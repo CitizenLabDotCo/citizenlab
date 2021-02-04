@@ -20,6 +20,7 @@ import eventEmitter from 'utils/eventEmitter';
 
 // components
 import Error from 'components/UI/Error';
+import PasswordInput from 'components/UI/PasswordInput';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import { convertUrlToUploadFile } from 'utils/fileTools';
 import { SectionField } from 'components/admin/Section';
@@ -68,6 +69,20 @@ const InputContainer = styled.div`
 
 const StyledIconTooltip = styled(IconTooltip)`
   margin-left: 5px;
+`;
+
+const LabelContainer = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const StyledFormLabel = styled(FormLabel)`
+  width: max-content;
+  margin-right: 5px;
+`;
+
+const StyledPasswordIconTooltip = styled(IconTooltip)`
+  margin-bottom: 4px;
 `;
 
 type Props = InputProps & DataProps & InjectedIntlProps & InjectedLocalized;
@@ -367,12 +382,33 @@ class ProfileForm extends PureComponent<Props, State> {
           </SectionField>
 
           <SectionField>
-            <FormLabel htmlFor="password" labelMessage={messages.password} />
-            <Input
-              type="password"
-              name="password"
-              id="password"
-              value={values.password}
+            <LabelContainer>
+              <StyledFormLabel
+                labelMessage={messages.password}
+                htmlFor="profile-password-input"
+              />
+              <StyledPasswordIconTooltip
+                content={
+                  <>
+                    <p>{formatMessage(messages.passwordStrengthTooltip1)}</p>
+                    <ul>
+                      <li>
+                        {formatMessage(messages.passwordStrengthTooltip2)}
+                      </li>
+                      <li>
+                        {formatMessage(messages.passwordStrengthTooltip3)}
+                      </li>
+                      <li>
+                        {formatMessage(messages.passwordStrengthTooltip4)}
+                      </li>
+                    </ul>
+                  </>
+                }
+              />
+            </LabelContainer>
+            <PasswordInput
+              id="profile-password-input"
+              password={values.password}
               onChange={createChangeHandler('password')}
               onBlur={createBlurHandler('password')}
             />

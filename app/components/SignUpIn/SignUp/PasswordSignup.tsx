@@ -6,8 +6,9 @@ import { API_PATH } from 'containers/App/constants';
 import request from 'utils/request';
 
 // components
-import { Input } from 'cl2-component-library';
+import { Input, IconTooltip } from 'cl2-component-library';
 import Button from 'components/UI/Button';
+import PasswordInput from 'components/UI/PasswordInput';
 import Error from 'components/UI/Error';
 import { FormLabel } from 'components/UI/FormComponents';
 import Consent from 'components/SignUpIn/SignUp/Consent';
@@ -70,6 +71,20 @@ const ButtonWrapper = styled.div`
   padding-top: 8px;
 `;
 
+const LabelContainer = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const StyledFormLabel = styled(FormLabel)`
+  width: max-content;
+  margin-right: 5px;
+`;
+
+const StyledIconTooltip = styled(IconTooltip)`
+  margin-bottom: 4px;
+`;
+
 type InputProps = {
   metaData: ISignUpInMetaData;
   hasNextStep?: boolean;
@@ -106,7 +121,8 @@ type State = {
   lastNameError: string | null;
   emailError: string | null;
   privacyError: boolean;
-  passwordError: string | null;
+  passwordEmptyError: string | null;
+  hasPasswordError: boolean;
   tacError: boolean;
   unknownError: string | null;
   apiErrors: CLErrorsJSON | null | Error;
@@ -128,7 +144,8 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
       firstNameError: null,
       lastNameError: null,
       emailError: null,
-      passwordError: null,
+      passwordEmptyError: null,
+      hasPasswordError: false,
       tacError: false,
       privacyError: false,
       unknownError: null,
@@ -204,10 +221,11 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
     }));
   };
 
-  handlePasswordOnChange = (password: string) => {
+  handlePasswordOnChange = (password: string, hasPasswordError: boolean) => {
     this.setState((state) => ({
       password,
-      passwordError: null,
+      hasPasswordError,
+      passwordEmptyError: null,
       unknownError: null,
       apiErrors: state.apiErrors
         ? set(state.apiErrors, 'json.errors.password', null)
@@ -255,6 +273,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
       tacAccepted,
       privacyAccepted,
       processing,
+      hasPasswordError,
     } = this.state;
     let invitationRedeemError =
       isInvitation && !token ? formatMessage(messages.noTokenError) : null;
@@ -272,22 +291,19 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
     const lastNameError = !lastName
       ? formatMessage(messages.noLastNameError)
       : null;
+    const passwordEmptyError = !password
+      ? formatMessage(messages.noPasswordError)
+      : null;
     const tacError = !tacAccepted;
     const privacyError = !privacyAccepted;
-    let passwordError: string | null = null;
-
-    if (!password) {
-      passwordError = formatMessage(messages.noPasswordError);
-    } else if (password.length < 8) {
-      passwordError = formatMessage(messages.noValidPasswordError);
-    }
 
     const hasErrors = [
       invitationRedeemError,
       emailError,
       firstNameError,
       lastNameError,
-      passwordError,
+      passwordEmptyError,
+      hasPasswordError,
       tacError,
       privacyError,
     ].some((error) => error);
@@ -297,7 +313,8 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
       emailError,
       firstNameError,
       lastNameError,
-      passwordError,
+      passwordEmptyError,
+      hasPasswordError,
       tacError,
       privacyError,
     });
@@ -383,7 +400,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
       firstNameError,
       lastNameError,
       emailError,
-      passwordError,
+      passwordEmptyError,
       apiErrors,
     } = this.state;
     const phone =
@@ -524,18 +541,37 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
             </FormElement>
 
             <FormElement id="e2e-password-container">
-              <FormLabel
-                labelMessage={messages.passwordLabel}
-                htmlFor="password"
-              />
-              <Input
-                type="password"
-                id="password"
-                value={password}
+              <LabelContainer>
+                <StyledFormLabel
+                  labelMessage={messages.passwordLabel}
+                  htmlFor="signup-password-input"
+                />
+                <StyledIconTooltip
+                  content={
+                    <>
+                      <p>{formatMessage(messages.passwordStrengthTooltip1)}</p>
+                      <ul>
+                        <li>
+                          {formatMessage(messages.passwordStrengthTooltip2)}
+                        </li>
+                        <li>
+                          {formatMessage(messages.passwordStrengthTooltip3)}
+                        </li>
+                        <li>
+                          {formatMessage(messages.passwordStrengthTooltip4)}
+                        </li>
+                      </ul>
+                    </>
+                  }
+                />
+              </LabelContainer>
+              <PasswordInput
+                id="signup-password-input"
+                password={password}
                 placeholder={formatMessage(messages.passwordPlaceholder)}
-                error={passwordError}
                 onChange={this.handlePasswordOnChange}
                 autocomplete="new-password"
+                error={passwordEmptyError}
               />
               <Error
                 fieldName={'password'}

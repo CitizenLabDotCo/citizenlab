@@ -8,6 +8,7 @@ import Link from 'utils/cl-router/Link';
 
 // components
 import { Input } from 'cl2-component-library';
+import PasswordInput from 'components/UI/PasswordInput';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import { FormLabel } from 'components/UI/FormComponents';
@@ -94,6 +95,7 @@ type State = {
   emailError: string | null;
   passwordError: string | null;
   signInError: string | null;
+  hasPasswordError: boolean;
 };
 
 class PasswordSignin extends PureComponent<
@@ -112,6 +114,7 @@ class PasswordSignin extends PureComponent<
       emailError: null,
       passwordError: null,
       signInError: null,
+      hasPasswordError: false,
     };
     this.emailInputElement = null;
     this.passwordInputElement = null;
@@ -133,9 +136,10 @@ class PasswordSignin extends PureComponent<
     trackEventByName(tracks.signInEmailPasswordExited);
   }
 
-  handlePasswordOnChange = (password: string) => {
+  handlePasswordOnChange = (password: string, hasPasswordError: boolean) => {
     this.setState({
       password,
+      hasPasswordError,
       passwordError: null,
       signInError: null,
     });
@@ -161,6 +165,7 @@ class PasswordSignin extends PureComponent<
       intl: { formatMessage },
       tenant,
     } = this.props;
+    const { hasPasswordError } = this.state;
     const phone =
       !isNilOrError(tenant) && tenant.attributes.settings.password_login?.phone;
     const hasEmailError = !phone && (!email || !isValidEmail(email));
@@ -179,11 +184,11 @@ class PasswordSignin extends PureComponent<
       this.emailInputElement.focus();
     }
 
-    if (passwordError && this.passwordInputElement) {
+    if (hasPasswordError && this.passwordInputElement) {
       this.passwordInputElement.focus();
     }
 
-    return !emailError && !passwordError;
+    return !emailError && !hasPasswordError;
   }
 
   handleOnSubmit = async (event: React.FormEvent) => {
@@ -280,14 +285,14 @@ class PasswordSignin extends PureComponent<
               htmlFor="password"
               labelMessage={messages.passwordLabel}
             />
-            <Input
-              type="password"
+            <PasswordInput
               id="password"
-              value={password}
+              password={password}
               error={passwordError}
               onChange={this.handlePasswordOnChange}
               setRef={this.handlePasswordInputSetRef}
               autocomplete="current-password"
+              isLoginPasswordInput
             />
           </FormElement>
 
