@@ -121,7 +121,6 @@ type State = {
   lastNameError: string | null;
   emailError: string | null;
   privacyError: boolean;
-  passwordEmptyError: string | null;
   hasPasswordError: boolean;
   tacError: boolean;
   unknownError: string | null;
@@ -144,7 +143,6 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
       firstNameError: null,
       lastNameError: null,
       emailError: null,
-      passwordEmptyError: null,
       hasPasswordError: false,
       tacError: false,
       privacyError: false,
@@ -225,7 +223,6 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
     this.setState((state) => ({
       password,
       hasPasswordError,
-      passwordEmptyError: null,
       unknownError: null,
       apiErrors: state.apiErrors
         ? set(state.apiErrors, 'json.errors.password', null)
@@ -291,9 +288,6 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
     const lastNameError = !lastName
       ? formatMessage(messages.noLastNameError)
       : null;
-    const passwordEmptyError = !password
-      ? formatMessage(messages.noPasswordError)
-      : null;
     const tacError = !tacAccepted;
     const privacyError = !privacyAccepted;
 
@@ -302,7 +296,6 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
       emailError,
       firstNameError,
       lastNameError,
-      passwordEmptyError,
       hasPasswordError,
       tacError,
       privacyError,
@@ -313,7 +306,6 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
       emailError,
       firstNameError,
       lastNameError,
-      passwordEmptyError,
       hasPasswordError,
       tacError,
       privacyError,
@@ -400,7 +392,6 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
       firstNameError,
       lastNameError,
       emailError,
-      passwordEmptyError,
       apiErrors,
     } = this.state;
     const phone =
@@ -571,7 +562,6 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
                 placeholder={formatMessage(messages.passwordPlaceholder)}
                 onChange={this.handlePasswordOnChange}
                 autocomplete="new-password"
-                error={passwordEmptyError}
               />
               <Error
                 fieldName={'password'}
