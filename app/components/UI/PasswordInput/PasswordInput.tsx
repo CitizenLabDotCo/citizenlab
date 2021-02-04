@@ -64,8 +64,13 @@ const PasswordInputComponent = ({
   const tenant = useTenant();
   const [showPassword, setShowPassword] = useState(false);
   const [passwordScore, setPasswordScore] = useState<PasswordScore>(0);
-  const hasPasswordError = getHasPasswordError();
-  const minimumPasswordLengthError = getMinimumPasswordLengthError();
+
+  const hadEmtpyError = getHasEmptyError();
+  const hasMinimumLengthError = getHasMinimumLengthError();
+  const hasPasswordError = hadEmtpyError || hasMinimumLengthError;
+  const minimumPasswordLengthError = getMinimumPasswordLengthError(
+    hasMinimumLengthError
+  );
 
   function getIsPasswordTooShort(
     password: string | null,
@@ -93,14 +98,8 @@ const PasswordInputComponent = ({
     return !password;
   }
 
-  function getHasPasswordError() {
-    const hadEmtpyError = getHasEmptyError();
-    const hasMinimumLengthError = getHasMinimumLengthError();
-    return hadEmtpyError || hasMinimumLengthError;
-  }
-
-  function getMinimumPasswordLengthError() {
-    return minimumPasswordLength
+  function getMinimumPasswordLengthError(hasMinimumLengthError: boolean) {
+    return hasMinimumLengthError
       ? formatMessage(messages.minimumPasswordLengthErrorMessage, {
           minimumPasswordLength,
         })
