@@ -20,6 +20,7 @@ import { WithRouterProps } from 'react-router';
 
 // what needs to be mocked by jest to render the component
 jest.mock('utils/cl-intl');
+jest.mock('components/Outlet', () => 'outlet');
 
 const getRouterProps = (projectId, tabName?: string) =>
   (({
