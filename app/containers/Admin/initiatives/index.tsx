@@ -63,22 +63,23 @@ const InitiativesPage = memo<InjectedIntlProps & WithRouterProps>(
     };
 
     const insertTab = ({
-      configuration,
-      after,
+      tabConfiguration,
+      insertAfterTabName,
     }: {
-      configuration: ITab;
-      after?: string;
+      tabConfiguration: ITab;
+      insertAfterTabName?: string;
     }) => {
       setTabs((tabs) => {
-        const insertIndex = tabs.findIndex((tab) => tab.name === after) + 1;
+        const insertIndex =
+          tabs.findIndex((tab) => tab.name === insertAfterTabName) + 1;
         if (insertIndex > 0) {
           return [
             ...tabs.slice(0, insertIndex),
-            configuration,
+            tabConfiguration,
             ...tabs.slice(insertIndex),
           ];
         }
-        return [...tabs, configuration];
+        return [...tabs, tabConfiguration];
       });
     };
 

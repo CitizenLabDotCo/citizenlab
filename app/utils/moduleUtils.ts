@@ -88,7 +88,10 @@ export type OutletsPropertyMap = {
       messageDescriptor: MessageDescriptor,
       values?: { [key: string]: MessageValue } | undefined
     ) => string;
-    onData: (data: { after?: string; configuration: ITab }) => void;
+    onData: (data: {
+      insertAfterTabName?: string;
+      tabConfiguration: ITab;
+    }) => void;
   };
 };
 
