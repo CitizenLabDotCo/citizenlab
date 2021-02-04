@@ -231,7 +231,6 @@
   "app.components.Modal.showPassword": "Show password",
   "app.components.Modal.strength1Password": "Weak",
   "app.components.Modal.strength2Password": "Reasonable",
-  "app.components.Modal.strength3Password": "Solid",
   "app.components.Modal.strength4Password": "Strong",
   "app.components.Modal.strength5Password": "Very strong",
   "app.components.PagesForm.dontChange": "Don't change this! (unless you really know what you're doing)",
