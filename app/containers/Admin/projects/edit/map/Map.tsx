@@ -63,54 +63,56 @@ const Map = memo<Props>(({ projectId, className }) => {
   const mapConfig = useMapConfig({ projectId, prefetchMapLayers: true });
 
   const [map, setMap] = useState<L.Map | null>(null);
-  const [layer, setLayer] = useState<L.GeoJSON | null>(null);
+  // const [layer, setLayer] = useState<L.GeoJSON | null>(null);
   const [editedMapLayerId, setEditedMapLayerId] = useState<string | null>(null);
 
   const mapConfigId = !isNilOrError(mapConfig) ? mapConfig.id : null;
 
   useEffect(() => {
-    if (!map) {
-      const map = L.map('mapid').setView([50.869189, 4.725238], 16);
+    const map = L.map('mapid').setView([50.869189, 4.725238], 16);
 
-      L.tileLayer(
-        'https://tiles.stadiamaps.com/tiles/osm_bright/{z}/{x}/{y}{r}.png',
-        {
-          subdomains: ['a', 'b', 'c'],
-          maxZoom: 20,
-        }
-      ).addTo(map);
+    L.tileLayer(
+      'https://tiles.stadiamaps.com/tiles/osm_bright/{z}/{x}/{y}{r}.png',
+      {
+        subdomains: ['a', 'b', 'c'],
+        maxZoom: 20,
+      }
+    ).addTo(map);
 
-      setLayer(
-        L.geoJSON(undefined, {
-          useSimpleStyle: true,
-          useMakiMarkers: true,
-          onEachFeature: (feature, layer) => {
-            if (feature.properties && feature.properties.popupContent) {
-              layer.bindPopup(feature.properties.popupContent);
-            }
-
-            if (feature.properties && feature.properties.tooltipContent) {
-              layer.bindTooltip(feature.properties.tooltipContent);
-            }
-          },
-        } as any).addTo(map)
-      );
-
-      setMap(map);
-    }
-  }, [map, layer]);
+    setMap(map);
+  }, []);
 
   useEffect(() => {
-    layer?.clearLayers();
-
-    if (!isNilOrError(mapConfig)) {
-      mapConfig?.attributes?.layers?.forEach(({ geojson }) => {
-        if (geojson) {
-          layer?.addData(geojson);
+    if (map) {
+      map.eachLayer((layer) => {
+        if (layer?.['identifier'] === 'customlayer') {
+          map.removeLayer(layer);
         }
       });
+
+      if (!isNilOrError(mapConfig)) {
+        mapConfig?.attributes?.layers?.forEach(({ geojson }) => {
+          if (geojson) {
+            L.geoJSON(geojson, {
+              useSimpleStyle: true,
+              useMakiMarkers: true,
+              onEachFeature: (feature, layer) => {
+                layer.identifier = 'customlayer';
+
+                if (feature.properties && feature.properties.popupContent) {
+                  layer.bindPopup(feature.properties.popupContent);
+                }
+
+                if (feature.properties && feature.properties.tooltipContent) {
+                  layer.bindTooltip(feature.properties.tooltipContent);
+                }
+              },
+            } as any).addTo(map);
+          }
+        });
+      }
     }
-  }, [mapConfig]);
+  }, [map, mapConfig]);
 
   const handleChange = (event: any) => {
     const fileReader = new FileReader();
