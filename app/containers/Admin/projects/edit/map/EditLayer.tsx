@@ -1,6 +1,6 @@
-import React, { memo, useState } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { isEmpty } from 'lodash-es';
+import { isEmpty, cloneDeep } from 'lodash-es';
 
 // services
 import { updateProjectMapLayer } from 'services/mapLayers';
@@ -18,7 +18,6 @@ import {
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
-import { Success } from 'cl2-component-library';
 
 // i18n
 import T from 'components/T';
@@ -65,34 +64,18 @@ const EditLayer = memo<Props & InjectedIntlProps>(
     // const [success, setSuccess] = useState(false);
     const [errors, setErrors] = useState<{ [key: string]: any }>({});
     const [formValues, setFormValues] = useState<IFormValues>({
-      title_multiloc: null,
+      title_multiloc: !isNilOrError(mapLayer)
+        ? mapLayer.attributes.title_multiloc
+        : null,
     });
 
-    const geojson = {
-      type: 'FeatureCollection',
-      features: [
-        {
-          type: 'Feature',
-          properties: {
-            shape: 'Polygon',
-            name: 'Unnamed Layer',
-            category: 'default',
-          },
-          geometry: {
-            type: 'Polygon',
-            coordinates: [
-              [
-                [4.724422, 50.870057],
-                [4.724089, 50.869407],
-                [4.72543, 50.869164],
-                [4.724422, 50.870057],
-              ],
-            ],
-          },
-          id: '7d0520b6-1e2d-49f2-9fdd-eab50995a81d',
-        },
-      ],
-    } as any;
+    useEffect(() => {
+      setFormValues({
+        title_multiloc: !isNilOrError(mapLayer)
+          ? mapLayer.attributes.title_multiloc
+          : null,
+      });
+    }, [mapLayer]);
 
     const handleTitleOnChange = (title_multiloc: Multiloc) => {
       formChange({ title_multiloc });
@@ -141,10 +124,25 @@ const EditLayer = memo<Props & InjectedIntlProps>(
       if (!processing && validate() && title_multiloc) {
         formProcessing();
 
+        const geojson = (!isNilOrError(mapLayer)
+          ? cloneDeep(mapLayer.attributes.geojson)
+          : {}) as GeoJSON.FeatureCollection;
+
+        geojson?.features.forEach((feature) => {
+          feature.properties = {
+            stroke: '#d50101',
+            'stroke-width': 4,
+            'stroke-opacity': 1,
+            fill: '#8100bd',
+            'fill-opacity': 0.3,
+            tooltipContent: 'This is the tooltip content',
+          };
+        });
+
         try {
           await updateProjectMapLayer(projectId, mapLayerId, {
-            geojson,
             title_multiloc,
+            geojson,
           });
           formSuccess();
         } catch (errorResponse) {
