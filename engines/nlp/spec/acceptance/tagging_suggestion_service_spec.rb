@@ -29,7 +29,8 @@ describe NLP::TaggingSuggestionService do
           {:doc_id=>@ideas[2].id,
             :text=>"But I\'m not ideal."}
           ],
-         :tenant_id=> @tenant_id
+         :tenant_id=> @tenant_id,
+         :locale => "en"
        }
       )
     end
@@ -43,7 +44,8 @@ describe NLP::TaggingSuggestionService do
           [{:doc_id=>@ideas[2].id,
             :text=>"Mais je ne suis pas idéale."}
           ],
-         :tenant_id=> @tenant_id
+         :tenant_id=> @tenant_id,
+         :locale => "fr-BE"
        }
       )
     end
