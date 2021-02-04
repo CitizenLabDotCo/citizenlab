@@ -20,6 +20,7 @@ import { WithRouterProps } from 'react-router';
 
 // what needs to be mocked by jest to render the component
 jest.mock('utils/cl-intl');
+jest.mock('components/Outlet', () => 'outlet');
 
 const getRouterProps = (projectId, tabName?: string) =>
   (({
@@ -60,7 +61,7 @@ describe('<AdminProjectEdition />', () => {
         {...localizeProps}
       />
     );
-    const tabs = wrapper.find('withRouter(TabbedResource)').props().tabs;
+    const tabs = wrapper.state().tabs;
 
     expect(tabs.map((tab) => tab.url)).toMatchSnapshot();
   });
@@ -93,7 +94,7 @@ describe('<AdminProjectEdition />', () => {
         {...localizeProps}
       />
     );
-    const tabs = wrapper.find('withRouter(TabbedResource)').props().tabs;
+    const tabs = wrapper.state().tabs;
 
     expect(tabs.map((tab) => tab.url)).toMatchSnapshot();
   });
@@ -126,7 +127,7 @@ describe('<AdminProjectEdition />', () => {
         {...localizeProps}
       />
     );
-    const tabs = wrapper.find('withRouter(TabbedResource)').props().tabs;
+    const tabs = wrapper.state().tabs;
 
     expect(tabs.map((tab) => tab.url)).toMatchSnapshot();
   });
@@ -159,7 +160,7 @@ describe('<AdminProjectEdition />', () => {
         {...localizeProps}
       />
     );
-    const tabs = wrapper.find('withRouter(TabbedResource)').props().tabs;
+    const tabs = wrapper.state().tabs;
 
     expect(tabs.map((tab) => tab.url)).toMatchSnapshot();
   });
@@ -192,7 +193,7 @@ describe('<AdminProjectEdition />', () => {
         {...localizeProps}
       />
     );
-    const tabs = wrapper.find('withRouter(TabbedResource)').props().tabs;
+    const tabs = wrapper.state().tabs;
 
     expect(tabs.map((tab) => tab.url)).toMatchSnapshot();
   });
@@ -221,7 +222,7 @@ describe('<AdminProjectEdition />', () => {
         {...localizeProps}
       />
     );
-    const tabs = wrapper.find('withRouter(TabbedResource)').props().tabs;
+    const tabs = wrapper.state().tabs;
 
     expect(tabs.map((tab) => tab.url)).toMatchSnapshot();
   });
@@ -252,7 +253,7 @@ describe('<AdminProjectEdition />', () => {
         {...localizeProps}
       />
     );
-    const tabs = wrapper.find('withRouter(TabbedResource)').props().tabs;
+    const tabs = wrapper.state().tabs;
 
     expect(tabs.map((tab) => tab.url)).toMatchSnapshot();
   });
@@ -280,7 +281,7 @@ describe('<AdminProjectEdition />', () => {
         {...localizeProps}
       />
     );
-    const tabs = wrapper.find('withRouter(TabbedResource)').props().tabs;
+    const tabs = wrapper.state().tabs;
 
     expect(tabs.map((tab) => tab.url)).toMatchSnapshot();
   });
@@ -308,7 +309,7 @@ describe('<AdminProjectEdition />', () => {
         {...localizeProps}
       />
     );
-    const tabs = wrapper.find('withRouter(TabbedResource)').props().tabs;
+    const tabs = wrapper.state().tabs;
 
     expect(tabs.map((tab) => tab.url)).toMatchSnapshot();
   });
