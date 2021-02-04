@@ -93,7 +93,6 @@ type State = {
   password: string | null;
   processing: boolean;
   emailError: string | null;
-  passwordError: string | null;
   signInError: string | null;
   hasPasswordError: boolean;
 };
@@ -112,7 +111,6 @@ class PasswordSignin extends PureComponent<
       password: null,
       processing: false,
       emailError: null,
-      passwordError: null,
       signInError: null,
       hasPasswordError: false,
     };
@@ -140,7 +138,6 @@ class PasswordSignin extends PureComponent<
     this.setState({
       password,
       hasPasswordError,
-      passwordError: null,
       signInError: null,
     });
   };
@@ -160,7 +157,7 @@ class PasswordSignin extends PureComponent<
     }
   };
 
-  validate(email: string | null, password: string | null) {
+  validate(email: string | null) {
     const {
       intl: { formatMessage },
       tenant,
@@ -174,11 +171,8 @@ class PasswordSignin extends PureComponent<
         ? formatMessage(messages.noEmailError)
         : formatMessage(messages.noValidEmailError)
       : null;
-    const passwordError = !password
-      ? formatMessage(messages.noPasswordError)
-      : null;
 
-    this.setState({ emailError, passwordError });
+    this.setState({ emailError });
 
     if (emailError && this.emailInputElement) {
       this.emailInputElement.focus();
@@ -198,7 +192,7 @@ class PasswordSignin extends PureComponent<
     const { formatMessage } = this.props.intl;
     const { email, password } = this.state;
 
-    if (this.validate(email, password) && email && password) {
+    if (this.validate(email) && email && password) {
       try {
         this.setState({ processing: true });
         const user = await signIn(email, password);
@@ -223,14 +217,7 @@ class PasswordSignin extends PureComponent<
   };
 
   render() {
-    const {
-      email,
-      password,
-      processing,
-      emailError,
-      passwordError,
-      signInError,
-    } = this.state;
+    const { email, password, processing, emailError, signInError } = this.state;
     const {
       className,
       tenant,
@@ -288,7 +275,6 @@ class PasswordSignin extends PureComponent<
             <PasswordInput
               id="password"
               password={password}
-              error={passwordError}
               onChange={this.handlePasswordOnChange}
               setRef={this.handlePasswordInputSetRef}
               autocomplete="current-password"
