@@ -46,6 +46,6 @@ export default loadModules([
   },
   {
     configuration: moderationConfiguration,
-    isEnabled: true,
+    isEnabled: false,
   },
 ]);
