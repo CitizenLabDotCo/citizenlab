@@ -71,6 +71,20 @@ const StyledIconTooltip = styled(IconTooltip)`
   margin-left: 5px;
 `;
 
+const LabelContainer = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const StyledFormLabel = styled(FormLabel)`
+  width: max-content;
+  margin-right: 5px;
+`;
+
+const StyledPasswordIconTooltip = styled(IconTooltip)`
+  margin-bottom: 4px;
+`;
+
 type Props = InputProps & DataProps & InjectedIntlProps & InjectedLocalized;
 
 class ProfileForm extends PureComponent<Props, State> {
@@ -368,9 +382,15 @@ class ProfileForm extends PureComponent<Props, State> {
           </SectionField>
 
           <SectionField>
-            <FormLabel htmlFor="password" labelMessage={messages.password} />
+            <LabelContainer>
+              <StyledFormLabel
+                labelMessage={messages.password}
+                htmlFor="profile-password-input"
+              />
+              <StyledPasswordIconTooltip content={'test'} />
+            </LabelContainer>
             <PasswordInput
-              id="password"
+              id="profile-password-input"
               password={values.password}
               onChange={createChangeHandler('password')}
               onBlur={createBlurHandler('password')}
