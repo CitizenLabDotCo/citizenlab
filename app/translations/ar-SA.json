@@ -2471,7 +2471,7 @@
   "containers.Admin.onboarding.manageSectionTitle": "إدارة",
   "containers.Admin.onboarding.readCompleteGuide": "اقرأ الدليل الكامل",
   "containers.Admin.onboarding.setupArticle1Description": "المشاريع هي قلب المنصة النابض بالحياة. يستطيع المسؤولون ومديرو المشاريع تعديل المشاريع في أي وقت كان.",
-  "containers.Admin.onboarding.setupArticle1Link": "/المسؤول/المشاريع/جديد",
+  "containers.Admin.onboarding.setupArticle1Link": "/admin/projects",
   "containers.Admin.onboarding.setupArticle1Title": "أنشئ مشاريع جديدة",
   "containers.Admin.onboarding.setupArticle2Description": "يمكنك طرح الأسئلة على المستخدمين خلال التسجيل والاستفادة من إجاباتهم في إنشاء مجموعات مستخدمين ومعرفة الأشخاص الموجودين على منصتك.",
   "containers.Admin.onboarding.setupArticle2Link": "/المسؤول/الإعدادات/التسجيل",
