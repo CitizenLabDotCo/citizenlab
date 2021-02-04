@@ -2471,7 +2471,7 @@
   "containers.Admin.onboarding.manageSectionTitle": "gérer",
   "containers.Admin.onboarding.readCompleteGuide": "Lire le guide complet",
   "containers.Admin.onboarding.setupArticle1Description": "Les projets sont le coeur de votre plateforme. Les administrateurs projet et les administrateurs peuvent modifier les projets à tout moment.",
-  "containers.Admin.onboarding.setupArticle1Link": "/admin/projects/new",
+  "containers.Admin.onboarding.setupArticle1Link": "/admin/projects",
   "containers.Admin.onboarding.setupArticle1Title": "Créer de nouveaux projets",
   "containers.Admin.onboarding.setupArticle2Description": "Vous pouvez demander aux utilisateurs des informations supplémentaires lors de leur inscription. Utilisez ces informations pour obtenir un meilleur aperçu de vos utilisateurs ou pour segmenter ces utilisateurs en différents groupes.",
   "containers.Admin.onboarding.setupArticle2Link": "/admin/settings/registration",
