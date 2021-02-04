@@ -2471,7 +2471,7 @@
   "containers.Admin.onboarding.manageSectionTitle": "zarządzaj",
   "containers.Admin.onboarding.readCompleteGuide": "Przeczytaj instrukcję",
   "containers.Admin.onboarding.setupArticle1Description": "Projekty są sercem platformy. Administratorzy i moderatorzy projektów mogą je edytować w dowolnym momencie.",
-  "containers.Admin.onboarding.setupArticle1Link": "/admin/projects/new",
+  "containers.Admin.onboarding.setupArticle1Link": "/admin/projects",
   "containers.Admin.onboarding.setupArticle1Title": "Utwórz nowe projekty",
   "containers.Admin.onboarding.setupArticle2Description": "Możesz zadawać pytania użytkownikom podczas rejestracji i wykorzystywać ich odpowiedzi do tworzenia grup użytkowników oraz gromadzenia wiedzy o użytkownikach platformy.",
   "containers.Admin.onboarding.setupArticle2Link": "/admin/settings/registration",
