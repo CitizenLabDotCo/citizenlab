@@ -6,7 +6,7 @@ import clHistory from 'utils/cl-router/history';
 import Link from 'utils/cl-router/Link';
 
 // components
-import { Success } from 'cl2-component-library';
+import { Success, IconTooltip } from 'cl2-component-library';
 import Button from 'components/UI/Button';
 import PasswordInput from 'components/UI/PasswordInput';
 import { Helmet } from 'react-helmet';
@@ -67,6 +67,20 @@ const Form = styled.form`
   margin-right: auto;
   display: flex;
   flex-direction: column;
+`;
+
+const LabelContainer = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const StyledFormLabel = styled(FormLabel)`
+  width: max-content;
+  margin-right: 5px;
+`;
+
+const StyledIconTooltip = styled(IconTooltip)`
+  margin-bottom: 6px;
 `;
 
 type Props = {};
@@ -196,12 +210,15 @@ class PasswordReset extends React.PureComponent<
             <Title>{title}</Title>
 
             <Form onSubmit={this.handleOnSubmit}>
-              <FormLabel
-                htmlFor="password"
-                labelMessage={messages.passwordLabel}
-              />
+              <LabelContainer>
+                <StyledFormLabel
+                  labelMessage={messages.passwordLabel}
+                  htmlFor="password-reset-input"
+                />
+                <StyledIconTooltip content={'test'} />
+              </LabelContainer>
               <PasswordInput
-                id="password"
+                id="password-reset-input"
                 password={password}
                 placeholder={passwordPlaceholder}
                 onChange={this.handlePasswordOnChange}
