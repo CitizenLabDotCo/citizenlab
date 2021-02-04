@@ -66,6 +66,7 @@ const PasswordInputComponent = ({
   minimumPasswordLength,
   error,
   isLoginPasswordInput,
+  setRef,
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
   const locale = useLocale();
@@ -75,7 +76,8 @@ const PasswordInputComponent = ({
   const hasMinimumLengthError =
     !isLoginPasswordInput &&
     isPasswordTooShort(password, minimumPasswordLength);
-  const hasPasswordError = hasMinimumLengthError;
+  const hasPropError = !!error;
+  const hasPasswordError = hasPropError || hasMinimumLengthError;
   const minimumPasswordLengthError = hasMinimumLengthError
     ? formatMessage(messages.minimumPasswordLengthErrorMessage, {
         minimumPasswordLength,
@@ -85,7 +87,7 @@ const PasswordInputComponent = ({
   const handleOnChange = (password: string) => {
     onChange(password, hasPasswordError);
 
-    if (hasMinimumLengthError && inputEl) {
+    if (hasPasswordError && inputEl) {
       inputEl.focus();
     }
   };
@@ -98,7 +100,10 @@ const PasswordInputComponent = ({
     setShowPassword(!showPassword);
   };
 
-  const setRef = (inputElement: HTMLInputElement) => {
+  const setInputRef = (inputElement: HTMLInputElement) => {
+    if (setRef) {
+      setRef(inputElement);
+    }
     inputEl = inputElement;
   };
 
@@ -118,7 +123,7 @@ const PasswordInputComponent = ({
             onBlur={handleOnBlur}
             autocomplete={autocomplete}
             placeholder={placeholder}
-            setRef={setRef}
+            setRef={setInputRef}
           />
           <ShowPasswordButton
             locale={locale}
