@@ -2471,7 +2471,7 @@
   "containers.Admin.onboarding.manageSectionTitle": "modereren",
   "containers.Admin.onboarding.readCompleteGuide": "Lees de volledige gids",
   "containers.Admin.onboarding.setupArticle1Description": "Projecten zijn het kloppende hart van je platform. Beheerders en projectbeheerders kunnen ze op elk moment bewerken.",
-  "containers.Admin.onboarding.setupArticle1Link": "/admin/projects/new",
+  "containers.Admin.onboarding.setupArticle1Link": "/admin/projects",
   "containers.Admin.onboarding.setupArticle1Title": "Maak nieuwe projecten aan",
   "containers.Admin.onboarding.setupArticle2Description": "Je kan je gebruikers tijdens de registratie extra informatie vragen. Gebruik deze registratievelden om je gebruikers te segmenteren.",
   "containers.Admin.onboarding.setupArticle2Link": "/admin/settings/registration",
