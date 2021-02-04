@@ -95,6 +95,7 @@ type State = {
   emailError: string | null;
   passwordError: string | null;
   signInError: string | null;
+  hasPasswordError: boolean;
 };
 
 class PasswordSignin extends PureComponent<
@@ -113,6 +114,7 @@ class PasswordSignin extends PureComponent<
       emailError: null,
       passwordError: null,
       signInError: null,
+      hasPasswordError: false,
     };
     this.emailInputElement = null;
     this.passwordInputElement = null;
@@ -134,9 +136,10 @@ class PasswordSignin extends PureComponent<
     trackEventByName(tracks.signInEmailPasswordExited);
   }
 
-  handlePasswordOnChange = (password: string) => {
+  handlePasswordOnChange = (password: string, hasPasswordError: boolean) => {
     this.setState({
       password,
+      hasPasswordError,
       passwordError: null,
       signInError: null,
     });
@@ -162,6 +165,7 @@ class PasswordSignin extends PureComponent<
       intl: { formatMessage },
       tenant,
     } = this.props;
+    const { hasPasswordError } = this.state;
     const phone =
       !isNilOrError(tenant) && tenant.attributes.settings.password_login?.phone;
     const hasEmailError = !phone && (!email || !isValidEmail(email));
@@ -180,11 +184,11 @@ class PasswordSignin extends PureComponent<
       this.emailInputElement.focus();
     }
 
-    if (passwordError && this.passwordInputElement) {
+    if (hasPasswordError && this.passwordInputElement) {
       this.passwordInputElement.focus();
     }
 
-    return !emailError && !passwordError;
+    return !emailError && !hasPasswordError;
   }
 
   handleOnSubmit = async (event: React.FormEvent) => {
