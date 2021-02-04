@@ -69,7 +69,6 @@ const InitiativesPage = memo<InjectedIntlProps & WithRouterProps>(
       configuration: ITab;
       after?: string;
     }) => {
-      console.log({ configuration, after });
       setTabs((tabs) => {
         const insertIndex = tabs.findIndex((tab) => tab.name === after) + 1;
         if (insertIndex > 0) {
