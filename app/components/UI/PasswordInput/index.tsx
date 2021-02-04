@@ -10,7 +10,6 @@ import PasswordInputComponent from './PasswordInput';
 export interface Props {
   id: string;
   password: string | null;
-  error?: string | null;
   onChange: (password: string, hasPasswordError?: boolean) => void;
   onBlur?: () => void;
   setRef?: (element: HTMLInputElement) => void;
