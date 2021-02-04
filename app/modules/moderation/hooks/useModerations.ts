@@ -4,7 +4,7 @@ import {
   IModerationData,
   TModerationStatuses,
   TModeratableTypes,
-} from 'services/moderations';
+} from '../services/moderations';
 import { isNilOrError } from 'utils/helperUtils';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
 

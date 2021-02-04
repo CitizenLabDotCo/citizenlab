@@ -6,7 +6,7 @@ import {
   moderationsStream,
   IModerationData,
   TModerationStatuses,
-} from 'services/moderations';
+} from 'modules/moderation/services/moderations';
 import { isNilOrError } from 'utils/helperUtils';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
 

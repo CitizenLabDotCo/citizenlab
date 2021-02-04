@@ -16,7 +16,7 @@ import SelectProject from './SelectProject';
 import SearchInput from 'components/UI/SearchInput';
 
 // hooks
-import useModerations from 'hooks/useModerations';
+import useModerations from 'modules/moderation/hooks/useModerations';
 
 // services
 import {
@@ -24,7 +24,7 @@ import {
   IModerationData,
   TModerationStatuses,
   TModeratableTypes,
-} from 'services/moderations';
+} from 'modules/moderation/services/moderations';
 
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
