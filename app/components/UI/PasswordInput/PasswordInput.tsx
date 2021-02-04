@@ -67,10 +67,14 @@ const PasswordInputComponent = ({
   const hasPasswordError = getHasPasswordError();
   const minimumPasswordLengthError = getMinimumPasswordLengthError();
 
-  function isPasswordTooShort(
+  function getIsPasswordTooShort(
     password: string | null,
     minimumPasswordLength: number
   ) {
+    // this function is used after the user
+    // has typed something in the field
+    // before that, when password is null,
+    // we use getHasEmptyError
     if (typeof password === 'string') {
       return password.length < minimumPasswordLength;
     }
@@ -81,14 +85,18 @@ const PasswordInputComponent = ({
   function getHasMinimumLengthError() {
     return (
       !isLoginPasswordInput &&
-      isPasswordTooShort(password, minimumPasswordLength)
+      getIsPasswordTooShort(password, minimumPasswordLength)
     );
   }
 
+  function getHasEmptyError() {
+    return !password;
+  }
+
   function getHasPasswordError() {
-    const hasPropError = !!error;
+    const hadEmtpyError = getHasEmptyError();
     const hasMinimumLengthError = getHasMinimumLengthError();
-    return hasPropError || hasMinimumLengthError;
+    return hadEmtpyError || hasMinimumLengthError;
   }
 
   function getMinimumPasswordLengthError() {
