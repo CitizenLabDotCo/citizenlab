@@ -2471,7 +2471,7 @@
   "containers.Admin.onboarding.manageSectionTitle": "manage",
   "containers.Admin.onboarding.readCompleteGuide": "Read the complete guide",
   "containers.Admin.onboarding.setupArticle1Description": "Projects are the beating heart of the platform. Admins and project managers can edit the projects at any time.",
-  "containers.Admin.onboarding.setupArticle1Link": "/admin/projects/new",
+  "containers.Admin.onboarding.setupArticle1Link": "/admin/projects",
   "containers.Admin.onboarding.setupArticle1Title": "Create new projects",
   "containers.Admin.onboarding.setupArticle2Description": "You can ask your users questions during registration and use their answers to create user groups and to learn who's on your platform.",
   "containers.Admin.onboarding.setupArticle2Link": "/admin/settings/registration",
