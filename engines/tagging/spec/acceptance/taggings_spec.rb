@@ -191,8 +191,6 @@ resource "Taggings" do
 
       do_request idea_ids: @ideas.map(&:id), tags: [ 'Lalalal' ,  'chachacha', 'lilila', 'leela', 'lou' ]
 
-      debugger
-
       expect(response_status).to eq 200
       expect(Tagging::PendingTask.count).to eq 1
     end
