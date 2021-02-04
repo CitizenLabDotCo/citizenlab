@@ -387,7 +387,24 @@ class ProfileForm extends PureComponent<Props, State> {
                 labelMessage={messages.password}
                 htmlFor="profile-password-input"
               />
-              <StyledPasswordIconTooltip content={'test'} />
+              <StyledPasswordIconTooltip
+                content={
+                  <>
+                    <p>{formatMessage(messages.passwordStrengthTooltip1)}</p>
+                    <ul>
+                      <li>
+                        {formatMessage(messages.passwordStrengthTooltip2)}
+                      </li>
+                      <li>
+                        {formatMessage(messages.passwordStrengthTooltip3)}
+                      </li>
+                      <li>
+                        {formatMessage(messages.passwordStrengthTooltip4)}
+                      </li>
+                    </ul>
+                  </>
+                }
+              />
             </LabelContainer>
             <PasswordInput
               id="profile-password-input"
