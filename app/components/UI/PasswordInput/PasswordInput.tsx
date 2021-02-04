@@ -54,7 +54,6 @@ const PasswordInputComponent = ({
   onChange,
   onBlur,
   minimumPasswordLength,
-  error,
   isLoginPasswordInput,
   setRef,
   intl: { formatMessage },
@@ -64,13 +63,24 @@ const PasswordInputComponent = ({
   const tenant = useTenant();
   const [showPassword, setShowPassword] = useState(false);
   const [passwordScore, setPasswordScore] = useState<PasswordScore>(0);
-
-  const hadEmtpyError = getHasEmptyError();
-  const hasMinimumLengthError = getHasMinimumLengthError();
-  const hasPasswordError = hadEmtpyError || hasMinimumLengthError;
-  const minimumPasswordLengthError = getMinimumPasswordLengthError(
+  const [hasEmptyError, setHasEmptyError] = useState(false);
+  const [hasMinimumLengthError, setHasMinimumLengthError] = useState(false);
+  const hasPasswordError = hasEmptyError || hasMinimumLengthError;
+  const minimumPasswordLengthErrorMessage = getMinimumPasswordLengthError(
     hasMinimumLengthError
   );
+  const emptyPasswordErrorMessage = getEmptyPasswordErrorMessage();
+
+  function getHasEmptyError(password: string) {
+    return !password;
+  }
+
+  function getHasMinimumLengthError(password: string) {
+    return (
+      !isLoginPasswordInput &&
+      getIsPasswordTooShort(password, minimumPasswordLength)
+    );
+  }
 
   function getIsPasswordTooShort(
     password: string | null,
@@ -87,17 +97,6 @@ const PasswordInputComponent = ({
     return false;
   }
 
-  function getHasMinimumLengthError() {
-    return (
-      !isLoginPasswordInput &&
-      getIsPasswordTooShort(password, minimumPasswordLength)
-    );
-  }
-
-  function getHasEmptyError() {
-    return !password;
-  }
-
   function getMinimumPasswordLengthError(hasMinimumLengthError: boolean) {
     return hasMinimumLengthError
       ? formatMessage(messages.minimumPasswordLengthErrorMessage, {
@@ -106,18 +105,27 @@ const PasswordInputComponent = ({
       : null;
   }
 
+  function getEmptyPasswordErrorMessage() {
+    return hasEmptyError ? formatMessage(messages.emptyPasswordError) : null;
+  }
+
   const handleOnChange = (password: string) => {
+    setHasEmptyError(getHasEmptyError(password));
+    setHasMinimumLengthError(getHasMinimumLengthError(password));
+
     onChange(password, hasPasswordError);
 
     if (hasPasswordError && inputEl) {
       inputEl.focus();
     }
   };
+
   const handleOnBlur = () => {
     if (onBlur) {
       onBlur();
     }
   };
+
   const handleOnClick = () => {
     setShowPassword(!showPassword);
   };
@@ -126,6 +134,7 @@ const PasswordInputComponent = ({
     if (setRef) {
       setRef(inputElement);
     }
+
     inputEl = inputElement;
   };
 
@@ -212,8 +221,8 @@ const PasswordInputComponent = ({
             </ScreenReaderOnly>
           </>
         )}
-        <Error text={error} />
-        <Error text={minimumPasswordLengthError} />
+        <Error text={emptyPasswordErrorMessage} />
+        <Error text={minimumPasswordLengthErrorMessage} />
       </>
     );
   }
