@@ -6,8 +6,9 @@ import clHistory from 'utils/cl-router/history';
 import Link from 'utils/cl-router/Link';
 
 // components
-import { Input, Success } from 'cl2-component-library';
+import { Success, IconTooltip } from 'cl2-component-library';
 import Button from 'components/UI/Button';
+import PasswordInput from 'components/UI/PasswordInput';
 import { Helmet } from 'react-helmet';
 import ContentContainer from 'components/ContentContainer';
 import { FormLabel } from 'components/UI/FormComponents';
@@ -52,8 +53,6 @@ const Title = styled.h1`
   margin-bottom: 50px;
 `;
 
-const StyledInput = styled(Input)``;
-
 const StyledButton = styled(Button)`
   margin-top: 20px;
   margin-bottom: 10px;
@@ -70,6 +69,20 @@ const Form = styled.form`
   flex-direction: column;
 `;
 
+const LabelContainer = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const StyledFormLabel = styled(FormLabel)`
+  width: max-content;
+  margin-right: 5px;
+`;
+
+const StyledIconTooltip = styled(IconTooltip)`
+  margin-bottom: 6px;
+`;
+
 type Props = {};
 
 interface IApiErrors {
@@ -82,7 +95,7 @@ type ApiErrorFieldName = keyof IApiErrors;
 type State = {
   token: string | null;
   password: string | null;
-  passwordError: boolean;
+  hasPasswordError: boolean;
   submitError: boolean;
   processing: boolean;
   success: boolean;
@@ -102,7 +115,7 @@ class PasswordReset extends React.PureComponent<
     this.state = {
       token,
       password: null,
-      passwordError: false,
+      hasPasswordError: false,
       submitError: false,
       processing: false,
       success: false,
@@ -122,24 +135,18 @@ class PasswordReset extends React.PureComponent<
     }
   }
 
-  validate = (password: string | null) => {
-    const passwordError = !password || password.length < 8;
+  validate = () => {
+    const { hasPasswordError } = this.state;
 
-    if (passwordError && this.passwordInputElement) {
-      this.passwordInputElement.focus();
-    }
-
-    this.setState({ passwordError });
-
-    return !passwordError;
+    return !hasPasswordError;
   };
 
-  handlePasswordOnChange = (value) => {
+  handlePasswordOnChange = (password: string, hasPasswordError: boolean) => {
     this.setState({
-      passwordError: false,
+      password,
+      hasPasswordError,
       submitError: false,
       apiErrors: null,
-      password: value,
     });
   };
 
@@ -152,7 +159,7 @@ class PasswordReset extends React.PureComponent<
 
     event.preventDefault();
 
-    if (this.validate(password) && password && token) {
+    if (this.validate() && password && token) {
       try {
         this.setState({ processing: true, success: false });
         await resetPassword(password, token);
@@ -181,13 +188,7 @@ class PasswordReset extends React.PureComponent<
 
   render() {
     const { formatMessage } = this.props.intl;
-    const {
-      password,
-      passwordError,
-      processing,
-      success,
-      apiErrors,
-    } = this.state;
+    const { password, processing, success, apiErrors } = this.state;
     const helmetTitle = formatMessage(messages.helmetTitle);
     const helmetDescription = formatMessage(messages.helmetDescription);
     const title = formatMessage(messages.title);
@@ -196,11 +197,6 @@ class PasswordReset extends React.PureComponent<
     const successMessage = success
       ? formatMessage(messages.successMessage)
       : null;
-    let errorMessage: string | null = null;
-
-    if (passwordError) {
-      errorMessage = formatMessage(messages.passwordError);
-    }
 
     return (
       <Container>
@@ -214,15 +210,33 @@ class PasswordReset extends React.PureComponent<
             <Title>{title}</Title>
 
             <Form onSubmit={this.handleOnSubmit}>
-              <FormLabel
-                htmlFor="password"
-                labelMessage={messages.passwordLabel}
-              />
-              <StyledInput
-                type="password"
-                id="password"
-                value={password}
-                error={errorMessage}
+              <LabelContainer>
+                <StyledFormLabel
+                  labelMessage={messages.passwordLabel}
+                  htmlFor="password-reset-input"
+                />
+                <StyledIconTooltip
+                  content={
+                    <>
+                      <p>{formatMessage(messages.passwordStrengthTooltip1)}</p>
+                      <ul>
+                        <li>
+                          {formatMessage(messages.passwordStrengthTooltip2)}
+                        </li>
+                        <li>
+                          {formatMessage(messages.passwordStrengthTooltip3)}
+                        </li>
+                        <li>
+                          {formatMessage(messages.passwordStrengthTooltip4)}
+                        </li>
+                      </ul>
+                    </>
+                  }
+                />
+              </LabelContainer>
+              <PasswordInput
+                id="password-reset-input"
+                password={password}
                 placeholder={passwordPlaceholder}
                 onChange={this.handlePasswordOnChange}
                 setRef={this.handlePasswordInputSetRef}
