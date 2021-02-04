@@ -546,7 +546,24 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
                   labelMessage={messages.passwordLabel}
                   htmlFor="signup-password-input"
                 />
-                <StyledIconTooltip content={'test'} />
+                <StyledIconTooltip
+                  content={
+                    <>
+                      <p>{formatMessage(messages.passwordStrengthTooltip1)}</p>
+                      <ul>
+                        <li>
+                          {formatMessage(messages.passwordStrengthTooltip2)}
+                        </li>
+                        <li>
+                          {formatMessage(messages.passwordStrengthTooltip3)}
+                        </li>
+                        <li>
+                          {formatMessage(messages.passwordStrengthTooltip4)}
+                        </li>
+                      </ul>
+                    </>
+                  }
+                />
               </LabelContainer>
               <PasswordInput
                 id="signup-password-input"
