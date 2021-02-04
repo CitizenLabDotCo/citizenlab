@@ -6,7 +6,7 @@ import { API_PATH } from 'containers/App/constants';
 import request from 'utils/request';
 
 // components
-import { Input } from 'cl2-component-library';
+import { Input, IconTooltip } from 'cl2-component-library';
 import Button from 'components/UI/Button';
 import PasswordInput from 'components/UI/PasswordInput';
 import Error from 'components/UI/Error';
@@ -69,6 +69,20 @@ const ButtonWrapper = styled.div`
   align-items: center;
   justify-content: space-between;
   padding-top: 8px;
+`;
+
+const LabelContainer = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const StyledFormLabel = styled(FormLabel)`
+  width: max-content;
+  margin-right: 5px;
+`;
+
+const StyledIconTooltip = styled(IconTooltip)`
+  margin-bottom: 4px;
 `;
 
 type InputProps = {
@@ -527,10 +541,13 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
             </FormElement>
 
             <FormElement id="e2e-password-container">
-              <FormLabel
-                labelMessage={messages.passwordLabel}
-                htmlFor="signup-password-input"
-              />
+              <LabelContainer>
+                <StyledFormLabel
+                  labelMessage={messages.passwordLabel}
+                  htmlFor="signup-password-input"
+                />
+                <StyledIconTooltip content={'test'} />
+              </LabelContainer>
               <PasswordInput
                 id="signup-password-input"
                 password={password}
