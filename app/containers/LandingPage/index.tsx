@@ -213,7 +213,6 @@ class LandingPage extends PureComponent<Props, State> {
                         publicationStatusFilter={['published', 'archived']}
                         showTitle={true}
                         layout="dynamic"
-                        folderId={null}
                       />
                     </Suspense>
                   </SectionContainer>
