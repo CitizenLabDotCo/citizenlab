@@ -1,8 +1,8 @@
 # Changelog
 
-## Next release
-
-/
+## 2021-02-04
+### Fixed
+- Fixed a bug causing the projects list in the navbar and projects page to display projects outside of folders when they're contained within them.
 
 ## 2021-01-29
 

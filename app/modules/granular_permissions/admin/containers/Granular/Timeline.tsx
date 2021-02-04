@@ -19,7 +19,7 @@ import GetPhasePermissions from 'resources/GetPhasePermissions';
 // i18n
 import T from 'components/T';
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
+import messages from './messages';
 
 // styling
 import styled from 'styled-components';
