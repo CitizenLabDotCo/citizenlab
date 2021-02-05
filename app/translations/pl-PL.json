@@ -1074,6 +1074,7 @@
   "app.containers.AdminPage.ProjectDescription.titleDescription": "Opis projektu",
   "app.containers.AdminPage.ProjectEdit.MapTab.cancel": "",
   "app.containers.AdminPage.ProjectEdit.MapTab.errorMessage": "",
+  "app.containers.AdminPage.ProjectEdit.MapTab.layers": "",
   "app.containers.AdminPage.ProjectEdit.MapTab.save": "",
   "app.containers.AdminPage.ProjectEdit.MapTab.titleLabel": "",
   "app.containers.AdminPage.ProjectEdit.PollTab.addOption": "Dodaj opcję",
