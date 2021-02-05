@@ -116,9 +116,9 @@ const PasswordInputComponent = ({
   };
 
   useEffect(() => {
-    setHasEmptyError(getHasEmptyError(password));
-    setHasMinimumLengthError(getHasMinimumLengthError(password));
-  }, [password]);
+    setHasEmptyError(getHasEmptyError(passwordInternal));
+    setHasMinimumLengthError(getHasMinimumLengthError(passwordInternal));
+  }, [passwordInternal]);
 
   useEffect(() => {
     if (hasPasswordError && inputEl) {
