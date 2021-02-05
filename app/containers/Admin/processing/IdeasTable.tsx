@@ -300,38 +300,37 @@ const IdeasTable = memo<Props & InjectedIntlProps>(
         <TableWrapper>
           <StyledTable>
             <thead>
-              <tr>
-                <th className="checkbox">
-                  <StyledCheckbox
-                    checked={
-                      ideaList.length > 0 &&
-                      selectedRows.length === ideaList?.length
-                    }
-                    indeterminate={
-                      selectedRows.length > 0 &&
-                      selectedRows.length < ideaList.length
-                    }
-                    disabled={ideaList?.length === 0}
-                    onChange={handleOnSelectAll}
-                  />
-                </th>
-
-                <th className="title">
-                  <FormattedMessage
-                    {...messages.items}
-                    values={{
-                      totalCount: ideaList.length,
-                      selectedCount: selectedRows.length,
-                    }}
-                  />
-                </th>
-
-                {!previewPostId && (
+              {!previewPostId && (
+                <tr>
+                  {' '}
+                  <th className="checkbox">
+                    <StyledCheckbox
+                      checked={
+                        ideaList.length > 0 &&
+                        selectedRows.length === ideaList?.length
+                      }
+                      indeterminate={
+                        selectedRows.length > 0 &&
+                        selectedRows.length < ideaList.length
+                      }
+                      disabled={ideaList?.length === 0}
+                      onChange={handleOnSelectAll}
+                    />
+                  </th>
+                  <th className="title">
+                    <FormattedMessage
+                      {...messages.items}
+                      values={{
+                        totalCount: ideaList.length,
+                        selectedCount: selectedRows.length,
+                      }}
+                    />
+                  </th>
                   <th className="tags">
                     <FormattedMessage {...messages.tags} />
-                  </th>
-                )}
-              </tr>
+                  </th>{' '}
+                </tr>
+              )}
             </thead>
             <tbody>
               {ideaList.map((idea) => (
@@ -344,7 +343,7 @@ const IdeasTable = memo<Props & InjectedIntlProps>(
                   onSelect={handleRowOnSelect}
                   openPreview={openPreview}
                   taggings={taggings}
-                  showTagColumn={!previewPostId}
+                  isManualTaggingMode={!!previewPostId}
                   processing={!!unprocessedItemsIds?.includes(idea.id)}
                 />
               ))}
