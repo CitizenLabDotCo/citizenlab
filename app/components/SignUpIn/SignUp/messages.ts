@@ -77,10 +77,6 @@ export default defineMessages({
     id: 'app.containers.SignUp.noPasswordError',
     defaultMessage: 'Your password cannot be empty',
   },
-  noValidPasswordError: {
-    id: 'app.containers.SignUp.noValidPasswordError',
-    defaultMessage: 'The password must be at least 8 characters long',
-  },
   continue: {
     id: 'app.containers.SignUp.continue',
     defaultMessage: 'Continue',
