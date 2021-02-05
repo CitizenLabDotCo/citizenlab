@@ -56,6 +56,7 @@ const PasswordInputComponent = ({
   minimumPasswordLength,
   isLoginPasswordInput,
   setRef,
+  hasEmptyPasswordError,
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
   let inputEl: HTMLInputElement | null = null;
@@ -64,17 +65,16 @@ const PasswordInputComponent = ({
   const [passwordInternal, setPasswordInternal] = useState(password);
   const [showPassword, setShowPassword] = useState(false);
   const [passwordScore, setPasswordScore] = useState<PasswordScore>(0);
-  const [hasEmptyError, setHasEmptyError] = useState(false);
   const [hasMinimumLengthError, setHasMinimumLengthError] = useState(false);
-  const hasPasswordError = hasEmptyError || hasMinimumLengthError;
-  const minimumPasswordLengthErrorMessage = getMinimumPasswordLengthError(
-    hasMinimumLengthError
-  );
-  const emptyPasswordErrorMessage = getEmptyPasswordErrorMessage();
-
-  function getHasEmptyError(password: string | null) {
-    return !password;
-  }
+  const hasPasswordError = hasEmptyPasswordError || hasMinimumLengthError;
+  const minimumPasswordLengthErrorMessage = hasMinimumLengthError
+    ? formatMessage(messages.minimumPasswordLengthErrorMessage, {
+        minimumPasswordLength,
+      })
+    : null;
+  const emptyPasswordErrorMessage = hasEmptyPasswordError
+    ? formatMessage(messages.emptyPasswordError)
+    : null;
 
   function getHasMinimumLengthError(password: string | null) {
     return (
@@ -87,11 +87,6 @@ const PasswordInputComponent = ({
     password: string | null,
     minimumPasswordLength: number
   ) {
-    // this function is used after the user
-    // has typed something in the field
-    // before that, when password is null,
-    // we use getHasEmptyError
-
     if (typeof password === 'string') {
       return password.length < minimumPasswordLength;
     }
@@ -99,24 +94,11 @@ const PasswordInputComponent = ({
     return false;
   }
 
-  function getMinimumPasswordLengthError(hasMinimumLengthError: boolean) {
-    return hasMinimumLengthError
-      ? formatMessage(messages.minimumPasswordLengthErrorMessage, {
-          minimumPasswordLength,
-        })
-      : null;
-  }
-
-  function getEmptyPasswordErrorMessage() {
-    return hasEmptyError ? formatMessage(messages.emptyPasswordError) : null;
-  }
-
   const handleOnChange = (password: string) => {
     setPasswordInternal(password);
   };
 
   useEffect(() => {
-    setHasEmptyError(getHasEmptyError(passwordInternal));
     setHasMinimumLengthError(getHasMinimumLengthError(passwordInternal));
   }, [passwordInternal]);
 

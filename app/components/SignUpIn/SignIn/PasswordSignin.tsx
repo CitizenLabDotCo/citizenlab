@@ -94,7 +94,7 @@ type State = {
   processing: boolean;
   emailError: string | null;
   signInError: string | null;
-  hasPasswordError: boolean;
+  hasEmptyPasswordError: boolean;
 };
 
 class PasswordSignin extends PureComponent<
@@ -112,7 +112,7 @@ class PasswordSignin extends PureComponent<
       processing: false,
       emailError: null,
       signInError: null,
-      hasPasswordError: false,
+      hasEmptyPasswordError: false,
     };
     this.emailInputElement = null;
     this.passwordInputElement = null;
@@ -134,10 +134,9 @@ class PasswordSignin extends PureComponent<
     trackEventByName(tracks.signInEmailPasswordExited);
   }
 
-  handlePasswordOnChange = (password: string, hasPasswordError: boolean) => {
+  handlePasswordOnChange = (password: string) => {
     this.setState({
       password,
-      hasPasswordError,
       signInError: null,
     });
   };
@@ -162,7 +161,7 @@ class PasswordSignin extends PureComponent<
       intl: { formatMessage },
       tenant,
     } = this.props;
-    const { hasPasswordError } = this.state;
+    const { password } = this.state;
     const phone =
       !isNilOrError(tenant) && tenant.attributes.settings.password_login?.phone;
     const hasEmailError = !phone && (!email || !isValidEmail(email));
@@ -171,18 +170,19 @@ class PasswordSignin extends PureComponent<
         ? formatMessage(messages.noEmailError)
         : formatMessage(messages.noValidEmailError)
       : null;
+    const hasEmptyPasswordError = !password;
 
-    this.setState({ emailError });
+    this.setState({ emailError, hasEmptyPasswordError });
 
     if (emailError && this.emailInputElement) {
       this.emailInputElement.focus();
     }
 
-    if (hasPasswordError && this.passwordInputElement) {
+    if (hasEmptyPasswordError && this.passwordInputElement) {
       this.passwordInputElement.focus();
     }
 
-    return !emailError && !hasPasswordError;
+    return !emailError && !hasEmptyPasswordError;
   }
 
   handleOnSubmit = async (event: React.FormEvent) => {
@@ -217,7 +217,14 @@ class PasswordSignin extends PureComponent<
   };
 
   render() {
-    const { email, password, processing, emailError, signInError } = this.state;
+    const {
+      email,
+      password,
+      processing,
+      emailError,
+      signInError,
+      hasEmptyPasswordError,
+    } = this.state;
     const {
       className,
       tenant,
@@ -279,6 +286,7 @@ class PasswordSignin extends PureComponent<
               setRef={this.handlePasswordInputSetRef}
               autocomplete="current-password"
               isLoginPasswordInput
+              hasEmptyPasswordError={hasEmptyPasswordError}
             />
           </FormElement>
 
