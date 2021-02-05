@@ -1,4 +1,4 @@
-import React, { useState, lazy, Suspense } from 'react';
+import React, { useEffect, useState, lazy, Suspense } from 'react';
 import styled from 'styled-components';
 import { Input, Button, Icon, colors } from 'cl2-component-library';
 import useLocale from 'hooks/useLocale';
@@ -61,6 +61,7 @@ const PasswordInputComponent = ({
   let inputEl: HTMLInputElement | null = null;
   const locale = useLocale();
   const tenant = useTenant();
+  const [passwordInternal, setPasswordInternal] = useState(password);
   const [showPassword, setShowPassword] = useState(false);
   const [passwordScore, setPasswordScore] = useState<PasswordScore>(0);
   const [hasEmptyError, setHasEmptyError] = useState(false);
@@ -71,11 +72,11 @@ const PasswordInputComponent = ({
   );
   const emptyPasswordErrorMessage = getEmptyPasswordErrorMessage();
 
-  function getHasEmptyError(password: string) {
+  function getHasEmptyError(password: string | null) {
     return !password;
   }
 
-  function getHasMinimumLengthError(password: string) {
+  function getHasMinimumLengthError(password: string | null) {
     return (
       !isLoginPasswordInput &&
       getIsPasswordTooShort(password, minimumPasswordLength)
@@ -90,6 +91,7 @@ const PasswordInputComponent = ({
     // has typed something in the field
     // before that, when password is null,
     // we use getHasEmptyError
+
     if (typeof password === 'string') {
       return password.length < minimumPasswordLength;
     }
@@ -110,15 +112,25 @@ const PasswordInputComponent = ({
   }
 
   const handleOnChange = (password: string) => {
+    setPasswordInternal(password);
+  };
+
+  useEffect(() => {
     setHasEmptyError(getHasEmptyError(password));
     setHasMinimumLengthError(getHasMinimumLengthError(password));
+  }, [password]);
 
-    onChange(password, hasPasswordError);
-
+  useEffect(() => {
     if (hasPasswordError && inputEl) {
       inputEl.focus();
     }
-  };
+  }, [hasPasswordError]);
+
+  useEffect(() => {
+    if (typeof passwordInternal === 'string') {
+      onChange(passwordInternal, hasPasswordError);
+    }
+  }, [passwordInternal, hasPasswordError]);
 
   const handleOnBlur = () => {
     if (onBlur) {
@@ -221,8 +233,10 @@ const PasswordInputComponent = ({
             </ScreenReaderOnly>
           </>
         )}
-        <Error text={emptyPasswordErrorMessage} />
-        <Error text={minimumPasswordLengthErrorMessage} />
+        {isLoginPasswordInput && <Error text={emptyPasswordErrorMessage} />}
+        {!isLoginPasswordInput && (
+          <Error text={minimumPasswordLengthErrorMessage} />
+        )}
       </>
     );
   }
