@@ -2,7 +2,7 @@ import React, { memo, useMemo, useCallback, RefObject } from 'react';
 import { omitBy, isNil, isEmpty } from 'lodash-es';
 
 // components
-import { Checkbox, Tag } from 'cl2-component-library';
+import { Checkbox, Spinner, Tag } from 'cl2-component-library';
 
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
@@ -37,6 +37,12 @@ const StyledCheckbox = styled(Checkbox)`
 const StyledTagWrapper = styled(TagWrapper)`
   cursor: default;
   margin-right: 4px;
+`;
+
+const StyledSpinner = styled(Spinner)`
+  display: inline-flex;
+  width: auto;
+  margin: 4px;
 `;
 
 const TagContainer = styled.td`
@@ -161,13 +167,7 @@ const ProcessingRow = memo<Props & InjectedIntlProps>(
                 key={tagging.attributes.tag_id}
               />
             ))}
-            {processing && (
-              <StyledTagWrapper
-                isSelected={selected}
-                tagId={null}
-                isAutoTag={true}
-              />
-            )}
+            {processing && <StyledSpinner color="#666" size="20px" />}
             {highlighted && ideaTaggings.length === 0 && (
               <Tag
                 isAutoTag={true}
