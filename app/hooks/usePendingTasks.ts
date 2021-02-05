@@ -10,15 +10,14 @@ export interface IUsePendingTasks {
 }
 
 export default function usePendingTasks() {
-  const [pendingTasks, setTasks] = useState<IPendingTask[] | null | undefined>(
-    undefined
-  );
+  const [pendingTasks, setPendingTasks] = useState<
+    IPendingTask[] | null | undefined
+  >(undefined);
 
-  const [processing, setProcessing] = useState<boolean>(false);
-  const [
-    processingRemainingItemsIds,
-    setProcessingRemainingItemsIds,
-  ] = useState<string[] | null>();
+  const [processing, setProcessing] = useState(false);
+  const [unprocessedItemsIds, setUnprocessedgItemsIds] = useState<
+    string[] | null
+  >();
 
   useEffect(() => {
     const observable = pendingTasksStream().observable;
@@ -26,7 +25,7 @@ export default function usePendingTasks() {
     const subscriptions = [
       observable.subscribe((response) => {
         const tasks = !isNilOrError(response) ? response.data : null;
-        setTasks(tasks);
+        setPendingTasks(tasks);
         if (tasks) {
           const remainingItems = [
             ...new Set(
@@ -35,13 +34,12 @@ export default function usePendingTasks() {
               )
             ),
           ];
-          console.log(tasks, remainingItems);
           if (remainingItems.length > 0) {
             setProcessing(true);
-            setProcessingRemainingItemsIds(remainingItems);
+            setUnprocessedgItemsIds(remainingItems);
           } else {
             setProcessing(false);
-            setProcessingRemainingItemsIds(null);
+            setUnprocessedgItemsIds(null);
           }
         }
       }),
@@ -66,7 +64,7 @@ export default function usePendingTasks() {
   return {
     pendingTasks,
     processing,
-    processingRemainingItemsIds,
-    processingRemainingItemsCount: processingRemainingItemsIds?.length,
+    unprocessedItemsIds,
+    processingRemainingItemsCount: unprocessedItemsIds?.length,
   };
 }

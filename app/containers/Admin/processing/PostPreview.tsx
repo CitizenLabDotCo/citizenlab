@@ -3,7 +3,7 @@ import Tippy from '@tippyjs/react';
 
 // components
 import IdeaContent from './IdeaContent';
-import { Button } from 'cl2-component-library';
+import { Button, Spinner } from 'cl2-component-library';
 
 // styling
 import styled from 'styled-components';
@@ -117,6 +117,12 @@ const StyledValidationError = styled.p`
   }
 `;
 
+const StyledSpinner = styled(Spinner)`
+  display: inline-flex;
+  width: auto;
+  margin: 4px;
+`;
+
 interface DataProps {}
 
 type Direction = 'up' | 'down';
@@ -128,7 +134,7 @@ interface InputProps {
   handleNavigation: (direction: Direction) => void;
   tags: ITag[] | null | undefined;
   handlePreventNavigation: (isNavigationPrevented: boolean) => void;
-  pending: boolean;
+  processing: boolean;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -256,7 +262,7 @@ class PostPreview extends PureComponent<Props & InjectedIntlProps, State> {
   };
 
   render() {
-    const { taggings, tags, pending } = this.props;
+    const { taggings, tags, processing } = this.props;
     const manualTaggings = isNilOrError(taggings)
       ? []
       : this.getManualTaggings(taggings);
@@ -329,7 +335,7 @@ class PostPreview extends PureComponent<Props & InjectedIntlProps, State> {
                 <h4>
                   <FormattedMessage {...messages.approveAutoTags} />
                 </h4>
-                {(automaticTaggings.length > 0 || pending) && (
+                {(automaticTaggings.length > 0 || processing) && (
                   <TagList>
                     {automaticTaggings.map((tagging) => (
                       <StyledTagWrapper
@@ -341,13 +347,7 @@ class PostPreview extends PureComponent<Props & InjectedIntlProps, State> {
                         tagId={tagging.attributes.tag_id}
                       />
                     ))}
-                    {pending && (
-                      <StyledTagWrapper
-                        isAutoTag={true}
-                        tagId={null}
-                        isSelected={false}
-                      />
-                    )}
+                    {processing && <StyledSpinner color="#666" size="20px" />}
                   </TagList>
                 )}
               </TagSubSection>

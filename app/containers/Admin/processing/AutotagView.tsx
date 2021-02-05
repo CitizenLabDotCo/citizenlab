@@ -360,11 +360,9 @@ const AutotagView = ({
                   />
                 ))
               ) : tagSuggestions === null || tagSuggestions?.length === 0 ? (
-                <>
-                  <StyledSubtitle>
-                    <FormattedMessage {...messages.noSuggestions} />
-                  </StyledSubtitle>
-                </>
+                <StyledSubtitle>
+                  <FormattedMessage {...messages.noSuggestions} />
+                </StyledSubtitle>
               ) : (
                 <>
                   <StyledSubtitle>

@@ -174,7 +174,7 @@ const Processing = memo<Props & InjectedIntlProps>(
 
     const {
       processing,
-      processingRemainingItemsIds,
+      unprocessedItemsIds,
       processingRemainingItemsCount,
     } = usePendingTasks();
 
@@ -404,7 +404,7 @@ const Processing = memo<Props & InjectedIntlProps>(
               setSelectedRows={setSelectedRows}
               tags={tags}
               taggings={taggings}
-              processingRemainingItemsIds={processingRemainingItemsIds}
+              unprocessedItemsIds={unprocessedItemsIds}
             />
           ) : (
             <EmptyState reason="projectSelection" />
