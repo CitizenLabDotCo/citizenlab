@@ -9,12 +9,7 @@ import { updateProjectMapLayer } from 'services/mapLayers';
 import useMapLayer from 'hooks/useMapLayer';
 
 // components
-import {
-  Section,
-  SectionField,
-  SectionTitle,
-  SectionDescription,
-} from 'components/admin/Section';
+import { Section, SectionField, SectionTitle } from 'components/admin/Section';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
@@ -55,7 +50,7 @@ interface IFormValues {
   title_multiloc: Multiloc | null;
 }
 
-const EditLayer = memo<Props & InjectedIntlProps>(
+const LayerConfig = memo<Props & InjectedIntlProps>(
   ({ projectId, mapLayerId, className, onClose, intl: { formatMessage } }) => {
     const mapLayer = useMapLayer({ projectId, mapLayerId });
 
@@ -204,4 +199,4 @@ const EditLayer = memo<Props & InjectedIntlProps>(
   }
 );
 
-export default injectIntl(EditLayer);
+export default injectIntl(LayerConfig);

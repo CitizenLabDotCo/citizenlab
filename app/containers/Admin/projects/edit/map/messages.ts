@@ -17,4 +17,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.MapTab.cancel',
     defaultMessage: 'Cancel',
   },
+  layers: {
+    id: 'app.containers.AdminPage.ProjectEdit.MapTab.layers',
+    defaultMessage: 'Layers',
+  },
 });
