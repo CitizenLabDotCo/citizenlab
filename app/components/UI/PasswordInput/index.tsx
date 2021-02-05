@@ -16,6 +16,7 @@ export interface Props {
   autocomplete?: 'current-password' | 'new-password';
   placeholder?: string;
   isLoginPasswordInput?: boolean;
+  hasEmptyPasswordError?: boolean;
 }
 
 const PasswordInput = (props: Props) => {
