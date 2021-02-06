@@ -1074,6 +1074,7 @@
   "app.containers.AdminPage.ProjectDescription.titleDescription": "Project description",
   "app.containers.AdminPage.ProjectEdit.MapTab.cancel": "Cancel",
   "app.containers.AdminPage.ProjectEdit.MapTab.errorMessage": "Something went wrong, please try again later",
+  "app.containers.AdminPage.ProjectEdit.MapTab.layers": "Layers",
   "app.containers.AdminPage.ProjectEdit.MapTab.save": "Save",
   "app.containers.AdminPage.ProjectEdit.MapTab.titleLabel": "Title",
   "app.containers.AdminPage.ProjectEdit.PollTab.addOption": "Add an option",
