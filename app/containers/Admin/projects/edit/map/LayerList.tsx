@@ -4,6 +4,7 @@ import { isNilOrError } from 'utils/helperUtils';
 // components
 import Button from 'components/UI/Button';
 import ImportButton from './ImportButton';
+import LayerConfig from './LayerConfig';
 
 // hooks
 import useMapConfig from 'hooks/useMapConfig';
@@ -38,20 +39,21 @@ const Title = styled.h2`
 const List = styled.div`
   display: flex;
   flex-direction: column;
+  margin-bottom: 30px;
 `;
 
 const ListItem = styled.div`
   display: flex;
-  padding-top: 12px;
-  padding-bottom: 12px;
-  margin-top: 12px;
-  margin-bottom: 12px;
+  flex-direction: column;
+  align-items: stretch;
   border-top: solid 1px #ccc;
   border-bottom: solid 1px #ccc;
+`;
 
-  &.first {
-    margin-top: 0px;
-  }
+const ListItemHeader = styled.div`
+  display: flex;
+  padding-top: 12px;
+  padding-bottom: 12px;
 `;
 
 const LayerName = styled.div`
@@ -74,6 +76,11 @@ const RemoveButton = styled(Button)`
   margin-left: 15px;
 `;
 
+const StyledLayerConfig = styled(LayerConfig)`
+  margin-top: 35px;
+  margin-bottom: 20px;
+`;
+
 interface Props {
   projectId: string;
   className?: string;
@@ -81,6 +88,8 @@ interface Props {
 
 const LayerList = memo<Props>(({ projectId, className }) => {
   const mapConfig = useMapConfig({ projectId, prefetchMapLayers: true });
+
+  const [editedLayerId, setEditedLayerId] = useState<string | null>(null);
 
   const mapConfigId = !isNilOrError(mapConfig) ? mapConfig.id : null;
 
@@ -97,13 +106,18 @@ const LayerList = memo<Props>(({ projectId, className }) => {
     }
   };
 
-  const removeLayer = (mapLayerId: string) => (event: React.FormEvent) => {
+  const removeLayer = (layerId: string) => (event: React.FormEvent) => {
     event?.preventDefault();
-    deleteProjectMapLayer(projectId, mapLayerId);
+    deleteProjectMapLayer(projectId, layerId);
   };
 
-  const editLayer = (mapLayerId: string) => (event: React.FormEvent) => {
+  const toggleLayerConfig = (layerId: string) => (event: React.FormEvent) => {
     event?.preventDefault();
+    setEditedLayerId((prevValue) => (prevValue === layerId ? null : layerId));
+  };
+
+  const closeLayerConfig = () => {
+    setEditedLayerId(null);
   };
 
   return (
@@ -115,23 +129,44 @@ const LayerList = memo<Props>(({ projectId, className }) => {
         <List>
           {mapConfig?.attributes?.layers?.map((mapLayer, index) => (
             <ListItem key={index} className={index === 0 ? 'first' : ''}>
-              <LayerName>
-                <T value={mapLayer.title_multiloc} />
-              </LayerName>
-              <Buttons>
-                <EditButton
-                  icon="edit"
-                  buttonStyle="text"
-                  padding="0px"
-                  onClick={editLayer(mapLayer.id)}
+              <ListItemHeader>
+                <LayerName>
+                  <T value={mapLayer.title_multiloc} />
+                </LayerName>
+                <Buttons>
+                  {editedLayerId !== mapLayer.id ? (
+                    <>
+                      <EditButton
+                        icon="edit"
+                        buttonStyle="text"
+                        padding="0px"
+                        onClick={toggleLayerConfig(mapLayer.id)}
+                      />
+                      <RemoveButton
+                        icon="delete"
+                        buttonStyle="text"
+                        padding="0px"
+                        onClick={removeLayer(mapLayer.id)}
+                      />
+                    </>
+                  ) : (
+                    <Button
+                      buttonStyle="text"
+                      padding="0px"
+                      onClick={toggleLayerConfig(mapLayer.id)}
+                    >
+                      Cancel
+                    </Button>
+                  )}
+                </Buttons>
+              </ListItemHeader>
+              {editedLayerId === mapLayer.id && (
+                <StyledLayerConfig
+                  projectId={projectId}
+                  mapLayerId={mapLayer.id}
+                  onClose={closeLayerConfig}
                 />
-                <RemoveButton
-                  icon="delete"
-                  buttonStyle="text"
-                  padding="0px"
-                  onClick={removeLayer(mapLayer.id)}
-                />
-              </Buttons>
+              )}
             </ListItem>
           ))}
         </List>

@@ -11,6 +11,7 @@ import { colors, fontSizes, defaultOutline, isRtl } from 'utils/styleUtils';
 
 // components
 import { Icon } from 'cl2-component-library';
+import Button from 'components/UI/Button';
 
 const Container = styled.div`
   margin-bottom: 10px;
@@ -46,30 +47,23 @@ const Input = styled.input`
   }
 `;
 
-const Label = styled.label`
+const ButtonContainer = styled.div`
   display: flex;
-  align-items: center;
-  cursor: pointer;
-  border: 1px dashed ${colors.border};
-  border-radius: ${(props: any) => props.theme.borderRadius};
-  font-size: ${fontSizes.base}px;
-  padding: 10px 20px;
-  color: ${colors.label};
-  background: transparent;
-  font-weight: 400;
+`;
 
-  ${isRtl`
-    flex-direction: row-reverse;
-  `}
-
-  &:hover {
-    color: #000;
-    border-color: #000;
-
-    ${StyledIcon} {
-      fill: #000;
-    }
+const StyledButton = styled(Button)`
+  & button {
+    position: relative;
   }
+`;
+
+const StyledLabel = styled.label`
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  cursor: pointer;
 `;
 
 // accepted file extensions:
@@ -108,10 +102,13 @@ const ImportButton = memo<Props>(({ onChange, className }) => {
         accept={fileAccept.join(',')}
         tabIndex={0}
       />
-      <Label aria-hidden htmlFor="file-attachment-uploader">
-        <StyledIcon name="upload-file" ariaHidden />
-        <span>Upload</span>
-      </Label>
+
+      <ButtonContainer>
+        <StyledButton icon="download" buttonStyle="secondary">
+          <StyledLabel aria-hidden htmlFor="file-attachment-uploader" />
+          Import
+        </StyledButton>
+      </ButtonContainer>
     </Container>
   );
 });

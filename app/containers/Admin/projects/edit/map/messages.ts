@@ -21,4 +21,12 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.MapTab.layers',
     defaultMessage: 'Layers',
   },
+  description: {
+    id: 'app.containers.AdminPage.ProjectEdit.MapTab.description',
+    defaultMessage: 'Description',
+  },
+  editLayer: {
+    id: 'app.containers.AdminPage.ProjectEdit.MapTab.editLayer',
+    defaultMessage: 'Edit layer',
+  },
 });
