@@ -98,7 +98,7 @@ const CollapseContainer = styled.div`
 
     &.collapse-enter-active {
       opacity: 1;
-      max-height: 200px;
+      max-height: 600px;
       overflow: hidden;
       display: block;
     }
@@ -112,7 +112,7 @@ const CollapseContainer = styled.div`
 
   &.collapse-exit {
     opacity: 1;
-    max-height: 200px;
+    max-height: 600px;
     overflow: hidden;
     display: block;
 

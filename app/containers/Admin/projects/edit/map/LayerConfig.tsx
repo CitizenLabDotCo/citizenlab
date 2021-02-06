@@ -149,9 +149,9 @@ const LayerConfig = memo<Props & InjectedIntlProps>(
     if (!isNilOrError(mapLayer)) {
       return (
         <Container className={className || ''}>
-          <SectionTitle>
+          {/* <SectionTitle>
             <T value={mapLayer.attributes.title_multiloc} />
-          </SectionTitle>
+          </SectionTitle> */}
 
           <Section>
             <SectionField>
