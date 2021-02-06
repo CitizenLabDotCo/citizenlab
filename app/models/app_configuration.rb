@@ -97,6 +97,10 @@ class AppConfiguration < ApplicationRecord
     "#{transport}://#{host}"
   end
 
+  def setting_activated?(setting_name)
+    settings[setting_name].values_at('enabled', 'allowed').all?
+  end
+
   private
 
   def validate_missing_feature_dependencies
