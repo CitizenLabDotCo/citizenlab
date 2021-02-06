@@ -1073,6 +1073,8 @@
   "app.containers.AdminPage.ProjectDescription.subtitleDescription": "أخبر المستخدمين عن فحوى المشروع وأقنعهم بالمشاركة.",
   "app.containers.AdminPage.ProjectDescription.titleDescription": "وصف المشروع",
   "app.containers.AdminPage.ProjectEdit.MapTab.cancel": "",
+  "app.containers.AdminPage.ProjectEdit.MapTab.description": "",
+  "app.containers.AdminPage.ProjectEdit.MapTab.editLayer": "",
   "app.containers.AdminPage.ProjectEdit.MapTab.errorMessage": "",
   "app.containers.AdminPage.ProjectEdit.MapTab.layers": "",
   "app.containers.AdminPage.ProjectEdit.MapTab.save": "",
