@@ -1073,6 +1073,8 @@
   "app.containers.AdminPage.ProjectDescription.subtitleDescription": "Schrijf een heldere boodschap over het project. Voeg afbeeldingen, video's en bijlagen toe aan het project.",
   "app.containers.AdminPage.ProjectDescription.titleDescription": "Projectbeschrijving",
   "app.containers.AdminPage.ProjectEdit.MapTab.cancel": "",
+  "app.containers.AdminPage.ProjectEdit.MapTab.description": "",
+  "app.containers.AdminPage.ProjectEdit.MapTab.editLayer": "",
   "app.containers.AdminPage.ProjectEdit.MapTab.errorMessage": "",
   "app.containers.AdminPage.ProjectEdit.MapTab.layers": "",
   "app.containers.AdminPage.ProjectEdit.MapTab.save": "",
