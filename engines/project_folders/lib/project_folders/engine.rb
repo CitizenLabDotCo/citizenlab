@@ -42,5 +42,14 @@ module ProjectFolders
       ::ProjectPolicy::Scope.prepend ProjectFolders::MonkeyPatches::ProjectPolicy::Scope
       ::WebApi::V1::ProjectSerializer.prepend ProjectFolders::MonkeyPatches::ProjectSerializer
     end
+
+    config.to_prepare do
+      ::Seo::ApplicationController.outlet 'seo.sitemap' do |locals|
+        folders = ProjectFolders::Folder
+                  .includes(:admin_publication)
+                  .where(admin_publications: { publication_status: %w[published archived] })
+        { partial: 'seo/sitemap', folders: folders, **locals }
+      end
+    end
   end
 end

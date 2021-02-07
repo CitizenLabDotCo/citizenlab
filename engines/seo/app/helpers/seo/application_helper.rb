@@ -5,14 +5,18 @@ module Seo
       segments.insert(3, "/#{locale}").join
     end
 
+    def front_end_url_for(record, options = {})
+      Frontend::UrlService.new.model_to_url(record, options)
+    end
+
     # rubocop:disable Metrics/MethodLength
     def multilingual_sitemap_entry(xml, _locales, url, priority = nil, lastmod = nil)
       locales.each do |locale|
         xml.url do
           xml.loc(localize_url(url, locale))
           xml.priority(priority) if priority
-          xml.lastmod(Time.zone.parse(lastmod).strftime('%Y-%m-%dT%H:%M:%S%:z')) if lastmod
-          (@locales - [locale]).each do |alternate_locale|
+          xml.lastmod(lastmod.strftime('%Y-%m-%dT%H:%M:%S%:z')) if lastmod
+          (locales - [locale]).each do |alternate_locale|
             xml.tag!(
               'xhtml:link',
               rel: 'alternate',
@@ -24,9 +28,9 @@ module Seo
       end
     end
     # rubocop:enable Metrics/MethodLength
-  end
 
-  def locales
-    AppConfiguration.instance.settings.dig('core', 'locales')
+    def locales
+      AppConfiguration.instance.settings.dig('core', 'locales')
+    end
   end
 end

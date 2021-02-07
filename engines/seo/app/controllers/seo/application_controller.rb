@@ -1,5 +1,7 @@
 module Seo
   class ApplicationController < ActionController::Base
+    include OutletRenderer
+
     protect_from_forgery with: :exception
 
     before_action :set_host
@@ -7,10 +9,12 @@ module Seo
     layout false
 
     def sitemap
-      @projects    = Project.where(visible_to: 'public', publication_status: 'published')
+      statuses     = %w[published archived]
+      @initiatives = Initiative.where(publication_status: statuses)
       @ideas       = Idea.where(project: @projects)
-      @initiatives = Initiative.where(publication_status: 'published')
-      @pages       = Page.where(publication_status: 'published')
+      @pages       = Page.where(publication_status: statuses)
+      @projects    = Project.includes(:admin_publication)
+                            .where(visible_to: 'public', admin_publications: { publication_status: statuses })
     end
 
     def robots; end

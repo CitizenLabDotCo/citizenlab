@@ -9,9 +9,7 @@ Gem::Specification.new do |spec|
   spec.version     = Seo::VERSION
   spec.authors     = ['']
   spec.email       = ['']
-  spec.homepage    = 'TODO'
-  spec.summary     = 'TODO: Summary of Seo.'
-  spec.description = 'TODO: Description of Seo.'
+  spec.summary     = 'The engine responsible for delivering the sitemap, scraping facebook and propagating changes to google.'
   spec.license     = 'MIT'
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
@@ -25,6 +23,8 @@ Gem::Specification.new do |spec|
 
   spec.files = Dir['{app,config,db,lib}/**/*', 'MIT-LICENSE', 'Rakefile', 'README.md']
 
+  spec.add_dependency 'aws-sdk-route53'
+  spec.add_dependency 'google-api-client'
   spec.add_dependency 'httparty'
   spec.add_dependency 'koala'
   spec.add_dependency 'rails', '~> 6.0.3', '>= 6.0.3.2'
