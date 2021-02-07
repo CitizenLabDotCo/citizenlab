@@ -1,4 +1,4 @@
-require "seo/engine"
+require 'seo/engine'
 
 module Seo
   # Your code goes here...

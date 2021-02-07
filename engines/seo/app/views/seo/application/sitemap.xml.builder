@@ -25,16 +25,16 @@ xml.urlset xmlns: 'http://www.sitemaps.org/schemas/sitemap/0.9', 'xmlns:xhtml': 
     multilingual_sitemap_entry(
       xml,
       locales,
-      project.href,
-      project.publication_status == 'published' ? 0.7 : 0.3,
+      front_end_url_for(project),
+      project.admin_publication.publication_status == 'published' ? 0.7 : 0.3,
       project.updated_at
     )
 
     multilingual_sitemap_entry(
       xml,
       locales,
-      "#{project.href}/info",
-      project.publication_status == 'published' ? 0.7 : 0.3,
+      "#{front_end_url_for(project)}/info",
+      project.admin_publication.publication_status == 'published' ? 0.7 : 0.3,
       project.updated_at
     )
 
@@ -42,8 +42,8 @@ xml.urlset xmlns: 'http://www.sitemaps.org/schemas/sitemap/0.9', 'xmlns:xhtml': 
       multilingual_sitemap_entry(
         xml,
         locales,
-        "#{project.href}/process",
-        project.publication_status == 'published' ? 0.6 : 0.2,
+        "#{front_end_url_for(project)}/process",
+        project.admin_publication.publication_status == 'published' ? 0.6 : 0.2,
         project.updated_at
       )
     end
@@ -51,8 +51,8 @@ xml.urlset xmlns: 'http://www.sitemaps.org/schemas/sitemap/0.9', 'xmlns:xhtml': 
     multilingual_sitemap_entry(
       xml,
       locales,
-      "#{project.href}/events",
-      project.publication_status == 'published' ? 0.4 : 0.2,
+      "#{front_end_url_for(project)}/events",
+      project.admin_publication.publication_status == 'published' ? 0.4 : 0.2,
       project.updated_at
     )
   end
@@ -61,7 +61,7 @@ xml.urlset xmlns: 'http://www.sitemaps.org/schemas/sitemap/0.9', 'xmlns:xhtml': 
     multilingual_sitemap_entry(
       xml,
       locales,
-      idea.href,
+      front_end_url_for(idea),
       0.3,
       idea.updated_at
     )
@@ -72,31 +72,21 @@ xml.urlset xmlns: 'http://www.sitemaps.org/schemas/sitemap/0.9', 'xmlns:xhtml': 
       multilingual_sitemap_entry(
         xml,
         locales,
-        initiative.href,
+        front_end_url_for(initiative),
         0.4,
         initiative.updated_at
       )
     end
   end
 
-  if AppConfiguration.instance.setting_activated?('folders')
-    @folders.each do |folder|
-      multilingual_sitemap_entry(
-        xml,
-        locales,
-        folder.href,
-        folder.publication_status == 'published' ? 0.6 : 0.2,
-        folder.updated_at
-      )
-    end
-  end
+  render_outlet 'seo.sitemap', xml: xml, locales: locales
 
   if AppConfiguration.instance.setting_activated?('pages')
     @pages.each do |page|
       multilingual_sitemap_entry(
         xml,
         locales,
-        page.href,
+        front_end_url_for(page),
         0.4,
         page.updated_at
       )

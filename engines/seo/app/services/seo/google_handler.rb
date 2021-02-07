@@ -34,6 +34,8 @@ module Seo
       authenticated_webmasters_api.submit_sitemap(url, "#{url}/sitemap.xml")
     end
 
+    private
+
     def hosted_zones
       r53.list_hosted_zones.hosted_zones
     end
