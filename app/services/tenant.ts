@@ -167,6 +167,14 @@ export interface ITenantSettings {
     destinations: string;
     container_id: string;
   };
+  redirects?: {
+    enabled: boolean;
+    allowed: boolean;
+    rules: {
+      path: string;
+      target: string;
+    }[];
+  };
 }
 
 interface TenantMapSettings extends TenantFeature {
