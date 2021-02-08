@@ -1,8 +1,37 @@
 # Changelog
 
-## Next release 
+## 2021-02-04
+### Fixed
+- Fixed a bug causing the projects list in the navbar and projects page to display projects outside of folders when they're contained within them.
 
-/
+## 2021-01-29
+
+### Added
+- Ability to redirect URLs through AdminHQ
+- Accessibility statement link in the footer
+
+### Fixed
+- Fixed issue affecting project managers that blocked access to their managed projects, when these are placed inside a folder.
+
+## 2021-01-28
+
+### Fixed
+- A bug in Admin project edit page that did not allow a user to Go Back to the projects list after switching tabs
+- Scrolling on the admin users page
+
+## 2021-01-26
+
+### Added
+- Folder admin rights. Folder admins or 'managers' can be assigned per folder. They can create projects inside folders they have rights for, and moderate/change the folder and all projects that are inside.
+- The 'from' and 'reply-to' emails can be customized by cluster (by our developers, not in Admin HQ). E.g. Benelux notification emails could be sent out by notifications@citizenlab.eu, US emails could be sent out by notifications@citizenlab.us etc., as long as those emails are owned by us. We can choose any email for "reply-to", so also email addresses we don't own. This means "reply-to" could potentially be configured to be an email address of the city, e.g. support@leuven.be. It is currently not possible to customize the reply-to (except for manual campaigns) and from fields for individual tenants.
+- When a survey requires the user to be signed-in, we now show the sign in/up form directly on the page when not logged in (instead of the green infobox with a link to the sign-up popup)
+
+### Fixed
+- The 'reply-to' field of our emails showed up twice in recipient's email clients, now only once.
+
+### Changed
+- Added the recipient first and last name to the 'to' email field in their email client, so not only their email adress is shown.
+- The links in the footer can now expand to multiple lines, and therefore accomodate more items (e.g. soon the addition of a link to the accesibility statement)
 
 ## 2021-01-21
 

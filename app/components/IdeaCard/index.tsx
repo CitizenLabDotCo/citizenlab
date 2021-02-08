@@ -311,7 +311,7 @@ class IdeaCard extends PureComponent<
             <StyledAuthor
               authorId={ideaAuthorId}
               createdAt={idea.attributes.published_at}
-              size="34px"
+              size={34}
             />
           }
           footer={

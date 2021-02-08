@@ -72,6 +72,7 @@ export type TSignUpSteps =
 export interface InputProps {
   metaData: ISignUpInMetaData;
   windowHeight: number;
+  customHeader?: JSX.Element;
   onSignUpCompleted: () => void;
   onGoToSignIn: () => void;
   className?: string;
@@ -325,6 +326,7 @@ class SignUp extends PureComponent<Props & InjectedIntlProps, State> {
       tenant,
       metaData,
       windowHeight,
+      customHeader,
       className,
       intl: { formatMessage },
     } = this.props;
@@ -373,10 +375,17 @@ class SignUp extends PureComponent<Props & InjectedIntlProps, State> {
                 onResize={this.onResize}
               >
                 <div>
-                  <StyledHeaderContainer inModal={!!metaData.inModal}>
-                    <StyledHeaderTitle inModal={!!metaData.inModal}>
-                      <FormattedMessage {...messages.signUp2} />
-                    </StyledHeaderTitle>
+                  <StyledHeaderContainer
+                    className="signupinheadercontainer"
+                    inModal={!!metaData.inModal}
+                  >
+                    {!customHeader ? (
+                      <StyledHeaderTitle inModal={!!metaData.inModal}>
+                        <FormattedMessage {...messages.signUp2} />
+                      </StyledHeaderTitle>
+                    ) : (
+                      customHeader
+                    )}
 
                     {hasHeaderSubtitle && (
                       <HeaderSubtitle>
@@ -405,6 +414,7 @@ class SignUp extends PureComponent<Props & InjectedIntlProps, State> {
             windowHeight={`${windowHeight}px`}
             headerHeight={headerHeight}
             ref={this.setRef}
+            className="signupincontentcontainer"
           >
             {error ? (
               <Error text={error} animate={false} marginBottom="30px" />
@@ -417,6 +427,7 @@ class SignUp extends PureComponent<Props & InjectedIntlProps, State> {
                 ].includes(activeStep) &&
                   !isEmpty(helperText) && (
                     <SignUpHelperText
+                      className="signuphelpertext"
                       textColor={this.props.theme.colorText}
                       fontSize="base"
                       fontWeight={300}
