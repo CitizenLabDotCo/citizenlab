@@ -22,7 +22,7 @@ Gem::Specification.new do |s|
       'public gem pushes.'
   end
 
-  s.add_dependency 'apartment', '~> 2.2.1'
+  s.add_dependency 'multi_tenancy'
   s.add_dependency 'pundit', '~> 2.0'
   s.add_dependency 'rails', '~> 6.0.0'
 

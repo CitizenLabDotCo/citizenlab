@@ -30,7 +30,6 @@ describe Tagging::AutomaticTaggingService do
     it "creates the tags corresponding to the response" do
       service.save_tags_from_prediction(@response)
       expect(Tagging::Tagging.automatic.length).to eq 7
-      # expect(Tagging::Tagging.pending.length).to eq 0
     end
 
 

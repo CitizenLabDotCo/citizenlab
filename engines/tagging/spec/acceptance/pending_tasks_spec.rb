@@ -24,16 +24,13 @@ resource 'PendingTask' do
       Tagging::PendingTask.create(nlp_task_id: 'lalalala', tag_ids: tags.map(&:id), idea_ids: @ideas.map(&:id))
     end
 
-    with_options scope: :page do
-      parameter :number, 'Page number'
-      parameter :size, 'Number of tags per page'
-    end
     parameter :search, 'Search entry', required: false
 
-    example_request 'List all tags' do
+    example_request 'List all pending tasks' do
       expect(status).to eq(200)
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 1
+      debugger
     end
   end
 end

@@ -2,7 +2,7 @@ class TrackEventJob < ApplicationJob
   queue_as :default
   # creates or updates users in tracking destinations
 
-  def perform activity
+  def run activity
     tenant = nil
 
     begin
