@@ -8,7 +8,9 @@ import request from 'utils/request';
 // components
 import { Input, IconTooltip } from 'cl2-component-library';
 import Button from 'components/UI/Button';
-import PasswordInput from 'components/UI/PasswordInput';
+import PasswordInput, {
+  hasPasswordMinimumLength,
+} from 'components/UI/PasswordInput';
 import Error from 'components/UI/Error';
 import { FormLabel } from 'components/UI/FormComponents';
 import Consent from 'components/SignUpIn/SignUp/Consent';
@@ -121,7 +123,7 @@ type State = {
   lastNameError: string | null;
   emailError: string | null;
   privacyError: boolean;
-  hasPasswordError: boolean;
+  hasMinimumLengthError: boolean;
   tacError: boolean;
   unknownError: string | null;
   apiErrors: CLErrorsJSON | null | Error;
@@ -143,7 +145,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
       firstNameError: null,
       lastNameError: null,
       emailError: null,
-      hasPasswordError: false,
+      hasMinimumLengthError: false,
       tacError: false,
       privacyError: false,
       unknownError: null,
@@ -219,10 +221,10 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
     }));
   };
 
-  handlePasswordOnChange = (password: string, hasPasswordError: boolean) => {
+  handlePasswordOnChange = (password: string) => {
     this.setState((state) => ({
       password,
-      hasPasswordError,
+      hasMinimumLengthError: false,
       unknownError: null,
       apiErrors: state.apiErrors
         ? set(state.apiErrors, 'json.errors.password', null)
@@ -270,7 +272,6 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
       tacAccepted,
       privacyAccepted,
       processing,
-      hasPasswordError,
     } = this.state;
     let invitationRedeemError =
       isInvitation && !token ? formatMessage(messages.noTokenError) : null;
@@ -288,6 +289,15 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
     const lastNameError = !lastName
       ? formatMessage(messages.noLastNameError)
       : null;
+    const hasMinimumLengthError =
+      typeof password === 'string'
+        ? hasPasswordMinimumLength(
+            password,
+            !isNilOrError(tenant)
+              ? tenant.attributes.settings.password_login?.minimum_length
+              : undefined
+          )
+        : true;
     const tacError = !tacAccepted;
     const privacyError = !privacyAccepted;
 
@@ -296,7 +306,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
       emailError,
       firstNameError,
       lastNameError,
-      hasPasswordError,
+      hasMinimumLengthError,
       tacError,
       privacyError,
     ].some((error) => error);
@@ -306,7 +316,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
       emailError,
       firstNameError,
       lastNameError,
-      hasPasswordError,
+      hasMinimumLengthError,
       tacError,
       privacyError,
     });
@@ -392,6 +402,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
       firstNameError,
       lastNameError,
       emailError,
+      hasMinimumLengthError,
       apiErrors,
     } = this.state;
     const phone =
@@ -562,6 +573,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
                 placeholder={formatMessage(messages.passwordPlaceholder)}
                 onChange={this.handlePasswordOnChange}
                 autocomplete="new-password"
+                errors={{ minimumLengthError: hasMinimumLengthError }}
               />
               <Error
                 fieldName={'password'}

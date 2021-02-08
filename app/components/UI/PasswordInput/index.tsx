@@ -7,16 +7,30 @@ import useTenant from 'hooks/useTenant';
 // components
 import PasswordInputComponent from './PasswordInput';
 
+type PasswordErrors = {
+  minimumLengthError?: boolean;
+  emptyError?: boolean;
+};
+
 export interface Props {
   id: string;
   password: string | null;
-  onChange: (password: string, hasPasswordError?: boolean) => void;
+  onChange: (password: string) => void;
   onBlur?: () => void;
   setRef?: (element: HTMLInputElement) => void;
   autocomplete?: 'current-password' | 'new-password';
   placeholder?: string;
   isLoginPasswordInput?: boolean;
-  hasEmptyPasswordError?: boolean;
+  errors: PasswordErrors;
+}
+
+export function hasPasswordMinimumLength(
+  password: string,
+  tenantMinimumPasswordLength: number | undefined
+) {
+  return tenantMinimumPasswordLength
+    ? password.length < tenantMinimumPasswordLength
+    : password.length < 8;
 }
 
 const PasswordInput = (props: Props) => {

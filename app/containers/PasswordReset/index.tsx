@@ -1,5 +1,7 @@
 import React from 'react';
+import { adopt } from 'react-adopt';
 import { isString } from 'lodash-es';
+import { isNilOrError } from 'utils/helperUtils';
 
 // router
 import clHistory from 'utils/cl-router/history';
@@ -8,7 +10,9 @@ import Link from 'utils/cl-router/Link';
 // components
 import { Success, IconTooltip } from 'cl2-component-library';
 import Button from 'components/UI/Button';
-import PasswordInput from 'components/UI/PasswordInput';
+import PasswordInput, {
+  hasPasswordMinimumLength,
+} from 'components/UI/PasswordInput';
 import { Helmet } from 'react-helmet';
 import ContentContainer from 'components/ContentContainer';
 import { FormLabel } from 'components/UI/FormComponents';
@@ -27,6 +31,9 @@ import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import styled from 'styled-components';
 import messages from './messages';
 import { fontSizes, colors } from 'utils/styleUtils';
+
+// resources
+import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 
 const Container = styled.div`
   width: 100%;
@@ -83,7 +90,13 @@ const StyledIconTooltip = styled(IconTooltip)`
   margin-bottom: 6px;
 `;
 
-type Props = {};
+interface DataProps {
+  tenant: GetTenantChildProps;
+}
+
+interface InputProps {}
+
+interface Props extends InputProps, DataProps {}
 
 interface IApiErrors {
   token?: CLError[];
@@ -95,7 +108,7 @@ type ApiErrorFieldName = keyof IApiErrors;
 type State = {
   token: string | null;
   password: string | null;
-  hasPasswordError: boolean;
+  minimumLengthError: boolean;
   submitError: boolean;
   processing: boolean;
   success: boolean;
@@ -115,7 +128,7 @@ class PasswordReset extends React.PureComponent<
     this.state = {
       token,
       password: null,
-      hasPasswordError: false,
+      minimumLengthError: false,
       submitError: false,
       processing: false,
       success: false,
@@ -135,16 +148,31 @@ class PasswordReset extends React.PureComponent<
     }
   }
 
-  validate = () => {
-    const { hasPasswordError } = this.state;
+  hasPasswordMinimumLengthError = () => {
+    const { tenant } = this.props;
+    const { password } = this.state;
 
-    return !hasPasswordError;
+    return typeof password === 'string'
+      ? hasPasswordMinimumLength(
+          password,
+          !isNilOrError(tenant)
+            ? tenant.attributes.settings.password_login?.minimum_length
+            : undefined
+        )
+      : false;
   };
 
-  handlePasswordOnChange = (password: string, hasPasswordError: boolean) => {
+  validate = () => {
+    const minimumLengthError = this.hasPasswordMinimumLengthError();
+    this.setState({ minimumLengthError });
+
+    return !minimumLengthError;
+  };
+
+  handlePasswordOnChange = (password: string) => {
     this.setState({
       password,
-      hasPasswordError,
+      minimumLengthError: false,
       submitError: false,
       apiErrors: null,
     });
@@ -188,7 +216,13 @@ class PasswordReset extends React.PureComponent<
 
   render() {
     const { formatMessage } = this.props.intl;
-    const { password, processing, success, apiErrors } = this.state;
+    const {
+      password,
+      processing,
+      success,
+      apiErrors,
+      minimumLengthError,
+    } = this.state;
     const helmetTitle = formatMessage(messages.helmetTitle);
     const helmetDescription = formatMessage(messages.helmetDescription);
     const title = formatMessage(messages.title);
@@ -240,6 +274,7 @@ class PasswordReset extends React.PureComponent<
                 placeholder={passwordPlaceholder}
                 onChange={this.handlePasswordOnChange}
                 setRef={this.handlePasswordInputSetRef}
+                errors={{ minimumLengthError }}
               />
               {apiErrors &&
                 Object.keys(apiErrors).map((errorField: ApiErrorFieldName) => (
@@ -266,4 +301,16 @@ class PasswordReset extends React.PureComponent<
   }
 }
 
-export default injectIntl<Props>(PasswordReset);
+const PasswordResetWithHocs = injectIntl<Props>(PasswordReset);
+
+const Data = adopt({
+  tenant: <GetTenant />,
+});
+
+export default (inputProps: InputProps) => (
+  <Data>
+    {(dataProps: DataProps) => (
+      <PasswordResetWithHocs {...inputProps} {...dataProps} />
+    )}
+  </Data>
+);
