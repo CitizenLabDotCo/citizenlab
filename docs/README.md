@@ -1,9 +1,10 @@
 # Changelog
 
-## Next Release
+## 2021-02-08
 
 ### Fixed
 - Fixed a bug preventing registration fields and poll questions from reordering correctly.
+- Fixed a bug causing errors in new platforms.
 
 ## 2021-02-04
 ### Fixed
