@@ -24,13 +24,15 @@ export interface Props {
   errors: PasswordErrors;
 }
 
+const DEFAULT_MINIMUM_PASSWORD_LENGTH = 8;
+
 export function hasPasswordMinimumLength(
   password: string,
   tenantMinimumPasswordLength: number | undefined
 ) {
   return tenantMinimumPasswordLength
     ? password.length < tenantMinimumPasswordLength
-    : password.length < 8;
+    : password.length < DEFAULT_MINIMUM_PASSWORD_LENGTH;
 }
 
 const PasswordInput = (props: Props) => {
@@ -38,7 +40,8 @@ const PasswordInput = (props: Props) => {
 
   if (!isNilOrError(tenant)) {
     const minimumPasswordLength =
-      tenant.data.attributes.settings.password_login?.minimum_length || 8;
+      tenant.data.attributes.settings.password_login?.minimum_length ||
+      DEFAULT_MINIMUM_PASSWORD_LENGTH;
 
     return (
       <PasswordInputComponent
