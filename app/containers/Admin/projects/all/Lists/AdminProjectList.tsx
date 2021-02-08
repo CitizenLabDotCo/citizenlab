@@ -1,16 +1,10 @@
 import React, { memo } from 'react';
-import { adopt } from 'react-adopt';
 
 // style
 import styled from 'styled-components';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-
-// resources
-import GetAdminPublications, {
-  GetAdminPublicationsChildProps,
-} from 'resources/GetAdminPublications';
 
 // components
 import { SortableList, SortableRow } from 'components/admin/ResourceList';
@@ -24,7 +18,9 @@ import messages from '../messages';
 
 // services
 import { reorderAdminPublication } from 'services/adminPublications';
-import { IAdminPublicationContent } from 'hooks/useAdminPublications';
+import useAdminPublications, {
+  IAdminPublicationContent,
+} from 'hooks/useAdminPublications';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 const StyledListHeader = styled(ListHeader)`
@@ -35,23 +31,21 @@ const Spacer = styled.div`
   flex: 1;
 `;
 
-interface DataProps {
-  AdminPublications: GetAdminPublicationsChildProps;
-}
-
-interface Props extends DataProps {}
+interface Props {}
 
 function handleReorderAdminPublication(itemId, newOrder) {
   reorderAdminPublication(itemId, newOrder);
 }
 
-const AdminProjectList = memo<Props>(({ AdminPublications }) => {
-  const AdminPublicationsList = AdminPublications.list;
+const AdminProjectList = memo<Props>((_props) => {
+  const { topLevel: topLevelAdminPublications } = useAdminPublications({
+    publicationStatusFilter: ['published', 'archived', 'draft'],
+  });
   const isProjectFoldersEnabled = useFeatureFlag('project_folders');
 
   if (
-    !isNilOrError(AdminPublicationsList) &&
-    AdminPublicationsList.length > 0
+    !isNilOrError(topLevelAdminPublications) &&
+    topLevelAdminPublications.length > 0
   ) {
     return (
       <>
@@ -66,11 +60,11 @@ const AdminProjectList = memo<Props>(({ AdminPublications }) => {
           <Outlet id="app.containers.AdminPage.projects.all.projectsAndFolders.actions" />
         </StyledListHeader>
         <SortableList
-          items={AdminPublicationsList}
+          items={topLevelAdminPublications}
           onReorder={handleReorderAdminPublication}
           className="projects-list e2e-admin-projects-list"
           id="e2e-admin-published-projects-list"
-          key={AdminPublicationsList.length}
+          key={topLevelAdminPublications.length}
         >
           {({ itemsList, handleDragRow, handleDropRow }) => {
             return (
@@ -78,25 +72,29 @@ const AdminProjectList = memo<Props>(({ AdminPublications }) => {
                 {itemsList.map(
                   (item: IAdminPublicationContent, index: number) => {
                     return (
-                      <SortableRow
-                        key={item.id}
-                        id={item.id}
-                        index={index}
-                        moveRow={handleDragRow}
-                        dropRow={handleDropRow}
-                        lastItem={index === AdminPublicationsList.length - 1}
-                      >
-                        {item.publicationType === 'project' && (
-                          <ProjectRow
-                            actions={['delete', 'manage']}
+                      <>
+                        <SortableRow
+                          key={item.id}
+                          id={item.id}
+                          index={index}
+                          moveRow={handleDragRow}
+                          dropRow={handleDropRow}
+                          lastItem={
+                            index === topLevelAdminPublications.length - 1
+                          }
+                        >
+                          {item.publicationType === 'project' && (
+                            <ProjectRow
+                              actions={['delete', 'manage']}
+                              publication={item}
+                            />
+                          )}
+                          <Outlet
+                            id="app.containers.AdminPage.projects.all.projectsAndFolders.row"
                             publication={item}
                           />
-                        )}
-                        <Outlet
-                          id="app.containers.AdminPage.projects.all.projectsAndFolders.row"
-                          publication={item}
-                        />
-                      </SortableRow>
+                        </SortableRow>
+                      </>
                     );
                   }
                 )}
@@ -111,15 +109,4 @@ const AdminProjectList = memo<Props>(({ AdminPublications }) => {
   return null;
 });
 
-const Data = adopt<DataProps>({
-  AdminPublications: (
-    <GetAdminPublications
-      publicationStatusFilter={['published', 'archived', 'draft']}
-      folderId={null}
-    />
-  ),
-});
-
-export default () => (
-  <Data>{(dataProps) => <AdminProjectList {...dataProps} />}</Data>
-);
+export default AdminProjectList;

@@ -6,7 +6,11 @@ import {
   filter as rxFilter,
   distinctUntilChanged,
 } from 'rxjs/operators';
-import { isEmpty, get, isString } from 'lodash-es';
+import { isEmpty, get, isString, set } from 'lodash-es';
+import { adopt } from 'react-adopt';
+import deepMerge from 'deepmerge';
+import eventEmitter from 'utils/eventEmitter';
+import { withRouter, WithRouterProps } from 'react-router';
 
 // components
 import InputMultiloc from 'components/UI/InputMultiloc';
@@ -15,7 +19,7 @@ import Error from 'components/UI/Error';
 import { Radio, IconTooltip, Input } from 'cl2-component-library';
 import MultipleSelect from 'components/UI/MultipleSelect';
 import FileUploader from 'components/UI/FileUploader';
-import SubmitWrapper, { ISubmitState } from 'components/admin/SubmitWrapper';
+import SubmitWrapper from 'components/admin/SubmitWrapper';
 import {
   Section,
   SectionField,
@@ -27,7 +31,7 @@ import ParticipationContext, {
   IParticipationContextConfig,
 } from '../participationContext';
 import Warning from 'components/UI/Warning';
-
+import Outlet from 'components/Outlet';
 import Link from 'utils/cl-router/Link';
 
 // animation
@@ -42,10 +46,10 @@ import messages from './messages';
 // services
 import {
   IUpdatedProjectProperties,
-  IProject,
   projectByIdStream,
   addProject,
   updateProject,
+  IProjectFormState,
 } from 'services/projects';
 import {
   projectFilesStream,
@@ -57,10 +61,15 @@ import {
   addProjectImage,
   deleteProjectImage,
 } from 'services/projectImages';
-import { areasStream, IAreaData } from 'services/areas';
+import { areasStream } from 'services/areas';
 import { localeStream } from 'services/locale';
-import { currentTenantStream, ITenant } from 'services/tenant';
-import eventEmitter from 'utils/eventEmitter';
+import { currentTenantStream } from 'services/tenant';
+
+// resources
+import GetFeatureFlag, {
+  GetFeatureFlagChildProps,
+} from 'resources/GetFeatureFlag';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // utils
 import { convertUrlToUploadFileObservable } from 'utils/fileTools';
@@ -70,7 +79,7 @@ import styled from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
 
 // typings
-import { CLError, IOption, Locale, Multiloc, UploadFile } from 'typings';
+import { IOption, Locale, Multiloc, UploadFile } from 'typings';
 import { isNilOrError } from 'utils/helperUtils';
 import { INewProjectCreatedEvent } from '../../all/CreateProject';
 
@@ -177,40 +186,22 @@ const SlugPreview = styled.div`
   font-size: ${fontSizes.base}px;
 `;
 
-type Props = {
-  params?: {
-    projectId: string;
-  };
-};
+export interface InputProps {}
 
-interface State {
-  processing: boolean;
-  project: IProject | null | undefined;
-  publicationStatus: 'draft' | 'published' | 'archived';
-  projectType: 'continuous' | 'timeline';
-  projectAttributesDiff: IUpdatedProjectProperties;
-  projectHeaderImage: UploadFile[] | null;
-  presentationMode: 'map' | 'card';
-  projectImages: UploadFile[];
-  projectImagesToRemove: UploadFile[];
-  projectFiles: UploadFile[];
-  projectFilesToRemove: UploadFile[];
-  noTitleError: Multiloc | null;
-  apiErrors: { [fieldName: string]: CLError[] };
-  saved: boolean;
-  areas: IAreaData[];
-  areaType: 'all' | 'selection';
-  locale: Locale;
-  currentTenant: ITenant | null;
-  areasOptions: IOption[];
-  submitState: ISubmitState;
-  slug: string | null;
-  showSlugErrorMessage: boolean;
+interface DataProps {
+  isProjectFoldersEnabled: GetFeatureFlagChildProps;
+  authUser: GetAuthUserChildProps;
 }
 
+interface Props extends InputProps, DataProps {}
+
+export type onProjectFormStateChange = (fieldUpdates: {
+  [fieldPath: string]: any;
+}) => void;
+
 class AdminProjectEditGeneral extends PureComponent<
-  Props & InjectedIntlProps,
-  State
+  Props & InjectedIntlProps & WithRouterProps,
+  IProjectFormState
 > {
   projectId$: BehaviorSubject<string | null>;
   processing$: BehaviorSubject<boolean>;
@@ -218,7 +209,7 @@ class AdminProjectEditGeneral extends PureComponent<
 
   constructor(props) {
     super(props);
-    this.state = {
+    const initialState: IProjectFormState = {
       processing: false,
       project: undefined,
       publicationStatus: 'draft',
@@ -246,6 +237,9 @@ class AdminProjectEditGeneral extends PureComponent<
       slug: null,
       showSlugErrorMessage: false,
     };
+
+    this.state = initialState;
+
     this.projectId$ = new BehaviorSubject(null);
     this.processing$ = new BehaviorSubject(false);
     this.subscriptions = [];
@@ -290,7 +284,8 @@ class AdminProjectEditGeneral extends PureComponent<
             }));
             const slug = project ? project.data.attributes.slug : null;
 
-            return {
+            const newState: IProjectFormState = {
+              ...state,
               locale,
               currentTenant,
               project,
@@ -309,6 +304,12 @@ class AdminProjectEditGeneral extends PureComponent<
                 },
               },
             };
+
+            if (project && this.props.isProjectFoldersEnabled) {
+              newState.folder_id = project.data.attributes.folder_id;
+            }
+
+            return newState;
           });
         }
       ),
@@ -754,6 +755,17 @@ class AdminProjectEditGeneral extends PureComponent<
     });
   };
 
+  handleFieldUpdate = (fieldUpdates: { [fieldPath: string]: any }) => {
+    this.setState((prevState) => {
+      const newState = { ...prevState };
+      set(newState, 'submitState', 'enabled');
+      for (const fieldPath in fieldUpdates) {
+        set(newState, fieldPath, fieldUpdates[fieldPath]);
+      }
+      return deepMerge(prevState, newState);
+    });
+  };
+
   render() {
     const {
       publicationStatus,
@@ -774,13 +786,16 @@ class AdminProjectEditGeneral extends PureComponent<
       currentTenant,
       locale,
     } = this.state;
+
     const {
       intl: { formatMessage },
+      authUser,
     } = this.props;
 
     if (
-      !get(this.props, 'params.projectId') ||
-      (get(this.props, 'params.projectId') && project !== undefined)
+      !isNilOrError(authUser) &&
+      (!get(this.props, 'params.projectId') ||
+        (get(this.props, 'params.projectId') && project !== undefined))
     ) {
       const projectAttrs = {
         ...(project ? project.data.attributes : {}),
@@ -1053,9 +1068,16 @@ class AdminProjectEditGeneral extends PureComponent<
               )}
             </StyledSectionField>
 
+            <Outlet
+              id="app.components.AdminPage.projects.form.additionalInputs.inputs"
+              projectAttrs={projectAttrs}
+              onChange={this.handleFieldUpdate}
+              authUser={authUser}
+            />
+
             <StyledSectionField>
               <SubSectionTitle>
-                <FormattedMessage {...messages.headerImageLabel} />
+                <FormattedMessage {...messages.headerImageLabelText} />
                 <IconTooltip
                   content={
                     <FormattedMessage
@@ -1093,7 +1115,7 @@ class AdminProjectEditGeneral extends PureComponent<
 
             <StyledSectionField>
               <SubSectionTitle>
-                <FormattedMessage {...messages.projectCardImageLabel} />
+                <FormattedMessage {...messages.projectCardImageLabelText} />
                 <IconTooltip
                   content={
                     <FormattedMessage
@@ -1150,4 +1172,16 @@ class AdminProjectEditGeneral extends PureComponent<
   }
 }
 
-export default injectIntl(AdminProjectEditGeneral);
+const AdminProjectEditGeneralWithHocs = injectIntl(AdminProjectEditGeneral);
+const Data = adopt({
+  isProjectFoldersEnabled: <GetFeatureFlag name="project_folders" />,
+  authUser: <GetAuthUser />,
+});
+
+export default withRouter((inputProps: InputProps & WithRouterProps) => (
+  <Data {...inputProps}>
+    {(dataProps: DataProps) => (
+      <AdminProjectEditGeneralWithHocs {...inputProps} {...dataProps} />
+    )}
+  </Data>
+));

@@ -5,14 +5,22 @@ import {
 import { GroupCreationModal } from 'containers/Admin/users';
 import { NormalFormValues } from 'containers/Admin/users/NormalGroupForm';
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
-
+import { IProjectData, IUpdatedProjectProperties } from 'services/projects';
+import { onProjectFormStateChange } from 'containers/Admin/projects/edit/general';
 import { mergeWith, castArray } from 'lodash-es';
 
 import { FunctionComponent } from 'react';
 
 import Loadable from 'react-loadable';
 import { IGroupDataAttributes, MembershipType } from 'services/groups';
-import { FormikSubmitHandler, Multiloc } from 'typings';
+import {
+  FormikSubmitHandler,
+  ITab,
+  MessageDescriptor,
+  Multiloc,
+} from 'typings';
+import { IUserData } from 'services/users';
+import { MessageValue } from 'react-intl';
 
 type Localize = (
   multiloc: Multiloc | null | undefined,
@@ -29,6 +37,12 @@ export type OutletsPropertyMap = {
     publication: IAdminPublicationContent;
   };
   'app.containers.AdminPage.projects.all.projectsAndFolders.title': {};
+  'app.components.AdminPage.projects.form.additionalInputs.inputs': {
+    projectAttrs: IUpdatedProjectProperties;
+    onChange: onProjectFormStateChange;
+    authUser: IUserData;
+  };
+  'app.containers.AdminPage.projects.all.createProjectNotAdmin': {};
   'app.containers.AdminPage.projects.all.projectsAndFolders.actions': {};
   'app.components.ProjectAndFolderCards.card': {
     publication: IAdminPublicationContent;
@@ -66,6 +80,19 @@ export type OutletsPropertyMap = {
   'app.containers.Admin.users.UsersHeader.icon': {
     type: GroupCreationModal;
   };
+  'app.containers.Admin.project.edit.permissions': {
+    project: IProjectData;
+  };
+  'app.containers.Admin.initiatives.tabs': {
+    formatMessage: (
+      messageDescriptor: MessageDescriptor,
+      values?: { [key: string]: MessageValue } | undefined
+    ) => string;
+    onData: (data: {
+      insertAfterTabName?: string;
+      tabConfiguration: ITab;
+    }) => void;
+  };
 };
 
 type Outlet<Props> = FunctionComponent<Props> | FunctionComponent<Props>[];
@@ -80,16 +107,25 @@ export type OutletId = keyof Outlets;
 
 export interface RouteConfiguration {
   path?: string;
-  name: string;
+  name?: string;
   container: () => Promise<any>;
   type?: string;
   indexRoute?: RouteConfiguration;
   childRoutes?: RouteConfiguration[];
 }
 
+type RecursivePartial<T> = {
+  [P in keyof T]?: T[P] extends (infer U)[]
+    ? RecursivePartial<U>[]
+    : T[P] extends object
+    ? RecursivePartial<T[P]>
+    : T[P];
+};
+
 interface Routes {
   citizen: RouteConfiguration[];
   admin: RouteConfiguration[];
+  'admin.initiatives': RouteConfiguration[];
 }
 
 export interface ParsedModuleConfiguration {
@@ -101,12 +137,14 @@ export interface ParsedModuleConfiguration {
   afterMountApplication: () => void;
 }
 
-type OptionalKeys<T> = {
-  [P in keyof T]?: T[P];
+export type ModuleConfiguration = RecursivePartial<
+  ParsedModuleConfiguration
+> & {
+  /** this function triggers before the Root component is mounted */
+  beforeMountApplication?: () => void;
+  /** this function triggers after the Root component mounted */
+  afterMountApplication?: () => void;
 };
-
-export type ModuleConfiguration = OptionalKeys<ParsedModuleConfiguration>;
-
 type Modules = {
   configuration: ModuleConfiguration;
   isEnabled: boolean;
@@ -144,7 +182,7 @@ const convertConfigurationToRoute = ({
 });
 
 const parseModuleRoutes = (
-  routes: RouteConfiguration[],
+  routes: RouteConfiguration[] = [],
   type = RouteTypes.CITIZEN
 ) => routes.map((route) => convertConfigurationToRoute({ ...route, type }));
 
@@ -180,6 +218,10 @@ export const loadModules = (modules: Modules): ParsedModuleConfiguration => {
     routes: {
       citizen: parseModuleRoutes(mergedRoutes.citizen),
       admin: parseModuleRoutes(mergedRoutes.admin, RouteTypes.ADMIN),
+      'admin.initiatives': parseModuleRoutes(
+        mergedRoutes?.['admin.initiatives'],
+        RouteTypes.ADMIN
+      ),
     },
     beforeMountApplication: callLifecycleMethods('beforeMountApplication'),
     afterMountApplication: callLifecycleMethods('afterMountApplication'),
