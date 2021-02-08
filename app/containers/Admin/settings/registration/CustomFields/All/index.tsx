@@ -153,7 +153,7 @@ class CustomFields extends Component<Props & InjectedIntlProps, State> {
   };
 
   handleDropRow = (fieldId: string, toIndex: number) => {
-    const listItems = this.listItems();
+    const { userCustomFields: listItems } = this.props;
 
     if (!listItems) return;
 
