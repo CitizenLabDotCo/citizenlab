@@ -1,5 +1,19 @@
-import { IRelationship, Multiloc, ImageSizes } from 'typings';
 import { API_PATH } from 'containers/App/constants';
+
+// typings
+import { ISubmitState } from 'components/admin/SubmitWrapper';
+import { Locale } from 'cl2-component-library/dist/utils/typings';
+import {
+  IRelationship,
+  Multiloc,
+  ImageSizes,
+  UploadFile,
+  IOption,
+  CLError,
+} from 'typings';
+import { IAreaData } from './areas';
+import { ITenant } from 'services/tenant';
+
 import streams, { IStreamParams } from 'utils/streams';
 import {
   SurveyServices,
@@ -63,65 +77,67 @@ export type PollDisabledReason =
   | 'not_verified'
   | 'not_signed_in';
 
+export interface IProjectAttributes {
+  title_multiloc: Multiloc;
+  description_multiloc: Multiloc;
+  description_preview_multiloc: Multiloc;
+  slug: string;
+  header_bg: ImageSizes;
+  ideas_count: number;
+  comments_count: number;
+  avatars_count: number;
+  created_at: string;
+  updated_at: string;
+  visible_to: Visibility;
+  process_type: ProcessType;
+  timeline_active?: 'past' | 'present' | 'future' | null;
+  participants_count: number;
+  participation_method: ParticipationMethod | null;
+  posting_enabled: boolean;
+  commenting_enabled: boolean;
+  voting_enabled: boolean;
+  voting_method: 'limited' | 'unlimited';
+  voting_limited_max: number;
+  downvoting_enabled: boolean;
+  presentation_mode: PresentationMode;
+  internal_role: 'open_idea_box' | null;
+  publication_status: PublicationStatus;
+  max_budget?: number;
+  survey_service?: SurveyServices;
+  survey_embed_url?: string;
+  ordering: number;
+  poll_anonymous?: boolean;
+  ideas_order?: IdeaDefaultSortMethod;
+  input_term: InputTerm;
+  action_descriptor: {
+    posting_idea: {
+      enabled: boolean;
+      future_enabled: string | null;
+      disabled_reason: PostingDisabledReason | null;
+    };
+    commenting_idea: {
+      enabled: boolean;
+      disabled_reason: CommentingDisabledReason | null;
+    };
+    voting_idea: {
+      enabled: boolean;
+      disabled_reason: VotingDisabledReason | null;
+    };
+    taking_survey: {
+      enabled: boolean;
+      disabled_reason: SurveyDisabledReason | null;
+    };
+    taking_poll: {
+      enabled: boolean;
+      disabled_reason: PollDisabledReason | null;
+    };
+  };
+}
+
 export interface IProjectData {
   id: string;
   type: 'project';
-  attributes: {
-    title_multiloc: Multiloc;
-    description_multiloc: Multiloc;
-    description_preview_multiloc: Multiloc;
-    input_term: InputTerm;
-    slug: string;
-    header_bg: ImageSizes;
-    ideas_count: number;
-    comments_count: number;
-    avatars_count: number;
-    created_at: string;
-    updated_at: string;
-    visible_to: Visibility;
-    process_type: ProcessType;
-    timeline_active?: 'past' | 'present' | 'future' | null;
-    participants_count: number;
-    participation_method: ParticipationMethod | null;
-    posting_enabled: boolean;
-    commenting_enabled: boolean;
-    voting_enabled: boolean;
-    voting_method: 'limited' | 'unlimited';
-    voting_limited_max: number;
-    downvoting_enabled: boolean;
-    presentation_mode: PresentationMode;
-    internal_role: 'open_idea_box' | null;
-    publication_status: PublicationStatus;
-    max_budget?: number;
-    survey_service?: SurveyServices;
-    survey_embed_url?: string;
-    ordering: number;
-    poll_anonymous?: boolean;
-    ideas_order?: IdeaDefaultSortMethod;
-    action_descriptor: {
-      posting_idea: {
-        enabled: boolean;
-        future_enabled: string | null;
-        disabled_reason: PostingDisabledReason | null;
-      };
-      commenting_idea: {
-        enabled: boolean;
-        disabled_reason: CommentingDisabledReason | null;
-      };
-      voting_idea: {
-        enabled: boolean;
-        disabled_reason: VotingDisabledReason | null;
-      };
-      taking_survey: {
-        enabled: boolean;
-        disabled_reason: SurveyDisabledReason | null;
-      };
-      taking_poll: {
-        enabled: boolean;
-        disabled_reason: PollDisabledReason | null;
-      };
-    };
-  };
+  attributes: IProjectAttributes;
   relationships: {
     project_images: {
       data: IRelationship[];
@@ -166,7 +182,9 @@ export interface IUpdatedProjectProperties {
   voting_limited_max?: number | null;
   downvoting_enabled?: boolean | null;
   presentation_mode?: PresentationMode | null;
-  admin_publication_attributes?: { publication_status?: PublicationStatus };
+  admin_publication_attributes?: {
+    publication_status?: PublicationStatus;
+  };
   publication_status?: PublicationStatus;
   max_budget?: number | null;
   survey_service?: SurveyServices | null;
@@ -176,6 +194,31 @@ export interface IUpdatedProjectProperties {
   ideas_order?: IdeaDefaultSortMethod;
   input_term?: InputTerm;
   slug?: string;
+}
+
+export interface IProjectFormState {
+  processing: boolean;
+  project: IProject | null | undefined;
+  publicationStatus: 'draft' | 'published' | 'archived';
+  projectType: 'continuous' | 'timeline';
+  projectAttributesDiff: IUpdatedProjectProperties;
+  projectHeaderImage: UploadFile[] | null;
+  presentationMode: 'map' | 'card';
+  projectImages: UploadFile[];
+  projectImagesToRemove: UploadFile[];
+  projectFiles: UploadFile[];
+  projectFilesToRemove: UploadFile[];
+  noTitleError: Multiloc | null;
+  apiErrors: { [fieldName: string]: CLError[] };
+  saved: boolean;
+  areas: IAreaData[];
+  areaType: 'all' | 'selection';
+  locale: Locale;
+  currentTenant: ITenant | null;
+  areasOptions: IOption[];
+  submitState: ISubmitState;
+  slug: string | null;
+  showSlugErrorMessage: boolean;
 }
 
 export interface IProject {
@@ -231,7 +274,11 @@ export async function addProject(projectData: IUpdatedProjectProperties) {
   const projectId = response.data.id;
   await streams.fetchAllWith({
     dataId: [projectId],
-    apiEndpoint: [`${API_PATH}/projects`, `${API_PATH}/admin_publications`],
+    apiEndpoint: [
+      `${API_PATH}/projects`,
+      `${API_PATH}/admin_publications`,
+      `${API_PATH}/users/me`,
+    ],
   });
   return response;
 }
@@ -247,7 +294,11 @@ export async function updateProject(
   );
   streams.fetchAllWith({
     dataId: [projectId],
-    apiEndpoint: [`${API_PATH}/projects`, `${API_PATH}/admin_publications`],
+    apiEndpoint: [
+      `${API_PATH}/projects`,
+      `${API_PATH}/admin_publications`,
+      `${API_PATH}/users/me`,
+    ],
   });
 
   // TODO: clear partial cache

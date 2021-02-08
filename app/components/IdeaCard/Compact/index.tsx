@@ -170,7 +170,7 @@ const CompactIdeaCard = memo<Props & InjectedLocalized>(
           <BodyWrapper>
             {authorId && (
               <StyledAvatar
-                size="34"
+                size={34}
                 userId={authorId}
                 hideIfNoAvatar={true}
                 fillColor={transparentize(0.6, colors.label)}

@@ -139,8 +139,8 @@ const VerificationStatus = memo(({ className }: { className?: string }) => {
           <>
             <StyledAvatar
               userId={authUser.id}
-              size="52px"
-              verified
+              size={52}
+              addVerificationBadge
               aria-hidden
             />
             <Content>
@@ -162,11 +162,11 @@ const VerificationStatus = memo(({ className }: { className?: string }) => {
           <>
             <AvatarAndShield aria-hidden>
               <StyledAvatar
-                userId={authUser.id}
-                size="52px"
+                userId={authUser?.id}
+                size={52}
                 bgColor="transparent"
-                padding="0px"
-                borderThickness="2px"
+                padding={0}
+                borderThickness={2}
                 borderColor="#fff"
               />
               <ShieldIcon name="verify_dark" />
