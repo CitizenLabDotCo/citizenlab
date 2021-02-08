@@ -24,7 +24,7 @@ resource "Layers", admin_api: true do
       expect(json_response.dig(:data, 0, :type)).to eq("layer")
 
       attributes = json_response.dig(:data, 0, :attributes)
-      expected_attributes = %i[title_multiloc geojson default_enabled marker_svg_url ordering]
+      expected_attributes = %i[title_multiloc geojson default_enabled marker_svg_url ordering id]
       expect(attributes.keys).to match_array expected_attributes
     end
   end
