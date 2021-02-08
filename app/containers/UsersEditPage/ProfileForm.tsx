@@ -197,9 +197,7 @@ class ProfileForm extends PureComponent<Props, State> {
       touched,
     } = props;
     const { userCustomFieldsSchema, lockedFields, authUser } = this.props;
-    const {
-      hasPasswordMinimumLengthError: passwordMinimumLengthError,
-    } = this.state;
+    const { hasPasswordMinimumLengthError } = this.state;
 
     // Won't be called with a nil or error user.
     if (isNilOrError(authUser)) return null;
@@ -260,22 +258,16 @@ class ProfileForm extends PureComponent<Props, State> {
       }
     };
 
-    const hasPasswordMinimumLengthError = (password: string) => {
+    const handlePasswordOnChange = (password: string) => {
       const { tenant } = this.props;
 
-      return typeof password === 'string'
-        ? hasPasswordMinimumLength(
-            password,
-            !isNilOrError(tenant)
-              ? tenant.attributes.settings.password_login?.minimum_length
-              : undefined
-          )
-        : false;
-    };
-
-    const handlePasswordOnChange = (password: string) => {
       this.setState({
-        hasPasswordMinimumLengthError: hasPasswordMinimumLengthError(password),
+        hasPasswordMinimumLengthError: hasPasswordMinimumLength(
+          password,
+          !isNilOrError(tenant)
+            ? tenant.attributes.settings.password_login?.minimum_length
+            : undefined
+        ),
       });
       setFieldValue('password', password);
     };
@@ -440,7 +432,7 @@ class ProfileForm extends PureComponent<Props, State> {
               password={values.password}
               onChange={handlePasswordOnChange}
               onBlur={createBlurHandler('password')}
-              errors={{ minimumLengthError: passwordMinimumLengthError }}
+              errors={{ minimumLengthError: hasPasswordMinimumLengthError }}
             />
             <Error apiErrors={errors.password} />
           </SectionField>
