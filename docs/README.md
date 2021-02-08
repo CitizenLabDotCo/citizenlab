@@ -3,7 +3,7 @@
 ## Next Release
 
 ### Fixed
-- Fixed a bug causing registration fields not to reorder correctly.
+- Fixed a bug preventing registration fields and poll questions from reordering correctly.
 
 ## 2021-02-04
 ### Fixed
