@@ -56,63 +56,32 @@ const PasswordInputComponent = ({
   minimumPasswordLength,
   isLoginPasswordInput,
   setRef,
-  hasEmptyPasswordError,
+  errors,
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
   let inputEl: HTMLInputElement | null = null;
   const locale = useLocale();
   const tenant = useTenant();
-  const [passwordInternal, setPasswordInternal] = useState(password);
   const [showPassword, setShowPassword] = useState(false);
   const [passwordScore, setPasswordScore] = useState<PasswordScore>(0);
-  const [hasMinimumLengthError, setHasMinimumLengthError] = useState(false);
-  const hasPasswordError = hasEmptyPasswordError || hasMinimumLengthError;
-  const minimumPasswordLengthErrorMessage = hasMinimumLengthError
+  const minimumPasswordLengthErrorMessage = errors.minimumLengthError
     ? formatMessage(messages.minimumPasswordLengthErrorMessage, {
         minimumPasswordLength,
       })
     : null;
-  const emptyPasswordErrorMessage = hasEmptyPasswordError
+  const emptyPasswordErrorMessage = errors.emptyError
     ? formatMessage(messages.emptyPasswordError)
     : null;
 
-  function getHasMinimumLengthError(password: string | null) {
-    return (
-      !isLoginPasswordInput &&
-      getIsPasswordTooShort(password, minimumPasswordLength)
-    );
-  }
-
-  function getIsPasswordTooShort(
-    password: string | null,
-    minimumPasswordLength: number
-  ) {
-    if (typeof password === 'string') {
-      return password.length < minimumPasswordLength;
-    }
-
-    return false;
-  }
-
   const handleOnChange = (password: string) => {
-    setPasswordInternal(password);
+    onChange(password);
   };
 
-  useEffect(() => {
-    setHasMinimumLengthError(getHasMinimumLengthError(passwordInternal));
-  }, [passwordInternal]);
-
-  useEffect(() => {
-    if (hasPasswordError && inputEl) {
-      inputEl.focus();
-    }
-  }, [hasPasswordError]);
-
-  useEffect(() => {
-    if (typeof passwordInternal === 'string') {
-      onChange(passwordInternal, hasPasswordError);
-    }
-  }, [passwordInternal, hasPasswordError]);
+  // useEffect(() => {
+  //   if (inputEl) {
+  //     inputEl.focus();
+  //   }
+  // }, [errors]);
 
   const handleOnBlur = () => {
     if (onBlur) {

@@ -286,7 +286,7 @@ class PasswordSignin extends PureComponent<
               setRef={this.handlePasswordInputSetRef}
               autocomplete="current-password"
               isLoginPasswordInput
-              hasEmptyPasswordError={hasEmptyPasswordError}
+              errors={{ emptyError: hasEmptyPasswordError }}
             />
           </FormElement>
 

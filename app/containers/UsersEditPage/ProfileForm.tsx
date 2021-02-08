@@ -13,6 +13,7 @@ import GetLockedFields, {
   GetLockedFieldsChildProps,
 } from 'resources/GetLockedFields';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 
 // utils
 import { Formik } from 'formik';
@@ -20,7 +21,9 @@ import eventEmitter from 'utils/eventEmitter';
 
 // components
 import Error from 'components/UI/Error';
-import PasswordInput from 'components/UI/PasswordInput';
+import PasswordInput, {
+  hasPasswordMinimumLength,
+} from 'components/UI/PasswordInput';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import { convertUrlToUploadFile } from 'utils/fileTools';
 import { SectionField } from 'components/admin/Section';
@@ -48,20 +51,6 @@ import styled from 'styled-components';
 import { IOption, UploadFile, CLErrorsJSON } from 'typings';
 import { isCLErrorJSON } from 'utils/errorUtils';
 
-// Types
-interface InputProps {}
-
-interface DataProps {
-  userCustomFieldsSchema: GetUserCustomFieldsSchemaChildProps;
-  authUser: GetAuthUserChildProps;
-  lockedFields: GetLockedFieldsChildProps;
-}
-
-interface State {
-  avatar: UploadFile[] | null;
-  userCustomFieldsFormData: any;
-}
-
 const InputContainer = styled.div`
   display: flex;
   flex-direction: row;
@@ -85,6 +74,22 @@ const StyledPasswordIconTooltip = styled(IconTooltip)`
   margin-bottom: 4px;
 `;
 
+// Types
+interface InputProps {}
+
+interface DataProps {
+  userCustomFieldsSchema: GetUserCustomFieldsSchemaChildProps;
+  authUser: GetAuthUserChildProps;
+  tenant: GetTenantChildProps;
+  lockedFields: GetLockedFieldsChildProps;
+}
+
+interface State {
+  avatar: UploadFile[] | null;
+  userCustomFieldsFormData: any;
+  hasPasswordMinimumLengthError: boolean;
+}
+
 type Props = InputProps & DataProps & InjectedIntlProps & InjectedLocalized;
 
 class ProfileForm extends PureComponent<Props, State> {
@@ -95,6 +100,7 @@ class ProfileForm extends PureComponent<Props, State> {
     this.state = {
       avatar: null,
       userCustomFieldsFormData: null,
+      hasPasswordMinimumLengthError: false,
     };
   }
 
@@ -191,6 +197,9 @@ class ProfileForm extends PureComponent<Props, State> {
       touched,
     } = props;
     const { userCustomFieldsSchema, lockedFields, authUser } = this.props;
+    const {
+      hasPasswordMinimumLengthError: passwordMinimumLengthError,
+    } = this.state;
 
     // Won't be called with a nil or error user.
     if (isNilOrError(authUser)) return null;
@@ -249,6 +258,26 @@ class ProfileForm extends PureComponent<Props, State> {
       } else {
         setFieldValue(fieldName, value);
       }
+    };
+
+    const hasPasswordMinimumLengthError = (password: string) => {
+      const { tenant } = this.props;
+
+      return typeof password === 'string'
+        ? hasPasswordMinimumLength(
+            password,
+            !isNilOrError(tenant)
+              ? tenant.attributes.settings.password_login?.minimum_length
+              : undefined
+          )
+        : false;
+    };
+
+    const handlePasswordOnChange = (password: string) => {
+      this.setState({
+        hasPasswordMinimumLengthError: hasPasswordMinimumLengthError(password),
+      });
+      setFieldValue('password', password);
     };
 
     const createBlurHandler = (fieldName: string) => () => {
@@ -409,8 +438,9 @@ class ProfileForm extends PureComponent<Props, State> {
             <PasswordInput
               id="profile-password-input"
               password={values.password}
-              onChange={createChangeHandler('password')}
+              onChange={handlePasswordOnChange}
               onBlur={createBlurHandler('password')}
+              errors={{ minimumLengthError: passwordMinimumLengthError }}
             />
             <Error apiErrors={errors.password} />
           </SectionField>
@@ -473,6 +503,7 @@ const ProfileFormWithHocs = injectIntl<InputProps>(localize(ProfileForm));
 
 const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
+  tenant: <GetTenant />,
   lockedFields: <GetLockedFields />,
   userCustomFieldsSchema: <GetUserCustomFieldsSchema />,
 });
