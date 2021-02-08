@@ -193,22 +193,27 @@ class PasswordReset extends React.PureComponent<
         await resetPassword(password, token);
         this.setState({ password: null, processing: false, success: true });
       } catch (error) {
-        let { errors } = error.json;
-        const passwordResetLink = (
-          <Link to="/password-recovery">
-            <FormattedMessage {...messages.requestNewPasswordReset} />
-          </Link>
-        );
+        let clErrors = error.json.errors;
 
-        errors = addErrorPayload(errors, 'token', 'invalid', {
-          passwordResetLink,
+        if (clErrors.token) {
+          const invalidTokenError = clErrors.token.find(
+            ({ error }) => error === 'invalid'
+          );
+        }
+
+        clErrors = addErrorPayload(clErrors, 'token', 'invalid', {
+          passwordResetLink: (
+            <Link to="/password-recovery">
+              <FormattedMessage {...messages.requestNewPasswordReset} />
+            </Link>
+          ),
         });
 
         this.setState({
           processing: false,
           success: false,
           submitError: true,
-          apiErrors: errors,
+          apiErrors: clErrors,
         });
       }
     }
