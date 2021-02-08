@@ -1,8 +1,9 @@
 require 'rails_helper'
 
+# Regression tests
 describe 'WebApi::V1::External::TenantSerializer' do
 
-  let(:serialized_tenant) {
+  let(:serialized_tenant) do
     { id: Tenant.current.id,
       name: 'test-tenant',
       host: 'example.org',
@@ -30,11 +31,19 @@ describe 'WebApi::V1::External::TenantSerializer' do
       style: {},
       logo: { 'small' => nil, 'medium' => nil, 'large' => nil },
       header_bg: { 'large' => nil, 'medium' => nil, 'small' => nil } }
-  }
+  end
 
-  it 'serializes Tenant correctly' do # regression test
+  it 'serializes Tenant correctly' do
     expect(
       WebApi::V1::External::TenantSerializer.new(Tenant.current).serializable_hash
     ).to match(serialized_tenant)
+  end
+
+  context 'when the app configuration is passed explicitly' do
+    it 'serializes Tenant correctly' do
+      tenant = Tenant.current
+      tenant_serializer = WebApi::V1::External::TenantSerializer.new(tenant, app_configuration: tenant.configuration)
+      expect(tenant_serializer.serializable_hash).to match(serialized_tenant)
+    end
   end
 end
