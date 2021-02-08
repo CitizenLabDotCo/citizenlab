@@ -137,6 +137,7 @@ class PasswordSignin extends PureComponent<
   handlePasswordOnChange = (password: string) => {
     this.setState({
       password,
+      hasEmptyPasswordError: false,
       signInError: null,
     });
   };
