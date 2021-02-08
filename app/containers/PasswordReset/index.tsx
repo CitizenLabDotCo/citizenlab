@@ -21,7 +21,6 @@ import Error from 'components/UI/Error';
 // services
 import { resetPassword } from 'services/auth';
 import { CLError } from 'typings';
-import { addErrorPayload } from 'utils/errorUtils';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -192,28 +191,34 @@ class PasswordReset extends React.PureComponent<
         this.setState({ processing: true, success: false });
         await resetPassword(password, token);
         this.setState({ password: null, processing: false, success: true });
-      } catch (error) {
-        let clErrors = error.json.errors;
+      } catch (errors) {
+        const apiErrors = errors.json.errors;
+        const tokenErrors: CLError[] = apiErrors.token;
 
-        if (clErrors.token) {
-          const invalidTokenError = clErrors.token.find(
-            ({ error }) => error === 'invalid'
-          );
+        if (tokenErrors && tokenErrors.length > 0) {
+          const invalidTokenErrorIndex = tokenErrors
+            .map((tokenError) => tokenError.error)
+            .indexOf('invalid');
+
+          // -1 if no element was found
+          if (invalidTokenErrorIndex !== -1) {
+            const invalidTokenError = tokenErrors[invalidTokenErrorIndex];
+
+            invalidTokenError.payload = {
+              passwordResetLink: (
+                <Link to="/password-recovery">
+                  <FormattedMessage {...messages.requestNewPasswordReset} />
+                </Link>
+              ),
+            };
+          }
         }
 
-        clErrors = addErrorPayload(clErrors, 'token', 'invalid', {
-          passwordResetLink: (
-            <Link to="/password-recovery">
-              <FormattedMessage {...messages.requestNewPasswordReset} />
-            </Link>
-          ),
-        });
-
         this.setState({
+          apiErrors,
           processing: false,
           success: false,
           submitError: true,
-          apiErrors: clErrors,
         });
       }
     }
