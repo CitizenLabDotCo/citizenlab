@@ -50,6 +50,7 @@ jobs:
           docker login -u $DOCKER_USER -p $DOCKER_PASS
           docker push citizenlabdotco/cl2-back:$CIRCLE_SHA1
 
+
   test:
     resource_class: small
     executor:
@@ -305,8 +306,26 @@ workflows:
               only:
                 - production
     jobs:
+      # Benelux
       - check-for-inconsistent-data:
           ssh_host: "52.57.74.84"
           compose_file: docker-compose-production-benelux.yml
           stack_name: cl2-prd-bnlx-stack
           env_file: ".env-production-benelux"
+      # South America
+      - check-for-inconsistent-data:
+          ssh_host: "52.67.181.38"
+          compose_file: docker-compose-production.yml
+          env_file: ".env-web"
+          stack_name: "cl2"
+      # Canada
+      - check-for-inconsistent-data:
+          ssh_host: "35.183.23.116"
+          compose_file: docker-compose-production-canada.yml
+          env_file: ".env-production-canada"
+      # US West
+      - check-for-inconsistent-data:
+          ssh_host: "52.13.59.174"
+          compose_file: docker-compose-production.yml
+          env_file: ".env-web"
+          stack_name: "cl2"

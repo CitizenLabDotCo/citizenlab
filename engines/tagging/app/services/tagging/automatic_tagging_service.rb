@@ -17,7 +17,6 @@ module Tagging
 
     def cancel_tasks
       if PendingTask.all.map do |task|
-        puts task.nlp_task_id
         cancelling_status = NLP::TasksService.new.cancel(task.nlp_task_id)
         if cancelling_status != 200
           if NLP::TasksService.new.status(task_id)['status'] != 'PENDING'
@@ -59,7 +58,7 @@ module Tagging
     def switch_tenant(body)
       tenant_id = body['result']['data']['tenant_id']
       if tenant_id
-        Apartment::Tenant.switch(Tenant.find(tenant_id).schema_name) do
+        Tenant.find(tenant_id).switch do
           yield
         end
       else

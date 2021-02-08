@@ -114,7 +114,7 @@ resource "Taggings" do
       @lone_tagging = Tagging::Tagging.create(idea_id: @ideas[0].id, tag_id: @lone_tag.id, assignment_method: 'automatic', confidence_score: 0.22)
     end
 
-    example 'Destroy the only tagging associaed whith a tag also destroys the tag' do
+    example 'Destroying the only tagging associated whith a tag also destroys the tag' do
       do_request id: @lone_tagging.id
       expect(status).to eq(200)
       begin
@@ -128,10 +128,7 @@ resource "Taggings" do
     example 'Destroy a tagging' do
       do_request id: @tagging.id
       expect(status).to eq(200)
-      begin
-        expect(Tagging::Tagging.find(@tagging.id)).to raise_error(ActiveRecord::RecordNotFound)
-      rescue ActiveRecord::RecordNotFound => _
-      end
+      expect(Tagging::Tagging.find(@tagging.id)).to raise_error(ActiveRecord::RecordNotFound)
       expect(Tagging::Tag.find(@tag.id).id).to eq @tag.id
     end
   end
@@ -178,6 +175,7 @@ resource "Taggings" do
 
       do_request idea_ids: @ideas.map(&:id), tag_ids: @tags.map(&:id)
       expect(response_status).to eq 200
+      expect(Tagging::PendingTask.count).to eq 1
     end
 
     example "Generates taggings from new tags" do
