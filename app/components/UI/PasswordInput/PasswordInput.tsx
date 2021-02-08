@@ -6,8 +6,8 @@ import useTenant from 'hooks/useTenant';
 import { isNilOrError } from 'utils/helperUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { Props as WrapperProps } from './';
-const PasswordStrengthBar = lazy(() => import('react-password-strength-bar'));
 // components
+const PasswordStrengthBar = lazy(() => import('react-password-strength-bar'));
 import Error from 'components/UI/Error';
 
 // i18n
@@ -64,12 +64,13 @@ const PasswordInputComponent = ({
   const tenant = useTenant();
   const [showPassword, setShowPassword] = useState(false);
   const [passwordScore, setPasswordScore] = useState<PasswordScore>(0);
-  const minimumPasswordLengthErrorMessage = errors.minimumLengthError
+  const { minimumLengthError, emptyError } = errors;
+  const minimumPasswordLengthErrorMessage = minimumLengthError
     ? formatMessage(messages.minimumPasswordLengthErrorMessage, {
         minimumPasswordLength,
       })
     : null;
-  const emptyPasswordErrorMessage = errors.emptyError
+  const emptyPasswordErrorMessage = emptyError
     ? formatMessage(messages.emptyPasswordError)
     : null;
 
@@ -78,10 +79,10 @@ const PasswordInputComponent = ({
   };
 
   // useEffect(() => {
-  //   if (inputEl) {
+  //   if (inputEl && (emptyError || minimumLengthError)) {
   //     inputEl.focus();
   //   }
-  // }, [errors]);
+  // }, [emptyError, minimumLengthError]);
 
   const handleOnBlur = () => {
     if (onBlur) {
