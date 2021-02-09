@@ -10,9 +10,14 @@ module MultiTenancy
       module ClassMethods
         # @return [Array<::AppConfiguration>]
         def of_all_tenants
-          sql_query = Apartment.tenant_names
-                               .map { |schema| "SELECT * FROM \"#{schema}\".\"app_configurations\" " }
-                               .join(' UNION ')
+          from_tenants(Tenant.all)
+        end
+
+        # @return [Array<::AppConfiguration>]
+        def from_tenants(tenants)
+          sql_query = tenants.map(&:schema_name)
+                             .map { |schema| "SELECT * FROM \"#{schema}\".app_configurations" }
+                             .join(' UNION ')
 
           app_configuration = ActiveRecord::Base.connection.execute(sql_query)
           app_configuration.map { |record| new(record) }
