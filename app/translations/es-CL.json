@@ -453,7 +453,7 @@
   "app.components.admin.PostManager.PostPreview.noSuggestions": "No se hay sugerencias.",
   "app.components.admin.PostManager.PostPreview.pbItemCountTooltip": "El número de veces que esto se ha incluido en los presupuestos participativos de otros participantes.",
   "app.components.admin.PostManager.PostPreview.pendingTagText": "pendiente",
-  "app.components.admin.PostManager.PostPreview.pickInputCollection": "Please select an input collection project to start with.",
+  "app.components.admin.PostManager.PostPreview.pickInputCollection": "Seleccione un proyecto de aportes ciudadanos para empezar.",
   "app.components.admin.PostManager.PostPreview.picks": "Selecciones: {picksNumber}",
   "app.components.admin.PostManager.PostPreview.save": "Guardar",
   "app.components.admin.PostManager.PostPreview.submitError": "Error",
