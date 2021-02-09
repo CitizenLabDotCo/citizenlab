@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
@@ -15,13 +13,15 @@ resource 'PendingTask' do
 
   get 'web_api/v1/pending_tasks' do
     before do
+      create_list(:idea, 2)
       @ideas = create_list(:idea, 5)
+      Tagging::Tag.create(title_multiloc: { en: 'NOO' })
 
-      tags = [Tagging::Tag.create(title_multiloc: { en: 'Fish' }),
+      @tags = [Tagging::Tag.create(title_multiloc: { en: 'Fish' }),
               Tagging::Tag.create(title_multiloc: { en: 'Sea Lion' }),
               Tagging::Tag.create(title_multiloc: { en: 'Dolphin' }),
               Tagging::Tag.create(title_multiloc: { en: 'Shark' })]
-      Tagging::PendingTask.create(nlp_task_id: 'lalalala', tag_ids: tags.map(&:id), idea_ids: @ideas.map(&:id))
+      Tagging::PendingTask.create(nlp_task_id: 'lalalala', tag_ids: @tags.map(&:id), idea_ids: @ideas.map(&:id))
     end
 
     parameter :search, 'Search entry', required: false
@@ -30,7 +30,8 @@ resource 'PendingTask' do
       expect(status).to eq(200)
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 1
-      debugger
+      expect(json_response[:data][0].dig(:relationships, :ideas, :data).map{ |i| i[:id]}).to match @ideas.map(&:id)
+      expect(json_response[:data][0].dig(:relationships, :tags, :data).map{ |i| i[:id]}).to match @tags.map(&:id)
     end
   end
 end

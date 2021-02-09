@@ -119,7 +119,7 @@ resource "Taggings" do
       expect(status).to eq(200)
       begin
         expect(Tagging::Tagging.find(@lone_tagging.id)).to raise_error(ActiveRecord::RecordNotFound)
-      rescue ActiveRecord::RecordNotFound => _
+      rescue ActiveRecord::RecordNotFound
       end
       expect(Tagging::Tag.find(@lone_tag.id)).to raise_error(ActiveRecord::RecordNotFound)
       rescue ActiveRecord::RecordNotFound
@@ -128,7 +128,10 @@ resource "Taggings" do
     example 'Destroy a tagging' do
       do_request id: @tagging.id
       expect(status).to eq(200)
-      expect(Tagging::Tagging.find(@tagging.id)).to raise_error(ActiveRecord::RecordNotFound)
+      begin
+        expect(Tagging::Tagging.find(@tagging.id)).to raise_error(ActiveRecord::RecordNotFound)
+      rescue ActiveRecord::RecordNotFound
+      end
       expect(Tagging::Tag.find(@tag.id).id).to eq @tag.id
     end
   end
