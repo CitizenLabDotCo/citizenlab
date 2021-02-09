@@ -23,9 +23,9 @@ module AdminApi
         raise ClErrors::TransactionError.new(error_key: :missing_locales)
       end
       @tenant = Tenant.new tenant_params
-      SideFxTenantService.new.before_create @tenant, nil
+      MultiTenancy::SideFxTenantService.new.before_create(@tenant, nil)
       if @tenant.save
-        SideFxTenantService.new.after_create @tenant, nil
+        MultiTenancy::SideFxTenantService.new.after_create(@tenant, nil)
         ApplyTenantTemplateJob.perform_later template, @tenant
         # This uses default model serialization
         render json: @tenant, status: :created
@@ -45,10 +45,10 @@ module AdminApi
 
       @tenant.assign_attributes(tenant_params.except(:settings, :style))
 
-      SideFxTenantService.new.before_update(@tenant, nil)
+      MultiTenancy::SideFxTenantService.new.before_update(@tenant, nil)
 
       if @tenant.save
-        SideFxTenantService.new.after_update(@tenant, nil)
+        MultiTenancy::SideFxTenantService.new.after_update(@tenant, nil)
         # This uses default model serialization
         render json: @tenant, status: :ok
       else
@@ -69,10 +69,10 @@ module AdminApi
     end
 
     def destroy
-      SideFxTenantService.new.before_destroy(@tenant, nil)
+      MultiTenancy::SideFxTenantService.new.before_destroy(@tenant, nil)
       tenant = @tenant.destroy
       if tenant.destroyed?
-        SideFxTenantService.new.after_destroy(tenant, nil)
+        MultiTenancy::SideFxTenantService.new.after_destroy(tenant, nil)
         head :ok
       else
         head 500
