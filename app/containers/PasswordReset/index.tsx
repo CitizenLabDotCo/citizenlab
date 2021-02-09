@@ -158,7 +158,7 @@ class PasswordReset extends React.PureComponent<
             ? tenant.attributes.settings.password_login?.minimum_length
             : undefined
         )
-      : false;
+      : true;
   };
 
   validate = () => {
