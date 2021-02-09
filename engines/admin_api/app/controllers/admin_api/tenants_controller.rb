@@ -5,10 +5,10 @@ module AdminApi
     skip_around_action :switch_tenant
 
     def index
-      @tenants = Tenant.all.order(name: :asc)
-      @tenants = @tenants.where("name LIKE ?", params[:search] + '%') if params[:search]
-      # This uses default model serialization
-      render json: @tenants
+      tenants = Tenant.all.order(name: :asc)
+      tenants = tenants.where('name LIKE ?', "%#{params[:search]}%") if params[:search]
+      # Call #to_json explicitly, otherwise 'data' is added as root.
+      render json: MultiTenancy::TenantService.serialize_tenants(tenants).to_json
     end
 
     def show
