@@ -147,7 +147,7 @@ class InitiativeCard extends PureComponent<Props & InjectedLocalized, State> {
             <StyledAuthor
               authorId={initiativeAuthorId}
               createdAt={initiative.attributes.published_at}
-              size="34px"
+              size={34}
             />
           }
           footer={
