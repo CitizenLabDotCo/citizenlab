@@ -25,9 +25,9 @@ class WebApi::V1::TenantsController < ApplicationController
       @tenant.remove_favicon!
     end
     authorize @tenant
-    SideFxTenantService.new.before_update @tenant, current_user
+    MultiTenancy::SideFxTenantService.new.before_update(@tenant, current_user)
     if @tenant.save
-      SideFxTenantService.new.after_update @tenant, current_user
+      MultiTenancy::SideFxTenantService.new.after_update(@tenant, current_user)
       render(
         json: WebApi::V1::TenantSerializer.new(@tenant, params: fastjson_params).serialized_json,
         status: :ok

@@ -254,8 +254,8 @@ namespace :cl2_back do
     end
 
 
-    SideFxTenantService.new.after_apply_template(tenant, nil)
-    SideFxTenantService.new.after_create(tenant, nil)
+    MultiTenancy::SideFxTenantService.new.after_apply_template(tenant, nil)
+    MultiTenancy::SideFxTenantService.new.after_create(tenant, nil)
 
   end
 end
