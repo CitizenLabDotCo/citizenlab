@@ -40,12 +40,12 @@ export default defineMessages({
   upAndDownArrow: {
     id: 'app.containers.Admin.Processing.upAndDownArrow',
     defaultMessage:
-      'Up and down arrows allow you to highlight the previous or next idea in the list',
+      'Up and down arrows allow you to highlight the previous or next item in the list',
   },
   returnKey: {
     id: 'app.containers.Admin.Processing.returnKey',
     defaultMessage:
-      'The "Return" key opens the side panel where you can add remove tags from ideas',
+      'The "Return" key opens the side panel where you can add remove tags from items',
   },
   escapeKey: {
     id: 'app.containers.Admin.Processing.escapeKey',
@@ -60,7 +60,7 @@ export default defineMessages({
   autotagOverwriteExplanation: {
     id: 'app.containers.Admin.Processing.autotagOverwriteExplanation',
     defaultMessage:
-      'Auto-tagging ideas will overwrite any previously automatically-generated tags. Tags that have been approved or that were manually added will not be overwritten.',
+      'Auto-tagging items will overwrite any previously automatically-generated tags. Tags that have been approved or that were manually added will not be overwritten.',
   },
   tag: {
     id: 'app.containers.Admin.Processing.tag',
@@ -72,7 +72,7 @@ export default defineMessages({
   },
   automaticallyAssign: {
     id: 'app.containers.Admin.Processing.automaticallyAssign',
-    defaultMessage: 'Automatically assign tags to selected ideas',
+    defaultMessage: 'Automatically assign tags to selected items',
   },
   addNewTag: {
     id: 'app.containers.Admin.Processing.addNewTag',
@@ -97,7 +97,7 @@ export default defineMessages({
   tagAssignationExplanation: {
     id: 'app.containers.Admin.Processing.tagAssignationExplanation',
     defaultMessage:
-      'Tags you add here will be automatically assigned to relevant ideas based on our natural language processing technology.',
+      'Tags you add here will be automatically assigned to relevant items based on our natural language processing technology.',
   },
   tagValidationErrorMessage: {
     id: 'app.containers.Admin.Processing.tagValidationErrorMessage',
@@ -119,7 +119,7 @@ export default defineMessages({
   helpTooltipText: {
     id: 'app.containers.Admin.Processing.helpTooltipText',
     defaultMessage:
-      'Did you know you can hit your keyboard up and down arrows to show and navigate through ideas content ?',
+      'Did you know you can hit your keyboard up and down arrows to show and navigate through items content ?',
   },
   description: {
     id: 'app.containers.Admin.Processing.description',
@@ -139,14 +139,27 @@ export default defineMessages({
   },
   suggestionLoading: {
     id: 'app.components.admin.PostManager.PostPreview.suggestionLoading',
-    defaultMessage: "We're retrieving suggestions to tag the selected ideas",
+    defaultMessage: "We're retrieving suggestions to tag the selected items",
   },
   noInputInThisProject: {
     id: 'app.components.admin.PostManager.PostPreview.noInputInThisProject',
     defaultMessage: "This project doesn't seem to contain any input.",
   },
-  pickProject: {
-    id: 'app.components.admin.PostManager.PostPreview.pickProject',
-    defaultMessage: 'Please select a project to start with.',
+  pickInputCollection: {
+    id: 'app.components.admin.PostManager.PostPreview.pickInputCollection',
+    defaultMessage: 'Please select an input collection project to start with.',
+  },
+  pendingTagText: {
+    id: 'app.components.admin.PostManager.PostPreview.pendingTagText',
+    defaultMessage: 'pending',
+  },
+  autotaggingProcessing: {
+    id: 'app.components.admin.PostManager.PostPreview.autotaggingProcessing',
+    defaultMessage:
+      'Automatic tagging : {remainingItems} items are being processed',
+  },
+  noSuggestions: {
+    id: 'app.components.admin.PostManager.PostPreview.noSuggestions',
+    defaultMessage: 'No suggestions found.',
   },
 });

@@ -2,7 +2,7 @@ import React, { memo, useMemo, useCallback, RefObject } from 'react';
 import { omitBy, isNil, isEmpty } from 'lodash-es';
 
 // components
-import { Checkbox, Tag } from 'cl2-component-library';
+import { Checkbox, Spinner, Tag } from 'cl2-component-library';
 
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
@@ -39,6 +39,17 @@ const StyledTagWrapper = styled(TagWrapper)`
   margin-right: 4px;
 `;
 
+const StyledSpinner = styled(Spinner)`
+  display: inline-flex;
+  width: auto;
+  margin: 4px;
+`;
+
+const TagContainer = styled.td`
+  display: flex;
+  align-items: center;
+`;
+
 const ContentTitle = styled.div`
   display: inline-block;
   font-size: ${fontSizes.base}px;
@@ -59,6 +70,7 @@ interface Props {
   rowRef?: RefObject<any>;
   taggings: ITagging[];
   showTagColumn: boolean;
+  processing: boolean;
 }
 
 const addTagMessage = <FormattedMessage {...messages.addTag} />;
@@ -74,6 +86,7 @@ const ProcessingRow = memo<Props & InjectedIntlProps>(
     rowRef,
     taggings,
     showTagColumn,
+    processing,
   }) => {
     const contentTitle = omitBy(
       idea.attributes.title_multiloc,
@@ -112,10 +125,19 @@ const ProcessingRow = memo<Props & InjectedIntlProps>(
       [openPreview]
     );
 
+    const sortTagsByMethod = (taggingA: ITagging) => {
+      switch (taggingA.attributes.assignment_method) {
+        case 'automatic':
+          return 1;
+        case 'manual':
+          return -1;
+      }
+    };
+
     const ideaTaggings = useMemo(() => {
-      return taggings.filter(
-        (tagging) => tagging.attributes.idea_id === idea.id
-      );
+      return taggings
+        .filter((tagging) => tagging.attributes.idea_id === idea.id)
+        .sort(sortTagsByMethod);
     }, [taggings, idea]);
 
     return (
@@ -136,7 +158,7 @@ const ProcessingRow = memo<Props & InjectedIntlProps>(
           </ContentTitle>
         </td>
         {showTagColumn && ideaTaggings && (
-          <td className="tags">
+          <TagContainer className="tags">
             {ideaTaggings.map((tagging) => (
               <StyledTagWrapper
                 isAutoTag={tagging.attributes.assignment_method === 'automatic'}
@@ -145,6 +167,7 @@ const ProcessingRow = memo<Props & InjectedIntlProps>(
                 key={tagging.attributes.tag_id}
               />
             ))}
+            {processing && <StyledSpinner color="#666" size="20px" />}
             {highlighted && ideaTaggings.length === 0 && (
               <Tag
                 isAutoTag={true}
@@ -154,7 +177,7 @@ const ProcessingRow = memo<Props & InjectedIntlProps>(
                 text={addTagMessage}
               />
             )}
-          </td>
+          </TagContainer>
         )}
       </Container>
     );
