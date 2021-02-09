@@ -1,4 +1,4 @@
-import React, { useEffect, useState, lazy, Suspense } from 'react';
+import React, { useState, lazy, Suspense } from 'react';
 import styled from 'styled-components';
 import { Input, Button, Icon, colors } from 'cl2-component-library';
 import useLocale from 'hooks/useLocale';
@@ -59,7 +59,6 @@ const PasswordInputComponent = ({
   errors,
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
-  let inputEl: HTMLInputElement | null = null;
   const locale = useLocale();
   const tenant = useTenant();
   const [showPassword, setShowPassword] = useState(false);
@@ -78,12 +77,6 @@ const PasswordInputComponent = ({
     onChange(password);
   };
 
-  // useEffect(() => {
-  //   if (inputEl && (emptyError || minimumLengthError)) {
-  //     inputEl.focus();
-  //   }
-  // }, [emptyError, minimumLengthError]);
-
   const handleOnBlur = () => {
     if (onBlur) {
       onBlur();
@@ -98,8 +91,6 @@ const PasswordInputComponent = ({
     if (setRef) {
       setRef(inputElement);
     }
-
-    inputEl = inputElement;
   };
 
   const handleOnChangeScore = (score: PasswordScore) => {
