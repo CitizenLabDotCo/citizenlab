@@ -165,6 +165,10 @@ class PasswordReset extends React.PureComponent<
     const minimumLengthError = this.hasPasswordMinimumLengthError();
     this.setState({ minimumLengthError });
 
+    if (this.passwordInputElement && minimumLengthError) {
+      this.passwordInputElement.focus();
+    }
+
     return !minimumLengthError;
   };
 
@@ -212,6 +216,10 @@ class PasswordReset extends React.PureComponent<
               ),
             };
           }
+        }
+
+        if (Object.keys(apiErrors).length > 0) {
+          this.passwordInputElement?.focus();
         }
 
         this.setState({
