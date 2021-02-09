@@ -15,7 +15,11 @@ export default defineMessages({
   },
   cancel: {
     id: 'app.containers.AdminPage.ProjectEdit.MapTab.cancel',
-    defaultMessage: 'Cancel',
+    defaultMessage: 'Cancel editing',
+  },
+  remove: {
+    id: 'app.containers.AdminPage.ProjectEdit.MapTab.remove',
+    defaultMessage: 'Remove layer',
   },
   layers: {
     id: 'app.containers.AdminPage.ProjectEdit.MapTab.layers',
@@ -25,8 +29,16 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.MapTab.description',
     defaultMessage: 'Description',
   },
-  editLayer: {
-    id: 'app.containers.AdminPage.ProjectEdit.MapTab.editLayer',
+  edit: {
+    id: 'app.containers.AdminPage.ProjectEdit.MapTab.edit',
     defaultMessage: 'Edit layer',
+  },
+  import: {
+    id: 'app.containers.AdminPage.ProjectEdit.MapTab.import',
+    defaultMessage: 'Import GeoJSON file',
+  },
+  color: {
+    id: 'app.containers.AdminPage.ProjectEdit.MapTab.color',
+    defaultMessage: 'Color',
   },
 });
