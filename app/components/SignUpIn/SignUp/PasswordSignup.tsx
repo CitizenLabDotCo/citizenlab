@@ -130,6 +130,11 @@ type State = {
 };
 
 class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
+  firstNameInputElement: HTMLInputElement | null;
+  lastNameInputElement: HTMLInputElement | null;
+  emailInputElement: HTMLInputElement | null;
+  passwordInputElement: HTMLInputElement | null;
+
   constructor(props: Props & InjectedIntlProps) {
     super(props);
     this.state = {
@@ -151,6 +156,11 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
       unknownError: null,
       apiErrors: null,
     };
+
+    this.firstNameInputElement = null;
+    this.lastNameInputElement = null;
+    this.emailInputElement = null;
+    this.passwordInputElement = null;
   }
 
   componentDidMount() {
@@ -256,6 +266,29 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
     });
   };
 
+  handleFirstNameInputSetRef = (element: HTMLInputElement) => {
+    if (element) {
+      this.firstNameInputElement = element;
+    }
+  };
+  handleLastNameInputSetRef = (element: HTMLInputElement) => {
+    if (element) {
+      this.lastNameInputElement = element;
+    }
+  };
+
+  handleEmailInputSetRef = (element: HTMLInputElement) => {
+    if (element) {
+      this.emailInputElement = element;
+    }
+  };
+
+  handlePasswordInputSetRef = (element: HTMLInputElement) => {
+    if (element) {
+      this.passwordInputElement = element;
+    }
+  };
+
   handleOnSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
@@ -300,6 +333,16 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
         : true;
     const tacError = !tacAccepted;
     const privacyError = !privacyAccepted;
+
+    if (this.firstNameInputElement && firstNameError) {
+      this.firstNameInputElement.focus();
+    } else if (this.lastNameInputElement && lastNameError) {
+      this.lastNameInputElement.focus();
+    } else if (this.emailInputElement && emailError) {
+      this.emailInputElement.focus();
+    } else if (this.passwordInputElement && hasMinimumLengthError) {
+      this.passwordInputElement.focus();
+    }
 
     const hasErrors = [
       invitationRedeemError,
@@ -493,6 +536,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
                   (!isInvitation ||
                     !!(isInvitation && this.props.metaData.token))
                 }
+                setRef={this.handleFirstNameInputSetRef}
               />
               <Error
                 fieldName={'first_name'}
@@ -513,6 +557,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
                 error={lastNameError}
                 onChange={this.handleLastNameOnChange}
                 autocomplete="family-name"
+                setRef={this.handleLastNameInputSetRef}
               />
               <Error
                 fieldName={'last_name'}
@@ -535,6 +580,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
                 error={emailError}
                 onChange={this.handleEmailOnChange}
                 autocomplete="email"
+                setRef={this.handleEmailInputSetRef}
               />
               <Error
                 fieldName={'email'}
@@ -574,6 +620,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
                 onChange={this.handlePasswordOnChange}
                 autocomplete="new-password"
                 errors={{ minimumLengthError: hasMinimumLengthError }}
+                setRef={this.handlePasswordInputSetRef}
               />
               <Error
                 fieldName={'password'}
