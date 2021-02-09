@@ -8,6 +8,7 @@ import SurveymonkeySurvey from './SurveymonkeySurvey';
 import GoogleFormsSurvey from './GoogleFormsSurvey';
 import EnalyzerSurvey from './EnalyzerSurvey';
 import Warning from 'components/UI/Warning';
+import SignUpIn from 'components/SignUpIn';
 import { ProjectPageSectionTitle } from 'containers/ProjectsShowPage/styles';
 
 // services
@@ -31,6 +32,7 @@ import { openSignUpInModal } from 'components/SignUpIn/events';
 
 // styling
 import styled from 'styled-components';
+import { defaultCardStyle, fontSizes, media } from 'utils/styleUtils';
 
 const Container = styled.div`
   position: relative;
@@ -38,6 +40,49 @@ const Container = styled.div`
   &.enabled {
     min-height: 500px;
   }
+`;
+
+const SignUpInWrapper = styled.div`
+  width: 100%;
+  padding: 20px;
+  padding-top: 45px;
+  ${defaultCardStyle};
+
+  ${media.smallerThanMinTablet`
+    padding-top: 30px;
+  `}
+`;
+
+const StyledSignUpIn = styled(SignUpIn)`
+  width: 100%;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+
+  & .signuphelpertext {
+    display: none !important;
+  }
+
+  & .signupinheadercontainer {
+    border-bottom: none !important;
+  }
+
+  & .signupincontentcontainer {
+    max-height: unset !important;
+  }
+`;
+
+const SignUpInHeader = styled.h2`
+  color: ${({ theme }) => theme.colorText};
+  font-size: ${fontSizes.xxl}px;
+  line-height: normal;
+  font-weight: 500;
+  margin: 0;
+  padding: 0;
+
+  ${media.smallerThanMinTablet`
+    font-size: ${fontSizes.xl}px;
+  `}
 `;
 
 interface InputProps {
@@ -110,6 +155,8 @@ class Survey extends PureComponent<Props, State> {
     this.signUpIn('signup');
   };
 
+  noOp = () => {};
+
   disabledMessage: {
     [key in ISurveyTakingDisabledReason]: ReactIntl.FormattedMessage.MessageDescriptor;
   } = {
@@ -137,6 +184,54 @@ class Survey extends PureComponent<Props, State> {
         phaseContext: phase,
         signedIn: !isNilOrError(authUser),
       });
+      const registrationNotCompleted =
+        !isNilOrError(authUser) &&
+        !authUser.attributes.registration_completed_at;
+      const shouldVerify = !!(
+        disabledReason === 'maybeNotVerified' ||
+        disabledReason === 'notVerified'
+      );
+
+      if (
+        disabledReason === 'maybeNotPermitted' ||
+        disabledReason === 'maybeNotVerified' ||
+        disabledReason === 'notVerified' ||
+        registrationNotCompleted
+      ) {
+        return (
+          <Container className={className || ''}>
+            {/*
+            <ProjectPageSectionTitle>
+              <FormattedMessage {...messages.survey} />
+            </ProjectPageSectionTitle>
+            */}
+
+            <SignUpInWrapper>
+              <StyledSignUpIn
+                metaData={{
+                  flow: 'signup',
+                  pathname: window.location.pathname,
+                  inModal: true,
+                  verification: shouldVerify,
+                  noPushLinks: true,
+                  noAutofocus: true,
+                }}
+                customSignInHeader={
+                  <SignUpInHeader>
+                    <FormattedMessage {...messages.logInToTakeTheSurvey} />
+                  </SignUpInHeader>
+                }
+                customSignUpHeader={
+                  <SignUpInHeader>
+                    <FormattedMessage {...messages.signUpToTakeTheSurvey} />
+                  </SignUpInHeader>
+                }
+                onSignUpInCompleted={this.noOp}
+              />
+            </SignUpInWrapper>
+          </Container>
+        );
+      }
 
       if (enabled) {
         const email = authUser ? authUser.attributes.email : null;
@@ -166,43 +261,42 @@ class Survey extends PureComponent<Props, State> {
             {surveyService === 'google_forms' && (
               <GoogleFormsSurvey googleFormsUrl={surveyEmbedUrl} />
             )}
+
             {surveyService === 'enalyzer' && (
               <EnalyzerSurvey enalyzerUrl={surveyEmbedUrl} />
             )}
           </Container>
         );
-      } else {
-        const message = disabledReason
-          ? this.disabledMessage[disabledReason]
-          : messages.surveyDisabledNotPossible;
-
-        return (
-          <Container className={`warning ${className || ''}`}>
-            <Warning icon="lock">
-              <FormattedMessage
-                {...message}
-                values={{
-                  verificationLink: (
-                    <button onClick={this.onVerify}>
-                      <FormattedMessage {...messages.verificationLinkText} />
-                    </button>
-                  ),
-                  signUpLink: (
-                    <button onClick={this.signUp}>
-                      <FormattedMessage {...messages.signUpLinkText} />
-                    </button>
-                  ),
-                  logInLink: (
-                    <button onClick={this.signIn}>
-                      <FormattedMessage {...messages.logInLinkText} />
-                    </button>
-                  ),
-                }}
-              />
-            </Warning>
-          </Container>
-        );
       }
+
+      return (
+        <Container className={`warning ${className || ''}`}>
+          <Warning icon="lock">
+            <FormattedMessage
+              {...(disabledReason
+                ? this.disabledMessage[disabledReason]
+                : messages.surveyDisabledNotPossible)}
+              values={{
+                verificationLink: (
+                  <button onClick={this.onVerify}>
+                    <FormattedMessage {...messages.verificationLinkText} />
+                  </button>
+                ),
+                signUpLink: (
+                  <button onClick={this.signUp}>
+                    <FormattedMessage {...messages.signUpLinkText} />
+                  </button>
+                ),
+                logInLink: (
+                  <button onClick={this.signIn}>
+                    <FormattedMessage {...messages.logInLinkText} />
+                  </button>
+                ),
+              }}
+            />
+          </Warning>
+        </Container>
+      );
     }
 
     return null;

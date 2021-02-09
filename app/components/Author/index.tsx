@@ -7,7 +7,7 @@ import Avatar from 'components/Avatar';
 import UserName from 'components/UI/UserName';
 
 // services
-import { canModerate } from 'services/permissions/rules/projectPermissions';
+import { canModerateProject } from 'services/permissions/rules/projectPermissions';
 
 // resources
 import GetUser, { GetUserChildProps } from 'resources/GetUser';
@@ -100,7 +100,7 @@ const TimeAgo = styled.div`
 export interface InputProps {
   authorId: string | null;
   createdAt?: string | undefined;
-  size: string;
+  size: number;
   isLinkToProfile?: boolean;
   projectId?: string | null;
   showAvatar?: boolean;
@@ -148,7 +148,7 @@ class Author extends PureComponent<Props, State> {
     const authorCanModerate =
       !isNilOrError(author) &&
       showModeration &&
-      canModerate(projectId, { data: author });
+      canModerateProject(projectId, { data: author });
     const authorName = (
       <UserName
         userId={authorId}
