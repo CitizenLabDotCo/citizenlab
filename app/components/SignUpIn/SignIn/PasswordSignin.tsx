@@ -179,7 +179,7 @@ class PasswordSignin extends PureComponent<
       this.emailInputElement.focus();
     }
 
-    if (hasEmptyPasswordError && this.passwordInputElement) {
+    if (!emailError && hasEmptyPasswordError && this.passwordInputElement) {
       this.passwordInputElement.focus();
     }
 
