@@ -28,7 +28,7 @@
   "app.components.Comments.commentingDisabledProject": "Les commentaires dans ce projet sont actuellement désactivés.",
   "app.components.Comments.commentingDisabledUnverified": "{verifyIdentityLink} pour commenter.",
   "app.components.Comments.commentingInitiativeMaybeNotPermitted": "Tous les utilisateurs ne sont autorisés à commenter. Cliquez ici {signUpLink} ou {signInLink} pour voir si vous avez accès.",
-  "app.components.Comments.commentingInitiativeNotPermitted": "Vous n'avez pas le droit de commenter.",
+  "app.components.Comments.commentingInitiativeNotPermitted": "Commenting is currently disabled.",
   "app.components.Comments.commentingMaybeNotPermitted": "Tout le monde n’est pas autorisé à commenter. {signInLink} pour le savoir.",
   "app.components.Comments.invisibleTitleComments": "Commentaires",
   "app.components.Comments.mostUpvoted": "Plus votés",
