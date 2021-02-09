@@ -22,6 +22,7 @@ class Idea < ApplicationRecord
 
   has_many :tagging_taggings
   has_many :tagging_tags, through: :tagging_taggings
+  has_and_belongs_to_many :tagging_pending_tasks, class_name: 'Tagging::PendingTask', join_table: :tagging_pending_tasks_ideas 
   has_many :ideas_topics, dependent: :destroy
   has_many :topics, through: :ideas_topics
   has_many :areas_ideas, dependent: :destroy
