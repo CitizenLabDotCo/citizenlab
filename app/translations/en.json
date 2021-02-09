@@ -1073,6 +1073,8 @@
   "app.containers.AdminPage.ProjectDescription.subtitleDescription": "Tell your users what the project is about and convince them to participate.",
   "app.containers.AdminPage.ProjectDescription.titleDescription": "Project description",
   "app.containers.AdminPage.ProjectEdit.MapTab.cancel": "Cancel",
+  "app.containers.AdminPage.ProjectEdit.MapTab.description": "Description",
+  "app.containers.AdminPage.ProjectEdit.MapTab.editLayer": "Edit layer",
   "app.containers.AdminPage.ProjectEdit.MapTab.errorMessage": "Something went wrong, please try again later",
   "app.containers.AdminPage.ProjectEdit.MapTab.layers": "Layers",
   "app.containers.AdminPage.ProjectEdit.MapTab.save": "Save",

@@ -1073,6 +1073,8 @@
   "app.containers.AdminPage.ProjectDescription.subtitleDescription": "Crea un mensaje claro sobre el proyecto para tu audiencia. Enriquece tu proyecto con imágenes, videos y archivos adjuntos.",
   "app.containers.AdminPage.ProjectDescription.titleDescription": "Descripción del proyecto",
   "app.containers.AdminPage.ProjectEdit.MapTab.cancel": "",
+  "app.containers.AdminPage.ProjectEdit.MapTab.description": "",
+  "app.containers.AdminPage.ProjectEdit.MapTab.editLayer": "",
   "app.containers.AdminPage.ProjectEdit.MapTab.errorMessage": "",
   "app.containers.AdminPage.ProjectEdit.MapTab.layers": "",
   "app.containers.AdminPage.ProjectEdit.MapTab.save": "",

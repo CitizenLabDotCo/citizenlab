@@ -1073,6 +1073,8 @@
   "app.containers.AdminPage.ProjectDescription.subtitleDescription": "Powiedz użytkownikom o co chodzi w projekcie i przekonaj ich do udziału.",
   "app.containers.AdminPage.ProjectDescription.titleDescription": "Opis projektu",
   "app.containers.AdminPage.ProjectEdit.MapTab.cancel": "",
+  "app.containers.AdminPage.ProjectEdit.MapTab.description": "",
+  "app.containers.AdminPage.ProjectEdit.MapTab.editLayer": "",
   "app.containers.AdminPage.ProjectEdit.MapTab.errorMessage": "",
   "app.containers.AdminPage.ProjectEdit.MapTab.layers": "",
   "app.containers.AdminPage.ProjectEdit.MapTab.save": "",
