@@ -2,8 +2,8 @@ import React, { memo } from 'react';
 import * as gjv from 'geojson-validation';
 
 // i18n
-// import messages from '../messages';
-// import { FormattedMessage } from 'utils/cl-intl';
+import messages from './messages';
+import { FormattedMessage } from 'utils/cl-intl';
 
 // styling
 import styled from 'styled-components';
@@ -104,9 +104,9 @@ const ImportButton = memo<Props>(({ onChange, className }) => {
       />
 
       <ButtonContainer>
-        <StyledButton icon="download" buttonStyle="secondary">
+        <StyledButton icon="upload-file" buttonStyle="secondary">
           <StyledLabel aria-hidden htmlFor="file-attachment-uploader" />
-          Import
+          <FormattedMessage {...messages.import} />
         </StyledButton>
       </ButtonContainer>
     </Container>

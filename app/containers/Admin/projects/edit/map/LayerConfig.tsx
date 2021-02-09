@@ -3,19 +3,23 @@ import { isNilOrError } from 'utils/helperUtils';
 import { isEmpty, cloneDeep } from 'lodash-es';
 
 // services
-import { updateProjectMapLayer } from 'services/mapLayers';
+import {
+  updateProjectMapLayer,
+  deleteProjectMapLayer,
+} from 'services/mapLayers';
 
 // hooks
 import useMapLayer from 'hooks/useMapLayer';
 
 // components
-import { Section, SectionField, SectionTitle } from 'components/admin/Section';
+import { Section, SectionField } from 'components/admin/Section';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
+import { Label, ColorPickerInput } from 'cl2-component-library';
 
 // i18n
-import T from 'components/T';
+// import T from 'components/T';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
@@ -29,14 +33,31 @@ import { Multiloc } from 'typings';
 const Container = styled.div`
   display: flex;
   flex-direction: column;
+  background: #fff;
 `;
 
 const ButtonContainer = styled.div`
   display: flex;
+  align-items: center;
+`;
+
+const ButtonContainerLeft = styled.div`
+  flex: 1;
+  display: flex;
+  align-items: center;
+`;
+
+const ButtonContainerRight = styled.div`
+  display: flex;
+  align-items: center;
 `;
 
 const CancelButton = styled(Button)`
   margin-left: 10px;
+`;
+
+const RemoveButton = styled(Button)`
+  margin-left: 20px;
 `;
 
 interface Props {
@@ -48,6 +69,7 @@ interface Props {
 
 interface IFormValues {
   title_multiloc: Multiloc | null;
+  color: string;
 }
 
 const LayerConfig = memo<Props & InjectedIntlProps>(
@@ -56,24 +78,29 @@ const LayerConfig = memo<Props & InjectedIntlProps>(
 
     const [touched, setTouched] = useState(false);
     const [processing, setProcessing] = useState(false);
-    // const [success, setSuccess] = useState(false);
     const [errors, setErrors] = useState<{ [key: string]: any }>({});
     const [formValues, setFormValues] = useState<IFormValues>({
       title_multiloc: !isNilOrError(mapLayer)
         ? mapLayer.attributes.title_multiloc
         : null,
+      color: '#000000',
     });
 
     useEffect(() => {
-      setFormValues({
+      setFormValues((prevValue) => ({
+        ...prevValue,
         title_multiloc: !isNilOrError(mapLayer)
           ? mapLayer.attributes.title_multiloc
           : null,
-      });
+      }));
     }, [mapLayer]);
 
     const handleTitleOnChange = (title_multiloc: Multiloc) => {
       formChange({ title_multiloc });
+    };
+
+    const handleColorOnChange = (color: string) => {
+      formChange({ color });
     };
 
     const validate = () => {
@@ -82,7 +109,6 @@ const LayerConfig = memo<Props & InjectedIntlProps>(
 
     const formChange = (changedFormValue: Partial<IFormValues>) => {
       setTouched(true);
-      // setSuccess(false);
       setFormValues((prevFormValues) => ({
         ...prevFormValues,
         ...changedFormValue,
@@ -92,21 +118,18 @@ const LayerConfig = memo<Props & InjectedIntlProps>(
     const formProcessing = () => {
       setProcessing(true);
       setErrors({});
-      // setSuccess(false);
     };
 
     const formSuccess = () => {
       setProcessing(false);
       setErrors({});
       setTouched(false);
-      // setSuccess(true);
       onClose();
     };
 
     const formError = (errorResponse) => {
       setProcessing(false);
-      setErrors(errorResponse?.json?.errors || {});
-      // setSuccess(false);
+      setErrors(errorResponse?.json?.errors || 'unknown error');
     };
 
     const handleOnCancel = () => {
@@ -125,12 +148,12 @@ const LayerConfig = memo<Props & InjectedIntlProps>(
 
         geojson?.features.forEach((feature) => {
           feature.properties = {
-            stroke: '#d50101',
+            stroke: formValues.color,
             'stroke-width': 4,
             'stroke-opacity': 1,
-            fill: '#8100bd',
+            fill: formValues.color,
             'fill-opacity': 0.3,
-            tooltipContent: 'This is the tooltip content',
+            tooltipContent: formValues.title_multiloc?.['en'] || 'bleh',
           };
         });
 
@@ -149,10 +172,6 @@ const LayerConfig = memo<Props & InjectedIntlProps>(
     if (!isNilOrError(mapLayer)) {
       return (
         <Container className={className || ''}>
-          {/* <SectionTitle>
-            <T value={mapLayer.attributes.title_multiloc} />
-          </SectionTitle> */}
-
           <Section>
             <SectionField>
               <InputMultilocWithLocaleSwitcher
@@ -163,33 +182,45 @@ const LayerConfig = memo<Props & InjectedIntlProps>(
                 label={formatMessage(messages.titleLabel)}
               />
             </SectionField>
+            <SectionField>
+              <Label>
+                <FormattedMessage {...messages.color} />
+              </Label>
+              <ColorPickerInput
+                type="text"
+                value={formValues.color}
+                onChange={handleColorOnChange}
+              />
+            </SectionField>
           </Section>
 
           <ButtonContainer>
-            <Button
-              buttonStyle="admin-dark"
-              onClick={handleOnSubmit}
-              processing={processing}
-              disabled={!touched}
-            >
-              <FormattedMessage {...messages.save} />
-            </Button>
+            <ButtonContainerLeft>
+              <Button
+                buttonStyle="admin-dark"
+                onClick={handleOnSubmit}
+                processing={processing}
+                disabled={!touched}
+              >
+                <FormattedMessage {...messages.save} />
+              </Button>
 
-            <CancelButton
-              buttonStyle="secondary-outlined"
-              onClick={handleOnCancel}
-              disabled={processing}
-            >
-              <FormattedMessage {...messages.cancel} />
-            </CancelButton>
+              <CancelButton
+                buttonStyle="secondary-outlined"
+                onClick={handleOnCancel}
+                disabled={processing}
+              >
+                <FormattedMessage {...messages.cancel} />
+              </CancelButton>
 
-            {!isEmpty(errors) && (
-              <Error
-                text={formatMessage(messages.errorMessage)}
-                showBackground={false}
-                showIcon={false}
-              />
-            )}
+              {!isEmpty(errors) && (
+                <Error
+                  text={formatMessage(messages.errorMessage)}
+                  showBackground={false}
+                  showIcon={false}
+                />
+              )}
+            </ButtonContainerLeft>
           </ButtonContainer>
         </Container>
       );

@@ -5,6 +5,12 @@ import { isNilOrError } from 'utils/helperUtils';
 import Button from 'components/UI/Button';
 import ImportButton from './ImportButton';
 import LayerConfig from './LayerConfig';
+import Tippy from '@tippyjs/react';
+import {
+  SectionTitle,
+  SectionDescription,
+  SubSectionTitle,
+} from 'components/admin/Section';
 
 // hooks
 import useMapConfig from 'hooks/useMapConfig';
@@ -26,14 +32,22 @@ import { colors, fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div``;
 
-const Title = styled.h2`
-  color: ${colors.adminTextColor};
-  font-size: ${fontSizes.large}px;
-  line-height: normal;
-  font-weight: 500;
+const Header = styled.div`
+  width: 100%;
+  max-width: 600px;
+  margin-bottom: 40px;
+`;
+
+const TitleContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+`;
+
+const StyledSectionTitle = styled(SectionTitle)`
   padding: 0;
   margin: 0;
-  margin-bottom: 20px;
 `;
 
 const List = styled.div`
@@ -46,22 +60,25 @@ const ListItem = styled.div`
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  border-top: solid 1px #ccc;
   border-bottom: solid 1px #ccc;
+
+  &.first {
+    border-top: solid 1px #ccc;
+  }
 `;
 
 const ListItemHeader = styled.div`
   display: flex;
-  padding-top: 12px;
-  padding-bottom: 12px;
+  padding-top: 15px;
+  padding-bottom: 15px;
 `;
 
 const LayerName = styled.div`
-  flex: 1;
-  color: ${colors.text};
-  font-size: ${fontSizes.base}px;
+  color: ${colors.adminTextColor};
+  font-size: ${fontSizes.medium}px;
   line-height: normal;
   font-weight: 400;
+  flex: 1;
 `;
 
 const Buttons = styled.div`
@@ -72,13 +89,15 @@ const Buttons = styled.div`
 
 const EditButton = styled(Button)``;
 
-const RemoveButton = styled(Button)`
-  margin-left: 15px;
+const RemoveButton = styled(Button)``;
+
+const Spacer = styled.div`
+  width: 14px;
 `;
 
 const StyledLayerConfig = styled(LayerConfig)`
   margin-top: 35px;
-  margin-bottom: 20px;
+  margin-bottom: 35px;
 `;
 
 interface Props {
@@ -122,42 +141,74 @@ const LayerList = memo<Props>(({ projectId, className }) => {
 
   return (
     <Container className={className || ''}>
-      <Title>
-        <FormattedMessage {...messages.layers} />
-      </Title>
+      <Header>
+        <TitleContainer>
+          <StyledSectionTitle>
+            <FormattedMessage {...messages.layers} />
+          </StyledSectionTitle>
+        </TitleContainer>
+        <SectionDescription>
+          <FormattedMessage {...messages.description} />
+        </SectionDescription>
+      </Header>
+
       {!isNilOrError(mapConfig) && mapConfig?.attributes?.layers?.length > 0 && (
         <List>
           {mapConfig?.attributes?.layers?.map((mapLayer, index) => (
-            <ListItem key={index} className={index === 0 ? 'first' : ''}>
+            <ListItem
+              key={index}
+              className={`${index === 0 ? 'first' : ''} ${
+                editedLayerId === mapLayer.id ? 'editing' : ''
+              }`}
+            >
               <ListItemHeader>
                 <LayerName>
                   <T value={mapLayer.title_multiloc} />
                 </LayerName>
                 <Buttons>
-                  {editedLayerId !== mapLayer.id ? (
-                    <>
+                  <Tippy
+                    placement="bottom"
+                    content={
+                      <FormattedMessage
+                        {...(editedLayerId !== mapLayer.id
+                          ? messages.edit
+                          : messages.cancel)}
+                      />
+                    }
+                    hideOnClick={false}
+                    arrow={false}
+                  >
+                    <div>
                       <EditButton
-                        icon="edit"
+                        icon={
+                          editedLayerId !== mapLayer.id ? 'edit' : 'cancel-edit'
+                        }
+                        iconSize="16px"
                         buttonStyle="text"
                         padding="0px"
                         onClick={toggleLayerConfig(mapLayer.id)}
                       />
+                    </div>
+                  </Tippy>
+
+                  <Spacer />
+
+                  <Tippy
+                    placement="bottom"
+                    content={<FormattedMessage {...messages.remove} />}
+                    hideOnClick={false}
+                    arrow={false}
+                  >
+                    <div>
                       <RemoveButton
                         icon="delete"
+                        iconSize="16px"
                         buttonStyle="text"
                         padding="0px"
                         onClick={removeLayer(mapLayer.id)}
                       />
-                    </>
-                  ) : (
-                    <Button
-                      buttonStyle="text"
-                      padding="0px"
-                      onClick={toggleLayerConfig(mapLayer.id)}
-                    >
-                      Cancel
-                    </Button>
-                  )}
+                    </div>
+                  </Tippy>
                 </Buttons>
               </ListItemHeader>
               {editedLayerId === mapLayer.id && (
