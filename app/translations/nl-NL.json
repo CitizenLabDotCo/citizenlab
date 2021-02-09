@@ -29,7 +29,7 @@
   "app.components.Comments.commentingDisabledUnverified": "{verifyIdentityLink} om te reageren.",
   "app.components.Comments.commentingInitiativeMaybeNotPermitted": "Niet iedereen kan reageren. {signUpLink} of {signInLink} om te zien of je aan de voorwaarden voldoet.",
   "app.components.Comments.commentingInitiativeNotPermitted": "Reageren is momenteel niet mogelijk.",
-  "app.components.Comments.commentingMaybeNotPermitted": "Niet iedereen kan reageren. {signInLink} om te zien of je aan de voorwaarden voldoet.",
+  "app.components.Comments.commentingMaybeNotPermitted": "{signInLink} om acties te ondernemen",
   "app.components.Comments.invisibleTitleComments": "Reacties",
   "app.components.Comments.mostUpvoted": "Meeste stemmen",
   "app.components.Comments.official": "Officieel",
