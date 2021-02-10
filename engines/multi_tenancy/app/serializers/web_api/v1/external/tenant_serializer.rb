@@ -12,7 +12,7 @@ module WebApi
   module V1
     module External
       class TenantSerializer < ActiveModel::Serializer
-        attributes :id, :name, :host, :settings, :style, :logo, :header_bg, :favicon
+        attributes :id, :name, :host, :settings, :style, :logo, :header_bg
         delegate :host, :settings, :style, to: :configuration
 
         def logo
@@ -21,10 +21,6 @@ module WebApi
 
         def header_bg
           configuration.header_bg && configuration.header_bg.versions.map { |k, v| [k.to_s, v.url] }.to_h
-        end
-
-        def favicon
-          configuration.favicon && configuration.favicon.versions.map { |k, v| [k.to_s, v.url] }.to_h
         end
 
         def configuration
