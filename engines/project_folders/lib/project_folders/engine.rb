@@ -44,6 +44,8 @@ module ProjectFolders
     end
 
     config.to_prepare do
+      next unless defined? ::Seo::ApplicationController
+
       ::Seo::ApplicationController.outlet 'seo.sitemap' do |locals|
         folders = ProjectFolders::Folder
                   .includes(:admin_publication)
