@@ -14,8 +14,8 @@ interface Props extends Omit<TagProps, 'text'> {
 
 export default memo<Props>(({ tagId, ...tagProps }) => {
   const localize = useLocalize();
-  const { tag } = useTag(tagId);
 
+  const { tag } = useTag(tagId);
   if (tag) {
     return (
       <Tag
@@ -25,5 +25,6 @@ export default memo<Props>(({ tagId, ...tagProps }) => {
       />
     );
   }
+
   return null;
 });

@@ -3,6 +3,7 @@ import { loadModules } from 'utils/moduleUtils';
 import projectFoldersConfiguration from './project_folders';
 import smartGroupsConfiguration from './smart_groups';
 import userCustomFieldsConfiguration from './user_custom_fields';
+import granularPermissions from './granular_permissions';
 
 import googleTagManagerConfiguration from './google_tag_manager';
 import googleAnalyticsConfiguration from './google_analytics';
@@ -41,6 +42,10 @@ export default loadModules([
   },
   {
     configuration: segmentConfiguration,
+    isEnabled: true,
+  },
+  {
+    configuration: granularPermissions,
     isEnabled: true,
   },
 ]);

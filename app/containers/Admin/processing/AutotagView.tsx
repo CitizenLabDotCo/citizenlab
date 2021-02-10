@@ -181,7 +181,6 @@ const AutotagView = ({
     selectedRows || null,
     selectedProjectIds
   );
-
   useEffect(() => {
     if (addTagInputKeyPress && isValidTag) {
       trackEventByName('Autotag View', {
@@ -360,6 +359,10 @@ const AutotagView = ({
                     text={localize(suggestion.title_multiloc)}
                   />
                 ))
+              ) : tagSuggestions === null || tagSuggestions?.length === 0 ? (
+                <StyledSubtitle>
+                  <FormattedMessage {...messages.noSuggestions} />
+                </StyledSubtitle>
               ) : (
                 <>
                   <StyledSubtitle>
