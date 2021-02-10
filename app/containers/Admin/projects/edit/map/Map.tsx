@@ -22,6 +22,9 @@ L.Icon.Default.mergeOptions({
 // hooks
 import useMapConfig from 'hooks/useMapConfig';
 
+// i18n
+import injectLocalize, { InjectedLocalized } from 'utils/localize';
+
 // styling
 import styled from 'styled-components';
 
@@ -32,78 +35,74 @@ interface Props {
   className?: string;
 }
 
-const Map = memo<Props>(({ projectId, className }) => {
-  const mapConfig = useMapConfig({ projectId, prefetchMapLayers: true });
+const Map = memo<Props & InjectedLocalized>(
+  ({ projectId, className, localize }) => {
+    const mapConfig = useMapConfig({ projectId, prefetchMapLayers: true });
 
-  const [map, setMap] = useState<L.Map | null>(null);
+    const [map, setMap] = useState<L.Map | null>(null);
 
-  // useEffect(() => {
-  //   const map = L.map('mapid').setView([50.869189, 4.725238], 16);
+    useEffect(() => {
+      const map = L.map('mapid').setView([50.869189, 4.725238], 16);
 
-  //   const subscription = layers$.subscribe((layers) => {
-  //     setLayers(layers);
-  //   });
-
-  //   L.tileLayer(
-  //     'https://tiles.stadiamaps.com/tiles/osm_bright/{z}/{x}/{y}{r}.png',
-  //     {
-  //       subdomains: ['a', 'b', 'c'],
-  //       maxZoom: 20,
-  //     }
-  //   ).addTo(map);
-
-  //   setMap(map);
-
-  //   return () => subscription.unsubscribe();
-  // }, []);
-
-  useEffect(() => {
-    const map = L.map('mapid').setView([50.869189, 4.725238], 16);
-
-    L.tileLayer(
-      'https://tiles.stadiamaps.com/tiles/osm_bright/{z}/{x}/{y}{r}.png',
-      {
-        subdomains: ['a', 'b', 'c'],
-        maxZoom: 20,
-      }
-    ).addTo(map);
-
-    setMap(map);
-  }, []);
-
-  useEffect(() => {
-    if (map) {
-      map.eachLayer((layer) => {
-        if (layer?.['identifier'] === 'customlayer') {
-          map.removeLayer(layer);
+      L.tileLayer(
+        'https://tiles.stadiamaps.com/tiles/osm_bright/{z}/{x}/{y}{r}.png',
+        {
+          subdomains: ['a', 'b', 'c'],
+          maxZoom: 20,
         }
-      });
+      ).addTo(map);
 
-      if (!isNilOrError(mapConfig)) {
-        mapConfig?.attributes?.layers?.forEach(({ geojson }) => {
-          if (geojson) {
-            L.geoJSON(geojson, {
-              useSimpleStyle: true,
-              useMakiMarkers: true,
-              onEachFeature: (feature, layer) => {
-                layer.identifier = 'customlayer';
+      setMap(map);
+    }, []);
 
-                if (feature.properties && feature.properties.popupContent) {
-                  layer.bindPopup(feature.properties.popupContent);
-                }
-
-                if (feature.properties && feature.properties.tooltipContent) {
-                  layer.bindTooltip(feature.properties.tooltipContent);
-                }
-              },
-            } as any).addTo(map);
+    useEffect(() => {
+      if (map) {
+        map.eachLayer((layer) => {
+          if (layer?.['identifier'] === 'customlayer') {
+            map.removeLayer(layer);
           }
         });
+
+        if (!isNilOrError(mapConfig)) {
+          mapConfig?.attributes?.layers?.forEach(({ geojson }) => {
+            if (geojson) {
+              L.geoJSON(geojson, {
+                useSimpleStyle: true,
+                useMakiMarkers: true,
+                onEachFeature: (feature, layer) => {
+                  layer.identifier = 'customlayer';
+
+                  if (
+                    feature.properties &&
+                    feature.properties.popupContent &&
+                    Object.values(feature.properties.popupContent).some(
+                      (x) => x && x !== ''
+                    )
+                  ) {
+                    layer.bindPopup(localize(feature.properties.popupContent));
+                  }
+
+                  if (
+                    feature.properties &&
+                    feature.properties.tooltipContent &&
+                    Object.values(feature.properties.tooltipContent).some(
+                      (x) => x && x !== ''
+                    )
+                  ) {
+                    layer.bindTooltip(
+                      localize(feature.properties.tooltipContent)
+                    );
+                  }
+                },
+              } as any).addTo(map);
+            }
+          });
+        }
       }
-    }
-  }, [map, mapConfig]);
+    }, [map, mapConfig]);
 
-  return <Container id="mapid" className={className || ''} />;
-});
+    return <Container id="mapid" className={className || ''} />;
+  }
+);
 
-export default Map;
+export default injectLocalize(Map);

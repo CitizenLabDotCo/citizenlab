@@ -14,6 +14,7 @@ import { Label, ColorPickerInput } from 'cl2-component-library';
 // i18n
 // import T from 'components/T';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
@@ -54,46 +55,50 @@ interface Props {
 
 interface IFormValues {
   title_multiloc: Multiloc | null;
+  tooltipContent: Multiloc | null;
+  popupContent: Multiloc | null;
   color: string;
 }
 
-const getMapLayerType = (mapLayer: IMapLayerAttributes) => {
-  return mapLayer?.geojson?.features?.[0]?.geometry?.type;
-};
-
-const getMapLayerColor = (
+const getColor = (
   mapLayer: IMapLayerAttributes,
-  mapLayerType: GeoJSON.GeoJsonTypes | undefined
+  type: GeoJSON.GeoJsonTypes | unknown
 ) => {
   let color: string;
 
-  if (mapLayerType === 'Point') {
+  if (type === 'Point') {
     color = mapLayer?.geojson?.features?.[0]?.properties?.['marker-color'];
-  } else {
-    color = mapLayer?.geojson?.features?.[0]?.properties?.fill;
   }
+
+  color = mapLayer?.geojson?.features?.[0]?.properties?.fill;
 
   return color || '#000000';
 };
 
-const LayerConfig = memo<Props & InjectedIntlProps>(
+const LayerConfig = memo<Props & InjectedIntlProps & InjectedLocalized>(
   ({ projectId, mapLayer, className, onClose, intl: { formatMessage } }) => {
-    const mapLayerType = getMapLayerType(mapLayer);
-    const mapLayerColor = getMapLayerColor(mapLayer, mapLayerType);
+    const type = mapLayer?.geojson?.features?.[0]?.geometry.type;
 
     const [touched, setTouched] = useState(false);
     const [processing, setProcessing] = useState(false);
     const [errors, setErrors] = useState<{ [key: string]: any }>({});
     const [formValues, setFormValues] = useState<IFormValues>({
       title_multiloc: mapLayer?.title_multiloc || null,
-      color: mapLayer?.geojson?.features?.[0]?.properties?.fill || '#000000',
+      color: getColor(mapLayer, type),
+      tooltipContent:
+        mapLayer?.geojson?.features?.[0]?.properties?.tooltipContent,
+      popupContent: mapLayer?.geojson?.features?.[0]?.properties?.popupContent,
     });
 
     useEffect(() => {
       formChange(
         {
           title_multiloc: mapLayer?.title_multiloc || null,
-          color: mapLayerColor,
+          color: getColor(mapLayer, type),
+          tooltipContent:
+            mapLayer?.geojson?.features?.[0]?.properties?.tooltipContent,
+          popupContent:
+            mapLayer?.geojson?.features?.[0]?.properties?.popupContent,
         },
         false
       );
@@ -101,6 +106,14 @@ const LayerConfig = memo<Props & InjectedIntlProps>(
 
     const handleTitleOnChange = (title_multiloc: Multiloc) => {
       formChange({ title_multiloc });
+    };
+
+    const handleTooltipContentOnChange = (tooltipContent: Multiloc) => {
+      formChange({ tooltipContent });
+    };
+
+    const handlePopupContentOnChange = (popupContent: Multiloc) => {
+      formChange({ popupContent });
     };
 
     const handleColorOnChange = (color: string) => {
@@ -154,25 +167,33 @@ const LayerConfig = memo<Props & InjectedIntlProps>(
         ) as GeoJSON.FeatureCollection;
 
         geojson?.features.forEach((feature) => {
-          if (mapLayerType !== 'Point') {
-            feature.properties = {
-              ...feature.properties,
-              stroke: formValues.color,
-              'stroke-width': 4,
-              'stroke-opacity': 1,
-              fill: formValues.color,
-              'fill-opacity': 0.3,
-              // tooltipContent: formValues.title_multiloc?.['en'] || 'bleh',
-            };
-          } else {
-            feature.properties = {
-              ...feature.properties,
-              'marker-color': formValues.color,
-              // 'marker-size': "medium",
-              // 'marker-symbol': ""
-              // tooltipContent: formValues.title_multiloc?.['en'] || 'bleh',
-            };
-          }
+          feature.properties = {
+            ...feature.properties,
+            fill: formValues.color,
+            'fill-opacity': 0.3,
+            stroke: formValues.color,
+            'stroke-width': 4,
+            'stroke-opacity': 1,
+            'marker-color': formValues.color,
+            'marker-size': 'medium',
+            'marker-symbol': '',
+            tooltipContent: formValues.tooltipContent,
+            popupContent: formValues.popupContent,
+          };
+
+          // if (formValues.tooltipContent && !Object.values(formValues.tooltipContent).some(x => (x && x !== ''))) {
+          //   feature.properties = {
+          //     ...feature.properties,
+          //     tooltipContent: formValues.tooltipContent,
+          //   };
+          // }
+
+          // if (formValues.popupContent && !Object.values(formValues.popupContent).some(x => (x && x !== ''))) {
+          //   feature.properties = {
+          //     ...feature.properties,
+          //     popupContent: formValues.popupContent,
+          //   };
+          // }
         });
 
         try {
@@ -193,12 +214,32 @@ const LayerConfig = memo<Props & InjectedIntlProps>(
           <SectionField>
             <InputMultilocWithLocaleSwitcher
               type="text"
-              id="cause-title"
               valueMultiloc={formValues.title_multiloc}
               onChange={handleTitleOnChange}
-              label={formatMessage(messages.titleLabel)}
+              label={formatMessage(messages.layerName)}
             />
           </SectionField>
+
+          <SectionField>
+            <InputMultilocWithLocaleSwitcher
+              type="text"
+              valueMultiloc={formValues.tooltipContent}
+              onChange={handleTooltipContentOnChange}
+              label={formatMessage(messages.layerTooltip)}
+              labelTooltipText={formatMessage(messages.layerTooltip)}
+            />
+          </SectionField>
+
+          <SectionField>
+            <InputMultilocWithLocaleSwitcher
+              type="text"
+              valueMultiloc={formValues.popupContent}
+              onChange={handlePopupContentOnChange}
+              label={formatMessage(messages.layerPopup)}
+              labelTooltipText={formatMessage(messages.layerPopup)}
+            />
+          </SectionField>
+
           <SectionField>
             <Label>
               <FormattedMessage {...messages.color} />
@@ -244,4 +285,4 @@ const LayerConfig = memo<Props & InjectedIntlProps>(
   }
 );
 
-export default injectIntl(LayerConfig);
+export default injectIntl(injectLocalize(LayerConfig));
