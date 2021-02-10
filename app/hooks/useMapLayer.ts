@@ -12,12 +12,12 @@ export interface Props {
   mapLayerId?: string | null;
 }
 
-export type IOutput = IMapLayerData | undefined | null | Error;
+export type IOutput = IMapLayerData | undefined | null;
 
 export default ({ projectId, mapLayerId }: Props): IOutput => {
-  const [mapLayer, setMapLayer] = useState<
-    IMapLayerData | undefined | null | Error
-  >(undefined);
+  const [mapLayer, setMapLayer] = useState<IMapLayerData | undefined | null>(
+    undefined
+  );
 
   useEffect(() => {
     setMapLayer(undefined);
@@ -30,7 +30,7 @@ export default ({ projectId, mapLayerId }: Props): IOutput => {
     }
 
     const subscription = observable.subscribe((mapLayer) => {
-      setMapLayer(!isNilOrError(mapLayer) ? mapLayer.data : mapLayer);
+      setMapLayer(!isNilOrError(mapLayer) ? mapLayer.data : null);
     });
 
     return () => subscription.unsubscribe();

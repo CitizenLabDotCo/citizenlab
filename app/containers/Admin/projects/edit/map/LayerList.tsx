@@ -1,16 +1,11 @@
-import React, { memo, useState, useEffect } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
+import React, { memo, useState } from 'react';
 
 // components
 import Button from 'components/UI/Button';
 import ImportButton from './ImportButton';
 import LayerConfig from './LayerConfig';
 import Tippy from '@tippyjs/react';
-import {
-  SectionTitle,
-  SectionDescription,
-  SubSectionTitle,
-} from 'components/admin/Section';
+import { SectionTitle, SectionDescription } from 'components/admin/Section';
 
 // hooks
 import useMapConfig from 'hooks/useMapConfig';
@@ -29,6 +24,9 @@ import messages from './messages';
 // styling
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
+
+// typings
+import { IMapLayerAttributes } from 'services/mapLayers';
 
 const Container = styled.div``;
 
@@ -96,8 +94,11 @@ const Spacer = styled.div`
 `;
 
 const StyledLayerConfig = styled(LayerConfig)`
-  margin-top: 35px;
-  margin-bottom: 35px;
+  padding-top: 35px;
+  padding-bottom: 35px;
+  margin-bottom: 30px;
+  border-bottom: solid 1px #ccc;
+  border-top: solid 1px #ccc;
 `;
 
 interface Props {
@@ -107,10 +108,12 @@ interface Props {
 
 const LayerList = memo<Props>(({ projectId, className }) => {
   const mapConfig = useMapConfig({ projectId, prefetchMapLayers: true });
+  const mapConfigId = mapConfig?.id || null;
 
-  const [editedLayerId, setEditedLayerId] = useState<string | null>(null);
-
-  const mapConfigId = !isNilOrError(mapConfig) ? mapConfig.id : null;
+  const [
+    editedMapLayer,
+    setEditedMapLayer,
+  ] = useState<IMapLayerAttributes | null>(null);
 
   const handleGeoJsonImport = (geojson: GeoJSON.FeatureCollection) => {
     if (mapConfigId) {
@@ -132,11 +135,14 @@ const LayerList = memo<Props>(({ projectId, className }) => {
 
   const toggleLayerConfig = (layerId: string) => (event: React.FormEvent) => {
     event?.preventDefault();
-    setEditedLayerId((prevValue) => (prevValue === layerId ? null : layerId));
+    const mapLayer =
+      mapConfig?.attributes?.layers?.find((layer) => layer.id === layerId) ||
+      null;
+    setEditedMapLayer((prevValue) => (prevValue ? null : mapLayer));
   };
 
   const closeLayerConfig = () => {
-    setEditedLayerId(null);
+    setEditedMapLayer(null);
   };
 
   return (
@@ -152,76 +158,67 @@ const LayerList = memo<Props>(({ projectId, className }) => {
         </SectionDescription>
       </Header>
 
-      {!isNilOrError(mapConfig) && mapConfig?.attributes?.layers?.length > 0 && (
-        <List>
-          {mapConfig?.attributes?.layers?.map((mapLayer, index) => (
-            <ListItem
-              key={index}
-              className={`${index === 0 ? 'first' : ''} ${
-                editedLayerId === mapLayer.id ? 'editing' : ''
-              }`}
-            >
-              <ListItemHeader>
-                <LayerName>
-                  <T value={mapLayer.title_multiloc} />
-                </LayerName>
-                <Buttons>
-                  <Tippy
-                    placement="bottom"
-                    content={
-                      <FormattedMessage
-                        {...(editedLayerId !== mapLayer.id
-                          ? messages.edit
-                          : messages.cancel)}
-                      />
-                    }
-                    hideOnClick={false}
-                    arrow={false}
-                  >
-                    <div>
-                      <EditButton
-                        icon={
-                          editedLayerId !== mapLayer.id ? 'edit' : 'cancel-edit'
-                        }
-                        iconSize="16px"
-                        buttonStyle="text"
-                        padding="0px"
-                        onClick={toggleLayerConfig(mapLayer.id)}
-                      />
-                    </div>
-                  </Tippy>
+      {!editedMapLayer &&
+        mapConfig?.attributes?.layers &&
+        mapConfig?.attributes?.layers?.length > 0 && (
+          <List>
+            {mapConfig?.attributes?.layers?.map((mapLayer, index) => (
+              <ListItem key={index} className={index === 0 ? 'first' : ''}>
+                <ListItemHeader>
+                  <LayerName>
+                    <T value={mapLayer.title_multiloc} />
+                  </LayerName>
+                  <Buttons>
+                    <Tippy
+                      placement="bottom"
+                      content={<FormattedMessage {...messages.edit} />}
+                      hideOnClick={false}
+                      arrow={false}
+                    >
+                      <div>
+                        <EditButton
+                          icon="edit"
+                          iconSize="16px"
+                          buttonStyle="text"
+                          padding="0px"
+                          onClick={toggleLayerConfig(mapLayer.id)}
+                        />
+                      </div>
+                    </Tippy>
 
-                  <Spacer />
+                    <Spacer />
 
-                  <Tippy
-                    placement="bottom"
-                    content={<FormattedMessage {...messages.remove} />}
-                    hideOnClick={false}
-                    arrow={false}
-                  >
-                    <div>
-                      <RemoveButton
-                        icon="delete"
-                        iconSize="16px"
-                        buttonStyle="text"
-                        padding="0px"
-                        onClick={removeLayer(mapLayer.id)}
-                      />
-                    </div>
-                  </Tippy>
-                </Buttons>
-              </ListItemHeader>
-              {editedLayerId === mapLayer.id && (
-                <StyledLayerConfig
-                  projectId={projectId}
-                  mapLayerId={mapLayer.id}
-                  onClose={closeLayerConfig}
-                />
-              )}
-            </ListItem>
-          ))}
-        </List>
+                    <Tippy
+                      placement="bottom"
+                      content={<FormattedMessage {...messages.remove} />}
+                      hideOnClick={false}
+                      arrow={false}
+                    >
+                      <div>
+                        <RemoveButton
+                          icon="delete"
+                          iconSize="16px"
+                          buttonStyle="text"
+                          padding="0px"
+                          onClick={removeLayer(mapLayer.id)}
+                        />
+                      </div>
+                    </Tippy>
+                  </Buttons>
+                </ListItemHeader>
+              </ListItem>
+            ))}
+          </List>
+        )}
+
+      {editedMapLayer && (
+        <StyledLayerConfig
+          projectId={projectId}
+          mapLayer={editedMapLayer}
+          onClose={closeLayerConfig}
+        />
       )}
+
       <ImportButton onChange={handleGeoJsonImport} />
     </Container>
   );

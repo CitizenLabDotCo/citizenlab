@@ -10,12 +10,12 @@ export interface Props {
   prefetchMapLayers?: boolean;
 }
 
-export type IOutput = IMapConfigData | undefined | null | Error;
+export type IOutput = IMapConfigData | undefined | null;
 
 export default ({ projectId, prefetchMapLayers }: Props): IOutput => {
-  const [mapConfig, setMapConfig] = useState<
-    IMapConfigData | undefined | null | Error
-  >(undefined);
+  const [mapConfig, setMapConfig] = useState<IMapConfigData | undefined | null>(
+    undefined
+  );
 
   useEffect(() => {
     const subscription = mapConfigByProjectStream(projectId)
@@ -39,7 +39,7 @@ export default ({ projectId, prefetchMapLayers }: Props): IOutput => {
         })
       )
       .subscribe((mapConfig) => {
-        setMapConfig(!isNilOrError(mapConfig) ? mapConfig.data : mapConfig);
+        setMapConfig(!isNilOrError(mapConfig) ? mapConfig.data : null);
       });
 
     return () => subscription.unsubscribe();

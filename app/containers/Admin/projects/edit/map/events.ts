@@ -6,7 +6,7 @@ enum events {
   layersUpdated = 'layersUpdated',
 }
 
-export function updateLayers(layers: IMapLayerAttributes[]) {
+export function setLayers(layers: IMapLayerAttributes[]) {
   eventEmitter.emit<IMapLayerAttributes[]>(events.layersUpdated, layers);
 }
 

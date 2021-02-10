@@ -1,16 +1,16 @@
-import React, { memo, useEffect } from 'react';
+import React, { memo } from 'react';
 import { withRouter, WithRouterProps } from 'react-router';
-import { isNilOrError } from 'utils/helperUtils';
+// import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import Map from './Map';
 import LayerList from './LayerList';
 
 // hooks
-import useMapConfig from 'hooks/useMapConfig';
+// import useMapConfig from 'hooks/useMapConfig';
 
 // events
-import { updateLayers } from './events';
+// import { setLayers } from './events';
 
 // styling
 import styled from 'styled-components';
@@ -37,27 +37,27 @@ interface Props {
 
 const MapPage = memo<Props & WithRouterProps>(
   ({ params: { projectId }, className }) => {
-    const mapConfig = useMapConfig({ projectId, prefetchMapLayers: true });
+    // const mapConfig = useMapConfig({ projectId, prefetchMapLayers: true });
 
-    useEffect(() => {
-      return () => {
-        updateLayers([]);
-      };
-    }, []);
+    // useEffect(() => {
+    //   return () => {
+    //     setLayers([]);
+    //   };
+    // }, []);
 
-    useEffect(() => {
-      updateLayers(
-        !isNilOrError(mapConfig) && mapConfig?.attributes?.layers?.length > 0
-          ? mapConfig.attributes.layers
-          : []
-      );
-    }, [mapConfig]);
+    // useEffect(() => {
+    //   setLayers(
+    //     !isNilOrError(mapConfig) && mapConfig?.attributes?.layers?.length > 0
+    //       ? mapConfig.attributes.layers
+    //       : []
+    //   );
+    // }, [mapConfig]);
 
     if (projectId) {
       return (
         <Container className={className || ''}>
           <StyledLayerList projectId={projectId} />
-          <StyledMap />
+          <StyledMap projectId={projectId} />
         </Container>
       );
     }
