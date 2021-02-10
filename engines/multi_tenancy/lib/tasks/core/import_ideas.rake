@@ -40,6 +40,8 @@ namespace :cl2_back do
     d[:image_url]      = csv_idea['Image URL']
     d[:phase_rank]     = csv_idea['Phase']
     d[:published_at]   = csv_idea['Date (dd-mm-yyyy)']
+    d[:latitude]       = csv_idea['Latitude']
+    d[:longitude]      = csv_idea['Longitude']
   	d
   end
 
