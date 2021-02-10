@@ -74,12 +74,12 @@ module AdminApi
       configs = AppConfiguration.from_tenants(tenants).sort_by(&:host)
 
       tenants.zip(configs).map do |tenant, config|
-        MultiTenancy::TenantSerializer.new(tenant, app_configuration: config)
+        AdminApi::TenantSerializer.new(tenant, app_configuration: config)
       end
     end
 
     def template_name
-      @template ||= params[:template] || 'base'
+      @template_name ||= params[:template] || 'base'
     end
 
     def secure_controller?
