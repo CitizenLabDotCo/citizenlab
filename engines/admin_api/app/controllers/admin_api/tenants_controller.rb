@@ -12,47 +12,39 @@ module AdminApi
     end
 
     def show
-      # This uses default model serialization
-      render json: @tenant
+      # Call #to_json explicitly, otherwise 'data' is added as root.
+      render json: WebApi::V1::External::TenantSerializer.new(@tenant).to_json
     end
 
     def create
-      template = params[:template] || 'base'
-      required_locales = TenantTemplateService.new.required_locales(template, external_subfolder: 'test')
-      if !Set.new(required_locales).subset?(Set.new(tenant_params.dig(:settings, 'core', 'locales')))
-        raise ClErrors::TransactionError.new(error_key: :missing_locales)
-      end
-      @tenant = Tenant.new tenant_params
-      MultiTenancy::SideFxTenantService.new.before_create(@tenant, nil)
-      if @tenant.save
-        MultiTenancy::SideFxTenantService.new.after_create(@tenant, nil)
-        ApplyTenantTemplateJob.perform_later template, @tenant
-        # This uses default model serialization
-        render json: @tenant, status: :created
+      success, tenant, config = tenant_service.initialize_with_template(tenant_params, config_params, template_name)
+      if success
+        tenant_json = WebApi::V1::External::TenantSerializer.new(tenant, app_configuration: config).to_json
+        render json: tenant_json, status: :created
       else
-        render json: {errors: @tenant.errors.details}, status: :unprocessable_entity
+        tenant.errors.merge!(config.errors)
+        render json: { errors: tenant.errors.details }, status: :unprocessable_entity
       end
     end
 
     def update
-      if tenant_params[:settings]
-        @tenant.assign_attributes(settings: tenant_params[:settings])
-      end
-
-      if tenant_params[:style]
-        @tenant.assign_attributes(style: tenant_params[:style])
-      end
-
-      @tenant.assign_attributes(tenant_params.except(:settings, :style))
-
-      MultiTenancy::SideFxTenantService.new.before_update(@tenant, nil)
-
-      if @tenant.save
-        MultiTenancy::SideFxTenantService.new.after_update(@tenant, nil)
-        # This uses default model serialization
-        render json: @tenant, status: :ok
+      success, tenant, config = tenant_service.update_tenant(@tenant, legacy_tenant_params)
+      if success
+        tenant_json = WebApi::V1::External::TenantSerializer.new(tenant, app_configuration: config).to_json
+        render json: tenant_json, status: :ok
       else
-        render json: {errors: @tenant.errors.details}, status: :unprocessable_entity
+        tenant.errors.merge!(config.errors)
+        render json: { errors: tenant.errors.details }, status: :unprocessable_entity
+      end
+    end
+
+    def destroy
+      tenant_side_fx.before_destroy(@tenant)
+      if @tenant.destroy.destroyed?
+        tenant_side_fx.after_destroy(@tenant)
+        head :ok
+      else
+        head 500
       end
     end
 
@@ -68,18 +60,11 @@ module AdminApi
       render json: TenantTemplateService.new.available_templates.values.flatten.uniq
     end
 
-    def destroy
-      MultiTenancy::SideFxTenantService.new.before_destroy(@tenant, nil)
-      tenant = @tenant.destroy
-      if tenant.destroyed?
-        MultiTenancy::SideFxTenantService.new.after_destroy(tenant, nil)
-        head :ok
-      else
-        head 500
-      end
-    end
-
     private
+
+    def template_name
+      @template ||= params[:template] || 'base'
+    end
 
     def secure_controller?
       false
@@ -89,19 +74,21 @@ module AdminApi
       @tenant = Tenant.find(params[:id])
     end
 
+    def config_params
+      @config_params ||= params.require(:tenant).permit(:host, :name, :logo, :header_bg, settings: {}, style: {})
+    end
+    alias legacy_tenant_params config_params
+
     def tenant_params
-      # Not perfect, but it's hard to translate all the features/settings to
-      # permitted attributes structure, at least in a general way. The json
-      # schema validation, however, should be covering all settings that are not
-      # allowed
-      all_settings = params.require(:tenant).fetch(:settings, nil).try(:permit!)
-      all_style = params.require(:tenant).fetch(:style, nil).try(:permit!)
-      params
-        .require(:tenant)
-        .permit(:name, :host, :logo, :header_bg)
-        .merge(:settings => all_settings)
-        .merge(:style => all_style)
+      @tenant_params ||= params.require(:tenant).permit(:name, :host)
     end
 
+    def tenant_service
+      @tenant_service ||= MultiTenancy::TenantService.new
+    end
+
+    def tenant_side_fx
+      @tenant_side_fx ||= MultiTenancy::SideFxTenantService.new
+    end
   end
 end
