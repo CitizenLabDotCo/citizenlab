@@ -1,12 +1,8 @@
 import React, { memo, useEffect, useState } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 import { isEmpty, cloneDeep } from 'lodash-es';
 
 // services
 import { updateProjectMapLayer } from 'services/mapLayers';
-
-// hooks
-import useMapLayer from 'hooks/useMapLayer';
 
 // components
 import { Section, SectionField } from 'components/admin/Section';
@@ -26,6 +22,7 @@ import styled from 'styled-components';
 
 // typing
 import { Multiloc } from 'typings';
+import { IMapLayerAttributes } from 'services/mapLayers';
 
 const Container = styled.div`
   display: flex;
@@ -50,7 +47,7 @@ const CancelButton = styled(Button)`
 
 interface Props {
   projectId: string;
-  mapLayerId: string;
+  mapLayer: IMapLayerAttributes;
   className?: string;
   onClose: () => void;
 }
@@ -60,27 +57,46 @@ interface IFormValues {
   color: string;
 }
 
+const getMapLayerType = (mapLayer: IMapLayerAttributes) => {
+  return mapLayer?.geojson?.features?.[0]?.geometry?.type;
+};
+
+const getMapLayerColor = (
+  mapLayer: IMapLayerAttributes,
+  mapLayerType: GeoJSON.GeoJsonTypes | undefined
+) => {
+  let color: string;
+
+  if (mapLayerType === 'Point') {
+    color = mapLayer?.geojson?.features?.[0]?.properties?.['marker-color'];
+  } else {
+    color = mapLayer?.geojson?.features?.[0]?.properties?.fill;
+  }
+
+  return color || '#000000';
+};
+
 const LayerConfig = memo<Props & InjectedIntlProps>(
-  ({ projectId, mapLayerId, className, onClose, intl: { formatMessage } }) => {
-    const mapLayer = useMapLayer({ projectId, mapLayerId });
+  ({ projectId, mapLayer, className, onClose, intl: { formatMessage } }) => {
+    const mapLayerType = getMapLayerType(mapLayer);
+    const mapLayerColor = getMapLayerColor(mapLayer, mapLayerType);
 
     const [touched, setTouched] = useState(false);
     const [processing, setProcessing] = useState(false);
     const [errors, setErrors] = useState<{ [key: string]: any }>({});
     const [formValues, setFormValues] = useState<IFormValues>({
-      title_multiloc: !isNilOrError(mapLayer)
-        ? mapLayer.attributes.title_multiloc
-        : null,
-      color: '#000000',
+      title_multiloc: mapLayer?.title_multiloc || null,
+      color: mapLayer?.geojson?.features?.[0]?.properties?.fill || '#000000',
     });
 
     useEffect(() => {
-      setFormValues((prevValue) => ({
-        ...prevValue,
-        title_multiloc: !isNilOrError(mapLayer)
-          ? mapLayer.attributes.title_multiloc
-          : null,
-      }));
+      formChange(
+        {
+          title_multiloc: mapLayer?.title_multiloc || null,
+          color: mapLayerColor,
+        },
+        false
+      );
     }, [mapLayer]);
 
     const handleTitleOnChange = (title_multiloc: Multiloc) => {
@@ -95,8 +111,11 @@ const LayerConfig = memo<Props & InjectedIntlProps>(
       return true;
     };
 
-    const formChange = (changedFormValue: Partial<IFormValues>) => {
-      setTouched(true);
+    const formChange = (
+      changedFormValue: Partial<IFormValues>,
+      touched = true
+    ) => {
+      setTouched(touched);
       setFormValues((prevFormValues) => ({
         ...prevFormValues,
         ...changedFormValue,
@@ -130,23 +149,34 @@ const LayerConfig = memo<Props & InjectedIntlProps>(
       if (!processing && validate() && title_multiloc) {
         formProcessing();
 
-        const geojson = (!isNilOrError(mapLayer)
-          ? cloneDeep(mapLayer.attributes.geojson)
-          : {}) as GeoJSON.FeatureCollection;
+        const geojson = cloneDeep(
+          mapLayer?.geojson || {}
+        ) as GeoJSON.FeatureCollection;
 
         geojson?.features.forEach((feature) => {
-          feature.properties = {
-            stroke: formValues.color,
-            'stroke-width': 4,
-            'stroke-opacity': 1,
-            fill: formValues.color,
-            'fill-opacity': 0.3,
-            tooltipContent: formValues.title_multiloc?.['en'] || 'bleh',
-          };
+          if (mapLayerType !== 'Point') {
+            feature.properties = {
+              ...feature.properties,
+              stroke: formValues.color,
+              'stroke-width': 4,
+              'stroke-opacity': 1,
+              fill: formValues.color,
+              'fill-opacity': 0.3,
+              // tooltipContent: formValues.title_multiloc?.['en'] || 'bleh',
+            };
+          } else {
+            feature.properties = {
+              ...feature.properties,
+              'marker-color': formValues.color,
+              // 'marker-size': "medium",
+              // 'marker-symbol': ""
+              // tooltipContent: formValues.title_multiloc?.['en'] || 'bleh',
+            };
+          }
         });
 
         try {
-          await updateProjectMapLayer(projectId, mapLayerId, {
+          await updateProjectMapLayer(projectId, mapLayer.id, {
             title_multiloc,
             geojson,
           });
@@ -157,64 +187,60 @@ const LayerConfig = memo<Props & InjectedIntlProps>(
       }
     };
 
-    if (!isNilOrError(mapLayer)) {
-      return (
-        <Container className={className || ''}>
-          <Section>
-            <SectionField>
-              <InputMultilocWithLocaleSwitcher
-                type="text"
-                id="cause-title"
-                valueMultiloc={formValues.title_multiloc}
-                onChange={handleTitleOnChange}
-                label={formatMessage(messages.titleLabel)}
+    return (
+      <Container className={className || ''}>
+        <Section>
+          <SectionField>
+            <InputMultilocWithLocaleSwitcher
+              type="text"
+              id="cause-title"
+              valueMultiloc={formValues.title_multiloc}
+              onChange={handleTitleOnChange}
+              label={formatMessage(messages.titleLabel)}
+            />
+          </SectionField>
+          <SectionField>
+            <Label>
+              <FormattedMessage {...messages.color} />
+            </Label>
+            <ColorPickerInput
+              type="text"
+              value={formValues.color}
+              onChange={handleColorOnChange}
+            />
+          </SectionField>
+        </Section>
+
+        <ButtonContainer>
+          <ButtonContainerLeft>
+            <Button
+              buttonStyle="admin-dark"
+              onClick={handleOnSubmit}
+              processing={processing}
+              disabled={!touched}
+            >
+              <FormattedMessage {...messages.save} />
+            </Button>
+
+            <CancelButton
+              buttonStyle="secondary-outlined"
+              onClick={handleOnCancel}
+              disabled={processing}
+            >
+              <FormattedMessage {...messages.cancel} />
+            </CancelButton>
+
+            {!isEmpty(errors) && (
+              <Error
+                text={formatMessage(messages.errorMessage)}
+                showBackground={false}
+                showIcon={false}
               />
-            </SectionField>
-            <SectionField>
-              <Label>
-                <FormattedMessage {...messages.color} />
-              </Label>
-              <ColorPickerInput
-                type="text"
-                value={formValues.color}
-                onChange={handleColorOnChange}
-              />
-            </SectionField>
-          </Section>
-
-          <ButtonContainer>
-            <ButtonContainerLeft>
-              <Button
-                buttonStyle="admin-dark"
-                onClick={handleOnSubmit}
-                processing={processing}
-                disabled={!touched}
-              >
-                <FormattedMessage {...messages.save} />
-              </Button>
-
-              <CancelButton
-                buttonStyle="secondary-outlined"
-                onClick={handleOnCancel}
-                disabled={processing}
-              >
-                <FormattedMessage {...messages.cancel} />
-              </CancelButton>
-
-              {!isEmpty(errors) && (
-                <Error
-                  text={formatMessage(messages.errorMessage)}
-                  showBackground={false}
-                  showIcon={false}
-                />
-              )}
-            </ButtonContainerLeft>
-          </ButtonContainer>
-        </Container>
-      );
-    }
-
-    return null;
+            )}
+          </ButtonContainerLeft>
+        </ButtonContainer>
+      </Container>
+    );
   }
 );
 

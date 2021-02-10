@@ -1,6 +1,7 @@
 require('leaflet-simplestyle');
 
 import React, { memo, useState, useEffect } from 'react';
+import { isNilOrError } from 'utils/helperUtils';
 
 // Map
 import L from 'leaflet';
@@ -18,31 +19,46 @@ L.Icon.Default.mergeOptions({
   shadowUrl: markerShadow,
 });
 
-// events
-import { layers$ } from './events';
+// hooks
+import useMapConfig from 'hooks/useMapConfig';
 
 // styling
 import styled from 'styled-components';
 
-// typings
-import { IMapLayerAttributes } from 'services/mapLayers';
-
 const Container = styled.div``;
 
 interface Props {
+  projectId: string;
   className?: string;
 }
 
-const Map = memo<Props>(({ className }) => {
+const Map = memo<Props>(({ projectId, className }) => {
+  const mapConfig = useMapConfig({ projectId, prefetchMapLayers: true });
+
   const [map, setMap] = useState<L.Map | null>(null);
-  const [layers, setLayers] = useState<IMapLayerAttributes[]>();
+
+  // useEffect(() => {
+  //   const map = L.map('mapid').setView([50.869189, 4.725238], 16);
+
+  //   const subscription = layers$.subscribe((layers) => {
+  //     setLayers(layers);
+  //   });
+
+  //   L.tileLayer(
+  //     'https://tiles.stadiamaps.com/tiles/osm_bright/{z}/{x}/{y}{r}.png',
+  //     {
+  //       subdomains: ['a', 'b', 'c'],
+  //       maxZoom: 20,
+  //     }
+  //   ).addTo(map);
+
+  //   setMap(map);
+
+  //   return () => subscription.unsubscribe();
+  // }, []);
 
   useEffect(() => {
     const map = L.map('mapid').setView([50.869189, 4.725238], 16);
-
-    const subscription = layers$.subscribe((layers) => {
-      setLayers(layers);
-    });
 
     L.tileLayer(
       'https://tiles.stadiamaps.com/tiles/osm_bright/{z}/{x}/{y}{r}.png',
@@ -53,41 +69,39 @@ const Map = memo<Props>(({ className }) => {
     ).addTo(map);
 
     setMap(map);
-
-    return () => subscription.unsubscribe();
   }, []);
 
   useEffect(() => {
     if (map) {
-      // reset
       map.eachLayer((layer) => {
         if (layer?.['identifier'] === 'customlayer') {
           map.removeLayer(layer);
         }
       });
 
-      // set geojson
-      layers?.forEach(({ geojson }) => {
-        if (geojson) {
-          L.geoJSON(geojson, {
-            useSimpleStyle: true,
-            useMakiMarkers: true,
-            onEachFeature: (feature, layer) => {
-              layer.identifier = 'customlayer';
+      if (!isNilOrError(mapConfig)) {
+        mapConfig?.attributes?.layers?.forEach(({ geojson }) => {
+          if (geojson) {
+            L.geoJSON(geojson, {
+              useSimpleStyle: true,
+              useMakiMarkers: true,
+              onEachFeature: (feature, layer) => {
+                layer.identifier = 'customlayer';
 
-              if (feature.properties && feature.properties.popupContent) {
-                layer.bindPopup(feature.properties.popupContent);
-              }
+                if (feature.properties && feature.properties.popupContent) {
+                  layer.bindPopup(feature.properties.popupContent);
+                }
 
-              if (feature.properties && feature.properties.tooltipContent) {
-                layer.bindTooltip(feature.properties.tooltipContent);
-              }
-            },
-          } as any).addTo(map);
-        }
-      });
+                if (feature.properties && feature.properties.tooltipContent) {
+                  layer.bindTooltip(feature.properties.tooltipContent);
+                }
+              },
+            } as any).addTo(map);
+          }
+        });
+      }
     }
-  }, [map, layers]);
+  }, [map, mapConfig]);
 
   return <Container id="mapid" className={className || ''} />;
 });
