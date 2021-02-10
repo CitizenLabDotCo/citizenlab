@@ -130,7 +130,7 @@ const CustomFieldsStep: FC<Props & InjectedIntlProps> = memo(
       eventEmitter.emit('customFieldsSubmitEvent');
     };
 
-    const handleCustomFieldsFormOnSubmit = async (formData) => {
+    const handleCustomFieldsFormOnSubmit = async ({ formData }) => {
       if (!isNilOrError(authUser) && isObject(formData)) {
         try {
           setProcessing(true);
