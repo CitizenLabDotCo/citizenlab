@@ -10,13 +10,13 @@ module Seo
     end
 
     # rubocop:disable Metrics/MethodLength
-    def multilingual_sitemap_entry(xml, _locales, url, priority = nil, lastmod = nil)
-      locales.each do |locale|
+    def multilingual_sitemap_entry(xml, url, priority = nil, lastmod = nil)
+      app_locales.each do |locale|
         xml.url do
           xml.loc(localize_url(url, locale))
           xml.priority(priority) if priority
           xml.lastmod(lastmod.strftime('%Y-%m-%dT%H:%M:%S%:z')) if lastmod
-          (locales - [locale]).each do |alternate_locale|
+          (app_locales - [locale]).each do |alternate_locale|
             xml.tag!(
               'xhtml:link',
               rel: 'alternate',
@@ -29,7 +29,7 @@ module Seo
     end
     # rubocop:enable Metrics/MethodLength
 
-    def locales
+    def app_locales
       AppConfiguration.instance.settings.dig('core', 'locales')
     end
   end

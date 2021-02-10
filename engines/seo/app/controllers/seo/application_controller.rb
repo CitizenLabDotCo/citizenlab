@@ -11,10 +11,10 @@ module Seo
     def sitemap
       statuses     = %w[published archived]
       @initiatives = Initiative.where(publication_status: statuses)
-      @ideas       = Idea.where(project: @projects)
       @pages       = Page.where(publication_status: statuses)
       @projects    = Project.includes(:admin_publication)
                             .where(visible_to: 'public', admin_publications: { publication_status: statuses })
+      @ideas       = Idea.where(project: @projects)
     end
 
     def robots; end

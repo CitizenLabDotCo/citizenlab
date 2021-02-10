@@ -19,6 +19,6 @@ module OutletRenderer
 
   def render_outlet(outlet_id, **locals)
     kwargs = outlets[outlet_id].call(locals)
-    render partial: kwargs[:render], locals: kwargs.except(:render)
+    render kwargs
   end
 end

@@ -48,7 +48,7 @@ module ProjectFolders
         folders = ProjectFolders::Folder
                   .includes(:admin_publication)
                   .where(admin_publications: { publication_status: %w[published archived] })
-        { partial: 'seo/sitemap', folders: folders, **locals }
+        { partial: 'seo/sitemap', locals: { folders: folders, **locals } }
       end
     end
   end
