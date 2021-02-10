@@ -5,9 +5,17 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.MapTab.errorMessage',
     defaultMessage: 'Something went wrong, please try again later',
   },
-  titleLabel: {
-    id: 'app.containers.AdminPage.ProjectEdit.MapTab.titleLabel',
-    defaultMessage: 'Title',
+  layerName: {
+    id: 'app.containers.AdminPage.ProjectEdit.MapTab.layerName',
+    defaultMessage: 'Layer name',
+  },
+  layerTooltip: {
+    id: 'app.containers.AdminPage.ProjectEdit.MapTab.laterTooltip',
+    defaultMessage: 'Layer tooltip text (optional)',
+  },
+  layerPopup: {
+    id: 'app.containers.AdminPage.ProjectEdit.MapTab.laterTooltip',
+    defaultMessage: 'Layer popup text (optional)',
   },
   save: {
     id: 'app.containers.AdminPage.ProjectEdit.MapTab.save',
