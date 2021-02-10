@@ -3,18 +3,18 @@ module Tagging
     module V1
       class TaggingsController < ApplicationController
         before_action :set_tagging, only: %i[show destroy update]
-        skip_after_action :verify_authorized, only: [:generate]
+        skip_after_action :verify_authorized, only: [:generate, :cancel_generate]
 
         def index
           @taggings = policy_scope(Tagging)
 
-          @taggings = @taggings.where(idea_id: params["idea_ids"]) if params["idea_ids"]
-          @taggings = @taggings.where(assignment_method: params["assignment_method"]) if params["assignment_method"]
+          @taggings = @taggings.where(idea_id: params['idea_ids']) if params['idea_ids']
+          @taggings = @taggings.where(assignment_method: params['assignment_method']) if params['assignment_method']
 
           render json: WebApi::V1::TaggingSerializer.new(
             @taggings,
             params: fastjson_params,
-            include: [:tag]
+            includes: [:tag]
           ).serialized_json, status: :ok
         end
 
@@ -22,8 +22,8 @@ module Tagging
           render json:  WebApi::V1::TaggingSerializer.new(
             @tagging,
             params: fastjson_params,
-            include: [:tag]
-            ).serialized_json
+            includes: [:tag]
+          ).serialized_json
         end
 
         def create
@@ -38,25 +38,23 @@ module Tagging
             render json: WebApi::V1::TaggingSerializer.new(
               @tagging,
               params: fastjson_params,
-              include: [:tag]
-              ).serialized_json, status: :created
+              includes: [:tag]
+            ).serialized_json, status: :created
           else
             render json: { errors: @tagging.errors.details }, status: :unprocessable_entity
           end
         end
 
         def update
-          if params["assignment_method"] == 'manual'
+          if params['assignment_method'] == 'manual' && @tagging.assignment_method == 'automatic'
             @tagging.confidence_score = 1
             @tagging.assignment_method = 'manual'
             authorize @tagging
-            # SideFxTagService.new.before_update(@tag, current_user)
             if @tagging.save
-              # SideFxTagService.new.after_update(@tag, current_user)
               render json: WebApi::V1::TaggingSerializer.new(
                 @tagging,
                 params: fastjson_params
-                ).serialized_json, status: :ok
+              ).serialized_json, status: :ok
             else
               render json: { errors: @tag.errors.details }, status: :unprocessable_entity
             end
@@ -77,44 +75,37 @@ module Tagging
         end
 
         def generate
-          Tagging.automatic.destroy_all
+          AutomaticTaggingService.new.cancel_tasks
 
-          tags = params["tags"]
-          tag_ids = params["tag_ids"]
-          @new_tags = tags ? tags.map { |tag| Tag.create({ title_multiloc: { current_user.locale => tag }}) } : []
+          tags = params['tags']
+          tag_ids = params['tag_ids']
+          @new_tags = tags ? tags.map { |tag| Tag.create(title_multiloc: { current_user.locale => tag }) } : []
           @old_tags = tag_ids ? Tag.where(id: tag_ids) : []
 
           @ideas = policy_scope(Idea)
           @ideas = @ideas.where(project_id: params[:projects]) if params[:projects].present?
           @ideas = @ideas.where(id: params[:idea_ids]) if params[:idea_ids].present?
 
-          @suggestion = NLP::TaggingSuggestionService.new.suggest(
+          @ideas = @ideas.order_new
+
+          Tagging.automatic.where(idea: @ideas).destroy_all
+
+          @res = NLP::TaggingSuggestionService.new.suggest(
             @ideas,
             @new_tags + @old_tags,
             current_user.locale
           )
-          if @suggestion
-            @suggestion.each do |document|
-              idea = @ideas.find(document['id'])
-              document['predicted_labels'].each{ |label|
-                tag = Tag.find(label['id'])
-                Tagging.create(
-                  tag: tag,
-                  idea: idea,
-                  assignment_method: :automatic,
-                  confidence_score: label['confidence']
-                )
-              }
-            end
+          if @res
+            AutomaticTaggingService.new.create_pending_tasks @res['batches']
 
-            render json: WebApi::V1::TaggingSerializer.new(
-              Tagging.automatic.all,
-              params: fastjson_params,
-              include: [:tag]
-            ).serialized_json, status: :ok
+            head :ok
           else
             render json: { errors: ['NO'] }, status: :unprocessable_entity
           end
+        end
+
+        def cancel_generate
+          head AutomaticTaggingService.new.cancel_tasks
         end
 
         private

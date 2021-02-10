@@ -2,23 +2,22 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 describe NLP::TaggingSuggestionService do
-  let(:service) { NLP::TaggingSuggestionService.new }
+  let(:api) { NLP::API.new ENV.fetch('CL2_NLP_HOST') }
+  let(:service) { NLP::TaggingSuggestionService.new(api) }
 
   before do
-    create_list(:idea, 2, title_multiloc: {'en' => 'I\'m an idea.'}, body_multiloc: {'en' => 'But I\'m not ideal.'})
-    create(:idea, title_multiloc: {'en' => 'I\'m an idea.', 'fr-BE': 'Je suis une idée.'}, body_multiloc: {'en' => 'But I\'m not ideal.', 'fr-BE' => 'Mais je ne suis pas idéale.'})
     Tagging::Tag.create(title_multiloc: {'en' => 'label', 'fr-BE' => 'label'})
     Tagging::Tag.create(title_multiloc: {'en' => 'item'})
     @tags = Tagging::Tag.all()
-    @ideas = Idea.all()
-    @api ||= NLP::API.new ENV.fetch('CL2_NLP_HOST')
+    @ideas = create_list(:idea, 2, title_multiloc: {'en' => 'I\'m an idea.'}, body_multiloc: {'en' => 'But I\'m not ideal.'}).push(create(:idea, title_multiloc: {'en' => 'I\'m an idea.', 'fr-BE': 'Je suis une idée.'}, body_multiloc: {'en' => 'But I\'m not ideal.', 'fr-BE' => 'Mais je ne suis pas idéale.'}))
+    @tenant_id = Tenant.current.id
   end
 
   describe "suggest" do
     it "parses args and pass down" do
-      allow(@api).to receive(:zeroshot_classification)
-      service.suggest(@ideas, @tags, 'en', @api)
-      expect(@api).to have_received(:zeroshot_classification).with(
+      allow(api).to receive(:zeroshot_classification).and_return(nil)
+      service.suggest(@ideas, @tags, 'en')
+      expect(api).to have_received(:zeroshot_classification).with(
         {:candidate_labels=>
           [{:label_id=> @tags[0].id, :text=>"label"},
           {:label_id=> @tags[1].id, :text=>"item"}],
@@ -30,21 +29,23 @@ describe NLP::TaggingSuggestionService do
           {:doc_id=>@ideas[2].id,
             :text=>"But I\'m not ideal."}
           ],
-         :min_confidence_treshold=>0.5
+         :tenant_id=> @tenant_id,
+         :locale => "en"
        }
       )
     end
     it "parses args and pass down" do
-      allow(@api).to receive(:zeroshot_classification)
-      service.suggest(@ideas, @tags, 'fr-BE', @api)
-      expect(@api).to have_received(:zeroshot_classification).with(
+      allow(api).to receive(:zeroshot_classification).and_return(nil)
+      service.suggest(@ideas, @tags, 'fr-BE')
+      expect(api).to have_received(:zeroshot_classification).with(
         {:candidate_labels=>
           [{:label_id=> @tags[0].id, :text=>"label"}],
          :documents=>
           [{:doc_id=>@ideas[2].id,
             :text=>"Mais je ne suis pas idéale."}
           ],
-         :min_confidence_treshold=>0.5
+         :tenant_id=> @tenant_id,
+         :locale => "fr-BE"
        }
       )
     end
