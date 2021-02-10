@@ -46,6 +46,9 @@ import styled from 'styled-components';
 import { IOption } from 'typings';
 import { IUserData } from 'services/users';
 
+// utils
+import eventEmitter from 'utils/eventEmitter';
+
 const Container = styled.div``;
 
 const StyledSectionField = styled(SectionField)`
@@ -122,6 +125,14 @@ class UserCustomFieldsForm extends PureComponent<
   }
 
   componentDidMount() {
+    this.subscriptions = [
+      eventEmitter.observeEvent('customFieldsSubmitEvent').subscribe(() => {
+        if (this.submitbuttonElement) {
+          this.submitbuttonElement?.click?.();
+        }
+      }),
+    ];
+
     this.props.onData?.({
       key: 'custom_field_values',
       data: {
