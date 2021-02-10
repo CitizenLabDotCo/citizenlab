@@ -434,7 +434,6 @@ class ProfileForm extends PureComponent<Props, State> {
               onBlur={createBlurHandler('password')}
               errors={{ minimumLengthError: hasPasswordMinimumLengthError }}
             />
-            <Error apiErrors={errors.password} />
           </SectionField>
 
           <SectionField>
