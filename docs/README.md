@@ -1,5 +1,10 @@
 # Changelog
 
+## 2021-02-10
+
+### Added
+- Automatic tagging
+
 ## 2021-02-08
 
 ### Fixed
