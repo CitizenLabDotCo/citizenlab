@@ -48,15 +48,16 @@ module MultiTenancy
 
     # @param [Tenant] tenant
     def update_tenant(tenant, attrs)
+      config = tenant.configuration
+      config.attributes = attrs
+      remove_images!(config, attrs)
+
       tenant.switch do
-        config = tenant.configuration
-        config.attributes = attrs
-        remove_images!(config, attrs)
         config_side_fx.before_update(config)
 
         ActiveRecord::Base.transaction do
           config.save!
-          tenant.reload
+          tenant.reload # after sync
           tenant.attributes = attrs.slice(:host, :name)
           tenant_side_fx.before_update(tenant)
           tenant.disable_config_sync.save!
