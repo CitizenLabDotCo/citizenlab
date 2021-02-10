@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe 'MultiTenancy::Patches::AppConfiguration' do
+describe 'MultiTenancy::Extensions::AppConfiguration' do
   describe ".all" do
     it "lists all app configuration" do
       expected_configs = Tenant.all.map(&:configuration) # the not-efficient way of getting configs.
