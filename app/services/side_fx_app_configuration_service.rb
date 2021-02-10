@@ -4,11 +4,14 @@ class SideFxAppConfigurationService
   include SideFxHelper
 
   def before_create(app_config, current_user = nil) end
+
   def after_create(app_config, current_user = nil) end
+
   def before_update(app_config, current_user = nil) end
 
   def after_update(app_config, current_user = nil)
     log_activity(app_config, 'changed', current_user)
+    log_activity(app_config, 'changed_host', current_user) if app_config.host_previously_changed?
 
     if (lifecycle_change = get_lifecycle_change(app_config))
       payload = { changes: lifecycle_change }
@@ -38,14 +41,13 @@ class SideFxAppConfigurationService
 
   # @param [AppConfiguration] app_config
   # @param [String] action
-  # @param [User] user
-  # @param [Hash,nil] payload
+  # @param [User, nil] user
+  # @param [Hash, nil] payload
   def log_activity(app_config, action, user, payload = nil)
-    tenant = Tenant.find_by(host: app_config.host)
     update_time = app_config.updated_at.to_i
     options = { payload: payload }.compact
 
     LogActivityJob.perform_later(app_config, action, user, update_time, options)
-    LogActivityJob.perform_later(tenant, action, user, update_time, options) # MT_TODO To be removed once event subscribers have benn adapted.
+    LogActivityJob.perform_later(app_config.tenant, action, user, update_time, options) # MT_TODO To be removed once event subscribers have benn adapted.
   end
 end

@@ -11,11 +11,9 @@ module MultiTenancy
     end
 
     def after_apply_template(tenant, current_user = nil)
-      Apartment::Tenant.switch(tenant.schema_name) do
-        # fix campaigns
-        EmailCampaigns::AssureCampaignsService.new.assure_campaigns
-        # fix permissions
-        PermissionsService.new.update_all_permissions
+      tenant.switch do 
+        EmailCampaigns::AssureCampaignsService.new.assure_campaigns # fix campaigns
+        PermissionsService.new.update_all_permissions # fix permissions
         track_tenant_async(tenant)
       end
     ensure
@@ -31,24 +29,11 @@ module MultiTenancy
         LogActivityJob.perform_later(tenant, 'changed_host', current_user, tenant.updated_at.to_i, payload: { changes: tenant.host_previous_change })
       end
 
-      if tenant.settings_previously_changed?
-        old_settings = tenant.settings_previous_change[0]
-        new_settings = tenant.settings
-
-        lifecycle_change_diff = [old_settings, new_settings].map { |s| s&.dig('core', 'lifecycle_stage') }
-        if lifecycle_change_diff.uniq.size > 1
-          LogActivityJob.perform_later(tenant, 'changed_lifecycle_stage', current_user, tenant.updated_at.to_i, payload: { changes: lifecycle_change_diff })
-        end
-      end
-      Apartment::Tenant.switch(tenant.schema_name) do
-        track_tenant_async(tenant)
-      end
+      track_tenant_async(tenant)
     end
 
     def before_destroy(tenant, current_user = nil)
-      Apartment::Tenant.switch(tenant.schema_name) do
-        Surveys::TypeformWebhookManager.new.delete_all_webhooks
-      end
+      tenant.switch { Surveys::TypeformWebhookManager.new.delete_all_webhooks }
     end
 
     def after_destroy(frozen_tenant, current_user = nil)
@@ -60,7 +45,7 @@ module MultiTenancy
 
     # @param [Tenant] tenant
     def track_tenant_async(tenant)
-      TrackTenantJob.perform_later(tenant)
+      tenant.switch { TrackTenantJob.perform_later(tenant) }
     end
   end
 end 
