@@ -19,15 +19,15 @@ export default defineMessages({
   },
   strength1Password: {
     id: 'app.components.PasswordInput.strength1Password',
-    defaultMessage: 'Weak',
+    defaultMessage: 'Poor',
   },
   strength2Password: {
     id: 'app.components.PasswordInput.strength2Password',
-    defaultMessage: 'Reasonable',
+    defaultMessage: 'Weak',
   },
   strength3Password: {
     id: 'app.components.PasswordInput.strength3Password',
-    defaultMessage: 'Decent',
+    defaultMessage: 'Medium',
   },
   strength4Password: {
     id: 'app.components.PasswordInput.strength4Password',
@@ -39,15 +39,15 @@ export default defineMessages({
   },
   a11y_strength1Password: {
     id: 'app.components.PasswordInput.a11y_strength1Password',
-    defaultMessage: 'Weak password strength',
+    defaultMessage: 'Poor password strength',
   },
   a11y_strength2Password: {
     id: 'app.components.PasswordInput.a11y_strength2Password',
-    defaultMessage: 'Reasonable password strength',
+    defaultMessage: 'Weak password strength',
   },
   a11y_strength3Password: {
     id: 'app.components.PasswordInput.a11y_strength3Password',
-    defaultMessage: 'Decent password strength',
+    defaultMessage: 'Medium password strength',
   },
   a11y_strength4Password: {
     id: 'app.components.PasswordInput.a11y_strength4Password',
