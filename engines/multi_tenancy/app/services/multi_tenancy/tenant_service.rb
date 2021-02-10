@@ -51,6 +51,7 @@ module MultiTenancy
       tenant.switch do
         config = tenant.configuration
         config.attributes = attrs
+        remove_images!(config, attrs)
         config_side_fx.before_update(config)
 
         ActiveRecord::Base.transaction do
@@ -78,6 +79,17 @@ module MultiTenancy
       unless required_locales.to_set <= config_locales.to_set
         raise ClErrors::TransactionError.new(error_key: :missing_locales)
       end
+    end
+
+    # Helper to remove uploads because assigning nil to the mounted attribute
+    # does not remove the image. We have to remove it explicitly.
+    #
+    # @param [AppConfiguration] app_config
+    # @param [Hash] attrs attributes (hash-like)
+    def remove_images!(app_config, attrs)
+      app_config.remove_logo!      if attrs.include?('logo')      and attrs['logo'].nil?
+      app_config.remove_header_bg! if attrs.include?('header_bg') and attrs['header_bg'].nil?
+      app_config.remove_favicon!   if attrs.include?('favicon')   and attrs['favicon'].nil?
     end
   end
 end
