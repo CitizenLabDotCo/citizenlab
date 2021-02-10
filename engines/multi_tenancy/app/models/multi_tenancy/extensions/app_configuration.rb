@@ -7,6 +7,13 @@ module MultiTenancy
         base.extend ClassMethods
       end
 
+      # Returns the corresponding tenant.
+      #
+      # @return [Tenant]
+      def tenant
+        Tenant.find_by(id: id)
+      end
+
       module ClassMethods
         # @return [Array<::AppConfiguration>]
         def of_all_tenants
@@ -26,5 +33,3 @@ module MultiTenancy
     end
   end
 end
-
-AppConfiguration.include(MultiTenancy::Extensions::AppConfiguration)
