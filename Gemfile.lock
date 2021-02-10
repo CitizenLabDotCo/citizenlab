@@ -124,6 +124,7 @@ PATH
   remote: engines/nlp
   specs:
     nlp (0.1.0)
+      bunny
       httparty (~> 0.16.2)
       rails (~> 6.0.0)
 
@@ -179,6 +180,8 @@ PATH
   remote: engines/tagging
   specs:
     tagging (0.1.0)
+      multi_tenancy
+      pundit (~> 2.0)
       rails (~> 6.0.0)
 
 PATH
