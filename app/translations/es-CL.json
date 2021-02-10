@@ -1078,7 +1078,7 @@
   "app.containers.AdminPage.ProjectDescription.titleDescription": "Descripción del proyecto",
   "app.containers.AdminPage.ProjectEdit.PollTab.addAnswerChoice": "Add an answer choice",
   "app.containers.AdminPage.ProjectEdit.PollTab.addPollQuestion": "Add a poll question",
-  "app.containers.AdminPage.ProjectEdit.PollTab.applyQuestionSettings": "Apply",
+  "app.containers.AdminPage.ProjectEdit.PollTab.applyQuestionSettings": "Postula",
   "app.containers.AdminPage.ProjectEdit.PollTab.cancelFormQuestion": "Cancelar",
   "app.containers.AdminPage.ProjectEdit.PollTab.cancelOption": "Cancelar",
   "app.containers.AdminPage.ProjectEdit.PollTab.deleteOption": "Eliminar",
