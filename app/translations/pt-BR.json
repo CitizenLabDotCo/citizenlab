@@ -746,7 +746,7 @@
   "app.containers.Admin.Processing.project": "Projeto",
   "app.containers.Admin.Processing.projectTags": "Etiqueta dos projetos",
   "app.containers.Admin.Processing.proposedBudgetTitle": "Orçamento proposto",
-  "app.containers.Admin.Processing.returnKey": "A tecla de retorno abre o painel lateral onde você pode adicionar e remover etiquetas de ideias",
+  "app.containers.Admin.Processing.returnKey": "A tecla de retorno abre o painel lateral onde você pode adicionar e remover etiquetas",
   "app.containers.Admin.Processing.selectProject": "Selecione os projetos",
   "app.containers.Admin.Processing.suggestedTags": "Etiquetas sugeridas",
   "app.containers.Admin.Processing.tag": "Etiquetas",
