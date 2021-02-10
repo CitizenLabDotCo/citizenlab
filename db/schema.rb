@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_19_144531) do
+ActiveRecord::Schema.define(version: 2021_01_27_112937) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -877,6 +877,30 @@ ActiveRecord::Schema.define(version: 2021_01_19_144531) do
     t.index ["user_id"], name: "index_surveys_responses_on_user_id"
   end
 
+  create_table "tagging_pending_tasks", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "nlp_task_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "tagging_pending_tasks_ideas", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "idea_id"
+    t.uuid "pending_task_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["idea_id"], name: "index_tagging_pending_tasks_ideas_on_idea_id"
+    t.index ["pending_task_id"], name: "index_tagging_pending_tasks_ideas_on_pending_task_id"
+  end
+
+  create_table "tagging_pending_tasks_tags", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "tag_id"
+    t.uuid "pending_task_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["pending_task_id"], name: "index_tagging_pending_tasks_tags_on_pending_task_id"
+    t.index ["tag_id"], name: "index_tagging_pending_tasks_tags_on_tag_id"
+  end
+
   create_table "tagging_taggings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.integer "assignment_method", default: 0
     t.uuid "idea_id"
@@ -1074,6 +1098,10 @@ ActiveRecord::Schema.define(version: 2021_01_19_144531) do
   add_foreign_key "projects_topics", "topics"
   add_foreign_key "public_api_api_clients", "tenants"
   add_foreign_key "spam_reports", "users"
+  add_foreign_key "tagging_pending_tasks_ideas", "ideas"
+  add_foreign_key "tagging_pending_tasks_ideas", "tagging_pending_tasks", column: "pending_task_id"
+  add_foreign_key "tagging_pending_tasks_tags", "tagging_pending_tasks", column: "pending_task_id"
+  add_foreign_key "tagging_pending_tasks_tags", "tagging_tags", column: "tag_id"
   add_foreign_key "tagging_taggings", "ideas"
   add_foreign_key "tagging_taggings", "tagging_tags", column: "tag_id"
   add_foreign_key "volunteering_volunteers", "volunteering_causes", column: "cause_id"
