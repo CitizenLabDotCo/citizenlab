@@ -3,6 +3,8 @@
 class SideFxAppConfigurationService
   include SideFxHelper
 
+  def before_create(app_config, current_user = nil) end
+  def after_create(app_config, current_user = nil) end
   def before_update(app_config, current_user = nil) end
 
   def after_update(app_config, current_user = nil)
