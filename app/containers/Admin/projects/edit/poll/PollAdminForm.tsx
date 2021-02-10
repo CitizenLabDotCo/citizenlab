@@ -93,7 +93,7 @@ export class PollAdminForm extends PureComponent<Props, State> {
   };
 
   handleDropRow = (fieldId: string, toIndex: number) => {
-    const { pollQuestions: listItems } = this.props;
+    const listItems = this.listItems();
 
     if (!listItems) return;
 
