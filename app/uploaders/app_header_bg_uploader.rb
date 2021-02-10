@@ -1,8 +1,7 @@
 class AppHeaderBgUploader < BaseImageUploader
 
   def store_dir
-    tenant = Tenant.find_by(host: model.host)
-    "uploads/#{tenant.id}/header-background/#{model.id}"
+    "uploads/#{model.tenant.id}/header-background/#{model.id}"
   end
 
   version :large do
