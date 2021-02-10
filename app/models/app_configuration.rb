@@ -20,7 +20,7 @@ class AppConfiguration < ApplicationRecord
 
   before_validation :validate_missing_feature_dependencies
 
-  after_update :update_tenant, if: :tenant_sync_enabled
+  after_save :update_tenant, if: :tenant_sync_enabled
   after_initialize :custom_initialization
 
   class << self
