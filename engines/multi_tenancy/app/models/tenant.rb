@@ -11,14 +11,6 @@ class Tenant < ApplicationRecord
   validates :host, uniqueness: true, exclusion: { in: %w(schema-migrations public) }
   validate :valid_host_format
 
-  validates :settings, presence: true, json: {
-    schema: -> { AppConfiguration.settings_json_schema_str },
-    message: ->(errors) { errors.map{|e| {fragment: e[:fragment], error: e[:failed_attribute], human_message: e[:message]} } },
-    options: {
-      errors_as_objects: true
-    }
-  }
-
   validate(on: :update) do |record|
     missing_locales = switch do
       User.where.not(locale: settings.dig('core', 'locales')).pluck(:locale)
