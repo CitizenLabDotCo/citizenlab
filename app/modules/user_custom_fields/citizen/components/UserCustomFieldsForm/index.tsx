@@ -154,17 +154,10 @@ class UserCustomFieldsForm extends PureComponent<
 
   handleOnSubmit = ({ formData }) => {
     const sanitizedFormData = {};
-    const { userCustomFieldsSchema } = this.props;
 
     forOwn(formData, (value, key) => {
       sanitizedFormData[key] = value === null ? undefined : value;
     });
-
-    const hasCustomFields =
-      !isNilOrError(userCustomFieldsSchema) &&
-      userCustomFieldsSchema.hasCustomFields;
-
-    console.log(hasCustomFields);
 
     this.setState({ formData: sanitizedFormData }, () =>
       this.props.onSubmit({
