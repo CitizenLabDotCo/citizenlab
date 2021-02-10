@@ -89,8 +89,8 @@ const StyledDateInput = styled(DateInput)`
 export interface InputProps {
   authUser: IUserData;
   onSubmit: (data: { key: string; formData: Object | null }) => void;
-  onChange?: () => void;
-  onData?: (data: {
+  onChange: () => void;
+  onData: (data: {
     key: ExtraFormDataKey;
     data: ExtraFormDataConfiguration;
   }) => void;
@@ -122,7 +122,7 @@ class UserCustomFieldsForm extends PureComponent<
   }
 
   componentDidMount() {
-    this.props?.onData?.({
+    this.props.onData({
       key: 'custom_field_values',
       data: {
         submit: () => this?.submitbuttonElement?.click?.(),
@@ -147,9 +147,7 @@ class UserCustomFieldsForm extends PureComponent<
       sanitizedFormData[key] = value === null ? undefined : value;
     });
 
-    this.setState({ formData: sanitizedFormData }, () =>
-      this.props?.onChange?.()
-    );
+    this.setState({ formData: sanitizedFormData }, () => this.props.onChange());
   };
 
   handleOnSubmit = ({ formData }) => {
