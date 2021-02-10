@@ -39,7 +39,7 @@ const NoUsers = memo(({ reason }: Props) => {
   return (
     <NoUsersPage>
       <Icon name="blankPage" />
-      <FormattedMessage {...messages.pickProject} />
+      <FormattedMessage {...messages.pickInputCollection} />
     </NoUsersPage>
   );
 });
