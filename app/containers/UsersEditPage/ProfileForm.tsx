@@ -235,12 +235,9 @@ class ProfileForm extends PureComponent<Props, State> {
       key: ExtraFormDataKey;
       data: ExtraFormDataConfiguration;
     }) => {
-      this.setState(
-        ({ extraFormData }) => ({
-          extraFormData: { ...extraFormData, [key]: data },
-        }),
-        () => console.log(this.state.extraFormData)
-      );
+      this.setState(({ extraFormData }) => ({
+        extraFormData: { ...extraFormData, [key]: data },
+      }));
     };
 
     const createChangeHandler = (fieldName: string) => (value) => {
