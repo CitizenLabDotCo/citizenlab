@@ -12,6 +12,8 @@ module Seo
     end
 
     def verify_domain(domain)
+      return if api_keys_missing?
+
       result = resquest_token_for_domain(domain)
 
       Rails.logger.info "Got verification token request result #{result.to_h}"
@@ -27,14 +29,22 @@ module Seo
     end
 
     def submit_to_search_console(url)
+      return if api_keys_missing?
+
       authenticated_webmasters_api.add_site(url)
     end
 
     def submit_sitemap(url)
+      return if api_keys_missing?
+
       authenticated_webmasters_api.submit_sitemap(url, "#{url}/sitemap.xml")
     end
 
     private
+
+    def api_keys_missing?
+      ENV.values_at('GOOGLE_SEARCH_CONSOLE_ACCOUNT_EMAIL', 'GOOGLE_PRIVATE_KEY').any?(&:blank?)
+    end
 
     def hosted_zones
       r53.list_hosted_zones.hosted_zones
