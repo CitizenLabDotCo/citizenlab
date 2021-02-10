@@ -3,10 +3,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { isEmpty, cloneDeep } from 'lodash-es';
 
 // services
-import {
-  updateProjectMapLayer,
-  deleteProjectMapLayer,
-} from 'services/mapLayers';
+import { updateProjectMapLayer } from 'services/mapLayers';
 
 // hooks
 import useMapLayer from 'hooks/useMapLayer';
@@ -47,17 +44,8 @@ const ButtonContainerLeft = styled.div`
   align-items: center;
 `;
 
-const ButtonContainerRight = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
 const CancelButton = styled(Button)`
   margin-left: 10px;
-`;
-
-const RemoveButton = styled(Button)`
-  margin-left: 20px;
 `;
 
 interface Props {
