@@ -8,18 +8,18 @@ module AdminApi
       tenants = Tenant.all.order(name: :asc)
       tenants = tenants.where('name LIKE ?', "%#{params[:search]}%") if params[:search]
       # Call #to_json explicitly, otherwise 'data' is added as root.
-      render json: MultiTenancy::TenantService.serialize_tenants(tenants).to_json
+      render json: serialize_tenants(tenants).to_json
     end
 
     def show
       # Call #to_json explicitly, otherwise 'data' is added as root.
-      render json: WebApi::V1::External::TenantSerializer.new(@tenant).to_json
+      render json: AdminApi::TenantSerializer.new(@tenant).to_json
     end
 
     def create
       success, tenant, config = tenant_service.initialize_with_template(tenant_params, config_params, template_name)
       if success
-        tenant_json = WebApi::V1::External::TenantSerializer.new(tenant, app_configuration: config).to_json
+        tenant_json = AdminApi::TenantSerializer.new(tenant, app_configuration: config).to_json
         render json: tenant_json, status: :created
       else
         tenant.errors.merge!(config.errors)
@@ -30,7 +30,7 @@ module AdminApi
     def update
       success, tenant, config = tenant_service.update_tenant(@tenant, legacy_tenant_params)
       if success
-        tenant_json = WebApi::V1::External::TenantSerializer.new(tenant, app_configuration: config).to_json
+        tenant_json = AdminApi::TenantSerializer.new(tenant, app_configuration: config).to_json
         render json: tenant_json, status: :ok
       else
         tenant.errors.merge!(config.errors)
@@ -61,6 +61,22 @@ module AdminApi
     end
 
     private
+
+    # Helper function to serialize an enumeration of tenants efficiently.
+    # It works by batch loading app configurations to avoid n+1 queries.
+    # It could be move to a dedicated service if it keeps growing, but 
+    # keeping things simple for now.
+    #
+    # @param [Enumerable<Tenant>] tenants
+    def serialize_tenants(tenants = nil)
+      tenants ||= Tenant.all
+      tenants = tenants.sort_by(&:host)
+      configs = AppConfiguration.from_tenants(tenants).sort_by(&:host)
+
+      tenants.zip(configs).map do |tenant, config|
+        MultiTenancy::TenantSerializer.new(tenant, app_configuration: config)
+      end
+    end
 
     def template_name
       @template ||= params[:template] || 'base'

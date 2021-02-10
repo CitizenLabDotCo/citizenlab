@@ -69,20 +69,6 @@ module MultiTenancy
       [false, tenant, config]
     end
 
-    # Helper function to serialize an enumeration of tenants efficiently.
-    # It works by batch loading app configurations to avoid n+1 queries.
-    #
-    # @param [Enumerable<Tenant>] tenants
-    def self.serialize_tenants(tenants = nil)
-      tenants ||= Tenant.all
-      tenants = tenants.sort_by(&:host)
-      configs = AppConfiguration.from_tenants(tenants).sort_by(&:host)
-
-      tenants.zip(configs).map do |tenant, config|
-        WebApi::V1::External::TenantSerializer.new(tenant, app_configuration: config)
-      end
-    end
-
     private
 
     # @param [String] template_name
