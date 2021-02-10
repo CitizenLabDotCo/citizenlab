@@ -7,7 +7,10 @@ import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 interface Props {
-  onData: (data: { after?: string; configuration: TabProps }) => void;
+  onData: (data: {
+    insertAfterTabName?: string;
+    tabConfiguration: TabProps;
+  }) => void;
 }
 
 const Tab: FC<Props & InjectedIntlProps> = ({
@@ -16,12 +19,12 @@ const Tab: FC<Props & InjectedIntlProps> = ({
 }) => {
   useEffect(() => {
     onData({
-      configuration: {
+      tabConfiguration: {
         name: 'registration',
         label: formatMessage(messages.tabRegistrationFields),
         url: '/admin/settings/registration',
       },
-      after: 'customize',
+      insertAfterTabName: 'customize',
     });
   }, []);
   return null;

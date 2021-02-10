@@ -108,7 +108,10 @@ export type OutletsPropertyMap = {
     onData: (data: { key: string; data: Object }) => void;
   };
   'app.containers.Admin.settings.SettingsPage': {
-    onData: (data: { after?: string; configuration: TabProps }) => void;
+    onData: (data: {
+      insertAfterTabName?: string;
+      tabConfiguration: TabProps;
+    }) => void;
   };
 };
 
