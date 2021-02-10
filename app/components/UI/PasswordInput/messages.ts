@@ -59,7 +59,7 @@ export default defineMessages({
   },
   initialPasswordStrengthCheckerMessage: {
     id: 'app.components.PasswordInput.initialPasswordStrengthCheckerMessage',
-    defaultMessage: 'Too short',
+    defaultMessage: 'Too short (min. {minimumPasswordLength} characters)',
   },
   minimumPasswordLengthErrorMessage: {
     id: 'app.components.PasswordInput.minimumPasswordLengthErrorMessage',

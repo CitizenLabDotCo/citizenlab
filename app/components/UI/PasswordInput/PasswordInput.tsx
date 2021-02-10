@@ -148,7 +148,10 @@ const PasswordInputComponent = ({
                 password={password || undefined}
                 minLength={minimumPasswordLength}
                 shortScoreWord={formatMessage(
-                  messages.initialPasswordStrengthCheckerMessage
+                  messages.initialPasswordStrengthCheckerMessage,
+                  {
+                    minimumPasswordLength,
+                  }
                 )}
                 scoreWords={[
                   formatMessage(messages.strength1Password),

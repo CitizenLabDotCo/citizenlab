@@ -240,7 +240,6 @@
   "app.components.PasswordInput.a11y_strength5Password": "Very strong password strength",
   "app.components.PasswordInput.emptyPasswordError": "The password field cannot be empty",
   "app.components.PasswordInput.hidePassword": "Hide password",
-  "app.components.PasswordInput.initialPasswordStrengthCheckerMessage": "Too short",
   "app.components.PasswordInput.minimumPasswordLengthErrorMessage": "Your password needs to be at least {minimumPasswordLength} characters long.",
   "app.components.PasswordInput.showPassword": "Show password",
   "app.components.PasswordInput.strength1Password": "Weak",
