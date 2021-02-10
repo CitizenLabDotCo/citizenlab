@@ -76,7 +76,7 @@ const QuestionRow = ({
       onClick={onEditOptions}
       buttonStyle="secondary"
     >
-      <FormattedMessage {...messages.editOptions} />
+      <FormattedMessage {...messages.editPollAnswersButtonLabel} />
     </Button>
   </SortableRow>
 );

@@ -107,7 +107,7 @@ export class OptionForm extends PureComponent<Props, State> {
             onClick={collapse}
             buttonStyle="secondary"
           >
-            <FormattedMessage {...messages.editOptionDone} />
+            <FormattedMessage {...messages.editOptionSave} />
           </Button>
         </Row>
         <OptionsContainer>
@@ -157,7 +157,7 @@ export class OptionForm extends PureComponent<Props, State> {
                 onClick={this.addOption}
                 autoFocus
               >
-                <FormattedMessage {...messages.addOption} />
+                <FormattedMessage {...messages.addAnswerChoice} />
               </StyledButton>
             )}
           </List>
