@@ -20,14 +20,13 @@ const Container = styled.div`
 `;
 
 const StyledLayerList = styled(LayerList)`
-  flex: 0 0 500px;
-  width: 500px;
+  flex: 0 0 400px;
+  width: 400px;
 `;
 
 const StyledMap = styled(Map)`
-  flex: 0 0 500px;
-  width: 500px;
-  height: 500px;
+  flex: 1;
+  height: 800px;
   margin-left: 60px;
 `;
 

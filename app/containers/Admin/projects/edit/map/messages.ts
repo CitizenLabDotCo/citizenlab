@@ -45,8 +45,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.MapTab.import',
     defaultMessage: 'Import GeoJSON file',
   },
-  color: {
-    id: 'app.containers.AdminPage.ProjectEdit.MapTab.color',
-    defaultMessage: 'Color',
+  layerColor: {
+    id: 'app.containers.AdminPage.ProjectEdit.MapTab.layerColor',
+    defaultMessage: 'Layer color',
   },
 });
