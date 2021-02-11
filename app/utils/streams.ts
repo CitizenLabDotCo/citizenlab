@@ -26,7 +26,7 @@ import {
 } from 'lodash-es';
 import request from 'utils/request';
 import { authApiEndpoint } from 'services/auth';
-import { currentTenantApiEndpoint } from 'services/tenant';
+import { currentAppConfigurationEndpoint } from 'services/tenant';
 import { currentOnboardingCampaignsApiEndpoint } from 'services/onboardingCampaigns';
 import { userCustomFieldsSchemaApiEndpoint } from 'services/userCustomFields';
 import { IUser } from 'services/users';
@@ -97,7 +97,7 @@ class Streams {
     Object.keys(this.streams).forEach((streamId) => {
       if (
         streamId === authApiEndpoint ||
-        streamId === currentTenantApiEndpoint ||
+        streamId === currentAppConfigurationEndpoint ||
         streamId === userCustomFieldsSchemaApiEndpoint
       ) {
         promisesToAwait.push(this.streams[streamId].fetch());

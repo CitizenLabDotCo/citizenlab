@@ -2,7 +2,7 @@ import { API_PATH } from 'containers/App/constants';
 import streams from 'utils/streams';
 import { ImageSizes, Multiloc, Locale } from 'typings';
 
-export const currentTenantApiEndpoint = `${API_PATH}/app_configuration`;
+export const currentAppConfigurationEndpoint = `${API_PATH}/app_configuration`;
 
 interface AppConfigurationFeature {
   allowed: boolean;
@@ -244,7 +244,7 @@ export interface IUpdatedAppConfigurationProperties {
 
 export function currentTenantStream() {
   return streams.get<IAppConfiguration>({
-    apiEndpoint: currentTenantApiEndpoint,
+    apiEndpoint: currentAppConfigurationEndpoint,
   });
 }
 
