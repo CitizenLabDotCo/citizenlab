@@ -53,9 +53,9 @@ const Container = styled.div`
 `;
 
 interface VoteControlComponentProps {
-  initiative: IInitiatIAppConfigurationSettings;
+  initiative: IInitiativeData;
   initiativeStatus: IInitiativeStatusData;
-  initiativeSettings: ITenantSettings['initiatives'];
+  initiativeSettings: IAppConfigurationSettings['initiatives'];
   userVoted: boolean;
   onVote?: () => void;
   onCancelVote?: () => void;
