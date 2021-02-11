@@ -9,7 +9,7 @@ import { Section, SectionField } from 'components/admin/Section';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
-import { Label, ColorPickerInput } from 'cl2-component-library';
+import { Label, ColorPickerInput, Input } from 'cl2-component-library';
 
 // i18n
 // import T from 'components/T';
@@ -67,6 +67,7 @@ interface IFormValues {
   tooltipContent: Multiloc | null;
   popupContent: Multiloc | null;
   color: string;
+  markerSymbol: string;
 }
 
 export const getLayerType = (mapLayer: IMapLayerAttributes | undefined) => {
@@ -99,6 +100,8 @@ const LayerConfig = memo<Props & InjectedIntlProps & InjectedLocalized>(
     const [formValues, setFormValues] = useState<IFormValues>({
       title_multiloc: mapLayer?.title_multiloc || null,
       color: getLayerColor(mapLayer, type),
+      markerSymbol:
+        mapLayer?.geojson?.features?.[0]?.properties?.['marker-symbol'] || '',
       tooltipContent:
         mapLayer?.geojson?.features?.[0]?.properties?.tooltipContent,
       popupContent: mapLayer?.geojson?.features?.[0]?.properties?.popupContent,
@@ -109,6 +112,9 @@ const LayerConfig = memo<Props & InjectedIntlProps & InjectedLocalized>(
         {
           title_multiloc: mapLayer?.title_multiloc || null,
           color: getLayerColor(mapLayer, type),
+          markerSymbol:
+            mapLayer?.geojson?.features?.[0]?.properties?.['marker-symbol'] ||
+            '',
           tooltipContent:
             mapLayer?.geojson?.features?.[0]?.properties?.tooltipContent,
           popupContent:
@@ -132,6 +138,10 @@ const LayerConfig = memo<Props & InjectedIntlProps & InjectedLocalized>(
 
     const handleColorOnChange = (color: string) => {
       formChange({ color });
+    };
+
+    const handleMarkerSymbolOnChange = (markerSymbol: string) => {
+      formChange({ markerSymbol });
     };
 
     const validate = () => {
@@ -194,7 +204,7 @@ const LayerConfig = memo<Props & InjectedIntlProps & InjectedLocalized>(
             'stroke-opacity': 1,
             'marker-color': formValues.color,
             'marker-size': 'medium',
-            'marker-symbol': '',
+            'marker-symbol': formValues.markerSymbol,
             tooltipContent: formValues.tooltipContent,
             popupContent: formValues.popupContent,
           };
@@ -248,6 +258,17 @@ const LayerConfig = memo<Props & InjectedIntlProps & InjectedLocalized>(
               onChange={handleColorOnChange}
             />
           </SectionField>
+
+          {type === 'Point' && (
+            <SectionField>
+              <Input
+                type="text"
+                value={formValues.markerSymbol}
+                onChange={handleMarkerSymbolOnChange}
+                label={formatMessage(messages.iconName)}
+              />
+            </SectionField>
+          )}
 
           <SectionField>
             <InputMultilocWithLocaleSwitcher
