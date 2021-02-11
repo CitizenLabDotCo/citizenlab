@@ -56,7 +56,7 @@ resource 'Map Configs' do
     end
 
     delete 'web_api/v1/projects/:project_id/map_config' do
-      example_request 'Cannot update the map config for a project' do
+      example_request 'Cannot delete the map config for a project' do
         expect(status).to eq 401
       end
     end
