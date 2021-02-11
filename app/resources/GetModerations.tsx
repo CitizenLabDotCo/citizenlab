@@ -32,7 +32,7 @@ export type GetModerationsChildProps = State & {
   onChangePage: (pageNumber: number) => void;
 };
 
-export default class GetTenant extends React.Component<Props, State> {
+export default class GetModerations extends React.Component<Props, State> {
   private inputProps$: BehaviorSubject<InputProps>;
   private pageChanges$: BehaviorSubject<number>;
   private subscriptions: Subscription[];
