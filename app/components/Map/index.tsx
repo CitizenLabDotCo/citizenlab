@@ -11,7 +11,7 @@ import Legend from './Legend';
 // resources
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
-} from 'resources/GetTenant';
+} from 'resources/GetAppConfiguration';
 import GetMapConfig, { GetMapConfigChildProps } from 'resources/GetMapConfig';
 
 // Map

@@ -22,7 +22,7 @@ import { addBasket, updateBasket } from 'services/baskets';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
-} from 'resources/GetTenant';
+} from 'resources/GetAppConfiguration';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import GetBasket, { GetBasketChildProps } from 'resources/GetBasket';

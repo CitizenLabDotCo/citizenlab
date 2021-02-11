@@ -3,7 +3,7 @@ import { mapValues, reduce } from 'lodash-es';
 import { Multiloc } from 'typings';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
-} from 'resources/GetTenant';
+} from 'resources/GetAppConfiguration';
 import { isNilOrError } from 'utils/helperUtils';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
 

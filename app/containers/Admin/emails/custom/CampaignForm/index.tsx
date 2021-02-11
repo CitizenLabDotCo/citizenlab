@@ -37,7 +37,7 @@ import GetGroups, { GetGroupsChildProps } from 'resources/GetGroups';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
-} from 'resources/GetTenant';
+} from 'resources/GetAppConfiguration';
 
 const StyledSection = styled(Section)`
   margin-bottom: 2.5rem;

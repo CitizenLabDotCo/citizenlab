@@ -11,7 +11,7 @@ import { ButtonWrapper } from 'components/admin/PageWrapper';
 // resources
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
-} from 'resources/GetTenant';
+} from 'resources/GetAppConfiguration';
 import { updateTenant } from 'services/appConfiguration';
 
 // i18n

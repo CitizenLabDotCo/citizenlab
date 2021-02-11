@@ -34,7 +34,7 @@ import GetWindowSize, {
 } from 'resources/GetWindowSize';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
-} from 'resources/GetTenant';
+} from 'resources/GetAppConfiguration';
 
 // style
 import styled, { css } from 'styled-components';

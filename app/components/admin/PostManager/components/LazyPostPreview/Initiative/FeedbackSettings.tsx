@@ -35,7 +35,7 @@ import GetInitiative, {
 } from 'resources/GetInitiative';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
-} from 'resources/GetTenant';
+} from 'resources/GetAppConfiguration';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // analytics

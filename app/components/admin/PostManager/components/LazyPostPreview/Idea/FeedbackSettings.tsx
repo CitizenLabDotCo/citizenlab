@@ -31,7 +31,7 @@ import GetIdeaStatuses, {
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
-} from 'resources/GetTenant';
+} from 'resources/GetAppConfiguration';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // analytics

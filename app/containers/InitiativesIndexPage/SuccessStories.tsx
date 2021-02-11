@@ -13,7 +13,7 @@ import { media, colors, fontSizes } from 'utils/styleUtils';
 import { adopt } from 'react-adopt';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
-} from 'resources/GetTenant';
+} from 'resources/GetAppConfiguration';
 import { isNilOrError } from 'utils/helperUtils';
 
 // intl

@@ -10,7 +10,7 @@ import AvatarBubbles from 'components/AvatarBubbles';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
-} from 'resources/GetTenant';
+} from 'resources/GetAppConfiguration';
 
 // tracking
 import { trackEventByName } from 'utils/analytics';

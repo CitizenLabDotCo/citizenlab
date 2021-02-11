@@ -21,7 +21,7 @@ import { IInitiativeData } from 'services/initiatives';
 import { IAppConfigurationSettings } from 'services/appConfiguration';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
-} from 'resources/GetTenant';
+} from 'resources/GetAppConfiguration';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import { addVote, deleteVote } from 'services/initiativeVotes';
 import ProposedNotVoted from './ProposedNotVoted';

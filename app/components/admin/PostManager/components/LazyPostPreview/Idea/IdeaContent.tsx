@@ -34,7 +34,7 @@ import GetIdeaImages, {
 } from 'resources/GetIdeaImages';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
-} from 'resources/GetTenant';
+} from 'resources/GetAppConfiguration';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetPermission, {

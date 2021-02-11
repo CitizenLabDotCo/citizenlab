@@ -3,7 +3,7 @@ import styled, { withTheme } from 'styled-components';
 
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
-} from 'resources/GetTenant';
+} from 'resources/GetAppConfiguration';
 import GetInitiative, {
   GetInitiativeChildProps,
 } from 'resources/GetInitiative';

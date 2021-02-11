@@ -16,7 +16,7 @@ import GetGroup from 'resources/GetGroup';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
-} from 'resources/GetTenant';
+} from 'resources/GetAppConfiguration';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';

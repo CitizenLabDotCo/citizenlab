@@ -28,7 +28,7 @@ import GetWindowSize, {
 } from 'resources/GetWindowSize';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
-} from 'resources/GetTenant';
+} from 'resources/GetAppConfiguration';
 import GetFeatureFlag from 'resources/GetFeatureFlag';
 
 // i18n

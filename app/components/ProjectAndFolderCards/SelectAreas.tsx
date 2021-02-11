@@ -8,7 +8,7 @@ import FilterSelector from 'components/FilterSelector';
 // services
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
-} from 'resources/GetTenant';
+} from 'resources/GetAppConfiguration';
 import GetAreas, { GetAreasChildProps } from 'resources/GetAreas';
 
 // i18n

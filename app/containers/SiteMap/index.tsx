@@ -25,7 +25,7 @@ import { media, colors, fontSizes } from 'utils/styleUtils';
 import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
-} from 'resources/GetTenant';
+} from 'resources/GetAppConfiguration';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 const Container = styled.div`
