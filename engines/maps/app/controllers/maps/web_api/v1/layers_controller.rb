@@ -36,7 +36,7 @@ module Maps
         end
 
         def reorder
-          if @layer.update(ordering: params.dig(:layer, :ordering))
+          if @layer.insert_at(params.dig(:layer, :ordering))
             render json: serialized_layer, status: :ok
           else
             render json: layer_errors, status: :unprocessable_entity
