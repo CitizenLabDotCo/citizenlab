@@ -7,7 +7,7 @@ import { IconTooltip, LocaleSwitcher, Label } from 'cl2-component-library';
 
 // hooks
 import useLocale from 'hooks/useLocale';
-import useAppConfigurationLocales from 'hooks/useTenantLocales';
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
 // style
 import styled from 'styled-components';

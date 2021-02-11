@@ -15,7 +15,7 @@ import { gql } from 'apollo-boost';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 
 // hooks
-import useAppConfigurationLocales from 'hooks/useTenantLocales';
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useGraphqlTenantLocales from 'hooks/useGraphqlTenantLocales';
 
 // components

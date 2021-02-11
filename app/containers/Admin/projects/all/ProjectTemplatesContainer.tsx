@@ -4,7 +4,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { useQuery } from '@apollo/react-hooks';
 import { gql } from 'apollo-boost';
 import useAppConfiguration from 'hooks/useAppConfiguration';
-import useAppConfigurationLocales from 'hooks/useTenantLocales';
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import { trackEventByName } from 'utils/analytics';
 import { get, isEmpty } from 'lodash-es';
 import tracks from './tracks';

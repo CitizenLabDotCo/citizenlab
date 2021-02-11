@@ -1,5 +1,5 @@
 import useLocale from 'hooks/useLocale';
-import useAppConfigurationLocales from 'hooks/useTenantLocales';
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import { isNilOrError } from 'utils/helperUtils';
 import { getLocalized } from 'utils/i18n';
 import { Multiloc } from 'typings';
