@@ -5,7 +5,9 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // services
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetAppConfiguration, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetTenant';
 import { updateTenant } from 'services/tenant';
 
 // components
@@ -81,7 +83,7 @@ interface InputProps {
 
 interface DataProps {
   locale: GetLocaleChildProps;
-  tenant: GetTenantChildProps;
+  tenant: GetAppConfigurationChildProps;
 }
 
 interface Props extends InputProps, DataProps {}

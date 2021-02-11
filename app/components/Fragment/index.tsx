@@ -7,7 +7,9 @@ import qs from 'qs';
 import styled from 'styled-components';
 
 // resources
-import GetAppConfiguration, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetTenant';
 import GetFeatureFlag, {
   GetFeatureFlagChildProps,
 } from 'resources/GetFeatureFlag';
@@ -19,7 +21,7 @@ const StyledIframe = styled.iframe`
 `;
 
 interface DataProps {
-  tenant: GetTenantChildProps;
+  tenant: GetAppConfigurationChildProps;
   fragmentsFeatureFlag: GetFeatureFlagChildProps;
 }
 

@@ -9,7 +9,9 @@ import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLoca
 import { ButtonWrapper } from 'components/admin/PageWrapper';
 
 // resources
-import GetAppConfiguration, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetTenant';
 import { updateTenant } from 'services/tenant';
 
 // i18n
@@ -35,7 +37,7 @@ interface InputProps {
 }
 
 interface DataProps {
-  tenant: GetTenantChildProps;
+  tenant: GetAppConfigurationChildProps;
 }
 
 interface Props extends DataProps, InputProps, InjectedIntlProps {}

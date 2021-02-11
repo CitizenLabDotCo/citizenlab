@@ -3,7 +3,9 @@ import { InjectedIntlProps } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import { adopt } from 'react-adopt';
-import GetAppConfiguration, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetTenant';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import styled from 'styled-components';
 import { isNilOrError } from 'utils/helperUtils';
@@ -54,7 +56,7 @@ interface InputProps {
 }
 
 interface DataProps {
-  tenant: GetTenantChildProps;
+  tenant: GetAppConfigurationChildProps;
   authUser: GetAuthUserChildProps;
 }
 

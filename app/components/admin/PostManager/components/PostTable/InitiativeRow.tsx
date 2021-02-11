@@ -40,7 +40,9 @@ import { TitleLink, StyledRow } from './Row';
 import SubRow from './SubRow';
 
 // resources
-import GetAppConfiguration, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetTenant';
 import GetInitiativeAllowedTransitions, {
   GetInitiativeAllowedTransitionsChildProps,
 } from 'resources/GetInitiativeAllowedTransitions';
@@ -53,7 +55,7 @@ import events, {
 } from 'components/admin/PostManager/events';
 
 interface DataProps {
-  tenant: GetTenantChildProps;
+  tenant: GetAppConfigurationChildProps;
   allowedTransitions: GetInitiativeAllowedTransitionsChildProps;
 }
 

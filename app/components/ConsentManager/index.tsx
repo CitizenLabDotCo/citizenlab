@@ -18,7 +18,9 @@ import { isNilOrError } from 'utils/helperUtils';
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import Container from './Container';
-import GetAppConfiguration, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetTenant';
 import {
   getConsent,
   IConsentCookie,
@@ -35,7 +37,7 @@ export type CategorizedDestinations = Record<TCategory, IDestination[]>;
 
 interface InputProps {}
 interface DataProps {
-  tenant: GetTenantChildProps;
+  tenant: GetAppConfigurationChildProps;
   authUser: GetAuthUserChildProps;
 }
 interface Props extends InputProps, DataProps {}

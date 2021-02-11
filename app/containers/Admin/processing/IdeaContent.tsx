@@ -9,7 +9,9 @@ import TagWrapper from './TagWrapper';
 
 // resources
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
-import GetAppConfiguration, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetTenant';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 
 // i18n
@@ -80,7 +82,7 @@ export interface InputProps {
 
 interface DataProps {
   idea: GetIdeaChildProps;
-  tenant: GetTenantChildProps;
+  tenant: GetAppConfigurationChildProps;
   locale: GetLocaleChildProps;
 }
 

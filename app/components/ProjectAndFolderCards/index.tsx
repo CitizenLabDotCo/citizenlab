@@ -12,7 +12,9 @@ import LoadingBox from './LoadingBox';
 import Button from 'components/UI/Button';
 
 // resources
-import GetAppConfiguration, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetTenant';
 import GetWindowSize, {
   GetWindowSizeChildProps,
 } from 'resources/GetWindowSize';
@@ -226,7 +228,7 @@ interface InputProps extends UseAdminPublicationInputProps {
 }
 
 interface DataProps {
-  tenant: GetTenantChildProps;
+  tenant: GetAppConfigurationChildProps;
   windowSize: GetWindowSizeChildProps;
   adminPublications: GetAdminPublicationsChildProps;
 }

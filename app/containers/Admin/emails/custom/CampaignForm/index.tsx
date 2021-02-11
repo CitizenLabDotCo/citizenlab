@@ -35,7 +35,9 @@ import Error from 'components/UI/Error';
 // resources
 import GetGroups, { GetGroupsChildProps } from 'resources/GetGroups';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetAppConfiguration, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetTenant';
 
 const StyledSection = styled(Section)`
   margin-bottom: 2.5rem;
@@ -71,7 +73,7 @@ interface InputProps {
 
 interface DataProps {
   user: GetAuthUserChildProps;
-  tenant: GetTenantChildProps;
+  tenant: GetAppConfigurationChildProps;
 }
 
 interface Props

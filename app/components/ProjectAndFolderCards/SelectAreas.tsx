@@ -6,7 +6,9 @@ import { isNilOrError, isEmptyMultiloc } from 'utils/helperUtils';
 import FilterSelector from 'components/FilterSelector';
 
 // services
-import GetAppConfiguration, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetTenant';
 import GetAreas, { GetAreasChildProps } from 'resources/GetAreas';
 
 // i18n
@@ -21,7 +23,7 @@ interface InputProps {
 
 interface DataProps {
   areas: GetAreasChildProps;
-  tenant: GetTenantChildProps;
+  tenant: GetAppConfigurationChildProps;
 }
 
 interface Props extends InputProps, DataProps, InjectedLocalized {}

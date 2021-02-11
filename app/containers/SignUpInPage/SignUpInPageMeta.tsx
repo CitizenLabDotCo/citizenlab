@@ -13,7 +13,9 @@ import { InjectedIntlProps } from 'react-intl';
 import GetTenantLocales, {
   GetTenantLocalesChildProps,
 } from 'resources/GetTenantLocales';
-import GetAppConfiguration, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetTenant';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 
 // utils
@@ -24,7 +26,7 @@ import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
 
 interface DataProps {
   tenantLocales: GetTenantLocalesChildProps;
-  tenant: GetTenantChildProps;
+  tenant: GetAppConfigurationChildProps;
   locale: GetLocaleChildProps;
 }
 

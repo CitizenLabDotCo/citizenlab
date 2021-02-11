@@ -19,7 +19,9 @@ import GetInitiativeStatus, {
 } from 'resources/GetInitiativeStatus';
 import { IInitiativeData } from 'services/initiatives';
 import { ITenantSettings } from 'services/tenant';
-import GetAppConfiguration, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetTenant';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import { addVote, deleteVote } from 'services/initiativeVotes';
 import ProposedNotVoted from './ProposedNotVoted';
@@ -105,7 +107,7 @@ interface InputProps {
 }
 
 interface DataProps {
-  tenant: GetTenantChildProps;
+  tenant: GetAppConfigurationChildProps;
   initiative: GetInitiativeChildProps;
   initiativeStatus: GetInitiativeStatusChildProps;
   authUser: GetAuthUserChildProps;

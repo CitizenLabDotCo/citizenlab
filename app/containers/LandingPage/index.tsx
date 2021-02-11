@@ -19,7 +19,9 @@ const ProjectAndFolderCards = React.lazy(() =>
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetAppConfiguration, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetTenant';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetPage, { GetPageChildProps } from 'resources/GetPage';
 
@@ -143,7 +145,7 @@ export interface InputProps {
 
 interface DataProps {
   locale: GetLocaleChildProps;
-  tenant: GetTenantChildProps;
+  tenant: GetAppConfigurationChildProps;
   authUser: GetAuthUserChildProps;
   homepageInfoPage: GetPageChildProps;
   postingPermission: GetInitiativesPermissionsChildProps;

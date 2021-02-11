@@ -32,7 +32,9 @@ import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetWindowSize, {
   GetWindowSizeChildProps,
 } from 'resources/GetWindowSize';
-import GetAppConfiguration, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetTenant';
 
 // style
 import styled, { css } from 'styled-components';
@@ -350,7 +352,7 @@ interface InputProps {
 interface DataProps {
   locale: GetLocaleChildProps;
   windowSize: GetWindowSizeChildProps;
-  tenant: GetTenantChildProps;
+  tenant: GetAppConfigurationChildProps;
 }
 
 interface Props extends DataProps, InputProps {}

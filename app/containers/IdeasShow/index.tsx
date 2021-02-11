@@ -64,7 +64,9 @@ import GetPermission, {
 import GetIdeaCustomFieldsSchemas, {
   GetIdeaCustomFieldsSchemasChildProps,
 } from 'resources/GetIdeaCustomFieldsSchemas';
-import GetAppConfiguration, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetTenant';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetComments, { GetCommentsChildProps } from 'resources/GetComments';
 
@@ -302,7 +304,7 @@ interface DataProps {
   officialFeedbacks: GetOfficialFeedbacksChildProps;
   postOfficialFeedbackPermission: GetPermissionChildProps;
   ideaCustomFieldsSchemas: GetIdeaCustomFieldsSchemasChildProps;
-  tenant: GetTenantChildProps;
+  tenant: GetAppConfigurationChildProps;
   comments: GetCommentsChildProps;
 }
 

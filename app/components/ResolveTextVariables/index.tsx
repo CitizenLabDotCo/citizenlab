@@ -1,7 +1,9 @@
 import React, { PureComponent } from 'react';
 import { mapValues, reduce } from 'lodash-es';
 import { Multiloc } from 'typings';
-import GetAppConfiguration, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetTenant';
 import { isNilOrError } from 'utils/helperUtils';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
 
@@ -11,7 +13,7 @@ interface InputProps {
 }
 
 interface DataProps {
-  tenant: GetTenantChildProps;
+  tenant: GetAppConfigurationChildProps;
 }
 
 interface Props extends InputProps, DataProps, InjectedLocalized {}
