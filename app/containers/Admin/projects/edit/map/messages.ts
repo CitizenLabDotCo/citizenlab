@@ -49,4 +49,12 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.MapTab.layerColor',
     defaultMessage: 'Layer color',
   },
+  iconName: {
+    id: 'app.containers.AdminPage.ProjectEdit.MapTab.iconName',
+    defaultMessage: 'Icon name',
+  },
+  centerLabel: {
+    id: 'app.containers.AdminPage.ProjectEdit.MapTab.centerLabel',
+    defaultMessage: 'Map center (lat, long)',
+  },
 });
