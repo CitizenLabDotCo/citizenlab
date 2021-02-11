@@ -10,9 +10,9 @@ import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 
 // resources
-import GetTenantLocales, {
-  GetTenantLocalesChildProps,
-} from 'resources/GetTenantLocales';
+import GetAppConfigurationLocales, {
+  GetAppConfigurationLocalesChildProps,
+} from 'resources/GetAppConfigurationLocales';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
@@ -25,7 +25,7 @@ import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
 import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
 
 interface DataProps {
-  tenantLocales: GetTenantLocalesChildProps;
+  tenantLocales: GetAppConfigurationLocalesChildProps;
   tenant: GetAppConfigurationChildProps;
   locale: GetLocaleChildProps;
 }
@@ -81,7 +81,7 @@ const SignUpInPageMeta = memo<Props & InjectedIntlProps & WithRouterProps>(
 const SignUpInPageMetaWithHoC = withRouter(injectIntl(SignUpInPageMeta));
 
 const Data = adopt<DataProps>({
-  tenantLocales: <GetTenantLocales />,
+  tenantLocales: <GetAppConfigurationLocales />,
   tenant: <GetAppConfiguration />,
   locale: <GetLocale />,
 });
