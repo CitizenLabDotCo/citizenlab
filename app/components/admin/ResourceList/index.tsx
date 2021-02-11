@@ -20,15 +20,15 @@ const StyledList = styled.div`
 const timeout = 200;
 
 const Container = styled.div`
-  align-items: center !important;
-  border-top: 1px solid ${colors.separation};
-  display: flex !important;
   font-size: ${fontSizes.small}px;
   font-weight: 300;
   justify-content: space-between !important;
   line-height: 20px;
+  display: flex !important;
+  align-items: center !important;
   padding-top: 10px;
   padding-bottom: 10px;
+  border-top: 1px solid ${colors.separation};
   transition: all ${timeout}ms cubic-bezier(0.165, 0.84, 0.44, 1);
 
   &.last-item {
