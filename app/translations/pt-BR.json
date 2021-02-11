@@ -1180,6 +1180,7 @@
   "app.containers.AdminPage.ProjectEdit.google_forms": "Formulário do Google",
   "app.containers.AdminPage.ProjectEdit.headerImageLabelText": "Imagem de cabeçalho",
   "app.containers.AdminPage.ProjectEdit.headerImageLabelTooltip": "Esta imagem é mostrada no topo da página do projeto. As dimensões ideais são 952x240.",
+  "app.containers.AdminPage.ProjectEdit.ideaFormTab": "",
   "app.containers.AdminPage.ProjectEdit.imageSupportArticleLinkTarget": "http://support.citizenlab.co/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "app.containers.AdminPage.ProjectEdit.imageSupportArticleLinkText": "Este artigo",
   "app.containers.AdminPage.ProjectEdit.inputAndFeedback": "Colete comentários e feedback",
