@@ -58,7 +58,7 @@ class Rack::Attack
   end
 
   # Temporary solution: Enable throttling for search requests.
-  # Search parameters are used for ideas, initiatives, users, invites,
+  # Search parameters are used for ideas, initiatives, users, invites, moderation.
   throttle('search/ip', limit: 15, period: 20.seconds) do |req|
     if req.params['search'].present?
       req.ip
