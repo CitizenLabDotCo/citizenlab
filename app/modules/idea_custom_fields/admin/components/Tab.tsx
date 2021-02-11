@@ -7,7 +7,10 @@ import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 interface Props {
-  onData: (data: { after?: string; configuration: ITab }) => void;
+  onData: (data: {
+    insertAfterTabName?: string;
+    tabConfiguration: ITab;
+  }) => void;
 }
 
 const Tab: FC<Props & InjectedIntlProps> = ({
@@ -16,13 +19,13 @@ const Tab: FC<Props & InjectedIntlProps> = ({
 }) => {
   useEffect(() => {
     onData({
-      configuration: {
+      tabConfiguration: {
         label: formatMessage(messages.ideaFormTab),
         url: `ideaform`,
         feature: 'idea_custom_fields',
         name: 'ideaform',
       },
-      after: 'survey-results',
+      insertAfterTabName: 'survey-results',
     });
   }, []);
   return null;
