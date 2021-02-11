@@ -7,7 +7,7 @@ import { ConsentManager } from './';
 
 // mock depencies
 jest.mock('services/appConfiguration');
-jest.mock('resources/GetTenant', () => 'GetTenant');
+jest.mock('recources/GetAppConfiguration', () => 'GetAppConfiguration');
 jest.mock('./Container', () => 'Container');
 
 // by default, no cookie
