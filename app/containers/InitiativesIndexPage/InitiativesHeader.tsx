@@ -10,7 +10,7 @@ import InitiativeInfoContent from './InitiativeInfoContent';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
-} from 'resources/GetTenant';
+} from 'resources/GetAppConfiguration';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';

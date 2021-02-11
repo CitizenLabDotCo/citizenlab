@@ -66,7 +66,7 @@ import GetIdeaCustomFieldsSchemas, {
 } from 'resources/GetIdeaCustomFieldsSchemas';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
-} from 'resources/GetTenant';
+} from 'resources/GetAppConfiguration';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetComments, { GetCommentsChildProps } from 'resources/GetComments';
 

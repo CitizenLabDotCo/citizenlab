@@ -15,7 +15,7 @@ import GetTenantLocales, {
 } from 'resources/GetTenantLocales';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
-} from 'resources/GetTenant';
+} from 'resources/GetAppConfiguration';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 
 // services

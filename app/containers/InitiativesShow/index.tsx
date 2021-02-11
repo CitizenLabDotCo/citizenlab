@@ -56,7 +56,7 @@ import GetPermission, {
 } from 'resources/GetPermission';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
-} from 'resources/GetTenant';
+} from 'resources/GetAppConfiguration';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';

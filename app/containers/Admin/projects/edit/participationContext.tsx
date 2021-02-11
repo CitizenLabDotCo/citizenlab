@@ -37,7 +37,7 @@ import eventEmitter from 'utils/eventEmitter';
 // resources
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
-} from 'resources/GetTenant';
+} from 'resources/GetAppConfiguration';
 import GetFeatureFlag, {
   GetFeatureFlagChildProps,
 } from 'resources/GetFeatureFlag';

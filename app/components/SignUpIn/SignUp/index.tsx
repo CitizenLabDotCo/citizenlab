@@ -24,7 +24,7 @@ import ReactResizeDetector from 'react-resize-detector';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
-} from 'resources/GetTenant';
+} from 'resources/GetAppConfiguration';
 import GetUserCustomFieldsSchema, {
   GetUserCustomFieldsSchemaChildProps,
 } from 'resources/GetUserCustomFieldsSchema';

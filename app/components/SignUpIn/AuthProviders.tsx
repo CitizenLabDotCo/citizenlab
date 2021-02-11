@@ -11,7 +11,7 @@ import franceConnectLogo from 'components/SignUpIn/svg/franceconnect.svg';
 // resources
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
-} from 'resources/GetTenant';
+} from 'resources/GetAppConfiguration';
 import GetFeatureFlag from 'resources/GetFeatureFlag';
 
 // i18n

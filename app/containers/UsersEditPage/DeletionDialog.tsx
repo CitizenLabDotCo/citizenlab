@@ -5,7 +5,7 @@ import messages from './messages';
 import { adopt } from 'react-adopt';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
-} from 'resources/GetTenant';
+} from 'resources/GetAppConfiguration';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import styled from 'styled-components';
 import { isNilOrError } from 'utils/helperUtils';

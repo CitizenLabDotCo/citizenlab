@@ -14,7 +14,7 @@ import { IParticipationContextType } from 'typings';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
-} from 'resources/GetTenant';
+} from 'resources/GetAppConfiguration';
 import GetBasket, { GetBasketChildProps } from 'resources/GetBasket';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';

@@ -11,7 +11,7 @@ import TagWrapper from './TagWrapper';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
-} from 'resources/GetTenant';
+} from 'resources/GetAppConfiguration';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 
 // i18n

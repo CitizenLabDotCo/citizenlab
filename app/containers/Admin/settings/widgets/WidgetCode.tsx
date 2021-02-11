@@ -5,7 +5,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
-} from 'resources/GetTenant';
+} from 'resources/GetAppConfiguration';
 import { isNilOrError } from 'utils/helperUtils';
 import Button from 'components/UI/Button';
 

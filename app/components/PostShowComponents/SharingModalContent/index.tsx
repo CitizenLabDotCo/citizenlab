@@ -11,7 +11,7 @@ import { Spinner } from 'cl2-component-library';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
-} from 'resources/GetTenant';
+} from 'resources/GetAppConfiguration';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import GetInitiative, {

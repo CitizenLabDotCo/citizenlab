@@ -12,7 +12,7 @@ import { updateBasket } from 'services/baskets';
 // resources
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
-} from 'resources/GetTenant';
+} from 'resources/GetAppConfiguration';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetBasket, { GetBasketChildProps } from 'resources/GetBasket';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';

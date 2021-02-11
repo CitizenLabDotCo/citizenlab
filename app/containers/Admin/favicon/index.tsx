@@ -19,7 +19,7 @@ import {
 // resources
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
-} from 'resources/GetTenant';
+} from 'resources/GetAppConfiguration';
 
 // intl
 import messages from './messages';

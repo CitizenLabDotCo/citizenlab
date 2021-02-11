@@ -7,7 +7,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
-} from 'resources/GetTenant';
+} from 'resources/GetAppConfiguration';
 import { updateTenant } from 'services/appConfiguration';
 
 // components
