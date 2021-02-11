@@ -1,5 +1,10 @@
 # Changelog
 
+## Next release 
+
+### Changed
+- All input fields for multiple locales now use the components with locale switchers, resulting in a cleaner and more compact UI.
+
 ## 2021-02-10
 
 ### Added
