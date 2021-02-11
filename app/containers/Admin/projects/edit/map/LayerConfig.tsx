@@ -31,15 +31,24 @@ const Container = styled.div`
   background: #fff;
 `;
 
-const ButtonContainer = styled.div`
+const StyledSection = styled(Section)`
+  margin-bottom: 10px;
+`;
+
+const Footer = styled.div`
   display: flex;
   align-items: center;
 `;
 
-const ButtonContainerLeft = styled.div`
-  flex: 1;
+const FooterLeft = styled.div`
   display: flex;
   align-items: center;
+`;
+
+const FooterRight = styled.div`
+  display: flex;
+  align-items: center;
+  margin-left: 15px;
 `;
 
 const CancelButton = styled(Button)`
@@ -60,9 +69,13 @@ interface IFormValues {
   color: string;
 }
 
-const getColor = (
-  mapLayer: IMapLayerAttributes,
-  type: GeoJSON.GeoJsonTypes | unknown
+export const getLayerType = (mapLayer: IMapLayerAttributes | undefined) => {
+  return mapLayer?.geojson?.features?.[0]?.geometry.type || 'Point';
+};
+
+export const getLayerColor = (
+  mapLayer: IMapLayerAttributes | undefined,
+  type: GeoJSON.GeoJsonTypes | undefined
 ) => {
   let color: string;
 
@@ -77,14 +90,15 @@ const getColor = (
 
 const LayerConfig = memo<Props & InjectedIntlProps & InjectedLocalized>(
   ({ projectId, mapLayer, className, onClose, intl: { formatMessage } }) => {
-    const type = mapLayer?.geojson?.features?.[0]?.geometry.type;
+    const type = getLayerType(mapLayer);
 
     const [touched, setTouched] = useState(false);
     const [processing, setProcessing] = useState(false);
+    // const [success, setSuccess] = useState(false);
     const [errors, setErrors] = useState<{ [key: string]: any }>({});
     const [formValues, setFormValues] = useState<IFormValues>({
       title_multiloc: mapLayer?.title_multiloc || null,
-      color: getColor(mapLayer, type),
+      color: getLayerColor(mapLayer, type),
       tooltipContent:
         mapLayer?.geojson?.features?.[0]?.properties?.tooltipContent,
       popupContent: mapLayer?.geojson?.features?.[0]?.properties?.popupContent,
@@ -94,7 +108,7 @@ const LayerConfig = memo<Props & InjectedIntlProps & InjectedLocalized>(
       formChange(
         {
           title_multiloc: mapLayer?.title_multiloc || null,
-          color: getColor(mapLayer, type),
+          color: getLayerColor(mapLayer, type),
           tooltipContent:
             mapLayer?.geojson?.features?.[0]?.properties?.tooltipContent,
           popupContent:
@@ -128,6 +142,7 @@ const LayerConfig = memo<Props & InjectedIntlProps & InjectedLocalized>(
       changedFormValue: Partial<IFormValues>,
       touched = true
     ) => {
+      // setSuccess(false);
       setTouched(touched);
       setFormValues((prevFormValues) => ({
         ...prevFormValues,
@@ -137,11 +152,13 @@ const LayerConfig = memo<Props & InjectedIntlProps & InjectedLocalized>(
 
     const formProcessing = () => {
       setProcessing(true);
+      // setSuccess(false);
       setErrors({});
     };
 
     const formSuccess = () => {
       setProcessing(false);
+      // setSuccess(true);
       setErrors({});
       setTouched(false);
       onClose();
@@ -149,6 +166,7 @@ const LayerConfig = memo<Props & InjectedIntlProps & InjectedLocalized>(
 
     const formError = (errorResponse) => {
       setProcessing(false);
+      // setSuccess(false);
       setErrors(errorResponse?.json?.errors || 'unknown error');
     };
 
@@ -210,13 +228,24 @@ const LayerConfig = memo<Props & InjectedIntlProps & InjectedLocalized>(
 
     return (
       <Container className={className || ''}>
-        <Section>
+        <StyledSection>
           <SectionField>
             <InputMultilocWithLocaleSwitcher
               type="text"
               valueMultiloc={formValues.title_multiloc}
               onChange={handleTitleOnChange}
               label={formatMessage(messages.layerName)}
+            />
+          </SectionField>
+
+          <SectionField>
+            <Label>
+              <FormattedMessage {...messages.layerColor} />
+            </Label>
+            <ColorPickerInput
+              type="text"
+              value={formValues.color}
+              onChange={handleColorOnChange}
             />
           </SectionField>
 
@@ -239,21 +268,10 @@ const LayerConfig = memo<Props & InjectedIntlProps & InjectedLocalized>(
               labelTooltipText={formatMessage(messages.layerPopup)}
             />
           </SectionField>
+        </StyledSection>
 
-          <SectionField>
-            <Label>
-              <FormattedMessage {...messages.color} />
-            </Label>
-            <ColorPickerInput
-              type="text"
-              value={formValues.color}
-              onChange={handleColorOnChange}
-            />
-          </SectionField>
-        </Section>
-
-        <ButtonContainer>
-          <ButtonContainerLeft>
+        <Footer>
+          <FooterLeft>
             <Button
               buttonStyle="admin-dark"
               onClick={handleOnSubmit}
@@ -264,13 +282,14 @@ const LayerConfig = memo<Props & InjectedIntlProps & InjectedLocalized>(
             </Button>
 
             <CancelButton
-              buttonStyle="secondary-outlined"
+              buttonStyle="secondary"
               onClick={handleOnCancel}
               disabled={processing}
             >
               <FormattedMessage {...messages.cancel} />
             </CancelButton>
-
+          </FooterLeft>
+          <FooterRight>
             {!isEmpty(errors) && (
               <Error
                 text={formatMessage(messages.errorMessage)}
@@ -278,8 +297,8 @@ const LayerConfig = memo<Props & InjectedIntlProps & InjectedLocalized>(
                 showIcon={false}
               />
             )}
-          </ButtonContainerLeft>
-        </ButtonContainer>
+          </FooterRight>
+        </Footer>
       </Container>
     );
   }

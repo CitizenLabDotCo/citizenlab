@@ -7,27 +7,11 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 // styling
 import styled from 'styled-components';
-import { colors, fontSizes, defaultOutline, isRtl } from 'utils/styleUtils';
 
 // components
-import { Icon } from 'cl2-component-library';
 import Button from 'components/UI/Button';
 
-const Container = styled.div`
-  margin-bottom: 10px;
-`;
-
-const StyledIcon = styled(Icon)`
-  width: 24px;
-  height: 18px;
-  fill: ${colors.label};
-  margin-right: 10px;
-
-  ${isRtl`
-    margin-right: 0;
-    margin-left: 10px;
-  `}
-`;
+const Container = styled.div``;
 
 const Input = styled.input`
   opacity: 0;
@@ -35,16 +19,6 @@ const Input = styled.input`
   pointer-events: none;
   width: 1px;
   height: 1px;
-
-  &:focus + label {
-    color: #000;
-    border-color: #000;
-    ${defaultOutline};
-
-    ${StyledIcon} {
-      fill: #000;
-    }
-  }
 `;
 
 const ButtonContainer = styled.div`
@@ -104,7 +78,11 @@ const ImportButton = memo<Props>(({ onChange, className }) => {
       />
 
       <ButtonContainer>
-        <StyledButton icon="upload-file" buttonStyle="secondary">
+        <StyledButton
+          icon="upload-file"
+          buttonStyle="secondary"
+          padding="8px 12px"
+        >
           <StyledLabel aria-hidden htmlFor="file-attachment-uploader" />
           <FormattedMessage {...messages.import} />
         </StyledButton>

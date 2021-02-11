@@ -78,7 +78,7 @@ export const reorderProjectMapLayer = async (
   ordering: number
 ) => {
   const response = await streams.update<IMapLayer>(
-    `${API_PATH}/projects/${projectId}/map_config/layers/${mapLayerId}`,
+    `${API_PATH}/projects/${projectId}/map_config/layers/${mapLayerId}/reorder`,
     mapLayerId,
     { layer: { ordering } }
   );
