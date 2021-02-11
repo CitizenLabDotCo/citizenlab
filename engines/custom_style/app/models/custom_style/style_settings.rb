@@ -34,7 +34,7 @@ module CustomStyle
         end
 
         def style_json_schema_str
-          style_schema_filepath = Rails.root.join('engines', 'frontend', 'config', 'schemas', 'style.schema.json')
+          style_schema_filepath = Rails.root.join('engines', 'custom_style', 'config', 'schemas', 'style.schema.json')
           @style_json_schema_str ||= File.read(style_schema_filepath)
         end
 
