@@ -16,7 +16,7 @@ import {
 import { convertUrlToUploadFile } from 'utils/fileTools';
 import useProjectFolderImages from 'modules/project_folders/hooks/useProjectFolderImages';
 import useProjectFolder from 'modules/project_folders/hooks/useProjectFolder';
-import useTenantLocales from 'hooks/useTenantLocales';
+import useAppConfigurationLocales from 'hooks/useTenantLocales';
 
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from '../messages';
@@ -222,7 +222,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
   >('disabled');
 
   // validation
-  const tenantLocales = useTenantLocales();
+  const tenantLocales = useAppConfigurationLocales();
 
   const validate = useCallback(() => {
     let valid = false;

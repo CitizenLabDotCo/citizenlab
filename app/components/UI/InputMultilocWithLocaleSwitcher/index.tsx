@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import useTenantLocales from 'hooks/useTenantLocales';
+import useAppConfigurationLocales from 'hooks/useTenantLocales';
 import {
   InputMultilocWithLocaleSwitcher,
   InputMultilocWithLocaleSwitcherProps,
@@ -10,7 +10,7 @@ export interface Props
   extends Omit<InputMultilocWithLocaleSwitcherProps, 'locales'> {}
 
 const InputMultilocWithLocaleSwitcherWrapper = memo<Props>((props) => {
-  const tenantLocales = useTenantLocales();
+  const tenantLocales = useAppConfigurationLocales();
 
   if (!isNilOrError(tenantLocales)) {
     return (

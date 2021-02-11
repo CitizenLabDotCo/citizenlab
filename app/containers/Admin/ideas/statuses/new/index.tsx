@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { addIdeaStatus } from 'services/ideaStatuses';
 import { CLErrorsJSON } from 'typings';
 import clHistory from 'utils/cl-router/history';
-import useTenantLocales from 'hooks/useTenantLocales';
+import useAppConfigurationLocales from 'hooks/useTenantLocales';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
@@ -21,7 +21,7 @@ const StyledSectionTitle = styled(SectionTitle)`
 `;
 
 const NewIdeaStatus = () => {
-  const tenantLocales = useTenantLocales();
+  const tenantLocales = useAppConfigurationLocales();
   const handleSubmit = (
     values: FormValues,
     { setErrors, setSubmitting, setStatus }
