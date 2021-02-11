@@ -4,20 +4,20 @@ import {
   IAppConfiguration,
 } from 'services/appConfiguration';
 
-export default function useTenant() {
-  const [tenant, setTenant] = useState<
+export default function useAppConfiguration() {
+  const [appConfiguration, setAppConfiguration] = useState<
     IAppConfiguration | undefined | null | Error
   >(undefined);
 
   useEffect(() => {
     const subscription = currentAppConfigurationStream().observable.subscribe(
-      (currentTenant) => {
-        setTenant(currentTenant);
+      (currentAppConfiguration) => {
+        setAppConfiguration(currentAppConfiguration);
       }
     );
 
     return () => subscription.unsubscribe();
   }, []);
 
-  return tenant;
+  return appConfiguration;
 }

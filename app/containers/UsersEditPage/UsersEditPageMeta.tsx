@@ -10,7 +10,7 @@ import { InjectedIntlProps } from 'react-intl';
 // hooks
 import useLocale from 'hooks/useLocale';
 import useTenantLocales from 'hooks/useTenantLocales';
-import useTenant from 'hooks/useTenant';
+import useAppConfiguration from 'hooks/useAppConfiguration';
 import useAuthUser from 'hooks/useAuthUser';
 
 // services
@@ -31,7 +31,7 @@ const UsersEditPageMeta = React.memo<Props & InjectedIntlProps>(
     const locale = useLocale();
     const tenantLocales = useTenantLocales();
     const authUser = useAuthUser();
-    const tenant = useTenant();
+    const tenant = useAppConfiguration();
 
     if (
       !isNilOrError(tenantLocales) &&
