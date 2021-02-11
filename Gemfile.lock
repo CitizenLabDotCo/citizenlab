@@ -96,6 +96,12 @@ PATH
       rails (~> 6.0.0)
 
 PATH
+  remote: engines/geographic_dashboard
+  specs:
+    geographic_dashboard (0.1.0)
+      rails (~> 6.0.3, >= 6.0.3.2)
+
+PATH
   remote: engines/machine_translations
   specs:
     machine_translations (0.1.0)
@@ -772,6 +778,7 @@ DEPENDENCIES
   fast_jsonapi!
   fog-aws
   frontend!
+  geographic_dashboard!
   groupdate
   ice_cube!
   intercom (~> 4.1)

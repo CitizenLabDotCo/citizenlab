@@ -13,6 +13,7 @@ Rails.application.routes.draw do
   mount Volunteering::Engine => "", as: 'volunteering'
   mount Maps::Engine => "", as: 'maps'
   mount Tagging::Engine => "", as: 'tagging'
+  mount GeographicDashboard::Engine => "", as: 'geographic_dashboard'
 
   namespace :web_api, :defaults => {:format => :json} do
     namespace :v1 do
