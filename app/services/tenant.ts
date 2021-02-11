@@ -2,7 +2,7 @@ import { API_PATH } from 'containers/App/constants';
 import streams from 'utils/streams';
 import { ImageSizes, Multiloc, Locale } from 'typings';
 
-export const currentTenantApiEndpoint = `${API_PATH}/tenants/current`;
+export const currentTenantApiEndpoint = `${API_PATH}/app_configuration`;
 
 interface TenantFeature {
   allowed: boolean;
