@@ -36,7 +36,7 @@ jest.mock('services/ideas');
 jest.mock('resources/GetResourceFiles', () => 'GetResourceFiles');
 jest.mock('resources/GetIdea', () => 'GetIdea');
 jest.mock('resources/GetIdeaImages', () => 'GetIdeaImages');
-jest.mock('resources/GetTenant', () => 'GetTenant');
+jest.mock('recources/GetAppConfiguration', () => 'GetTenant');
 jest.mock('resources/GetProject', () => 'GetProject');
 jest.mock('resources/GetPermission', () => 'GetPermission');
 jest.mock('resources/GetLocale', () => 'GetLocale');
