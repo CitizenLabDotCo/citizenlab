@@ -12,7 +12,7 @@ import {
   CLError,
 } from 'typings';
 import { IAreaData } from './areas';
-import { IAppConfiguration } from 'services/tenant';
+import { IAppConfiguration } from 'services/appConfiguration';
 
 import streams, { IStreamParams } from 'utils/streams';
 import {

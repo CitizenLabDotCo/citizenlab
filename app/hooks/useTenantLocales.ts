@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { currentAppConfigurationStream } from 'services/tenant';
+import { currentAppConfigurationStream } from 'services/appConfiguration';
 import { Locale } from 'typings';
 import { isNilOrError } from 'utils/helperUtils';
 

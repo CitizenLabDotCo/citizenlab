@@ -11,7 +11,7 @@ import {
   MODERATOR_ROUTES,
 } from 'services/permissions/rules/routePermissions';
 import { IUser } from 'services/users';
-import { IAppConfigurationData } from 'services/tenant';
+import { IAppConfigurationData } from 'services/appConfiguration';
 
 const canUserAccessAdminFolderRoute = (
   item: IRouteItem,

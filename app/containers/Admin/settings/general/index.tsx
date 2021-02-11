@@ -29,7 +29,7 @@ import {
   updateTenant,
   IUpdatedAppConfigurationProperties,
   IAppConfigurationData,
-} from 'services/tenant';
+} from 'services/appConfiguration';
 
 // Utils
 import getSubmitState from 'utils/getSubmitState';

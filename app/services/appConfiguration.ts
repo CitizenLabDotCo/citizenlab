@@ -17,6 +17,7 @@ export type ISuccessStory = {
 export type AppConfigurationSettingsFeatureNames = keyof IAppConfigurationSettings;
 
 export interface IAppConfigurationSettings {
+  t;
   core: {
     allowed: boolean;
     enabled: boolean;

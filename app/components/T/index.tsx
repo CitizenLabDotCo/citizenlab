@@ -4,7 +4,7 @@ import { map } from 'rxjs/operators';
 import { Multiloc, Locale } from 'typings';
 import { getLocalized } from 'utils/i18n';
 import { localeStream } from 'services/locale';
-import { currentAppConfigurationStream } from 'services/tenant';
+import { currentAppConfigurationStream } from 'services/appConfiguration';
 
 type children = (localizedText: string) => JSX.Element | null;
 

@@ -11,7 +11,7 @@ import {
   IDestinationConfig,
 } from 'components/ConsentManager/destinations';
 import { isAdmin, isModerator, isSuperAdmin } from 'services/permissions/roles';
-import { currentAppConfigurationStream } from 'services/tenant';
+import { currentAppConfigurationStream } from 'services/appConfiguration';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 
 declare module 'components/ConsentManager/destinations' {

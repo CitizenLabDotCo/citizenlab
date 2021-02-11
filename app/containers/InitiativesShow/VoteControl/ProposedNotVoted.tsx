@@ -8,7 +8,7 @@ import { getDaysRemainingUntil } from 'utils/dateUtils';
 
 import { IInitiativeData } from 'services/initiatives';
 import { IInitiativeStatusData } from 'services/initiativeStatuses';
-import { IAppConfigurationSettings } from 'services/tenant';
+import { IAppConfigurationSettings } from 'services/appConfiguration';
 
 import CountDown from './CountDown';
 import { Icon, IconTooltip } from 'cl2-component-library';

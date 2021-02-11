@@ -27,7 +27,7 @@ import { localeStream } from 'services/locale';
 import {
   currentAppConfigurationStream,
   IAppConfiguration,
-} from 'services/tenant';
+} from 'services/appConfiguration';
 import { ITopicData } from 'services/topics';
 import { projectByIdStream, IProject, IProjectData } from 'services/projects';
 import { phasesStream, IPhaseData } from 'services/phases';

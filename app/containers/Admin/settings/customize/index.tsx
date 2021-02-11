@@ -45,7 +45,7 @@ import {
   IUpdatedAppConfigurationProperties,
   IAppConfiguration,
   IAppConfigurationSettings,
-} from 'services/tenant';
+} from 'services/appConfiguration';
 import { updatePage } from 'services/pages';
 
 // typings

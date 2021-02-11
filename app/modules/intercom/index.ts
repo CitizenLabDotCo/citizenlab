@@ -1,6 +1,6 @@
 import { combineLatest } from 'rxjs';
 import { authUserStream } from 'services/auth';
-import { currentAppConfigurationStream } from 'services/tenant';
+import { currentAppConfigurationStream } from 'services/appConfiguration';
 import {
   bufferUntilInitialized,
   events$,

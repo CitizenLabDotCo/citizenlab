@@ -74,7 +74,7 @@ import {
   currentAppConfigurationStream,
   IAppConfiguration,
   IAppConfigurationStyle,
-} from 'services/tenant';
+} from 'services/appConfiguration';
 
 // resources
 import GetFeatureFlag, {

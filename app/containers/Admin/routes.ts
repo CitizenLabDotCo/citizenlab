@@ -22,7 +22,7 @@ import { isUUID } from 'utils/helperUtils';
 
 import Loadable from 'react-loadable';
 import { LoadableLoadingAdmin } from 'components/UI/LoadableLoading';
-import { currentAppConfigurationStream } from 'services/tenant';
+import { currentAppConfigurationStream } from 'services/appConfiguration';
 import { combineLatest } from 'rxjs';
 import { authUserStream } from 'services/auth';
 import { isModerator } from 'services/permissions/roles';

@@ -9,7 +9,7 @@ import {
   isSuperAdmin,
 } from '../roles';
 import { IUser } from 'services/users';
-import { IAppConfigurationData } from 'services/tenant';
+import { IAppConfigurationData } from 'services/appConfiguration';
 
 export const MODERATOR_ROUTES = [
   '/admin/projects',

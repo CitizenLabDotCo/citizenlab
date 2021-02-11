@@ -17,7 +17,7 @@ import { List, Row } from 'components/admin/ResourceList';
 
 // Services
 import { localeStream } from 'services/locale';
-import { currentAppConfigurationStream } from 'services/tenant';
+import { currentAppConfigurationStream } from 'services/appConfiguration';
 import { getGroups, IGroups, IGroupData } from 'services/groups';
 import {
   addGroupProject,

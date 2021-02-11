@@ -10,7 +10,7 @@ import {
   tenantInfo,
 } from 'utils/analytics';
 import snippet from '@segment/snippet';
-import { currentAppConfigurationStream } from 'services/tenant';
+import { currentAppConfigurationStream } from 'services/appConfiguration';
 import { authUserStream } from 'services/auth';
 import { combineLatest } from 'rxjs';
 import { isNilOrError } from 'utils/helperUtils';

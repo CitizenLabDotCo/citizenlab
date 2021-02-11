@@ -5,7 +5,7 @@ import { fontSizes } from 'utils/styleUtils';
 // services
 import { IInitiativeData } from 'services/initiatives';
 import { IInitiativeStatusData } from 'services/initiativeStatuses';
-import { IAppConfigurationSettings } from 'services/tenant';
+import { IAppConfigurationSettings } from 'services/appConfiguration';
 
 // components
 import { Icon, IconTooltip } from 'cl2-component-library';

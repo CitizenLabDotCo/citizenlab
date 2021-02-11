@@ -26,7 +26,7 @@ import {
 } from 'lodash-es';
 import request from 'utils/request';
 import { authApiEndpoint } from 'services/auth';
-import { currentAppConfigurationEndpoint } from 'services/tenant';
+import { currentAppConfigurationEndpoint } from 'services/appConfiguration';
 import { currentOnboardingCampaignsApiEndpoint } from 'services/onboardingCampaigns';
 import { userCustomFieldsSchemaApiEndpoint } from 'services/userCustomFields';
 import { IUser } from 'services/users';

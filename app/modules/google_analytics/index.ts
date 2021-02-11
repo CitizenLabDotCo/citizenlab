@@ -3,7 +3,7 @@ import {
   registerDestination,
 } from 'components/ConsentManager/destinations';
 import { combineLatest } from 'rxjs';
-import { currentAppConfigurationStream } from 'services/tenant';
+import { currentAppConfigurationStream } from 'services/appConfiguration';
 import { initializeFor, shutdownFor } from 'utils/analytics';
 import { isNilOrError } from 'utils/helperUtils';
 import { ModuleConfiguration } from 'utils/moduleUtils';

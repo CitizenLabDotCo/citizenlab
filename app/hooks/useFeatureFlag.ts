@@ -3,7 +3,7 @@ import {
   currentAppConfigurationStream,
   IAppConfiguration,
   AppConfigurationSettingsFeatureNames,
-} from 'services/tenant';
+} from 'services/appConfiguration';
 import { get } from 'lodash-es';
 
 export default function useFeatureFlag(

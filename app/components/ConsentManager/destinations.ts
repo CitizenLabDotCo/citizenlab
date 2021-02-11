@@ -1,5 +1,5 @@
 import { isFeatureActive } from 'components/FeatureFlag';
-import { IAppConfigurationData } from 'services/tenant';
+import { IAppConfigurationData } from 'services/appConfiguration';
 import { IUserData } from 'services/users';
 
 export interface IDestinationMap {}

@@ -7,7 +7,7 @@ import {
   currentAppConfigurationStream,
   IAppConfiguration,
   IAppConfigurationData,
-} from 'services/tenant';
+} from 'services/appConfiguration';
 import { isNilOrError } from 'utils/helperUtils';
 
 interface Props {
