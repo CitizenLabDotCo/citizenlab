@@ -76,6 +76,12 @@ PATH
       rails (~> 6.0.0)
 
 PATH
+  remote: engines/custom_style
+  specs:
+    custom_style (0.1.0)
+      rails (~> 6.0.0)
+
+PATH
   remote: engines/email_campaigns
   specs:
     email_campaigns (0.1.0)
@@ -764,6 +770,7 @@ DEPENDENCIES
   carrierwave (~> 2.0.2)
   carrierwave-base64 (~> 2.6)
   counter_culture (~> 2.1)
+  custom_style!
   dalli
   database_cleaner
   email_campaigns!
