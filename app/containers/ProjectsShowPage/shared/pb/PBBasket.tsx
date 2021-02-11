@@ -10,7 +10,7 @@ import { get, isEmpty, isUndefined } from 'lodash-es';
 import { updateBasket } from 'services/baskets';
 
 // resources
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAppConfiguration, { GetTenantChildProps } from 'resources/GetTenant';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetBasket, { GetBasketChildProps } from 'resources/GetBasket';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
@@ -309,7 +309,7 @@ class PBBasket extends PureComponent<Props & Tracks, State> {
 }
 
 const Data = adopt<DataProps, InputProps>({
-  tenant: <GetTenant />,
+  tenant: <GetAppConfiguration />,
   authUser: <GetAuthUser />,
   project: ({ participationContextType, participationContextId, render }) => (
     <GetProject

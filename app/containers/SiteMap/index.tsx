@@ -23,7 +23,7 @@ import { media, colors, fontSizes } from 'utils/styleUtils';
 
 // resources
 import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAppConfiguration, { GetTenantChildProps } from 'resources/GetTenant';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 const Container = styled.div`
@@ -363,7 +363,7 @@ const Data = adopt<DataProps>({
   projects: (
     <GetProjects publicationStatuses={['draft', 'published', 'archived']} />
   ),
-  tenant: <GetTenant />,
+  tenant: <GetAppConfiguration />,
   authUser: <GetAuthUser />,
 });
 

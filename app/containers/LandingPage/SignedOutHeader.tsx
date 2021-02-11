@@ -8,7 +8,7 @@ import AvatarBubbles from 'components/AvatarBubbles';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAppConfiguration, { GetTenantChildProps } from 'resources/GetTenant';
 
 // tracking
 import { trackEventByName } from 'utils/analytics';
@@ -241,7 +241,7 @@ class SignedOutHeader extends PureComponent<
 
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
-  tenant: <GetTenant />,
+  tenant: <GetAppConfiguration />,
 });
 
 const SignedOutHeaderWithHoC = injectIntl(injectLocalize(SignedOutHeader));

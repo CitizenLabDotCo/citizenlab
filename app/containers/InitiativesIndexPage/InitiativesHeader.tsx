@@ -8,7 +8,7 @@ import InitiativeInfoContent from './InitiativeInfoContent';
 
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAppConfiguration, { GetTenantChildProps } from 'resources/GetTenant';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -152,7 +152,7 @@ class InitiativesHeader extends PureComponent<Props, State> {
 
 const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
-  tenant: <GetTenant />,
+  tenant: <GetAppConfiguration />,
   postingPermission: <GetInitiativesPermissions action="posting_initiative" />,
 });
 

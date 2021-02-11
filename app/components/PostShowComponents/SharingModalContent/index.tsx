@@ -9,7 +9,7 @@ import { Spinner } from 'cl2-component-library';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAppConfiguration, { GetTenantChildProps } from 'resources/GetTenant';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import GetInitiative, {
@@ -287,7 +287,7 @@ const SharingModalContentWithHoCs = injectIntl<Props>(
 
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
-  tenant: <GetTenant />,
+  tenant: <GetAppConfiguration />,
   authUser: <GetAuthUser />,
   idea: ({ postId, postType, render }) => (
     <GetIdea ideaId={postId && postType === 'idea' ? postId : null}>

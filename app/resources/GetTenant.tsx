@@ -17,7 +17,7 @@ interface State {
 
 export type GetTenantChildProps = ITenantData | undefined | null | Error;
 
-export default class GetTenant extends React.Component<Props, State> {
+export default class GetAppConfiguration extends React.Component<Props, State> {
   private subscriptions: Subscription[];
 
   constructor(props: Props) {

@@ -14,7 +14,7 @@ import getSubmitState from 'utils/getSubmitState';
 import { updateTenant, IUpdatedTenantProperties } from 'services/tenant';
 
 // resources
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAppConfiguration, { GetTenantChildProps } from 'resources/GetTenant';
 
 // intl
 import messages from './messages';
@@ -201,5 +201,7 @@ class Favicon extends PureComponent<Props, State> {
 }
 
 export default () => (
-  <GetTenant>{(tenant) => <Favicon tenant={tenant} />}</GetTenant>
+  <GetAppConfiguration>
+    {(tenant) => <Favicon tenant={tenant} />}
+  </GetAppConfiguration>
 );

@@ -19,7 +19,7 @@ import GetInitiativeStatus, {
 } from 'resources/GetInitiativeStatus';
 import { IInitiativeData } from 'services/initiatives';
 import { ITenantSettings } from 'services/tenant';
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAppConfiguration, { GetTenantChildProps } from 'resources/GetTenant';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import { addVote, deleteVote } from 'services/initiativeVotes';
 import ProposedNotVoted from './ProposedNotVoted';
@@ -241,7 +241,7 @@ class VoteControl extends PureComponent<Props, State> {
 }
 
 const Data = adopt<DataProps, InputProps>({
-  tenant: <GetTenant />,
+  tenant: <GetAppConfiguration />,
   authUser: <GetAuthUser />,
   initiative: ({ initiativeId, render }) => (
     <GetInitiative id={initiativeId}>{render}</GetInitiative>

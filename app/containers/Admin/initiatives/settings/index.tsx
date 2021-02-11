@@ -5,7 +5,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // services
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAppConfiguration, { GetTenantChildProps } from 'resources/GetTenant';
 import { updateTenant } from 'services/tenant';
 
 // components
@@ -433,7 +433,7 @@ class InitiativesSettingsPage extends PureComponent<
 
 const Data = adopt<DataProps>({
   locale: <GetLocale />,
-  tenant: <GetTenant />,
+  tenant: <GetAppConfiguration />,
 });
 
 const InitiativesSettingsPageWithHoC = injectIntl<Props>(

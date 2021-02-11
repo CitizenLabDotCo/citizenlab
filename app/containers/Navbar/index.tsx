@@ -23,7 +23,7 @@ import tracks from './tracks';
 
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAppConfiguration, { GetTenantChildProps } from 'resources/GetTenant';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetAdminPublications, {
   GetAdminPublicationsChildProps,
@@ -804,7 +804,7 @@ class Navbar extends PureComponent<
 
 const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
-  tenant: <GetTenant />,
+  tenant: <GetAppConfiguration />,
   locale: <GetLocale />,
   adminPublications: (
     <GetAdminPublications

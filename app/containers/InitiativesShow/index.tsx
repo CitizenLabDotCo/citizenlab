@@ -54,7 +54,7 @@ import GetOfficialFeedbacks, {
 import GetPermission, {
   GetPermissionChildProps,
 } from 'resources/GetPermission';
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAppConfiguration, { GetTenantChildProps } from 'resources/GetTenant';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -755,7 +755,7 @@ const InitiativesShowWithHOCs = injectLocalize<Props>(
 
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
-  tenant: <GetTenant />,
+  tenant: <GetAppConfiguration />,
   authUser: <GetAuthUser />,
   windowSize: <GetWindowSize />,
   initiative: ({ initiativeId, render }) => (

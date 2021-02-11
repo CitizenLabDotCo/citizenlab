@@ -32,7 +32,7 @@ import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetWindowSize, {
   GetWindowSizeChildProps,
 } from 'resources/GetWindowSize';
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAppConfiguration, { GetTenantChildProps } from 'resources/GetTenant';
 
 // style
 import styled, { css } from 'styled-components';
@@ -654,7 +654,7 @@ class PlatformFooter extends PureComponent<Props, State> {
 const Data = adopt<Props>({
   locale: <GetLocale />,
   windowSize: <GetWindowSize />,
-  tenant: <GetTenant />,
+  tenant: <GetAppConfiguration />,
 });
 
 export default (inputProps: InputProps) => (

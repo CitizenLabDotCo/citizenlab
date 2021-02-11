@@ -9,7 +9,7 @@ import TagWrapper from './TagWrapper';
 
 // resources
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAppConfiguration, { GetTenantChildProps } from 'resources/GetTenant';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 
 // i18n
@@ -142,7 +142,7 @@ export class IdeaContent extends PureComponent<
 }
 
 const Data = adopt<DataProps, InputProps>({
-  tenant: <GetTenant />,
+  tenant: <GetAppConfiguration />,
   locale: <GetLocale />,
   idea: ({ ideaId, render }) => <GetIdea ideaId={ideaId}>{render}</GetIdea>,
 });

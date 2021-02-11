@@ -12,7 +12,7 @@ import LoadingBox from './LoadingBox';
 import Button from 'components/UI/Button';
 
 // resources
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAppConfiguration, { GetTenantChildProps } from 'resources/GetTenant';
 import GetWindowSize, {
   GetWindowSizeChildProps,
 } from 'resources/GetWindowSize';
@@ -522,7 +522,7 @@ const ProjectAndFolderCardsWithHOCs = withTheme(
 );
 
 const Data = adopt<DataProps, InputProps>({
-  tenant: <GetTenant />,
+  tenant: <GetAppConfiguration />,
   windowSize: <GetWindowSize />,
   adminPublications: ({ render, ...props }) => (
     <GetAdminPublications

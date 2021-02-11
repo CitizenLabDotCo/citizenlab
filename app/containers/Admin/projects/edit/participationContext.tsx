@@ -35,7 +35,7 @@ import {
 import eventEmitter from 'utils/eventEmitter';
 
 // resources
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAppConfiguration, { GetTenantChildProps } from 'resources/GetTenant';
 import GetFeatureFlag, {
   GetFeatureFlagChildProps,
 } from 'resources/GetFeatureFlag';
@@ -1099,7 +1099,7 @@ const Data = adopt<DataProps, {}>({
   survey_monkey_enabled: <GetFeatureFlag name="surveymonkey_surveys" />,
   enalyzer_enabled: <GetFeatureFlag name="enalyzer_surveys" />,
   isCustomInputTermEnabled: <GetFeatureFlag name="idea_custom_copy" />,
-  tenant: <GetTenant />,
+  tenant: <GetAppConfiguration />,
 });
 
 const ParticipationContextWithIntl = injectIntl(ParticipationContext);

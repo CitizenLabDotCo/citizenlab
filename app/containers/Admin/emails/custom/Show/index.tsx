@@ -14,7 +14,7 @@ import {
 import GetCampaign from 'resources/GetCampaign';
 import GetGroup from 'resources/GetGroup';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAppConfiguration, { GetTenantChildProps } from 'resources/GetTenant';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -371,7 +371,7 @@ const Data = adopt<DataProps, InputProps & WithRouterProps>({
     <GetCampaign id={params.campaignId}>{render}</GetCampaign>
   ),
   user: ({ render }) => <GetAuthUser>{render}</GetAuthUser>,
-  tenant: ({ render }) => <GetTenant>{render}</GetTenant>,
+  tenant: ({ render }) => <GetAppConfiguration>{render}</GetAppConfiguration>,
 });
 
 const ShowWithHOCs = injectIntl(localize(Show));
