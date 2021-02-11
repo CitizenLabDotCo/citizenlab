@@ -63,7 +63,7 @@ import {
 } from 'services/projectImages';
 import { areasStream } from 'services/areas';
 import { localeStream } from 'services/locale';
-import { currentAppConfigurationStream } from 'services/tenant';
+import { currentAppConfigurationStream } from 'services/appConfiguration';
 
 // resources
 import GetFeatureFlag, {

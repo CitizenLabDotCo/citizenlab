@@ -3,7 +3,7 @@ import { Subscription } from 'rxjs';
 import {
   currentAppConfigurationStream,
   IAppConfigurationData,
-} from 'services/tenant';
+} from 'services/appConfiguration';
 import { isNilOrError } from 'utils/helperUtils';
 
 interface InputProps {}

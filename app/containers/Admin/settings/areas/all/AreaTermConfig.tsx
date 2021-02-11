@@ -12,7 +12,7 @@ import { ButtonWrapper } from 'components/admin/PageWrapper';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetTenant';
-import { updateTenant } from 'services/tenant';
+import { updateTenant } from 'services/appConfiguration';
 
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';

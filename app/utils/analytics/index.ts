@@ -15,7 +15,7 @@ import eventEmitter from 'utils/eventEmitter';
 import {
   IAppConfigurationData,
   currentAppConfigurationStream,
-} from 'services/tenant';
+} from 'services/appConfiguration';
 
 import {
   getDestinationConfig,

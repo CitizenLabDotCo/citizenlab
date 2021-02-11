@@ -7,7 +7,7 @@ import { initializeFor } from 'utils/analytics';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import { combineLatest } from 'rxjs';
-import { currentAppConfigurationStream } from 'services/tenant';
+import { currentAppConfigurationStream } from 'services/appConfiguration';
 import { isNilOrError } from 'utils/helperUtils';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 

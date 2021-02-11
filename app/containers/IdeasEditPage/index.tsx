@@ -15,7 +15,7 @@ import IdeasEditMeta from './IdeasEditMeta';
 
 // services
 import { localeStream } from 'services/locale';
-import { currentAppConfigurationStream } from 'services/tenant';
+import { currentAppConfigurationStream } from 'services/appConfiguration';
 import { ideaByIdStream, updateIdea } from 'services/ideas';
 import {
   ideaImageStream,

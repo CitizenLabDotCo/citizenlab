@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import {
   currentAppConfigurationStream,
   IAppConfiguration,
-} from 'services/tenant';
+} from 'services/appConfiguration';
 
 export default function useTenant() {
   const [tenant, setTenant] = useState<

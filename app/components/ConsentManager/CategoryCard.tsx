@@ -8,7 +8,7 @@ import { Radio } from 'cl2-component-library';
 import { getDestinationConfig, IDestination } from './destinations';
 import useTenant from 'hooks/useTenant';
 import { isNilOrError } from 'utils/helperUtils';
-import { IAppConfiguration } from 'services/tenant';
+import { IAppConfiguration } from 'services/appConfiguration';
 
 const Container = styled.div`
   display: flex;

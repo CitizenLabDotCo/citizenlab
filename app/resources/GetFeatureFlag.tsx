@@ -7,7 +7,7 @@ import {
   currentAppConfigurationStream,
   IAppConfiguration,
   AppConfigurationSettingsFeatureNames,
-} from 'services/tenant';
+} from 'services/appConfiguration';
 
 type children = (renderProps: GetFeatureFlagChildProps) => JSX.Element | null;
 

@@ -15,7 +15,7 @@ import { localeStream } from 'services/locale';
 import {
   currentAppConfigurationStream,
   IAppConfiguration,
-} from 'services/tenant';
+} from 'services/appConfiguration';
 
 // style
 import styled from 'styled-components';

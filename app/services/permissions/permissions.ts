@@ -5,7 +5,7 @@ import { combineLatest } from 'rxjs';
 import {
   currentAppConfigurationStream,
   IAppConfigurationData,
-} from 'services/tenant';
+} from 'services/appConfiguration';
 import { map } from 'rxjs/operators';
 
 export type TPermissionItem = IResourceData | IRouteItem | TResourceType;

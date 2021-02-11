@@ -33,7 +33,7 @@
 import { BehaviorSubject, combineLatest } from 'rxjs';
 import { first, map, distinctUntilChanged, filter } from 'rxjs/operators';
 import { includes, isEqual, get } from 'lodash-es';
-import { currentAppConfigurationStream } from 'services/tenant';
+import { currentAppConfigurationStream } from 'services/appConfiguration';
 import { authUserStream } from 'services/auth';
 import { updateUser } from 'services/users';
 import { Locale } from 'typings';

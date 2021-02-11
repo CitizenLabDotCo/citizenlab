@@ -7,7 +7,7 @@ import { StatusExplanation } from './SharedStyles';
 
 import { IInitiativeData } from 'services/initiatives';
 import { IInitiativeStatusData } from 'services/initiativeStatuses';
-import { IAppConfigurationSettings } from 'services/tenant';
+import { IAppConfigurationSettings } from 'services/appConfiguration';
 
 import CountDown from './CountDown';
 import ProgressBar from 'components/UI/ProgressBar';

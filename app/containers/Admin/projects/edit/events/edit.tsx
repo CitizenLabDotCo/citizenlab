@@ -29,7 +29,7 @@ import { localeStream } from 'services/locale';
 import {
   currentAppConfigurationStream,
   IAppConfiguration,
-} from 'services/tenant';
+} from 'services/appConfiguration';
 import { IProjectData } from 'services/projects';
 import {
   eventStream,

@@ -18,7 +18,7 @@ import GetInitiativeStatus, {
   GetInitiativeStatusChildProps,
 } from 'resources/GetInitiativeStatus';
 import { IInitiativeData } from 'services/initiatives';
-import { IAppConfigurationSettings } from 'services/tenant';
+import { IAppConfigurationSettings } from 'services/appConfiguration';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetTenant';

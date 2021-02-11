@@ -8,7 +8,7 @@ import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetTenant';
-import { updateTenant } from 'services/tenant';
+import { updateTenant } from 'services/appConfiguration';
 
 // components
 import {

@@ -1,4 +1,4 @@
-import { IAppConfiguration, IAppConfigurationData } from 'services/tenant';
+import { IAppConfiguration, IAppConfigurationData } from 'services/appConfiguration';
 import { BehaviorSubject } from 'rxjs';
 
 const getTenant = (): IAppConfiguration => ({

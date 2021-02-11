@@ -2,7 +2,7 @@ import React from 'react';
 import { Subscription, combineLatest } from 'rxjs';
 // tslint:disable-next-line:no-vanilla-formatted-messages
 import { FormattedMessage as OriginalFormattedMessage } from 'react-intl';
-import { currentAppConfigurationStream } from 'services/tenant';
+import { currentAppConfigurationStream } from 'services/appConfiguration';
 import { localeStream } from 'services/locale';
 import { getLocalized } from 'utils/i18n';
 import { isNilOrError } from 'utils/helperUtils';

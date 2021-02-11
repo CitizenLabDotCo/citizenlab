@@ -4,7 +4,7 @@ import { fontSizes } from 'utils/styleUtils';
 
 import { IInitiativeData } from 'services/initiatives';
 import { IInitiativeStatusData } from 'services/initiativeStatuses';
-import { IAppConfigurationSettings } from 'services/tenant';
+import { IAppConfigurationSettings } from 'services/appConfiguration';
 
 import { Icon } from 'cl2-component-library';
 import { StatusWrapper, StatusExplanation } from './SharedStyles';

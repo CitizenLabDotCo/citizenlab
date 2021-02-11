@@ -4,7 +4,7 @@ import { Subscription, combineLatest } from 'rxjs';
 
 // Services
 import { localeStream } from 'services/locale';
-import { currentAppConfigurationStream } from 'services/tenant';
+import { currentAppConfigurationStream } from 'services/appConfiguration';
 
 // i18n
 import { getLocalized } from 'utils/i18n';

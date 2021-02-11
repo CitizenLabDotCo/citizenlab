@@ -14,7 +14,7 @@ import getSubmitState from 'utils/getSubmitState';
 import {
   updateTenant,
   IUpdatedAppConfigurationProperties,
-} from 'services/tenant';
+} from 'services/appConfiguration';
 
 // resources
 import GetAppConfiguration, {

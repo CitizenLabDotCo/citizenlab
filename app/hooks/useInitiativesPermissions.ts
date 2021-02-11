@@ -5,7 +5,7 @@ import {
 } from 'services/initiatives';
 import { isNilOrError } from 'utils/helperUtils';
 import { ActionPermission } from 'services/actionTakingRules';
-import { currentAppConfigurationStream } from 'services/tenant';
+import { currentAppConfigurationStream } from 'services/appConfiguration';
 import { authUserStream } from 'services/auth';
 import { combineLatest } from 'rxjs';
 
