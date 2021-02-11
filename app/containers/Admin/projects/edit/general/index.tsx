@@ -63,7 +63,7 @@ import {
 } from 'services/projectImages';
 import { areasStream } from 'services/areas';
 import { localeStream } from 'services/locale';
-import { currentTenantStream } from 'services/tenant';
+import { currentAppConfigurationStream } from 'services/tenant';
 
 // resources
 import GetFeatureFlag, {
@@ -247,7 +247,7 @@ class AdminProjectEditGeneral extends PureComponent<
 
   componentDidMount() {
     const locale$ = localeStream().observable;
-    const currentTenant$ = currentTenantStream().observable;
+    const currentTenant$ = currentAppConfigurationStream().observable;
     const areas$ = areasStream().observable;
     const project$ = this.projectId$.pipe(
       distinctUntilChanged(),

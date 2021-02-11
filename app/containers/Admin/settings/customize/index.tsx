@@ -40,7 +40,7 @@ import messages from '../messages';
 // services
 import { localeStream } from 'services/locale';
 import {
-  currentTenantStream,
+  currentAppConfigurationStream,
   updateTenant,
   IUpdatedAppConfigurationProperties,
   IAppConfiguration,
@@ -149,7 +149,7 @@ class SettingsCustomizeTab extends PureComponent<
 
   componentDidMount() {
     const locale$ = localeStream().observable;
-    const tenant$ = currentTenantStream().observable;
+    const tenant$ = currentAppConfigurationStream().observable;
 
     this.subscriptions = [
       combineLatest(locale$, tenant$)

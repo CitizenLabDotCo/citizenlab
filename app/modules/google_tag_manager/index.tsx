@@ -7,7 +7,7 @@ import { initializeFor } from 'utils/analytics';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import { combineLatest } from 'rxjs';
-import { currentTenantStream } from 'services/tenant';
+import { currentAppConfigurationStream } from 'services/tenant';
 import { isNilOrError } from 'utils/helperUtils';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 
@@ -35,7 +35,7 @@ const destinationConfig: IDestinationConfig = {
 const configuration: ModuleConfiguration = {
   beforeMountApplication: () => {
     combineLatest([
-      currentTenantStream().observable,
+      currentAppConfigurationStream().observable,
       initializeFor('google_tag_manager'),
     ]).subscribe(([tenant, _]) => {
       if (isNilOrError(tenant)) return;

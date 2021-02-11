@@ -25,7 +25,7 @@ import {
 
 // services
 import {
-  currentTenantStream,
+  currentAppConfigurationStream,
   updateTenant,
   IUpdatedAppConfigurationProperties,
   IAppConfigurationData,
@@ -67,7 +67,7 @@ class SettingsGeneralTab extends PureComponent<
   }
 
   componentDidMount() {
-    const currentTenant$ = currentTenantStream().observable;
+    const currentTenant$ = currentAppConfigurationStream().observable;
 
     this.subscriptions = [
       currentTenant$.subscribe((currentTenant) => {

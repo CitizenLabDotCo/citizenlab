@@ -1,6 +1,9 @@
 import React from 'react';
 import { Subscription } from 'rxjs';
-import { currentTenantStream, IAppConfigurationData } from 'services/tenant';
+import {
+  currentAppConfigurationStream,
+  IAppConfigurationData,
+} from 'services/tenant';
 import { isNilOrError } from 'utils/helperUtils';
 
 interface InputProps {}
@@ -34,7 +37,7 @@ export default class GetAppConfiguration extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    const currentTenant$ = currentTenantStream().observable;
+    const currentTenant$ = currentAppConfigurationStream().observable;
 
     this.subscriptions = [
       currentTenant$.subscribe((currentTenant) => {

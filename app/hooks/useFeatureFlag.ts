@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import {
-  currentTenantStream,
+  currentAppConfigurationStream,
   IAppConfiguration,
   AppConfigurationSettingsFeatureNames,
 } from 'services/tenant';
@@ -17,7 +17,7 @@ export default function useFeatureFlag(
   >(undefined);
 
   useEffect(() => {
-    const subscription = currentTenantStream().observable.subscribe(
+    const subscription = currentAppConfigurationStream().observable.subscribe(
       (tenantSettings) =>
         setTenantSettings(tenantSettings.data.attributes.settings)
     );

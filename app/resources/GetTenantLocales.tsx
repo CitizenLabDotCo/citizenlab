@@ -1,6 +1,6 @@
 import React from 'react';
 import { Subscription } from 'rxjs';
-import { currentTenantStream } from 'services/tenant';
+import { currentAppConfigurationStream } from 'services/tenant';
 import { Locale } from 'typings';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -29,7 +29,7 @@ export default class GetTenantLocales extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    const currentTenant$ = currentTenantStream().observable;
+    const currentTenant$ = currentAppConfigurationStream().observable;
 
     this.subscriptions = [
       currentTenant$.subscribe((currentTenant) => {
