@@ -12,7 +12,10 @@ import messages from './messages';
 
 // services
 import { localeStream } from 'services/locale';
-import { currentTenantStream, IAppConfiguration } from 'services/tenant';
+import {
+  currentAppConfigurationStream,
+  IAppConfiguration,
+} from 'services/tenant';
 
 // style
 import styled from 'styled-components';
@@ -79,7 +82,7 @@ class CityLogoSection extends PureComponent<Props & InjectedIntlProps, State> {
 
   componentDidMount() {
     const locale$ = localeStream().observable;
-    const currentTenant$ = currentTenantStream().observable;
+    const currentTenant$ = currentAppConfigurationStream().observable;
 
     this.subscriptions = [
       combineLatest(locale$, currentTenant$).subscribe(

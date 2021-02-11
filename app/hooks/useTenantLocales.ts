@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { currentTenantStream } from 'services/tenant';
+import { currentAppConfigurationStream } from 'services/tenant';
 import { Locale } from 'typings';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -9,7 +9,7 @@ export default function useTenantLocales() {
   >(undefined);
 
   useEffect(() => {
-    const subscription = currentTenantStream().observable.subscribe(
+    const subscription = currentAppConfigurationStream().observable.subscribe(
       (currentTenant) => {
         setTenantLocales(
           !isNilOrError(currentTenant)

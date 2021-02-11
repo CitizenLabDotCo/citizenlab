@@ -2,7 +2,7 @@ import React from 'react';
 import { Subscription, combineLatest } from 'rxjs';
 // tslint:disable-next-line:no-vanilla-formatted-messages
 import { FormattedMessage as OriginalFormattedMessage } from 'react-intl';
-import { currentTenantStream } from 'services/tenant';
+import { currentAppConfigurationStream } from 'services/tenant';
 import { localeStream } from 'services/locale';
 import { getLocalized } from 'utils/i18n';
 import { isNilOrError } from 'utils/helperUtils';
@@ -34,7 +34,7 @@ export default class FormattedMessage extends React.PureComponent<
 
   componentDidMount() {
     const locale$ = localeStream().observable;
-    const currentTenant$ = currentTenantStream().observable;
+    const currentTenant$ = currentAppConfigurationStream().observable;
 
     this.subscriptions = [
       combineLatest(locale$, currentTenant$).subscribe(([locale, tenant]) => {

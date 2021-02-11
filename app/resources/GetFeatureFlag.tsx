@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs';
 
 // services
 import {
-  currentTenantStream,
+  currentAppConfigurationStream,
   IAppConfiguration,
   AppConfigurationSettingsFeatureNames,
 } from 'services/tenant';
@@ -34,7 +34,7 @@ export default class GetFeatureFlag extends PureComponent<Props, State> {
   }
 
   componentDidMount() {
-    const currentTenant$ = currentTenantStream().observable;
+    const currentTenant$ = currentAppConfigurationStream().observable;
 
     this.subscription = currentTenant$.subscribe((currentTenant) => {
       this.setState({ tenantSettings: currentTenant.data.attributes.settings });

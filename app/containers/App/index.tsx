@@ -71,7 +71,7 @@ import {
   signOutAndDeleteAccountPart2,
 } from 'services/auth';
 import {
-  currentTenantStream,
+  currentAppConfigurationStream,
   IAppConfiguration,
   IAppConfigurationStyle,
 } from 'services/tenant';
@@ -177,7 +177,7 @@ class App extends PureComponent<Props, State> {
     const { redirectsEnabled } = this.props;
     const authUser$ = authUserStream().observable;
     const locale$ = localeStream().observable;
-    const tenant$ = currentTenantStream().observable;
+    const tenant$ = currentAppConfigurationStream().observable;
 
     this.unlisten = clHistory.listenBefore((newLocation) => {
       const newPreviousPathname = location.pathname;

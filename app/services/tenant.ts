@@ -242,7 +242,7 @@ export interface IUpdatedAppConfigurationProperties {
   favicon?: string;
 }
 
-export function currentTenantStream() {
+export function currentAppConfigurationStream() {
   return streams.get<IAppConfiguration>({
     apiEndpoint: currentAppConfigurationEndpoint,
   });
@@ -257,6 +257,6 @@ export async function updateTenant(
     tenantId,
     { tenant: object }
   );
-  await currentTenantStream().fetch();
+  await currentAppConfigurationStream().fetch();
   return tenant;
 }

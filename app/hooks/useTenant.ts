@@ -1,5 +1,8 @@
 import { useState, useEffect } from 'react';
-import { currentTenantStream, IAppConfiguration } from 'services/tenant';
+import {
+  currentAppConfigurationStream,
+  IAppConfiguration,
+} from 'services/tenant';
 
 export default function useTenant() {
   const [tenant, setTenant] = useState<
@@ -7,7 +10,7 @@ export default function useTenant() {
   >(undefined);
 
   useEffect(() => {
-    const subscription = currentTenantStream().observable.subscribe(
+    const subscription = currentAppConfigurationStream().observable.subscribe(
       (currentTenant) => {
         setTenant(currentTenant);
       }
