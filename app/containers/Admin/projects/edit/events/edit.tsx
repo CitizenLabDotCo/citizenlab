@@ -26,7 +26,7 @@ import messages from './messages';
 
 // services
 import { localeStream } from 'services/locale';
-import { currentTenantStream, ITenant } from 'services/tenant';
+import { currentTenantStream, IAppConfiguration } from 'services/tenant';
 import { IProjectData } from 'services/projects';
 import {
   eventStream,
@@ -60,7 +60,7 @@ interface Props extends DataProps {
 
 interface State {
   locale: Locale | null;
-  currentTenant: ITenant | null;
+  currentTenant: IAppConfiguration | null;
   event: IEvent | null;
   attributeDiff: IUpdatedEventProperties;
   errors:

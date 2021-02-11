@@ -1,6 +1,6 @@
 import React from 'react';
 import { Subscription } from 'rxjs';
-import { currentTenantStream, ITenantData } from 'services/tenant';
+import { currentTenantStream, IAppConfigurationData } from 'services/tenant';
 import { isNilOrError } from 'utils/helperUtils';
 
 interface InputProps {}
@@ -14,11 +14,11 @@ interface Props extends InputProps {
 }
 
 interface State {
-  tenant: ITenantData | undefined | null | Error;
+  tenant: IAppConfigurationData | undefined | null | Error;
 }
 
 export type GetAppConfigurationChildProps =
-  | ITenantData
+  | IAppConfigurationData
   | undefined
   | null
   | Error;

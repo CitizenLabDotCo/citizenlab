@@ -5,7 +5,7 @@ import { ScreenReaderOnly } from 'utils/a11y';
 
 import { IInitiativeData } from 'services/initiatives';
 import { IInitiativeStatusData } from 'services/initiativeStatuses';
-import { ITenantSettings } from 'services/tenant';
+import { IAppConfigurationSettings } from 'services/tenant';
 
 import { Icon } from 'cl2-component-library';
 import { StatusWrapper, StatusExplanation } from './SharedStyles';
@@ -58,7 +58,7 @@ const StyledButton = styled(Button)`
 interface InputProps {
   initiative: IInitiativeData;
   initiativeStatus: IInitiativeStatusData;
-  initiativeSettings: NonNullable<ITenantSettings['initiatives']>;
+  initiativeSettings: NonNullable<IAppConfigurationSettings['initiatives']>;
   userVoted: boolean;
 }
 interface DataProps {}

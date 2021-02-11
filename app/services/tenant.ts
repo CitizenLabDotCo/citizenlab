@@ -4,7 +4,7 @@ import { ImageSizes, Multiloc, Locale } from 'typings';
 
 export const currentTenantApiEndpoint = `${API_PATH}/app_configuration`;
 
-interface TenantFeature {
+interface AppConfigurationFeature {
   allowed: boolean;
   enabled: boolean;
 }
@@ -14,9 +14,9 @@ export type ISuccessStory = {
   location: string;
   page_slug: string;
 };
-export type TenantSettingsFeatureNames = keyof ITenantSettings;
+export type AppConfigurationSettingsFeatureNames = keyof IAppConfigurationSettings;
 
-export interface ITenantSettings {
+export interface IAppConfigurationSettings {
   core: {
     allowed: boolean;
     enabled: boolean;
@@ -93,12 +93,12 @@ export interface ITenantSettings {
     identifier: string;
     secret: string;
   };
-  manual_project_sorting?: TenantFeature;
-  admin_project_templates?: TenantFeature;
-  pages?: TenantFeature;
-  private_projects?: TenantFeature;
-  maps?: TenantMapSettings;
-  participatory_budgeting?: TenantFeature;
+  manual_project_sorting?: AppConfigurationFeature;
+  admin_project_templates?: AppConfigurationFeature;
+  pages?: AppConfigurationFeature;
+  private_projects?: AppConfigurationFeature;
+  maps?: AppConfigurationMapSettings;
+  participatory_budgeting?: AppConfigurationFeature;
   initiatives?: {
     allowed: boolean;
     enabled: boolean;
@@ -118,52 +118,52 @@ export interface ITenantSettings {
     enabled: boolean;
     verification_methods: string[];
   };
-  idea_custom_fields?: TenantFeature;
-  user_custom_fields?: TenantFeature;
-  volunteering?: TenantFeature;
-  workshops?: TenantFeature;
-  ideas_overview?: TenantFeature;
-  smart_groups?: TenantFeature;
-  manual_emailing?: TenantFeature;
-  automated_emailing_control?: TenantFeature;
+  idea_custom_fields?: AppConfigurationFeature;
+  user_custom_fields?: AppConfigurationFeature;
+  volunteering?: AppConfigurationFeature;
+  workshops?: AppConfigurationFeature;
+  ideas_overview?: AppConfigurationFeature;
+  smart_groups?: AppConfigurationFeature;
+  manual_emailing?: AppConfigurationFeature;
+  automated_emailing_control?: AppConfigurationFeature;
   typeform_surveys?: {
     allowed: boolean;
     enabled: boolean;
     user_token: string;
   };
-  surveys?: TenantFeature;
-  google_forms_surveys?: TenantFeature;
-  surveymonkey_surveys?: TenantFeature;
-  enalyzer_surveys?: TenantFeature;
-  project_folders?: TenantFeature;
-  clustering?: TenantFeature;
-  geographic_dashboard?: TenantFeature;
-  widgets?: TenantFeature;
-  granular_permissions?: TenantFeature;
-  ideaflow_social_sharing?: TenantFeature;
-  initiativeflow_social_sharing?: TenantFeature;
-  machine_translations?: TenantFeature;
-  custom_topics?: TenantFeature;
-  similar_ideas?: TenantFeature;
-  polls?: TenantFeature;
-  moderation?: TenantFeature;
-  disable_downvoting?: TenantFeature;
-  project_visibility?: TenantFeature;
-  project_management?: TenantFeature;
-  idea_assignment?: TenantFeature;
-  custom_idea_statuses?: TenantFeature;
-  idea_custom_copy?: TenantFeature;
-  intercom?: TenantFeature;
-  satismeter?: TenantFeature & {
+  surveys?: AppConfigurationFeature;
+  google_forms_surveys?: AppConfigurationFeature;
+  surveymonkey_surveys?: AppConfigurationFeature;
+  enalyzer_surveys?: AppConfigurationFeature;
+  project_folders?: AppConfigurationFeature;
+  clustering?: AppConfigurationFeature;
+  geographic_dashboard?: AppConfigurationFeature;
+  widgets?: AppConfigurationFeature;
+  granular_permissions?: AppConfigurationFeature;
+  ideaflow_social_sharing?: AppConfigurationFeature;
+  initiativeflow_social_sharing?: AppConfigurationFeature;
+  machine_translations?: AppConfigurationFeature;
+  custom_topics?: AppConfigurationFeature;
+  similar_ideas?: AppConfigurationFeature;
+  polls?: AppConfigurationFeature;
+  moderation?: AppConfigurationFeature;
+  disable_downvoting?: AppConfigurationFeature;
+  project_visibility?: AppConfigurationFeature;
+  project_management?: AppConfigurationFeature;
+  idea_assignment?: AppConfigurationFeature;
+  custom_idea_statuses?: AppConfigurationFeature;
+  idea_custom_copy?: AppConfigurationFeature;
+  intercom?: AppConfigurationFeature;
+  satismeter?: AppConfigurationFeature & {
     write_key: string;
   };
-  google_analytics?: TenantFeature & {
+  google_analytics?: AppConfigurationFeature & {
     tracking_id: string;
   };
-  segment?: TenantFeature & {
+  segment?: AppConfigurationFeature & {
     destinations: string;
   };
-  google_tag_manager?: TenantFeature & {
+  google_tag_manager?: AppConfigurationFeature & {
     destinations: string;
     container_id: string;
   };
@@ -177,7 +177,7 @@ export interface ITenantSettings {
   };
 }
 
-interface TenantMapSettings extends TenantFeature {
+interface AppConfigurationMapSettings extends AppConfigurationFeature {
   map_center: {
     lat: string;
     long: string;
@@ -186,7 +186,7 @@ interface TenantMapSettings extends TenantFeature {
   zoom_level: number;
 }
 
-export interface ITenantStyle {
+export interface IAppConfigurationStyle {
   invertedNavbarColors: boolean;
   navbarBackgroundColor?: string;
   navbarActiveItemBackgroundColor?: string;
@@ -208,30 +208,34 @@ export interface ITenantStyle {
   projectNavbarIdeaButtonTextColor?: string;
 }
 
-export interface ITenantAttributes {
+export interface IAppConfigurationAttributes {
   name: string;
   host: string;
-  settings: ITenantSettings;
+  settings: IAppConfigurationSettings;
   logo: ImageSizes | null;
   header_bg: ImageSizes | null;
   favicon?: ImageSizes | null;
-  style?: ITenantStyle;
+  style?: IAppConfigurationStyle;
   homepage_info?: Multiloc;
 }
 
-export interface ITenantData {
+export interface IAppConfigurationData {
   id: string;
   type: string;
-  attributes: ITenantAttributes;
+  attributes: IAppConfigurationAttributes;
 }
 
-export interface ITenant {
-  data: ITenantData;
+export interface IAppConfiguration {
+  data: IAppConfigurationData;
 }
 
-export interface IUpdatedTenantProperties {
+export interface IUpdatedAppConfigurationProperties {
   settings?: Partial<
-    { [P in keyof ITenantSettings]: Partial<ITenantSettings[P]> }
+    {
+      [P in keyof IAppConfigurationSettings]: Partial<
+        IAppConfigurationSettings[P]
+      >;
+    }
   >;
   logo?: string;
   header_bg?: string;
@@ -239,14 +243,16 @@ export interface IUpdatedTenantProperties {
 }
 
 export function currentTenantStream() {
-  return streams.get<ITenant>({ apiEndpoint: currentTenantApiEndpoint });
+  return streams.get<IAppConfiguration>({
+    apiEndpoint: currentTenantApiEndpoint,
+  });
 }
 
 export async function updateTenant(
   tenantId: string,
-  object: IUpdatedTenantProperties
+  object: IUpdatedAppConfigurationProperties
 ) {
-  const tenant = await streams.update<ITenant>(
+  const tenant = await streams.update<IAppConfiguration>(
     `${API_PATH}/tenants/${tenantId}`,
     tenantId,
     { tenant: object }

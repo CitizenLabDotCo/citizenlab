@@ -24,7 +24,7 @@ import {
 
 // services
 import { localeStream } from 'services/locale';
-import { currentTenantStream, ITenant } from 'services/tenant';
+import { currentTenantStream, IAppConfiguration } from 'services/tenant';
 import { ITopicData } from 'services/topics';
 import { projectByIdStream, IProject, IProjectData } from 'services/projects';
 import { phasesStream, IPhaseData } from 'services/phases';
@@ -125,7 +125,7 @@ interface Props extends InputProps, DataProps {}
 
 interface State {
   locale: Locale | null;
-  tenant: ITenant | null;
+  tenant: IAppConfiguration | null;
   pbContext: IProjectData | IPhaseData | null;
   projects: IOption[] | null;
   title: string;

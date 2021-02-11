@@ -12,7 +12,7 @@ import {
 import { isEqual, mapValues } from 'lodash-es';
 import eventEmitter from 'utils/eventEmitter';
 
-import { ITenantData, currentTenantStream } from 'services/tenant';
+import { IAppConfigurationData, currentTenantStream } from 'services/tenant';
 
 import {
   getDestinationConfig,
@@ -97,7 +97,7 @@ export const shutdownFor = (destination: IDestination) => {
   );
 };
 
-export function tenantInfo(tenant: ITenantData) {
+export function tenantInfo(tenant: IAppConfigurationData) {
   return {
     tenantId: tenant && tenant.id,
     tenantName: tenant && tenant.attributes.name,

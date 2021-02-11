@@ -3,7 +3,11 @@ import { get } from 'lodash-es';
 import { Subscription } from 'rxjs';
 
 // services
-import { currentTenantStream, ITenant, ITenantData } from 'services/tenant';
+import {
+  currentTenantStream,
+  IAppConfiguration,
+  IAppConfigurationData,
+} from 'services/tenant';
 import { isNilOrError } from 'utils/helperUtils';
 
 interface Props {
@@ -13,12 +17,12 @@ interface Props {
 }
 
 interface State {
-  currentTenant: ITenant | null;
+  currentTenant: IAppConfiguration | null;
 }
 
 export const isFeatureActive = (
   feature: string,
-  tenant: ITenantData,
+  tenant: IAppConfigurationData,
   options?: { onlyCheckAllowed?: boolean }
 ) => {
   return (

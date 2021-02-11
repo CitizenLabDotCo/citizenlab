@@ -27,8 +27,8 @@ import {
 import {
   currentTenantStream,
   updateTenant,
-  IUpdatedTenantProperties,
-  ITenantData,
+  IUpdatedAppConfigurationProperties,
+  IAppConfigurationData,
 } from 'services/tenant';
 
 // Utils
@@ -40,8 +40,8 @@ export interface Props {}
 interface State {
   loading: boolean;
   saved: boolean;
-  attributesDiff: IUpdatedTenantProperties;
-  tenant: ITenantData | null;
+  attributesDiff: IUpdatedAppConfigurationProperties;
+  tenant: IAppConfigurationData | null;
   errors: {
     [fieldName: string]: CLError[];
   };

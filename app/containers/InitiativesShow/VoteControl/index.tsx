@@ -18,7 +18,7 @@ import GetInitiativeStatus, {
   GetInitiativeStatusChildProps,
 } from 'resources/GetInitiativeStatus';
 import { IInitiativeData } from 'services/initiatives';
-import { ITenantSettings } from 'services/tenant';
+import { IAppConfigurationSettings } from 'services/tenant';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetTenant';
@@ -53,7 +53,7 @@ const Container = styled.div`
 `;
 
 interface VoteControlComponentProps {
-  initiative: IInitiativeData;
+  initiative: IInitiatIAppConfigurationSettings;
   initiativeStatus: IInitiativeStatusData;
   initiativeSettings: ITenantSettings['initiatives'];
   userVoted: boolean;

@@ -11,7 +11,10 @@ import { convertUrlToUploadFile } from 'utils/fileTools';
 import getSubmitState from 'utils/getSubmitState';
 
 // services
-import { updateTenant, IUpdatedTenantProperties } from 'services/tenant';
+import {
+  updateTenant,
+  IUpdatedAppConfigurationProperties,
+} from 'services/tenant';
 
 // resources
 import GetAppConfiguration, {
@@ -116,7 +119,7 @@ class Favicon extends PureComponent<Props, State> {
       try {
         await updateTenant(
           tenant.id,
-          this.state.attributesDiff as IUpdatedTenantProperties
+          this.state.attributesDiff as IUpdatedAppConfigurationProperties
         );
         this.setState({ loading: false, saved: true, attributesDiff: {} });
       } catch (error) {
