@@ -4,7 +4,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { useQuery } from '@apollo/react-hooks';
 import { gql } from 'apollo-boost';
 import useAppConfiguration from 'hooks/useAppConfiguration';
-import useTenantLocales from 'hooks/useTenantLocales';
+import useAppConfigurationLocales from 'hooks/useTenantLocales';
 import { trackEventByName } from 'utils/analytics';
 import { get, isEmpty } from 'lodash-es';
 import tracks from './tracks';
@@ -35,7 +35,7 @@ const ProjectTemplatesContainer = memo(
     const [search, setSearch] = useState<string | null>(null);
     const [loadingMore, setLoadingMore] = useState(false);
 
-    const tenantLocales = useTenantLocales();
+    const tenantLocales = useAppConfigurationLocales();
 
     const TEMPLATES_QUERY = gql`
     query PublishedProjectTemplatesQuery(

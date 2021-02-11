@@ -3,24 +3,23 @@ import { currentAppConfigurationStream } from 'services/appConfiguration';
 import { Locale } from 'typings';
 import { isNilOrError } from 'utils/helperUtils';
 
-export default function useTenantLocales() {
-  const [tenantLocales, setTenantLocales] = useState<
+export default function useAppConfigurationLocales() {
+  const [appConfigurationLocales, setAppConfigurationLocales] = useState<
     Locale[] | undefined | null | Error
   >(undefined);
 
   useEffect(() => {
     const subscription = currentAppConfigurationStream().observable.subscribe(
-      (currentTenant) => {
-        setTenantLocales(
-          !isNilOrError(currentTenant)
-            ? currentTenant.data.attributes.settings.core.locales
-            : currentTenant
+      (currentAppConfiguration) => {
+        setAppConfigurationLocales(
+          !isNilOrError(currentAppConfiguration)
+            ? currentAppConfiguration.data.attributes.settings.core.locales
+            : currentAppConfiguration
         );
       }
     );
-
     return () => subscription.unsubscribe();
   }, []);
 
-  return tenantLocales;
+  return appConfigurationLocales;
 }
