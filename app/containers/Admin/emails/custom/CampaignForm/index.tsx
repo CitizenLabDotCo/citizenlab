@@ -216,11 +216,7 @@ class CampaignForm extends React.Component<
               component={FormikInputMultilocWithLocaleSwitcher}
               label={<FormattedMessage {...messages.fieldSubject} />}
               labelTooltipText={
-                <IconTooltip
-                  content={
-                    <FormattedMessage {...messages.fieldSubjectTooltip} />
-                  }
-                />
+                <FormattedMessage {...messages.fieldSubjectTooltip} />
               }
               maxCharCount={80}
             />
