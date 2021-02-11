@@ -6,7 +6,7 @@ import { shallow } from 'enzyme';
 import { ConsentManager } from './';
 
 // mock depencies
-jest.mock('services/tenant');
+jest.mock('services/appConfiguration');
 jest.mock('resources/GetTenant', () => 'GetTenant');
 jest.mock('./Container', () => 'Container');
 
