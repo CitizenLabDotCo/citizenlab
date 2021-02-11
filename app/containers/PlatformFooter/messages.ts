@@ -9,19 +9,19 @@ export default defineMessages({
     id: 'app.containers.footer.information',
     defaultMessage: 'Information',
   },
-  'terms-and-conditions': {
+  termsAndConditions: {
     id: 'app.containers.footer.terms-and-conditions',
     defaultMessage: 'Terms and Conditions',
   },
-  'privacy-policy': {
+  privacyPolicy: {
     id: 'app.containers.footer.privacy-policy',
     defaultMessage: 'Privacy policy',
   },
-  'accessibility-statement': {
+  accessibilityStatement: {
     id: 'app.containers.footer.accessibility-statement',
     defaultMessage: 'Accessibility statement',
   },
-  'cookie-policy': {
+  cookiePolicy: {
     id: 'app.containers.footer.cookie-policy',
     defaultMessage: 'Cookie policy',
   },

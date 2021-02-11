@@ -1,7 +1,34 @@
 # Changelog
 
-## Next release 
-/
+## 2021-02-10
+
+### Added
+- Automatic tagging
+
+## 2021-02-08
+
+### Fixed
+- Fixed a bug preventing registration fields and poll questions from reordering correctly.
+- Fixed a bug causing errors in new platforms.
+
+## 2021-02-04
+### Fixed
+- Fixed a bug causing the projects list in the navbar and projects page to display projects outside of folders when they're contained within them.
+
+## 2021-01-29
+
+### Added
+- Ability to redirect URLs through AdminHQ
+- Accessibility statement link in the footer
+
+### Fixed
+- Fixed issue affecting project managers that blocked access to their managed projects, when these are placed inside a folder.
+
+## 2021-01-28
+
+### Fixed
+- A bug in Admin project edit page that did not allow a user to Go Back to the projects list after switching tabs
+- Scrolling on the admin users page
 
 ## 2021-01-26
 

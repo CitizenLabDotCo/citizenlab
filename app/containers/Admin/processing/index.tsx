@@ -41,6 +41,8 @@ import FeatureFlag from 'components/FeatureFlag';
 import IdeasTable from './IdeasTable';
 import useTaggings from 'hooks/useTaggings';
 import EmptyState from './EmptyState';
+import { cancelGenerate } from 'services/taggings';
+import usePendingTasks from 'hooks/usePendingTasks';
 
 const Container = styled.div`
   height: calc(100vh - ${(props) => props.theme.menuHeight}px);
@@ -129,6 +131,15 @@ const KeyboardShortcuts = styled.div`
   background: ${colors.clBlueDarkBg};
   font-size: ${fontSizes.xs}px;
 `;
+
+export const WarningTitle = styled.h2`
+  font-size: ${fontSizes.large}px !important;
+  margin-right: 20px !important;
+`;
+export const WarningMessage = styled.div`
+  margin-bottom: 20px !important;
+`;
+
 interface DataProps {
   projects: GetProjectsChildProps;
 }
@@ -149,17 +160,23 @@ const Processing = memo<Props & InjectedIntlProps>(
     const tenant = useTenant();
     const locale = useLocale();
 
+    const { tags, onProjectsChange: changeTagsProjectFilter } = useTags();
+
     const { taggings } = useTaggings();
 
     const [projectList, setProjectList] = useState<
       IFilterSelectorValue[] | null
     >(null);
 
-    const { tags, onProjectsChange: changeTagsProjectFilter } = useTags();
-
     const [exporting, setExporting] = useState<boolean>(false);
 
     const [selectedProjectIds, setSelectedProjectIds] = useState<string[]>([]);
+
+    const {
+      processing,
+      unprocessedItemsIds,
+      processingRemainingItemsCount,
+    } = usePendingTasks();
 
     const [showAutotagView, setShowAutotagView] = useState<boolean>(false);
     const [confirmationModalOpen, setConfirmationModalOpen] = useState<boolean>(
@@ -231,6 +248,13 @@ const Processing = memo<Props & InjectedIntlProps>(
       )
         ? setConfirmationModalOpen(true)
         : setShowAutotagView(true);
+    };
+    const handleCancelAutoTag = (e: FormEvent) => {
+      e.preventDefault();
+      trackEventByName('Filter View', {
+        action: 'Clicked Cancel Autotag Button',
+      });
+      cancelGenerate();
     };
 
     const handleCloseAutotagView = (e?: FormEvent) => {
@@ -305,14 +329,34 @@ const Processing = memo<Props & InjectedIntlProps>(
 
                   <StyledActions>
                     <FeatureFlag name="automatic_tagging">
-                      <Button
-                        buttonStyle="admin-dark"
-                        disabled={selectedRows.length === 0}
-                        locale={locale}
-                        onClick={handleAutoTag}
-                      >
-                        <FormattedMessage {...messages.autotag} />
-                      </Button>
+                      {!processing ? (
+                        <Button
+                          buttonStyle="admin-dark"
+                          disabled={selectedRows.length === 0}
+                          locale={locale}
+                          onClick={handleAutoTag}
+                        >
+                          <FormattedMessage {...messages.autotag} />
+                        </Button>
+                      ) : (
+                        <>
+                          <div>
+                            <FormattedMessage
+                              {...messages.autotaggingProcessing}
+                              values={{
+                                remainingItems: processingRemainingItemsCount,
+                              }}
+                            />
+                          </div>
+                          <Button
+                            locale={locale}
+                            buttonStyle="admin-dark"
+                            onClick={handleCancelAutoTag}
+                          >
+                            <FormattedMessage {...messages.cancel} />
+                          </Button>
+                        </>
+                      )}
                     </FeatureFlag>
 
                     <Button
@@ -360,6 +404,7 @@ const Processing = memo<Props & InjectedIntlProps>(
               setSelectedRows={setSelectedRows}
               tags={tags}
               taggings={taggings}
+              unprocessedItemsIds={unprocessedItemsIds}
             />
           ) : (
             <EmptyState reason="projectSelection" />
@@ -369,12 +414,12 @@ const Processing = memo<Props & InjectedIntlProps>(
             close={handleCloseConfirmationModal}
           >
             <QuillEditedContent textColor={colors.adminTextColor}>
-              <h2>
+              <WarningTitle>
                 <FormattedMessage {...messages.autotagOverwriteAlert} />
-              </h2>
-              <h4>
+              </WarningTitle>
+              <WarningMessage>
                 <FormattedMessage {...messages.autotagOverwriteExplanation} />
-              </h4>
+              </WarningMessage>
               <ButtonRow>
                 <Button
                   locale={locale}
@@ -395,7 +440,7 @@ const Processing = memo<Props & InjectedIntlProps>(
       );
     }
     if (showAutotagView) {
-      if (selectedRows.length > 500) {
+      if (selectedRows.length > 100) {
         return (
           <AutotagView
             closeView={handleCloseAutotagView}
@@ -417,7 +462,7 @@ const Data = adopt<DataProps, InputProps>({
   projects: ({ render }) => {
     return (
       <GetProjects
-        publicationStatuses={['published', 'archived']}
+        publicationStatuses={['published', 'archived', 'draft']}
         filterCanModerate={true}
         sort="new"
       >
