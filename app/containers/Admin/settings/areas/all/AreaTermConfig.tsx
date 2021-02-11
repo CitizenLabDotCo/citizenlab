@@ -9,7 +9,7 @@ import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLoca
 import { ButtonWrapper } from 'components/admin/PageWrapper';
 
 // resources
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAppConfiguration, { GetTenantChildProps } from 'resources/GetTenant';
 import { updateTenant } from 'services/tenant';
 
 // i18n
@@ -147,7 +147,7 @@ class AreaTermConfig extends PureComponent<Props, State> {
 const AreaTermConfigWithHocs = injectIntl(AreaTermConfig);
 
 export default (inputProps: InputProps) => (
-  <GetTenant>
+  <GetAppConfiguration>
     {(tenant) => <AreaTermConfigWithHocs {...inputProps} tenant={tenant} />}
-  </GetTenant>
+  </GetAppConfiguration>
 );

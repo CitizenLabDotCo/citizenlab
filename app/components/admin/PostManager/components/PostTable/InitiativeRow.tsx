@@ -40,7 +40,7 @@ import { TitleLink, StyledRow } from './Row';
 import SubRow from './SubRow';
 
 // resources
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAppConfiguration, { GetTenantChildProps } from 'resources/GetTenant';
 import GetInitiativeAllowedTransitions, {
   GetInitiativeAllowedTransitionsChildProps,
 } from 'resources/GetInitiativeAllowedTransitions';
@@ -283,7 +283,7 @@ const InitiativesRowWithHocs = injectIntl(
 );
 
 const Data = adopt<DataProps, InputProps>({
-  tenant: <GetTenant />,
+  tenant: <GetAppConfiguration />,
   allowedTransitions: ({ initiative, render }) => (
     <GetInitiativeAllowedTransitions id={initiative.id}>
       {render}

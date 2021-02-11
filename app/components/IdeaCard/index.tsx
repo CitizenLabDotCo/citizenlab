@@ -14,7 +14,7 @@ import AssignBudgetDisabled from 'components/AssignBudgetControl/AssignBudgetDis
 import Author from 'components/Author';
 
 // resources
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAppConfiguration, { GetTenantChildProps } from 'resources/GetTenant';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import GetIdeaImage, { GetIdeaImageChildProps } from 'resources/GetIdeaImage';
 import GetUser, { GetUserChildProps } from 'resources/GetUser';
@@ -411,7 +411,7 @@ class IdeaCard extends PureComponent<
 }
 
 const Data = adopt<DataProps, InputProps>({
-  tenant: <GetTenant />,
+  tenant: <GetAppConfiguration />,
   idea: ({ ideaId, render }) => <GetIdea ideaId={ideaId}>{render}</GetIdea>,
   ideaImage: ({ ideaId, idea, render }) => (
     <GetIdeaImage

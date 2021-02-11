@@ -13,7 +13,7 @@ import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetTenantLocales, {
   GetTenantLocalesChildProps,
 } from 'resources/GetTenantLocales';
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAppConfiguration, { GetTenantChildProps } from 'resources/GetTenant';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 
 // services
@@ -105,7 +105,7 @@ const UsersShowPageMetaWithHoc = injectIntl<Props>(UsersShowPageMeta);
 
 const Data = adopt<DataProps, InputProps>({
   tenantLocales: <GetTenantLocales />,
-  tenant: <GetTenant />,
+  tenant: <GetAppConfiguration />,
   authUser: <GetAuthUser />,
   locale: <GetLocale />,
 });

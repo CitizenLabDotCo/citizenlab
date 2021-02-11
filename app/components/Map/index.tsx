@@ -9,7 +9,7 @@ import { Icon } from 'cl2-component-library';
 import Legend from './Legend';
 
 // resources
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAppConfiguration, { GetTenantChildProps } from 'resources/GetTenant';
 import GetMapConfig, { GetMapConfigChildProps } from 'resources/GetMapConfig';
 
 // Map
@@ -469,7 +469,7 @@ export default ({ projectId, ...inputProps }: InputProps) =>
       {(mapConfig: GetMapConfigChildProps) => {
         if (isError(mapConfig) || mapConfig) {
           return (
-            <GetTenant>
+            <GetAppConfiguration>
               {(tenant: GetTenantChildProps) => {
                 return (
                   <CLMapWithHOCs
@@ -480,7 +480,7 @@ export default ({ projectId, ...inputProps }: InputProps) =>
                   />
                 );
               }}
-            </GetTenant>
+            </GetAppConfiguration>
           );
         }
 
@@ -488,11 +488,11 @@ export default ({ projectId, ...inputProps }: InputProps) =>
       }}
     </GetMapConfig>
   ) : (
-    <GetTenant>
+    <GetAppConfiguration>
       {(tenant: GetTenantChildProps) => {
         return (
           <CLMapWithHOCs tenant={tenant} mapConfig={null} {...inputProps} />
         );
       }}
-    </GetTenant>
+    </GetAppConfiguration>
   );

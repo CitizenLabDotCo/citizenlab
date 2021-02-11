@@ -7,7 +7,7 @@ import qs from 'qs';
 import styled from 'styled-components';
 
 // resources
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAppConfiguration, { GetTenantChildProps } from 'resources/GetTenant';
 import GetFeatureFlag, {
   GetFeatureFlagChildProps,
 } from 'resources/GetFeatureFlag';
@@ -112,7 +112,7 @@ class Fragment extends PureComponent<Props, State> {
 }
 
 const Data = adopt<DataProps, InputProps>({
-  tenant: <GetTenant />,
+  tenant: <GetAppConfiguration />,
   fragmentsFeatureFlag: <GetFeatureFlag name="fragments" />,
 });
 

@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import styled, { withTheme } from 'styled-components';
 
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAppConfiguration, { GetTenantChildProps } from 'resources/GetTenant';
 import GetInitiative, {
   GetInitiativeChildProps,
 } from 'resources/GetInitiative';
@@ -245,7 +245,7 @@ class VoteIndicator extends PureComponent<Props & { theme: any }> {
 }
 
 const Data = adopt<DataProps, InputProps>({
-  tenant: <GetTenant />,
+  tenant: <GetAppConfiguration />,
   initiative: ({ initiativeId, render }) => (
     <GetInitiative id={initiativeId}>{render}</GetInitiative>
   ),

@@ -12,7 +12,7 @@ import { IParticipationContextType } from 'typings';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAppConfiguration, { GetTenantChildProps } from 'resources/GetTenant';
 import GetBasket, { GetBasketChildProps } from 'resources/GetBasket';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
@@ -498,7 +498,7 @@ class PBExpenses extends PureComponent<
 
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
-  tenant: <GetTenant />,
+  tenant: <GetAppConfiguration />,
   project: ({ participationContextType, participationContextId, render }) => (
     <GetProject
       projectId={

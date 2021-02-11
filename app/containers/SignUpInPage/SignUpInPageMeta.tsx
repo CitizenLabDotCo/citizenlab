@@ -13,7 +13,7 @@ import { InjectedIntlProps } from 'react-intl';
 import GetTenantLocales, {
   GetTenantLocalesChildProps,
 } from 'resources/GetTenantLocales';
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAppConfiguration, { GetTenantChildProps } from 'resources/GetTenant';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 
 // utils
@@ -80,7 +80,7 @@ const SignUpInPageMetaWithHoC = withRouter(injectIntl(SignUpInPageMeta));
 
 const Data = adopt<DataProps>({
   tenantLocales: <GetTenantLocales />,
-  tenant: <GetTenant />,
+  tenant: <GetAppConfiguration />,
   locale: <GetLocale />,
 });
 

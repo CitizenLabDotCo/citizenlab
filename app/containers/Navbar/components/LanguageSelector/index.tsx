@@ -10,7 +10,7 @@ import { updateLocale } from 'services/locale';
 
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAppConfiguration, { GetTenantChildProps } from 'resources/GetTenant';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 
 // style
@@ -210,7 +210,7 @@ class LanguageSelector extends PureComponent<Props, State> {
 }
 
 const Data = adopt<DataProps, InputProps>({
-  tenant: <GetTenant />,
+  tenant: <GetAppConfiguration />,
   authUser: <GetAuthUser />,
   locale: <GetLocale />,
 });
