@@ -14,7 +14,9 @@ import getSubmitState from 'utils/getSubmitState';
 import { updateTenant, IUpdatedTenantProperties } from 'services/tenant';
 
 // resources
-import GetAppConfiguration, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetTenant';
 
 // intl
 import messages from './messages';
@@ -51,7 +53,7 @@ interface IAttributesDiff {
 }
 
 interface Props {
-  tenant: GetTenantChildProps;
+  tenant: GetAppConfigurationChildProps;
 }
 
 type State = {

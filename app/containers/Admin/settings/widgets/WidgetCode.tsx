@@ -3,7 +3,9 @@ import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
-import GetAppConfiguration, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetTenant';
 import { isNilOrError } from 'utils/helperUtils';
 import Button from 'components/UI/Button';
 
@@ -27,7 +29,7 @@ interface Props {
 }
 
 interface DataProps {
-  tenant: GetTenantChildProps;
+  tenant: GetAppConfigurationChildProps;
 }
 
 interface State {

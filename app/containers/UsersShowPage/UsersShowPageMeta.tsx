@@ -13,7 +13,9 @@ import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetTenantLocales, {
   GetTenantLocalesChildProps,
 } from 'resources/GetTenantLocales';
-import GetAppConfiguration, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetTenant';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 
 // services
@@ -32,7 +34,7 @@ interface InputProps {
 interface DataProps {
   authUser: GetAuthUserChildProps;
   tenantLocales: GetTenantLocalesChildProps;
-  tenant: GetTenantChildProps;
+  tenant: GetAppConfigurationChildProps;
   locale: GetLocaleChildProps;
 }
 

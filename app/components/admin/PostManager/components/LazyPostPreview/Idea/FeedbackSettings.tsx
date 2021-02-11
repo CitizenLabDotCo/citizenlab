@@ -29,7 +29,9 @@ import GetIdeaStatuses, {
   GetIdeaStatusesChildProps,
 } from 'resources/GetIdeaStatuses';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
-import GetAppConfiguration, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetTenant';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // analytics
@@ -44,7 +46,7 @@ const Container = styled.div``;
 
 interface DataProps {
   authUser: GetAuthUserChildProps;
-  tenant: GetTenantChildProps;
+  tenant: GetAppConfigurationChildProps;
   statuses: GetIdeaStatusesChildProps;
   idea: GetIdeaChildProps;
   prospectAssignees: GetUsersChildProps;

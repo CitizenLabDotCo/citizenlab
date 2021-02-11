@@ -8,7 +8,9 @@ import InitiativeInfoContent from './InitiativeInfoContent';
 
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetAppConfiguration, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetTenant';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -93,7 +95,7 @@ export interface InputProps {
 
 interface DataProps {
   authUser: GetAuthUserChildProps;
-  tenant: GetTenantChildProps;
+  tenant: GetAppConfigurationChildProps;
   postingPermission: GetInitiativesPermissionsChildProps;
 }
 

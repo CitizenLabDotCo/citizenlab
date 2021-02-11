@@ -33,7 +33,9 @@ import GetInitiativeAllowedTransitions, {
 import GetInitiative, {
   GetInitiativeChildProps,
 } from 'resources/GetInitiative';
-import GetAppConfiguration, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetTenant';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // analytics
@@ -55,7 +57,7 @@ const Container = styled.div``;
 
 interface DataProps {
   authUser: GetAuthUserChildProps;
-  tenant: GetTenantChildProps;
+  tenant: GetAppConfigurationChildProps;
   statuses: GetInitiativeStatusesChildProps;
   initiative: GetInitiativeChildProps;
   prospectAssignees: GetUsersChildProps;

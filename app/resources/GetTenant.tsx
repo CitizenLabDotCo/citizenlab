@@ -5,7 +5,9 @@ import { isNilOrError } from 'utils/helperUtils';
 
 interface InputProps {}
 
-type children = (renderProps: GetTenantChildProps) => JSX.Element | null;
+type children = (
+  renderProps: GetAppConfigurationChildProps
+) => JSX.Element | null;
 
 interface Props extends InputProps {
   children?: children;
@@ -15,7 +17,11 @@ interface State {
   tenant: ITenantData | undefined | null | Error;
 }
 
-export type GetTenantChildProps = ITenantData | undefined | null | Error;
+export type GetAppConfigurationChildProps =
+  | ITenantData
+  | undefined
+  | null
+  | Error;
 
 export default class GetAppConfiguration extends React.Component<Props, State> {
   private subscriptions: Subscription[];

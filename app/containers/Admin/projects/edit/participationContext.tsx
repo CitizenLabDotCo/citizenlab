@@ -35,7 +35,9 @@ import {
 import eventEmitter from 'utils/eventEmitter';
 
 // resources
-import GetAppConfiguration, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetTenant';
 import GetFeatureFlag, {
   GetFeatureFlagChildProps,
 } from 'resources/GetFeatureFlag';
@@ -158,7 +160,7 @@ export interface IParticipationContextConfig {
 }
 
 interface DataProps {
-  tenant: GetTenantChildProps;
+  tenant: GetAppConfigurationChildProps;
   surveys_enabled: GetFeatureFlagChildProps;
   typeform_enabled: GetFeatureFlagChildProps;
   google_forms_enabled: GetFeatureFlagChildProps;
