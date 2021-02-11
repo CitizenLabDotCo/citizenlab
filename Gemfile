@@ -162,3 +162,5 @@ gem 'verification', path: 'engines/verification'
 gem 'volunteering', path: 'engines/volunteering'
 
 
+
+gem 'geographic_dashboard', path: 'geographic_dashboard'
