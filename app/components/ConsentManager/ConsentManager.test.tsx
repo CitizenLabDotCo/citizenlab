@@ -22,7 +22,7 @@ import * as consent from './consent';
 import { makeUser } from 'services/__mocks__/users';
 import {
   __setMockAppConfiguration,
-  getAppConfiguration,
+  getAppConfigurationData,
 } from 'services/__mocks__/appConfiguration';
 import {
   getDestinationConfig,
@@ -64,7 +64,7 @@ const savedChoicesAllEnabled = getDestinationConfigs().reduce(
   {}
 );
 
-const tenantDataAllEnabled = getAppConfiguration({
+const tenantDataAllEnabled = getAppConfigurationData({
   settings: {
     satismeter: { allowed: true, enabled: true },
     google_analytics: { allowed: true, enabled: true },
@@ -74,7 +74,7 @@ const tenantDataAllEnabled = getAppConfiguration({
   },
 });
 
-const tenantDataAllDisabled = getAppConfiguration({
+const tenantDataAllDisabled = getAppConfigurationData({
   settings: {
     satismeter: { allowed: false, enabled: false },
     google_analytics: { allowed: false, enabled: false },
@@ -419,9 +419,9 @@ describe('<ConsentManager />', () => {
   describe('sets the cookie', () => {
     describe('accept', () => {
       it('accepts all when no cookie was set', () => {
-        const tenantAllDestinationsEnabled = getAppConfiguration({
+        const tenantAllDestinationsEnabled = getAppConfigurationData({
           settings: {
-            ...getAppConfiguration()['attributes']['settings'],
+            ...getAppConfigurationData()['attributes']['settings'],
             google_analytics: { enabled: true, allowed: true },
           },
         });
