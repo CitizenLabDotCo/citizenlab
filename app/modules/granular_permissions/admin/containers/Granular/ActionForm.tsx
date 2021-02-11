@@ -9,7 +9,8 @@ import MultipleSelect from 'components/UI/MultipleSelect';
 import { Radio } from 'cl2-component-library';
 
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
+import messages from './messages';
+import permissionsMessages from 'containers/Admin/projects/edit/permissions/messages';
 import { IPermissionData } from 'services/actionPermissions';
 
 const StyledFieldset = styled.fieldset`
@@ -83,7 +84,9 @@ class ActionForm extends PureComponent<Props> {
               value="everyone"
               currentValue={permittedBy}
               label={
-                <FormattedMessage {...messages.permissionsEveryoneLabel} />
+                <FormattedMessage
+                  {...permissionsMessages.permissionsEveryoneLabel}
+                />
               }
               onChange={this.handlePermittedByUpdate('everyone')}
               id={`participation-permission-everyone-${permissionId}`}
@@ -101,7 +104,11 @@ class ActionForm extends PureComponent<Props> {
             name={`permittedBy-${permissionId}`}
             value="admins_moderators"
             currentValue={permittedBy}
-            label={<FormattedMessage {...messages.permissionsAdministrators} />}
+            label={
+              <FormattedMessage
+                {...permissionsMessages.permissionsAdministrators}
+              />
+            }
             onChange={this.handlePermittedByUpdate('admins_moderators')}
             id={`participation-permission-admins-${permissionId}`}
           />
@@ -109,7 +116,11 @@ class ActionForm extends PureComponent<Props> {
             name={`permittedBy-${permissionId}`}
             value="groups"
             currentValue={permittedBy}
-            label={<FormattedMessage {...messages.permissionsSelectionLabel} />}
+            label={
+              <FormattedMessage
+                {...permissionsMessages.permissionsSelectionLabel}
+              />
+            }
             onChange={this.handlePermittedByUpdate('groups')}
             id={`participation-permission-certain-groups-${permissionId}`}
           />

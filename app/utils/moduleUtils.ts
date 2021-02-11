@@ -10,7 +10,7 @@ import {
 import { GroupCreationModal } from 'containers/Admin/users';
 import { NormalFormValues } from 'containers/Admin/users/NormalGroupForm';
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
-import { IUpdatedProjectProperties, IProjectData } from 'services/projects';
+import { IProjectData, IUpdatedProjectProperties } from 'services/projects';
 import { onProjectFormStateChange } from 'containers/Admin/projects/edit/general';
 import { mergeWith, castArray } from 'lodash-es';
 
@@ -19,8 +19,14 @@ import { FunctionComponent } from 'react';
 import Loadable from 'react-loadable';
 import { IGroupDataAttributes, MembershipType } from 'services/groups';
 import { ParticipationMethod } from 'services/participationContexts';
+import {
+  FormikSubmitHandler,
+  ITab,
+  MessageDescriptor,
+  Multiloc,
+} from 'typings';
 import { IUserData } from 'services/users';
-import { FormikSubmitHandler, Multiloc, ITab } from 'typings';
+import { MessageValue } from 'react-intl';
 
 type Localize = (
   multiloc: Multiloc | null | undefined,
@@ -107,10 +113,29 @@ export type OutletsPropertyMap = {
     onData: (data: { key: string; data: Object }) => void;
   };
   'app.containers.Admin.settings.SettingsPage': {
-    onData: (data: { after?: string; configuration: ITab }) => void;
+    onData: (data: {
+      insertAfterTabName?: string;
+      tabConfiguration: ITab;
+    }) => void;
   };
   'app.containers.Admin.projects.edit': {
-    onData: (data: { after?: string; configuration: ITab }) => void;
+    onData: (data: {
+      insertAfterTabName?: string;
+      tabConfiguration: ITab;
+    }) => void;
+  };
+  'app.containers.Admin.project.edit.permissions': {
+    project: IProjectData;
+  };
+  'app.containers.Admin.initiatives.tabs': {
+    formatMessage: (
+      messageDescriptor: MessageDescriptor,
+      values?: { [key: string]: MessageValue } | undefined
+    ) => string;
+    onData: (data: {
+      insertAfterTabName?: string;
+      tabConfiguration: ITab;
+    }) => void;
   };
 };
 
@@ -133,11 +158,20 @@ export interface RouteConfiguration {
   childRoutes?: RouteConfiguration[];
 }
 
+type RecursivePartial<T> = {
+  [P in keyof T]?: T[P] extends (infer U)[]
+    ? RecursivePartial<U>[]
+    : T[P] extends object
+    ? RecursivePartial<T[P]>
+    : T[P];
+};
+
 interface Routes {
   citizen: RouteConfiguration[];
   admin: RouteConfiguration[];
   'admin.settings': RouteConfiguration[];
   'admin.projects': RouteConfiguration[];
+  'admin.initiatives': RouteConfiguration[];
 }
 
 export interface ParsedModuleConfiguration {
@@ -148,14 +182,6 @@ export interface ParsedModuleConfiguration {
   /** this function triggers after the Root component mounted */
   afterMountApplication: () => void;
 }
-
-type RecursivePartial<T> = {
-  [P in keyof T]?: T[P] extends (infer U)[]
-    ? RecursivePartial<U>[]
-    : T[P] extends object
-    ? RecursivePartial<T[P]>
-    : T[P];
-};
 
 export type ModuleConfiguration = RecursivePartial<
   ParsedModuleConfiguration
@@ -245,6 +271,10 @@ export const loadModules = (modules: Modules): ParsedModuleConfiguration => {
       ),
       'admin.projects': parseModuleRoutes(
         mergedRoutes?.['admin.projects'],
+        RouteTypes.ADMIN
+      ),
+      'admin.initiatives': parseModuleRoutes(
+        mergedRoutes?.['admin.initiatives'],
         RouteTypes.ADMIN
       ),
     },

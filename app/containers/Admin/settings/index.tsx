@@ -79,24 +79,25 @@ class SettingsPage extends React.PureComponent<
   }
 
   insertTab = ({
-    configuration,
-    after,
+    tabConfiguration,
+    insertAfterTabName,
   }: {
-    configuration: ITab;
-    after?: string;
+    tabConfiguration: ITab;
+    insertAfterTabName?: string;
   }) => {
     this.setState(({ tabs }) => {
-      const insertIndex = tabs.findIndex((tab) => tab.name === after) + 1;
+      const insertIndex =
+        tabs.findIndex((tab) => tab.name === insertAfterTabName) + 1;
       if (insertIndex > 0) {
         return {
           tabs: [
             ...tabs.slice(0, insertIndex),
-            configuration,
+            tabConfiguration,
             ...tabs.slice(insertIndex),
           ],
         };
       }
-      return { tabs: [...tabs, configuration] };
+      return { tabs: [...tabs, tabConfiguration] };
     });
   };
 
@@ -127,7 +128,7 @@ class SettingsPage extends React.PureComponent<
 
     tabNames.forEach((tabName) => {
       if (tabName && tabHideConditions?.[tabName]?.()) {
-        enabledTabs = reject(tabs, { name: tabName });
+        enabledTabs = reject(enabledTabs, { name: tabName });
       }
     });
 

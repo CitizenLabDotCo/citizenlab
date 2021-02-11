@@ -46,6 +46,9 @@ import styled from 'styled-components';
 import { IOption } from 'typings';
 import { IUserData } from 'services/users';
 
+// utils
+import eventEmitter from 'utils/eventEmitter';
+
 const Container = styled.div``;
 
 const StyledSectionField = styled(SectionField)`
@@ -122,7 +125,15 @@ class UserCustomFieldsForm extends PureComponent<
   }
 
   componentDidMount() {
-    this.props?.onData?.({
+    this.subscriptions = [
+      eventEmitter.observeEvent('customFieldsSubmitEvent').subscribe(() => {
+        if (this.submitbuttonElement) {
+          this.submitbuttonElement?.click?.();
+        }
+      }),
+    ];
+
+    this.props.onData?.({
       key: 'custom_field_values',
       data: {
         submit: () => this?.submitbuttonElement?.click?.(),
@@ -148,23 +159,16 @@ class UserCustomFieldsForm extends PureComponent<
     });
 
     this.setState({ formData: sanitizedFormData }, () =>
-      this.props?.onChange?.()
+      this.props.onChange?.()
     );
   };
 
   handleOnSubmit = ({ formData }) => {
     const sanitizedFormData = {};
-    const { userCustomFieldsSchema } = this.props;
 
     forOwn(formData, (value, key) => {
       sanitizedFormData[key] = value === null ? undefined : value;
     });
-
-    const hasCustomFields =
-      !isNilOrError(userCustomFieldsSchema) &&
-      userCustomFieldsSchema.hasCustomFields;
-
-    console.log(hasCustomFields);
 
     this.setState({ formData: sanitizedFormData }, () =>
       this.props.onSubmit({
