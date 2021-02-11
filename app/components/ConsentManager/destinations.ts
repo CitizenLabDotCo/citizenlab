@@ -1,5 +1,5 @@
 import { isFeatureActive } from 'components/FeatureFlag';
-import { ITenantData } from 'services/tenant';
+import { IAppConfigurationData } from 'services/tenant';
 import { IUserData } from 'services/users';
 
 export interface IDestinationMap {}
@@ -16,11 +16,11 @@ export interface IDestinationConfig {
   /** Destinations are grouped in categories. Under which category should it be listed? */
   category: TCategory;
   /** The name of the feature flag that should be active for the destination to be functional */
-  feature_flag?: keyof ITenantData['attributes']['settings'];
+  feature_flag?: keyof IAppConfigurationData['attributes']['settings'];
   /** Can the destination be active for the given user? */
   hasPermission?: (user?: IUserData) => boolean;
   /** Name of the destination shown in the UI */
-  name?: (tenant: ITenantData) => JSX.Element | string;
+  name?: (tenant: IAppConfigurationData) => JSX.Element | string;
 }
 
 export const getDestinationConfigs = () => {
@@ -41,7 +41,7 @@ export const registerDestination = (destinationConfig: IDestinationConfig) => {
 
 export const isDestinationActive = (
   config: IDestinationConfig,
-  tenant: ITenantData,
+  tenant: IAppConfigurationData,
   user?: IUserData | null
 ): boolean => {
   if (config?.feature_flag && !isFeatureActive(config.feature_flag, tenant)) {

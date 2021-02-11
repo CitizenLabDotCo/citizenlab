@@ -12,7 +12,7 @@ import messages from './messages';
 
 // services
 import { localeStream } from 'services/locale';
-import { currentTenantStream, ITenant } from 'services/tenant';
+import { currentTenantStream, IAppConfiguration } from 'services/tenant';
 
 // style
 import styled from 'styled-components';
@@ -62,7 +62,7 @@ interface Props {}
 
 interface State {
   locale: Locale | null;
-  currentTenant: ITenant | null;
+  currentTenant: IAppConfiguration | null;
 }
 
 class CityLogoSection extends PureComponent<Props & InjectedIntlProps, State> {

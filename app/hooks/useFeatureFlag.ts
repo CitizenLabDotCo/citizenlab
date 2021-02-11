@@ -1,14 +1,19 @@
 import { useState, useEffect } from 'react';
 import {
   currentTenantStream,
-  ITenant,
-  TenantSettingsFeatureNames,
+  IAppConfiguration,
+  AppConfigurationSettingsFeatureNames,
 } from 'services/tenant';
 import { get } from 'lodash-es';
 
-export default function useFeatureFlag(name: TenantSettingsFeatureNames) {
+export default function useFeatureFlag(
+  name: AppConfigurationSettingsFeatureNames
+) {
   const [tenantSettings, setTenantSettings] = useState<
-    ITenant['data']['attributes']['settings'] | undefined | null | Error
+    | IAppConfiguration['data']['attributes']['settings']
+    | undefined
+    | null
+    | Error
   >(undefined);
 
   useEffect(() => {

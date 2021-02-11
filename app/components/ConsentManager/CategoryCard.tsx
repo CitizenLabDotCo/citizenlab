@@ -8,7 +8,7 @@ import { Radio } from 'cl2-component-library';
 import { getDestinationConfig, IDestination } from './destinations';
 import useTenant from 'hooks/useTenant';
 import { isNilOrError } from 'utils/helperUtils';
-import { ITenant } from 'services/tenant';
+import { IAppConfiguration } from 'services/tenant';
 
 const Container = styled.div`
   display: flex;
@@ -90,7 +90,7 @@ const DestinationName = ({
   tenant,
   destination,
 }: {
-  tenant: ITenant | null;
+  tenant: IAppConfiguration | null;
   destination: IDestination;
 }) => {
   const config = getDestinationConfig(destination);

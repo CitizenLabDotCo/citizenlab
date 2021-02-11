@@ -8,7 +8,7 @@ import { Label, IconTooltip } from 'cl2-component-library';
 
 // services
 import { localeStream } from 'services/locale';
-import { currentTenantStream, ITenant } from 'services/tenant';
+import { currentTenantStream, IAppConfiguration } from 'services/tenant';
 
 // style
 import styled from 'styled-components';
@@ -46,7 +46,7 @@ export type Props = {
 
 type State = {
   locale: Locale | null;
-  currentTenant: ITenant | null;
+  currentTenant: IAppConfiguration | null;
 };
 
 export default class TextAreaMultiloc extends React.PureComponent<

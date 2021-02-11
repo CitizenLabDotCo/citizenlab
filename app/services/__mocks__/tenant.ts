@@ -1,11 +1,11 @@
-import { ITenant, ITenantData } from 'services/tenant';
+import { IAppConfiguration, IAppConfigurationData } from 'services/tenant';
 import { BehaviorSubject } from 'rxjs';
 
-const getTenant = (): ITenant => ({
+const getTenant = (): IAppConfiguration => ({
   data: getTenantData()
 });
 
-export const getTenantData = (attributes = {}): ITenantData => ({
+export const getTenantData = (attributes = {}): IAppConfigurationData => ({
     id: 'c4b400e1-1786-5be2-af55-40730c6a843d',
     type: 'tenant',
     attributes: {
@@ -48,9 +48,9 @@ export const getTenantData = (attributes = {}): ITenantData => ({
     },
 });
 
-let mockTenant: ITenant = getTenant();
+let mockTenant: IAppConfiguration = getTenant();
 
-export const __setMockTenant = (tenant: ITenant) => {
+export const __setMockTenant = (tenant: IAppConfiguration) => {
   mockTenant = tenant;
 };
 

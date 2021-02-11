@@ -5,19 +5,19 @@ import { Subscription } from 'rxjs';
 // services
 import {
   currentTenantStream,
-  ITenant,
-  TenantSettingsFeatureNames,
+  IAppConfiguration,
+  AppConfigurationSettingsFeatureNames,
 } from 'services/tenant';
 
 type children = (renderProps: GetFeatureFlagChildProps) => JSX.Element | null;
 
 interface Props {
-  name?: TenantSettingsFeatureNames;
+  name?: AppConfigurationSettingsFeatureNames;
   children?: children;
 }
 
 interface State {
-  tenantSettings: ITenant['data']['attributes']['settings'] | null;
+  tenantSettings: IAppConfiguration['data']['attributes']['settings'] | null;
 }
 
 export type GetFeatureFlagChildProps = boolean;

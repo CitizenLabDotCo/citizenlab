@@ -2,7 +2,7 @@ import { authUserStream } from 'services/auth';
 import { IUser } from 'services/users';
 import { isObject } from 'lodash-es';
 import { combineLatest } from 'rxjs';
-import { currentTenantStream, ITenantData } from 'services/tenant';
+import { currentTenantStream, IAppConfigurationData } from 'services/tenant';
 import { map } from 'rxjs/operators';
 
 export type TPermissionItem = IResourceData | IRouteItem | TResourceType;
@@ -21,7 +21,7 @@ interface IPermissionRule {
   (
     resource: TPermissionItem | null,
     user: IUser | null,
-    tenant: ITenantData,
+    tenant: IAppConfigurationData,
     context?: any
   ): boolean;
 }

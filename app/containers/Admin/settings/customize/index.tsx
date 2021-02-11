@@ -42,9 +42,9 @@ import { localeStream } from 'services/locale';
 import {
   currentTenantStream,
   updateTenant,
-  IUpdatedTenantProperties,
-  ITenant,
-  ITenantSettings,
+  IUpdatedAppConfigurationProperties,
+  IAppConfiguration,
+  IAppConfigurationSettings,
 } from 'services/tenant';
 import { updatePage } from 'services/pages';
 
@@ -73,7 +73,7 @@ interface Props extends DataProps {
 }
 
 interface IAttributesDiff {
-  settings?: Partial<ITenantSettings>;
+  settings?: Partial<IAppConfigurationSettings>;
   homepage_info?: Multiloc;
   logo?: UploadFile;
   header_bg?: UploadFile;
@@ -82,7 +82,7 @@ interface IAttributesDiff {
 interface State {
   locale: Locale | null;
   attributesDiff: IAttributesDiff;
-  tenant: ITenant | null;
+  tenant: IAppConfiguration | null;
   logo: UploadFile[] | null;
   header_bg: UploadFile[] | null;
   colorPickerOpened: boolean;
@@ -337,7 +337,7 @@ class SettingsCustomizeTab extends PureComponent<
     });
   };
 
-  validate = (tenant: ITenant, attributesDiff: IAttributesDiff) => {
+  validate = (tenant: IAppConfiguration, attributesDiff: IAttributesDiff) => {
     const { formatMessage } = this.props.intl;
     const hasRemoteLogo = has(tenant, 'data.attributes.logo.large');
     const localLogoIsNotSet = !has(attributesDiff, 'logo');
@@ -377,7 +377,7 @@ class SettingsCustomizeTab extends PureComponent<
       try {
         await updateTenant(
           tenant.data.id,
-          attributesDiff as IUpdatedTenantProperties
+          attributesDiff as IUpdatedAppConfigurationProperties
         );
 
         if (!isNilOrError(homepageInfoPage)) {
