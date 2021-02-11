@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import useAppConfigurationLocales from 'hooks/useTenantLocales';
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import { InputMultiloc, InputMultilocProps } from 'cl2-component-library';
 
 export interface Props extends Omit<InputMultilocProps, 'locales'> {}

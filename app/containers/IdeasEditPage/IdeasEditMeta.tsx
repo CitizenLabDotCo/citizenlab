@@ -10,7 +10,7 @@ import { InjectedIntlProps } from 'react-intl';
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
-import useAppConfigurationLocales from 'hooks/useTenantLocales';
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useIdea from 'hooks/useIdea';
 import useProject from 'hooks/useProject';
 import useLocalize from 'hooks/useLocalize';

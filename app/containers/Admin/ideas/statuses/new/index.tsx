@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { addIdeaStatus } from 'services/ideaStatuses';
 import { CLErrorsJSON } from 'typings';
 import clHistory from 'utils/cl-router/history';
-import useAppConfigurationLocales from 'hooks/useTenantLocales';
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components

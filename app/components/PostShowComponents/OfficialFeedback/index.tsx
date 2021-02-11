@@ -3,7 +3,7 @@ import { isBoolean } from 'lodash-es';
 
 // resource hooks
 import useLocale from 'hooks/useLocale';
-import useAppConfigurationLocales from 'hooks/useTenantLocales';
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
 // components
 import OfficialFeedbackForm from './OfficialFeedbackForm';

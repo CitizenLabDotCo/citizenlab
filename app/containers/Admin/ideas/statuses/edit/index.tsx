@@ -7,7 +7,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // hooks
 import useIdeaStatus from 'hooks/useIdeaStatus';
-import useAppConfigurationLocales from 'hooks/useTenantLocales';
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import { Formik } from 'formik';
 import { updateIdeaStatus } from 'services/ideaStatuses';
 

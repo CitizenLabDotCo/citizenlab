@@ -6,7 +6,7 @@ import { Helmet } from 'react-helmet';
 
 // hooks
 import useLocale from 'hooks/useLocale';
-import useAppConfigurationLocales from 'hooks/useTenantLocales';
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useAuthUser from 'hooks/useAuthUser';
 
 // utils
