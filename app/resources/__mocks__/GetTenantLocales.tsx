@@ -1,3 +1,3 @@
-import { GetTenantLocalesChildProps } from 'resources/GetTenantLocales';
+import { GetAppConfigurationLocalesChildProps } from 'resources/GetAppConfigurationLocales';
 
-export const mockGetTenantLocales = ['en', 'fr-BE'] as GetTenantLocalesChildProps;
+export const mockGetTenantLocales = ['en', 'fr-BE'] as GetAppConfigurationLocalesChildProps;

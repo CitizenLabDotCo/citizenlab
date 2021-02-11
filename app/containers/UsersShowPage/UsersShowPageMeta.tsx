@@ -10,9 +10,9 @@ import { InjectedIntlProps } from 'react-intl';
 
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetTenantLocales, {
-  GetTenantLocalesChildProps,
-} from 'resources/GetTenantLocales';
+import GetAppConfigurationLocales, {
+  GetAppConfigurationLocalesChildProps,
+} from 'resources/GetAppConfigurationLocales';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
@@ -33,7 +33,7 @@ interface InputProps {
 
 interface DataProps {
   authUser: GetAuthUserChildProps;
-  tenantLocales: GetTenantLocalesChildProps;
+  tenantLocales: GetAppConfigurationLocalesChildProps;
   tenant: GetAppConfigurationChildProps;
   locale: GetLocaleChildProps;
 }
@@ -106,7 +106,7 @@ const UsersShowPageMeta: React.SFC<Props & InjectedIntlProps> = ({
 const UsersShowPageMetaWithHoc = injectIntl<Props>(UsersShowPageMeta);
 
 const Data = adopt<DataProps, InputProps>({
-  tenantLocales: <GetTenantLocales />,
+  tenantLocales: <GetAppConfigurationLocales />,
   tenant: <GetAppConfiguration />,
   authUser: <GetAuthUser />,
   locale: <GetLocale />,
