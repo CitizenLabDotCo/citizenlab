@@ -51,8 +51,14 @@ const StyledSectionTitle = styled(SectionTitle)`
   margin: 0;
 `;
 
-const ListItemHeader = styled.div`
+const StyledSortableList = styled(SortableList)`
+  margin-bottom: 30px;
+`;
+
+const ListItem = styled.div`
+  flex: 1;
   display: flex;
+  align-items: center;
   padding-top: 15px;
   padding-bottom: 15px;
 `;
@@ -77,6 +83,8 @@ const LayerName = styled.div`
   line-height: normal;
   font-weight: 400;
   flex: 1;
+  display: flex;
+  align-items: center;
 `;
 
 const Buttons = styled.div`
@@ -198,7 +206,7 @@ const LayerList = memo<Props>(({ projectId, className }) => {
       {!editedMapLayer &&
         mapConfig?.attributes?.layers &&
         mapConfig?.attributes?.layers?.length > 0 && (
-          <SortableList
+          <StyledSortableList
             key={mapConfig.attributes.layers.length}
             items={mapConfig.attributes.layers}
             onReorder={handleReorderLayers}
@@ -223,7 +231,7 @@ const LayerList = memo<Props>(({ projectId, className }) => {
                       moveRow={handleDragRow}
                       dropRow={handleDropRow}
                     >
-                      <ListItemHeader>
+                      <ListItem>
                         <LayerIcon color={layerColor}>{layerIcon}</LayerIcon>
                         <LayerName>
                           <T value={mapLayer.title_multiloc} />
@@ -265,13 +273,13 @@ const LayerList = memo<Props>(({ projectId, className }) => {
                             </div>
                           </Tippy>
                         </Buttons>
-                      </ListItemHeader>
+                      </ListItem>
                     </SortableRow>
                   );
                 })}
               </>
             )}
-          </SortableList>
+          </StyledSortableList>
         )}
 
       {!editedMapLayer && <ImportButton onChange={handleGeoJsonImport} />}

@@ -23,6 +23,12 @@ import useAdminPublications, {
 } from 'hooks/useAdminPublications';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
+const StyledSortableRow = styled(SortableRow)`
+  & .sortablerow-draghandle {
+    align-self: flex-start;
+  }
+`;
+
 const StyledListHeader = styled(ListHeader)`
   margin-bottom: 30px;
 `;
@@ -73,7 +79,7 @@ const AdminProjectList = memo<Props>((_props) => {
                   (item: IAdminPublicationContent, index: number) => {
                     return (
                       <>
-                        <SortableRow
+                        <StyledSortableRow
                           key={item.id}
                           id={item.id}
                           index={index}
@@ -93,7 +99,7 @@ const AdminProjectList = memo<Props>((_props) => {
                             id="app.containers.AdminPage.projects.all.projectsAndFolders.row"
                             publication={item}
                           />
-                        </SortableRow>
+                        </StyledSortableRow>
                       </>
                     );
                   }

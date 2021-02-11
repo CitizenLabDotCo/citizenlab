@@ -7,9 +7,8 @@ import { Icon } from 'semantic-ui-react';
 
 const DragHandle = styled.div`
   cursor: move;
-  padding: 1rem;
+  padding: 1rem 0;
   height: 100%;
-  align-self: flex-start;
 `;
 
 // TODO: type checking doesn't work for this component
@@ -47,7 +46,7 @@ class SortableRow extends React.Component<Props, State> {
       connectDragSource(
         <div style={{ opacity }} className={className}>
           <Row isLastItem={lastItem}>
-            <DragHandle>
+            <DragHandle className="sortablerow-draghandle">
               <Icon name="sort" />
             </DragHandle>
             {children}
