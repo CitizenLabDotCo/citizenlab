@@ -146,6 +146,7 @@ gem "mjml-rails", "~> 4.4"
 gem 'intercom', '~> 4.1'
 
 gem 'admin_api', path: 'engines/admin_api'
+gem 'custom_style', path: 'engines/custom_style'
 gem 'email_campaigns', path: 'engines/email_campaigns'
 gem 'frontend', path: 'engines/frontend'
 gem 'machine_translations', path: 'engines/machine_translations'
@@ -160,5 +161,6 @@ gem 'surveys', path: 'engines/surveys'
 gem 'tagging', path: 'engines/tagging'
 gem 'verification', path: 'engines/verification'
 gem 'volunteering', path: 'engines/volunteering'
+
 
 
