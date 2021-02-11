@@ -7,5 +7,4 @@ class DumpTenantJob < ApplicationJob
     api.update_tenant dump
     puts "Dumped tenant #{tenant.host}"
   end
-
 end

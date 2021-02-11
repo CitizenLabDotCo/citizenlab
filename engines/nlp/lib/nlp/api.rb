@@ -58,24 +58,6 @@ module NLP
       )
     end
 
-    def geotag(tenant_id, text, locale, options = {})
-      body = {
-        **options,
-        text: text,
-        locale: locale
-      }
-      resp = self.class.post(
-        "/v1/tenants/#{tenant_id}/geotagging",
-        body: body.to_json,
-        headers: { 'Content-Type' => 'application/json' },
-        timeout: LONG_TIMEOUT
-      )
-      unless resp.success?
-        raise ClErrors::TransactionError.new(error_key: resp['code'])
-      end
-      resp.parsed_response.dig('data')
-    end
-
     def summarize(texts, locale, options = {})
       body = {
         **options,
