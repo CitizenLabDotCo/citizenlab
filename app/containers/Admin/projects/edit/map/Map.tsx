@@ -40,6 +40,9 @@ const Map = memo<Props & InjectedLocalized>(
     const mapConfig = useMapConfig({ projectId, prefetchMapLayers: true });
 
     const [map, setMap] = useState<L.Map | null>(null);
+    const [layerControl, setLayerControl] = useState<L.Control.Layers | null>(
+      null
+    );
 
     useEffect(() => {
       const map = L.map('mapid').setView([50.869189, 4.725238], 16);
@@ -57,49 +60,63 @@ const Map = memo<Props & InjectedLocalized>(
 
     useEffect(() => {
       if (map) {
+        if (!layerControl) {
+          setLayerControl(L.control.layers().addTo(map));
+        }
+
+        // first reset
         map.eachLayer((layer) => {
-          if (layer?.['identifier'] === 'customlayer') {
+          layerControl?.removeLayer(layer);
+
+          if (layer?.['isCustom']) {
             map.removeLayer(layer);
           }
         });
 
+        // add layers to map and layerControl
         if (!isNilOrError(mapConfig)) {
-          mapConfig?.attributes?.layers?.forEach(({ geojson }) => {
-            if (geojson) {
-              L.geoJSON(geojson, {
-                useSimpleStyle: true,
-                useMakiMarkers: true,
-                onEachFeature: (feature, layer) => {
-                  layer.identifier = 'customlayer';
+          mapConfig?.attributes?.layers?.forEach(
+            ({ geojson, title_multiloc }) => {
+              if (geojson) {
+                const layer = L.geoJSON(geojson, {
+                  useSimpleStyle: true,
+                  useMakiMarkers: true,
+                  onEachFeature: (feature, layer) => {
+                    layer.isCustom = true;
 
-                  if (
-                    feature.properties &&
-                    feature.properties.popupContent &&
-                    Object.values(feature.properties.popupContent).some(
-                      (x) => x && x !== ''
-                    )
-                  ) {
-                    layer.bindPopup(localize(feature.properties.popupContent));
-                  }
+                    if (
+                      feature.properties &&
+                      feature.properties.popupContent &&
+                      Object.values(feature.properties.popupContent).some(
+                        (x) => x && x !== ''
+                      )
+                    ) {
+                      layer.bindPopup(
+                        localize(feature.properties.popupContent)
+                      );
+                    }
 
-                  if (
-                    feature.properties &&
-                    feature.properties.tooltipContent &&
-                    Object.values(feature.properties.tooltipContent).some(
-                      (x) => x && x !== ''
-                    )
-                  ) {
-                    layer.bindTooltip(
-                      localize(feature.properties.tooltipContent)
-                    );
-                  }
-                },
-              } as any).addTo(map);
+                    if (
+                      feature.properties &&
+                      feature.properties.tooltipContent &&
+                      Object.values(feature.properties.tooltipContent).some(
+                        (x) => x && x !== ''
+                      )
+                    ) {
+                      layer.bindTooltip(
+                        localize(feature.properties.tooltipContent)
+                      );
+                    }
+                  },
+                } as any).addTo(map);
+
+                layerControl?.addOverlay(layer, localize(title_multiloc));
+              }
             }
-          });
+          );
         }
       }
-    }, [map, mapConfig]);
+    }, [map, layerControl, mapConfig]);
 
     return <Container id="mapid" className={className || ''} />;
   }
