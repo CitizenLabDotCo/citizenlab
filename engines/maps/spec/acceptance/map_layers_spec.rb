@@ -41,19 +41,34 @@ resource 'Map Layers' do
   end
 
   shared_examples 'unauthorized POST, PATCH and DELETE map layer' do
-    post 'web_api/v1/projects/:project_id/map_config' do
+    post 'web_api/v1/projects/:project_id/map_config/layers' do
       example_request 'Cannot create a map config for a project' do
         expect(status).to eq 401
       end
     end
 
-    patch 'web_api/v1/projects/:project_id/map_config' do
+    patch 'web_api/v1/projects/:project_id/map_config/layers/:id' do
+      let(:layer) { map_config.layers.first }
+      let(:id)    { layer.id }
+
       example_request 'Cannot update the map config for a project' do
         expect(status).to eq 401
       end
     end
 
-    delete 'web_api/v1/projects/:project_id/map_config' do
+    patch 'web_api/v1/projects/:project_id/map_config/layers/:id/reorder' do
+      let(:layer) { map_config.layers.first }
+      let(:id)    { layer.id }
+
+      example_request 'Cannot update the map config for a project' do
+        expect(status).to eq 401
+      end
+    end
+
+    delete 'web_api/v1/projects/:project_id/map_config/layers/:id' do
+      let(:layer) { map_config.layers.first }
+      let(:id)    { layer.id }
+
       example_request 'Cannot update the map config for a project' do
         expect(status).to eq 401
       end
