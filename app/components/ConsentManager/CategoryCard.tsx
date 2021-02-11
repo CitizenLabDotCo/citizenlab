@@ -6,7 +6,7 @@ import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import { Radio } from 'cl2-component-library';
 import { getDestinationConfig, IDestination } from './destinations';
-import useTenant from 'hooks/useTenant';
+import useAppConfiguration from 'hooks/useAppConfiguration';
 import { isNilOrError } from 'utils/helperUtils';
 import { IAppConfiguration } from 'services/appConfiguration';
 
@@ -110,7 +110,7 @@ const CategoryCard = ({
   handleChange,
   disableUncheck,
 }: Props) => {
-  const tenant = useTenant();
+  const tenant = useAppConfiguration();
 
   return (
     <Container className="e2e-category">

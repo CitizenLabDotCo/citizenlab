@@ -3,7 +3,7 @@ import useGraphqlTenantLocales from 'hooks/useGraphqlTenantLocales';
 import { isNilOrError } from 'utils/helperUtils';
 import { useQuery } from '@apollo/react-hooks';
 import { gql } from 'apollo-boost';
-import useTenant from 'hooks/useTenant';
+import useAppConfiguration from 'hooks/useAppConfiguration';
 import useTenantLocales from 'hooks/useTenantLocales';
 import { trackEventByName } from 'utils/analytics';
 import { get, isEmpty } from 'lodash-es';
@@ -18,7 +18,7 @@ interface Props {
 
 const ProjectTemplatesContainer = memo(
   ({ graphqlTenantLocales, className }: Props): ReactElement => {
-    const tenant = useTenant();
+    const tenant = useAppConfiguration();
 
     const locales = !isNilOrError(tenant)
       ? tenant.data.attributes.settings.core.locales
