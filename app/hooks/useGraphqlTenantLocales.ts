@@ -1,35 +1,30 @@
 import { useState, useEffect } from 'react';
-import { currentTenantStream } from 'services/tenant';
 import { isNilOrError, convertToGraphqlLocale } from 'utils/helperUtils';
 import { GraphqlLocale } from 'typings';
 import { includes } from 'lodash-es';
+import useTenant from 'hooks/useTenant';
 
 export default function useGraphqlTenantLocales() {
   const [graphqlTenantLocales, setGraphqlTenantLocales] = useState<
-    GraphqlLocale[] | undefined | null | Error
-  >(undefined);
+    GraphqlLocale[]
+  >(['en']);
+  const tenant = useTenant();
 
   useEffect(() => {
-    const subscription = currentTenantStream().observable.subscribe(
-      (currentTenant) => {
-        if (!isNilOrError(currentTenant)) {
-          const graphqlLocales = currentTenant.data.attributes.settings.core.locales.map(
-            (locale) => convertToGraphqlLocale(locale)
-          );
+    if (isNilOrError(tenant)) return;
 
-          if (!includes(graphqlLocales, 'en')) {
-            graphqlLocales.push('en');
-          }
-
-          setGraphqlTenantLocales(graphqlLocales);
-        } else {
-          setGraphqlTenantLocales(currentTenant);
-        }
-      }
+    const graphqlLocales = tenant.data.attributes.settings.core.locales.map(
+      (locale) => convertToGraphqlLocale(locale)
     );
 
-    return () => subscription.unsubscribe();
-  }, []);
+    if (!includes(graphqlLocales, 'en')) {
+      graphqlLocales.push('en');
+    }
 
-  return !isNilOrError(graphqlTenantLocales) ? graphqlTenantLocales : null;
+    setGraphqlTenantLocales(graphqlLocales);
+
+    return () => setGraphqlTenantLocales(['en']);
+  }, [tenant]);
+
+  return graphqlTenantLocales;
 }
