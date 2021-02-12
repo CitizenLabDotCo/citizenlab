@@ -21,7 +21,7 @@ import { isUUID } from 'utils/helperUtils';
 
 import Loadable from 'react-loadable';
 import { LoadableLoadingAdmin } from 'components/UI/LoadableLoading';
-import { currentTenantStream } from 'services/tenant';
+import { currentAppConfigurationStream } from 'services/appConfiguration';
 import { combineLatest } from 'rxjs';
 import { authUserStream } from 'services/auth';
 import { isModerator } from 'services/permissions/roles';
@@ -34,7 +34,7 @@ const isUserAuthorized = (nextState, replace) => {
       item: { type: 'route', path: pathname },
       action: 'access',
     }),
-    currentTenantStream().observable,
+    currentAppConfigurationStream().observable,
     authUserStream().observable
   ).subscribe(([accessAthorized, tenant, authUser]) => {
     if (!accessAthorized) {

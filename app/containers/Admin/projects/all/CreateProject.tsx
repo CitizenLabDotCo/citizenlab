@@ -17,7 +17,7 @@ import AdminProjectEditGeneral from 'containers/Admin/projects/edit/general';
 import { HeaderTitle } from './StyledComponents';
 
 // hooks
-import useTenant from 'hooks/useTenant';
+import useAppConfiguration from 'hooks/useAppConfiguration';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
@@ -175,7 +175,7 @@ const CreateProject = memo<Props & InjectedIntlProps>(({ className, intl }) => {
     },
   ];
 
-  const tenant = useTenant();
+  const tenant = useAppConfiguration();
   const projectTemplatesEnabled: boolean = get(
     tenant,
     'data.attributes.settings.admin_project_templates.enabled',

@@ -3,7 +3,7 @@ import {
   registerDestination,
 } from 'components/ConsentManager/destinations';
 import { combineLatest } from 'rxjs';
-import { currentTenantStream } from 'services/tenant';
+import { currentAppConfigurationStream } from 'services/appConfiguration';
 import { initializeFor, shutdownFor } from 'utils/analytics';
 import { isNilOrError } from 'utils/helperUtils';
 import { ModuleConfiguration } from 'utils/moduleUtils';
@@ -25,7 +25,7 @@ const configuration: ModuleConfiguration = {
   beforeMountApplication: () => {
     // Initialize
     combineLatest([
-      currentTenantStream().observable,
+      currentAppConfigurationStream().observable,
       initializeFor('google_analytics'),
     ]).subscribe(([tenant, _]) => {
       if (isNilOrError(tenant)) return;
@@ -78,7 +78,7 @@ const configuration: ModuleConfiguration = {
 
     // Shutdown
     combineLatest([
-      currentTenantStream().observable,
+      currentAppConfigurationStream().observable,
       shutdownFor('google_analytics'),
     ]).subscribe(([tenant, _]) => {
       window[

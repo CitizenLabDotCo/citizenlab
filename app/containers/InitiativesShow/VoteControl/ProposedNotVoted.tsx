@@ -8,7 +8,7 @@ import { getDaysRemainingUntil } from 'utils/dateUtils';
 
 import { IInitiativeData } from 'services/initiatives';
 import { IInitiativeStatusData } from 'services/initiativeStatuses';
-import { ITenantSettings } from 'services/tenant';
+import { IAppConfigurationSettings } from 'services/appConfiguration';
 
 import CountDown from './CountDown';
 import { Icon, IconTooltip } from 'cl2-component-library';
@@ -148,7 +148,7 @@ const TooltipContentText = styled.div`
 interface InputProps {
   initiative: IInitiativeData;
   initiativeStatus: IInitiativeStatusData;
-  initiativeSettings: NonNullable<ITenantSettings['initiatives']>;
+  initiativeSettings: NonNullable<IAppConfigurationSettings['initiatives']>;
   userVoted: boolean;
   onVote: () => void;
   disabledReason: IInitiativeDisabledReason;

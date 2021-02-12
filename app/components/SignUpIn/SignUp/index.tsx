@@ -42,11 +42,12 @@ import { HeaderSubtitle } from 'components/UI/Modal';
 // typings
 import { ISignUpInMetaData } from 'components/SignUpIn';
 import { Multiloc } from 'typings';
-import useTenant from 'hooks/useTenant';
 import useAuthUser from 'hooks/useAuthUser';
 
 import { IUserData } from 'services/users';
-import { ITenantData } from 'services/tenant';
+
+import useAppConfiguration from 'hooks/useAppConfiguration';
+import { IAppConfigurationData } from 'services/appConfiguration';
 
 const Container = styled.div`
   width: 100%;
@@ -70,7 +71,9 @@ export type TSignUpSteps = TSignUpStepsMap[keyof TSignUpStepsMap];
 export type TSignUpStepConfigurationObject = {
   position: number;
   stepName?: string;
-  helperText?: (tenant: ITenantData | undefined) => Multiloc | null | undefined;
+  helperText?: (
+    tenant: IAppConfigurationData | undefined
+  ) => Multiloc | null | undefined;
   onCompleted?: () => void;
   onSkipped?: () => void;
   onError?: () => void;
@@ -107,7 +110,7 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
     windowHeight,
   }) => {
     const authUser = useAuthUser();
-    const tenant = useTenant();
+    const tenant = useAppConfiguration();
 
     const modalContentRef = useRef<HTMLDivElement>(null);
 

@@ -20,7 +20,9 @@ import { addBasket, updateBasket } from 'services/baskets';
 
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetAppConfiguration';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import GetBasket, { GetBasketChildProps } from 'resources/GetBasket';
@@ -157,7 +159,7 @@ interface InputProps {
 
 interface DataProps {
   authUser: GetAuthUserChildProps;
-  tenant: GetTenantChildProps;
+  tenant: GetAppConfigurationChildProps;
   locale: GetLocaleChildProps;
   idea: GetIdeaChildProps;
   basket: GetBasketChildProps;
@@ -498,7 +500,7 @@ class AssignBudgetControl extends PureComponent<
 
 const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
-  tenant: <GetTenant />,
+  tenant: <GetAppConfiguration />,
   locale: <GetLocale />,
   idea: ({ ideaId, render }) => <GetIdea ideaId={ideaId}>{render}</GetIdea>,
   project: ({ projectId, render }) => (
