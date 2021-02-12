@@ -44,22 +44,21 @@ const Map = memo<Props & InjectedLocalized>(
       null
     );
 
-    console.log(mapConfig);
-
     useEffect(() => {
       const map = L.map('mapid').setView([50.869189, 4.725238], 16);
 
-      L.tileLayer(
-        'https://api.maptiler.com/maps/77632ac6-e168-429c-8b1b-76599ce796e3/{z}/{x}/{y}@2x.png?key=DIZiuhfkZEQ5EgsaTk6D',
-        {
-          tileSize: 512,
-          zoomOffset: -1,
-          minZoom: 1,
-          attribution:
-            '\u003ca href="https://www.maptiler.com/copyright/" target="_blank"\u003e\u0026copy; MapTiler\u003c/a\u003e \u003ca href="https://www.openstreetmap.org/copyright" target="_blank"\u003e\u0026copy; OpenStreetMap contributors\u003c/a\u003e',
-          crossOrigin: true,
-        }
-      ).addTo(map);
+      const provider =
+        mapConfig?.attributes?.tile_provider ||
+        'https://api.maptiler.com/maps/77632ac6-e168-429c-8b1b-76599ce796e3/{z}/{x}/{y}@2x.png?key=DIZiuhfkZEQ5EgsaTk6D';
+
+      L.tileLayer(provider, {
+        tileSize: 512,
+        zoomOffset: -1,
+        minZoom: 1,
+        attribution:
+          '\u003ca href="https://www.maptiler.com/copyright/" target="_blank"\u003e\u0026copy; MapTiler\u003c/a\u003e \u003ca href="https://www.openstreetmap.org/copyright" target="_blank"\u003e\u0026copy; OpenStreetMap contributors\u003c/a\u003e',
+        crossOrigin: true,
+      }).addTo(map);
 
       setMap(map);
     }, []);
