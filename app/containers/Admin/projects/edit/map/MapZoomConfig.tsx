@@ -2,7 +2,7 @@ import React, { memo, useState, useEffect } from 'react';
 import { isEmpty } from 'lodash-es';
 
 // services
-import { updateProjectMapLayer } from 'services/mapLayers';
+import { updateProjectMapConfig } from 'services/mapConfigs';
 
 // hooks
 import useMapConfig from 'hooks/useMapConfig';
@@ -112,13 +112,12 @@ const MapZoomConfig = memo<Props & InjectedIntlProps>(
 
     const handleOnSave = async (event: React.FormEvent) => {
       event.preventDefault();
-      if (validate()) {
+      if (mapConfig && formValues.zoom && validate()) {
         try {
           formProcessing();
-          // await updateProjectMapLayer(projectId, mapLayer.id, {
-          //   title_multiloc,
-          //   geojson,
-          // });
+          await updateProjectMapConfig(projectId, mapConfig.id, {
+            zoom_level: formValues.zoom,
+          });
           formSuccess();
         } catch (error) {
           formError(error);
