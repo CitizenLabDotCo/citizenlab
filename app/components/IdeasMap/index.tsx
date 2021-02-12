@@ -30,7 +30,6 @@ import messages from './messages';
 
 // Styling
 import styled from 'styled-components';
-import { viewportWidths } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 
 const Container = styled.div`
