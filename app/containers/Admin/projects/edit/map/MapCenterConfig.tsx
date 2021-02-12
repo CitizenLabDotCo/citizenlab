@@ -1,11 +1,11 @@
 import React, { memo, useState, useEffect } from 'react';
-import { isEmpty } from 'lodash-es';
+import { isEmpty, inRange } from 'lodash-es';
 
 // services
 import { updateProjectMapConfig } from 'services/mapConfigs';
 
 // hooks
-import useMapConfig from 'hooks/useMapConfig';
+import useMapConfig, { IOutput as IMapConfig } from 'hooks/useMapConfig';
 
 // components
 import { Input } from 'cl2-component-library';
@@ -36,7 +36,7 @@ const InputWrapper = styled.div`
 const StyledInput = styled(Input)``;
 
 const SaveButton = styled(Button)`
-  margin-left: 15px;
+  margin-left: 10px;
 `;
 
 interface Props {
@@ -48,36 +48,57 @@ interface IFormValues {
   center: string | null;
 }
 
+const getCenter = (mapConfig: IMapConfig) => {
+  const lat = mapConfig?.attributes?.center_geojson?.coordinates?.[0];
+  const long = mapConfig?.attributes?.center_geojson?.coordinates?.[1];
+
+  if (lat && long) {
+    return `${lat}, ${long}`;
+  }
+
+  return null;
+};
+
 const MapCenterConfig = memo<Props & InjectedIntlProps>(
   ({ projectId, className, intl: { formatMessage } }) => {
     const mapConfig = useMapConfig({ projectId });
 
     const [touched, setTouched] = useState(false);
     const [processing, setProcessing] = useState(false);
-    // const [success, setSuccess] = useState(false);
     const [errors, setErrors] = useState<{ [key: string]: any }>({});
     const [formValues, setFormValues] = useState<IFormValues>({
-      center: null,
+      center: getCenter(mapConfig),
     });
 
     useEffect(() => {
       formChange(
         {
-          center: null,
+          center: getCenter(mapConfig),
         },
         false
       );
     }, [mapConfig]);
 
     const validate = () => {
-      return true;
+      const latlong = formValues?.center?.split(',');
+
+      if (latlong && latlong.length > 0) {
+        const latitude = parseFloat(latlong[0]);
+        const longitude = parseFloat(latlong[1]);
+
+        if (inRange(longitude, -180, 180) && inRange(latitude, -90, 90)) {
+          console.log('zolg');
+          return true;
+        }
+      }
+
+      return false;
     };
 
     const formChange = (
       changedFormValue: Partial<IFormValues>,
       touched = true
     ) => {
-      // setSuccess(false);
       setTouched(touched);
       setFormValues((prevFormValues) => ({
         ...prevFormValues,
@@ -87,20 +108,17 @@ const MapCenterConfig = memo<Props & InjectedIntlProps>(
 
     const formProcessing = () => {
       setProcessing(true);
-      // setSuccess(false);
       setErrors({});
     };
 
     const formSuccess = () => {
       setProcessing(false);
-      // setSuccess(true);
       setErrors({});
       setTouched(false);
     };
 
     const formError = (errorResponse) => {
       setProcessing(false);
-      // setSuccess(false);
       setErrors(errorResponse?.json?.errors || 'unknown error');
     };
 
@@ -151,7 +169,7 @@ const MapCenterConfig = memo<Props & InjectedIntlProps>(
             onClick={handleOnSave}
             processing={processing}
             disabled={!touched}
-            padding="12px 14px"
+            padding="12px 16px"
           >
             <FormattedMessage {...messages.save} />
           </SaveButton>
