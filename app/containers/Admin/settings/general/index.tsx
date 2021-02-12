@@ -26,7 +26,7 @@ import {
 // services
 import {
   currentAppConfigurationStream,
-  updateTenant,
+  updateAppConfiguration,
   IUpdatedAppConfigurationProperties,
   IAppConfigurationData,
 } from 'services/appConfiguration';
@@ -141,7 +141,7 @@ class SettingsGeneralTab extends PureComponent<
         errors: {},
       });
 
-      updateTenant(tenant.id, attributesDiff)
+      updateAppConfiguration(attributesDiff)
         .then(() => {
           this.setState({ saved: true, attributesDiff: {}, loading: false });
         })

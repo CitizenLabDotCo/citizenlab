@@ -12,7 +12,7 @@ import getSubmitState from 'utils/getSubmitState';
 
 // services
 import {
-  updateTenant,
+  updateAppConfiguration,
   IUpdatedAppConfigurationProperties,
 } from 'services/appConfiguration';
 
@@ -117,8 +117,7 @@ class Favicon extends PureComponent<Props, State> {
       this.setState({ loading: true, saved: false });
 
       try {
-        await updateTenant(
-          tenant.id,
+        await updateAppConfiguration(
           this.state.attributesDiff as IUpdatedAppConfigurationProperties
         );
         this.setState({ loading: false, saved: true, attributesDiff: {} });

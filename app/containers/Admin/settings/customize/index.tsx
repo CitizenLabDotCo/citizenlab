@@ -41,7 +41,7 @@ import messages from '../messages';
 import { localeStream } from 'services/locale';
 import {
   currentAppConfigurationStream,
-  updateTenant,
+  updateAppConfiguration,
   IUpdatedAppConfigurationProperties,
   IAppConfiguration,
   IAppConfigurationSettings,
@@ -375,8 +375,7 @@ class SettingsCustomizeTab extends PureComponent<
       const homepageInfoPageMultiloc = attributesDiff.homepage_info;
 
       try {
-        await updateTenant(
-          tenant.data.id,
+        await updateAppConfiguration(
           attributesDiff as IUpdatedAppConfigurationProperties
         );
 
