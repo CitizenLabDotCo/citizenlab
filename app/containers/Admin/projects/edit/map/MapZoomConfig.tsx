@@ -148,7 +148,6 @@ const MapZoomConfig = memo<Props & InjectedIntlProps>(
             type="number"
             value={formValues.zoom?.toString()}
             onChange={handleOnChange}
-            placeholder="0 - 18"
           />
           <SaveButton
             buttonStyle="admin-dark"

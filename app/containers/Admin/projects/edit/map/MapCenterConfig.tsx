@@ -53,7 +53,7 @@ const getCenter = (mapConfig: IMapConfig) => {
   const long = mapConfig?.attributes?.center_geojson?.coordinates?.[1];
 
   if (lat && long) {
-    return `${lat}, ${long}`;
+    return `${long}, ${lat}`;
   }
 
   return null;
@@ -87,7 +87,6 @@ const MapCenterConfig = memo<Props & InjectedIntlProps>(
         const longitude = parseFloat(latlong[1]);
 
         if (inRange(longitude, -180, 180) && inRange(latitude, -90, 90)) {
-          console.log('zolg');
           return true;
         }
       }
@@ -142,7 +141,7 @@ const MapCenterConfig = memo<Props & InjectedIntlProps>(
           await updateProjectMapConfig(projectId, mapConfig.id, {
             center_geojson: {
               type: 'Point',
-              coordinates: [latitude, longitude],
+              coordinates: [longitude, latitude],
             },
           });
           formSuccess();

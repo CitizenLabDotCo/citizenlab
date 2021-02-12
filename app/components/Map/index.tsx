@@ -207,12 +207,16 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
     let initCenter: [number, number] = [0, 0];
     const defaultMapConfig = {
       center: initCenter,
-      zoom_level: 15,
+      zoom_level: mapConfig?.attributes?.zoom_level
+        ? parseInt(mapConfig?.attributes?.zoom_level, 10)
+        : 15,
       tile_provider:
-        'https://api.maptiler.com/maps/basic/{z}/{x}/{y}.png?key=DIZiuhfkZEQ5EgsaTk6D',
+        mapConfig?.attributes?.tile_provider ||
+        'https://api.maptiler.com/maps/77632ac6-e168-429c-8b1b-76599ce796e3/{z}/{x}/{y}@2x.png?key=DIZiuhfkZEQ5EgsaTk6D',
     };
 
     const tenantMapConfig = {};
+
     if (
       !isNilOrError(tenant) &&
       tenant.attributes &&
@@ -274,8 +278,12 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
     const { zoom_level, tile_provider, center } = this.calculateMapConfig();
 
     const baseLayer = Leaflet.tileLayer(tile_provider, {
+      tileSize: 512,
+      zoomOffset: -1,
+      minZoom: 1,
       attribution:
-        '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>',
+        '\u003ca href="https://www.maptiler.com/copyright/" target="_blank"\u003e\u0026copy; MapTiler\u003c/a\u003e \u003ca href="https://www.openstreetmap.org/copyright" target="_blank"\u003e\u0026copy; OpenStreetMap contributors\u003c/a\u003e',
+      crossOrigin: true,
       subdomains: ['a', 'b', 'c'],
     });
 
