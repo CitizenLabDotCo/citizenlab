@@ -7,7 +7,11 @@ import LayerConfig, { getLayerColor, getLayerType } from './LayerConfig';
 import MapZoomConfig from './MapZoomConfig';
 import MapCenterConfig from './MapCenterConfig';
 import Tippy from '@tippyjs/react';
-import { SectionTitle, SectionDescription } from 'components/admin/Section';
+import {
+  SubSectionTitle,
+  SectionTitle,
+  SectionDescription,
+} from 'components/admin/Section';
 import { SortableList, SortableRow } from 'components/admin/ResourceList';
 
 // hooks
@@ -53,8 +57,13 @@ const StyledSectionTitle = styled(SectionTitle)`
   margin: 0;
 `;
 
+const ListWrapper = styled.div`
+  margin-bottom: 60px;
+`;
+
 const StyledSortableList = styled(SortableList)`
-  margin-bottom: 30px;
+  margin-top: 5px;
+  margin-bottom: 25px;
 `;
 
 const ListItem = styled.div`
@@ -111,11 +120,11 @@ const StyledLayerConfig = styled(LayerConfig)`
 `;
 
 const StyledMapCenterConfig = styled(MapCenterConfig)`
-  margin-bottom: 30px;
+  margin-bottom: 40px;
 `;
 
 const StyledMapZoomConfig = styled(MapZoomConfig)`
-  margin-bottom: 30px;
+  margin-bottom: 40px;
 `;
 
 interface Props {
@@ -205,7 +214,7 @@ const LayerList = memo<Props>(({ projectId, className }) => {
       <Header>
         <TitleContainer>
           <StyledSectionTitle>
-            <FormattedMessage {...messages.layers} />
+            <FormattedMessage {...messages.mapConfiguration} />
           </StyledSectionTitle>
         </TitleContainer>
         <SectionDescription>
@@ -213,98 +222,116 @@ const LayerList = memo<Props>(({ projectId, className }) => {
         </SectionDescription>
       </Header>
 
-      {!editedMapLayer &&
-        mapConfig?.attributes?.layers &&
-        mapConfig?.attributes?.layers?.length > 0 && (
-          <StyledSortableList
-            key={mapConfig.attributes.layers.length}
-            items={mapConfig.attributes.layers}
-            onReorder={handleReorderLayers}
-            className="maplayers-list e2e-admin-maplayers-list"
-            id="e2e-admin-maplayers-list"
-          >
-            {({ itemsList, handleDragRow, handleDropRow }) => (
-              <>
-                {(itemsList as IMapLayerAttributes[]).map((mapLayer, index) => {
-                  const layerType = getLayerType(mapLayer);
-                  const layerColor = getLayerColor(mapLayer, layerType);
-                  const layerIcon = getLayerIcon(layerType);
+      <ListWrapper>
+        <SubSectionTitle>
+          <FormattedMessage
+            {...(!editedMapLayer ? messages.layers : messages.editLayer)}
+          />
+        </SubSectionTitle>
+        {!editedMapLayer &&
+          mapConfig?.attributes?.layers &&
+          mapConfig?.attributes?.layers?.length > 0 && (
+            <StyledSortableList
+              key={mapConfig.attributes.layers.length}
+              items={mapConfig.attributes.layers}
+              onReorder={handleReorderLayers}
+              className="maplayers-list e2e-admin-maplayers-list"
+              id="e2e-admin-maplayers-list"
+            >
+              {({ itemsList, handleDragRow, handleDropRow }) => (
+                <>
+                  {(itemsList as IMapLayerAttributes[]).map(
+                    (mapLayer, index) => {
+                      const layerType = getLayerType(mapLayer);
+                      const layerColor = getLayerColor(mapLayer, layerType);
+                      const layerIcon = getLayerIcon(layerType);
 
-                  return (
-                    <SortableRow
-                      key={mapLayer.id}
-                      id={mapLayer.id}
-                      index={index}
-                      lastItem={
-                        index === mapConfig.attributes.layers.length - 1
-                      }
-                      moveRow={handleDragRow}
-                      dropRow={handleDropRow}
-                    >
-                      <ListItem>
-                        <LayerIcon color={layerColor}>{layerIcon}</LayerIcon>
-                        <LayerName>
-                          <T value={mapLayer.title_multiloc} />
-                        </LayerName>
-                        <Buttons>
-                          <Tippy
-                            placement="bottom"
-                            content={<FormattedMessage {...messages.edit} />}
-                            hideOnClick={false}
-                            arrow={false}
-                          >
-                            <div>
-                              <EditButton
-                                icon="edit"
-                                iconSize="16px"
-                                buttonStyle="text"
-                                padding="0px"
-                                onClick={toggleLayerConfig(mapLayer.id)}
-                              />
-                            </div>
-                          </Tippy>
+                      return (
+                        <SortableRow
+                          key={mapLayer.id}
+                          id={mapLayer.id}
+                          index={index}
+                          lastItem={
+                            index === mapConfig.attributes.layers.length - 1
+                          }
+                          moveRow={handleDragRow}
+                          dropRow={handleDropRow}
+                        >
+                          <ListItem>
+                            <LayerIcon color={layerColor}>
+                              {layerIcon}
+                            </LayerIcon>
+                            <LayerName>
+                              <T value={mapLayer.title_multiloc} />
+                            </LayerName>
+                            <Buttons>
+                              <Tippy
+                                placement="bottom"
+                                content={
+                                  <FormattedMessage {...messages.edit} />
+                                }
+                                hideOnClick={false}
+                                arrow={false}
+                              >
+                                <div>
+                                  <EditButton
+                                    icon="edit"
+                                    iconSize="16px"
+                                    buttonStyle="text"
+                                    padding="0px"
+                                    onClick={toggleLayerConfig(mapLayer.id)}
+                                  />
+                                </div>
+                              </Tippy>
 
-                          <Spacer />
+                              <Spacer />
 
-                          <Tippy
-                            placement="bottom"
-                            content={<FormattedMessage {...messages.remove} />}
-                            hideOnClick={false}
-                            arrow={false}
-                          >
-                            <div>
-                              <RemoveButton
-                                icon="delete"
-                                iconSize="16px"
-                                buttonStyle="text"
-                                padding="0px"
-                                onClick={removeLayer(mapLayer.id)}
-                              />
-                            </div>
-                          </Tippy>
-                        </Buttons>
-                      </ListItem>
-                    </SortableRow>
-                  );
-                })}
-              </>
-            )}
-          </StyledSortableList>
+                              <Tippy
+                                placement="bottom"
+                                content={
+                                  <FormattedMessage {...messages.remove} />
+                                }
+                                hideOnClick={false}
+                                arrow={false}
+                              >
+                                <div>
+                                  <RemoveButton
+                                    icon="delete"
+                                    iconSize="16px"
+                                    buttonStyle="text"
+                                    padding="0px"
+                                    onClick={removeLayer(mapLayer.id)}
+                                  />
+                                </div>
+                              </Tippy>
+                            </Buttons>
+                          </ListItem>
+                        </SortableRow>
+                      );
+                    }
+                  )}
+                </>
+              )}
+            </StyledSortableList>
+          )}
+
+        {!editedMapLayer && <ImportButton onChange={handleGeoJsonImport} />}
+
+        {editedMapLayer && (
+          <StyledLayerConfig
+            projectId={projectId}
+            mapLayer={editedMapLayer}
+            onClose={closeLayerConfig}
+          />
         )}
+      </ListWrapper>
 
-      {!editedMapLayer && <ImportButton onChange={handleGeoJsonImport} />}
-
-      {editedMapLayer && (
-        <StyledLayerConfig
-          projectId={projectId}
-          mapLayer={editedMapLayer}
-          onClose={closeLayerConfig}
-        />
+      {!editedMapLayer && (
+        <>
+          <StyledMapCenterConfig projectId={projectId} />
+          <StyledMapZoomConfig projectId={projectId} />
+        </>
       )}
-
-      <StyledMapCenterConfig projectId={projectId} mapLayer={editedMapLayer} />
-
-      <StyledMapZoomConfig projectId={projectId} mapLayer={editedMapLayer} />
     </Container>
   );
 });

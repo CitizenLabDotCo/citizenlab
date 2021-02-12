@@ -35,7 +35,7 @@ export default defineMessages({
   },
   description: {
     id: 'app.containers.AdminPage.ProjectEdit.MapTab.description',
-    defaultMessage: 'Description',
+    defaultMessage: 'Description goes here',
   },
   edit: {
     id: 'app.containers.AdminPage.ProjectEdit.MapTab.edit',
@@ -55,6 +55,18 @@ export default defineMessages({
   },
   centerLabel: {
     id: 'app.containers.AdminPage.ProjectEdit.MapTab.centerLabel',
-    defaultMessage: 'Map center (lat, long)',
+    defaultMessage: 'Map center',
+  },
+  zoomLabel: {
+    id: 'app.containers.AdminPage.ProjectEdit.MapTab.zoomLabel',
+    defaultMessage: 'Default zoom level',
+  },
+  mapConfiguration: {
+    id: 'app.containers.AdminPage.ProjectEdit.MapTab.mapConfiguration',
+    defaultMessage: 'Map configuration',
+  },
+  editLayer: {
+    id: 'app.containers.AdminPage.ProjectEdit.MapTab.editLayer',
+    defaultMessage: 'Edit layer',
   },
 });
