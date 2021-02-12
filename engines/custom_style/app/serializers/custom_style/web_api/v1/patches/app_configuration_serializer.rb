@@ -1,5 +1,5 @@
-module WebApi
-  module V1
+module CustomStyle
+  module WebApi::V1
     module Patches
       module AppConfigurationSerializer
         def self.included(base)
@@ -12,7 +12,8 @@ module WebApi
   end
 end
 
-WebApi::V1::AppConfigurationSerializer.include(WebApi::V1::Patches::AppConfigurationSerializer)
+WebApi::V1::AppConfigurationSerializer.include(CustomStyle::WebApi::V1::Patches::AppConfigurationSerializer)
+
 
 
 
