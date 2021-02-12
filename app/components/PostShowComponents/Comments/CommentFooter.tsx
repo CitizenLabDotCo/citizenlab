@@ -10,9 +10,9 @@ import CommentTranslateButton from './CommentTranslateButton';
 import CommentsMoreActions from './CommentsMoreActions';
 
 // resources
-import GetTenantLocales, {
-  GetTenantLocalesChildProps,
-} from 'resources/GetTenantLocales';
+import GetAppConfigurationLocales, {
+  GetAppConfigurationLocalesChildProps,
+} from 'resources/GetAppConfigurationLocales';
 import GetComment, { GetCommentChildProps } from 'resources/GetComment';
 import GetPost, { GetPostChildProps } from 'resources/GetPost';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
@@ -130,7 +130,7 @@ interface InputProps {
 }
 
 interface DataProps {
-  tenantLocales: GetTenantLocalesChildProps;
+  tenantLocales: GetAppConfigurationLocalesChildProps;
   locale: GetLocaleChildProps;
   authUser: GetAuthUserChildProps;
   post: GetPostChildProps;
@@ -214,7 +214,7 @@ class CommentFooter extends PureComponent<Props & InjectedIntlProps, State> {
 }
 
 const Data = adopt<DataProps, InputProps>({
-  tenantLocales: <GetTenantLocales />,
+  tenantLocales: <GetAppConfigurationLocales />,
   locale: <GetLocale />,
   authUser: <GetAuthUser />,
   post: ({ postId, postType, render }) => (
