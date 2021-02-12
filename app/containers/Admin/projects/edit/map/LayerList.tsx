@@ -4,6 +4,8 @@ import React, { memo, useState } from 'react';
 import Button from 'components/UI/Button';
 import ImportButton from './ImportButton';
 import LayerConfig, { getLayerColor, getLayerType } from './LayerConfig';
+import MapZoomConfig from './MapZoomConfig';
+import MapCenterConfig from './MapCenterConfig';
 import Tippy from '@tippyjs/react';
 import { SectionTitle, SectionDescription } from 'components/admin/Section';
 import { SortableList, SortableRow } from 'components/admin/ResourceList';
@@ -106,6 +108,14 @@ const StyledLayerConfig = styled(LayerConfig)`
   padding-bottom: 20px;
   border-bottom: solid 1px #ccc;
   border-top: solid 1px #ccc;
+`;
+
+const StyledMapCenterConfig = styled(MapCenterConfig)`
+  margin-bottom: 30px;
+`;
+
+const StyledMapZoomConfig = styled(MapZoomConfig)`
+  margin-bottom: 30px;
 `;
 
 interface Props {
@@ -291,6 +301,10 @@ const LayerList = memo<Props>(({ projectId, className }) => {
           onClose={closeLayerConfig}
         />
       )}
+
+      <StyledMapCenterConfig projectId={projectId} mapLayer={editedMapLayer} />
+
+      <StyledMapZoomConfig projectId={projectId} mapLayer={editedMapLayer} />
     </Container>
   );
 });
