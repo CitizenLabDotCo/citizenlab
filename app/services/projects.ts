@@ -12,7 +12,7 @@ import {
   CLError,
 } from 'typings';
 import { IAreaData } from './areas';
-import { ITenant } from 'services/tenant';
+import { IAppConfiguration } from 'services/appConfiguration';
 
 import streams, { IStreamParams } from 'utils/streams';
 import {
@@ -214,7 +214,7 @@ export interface IProjectFormState {
   areas: IAreaData[];
   areaType: 'all' | 'selection';
   locale: Locale;
-  currentTenant: ITenant | null;
+  currentTenant: IAppConfiguration | null;
   areasOptions: IOption[];
   submitState: ISubmitState;
   slug: string | null;

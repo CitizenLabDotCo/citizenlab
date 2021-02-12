@@ -6,7 +6,7 @@ import { Helmet } from 'react-helmet';
 
 // hooks
 import useLocale from 'hooks/useLocale';
-import useTenantLocales from 'hooks/useTenantLocales';
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useAuthUser from 'hooks/useAuthUser';
 
 // utils
@@ -30,7 +30,7 @@ interface Props {
 
 const ProjectHelmet = memo<Props & InjectedIntlProps>(({ project, intl }) => {
   const locale = useLocale();
-  const tenantLocales = useTenantLocales();
+  const tenantLocales = useAppConfigurationLocales();
   const authUser = useAuthUser();
 
   if (

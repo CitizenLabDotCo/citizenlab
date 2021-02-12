@@ -8,7 +8,10 @@ import { Label, IconTooltip } from 'cl2-component-library';
 
 // services
 import { localeStream } from 'services/locale';
-import { currentTenantStream, ITenant } from 'services/tenant';
+import {
+  currentAppConfigurationStream,
+  IAppConfiguration,
+} from 'services/appConfiguration';
 
 // style
 import styled from 'styled-components';
@@ -46,7 +49,7 @@ export type Props = {
 
 type State = {
   locale: Locale | null;
-  currentTenant: ITenant | null;
+  currentTenant: IAppConfiguration | null;
 };
 
 export default class TextAreaMultiloc extends React.PureComponent<
@@ -66,7 +69,7 @@ export default class TextAreaMultiloc extends React.PureComponent<
 
   componentDidMount() {
     const locale$ = localeStream().observable;
-    const currentTenant$ = currentTenantStream().observable;
+    const currentTenant$ = currentAppConfigurationStream().observable;
 
     this.subscriptions = [
       combineLatest(locale$, currentTenant$).subscribe(

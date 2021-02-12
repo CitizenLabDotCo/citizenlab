@@ -26,7 +26,10 @@ import messages from './messages';
 
 // services
 import { localeStream } from 'services/locale';
-import { currentTenantStream, ITenant } from 'services/tenant';
+import {
+  currentAppConfigurationStream,
+  IAppConfiguration,
+} from 'services/appConfiguration';
 import { IProjectData } from 'services/projects';
 import {
   eventStream,
@@ -60,7 +63,7 @@ interface Props extends DataProps {
 
 interface State {
   locale: Locale | null;
-  currentTenant: ITenant | null;
+  currentTenant: IAppConfiguration | null;
   event: IEvent | null;
   attributeDiff: IUpdatedEventProperties;
   errors:
@@ -102,7 +105,7 @@ class AdminProjectEventEdit extends PureComponent<Props, State> {
   componentDidMount() {
     const { remoteEventFiles } = this.props;
     const locale$ = localeStream().observable;
-    const currentTenant$ = currentTenantStream().observable;
+    const currentTenant$ = currentAppConfigurationStream().observable;
     const event$ = this.props.params.id
       ? eventStream(this.props.params.id).observable
       : of(null);

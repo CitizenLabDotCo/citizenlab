@@ -1,9 +1,9 @@
 import React from 'react';
 import { adopt } from 'react-adopt';
 import { IntlProvider } from 'react-intl';
-import GetTenantLocales, {
-  GetTenantLocalesChildProps,
-} from 'resources/GetTenantLocales';
+import GetAppConfigurationLocales, {
+  GetAppConfigurationLocalesChildProps,
+} from 'resources/GetAppConfigurationLocales';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import { isNilOrError } from 'utils/helperUtils';
 import { Locale } from 'typings';
@@ -12,7 +12,7 @@ interface InputProps {}
 
 interface DataProps {
   locale: GetLocaleChildProps;
-  tenantLocales: GetTenantLocalesChildProps;
+  tenantLocales: GetAppConfigurationLocalesChildProps;
 }
 
 interface Props extends DataProps, InputProps {}
@@ -93,7 +93,7 @@ class LanguageProvider extends React.PureComponent<Props, State> {
 
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
-  tenantLocales: <GetTenantLocales />,
+  tenantLocales: <GetAppConfigurationLocales />,
 });
 
 export default (inputProps: InputProps) => (

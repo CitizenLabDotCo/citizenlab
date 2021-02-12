@@ -32,7 +32,7 @@ import FilterSelector, {
 } from 'components/FilterSelector';
 import useLocalize from 'hooks/useLocalize';
 import useLocale from 'hooks/useLocale';
-import useTenant from 'hooks/useTenant';
+import useAppConfiguration from 'hooks/useAppConfiguration';
 import { CSSTransition } from 'react-transition-group';
 import useTags from 'hooks/useTags';
 import Tippy from '@tippyjs/react';
@@ -157,7 +157,7 @@ const continueMessage = <FormattedMessage {...messages.continue} />;
 const Processing = memo<Props & InjectedIntlProps>(
   ({ className, projects }) => {
     const localize = useLocalize();
-    const tenant = useTenant();
+    const tenant = useAppConfiguration();
     const locale = useLocale();
 
     const { tags, onProjectsChange: changeTagsProjectFilter } = useTags();
