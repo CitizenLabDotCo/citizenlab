@@ -4,10 +4,14 @@ import { isEmpty } from 'lodash-es';
 // services
 import { updateProjectMapLayer } from 'services/mapLayers';
 
+// hooks
+import useMapConfig from 'hooks/useMapConfig';
+
 // components
 import { Input } from 'cl2-component-library';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
+import { SubSectionTitle } from 'components/admin/Section';
 
 // i18n
 // import T from 'components/T';
@@ -18,9 +22,6 @@ import messages from './messages';
 // styling
 import styled from 'styled-components';
 
-// typing
-import { IMapLayerAttributes } from 'services/mapLayers';
-
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -29,11 +30,19 @@ const Container = styled.div`
 
 const InputWrapper = styled.div`
   display: flex;
+  align-items: flex-end;
+`;
+
+const StyledInput = styled(Input)`
+  width: 100px;
+`;
+
+const SaveButton = styled(Button)`
+  margin-left: 15px;
 `;
 
 interface Props {
   projectId: string;
-  mapLayer: IMapLayerAttributes;
   className?: string;
 }
 
@@ -42,7 +51,9 @@ interface IFormValues {
 }
 
 const MapZoomConfig = memo<Props & InjectedIntlProps>(
-  ({ projectId, mapLayer, className, intl: { formatMessage } }) => {
+  ({ projectId, className, intl: { formatMessage } }) => {
+    const mapConfig = useMapConfig({ projectId });
+
     const [touched, setTouched] = useState(false);
     const [processing, setProcessing] = useState(false);
     // const [success, setSuccess] = useState(false);
@@ -58,7 +69,7 @@ const MapZoomConfig = memo<Props & InjectedIntlProps>(
         },
         false
       );
-    }, [mapLayer]);
+    }, [mapConfig]);
 
     const validate = () => {
       return true;
@@ -117,21 +128,25 @@ const MapZoomConfig = memo<Props & InjectedIntlProps>(
 
     return (
       <Container className={className || ''}>
+        <SubSectionTitle>
+          <FormattedMessage {...messages.zoomLabel} />
+        </SubSectionTitle>
         <InputWrapper>
-          <Input
-            type="text"
+          <StyledInput
+            type="number"
             value={formValues.zoom}
             onChange={handleOnChange}
-            label={formatMessage(messages.centerLabel)}
+            placeholder="0 - 18"
           />
-          <Button
+          <SaveButton
             buttonStyle="admin-dark"
             onClick={handleOnSave}
             processing={processing}
             disabled={!touched}
+            padding="12px 14px"
           >
             <FormattedMessage {...messages.save} />
-          </Button>
+          </SaveButton>
         </InputWrapper>
         {!isEmpty(errors) && (
           <Error
