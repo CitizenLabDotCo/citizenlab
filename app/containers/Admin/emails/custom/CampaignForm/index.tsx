@@ -35,7 +35,9 @@ import Error from 'components/UI/Error';
 // resources
 import GetGroups, { GetGroupsChildProps } from 'resources/GetGroups';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetAppConfiguration';
 
 const StyledSection = styled(Section)`
   margin-bottom: 2.5rem;
@@ -71,7 +73,7 @@ interface InputProps {
 
 interface DataProps {
   user: GetAuthUserChildProps;
-  tenant: GetTenantChildProps;
+  tenant: GetAppConfigurationChildProps;
 }
 
 interface Props
@@ -269,7 +271,7 @@ class CampaignForm extends React.Component<
 
 const Data = adopt<DataProps, InputProps>({
   user: ({ render }) => <GetAuthUser>{render}</GetAuthUser>,
-  tenant: ({ render }) => <GetTenant>{render}</GetTenant>,
+  tenant: ({ render }) => <GetAppConfiguration>{render}</GetAppConfiguration>,
 });
 
 const CampaignFormWithHOCs = injectIntl(localize<InputProps>(CampaignForm));
