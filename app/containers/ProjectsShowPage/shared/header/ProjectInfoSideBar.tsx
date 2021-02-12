@@ -10,7 +10,7 @@ import { isNumber } from 'lodash-es';
 import moment from 'moment';
 
 // hooks
-import useTenant from 'hooks/useTenant';
+import useAppConfiguration from 'hooks/useAppConfiguration';
 import useProject from 'hooks/useProject';
 import usePhases from 'hooks/usePhases';
 import useEvents from 'hooks/useEvents';
@@ -123,7 +123,7 @@ interface Props {
 }
 
 const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
-  const tenant = useTenant();
+  const tenant = useAppConfiguration();
   const project = useProject({ projectId });
   const phases = usePhases(projectId);
   const events = useEvents(projectId);

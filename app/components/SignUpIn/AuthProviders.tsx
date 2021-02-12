@@ -9,7 +9,9 @@ import AuthProviderButton from './AuthProviderButton';
 import franceConnectLogo from 'components/SignUpIn/svg/franceconnect.svg';
 
 // resources
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetAppConfiguration';
 import GetFeatureFlag from 'resources/GetFeatureFlag';
 
 // i18n
@@ -100,7 +102,7 @@ interface InputProps {
 }
 
 interface DataProps {
-  tenant: GetTenantChildProps;
+  tenant: GetAppConfigurationChildProps;
   passwordLoginEnabled: boolean | null;
   googleLoginEnabled: boolean | null;
   facebookLoginEnabled: boolean | null;
@@ -295,7 +297,7 @@ const AuthProviders = memo<Props & InjectedIntlProps>(
 const AuthProvidersWithHoC = injectIntl(AuthProviders);
 
 const Data = adopt<DataProps, {}>({
-  tenant: <GetTenant />,
+  tenant: <GetAppConfiguration />,
   passwordLoginEnabled: <GetFeatureFlag name="password_login" />,
   googleLoginEnabled: <GetFeatureFlag name="google_login" />,
   facebookLoginEnabled: <GetFeatureFlag name="facebook_login" />,

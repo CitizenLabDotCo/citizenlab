@@ -4,20 +4,20 @@ import { Subscription } from 'rxjs';
 
 // services
 import {
-  currentTenantStream,
-  ITenant,
-  TenantSettingsFeatureNames,
-} from 'services/tenant';
+  currentAppConfigurationStream,
+  IAppConfiguration,
+  AppConfigurationSettingsFeatureNames,
+} from 'services/appConfiguration';
 
 type children = (renderProps: GetFeatureFlagChildProps) => JSX.Element | null;
 
 interface Props {
-  name?: TenantSettingsFeatureNames;
+  name?: AppConfigurationSettingsFeatureNames;
   children?: children;
 }
 
 interface State {
-  tenantSettings: ITenant['data']['attributes']['settings'] | null;
+  tenantSettings: IAppConfiguration['data']['attributes']['settings'] | null;
 }
 
 export type GetFeatureFlagChildProps = boolean;
@@ -34,7 +34,7 @@ export default class GetFeatureFlag extends PureComponent<Props, State> {
   }
 
   componentDidMount() {
-    const currentTenant$ = currentTenantStream().observable;
+    const currentTenant$ = currentAppConfigurationStream().observable;
 
     this.subscription = currentTenant$.subscribe((currentTenant) => {
       this.setState({ tenantSettings: currentTenant.data.attributes.settings });
