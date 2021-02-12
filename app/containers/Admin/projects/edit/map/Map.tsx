@@ -48,7 +48,8 @@ const Map = memo<Props & InjectedLocalized>(
       const map = L.map('mapid').setView([50.869189, 4.725238], 16);
 
       L.tileLayer(
-        'https://tiles.stadiamaps.com/tiles/osm_bright/{z}/{x}/{y}{r}.png',
+        // 'https://tiles.stadiamaps.com/tiles/osm_bright/{z}/{x}/{y}{r}.png',
+        'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
         {
           subdomains: ['a', 'b', 'c'],
           maxZoom: 20,
