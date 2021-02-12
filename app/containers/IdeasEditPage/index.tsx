@@ -15,7 +15,7 @@ import IdeasEditMeta from './IdeasEditMeta';
 
 // services
 import { localeStream } from 'services/locale';
-import { currentTenantStream } from 'services/tenant';
+import { currentAppConfigurationStream } from 'services/appConfiguration';
 import { ideaByIdStream, updateIdea } from 'services/ideas';
 import {
   ideaImageStream,
@@ -149,7 +149,7 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
   componentDidMount() {
     const { ideaId } = this.props.params;
     const locale$ = localeStream().observable;
-    const currentTenantLocales$ = currentTenantStream().observable.pipe(
+    const currentTenantLocales$ = currentAppConfigurationStream().observable.pipe(
       map(
         (currentTenant) => currentTenant.data.attributes.settings.core.locales
       )

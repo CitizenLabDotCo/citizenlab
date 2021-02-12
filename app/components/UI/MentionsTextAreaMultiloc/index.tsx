@@ -5,9 +5,9 @@ import MentionsTextArea from 'components/UI/MentionsTextArea';
 import { Label } from 'cl2-component-library';
 
 // resources
-import GetTenantLocales, {
-  GetTenantLocalesChildProps,
-} from 'resources/GetTenantLocales';
+import GetAppConfigurationLocales, {
+  GetAppConfigurationLocalesChildProps,
+} from 'resources/GetAppConfigurationLocales';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -56,7 +56,7 @@ export interface InputProps {
 }
 
 interface DataProps {
-  tenantLocales: GetTenantLocalesChildProps;
+  tenantLocales: GetAppConfigurationLocalesChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -152,9 +152,9 @@ class MentionsTextAreaMultiloc extends React.PureComponent<Props, State> {
 }
 
 export default (InputProps: InputProps) => (
-  <GetTenantLocales>
+  <GetAppConfigurationLocales>
     {(tenantLocales) => (
       <MentionsTextAreaMultiloc {...InputProps} tenantLocales={tenantLocales} />
     )}
-  </GetTenantLocales>
+  </GetAppConfigurationLocales>
 );

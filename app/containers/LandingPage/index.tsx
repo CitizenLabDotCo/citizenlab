@@ -19,7 +19,9 @@ const ProjectAndFolderCards = React.lazy(() =>
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetAppConfiguration';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetPage, { GetPageChildProps } from 'resources/GetPage';
 
@@ -143,7 +145,7 @@ export interface InputProps {
 
 interface DataProps {
   locale: GetLocaleChildProps;
-  tenant: GetTenantChildProps;
+  tenant: GetAppConfigurationChildProps;
   authUser: GetAuthUserChildProps;
   homepageInfoPage: GetPageChildProps;
   postingPermission: GetInitiativesPermissionsChildProps;
@@ -213,6 +215,7 @@ class LandingPage extends PureComponent<Props, State> {
                         publicationStatusFilter={['published', 'archived']}
                         showTitle={true}
                         layout="dynamic"
+                        folderId={null}
                       />
                     </Suspense>
                   </SectionContainer>
@@ -278,7 +281,7 @@ class LandingPage extends PureComponent<Props, State> {
 
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
-  tenant: <GetTenant />,
+  tenant: <GetAppConfiguration />,
   authUser: <GetAuthUser />,
   homepageInfoPage: <GetPage slug="homepage-info" />,
   postingPermission: <GetInitiativesPermissions action="posting_initiative" />,
