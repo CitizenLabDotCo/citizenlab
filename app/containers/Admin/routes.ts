@@ -101,14 +101,6 @@ export default () => ({
     emailsRoutes(),
     ideasRoutes(),
     {
-      path: 'moderation',
-      component: Loadable({
-        loader: () => import('containers/Admin/moderation'),
-        loading: LoadableLoadingAdmin,
-        delay: 500,
-      }),
-    },
-    {
       path: 'workshops',
       component: Loadable({
         loader: () => import('containers/Admin/workshops'),
