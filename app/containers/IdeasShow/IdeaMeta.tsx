@@ -6,7 +6,9 @@ import { Helmet } from 'react-helmet';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetAppConfiguration';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
@@ -35,7 +37,7 @@ interface DataProps {
   project: GetProjectChildProps;
   author: GetUserChildProps;
   locale: GetLocaleChildProps;
-  tenant: GetTenantChildProps;
+  tenant: GetAppConfigurationChildProps;
   authUser: GetAuthUserChildProps;
   ideaImages: GetIdeaImagesChildProps;
 }
@@ -193,7 +195,7 @@ const Data = adopt<DataProps, InputProps>({
     </GetUser>
   ),
   locale: <GetLocale />,
-  tenant: <GetTenant />,
+  tenant: <GetAppConfiguration />,
   authUser: <GetAuthUser />,
 });
 
