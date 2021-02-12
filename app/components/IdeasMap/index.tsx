@@ -137,18 +137,12 @@ export class IdeasMap extends PureComponent<Props & WithRouterProps, State> {
 
   getMapHeight = () => {
     const { windowSize } = this.props;
-    const smallerThanMaxTablet = windowSize
-      ? windowSize <= viewportWidths.largeTablet
-      : false;
-    const smallerThanMinTablet = windowSize
-      ? windowSize <= viewportWidths.smallTablet
-      : false;
-    const height = smallerThanMinTablet
-      ? 400
-      : smallerThanMaxTablet
-      ? 500
-      : 550;
-    return height;
+    const vh = Math.max(
+      document.documentElement.clientHeight || 0,
+      window.innerHeight || 0
+    );
+    const smallerThan1100px = !!(windowSize && windowSize <= 1100);
+    return smallerThan1100px ? vh - 180 : 800;
   };
 
   render() {
