@@ -2,7 +2,7 @@ import React, { memo, useState, useEffect } from 'react';
 import { isEmpty } from 'lodash-es';
 
 // services
-import { updateProjectMapLayer } from 'services/mapLayers';
+import { updateProjectMapConfig } from 'services/mapConfigs';
 
 // hooks
 import useMapConfig from 'hooks/useMapConfig';
@@ -110,13 +110,23 @@ const MapCenterConfig = memo<Props & InjectedIntlProps>(
 
     const handleOnSave = async (event: React.FormEvent) => {
       event.preventDefault();
-      if (validate()) {
+      if (
+        mapConfig &&
+        formValues.center &&
+        formValues.center.length > 0 &&
+        validate()
+      ) {
         try {
           formProcessing();
-          // await updateProjectMapLayer(projectId, mapLayer.id, {
-          //   title_multiloc,
-          //   geojson,
-          // });
+          const latlong = formValues.center.split(',');
+          const latitude = parseFloat(latlong[0]);
+          const longitude = parseFloat(latlong[1]);
+          await updateProjectMapConfig(projectId, mapConfig.id, {
+            center_geojson: {
+              type: 'Point',
+              coordinates: [latitude, longitude],
+            },
+          });
           formSuccess();
         } catch (error) {
           formError(error);
@@ -134,7 +144,7 @@ const MapCenterConfig = memo<Props & InjectedIntlProps>(
             type="text"
             value={formValues.center}
             onChange={handleOnChange}
-            placeholder="lat, lng"
+            placeholder="lat, lng (e.g. 50.87959, 4.70093)"
           />
           <SaveButton
             buttonStyle="admin-dark"
