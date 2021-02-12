@@ -9,8 +9,10 @@ import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLoca
 import { ButtonWrapper } from 'components/admin/PageWrapper';
 
 // resources
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
-import { updateTenant } from 'services/tenant';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetAppConfiguration';
+import { updateAppConfiguration } from 'services/appConfiguration';
 
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
@@ -35,7 +37,7 @@ interface InputProps {
 }
 
 interface DataProps {
-  tenant: GetTenantChildProps;
+  tenant: GetAppConfigurationChildProps;
 }
 
 interface Props extends DataProps, InputProps, InjectedIntlProps {}
@@ -62,7 +64,7 @@ class AreaTermConfig extends PureComponent<Props, State> {
     if (!isNilOrError(tenant)) {
       this.setState({ submitState: 'saving' });
       try {
-        updateTenant(tenant.id, {
+        updateAppConfiguration({
           settings: {
             core: {
               areas_term: areasTerm,
@@ -147,7 +149,7 @@ class AreaTermConfig extends PureComponent<Props, State> {
 const AreaTermConfigWithHocs = injectIntl(AreaTermConfig);
 
 export default (inputProps: InputProps) => (
-  <GetTenant>
+  <GetAppConfiguration>
     {(tenant) => <AreaTermConfigWithHocs {...inputProps} tenant={tenant} />}
-  </GetTenant>
+  </GetAppConfiguration>
 );
