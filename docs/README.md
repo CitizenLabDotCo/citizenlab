@@ -1,8 +1,28 @@
 # Changelog
 
-## Next release
+## 2021-02-12
 
-/
+### Fixed
+
+- Fixed Azure AD login for some Azure setups (Schagen)
+
+### Changed
+- When searching for an idea, the search operation no longer searches on the author's name. This was causing severe performance issues and slowness of the paltforms.
+
+## 2021-02-10
+
+### Added
+- Automatic tagging
+
+## 2021-02-08
+
+### Fixed
+- Fixed a bug preventing registration fields and poll questions from reordering correctly.
+- Fixed a bug causing errors in new platforms.
+
+## 2021-02-04
+### Fixed
+- Fixed a bug causing the projects list in the navbar and projects page to display projects outside of folders when they're contained within them.
 
 ## 2021-01-29
 

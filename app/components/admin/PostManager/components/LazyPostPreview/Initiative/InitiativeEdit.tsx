@@ -5,9 +5,9 @@ import { adopt } from 'react-adopt';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetTenantLocales, {
-  GetTenantLocalesChildProps,
-} from 'resources/GetTenantLocales';
+import GetAppConfigurationLocales, {
+  GetAppConfigurationLocalesChildProps,
+} from 'resources/GetAppConfigurationLocales';
 import GetInitiative, {
   GetInitiativeChildProps,
 } from 'resources/GetInitiative';
@@ -45,7 +45,7 @@ export interface InputProps {
 
 interface DataProps {
   locale: GetLocaleChildProps;
-  tenantLocales: GetTenantLocalesChildProps;
+  tenantLocales: GetAppConfigurationLocalesChildProps;
   initiative: GetInitiativeChildProps;
   initiativeImages: GetInitiativeImagesChildProps;
   initiativeFiles: GetResourceFileObjectsChildProps;
@@ -144,7 +144,7 @@ export class InitiativesEditPage extends React.PureComponent<Props, State> {
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
   topics: <GetTopics exclude_code={'custom'} />,
-  tenantLocales: <GetTenantLocales />,
+  tenantLocales: <GetAppConfigurationLocales />,
   initiative: ({ initiativeId, render }) => (
     <GetInitiative id={initiativeId}>{render}</GetInitiative>
   ),

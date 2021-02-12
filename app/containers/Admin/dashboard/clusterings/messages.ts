@@ -115,6 +115,10 @@ export default defineMessages({
     id: 'app.containers.Admin.clusterViewer.level_description',
     defaultMessage: 'Description',
   },
+  level_clustering: {
+    id: 'app.containers.Admin.clusterViewer.level_clustering',
+    defaultMessage: 'Description',
+  },
   firstGroup: {
     id: 'app.containers.Admin.clusterViewer.firstGroup',
     defaultMessage: 'First group: {level}',

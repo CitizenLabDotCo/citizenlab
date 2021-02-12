@@ -70,7 +70,11 @@ import {
   signOut,
   signOutAndDeleteAccountPart2,
 } from 'services/auth';
-import { currentTenantStream, ITenant, ITenantStyle } from 'services/tenant';
+import {
+  currentAppConfigurationStream,
+  IAppConfiguration,
+  IAppConfigurationStyle,
+} from 'services/appConfiguration';
 
 // resources
 import GetFeatureFlag, {
@@ -129,7 +133,7 @@ interface Props extends WithRouterProps, InputProps, DataProps {}
 
 interface State {
   previousPathname: string | null;
-  tenant: ITenant | null;
+  tenant: IAppConfiguration | null;
   authUser: IUser | null | undefined;
   modalId: string | null;
   modalSlug: string | null;
@@ -173,7 +177,7 @@ class App extends PureComponent<Props, State> {
     const { redirectsEnabled } = this.props;
     const authUser$ = authUserStream().observable;
     const locale$ = localeStream().observable;
-    const tenant$ = currentTenantStream().observable;
+    const tenant$ = currentAppConfigurationStream().observable;
 
     this.unlisten = clHistory.listenBefore((newLocation) => {
       const newPreviousPathname = location.pathname;
@@ -240,7 +244,7 @@ class App extends PureComponent<Props, State> {
           import('webfontloader').then((WebfontLoader) => {
             WebfontLoader.load({
               typekit: {
-                id: (tenant.data.attributes.style as ITenantStyle)
+                id: (tenant.data.attributes.style as IAppConfigurationStyle)
                   .customFontAdobeId,
               },
             });
