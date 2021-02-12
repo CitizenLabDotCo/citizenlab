@@ -12,7 +12,7 @@ import { ButtonWrapper } from 'components/admin/PageWrapper';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
-import { updateTenant } from 'services/appConfiguration';
+import { updateAppConfiguration } from 'services/appConfiguration';
 
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
@@ -64,7 +64,7 @@ class AreaTermConfig extends PureComponent<Props, State> {
     if (!isNilOrError(tenant)) {
       this.setState({ submitState: 'saving' });
       try {
-        updateTenant(tenant.id, {
+        updateAppConfiguration({
           settings: {
             core: {
               areas_term: areasTerm,

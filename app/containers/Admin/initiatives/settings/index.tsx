@@ -8,7 +8,7 @@ import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
-import { updateTenant } from 'services/appConfiguration';
+import { updateAppConfiguration } from 'services/appConfiguration';
 
 // components
 import {
@@ -198,7 +198,7 @@ class InitiativesSettingsPage extends PureComponent<
       this.setState({ processing: true });
 
       try {
-        await updateTenant(tenant.id, {
+        await updateAppConfiguration({
           settings: {
             initiatives: formValues,
           },

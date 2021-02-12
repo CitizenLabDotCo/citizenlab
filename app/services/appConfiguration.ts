@@ -248,14 +248,13 @@ export function currentAppConfigurationStream() {
   });
 }
 
-export async function updateTenant(
-  tenantId: string,
+export async function updateAppConfiguration(
   object: IUpdatedAppConfigurationProperties
 ) {
   const tenant = await streams.update<IAppConfiguration>(
-    `${API_PATH}/tenants/${tenantId}`,
-    tenantId,
-    { tenant: object }
+    currentAppConfigurationEndpoint,
+    'app_configuration',
+    { app_configuration: object }
   );
   await currentAppConfigurationStream().fetch();
   return tenant;
