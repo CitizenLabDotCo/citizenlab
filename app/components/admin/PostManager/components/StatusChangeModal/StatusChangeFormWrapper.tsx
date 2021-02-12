@@ -11,9 +11,9 @@ import StatusChangeForm from './StatusChangeForm';
 
 // resources
 import { isNilOrError } from 'utils/helperUtils';
-import GetTenantLocales, {
-  GetTenantLocalesChildProps,
-} from 'resources/GetTenantLocales';
+import GetAppConfigurationLocales, {
+  GetAppConfigurationLocalesChildProps,
+} from 'resources/GetAppConfigurationLocales';
 import GetInitiative, {
   GetInitiativeChildProps,
 } from 'resources/GetInitiative';
@@ -58,7 +58,7 @@ interface InputProps {
 }
 
 interface DataProps {
-  tenantLocales: GetTenantLocalesChildProps;
+  tenantLocales: GetAppConfigurationLocalesChildProps;
   initiative: GetInitiativeChildProps;
   newStatus: GetInitiativeStatusChildProps;
   officialFeedbacks: GetOfficialFeedbacksChildProps;
@@ -249,7 +249,7 @@ class StatusChangeFormWrapper extends PureComponent<
 }
 
 const Data = adopt<DataProps, InputProps>({
-  tenantLocales: <GetTenantLocales />,
+  tenantLocales: <GetAppConfigurationLocales />,
   initiative: ({ initiativeId, render }) => (
     <GetInitiative id={initiativeId}>{render}</GetInitiative>
   ),

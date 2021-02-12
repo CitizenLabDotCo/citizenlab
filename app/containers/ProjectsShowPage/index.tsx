@@ -18,7 +18,7 @@ import { Spinner } from 'cl2-component-library';
 
 // hooks
 import useLocale from 'hooks/useLocale';
-import useTenant from 'hooks/useTenant';
+import useAppConfiguration from 'hooks/useAppConfiguration';
 import useProject from 'hooks/useProject';
 import usePhases from 'hooks/usePhases';
 import useEvents from 'hooks/useEvents';
@@ -77,7 +77,7 @@ const ProjectsShowPage = memo<Props>(({ project }) => {
     : undefined;
 
   const locale = useLocale();
-  const tenant = useTenant();
+  const tenant = useAppConfiguration();
   const phases = usePhases(projectId);
   const events = useEvents(projectId);
 

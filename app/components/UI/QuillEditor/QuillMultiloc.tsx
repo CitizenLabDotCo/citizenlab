@@ -12,9 +12,9 @@ import styled from 'styled-components';
 import { Locale, Multiloc } from 'typings';
 
 // resources
-import GetTenantLocales, {
-  GetTenantLocalesChildProps,
-} from 'resources/GetTenantLocales';
+import GetAppConfigurationLocales, {
+  GetAppConfigurationLocalesChildProps,
+} from 'resources/GetAppConfigurationLocales';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -39,7 +39,7 @@ export interface InputProps
 }
 
 interface DataProps {
-  tenantLocales: GetTenantLocalesChildProps;
+  tenantLocales: GetAppConfigurationLocalesChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -120,9 +120,9 @@ class QuillMultiloc extends PureComponent<Props, State> {
 }
 
 export default (InputProps: InputProps) => (
-  <GetTenantLocales>
+  <GetAppConfigurationLocales>
     {(tenantLocales) => (
       <QuillMultiloc {...InputProps} tenantLocales={tenantLocales} />
     )}
-  </GetTenantLocales>
+  </GetAppConfigurationLocales>
 );
