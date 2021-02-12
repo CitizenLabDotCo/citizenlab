@@ -1,4 +1,4 @@
-class AddStyleToAppConfiguration < ActiveRecord::Migration[5.2]
+class AddStyleToAppConfiguration < ActiveRecord::Migration[6.0]
   def change
     add_column :app_configurations, :style, :jsonb, default: {}
   end
