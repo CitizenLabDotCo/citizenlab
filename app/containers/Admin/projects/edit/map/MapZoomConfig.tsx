@@ -38,23 +38,23 @@ interface Props {
 }
 
 interface IFormValues {
-  center: string | null;
+  zoom: string | null;
 }
 
-const MapCenterConfig = memo<Props & InjectedIntlProps>(
+const MapZoomConfig = memo<Props & InjectedIntlProps>(
   ({ projectId, mapLayer, className, intl: { formatMessage } }) => {
     const [touched, setTouched] = useState(false);
     const [processing, setProcessing] = useState(false);
     // const [success, setSuccess] = useState(false);
     const [errors, setErrors] = useState<{ [key: string]: any }>({});
     const [formValues, setFormValues] = useState<IFormValues>({
-      center: null,
+      zoom: null,
     });
 
     useEffect(() => {
       formChange(
         {
-          center: null,
+          zoom: null,
         },
         false
       );
@@ -96,7 +96,7 @@ const MapCenterConfig = memo<Props & InjectedIntlProps>(
     };
 
     const handleOnChange = (center: string) => {
-      formChange({ center });
+      formChange({ zoom: center });
     };
 
     const handleOnSave = async (event: React.FormEvent) => {
@@ -120,7 +120,7 @@ const MapCenterConfig = memo<Props & InjectedIntlProps>(
         <InputWrapper>
           <Input
             type="text"
-            value={formValues.center}
+            value={formValues.zoom}
             onChange={handleOnChange}
             label={formatMessage(messages.centerLabel)}
           />
@@ -146,4 +146,4 @@ const MapCenterConfig = memo<Props & InjectedIntlProps>(
   }
 );
 
-export default injectIntl(MapCenterConfig);
+export default injectIntl(MapZoomConfig);
