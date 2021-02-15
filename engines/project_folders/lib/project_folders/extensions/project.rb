@@ -79,7 +79,7 @@ module ProjectFolders
       end
 
       def old_folder_moderators
-        return User.none unless folder_was.is_a?(ProjectFolders::Folder)
+        return ::User.none unless folder_was.is_a?(ProjectFolders::Folder)
 
         ::User.project_folder_moderator(folder_was.id)
       end
