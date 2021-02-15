@@ -124,7 +124,7 @@ module EmailCampaigns
     end
 
     def reply_to_email
-      command[:reply_to] || ENV.fetch("DEFAULT_REPLY_TO_EMAIL", nil) || ENV.fetch("DEFAULT_FROM_EMAIL", 'hello@citizenlab.co')
+      command[:reply_to] || ENV.fetch('DEFAULT_REPLY_TO_EMAIL', nil) || ENV.fetch('DEFAULT_FROM_EMAIL', 'hello@citizenlab.co')
     end
 
     def event

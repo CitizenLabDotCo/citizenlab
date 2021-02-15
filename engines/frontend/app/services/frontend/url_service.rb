@@ -1,8 +1,9 @@
-module Frontend
-  class UrlService
-    # The main purpose of this service is to decouple all assumptions the backend
-    # makes about the frontend URLs into a single location.
+# frozen_string_literal: true
 
+module Frontend
+  # The main purpose of this service is to decouple all assumptions the backend
+  # makes about the frontend URLs into a single location.
+  class UrlService
     def model_to_url(model_instance, options = {})
       case model_instance
       when Project
