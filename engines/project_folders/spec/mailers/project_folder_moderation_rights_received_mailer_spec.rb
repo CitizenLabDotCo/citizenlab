@@ -1,10 +1,10 @@
 require 'rails_helper'
 
-RSpec.describe EmailCampaigns::ProjectFolderModerationRightsReceivedMailer, type: :mailer do
+RSpec.describe ProjectFolders::EmailCampaigns::ProjectFolderModerationRightsReceivedMailer, type: :mailer do
   describe 'campaign_mail' do
     let(:project_folder) { create(:project_folder) }
     let!(:recipient) { create(:project_folder_moderator, locale: 'en', project_folder: project_folder) }
-    let!(:campaign) { EmailCampaigns::Campaigns::ProjectFolderModerationRightsReceived.create! }
+    let!(:campaign) { ProjectFolders::EmailCampaigns::Campaigns::ProjectFolderModerationRightsReceived.create! }
     let(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
 
     let(:command) do
@@ -14,7 +14,7 @@ RSpec.describe EmailCampaigns::ProjectFolderModerationRightsReceivedMailer, type
           project_folder_id: project_folder.id,
           project_folder_title_multiloc: project_folder.title_multiloc,
           project_folder_projects_count: project_folder.projects.count,
-          project_url: Frontend::UrlService.new.model_to_url(project_folder, locale: recipient.locale)
+          project_url: Frontend::UrlService.new.admin_project_folder_url(project_folder.id, locale: recipient.locale)
         }
       }
     end
@@ -24,7 +24,7 @@ RSpec.describe EmailCampaigns::ProjectFolderModerationRightsReceivedMailer, type
     end
 
     it 'renders the subject' do
-      expect(mail.subject).to start_with('You\'ve been added as a folder administrator')
+      expect(mail.subject).to start_with('You became a project folder manager')
     end
 
     it 'renders the receiver email' do
@@ -40,7 +40,7 @@ RSpec.describe EmailCampaigns::ProjectFolderModerationRightsReceivedMailer, type
     end
 
     it 'assigns moderate CTA' do
-      expect(mail.body.encoded).to match(Frontend::UrlService.new.admin_project_folder_url(project_folder.id))
+      expect(mail.body.encoded).to match(Frontend::UrlService.new.admin_project_folder_url(project_folder.id, locale: recipient.locale))
     end
   end
 end

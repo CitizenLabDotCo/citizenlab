@@ -1,5 +1,5 @@
 module ProjectFolders
-  module MonkeyPatches
+  module Extensions
     module ProjectSerializer
       def self.prepended(base)
         base.class_eval do
