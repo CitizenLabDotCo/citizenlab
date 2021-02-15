@@ -1,10 +1,15 @@
 # frozen_string_literal: true
 
+# monkey patches
+require 'project_folders/monkey_patches/user'
 require 'project_folders/monkey_patches/user_policy'
 require 'project_folders/monkey_patches/project_policy'
-require 'project_folders/monkey_patches/project_serializer'
 require 'project_folders/monkey_patches/admin_publication_policy'
-require 'project_folders/monkey_patches/frontend/url_service'
+
+# extensions
+require 'project_folders/extensions/frontend/url_service'
+require 'project_folders/extensions/user'
+require 'project_folders/extensions/project_serializer'
 
 # rubocop:disable Lint/SuppressedException
 begin
@@ -15,7 +20,6 @@ end
 
 module ProjectFolders
   class Engine < ::Rails::Engine
-
     isolate_namespace ProjectFolders
 
     config.generators.api_only = true
@@ -34,9 +38,16 @@ module ProjectFolders
     config.to_prepare(&method(:activate).to_proc)
 
     config.after_initialize do
-      ::User.prepend(ProjectFolders::UserDecorator)
+      # adds folder moderation rights methods to users.
+      ::User.include(ProjectFolders::Extensions::User)
+
+      # overrides the roles validation json, and patches the user highest_role method.
+      ::User.prepend(ProjectFolders::MonkeyPatches::User)
+
+      # adds a model to url method for folders.
       ::Frontend::UrlService.include(ProjectFolders::Extensions::Frontend::UrlService)
 
+      # adds a the moderation rights received email campaign to the list in the DeliveryService
       if defined? ::EmailCampaigns
         ::EmailCampaigns::DeliveryService.add_campaign_types(
           ::ProjectFolders::EmailCampaigns::Campaigns::ProjectFolderModerationRightsReceived
@@ -45,10 +56,17 @@ module ProjectFolders
     end
 
     ActiveSupport.on_load(:action_controller) do
+      # changes the project policy to give special rights to folder moderators.
       ::ProjectPolicy.prepend(ProjectFolders::MonkeyPatches::ProjectPolicy)
-      ::UserPolicy.prepend(ProjectFolders::MonkeyPatches::UserPolicy)
-      ::AdminPublicationPolicy.prepend(ProjectFolders::MonkeyPatches::AdminPublicationPolicy)
       ::ProjectPolicy::Scope.prepend(ProjectFolders::MonkeyPatches::ProjectPolicy::Scope)
+
+      # changes the user policy to allow folder_id in the user role params.
+      ::UserPolicy.prepend(ProjectFolders::MonkeyPatches::UserPolicy)
+
+      # changes the admin publication policy to allow folder moderators to reorder their projects.
+      ::AdminPublicationPolicy.prepend(ProjectFolders::MonkeyPatches::AdminPublicationPolicy)
+
+      # adds folder_id to the serialized project.
       ::WebApi::V1::ProjectSerializer.include(ProjectFolders::Extensions::ProjectSerializer)
     end
   end
