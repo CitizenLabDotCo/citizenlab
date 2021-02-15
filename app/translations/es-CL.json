@@ -439,7 +439,7 @@
   "app.components.admin.InputManager.onePost": "Una entrada",
   "app.components.admin.PostManager.PostPreview.addTag": "Añade una etiqueta",
   "app.components.admin.PostManager.PostPreview.assignee": "Asignado",
-  "app.components.admin.PostManager.PostPreview.autotaggingProcessing": "Autotag: se están procesando {remainingItems} elementos",
+  "app.components.admin.PostManager.PostPreview.autotaggingProcessing": " Se está procesando {remainingItems} el etiquetado automático",
   "app.components.admin.PostManager.PostPreview.cancelEdit": "Cancelar la edición",
   "app.components.admin.PostManager.PostPreview.createTag": "Crear una etiqueta",
   "app.components.admin.PostManager.PostPreview.currentStatus": "Estado actual",
