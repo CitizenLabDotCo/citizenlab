@@ -9,11 +9,11 @@ module EmailCampaigns
     private
 
     def header_title
-      format_message('title_you_became_moderator')
+      format_message('title_added_as_folderadmin')
     end
 
     def header_message
-      format_message('message_you_became_moderator', values: { organizationName: organization_name })
+      format_message('message_added_as_folderadmin', values: { organizationName: organization_name })
     end
 
     def preheader
