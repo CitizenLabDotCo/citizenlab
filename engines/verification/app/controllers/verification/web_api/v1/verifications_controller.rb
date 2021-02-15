@@ -43,11 +43,11 @@ module Verification
             raise RuntimeError.new("Unknown verification method #{params[:method_name]}")
           end
 
-          unless Tenant.current.has_feature? 'verification'
+          unless AppConfiguration.instance.has_feature?('verification')
             raise Pundit::NotAuthorizedError.new
           end
 
-          unless @ver_ser.active_methods_for_tenant(Tenant.current).include?(@verification_method)
+          unless @ver_ser.active_methods(AppConfiguration.instance).include?(@verification_method)
             raise Pundit::NotAuthorizedError.new
           end
         end

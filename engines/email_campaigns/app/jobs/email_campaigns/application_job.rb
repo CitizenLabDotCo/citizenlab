@@ -1,4 +1,4 @@
 module EmailCampaigns
-  class ApplicationJob < ActiveJob::Base
+  class ApplicationJob < ::ApplicationJob
   end
 end

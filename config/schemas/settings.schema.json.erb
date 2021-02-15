@@ -921,6 +921,31 @@
         }
       },
 
+      "redirects": {
+        "type": "object",
+        "title": "URL redirection rules",
+        "description":  "Define redirection rules on certain targets",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true},
+          "rules": {
+            "type": "array",
+            "default": [],
+            "items": {
+              "type": "object",
+              "required": ["path", "target"],
+              "additionalProperties": false,
+              "properties": {
+                "path": {"type": "string", "description": "The URL path that should trigger the redirect. This is the part after the locale. For e.g. https://my-platform.com/en-GB/projects/my-project, the path would be projects/my-project."},
+                "target": {"type": "string", "description": "The URL where the path should redirected to, e.g. https://google.com"}
+              }
+            }
+          }
+        }
+      },
+
       "abbreviated_user_names": {
         "type": "object",
         "title": "Abbreviated User Name",

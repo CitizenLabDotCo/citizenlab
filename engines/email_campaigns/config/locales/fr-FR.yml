@@ -520,7 +520,7 @@ fr:
       cta_join_platform: 'Découvrir la plateforme'
       subject: 'Bienvenue sur la plateforme de %{organizationName}'
       main_header: Bienvenue !
-      message_welcome: 'Félicitations, vous vous êtes inscrit avec succès sur la plateforme de participation de %{organizationName}. Vous pouvez maintenant découvrir la plateforme et faire entendre votre voix. Vous pouvez également ajouter une photo de profil et une courte description pour dire aux autres qui vous êtes.'
+      message_welcome: 'Félicitations, vous vous êtes inscrit.e avec succès sur la plateforme de participation de %{organizationName}. Vous pouvez maintenant découvrir la plateforme et faire entendre votre voix. Vous pouvez également ajouter une photo de profil et une courte description pour dire aux autres qui vous êtes.'
       preheader: 'Voici ce que vous pouvez faire sur la plateforme de %{organizationName}'
     idea_published:
       action_add_image: '%{addImageLink} pour donner plus de visibilité à votre idée'

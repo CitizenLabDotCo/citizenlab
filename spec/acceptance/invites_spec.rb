@@ -246,10 +246,6 @@ resource "Invites" do
   end
 
   context "When not authenticated" do
-    before do
-      @invite = create(:invite)
-    end
-
     post "web_api/v1/invites/by_token/:token/accept" do
       with_options scope: :invite do
         parameter :email, "The email of the user. Required if not sepcified at creation of the invite", required: false
@@ -262,7 +258,8 @@ resource "Invites" do
       ValidationErrorHelper.new.error_fields(self, Invite)
       ValidationErrorHelper.new.error_fields(self, User)
 
-      let(:token) { @invite.token }
+      let(:invite) { create(:invite, email: 'super.boulette@hotmail.com') }
+      let(:token) { invite.token }
       let(:first_name) { 'Bart' }
       let(:last_name) { 'Boulettos' }
       let(:password) { 'I<3BouletteSpecial' }
@@ -272,14 +269,22 @@ resource "Invites" do
         expect(status).to eq(200)
         json_response = json_parse(response_body)
         expect(json_response.dig(:data,:attributes,:accepted_at)).to be_present
-        boulettos = json_response.dig(:included).select{|inc| inc[:id] == @invite.invitee.id}&.first
+        boulettos = json_response.dig(:included).select{|inc| inc[:id] == invite.invitee.id}&.first
         expect(boulettos&.dig(:attributes,:last_name)).to eq('Boulettos')
         expect(boulettos&.dig(:attributes,:invite_status)).to eq('accepted')
-        expect(@invite.reload.invitee.registration_completed_at).to be_present  # when no custom fields
+        expect(invite.reload.invitee.registration_completed_at).to be_present  # when no custom fields
+      end
+
+      describe do
+        let(:email) { 'Super.Boulette@hotmail.com' }
+        
+        example_request "Accept an invite using different capitalization for the email", document: false do
+          expect(status).to eq 200
+        end
       end
 
       example "[error] Accept an invite with an invalid token", document: false do
-        @invite.destroy!
+        invite.destroy!
         do_request
         expect(response_status).to eq 401 # unauthorized
       end
