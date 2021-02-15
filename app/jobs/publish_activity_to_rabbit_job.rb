@@ -1,7 +1,7 @@
 class PublishActivityToRabbitJob < ApplicationJob
   queue_as :default
 
-  def perform(activity)
+  def run(activity)
     event = event_from(activity)
     routing_key = routing_key_from(activity)
     PublishGenericEventToRabbitJob.perform_now(event, routing_key)

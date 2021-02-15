@@ -109,6 +109,118 @@ To (re)load the data and run the e2e tests locally, execute the following comman
 docker-compose run --rm web bundle exec rake cl2_back:create_tenant[localhost,e2etests_template]
 ```
 
+### Rubocop
+
+As part of our OS efforts, we are using rubocop as a linter for our ruby code.
+
+### Running rubocop
+
+For a complete list of commands, [see docs here](https://docs.rubocop.org/rubocop/usage/basic_usage.html).
+
+```zsh
+# default
+rubocop
+
+# in different output formats
+rubocop --format simple
+
+# with safe autocorrect
+rubocop -a
+
+# with unsafe autocorrect
+rubocop -A
+
+# for specific rules
+rubocop --only Rails/Blank,Layout/HeredocIndentation,Naming/FileName
+
+# for specific files or directories. Files to always be ignored should be added in rubocop.yml
+rubocop app spec lib/something.rb
+
+# running rubocop on modified files only
+git diff --name-only --diff-filter=MA | xargs rubocop
+
+# autofixing the files you modified
+git diff --name-only --diff-filter=MA | xargs rubocop -a
+```
+
+
+### Enabling/Disabling Cops
+Everything is configured in the `.rubocop.yml` file. Here's the first version.
+
+```yaml
+require:
+  - rubocop-rails
+  - rubocop-performance
+  - rubocop-rspec
+
+AllCops:
+  NewCops: enable
+  Exclude:
+  - 'db/schema.rb'
+  # add other auto-generated ruby files here.
+Metrics/BlockLength:
+  Enabled: true
+  Exclude:
+    - 'spec/**/*'
+    - 'db/migrate/**/*'
+  # Max: 25
+Metrics/MethodLength:
+  Enabled: true
+  Exclude:
+    - 'db/migrate/**/*'
+  # Max: 10
+Metrics/ClassLength:
+  Enabled: true
+  # Max: 100
+Layout/LineLength:
+  Enabled: true
+  # Max: 120
+Rails/LexicallyScopedActionFilter:
+  Enabled: true
+Style/Documentation:
+  Enabled: true
+  Exclude:
+    - 'db/migrate/**/*'
+Style/ClassAndModuleChildren:
+  Enabled: false
+```
+
+### Instructions for VsCode
+
+**Option 1** - Install ruby on your machine, the `rubocop` gems and the **rubocop vscode extension** (this can take up to a few hours if you don't have ruby installed locally but it's the best option for me).
+
+```
+gem install rubocop rubocop-rspec rubocop-i18n rubocop-performance rubocop-rails rubocop-require_tools
+code --install-extension misogi.ruby-rubocop
+```
+
+**Option 2** - Give VSCode access to your contained environment.
+
+1. Install the extension `Remote Containers` if you don't have yet.
+2. You should now get prompted with something like this:
+![Screenshot 2020-12-18 at 17 37 09](https://user-images.githubusercontent.com/24591228/102638438-c3ed4880-4157-11eb-88f5-4ab41c868562.png)
+3. Click, wait a few minutes for the containers to build and voila! Rubocop should be running in your local environment.
+
+
+### Adding a CI check
+
+```yml
+  rubocop:
+    resource_class: small
+    executor:
+      name: cl2-back
+      image-tag: $CIRCLE_SHA1
+    working_directory: /cl2_back
+    parallelism: 4
+    environment:
+      RAILS_ENV: test
+    steps:
+      - checkout:
+          path: /tmp/cl2-back
+      - run: |
+          rubocop --format simple --parallel
+```
+
 
 ## Using Customized Tenants for Development
 
