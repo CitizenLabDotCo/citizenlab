@@ -29,21 +29,20 @@ module Verification
       end
     end
 
-    def active_methods_for_tenant tenant
-      if tenant.has_feature? 'verification'
-        active_method_names = tenant.settings['verification']['verification_methods'].map do |vm|
-          vm['name']
-        end
-        all_methods.select do |method|
-          active_method_names.include? method.name
-        end
-      else
-        []
-      end
+
+    # @param [AppConfiguration] app_configuration
+    def active_methods(app_configuration)
+      return [] unless app_configuration.has_feature?('verification')
+
+      active_methods = app_configuration.settings['verification']['verification_methods']
+      active_method_names = active_methods.map { |vm| vm['name'] }
+      all_methods.select { |method| active_method_names.include?(method.name) }
     end
 
-    def is_active? tenant, method_name
-      active_methods_for_tenant(tenant).include? method_by_name(method_name)
+    # @param [AppConfiguration] configuration
+    # @return [Boolean]
+    def is_active?(configuration, method_name)
+      active_methods(configuration).include? method_by_name(method_name)
     end
 
     class NoMatchError < StandardError; end

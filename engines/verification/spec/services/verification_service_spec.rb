@@ -5,14 +5,14 @@ describe Verification::VerificationService do
   let(:service) { Verification::VerificationService.new sfxv_service }
 
   before do
-    @tenant = Tenant.current
-    settings = @tenant.settings
+    configuration = AppConfiguration.instance
+    settings = configuration.settings
     settings['verification'] = {
       allowed: true,
       enabled: true,
       verification_methods: [{name: 'cow', api_username: 'fake_username', api_password: 'fake_password', rut_empresa: 'fake_rut_empresa'}],
     }
-    @tenant.save!
+    configuration.save!
   end
 
   describe "verify_sync" do
