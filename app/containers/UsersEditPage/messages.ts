@@ -227,21 +227,4 @@ export default defineMessages({
     defaultMessage:
       'This is the profile settings page of {firstName} {lastName} on the online participation platform of {tenantName}. Here you can verify your identity, edit your account information, delete your account and edit your email preferences.',
   },
-  passwordStrengthTooltip1: {
-    id: 'app.containers.UsersEditPage.passwordStrengthTooltip1',
-    defaultMessage: 'To make your password stronger:',
-  },
-  passwordStrengthTooltip2: {
-    id: 'app.containers.UsersEditPage.passwordStrengthTooltip2',
-    defaultMessage:
-      'Use a combination of non-consecutive lowercase letters, uppercase letters, digits, special characters and punctuation',
-  },
-  passwordStrengthTooltip3: {
-    id: 'app.containers.UsersEditPage.passwordStrengthTooltip3',
-    defaultMessage: 'Avoid common or easily guessed words',
-  },
-  passwordStrengthTooltip4: {
-    id: 'app.containers.UsersEditPage.passwordStrengthTooltip4',
-    defaultMessage: 'Increase the length',
-  },
 });

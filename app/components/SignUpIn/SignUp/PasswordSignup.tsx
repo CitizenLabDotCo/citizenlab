@@ -6,11 +6,12 @@ import { API_PATH } from 'containers/App/constants';
 import request from 'utils/request';
 
 // components
-import { Input, IconTooltip } from 'cl2-component-library';
+import { Input } from 'cl2-component-library';
 import Button from 'components/UI/Button';
 import PasswordInput, {
   hasPasswordMinimumLength,
 } from 'components/UI/PasswordInput';
+import PasswordInputIconTooltip from 'components/UI/PasswordInput/PasswordInputIconTooltip';
 import Error from 'components/UI/Error';
 import { FormLabel } from 'components/UI/FormComponents';
 import Consent from 'components/SignUpIn/SignUp/Consent';
@@ -83,7 +84,7 @@ const StyledFormLabel = styled(FormLabel)`
   margin-right: 5px;
 `;
 
-const StyledIconTooltip = styled(IconTooltip)`
+const StyledPasswordInputIconTooltip = styled(PasswordInputIconTooltip)`
   margin-bottom: 4px;
 `;
 
@@ -594,24 +595,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
                   labelMessage={messages.passwordLabel}
                   htmlFor="signup-password-input"
                 />
-                <StyledIconTooltip
-                  content={
-                    <>
-                      <p>{formatMessage(messages.passwordStrengthTooltip1)}</p>
-                      <ul>
-                        <li>
-                          {formatMessage(messages.passwordStrengthTooltip2)}
-                        </li>
-                        <li>
-                          {formatMessage(messages.passwordStrengthTooltip3)}
-                        </li>
-                        <li>
-                          {formatMessage(messages.passwordStrengthTooltip4)}
-                        </li>
-                      </ul>
-                    </>
-                  }
-                />
+                <StyledPasswordInputIconTooltip />
               </LabelContainer>
               <PasswordInput
                 id="signup-password-input"
