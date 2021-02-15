@@ -73,13 +73,15 @@ class Tenant < ApplicationRecord
     AppConfiguration.available_style_attributes
   end
 
+  # @return [String, nil] +nil+ if the tenant has not been persisted yet.
+  #   Otherwise, the name of the corresponding PG schema.
   def schema_name
     # The reason for using `host_was` and not `host` is
     # because the schema name would be wrong when updating
     # the tenant's host. `host_was` should always 
     # correspond to the value as it currently is in the
     # database.
-    self.host_was&.gsub(/\./, "_")
+    host_was&.gsub(/\./, '_')
   end
 
   def cleanup_settings
