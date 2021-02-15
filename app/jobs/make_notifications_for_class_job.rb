@@ -1,7 +1,7 @@
 class MakeNotificationsForClassJob < ApplicationJob
   queue_as :default
 
-  def perform(notification_class, activity)
+  def run(notification_class, activity)
     notifications = notification_class.constantize.make_notifications_on(activity)
 
     notifications.each(&:validate!)

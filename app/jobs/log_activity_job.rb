@@ -2,7 +2,7 @@ class LogActivityJob < ApplicationJob
   include SideFxHelper
   queue_as :default
 
-  def perform(item, action, user, acted_at=Time.now, options={})
+  def run(item, action, user, acted_at=Time.now, options={})
     activity = if item.kind_of? String
       # when e.g. the item has been destroyed, the class and id must be
       # retrieved by encoding and decoding to a string

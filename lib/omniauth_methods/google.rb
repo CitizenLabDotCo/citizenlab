@@ -1,23 +1,24 @@
 module OmniauthMethods
   class Google
 
-    def omniauth_setup tenant, env
-      if tenant.has_feature?('google_login')
-        env['omniauth.strategy'].options[:client_id] = Tenant.settings("google_login", "client_id")
-        env['omniauth.strategy'].options[:client_secret] = Tenant.settings("google_login", "client_secret")
+    # @param [AppConfiguration] configuration
+    def omniauth_setup(configuration, env)
+      if configuration.has_feature?('google_login')
+        env['omniauth.strategy'].options[:client_id] = configuration.settings("google_login", "client_id")
+        env['omniauth.strategy'].options[:client_secret] = configuration.settings("google_login", "client_secret")
         env['omniauth.strategy'].options[:image_size] = 640
         env['omniauth.strategy'].options[:image_aspect_ratio] = "square"
       end
     end
 
-    def profile_to_user_attrs auth
+    def profile_to_user_attrs(auth)
       user_attrs = {
         first_name: auth.info['first_name'],
         last_name: auth.info['last_name'],
         email: auth.info['email'],
         remote_avatar_url: auth.info['image'],
         gender: auth.extra.raw_info.gender,
-        locale: Tenant.current.closest_locale_to(auth.extra.raw_info.locale)
+        locale: AppConfiguration.instance.closest_locale_to(auth.extra.raw_info.locale)
       }
 
       # Currently, the only way to detect if the google account
@@ -37,8 +38,8 @@ module OmniauthMethods
     end
 
     private
-    
-    def image_available? img_url_s
+
+    def image_available?(img_url_s)
       img_url = URI.parse(img_url_s)
       req = Net::HTTP.new(img_url.host, img_url.port)
       req.use_ssl = true
