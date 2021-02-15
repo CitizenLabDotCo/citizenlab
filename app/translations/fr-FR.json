@@ -439,7 +439,7 @@
   "app.components.admin.InputManager.onePost": "1 contribution",
   "app.components.admin.PostManager.PostPreview.addTag": "Ajouter une étiquette",
   "app.components.admin.PostManager.PostPreview.assignee": "Attribué",
-  "app.components.admin.PostManager.PostPreview.autotaggingProcessing": "Automatic tagging: {remainingItems} items are being processed",
+  "app.components.admin.PostManager.PostPreview.autotaggingProcessing": "Autotag : {remainingItems} articles sont en cours de traitement",
   "app.components.admin.PostManager.PostPreview.cancelEdit": "Annuler la modification",
   "app.components.admin.PostManager.PostPreview.createTag": "Créer une étiquette",
   "app.components.admin.PostManager.PostPreview.currentStatus": "Statut actuel",
