@@ -4,7 +4,7 @@
 
       <% if show_unsubscribe_link? %>
         <a
-          href="<%= unsubscribe_url(tenant, campaign.id, user.id) %>"
+          href="<%= unsubscribe_url(app_configuration, campaign.id, user.id) %>"
           style="color: #84939E; text-decoration: none; margin-right: 10px;"
         >
           <%= format_message('link_unsubscribe', component: 'footer') %>
@@ -14,7 +14,7 @@
 
       <% if show_terms_link? %>
         <a
-          href="<%= terms_conditions_url(tenant: tenant) %>"
+          href="<%= terms_conditions_url(app_configuration) %>"
           style="color: #84939E; text-decoration: none; margin: 0 10px;"
         >
           <%= format_message('link_terms_conditions', component: 'footer') %>
@@ -25,7 +25,7 @@
 
       <% if show_privacy_policy_link? %>
         <a
-          href="<%= privacy_policy_url(tenant: tenant) %>"
+          href="<%= privacy_policy_url(app_configuration) %>"
           style="color: #84939E; text-decoration: none; margin-left: 10px;"
         >
           <%= format_message('link_privacy_policy', component: 'footer') %>
@@ -38,8 +38,8 @@
       <p style="font-size: 12px;">
         <%= format_message('statement', component: 'footer', escape_html: false, values: {
           organizationName: organization_name,
-          organizationLink: "<a href='#{tenant_home_url}' style='color: #84939E; text-decoration: underline;'>#{tenant.host}</a>",
-          unsubscribeLink: "<a href='#{unsubscribe_url(tenant, campaign.id, user.id)}' style='color: #84939E; text-decoration: underline;'>#{format_message('unsubscribe_text', component: 'footer')}</a>"
+          organizationLink: "<a href='#{home_url}' style='color: #84939E; text-decoration: underline;'>#{app_configuration.host}</a>",
+          unsubscribeLink: "<a href='#{unsubscribe_url(app_configuration, campaign.id, user.id)}' style='color: #84939E; text-decoration: underline;'>#{format_message('unsubscribe_text', component: 'footer')}</a>"
         }) %>
       </p>
     </mj-text>
