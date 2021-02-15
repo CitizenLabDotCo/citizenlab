@@ -8,11 +8,12 @@ import clHistory from 'utils/cl-router/history';
 import Link from 'utils/cl-router/Link';
 
 // components
-import { Success, IconTooltip } from 'cl2-component-library';
+import { Success } from 'cl2-component-library';
 import Button from 'components/UI/Button';
 import PasswordInput, {
   hasPasswordMinimumLength,
 } from 'components/UI/PasswordInput';
+import PasswordIconTooltip from 'components/UI/PasswordInput/PasswordInputIconTooltip';
 import { Helmet } from 'react-helmet';
 import ContentContainer from 'components/ContentContainer';
 import { FormLabel } from 'components/UI/FormComponents';
@@ -85,7 +86,7 @@ const StyledFormLabel = styled(FormLabel)`
   margin-right: 5px;
 `;
 
-const StyledIconTooltip = styled(IconTooltip)`
+const StyledPasswordIconTooltip = styled(PasswordIconTooltip)`
   margin-bottom: 6px;
 `;
 
@@ -267,24 +268,7 @@ class PasswordReset extends React.PureComponent<
                   labelMessage={messages.passwordLabel}
                   htmlFor="password-reset-input"
                 />
-                <StyledIconTooltip
-                  content={
-                    <>
-                      <p>{formatMessage(messages.passwordStrengthTooltip1)}</p>
-                      <ul>
-                        <li>
-                          {formatMessage(messages.passwordStrengthTooltip2)}
-                        </li>
-                        <li>
-                          {formatMessage(messages.passwordStrengthTooltip3)}
-                        </li>
-                        <li>
-                          {formatMessage(messages.passwordStrengthTooltip4)}
-                        </li>
-                      </ul>
-                    </>
-                  }
-                />
+                <StyledPasswordIconTooltip />
               </LabelContainer>
               <PasswordInput
                 id="password-reset-input"
