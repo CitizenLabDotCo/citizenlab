@@ -25,16 +25,24 @@ class Phase < ApplicationRecord
   before_validation :strip_title
 
   scope :published_and_starting_on, lambda { |date|
-    where(start_at: date)
-      .includes(project: { admin_publication: :parent })
-      .where(
+    joined = includes(project: { admin_publication: :parent })
+    joined.where(
+      projects: {
+        admin_publications: {
+          publication_status: 'published',
+          parents_admin_publications: { publication_status: 'published' }
+        }
+      }
+    ).or(
+      joined.where(
         projects: {
           admin_publications: {
             publication_status: 'published',
-            parents_admin_publications: { publication_status: 'published' }
+            parent_id: nil
           }
         }
       )
+    ).where(start_at: date)
   }
 
   def ends_before?(date)
