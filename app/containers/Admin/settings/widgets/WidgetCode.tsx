@@ -3,7 +3,9 @@ import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetAppConfiguration';
 import { isNilOrError } from 'utils/helperUtils';
 import Button from 'components/UI/Button';
 
@@ -27,7 +29,7 @@ interface Props {
 }
 
 interface DataProps {
-  tenant: GetTenantChildProps;
+  tenant: GetAppConfigurationChildProps;
 }
 
 interface State {
@@ -98,7 +100,7 @@ class WidgetCode extends PureComponent<Props & DataProps, State> {
 }
 
 export default (inputProps) => (
-  <GetTenant>
+  <GetAppConfiguration>
     {(tenant) => <WidgetCode {...inputProps} tenant={tenant} />}
-  </GetTenant>
+  </GetAppConfiguration>
 );

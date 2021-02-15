@@ -17,7 +17,7 @@ import { List, Row } from 'components/admin/ResourceList';
 
 // Services
 import { localeStream } from 'services/locale';
-import { currentTenantStream } from 'services/tenant';
+import { currentAppConfigurationStream } from 'services/appConfiguration';
 import { getGroups, IGroups, IGroupData } from 'services/groups';
 import {
   addGroupProject,
@@ -104,7 +104,7 @@ class ProjectGroupsList extends PureComponent<
   componentDidMount() {
     const { projectId } = this.props;
     const locale$ = localeStream().observable;
-    const currentTenant$ = currentTenantStream().observable;
+    const currentTenant$ = currentAppConfigurationStream().observable;
     const groups$ = getGroups().observable;
     const groupsProjects$ = groupsProjectsByProjectIdStream(projectId)
       .observable;

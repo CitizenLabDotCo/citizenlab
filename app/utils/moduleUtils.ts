@@ -21,6 +21,7 @@ import {
 } from 'typings';
 import { IUserData } from 'services/users';
 import { MessageValue } from 'react-intl';
+import { NavItem } from 'containers/Admin/sideBar';
 
 type Localize = (
   multiloc: Multiloc | null | undefined,
@@ -91,6 +92,12 @@ export type OutletsPropertyMap = {
     onData: (data: {
       insertAfterTabName?: string;
       tabConfiguration: ITab;
+    }) => void;
+  };
+  'app.containers.Admin.sideBar.navItems': {
+    onData: (data: {
+      insertAfterNavItemId?: string;
+      navItemConfiguration: NavItem;
     }) => void;
   };
 };
