@@ -33,12 +33,5 @@ export default () => ({
       }),
     },
     clusteringsRoutes(),
-    {
-      path: 'map',
-      component: Loadable({
-        loader: () => import('./map'),
-        loading: () => null,
-      }),
-    },
   ],
 });

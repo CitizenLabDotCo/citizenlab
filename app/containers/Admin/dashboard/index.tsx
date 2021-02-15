@@ -251,12 +251,9 @@ export const DashboardsPage = memo(
         url: '/admin/dashboard/insights',
         feature: 'clustering',
       },
-      {
-        label: formatMessage(messages.tabMap),
-        url: '/admin/dashboard/map',
-        feature: 'geographic_dashboard',
-      },
     ];
+    // TODO: add map dashboard tab
+
     const moderatorTabs = [
       { label: formatMessage(messages.tabSummary), url: '/admin/dashboard' },
       {
