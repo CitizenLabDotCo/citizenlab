@@ -2074,6 +2074,7 @@
   "app.containers.Projects.survey": "Enquête",
   "app.containers.Projects.takeThePoll": "Répondre au sondage",
   "app.containers.Projects.takeTheSurvey": "Répondre à l'enquête",
+  "app.containers.Projects.thisProjectIsNotVisibleToYou": "",
   "app.containers.Projects.timeline": "Ligne du temps",
   "app.containers.Projects.totalBudget": "Budget total",
   "app.containers.Projects.upcomingEvents": "Événements à venir",

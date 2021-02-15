@@ -2074,6 +2074,7 @@
   "app.containers.Projects.survey": "الاستبيان",
   "app.containers.Projects.takeThePoll": "شارك في الاستطلاع",
   "app.containers.Projects.takeTheSurvey": "شارك في الاستبيان",
+  "app.containers.Projects.thisProjectIsNotVisibleToYou": "",
   "app.containers.Projects.timeline": "الجدول الزمني",
   "app.containers.Projects.totalBudget": "إجمالي الميزانية",
   "app.containers.Projects.upcomingEvents": "الأحداث القادمة",
