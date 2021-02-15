@@ -22,18 +22,19 @@ module EmailCampaigns
 
     attr_reader :command, :campaign
 
-    delegate :unsubscribe_url, :terms_conditions_url, :privacy_policy_url, :home_url, to: :url_service
+    delegate :unsubscribe_url, :terms_conditions_url, :privacy_policy_url, to: :url_service
     delegate :first_name, to: :recipient, prefix: true
 
-    helper_method :command, :campaign, :event, :header_title, :header_message, :show_header?, :preheader, :subject,
-                  :tenant, :user, :recipient, :locale, :count_from, :days_since_publishing, :text_direction
+    helper_method :app_configuration, :app_settings, :command, :campaign, :event, :header_title, :header_message,
+                  :show_header?, :preheader, :subject, :user, :recipient, :locale, :count_from, :days_since_publishing,
+                  :text_direction
 
     helper_method :organization_name, :recipient_name,
                   :url_service, :multiloc_service, :organization_name,
                   :loc, :localize_for_recipient, :recipient_first_name
 
-    helper_method :unsubscribe_url, :terms_conditions_url, :privacy_policy_url, :home_url, :tenant_home_url,
-                  :logo_url, :show_unsubscribe_link?, :show_terms_link?, :show_privacy_policy_link?, :tenant_settings
+    helper_method :unsubscribe_url, :terms_conditions_url, :privacy_policy_url, :home_url, :logo_url,
+                  :show_unsubscribe_link?, :show_terms_link?, :show_privacy_policy_link?
 
     private
 
@@ -73,7 +74,7 @@ module EmailCampaigns
     def mailgun_headers
       {
         'X-Mailgun-Variables' => {
-          'cl_tenant_id' => tenant.id,
+          'cl_tenant_id' => Tenant.current.id,  # TODO_MT Customize mailgun vars from the engine?
           'cl_campaign_id' => campaign.id,
           'cl_user_id' => recipient.id
         }.to_json
@@ -86,10 +87,6 @@ module EmailCampaigns
 
     def app_configuration
       @app_configuration ||= AppConfiguration.instance
-    end
-
-    def tenant
-      @tenant ||= Tenant.current
     end
 
     def show_unsubscribe_link?
@@ -127,7 +124,7 @@ module EmailCampaigns
     end
 
     def reply_to_email
-      command[:reply_to] || ENV.fetch("DEFAULT_REPLY_TO_EMAIL", nil) || ENV.fetch("DEFAULT_FROM_EMAIL", 'hello@citizenlab.co')
+      command[:reply_to] || ENV.fetch('DEFAULT_REPLY_TO_EMAIL', nil) || ENV.fetch('DEFAULT_FROM_EMAIL', 'hello@citizenlab.co')
     end
 
     def event
@@ -163,20 +160,20 @@ module EmailCampaigns
       multiloc_service.t(multiloc, recipient).html_safe if multiloc
     end
 
-    def tenant_settings
-      @tenant_settings ||= to_deep_struct(tenant.settings)
+    def app_settings
+      @app_settings ||= to_deep_struct(app_configuration.settings)
     end
 
     def organization_name
-      @organization_name ||= localize_for_recipient(tenant_settings.core.organization_name)
+      @organization_name ||= localize_for_recipient(app_settings.core.organization_name)
     end
 
-    def tenant_home_url
-      @tenant_home_url ||= home_url(tenant: tenant, locale: locale)
+    def home_url
+      @home_url ||= url_service.home_url(app_configuration: app_configuration, locale: locale)
     end
 
     def logo_url
-      @logo_url ||= tenant.logo.versions.yield_self do |versions|
+      @logo_url ||= app_configuration.logo.versions.yield_self do |versions|
         versions[:medium].url || versions[:small].url || versions[:large].url || ''
       end
     end

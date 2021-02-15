@@ -6,7 +6,7 @@ module Verification
         def index
           vm_service = VerificationService.new
 
-          @verification_methods = vm_service.active_methods_for_tenant(Tenant.current)
+          @verification_methods = vm_service.active_methods(AppConfiguration.instance)
           @verification_methods = policy_scope(@verification_methods, policy_scope_class: VerificationMethodPolicy::Scope)
           @verification_methods = Kaminari.paginate_array(@verification_methods)
             .page(params.dig(:page, :number))

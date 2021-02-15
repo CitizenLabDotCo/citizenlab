@@ -57,7 +57,6 @@ WORKDIR $INSTALL_PATH
 
 COPY Gemfile Gemfile.lock ./
 COPY engines ./engines
-
 # This is going to copy in the Gemfile and Gemfile.lock from our
 # work station at a path relative to the Dockerfile to the
 # my_dockerized_app/ path inside of the Docker image.
@@ -76,10 +75,7 @@ COPY engines ./engines
 # change, it won't re-run bundle install unless a gem changed.
 
 RUN bundle install
-# We want binstubs to be available so we can directly call sidekiq and
-# potentially other binaries as command overrides without depending on
-# bundle exec.
-# This is mainly due for production compatibility assurance.
+# Install gems with Bundler.
 
 COPY . .
 # This might look a bit alien but it's copying in everything from
