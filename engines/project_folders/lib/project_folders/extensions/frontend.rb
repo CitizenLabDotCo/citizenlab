@@ -1,5 +1,5 @@
 module ProjectFolders
-  module MonkeyPatches
+  module Extensions
     module Frontend; end
   end
 end
