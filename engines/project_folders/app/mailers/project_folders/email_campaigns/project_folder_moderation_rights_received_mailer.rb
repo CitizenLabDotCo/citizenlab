@@ -1,3 +1,5 @@
+return unless defined? ::EmailCampaigns::ApplicationMailer
+
 module ProjectFolders
   module EmailCampaigns
     class ProjectFolderModerationRightsReceivedMailer < ::EmailCampaigns::ApplicationMailer

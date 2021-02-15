@@ -35,11 +35,11 @@ module ProjectFolders
 
     config.after_initialize do
       ::User.prepend(ProjectFolders::UserDecorator)
-      ::Frontend::UrlService.prepend(ProjectFolders::MonkeyPatches::Frontend::UrlService)
+      ::Frontend::UrlService.include(ProjectFolders::Extensions::Frontend::UrlService)
 
       if defined? ::EmailCampaigns
         ::EmailCampaigns::DeliveryService.add_campaign_types(
-          EmailCampaigns::Campaigns::ProjectFolderModerationRightsReceived
+          ::ProjectFolders::EmailCampaigns::Campaigns::ProjectFolderModerationRightsReceived
         )
       end
     end
@@ -49,7 +49,7 @@ module ProjectFolders
       ::UserPolicy.prepend(ProjectFolders::MonkeyPatches::UserPolicy)
       ::AdminPublicationPolicy.prepend(ProjectFolders::MonkeyPatches::AdminPublicationPolicy)
       ::ProjectPolicy::Scope.prepend(ProjectFolders::MonkeyPatches::ProjectPolicy::Scope)
-      ::WebApi::V1::ProjectSerializer.prepend(ProjectFolders::MonkeyPatches::ProjectSerializer)
+      ::WebApi::V1::ProjectSerializer.include(ProjectFolders::Extensions::ProjectSerializer)
     end
   end
 end

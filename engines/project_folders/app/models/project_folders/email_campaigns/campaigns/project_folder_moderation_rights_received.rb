@@ -1,3 +1,5 @@
+return unless defined? ::EmailCampaigns::Campaign
+
 module ProjectFolders
   module EmailCampaigns
     class Campaigns::ProjectFolderModerationRightsReceived < ::EmailCampaigns::Campaign
@@ -11,7 +13,7 @@ module ProjectFolders
 
       recipient_filter :filter_notification_recipient
 
-      delegate :model_to_url, to: :url_service
+      delegate :admin_project_folder_url, to: :url_service
 
       def mailer_class
         ProjectFolderModerationRightsReceivedMailer
@@ -32,7 +34,7 @@ module ProjectFolders
             project_folder_id: notification.post.id,
             project_folder_title_multiloc: notification.post.title_multiloc,
             project_folder_projects_count: notification.post.projects.count,
-            project_folder_url: model_to_url(notification.post, locale: recipient.locale)
+            project_folder_url: admin_project_folder_url(notification.post.id, locale: recipient.locale)
           }
         }]
       end
