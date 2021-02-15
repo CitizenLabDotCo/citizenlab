@@ -1,13 +1,7 @@
-Hello! Please make sure your PR respects the following concerns before asking for approval or merging to master.
+Before opening this PR:
 
-- [ ] Correctness
-- [ ] Responsiveness
-- [ ] a11y
-- [ ] l18n
-- [ ] Authorization
-- [ ] Error Handling
-- [ ] Loading behaviour
-- [ ] Tests
-- [ ] Performance
-- [ ] Simplicity
-- [ ] Separation of concerns
+- Add a link to Jira ticket
+- Add a link to the PRs from other repos related to this 
+- Add a summary of what has changed
+- Review and prepare your own code to reduce unnecessary back and forth (removal of console.log etc.)
+- While doing the above, add comments to your code to clarify, add questions you still have, etc.
