@@ -12,7 +12,7 @@ import { appLocalePairs } from 'containers/App/constants';
 import messages from '../messages';
 
 // components
-import InputMultiloc from 'components/UI/InputMultiloc';
+import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import { Input, IconTooltip, Label } from 'cl2-component-library';
 import MultipleSelect from 'components/UI/MultipleSelect';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
@@ -237,7 +237,7 @@ class SettingsGeneralTab extends PureComponent<
             </SectionDescription>
 
             <SectionField>
-              <InputMultiloc
+              <InputMultilocWithLocaleSwitcher
                 type="text"
                 id="organization_name"
                 label={

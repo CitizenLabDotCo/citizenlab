@@ -28,7 +28,7 @@ import {
   FormikErrors,
 } from 'formik';
 import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
-import FormikInputMultiloc from 'components/UI/FormikInputMultiloc';
+import FormikInputMultilocWithLocaleSwitcher from 'components/UI/FormikInputMultilocWithLocaleSwitcher';
 import FormikSelect from 'components/UI/FormikSelect';
 import Error from 'components/UI/Error';
 
@@ -215,14 +215,10 @@ class CampaignForm extends React.Component<
           <SectionField>
             <FastField
               name="subject_multiloc"
-              component={FormikInputMultiloc}
+              component={FormikInputMultilocWithLocaleSwitcher}
               label={<FormattedMessage {...messages.fieldSubject} />}
               labelTooltipText={
-                <IconTooltip
-                  content={
-                    <FormattedMessage {...messages.fieldSubjectTooltip} />
-                  }
-                />
+                <FormattedMessage {...messages.fieldSubjectTooltip} />
               }
               maxCharCount={80}
             />
