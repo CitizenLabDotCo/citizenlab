@@ -439,7 +439,7 @@
   "app.components.admin.InputManager.onePost": "1 input",
   "app.components.admin.PostManager.PostPreview.addTag": "Tilføy et stikkord",
   "app.components.admin.PostManager.PostPreview.assignee": "Assignee",
-  "app.components.admin.PostManager.PostPreview.autotaggingProcessing": "Automatic tagging: {remainingItems} items are being processed",
+  "app.components.admin.PostManager.PostPreview.autotaggingProcessing": "Automatic tagging : {remainingItems} items are being processed",
   "app.components.admin.PostManager.PostPreview.cancelEdit": "Cancel editing",
   "app.components.admin.PostManager.PostPreview.createTag": "Lag et stikkord",
   "app.components.admin.PostManager.PostPreview.currentStatus": "Current status",
