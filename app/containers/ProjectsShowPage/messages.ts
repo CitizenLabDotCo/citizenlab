@@ -85,6 +85,10 @@ export default defineMessages({
     id: 'app.containers.Projects.noProjectFoundHere',
     defaultMessage: 'There is no project here.',
   },
+  thisProjectIsNotVisibleToYou: {
+    id: 'app.containers.Projects.thisProjectIsNotVisibleToYou',
+    defaultMessage: 'This project is not visible to you.',
+  },
   goBackToList: {
     id: 'app.containers.Projects.goBackToList',
     defaultMessage: 'Go to the projects overview',
