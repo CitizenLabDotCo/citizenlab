@@ -2,28 +2,28 @@ module EmailCampaigns
   class ManualCampaignMailer < ApplicationMailer
     layout false
 
-    attr_reader :command, :campaign, :recipient, :tenant
+    attr_reader :command, :campaign, :recipient, :app_configuration
 
     def campaign_mail
       @recipient = command[:recipient]
       multiloc_service = MultilocService.new
       frontend_service = Frontend::UrlService.new
-      @tenant = Tenant.current
+      @app_configuration = AppConfiguration.instance
 
       body_html_with_liquid = multiloc_service.t(command[:body_multiloc], recipient)
       template = Liquid::Template.parse(body_html_with_liquid)
       @body_html = template.render(liquid_params(recipient))
       @body_text = ActionView::Base.full_sanitizer.sanitize(@body_html)
 
-      url = frontend_service.unsubscribe_url_template(tenant, campaign.id)
+      url = frontend_service.unsubscribe_url_template(app_configuration, campaign.id)
       url_template = Liquid::Template.parse(url)
       @unsubscribe_url = url_template.render(liquid_params(recipient))
 
-      @tenant_logo_url = tenant.logo.versions[:medium].url
-      @terms_conditions_url = frontend_service.terms_conditions_url(tenant: tenant)
-      @privacy_policy_url = frontend_service.privacy_policy_url(tenant: tenant)
-      @host_url = frontend_service.home_url(tenant: tenant)
-      @organization_name = multiloc_service.t(Tenant.settings('core', 'organization_name'), recipient)
+      @logo_url = app_configuration.logo.versions[:medium].url
+      @terms_conditions_url = frontend_service.terms_conditions_url(app_configuration)
+      @privacy_policy_url = frontend_service.privacy_policy_url(app_configuration)
+      @host_url = frontend_service.home_url(app_configuration: app_configuration)
+      @organization_name = multiloc_service.t(app_configuration.settings('core', 'organization_name'), recipient)
 
       I18n.with_locale(locale) do
         mail(default_config).tap do |message|
@@ -48,7 +48,7 @@ module EmailCampaigns
       if sender_type == 'author'
         "#{author.first_name} #{author.last_name}"
       elsif sender_type == 'organization'
-        MultilocService.new.t(Tenant.settings('core', 'organization_name'), recipient)
+        MultilocService.new.t(AppConfiguration.instance.settings('core', 'organization_name'), recipient)
       end
     end
 
@@ -62,8 +62,8 @@ module EmailCampaigns
       }
     end
 
-    def tenant_home_url
-      home_url(tenant: tenant, locale: recipient.locale)
+    def home_url
+      url_service.home_url(app_configuration: app_configuration, locale: recipient.locale)
     end
   end
 end
