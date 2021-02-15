@@ -24,11 +24,11 @@
 <mj-section padding="0 0 80px">
   <mj-column>
     <mj-button
-      href="<%= event.project_folder_url %>"
       border-radius="5px"
       background-color="#044D6C"
       color="#fff"
       width="100%"
+      href="<%= event.project_folder_url %>"
       padding="0 25px"><%= format_message('cta_view_folder_button') %></mj-button>
   </mj-column>
 </mj-section>
