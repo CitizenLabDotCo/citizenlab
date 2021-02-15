@@ -26,9 +26,9 @@ import {
 } from 'services/invites';
 
 // resources
-import GetTenantLocales, {
-  GetTenantLocalesChildProps,
-} from 'resources/GetTenantLocales';
+import GetAppConfigurationLocales, {
+  GetAppConfigurationLocalesChildProps,
+} from 'resources/GetAppConfigurationLocales';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetGroups, { GetGroupsChildProps } from 'resources/GetGroups';
 import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
@@ -125,7 +125,7 @@ export interface InputProps {}
 interface DataProps {
   projects: GetProjectsChildProps;
   locale: GetLocaleChildProps;
-  tenantLocales: GetTenantLocalesChildProps;
+  tenantLocales: GetAppConfigurationLocalesChildProps;
   groups: GetGroupsChildProps;
 }
 
@@ -190,7 +190,7 @@ class Invitations extends React.PureComponent<
   getProjectOptions = (
     projects: GetProjectsChildProps,
     locale: GetLocaleChildProps,
-    tenantLocales: GetTenantLocalesChildProps
+    tenantLocales: GetAppConfigurationLocalesChildProps
   ) => {
     const { projectsList } = projects;
 
@@ -216,7 +216,7 @@ class Invitations extends React.PureComponent<
   getGroupOptions = (
     groups: GetGroupsChildProps,
     locale: GetLocaleChildProps,
-    tenantLocales: GetTenantLocalesChildProps
+    tenantLocales: GetAppConfigurationLocalesChildProps
   ) => {
     if (
       !isNilOrError(locale) &&
@@ -798,7 +798,7 @@ const Data = adopt<DataProps, {}>({
     <GetProjects publicationStatuses={['draft', 'published', 'archived']} />
   ),
   locale: <GetLocale />,
-  tenantLocales: <GetTenantLocales />,
+  tenantLocales: <GetAppConfigurationLocales />,
   groups: <GetGroups membershipType="manual" />,
 });
 

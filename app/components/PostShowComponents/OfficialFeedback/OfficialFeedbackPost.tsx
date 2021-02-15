@@ -32,9 +32,9 @@ import {
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetTenantLocales, {
-  GetTenantLocalesChildProps,
-} from 'resources/GetTenantLocales';
+import GetAppConfigurationLocales, {
+  GetAppConfigurationLocalesChildProps,
+} from 'resources/GetAppConfigurationLocales';
 
 const Container = styled.div`
   display: flex;
@@ -149,7 +149,7 @@ const StyledMoreActionsMenu = styled(MoreActionsMenu)`
 
 interface DataProps {
   locale: GetLocaleChildProps;
-  tenantLocales: GetTenantLocalesChildProps;
+  tenantLocales: GetAppConfigurationLocalesChildProps;
 }
 
 interface InputProps {
@@ -346,7 +346,7 @@ export class OfficialFeedbackPost extends PureComponent<
 
 const Data = adopt<DataProps, {}>({
   locale: <GetLocale />,
-  tenantLocales: <GetTenantLocales />,
+  tenantLocales: <GetAppConfigurationLocales />,
 });
 
 const OfficialFeedbackPostWithIntl = injectIntl<Props>(OfficialFeedbackPost);

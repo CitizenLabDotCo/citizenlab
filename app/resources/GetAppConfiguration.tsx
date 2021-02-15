@@ -1,23 +1,32 @@
 import React from 'react';
 import { Subscription } from 'rxjs';
-import { currentTenantStream, ITenantData } from 'services/tenant';
+import {
+  currentAppConfigurationStream,
+  IAppConfigurationData,
+} from 'services/appConfiguration';
 import { isNilOrError } from 'utils/helperUtils';
 
 interface InputProps {}
 
-type children = (renderProps: GetTenantChildProps) => JSX.Element | null;
+type children = (
+  renderProps: GetAppConfigurationChildProps
+) => JSX.Element | null;
 
 interface Props extends InputProps {
   children?: children;
 }
 
 interface State {
-  tenant: ITenantData | undefined | null | Error;
+  tenant: IAppConfigurationData | undefined | null | Error;
 }
 
-export type GetTenantChildProps = ITenantData | undefined | null | Error;
+export type GetAppConfigurationChildProps =
+  | IAppConfigurationData
+  | undefined
+  | null
+  | Error;
 
-export default class GetTenant extends React.Component<Props, State> {
+export default class GetAppConfiguration extends React.Component<Props, State> {
   private subscriptions: Subscription[];
 
   constructor(props: Props) {
@@ -28,7 +37,7 @@ export default class GetTenant extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    const currentTenant$ = currentTenantStream().observable;
+    const currentTenant$ = currentAppConfigurationStream().observable;
 
     this.subscriptions = [
       currentTenant$.subscribe((currentTenant) => {

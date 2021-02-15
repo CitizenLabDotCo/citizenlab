@@ -25,11 +25,11 @@ import {
 
 // services
 import {
-  currentTenantStream,
-  updateTenant,
-  IUpdatedTenantProperties,
-  ITenantData,
-} from 'services/tenant';
+  currentAppConfigurationStream,
+  updateAppConfiguration,
+  IUpdatedAppConfigurationProperties,
+  IAppConfigurationData,
+} from 'services/appConfiguration';
 
 // Utils
 import getSubmitState from 'utils/getSubmitState';
@@ -40,8 +40,8 @@ export interface Props {}
 interface State {
   loading: boolean;
   saved: boolean;
-  attributesDiff: IUpdatedTenantProperties;
-  tenant: ITenantData | null;
+  attributesDiff: IUpdatedAppConfigurationProperties;
+  tenant: IAppConfigurationData | null;
   errors: {
     [fieldName: string]: CLError[];
   };
@@ -67,7 +67,7 @@ class SettingsGeneralTab extends PureComponent<
   }
 
   componentDidMount() {
-    const currentTenant$ = currentTenantStream().observable;
+    const currentTenant$ = currentAppConfigurationStream().observable;
 
     this.subscriptions = [
       currentTenant$.subscribe((currentTenant) => {
@@ -141,7 +141,7 @@ class SettingsGeneralTab extends PureComponent<
         errors: {},
       });
 
-      updateTenant(tenant.id, attributesDiff)
+      updateAppConfiguration(attributesDiff)
         .then(() => {
           this.setState({ saved: true, attributesDiff: {}, loading: false });
         })
