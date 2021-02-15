@@ -11,7 +11,7 @@ RSpec.describe Tenant, type: :model do
   end
 
   describe '#switch!' do
-    it 'switches corretly into the tenant' do
+    it 'switches successfully into the tenant' do
       tenant = create(:tenant, host: 'unused.hostname.com')
       tenant.switch!
       expect(Tenant.current).to eq(tenant)
