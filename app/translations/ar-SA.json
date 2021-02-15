@@ -2480,7 +2480,7 @@
   "containers.Admin.onboarding.setupArticle2Description": "يمكنك طرح الأسئلة على المستخدمين خلال التسجيل والاستفادة من إجاباتهم في إنشاء مجموعات مستخدمين ومعرفة الأشخاص الموجودين على منصتك.",
   "containers.Admin.onboarding.setupArticle2Link": "/admin/settings/registration",
   "containers.Admin.onboarding.setupArticle2Title": "حدد بيانات المستخدم الخاصة بك",
-  "containers.Admin.onboarding.setupArtiscle3Description": "عنصر الواجهة المخصص يقوم بتوجيه الأشخاص من موقعك الإلكتروني للوصول إلى هذه المنصة.",
+  "containers.Admin.onboarding.setupArticle3Description": "",
   "containers.Admin.onboarding.setupArticle3Link": "/admin/settings/widgets",
   "containers.Admin.onboarding.setupArticle3Title": "أضِف عنصر واجهة إلى موقعك",
   "containers.Admin.onboarding.setupSectionLink": "http://support.citizenlab.co/collections/1846692-set-up",
