@@ -33,6 +33,7 @@ import GetInitiativesCount, {
   GetInitiativesCountChildProps,
 } from 'resources/GetInitiativesCount';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import Outlet from 'components/Outlet';
 
 const Menu = styled.div`
   z-index: 10;
@@ -157,6 +158,7 @@ class Sidebar extends PureComponent<
 > {
   constructor(props: Props & InjectedIntlProps & WithRouterProps & Tracks) {
     super(props);
+
     this.state = {
       navItems: [
         {
@@ -169,19 +171,6 @@ class Sidebar extends PureComponent<
               `${
                 getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''
               }/admin/dashboard`
-            ),
-        },
-        {
-          id: 'moderation',
-          link: '/admin/moderation',
-          iconName: 'moderation',
-          message: 'moderation',
-          featureName: 'moderation',
-          isActive: (pathName) =>
-            pathName.startsWith(
-              `${
-                getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''
-              }/admin/moderation`
             ),
         },
         {
@@ -329,6 +318,30 @@ class Sidebar extends PureComponent<
     return prevState;
   }
 
+  handleInsertNavItem = ({
+    insertAfterNavItemId,
+    navItemConfiguration,
+  }: {
+    insertAfterNavItemId?: string;
+    navItemConfiguration: NavItem;
+  }) => {
+    this.setState(({ navItems }) => {
+      const insertIndex =
+        navItems.findIndex((navItem) => navItem.id === insertAfterNavItemId) +
+        1;
+      if (insertIndex > 0) {
+        return {
+          navItems: [
+            ...navItems.slice(0, insertIndex),
+            navItemConfiguration,
+            ...navItems.slice(insertIndex),
+          ],
+        };
+      }
+      return { navItems: [...navItems, navItemConfiguration] };
+    });
+  };
+
   render() {
     const { formatMessage } = this.props.intl;
     const { navItems } = this.state;
@@ -339,6 +352,10 @@ class Sidebar extends PureComponent<
 
     return (
       <Menu>
+        <Outlet
+          id="app.containers.Admin.sideBar.navItems"
+          onData={this.handleInsertNavItem}
+        />
         <MenuInner id="sidebar">
           {navItems.map((route) => {
             if (route.id === 'emails') {
