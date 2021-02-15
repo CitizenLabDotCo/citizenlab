@@ -11,9 +11,9 @@ import { updateComment, IUpdatedComment } from 'services/comments';
 
 // Resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetTenantLocales, {
-  GetTenantLocalesChildProps,
-} from 'resources/GetTenantLocales';
+import GetAppConfigurationLocales, {
+  GetAppConfigurationLocalesChildProps,
+} from 'resources/GetAppConfigurationLocales';
 import GetComment, { GetCommentChildProps } from 'resources/GetComment';
 import GetMachineTranslation from 'resources/GetMachineTranslation';
 
@@ -73,7 +73,7 @@ interface InputProps {
 
 interface DataProps {
   locale: GetLocaleChildProps;
-  tenantLocales: GetTenantLocalesChildProps;
+  tenantLocales: GetAppConfigurationLocalesChildProps;
   comment: GetCommentChildProps;
 }
 
@@ -326,7 +326,7 @@ const CommentBodyWithHoC = withTheme(CommentBody);
 
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
-  tenantLocales: <GetTenantLocales />,
+  tenantLocales: <GetAppConfigurationLocales />,
   comment: ({ commentId, render }) => (
     <GetComment id={commentId}>{render}</GetComment>
   ),

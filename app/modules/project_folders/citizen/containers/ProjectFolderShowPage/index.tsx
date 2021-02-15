@@ -16,7 +16,7 @@ import ContentContainer from 'components/ContentContainer';
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
 import useLocale from 'hooks/useLocale';
-import useTenant from 'hooks/useTenant';
+import useAppConfiguration from 'hooks/useAppConfiguration';
 import useProjectFolder from 'modules/project_folders/hooks/useProjectFolder';
 import useAdminPublicationPrefetchProjects from 'hooks/useAdminPublicationPrefetchProjects';
 import useWindowSize from 'hooks/useWindowSize';
@@ -153,7 +153,7 @@ const ProjectFolderShowPage = memo<{
 }>(({ projectFolder }) => {
   const authUser = useAuthUser();
   const locale = useLocale();
-  const tenant = useTenant();
+  const tenant = useAppConfiguration();
   const adminPublication = useAdminPublicationPrefetchProjects({
     folderId: projectFolder.id,
     publicationStatusFilter: ['published', 'archived'],

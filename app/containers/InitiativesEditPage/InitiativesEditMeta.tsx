@@ -10,9 +10,9 @@ import { InjectedIntlProps } from 'react-intl';
 
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetTenantLocales, {
-  GetTenantLocalesChildProps,
-} from 'resources/GetTenantLocales';
+import GetAppConfigurationLocales, {
+  GetAppConfigurationLocalesChildProps,
+} from 'resources/GetAppConfigurationLocales';
 
 // utils
 import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
@@ -22,7 +22,7 @@ interface InputProps {}
 
 interface DataProps {
   authUser: GetAuthUserChildProps;
-  tenantLocales: GetTenantLocalesChildProps;
+  tenantLocales: GetAppConfigurationLocalesChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -58,7 +58,7 @@ const InitiativesNewMeta = React.memo<Props & InjectedIntlProps>(
 const InitiativesNewMetaWithHoc = injectIntl<Props>(InitiativesNewMeta);
 
 const Data = adopt<DataProps, InputProps>({
-  tenantLocales: <GetTenantLocales />,
+  tenantLocales: <GetAppConfigurationLocales />,
   authUser: <GetAuthUser />,
 });
 
