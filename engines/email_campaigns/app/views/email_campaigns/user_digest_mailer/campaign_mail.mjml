@@ -28,7 +28,7 @@
       color="#fff"
       background-color="#044D6C"
       border-radius="5px"
-      href="<%= url_service.home_url(tenant: @tenant, locale: @locale) %>"
+      href="<%= url_service.home_url(app_configuration: @app_configuration, locale: @locale) %>"
       align="left"
     >
       <%= format_message('cta_go_to_the_platform') %>
@@ -234,4 +234,4 @@
 </mj-section>
 
 <!-- CTA button -->
-<%= render partial: 'application/cta_button', locals: { href: tenant_home_url, message: format_message('cta_go_to_the_platform') } %>
+<%= render partial: 'application/cta_button', locals: { href: home_url, message: format_message('cta_go_to_the_platform') } %>
