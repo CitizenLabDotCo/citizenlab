@@ -140,6 +140,11 @@ class Tenant < ApplicationRecord
     Apartment::Tenant.switch(schema_name) { yield }
   end
 
+  def switch!
+    raise Apartment::TenantNotFound unless schema_name
+    Apartment::Tenant.switch!(schema_name)
+  end
+
   private
 
   def create_app_configuration
