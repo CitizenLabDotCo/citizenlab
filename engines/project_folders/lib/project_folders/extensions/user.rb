@@ -1,6 +1,6 @@
 module ProjectFolders
   module Extensions
-    module UserDecorator
+    module User
       def self.included(base)
         base.class_eval do
           scope :project_folder_moderator, lambda { |*project_folder_ids|
