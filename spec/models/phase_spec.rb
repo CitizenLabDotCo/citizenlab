@@ -98,4 +98,30 @@ RSpec.describe Phase, type: :model do
       expect(phase).to be_valid
     end
   end
+
+  describe 'Phase#published_and_starting_on' do
+    let(:start_date) { Time.zone.today }
+    let(:phases) { create_list(:phase, 6, start_at: start_date, end_at: start_date + 1.month) }
+
+    context 'when there are 3 phases that belong to published publications' do
+      let(:date) { start_date }
+
+      before do
+        phases.first(2).each do |phase|
+          draft = create(:project, admin_publication_attributes: { publication_status: 'draft' })
+          phase.project.admin_publication.update(parent: draft.admin_publication)
+        end
+
+        phases[2].project.admin_publication.update(publication_status: 'draft')
+      end
+
+      it 'returns only the phases that belong to published publications' do
+        expect(described_class.published_and_starting_on(start_date).length).to eq 3
+      end
+
+      it 'returns no phases if the date is tomorrow' do
+        expect(described_class.published_and_starting_on(start_date + 1.day).length).to eq 0
+      end
+    end
+  end
 end
