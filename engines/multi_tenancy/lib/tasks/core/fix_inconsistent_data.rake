@@ -189,4 +189,16 @@ namespace :inconsistent_data do
       end
     end
   end
+
+  task :fix_machine_translations_without_translatables_for_initiatives => :environment do
+    # Can be deleted later
+
+    Tenant.all.each do |tenant|
+      Apartment::Tenant.switch(tenant.schema_name) do
+        MachineTranslations::MachineTranslation.where(translatable_type: 'Initiative')
+          .where.not(translatable_id: Initiative.ids)
+          .each(&:destroy!)
+      end
+    end
+  end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_17_170635) do
+ActiveRecord::Schema.define(version: 2021_02_11_144443) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -359,6 +359,7 @@ ActiveRecord::Schema.define(version: 2020_12_17_170635) do
     t.uuid "assignee_id"
     t.datetime "assigned_at"
     t.integer "proposed_budget"
+    t.index "((to_tsvector('simple'::regconfig, COALESCE((title_multiloc)::text, ''::text)) || to_tsvector('simple'::regconfig, COALESCE((body_multiloc)::text, ''::text))))", name: "index_ideas_search", using: :gin
     t.index ["author_id"], name: "index_ideas_on_author_id"
     t.index ["idea_status_id"], name: "index_ideas_on_idea_status_id"
     t.index ["location_point"], name: "index_ideas_on_location_point", using: :gist
@@ -454,6 +455,7 @@ ActiveRecord::Schema.define(version: 2020_12_17_170635) do
     t.uuid "assignee_id"
     t.integer "official_feedbacks_count", default: 0, null: false
     t.datetime "assigned_at"
+    t.index "((to_tsvector('simple'::regconfig, COALESCE((title_multiloc)::text, ''::text)) || to_tsvector('simple'::regconfig, COALESCE((body_multiloc)::text, ''::text))))", name: "index_initiatives_search", using: :gin
     t.index ["author_id"], name: "index_initiatives_on_author_id"
     t.index ["location_point"], name: "index_initiatives_on_location_point", using: :gist
     t.index ["slug"], name: "index_initiatives_on_slug"
@@ -817,6 +819,36 @@ ActiveRecord::Schema.define(version: 2020_12_17_170635) do
     t.index ["tenant_id"], name: "index_public_api_api_clients_on_tenant_id"
   end
 
+  create_table "que_jobs", comment: "4", force: :cascade do |t|
+    t.integer "priority", limit: 2, default: 100, null: false
+    t.datetime "run_at", default: -> { "now()" }, null: false
+    t.text "job_class", null: false
+    t.integer "error_count", default: 0, null: false
+    t.text "last_error_message"
+    t.text "queue", default: "default", null: false
+    t.text "last_error_backtrace"
+    t.datetime "finished_at"
+    t.datetime "expired_at"
+    t.jsonb "args", default: [], null: false
+    t.jsonb "data", default: {}, null: false
+    t.index ["args"], name: "que_jobs_args_gin_idx", opclass: :jsonb_path_ops, using: :gin
+    t.index ["data"], name: "que_jobs_data_gin_idx", opclass: :jsonb_path_ops, using: :gin
+    t.index ["queue", "priority", "run_at", "id"], name: "que_poll_idx", where: "((finished_at IS NULL) AND (expired_at IS NULL))"
+  end
+
+  create_table "que_lockers", primary_key: "pid", id: :integer, default: nil, force: :cascade do |t|
+    t.integer "worker_count", null: false
+    t.integer "worker_priorities", null: false, array: true
+    t.integer "ruby_pid", null: false
+    t.text "ruby_hostname", null: false
+    t.text "queues", null: false, array: true
+    t.boolean "listening", null: false
+  end
+
+  create_table "que_values", primary_key: "key", id: :text, force: :cascade do |t|
+    t.jsonb "value", default: {}, null: false
+  end
+
   create_table "spam_reports", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "spam_reportable_id", null: false
     t.string "spam_reportable_type", null: false
@@ -845,6 +877,30 @@ ActiveRecord::Schema.define(version: 2020_12_17_170635) do
     t.datetime "updated_at", null: false
     t.index ["participation_context_type", "participation_context_id"], name: "index_surveys_responses_on_participation_context"
     t.index ["user_id"], name: "index_surveys_responses_on_user_id"
+  end
+
+  create_table "tagging_pending_tasks", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "nlp_task_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "tagging_pending_tasks_ideas", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "idea_id"
+    t.uuid "pending_task_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["idea_id"], name: "index_tagging_pending_tasks_ideas_on_idea_id"
+    t.index ["pending_task_id"], name: "index_tagging_pending_tasks_ideas_on_pending_task_id"
+  end
+
+  create_table "tagging_pending_tasks_tags", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "tag_id"
+    t.uuid "pending_task_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["pending_task_id"], name: "index_tagging_pending_tasks_tags_on_pending_task_id"
+    t.index ["tag_id"], name: "index_tagging_pending_tasks_tags_on_tag_id"
   end
 
   create_table "tagging_taggings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1044,6 +1100,10 @@ ActiveRecord::Schema.define(version: 2020_12_17_170635) do
   add_foreign_key "projects_topics", "topics"
   add_foreign_key "public_api_api_clients", "tenants"
   add_foreign_key "spam_reports", "users"
+  add_foreign_key "tagging_pending_tasks_ideas", "ideas"
+  add_foreign_key "tagging_pending_tasks_ideas", "tagging_pending_tasks", column: "pending_task_id"
+  add_foreign_key "tagging_pending_tasks_tags", "tagging_pending_tasks", column: "pending_task_id"
+  add_foreign_key "tagging_pending_tasks_tags", "tagging_tags", column: "tag_id"
   add_foreign_key "tagging_taggings", "ideas"
   add_foreign_key "tagging_taggings", "tagging_tags", column: "tag_id"
   add_foreign_key "volunteering_volunteers", "volunteering_causes", column: "cause_id"
