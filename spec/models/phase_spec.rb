@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe Phase, type: :model do
+  subject { create(:phase) }
+
   describe "Default factory" do
     it "is valid" do
       expect(build(:phase)).to be_valid
@@ -99,7 +101,20 @@ RSpec.describe Phase, type: :model do
     end
   end
 
-  describe 'Phase#published_and_starting_on' do
+  describe '#ends_before?' do
+    let(:start_date) { Time.zone.today }
+    let(:phase) { create(:phase, start_at: start_date, end_at: start_date + 1.day) }
+
+    it 'returns false if passing today\'s date' do
+      expect(phase.ends_before?(start_date)).to eq false
+    end
+
+    it 'returns true if passing tomorrow\'s date' do
+      expect(phase.ends_before?(start_date + 2.days)).to eq true
+    end
+  end
+
+  describe '::published_and_starting_on' do
     let(:start_date) { Time.zone.today }
     let(:phases) { create_list(:phase, 6, start_at: start_date, end_at: start_date + 1.month) }
 
