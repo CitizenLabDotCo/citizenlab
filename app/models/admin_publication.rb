@@ -5,6 +5,7 @@ class AdminPublication < ApplicationRecord
   acts_as_list column: :ordering, top_of_list: 0, scope: [:parent_id], add_new_at: :top
 
   belongs_to :publication, polymorphic: true, touch: true
+  belongs_to :parent, optional: true, class_name: 'AdminPublication', foreign_key: 'parent_id'
 
   validates :publication, presence: true
   validates :publication_status, presence: true, inclusion: {in: PUBLICATION_STATUSES}
