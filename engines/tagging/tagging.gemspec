@@ -1,4 +1,6 @@
-$:.push File.expand_path("../lib", __FILE__)
+# frozen_string_literal: true
+
+$LOAD_PATH.push File.expand_path('../lib', __FILE__)
 
 # Maintain your gem's version:
 require 'tagging/version'
@@ -20,10 +22,10 @@ Gem::Specification.new do |s|
       'public gem pushes.'
   end
 
+  s.add_dependency 'multi_tenancy'
+  s.add_dependency 'pundit', '~> 2.0'
   s.add_dependency 'rails', '~> 6.0.0'
-
 
   s.add_development_dependency 'rspec-rails'
   s.add_development_dependency 'rspec_api_documentation'
-
 end

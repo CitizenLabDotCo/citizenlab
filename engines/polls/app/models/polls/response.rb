@@ -8,7 +8,7 @@ module Polls
     validates :user, :participation_context, presence: true
     validates :user, uniqueness: {scope: [:participation_context]}
 
-    validate :validate_participation_context_poll
+    validate :validate_participation_context_poll, on: :response_submission
     validate :validate_option_count, on: :response_submission
 
     accepts_nested_attributes_for :response_options

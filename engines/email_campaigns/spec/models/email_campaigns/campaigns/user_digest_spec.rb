@@ -38,7 +38,7 @@ RSpec.describe EmailCampaigns::Campaigns::UserDigest, type: :model do
     end
 
     it "generates a command with abbreviated names" do
-      Tenant.current.turn_on_abbreviated_user_names!
+      AppConfiguration.instance.turn_on_abbreviated_user_names!
       expect(user.admin?).to be false
       command = campaign.generate_commands(recipient: user).first
 

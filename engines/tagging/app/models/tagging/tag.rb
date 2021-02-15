@@ -4,6 +4,7 @@ module Tagging
 
     has_many :taggings, dependent: :destroy
     has_many :ideas, through: :taggings
+    has_and_belongs_to_many :pending_tasks
 
     validates :title_multiloc, presence: true, multiloc: {presence: true}
 
