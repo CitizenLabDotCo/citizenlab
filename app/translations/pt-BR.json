@@ -2074,7 +2074,7 @@
   "app.containers.Projects.survey": "Pesquisa",
   "app.containers.Projects.takeThePoll": "Faça a enquete",
   "app.containers.Projects.takeTheSurvey": "Faça a pesquisa",
-  "app.containers.Projects.thisProjectIsNotVisibleToYou": "",
+  "app.containers.Projects.thisProjectIsNotVisibleToYou": "This project is not visible to you.",
   "app.containers.Projects.timeline": "Linha do tempo",
   "app.containers.Projects.totalBudget": "Orçamento total",
   "app.containers.Projects.upcomingEvents": "Próximos eventos",
