@@ -13,9 +13,9 @@
       </h2>
       <p style="margin-top: 10px">
         <% if event.project_folder_projects_count.zero? %>
-          <%= format_message("no_ideas") %>
+          <%= format_message("no_projects") %>
         <% else %>
-          <%= format_message("x_ideas", values: { numberOfProjects: event.project_folder_projects_count }) %>
+          <%= format_message("x_projects", values: { numberOfProjects: event.project_folder_projects_count }) %>
         <% end %>
       </p>
     </mj-text>
@@ -29,7 +29,7 @@
       background-color="#044D6C"
       color="#fff"
       width="100%"
-      padding="0 25px"><%= format_message('cta_moderate_project_folder') %></mj-button>
+      padding="0 25px"><%= format_message('cta_view_folder_button') %></mj-button>
   </mj-column>
 </mj-section>
 
@@ -41,11 +41,11 @@
     background-color="#F2F6F8"
     border-radius="5px">
     <mj-text>
-      <h2 style="font-size: 18px; margin-bottom: 40px"><%= format_message('title_what_can_you_do_moderator') %></h2>
+      <h2 style="font-size: 18px; margin-bottom: 40px"><%= format_message('title_what_can_you_do_folderadmin') %></h2>
+      <h3 style="font-size: 15px;"><%= format_message('title_manage_folder') %></h3>
+      <p><%= format_message('text_manage_folder') %></p>
       <h3 style="font-size: 15px;"><%= format_message('title_design_participatory_process') %></h3>
       <p><%= format_message('text_design_participatory_process') %></p>
-      <h3 style="font-size: 15px;"><%= format_message('title_share_project_information') %></h3>
-      <p><%= format_message('text_share_project_information') %></p>
       <h3 style="font-size: 15px;"><%= format_message('title_moderate_analyse_input') %></h3>
       <p><%= format_message('text_moderate_analyse_input') %></p>
     </mj-text>
