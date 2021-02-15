@@ -7,9 +7,10 @@ require 'project_folders/monkey_patches/project_policy'
 require 'project_folders/monkey_patches/admin_publication_policy'
 
 # extensions
-require 'project_folders/extensions/frontend/url_service'
 require 'project_folders/extensions/user'
+require 'project_folders/extensions/project'
 require 'project_folders/extensions/project_serializer'
+require 'project_folders/extensions/frontend/url_service'
 
 # rubocop:disable Lint/SuppressedException
 begin
@@ -43,6 +44,10 @@ module ProjectFolders
 
       # overrides the roles validation json, and patches the user highest_role method.
       ::User.prepend(ProjectFolders::MonkeyPatches::User)
+
+      # adds lifecycle methods to projects that check up on whether it is contained in a folder or not,
+      # to automatically set folder admins.
+      ::Project.include(ProjectFolders::Extensions::Project)
 
       # adds a model to url method for folders.
       ::Frontend::UrlService.include(ProjectFolders::Extensions::Frontend::UrlService)
