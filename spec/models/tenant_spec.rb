@@ -9,11 +9,39 @@ RSpec.describe Tenant, type: :model do
     end
   end
 
+  describe '#switch!' do
+    it "switches corretly into the tenant" do
+      tenant = create(:tenant, host: 'unused.hostname.com')
+      tenant.switch!
+      expect(Tenant.current).to eq(tenant)
+    end
+
+    it "fails when the tenant is not persisted" do
+      tenant = build(:tenant, host: 'unused.hostname.com')
+      expect { tenant.switch! }.to raise_error(Apartment::TenantNotFound)
+    end
+  end
+
+  describe '#switch' do
+    it "runs the block in the tenant context" do
+      tenant = create(:tenant, host: 'unused.hostname.com')
+      current_tenant = tenant.switch { Tenant.current }
+      expect(current_tenant).to eq(tenant)
+    end
+
+    it "fails if the tenant is not persisted" do
+      tenant = build(:tenant, host: 'unused.hostname.com')
+      expect do
+        tenant.switch { User.first}
+      end.to raise_error(Apartment::TenantNotFound)
+    end
+  end
+
   describe "Apartment tenant" do
     it "is created on create" do
-      host = "something-else.com"  # a different host than the default test tenant
+      host = "something-else.com" # a different host than the default test tenant
       tenant = create(:tenant, host: host)
-      expect {Apartment::Tenant.switch!(tenant.schema_name) }.to_not raise_error(Apartment::TenantNotFound)
+      expect { Apartment::Tenant.switch!(tenant.schema_name) }.to_not raise_error(Apartment::TenantNotFound)
     end
 
     it "is deleted on destroy" do
@@ -50,7 +78,7 @@ RSpec.describe Tenant, type: :model do
 
     it "raise an error when there is no current tenant" do
       Apartment::Tenant.switch('public') do
-        expect{Tenant.settings 'core', 'timezone'}.to raise_error(ActiveRecord::RecordNotFound)
+        expect { Tenant.settings 'core', 'timezone' }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
 

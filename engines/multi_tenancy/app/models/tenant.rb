@@ -137,6 +137,7 @@ class Tenant < ApplicationRecord
   end
 
   def switch
+    raise Apartment::TenantNotFound unless schema_name
     Apartment::Tenant.switch(schema_name) { yield }
   end
 
