@@ -5,7 +5,7 @@ class SanitizationService
 
   EDITOR_STRUCTURE_TAGS = %w[div p h2 h3 ol ul].freeze
 
-  SANITIZER = Rails::Html::WhiteListSanitizer.new
+  SANITIZER = Rails::Html::SafeListSanitizer.new
 
   private_constant :SANITIZER
 
@@ -148,6 +148,7 @@ class SanitizationService
     attr_reader :tags, :attributes
 
     def initialize(features)
+      super()
       features_w_default = features.concat([:default])
       @tags = features_w_default.flat_map { |f| EDITOR_FEATURES[f][:tags] }.uniq
       @attributes = features_w_default.flat_map { |f| EDITOR_FEATURES[f][:attributes] }.uniq
