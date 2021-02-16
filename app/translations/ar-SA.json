@@ -1078,7 +1078,7 @@
   "app.containers.AdminPage.ProjectDescription.titleDescription": "وصف المشروع",
   "app.containers.AdminPage.ProjectEdit.PollTab.addAnswerChoice": "Add an answer choice",
   "app.containers.AdminPage.ProjectEdit.PollTab.addPollQuestion": "Add a poll question",
-  "app.containers.AdminPage.ProjectEdit.PollTab.applyQuestionSettings": "Apply",
+  "app.containers.AdminPage.ProjectEdit.PollTab.applyQuestionSettings": "تطبيق",
   "app.containers.AdminPage.ProjectEdit.PollTab.cancelFormQuestion": "إلغاء",
   "app.containers.AdminPage.ProjectEdit.PollTab.cancelOption": "إلغاء",
   "app.containers.AdminPage.ProjectEdit.PollTab.deleteOption": "حذف",
