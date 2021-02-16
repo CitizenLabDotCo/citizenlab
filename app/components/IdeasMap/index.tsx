@@ -30,6 +30,7 @@ import messages from './messages';
 
 // Styling
 import styled from 'styled-components';
+import { media } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 
 const Container = styled.div`
@@ -39,6 +40,14 @@ const Container = styled.div`
 `;
 
 const IdeaButtonWrapper = styled.div``;
+
+const StyledMap = styled(Map)`
+  height: 800px;
+
+  ${media.smallerThan1100px`
+    height: calc(100vh - 180px);
+  `}
+`;
 
 const StyledWarning = styled(Warning)`
   margin-bottom: 10px;
@@ -134,16 +143,6 @@ export class IdeasMap extends PureComponent<Props & WithRouterProps, State> {
     this.ideaButtonRef = element;
   };
 
-  getMapHeight = () => {
-    const { windowSize } = this.props;
-    const vh = Math.max(
-      document.documentElement.clientHeight || 0,
-      window.innerHeight || 0
-    );
-    const smallerThan1100px = !!(windowSize && windowSize <= 1100);
-    return smallerThan1100px ? vh - 180 : 800;
-  };
-
   render() {
     const { phaseId, projectIds, ideaMarkers, className } = this.props;
     const {
@@ -151,7 +150,6 @@ export class IdeasMap extends PureComponent<Props & WithRouterProps, State> {
       points,
       selectedLatLng: selectedPosition,
     } = this.state;
-    const mapHeight = this.getMapHeight();
     const projectId =
       projectIds && projectIds.length === 1 ? projectIds[0] : null;
 
@@ -167,7 +165,7 @@ export class IdeasMap extends PureComponent<Props & WithRouterProps, State> {
           <FormattedMessage {...messages.a11y_mapTitle} />
         </ScreenReaderOnly>
 
-        <Map
+        <StyledMap
           points={points}
           onMarkerClick={this.toggleIdea}
           onMapClick={this.onMapClick}
@@ -176,7 +174,6 @@ export class IdeasMap extends PureComponent<Props & WithRouterProps, State> {
             selectedIdeaId ? <IdeaPreview ideaId={selectedIdeaId} /> : null
           }
           onBoxClose={this.deselectIdea}
-          mapHeight={mapHeight}
           projectId={
             projectIds && projectIds.length === 1 ? projectIds[0] : null
           }

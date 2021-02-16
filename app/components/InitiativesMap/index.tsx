@@ -27,7 +27,7 @@ import messages from './messages';
 
 // Styling
 import styled from 'styled-components';
-import { viewportWidths } from 'utils/styleUtils';
+import { media } from 'utils/styleUtils';
 
 // Typing
 import { IGeotaggedInitiativeData } from 'services/initiatives';
@@ -37,6 +37,18 @@ const Container = styled.div`
   > .create-initiative-wrapper {
     display: none;
   }
+`;
+
+const StyledMap = styled(Map)`
+  height: 600px;
+
+  ${media.smallerThanMaxTablet`
+    height: 500px;
+  `}
+
+  ${media.smallerThanMinTablet`
+    height: 400px;
+  `}
 `;
 
 const StyledWarning = styled(Warning)`
@@ -146,27 +158,6 @@ export class InitiativesMap extends PureComponent<
     return;
   };
 
-  getMapHeight = () => {
-    const { windowSize } = this.props;
-    const smallerThanMaxTablet = windowSize
-      ? windowSize <= viewportWidths.largeTablet
-      : false;
-    const smallerThanMinTablet = windowSize
-      ? windowSize <= viewportWidths.smallTablet
-      : false;
-    let height = 550;
-
-    if (smallerThanMinTablet) {
-      height = 400;
-    }
-
-    if (smallerThanMaxTablet) {
-      height = 500;
-    }
-
-    return height;
-  };
-
   noInitiativesWithLocationMessage = (
     <FormattedMessage {...messages.noInitiativesWithLocation} />
   );
@@ -174,7 +165,6 @@ export class InitiativesMap extends PureComponent<
   render() {
     const { initiativeMarkers, className } = this.props;
     const { selectedInitiativeId, points, lat, lng } = this.state;
-    const mapHeight = this.getMapHeight();
 
     return (
       <Container className={className}>
@@ -184,7 +174,7 @@ export class InitiativesMap extends PureComponent<
             <StyledWarning text={this.noInitiativesWithLocationMessage} />
           )}
 
-        <Map
+        <StyledMap
           points={points}
           onMarkerClick={this.toggleInitiative}
           boxContent={
@@ -194,7 +184,6 @@ export class InitiativesMap extends PureComponent<
           }
           onBoxClose={this.deselectInitiative}
           onMapClick={this.onMapClick}
-          mapHeight={mapHeight}
         />
 
         <div

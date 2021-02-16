@@ -83,9 +83,7 @@ const MapZoomConfig = memo<Props & InjectedIntlProps>(
     }, [mapConfig]);
 
     const validate = () => {
-      console.log(formValues.zoom);
-
-      if (isNumber(formValues.zoom) && inRange(formValues.zoom, 0, 18)) {
+      if (isNumber(formValues.zoom) && inRange(formValues.zoom, 1, 18)) {
         return true;
       }
 
@@ -147,6 +145,8 @@ const MapZoomConfig = memo<Props & InjectedIntlProps>(
           <StyledInput
             type="number"
             value={formValues.zoom?.toString()}
+            min="1"
+            max="17"
             onChange={handleOnChange}
           />
           <SaveButton

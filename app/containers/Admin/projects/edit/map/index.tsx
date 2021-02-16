@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 import { withRouter, WithRouterProps } from 'react-router';
 
 // components
-import Map from './Map';
+import Map from 'components/Map';
 import LayerList from './LayerList';
 
 // styling
