@@ -597,7 +597,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.inputTermSelectLabel": "What should an input be called?",
   "app.components.app.containers.AdminPage.ProjectEdit.issueTerm": "مشكلة",
   "app.components.app.containers.AdminPage.ProjectEdit.optionTerm": "خيار",
-  "app.components.app.containers.AdminPage.ProjectEdit.projectTerm": "Project",
+  "app.components.app.containers.AdminPage.ProjectEdit.projectTerm": "مشروع",
   "app.components.app.containers.AdminPage.ProjectEdit.questionTerm": "سؤال",
   "app.components.sendFeedback": "ملاحظاتك حول المنصة",
   "app.components.sendFeedbackLink": "https://citizenlabco.typeform.com/to/z7baRP?source={url}",
