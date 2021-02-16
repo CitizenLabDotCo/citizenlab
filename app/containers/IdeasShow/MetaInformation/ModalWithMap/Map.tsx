@@ -1,5 +1,10 @@
 import React, { memo } from 'react';
 import Map from 'components/Map';
+import styled from 'styled-components';
+
+const StyledMap = styled(Map)`
+  height: 400px;
+`;
 
 export interface Props {
   position: GeoJSON.Point;
@@ -11,10 +16,9 @@ const MapComponent = memo<Props>(({ position, projectId }) => {
   const center = position.coordinates;
 
   return (
-    <Map
+    <StyledMap
       points={points}
-      center={center}
-      mapHeight={400}
+      centerCoordinates={center}
       projectId={projectId}
     />
   );

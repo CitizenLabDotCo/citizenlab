@@ -1,33 +1,63 @@
-import React, { FormEvent } from 'react';
-import { compact, isNil } from 'lodash-es';
-import { isError } from 'util';
+import React, { memo, useState, useEffect } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-require('leaflet-simplestyle');
+import { isEqual, compact } from 'lodash-es';
+
+// Map
+import L from 'leaflet';
+import 'leaflet-simplestyle';
+import 'leaflet.markercluster';
+import 'leaflet/dist/leaflet.css';
+import marker from 'leaflet/dist/images/marker-icon.png';
+import marker2x from 'leaflet/dist/images/marker-icon-2x.png';
+import markerShadow from 'leaflet/dist/images/marker-shadow.png';
+
+delete L.Icon.Default.prototype['_getIconUrl'];
+
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: marker2x,
+  iconUrl: marker,
+  shadowUrl: markerShadow,
+});
 
 // components
 import { Icon } from 'cl2-component-library';
 import Legend from './Legend';
 
-// resources
-import GetAppConfiguration, {
-  GetAppConfigurationChildProps,
-} from 'resources/GetAppConfiguration';
-import GetMapConfig, { GetMapConfigChildProps } from 'resources/GetMapConfig';
+// hooks
+import useAppConfiguration from 'hooks/useAppConfiguration';
+import useMapConfig, { IOutput as IMapConfig } from 'hooks/useMapConfig';
+import usePrevious from 'hooks/usePrevious';
 
-// Map
-import Leaflet from 'leaflet';
-import 'leaflet.markercluster';
+// i18n
+import injectLocalize, { InjectedLocalized } from 'utils/localize';
 
-// Styling
-import 'leaflet/dist/leaflet.css';
+// styling
 import styled from 'styled-components';
 import { darken } from 'polished';
 import { media, defaultOutline } from 'utils/styleUtils';
 import ideaMarkerIcon from './idea-marker.svg';
 import legendMarkerIcon from './legend-marker.svg';
 
-// localize
-import injectLocalize, { InjectedLocalized } from 'utils/localize';
+// typings
+import { IAppConfiguration } from 'services/appConfiguration';
+
+export interface Point extends GeoJSON.Point {
+  data?: any;
+  id: string;
+  title?: string;
+}
+
+const ideaMarker = L.icon({
+  iconUrl: ideaMarkerIcon,
+  iconSize: [29, 41],
+  iconAnchor: [14, 41],
+});
+
+const fallbackLegendMarker = L.icon({
+  iconUrl: legendMarkerIcon,
+  iconSize: [29, 41],
+  iconAnchor: [14, 41],
+});
 
 const Container = styled.div`
   width: 100%;
@@ -92,9 +122,8 @@ const CloseIcon = styled(Icon)`
   fill: #000;
 `;
 
-const LeafletMapContainer = styled.div<{ mapHeight: number }>`
+const LeafletMapContainer = styled.div`
   flex: 1;
-  height: ${(props) => props.mapHeight}px;
   overflow: hidden;
 
   .leaflet-container {
@@ -117,392 +146,323 @@ const LeafletMapContainer = styled.div<{ mapHeight: number }>`
   }
 `;
 
-const ideaMarker = Leaflet.icon({
-  iconUrl: ideaMarkerIcon,
-  iconSize: [29, 41],
-  iconAnchor: [14, 41],
-});
-
-const fallbackLegendMarker = Leaflet.icon({
-  iconUrl: legendMarkerIcon,
-  iconSize: [29, 41],
-  iconAnchor: [14, 41],
-});
-
-export interface Point extends GeoJSON.Point {
-  data?: any;
-  id: string;
-  title?: string;
-}
-
-export interface InputProps {
-  center?: GeoJSON.Position;
+interface Props {
+  projectId?: string | null;
+  centerCoordinates?: GeoJSON.Position;
   points?: Point[];
   areas?: GeoJSON.Polygon[];
   zoom?: number;
   boxContent?: JSX.Element | null;
-  onBoxClose?: (event: FormEvent) => void;
+  onBoxClose?: (event: React.FormEvent) => void;
   onMarkerClick?: (id: string, data: any) => void;
-  onMapClick?: (map: Leaflet.Map, position: Leaflet.LatLng) => void;
+  onMapClick?: (map: L.Map, position: L.LatLng) => void;
   fitBounds?: boolean;
   className?: string;
-  mapHeight: number;
-  projectId?: string | null;
 }
 
-interface DataProps {
-  tenant: GetAppConfigurationChildProps;
-  mapConfig: GetMapConfigChildProps;
-}
+const getCenter = (
+  centerCoordinates: GeoJSON.Position | undefined,
+  appConfig: IAppConfiguration | undefined | null | Error,
+  mapConfig: IMapConfig
+) => {
+  const projectCenterLat =
+    mapConfig?.attributes.center_geojson?.coordinates?.[0];
+  const tenantCenterLat =
+    !isNilOrError(appConfig) &&
+    appConfig?.data?.attributes?.settings?.maps?.map_center?.lat;
+  const projectCenterLong =
+    mapConfig?.attributes.center_geojson?.coordinates?.[1];
+  const tenantCenterLong =
+    !isNilOrError(appConfig) &&
+    appConfig?.data?.attributes?.settings?.maps?.map_center?.long;
 
-interface Props extends InputProps, DataProps {}
+  let center: L.LatLngExpression = [0, 0];
 
-interface State {
-  initiated: boolean;
-}
-
-class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
-  private mapElement: HTMLDivElement;
-  private map: Leaflet.Map;
-  private clusterLayer: Leaflet.MarkerClusterGroup;
-  private markers: Leaflet.Marker[];
-  private markerOptions = { icon: ideaMarker };
-  private clusterOptions = {
-    showCoverageOnHover: false,
-    spiderfyDistanceMultiplier: 2,
-    iconCreateFunction: (cluster) => {
-      return Leaflet.divIcon({
-        html: `<span>${cluster.getChildCount()}</span>`,
-        className: 'marker-cluster-custom',
-        iconSize: Leaflet.point(40, 40, true),
-      });
-    },
-  };
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      initiated: false,
-    };
+  if (centerCoordinates !== undefined) {
+    center = centerCoordinates as L.LatLngExpression;
+  } else if (
+    projectCenterLat !== undefined &&
+    projectCenterLong !== undefined
+  ) {
+    center = [projectCenterLong, projectCenterLat];
+  } else if (
+    tenantCenterLat !== undefined &&
+    tenantCenterLat !== false &&
+    tenantCenterLong !== undefined &&
+    tenantCenterLong !== false
+  ) {
+    center = [tenantCenterLong, tenantCenterLat] as any;
   }
 
-  componentDidMount() {
-    this.initMap();
-  }
+  return center;
+};
 
-  componentDidUpdate() {
-    const { points } = this.props;
+const getZoomLevel = (
+  zoom: number | undefined,
+  appConfig: IAppConfiguration | undefined | null | Error,
+  mapConfig: IMapConfig
+) => {
+  const mapConfigZoomLevel = mapConfig?.attributes.zoom_level;
+  const tenantZoomLevel =
+    !isNilOrError(appConfig) &&
+    (appConfig?.data?.attributes?.settings?.maps?.zoom_level as any);
+  return parseInt(zoom || mapConfigZoomLevel || tenantZoomLevel || 16, 10);
+};
 
-    if (points && points.length > 0) {
-      this.convertPoints(points);
-    }
-  }
+const getTileProvider = (
+  appConfig: IAppConfiguration | undefined | null | Error,
+  mapConfig: IMapConfig
+) => {
+  const mapConfigTileProvider = mapConfig?.attributes?.tile_provider;
+  const appConfigProvider =
+    !isNilOrError(appConfig) &&
+    appConfig?.data?.attributes?.settings?.maps?.tile_provider;
+  const fallbackProvider =
+    'https://api.maptiler.com/maps/77632ac6-e168-429c-8b1b-76599ce796e3/{z}/{x}/{y}@2x.png?key=DIZiuhfkZEQ5EgsaTk6D';
+  return mapConfigTileProvider || appConfigProvider || fallbackProvider;
+};
 
-  bindMapContainer = (mapContainer: HTMLDivElement) => {
-    this.mapElement = mapContainer;
-  };
+const Map = memo<Props & InjectedLocalized>(
+  ({
+    projectId,
+    centerCoordinates,
+    zoom,
+    points,
+    boxContent,
+    onBoxClose,
+    onMapClick,
+    onMarkerClick,
+    fitBounds,
+    className,
+    localize,
+  }) => {
+    const appConfig = useAppConfiguration();
+    const mapConfig = useMapConfig({ projectId, prefetchMapLayers: true });
 
-  calculateMapConfig = () => {
-    const { tenant, center, mapConfig, zoom } = this.props;
-    let initCenter: [number, number] = [0, 0];
-    const defaultMapConfig = {
-      center: initCenter,
-      zoom_level: mapConfig?.attributes?.zoom_level
-        ? parseInt(mapConfig?.attributes?.zoom_level, 10)
-        : 15,
-      tile_provider:
-        mapConfig?.attributes?.tile_provider ||
-        'https://api.maptiler.com/maps/77632ac6-e168-429c-8b1b-76599ce796e3/{z}/{x}/{y}@2x.png?key=DIZiuhfkZEQ5EgsaTk6D',
-    };
+    const [map, setMap] = useState<L.Map | null>(null);
+    const prevMap = usePrevious(map);
+    const [layerControl, setLayerControl] = useState<L.Control.Layers | null>(
+      null
+    );
+    const [center, setCenter] = useState(
+      getCenter(centerCoordinates, appConfig, mapConfig)
+    );
+    const [zoomLevel, setZoomLevel] = useState(
+      getZoomLevel(zoom, appConfig, mapConfig)
+    );
+    const [markers, setMarkers] = useState<L.Marker<any>[]>([]);
+    const prevMarkers = usePrevious(markers);
+    const [
+      markerClusterGroup,
+      setMarkerClusterGroup,
+    ] = useState<L.MarkerClusterGroup | null>(null);
 
-    const tenantMapConfig = {};
-
-    if (
-      !isNilOrError(tenant) &&
-      tenant.attributes &&
-      tenant.attributes.settings.maps
-    ) {
-      const {
-        map_center: { lat, long },
-        zoom_level,
-        tile_provider,
-      } = tenant.attributes.settings.maps;
-
-      if (lat && long) {
-        initCenter = [parseFloat(lat), parseFloat(long)];
-
-        tenantMapConfig['center'] = initCenter;
-      }
-      if (zoom_level) tenantMapConfig['zoom_level'] = zoom_level;
-      if (tile_provider) tenantMapConfig['tile_provider'] = tile_provider;
-    }
-
-    const dataPropsMapConfig = {};
-
-    if (!isNilOrError(mapConfig) && mapConfig.attributes) {
-      const {
-        zoom_level,
-        tile_provider,
-        center_geojson,
-      } = mapConfig.attributes;
-
-      if (center_geojson?.coordinates) {
-        const [longitude, latitude] = center_geojson.coordinates;
-        initCenter = [latitude, longitude];
-        dataPropsMapConfig['center'] = initCenter;
-      }
-      if (zoom_level) dataPropsMapConfig['zoom_level'] = zoom_level;
-      if (tile_provider) dataPropsMapConfig['tile_provider'] = tile_provider;
-    }
-
-    const inputPropsMapConfig = {};
-
-    if (center) {
-      const [longitude, latitude] = center;
-      initCenter = [latitude, longitude];
-      inputPropsMapConfig['center'] = initCenter;
-    }
-
-    if (zoom) inputPropsMapConfig['zoom_level'] = zoom;
-
-    return {
-      ...defaultMapConfig,
-      ...tenantMapConfig,
-      ...dataPropsMapConfig,
-      ...inputPropsMapConfig,
-    };
-  };
-
-  initMap = () => {
-    const { localize, mapConfig, points } = this.props;
-    const { zoom_level, tile_provider, center } = this.calculateMapConfig();
-
-    const baseLayer = Leaflet.tileLayer(tile_provider, {
-      tileSize: 512,
-      zoomOffset: -1,
-      minZoom: 1,
-      attribution:
-        '\u003ca href="https://www.maptiler.com/copyright/" target="_blank"\u003e\u0026copy; MapTiler\u003c/a\u003e \u003ca href="https://www.openstreetmap.org/copyright" target="_blank"\u003e\u0026copy; OpenStreetMap contributors\u003c/a\u003e',
-      crossOrigin: true,
-      subdomains: ['a', 'b', 'c'],
-    });
-
-    this.map = Leaflet.map(this.mapElement, {
-      center,
-      zoom: zoom_level,
-      maxZoom: 17,
-      layers: [baseLayer],
-    });
-
-    // Handlers
-    if (this.props.onMapClick) {
-      this.map.on('click', this.handleMapClick);
-    }
-
-    // Add marker(s)
-    if (points && points.length > 0) {
-      this.convertPoints(points);
-    }
-
-    // Create layers
-    if (
-      !isNilOrError(mapConfig) &&
-      mapConfig.attributes.layers &&
-      mapConfig.attributes.layers.length > 0
-    ) {
-      const layers = mapConfig.attributes.layers;
-
-      // add default enabled layers to map
-      const leafletLayers = createLeafletLayers(layers);
-      const overlaysEnabledByDefault = leafletLayers
-        .filter((layer) => layer.enabledByDefault === true)
-        .map((layer) => layer.leafletGeoJson);
-      overlaysEnabledByDefault.forEach((overlay) => overlay.addTo(this.map));
-
-      // add layers control to map
-      const overlayMaps = leafletLayers.reduce((accOverlayMaps, layer) => {
-        return {
-          ...accOverlayMaps,
-          [localize(layer.title_multiloc)]: layer.leafletGeoJson,
-        };
-      }, {});
-      Leaflet.control.layers(undefined, overlayMaps).addTo(this.map);
-    }
-
-    /**
-      Leaflet creates a geoJSON object with an id when calling Leaflet.geoJSON.
-      This is how it keeps the toggles in sync.
-      Because we need two different arrays of Leaflet geoJSON overlays,
-      one for the layers that need to be enabled by default,
-      and one for creating the overlay maps,
-      we need to reformat the data we get from the back-end, so we can do filter
-      operations (that require the default_enabled value)
-      and create overlay maps (that require the geoJson title) coming from the same
-      "starting" array, so Leaflet can keep in sync
-    */
-    function createLeafletLayers(layers) {
-      return layers.map((layer) => {
-        const customLegendMarker =
-          layer.marker_svg_url && require(`${layer.marker_svg_url}`);
-        const geoJsonOptions = {
-          useSimpleStyle: true,
-          pointToLayer: (_feature, latlng) => {
-            return Leaflet.marker(latlng, {
-              icon: customLegendMarker || fallbackLegendMarker,
-            });
-          },
-        };
-
-        return {
-          title_multiloc: layer.title_multiloc,
-          leafletGeoJson: Leaflet.geoJSON(layer.geojson, geoJsonOptions as any),
-          enabledByDefault: layer.default_enabled,
-        };
-      });
-    }
-  };
-
-  convertPoints = (points: Point[]) => {
-    const bounds: [number, number][] = [];
-    const mapConfig = this.calculateMapConfig();
-    const { zoom_level, center } = mapConfig;
-
-    this.markers = compact(points).map((point) => {
-      const latlng: [number, number] = [
-        point.coordinates[1],
-        point.coordinates[0],
-      ];
-
-      const markerOptions = {
-        ...this.markerOptions,
-        data: point.data,
-        id: point.id,
-        title: point.title ? point.title : '',
-      };
-
-      bounds.push(latlng);
-
-      return Leaflet.marker(latlng, markerOptions);
-    });
-
-    if (
-      bounds &&
-      bounds.length > 0 &&
-      this.props.fitBounds &&
-      !this.state.initiated &&
-      this.map
-    ) {
-      if (
-        // If zoom level and center are the default values
-        zoom_level === 15 &&
-        center[0] === 0 &&
-        center[1] === 0
-      ) {
-        this.map.fitBounds(bounds, { maxZoom: 12, padding: [50, 50] });
-      }
-      this.setState({ initiated: true });
-    }
-
-    this.addClusters();
-  };
-
-  addClusters = () => {
-    if (this.map && this.markers) {
-      if (this.clusterLayer) {
-        this.map.removeLayer(this.clusterLayer);
-      }
-
-      this.clusterLayer = Leaflet.markerClusterGroup(this.clusterOptions);
-      this.clusterLayer.addLayers(this.markers);
-      this.map.addLayer(this.clusterLayer);
-
-      if (this.props.onMarkerClick) {
-        this.clusterLayer.on('click', this.handleMarkerClick);
-      }
-    }
-  };
-
-  handleMapClick = (event: Leaflet.LeafletMouseEvent) => {
-    this.props.onMapClick && this.props.onMapClick(this.map, event.latlng);
-  };
-
-  handleMarkerClick = (event) => {
-    this.props.onMarkerClick &&
-      this.props.onMarkerClick(
-        event.layer.options.id,
-        event.layer.options.data
+    // set center
+    useEffect(() => {
+      const nextCenter = getCenter(centerCoordinates, appConfig, mapConfig);
+      setCenter((prevCenter) =>
+        !isEqual(prevCenter, nextCenter) ? nextCenter : prevCenter
       );
-  };
+      setZoomLevel(getZoomLevel(zoom, appConfig, mapConfig));
+    }, [appConfig, mapConfig, centerCoordinates]);
 
-  handleBoxOnClose = (event: FormEvent) => {
-    event.preventDefault();
-    this.props.onBoxClose && this.props.onBoxClose(event);
-  };
+    // set zoom
+    useEffect(() => {
+      setZoomLevel(getZoomLevel(zoom, appConfig, mapConfig));
+    }, [appConfig, mapConfig, zoom]);
 
-  render() {
-    const { tenant, boxContent, className, mapHeight, projectId } = this.props;
+    // set map
+    useEffect(() => {
+      if (!isNilOrError(appConfig) && mapConfig && !map) {
+        const tileProvider = getTileProvider(appConfig, mapConfig);
+        const map = L.map('mapid');
+        L.tileLayer(tileProvider, {
+          tileSize: 512,
+          zoomOffset: -1,
+          minZoom: 1,
+          maxZoom: 17,
+          crossOrigin: true,
+          attribution:
+            '\u003ca href="https://www.maptiler.com/copyright/" target="_blank"\u003e\u0026copy; MapTiler\u003c/a\u003e \u003ca href="https://www.openstreetmap.org/copyright" target="_blank"\u003e\u0026copy; OpenStreetMap contributors\u003c/a\u003e',
+        }).addTo(map);
 
-    if (!isNilOrError(tenant)) {
-      return (
-        <Container className={className}>
-          <MapContainer>
-            {!isNil(boxContent) && (
-              <BoxContainer className={className}>
-                <CloseButton onClick={this.handleBoxOnClose}>
-                  <CloseIcon name="close" />
-                </CloseButton>
-
-                {boxContent}
-              </BoxContainer>
-            )}
-
-            <LeafletMapContainer
-              id="e2e-map"
-              ref={this.bindMapContainer}
-              mapHeight={mapHeight}
-            />
-          </MapContainer>
-          {projectId && <Legend projectId={projectId} />}
-        </Container>
-      );
-    }
-
-    return null;
-  }
-}
-
-const CLMapWithHOCs = injectLocalize(CLMap);
-
-export default ({ projectId, ...inputProps }: InputProps) =>
-  projectId ? (
-    <GetMapConfig projectId={projectId}>
-      {(mapConfig: GetMapConfigChildProps) => {
-        if (isError(mapConfig) || mapConfig) {
-          return (
-            <GetAppConfiguration>
-              {(tenant: GetAppConfigurationChildProps) => {
-                return (
-                  <CLMapWithHOCs
-                    tenant={tenant}
-                    mapConfig={mapConfig}
-                    projectId={projectId}
-                    {...inputProps}
-                  />
-                );
-              }}
-            </GetAppConfiguration>
-          );
+        // handlers
+        if (onMapClick) {
+          map.on('click', handleMapClick);
         }
 
-        return null;
-      }}
-    </GetMapConfig>
-  ) : (
-    <GetAppConfiguration>
-      {(tenant: GetAppConfigurationChildProps) => {
-        return (
-          <CLMapWithHOCs tenant={tenant} mapConfig={null} {...inputProps} />
+        setMap(map);
+      }
+    }, [map, appConfig, mapConfig, centerCoordinates, zoom, onMapClick]);
+
+    // set layerControl
+    useEffect(() => {
+      if (map && !layerControl) {
+        setLayerControl(L.control.layers().addTo(map));
+      }
+    }, [map, layerControl]);
+
+    // apply zoom and center changes on map
+    useEffect(() => {
+      map?.setView(center, zoomLevel);
+    }, [map, center, zoomLevel]);
+
+    // apply custom layer changes on map
+    useEffect(() => {
+      // first remove custom layers from layerControler and map
+      map?.eachLayer((layer) => {
+        layerControl?.removeLayer(layer);
+
+        if (layer?.['isCustom']) {
+          map.removeLayer(layer);
+        }
+      });
+
+      // then (re)add layers to map and layerControl
+      if (!isNilOrError(mapConfig) && map) {
+        mapConfig?.attributes?.layers?.forEach(
+          ({ geojson, title_multiloc, marker_svg_url }) => {
+            if (geojson) {
+              const layer = L.geoJSON(geojson, {
+                useSimpleStyle: true,
+                useMakiMarkers: true,
+                pointToLayer: (_feature, latlng) => {
+                  const customLegendMarker =
+                    marker_svg_url && require(`${marker_svg_url}`);
+                  return L.marker(latlng, {
+                    icon: customLegendMarker || fallbackLegendMarker,
+                  });
+                },
+                onEachFeature: (feature, layer) => {
+                  layer.isCustom = true;
+
+                  if (
+                    feature.properties &&
+                    feature.properties.popupContent &&
+                    Object.values(feature.properties.popupContent).some(
+                      (x) => x && x !== ''
+                    )
+                  ) {
+                    layer.bindPopup(localize(feature.properties.popupContent));
+                  }
+
+                  if (
+                    feature.properties &&
+                    feature.properties.tooltipContent &&
+                    Object.values(feature.properties.tooltipContent).some(
+                      (x) => x && x !== ''
+                    )
+                  ) {
+                    layer.bindTooltip(
+                      localize(feature.properties.tooltipContent)
+                    );
+                  }
+                },
+              } as any).addTo(map);
+
+              layerControl?.addOverlay(layer, localize(title_multiloc));
+            }
+          }
         );
-      }}
-    </GetAppConfiguration>
-  );
+      }
+    }, [map, layerControl, mapConfig]);
+
+    // apply points on map
+    useEffect(() => {
+      if (map) {
+        const bounds: [number, number][] = [];
+        const markers = compact(points).map((point) => {
+          const latlng: [number, number] = [
+            point.coordinates[1],
+            point.coordinates[0],
+          ];
+
+          const markerOptions = {
+            icon: ideaMarker,
+            data: point.data,
+            id: point.id,
+            title: point.title ? point.title : '',
+          };
+
+          bounds.push(latlng);
+
+          return L.marker(latlng, markerOptions);
+        });
+
+        setMarkers(markers);
+
+        if (!prevMap && fitBounds && bounds?.length > 0) {
+          map.fitBounds(bounds, { maxZoom: 12, padding: [50, 50] });
+        }
+      }
+    }, [prevMap, map, points, fitBounds]);
+
+    // apply clusters
+    useEffect(() => {
+      if (map && markers && (prevMap !== map || prevMarkers !== markers)) {
+        if (markerClusterGroup) {
+          map.removeLayer(markerClusterGroup);
+        }
+
+        const newMarkerClusterGroup = L.markerClusterGroup({
+          showCoverageOnHover: false,
+          spiderfyDistanceMultiplier: 2,
+          iconCreateFunction: (cluster) => {
+            return L.divIcon({
+              html: `<span>${cluster.getChildCount()}</span>`,
+              className: 'marker-cluster-custom',
+              iconSize: L.point(40, 40, true),
+            });
+          },
+        });
+        newMarkerClusterGroup.addLayers(markers);
+        map.addLayer(newMarkerClusterGroup);
+
+        if (onMarkerClick) {
+          newMarkerClusterGroup.on('click', handleMarkerClick);
+        }
+
+        setMarkerClusterGroup(newMarkerClusterGroup);
+      }
+    }, [prevMap, map, prevMarkers, markers, markerClusterGroup, onMarkerClick]);
+
+    const handleMapClick = (event: L.LeafletMouseEvent) => {
+      if (map) {
+        onMapClick?.(map, event.latlng);
+      }
+    };
+
+    const handleMarkerClick = (event) => {
+      onMarkerClick?.(event.layer.options.id, event.layer.options.data);
+    };
+
+    const handleBoxOnClose = (event: React.FormEvent) => {
+      event.preventDefault();
+      onBoxClose?.(event);
+    };
+
+    return (
+      <Container className={className || ''}>
+        <MapContainer>
+          {!isNilOrError(boxContent) && (
+            <BoxContainer>
+              <CloseButton onClick={handleBoxOnClose}>
+                <CloseIcon name="close" />
+              </CloseButton>
+
+              {boxContent}
+            </BoxContainer>
+          )}
+
+          <LeafletMapContainer
+            id="mapid"
+            className={`e2e-map ${className || ''}`}
+          />
+        </MapContainer>
+        {projectId && <Legend projectId={projectId} />}
+      </Container>
+    );
+  }
+);
+
+export default injectLocalize(Map);
