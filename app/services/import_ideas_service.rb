@@ -64,15 +64,17 @@ class ImportIdeasService
       begin
         d[:published_at] = Date.parse idea_data[:published_at]
       rescue Exception => e
+        puts "Falied to parse publication date: #{idea_data[:published_at]}"
       end
     end
-  	d[:publication_status] = 'published'
     if (lat = idea_data[:latitude]&.to_f) && (lon = idea_data[:longitude]&.to_f)
       d[:location_point_geojson] = {
         'type' => 'Point',
         'coordinates' => [lon, lat]
       }
     end
+    d[:location_description] = idea_data[:location_description] if idea_data[:location_description]
+    d[:publication_status] = 'published'
   	idea = Idea.create! d
   	if idea_data[:image_url]
   		begin
