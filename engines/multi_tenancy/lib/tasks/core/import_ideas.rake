@@ -32,16 +32,17 @@ namespace :cl2_back do
         end
       end
     end
-  	d[:title_multiloc] = title_multiloc
-  	d[:body_multiloc]  = body_multiloc
-  	d[:topic_titles]   = (csv_idea['Topics'] || '').split(';').map(&:strip).select{ |topic| topic }
-  	d[:project_title]  = csv_idea['Project']
-  	d[:user_email]     = csv_idea['Email']
-    d[:image_url]      = csv_idea['Image URL']
-    d[:phase_rank]     = csv_idea['Phase']
-    d[:published_at]   = csv_idea['Date (dd-mm-yyyy)']
-    d[:latitude]       = csv_idea['Latitude']
-    d[:longitude]      = csv_idea['Longitude']
+  	d[:title_multiloc]       = title_multiloc
+  	d[:body_multiloc]        = body_multiloc
+  	d[:topic_titles]         = (csv_idea['Topics'] || '').split(';').map(&:strip).select{ |topic| topic }
+  	d[:project_title]        = csv_idea['Project']
+  	d[:user_email]           = csv_idea['Email']
+    d[:image_url]            = csv_idea['Image URL']
+    d[:phase_rank]           = csv_idea['Phase']
+    d[:published_at]         = csv_idea['Date (dd-mm-yyyy)']
+    d[:latitude]             = csv_idea['Latitude']
+    d[:longitude]            = csv_idea['Longitude']
+    d[:location_description] = csv_idea['Location Description']
   	d
   end
 
