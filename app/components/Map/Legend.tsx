@@ -2,7 +2,6 @@ import React, { memo } from 'react';
 import styled from 'styled-components';
 import useLocalize from 'hooks/useLocalize';
 import useMapConfig from 'hooks/useMapConfig';
-import { isNilOrError } from 'utils/helperUtils';
 import { media, isRtl } from 'utils/styleUtils';
 
 const LegendContainer = styled.div`
@@ -59,11 +58,18 @@ const Legend = memo(({ projectId }: Props) => {
   const localize = useLocalize();
 
   if (
-    !isNilOrError(mapConfig) &&
-    mapConfig.attributes.legend &&
-    mapConfig.attributes.legend.length !== 0
+    (mapConfig?.attributes?.legend &&
+      mapConfig?.attributes?.legend?.length > 0) ||
+    (mapConfig?.attributes?.layers && mapConfig?.attributes?.layers?.length > 0)
   ) {
-    const legend = mapConfig.attributes.legend;
+    const legend =
+      mapConfig.attributes.legend ||
+      mapConfig?.attributes?.layers?.map((layer) => ({
+        title_multiloc: layer.title_multiloc,
+        color:
+          layer.geojson?.features?.[0]?.properties?.['marker-color'] ||
+          layer.geojson?.features?.[0]?.properties?.fill,
+      }));
 
     return (
       <LegendContainer>

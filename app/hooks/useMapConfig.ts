@@ -34,13 +34,15 @@ export default ({ projectId, prefetchMapLayers }: Props): IOutput => {
               (mapLayer) => mapLayer.id
             );
 
-            combineLatest(
-              mapLayerIds.map(
-                (mapLayerId) =>
-                  mapLayerByProjectMapConfigStream(projectId, mapLayerId)
-                    .observable
-              )
-            );
+            if (mapLayerIds && mapLayerIds.length > 0) {
+              combineLatest(
+                mapLayerIds.map(
+                  (mapLayerId) =>
+                    mapLayerByProjectMapConfigStream(projectId, mapLayerId)
+                      .observable
+                )
+              );
+            }
           }
 
           return of(mapConfig);
