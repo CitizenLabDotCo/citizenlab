@@ -1,5 +1,6 @@
 class AppConfiguration < ApplicationRecord
   include Frontend::StyleSettings
+  extend SettingsProvider
 
   mount_base64_uploader :logo, LogoUploader
   mount_base64_uploader :header_bg, AppHeaderBgUploader
@@ -31,11 +32,6 @@ class AppConfiguration < ApplicationRecord
       settings_schema_filepath = Rails.root.join('config', 'schemas', 'settings.schema.json.erb')
       @settings_json_schema_str ||= ERB.new(File.read(settings_schema_filepath)).result(binding)
     end
-
-    def settings_json_schema
-      @settings_json_schema ||= JSON.parse(settings_json_schema_str)
-    end
-
   end
 
   # @return [AppConfiguration] self
