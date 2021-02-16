@@ -1678,7 +1678,7 @@
   "app.containers.CookiePolicy.wikipediaCookieLinkHref": "https://en.wikipedia.org/wiki/HTTP_cookie",
   "app.containers.CookiePolicy.wikipediaCookieLinkText": "diesem Wikipedia-Artikel",
   "app.containers.Dashboards.ReportsTab.participantsOverTimeTitle": "Participants",
-  "app.containers.Dashboards.ReportsTab.sectionWhatInput": "What input did you collect?",
+  "app.containers.Dashboards.ReportsTab.sectionWhatInput": "Welche Eingaben haben Sie gesammelt?",
   "app.containers.Dashboards.ReportsTab.sectionWho": "Who participated?",
   "app.containers.Dashboards.ReportsTab.selectAProject": "What project are you interested in?",
   "app.containers.IdeaButton.addAContribution": "Einen Beitrag hinzufügen\n",
