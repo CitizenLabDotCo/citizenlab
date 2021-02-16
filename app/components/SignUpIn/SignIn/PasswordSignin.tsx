@@ -202,7 +202,6 @@ class PasswordSignin extends PureComponent<
       } catch (error) {
         trackEventByName(tracks.signInEmailPasswordFailed, { error });
         const signInError = formatMessage(messages.signInError);
-        this.emailInputElement?.focus();
         this.setState({ signInError, processing: false });
       }
     }
