@@ -4,9 +4,8 @@ import useLocalize from 'hooks/useLocalize';
 import useMapConfig from 'hooks/useMapConfig';
 import { media, isRtl } from 'utils/styleUtils';
 
-const LegendContainer = styled.div`
-  background-color: white;
-  padding: 30px;
+const Container = styled.div`
+  padding: 25px;
 `;
 
 const LegendItems = styled.ul`
@@ -42,6 +41,7 @@ const ColorLabel = styled.div`
   height: 20px;
   background-color: ${(props) => props.color};
   margin-right: 10px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
 
   ${isRtl`
     margin-right: 0;
@@ -51,9 +51,10 @@ const ColorLabel = styled.div`
 
 interface Props {
   projectId: string;
+  className?: string;
 }
 
-const Legend = memo(({ projectId }: Props) => {
+const Legend = memo<Props>(({ projectId, className }) => {
   const mapConfig = useMapConfig({ projectId });
   const localize = useLocalize();
 
@@ -72,7 +73,7 @@ const Legend = memo(({ projectId }: Props) => {
       }));
 
     return (
-      <LegendContainer>
+      <Container className={`${className || ''} legendContainer`}>
         <LegendItems>
           {legend.map((legendItem, index) => {
             const color = legendItem.color;
@@ -86,7 +87,7 @@ const Legend = memo(({ projectId }: Props) => {
             );
           })}
         </LegendItems>
-      </LegendContainer>
+      </Container>
     );
   }
 

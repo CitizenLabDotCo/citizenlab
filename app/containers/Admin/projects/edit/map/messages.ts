@@ -55,7 +55,7 @@ export default defineMessages({
   },
   centerLabel: {
     id: 'app.containers.AdminPage.ProjectEdit.MapTab.centerLabel',
-    defaultMessage: 'Map center',
+    defaultMessage: 'Default map center (lat, lng)',
   },
   zoomLabel: {
     id: 'app.containers.AdminPage.ProjectEdit.MapTab.zoomLabel',
