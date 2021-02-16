@@ -21,7 +21,12 @@ const Container = styled.div`
   margin-bottom: 10px;
 `;
 
-const StyledInput = styled(Input)``;
+const StyledInput = styled(Input)`
+  & input::-ms-reveal,
+  & input::-ms-clear {
+    display: none;
+  }
+`;
 
 const EyeIcon = styled(Icon)`
   width: 22px;
