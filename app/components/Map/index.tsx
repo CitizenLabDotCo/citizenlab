@@ -1,6 +1,6 @@
 import React, { memo, useState, useEffect } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { isEqual, compact } from 'lodash-es';
+import { isEqual, compact, isUndefined } from 'lodash-es';
 
 // Map
 import L from 'leaflet';
@@ -81,6 +81,7 @@ const BoxContainer = styled.div`
   background: #fff;
   width: 100%;
   height: 80%;
+  max-height: 550px;
 `;
 
 const CloseButton = styled.button`
@@ -166,12 +167,12 @@ const getCenter = (
   mapConfig: IMapConfig
 ) => {
   const projectCenterLat =
-    mapConfig?.attributes.center_geojson?.coordinates?.[0];
+    mapConfig?.attributes.center_geojson?.coordinates?.[1];
   const tenantCenterLat =
     !isNilOrError(appConfig) &&
     appConfig?.data?.attributes?.settings?.maps?.map_center?.lat;
   const projectCenterLong =
-    mapConfig?.attributes.center_geojson?.coordinates?.[1];
+    mapConfig?.attributes.center_geojson?.coordinates?.[0];
   const tenantCenterLong =
     !isNilOrError(appConfig) &&
     appConfig?.data?.attributes?.settings?.maps?.map_center?.long;
@@ -184,14 +185,14 @@ const getCenter = (
     projectCenterLat !== undefined &&
     projectCenterLong !== undefined
   ) {
-    center = [projectCenterLong, projectCenterLat];
+    center = [projectCenterLat, projectCenterLong];
   } else if (
     tenantCenterLat !== undefined &&
     tenantCenterLat !== false &&
     tenantCenterLong !== undefined &&
     tenantCenterLong !== false
   ) {
-    center = [tenantCenterLong, tenantCenterLat] as any;
+    center = [parseFloat(tenantCenterLat), parseFloat(tenantCenterLong)];
   }
 
   return center;
@@ -210,16 +211,16 @@ const getZoomLevel = (
 };
 
 const getTileProvider = (
-  appConfig: IAppConfiguration | undefined | null | Error,
+  _appConfig: IAppConfiguration | undefined | null | Error,
   mapConfig: IMapConfig
 ) => {
   const mapConfigTileProvider = mapConfig?.attributes?.tile_provider;
-  const appConfigProvider =
-    !isNilOrError(appConfig) &&
-    appConfig?.data?.attributes?.settings?.maps?.tile_provider;
+  // const appConfigProvider =
+  //   !isNilOrError(appConfig) &&
+  //   appConfig?.data?.attributes?.settings?.maps?.tile_provider;
   const fallbackProvider =
     'https://api.maptiler.com/maps/77632ac6-e168-429c-8b1b-76599ce796e3/{z}/{x}/{y}@2x.png?key=DIZiuhfkZEQ5EgsaTk6D';
-  return mapConfigTileProvider || appConfigProvider || fallbackProvider;
+  return mapConfigTileProvider || fallbackProvider;
 };
 
 const Map = memo<Props & InjectedLocalized>(
@@ -263,7 +264,6 @@ const Map = memo<Props & InjectedLocalized>(
       setCenter((prevCenter) =>
         !isEqual(prevCenter, nextCenter) ? nextCenter : prevCenter
       );
-      setZoomLevel(getZoomLevel(zoom, appConfig, mapConfig));
     }, [appConfig, mapConfig, centerCoordinates]);
 
     // set zoom
@@ -273,7 +273,7 @@ const Map = memo<Props & InjectedLocalized>(
 
     // set map
     useEffect(() => {
-      if (!isNilOrError(appConfig) && mapConfig && !map) {
+      if (!isNilOrError(appConfig) && !isUndefined(mapConfig) && !map) {
         const tileProvider = getTileProvider(appConfig, mapConfig);
         const map = L.map('mapid');
         L.tileLayer(tileProvider, {
@@ -282,13 +282,16 @@ const Map = memo<Props & InjectedLocalized>(
           minZoom: 1,
           maxZoom: 17,
           crossOrigin: true,
+          subdomains: ['a', 'b', 'c'],
           attribution:
             '\u003ca href="https://www.maptiler.com/copyright/" target="_blank"\u003e\u0026copy; MapTiler\u003c/a\u003e \u003ca href="https://www.openstreetmap.org/copyright" target="_blank"\u003e\u0026copy; OpenStreetMap contributors\u003c/a\u003e',
         }).addTo(map);
 
-        // handlers
+        // map click handler
         if (onMapClick) {
-          map.on('click', handleMapClick);
+          map.on('click', (event: L.LeafletMouseEvent) => {
+            onMapClick(map, event.latlng);
+          });
         }
 
         setMap(map);
@@ -297,10 +300,15 @@ const Map = memo<Props & InjectedLocalized>(
 
     // set layerControl
     useEffect(() => {
-      if (map && !layerControl) {
+      if (
+        map &&
+        mapConfig &&
+        mapConfig?.attributes?.layers?.length > 0 &&
+        !layerControl
+      ) {
         setLayerControl(L.control.layers().addTo(map));
       }
-    }, [map, layerControl]);
+    }, [map, mapConfig, layerControl]);
 
     // apply zoom and center changes on map
     useEffect(() => {
@@ -319,7 +327,7 @@ const Map = memo<Props & InjectedLocalized>(
       });
 
       // then (re)add layers to map and layerControl
-      if (!isNilOrError(mapConfig) && map) {
+      if (!isUndefined(mapConfig) && map) {
         mapConfig?.attributes?.layers?.forEach(
           ({ geojson, title_multiloc, marker_svg_url }) => {
             if (geojson) {
@@ -367,7 +375,7 @@ const Map = memo<Props & InjectedLocalized>(
       }
     }, [map, layerControl, mapConfig]);
 
-    // apply points on map
+    // set markers whenever points changed
     useEffect(() => {
       if (map) {
         const bounds: [number, number][] = [];
@@ -391,13 +399,20 @@ const Map = memo<Props & InjectedLocalized>(
 
         setMarkers(markers);
 
-        if (!prevMap && fitBounds && bounds?.length > 0) {
-          map.fitBounds(bounds, { maxZoom: 12, padding: [50, 50] });
+        if (
+          bounds &&
+          bounds.length > 0 &&
+          fitBounds &&
+          zoom === 15 &&
+          center[0] === 0 &&
+          center[1] === 0
+        ) {
+          map.fitBounds(bounds, { maxZoom: 17, padding: [50, 50] });
         }
       }
-    }, [prevMap, map, points, fitBounds]);
+    }, [map, points, fitBounds, zoom, center]);
 
-    // apply clusters
+    // apply clusters whenever markers changed
     useEffect(() => {
       if (map && markers && (prevMap !== map || prevMarkers !== markers)) {
         if (markerClusterGroup) {
@@ -419,22 +434,14 @@ const Map = memo<Props & InjectedLocalized>(
         map.addLayer(newMarkerClusterGroup);
 
         if (onMarkerClick) {
-          newMarkerClusterGroup.on('click', handleMarkerClick);
+          newMarkerClusterGroup.on('click', (event) => {
+            onMarkerClick?.(event.layer.options.id, event.layer.options.data);
+          });
         }
 
         setMarkerClusterGroup(newMarkerClusterGroup);
       }
     }, [prevMap, map, prevMarkers, markers, markerClusterGroup, onMarkerClick]);
-
-    const handleMapClick = (event: L.LeafletMouseEvent) => {
-      if (map) {
-        onMapClick?.(map, event.latlng);
-      }
-    };
-
-    const handleMarkerClick = (event) => {
-      onMarkerClick?.(event.layer.options.id, event.layer.options.data);
-    };
 
     const handleBoxOnClose = (event: React.FormEvent) => {
       event.preventDefault();
@@ -442,7 +449,7 @@ const Map = memo<Props & InjectedLocalized>(
     };
 
     return (
-      <Container className={className || ''}>
+      <Container>
         <MapContainer>
           {!isNilOrError(boxContent) && (
             <BoxContainer>
