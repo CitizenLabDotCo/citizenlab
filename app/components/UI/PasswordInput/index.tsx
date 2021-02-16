@@ -35,7 +35,17 @@ export function hasPasswordMinimumLength(
     : password.length < DEFAULT_MINIMUM_PASSWORD_LENGTH;
 }
 
-const PasswordInput = (props: Props) => {
+const PasswordInput = ({
+  id,
+  password,
+  onChange,
+  onBlur,
+  setRef,
+  autocomplete,
+  placeholder,
+  isLoginPasswordInput,
+  errors,
+}: Props) => {
   const tenant = useTenant();
 
   if (!isNilOrError(tenant)) {
@@ -46,7 +56,15 @@ const PasswordInput = (props: Props) => {
     return (
       <PasswordInputComponent
         minimumPasswordLength={minimumPasswordLength}
-        {...props}
+        id={id}
+        password={password}
+        onChange={onChange}
+        onBlur={onBlur}
+        setRef={setRef}
+        autocomplete={autocomplete}
+        placeholder={placeholder}
+        isLoginPasswordInput={isLoginPasswordInput}
+        errors={errors}
       />
     );
   }
