@@ -2074,7 +2074,7 @@
   "app.containers.Projects.survey": "Umfrage",
   "app.containers.Projects.takeThePoll": "Nehmen Sie an der Abstimmung teil",
   "app.containers.Projects.takeTheSurvey": "Nehmen Sie an der Umfrage teil",
-  "app.containers.Projects.thisProjectIsNotVisibleToYou": "This project is not visible to you.",
+  "app.containers.Projects.thisProjectIsNotPubliclyVisibleVisitHomePageToDiscover": "This project is not publicly visible. Visit the homepage to discover other engagement opportunities.",
   "app.containers.Projects.timeline": "Zeitstrahl",
   "app.containers.Projects.totalBudget": "Gesamtbudget",
   "app.containers.Projects.upcomingEvents": "Bevorstehende Veranstaltungen",
