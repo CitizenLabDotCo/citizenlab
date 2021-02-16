@@ -30,7 +30,9 @@ const ProjectNotVisible = memo<Props>(({ className }) => {
   return (
     <Container className={className || ''}>
       <p>
-        <FormattedMessage {...messages.thisProjectIsNotVisibleToYou} />
+        <FormattedMessage
+          {...messages.thisProjectIsNotPubliclyVisibleVisitHomePageToDiscover}
+        />
       </p>
       <Button
         linkTo="/projects"
