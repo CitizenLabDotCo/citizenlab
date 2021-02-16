@@ -1,7 +1,8 @@
 import React, { PureComponent, Suspense, lazy } from 'react';
+import { adopt } from 'react-adopt';
 import { Subscription, combineLatest } from 'rxjs';
 import { tap, first } from 'rxjs/operators';
-import { uniq, has } from 'lodash-es';
+import { uniq, has, includes } from 'lodash-es';
 import { isNilOrError, isPage, endsWith } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
 import clHistory from 'utils/cl-router/history';
@@ -18,6 +19,7 @@ import GlobalStyle from 'global-styles';
 import {
   appLocalesMomentPairs,
   ADMIN_TEMPLATES_GRAPHQL_PATH,
+  locales,
 } from 'containers/App/constants';
 
 // graphql
@@ -68,7 +70,16 @@ import {
   signOut,
   signOutAndDeleteAccountPart2,
 } from 'services/auth';
-import { currentTenantStream, ITenant, ITenantStyle } from 'services/tenant';
+import {
+  currentAppConfigurationStream,
+  IAppConfiguration,
+  IAppConfigurationStyle,
+} from 'services/appConfiguration';
+
+// resources
+import GetFeatureFlag, {
+  GetFeatureFlagChildProps,
+} from 'resources/GetFeatureFlag';
 
 // events
 import eventEmitter from 'utils/eventEmitter';
@@ -112,11 +123,17 @@ export interface IOpenPostPageModalEvent {
   type: 'idea' | 'initiative';
 }
 
-type Props = {};
+interface InputProps {}
 
-type State = {
+interface DataProps {
+  redirectsEnabled: GetFeatureFlagChildProps;
+}
+
+interface Props extends WithRouterProps, InputProps, DataProps {}
+
+interface State {
   previousPathname: string | null;
-  tenant: ITenant | null;
+  tenant: IAppConfiguration | null;
   authUser: IUser | null | undefined;
   modalId: string | null;
   modalSlug: string | null;
@@ -129,9 +146,9 @@ type State = {
   navbarRef: HTMLElement | null;
   mobileNavbarRef: HTMLElement | null;
   locale: Locale | null;
-};
+}
 
-class App extends PureComponent<Props & WithRouterProps, State> {
+class App extends PureComponent<Props, State> {
   subscriptions: Subscription[];
   unlisten: () => void;
 
@@ -157,9 +174,10 @@ class App extends PureComponent<Props & WithRouterProps, State> {
   }
 
   componentDidMount() {
+    const { redirectsEnabled } = this.props;
     const authUser$ = authUserStream().observable;
     const locale$ = localeStream().observable;
-    const tenant$ = currentTenantStream().observable;
+    const tenant$ = currentAppConfigurationStream().observable;
 
     this.unlisten = clHistory.listenBefore((newLocation) => {
       const newPreviousPathname = location.pathname;
@@ -175,8 +193,12 @@ class App extends PureComponent<Props & WithRouterProps, State> {
           ? newPreviousPathname
           : state.previousPathname,
       }));
+      if (redirectsEnabled) {
+        this.handleCustomRedirect();
+      }
       trackPage(newLocation.pathname);
     });
+
     trackPage(location.pathname);
 
     smoothscroll.polyfill();
@@ -222,7 +244,7 @@ class App extends PureComponent<Props & WithRouterProps, State> {
           import('webfontloader').then((WebfontLoader) => {
             WebfontLoader.load({
               typekit: {
-                id: (tenant.data.attributes.style as ITenantStyle)
+                id: (tenant.data.attributes.style as IAppConfigurationStyle)
                   .customFontAdobeId,
               },
             });
@@ -258,15 +280,25 @@ class App extends PureComponent<Props & WithRouterProps, State> {
     ];
   }
 
-  componentDidUpdate(_prevProps: Props, prevState: State) {
+  componentDidUpdate(prevProps: Props, prevState: State) {
     const {
       authUser,
+      tenant,
       signUpInModalMounted,
       verificationModalMounted,
     } = this.state;
+    const { redirectsEnabled } = this.props;
     const { pathname, search } = this.props.location;
     const isAuthError = endsWith(pathname, 'authentication-error');
     const isInvitation = endsWith(pathname, '/invite');
+
+    if (
+      redirectsEnabled &&
+      (prevState.tenant !== tenant ||
+        prevProps.location.pathname !== this.props.location.pathname)
+    ) {
+      this.handleCustomRedirect();
+    }
 
     if (
       (!prevState.signUpInModalMounted &&
@@ -371,6 +403,28 @@ class App extends PureComponent<Props & WithRouterProps, State> {
   componentWillUnmount() {
     this.unlisten();
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+  }
+
+  handleCustomRedirect() {
+    const {
+      location: { pathname },
+    } = this.props;
+    const { tenant } = this.state;
+    const urlSegments = pathname.replace(/^\/+/g, '').split('/');
+
+    if (!isNilOrError(tenant) && tenant.data.attributes.settings.redirects) {
+      const { rules } = tenant.data.attributes.settings.redirects;
+
+      rules.forEach((rule) => {
+        if (
+          urlSegments.length === 2 &&
+          includes(locales, urlSegments[0]) &&
+          urlSegments[1] === rule.path
+        ) {
+          window.location.href = rule.target;
+        }
+      });
+    }
   }
 
   openPostPageModal = (
@@ -538,31 +592,38 @@ class App extends PureComponent<Props & WithRouterProps, State> {
   }
 }
 
-const AppWithHoC = withRouter(App);
+const Data = adopt<DataProps, InputProps>({
+  redirectsEnabled: <GetFeatureFlag name="redirects" />,
+});
 
+// Apollo
 const cache = new InMemoryCache();
-
 const httpLink = new HttpLink({ uri: ADMIN_TEMPLATES_GRAPHQL_PATH });
-
 const authLink = new ApolloLink((operation, forward) => {
   const jwt = getJwt();
 
   operation.setContext({
     headers: {
+      origin: '*',
       authorization: jwt ? `Bearer ${jwt}` : '',
+      'Access-Control-Allow-Origin': '*',
+    },
+    fetchOptions: {
+      mode: 'cors',
     },
   });
 
   return forward(operation);
 });
-
 const client = new ApolloClient({
   cache,
   link: authLink.concat(httpLink),
 });
 
-export default (props: Props) => (
+const AppWithHoC = withRouter(App);
+
+export default (inputProps: InputProps) => (
   <ApolloProvider client={client}>
-    <AppWithHoC {...props} />
+    <Data>{(dataProps) => <AppWithHoC {...dataProps} {...inputProps} />}</Data>
   </ApolloProvider>
 );

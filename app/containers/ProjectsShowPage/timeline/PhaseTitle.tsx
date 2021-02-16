@@ -5,7 +5,7 @@ import moment from 'moment';
 
 // hooks
 import useLocale from 'hooks/useLocale';
-import useTenant from 'hooks/useTenant';
+import useAppConfiguration from 'hooks/useAppConfiguration';
 import usePhases from 'hooks/usePhases';
 import useWindowSize from 'hooks/useWindowSize';
 
@@ -122,7 +122,7 @@ interface Props {
 
 const PhaseTitle = memo<Props>(({ projectId, selectedPhaseId, className }) => {
   const locale = useLocale();
-  const tenant = useTenant();
+  const tenant = useAppConfiguration();
   const phases = usePhases(projectId);
   const { windowWidth } = useWindowSize();
 

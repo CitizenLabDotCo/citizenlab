@@ -6,7 +6,9 @@ import { isNilOrError, isEmptyMultiloc } from 'utils/helperUtils';
 import FilterSelector from 'components/FilterSelector';
 
 // services
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetAppConfiguration';
 import GetAreas, { GetAreasChildProps } from 'resources/GetAreas';
 
 // i18n
@@ -21,7 +23,7 @@ interface InputProps {
 
 interface DataProps {
   areas: GetAreasChildProps;
-  tenant: GetTenantChildProps;
+  tenant: GetAppConfigurationChildProps;
 }
 
 interface Props extends InputProps, DataProps, InjectedLocalized {}
@@ -83,7 +85,7 @@ class SelectAreas extends PureComponent<Props> {
 const SelectAreasWithHOCs = injectLocalize<InputProps>(SelectAreas);
 
 const Data = adopt<DataProps, InputProps>({
-  tenant: <GetTenant />,
+  tenant: <GetAppConfiguration />,
   areas: <GetAreas />,
 });
 

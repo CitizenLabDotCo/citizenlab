@@ -23,7 +23,23 @@ export async function generateTaggings(ideaIds, tagIds, tags, projectIds) {
     projects: projectIds,
   });
   await streams.fetchAllWith({
-    apiEndpoint: [`${API_PATH}/taggings`, `${API_PATH}/tags`],
+    apiEndpoint: [
+      `${API_PATH}/taggings`,
+      `${API_PATH}/tags`,
+      `${API_PATH}/pending_tasks`,
+    ],
+  });
+  return response;
+}
+
+export async function cancelGenerate() {
+  const response = await streams.delete(`${API_PATH}/taggings/generate`, '');
+  await streams.fetchAllWith({
+    apiEndpoint: [
+      `${API_PATH}/taggings`,
+      `${API_PATH}/tags`,
+      `${API_PATH}/pending_tasks`,
+    ],
   });
   return response;
 }

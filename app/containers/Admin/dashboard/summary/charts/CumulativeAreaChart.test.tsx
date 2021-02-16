@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 jest.mock('utils/cl-intl');
-jest.mock('services/tenant');
+jest.mock('services/appConfiguration');
 import { intl } from 'utils/cl-intl';
 import { CumulativeAreaChart } from './CumulativeAreaChart';
 import {

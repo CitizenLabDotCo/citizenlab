@@ -113,9 +113,8 @@ const dropTarget = {
     monitor.getItem().index = toIndex;
   },
   drop(props, monitor) {
-    const { id } = monitor.getItem();
-    const toIndex = props.index;
-    props.dropRow(id, toIndex);
+    const { id, index } = monitor.getItem();
+    props.dropRow(id, index);
   },
 };
 

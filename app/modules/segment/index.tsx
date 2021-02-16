@@ -10,7 +10,7 @@ import {
   tenantInfo,
 } from 'utils/analytics';
 import snippet from '@segment/snippet';
-import { currentTenantStream } from 'services/tenant';
+import { currentAppConfigurationStream } from 'services/appConfiguration';
 import { authUserStream } from 'services/auth';
 import { combineLatest } from 'rxjs';
 import { isNilOrError } from 'utils/helperUtils';
@@ -73,7 +73,7 @@ const configuration: ModuleConfiguration = {
     });
 
     combineLatest([
-      currentTenantStream().observable,
+      currentAppConfigurationStream().observable,
       bufferUntilInitialized('segment', authUserStream().observable),
     ]).subscribe(([tenant, user]) => {
       if (
@@ -130,7 +130,7 @@ const configuration: ModuleConfiguration = {
     });
 
     combineLatest([
-      currentTenantStream().observable,
+      currentAppConfigurationStream().observable,
       authUserStream().observable,
       bufferUntilInitialized('segment', events$),
     ]).subscribe(([tenant, user, event]) => {
@@ -150,7 +150,7 @@ const configuration: ModuleConfiguration = {
     });
 
     combineLatest([
-      currentTenantStream().observable,
+      currentAppConfigurationStream().observable,
       authUserStream().observable,
       bufferUntilInitialized('segment', pageChanges$),
     ]).subscribe(([tenant, user, pageChange]) => {

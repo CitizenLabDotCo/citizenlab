@@ -15,7 +15,7 @@ import { gql } from 'apollo-boost';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 
 // hooks
-import useTenantLocales from 'hooks/useTenantLocales';
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useGraphqlTenantLocales from 'hooks/useGraphqlTenantLocales';
 
 // components
@@ -134,7 +134,7 @@ const UseTemplateModal = memo<Props & WithRouterProps & InjectedIntlProps>(
     const templateId: string | undefined =
       projectTemplateId || get(params, 'projectTemplateId');
 
-    const tenantLocales = useTenantLocales();
+    const tenantLocales = useAppConfigurationLocales();
     const graphqlTenantLocales = useGraphqlTenantLocales();
 
     const [titleMultiloc, setTitleMultiloc] = useState<Multiloc | null>(null);
