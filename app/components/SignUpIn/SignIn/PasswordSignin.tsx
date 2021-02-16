@@ -15,7 +15,9 @@ import { FormLabel } from 'components/UI/FormComponents';
 import { Options, Option } from 'components/SignUpIn/styles';
 
 // resources
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetAppConfiguration';
 import GetWindowSize, {
   GetWindowSizeChildProps,
 } from 'resources/GetWindowSize';
@@ -77,7 +79,7 @@ export interface InputProps {
 }
 
 interface DataProps {
-  tenant: GetTenantChildProps;
+  tenant: GetAppConfigurationChildProps;
   windowSize: GetWindowSizeChildProps;
   passwordLoginEnabled: boolean | null;
   googleLoginEnabled: boolean | null;
@@ -343,7 +345,7 @@ class PasswordSignin extends PureComponent<
 const PasswordSigninWithHoC = withRouter<Props>(injectIntl(PasswordSignin));
 
 const Data = adopt<DataProps, {}>({
-  tenant: <GetTenant />,
+  tenant: <GetAppConfiguration />,
   windowSize: <GetWindowSize />,
   passwordLoginEnabled: <GetFeatureFlag name="password_login" />,
   googleLoginEnabled: <GetFeatureFlag name="google_login" />,

@@ -10,7 +10,7 @@ import { IParticipationContextType } from 'typings';
 import { IIdeaData } from 'services/ideas';
 
 // hooks
-import useTenant from 'hooks/useTenant';
+import useAppConfiguration from 'hooks/useAppConfiguration';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -63,7 +63,7 @@ interface Props {
 
 const CompactIdeaCard = memo<Props>(
   ({ idea, participationContextId, participationContextType, openIdea }) => {
-    const tenant = useTenant();
+    const tenant = useAppConfiguration();
 
     if (isNilOrError(tenant)) {
       return null;

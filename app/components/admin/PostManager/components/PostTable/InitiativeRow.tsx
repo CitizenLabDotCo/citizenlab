@@ -40,7 +40,9 @@ import { TitleLink, StyledRow } from './Row';
 import SubRow from './SubRow';
 
 // resources
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetAppConfiguration';
 import GetInitiativeAllowedTransitions, {
   GetInitiativeAllowedTransitionsChildProps,
 } from 'resources/GetInitiativeAllowedTransitions';
@@ -53,7 +55,7 @@ import events, {
 } from 'components/admin/PostManager/events';
 
 interface DataProps {
-  tenant: GetTenantChildProps;
+  tenant: GetAppConfigurationChildProps;
   allowedTransitions: GetInitiativeAllowedTransitionsChildProps;
 }
 
@@ -283,7 +285,7 @@ const InitiativesRowWithHocs = injectIntl(
 );
 
 const Data = adopt<DataProps, InputProps>({
-  tenant: <GetTenant />,
+  tenant: <GetAppConfiguration />,
   allowedTransitions: ({ initiative, render }) => (
     <GetInitiativeAllowedTransitions id={initiative.id}>
       {render}
