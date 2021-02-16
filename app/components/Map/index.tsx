@@ -25,8 +25,11 @@ import Legend from './Legend';
 
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
-import useMapConfig, { IOutput as IMapConfig } from 'hooks/useMapConfig';
+import useMapConfig from 'hooks/useMapConfig';
 import usePrevious from 'hooks/usePrevious';
+
+// utils
+import { getCenter, getZoomLevel, getTileProvider } from 'utils/map';
 
 // i18n
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
@@ -34,12 +37,9 @@ import injectLocalize, { InjectedLocalized } from 'utils/localize';
 // styling
 import styled from 'styled-components';
 import { darken } from 'polished';
-import { media, defaultOutline } from 'utils/styleUtils';
+import { media, defaultOutline, defaultCardStyle } from 'utils/styleUtils';
 import ideaMarkerIcon from './idea-marker.svg';
 import legendMarkerIcon from './legend-marker.svg';
-
-// typings
-import { IAppConfiguration } from 'services/appConfiguration';
 
 export interface Point extends GeoJSON.Point {
   data?: any;
@@ -64,10 +64,16 @@ const Container = styled.div`
   height: 100%;
   display: flex;
   align-items: stretch;
+  justify-content: stretch;
   flex-direction: column;
+  ${defaultCardStyle}
 `;
 
 const MapContainer = styled.div`
+  flex: 1;
+  display: flex;
+  align-items: stretch;
+  justify-content: stretch;
   position: relative;
 `;
 
@@ -158,70 +164,9 @@ interface Props {
   onMarkerClick?: (id: string, data: any) => void;
   onMapClick?: (map: L.Map, position: L.LatLng) => void;
   fitBounds?: boolean;
+  hideLegend?: boolean;
   className?: string;
 }
-
-const getCenter = (
-  centerCoordinates: GeoJSON.Position | undefined,
-  appConfig: IAppConfiguration | undefined | null | Error,
-  mapConfig: IMapConfig
-) => {
-  const projectCenterLat =
-    mapConfig?.attributes.center_geojson?.coordinates?.[1];
-  const tenantCenterLat =
-    !isNilOrError(appConfig) &&
-    appConfig?.data?.attributes?.settings?.maps?.map_center?.lat;
-  const projectCenterLong =
-    mapConfig?.attributes.center_geojson?.coordinates?.[0];
-  const tenantCenterLong =
-    !isNilOrError(appConfig) &&
-    appConfig?.data?.attributes?.settings?.maps?.map_center?.long;
-
-  let center: L.LatLngExpression = [0, 0];
-
-  if (centerCoordinates !== undefined) {
-    center = centerCoordinates as L.LatLngExpression;
-  } else if (
-    projectCenterLat !== undefined &&
-    projectCenterLong !== undefined
-  ) {
-    center = [projectCenterLat, projectCenterLong];
-  } else if (
-    tenantCenterLat !== undefined &&
-    tenantCenterLat !== false &&
-    tenantCenterLong !== undefined &&
-    tenantCenterLong !== false
-  ) {
-    center = [parseFloat(tenantCenterLat), parseFloat(tenantCenterLong)];
-  }
-
-  return center;
-};
-
-const getZoomLevel = (
-  zoom: number | undefined,
-  appConfig: IAppConfiguration | undefined | null | Error,
-  mapConfig: IMapConfig
-) => {
-  const mapConfigZoomLevel = mapConfig?.attributes.zoom_level;
-  const tenantZoomLevel =
-    !isNilOrError(appConfig) &&
-    (appConfig?.data?.attributes?.settings?.maps?.zoom_level as any);
-  return parseInt(zoom || mapConfigZoomLevel || tenantZoomLevel || 16, 10);
-};
-
-const getTileProvider = (
-  _appConfig: IAppConfiguration | undefined | null | Error,
-  mapConfig: IMapConfig
-) => {
-  const mapConfigTileProvider = mapConfig?.attributes?.tile_provider;
-  // const appConfigProvider =
-  //   !isNilOrError(appConfig) &&
-  //   appConfig?.data?.attributes?.settings?.maps?.tile_provider;
-  const fallbackProvider =
-    'https://api.maptiler.com/maps/77632ac6-e168-429c-8b1b-76599ce796e3/{z}/{x}/{y}@2x.png?key=DIZiuhfkZEQ5EgsaTk6D';
-  return mapConfigTileProvider || fallbackProvider;
-};
 
 const Map = memo<Props & InjectedLocalized>(
   ({
@@ -236,6 +181,7 @@ const Map = memo<Props & InjectedLocalized>(
     fitBounds,
     className,
     localize,
+    hideLegend,
   }) => {
     const appConfig = useAppConfiguration();
     const mapConfig = useMapConfig({ projectId, prefetchMapLayers: true });
@@ -449,7 +395,7 @@ const Map = memo<Props & InjectedLocalized>(
     };
 
     return (
-      <Container>
+      <Container className={className || ''}>
         <MapContainer>
           {!isNilOrError(boxContent) && (
             <BoxContainer>
@@ -461,12 +407,9 @@ const Map = memo<Props & InjectedLocalized>(
             </BoxContainer>
           )}
 
-          <LeafletMapContainer
-            id="mapid"
-            className={`e2e-map ${className || ''}`}
-          />
+          <LeafletMapContainer id="mapid" className="e2e-map" />
         </MapContainer>
-        {projectId && <Legend projectId={projectId} />}
+        {projectId && !hideLegend && <Legend projectId={projectId} />}
       </Container>
     );
   }

@@ -5,13 +5,17 @@ import { isEmpty, inRange } from 'lodash-es';
 import { updateProjectMapConfig } from 'services/mapConfigs';
 
 // hooks
-import useMapConfig, { IOutput as IMapConfig } from 'hooks/useMapConfig';
+import useAppConfiguration from 'hooks/useAppConfiguration';
+import useMapConfig from 'hooks/useMapConfig';
 
 // components
 import { Input } from 'cl2-component-library';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import { SubSectionTitle } from 'components/admin/Section';
+
+// utils
+import { getCenter } from 'utils/map';
 
 // i18n
 // import T from 'components/T';
@@ -48,36 +52,30 @@ interface IFormValues {
   center: string | null;
 }
 
-const getCenter = (mapConfig: IMapConfig) => {
-  const lat = mapConfig?.attributes?.center_geojson?.coordinates?.[0];
-  const long = mapConfig?.attributes?.center_geojson?.coordinates?.[1];
-
-  if (lat && long) {
-    return `${long}, ${lat}`;
-  }
-
-  return null;
-};
-
 const MapCenterConfig = memo<Props & InjectedIntlProps>(
   ({ projectId, className, intl: { formatMessage } }) => {
+    const appConfig = useAppConfiguration();
     const mapConfig = useMapConfig({ projectId });
 
     const [touched, setTouched] = useState(false);
     const [processing, setProcessing] = useState(false);
     const [errors, setErrors] = useState<{ [key: string]: any }>({});
     const [formValues, setFormValues] = useState<IFormValues>({
-      center: getCenter(mapConfig),
+      center: `${getCenter(undefined, appConfig, mapConfig)[0]}, ${
+        getCenter(undefined, appConfig, mapConfig)[1]
+      }`,
     });
 
     useEffect(() => {
       formChange(
         {
-          center: getCenter(mapConfig),
+          center: `${getCenter(undefined, appConfig, mapConfig)[0]}, ${
+            getCenter(undefined, appConfig, mapConfig)[1]
+          }`,
         },
         false
       );
-    }, [mapConfig]);
+    }, [appConfig, mapConfig]);
 
     const validate = () => {
       const latlong = formValues?.center?.split(',');

@@ -40,14 +40,10 @@ const Container = styled.div`
 `;
 
 const StyledMap = styled(Map)`
-  height: 600px;
+  height: 800px;
 
-  ${media.smallerThanMaxTablet`
-    height: 500px;
-  `}
-
-  ${media.smallerThanMinTablet`
-    height: 400px;
+  ${media.smallerThan1100px`
+    height: calc(100vh - 180px);
   `}
 `;
 

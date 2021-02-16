@@ -5,7 +5,8 @@ import { isEmpty, isNumber, inRange } from 'lodash-es';
 import { updateProjectMapConfig } from 'services/mapConfigs';
 
 // hooks
-import useMapConfig, { IOutput as IMapConfig } from 'hooks/useMapConfig';
+import useAppConfiguration from 'hooks/useAppConfiguration';
+import useMapConfig from 'hooks/useMapConfig';
 
 // components
 import { Input } from 'cl2-component-library';
@@ -13,8 +14,10 @@ import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import { SubSectionTitle } from 'components/admin/Section';
 
+// utils
+import { getZoomLevel } from 'utils/map';
+
 // i18n
-// import T from 'components/T';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
@@ -50,40 +53,31 @@ interface IFormValues {
   zoom: number | null;
 }
 
-const getZoom = (mapConfig: IMapConfig) => {
-  if (mapConfig?.attributes?.zoom_level !== undefined) {
-    const zoom = parseInt(mapConfig?.attributes?.zoom_level, 10);
-
-    if (inRange(zoom, 0, 18)) {
-      return zoom;
-    }
-  }
-
-  return null;
-};
-
 const MapZoomConfig = memo<Props & InjectedIntlProps>(
   ({ projectId, className, intl: { formatMessage } }) => {
+    const appConfig = useAppConfiguration();
     const mapConfig = useMapConfig({ projectId });
 
     const [touched, setTouched] = useState(false);
     const [processing, setProcessing] = useState(false);
     const [errors, setErrors] = useState<{ [key: string]: any }>({});
     const [formValues, setFormValues] = useState<IFormValues>({
-      zoom: getZoom(mapConfig),
+      zoom: getZoomLevel(undefined, appConfig, mapConfig),
     });
 
     useEffect(() => {
       formChange(
         {
-          zoom: getZoom(mapConfig),
+          zoom: getZoomLevel(undefined, appConfig, mapConfig),
         },
         false
       );
-    }, [mapConfig]);
+    }, [appConfig, mapConfig]);
 
     const validate = () => {
-      if (isNumber(formValues.zoom) && inRange(formValues.zoom, 1, 18)) {
+      const newZoomLevel = parseInt(formValues.zoom as any, 10);
+
+      if (isNumber(newZoomLevel) && inRange(newZoomLevel, 1, 18)) {
         return true;
       }
 

@@ -43,8 +43,6 @@ const IdeaButtonWrapper = styled.div``;
 
 const StyledMap = styled(Map)`
   height: 800px;
-  border: solid 1px #ccc;
-  border-radius: ${(props: any) => props.theme.borderRadius};
 
   ${media.smallerThan1100px`
     height: calc(100vh - 180px);
