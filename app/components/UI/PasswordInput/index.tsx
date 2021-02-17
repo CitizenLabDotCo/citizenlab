@@ -2,7 +2,7 @@ import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // hooks
-import useTenant from 'hooks/useTenant';
+import useAppConfiguration from 'hooks/useAppConfiguration';
 
 // components
 import PasswordInputComponent from './PasswordInput';
@@ -46,7 +46,7 @@ const PasswordInput = ({
   isLoginPasswordInput,
   errors,
 }: Props) => {
-  const tenant = useTenant();
+  const tenant = useAppConfiguration();
 
   if (!isNilOrError(tenant)) {
     const minimumPasswordLength =

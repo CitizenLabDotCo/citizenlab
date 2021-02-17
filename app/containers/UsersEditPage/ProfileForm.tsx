@@ -13,7 +13,9 @@ import GetLockedFields, {
   GetLockedFieldsChildProps,
 } from 'resources/GetLockedFields';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetAppConfiguration';
 
 // utils
 import { Formik } from 'formik';
@@ -80,7 +82,7 @@ interface InputProps {}
 interface DataProps {
   userCustomFieldsSchema: GetUserCustomFieldsSchemaChildProps;
   authUser: GetAuthUserChildProps;
-  tenant: GetTenantChildProps;
+  tenant: GetAppConfigurationChildProps;
   lockedFields: GetLockedFieldsChildProps;
 }
 
@@ -477,7 +479,7 @@ const ProfileFormWithHocs = injectIntl<InputProps>(localize(ProfileForm));
 
 const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
-  tenant: <GetTenant />,
+  tenant: <GetAppConfiguration />,
   lockedFields: <GetLockedFields />,
   userCustomFieldsSchema: <GetUserCustomFieldsSchema />,
 });
