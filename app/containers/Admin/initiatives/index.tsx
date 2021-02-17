@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useState } from 'react';
 import { withRouter, WithRouterProps } from 'react-router';
 
 // components
@@ -17,6 +17,8 @@ import tracks from './tracks';
 
 // styles
 import styled from 'styled-components';
+import { ITab } from 'typings';
+import Outlet from 'components/Outlet';
 
 const TopContainer = styled.div`
   width: 100%;
@@ -37,21 +39,18 @@ const ActionsContainer = styled.div`
 `;
 const InitiativesPage = memo<InjectedIntlProps & WithRouterProps>(
   ({ children, intl: { formatMessage }, location }) => {
-    const tabs = [
+    const [tabs, setTabs] = useState<ITab[]>([
       {
         label: formatMessage(messages.settingsTab),
+        name: 'initiatives',
         url: '/admin/initiatives',
       },
       {
         label: formatMessage(messages.manageTab),
+        name: 'manage',
         url: '/admin/initiatives/manage',
       },
-      {
-        label: formatMessage(messages.permissionTab),
-        url: '/admin/initiatives/permissions',
-        feature: 'granular_permissions',
-      },
-    ];
+    ]);
 
     const resource = {
       title: formatMessage(messages.titleInitiatives),
@@ -63,9 +62,35 @@ const InitiativesPage = memo<InjectedIntlProps & WithRouterProps>(
       });
     };
 
+    const insertTab = ({
+      tabConfiguration,
+      insertAfterTabName,
+    }: {
+      tabConfiguration: ITab;
+      insertAfterTabName?: string;
+    }) => {
+      setTabs((tabs) => {
+        const insertIndex =
+          tabs.findIndex((tab) => tab.name === insertAfterTabName) + 1;
+        if (insertIndex > 0) {
+          return [
+            ...tabs.slice(0, insertIndex),
+            tabConfiguration,
+            ...tabs.slice(insertIndex),
+          ];
+        }
+        return [...tabs, tabConfiguration];
+      });
+    };
+
     const { pathname } = location;
     return (
       <>
+        <Outlet
+          id="app.containers.Admin.initiatives.tabs"
+          onData={insertTab}
+          formatMessage={formatMessage}
+        />
         <TopContainer>
           <ActionsContainer>
             <Button

@@ -4,7 +4,7 @@ import { Form, Field, InjectedFormikProps } from 'formik';
 
 // Components
 import { SectionField } from 'components/admin/Section';
-import FormikInputMultiloc from 'components/UI/FormikInputMultiloc';
+import FormikInputMultilocWithLocaleSwitcher from 'components/UI/FormikInputMultilocWithLocaleSwitcher';
 import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
 import { FooterContainer, Fill } from 'containers/Admin/users/NormalGroupForm';
 import Error from 'components/UI/Error';
@@ -47,7 +47,7 @@ export class RulesGroupForm extends React.PureComponent<
             <Field
               id="group-title-field"
               name="title_multiloc"
-              component={FormikInputMultiloc}
+              component={FormikInputMultilocWithLocaleSwitcher}
               label={
                 <FormattedMessage {...adminUsersMessages.fieldGroupName} />
               }

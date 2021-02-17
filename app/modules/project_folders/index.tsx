@@ -87,13 +87,9 @@ const configuration: ModuleConfiguration = {
         <NewProjectFolderButton />
       </RenderOnFeatureFlag>
     ),
-    'app.containers.AdminPage.projects.all.projectsAndFolders.projectFolderRow': (
-      props
-    ) => (
+    'app.containers.AdminPage.projects.all.projectsAndFolders.row': (props) => (
       <RenderOnPublicationType publication={props.publication}>
-        <RenderOnProjectFolderModerator>
-          <ProjectFolderRow {...props} />
-        </RenderOnProjectFolderModerator>
+        <ProjectFolderRow {...props} />
       </RenderOnPublicationType>
     ),
     'app.components.ProjectAndFolderCards.card': (props) => (
