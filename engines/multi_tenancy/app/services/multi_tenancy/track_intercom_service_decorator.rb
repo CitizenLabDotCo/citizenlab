@@ -8,7 +8,30 @@ module MultiTenancy
     rescue Intercom::ResourceNotFound
       # Ignored: we don't add the company when there is not current tenant.
     end
+
+    def user_attributes(user)
+      super.merge(TrackingTenantService.new.tenant_properties)
+    end
+
+    def activity_attributes(activity)
+      tracking_service = TrackingTenantService.new
+      super.merge(tracking_service.tenant_properties)
+           .merge(tracking_service.environment_properties)
+    end
+
+    def tenant_attributes(tenant)
+      TrackingTenantService.new.tenant_properties
+    end
+
+    private
+
+    def add_company_to_contact(contact, tenant)
+      company = @intercom.companies.find(id: tenant.id)
+      contact.add_company(id: company.id)
+    rescue Intercom::ResourceNotFound
+      # Ignored
+    end
   end
 end
 
-::TrackIntercomService.prepend(MultiTenancy::TrackIntercomServiceDecorator)
+TrackIntercomService.prepend(MultiTenancy::TrackIntercomServiceDecorator)
