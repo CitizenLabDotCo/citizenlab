@@ -2103,7 +2103,7 @@
   "app.containers.Projects.xSurveysInCurrentPhase": "{surveysCount, plural, one {# encuesta} other {# encuestas}} en la fase actual",
   "app.containers.Projects.xUpcomingEvents": "{upcomingEventsCount, plural, one {# próximo evento} other {# próximos eventos}}",
   "app.containers.ProjectsIndexPage.metaDescription": "Explora todos los proyectos en curso de {orgName} para entender cómo puedes participar.\nÚnete a la conversación sobre los proyectos que más te interesen.",
-  "app.containers.ProjectsIndexPage.metaTitle": "Proyectos • {orgName}",
+  "app.containers.ProjectsIndexPage.metaTitle": "{orgName}",
   "app.containers.ProjectsIndexPage.pageTitle": "Proyectos",
   "app.containers.ProjectsShowPage.VolunteeringSection.becomeVolunteerButton": "Quiero ser voluntario",
   "app.containers.ProjectsShowPage.VolunteeringSection.notLoggedIn": "Por favor, {signInLink} o {signUpLink} primero para poder ofrecerte como voluntario para esta actividad",
