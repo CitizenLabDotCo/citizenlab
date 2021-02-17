@@ -19,7 +19,6 @@ import tracks from './tracks';
 import styled from 'styled-components';
 import { InsertTabOptions, ITab } from 'typings';
 import Outlet from 'components/Outlet';
-import { isArray, isPlainObject } from 'lodash-es';
 import { insertTab } from 'utils/moduleUtils';
 
 const TopContainer = styled.div`
