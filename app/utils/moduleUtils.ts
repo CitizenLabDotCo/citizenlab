@@ -1,4 +1,3 @@
-import { TabProps } from 'components/admin/TabbedResource';
 import {
   TSignUpStepConfigurationObject,
   TSignUpSteps,
