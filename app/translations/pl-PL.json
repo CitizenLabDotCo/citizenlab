@@ -439,7 +439,7 @@
   "app.components.admin.InputManager.onePost": "1 wkład",
   "app.components.admin.PostManager.PostPreview.addTag": "Dodaj tag",
   "app.components.admin.PostManager.PostPreview.assignee": "Moderator",
-  "app.components.admin.PostManager.PostPreview.autotaggingProcessing": "Automatyczne tagowanie: przetwarzanie {remainingItems} elementów",
+  "app.components.admin.PostManager.PostPreview.autotaggingProcessing": "Automatyczne tagowanie: {remainingItems} elementów jest przetwarzanych",
   "app.components.admin.PostManager.PostPreview.cancelEdit": "Anuluj edycję",
   "app.components.admin.PostManager.PostPreview.createTag": "Utwórz tag",
   "app.components.admin.PostManager.PostPreview.currentStatus": "Aktualny status",
