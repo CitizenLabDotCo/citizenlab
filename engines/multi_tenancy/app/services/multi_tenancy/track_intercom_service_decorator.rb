@@ -20,7 +20,7 @@ module MultiTenancy
     end
 
     def tenant_attributes(tenant)
-      TrackingTenantService.new.tenant_properties
+      TrackingTenantService.new.tenant_properties(tenant)
     end
 
     private
