@@ -15,6 +15,7 @@ import Loadable from 'react-loadable';
 import { IGroupDataAttributes, MembershipType } from 'services/groups';
 import {
   FormikSubmitHandler,
+  InsertTabOptions,
   ITab,
   MessageDescriptor,
   Multiloc,
@@ -89,10 +90,7 @@ export type OutletsPropertyMap = {
       messageDescriptor: MessageDescriptor,
       values?: { [key: string]: MessageValue } | undefined
     ) => string;
-    onData: (data: {
-      insertAfterTabName?: string;
-      tabConfiguration: ITab;
-    }) => void;
+    onData: (data: InsertTabOptions) => void;
   };
   'app.containers.Admin.sideBar.navItems': {
     onData: (data: {
