@@ -141,7 +141,7 @@ RSpec.describe Phase, type: :model do
 
     context 'when there are 3 phases that belong to published publications' do
       it 'returns only the phases that belong to published publications' do
-        expect(described_class.starting_on(start_date).length).to eq 6
+        expect(described_class.starting_on(start_date).length).to eq phases.length
       end
 
       it 'returns no phases if the date is tomorrow' do
