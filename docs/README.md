@@ -2,9 +2,11 @@
 
 ## Next release 
 
+## 2021-02-17
+
 ### Changed
 - All input fields for multiple locales now use the components with locale switchers, resulting in a cleaner and more compact UI.
-- Poll related copy improvements
+- Copy improvements
 
 ## 2021-02-12
 
