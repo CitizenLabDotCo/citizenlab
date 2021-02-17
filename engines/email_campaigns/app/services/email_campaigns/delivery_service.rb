@@ -62,7 +62,7 @@ module EmailCampaigns
 
     delegate :campaign_types, to: :class
 
-    def consentable_campaign_types_for user
+    def consentable_campaign_types_for(user)
       consentable_types = Consentable.consentable_campaign_types(CAMPAIGN_CLASSES, user)
       disabled_types = Disableable.enabled_campaign_types(Campaign.where(type: campaign_types))
 
@@ -70,44 +70,41 @@ module EmailCampaigns
     end
 
     # called every hour
-    def send_on_schedule time=Time.now
+    def send_on_schedule(time = Time.zone.now)
       campaign_candidates = Campaign.where(type: campaign_types)
       apply_send_pipeline(campaign_candidates, time: time)
     end
 
     #  called on every activity
-    def send_on_activity activity
+    def send_on_activity(activity)
       campaign_candidates = Campaign.where(type: campaign_types)
       apply_send_pipeline(campaign_candidates, activity: activity)
     end
 
     #  called when explicit send is requested by human
-    def send_now campaign
+    def send_now(campaign)
       apply_send_pipeline([campaign])
     end
 
-    def send_preview campaign, recipient
+    def send_preview(campaign, recipient)
       campaign.generate_commands(
         recipient: recipient,
-        time: Time.now
+        time: Time.zone.now
       ).each do |command|
         process_command(campaign, command.merge({ recipient: recipient }))
       end
     end
 
     # This only works for emails that are sent out internally
-    def preview_html campaign, recipient
+    def preview_html(campaign, recipient)
       command = campaign.generate_commands(
         recipient: recipient,
-        time: Time.now
+        time: Time.zone.now
       ).first&.merge({ recipient: recipient })
+      return unless command
 
-      if command
-        mail = campaign.mailer_class.with(campaign: campaign, command: command).campaign_mail
-        mail.parts[1].body.to_s
-      else
-        nil
-      end
+      mail = campaign.mailer_class.with(campaign: campaign, command: command).campaign_mail
+      mail.parts[1].body.to_s
     end
 
     private
@@ -157,28 +154,8 @@ module EmailCampaigns
     #   event_payload: # A hash with the daa that's needed to generate email view, required
     #   delay: # Integer in seconds, optional
     # }
-    def process_command campaign, command
-      if campaign.respond_to? :mailer_class
-        send_command_internal(campaign, command)
-      else
-        send_command_external(campaign, command)
-      end
-    end
-
-    # This method is triggered when the given sending command should be sent
-    # out through the event bus
-    def send_command_external campaign, command
-      rabbit_event = {
-        event: "#{campaign.class.campaign_name} email command",
-        timestamp: Time.now.iso8601,
-        user_id: command[:recipient].id,
-        campaign_id: campaign.id,
-        payload: command[:event_payload]
-      }
-
-      PublishGenericEventToRabbitJob
-        .set(wait: command[:delay] || 0)
-        .perform_later rabbit_event, "campaigns.command.#{campaign.class.campaign_name}"
+    def process_command(campaign, command)
+      send_command_internal(campaign, command) if campaign.respond_to? :mailer_class
     end
 
     # This method is triggered when the given sending command should be sent
