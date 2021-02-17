@@ -1,6 +1,7 @@
 import { isNilOrError } from 'utils/helperUtils';
 import { IOutput as IMapConfig } from 'hooks/useMapConfig';
 import { IAppConfiguration } from 'services/appConfiguration';
+import { IMapLayerAttributes } from 'services/mapLayers';
 
 export const getCenter = (
   centerCoordinates: GeoJSON.Position | undefined,
@@ -59,4 +60,23 @@ export const getTileProvider = (
   const fallbackProvider =
     'https://api.maptiler.com/maps/77632ac6-e168-429c-8b1b-76599ce796e3/{z}/{x}/{y}@2x.png?key=DIZiuhfkZEQ5EgsaTk6D';
   return mapConfigTileProvider || fallbackProvider;
+};
+
+export const getLayerType = (mapLayer: IMapLayerAttributes | undefined) => {
+  return mapLayer?.geojson?.features?.[0]?.geometry?.type || 'Point';
+};
+
+export const getLayerColor = (mapLayer: IMapLayerAttributes | undefined) => {
+  const type = getLayerType(mapLayer);
+  const fillColor: string | undefined =
+    mapLayer?.geojson?.features?.[0]?.properties?.fill;
+  const markerColor: string | undefined =
+    mapLayer?.geojson?.features?.[0]?.properties?.['marker-color'];
+  const fallbackColor = '#000000';
+
+  if (type === 'Point') {
+    return markerColor || fillColor || fallbackColor;
+  }
+
+  return fillColor || fallbackColor;
 };

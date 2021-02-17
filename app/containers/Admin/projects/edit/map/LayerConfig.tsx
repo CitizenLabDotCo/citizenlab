@@ -11,8 +11,10 @@ import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import { Label, ColorPickerInput, Input } from 'cl2-component-library';
 
+// utils
+import { getLayerColor, getLayerType } from 'utils/map';
+
 // i18n
-// import T from 'components/T';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import { InjectedIntlProps } from 'react-intl';
@@ -70,36 +72,16 @@ interface IFormValues {
   markerSymbol: string;
 }
 
-export const getLayerType = (mapLayer: IMapLayerAttributes | undefined) => {
-  return mapLayer?.geojson?.features?.[0]?.geometry.type || 'Point';
-};
-
-export const getLayerColor = (
-  mapLayer: IMapLayerAttributes | undefined,
-  type: GeoJSON.GeoJsonTypes | undefined
-) => {
-  let color: string;
-
-  if (type === 'Point') {
-    color = mapLayer?.geojson?.features?.[0]?.properties?.['marker-color'];
-  }
-
-  color = mapLayer?.geojson?.features?.[0]?.properties?.fill;
-
-  return color || '#000000';
-};
-
 const LayerConfig = memo<Props & InjectedIntlProps & InjectedLocalized>(
   ({ projectId, mapLayer, className, onClose, intl: { formatMessage } }) => {
     const type = getLayerType(mapLayer);
 
     const [touched, setTouched] = useState(false);
     const [processing, setProcessing] = useState(false);
-    // const [success, setSuccess] = useState(false);
     const [errors, setErrors] = useState<{ [key: string]: any }>({});
     const [formValues, setFormValues] = useState<IFormValues>({
       title_multiloc: mapLayer?.title_multiloc || null,
-      color: getLayerColor(mapLayer, type),
+      color: getLayerColor(mapLayer),
       markerSymbol:
         mapLayer?.geojson?.features?.[0]?.properties?.['marker-symbol'] || '',
       tooltipContent:
@@ -111,7 +93,7 @@ const LayerConfig = memo<Props & InjectedIntlProps & InjectedLocalized>(
       formChange(
         {
           title_multiloc: mapLayer?.title_multiloc || null,
-          color: getLayerColor(mapLayer, type),
+          color: getLayerColor(mapLayer),
           markerSymbol:
             mapLayer?.geojson?.features?.[0]?.properties?.['marker-symbol'] ||
             '',
@@ -152,7 +134,6 @@ const LayerConfig = memo<Props & InjectedIntlProps & InjectedLocalized>(
       changedFormValue: Partial<IFormValues>,
       touched = true
     ) => {
-      // setSuccess(false);
       setTouched(touched);
       setFormValues((prevFormValues) => ({
         ...prevFormValues,
@@ -162,13 +143,11 @@ const LayerConfig = memo<Props & InjectedIntlProps & InjectedLocalized>(
 
     const formProcessing = () => {
       setProcessing(true);
-      // setSuccess(false);
       setErrors({});
     };
 
     const formSuccess = () => {
       setProcessing(false);
-      // setSuccess(true);
       setErrors({});
       setTouched(false);
       onClose();
@@ -176,7 +155,6 @@ const LayerConfig = memo<Props & InjectedIntlProps & InjectedLocalized>(
 
     const formError = (errorResponse) => {
       setProcessing(false);
-      // setSuccess(false);
       setErrors(errorResponse?.json?.errors || 'unknown error');
     };
 
@@ -208,20 +186,6 @@ const LayerConfig = memo<Props & InjectedIntlProps & InjectedLocalized>(
             tooltipContent: formValues.tooltipContent,
             popupContent: formValues.popupContent,
           };
-
-          // if (formValues.tooltipContent && !Object.values(formValues.tooltipContent).some(x => (x && x !== ''))) {
-          //   feature.properties = {
-          //     ...feature.properties,
-          //     tooltipContent: formValues.tooltipContent,
-          //   };
-          // }
-
-          // if (formValues.popupContent && !Object.values(formValues.popupContent).some(x => (x && x !== ''))) {
-          //   feature.properties = {
-          //     ...feature.properties,
-          //     popupContent: formValues.popupContent,
-          //   };
-          // }
         });
 
         try {

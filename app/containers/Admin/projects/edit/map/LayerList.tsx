@@ -3,7 +3,7 @@ import React, { memo, useState } from 'react';
 // components
 import Button from 'components/UI/Button';
 import ImportButton from './ImportButton';
-import LayerConfig, { getLayerColor, getLayerType } from './LayerConfig';
+import LayerConfig from './LayerConfig';
 import MapZoomConfig from './MapZoomConfig';
 import MapCenterConfig from './MapCenterConfig';
 import Tippy from '@tippyjs/react';
@@ -15,6 +15,7 @@ import {
 import { SortableList, SortableRow } from 'components/admin/ResourceList';
 
 // hooks
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useMapConfig from 'hooks/useMapConfig';
 
 // services
@@ -23,6 +24,10 @@ import {
   deleteProjectMapLayer,
   reorderProjectMapLayer,
 } from 'services/mapLayers';
+
+// utils
+import { getLayerColor, getLayerType } from 'utils/map';
+import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
 import T from 'components/T';
@@ -133,6 +138,7 @@ interface Props {
 }
 
 const LayerList = memo<Props>(({ projectId, className }) => {
+  const tenantLocales = useAppConfigurationLocales();
   const mapConfig = useMapConfig({ projectId, prefetchMapLayers: true });
   const mapConfigId = mapConfig?.id || null;
 
@@ -143,12 +149,28 @@ const LayerList = memo<Props>(({ projectId, className }) => {
 
   const handleGeoJsonImport = (geojson: GeoJSON.FeatureCollection) => {
     if (mapConfigId) {
+      const unnamedLayersCount =
+        mapConfig?.attributes?.layers?.filter((layer) =>
+          layer?.title_multiloc?.['en']?.startsWith('Unnamed')
+        )?.length || 0;
+
+      const newUnnamedLayerTitle = `Unnamed layer ${unnamedLayersCount + 1}`;
+
+      const title_multiloc = {
+        en: newUnnamedLayerTitle,
+      };
+
+      if (!isNilOrError(tenantLocales)) {
+        tenantLocales.forEach(
+          (tenantLocale) =>
+            (title_multiloc[tenantLocale] = newUnnamedLayerTitle)
+        );
+      }
+
       createProjectMapLayer(projectId, {
         geojson,
+        title_multiloc,
         id: mapConfigId,
-        title_multiloc: {
-          en: `Unnamed layer ${Date.now()}`,
-        },
         default_enabled: true,
       });
     }
@@ -243,7 +265,7 @@ const LayerList = memo<Props>(({ projectId, className }) => {
                   {(itemsList as IMapLayerAttributes[]).map(
                     (mapLayer, index) => {
                       const layerType = getLayerType(mapLayer);
-                      const layerColor = getLayerColor(mapLayer, layerType);
+                      const layerColor = getLayerColor(mapLayer);
                       const layerIcon = getLayerIcon(layerType);
 
                       return (
