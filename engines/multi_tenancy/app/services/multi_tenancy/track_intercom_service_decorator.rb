@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module MultiTenancy
   module TrackIntercomServiceDecorator
     # Patches +identify_user+ to link the user with an intercom company

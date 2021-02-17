@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module MultiTenancy
   class TrackingTenantService
     # @param [Tenant, nil] tenant
