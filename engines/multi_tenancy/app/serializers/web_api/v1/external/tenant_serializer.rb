@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class WebApi::V1::External::TenantSerializer < ActiveModel::Serializer
   attributes :id, :name, :host, :settings, :style, :logo, :header_bg
 
