@@ -20,11 +20,13 @@ export default function useTaggings() {
       },
     }).observable;
 
-    const subscription = taggingObservable.subscribe((taggings) => {
-      setTaggings(isNilOrError(taggings) ? taggings : taggings.data);
-    });
+    const subscriptions = [
+      taggingObservable.subscribe((taggings) => {
+        setTaggings(isNilOrError(taggings) ? taggings : taggings.data);
+      }),
+    ];
 
-    return () => subscription.unsubscribe();
+    return () => subscriptions.forEach((sub) => sub.unsubscribe());
   }, [ideaIds]);
 
   return { taggings, onIdeasChange };

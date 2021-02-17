@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import { reportError } from 'utils/loggingUtils';
 import { adopt } from 'react-adopt';
+import { isNilOrError } from 'utils/helperUtils';
 
 // utils
 import Link from 'utils/cl-router/Link';
@@ -24,16 +25,19 @@ import tracks from './tracks';
 
 // services
 import { removeUrlLocale } from 'services/locale';
-import { LEGAL_PAGES } from 'services/pages';
+import { LEGAL_PAGES, TLegalPage } from 'services/pages';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetWindowSize, {
   GetWindowSizeChildProps,
 } from 'resources/GetWindowSize';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetAppConfiguration';
 
 // style
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { transparentize } from 'polished';
 import {
   media,
@@ -234,7 +238,7 @@ const StyledButton = styled.button`
   }
 `;
 
-const StyledLink = styled(Link)`
+const linkStyle = css`
   color: ${colors.label};
   font-weight: 400;
   font-size: ${fontSizes.small}px;
@@ -250,6 +254,14 @@ const StyledLink = styled(Link)`
     color: #000;
     text-decoration: underline;
   }
+`;
+
+const StyledLink = styled(Link)`
+  ${linkStyle}
+`;
+
+const StyledA = styled.a`
+  ${linkStyle}
 `;
 
 const Right = styled.div`
@@ -340,6 +352,7 @@ interface InputProps {
 interface DataProps {
   locale: GetLocaleChildProps;
   windowSize: GetWindowSizeChildProps;
+  tenant: GetAppConfigurationChildProps;
 }
 
 interface Props extends DataProps, InputProps {}
@@ -427,6 +440,45 @@ class PlatformFooter extends PureComponent<Props, State> {
     eventEmitter.emit('openConsentManager');
   };
 
+  getHasCustomizedA11yFooterLink = () => {
+    const { tenant } = this.props;
+
+    if (!isNilOrError(tenant)) {
+      if (
+        // Hillerod
+        tenant.id === '6964ee76-97bb-4106-8be0-cfba7a027240' ||
+        // Linz
+        tenant.id === '7413b333-a14a-4a3a-a037-da6ac4caf440'
+      ) {
+        return true;
+      }
+    }
+
+    return false;
+  };
+
+  getCustomizedA11yHref = () => {
+    const { tenant } = this.props;
+
+    if (!isNilOrError(tenant)) {
+      if (
+        // Hillerod
+        tenant.id === '6964ee76-97bb-4106-8be0-cfba7a027240'
+      ) {
+        return 'https://www.was.digst.dk/hillerod-citizenlab-co-da-DK';
+      }
+
+      if (
+        // Linz
+        tenant.id === '7413b333-a14a-4a3a-a037-da6ac4caf440'
+      ) {
+        return 'https://res.cloudinary.com/citizenlabco/image/upload/v1611739984/Linz_Web_Content_Accessibility_Guidlines_WCAG_2.1_nduhob.pdf';
+      }
+    }
+
+    return null;
+  };
+
   render() {
     const {
       shortFeedbackButtonClicked,
@@ -443,6 +495,8 @@ class PlatformFooter extends PureComponent<Props, State> {
     const smallerThanSmallTablet = windowSize
       ? windowSize <= viewportWidths.smallTablet
       : false;
+    const hasCustomizedA11yFooterLink = this.getHasCustomizedA11yFooterLink();
+    const customizedA11yHref = this.getCustomizedA11yHref();
 
     return (
       <Container
@@ -528,21 +582,43 @@ class PlatformFooter extends PureComponent<Props, State> {
         >
           <PagesNav>
             <PagesNavList>
-              {LEGAL_PAGES
-                // to be added back when we do the footer redesign
-                .filter((slug) => slug !== 'accessibility-statement')
-                .map((slug, index) => (
+              {LEGAL_PAGES.map((slug: TLegalPage, index) => {
+                return (
                   <React.Fragment key={slug}>
                     <PagesNavListItem>
-                      <StyledLink
-                        to={`/pages/${slug}`}
-                        className={index === 0 ? 'first' : ''}
-                      >
-                        <FormattedMessage {...messages[slug]} />
-                      </StyledLink>
+                      {slug === 'accessibility-statement' &&
+                      hasCustomizedA11yFooterLink &&
+                      customizedA11yHref ? (
+                        <StyledA
+                          href={customizedA11yHref}
+                          className={index === 0 ? 'first' : ''}
+                        >
+                          <FormattedMessage
+                            {...messages.accessibilityStatement}
+                          />
+                        </StyledA>
+                      ) : (
+                        <StyledLink
+                          to={`/pages/${slug}`}
+                          className={index === 0 ? 'first' : ''}
+                        >
+                          <FormattedMessage
+                            {...{
+                              information: messages.information,
+                              'terms-and-conditions':
+                                messages.termsAndConditions,
+                              'privacy-policy': messages.privacyPolicy,
+                              'cookie-policy': messages.cookiePolicy,
+                              'accessibility-statement':
+                                messages.accessibilityStatement,
+                            }[slug]}
+                          />
+                        </StyledLink>
+                      )}
                     </PagesNavListItem>
                   </React.Fragment>
-                ))}
+                );
+              })}
               <PagesNavListItem>
                 <StyledButton onClick={this.openConsentManager}>
                   <FormattedMessage {...messages.cookieSettings} />
@@ -580,6 +656,7 @@ class PlatformFooter extends PureComponent<Props, State> {
 const Data = adopt<Props>({
   locale: <GetLocale />,
   windowSize: <GetWindowSize />,
+  tenant: <GetAppConfiguration />,
 });
 
 export default (inputProps: InputProps) => (

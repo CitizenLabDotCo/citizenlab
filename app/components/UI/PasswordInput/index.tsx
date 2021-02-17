@@ -2,7 +2,7 @@ import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // hooks
-import useTenant from 'hooks/useTenant';
+import useAppConfiguration from 'hooks/useAppConfiguration';
 
 // components
 import PasswordInputComponent from './PasswordInput';
@@ -35,8 +35,18 @@ export function hasPasswordMinimumLength(
     : password.length < DEFAULT_MINIMUM_PASSWORD_LENGTH;
 }
 
-const PasswordInput = (props: Props) => {
-  const tenant = useTenant();
+const PasswordInput = ({
+  id,
+  password,
+  onChange,
+  onBlur,
+  setRef,
+  autocomplete,
+  placeholder,
+  isLoginPasswordInput,
+  errors,
+}: Props) => {
+  const tenant = useAppConfiguration();
 
   if (!isNilOrError(tenant)) {
     const minimumPasswordLength =
@@ -46,7 +56,15 @@ const PasswordInput = (props: Props) => {
     return (
       <PasswordInputComponent
         minimumPasswordLength={minimumPasswordLength}
-        {...props}
+        id={id}
+        password={password}
+        onChange={onChange}
+        onBlur={onBlur}
+        setRef={setRef}
+        autocomplete={autocomplete}
+        placeholder={placeholder}
+        isLoginPasswordInput={isLoginPasswordInput}
+        errors={errors}
       />
     );
   }

@@ -76,7 +76,7 @@ export class AdminProjectPoll extends React.PureComponent<Props> {
                   <FormattedMessage {...messages.titlePollTab} />
                 </SectionTitle>
                 <SectionDescription>
-                  <FormattedMessage {...messages.subtitlePollTab} />
+                  <FormattedMessage {...messages.pollTabSubtitle} />
                 </SectionDescription>
               </Left>
               <ExportPollButton
@@ -116,7 +116,7 @@ export class AdminProjectPoll extends React.PureComponent<Props> {
               <FormattedMessage {...messages.titlePollTab} />
             </SectionTitle>
             <SectionDescription>
-              <FormattedMessage {...messages.subtitlePollTab} />
+              <FormattedMessage {...messages.pollTabSubtitle} />
             </SectionDescription>
             {pollPhases.map((phase) => (
               <PhaseContainer key={phase.id}>

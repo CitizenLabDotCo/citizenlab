@@ -6,11 +6,12 @@ import { API_PATH } from 'containers/App/constants';
 import request from 'utils/request';
 
 // components
-import { Input, IconTooltip } from 'cl2-component-library';
+import { Input } from 'cl2-component-library';
 import Button from 'components/UI/Button';
 import PasswordInput, {
   hasPasswordMinimumLength,
 } from 'components/UI/PasswordInput';
+import PasswordInputIconTooltip from 'components/UI/PasswordInput/PasswordInputIconTooltip';
 import Error from 'components/UI/Error';
 import { FormLabel } from 'components/UI/FormComponents';
 import Consent from 'components/SignUpIn/SignUp/Consent';
@@ -29,7 +30,9 @@ import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetWindowSize, {
   GetWindowSizeChildProps,
 } from 'resources/GetWindowSize';
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetAppConfiguration';
 import GetFeatureFlag from 'resources/GetFeatureFlag';
 
 // i18n
@@ -83,7 +86,7 @@ const StyledFormLabel = styled(FormLabel)`
   margin-right: 5px;
 `;
 
-const StyledIconTooltip = styled(IconTooltip)`
+const StyledPasswordInputIconTooltip = styled(PasswordInputIconTooltip)`
   margin-bottom: 4px;
 `;
 
@@ -98,7 +101,7 @@ type InputProps = {
 
 interface DataProps {
   locale: GetLocaleChildProps;
-  tenant: GetTenantChildProps;
+  tenant: GetAppConfigurationChildProps;
   windowSize: GetWindowSizeChildProps;
   passwordLoginEnabled: boolean | null;
   googleLoginEnabled: boolean | null;
@@ -594,24 +597,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
                   labelMessage={messages.passwordLabel}
                   htmlFor="signup-password-input"
                 />
-                <StyledIconTooltip
-                  content={
-                    <>
-                      <p>{formatMessage(messages.passwordStrengthTooltip1)}</p>
-                      <ul>
-                        <li>
-                          {formatMessage(messages.passwordStrengthTooltip2)}
-                        </li>
-                        <li>
-                          {formatMessage(messages.passwordStrengthTooltip3)}
-                        </li>
-                        <li>
-                          {formatMessage(messages.passwordStrengthTooltip4)}
-                        </li>
-                      </ul>
-                    </>
-                  }
-                />
+                <StyledPasswordInputIconTooltip />
               </LabelContainer>
               <PasswordInput
                 id="signup-password-input"
@@ -684,7 +670,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
 
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
-  tenant: <GetTenant />,
+  tenant: <GetAppConfiguration />,
   windowSize: <GetWindowSize />,
   passwordLoginEnabled: <GetFeatureFlag name="password_login" />,
   googleLoginEnabled: <GetFeatureFlag name="google_login" />,

@@ -1,11 +1,11 @@
 import React from 'react';
-import { GetTenantLocalesChildProps } from 'resources/GetTenantLocales';
+import { GetAppConfigurationLocalesChildProps } from 'resources/GetAppConfigurationLocales';
 import { replacePathnameLocale } from 'services/locale';
 import { isPage } from 'utils/helperUtils';
 
 // https://github.com/nfl/react-helmet/issues/279 href comes first!
 export default function getAlternateLinks(
-  tenantLocales: GetTenantLocalesChildProps
+  tenantLocales: GetAppConfigurationLocalesChildProps
 ) {
   const pathName = location.pathname;
 

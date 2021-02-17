@@ -14,15 +14,15 @@ import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
 
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetTenantLocales, {
-  GetTenantLocalesChildProps,
-} from 'resources/GetTenantLocales';
+import GetAppConfigurationLocales, {
+  GetAppConfigurationLocalesChildProps,
+} from 'resources/GetAppConfigurationLocales';
 
 interface InputProps {}
 
 interface DataProps {
   authUser: GetAuthUserChildProps;
-  tenantLocales: GetTenantLocalesChildProps;
+  tenantLocales: GetAppConfigurationLocalesChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -60,7 +60,7 @@ const ProjectsMeta = React.memo<Props & InjectedIntlProps>(
 const ProjectsMetaWithHoc = injectIntl<Props>(ProjectsMeta);
 
 const Data = adopt<DataProps, InputProps>({
-  tenantLocales: <GetTenantLocales />,
+  tenantLocales: <GetAppConfigurationLocales />,
   authUser: <GetAuthUser />,
 });
 

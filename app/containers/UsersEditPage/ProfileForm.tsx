@@ -13,7 +13,9 @@ import GetLockedFields, {
   GetLockedFieldsChildProps,
 } from 'resources/GetLockedFields';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetAppConfiguration';
 
 // utils
 import { Formik } from 'formik';
@@ -24,6 +26,7 @@ import Error from 'components/UI/Error';
 import PasswordInput, {
   hasPasswordMinimumLength,
 } from 'components/UI/PasswordInput';
+import PasswordInputIconTooltip from 'components/UI/PasswordInput/PasswordInputIconTooltip';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import { convertUrlToUploadFile } from 'utils/fileTools';
 import { SectionField } from 'components/admin/Section';
@@ -33,7 +36,7 @@ import {
   FormSectionTitle,
 } from 'components/UI/FormComponents';
 import UserCustomFieldsForm from 'components/UserCustomFieldsForm';
-import { Input, IconTooltip, Select } from 'cl2-component-library';
+import { Input, Select, IconTooltip } from 'cl2-component-library';
 import QuillEditor from 'components/UI/QuillEditor';
 
 // i18n
@@ -55,7 +58,6 @@ const InputContainer = styled.div`
   display: flex;
   flex-direction: row;
 `;
-
 const StyledIconTooltip = styled(IconTooltip)`
   margin-left: 5px;
 `;
@@ -70,7 +72,7 @@ const StyledFormLabel = styled(FormLabel)`
   margin-right: 5px;
 `;
 
-const StyledPasswordIconTooltip = styled(IconTooltip)`
+const StyledPasswordInputIconTooltip = styled(PasswordInputIconTooltip)`
   margin-bottom: 4px;
 `;
 
@@ -80,7 +82,7 @@ interface InputProps {}
 interface DataProps {
   userCustomFieldsSchema: GetUserCustomFieldsSchemaChildProps;
   authUser: GetAuthUserChildProps;
-  tenant: GetTenantChildProps;
+  tenant: GetAppConfigurationChildProps;
   lockedFields: GetLockedFieldsChildProps;
 }
 
@@ -408,24 +410,7 @@ class ProfileForm extends PureComponent<Props, State> {
                 labelMessage={messages.password}
                 htmlFor="profile-password-input"
               />
-              <StyledPasswordIconTooltip
-                content={
-                  <>
-                    <p>{formatMessage(messages.passwordStrengthTooltip1)}</p>
-                    <ul>
-                      <li>
-                        {formatMessage(messages.passwordStrengthTooltip2)}
-                      </li>
-                      <li>
-                        {formatMessage(messages.passwordStrengthTooltip3)}
-                      </li>
-                      <li>
-                        {formatMessage(messages.passwordStrengthTooltip4)}
-                      </li>
-                    </ul>
-                  </>
-                }
-              />
+              <StyledPasswordInputIconTooltip />
             </LabelContainer>
             <PasswordInput
               id="profile-password-input"
@@ -494,7 +479,7 @@ const ProfileFormWithHocs = injectIntl<InputProps>(localize(ProfileForm));
 
 const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
-  tenant: <GetTenant />,
+  tenant: <GetAppConfiguration />,
   lockedFields: <GetLockedFields />,
   userCustomFieldsSchema: <GetUserCustomFieldsSchema />,
 });

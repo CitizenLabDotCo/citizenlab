@@ -155,7 +155,7 @@ export class QuestionDetailsForm extends PureComponent<
             onClick={this.onSave}
             disabled={!isValid}
           >
-            <FormattedMessage {...messages.saveQuestionSettings} />
+            <FormattedMessage {...messages.applyQuestionSettings} />
           </Button>
         </FormContainer>
       </Row>

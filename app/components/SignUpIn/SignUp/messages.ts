@@ -211,21 +211,4 @@ export default defineMessages({
     id: 'app.containers.SignUp.invitationError',
     defaultMessage: 'Your invitation has expired or has already been redeemed.',
   },
-  passwordStrengthTooltip1: {
-    id: 'app.containers.SignUp.passwordStrengthTooltip1',
-    defaultMessage: 'To make your password stronger:',
-  },
-  passwordStrengthTooltip2: {
-    id: 'app.containers.SignUp.passwordStrengthTooltip2',
-    defaultMessage:
-      'Use a combination of non-consecutive lowercase letters, uppercase letters, digits, special characters and punctuation',
-  },
-  passwordStrengthTooltip3: {
-    id: 'app.containers.SignUp.passwordStrengthTooltip3',
-    defaultMessage: 'Avoid common or easily guessed words',
-  },
-  passwordStrengthTooltip4: {
-    id: 'app.containers.SignUp.passwordStrengthTooltip4',
-    defaultMessage: 'Increase the length',
-  },
 });

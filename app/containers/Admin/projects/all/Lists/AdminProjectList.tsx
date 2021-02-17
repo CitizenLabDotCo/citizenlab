@@ -38,16 +38,14 @@ function handleReorderAdminPublication(itemId, newOrder) {
 }
 
 const AdminProjectList = memo<Props>((_props) => {
-  const adminPublications = useAdminPublications({
+  const { topLevel: topLevelAdminPublications } = useAdminPublications({
     publicationStatusFilter: ['published', 'archived', 'draft'],
-    folderId: null,
   });
-  const adminPublicationsList = adminPublications.list;
   const isProjectFoldersEnabled = useFeatureFlag('project_folders');
 
   if (
-    !isNilOrError(adminPublicationsList) &&
-    adminPublicationsList.length > 0
+    !isNilOrError(topLevelAdminPublications) &&
+    topLevelAdminPublications.length > 0
   ) {
     return (
       <>
@@ -62,11 +60,11 @@ const AdminProjectList = memo<Props>((_props) => {
           <Outlet id="app.containers.AdminPage.projects.all.projectsAndFolders.actions" />
         </StyledListHeader>
         <SortableList
-          items={adminPublicationsList}
+          items={topLevelAdminPublications}
           onReorder={handleReorderAdminPublication}
           className="projects-list e2e-admin-projects-list"
           id="e2e-admin-published-projects-list"
-          key={adminPublicationsList.length}
+          key={topLevelAdminPublications.length}
         >
           {({ itemsList, handleDragRow, handleDropRow }) => {
             return (
@@ -81,7 +79,9 @@ const AdminProjectList = memo<Props>((_props) => {
                           index={index}
                           moveRow={handleDragRow}
                           dropRow={handleDropRow}
-                          lastItem={index === adminPublicationsList.length - 1}
+                          lastItem={
+                            index === topLevelAdminPublications.length - 1
+                          }
                         >
                           {item.publicationType === 'project' && (
                             <ProjectRow
@@ -90,7 +90,7 @@ const AdminProjectList = memo<Props>((_props) => {
                             />
                           )}
                           <Outlet
-                            id="app.containers.AdminPage.projects.all.projectsAndFolders.projectFolderRow"
+                            id="app.containers.AdminPage.projects.all.projectsAndFolders.row"
                             publication={item}
                           />
                         </SortableRow>
