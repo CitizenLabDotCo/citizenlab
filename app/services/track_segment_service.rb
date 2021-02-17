@@ -18,10 +18,9 @@ class TrackSegmentService
     )
   end
 
-  def identify_tenant(tenant = nil)
+  def identify_tenant(tenant)
     return unless @segment_client
 
-    tenant ||= Tenant.current
     traits = tenant_traits(tenant)
     integrations = { All: true, Intercom: true, SatisMeter: true }
 
