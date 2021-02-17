@@ -118,9 +118,11 @@ describe SideFxIdeaService do
     it "logs a 'published' action job when publication_state goes from draft to published, as well as a first idea published log when the idea was first published" do
       idea = create(:idea, publication_status: 'draft', author: user)
       idea.update(publication_status: 'published')
-      expect { service.after_update(idea, user) }
-        .to(have_enqueued_job(LogActivityJob).with(idea, 'published', user, idea.created_at.to_i).exactly(1).times)
-        .and(have_enqueued_job(LogActivityJob).with(idea, 'first_published_by_user', user, idea.created_at.to_i).exactly(1).times)
+      expect { service.after_update(idea, user) }.to(
+        have_enqueued_job(LogActivityJob).with(idea, 'published', user, idea.created_at.to_i).exactly(1).times
+      ).and(
+        have_enqueued_job(LogActivityJob).with(idea, 'first_published_by_user', user, idea.created_at.to_i).exactly(1).times
+      )
     end
 
     it "logs a 'changed' action job when the idea has changed" do
