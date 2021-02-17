@@ -2,7 +2,9 @@ import React, { memo } from 'react';
 import styled from 'styled-components';
 import useLocalize from 'hooks/useLocalize';
 import useMapConfig from 'hooks/useMapConfig';
-import { media, isRtl } from 'utils/styleUtils';
+import { media, isRtl, fontSizes, colors } from 'utils/styleUtils';
+import { Multiloc } from 'typings';
+import { getLayerColor } from 'utils/map';
 
 const Container = styled.div`
   padding: 25px;
@@ -17,6 +19,9 @@ const LegendItems = styled.ul`
 `;
 
 const Item = styled.li`
+  color: ${colors.text};
+  font-size: ${fontSizes.base}px;
+  line-height: normal;
   display: flex;
   flex: 1 0 calc(50% - 10px);
   margin-right: 10px;
@@ -28,7 +33,7 @@ const Item = styled.li`
   `}
 
   &:not(:last-child) {
-    margin-bottom: 10px;
+    margin-bottom: 12px;
   }
 
   ${media.smallerThanMinTablet`
@@ -54,24 +59,32 @@ interface Props {
   className?: string;
 }
 
+interface ILegendItem {
+  title_multiloc: Multiloc;
+  color: string;
+}
+
 const Legend = memo<Props>(({ projectId, className }) => {
   const mapConfig = useMapConfig({ projectId });
   const localize = useLocalize();
+  let legend: ILegendItem[] = [];
 
   if (
-    (mapConfig?.attributes?.legend &&
-      mapConfig?.attributes?.legend?.length > 0) ||
-    (mapConfig?.attributes?.layers && mapConfig?.attributes?.layers?.length > 0)
+    mapConfig?.attributes?.legend &&
+    mapConfig?.attributes?.legend?.length > 0
   ) {
-    const legend =
-      mapConfig.attributes.legend ||
-      mapConfig?.attributes?.layers?.map((layer) => ({
-        title_multiloc: layer.title_multiloc,
-        color:
-          layer.geojson?.features?.[0]?.properties?.['marker-color'] ||
-          layer.geojson?.features?.[0]?.properties?.fill,
-      }));
+    legend = mapConfig.attributes.legend;
+  } else if (
+    mapConfig?.attributes?.layers &&
+    mapConfig?.attributes?.layers?.length > 0
+  ) {
+    legend = mapConfig.attributes.layers.map((layer) => ({
+      title_multiloc: layer.title_multiloc,
+      color: getLayerColor(layer),
+    }));
+  }
 
+  if (legend.length > 0) {
     return (
       <Container className={`${className || ''} legendContainer`}>
         <LegendItems>
