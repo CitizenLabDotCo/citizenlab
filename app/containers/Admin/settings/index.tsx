@@ -19,6 +19,8 @@ import GetFeatureFlag, {
 } from 'resources/GetFeatureFlag';
 import { reject } from 'lodash-es';
 import Outlet from 'components/Outlet';
+import { insertTab } from 'utils/moduleUtils';
+import { InsertTabOptions } from 'typings';
 
 export interface InputProps {}
 
@@ -77,27 +79,8 @@ class SettingsPage extends React.PureComponent<
     };
   }
 
-  insertTab = ({
-    tabConfiguration,
-    insertAfterTabName,
-  }: {
-    tabConfiguration: TabProps;
-    insertAfterTabName?: string;
-  }) => {
-    this.setState(({ tabs }) => {
-      const insertIndex =
-        tabs.findIndex((tab) => tab.name === insertAfterTabName) + 1;
-      if (insertIndex > 0) {
-        return {
-          tabs: [
-            ...tabs.slice(0, insertIndex),
-            tabConfiguration,
-            ...tabs.slice(insertIndex),
-          ],
-        };
-      }
-      return { tabs: [...tabs, tabConfiguration] };
-    });
+  handleData = (insertTabOptions: InsertTabOptions) => {
+    this.setState(({ tabs }) => ({ tabs: insertTab(insertTabOptions)(tabs) }));
   };
 
   getTabs = () => {
@@ -146,7 +129,7 @@ class SettingsPage extends React.PureComponent<
       <>
         <Outlet
           id="app.containers.Admin.settings.SettingsPage"
-          onData={this.insertTab}
+          onData={this.handleData}
         />
         <TabbedResource
           resource={resource}
