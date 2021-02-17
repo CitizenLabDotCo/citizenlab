@@ -14,7 +14,7 @@ RSpec.describe ProjectFolders::EmailCampaigns::ProjectFolderModerationRightsRece
           project_folder_id: project_folder.id,
           project_folder_title_multiloc: project_folder.title_multiloc,
           project_folder_projects_count: project_folder.projects.count,
-          project_url: Frontend::UrlService.new.admin_project_folder_url(project_folder.id, locale: recipient.locale)
+          project_folder_url: Frontend::UrlService.new.admin_project_folder_url(project_folder.id, locale: recipient.locale)
         }
       }
     end
