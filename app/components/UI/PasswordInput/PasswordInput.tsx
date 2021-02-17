@@ -2,7 +2,7 @@ import React, { useState, lazy, Suspense } from 'react';
 import styled from 'styled-components';
 import { Input, Button, Icon, colors } from 'cl2-component-library';
 import useLocale from 'hooks/useLocale';
-import useTenant from 'hooks/useTenant';
+import useAppConfiguration from 'hooks/useAppConfiguration';
 import { isNilOrError } from 'utils/helperUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { Props as WrapperProps } from './';
@@ -65,7 +65,7 @@ const PasswordInputComponent = ({
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
   const locale = useLocale();
-  const tenant = useTenant();
+  const tenant = useAppConfiguration();
   const [showPassword, setShowPassword] = useState(false);
   const [passwordScore, setPasswordScore] = useState<PasswordScore>(0);
   const { minimumLengthError, emptyError } = errors;

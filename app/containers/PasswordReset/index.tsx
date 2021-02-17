@@ -33,7 +33,9 @@ import messages from './messages';
 import { fontSizes, colors } from 'utils/styleUtils';
 
 // resources
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetAppConfiguration';
 
 const Container = styled.div`
   width: 100%;
@@ -91,7 +93,7 @@ const StyledPasswordIconTooltip = styled(PasswordIconTooltip)`
 `;
 
 interface DataProps {
-  tenant: GetTenantChildProps;
+  tenant: GetAppConfigurationChildProps;
 }
 
 interface InputProps {}
@@ -306,7 +308,7 @@ class PasswordReset extends React.PureComponent<
 const PasswordResetWithHocs = injectIntl<Props>(PasswordReset);
 
 const Data = adopt({
-  tenant: <GetTenant />,
+  tenant: <GetAppConfiguration />,
 });
 
 export default (inputProps: InputProps) => (
