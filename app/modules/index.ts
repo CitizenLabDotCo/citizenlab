@@ -4,7 +4,8 @@ import projectFoldersConfiguration from './project_folders';
 import smartGroupsConfiguration from './smart_groups';
 import userCustomFieldsConfiguration from './user_custom_fields';
 import ideaCustomFieldsConfiguration from './idea_custom_fields';
-import granularPermissions from './granular_permissions';
+import granularPermissionsConfiguration from './granular_permissions';
+import moderationConfiguration from './moderation';
 
 import googleTagManagerConfiguration from './google_tag_manager';
 import googleAnalyticsConfiguration from './google_analytics';
@@ -50,7 +51,11 @@ export default loadModules([
     isEnabled: true,
   },
   {
-    configuration: granularPermissions,
+    configuration: granularPermissionsConfiguration,
+    isEnabled: true,
+  },
+  {
+    configuration: moderationConfiguration,
     isEnabled: true,
   },
 ]);

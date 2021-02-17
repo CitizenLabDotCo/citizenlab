@@ -7,7 +7,7 @@ import { forOwn, get, size, has, trim, isEmpty, omitBy } from 'lodash-es';
 import { Label, IconTooltip, ColorPickerInput } from 'cl2-component-library';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import RangeInput from 'components/UI/RangeInput';
-import InputMultiloc from 'components/UI/InputMultiloc';
+import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import {
   Section,
   SectionTitle,
@@ -17,7 +17,7 @@ import {
 } from 'components/admin/Section';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import Warning from 'components/UI/Warning';
-import QuillMultiloc from 'components/UI/QuillEditor/QuillMultiloc';
+import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 import ErrorMessage from 'components/UI/Error';
 
 // resources
@@ -600,7 +600,7 @@ class SettingsCustomizeTab extends PureComponent<
             </SectionField>
 
             <SectionField>
-              <InputMultiloc
+              <InputMultilocWithLocaleSwitcher
                 type="text"
                 valueMultiloc={
                   get(attributesDiff, 'settings.core.header_title') ||
@@ -615,7 +615,7 @@ class SettingsCustomizeTab extends PureComponent<
             </SectionField>
 
             <SectionField>
-              <InputMultiloc
+              <InputMultilocWithLocaleSwitcher
                 type="text"
                 valueMultiloc={
                   get(attributesDiff, 'settings.core.header_slogan') ||
@@ -636,7 +636,7 @@ class SettingsCustomizeTab extends PureComponent<
             </SubSectionTitle>
 
             <WideSectionField>
-              <QuillMultiloc
+              <QuillMultilocWithLocaleSwitcher
                 id="custom-section"
                 label={this.customSectionLabel}
                 labelTooltipText={formatMessage(messages.customSectionInfo)}
