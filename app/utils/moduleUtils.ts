@@ -127,6 +127,9 @@ export type OutletsPropertyMap = {
     ) => string;
     onData: (data: InsertTabOptions) => void;
   };
+  'app.containers.Admin.projects.edit': {
+    onData: (data: InsertTabOptions) => void;
+  };
   'app.containers.Admin.sideBar.navItems': {
     onData: (data: {
       insertAfterNavItemId?: string;
