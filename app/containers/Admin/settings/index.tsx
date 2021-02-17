@@ -19,9 +19,8 @@ import GetFeatureFlag, {
 } from 'resources/GetFeatureFlag';
 import { reject } from 'lodash-es';
 import Outlet from 'components/Outlet';
-import { ITab } from 'typings';
+import { ITab, InsertTabOptions } from 'typings';
 import { insertTab } from 'utils/moduleUtils';
-import { InsertTabOptions } from 'typings';
 
 export interface InputProps {}
 
