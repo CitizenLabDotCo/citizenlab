@@ -32,8 +32,8 @@ exports[`<QuestionDetailsForm/> display displays correctly for a single choice q
       onClick={[Function]}
     >
       <FormattedMessage
-        defaultMessage="Save number of choices"
-        id="app.containers.AdminPage.ProjectEdit.PollTab.saveQuestionSettings"
+        defaultMessage="Apply"
+        id="app.containers.AdminPage.ProjectEdit.PollTab.applyQuestionSettings"
       />
     </Button>
   </QuestionDetailsForm__FormContainer>

@@ -6,9 +6,9 @@ import { isNilOrError } from 'utils/helperUtils';
 import { IOfficialFeedbackData } from 'services/officialFeedback';
 
 // resources
-import GetTenantLocales, {
-  GetTenantLocalesChildProps,
-} from 'resources/GetTenantLocales';
+import GetAppConfigurationLocales, {
+  GetAppConfigurationLocalesChildProps,
+} from 'resources/GetAppConfigurationLocales';
 
 // intl
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
@@ -69,7 +69,7 @@ interface InputProps {
 }
 
 interface DataProps {
-  tenantLocales: GetTenantLocalesChildProps;
+  tenantLocales: GetAppConfigurationLocalesChildProps;
 }
 
 interface Props extends DataProps, InputProps {}
@@ -228,7 +228,7 @@ class StatusChangeForm extends PureComponent<Props & InjectedIntlProps, State> {
 const StatusChangeFormWithHoC = injectIntl(StatusChangeForm);
 
 const Data = adopt<DataProps, InputProps>({
-  tenantLocales: <GetTenantLocales />,
+  tenantLocales: <GetAppConfigurationLocales />,
 });
 
 const StatusChangeFormWithData = (inputProps: InputProps) => (

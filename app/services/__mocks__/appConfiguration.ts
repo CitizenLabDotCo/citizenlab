@@ -1,11 +1,11 @@
-import { ITenant, ITenantData } from 'services/tenant';
+import { IAppConfiguration, IAppConfigurationData } from 'services/appConfiguration';
 import { BehaviorSubject } from 'rxjs';
 
-const getTenant = (): ITenant => ({
-  data: getTenantData()
+const getAppConfiguration = (): IAppConfiguration => ({
+  data: getAppConfigurationData()
 });
 
-export const getTenantData = (attributes = {}): ITenantData => ({
+export const getAppConfigurationData = (attributes = {}): IAppConfigurationData => ({
     id: 'c4b400e1-1786-5be2-af55-40730c6a843d',
     type: 'tenant',
     attributes: {
@@ -48,14 +48,14 @@ export const getTenantData = (attributes = {}): ITenantData => ({
     },
 });
 
-let mockTenant: ITenant = getTenant();
+let mockAppConfiguration: IAppConfiguration = getAppConfiguration();
 
-export const __setMockTenant = (tenant: ITenant) => {
-  mockTenant = tenant;
+export const __setMockAppConfiguration = (appConfiguration: IAppConfiguration) => {
+  mockAppConfiguration = appConfiguration;
 };
 
-export const currentTenantStream = jest.fn(() => {
-  const observable = new BehaviorSubject(mockTenant);
+export const currentAppConfigurationStream = jest.fn(() => {
+  const observable = new BehaviorSubject(mockAppConfiguration);
   return {
     observable
   };

@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import useTenant from 'hooks/useTenant';
+import useAppConfiguration from 'hooks/useAppConfiguration';
 import Link from 'utils/cl-router/Link';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -38,7 +38,7 @@ interface Props {
 
 const InitiativeInfoContent = memo<InjectedLocalized & Props>(
   ({ className, localize }) => {
-    const tenant = useTenant();
+    const tenant = useAppConfiguration();
 
     if (!isNilOrError(tenant)) {
       const voteThreshold =

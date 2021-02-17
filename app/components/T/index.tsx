@@ -4,7 +4,7 @@ import { map } from 'rxjs/operators';
 import { Multiloc, Locale } from 'typings';
 import { getLocalized } from 'utils/i18n';
 import { localeStream } from 'services/locale';
-import { currentTenantStream } from 'services/tenant';
+import { currentAppConfigurationStream } from 'services/appConfiguration';
 
 type children = (localizedText: string) => JSX.Element | null;
 
@@ -37,7 +37,7 @@ export default class T extends React.PureComponent<Props, State> {
 
   componentDidMount() {
     const locale$ = localeStream().observable;
-    const currentTenantLocales$ = currentTenantStream().observable.pipe(
+    const currentTenantLocales$ = currentAppConfigurationStream().observable.pipe(
       map(
         (currentTenant) => currentTenant.data.attributes.settings.core.locales
       )

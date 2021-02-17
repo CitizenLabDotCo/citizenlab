@@ -22,7 +22,9 @@ import ReactResizeDetector from 'react-resize-detector';
 
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetAppConfiguration';
 import GetUserCustomFieldsSchema, {
   GetUserCustomFieldsSchemaChildProps,
 } from 'resources/GetUserCustomFieldsSchema';
@@ -80,7 +82,7 @@ export interface InputProps {
 
 interface DataProps {
   authUser: GetAuthUserChildProps;
-  tenant: GetTenantChildProps;
+  tenant: GetAppConfigurationChildProps;
   customFieldsSchema: GetUserCustomFieldsSchemaChildProps;
 }
 
@@ -489,7 +491,7 @@ class SignUp extends PureComponent<Props & InjectedIntlProps, State> {
 
 const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
-  tenant: <GetTenant />,
+  tenant: <GetAppConfiguration />,
   customFieldsSchema: <GetUserCustomFieldsSchema />,
 });
 

@@ -1,7 +1,9 @@
 import React, { PureComponent } from 'react';
 import styled, { withTheme } from 'styled-components';
 
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetAppConfiguration';
 import GetInitiative, {
   GetInitiativeChildProps,
 } from 'resources/GetInitiative';
@@ -127,7 +129,7 @@ interface InputProps {
 }
 
 interface DataProps {
-  tenant: GetTenantChildProps;
+  tenant: GetAppConfigurationChildProps;
   initiative: GetInitiativeChildProps;
   initiativeStatus: GetInitiativeStatusChildProps;
 }
@@ -245,7 +247,7 @@ class VoteIndicator extends PureComponent<Props & { theme: any }> {
 }
 
 const Data = adopt<DataProps, InputProps>({
-  tenant: <GetTenant />,
+  tenant: <GetAppConfiguration />,
   initiative: ({ initiativeId, render }) => (
     <GetInitiative id={initiativeId}>{render}</GetInitiative>
   ),
