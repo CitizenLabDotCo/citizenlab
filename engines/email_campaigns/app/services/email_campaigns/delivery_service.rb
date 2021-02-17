@@ -65,7 +65,6 @@ module EmailCampaigns
     def consentable_campaign_types_for(user)
       consentable_types = Consentable.consentable_campaign_types(CAMPAIGN_CLASSES, user)
       disabled_types = Disableable.enabled_campaign_types(Campaign.where(type: campaign_types))
-
       consentable_types - disabled_types
     end
 

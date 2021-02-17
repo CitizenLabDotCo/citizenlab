@@ -140,16 +140,17 @@ describe EmailCampaigns::DeliveryService do
       NonConsentableCampaign.create!
       ConsentableCampaign.create!
       ConsentableDisableableCampaignA.create!(enabled: false)
-      ConsentableDisableableCampaignB.create!(enabled: false)
       ConsentableDisableableCampaignB.create!(enabled: true)
-      stub_const(
-        "EmailCampaigns::DeliveryService::CAMPAIGN_CLASSES",
-        [NonConsentableCampaign, ConsentableDisableableCampaignA, ConsentableDisableableCampaignB, ConsentableCampaign]
+
+      DeliveryService.add_campaign_types(
+        NonConsentableCampaign,
+        ConsentableCampaign,
+        ConsentableDisableableCampaignA,
+        ConsentableDisableableCampaignB
       )
       user = create(:user)
 
       expect(service.consentable_campaign_types_for(user)).to match_array ["ConsentableCampaign", "ConsentableDisableableCampaignB"]
     end
   end
-
 end
