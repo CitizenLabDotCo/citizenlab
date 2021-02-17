@@ -14,7 +14,7 @@ class ActivitiesService
   def create_phase_started_activities(now, last_time)
     return unless now.to_date != last_time.to_date
 
-    Phase.published_and_starting_on(now.to_date).each do |phase|
+    Phase.published.starting_on(now.to_date).each do |phase|
       if phase.ends_before?(now + 1.day)
         raise "Invalid phase started event would have been generated for phase\
                #{phase.id} with now=#{now} and last_time=#{last_time}"
@@ -27,7 +27,7 @@ class ActivitiesService
   def create_phase_upcoming_activities(now, last_time)
     return unless now.to_date != last_time.to_date
 
-    Phase.published_and_starting_on(now.to_date + 1.week).each do |phase|
+    Phase.published.starting_on(now.to_date + 1.week).each do |phase|
       if phase.ends_before?(now + 1.day)
         raise "Invalid phase upcoming event would have been generated for phase\
                #{phase.id} with now=#{now} and last_time=#{last_time}"

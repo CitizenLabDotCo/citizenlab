@@ -24,7 +24,11 @@ class Phase < ApplicationRecord
   before_validation :sanitize_description_multiloc
   before_validation :strip_title
 
-  scope :published_and_starting_on, lambda { |date|
+  scope :starting_on, lambda { |date|
+    where(start_at: date)
+  }
+
+  scope :published, lambda {
     joined = includes(project: { admin_publication: :parent })
     joined.where(
       projects: {
@@ -42,7 +46,7 @@ class Phase < ApplicationRecord
           }
         }
       )
-    ).where(start_at: date)
+    )
   }
 
   def ends_before?(date)
