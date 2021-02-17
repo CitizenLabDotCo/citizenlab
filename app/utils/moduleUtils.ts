@@ -232,3 +232,19 @@ export const loadModules = (modules: Modules): ParsedModuleConfiguration => {
     afterMountApplication: callLifecycleMethods('afterMountApplication'),
   };
 };
+
+export const insertTab = ({
+  tabConfiguration,
+  insertAfterTabName,
+}: InsertTabOptions) => (tabs: ITab[]): ITab[] => {
+  const insertIndex =
+    tabs.findIndex((tab) => tab.name === insertAfterTabName) + 1;
+
+  return insertIndex > 0
+    ? [
+        ...tabs.slice(0, insertIndex),
+        tabConfiguration,
+        ...tabs.slice(insertIndex),
+      ]
+    : [...tabs, tabConfiguration];
+};
