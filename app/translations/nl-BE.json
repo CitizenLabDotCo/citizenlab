@@ -439,7 +439,7 @@
   "app.components.admin.InputManager.onePost": "1 input",
   "app.components.admin.PostManager.PostPreview.addTag": "Een tag toevoegen",
   "app.components.admin.PostManager.PostPreview.assignee": "Toegewezen aan",
-  "app.components.admin.PostManager.PostPreview.autotaggingProcessing": "Automatisch taggen: {remainingItems} items worden verwerkt",
+  "app.components.admin.PostManager.PostPreview.autotaggingProcessing": "Autotagging: {remainingItems} items worden verwerkt",
   "app.components.admin.PostManager.PostPreview.cancelEdit": "Annuleer de wijzigingen",
   "app.components.admin.PostManager.PostPreview.createTag": "Maak een tag aan",
   "app.components.admin.PostManager.PostPreview.currentStatus": "Huidige status",
