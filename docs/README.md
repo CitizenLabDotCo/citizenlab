@@ -1,6 +1,8 @@
 # Changelog
 
-## Next release 
+## Next release
+
+/
 
 ## 2021-02-17
 
