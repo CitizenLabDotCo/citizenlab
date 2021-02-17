@@ -38,7 +38,8 @@ import { getInputTerm } from 'services/participationContexts';
 import { IProjectData } from 'services/projects';
 
 import Outlet from 'components/Outlet';
-import { ITab } from 'typings';
+import { InsertTabOptions, ITab } from 'typings';
+import { insertTab } from 'utils/moduleUtils';
 
 const TopContainer = styled.div`
   width: 100%;
@@ -342,27 +343,10 @@ export class AdminProjectEdition extends PureComponent<
     });
   };
 
-  insertTab = ({
-    tabConfiguration,
-    insertAfterTabName,
-  }: {
-    tabConfiguration: ITab;
-    insertAfterTabName?: string;
-  }) => {
-    this.setState(({ tabs }) => {
-      const insertIndex =
-        tabs.findIndex((tab) => tab.name === insertAfterTabName) + 1;
-      if (insertIndex > 0) {
-        return {
-          tabs: [
-            ...tabs.slice(0, insertIndex),
-            tabConfiguration,
-            ...tabs.slice(insertIndex),
-          ],
-        };
-      }
-      return { tabs: [...tabs, tabConfiguration] };
-    });
+  handleData = (insertTabOptions: InsertTabOptions) => {
+    this.setState(({ tabs }) => ({
+      tabs: insertTab(insertTabOptions)(tabs),
+    }));
   };
 
   render() {
@@ -399,7 +383,7 @@ export class AdminProjectEdition extends PureComponent<
         <>
           <Outlet
             id="app.containers.Admin.projects.edit"
-            onData={this.insertTab}
+            onData={this.handleData}
           />
           <TopContainer>
             <GoBackButton onClick={this.goBack} />
