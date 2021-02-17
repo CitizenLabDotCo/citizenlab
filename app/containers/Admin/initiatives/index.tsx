@@ -17,8 +17,10 @@ import tracks from './tracks';
 
 // styles
 import styled from 'styled-components';
-import { ITab } from 'typings';
+import { InsertTabOptions, ITab } from 'typings';
 import Outlet from 'components/Outlet';
+import { isArray, isPlainObject } from 'lodash-es';
+import { insertTab } from 'utils/moduleUtils';
 
 const TopContainer = styled.div`
   width: 100%;
@@ -62,33 +64,15 @@ const InitiativesPage = memo<InjectedIntlProps & WithRouterProps>(
       });
     };
 
-    const insertTab = ({
-      tabConfiguration,
-      insertAfterTabName,
-    }: {
-      tabConfiguration: ITab;
-      insertAfterTabName?: string;
-    }) => {
-      setTabs((tabs) => {
-        const insertIndex =
-          tabs.findIndex((tab) => tab.name === insertAfterTabName) + 1;
-        if (insertIndex > 0) {
-          return [
-            ...tabs.slice(0, insertIndex),
-            tabConfiguration,
-            ...tabs.slice(insertIndex),
-          ];
-        }
-        return [...tabs, tabConfiguration];
-      });
-    };
+    const handleData = (insertTabOptions: InsertTabOptions) =>
+      setTabs(insertTab(insertTabOptions));
 
     const { pathname } = location;
     return (
       <>
         <Outlet
           id="app.containers.Admin.initiatives.tabs"
-          onData={insertTab}
+          onData={handleData}
           formatMessage={formatMessage}
         />
         <TopContainer>
