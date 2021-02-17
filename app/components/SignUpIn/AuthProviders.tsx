@@ -190,6 +190,9 @@ const AuthProviders = memo<Props & InjectedIntlProps>(
       [goToOtherFlow]
     );
 
+    const phone =
+      !isNilOrError(tenant) && tenant.attributes.settings.password_login?.phone;
+
     return (
       <Container className={className}>
         {passwordLoginEnabled && (
@@ -199,9 +202,17 @@ const AuthProviders = memo<Props & InjectedIntlProps>(
             onContinue={handleOnAuthProviderSelected}
           >
             {flow === 'signup' ? (
-              <FormattedMessage {...messages.signUpWithEmail} />
+              <FormattedMessage
+                {...(phone
+                  ? messages.signUpWithPhoneOrEmail
+                  : messages.signUpWithEmail)}
+              />
             ) : (
-              <FormattedMessage {...messages.logInWithEmail} />
+              <FormattedMessage
+                {...(phone
+                  ? messages.logInWithPhoneOrEmail
+                  : messages.logInWithEmail)}
+              />
             )}
           </StyledAuthProviderButton>
         )}
