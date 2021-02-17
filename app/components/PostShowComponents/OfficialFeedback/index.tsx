@@ -3,7 +3,7 @@ import { isBoolean } from 'lodash-es';
 
 // resource hooks
 import useLocale from 'hooks/useLocale';
-import useTenantLocales from 'hooks/useTenantLocales';
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
 // components
 import OfficialFeedbackForm from './OfficialFeedbackForm';
@@ -34,7 +34,7 @@ const OfficialFeedback = memo<Props>(
     className,
   }) => {
     const locale = useLocale();
-    const tenantLocales = useTenantLocales();
+    const tenantLocales = useAppConfigurationLocales();
 
     if (
       isBoolean(permissionToPost) &&

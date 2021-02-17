@@ -1,5 +1,20 @@
 # Changelog
 
+## Next release 
+
+### Changed
+- All input fields for multiple locales now use the components with locale switchers, resulting in a cleaner and more compact UI.
+- Poll related copy improvements
+
+## 2021-02-12
+
+### Fixed
+
+- Fixed Azure AD login for some Azure setups (Schagen)
+
+### Changed
+- When searching for an idea, the search operation no longer searches on the author's name. This was causing severe performance issues and slowness of the paltforms.
+
 ## 2021-02-10
 
 ### Added
