@@ -421,8 +421,8 @@ es:
       title_design_participatory_process: 'Diseña el proceso participativo'
       title_moderate_analyse_input: 'Modera y analiza los datos introducidos'
       title_manage_folder: 'Manage the folder settings and create new projects.'
-      title_what_can_you_do_folderadmin: 'What can you do as a folder administrator?'
-      title_added_as_folderadmin: 'You''ve been added as a folder administrator'
+      title_what_can_you_do_folderadmin: '¿Qué puedes hacer como administrador de carpetas?'
+      title_added_as_folderadmin: 'Has sido añadido como administrador de la carpeta'
       x_projects: '%{numberOfProjects} projects'
     password_reset:
       cta_reset_password: 'Restablece tu contraseña'
