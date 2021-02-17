@@ -117,7 +117,7 @@ RSpec.describe Phase, type: :model do
   # too lazy to split the tests at this stage
   describe '::published' do
     let(:start_date) { Time.zone.today }
-    let(:phases) { create_list(:phase, 6, start_at: start_date, end_at: start_date + 1.month) }
+    let!(:phases) { create_list(:phase, 6, start_at: start_date, end_at: start_date + 1.month) }
 
     context 'when there are 3 phases that belong to published publications' do
       before do
@@ -137,7 +137,7 @@ RSpec.describe Phase, type: :model do
 
   describe '::starting_on' do
     let(:start_date) { Time.zone.today }
-    let(:phases) { create_list(:phase, 6, start_at: start_date, end_at: start_date + 1.month) }
+    let!(:phases) { create_list(:phase, 6, start_at: start_date, end_at: start_date + 1.month) }
 
     context 'when there are 3 phases that belong to published publications' do
       it 'returns only the phases that belong to published publications' do
