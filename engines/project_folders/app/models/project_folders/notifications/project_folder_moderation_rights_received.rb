@@ -1,7 +1,9 @@
 module ProjectFolders
   module Notifications
     class ProjectFolderModerationRightsReceived < Notification
-      validates :project, presence: true
+      belongs_to :project_folder, class_name: 'ProjectFolders::Folder', optional: true
+
+      validates :project_folder, presence: true
 
       ACTIVITY_TRIGGERS = { 'User': { 'project_folder_moderation_rights_given': true } }.freeze
       EVENT_NAME = 'Project Folder moderation rights received'.freeze
@@ -13,7 +15,7 @@ module ProjectFolders
         project_folder    = ProjectFolders::Folder.find(project_folder_id)
         return [] unless project_folder && recipient_id
 
-        [new(recipient_id: recipient_id, initiating_user_id: initiator_id, post: project_folder)]
+        [new(recipient_id: recipient_id, initiating_user_id: initiator_id, project_folder: project_folder)]
       end
     end
   end
