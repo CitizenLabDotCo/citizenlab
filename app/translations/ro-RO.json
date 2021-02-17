@@ -436,7 +436,7 @@
   "app.components.VerificationModal.verifyCow": "Confirmați folosind COW",
   "app.components.VerificationModal.verifyNow": "Verifică acum",
   "app.components.VerificationModal.verifyYourIdentity": "Verificați-vă identitatea",
-  "app.components.VoteControl.budgetingFutureEnabled": "Input filters",
+  "app.components.VoteControl.budgetingFutureEnabled": "You can allocate your budget starting from {enabledFromDate}.",
   "app.components.VoteControl.budgetingNotPermitted": "Participatory budgeting is not currently enabled.",
   "app.components.VoteControl.budgetingNotPossible": "Making changes to your budget is not possible at this time.",
   "app.components.VoteControl.budgetingNotVerified": "Please {verifyAccountLink} to continue.",
