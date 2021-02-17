@@ -1098,7 +1098,7 @@
   "app.containers.AdminPage.ProjectEdit.PollTab.saveQuestion": "Salvo!",
   "app.containers.AdminPage.ProjectEdit.PollTab.saveQuestionSettings": "Salvar o número de escolhas",
   "app.containers.AdminPage.ProjectEdit.PollTab.singleOption": "Escolha única",
-  "app.containers.AdminPage.ProjectEdit.PollTab.subtitlePollTab": "Aqui, você pode configurar as sondagens dentro deste projeto e exportar seus resultados",
+  "app.containers.AdminPage.ProjectEdit.PollTab.subtitlePollTab": "Aqui, você pode configurar as consultas dentro deste projeto e exportar seus resultados",
   "app.containers.AdminPage.ProjectEdit.PollTab.titlePollTab": "Configurações e resultados das sondagens",
   "app.containers.AdminPage.ProjectEdit.PollTab.wrongMax": "Máximo errado",
   "app.containers.AdminPage.ProjectEdit.PostManager.subtitleInputManager": "Dê feedback, atribua tópicos ou copie entradas para a próxima fase do projeto.",
