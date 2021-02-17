@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import styled from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
 import messages from './messages';
@@ -26,7 +26,7 @@ const OrText = styled.div`
   padding-right: 10px;
 `;
 
-export default function Or(): ReactElement {
+const Or = (): ReactElement => {
   return (
     <OrContainer aria-hidden>
       <Line />
@@ -36,4 +36,6 @@ export default function Or(): ReactElement {
       <Line />
     </OrContainer>
   );
-}
+};
+
+export default Or;

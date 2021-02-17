@@ -1,5 +1,5 @@
 import React, { ReactElement, FormEvent } from 'react';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import styled from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
 import messages from './messages';
@@ -44,10 +44,7 @@ interface Props {
   logoAlt: string;
 }
 
-export default function FranceConnectButton({
-  onClick,
-  logoAlt,
-}: Props): ReactElement {
+const FranceConnectButton = ({ onClick, logoAlt }: Props): ReactElement => {
   return (
     <FranceConnectButtonWrapper>
       <FranceConnectButtonLink onClick={onClick}>
@@ -61,4 +58,6 @@ export default function FranceConnectButton({
       </SubSocialButtonLink>
     </FranceConnectButtonWrapper>
   );
-}
+};
+
+export default FranceConnectButton;
