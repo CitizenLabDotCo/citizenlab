@@ -9,7 +9,8 @@ class TrackSegmentService
 
   def identify_user(user)
     return unless @segment_client
-    traits = build_user_traits(user)
+
+    traits = user_traits(user)
     @segment_client.identify(
       user_id: user.id,
       traits: traits,
@@ -19,8 +20,9 @@ class TrackSegmentService
 
   def identify_tenant(tenant = nil)
     return unless @segment_client
+
     tenant ||= Tenant.current
-    traits = build_tenant_traits(tenant)
+    traits = tenant_traits(tenant)
     integrations = { All: true, Intercom: true, SatisMeter: true }
 
     # Segment provides no way to track a group of users directly.
@@ -36,6 +38,7 @@ class TrackSegmentService
 
   def track_activity(activity)
     return unless @segment_client
+
     event = event_from_activity(activity)
     @segment_client.track(event)
   end
