@@ -3,7 +3,7 @@ module EmailCampaigns
     extend ActiveSupport::Concern
 
     def self.consentable_campaign_types classes, user
-      DeliveryService::CAMPAIGN_CLASSES
+      DeliveryService.campaign_classes
         .select{|claz| claz.respond_to?(:consentable_for?) && claz.consentable_for?(user)}
         .map(&:name)
     end

@@ -1,6 +1,20 @@
 module EmailCampaigns
   class DeliveryService
-    CAMPAIGN_CLASSES = [
+    class << self
+      def campaign_classes
+        @campaign_types.map(&:constantize)
+      end
+
+      def campaign_types
+        @campaign_types ||= []
+      end
+
+      def add_campaign_types(*campaign_classes)
+        @campaign_types = campaign_types.concat(campaign_classes.map(&:name).uniq)
+      end
+    end
+
+    add_campaign_types(
       Campaigns::AdminDigest,
       Campaigns::AdminRightsReceived,
       Campaigns::AssigneeDigest,
@@ -48,22 +62,12 @@ module EmailCampaigns
       Campaigns::UserDigest,
       Campaigns::Welcome,
       Campaigns::YourProposedInitiativesDigest
-    ].freeze
+    )
 
-    class << self
-      def campaign_types
-        @campaign_types ||= CAMPAIGN_CLASSES.map(&:name).uniq
-      end
-
-      def add_campaign_types(*campaign_classes)
-        campaign_types.concat(campaign_classes.map(&:name).uniq)
-      end
-    end
-
-    delegate :campaign_types, to: :class
+    delegate :campaign_types, :campaign_classes, to: :class
 
     def consentable_campaign_types_for(user)
-      consentable_types = Consentable.consentable_campaign_types(CAMPAIGN_CLASSES, user)
+      consentable_types = Consentable.consentable_campaign_types(campaign_classes, user)
       disabled_types = Disableable.enabled_campaign_types(Campaign.where(type: campaign_types))
       consentable_types - disabled_types
     end
@@ -99,7 +103,7 @@ module EmailCampaigns
       command = campaign.generate_commands(
         recipient: recipient,
         time: Time.zone.now
-      ).first&.merge({ recipient: recipient })
+      ).first&.merge(recipient: recipient)
       return unless command
 
       mail = campaign.mailer_class.with(campaign: campaign, command: command).campaign_mail
