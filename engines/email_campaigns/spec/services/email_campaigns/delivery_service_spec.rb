@@ -142,7 +142,7 @@ describe EmailCampaigns::DeliveryService do
       ConsentableDisableableCampaignA.create!(enabled: false)
       ConsentableDisableableCampaignB.create!(enabled: true)
 
-      DeliveryService.add_campaign_types(
+      described_class.add_campaign_types(
         NonConsentableCampaign,
         ConsentableCampaign,
         ConsentableDisableableCampaignA,
