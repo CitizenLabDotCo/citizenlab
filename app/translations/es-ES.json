@@ -2061,7 +2061,7 @@
   "app.containers.Projects.issues": "Asuntos",
   "app.containers.Projects.location": "Ubicación:",
   "app.containers.Projects.manageBudget": "Gestionar los gastos",
-  "app.containers.Projects.metaTitle": "Proyecto • {projectTitle}",
+  "app.containers.Projects.metaTitle": "{projectTitle}",
   "app.containers.Projects.myExpenses": "Mis gastos",
   "app.containers.Projects.navPoll": "Consulta",
   "app.containers.Projects.navSurvey": "Encuesta",
