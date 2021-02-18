@@ -7,7 +7,7 @@ module ProjectFolders
   module SettingsSpecification
     extend CitizenLab::Mixins::SettingsSpecification
 
-    def self.name
+    def self.settings_name
       'project_folders'
     end
 

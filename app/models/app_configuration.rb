@@ -47,7 +47,7 @@ class AppConfiguration < ApplicationRecord
       settings_schema = CoreSettings.settings_json_schema
       schema_properties = settings_schema['properties']
 
-      extensions_settings_specs.each_with_object(schema_properties) do |spec, properties|
+      settings_extensions.each_with_object(schema_properties) do |spec, properties|
         properties[spec.settings_name] = spec.settings_json_schema
       end
 
@@ -55,8 +55,21 @@ class AppConfiguration < ApplicationRecord
     end
 
     # @return [Array<CitizenLab::Mixins::SettingsSpecification>]
-    def extensions_settings_specs
-      @extensions_settings_specs ||= []
+    def settings_extensions
+      @extensions_settings_specs ? @extensions_settings_specs.values : []
+    end
+
+    # @param [CitizenLab::Mixins::SettingsSpecification] settings_specs
+    def extend_settings(settings_specs)
+      @extensions_settings_specs ||= {}
+
+      settings_name = settings_specs.settings_name
+      if @extensions_settings_specs.key?(settings_name)
+        Rails.logger.warn("Overwriting settings specification for '#{settings_name}' extension.", caller: caller)
+      end
+
+      @extensions_settings_specs[settings_name] = settings_specs
+      nil
     end
   end
 
@@ -173,4 +186,4 @@ class AppConfiguration < ApplicationRecord
 
 end
 
-AppConfiguration.extensions_settings_specs << ProjectFolders::SettingsSpecification if CitizenLab.ee?
+AppConfiguration.extend_settings(ProjectFolders::SettingsSpecification) if CitizenLab.ee?
