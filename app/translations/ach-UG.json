@@ -2393,6 +2393,7 @@
   "app.containers.landing.userDeletionFailed": "crwdns26732:0crwdne26732:0",
   "app.containers.landing.verifyNow": "crwdns29123:0crwdne29123:0",
   "app.containers.landing.verifyYourIdentity": "crwdns29125:0crwdne29125:0",
+  "app.containers.verificationModal.verificationButtonAltText": "crwdns161728:0{loginMechanismName}crwdne161728:0",
   "app.errors.after_end_at": "crwdns18402:0crwdne18402:0",
   "app.errors.avatar_carrierwave_download_error": "crwdns98034:0crwdne98034:0",
   "app.errors.avatar_carrierwave_integrity_error": "crwdns98036:0crwdne98036:0",
