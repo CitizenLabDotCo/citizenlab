@@ -11,10 +11,3 @@ module CustomStyle
     end
   end
 end
-
-WebApi::V1::AppConfigurationSerializer.include(CustomStyle::WebApi::V1::Patches::AppConfigurationSerializer)
-
-
-
-
-

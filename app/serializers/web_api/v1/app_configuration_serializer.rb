@@ -17,3 +17,6 @@ class WebApi::V1::AppConfigurationSerializer < WebApi::V1::BaseSerializer
     object.public_settings
   end
 end
+
+WebApi::V1::AppConfigurationSerializer.include_if_ee('CustomStyle::WebApi::V1::Patches::AppConfigurationSerializer')
+

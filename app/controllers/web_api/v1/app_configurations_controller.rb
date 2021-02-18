@@ -45,3 +45,5 @@ class WebApi::V1::AppConfigurationsController < ApplicationController
                              .permit(:logo, :header_bg, :favicon, settings: {})
   end
 end
+
+WebApi::V1::AppConfigurationsController.prepend_if_ee('CustomStyle::WebApi::V1::Patches::AppConfigurationsController')
