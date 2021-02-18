@@ -12,6 +12,9 @@
 - The password fields have a strength checker with appropriate informative message on how to increase the strength
 - France Connect as a verification method.
 
+### Fixed
+- Notifications for started phases are no longer triggered for unpublished projects and folders.
+
 ## 2021-02-17
 
 ### Changed
