@@ -2413,6 +2413,7 @@
   "app.containers.landing.userDeletionFailed": "Det oppsto et problem med å slette kontoen din. Vi er oppmerksomme på problemet og skal gjøre vårt beste for å løse det. Vennligst prøv igjen senere.",
   "app.containers.landing.verifyNow": "Bekreft nå",
   "app.containers.landing.verifyYourIdentity": "Bekreft hvem du er",
+  "app.containers.verificationModal.verificationButtonAltText": "Verify with {loginMechanismName}",
   "app.errors.after_end_at": "Startdatoen inntreffer etter sluttdatoen",
   "app.errors.avatar_carrierwave_download_error": "Kunne ikke laste ned avatarfilen.",
   "app.errors.avatar_carrierwave_integrity_error": "Avatarfilen er ikke av tillatt type.",
