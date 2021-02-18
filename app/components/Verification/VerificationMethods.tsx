@@ -322,9 +322,7 @@ const VerificationMethods = memo<Props>(
                       rules
                     ) : (
                       <Fragment key={index}>
-                        <Or>
-                          <FormattedMessage {...messages.or} />
-                        </Or>
+                        <Or />
                         {rules}
                       </Fragment>
                     );
