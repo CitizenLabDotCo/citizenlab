@@ -3,6 +3,8 @@ class AppConfiguration < ApplicationRecord
   mount_base64_uploader :header_bg, AppHeaderBgUploader
   mount_base64_uploader :favicon, FaviconUploader
 
+  attr_accessor :tenant_sync_enabled
+
   validates :settings, presence: true, json: {
       schema: -> { AppConfiguration.settings_json_schema_str },
       message: ->(errors) { errors.map { |e| {fragment: e[:fragment], error: e[:failed_attribute], human_message: e[:message]} } },
@@ -15,7 +17,9 @@ class AppConfiguration < ApplicationRecord
   validate :validate_singleton, on: :create
 
   before_validation :validate_missing_feature_dependencies
-  after_update :update_tenant
+
+  after_save :update_tenant, if: :tenant_sync_enabled
+  after_initialize :custom_initialization
 
   class << self
 
@@ -34,6 +38,15 @@ class AppConfiguration < ApplicationRecord
       @settings_json_schema ||= JSON.parse(settings_json_schema_str)
     end
 
+  end
+
+  def custom_initialization
+    @tenant_sync_enabled = true
+  end
+
+  def disable_tenant_sync
+    self.tenant_sync_enabled = false
+    self
   end
 
   # @return [AppConfiguration] self
@@ -128,7 +141,6 @@ class AppConfiguration < ApplicationRecord
   end
 
   def update_tenant
-    return if caller.any? { |s| s.match?(/tenant\.rb.*`update_app_configuration'/) }
     tenant = Tenant.current
     attrs_delta = tenant.send(:attributes_delta, self, tenant)
     return unless attrs_delta.present?
@@ -136,7 +148,7 @@ class AppConfiguration < ApplicationRecord
     tenant.remove_logo! if logo_previously_changed? && logo.blank?
     tenant.remove_favicon! if favicon_previously_changed? && favicon.blank?
     tenant.remove_header_bg! if header_bg_previously_changed? && header_bg.blank?
-    tenant.save
+    tenant.disable_config_sync.save
   end
 
 end
