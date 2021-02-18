@@ -2413,6 +2413,7 @@
   "app.containers.landing.userDeletionFailed": "",
   "app.containers.landing.verifyNow": "",
   "app.containers.landing.verifyYourIdentity": "",
+  "app.containers.verificationModal.verificationButtonAltText": "",
   "app.errors.after_end_at": "",
   "app.errors.avatar_carrierwave_download_error": "",
   "app.errors.avatar_carrierwave_integrity_error": "",
