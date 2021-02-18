@@ -10,6 +10,7 @@ import Button from 'components/UI/Button';
 import { Title, Subtitle } from './styles';
 import FranceConnectButton from 'components/UI/FranceConnectButton';
 import Or from 'components/UI/Or';
+import VerificationMethodButton from './VerificationMethodButton';
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
@@ -32,7 +33,6 @@ import { getJwt } from 'utils/auth/jwt';
 import { removeUrlLocale } from 'services/locale';
 import { ContextShape } from './VerificationModal';
 import Outlet from 'components/Outlet';
-import VerificationMethodButton from './VerificationMethodButton';
 
 const Container = styled.div`
   display: flex;
@@ -215,6 +215,13 @@ const VerificationMethods = memo<Props & InjectedIntlProps>(
       !isNilOrError(participationConditions) &&
       participationConditions.length > 0;
 
+    const handleOnMethodSelected = useCallback(
+      (method) => () => {
+        onMethodSelected(method);
+      },
+      [onMethodSelected]
+    );
+
     const onVerifyFranceConnectButtonClick = useCallback(() => {
       const jwt = getJwt();
       window.location.href = `${AUTH_PATH}/franceconnect?token=${jwt}&pathname=${removeUrlLocale(
@@ -317,7 +324,7 @@ const VerificationMethods = memo<Props & InjectedIntlProps>(
                   className={
                     index + 1 === verificationMethods.data.length ? 'last' : ''
                   }
-                  onClick={() => onMethodSelected(method)}
+                  onClick={handleOnMethodSelected(method)}
                 >
                   {method.attributes.name === 'cow' && (
                     <FormattedMessage {...messages.verifyCow} />
