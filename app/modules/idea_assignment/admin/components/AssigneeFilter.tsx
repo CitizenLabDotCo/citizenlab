@@ -12,11 +12,12 @@ import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
-import messages from '../../messages';
+import messages from './messages';
+import postManagerMessages from 'components/admin/PostManager/messages';
 
 import { trackEventByName } from 'utils/analytics';
-import tracks from '../../tracks';
-import { ManagerType } from '../..';
+import tracks from './tracks';
+import { ManagerType } from 'components/admin/PostManager';
 
 interface DataProps {
   prospectAssignees: GetUsersChildProps;
@@ -55,7 +56,7 @@ export class AssigneeFilter extends PureComponent<
         .filter((assignee) => assignee.id !== authUser.id)
         .map((assignee) => ({
           value: assignee.id,
-          text: formatMessage(messages.assignedTo, {
+          text: formatMessage(postManagerMessages.assignedTo, {
             assigneeName: `${assignee.attributes.first_name} ${assignee.attributes.last_name}`,
           }),
           className: 'e2e-assignee-filter-other-user',
@@ -71,12 +72,12 @@ export class AssigneeFilter extends PureComponent<
         },
         {
           value: authUser.id,
-          text: formatMessage(messages.assignedToMe),
+          text: formatMessage(postManagerMessages.assignedToMe),
           id: 'e2e-assignee-filter-assigned-to-user',
         },
         {
           value: 'unassigned',
-          text: formatMessage(messages.noOne),
+          text: formatMessage(postManagerMessages.noOne),
           id: 'e2e-assignee-filter-unassigned',
         },
         ...dynamicOptions,
