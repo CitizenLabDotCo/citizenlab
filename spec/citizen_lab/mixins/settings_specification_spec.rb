@@ -30,7 +30,7 @@ describe 'CitizenLab::Mixins::SettingsSpecification' do
     end
   end
 
-  context "with settings specified as a string" do
+  context 'with settings specified as a string' do
     let(:spec_as_str) do
       Module.new do
         def self.settings_json_schema_str
