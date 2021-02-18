@@ -2393,6 +2393,7 @@
   "app.containers.landing.userDeletionFailed": "Beim Löschen des Accounts ist ein Fehler aufgetreten. Wir wurden über das Problem benachrichtigt und werden unser Bestes geben, um es zu beheben. Bitte versuche es später erneut.",
   "app.containers.landing.verifyNow": "Jetzt verifizieren",
   "app.containers.landing.verifyYourIdentity": "Werde ein verifizierter Bürger",
+  "app.containers.verificationModal.verificationButtonAltText": "Verify with {loginMechanismName}",
   "app.errors.after_end_at": "Das Startdatum ist auf die Zeit nach dem Enddatum gesetzt worden",
   "app.errors.avatar_carrierwave_download_error": "Die Avatardatei konnte nicht heruntergeladen werden.",
   "app.errors.avatar_carrierwave_integrity_error": "Die Avatardatei hat ein unzulässiges Format.",
