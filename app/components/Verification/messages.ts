@@ -109,10 +109,6 @@ export default defineMessages({
     id: 'app.components.VerificationModal.verifyNow',
     defaultMessage: 'Verify now',
   },
-  verifyBOSA: {
-    id: 'app.components.VerificationModal.verifyBOSA',
-    defaultMessage: 'Verify with itsme or eID',
-  },
   skipThisStep: {
     id: 'app.components.VerificationModal.skipThisStep',
     defaultMessage: 'Skip this step',

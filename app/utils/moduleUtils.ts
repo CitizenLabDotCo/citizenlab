@@ -23,6 +23,7 @@ import {
 import { IUserData } from 'services/users';
 import { MessageValue } from 'react-intl';
 import { NavItem } from 'containers/Admin/sideBar';
+import { IVerificationMethod } from 'services/verificationMethods';
 
 type Localize = (
   multiloc: Multiloc | null | undefined,
@@ -97,6 +98,9 @@ export type OutletsPropertyMap = {
       insertAfterNavItemId?: string;
       navItemConfiguration: NavItem;
     }) => void;
+  };
+  'app.components.VerificationModal.buttons': {
+    activeMethods: IVerificationMethod[];
   };
 };
 

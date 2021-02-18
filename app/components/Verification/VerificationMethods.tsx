@@ -31,6 +31,8 @@ import { AUTH_PATH } from 'containers/App/constants';
 import { getJwt } from 'utils/auth/jwt';
 import { removeUrlLocale } from 'services/locale';
 import { ContextShape } from './VerificationModal';
+import Outlet from 'components/Outlet';
+import VerificationMethodButton from './VerificationMethodButton';
 
 const Container = styled.div`
   display: flex;
@@ -163,14 +165,6 @@ const ButtonsContainer = styled.div`
   }
 `;
 
-const MethodButton = styled(Button)`
-  margin-bottom: 15px;
-
-  &.last {
-    margin-bottom: 0px;
-  }
-`;
-
 const SkipButtonContainer = styled.div`
   width: 100%;
   display: flex;
@@ -211,13 +205,6 @@ const VerificationMethods = memo<Props & InjectedIntlProps>(
           )
         : [];
 
-    const filteredVerificationMethods = filterMethods([
-      'cow',
-      'bosa_fas',
-      'bogus',
-      'id_card_lookup',
-    ]);
-
     const alternativeMethods = filterMethods(['franceconnect']);
 
     const franceConnectVerification = alternativeMethods.find(
@@ -228,30 +215,12 @@ const VerificationMethods = memo<Props & InjectedIntlProps>(
       !isNilOrError(participationConditions) &&
       participationConditions.length > 0;
 
-    const onVerifyBOSAButtonClick = useCallback(() => {
-      const jwt = getJwt();
-      window.location.href = `${AUTH_PATH}/bosa_fas?token=${jwt}&pathname=${removeUrlLocale(
-        window.location.pathname
-      )}`;
-    }, []);
-
     const onVerifyFranceConnectButtonClick = useCallback(() => {
       const jwt = getJwt();
       window.location.href = `${AUTH_PATH}/franceconnect?token=${jwt}&pathname=${removeUrlLocale(
         window.location.pathname
       )}`;
     }, []);
-
-    const onSelectMethodButtonClick = useCallback(
-      (method) => () => {
-        if (method.attributes.name === 'bosa_fas') {
-          onVerifyBOSAButtonClick();
-        } else {
-          onMethodSelected(method);
-        }
-      },
-      [onVerifyBOSAButtonClick, onMethodSelected]
-    );
 
     const onSkipButtonClicked = useCallback(() => {
       onSkipped?.();
@@ -269,7 +238,7 @@ const VerificationMethods = memo<Props & InjectedIntlProps>(
     }
 
     if (
-      verificationMethods !== undefined &&
+      !isNilOrError(verificationMethods) &&
       participationConditions !== undefined
     ) {
       return (
@@ -337,6 +306,33 @@ const VerificationMethods = memo<Props & InjectedIntlProps>(
                 inModal ? 'inModal' : ''
               }`}
             >
+              <Outlet
+                id="app.components.VerificationModal.buttons"
+                activeMethods={verificationMethods.data}
+              />
+              {verificationMethods.data.map((method, index) => (
+                <VerificationMethodButton
+                  key={method.id}
+                  id={`e2e-${method.attributes.name}-button`}
+                  className={
+                    index + 1 === verificationMethods.data.length ? 'last' : ''
+                  }
+                  onClick={() => onMethodSelected(method)}
+                >
+                  {method.attributes.name === 'cow' && (
+                    <FormattedMessage {...messages.verifyCow} />
+                  )}
+                  {method.attributes.name === 'id_card_lookup' && (
+                    <T value={method.attributes.method_name_multiloc} />
+                  )}
+                  {method.attributes.name === 'bogus' &&
+                    'Bogus verification (testing)'}
+                </VerificationMethodButton>
+              ))}
+
+              {!isEmpty(alternativeMethods) &&
+                !isEmpty(filteredVerificationMethods) && <Or />}
+
               {franceConnectVerification && (
                 <FranceConnectButton
                   onClick={onVerifyFranceConnectButtonClick}
@@ -345,40 +341,6 @@ const VerificationMethods = memo<Props & InjectedIntlProps>(
                   })}
                 />
               )}
-
-              {!isEmpty(alternativeMethods) &&
-                !isEmpty(filteredVerificationMethods) && <Or />}
-
-              {filteredVerificationMethods.map((method, index) => (
-                <MethodButton
-                  key={method.id}
-                  id={`e2e-${method.attributes.name}-button`}
-                  className={
-                    index + 1 === filteredVerificationMethods.length
-                      ? 'last'
-                      : ''
-                  }
-                  icon="shieldVerified"
-                  iconSize="22px"
-                  onClick={onSelectMethodButtonClick(method)}
-                  buttonStyle="white"
-                  fullWidth={true}
-                  justify="left"
-                  whiteSpace="wrap"
-                >
-                  {method.attributes.name === 'cow' && (
-                    <FormattedMessage {...messages.verifyCow} />
-                  )}
-                  {method.attributes.name === 'bosa_fas' && (
-                    <FormattedMessage {...messages.verifyBOSA} />
-                  )}
-                  {method.attributes.name === 'id_card_lookup' && (
-                    <T value={method.attributes.method_name_multiloc} />
-                  )}
-                  {method.attributes.name === 'bogus' &&
-                    'Bogus verification (testing)'}
-                </MethodButton>
-              ))}
             </ButtonsContainer>
           </Content>
 
