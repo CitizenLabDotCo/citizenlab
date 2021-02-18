@@ -1,6 +1,9 @@
 # Changelog
 
-## Next release 
+## Next release
+
+### Added
+- Added France Connect as a verification method.
 
 ## 2021-02-17
 
