@@ -51,7 +51,6 @@ import tracks from '../../tracks';
 import { TFilterMenu, ManagerType } from '../..';
 import { TitleLink, StyledRow } from './Row';
 import SubRow from './SubRow';
-import Fragment from 'components/Fragment';
 
 type InputProps = {
   type: ManagerType;
