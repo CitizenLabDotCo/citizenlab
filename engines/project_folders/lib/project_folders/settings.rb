@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
 # TODO Nasty require; need to find a better way.
-require_relative '../../../../lib/citizen_lab/mixins/settings_provider.rb'  
+require_relative '../../../../lib/citizen_lab/mixins/settings_specification'
 
 module ProjectFolders
   module Settings
-    extend CitizenLab::Mixins::SettingsProvider
+    extend CitizenLab::Mixins::SettingsSpecification
 
     def self.name
       'project_folders'
