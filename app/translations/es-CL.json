@@ -2413,6 +2413,7 @@
   "app.containers.landing.userDeletionFailed": "Un error ha ocurrido borrando tu cuenta, hemos notificado este asunto y haremos lo posible por arreglarlo. Inténtalo más tarde.",
   "app.containers.landing.verifyNow": "Verificar ahora",
   "app.containers.landing.verifyYourIdentity": "Confirma que tu identidad ha sido verificada",
+  "app.containers.verificationModal.verificationButtonAltText": "Verify with {loginMechanismName}",
   "app.errors.after_end_at": "La fecha de inicio es anterior a la fecha de término",
   "app.errors.avatar_carrierwave_download_error": "No pude descargar el archivo del avatar.",
   "app.errors.avatar_carrierwave_integrity_error": "El archivo de Avatar no es del tipo permitido.",

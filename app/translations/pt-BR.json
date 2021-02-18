@@ -2413,6 +2413,7 @@
   "app.containers.landing.userDeletionFailed": "Ocorreu um erro ao apagar a sua conta, fomos notificados do problema e faremos o possivel para corrigi-lo. Por favor, tente novamente mais tarde.",
   "app.containers.landing.verifyNow": "Verifique agora",
   "app.containers.landing.verifyYourIdentity": "Confirmar que o seu usuário foi verificado",
+  "app.containers.verificationModal.verificationButtonAltText": "Verify with {loginMechanismName}",
   "app.errors.after_end_at": "A data de início ocorre após a data final",
   "app.errors.avatar_carrierwave_download_error": "Não foi possível fazer o download do arquivo avatar.",
   "app.errors.avatar_carrierwave_integrity_error": "O arquivo Avatar não é de um tipo permitido.",
