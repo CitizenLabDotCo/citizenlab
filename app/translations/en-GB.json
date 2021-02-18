@@ -2393,6 +2393,7 @@
   "app.containers.landing.userDeletionFailed": "An error occurred deleting your account, we have been notified of the issue and will do our best to fix it. Please try again later.",
   "app.containers.landing.verifyNow": "Verify now",
   "app.containers.landing.verifyYourIdentity": "Become a verified citizen",
+  "app.containers.verificationModal.verificationButtonAltText": "",
   "app.errors.after_end_at": "The start date occurs after the end date",
   "app.errors.avatar_carrierwave_download_error": "Could not download avatar file.",
   "app.errors.avatar_carrierwave_integrity_error": "Avatar file is not of an allowed type.",
