@@ -2178,7 +2178,7 @@
   "app.containers.SignUp.noPasswordError": "Una allassimasoqassaaq",
   "app.containers.SignUp.noTokenError": "Una allassimasoqassaaq",
   "app.containers.SignUp.noValidEmailError": "E-mail atuuppasinngilaq.",
-  "app.containers.SignUp.noValidPasswordError": "Kode isissutissaq minnerpaamik 8-nik naqinneqassaaq.",
+  "app.containers.SignUp.noValidPasswordError": "Kode isissutigisartakkat minnerpaamik 8-nik naqinneqassaaq",
   "app.containers.SignUp.or": "Imaluunniit",
   "app.containers.SignUp.passwordLabel": "Kode isissutissaq",
   "app.containers.SignUp.passwordPlaceholder": " ",
