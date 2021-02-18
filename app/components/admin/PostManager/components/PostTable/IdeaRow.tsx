@@ -70,9 +70,127 @@ type Props = InputProps & {
   connectDragSource: any;
 };
 
+type State = {
+  cells: CellConfiguration[];
+};
+
 class IdeaRow extends React.PureComponent<
-  Props & InjectedIntlProps & InjectedLocalized
+  Props & InjectedIntlProps & InjectedLocalized,
+  State
 > {
+  constructor(props) {
+    super(props);
+
+    const { onClickCheckbox, onClickTitle, nothingHappens } = props;
+
+    this.state = {
+      cells: [
+        {
+          name: 'selection',
+          cellProps: { collapsing: true },
+          onChange: onClickCheckbox,
+          Component: ({
+            selection,
+            idea,
+            onChange,
+          }: CellComponentProps & {
+            onChange: (event: ChangeEvent<HTMLInputElement>) => void;
+          }) => {
+            return (
+              <Checkbox
+                checked={!!selection.has(idea.id)}
+                onChange={onChange}
+                size="21px"
+              />
+            );
+          },
+        },
+        {
+          name: 'title',
+          onClick: onClickTitle,
+          Component: ({ idea, onClick }) => {
+            return (
+              <TitleLink
+                className="e2e-idea-manager-idea-title"
+                onClick={onClick}
+              >
+                <T value={idea.attributes.title_multiloc} />
+              </TitleLink>
+            );
+          },
+        },
+        {
+          name: 'assignee',
+          cellProps: { onClick: nothingHappens, singleLine: true },
+          onChange: (idea: IIdeaData) => (assigneeId: string | undefined) => {
+            const ideaId = idea.id;
+            console.log({ ideaId, assigneeId });
+
+            updateIdea(ideaId, { assignee_id: assigneeId || null });
+
+            trackEventByName(tracks.changeIdeaAssignment, {
+              location: 'Idea Manager',
+              method: 'Changed through the dropdown n the table overview',
+              idea: ideaId,
+            });
+          },
+          Component: ({
+            idea,
+            onChange,
+          }: CellComponentProps & {
+            onChange: (idea: IIdeaData) => (assigneeId?: string) => void;
+          }) => {
+            return (
+              <AssigneeSelect
+                onAssigneeChange={onChange(idea)}
+                projectId={get(idea, 'relationships.project.data.id')}
+                assigneeId={get(idea, 'relationships.assignee.data.id')}
+              />
+            );
+          },
+        },
+        {
+          name: 'published_on',
+          Component: ({ idea }) => {
+            return <FormattedRelative value={idea.attributes.published_at} />;
+          },
+        },
+        {
+          name: 'up',
+          cellProps: { singleLine: true },
+          Component: ({ idea }) => {
+            return (
+              <>
+                <Icon name="thumbs up" />
+                {idea.attributes.upvotes_count}
+              </>
+            );
+          },
+        },
+        {
+          name: 'down',
+          cellProps: { singleLine: true },
+          Component: ({ idea }: CellComponentProps) => {
+            return (
+              <>
+                <Icon name="thumbs down" />
+                {idea.attributes.downvotes_count}
+              </>
+            );
+          },
+        },
+        {
+          name: 'picks',
+          cellProps: { singleLine: true },
+          featureFlag: 'participatory_budgeting',
+          Component: ({ idea }: CellComponentProps) => {
+            return <>{idea.attributes.baskets_count}</>;
+          },
+        },
+      ],
+    };
+  }
+
   onUpdateIdeaPhases = (selectedPhases) => {
     updateIdea(this.props.idea.id, {
       phase_ids: selectedPhases,
@@ -134,10 +252,9 @@ class IdeaRow extends React.PureComponent<
       phases,
       statuses,
       className,
-      onClickCheckbox,
-      onClickTitle,
-      nothingHappens,
     } = this.props;
+
+    const { cells } = this.state;
 
     const selectedStatus: string | undefined = get(
       idea,
@@ -147,112 +264,6 @@ class IdeaRow extends React.PureComponent<
     const selectedTopics = idea.relationships.topics?.data.map((p) => p.id);
     const active = selection.has(idea.id);
     const projectId = get(idea, 'relationships.project.data.id');
-
-    const cells: CellConfiguration[] = [
-      {
-        cellProps: { collapsing: true },
-        name: 'selection',
-        onChange: onClickCheckbox,
-        Component: ({
-          selection,
-          idea,
-          onChange,
-        }: CellComponentProps & {
-          onChange: (event: ChangeEvent<HTMLInputElement>) => void;
-        }) => {
-          return (
-            <Checkbox
-              checked={!!selection.has(idea.id)}
-              onChange={onChange}
-              size="21px"
-            />
-          );
-        },
-      },
-      {
-        cellProps: {},
-        name: 'title',
-        onClick: onClickTitle,
-        Component: ({ idea, onClick }) => {
-          return (
-            <TitleLink
-              className="e2e-idea-manager-idea-title"
-              onClick={onClick}
-            >
-              <T value={idea.attributes.title_multiloc} />
-            </TitleLink>
-          );
-        },
-      },
-      {
-        cellProps: { onClick: nothingHappens, singleLine: true },
-        name: 'assignee',
-        onChange: (idea: IIdeaData) => (assigneeId: string | undefined) => {
-          const ideaId = idea.id;
-          console.log({ ideaId, assigneeId });
-
-          updateIdea(ideaId, { assignee_id: assigneeId || null });
-
-          trackEventByName(tracks.changeIdeaAssignment, {
-            location: 'Idea Manager',
-            method: 'Changed through the dropdown n the table overview',
-            idea: ideaId,
-          });
-        },
-        Component: ({
-          idea,
-          onChange,
-        }: CellComponentProps & {
-          onChange: (idea: IIdeaData) => (assigneeId?: string) => void;
-        }) => {
-          return (
-            <AssigneeSelect
-              onAssigneeChange={onChange(idea)}
-              projectId={get(idea, 'relationships.project.data.id')}
-              assigneeId={get(idea, 'relationships.assignee.data.id')}
-            />
-          );
-        },
-      },
-      {
-        name: 'published_on',
-        Component: ({ idea }) => {
-          return <FormattedRelative value={idea.attributes.published_at} />;
-        },
-      },
-      {
-        name: 'up',
-        cellProps: { singleLine: true },
-        Component: ({ idea }) => {
-          return (
-            <>
-              <Icon name="thumbs up" />
-              {idea.attributes.upvotes_count}
-            </>
-          );
-        },
-      },
-      {
-        name: 'down',
-        cellProps: { singleLine: true },
-        Component: ({ idea }: CellComponentProps) => {
-          return (
-            <>
-              <Icon name="thumbs down" />
-              {idea.attributes.downvotes_count}
-            </>
-          );
-        },
-      },
-      {
-        name: 'picks',
-        cellProps: { singleLine: true },
-        featureFlag: 'participatory_budgeting',
-        Component: ({ idea }: CellComponentProps) => {
-          return <>{idea.attributes.baskets_count}</>;
-        },
-      },
-    ];
 
     return (
       <>
