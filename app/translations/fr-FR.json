@@ -893,6 +893,7 @@
   "app.containers.Admin.emails.subtitleEmails": "Ecrivez vos emails sur la plateforme et envoyer les à tous les utilisateurs ou à certains groupes. Contrôlez quels messages seront envoyés automatiquement aux utilisateurs de la plateforme.",
   "app.containers.Admin.emails.titleEmails": "Emails",
   "app.containers.Admin.emails.toAllUsers": "Voulez-vous envoyer ce courriel à tous les utilisateurs ?",
+  "app.containers.Admin.ideas.tabStatuses": "",
   "app.containers.Admin.initiatives.addNewProposal": "Ajouter une proposition",
   "app.containers.Admin.initiatives.enabledToggle": "Activée",
   "app.containers.Admin.initiatives.fieldPostingEnabled": "Soumission des propositions",

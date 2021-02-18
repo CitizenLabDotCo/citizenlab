@@ -893,6 +893,7 @@
   "app.containers.Admin.emails.subtitleEmails": "Maak zelf e-mails aan die naar alle gebruikers of naar bepaalde groepen worden verzonden. En beheer de e-mails die je gebruikers automatisch ontvangen.",
   "app.containers.Admin.emails.titleEmails": "E-mails",
   "app.containers.Admin.emails.toAllUsers": "Wil je deze e-mail naar alle gebruikers sturen?",
+  "app.containers.Admin.ideas.tabStatuses": "",
   "app.containers.Admin.initiatives.addNewProposal": "Een initiatief toevoegen",
   "app.containers.Admin.initiatives.enabledToggle": "Ingeschakeld",
   "app.containers.Admin.initiatives.fieldPostingEnabled": "Indienen van een voorstel",

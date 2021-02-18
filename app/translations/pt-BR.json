@@ -893,6 +893,7 @@
   "app.containers.Admin.emails.subtitleEmails": "Envie seus próprios emails e controle quais emails automáticos seus usuários recebem.",
   "app.containers.Admin.emails.titleEmails": "E-mail",
   "app.containers.Admin.emails.toAllUsers": "Quer enviar este email para todos os usuários?",
+  "app.containers.Admin.ideas.tabStatuses": "",
   "app.containers.Admin.initiatives.addNewProposal": "Adicione uma proposta",
   "app.containers.Admin.initiatives.enabledToggle": "Ativado",
   "app.containers.Admin.initiatives.fieldPostingEnabled": "Submissão de proposta",

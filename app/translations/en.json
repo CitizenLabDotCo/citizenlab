@@ -893,6 +893,7 @@
   "app.containers.Admin.emails.subtitleEmails": "Send out your own emails and control what automated emails your users receive.",
   "app.containers.Admin.emails.titleEmails": "Emails",
   "app.containers.Admin.emails.toAllUsers": "Do you want to send this email to all users?",
+  "app.containers.Admin.ideas.tabStatuses": "Statuses",
   "app.containers.Admin.initiatives.addNewProposal": "Add a proposal",
   "app.containers.Admin.initiatives.enabledToggle": "Enabled",
   "app.containers.Admin.initiatives.fieldPostingEnabled": "Proposal submission",
