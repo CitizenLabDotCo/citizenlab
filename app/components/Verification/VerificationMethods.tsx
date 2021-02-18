@@ -18,7 +18,8 @@ import useVerificationMethods from 'hooks/useVerificationMethods';
 
 // i18n
 import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
 
 // style
 import styled from 'styled-components';
@@ -187,7 +188,7 @@ interface Props {
   className?: string;
 }
 
-const VerificationMethods = memo<Props>(
+const VerificationMethods = memo<Props & InjectedIntlProps>(
   ({
     context,
     showHeader,
@@ -196,6 +197,7 @@ const VerificationMethods = memo<Props>(
     onMethodSelected,
     onSkipped,
     className,
+    intl: { formatMessage },
   }) => {
     const participationConditions = useParticipationConditions(context);
 
@@ -371,7 +373,9 @@ const VerificationMethods = memo<Props>(
               {franceConnectVerification && (
                 <FranceConnectButton
                   onClick={onVerifyFranceConnectButtonClick}
-                  logoAlt=""
+                  logoAlt={formatMessage(messages.verificationButtonAltText, {
+                    loginMechanismName: 'FranceConnect',
+                  })}
                 />
               )}
             </ButtonsContainer>
@@ -396,4 +400,4 @@ const VerificationMethods = memo<Props>(
   }
 );
 
-export default VerificationMethods;
+export default injectIntl(VerificationMethods);
