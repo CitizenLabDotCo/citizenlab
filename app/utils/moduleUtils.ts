@@ -14,10 +14,8 @@ import { FunctionComponent } from 'react';
 import Loadable from 'react-loadable';
 import { IGroupDataAttributes, MembershipType } from 'services/groups';
 import {
-  CellConfiguration,
   FormikSubmitHandler,
-  InsertCellOptions,
-  InsertTabOptions,
+  InsertConfigurationOptions,
   ITab,
   MessageDescriptor,
   Multiloc,
@@ -93,13 +91,10 @@ export type OutletsPropertyMap = {
       messageDescriptor: MessageDescriptor,
       values?: { [key: string]: MessageValue } | undefined
     ) => string;
-    onData: (data: InsertTabOptions) => void;
+    onData: (data: InsertConfigurationOptions<ITab>) => void;
   };
   'app.containers.Admin.sideBar.navItems': {
-    onData: (data: {
-      insertAfterNavItemId?: string;
-      navItemConfiguration: NavItem;
-    }) => void;
+    onData: (data: InsertConfigurationOptions<NavItem>) => void;
   };
   'app.components.admin.PostManager.topActionBar': {
     assignee?: string | null;
@@ -245,10 +240,7 @@ export const loadModules = (modules: Modules): ParsedModuleConfiguration => {
 export const insertConfiguration = <T extends { name: string }>({
   configuration,
   insertAfterName,
-}: {
-  configuration: T;
-  insertAfterName: string;
-}) => (items: T[]): T[] => {
+}: InsertConfigurationOptions<T>) => (items: T[]): T[] => {
   const insertIndex =
     items.findIndex((item) => item.name === insertAfterName) + 1;
 
