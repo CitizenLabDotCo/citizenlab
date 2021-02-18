@@ -15,12 +15,14 @@ import Loadable from 'react-loadable';
 import { IGroupDataAttributes, MembershipType } from 'services/groups';
 import {
   FormikSubmitHandler,
+  InsertTabOptions,
   ITab,
   MessageDescriptor,
   Multiloc,
 } from 'typings';
 import { IUserData } from 'services/users';
 import { MessageValue } from 'react-intl';
+import { NavItem } from 'containers/Admin/sideBar';
 
 type Localize = (
   multiloc: Multiloc | null | undefined,
@@ -88,9 +90,12 @@ export type OutletsPropertyMap = {
       messageDescriptor: MessageDescriptor,
       values?: { [key: string]: MessageValue } | undefined
     ) => string;
+    onData: (data: InsertTabOptions) => void;
+  };
+  'app.containers.Admin.sideBar.navItems': {
     onData: (data: {
-      insertAfterTabName?: string;
-      tabConfiguration: ITab;
+      insertAfterNavItemId?: string;
+      navItemConfiguration: NavItem;
     }) => void;
   };
 };
@@ -226,4 +231,20 @@ export const loadModules = (modules: Modules): ParsedModuleConfiguration => {
     beforeMountApplication: callLifecycleMethods('beforeMountApplication'),
     afterMountApplication: callLifecycleMethods('afterMountApplication'),
   };
+};
+
+export const insertTab = ({
+  tabConfiguration,
+  insertAfterTabName,
+}: InsertTabOptions) => (tabs: ITab[]): ITab[] => {
+  const insertIndex =
+    tabs.findIndex((tab) => tab.name === insertAfterTabName) + 1;
+
+  return insertIndex > 0
+    ? [
+        ...tabs.slice(0, insertIndex),
+        tabConfiguration,
+        ...tabs.slice(insertIndex),
+      ]
+    : [...tabs, tabConfiguration];
 };
