@@ -14,7 +14,9 @@ import { FunctionComponent } from 'react';
 import Loadable from 'react-loadable';
 import { IGroupDataAttributes, MembershipType } from 'services/groups';
 import {
+  CellConfiguration,
   FormikSubmitHandler,
+  InsertCellOptions,
   InsertTabOptions,
   ITab,
   MessageDescriptor,
@@ -240,18 +242,21 @@ export const loadModules = (modules: Modules): ParsedModuleConfiguration => {
   };
 };
 
-export const insertTab = ({
-  tabConfiguration,
-  insertAfterTabName,
-}: InsertTabOptions) => (tabs: ITab[]): ITab[] => {
+export const insertConfiguration = <T extends { name: string }>({
+  configuration,
+  insertAfterName,
+}: {
+  configuration: T;
+  insertAfterName: string;
+}) => (items: T[]): T[] => {
   const insertIndex =
-    tabs.findIndex((tab) => tab.name === insertAfterTabName) + 1;
+    items.findIndex((item) => item.name === insertAfterName) + 1;
 
   return insertIndex > 0
     ? [
-        ...tabs.slice(0, insertIndex),
-        tabConfiguration,
-        ...tabs.slice(insertIndex),
+        ...items.slice(0, insertIndex),
+        configuration,
+        ...items.slice(insertIndex),
       ]
-    : [...tabs, tabConfiguration];
+    : [...items, configuration];
 };
