@@ -1,10 +1,22 @@
-# Changelog
+# Changelog 
 
-## Next release 
+## Next release
+
+/
+
+## 2021-02-18
+
+### Added
+- The password fields show an error when the password is too short
+- The password fields have a 'show password' button to let people check their password while typing
+- The password fields have a strength checker with appropriate informative message on how to increase the strength
+- France Connect as a verification method.
+
+## 2021-02-17
 
 ### Changed
 - All input fields for multiple locales now use the components with locale switchers, resulting in a cleaner and more compact UI.
-- Poll related copy improvements
+- Copy improvements
 
 ## 2021-02-12
 
