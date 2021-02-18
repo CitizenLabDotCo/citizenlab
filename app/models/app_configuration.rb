@@ -20,6 +20,15 @@ class AppConfiguration < ApplicationRecord
   before_validation :validate_missing_feature_dependencies
   after_update :update_tenant
 
+  module CoreSettings
+    extend CitizenLab::Mixins::SettingsSpecification
+
+    def self.settings_json_schema_str
+      settings_schema_filepath = Rails.root.join('config/schemas/settings.schema.json.erb')
+      @settings_json_schema_str ||= ERB.new(File.read(settings_schema_filepath)).result(binding)
+    end
+  end
+
   class << self
 
     private :new # We need a singleton
