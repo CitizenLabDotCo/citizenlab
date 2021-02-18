@@ -300,8 +300,9 @@ export const DashboardsPage = memo(
       (authUser &&
         !isAdmin({ data: authUser }) &&
         !isProjectModerator({ data: authUser }))
-    )
+    ) {
       return null;
+    }
 
     return (
       <>
