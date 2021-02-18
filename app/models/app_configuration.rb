@@ -44,7 +44,7 @@ class AppConfiguration < ApplicationRecord
       schema_properties = settings_schema['properties']
 
       extensions_settings_specs.each_with_object(schema_properties) do |spec, properties|
-        properties[spec.name] = spec.settings_json_schema
+        properties[spec.settings_name] = spec.settings_json_schema
       end
 
       settings_schema

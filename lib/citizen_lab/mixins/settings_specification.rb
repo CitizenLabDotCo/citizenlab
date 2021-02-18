@@ -4,7 +4,7 @@ module CitizenLab
   module Mixins
     module SettingsSpecification
       # @return [String] Name of the settings group
-      def name
+      def settings_name
         raise NotImplementedError
       end
 
