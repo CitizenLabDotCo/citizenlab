@@ -1,7 +1,9 @@
-module OmniauthMethods
-  class BosaFas
+# frozen_string_literal: true
 
-    include Verification::Methods::BosaFas
+module IdBosaFas
+  class BosaFasOmniauth
+
+    include IdBosaFas::BosaFasVerification
 
     def profile_to_user_attrs(auth)
       {}.tap do |info|

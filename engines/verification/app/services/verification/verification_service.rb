@@ -4,7 +4,6 @@ module Verification
     ALL_METHODS = [
       Methods::Cow.new,
       Methods::Bogus.new,
-      OmniauthMethods::BosaFas.new,
       OmniauthMethods::FranceConnect.new,
       Methods::IdCardLookup.new,
     ]

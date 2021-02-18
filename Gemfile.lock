@@ -117,6 +117,13 @@ PATH
       rails (~> 6.0.3, >= 6.0.3.2)
 
 PATH
+  remote: engines/id_bosa_fas
+  specs:
+    id_bosa_fas (0.1.0)
+      rails (~> 6.0.0)
+      verification
+
+PATH
   remote: engines/machine_translations
   specs:
     machine_translations (0.1.0)
@@ -852,6 +859,7 @@ DEPENDENCIES
   geographic_dashboard!
   groupdate
   ice_cube!
+  id_bosa_fas!
   intercom (~> 4.1)
   kaminari (~> 1.2)
   knock!
