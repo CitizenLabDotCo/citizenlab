@@ -9,8 +9,8 @@ type RenderOnFeatureFlagProps = {
 };
 
 const RenderOnFeatureFlag = ({ children }: RenderOnFeatureFlagProps) => {
-  const isGranularPermissionsEnabled = useFeatureFlag('granular_permissions');
-  if (isGranularPermissionsEnabled) {
+  const isEnabled = useFeatureFlag('custom_idea_statuses');
+  if (isEnabled) {
     return <>{children}</>;
   }
   return null;
@@ -31,7 +31,13 @@ const configuration: ModuleConfiguration = {
         <Granular {...props} />
       </RenderOnFeatureFlag>
     ),
-    'app.containers.Admin.initiatives.tabs': (props) => <Tab {...props} />,
+    'app.containers.Admin.ideas.tabs': (props) => {
+      return (
+        <RenderOnFeatureFlag>
+          <Tab {...props} />
+        </RenderOnFeatureFlag>
+      );
+    },
   },
 };
 
