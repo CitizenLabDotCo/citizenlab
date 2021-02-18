@@ -51,6 +51,7 @@ import tracks from '../../tracks';
 import { TFilterMenu, ManagerType } from '../..';
 import { TitleLink, StyledRow } from './Row';
 import SubRow from './SubRow';
+import Fragment from 'components/Fragment';
 
 type InputProps = {
   type: ManagerType;
@@ -102,18 +103,27 @@ class IdeaRow extends React.PureComponent<
 
   renderCell = (
     { idea, selection }: CellComponentProps,
-    { cellProps = {}, Component, onChange, onClick }: CellConfiguration
+    {
+      cellProps = {},
+      Component,
+      onChange,
+      onClick,
+      featureFlag,
+    }: CellConfiguration
   ) => {
     const handlers = {
       ...(onChange ? { onChange } : {}),
       ...(onClick ? { onClick } : {}),
     };
 
-    return (
+    const Content = (
       <Table.Cell {...cellProps}>
         <Component idea={idea} selection={selection} {...handlers} />
       </Table.Cell>
     );
+
+    if (!featureFlag) return Content;
+    return <FeatureFlag name={featureFlag}>{Content}</FeatureFlag>;
   };
 
   render() {
