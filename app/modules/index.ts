@@ -4,6 +4,7 @@ import projectFoldersConfiguration from './project_folders';
 import smartGroupsConfiguration from './smart_groups';
 import granularPermissionsConfiguration from './granular_permissions';
 import moderationConfiguration from './moderation';
+import idBosaFasConfiguration from './id_bosa_fas';
 
 import googleTagManagerConfiguration from './google_tag_manager';
 import googleAnalyticsConfiguration from './google_analytics';
@@ -46,6 +47,10 @@ export default loadModules([
   },
   {
     configuration: moderationConfiguration,
+    isEnabled: true,
+  },
+  {
+    configuration: idBosaFasConfiguration,
     isEnabled: true,
   },
 ]);

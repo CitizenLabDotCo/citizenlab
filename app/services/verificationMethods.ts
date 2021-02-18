@@ -2,11 +2,13 @@ import { API_PATH } from 'containers/App/constants';
 import streams from 'utils/streams';
 import { Multiloc } from 'typings';
 
-export type VerificationMethodNames =
-  | 'cow'
-  | 'bogus'
-  | 'bosa_fas'
-  | 'franceconnect';
+export interface IVerificationMethodNamesMap {
+  cow: 'cow';
+  bogus: 'bogus';
+  franceconnect: 'franceconnect';
+}
+
+export type VerificationMethodNames = IVerificationMethodNamesMap[keyof IVerificationMethodNamesMap];
 
 export type IDLookupMethod = {
   id: string;
