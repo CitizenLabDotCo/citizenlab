@@ -716,7 +716,7 @@
   "app.containers.Admin.Moderation.noUnviewedItems": "Il n'y a pas d'éléments non vus",
   "app.containers.Admin.Moderation.noViewedItems": "Il n'y a pas d'éléments vus",
   "app.containers.Admin.Moderation.pageTitle": "Activité",
-  "app.containers.Admin.Moderation.post": "Publication",
+  "app.containers.Admin.Moderation.post": "Contribution",
   "app.containers.Admin.Moderation.project": "Projet",
   "app.containers.Admin.Moderation.read": "Vu",
   "app.containers.Admin.Moderation.readMore": "Voir plus",
