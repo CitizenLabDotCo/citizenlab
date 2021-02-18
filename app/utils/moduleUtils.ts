@@ -22,6 +22,7 @@ import {
 import { IUserData } from 'services/users';
 import { MessageValue } from 'react-intl';
 import { NavItem } from 'containers/Admin/sideBar';
+import { ManagerType } from 'components/admin/PostManager';
 
 type Localize = (
   multiloc: Multiloc | null | undefined,
@@ -99,6 +100,12 @@ export type OutletsPropertyMap = {
       insertAfterNavItemId?: string;
       navItemConfiguration: NavItem;
     }) => void;
+  };
+  'app.components.admin.PostManager.topActionBar': {
+    assignee?: string | null;
+    projectId?: string | null;
+    handleAssigneeFilterChange: (value: string) => void;
+    type: ManagerType;
   };
 };
 
