@@ -600,7 +600,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
                 <StyledPasswordInputIconTooltip />
               </LabelContainer>
               <PasswordInput
-                id="signup-password-input"
+                id="password"
                 password={password}
                 placeholder={formatMessage(messages.passwordPlaceholder)}
                 onChange={this.handlePasswordOnChange}
