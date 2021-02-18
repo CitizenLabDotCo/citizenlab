@@ -6,13 +6,17 @@ import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
-interface Props {}
+interface Props {
+  className?: string;
+}
 
 const PasswordInputIconTooltip = ({
   intl: { formatMessage },
+  className,
 }: Props & InjectedIntlProps) => {
   return (
     <IconTooltip
+      className={className}
       content={
         <>
           <p>{formatMessage(messages.passwordStrengthTooltip1)}</p>
