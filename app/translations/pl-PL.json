@@ -2393,7 +2393,7 @@
   "app.containers.landing.userDeletionFailed": "Wystąpił błąd przy usuwaniu Twojego konta, zostaliśmy powiadomieni o problemie i dołożymy wszelkich starań, aby go naprawić. Proszę spróbuj ponownie później.",
   "app.containers.landing.verifyNow": "Zweryfikuj teraz",
   "app.containers.landing.verifyYourIdentity": "Jesteś zweryfikowanym obywatelem",
-  "app.containers.verificationModal.verificationButtonAltText": "",
+  "app.containers.verificationModal.verificationButtonAltText": "Verify with {loginMechanismName}",
   "app.errors.after_end_at": "Data rozpoczęcia po dacie zakończenia",
   "app.errors.avatar_carrierwave_download_error": "Nie mogłem pobrać pliku avatara (zdjęcia profilowego).",
   "app.errors.avatar_carrierwave_integrity_error": "Plik avatara (zdj. profilowego) ma niedozwolony typ.",

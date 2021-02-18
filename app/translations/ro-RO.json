@@ -2393,7 +2393,7 @@
   "app.containers.landing.userDeletionFailed": "A apărut o eroare la ștergerea contului tău, am fost anunțați despre problemă și facem tot posibilul pentru a remedia problema. Vă rugăm să încercați din nou mai târziu.",
   "app.containers.landing.verifyNow": "Verifică acum",
   "app.containers.landing.verifyYourIdentity": "Devin-o un cetățean verificat",
-  "app.containers.verificationModal.verificationButtonAltText": "",
+  "app.containers.verificationModal.verificationButtonAltText": "Verify with {loginMechanismName}",
   "app.errors.after_end_at": "Data de începere apare după data de încheiere",
   "app.errors.avatar_carrierwave_download_error": "Could not download avatar file.",
   "app.errors.avatar_carrierwave_integrity_error": "Avatar file is not of an allowed type.",
