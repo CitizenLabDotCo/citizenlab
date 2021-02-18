@@ -188,7 +188,7 @@ class Sidebar extends PureComponent<
             ),
         },
         {
-          mame: 'processing',
+          name: 'processing',
           link: '/admin/processing',
           iconName: 'processing',
           featureName: 'manual_tagging',
