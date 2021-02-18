@@ -4,7 +4,7 @@
 require_relative '../../../../lib/citizen_lab/mixins/settings_specification'
 
 module ProjectFolders
-  module Settings
+  module SettingsSpecification
     extend CitizenLab::Mixins::SettingsSpecification
 
     def self.name
