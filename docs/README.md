@@ -2,14 +2,12 @@
 
 ## Next release
 
-/
-
-## 2021-02-17
-
 ### Added
 - The password fields show an error when the password is too short
 - The password fields have a 'show password' button to let people check their password while typing
 - The password fields have a strength checker with appropriate informative message on how to increase the strength
+
+## 2021-02-17
 
 ### Changed
 - All input fields for multiple locales now use the components with locale switchers, resulting in a cleaner and more compact UI.
