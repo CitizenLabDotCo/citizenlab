@@ -1,6 +1,8 @@
+require 'set'
+
 class AppConfiguration < ApplicationRecord
   include Frontend::StyleSettings
-  extend SettingsProvider
+  extend CitizenLab::Mixins::SettingsSpecification
 
   mount_base64_uploader :logo, LogoUploader
   mount_base64_uploader :header_bg, AppHeaderBgUploader
@@ -37,9 +39,20 @@ class AppConfiguration < ApplicationRecord
       first!
     end
 
-    def settings_json_schema_str
-      settings_schema_filepath = Rails.root.join('config', 'schemas', 'settings.schema.json.erb')
-      @settings_json_schema_str ||= ERB.new(File.read(settings_schema_filepath)).result(binding)
+    def settings_json_schema
+      settings_schema = CoreSettings.settings_json_schema
+      schema_properties = settings_schema['properties']
+
+      extensions_settings_specs.each_with_object(schema_properties) do |spec, properties|
+        properties[spec.name] = spec.settings_json_schema
+      end
+
+      settings_schema
+    end
+
+    # @return [Array<CitizenLab::Mixins::SettingsSpecification>]
+    def extensions_settings_specs
+      @extensions_settings_specs ||= []
     end
   end
 
