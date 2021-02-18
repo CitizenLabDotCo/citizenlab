@@ -57,16 +57,32 @@ export interface ITheme {
 }
 
 export interface ITab {
+  name: string;
   label: string;
   url: string;
   active?: boolean;
   feature?: string;
-  name?: string;
 }
 
-export interface InsertTabOptions {
-  tabConfiguration: ITab;
-  insertAfterTabName?: string;
+export type CellComponentProps = {
+  idea: IIdeaData;
+  selection: Set<string>;
+  onChange?: (event: unknown) => void;
+  onClick?: (event: unknown) => void;
+};
+
+export type CellConfiguration = {
+  name: string;
+  onChange?: (event: unknown) => void;
+  onClick?: (event: unknown) => void;
+  featureFlag?: string;
+  cellProps?: TableCellProps;
+  Component: FC<CellComponentProps>;
+};
+
+export interface InsertConfigurationOptions<T extends { name: string }> {
+  configuration: T;
+  insertAfterName?: string;
 }
 
 export interface ILinks {
@@ -100,8 +116,10 @@ export interface Message {
 
 import { Messages } from 'react-intl';
 import { IProjectAction } from 'services/projects';
-import { IIdeaAction } from 'services/ideas';
+import { IIdeaAction, IIdeaData } from 'services/ideas';
 import { FormikActions } from 'formik';
+import { FC } from 'react';
+import { TableCellProps } from 'semantic-ui-react';
 export type MessageDescriptor = Messages['key'];
 
 export type Locale = keyof typeof appLocalePairs;
