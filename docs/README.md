@@ -2,8 +2,15 @@
 
 ## Next release
 
+/
+
+## 2021-02-18
+
 ### Added
-- Added France Connect as a verification method.
+- The password fields show an error when the password is too short
+- The password fields have a 'show password' button to let people check their password while typing
+- The password fields have a strength checker with appropriate informative message on how to increase the strength
+- France Connect as a verification method.
 
 ## 2021-02-17
 

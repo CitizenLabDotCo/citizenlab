@@ -8,6 +8,10 @@ import request from 'utils/request';
 // components
 import { Input } from 'cl2-component-library';
 import Button from 'components/UI/Button';
+import PasswordInput, {
+  hasPasswordMinimumLength,
+} from 'components/UI/PasswordInput';
+import PasswordInputIconTooltip from 'components/UI/PasswordInput/PasswordInputIconTooltip';
 import Error from 'components/UI/Error';
 import { FormLabel } from 'components/UI/FormComponents';
 import Consent from 'components/SignUpIn/SignUp/Consent';
@@ -72,6 +76,20 @@ const ButtonWrapper = styled.div`
   padding-top: 8px;
 `;
 
+const LabelContainer = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const StyledFormLabel = styled(FormLabel)`
+  width: max-content;
+  margin-right: 5px;
+`;
+
+const StyledPasswordInputIconTooltip = styled(PasswordInputIconTooltip)`
+  margin-bottom: 4px;
+`;
+
 type InputProps = {
   metaData: ISignUpInMetaData;
   hasNextStep?: boolean;
@@ -108,13 +126,18 @@ type State = {
   lastNameError: string | null;
   emailError: string | null;
   privacyError: boolean;
-  passwordError: string | null;
+  hasMinimumLengthError: boolean;
   tacError: boolean;
   unknownError: string | null;
   apiErrors: CLErrorsJSON | null | Error;
 };
 
 class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
+  firstNameInputElement: HTMLInputElement | null;
+  lastNameInputElement: HTMLInputElement | null;
+  emailInputElement: HTMLInputElement | null;
+  passwordInputElement: HTMLInputElement | null;
+
   constructor(props: Props & InjectedIntlProps) {
     super(props);
     this.state = {
@@ -130,12 +153,17 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
       firstNameError: null,
       lastNameError: null,
       emailError: null,
-      passwordError: null,
+      hasMinimumLengthError: false,
       tacError: false,
       privacyError: false,
       unknownError: null,
       apiErrors: null,
     };
+
+    this.firstNameInputElement = null;
+    this.lastNameInputElement = null;
+    this.emailInputElement = null;
+    this.passwordInputElement = null;
   }
 
   componentDidMount() {
@@ -209,7 +237,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
   handlePasswordOnChange = (password: string) => {
     this.setState((state) => ({
       password,
-      passwordError: null,
+      hasMinimumLengthError: false,
       unknownError: null,
       apiErrors: state.apiErrors
         ? set(state.apiErrors, 'json.errors.password', null)
@@ -239,6 +267,29 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
       privacyAccepted,
       privacyError: false,
     });
+  };
+
+  handleFirstNameInputSetRef = (element: HTMLInputElement) => {
+    if (element) {
+      this.firstNameInputElement = element;
+    }
+  };
+  handleLastNameInputSetRef = (element: HTMLInputElement) => {
+    if (element) {
+      this.lastNameInputElement = element;
+    }
+  };
+
+  handleEmailInputSetRef = (element: HTMLInputElement) => {
+    if (element) {
+      this.emailInputElement = element;
+    }
+  };
+
+  handlePasswordInputSetRef = (element: HTMLInputElement) => {
+    if (element) {
+      this.passwordInputElement = element;
+    }
   };
 
   handleOnSubmit = async (event: React.FormEvent) => {
@@ -274,14 +325,26 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
     const lastNameError = !lastName
       ? formatMessage(messages.noLastNameError)
       : null;
+    const hasMinimumLengthError =
+      typeof password === 'string'
+        ? hasPasswordMinimumLength(
+            password,
+            !isNilOrError(tenant)
+              ? tenant.attributes.settings.password_login?.minimum_length
+              : undefined
+          )
+        : true;
     const tacError = !tacAccepted;
     const privacyError = !privacyAccepted;
-    let passwordError: string | null = null;
 
-    if (!password) {
-      passwordError = formatMessage(messages.noPasswordError);
-    } else if (password.length < 8) {
-      passwordError = formatMessage(messages.noValidPasswordError);
+    if (this.firstNameInputElement && firstNameError) {
+      this.firstNameInputElement.focus();
+    } else if (this.lastNameInputElement && lastNameError) {
+      this.lastNameInputElement.focus();
+    } else if (this.emailInputElement && emailError) {
+      this.emailInputElement.focus();
+    } else if (this.passwordInputElement && hasMinimumLengthError) {
+      this.passwordInputElement.focus();
     }
 
     const hasErrors = [
@@ -289,7 +352,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
       emailError,
       firstNameError,
       lastNameError,
-      passwordError,
+      hasMinimumLengthError,
       tacError,
       privacyError,
     ].some((error) => error);
@@ -299,7 +362,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
       emailError,
       firstNameError,
       lastNameError,
-      passwordError,
+      hasMinimumLengthError,
       tacError,
       privacyError,
     });
@@ -385,7 +448,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
       firstNameError,
       lastNameError,
       emailError,
-      passwordError,
+      hasMinimumLengthError,
       apiErrors,
     } = this.state;
     const phone =
@@ -476,6 +539,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
                   (!isInvitation ||
                     !!(isInvitation && this.props.metaData.token))
                 }
+                setRef={this.handleFirstNameInputSetRef}
               />
               <Error
                 fieldName={'first_name'}
@@ -496,6 +560,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
                 error={lastNameError}
                 onChange={this.handleLastNameOnChange}
                 autocomplete="family-name"
+                setRef={this.handleLastNameInputSetRef}
               />
               <Error
                 fieldName={'last_name'}
@@ -518,6 +583,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
                 error={emailError}
                 onChange={this.handleEmailOnChange}
                 autocomplete="email"
+                setRef={this.handleEmailInputSetRef}
               />
               <Error
                 fieldName={'email'}
@@ -526,18 +592,21 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
             </FormElement>
 
             <FormElement id="e2e-password-container">
-              <FormLabel
-                labelMessage={messages.passwordLabel}
-                htmlFor="password"
-              />
-              <Input
-                type="password"
-                id="password"
-                value={password}
+              <LabelContainer>
+                <StyledFormLabel
+                  labelMessage={messages.passwordLabel}
+                  htmlFor="signup-password-input"
+                />
+                <StyledPasswordInputIconTooltip />
+              </LabelContainer>
+              <PasswordInput
+                id="signup-password-input"
+                password={password}
                 placeholder={formatMessage(messages.passwordPlaceholder)}
-                error={passwordError}
                 onChange={this.handlePasswordOnChange}
                 autocomplete="new-password"
+                errors={{ minimumLengthError: hasMinimumLengthError }}
+                setRef={this.handlePasswordInputSetRef}
               />
               <Error
                 fieldName={'password'}
