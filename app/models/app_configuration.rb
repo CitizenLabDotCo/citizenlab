@@ -7,9 +7,9 @@ class AppConfiguration < ApplicationRecord
   mount_base64_uploader :favicon, FaviconUploader
 
   validates :settings, presence: true, json: {
-      schema: -> { AppConfiguration.settings_json_schema_str },
-      message: ->(errors) { errors.map { |e| {fragment: e[:fragment], error: e[:failed_attribute], human_message: e[:message]} } },
-      options: { errors_as_objects: true }
+    schema: -> { AppConfiguration.settings_json_schema_str },
+    message: ->(errors) { errors.map { |e| { fragment: e[:fragment], error: e[:failed_attribute], human_message: e[:message] } } },
+    options: { errors_as_objects: true }
   }
 
   validates :host, presence: true
@@ -22,10 +22,10 @@ class AppConfiguration < ApplicationRecord
 
   class << self
 
-    private :new  # We need a singleton
+    private :new # We need a singleton
 
     def instance
-      self.first!
+      first!
     end
 
     def settings_json_schema_str
@@ -66,7 +66,7 @@ class AppConfiguration < ApplicationRecord
 
   def turn_on_abbreviated_user_names!
     config = self.settings['abbreviated_user_names'] || {}
-    self.settings['abbreviated_user_names'] = config.merge({'allowed' => true, 'enabled' => true})
+    self.settings['abbreviated_user_names'] = config.merge({ 'allowed' => true, 'enabled' => true })
     self.save!
   end
 
@@ -114,9 +114,9 @@ class AppConfiguration < ApplicationRecord
 
     if !host.include?('.') || host.include?(' ') || host.include?('_') || (host =~ /[A-Z]/)
       self.errors.add(
-          :host,
-          :invalid_format,
-          message: 'The chosen host does not have a valid format'
+        :host,
+        :invalid_format,
+        message: 'The chosen host does not have a valid format'
       )
     end
   end
