@@ -273,7 +273,7 @@ class PasswordReset extends React.PureComponent<
                 <StyledPasswordIconTooltip />
               </LabelContainer>
               <PasswordInput
-                id="password-reset-input"
+                id="password"
                 password={password}
                 placeholder={passwordPlaceholder}
                 onChange={this.handlePasswordOnChange}
