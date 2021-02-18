@@ -7,7 +7,7 @@ const configuration: ModuleConfiguration = {
     'admin.dashboards': [
       {
         path: 'map',
-        container: () => import('./admin/containers/Dashboard'),
+        container: () => import('./admin/containers/dashboard'),
       },
     ],
   },
