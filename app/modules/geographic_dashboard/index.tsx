@@ -1,21 +1,19 @@
 import React from 'react';
+import { ModuleConfiguration } from 'utils/moduleUtils';
+import Tab from './admin/components/Tab';
 
-interface RenderOnTypeProps {}
-// {
-//   label: formatMessage(messages.tabMap),
-//   url: '/admin/dashboard/map',
-//   feature: 'geographic_dashboard',
-// },
-// {
-//   path: 'map',
-//   component: Loadable({
-//     loader: () => import('./map'),
-//     loading: () => null,
-//   }),
-// },
 const configuration: ModuleConfiguration = {
-  routes: {},
-  outlets: {},
+  routes: {
+    'admin.dashboards': [
+      {
+        path: 'map',
+        container: () => import('./admin/containers/Dashboard'),
+      },
+    ],
+  },
+  outlets: {
+    'app.containers.Admin.dashboards.tabs': (props) => <Tab {...props} />,
+  },
 };
 
 export default configuration;
