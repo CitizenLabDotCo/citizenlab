@@ -2178,7 +2178,7 @@
   "app.containers.SignUp.noPasswordError": "To pole nie może być puste",
   "app.containers.SignUp.noTokenError": "To pole nie może być puste",
   "app.containers.SignUp.noValidEmailError": "To nie wygląda na prawidłowy e-mail",
-  "app.containers.SignUp.noValidPasswordError": "Hasło musi mieć długość co najmniej 8 znaków",
+  "app.containers.SignUp.noValidPasswordError": "Twoje hasło musi zawierać co najmniej 8 znaków",
   "app.containers.SignUp.or": "Albo",
   "app.containers.SignUp.passwordLabel": "Hasło",
   "app.containers.SignUp.passwordPlaceholder": " ",
