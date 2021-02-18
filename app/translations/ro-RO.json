@@ -2178,7 +2178,7 @@
   "app.containers.SignUp.noPasswordError": "Acest câmp nu poate fi gol",
   "app.containers.SignUp.noTokenError": "Acest câmp nu poate fi gol",
   "app.containers.SignUp.noValidEmailError": "Aceasta nu pare să fie o adresă de e-mail validă",
-  "app.containers.SignUp.noValidPasswordError": "Parola trebuie să fie de cel puțin 8 caractere",
+  "app.containers.SignUp.noValidPasswordError": "Parola dvs. trebuie să conțină minim 8 caractere",
   "app.containers.SignUp.or": "Sau",
   "app.containers.SignUp.passwordLabel": "Parola",
   "app.containers.SignUp.passwordPlaceholder": " ",
