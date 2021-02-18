@@ -14,6 +14,7 @@ import { FunctionComponent } from 'react';
 import Loadable from 'react-loadable';
 import { IGroupDataAttributes, MembershipType } from 'services/groups';
 import {
+  CellConfiguration,
   FormikSubmitHandler,
   InsertConfigurationOptions,
   ITab,
@@ -101,6 +102,9 @@ export type OutletsPropertyMap = {
     projectId?: string | null;
     handleAssigneeFilterChange: (value: string) => void;
     type: ManagerType;
+  };
+  'app.components.admin.PostManager.components.PostTable.IdeaRow.cells': {
+    onData: (data: InsertConfigurationOptions<CellConfiguration>) => void;
   };
 };
 
