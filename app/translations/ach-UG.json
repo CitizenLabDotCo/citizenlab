@@ -2413,6 +2413,7 @@
   "app.containers.landing.userDeletionFailed": "crwdns143576:0crwdne143576:0",
   "app.containers.landing.verifyNow": "crwdns143578:0crwdne143578:0",
   "app.containers.landing.verifyYourIdentity": "crwdns143580:0crwdne143580:0",
+  "app.containers.verificationModal.verificationButtonAltText": "crwdns161730:0{loginMechanismName}crwdne161730:0",
   "app.errors.after_end_at": "crwdns143582:0crwdne143582:0",
   "app.errors.avatar_carrierwave_download_error": "crwdns143584:0crwdne143584:0",
   "app.errors.avatar_carrierwave_integrity_error": "crwdns143586:0crwdne143586:0",
