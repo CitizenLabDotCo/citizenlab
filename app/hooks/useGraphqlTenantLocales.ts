@@ -2,13 +2,13 @@ import { useState, useEffect } from 'react';
 import { isNilOrError, convertToGraphqlLocale } from 'utils/helperUtils';
 import { GraphqlLocale } from 'typings';
 import { includes } from 'lodash-es';
-import useTenant from 'hooks/useTenant';
+import useAppConfiguration from 'hooks/useAppConfiguration';
 
 export default function useGraphqlTenantLocales() {
   const [graphqlTenantLocales, setGraphqlTenantLocales] = useState<
     GraphqlLocale[]
   >(['en']);
-  const tenant = useTenant();
+  const tenant = useAppConfiguration();
 
   useEffect(() => {
     if (isNilOrError(tenant)) return;

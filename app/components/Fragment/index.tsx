@@ -7,7 +7,9 @@ import qs from 'qs';
 import styled from 'styled-components';
 
 // resources
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetAppConfiguration';
 import GetFeatureFlag, {
   GetFeatureFlagChildProps,
 } from 'resources/GetFeatureFlag';
@@ -19,7 +21,7 @@ const StyledIframe = styled.iframe`
 `;
 
 interface DataProps {
-  tenant: GetTenantChildProps;
+  tenant: GetAppConfigurationChildProps;
   fragmentsFeatureFlag: GetFeatureFlagChildProps;
 }
 
@@ -112,7 +114,7 @@ class Fragment extends PureComponent<Props, State> {
 }
 
 const Data = adopt<DataProps, InputProps>({
-  tenant: <GetTenant />,
+  tenant: <GetAppConfiguration />,
   fragmentsFeatureFlag: <GetFeatureFlag name="fragments" />,
 });
 

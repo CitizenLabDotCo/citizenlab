@@ -2,15 +2,15 @@ import React, { PureComponent } from 'react';
 import { FieldProps } from 'formik';
 
 // components
-import QuillMultiloc, {
-  InputProps,
-} from 'components/UI/QuillEditor/QuillMultiloc';
+import QuillMultilocWithLocaleSwitcher, {
+  Props,
+} from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 
 // typings
 import { Multiloc } from 'typings';
 
 export default class FormikQuillMultiloc extends PureComponent<
-  FieldProps & InputProps
+  FieldProps & Props
 > {
   handleOnChange = (newValue: Multiloc) => {
     this.props.form.setFieldValue(this.props.field.name, newValue);
@@ -25,7 +25,7 @@ export default class FormikQuillMultiloc extends PureComponent<
     const { field } = this.props;
 
     return (
-      <QuillMultiloc
+      <QuillMultilocWithLocaleSwitcher
         {...this.props}
         valueMultiloc={field.value}
         onChange={this.handleOnChange}

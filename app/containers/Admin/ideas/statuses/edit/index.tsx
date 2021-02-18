@@ -7,7 +7,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // hooks
 import useIdeaStatus from 'hooks/useIdeaStatus';
-import useTenantLocales from 'hooks/useTenantLocales';
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import { Formik } from 'formik';
 import { updateIdeaStatus } from 'services/ideaStatuses';
 
@@ -31,7 +31,7 @@ const StyledSectionTitle = styled(SectionTitle)`
 const Edit = ({ params }: WithRouterProps) => {
   const { id: statusId } = params;
   const ideaStatus = useIdeaStatus({ statusId });
-  const tenantLocales = useTenantLocales();
+  const tenantLocales = useAppConfigurationLocales();
 
   const handleSubmit = (
     values: FormValues,
