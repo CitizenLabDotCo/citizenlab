@@ -893,6 +893,7 @@
   "app.containers.Admin.emails.subtitleEmails": "Redacta mensajes de correo electrónico y envialos a todos los usuarios o a ciertos grupos. Y controla qué emails automatizados los usuarios reciben.",
   "app.containers.Admin.emails.titleEmails": "Correos electrónicos",
   "app.containers.Admin.emails.toAllUsers": "¿Quieres enviar este correo electrónico a todos los usuarios?",
+  "app.containers.Admin.ideas.tabStatuses": "",
   "app.containers.Admin.initiatives.addNewProposal": "Añadir una propuesta",
   "app.containers.Admin.initiatives.enabledToggle": "Activado",
   "app.containers.Admin.initiatives.fieldPostingEnabled": "Presentación de propuestas",

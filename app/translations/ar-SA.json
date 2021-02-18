@@ -893,6 +893,7 @@
   "app.containers.Admin.emails.subtitleEmails": "أرسل الرسائل الإلكترونية الخاصة بك وتحكم في الرسائل الإلكترونية التلقائية التي يتلقاها المستخدمون.",
   "app.containers.Admin.emails.titleEmails": "الرسائل الإلكترونية",
   "app.containers.Admin.emails.toAllUsers": "هل ترغب في إرسال هذه الرسالة الإلكترونية إلى جميع المستخدمين؟",
+  "app.containers.Admin.ideas.tabStatuses": "",
   "app.containers.Admin.initiatives.addNewProposal": "Add a proposal",
   "app.containers.Admin.initiatives.enabledToggle": "تم التمكين",
   "app.containers.Admin.initiatives.fieldPostingEnabled": "تقديم المُقترح",
