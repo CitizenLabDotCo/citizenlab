@@ -11,5 +11,3 @@ module CustomStyle
     end
   end
 end
-
-WebApi::V1::AppConfigurationsController.prepend(CustomStyle::WebApi::V1::Patches::AppConfigurationsController)
