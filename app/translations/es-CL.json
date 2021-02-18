@@ -2178,7 +2178,7 @@
   "app.containers.SignUp.noPasswordError": "Esto no puede estar vacío",
   "app.containers.SignUp.noTokenError": "Esto no puede estar vacío",
   "app.containers.SignUp.noValidEmailError": "Esto no parece un correo electrónico válido",
-  "app.containers.SignUp.noValidPasswordError": "La contraseña debe tener al menos 8 caracteres",
+  "app.containers.SignUp.noValidPasswordError": "Tu contraseña debe contener al menos 8 caracteres",
   "app.containers.SignUp.or": "O",
   "app.containers.SignUp.passwordLabel": "Contraseña",
   "app.containers.SignUp.passwordPlaceholder": " ",
