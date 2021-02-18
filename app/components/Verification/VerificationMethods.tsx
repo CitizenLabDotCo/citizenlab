@@ -368,7 +368,8 @@ const VerificationMethods = memo<Props & InjectedIntlProps>(
                 </MethodButton>
               ))}
 
-              {!isEmpty(alternativeMethods) && <Or />}
+              {!isEmpty(alternativeMethods) &&
+                !isEmpty(filteredVerificationMethods) && <Or />}
 
               {franceConnectVerification && (
                 <FranceConnectButton
