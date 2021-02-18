@@ -1,11 +1,16 @@
-import VerificationMethodButton from 'components/Verification/VerificationMethodButton';
+import React, { useCallback } from 'react';
 import { AUTH_PATH } from 'containers/App/constants';
-import React from 'react';
-import { useCallback } from 'react';
-import { FormattedMessage } from 'react-intl';
 import { removeUrlLocale } from 'services/locale';
-import { IVerificationMethod } from 'services/verificationMethods';
 import { getJwt } from 'utils/auth/jwt';
+
+// typings
+import { IVerificationMethod } from 'services/verificationMethods';
+
+// components
+import VerificationMethodButton from 'components/Verification/VerificationMethodButton';
+
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
 interface Props {
