@@ -2393,6 +2393,7 @@
   "app.containers.landing.userDeletionFailed": "Une erreur est survenue lors de la suppression de votre compte, nous avons été notifié et faisons notre mieux pour résoudre ce problème. Réessayer plus tard.",
   "app.containers.landing.verifyNow": "Vérifier maintenant",
   "app.containers.landing.verifyYourIdentity": "Devenir un citoyen vérifié",
+  "app.containers.verificationModal.verificationButtonAltText": "Verify with {loginMechanismName}",
   "app.errors.after_end_at": "La date de début a lieu après la date de fin",
   "app.errors.avatar_carrierwave_download_error": "Impossible de télécharger l'image de profil.",
   "app.errors.avatar_carrierwave_integrity_error": "Le type de fichier choisi pour l'image de profil n'est pas autorisé.",
