@@ -41,7 +41,7 @@ const StyledInput = styled(Input)`
 `;
 
 const SaveButton = styled(Button)`
-  margin-left: 10px;
+  margin-left: 8px;
 `;
 
 interface Props {

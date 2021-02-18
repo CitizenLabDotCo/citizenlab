@@ -69,14 +69,11 @@ const Legend = memo<Props>(({ projectId, className }) => {
   const localize = useLocalize();
   let legend: ILegendItem[] = [];
 
-  if (
-    mapConfig?.attributes?.legend &&
-    mapConfig?.attributes?.legend?.length > 0
-  ) {
+  if (mapConfig?.attributes?.legend && mapConfig.attributes.legend.length > 0) {
     legend = mapConfig.attributes.legend;
   } else if (
     mapConfig?.attributes?.layers &&
-    mapConfig?.attributes?.layers?.length > 0
+    mapConfig.attributes.layers.length > 0
   ) {
     legend = mapConfig.attributes.layers.map((layer) => ({
       title_multiloc: layer.title_multiloc,

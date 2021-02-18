@@ -2,6 +2,7 @@ import React, { memo, useState } from 'react';
 
 // components
 import Button from 'components/UI/Button';
+import { Icon } from 'cl2-component-library';
 import ImportButton from './ImportButton';
 import LayerConfig from './LayerConfig';
 import MapZoomConfig from './MapZoomConfig';
@@ -75,22 +76,13 @@ const ListItem = styled.div`
   flex: 1;
   display: flex;
   align-items: center;
-  padding-top: 15px;
-  padding-bottom: 15px;
 `;
 
-const LayerIcon = styled.div<{ color: string }>`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 20px;
-  height: 20px;
+const LayerIcon = styled(Icon)<{ color: string }>`
+  fill: ${(props) => props.color};
+  width: 22px;
+  height: 22px;
   margin-right: 10px;
-
-  & svg {
-    height: 100%;
-    fill: ${(props) => props.color};
-  }
 `;
 
 const LayerName = styled.div`
@@ -198,37 +190,15 @@ const LayerList = memo<Props>(({ projectId, className }) => {
   };
 
   const getLayerIcon = (layerType: GeoJSON.GeoJsonTypes) => {
-    const pointIcon = (
-      <svg viewBox="0 0 18 24">
-        <path d="M8 23.5C1.4 13.6 0 12.6 0 9a9 9 0 1118 0c0 3.6-1.3 4.6-8 14.5-.5.7-1.5.7-2 0zm1-10.8a3.7 3.7 0 100-7.4 3.7 3.7 0 000 7.4z" />
-      </svg>
-    );
-
-    const polygonIcon = (
-      <svg viewBox="0 0 21 21">
-        <path d="M6.1 21L0 10.1 9.4 0 21 6.4l-1.3 12.3L6 21z" />
-      </svg>
-    );
-
-    const lineIcon = (
-      <svg viewBox="0 0 20 19.7">
-        <path
-          d="M20 2.8a2.8 2.8 0 01-3.8 2.5L5.3 15.9a2.8 2.8 0 01-2.5 3.8A2.8 2.8 0 114 14.4L14.7 4A2.7 2.7 0 0117.2 0C18.8 0 20 1.2 20 2.8z"
-          clipRule="evenodd"
-          fillRule="evenodd"
-        />
-      </svg>
-    );
-
-    let layerIcon = polygonIcon;
+    let iconName: 'point' | 'line' | 'polygon' = 'polygon';
 
     if (layerType === 'Point') {
-      layerIcon = pointIcon;
+      iconName = 'point';
     } else if (layerType === 'LineString') {
-      layerIcon = lineIcon;
+      iconName = 'line';
     }
 
-    return layerIcon;
+    return iconName;
   };
 
   return (
@@ -266,7 +236,7 @@ const LayerList = memo<Props>(({ projectId, className }) => {
                     (mapLayer, index) => {
                       const layerType = getLayerType(mapLayer);
                       const layerColor = getLayerColor(mapLayer);
-                      const layerIcon = getLayerIcon(layerType);
+                      const layerIconName = getLayerIcon(layerType);
 
                       return (
                         <SortableRow
@@ -280,9 +250,10 @@ const LayerList = memo<Props>(({ projectId, className }) => {
                           dropRow={handleDropRow}
                         >
                           <ListItem>
-                            <LayerIcon color={layerColor}>
-                              {layerIcon}
-                            </LayerIcon>
+                            <LayerIcon
+                              name={layerIconName}
+                              color={layerColor}
+                            />
                             <LayerName>
                               <T value={mapLayer.title_multiloc} />
                             </LayerName>
