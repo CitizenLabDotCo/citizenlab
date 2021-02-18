@@ -209,4 +209,13 @@ namespace :inconsistent_data do
       end
     end
   end
+
+  task :fix_authored_campaigns_without_authors => :environment do
+    Tenant.all.each do |tenant|
+      Apartment::Tenant.switch(tenant.schema_name) do
+        EmailCampaigns::Campaigns::Manual.where(sender: 'author').where(author_id: nil)
+          .update_all(sender: 'organization')
+      end
+    end
+  end
 end
