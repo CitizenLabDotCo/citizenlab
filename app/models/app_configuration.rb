@@ -172,3 +172,5 @@ class AppConfiguration < ApplicationRecord
   end
 
 end
+
+AppConfiguration.extensions_settings_specs << ProjectFolders::SettingsSpecification if CitizenLab.ee?
