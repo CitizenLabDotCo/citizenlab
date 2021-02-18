@@ -2178,7 +2178,7 @@
   "app.containers.SignUp.noPasswordError": "Dette kan ikke være tomt",
   "app.containers.SignUp.noTokenError": "Dette kan ikke være tomt",
   "app.containers.SignUp.noValidEmailError": "Det ser ikke ud til, at dette er en gyldig e-mail.",
-  "app.containers.SignUp.noValidPasswordError": "Adgangskoden skal være på mindst 8 tegn",
+  "app.containers.SignUp.noValidPasswordError": "Din adgangskode skal indeholde mindst 8 tegn",
   "app.containers.SignUp.or": "Eller",
   "app.containers.SignUp.passwordLabel": "Adgangskode",
   "app.containers.SignUp.passwordPlaceholder": " ",
