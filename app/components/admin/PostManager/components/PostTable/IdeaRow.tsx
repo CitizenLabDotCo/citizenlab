@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ChangeEvent, FC } from 'react';
 import { combineLatest } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { uniq, isEmpty, get } from 'lodash-es';
@@ -11,12 +11,28 @@ import { IPhaseData } from 'services/phases';
 import { IIdeaStatusData } from 'services/ideaStatuses';
 
 // components
-import { Table, Icon } from 'semantic-ui-react';
+import { Table, Icon, TableCellProps } from 'semantic-ui-react';
 import WrappedRow from './WrappedRow';
 import T from 'components/T';
 
 import Checkbox from 'components/UI/Checkbox';
 import FeatureFlag from 'components/FeatureFlag';
+
+type CellComponentProps = {
+  idea: IIdeaData;
+  selection: Set<string>;
+  onChange?: (event: unknown) => void;
+  onClick?: (event: unknown) => void;
+};
+
+type CellConfiguration = {
+  name: string;
+  onChange?: (event: unknown) => void;
+  onClick?: (event: unknown) => void;
+  featureFlag?: string;
+  cellProps?: TableCellProps;
+  Component: FC<CellComponentProps>;
+};
 
 // utils
 import localize, { InjectedLocalized } from 'utils/localize';
@@ -83,17 +99,21 @@ class IdeaRow extends React.PureComponent<
       idea: ideaId,
     });
   };
-  onUpdateIdeaAssignee = (assigneeId: string | undefined) => {
-    const { idea } = this.props;
-    const ideaId = idea.id;
 
-    updateIdea(ideaId, { assignee_id: assigneeId || null });
+  renderCell = (
+    { idea, selection }: CellComponentProps,
+    { cellProps = {}, Component, onChange, onClick }: CellConfiguration
+  ) => {
+    const handlers = {
+      ...(onChange ? { onChange } : {}),
+      ...(onClick ? { onClick } : {}),
+    };
 
-    trackEventByName(tracks.changeIdeaAssignment, {
-      location: 'Idea Manager',
-      method: 'Changed through the dropdown n the table overview',
-      idea: ideaId,
-    });
+    return (
+      <Table.Cell {...cellProps}>
+        <Component idea={idea} selection={selection} {...handlers} />
+      </Table.Cell>
+    );
   };
 
   render() {
@@ -116,10 +136,114 @@ class IdeaRow extends React.PureComponent<
     );
     const selectedPhases = idea.relationships.phases.data.map((p) => p.id);
     const selectedTopics = idea.relationships.topics?.data.map((p) => p.id);
-    const attrs = idea.attributes;
     const active = selection.has(idea.id);
     const projectId = get(idea, 'relationships.project.data.id');
-    const assigneeId = get(idea, 'relationships.assignee.data.id');
+
+    const cells: CellConfiguration[] = [
+      {
+        cellProps: { collapsing: true },
+        name: 'selection',
+        onChange: onClickCheckbox,
+        Component: ({
+          selection,
+          idea,
+          onChange,
+        }: CellComponentProps & {
+          onChange: (event: ChangeEvent<HTMLInputElement>) => void;
+        }) => {
+          return (
+            <Checkbox
+              checked={!!selection.has(idea.id)}
+              onChange={onChange}
+              size="21px"
+            />
+          );
+        },
+      },
+      {
+        cellProps: {},
+        name: 'title',
+        onClick: onClickTitle,
+        Component: ({ idea, onClick }) => {
+          return (
+            <TitleLink
+              className="e2e-idea-manager-idea-title"
+              onClick={onClick}
+            >
+              <T value={idea.attributes.title_multiloc} />
+            </TitleLink>
+          );
+        },
+      },
+      {
+        cellProps: { onClick: nothingHappens, singleLine: true },
+        name: 'assignee',
+        onChange: (idea: IIdeaData) => (assigneeId: string | undefined) => {
+          const ideaId = idea.id;
+          console.log({ ideaId, assigneeId });
+
+          updateIdea(ideaId, { assignee_id: assigneeId || null });
+
+          trackEventByName(tracks.changeIdeaAssignment, {
+            location: 'Idea Manager',
+            method: 'Changed through the dropdown n the table overview',
+            idea: ideaId,
+          });
+        },
+        Component: ({
+          idea,
+          onChange,
+        }: CellComponentProps & {
+          onChange: (idea: IIdeaData) => (assigneeId?: string) => void;
+        }) => {
+          return (
+            <AssigneeSelect
+              onAssigneeChange={onChange(idea)}
+              projectId={get(idea, 'relationships.project.data.id')}
+              assigneeId={get(idea, 'relationships.assignee.data.id')}
+            />
+          );
+        },
+      },
+      {
+        name: 'published_on',
+        Component: ({ idea }) => {
+          return <FormattedRelative value={idea.attributes.published_at} />;
+        },
+      },
+      {
+        name: 'up',
+        cellProps: { singleLine: true },
+        Component: ({ idea }) => {
+          return (
+            <>
+              <Icon name="thumbs up" />
+              {idea.attributes.upvotes_count}
+            </>
+          );
+        },
+      },
+      {
+        name: 'down',
+        cellProps: { singleLine: true },
+        Component: ({ idea }: CellComponentProps) => {
+          return (
+            <>
+              <Icon name="thumbs down" />
+              {idea.attributes.downvotes_count}
+            </>
+          );
+        },
+      },
+      {
+        name: 'picks',
+        cellProps: { singleLine: true },
+        featureFlag: 'participatory_budgeting',
+        Component: ({ idea }: CellComponentProps) => {
+          return <>{idea.attributes.baskets_count}</>;
+        },
+      },
+    ];
 
     return (
       <>
@@ -131,42 +255,9 @@ class IdeaRow extends React.PureComponent<
             instance && connectDragSource(findDOMNode(instance));
           }}
         >
-          <Table.Cell collapsing={true}>
-            <Checkbox
-              checked={!!active}
-              onChange={onClickCheckbox}
-              size="21px"
-            />
-          </Table.Cell>
-          <Table.Cell>
-            <TitleLink
-              className="e2e-idea-manager-idea-title"
-              onClick={onClickTitle}
-            >
-              <T value={attrs.title_multiloc} />
-            </TitleLink>
-          </Table.Cell>
-          <Table.Cell onClick={nothingHappens} singleLine>
-            <AssigneeSelect
-              onAssigneeChange={this.onUpdateIdeaAssignee}
-              projectId={projectId}
-              assigneeId={assigneeId}
-            />
-          </Table.Cell>
-          <Table.Cell>
-            <FormattedRelative value={attrs.published_at} />
-          </Table.Cell>
-          <Table.Cell singleLine>
-            <Icon name="thumbs up" />
-            {attrs.upvotes_count}
-          </Table.Cell>
-          <Table.Cell singleLine>
-            <Icon name="thumbs down" />
-            {attrs.downvotes_count}
-          </Table.Cell>
-          <FeatureFlag name="participatory_budgeting">
-            <Table.Cell singleLine>{attrs.baskets_count}</Table.Cell>
-          </FeatureFlag>
+          {cells.map((cellConfiguration) =>
+            this.renderCell({ idea, selection }, cellConfiguration)
+          )}
         </WrappedRow>
         <SubRow
           {...{
