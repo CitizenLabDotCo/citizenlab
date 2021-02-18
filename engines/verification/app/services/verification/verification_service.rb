@@ -1,19 +1,27 @@
 module Verification
   class VerificationService
 
-    ALL_METHODS = [
+    @all_methods = [
       Methods::Cow.new,
       Methods::Bogus.new,
       OmniauthMethods::FranceConnect.new,
       Methods::IdCardLookup.new,
     ]
 
+    class << self
+      attr_reader :all_methods
+
+      def add_method verification_method
+        @all_methods << verification_method
+      end
+    end
+
     def initialize sfxv_service=SideFxVerificationService.new
       @sfxv_service = sfxv_service
     end
 
     def all_methods
-      ALL_METHODS
+      self.class.all_methods
     end
 
     def method_by_name name

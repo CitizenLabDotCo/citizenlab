@@ -4,8 +4,10 @@ module IdBosaFas
   class Engine < ::Rails::Engine
     isolate_namespace IdBosaFas
 
-    config.after_initialize do
-      Verification::VerificationService.prepend(::IdBosaFas::MonkeyPatches::VerificationService)
+    config.to_prepare do
+      Verification::VerificationService.add_method(
+        BosaFasOmniauth.new
+      )
     end
   end
 end

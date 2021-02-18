@@ -3,7 +3,7 @@
 module IdBosaFas
   class BosaFasOmniauth
 
-    include IdBosaFas::BosaFasVerification
+    include BosaFasVerification
 
     def profile_to_user_attrs(auth)
       {}.tap do |info|
