@@ -11,28 +11,12 @@ import { IPhaseData } from 'services/phases';
 import { IIdeaStatusData } from 'services/ideaStatuses';
 
 // components
-import { Table, Icon, TableCellProps } from 'semantic-ui-react';
+import { Table, Icon } from 'semantic-ui-react';
 import WrappedRow from './WrappedRow';
 import T from 'components/T';
 
 import Checkbox from 'components/UI/Checkbox';
 import FeatureFlag from 'components/FeatureFlag';
-
-type CellComponentProps = {
-  idea: IIdeaData;
-  selection: Set<string>;
-  onChange?: (event: unknown) => void;
-  onClick?: (event: unknown) => void;
-};
-
-type CellConfiguration = {
-  name: string;
-  onChange?: (event: unknown) => void;
-  onClick?: (event: unknown) => void;
-  featureFlag?: string;
-  cellProps?: TableCellProps;
-  Component: FC<CellComponentProps>;
-};
 
 // utils
 import localize, { InjectedLocalized } from 'utils/localize';
@@ -42,15 +26,19 @@ import { FormattedRelative, InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import messages from '../../messages';
 
-// style
-import AssigneeSelect from './AssigneeSelect';
-
 // analytics
 import { trackEventByName } from 'utils/analytics';
 import tracks from '../../tracks';
 import { TFilterMenu, ManagerType } from '../..';
 import { TitleLink, StyledRow } from './Row';
 import SubRow from './SubRow';
+import {
+  CellConfiguration,
+  CellComponentProps,
+  InsertConfigurationOptions,
+} from 'typings';
+import { insertConfiguration } from 'utils/moduleUtils';
+import Outlet from 'components/Outlet';
 
 type InputProps = {
   type: ManagerType;
@@ -81,7 +69,7 @@ class IdeaRow extends React.PureComponent<
   constructor(props) {
     super(props);
 
-    const { onClickCheckbox, onClickTitle, nothingHappens } = props;
+    const { onClickCheckbox, onClickTitle } = props;
 
     this.state = {
       cells: [
@@ -116,36 +104,6 @@ class IdeaRow extends React.PureComponent<
               >
                 <T value={idea.attributes.title_multiloc} />
               </TitleLink>
-            );
-          },
-        },
-        {
-          name: 'assignee',
-          cellProps: { onClick: nothingHappens, singleLine: true },
-          onChange: (idea: IIdeaData) => (assigneeId: string | undefined) => {
-            const ideaId = idea.id;
-            console.log({ ideaId, assigneeId });
-
-            updateIdea(ideaId, { assignee_id: assigneeId || null });
-
-            trackEventByName(tracks.changeIdeaAssignment, {
-              location: 'Idea Manager',
-              method: 'Changed through the dropdown n the table overview',
-              idea: ideaId,
-            });
-          },
-          Component: ({
-            idea,
-            onChange,
-          }: CellComponentProps & {
-            onChange: (idea: IIdeaData) => (assigneeId?: string) => void;
-          }) => {
-            return (
-              <AssigneeSelect
-                onAssigneeChange={onChange(idea)}
-                projectId={get(idea, 'relationships.project.data.id')}
-                assigneeId={get(idea, 'relationships.assignee.data.id')}
-              />
             );
           },
         },
@@ -243,6 +201,14 @@ class IdeaRow extends React.PureComponent<
     return <FeatureFlag name={featureFlag}>{Content}</FeatureFlag>;
   };
 
+  handleData = (
+    insertCellOptions: InsertConfigurationOptions<CellConfiguration>
+  ) => {
+    this.setState(({ cells }) => ({
+      cells: insertConfiguration(insertCellOptions)(cells),
+    }));
+  };
+
   render() {
     const {
       idea,
@@ -267,6 +233,10 @@ class IdeaRow extends React.PureComponent<
 
     return (
       <>
+        <Outlet
+          id="app.components.admin.PostManager.components.PostTable.IdeaRow.cells"
+          onData={this.handleData}
+        />
         <WrappedRow
           className={`${className} e2e-idea-manager-idea-row`}
           as={StyledRow}
