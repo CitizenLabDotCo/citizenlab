@@ -55,7 +55,7 @@ export default defineMessages({
   },
   centerLabel: {
     id: 'app.containers.AdminPage.ProjectEdit.MapTab.centerLabel',
-    defaultMessage: 'Default map center (lat, lng)',
+    defaultMessage: 'Default center coordinates (lat, lng)',
   },
   zoomLabel: {
     id: 'app.containers.AdminPage.ProjectEdit.MapTab.zoomLabel',
@@ -68,5 +68,13 @@ export default defineMessages({
   editLayer: {
     id: 'app.containers.AdminPage.ProjectEdit.MapTab.editLayer',
     defaultMessage: 'Edit layer',
+  },
+  currentCenterCoordinates: {
+    id: 'app.containers.AdminPage.ProjectEdit.MapTab.currentCenterCoordinates',
+    defaultMessage: 'Current center coordinates',
+  },
+  currentZoomLevel: {
+    id: 'app.containers.AdminPage.ProjectEdit.MapTab.currentZoomLevel',
+    defaultMessage: 'Current zoom level',
   },
 });

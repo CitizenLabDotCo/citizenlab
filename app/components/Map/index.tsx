@@ -1,6 +1,6 @@
 import React, { memo, useState, useEffect } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { isEqual, compact, isUndefined } from 'lodash-es';
+import { isEqual, compact, isUndefined, isEmpty } from 'lodash-es';
 
 // Map
 import L from 'leaflet';
@@ -30,6 +30,9 @@ import usePrevious from 'hooks/usePrevious';
 
 // utils
 import { getCenter, getZoomLevel, getTileProvider } from 'utils/map';
+
+// events
+import { broadcastMapCenter, broadcastMapZoom } from './events';
 
 // i18n
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
@@ -187,41 +190,67 @@ const Map = memo<Props & InjectedLocalized>(
     const mapConfig = useMapConfig({ projectId, prefetchMapLayers: true });
 
     const [map, setMap] = useState<L.Map | null>(null);
-    const prevMap = usePrevious(map);
     const [layerControl, setLayerControl] = useState<L.Control.Layers | null>(
       null
     );
-    const [center, setCenter] = useState(
+    const [layers, setLayers] = useState<L.Layer[]>([]);
+    const [defaultCenter, setDefaultCenter] = useState(
       getCenter(centerCoordinates, appConfig, mapConfig)
     );
-    const [zoomLevel, setZoomLevel] = useState(
-      getZoomLevel(zoom, appConfig, mapConfig)
-    );
+    // const [defaultZoom, setDefaultZoom] = useState(
+    //   getZoomLevel(zoom, appConfig, mapConfig)
+    // );
     const [markers, setMarkers] = useState<L.Marker<any>[]>([]);
-    const prevMarkers = usePrevious(markers);
     const [
       markerClusterGroup,
       setMarkerClusterGroup,
     ] = useState<L.MarkerClusterGroup | null>(null);
 
-    // set center
+    const prevMapConfig = usePrevious(mapConfig);
+    const prevMap = usePrevious(map);
+    const prevMarkers = usePrevious(markers);
+    const prevPoints = usePrevious(points);
+
     useEffect(() => {
-      const nextCenter = getCenter(centerCoordinates, appConfig, mapConfig);
-      setCenter((prevCenter) =>
-        !isEqual(prevCenter, nextCenter) ? nextCenter : prevCenter
+      return () => {
+        map?.off('moveend');
+        map?.off('zoomend');
+        broadcastMapCenter(null);
+        broadcastMapZoom(null);
+      };
+    }, [map]);
+
+    // set default center
+    useEffect(() => {
+      const newDefaultCenter = getCenter(
+        centerCoordinates,
+        appConfig,
+        mapConfig
+      );
+      setDefaultCenter((defaultCenter) =>
+        !isEqual(defaultCenter, newDefaultCenter)
+          ? newDefaultCenter
+          : defaultCenter
       );
     }, [appConfig, mapConfig, centerCoordinates]);
 
-    // set zoom
-    useEffect(() => {
-      setZoomLevel(getZoomLevel(zoom, appConfig, mapConfig));
-    }, [appConfig, mapConfig, zoom]);
+    // set default zoom
+    // useEffect(() => {
+    //   setDefaultZoom(getZoomLevel(zoom, appConfig, mapConfig));
+    // }, [appConfig, mapConfig, zoom]);
 
-    // set map
+    // init map
     useEffect(() => {
       if (!isNilOrError(appConfig) && !isUndefined(mapConfig) && !map) {
         const tileProvider = getTileProvider(appConfig, mapConfig);
+        const defaultCenter = getCenter(
+          centerCoordinates,
+          appConfig,
+          mapConfig
+        );
+        const defaultZoom = getZoomLevel(zoom, appConfig, mapConfig);
         const map = L.map('mapid');
+
         L.tileLayer(tileProvider, {
           tileSize: 512,
           zoomOffset: -1,
@@ -240,43 +269,52 @@ const Map = memo<Props & InjectedLocalized>(
           });
         }
 
+        map.setView(defaultCenter, defaultZoom);
+
+        broadcastMapCenter(defaultCenter);
+        broadcastMapZoom(defaultZoom);
+
+        map.on('moveend', () => {
+          const center = map.getCenter();
+          broadcastMapCenter([center.lat, center.lng]);
+        });
+
+        map.on('zoomend', () => {
+          const zoom = map.getZoom();
+          broadcastMapZoom(zoom);
+        });
+
         setMap(map);
       }
     }, [map, appConfig, mapConfig, centerCoordinates, zoom, onMapClick]);
 
-    // set layerControl
+    // set layers and layerControl
     useEffect(() => {
-      if (
-        map &&
-        mapConfig &&
-        mapConfig?.attributes?.layers?.length > 0 &&
-        !layerControl
-      ) {
-        setLayerControl(L.control.layers().addTo(map));
-      }
-    }, [map, mapConfig, layerControl]);
+      if (map && (prevMapConfig !== mapConfig || prevMap !== map)) {
+        let newLayers: L.Layer[] = [];
+        let newLayerControl: L.Control.Layers | null = null;
 
-    // apply zoom and center changes on map
-    useEffect(() => {
-      map?.setView(center, zoomLevel);
-    }, [map, center, zoomLevel]);
-
-    // apply custom layer changes on map
-    useEffect(() => {
-      // first remove custom layers from layerControler and map
-      map?.eachLayer((layer) => {
-        layerControl?.removeLayer(layer);
-
-        if (layer?.['isCustom']) {
-          map.removeLayer(layer);
+        // first remove old layers and layerControl
+        if (layerControl) {
+          map.removeControl(layerControl);
         }
-      });
 
-      // then (re)add layers to map and layerControl
-      if (!isUndefined(mapConfig) && map) {
-        mapConfig?.attributes?.layers?.forEach(
-          ({ geojson, title_multiloc, marker_svg_url }) => {
-            if (geojson) {
+        if (layers && layers.length > 0) {
+          layers.forEach((layer) => {
+            map.removeLayer(layer);
+          });
+        }
+
+        if (
+          map &&
+          mapConfig &&
+          mapConfig?.attributes?.layers &&
+          mapConfig.attributes.layers.length > 0
+        ) {
+          newLayerControl = L.control.layers().addTo(map);
+          newLayers = mapConfig?.attributes?.layers
+            ?.filter((layer) => !isEmpty(layer.geojson))
+            .map(({ geojson, title_multiloc, marker_svg_url }) => {
               const layer = L.geoJSON(geojson, {
                 useSimpleStyle: true,
                 useMakiMarkers: true,
@@ -288,8 +326,6 @@ const Map = memo<Props & InjectedLocalized>(
                   });
                 },
                 onEachFeature: (feature, layer) => {
-                  layer.isCustom = true;
-
                   if (
                     feature.properties &&
                     feature.properties.popupContent &&
@@ -314,18 +350,22 @@ const Map = memo<Props & InjectedLocalized>(
                 },
               } as any).addTo(map);
 
-              layerControl?.addOverlay(layer, localize(title_multiloc));
-            }
-          }
-        );
-      }
-    }, [map, layerControl, mapConfig]);
+              newLayerControl?.addOverlay(layer, localize(title_multiloc));
 
-    // set markers whenever points changed
+              return layer;
+            });
+        }
+
+        setLayers(newLayers);
+        setLayerControl(newLayerControl);
+      }
+    }, [prevMap, map, prevMapConfig, mapConfig, layerControl, layers]);
+
+    // set markers
     useEffect(() => {
-      if (map) {
+      if (map && (prevPoints !== points || prevMap !== map)) {
         const bounds: [number, number][] = [];
-        const markers = compact(points).map((point) => {
+        const newMarkers = compact(points).map((point) => {
           const latlng: [number, number] = [
             point.coordinates[1],
             point.coordinates[0],
@@ -343,24 +383,24 @@ const Map = memo<Props & InjectedLocalized>(
           return L.marker(latlng, markerOptions);
         });
 
-        setMarkers(markers);
-
         if (
           bounds &&
           bounds.length > 0 &&
           fitBounds &&
           zoom === 15 &&
-          center[0] === 0 &&
-          center[1] === 0
+          defaultCenter[0] === 0 &&
+          defaultCenter[1] === 0
         ) {
           map.fitBounds(bounds, { maxZoom: 17, padding: [50, 50] });
         }
-      }
-    }, [map, points, fitBounds, zoom, center]);
 
-    // apply clusters whenever markers changed
+        setMarkers(newMarkers);
+      }
+    }, [prevMap, map, prevPoints, points, fitBounds, zoom, defaultCenter]);
+
+    // set markerClusterGroup
     useEffect(() => {
-      if (map && markers && (prevMap !== map || prevMarkers !== markers)) {
+      if (map && (prevMap !== map || prevMarkers !== markers)) {
         if (markerClusterGroup) {
           map.removeLayer(markerClusterGroup);
         }
@@ -381,7 +421,7 @@ const Map = memo<Props & InjectedLocalized>(
 
         if (onMarkerClick) {
           newMarkerClusterGroup.on('click', (event) => {
-            onMarkerClick?.(event.layer.options.id, event.layer.options.data);
+            onMarkerClick(event.layer.options.id, event.layer.options.data);
           });
         }
 
