@@ -2393,6 +2393,7 @@
   "app.containers.landing.userDeletionFailed": "Kontuit peerniarnera ajornartorsiuteqarpoq, ajornartorsiut sunaanersoq paasitinneqarsimavugut aamma sapinngisarput tamaat aaqqiiviniassavarput. Kinguninngua misileeqqikkina.",
   "app.containers.landing.verifyNow": "Maanna uppernarsaagit",
   "app.containers.landing.verifyYourIdentity": "Innuttaasutut uppernarsarsinnaallugu ilaasortanngorit",
+  "app.containers.verificationModal.verificationButtonAltText": "Verify with {loginMechanismName}",
   "app.errors.after_end_at": "Ulloq aallartiffissaq ullup naammassiffiup kingornaniippoq",
   "app.errors.avatar_carrierwave_download_error": "Could not download avatar file.",
   "app.errors.avatar_carrierwave_integrity_error": "Avatar file is not of an allowed type.",
