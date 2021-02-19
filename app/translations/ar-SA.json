@@ -473,6 +473,7 @@
   "app.components.admin.PostManager.delete": "حذف",
   "app.components.admin.PostManager.deleteAllSelectedInitiatives": "احذف {count} مُقترحات محددة",
   "app.components.admin.PostManager.deleteAllSelectedInputs": "حذف {count} مُدخلات",
+  "app.components.admin.PostManager.deleteConfirmation": "",
   "app.components.admin.PostManager.deleteInitiativeConfirmation": "هل تريد حذف هذا المُقترح بالتأكيد؟",
   "app.components.admin.PostManager.deleteInitiativesConfirmation": "هل تريد حذف {count} من المُقترحات بالتأكيد؟",
   "app.components.admin.PostManager.deleteInputConfirmation": "هل أنت مُتأكد من حذف هذا المُدخل؟ ",

@@ -473,6 +473,7 @@
   "app.components.admin.PostManager.delete": "Supprimer",
   "app.components.admin.PostManager.deleteAllSelectedInitiatives": "Supprimer {count} proposition(s) sélectionnée(s)",
   "app.components.admin.PostManager.deleteAllSelectedInputs": "Supprimer {count} contributions",
+  "app.components.admin.PostManager.deleteConfirmation": "",
   "app.components.admin.PostManager.deleteInitiativeConfirmation": "Êtes-vous sûr de vouloir supprimer cette proposition ?",
   "app.components.admin.PostManager.deleteInitiativesConfirmation": "Êtes-vous sûr de vouloir supprimer {count} proposition(s) ?",
   "app.components.admin.PostManager.deleteInputConfirmation": "Êtes-vous sûr de vouloir supprimer cette contribution ?",

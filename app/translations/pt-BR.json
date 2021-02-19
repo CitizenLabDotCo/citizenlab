@@ -473,6 +473,7 @@
   "app.components.admin.PostManager.delete": "Deletar",
   "app.components.admin.PostManager.deleteAllSelectedInitiatives": "Excluir {count} propostas selecionadas",
   "app.components.admin.PostManager.deleteAllSelectedInputs": "Excluir {count} entradas",
+  "app.components.admin.PostManager.deleteConfirmation": "",
   "app.components.admin.PostManager.deleteInitiativeConfirmation": "Tem certeza de que deseja excluir esta proposta?",
   "app.components.admin.PostManager.deleteInitiativesConfirmation": "Tem certeza de que deseja excluir {count} propostas?",
   "app.components.admin.PostManager.deleteInputConfirmation": "Tem certeza de que deseja excluir esta entrada?",

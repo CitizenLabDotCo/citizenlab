@@ -473,6 +473,7 @@
   "app.components.admin.PostManager.delete": "Verwijder",
   "app.components.admin.PostManager.deleteAllSelectedInitiatives": "Verwijder {count} geselecteerde initiatieven",
   "app.components.admin.PostManager.deleteAllSelectedInputs": "Verwijder {count} inputs",
+  "app.components.admin.PostManager.deleteConfirmation": "",
   "app.components.admin.PostManager.deleteInitiativeConfirmation": "Ben je zeker dat je dit initiatief wil verwijderen?",
   "app.components.admin.PostManager.deleteInitiativesConfirmation": "Ben je zeker dat je {count} initiatieven wil verwijderen?",
   "app.components.admin.PostManager.deleteInputConfirmation": "Weet je zeker dat je deze input wilt verwijderen?",
