@@ -4,7 +4,8 @@ import useLocalize from 'hooks/useLocalize';
 import useMapConfig from 'hooks/useMapConfig';
 import { media, isRtl, fontSizes, colors } from 'utils/styleUtils';
 import { Multiloc } from 'typings';
-import { getLayerColor } from 'utils/map';
+import { getLayerColor, getLayerIcon } from 'utils/map';
+import { Icon, IconNames } from 'cl2-component-library';
 
 const Container = styled.div`
   padding: 25px;
@@ -54,6 +55,13 @@ const ColorLabel = styled.div`
   `}
 `;
 
+const StyledIcon = styled(Icon)<{ color: string }>`
+  fill: ${(props) => props.color};
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+`;
+
 interface Props {
   projectId: string;
   className?: string;
@@ -62,14 +70,17 @@ interface Props {
 interface ILegendItem {
   title_multiloc: Multiloc;
   color: string;
+  iconName?: IconNames;
 }
 
 const Legend = memo<Props>(({ projectId, className }) => {
   const mapConfig = useMapConfig({ projectId });
   const localize = useLocalize();
+  let hasCustomLegend = false;
   let legend: ILegendItem[] = [];
 
   if (mapConfig?.attributes?.legend && mapConfig.attributes.legend.length > 0) {
+    hasCustomLegend = true;
     legend = mapConfig.attributes.legend;
   } else if (
     mapConfig?.attributes?.layers &&
@@ -78,6 +89,7 @@ const Legend = memo<Props>(({ projectId, className }) => {
     legend = mapConfig.attributes.layers.map((layer) => ({
       title_multiloc: layer.title_multiloc,
       color: getLayerColor(layer),
+      iconName: getLayerIcon(layer),
     }));
   }
 
@@ -87,11 +99,15 @@ const Legend = memo<Props>(({ projectId, className }) => {
         <LegendItems>
           {legend.map((legendItem, index) => {
             const color = legendItem.color;
+            const iconName = legendItem?.iconName;
             const label = localize(legendItem.title_multiloc);
 
             return (
               <Item key={`legend-item-${index}`}>
-                <ColorLabel color={color} />
+                {hasCustomLegend && color && <ColorLabel color={color} />}
+                {!hasCustomLegend && color && iconName && (
+                  <StyledIcon name={iconName} color={color} />
+                )}
                 {label}
               </Item>
             );

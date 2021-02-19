@@ -80,3 +80,16 @@ export const getLayerColor = (mapLayer: IMapLayerAttributes | undefined) => {
 
   return fillColor || fallbackColor;
 };
+
+export const getLayerIcon = (mapLayer: IMapLayerAttributes | undefined) => {
+  const layerType = getLayerType(mapLayer);
+  let iconName: 'point' | 'line' | 'polygon' = 'polygon';
+
+  if (layerType === 'Point') {
+    iconName = 'point';
+  } else if (layerType === 'LineString') {
+    iconName = 'line';
+  }
+
+  return iconName;
+};

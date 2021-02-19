@@ -27,7 +27,7 @@ import {
 } from 'services/mapLayers';
 
 // utils
-import { getLayerColor, getLayerType } from 'utils/map';
+import { getLayerColor, getLayerType, getLayerIcon } from 'utils/map';
 import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
@@ -189,18 +189,6 @@ const LayerList = memo<Props>(({ projectId, className }) => {
     setEditedMapLayer(null);
   };
 
-  const getLayerIcon = (layerType: GeoJSON.GeoJsonTypes) => {
-    let iconName: 'point' | 'line' | 'polygon' = 'polygon';
-
-    if (layerType === 'Point') {
-      iconName = 'point';
-    } else if (layerType === 'LineString') {
-      iconName = 'line';
-    }
-
-    return iconName;
-  };
-
   return (
     <Container className={className || ''}>
       <Header>
@@ -234,9 +222,8 @@ const LayerList = memo<Props>(({ projectId, className }) => {
                 <>
                   {(itemsList as IMapLayerAttributes[]).map(
                     (mapLayer, index) => {
-                      const layerType = getLayerType(mapLayer);
                       const layerColor = getLayerColor(mapLayer);
-                      const layerIconName = getLayerIcon(layerType);
+                      const layerIconName = getLayerIcon(mapLayer);
 
                       return (
                         <SortableRow
