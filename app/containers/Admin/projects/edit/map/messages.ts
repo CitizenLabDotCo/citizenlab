@@ -11,7 +11,7 @@ export default defineMessages({
   },
   layerTooltip: {
     id: 'app.containers.AdminPage.ProjectEdit.MapTab.laterTooltip',
-    defaultMessage: 'Layer tooltip text (optional)',
+    defaultMessage: 'Layer tooltip text',
   },
   save: {
     id: 'app.containers.AdminPage.ProjectEdit.MapTab.save',
@@ -47,7 +47,7 @@ export default defineMessages({
   },
   iconName: {
     id: 'app.containers.AdminPage.ProjectEdit.MapTab.iconName',
-    defaultMessage: 'Icon name',
+    defaultMessage: 'Marker icon',
   },
   centerLabel: {
     id: 'app.containers.AdminPage.ProjectEdit.MapTab.centerLabel',

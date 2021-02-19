@@ -9,10 +9,10 @@ import { Section, SectionField } from 'components/admin/Section';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
-import { Label, ColorPickerInput, Input } from 'cl2-component-library';
+import { Label, ColorPickerInput, Select } from 'cl2-component-library';
 
 // utils
-import { getLayerColor, getLayerType } from 'utils/map';
+import { getLayerColor, getLayerType, makiIconNames } from 'utils/map';
 
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
@@ -24,7 +24,7 @@ import messages from './messages';
 import styled from 'styled-components';
 
 // typing
-import { Multiloc } from 'typings';
+import { Multiloc, IOption } from 'typings';
 import { IMapLayerAttributes } from 'services/mapLayers';
 
 const Container = styled.div`
@@ -71,6 +71,13 @@ interface IFormValues {
   markerSymbol: string;
 }
 
+const makiIconOptions: IOption[] = makiIconNames.map((makiIconName) => {
+  return {
+    value: makiIconName,
+    label: makiIconName,
+  };
+});
+
 const LayerConfig = memo<Props & InjectedIntlProps & InjectedLocalized>(
   ({ projectId, mapLayer, className, onClose, intl: { formatMessage } }) => {
     const type = getLayerType(mapLayer);
@@ -114,8 +121,8 @@ const LayerConfig = memo<Props & InjectedIntlProps & InjectedLocalized>(
       formChange({ color });
     };
 
-    const handleMarkerSymbolOnChange = (markerSymbol: string) => {
-      formChange({ markerSymbol });
+    const handleMarkerSymbolOnChange = (option: IOption) => {
+      formChange({ markerSymbol: option.value });
     };
 
     const validate = () => {
@@ -167,16 +174,22 @@ const LayerConfig = memo<Props & InjectedIntlProps & InjectedLocalized>(
         geojson?.features.forEach((feature) => {
           feature.properties = {
             ...feature.properties,
-            fill: formValues.color,
-            'fill-opacity': 0.3,
-            stroke: formValues.color,
-            'stroke-width': 4,
-            'stroke-opacity': 1,
-            'marker-color': formValues.color,
-            'marker-size': 'medium',
+            // 'fill-opacity': 0.3,
+            // 'stroke-width': 4,
+            // 'stroke-opacity': 1,
+            // 'marker-size': 'medium',
             'marker-symbol': formValues.markerSymbol,
             tooltipContent: formValues.tooltipContent,
           };
+
+          if (formValues.color !== getLayerColor(mapLayer)) {
+            feature.properties = {
+              ...feature.properties,
+              fill: formValues.color,
+              stroke: formValues.color,
+              'marker-color': formValues.color,
+            };
+          }
         });
 
         try {
@@ -204,6 +217,33 @@ const LayerConfig = memo<Props & InjectedIntlProps & InjectedLocalized>(
           </SectionField>
 
           <SectionField>
+            <InputMultilocWithLocaleSwitcher
+              type="text"
+              valueMultiloc={formValues.tooltipContent}
+              onChange={handleTooltipContentOnChange}
+              label={formatMessage(messages.layerTooltip)}
+              labelTooltipText={formatMessage(messages.layerTooltip)}
+            />
+          </SectionField>
+
+          {type === 'Point' && (
+            <SectionField>
+              <Select
+                onChange={handleMarkerSymbolOnChange}
+                label={formatMessage(messages.iconName)}
+                value={formValues.markerSymbol}
+                options={[
+                  {
+                    value: '',
+                    label: '',
+                  },
+                  ...makiIconOptions,
+                ]}
+              />
+            </SectionField>
+          )}
+
+          <SectionField>
             <Label>
               <FormattedMessage {...messages.layerColor} />
             </Label>
@@ -211,27 +251,6 @@ const LayerConfig = memo<Props & InjectedIntlProps & InjectedLocalized>(
               type="text"
               value={formValues.color}
               onChange={handleColorOnChange}
-            />
-          </SectionField>
-
-          {type === 'Point' && (
-            <SectionField>
-              <Input
-                type="text"
-                value={formValues.markerSymbol}
-                onChange={handleMarkerSymbolOnChange}
-                label={formatMessage(messages.iconName)}
-              />
-            </SectionField>
-          )}
-
-          <SectionField>
-            <InputMultilocWithLocaleSwitcher
-              type="text"
-              valueMultiloc={formValues.tooltipContent}
-              onChange={handleTooltipContentOnChange}
-              label={formatMessage(messages.layerTooltip)}
-              labelTooltipText={formatMessage(messages.layerTooltip)}
             />
           </SectionField>
         </StyledSection>
