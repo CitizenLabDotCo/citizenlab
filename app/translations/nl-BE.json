@@ -2435,7 +2435,7 @@
   "app.errors.slug_taken": "Deze project-URL bestaat al. Verander de slug in iets anders.",
   "app.errors.title_multiloc_blank": "De titel kan niet leeg zijn.",
   "app.errors.token_invalid": "De link om je wachtwoord opnieuw in te stellen kan slechts één keer worden gebruikt en is geldig tot een uur na verzending. {passwordResetLink}.",
-  "app.errors.too_common": "Dit wachtwoord is makkelijk to raden. Kies een sterker wachtwoord.",
+  "app.errors.too_common": "Dit wachtwoord is makkelijk te raden. Kies een sterker wachtwoord.",
   "app.errors.too_long": "Het wachtwoord mag maximaal 72 tekens lang zijn",
   "app.errors.too_short": "Het wachtwoord moet minstens 8 tekens lang zijn",
   "app.errors.unknown_group": "De groep {value} in rij {row} is geen geldige groep",
