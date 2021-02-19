@@ -4,11 +4,11 @@ class LogActivityJob < ApplicationJob
 
   attr_reader :item, :action, :user, :acted_at, :options, :activity
 
-  def perform(item, action, user, acted_at = Time.now, options = {})
+  def run(item, action, user, acted_at = Time.zone.now, options = {})
     @item     = item
     @action   = action
     @user     = user
-    @acted_at = acted_at
+    @acted_at = Time.zone.at(acted_at)
     @options  = options
 
     do_perform
@@ -16,7 +16,7 @@ class LogActivityJob < ApplicationJob
 
   private
 
-  def do_perform
+  def do_run
     instantiate_activity
     save_activity
     trigger_notifications
@@ -41,7 +41,7 @@ class LogActivityJob < ApplicationJob
   def save_activity
     activity.action   = action
     activity.user     = user
-    activity.acted_at = Time.at(acted_at)
+    activity.acted_at = acted_at
     activity.payload  = options[:payload] || {}
     activity.save!
   end
