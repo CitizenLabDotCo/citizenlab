@@ -211,9 +211,4 @@ export default defineMessages({
     defaultMessage:
       "The color you selected doesn't have a high enough contrast (to a white background) to comply with the {wcagLink} accessibility standard. {lineBreak} {lineBreak} Not meeting this ratio may impair the user experience of users with visual disabilities, or even make it impossible to use the platform altogether. {lineBreak} {lineBreak} A ratio of at least 4.5 to 1 is needed to comply. Current ratio: {contrastRatio} to 1. Choose a darker color to increase the ratio.",
   },
-  dummyCrowdinTestText: {
-    id: 'app.components.AdminPage.SettingsPage.dummyCrowdinTestText',
-    defaultMessage:
-      "This is a dummy text just to test crowdin branch translations. Don't waste time translating this!",
-  },
 });

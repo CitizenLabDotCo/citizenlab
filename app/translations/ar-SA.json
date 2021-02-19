@@ -10,7 +10,6 @@
   "app.components.AdminPage.SettingsPage.contrastRatioTooLow": "تحذير: اللون الذي اخترته ليس بالتباين الكافي. ما يعني أن النص ستصعُب قراءته. اختر لونًا أغمق لتحسين قابلية القراءة.",
   "app.components.AdminPage.SettingsPage.customSectionInfo": "سيظهر هذا المحتوى أسفل صفحتك الرئيسية. يمكنك تغييره في أي وقت.",
   "app.components.AdminPage.SettingsPage.customSectionLabel": "المحتوى",
-  "app.components.AdminPage.SettingsPage.dummyCrowdinTestText": "This is a dummy text just to test crowdin branch translations. Don't waste time translating this!",
   "app.components.AdminPage.SettingsPage.homePageCustomSection": "قسم مخصص للصفحة الرئيسية",
   "app.components.AssignBudgetControl.a11y_price": "السعر:",
   "app.components.AssignBudgetControl.assign": "أضِف إلى نفقاتي",
