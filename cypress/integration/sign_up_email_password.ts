@@ -59,10 +59,11 @@ describe('Sign up - Email + password step', () => {
   });
 
   it('shows an error when no password is provided', () => {
-    cy.get('#e2e-signup-password-button').click();
+    cy.get('#e2e-login-with-email').click();
+    cy.get('#e2e-signup-password-submit-button').click();
     cy.get('#e2e-password-container .e2e-error-message').should(
       'contain',
-      'This cannot be empty'
+      'Your password needs to be at least 8 characters long.'
     );
   });
 
