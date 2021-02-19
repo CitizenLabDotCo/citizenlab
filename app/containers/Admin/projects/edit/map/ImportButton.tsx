@@ -1,5 +1,4 @@
 import React, { memo } from 'react';
-import * as gjv from 'geojson-validation';
 
 // i18n
 import messages from './messages';
@@ -60,10 +59,7 @@ const ImportButton = memo<Props>(({ onChange, className }) => {
     event.target.value = null;
     fileReader.onload = (event: any) => {
       const geojson = JSON.parse(event.target.result);
-
-      if (gjv.valid(geojson)) {
-        onChange(geojson);
-      }
+      onChange(geojson);
     };
   };
 

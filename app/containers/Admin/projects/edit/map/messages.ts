@@ -65,9 +65,23 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.MapTab.layerColor',
     defaultMessage: 'Layer color',
   },
-  iconName: {
-    id: 'app.containers.AdminPage.ProjectEdit.MapTab.iconName',
+  layerColorTooltip: {
+    id: 'app.containers.AdminPage.ProjectEdit.MapTab.layerColorTooltip',
+    defaultMessage:
+      'This color is applied to all features within the map layer. Marker sizes, line widths and fill opacity are fixed by default.',
+  },
+  layerIconName: {
+    id: 'app.containers.AdminPage.ProjectEdit.MapTab.layerIconName',
     defaultMessage: 'Marker icon',
+  },
+  layerIconNameTooltip: {
+    id: 'app.containers.AdminPage.ProjectEdit.MapTab.layerIconNameTooltip',
+    defaultMessage:
+      'Optionally select an icon that is displayed in the markers. Click {url} to see the list of icons you can select.',
+  },
+  here: {
+    id: 'app.containers.AdminPage.ProjectEdit.MapTab.here',
+    defaultMessage: 'here',
   },
   centerLabel: {
     id: 'app.containers.AdminPage.ProjectEdit.MapTab.centerLabel',
@@ -85,7 +99,7 @@ export default defineMessages({
   zoomLabelTooltip: {
     id: 'app.containers.AdminPage.ProjectEdit.MapTab.zoomLabelTooltip',
     defaultMessage:
-      'Set how zoomed in the map is by default. Choose a value between 0 and 17, where 0 is fully zoomed out (the entire world is visible) and 17 is fully zoomed in (blocks and buildings are visible)',
+      'Set how zoomed in the map is by default. Choose a value between 1 and 17, where 1 is fully zoomed out (the entire world is visible) and 17 is fully zoomed in (blocks and buildings are visible)',
   },
   editLayer: {
     id: 'app.containers.AdminPage.ProjectEdit.MapTab.editLayer',
@@ -106,5 +120,9 @@ export default defineMessages({
   deleteConfirmation: {
     id: 'app.components.admin.PostManager.deleteConfirmation',
     defaultMessage: 'Are you sure you want to delete this layer?',
+  },
+  importError: {
+    id: 'app.components.admin.PostManager.importError',
+    defaultMessage: `The selected file could not be imported because it's not a valid GeoJSON file`,
   },
 });

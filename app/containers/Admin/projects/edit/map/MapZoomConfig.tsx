@@ -79,7 +79,7 @@ const MapZoomConfig = memo<Props & InjectedIntlProps>(
     const validate = () => {
       const newZoomLevel = parseInt(formValues.zoom as any, 10);
 
-      if (isNumber(newZoomLevel) && inRange(newZoomLevel, 1, 18)) {
+      if (isNumber(newZoomLevel) && inRange(newZoomLevel, 0, 18)) {
         return true;
       }
 

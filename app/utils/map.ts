@@ -72,7 +72,7 @@ export const getLayerColor = (mapLayer: IMapLayerAttributes | undefined) => {
     mapLayer?.geojson?.features?.[0]?.properties?.fill;
   const markerColor: string | undefined =
     mapLayer?.geojson?.features?.[0]?.properties?.['marker-color'];
-  const fallbackColor = '#000000';
+  const fallbackColor = '#7D7D7D';
 
   if (type === 'Point') {
     return markerColor || fillColor || fallbackColor;
@@ -117,7 +117,6 @@ export const makiIconNames = [
   'cafe',
   'campsite',
   'car',
-  'castle',
   'cemetery',
   'cinema',
   'circle',
@@ -197,7 +196,7 @@ export const makiIconNames = [
   'telephone',
   'tennis',
   'theatre',
-  'toilet',
+  'toilets',
   'town-hall',
   'triangle',
   'triangle-stroked',
@@ -207,6 +206,5 @@ export const makiIconNames = [
   'waste-basket',
   'water',
   'wetland',
-  'wheelchair',
   'zoo',
 ];
