@@ -64,7 +64,7 @@ const StyledSectionTitle = styled(SectionTitle)`
 `;
 
 const ListWrapper = styled.div`
-  margin-bottom: 60px;
+  margin-bottom: 70px;
 `;
 
 const StyledSortableList = styled(SortableList)`
@@ -117,12 +117,11 @@ const StyledLayerConfig = styled(LayerConfig)`
 `;
 
 const StyledMapCenterConfig = styled(MapCenterConfig)`
-  margin-bottom: 40px;
+  margin-top: 10px;
+  margin-bottom: 30px;
 `;
 
-const StyledMapZoomConfig = styled(MapZoomConfig)`
-  margin-bottom: 40px;
-`;
+const StyledMapZoomConfig = styled(MapZoomConfig)``;
 
 interface Props {
   projectId: string;
@@ -308,6 +307,9 @@ const LayerList = memo<Props>(({ projectId, className }) => {
 
       {!editedMapLayer && (
         <>
+          <SubSectionTitle>
+            <FormattedMessage {...messages.mapCenterAndZoom} />
+          </SubSectionTitle>
           <StyledMapCenterConfig projectId={projectId} />
           <StyledMapZoomConfig projectId={projectId} />
         </>

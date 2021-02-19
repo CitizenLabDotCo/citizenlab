@@ -67,7 +67,6 @@ interface Props {
 interface IFormValues {
   title_multiloc: Multiloc | null;
   tooltipContent: Multiloc | null;
-  popupContent: Multiloc | null;
   color: string;
   markerSymbol: string;
 }
@@ -86,7 +85,6 @@ const LayerConfig = memo<Props & InjectedIntlProps & InjectedLocalized>(
         mapLayer?.geojson?.features?.[0]?.properties?.['marker-symbol'] || '',
       tooltipContent:
         mapLayer?.geojson?.features?.[0]?.properties?.tooltipContent,
-      popupContent: mapLayer?.geojson?.features?.[0]?.properties?.popupContent,
     });
 
     useEffect(() => {
@@ -99,8 +97,6 @@ const LayerConfig = memo<Props & InjectedIntlProps & InjectedLocalized>(
             '',
           tooltipContent:
             mapLayer?.geojson?.features?.[0]?.properties?.tooltipContent,
-          popupContent:
-            mapLayer?.geojson?.features?.[0]?.properties?.popupContent,
         },
         false
       );
@@ -112,10 +108,6 @@ const LayerConfig = memo<Props & InjectedIntlProps & InjectedLocalized>(
 
     const handleTooltipContentOnChange = (tooltipContent: Multiloc) => {
       formChange({ tooltipContent });
-    };
-
-    const handlePopupContentOnChange = (popupContent: Multiloc) => {
-      formChange({ popupContent });
     };
 
     const handleColorOnChange = (color: string) => {
@@ -184,7 +176,6 @@ const LayerConfig = memo<Props & InjectedIntlProps & InjectedLocalized>(
             'marker-size': 'medium',
             'marker-symbol': formValues.markerSymbol,
             tooltipContent: formValues.tooltipContent,
-            popupContent: formValues.popupContent,
           };
         });
 
@@ -241,16 +232,6 @@ const LayerConfig = memo<Props & InjectedIntlProps & InjectedLocalized>(
               onChange={handleTooltipContentOnChange}
               label={formatMessage(messages.layerTooltip)}
               labelTooltipText={formatMessage(messages.layerTooltip)}
-            />
-          </SectionField>
-
-          <SectionField>
-            <InputMultilocWithLocaleSwitcher
-              type="text"
-              valueMultiloc={formValues.popupContent}
-              onChange={handlePopupContentOnChange}
-              label={formatMessage(messages.layerPopup)}
-              labelTooltipText={formatMessage(messages.layerPopup)}
             />
           </SectionField>
         </StyledSection>

@@ -1,5 +1,6 @@
 import React, { memo, useState, useEffect } from 'react';
 import { isEmpty, inRange } from 'lodash-es';
+import { isNilOrError } from 'utils/helperUtils';
 
 // services
 import { updateProjectMapConfig } from 'services/mapConfigs';
@@ -12,7 +13,6 @@ import useMapConfig from 'hooks/useMapConfig';
 import { Input } from 'cl2-component-library';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
-import { SubSectionTitle } from 'components/admin/Section';
 
 // utils
 import { getCenter } from 'utils/map';
@@ -61,21 +61,21 @@ const MapCenterConfig = memo<Props & InjectedIntlProps>(
     const [processing, setProcessing] = useState(false);
     const [errors, setErrors] = useState<{ [key: string]: any }>({});
     const [formValues, setFormValues] = useState<IFormValues>({
-      center: `${getCenter(undefined, appConfig, mapConfig)[0]}, ${
-        getCenter(undefined, appConfig, mapConfig)[1]
-      }`,
+      center: null,
     });
 
     useEffect(() => {
-      formChange(
-        {
-          center: `${getCenter(undefined, appConfig, mapConfig)[0]}, ${
-            getCenter(undefined, appConfig, mapConfig)[1]
-          }`,
-        },
-        false
-      );
-    }, [appConfig, mapConfig]);
+      if (!isNilOrError(appConfig) && mapConfig && formValues.center === null) {
+        const center = getCenter(undefined, appConfig, mapConfig);
+
+        formChange(
+          {
+            center: `${center[0]}, ${center[1]}`,
+          },
+          false
+        );
+      }
+    }, [appConfig, mapConfig, formValues]);
 
     const validate = () => {
       const latlong = formValues?.center?.split(',');
@@ -151,15 +151,13 @@ const MapCenterConfig = memo<Props & InjectedIntlProps>(
 
     return (
       <Container className={className || ''}>
-        <SubSectionTitle>
-          <FormattedMessage {...messages.centerLabel} />
-        </SubSectionTitle>
         <InputWrapper>
           <StyledInput
             type="text"
             value={formValues.center}
             onChange={handleOnChange}
             placeholder="lat, lng (e.g. 50.87959, 4.70093)"
+            label={formatMessage(messages.centerLabel)}
           />
           <SaveButton
             buttonStyle="admin-dark"
