@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-# 
+
 module CustomStyle
   module StyleSettings
     extend ActiveSupport::Concern
