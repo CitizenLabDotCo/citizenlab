@@ -768,7 +768,6 @@
   "app.containers.Admin.Processing.projectTags": "Projecttags",
   "app.containers.Admin.Processing.proposedBudgetTitle": "Voorgesteld budget",
   "app.containers.Admin.Processing.returnKey": "De Enter-toets opent het zijpaneel waar je tags kan toevoegen of verwijderen",
-  "app.containers.Admin.Processing.selectProject": "Select project",
   "app.containers.Admin.Processing.suggestedTags": "Voorgestelde tags",
   "app.containers.Admin.Processing.tag": "Tag",
   "app.containers.Admin.Processing.tagAssignationExplanation": "Tags die je hier toevoegt worden automatisch toegewezen aan relevante input op basis van onze natural language processing technologie.",
