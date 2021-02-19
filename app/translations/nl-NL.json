@@ -10,7 +10,6 @@
   "app.components.AdminPage.SettingsPage.contrastRatioTooLow": "Opgelet: Deze kleur heeft een te laag contrast. Hierdoor wordt sommige tekst moeilijk leesbaar. Kies een donkerdere kleur om de leesbaarheid te verbeteren.",
   "app.components.AdminPage.SettingsPage.customSectionInfo": "De inhoud wordt onderaan de homepagina van je platform weergegeven, zichtbaar voor alle gebruikers.",
   "app.components.AdminPage.SettingsPage.customSectionLabel": "Inhoud",
-  "app.components.AdminPage.SettingsPage.dummyCrowdinTestText": "Dit is een dummy tekst alleen maar om crowdin branch vertalingen te testen. Verspil geen tijd met het vertalen hiervan!",
   "app.components.AdminPage.SettingsPage.homePageCustomSection": "Vrij veld homepagina",
   "app.components.AssignBudgetControl.a11y_price": "Prijs:",
   "app.components.AssignBudgetControl.assign": "Voeg toe aan mijn uitgaven",
