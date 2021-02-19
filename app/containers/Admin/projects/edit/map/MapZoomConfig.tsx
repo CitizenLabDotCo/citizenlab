@@ -142,6 +142,7 @@ const MapZoomConfig = memo<Props & InjectedIntlProps>(
             max="17"
             onChange={handleOnChange}
             label={formatMessage(messages.zoomLabel)}
+            labelTooltipText={formatMessage(messages.zoomLabelTooltip)}
           />
           <SaveButton
             buttonStyle="admin-dark"

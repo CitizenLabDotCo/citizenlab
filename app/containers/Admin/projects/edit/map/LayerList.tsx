@@ -2,7 +2,7 @@ import React, { memo, useState } from 'react';
 
 // components
 import Button from 'components/UI/Button';
-import { Icon } from 'cl2-component-library';
+import { Icon, IconTooltip } from 'cl2-component-library';
 import ImportButton from './ImportButton';
 import LayerConfig from './LayerConfig';
 import MapZoomConfig from './MapZoomConfig';
@@ -62,6 +62,10 @@ const StyledSectionTitle = styled(SectionTitle)`
   flex: 1;
   padding: 0;
   margin: 0;
+`;
+
+const StyledIconTooltip = styled(IconTooltip)`
+  margin-left: 5px;
 `;
 
 const ListWrapper = styled.div`
@@ -200,11 +204,11 @@ const LayerList = memo<Props & InjectedIntlProps>(
         <Header>
           <TitleContainer>
             <StyledSectionTitle>
-              <FormattedMessage {...messages.mapConfiguration} />
+              <FormattedMessage {...messages.mapConfigurationTitle} />
             </StyledSectionTitle>
           </TitleContainer>
           <SectionDescription>
-            <FormattedMessage {...messages.description} />
+            <FormattedMessage {...messages.mapConfigurationDescription} />
           </SectionDescription>
         </Header>
 
@@ -213,6 +217,11 @@ const LayerList = memo<Props & InjectedIntlProps>(
             <FormattedMessage
               {...(!editedMapLayer ? messages.layers : messages.editLayer)}
             />
+            {!editedMapLayer && (
+              <StyledIconTooltip
+                content={<FormattedMessage {...messages.layersTitleTooltip} />}
+              />
+            )}
           </SubSectionTitle>
           {!editedMapLayer &&
             mapConfig?.attributes?.layers &&

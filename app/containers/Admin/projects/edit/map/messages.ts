@@ -9,9 +9,18 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.MapTab.layerName',
     defaultMessage: 'Layer name',
   },
+  layerNameTooltip: {
+    id: 'app.containers.AdminPage.ProjectEdit.MapTab.layerNameTooltip',
+    defaultMessage: 'This layer name is shown on the map legend',
+  },
   layerTooltip: {
-    id: 'app.containers.AdminPage.ProjectEdit.MapTab.laterTooltip',
-    defaultMessage: 'Layer tooltip text',
+    id: 'app.containers.AdminPage.ProjectEdit.MapTab.layerTooltip',
+    defaultMessage: 'Layer tooltip',
+  },
+  layerTooltipTooltip: {
+    id: 'app.containers.AdminPage.ProjectEdit.MapTab.layerTooltipTooltip',
+    defaultMessage:
+      'This text is displayed as a tooltip when hovering over the layer features on the map',
   },
   save: {
     id: 'app.containers.AdminPage.ProjectEdit.MapTab.save',
@@ -27,15 +36,26 @@ export default defineMessages({
   },
   layers: {
     id: 'app.containers.AdminPage.ProjectEdit.MapTab.layers',
-    defaultMessage: 'Layers',
+    defaultMessage: 'Map layers',
   },
-  description: {
-    id: 'app.containers.AdminPage.ProjectEdit.MapTab.description',
-    defaultMessage: 'Description goes here',
+  mapConfigurationTitle: {
+    id: 'app.containers.AdminPage.ProjectEdit.MapTab.mapConfigurationTitle',
+    defaultMessage: 'Map configuration',
+  },
+  mapConfigurationDescription: {
+    id:
+      'app.containers.AdminPage.ProjectEdit.MapTab.mapConfigurationDescription',
+    defaultMessage:
+      'Customize the map view, including uploading and styling map layers and setting the map center and zoom level.',
+  },
+  layersTitleTooltip: {
+    id: 'app.containers.AdminPage.ProjectEdit.MapTab.layersTitleTooltip',
+    defaultMessage:
+      'We currently support GeoJSON files. Read the support article for tips on how to convert and style map layers.',
   },
   edit: {
     id: 'app.containers.AdminPage.ProjectEdit.MapTab.edit',
-    defaultMessage: 'Edit layer',
+    defaultMessage: 'Edit map layer',
   },
   import: {
     id: 'app.containers.AdminPage.ProjectEdit.MapTab.import',
@@ -51,15 +71,21 @@ export default defineMessages({
   },
   centerLabel: {
     id: 'app.containers.AdminPage.ProjectEdit.MapTab.centerLabel',
-    defaultMessage: 'Default center coordinates (lat, lng)',
+    defaultMessage: 'Default center coordinates',
+  },
+  centerLabelTooltip: {
+    id: 'app.containers.AdminPage.ProjectEdit.MapTab.centerLabelTooltip',
+    defaultMessage:
+      'Set the default center of the map using latitude and longitude coordinates',
   },
   zoomLabel: {
     id: 'app.containers.AdminPage.ProjectEdit.MapTab.zoomLabel',
     defaultMessage: 'Default zoom level',
   },
-  mapConfiguration: {
-    id: 'app.containers.AdminPage.ProjectEdit.MapTab.mapConfiguration',
-    defaultMessage: 'Map configuration',
+  zoomLabelTooltip: {
+    id: 'app.containers.AdminPage.ProjectEdit.MapTab.zoomLabelTooltip',
+    defaultMessage:
+      'Set how zoomed in the map is by default. Choose a value between 0 and 17, where 0 is fully zoomed out (the entire world is visible) and 17 is fully zoomed in (blocks and buildings are visible)',
   },
   editLayer: {
     id: 'app.containers.AdminPage.ProjectEdit.MapTab.editLayer',
