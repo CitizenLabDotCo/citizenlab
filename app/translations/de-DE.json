@@ -10,7 +10,6 @@
   "app.components.AdminPage.SettingsPage.contrastRatioTooLow": "Warning: the color you selected doesn't have a high enough contrast. This may result in text that's hard to read. Choose a darker color to optimize readability.",
   "app.components.AdminPage.SettingsPage.customSectionInfo": "This content is shown at the bottom of your homepage. You can change it at any time.",
   "app.components.AdminPage.SettingsPage.customSectionLabel": "Content",
-  "app.components.AdminPage.SettingsPage.dummyCrowdinTestText": "This is a dummy text just to test crowdin branch translations. Don't waste time translating this!",
   "app.components.AdminPage.SettingsPage.homePageCustomSection": "Home page custom section",
   "app.components.AssignBudgetControl.a11y_price": "Preis:",
   "app.components.AssignBudgetControl.assign": "Zu meinen Ausgaben hinzufügen",
