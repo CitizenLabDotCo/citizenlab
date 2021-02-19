@@ -80,6 +80,7 @@ const ImportButton = memo<Props>(({ onChange, className }) => {
       <ButtonContainer>
         <StyledButton
           icon="upload-file"
+          iconSize="19px"
           buttonStyle="secondary"
           padding="8px 12px"
         >
