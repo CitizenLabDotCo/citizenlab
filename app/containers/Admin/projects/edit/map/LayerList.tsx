@@ -32,7 +32,8 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
 import T from 'components/T';
-import { FormattedMessage } from 'utils/cl-intl';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
 // styling
@@ -128,194 +129,201 @@ interface Props {
   className?: string;
 }
 
-const LayerList = memo<Props>(({ projectId, className }) => {
-  const tenantLocales = useAppConfigurationLocales();
-  const mapConfig = useMapConfig({ projectId, prefetchMapLayers: true });
-  const mapConfigId = mapConfig?.id || null;
+const LayerList = memo<Props & InjectedIntlProps>(
+  ({ projectId, className, intl: { formatMessage } }) => {
+    const tenantLocales = useAppConfigurationLocales();
+    const mapConfig = useMapConfig({ projectId, prefetchMapLayers: true });
+    const mapConfigId = mapConfig?.id || null;
 
-  const [
-    editedMapLayer,
-    setEditedMapLayer,
-  ] = useState<IMapLayerAttributes | null>(null);
+    const [
+      editedMapLayer,
+      setEditedMapLayer,
+    ] = useState<IMapLayerAttributes | null>(null);
 
-  const handleGeoJsonImport = (geojson: GeoJSON.FeatureCollection) => {
-    if (mapConfigId) {
-      const unnamedLayersCount =
-        mapConfig?.attributes?.layers?.filter((layer) =>
-          layer?.title_multiloc?.['en']?.startsWith('Unnamed')
-        )?.length || 0;
+    const handleGeoJsonImport = (geojson: GeoJSON.FeatureCollection) => {
+      if (mapConfigId) {
+        const unnamedLayersCount =
+          mapConfig?.attributes?.layers?.filter((layer) =>
+            layer?.title_multiloc?.['en']?.startsWith('Unnamed')
+          )?.length || 0;
 
-      const newUnnamedLayerTitle = `Unnamed layer ${unnamedLayersCount + 1}`;
+        const newUnnamedLayerTitle = `Unnamed layer ${unnamedLayersCount + 1}`;
 
-      const title_multiloc = {
-        en: newUnnamedLayerTitle,
-      };
+        const title_multiloc = {
+          en: newUnnamedLayerTitle,
+        };
 
-      if (!isNilOrError(tenantLocales)) {
-        tenantLocales.forEach(
-          (tenantLocale) =>
-            (title_multiloc[tenantLocale] = newUnnamedLayerTitle)
-        );
+        if (!isNilOrError(tenantLocales)) {
+          tenantLocales.forEach(
+            (tenantLocale) =>
+              (title_multiloc[tenantLocale] = newUnnamedLayerTitle)
+          );
+        }
+
+        createProjectMapLayer(projectId, {
+          geojson,
+          title_multiloc,
+          id: mapConfigId,
+          default_enabled: true,
+        });
       }
+    };
 
-      createProjectMapLayer(projectId, {
-        geojson,
-        title_multiloc,
-        id: mapConfigId,
-        default_enabled: true,
-      });
-    }
-  };
+    const handleReorderLayers = (mapLayerId: string, newOrder: number) => {
+      reorderProjectMapLayer(projectId, mapLayerId, newOrder);
+    };
 
-  const handleReorderLayers = (mapLayerId: string, newOrder: number) => {
-    reorderProjectMapLayer(projectId, mapLayerId, newOrder);
-  };
+    const removeLayer = (layerId: string) => (event: React.FormEvent) => {
+      event?.preventDefault();
 
-  const removeLayer = (layerId: string) => (event: React.FormEvent) => {
-    event?.preventDefault();
-    deleteProjectMapLayer(projectId, layerId);
-  };
+      const message = formatMessage(messages.deleteConfirmation);
 
-  const toggleLayerConfig = (layerId: string) => (event: React.FormEvent) => {
-    event?.preventDefault();
-    const mapLayer =
-      mapConfig?.attributes?.layers?.find((layer) => layer.id === layerId) ||
-      null;
-    setEditedMapLayer((prevValue) => (prevValue ? null : mapLayer));
-  };
+      if (window.confirm(message)) {
+        deleteProjectMapLayer(projectId, layerId);
+      }
+    };
 
-  const closeLayerConfig = () => {
-    setEditedMapLayer(null);
-  };
+    const toggleLayerConfig = (layerId: string) => (event: React.FormEvent) => {
+      event?.preventDefault();
+      const mapLayer =
+        mapConfig?.attributes?.layers?.find((layer) => layer.id === layerId) ||
+        null;
+      setEditedMapLayer((prevValue) => (prevValue ? null : mapLayer));
+    };
 
-  return (
-    <Container className={className || ''}>
-      <Header>
-        <TitleContainer>
-          <StyledSectionTitle>
-            <FormattedMessage {...messages.mapConfiguration} />
-          </StyledSectionTitle>
-        </TitleContainer>
-        <SectionDescription>
-          <FormattedMessage {...messages.description} />
-        </SectionDescription>
-      </Header>
+    const closeLayerConfig = () => {
+      setEditedMapLayer(null);
+    };
 
-      <ListWrapper>
-        <SubSectionTitle>
-          <FormattedMessage
-            {...(!editedMapLayer ? messages.layers : messages.editLayer)}
-          />
-        </SubSectionTitle>
-        {!editedMapLayer &&
-          mapConfig?.attributes?.layers &&
-          mapConfig?.attributes?.layers?.length > 0 && (
-            <StyledSortableList
-              key={mapConfig.attributes.layers.length}
-              items={mapConfig.attributes.layers}
-              onReorder={handleReorderLayers}
-              className="maplayers-list e2e-admin-maplayers-list"
-              id="e2e-admin-maplayers-list"
-            >
-              {({ itemsList, handleDragRow, handleDropRow }) => (
-                <>
-                  {(itemsList as IMapLayerAttributes[]).map(
-                    (mapLayer, index) => {
-                      const layerColor = getLayerColor(mapLayer);
-                      const layerIconName = getLayerIcon(mapLayer);
+    return (
+      <Container className={className || ''}>
+        <Header>
+          <TitleContainer>
+            <StyledSectionTitle>
+              <FormattedMessage {...messages.mapConfiguration} />
+            </StyledSectionTitle>
+          </TitleContainer>
+          <SectionDescription>
+            <FormattedMessage {...messages.description} />
+          </SectionDescription>
+        </Header>
 
-                      return (
-                        <SortableRow
-                          key={mapLayer.id}
-                          id={mapLayer.id}
-                          index={index}
-                          lastItem={
-                            index === mapConfig.attributes.layers.length - 1
-                          }
-                          moveRow={handleDragRow}
-                          dropRow={handleDropRow}
-                        >
-                          <ListItem>
-                            <LayerIcon
-                              name={layerIconName}
-                              color={layerColor}
-                            />
-                            <LayerName>
-                              <T value={mapLayer.title_multiloc} />
-                            </LayerName>
-                            <Buttons>
-                              <Tippy
-                                placement="bottom"
-                                content={
-                                  <FormattedMessage {...messages.edit} />
-                                }
-                                hideOnClick={false}
-                                arrow={false}
-                              >
-                                <div>
-                                  <EditButton
-                                    icon="edit"
-                                    iconSize="16px"
-                                    buttonStyle="text"
-                                    padding="0px"
-                                    onClick={toggleLayerConfig(mapLayer.id)}
-                                  />
-                                </div>
-                              </Tippy>
-
-                              <Spacer />
-
-                              <Tippy
-                                placement="bottom"
-                                content={
-                                  <FormattedMessage {...messages.remove} />
-                                }
-                                hideOnClick={false}
-                                arrow={false}
-                              >
-                                <div>
-                                  <RemoveButton
-                                    icon="delete"
-                                    iconSize="16px"
-                                    buttonStyle="text"
-                                    padding="0px"
-                                    onClick={removeLayer(mapLayer.id)}
-                                  />
-                                </div>
-                              </Tippy>
-                            </Buttons>
-                          </ListItem>
-                        </SortableRow>
-                      );
-                    }
-                  )}
-                </>
-              )}
-            </StyledSortableList>
-          )}
-
-        {!editedMapLayer && <ImportButton onChange={handleGeoJsonImport} />}
-
-        {editedMapLayer && (
-          <StyledLayerConfig
-            projectId={projectId}
-            mapLayer={editedMapLayer}
-            onClose={closeLayerConfig}
-          />
-        )}
-      </ListWrapper>
-
-      {!editedMapLayer && (
-        <>
+        <ListWrapper>
           <SubSectionTitle>
-            <FormattedMessage {...messages.mapCenterAndZoom} />
+            <FormattedMessage
+              {...(!editedMapLayer ? messages.layers : messages.editLayer)}
+            />
           </SubSectionTitle>
-          <StyledMapCenterConfig projectId={projectId} />
-          <StyledMapZoomConfig projectId={projectId} />
-        </>
-      )}
-    </Container>
-  );
-});
+          {!editedMapLayer &&
+            mapConfig?.attributes?.layers &&
+            mapConfig?.attributes?.layers?.length > 0 && (
+              <StyledSortableList
+                key={mapConfig.attributes.layers.length}
+                items={mapConfig.attributes.layers}
+                onReorder={handleReorderLayers}
+                className="maplayers-list e2e-admin-maplayers-list"
+                id="e2e-admin-maplayers-list"
+              >
+                {({ itemsList, handleDragRow, handleDropRow }) => (
+                  <>
+                    {(itemsList as IMapLayerAttributes[]).map(
+                      (mapLayer, index) => {
+                        const layerColor = getLayerColor(mapLayer);
+                        const layerIconName = getLayerIcon(mapLayer);
 
-export default LayerList;
+                        return (
+                          <SortableRow
+                            key={mapLayer.id}
+                            id={mapLayer.id}
+                            index={index}
+                            lastItem={
+                              index === mapConfig.attributes.layers.length - 1
+                            }
+                            moveRow={handleDragRow}
+                            dropRow={handleDropRow}
+                          >
+                            <ListItem>
+                              <LayerIcon
+                                name={layerIconName}
+                                color={layerColor}
+                              />
+                              <LayerName>
+                                <T value={mapLayer.title_multiloc} />
+                              </LayerName>
+                              <Buttons>
+                                <Tippy
+                                  placement="bottom"
+                                  content={
+                                    <FormattedMessage {...messages.edit} />
+                                  }
+                                  hideOnClick={false}
+                                  arrow={false}
+                                >
+                                  <div>
+                                    <EditButton
+                                      icon="edit"
+                                      iconSize="16px"
+                                      buttonStyle="text"
+                                      padding="0px"
+                                      onClick={toggleLayerConfig(mapLayer.id)}
+                                    />
+                                  </div>
+                                </Tippy>
+
+                                <Spacer />
+
+                                <Tippy
+                                  placement="bottom"
+                                  content={
+                                    <FormattedMessage {...messages.remove} />
+                                  }
+                                  hideOnClick={false}
+                                  arrow={false}
+                                >
+                                  <div>
+                                    <RemoveButton
+                                      icon="delete"
+                                      iconSize="16px"
+                                      buttonStyle="text"
+                                      padding="0px"
+                                      onClick={removeLayer(mapLayer.id)}
+                                    />
+                                  </div>
+                                </Tippy>
+                              </Buttons>
+                            </ListItem>
+                          </SortableRow>
+                        );
+                      }
+                    )}
+                  </>
+                )}
+              </StyledSortableList>
+            )}
+
+          {!editedMapLayer && <ImportButton onChange={handleGeoJsonImport} />}
+
+          {editedMapLayer && (
+            <StyledLayerConfig
+              projectId={projectId}
+              mapLayer={editedMapLayer}
+              onClose={closeLayerConfig}
+            />
+          )}
+        </ListWrapper>
+
+        {!editedMapLayer && (
+          <>
+            <SubSectionTitle>
+              <FormattedMessage {...messages.mapCenterAndZoom} />
+            </SubSectionTitle>
+            <StyledMapCenterConfig projectId={projectId} />
+            <StyledMapZoomConfig projectId={projectId} />
+          </>
+        )}
+      </Container>
+    );
+  }
+);
+
+export default injectIntl(LayerList);

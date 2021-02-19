@@ -77,4 +77,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.MapTab.mapCenterAndZoom',
     defaultMessage: 'Map center & zoom',
   },
+  deleteConfirmation: {
+    id: 'app.components.admin.PostManager.deleteConfirmation',
+    defaultMessage: 'Are you sure you want to delete this layer?',
+  },
 });
