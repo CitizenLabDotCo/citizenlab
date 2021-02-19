@@ -299,7 +299,7 @@ class PasswordSignin extends PureComponent<
                 onClick={this.handleOnSubmit}
                 processing={processing}
                 text={formatMessage(messages.submit)}
-                className="e2e-submit-signin"
+                id="e2e-signin-password-submit-button"
               />
             </ButtonWrapper>
             <Error marginTop="10px" text={signInError} />
@@ -317,7 +317,11 @@ class PasswordSignin extends PureComponent<
           </Option>
           <Option>
             {enabledProviders.length > 1 ? (
-              <button onClick={this.handleGoToLogInOptions} className="link">
+              <button
+                id="e2e-login-options"
+                onClick={this.handleGoToLogInOptions}
+                className="link"
+              >
                 <FormattedMessage {...messages.backToLoginOptions} />
               </button>
             ) : (
@@ -326,8 +330,8 @@ class PasswordSignin extends PureComponent<
                 values={{
                   goToOtherFlowLink: (
                     <button
+                      id="e2e-goto-signup"
                       onClick={this.handleGoToSignUp}
-                      className="link e2e-sign-up-link"
                     >
                       {formatMessage(messages.signUp)}
                     </button>
