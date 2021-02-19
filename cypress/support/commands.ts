@@ -93,7 +93,7 @@ export function login(email: string, password: string) {
   cy.get('#e2e-sign-in-container');
   cy.get('#email').type(email);
   cy.get('#password').type(password);
-  cy.get('.e2e-submit-signin').click();
+  cy.get('#e2e-signin-password-submit-button').click();
   cy.get('#e2e-sign-up-in-modal').should('not.exist');
   cy.get('#e2e-user-menu-container');
   cy.wait(500);
