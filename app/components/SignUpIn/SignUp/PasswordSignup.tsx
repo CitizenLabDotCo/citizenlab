@@ -626,7 +626,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
             <FormElement>
               <ButtonWrapper>
                 <Button
-                  id="e2e-signup-password-button"
+                  id="e2e-signup-password-submit-button"
                   processing={processing}
                   text={formatMessage(
                     hasNextStep ? messages.nextStep : messages.signUp2
