@@ -128,7 +128,7 @@ describe('Idea cards without filter sidebar pagination', () => {
     cy.get('#e2e-ideas-list')
       .find('.e2e-idea-card')
       .its('length')
-      .should('be.gte', 12);
+      .should('be.gte', 24);
   });
 
   after(() => {
