@@ -36,9 +36,7 @@ const InputWrapper = styled.div`
   align-items: flex-end;
 `;
 
-const StyledInput = styled(Input)`
-  width: 180px;
-`;
+const StyledInput = styled(Input)``;
 
 const SaveButton = styled(Button)`
   margin-left: 8px;
