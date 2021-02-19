@@ -473,6 +473,7 @@
   "app.components.admin.PostManager.delete": "Delete",
   "app.components.admin.PostManager.deleteAllSelectedInitiatives": "{tenantName, select, stirlingcouncil {Delete {count} selected petitions} other {Delete {count} selected proposals}}",
   "app.components.admin.PostManager.deleteAllSelectedInputs": "Delete {count} inputs",
+  "app.components.admin.PostManager.deleteConfirmation": "",
   "app.components.admin.PostManager.deleteInitiativeConfirmation": "{tenantName, select, stirlingcouncil {Are you sure you want to delete this petition?} other {Are you sure you want to delete this proposal?}}",
   "app.components.admin.PostManager.deleteInitiativesConfirmation": "Are you sure you want to delete {count} proposals?",
   "app.components.admin.PostManager.deleteInputConfirmation": "Are you sure you want to delete this input?",

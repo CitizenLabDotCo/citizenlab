@@ -473,6 +473,7 @@
   "app.components.admin.PostManager.delete": "",
   "app.components.admin.PostManager.deleteAllSelectedInitiatives": "",
   "app.components.admin.PostManager.deleteAllSelectedInputs": "",
+  "app.components.admin.PostManager.deleteConfirmation": "",
   "app.components.admin.PostManager.deleteInitiativeConfirmation": "",
   "app.components.admin.PostManager.deleteInitiativesConfirmation": "",
   "app.components.admin.PostManager.deleteInputConfirmation": "",
