@@ -36,6 +36,7 @@ import {
   CellConfiguration,
   CellComponentProps,
   InsertConfigurationOptions,
+  Override,
 } from 'typings';
 import { insertConfiguration } from 'utils/moduleUtils';
 import Outlet from 'components/Outlet';
@@ -81,9 +82,12 @@ class IdeaRow extends React.PureComponent<
             selection,
             idea,
             onChange,
-          }: CellComponentProps & {
-            onChange: (event: ChangeEvent<HTMLInputElement>) => void;
-          }) => {
+          }: Override<
+            CellComponentProps,
+            {
+              onChange: (event: ChangeEvent<HTMLInputElement>) => void;
+            }
+          >) => {
             return (
               <Checkbox
                 checked={!!selection.has(idea.id)}
