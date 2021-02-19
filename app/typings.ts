@@ -203,3 +203,5 @@ export type FormikSubmitHandler<V> = (
   values: V,
   actions: FormikActions<V>
 ) => void;
+
+export type Override<T, U> = Pick<T, Exclude<keyof T, keyof U>> & U;

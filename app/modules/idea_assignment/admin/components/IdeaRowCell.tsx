@@ -7,6 +7,7 @@ import {
   InsertConfigurationOptions,
   CellConfiguration,
   CellComponentProps,
+  Override,
 } from 'typings';
 import { trackEventByName } from 'utils/analytics';
 import tracks from 'components/admin/PostManager/tracks';
@@ -42,9 +43,12 @@ const IdeaRowCell: FC<Props> = ({ onData }) => {
           Component: ({
             idea,
             onChange,
-          }: CellComponentProps & {
-            onChange: (idea: IIdeaData) => (assigneeId?: string) => void;
-          }) => {
+          }: Override<
+            CellComponentProps,
+            {
+              onChange: (idea: IIdeaData) => (assigneeId?: string) => void;
+            }
+          >) => {
             return (
               <AssigneeSelect
                 onAssigneeChange={onChange(idea)}
