@@ -11,7 +11,7 @@ class LogActivityJob < ApplicationJob
     @acted_at = Time.zone.at(acted_at)
     @options  = options
 
-    do_perform
+    do_run
   end
 
   private
