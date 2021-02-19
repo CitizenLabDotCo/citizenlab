@@ -1,5 +1,6 @@
 import React, { memo, useState, useEffect } from 'react';
 import { isEmpty, isNumber, inRange } from 'lodash-es';
+import { isNilOrError } from 'utils/helperUtils';
 
 // services
 import { updateProjectMapConfig } from 'services/mapConfigs';
@@ -12,7 +13,6 @@ import useMapConfig from 'hooks/useMapConfig';
 import { Input } from 'cl2-component-library';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
-import { SubSectionTitle } from 'components/admin/Section';
 
 // utils
 import { getZoomLevel } from 'utils/map';
@@ -37,7 +37,7 @@ const InputWrapper = styled.div`
 `;
 
 const StyledInput = styled(Input)`
-  width: 100px;
+  width: 180px;
 `;
 
 const SaveButton = styled(Button)`
@@ -62,17 +62,19 @@ const MapZoomConfig = memo<Props & InjectedIntlProps>(
     const [processing, setProcessing] = useState(false);
     const [errors, setErrors] = useState<{ [key: string]: any }>({});
     const [formValues, setFormValues] = useState<IFormValues>({
-      zoom: getZoomLevel(undefined, appConfig, mapConfig),
+      zoom: null,
     });
 
     useEffect(() => {
-      formChange(
-        {
-          zoom: getZoomLevel(undefined, appConfig, mapConfig),
-        },
-        false
-      );
-    }, [appConfig, mapConfig]);
+      if (!isNilOrError(appConfig) && mapConfig && formValues.zoom === null) {
+        formChange(
+          {
+            zoom: getZoomLevel(undefined, appConfig, mapConfig),
+          },
+          false
+        );
+      }
+    }, [appConfig, mapConfig, formValues]);
 
     const validate = () => {
       const newZoomLevel = parseInt(formValues.zoom as any, 10);
@@ -132,9 +134,6 @@ const MapZoomConfig = memo<Props & InjectedIntlProps>(
 
     return (
       <Container className={className || ''}>
-        <SubSectionTitle>
-          <FormattedMessage {...messages.zoomLabel} />
-        </SubSectionTitle>
         <InputWrapper>
           <StyledInput
             type="number"
@@ -142,6 +141,7 @@ const MapZoomConfig = memo<Props & InjectedIntlProps>(
             min="1"
             max="17"
             onChange={handleOnChange}
+            label={formatMessage(messages.zoomLabel)}
           />
           <SaveButton
             buttonStyle="admin-dark"

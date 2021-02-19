@@ -46,7 +46,8 @@ const MapWrapper = styled.div`
 
 const StyledMap = styled(Map)`
   flex: 1;
-  height: 800px;
+  height: calc(100vh - 250px);
+  max-height: 800px;
 `;
 
 const Footer = styled.div`

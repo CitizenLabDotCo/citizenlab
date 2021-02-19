@@ -13,10 +13,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.MapTab.laterTooltip',
     defaultMessage: 'Layer tooltip text (optional)',
   },
-  layerPopup: {
-    id: 'app.containers.AdminPage.ProjectEdit.MapTab.laterTooltip',
-    defaultMessage: 'Layer popup text (optional)',
-  },
   save: {
     id: 'app.containers.AdminPage.ProjectEdit.MapTab.save',
     defaultMessage: 'Save',
@@ -76,5 +72,9 @@ export default defineMessages({
   currentZoomLevel: {
     id: 'app.containers.AdminPage.ProjectEdit.MapTab.currentZoomLevel',
     defaultMessage: 'Current zoom level',
+  },
+  mapCenterAndZoom: {
+    id: 'app.containers.AdminPage.ProjectEdit.MapTab.mapCenterAndZoom',
+    defaultMessage: 'Map center & zoom',
   },
 });
