@@ -30,7 +30,6 @@ const IdeaRowCell: FC<Props> = ({ onData }) => {
           },
           onChange: (idea: IIdeaData) => (assigneeId: string | undefined) => {
             const ideaId = idea.id;
-            console.log({ ideaId, assigneeId });
 
             updateIdea(ideaId, { assignee_id: assigneeId || null });
 
