@@ -27,7 +27,7 @@ import {
 } from 'services/mapLayers';
 
 // utils
-import { getLayerColor, getLayerType, getLayerIcon } from 'utils/map';
+import { getLayerColor, getLayerIcon } from 'utils/map';
 import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
