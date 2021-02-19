@@ -10,7 +10,6 @@
   "app.components.AdminPage.SettingsPage.contrastRatioTooLow": "Attention : la couleur que vous avez sélectionné n’est pas assez contrastée. Cela peut entraîner des problèmes de lecture. Choisissez une couleur plus foncée pour optimiser la lisibilité.",
   "app.components.AdminPage.SettingsPage.customSectionInfo": "Le contenu de ce champ s’affichera au bas de la page d’accueil de la plate-forme, visible par tous les utilisateurs.",
   "app.components.AdminPage.SettingsPage.customSectionLabel": "Contenu",
-  "app.components.AdminPage.SettingsPage.dummyCrowdinTestText": "Il s'agit d'un texte factice destiné à tester les traductions des branches de Crowdin. Ne perdez pas de temps à le traduire !",
   "app.components.AdminPage.SettingsPage.homePageCustomSection": "Section personnalisée de la page d’accueil ",
   "app.components.AssignBudgetControl.a11y_price": "Prix :",
   "app.components.AssignBudgetControl.assign": "Ajouter à mes dépenses",
