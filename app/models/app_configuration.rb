@@ -152,3 +152,5 @@ class AppConfiguration < ApplicationRecord
   end
 
 end
+
+AppConfiguration.include_if_ee('CustomStyle::StyleSettings')
