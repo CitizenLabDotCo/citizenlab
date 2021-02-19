@@ -329,7 +329,10 @@ class PasswordSignin extends PureComponent<
                 {...messages.goToSignUp}
                 values={{
                   goToOtherFlowLink: (
-                    <button onClick={this.handleGoToSignUp}>
+                    <button
+                      id="e2e-goto-signup"
+                      onClick={this.handleGoToSignUp}
+                    >
                       {formatMessage(messages.signUp)}
                     </button>
                   ),
