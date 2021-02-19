@@ -5,6 +5,7 @@ describe('Sign in page', () => {
     cy.goToLandingPage();
     cy.get('#e2e-navbar-login-menu-item').click();
     cy.get('#e2e-sign-in-container');
+    cy.get('#e2e-login-with-email').click();
   });
 
   it('has a working email field', () => {
@@ -16,19 +17,25 @@ describe('Sign in page', () => {
   });
 
   it('shows an error when no email is provided', () => {
-    cy.get('.e2e-submit-signin').click();
+    cy.get('#e2e-signin-password-submit-button').click();
     cy.get('.e2e-error-message').should('contain', 'This cannot be empty');
   });
 
   it('shows an error when no valid email is provided', () => {
     cy.get('#email').type('test');
-    cy.get('.e2e-submit-signin').click();
-    cy.get('.e2e-error-message').should('contain', 'This cannot be empty');
+    cy.get('#e2e-signin-password-submit-button').click();
+    cy.get('.e2e-error-message').should(
+      'contain',
+      "This doesn't look like a valid email"
+    );
   });
 
   it('shows an error when no password is provided', () => {
-    cy.get('.e2e-submit-signin').click();
-    cy.get('.e2e-error-message').should('contain', 'This cannot be empty');
+    cy.get('#e2e-signin-password-submit-button').click();
+    cy.get('.e2e-error-message').should(
+      'contain',
+      'The password field cannot be empty'
+    );
   });
 
   it('has a working link to the password recovery page', () => {
@@ -37,7 +44,8 @@ describe('Sign in page', () => {
   });
 
   it('has a working link to the sign up flow', () => {
-    cy.get('.e2e-sign-up-link').click();
+    cy.get('#e2e-login-options').click();
+    cy.get('#e2e-goto-signup').click();
     cy.get('#e2e-sign-up-container');
   });
 
@@ -47,7 +55,7 @@ describe('Sign in page', () => {
 
     cy.get('#email').type(email);
     cy.get('#password').type(password);
-    cy.get('.e2e-submit-signin').click();
+    cy.get('#e2e-signin-password-submit-button').click();
     cy.get('#e2e-user-menu-container');
   });
 
@@ -57,7 +65,7 @@ describe('Sign in page', () => {
 
     cy.get('#email').type(email);
     cy.get('#password').type(password);
-    cy.get('.e2e-submit-signin').click();
+    cy.get('#e2e-signin-password-submit-button').click();
     cy.get('.e2e-error-message').should(
       'contain',
       'The provided information is not correct'
