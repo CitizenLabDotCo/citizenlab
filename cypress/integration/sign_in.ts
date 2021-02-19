@@ -5,7 +5,7 @@ describe('Sign in page', () => {
     cy.goToLandingPage();
     cy.get('#e2e-navbar-login-menu-item').click();
     cy.get('#e2e-sign-in-container');
-    cy.get('#e2e-login-with-email').click();
+    // cy.get('#e2e-login-with-email').click();
   });
 
   it('has a working email field', () => {
@@ -44,7 +44,6 @@ describe('Sign in page', () => {
   });
 
   it('has a working link to the sign up flow', () => {
-    cy.get('#e2e-login-options').click();
     cy.get('#e2e-goto-signup').click();
     cy.get('#e2e-sign-up-container');
   });
