@@ -213,6 +213,7 @@ const LayerConfig = memo<Props & InjectedIntlProps & InjectedLocalized>(
               valueMultiloc={formValues.title_multiloc}
               onChange={handleTitleOnChange}
               label={formatMessage(messages.layerName)}
+              labelTooltipText={formatMessage(messages.layerNameTooltip)}
             />
           </SectionField>
 
@@ -222,7 +223,7 @@ const LayerConfig = memo<Props & InjectedIntlProps & InjectedLocalized>(
               valueMultiloc={formValues.tooltipContent}
               onChange={handleTooltipContentOnChange}
               label={formatMessage(messages.layerTooltip)}
-              labelTooltipText={formatMessage(messages.layerTooltip)}
+              labelTooltipText={formatMessage(messages.layerTooltipTooltip)}
             />
           </SectionField>
 

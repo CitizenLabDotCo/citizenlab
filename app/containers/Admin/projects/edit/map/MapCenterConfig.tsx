@@ -156,8 +156,8 @@ const MapCenterConfig = memo<Props & InjectedIntlProps>(
             type="text"
             value={formValues.center}
             onChange={handleOnChange}
-            placeholder="lat, lng (e.g. 50.87959, 4.70093)"
             label={formatMessage(messages.centerLabel)}
+            labelTooltipText={formatMessage(messages.centerLabelTooltip)}
           />
           <SaveButton
             buttonStyle="admin-dark"
