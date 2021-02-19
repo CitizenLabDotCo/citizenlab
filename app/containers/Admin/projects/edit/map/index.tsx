@@ -116,7 +116,6 @@ const MapPage = memo<Props & WithRouterProps>(
       const subscriptions = [
         mapCenter$.subscribe((center) => {
           if (center) {
-            console.log(center);
             setCurrentCenter(`${center[0]}, ${center[1]}`);
           }
         }),
