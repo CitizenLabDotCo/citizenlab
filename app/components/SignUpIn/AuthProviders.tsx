@@ -206,7 +206,13 @@ const AuthProviders = memo<Props & InjectedIntlProps>(
                 : messages.goToSignUp)}
               values={{
                 goToOtherFlowLink: (
-                  <button onClick={handleGoToOtherFlow} className="link">
+                  <button
+                    id={
+                      flow === 'signup' ? 'e2e-goto-signin' : 'e2e-goto-signup'
+                    }
+                    onClick={handleGoToOtherFlow}
+                    className="link"
+                  >
                     {formatMessage(
                       flow === 'signup' ? messages.logIn2 : messages.signUp2
                     )}
