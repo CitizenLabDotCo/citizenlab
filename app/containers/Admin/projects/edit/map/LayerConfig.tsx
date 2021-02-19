@@ -231,7 +231,22 @@ const LayerConfig = memo<Props & InjectedIntlProps & InjectedLocalized>(
             <SectionField>
               <Select
                 onChange={handleMarkerSymbolOnChange}
-                label={formatMessage(messages.iconName)}
+                label={formatMessage(messages.layerIconName)}
+                labelTooltipText={
+                  <FormattedMessage
+                    {...messages.layerIconNameTooltip}
+                    values={{
+                      url: (
+                        <a
+                          href="https://github.com/olistik/maki-icons-list"
+                          target="_blank"
+                        >
+                          {formatMessage(messages.here)}
+                        </a>
+                      ),
+                    }}
+                  />
+                }
                 value={formValues.markerSymbol}
                 options={[
                   {
