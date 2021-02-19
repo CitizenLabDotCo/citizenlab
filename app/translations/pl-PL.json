@@ -473,6 +473,7 @@
   "app.components.admin.PostManager.delete": "Usuń",
   "app.components.admin.PostManager.deleteAllSelectedInitiatives": "Usuń wybrane propozycje {count}",
   "app.components.admin.PostManager.deleteAllSelectedInputs": "Usuń {count} inicjatywy",
+  "app.components.admin.PostManager.deleteConfirmation": "",
   "app.components.admin.PostManager.deleteInitiativeConfirmation": "Czy na pewno usunąć tą propozycję?",
   "app.components.admin.PostManager.deleteInitiativesConfirmation": "Czy na pewno chcesz usunąć propozycje w liczbie: {count}?",
   "app.components.admin.PostManager.deleteInputConfirmation": "Czy na pewno chcesz usunąć ten wkład?",
