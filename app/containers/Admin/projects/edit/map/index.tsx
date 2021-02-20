@@ -3,7 +3,7 @@ import { withRouter, WithRouterProps } from 'react-router';
 
 // components
 import Map from 'components/Map';
-import LayerList from './LayerList';
+import MapConfigOverview from './MapConfigOverview';
 
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
@@ -31,7 +31,7 @@ const Container = styled.div`
   display: flex;
 `;
 
-const StyledLayerList = styled(LayerList)`
+const StyledMapConfigOverview = styled(MapConfigOverview)`
   flex: 0 0 400px;
   width: 400px;
 `;
@@ -134,7 +134,7 @@ const MapPage = memo<Props & WithRouterProps>(
     if (projectId) {
       return (
         <Container className={className || ''}>
-          <StyledLayerList projectId={projectId} />
+          <StyledMapConfigOverview projectId={projectId} />
           <MapWrapper>
             <StyledMap projectId={projectId} hideLegend={true} />
             <Footer>

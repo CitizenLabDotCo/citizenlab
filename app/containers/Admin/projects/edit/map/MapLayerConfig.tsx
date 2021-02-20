@@ -4,8 +4,15 @@ import { isEmpty, cloneDeep } from 'lodash-es';
 // services
 import { updateProjectMapLayer } from 'services/mapLayers';
 
+// hooks
+import useMapConfig from 'hooks/useMapConfig';
+
 // components
-import { Section, SectionField } from 'components/admin/Section';
+import {
+  Section,
+  SectionField,
+  SubSectionTitle,
+} from 'components/admin/Section';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
@@ -25,21 +32,23 @@ import styled from 'styled-components';
 
 // typing
 import { Multiloc, IOption } from 'typings';
-import { IMapLayerAttributes } from 'services/mapLayers';
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  background: #fff;
 `;
 
 const StyledSection = styled(Section)`
   margin-bottom: 10px;
+  padding-top: 25px;
+  border-top: solid 1px #ccc;
 `;
 
 const Footer = styled.div`
   display: flex;
   align-items: center;
+  padding-bottom: 25px;
+  border-bottom: solid 1px #ccc;
 `;
 
 const FooterLeft = styled.div`
@@ -59,7 +68,7 @@ const CancelButton = styled(Button)`
 
 interface Props {
   projectId: string;
-  mapLayer: IMapLayerAttributes;
+  mapLayerId: string;
   className?: string;
   onClose: () => void;
 }
@@ -78,8 +87,13 @@ const makiIconOptions: IOption[] = makiIconNames.map((makiIconName) => {
   };
 });
 
-const LayerConfig = memo<Props & InjectedIntlProps & InjectedLocalized>(
-  ({ projectId, mapLayer, className, onClose, intl: { formatMessage } }) => {
+const MapLayerConfig = memo<Props & InjectedIntlProps & InjectedLocalized>(
+  ({ projectId, mapLayerId, className, onClose, intl: { formatMessage } }) => {
+    const mapConfig = useMapConfig({ projectId });
+
+    const mapLayer =
+      mapConfig?.attributes?.layers?.find((layer) => layer.id === mapLayerId) ||
+      undefined;
     const type = getLayerType(mapLayer);
 
     const [touched, setTouched] = useState(false);
@@ -164,7 +178,7 @@ const LayerConfig = memo<Props & InjectedIntlProps & InjectedLocalized>(
     const handleOnSubmit = async () => {
       const { title_multiloc } = formValues;
 
-      if (!processing && validate() && title_multiloc) {
+      if (!processing && validate() && title_multiloc && mapLayer) {
         formProcessing();
 
         const geojson = cloneDeep(
@@ -206,6 +220,10 @@ const LayerConfig = memo<Props & InjectedIntlProps & InjectedLocalized>(
 
     return (
       <Container className={className || ''}>
+        <SubSectionTitle>
+          <FormattedMessage {...messages.editLayer} />
+        </SubSectionTitle>
+
         <StyledSection>
           <SectionField>
             <InputMultilocWithLocaleSwitcher
@@ -305,4 +323,4 @@ const LayerConfig = memo<Props & InjectedIntlProps & InjectedLocalized>(
   }
 );
 
-export default injectIntl(injectLocalize(LayerConfig));
+export default injectIntl(injectLocalize(MapLayerConfig));
