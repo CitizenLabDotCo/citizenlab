@@ -350,6 +350,11 @@ if ['public','example_org'].include? Apartment::Tenant.current
             secret: 'fake_secret'
           },
           {
+            name: 'clave_unica',
+            client_id: 'fake_identifier',
+            client_secret: 'fake_secret'
+          },
+          {
             name: 'bogus'
           },
           {
