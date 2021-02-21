@@ -124,6 +124,14 @@ PATH
       verification
 
 PATH
+  remote: engines/id_clave_unica
+  specs:
+    id_clave_unica (0.1.0)
+      omniauth_openid_connect (~> 0.3.3)
+      rails (~> 6.0.0)
+      verification
+
+PATH
   remote: engines/machine_translations
   specs:
     machine_translations (0.1.0)
@@ -860,6 +868,7 @@ DEPENDENCIES
   groupdate
   ice_cube!
   id_bosa_fas!
+  id_clave_unica!
   intercom (~> 4.1)
   kaminari (~> 1.2)
   knock!
