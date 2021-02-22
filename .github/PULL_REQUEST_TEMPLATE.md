@@ -1,7 +1,7 @@
-✅ [Jira ticket](URL here)
-💾 [Related PR](URL here)
-📄 [Specs](URL here)
-🚀 [Epic Deployment](URL here)
+- [Jira ticket](URL here)
+- [Related PR](URL here)
+- [Specs](URL here)
+- [Epic Deployment](URL here)
 
 # What changes are in this PR?
 
