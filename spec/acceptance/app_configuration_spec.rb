@@ -65,7 +65,7 @@ resource 'AppConfigurations' do
       if CitizenLab.ee?
         # Style parameters
         parameter :style, <<~DESC, extra: ''
-          The changes to the style object. This will me merged with the existing
+          The changes to the style object. This will be merged with the existing
           style. Arrays will not be merged, but override their values.
         DESC
 
