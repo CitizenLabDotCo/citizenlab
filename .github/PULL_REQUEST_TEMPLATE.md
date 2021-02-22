@@ -5,8 +5,8 @@
 
 # What changes are in this PR?
 
-[] Reviewed and added comments to your code?
-[] E2E tests are updated? (E2E template cl2-back: `docker-compose run --rm web bundle exec rake cl2_back:create_tenant[localhost,e2etests_template]`)
+- [ ] Reviewed and added comments to your code?
+- [ ] E2E tests are updated? (E2E template cl2-back: `docker-compose run --rm web bundle exec rake cl2_back:create_tenant[localhost,e2etests_template]`)
 
 # More info:
 ## Before asking for this PR to be reviewed:
