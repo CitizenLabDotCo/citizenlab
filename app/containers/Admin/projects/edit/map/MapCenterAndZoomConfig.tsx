@@ -19,6 +19,9 @@ import { SubSectionTitle } from 'components/admin/Section';
 // utils
 import { getCenter, getZoomLevel } from 'utils/map';
 
+// events
+import { mapCenter$, mapZoom$, setMapLatLngZoom } from 'components/Map/events';
+
 // i18n
 // import T from 'components/T';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
@@ -38,7 +41,7 @@ const SubSectionTitleWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 35px;
+  margin-bottom: 20px;
 `;
 
 const StyledSubSectionTitle = styled(SubSectionTitle)`
@@ -47,24 +50,39 @@ const StyledSubSectionTitle = styled(SubSectionTitle)`
 `;
 
 const Buttons = styled.div`
+  flex: 1;
   display: flex;
   align-items: center;
-  display: none;
+  justify-content: flex-end;
 `;
-
-const GetCenterAndZoomFromMapButton = styled(Button)``;
-
-const SetCenterAndZoomOnMapButton = styled(Button)``;
 
 const Spacer = styled.div`
   width: 10px;
 `;
 
-const CenterLatInput = styled(Input)``;
+const DefaultsToMapButton = styled(Button)`
+  & svg {
+    transform: rotate(180deg);
+  }
+`;
 
-const CenterLngInput = styled(Input)``;
+const MapToDefaultsButton = styled(Button)``;
 
-const ZoomInput = styled(Input)``;
+const CenterLatInput = styled(Input)`
+  margin-bottom: 30px;
+`;
+
+const CenterLngInput = styled(Input)`
+  margin-bottom: 30px;
+`;
+
+const ZoomInput = styled(Input)`
+  margin-bottom: 30px;
+`;
+
+const ButtonWrapper = styled.div`
+  display: flex;
+`;
 
 const SaveButton = styled(Button)``;
 
@@ -74,9 +92,9 @@ interface Props {
 }
 
 interface IFormValues {
-  centerLat: string | null;
-  centerLng: string | null;
-  zoom: number | null;
+  defaultLat: string | null;
+  defaultLng: string | null;
+  defaultZoom: number | null;
 }
 
 const MapCenterAndZoomConfig = memo<Props & InjectedIntlProps>(
@@ -84,33 +102,55 @@ const MapCenterAndZoomConfig = memo<Props & InjectedIntlProps>(
     const appConfig = useAppConfiguration();
     const mapConfig = useMapConfig({ projectId });
 
-    const centerCoordinates = getCenter(undefined, appConfig, mapConfig);
-    const centerLat = centerCoordinates[0];
-    const centerLng = centerCoordinates[1];
-    const zoom = getZoomLevel(undefined, appConfig, mapConfig);
+    const defaultLatLng = getCenter(undefined, appConfig, mapConfig);
+    const defaultLat = defaultLatLng[0];
+    const defaultLng = defaultLatLng[1];
+    const defaultZoom = getZoomLevel(undefined, appConfig, mapConfig);
 
     const [isInitialised, setIsInitialised] = useState(false);
+    const [currentLat, setCurrentLat] = useState<string | null>(null);
+    const [currentLng, setCurrentLng] = useState<string | null>(null);
+    const [currentZoom, setCurrentZoom] = useState<number | null>(null);
     const [touched, setTouched] = useState(false);
     const [processing, setProcessing] = useState(false);
     const [errors, setErrors] = useState<{ [key: string]: any }>({});
     const [formValues, setFormValues] = useState<IFormValues>({
-      centerLat,
-      centerLng,
-      zoom,
+      defaultLat,
+      defaultLng,
+      defaultZoom,
     });
 
     useEffect(() => {
+      const subscriptions = [
+        mapCenter$.subscribe((center) => {
+          if (center) {
+            setCurrentLat(center[0]);
+            setCurrentLng(center[1]);
+          }
+        }),
+        mapZoom$.subscribe((zoom) => {
+          if (zoom !== null) {
+            setCurrentZoom(zoom);
+          }
+        }),
+      ];
+
+      return () =>
+        subscriptions.forEach((subscription) => subscription.unsubscribe());
+    }, []);
+
+    useEffect(() => {
       if (!isNilOrError(appConfig) && mapConfig && !isInitialised) {
-        const centerCoordinates = getCenter(undefined, appConfig, mapConfig);
-        const centerLat = centerCoordinates[0];
-        const centerLng = centerCoordinates[1];
-        const zoom = getZoomLevel(undefined, appConfig, mapConfig);
+        const defaultLatLng = getCenter(undefined, appConfig, mapConfig);
+        const defaultLat = defaultLatLng[0];
+        const defaultLng = defaultLatLng[1];
+        const defaultZoom = getZoomLevel(undefined, appConfig, mapConfig);
 
         formChange(
           {
-            centerLat,
-            centerLng,
-            zoom,
+            defaultLat,
+            defaultLng,
+            defaultZoom,
           },
           false
         );
@@ -119,14 +159,14 @@ const MapCenterAndZoomConfig = memo<Props & InjectedIntlProps>(
     }, [appConfig, mapConfig, isInitialised]);
 
     const validate = () => {
-      const centerLat = parseFloat(formValues.centerLat as any);
-      const centerLng = parseFloat(formValues.centerLng as any);
-      const zoom = parseInt(formValues.zoom as any, 10);
+      const defaultLat = parseFloat(formValues.defaultLat as any);
+      const defaultLng = parseFloat(formValues.defaultLng as any);
+      const defaultZoom = parseInt(formValues.defaultZoom as any, 10);
 
       if (
-        inRange(centerLng, -180, 180) &&
-        inRange(centerLat, -90, 90) &&
-        inRange(zoom, 0, 18)
+        inRange(defaultLng, -180, 180) &&
+        inRange(defaultLat, -90, 90) &&
+        inRange(defaultZoom, 0, 18)
       ) {
         return true;
       }
@@ -162,15 +202,15 @@ const MapCenterAndZoomConfig = memo<Props & InjectedIntlProps>(
     };
 
     const handleCenterLatOnChange = (centerLat: string) => {
-      formChange({ centerLat });
+      formChange({ defaultLat: centerLat });
     };
 
     const handleCenterLngOnChange = (centerLng: string) => {
-      formChange({ centerLng });
+      formChange({ defaultLng: centerLng });
     };
 
     const handleZoomOnChange = (zoom: string) => {
-      formChange({ zoom: parseInt(zoom, 10) });
+      formChange({ defaultZoom: parseInt(zoom, 10) });
     };
 
     const handleOnSave = async (event: React.FormEvent) => {
@@ -178,16 +218,16 @@ const MapCenterAndZoomConfig = memo<Props & InjectedIntlProps>(
       if (mapConfig && validate()) {
         try {
           formProcessing();
-          const centerLat = parseFloat(formValues.centerLat as any);
-          const centerLng = parseFloat(formValues.centerLng as any);
-          const zoom = formValues.zoom?.toString();
+          const defaultLat = parseFloat(formValues.defaultLat as any);
+          const defaultLng = parseFloat(formValues.defaultLng as any);
+          const defaultZoom = formValues.defaultZoom?.toString();
 
           await updateProjectMapConfig(projectId, mapConfig.id, {
             center_geojson: {
               type: 'Point',
-              coordinates: [centerLng, centerLat],
+              coordinates: [defaultLng, defaultLat],
             },
-            zoom_level: zoom,
+            zoom_level: defaultZoom,
           });
           formSuccess();
         } catch (error) {
@@ -196,50 +236,58 @@ const MapCenterAndZoomConfig = memo<Props & InjectedIntlProps>(
       }
     };
 
-    const getCenterAndZoomFromMap = () => {
-      // empty
+    const handleDefaultsToMap = () => {
+      if (defaultLat && defaultLng && defaultZoom) {
+        setMapLatLngZoom({
+          lat: parseFloat(defaultLat),
+          lng: parseFloat(defaultLng),
+          zoom: defaultZoom,
+        });
+      }
     };
 
-    const setCenterAndZoomOnMap = () => {
-      // empty
+    const handleMapToDefaults = () => {
+      formChange({
+        defaultLat: currentLat,
+        defaultLng: currentLng,
+        defaultZoom: currentZoom,
+      });
     };
 
     return (
       <Container className={className || ''}>
         <SubSectionTitleWrapper>
           <StyledSubSectionTitle>
-            <FormattedMessage {...messages.mapCenterAndZoom} />
+            <FormattedMessage {...messages.mapDefaultCenterAndZoom} />
           </StyledSubSectionTitle>
 
           <Buttons>
             <Tippy
               placement="bottom"
-              content={'zolg'}
+              content={formatMessage(messages.setMapToDefaults)}
               hideOnClick={false}
               arrow={false}
             >
               <div>
-                <GetCenterAndZoomFromMapButton
-                  icon="saveAlt"
+                <DefaultsToMapButton
+                  icon="goTo"
                   buttonStyle="secondary"
-                  onClick={getCenterAndZoomFromMap}
+                  onClick={handleMapToDefaults}
                 />
               </div>
             </Tippy>
-
             <Spacer />
-
             <Tippy
               placement="bottom"
-              content={'zolg'}
+              content={formatMessage(messages.setMapToDefaults)}
               hideOnClick={false}
               arrow={false}
             >
               <div>
-                <SetCenterAndZoomOnMapButton
+                <MapToDefaultsButton
                   icon="mapCenter"
                   buttonStyle="secondary"
-                  onClick={setCenterAndZoomOnMap}
+                  onClick={handleDefaultsToMap}
                 />
               </div>
             </Tippy>
@@ -248,21 +296,23 @@ const MapCenterAndZoomConfig = memo<Props & InjectedIntlProps>(
 
         <CenterLatInput
           type="text"
-          value={formValues.centerLat}
+          value={formValues.defaultLat}
           onChange={handleCenterLatOnChange}
           label={formatMessage(messages.centerLatLabel)}
+          labelTooltipText={formatMessage(messages.centerLatLabelTooltip)}
         />
 
         <CenterLngInput
           type="text"
-          value={formValues.centerLat}
+          value={formValues.defaultLng}
           onChange={handleCenterLngOnChange}
           label={formatMessage(messages.centerLngLabel)}
+          labelTooltipText={formatMessage(messages.centerLngLabelTooltip)}
         />
 
         <ZoomInput
           type="number"
-          value={formValues.zoom?.toString()}
+          value={formValues.defaultZoom?.toString()}
           min="1"
           max="17"
           onChange={handleZoomOnChange}
@@ -270,22 +320,19 @@ const MapCenterAndZoomConfig = memo<Props & InjectedIntlProps>(
           labelTooltipText={formatMessage(messages.zoomLabelTooltip)}
         />
 
-        <SaveButton
-          buttonStyle="admin-dark"
-          onClick={handleOnSave}
-          processing={processing}
-          disabled={!touched}
-        >
-          <FormattedMessage {...messages.save} />
-        </SaveButton>
+        <ButtonWrapper>
+          <SaveButton
+            buttonStyle="admin-dark"
+            onClick={handleOnSave}
+            processing={processing}
+            disabled={!touched}
+          >
+            <FormattedMessage {...messages.save} />
+          </SaveButton>
+        </ButtonWrapper>
 
-        {isEmpty(errors) && (
-          <Error
-            text={formatMessage(messages.errorMessage)}
-            showBackground={false}
-            showIcon={false}
-            marginTop="20px"
-          />
+        {!isEmpty(errors) && (
+          <Error text={formatMessage(messages.errorMessage)} marginTop="20px" />
         )}
       </Container>
     );
