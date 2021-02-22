@@ -83,14 +83,13 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.MapTab.here',
     defaultMessage: 'here',
   },
-  centerLabel: {
-    id: 'app.containers.AdminPage.ProjectEdit.MapTab.centerLabel',
-    defaultMessage: 'Default center coordinates',
+  centerLngLabel: {
+    id: 'app.containers.AdminPage.ProjectEdit.MapTab.centerLngLabel',
+    defaultMessage: 'Default center latitude',
   },
-  centerLabelTooltip: {
-    id: 'app.containers.AdminPage.ProjectEdit.MapTab.centerLabelTooltip',
-    defaultMessage:
-      'Set the default center of the map using latitude and longitude coordinates',
+  centerLatLabel: {
+    id: 'app.containers.AdminPage.ProjectEdit.MapTab.centerLatLabel',
+    defaultMessage: 'Default center longitude',
   },
   zoomLabel: {
     id: 'app.containers.AdminPage.ProjectEdit.MapTab.zoomLabel',

@@ -4,6 +4,7 @@ import { withRouter, WithRouterProps } from 'react-router';
 // components
 import Map from 'components/Map';
 import MapConfigOverview from './MapConfigOverview';
+import { Spinner } from 'cl2-component-library';
 
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
@@ -16,16 +17,16 @@ import { createProjectMapConfig } from 'services/mapConfigs';
 import { getCenter, getZoomLevel, getTileProvider } from 'utils/map';
 import { isNilOrError } from 'utils/helperUtils';
 
-// i18n
-// import { FormattedMessage } from 'utils/cl-intl';
-// import messages from './messages';
-
-// // events
-// import { mapCenter$, mapZoom$ } from 'components/Map/events';
-
-// // styling
+// styling
 import styled from 'styled-components';
-// import { fontSizes, colors } from 'utils/styleUtils';
+
+const Loading = styled.div`
+  width: 100%;
+  height: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
 
 const Container = styled.div`
   display: flex;
@@ -52,9 +53,6 @@ const MapPage = memo<Props & WithRouterProps>(
     const appConfig = useAppConfiguration();
     const mapConfig = useMapConfig({ projectId });
 
-    // const [currentCenter, setCurrentCenter] = useState<string | null>(null);
-    // const [currentZoom, setCurrentZoom] = useState<number | null>(null);
-
     useEffect(() => {
       // create project mapConfig if it doesn't yet exist
       if (projectId && !isNilOrError(appConfig) && mapConfig === null) {
@@ -79,25 +77,7 @@ const MapPage = memo<Props & WithRouterProps>(
       }
     }, [projectId, appConfig, mapConfig]);
 
-    // useEffect(() => {
-    //   const subscriptions = [
-    //     mapCenter$.subscribe((center) => {
-    //       if (center) {
-    //         setCurrentCenter(`${center[0]}, ${center[1]}`);
-    //       }
-    //     }),
-    //     mapZoom$.subscribe((zoom) => {
-    //       if (zoom !== null) {
-    //         setCurrentZoom(zoom);
-    //       }
-    //     }),
-    //   ];
-
-    //   return () =>
-    //     subscriptions.forEach((subscription) => subscription.unsubscribe());
-    // }, []);
-
-    if (projectId) {
+    if (projectId && mapConfig?.id) {
       return (
         <Container className={className || ''}>
           <StyledMapConfigOverview projectId={projectId} />
@@ -106,7 +86,11 @@ const MapPage = memo<Props & WithRouterProps>(
       );
     }
 
-    return null;
+    return (
+      <Loading>
+        <Spinner />
+      </Loading>
+    );
   }
 );
 

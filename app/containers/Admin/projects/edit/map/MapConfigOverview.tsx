@@ -1,17 +1,10 @@
 import React, { memo, useState } from 'react';
 
 // components
-import Button from 'components/UI/Button';
-import Tippy from '@tippyjs/react';
-import MapLayers from './MapLayers';
+import MapLayersList from './MapLayersList';
 import MapLayerConfig from './MapLayerConfig';
-import MapZoomConfig from './MapZoomConfig';
-import MapCenterConfig from './MapCenterConfig';
-import {
-  SubSectionTitle,
-  SectionTitle,
-  SectionDescription,
-} from 'components/admin/Section';
+import MapCenterAndZoomConfig from './MapCenterAndZoomConfig';
+import { SectionTitle, SectionDescription } from 'components/admin/Section';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -41,42 +34,9 @@ const StyledSectionTitle = styled(SectionTitle)`
   margin: 0;
 `;
 
-const StyledMapLayers = styled(MapLayers)`
-  margin-bottom: 100px;
-`;
+const StyledMapLayersList = styled(MapLayersList)``;
 
-const SubSectionTitleWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 35px;
-`;
-
-const StyledSubSectionTitle = styled(SubSectionTitle)`
-  padding: 0px;
-  margin: 0px;
-`;
-
-const Buttons = styled.div`
-  display: flex;
-  align-items: center;
-  display: none;
-`;
-
-const GetCenterAndZoomFromMapButton = styled(Button)``;
-
-const ApplyCenterAndZoomOnMapButton = styled(Button)``;
-
-const Spacer = styled.div`
-  width: 10px;
-`;
-
-const StyledMapCenterConfig = styled(MapCenterConfig)`
-  margin-top: 10px;
-  margin-bottom: 30px;
-`;
-
-const StyledMapZoomConfig = styled(MapZoomConfig)``;
+const StyledMapCenterAndZoomConfig = styled(MapCenterAndZoomConfig)``;
 
 interface Props {
   projectId: string;
@@ -94,10 +54,6 @@ const MapConfigOverview = memo<Props>(({ projectId, className }) => {
     setEditedMapLayerId(null);
   };
 
-  const setDefaultCenterAndZoom = () => {
-    // empty
-  };
-
   return (
     <Container className={className || ''}>
       <Header>
@@ -113,51 +69,11 @@ const MapConfigOverview = memo<Props>(({ projectId, className }) => {
 
       {!editedMapLayerId ? (
         <>
-          <StyledMapLayers
+          <StyledMapLayersList
             projectId={projectId}
             onEditLayer={openLayerConfig}
           />
-          <SubSectionTitleWrapper>
-            <StyledSubSectionTitle>
-              <FormattedMessage {...messages.mapCenterAndZoom} />
-            </StyledSubSectionTitle>
-
-            <Buttons>
-              <Tippy
-                placement="bottom"
-                content={'zolg'}
-                hideOnClick={false}
-                arrow={false}
-              >
-                <div>
-                  <GetCenterAndZoomFromMapButton
-                    icon="saveAlt"
-                    buttonStyle="secondary"
-                    onClick={setDefaultCenterAndZoom}
-                  />
-                </div>
-              </Tippy>
-
-              <Spacer />
-
-              <Tippy
-                placement="bottom"
-                content={'zolg'}
-                hideOnClick={false}
-                arrow={false}
-              >
-                <div>
-                  <ApplyCenterAndZoomOnMapButton
-                    icon="mapCenter"
-                    buttonStyle="secondary"
-                    onClick={setDefaultCenterAndZoom}
-                  />
-                </div>
-              </Tippy>
-            </Buttons>
-          </SubSectionTitleWrapper>
-          <StyledMapCenterConfig projectId={projectId} />
-          <StyledMapZoomConfig projectId={projectId} />
+          <StyledMapCenterAndZoomConfig projectId={projectId} />
         </>
       ) : (
         <MapLayerConfig
