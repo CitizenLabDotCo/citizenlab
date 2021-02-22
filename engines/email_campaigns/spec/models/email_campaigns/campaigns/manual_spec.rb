@@ -35,4 +35,13 @@ RSpec.describe EmailCampaigns::Campaigns::Manual, type: :model do
     end
   end
 
+  describe "author" do
+    let(:campaign) { create(:manual_campaign, author: create(:admin)) }
+
+    it "leaves campaign in a valid state after destroy" do
+      campaign.author.destroy!
+      expect(campaign.reload).to be_valid
+    end
+  end
+
 end
