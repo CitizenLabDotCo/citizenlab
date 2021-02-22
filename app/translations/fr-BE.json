@@ -2094,7 +2094,7 @@
   "app.containers.Projects.survey": "Enquête",
   "app.containers.Projects.takeThePoll": "Répondre au sondage",
   "app.containers.Projects.takeTheSurvey": "Répondre à l'enquête",
-  "app.containers.Projects.thisProjectIsNotPubliclyVisibleVisitHomePageToDiscover": "",
+  "app.containers.Projects.thisProjectIsNotPubliclyVisibleVisitHomePageToDiscover": "Ce projet n'est pas visible publiquement. Visitez la page d'accueil pour découvrir d'autres opportunités d'engagement.",
   "app.containers.Projects.timeline": "Ligne du temps",
   "app.containers.Projects.totalBudget": "Budget total",
   "app.containers.Projects.upcomingEvents": "Événements à venir",
