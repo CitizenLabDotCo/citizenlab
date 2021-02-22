@@ -1,5 +1,5 @@
 import React, { memo, useState, useEffect } from 'react';
-import { isEmpty, inRange, isEqual } from 'lodash-es';
+import { isEmpty, inRange } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // services
@@ -13,17 +13,13 @@ import useMapConfig from 'hooks/useMapConfig';
 import { Input } from 'cl2-component-library';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
-import Tippy from '@tippyjs/react';
 import { SubSectionTitle } from 'components/admin/Section';
 
 // utils
 import { getCenter, getZoomLevel } from 'utils/map';
 
-// events
-import { mapCenter$, mapZoom$, setMapLatLngZoom } from 'components/Map/events';
-
 // i18n
-// import T from 'components/T';
+
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
@@ -49,25 +45,6 @@ const StyledSubSectionTitle = styled(SubSectionTitle)`
   margin: 0px;
 `;
 
-const Buttons = styled.div`
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-`;
-
-const Spacer = styled.div`
-  width: 10px;
-`;
-
-const DefaultsToMapButton = styled(Button)`
-  & svg {
-    transform: rotate(180deg);
-  }
-`;
-
-const MapToDefaultsButton = styled(Button)``;
-
 const CenterLatInput = styled(Input)`
   margin-bottom: 30px;
 `;
@@ -84,7 +61,9 @@ const ButtonWrapper = styled.div`
   display: flex;
 `;
 
-const SaveButton = styled(Button)``;
+const SaveButton = styled(Button)`
+  margin-right: 10px;
+`;
 
 interface Props {
   projectId: string;
@@ -107,12 +86,7 @@ const MapCenterAndZoomConfig = memo<Props & InjectedIntlProps>(
     const defaultLng = defaultLatLng[1];
     const defaultZoom = getZoomLevel(undefined, appConfig, mapConfig);
 
-    const [isInitialised, setIsInitialised] = useState(false);
-    const [currentLat, setCurrentLat] = useState<string | null>(null);
-    const [currentLng, setCurrentLng] = useState<string | null>(null);
-    const [currentZoom, setCurrentZoom] = useState<number | null>(null);
-    const [isDefaultCurrentEqual, setIsDefaultCurrentEqual] = useState(true);
-    const [isFormCurrentEqual, setIsFormCurrentEqual] = useState(true);
+    const [isInit, setIsInit] = useState(false);
     const [touched, setTouched] = useState(false);
     const [processing, setProcessing] = useState(false);
     const [errors, setErrors] = useState<{ [key: string]: any }>({});
@@ -123,52 +97,7 @@ const MapCenterAndZoomConfig = memo<Props & InjectedIntlProps>(
     });
 
     useEffect(() => {
-      const subscriptions = [
-        mapCenter$.subscribe((center) => {
-          if (center) {
-            setCurrentLat(center[0]);
-            setCurrentLng(center[1]);
-          }
-        }),
-        mapZoom$.subscribe((zoom) => {
-          if (zoom !== null) {
-            setCurrentZoom(zoom);
-          }
-        }),
-      ];
-
-      return () =>
-        subscriptions.forEach((subscription) => subscription.unsubscribe());
-    }, []);
-
-    useEffect(() => {
-      const defaultLatLng = getCenter(undefined, appConfig, mapConfig);
-      const defaultLat = defaultLatLng[0];
-      const defaultLng = defaultLatLng[1];
-      const defaultZoom = getZoomLevel(undefined, appConfig, mapConfig);
-      setIsDefaultCurrentEqual(
-        isEqual(
-          [defaultLat, defaultLng, defaultZoom],
-          [currentLat, currentLng, currentZoom]
-        )
-      );
-    }, [appConfig, mapConfig, currentLat, currentLng, currentZoom]);
-
-    useEffect(() => {
-      setIsFormCurrentEqual(
-        isEqual(
-          [
-            formValues.defaultLat,
-            formValues.defaultLng,
-            formValues.defaultZoom,
-          ],
-          [currentLat, currentLng, currentZoom]
-        )
-      );
-    }, [formValues, currentLat, currentLng, currentZoom]);
-
-    useEffect(() => {
-      if (!isNilOrError(appConfig) && mapConfig && !isInitialised) {
+      if (!isNilOrError(appConfig) && mapConfig && !isInit) {
         const defaultLatLng = getCenter(undefined, appConfig, mapConfig);
         const defaultLat = defaultLatLng[0];
         const defaultLng = defaultLatLng[1];
@@ -182,9 +111,9 @@ const MapCenterAndZoomConfig = memo<Props & InjectedIntlProps>(
           },
           false
         );
-        setIsInitialised(true);
+        setIsInit(true);
       }
-    }, [appConfig, mapConfig, isInitialised]);
+    }, [appConfig, mapConfig, isInit]);
 
     const validate = () => {
       const defaultLat = parseFloat(formValues.defaultLat as any);
@@ -264,64 +193,12 @@ const MapCenterAndZoomConfig = memo<Props & InjectedIntlProps>(
       }
     };
 
-    const handleDefaultsToMap = () => {
-      if (defaultLat && defaultLng && defaultZoom) {
-        setMapLatLngZoom({
-          lat: parseFloat(defaultLat),
-          lng: parseFloat(defaultLng),
-          zoom: defaultZoom,
-        });
-      }
-    };
-
-    const handleMapToDefaults = () => {
-      formChange({
-        defaultLat: currentLat,
-        defaultLng: currentLng,
-        defaultZoom: currentZoom,
-      });
-    };
-
     return (
       <Container className={className || ''}>
         <SubSectionTitleWrapper>
           <StyledSubSectionTitle>
             <FormattedMessage {...messages.mapDefaultCenterAndZoom} />
           </StyledSubSectionTitle>
-
-          <Buttons>
-            <Tippy
-              placement="bottom"
-              content={formatMessage(messages.mapToDefaults)}
-              hideOnClick={false}
-              arrow={false}
-            >
-              <div>
-                <DefaultsToMapButton
-                  icon="goTo"
-                  buttonStyle="secondary"
-                  onClick={handleMapToDefaults}
-                  disabled={isFormCurrentEqual}
-                />
-              </div>
-            </Tippy>
-            <Spacer />
-            <Tippy
-              placement="bottom"
-              content={formatMessage(messages.defaultsToMap)}
-              hideOnClick={false}
-              arrow={false}
-            >
-              <div>
-                <MapToDefaultsButton
-                  icon="mapCenter"
-                  buttonStyle="secondary"
-                  onClick={handleDefaultsToMap}
-                  disabled={isDefaultCurrentEqual}
-                />
-              </div>
-            </Tippy>
-          </Buttons>
         </SubSectionTitleWrapper>
 
         <CenterLatInput

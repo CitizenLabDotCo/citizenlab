@@ -126,13 +126,9 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.importError',
     defaultMessage: `The selected file could not be imported because it's not a valid GeoJSON file`,
   },
-  mapToDefaults: {
-    id: 'app.components.admin.PostManager.mapToDefaults',
-    defaultMessage: `Set the default values to the current map center point & zoom level`,
-  },
-  defaultsToMap: {
-    id: 'app.components.admin.PostManager.defaultsToMap',
-    defaultMessage: `Pan & zoom the map to its default center point & zoom level`,
+  goToDefaultMapView: {
+    id: 'app.components.admin.PostManager.goToDefaultMapView',
+    defaultMessage: `Go to default map center & zoom`,
   },
   currentLat: {
     id: 'app.components.admin.PostManager.currentLat',

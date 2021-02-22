@@ -228,8 +228,8 @@ const Map = memo<Props & InjectedLocalized>(
         subscriptions.forEach((subscription) => subscription.unsubscribe());
         map?.off('moveend');
         map?.off('zoomend');
-        broadcastMapCenter(null);
-        broadcastMapZoom(null);
+        // broadcastMapCenter(null);
+        // broadcastMapZoom(null);
       };
     }, [map]);
 

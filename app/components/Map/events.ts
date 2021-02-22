@@ -1,4 +1,9 @@
-import { distinctUntilChanged, map as RxMap } from 'rxjs/operators';
+import {
+  distinctUntilChanged,
+  map,
+  publishReplay,
+  refCount,
+} from 'rxjs/operators';
 import eventEmitter from 'utils/eventEmitter';
 import L from 'leaflet';
 
@@ -17,8 +22,10 @@ export function broadcastMapCenter(center: L.LatLngExpression | null) {
 export const mapCenter$ = eventEmitter
   .observeEvent<L.LatLngExpression | null>(events.mapCenterChange)
   .pipe(
-    RxMap(({ eventValue }) => eventValue),
-    distinctUntilChanged((x, y) => x === y)
+    map(({ eventValue }) => eventValue),
+    distinctUntilChanged((x, y) => x === y),
+    publishReplay(1),
+    refCount()
   );
 
 // ----------------------------------------------------------------------------------------------
@@ -30,8 +37,10 @@ export function broadcastMapZoom(zoom: number | null) {
 export const mapZoom$ = eventEmitter
   .observeEvent<number | null>(events.mapZoomChange)
   .pipe(
-    RxMap(({ eventValue }) => eventValue),
-    distinctUntilChanged((x, y) => x === y)
+    map(({ eventValue }) => eventValue),
+    distinctUntilChanged((x, y) => x === y),
+    publishReplay(1),
+    refCount()
   );
 
 // ----------------------------------------------------------------------------------------------
@@ -48,6 +57,6 @@ export function setMapLatLngZoom(mapLatLngZoom: IMapLatLngZoom) {
 
 export const setMapLatLngZoom$ = eventEmitter
   .observeEvent<IMapLatLngZoom>(events.setMapLatLngZoom)
-  .pipe(RxMap(({ eventValue }) => eventValue));
+  .pipe(map(({ eventValue }) => eventValue));
 
 // ----------------------------------------------------------------------------------------------
