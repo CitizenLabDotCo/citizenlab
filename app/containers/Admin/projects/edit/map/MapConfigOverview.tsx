@@ -34,7 +34,9 @@ const StyledSectionTitle = styled(SectionTitle)`
   margin: 0;
 `;
 
-const StyledMapLayersList = styled(MapLayersList)``;
+const StyledMapLayersList = styled(MapLayersList)`
+  margin-bottom: 80px;
+`;
 
 const StyledMapCenterAndZoomConfig = styled(MapCenterAndZoomConfig)``;
 

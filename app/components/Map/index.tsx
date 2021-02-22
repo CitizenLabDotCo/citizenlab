@@ -32,7 +32,11 @@ import usePrevious from 'hooks/usePrevious';
 import { getCenter, getZoomLevel, getTileProvider } from 'utils/map';
 
 // events
-import { broadcastMapCenter, broadcastMapZoom } from './events';
+import {
+  broadcastMapCenter,
+  broadcastMapZoom,
+  setMapLatLngZoom$,
+} from './events';
 
 // i18n
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
@@ -212,7 +216,16 @@ const Map = memo<Props & InjectedLocalized>(
     const prevPoints = usePrevious(points);
 
     useEffect(() => {
+      const subscriptions = [
+        setMapLatLngZoom$.subscribe(({ lat, lng, zoom }) => {
+          if (map) {
+            map.setView([lat, lng], zoom);
+          }
+        }),
+      ];
+
       return () => {
+        subscriptions.forEach((subscription) => subscription.unsubscribe());
         map?.off('moveend');
         map?.off('zoomend');
         broadcastMapCenter(null);
