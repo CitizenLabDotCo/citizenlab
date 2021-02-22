@@ -2,7 +2,6 @@
 
 class AppConfiguration < ApplicationRecord
   include Frontend::StyleSettings
-  extend CitizenLab::Mixins::SettingsSpecification
 
   mount_base64_uploader :logo, LogoUploader
   mount_base64_uploader :header_bg, AppHeaderBgUploader
@@ -26,50 +25,58 @@ class AppConfiguration < ApplicationRecord
   after_save :update_tenant, if: :tenant_sync_enabled
   after_initialize :custom_initialization
 
-  module CoreSettings
+  module Settings
     extend CitizenLab::Mixins::SettingsSpecification
 
-    def self.settings_json_schema_str
-      settings_schema_filepath = Rails.root.join('config/schemas/settings.schema.json.erb')
-      @settings_json_schema_str ||= ERB.new(File.read(settings_schema_filepath)).result(binding)
-    end
-  end
-
-  class << self
-
-    private :new # We need a singleton
-
-    def instance
-      first!
-    end
-
-    def settings_json_schema
-      settings_schema = CoreSettings.settings_json_schema
+    def self.json_schema
+      settings_schema = core_settings_json_schema
       schema_properties = settings_schema['properties']
 
-      settings_extensions.each_with_object(schema_properties) do |spec, properties|
-        properties[spec.settings_name] = spec.settings_json_schema
+      extension_features_specs.each_with_object(schema_properties) do |spec, properties|
+        properties[spec.feature_name] = spec.json_schema
       end
 
       settings_schema
     end
 
-    # @return [Array<CitizenLab::Mixins::SettingsSpecification>]
-    def settings_extensions
-      @extensions_settings_specs ? @extensions_settings_specs.values : []
+    def self.core_settings_json_schema
+      return @core_settings_json_schema if @core_settings_json_schema
+
+      schema_filepath = Rails.root.join('config/schemas/settings.schema.json.erb')
+      json_schema_str = ERB.new(File.read(schema_filepath)).result(binding)
+      @core_settings_json_schema = JSON.parse(json_schema_str)
     end
 
-    # @param [CitizenLab::Mixins::SettingsSpecification] settings_specs
-    def extend_settings(settings_specs)
-      @extensions_settings_specs ||= {}
+    def self.extension_features_specs
+      extension_features_hash.values
+    end
 
-      settings_name = settings_specs.settings_name
-      if @extensions_settings_specs.key?(settings_name)
-        Rails.logger.warn("Overwriting settings specification for '#{settings_name}' extension.", caller: caller)
+    # @param [CitizenLab::Mixins::FeatureSpecification] specification
+    def self.add_feature(specification)
+      feature_name = specification.feature_name
+      if extension_features_hash.key?(feature_name)
+        Rails.logger.warn(
+          "Overwriting settings specification for '#{feature_name}' feature.",
+          caller: caller
+        )
       end
 
-      @extensions_settings_specs[settings_name] = settings_specs
+      extension_features_hash[feature_name] = specification
       nil
+    end
+
+    def self.extension_features_hash
+      @extension_features_hash ||= {}
+    end
+    private_class_method :extension_features_hash
+  end
+
+  class << self
+    private :new # We need a singleton
+    delegate :json_schema, :json_schema_str, to: Settings, prefix: :settings
+
+    def instance
+      first!
     end
   end
 
@@ -131,14 +138,14 @@ class AppConfiguration < ApplicationRecord
 
   def base_frontend_uri
     return "http://localhost:3000" if Rails.env.development?
-    
+
     transport = Rails.env.test? ? 'http' : 'https'
     "#{transport}://#{host}"
   end
 
   def base_backend_uri
     return "http://localhost:4000" if Rails.env.development?
-    
+
     transport = Rails.env.test? ? 'http' : 'https'
     "#{transport}://#{host}"
   end
@@ -185,7 +192,4 @@ class AppConfiguration < ApplicationRecord
     tenant.remove_header_bg! if header_bg_previously_changed? && header_bg.blank?
     tenant.disable_config_sync.save
   end
-
 end
-
-AppConfiguration.extend_settings(ProjectFolders::SettingsSpecification) if CitizenLab.ee?
