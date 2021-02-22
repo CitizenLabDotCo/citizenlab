@@ -1,5 +1,4 @@
-require "easy_translate"
-require "machine_translations/engine"
+require "custom_statuses/engine"
 
-module MachineTranslations
+module CustomStatuses
 end
