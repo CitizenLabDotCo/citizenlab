@@ -1,5 +1,5 @@
 import React, { memo, useState, useEffect } from 'react';
-import { isEmpty, inRange } from 'lodash-es';
+import { isEmpty, inRange, isEqual } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // services
@@ -111,6 +111,8 @@ const MapCenterAndZoomConfig = memo<Props & InjectedIntlProps>(
     const [currentLat, setCurrentLat] = useState<string | null>(null);
     const [currentLng, setCurrentLng] = useState<string | null>(null);
     const [currentZoom, setCurrentZoom] = useState<number | null>(null);
+    const [isDefaultCurrentEqual, setIsDefaultCurrentEqual] = useState(true);
+    const [isFormCurrentEqual, setIsFormCurrentEqual] = useState(true);
     const [touched, setTouched] = useState(false);
     const [processing, setProcessing] = useState(false);
     const [errors, setErrors] = useState<{ [key: string]: any }>({});
@@ -138,6 +140,32 @@ const MapCenterAndZoomConfig = memo<Props & InjectedIntlProps>(
       return () =>
         subscriptions.forEach((subscription) => subscription.unsubscribe());
     }, []);
+
+    useEffect(() => {
+      const defaultLatLng = getCenter(undefined, appConfig, mapConfig);
+      const defaultLat = defaultLatLng[0];
+      const defaultLng = defaultLatLng[1];
+      const defaultZoom = getZoomLevel(undefined, appConfig, mapConfig);
+      setIsDefaultCurrentEqual(
+        isEqual(
+          [defaultLat, defaultLng, defaultZoom],
+          [currentLat, currentLng, currentZoom]
+        )
+      );
+    }, [appConfig, mapConfig, currentLat, currentLng, currentZoom]);
+
+    useEffect(() => {
+      setIsFormCurrentEqual(
+        isEqual(
+          [
+            formValues.defaultLat,
+            formValues.defaultLng,
+            formValues.defaultZoom,
+          ],
+          [currentLat, currentLng, currentZoom]
+        )
+      );
+    }, [formValues, currentLat, currentLng, currentZoom]);
 
     useEffect(() => {
       if (!isNilOrError(appConfig) && mapConfig && !isInitialised) {
@@ -264,7 +292,7 @@ const MapCenterAndZoomConfig = memo<Props & InjectedIntlProps>(
           <Buttons>
             <Tippy
               placement="bottom"
-              content={formatMessage(messages.setMapToDefaults)}
+              content={formatMessage(messages.mapToDefaults)}
               hideOnClick={false}
               arrow={false}
             >
@@ -273,13 +301,14 @@ const MapCenterAndZoomConfig = memo<Props & InjectedIntlProps>(
                   icon="goTo"
                   buttonStyle="secondary"
                   onClick={handleMapToDefaults}
+                  disabled={isFormCurrentEqual}
                 />
               </div>
             </Tippy>
             <Spacer />
             <Tippy
               placement="bottom"
-              content={formatMessage(messages.setMapToDefaults)}
+              content={formatMessage(messages.defaultsToMap)}
               hideOnClick={false}
               arrow={false}
             >
@@ -288,6 +317,7 @@ const MapCenterAndZoomConfig = memo<Props & InjectedIntlProps>(
                   icon="mapCenter"
                   buttonStyle="secondary"
                   onClick={handleDefaultsToMap}
+                  disabled={isDefaultCurrentEqual}
                 />
               </div>
             </Tippy>

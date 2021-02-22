@@ -90,7 +90,7 @@ export default defineMessages({
   centerLngLabelTooltip: {
     id: 'app.containers.AdminPage.ProjectEdit.MapTab.centerLngLabelTooltip',
     defaultMessage:
-      'The default longitude of the map center point. Accepts a value between -180 and 180.',
+      'The longitude of the default map center point. Accepts a value between -180 and 180.',
   },
   centerLatLabel: {
     id: 'app.containers.AdminPage.ProjectEdit.MapTab.centerLatLabel',
@@ -99,7 +99,7 @@ export default defineMessages({
   centerLatLabelTooltip: {
     id: 'app.containers.AdminPage.ProjectEdit.MapTab.centerLatLabelTooltip',
     defaultMessage:
-      'The default latitude of the map center point. Accepts a value between -90 and 90.',
+      'The latitude of the default map center point. Accepts a value between -90 and 90.',
   },
   zoomLabel: {
     id: 'app.containers.AdminPage.ProjectEdit.MapTab.zoomLabel',
@@ -126,13 +126,13 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.importError',
     defaultMessage: `The selected file could not be imported because it's not a valid GeoJSON file`,
   },
-  setMapToDefaults: {
-    id: 'app.components.admin.PostManager.setMapToDefaults',
-    defaultMessage: `Center and zoom map to default values`,
+  mapToDefaults: {
+    id: 'app.components.admin.PostManager.mapToDefaults',
+    defaultMessage: `Set the default values to the current map center point & zoom level`,
   },
-  setDefaultsToMap: {
-    id: 'app.components.admin.PostManager.setDefaultsToMap',
-    defaultMessage: `Copy to current center point & zoom level of the map to the default values listed below`,
+  defaultsToMap: {
+    id: 'app.components.admin.PostManager.defaultsToMap',
+    defaultMessage: `Pan & zoom the map to its default center point & zoom level`,
   },
   currentLat: {
     id: 'app.components.admin.PostManager.currentLat',
