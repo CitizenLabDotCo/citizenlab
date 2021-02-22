@@ -1,29 +1,24 @@
-import React, { memo, useState } from 'react';
-import * as gjv from 'geojson-validation';
+import React, { memo } from 'react';
 
 // components
 import Button from 'components/UI/Button';
 import { Icon, IconTooltip } from 'cl2-component-library';
-import ImportButton from './ImportButton';
 import Tippy from '@tippyjs/react';
 import { SubSectionTitle } from 'components/admin/Section';
 import { SortableList, SortableRow } from 'components/admin/ResourceList';
-import Error from 'components/UI/Error';
+import GeoJsonImportButton from './GeoJsonImportButton';
 
 // hooks
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useMapConfig from 'hooks/useMapConfig';
 
 // services
 import {
-  createProjectMapLayer,
   deleteProjectMapLayer,
   reorderProjectMapLayer,
 } from 'services/mapLayers';
 
 // utils
 import { getLayerColor, getLayerIcon } from 'utils/map';
-import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
 import T from 'components/T';
@@ -92,50 +87,9 @@ interface Props {
   className?: string;
 }
 
-const MapLayers = memo<Props & InjectedIntlProps>(
+const MapLayersList = memo<Props & InjectedIntlProps>(
   ({ projectId, onEditLayer, className, intl: { formatMessage } }) => {
-    const tenantLocales = useAppConfigurationLocales();
-    const mapConfig = useMapConfig({ projectId, prefetchMapLayers: true });
-    const mapConfigId = mapConfig?.id || null;
-
-    const [importError, setImportError] = useState(false);
-
-    const handleGeoJsonImport = (geojson: GeoJSON.FeatureCollection) => {
-      setImportError(false);
-
-      if (gjv.valid(geojson)) {
-        if (mapConfigId) {
-          const unnamedLayersCount =
-            mapConfig?.attributes?.layers?.filter((layer) =>
-              layer?.title_multiloc?.['en']?.startsWith('Unnamed')
-            )?.length || 0;
-
-          const newUnnamedLayerTitle = `Unnamed layer ${
-            unnamedLayersCount + 1
-          }`;
-
-          const title_multiloc = {
-            en: newUnnamedLayerTitle,
-          };
-
-          if (!isNilOrError(tenantLocales)) {
-            tenantLocales.forEach(
-              (tenantLocale) =>
-                (title_multiloc[tenantLocale] = newUnnamedLayerTitle)
-            );
-          }
-
-          createProjectMapLayer(projectId, {
-            geojson,
-            title_multiloc,
-            id: mapConfigId,
-            default_enabled: true,
-          });
-        }
-      } else {
-        setImportError(true);
-      }
-    };
+    const mapConfig = useMapConfig({ projectId });
 
     const handleReorderLayers = (mapLayerId: string, newOrder: number) => {
       reorderProjectMapLayer(projectId, mapLayerId, newOrder);
@@ -250,14 +204,10 @@ const MapLayers = memo<Props & InjectedIntlProps>(
             </StyledSortableList>
           )}
 
-        <ImportButton onChange={handleGeoJsonImport} />
-
-        {importError && (
-          <Error
-            text={<FormattedMessage {...messages.importError} />}
-            marginTop="10px"
-            showBackground={false}
-            showIcon={true}
+        {mapConfig?.id && (
+          <GeoJsonImportButton
+            projectId={projectId}
+            mapConfigId={mapConfig.id}
           />
         )}
       </Container>
@@ -265,4 +215,4 @@ const MapLayers = memo<Props & InjectedIntlProps>(
   }
 );
 
-export default injectIntl(MapLayers);
+export default injectIntl(MapLayersList);

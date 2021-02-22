@@ -187,7 +187,7 @@ const Map = memo<Props & InjectedLocalized>(
     hideLegend,
   }) => {
     const appConfig = useAppConfiguration();
-    const mapConfig = useMapConfig({ projectId, prefetchMapLayers: true });
+    const mapConfig = useMapConfig({ projectId });
 
     const [map, setMap] = useState<L.Map | null>(null);
     const [layerControl, setLayerControl] = useState<L.Control.Layers | null>(
