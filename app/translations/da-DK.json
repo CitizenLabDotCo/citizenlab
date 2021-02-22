@@ -2074,6 +2074,7 @@
   "app.containers.Projects.survey": "Survey",
   "app.containers.Projects.takeThePoll": "Tag afstemningen",
   "app.containers.Projects.takeTheSurvey": "Besvar spørgeskemaet",
+  "app.containers.Projects.thisProjectIsNotPubliclyVisibleVisitHomePageToDiscover": "",
   "app.containers.Projects.timeline": "Tidslinje",
   "app.containers.Projects.totalBudget": "Samlet budget",
   "app.containers.Projects.upcomingEvents": "Kommende begivenheder",
