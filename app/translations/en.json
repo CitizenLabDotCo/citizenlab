@@ -2074,6 +2074,7 @@
   "app.containers.Projects.survey": "Survey",
   "app.containers.Projects.takeThePoll": "Take the poll",
   "app.containers.Projects.takeTheSurvey": "Take the survey",
+  "app.containers.Projects.thisProjectIsNotPubliclyVisibleVisitHomePageToDiscover": "This project is not publicly visible. Visit the homepage to discover other engagement opportunities.",
   "app.containers.Projects.timeline": "Timeline",
   "app.containers.Projects.totalBudget": "Total budget",
   "app.containers.Projects.upcomingEvents": "Upcoming events",
