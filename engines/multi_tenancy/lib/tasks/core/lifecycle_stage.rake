@@ -2,8 +2,9 @@
 namespace :fix_existing_tenants do
   desc "Set the lifecycle stages and organization types to the values given in the sheet, remove demo values for organization_type"
   task :lifecycle_stage, [:url] => [:environment] do |t, args|
-    organization_types = Tenant.settings_json_schema.dig('properties','core','properties','organization_type','enum')
-    lifecycle_stages = Tenant.settings_json_schema.dig('properties','core','properties','lifecycle_stage','enum')
+    core_settings_json_schema = AppConfiguration::Settings.json_schema.dig('properties', 'core')
+    organization_types = core_settings_json_schema.dig('properties', 'organization_type', 'enum')
+    lifecycle_stages = core_settings_json_schema.dig('properties', 'lifecycle_stage', 'enum')
     log = []
 
     # set the lifecycle stages and organization types to the values given in the sheet
