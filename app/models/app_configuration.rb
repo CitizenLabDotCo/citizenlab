@@ -10,7 +10,7 @@ class AppConfiguration < ApplicationRecord
   attr_accessor :tenant_sync_enabled
 
   validates :settings, presence: true, json: {
-    schema: -> { AppConfiguration.settings_json_schema_str },
+    schema: -> { AppConfiguration::Settings.json_schema_str },
     message: ->(errors) { errors.map { |e| { fragment: e[:fragment], error: e[:failed_attribute], human_message: e[:message] } } },
     options: { errors_as_objects: true }
   }
@@ -73,7 +73,6 @@ class AppConfiguration < ApplicationRecord
 
   class << self
     private :new # We need a singleton
-    delegate :json_schema, :json_schema_str, to: Settings, prefix: :settings
 
     def instance
       first!
@@ -92,10 +91,11 @@ class AppConfiguration < ApplicationRecord
   # @return [AppConfiguration] self
   def cleanup_settings
     ss = SettingsService.new
-    self.settings = ss.remove_additional_features(self.settings, self.class.settings_json_schema)
-    self.settings = ss.remove_additional_settings(self.settings, self.class.settings_json_schema)
-    self.settings = ss.add_missing_features(self.settings, self.class.settings_json_schema)
-    self.settings = ss.add_missing_settings(self.settings, self.class.settings_json_schema)
+    schema = Settings.json_schema
+    self.settings = ss.remove_additional_features(self.settings, schema)
+    self.settings = ss.remove_additional_settings(self.settings, schema)
+    self.settings = ss.add_missing_features(self.settings, schema)
+    self.settings = ss.add_missing_settings(self.settings, schema)
     self
   end
 
@@ -110,7 +110,7 @@ class AppConfiguration < ApplicationRecord
   end
 
   def public_settings
-    @public_settings ||= SettingsService.new.remove_private_settings(self.settings, self.class.settings_json_schema)
+    @public_settings ||= SettingsService.new.remove_private_settings(settings, Settings.json_schema)
   end
 
   def location
@@ -153,7 +153,7 @@ class AppConfiguration < ApplicationRecord
   private
 
   def validate_missing_feature_dependencies
-    missing_dependencies = SettingsService.new.missing_dependencies(settings, self.class.settings_json_schema)
+    missing_dependencies = SettingsService.new.missing_dependencies(settings, Settings.json_schema)
     unless missing_dependencies.empty?
       errors.add(:settings, "has unactive features that other features are depending on: #{missing_dependencies}")
     end

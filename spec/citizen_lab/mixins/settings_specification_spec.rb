@@ -7,7 +7,7 @@ describe 'CitizenLab::Mixins::SettingsSpecification' do
   context "with settings specified as JSON" do
     let(:spec_as_json) do
       Module.new do
-        def self.settings_json_schema
+        def self.json_schema
           {
             type: 'object',
             title: 'Feature title',
@@ -24,16 +24,16 @@ describe 'CitizenLab::Mixins::SettingsSpecification' do
     end
 
     it 'generates the str version of the settings json-schema' do
-      expect { spec_as_json.settings_json_schema_str }.to raise_error(NoMethodError)
+      expect { spec_as_json.json_schema_str }.to raise_error(NoMethodError)
       spec_as_json.extend(CitizenLab::Mixins::SettingsSpecification)
-      expect(spec_as_json.settings_json_schema_str).to eq(spec_as_json.settings_json_schema.to_json)
+      expect(spec_as_json.json_schema_str).to eq(spec_as_json.json_schema.to_json)
     end
   end
 
   context 'with settings specified as a string' do
     let(:spec_as_str) do
       Module.new do
-        def self.settings_json_schema_str
+        def self.json_schema_str
           {
             type: 'object',
             title: 'Feature title',
@@ -50,9 +50,9 @@ describe 'CitizenLab::Mixins::SettingsSpecification' do
     end
 
     it 'generates the str version of the settings json-schema' do
-      expect { spec_as_str.settings_json_schema }.to raise_error(NoMethodError)
+      expect { spec_as_str.json_schema }.to raise_error(NoMethodError)
       spec_as_str.extend(CitizenLab::Mixins::SettingsSpecification)
-      expect(spec_as_str.settings_json_schema.to_json).to eq(spec_as_str.settings_json_schema_str)
+      expect(spec_as_str.json_schema.to_json).to eq(spec_as_str.json_schema_str)
     end
   end
 end
