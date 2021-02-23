@@ -165,11 +165,11 @@ class Tenant < ApplicationRecord
   def changed_lifecycle_stage?
     return false unless settings_previously_changed?
 
-    old_settings = settings_previous_change[0]
-    new_settings = settings
-
-    lifecycle_change_diff = [old_settings, new_settings].map { |s| s&.dig('core', 'lifecycle_stage') }
     lifecycle_change_diff.uniq.size > 1
+  end
+
+  def lifecycle_change_diff
+    settings_previous_change.map { |s| s&.dig('core', 'lifecycle_stage') }
   end
 
   def active?

@@ -47,7 +47,7 @@ module MultiTenancy
 
     def trigger_lifecycle_stage_change_effects(tenant, user)
       LogActivityJob.perform_later(tenant, 'changed_lifecycle_stage', user, tenant.updated_at.to_i,
-                                   payload: { changes: lifecycle_change_diff })
+                                   payload: { changes: tenant.lifecycle_change_diff })
     end
 
     def trigger_host_changed_effects(tenant, user)
