@@ -33,6 +33,7 @@ import messages from './messages';
 
 // styling
 import styled from 'styled-components';
+import { media } from 'utils/styleUtils';
 
 const Loading = styled.div`
   width: 100%;
@@ -62,23 +63,30 @@ const MapWrapper = styled.div`
 
 const StyledMap = styled(Map)`
   flex: 1;
-  height: 100%;
+  height: 800px;
+  border: solid 1px #ccc;
+
+  ${media.smallerThan1100px`
+    height: calc(100vh - 180px);
+  `}
 `;
 
 const GoToDefaultViewportButtonWrapper = styled.div`
   position: absolute;
   top: 80px;
-  left: 10px;
+  left: 11px;
   z-index: 314159;
   background: #fff;
+  border-radius: ${(props: any) => props.theme.borderRadius};
 `;
 
 const SetAsDefaultViewportButtonWrapper = styled.div`
   position: absolute;
   top: 122px;
-  left: 10px;
+  left: 11px;
   z-index: 314159;
   background: #fff;
+  border-radius: ${(props: any) => props.theme.borderRadius};
 `;
 
 interface Props {
@@ -165,17 +173,12 @@ const MapPage = memo<Props & WithRouterProps & InjectedIntlProps>(
       }
     }, [projectId, appConfig, mapConfig]);
 
-    console.log(
-      [defaultLat, defaultLng, defaultZoom],
-      [currentLat, currentLng, currentZoom]
-    );
-
     if (projectId && mapConfig?.id) {
       return (
         <Container className={className || ''}>
           <StyledMapConfigOverview projectId={projectId} />
           <MapWrapper>
-            <StyledMap projectId={projectId} hideLegend={true} />
+            <StyledMap projectId={projectId} />
             <GoToDefaultViewportButtonWrapper>
               <Tippy
                 maxWidth="250px"
