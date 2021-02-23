@@ -9,6 +9,7 @@ import { Icon, IconNames } from 'cl2-component-library';
 
 const Container = styled.div`
   padding: 25px;
+  padding-bottom: 10px;
 `;
 
 const LegendItems = styled.ul`
@@ -27,16 +28,13 @@ const Item = styled.li`
   align-items: center;
   flex: 1 0 calc(50% - 10px);
   margin-right: 8px;
+  margin-bottom: 17px;
 
   ${isRtl`
     margin-right: 0;
     margin-left: 10px;
     flex-direction: row-reverse;
   `}
-
-  &:not(:last-child) {
-    margin-bottom: 17px;
-  }
 
   ${media.smallerThanMinTablet`
     flex: 1 0 calc(100% - 10px);

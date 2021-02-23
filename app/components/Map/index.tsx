@@ -1,6 +1,13 @@
 import React, { memo, useState, useEffect } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { isEqual, compact, isUndefined, isEmpty } from 'lodash-es';
+import {
+  isEqual,
+  compact,
+  isUndefined,
+  isEmpty,
+  reverse,
+  cloneDeep,
+} from 'lodash-es';
 
 // Map
 import L from 'leaflet';
@@ -325,7 +332,7 @@ const Map = memo<Props & InjectedLocalized>(
           mapConfig.attributes.layers.length > 0
         ) {
           newLayerControl = L.control.layers().addTo(map);
-          newLayers = mapConfig?.attributes?.layers
+          newLayers = reverse(cloneDeep(mapConfig?.attributes?.layers))
             ?.filter((layer) => !isEmpty(layer.geojson))
             .map(({ geojson, title_multiloc, marker_svg_url }) => {
               const layer = L.geoJSON(geojson, {
