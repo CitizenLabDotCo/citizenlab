@@ -40,8 +40,8 @@ if web_concurrency.to_i > 1
     end
     SemanticLogger.reopen
 
-    # We also need to deal with bunny here, but since we're only using it from
-    # sidekiq, it's easier right now to leave it in an initializer
+    # We also need to deal with bunny here, but since we're only using it for
+    # background jobs, it's easier right now to leave it in an initializer
     # http://rubybunny.info/articles/connecting.html#using_bunny_with_unicorn
     #
     # BUNNY_CON = connect_bunny

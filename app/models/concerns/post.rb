@@ -10,12 +10,10 @@ module Post
   included do
     pg_search_scope :search_by_all,
                     against: [:title_multiloc, :body_multiloc],
-                    associated_against: {author: [:first_name, :last_name]},
                     using: { :tsearch => {:prefix => true} }
 
     pg_search_scope :restricted_search,
                     against: [:title_multiloc, :body_multiloc],
-                    associated_against: {author: [:first_name]},
                     using: { :tsearch => {:prefix => true} }
 
     # Note from: https://github.com/Casecommons/pg_search

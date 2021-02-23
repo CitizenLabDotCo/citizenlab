@@ -115,9 +115,6 @@ Rails.application.routes.draw do
 
       resource :app_configuration, only: [:show, :update]
 
-      resources :tenants, only: [:update] do
-        get :current, on: :collection
-      end
       resources :pages do
         resources :files, defaults: {container_type: 'Page'}, shallow: false
         get 'by_slug/:slug', on: :collection, to: 'pages#by_slug'
@@ -308,8 +305,7 @@ Rails.application.routes.draw do
   get '/auth/:provider/logout', to: 'omniauth_callback#logout'
 
   if Rails.env.development?
-    require 'sidekiq/web'
-    mount Sidekiq::Web => '/sidekiq'
+    require 'que/web'
+    mount Que::Web => '/que'
   end
-
 end
