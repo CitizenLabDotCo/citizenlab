@@ -30,8 +30,8 @@ resource 'PendingTask' do
       expect(status).to eq(200)
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 1
-      expect(json_response[:data][0].dig(:relationships, :ideas, :data).map{ |i| i[:id]}).to match @ideas.map(&:id)
-      expect(json_response[:data][0].dig(:relationships, :tags, :data).map{ |i| i[:id]}).to match @tags.map(&:id)
+      expect(json_response[:data][0].dig(:relationships, :ideas, :data).map{ |i| i[:id]}).to match_array @ideas.map(&:id)
+      expect(json_response[:data][0].dig(:relationships, :tags, :data).map{ |i| i[:id]}).to match_array @tags.map(&:id)
     end
   end
 end
