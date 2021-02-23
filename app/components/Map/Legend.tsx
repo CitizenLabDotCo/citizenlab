@@ -26,7 +26,7 @@ const Item = styled.li`
   display: flex;
   align-items: center;
   flex: 1 0 calc(50% - 10px);
-  margin-right: 10px;
+  margin-right: 8px;
 
   ${isRtl`
     margin-right: 0;
@@ -35,7 +35,7 @@ const Item = styled.li`
   `}
 
   &:not(:last-child) {
-    margin-bottom: 15px;
+    margin-bottom: 17px;
   }
 
   ${media.smallerThanMinTablet`

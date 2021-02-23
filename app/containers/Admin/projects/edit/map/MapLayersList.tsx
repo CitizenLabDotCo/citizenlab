@@ -52,8 +52,7 @@ const ListItem = styled.div`
 
 const LayerIcon = styled(Icon)<{ color: string }>`
   fill: ${(props) => props.color};
-  width: 22px;
-  height: 22px;
+  width: 19px;
   margin-right: 10px;
 `;
 
@@ -110,12 +109,29 @@ const MapLayersList = memo<Props & InjectedIntlProps>(
       onEditLayer(layerId);
     };
 
+    const supportArticleUrl = formatMessage(messages.supportArticleUrl);
+
+    const supportArticleLink = (
+      <a href={supportArticleUrl} target="_blank">
+        <FormattedMessage {...messages.supportArticle} />
+      </a>
+    );
+
+    console.log(supportArticleUrl);
+
     return (
       <Container className={className || ''}>
         <SubSectionTitle>
           <FormattedMessage {...messages.layers} />
           <StyledIconTooltip
-            content={<FormattedMessage {...messages.layersTitleTooltip} />}
+            content={
+              <FormattedMessage
+                {...messages.layersTooltip}
+                values={{
+                  supportArticle: supportArticleLink,
+                }}
+              />
+            }
           />
         </SubSectionTitle>
         {mapConfig?.attributes?.layers &&
