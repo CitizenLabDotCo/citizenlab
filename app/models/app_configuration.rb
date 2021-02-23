@@ -67,6 +67,12 @@ class AppConfiguration < ApplicationRecord
     settings[setting_name]&.values_at('enabled', 'allowed')&.all?
   end
 
+  def has_feature?(f)
+    ActiveSupport::Deprecation.warn("AppConfiguration#has_feature? is deprecated. Use AppConfiguration#feature_activated? instead.")
+    feature_activated?(f)
+  end
+
+
   def closest_locale_to(locale)
     locale = locale.to_s
     locales = settings.dig('core', 'locales') || []
