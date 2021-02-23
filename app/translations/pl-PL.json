@@ -1023,7 +1023,7 @@
   "app.containers.AdminPage.FaviconPage.saveSuccessMessage": "Twoje zmiany zostały zapisane.",
   "app.containers.AdminPage.FolderPermissions.addFolderManager": "Dodaj",
   "app.containers.AdminPage.FolderPermissions.deleteFolderManagerLabel": "Usuń",
-  "app.containers.AdminPage.FolderPermissions.folderManagerSectionTitle": "",
+  "app.containers.AdminPage.FolderPermissions.folderManagerSectionTitle": "Folder managers",
   "app.containers.AdminPage.FolderPermissions.folderManagerTooltip": "Menedżerowie folderów mogą edytować opis foldera, tworzyć nowe projekty w obrębie folderu oraz posiadać uprawnienia do zarządzania wszystkimi projektami w obrębie folderu. Nie mogą oni usuwać projektów i nie mają dostępu do projektów, które nie znajdują się w ich folderze. Aby uzyskać więcej informacji o uprawnieniach do zarządzania projektami, możesz wybrać opcję {projectManagementInfoCenterLink}.",
   "app.containers.AdminPage.FolderPermissions.moreInfoFolderManagerLink": "https://support.citizenlab.co/en/articles/4648650-assign-the-right-project-managers",
   "app.containers.AdminPage.FolderPermissions.noMatch": "Nie znaleziono dopasowania",
