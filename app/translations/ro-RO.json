@@ -1709,7 +1709,7 @@
   "app.containers.IdeaButton.postingInNonActivePhases": "New submissions can only be added in active phases.",
   "app.containers.IdeaButton.postingInactive": "New submissions are not currently being accepted.",
   "app.containers.IdeaButton.postingMayNotBePermitted": "Please {signInLink} to the platform to see what actions you can take.",
-  "app.containers.IdeaButton.postingNoPermission": "New submissions are not currently being accepted",
+  "app.containers.IdeaButton.postingNoPermission": "New submissions are not currently enabled",
   "app.containers.IdeaButton.postingNotYetPossible": "New submissions are not yet being accepted.",
   "app.containers.IdeaButton.signInLinkText": "Autentifică-te",
   "app.containers.IdeaButton.signUpLinkText": "Înscrie-te",
