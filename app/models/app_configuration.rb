@@ -52,6 +52,10 @@ class AppConfiguration < ApplicationRecord
     settings.dig(f, 'allowed') && settings.dig(f, 'enabled')
   end
 
+  def setting_activated?(setting_name)
+    settings[setting_name]&.values_at('enabled', 'allowed')&.all?
+  end
+
   def closest_locale_to(locale)
     locale = locale.to_s
     locales = settings.dig('core', 'locales') || []
@@ -95,10 +99,6 @@ class AppConfiguration < ApplicationRecord
     return "http://localhost:4000" if Rails.env.development?
     transport = Rails.env.test? ? 'http' : 'https'
     "#{transport}://#{host}"
-  end
-
-  def setting_activated?(setting_name)
-    settings[setting_name]&.values_at('enabled', 'allowed')&.all?
   end
 
   private
