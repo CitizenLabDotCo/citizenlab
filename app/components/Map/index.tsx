@@ -455,8 +455,8 @@ const Map = memo<Props & InjectedLocalized>(
     };
 
     return (
-      <Container className={className || ''}>
-        <MapContainer>
+      <Container>
+        <MapContainer className={className || ''}>
           {!isNilOrError(boxContent) && (
             <BoxContainer>
               <CloseButton onClick={handleBoxOnClose}>
