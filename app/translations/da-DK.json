@@ -2094,6 +2094,7 @@
   "app.containers.Projects.survey": "Survey",
   "app.containers.Projects.takeThePoll": "Tag afstemningen",
   "app.containers.Projects.takeTheSurvey": "Besvar spørgeskemaet",
+  "app.containers.Projects.thisProjectIsNotPubliclyVisibleVisitHomePageToDiscover": "Dette projekt er ikke offentligt tilgængeligt. Besøg hjemmesiden for at finde andre muligheder for borgerinddragelse.",
   "app.containers.Projects.timeline": "Tidslinje",
   "app.containers.Projects.totalBudget": "Samlet budget",
   "app.containers.Projects.upcomingEvents": "Kommende begivenheder",
