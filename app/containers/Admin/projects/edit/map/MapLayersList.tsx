@@ -117,8 +117,6 @@ const MapLayersList = memo<Props & InjectedIntlProps>(
       </a>
     );
 
-    console.log(supportArticleUrl);
-
     return (
       <Container className={className || ''}>
         <SubSectionTitle>
