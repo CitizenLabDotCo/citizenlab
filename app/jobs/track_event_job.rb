@@ -8,11 +8,11 @@ class TrackEventJob < ApplicationJob
     begin
       tenant = Tenant.current
       if tenant
-        if tenant.has_feature?('intercom')
+        if tenant.feature_activated?('intercom')
           intercom_service = TrackIntercomService.new()
           intercom_service.track(activity, tenant)
         end
-        if tenant.has_feature?('segment')
+        if tenant.feature_activated?('segment')
           segment_service = TrackSegmentService.new()
           segment_service.track(activity, tenant)
         end
