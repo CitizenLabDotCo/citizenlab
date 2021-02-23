@@ -29,7 +29,7 @@ module MultiTenancy
       trigger_host_changed_effects(tenant, current_user)           if tenant.host_previously_changed?
       trigger_lifecycle_stage_change_effects(tenant, current_user) if tenant.changed_lifecycle_stage?
 
-      update_google_host(tenant) if tenant.host_previously_changed? || tenant.changed_lifecycle_stage?
+      update_google_host(tenant) if tenant.active? && tenant.host_previously_changed? || tenant.changed_lifecycle_stage?
       track_tenant_async(tenant)
     end
 
@@ -53,7 +53,6 @@ module MultiTenancy
     def trigger_host_changed_effects(tenant, user)
       LogActivityJob.perform_later(tenant, 'changed_host', user, tenant.updated_at.to_i,
                                    payload: { changes: tenant.host_previous_change })
-      update_google_host(tenant)
     end
 
     # @param [Tenant] tenant
@@ -62,7 +61,7 @@ module MultiTenancy
     end
 
     def update_google_host(tenant)
-      tenant.switch { Seo::UpdateGoogleHostJob.perform_later } if tenant.active?
+      tenant.switch { Seo::UpdateGoogleHostJob.perform_later }
     end
   end
 end
