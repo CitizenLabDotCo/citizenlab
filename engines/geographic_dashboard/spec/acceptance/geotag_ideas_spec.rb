@@ -14,7 +14,7 @@ resource 'GeotagIdeas' do
 
   before do
     header 'Content-Type', 'application/json'
-    user_header_token
+    admin_header_token
   end
 
   get '/web_api/v1/ideas/geotagged' do
