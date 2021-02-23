@@ -32,7 +32,7 @@ module Verification
 
     # @param [AppConfiguration] app_configuration
     def active_methods(app_configuration)
-      return [] unless app_configuration.has_feature?('verification')
+      return [] unless app_configuration.feature_activated?('verification')
 
       active_methods = app_configuration.settings['verification']['verification_methods']
       active_method_names = active_methods.map { |vm| vm['name'] }
