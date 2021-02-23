@@ -91,7 +91,6 @@ export const appLocalePairs = {
   'hu-HU': 'Magyar',
   'ro-RO': 'Română',
   'pt-BR': 'Português (Brasil)',
-  ach: 'Acholi',
   'ar-SA': 'عربى',
 };
 
@@ -140,7 +139,6 @@ export const shortenedAppLocalePairs = {
   'hu-HU': 'Magyar',
   'ro-RO': 'Română',
   'pt-BR': 'Português',
-  ach: 'Acholi',
   'ar-SA': 'عربى',
 };
 
