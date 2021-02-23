@@ -517,7 +517,7 @@
   "app.components.admin.PostManager.hiddenFieldsSupportArticleUrl": "https://support.citizenlab.co/en/articles/1641202",
   "app.components.admin.PostManager.hiddenFieldsTip": "Tip: add {hiddenFieldsLink} when setting up your Typeform survey to keep track of who has responded to your survey.",
   "app.components.admin.PostManager.initiatives": "proposals",
-  "app.components.admin.PostManager.inputManagerHeader": "Inputs",
+  "app.components.admin.PostManager.inputManagerHeader": "Posts",
   "app.components.admin.PostManager.inputs": "inputs",
   "app.components.admin.PostManager.inputsNeedFeedbackToggle": "Nur Einträge anzeigen, die eine Rückmeldung erfordern",
   "app.components.admin.PostManager.latestFeedbackMode": "Use the most recent official update",
