@@ -7,7 +7,7 @@
 #     /web_api/v1/idea_statuses
 #
 class WebApi::V1::IdeaStatusesController < ApplicationController
-  before_action :set_idea_status, only: %i[show]
+  before_action :set_idea_status, except: %i[index]
   skip_before_action :authenticate_user, only: %i[index show]
 
   def index
