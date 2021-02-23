@@ -56,13 +56,17 @@ const MapWrapper = styled.div`
   flex: 1;
   margin-left: 60px;
   position: relative;
-  overflow: hidden;
-  border-radius: ${(props: any) => props.theme.borderRadius};
-  border: solid 1px #ccc;
+
+  & .mapcontainer {
+    box-shadow: none !important;
+  }
+
+  & .legendcontainer {
+    border: solid 1px #ccc;
+  }
 `;
 
 const StyledMap = styled(Map)`
-  flex: 1;
   height: calc(100vh - 300px);
   max-height: 750px;
 
