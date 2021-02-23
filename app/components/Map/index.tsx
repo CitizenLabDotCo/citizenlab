@@ -78,12 +78,11 @@ const Container = styled.div`
   height: 100%;
   display: flex;
   align-items: stretch;
-  justify-content: stretch;
   flex-direction: column;
   ${defaultCardStyle}
 `;
 
-const MapContainer = styled.div`
+const MapWrapper = styled.div`
   flex: 1;
   display: flex;
   align-items: stretch;
@@ -455,8 +454,8 @@ const Map = memo<Props & InjectedLocalized>(
     };
 
     return (
-      <Container>
-        <MapContainer className={className || ''}>
+      <Container className="mapcontainer">
+        <MapWrapper className={className || ''}>
           {!isNilOrError(boxContent) && (
             <BoxContainer>
               <CloseButton onClick={handleBoxOnClose}>
@@ -468,7 +467,7 @@ const Map = memo<Props & InjectedLocalized>(
           )}
 
           <LeafletMapContainer id="mapid" className="e2e-map" />
-        </MapContainer>
+        </MapWrapper>
         {projectId && !hideLegend && <Legend projectId={projectId} />}
       </Container>
     );

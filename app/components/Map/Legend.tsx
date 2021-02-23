@@ -93,7 +93,7 @@ const Legend = memo<Props>(({ projectId, className }) => {
 
   if (legend.length > 0) {
     return (
-      <Container className={`${className || ''} legendContainer`}>
+      <Container className={`${className || ''} legendcontainer`}>
         <LegendItems>
           {legend.map((legendItem, index) => {
             const color = legendItem.color;
