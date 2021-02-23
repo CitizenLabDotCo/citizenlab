@@ -209,7 +209,6 @@ const MapPage = memo<Props & WithRouterProps & InjectedIntlProps>(
               >
                 <div>
                   <Button
-                    // icon={saved ? 'checkmark' : 'save'}
                     icon="save"
                     buttonStyle="white"
                     padding="7px"

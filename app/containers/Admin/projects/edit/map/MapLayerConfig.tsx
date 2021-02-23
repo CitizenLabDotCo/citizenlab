@@ -16,7 +16,7 @@ import {
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
-import { Label, ColorPickerInput, Select } from 'cl2-component-library';
+import { ColorPickerInput, Select } from 'cl2-component-library';
 
 // utils
 import { getLayerColor, getLayerType, makiIconNames } from 'utils/map';
@@ -188,10 +188,10 @@ const MapLayerConfig = memo<Props & InjectedIntlProps & InjectedLocalized>(
         geojson?.features.forEach((feature) => {
           feature.properties = {
             ...feature.properties,
-            // 'fill-opacity': 0.3,
-            // 'stroke-width': 4,
-            // 'stroke-opacity': 1,
-            // 'marker-size': 'medium',
+            'fill-opacity': 0.3,
+            'stroke-width': 3,
+            'stroke-opacity': 1,
+            'marker-size': 'medium',
             'marker-symbol': formValues.markerSymbol,
             tooltipContent: formValues.tooltipContent,
           };
@@ -278,13 +278,12 @@ const MapLayerConfig = memo<Props & InjectedIntlProps & InjectedLocalized>(
           )}
 
           <SectionField>
-            <Label>
-              <FormattedMessage {...messages.layerColor} />
-            </Label>
             <ColorPickerInput
               type="text"
               value={formValues.color}
               onChange={handleColorOnChange}
+              label={formatMessage(messages.layerColor)}
+              labelTooltipText={formatMessage(messages.layerColorTooltip)}
             />
           </SectionField>
         </StyledSection>

@@ -48,10 +48,19 @@ export default defineMessages({
     defaultMessage:
       'Customize the map view, including uploading and styling map layers and setting the map center and zoom level.',
   },
-  layersTitleTooltip: {
-    id: 'app.containers.AdminPage.ProjectEdit.MapTab.layersTitleTooltip',
+  supportArticle: {
+    id: 'app.containers.AdminPage.ProjectEdit.MapTab.supportArticle',
+    defaultMessage: 'support article',
+  },
+  supportArticleUrl: {
+    id: 'app.containers.AdminPage.ProjectEdit.MapTab.supportArticleUrl',
     defaultMessage:
-      'We currently support GeoJSON files. Read the support article for tips on how to convert and style map layers.',
+      'https://support.citizenlab.co/en/articles/4910983-customize-your-project-map',
+  },
+  layersTooltip: {
+    id: 'app.containers.AdminPage.ProjectEdit.MapTab.layersTooltip',
+    defaultMessage:
+      'We currently support GeoJSON files. Read the {supportArticle} for tips on how to convert and style map layers.',
   },
   edit: {
     id: 'app.containers.AdminPage.ProjectEdit.MapTab.edit',
@@ -68,7 +77,7 @@ export default defineMessages({
   layerColorTooltip: {
     id: 'app.containers.AdminPage.ProjectEdit.MapTab.layerColorTooltip',
     defaultMessage:
-      'This color is applied to all features within the map layer. Marker sizes, line widths and fill opacity are fixed by default.',
+      'All features in the layer will be styled with this color. This color will also overwrite any existing styling in your GeoJSON file.',
   },
   layerIconName: {
     id: 'app.containers.AdminPage.ProjectEdit.MapTab.layerIconName',
@@ -103,7 +112,7 @@ export default defineMessages({
   },
   zoomLabel: {
     id: 'app.containers.AdminPage.ProjectEdit.MapTab.zoomLabel',
-    defaultMessage: 'Default zoom level',
+    defaultMessage: 'Map zoom level',
   },
   zoomLabelTooltip: {
     id: 'app.containers.AdminPage.ProjectEdit.MapTab.zoomLabelTooltip',
