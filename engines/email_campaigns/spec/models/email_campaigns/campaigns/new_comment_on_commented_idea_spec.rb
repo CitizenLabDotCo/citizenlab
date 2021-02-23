@@ -21,7 +21,7 @@ RSpec.describe EmailCampaigns::Campaigns::NewCommentOnCommentedIdea, type: :mode
     end
 
     it "generates a command with an abbreviated name" do
-      Tenant.current.turn_on_abbreviated_user_names!
+      AppConfiguration.instance.turn_on_abbreviated_user_names!
       expect(recipient_comment.author.admin?).to be false
       expect(initiator_comment.author.admin?).to be false
 

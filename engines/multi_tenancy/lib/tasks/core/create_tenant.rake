@@ -15,7 +15,7 @@ namespace :cl2_back do
         core: {
           allowed: true,
           enabled: true,
-          locales: ['en','nl-BE', 'fr-BE'],
+          locales: ['en','nl-BE', 'nl-NL', 'fr-BE'],
           organization_type: 'medium_city',
           organization_name: {
             "en" => 'Wonderville',
@@ -254,8 +254,8 @@ namespace :cl2_back do
     end
 
 
-    SideFxTenantService.new.after_apply_template(tenant, nil)
-    SideFxTenantService.new.after_create(tenant, nil)
+    MultiTenancy::SideFxTenantService.new.after_apply_template(tenant, nil)
+    MultiTenancy::SideFxTenantService.new.after_create(tenant, nil)
 
   end
 end

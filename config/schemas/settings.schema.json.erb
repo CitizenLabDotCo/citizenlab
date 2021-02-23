@@ -205,7 +205,7 @@
           },
           "phone_email_pattern": {
             "title": "Phone Number Format",
-            "description": "Specify how phone numbers should be stored in the database (needs to be in email format - e.g., 'phone+_PHONE_@test.com' stores the phone number as 'phone+32478637483@test.com'.",
+            "description": "Specify how phone numbers should be stored in the database (needs to be in email format - e.g., 'phone+__PHONE__@test.com' stores the phone number as 'phone+32478637483@test.com'.",
             "type": "string",
             "format": "email",
             "pattern": "^.*__PHONE__.*@.*$",
@@ -932,6 +932,7 @@
           "enabled": { "type": "boolean", "default": true},
           "rules": {
             "type": "array",
+            "default": [],
             "items": {
               "type": "object",
               "required": ["path", "target"],
