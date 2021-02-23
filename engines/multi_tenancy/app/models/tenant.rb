@@ -162,7 +162,7 @@ class Tenant < ApplicationRecord
     Apartment::Tenant.switch!(schema_name)
   end
 
-  def lifecycle_stage_changed?
+  def changed_lifecycle_stage?
     return false unless settings_previously_changed?
 
     old_settings = settings_previous_change[0]
