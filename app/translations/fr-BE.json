@@ -2198,6 +2198,7 @@
   "app.containers.SignUp.noPasswordError": "Cela ne peut pas être vide",
   "app.containers.SignUp.noTokenError": "Cela ne peut pas être vide",
   "app.containers.SignUp.noValidEmailError": "Cela ne ressemble pas à un courriel valide",
+  "app.containers.SignUp.noValidPasswordError": "Votre mot de passe doit contenir au moins 8 caractères",
   "app.containers.SignUp.or": "Ou",
   "app.containers.SignUp.passwordLabel": "Mot de passe",
   "app.containers.SignUp.passwordPlaceholder": " ",
