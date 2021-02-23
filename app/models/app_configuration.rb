@@ -69,6 +69,11 @@ class AppConfiguration < ApplicationRecord
       @extension_features_hash ||= {}
     end
     private_class_method :extension_features_hash
+
+    def self.reset
+      @extension_features_hash = {}
+    end
+    private_class_method :reset
   end
 
   class << self
