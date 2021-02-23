@@ -2198,7 +2198,6 @@
   "app.containers.SignUp.noPasswordError": "Dit mag niet leeg zijn",
   "app.containers.SignUp.noTokenError": "Dit kan niet leeg zijn",
   "app.containers.SignUp.noValidEmailError": "Dit lijkt geen geldige e-mail te zijn",
-  "app.containers.SignUp.noValidPasswordError": "Je wachtwoord moet minstens 8 karakters bevatten",
   "app.containers.SignUp.or": "Of",
   "app.containers.SignUp.passwordLabel": "Wachtwoord",
   "app.containers.SignUp.passwordPlaceholder": " ",
