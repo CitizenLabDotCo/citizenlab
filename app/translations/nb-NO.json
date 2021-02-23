@@ -468,6 +468,7 @@
   "app.containers.AccessibilityStatement.terms-and-conditionsPageName": "Vilkår og betingelser",
   "app.containers.AccessibilityStatement.title": "Beskrivelse av tilgjengelighet",
   "app.containers.Admin.Processing.automaticallyAssign": "Tildel stikkord automatisk til valgte ideer",
+  "app.containers.Admin.Processing.autotagOverwriteExplanation": "Ideer for automatisk merking vil overskrive tidligere automatisk genererte stikkord. Stikkord som er godkjent eller som ble lagt til manuelt, overskrives ikke.",
   "app.containers.Admin.Workshop.learnHowToCreateWorkshopLinkCopy": "lær hvordan du kan lage din egen workshop",
   "app.containers.Admin.Workshop.supportGuideLinkCopy": "Les introduksjonsguiden vår",
   "app.containers.Admin.Workshop.workshopsIntro": "{readSupportGuideLink} for å lære om våre workshops eller klikk her {createWorkshopArticleLink}.",
