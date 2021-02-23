@@ -7,9 +7,9 @@ describe MultiTenancy::SideFxTenantService do
   describe 'after_create' do
     it "logs a 'created' action" do
       tenant = Tenant.current
-      expect { service.after_create(tenant, current_user) }
-        .to have_enqueued_job(LogActivityJob).with(tenant, 'created', current_user, tenant.updated_at.to_i)
-                                             .and have_enqueued_job(Seo::UpdateGoogleHostJob)
+      expect { service.after_create(tenant, current_user) }.to(
+        have_enqueued_job(LogActivityJob).and(have_enqueued_job(Seo::UpdateGoogleHostJob))
+      )
     end
   end
 
