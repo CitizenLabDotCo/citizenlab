@@ -65,6 +65,8 @@ class SideFxUserService
         user.assigned_ideas
           .where.not(project: moderatable_projects)
           .update_all(assignee_id: nil, updated_at: DateTime.now)
+        user.assigned_initiatives
+          .update_all(assignee_id: nil, updated_at: DateTime.now)
       end
     end
   end
