@@ -7,10 +7,9 @@ require 'seo/version'
 Gem::Specification.new do |spec|
   spec.name        = 'seo'
   spec.version     = Seo::VERSION
-  spec.authors     = ['']
-  spec.email       = ['']
+  spec.authors     = ['guilherme-andrade']
+  spec.email       = ['guilherme@citizenlab.co']
   spec.summary     = 'The engine responsible for delivering the sitemap, scraping facebook and propagating changes to google.'
-  spec.license     = 'MIT'
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
   # to allow pushing to a single host or delete this section to allow pushing to any host.

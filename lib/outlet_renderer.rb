@@ -9,16 +9,25 @@ module OutletRenderer
   end
 
   class_methods do
-    attr_reader :outlets
+    def outlets
+      @outlets ||= {}
+    end
 
     def outlet(outlet_id, &blk)
-      @outlets ||= {}
-      @outlets[outlet_id] = blk
+      outlets[outlet_id] = blk
     end
   end
 
   def render_outlet(outlet_id, **locals)
-    kwargs = outlets[outlet_id].call(locals)
-    render kwargs
+    return unless outlet_renderable?(outlet_id, locals)
+
+    render outlets[outlet_id].call(locals)
+  end
+
+  private
+
+  def outlet_renderable?(outlet_id, locals)
+    outlets.present? && outlets[outlet_id].respond_to?(:call) &&
+      outlets[outlet_id].call(locals) && outlets[outlet_id].call(locals).key?(:partial, :locals)
   end
 end
