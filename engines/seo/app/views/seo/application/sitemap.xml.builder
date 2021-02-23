@@ -59,7 +59,7 @@ xml.urlset xmlns: 'http://www.sitemaps.org/schemas/sitemap/0.9', 'xmlns:xhtml': 
     )
   end
 
-  if AppConfiguration.instance.setting_activated?('initiatives')
+  if AppConfiguration.instance.feature_activated?('initiatives')
     @initiatives.each do |initiative|
       multilingual_sitemap_entry(
         xml,
@@ -70,7 +70,7 @@ xml.urlset xmlns: 'http://www.sitemaps.org/schemas/sitemap/0.9', 'xmlns:xhtml': 
     end
   end
 
-  if AppConfiguration.instance.setting_activated?('pages')
+  if AppConfiguration.instance.feature_activated?('pages')
     @pages.each do |page|
       multilingual_sitemap_entry(
         xml,
@@ -81,7 +81,7 @@ xml.urlset xmlns: 'http://www.sitemaps.org/schemas/sitemap/0.9', 'xmlns:xhtml': 
     end
   end
 
-  if AppConfiguration.instance.setting_activated?('ideas_overview')
+  if AppConfiguration.instance.feature_activated?('ideas_overview')
     multilingual_sitemap_entry(
       xml,
       "https://#{@host}/ideas",
@@ -89,7 +89,7 @@ xml.urlset xmlns: 'http://www.sitemaps.org/schemas/sitemap/0.9', 'xmlns:xhtml': 
     )
   end
 
-  if AppConfiguration.instance.setting_activated?('initiatives')
+  if AppConfiguration.instance.feature_activated?('initiatives')
     multilingual_sitemap_entry(
       xml,
       "https://#{@host}/initiatives",

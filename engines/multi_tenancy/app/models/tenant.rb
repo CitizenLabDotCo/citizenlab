@@ -103,9 +103,9 @@ class Tenant < ApplicationRecord
     configuration.cleanup_settings
   end
 
-  def has_feature?(f)
-    ActiveSupport::Deprecation.warn("Tenant#cleanup_settings is deprecated. Use AppConfiguration#has_feature? instead.")
-    configuration.has_feature?(f)
+  def feature_activated?(f)
+    ActiveSupport::Deprecation.warn("Tenant#cleanup_settings is deprecated. Use AppConfiguration#feature_activated? instead.")
+    configuration.feature_activated?(f)
   end
 
   def closest_locale_to(locale)
