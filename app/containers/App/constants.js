@@ -54,7 +54,6 @@ exports.graphqlLocales = [
   'nb',
   'da',
   'es',
-  'ach',
   'enGb',
   'enCa',
   'frBe',
@@ -92,7 +91,6 @@ exports.appLocalePairs = {
   'hu-HU': 'Magyar',
   'ro-RO': 'Română',
   'pt-BR': 'Português (Brasil)',
-  ach: 'Acholi',
   'ar-SA': 'عربى',
 };
 exports.appGraphqlLocalePairs = {
@@ -103,7 +101,6 @@ exports.appGraphqlLocalePairs = {
   nb: 'nb',
   da: 'da',
   es: 'es',
-  ach: 'ach',
   enGb: 'en-GB',
   enCa: 'en-CA',
   frBe: 'fr-BE',
