@@ -71,8 +71,8 @@ Rails.application.routes.draw do
         get :allowed_transitions, on: :member
       end
 
-      resources :idea_statuses, only: [:index, :show]
-      resources :initiative_statuses, only: [:index, :show]
+      resources :idea_statuses, only: %i[index show]
+      resources :initiative_statuses, only: %i[index show]
 
       # auth
       post 'user_token' => 'user_token#create'
