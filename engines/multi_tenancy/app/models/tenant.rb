@@ -104,7 +104,12 @@ class Tenant < ApplicationRecord
   end
 
   def feature_activated?(f)
-    ActiveSupport::Deprecation.warn("Tenant#cleanup_settings is deprecated. Use AppConfiguration#feature_activated? instead.")
+    ActiveSupport::Deprecation.warn("Tenant#feature_activated is deprecated. Use AppConfiguration#feature_activated? instead.")
+    configuration.feature_activated?(f)
+  end
+
+  def has_feature?(f)
+    ActiveSupport::Deprecation.warn("Tenant#has_feature? is deprecated. Use AppConfiguration#feature_activated? instead.")
     configuration.feature_activated?(f)
   end
 
