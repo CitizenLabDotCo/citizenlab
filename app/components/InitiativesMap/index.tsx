@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
-import Leaflet from 'leaflet';
+import { popup, LatLng, Map as LeafletMap } from 'leaflet';
 import { withRouter, WithRouterProps } from 'react-router';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -140,12 +140,12 @@ export class InitiativesMap extends PureComponent<
     this.setState({ selectedInitiativeId: null });
   };
 
-  onMapClick = (map: Leaflet.Map, position: Leaflet.LatLng) => {
+  onMapClick = (map: LeafletMap, position: LatLng) => {
     const { lat, lng } = position;
     this.setState({ lat, lng });
 
     if (this.addInitiativeButtonElement) {
-      Leaflet.popup()
+      popup()
         .setLatLng(position)
         .setContent(this.addInitiativeButtonElement)
         .openOn(map);

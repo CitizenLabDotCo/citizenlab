@@ -10,7 +10,7 @@ import useAppConfiguration from 'hooks/useAppConfiguration';
 import useMapConfig from 'hooks/useMapConfig';
 
 // components
-import { Input } from 'cl2-component-library';
+import { Input, IconTooltip, Icon } from 'cl2-component-library';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import { SubSectionTitle } from 'components/admin/Section';
@@ -19,7 +19,6 @@ import { SubSectionTitle } from 'components/admin/Section';
 import { getCenter, getZoomLevel } from 'utils/map';
 
 // i18n
-
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
@@ -37,12 +36,24 @@ const SubSectionTitleWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 20px;
+  margin-bottom: 25px;
 `;
 
 const StyledSubSectionTitle = styled(SubSectionTitle)`
   padding: 0px;
   margin: 0px;
+`;
+
+const StyledIconTooltip = styled(IconTooltip)`
+  margin-left: 5px;
+`;
+
+const CopyIcon = styled(Icon)`
+  width: 16px;
+  height: 16px;
+  fill: #fff;
+  margin-left: 2px;
+  margin-right: 2px;
 `;
 
 const CenterLatInput = styled(Input)`
@@ -54,7 +65,7 @@ const CenterLngInput = styled(Input)`
 `;
 
 const ZoomInput = styled(Input)`
-  margin-bottom: 30px;
+  margin-bottom: 25px;
 `;
 
 const ButtonWrapper = styled.div`
@@ -86,7 +97,6 @@ const MapCenterAndZoomConfig = memo<Props & InjectedIntlProps>(
     const defaultLng = defaultLatLng[1];
     const defaultZoom = getZoomLevel(undefined, appConfig, mapConfig);
 
-    const [isInit, setIsInit] = useState(false);
     const [touched, setTouched] = useState(false);
     const [processing, setProcessing] = useState(false);
     const [errors, setErrors] = useState<{ [key: string]: any }>({});
@@ -97,7 +107,7 @@ const MapCenterAndZoomConfig = memo<Props & InjectedIntlProps>(
     });
 
     useEffect(() => {
-      if (!isNilOrError(appConfig) && mapConfig && !isInit) {
+      if (!isNilOrError(appConfig) && mapConfig) {
         const defaultLatLng = getCenter(undefined, appConfig, mapConfig);
         const defaultLat = defaultLatLng[0];
         const defaultLng = defaultLatLng[1];
@@ -111,9 +121,8 @@ const MapCenterAndZoomConfig = memo<Props & InjectedIntlProps>(
           },
           false
         );
-        setIsInit(true);
       }
-    }, [appConfig, mapConfig, isInit]);
+    }, [appConfig, mapConfig]);
 
     const validate = () => {
       const defaultLat = parseFloat(formValues.defaultLat as any);
@@ -197,7 +206,15 @@ const MapCenterAndZoomConfig = memo<Props & InjectedIntlProps>(
       <Container className={className || ''}>
         <SubSectionTitleWrapper>
           <StyledSubSectionTitle>
-            <FormattedMessage {...messages.mapDefaultCenterAndZoom} />
+            <FormattedMessage {...messages.mapCenterAndZoom} />
+            <StyledIconTooltip
+              content={
+                <FormattedMessage
+                  {...messages.mapCenterAndZoomTooltip}
+                  values={{ button: <CopyIcon name="save" /> }}
+                />
+              }
+            />
           </StyledSubSectionTitle>
         </SubSectionTitleWrapper>
 
@@ -229,6 +246,7 @@ const MapCenterAndZoomConfig = memo<Props & InjectedIntlProps>(
 
         <ButtonWrapper>
           <SaveButton
+            icon="save"
             buttonStyle="admin-dark"
             onClick={handleOnSave}
             processing={processing}

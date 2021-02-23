@@ -83,7 +83,7 @@ export const getLayerColor = (mapLayer: IMapLayerAttributes | undefined) => {
 
 export const getLayerIcon = (mapLayer: IMapLayerAttributes | undefined) => {
   const layerType = getLayerType(mapLayer);
-  let iconName: 'point' | 'line' | 'polygon' = 'polygon';
+  let iconName: 'point' | 'line' | 'rectangle' = 'rectangle';
 
   if (layerType === 'Point') {
     iconName = 'point';
