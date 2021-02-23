@@ -176,6 +176,10 @@ class Tenant < ApplicationRecord
     settings.dig('core', 'lifecycle_stage') == 'active'
   end
 
+  def just_churned?
+    active? && changed_lifecycle_stage
+  end
+
   private
 
   def create_app_configuration
