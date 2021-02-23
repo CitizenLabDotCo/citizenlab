@@ -25,6 +25,14 @@ namespace :nlp do
     end
   end
 
+  task :dump_nlp_tenants_to_nlp, [] => [:environment] do |_t, _args|
+    Tenant.all.each do |tn|
+      if (tn.configuration.settings('automatic_tagging', 'allowed') || tn.configuration.settings('geotagging', 'allowed') || tn.configuration.settings('similar_ideas', 'allowed'))
+        DumpTenantJob.perform_later tn
+      end
+    end
+  end
+
   task :similar_ideas, [] => [:environment] do |_t, _args|
     logs = []
     service = NLP::SimilarityService.new
