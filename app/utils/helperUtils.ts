@@ -3,6 +3,7 @@ import {
   Multiloc,
   GraphqlLocale,
   IParticipationContextType,
+  CLErrorsJSON,
 } from 'typings';
 import { isString } from 'util';
 import { trim } from 'lodash-es';
@@ -20,6 +21,10 @@ export function capitalizeParticipationContextType(
 
 export function isNilOrError(obj: any): obj is undefined | null | Error {
   return obj === undefined || obj === null || obj instanceof Error;
+}
+
+export function isApiError(obj: any): obj is CLErrorsJSON {
+  return (obj as CLErrorsJSON)?.json !== undefined;
 }
 
 export function isUndefinedOrError(obj: any): obj is undefined | Error {
