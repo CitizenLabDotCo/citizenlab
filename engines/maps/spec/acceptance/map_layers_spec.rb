@@ -41,13 +41,13 @@ resource 'Map Layers' do
   end
 
   shared_examples 'unauthorized POST, PATCH and DELETE map layer' do
-    post 'web_api/v1/projects/:project_id/map_config/layers' do
+    post 'web_api/v1/projects/:project_id/map_config/layers', document: false do
       example_request 'Cannot create a map config for a project' do
         expect(status).to eq 401
       end
     end
 
-    patch 'web_api/v1/projects/:project_id/map_config/layers/:id' do
+    patch 'web_api/v1/projects/:project_id/map_config/layers/:id', document: false do
       let(:layer) { map_config.layers.first }
       let(:id)    { layer.id }
 
@@ -56,7 +56,7 @@ resource 'Map Layers' do
       end
     end
 
-    patch 'web_api/v1/projects/:project_id/map_config/layers/:id/reorder' do
+    patch 'web_api/v1/projects/:project_id/map_config/layers/:id/reorder', document: false do
       let(:layer) { map_config.layers.first }
       let(:id)    { layer.id }
 
@@ -65,11 +65,11 @@ resource 'Map Layers' do
       end
     end
 
-    delete 'web_api/v1/projects/:project_id/map_config/layers/:id' do
+    delete 'web_api/v1/projects/:project_id/map_config/layers/:id', document: false do
       let(:layer) { map_config.layers.first }
       let(:id)    { layer.id }
 
-      example_request 'Cannot update the map config for a project' do
+      example_request 'Cannot delete the map config for a project' do
         expect(status).to eq 401
       end
     end
@@ -99,9 +99,9 @@ resource 'Map Layers' do
     post 'web_api/v1/projects/:project_id/map_config/layers' do
       with_options scope: :layer, required: true, with_example: true do
         parameter :title_multiloc,  'The name of the layer in multiple locales'
-        parameter :geojson,         'The GeoJSON object with all the specs for the layer', required: false
-        parameter :geojson_file,    'The GeoJSON file with all the specs for the layer', required: false
-        parameter :default_enabled, 'The setting that determines whether a laberl is visible'
+        parameter :geojson,         '[Option 1] The GeoJSON object with all the specs for the layer', required: false
+        parameter :geojson_file,    '[Option 2] The GeoJSON file with all the specs for the layer', required: false
+        parameter :default_enabled, 'The setting that determines whether a label is visible'
         parameter :marker_svg_url,  'The url for an svg marker [DEPRECATED, prefer GeoJSON properties instead]'
       end
 
@@ -165,7 +165,7 @@ resource 'Map Layers' do
       end
 
       context 'when passing no geojson object or file' do
-        example_request 'Fails to create a map layer' do
+        example_request 'Fails to update a map layer' do
           expect(status).to eq 422
         end
       end
@@ -176,7 +176,7 @@ resource 'Map Layers' do
         parameter :title_multiloc,  'The name of the layer in multiple locales'
         parameter :geojson,         'The GeoJSON object with all the specs for the layer', required: false
         parameter :geojson_file,    'The GeoJSON file with all the specs for the layer', required: false
-        parameter :default_enabled, 'The setting that determines whether a laberl is visible'
+        parameter :default_enabled, 'The setting that determines whether a label is visible'
         parameter :marker_svg_url,  'The url for an svg marker [DEPRECATED, prefer GeoJSON properties instead]'
       end
 
