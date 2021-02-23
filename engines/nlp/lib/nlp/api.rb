@@ -9,12 +9,14 @@ module NLP
 
     LONG_TIMEOUT = 2 * 60 # 2 minutes
 
+    delegate :post, :base_uri, :get, to: :class
+
     def initialize(base_uri)
-      self.class.base_uri(base_uri)
+      base_uri(base_uri)
     end
 
     def update_tenant(dump)
-      self.class.post(
+      post(
         '/v1/tenants',
         body: dump.to_json,
         headers: { 'Content-Type' => 'application/json' },
@@ -24,7 +26,7 @@ module NLP
 
     def similarity(tenant_id, idea_id, locale, options = {})
       options[:locale] = locale
-      resp = self.class.get(
+      resp = get(
         "/v1/tenants/#{tenant_id}/ideas/#{idea_id}/similarity",
         body: options.to_json,
         headers: { 'Content-Type' => 'application/json' },
@@ -39,7 +41,7 @@ module NLP
       body[:n_clusters] = options[:n_clusters] if options[:n_clusters]
       body[:max_depth]  = options[:max_depth]  if options[:max_depth]
 
-      resp = self.class.post(
+      resp = post(
         "/v1/tenants/#{tenant_id}/ideas/clustering",
         body: body.to_json,
         headers: { 'Content-Type' => 'application/json' },
@@ -52,7 +54,7 @@ module NLP
     end
 
     def ideas_classification(tenant_id, locale)
-      self.class.get(
+      get(
         "/v1/tenants/#{tenant_id}/#{locale}/ideas/classification",
         timeout: LONG_TIMEOUT
       )
@@ -64,7 +66,7 @@ module NLP
         texts: texts,
         locale: locale
       }
-      resp = self.class.post(
+      resp = post(
         '/v1/summarization',
         body: body.to_json,
         headers: { 'Content-Type' => 'application/json' },
@@ -74,7 +76,7 @@ module NLP
     end
 
     def tag_suggestions(body)
-      resp = self.class.post(
+      resp = post(
         '/v2/tag_suggestions',
         body: body.to_json,
         headers: { 'Content-Type' => 'application/json' },
@@ -84,7 +86,7 @@ module NLP
     end
 
     def zeroshot_classification(body)
-      resp = self.class.post(
+      resp = post(
         '/v2/zeroshot_classification',
         body: body.to_json,
         headers: { 'Content-Type' => 'application/json' },
@@ -94,7 +96,7 @@ module NLP
     end
 
     def cancel_task(task_id)
-      resp = self.class.get(
+      resp = get(
         "/v2/async_api/cancel/#{task_id}",
         headers: { 'Content-Type' => 'application/json' },
         timeout: LONG_TIMEOUT
@@ -103,7 +105,7 @@ module NLP
     end
 
     def status_task(task_id)
-      resp = self.class.get(
+      resp = get(
         "/v2/async_api/status/#{task_id}",
         headers: { 'Content-Type' => 'application/json' },
         timeout: LONG_TIMEOUT

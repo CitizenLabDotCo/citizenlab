@@ -2,7 +2,7 @@ module GeographicDashboard
   class NLPApiService < ::NLP::API
     def geotag(tenant_id, text, locale, options = {})
       body = options.merge(text: text, locale: locale)
-      resp = NLP::API.post(
+      resp = post(
         "/v1/tenants/#{tenant_id}/geotagging",
         body: body.to_json,
         headers: { 'Content-Type' => 'application/json' },
