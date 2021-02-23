@@ -27,7 +27,6 @@ module OutletRenderer
   private
 
   def outlet_renderable?(outlet_id, locals)
-    outlets.present? && outlets[outlet_id].respond_to?(:call) &&
-      outlets[outlet_id].call(locals) && (outlets[outlet_id].call(locals).keys & %i[partial locals]).any?
+    outlets.present? && outlets[outlet_id].respond_to?(:call) && outlets[outlet_id].call(locals)
   end
 end
