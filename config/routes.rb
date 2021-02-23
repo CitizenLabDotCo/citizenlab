@@ -116,9 +116,6 @@ Rails.application.routes.draw do
 
       resource :app_configuration, only: [:show, :update]
 
-      resources :tenants, only: [:update] do
-        get :current, on: :collection
-      end
       resources :pages do
         resources :files, defaults: {container_type: 'Page'}, shallow: false
         get 'by_slug/:slug', on: :collection, to: 'pages#by_slug'
