@@ -6,7 +6,7 @@ module Onboarding
     def current_campaign user
       raise ArgumentError unless user
       dismissals = CampaignDismissal.where(user: user).pluck(:campaign_name)
-      if Tenant.current.has_feature?('verification') && !user.verified && !dismissals.include?('verification')
+      if Tenant.current.feature_activated?('verification') && !user.verified && !dismissals.include?('verification')
         :verification
       elsif profile_incomplete?(user) && !dismissals.include?('complete_profile')
         :complete_profile
