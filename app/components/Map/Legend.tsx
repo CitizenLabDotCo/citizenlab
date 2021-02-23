@@ -24,6 +24,7 @@ const Item = styled.li`
   font-size: ${fontSizes.base}px;
   line-height: normal;
   display: flex;
+  align-items: center;
   flex: 1 0 calc(50% - 10px);
   margin-right: 10px;
 
@@ -34,7 +35,7 @@ const Item = styled.li`
   `}
 
   &:not(:last-child) {
-    margin-bottom: 12px;
+    margin-bottom: 15px;
   }
 
   ${media.smallerThanMinTablet`
@@ -43,8 +44,8 @@ const Item = styled.li`
 `;
 
 const ColorLabel = styled.div`
-  width: 20px;
-  height: 20px;
+  width: 19px;
+  height: 19px;
   background-color: ${(props) => props.color};
   margin-right: 10px;
   border-radius: ${(props: any) => props.theme.borderRadius};
@@ -57,8 +58,7 @@ const ColorLabel = styled.div`
 
 const StyledIcon = styled(Icon)<{ color: string }>`
   fill: ${(props) => props.color};
-  width: 20px;
-  height: 20px;
+  width: 19px;
   margin-right: 10px;
 `;
 
