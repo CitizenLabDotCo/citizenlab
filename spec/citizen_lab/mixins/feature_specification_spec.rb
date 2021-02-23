@@ -77,8 +77,8 @@ RSpec.describe CitizenLab::Mixins::FeatureSpecification do
           DESC
         end
 
-        add_setting 'max_nb_authors', schema: max_nb_authors_schema_
         add_setting 'live_edit', required: true, schema: live_edit_schema_
+        add_setting 'max_nb_authors', schema: max_nb_authors_schema_
       end
     end
 
@@ -95,7 +95,16 @@ RSpec.describe CitizenLab::Mixins::FeatureSpecification do
     end
 
     describe '.settings' do
+      let(:first_setting) { feature_spec.settings.first }
+
       it { expect(feature_spec.settings.length).to eq(2) }
+
+      it do
+        expect(first_setting).to have_attributes(
+          name: 'live_edit',
+          required: true,
+          schema: live_edit_schema)
+      end
     end
 
     describe '.required_settings' do
