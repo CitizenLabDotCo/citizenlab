@@ -137,7 +137,6 @@ exports.shortenedAppLocalePairs = {
   'hu-HU': 'Magyar',
   'ro-RO': 'Română',
   'pt-BR': 'Português',
-  ach: 'Acholi',
   'ar-SA': 'عربى',
 };
 // see https://www.ge.com/digital/documentation/predix-services/c_custom_locale_support.html
