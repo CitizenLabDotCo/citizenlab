@@ -2466,7 +2466,7 @@
   "components.admin.ServerError.genericServerError": "Algo pasó al cargar este contenido, por favor intentalo más tarde.",
   "containers.Admin.onboarding.HTMLDescription": "Esta página será tu guía",
   "containers.Admin.onboarding.HTMLTitle": "Bienvenido al panel de administración",
-  "containers.Admin.onboarding.decideArticle1Description2": "",
+  "containers.Admin.onboarding.decideArticle1Description2": "Add topics to inputs, move inputs from one phase to another, change their status or mark them as spam.",
   "containers.Admin.onboarding.decideArticle1Link": "/admin/ideas",
   "containers.Admin.onboarding.decideArticle2Description": "Obten un análisis inmediato y fácil de entender de lo que está pasando en la plataforma.",
   "containers.Admin.onboarding.decideArticle2Link": "/admin/dashboard",
