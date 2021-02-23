@@ -8,7 +8,7 @@
 #
 class WebApi::V1::IdeaStatusesController < ApplicationController
   before_action :set_idea_status, only: [:show]
-  skip_before_action :authenticate_user, only: [:indext, :show]
+  skip_before_action :authenticate_user, only: [:index, :show]
 
   def index
     @idea_statuses = policy_scope(IdeaStatus)
