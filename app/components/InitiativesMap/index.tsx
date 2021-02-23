@@ -40,7 +40,8 @@ const Container = styled.div`
 `;
 
 const StyledMap = styled(Map)`
-  height: 800px;
+  height: calc(100vh - 300px);
+  max-height: 750px;
 
   ${media.smallerThan1100px`
     height: calc(100vh - 180px);

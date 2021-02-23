@@ -54,17 +54,17 @@ const StyledMapConfigOverview = styled(MapConfigOverview)`
 
 const MapWrapper = styled.div`
   flex: 1;
-  height: calc(100vh - 250px);
-  max-height: 800px;
-  display: flex;
   margin-left: 60px;
   position: relative;
+  overflow: hidden;
+  border-radius: ${(props: any) => props.theme.borderRadius};
+  border: solid 1px #ccc;
 `;
 
 const StyledMap = styled(Map)`
   flex: 1;
-  height: 800px;
-  border: solid 1px #ccc;
+  height: calc(100vh - 300px);
+  max-height: 750px;
 
   ${media.smallerThan1100px`
     height: calc(100vh - 180px);
