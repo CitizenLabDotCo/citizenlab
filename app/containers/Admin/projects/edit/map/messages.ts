@@ -114,9 +114,14 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.MapTab.editLayer',
     defaultMessage: 'Edit layer',
   },
-  mapDefaultCenterAndZoom: {
-    id: 'app.containers.AdminPage.ProjectEdit.MapTab.mapDefaultCenterAndZoom',
-    defaultMessage: 'Map center & zoom',
+  mapCenterAndZoom: {
+    id: 'app.containers.AdminPage.ProjectEdit.MapTab.mapCenterAndZoom',
+    defaultMessage: 'Map default center & zoom',
+  },
+  mapCenterAndZoomTooltip: {
+    id: 'app.containers.AdminPage.ProjectEdit.MapTab.mapCenterAndZoomTooltip',
+    defaultMessage:
+      'The default center point and zoom level of the map. Manually adjust the values below, or click on the {button} button in the top right corner of the map to save the current center point and zoom level of the map as the default values.',
   },
   deleteConfirmation: {
     id: 'app.components.admin.PostManager.deleteConfirmation',
@@ -128,22 +133,26 @@ export default defineMessages({
   },
   goToDefaultMapView: {
     id: 'app.components.admin.PostManager.goToDefaultMapView',
-    defaultMessage: `Go to default map center & zoom`,
+    defaultMessage: `Pan & zoom to the default center point & zoom level`,
+  },
+  setAsDefaultMapView: {
+    id: 'app.components.admin.PostManager.setAsDefaultMapView',
+    defaultMessage: `Save the current center point & zoom level as the map defaults`,
   },
   currentLat: {
     id: 'app.components.admin.PostManager.currentLat',
-    defaultMessage: `Current latitude`,
+    defaultMessage: `Center latitude`,
   },
   currentLng: {
     id: 'app.components.admin.PostManager.currentLng',
-    defaultMessage: `Current longitude`,
+    defaultMessage: `Center longitude`,
   },
   currentZoomLevel: {
     id: 'app.components.admin.PostManager.currentZoomLevel',
-    defaultMessage: `Current zoom level`,
+    defaultMessage: `Zoom level`,
   },
-  copy: {
-    id: 'app.components.admin.PostManager.copy',
-    defaultMessage: `copy`,
+  saved: {
+    id: 'app.components.admin.PostManager.saved',
+    defaultMessage: `Saved`,
   },
 });

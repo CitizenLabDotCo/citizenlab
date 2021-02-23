@@ -1,5 +1,6 @@
-import React, { memo, useEffect } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import { withRouter, WithRouterProps } from 'react-router';
+import { isEqual } from 'lodash-es';
 
 // components
 import Map from 'components/Map';
@@ -13,10 +14,13 @@ import useAppConfiguration from 'hooks/useAppConfiguration';
 import useMapConfig from 'hooks/useMapConfig';
 
 // services
-import { createProjectMapConfig } from 'services/mapConfigs';
+import {
+  createProjectMapConfig,
+  updateProjectMapConfig,
+} from 'services/mapConfigs';
 
 // events
-import { setMapLatLngZoom } from 'components/Map/events';
+import { setMapLatLngZoom, mapCenter$, mapZoom$ } from 'components/Map/events';
 
 // utils
 import { getCenter, getZoomLevel, getTileProvider } from 'utils/map';
@@ -61,11 +65,20 @@ const StyledMap = styled(Map)`
   height: 100%;
 `;
 
-const DefaultMapViewButtonWrapper = styled.div`
+const GoToDefaultViewportButtonWrapper = styled.div`
   position: absolute;
   top: 80px;
   left: 10px;
   z-index: 314159;
+  background: #fff;
+`;
+
+const SetAsDefaultViewportButtonWrapper = styled.div`
+  position: absolute;
+  top: 122px;
+  left: 10px;
+  z-index: 314159;
+  background: #fff;
 `;
 
 interface Props {
@@ -77,17 +90,63 @@ const MapPage = memo<Props & WithRouterProps & InjectedIntlProps>(
     const appConfig = useAppConfiguration();
     const mapConfig = useMapConfig({ projectId });
 
-    const goToDefaultMapView = () => {
-      const defaultLatLng = getCenter(undefined, appConfig, mapConfig);
-      const defaultLat = defaultLatLng[0];
-      const defaultLng = defaultLatLng[1];
-      const defaultZoom = getZoomLevel(undefined, appConfig, mapConfig);
+    const defaultLatLng = getCenter(undefined, appConfig, mapConfig);
+    const defaultLat = parseFloat(defaultLatLng[0]);
+    const defaultLng = parseFloat(defaultLatLng[1]);
+    const defaultZoom = getZoomLevel(undefined, appConfig, mapConfig);
+    const defaultTileProvider = getTileProvider(appConfig, mapConfig);
 
-      if (defaultLat && defaultLng && defaultZoom) {
-        setMapLatLngZoom({
-          lat: parseFloat(defaultLat),
-          lng: parseFloat(defaultLng),
-          zoom: defaultZoom,
+    const [currentLat, setCurrentLat] = useState<number | null>(null);
+    const [currentLng, setCurrentLng] = useState<number | null>(null);
+    const [currentZoom, setCurrentZoom] = useState<number | null>(null);
+
+    const disabled = isEqual(
+      [defaultLat.toFixed(4), defaultLng.toFixed(4), defaultZoom],
+      [currentLat?.toFixed(4), currentLng?.toFixed(4), currentZoom]
+    );
+
+    useEffect(() => {
+      const subscriptions = [
+        mapCenter$.subscribe((center) => {
+          if (center) {
+            setCurrentLat(center[0]);
+            setCurrentLng(center[1]);
+          }
+        }),
+        mapZoom$.subscribe((zoom) => {
+          if (zoom !== null) {
+            setCurrentZoom(zoom);
+          }
+        }),
+      ];
+
+      return () =>
+        subscriptions.forEach((subscription) => subscription.unsubscribe());
+    }, []);
+
+    const goToDefaultMapView = () => {
+      setMapLatLngZoom({
+        lat: defaultLat,
+        lng: defaultLng,
+        zoom: defaultZoom,
+      });
+    };
+
+    const setAsDefaultMapView = async (event: React.FormEvent) => {
+      event.preventDefault();
+
+      if (
+        mapConfig &&
+        currentLat !== null &&
+        currentLng !== null &&
+        currentZoom !== null
+      ) {
+        updateProjectMapConfig(projectId, mapConfig.id, {
+          center_geojson: {
+            type: 'Point',
+            coordinates: [currentLng, currentLat],
+          },
+          zoom_level: currentZoom.toString(),
         });
       }
     };
@@ -95,26 +154,21 @@ const MapPage = memo<Props & WithRouterProps & InjectedIntlProps>(
     useEffect(() => {
       // create project mapConfig if it doesn't yet exist
       if (projectId && !isNilOrError(appConfig) && mapConfig === null) {
-        const zoom_level = getZoomLevel(
-          undefined,
-          appConfig,
-          mapConfig
-        ).toString();
-        const center = getCenter(undefined, appConfig, mapConfig);
-        const centerLat = center[0];
-        const centerLong = center[1];
-        const tile_provider = getTileProvider(appConfig, mapConfig);
-
         createProjectMapConfig(projectId, {
-          zoom_level,
-          tile_provider,
+          tile_provider: defaultTileProvider,
           center_geojson: {
             type: 'Point',
-            coordinates: [centerLat, centerLong],
+            coordinates: [defaultLat, defaultLng],
           },
+          zoom_level: defaultZoom.toString(),
         });
       }
     }, [projectId, appConfig, mapConfig]);
+
+    console.log(
+      [defaultLat, defaultLng, defaultZoom],
+      [currentLat, currentLng, currentZoom]
+    );
 
     if (projectId && mapConfig?.id) {
       return (
@@ -122,22 +176,47 @@ const MapPage = memo<Props & WithRouterProps & InjectedIntlProps>(
           <StyledMapConfigOverview projectId={projectId} />
           <MapWrapper>
             <StyledMap projectId={projectId} hideLegend={true} />
-            <DefaultMapViewButtonWrapper>
+            <GoToDefaultViewportButtonWrapper>
               <Tippy
+                maxWidth="250px"
                 placement="right"
                 content={formatMessage(messages.goToDefaultMapView)}
-                hideOnClick={false}
+                hideOnClick={true}
+                disabled={disabled}
               >
                 <div>
                   <Button
                     icon="mapCenter"
                     buttonStyle="white"
-                    padding="8px"
+                    padding="7px"
+                    boxShadow="0px 2px 2px rgba(0, 0, 0, 0.2)"
                     onClick={goToDefaultMapView}
+                    disabled={disabled}
                   />
                 </div>
               </Tippy>
-            </DefaultMapViewButtonWrapper>
+            </GoToDefaultViewportButtonWrapper>
+            <SetAsDefaultViewportButtonWrapper>
+              <Tippy
+                maxWidth="250px"
+                placement="right"
+                content={formatMessage(messages.setAsDefaultMapView)}
+                hideOnClick={true}
+                disabled={disabled}
+              >
+                <div>
+                  <Button
+                    // icon={saved ? 'checkmark' : 'save'}
+                    icon="save"
+                    buttonStyle="white"
+                    padding="7px"
+                    boxShadow="0px 2px 2px rgba(0, 0, 0, 0.2)"
+                    onClick={setAsDefaultMapView}
+                    disabled={disabled}
+                  />
+                </div>
+              </Tippy>
+            </SetAsDefaultViewportButtonWrapper>
           </MapWrapper>
         </Container>
       );

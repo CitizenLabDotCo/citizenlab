@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
-import Leaflet from 'leaflet';
+import { popup, LatLng, Map as LeafletMap } from 'leaflet';
 import { withRouter, WithRouterProps } from 'react-router';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -71,7 +71,7 @@ interface Props extends InputProps, DataProps {}
 interface State {
   points: Point[];
   selectedIdeaId: string | null;
-  selectedLatLng: Leaflet.LatLng | null;
+  selectedLatLng: LatLng | null;
 }
 
 export class IdeasMap extends PureComponent<Props & WithRouterProps, State> {
@@ -122,7 +122,7 @@ export class IdeasMap extends PureComponent<Props & WithRouterProps, State> {
     this.setState({ selectedIdeaId: null });
   };
 
-  onMapClick = (map: Leaflet.Map, position: Leaflet.LatLng) => {
+  onMapClick = (map: LeafletMap, position: LatLng) => {
     this.setState({ selectedLatLng: position });
     const { project, phase } = this.props;
     const ideaPostingEnabled =
@@ -130,10 +130,7 @@ export class IdeasMap extends PureComponent<Props & WithRouterProps, State> {
       (!isNilOrError(phase) && phase.attributes.posting_enabled);
 
     if (ideaPostingEnabled && this.ideaButtonRef) {
-      Leaflet.popup()
-        .setLatLng(position)
-        .setContent(this.ideaButtonRef)
-        .openOn(map);
+      popup().setLatLng(position).setContent(this.ideaButtonRef).openOn(map);
     }
 
     return;

@@ -5,7 +5,7 @@ import {
   refCount,
 } from 'rxjs/operators';
 import eventEmitter from 'utils/eventEmitter';
-import L from 'leaflet';
+import { LatLngExpression } from 'leaflet';
 
 enum events {
   mapCenterChange = 'mapCenterChange',
@@ -15,12 +15,12 @@ enum events {
 
 // ----------------------------------------------------------------------------------------------
 
-export function broadcastMapCenter(center: L.LatLngExpression | null) {
-  eventEmitter.emit<L.LatLngExpression | null>(events.mapCenterChange, center);
+export function broadcastMapCenter(center: LatLngExpression | null) {
+  eventEmitter.emit<LatLngExpression | null>(events.mapCenterChange, center);
 }
 
 export const mapCenter$ = eventEmitter
-  .observeEvent<L.LatLngExpression | null>(events.mapCenterChange)
+  .observeEvent<LatLngExpression | null>(events.mapCenterChange)
   .pipe(
     map(({ eventValue }) => eventValue),
     distinctUntilChanged((x, y) => x === y),
