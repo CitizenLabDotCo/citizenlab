@@ -551,13 +551,33 @@ resource "Users" do
         end
         let(:mortal_user) { create(:user) }
         let(:id) { mortal_user.id }
-        let(:roles) { [type: 'admin']}
+        let(:roles) { [type: 'admin'] }
 
         example_request "Make a user admin, as an admin" do
           expect(response_status).to eq 200
           json_response = json_parse(response_body)
           expect(json_response.dig(:data, :id)).to eq id
           expect(json_response.dig(:data, :attributes, :roles)).to eq [{type: 'admin'}]
+        end
+      end
+
+      describe do
+        before do
+          @user = create(:admin)
+          token = Knock::AuthToken.new(payload: @user.to_token_payload).token
+          header 'Authorization', "Bearer #{token}"
+        end
+        let(:assignee) { create(:admin) }
+        let!(:assigned_idea) { create(:idea, assignee: assignee) }
+        let!(:assigned_initiative) { create(:initiative, assignee: assignee) }
+        let(:id) { assignee.id }
+        let(:roles) { [] }
+
+        example_request "Remove user as assignee when losing admin rights" do
+          expect(response_status).to eq 200
+          expect(assignee.reload.admin?).to be_falsey
+          expect(assigned_idea.reload.assignee_id).not_to eq id
+          expect(assigned_initiative.reload.assignee_id).not_to eq id
         end
       end
 
