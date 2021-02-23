@@ -1,7 +1,7 @@
 require 'rails_helper'
 
-describe SideFxTenantService do
-  let(:service) { SideFxTenantService.new }
+describe MultiTenancy::SideFxTenantService do
+  let(:service) { MultiTenancy::SideFxTenantService.new }
   let(:current_user) { create(:user) }
 
   describe 'after_create' do

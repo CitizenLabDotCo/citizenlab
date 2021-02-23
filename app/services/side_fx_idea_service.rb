@@ -105,6 +105,7 @@ class SideFxIdeaService
 
   def log_activity_jobs_after_published(idea, user)
     LogActivityJob.set(wait: 20.seconds).perform_later(idea, 'published', user, idea.published_at.to_i)
+<<<<<<< HEAD
     scrape_facebook(idea)
     return unless first_user_idea?(idea, user)
 
@@ -114,5 +115,10 @@ class SideFxIdeaService
   def scrape_facebook(idea)
     url = Frontend::UrlService.new.model_to_url(idea)
     Seo::ScrapeFacebookJob.perform_later(url)
+=======
+    return unless first_user_idea?(idea, user)
+
+    LogActivityJob.set(wait: 20.seconds).perform_later(idea, 'first_published_by_user', user, idea.published_at.to_i)
+>>>>>>> 19700329af3ce097a9b75a81decdadba4bc70b86
   end
 end

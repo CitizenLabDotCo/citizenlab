@@ -5,17 +5,11 @@ class Tenant < ApplicationRecord
   mount_base64_uploader :header_bg, TenantHeaderBgUploader
   mount_base64_uploader :favicon, TenantFaviconUploader
 
+  attr_accessor :config_sync_enabled, :auto_config
+
   validates :name, :host, presence: true
   validates :host, uniqueness: true, exclusion: { in: %w(schema-migrations public) }
   validate :valid_host_format
-
-  validates :settings, presence: true, json: {
-    schema: -> { AppConfiguration.settings_json_schema_str },
-    message: ->(errors) { errors.map{|e| {fragment: e[:fragment], error: e[:failed_attribute], human_message: e[:message]} } },
-    options: {
-      errors_as_objects: true
-    }
-  }
 
   validate(on: :update) do |record|
     missing_locales = switch do
@@ -26,10 +20,15 @@ class Tenant < ApplicationRecord
     end
   end
 
-  after_create :create_apartment_tenant, :create_app_configuration
+  after_create :create_apartment_tenant
+  after_create :create_app_configuration, if: :auto_config
+
   after_destroy :delete_apartment_tenant
+
   after_update :update_tenant_schema, if: :saved_change_to_host?
-  after_update :update_app_configuration
+  after_update :update_app_configuration, if: :config_sync_enabled
+
+  after_initialize :custom_initialization
 
   before_validation :validate_missing_feature_dependencies
   before_validation :ensure_style
@@ -73,13 +72,30 @@ class Tenant < ApplicationRecord
     AppConfiguration.available_style_attributes
   end
 
+  def custom_initialization
+    @config_sync_enabled = true
+    @auto_config = true
+  end
+
+  def disable_auto_config
+    self.auto_config = false
+    self
+  end
+
+  def disable_config_sync
+    self.config_sync_enabled = false
+    self
+  end
+
+  # @return [String, nil] +nil+ if the tenant has not been persisted yet.
+  #   Otherwise, the name of the corresponding PG schema.
   def schema_name
     # The reason for using `host_was` and not `host` is
     # because the schema name would be wrong when updating
-    # the tenant's host. `host_was` should always 
+    # the tenant's host. `host_was` should always
     # correspond to the value as it currently is in the
     # database.
-    self.host_was&.gsub(/\./, "_")
+    host_was&.gsub(/\./, '_')
   end
 
   def cleanup_settings
@@ -137,7 +153,27 @@ class Tenant < ApplicationRecord
   end
 
   def switch
+    raise Apartment::TenantNotFound unless schema_name
     Apartment::Tenant.switch(schema_name) { yield }
+  end
+
+  def switch!
+    raise Apartment::TenantNotFound unless schema_name
+    Apartment::Tenant.switch!(schema_name)
+  end
+
+  def lifecycle_stage_changed?
+    return false unless settings_previously_changed?
+
+    old_settings = settings_previous_change[0]
+    new_settings = settings
+
+    lifecycle_change_diff = [old_settings, new_settings].map { |s| s&.dig('core', 'lifecycle_stage') }
+    lifecycle_change_diff.uniq.size > 1
+  end
+
+  def active?
+    settings.dig('core', 'lifecycle_stage') == 'active'
   end
 
   private
@@ -159,7 +195,6 @@ class Tenant < ApplicationRecord
   end
 
   def update_app_configuration
-    return if caller.any? { |s| s.match?(/app_configuration\.rb.*`update_tenant'/) }
     switch do
       config = AppConfiguration.instance
       attrs_delta = attributes_delta(self, config)
@@ -168,7 +203,7 @@ class Tenant < ApplicationRecord
       config.remove_logo! if logo_previously_changed? && logo.blank?
       config.remove_favicon! if favicon_previously_changed? && favicon.blank?
       config.remove_header_bg! if header_bg_previously_changed? && header_bg.blank?
-      config.save
+      config.disable_tenant_sync.save
     end
   end
 
@@ -228,5 +263,4 @@ class Tenant < ApplicationRecord
   def ensure_style
     self.style ||= {}
   end
-
 end
