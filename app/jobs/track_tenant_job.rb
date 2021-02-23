@@ -6,7 +6,7 @@ class TrackTenantJob < ApplicationJob
   def run(tenant)
     return unless tenant
 
-    TrackIntercomService.new.identify_tenant(tenant) if tenant.has_feature?('intercom')
-    TrackSegmentService.new.identify_tenant(tenant)  if tenant.has_feature?('segment')
+    TrackIntercomService.new.identify_tenant(tenant) if tenant.feature_activated?('intercom')
+    TrackSegmentService.new.identify_tenant(tenant)  if tenant.feature_activated?('segment')
   end
 end
