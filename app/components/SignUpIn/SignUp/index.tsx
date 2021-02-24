@@ -314,8 +314,10 @@ class SignUp extends PureComponent<Props & InjectedIntlProps, State> {
     clHistory.push('/sign-in');
   };
 
-  onResize = (_width, height) => {
-    this.setState({ headerHeight: `${Math.round(height) + 2}px` });
+  onResize = (_width: number | undefined, height: number | undefined) => {
+    if (height) {
+      this.setState({ headerHeight: `${Math.round(height) + 2}px` });
+    }
   };
 
   setRef = (element: HTMLDivElement) => {

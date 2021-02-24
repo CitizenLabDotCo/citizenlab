@@ -146,8 +146,13 @@ const ProjectFolderDescription = memo<Props & InjectedIntlProps>(
       []
     );
 
-    const onResize = (_width, height) => {
-      setDescriptionHeight(height);
+    const onResize = (
+      _width: number | undefined,
+      height: number | undefined
+    ) => {
+      if (height) {
+        setDescriptionHeight(height);
+      }
     };
 
     if (!isNilOrError(projectFolder)) {
