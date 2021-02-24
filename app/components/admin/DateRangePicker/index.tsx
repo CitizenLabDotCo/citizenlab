@@ -16,7 +16,10 @@ import { InjectedIntlProps } from 'react-intl';
 import { omit } from 'lodash-es';
 
 interface Props
-  extends Omit<DateRangePickerShape, 'focusedInput' | 'onFocusChange'> {
+  extends Omit<
+    DateRangePickerShape,
+    'focusedInput' | 'onFocusChange' | 'renderMonthText'
+  > {
   className?: string;
 }
 
