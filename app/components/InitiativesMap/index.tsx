@@ -27,7 +27,6 @@ import messages from './messages';
 
 // Styling
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
 
 // Typing
 import { IGeotaggedInitiativeData } from 'services/initiatives';
@@ -37,15 +36,6 @@ const Container = styled.div`
   > .create-initiative-wrapper {
     display: none;
   }
-`;
-
-const StyledMap = styled(Map)`
-  height: calc(100vh - 300px);
-  max-height: 750px;
-
-  ${media.smallerThan1100px`
-    height: calc(100vh - 180px);
-  `}
 `;
 
 const StyledWarning = styled(Warning)`
@@ -171,7 +161,7 @@ export class InitiativesMap extends PureComponent<
             <StyledWarning text={this.noInitiativesWithLocationMessage} />
           )}
 
-        <StyledMap
+        <Map
           points={points}
           onMarkerClick={this.toggleInitiative}
           boxContent={

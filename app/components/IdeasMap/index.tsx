@@ -30,7 +30,6 @@ import messages from './messages';
 
 // Styling
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 
 const Container = styled.div`
@@ -40,15 +39,6 @@ const Container = styled.div`
 `;
 
 const IdeaButtonWrapper = styled.div``;
-
-const StyledMap = styled(Map)`
-  height: calc(100vh - 300px);
-  max-height: 750px;
-
-  ${media.smallerThan1100px`
-    height: calc(100vh - 180px);
-  `}
-`;
 
 const StyledWarning = styled(Warning)`
   margin-bottom: 10px;
@@ -163,7 +153,7 @@ export class IdeasMap extends PureComponent<Props & WithRouterProps, State> {
           <FormattedMessage {...messages.a11y_mapTitle} />
         </ScreenReaderOnly>
 
-        <StyledMap
+        <Map
           points={points}
           onMarkerClick={this.toggleIdea}
           onMapClick={this.onMapClick}

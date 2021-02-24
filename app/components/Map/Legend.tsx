@@ -8,7 +8,7 @@ import { getLayerColor, getLayerIcon } from 'utils/map';
 import { Icon, IconNames } from 'cl2-component-library';
 
 const Container = styled.div`
-  padding: 25px;
+  padding: 23px;
   padding-bottom: 10px;
 `;
 
@@ -28,7 +28,7 @@ const Item = styled.li`
   align-items: center;
   flex: 1 0 calc(50% - 10px);
   margin-right: 8px;
-  margin-bottom: 17px;
+  margin-bottom: 15px;
 
   ${isRtl`
     margin-right: 0;
@@ -42,8 +42,8 @@ const Item = styled.li`
 `;
 
 const ColorLabel = styled.div`
-  width: 19px;
-  height: 19px;
+  width: 18px;
+  height: 18px;
   background-color: ${(props) => props.color};
   margin-right: 10px;
   border-radius: ${(props: any) => props.theme.borderRadius};
@@ -56,7 +56,7 @@ const ColorLabel = styled.div`
 
 const StyledIcon = styled(Icon)<{ color: string }>`
   fill: ${(props) => props.color};
-  width: 19px;
+  width: 18px;
   margin-right: 10px;
 `;
 

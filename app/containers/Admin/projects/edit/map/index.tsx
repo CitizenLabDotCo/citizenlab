@@ -33,7 +33,6 @@ import messages from './messages';
 
 // styling
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
 
 const Loading = styled.div`
   width: 100%;
@@ -56,23 +55,6 @@ const MapWrapper = styled.div`
   flex: 1;
   margin-left: 60px;
   position: relative;
-
-  & .mapcontainer {
-    box-shadow: none !important;
-  }
-
-  & .legendcontainer {
-    border: solid 1px #ccc;
-  }
-`;
-
-const StyledMap = styled(Map)`
-  height: calc(100vh - 300px);
-  max-height: 750px;
-
-  ${media.smallerThan1100px`
-    height: calc(100vh - 180px);
-  `}
 `;
 
 const GoToDefaultViewportButtonWrapper = styled.div`
@@ -182,7 +164,7 @@ const MapPage = memo<Props & WithRouterProps & InjectedIntlProps>(
         <Container className={className || ''}>
           <StyledMapConfigOverview projectId={projectId} />
           <MapWrapper>
-            <StyledMap projectId={projectId} />
+            <Map projectId={projectId} />
             <GoToDefaultViewportButtonWrapper>
               <Tippy
                 maxWidth="250px"

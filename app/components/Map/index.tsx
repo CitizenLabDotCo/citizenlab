@@ -49,7 +49,7 @@ import {
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
 
 // styling
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { darken } from 'polished';
 import { media, defaultOutline, defaultCardStyle } from 'utils/styleUtils';
 import ideaMarkerIcon from './idea-marker.svg';
@@ -74,19 +74,16 @@ const fallbackLegendMarker = L.icon({
 });
 
 const Container = styled.div`
-  width: 100%;
-  height: 100%;
   display: flex;
   align-items: stretch;
   flex-direction: column;
-  ${defaultCardStyle}
+  ${defaultCardStyle};
+  border: solid 1px #ccc;
 `;
 
 const MapWrapper = styled.div`
   flex: 1;
   display: flex;
-  align-items: stretch;
-  justify-content: stretch;
   position: relative;
 `;
 
@@ -142,13 +139,28 @@ const CloseIcon = styled(Icon)`
   fill: #000;
 `;
 
-const LeafletMapContainer = styled.div`
+const LeafletMapContainer = styled.div<{ mapHeight: string | undefined }>`
   flex: 1;
   overflow: hidden;
 
-  .leaflet-container {
-    height: 100%;
-  }
+  ${(props) => {
+    const { mapHeight } = props;
+
+    if (mapHeight) {
+      return css`
+        height: ${mapHeight};
+      `;
+    }
+
+    return css`
+      height: calc(100vh - 300px);
+      max-height: 700px;
+
+      ${media.smallerThan1100px`
+        height: calc(100vh - 180px);
+      `}
+    `;
+  }}
 
   .marker-cluster-custom {
     background: #004949;
@@ -172,6 +184,7 @@ interface Props {
   points?: Point[];
   areas?: GeoJSON.Polygon[];
   zoom?: number;
+  mapHeight?: string;
   boxContent?: JSX.Element | null;
   onBoxClose?: (event: React.FormEvent) => void;
   onMarkerClick?: (id: string, data: any) => void;
@@ -186,6 +199,7 @@ const Map = memo<Props & InjectedLocalized>(
     projectId,
     centerCoordinates,
     zoom,
+    mapHeight,
     points,
     boxContent,
     onBoxClose,
@@ -207,9 +221,6 @@ const Map = memo<Props & InjectedLocalized>(
     const [defaultCenter, setDefaultCenter] = useState(
       getCenter(centerCoordinates, appConfig, mapConfig)
     );
-    // const [defaultZoom, setDefaultZoom] = useState(
-    //   getZoomLevel(zoom, appConfig, mapConfig)
-    // );
     const [markers, setMarkers] = useState<L.Marker<any>[]>([]);
     const [
       markerClusterGroup,
@@ -252,11 +263,6 @@ const Map = memo<Props & InjectedLocalized>(
           : defaultCenter
       );
     }, [appConfig, mapConfig, centerCoordinates]);
-
-    // set default zoom
-    // useEffect(() => {
-    //   setDefaultZoom(getZoomLevel(zoom, appConfig, mapConfig));
-    // }, [appConfig, mapConfig, zoom]);
 
     // init map
     useEffect(() => {
@@ -454,8 +460,8 @@ const Map = memo<Props & InjectedLocalized>(
     };
 
     return (
-      <Container className="mapcontainer">
-        <MapWrapper className={className || ''}>
+      <Container className={className || ''}>
+        <MapWrapper>
           {!isNilOrError(boxContent) && (
             <BoxContainer>
               <CloseButton onClick={handleBoxOnClose}>
@@ -466,7 +472,11 @@ const Map = memo<Props & InjectedLocalized>(
             </BoxContainer>
           )}
 
-          <LeafletMapContainer id="mapid" className="e2e-map" />
+          <LeafletMapContainer
+            id="mapid"
+            className="e2e-map"
+            mapHeight={mapHeight}
+          />
         </MapWrapper>
         {projectId && !hideLegend && <Legend projectId={projectId} />}
       </Container>
