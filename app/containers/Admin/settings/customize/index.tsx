@@ -435,6 +435,23 @@ class SettingsCustomizeTab extends PureComponent<
     });
   };
 
+  handleProjectHeaderOnChange = (projectHeader: Multiloc) => {
+    this.setState((state) => {
+      return {
+        attributesDiff: {
+          ...state.attributesDiff,
+          settings: {
+            ...get(state.attributesDiff, 'settings', {}),
+            core: {
+              ...get(state.attributesDiff, 'settings.core', {}),
+              currently_working_on_text: projectHeader,
+            },
+          },
+        },
+      };
+    });
+  };
+
   /*
   Below values are intentionally defined outside of render() for better performance
   because references stay the same this way, e.g. onClick={this.handleLogoOnAdd} vs onClick={this.handleUploadOnAdd('logo')},
@@ -657,6 +674,32 @@ class SettingsCustomizeTab extends PureComponent<
                 }
                 label={formatMessage(messages.bannerHeaderSignedIn)}
                 onChange={this.handleBannerHeaderSignedInOnChange}
+                errorMultiloc={subtitleError}
+              />
+            </SectionField>
+          </Section>
+
+          <Section key={'project_header'}>
+            <SubSectionTitle>
+              <FormattedMessage {...messages.project_header} />
+              <IconTooltip
+                content={formatMessage(messages.project_header_tooltip)}
+              />
+            </SubSectionTitle>
+            <SectionField>
+              <InputMultilocWithLocaleSwitcher
+                type="text"
+                valueMultiloc={
+                  get(
+                    attributesDiff,
+                    'settings.core.currently_working_on_text'
+                  ) ||
+                  get(
+                    tenant,
+                    'data.attributes.settings.core.currently_working_on_text'
+                  )
+                }
+                onChange={this.handleProjectHeaderOnChange}
                 errorMultiloc={subtitleError}
               />
             </SectionField>
