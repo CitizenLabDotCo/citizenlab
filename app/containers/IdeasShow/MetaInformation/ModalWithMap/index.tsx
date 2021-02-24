@@ -41,6 +41,7 @@ const ModalWithMap = ({
       opened={isOpened}
       close={onCloseModal}
       header={<Location>{address}</Location>}
+      width={1150}
     >
       <Suspense fallback={<Spinner />}>
         <Container>
