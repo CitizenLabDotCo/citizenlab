@@ -29,4 +29,3 @@ module MultiTenancy
 end
 
 TrackSegmentService.prepend(MultiTenancy::Patches::TrackSegmentService)
-

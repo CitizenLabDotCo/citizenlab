@@ -1,11 +1,12 @@
-require "rails_helper"
+# frozen_string_literal: true
+
+require 'rails_helper'
 
 describe TrackIntercomService do
   let(:intercom) { double(INTERCOM_CLIENT).as_null_object }
-  let(:service) { TrackIntercomService.new(intercom) }
+  let(:service) { described_class.new(intercom) }
 
-  describe "identify_user" do
-
+  describe 'identify_user' do
     it "doesn't interact with Intercom when the given user is not an admin or moderator" do
       user = create(:user)
       super_admin = create(:super_admin)
@@ -23,7 +24,7 @@ describe TrackIntercomService do
       expect(intercom).to receive(:contacts).twice.and_return(contacts_api)
 
       expect(contacts_api).to receive(:search)
-        .and_return(OpenStruct.new({count: 0}))
+        .and_return(OpenStruct.new({ count: 0 }))
 
       _contact = double.as_null_object
       expect(contacts_api).to receive(:create).with({
@@ -46,7 +47,7 @@ describe TrackIntercomService do
       service.identify_user(user)
     end
 
-    it "updates an Intercom contact if it already exist" do
+    it 'updates an Intercom contact if it already exist' do
       user = create(:admin)
 
       contacts_api = double
@@ -54,7 +55,7 @@ describe TrackIntercomService do
 
       contact = double.as_null_object
       expect(contacts_api).to receive(:search)
-        .and_return(double({count: 1, :[] => contact}))
+        .and_return(double({ count: 1, :[] => contact }))
 
       expect(contact).to receive(:email=).with(user.email)
       expect(contact).to receive(:name=).with("#{user.first_name} #{user.last_name}")
@@ -73,11 +74,9 @@ describe TrackIntercomService do
 
       service.identify_user(user)
     end
-
   end
 
-  describe "track_activity" do
-
+  describe 'track_activity' do
     it "doesn't interact with Intercom when the given user is not an admin or moderator" do
       user = create(:user)
       super_admin = create(:super_admin)
@@ -86,7 +85,7 @@ describe TrackIntercomService do
       service.track_activity(build(:activity, user: super_admin))
     end
 
-    it "sends the activity to Intercom" do
+    it 'sends the activity to Intercom' do
       admin = create(:admin)
       activity = build(:activity, user: admin)
 

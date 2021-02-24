@@ -7,11 +7,11 @@ module MultiTenancy
     def tenant_properties(tenant = Tenant.current)
       app_config = tenant.configuration
       {
-        tenantId:               tenant.id,
-        tenantName:             tenant.name,
-        tenantHost:             tenant.host,
+        tenantId: tenant.id,
+        tenantName: tenant.name,
+        tenantHost: tenant.host,
         tenantOrganizationType: app_config.settings('core', 'organization_type'),
-        tenantLifecycleStage:   app_config.settings('core', 'lifecycle_stage'),
+        tenantLifecycleStage: app_config.settings('core', 'lifecycle_stage')
       }
     end
 

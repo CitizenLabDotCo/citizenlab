@@ -1,12 +1,12 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe PublishActivityToRabbitJob, type: :job do
-  
-  subject(:job) { PublishActivityToRabbitJob.new }
+  subject(:job) { described_class.new }
 
   describe '#perform' do
-
-    it "generates an event with the desired content" do
+    it 'generates an event with the desired content' do
       user = create(:user)
       comment = create(:comment)
       activity = create(:activity, item: comment, action: 'created', user: user)
@@ -26,7 +26,5 @@ RSpec.describe PublishActivityToRabbitJob, type: :job do
 
       job.perform activity
     end
-
   end
 end
-
