@@ -32,14 +32,14 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.tabCustomize',
     defaultMessage: 'Customize',
   },
-  subtitleCustomize: {
-    id: 'app.containers.AdminPage.SettingsPage.subtitleCustomize',
+  subtitleHomepageStyle: {
+    id: 'app.containers.AdminPage.SettingsPage.subtitleHomepageStyle',
     defaultMessage:
-      'Define how your homepage looks like and pick the colour for the action buttons.',
+      'Add your logo, set the platform colors, customize the homepage banner and text, and add your own content to the customizable section at the bottom of the homepage.',
   },
-  titleCustomize: {
-    id: 'app.containers.AdminPage.SettingsPage.titleCustomize',
-    defaultMessage: 'Customize your platform',
+  titleHomepageStyle: {
+    id: 'app.containers.AdminPage.SettingsPage.titleHomepageStyle',
+    defaultMessage: 'Homepage and style',
   },
   tabPages: {
     id: 'app.containers.AdminPage.SettingsPage.tabPages',
@@ -70,9 +70,9 @@ export default defineMessages({
     defaultMessage:
       'Select the languages in which your platform is made available to users. They can easily choose their preferred language from this list via a button in the navbar.',
   },
-  color_main: {
-    id: 'app.containers.AdminPage.SettingsPage.color_main',
-    defaultMessage: 'Main color',
+  color_primary: {
+    id: 'app.containers.AdminPage.SettingsPage.color_primary',
+    defaultMessage: 'Primary color',
   },
   color_secondary: {
     id: 'app.containers.AdminPage.SettingsPage.color_secondary',
@@ -82,13 +82,13 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.color_text',
     defaultMessage: 'Text color',
   },
-  headerOverlayColor: {
-    id: 'app.containers.AdminPage.SettingsPage.headerOverlayColor',
-    defaultMessage: 'Header overlay color',
+  bannerOverlayColor: {
+    id: 'app.containers.AdminPage.SettingsPage.bannerOverlayColor',
+    defaultMessage: 'Banner overlay color',
   },
-  headerOverlayOpacity: {
-    id: 'app.containers.AdminPage.SettingsPage.headerOverlayOpacity',
-    defaultMessage: 'Header overlay opacity',
+  bannerOverlayOpacity: {
+    id: 'app.containers.AdminPage.SettingsPage.bannerOverlayOpacity',
+    defaultMessage: 'Banner overlay opacity',
   },
   logo: {
     id: 'app.containers.AdminPage.SettingsPage.logo',
@@ -111,32 +111,26 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.titleBasic',
     defaultMessage: 'Basic information',
   },
-  titleBranding: {
-    id: 'app.containers.AdminPage.SettingsPage.titleBranding',
-    defaultMessage: 'Branding',
+  titlePlatformBranding: {
+    id: 'app.containers.AdminPage.SettingsPage.titlePlatformBranding',
+    defaultMessage: 'Platform branding',
   },
-  headerTitleLabel: {
-    id: 'app.containers.AdminPage.SettingsPage.headerTitleLabel',
-    defaultMessage: 'Header title',
+  bannerHeaderSignedOut: {
+    id: 'app.containers.AdminPage.SettingsPage.bannerHeaderSignedOut',
+    defaultMessage: 'Banner header (for non-signed in visitors)',
   },
-  headerTitleTooltip: {
-    id: 'app.containers.AdminPage.SettingsPage.headerTitleTooltip',
-    defaultMessage:
-      'Shown on the header image on the home page. Tell your users what this platform is about.',
+  bannerHeaderSignedOutTooltip: {
+    id: 'app.containers.AdminPage.SettingsPage.bannerHeaderSignedOutTooltip',
+    defaultMessage: 'This text is shown on the banner image',
   },
   titleMaxCharError: {
     id: 'app.containers.AdminPage.SettingsPage.titleMaxCharError',
     defaultMessage:
       'The provided title exceeds the maximum allowed character limit',
   },
-  headerSubtitleLabel: {
-    id: 'app.containers.AdminPage.SettingsPage.headerSubtitleLabel',
-    defaultMessage: 'Header subtitle',
-  },
-  headerSubtitleTooltip: {
-    id: 'app.containers.AdminPage.SettingsPage.headerSubtitleTooltip',
-    defaultMessage:
-      'Shown below the header title on the home page. Tell your users why they should register on your platform.',
+  bannerHeaderSignedOutSubtitle: {
+    id: 'app.containers.AdminPage.SettingsPage.bannerHeaderSignedOutSubtitle',
+    defaultMessage: 'Banner sub-header (for non-signed in visitors)',
   },
   subtitleMaxCharError: {
     id: 'app.containers.AdminPage.SettingsPage.subtitleMaxCharError',
@@ -193,18 +187,19 @@ export default defineMessages({
     defaultMessage:
       'Add the URL of the website you want to link this platform with. Used in the footer on the home page.',
   },
-  homePageCustomSection: {
-    id: 'app.components.AdminPage.SettingsPage.homePageCustomSection',
-    defaultMessage: 'Home page custom section',
+  homePageCustomizableSection: {
+    id: 'app.components.AdminPage.SettingsPage.homePageCustomizableSection',
+    defaultMessage: 'Homepage customizable section',
   },
   customSectionLabel: {
     id: 'app.components.AdminPage.SettingsPage.customSectionLabel',
     defaultMessage: 'Content',
   },
-  customSectionInfo: {
-    id: 'app.components.AdminPage.SettingsPage.customSectionInfo',
+  homePageCustomizableSectionTooltip: {
+    id:
+      'app.components.AdminPage.SettingsPage.homePageCustomizableSectionTooltip',
     defaultMessage:
-      "The content of this field will be shown at the bottom of the platform's home page, visible to all visitors.",
+      'This empty section at the bottom of the homepage can be customized with your own images, text and links.',
   },
   contrastRatioTooLow: {
     id: 'app.components.AdminPage.SettingsPage.contrastRatioTooLow',
