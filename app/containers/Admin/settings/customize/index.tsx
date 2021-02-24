@@ -461,11 +461,6 @@ class SettingsCustomizeTab extends PureComponent<
   handleHeaderBgOnAdd = this.handleUploadOnAdd('header_bg');
   handleLogoOnRemove = this.handleUploadOnRemove('logo');
   handleHeaderBgOnRemove = this.handleUploadOnRemove('header_bg');
-  headerTitleLabel = (<FormattedMessage {...messages.headerTitleLabel} />);
-  headerSubtitleLabel = (
-    <FormattedMessage {...messages.headerSubtitleLabel} />
-  );
-  customSectionLabel = (<FormattedMessage {...messages.customSectionLabel} />);
 
   render() {
     const { locale, tenant } = this.state;
@@ -491,14 +486,14 @@ class SettingsCustomizeTab extends PureComponent<
         <form onSubmit={this.save}>
           <Section key={'branding'}>
             <SectionTitle>
-              <FormattedMessage {...messages.titleCustomize} />
+              <FormattedMessage {...messages.titleHomepageStyle} />
             </SectionTitle>
             <SectionDescription>
-              <FormattedMessage {...messages.subtitleCustomize} />
+              <FormattedMessage {...messages.subtitleHomepageStyle} />
             </SectionDescription>
 
             <SubSectionTitle>
-              <FormattedMessage {...messages.titleBranding} />
+              <FormattedMessage {...messages.titlePlatformBranding} />
             </SubSectionTitle>
 
             {['color_main', 'color_secondary', 'color_text'].map(
@@ -510,7 +505,13 @@ class SettingsCustomizeTab extends PureComponent<
                 return (
                   <ColorPickerSectionField key={colorName}>
                     <Label>
-                      <FormattedMessage {...messages[colorName]} />
+                      <FormattedMessage
+                        {...{
+                          color_main: messages.color_primary,
+                          color_secondary: messages.color_secondary,
+                          color_text: messages.color_text,
+                        }[colorName]}
+                      />
                     </Label>
                     <ColorPickerInput
                       type="text"
@@ -595,7 +596,7 @@ class SettingsCustomizeTab extends PureComponent<
             </SectionField>
             <ColorPickerSectionField>
               <Label>
-                <FormattedMessage {...messages.headerOverlayColor} />
+                <FormattedMessage {...messages.bannerOverlayColor} />
               </Label>
               <ColorPickerInput
                 type="text"
@@ -612,7 +613,7 @@ class SettingsCustomizeTab extends PureComponent<
             </ColorPickerSectionField>
             <SectionField>
               <Label>
-                <FormattedMessage {...messages.headerOverlayOpacity} />
+                <FormattedMessage {...messages.bannerOverlayOpacity} />
               </Label>
               <RangeInput
                 step={1}
@@ -636,8 +637,10 @@ class SettingsCustomizeTab extends PureComponent<
                   get(attributesDiff, 'settings.core.header_title') ||
                   get(tenant, 'data.attributes.settings.core.header_title')
                 }
-                label={this.headerTitleLabel}
-                labelTooltipText={formatMessage(messages.headerTitleTooltip)}
+                label={formatMessage(messages.bannerHeaderSignedOut)}
+                labelTooltipText={formatMessage(
+                  messages.bannerHeaderSignedOutTooltip
+                )}
                 maxCharCount={this.titleMaxCharCount}
                 onChange={this.handleTitleOnChange}
                 errorMultiloc={titleError}
@@ -650,8 +653,7 @@ class SettingsCustomizeTab extends PureComponent<
                   get(attributesDiff, 'settings.core.header_slogan') ||
                   get(tenant, 'data.attributes.settings.core.header_slogan')
                 }
-                label={this.headerSubtitleLabel}
-                labelTooltipText={formatMessage(messages.headerSubtitleTooltip)}
+                label={formatMessage(messages.bannerHeaderSignedOutSubtitle)}
                 maxCharCount={this.subtitleMaxCharCount}
                 onChange={this.handleSubtitleOnChange}
                 errorMultiloc={subtitleError}
@@ -705,14 +707,16 @@ class SettingsCustomizeTab extends PureComponent<
 
           <Section>
             <SubSectionTitle>
-              <FormattedMessage {...messages.homePageCustomSection} />
+              <FormattedMessage {...messages.homePageCustomizableSection} />
             </SubSectionTitle>
 
             <WideSectionField>
               <QuillMultilocWithLocaleSwitcher
                 id="custom-section"
-                label={this.customSectionLabel}
-                labelTooltipText={formatMessage(messages.customSectionInfo)}
+                label={formatMessage(messages.customSectionLabel)}
+                labelTooltipText={formatMessage(
+                  messages.homePageCustomizableSectionTooltip
+                )}
                 valueMultiloc={
                   attributesDiff.homepage_info ||
                   get(homepageInfoPage, 'attributes.body_multiloc')
