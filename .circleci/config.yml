@@ -130,6 +130,13 @@ jobs:
             aws s3 sync build/ s3://cl2-front-staging/ --acl public-read --exclude "index.html"
             aws s3 cp build/index.html s3://cl2-front-staging/index.html --acl public-read --cache-control no-cache
 
+  license-check:
+    docker:
+      - image: licensefinder/license_finder
+    working_directory: ~/cl2-front
+    steps:
+      - run: license_finder
+
   # deploy_crowdin:
   #   docker:
   #     - image: citizenlabdotco/cl2-devops-front-buildenv
@@ -264,6 +271,12 @@ workflows:
                 - /l10n_.*/
                 - master
                 - production
+      - license-check:
+          filters:
+            branches:
+              ignore:
+                - crowdin_master
+                - /l10n_.*/
       - build:
           filters:
             branches:
