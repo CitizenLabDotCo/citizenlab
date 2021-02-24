@@ -1103,7 +1103,7 @@
   "app.containers.AdminPage.ProjectEdit.MapTab.layerTooltip": "Layer tooltip",
   "app.containers.AdminPage.ProjectEdit.MapTab.layerTooltipTooltip": "This text is displayed as a tooltip when hovering over the layer features on the map",
   "app.containers.AdminPage.ProjectEdit.MapTab.layers": "Layers",
-  "app.containers.AdminPage.ProjectEdit.MapTab.layersTooltip": "We currently support GeoJSON files. Read the {supportArticle} for tips on how to convert and style map layers.",
+  "app.containers.AdminPage.ProjectEdit.MapTab.layersTooltip": "Vi støtter for øyeblikket GeoJSON-filer. Les {supportArticle} for tips om hvordan du konverterer og utformer kartlag.",
   "app.containers.AdminPage.ProjectEdit.MapTab.mapCenterAndZoom": "Map default center & zoom",
   "app.containers.AdminPage.ProjectEdit.MapTab.mapCenterAndZoomTooltip": "The default center point and zoom level of the map. Manually adjust the values below, or click on the {button} button in the top right corner of the map to save the current center point and zoom level of the map as the default values.",
   "app.containers.AdminPage.ProjectEdit.MapTab.mapConfigurationDescription": "Customize the map view, including uploading and styling map layers and setting the map center and zoom level.",
