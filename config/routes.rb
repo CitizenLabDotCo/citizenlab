@@ -1,18 +1,18 @@
 Rails.application.routes.draw do
-
-  mount PublicApi::Engine => "/api", as: 'public_api'
-  mount AdminApi::Engine => "/admin_api", as: 'admin_api', defaults: {format: :json}
-  mount EmailCampaigns::Engine => "", as: 'email_campaigns'
-  mount MachineTranslations::Engine => "", as: 'machine_translations'
-  mount NLP::Engine => "", as: 'nlp'
-  mount Onboarding::Engine => "", as: 'onboarding'
-  mount Surveys::Engine => "", as: 'surveys'
-  mount Frontend::Engine => "", as: 'frontend'
-  mount Polls::Engine => "", as: 'polls'
-  mount Verification::Engine => "", as: 'verification'
-  mount Volunteering::Engine => "", as: 'volunteering'
-  mount Maps::Engine => "", as: 'maps'
-  mount Tagging::Engine => "", as: 'tagging'
+  mount PublicApi::Engine => '/api', as: 'public_api'
+  mount AdminApi::Engine => '/admin_api', as: 'admin_api', defaults: {format: :json}
+  mount EmailCampaigns::Engine => '', as: 'email_campaigns'
+  mount MachineTranslations::Engine => '', as: 'machine_translations'
+  mount NLP::Engine => '', as: 'nlp'
+  mount Onboarding::Engine => '', as: 'onboarding'
+  mount Surveys::Engine => '', as: 'surveys'
+  mount Frontend::Engine => '', as: 'frontend'
+  mount Polls::Engine => '', as: 'polls'
+  mount Verification::Engine => '', as: 'verification'
+  mount Volunteering::Engine => '', as: 'volunteering'
+  mount Maps::Engine => '', as: 'maps'
+  mount Tagging::Engine => '', as: 'tagging'
+  mount Seo::Engine => '', as: 'seo'
 
   namespace :web_api, :defaults => {:format => :json} do
     namespace :v1 do
@@ -115,9 +115,6 @@ Rails.application.routes.draw do
 
       resource :app_configuration, only: [:show, :update]
 
-      resources :tenants, only: [:update] do
-        get :current, on: :collection
-      end
       resources :pages do
         resources :files, defaults: {container_type: 'Page'}, shallow: false
         get 'by_slug/:slug', on: :collection, to: 'pages#by_slug'

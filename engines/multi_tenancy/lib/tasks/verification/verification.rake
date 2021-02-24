@@ -5,7 +5,7 @@ namespace :verification do
     verification_service = Verification::VerificationService.new
     Tenant.all.each do |tenant|
       tenant.switch do
-        if AppConfiguration.instance.has_feature?('franceconnect_login')
+        if AppConfiguration.instance.feature_activated?('franceconnect_login')
           Identity.where(provider: 'franceconnect').each do |identity|
             verification = ::Verification::Verification.new(
               method_name: 'franceconnect',
