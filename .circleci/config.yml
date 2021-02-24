@@ -137,6 +137,12 @@ jobs:
     resource_class: small
     steps:
       - checkout
+      - restore_cache:
+          keys:
+          - v1-npm-cache-{{ checksum "package.json" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-npm-cache-
+      - run: npm ci
       - run: /bin/bash -lc "cd /scan && license_finder"
 
   # deploy_crowdin:
