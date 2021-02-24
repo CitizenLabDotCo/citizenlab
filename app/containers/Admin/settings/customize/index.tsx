@@ -418,6 +418,23 @@ class SettingsCustomizeTab extends PureComponent<
     }));
   };
 
+  handleBannerHeaderSignedInOnChange = (signedInHeader: Multiloc) => {
+    this.setState((state) => {
+      return {
+        attributesDiff: {
+          ...state.attributesDiff,
+          settings: {
+            ...get(state.attributesDiff, 'settings', {}),
+            core: {
+              ...get(state.attributesDiff, 'settings.core', {}),
+              custom_onboarding_fallback_message: signedInHeader,
+            },
+          },
+        },
+      };
+    });
+  };
+
   /*
   Below values are intentionally defined outside of render() for better performance
   because references stay the same this way, e.g. onClick={this.handleLogoOnAdd} vs onClick={this.handleUploadOnAdd('logo')},
@@ -577,7 +594,6 @@ class SettingsCustomizeTab extends PureComponent<
             <SubSectionTitle>
               <FormattedMessage {...messages.header} />
             </SubSectionTitle>
-
             <SectionField key={'header_bg'}>
               <Label htmlFor="landingpage-header-dropzone">
                 <FormattedMessage {...messages.header_bg} />
@@ -598,7 +614,6 @@ class SettingsCustomizeTab extends PureComponent<
                 errorMessage={headerError}
               />
             </SectionField>
-
             <SectionField>
               <InputMultilocWithLocaleSwitcher
                 type="text"
@@ -613,7 +628,6 @@ class SettingsCustomizeTab extends PureComponent<
                 errorMultiloc={titleError}
               />
             </SectionField>
-
             <SectionField>
               <InputMultilocWithLocaleSwitcher
                 type="text"
@@ -625,6 +639,24 @@ class SettingsCustomizeTab extends PureComponent<
                 labelTooltipText={formatMessage(messages.headerSubtitleTooltip)}
                 maxCharCount={this.subtitleMaxCharCount}
                 onChange={this.handleSubtitleOnChange}
+                errorMultiloc={subtitleError}
+              />
+            </SectionField>
+            <SectionField>
+              <InputMultilocWithLocaleSwitcher
+                type="text"
+                valueMultiloc={
+                  get(
+                    attributesDiff,
+                    'settings.core.custom_onboarding_fallback_message'
+                  ) ||
+                  get(
+                    tenant,
+                    'data.attributes.settings.core.custom_onboarding_fallback_message'
+                  )
+                }
+                label={formatMessage(messages.bannerHeaderSignedIn)}
+                onChange={this.handleBannerHeaderSignedInOnChange}
                 errorMultiloc={subtitleError}
               />
             </SectionField>
