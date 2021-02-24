@@ -10,8 +10,12 @@ class AppConfiguration < ApplicationRecord
   attr_accessor :tenant_sync_enabled
 
   validates :settings, presence: true, json: {
-    schema: -> { AppConfiguration::Settings.json_schema_str },
-    message: ->(errors) { errors.map { |e| { fragment: e[:fragment], error: e[:failed_attribute], human_message: e[:message] } } },
+    schema: -> { AppConfiguration.settings_json_schema_str },
+    message: lambda { |errors|
+               errors.map do |e|
+                 { fragment: e[:fragment], error: e[:failed_attribute], human_message: e[:message] }
+               end
+             },
     options: { errors_as_objects: true }
   }
 
@@ -97,15 +101,20 @@ class AppConfiguration < ApplicationRecord
   def cleanup_settings
     ss = SettingsService.new
     schema = Settings.json_schema
-    self.settings = ss.remove_additional_features(self.settings, schema)
-    self.settings = ss.remove_additional_settings(self.settings, schema)
-    self.settings = ss.add_missing_features(self.settings, schema)
-    self.settings = ss.add_missing_settings(self.settings, schema)
+    self.settings = ss.remove_additional_features(settings, schema)
+    self.settings = ss.remove_additional_settings(settings, schema)
+    self.settings = ss.add_missing_features(settings, schema)
+    self.settings = ss.add_missing_settings(settings, schema)
     self
   end
 
+  def feature_activated?(setting_name)
+    settings[setting_name]&.values_at('enabled', 'allowed')&.all?
+  end
+
   def has_feature?(f)
-    settings.dig(f, 'allowed') && settings.dig(f, 'enabled')
+    ActiveSupport::Deprecation.warn("AppConfiguration#has_feature? is deprecated. Use AppConfiguration#feature_activated? instead.")
+    feature_activated?(f)
   end
 
   def closest_locale_to(locale)
@@ -121,18 +130,18 @@ class AppConfiguration < ApplicationRecord
   def location
     longitude = settings.dig('maps', 'map_center', 'long')
     latitude = settings.dig('maps', 'map_center', 'lat')
-    RGeo::Geographic.spherical_factory(:srid => 4326).point(longitude, latitude)
+    RGeo::Geographic.spherical_factory(srid: 4326).point(longitude, latitude)
   end
 
   def turn_on_abbreviated_user_names!
-    config = self.settings['abbreviated_user_names'] || {}
-    self.settings['abbreviated_user_names'] = config.merge({ 'allowed' => true, 'enabled' => true })
-    self.save!
+    config = settings['abbreviated_user_names'] || {}
+    settings['abbreviated_user_names'] = config.merge({ 'allowed' => true, 'enabled' => true })
+    save!
   end
 
   def configuration
     # [TODO] temporary
-    Rails.logger.warn("Calling +configuration+ on an AppConfiguration", caller: caller)
+    Rails.logger.warn('Calling +configuration+ on an AppConfiguration', caller: caller)
     self
   end
 
@@ -142,15 +151,13 @@ class AppConfiguration < ApplicationRecord
   end
 
   def base_frontend_uri
-    return "http://localhost:3000" if Rails.env.development?
-
+    return 'http://localhost:3000' if Rails.env.development?
     transport = Rails.env.test? ? 'http' : 'https'
     "#{transport}://#{host}"
   end
 
   def base_backend_uri
-    return "http://localhost:4000" if Rails.env.development?
-
+    return 'http://localhost:4000' if Rails.env.development?
     transport = Rails.env.test? ? 'http' : 'https'
     "#{transport}://#{host}"
   end
@@ -159,38 +166,40 @@ class AppConfiguration < ApplicationRecord
 
   def validate_missing_feature_dependencies
     missing_dependencies = SettingsService.new.missing_dependencies(settings, Settings.json_schema)
-    unless missing_dependencies.empty?
-      errors.add(:settings, "has unactive features that other features are depending on: #{missing_dependencies}")
-    end
+    return if missing_dependencies.empty?
+
+    errors.add(:settings, "has unactive features that other features are depending on: #{missing_dependencies}")
   end
 
   def validate_locales
     missing_locales = User.where.not(locale: settings('core', 'locales')).pluck(:locale).uniq
-    if missing_locales.present?
-      errors.add(:settings, "is missing locales that are still used by some users: #{missing_locales}")
-    end
+    return if missing_locales.blank?
+
+    errors.add(:settings, "is missing locales that are still used by some users: #{missing_locales}")
   end
 
   def validate_host_format
     return if host == 'localhost'
 
-    if !host.include?('.') || host.include?(' ') || host.include?('_') || (host =~ /[A-Z]/)
-      self.errors.add(
+    return unless host.exclude?('.') || host.include?(' ') || host.include?('_') || (host =~ /[A-Z]/)
+
+    errors.add(
         :host,
         :invalid_format,
         message: 'The chosen host does not have a valid format'
       )
-    end
+
   end
 
   def validate_singleton
-    self.errors.add(:base, "there can be only one instance of AppConfiguration") if AppConfiguration.count > 0
+    errors.add(:base, 'there can be only one instance of AppConfiguration') if AppConfiguration.count.positive?
   end
 
   def update_tenant
     tenant = Tenant.current
     attrs_delta = tenant.send(:attributes_delta, self, tenant)
-    return unless attrs_delta.present?
+    return if attrs_delta.blank?
+
     tenant.attributes = attrs_delta
     tenant.remove_logo! if logo_previously_changed? && logo.blank?
     tenant.remove_favicon! if favicon_previously_changed? && favicon.blank?
