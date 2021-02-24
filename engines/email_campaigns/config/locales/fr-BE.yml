@@ -33,7 +33,7 @@ fr-BE:
       "official_feedback_on_your_initiative": Mise à jour de mon proposition
       "password_reset": Réinitialisation du mot de passe
       "project_moderation_rights_received": Droits de modération de projet reçus
-      "project_folder_moderation_rights_received": Project folder moderation rights received
+      "project_folder_moderation_rights_received": Droits d'administrateur de dossiers reçus
       "project_phase_started": Nouvelle phase de projet
       "project_phase_upcoming": Nouvelle phase de projet à venir
       "status_change_of_commented_idea": Changement de statut d'une idée que j'ai commentée
@@ -83,7 +83,7 @@ fr-BE:
       "official_feedback_on_your_initiative": Mise à jour de votre proposition - tous les utilisateurs
       "password_reset": Réinitialisation du mot de passe (tous les utilisateurs)
       "project_moderation_rights_received": Droits de modération de projet reçus - administrateurs projet
-      "project_folder_moderation_rights_received": Project folder moderation rights received
+      "project_folder_moderation_rights_received": Droits d'administrateur de dossiers reçus
       "project_phase_started": Nouvelle phase de projet - tous les utilisateurs
       "project_phase_upcoming": Nouvelle phase de projet à venir - administrateurs et administrateurs projet
       "status_change_of_commented_idea": Changement de statut d'une idée que vous avez commentée (tous les utilisateurs)
@@ -223,7 +223,7 @@ fr-BE:
       added_a_message: '%{organizationName} a écrit le message suivant :'
       cta_accept_invitation: 'Accepter votre invitation'
       invitation_header: 'Vous êtes invités !'
-      invitation_header_message: '%{organizationName} vous a invité à leur plateforme de participation.'
+      invitation_header_message: '%{organizationName} vous a invité à rejoindre sa plateforme de participation.'
       preheader: '%{organizationName} vous a envoyé une invitation à rejoindre leur plateforme de participation.'
       subject: 'Vous avez reçu une invitation pour rejoindre la plateforme de %{organizationName}'
     initiative_published:
@@ -410,20 +410,20 @@ fr-BE:
       title_you_became_moderator: 'Vous êtes à présent modérateur'
       x_ideas: '%{numberOfIdeas} idées'
     project_folder_moderation_rights_received:
-      cta_view_folder_button: 'View this folder'
-      message_added_as_folderadmin: 'You''ve been given administrator rights on %{organizationName}''s participation platform for the following folder:'
-      no_projects: 'No projects yet'
-      preheader: 'An adminstrator of the participation platform of %{organizationName} just made you a manager of the following projects folder'
-      subject: 'You became a project folder manager on the platform of %{organizationName}'
-      text_manage_folder: 'A folder is way to organize several participation projects together. As a folder admin, you can edit the folder and folder description and create new projects (to delete projects, contact your platform administrator). You will also have project management rights over all projects within the folder, allowing you to edit the projects, manage the inputs and email participants.'
-      text_moderate_analyse_input: 'Once the projects are launched, the first inputs will start coming in. You''ll receive weekly reports with the key activities so that you can stay on top of what’s happening. The Post Manager in your admin view will help you see and manage the input, including assigning statuses and responding to posts and comments.'
-      text_design_participatory_process: 'You can manage the different participation projects within your folder - configure the participation method, add a project description, attach images, and communicate related events. You can also manage how participants interact with your projects, including setting access rights and configuring the posting, voting and commenting settings.'
+      cta_view_folder_button: 'Voir ce dossier'
+      message_added_as_folderadmin: 'Vous avez reçu des droits d''administrateur sur la plateforme de participation de %{organizationName} pour le dossier suivant :'
+      no_projects: 'Pas encore de projets'
+      preheader: 'Un administrateur de la plateforme de %{organizationName} vous a nommé administrateur du dossier suivant'
+      subject: 'Vous êtes à présent un administrateur de dossier sur la plateforme de %{organizationName}'
+      text_manage_folder: 'Un dossier est un moyen d''organiser plusieurs projets de participation ensemble. En tant qu''administrateur de dossier, vous pouvez modifier le dossier et sa description et créer de nouveaux projets (pour supprimer des projets, contactez l''administrateur de votre plateforme). Vous aurez également des droits de gestion de projet sur tous les projets du dossier, ce qui vous permettra de modifier les projets, de gérer les contributions et d''envoyer des e-mails aux participants.entrées et d''envoyer des e-mails aux participants.'
+      text_moderate_analyse_input: 'Une fois les projets lancés, les premières contributions commenceront à arriver. Vous recevrez des rapports hebdomadaires avec les activités clés afin de rester au courant de ce qui se passe. Le gestionnaire de poste dans votre vue d''administration vous aidera à voir et à gérer les contributions, y compris l''attribution de statuts et la réponse aux messages et aux commentaires.'
+      text_design_participatory_process: 'Vous pouvez gérer les différents projets de participation dans votre dossier. Configurez la méthode de participation, ajoutez une description de projet, joignez des images et communiquez les événements associés. Vous pouvez également gérer la manière dont les participants interagissent avec vos projets, y compris la définition des droits d''accès et la configuration des paramètres de publication, de vote et de commentaire.'
       title_design_participatory_process: 'Concevoir le processus de participation'
       title_moderate_analyse_input: 'Modérer et analyser les contributions'
-      title_manage_folder: 'Manage the folder settings and create new projects.'
-      title_what_can_you_do_folderadmin: 'What can you do as a folder administrator?'
-      title_added_as_folderadmin: 'You''ve been added as a folder administrator'
-      x_projects: '%{numberOfProjects} projects'
+      title_manage_folder: 'Gérez les paramètres du dossier et créez de nouveaux projets.'
+      title_what_can_you_do_folderadmin: 'Que pouvez-vous faire en tant qu''administrateur de dossiers ?'
+      title_added_as_folderadmin: 'Vous êtes à présent administrateur de dossiers'
+      x_projects: '%{numberOfProjects} projets'
     password_reset:
       cta_reset_password: 'Réinitialisez votre mot de passe'
       message_you_reset_your_password: 'Vous avez demandé une réinitialisation du mot de passe pour la plateforme de participation de %{organizationName}. Cliquez sur le bouton ci-dessous pour choisir un nouveau mot de passe sécurisé. Le lien expire dans 1 heure.'
