@@ -23,7 +23,7 @@ module OmniauthMethods
 
     # @param [AppConfiguration] configuration
     def omniauth_setup(configuration, env)
-      return unless configuration.has_feature?('franceconnect_login')
+      return unless configuration.feature_activated?('franceconnect_login')
 
       env['omniauth.strategy'].options.merge!({
         scope: [:openid, :profile, :email, :address],
