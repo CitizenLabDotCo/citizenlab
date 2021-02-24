@@ -106,3 +106,63 @@
     :why: 
     :versions: []
     :when: 2020-11-17 00:08:53.943260529 Z
+- - :permit
+  - CitizenLab Commercial License
+  - :who: 
+    :why: 
+    :versions: []
+    :when: 2021-02-24 13:52:04.031811239 Z
+- - :approve
+  - admin_api
+  - :who: 
+    :why: 
+    :versions: []
+    :when: 2021-02-24 13:55:48.746984657 Z
+- - :approve
+  - email_campaigns
+  - :who: 
+    :why: 
+    :versions: []
+    :when: 2021-02-24 13:56:17.996729810 Z
+- - :approve
+  - frontend
+  - :who: 
+    :why: 
+    :versions: []
+    :when: 2021-02-24 13:56:18.297371212 Z
+- - :approve
+  - onboarding
+  - :who: 
+    :why: 
+    :versions: []
+    :when: 2021-02-24 13:56:18.596411203 Z
+- - :approve
+  - polls
+  - :who: 
+    :why: 
+    :versions: []
+    :when: 2021-02-24 13:56:18.898552631 Z
+- - :approve
+  - seo
+  - :who: 
+    :why: 
+    :versions: []
+    :when: 2021-02-24 13:56:19.212311410 Z
+- - :approve
+  - surveys
+  - :who: 
+    :why: 
+    :versions: []
+    :when: 2021-02-24 13:56:19.512278233 Z
+- - :approve
+  - volunteering
+  - :who: 
+    :why: 
+    :versions: []
+    :when: 2021-02-24 13:56:21.699541131 Z
+- - :approve
+  - que-web
+  - :who: 
+    :why: 
+    :versions: []
+    :when: 2021-02-24 14:15:04.392754008 Z
