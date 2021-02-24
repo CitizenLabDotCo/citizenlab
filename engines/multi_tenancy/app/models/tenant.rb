@@ -92,7 +92,7 @@ class Tenant < ApplicationRecord
   def schema_name
     # The reason for using `host_was` and not `host` is
     # because the schema name would be wrong when updating
-    # the tenant's host. `host_was` should always 
+    # the tenant's host. `host_was` should always
     # correspond to the value as it currently is in the
     # database.
     host_was&.gsub(/\./, '_')
@@ -103,9 +103,14 @@ class Tenant < ApplicationRecord
     configuration.cleanup_settings
   end
 
+  def feature_activated?(f)
+    ActiveSupport::Deprecation.warn("Tenant#feature_activated is deprecated. Use AppConfiguration#feature_activated? instead.")
+    configuration.feature_activated?(f)
+  end
+
   def has_feature?(f)
-    ActiveSupport::Deprecation.warn("Tenant#cleanup_settings is deprecated. Use AppConfiguration#has_feature? instead.")
-    configuration.has_feature?(f)
+    ActiveSupport::Deprecation.warn("Tenant#has_feature? is deprecated. Use AppConfiguration#feature_activated? instead.")
+    configuration.feature_activated?(f)
   end
 
   def closest_locale_to(locale)
@@ -173,6 +178,24 @@ class Tenant < ApplicationRecord
   def switch!
     raise Apartment::TenantNotFound unless schema_name
     Apartment::Tenant.switch!(schema_name)
+  end
+
+  def changed_lifecycle_stage?
+    return false unless settings_previously_changed?
+
+    lifecycle_change_diff.uniq.size > 1
+  end
+
+  def lifecycle_change_diff
+    settings_previous_change.map { |s| s&.dig('core', 'lifecycle_stage') }
+  end
+
+  def active?
+    settings.dig('core', 'lifecycle_stage') == 'active'
+  end
+
+  def just_churned?
+    active? && changed_lifecycle_stage
   end
 
   private

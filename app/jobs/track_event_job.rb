@@ -3,7 +3,8 @@ class TrackEventJob < ApplicationJob
   # creates or updates users in tracking destinations
 
   def run(activity)
-    TrackIntercomService.new.track_activity(activity) if AppConfiguration.instance.has_feature?('intercom')
-    TrackSegmentService.new.track_activity(activity)  if AppConfiguration.instance.has_feature?('segment')
+    app_config = AppConfiguration.instance
+    TrackIntercomService.new.track_activity(activity) if app_config.feature_activated?('intercom')
+    TrackSegmentService.new.track_activity(activity)  if app_config.feature_activated?('segment')
   end
 end
