@@ -124,7 +124,6 @@ gem 'faker'
 # This fork was made to support the latest verions of Ruby
 # and Rails.
 gem 'ice_cube', github: 'CitizenLabDotCo/ice_cube'
-gem 'skylight'
 # Also required here to be able to initialize Mailgun in
 # e.g. production.rb, which would otherwise result in an
 # "undefined method 'mailgun_settings=' for ActionMailer::Base:Class"
