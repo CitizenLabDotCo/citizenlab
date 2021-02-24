@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import ReactDOM from 'react-dom';
+import { createPortal } from 'react-dom';
 import { adopt } from 'react-adopt';
 import { Subscription, fromEvent } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
@@ -469,7 +469,7 @@ class Modal extends PureComponent<Props, State> {
     }
 
     if (modalPortalElement && width) {
-      return ReactDOM.createPortal(
+      return createPortal(
         <CSSTransition
           classNames="modal"
           in={opened}

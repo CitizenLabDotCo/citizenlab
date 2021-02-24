@@ -151,7 +151,7 @@ const config = {
       template: 'app/index.html'
     }),
 
-    // new BundleAnalyzerPlugin(),
+    new BundleAnalyzerPlugin(),
 
     isDev && new webpack.ProgressPlugin(),
 

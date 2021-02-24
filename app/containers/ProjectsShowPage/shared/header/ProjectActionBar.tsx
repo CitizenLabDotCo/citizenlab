@@ -1,5 +1,5 @@
 import React, { memo, useState, useEffect } from 'react';
-import ReactDOM from 'react-dom';
+import { createPortal } from 'react-dom';
 import { isNilOrError } from 'utils/helperUtils';
 import { CSSTransition } from 'react-transition-group';
 
@@ -198,7 +198,7 @@ const ProjectActionBar = memo<Props>(({ projectId, className }) => {
       publication_status,
     } = project.attributes;
 
-    return ReactDOM.createPortal(
+    return createPortal(
       <Container
         className={`${className || ''} ${isVisible ? 'visible' : 'hidden'}`}
       >

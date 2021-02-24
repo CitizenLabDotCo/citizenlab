@@ -1,6 +1,6 @@
 // libraries
 import React, { useState } from 'react';
-import ReactDOM from 'react-dom';
+import { findDOMNode } from 'react-dom';
 import { trackEventByName } from 'utils/analytics';
 
 // styling
@@ -93,9 +93,7 @@ const ExportMenu: React.SFC<ExportMenuProps & InjectedIntlProps> = ({
   }`;
 
   const handleDownloadSvg = () => {
-    const node = ReactDOM.findDOMNode(
-      svgNode && svgNode.current.container.children[0]
-    );
+    const node = findDOMNode(svgNode && svgNode.current.container.children[0]);
     if (node) {
       const svgContent = new XMLSerializer().serializeToString(node);
       const svgBlob = new Blob([svgContent], {
