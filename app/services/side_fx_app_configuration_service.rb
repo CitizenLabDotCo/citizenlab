@@ -26,6 +26,7 @@ class SideFxAppConfigurationService
   # @return [nil,Array(String,String)] An array of two strings if the lifecycle changed. Otherwise, nil.
   def get_lifecycle_change(app_config)
     return unless app_config.settings_previously_changed?
+
     old_settings = app_config.settings_previous_change[0]
     new_settings = app_config.settings
 

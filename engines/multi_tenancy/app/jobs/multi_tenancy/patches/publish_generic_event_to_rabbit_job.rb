@@ -3,7 +3,6 @@
 module MultiTenancy
   module Patches
     module PublishGenericEventToRabbitJob
-
       def add_extra_properties(event)
         super
         add_tenant_properties(event)
@@ -15,7 +14,6 @@ module MultiTenancy
       rescue ActiveRecord::RecordNotFound
         # Tenant can't be found, so we don't add anything
       end
-
     end
   end
 end

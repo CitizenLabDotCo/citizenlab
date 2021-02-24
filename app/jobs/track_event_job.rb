@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class TrackEventJob < ApplicationJob
   queue_as :default
   # creates or updates users in tracking destinations

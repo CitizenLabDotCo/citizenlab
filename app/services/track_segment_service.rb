@@ -37,7 +37,6 @@ class TrackSegmentService
 
   def track_activity(activity)
     return unless @segment_client
-
     event = event_from_activity(activity)
     @segment_client.track(event)
   end

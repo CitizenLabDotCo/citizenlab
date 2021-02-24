@@ -3,7 +3,6 @@
 module MultiTenancy
   module Patches
     module ApplicationController
-
       def self.prepended(base)
         base.class_eval do
           before_action :set_current_tenant
@@ -14,12 +13,12 @@ module MultiTenancy
       def set_current_tenant
         Current.tenant = Tenant.current
       rescue ActiveRecord::RecordNotFound
+        # Ignored
       end
 
       def tenant_not_found
         head 404
       end
-
     end
   end
 end

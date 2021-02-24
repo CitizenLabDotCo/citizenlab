@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class TrackIntercomService
-
   def initialize(intercom_client = INTERCOM_CLIENT)
     @intercom = intercom_client
   end
@@ -73,7 +72,7 @@ class TrackIntercomService
       isAdmin: user.admin?,
       isSuperAdmin: user.super_admin?,
       isProjectModerator: user.project_moderator?,
-      highestRole: user.highest_role.to_s,
+      highestRole: user.highest_role.to_s
     }
   end
 

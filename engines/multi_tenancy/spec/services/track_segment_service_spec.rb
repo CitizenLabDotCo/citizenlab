@@ -1,15 +1,19 @@
-require "rails_helper"
+# frozen_string_literal: true
+
+require 'rails_helper'
 
 describe TrackSegmentService do
-  let(:service) { TrackSegmentService.new }
+  let(:service) { described_class.new }
   let(:tenant) { Tenant.current }
-  let(:expected_tenant_props) { {
-    tenantId: Tenant.current.id,
-    tenantName: "test-tenant",
-    tenantHost: "example.org",
-    tenantOrganizationType: "medium_city",
-    tenantLifecycleStage: "active"
-  } }
+  let(:expected_tenant_props) do
+    {
+      tenantId: Tenant.current.id,
+      tenantName: 'test-tenant',
+      tenantHost: 'example.org',
+      tenantOrganizationType: 'medium_city',
+      tenantLifecycleStage: 'active'
+    }
+  end
 
   describe 'identify_user' do
     it "includes tenant properties in the Segment's identify payload" do
@@ -29,11 +33,11 @@ describe TrackSegmentService do
         user_id: anything, # we don't care about the user id when tracking a tenant
         group_id: Tenant.current.id,
         traits: {
-          name: "test-tenant",
-          website: "https://example.org",
+          name: 'test-tenant',
+          website: 'https://example.org',
           avatar: nil,
           createdAt: Tenant.current.created_at,
-          tenantLocales: ["en", "fr-FR", "nl-NL"],
+          tenantLocales: %w[en fr-FR nl-NL],
           **expected_tenant_props
         },
         integrations: {
@@ -47,8 +51,8 @@ describe TrackSegmentService do
     end
   end
 
-  describe "track_activity" do
-    it "includes tenant/environment properties in activity events" do
+  describe 'track_activity' do
+    it 'includes tenant/environment properties in activity events' do
       user = create(:user)
       comment = create(:comment)
       activity = create(:activity, item: comment, action: 'created', user: user)
@@ -62,6 +66,5 @@ describe TrackSegmentService do
 
       service.track_activity(activity)
     end
-
   end
 end

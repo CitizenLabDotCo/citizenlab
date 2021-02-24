@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class PublishGenericEventToRabbitJob < ApplicationJob
   queue_as :default
 
@@ -6,6 +8,7 @@ class PublishGenericEventToRabbitJob < ApplicationJob
   # @param [Bunny::Session] bunny
   def run(event, routing_key, bunny = BUNNY_CON)
     return unless bunny
+
     add_extra_properties(event)
     publish_to_rabbitmq(bunny, event, routing_key)
   end
