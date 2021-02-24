@@ -133,9 +133,11 @@ jobs:
   license-check:
     docker:
       - image: licensefinder/license_finder
-    working_directory: ~/cl2-front
+    working_directory: /scan
+    resource_class: small
     steps:
-      - run: license_finder
+      - checkout
+      - run: /bin/bash -lc "cd /scan && license_finder"
 
   # deploy_crowdin:
   #   docker:
