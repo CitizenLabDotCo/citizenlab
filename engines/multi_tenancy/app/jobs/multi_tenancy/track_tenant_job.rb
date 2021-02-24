@@ -7,8 +7,9 @@ module MultiTenancy
 
     # @param [Tenant] tenant
     def run(tenant)
-      TrackIntercomService.new.identify_tenant(tenant) if AppConfiguration.instance.has_feature?('intercom')
-      TrackSegmentService.new.identify_tenant(tenant) if AppConfiguration.instance.has_feature?('segment')
+      app_config = AppConfiguration.instance
+      TrackIntercomService.new.identify_tenant(tenant) if app_config.feature_activated?('intercom')
+      TrackSegmentService.new.identify_tenant(tenant)  if app_config.feature_activated?('segment')
     end
   end
 end
