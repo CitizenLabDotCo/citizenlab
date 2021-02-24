@@ -549,44 +549,6 @@ class SettingsCustomizeTab extends PureComponent<
               }
             )}
 
-            <ColorPickerSectionField>
-              <Label>
-                <FormattedMessage {...messages.headerOverlayColor} />
-              </Label>
-              <ColorPickerInput
-                type="text"
-                value={
-                  get(attributesDiff, 'style.signedOutHeaderOverlayColor') ||
-                  get(
-                    tenant,
-                    'data.attributes.style.signedOutHeaderOverlayColor'
-                  ) ||
-                  this.props.theme.colorMain
-                }
-                onChange={this.handleHeaderOverlayColorOnChange}
-              />
-            </ColorPickerSectionField>
-
-            <SectionField>
-              <Label>
-                <FormattedMessage {...messages.headerOverlayOpacity} />
-              </Label>
-              <RangeInput
-                step={1}
-                min={0}
-                max={100}
-                value={
-                  get(attributesDiff, 'style.signedOutHeaderOverlayOpacity') ||
-                  get(
-                    tenant,
-                    'data.attributes.style.signedOutHeaderOverlayOpacity'
-                  ) ||
-                  90
-                }
-                onChange={this.handleHeaderOverlayOpacityOnChange}
-              />
-            </SectionField>
-
             <SectionField key={'logo'}>
               <Label htmlFor="tenant-logo-dropzone">
                 <FormattedMessage {...messages.logo} />
@@ -629,6 +591,42 @@ class SettingsCustomizeTab extends PureComponent<
                 onAdd={this.handleHeaderBgOnAdd}
                 onRemove={this.handleHeaderBgOnRemove}
                 errorMessage={headerError}
+              />
+            </SectionField>
+            <ColorPickerSectionField>
+              <Label>
+                <FormattedMessage {...messages.headerOverlayColor} />
+              </Label>
+              <ColorPickerInput
+                type="text"
+                value={
+                  get(attributesDiff, 'style.signedOutHeaderOverlayColor') ||
+                  get(
+                    tenant,
+                    'data.attributes.style.signedOutHeaderOverlayColor'
+                  ) ||
+                  this.props.theme.colorMain
+                }
+                onChange={this.handleHeaderOverlayColorOnChange}
+              />
+            </ColorPickerSectionField>
+            <SectionField>
+              <Label>
+                <FormattedMessage {...messages.headerOverlayOpacity} />
+              </Label>
+              <RangeInput
+                step={1}
+                min={0}
+                max={100}
+                value={
+                  get(attributesDiff, 'style.signedOutHeaderOverlayOpacity') ||
+                  get(
+                    tenant,
+                    'data.attributes.style.signedOutHeaderOverlayOpacity'
+                  ) ||
+                  90
+                }
+                onChange={this.handleHeaderOverlayOpacityOnChange}
               />
             </SectionField>
             <SectionField>
