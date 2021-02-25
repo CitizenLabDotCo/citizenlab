@@ -164,7 +164,7 @@ const MapPage = memo<Props & WithRouterProps & InjectedIntlProps>(
         <Container className={className || ''}>
           <StyledMapConfigOverview projectId={projectId} />
           <MapWrapper>
-            <Map projectId={projectId} hideLegend={true} />
+            <Map projectId={projectId} hideLegend={false} />
             <GoToDefaultViewportButtonWrapper>
               <Tippy
                 maxWidth="250px"
