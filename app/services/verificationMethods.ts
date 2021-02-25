@@ -1,9 +1,7 @@
 import { API_PATH } from 'containers/App/constants';
 import streams from 'utils/streams';
 
-export interface IVerificationMethodNamesMap {
-  franceconnect: 'franceconnect';
-}
+export interface IVerificationMethodNamesMap {}
 
 export type VerificationMethodNames = IVerificationMethodNamesMap[keyof IVerificationMethodNamesMap];
 
