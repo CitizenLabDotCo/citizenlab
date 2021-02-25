@@ -10,7 +10,6 @@ import Button from 'components/UI/Button';
 import { Title, Subtitle } from './styles';
 import FranceConnectButton from 'components/UI/FranceConnectButton';
 import Or from 'components/UI/Or';
-import VerificationMethodButton from './VerificationMethodButton';
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
@@ -314,28 +313,12 @@ const VerificationMethods = memo<Props & InjectedIntlProps>(
               }`}
             >
               {verificationMethods.data.map((method, index) => (
-                <>
-                  <Outlet
-                    id="app.components.VerificationModal.button"
-                    method={method}
-                    onMethodSelected={handleOnMethodSelected(method)}
-                    last={index + 1 === verificationMethods.data.length}
-                  />
-                  <VerificationMethodButton
-                    key={method.id}
-                    id={`e2e-${method.attributes.name}-button`}
-                    className={
-                      index + 1 === verificationMethods.data.length
-                        ? 'last'
-                        : ''
-                    }
-                    onClick={handleOnMethodSelected(method)}
-                  >
-                    {method.attributes.name === 'id_card_lookup' && (
-                      <T value={method.attributes.method_name_multiloc} />
-                    )}
-                  </VerificationMethodButton>
-                </>
+                <Outlet
+                  id="app.components.VerificationModal.button"
+                  method={method}
+                  onMethodSelected={handleOnMethodSelected(method)}
+                  last={index + 1 === verificationMethods.data.length}
+                />
               ))}
 
               {!isEmpty(alternativeMethods) &&
