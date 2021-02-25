@@ -413,7 +413,7 @@ class ProfileForm extends PureComponent<Props, State> {
               <StyledPasswordInputIconTooltip />
             </LabelContainer>
             <PasswordInput
-              id="profile-password-input"
+              id="password"
               password={values.password}
               onChange={handlePasswordOnChange}
               onBlur={createBlurHandler('password')}
