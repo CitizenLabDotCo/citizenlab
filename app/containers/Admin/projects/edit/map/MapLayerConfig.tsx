@@ -1,10 +1,12 @@
 import React, { memo, useEffect, useState } from 'react';
-import { isEmpty, cloneDeep } from 'lodash-es';
+import { isEmpty, cloneDeep, forOwn } from 'lodash-es';
+import { isNilOrError } from 'utils/helperUtils';
 
 // services
-import { updateProjectMapLayer } from 'services/mapLayers';
+import { updateProjectMapLayer, IMapLayerAttributes } from 'services/mapLayers';
 
 // hooks
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useMapConfig from 'hooks/useMapConfig';
 
 // components
@@ -19,7 +21,12 @@ import Error from 'components/UI/Error';
 import { ColorPickerInput, Select } from 'cl2-component-library';
 
 // utils
-import { getLayerColor, getLayerType, makiIconNames } from 'utils/map';
+import {
+  getLayerColor,
+  getLayerType,
+  makiIconNames,
+  getUnnamedLayerTitleMultiloc,
+} from 'utils/map';
 
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
@@ -87,8 +94,25 @@ const makiIconOptions: IOption[] = makiIconNames.map((makiIconName) => {
   };
 });
 
+const getEditableTitleMultiloc = (
+  mapLayer: IMapLayerAttributes | undefined
+) => {
+  const mutiloc = {};
+
+  if (mapLayer?.title_multiloc) {
+    forOwn(mapLayer.title_multiloc, (value: string, key) => {
+      mutiloc[key] = value === 'Unnamed layer' ? '' : value;
+    });
+
+    return mutiloc as Multiloc;
+  }
+
+  return null;
+};
+
 const MapLayerConfig = memo<Props & InjectedIntlProps & InjectedLocalized>(
   ({ projectId, mapLayerId, className, onClose, intl: { formatMessage } }) => {
+    const tenantLocales = useAppConfigurationLocales();
     const mapConfig = useMapConfig({ projectId });
 
     const mapLayer =
@@ -100,7 +124,7 @@ const MapLayerConfig = memo<Props & InjectedIntlProps & InjectedLocalized>(
     const [processing, setProcessing] = useState(false);
     const [errors, setErrors] = useState<{ [key: string]: any }>({});
     const [formValues, setFormValues] = useState<IFormValues>({
-      title_multiloc: mapLayer?.title_multiloc || null,
+      title_multiloc: getEditableTitleMultiloc(mapLayer),
       color: getLayerColor(mapLayer),
       markerSymbol:
         mapLayer?.geojson?.features?.[0]?.properties?.['marker-symbol'] || '',
@@ -111,7 +135,7 @@ const MapLayerConfig = memo<Props & InjectedIntlProps & InjectedLocalized>(
     useEffect(() => {
       formChange(
         {
-          title_multiloc: mapLayer?.title_multiloc || null,
+          title_multiloc: getEditableTitleMultiloc(mapLayer),
           color: getLayerColor(mapLayer),
           markerSymbol:
             mapLayer?.geojson?.features?.[0]?.properties?.['marker-symbol'] ||
@@ -176,10 +200,18 @@ const MapLayerConfig = memo<Props & InjectedIntlProps & InjectedLocalized>(
     };
 
     const handleOnSubmit = async () => {
-      const { title_multiloc } = formValues;
+      let { title_multiloc } = formValues;
 
       if (!processing && validate() && title_multiloc && mapLayer) {
         formProcessing();
+
+        const isTitleMultilocEmpty = Object.getOwnPropertyNames(
+          title_multiloc
+        ).every((key) => isEmpty((title_multiloc as Multiloc)[key]));
+
+        if (isTitleMultilocEmpty && mapConfig && !isNilOrError(tenantLocales)) {
+          title_multiloc = getUnnamedLayerTitleMultiloc(tenantLocales);
+        }
 
         const geojson = cloneDeep(
           mapLayer?.geojson || {}

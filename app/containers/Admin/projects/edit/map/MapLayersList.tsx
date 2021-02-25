@@ -15,23 +15,21 @@ import useMapConfig from 'hooks/useMapConfig';
 import {
   deleteProjectMapLayer,
   reorderProjectMapLayer,
+  IMapLayerAttributes,
 } from 'services/mapLayers';
 
 // utils
 import { getLayerColor, getLayerIcon } from 'utils/map';
 
 // i18n
-import T from 'components/T';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
 // styling
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
-
-// typings
-import { IMapLayerAttributes } from 'services/mapLayers';
 
 const Container = styled.div``;
 
@@ -86,8 +84,14 @@ interface Props {
   className?: string;
 }
 
-const MapLayersList = memo<Props & InjectedIntlProps>(
-  ({ projectId, onEditLayer, className, intl: { formatMessage } }) => {
+const MapLayersList = memo<Props & InjectedIntlProps & InjectedLocalized>(
+  ({
+    projectId,
+    onEditLayer,
+    className,
+    intl: { formatMessage },
+    localize,
+  }) => {
     const mapConfig = useMapConfig({ projectId });
 
     const handleReorderLayers = (mapLayerId: string, newOrder: number) => {
@@ -112,6 +116,7 @@ const MapLayersList = memo<Props & InjectedIntlProps>(
     const supportArticleUrl = formatMessage(messages.supportArticleUrl);
 
     const supportArticleLink = (
+      // tslint:disable-next-line
       <a href={supportArticleUrl} target="_blank">
         <FormattedMessage {...messages.supportArticle} />
       </a>
@@ -147,6 +152,7 @@ const MapLayersList = memo<Props & InjectedIntlProps>(
                     (mapLayer, index) => {
                       const layerColor = getLayerColor(mapLayer);
                       const layerIconName = getLayerIcon(mapLayer);
+                      const layerTitle = localize(mapLayer.title_multiloc);
 
                       return (
                         <SortableRow
@@ -164,9 +170,7 @@ const MapLayersList = memo<Props & InjectedIntlProps>(
                               name={layerIconName}
                               color={layerColor}
                             />
-                            <LayerName>
-                              <T value={mapLayer.title_multiloc} />
-                            </LayerName>
+                            <LayerName>{layerTitle}</LayerName>
                             <Buttons>
                               <Tippy
                                 placement="bottom"
@@ -229,4 +233,4 @@ const MapLayersList = memo<Props & InjectedIntlProps>(
   }
 );
 
-export default injectIntl(MapLayersList);
+export default injectIntl(injectLocalize(MapLayersList));
