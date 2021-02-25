@@ -267,7 +267,7 @@ class Tenant < ApplicationRecord
 
   def validate_missing_feature_dependencies
     ss = SettingsService.new
-    missing_dependencies = ss.missing_dependencies(settings, self.class.settings_json_schema)
+    missing_dependencies = ss.missing_dependencies(settings, AppConfiguration::Settings.json_schema)
     unless missing_dependencies.empty?
       errors.add(:settings, "has unactive features that other features are depending on: #{missing_dependencies}")
     end
