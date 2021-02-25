@@ -141,6 +141,7 @@ const AuthProviders = memo<Props & InjectedIntlProps>(
             flow={flow}
             authProvider="email"
             onContinue={handleOnAuthProviderSelected}
+            id="e2e-login-with-email"
           >
             {flow === 'signup' ? (
               <FormattedMessage {...messages.signUpWithEmail} />
