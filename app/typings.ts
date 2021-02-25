@@ -109,7 +109,7 @@ export interface Message {
 
 import { Messages } from 'react-intl';
 import { IProjectAction } from 'services/projects';
-import { IIdeaAction, IIdeaData } from 'services/ideas';
+import { IIdeaAction } from 'services/ideas';
 import { FormikActions } from 'formik';
 import { FC } from 'react';
 import { TableCellProps } from 'semantic-ui-react';

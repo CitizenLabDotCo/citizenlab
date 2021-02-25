@@ -1,4 +1,3 @@
-import IdeaHeaderRow from 'components/admin/PostManager/components/PostTable/IdeaHeaderRow';
 import React from 'react';
 import styled from 'styled-components';
 import { ModuleConfiguration } from 'utils/moduleUtils';
