@@ -53,7 +53,6 @@ export const graphqlLocales = [
   'nb',
   'da',
   'es',
-  'ach',
   'enGb',
   'enCa',
   'frBe',
@@ -92,7 +91,6 @@ export const appLocalePairs = {
   'hu-HU': 'Magyar',
   'ro-RO': 'Română',
   'pt-BR': 'Português (Brasil)',
-  ach: 'Acholi',
   'ar-SA': 'عربى',
 };
 
@@ -104,7 +102,6 @@ export const appGraphqlLocalePairs = {
   nb: 'nb',
   da: 'da',
   es: 'es',
-  ach: 'ach',
   enGb: 'en-GB',
   enCa: 'en-CA',
   frBe: 'fr-BE',
@@ -142,7 +139,6 @@ export const shortenedAppLocalePairs = {
   'hu-HU': 'Magyar',
   'ro-RO': 'Română',
   'pt-BR': 'Português',
-  ach: 'Acholi',
   'ar-SA': 'عربى',
 };
 
