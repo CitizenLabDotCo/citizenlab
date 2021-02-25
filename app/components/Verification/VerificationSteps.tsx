@@ -151,17 +151,6 @@ const VerificationSteps = memo<Props>(
               onVerified={onStepVerified}
             />
           )}
-
-          {/* 
-          {activeStep === 'id_card_lookup' && method && (
-            <VerificationFormLookup
-              method={method}
-              showHeader={showHeader}
-              inModal={inModal}
-              onCancel={onLookupCancel}
-              onVerified={onLookupVerified}
-            />
-          )} */}
         </Container>
       );
     }
