@@ -3,7 +3,7 @@ import { isEmpty, values as getValues, every } from 'lodash-es';
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 import { Multiloc, Locale } from 'typings';
-import { ideaStatusCodes, Code } from 'services/ideaStatuses';
+import { ideaStatusCodes, TIdeaStatusCode } from 'services/ideaStatuses';
 
 // components
 import FormikColorPickerInput from 'components/UI/FormikColorPickerInput';
@@ -24,7 +24,7 @@ import messages from './messages';
 
 export interface FormValues {
   color: string;
-  code: Code;
+  code: TIdeaStatusCode;
   title_multiloc: Multiloc;
   description_multiloc: Multiloc;
 }
@@ -147,17 +147,38 @@ const IdeaStatusForm = ({
               content={<FormattedMessage {...messages.categoryDescription} />}
             />
           </StyledLabel>
-          {ideaStatusCodes.map((code, i) => (
+          {ideaStatusCodes.map((code: TIdeaStatusCode, i) => (
             <StyledFormikRadio
               key={`code-input-${i}`}
               label={
                 <LabelText>
                   <span className="header">
-                    {formatMessage(messages[`${code}FieldCodeTitle`])}
+                    {formatMessage(
+                      {
+                        proposed: messages.proposedFieldCodeTitle,
+                        viewed: messages.viewedFieldCodeTitle,
+                        under_consideration:
+                          messages.under_considerationFieldCodeTitle,
+                        accepted: messages.acceptedFieldCodeTitle,
+                        implemented: messages.implementedFieldCodeTitle,
+                        rejected: messages.rejectedFieldCodeTitle,
+                        custom: messages.customFieldCodeTitle,
+                      }[`${code}FieldCodeTitle`]
+                    )}
                   </span>
                   {code !== 'custom' && (
                     <span className="description">
-                      {formatMessage(messages[`${code}FieldCodeDescription`])}
+                      {formatMessage(
+                        {
+                          proposed: messages.proposedFieldCodeDescription,
+                          viewed: messages.viewedFieldCodeDescription,
+                          under_consideration:
+                            messages.under_considerationFieldCodeDescription,
+                          accepted: messages.acceptedFieldCodeDescription,
+                          implemented: messages.implementedFieldCodeDescription,
+                          rejected: messages.rejectedFieldCodeDescription,
+                        }[`${code}FieldCodeDescription`]
+                      )}
                     </span>
                   )}
                 </LabelText>
