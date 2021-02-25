@@ -4,6 +4,12 @@
 
 /
 
+## 2021-02-24
+
+### Fixed
+- The project page no longer shows an eternal spinner when the user has no access to see the project
+
+
 ## 2021-02-18
 
 ### Added
@@ -24,7 +30,6 @@
 ## 2021-02-12
 
 ### Fixed
-
 - Fixed Azure AD login for some Azure setups (Schagen)
 
 ### Changed
