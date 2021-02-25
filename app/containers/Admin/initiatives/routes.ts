@@ -25,5 +25,6 @@ export default () => ({
       }),
     },
     ...moduleConfiguration.routes['admin.initiatives'],
+    ...moduleConfiguration.routes['admin.ideas'],
   ],
 });
