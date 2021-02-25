@@ -64,20 +64,13 @@ export interface ITab {
   feature?: string;
 }
 
-export type CellComponentProps = {
-  idea: IIdeaData;
-  selection: Set<string>;
-  onChange?: (event: unknown) => void;
-  onClick?: (event: unknown) => void;
-};
-
-export type CellConfiguration = {
+export type CellConfiguration<ComponentProps> = {
   name: string;
   onChange?: (event: unknown) => void;
   onClick?: (event: unknown) => void;
   featureFlag?: string;
   cellProps?: TableCellProps;
-  Component: FC<CellComponentProps>;
+  Component: FC<ComponentProps>;
 };
 
 export interface InsertConfigurationOptions<T extends { name: string }> {

@@ -1,8 +1,10 @@
+import IdeaHeaderRow from 'components/admin/PostManager/components/PostTable/IdeaHeaderRow';
 import React from 'react';
 import styled from 'styled-components';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 
 import AssigneeFilter from './admin/components/AssigneeFilter';
+import IdeaHeaderCell from './admin/components/IdeaHeaderCell';
 import IdeaRowCell from './admin/components/IdeaRowCell';
 
 const StyledAssigneeFilter = styled(AssigneeFilter)`
@@ -15,6 +17,7 @@ const configuration: ModuleConfiguration = {
       <StyledAssigneeFilter {...props} />
     ),
     'app.components.admin.PostManager.components.PostTable.IdeaRow.cells': IdeaRowCell,
+    'app.components.admin.PostManager.components.PostTable.IdeaHeaderRow.cells': IdeaHeaderCell,
   },
 };
 

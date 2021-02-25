@@ -6,14 +6,17 @@ import { IIdeaData, updateIdea } from 'services/ideas';
 import {
   InsertConfigurationOptions,
   CellConfiguration,
-  CellComponentProps,
   Override,
 } from 'typings';
 import { trackEventByName } from 'utils/analytics';
 import tracks from 'components/admin/PostManager/tracks';
 
+import { IdeaCellComponentProps } from 'components/admin/PostManager/components/PostTable/IdeaRow';
+
 type Props = {
-  onData: (data: InsertConfigurationOptions<CellConfiguration>) => void;
+  onData: (
+    data: InsertConfigurationOptions<CellConfiguration<IdeaCellComponentProps>>
+  ) => void;
 };
 
 const IdeaRowCell: FC<Props> = ({ onData }) => {
@@ -44,7 +47,7 @@ const IdeaRowCell: FC<Props> = ({ onData }) => {
             idea,
             onChange,
           }: Override<
-            CellComponentProps,
+            IdeaCellComponentProps,
             {
               onChange: (idea: IIdeaData) => (assigneeId?: string) => void;
             }

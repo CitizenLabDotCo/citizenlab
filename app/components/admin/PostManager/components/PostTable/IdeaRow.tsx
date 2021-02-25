@@ -34,7 +34,6 @@ import { TitleLink, StyledRow } from './Row';
 import SubRow from './SubRow';
 import {
   CellConfiguration,
-  CellComponentProps,
   InsertConfigurationOptions,
   Override,
 } from 'typings';
@@ -55,12 +54,19 @@ type InputProps = {
   nothingHappens: (event) => void;
 };
 
+export type IdeaCellComponentProps = {
+  idea: IIdeaData;
+  selection: Set<string>;
+  onChange?: (event: unknown) => void;
+  onClick?: (event: unknown) => void;
+};
+
 type Props = InputProps & {
   connectDragSource: any;
 };
 
 type State = {
-  cells: CellConfiguration[];
+  cells: CellConfiguration<IdeaCellComponentProps>[];
 };
 
 class IdeaRow extends React.PureComponent<
@@ -83,7 +89,7 @@ class IdeaRow extends React.PureComponent<
             idea,
             onChange,
           }: Override<
-            CellComponentProps,
+            IdeaCellComponentProps,
             {
               onChange: (event: ChangeEvent<HTMLInputElement>) => void;
             }
@@ -132,7 +138,7 @@ class IdeaRow extends React.PureComponent<
         {
           name: 'down',
           cellProps: { singleLine: true },
-          Component: ({ idea }: CellComponentProps) => {
+          Component: ({ idea }: IdeaCellComponentProps) => {
             return (
               <>
                 <Icon name="thumbs down" />
@@ -145,7 +151,7 @@ class IdeaRow extends React.PureComponent<
           name: 'picks',
           cellProps: { singleLine: true },
           featureFlag: 'participatory_budgeting',
-          Component: ({ idea }: CellComponentProps) => {
+          Component: ({ idea }: IdeaCellComponentProps) => {
             return <>{idea.attributes.baskets_count}</>;
           },
         },
@@ -181,14 +187,15 @@ class IdeaRow extends React.PureComponent<
   };
 
   renderCell = (
-    { idea, selection }: CellComponentProps,
+    { idea, selection }: IdeaCellComponentProps,
     {
       cellProps = {},
+      name,
       Component,
       onChange,
       onClick,
       featureFlag,
-    }: CellConfiguration
+    }: CellConfiguration<IdeaCellComponentProps>
   ) => {
     const handlers = {
       ...(onChange ? { onChange } : {}),
@@ -196,17 +203,23 @@ class IdeaRow extends React.PureComponent<
     };
 
     const Content = (
-      <Table.Cell {...cellProps}>
+      <Table.Cell {...cellProps} key={name}>
         <Component idea={idea} selection={selection} {...handlers} />
       </Table.Cell>
     );
 
     if (!featureFlag) return Content;
-    return <FeatureFlag name={featureFlag}>{Content}</FeatureFlag>;
+    return (
+      <FeatureFlag name={featureFlag} key={name}>
+        {Content}
+      </FeatureFlag>
+    );
   };
 
   handleData = (
-    insertCellOptions: InsertConfigurationOptions<CellConfiguration>
+    insertCellOptions: InsertConfigurationOptions<
+      CellConfiguration<IdeaCellComponentProps>
+    >
   ) => {
     this.setState(({ cells }) => ({
       cells: insertConfiguration(insertCellOptions)(cells),
