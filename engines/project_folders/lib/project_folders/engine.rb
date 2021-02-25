@@ -30,12 +30,11 @@ module ProjectFolders
     end
 
     config.to_prepare(&method(:activate).to_proc)
+    config.to_prepare do
+      require 'project_folders/feature_specification'
+      AppConfiguration::Settings.add_feature(ProjectFolders::FeatureSpecification)
 
-    config.after_initialize do
       ::User.prepend(ProjectFolders::UserDecorator)
-    end
-
-    ActiveSupport.on_load(:action_controller) do
       ::ProjectPolicy.prepend ProjectFolders::MonkeyPatches::ProjectPolicy
       ::UserPolicy.prepend ProjectFolders::MonkeyPatches::UserPolicy
       ::AdminPublicationPolicy.prepend ProjectFolders::MonkeyPatches::AdminPublicationPolicy
