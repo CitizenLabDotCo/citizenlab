@@ -1,6 +1,3 @@
+INTERCOM_CLIENT = ENV["INTERCOM_TOKEN"] ?
+                    Intercom::Client.new(token: ENV["INTERCOM_TOKEN"]) : nil
 
-IntercomInstance = if ENV.fetch("INTERCOM_TOKEN", false)
-  Intercom::Client.new(token: ENV.fetch("INTERCOM_TOKEN"))
-else
-  nil
-end
