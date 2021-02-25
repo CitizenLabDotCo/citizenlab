@@ -7,6 +7,7 @@ import moderationConfiguration from './moderation';
 import idBosaFasConfiguration from './id_bosa_fas';
 import idCowConfiguration from './id_cow';
 import idBogusConfiguration from './id_bogus';
+import idIdCardLookupConfiguration from './id_id_card_lookup';
 
 import googleTagManagerConfiguration from './google_tag_manager';
 import googleAnalyticsConfiguration from './google_analytics';
@@ -61,6 +62,10 @@ export default loadModules([
   },
   {
     configuration: idBogusConfiguration,
+    isEnabled: true,
+  },
+  {
+    configuration: idIdCardLookupConfiguration,
     isEnabled: true,
   },
 ]);

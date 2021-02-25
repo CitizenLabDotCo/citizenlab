@@ -20,18 +20,18 @@ import {
   SubmitButton,
   CancelButton,
   HelpImage,
-} from './styles';
+} from 'components/Verification/styles';
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
 
 // services
-import { verifyIDLookup } from 'services/verify';
+import { verifyIDLookup } from '../services/verify';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
+import messages from '../messages';
 import T from 'components/T';
 
 // typings
