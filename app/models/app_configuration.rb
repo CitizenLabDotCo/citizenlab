@@ -10,7 +10,7 @@ class AppConfiguration < ApplicationRecord
   attr_accessor :tenant_sync_enabled
 
   validates :settings, presence: true, json: {
-    schema: -> { AppConfiguration.settings_json_schema_str },
+    schema: -> { AppConfiguration::Settings.json_schema_str },
     message: lambda { |errors|
                errors.map do |e|
                  { fragment: e[:fragment], error: e[:failed_attribute], human_message: e[:message] }
