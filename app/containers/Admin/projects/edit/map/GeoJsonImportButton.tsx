@@ -1,6 +1,6 @@
 import React, { memo, useState } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import * as gjv from 'geojson-validation';
+import { valid } from 'geojson-validation';
 
 // services
 import { createProjectMapLayer } from 'services/mapLayers';
@@ -10,7 +10,9 @@ import Error from 'components/UI/Error';
 
 // hooks
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-import useMapConfig from 'hooks/useMapConfig';
+
+// utils
+import { getUnnamedLayerTitleMultiloc } from 'utils/map';
 
 // i18n
 import messages from './messages';
@@ -68,7 +70,6 @@ interface Props {
 const GeoJsonImportButton = memo<Props>(
   ({ projectId, mapConfigId, className }) => {
     const tenantLocales = useAppConfigurationLocales();
-    const mapConfig = useMapConfig({ projectId });
 
     const [importError, setImportError] = useState(false);
 
@@ -81,27 +82,9 @@ const GeoJsonImportButton = memo<Props>(
 
         setImportError(false);
 
-        if (gjv.valid(geojson)) {
-          if (mapConfigId) {
-            const unnamedLayersCount =
-              mapConfig?.attributes?.layers?.filter((layer) =>
-                layer?.title_multiloc?.['en']?.startsWith('Unnamed')
-              )?.length || 0;
-
-            const newUnnamedLayerTitle = `Unnamed layer ${
-              unnamedLayersCount + 1
-            }`;
-
-            const title_multiloc = {
-              en: newUnnamedLayerTitle,
-            };
-
-            if (!isNilOrError(tenantLocales)) {
-              tenantLocales.forEach(
-                (tenantLocale) =>
-                  (title_multiloc[tenantLocale] = newUnnamedLayerTitle)
-              );
-            }
+        if (mapConfigId && !isNilOrError(tenantLocales)) {
+          if (valid(geojson)) {
+            const title_multiloc = getUnnamedLayerTitleMultiloc(tenantLocales);
 
             createProjectMapLayer(projectId, {
               geojson,
@@ -109,9 +92,9 @@ const GeoJsonImportButton = memo<Props>(
               id: mapConfigId,
               default_enabled: true,
             });
+          } else {
+            setImportError(true);
           }
-        } else {
-          setImportError(true);
         }
       };
     };

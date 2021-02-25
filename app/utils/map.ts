@@ -2,6 +2,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { IOutput as IMapConfig } from 'hooks/useMapConfig';
 import { IAppConfiguration } from 'services/appConfiguration';
 import { IMapLayerAttributes } from 'services/mapLayers';
+import { Locale } from 'typings';
 
 export const getCenter = (
   centerCoordinates: GeoJSON.Position | undefined,
@@ -92,6 +93,15 @@ export const getLayerIcon = (mapLayer: IMapLayerAttributes | undefined) => {
   }
 
   return iconName;
+};
+
+export const getUnnamedLayerTitleMultiloc = (tenantLocales: Locale[]) => {
+  const newUnnamedLayerTitle = 'Unnamed layer';
+  const title_multiloc = {};
+  tenantLocales.forEach(
+    (tenantLocale) => (title_multiloc[tenantLocale] = newUnnamedLayerTitle)
+  );
+  return title_multiloc;
 };
 
 export const makiIconNames = [
