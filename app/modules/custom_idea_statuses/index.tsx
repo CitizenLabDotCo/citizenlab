@@ -2,7 +2,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import React, { ReactNode } from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 import Tab from './admin/components/Tab';
-import Granular from './admin/containers/Granular';
+// import Granular from './admin/containers/Granular';
 
 type RenderOnFeatureFlagProps = {
   children: ReactNode;
@@ -18,19 +18,19 @@ const RenderOnFeatureFlag = ({ children }: RenderOnFeatureFlagProps) => {
 
 const configuration: ModuleConfiguration = {
   routes: {
-    'admin.initiatives': [
+    'admin.ideas': [
       {
-        path: 'permissions',
-        container: () => import('./admin/containers/permissions'),
+        path: 'statuses',
+        container: () => import('./admin/containers'),
       },
     ],
   },
   outlets: {
-    'app.containers.Admin.project.edit.permissions': (props) => (
-      <RenderOnFeatureFlag>
-        <Granular {...props} />
-      </RenderOnFeatureFlag>
-    ),
+    // 'app.containers.Admin.project.edit.permissions': (props) => (
+    //   <RenderOnFeatureFlag>
+    //     <Granular {...props} />
+    //   </RenderOnFeatureFlag>
+    // ),
     'app.containers.Admin.ideas.tabs': (props) => {
       return (
         <RenderOnFeatureFlag>
