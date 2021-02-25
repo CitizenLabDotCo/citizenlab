@@ -334,8 +334,6 @@ const VerificationMethods = memo<Props & InjectedIntlProps>(
                     {method.attributes.name === 'id_card_lookup' && (
                       <T value={method.attributes.method_name_multiloc} />
                     )}
-                    {method.attributes.name === 'bogus' &&
-                      'Bogus verification (testing)'}
                   </VerificationMethodButton>
                 </>
               ))}
