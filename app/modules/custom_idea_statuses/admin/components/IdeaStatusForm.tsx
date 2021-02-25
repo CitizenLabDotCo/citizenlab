@@ -163,7 +163,7 @@ const IdeaStatusForm = ({
                         implemented: messages.implementedFieldCodeTitle,
                         rejected: messages.rejectedFieldCodeTitle,
                         custom: messages.customFieldCodeTitle,
-                      }[`${code}FieldCodeTitle`]
+                      }[code]
                     )}
                   </span>
                   {code !== 'custom' && (
@@ -177,7 +177,7 @@ const IdeaStatusForm = ({
                           accepted: messages.acceptedFieldCodeDescription,
                           implemented: messages.implementedFieldCodeDescription,
                           rejected: messages.rejectedFieldCodeDescription,
-                        }[`${code}FieldCodeDescription`]
+                        }[code]
                       )}
                     </span>
                   )}
