@@ -99,8 +99,17 @@ export type OutletsPropertyMap = {
       navItemConfiguration: NavItem;
     }) => void;
   };
-  'app.components.VerificationModal.buttons': {
-    activeMethods: IVerificationMethod[];
+  'app.components.VerificationModal.button': {
+    method: IVerificationMethod;
+    onMethodSelected: () => void;
+    last: boolean;
+  };
+  'app.components.VerificationModal.methodStep': {
+    method: IVerificationMethod;
+    onCancel: () => void;
+    onVerified: () => void;
+    showHeader?: boolean;
+    inModal: boolean;
   };
 };
 

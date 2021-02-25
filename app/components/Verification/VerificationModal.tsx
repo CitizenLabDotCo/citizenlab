@@ -24,7 +24,6 @@ import styled from 'styled-components';
 import { viewportWidths } from 'utils/styleUtils';
 
 // typings
-import { IVerificationMethod } from 'services/verificationMethods';
 import { IParticipationContextType, IPCAction } from 'typings';
 import { IInitiativeAction } from 'services/initiatives';
 
@@ -67,17 +66,10 @@ export function isInitiativeContext(
 
 export type TVerificationSteps =
   | 'method-selection'
+  | 'method-step'
   | 'success'
   | 'error'
-  | null
-  | IVerificationMethod['attributes']['name'];
-
-export type VerificationModalSteps =
-  | 'method-selection'
-  | 'success'
-  | 'error'
-  | null
-  | IVerificationMethod['attributes']['name'];
+  | null;
 
 export interface Props {
   className?: string;
@@ -89,7 +81,7 @@ const VerificationModal = memo<Props>(({ className, onMounted }) => {
   const { windowWidth } = useWindowSize();
 
   const isMounted = useIsMounted();
-  const [activeStep, setActiveStep] = useState<VerificationModalSteps>(null);
+  const [activeStep, setActiveStep] = useState<TVerificationSteps>(null);
   const [context, setContext] = useState<ContextShape>(null);
   const [error, setError] = useState<IVerificationError>(null);
   const opened = !!activeStep;

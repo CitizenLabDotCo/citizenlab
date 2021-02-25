@@ -1,7 +1,4 @@
 import React, { useCallback } from 'react';
-import { AUTH_PATH } from 'containers/App/constants';
-import { removeUrlLocale } from 'services/locale';
-import { getJwt } from 'utils/auth/jwt';
 
 // typings
 import { IVerificationMethod } from 'services/verificationMethods';
@@ -15,15 +12,13 @@ import messages from '../messages';
 
 interface Props {
   method: IVerificationMethod;
+  onMethodSelected: () => void;
   last: boolean;
 }
 
-const BosaFasButton = ({ method, last }: Props) => {
+const CowButton = ({ method, last, onMethodSelected }: Props) => {
   const handleOnClick = useCallback(() => {
-    const jwt = getJwt();
-    window.location.href = `${AUTH_PATH}/bosa_fas?token=${jwt}&pathname=${removeUrlLocale(
-      window.location.pathname
-    )}`;
+    onMethodSelected();
   }, []);
 
   return (
@@ -33,9 +28,9 @@ const BosaFasButton = ({ method, last }: Props) => {
       className={last ? 'last' : ''}
       onClick={handleOnClick}
     >
-      <FormattedMessage {...messages.verifyBOSA} />
+      <FormattedMessage {...messages.verifyCow} />
     </VerificationMethodButton>
   );
 };
 
-export default BosaFasButton;
+export default CowButton;

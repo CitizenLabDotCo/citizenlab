@@ -5,6 +5,7 @@ import smartGroupsConfiguration from './smart_groups';
 import granularPermissionsConfiguration from './granular_permissions';
 import moderationConfiguration from './moderation';
 import idBosaFasConfiguration from './id_bosa_fas';
+import idCowConfiguration from './id_cow';
 
 import googleTagManagerConfiguration from './google_tag_manager';
 import googleAnalyticsConfiguration from './google_analytics';
@@ -51,6 +52,10 @@ export default loadModules([
   },
   {
     configuration: idBosaFasConfiguration,
+    isEnabled: true,
+  },
+  {
+    configuration: idCowConfiguration,
     isEnabled: true,
   },
 ]);
