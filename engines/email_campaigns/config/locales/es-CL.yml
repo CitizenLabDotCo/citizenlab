@@ -52,12 +52,12 @@ es-CL:
     admin_campaign_type_description:
       "manual": 'Mensaje oficial: todos los usuarios'
       "admin_rights_received": 'Derechos de administrador recibidos: administradores'
-      "comment_deleted_by_admin": 'Eliminación de tu comentario: todos los usuarios'
-      "comment_marked_as_spam": Informar de spam de comentarios - administradores y administradores de proyecto
-      "comment_on_your_comment": 'Responder a tu comentario: todos los usuarios'
-      "comment_on_your_idea": 'Comentar en tu idea: todos los usuarios'
-      "comment_on_your_initiative": 'Comentar en tu propuesta: todos los usuarios'
-      "first_idea_published": 'Publicación de tu primera idea: todos los usuarios'
+      "comment_deleted_by_admin": Eliminación de su comentario - todos los usuarios
+      "comment_marked_as_spam": Comentar informe de spam - administradores y gestores de proyectos
+      "comment_on_your_comment": Responder a su comentario - todos los usuarios
+      "comment_on_your_idea": 'Comentar en su idea: todos los usuarios'
+      "comment_on_your_initiative": Comente su propuesta - todos los usuarios
+      "first_idea_published": Publicación de su primera idea - todos los usuarios
       "idea_assigned_to_you": Asignación de una idea - administradores y administradores de proyecto
       "idea_marked_as_spam": Informar de spam de ideas - administradores y administradores de proyecto
       "idea_published": 'Publicación de tu idea: todos los usuarios'
@@ -416,7 +416,7 @@ es-CL:
       preheader: 'Un administrador de la plataforma de participación de %{organizationName} acaba de nombrarte gestor de la siguiente carpeta'
       subject: 'Te convertiste en administrador de carpetas de la plataforma %{organizationName}'
       text_manage_folder: 'Una carpeta es una forma de organizar y juntar varios proyectos de participación. Como administrador de la carpeta, puede editar la carpeta y la descripción de esta, y crear nuevos proyectos (para eliminar proyectos, comuníquese con el administrador de su plataforma). También tendrá derechos de administración de proyectos sobre todos aquellos que estén dentro de la carpeta, lo que le permitirá editarlos, administrar las entradas y enviar correos electrónicos a los participantes.'
-      text_moderate_analyse_input: 'Una vez lanzados los proyectos, empezarán a llegar las primeras aportaciones. Recibirás informes semanales con las principales actividades para que puedas estar al tanto de lo que ocurre. El gestor de aportaciones de tu panel "Gestionar plataforma" te permite ver y gestionar las aportaciones, incluida la asignación de estados y la respuesta a las publicaciones y los comentarios.'
+      text_moderate_analyse_input: 'Una vez lanzados los proyectos, empezarán a llegar las primeras entradas. Recibirá informes semanales con las actividades clave para que pueda estar al tanto de lo que ocurre. El gestor de entradas en el panel "Gestionar plataforma" le permite ver y gestionar los aportes, incluida la asignación de estados y el responder a las publicaciones y los comentarios.'
       text_design_participatory_process: 'Puede administrar los diferentes proyectos de participación dentro de la carpeta: configurar el método de participación, agregar una descripción del proyecto, adjuntar imágenes y comunicar eventos relacionados. También puede administrar el modo en que los participantes interactúan con los proyectos, incluida la configuración de derechos de acceso y la configuración de publicaciones, votaciones y comentarios.'
       title_design_participatory_process: 'Diseña el proceso participativo'
       title_moderate_analyse_input: 'Modera y analiza los datos introducidos'
