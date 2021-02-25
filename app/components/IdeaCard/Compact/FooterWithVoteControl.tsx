@@ -59,8 +59,12 @@ interface Props {
 
 const CompactIdeaCard = memo<Props>(({ idea, hideIdeaStatus, className }) => {
   const ideaStatusId = idea?.relationships?.idea_status?.data.id;
-  const isDownVotingEnabled = !!idea?.attributes?.action_descriptor?.voting_idea
-    ?.downvoting_enabled;
+  const isDownVotingEnabled =
+    idea.attributes.action_descriptor.voting_idea.downvoting_enabled;
+  // if a project is inactive (archived), downvoting_enabled is
+  // null, hence the boolean check
+  const showDownvote =
+    typeof isDownVotingEnabled === 'boolean' ? isDownVotingEnabled : true;
   const commentingDescriptor =
     idea?.attributes?.action_descriptor?.commenting_idea;
   const isCommentingEnabled = !!(
@@ -76,7 +80,7 @@ const CompactIdeaCard = memo<Props>(({ idea, hideIdeaStatus, className }) => {
           ideaId={idea.id}
           size="1"
           ariaHidden
-          showDownvote={isDownVotingEnabled}
+          showDownvote={showDownvote}
         />
 
         <CommentsCount
