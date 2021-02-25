@@ -2,13 +2,14 @@
 
 ## Next release
 
-/
+### Fixed
+- Downvote button (thumbs down) on input card is displayed for archived projects
+
 
 ## 2021-02-24
 
 ### Fixed
 - The project page no longer shows an eternal spinner when the user has no access to see the project
-
 
 ## 2021-02-18
 
