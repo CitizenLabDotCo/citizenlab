@@ -160,7 +160,7 @@ const VerificationFormLookup = memo<Props & InjectedIntlProps>(
             <Collapse
               opened={showHelp}
               onToggle={onToggleHelpButtonClick}
-              label={<FormattedMessage {...messages.showCOWHelp} />}
+              label={<FormattedMessage {...messages.showHelp} />}
             >
               <HelpImage
                 src={method.attributes.explainer_image_url}

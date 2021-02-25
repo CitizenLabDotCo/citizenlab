@@ -216,7 +216,7 @@ const VerificationMethods = memo<Props & InjectedIntlProps>(
       participationConditions.length > 0;
 
     const handleOnMethodSelected = useCallback(
-      (method) => () => {
+      (method: IVerificationMethod) => () => {
         onMethodSelected(method);
       },
       [onMethodSelected]
@@ -313,32 +313,35 @@ const VerificationMethods = memo<Props & InjectedIntlProps>(
                 inModal ? 'inModal' : ''
               }`}
             >
-              <Outlet
-                id="app.components.VerificationModal.buttons"
-                activeMethods={verificationMethods.data}
-              />
               {verificationMethods.data.map((method, index) => (
-                <VerificationMethodButton
-                  key={method.id}
-                  id={`e2e-${method.attributes.name}-button`}
-                  className={
-                    index + 1 === verificationMethods.data.length ? 'last' : ''
-                  }
-                  onClick={handleOnMethodSelected(method)}
-                >
-                  {method.attributes.name === 'cow' && (
-                    <FormattedMessage {...messages.verifyCow} />
-                  )}
-                  {method.attributes.name === 'id_card_lookup' && (
-                    <T value={method.attributes.method_name_multiloc} />
-                  )}
-                  {method.attributes.name === 'bogus' &&
-                    'Bogus verification (testing)'}
-                </VerificationMethodButton>
+                <>
+                  <Outlet
+                    id="app.components.VerificationModal.button"
+                    method={method}
+                    onMethodSelected={handleOnMethodSelected(method)}
+                    last={index + 1 === verificationMethods.data.length}
+                  />
+                  <VerificationMethodButton
+                    key={method.id}
+                    id={`e2e-${method.attributes.name}-button`}
+                    className={
+                      index + 1 === verificationMethods.data.length
+                        ? 'last'
+                        : ''
+                    }
+                    onClick={handleOnMethodSelected(method)}
+                  >
+                    {method.attributes.name === 'id_card_lookup' && (
+                      <T value={method.attributes.method_name_multiloc} />
+                    )}
+                    {method.attributes.name === 'bogus' &&
+                      'Bogus verification (testing)'}
+                  </VerificationMethodButton>
+                </>
               ))}
 
               {!isEmpty(alternativeMethods) &&
-                !isEmpty(filteredVerificationMethods) && <Or />}
+                !isEmpty(verificationMethods.data) && <Or />}
 
               {franceConnectVerification && (
                 <FranceConnectButton

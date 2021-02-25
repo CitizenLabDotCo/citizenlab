@@ -20,7 +20,7 @@ import {
   SubmitButton,
   CancelButton,
   HelpImage,
-} from './styles';
+} from 'components/Verification/styles';
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
@@ -31,16 +31,18 @@ import { verifyCOW } from 'services/verify';
 // i18n
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
+import messages from '../messages';
 
 // images
 import helpImage from './COWHelpImage.png';
+import { IVerificationMethod } from 'services/verificationMethods';
 
 interface Props {
   onCancel: () => void;
   onVerified: () => void;
   showHeader?: boolean;
   inModal: boolean;
+  method: IVerificationMethod;
   className?: string;
 }
 
