@@ -1105,7 +1105,7 @@
   "app.containers.AdminPage.ProjectEdit.MapTab.layers": "Capas",
   "app.containers.AdminPage.ProjectEdit.MapTab.layersTooltip": "Actualmente soportamos archivos GeoJSON. Lea el {supportArticle} para obtener consejos sobre cómo convertir y ajustar el estilo de las capas del mapa.",
   "app.containers.AdminPage.ProjectEdit.MapTab.mapCenterAndZoom": "Ir al centro del mapa por defecto y hacer zoom",
-  "app.containers.AdminPage.ProjectEdit.MapTab.mapCenterAndZoomTooltip": "The default center point and zoom level of the map. Manually adjust the values below, or click on the {button} button in the top right corner of the map to save the current center point and zoom level of the map as the default values.",
+  "app.containers.AdminPage.ProjectEdit.MapTab.mapCenterAndZoomTooltip": "El punto central y el nivel de zoom por defecto del mapa. Ajuste manualmente los valores que aparecen a continuación, o haga clic en el botón {button} de la esquina superior derecha del mapa para guardar el punto central y el nivel de zoom actuales del mapa como valores predeterminados.",
   "app.containers.AdminPage.ProjectEdit.MapTab.mapConfigurationDescription": "Customize the map view, including uploading and styling map layers and setting the map center and zoom level.",
   "app.containers.AdminPage.ProjectEdit.MapTab.mapConfigurationTitle": "Map configuration",
   "app.containers.AdminPage.ProjectEdit.MapTab.remove": "Remove layer",
