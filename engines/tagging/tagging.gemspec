@@ -11,6 +11,7 @@ Gem::Specification.new do |s|
   s.version     = Tagging::VERSION
   s.authors     = ['Sara Boisseau']
   s.email       = ['sara@citizenlab.co']
+  s.licenses    = ['CitizenLab Commercial License']
   s.summary     = 'Tags content from CitizenLab platform for processing'
 
   s.files = Dir['{app,config,db,lib}/**/*', 'MIT-LICENSE', 'Rakefile', 'README.md']
