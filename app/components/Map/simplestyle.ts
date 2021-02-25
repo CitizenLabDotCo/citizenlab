@@ -1,4 +1,9 @@
 // @ts-nocheck
+/* tslint:disable */
+
+// This is a direct copy of the source code of https://github.com/rowanwins/leaflet-simplestyle.
+// Installing it through npm and importing it as a normal package unfortunatly crashes IE11.
+// Therefore it's added directly to the codebase, which fixes the IE11 issue.
 
 (function (factory) {
   typeof define === 'function' && define.amd ? define(factory) : factory();
