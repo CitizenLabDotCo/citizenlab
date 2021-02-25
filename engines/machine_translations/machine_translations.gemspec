@@ -9,6 +9,7 @@ Gem::Specification.new do |s|
   s.version     = MachineTranslations::VERSION
   s.authors     = ["Koen Gremmelprez"]
   s.email       = ["koen@citizenlab.co"]
+  s.licenses    = ['CitizenLab Commercial License']
   s.summary     = "Automatically translates content (ideas/comments) through machine translation"
 
   s.files = Dir["{app,config,db,lib}/**/*", "README.md"]

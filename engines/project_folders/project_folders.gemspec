@@ -8,6 +8,7 @@ Gem::Specification.new do |spec|
   spec.name        = "project_folders"
   spec.version     = ProjectFolders::VERSION
   spec.authors     = ["Adrien Dessy"]
+  spec.licenses    = ['CitizenLab Commercial License']
   spec.email       = ["adrien@citizenlab.co"]
   spec.summary     = "Project folders for CitizenLab participation platform"
 
