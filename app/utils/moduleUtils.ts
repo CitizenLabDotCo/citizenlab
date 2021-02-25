@@ -25,6 +25,8 @@ import { IUserData } from 'services/users';
 import { MessageValue } from 'react-intl';
 import { NavItem } from 'containers/Admin/sideBar';
 import { ManagerType } from 'components/admin/PostManager';
+import { IdeaCellComponentProps } from 'components/admin/PostManager/components/PostTable/IdeaRow';
+import { IdeaHeaderCellComponentProps } from 'components/admin/PostManager/components/PostTable/IdeaHeaderRow';
 
 type Localize = (
   multiloc: Multiloc | null | undefined,
@@ -104,7 +106,18 @@ export type OutletsPropertyMap = {
     type: ManagerType;
   };
   'app.components.admin.PostManager.components.PostTable.IdeaRow.cells': {
-    onData: (data: InsertConfigurationOptions<CellConfiguration>) => void;
+    onData: (
+      data: InsertConfigurationOptions<
+        CellConfiguration<IdeaCellComponentProps>
+      >
+    ) => void;
+  };
+  'app.components.admin.PostManager.components.PostTable.IdeaHeaderRow.cells': {
+    onData: (
+      data: InsertConfigurationOptions<
+        CellConfiguration<IdeaHeaderCellComponentProps>
+      >
+    ) => void;
   };
 };
 
