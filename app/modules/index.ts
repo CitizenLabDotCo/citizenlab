@@ -8,6 +8,7 @@ import idBosaFasConfiguration from './id_bosa_fas';
 import idCowConfiguration from './id_cow';
 import idBogusConfiguration from './id_bogus';
 import idIdCardLookupConfiguration from './id_id_card_lookup';
+import IdFraneConnectConfiguration from './id_franceconnect';
 
 import googleTagManagerConfiguration from './google_tag_manager';
 import googleAnalyticsConfiguration from './google_analytics';
@@ -66,6 +67,10 @@ export default loadModules([
   },
   {
     configuration: idIdCardLookupConfiguration,
+    isEnabled: true,
+  },
+  {
+    configuration: IdFraneConnectConfiguration,
     isEnabled: true,
   },
 ]);

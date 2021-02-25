@@ -1,5 +1,4 @@
 import React, { memo, useCallback, Fragment } from 'react';
-import { isEmpty } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
@@ -8,7 +7,6 @@ import Avatar from 'components/Avatar';
 import T from 'components/T';
 import Button from 'components/UI/Button';
 import { Title, Subtitle } from './styles';
-import FranceConnectButton from 'components/UI/FranceConnectButton';
 import Or from 'components/UI/Or';
 
 // hooks
@@ -18,8 +16,7 @@ import useVerificationMethods from 'hooks/useVerificationMethods';
 
 // i18n
 import messages from './messages';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 
 // style
 import styled from 'styled-components';
@@ -27,9 +24,6 @@ import { colors, fontSizes, media } from 'utils/styleUtils';
 
 // typings
 import { IVerificationMethod } from 'services/verificationMethods';
-import { AUTH_PATH } from 'containers/App/constants';
-import { getJwt } from 'utils/auth/jwt';
-import { removeUrlLocale } from 'services/locale';
 import { ContextShape } from './VerificationModal';
 import Outlet from 'components/Outlet';
 
@@ -181,7 +175,7 @@ interface Props {
   className?: string;
 }
 
-const VerificationMethods = memo<Props & InjectedIntlProps>(
+const VerificationMethods = memo<Props>(
   ({
     context,
     showHeader,
@@ -190,25 +184,11 @@ const VerificationMethods = memo<Props & InjectedIntlProps>(
     onMethodSelected,
     onSkipped,
     className,
-    intl: { formatMessage },
   }) => {
     const participationConditions = useParticipationConditions(context);
 
     const authUser = useAuthUser();
     const verificationMethods = useVerificationMethods();
-
-    const filterMethods = (methods: string[]) =>
-      !isNilOrError(verificationMethods)
-        ? verificationMethods.data.filter((method) =>
-            methods.includes(method.attributes.name)
-          )
-        : [];
-
-    const alternativeMethods = filterMethods(['franceconnect']);
-
-    const franceConnectVerification = alternativeMethods.find(
-      ({ attributes }) => attributes.name === 'franceconnect'
-    );
 
     const withContext =
       !isNilOrError(participationConditions) &&
@@ -220,13 +200,6 @@ const VerificationMethods = memo<Props & InjectedIntlProps>(
       },
       [onMethodSelected]
     );
-
-    const onVerifyFranceConnectButtonClick = useCallback(() => {
-      const jwt = getJwt();
-      window.location.href = `${AUTH_PATH}/franceconnect?token=${jwt}&pathname=${removeUrlLocale(
-        window.location.pathname
-      )}`;
-    }, []);
 
     const onSkipButtonClicked = useCallback(() => {
       onSkipped?.();
@@ -320,18 +293,6 @@ const VerificationMethods = memo<Props & InjectedIntlProps>(
                   last={index + 1 === verificationMethods.data.length}
                 />
               ))}
-
-              {!isEmpty(alternativeMethods) &&
-                !isEmpty(verificationMethods.data) && <Or />}
-
-              {franceConnectVerification && (
-                <FranceConnectButton
-                  onClick={onVerifyFranceConnectButtonClick}
-                  logoAlt={formatMessage(messages.verificationButtonAltText, {
-                    loginMechanismName: 'FranceConnect',
-                  })}
-                />
-              )}
             </ButtonsContainer>
           </Content>
 
@@ -354,4 +315,4 @@ const VerificationMethods = memo<Props & InjectedIntlProps>(
   }
 );
 
-export default injectIntl(VerificationMethods);
+export default VerificationMethods;
