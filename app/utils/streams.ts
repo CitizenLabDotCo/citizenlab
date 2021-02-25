@@ -513,12 +513,15 @@ class Streams {
           if (!stream.cacheStream) {
             promises.push(stream.fetch());
           } else {
-            stream.observer.next((previous) =>
-              this.deepFreeze({
-                ...previous,
-                data: [...previous.data, response['data']],
-              })
-            );
+            stream.observer.next((previous) => {
+              return this.deepFreeze({
+                ...(previous || {}),
+                data: {
+                  ...(previous?.data || {}),
+                  ...(response?.['data'] || {}),
+                },
+              });
+            });
           }
         }
       );

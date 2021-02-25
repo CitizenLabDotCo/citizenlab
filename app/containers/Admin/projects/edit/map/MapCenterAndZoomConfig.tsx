@@ -202,6 +202,8 @@ const MapCenterAndZoomConfig = memo<Props & InjectedIntlProps>(
       }
     };
 
+    console.log(formValues);
+
     return (
       <Container className={className || ''}>
         <SubSectionTitleWrapper>
