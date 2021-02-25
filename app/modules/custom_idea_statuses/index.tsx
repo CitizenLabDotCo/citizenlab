@@ -21,7 +21,15 @@ const configuration: ModuleConfiguration = {
     'admin.ideas': [
       {
         path: 'statuses',
-        container: () => import('./admin/containers'),
+        container: () => import('./admin/containers/'),
+      },
+      {
+        path: 'statuses/new',
+        container: () => import('./admin/containers/new'),
+      },
+      {
+        path: 'statuses/edit',
+        container: () => import('./admin/containers/edit'),
       },
     ],
   },
