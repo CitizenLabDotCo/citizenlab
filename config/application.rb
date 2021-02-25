@@ -45,7 +45,6 @@ module Cl2Back
     # error from files in the lib directory to other files
     # that need to be loaded.
     config.eager_load_paths << Rails.root.join('lib')
-    config.skylight.environments = %w[staging]
 
     config.action_dispatch.perform_deep_munge = false
     config.session_store :cookie_store, key: '_interslice_session'
