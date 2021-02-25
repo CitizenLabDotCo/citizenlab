@@ -221,7 +221,7 @@ fr:
       added_a_message: '%{organizationName} a écrit le message suivant :'
       cta_accept_invitation: 'Accepter votre invitation'
       invitation_header: 'Vous êtes invités !'
-      invitation_header_message: '%{organizationName} vous a invité à leur plateforme de participation.'
+      invitation_header_message: '%{organizationName} vous a invité à rejoindre sa plateforme de participation.'
       preheader: '%{organizationName} vous a envoyé une invitation à rejoindre leur plateforme de participation.'
       subject: 'Vous avez reçu une invitation pour rejoindre la plateforme de %{organizationName}'
     initiative_published:
