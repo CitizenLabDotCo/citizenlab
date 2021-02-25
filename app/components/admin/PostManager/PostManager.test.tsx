@@ -21,14 +21,11 @@ jest.mock('./components/InfoSidebar', () => 'InfoSidebar');
 jest.mock('./components/IdeasCount', () => 'IdeasCount');
 jest.mock('./components/InitiativesCount', () => 'InitiativesCount');
 jest.mock(
-  './components/TopLevelFilters/AssigneeFilter',
-  () => 'AssigneeFilter'
-);
-jest.mock(
   './components/TopLevelFilters/FeedbackToggle',
   () => 'FeedbackToggle'
 );
 jest.mock('./components/LazyPostPreview', () => 'LazyPostPreview');
+jest.mock('components/Outlet', () => 'Outlet');
 
 import { PostManager } from './';
 
