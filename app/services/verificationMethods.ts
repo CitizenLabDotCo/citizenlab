@@ -3,8 +3,6 @@ import streams from 'utils/streams';
 import { Multiloc } from 'typings';
 
 export interface IVerificationMethodNamesMap {
-  cow: 'cow';
-  bogus: 'bogus';
   franceconnect: 'franceconnect';
 }
 

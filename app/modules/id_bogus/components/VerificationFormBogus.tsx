@@ -17,17 +17,13 @@ import {
   Footer,
   SubmitButton,
   CancelButton,
-} from './styles';
+} from 'components/Verification/styles';
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
 
 // services
-import { verifyBogus } from 'services/verify';
-
-// i18n
-import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
+import { verifyBogus } from '../services/verify';
 
 interface Props {
   onCancel: () => void;
@@ -140,13 +136,13 @@ const VerificationFormBogus = memo<Props>(
               id="e2e-verification-bogus-submit-button"
               onClick={onSubmit}
             >
-              <FormattedMessage {...messages.submit} />
+              Submit
             </SubmitButton>
             <CancelButton
               onClick={onCancelButtonClicked}
               buttonStyle="secondary"
             >
-              <FormattedMessage {...messages.cancel} />
+              Cancel
             </CancelButton>
           </Footer>
         </Form>

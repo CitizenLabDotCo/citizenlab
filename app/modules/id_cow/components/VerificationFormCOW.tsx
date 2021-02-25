@@ -26,7 +26,7 @@ import {
 import useAuthUser from 'hooks/useAuthUser';
 
 // services
-import { verifyCOW } from 'services/verify';
+import { verifyCOW } from '../services/verify';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';

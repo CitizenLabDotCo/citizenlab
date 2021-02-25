@@ -6,6 +6,7 @@ import granularPermissionsConfiguration from './granular_permissions';
 import moderationConfiguration from './moderation';
 import idBosaFasConfiguration from './id_bosa_fas';
 import idCowConfiguration from './id_cow';
+import idBogusConfiguration from './id_bogus';
 
 import googleTagManagerConfiguration from './google_tag_manager';
 import googleAnalyticsConfiguration from './google_analytics';
@@ -56,6 +57,10 @@ export default loadModules([
   },
   {
     configuration: idCowConfiguration,
+    isEnabled: true,
+  },
+  {
+    configuration: idBogusConfiguration,
     isEnabled: true,
   },
 ]);

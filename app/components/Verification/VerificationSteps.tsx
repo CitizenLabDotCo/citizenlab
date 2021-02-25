@@ -153,15 +153,6 @@ const VerificationSteps = memo<Props>(
           )}
 
           {/* 
-          {activeStep === 'bogus' && (
-            <VerificationFormBogus
-              showHeader={showHeader}
-              inModal={inModal}
-              onCancel={onBogusCancel}
-              onVerified={onBogusVerified}
-            />
-          )}
-
           {activeStep === 'id_card_lookup' && method && (
             <VerificationFormLookup
               method={method}
