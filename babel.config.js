@@ -33,10 +33,11 @@ module.exports = function (api) {
       },
     ],
     '@babel/plugin-syntax-dynamic-import',
-    '@babel/proposal-class-properties',
-    '@babel/proposal-object-rest-spread',
-    '@babel/plugin-transform-runtime',
+    '@babel/plugin-proposal-class-properties',
+    '@babel/plugin-proposal-object-rest-spread',
     '@babel/plugin-proposal-optional-chaining',
+    '@babel/plugin-transform-modules-commonjs',
+    '@babel/plugin-transform-runtime',
   ];
 
   const env = {
@@ -55,9 +56,10 @@ module.exports = function (api) {
         ],
         'transform-es2015-modules-commonjs',
         '@babel/plugin-syntax-dynamic-import',
-        '@babel/proposal-class-properties',
-        '@babel/proposal-object-rest-spread',
+        '@babel/plugin-proposal-class-properties',
+        '@babel/plugin-proposal-object-rest-spread',
         '@babel/plugin-proposal-optional-chaining',
+        '@babel/plugin-transform-modules-commonjs',
         '@babel/plugin-transform-runtime',
         'dynamic-import-node',
       ],

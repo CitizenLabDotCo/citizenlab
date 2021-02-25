@@ -10,10 +10,10 @@ import {
 } from 'lodash-es';
 
 // Map
-import L from 'leaflet';
-import 'leaflet-simplestyle';
-import 'leaflet.markercluster';
 import 'leaflet/dist/leaflet.css';
+import L from 'leaflet';
+import 'leaflet.markercluster';
+import './simplestyle';
 import marker from 'leaflet/dist/images/marker-icon.png';
 import marker2x from 'leaflet/dist/images/marker-icon-2x.png';
 import markerShadow from 'leaflet/dist/images/marker-shadow.png';
@@ -74,9 +74,6 @@ const fallbackLegendMarker = L.icon({
 });
 
 const Container = styled.div`
-  display: flex;
-  align-items: stretch;
-  flex-direction: column;
   ${defaultCardStyle};
   border: solid 1px #ccc;
 `;
