@@ -6,18 +6,21 @@ import { media, isRtl, fontSizes, colors } from 'utils/styleUtils';
 import { Multiloc } from 'typings';
 import { getLayerColor, getLayerIcon } from 'utils/map';
 import { Icon, IconNames } from 'cl2-component-library';
+import bowser from 'bowser';
 
 const Container = styled.div`
-  padding: 23px;
-  padding-bottom: 10px;
+  padding: 20px;
 `;
 
 const LegendItems = styled.ul`
   list-style: none;
   padding: 0;
   margin: 0;
-  display: flex;
-  flex-wrap: wrap;
+  columns: 2;
+
+  ${media.smallerThanMinTablet`
+    columns: 1;
+  `}
 `;
 
 const Item = styled.li`
@@ -26,26 +29,24 @@ const Item = styled.li`
   line-height: normal;
   display: flex;
   align-items: center;
-  flex: 1 0 calc(50% - 10px);
-  margin-right: 8px;
   margin-bottom: 15px;
+  min-height: 26px;
+  -webkit-column-break-inside: avoid;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  overflow: hidden;
 
   ${isRtl`
-    margin-right: 0;
-    margin-left: 10px;
     flex-direction: row-reverse;
-  `}
-
-  ${media.smallerThanMinTablet`
-    flex: 1 0 calc(100% - 10px);
   `}
 `;
 
 const ColorLabel = styled.div`
+  flex: 0 0 18px;
   width: 18px;
   height: 18px;
-  background-color: ${(props) => props.color};
   margin-right: 10px;
+  background-color: ${(props) => props.color};
   border-radius: ${(props: any) => props.theme.borderRadius};
 
   ${isRtl`
@@ -56,8 +57,18 @@ const ColorLabel = styled.div`
 
 const StyledIcon = styled(Icon)<{ color: string }>`
   fill: ${(props) => props.color};
+  flex: 0 0 18px;
   width: 18px;
   margin-right: 10px;
+
+  &.ie {
+    height: 18px;
+  }
+
+  ${isRtl`
+    margin-right: 0;
+    margin-left: 10px;
+  `}
 `;
 
 interface Props {
@@ -101,10 +112,18 @@ const Legend = memo<Props>(({ projectId, className }) => {
             const label = localize(legendItem.title_multiloc);
 
             return (
-              <Item key={`legend-item-${index}`}>
+              <Item
+                key={`legend-item-${index} ${index === 0 ? 'first' : ''} ${
+                  index === legend.length - 1 ? 'last' : ''
+                }`}
+              >
                 {hasCustomLegend && color && <ColorLabel color={color} />}
                 {!hasCustomLegend && color && iconName && (
-                  <StyledIcon name={iconName} color={color} />
+                  <StyledIcon
+                    name={iconName}
+                    color={color}
+                    className={bowser.msie ? 'ie' : ''}
+                  />
                 )}
                 {label}
               </Item>

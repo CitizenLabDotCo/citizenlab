@@ -221,7 +221,7 @@ const MapLayerConfig = memo<Props & InjectedIntlProps & InjectedLocalized>(
           feature.properties = {
             ...feature.properties,
             'fill-opacity': 0.3,
-            'stroke-width': 2,
+            'stroke-width': 3,
             'stroke-opacity': 1,
             'marker-size': 'medium',
             'marker-symbol': formValues.markerSymbol,
