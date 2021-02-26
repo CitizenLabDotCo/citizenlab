@@ -10,39 +10,6 @@ class WebApi::V1::InitiativesController < ApplicationController
     render json: linked_json(@initiatives, WebApi::V1::InitiativeSerializer, serialization_options)
   end
 
-  # def index
-  #   @initiatives = policy_scope(Initiative).includes(:author, :assignee, :topics, :areas)
-  #   search_last_names = !UserDisplayNameService.new(AppConfiguration.instance, current_user).restricted?
-  #   @initiatives = PostsFilteringService.new.apply_common_initiative_index_filters @initiatives, params, search_last_names
-
-  #   if params[:sort].present? && !params[:search].present?
-  #     @initiatives = case params[:sort]
-  #       when 'new'
-  #         @initiatives.order_new
-  #       when '-new'
-  #         @initiatives.order_new(:asc)
-  #       when "author_name"
-  #        @ideas.order("users.first_name ASC", "users.last_name ASC")
-  #       when "-author_name"
-  #        @ideas.order("users.first_name DESC", "users.last_name DESC")
-  #       when 'upvotes_count'
-  #         @initiatives.order(upvotes_count: :asc)
-  #       when '-upvotes_count'
-  #         @initiatives.order(upvotes_count: :desc)
-  #       when 'status'
-  #         @initiatives.order_status(:asc)
-  #       when '-status'
-  #         @initiatives.order_status(:desc)
-  #       when 'random'
-  #         @initiatives.order_random
-  #       when nil
-  #         @initiatives
-  #       else
-  #         raise 'Unsupported sort method'
-  #       end
-  #   end
-  # end
-
   def index_initiative_markers
     @result = InitiativesFinder.find(params, authorize_with: current_user)
     @initiatives = @result.records
