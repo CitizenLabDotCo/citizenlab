@@ -3,7 +3,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import styled from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
 import messages from './messages';
-import Logo from './Logo';
+import FranceConnectLogo from './FranceConnectLogo';
 
 const FranceConnectButtonWrapper = styled.div`
   display: flex;
@@ -53,11 +53,11 @@ interface Props {
   logoAlt: string;
 }
 
-const FranceConnectButton = ({ onClick, logoAlt }: Props): ReactElement => {
+const FranceConnectButton = ({ onClick }: Props): ReactElement => {
   return (
     <FranceConnectButtonWrapper>
       <FranceConnectButtonLink onClick={onClick}>
-        <Logo />
+        <FranceConnectLogo />
       </FranceConnectButtonLink>
       <SubSocialButtonLink
         href="https://app.franceconnect.gouv.fr/en-savoir-plus"
