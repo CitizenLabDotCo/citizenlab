@@ -24,51 +24,62 @@ interface Props {}
 const SettingsRegistrationTab = (_props: Props) => {
   const handleProjectHeaderOnChange = () => {};
   return (
-    <Section key={'signup_fields'}>
-      <SectionTitle>
-        <FormattedMessage {...messages.titleRegistration} />
-      </SectionTitle>
-      <SectionDescription>
-        <FormattedMessage {...messages.subtitleRegistration} />
-      </SectionDescription>
-      <SubSectionTitle>
+    <>
+      <Section key={'signup_fields'}>
+        <SectionTitle>
+          <FormattedMessage {...messages.signupFormText} />
+        </SectionTitle>
+        <SectionDescription>
+          <FormattedMessage {...messages.signupFormTooltip} />
+        </SectionDescription>
+        {/* <SubSectionTitle>
         <FormattedMessage {...messages.signupFormText} />
         <IconTooltip
           content={<FormattedMessage {...messages.signupFormTooltip} />}
         />
-      </SubSectionTitle>
-      <SectionField>
-        <InputMultilocWithLocaleSwitcher
-          type="text"
-          valueMultiloc={{}}
-          onChange={handleProjectHeaderOnChange}
-          label={
-            <LabelTooltip>
-              <FormattedMessage {...messages.firstPage} />
-              <IconTooltip
-                content={<FormattedMessage {...messages.firstPageTooltip} />}
-              />
-            </LabelTooltip>
-          }
-        />
-      </SectionField>
-      <SectionField>
-        <InputMultilocWithLocaleSwitcher
-          type="text"
-          valueMultiloc={{}}
-          onChange={handleProjectHeaderOnChange}
-          label={
-            <LabelTooltip>
-              <FormattedMessage {...messages.secondPage} />
-              <IconTooltip
-                content={<FormattedMessage {...messages.secondPageTooltip} />}
-              />
-            </LabelTooltip>
-          }
-        />
-      </SectionField>
-      <AllCustomFields />
-    </Section>
+      </SubSectionTitle> */}
+        <SectionField>
+          <InputMultilocWithLocaleSwitcher
+            type="text"
+            valueMultiloc={{}}
+            onChange={handleProjectHeaderOnChange}
+            label={
+              <LabelTooltip>
+                <FormattedMessage {...messages.firstPage} />
+                <IconTooltip
+                  content={<FormattedMessage {...messages.firstPageTooltip} />}
+                />
+              </LabelTooltip>
+            }
+          />
+        </SectionField>
+        <SectionField>
+          <InputMultilocWithLocaleSwitcher
+            type="text"
+            valueMultiloc={{}}
+            onChange={handleProjectHeaderOnChange}
+            label={
+              <LabelTooltip>
+                <FormattedMessage {...messages.secondPage} />
+                <IconTooltip
+                  content={<FormattedMessage {...messages.secondPageTooltip} />}
+                />
+              </LabelTooltip>
+            }
+          />
+        </SectionField>
+      </Section>
+      <Section>
+        <SectionTitle>
+          Fields
+          {/* <FormattedMessage {...messages.signupFormText} /> */}
+        </SectionTitle>
+        <SectionDescription>
+          <FormattedMessage {...messages.subtitleRegistration} />
+        </SectionDescription>
+        <AllCustomFields />
+      </Section>
+    </>
   );
 };
 
