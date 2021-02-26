@@ -1,16 +1,13 @@
 import React, { memo, useCallback, MouseEvent } from 'react';
 import clHistory from 'utils/cl-router/history';
-import { adopt } from 'react-adopt';
 import { get } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
-// resources
-import GetWindowSize, {
-  GetWindowSizeChildProps,
-} from 'resources/GetWindowSize';
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
-import GetProject, { GetProjectChildProps } from 'resources/GetProject';
+// hooks
+import useIdea from 'hooks/useIdea';
+import useProject from 'hooks/useProject';
+import useAuthUser from 'hooks/useAuthUser';
+import useWindowSize from 'hooks/useWindowSize';
 
 // components
 import VoteControl from 'components/VoteControl';
@@ -106,112 +103,92 @@ const GoBackLabel = styled.div`
   `}
 `;
 
-interface InputProps {
+interface Props {
   ideaId: string;
   insideModal?: boolean;
   className?: string;
 }
 
-interface DataProps {
-  windowSize: GetWindowSizeChildProps;
-  authUser: GetAuthUserChildProps;
-  idea: GetIdeaChildProps;
-  project: GetProjectChildProps;
-}
+const IdeaShowPageTopBar = memo<Props>(({ ideaId, insideModal, className }) => {
+  const windowSize = useWindowSize();
+  const authUser = useAuthUser();
+  const idea = useIdea({ ideaId });
+  const project = useProject({
+    projectId: get(idea, 'relationships.project.data.id'),
+  });
+  const onGoBack = useCallback(
+    (event: MouseEvent<HTMLElement>) => {
+      event.preventDefault();
 
-interface Props extends InputProps, DataProps {}
+      if (insideModal) {
+        eventEmitter.emit('closeIdeaModal');
+      } else if (!isNilOrError(project)) {
+        clHistory.push(`/projects/${project.attributes.slug}`);
+      } else {
+        clHistory.push('/');
+      }
+    },
+    [insideModal]
+  );
 
-const IdeaShowPageTopBar = memo<Props>(
-  ({ ideaId, insideModal, className, project, windowSize, authUser }) => {
-    const onGoBack = useCallback(
-      (event: MouseEvent<HTMLElement>) => {
-        event.preventDefault();
+  const onDisabledVoteClick = useCallback(
+    (disabled_reason: IdeaVotingDisabledReason) => {
+      if (
+        !isNilOrError(authUser) &&
+        !isNilOrError(project) &&
+        disabled_reason === 'not_verified'
+      ) {
+        const pcType =
+          project.attributes.process_type === 'continuous'
+            ? 'project'
+            : 'phase';
+        const pcId =
+          project.relationships?.current_phase?.data?.id || project.id;
 
-        if (insideModal) {
-          eventEmitter.emit('closeIdeaModal');
-        } else if (!isNilOrError(project)) {
-          clHistory.push(`/projects/${project.attributes.slug}`);
-        } else {
-          clHistory.push('/');
+        if (pcId && pcType) {
+          openVerificationModal({
+            context: {
+              action: 'voting_idea',
+              id: pcId,
+              type: pcType,
+            },
+          });
         }
-      },
-      [insideModal]
+      }
+    },
+    [authUser, project]
+  );
+
+  const smallerThanLargeTablet = windowSize
+    ? windowSize.windowWidth <= viewportWidths.largeTablet
+    : false;
+
+  if (smallerThanLargeTablet) {
+    return (
+      <Container className={className}>
+        <TopBarInner>
+          <Left>
+            <GoBackButton onClick={onGoBack}>
+              <GoBackIcon ariaHidden name="arrow-back" />
+            </GoBackButton>
+            <GoBackLabel>
+              <FormattedMessage {...messages.goBack} />
+            </GoBackLabel>
+          </Left>
+          <Right>
+            <VoteControl
+              style="shadow"
+              size="1"
+              ideaId={ideaId}
+              disabledVoteClick={onDisabledVoteClick}
+            />
+          </Right>
+        </TopBarInner>
+      </Container>
     );
-
-    const onDisabledVoteClick = useCallback(
-      (disabled_reason: IdeaVotingDisabledReason) => {
-        if (
-          !isNilOrError(authUser) &&
-          !isNilOrError(project) &&
-          disabled_reason === 'not_verified'
-        ) {
-          const pcType =
-            project.attributes.process_type === 'continuous'
-              ? 'project'
-              : 'phase';
-          const pcId =
-            project.relationships?.current_phase?.data?.id || project.id;
-
-          if (pcId && pcType) {
-            openVerificationModal({
-              context: {
-                action: 'voting_idea',
-                id: pcId,
-                type: pcType,
-              },
-            });
-          }
-        }
-      },
-      [authUser, project]
-    );
-
-    const smallerThanLargeTablet = windowSize
-      ? windowSize <= viewportWidths.largeTablet
-      : false;
-
-    if (smallerThanLargeTablet) {
-      return (
-        <Container className={className}>
-          <TopBarInner>
-            <Left>
-              <GoBackButton onClick={onGoBack}>
-                <GoBackIcon ariaHidden name="arrow-back" />
-              </GoBackButton>
-              <GoBackLabel>
-                <FormattedMessage {...messages.goBack} />
-              </GoBackLabel>
-            </Left>
-            <Right>
-              <VoteControl
-                style="shadow"
-                size="1"
-                ideaId={ideaId}
-                disabledVoteClick={onDisabledVoteClick}
-              />
-            </Right>
-          </TopBarInner>
-        </Container>
-      );
-    }
-
-    return null;
   }
-);
 
-const Data = adopt<DataProps, InputProps>({
-  windowSize: <GetWindowSize />,
-  authUser: <GetAuthUser />,
-  idea: ({ ideaId, render }) => <GetIdea ideaId={ideaId}>{render}</GetIdea>,
-  project: ({ idea, render }) => (
-    <GetProject projectId={get(idea, 'relationships.project.data.id')}>
-      {render}
-    </GetProject>
-  ),
+  return null;
 });
 
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <IdeaShowPageTopBar {...inputProps} {...dataProps} />}
-  </Data>
-);
+export default IdeaShowPageTopBar;
