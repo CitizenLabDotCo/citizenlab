@@ -1,5 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
+import getSubmitState from 'utils/getSubmitState';
+
+// components
 import AllCustomFields from './CustomFields/All';
 import {
   Section,
@@ -10,6 +13,7 @@ import {
 } from 'components/admin/Section';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import { IconTooltip } from 'cl2-component-library';
+import SubmitWrapper from 'components/admin/SubmitWrapper';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -22,7 +26,43 @@ const LabelTooltip = styled.div`
 interface Props {}
 
 const SettingsRegistrationTab = (_props: Props) => {
+  const [isFormSubmitting, setIsFormSubmitting] = useState(false);
   const handleProjectHeaderOnChange = () => {};
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    setIsFormSubmitting(true);
+    // event.preventDefault();
+
+    // const { tenant, attributesDiff } = this.state;
+    // const { homepageInfoPage } = this.props;
+
+    // if (tenant && this.validate(tenant, attributesDiff)) {
+    //   this.setState({ loading: true, saved: false });
+    //   const homepageInfoPageMultiloc = attributesDiff.homepage_info;
+
+    //   try {
+    //     await updateAppConfiguration(
+    //       attributesDiff as IUpdatedAppConfigurationProperties
+    //     );
+
+    //     if (!isNilOrError(homepageInfoPage)) {
+    //       const homepageInfoPageId = homepageInfoPage.id;
+
+    //       if (attributesDiff.homepage_info) {
+    //         await updatePage(homepageInfoPageId, {
+    //           body_multiloc: homepageInfoPageMultiloc,
+    //         });
+    //       }
+    //     }
+    //     this.setState({ loading: false, saved: true, attributesDiff: {} });
+    //   } catch (error) {
+    //     if (isCLErrorJSON(error)) {
+    //       this.setState({ loading: false, errors: error.json.errors });
+    //     } else {
+    //       this.setState({ loading: false, errors: error });
+    //     }
+    //   }
+    // }
+  };
   return (
     <>
       <Section key={'signup_fields'}>
@@ -38,36 +78,52 @@ const SettingsRegistrationTab = (_props: Props) => {
           content={<FormattedMessage {...messages.signupFormTooltip} />}
         />
       </SubSectionTitle> */}
-        <SectionField>
-          <InputMultilocWithLocaleSwitcher
-            type="text"
-            valueMultiloc={{}}
-            onChange={handleProjectHeaderOnChange}
-            label={
-              <LabelTooltip>
-                <FormattedMessage {...messages.firstPage} />
-                <IconTooltip
-                  content={<FormattedMessage {...messages.firstPageTooltip} />}
-                />
-              </LabelTooltip>
-            }
-          />
-        </SectionField>
-        <SectionField>
-          <InputMultilocWithLocaleSwitcher
-            type="text"
-            valueMultiloc={{}}
-            onChange={handleProjectHeaderOnChange}
-            label={
-              <LabelTooltip>
-                <FormattedMessage {...messages.secondPage} />
-                <IconTooltip
-                  content={<FormattedMessage {...messages.secondPageTooltip} />}
-                />
-              </LabelTooltip>
-            }
-          />
-        </SectionField>
+        <form onSubmit={handleSubmit}>
+          <SectionField>
+            <InputMultilocWithLocaleSwitcher
+              type="text"
+              valueMultiloc={{}}
+              onChange={handleProjectHeaderOnChange}
+              label={
+                <LabelTooltip>
+                  <FormattedMessage {...messages.firstPage} />
+                  <IconTooltip
+                    content={
+                      <FormattedMessage {...messages.firstPageTooltip} />
+                    }
+                  />
+                </LabelTooltip>
+              }
+            />
+          </SectionField>
+          <SectionField>
+            <InputMultilocWithLocaleSwitcher
+              type="text"
+              valueMultiloc={{}}
+              onChange={handleProjectHeaderOnChange}
+              label={
+                <LabelTooltip>
+                  <FormattedMessage {...messages.secondPage} />
+                  <IconTooltip
+                    content={
+                      <FormattedMessage {...messages.secondPageTooltip} />
+                    }
+                  />
+                </LabelTooltip>
+              }
+            />
+          </SectionField>
+          {/* <SubmitWrapper
+            loading={isFormSubmitting}
+            status={getSubmitState({ errors, saved, diff: attributesDiff })}
+            messages={{
+              buttonSave: messages.save,
+              buttonSuccess: messages.saveSuccess,
+              messageError: messages.saveErrorMessage,
+              messageSuccess: messages.saveSuccessMessage,
+            }}
+          /> */}
+        </form>
       </Section>
       <Section>
         <SectionTitle>
