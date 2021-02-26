@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import getSubmitState from 'utils/getSubmitState';
+import { IAppConfigurationSettings } from 'services/appConfiguration';
 
 // components
 import AllCustomFields from './CustomFields/All';
@@ -25,18 +26,26 @@ const LabelTooltip = styled.div`
 
 interface Props {}
 
+interface IAttributesDiff {
+  settings?: Partial<IAppConfigurationSettings>;
+}
+
 const SettingsRegistrationTab = (_props: Props) => {
   const [isFormSubmitting, setIsFormSubmitting] = useState(false);
+  const [isFormSaved, setIsFormSaved] = useState(false);
+  const [attributesDiff, setAttributesDiff] = useState<IAttributesDiff>({});
   const handleProjectHeaderOnChange = () => {};
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     setIsFormSubmitting(true);
     // event.preventDefault();
 
     // const { tenant, attributesDiff } = this.state;
-    // const { homepageInfoPage } = this.props;
 
     // if (tenant && this.validate(tenant, attributesDiff)) {
     //   this.setState({ loading: true, saved: false });
+    //   setIsFormSubmitting(true);
+    //   setIsFormSaved(false);
+
     //   const homepageInfoPageMultiloc = attributesDiff.homepage_info;
 
     //   try {
@@ -53,7 +62,9 @@ const SettingsRegistrationTab = (_props: Props) => {
     //         });
     //       }
     //     }
-    //     this.setState({ loading: false, saved: true, attributesDiff: {} });
+    //     setIsFormSubmitting(false);
+    //     setIsFormSaved(true);
+    //     setAttributesDiff({});
     //   } catch (error) {
     //     if (isCLErrorJSON(error)) {
     //       this.setState({ loading: false, errors: error.json.errors });
