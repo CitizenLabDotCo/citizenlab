@@ -14,7 +14,7 @@ RSpec.describe User, type: :model do
       u.first_name = "Not Really_%40)"
       u.last_name = "286^$@sluggable"
       u.save
-      expect(u.slug).to eq("not-really_-40-286-sluggable")
+      expect(u.slug).to eq("not-really--40-286-sluggable")
     end
   end
 
@@ -202,34 +202,23 @@ RSpec.describe User, type: :model do
 
   describe "locale" do
     before do
-      tenant = Tenant.current
-      settings = tenant.settings
+      settings = AppConfiguration.instance.settings
       settings['core']['locales'] = ["en","nl-BE","fr-FR"]
-      tenant.update!(settings: settings)
+      AppConfiguration.instance.update!(settings: settings)
     end
 
-    it "is valid when it's one of the tenant locales" do
+    it "is valid when it's one of the configured locales" do
       user = build(:user, locale: "nl-BE")
       expect(user).to be_valid
     end
 
-    it "is invalid when it's not one of the tenant locales" do
+    it "is invalid when it's not one of the configured locales" do
       user = build(:user, locale: "pt")
       expect{ user.valid? }.to change{ user.errors[:locale] }
     end
   end
 
   describe "slug" do
-
-    it "is valid when it's only containing alphanumeric and hyphens" do
-      user = build(:user, slug: 'aBc-123-g3S')
-      expect(user).to be_valid
-    end
-
-    it "is invalid when there's others than alphanumeric and hyphens" do
-      user = build(:user, slug: 'ab_c-.asdf@')
-      expect{ user.valid? }.to change{ user.errors[:slug] }
-    end
 
     it "is generated on create when not given" do
       user = create(:user, slug: nil)

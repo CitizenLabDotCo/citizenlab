@@ -184,9 +184,9 @@ describe TenantTemplateService do
 
         service.apply_template(template)
 
-        expect(ProjectFolder.count).to eq 1
+        expect(ProjectFolders::Folder.count).to eq 1
         expect(Project.count).to eq 2
-        expect(Project.all.map{|pj| pj.folder&.id}.uniq).to eq [ProjectFolder.first.id]
+        expect(Project.all.map{|pj| pj.folder&.id}.uniq).to eq [ProjectFolders::Folder.first.id]
     end
   end
 
@@ -195,8 +195,8 @@ describe TenantTemplateService do
       load Rails.root.join("db","seeds.rb")
       localhost = Tenant.find_by(host: 'localhost')
       settings = localhost.settings
-      settings['core']['locales'] = Tenant.current.settings.dig('core', 'locales')
-      localhost.update! settings: settings
+      settings['core']['locales'] = AppConfiguration.instance.settings('core', 'locales')
+      localhost.update!(settings: settings) # TODO OS how will tenant templates work?
       Apartment::Tenant.switch('localhost') do
         load Rails.root.join("db","seeds.rb")
       end
@@ -221,7 +221,7 @@ describe TenantTemplateService do
       create(:project_folder, projects: create_list(:project, 2))
       template = service.tenant_to_template Tenant.current
 
-      admin_publication_attributes = template.dig('models', 'project_folder').first['admin_publication_attributes']
+      admin_publication_attributes = template.dig('models', 'project_folders/folder').first['admin_publication_attributes']
       expect(admin_publication_attributes).to be_present
       template.dig('models', 'project').each do |pj|
         expect(pj.dig('admin_publication_attributes', 'parent_ref')).to eq admin_publication_attributes

@@ -6,11 +6,12 @@ module Frontend
         skip_after_action :verify_authorized
 
         def show
-          render json: { 
-            short_name: MultilocService.new.t(Tenant.settings('core', 'organization_name')),
+          configuration = AppConfiguration.instance
+          render json: {
+            short_name: MultilocService.new.t(configuration.settings('core', 'organization_name')),
             icons: [
               {
-                src: Tenant.current.favicon.versions[:large].url,
+                src: configuration.favicon.versions[:large].url,
                 type: 'image/png',
                 sizes: '152x152'
               }
@@ -18,7 +19,7 @@ module Frontend
             start_url: Frontend::UrlService.new.manifest_start_url,
             background_color: '#FFFFFF',
             display: 'standalone',
-            theme_color: Tenant.settings('core', 'color_main')
+            theme_color: configuration.settings('core', 'color_main')
           }, status: :ok
         end
 

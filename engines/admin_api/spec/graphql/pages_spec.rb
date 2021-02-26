@@ -45,7 +45,7 @@ RSpec.describe "Graphql pages" do
       edges = response.dig("data", "publicPages", "edges")
       expect(edges&.size).to eq 3
       expect(edges&.first&.dig('node','id')).to eq p1.id
-      expect(edges&.first&.dig('node','href')).to eq "#{Tenant.current.base_frontend_uri}/pages/#{p1.slug}"
+      expect(edges&.first&.dig('node','href')).to eq "#{AppConfiguration.instance.base_frontend_uri}/pages/#{p1.slug}"
       expect(edges&.first&.dig('node','titleMultiloc','en')).to eq p1.title_multiloc['en']
       expect(edges&.first&.dig('node','bodyMultiloc','en')).to eq p1.body_multiloc['en']
       expect(edges&.first&.dig('node','slug')).to eq p1.slug

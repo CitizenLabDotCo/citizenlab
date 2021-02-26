@@ -1,0 +1,99 @@
+
+<mj-wrapper background-color="#F6F6F6" full-width="full-width" padding="40px 0 0">
+
+  <!-- 3 statistics box-->
+  <mj-section
+    background-color="#FFFFFF"
+    padding="40px 25px"
+    border="1px solid #EAEAEA"
+    border-radius="5px"
+  >
+    <mj-column>
+      <mj-text font-size="28px" align="center" font-weight="700">
+        <%= event.statistics.users.new_participants.increase %>
+        <img
+          alt="User icon"
+          width="29px"
+          src="http://res.cloudinary.com/citizenlabco/image/upload/v1527512109/users-icon_w9vccy.png"
+        />
+      </mj-text>
+      <mj-text font-size="16px" align="center">
+        <%= format_message("new_users") %>
+      </mj-text>
+      <% unless change_users.zero? %>
+        <mj-text color="<%= change_users.positive? ? '#2ecc71' : '#fab1a0' %>" font-size="16px" align="center" font-weight="700">
+          <%= '+' if change_users.positive? %>
+          <%= change_users %>%
+        </mj-text>
+      <% end %>
+    </mj-column>
+
+    <mj-column>
+      <mj-text font-size="28px" align="center" font-weight="700">
+        <%= event.statistics.activities.new_ideas.increase %>
+        <img
+          alt="Idea icon"
+          width="24px"
+          src="http://res.cloudinary.com/citizenlabco/image/upload/v1527512109/idea-icon_zfjmco.png"
+        />
+      </mj-text>
+      <mj-text font-size="16px" align="center">
+        <%= format_message("new_ideas") %>
+      </mj-text>
+      <% unless change_ideas.zero? %>
+        <mj-text color="<%= change_ideas.positive? ? '#2ecc71' : '#fab1a0' %>" font-size="16px" align="center" font-weight="700">
+          <%= '+' if change_ideas.positive? %>
+          <%= change_ideas %>%
+        </mj-text>
+      <% end %>
+    </mj-column>
+
+    <mj-column>
+      <mj-text font-size="28px" align="center" font-weight="700">
+        <%= event.statistics.activities.new_comments.increase %>
+        <img
+          alt="Comment icon"
+          width="26px"
+          src="http://res.cloudinary.com/citizenlabco/image/upload/v1527512109/comment-icon_ouanbm.png"
+        />
+      </mj-text>
+      <mj-text font-size="16px" align="center">
+        <%= format_message("new_comments") %>
+      </mj-text>
+      <% unless change_comments.zero? %>
+        <mj-text color="<%= change_comments.positive? ? '#2ecc71' : '#fab1a0' %>" font-size="16px" align="center" font-weight="700">
+          <%= '+' if change_comments.positive? %>
+          <%= change_comments %>%
+        </mj-text>
+      <% end %>
+    </mj-column>
+  </mj-section>
+
+
+  <!-- Activity of the past week -->
+
+  <mj-section padding="20px 25px">
+    <mj-column>
+      <mj-text>
+        <h2 style="padding: 20px 0">
+          <% if event.top_ideas.blank? %>
+            <%= format_message('title_activity_past_week') %>
+          <% else %>
+            <%= format_message('title_no_activity_past_week') %>
+          <% end %>
+        </h2>
+      </mj-text>
+
+      <mj-table cellpadding="15">
+        <% event.top_ideas.each do |serialized_idea| %>
+          <%= render 'email_campaigns/ideas/idea-minimal', serialized_idea: serialized_idea %>
+        <% end %>
+      </mj-table>
+
+      <mj-text>&nbsp;</mj-text>
+    </mj-column>
+  </mj-section>
+
+  <%= render partial: 'application/cta_button', locals: { href:  "https://#{event.tenant_host}/admin/projects", message: format_message('cta_moderate') } %>
+
+</mj-wrapper>

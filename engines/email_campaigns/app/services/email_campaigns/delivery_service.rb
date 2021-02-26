@@ -1,11 +1,11 @@
 module EmailCampaigns
   class DeliveryService
 
-    CAMPAIGN_CLASSES = [   
+    CAMPAIGN_CLASSES = [
       Campaigns::AdminDigest,
       Campaigns::AdminRightsReceived,
       Campaigns::AssigneeDigest,
-      Campaigns::CommentDeletedByAdmin,   
+      Campaigns::CommentDeletedByAdmin,
       Campaigns::CommentMarkedAsSpam,
       Campaigns::CommentOnYourComment,
       Campaigns::CommentOnYourIdea,
@@ -19,8 +19,7 @@ module EmailCampaigns
       Campaigns::InitiativePublished,
       Campaigns::InviteReceived,
       Campaigns::InviteReminder,
-      Campaigns::Manual,      
-      Campaigns::MentionInComment,
+      Campaigns::Manual,
       Campaigns::MentionInOfficialFeedback,
       Campaigns::ModeratorDigest,
       Campaigns::NewCommentForAdmin,
@@ -97,7 +96,7 @@ module EmailCampaigns
       ).first&.merge({ recipient: recipient })
 
       if command
-        mail = campaign.mailer_class.campaign_mail(campaign, command)
+        mail = campaign.mailer_class.with(campaign: campaign, command: command).campaign_mail
         mail.parts[1].body.to_s
       else
         nil
@@ -109,28 +108,38 @@ module EmailCampaigns
     # Takes options, either
     # * time: Time object when the sending command happened
     # * activity: Activity object which activity happened
-    def apply_send_pipeline campaign_candidates, options={}
-      campaign_candidates
-        .select{|campaign| campaign.run_before_send_hooks(options)}
-        .flat_map do |campaign| 
-          recipients = campaign.apply_recipient_filters(options)
-          recipients.zip([campaign].cycle)
-        end
-        .flat_map do |(recipient, campaign)|
-          campaign.generate_commands(
-            recipient: recipient,
-            **options
-          ).map do |command|
-            command.merge({
-              recipient: recipient,
-            })
-          end
-          .zip([campaign].cycle)
-        end
-        .each do |(command, campaign)|
-          process_command(campaign, command)
-          campaign.run_after_send_hooks(command)
-        end
+    def apply_send_pipeline(campaign_candidates, options = {})
+      valid_campaigns           = filter_valid_campaigns_before_send(campaign_candidates, options)
+      campaigns_with_recipients = assign_campaigns_recipients(valid_campaigns, options)
+      campaigns_with_command    = assign_campaigns_command(campaigns_with_recipients, options)
+
+      process_send_campaigns(campaigns_with_command)
+    end
+
+    def filter_valid_campaigns_before_send(campaigns, options)
+      campaigns.select { |campaign| campaign.run_before_send_hooks(options) }
+    end
+
+    def assign_campaigns_recipients(campaigns, options)
+      campaigns.flat_map do |campaign|
+        recipients = campaign.apply_recipient_filters(options)
+        recipients.zip([campaign].cycle)
+      end
+    end
+
+    def assign_campaigns_command(campaigns_with_recipients, options)
+      campaigns_with_recipients.flat_map do |(recipient, campaign)|
+        campaign.generate_commands(recipient: recipient, **options)
+                .map { |command| command.merge(recipient: recipient) }
+                .zip([campaign].cycle)
+      end
+    end
+
+    def process_send_campaigns(campaigns_with_command)
+      campaigns_with_command.each do |(command, campaign)|
+        process_command(campaign, command)
+        campaign.run_after_send_hooks(command)
+      end
     end
 
     # A command can have the following structure:
@@ -152,15 +161,6 @@ module EmailCampaigns
     # This method is triggered when the given sending command should be sent
     # out through the event bus
     def send_command_external campaign, command
-      segment_event = {
-        event: "#{campaign.class.campaign_name} email command",
-        user_id: command[:recipient].id,
-        timestamp: Time.now.iso8601,
-        properties: {
-          source: 'cl2-back',
-          payload: command[:event_payload]
-        }
-      }
       rabbit_event = {
         event: "#{campaign.class.campaign_name} email command",
         timestamp: Time.now.iso8601,
@@ -169,16 +169,18 @@ module EmailCampaigns
         payload: command[:event_payload]
       }
 
-      PublishRawEventToRabbitJob
+      PublishGenericEventToRabbitJob
         .set(wait: command[:delay] || 0)
         .perform_later rabbit_event, "campaigns.command.#{campaign.class.campaign_name}"
     end
 
     # This method is triggered when the given sending command should be sent
     # out through the interal Rails mailing stack
-    def send_command_internal campaign, command
-      campaign.mailer_class.campaign_mail(campaign, command).deliver_later
+    def send_command_internal(campaign, command)
+      campaign.mailer_class
+              .with(campaign: campaign, command: command)
+              .campaign_mail
+              .deliver_later(wait: command[:delay] || 0)
     end
-
   end
 end

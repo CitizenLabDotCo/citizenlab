@@ -1,17 +1,18 @@
 Rails.application.routes.draw do
-
-  mount PublicApi::Engine => "/api", as: 'public_api'
-  mount AdminApi::Engine => "/admin_api", as: 'admin_api', defaults: {format: :json}
-  mount EmailCampaigns::Engine => "", as: 'email_campaigns'
-  mount MachineTranslations::Engine => "", as: 'machine_translations'
-  mount NLP::Engine => "", as: 'nlp'
-  mount Onboarding::Engine => "", as: 'onboarding'
-  mount Surveys::Engine => "", as: 'surveys'
-  mount Frontend::Engine => "", as: 'frontend'
-  mount Polls::Engine => "", as: 'polls'
-  mount Verification::Engine => "", as: 'verification'
-  mount Volunteering::Engine => "", as: 'volunteering'
-  mount Maps::Engine => "", as: 'maps'
+  mount PublicApi::Engine => '/api', as: 'public_api'
+  mount AdminApi::Engine => '/admin_api', as: 'admin_api', defaults: {format: :json}
+  mount EmailCampaigns::Engine => '', as: 'email_campaigns'
+  mount MachineTranslations::Engine => '', as: 'machine_translations'
+  mount NLP::Engine => '', as: 'nlp'
+  mount Onboarding::Engine => '', as: 'onboarding'
+  mount Surveys::Engine => '', as: 'surveys'
+  mount Frontend::Engine => '', as: 'frontend'
+  mount Polls::Engine => '', as: 'polls'
+  mount Verification::Engine => '', as: 'verification'
+  mount Volunteering::Engine => '', as: 'volunteering'
+  mount Maps::Engine => '', as: 'maps'
+  mount Tagging::Engine => '', as: 'tagging'
+  mount Seo::Engine => '', as: 'seo'
 
   namespace :web_api, :defaults => {:format => :json} do
     namespace :v1 do
@@ -46,6 +47,8 @@ Rails.application.routes.draw do
         resources :files, defaults: {container_type: 'Idea'}
 
         get :as_xlsx, on: :collection, action: 'index_xlsx'
+        get :as_xlsx_with_tags, on: :collection, action: 'index_with_tags_xlsx'
+        get :mini, on: :collection, action: 'index_mini'
         get 'by_slug/:slug', on: :collection, to: 'ideas#by_slug'
         get :as_markers, on: :collection, action: 'index_idea_markers'
         get :filter_counts, on: :collection
@@ -67,7 +70,7 @@ Rails.application.routes.draw do
         get :allowed_transitions, on: :member
       end
 
-      resources :idea_statuses, only: [:index, :show]
+      resources :idea_statuses
       resources :initiative_statuses, only: [:index, :show]
 
       # auth
@@ -110,9 +113,8 @@ Rails.application.routes.draw do
         patch 'reorder', on: :member
       end
 
-      resources :tenants, only: [:update] do
-        get :current, on: :collection
-      end
+      resource :app_configuration, only: [:show, :update]
+
       resources :pages do
         resources :files, defaults: {container_type: 'Page'}, shallow: false
         get 'by_slug/:slug', on: :collection, to: 'pages#by_slug'
@@ -133,41 +135,45 @@ Rails.application.routes.draw do
       # resource (i.e. files) nested in a shallow resource. File resources have
       # to be shallow so we can determine their container class. See e.g.
       # https://github.com/rails/rails/pull/24405
-      resources :events, only: [:show, :edit, :update, :destroy] do
-        resources :files, defaults: {container_type: 'Event'}, shallow: false
+
+      resources :events, only: %i[show edit update destroy] do
+        resources :files, defaults: { container_type: 'Event' }, shallow: false
       end
-      resources :phases, only: [:show, :edit, :update, :destroy], concerns: :participation_context, defaults: {parent_param: :phase_id} do
-        resources :files, defaults: {container_type: 'Phase'}, shallow: false
+
+      resources :phases,
+                only: %i[show edit update destroy],
+                concerns: %i[participation_context],
+                defaults: { parent_param: :phase_id } do
+        resources :files, defaults: { container_type: 'Phase' }, shallow: false
       end
-      resources :projects, concerns: :participation_context, defaults: {parent_param: :project_id} do
-        resources :events, only: [:index, :new, :create]
+
+      resources :projects,
+                concerns: %i[participation_context],
+                defaults: { parent_param: :project_id } do
+
+        resources :events, only: %i[index new create]
         resources :projects_topics, only: [:index]
-        resources :topics, only: [:index, :reorder] do
+        resources :topics, only: %i[index reorder] do
           patch 'reorder', on: :member
         end
-        resources :phases, only: [:index, :new, :create]
-        resources :images, defaults: {container_type: 'Project'}
-        resources :files, defaults: {container_type: 'Project'}
+        resources :phases, only: %i[index new create]
+        resources :images, defaults: { container_type: 'Project' }
+        resources :files, defaults: { container_type: 'Project' }
         resources :groups_projects, shallow: true, except: [:update]
         resources :moderators, except: [:update] do
           get :users_search, on: :collection
         end
-        resources :custom_fields, controller: 'idea_custom_fields', only: [:index, :show] do
+        resources :custom_fields, controller: 'idea_custom_fields', only: %i[index show] do
           get 'schema', on: :collection
           patch 'by_code/:code', action: 'upsert_by_code', on: :collection
         end
         get 'by_slug/:slug', on: :collection, to: 'projects#by_slug'
       end
-      resources :admin_publications, only: [:index, :show] do
+      resources :admin_publications, only: %i[index show] do
         patch 'reorder', on: :member
       end
-      resources :project_folders do
-        resources :images, defaults: {container_type: 'ProjectFolder'}
-        resources :files, defaults: {container_type: 'ProjectFolder'}
-        get 'by_slug/:slug', on: :collection, to: 'project_folders#by_slug'
-      end
 
-      resources :notifications, only: [:index, :show] do
+      resources :notifications, only: %i[index show] do
         post 'mark_read', on: :member
         post 'mark_all_read', on: :collection
       end
@@ -299,8 +305,7 @@ Rails.application.routes.draw do
   get '/auth/:provider/logout', to: 'omniauth_callback#logout'
 
   if Rails.env.development?
-    require 'sidekiq/web'
-    mount Sidekiq::Web => '/sidekiq'
+    require 'que/web'
+    mount Que::Web => '/que'
   end
-
 end

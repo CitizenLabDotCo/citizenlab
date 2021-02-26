@@ -1,10 +1,9 @@
 class AutomatedTransitionJob < ApplicationJob
   queue_as :default
 
-  def perform
-    if Tenant.current.has_feature? 'initiatives'
-      InitiativeStatusService.new.automated_transitions!
-    end
-  end
+  def run
+    return unless AppConfiguration.instance.feature_activated? 'initiatives'
 
+    InitiativeStatusService.new.automated_transitions!
+  end
 end

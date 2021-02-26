@@ -1,4 +1,6 @@
 en-CA:
+  symbols:
+    outside: somewhere else
   idea_statuses:
     proposed: proposed
     proposed_description: This idea has been proposed to the city
@@ -263,7 +265,7 @@ en-CA:
     gender:
       male: Male
       female: Female
-      unspecified: Unspecified
+      unspecified: Other
     domicile:
       outside: Somewhere else
     education:
@@ -304,6 +306,8 @@ en-CA:
     custom_field_select:
       has_value: "%{property} is %{value}"
       not_has_value: "%{property} isn't %{value}"
+      is_one_of: "%{property} has one of the following values: %{value}"
+      not_is_one_of: "%{property} does not have any of the following values: %{value}"
     custom_field_text:
       is: "%{property} is %{value}"
       not_is: "%{property} is not %{value}"

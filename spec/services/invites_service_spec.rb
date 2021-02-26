@@ -4,9 +4,9 @@ describe InvitesService do
   let(:service) { InvitesService.new }
 
   before do
-    settings = Tenant.current.settings
+    settings = AppConfiguration.instance.settings
     settings['core']['locales'] = ['fr','en','nl']
-    Tenant.current.update(settings: settings)
+    AppConfiguration.instance.update(settings: settings)
   end
 
   describe "bulk_create_xlsx" do
@@ -274,6 +274,42 @@ describe InvitesService do
       end
     end
 
+    context "with send_invite_email set to false" do
+      let(:hash_array) {[
+        {email: "test1@example.com", send_invite_email: "FALSE"},
+        {email: "test2@example.com", send_invite_email: "0"},
+        {email: "test3@example.com", send_invite_email: "false"},
+      ]}
+
+      it "sets send_invite_email attribute to false in the invite" do
+        expect{ service.bulk_create_xlsx(xlsx) }.to change{Invite.count}.from(0).to(3)
+        expect(Invite.all.pluck(:send_invite_email)).to eq [false, false, false]
+      end
+    end
+
+    context "with send_invite_email set to true" do
+      let(:hash_array) {[
+        {email: "test1@example.com", send_invite_email: "TRUE"},
+        {email: "test2@example.com", send_invite_email: "1"},
+        {email: "test3@example.com", send_invite_email: "true"},
+      ]}
+
+      it "sets send_invite_email attribute to true in the invite" do
+        expect{ service.bulk_create_xlsx(xlsx) }.to change{Invite.count}.from(0).to(3)
+        expect(Invite.all.pluck(:send_invite_email)).to eq [true, true, true]
+      end
+    end
+
+    context "with send_invite_email missing" do
+      let(:hash_array) {[
+        {email: "test1@example.com"}
+      ]}
+
+      it "sets send_invite_email attribute to true in the invite" do
+        expect{ service.bulk_create_xlsx(xlsx) }.to change{Invite.count}.from(0).to(1)
+        expect(Invite.first.send_invite_email).to be true
+      end
+    end
   end
 
 end

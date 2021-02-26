@@ -18,7 +18,6 @@ resource "Typeform Events" do
       url_params = {
         pc_id: @pc.id,
         pc_type: @pc.class.name,
-        tenant_id: Tenant.current.id
       }
       # Hack from https://github.com/zipmark/rspec_api_documentation/issues/342 
       example.metadata[:route] += "?#{url_params.to_query}"

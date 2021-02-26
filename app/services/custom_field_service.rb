@@ -5,8 +5,10 @@ class CustomFieldService
     @multiloc_service = MultilocService.new
   end
 
-  def fields_to_json_schema_multiloc(tenant, fields)
-    tenant.settings.dig('core', 'locales').each_with_object({}) do |locale, obj|
+  # @param [AppConfiguration] configuration
+  # @return [Hash{String => Object}]
+  def fields_to_json_schema_multiloc(configuration, fields)
+    configuration.settings('core', 'locales').each_with_object({}) do |locale, obj|
       obj[locale] = fields_to_json_schema(fields, locale)
     end
   end
@@ -31,8 +33,10 @@ class CustomFieldService
     end
   end
 
-  def fields_to_ui_schema_multiloc(tenant, fields)
-    tenant.settings.dig('core', 'locales').inject({}) do |memo, locale|
+  # @param [AppConfiguration] configuration
+  # @return [Hash{String => Object}]
+  def fields_to_ui_schema_multiloc(configuration, fields)
+    configuration.settings('core', 'locales').inject({}) do |memo, locale|
       memo[locale] = fields_to_ui_schema(fields, locale)
       memo
     end

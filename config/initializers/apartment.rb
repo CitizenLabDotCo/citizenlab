@@ -3,6 +3,8 @@
 # Require whichever Elevator you're using below or none if you have a custom one.
 #
 require 'apartment/elevators/generic'
+require 'apartment_active_job'
+
 # require 'apartment/elevators/domain'
 # require 'apartment/elevators/subdomain'
 # require 'apartment/elevators/first_subdomain'
@@ -98,7 +100,7 @@ class RescuedApartmentMiddleware < Apartment::Elevators::Generic
   end
 
   def parse_tenant_name request
-    if request.path =~ /^\/admin_api\/.*/ || request.path =~ /^\/okcomputer.*/ || request.path == "/hooks/mailgun_events" || request.path == "/hooks/typeform_events"
+    if request.path =~ /^\/admin_api\/.*/ || request.path =~ /^\/okcomputer.*/ || request.path == "/hooks/mailgun_events"
       nil
     else
       if Rails.env.development? || Rails.env.staging?

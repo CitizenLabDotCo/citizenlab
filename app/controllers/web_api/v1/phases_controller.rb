@@ -74,10 +74,12 @@ class WebApi::V1::PhasesController < ApplicationController
       :survey_service,
       :max_budget,
       :poll_anonymous,
+      :ideas_order,
+      :input_term,
       title_multiloc: CL2_SUPPORTED_LOCALES,
       description_multiloc: CL2_SUPPORTED_LOCALES
     ]
-    permitted += [:downvoting_enabled] if Tenant.current.has_feature? 'disable_downvoting'
+    permitted += [:downvoting_enabled] if AppConfiguration.instance.feature_activated? 'disable_downvoting'
     params.require(:phase).permit(permitted)
   end
 

@@ -14,9 +14,12 @@ module EmailCampaigns
 
     N_TOP_IDEAS = ENV.fetch("N_MODERATOR_DIGEST_IDEAS", 12).to_i
 
+    def mailer_class
+      ModeratorDigestMailer
+    end
 
     def self.default_schedule
-      IceCube::Schedule.new(Time.find_zone(Tenant.settings('core','timezone')).local(2019)) do |s|
+      IceCube::Schedule.new(Time.find_zone(AppConfiguration.instance.settings('core','timezone')).local(2019)) do |s|
         s.add_recurrence_rule(
           IceCube::Rule.weekly(1).day(:monday).hour_of_day(10)
         )
@@ -32,7 +35,7 @@ module EmailCampaigns
     end
 
     def generate_commands recipient:, time: nil
-      name_service = UserDisplayNameService.new(Tenant.current, recipient)
+      name_service = UserDisplayNameService.new(AppConfiguration.instance, recipient)
       recipient.moderatable_project_ids.map do |project_id|
         project = Project.find project_id
         statistics = statistics project

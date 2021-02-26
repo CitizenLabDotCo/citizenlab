@@ -26,7 +26,10 @@ public/uploads
 !.elasticbeanstalk/*.cfg.yml
 !.elasticbeanstalk/*.global.yml
 
-doc/
+doc/*
+!doc/dependency_decisions.yml
+.yardoc/
+attractor_output/
 
 .custom_env
 

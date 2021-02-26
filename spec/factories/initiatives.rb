@@ -55,5 +55,15 @@ FactoryBot.define do
         end
       end
     end
+
+    factory :assigned_initiative do
+      transient do
+        assigned_at { Time.now }
+      end
+      after(:create) do |initiative, evaluator|
+        initiative.assignee = create(:admin)
+        initiative.assigned_at = evaluator.assigned_at
+      end
+    end
   end
 end

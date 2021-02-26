@@ -11,7 +11,7 @@ module EmailCampaigns
     recipient_filter :user_filter_no_invitees
 
     def mailer_class
-      CampaignMailer
+      ManualCampaignMailer
     end
 
     # If this would be missing, the campaign would be sent on every event and

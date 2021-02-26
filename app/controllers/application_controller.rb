@@ -3,13 +3,11 @@ class ApplicationController < ActionController::API
   include Pundit
   include Finder::Pundit
 
-  before_action :set_current
   before_action :authenticate_user, if: :secure_controller?
   after_action :verify_authorized, except: :index
   after_action :verify_policy_scoped, only: :index
 
   rescue_from ActiveRecord::RecordNotFound, with: :send_not_found
-  rescue_from Apartment::TenantNotFound, with: :tenant_not_found
 
   rescue_from ActionController::UnpermittedParameters do |pme|
     render json: { error:  { unknown_parameters: pme.params } },
@@ -41,10 +39,6 @@ class ApplicationController < ActionController::API
     end
   end
 
-  def tenant_not_found
-    head 404
-  end
-
   def send_no_content(status=204)
     head status
   end
@@ -57,11 +51,6 @@ class ApplicationController < ActionController::API
     render json: { errors: { base: [{ error: 'Unauthorized!' }] } }, status: :unauthorized
   end
 
-  def set_current
-    Current.tenant = Tenant.current
-  rescue ActiveRecord::RecordNotFound
-  end
-
   # Used by semantic logger to include in every log line
   def append_info_to_payload(payload)
     super
@@ -71,11 +60,8 @@ class ApplicationController < ActionController::API
     payload[:"X-Amzn-Trace-Id"] = request.headers["X-Amzn-Trace-Id"]
   end
 
-  def fastjson_params extra_params={}
-    {
-      current_user: current_user,
-      **extra_params
-    }
+  def fastjson_params(extra_params = {})
+    { current_user: current_user, **extra_params.symbolize_keys }
   end
 
   def linked_json collection, serializer, options={}
@@ -98,7 +84,6 @@ class ApplicationController < ActionController::API
 
     links
   end
-
 
   private
 

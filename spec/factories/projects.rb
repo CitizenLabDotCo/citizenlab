@@ -24,26 +24,29 @@ end
 
 FactoryBot.define do
   factory :project do
+    ideas_order { nil }
+    input_term { nil }
+    admin_publication_attributes { {} }
     title_multiloc {{
-      "en" => "Renew West Parc",
-      "nl-BE" => "Westpark vernieuwen"
+      'en' => 'Renew West Parc',
+      'nl-BE' => 'Westpark vernieuwen'
     }}
     description_multiloc {{
-      "en" => "<p>Let's renew the parc at the city border and make it an enjoyable place for young and old.</p>",
-      "nl-BE" => "<p>Laten we het park op de grend van de stad vernieuwen en er een aangename plek van maken, voor jong en oud.</p>"
+      'en' => '<p>Let\'s renew the parc at the city border and make it an enjoyable place for young and old.</p>',
+      'nl-BE' => '<p>Laten we het park op de grend van de stad vernieuwen en er een aangename plek van maken, voor jong en oud.</p>'
     }}
     description_preview_multiloc {{
-      "en" => "Let's renew the parc at the city border and make it an enjoyable place for young and old.",
-      "nl-BE" => "Laten we het park op de grend van de stad vernieuwen en er een aangename plek van maken, voor jong en oud."
+      'en' => 'Let\'s renew the parc at the city border and make it an enjoyable place for young and old.',
+      'nl-BE' => 'Laten we het park op de grend van de stad vernieuwen en er een aangename plek van maken, voor jong en oud.'
     }}
-    sequence(:slug) {|n| "renew-west-parc-#{n}"}
+    sequence(:slug) { |n| "renew-west-parc-#{n}" }
 
     transient do
       with_permissions { false }
     end
 
     after(:create) do |project, evaluator|
-      if evaluator.with_permissions && project.is_participation_context?
+      if evaluator.with_permissions && project.participation_context?
         PermissionsService.new.update_permissions_for_context project
       end
     end
@@ -77,7 +80,7 @@ FactoryBot.define do
       after(:create) do |project, evaluator|
         start_at = Faker::Date.between(from: 1.year.ago, to: 1.year.from_now)
         evaluator.phases_count.times do |i|
-          project.phases << create(:phase, 
+          project.phases << create(:phase,
             start_at: start_at + 1,
             end_at: start_at += (1 + rand(120)).days,
             project: project,
@@ -90,8 +93,8 @@ FactoryBot.define do
     factory :project_with_active_ideation_phase do
       after(:create) do |project, evaluator|
         project.phases << create(:active_phase,
-          project: project, 
-          participation_method: 'ideation', 
+          project: project,
+          participation_method: 'ideation',
           with_permissions: evaluator.with_permissions
           )
       end
@@ -124,7 +127,7 @@ FactoryBot.define do
       after(:create) do |project, evaluator|
         phase_config = evaluator.current_phase_attrs.merge((evaluator.phases_config[:c].clone || {}))
         permissions_config = FactoryHelpers.extract_permissions_config phase_config
-        active_phase = create(:phase, 
+        active_phase = create(:phase,
           start_at: Faker::Date.between(from: 6.months.ago, to: Time.now),
           end_at: Faker::Date.between(from: Time.now+1.day, to: 6.months.from_now),
           project: project,
@@ -153,7 +156,7 @@ FactoryBot.define do
         phases_after&.chars&.map(&:to_sym)&.each do |sequence_char|
           phase_config = evaluator.phases_config[sequence_char].clone || {}
           permissions_config = FactoryHelpers.extract_permissions_config phase_config
-          phase = create(:phase, 
+          phase = create(:phase,
             start_at: start_at + 1,
             end_at: start_at += (1 + rand(120)).days,
             project: project,
@@ -174,7 +177,7 @@ FactoryBot.define do
       after(:create) do |project, evaluator|
         start_at = evaluator.first_start_at
         evaluator.phases_count.times do |i|
-          project.phases << create(:phase, 
+          project.phases << create(:phase,
             start_at: start_at + 1,
             end_at: start_at += (1 + rand(120)).days,
             project: project,
@@ -183,7 +186,6 @@ FactoryBot.define do
         end
       end
     end
-
 
     factory :project_xl do
       transient do
@@ -227,7 +229,6 @@ FactoryBot.define do
         end
       end
     end
-
 
     factory :private_admins_project do
       visible_to { :admins }
@@ -294,6 +295,5 @@ FactoryBot.define do
       process_type { 'continuous' }
       participation_method { 'volunteering' }
     end
-
   end
 end

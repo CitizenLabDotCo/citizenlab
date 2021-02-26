@@ -38,14 +38,14 @@ describe "bosa_fas verification" do
            "egovNRN"=>"93051822361",
            "fedid"=>"a8fb031d4ef30757ea70912b2876a4c2878309e0"}}})
 
-    @tenant = Tenant.current
-    settings = @tenant.settings
+    configuration = AppConfiguration.instance
+    settings = configuration.settings
     settings['verification'] = {
       allowed: true,
       enabled: true,
       verification_methods: [{name: 'bosa_fas', environment: 'integration', identifier: 'fake', secret: 'fake'}],
     }
-    @tenant.save!
+    configuration.save!
     host! 'example.org'
   end
 

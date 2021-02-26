@@ -41,14 +41,15 @@ services:
       - cow_ssl_cert_file
       - cow_ssl_cert_key_file
 
-  sidekiq:
+  que:
+    container_name: cl2-que
     depends_on:
       - 'postgres'
-      - 'redis'
+      - 'mailcatcher'
       - 'rabbitmq'
     build: .
     image: citizenlabdotco/cl2-back:latest
-    command: sidekiq -C config/sidekiq.yml.erb
+    command: bundle exec que
     volumes:
       - '.:/cl2_back'
     env_file:

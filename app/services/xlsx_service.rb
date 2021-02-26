@@ -146,7 +146,7 @@ class XlsxService
     generate_xlsx 'Users', columns, users
   end
 
-  def generate_ideas_xlsx ideas, view_private_attributes: false
+  def generate_ideas_xlsx ideas, view_private_attributes: false, with_tags: false
     columns = [
       {header: 'id',                   f: -> (i) { i.id },                                        skip_sanitization: true},
       {header: 'title',                f: -> (i) { @@multiloc_service.t(i.title_multiloc) }},
@@ -163,7 +163,7 @@ class XlsxService
       {header: 'project',              f: -> (i) { @@multiloc_service.t(i&.project&.title_multiloc) }},
       {header: 'topics',               f: -> (i) { i.topics.map{|t| @@multiloc_service.t(t.title_multiloc)}.join(',') }},
       {header: 'areas',                f: -> (i) { i.areas.map{|a| @@multiloc_service.t(a.title_multiloc)}.join(',') }},
-      {header: 'idea_status',          f: -> (i) { @@multiloc_service.t(i&.idea_status&.title_multiloc) }},
+      {header: 'status',               f: -> (i) { @@multiloc_service.t(i&.idea_status&.title_multiloc) }},
       {header: 'assignee',             f: -> (i) { i.assignee&.full_name }},
       {header: 'assignee_email',       f: -> (i) { i.assignee&.email }},
       {header: 'latitude',             f: -> (i) { i.location_point&.coordinates&.last },         skip_sanitization: true},
@@ -177,6 +177,15 @@ class XlsxService
       columns.select! do |c|
         !%w(author_email assignee_email).include?(c[:header])
       end
+    end
+
+    if with_tags
+      Tagging::Tag.joins(:taggings).where({tagging_taggings: {idea_id: ideas.map(&:id)}}).each { |tag|
+        columns.insert(3,{header: @@multiloc_service.t(tag.title_multiloc), f: -> (i) {
+          tagging = Tagging::Tagging.where(tag_id: tag.id, idea_id: i.id)
+          !tagging.empty? ? tagging.first.confidence_score : '0'
+          }})
+      }
     end
     generate_xlsx 'Ideas', columns, ideas
   end
@@ -215,7 +224,7 @@ class XlsxService
   def generate_idea_comments_xlsx comments, view_private_attributes: false
     columns = [
       {header: 'id',            f: -> (c) { c.id },            skip_sanitization: true},
-      {header: 'idea',          f: -> (c) { @@multiloc_service.t(c&.post.title_multiloc) }},
+      {header: 'input',         f: -> (c) { @@multiloc_service.t(c&.post.title_multiloc) }},
       {header: 'body',          f: -> (c) { convert_to_text(@@multiloc_service.t(c.body_multiloc)) }},
       {header: 'upvotes_count', f: -> (c) { c.upvotes_count }, skip_sanitization: true},
       {header: 'author_name',   f: -> (c) { c.author_name }},

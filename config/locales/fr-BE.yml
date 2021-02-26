@@ -1,16 +1,18 @@
 fr-BE:
+  symbols:
+    outside: autre lieu
   idea_statuses:
-    proposed: soumise
+    proposed: soumis.e
     proposed_description: Cette idée à été proposée à l'administration
-    viewed: vue
+    viewed: vu.e
     viewed_description: Cette idée a été vue par une personne de la ville
-    under_consideration: prise en considération
+    under_consideration: pris.e en considération
     under_consideration_description: Cette idée a été prise en considération par l'administration
-    accepted: acceptée
+    accepted: accepté.e
     accepted_description: Cette idée a été acceptée et sera mise en place par l'administration
-    implemented: mise en place
+    implemented: mis.e en place
     implemented_description: Cette idée a été mise en place par l'administration
-    rejected: non-retenue
+    rejected: non-retenu.e
     rejected_description: Cette idée n'a pas été retenue
   initiative_statuses:
     proposed: soumise
@@ -140,7 +142,7 @@ fr-BE:
     default_threshold_reached_message: >
       <p>Les porteurs de projets sont invités à présenter leur proposition à la prochaine réunion du conseil. Nous fourniront une mise à jour officielle.</p>
     default_eligibility_criteria: >
-      <ul> <li>Ca doit s’inscrire dans les compétences de l’autorité locale</li> <li>Ca doit servir l’intérêt général plutôt que votre intérêt personnel</li> <li>Ca ne peut pas être discriminatoire en terme de sexe, de race, d’âge ou d’origine</li> <li>Ca ne peut pas nuire à autrui</li></ul>
+      <ul> <li>Doit s’inscrire dans les compétences de l’autorité locale</li> <li>Doit servir l’intérêt général plutôt que votre intérêt personnel</li> <li>Ne peut pas être discriminatoire en terme de sexe, de race, d’âge ou d’origine</li> <li>Ne peut pas nuire à autrui</li></ul>
   smart_group_rules:
     is_empty: "%{property} n'a pas de valeur"
     not_is_empty: "%{property} a une valeur"
@@ -161,6 +163,8 @@ fr-BE:
     custom_field_select:
       has_value: "%{property} est %{value}"
       not_has_value: "%{property} n'est pas %{value}"
+      is_one_of: "%{property} a l'une des valeurs suivantes : %{value}"
+      not_is_one_of: "%{property} ne possède aucune des valeurs suivantes : %{value}"
     custom_field_text:
       is: "%{property} est %{value}"
       not_is: "%{property} n'est pas %{value}"

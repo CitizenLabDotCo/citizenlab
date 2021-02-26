@@ -37,7 +37,7 @@ resource "Stats - Comments" do
     token = Knock::AuthToken.new(payload: @current_user.to_token_payload).token
     header 'Authorization', "Bearer #{token}"
     header "Content-Type", "application/json"
-    @timezone = Tenant.settings('core','timezone')
+    @timezone = AppConfiguration.instance.settings('core','timezone')
     Tenant.current.update!(created_at: now - 3.month)
     create_list(:comment, 2)
     create(:comment, publication_status: 'deleted')

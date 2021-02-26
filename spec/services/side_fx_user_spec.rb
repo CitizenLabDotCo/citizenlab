@@ -34,7 +34,7 @@ describe SideFxUserService do
 
     it "identifies the user with segment after a user is created" do
       expect {service.after_create(user, current_user)}.
-        to have_enqueued_job(IdentifyToSegmentJob).with(user)
+        to have_enqueued_job(TrackUserJob).with(user)
     end
 
     it "logs a UpdateMemberCountJob" do

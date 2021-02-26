@@ -1,58 +1,16 @@
 class WebApi::V1::IdeasController < ApplicationController
 
   before_action :set_idea, only: [:show, :update, :destroy]
-  skip_after_action :verify_authorized, only: [:index_xlsx, :index_idea_markers, :filter_counts]
+  skip_after_action :verify_authorized, only: [:index_xlsx, :index_mini, :index_idea_markers, :filter_counts]
+  after_action :verify_policy_scoped, only: %i[index index_mini]
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   def index
     @ideas = policy_scope(Idea).includes(:topics, :areas, :idea_images, project: [:phases, :permissions, custom_form: [:custom_fields]], phases: [:permissions], author: [:unread_notifications], assignee: [:unread_notifications])
       .left_outer_joins(:idea_trending_info)
-    search_last_names = !UserDisplayNameService.new(Tenant.current, current_user).restricted?
-    @ideas = PostsFilteringService.new.apply_common_idea_index_filters @ideas, params, search_last_names
 
-    if params[:sort].present? && !params[:search].present?
-      @ideas = case params[:sort]
-        when "new"
-          @ideas.order_new
-        when "-new"
-          @ideas.order_new(:asc)
-        when "trending"
-          TrendingIdeaService.new.sort_trending @ideas
-        when "-trending"
-          TrendingIdeaService.new.sort_trending(@ideas).reverse
-        when "popular"
-          @ideas.order_popular
-        when "-popular"
-          @ideas.order_popular(:asc)
-        when "author_name"
-          @ideas.order("users.first_name ASC", "users.last_name ASC")
-        when "-author_name"
-          @ideas.order("users.first_name DESC", "users.last_name DESC")
-        when "upvotes_count"
-          @ideas.order(upvotes_count: :asc)
-        when "-upvotes_count"
-          @ideas.order(upvotes_count: :desc)
-        when "downvotes_count"
-          @ideas.order(downvotes_count: :asc)
-        when "-downvotes_count"
-          @ideas.order(downvotes_count: :desc)
-        when "status"
-          @ideas.order_status(:asc)
-        when "-status"
-          @ideas.order_status(:desc)
-        when "baskets_count"
-          @ideas.order(baskets_count: :asc)
-        when "-baskets_count"
-          @ideas.order(baskets_count: :desc)
-        when "random"
-          @ideas.order_random
-        when nil
-          @ideas
-        else
-          raise "Unsupported sort method"
-        end
-    end
+    search_and_sort(params)
 
     @ideas = @ideas
       .page(params.dig(:page, :number))
@@ -78,9 +36,22 @@ class WebApi::V1::IdeasController < ApplicationController
     render json: linked_json(@ideas, WebApi::V1::IdeaSerializer, serialization_options)
   end
 
+  def index_mini
+    @ideas = policy_scope(Idea)
+      .left_outer_joins(:idea_trending_info)
+
+    search_and_sort(params)
+
+    @ideas = @ideas
+      .page(params.dig(:page, :number))
+      .per(params.dig(:page, :size))
+
+    render json: linked_json(@ideas, WebApi::V1::IdeaMiniSerializer, params: fastjson_params(pcs: ParticipationContextService.new))
+  end
+
   def index_idea_markers
     @ideas = policy_scope(Idea).includes(:author)
-    search_last_names = !UserDisplayNameService.new(Tenant.current, current_user).restricted?
+    search_last_names = !UserDisplayNameService.new(AppConfiguration.instance, current_user).restricted?
     @ideas = PostsFilteringService.new.apply_common_idea_index_filters @ideas, params, search_last_names
     @ideas = @ideas.with_bounding_box(params[:bounding_box]) if params[:bounding_box].present?
 
@@ -109,9 +80,28 @@ class WebApi::V1::IdeasController < ApplicationController
     end
   end
 
+  def index_with_tags_xlsx
+    if params[:project].present?
+      authorize Project.find_by!(id: params[:project]), :index_xlsx?
+    else
+      authorize :idea, :index_xlsx?
+    end
+
+    @ideas = policy_scope(Idea)
+      .includes(:author, :topics, :areas, :project, :idea_status, :idea_files)
+      .where(publication_status: 'published')
+    @ideas = @ideas.where(project_id: params[:project]) if params[:project].present?
+    @ideas = @ideas.where(id: params[:ideas]) if params[:ideas].present?
+
+    I18n.with_locale(current_user&.locale) do
+      xlsx = XlsxService.new.generate_ideas_xlsx @ideas, view_private_attributes: Pundit.policy!(current_user, User).view_private_attributes?, with_tags: true
+      send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'ideas.xlsx'
+    end
+  end
+
   def filter_counts
     @ideas = policy_scope(Idea).left_outer_joins(:idea_trending_info)
-    search_last_names = !UserDisplayNameService.new(Tenant.current, current_user).restricted?
+    search_last_names = !UserDisplayNameService.new(AppConfiguration.instance, current_user).restricted?
     @ideas = PostsFilteringService.new.apply_common_idea_index_filters @ideas, params, search_last_names
     counts = {
       'idea_status_id' => {},
@@ -154,7 +144,6 @@ class WebApi::V1::IdeasController < ApplicationController
 
     @idea = Idea.new(permitted_attributes(Idea))
     @idea.author ||= current_user
-
     service.before_create(@idea, current_user)
 
     authorize @idea
@@ -235,6 +224,54 @@ class WebApi::V1::IdeasController < ApplicationController
       end
     end
     render json: { errors: { base: [{ error: 'Unauthorized!' }] } }, status: :unauthorized
+  end
+
+  def search_and_sort params
+    search_last_names = !UserDisplayNameService.new(AppConfiguration.instance, current_user).restricted?
+    @ideas = PostsFilteringService.new.apply_common_idea_index_filters @ideas, params, search_last_names
+
+    if params[:sort].present? && !params[:search].present?
+      @ideas = case params[:sort]
+        when "new"
+          @ideas.order_new
+        when "-new"
+          @ideas.order_new(:asc)
+        when "trending"
+          TrendingIdeaService.new.sort_trending @ideas
+        when "-trending"
+          TrendingIdeaService.new.sort_trending(@ideas).reverse
+        when "popular"
+          @ideas.order_popular
+        when "-popular"
+          @ideas.order_popular(:asc)
+        when "author_name"
+          @ideas.order("users.first_name ASC", "users.last_name ASC")
+        when "-author_name"
+          @ideas.order("users.first_name DESC", "users.last_name DESC")
+        when "upvotes_count"
+          @ideas.order(upvotes_count: :asc)
+        when "-upvotes_count"
+          @ideas.order(upvotes_count: :desc)
+        when "downvotes_count"
+          @ideas.order(downvotes_count: :asc)
+        when "-downvotes_count"
+          @ideas.order(downvotes_count: :desc)
+        when "status"
+          @ideas.order_status(:asc)
+        when "-status"
+          @ideas.order_status(:desc)
+        when "baskets_count"
+          @ideas.order(baskets_count: :asc)
+        when "-baskets_count"
+          @ideas.order(baskets_count: :desc)
+        when "random"
+          @ideas.order_random
+        when nil
+          @ideas
+        else
+          raise "Unsupported sort method"
+        end
+    end
   end
 
 end

@@ -80,7 +80,6 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
     end
   end
 
-  # belongs_to :folder, serializer: WebApi::V1::ProjectFolderSerializer
   has_one :admin_publication
 
   has_many :project_images, serializer: WebApi::V1::ImageSerializer
@@ -90,14 +89,14 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
   has_many :avatars, serializer: WebApi::V1::AvatarSerializer do |object, params|
     avatars_for_project(object, params)[:users]
   end
-  
+
   has_one :user_basket, record_type: :basket, if: Proc.new { |object, params|
     signed_in? object, params
   } do |object, params|
     user_basket object, params
   end
   has_one :current_phase, serializer: WebApi::V1::PhaseSerializer, record_type: :phase, if: Proc.new { |object, params|
-    !object.is_participation_context?
+    !object.participation_context?
   } do |object|
     TimelineService.new.current_phase(object)
   end
@@ -106,12 +105,12 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
     can_moderate? object, params
   }
 
-  
+
   def self.avatars_for_project object, params
     # TODO call only once (not a second time for counts)
     @participants_service ||= ParticipantsService.new
     AvatarsService.new(@participants_service).avatars_for_project(object, limit: 3)
-  end  
+  end
 
   def self.user_basket object, params
     if params[:user_baskets]

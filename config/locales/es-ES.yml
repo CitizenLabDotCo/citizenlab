@@ -1,4 +1,6 @@
 es:
+  symbols:
+    outside: en otro lugar
   idea_statuses:
     proposed: propuesta
     proposed_description: Esta idea ha sido propuesta
@@ -24,7 +26,7 @@ es:
     ineligible: no elegible
     ineligible_description: no elegible
   topics:
-    nature: Naturaleza y la biodiversidad
+    nature: Naturaleza y biodiversidad
     nature_description: Naturaleza y biodiversidad
     waste: Limpieza y residuos
     waste_description: Limpieza y residuos
@@ -52,10 +54,10 @@ es:
     inclusion_description: Inclusión social
     community: Desarrollo comunitario
     community_description: Desarrollo comunitario
-    services: Servicio público
-    services_description: Servicio público
-    other: Otro
-    other_description: Otro
+    services: Servicios públicos
+    services_description: Servicios públicos
+    other: Otros
+    other_description: Otros
   pages:
     terms_and_conditions_title: Términos y Condiciones
     terms_and_conditions_body: >
@@ -161,6 +163,8 @@ es:
     custom_field_select:
       has_value: "%{property} es %{value}"
       not_has_value: "%{property} no es %{value}"
+      is_one_of: "%{property} tiene uno de los siguientes valores: %{value}"
+      not_is_one_of: "%{property} no tiene ninguno de los siguientes valores: %{value}"
     custom_field_text:
       is: "%{property} es %{value}"
       not_is: "%{property} no es %{value}"

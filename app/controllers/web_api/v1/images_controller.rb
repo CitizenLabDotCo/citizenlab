@@ -21,13 +21,6 @@ class WebApi::V1::ImagesController < ApplicationController
       policy_scope_class: ProjectImagePolicy::Scope,
       image_relationship: :project_images,
       container_id: :project_id
-    },
-    'ProjectFolder' => {
-      container_class: ProjectFolder,
-      image_class: ProjectFolderImage,
-      policy_scope_class: ProjectFolderImagePolicy::Scope,
-      image_relationship: :project_folder_images,
-      container_id: :project_folder_id
     }
   }
 
@@ -81,6 +74,24 @@ class WebApi::V1::ImagesController < ApplicationController
     end
   end
 
+  # todo: move this to a service?
+  #
+  # @param [String] container_type
+  # @param [Class] container_class
+  # @param [Class] image_class
+  # @param [Class] policy_scope_class
+  # @param [Symbol] image_relationship
+  # @param [Symbol] container_id
+  # @return [void]
+  def self.register_container(container_type, container_class, image_class, policy_scope_class, image_relationship, container_id)
+    CONSTANTIZER[container_type] = {
+        container_class: container_class,
+        image_class: image_class,
+        policy_scope_class: policy_scope_class,
+        image_relationship: image_relationship,
+        container_id: container_id
+    }
+  end
 
   private
 

@@ -1,6 +1,4 @@
-class PageFileUploader < CarrierWave::Uploader::Base
-  include BaseFileUploader
-  
+class PageFileUploader < BaseFileUploader
 
   def size_range
     1.byte..50.megabytes

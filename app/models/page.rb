@@ -11,7 +11,7 @@ class Page < ApplicationRecord
   PUBLICATION_STATUSES = %w(draft published)
 
   validates :title_multiloc, :body_multiloc, presence: true
-  validates :slug, presence: true, uniqueness: true, format: {with: SlugService.new.regex }
+  validates :slug, presence: true, uniqueness: true
   validates :publication_status, presence: true, inclusion: {in: PUBLICATION_STATUSES}
 
   before_validation :generate_slug, on: :create
@@ -42,7 +42,7 @@ class Page < ApplicationRecord
       self.body_multiloc,
       %i{title alignment list decoration link image video}
     )
-    self.body_multiloc = service.remove_empty_paragraphs_multiloc(self.body_multiloc)
+    self.body_multiloc = service.remove_multiloc_empty_trailing_tags(self.body_multiloc)
     self.body_multiloc = service.linkify_multiloc(self.body_multiloc)
   end
 

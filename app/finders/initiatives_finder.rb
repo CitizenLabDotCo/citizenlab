@@ -28,7 +28,7 @@ class InitiativesFinder < ApplicationFinder
   def initiative_status_condition(status_id)
     filter_records do
       records.left_outer_joins(:initiative_initiative_status)
-             .where('initiative_initiative_statuses.initiative_status_id = ?', status_id)
+             .where(initiative_initiative_statuses: { initiative_status_id: status_id })
     end
   end
 
@@ -67,6 +67,6 @@ class InitiativesFinder < ApplicationFinder
   end
 
   def _search_restricted?
-    UserDisplayNameService.new(Tenant.current, @authorized_with).restricted?
+    UserDisplayNameService.new(AppConfiguration.instance, @authorized_with).restricted?
   end
 end

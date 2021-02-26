@@ -9,6 +9,10 @@ module EmailCampaigns
 
     recipient_filter :filter_recipient
 
+    def mailer_class
+      WelcomeMailer
+    end
+
     def activity_triggers
       {'User' => {'completed_registration' => true}}
     end

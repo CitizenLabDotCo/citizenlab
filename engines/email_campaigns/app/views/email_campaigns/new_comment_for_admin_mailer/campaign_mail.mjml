@@ -1,0 +1,36 @@
+<!-- Idea description box -->
+<mj-section padding="0 25px 25px"
+            background-color="#fff"
+            text-align="left">
+  <mj-column border="1px solid #eaeaea" padding="20px 25px" background-color="#fff" border-radius="5px">
+    <mj-text>
+      <h2 style="font-size: 18px; margin-top: 10px; margin-bottom: 10px;">
+        <%= localize_for_recipient(event.post_title_multiloc) %>
+      </h2>
+      <p style="margin-top: 10px; color: #84939E;">
+        <%= time_ago(event.post_published_at) %>
+        <%= format_message('by_author', values: {authorName: event.post_author_name}) %>
+      </p>
+    </mj-text>
+  </mj-column>
+</mj-section>
+
+<!-- Comment -->
+<mj-section
+  padding="25px"
+  border-radius="5px"
+  text-align="left">
+  <mj-column border-radius="5px" background-color="#F2F6F8" padding="25px">
+    <mj-text font-size="14px">
+      <%= format_message('commented', values: {
+        authorFirstName: "<span style=\"font-weight:bold; color: #000;\">#{event.initiating_user_first_name.capitalize}</span>"
+      }).html_safe %>
+      <p style="margin: 15px 0 0;">
+        <%= strip_tags(localize_for_recipient(event.comment_body_multiloc))[0..140] %>
+      </p>
+    </mj-text>
+  </mj-column>
+</mj-section>
+
+
+<%= render partial: 'application/cta_button', locals: { href: event.comment_url, message: format_message('cta_reply_to', values: {commentAuthor: event.initiating_user_first_name&.capitalize}) } %>

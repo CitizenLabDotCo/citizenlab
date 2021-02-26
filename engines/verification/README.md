@@ -32,8 +32,8 @@ module Verification
         "dna"
       end
 
-      # A list of configuration parameters. Their values can be specified per
-      # tenant in Admin HQ. These are considered private and won't be exposed to
+      # A list of configuration parameters. 
+      # These are considered private and won't be exposed to
       # non-admins through the API. Use them to hold any values that are
       # needed to perform verification. By default, the values you'll receive are
       # strings. In case you don't need any parameters, return an empty array.
@@ -74,8 +74,8 @@ module Verification
       end
 
       # A list of custom field keys that should be unchangeable by the user,
-      # when they're verified using this method. Make sure that tenants that
-      # are using this method have the custom field in place and enabled
+      # when they're verified using this method. Make sure that the 
+      # corresponding custom field is in place and enabled.
       def locked_custom_fields
         [:gender]
       end
@@ -180,7 +180,7 @@ VERIFICATION_COW_SSL_CERT_FILE=./secrets/cow_ssl_cert_file
 VERIFICATION_COW_SSL_CERT_KEY_FILE=./secrets/cow_ssl_cert_key_file
 ```
 
-4) Activate cow as a verification method for the tenant, e.g. through admin HQ, and add the right values for `api_username`, `api_password` and `rut_empresa`
+4) Activate cow as a verification method in the application configuration and add the right values for `api_username`, `api_password` and `rut_empresa`.
 
 ### id_card_lookup
 

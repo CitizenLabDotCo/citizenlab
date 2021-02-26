@@ -21,12 +21,16 @@ FactoryBot.define do
           "color_main" => "#335533",
           "color_secondary" => Faker::Color.hex_color,
           "color_text" => Faker::Color.hex_color,
+          "lifecycle_stage" => "active"
         },
         "initiatives" => {
           "enabled" => true,
           "allowed" => true,
           "voting_threshold" => 300,
-          "days_limit" => 90
+          "days_limit" => 90,
+          "threshold_reached_message" => {"en" => "Threshold reached"},
+          "eligibility_criteria" => {"en" => "Eligibility criteria"},
+          "success_stories" => []
         }
       }
     }
@@ -53,12 +57,16 @@ FactoryBot.define do
           "color_main" => "#335533",
           "color_secondary" => Faker::Color.hex_color,
           "color_text" => Faker::Color.hex_color,
+          "lifecycle_stage" => "active"
         },
         "initiatives" => {
           "enabled" => true,
           "allowed" => true,
           "voting_threshold" => 300,
-          "days_limit" => 90
+          "days_limit" => 90,
+          "threshold_reached_message" => {"en" => "Threshold reached"},
+          "eligibility_criteria" => {"en" => "Eligibility criteria"},
+          "success_stories" => []
         }
       }
     }

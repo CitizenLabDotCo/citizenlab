@@ -8,6 +8,7 @@ Gem::Specification.new do |s|
   s.name        = "admin_api"
   s.version     = AdminApi::VERSION
   s.authors     = ["Koen Gremmelprez"]
+  s.licenses    = ['CitizenLab Commercial License']
   s.email       = ["koen@citizenlab.co"]
   s.summary     = "Rails engine that provides the endpoints for the admin CL2 api"
 
@@ -17,6 +18,7 @@ Gem::Specification.new do |s|
   s.add_dependency "active_model_serializers", "~> 0.10.7"
   s.add_dependency "apartment", "~> 2.2.1"
   s.add_dependency "graphql", "~> 1.8.0"
+  s.add_dependency "kaminari", "~> 1.2"
 
   s.add_development_dependency "rspec_api_documentation"
   s.add_development_dependency "rspec-rails"

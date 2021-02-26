@@ -345,8 +345,7 @@ module AdminApi
 
       User.where(id: user_ids.uniq).map do |u|
         yml_user = if anonymize_users
-          yml_user = service.anonymized_attributes Tenant.settings('core', 'locales'), user: u
-          yml_user.delete 'custom_field_values'
+          yml_user = service.anonymized_attributes AppConfiguration.instance.settings('core', 'locales'), user: u
           yml_user
         else
            yml_user = { 
@@ -458,6 +457,15 @@ module AdminApi
           'location_description'   => i.location_description,
           'budget'                 => i.budget,
           'proposed_budget'       => i.proposed_budget,
+          'text_images_attributes'       => @project.text_images.map{ |i|
+            {
+              'imageable_field'          => i.imageable_field,
+              'remote_image_url'         => i.image_url,
+              'text_reference'           => i.text_reference,
+              'created_at'               => i.created_at.to_s,
+              'updated_at'               => i.updated_at.to_s
+            }
+          }
         }
         store_ref yml_idea, i.id, :idea
         yml_idea

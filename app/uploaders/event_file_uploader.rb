@@ -1,6 +1,4 @@
-class EventFileUploader < CarrierWave::Uploader::Base
-  include BaseFileUploader
-  
+class EventFileUploader < BaseFileUploader
   
   def size_range
 	  1.byte..50.megabytes

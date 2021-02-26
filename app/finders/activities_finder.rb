@@ -8,7 +8,7 @@ class ActivitiesFinder < ApplicationFinder
   def post_condition(param)
     return if param.blank?
 
-    where(item_id: param.dig(:id), item_type: param.dig(:type))
+    where(item_id: param[:id], item_type: param[:type])
   end
 
   def action_condition(actions)

@@ -44,7 +44,7 @@ class PermissionsService
   end
 
   def update_permissions_for_context participation_context
-    if participation_context.is_participation_context?
+    if participation_context.participation_context?
       actions = ACTIONS[participation_context.participation_method]
       participation_context.permissions.where.not(action: actions).each(&:destroy!)
       actions&.select do |action|
@@ -55,7 +55,7 @@ class PermissionsService
     end
   end
 
-  def update_permissions_for_current_tenant
+  def update_all_permissions
     PermissionsService.new.update_global_permissions
     Project.all.each do |project|
       PermissionsService.new.update_permissions_for_context project
@@ -129,7 +129,7 @@ class PermissionsService
   end
 
 
-  private 
+  private
 
   def global_permission action
     Permission.includes(:groups).find_by(permission_scope: nil, action: action)

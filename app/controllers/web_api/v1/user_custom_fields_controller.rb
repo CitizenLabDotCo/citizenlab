@@ -18,8 +18,8 @@ class WebApi::V1::UserCustomFieldsController < ApplicationController
     fields = CustomField.with_resource_type(@resource_type)
 
     service = CustomFieldService.new
-    json_schema_multiloc = service.fields_to_json_schema_multiloc(Tenant.current, fields)
-    ui_schema_multiloc = service.fields_to_ui_schema_multiloc(Tenant.current, fields)
+    json_schema_multiloc = service.fields_to_json_schema_multiloc(AppConfiguration.instance, fields)
+    ui_schema_multiloc = service.fields_to_ui_schema_multiloc(AppConfiguration.instance, fields)
 
     mark_locked_fields(ui_schema_multiloc) if current_user
 

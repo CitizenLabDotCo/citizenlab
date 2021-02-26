@@ -1,0 +1,7 @@
+<mj-wrapper background-color="#F6F6F6" full-width="full-width" padding="40px 0 0">
+  <%= render 'statistics' %>
+  <%= render 'email_campaigns/projects/top-projects' %>
+  <%= render 'email_campaigns/initiatives/new-initiatives' unless event.new_initiatives.empty? %>
+  <%= render 'email_campaigns/initiatives/successful-initiatives' unless event.successful_initiatives.empty? %>
+  <%= render partial: 'application/cta_button', locals: { href: home_url, message: format_message('cta_visit_the_platform') } %>
+</mj-wrapper>

@@ -1,4 +1,6 @@
 es-CL:
+  symbols:
+    outside: en otro lugar
   idea_statuses:
     proposed: propuesta
     proposed_description: Esta idea ha sido propuesta
@@ -32,30 +34,30 @@ es-CL:
     sustainability_description: Desarrollo sostenible
     mobility: Movilidad
     mobility_description: Movilidad
-    technology: Tecnología
+    technology: Energía y tecnología
     technology_description: Energía y tecnología
-    economy: Trabajo, economía y comercio
+    economy: Trabajo, economía y turismo
     economy_description: Trabajo, economía y turismo
     housing: Vivienda
     housing_description: Vivienda
-    public_space: Public spaces and buildings
-    public_space_description: Public spaces and buildings
-    safety: Safety
-    safety_description: Safety
+    public_space: Espacios públicos y edificios
+    public_space_description: Espacios públicos y edificios
+    safety: Seguridad
+    safety_description: Seguridad
     education: Educación y juventud
     education_description: Educación y juventud
     culture: Cultura, deportes y eventos
     culture_description: Cultura, deportes y eventos
     health: Salud y bienestar
     health_description: Salud y bienestar
-    inclusion: Social inclusion
-    inclusion_description: Social inclusion
-    community: Community development
-    community_description: Community development
-    services: Public services
-    services_description: Public services
-    other: Otro
-    other_description: Otro
+    inclusion: Inclusión social
+    inclusion_description: Inclusión social
+    community: Desarrollo comunitario
+    community_description: Desarrollo comunitario
+    services: Servicio público
+    services_description: Servicio público
+    other: Otros
+    other_description: Otros
   pages:
     terms_and_conditions_title: Términos y Condiciones
     terms_and_conditions_body: >
@@ -161,6 +163,8 @@ es-CL:
     custom_field_select:
       has_value: "%{property} es %{value}"
       not_has_value: "%{property} no es %{value}"
+      is_one_of: "%{property} tiene uno de los siguientes valores: %{value}"
+      not_is_one_of: "%{property} no tiene ninguno de los siguientes valores: %{value}"
     custom_field_text:
       is: "%{property} es %{value}"
       not_is: "%{property} no es %{value}"

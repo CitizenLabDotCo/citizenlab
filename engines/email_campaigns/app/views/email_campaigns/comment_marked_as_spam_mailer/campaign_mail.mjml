@@ -1,0 +1,42 @@
+    <!-- Comment -->
+    <mj-section
+      padding="25px"
+      border-radius="5px"
+      text-align="left">
+      <mj-column border-radius="5px" background-color="#F2F6F8" padding="25px" vertical-align="middle" >
+        <mj-text font-size="14px" color="#84939E">
+          <%= format_message('commented', values: {
+            authorName: "<span style=\"font-weight:bold; color: #000;\">#{ event.comment_author_name }</span>"
+          }, escape_html: false) %>
+          <p style="margin: 15px 0 0; color: #000;">
+            <%= strip_tags(localize_for_recipient(event.comment_body_multiloc)).first(140) %>
+          </p>
+        </mj-text>
+      </mj-column>
+    </mj-section>
+
+    <!-- Reason for reporting box -->
+    <mj-section padding="20px 25px" border-radius="5px" text-align="left">
+      <mj-column>
+        <mj-text font-size="14px" color="#84939E">
+          <%= format_message('reported_this_because', values: {
+            reporterFirstName: "<span style=\"font-weight:bold; color: #000;\">#{ event.initiating_user_first_name }</span>"
+          }, escape_html: false) %>
+        </mj-text>
+        <mj-text>
+          <p style="margin: 15px 0 0;">
+            <% case event.spam_report_reason_code %>
+            <% when 'other' %>
+              <%= event.spam_report_other_reason %>
+            <% when 'inappropriate' %>
+              <%= format_message('inappropriate_content') %>
+            <% when 'wrong_content' %>
+              <%= format_message('wrong_content')%>
+            <% end %>
+          </p>
+        </mj-text>
+      </mj-column>
+    </mj-section>
+
+    <!-- CTA button -->
+    <%= render partial: 'application/cta_button', locals: { href: event.comment_url, message: format_message('cta_review_comment') } %>

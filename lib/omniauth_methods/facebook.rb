@@ -1,20 +1,21 @@
 module OmniauthMethods
   class Facebook
 
-    def omniauth_setup tenant, env
-      if tenant.has_feature?('facebook_login')
-        env['omniauth.strategy'].options[:client_id] = Tenant.settings("facebook_login", "app_id")
-        env['omniauth.strategy'].options[:client_secret] = Tenant.settings("facebook_login", "app_secret")
+    # @param [AppConfiguration] configuration
+    def omniauth_setup(configuration, env)
+      if configuration.feature_activated?('facebook_login')
+        env['omniauth.strategy'].options[:client_id] = configuration.settings("facebook_login", "app_id")
+        env['omniauth.strategy'].options[:client_secret] = configuration.settings("facebook_login", "app_secret")
         env['omniauth.strategy'].options[:info_fields] = "first_name,last_name,email,birthday,education,gender,locale,third_party_id,timezone,age_range,picture.width(640).height(640)"
       end
     end
 
-    def profile_to_user_attrs auth
+    def profile_to_user_attrs(auth)
       user_attrs = {
         first_name: auth.info['first_name'],
         last_name: auth.info['last_name'],
         email: auth.info['email'],
-        locale: Tenant.current.closest_locale_to(auth.extra.raw_info.locale)
+        locale: AppConfiguration.instance.closest_locale_to(auth.extra.raw_info.locale)
       }
       gender = auth.extra.raw_info&.gender
       if gender
