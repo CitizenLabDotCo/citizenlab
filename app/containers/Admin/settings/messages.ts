@@ -45,9 +45,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.tabPages',
     defaultMessage: 'Pages',
   },
-  tabRegistrationFields: {
-    id: 'app.containers.AdminPage.SettingsPage.tabRegistrationFields',
-    defaultMessage: 'Registration fields',
+  tabRegistration: {
+    id: 'app.containers.AdminPage.SettingsPage.tabRegistration',
+    defaultMessage: 'Registration',
   },
   tabTopics: {
     id: 'app.containers.AdminPage.SettingsPage.tabTopics',
@@ -161,9 +161,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.saveSuccessMessage',
     defaultMessage: 'Your changes have been saved.',
   },
-  titleRegistration: {
-    id: 'app.containers.AdminPage.SettingsPage.titleRegistration',
-    defaultMessage: 'Registration fields',
+  registrationTitle: {
+    id: 'app.containers.AdminPage.SettingsPage.registrationTitle',
+    defaultMessage: 'Registration',
   },
   subtitleRegistration: {
     id: 'app.containers.AdminPage.SettingsPage.subtitleRegistration',
