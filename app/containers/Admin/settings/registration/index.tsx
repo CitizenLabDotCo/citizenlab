@@ -1,4 +1,5 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
+import styled from 'styled-components';
 import AllCustomFields from './CustomFields/All';
 import {
   Section,
@@ -13,6 +14,10 @@ import { IconTooltip } from 'cl2-component-library';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
+
+const LabelTooltip = styled.div`
+  display: flex;
+`;
 
 interface Props {}
 
@@ -38,9 +43,27 @@ const SettingsRegistrationTab = (_props: Props) => {
           valueMultiloc={{}}
           onChange={handleProjectHeaderOnChange}
           label={
-            <>
+            <LabelTooltip>
               <FormattedMessage {...messages.firstPage} />
-            </>
+              <IconTooltip
+                content={<FormattedMessage {...messages.firstPageTooltip} />}
+              />
+            </LabelTooltip>
+          }
+        />
+      </SectionField>
+      <SectionField>
+        <InputMultilocWithLocaleSwitcher
+          type="text"
+          valueMultiloc={{}}
+          onChange={handleProjectHeaderOnChange}
+          label={
+            <LabelTooltip>
+              <FormattedMessage {...messages.secondPage} />
+              <IconTooltip
+                content={<FormattedMessage {...messages.secondPageTooltip} />}
+              />
+            </LabelTooltip>
           }
         />
       </SectionField>

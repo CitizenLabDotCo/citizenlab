@@ -230,4 +230,18 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.firstPage',
     defaultMessage: 'First page',
   },
+  secondPage: {
+    id: 'app.containers.AdminPage.SettingsPage.secondPage',
+    defaultMessage: 'Second page',
+  },
+  firstPageTooltip: {
+    id: 'app.containers.AdminPage.SettingsPage.firstPageTooltip',
+    defaultMessage:
+      'This is shown on the top of the first page of the sign-up form (name, email, password)',
+  },
+  secondPageTooltip: {
+    id: 'app.containers.AdminPage.SettingsPage.secondPageTooltip',
+    defaultMessage:
+      'This is shown on the top of the second page of the sign-up form (additional registration fields)',
+  },
 });
