@@ -32,8 +32,8 @@ const FranceConnectButtonLink = styled.button`
     cursor: not-allowed;
   }
 
-  &:hover #france-connect-background {
-    fill: #3483f2;
+  &:hover #Fond {
+    fill: #2183f0;
   }
 `;
 
