@@ -1113,7 +1113,7 @@
   "app.containers.AdminPage.ProjectEdit.MapTab.supportArticle": "support article",
   "app.containers.AdminPage.ProjectEdit.MapTab.supportArticleUrl": "https://support.citizenlab.co/en/articles/4910983-customize-your-project-map",
   "app.containers.AdminPage.ProjectEdit.MapTab.zoomLabel": "Default zoom level",
-  "app.containers.AdminPage.ProjectEdit.MapTab.zoomLabelTooltip": "Set how zoomed in the map is by default. Choose a value between 0 and 17, where 0 is fully zoomed out (the entire world is visible) and 17 is fully zoomed in (blocks and buildings are visible)",
+  "app.containers.AdminPage.ProjectEdit.MapTab.zoomLabelTooltip": "Set how zoomed in the map is by default. Choose a value between 0 and 20, where 0 is fully zoomed out (the entire world is visible) and 20 is fully zoomed in (blocks and buildings are visible)",
   "app.containers.AdminPage.ProjectEdit.PollTab.addOption": "Ajouter une option",
   "app.containers.AdminPage.ProjectEdit.PollTab.addQuestion": "Ajouter une question",
   "app.containers.AdminPage.ProjectEdit.PollTab.cancelFormQuestion": "Annuler",
