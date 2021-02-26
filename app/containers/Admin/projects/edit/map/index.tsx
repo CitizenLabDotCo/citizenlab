@@ -61,7 +61,7 @@ const GoToDefaultViewportButtonWrapper = styled.div`
   position: absolute;
   top: 80px;
   left: 11px;
-  z-index: 314159;
+  z-index: 1000;
   background: #fff;
   border-radius: ${(props: any) => props.theme.borderRadius};
 `;
@@ -70,7 +70,7 @@ const SetAsDefaultViewportButtonWrapper = styled.div`
   position: absolute;
   top: 122px;
   left: 11px;
-  z-index: 314159;
+  z-index: 1000;
   background: #fff;
   border-radius: ${(props: any) => props.theme.borderRadius};
 `;

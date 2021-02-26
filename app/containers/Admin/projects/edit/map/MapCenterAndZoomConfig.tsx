@@ -18,6 +18,9 @@ import { SubSectionTitle } from 'components/admin/Section';
 // utils
 import { getCenter, getZoomLevel } from 'utils/map';
 
+// events
+import { setMapLatLngZoom } from 'components/Map/events';
+
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
@@ -186,7 +189,7 @@ const MapCenterAndZoomConfig = memo<Props & InjectedIntlProps>(
           formProcessing();
           const defaultLat = parseFloat(formValues.defaultLat as any);
           const defaultLng = parseFloat(formValues.defaultLng as any);
-          const defaultZoom = formValues.defaultZoom?.toString();
+          const defaultZoom = formValues.defaultZoom?.toString() as string;
 
           await updateProjectMapConfig(projectId, mapConfig.id, {
             center_geojson: {
@@ -195,8 +198,14 @@ const MapCenterAndZoomConfig = memo<Props & InjectedIntlProps>(
             },
             zoom_level: defaultZoom,
           });
+          setMapLatLngZoom({
+            lat: defaultLat,
+            lng: defaultLng,
+            zoom: parseInt(defaultZoom, 10),
+          });
           formSuccess();
         } catch (error) {
+          console.log(error);
           formError(error);
         }
       }

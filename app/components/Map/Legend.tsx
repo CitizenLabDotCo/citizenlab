@@ -10,6 +10,7 @@ import bowser from 'bowser';
 
 const Container = styled.div`
   padding: 20px;
+  padding-bottom: 5px;
 `;
 
 const LegendItems = styled.ul`
@@ -102,7 +103,7 @@ const Legend = memo<Props>(({ projectId, className }) => {
     }));
   }
 
-  if (legend.length > 0) {
+  if (legend && legend.length > 0) {
     return (
       <Container className={`${className || ''} legendcontainer`}>
         <LegendItems>
