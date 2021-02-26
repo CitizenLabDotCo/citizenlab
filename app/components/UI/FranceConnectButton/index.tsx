@@ -21,7 +21,8 @@ const FranceConnectButtonLink = styled.button`
   cursor: pointer;
   padding: 0;
   margin: 0;
-  margin-bottom: 2px;
+  margin-bottom: 8px;
+  border: none;
 
   #france-connect-background {
     transition: fill 0.2s ease-in-out;
@@ -42,6 +43,7 @@ const SubSocialButtonLink = styled.a`
   font-weight: 300;
   text-decoration: none;
   transition: all 0.2s ease-in-out;
+  line-height: 1;
 
   &:hover {
     color: #000;
