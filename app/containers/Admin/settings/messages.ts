@@ -117,7 +117,7 @@ export default defineMessages({
   },
   bannerHeaderSignedOut: {
     id: 'app.containers.AdminPage.SettingsPage.bannerHeaderSignedOut',
-    defaultMessage: 'Banner header (for non-signed in visitors)',
+    defaultMessage: 'Banner header for non-signed in visitors',
   },
   bannerHeaderSignedOutTooltip: {
     id: 'app.containers.AdminPage.SettingsPage.bannerHeaderSignedOutTooltip',
@@ -208,7 +208,7 @@ export default defineMessages({
   },
   bannerHeaderSignedIn: {
     id: 'app.components.AdminPage.SettingsPage.bannerHeaderSignedIn',
-    defaultMessage: 'Banner header (for signed-in users)',
+    defaultMessage: 'Banner header for signed-in users',
   },
   project_header: {
     id: 'app.containers.AdminPage.SettingsPage.project_header',
