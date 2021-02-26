@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
 import messages from './messages';
 import FranceConnectLogo from './FranceConnectLogo';
+import { ScreenReaderOnly } from 'utils/a11y';
 
 const FranceConnectButtonWrapper = styled.div`
   display: flex;
@@ -53,11 +54,12 @@ interface Props {
   logoAlt: string;
 }
 
-const FranceConnectButton = ({ onClick }: Props): ReactElement => {
+const FranceConnectButton = ({ onClick, logoAlt }: Props): ReactElement => {
   return (
     <FranceConnectButtonWrapper>
       <FranceConnectButtonLink onClick={onClick}>
         <FranceConnectLogo />
+        <ScreenReaderOnly>{logoAlt}</ScreenReaderOnly>
       </FranceConnectButtonLink>
       <SubSocialButtonLink
         href="https://app.franceconnect.gouv.fr/en-savoir-plus"
