@@ -5,9 +5,11 @@ jest.mock('services/stats');
 jest.mock('services/appConfiguration');
 jest.mock('components/Outlet', () => 'Outlet');
 
-import { intl } from 'utils/cl-intl';
 import { BarChartByCategory } from './BarChartByCategory';
 import { chartTheme } from '../..';
+
+const Intl = require('utils/cl-intl/__mocks__/');
+const { intl } = Intl;
 
 const convertToGraphFormat = jest.fn();
 const stream = jest.fn();
