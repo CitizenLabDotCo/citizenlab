@@ -184,6 +184,7 @@ const MapCenterAndZoomConfig = memo<Props & InjectedIntlProps>(
 
     const handleOnSave = async (event: React.FormEvent) => {
       event.preventDefault();
+
       if (mapConfig && validate()) {
         try {
           formProcessing();
@@ -205,7 +206,6 @@ const MapCenterAndZoomConfig = memo<Props & InjectedIntlProps>(
           });
           formSuccess();
         } catch (error) {
-          console.log(error);
           formError(error);
         }
       }
