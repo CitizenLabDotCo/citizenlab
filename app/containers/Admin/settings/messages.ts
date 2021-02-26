@@ -218,4 +218,16 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.project_header_tooltip',
     defaultMessage: 'This text is shown on the homepage above the projects.',
   },
+  signupFormText: {
+    id: 'app.containers.AdminPage.SettingsPage.signupFormText',
+    defaultMessage: 'Sign-up form text',
+  },
+  signupFormTooltip: {
+    id: 'app.containers.AdminPage.SettingsPage.signupFormTooltip',
+    defaultMessage: 'Add a short description at the top of the sign-up form',
+  },
+  firstPage: {
+    id: 'app.containers.AdminPage.SettingsPage.firstPage',
+    defaultMessage: 'First page',
+  },
 });
