@@ -9,6 +9,7 @@ Gem::Specification.new do |s|
   s.version     = Maps::VERSION
   s.authors     = ["Koen Gremmelprez"]
   s.email       = ["koen@citizenlab.co"]
+  s.licenses    = ['CitizenLab Commercial License']
   s.summary     = "Contains everything to configure maps on the platform"
 
   s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
