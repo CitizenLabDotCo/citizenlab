@@ -14,51 +14,39 @@ import { IconTooltip } from 'cl2-component-library';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
-type Props = {};
+interface Props {}
 
-type State = {};
-
-class SettingsRegistrationTab extends PureComponent<Props, State> {
-  render() {
-    return (
-      <Section key={'signup_fields'}>
-        <SectionTitle>
-          <FormattedMessage {...messages.titleRegistration} />
-        </SectionTitle>
-        <SectionDescription>
-          <FormattedMessage {...messages.subtitleRegistration} />
-        </SectionDescription>
-        <AllCustomFields />
-        <Section key={'project_header'}>
-          <SubSectionTitle>
-            <FormattedMessage {...messages.project_header} />
-            <IconTooltip
-              content={
-                <FormattedMessage {...messages.project_header_tooltip} />
-              }
-            />
-          </SubSectionTitle>
-          {/* <SectionField>
-            <InputMultilocWithLocaleSwitcher
-              type="text"
-              valueMultiloc={
-                get(
-                  attributesDiff,
-                  'settings.core.currently_working_on_text'
-                ) ||
-                get(
-                  tenant,
-                  'data.attributes.settings.core.currently_working_on_text'
-                )
-              }
-              onChange={this.handleProjectHeaderOnChange}
-              errorMultiloc={subtitleError}
-            />
-          </SectionField> */}
-        </Section>
-      </Section>
-    );
-  }
-}
+const SettingsRegistrationTab = (_props: Props) => {
+  const handleProjectHeaderOnChange = () => {};
+  return (
+    <Section key={'signup_fields'}>
+      <SectionTitle>
+        <FormattedMessage {...messages.titleRegistration} />
+      </SectionTitle>
+      <SectionDescription>
+        <FormattedMessage {...messages.subtitleRegistration} />
+      </SectionDescription>
+      <SubSectionTitle>
+        <FormattedMessage {...messages.signupFormText} />
+        <IconTooltip
+          content={<FormattedMessage {...messages.signupFormTooltip} />}
+        />
+      </SubSectionTitle>
+      <SectionField>
+        <InputMultilocWithLocaleSwitcher
+          type="text"
+          valueMultiloc={{}}
+          onChange={handleProjectHeaderOnChange}
+          label={
+            <>
+              <FormattedMessage {...messages.firstPage} />
+            </>
+          }
+        />
+      </SectionField>
+      <AllCustomFields />
+    </Section>
+  );
+};
 
 export default SettingsRegistrationTab;
