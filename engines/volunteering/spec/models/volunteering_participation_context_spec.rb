@@ -11,5 +11,4 @@ describe Volunteering::VolunteeringParticipationContext do
       expect(pc.errors.details).to include({:base => [{:error=>:cannot_contain_causes, :causes_count=>1}]})
     end
   end
-
 end

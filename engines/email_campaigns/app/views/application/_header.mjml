@@ -1,0 +1,22 @@
+<mj-section>
+  <mj-column>
+    <mj-text>
+      <span style="color: transparent; display: none; height: 0; max-height: 0; max-width: 0; opacity: 0; overflow: hidden; mso-hide: all; visibility: hidden; width: 0;">
+        <%= preheader %>
+      </span>
+    </mj-text>
+  </mj-column>
+</mj-section>
+
+<%= render partial: 'application/logo_medium_top' %>
+
+<mj-section padding="30px 25px">
+  <mj-column>
+    <mj-text>
+      <h1><%= header_title %></h1>
+      <% if header_message %>
+        <p><%= header_message %></p>
+      <% end %>
+    </mj-text>
+  </mj-column>
+</mj-section>

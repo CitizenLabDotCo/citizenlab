@@ -1,0 +1,16 @@
+<mj-table cellpadding="15">
+  <tr style="border-bottom:1px solid #ecedee;text-align:left;">
+    <th
+      colspan="4"
+      style="padding: 0 15px 0 0; background-color: #044D6C; font-size: 16px; padding: 15px; font-weight: 400; border-radius: 5px 5px 0 0;"
+    >
+      <%= link_to localize_for_recipient(serialized_project_ideas.project.title_multiloc)&.first(120), serialized_project_ideas.project.url, style: 'color: #FFFFFF' %>
+    </th>
+  </tr>
+
+  <% serialized_project_ideas.top_ideas.each do |serialized_idea| %>
+    <%= render 'email_campaigns/ideas/idea-minimal-with-increments', serialized_idea: serialized_idea %>
+  <% end %>
+
+</mj-table>
+<mj-text>&nbsp;</mj-text>

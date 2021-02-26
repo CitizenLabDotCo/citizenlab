@@ -12,7 +12,7 @@ class WebApi::V1::IdeaGeotagSerializer < ::WebApi::V1::BaseSerializer
   end
 
   attribute :location_description do |object, params|
-    if object.location_description 
+    if object.location_description
       object.location_description
     elsif params[:geotags][object.id]
       params[:geotags][object.id]['address']

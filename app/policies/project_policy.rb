@@ -10,16 +10,12 @@ class ProjectPolicy < ApplicationPolicy
     def resolve
       if user&.admin?
         scope.all
+      elsif user&.project_moderator?
+        Project.where(id: user.moderatable_project_ids + filter_for_normal_user(normal_user_result, user))
+      elsif user
+        filter_for_normal_user normal_user_result, user
       else
-        normal_user_result = scope.left_outer_joins(:admin_publication)
-          .where(admin_publications: {publication_status: ['published', 'archived']})
-        if user&.project_moderator?
-          Project.where(id: user.moderatable_project_ids + filter_for_normal_user(normal_user_result, user))
-        elsif user
-          filter_for_normal_user normal_user_result, user
-        else
-          normal_user_result.where visible_to: 'public'
-        end
+        normal_user_result.where visible_to: 'public'
       end
     end
 
@@ -33,8 +29,12 @@ class ProjectPolicy < ApplicationPolicy
       end
     end
 
-
     private
+
+    def normal_user_result
+      scope.left_outer_joins(:admin_publication)
+           .where(admin_publications: { publication_status: %w[published archived] })
+    end
 
     def filter_for_normal_user scope, user
       scope
@@ -43,7 +43,7 @@ class ProjectPolicy < ApplicationPolicy
     end
   end
 
-  # The normal scope: Given this user, which resources can she access? 
+  # The normal scope: Given this user, which resources can she access?
   # The inverse scope: Given this resource, which users can access it?
   class InverseScope
     attr_reader :record, :scope
@@ -104,7 +104,7 @@ class ProjectPolicy < ApplicationPolicy
 
   def shared_permitted_attributes
     shared = [
-      :slug, 
+      :slug,
       :header_bg,
       :visible_to,
       :participation_method,
@@ -119,14 +119,15 @@ class ProjectPolicy < ApplicationPolicy
       :presentation_mode,
       :default_assignee_id,
       :poll_anonymous,
-      :folder_id,
+      :ideas_order,
+      :input_term,
       admin_publication_attributes: [:publication_status],
-      title_multiloc: CL2_SUPPORTED_LOCALES, 
+      title_multiloc: CL2_SUPPORTED_LOCALES,
       description_multiloc: CL2_SUPPORTED_LOCALES,
       description_preview_multiloc: CL2_SUPPORTED_LOCALES,
       area_ids: []
     ]
-    shared += [:downvoting_enabled] if Tenant.current.has_feature? 'disable_downvoting'
+    shared += [:downvoting_enabled] if AppConfiguration.instance.feature_activated? 'disable_downvoting'
     shared
   end
 

@@ -1,13 +1,13 @@
 # Service that adapts the user name that is shown depending on the context.
 # For now, it can be used to "shallow anonymization" of users, depending on the
-# tenant settings and the permissions of the current user.
+# application configuration and the permissions of the current user.
 
 class UserDisplayNameService
 
-  # @param [Tenant] tenant
-  # @param [User] current_user
-  def initialize(tenant, current_user = nil)
-    @tenant = tenant
+  # @param [AppConfiguration] app_configuration
+  # @param [User,nil] current_user
+  def initialize(app_configuration, current_user = nil)
+    @app_configuration = app_configuration
     @current_user = current_user
     @is_admin = !!@current_user&.admin?
   end
@@ -15,8 +15,8 @@ class UserDisplayNameService
   # Compute the name that should be displayed depending on the context.
   # Returns nil when user is nil, but logs a warning.
   #
-  # @param [User, nil] user
-  # @return [String]
+  # @param [User,nil] user
+  # @return [String,nil]
   def display_name(user)
     if user.nil?
       Rails.logger.warn({
@@ -30,8 +30,8 @@ class UserDisplayNameService
   # nil-friendly version of #display_name.
   # Return nil when 'user' is nil without logging a warning.
   #
-  # @param [User, nil] user
-  # @return [String]
+  # @param [User,nil] user
+  # @return [String,nil]
   def display_name!(user)
     return nil if user.nil?
     [user.first_name, last_name(user)].join(' ')
@@ -63,7 +63,7 @@ class UserDisplayNameService
   end
 
   def restricted?
-    !admin? && @tenant.has_feature?("abbreviated_user_names")
+    !admin? && @app_configuration.feature_activated?("abbreviated_user_names")
   end
 
   private

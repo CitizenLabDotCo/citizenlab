@@ -8,20 +8,15 @@ class AdminPublicationPolicy < ApplicationPolicy
     end
 
     def resolve
-      scope.where(publication: Pundit.policy_scope(user, ProjectFolder))
-        .or(scope.where(publication: Pundit.policy_scope(user, Project)))
+      AdminPublication
+          .publication_types
+          .map { |klass| scope.where(publication: Pundit.policy_scope(user, klass)) } # scope per publication type
+          .reduce(&:or) # joining partial scopes
     end
   end
 
   def show?
-    case record.publication_type
-    when 'Project'
-      ProjectPolicy.new(user, record.publication).show?
-    when 'ProjectFolder'
-      ProjectFolderPolicy.new(user, record.publication).show?
-    else
-      raise "No policy for #{record.publication_type}"
-    end
+    Pundit.policy(user, record.publication).show?
   end
 
   def reorder?

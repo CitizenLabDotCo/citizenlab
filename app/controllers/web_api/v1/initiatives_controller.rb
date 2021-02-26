@@ -10,6 +10,39 @@ class WebApi::V1::InitiativesController < ApplicationController
     render json: linked_json(@initiatives, WebApi::V1::InitiativeSerializer, serialization_options)
   end
 
+  # def index
+  #   @initiatives = policy_scope(Initiative).includes(:author, :assignee, :topics, :areas)
+  #   search_last_names = !UserDisplayNameService.new(AppConfiguration.instance, current_user).restricted?
+  #   @initiatives = PostsFilteringService.new.apply_common_initiative_index_filters @initiatives, params, search_last_names
+
+  #   if params[:sort].present? && !params[:search].present?
+  #     @initiatives = case params[:sort]
+  #       when 'new'
+  #         @initiatives.order_new
+  #       when '-new'
+  #         @initiatives.order_new(:asc)
+  #       when "author_name"
+  #        @ideas.order("users.first_name ASC", "users.last_name ASC")
+  #       when "-author_name"
+  #        @ideas.order("users.first_name DESC", "users.last_name DESC")
+  #       when 'upvotes_count'
+  #         @initiatives.order(upvotes_count: :asc)
+  #       when '-upvotes_count'
+  #         @initiatives.order(upvotes_count: :desc)
+  #       when 'status'
+  #         @initiatives.order_status(:asc)
+  #       when '-status'
+  #         @initiatives.order_status(:desc)
+  #       when 'random'
+  #         @initiatives.order_random
+  #       when nil
+  #         @initiatives
+  #       else
+  #         raise 'Unsupported sort method'
+  #       end
+  #   end
+  # end
+
   def index_initiative_markers
     @result = InitiativesFinder.find(params, authorize_with: current_user)
     @initiatives = @result.records
@@ -29,11 +62,34 @@ class WebApi::V1::InitiativesController < ApplicationController
     end
   end
 
+  # @result = InitiativesFinder.find(params, authorize_with: current_user)
+  # @initiatives = @result.records
+  # @counts = InitiativesCountCalculator.calculate(@initiatives, counts: %i[initiative_status_id area_id topic_id]).counts
+  # render json: @counts
   def filter_counts
-    @result = InitiativesFinder.find(params, authorize_with: current_user)
-    @initiatives = @result.records
-    @counts = InitiativesCountCalculator.calculate(@initiatives, counts: %i[initiative_status_id area_id topic_id]).counts
-    render json: @counts
+    @initiatives = policy_scope(Initiative)
+    search_last_names = !UserDisplayNameService.new(AppConfiguration.instance, current_user).restricted?
+    @initiatives = PostsFilteringService.new.apply_common_initiative_index_filters @initiatives, params, search_last_names
+    counts = {
+      'initiative_status_id' => {},
+      'area_id' => {},
+      'topic_id' => {}
+    }
+    @initiatives
+      .joins('FULL OUTER JOIN initiatives_topics ON initiatives_topics.initiative_id = initiatives.id')
+      .joins('FULL OUTER JOIN areas_initiatives ON areas_initiatives.initiative_id = initiatives.id')
+      .joins('FULL OUTER JOIN initiative_initiative_statuses ON initiative_initiative_statuses.initiative_id = initiatives.id')
+      .select('initiative_initiative_statuses.initiative_status_id, areas_initiatives.area_id, initiatives_topics.topic_id, COUNT(DISTINCT(initiatives.id)) as count')
+      .reorder(nil)  # Avoids SQL error on GROUP BY when a search string was used
+      .group('GROUPING SETS (initiative_initiative_statuses.initiative_status_id, areas_initiatives.area_id, initiatives_topics.topic_id)')
+      .each do |record|
+        %w(initiative_status_id area_id topic_id).each do |attribute|
+          id = record.send attribute
+          counts[attribute][id] = record.count if id
+        end
+      end
+    counts['total'] = @initiatives.count
+    render json: counts
   end
 
   def show

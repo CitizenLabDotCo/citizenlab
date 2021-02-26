@@ -261,6 +261,8 @@ resource "Projects" do
         parameter :default_assignee_id, "The user id of the admin or moderator that gets assigned to ideas by default. Defaults to unassigned", required: false
         parameter :poll_anonymous, "Are users associated with their answer? Defaults to false. Only applies if participation_method is 'poll'", required: false
         parameter :folder_id, "The ID of the project folder (can be set to nil for top-level projects)", required: false
+        parameter :ideas_order, 'The default order of ideas.'
+        parameter :input_term, 'The input term for posts.'
       end
       with_options scope: [:project, :admin_publication_attributes] do
         parameter :publication_status, "Describes the publication status of the project, either #{AdminPublication::PUBLICATION_STATUSES.join(",")}. Defaults to published.", required: false
@@ -304,7 +306,6 @@ resource "Projects" do
         example "Create a project in a folder" do
           folder = create(:project_folder)
           do_request folder_id: folder.id
-
           expect(response_status).to eq 201
           json_response = json_parse(response_body)
           # New folder projects are added to the top
@@ -328,6 +329,7 @@ resource "Projects" do
         let(:voting_enabled) { project.voting_enabled }
         let(:voting_method) { project.voting_method }
         let(:voting_limited_max) { project.voting_limited_max }
+        let(:ideas_order) { 'new' }
 
         example_request "Create a continuous project" do
           expect(response_status).to eq 201
@@ -346,7 +348,10 @@ resource "Projects" do
           expect(json_response.dig(:data,:attributes,:downvoting_enabled)).to eq true
           expect(json_response.dig(:data,:attributes,:voting_method)).to eq voting_method
           expect(json_response.dig(:data,:attributes,:voting_limited_max)).to eq voting_limited_max
-
+          expect(json_response.dig(:data,:attributes,:ideas_order)).to be_present
+          expect(json_response.dig(:data,:attributes,:ideas_order)).to eq 'new'
+          expect(json_response.dig(:data,:attributes,:input_term)).to be_present
+          expect(json_response.dig(:data,:attributes,:input_term)).to eq 'idea'
         end
 
         context 'when not admin' do
@@ -401,7 +406,6 @@ resource "Projects" do
       before do
         @project = create(:project, process_type: 'continuous')
       end
-
       with_options scope: :project do
         parameter :title_multiloc, "The title of the project, as a multiloc string", required: true
         parameter :description_multiloc, "The description of the project, as a multiloc HTML string", required: true
@@ -425,6 +429,7 @@ resource "Projects" do
         parameter :default_assignee_id, "The user id of the admin or moderator that gets assigned to ideas by default. Set to null to default to unassigned", required: false
         parameter :poll_anonymous, "Are users associated with their answer? Only applies if participation_method is 'poll'. Can't be changed after first answer.", required: false
         parameter :folder_id, "The ID of the project folder (can be set to nil for top-level projects)"
+        parameter :ideas_order, 'The default order of ideas.'
       end
       with_options scope: [:project, :admin_publication_attributes] do
         parameter :publication_status, "Describes the publication status of the project, either #{AdminPublication::PUBLICATION_STATUSES.join(",")}.", required: false
@@ -442,6 +447,7 @@ resource "Projects" do
       let(:presentation_mode) { 'card' }
       let(:publication_status) { 'archived' }
       let(:default_assignee_id) { create(:admin).id }
+      let(:ideas_order) { 'new' }
 
       example "Update a project" do
         old_publcation_ids = AdminPublication.ids
@@ -456,7 +462,11 @@ resource "Projects" do
         expect(json_response.dig(:data,:attributes,:description_preview_multiloc).stringify_keys).to match description_preview_multiloc
         expect(json_response.dig(:data,:attributes,:slug)).to eq "changed-title"
         expect(json_response.dig(:data,:relationships,:areas,:data).map{|d| d[:id]}).to match_array area_ids
-        expect(json_response.dig(:data,:attributes,:visible_to)).to eq 'groups'       
+        expect(json_response.dig(:data,:attributes,:visible_to)).to eq 'groups'
+        expect(json_response.dig(:data,:attributes,:ideas_order)).to be_present
+        expect(json_response.dig(:data,:attributes,:ideas_order)).to eq 'new'
+        expect(json_response.dig(:data,:attributes,:input_term)).to be_present
+        expect(json_response.dig(:data,:attributes,:input_term)).to eq 'idea'
         expect(json_response.dig(:data,:attributes,:presentation_mode)).to eq 'card'
         expect(json_response[:included].select{|inc| inc[:type] == 'admin_publication'}.first.dig(:attributes, :publication_status)).to eq 'archived'
         expect(json_response.dig(:data,:relationships,:default_assignee,:data,:id)).to eq default_assignee_id
@@ -500,18 +510,18 @@ resource "Projects" do
       end
 
       example "Disable downvoting", document: false do
-        tn = Tenant.current
-        tn.settings['disable_downvoting'] = {'allowed' => true, 'enabled' => true}
-        tn.save!
+        configuration = AppConfiguration.instance
+        configuration.settings['disable_downvoting'] = {'allowed' => true, 'enabled' => true}
+        configuration.save!
         do_request(project: {downvoting_enabled: false})
         json_response = json_parse(response_body)
-        expect(json_response.dig(:data,:attributes,:downvoting_enabled)).to eq false  
+        expect(json_response.dig(:data,:attributes,:downvoting_enabled)).to eq false
       end
 
       example "Disable downvoting when feature is not enabled", document: false do
-        tn = Tenant.current
-        tn.settings['disable_downvoting'] = {'allowed' => false, 'enabled' => false}
-        tn.save!
+        configuration = AppConfiguration.instance
+        configuration.settings['disable_downvoting'] = {'allowed' => false, 'enabled' => false}
+        configuration.save!
         do_request(project: {downvoting_enabled: false})
         expect(@project.reload.downvoting_enabled).to eq true
       end

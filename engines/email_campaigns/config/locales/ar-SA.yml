@@ -1,0 +1,553 @@
+ar:
+  email_campaigns:
+    campaign_type_description:
+      "manual": رسائل رسمية
+      "admin_rights_received": تم استلام حقوق المسؤول
+      "comment_deleted_by_admin": حذف حسابي
+      "comment_marked_as_spam": الإبلاغ عن التعليق كـ مزعج
+      "comment_on_your_comment": رد على تعليقي
+      "comment_on_your_idea": تعليق على فكرتي
+      "comment_on_your_initiative": تعليق على مُقترحي
+      "first_idea_published": نشر فكرتي الأولى
+      "idea_assigned_to_you": تعيين فكرة إلي
+      "idea_marked_as_spam": الإبلاغ عن الفكرة كـ مزعجة
+      "idea_published": نشر فكرتي
+      "initiative_assigned_to_you": تعيين مُقترح إلي
+      "initiative_marked_as_spam": الإبلاغ عن المُقترح كـ مزعج
+      "initiative_published": نشر مُقترحي
+      "invite_received": دعوة
+      "invite_reminder": تذكير بالدعوة
+      "mention_in_official_feedback": ذكر في تحديث
+      "new_comment_for_admin": تعليق جديد في مشروع أُشرف عليه
+      "new_comment_on_commented_idea": تعليق جديد على فكرة علّقت عليها
+      "new_comment_on_commented_initiative": تعليق جديد على مُقترح علّقت عليه
+      "new_comment_on_voted_idea": تعليق جديد على فكرة صوتّ لها
+      "new_comment_on_voted_initiative": تعليق جديد على مُقترح صوتّ له
+      "new_idea_for_admin": فكرة جديدة في مشروع أُشرف عليه
+      "new_initiative_for_admin": مُقترح جديد
+      "official_feedback_on_commented_idea": تحديث على فكرة علقت عليها
+      "official_feedback_on_commented_initiative": تحديث على مُقترح علقت عليه
+      "official_feedback_on_voted_idea": تحديث على فكرة صوتّ لها
+      "official_feedback_on_voted_initiative": تحديث على مُقترح صوتّ له
+      "official_feedback_on_your_idea": تحديث على فكرتي
+      "official_feedback_on_your_initiative": تحديث على مُقترحي
+      "password_reset": تمت إعادة تعيين كلمة المرور
+      "project_moderation_rights_received": تم استلام حقوق الإشراف على المشروع
+      "project_phase_started": مرحلة مشروع جديدة
+      "project_phase_upcoming": مرحلة مشروع جديدة قادمة
+      "status_change_of_commented_idea": تغيرت حالة فكرة كنت قد علقت عليها
+      "status_change_of_commented_initiative": تغيرت حالة مُقترح كنت قد علقت عليه
+      "status_change_of_voted_idea": تغيرت حالة فكرة كنت قد صوتّ لها
+      "status_change_of_voted_initiative": تغيرت حالة مُقترح كنت قد صوتّ له
+      "status_change_of_your_idea": تغيرت حالة فكرتي
+      "status_change_of_your_initiative": تغيرت حالة مُقترحي
+      "threshold_reached_for_admin": بلغ المُقترح حد التصويت المطلوب
+      "welcome": بعد التسجيل
+      "admin_digest": نظرة عامة أسبوعية للمسؤولين
+      "moderator_digest": نظرة عامة أسبوعية لمديري المشاريع
+      "assignee_digest": نظرة عامة أسبوعية على الأفكار المعيّنة
+      "user_digest": نظرة عامة أسبوعية
+      "your_proposed_initiatives_digest": نظرة عامة أسبوعية على مُقترحاتك
+    admin_campaign_type_description:
+      "manual": رسالة رسمية - جميع المستخدمين
+      "admin_rights_received": تم استلام حقوق المسؤول - المسؤولين
+      "comment_deleted_by_admin": حذف تعليقك - جميع المستخدمين
+      "comment_marked_as_spam": الإبلاغ عن التعليق كـ مزعج - المسؤولين ومديري المشاريع
+      "comment_on_your_comment": الرد على تعليقك - جميع المستخدمين
+      "comment_on_your_idea": التعليق على فكرتك - جميع المستخدمين
+      "comment_on_your_initiative": التعليق على مُقترحك - جميع المستخدمين
+      "first_idea_published": نشر فكرتك الأولى - جميع المستخدمين
+      "idea_assigned_to_you": تعيين الفكرة - المسؤولين ومديري المشاريع
+      "idea_marked_as_spam": الإبلاغ عن الفكرة كـ مزعجة - المسؤولين ومديري المشاريع
+      "idea_published": نشر فكرتك - جميع المستخدمين
+      "initiative_assigned_to_you": تعيين المُقترح - المسؤولين
+      "initiative_marked_as_spam": الإبلاغ عن المُقترح كـ مزعج - المسؤولين
+      "initiative_published": نشر مُقترحك - جميع المستخدمين
+      "invite_received": الدعوة - جميع المستخدمين
+      "invite_reminder": تذكير بالدعوة - جميع المستخدمين
+      "mention_in_comment": الذكر في تعليق - جميع المستخدمين
+      "mention_in_official_feedback": الذكر في تحديث - جميع المستخدمين
+      "new_comment_for_admin": تعليق جديد - المسؤولين ومديري المشاريع
+      "new_comment_on_commented_idea": تعليق جديد على فكرة كنتَ علّقتَ عليها - جميع المستخدمين
+      "new_comment_on_commented_initiative": تعليق جديد على مُقترح كنت قد علّقتَ عليه - جميع المستخدمين
+      "new_comment_on_voted_idea": تعليق جديد على فكرة صوتَّ لها - جميع المستخدمين
+      "new_comment_on_voted_initiative": تعليق جديد على مُقترح صوتَّ له - جميع المستخدمين
+      "new_idea_for_admin": فكرة جديدة - المسؤولين ومديري المشاريع
+      "new_initiative_for_admin": مُقترح جديد - المسؤولين
+      "official_feedback_on_commented_idea": تحديث على فكرة علقتَ عليها - جميع المستخدمين
+      "official_feedback_on_commented_initiative": تحديث على مُقترح علقتَ عليه - جميع المستخدمين
+      "official_feedback_on_voted_idea": تحديث على فكرة قد صوتّ لها - جميع المستخدمين
+      "official_feedback_on_voted_initiative": تحديث على مُقترح قد صوتّ له - جميع المستخدمين
+      "official_feedback_on_your_idea": تحديث على فكرتك - جميع المستخدمين
+      "official_feedback_on_your_initiative": تحديث على مُقترحك - جميع المستخدمين
+      "password_reset": تمت إعادة تعيين كلمة المرور - جميع المستخدمين
+      "project_moderation_rights_received": تم استلام حقوق الإشراف على المشروع - مديري المشاريع
+      "project_phase_started": مرحلة مشروع جديدة - جميع المستخدمين
+      "project_phase_upcoming": مرحلة مشروع جديدة قائمة - المسؤولين ومديري المشاريع
+      "status_change_of_commented_idea": تغيرت حالة فكرة كنت قد علقتَ عليها - جميع المستخدمين
+      "status_change_of_commented_initiative": تغيرت حالة مُقترح كنت قد علقتَ عليه - جميع المستخدمين
+      "status_change_of_voted_idea": تغيرت حالة فكرة كنت قد صوتَّ لها - جميع المستخدمين
+      "status_change_of_voted_initiative": تغيرت حالة مُقترح كنت قد صوتَّ له - جميع المستخدمين
+      "status_change_of_your_idea": تغيرت حالة فكرتك - جميع المستخدمين
+      "status_change_of_your_initiative": تغيرت حالة مُقترحك - جميع المستخدمين
+      "threshold_reached_for_admin": بلغ المُقترح حد التصويت المطلوب - المسؤولين
+      "welcome": مستخدم جديد - المسؤولين
+      "admin_digest": نظرة عامة أسبوعية - المسؤولين
+      "moderator_digest": نظرة عامة أسبوعية - مديري المشاريع
+      "assignee_digest": نظرة عامة أسبوعية على الأفكار المعيّنة - المسؤولين ومديري المشاريع
+      "user_digest": نظرة عامة أسبوعية - جميع المستخدمين
+      "your_proposed_initiatives_digest": Weekly overview of your own proposals - all users
+    footer:
+      "link_privacy_policy": "سياسة الخصوصية"
+      "link_terms_conditions": "الشروط والأحكام"
+      "link_unsubscribe": "إلغاء الاشتراك"
+      "powered_by": "مشغّل بواسطة"
+      "statement": "تم إرسال هذه الرسالة الإلكترونية بواسطة CitizenLab بالنيابة عن %{organizationName}، لأنك مستخدم مسجل لدى %{organizationLink}. يمكنك %{unsubscribeLink} إذا لم تعُد ترغب في استلام هذه الرسائل الإلكترونية في المستقبل."
+      "unsubscribe_text": "إلغاء الاشتراك"
+    comment_deleted_by_admin:
+      reason: 'سبب حذف تعليقك:'
+      cta_view: 'اعرض هذه الفكرة'
+      event_description: 'حذف %{organizationName} التعليق الذي كتبته على فكرة.'
+      main_header: 'حذف %{organizationName} تعليقك'
+      other_reason: '%{otherReason}'
+      inappropriate_reason: 'تم اعتبار تعليقك غير لائق'
+      irrelevant_reason: 'تم اعتبار تعليقك غير ذي صلة بذاك السياق'
+      no_reason: 'السبب غير محدد'
+      subject: 'تم حذف تعليقك على المنصة الخاصة بـ %{organizationName}'
+      preheader: 'تم حذف تعليقك'
+    admin_digest:
+      subject: 'تقرير المسؤول الأسبوعي الخاص بك لـ%{time}'
+      preheader: 'ملخص المسؤول لـ %{organizationName}'
+      title_your_weekly_report: '%{firstName}، تقريرك الأسبوعي'
+      text_introduction: "قمنا بتحضير قائمة تضم جميع الأفكار التي ولّدت أكبر تفاعل ونشاط على مدار الأسبوع الماضي.\nاكتشف ما يحدث على منصتك!"
+      cta_visit_the_platform: 'زُر منصتك'
+      new_users: 'المستخدمون الجُدد'
+      new_ideas: 'الأفكار الجديدة'
+      new_comments: 'التعليقات الجديدة'
+      title_activity_past_week: 'النشاط على مدار الأسبوع الماضي'
+      title_no_activity_past_week: 'لم يكن هناك نشاط في الأسبوع الماضي'
+      title_initiatives_past_week: 'المُقترحات الجديدة في الأسبوع الماضي'
+      title_successful_initiatives_past_week: 'المُقترحات التي وصلت إلى الحد المطلوب الأسبوع الماضي'
+      yesterday_by_author: 'الأمس بواسطة %{author}'
+      today_by_author: 'اليوم بواسطة %{author}'
+      x_days_ago_by_author: 'قبل %{x} يوم بواسطة %{author}'
+    admin_rights_received:
+      cta_moderate_platform: 'أشرِف على منصتك'
+      message_you_became_administrator: 'لقد مُنحت حقوق المسؤول عن منصة المشاركة الخاصة بـ %{organizationName}.'
+      preheader: 'تم منحك حقوق المسؤول عن منصة المشاركة الخاصة بـ %{organizationName}'
+      subject: 'لقد أصبحت المسؤول عن المنصة الخاصة بـ%{organizationName}'
+      text_create_participatory_process: 'بصفتك مسؤولًا، يمكنك إنشاء وتهيئة مشاريع المشاركة الجديدة. يمكنك أيضًا إضافة مراحل جديدة باستخدام الجدول الزمني. كل واحدة من هذه المراحل لديها سلوكها الخاص فيما يتعلق بنشر الأفكار، والتعليق عليها، والتصويت لها.'
+      text_moderate_analyse_input: 'بمجرد إطلاق المشاريع، ستبدأ الأفكار بالتدفق. ستستلم تقارير أسبوعية حول جميع الأنشطة الرئيسية حتى تبقى على اطلاع تام بكافة المُجريات. ستساعدك النظرة العامة على الأفكار في تنسيق المُدخلات والتعاون في معالجتها.'
+      text_platform_setup: 'بصفتك مسؤولًا ستتمكن من إعداد منصة المشاركة الخاصة بك. اختر شعارًا، وصورًا، وألوانًا، واكتب رسالة شخصية على صفحتك الرئيسية، وأرسل الدعوات، وحدّد الأمور التي ترغب في معرفتها حول المستخدمين لديك، ...'
+      title_create_participatory_process: 'صمّم عملية المشاركة'
+      title_moderate_analyse_input: 'قم بالإشراف على المُدخلات وتحليلها'
+      title_platform_setup: 'قم بإعداد منصتك'
+      title_what_can_you_do_administrator: 'ما الذي يمكنك القيام به بصفتك مسؤولًا؟'
+      title_you_became_administrator: 'لقد أصبحت المسؤول'
+    comment_marked_as_spam:
+      by_author: 'بواسطة %{authorName}'
+      commented: 'علّق %{authorName}:'
+      cta_review_comment: 'مراجعة التعليق'
+      days_ago: 'قبل %{numberOfDays} يوم'
+      event_description: 'تم الإبلاغ عن التعليق التالي والذي تم نشره على <strong>%{post}</strong>:'
+      inappropriate_content: 'التعليق غير لائق أو مسيء.'
+      preheader: 'التصرف بناءً على هذا التعليق والذي أُبلغ عنه كـ "مزعج"'
+      reported_this_because: 'قام %{reporterFirstName} بالإبلاغ لأن:'
+      subject: 'أبلغ %{organizationName}: %{firstName}%{lastName} عن هذا التعليق كـ "مزعج"'
+      title_comment_spam_report: 'أبلغ %{firstName} %{lastName} عن هذا التعليق كـ "مزعج"'
+      today: اليوم
+      wrong_content: 'التعليق غير ذي صلة.'
+      yesterday: الأمس
+    comment_on_your_initiative:
+      commented: 'كتب %{authorFirstName}:'
+      cta_reply_to: 'الرد على %{commentAuthor}'
+      event_description: 'أبدى %{authorNameFull} رد فعل على مبادرتك ''%{initiativeTitle}''. انقر الزر أدناه لمتابعة الحوار مع %{authorName}.'
+      main_header: 'علّق %{commentAuthor} على مبادرتك'
+      subject: 'لقد استلمت تعليقًا على المنصة الخاصة بـ %{organizationName}'
+      preheader: 'ترك %{authorName} تعليقًا على مبادرتك لـ %{organizationName}'
+    idea_assigned_to_you:
+      by_author: 'بواسطة %{authorName}'
+      cta_reply_to: 'قدّم ملاحظاتك لـ %{authorName}'
+      event_description_idea: 'تم تعيين فكرة إليك. قدّم ملاحظاتك من خلال كتابة تحديث رسمي أو بتغيير حالتها.'
+      main_header: '%{firstName}، لديك مهمة جديدة'
+      subject: 'لديك مهمة على المنصة الخاصة بـ %{organizationName}'
+      preheader_idea: 'تم تعيين فكرة %{authorName} إليك'
+    assignee_digest:
+      subject: 'أفكار بانتظار ملاحظاتك: %{numberIdeas}'
+      preheader: 'ملخص التعيين لـ %{organizationName}'
+      title_your_weekly_report: '%{firstName}، مُدخلات المواطنين بانتظار ملاحظاتك'
+      cta_manage_your_input: 'إدارة مُدخلاتك'
+      assigned_ideas: 'أفكار بحاجة إلى ملاحظاتك'
+      title_assignment_past_week: 'آخر الأفكار المعيّنة إليك'
+      title_no_assignment_past_week: 'لم يتم تعيين أي أفكار جديدة إليك في الأسبوع الماضي'
+      yesterday_by_author: 'الأمس بواسطة %{author}'
+      today_by_author: 'اليوم بواسطة %{author}'
+      x_days_ago_by_author: 'قبل %{x} يوم بواسطة %{author}'
+      idea_section: الأفكار
+      initiative_section: المُقترحات
+      title_initiatives_past_week: 'المُقترحات الجديدة المُعيّنة إليك'
+      title_successful_initiatives_past_week: 'المُقترحات المعيّنة إليك والتي وصلت إلى الحد المطلوب'
+    idea_marked_as_spam:
+      by_author: 'بواسطة %{authorName}'
+      cta_review_idea: 'مراجعة الفكرة'
+      report_inappropriate_offensive_content: 'أجد هذا المحتوى مسيئًا أو غير لائق.'
+      report_not_an_idea: 'هذا المحتوى ليس فكرة ولا ينتمي إلى هنا.'
+      subject: 'لديك تقرير إزعاج على المنصة الخاصة بـ %{organizationName}'
+      preheader: 'تصرف بناءً على تقرير الإزعاج هذا'
+      reported_this_because: 'قام %{reporterFirstName} بالإبلاغ لأن:'
+      title_spam_report: 'أبلغ %{firstName}%{lastName} عن إزعاج'
+    initiative_marked_as_spam:
+      by_author: 'بواسطة %{authorName}'
+      cta_review_initiative: 'Review proposal'
+      report_inappropriate_offensive_content: 'أجد هذا المحتوى مسيئًا أو غير لائق.'
+      report_not_an_initiative: 'This content is not a proposal and does not belong here.'
+      subject: 'لديك تقرير إزعاج على المنصة الخاصة بـ %{organizationName}'
+      preheader: 'تصرف بناءً على تقرير الإزعاج هذا'
+      reported_this_because: 'قام %{reporterFirstName} بالإبلاغ لأن:'
+      title_spam_report: 'أبلغ %{firstName}%{lastName} عن إزعاج'
+    initiative_assigned_to_you:
+      by_author: 'بواسطة %{authorName}'
+      cta_reply_to: 'قدّم ملاحظاتك لـ %{authorName}'
+      event_description_initiative: 'تم تعيين مُقترح إليك. قدّم ملاحظاتك من خلال كتابة تحديث رسمي أو بتغيير حالته.'
+      main_header: '%{firstName}، لديك مهمة جديدة'
+      subject: 'لديك مهمة على المنصة الخاصة بـ %{organizationName}'
+      preheader_initiative: 'تم تعيين مُقترح %{authorName} إليك'
+    invite_reminder:
+      cta_accept_invitation: 'اقبل دعوتك'
+      invitation_header: 'دعوتك قيد الانتظار'
+      preheader: 'تم إرسال دعوة لك للانضمام إلى منصة المشاركة بواسطة %{organizationName} قبل بضعة أيام.'
+      subject: 'دعوة قيد الانتظار إلى منصة المشاركة الخاصة بـ %{organizationName}'
+    invite_received:
+      added_a_message: 'كتب %{organizationName} الرسالة التالية:'
+      cta_accept_invitation: 'اقبل دعوتك'
+      invitation_header: 'أنت مدعو!'
+      invitation_header_message: 'تمت دعوتك إلى منصة المشاركة بواسطة %{organizationName}.'
+      preheader: 'تم إرسال دعوة لك للانضمام إلى منصة المشاركة بواسطة %{organizationName}.'
+      subject: 'أنت مدعو للانضمام إلى المنصة الخاصة بـ %{organizationName}'
+    initiative_published:
+      action_add_image: '%{addImageLink} لزيادة إمكانية الرؤية'
+      action_published_initiative: 'مُقترح منشور'
+      action_send_email: 'أرسل %{sendEmailLink} لجهات الاتصال لديك'
+      action_share_fb: 'دع أصدقائك يعرفون على %{fbLink}'
+      action_share_link: 'شارك عبر أي قناة عن طريق نسخ الرابط %{link}'
+      action_share_twitter: 'أبلغ متابعيك على %{twitterLink}'
+      cta_view_initiative: 'اذهب إلى مُقترحك'
+      link: رابط
+      main_header: 'لقد نشرت مُقترحًا! دعنا نبدأ بحشد الدعم.'
+      message_next_steps: '%{userFirstName}، تم نشر مُقترحك على منصة مشاركة %{organizationName} بنجاح. سيتم إخطارك عند تفاعل الناس مع مُقترحك. تعرف على الخطوات التالية التي يمكنك اتخاذها أدناه.'
+      message_get_votes: 'فلتصل إلى حد التصويت المطلوب:'
+      preheader: 'شكرًا لك على مشاركتك مُقترحك %{initiativeTitle} لـ %{organizationName}. تتمثل الخطوة التالية بحشد الدعم لمُقترحك من خلال مشاركته عبر شبكتك.'
+      send_email: البريد الإلكتروني
+      subject: 'تم نشر مُقترحك على منصة %{organizationName}'
+    mention_in_official_feedback:
+      by_author: 'بواسطة %{authorName}'
+      commented: 'كتب %{organizationName}:'
+      cta_reply_to: 'الرد على %{organizationName}'
+      event_description: 'ذكرك %{organizationName} في ملاحظات على الفكرة ''%{post}‘. انقر على الرابط أدناه للمشاركة في حوار مع %{organizationName}'
+      main_header: 'لقد تم ذكرك'
+      subject: 'ذكرك %{organizationName} في الملاحظات'
+      preheader: 'ذكرك %{commentAuthor} في ملاحظات'
+    new_comment_on_commented_idea:
+      commented: 'كتب %{commentAuthor}:'
+      cta_reply_to: 'الرد على %{commentAuthor}'
+      event_description: 'كتب %{commentAuthorFull} أيضًا تعليقًا على الفكرة ''%{ideaTitle}'' على منصة المشاركة الخاصة بـ %{organizationName}. انقر الزر أدناه لبدء حوار مع %{commentAuthor}.'
+      main_header: 'كتب %{commentAuthor} تعليقًا على نفس الفكرة'
+      subject: 'هناك تعليق آخر على الفكرة التي علّقت عليها'
+      preheader: 'ترك %{commentAuthor} أيضًا تعليقًا على فكرة لـ %{organizationName}'
+    mention_in_comment:
+      by_author: 'بواسطة %{authorName}'
+      commented: 'كتب %{commentAuthor}:'
+      cta_reply_to: 'الرد على %{commentAuthor}'
+      event_description: 'ذكرك %{commentAuthorFull} في تعليق على الفكرة ''%{post}‘. انقر على الرابط أدناه للمشاركة في حوار مع %{commentAuthor}'
+      main_header: 'يتحدث الناس عنك'
+      subject: 'ذكرك شخص على المنصة الخاصة بـ %{organizationName}'
+      preheader: 'ذكرك %{commentAuthor} في تعليق'
+    moderator_digest:
+      subject: 'تقرير مدير المشروع الأسبوعي الخاص بك لـ%{time}'
+      preheader: 'ملخص مدير المشروع لـ %{organizationName}'
+      title_your_weekly_report: '%{firstName}، تقريرك الأسبوعي'
+      text_introduction: "قمنا بتحضير قائمة تضم جميع الأفكار التي ولّدت أكبر تفاعل ونشاط على مدار الأسبوع الماضي.\nاكتشف ما يحدث في مشروعك!"
+      cta_moderate: 'أشرِف على مشروعك'
+      new_users: 'المستخدمون الجُدد'
+      new_ideas: 'الأفكار الجديدة'
+      new_comments: 'التعليقات الجديدة'
+      title_activity_past_week: 'النشاط على مدار الأسبوع الماضي'
+      title_no_activity_past_week: 'لا يوجد نشاط في الأسبوع الماضي'
+      yesterday_by_author: 'الأمس بواسطة %{author}'
+      today_by_author: 'اليوم بواسطة %{author}'
+      x_days_ago_by_author: 'قبل %{x} يوم بواسطة %{author}'
+    new_comment_on_commented_initiative:
+      commented: 'كتب %{commentAuthor}:'
+      cta_reply_to: 'الرد على %{commentAuthor}'
+      event_description: 'كتب %{commentAuthorFull} أيضًا تعليقًا على المُقترح ''%{initiativeTitle}'' على منصة المشاركة الخاصة بـ %{organizationName}. انقر الزر أدناه لبدء حوار مع %{commentAuthor}.'
+      main_header: 'كتب %{commentAuthor} تعليقًا على نفس المُقترح'
+      subject: 'هناك تعليق آخر على المُقترح الذي علّقت عليه'
+      preheader: 'ترك %{commentAuthor} أيضًا تعليقًا على مُقترح لـ %{organizationName}'
+    new_comment_for_admin:
+      by_author: 'بواسطة %{authorName}'
+      commented: 'علّق %{authorFirstName}:'
+      cta_reply_to: 'اطلع على تعليق %{commentAuthor}'
+      days_ago: 'قبل %{numberOfDays} يوم'
+      event_description: 'كتب %{authorName} تعليقًا على منصتك. لا تتردد بالانضمام إلى النقاش وإبقاء الحوار مستمرًا!'
+      main_header: '%{firstName}، تم نشر تعليق جديد على منصتك'
+      subject: 'هناك تعليق جديد على منصة %{organizationName}'
+      preheader: 'ترك %{authorName} تعليقًا'
+      today: اليوم
+      yesterday: الأمس
+    comment_on_your_idea:
+      by_author: 'بواسطة %{authorName}'
+      commented: 'كتب %{authorFirstName}:'
+      cta_reply_to: 'الرد على %{commentAuthor}'
+      event_description: 'أبدى %{authorNameFull} رد فعل على فكرتك ''%{ideaTitle}''. انقر الزر أدناه لمتابعة الحوار مع %{authorName}.'
+      main_header: 'علّق %{authorName} على فكرتك'
+      subject: 'لقد استلمت تعليقًا على المنصة الخاصة بـ %{organizationName}'
+      preheader: 'ترك %{authorName} تعليقًا على فكرتك لـ %{organizationName}'
+    new_comment_on_voted_initiative:
+      commented: 'كتب %{commentAuthor}:'
+      cta_reply_to: 'اعرض هذا المُقترح'
+      event_description: 'علق %{commentAuthor} على المُقترح ''%{initiativeTitle}'' والتي قمت بالتصويت لها. انضم للنقاش على منصة %{organizationName}!'
+      main_header: '%{firstName}، هناك تعليق جديد على المُقترح التي صوّت له'
+      subject: 'هناك تعليق جديد على المُقترح التي صوّت له'
+      preheader: 'ترك %{commentAuthor} تعليقًا على المُقترح الذي قمت بالتصويت له على منصة %{organizationName}'
+    new_comment_on_voted_idea:
+      commented: 'علّق %{commentAuthor}:'
+      cta_reply_to: 'الرد على %{commentAuthor}'
+      days_ago: 'قبل %{numberOfDays} يوم'
+      event_description: 'علق %{commentAuthor} على الفكرة ''%{ideaTitle}'' والتي قمت بالتصويت لها. انضم للنقاش على منصة %{organizationName}!'
+      main_header: '%{firstName}، هناك تعليق جديد على الفكرة التي صوّت لصالحها'
+      subject: 'هناك تعليق جديد على الفكرة التي صوّت لصالحها'
+      preheader: 'ترك %{commentAuthor} تعليقًا على الفكرة التي قمت بالتصويت لها على منصة %{organizationName}'
+      today: اليوم
+      yesterday: الأمس
+    new_initiative_for_admin:
+      by_author: 'بواسطة %{authorName}'
+      commented: 'كتب %{authorFirstName}:'
+      cta_reply_to: 'قدّم ملاحظاتك لـ %{authorName}'
+      event_description: 'قام %{authorName} بنشر مُقترح جديد على منصتك. تعرف عليه الآن، وقدّم ملاحظاتك أو غيّر حالته!'
+      main_header: '%{firstName}، تم نشر مُقترح جديد على منصتك'
+      subject: 'قام شخص بنشر مُقترح جديد على منصة %{organizationName}'
+      preheader: 'قام %{authorName} بنشر مُقترح جديد على منصتك'
+    new_idea_for_admin:
+      by_author: 'بواسطة %{authorName}'
+      commented: 'علّق %{authorFirstName}:'
+      cta_reply_to: 'قدّم ملاحظاتك لـ %{authorName}'
+      days_ago: 'قبل %{numberOfDays} يوم'
+      event_description: 'قام %{authorName} بنشر فكرة جديدة على منصتك. تعرف عليها الآن، وقدّم ملاحطاتك أو غيّر حالتها!'
+      main_header: '%{firstName}، تم نشر فكرة جديدة على منصتك'
+      subject: 'قام شخص بنشر فكرة جديدة على منصة %{organizationName}'
+      preheader: 'قام %{authorName} بنشر فكرة جديدة على منصتك'
+      today: اليوم
+      yesterday: الأمس
+    comment_on_your_comment:
+      cta_reply_to: 'الرد على %{firstName}'
+      event_description: 'كتب %{authorNameFull} ردًا على تعليقك على ''%{post}'' على منصة المشاركة. انقر الزر أدناه لمتابعة الحوار مع %{authorName}.'
+      subject: 'لديك رد على تعليقك على منصة %{organizationName}'
+      main_header: 'ردّ %{authorName} على تعليقك'
+      preheader: 'رد %{authorName} على تعليقك على منصة %{organizationName}'
+      replied: 'كتب %{authorFirstName}:'
+    official_feedback_on_commented_initiative:
+      by_author: 'بواسطة %{authorName}'
+      updated: 'كتب %{officialName}:'
+      cta_view: 'اذهب إلى هذا المُقترح'
+      event_description: 'أعطى %{officialName} تحديثًا على المُقترح ''%{initiativeTitle}''. انقر الزر أدناه لمتابعة الحوار مع %{organizationName}.'
+      main_header: 'هناك تحديث على مُقترح قد علقت عليه'
+      subject: 'تلقى مُقترح كنت قد علقت عليه تحديثًا رسميًا على المنصة الخاصة بـ %{organizationName}'
+      preheader: 'ترك %{officialName} تحديثًا رسميًا حول مُقترح علقت عليه'
+    official_feedback_on_voted_idea:
+      by_author: 'بواسطة %{authorName}'
+      updated: 'كتب %{officialName}:'
+      cta_view: 'اذهب إلى هذه الفكرة'
+      event_description: 'أعطى %{officialName} تحديثًا على الفكرة ''%{ideaTitle}''. انقر الزر أدناه لمتابعة الحوار مع %{officialName}.'
+      subject: 'تلقت فكرة كنت قد صوتّ لها تحديثًا رسميًا على المنصة الخاصة بـ %{organizationName}'
+      preheader: 'ترك %{officialName} تحديثًا حول فكرة قد صوتّ لها'
+      main_header: ""
+    official_feedback_on_commented_idea:
+      by_author: 'بواسطة %{authorName}'
+      updated: 'كتب %{officialName}:'
+      cta_view: 'اذهب إلى الفكرة'
+      event_description: 'أعطى %{officialName} تحديثًا على الفكرة ''%{ideaTitle}''. انقر الزر أدناه لمتابعة الحوار مع %{officialName}.'
+      main_header: 'هناك تحديث على فكرة قد علقت عليها'
+      subject: 'تلقت فكرة كنت قد علقت عليها تحديثًا رسميًا على المنصة الخاصة بـ %{organizationName}'
+      preheader: 'ترك %{officialName} تحديثًا رسميًا حول فكرة علقت عليها'
+    official_feedback_on_your_idea:
+      by_author: 'بواسطة %{authorName}'
+      updated: 'كتب %{officialName}:'
+      cta_view: 'اذهب إلى فكرتك'
+      event_description: 'أعطى %{officialName} تحديثًا على فكرتك ''%{ideaTitle}''. انقر الزر أدناه لمتابعة الحوار مع %{officialName}.'
+      main_header: 'استلمت تحديثًا من %{organizationName}'
+      subject: 'استلمت تحديثًا من %{organizationName}'
+      preheader: 'ترك %{officialName} تحديثًا رسميًا حول فكرتك'
+    official_feedback_on_voted_initiative:
+      by_author: 'بواسطة %{authorName}'
+      updated: 'كتب %{officialName}:'
+      cta_view: 'اذهب إلى هذا المُقترح'
+      event_description: 'أعطى %{officialName} تحديثًا على المُقترح ''%{initiativeTitle}''. انقر الزر أدناه لمتابعة الحوار مع %{organizationName}.'
+      main_header: 'هناك تحديث على مُقترح قد صوتّ له'
+      subject: 'تلقى مُقترح كنت قد صوتّ له تحديثًا رسميًا على المنصة الخاصة بـ %{organizationName}'
+      preheader: 'ترك %{officialName} تحديثًا رسميًا حول مُقترح كنت قد صوتّ له'
+    official_feedback_on_your_initiative:
+      updated: 'كتب %{officialName}:'
+      cta_view: 'اذهب إلى مُقترحك'
+      event_description: 'أعطى %{officialName} تحديثًا على مُقترحك''%{initiativeTitle}''. انقر الزر أدناه لمتابعة الحوار مع %{organizationName}.'
+      main_header: 'استلمت تحديثًا من %{officialName}'
+      subject: 'لقد استلمت تحديثًا رسميًا على المنصة الخاصة بـ %{organizationName}'
+      preheader: 'ترك %{officialName} تحديثًا رسميًا على مُقترحك'
+    project_moderation_rights_received:
+      cta_moderate_project: 'أشرِف على هذا المشروع'
+      message_you_became_moderator: 'لقد جعلك مسؤول منصة المشاركة الخاصة بـ %{organizationName} للتوّ "مدير مشروع" للمشروع التالي:'
+      no_ideas: 'لا توجد أفكار بعد'
+      preheader: 'لقد جعلك مسؤول منصة المشاركة الخاصة بـ %{organizationName} للتوّ "مدير مشروع" للمشروع التالي'
+      subject: 'لقد أصبحت مدير مشروع على المنصة الخاصة بـ%{organizationName}'
+      text_design_participatory_process: 'بصفتك مدير مشروع، تستطيع تهيئة كيفية تفاعل المستخدمين داخل مشروعك. يمكنك إضافة مراحل جديدة باستخدام الجدول الزمني. ويمكن أن يكون لكل مرحلة من هذه المراحل سلوكها الخاص فيما يتعلق بنشر الفكرة والتعليق عليها والتصويت لها.'
+      text_moderate_analyse_input: 'بمجرد إطلاق المشروع، ستبدأ الأفكار بالتدفق. ستستلم تقارير أسبوعية حول جميع الأنشطة الرئيسية حتى تبقى على اطلاع تام بكافة المُجريات. ستساعدك النظرة العامة على الأفكار في طريقة عرض "مدير المشروع" على فهم الأفكار التي حصلت على أكبر عدد من الأصوات المؤيدة والمعارضة.'
+      text_share_project_information: 'لرفع جودة الأفكار التي تحصل عليها، فمن الضروري مشاركة المعلومات الكافية: كإضافة وصف شامل للمشروع، وإرفاق الصور (بما في ذلك الرسومات والخطط)، والإعلان عن جميع الأحداث الجارية ذات الصلة. وتذكر: المعلومات الجيدة تسبق المشاركة الجيدة!'
+      title_design_participatory_process: 'صمّم عملية المشاركة'
+      title_moderate_analyse_input: 'قم بالإشراف على المُدخلات وتحليلها'
+      title_share_project_information: 'قدّم معلومات المشروع'
+      title_what_can_you_do_moderator: 'ما الذي يمكنك القيام به بصفتك مدير المشروع؟'
+      title_you_became_moderator: 'لقد أصبحت مدير المشروع'
+      x_ideas: '%{numberOfIdeas} أفكار'
+    password_reset:
+      cta_reset_password: 'إعادة تعيين كلمة المرور'
+      message_you_reset_your_password: 'لقد طلبت إعادة تعيين كلمة المرور لمنصة مشاركة %{organizationName}. انقر فوق الزر أدناه لاختيار كلمة مرور جديدة وآمنة. تنتهي صلاحية الرابط خلال ساعة واحدة.'
+      preheader: 'هذا هو الرابط الذي طلبته لإعادة تعيين كلمة المرور الخاصة بك'
+      subject: '%{organizationName}: إعادة تعيين كلمة المرور'
+      title_reset_your_password: 'اختر كلمة مرور جديدة'
+    project_phase_started:
+      cta_view_phase: 'اكتشف هذه المرحلة الجديدة'
+      event_description: 'دخل هذا المشروع مرحلة جديدة على المنصة الخاصة بـ %{organizationName}. انقر على الرابط أدناه لمعرفة المزيد!'
+      main_header: 'بدأت مرحلة جديدة للمشروع ''%{projectName}'''
+      new_phase: 'دخل هذا المشروع المرحلة ''%{phaseTitle}'''
+      subject: 'دخل %{projectName} مرحلة جديدة'
+      preheader: 'بدأت مرحلة جديدة لـ %{projectName}'
+    project_phase_upcoming:
+      cta_view_phase: 'قم بإعداد هذه المرحلة الجديدة'
+      event_description: 'سيدخل المشروع ''%{projectName}'' مرحلة جديدة عمّا قريب. تأكد من إعداد كل شيء في هذه المرحلة: هل الوصف كافٍ؟ هل تم نقل الأفكار المحدّدة إلى هذه المرحلة؟ هل ترغب في إعلام المواطنين بتفاصيل هذه المرحلة عبر حملة بريد إلكتروني مخصصة؟'
+      main_header: '%{firstName}، سيدخل أحد المشاريع مرحلة جديدة عمّا قريب'
+      new_phase: 'سيدخل المشروع المرحلة ''%{phaseTitle}'''
+      subject: 'قم بإعداد كل شيء للمرحلة الجديدة الخاصة بـ %{projectName}'
+      preheader: 'قريبًا ستبدأ مرحلة جديدة لـ %{projectName}'
+    status_change_of_commented_idea:
+      status_change: 'الحالة الجديدة لهذه الفكرة هي ''%{ideaStatus}'''
+      cta_view_idea: 'اذهب إلى هذه الفكرة'
+      event_description: 'قامت %{organizationName} بتحديث حالة الفكرة ''%{ideaTitle}'' على منصة المشاركة الرقمية الخاصة بها.'
+      main_header: 'تم تغيير حالة فكرة كنت قد علقت عليها'
+      subject: 'تغيرت حالة فكرة قمت بالتعليق عليها'
+      preheader: 'قامت %{organizationName} بتغيير حالة فكرة قد علقت عليها'
+    status_change_of_your_idea:
+      status_change: 'الحالة الجديدة لفكرتك هي ''%{ideaStatus}'''
+      cta_view_idea: 'اذهب إلى فكرتك'
+      event_description: 'قامت %{organizationName} بتحديث حالة فكرتك ''%{ideaTitle}'' على منصة المشاركة الرقمية الخاصة بها.'
+      main_header: 'لدى فكرتك حالة جديدة'
+      subject: 'تم تغيير حالة فكرتك'
+      preheader: 'قامت %{organizationName} بتغيير حالة فكرتك'
+    status_change_of_voted_idea:
+      status_change: 'الحالة الجديدة لهذه الفكرة هي ''%{ideaStatus}'''
+      cta_view_idea: 'اذهب إلى هذه الفكرة'
+      event_description: 'قامت %{organizationName} بتحديث حالة الفكرة ''%{ideaTitle}'' على منصة المشاركة الرقمية الخاصة بها.'
+      main_header: 'تم تغيير حالة فكرة كنت قد صوتّ لها'
+      subject: 'تغيرت حالة فكرة قمت بالتصويت لها'
+      preheader: 'قامت %{organizationName} بتغيير حالة فكرة قد صوتّ لها'
+    status_change_of_voted_initiative:
+      status_change: 'الحالة الجديدة لهذا المُقترح هي ''%{initiativeStatus}'''
+      cta_view_initiative: 'اذهب إلى هذا المُقترح'
+      event_description: 'تم تحديث حالة المُقترح ''%{initiativeTitle}'' على منصة المشاركة الرقمية الخاصة بـ %{organizationName}.'
+      main_header: 'تم تغيير حالة مُقترح كنت قد صوتّ له'
+      subject: 'تغيرت حالة مُقترح قمت بالتصويت له'
+      preheader: 'تغيرت حالة مُقترح قمت بالتصويت له'
+    status_change_of_commented_initiative:
+      status_change: 'الحالة الجديدة لهذا المُقترح هي ''%{initiativeStatus}'''
+      cta_view_initiative: 'اذهب إلى هذا المُقترح'
+      event_description: 'تم تحديث حالة المُقترح ''%{initiativeTitle}'' على منصة المشاركة الرقمية الخاصة بـ %{organizationName}.'
+      main_header: 'تم تغيير حالة مُقترح كنت قد علقت عليه'
+      subject: 'تغيرت حالة مُقترح قمت بالتعليق عليه'
+      preheader: 'تغيرت حالة مُقترح قمت بالتعليق عليه'
+    status_change_of_your_initiative:
+      status_change: 'الحالة الجديدة لمُقترحك هي ''%{initiativeStatus}'''
+      cta_view_initiative: 'اذهب إلى مُقترحك'
+      event_description: 'تم تحديث حالة المُقترح ''%{initiativeTitle}'' على منصة المشاركة الرقمية الخاصة بـ %{organizationName}.'
+      main_header: 'لدى مُقترحك حالة جديدة'
+      subject: 'تغيرت حالة مُقترحك'
+      preheader: 'تغيرت حالة مُقترحك'
+    user_digest:
+      subject: "تحديث أسبوعي يتعلق بمنصة المشاركة الخاصة بـ %{organizationName}"
+      commented: "علّق %{authorFirstName}:"
+      preheader: "نظرة عامة أسبوعية على %{organizationName}"
+      title_your_weekly_report: "تعرف على ما حصل في الأسبوع الماضي"
+      intro_text: "ها هو ملخص لما حدث على منصة المشاركة لـ %{organizationName}."
+      cta_go_to_the_platform: "اذهب إلى المنصة"
+      title_no_activity_past_week: "لا يوجد نشاط في الأسبوع الماضي"
+      title_proposals: "بدأت المقترحات"
+      proposals_started_text: "المقترحات هي عبارة عن أفكار تحتاج إلى اكتساب قوة الدفع والدعم من الآخرين (أشخاص مثلك!) من أجل المضي قدماً. وفيما يلي قائمة من المقترحات التي تم طرحها الأسبوع الماضي. انقر فوق أي منها لإلقاء نظرة وقدِّم دعمك وملاحظاتك!"
+      title_successful_proposals: "المقترحات التي بلغت العتبة"
+      successful_proposals_text: "لقد حصلت هذه المقترحات على دعمٍ كافٍ للانتقال إلى المرحلة التالية! انقر فوق المقترح لمعرفة المزيد حول ماذا سيحدث بعد ذلك."
+      today_by_author: "اليوم بواسطة %{author}"
+      yesterday_by_author: "الأمس بواسطة %{author}"
+      x_days_ago_by_author: "قبل %{x} يوم بواسطة %{author}"
+      trending_ideas: "أفكار شائعة"
+      trending_ideas_text: "هل أنت مهتم بما يحدث على المنصة؟ إليك ثلاث أكثر الأفكار شيوعاً وما يقوله الناس عنها."
+      no_notifications: "لا توجد إشعارات"
+      one_notification: "إشعار واحد"
+      multiple_notifications: "%{notifCount} إشعارات "
+      no_unread_notifications: "لا يوجد لديك أي إشعارات غير مقروءة. ومع ذلك، ندعوك لزيارة المنصة لاكتشاف ما يحدث."
+      unread_notifications: "لديك إشعارات غير مقروءة. ندعوك لزيارة المنصة لاكتشاف ما يحدث."
+    threshold_reached_for_admin:
+      by_author: 'بواسطة %{authorName}'
+      cta_process_initiative: 'خذ هذه المبادرة إلى الخطوات التالية'
+      event_description: 'وصلت إحدى المبادرات إلى حد التصويت المطلوب على منصتك. انقر الزر أدناه للانتقال إلى الخطوات التالية!'
+      main_header: 'بلغت المبادرة حد التصويت المطلوب!'
+      subject: 'بلغت المبادرة حد التصويت المطلوب على منصتك'
+      preheader: 'تأكد من اتخاذ الخطوات التالية'
+    first_idea_published:
+      action_add_image: '%{addImageLink} لزيادة إمكانية الرؤية'
+      action_comment: '%{textComment} على أفكار موجودة'
+      action_published_idea: 'فكرة منشورة'
+      action_send_email: 'أرسل %{sendEmailLink} لجهات الاتصال لديك'
+      action_share_fb: 'دع أصدقائك يعرفون على %{fbLink}'
+      action_share_link: 'شارك عبر أي قناة عن طريق نسخ الرابط %{link}'
+      action_share_twitter: 'أبلغ متابعيك على %{twitterLink}'
+      add_image: 'أضِف صورة'
+      cta_view_idea: 'اذهب إلى فكرتك'
+      event_description: '%{firstName}، تهانينا على أول فكرة لك على منصة المشاركة الخاصة بـ %{organizationName}. سيتم إخطارك عند تفاعل الناس مع فكرتك. تعرف على الخطوات التالية التي يمكنك اتخاذها أدناه.'
+      link: رابط
+      main_header: '%{firstName}، لقد نشرت فكرتك الأولى!'
+      message_get_votes: 'فلتصل بفكرتك إلى المزيد من الأشخاص:'
+      preheader: '%{firstName}، تهانينا على نشر أولى أفكارك على المنصة الخاصة بـ %{organizationName}. الآن قم بحشد الدعم لفكرتك'
+      see_you: 'نراك قريبًا على المنصة!'
+      send_email: البريد الإلكتروني
+      subject: 'فكرتك الأولى على المنصة الخاصة بـ %{organizationName}'
+    welcome:
+      cta_join_platform: 'استكشف المنصة'
+      subject: 'مرحبًا بك في المنصة الخاصة بـ %{organizationName}'
+      main_header: مرحبًا!
+      message_welcome: 'تهانينا لك، لقد قمت بالتسجيل في منصة المشاركة الخاصة بـ %{organizationName} بنجاح. يمكنك الآن استكشاف المنصة وجعل صوتك مسموعًا. يمكنك أيضًا إضافة صورة لملف التعريف ووصف قصير لتعريف الآخرين بك.'
+      preheader: 'إليك ما يمكنك القيام به على المنصة الخاصة بـ %{organizationName}'
+    idea_published:
+      action_add_image: '%{addImageLink} لزيادة إمكانية الرؤية'
+      action_published_idea: 'فكرة منشورة'
+      action_send_email: 'أرسل %{sendEmailLink} لجهات الاتصال لديك'
+      action_share_fb: 'دع أصدقائك يعرفون على %{fbLink}'
+      action_share_link: 'شارك عبر أي قناة عن طريق نسخ الرابط %{link}'
+      action_share_twitter: 'أبلغ متابعيك على %{twitterLink}'
+      add_image: 'أضِف صورة'
+      cta_view_idea: 'اذهب إلى فكرتك'
+      event_description: '%{firstName}، تم نشر فكرتك على منصة مشاركة %{organizationName} بنجاح. سيتم إخطارك عند تفاعل الناس مع فكرتك. تعرف على الخطوات التالية التي يمكنك اتخاذها أدناه.'
+      link: رابط
+      main_header: 'لقد نشرت فكرة! دعنا نحرص على قراءة الآخرين لها.'
+      message_get_votes: 'فلتصل بفكرتك إلى المزيد من الأشخاص:'
+      preheader: '%{firstName}، تهانينا على نشر فكرتك على المنصة الخاصة بـ %{organizationName}. الآن قم بحشد الدعم.'
+      see_you: 'نراك قريبًا على المنصة!'
+      send_email: البريد الإلكتروني
+      subject: 'فكرتك على المنصة الخاصة بـ %{organizationName}'
+      message_next_steps: ""
+    your_proposed_initiatives_digest:
+      subject: 'تحديث أسبوعي على مُقترحك'
+      preheader: 'ما الذي حدث لمُقترحك في الأسبوع الماضي؟'
+      title_your_weekly_report: 'كيف كان أداء مُقترحك؟'
+      text_introduction: 'اطلع على الإحصائيات الرئيسية أدناه، وانتقل إلى صفحة المُقترح الخاص بك لاتخاذ الإجراءات المناسبة والحصول على الدعم الكافي في الوقت المناسب.'
+      cta_see_your_initiative: 'اذهب إلى مُقترحك'
+      total_votes: 'إجمالي الأصوات'
+      new_votes: 'الأصوات الجديدة'
+      remaining_votes: 'الأصوات المتبقية'
+      remaining_days: 'الأيام المتبقية'
+

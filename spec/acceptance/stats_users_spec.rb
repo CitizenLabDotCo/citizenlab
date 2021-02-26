@@ -33,7 +33,7 @@ resource "Stats - Users" do
     header 'Authorization', "Bearer #{token}"
     header "Content-Type", "application/json"
     Tenant.current.update!(created_at: now - 2.year)
-    @timezone = Tenant.settings('core','timezone')
+    @timezone = AppConfiguration.instance.settings('core','timezone')
   end
 
   describe "not depending on custom fields" do

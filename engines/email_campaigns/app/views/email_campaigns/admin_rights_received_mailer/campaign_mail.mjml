@@ -1,0 +1,21 @@
+<!-- What can you do as an administrator? -->
+<mj-section
+  padding="0 30px">
+  <mj-column
+    padding="50px 30px"
+    background-color="#F2F6F8"
+    border-radius="5px">
+    <mj-text>
+      <h2 style="font-size: 18px; margin-bottom: 40px"><%= format_message('title_what_can_you_do_administrator') %></h2>
+      <h3 style="font-size: 15px;"><%= format_message('title_platform_setup') %></h3>
+      <p><%= format_message('text_platform_setup') %></p>
+      <h3 style="font-size: 15px;"><%= format_message('title_create_participatory_process') %></h3>
+      <p><%= format_message('text_create_participatory_process') %></p>
+      <h3 style="font-size: 15px;"><%= format_message('title_moderate_analyse_input') %></h3>
+      <p><%= format_message('text_moderate_analyse_input') %></p>
+    </mj-text>
+    
+  </mj-column>
+</mj-section>
+
+<%= render partial: 'application/cta_button', locals: { href: home_url, message: format_message('cta_moderate_platform') } %>

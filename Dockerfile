@@ -25,6 +25,12 @@ RUN apt-get update && apt-get install -qq -y --no-install-recommends \
 # packages to ensure that we can compile assets (nodejs) and
 # communicate with PostgreSQL (libpq-dev).
 
+RUN apt-get -y install curl
+RUN curl -sL https://deb.nodesource.com/setup_15.x  | bash -
+RUN apt-get -y install nodejs
+RUN npm install -g mjml@4.4.1
+# Install MJML parser required by email engine.
+
 ENV INSTALL_PATH /cl2_back
 # The name of the application is my_dockerized_app and while there
 # is no standard on where your project should live inside of the Docker
@@ -51,7 +57,6 @@ WORKDIR $INSTALL_PATH
 
 COPY Gemfile Gemfile.lock ./
 COPY engines ./engines
-
 # This is going to copy in the Gemfile and Gemfile.lock from our
 # work station at a path relative to the Dockerfile to the
 # my_dockerized_app/ path inside of the Docker image.
@@ -70,10 +75,7 @@ COPY engines ./engines
 # change, it won't re-run bundle install unless a gem changed.
 
 RUN bundle install
-# We want binstubs to be available so we can directly call sidekiq and
-# potentially other binaries as command overrides without depending on
-# bundle exec.
-# This is mainly due for production compatibility assurance.
+# Install gems with Bundler.
 
 COPY . .
 # This might look a bit alien but it's copying in everything from

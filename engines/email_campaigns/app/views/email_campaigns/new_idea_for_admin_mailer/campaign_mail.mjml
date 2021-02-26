@@ -1,0 +1,30 @@
+<% @diff_days = (Time.zone.today - event.post_published_at.to_date).to_i %>
+
+<!-- Idea description box -->
+<mj-section padding="0 25px 25px"
+            background-color="#fff"
+            border-radius="5px"
+            text-align="left">
+  <mj-column border="1px solid #eaeaea" padding="20px 25px" background-color="#fff" border-radius="5px">
+    <mj-text>
+      <h2 style="font-size: 18px; margin-top: 10px; margin-bottom: 10px;">
+        <%= localize_for_recipient(event.post_title_multiloc) %>
+      </h2>
+      <p style="margin-top: 10px; color: #84939E;">
+        <% if @diff_days < 1 %>
+          <%= format_message('today') %>
+        <% elsif @diff_days < 2 %>
+          <%= format_message('yesterday') %>
+        <% else %>
+          <%= format_message('days_ago', values: {
+            numberOfDays: @diff_days.to_s
+          }) %>
+        <% end %>
+        <%= format_message('by_author', values: {authorName: event.post_author_name }) %>
+      </p>
+    </mj-text>
+  </mj-column>
+</mj-section>
+
+
+<%= render partial: 'application/cta_button', locals: { href: event.post_url, message: format_message('cta_reply_to', values: { authorName: event.post_author_name }) } %>

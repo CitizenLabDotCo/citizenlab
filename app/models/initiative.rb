@@ -1,4 +1,5 @@
 class Initiative < ApplicationRecord
+  include MachineTranslations::InitiativeDecorator
   include Post
   include Moderatable
 
@@ -80,16 +81,14 @@ class Initiative < ApplicationRecord
       .where('initiative_statuses.code = ?', 'proposed')
   }
 
-  def votes_needed tenant=Tenant.current
-    [tenant.settings.dig('initiatives', 'voting_threshold') - upvotes_count, 0].max
+
+  def votes_needed(configuration = AppConfiguration.instance)
+    [configuration.settings('initiatives', 'voting_threshold') - upvotes_count, 0].max
   end
 
-  def expires_at tenant=Tenant.current
-    if published?
-      published_at + tenant.settings.dig('initiatives', 'days_limit').days
-    else
-      nil
-    end
+  def expires_at(configuration = AppConfiguration.instance)
+    return nil unless published?
+    published_at + configuration.settings('initiatives', 'days_limit').days
   end
 
   def threshold_reached_at
@@ -107,7 +106,7 @@ class Initiative < ApplicationRecord
       self.body_multiloc,
       %i{title alignment list decoration link image video}
     )
-    self.body_multiloc = service.remove_empty_paragraphs_multiloc(self.body_multiloc)
+    self.body_multiloc = service.remove_multiloc_empty_trailing_tags(self.body_multiloc)
     self.body_multiloc = service.linkify_multiloc(self.body_multiloc)
   end
 

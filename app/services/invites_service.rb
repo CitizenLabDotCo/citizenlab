@@ -62,6 +62,10 @@ class InvitesService
     @custom_field_schema = CustomFieldService.new.fields_to_json_schema(CustomField.with_resource_type('User'))
   end
 
+  def generate_token
+    ([*('a'..'z'),*('0'..'9')]).sample(9).join
+  end
+
   def bulk_create_xlsx file, default_params={}, inviter=nil
 
     map_rows = []
@@ -108,7 +112,7 @@ class InvitesService
         email: 'someuser@somedomain.com',
         first_name: 'John',
         last_name: 'Johnson',
-        language: Tenant.settings('core', 'locales').first,
+        language: AppConfiguration.instance.settings('core', 'locales').first,
         groups: MultilocService.new.t(Group.first&.title_multiloc),
         admin: false,
       }
@@ -146,6 +150,10 @@ class InvitesService
         hash['locale'] = hash['language']
       end
       hash.delete('language')
+
+      if hash['send_invite_email'].present?
+        hash['send_invite_email'] = to_boolean(hash['send_invite_email'])
+      end
 
       coerce_custom_field_types(hash)
     end
@@ -254,7 +262,7 @@ class InvitesService
       email: params["email"],
       first_name: params["first_name"], 
       last_name: params["last_name"], 
-      locale: params["locale"] || default_params["locale"] || Tenant.settings('core', 'locales').first, 
+      locale: params["locale"] || default_params["locale"] || AppConfiguration.instance.settings('core', 'locales').first,
       manual_group_ids: params["group_ids"] || default_params["group_ids"] || [],
       roles: params["roles"] || default_params["roles"] || [],
       custom_field_values: params.slice(*custom_field_keys),
@@ -265,7 +273,7 @@ class InvitesService
       invitee: invitee,
       inviter: inviter,
       invite_text: params["invite_text"] || default_params["invite_text"],
-      send_invite_email: params[:send_invite_email].nil? ? true : params[:send_invite_email]
+      send_invite_email: params["send_invite_email"].nil? ? true  : params["send_invite_email"]
     )
   end
 

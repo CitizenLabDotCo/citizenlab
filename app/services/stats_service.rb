@@ -4,7 +4,7 @@ class StatsService
     resource.send("group_by_#{interval}",
       field, 
       range: start_at..end_at,
-      time_zone: Tenant.settings('core','timezone')
+      time_zone: AppConfiguration.instance.settings('core','timezone')
     ).count
   end
 

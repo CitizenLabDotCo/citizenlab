@@ -1,0 +1,9 @@
+<mj-section padding="20px 25px 0">
+  <mj-column>
+    <mj-raw>
+      <%= link_to home_url do %>
+        <%= image_tag logo_url, alt: 'Organization logo' %>
+      <% end %>
+    </mj-raw>
+  </mj-column>
+</mj-section>

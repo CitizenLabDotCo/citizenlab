@@ -23,7 +23,7 @@ class MentionService
   # @return [String] text with plain mentions replaced by mention tags.
   def add_span_around text, user
     mention = user_to_mention(user)
-    name_service = UserDisplayNameService.new(Tenant.current)
+    name_service = UserDisplayNameService.new(AppConfiguration.instance)
     text.gsub(
         /#{mention}/i,
         "<span class=\"cl-mention-user\" data-user-id=\"#{user.id}\" data-user-slug=\"#{user.slug}\">@#{name_service.display_name(user)}</span>"

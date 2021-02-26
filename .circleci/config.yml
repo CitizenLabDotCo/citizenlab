@@ -50,9 +50,10 @@ jobs:
           docker login -u $DOCKER_USER -p $DOCKER_PASS
           docker push citizenlabdotco/cl2-back:$CIRCLE_SHA1
 
+
   test:
     resource_class: small
-    executor: 
+    executor:
       name: cl2-back
       image-tag: $CIRCLE_SHA1
     working_directory: /cl2_back
@@ -73,9 +74,18 @@ jobs:
       - store_test_results:
           path: spec/reports
 
+  license-check:
+    resource_class: small
+    executor:
+      name: cl2-back
+      image-tag: $CIRCLE_SHA1
+    working_directory: /cl2_back
+    steps:
+      - run: license_finder
+
   slow-tests:
     resource_class: small
-    executor: 
+    executor:
       name: cl2-back
       image-tag: $CIRCLE_SHA1
     working_directory: /cl2_back
@@ -132,7 +142,7 @@ jobs:
       - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
       - run: docker pull citizenlabdotco/cl2-back:$CIRCLE_SHA1
       - run: docker tag citizenlabdotco/cl2-back:$CIRCLE_SHA1 citizenlabdotco/cl2-back:$CIRCLE_BRANCH
-      - deploy: 
+      - deploy:
           command: docker push citizenlabdotco/cl2-back:$CIRCLE_BRANCH
 
   deploy-to-swarm:
@@ -156,7 +166,7 @@ jobs:
         default: .env-production
     steps:
       - run:
-          command: ssh << parameters.ssh_user >>@<< parameters.ssh_host >> -o StrictHostKeyChecking=no "docker pull citizenlabdotco/cl2-back:$CIRCLE_BRANCH && docker run --env-file cl2-deployment/<< parameters.env_file >> citizenlabdotco/cl2-back:$CIRCLE_BRANCH rake db:migrate cl2back:clean_tenant_settings email_campaigns:assure_campaign_records fix_existing_tenants:update_permissions cl2back:clear_cache_store"
+          command: ssh << parameters.ssh_user >>@<< parameters.ssh_host >> -o StrictHostKeyChecking=no "docker pull citizenlabdotco/cl2-back:$CIRCLE_BRANCH && docker run --env-file cl2-deployment/<< parameters.env_file >> citizenlabdotco/cl2-back:$CIRCLE_BRANCH rake db:migrate cl2back:clean_tenant_settings email_campaigns:assure_campaign_records fix_existing_tenants:update_permissions cl2back:clear_cache_store email_campaigns:remove_deprecated"
       - deploy:
           command: ssh << parameters.ssh_user >>@<< parameters.ssh_host >> -o StrictHostKeyChecking=no "cd cl2-deployment && docker stack deploy --compose-file << parameters.compose_file >> << parameters.stack_name >> --with-registry-auth"
 
@@ -192,6 +202,14 @@ workflows:
     jobs:
       - build-docker-image:
           context: docker-hub-access
+          filters:
+            branches:
+              ignore:
+                - crowdin_master
+      - license-check:
+          context: docker-hub-access
+          requires:
+            - build-docker-image
           filters:
             branches:
               ignore:
@@ -305,8 +323,26 @@ workflows:
               only:
                 - production
     jobs:
+      # Benelux
       - check-for-inconsistent-data:
           ssh_host: "52.57.74.84"
           compose_file: docker-compose-production-benelux.yml
           stack_name: cl2-prd-bnlx-stack
           env_file: ".env-production-benelux"
+      # South America
+      - check-for-inconsistent-data:
+          ssh_host: "52.67.181.38"
+          compose_file: docker-compose-production.yml
+          env_file: ".env-web"
+          stack_name: "cl2"
+      # Canada
+      - check-for-inconsistent-data:
+          ssh_host: "35.183.23.116"
+          compose_file: docker-compose-production-canada.yml
+          env_file: ".env-production-canada"
+      # US West
+      - check-for-inconsistent-data:
+          ssh_host: "52.13.59.174"
+          compose_file: docker-compose-production.yml
+          env_file: ".env-web"
+          stack_name: "cl2"

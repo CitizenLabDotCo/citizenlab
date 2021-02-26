@@ -29,8 +29,7 @@ resource "Product Feedback" do
     let(:message) { "I can't find back the idea I posted last year :(" }
 
     example "Create new product feedback" do
-      expect{do_request}
-        .to have_enqueued_job(PublishRawEventToSegmentJob)
+      do_request
       expect(status).to eq(200)
     end
 

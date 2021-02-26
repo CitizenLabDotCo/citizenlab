@@ -1,0 +1,66 @@
+<!-- Initiatives overview-->
+<mj-section padding="0px 20px 80px">
+  <mj-column>
+    <mj-raw><% event.initiatives.each do |initiatives| %></mj-raw>
+      <mj-text>
+        <h1 style="padding-top: 50px"><%= localize_for_recipient(initiatives.title_multiloc).first(80) %></h1>
+      </mj-text>
+      <mj-table cellpadding="15">
+        <tr style="border:1px solid #ecedee; background-color: #FFFFFF">
+          <td style="width: 70px;">
+            <span style="font-size: 14px; font-weight: 700;">
+              <mj-text font-size="8px" align="center">
+                <%= format_message("total_votes") %>
+              </mj-text>
+            </span>
+
+          </td>
+          <td style="width: 70px;">
+            <span style="font-size: 14px; font-weight: 700;">
+              <mj-text font-size="8px" align="center">
+                <%= format_message("new_votes") %>
+              </mj-text>
+            </span>
+
+          </td>
+          <td style="width: 70px;">
+            <span style="font-size: 14px; font-weight: 700;">
+              <mj-text font-size="8px" align="center">
+                <%= format_message("remaining_votes") %>
+              </mj-text>
+            </span>
+
+          </td>
+          <td style="width: 70px;">
+            <span style="font-size: 14px; font-weight: 700;">
+              <mj-text font-size="8px" align="center">
+                <%= format_message("remaining_days") %>
+              </mj-text>
+            </span>
+
+          </td>
+        </tr>
+
+        <tr style="border:1px solid #ecedee; background-color: #FFFFFF">
+          <td style="width: 70px;">
+            <span style="font-size: 14px; font-weight: 700; color: rgb(111, 119, 125);"><%= initiatives.upvotes_count %></span>
+          </td>
+          <td style="width: 70px;">
+            <span style="font-size: 14px; font-weight: 700; color: rgb(111, 119, 125);"><%= initiatives.votes_this_week %></span>
+          </td>
+          <td style="width: 70px;">
+            <span style="font-size: 14px; font-weight: 700; color: rgb(111, 119, 125);"><%= initiatives.votes_needed %></span>
+          </td>
+          <td style="width: 70px;">
+            <span style="font-size: 14px; font-weight: 700; color: rgb(111, 119, 125);"><%= (Time.zone.today - initiatives.expires_at.to_date).to_i %></span>
+          </td>
+        </tr>
+        <mj-text>&nbsp;</mj-text>
+      </mj-table>
+    <mj-raw><% end %></mj-raw>
+  </mj-column>
+</mj-section>
+
+
+<!-- CTA button -->
+<%= render partial: 'application/cta_button', locals: { href: url_service.initiatives_url, message: format_message('cta_see_your_initiative') } %>

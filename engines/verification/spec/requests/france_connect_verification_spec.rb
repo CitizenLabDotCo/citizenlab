@@ -45,8 +45,8 @@ describe "franceconnect verification" do
              "street_address"=>"20 avenue de Ségur"}}}}
     )
 
-    @tenant = Tenant.current
-    settings = @tenant.settings
+    configuration = AppConfiguration.instance
+    settings = configuration.settings
     settings['franceconnect_login'] = {
       allowed: true,
       enabled: true,
@@ -63,7 +63,7 @@ describe "franceconnect verification" do
         }
       ]
     }
-    @tenant.save!
+    configuration.save!
     host! 'example.org'
   end
 

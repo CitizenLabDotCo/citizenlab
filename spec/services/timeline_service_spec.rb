@@ -4,9 +4,9 @@ describe TimelineService do
   let(:service) { TimelineService.new }
 
   before do
-    settings = Tenant.current.settings
+    settings = AppConfiguration.instance.settings
     settings['core']['locales'] = ['fr','en','nl-BE']
-    Tenant.current.update(settings: settings)
+    AppConfiguration.instance.update(settings: settings)
   end
 
   describe "current_phase" do
@@ -19,7 +19,7 @@ describe TimelineService do
     end
 
     it "returns the active phase when we're in the last day of the phase" do
-      now = Time.now.in_time_zone(Tenant.settings('core', 'timezone')).to_date
+      now = Time.now.in_time_zone(AppConfiguration.instance.settings('core', 'timezone')).to_date
       project = create(:project)
       phase = create(:phase, start_at: now - 1.week, end_at: now, project: project)
       expect(service.current_phase(project)&.id).to eq (phase.id)
@@ -37,14 +37,14 @@ describe TimelineService do
 
       t = Time.new(2019,9,9,23) # 11 pm utc = 1 am Brussels == 8pm Santiage
 
-      settings = Tenant.current.settings
+      settings = AppConfiguration.instance.settings
       settings['core']['timezone'] = "Brussels"
-      Tenant.current.update!(settings: settings)
+      AppConfiguration.instance.update!(settings: settings)
       expect(service.current_phase(project, t)&.id).to be nil
 
-      settings = Tenant.current.settings
+      settings = AppConfiguration.instance.settings
       settings['core']['timezone'] = "Santiago"
-      Tenant.current.update!(settings: settings)
+      AppConfiguration.instance.update!(settings: settings)
       expect(service.current_phase(project, t)&.id).to eq phase.id
     end
   end
@@ -61,14 +61,14 @@ describe TimelineService do
 
       t = Time.new(2019,9,9,23) # 11 pm utc = 1 am Brussels == 8pm Santiage
 
-      settings = Tenant.current.settings
+      settings = AppConfiguration.instance.settings
       settings['core']['timezone'] = "Brussels"
-      Tenant.current.update!(settings: settings)
+      AppConfiguration.instance.update!(settings: settings)
       expect(service.current_and_future_phases(project, t)).to eq []
 
-      settings = Tenant.current.settings
+      settings = AppConfiguration.instance.settings
       settings['core']['timezone'] = "Santiago"
-      Tenant.current.update!(settings: settings)
+      AppConfiguration.instance.update!(settings: settings)
       expect(service.current_and_future_phases(project, t)).to eq [phase]
     end
   end
@@ -113,14 +113,14 @@ describe TimelineService do
       project = phase.project
 
       travel_to Time.new(2019,9,9,23) do# 11 pm utc = 1 am Brussels == 8pm Santiage
-        settings = Tenant.current.settings
+        settings = AppConfiguration.instance.settings
         settings['core']['timezone'] = "Brussels"
-        Tenant.current.update!(settings: settings)
+        AppConfiguration.instance.update!(settings: settings)
         expect(service.timeline_active(project)).to eq :past
 
-        settings = Tenant.current.settings
+        settings = AppConfiguration.instance.settings
         settings['core']['timezone'] = "Santiago"
-        Tenant.current.update!(settings: settings)
+        AppConfiguration.instance.update!(settings: settings)
         expect(service.timeline_active(project)).to eq :present
       end
     end
@@ -128,7 +128,7 @@ describe TimelineService do
 
 
   def create_active_phase project
-    now = Time.now.in_time_zone(Tenant.settings('core', 'timezone')).to_date
+    now = Time.now.in_time_zone(AppConfiguration.instance.settings('core', 'timezone')).to_date
     create(:phase, project: project,
       start_at: now - 2.week,
       end_at: now

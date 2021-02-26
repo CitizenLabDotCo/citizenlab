@@ -1,13 +1,9 @@
-class FaviconUploader < CarrierWave::Uploader::Base
-  include BaseImageUploader
-  include CarrierWave::MiniMagick
-
+class FaviconUploader < BaseImageUploader
 
   def store_dir
-    tenant = model
-    "uploads/#{tenant.id}/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
+    "uploads/#{model.tenant.id}/favicon/#{model.id}"
   end
-
+  
   version :large do
     process resize_to_fit: [152,152]
     process convert: :png

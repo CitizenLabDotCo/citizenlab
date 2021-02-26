@@ -1,4 +1,6 @@
 pt:
+  symbols:
+    outside: em outro lugar
   idea_statuses:
     proposed: Proposta
     proposed_description: Esta idea foi proposta por alguem da organização
@@ -161,6 +163,8 @@ pt:
     custom_field_select:
       has_value: "%{property} é %{value}"
       not_has_value: "%{property} não é %{value}"
+      is_one_of: "%{property} tem um dos seguintes valores: %{value}"
+      not_is_one_of: "%{property} não possui nenhum dos seguintes valores: %{value}"
     custom_field_text:
       is: "%{property} é %{value}"
       not_is: "%{property} não é %{value}"

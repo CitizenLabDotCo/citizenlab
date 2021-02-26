@@ -9,6 +9,5 @@ module EmailCampaigns
     def filter_activity_triggered activity:, time: nil
       activity && activity_triggers.dig(activity.item_type, activity.action)
     end
-
   end
 end

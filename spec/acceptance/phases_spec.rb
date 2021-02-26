@@ -16,7 +16,7 @@ resource "Phases" do
     with_options scope: :page do
       parameter :number, "Page number"
       parameter :size, "Number of phases per page"
-    end 
+    end
     let(:project_id) { @project.id }
 
     example_request "List all phases of a project" do
@@ -74,8 +74,11 @@ resource "Phases" do
         parameter :max_budget, "The maximal budget amount each citizen can spend during participatory budgeting.", required: false
         parameter :start_at, "The start date of the phase", required: true
         parameter :end_at, "The end date of the phase", required: true
-        parameter :poll_anonymous, "Are users associated with their answer? Defaults to false. Only applies if participation_method is 'poll'", required: false        
+        parameter :poll_anonymous, "Are users associated with their answer? Defaults to false. Only applies if participation_method is 'poll'", required: false
+        parameter :ideas_order, 'The default order of ideas.'
+        parameter :input_term, 'The input term for something.'
       end
+
       ValidationErrorHelper.new.error_fields(self, Phase)
       response_field :project, "Array containing objects with signature {error: 'is_not_timeline_project'}", scope: :errors
       response_field :base, "Array containing objects with signature {error: 'has_other_overlapping_phases'}", scope: :errors
@@ -145,12 +148,17 @@ resource "Phases" do
       describe do
         let(:participation_method) { 'budgeting' }
         let(:max_budget) { 420000 }
+        let(:ideas_order) { 'new' }
 
         example "Create a participatory budgeting phase", document: false do
           do_request
           expect(response_status).to eq 201
           json_response = json_parse(response_body)
           expect(json_response.dig(:data,:attributes,:max_budget)).to eq max_budget
+          expect(json_response.dig(:data,:attributes,:ideas_order)).to be_present
+          expect(json_response.dig(:data,:attributes,:ideas_order)).to eq 'new'
+          expect(json_response.dig(:data,:attributes,:input_term)).to be_present
+          expect(json_response.dig(:data,:attributes,:input_term)).to eq 'idea'
         end
       end
 

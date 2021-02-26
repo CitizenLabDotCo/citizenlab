@@ -37,7 +37,7 @@ resource "Stats - Initiatives" do
     header 'Authorization', "Bearer #{token}"
     header "Content-Type", "application/json"
     Tenant.current.update!(created_at: now - 3.year)
-    @timezone = Tenant.settings('core','timezone')
+    @timezone = AppConfiguration.instance.settings('core','timezone')
 
     @threshold_reached = create(:initiative_status, code: 'threshold_reached')
     @initiatives_with_topics = []

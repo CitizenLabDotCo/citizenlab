@@ -129,6 +129,7 @@ if ['public','example_org'].include? Apartment::Tenant.current
       password_login: {
         allowed: true,
         enabled: true,
+        phone: false,
       },
       facebook_login: {
         allowed: true,
@@ -176,6 +177,10 @@ if ['public','example_org'].include? Apartment::Tenant.current
         enabled: true,
         allowed: true
       },
+      custom_idea_statuses: {
+        enabled: true,
+        allowed: true
+      },
       idea_custom_fields: {
         enabled: true,
         allowed: true
@@ -216,15 +221,51 @@ if ['public','example_org'].include? Apartment::Tenant.current
         enabled: false,
         allowed: false
       },
+      manual_tagging: {
+        enabled: true,
+        allowed: true
+      },
+      automatic_tagging: {
+        enabled: true,
+        allowed: true
+      },
       geographic_dashboard: {
         enabled: true,
         allowed: true
+      },
+      intercom: {
+        enabled: true,
+        allowed: true
+      },
+      segment: {
+        enabled: false,
+        allowed: false
+      },
+      satismeter: {
+        enabled: true,
+        allowed: true,
+        write_key: ENV.fetch("DEFAULT_SATISMETER_WRITE_KEY")
+      },
+      google_analytics: {
+        enabled: true,
+        allowed: true,
+        tracking_id: ENV.fetch("DEFAULT_GA_TRACKING_ID")
+      },
+      google_tag_manager: {
+        enabled: true,
+        allowed: true,
+        destinations: 'InvasiveTracking',
+        container_id: ENV.fetch("DEFAULT_GTM_CONTAINER_ID")
       },
       smart_groups: {
         enabled: true,
         allowed: true
       },
       surveys: {
+        enabled: true,
+        allowed: true
+      },
+      project_management: {
         enabled: true,
         allowed: true
       },
@@ -351,6 +392,7 @@ if ['public','example_org'].include? Apartment::Tenant.current
         color_main: Faker::Color.hex_color,
         color_secondary: Faker::Color.hex_color,
         color_text: Faker::Color.hex_color,
+        lifecycle_stage: 'active',
       },
       facebook_login: {
         allowed: true,
@@ -390,7 +432,7 @@ user = {
 
 if Apartment::Tenant.current == 'empty_localhost'
   TenantTemplateService.new.resolve_and_apply_template 'base', external_subfolder: false
-  SideFxTenantService.new.after_apply_template Tenant.current, nil
+  MultiTenancy::SideFxTenantService.new.after_apply_template(Tenant.current, nil)
   random_user = AnonymizeUserService.new.anonymized_attributes(Tenant.current.settings.dig('core', 'locales'))
   User.create! AnonymizeUserService.new.anonymized_attributes(Tenant.current.settings.dig('core', 'locales')).merge({**admin, id: "e0d698fc-5969-439f-9fe6-e74fe82b567a"})
 end
@@ -428,7 +470,7 @@ if Apartment::Tenant.current == 'localhost'
   end
 
   TenantTemplateService.new.resolve_and_apply_template 'base', external_subfolder: false
-  SideFxTenantService.new.after_apply_template Tenant.current, nil
+  MultiTenancy::SideFxTenantService.new.after_apply_template(Tenant.current, nil)
   User.create! AnonymizeUserService.new.anonymized_attributes(Tenant.current.settings.dig('core', 'locales')).merge(admin)
   User.create! AnonymizeUserService.new.anonymized_attributes(Tenant.current.settings.dig('core', 'locales')).merge(moderator)
   User.create! AnonymizeUserService.new.anonymized_attributes(Tenant.current.settings.dig('core', 'locales')).merge(user)
@@ -451,7 +493,7 @@ if Apartment::Tenant.current == 'localhost'
     end
 
     2.times do
-      folder = ProjectFolder.create!(
+      folder = ProjectFolders::Folder.create!( # todo: move to ProjectFolders engine
         title_multiloc: create_for_tenant_locales{Faker::Lorem.sentence},
         description_multiloc: create_for_tenant_locales{Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join},
         description_preview_multiloc: create_for_tenant_locales{Faker::Lorem.sentence},
@@ -461,10 +503,10 @@ if Apartment::Tenant.current == 'localhost'
         }
       )
       [0,1,2,3,4][rand(5)].times do |i|
-        folder.project_folder_images.create!(image: Rails.root.join("spec/fixtures/image#{rand(20)}.png").open)
+        folder.images.create!(image: Rails.root.join("spec/fixtures/image#{rand(20)}.png").open)
       end
       (rand(3)+1).times do
-        folder.project_folder_files.create!(generate_file_attributes)
+        folder.files.create!(generate_file_attributes)
       end
     end
 
@@ -480,7 +522,7 @@ if Apartment::Tenant.current == 'localhost'
         areas: rand(3).times.map{rand(Area.count)}.uniq.map{|offset| Area.offset(offset).first },
         topics: Topic.all.shuffle.take(rand(Topic.count)+1),
         admin_publication_attributes: {
-          parent_id: (rand(2) == 0 ? nil : AdminPublication.where(publication_type: ProjectFolder.name).ids.shuffle.first),
+          parent_id: (rand(2) == 0 ? nil : AdminPublication.where(publication_type: ProjectFolders::Folder.name).ids.shuffle.first),
           publication_status: ['published','published','published','published','published','draft','archived'][rand(7)]
         }
       })

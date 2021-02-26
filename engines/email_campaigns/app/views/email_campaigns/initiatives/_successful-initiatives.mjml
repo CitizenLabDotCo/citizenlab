@@ -1,0 +1,13 @@
+<mj-section padding="20px 25px">
+  <mj-column>
+    <mj-text>
+      <h3 style="padding: 20px 0">
+        <%= format_message('title_successful_initiatives_past_week') %>
+      </h3>
+    </mj-text>
+
+    <mj-raw><% event.successful_initiatives.each do |serialized_initiative| %></mj-raw>
+      <%= render 'email_campaigns/initiatives/initiative', serialized_initiative: serialized_initiative %>
+    <mj-raw><% end %></mj-raw>
+  </mj-column>
+</mj-section>

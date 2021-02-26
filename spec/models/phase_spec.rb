@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe Phase, type: :model do
+  subject { create(:phase) }
+
   describe "Default factory" do
     it "is valid" do
       expect(build(:phase)).to be_valid
@@ -31,14 +33,22 @@ RSpec.describe Phase, type: :model do
     end
   end
 
-  describe "participation_mode" do
-    it "can be null for non-ideation phases" do 
+  describe "participation_method" do
+    it "cannot be null" do
+      p = create(:phase, participation_method: 'ideation')
+      p.participation_method = nil
+      expect(p.save).to eq false
+    end
+  end
+
+  describe "presentation_mode" do
+    it "can be null for non-ideation phases" do
       p = create(:phase, participation_method: 'information')
       p.presentation_mode = nil
       expect(p.save).to eq true
     end
 
-    it "cannot be null for ideation phases" do 
+    it "cannot be null for an ideation phase" do
       p = create(:phase, participation_method: 'ideation')
       p.presentation_mode = nil
       expect(p.save).to eq false
@@ -80,14 +90,63 @@ RSpec.describe Phase, type: :model do
 
   describe "max_budget" do
     it "can be updated in a project with just one phase" do
-      project = create(:project_with_current_phase, 
+      project = create(:project_with_current_phase,
         phases_config: {sequence: 'xc'},
-        current_phase_attrs: {participation_method: 'budgeting', max_budget: 1234} 
+        current_phase_attrs: {participation_method: 'budgeting', max_budget: 1234}
         )
       phase = project.phases.find_by participation_method: 'budgeting'
 
       phase.max_budget = 9876
       expect(phase).to be_valid
+    end
+  end
+
+  describe '#ends_before?' do
+    let(:start_date) { Time.zone.today }
+    let(:phase) { create(:phase, start_at: start_date, end_at: start_date + 1.day) }
+
+    it 'returns false if passing today\'s date' do
+      expect(phase.ends_before?(start_date)).to eq false
+    end
+
+    it 'returns true if passing tomorrow\'s date' do
+      expect(phase.ends_before?(start_date + 2.days)).to eq true
+    end
+  end
+
+  # too lazy to split the tests at this stage
+  describe '::published' do
+    let(:start_date) { Time.zone.today }
+    let!(:phases) { create_list(:phase, 6, start_at: start_date, end_at: start_date + 1.month) }
+
+    context 'when there are 3 phases that belong to published publications' do
+      before do
+        phases.first(2).each do |phase|
+          draft = create(:project, admin_publication_attributes: { publication_status: 'draft' })
+          phase.project.admin_publication.update(parent: draft.admin_publication)
+        end
+
+        phases[2].project.admin_publication.update(publication_status: 'draft')
+      end
+
+      it 'returns only the phases that belong to published publications' do
+        expect(described_class.published.length).to eq 3
+      end
+    end
+  end
+
+  describe '::starting_on' do
+    let(:start_date) { Time.zone.today }
+    let!(:phases) { create_list(:phase, 6, start_at: start_date, end_at: start_date + 1.month) }
+
+    context 'when there are 3 phases that belong to published publications' do
+      it 'returns only the phases that belong to published publications' do
+        expect(described_class.starting_on(start_date).length).to eq phases.length
+      end
+
+      it 'returns no phases if the date is tomorrow' do
+        expect(described_class.starting_on(start_date + 1.day).length).to eq 0
+      end
     end
   end
 end

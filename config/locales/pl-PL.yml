@@ -1,11 +1,13 @@
 pl:
+  symbols:
+    outside: gdzieś indziej
   idea_statuses:
     proposed: zaproponowana
     proposed_description: Ten pomysł został zaproponowany miastu
     viewed: obejrzany
     viewed_description: Ten pomysł został obejrzany przez kogoś z miasta
-    under_consideration: rozważany
-    under_consideration_description: Pomysł ten został wzięty pod uwagę przez miasto
+    under_consideration: rozpatrywany
+    under_consideration_description: Ten pomysł został wzięty pod uwagę przez miasto
     accepted: przyjęty
     accepted_description: Ten pomysł został zaakceptowany i będzie realizowany przez miasto
     implemented: wdrożony
@@ -161,6 +163,8 @@ pl:
     custom_field_select:
       has_value: "%{property} jest %{value}"
       not_has_value: "%{property} nie jest %{value}"
+      is_one_of: "%{property} ma jedną z poniższych wartości: %{value}"
+      not_is_one_of: "%{property} nie ma żadnej z poniższych wartości: %{value}"
     custom_field_text:
       is: "%{property} jest %{value}"
       not_is: "%{property} nie jest %{value}"

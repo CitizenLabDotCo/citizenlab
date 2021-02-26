@@ -82,7 +82,4 @@ Rails.application.configure do
     api_host: ENV.fetch("MAILGUN_API_HOST", "api.mailgun.net"),
   }
 
-  Raven.configure do |config|
-    config.dsn = 'https://a2819797a1614558a2485f85ba70b152:c76baf7f978a4e748dd2253346f97a90@sentry.io/233005'
-  end
 end

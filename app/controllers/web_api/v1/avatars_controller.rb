@@ -27,7 +27,7 @@ class WebApi::V1::AvatarsController < ApplicationController
       authorize initiative, :show?
       avatars_service.avatars_for_initiative(initiative, users: users, limit: limit)
     when nil
-      avatars_service.avatars_for_tenant(users: users, limit: limit)
+      avatars_service.some_avatars(users: users, limit: limit)
     end
 
     render json: { 

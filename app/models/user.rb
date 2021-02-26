@@ -12,8 +12,8 @@ class User < ApplicationRecord
   has_secure_password validations: false
   mount_base64_uploader :avatar, AvatarUploader
 
-  pg_search_scope :search_by_all, 
-    :against => [:first_name, :last_name, :email], 
+  pg_search_scope :search_by_all,
+    :against => [:first_name, :last_name, :email],
     :using => { :tsearch => {:prefix => true} }
 
   pg_search_scope :by_full_name,
@@ -25,7 +25,7 @@ class User < ApplicationRecord
                   :using => { :tsearch => {:prefix => true} }
 
   scope :by_username, -> (username) {
-    Tenant.current.has_feature?("abbreviated_user_names") ? by_first_name(username) : by_full_name(username)
+    AppConfiguration.instance.feature_activated?("abbreviated_user_names") ? by_first_name(username) : by_full_name(username)
   }
 
   has_many :ideas, foreign_key: :author_id, dependent: :nullify
@@ -56,9 +56,9 @@ class User < ApplicationRecord
   validates :email, :first_name, :slug, :locale, presence: true, unless: :invite_pending?
 
   validates :email, uniqueness: true, allow_nil: true
-  validates :slug, uniqueness: true, format: {with: SlugService.new.regex }, unless: :invite_pending?
+  validates :slug, uniqueness: true, presence: true, unless: :invite_pending?
   validates :email, format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i }, allow_nil: true
-  validates :locale, inclusion: { in: proc {Tenant.settings('core','locales')} }
+  validates :locale, inclusion: { in: proc {AppConfiguration.instance.settings('core','locales')} }
   validates :bio_multiloc, multiloc: {presence: false}
   validates :gender, inclusion: {in: GENDERS}, allow_nil: true
   validates :birthyear, numericality: {only_integer: true, greater_than_or_equal_to: 1900, less_than: Time.now.year}, allow_nil: true
@@ -79,9 +79,8 @@ class User < ApplicationRecord
   validate do |record|
     record.errors.add(:last_name, :blank) unless (record.last_name.present? or record.cl1_migrated or record.invite_pending?)
     record.errors.add(:password, :blank) unless (record.password_digest.present? or record.identities.any? or record.invite_pending?)
-    if record.email && User.find_by_cimail(record.email).present?
-      duplicate_user = User.find_by_cimail(record.email)
-      if duplicate_user.invite_pending? && duplicate_user.id != id
+    if record.email && (duplicate_user = User.find_by_cimail(record.email)).present? && duplicate_user.id != id
+      if duplicate_user.invite_pending?
         ErrorsService.new.remove record.errors, :email, :taken, value: record.email
         record.errors.add(:email, :taken_by_invite, value: record.email, inviter_email: duplicate_user.invitee_invite&.inviter&.email)
       elsif duplicate_user.email != record.email
@@ -97,7 +96,7 @@ class User < ApplicationRecord
   validate :validate_email_domain_blacklist
 
   ROLES_JSON_SCHEMA = Rails.root.join('config', 'schemas', 'user_roles.json_schema').to_s
-  validates :roles, json: { schema: ROLES_JSON_SCHEMA, message: ->(errors) { errors } }
+  validates :roles, json: { schema: -> { roles_json_schema }, message: ->(errors) { errors } }
 
   before_validation :set_cl1_migrated, on: :create
   before_validation :generate_slug
@@ -110,7 +109,7 @@ class User < ApplicationRecord
     .group('users.id')
   }
 
-  scope :admin, -> { 
+  scope :admin, -> {
     where("roles @> '[{\"type\":\"admin\"}]'")
   }
 
@@ -170,16 +169,16 @@ class User < ApplicationRecord
 
   # This method is used by knock to get the user.
   # Default is by email, but we want to compare
-  # case insensitively and forbid login for 
+  # case insensitively and forbid login for
   # invitees.
   def self.from_token_request request
     email = request.params["auth"]["email"]
 
     # Hack to embed phone numbers in email
-    if Tenant.current.has_feature?('password_login') && Tenant.settings('password_login','phone')
+    if AppConfiguration.instance.feature_activated?('password_login') && AppConfiguration.instance.settings('password_login','phone')
       phone_service = PhoneService.new
       if phone_service.phone_or_email(email) == :phone
-        pattern = Tenant.settings('password_login', 'phone_email_pattern')
+        pattern = AppConfiguration.instance.settings('password_login', 'phone_email_pattern')
         email = pattern.gsub('__PHONE__', phone_service.normalize_phone(email))
       end
     end
@@ -209,11 +208,11 @@ class User < ApplicationRecord
   end
 
   def full_name
-    [first_name, last_name].compact.join(" ")
+    [first_name, last_name].compact.join(' ')
   end
 
   def admin?
-    !!self.roles.find{|r| r["type"] == "admin"}
+    roles.any? { |r| r['type'] == 'admin' }
   end
 
   def super_admin?
@@ -250,13 +249,17 @@ class User < ApplicationRecord
       .map{|role| role['project_id']}.compact
   end
 
-  def add_role type, options={}
-    self.roles << {"type" => type}.merge(options)
-    self.roles.uniq!
+  def moderatable_projects
+    Project.where(id: moderatable_project_ids)
   end
 
-  def delete_role type, options={}
-    self.roles.delete({"type" => type}.merge(options.stringify_keys))
+  def add_role(type, options = {})
+    roles << { 'type' => type.to_s }.merge(options.stringify_keys)
+    roles.uniq!
+  end
+
+  def delete_role(type, options = {})
+    roles.delete({ 'type' => type.to_s }.merge(options.stringify_keys))
   end
 
   def authenticate unencrypted_password
@@ -285,13 +288,13 @@ class User < ApplicationRecord
   def group_ids
     manual_group_ids + SmartGroupsService.new.groups_for_user(self).pluck(:id)
   end
-  
+
 
   private
 
   def generate_slug
     return if self.slug.present?
-    if Tenant.current.has_feature?("abbreviated_user_names")
+    if AppConfiguration.instance.feature_activated?("abbreviated_user_names")
       self.slug = SecureRandom.uuid
     elsif self.first_name.present?
       self.slug = SlugService.new.generate_slug self, self.full_name
@@ -304,7 +307,7 @@ class User < ApplicationRecord
       self.bio_multiloc,
       %i{title alignment list decoration link video}
     )
-    self.bio_multiloc = service.remove_empty_paragraphs_multiloc(self.bio_multiloc)
+    self.bio_multiloc = service.remove_multiloc_empty_trailing_tags(self.bio_multiloc)
     self.bio_multiloc = service.linkify_multiloc(self.bio_multiloc)
   end
 
@@ -347,4 +350,7 @@ class User < ApplicationRecord
     end
   end
 
+  def roles_json_schema
+    ROLES_JSON_SCHEMA
+  end
 end

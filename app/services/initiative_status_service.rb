@@ -43,7 +43,7 @@ class InitiativeStatusService
         scope_contition: lambda{ |initiative_scope|
           initiative_scope.where(
             'initiatives.upvotes_count >= ?', 
-            Tenant.current.settings.dig('initiatives', 'voting_threshold')
+            AppConfiguration.instance.settings('initiatives', 'voting_threshold')
             )
         }
       },
@@ -51,7 +51,7 @@ class InitiativeStatusService
         scope_contition: lambda{ |initiative_scope|
           initiative_scope.where(
             'initiatives.published_at < ?', 
-            (Time.now - Tenant.current.settings.dig('initiatives', 'days_limit').days)
+            (Time.now - AppConfiguration.instance.settings('initiatives', 'days_limit').days)
             )
         }
       }

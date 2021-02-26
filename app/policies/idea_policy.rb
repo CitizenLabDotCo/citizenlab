@@ -25,8 +25,12 @@ class IdeaPolicy < ApplicationPolicy
     user&.admin?
   end
 
+  def index_mini?
+    user&.admin?
+  end
+
   def create?
-    pcs = ParticipationContextService.new 
+    pcs = ParticipationContextService.new
     record.draft? ||
     user&.active_admin_or_moderator?(record.project_id) ||
     (
@@ -54,7 +58,18 @@ class IdeaPolicy < ApplicationPolicy
   end
 
   def update?
-    create?
+    # TODO: remove this after Gents project
+    bypassable_reasons = %w[posting_disabled]
+    bypassable_reasons << 'not_permitted' if Tenant.current.host == 'participatie.stad.gent'
+    pcs = ParticipationContextService.new
+    pcs_posting_reason = pcs.posting_idea_disabled_reason_for_project(record.project, user)
+    record.draft? || user&.active_admin_or_moderator?(record.project_id) ||
+      (
+        user&.active? &&
+        record.author_id == user.id &&
+        (pcs_posting_reason.nil? || bypassable_reasons.include?(pcs_posting_reason)) &&
+        ProjectPolicy.new(user, record.project).show?
+      )
   end
 
   def destroy?
@@ -80,6 +95,4 @@ class IdeaPolicy < ApplicationPolicy
       shared
     end
   end
-
-
 end

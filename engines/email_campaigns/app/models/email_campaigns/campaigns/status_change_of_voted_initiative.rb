@@ -10,6 +10,9 @@ module EmailCampaigns
 
     recipient_filter :filter_recipient
 
+    def mailer_class
+      StatusChangeOfVotedInitiativeMailer
+    end
 
     def activity_triggers
       {'Initiative' => {'changed_status' => true}}

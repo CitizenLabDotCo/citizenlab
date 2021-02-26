@@ -30,7 +30,7 @@ class Invite < ApplicationRecord
   end
 
   def generate_token
-    self.token ||= ([*('a'..'z'),*('0'..'9')]).sample(9).join
+    self.token ||= InvitesService.new.generate_token
   end
 
   def sanitize_invite_text
@@ -39,7 +39,7 @@ class Invite < ApplicationRecord
       self.invite_text,
       %i{decoration link}
     )
-    self.invite_text = service.remove_empty_paragraphs(self.invite_text)
+    self.invite_text = service.remove_empty_trailing_tags(self.invite_text)
     self.invite_text = service.linkify(self.invite_text)
   end
 

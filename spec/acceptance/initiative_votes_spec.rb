@@ -62,10 +62,9 @@ resource "Votes" do
     end
 
     example "Reaching the voting threshold immediately triggers status change", document: false do
-      tn = Tenant.current
-      settings = tn.settings
+      settings = AppConfiguration.instance.settings
       settings['initiatives']['voting_threshold'] = 3
-      tn.update! settings: settings
+      AppConfiguration.instance.update! settings: settings
 
       do_request
       expect(response_status).to eq 201

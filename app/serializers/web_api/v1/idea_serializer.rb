@@ -2,8 +2,12 @@ class WebApi::V1::IdeaSerializer < WebApi::V1::BaseSerializer
   attributes :title_multiloc, :body_multiloc, :slug, :publication_status, :upvotes_count, :downvotes_count, :comments_count, :official_feedbacks_count, :location_point_geojson, :location_description, :created_at, :updated_at, :published_at, :budget, :proposed_budget, :baskets_count
 
   attribute :author_name do |object, params|
-    name_service = UserDisplayNameService.new(Tenant.current, current_user(params))
+    name_service = UserDisplayNameService.new(AppConfiguration.instance, current_user(params))
     name_service.display_name!(object.author)
+  end
+
+  attribute :body_multiloc do |object|
+    TextImageService.new.render_data_images object, :body_multiloc
   end
 
   attribute :action_descriptor do |object, params|
@@ -26,7 +30,7 @@ class WebApi::V1::IdeaSerializer < WebApi::V1::BaseSerializer
         disabled_reason: voting_disabled_reason,
         future_enabled: voting_disabled_reason && @participation_context_service.future_voting_idea_enabled_phase(object.project, current_user(params))&.start_at,
         cancelling_enabled: !cancelling_votes_disabled_reason
-      },   
+      },
       comment_voting_idea: {
         enabled: !comment_voting_disabled_reason,
         disabled_reason: comment_voting_disabled_reason,
@@ -67,6 +71,6 @@ class WebApi::V1::IdeaSerializer < WebApi::V1::BaseSerializer
       params.dig(:vbii, object.id)
     else
        object.votes.where(user_id: current_user(params)&.id).first
-     end
+    end
   end
 end

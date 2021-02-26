@@ -6,9 +6,13 @@ module EmailCampaigns
     include Disableable
     include Trackable
     include LifecycleStageRestrictable
-    allow_lifecycle_stages only: ['trial','active']
+    allow_lifecycle_stages only: ['active']
 
     recipient_filter :filter_notification_recipient
+
+    def mailer_class
+      ProjectPhaseStartedMailer
+    end
 
     def activity_triggers
       {'Notifications::ProjectPhaseStarted' => {'created' => true}}
