@@ -65,6 +65,7 @@ export interface IAppConfigurationSettings {
     allowed: boolean;
     enabled: boolean;
     phone?: boolean;
+    minimum_length?: number;
     phone_email_pattern?: string;
   };
   facebook_login?: {
