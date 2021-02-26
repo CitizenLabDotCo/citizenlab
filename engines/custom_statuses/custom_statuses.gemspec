@@ -7,8 +7,8 @@ require "custom_statuses/version"
 Gem::Specification.new do |s|
   s.name        = "custom_statuses"
   s.version     = CustomStatuses::VERSION
-  s.authors     = ["Koen Gremmelprez"]
-  s.email       = ["koen@citizenlab.co"]
+  s.authors     = ["Citizenlab"]
+  s.email       = ["developers@citizenlab.co"]
   s.summary     = "Allows customization of the idea and initiative statuses by exposing the #create, #update and #destroy actions for the statuses' endpoints"
 
   s.files = Dir["{app,config,db,lib}/**/*", "README.md"]

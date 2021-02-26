@@ -38,7 +38,7 @@ resource 'IdeaStatuses' do
     end
 
     get 'web_api/v1/idea_statuses' do
-      example_request 'List all idea statuses' do
+      example_request 'List all idea statuses', document: false do
         expect(status).to eq(200)
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 3
@@ -48,7 +48,7 @@ resource 'IdeaStatuses' do
     get 'web_api/v1/idea_statuses/:id' do
       let(:id) { @statuses.first.id }
 
-      example_request 'Get one idea status by id' do
+      example_request 'Get one idea status by id', document: false do
         expect(status).to eq 200
         json_response = json_parse(response_body)
         expect(json_response.dig(:data, :id)).to eq @statuses.first.id
@@ -62,7 +62,7 @@ resource 'IdeaStatuses' do
     end
 
     get 'web_api/v1/idea_statuses' do
-      example_request 'List all idea statuses' do
+      example_request 'List all idea statuses', document: false do
         expect(status).to eq(200)
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 3
@@ -72,7 +72,7 @@ resource 'IdeaStatuses' do
     get 'web_api/v1/idea_statuses/:id' do
       let(:id) { @statuses.first.id }
 
-      example_request 'Get one idea status by id' do
+      example_request 'Get one idea status by id', document: false do
         expect(status).to eq 200
         json_response = json_parse(response_body)
         expect(json_response.dig(:data, :id)).to eq @statuses.first.id
