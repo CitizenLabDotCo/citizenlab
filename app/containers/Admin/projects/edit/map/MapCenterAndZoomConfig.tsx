@@ -135,7 +135,7 @@ const MapCenterAndZoomConfig = memo<Props & InjectedIntlProps>(
       if (
         inRange(defaultLng, -180, 180) &&
         inRange(defaultLat, -90, 90) &&
-        inRange(defaultZoom, 0, 18)
+        inRange(defaultZoom, 0, 21)
       ) {
         return true;
       }
@@ -247,7 +247,7 @@ const MapCenterAndZoomConfig = memo<Props & InjectedIntlProps>(
           type="number"
           value={formValues.defaultZoom?.toString()}
           min="1"
-          max="17"
+          max="18"
           onChange={handleZoomOnChange}
           label={formatMessage(messages.zoomLabel)}
           labelTooltipText={formatMessage(messages.zoomLabelTooltip)}
