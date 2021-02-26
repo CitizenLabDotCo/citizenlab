@@ -162,3 +162,5 @@ gem 'verification', path: 'engines/verification'
 gem 'volunteering', path: 'engines/volunteering'
 
 gem 'seo', path: 'engines/seo'
+
+gem 'idea_assignment', path: 'idea_assignment'
