@@ -21,7 +21,7 @@ resource "AppConfigurations" do
       end
     end
 
-    AppConfiguration.settings_json_schema["properties"].each do |feature, feature_descriptor|
+    AppConfiguration::Settings.json_schema["properties"].each do |feature, feature_descriptor|
 
       parameter :allowed, "Does the commercial plan allow #{feature}", scope: [:app_configuration, :settings, feature]
       parameter :enabled, "Is #{feature} enabled", scope: ['settings', feature]
@@ -53,7 +53,7 @@ resource "AppConfigurations" do
       style object. This will me merged with the existing style. Arrays\
       will not be merged, but override their values.", extra: ""
 
-      AppConfiguration.settings_json_schema["properties"].each do |feature, feature_descriptor|
+      AppConfiguration::Settings.json_schema["properties"].each do |feature, feature_descriptor|
         parameter :allowed, "Does the commercial plan allow #{feature}", scope: [:app_configuration, :settings, feature]
         parameter :enabled, "Is #{feature} enabled", scope: [:app_configuration, :settings, feature]
         feature_descriptor['properties'].without("allowed", "enabled").each do |setting, setting_descriptor|

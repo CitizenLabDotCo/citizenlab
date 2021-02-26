@@ -8,6 +8,7 @@ Gem::Specification.new do |s|
   s.name        = "admin_api"
   s.version     = AdminApi::VERSION
   s.authors     = ["Koen Gremmelprez"]
+  s.licenses    = ['CitizenLab Commercial License']
   s.email       = ["koen@citizenlab.co"]
   s.summary     = "Rails engine that provides the endpoints for the admin CL2 api"
 

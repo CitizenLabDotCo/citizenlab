@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-
+  
   mount AdminApi::Engine => "/admin_api", as: 'admin_api', defaults: {format: :json}
   mount CustomStatuses::Engine => "", as: 'custom_statuses'
   mount EmailCampaigns::Engine => "", as: 'email_campaigns'
@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   mount Onboarding::Engine => "", as: 'onboarding'
   mount Polls::Engine => "", as: 'polls'
   mount PublicApi::Engine => "/api", as: 'public_api'
+  mount Seo::Engine => '', as: 'seo'
   mount Surveys::Engine => "", as: 'surveys'
   mount Tagging::Engine => "", as: 'tagging'
   mount Verification::Engine => "", as: 'verification'
