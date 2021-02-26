@@ -60,8 +60,6 @@ interface Props {
 const FooterWithVoteControl = memo<Props>(
   ({ idea, hideIdeaStatus, className }) => {
     const ideaStatusId = idea?.relationships?.idea_status?.data.id;
-    const isDownVotingEnabled =
-      idea.attributes.action_descriptor.voting_idea.downvoting_enabled;
     const commentingDescriptor =
       idea?.attributes?.action_descriptor?.commenting_idea;
     const isCommentingEnabled = !!(
