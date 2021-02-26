@@ -1,8 +1,16 @@
-# Changelog 
+# Changelog
 
-## Next release
+## 2021-02-26
 
-/
+### Fixed
+
+- France Connect button hover state now complies with the vendor's guidelines.
+
+## 2021-02-24
+
+### Fixed
+- The project page no longer shows an eternal spinner when the user has no access to see the project
+
 
 ## 2021-02-18
 
@@ -24,7 +32,6 @@
 ## 2021-02-12
 
 ### Fixed
-
 - Fixed Azure AD login for some Azure setups (Schagen)
 
 ### Changed
