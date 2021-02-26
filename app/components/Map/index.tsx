@@ -277,7 +277,7 @@ const Map = memo<Props & InjectedLocalized>(
           tileSize: 512,
           zoomOffset: -1,
           minZoom: 1,
-          maxZoom: 17,
+          maxZoom: 20,
           crossOrigin: true,
           subdomains: ['a', 'b', 'c'],
           attribution:
