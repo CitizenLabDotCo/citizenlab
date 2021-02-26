@@ -14,7 +14,7 @@ resource 'AppConfigurations' do
 
   get 'web_api/v1/app_configuration' do
 
-    AppConfiguration.settings_json_schema['properties'].each do |feature, feature_descriptor|
+    AppConfiguration::Settings.json_schema['properties'].each do |feature, feature_descriptor|
       parameter :allowed, "Does the commercial plan allow #{feature}", scope: [:app_configuration, :settings, feature]
       parameter :enabled, "Is #{feature} enabled", scope: ['settings', feature]
 
@@ -53,7 +53,7 @@ resource 'AppConfigurations' do
         values.
       DESC
 
-      AppConfiguration.settings_json_schema['properties'].each do |feature, feature_descriptor|
+      AppConfiguration::Settings.json_schema['properties'].each do |feature, feature_descriptor|
         parameter :allowed, "Does the commercial plan allow #{feature}", scope: [:app_configuration, :settings, feature]
         parameter :enabled, "Is #{feature} enabled", scope: [:app_configuration, :settings, feature]
         feature_descriptor['properties'].without('allowed', 'enabled').each do |setting, setting_descriptor|
