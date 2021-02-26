@@ -237,10 +237,6 @@ class IdeaPreview extends PureComponent<Props & InjectedLocalized, State> {
                     ideaId={idea.id}
                     size={smallerThanSmallTablet ? '1' : '2'}
                     disabledVoteClick={this.handleDisabledVoteClick}
-                    showDownvote={
-                      idea.attributes.action_descriptor.voting_idea
-                        .downvoting_enabled
-                    }
                   />
                   <CommentsCount>
                     <CommentIcon name="comments" />
