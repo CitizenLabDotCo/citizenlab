@@ -13,6 +13,7 @@ import { shallowWithIntl } from 'utils/testUtils/withIntl';
 
 // what needs to be mocked by jest to render the component
 jest.mock('utils/cl-intl');
+jest.mock('components/Outlet', () => 'Outlet');
 
 describe('<UsersDashboard />', () => {
   it('renders correctly', () => {

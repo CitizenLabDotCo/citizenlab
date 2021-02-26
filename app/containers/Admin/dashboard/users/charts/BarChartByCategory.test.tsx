@@ -3,6 +3,8 @@ import { shallow } from 'enzyme';
 jest.mock('utils/cl-intl');
 jest.mock('services/stats');
 jest.mock('services/appConfiguration');
+jest.mock('components/Outlet', () => 'Outlet');
+
 import { intl } from 'utils/cl-intl';
 import { BarChartByCategory } from './BarChartByCategory';
 import { chartTheme } from '../..';
