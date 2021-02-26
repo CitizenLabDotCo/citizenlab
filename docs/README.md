@@ -1,8 +1,10 @@
-# Changelog 
+# Changelog
 
 ## Next release
 
-/
+### Fixed
+
+- France Connect button hover state now complies with the vendor's guidelines.
 
 ## 2021-02-24
 
