@@ -96,6 +96,12 @@ PATH
       rails (~> 6.0.0)
 
 PATH
+  remote: engines/idea_assignment
+  specs:
+    idea_assignment (0.1.0)
+      rails (~> 6.0.3, >= 6.0.3.2)
+
+PATH
   remote: engines/machine_translations
   specs:
     machine_translations (0.1.0)
@@ -822,6 +828,7 @@ DEPENDENCIES
   frontend!
   groupdate
   ice_cube!
+  idea_assignment!
   intercom (~> 4.1)
   kaminari (~> 1.2)
   knock!
