@@ -4,6 +4,7 @@ require 'callable'
 require 'finder/error'
 require 'finder/sortable'
 require 'finder/helpers'
+require 'finder/inflectors'
 
 module Finder
   ## Finder::Base
@@ -11,13 +12,14 @@ module Finder
     include Callable
     include Finder::Sortable
     include Finder::Helpers
+    include Finder::Inflectors
 
     ## You can now use #find instead of call.
     callable_with :find, error_class: Finder::Error, default_error: 'Something went wrong'
 
     def initialize(params, scope: nil, includes: [], authorize_with: nil)
-      @pagination_params = params.dig(:page) || {}
-      @sort_param        = params.dig(:sort)
+      @pagination_params = params[:page] || {}
+      @sort_param        = params[:sort]
       @params            = params.respond_to?(:permit!) ? params.permit! : params
       @authorize_with    = authorize_with
       @base_scope        = scope || _base_scope
@@ -27,19 +29,23 @@ module Finder
     private
 
     def find
-      _raise_error_if_records_class_invalid
-      _authorize_records
-      _filter_records
-      _sort_records
-      _paginate_records
+      do_find
       result.records = records
       result.count = records.count
     rescue ActiveRecord::StatementInvalid, PG::InFailedSqlTransaction, PG::UndefinedTable => e
       raise Finder::Error, e
     end
 
+    def do_find
+      _raise_error_if_records_class_invalid
+      _authorize_records
+      _filter_records
+      _sort_records
+      _paginate_records
+    end
+
     def _raise_error_if_records_class_invalid
-      return unless _klass&.is_a?(ApplicationRecord)
+      return unless _klass.is_a?(ApplicationRecord)
 
       raise "#{_klass_string} is not a valid Model. Please rename your finder."
     end
@@ -53,26 +59,14 @@ module Finder
 
     def _filter_records
       params.each do |param, value|
-        value = [nil] if value == []
         next unless respond_to?("#{param}_condition", true) && value.present?
 
         send("#{param}_condition", value)
       end
-      records
     end
 
     def _paginate_records
-      filter_records { records.page(pagination_params.dig(:number)).per(pagination_params.dig(:size)) }
-    end
-
-    def _klass
-      return @_klass if @_klass || !Object.const_defined?(_klass_string)
-
-      @_klass = _klass_string.constantize
-    end
-
-    def _klass_string
-      @_klass_string ||= self.class.name.gsub('Finder', '').singularize
+      filter_records { records.page(pagination_params[:number]).per(pagination_params[:size]) }
     end
 
     def _base_scope

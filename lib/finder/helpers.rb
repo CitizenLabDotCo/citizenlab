@@ -14,7 +14,7 @@ module Finder
     end
 
     def filter_records(&blk)
-      @records = blk.call if blk
+      @records = yield if blk
     end
 
     def scope(scope_name, *args)
