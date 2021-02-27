@@ -35,9 +35,7 @@ module Finder
       end
 
       def sortable_attribute(attribute)
-        @_sortable_attributes ||= []
-
-        @_sortable_attributes.push(attribute.to_s)
+        _sortable_attributes.push(attribute.to_s)
       end
 
       def _sortable_attributes
