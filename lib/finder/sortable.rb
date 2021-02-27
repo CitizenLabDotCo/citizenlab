@@ -13,18 +13,14 @@ module Finder
 
     # Finder::Sortable::ClassMethods
     module ClassMethods
-      attr_reader :_sort_scopes, :_default_sort, :_default_sort_order
+      attr_reader :_default_sort, :_default_sort_order
 
       def sort_scopes(scopes)
-        @_sort_scopes ||= {}.with_indifferent_access
-
-        @_sort_scopes.merge(scopes)
+        _sort_scopes.merge(scopes.with_indifferent_access)
       end
 
       def sort_scope(scope_name, blk_or_options)
-        @_sort_scopes ||= {}.with_indifferent_access
-
-        @_sort_scopes[scope_name] = blk_or_options
+        _sort_scopes[scope_name] = blk_or_options
       end
 
       def default_sort(scope)
@@ -35,17 +31,21 @@ module Finder
       end
 
       def sortable_attributes(*attributes)
-        @_sortable_attributes ||= []
-
-        @_sortable_attributes.concat(attributes.map(&:to_s))
+        _sortable_attributes.concat(attributes.map(&:to_s))
       end
 
       def sortable_attribute(attribute)
+        @_sortable_attributes ||= []
+
         @_sortable_attributes.push(attribute.to_s)
       end
 
       def _sortable_attributes
         @_sortable_attributes ||= []
+      end
+
+      def _sort_scopes
+        @_sort_scopes ||= {}.with_indifferent_access
       end
     end
 
