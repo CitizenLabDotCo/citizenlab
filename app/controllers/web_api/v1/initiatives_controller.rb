@@ -29,10 +29,6 @@ class WebApi::V1::InitiativesController < ApplicationController
     end
   end
 
-  # @result = InitiativesFinder.find(params, authorize_with: current_user)
-  # @initiatives = @result.records
-  # @counts = InitiativesCountCalculator.calculate(@initiatives, counts: %i[initiative_status_id area_id topic_id]).counts
-  # render json: @counts
   def filter_counts
     @initiatives = policy_scope(Initiative)
     search_last_names = !UserDisplayNameService.new(AppConfiguration.instance, current_user).restricted?

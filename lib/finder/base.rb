@@ -37,14 +37,14 @@ module Finder
     end
 
     def do_find
-      _raise_error_if_records_class_invalid
+      _abort_if_records_class_invalid
       _authorize_records
       _filter_records
       _sort_records
       _paginate_records
     end
 
-    def _raise_error_if_records_class_invalid
+    def _abort_if_records_class_invalid
       return unless _klass.is_a?(ApplicationRecord)
 
       raise "#{_klass_string} is not a valid Model. Please rename your finder."
@@ -75,8 +75,10 @@ module Finder
 
     protected
 
-    attr_reader :params, :records, :pagination_params
+    attr_reader :params, :records, :pagination_params, :authorize_with
     attr_accessor :sort_param
+
+    alias current_user authorize_with
 
     delegate :table_name, to: :_klass
   end
