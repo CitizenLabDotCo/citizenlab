@@ -16,18 +16,32 @@ module Finder
       attr_reader :_sort_scopes, :_default_sort, :_default_sort_order
 
       def sort_scopes(scopes)
-        @_sort_scopes = scopes.with_indifferent_access
+        @_sort_scopes ||= {}.with_indifferent_access
+
+        @_sort_scopes.merge(scopes)
+      end
+
+      def sort_scope(scope_name, blk_or_options)
+        @_sort_scopes ||= {}.with_indifferent_access
+
+        @_sort_scopes[scope_name] = blk_or_options
       end
 
       def default_sort(scope)
         @_default_sort, @_default_sort_order = scope.first if scope.is_a? Hash
 
         @_default_sort_order = scope.to_s.delete_prefix!('-') ? :asc : :desc
-        @_default_sort = scope.to_s
+        @_default_sort       = scope.to_s
       end
 
       def sortable_attributes(*attributes)
-        @_sortable_attributes = attributes.map(&:to_s)
+        @_sortable_attributes ||= []
+
+        @_sortable_attribute.concat(attributes.map(&:to_s))
+      end
+
+      def sortable_attribute(attribute)
+        @_sortable_attribute.push(attribute.to_s)
       end
 
       def _sortable_attributes
@@ -41,6 +55,7 @@ module Finder
 
     def _sort_records
       self.sort_param ||= _default_sort
+
       if _sort_scopes&.key? _sort_method
         _sort_with_method
       elsif _sortable_attributes.include? _sort_method_suffix
@@ -50,16 +65,18 @@ module Finder
 
     def _sort_with_method
       sort_option = _sort_scopes[_sort_method.to_sym]
+
       @records = case sort_option
-                 when Proc   then  sort_option.call(@records)
-                 when Hash   then  _sort_from_hash(sort_option)
-                 when Symbol then  @records.send(sort_option)
-                 else              @records.order(sort_option)
+                 when ->(so) { so.respond_to?(:call) } then  sort_option.call(@records)
+                 when Hash                             then  _sort_from_hash(sort_option)
+                 when Symbol                           then  @records.send(sort_option)
+                 else                                        @records.order(sort_option)
                  end
     end
 
     def _sort_from_hash(hash)
       sort_scope, sort_order = hash.first
+
       if @records.respond_to?(sort_scope)
         @records.send(sort_scope, sort_order)
       else
