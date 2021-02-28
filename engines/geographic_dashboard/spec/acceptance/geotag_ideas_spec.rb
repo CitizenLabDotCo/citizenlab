@@ -22,8 +22,10 @@ resource 'GeotagIdeas' do
       create_list(:idea, 2, title_multiloc: { 'nl-BE' => 'Een fietspad in het Prinsenbos van Grimbergen' })
     end
 
+    allow(GeographicDashboard::NLPApiService.new).to receive(:geotag).and_return(geocoded)
+    allow(GeographicDashboard::GeotagService.new).to receive(:geotag).and_return(geocoded)
+
     before do
-      allow(GeographicDashboard::GeotagService.new).to receive(:geotag).and_return(geocoded)
       do_request
     end
 
