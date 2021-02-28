@@ -163,7 +163,7 @@ const ProjectFolderDescription = memo<Props & InjectedIntlProps>(
               <div>
                 <QuillEditedContent
                   textColor={theme.colorText}
-                  fontSize="base"
+                  fontSize={windowWidth <= 1439 ? 'base' : 'medium'}
                   className="e2e-folder-description"
                 >
                   <T
