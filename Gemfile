@@ -31,6 +31,7 @@ group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
   gem 'database_cleaner'
   gem 'factory_bot_rails'
+  gem 'license_finder'
   gem 'rack-mini-profiler'
   gem 'rspec_api_documentation'
   gem 'rspec_junit_formatter'
@@ -122,7 +123,6 @@ gem 'scenic'
 # This fork was made to support the latest verions of Ruby
 # and Rails.
 gem 'ice_cube', github: 'CitizenLabDotCo/ice_cube'
-gem 'skylight'
 # Also required here to be able to initialize Mailgun in
 # e.g. production.rb, which would otherwise result in an
 # "undefined method 'mailgun_settings=' for ActionMailer::Base:Class"
