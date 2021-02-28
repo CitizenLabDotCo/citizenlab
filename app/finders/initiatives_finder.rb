@@ -61,6 +61,6 @@ class InitiativesFinder < ApplicationFinder
   end
 
   def _search_restricted?
-    UserDisplayNameService.new(AppConfiguration.instance, @authorized_with).restricted?
+    UserDisplayNameService.new(AppConfiguration.instance, current_user).restricted?
   end
 end
