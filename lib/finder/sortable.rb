@@ -16,7 +16,7 @@ module Finder
       attr_reader :_default_sort, :_default_sort_order
 
       def sort_scopes(scopes)
-        _sort_scopes.merge(scopes.with_indifferent_access)
+        _sort_scopes.merge!(scopes.with_indifferent_access)
       end
 
       def sort_scope(scope_name, blk_or_options)
