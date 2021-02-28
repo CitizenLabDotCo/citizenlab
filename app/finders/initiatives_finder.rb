@@ -1,17 +1,13 @@
 class InitiativesFinder < ApplicationFinder
   default_sort 'new'
 
-  # rubocop:disable Layout/HashAlignment
-  sort_scopes(
-    'new'           => { order_new: :desc },
-    '-new'          => { order_new: :asc },
-    'status'        => { order_status: :asc },
-    '-status'       => { order_status: :desc },
-    'random'        => :order_random,
-    'author_name'   => ['users.first_name ASC', 'users.last_name ASC'],
-    '-author_name'  => ['users.first_name DESC', 'users.last_name DESC']
-  )
-  # rubocop:enable Layout/HashAlignment
+  sort_scope 'new',          order_new: :desc
+  sort_scope '-new',         order_new: :asc
+  sort_scope 'status',       order_status: :asc
+  sort_scope '-status',      order_status: :desc
+  sort_scope 'random',       :order_random
+  sort_scope 'author_name',  ['users.first_name ASC', 'users.last_name ASC']
+  sort_scope '-author_name', ['users.first_name DESC', 'users.last_name DESC']
 
   sortable_attributes :upvotes_count
 
@@ -36,10 +32,8 @@ class InitiativesFinder < ApplicationFinder
     where(assignee_id: assignee_id)
   end
 
-  def feedback_needed_condition(param)
-    return unless param
-
-    scope(:feedback_needed)
+  def feedback_needed_condition(feedback_needed)
+    feedback_needed ? scope(:feedback_needed) : scope(:no_feedback_needed)
   end
 
   def author_condition(author_id)
