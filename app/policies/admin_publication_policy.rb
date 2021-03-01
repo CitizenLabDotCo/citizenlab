@@ -9,9 +9,9 @@ class AdminPublicationPolicy < ApplicationPolicy
 
     def resolve
       AdminPublication
-          .publication_types
-          .map { |klass| scope.where(publication: Pundit.policy_scope(user, klass)) } # scope per publication type
-          .reduce(&:or) # joining partial scopes
+        .publication_types
+        .map { |klass| scope.where(publication: Pundit.policy_scope(user, klass)) } # scope per publication type
+        .reduce(&:or) # joining partial scopes
     end
   end
 
