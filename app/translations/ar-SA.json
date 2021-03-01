@@ -1420,6 +1420,7 @@
   "app.containers.AdminPage.SettingsPage.fieldTitleTooltip": "سيكون الاسم الذي تختاره لكل منطقة مرئيًا للمواطنين أثناء التسجيل وعند التصفية للبحث عن المشاريع.",
   "app.containers.AdminPage.SettingsPage.fieldTopicTitle": "اسم الموضوع",
   "app.containers.AdminPage.SettingsPage.fieldTopicTitleTooltip": "سيكون الاسم الذي تختاره لكل موضوع مرئيًا لمستخدمي المنصة.",
+  "app.containers.AdminPage.SettingsPage.fields": "",
   "app.containers.AdminPage.SettingsPage.firstPage": "",
   "app.containers.AdminPage.SettingsPage.firstPageTooltip": "",
   "app.containers.AdminPage.SettingsPage.header": "لافتة الصفحة الرئيسية",
