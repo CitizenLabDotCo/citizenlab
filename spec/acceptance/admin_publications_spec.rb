@@ -202,10 +202,9 @@ resource "AdminPublication" do
         expect(json_response[:data].select{|d| d.dig(:relationships, :publication, :data, :type) == 'folder'}.first.dig(:attributes, :visible_children_count)).to eq 1
       end
 
-      example "Returns an empty list success response when there are no projects or folders", document: false do
-        Project.all.each(&:destroy!)
-        ProjectFolders::Folder.all.each(&:destroy!)
-        do_request(folder: nil, publication_statuses: ['published'])
+      example "Returns an empty list success response when there are no publications", document: false do
+        AdminPublication.publication_types.each{|claz| claz.all.each(&:destroy!)}
+        do_request(publication_statuses: ['published'])
         expect(status).to eq(200)
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 0
