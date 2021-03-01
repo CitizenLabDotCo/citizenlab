@@ -448,6 +448,15 @@ class SettingsCustomizeTab extends PureComponent<
         contrastRatio,
       } = this.state;
 
+      const latestAppConfigStyleSettings = {
+        ...tenant.data.attributes,
+        ...attributesDiff,
+      }.style;
+      const latestAppConfigCoreSettings = {
+        ...tenant.data.attributes,
+        ...attributesDiff,
+      }.settings.core;
+
       return (
         <form onSubmit={this.save}>
           <Section key={'branding'}>
@@ -567,11 +576,7 @@ class SettingsCustomizeTab extends PureComponent<
               <ColorPickerInput
                 type="text"
                 value={
-                  get(attributesDiff, 'style.signedOutHeaderOverlayColor') ||
-                  get(
-                    tenant,
-                    'data.attributes.style.signedOutHeaderOverlayColor'
-                  ) ||
+                  latestAppConfigStyleSettings?.signedOutHeaderOverlayColor ||
                   this.props.theme.colorMain
                 }
                 onChange={this.handleHeaderOverlayColorOnChange}
@@ -586,11 +591,7 @@ class SettingsCustomizeTab extends PureComponent<
                 min={0}
                 max={100}
                 value={
-                  get(attributesDiff, 'style.signedOutHeaderOverlayOpacity') ||
-                  get(
-                    tenant,
-                    'data.attributes.style.signedOutHeaderOverlayOpacity'
-                  ) ||
+                  latestAppConfigStyleSettings?.signedOutHeaderOverlayOpacity ||
                   90
                 }
                 onChange={this.handleHeaderOverlayOpacityOnChange}
@@ -599,10 +600,7 @@ class SettingsCustomizeTab extends PureComponent<
             <SectionField>
               <InputMultilocWithLocaleSwitcher
                 type="text"
-                valueMultiloc={
-                  get(attributesDiff, 'settings.core.header_title') ||
-                  get(tenant, 'data.attributes.settings.core.header_title')
-                }
+                valueMultiloc={latestAppConfigCoreSettings?.['header_title']}
                 label={
                   <LabelTooltip>
                     <FormattedMessage {...messages.bannerHeaderSignedOut} />
@@ -623,10 +621,7 @@ class SettingsCustomizeTab extends PureComponent<
             <SectionField>
               <InputMultilocWithLocaleSwitcher
                 type="text"
-                valueMultiloc={
-                  get(attributesDiff, 'settings.core.header_slogan') ||
-                  get(tenant, 'data.attributes.settings.core.header_slogan')
-                }
+                valueMultiloc={latestAppConfigCoreSettings?.['header_slogan']}
                 label={formatMessage(messages.bannerHeaderSignedOutSubtitle)}
                 maxCharCount={this.subtitleMaxCharCount}
                 onChange={this.handleSubtitleOnChange}
@@ -637,14 +632,9 @@ class SettingsCustomizeTab extends PureComponent<
               <InputMultilocWithLocaleSwitcher
                 type="text"
                 valueMultiloc={
-                  get(
-                    attributesDiff,
-                    'settings.core.custom_onboarding_fallback_message'
-                  ) ||
-                  get(
-                    tenant,
-                    'data.attributes.settings.core.custom_onboarding_fallback_message'
-                  )
+                  latestAppConfigCoreSettings?.[
+                    'custom_onboarding_fallback_message'
+                  ]
                 }
                 label={formatMessage(messages.bannerHeaderSignedIn)}
                 onChange={this.handleCoreMultilocSettingOnChange(
@@ -665,14 +655,7 @@ class SettingsCustomizeTab extends PureComponent<
               <InputMultilocWithLocaleSwitcher
                 type="text"
                 valueMultiloc={
-                  get(
-                    attributesDiff,
-                    'settings.core.currently_working_on_text'
-                  ) ||
-                  get(
-                    tenant,
-                    'data.attributes.settings.core.currently_working_on_text'
-                  )
+                  latestAppConfigCoreSettings?.['currently_working_on_text']
                 }
                 onChange={this.handleCoreMultilocSettingOnChange(
                   'currently_working_on_text'
