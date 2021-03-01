@@ -1,7 +1,13 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import getSubmitState from 'utils/getSubmitState';
-import { IAppConfigurationSettings } from 'services/appConfiguration';
+import { isCLErrorJSON } from 'utils/errorUtils';
+
+import {
+  IUpdatedAppConfigurationProperties,
+  updateAppConfiguration,
+  IAppConfigurationSettings,
+} from 'services/appConfiguration';
 
 // components
 import AllCustomFields from './CustomFields/All';
@@ -10,7 +16,6 @@ import {
   SectionTitle,
   SectionField,
   SectionDescription,
-  SubSectionTitle,
 } from 'components/admin/Section';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import { IconTooltip } from 'cl2-component-library';
@@ -24,6 +29,10 @@ const LabelTooltip = styled.div`
   display: flex;
 `;
 
+const SignUpFieldsSection = styled.div`
+  margin-bottom: 60px;
+`;
+
 interface Props {}
 
 interface IAttributesDiff {
@@ -34,49 +43,39 @@ const SettingsRegistrationTab = (_props: Props) => {
   const [isFormSubmitting, setIsFormSubmitting] = useState(false);
   const [isFormSaved, setIsFormSaved] = useState(false);
   const [attributesDiff, setAttributesDiff] = useState<IAttributesDiff>({});
+
   const handleProjectHeaderOnChange = () => {};
+
+  const validateForm = () => {
+    return true;
+  };
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     setIsFormSubmitting(true);
-    // event.preventDefault();
+    event.preventDefault();
 
-    // const { tenant, attributesDiff } = this.state;
+    if (validateForm()) {
+      setIsFormSubmitting(true);
+      setIsFormSaved(false);
 
-    // if (tenant && this.validate(tenant, attributesDiff)) {
-    //   this.setState({ loading: true, saved: false });
-    //   setIsFormSubmitting(true);
-    //   setIsFormSaved(false);
+      try {
+        await updateAppConfiguration(
+          attributesDiff as IUpdatedAppConfigurationProperties
+        );
 
-    //   const homepageInfoPageMultiloc = attributesDiff.homepage_info;
-
-    //   try {
-    //     await updateAppConfiguration(
-    //       attributesDiff as IUpdatedAppConfigurationProperties
-    //     );
-
-    //     if (!isNilOrError(homepageInfoPage)) {
-    //       const homepageInfoPageId = homepageInfoPage.id;
-
-    //       if (attributesDiff.homepage_info) {
-    //         await updatePage(homepageInfoPageId, {
-    //           body_multiloc: homepageInfoPageMultiloc,
-    //         });
-    //       }
-    //     }
-    //     setIsFormSubmitting(false);
-    //     setIsFormSaved(true);
-    //     setAttributesDiff({});
-    //   } catch (error) {
-    //     if (isCLErrorJSON(error)) {
-    //       this.setState({ loading: false, errors: error.json.errors });
-    //     } else {
-    //       this.setState({ loading: false, errors: error });
-    //     }
-    //   }
-    // }
+        setIsFormSubmitting(false);
+        setIsFormSaved(true);
+        setAttributesDiff({});
+      } catch (error) {
+        setIsFormSubmitting(true);
+        setIsFormSaved(false);
+        // setErrors(isCLErrorJSON(error) ? error.json.errors : error);
+      }
+    }
   };
   return (
     <>
-      <Section key={'signup_fields'}>
+      <SignUpFieldsSection key={'signup_fields'}>
         <SectionTitle>
           <FormattedMessage {...messages.signupFormText} />
         </SectionTitle>
@@ -124,18 +123,22 @@ const SettingsRegistrationTab = (_props: Props) => {
               }
             />
           </SectionField>
-          {/* <SubmitWrapper
+          <SubmitWrapper
             loading={isFormSubmitting}
-            status={getSubmitState({ errors, saved, diff: attributesDiff })}
+            status={getSubmitState({
+              saved: isFormSaved,
+              errors: null,
+              diff: attributesDiff,
+            })}
             messages={{
               buttonSave: messages.save,
               buttonSuccess: messages.saveSuccess,
               messageError: messages.saveErrorMessage,
               messageSuccess: messages.saveSuccessMessage,
             }}
-          /> */}
+          />
         </form>
-      </Section>
+      </SignUpFieldsSection>
       <Section>
         <SectionTitle>
           Fields
