@@ -2102,6 +2102,7 @@
   "app.containers.Projects.survey": "Spørreundersøkelse",
   "app.containers.Projects.takeThePoll": "Bli med på avstemmingen",
   "app.containers.Projects.takeTheSurvey": "Ta spørreundersøkelsen",
+  "app.containers.Projects.thisProjectIsNotPubliclyVisibleVisitHomePageToDiscover": "Dette prosjektet er ikke offentlig synlig. Besøk hjemmesiden for å oppdage andre engasjementsmuligheter.",
   "app.containers.Projects.timeline": "Tidslinje",
   "app.containers.Projects.totalBudget": "Totalbudsjett",
   "app.containers.Projects.upcomingEvents": "Kommende hendelser",
