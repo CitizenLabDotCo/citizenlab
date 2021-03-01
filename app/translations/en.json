@@ -1397,6 +1397,7 @@
   "app.containers.AdminPage.SettingsPage.areasTermPlaceholder": "areas",
   "app.containers.AdminPage.SettingsPage.areasTermsSave": "Save",
   "app.containers.AdminPage.SettingsPage.bannerHeaderSignedOut": "Banner header for non-signed in visitors",
+  "app.containers.AdminPage.SettingsPage.bannerHeaderSignedOutSubtitle": "Banner sub-header for non-signed in visitors",
   "app.containers.AdminPage.SettingsPage.bannerHeaderSignedOutTooltip": "This text is shown on the banner image",
   "app.containers.AdminPage.SettingsPage.bannerOverlayColor": "Banner overlay color",
   "app.containers.AdminPage.SettingsPage.bannerOverlayOpacity": "Banner overlay opacity",
