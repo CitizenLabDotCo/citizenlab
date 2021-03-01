@@ -63,6 +63,11 @@ const WideSectionField = styled(SectionField)`
   max-width: calc(${(props) => props.theme.maxPageWidth}px - 100px);
 `;
 
+const LabelTooltip = styled.div`
+  display: flex;
+  margin-right: 20px;
+`;
+
 interface DataProps {
   homepageInfoPage: GetPageChildProps;
 }
@@ -637,10 +642,18 @@ class SettingsCustomizeTab extends PureComponent<
                   get(attributesDiff, 'settings.core.header_title') ||
                   get(tenant, 'data.attributes.settings.core.header_title')
                 }
-                label={formatMessage(messages.bannerHeaderSignedOut)}
-                labelTooltipText={formatMessage(
-                  messages.bannerHeaderSignedOutTooltip
-                )}
+                label={
+                  <LabelTooltip>
+                    <FormattedMessage {...messages.bannerHeaderSignedOut} />
+                    <IconTooltip
+                      content={
+                        <FormattedMessage
+                          {...messages.bannerHeaderSignedOutTooltip}
+                        />
+                      }
+                    />
+                  </LabelTooltip>
+                }
                 maxCharCount={this.titleMaxCharCount}
                 onChange={this.handleTitleOnChange}
                 errorMultiloc={titleError}
