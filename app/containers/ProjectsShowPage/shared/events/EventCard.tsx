@@ -117,7 +117,7 @@ const EventMonth = styled.div`
 
 const EventDay = styled.div`
   color: ${(props: any) => props.theme.colorText};
-  font-size: 18px;
+  font-size: 17px;
   line-height: normal;
   font-weight: 400;
 
@@ -258,8 +258,8 @@ const EventCard = memo<Props>(({ event, className }) => {
     const isMultiYear = startAtYear !== endAtYear;
     const hasLocation = !every(event.attributes.location_multiloc, isEmpty);
     const eventDateTime = isMultiDayEvent
-      ? `${startAtMoment.format('lll')} - ${endAtMoment.format('lll')}`
-      : `${startAtMoment.format('ll')} • ${startAtMoment.format(
+      ? `${startAtMoment.format('LLL')} - ${endAtMoment.format('LLL')}`
+      : `${startAtMoment.format('LL')} • ${startAtMoment.format(
           'LT'
         )} - ${endAtMoment.format('LT')}`;
 
