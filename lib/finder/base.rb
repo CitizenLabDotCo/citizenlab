@@ -1,30 +1,36 @@
 # frozen_string_literal: true
 
 require 'callable'
+require 'finder/authorization'
 require 'finder/error'
-require 'finder/sortable'
 require 'finder/helpers'
 require 'finder/inflectors'
+require 'finder/sortable'
 
 module Finder
   ## Finder::Base
   class Base
     include Callable
-    include Finder::Sortable
+    include Finder::Authorization
     include Finder::Helpers
     include Finder::Inflectors
+    include Finder::Sortable
 
     ## You can now use #find instead of call.
     callable_with :find, error_class: Finder::Error, default_error: 'Something went wrong'
 
-    def initialize(params, scope: nil, includes: [], authorize_with: nil)
-      @pagination_params = params[:page] || {}
-      @sort_param        = params[:sort]
+    def initialize(params, scope: nil, includes: [], **options)
       @params            = params.respond_to?(:permit!) ? params.permit! : params
-      @authorize_with    = authorize_with
+      @options           = options
       @base_scope        = scope || _base_scope
       @records           = @base_scope.includes(includes)
     end
+
+    protected
+
+    attr_reader :params, :records, :options
+
+    delegate :table_name, to: :_klass
 
     private
 
@@ -50,13 +56,6 @@ module Finder
       raise "#{_klass_string} is not a valid Model. Please rename your finder."
     end
 
-    def _authorize_records
-      return unless @authorize_with
-
-      result.performed_authorization = true
-      filter_records { ::Pundit.policy_scope(@authorize_with, records) }
-    end
-
     def _filter_records
       params.each do |param, value|
         send("#{param}_condition", value) if respond_to?("#{param}_condition", true) && !value.nil?
@@ -64,20 +63,12 @@ module Finder
     end
 
     def _paginate_records
+      pagination_params = params[:page] || {}
       filter_records { records.page(pagination_params[:number]).per(pagination_params[:size]) }
     end
 
     def _base_scope
       _klass.all
     end
-
-    protected
-
-    attr_reader :params, :records, :pagination_params, :authorize_with
-    attr_accessor :sort_param
-
-    alias current_user authorize_with
-
-    delegate :table_name, to: :_klass
   end
 end

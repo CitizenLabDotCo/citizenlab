@@ -9,3 +9,5 @@ module IdeaAssignment
     end
   end
 end
+
+User.include(IdeaAssignment::Extensions::User)

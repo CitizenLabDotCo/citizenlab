@@ -47,12 +47,15 @@ module Finder
       end
     end
 
+    attr_accessor :_sort_method
+
     private
 
     delegate :_default_sort, :_default_sort_order, :_sortable_attributes, :_sort_scopes, to: :class
 
     def _sort_records
-      self.sort_param ||= _default_sort
+      @_sort_method = _default_sort || params[:sort]
+      return unless _sort_method
 
       if _sort_scopes&.key? _sort_method
         _sort_with_method
@@ -78,7 +81,7 @@ module Finder
       if @records.respond_to?(sort_scope)
         @records.send(sort_scope, sort_order)
       else
-        @records.order(*sort_scope)
+        @records.order(hash)
       end
     end
 
@@ -86,10 +89,6 @@ module Finder
       attribute = _sort_method_suffix.include?('.') ? _sort_method_suffix : "#{table_name}.#{_sort_method_suffix}"
 
       order(attribute => _sort_order)
-    end
-
-    def _sort_method
-      @_sort_method ||= sort_param
     end
 
     def _sort_method_suffix

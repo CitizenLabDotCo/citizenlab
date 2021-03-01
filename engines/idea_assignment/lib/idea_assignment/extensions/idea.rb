@@ -20,3 +20,5 @@ module IdeaAssignment
     end
   end
 end
+
+Idea.include(IdeaAssignment::Extensions::Idea)

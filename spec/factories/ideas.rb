@@ -14,7 +14,6 @@ FactoryBot.define do
     proposed_budget { 500 }
     association :project, factory: :continuous_project
     author
-    assignee { nil }
     idea_status
     factory :idea_with_topics do
       transient do

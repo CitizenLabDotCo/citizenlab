@@ -52,9 +52,6 @@ class WebApi::V1::IdeaSerializer < WebApi::V1::BaseSerializer
   belongs_to :author, record_type: :user, serializer: WebApi::V1::UserSerializer
   belongs_to :project
   belongs_to :idea_status
-  belongs_to :assignee, if: Proc.new { |object, params|
-    can_moderate? object, params
-  }, record_type: :user, serializer: WebApi::V1::UserSerializer
 
   has_one :user_vote, if: Proc.new { |object, params|
     signed_in? object, params
