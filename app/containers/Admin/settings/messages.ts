@@ -130,7 +130,7 @@ export default defineMessages({
   },
   bannerHeaderSignedOutSubtitle: {
     id: 'app.containers.AdminPage.SettingsPage.bannerHeaderSignedOutSubtitle',
-    defaultMessage: 'Banner sub-header (for non-signed in visitors)',
+    defaultMessage: 'Banner sub-header for non-signed in visitors',
   },
   subtitleMaxCharError: {
     id: 'app.containers.AdminPage.SettingsPage.subtitleMaxCharError',
