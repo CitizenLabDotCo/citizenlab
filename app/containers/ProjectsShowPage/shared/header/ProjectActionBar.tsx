@@ -81,8 +81,8 @@ const Left = styled.div`
 `;
 
 const Right = styled.div`
-  flex: 0 0 300px;
-  width: 300px;
+  flex: 0 0 310px;
+  width: 310px;
   display: flex;
   align-items: center;
   margin-left: 15px;
@@ -226,7 +226,7 @@ const ProjectActionBar = memo<Props>(({ projectId, className }) => {
                       projectId={project.id}
                       participationContextType="project"
                       fontWeight="500"
-                      width={!smallerThanLargeTablet ? '300px' : undefined}
+                      width={!smallerThanLargeTablet ? '310px' : undefined}
                     />
                   </CSSTransition>
                 )}
@@ -246,7 +246,7 @@ const ProjectActionBar = memo<Props>(({ projectId, className }) => {
                     phaseId={currentPhase?.id}
                     participationContextType="phase"
                     fontWeight="500"
-                    width={!smallerThanLargeTablet ? '300px' : undefined}
+                    width={!smallerThanLargeTablet ? '310px' : undefined}
                   />
                 </CSSTransition>
               )}
