@@ -115,8 +115,8 @@ const StyledProjectFolderDescription = styled(ProjectFolderDescription)`
 const StyledProjectFolderProjectCards = styled(ProjectFolderProjectCards)`
   flex: 0 0 800px;
   width: 800px;
-  padding: 25px;
-  padding-bottom: 5px;
+  padding: 20px;
+  padding-bottom: 0px;
   margin-left: 80px;
   margin-top: 4px;
   background: ${colors.background};
