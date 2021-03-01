@@ -1,7 +1,7 @@
 module MonkeyPatches
   module WebApi
     module V1
-      module IdeasSerializer
+      module IdeaSerializer
         def self.included(base)
           base.class_eval do
             belongs_to :assignee,
@@ -15,4 +15,4 @@ module MonkeyPatches
   end
 end
 
-::WebApi::V1::IdeasSerializer.prepend(MonkeyPatches::WebApi::V1::IdeasSerializer)
+::WebApi::V1::IdeaSerializer.prepend(MonkeyPatches::WebApi::V1::IdeaSerializer)
