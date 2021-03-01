@@ -1,0 +1,168 @@
+---
+- - :permit
+  - MIT
+  - :who: 
+    :why: 
+    :versions: []
+    :when: 2020-11-16 23:10:14.177024779 Z
+- - :permit
+  - ruby
+  - :who: 
+    :why: 
+    :versions: []
+    :when: 2020-11-16 23:10:22.251584497 Z
+- - :permit
+  - Apache 2.0
+  - :who: 
+    :why: 
+    :versions: []
+    :when: 2020-11-16 23:17:41.317926625 Z
+- - :permit
+  - ISC
+  - :who: 
+    :why: 
+    :versions: []
+    :when: 2020-11-16 23:19:46.989627255 Z
+- - :approve
+  - WTFPL
+  - :who: 
+    :why: 
+    :versions: []
+    :when: 2020-11-16 23:43:20.561698523 Z
+- - :approve
+  - New BSD
+  - :who: 
+    :why: 
+    :versions: []
+    :when: 2020-11-16 23:45:12.362528969 Z
+- - :approve
+  - BSD 3-Clause
+  - :who: 
+    :why: 
+    :versions: []
+    :when: 2020-11-16 23:45:34.497617768 Z
+- - :permit
+  - WTFPL
+  - :who: 
+    :why: 
+    :versions: []
+    :when: 2020-11-16 23:52:14.323115325 Z
+- - :permit
+  - New BSD
+  - :who: 
+    :why: 
+    :versions: []
+    :when: 2020-11-16 23:52:39.960950292 Z
+- - :permit
+  - Simplified BSD
+  - :who: 
+    :why: 
+    :versions: []
+    :when: 2020-11-16 23:54:14.723953082 Z
+- - :permit
+  - BSD 3-Clause
+  - :who: 
+    :why: 
+    :versions: []
+    :when: 2020-11-16 23:55:19.036737894 Z
+- - :license
+  - activerecord-postgis-adapter
+  - BSD 3-Clause
+  - :who: 
+    :why: 
+    :versions: []
+    :when: 2020-11-17 00:01:48.552672458 Z
+- - :license
+  - rgeo-geojson
+  - BSD 3-Clause
+  - :who: 
+    :why: 
+    :versions: []
+    :when: 2020-11-17 00:02:58.643770167 Z
+- - :permit
+  - 2-clause BSDL
+  - :who: 
+    :why: 
+    :versions: []
+    :when: 2020-11-17 00:05:01.110510128 Z
+- - :license
+  - rgeo
+  - BSD 3-Clause
+  - :who: 
+    :why: 
+    :versions: []
+    :when: 2020-11-17 00:06:31.056107479 Z
+- - :license
+  - rgeo-activerecord
+  - BSD 3-Clause
+  - :who: 
+    :why: 
+    :versions: []
+    :when: 2020-11-17 00:06:56.743802694 Z
+- - :license
+  - simplecov-rcov
+  - MIT
+  - :who: 
+    :why: 
+    :versions: []
+    :when: 2020-11-17 00:08:53.943260529 Z
+- - :permit
+  - CitizenLab Commercial License
+  - :who: 
+    :why: 
+    :versions: []
+    :when: 2021-02-24 13:52:04.031811239 Z
+- - :approve
+  - admin_api
+  - :who: 
+    :why: 
+    :versions: []
+    :when: 2021-02-24 13:55:48.746984657 Z
+- - :approve
+  - email_campaigns
+  - :who: 
+    :why: 
+    :versions: []
+    :when: 2021-02-24 13:56:17.996729810 Z
+- - :approve
+  - frontend
+  - :who: 
+    :why: 
+    :versions: []
+    :when: 2021-02-24 13:56:18.297371212 Z
+- - :approve
+  - onboarding
+  - :who: 
+    :why: 
+    :versions: []
+    :when: 2021-02-24 13:56:18.596411203 Z
+- - :approve
+  - polls
+  - :who: 
+    :why: 
+    :versions: []
+    :when: 2021-02-24 13:56:18.898552631 Z
+- - :approve
+  - seo
+  - :who: 
+    :why: 
+    :versions: []
+    :when: 2021-02-24 13:56:19.212311410 Z
+- - :approve
+  - surveys
+  - :who: 
+    :why: 
+    :versions: []
+    :when: 2021-02-24 13:56:19.512278233 Z
+- - :approve
+  - volunteering
+  - :who: 
+    :why: 
+    :versions: []
+    :when: 2021-02-24 13:56:21.699541131 Z
+- - :approve
+  - que-web
+  - :who: 
+    :why: 
+    :versions: []
+    :when: 2021-02-24 14:15:04.392754008 Z

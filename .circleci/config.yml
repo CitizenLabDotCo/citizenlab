@@ -74,6 +74,15 @@ jobs:
       - store_test_results:
           path: spec/reports
 
+  license-check:
+    resource_class: small
+    executor:
+      name: cl2-back
+      image-tag: $CIRCLE_SHA1
+    working_directory: /cl2_back
+    steps:
+      - run: license_finder
+
   slow-tests:
     resource_class: small
     executor:
@@ -193,6 +202,14 @@ workflows:
     jobs:
       - build-docker-image:
           context: docker-hub-access
+          filters:
+            branches:
+              ignore:
+                - crowdin_master
+      - license-check:
+          context: docker-hub-access
+          requires:
+            - build-docker-image
           filters:
             branches:
               ignore:
