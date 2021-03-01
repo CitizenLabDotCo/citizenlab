@@ -226,56 +226,34 @@ class SettingsCustomizeTab extends PureComponent<
   };
 
   handleTitleOnChange = (titleMultiloc: Multiloc) => {
-    this.setState((state) => {
-      const { formatMessage } = this.props.intl;
-      const titleError = {} as Multiloc;
+    const { formatMessage } = this.props.intl;
+    const titleError = {} as Multiloc;
 
-      forOwn(titleMultiloc, (title, locale) => {
-        if (size(trim(title)) > 45) {
-          titleError[locale] = formatMessage(messages.titleMaxCharError);
-        }
-      });
+    forOwn(titleMultiloc, (title, locale) => {
+      if (size(trim(title)) > 45) {
+        titleError[locale] = formatMessage(messages.titleMaxCharError);
+      }
+    });
 
-      return {
-        titleError,
-        attributesDiff: {
-          ...state.attributesDiff,
-          settings: {
-            ...get(state.attributesDiff, 'settings', {}),
-            core: {
-              ...get(state.attributesDiff, 'settings.core', {}),
-              header_title: titleMultiloc,
-            },
-          },
-        },
-      };
+    this.handleCoreMultilocSettingOnChange('header_title');
+    this.setState({
+      titleError,
     });
   };
 
   handleSubtitleOnChange = (subtitleMultiloc: Multiloc) => {
-    this.setState((state) => {
-      const { formatMessage } = this.props.intl;
-      const subtitleError = {} as Multiloc;
+    const { formatMessage } = this.props.intl;
+    const subtitleError = {} as Multiloc;
 
-      forOwn(subtitleMultiloc, (subtitle, locale) => {
-        if (size(trim(subtitle)) > 90) {
-          subtitleError[locale] = formatMessage(messages.subtitleMaxCharError);
-        }
-      });
+    forOwn(subtitleMultiloc, (subtitle, locale) => {
+      if (size(trim(subtitle)) > 90) {
+        subtitleError[locale] = formatMessage(messages.subtitleMaxCharError);
+      }
+    });
 
-      return {
-        subtitleError,
-        attributesDiff: {
-          ...state.attributesDiff,
-          settings: {
-            ...get(state.attributesDiff, 'settings', {}),
-            core: {
-              ...get(state.attributesDiff, 'settings.core', {}),
-              header_slogan: subtitleMultiloc,
-            },
-          },
-        },
-      };
+    this.handleCoreMultilocSettingOnChange('header_slogan');
+    this.setState({
+      subtitleError,
     });
   };
 
@@ -423,38 +401,21 @@ class SettingsCustomizeTab extends PureComponent<
     }));
   };
 
-  handleBannerHeaderSignedInOnChange = (signedInHeader: Multiloc) => {
-    this.setState((state) => {
-      return {
-        attributesDiff: {
-          ...state.attributesDiff,
-          settings: {
-            ...get(state.attributesDiff, 'settings', {}),
-            core: {
-              ...get(state.attributesDiff, 'settings.core', {}),
-              custom_onboarding_fallback_message: signedInHeader,
-            },
+  handleCoreMultilocSettingOnChange = (propertyName: string) => (
+    multiloc: Multiloc
+  ) => {
+    this.setState((state) => ({
+      attributesDiff: {
+        ...state.attributesDiff,
+        settings: {
+          ...get(state.attributesDiff, 'settings', {}),
+          core: {
+            ...get(state.attributesDiff, 'settings.core', {}),
+            [propertyName]: multiloc,
           },
         },
-      };
-    });
-  };
-
-  handleProjectHeaderOnChange = (projectHeader: Multiloc) => {
-    this.setState((state) => {
-      return {
-        attributesDiff: {
-          ...state.attributesDiff,
-          settings: {
-            ...get(state.attributesDiff, 'settings', {}),
-            core: {
-              ...get(state.attributesDiff, 'settings.core', {}),
-              currently_working_on_text: projectHeader,
-            },
-          },
-        },
-      };
-    });
+      },
+    }));
   };
 
   /*
@@ -686,8 +647,9 @@ class SettingsCustomizeTab extends PureComponent<
                   )
                 }
                 label={formatMessage(messages.bannerHeaderSignedIn)}
-                onChange={this.handleBannerHeaderSignedInOnChange}
-                errorMultiloc={subtitleError}
+                onChange={this.handleCoreMultilocSettingOnChange(
+                  'custom_onboarding_fallback_message'
+                )}
               />
             </SectionField>
           </Section>
@@ -712,8 +674,9 @@ class SettingsCustomizeTab extends PureComponent<
                     'data.attributes.settings.core.currently_working_on_text'
                   )
                 }
-                onChange={this.handleProjectHeaderOnChange}
-                errorMultiloc={subtitleError}
+                onChange={this.handleCoreMultilocSettingOnChange(
+                  'currently_working_on_text'
+                )}
               />
             </SectionField>
           </Section>
