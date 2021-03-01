@@ -13,7 +13,7 @@ import GetOfficialFeedbacks, {
 
 // styles
 import styled from 'styled-components';
-import { colors, fontSizes, media } from 'utils/styleUtils';
+import { colors, fontSizes, media, isRtl } from 'utils/styleUtils';
 
 // i18n
 import messages from './messages';
@@ -31,6 +31,10 @@ const FeedbackHeader = styled.div`
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
+
+  ${isRtl`
+    flex-direction: row-reverse;
+  `}
 
   ${media.smallerThanMinTablet`
     flex-direction: column;
@@ -53,6 +57,13 @@ const FeedbackSubtitle = styled.div`
   font-size: ${fontSizes.base}px;
   line-height: normal;
   font-weight: 400;
+
+  ${isRtl`
+    & span {
+        display: flex;
+        flex-direction: row-reverse;
+    }
+  `}
 `;
 
 const StyledOfficialFeedbackPost = styled(OfficialFeedbackPost)`

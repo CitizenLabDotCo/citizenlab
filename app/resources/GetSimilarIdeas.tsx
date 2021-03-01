@@ -3,7 +3,7 @@ import shallowCompare from 'utils/shallowCompare';
 import { Subscription, BehaviorSubject, of } from 'rxjs';
 import { distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { isString } from 'lodash-es';
-import { IMinimalIdeaData, similarIdeas } from 'services/ideas';
+import { IMinimalIdeaData, similarIdeasStream } from 'services/ideas';
 import { isNilOrError } from 'utils/helperUtils';
 
 interface InputProps {
@@ -53,7 +53,7 @@ export default class GetSimilarIdeas extends React.Component<Props, State> {
           distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
           switchMap(({ ideaId, pageSize }) => {
             if (isString(ideaId)) {
-              return similarIdeas(ideaId, {
+              return similarIdeasStream(ideaId, {
                 queryParameters: {
                   'page[size]': pageSize,
                 },

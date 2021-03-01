@@ -13,6 +13,7 @@ import { withTheme } from 'styled-components';
 import { rgba } from 'polished';
 
 // components
+import ExportMenu from '../../components/ExportMenu';
 import {
   AreaChart,
   CartesianGrid,
@@ -49,14 +50,18 @@ type IResourceByTime = IUsersByTime | IIdeasByTime | ICommentsByTime;
 type Props = {
   className?: string;
   graphUnit: IGraphUnit;
-  graphTitleMessageKey: string;
+  graphTitle: string;
   startAt: string | null | undefined;
   endAt: string | null;
   resolution: IResolution;
   currentProjectFilter: string | undefined;
   currentGroupFilter: string | undefined;
   currentTopicFilter: string | undefined;
+  currentProjectFilterLabel: string | undefined;
+  currentGroupFilterLabel: string | undefined;
+  currentTopicFilterLabel: string | undefined;
   stream: (streamParams?: IStreamParams | null) => IStream<IResourceByTime>;
+  xlsxEndpoint: string;
 };
 
 export class CumulativeAreaChart extends PureComponent<
@@ -64,12 +69,15 @@ export class CumulativeAreaChart extends PureComponent<
   State
 > {
   subscription: Subscription;
+  currentChart: React.RefObject<any>;
 
   constructor(props: Props & InjectedIntlProps) {
     super(props as any);
     this.state = {
       serie: null,
     };
+
+    this.currentChart = React.createRef();
   }
 
   componentDidMount() {
@@ -227,7 +235,7 @@ export class CumulativeAreaChart extends PureComponent<
 
   render() {
     const {
-      graphTitleMessageKey,
+      graphTitle,
       graphUnit,
       className,
       intl: { formatMessage },
@@ -240,6 +248,7 @@ export class CumulativeAreaChart extends PureComponent<
       chartStroke,
       animationBegin,
       animationDuration,
+      cartesianGridColor,
     } = this.props['theme'];
     const formattedNumbers = this.getFormattedNumbers(serie);
     const {
@@ -253,14 +262,22 @@ export class CumulativeAreaChart extends PureComponent<
         <GraphCardInner>
           <GraphCardHeader>
             <GraphCardTitle>
-              <FormattedMessage {...messages[graphTitleMessageKey]} />
+              {graphTitle}
+              <GraphCardFigureContainer>
+                <GraphCardFigure>{totalNumber}</GraphCardFigure>
+                <GraphCardFigureChange className={typeOfChange}>
+                  {formattedSerieChange}
+                </GraphCardFigureChange>
+              </GraphCardFigureContainer>
             </GraphCardTitle>
-            <GraphCardFigureContainer>
-              <GraphCardFigure>{totalNumber}</GraphCardFigure>
-              <GraphCardFigureChange className={typeOfChange}>
-                {formattedSerieChange}
-              </GraphCardFigureChange>
-            </GraphCardFigureContainer>
+
+            {serie && (
+              <ExportMenu
+                {...this.props}
+                svgNode={this.currentChart}
+                name={graphTitle}
+              />
+            )}
           </GraphCardHeader>
           {!serie ? (
             <NoDataContainer>
@@ -269,7 +286,7 @@ export class CumulativeAreaChart extends PureComponent<
           ) : (
             <ResponsiveContainer>
               <AreaChart data={serie} margin={{ right: 40 }}>
-                <CartesianGrid strokeDasharray="5 5" />
+                <CartesianGrid stroke={cartesianGridColor} strokeWidth={0.5} />
                 <Area
                   type="monotone"
                   dataKey="value"
@@ -280,6 +297,7 @@ export class CumulativeAreaChart extends PureComponent<
                   stroke={chartStroke}
                   animationDuration={animationDuration}
                   animationBegin={animationBegin}
+                  isAnimationActive={true}
                 />
                 <XAxis
                   dataKey="name"

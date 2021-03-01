@@ -8,7 +8,7 @@ import { getDaysRemainingUntil } from 'utils/dateUtils';
 
 import { IInitiativeData } from 'services/initiatives';
 import { IInitiativeStatusData } from 'services/initiativeStatuses';
-import { ITenantSettings } from 'services/tenant';
+import { IAppConfigurationSettings } from 'services/appConfiguration';
 
 import CountDown from './CountDown';
 import { Icon, IconTooltip } from 'cl2-component-library';
@@ -19,6 +19,9 @@ import Button from 'components/UI/Button';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import T from 'components/T';
+import { IInitiativeDisabledReason } from 'hooks/useInitiativesPermissions';
+import { darken } from 'polished';
+import Tippy from '@tippyjs/react';
 
 const Container = styled.div``;
 
@@ -92,15 +95,72 @@ const OnMobile = styled.span`
   `}
 `;
 
+const TooltipContent = styled.div<{ inMap?: boolean }>`
+  display: flex;
+  align-items: center;
+  padding: ${(props) => (props.inMap ? '0px' : '15px')};
+`;
+
+const TooltipContentIcon = styled(Icon)`
+  flex: 0 0 25px;
+  width: 20px;
+  height: 25px;
+  margin-right: 1rem;
+`;
+
+const TooltipContentText = styled.div`
+  flex: 1 1 auto;
+  color: ${colors.text};
+  font-size: ${fontSizes.base}px;
+  line-height: normal;
+  font-weight: 400;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+
+  a,
+  button {
+    color: ${colors.clBlueDark};
+    font-size: ${fontSizes.base}px;
+    line-height: normal;
+    font-weight: 400;
+    text-align: left;
+    text-decoration: underline;
+    white-space: normal;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-all;
+    word-break: break-word;
+    hyphens: auto;
+    display: inline;
+    padding: 0px;
+    margin: 0px;
+    cursor: pointer;
+    transition: all 100ms ease-out;
+
+    &:hover {
+      color: ${darken(0.15, colors.clBlueDark)};
+      text-decoration: underline;
+    }
+  }
+`;
+
 interface InputProps {
   initiative: IInitiativeData;
   initiativeStatus: IInitiativeStatusData;
-  initiativeSettings: NonNullable<ITenantSettings['initiatives']>;
+  initiativeSettings: NonNullable<IAppConfigurationSettings['initiatives']>;
   userVoted: boolean;
   onVote: () => void;
+  disabledReason: IInitiativeDisabledReason;
 }
 
 interface Props extends InputProps {}
+
+const disabledMessages: {
+  [key in IInitiativeDisabledReason]: ReactIntl.FormattedMessage.MessageDescriptor;
+} = {
+  notPermitted: messages.votingNotPermitted,
+};
 
 class ProposedNotVoted extends PureComponent<Props & { theme: any }> {
   handleOnVote = () => {
@@ -112,6 +172,7 @@ class ProposedNotVoted extends PureComponent<Props & { theme: any }> {
       initiative,
       initiativeSettings: { voting_threshold, threshold_reached_message },
       theme,
+      disabledReason,
     } = this.props;
     const voteCount = initiative.attributes.upvotes_count;
     const voteLimit = voting_threshold;
@@ -128,6 +189,15 @@ class ProposedNotVoted extends PureComponent<Props & { theme: any }> {
     ) : (
       <></>
     );
+
+    const tippyContent = disabledReason ? (
+      <TooltipContent id="tooltip-content" className="e2e-disabled-tooltip">
+        <TooltipContentIcon name="lock-outlined" ariaHidden />
+        <TooltipContentText>
+          <FormattedMessage {...disabledMessages[disabledReason]} />
+        </TooltipContentText>
+      </TooltipContent>
+    ) : null;
 
     return (
       <Container>
@@ -200,15 +270,34 @@ class ProposedNotVoted extends PureComponent<Props & { theme: any }> {
             bgColor={colors.lightGreyishBlue}
           />
         </VoteCounter>
-        <StyledButton
-          icon="upvote"
-          iconAriaHidden
-          buttonStyle="primary"
-          onClick={this.handleOnVote}
-          id="e2e-initiative-upvote-button"
+        <Tippy
+          disabled={!tippyContent}
+          interactive={true}
+          placement="bottom"
+          content={tippyContent || <></>}
+          theme="light"
+          hideOnClick={false}
         >
-          <FormattedMessage {...messages.vote} />
-        </StyledButton>
+          <div
+            tabIndex={tippyContent ? 0 : -1}
+            className={`e2e-idea-button ${tippyContent ? 'disabled' : ''} ${
+              disabledReason ? disabledReason : ''
+            }`}
+          >
+            <StyledButton
+              icon="upvote"
+              aria-describedby="tooltip-content"
+              iconAriaHidden
+              disabled={!!tippyContent}
+              buttonStyle="primary"
+              onClick={this.handleOnVote}
+              id="e2e-initiative-upvote-button"
+              ariaDisabled={false}
+            >
+              <FormattedMessage {...messages.vote} />
+            </StyledButton>
+          </div>
+        </Tippy>
       </Container>
     );
   }

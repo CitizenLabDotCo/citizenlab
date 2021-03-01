@@ -1,7 +1,8 @@
 import React, { PureComponent, Suspense, lazy } from 'react';
+import { adopt } from 'react-adopt';
 import { Subscription, combineLatest } from 'rxjs';
 import { tap, first } from 'rxjs/operators';
-import { uniq, has } from 'lodash-es';
+import { uniq, has, includes } from 'lodash-es';
 import { isNilOrError, isPage, endsWith } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
 import clHistory from 'utils/cl-router/history';
@@ -10,6 +11,7 @@ import moment from 'moment';
 import 'moment-timezone';
 import 'intersection-observer';
 import 'focus-visible';
+import smoothscroll from 'smoothscroll-polyfill';
 import { configureScope } from '@sentry/browser';
 import GlobalStyle from 'global-styles';
 
@@ -17,6 +19,7 @@ import GlobalStyle from 'global-styles';
 import {
   appLocalesMomentPairs,
   ADMIN_TEMPLATES_GRAPHQL_PATH,
+  locales,
 } from 'containers/App/constants';
 
 // graphql
@@ -67,7 +70,16 @@ import {
   signOut,
   signOutAndDeleteAccountPart2,
 } from 'services/auth';
-import { currentTenantStream, ITenant, ITenantStyle } from 'services/tenant';
+import {
+  currentAppConfigurationStream,
+  IAppConfiguration,
+  IAppConfigurationStyle,
+} from 'services/appConfiguration';
+
+// resources
+import GetFeatureFlag, {
+  GetFeatureFlagChildProps,
+} from 'resources/GetFeatureFlag';
 
 // events
 import eventEmitter from 'utils/eventEmitter';
@@ -78,8 +90,8 @@ import styled, { ThemeProvider } from 'styled-components';
 import { media, getTheme } from 'utils/styleUtils';
 
 // typings
-import { ContextShape } from 'components/Verification/VerificationSteps';
 import { SSOParams } from 'services/singleSignOn';
+import { Locale } from 'typings';
 
 const Container = styled.div`
   display: flex;
@@ -90,18 +102,18 @@ const Container = styled.div`
 `;
 
 const InnerContainer = styled.div`
-  padding-top: ${(props) => props.theme.menuHeight}px;
   width: 100vw;
+  padding-top: ${(props) => props.theme.menuHeight}px;
   min-height: calc(100vh - ${(props) => props.theme.menuHeight}px);
   display: flex;
   flex-direction: column;
   align-items: stretch;
 
   ${media.smallerThanMaxTablet`
-    padding-top: 0px;
-    min-height: calc(100vh - ${(props) => props.theme.mobileMenuHeight}px - ${(
-    props
-  ) => props.theme.mobileTopBarHeight}px);
+    padding-top: ${(props) => props.theme.mobileTopBarHeight}px;
+    min-height: calc(100vh - ${(props) =>
+      props.theme.mobileTopBarHeight}px - ${(props) =>
+    props.theme.mobileMenuHeight}px);
   `}
 `;
 
@@ -111,11 +123,17 @@ export interface IOpenPostPageModalEvent {
   type: 'idea' | 'initiative';
 }
 
-type Props = {};
+interface InputProps {}
 
-type State = {
+interface DataProps {
+  redirectsEnabled: GetFeatureFlagChildProps;
+}
+
+interface Props extends WithRouterProps, InputProps, DataProps {}
+
+interface State {
   previousPathname: string | null;
-  tenant: ITenant | null;
+  tenant: IAppConfiguration | null;
   authUser: IUser | null | undefined;
   modalId: string | null;
   modalSlug: string | null;
@@ -127,9 +145,10 @@ type State = {
   verificationModalMounted: boolean;
   navbarRef: HTMLElement | null;
   mobileNavbarRef: HTMLElement | null;
-};
+  locale: Locale | null;
+}
 
-class App extends PureComponent<Props & WithRouterProps, State> {
+class App extends PureComponent<Props, State> {
   subscriptions: Subscription[];
   unlisten: () => void;
 
@@ -149,14 +168,16 @@ class App extends PureComponent<Props & WithRouterProps, State> {
       verificationModalMounted: false,
       navbarRef: null,
       mobileNavbarRef: null,
+      locale: null,
     };
     this.subscriptions = [];
   }
 
   componentDidMount() {
+    const { redirectsEnabled } = this.props;
     const authUser$ = authUserStream().observable;
     const locale$ = localeStream().observable;
-    const tenant$ = currentTenantStream().observable;
+    const tenant$ = currentAppConfigurationStream().observable;
 
     this.unlisten = clHistory.listenBefore((newLocation) => {
       const newPreviousPathname = location.pathname;
@@ -172,8 +193,15 @@ class App extends PureComponent<Props & WithRouterProps, State> {
           ? newPreviousPathname
           : state.previousPathname,
       }));
+      if (redirectsEnabled) {
+        this.handleCustomRedirect();
+      }
       trackPage(newLocation.pathname);
     });
+
+    trackPage(location.pathname);
+
+    smoothscroll.polyfill();
 
     this.subscriptions = [
       combineLatest(
@@ -197,7 +225,7 @@ class App extends PureComponent<Props & WithRouterProps, State> {
 
             uniq(
               tenant.data.attributes.settings.core.locales
-                .filter((locale) => locale !== 'en' && locale !== 'ach')
+                .filter((locale) => locale !== 'en')
                 .map((locale) => appLocalesMomentPairs[locale])
             ).forEach((locale) => require(`moment/locale/${locale}.js`));
           })
@@ -205,7 +233,7 @@ class App extends PureComponent<Props & WithRouterProps, State> {
       ).subscribe(([authUser, locale, tenant]) => {
         const momentLoc = appLocalesMomentPairs[locale] || 'en';
         moment.locale(momentLoc);
-        this.setState({ tenant, authUser });
+        this.setState({ tenant, authUser, locale });
       }),
 
       tenant$.pipe(first()).subscribe((tenant) => {
@@ -216,7 +244,7 @@ class App extends PureComponent<Props & WithRouterProps, State> {
           import('webfontloader').then((WebfontLoader) => {
             WebfontLoader.load({
               typekit: {
-                id: (tenant.data.attributes.style as ITenantStyle)
+                id: (tenant.data.attributes.style as IAppConfigurationStyle)
                   .customFontAdobeId,
               },
             });
@@ -252,15 +280,25 @@ class App extends PureComponent<Props & WithRouterProps, State> {
     ];
   }
 
-  componentDidUpdate(_prevProps: Props, prevState: State) {
+  componentDidUpdate(prevProps: Props, prevState: State) {
     const {
       authUser,
+      tenant,
       signUpInModalMounted,
       verificationModalMounted,
     } = this.state;
+    const { redirectsEnabled } = this.props;
     const { pathname, search } = this.props.location;
     const isAuthError = endsWith(pathname, 'authentication-error');
     const isInvitation = endsWith(pathname, '/invite');
+
+    if (
+      redirectsEnabled &&
+      (prevState.tenant !== tenant ||
+        prevProps.location.pathname !== this.props.location.pathname)
+    ) {
+      this.handleCustomRedirect();
+    }
 
     if (
       (!prevState.signUpInModalMounted &&
@@ -355,9 +393,8 @@ class App extends PureComponent<Props & WithRouterProps, State> {
         window.history.replaceState(null, '', window.location.pathname);
         openVerificationModal({
           step: 'error',
-          context: {
-            error: this.props.location.query?.error || null,
-          } as ContextShape,
+          error: this.props.location.query?.error || null,
+          context: null,
         });
       }
     }
@@ -366,6 +403,28 @@ class App extends PureComponent<Props & WithRouterProps, State> {
   componentWillUnmount() {
     this.unlisten();
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+  }
+
+  handleCustomRedirect() {
+    const {
+      location: { pathname },
+    } = this.props;
+    const { tenant } = this.state;
+    const urlSegments = pathname.replace(/^\/+/g, '').split('/');
+
+    if (!isNilOrError(tenant) && tenant.data.attributes.settings.redirects) {
+      const { rules } = tenant.data.attributes.settings.redirects;
+
+      rules.forEach((rule) => {
+        if (
+          urlSegments.length === 2 &&
+          includes(locales, urlSegments[0]) &&
+          urlSegments[1] === rule.path
+        ) {
+          window.location.href = rule.target;
+        }
+      });
+    }
   }
 
   openPostPageModal = (
@@ -422,27 +481,29 @@ class App extends PureComponent<Props & WithRouterProps, State> {
       navbarRef,
       mobileNavbarRef,
     } = this.state;
-    const adminPage = isPage('admin', location.pathname);
-    const initiativeFormPage = isPage('initiative_form', location.pathname);
-    const ideaFormPage = isPage('idea_form', location.pathname);
-    const ideaEditPage = isPage('idea_edit', location.pathname);
-    const initiativeEditPage = isPage('initiative_edit', location.pathname);
-    const signInPage = isPage('sign_in', location.pathname);
-    const signUpPage = isPage('sign_up', location.pathname);
+    const isAdminPage = isPage('admin', location.pathname);
+    const isInitiativeFormPage = isPage('initiative_form', location.pathname);
+    const isIdeaFormPage = isPage('idea_form', location.pathname);
+    const isIdeaEditPage = isPage('idea_edit', location.pathname);
+    const isInitiativeEditPage = isPage('initiative_edit', location.pathname);
+    const isSignInPage = isPage('sign_in', location.pathname);
+    const isSignUpPage = isPage('sign_up', location.pathname);
     const theme = getTheme(tenant);
     const showFooter =
-      !adminPage &&
-      !ideaFormPage &&
-      !initiativeFormPage &&
-      !ideaEditPage &&
-      !initiativeEditPage;
-    const showShortFeedback = !signInPage && !signUpPage;
+      !isAdminPage &&
+      !isIdeaFormPage &&
+      !isInitiativeFormPage &&
+      !isIdeaEditPage &&
+      !isInitiativeEditPage;
+    const showShortFeedback = !isSignInPage && !isSignUpPage;
 
     return (
       <>
         {tenant && visible && (
           <PreviousPathnameContext.Provider value={previousPathname}>
-            <ThemeProvider theme={theme}>
+            <ThemeProvider
+              theme={{ ...theme, isRtl: !!this.state.locale?.startsWith('ar') }}
+            >
               <LiveAnnouncer>
                 <GlobalStyle />
 
@@ -492,6 +553,10 @@ class App extends PureComponent<Props & WithRouterProps, State> {
                   </ErrorBoundary>
 
                   <ErrorBoundary>
+                    <div id="topbar-portal" />
+                  </ErrorBoundary>
+
+                  <ErrorBoundary>
                     <ConsentManager />
                   </ErrorBoundary>
 
@@ -527,31 +592,38 @@ class App extends PureComponent<Props & WithRouterProps, State> {
   }
 }
 
-const AppWithHoC = withRouter(App);
+const Data = adopt<DataProps, InputProps>({
+  redirectsEnabled: <GetFeatureFlag name="redirects" />,
+});
 
+// Apollo
 const cache = new InMemoryCache();
-
 const httpLink = new HttpLink({ uri: ADMIN_TEMPLATES_GRAPHQL_PATH });
-
 const authLink = new ApolloLink((operation, forward) => {
   const jwt = getJwt();
 
   operation.setContext({
     headers: {
+      origin: '*',
       authorization: jwt ? `Bearer ${jwt}` : '',
+      'Access-Control-Allow-Origin': '*',
+    },
+    fetchOptions: {
+      mode: 'cors',
     },
   });
 
   return forward(operation);
 });
-
 const client = new ApolloClient({
   cache,
   link: authLink.concat(httpLink),
 });
 
-export default (props: Props) => (
+const AppWithHoC = withRouter(App);
+
+export default (inputProps: InputProps) => (
   <ApolloProvider client={client}>
-    <AppWithHoC {...props} />
+    <Data>{(dataProps) => <AppWithHoC {...dataProps} {...inputProps} />}</Data>
   </ApolloProvider>
 );

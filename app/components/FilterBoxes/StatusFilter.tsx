@@ -12,7 +12,7 @@ import { Icon } from 'cl2-component-library';
 
 // styling
 import styled from 'styled-components';
-import { fontSizes, colors, defaultCardStyle } from 'utils/styleUtils';
+import { fontSizes, colors, defaultCardStyle, isRtl } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { darken } from 'polished';
 import { Header, Title } from './styles';
@@ -41,6 +41,11 @@ const Count = styled.span`
   font-weight: 300;
   transition: all 80ms ease-out;
   margin-left: auto;
+
+  ${isRtl`
+    margin-left: 0;
+    margin-right: auto;
+  `}
 `;
 
 const CloseIcon = styled(Icon)`
@@ -48,6 +53,11 @@ const CloseIcon = styled(Icon)`
   height: 12px;
   fill: #fff;
   margin-left: auto;
+
+  ${isRtl`
+    margin-left: 0;
+    margin-right: auto;
+  `}
 `;
 
 const StatusesContainer = styled.div``;
@@ -72,6 +82,10 @@ const Status = styled.button`
   user-select: none;
   transition: all 80ms ease-out;
   width: 100%;
+
+  ${isRtl`
+    flex-direction: row-reverse;
+  `}
 
   &:not(.selected):hover {
     background: rgba(132, 147, 158, 0.15);
@@ -149,8 +163,8 @@ const StatusFilter = memo<Props>(
                 {/* Pronounce number of ideas/initiatives of All status when focus/hover it */}
                 {type === 'idea' && (
                   <FormattedMessage
-                    {...messages.a11y_numberOfIdeas}
-                    values={{ ideaCount: allPostsCount }}
+                    {...messages.a11y_numberOfInputs}
+                    values={{ inputsCount: allPostsCount }}
                   />
                 )}
                 {type === 'initiative' && (
@@ -205,8 +219,8 @@ const StatusFilter = memo<Props>(
                     {/* Pronounce number of ideas per status when focus/hover it */}
                     {type === 'idea' && (
                       <FormattedMessage
-                        {...messages.a11y_numberOfIdeas}
-                        values={{ ideaCount: filterPostCount }}
+                        {...messages.a11y_numberOfInputs}
+                        values={{ inputsCount: filterPostCount }}
                       />
                     )}
                     {type === 'initiative' && (

@@ -233,11 +233,12 @@ class IdeaPreview extends PureComponent<Props & InjectedLocalized, State> {
               {!showFooter && (
                 <>
                   <VoteControl
+                    style="border"
                     ideaId={idea.id}
                     size={smallerThanSmallTablet ? '1' : '2'}
                     disabledVoteClick={this.handleDisabledVoteClick}
                     showDownvote={
-                      idea.attributes.action_descriptor.voting
+                      idea.attributes.action_descriptor.voting_idea
                         .downvoting_enabled
                     }
                   />
@@ -250,7 +251,9 @@ class IdeaPreview extends PureComponent<Props & InjectedLocalized, State> {
 
               {showFooter === 'votingDisabled' && (
                 <VotingDisabled
-                  votingDescriptor={idea.attributes.action_descriptor.voting}
+                  votingDescriptor={
+                    idea.attributes.action_descriptor.voting_idea
+                  }
                   projectId={idea.relationships.project.data.id}
                 />
               )}
@@ -258,7 +261,7 @@ class IdeaPreview extends PureComponent<Props & InjectedLocalized, State> {
 
             <ViewIdeaButtonContainer>
               <Button fullWidth={true} onClick={this.createIdeaClickHandler}>
-                <FormattedMessage {...messages.seeIdea} />
+                <FormattedMessage {...messages.ideaOnMapReadMore} />
               </Button>
             </ViewIdeaButtonContainer>
           </Footer>

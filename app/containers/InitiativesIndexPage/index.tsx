@@ -1,4 +1,4 @@
-import React, { memo, useCallback } from 'react';
+import React, { memo } from 'react';
 
 // components
 import InitiativesIndexMeta from './InitiativesIndexMeta';
@@ -7,32 +7,19 @@ import SuccessStories from './SuccessStories';
 import InitiativeCards from 'components/InitiativeCards';
 import ContentContainer from 'components/ContentContainer';
 import CityLogoSection from 'components/CityLogoSection';
-
-// hooks
-import useAuthUser from 'hooks/useAuthUser';
-import useTenant from 'hooks/useTenant';
+import InitiativeButton from 'components/InitiativeButton';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
-// utils
-import { openSignUpInModal } from 'components/SignUpIn/events';
-import { isNilOrError } from 'utils/helperUtils';
-import clHistory from 'utils/cl-router/history';
-
 // style
 import styled from 'styled-components';
 import { media, fontSizes, colors } from 'utils/styleUtils';
-import Button from 'components/UI/Button';
-
-// tracks
-import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
 
 const Container = styled.main``;
 
-const FooterBanner: any = styled.div`
+const FooterBanner = styled.div`
   background: ${({ theme }) => theme.colorMain};
   width: 100%;
   min-height: 300px;
@@ -84,75 +71,29 @@ const Padding = styled.div`
 interface Props {}
 
 const InitiativeIndexPage = memo<Props>(() => {
-  const authUser = useAuthUser();
-  const tenant = useTenant();
+  return (
+    <>
+      <InitiativesIndexMeta />
+      <Container>
+        <InitiativesHeader />
+        <StyledContentContainer maxWidth="100%">
+          <SuccessStories />
+          <Padding />
+          <InitiativeCards
+            invisibleTitleMessage={messages.invisibleTitleInitiativeCards}
+          />
+        </StyledContentContainer>
+        <FooterBanner>
+          <FooterMessage>
+            <FormattedMessage {...messages.footer} />
+          </FooterMessage>
 
-  const onNewInitiativeButtonClick = useCallback(
-    (event?: React.FormEvent) => {
-      event?.preventDefault();
-
-      trackEventByName(tracks.clickStartInitiativesCTA, {
-        extra: {
-          location: 'initiatives footer',
-          authenticated: !isNilOrError(authUser),
-        },
-      });
-
-      if (!isNilOrError(authUser)) {
-        clHistory.push('/initiatives/new');
-      } else {
-        openSignUpInModal({
-          action: () => onNewInitiativeButtonClick(),
-        });
-      }
-    },
-    [authUser]
+          <InitiativeButton buttonStyle="white" location="initiatives_footer" />
+        </FooterBanner>
+        <CityLogoSection />
+      </Container>
+    </>
   );
-
-  if (!isNilOrError(tenant)) {
-    const postingProposalEnabled =
-      tenant.data.attributes.settings.initiatives?.posting_enabled;
-
-    return (
-      <>
-        <InitiativesIndexMeta />
-        <Container>
-          <InitiativesHeader />
-          <StyledContentContainer maxWidth="100%">
-            <SuccessStories />
-            <Padding />
-            <InitiativeCards
-              invisibleTitleMessage={messages.invisibleTitleInitiativeCards}
-            />
-          </StyledContentContainer>
-          <FooterBanner>
-            <FooterMessage>
-              {postingProposalEnabled ? (
-                <FormattedMessage {...messages.footer} />
-              ) : (
-                <FormattedMessage {...messages.footerPostingDisabled} />
-              )}
-            </FooterMessage>
-
-            {postingProposalEnabled && (
-              <Button
-                fontWeight="500"
-                padding="13px 22px"
-                buttonStyle="primary-inverse"
-                onClick={onNewInitiativeButtonClick}
-                icon="arrowLeft"
-                iconPos="right"
-                text={<FormattedMessage {...messages.startInitiative} />}
-              />
-            )}
-          </FooterBanner>
-          <CityLogoSection />
-        </Container>
-      </>
-    );
-  }
-
-  return null;
 });
 
 export default InitiativeIndexPage;

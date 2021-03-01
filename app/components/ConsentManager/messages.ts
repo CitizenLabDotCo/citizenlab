@@ -38,6 +38,10 @@ export default defineMessages({
     id: 'app.components.ConsentManager.Modal.PreferencesDialog.title',
     defaultMessage: 'Your cookie preferences',
   },
+  back: {
+    id: 'app.components.ConsentManager.Modal.PreferencesDialog.back',
+    defaultMessage: 'Go back',
+  },
   functional: {
     id: 'app.components.ConsentManager.Modal.PreferencesDialog.functional',
     defaultMessage: 'Functional',
@@ -68,6 +72,15 @@ export default defineMessages({
     defaultMessage:
       'To personalize and measure the effectiveness of advertising campains of our website. We will not show any advertising on this platform, but the following services might serve you a personalized ad based on the pages you visit on our site.',
   },
+  required: {
+    id: 'app.components.ConsentManager.Modal.PreferencesDialog.required',
+    defaultMessage: 'Required',
+  },
+  requiredPurpose: {
+    id: 'app.components.ConsentManager.Modal.PreferencesDialog.requiredPurpose',
+    defaultMessage:
+      'To have a fonctional platorm, we save the cookie preferences, an authenticating cookie if you sign up, and the language in which you use this platform',
+  },
   tools: {
     id: 'app.components.ConsentManager.Modal.PreferencesDialog.tools',
     defaultMessage: 'Tools',
@@ -95,9 +108,5 @@ export default defineMessages({
   confirm: {
     id: 'app.components.ConsentManager.Modal.CancelDialog.confirm',
     defaultMessage: 'Confirm',
-  },
-  back: {
-    id: 'app.components.ConsentManager.Modal.CancelDialog.back',
-    defaultMessage: 'Go Back',
   },
 });

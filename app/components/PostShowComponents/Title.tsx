@@ -81,7 +81,12 @@ const PostTitle = memo<Props>(
             context={postType}
           >
             {(translation) => (
-              <Title color={color} align={align} aria-live="polite">
+              <Title
+                id={`e2e-${postType}-title`}
+                color={color}
+                align={align}
+                aria-live="polite"
+              >
                 {parseTranslation(translation, title)}
               </Title>
             )}

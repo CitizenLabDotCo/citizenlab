@@ -11,6 +11,7 @@ import messages from '../../messages';
 import { withTheme } from 'styled-components';
 
 // components
+import ExportMenu from '../../components/ExportMenu';
 import {
   BarChart,
   Bar,
@@ -58,10 +59,12 @@ interface InputProps {
   startAt: string | null | undefined;
   endAt: string | null;
   currentGroupFilter: string | undefined;
+  currentGroupFilterLabel: string | undefined;
   graphTitleString: string;
   graphUnit: IGraphUnit;
   className?: string;
   customId?: string;
+  xlsxEndpoint: string;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -69,9 +72,14 @@ interface Props extends InputProps, DataProps {}
 export class BarChartByCategory extends React.PureComponent<
   Props & InjectedIntlProps
 > {
+  currentChart: React.RefObject<any>;
+  constructor(props: Props & InjectedIntlProps) {
+    super(props as any);
+    this.currentChart = React.createRef();
+  }
   render() {
     const {
-      chartFill,
+      newBarFill,
       barFill,
       chartLabelSize,
       chartLabelColor,
@@ -80,14 +88,19 @@ export class BarChartByCategory extends React.PureComponent<
       animationDuration,
     } = this.props['theme'];
     const {
+      currentGroupFilterLabel,
+      currentGroupFilter,
+      xlsxEndpoint,
       className,
       graphTitleString,
       serie,
       intl: { formatMessage },
       graphUnit,
     } = this.props;
+
     const noData =
       !serie || serie.every((item) => isEmpty(item)) || serie.length <= 0;
+
     const unitName = formatMessage(messages[graphUnit]);
 
     return (
@@ -95,6 +108,15 @@ export class BarChartByCategory extends React.PureComponent<
         <GraphCardInner>
           <GraphCardHeader>
             <GraphCardTitle>{graphTitleString}</GraphCardTitle>
+            {!noData && (
+              <ExportMenu
+                name={graphTitleString}
+                svgNode={this.currentChart}
+                xlsxEndpoint={xlsxEndpoint}
+                currentGroupFilterLabel={currentGroupFilterLabel}
+                currentGroupFilter={currentGroupFilter}
+              />
+            )}
           </GraphCardHeader>
           {noData ? (
             <NoDataContainer>
@@ -102,14 +124,20 @@ export class BarChartByCategory extends React.PureComponent<
             </NoDataContainer>
           ) : (
             <ResponsiveContainer>
-              <BarChart data={serie} margin={{ right: 40 }}>
+              <BarChart
+                data={serie}
+                margin={{ right: 40 }}
+                ref={this.currentChart}
+                layout="horizontal"
+              >
                 <Bar
                   dataKey="value"
                   name={unitName}
-                  fill={chartFill}
+                  fill={newBarFill}
                   label={{ fill: barFill, fontSize: chartLabelSize }}
                   animationDuration={animationDuration}
                   animationBegin={animationBegin}
+                  isAnimationActive={true}
                 />
                 <XAxis
                   dataKey="name"

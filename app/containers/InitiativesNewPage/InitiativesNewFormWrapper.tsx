@@ -208,6 +208,7 @@ export default class InitiativesNewFormWrapper extends React.PureComponent<
       // save any changes to the initiative data.
       if (!isEmpty(formAPIValues)) {
         let initiative;
+
         if (initiativeId) {
           initiative = await updateInitiative(initiativeId, formAPIValues);
         } else {
@@ -253,6 +254,7 @@ export default class InitiativesNewFormWrapper extends React.PureComponent<
       this.setState({ saving: false });
     }
   };
+
   debouncedSave = debounce(this.handleSave, 500);
 
   handlePublish = async () => {
@@ -291,6 +293,7 @@ export default class InitiativesNewFormWrapper extends React.PureComponent<
           ...formAPIValues,
           publication_status: 'published',
         });
+
         this.setState({ initiativeId: initiative.data.id });
       }
       // feed back what was saved to the api into the initialValues object

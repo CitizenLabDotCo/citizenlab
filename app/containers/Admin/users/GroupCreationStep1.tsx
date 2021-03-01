@@ -1,5 +1,5 @@
 // Libraries
-import React from 'react';
+import React, { memo } from 'react';
 
 // Components
 import { Icon } from 'cl2-component-library';
@@ -20,64 +20,44 @@ const Container = styled.div`
   display: flex;
 `;
 
-const GroupType = styled.div`
-  width: 50%;
+export const GroupType = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-left: 20px;
-  padding-right: 20px;
+  padding-left: 30px;
+  padding-right: 30px;
   padding-top: 50px;
   padding-bottom: 50px;
-
-  &.manual {
-    background: ${colors.lightGreyishBlue};
-  }
-
-  &.rules {
-    background: ${colors.background};
-  }
+  position: relative;
+  flex: 1;
+  background: ${colors.lightGreyishBlue};
 `;
 
-const GroupIconWrapper = styled.div`
+export const IconWrapper = styled.div`
   width: 62px;
   height: 62px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-`;
-
-const ManualGroupIconWrapper = styled(GroupIconWrapper)`
   background: ${transparentize(0.9, colors.adminTextColor)};
 `;
 
-const SmartGroupIconWrapper = styled(GroupIconWrapper)`
-  background: ${transparentize(0.9, colors.adminOrangeIcons)};
-`;
-
-const GroupIcon = styled(Icon)`
+const ManualGroupIcon = styled(Icon).attrs({ name: 'database' })`
   width: 28px;
   height: 28px;
   fill: ${colors.adminTextColor};
-`;
-
-const ManualGroupIcon = styled(GroupIcon)`
   fill: ${colors.adminTextColor};
 `;
 
-const SmartGroupIcon = styled(GroupIcon)`
-  fill: ${colors.adminOrangeIcons};
-`;
-
-const GroupName = styled.p`
+export const GroupName = styled.p`
   color: ${colors.adminTextColor};
   font-size: ${fontSizes.xl}px;
   font-weight: 600;
   margin-top: 15px;
 `;
 
-const GroupDescription = styled.div`
+export const GroupDescription = styled.div`
   min-height: 100px;
   display: flex;
   flex-direction: column;
@@ -85,13 +65,13 @@ const GroupDescription = styled.div`
   margin-bottom: 30px;
 `;
 
-const DescriptionText = styled.div`
-  width: 285px;
+export const DescriptionText = styled.div`
+  max-width: 285px;
   color: ${colors.adminTextColor};
   text-align: center;
 `;
 
-const MoreInfoLink = styled.a`
+export const MoreInfoLink = styled.a`
   color: ${colors.clBlueDark};
   text-align: center;
   text-decoration: underline;
@@ -103,39 +83,31 @@ const MoreInfoLink = styled.a`
   }
 `;
 
-const Step2Button = styled(Button)``;
+export const Step2Button = styled(Button)``;
 
 // Typings
 import { IGroupData } from 'services/groups';
+import Outlet from 'components/Outlet';
+import { MembershipType } from 'resources/GetGroups';
 
 export interface Props {
   onOpenStep2: (groupType: IGroupData['attributes']['membership_type']) => void;
 }
-export interface State {}
 
-export class GroupCreationStep1 extends React.PureComponent<
-  Props & InjectedIntlProps,
-  State
-> {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
+const GroupCreationStep1 = memo(
+  ({ intl, onOpenStep2 }: Props & InjectedIntlProps) => {
+    const formattedLink = intl.formatMessage(messages.readMoreLink);
 
-  createStep2Handler = (
-    groupType: IGroupData['attributes']['membership_type']
-  ) => () => {
-    this.props.onOpenStep2(groupType);
-  };
+    const createStep2Handler = (groupType: MembershipType) => () => {
+      onOpenStep2(groupType);
+    };
 
-  render() {
-    const formattedLink = this.props.intl.formatMessage(messages.readMoreLink);
     return (
       <Container>
         <GroupType className="manual">
-          <ManualGroupIconWrapper>
-            <ManualGroupIcon name="database" />
-          </ManualGroupIconWrapper>
+          <IconWrapper>
+            <ManualGroupIcon />
+          </IconWrapper>
           <GroupName>
             <FormattedMessage {...messages.step1TypeNameNormal} />
           </GroupName>
@@ -144,43 +116,25 @@ export class GroupCreationStep1 extends React.PureComponent<
               <FormattedMessage {...messages.step1TypeDescriptionNormal} />
             </DescriptionText>
             <MoreInfoLink href={formattedLink} target="_blank">
-              <FormattedMessage {...messages.step1ReadMore} />
+              <FormattedMessage {...messages.step1LearnMoreGroups} />
             </MoreInfoLink>
           </GroupDescription>
           <Step2Button
             className="e2e-create-normal-group-button"
             buttonStyle="cl-blue"
-            onClick={this.createStep2Handler('manual')}
+            onClick={createStep2Handler('manual')}
           >
             <FormattedMessage {...messages.step1CreateButtonNormal} />
           </Step2Button>
         </GroupType>
-        <GroupType className="rules">
-          <SmartGroupIconWrapper>
-            <SmartGroupIcon name="lightningBolt" />
-          </SmartGroupIconWrapper>
-          <GroupName>
-            <FormattedMessage {...messages.step1TypeNameSmart} />
-          </GroupName>
-          <GroupDescription>
-            <DescriptionText>
-              <FormattedMessage {...messages.step1TypeDescriptionSmart} />
-            </DescriptionText>
-            <MoreInfoLink href={formattedLink} target="_blank">
-              <FormattedMessage {...messages.step1ReadMore} />
-            </MoreInfoLink>
-          </GroupDescription>
-          <Step2Button
-            className="e2e-create-rules-group-button"
-            buttonStyle="cl-blue"
-            onClick={this.createStep2Handler('rules')}
-          >
-            <FormattedMessage {...messages.step1CreateButtonSmart} />
-          </Step2Button>
-        </GroupType>
+        <Outlet
+          id="app.containers.Admin.users.GroupCreationStep1.type"
+          onClick={createStep2Handler}
+          formattedLink={formattedLink}
+        />
       </Container>
     );
   }
-}
+);
 
 export default injectIntl<Props>(GroupCreationStep1);

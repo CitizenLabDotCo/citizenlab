@@ -30,8 +30,8 @@ import { convertUrlToUploadFileObservable } from 'utils/fileTools';
 
 // Components
 import { Label } from 'cl2-component-library';
-import InputMultiloc from 'components/UI/InputMultiloc';
-import QuillMultiloc from 'components/UI/QuillEditor/QuillMultiloc';
+import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
+import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 import Error from 'components/UI/Error';
 import DateRangePicker from 'components/admin/DateRangePicker';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
@@ -228,8 +228,8 @@ class AdminProjectTimelineEdit extends PureComponent<
       submitState: 'enabled',
       attributeDiff: {
         ...attributeDiff,
-        start_at: startDate ? startDate.format('YYYY-MM-DD') : '',
-        end_at: endDate ? endDate.format('YYYY-MM-DD') : '',
+        start_at: startDate ? startDate.locale('en').format('YYYY-MM-DD') : '',
+        end_at: endDate ? endDate.locale('en').format('YYYY-MM-DD') : '',
       },
     }));
   };
@@ -316,12 +316,14 @@ class AdminProjectTimelineEdit extends PureComponent<
 
         this.setState({ processing: true });
 
-        if (phase && !isEmpty(attributeDiff)) {
-          phaseResponse = await updatePhase(phase.data.id, attributeDiff);
-          this.setState({ attributeDiff: {} });
-        } else if (projectId && !isEmpty(attributeDiff)) {
-          phaseResponse = await addPhase(projectId, attributeDiff);
-          redirect = true;
+        if (!isEmpty(attributeDiff)) {
+          if (phase) {
+            phaseResponse = await updatePhase(phase.data.id, attributeDiff);
+            this.setState({ attributeDiff: {} });
+          } else if (projectId) {
+            phaseResponse = await addPhase(projectId, attributeDiff);
+            redirect = true;
+          }
         }
 
         if (phaseResponse) {
@@ -428,7 +430,7 @@ class AdminProjectTimelineEdit extends PureComponent<
           <PhaseForm onSubmit={this.handleOnSubmit}>
             <Section>
               <SectionField>
-                <InputMultiloc
+                <InputMultilocWithLocaleSwitcher
                   id="title"
                   label={<FormattedMessage {...messages.titleLabel} />}
                   type="text"
@@ -463,7 +465,7 @@ class AdminProjectTimelineEdit extends PureComponent<
               </SectionField>
 
               <SectionField className="fullWidth">
-                <QuillMultiloc
+                <QuillMultilocWithLocaleSwitcher
                   id="description"
                   label={this.quillMultilocLabel}
                   valueMultiloc={phaseAttrs.description_multiloc}

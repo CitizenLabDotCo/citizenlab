@@ -3,17 +3,16 @@
  * screen readers, please adapt inner content to be intelligible before removing aria-hidden prop
  */
 
-import React, { PureComponent, FormEvent } from 'react';
-import { isFunction, isNumber } from 'lodash-es';
-import { adopt } from 'react-adopt';
+import React, { memo } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import { Icon } from 'cl2-component-library';
 import FeatureFlag from 'components/FeatureFlag';
+import Link from 'utils/cl-router/Link';
 
-// resources
-import GetUser, { GetUserChildProps } from 'resources/GetUser';
+// hooks
+import useUser from 'hooks/useUser';
 
 // i18n
 import injectIntl from 'utils/cl-intl/injectIntl';
@@ -36,21 +35,20 @@ export const Container = styled.div<{ size: number }>`
 
 export const AvatarImage = styled.img<{
   size: number;
-  padding: number | undefined;
+  padding: number;
   bgColor: string | undefined;
   borderColor: string | undefined;
-  borderThickness: number | undefined;
+  borderThickness: number;
   borderHoverColor: string | undefined;
 }>`
   flex: 0 0 ${({ size }) => size}px;
   width: ${({ size }) => size}px;
   height: ${({ size }) => size}px;
-  padding: ${({ padding }) => (isNumber(padding) ? padding : 3)}px;
+  padding: ${({ padding }) => padding}px;
   border-radius: 50%;
   border-style: ${({ borderThickness }) =>
     borderThickness === 0 ? 'none' : 'solid'};
-  border-width: ${({ borderThickness }) =>
-    isNumber(borderThickness) ? borderThickness : 1}px;
+  border-width: ${({ borderThickness }) => `${borderThickness}px`};
   border-color: ${({ borderColor }) => borderColor || 'transparent'};
   background: ${({ bgColor }) => bgColor || 'transparent'};
 
@@ -69,22 +67,21 @@ const AvatarIcon = styled(Icon)<{
   size: number;
   fillColor: string | undefined;
   fillHoverColor: string | undefined;
-  padding: number | undefined;
+  padding: number;
   bgColor: string | undefined;
   borderColor: string | undefined;
-  borderThickness: number | undefined;
+  borderThickness: number;
   borderHoverColor: string | undefined;
 }>`
   flex: 0 0 ${({ size }) => size}px;
   width: ${({ size }) => size}px;
   height: ${({ size }) => size}px;
   fill: ${({ fillColor }) => fillColor || ''};
-  padding: ${({ padding }) => (isNumber(padding) ? padding : 3)}px;
+  padding: ${({ padding }) => padding}px;
   border-radius: 50%;
   border-style: ${({ borderThickness }) =>
     borderThickness === 0 ? 'none' : 'solid'};
-  border-width: ${({ borderThickness }) =>
-    isNumber(borderThickness) ? borderThickness : 1}px;
+  border-width: ${({ borderThickness }) => `${borderThickness}px`};
   border-color: ${({ borderColor }) => borderColor || 'transparent'};
   background: ${({ bgColor }) => bgColor || 'transparent'};
 
@@ -112,90 +109,60 @@ const BadgeIcon = styled(Icon)<{ size: number; fill: string }>`
   border: solid 2px #fff;
 `;
 
-interface InputProps {
+interface Props {
   userId: string | null;
-  size: string;
-  badgeSize?: string;
-  onClick?: (event: FormEvent) => void;
-  hasHoverEffect?: boolean;
-  hideIfNoAvatar?: boolean | undefined;
-  padding?: string;
+  size: number;
+  isLinkToProfile?: boolean;
   fillColor?: string;
-  fillHoverColor?: string;
-  borderThickness?: string;
+  borderThickness?: number;
   borderColor?: string;
-  borderHoverColor?: string;
   bgColor?: string;
   className?: string;
   moderator?: boolean | null;
-  verified?: boolean | null;
+  addVerificationBadge?: boolean | null;
+  padding?: number;
+  hideIfNoAvatar?: boolean;
 }
 
-interface DataProps {
-  user: GetUserChildProps;
-}
+const Avatar = memo(
+  ({
+    isLinkToProfile,
+    moderator,
+    className,
+    addVerificationBadge,
+    userId,
+    hideIfNoAvatar,
+    ...props
+  }: Props & InjectedIntlProps) => {
+    const user = useUser({ userId });
 
-interface Props extends InputProps, DataProps {}
+    if (!isNilOrError(user)) {
+      const { slug, avatar, verified } = user.attributes;
+      const profileLink = `/profile/${slug}`;
+      // In dev mode, slug is sometimes undefined,
+      // while !isNilOrError(user) passes... To be solved properly
+      const hasValidProfileLink = profileLink !== '/profile/undefined';
+      const avatarSize = props.size;
+      const padding = props.padding || 3;
+      const borderThickness = props.borderThickness || 1;
+      const hasHoverEffect = (isLinkToProfile && hasValidProfileLink) || false;
+      const imageSizeLabel = avatarSize > 160 ? 'large' : 'medium';
+      const avatarSrc = avatar ? avatar[imageSizeLabel] : null;
+      const containerSize = avatarSize + padding * 2 + borderThickness * 2;
+      const badgeSize = avatarSize / (avatarSize < 40 ? 1.8 : 2.3);
+      const fillColor = props.fillColor || lighten(0.2, colors.label);
+      const fillHoverColor = colors.label;
+      const borderHoverColor = colors.label;
+      const borderColor = props.borderColor || 'transparent';
+      const bgColor = props.bgColor || 'transparent';
 
-interface State {}
+      if (!avatarSrc && hideIfNoAvatar) {
+        return null;
+      }
 
-class Avatar extends PureComponent<Props & InjectedIntlProps, State> {
-  static defaultProps = {
-    hasHoverEffect: false,
-    padding: '3px',
-    fillColor: lighten(0.2, colors.label),
-    fillHoverColor: colors.label,
-    borderThickness: '1px',
-    borderColor: 'transparent',
-    borderHoverColor: colors.label,
-    bgColor: 'transparent',
-  };
-
-  handleOnClick = (event: FormEvent) => {
-    this.props.onClick && this.props.onClick(event);
-  };
-
-  render() {
-    const {
-      hideIfNoAvatar,
-      user,
-      onClick,
-      fillColor,
-      fillHoverColor,
-      borderColor,
-      borderHoverColor,
-      bgColor,
-      moderator,
-      className,
-      verified,
-    } = this.props;
-
-    if (!isNilOrError(user) && hideIfNoAvatar !== true) {
-      const size = parseInt(this.props.size, 10);
-      const padding = parseInt(this.props.padding as string, 10);
-      const borderThickness = parseInt(
-        this.props.borderThickness as string,
-        10
-      );
-      const hasHoverEffect = !!(
-        isFunction(onClick) || this.props.hasHoverEffect
-      );
-      const imageSize = size > 160 ? 'large' : 'medium';
-      const avatarSrc =
-        user.attributes.avatar && user.attributes.avatar[imageSize];
-      const containerSize = size + padding * 2 + borderThickness * 2;
-      const badgeSize = this.props.badgeSize
-        ? parseInt(this.props.badgeSize, 10)
-        : size / (size < 40 ? 1.8 : 2.3);
-
-      return (
-        <Container
-          aria-hidden
-          className={className}
-          onClick={this.handleOnClick}
-          size={containerSize}
-        >
-          {avatarSrc ? (
+      const AvatarComponent = (
+        <Container aria-hidden className={className} size={containerSize}>
+          {avatarSrc && (
             <AvatarImage
               className={`avatarImage ${
                 hasHoverEffect ? 'hasHoverEffect' : ''
@@ -203,28 +170,30 @@ class Avatar extends PureComponent<Props & InjectedIntlProps, State> {
               src={avatarSrc}
               alt=""
               size={containerSize}
-              padding={padding}
               borderThickness={borderThickness}
               borderColor={borderColor}
               borderHoverColor={
                 moderator ? colors.clRedError : borderHoverColor
               }
               bgColor={bgColor}
+              padding={padding}
             />
-          ) : (
+          )}
+
+          {!avatarSrc && !hideIfNoAvatar && (
             <AvatarIcon
               className={`avatarIcon ${hasHoverEffect ? 'hasHoverEffect' : ''}`}
               name="user"
               size={containerSize}
               fillColor={fillColor}
               fillHoverColor={fillHoverColor}
-              padding={padding}
               borderThickness={borderThickness}
               borderColor={borderColor}
               borderHoverColor={
                 moderator ? colors.clRedError : borderHoverColor
               }
               bgColor={bgColor}
+              padding={padding}
             />
           )}
 
@@ -236,7 +205,7 @@ class Avatar extends PureComponent<Props & InjectedIntlProps, State> {
             />
           )}
 
-          {user.attributes.verified && verified && (
+          {verified && addVerificationBadge && (
             <FeatureFlag name="verification">
               <BadgeIcon
                 name="checkmark-full"
@@ -247,22 +216,16 @@ class Avatar extends PureComponent<Props & InjectedIntlProps, State> {
           )}
         </Container>
       );
+
+      if (isLinkToProfile && hasValidProfileLink) {
+        return <Link to={profileLink}>{AvatarComponent}</Link>;
+      }
+
+      return AvatarComponent;
     }
 
     return null;
   }
-}
-
-const Data = adopt<DataProps, InputProps>({
-  user: ({ userId, render }) => <GetUser id={userId}>{render}</GetUser>,
-});
-
-const AvatarWithHoc = injectIntl<Props>(Avatar);
-
-const WrappedAvatar = (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <AvatarWithHoc {...inputProps} {...dataProps} />}
-  </Data>
 );
 
-export default WrappedAvatar;
+export default injectIntl(Avatar);

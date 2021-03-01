@@ -3,7 +3,7 @@ import bowser from 'bowser';
 
 // components
 import Link from 'utils/cl-router/Link';
-import LazyImage from 'components/LazyImage';
+import Image from 'components/UI/Image';
 
 // styling
 import styled from 'styled-components';
@@ -28,7 +28,7 @@ const Container = styled(Link)`
   }
 `;
 
-const ImageWrapper = styled.div`
+const CardImageWrapper = styled.div`
   height: 115px;
   display: flex;
   align-items: center;
@@ -38,7 +38,7 @@ const ImageWrapper = styled.div`
   border-top-right-radius: ${(props: any) => props.theme.borderRadius};
 `;
 
-const Image = styled(LazyImage)`
+const CardImage = styled(Image)`
   width: 100%;
 `;
 
@@ -51,7 +51,7 @@ const HeaderContentWrapper = styled.div`
 `;
 
 const Title = styled.h3<{ hasHeader: boolean }>`
-  color: #333;
+  color: ${(props) => props.theme.colorText};
   max-width: 400px;
   font-size: ${fontSizes.xl}px;
   font-weight: 500;
@@ -120,9 +120,9 @@ export const Card = ({
     }`}
   >
     {imageUrl && (
-      <ImageWrapper>
-        <Image src={imageUrl} alt="" />
-      </ImageWrapper>
+      <CardImageWrapper>
+        <CardImage src={imageUrl} alt="" />
+      </CardImageWrapper>
     )}
 
     <Title className="e2e-card-title" hasHeader={!!header}>

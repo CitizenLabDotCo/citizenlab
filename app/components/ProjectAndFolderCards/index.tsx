@@ -7,13 +7,14 @@ import { stringify } from 'qs';
 
 // components
 import ProjectCard from 'components/ProjectCard';
-import ProjectFolderCard from 'components/ProjectFolderCard';
 import SelectAreas from './SelectAreas';
 import LoadingBox from './LoadingBox';
 import Button from 'components/UI/Button';
 
 // resources
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetAppConfiguration';
 import GetWindowSize, {
   GetWindowSizeChildProps,
 } from 'resources/GetWindowSize';
@@ -48,12 +49,14 @@ import {
   fontSizes,
   viewportWidths,
   defaultCardStyle,
+  isRtl,
 } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { rgba } from 'polished';
 
 // svg
 import EmptyProjectsImageSrc from 'assets/img/landingpage/no_projects_image.svg';
+import Outlet from 'components/Outlet';
 
 const Container = styled.div`
   display: flex;
@@ -72,6 +75,10 @@ const Header = styled.div`
     justify-content: center;
     border: none;
   `};
+
+  ${isRtl`
+    flex-direction: row-reverse;
+  `}
 `;
 
 const Title = styled.h2`
@@ -89,6 +96,12 @@ const Title = styled.h2`
     text-align: center;
     margin: 0;
   `};
+
+  ${isRtl`
+    margin-right: 0;
+    margin-left: 45px;
+    justify-content: flex-end;
+  `}
 `;
 
 const ProjectsList = styled.div`
@@ -187,6 +200,10 @@ const FiltersArea = styled.div`
   ${media.smallerThanMinTablet`
     display: none;
   `};
+
+  ${isRtl`
+    justify-content: flex-start;
+  `}
 `;
 
 const FilterArea = styled.div`
@@ -211,7 +228,7 @@ interface InputProps extends UseAdminPublicationInputProps {
 }
 
 interface DataProps {
-  tenant: GetTenantChildProps;
+  tenant: GetAppConfigurationChildProps;
   windowSize: GetWindowSizeChildProps;
   adminPublications: GetAdminPublicationsChildProps;
 }
@@ -266,17 +283,17 @@ class ProjectAndFolderCards extends PureComponent<
 
     if (
       !isNilOrError(adminPublications) &&
-      adminPublications.list &&
-      adminPublications.list.length > 0 &&
+      adminPublications.topLevel &&
+      adminPublications.topLevel.length > 0 &&
       windowSize &&
       layout === 'dynamic'
     ) {
-      const initialCount = size(adminPublications.list.slice(0, 6));
+      const initialCount = size(adminPublications.topLevel.slice(0, 6));
       const isOdd = (number: number) => number % 2 === 1;
       const biggerThanSmallTablet = windowSize >= viewportWidths.smallTablet;
       const biggerThanLargeTablet = windowSize >= viewportWidths.largeTablet;
 
-      const cardSizes = adminPublications.list.map((_project, index) => {
+      const cardSizes = adminPublications.topLevel.map((_project, index) => {
         let cardSize: 'small' | 'medium' | 'large' =
           biggerThanSmallTablet && !biggerThanLargeTablet ? 'medium' : 'small';
 
@@ -353,8 +370,13 @@ class ProjectAndFolderCards extends PureComponent<
   render() {
     const { cardSizes, areas } = this.state;
     const { tenant, showTitle, layout, theme, adminPublications } = this.props;
-    const { loadingInitial, loadingMore, hasMore, list } = adminPublications;
-    const hasPublications = list && list.length > 0;
+    const {
+      loadingInitial,
+      loadingMore,
+      hasMore,
+      topLevel,
+    } = adminPublications;
+    const hasPublications = topLevel && topLevel.length > 0;
     const objectFitCoverSupported =
       window['CSS'] && CSS.supports('object-fit: cover');
 
@@ -415,9 +437,9 @@ class ProjectAndFolderCards extends PureComponent<
             </EmptyContainer>
           )}
 
-          {!loadingInitial && hasPublications && list && (
+          {!loadingInitial && hasPublications && topLevel && (
             <ProjectsList id="e2e-projects-list">
-              {list.map((item: IAdminPublicationContent, index: number) => {
+              {topLevel.map((item: IAdminPublicationContent, index: number) => {
                 const projectOrFolderId = item.publicationId;
                 const projectOrFolderType = item.publicationType;
                 const size =
@@ -429,19 +451,19 @@ class ProjectAndFolderCards extends PureComponent<
 
                 return (
                   <React.Fragment key={index}>
-                    {projectOrFolderType === 'project' ? (
+                    {projectOrFolderType === 'project' && (
                       <ProjectCard
                         projectId={projectOrFolderId}
                         size={size}
                         layout={layout}
                       />
-                    ) : (
-                      <ProjectFolderCard
-                        publication={item}
-                        size={size}
-                        layout={layout}
-                      />
                     )}
+                    <Outlet
+                      id="app.components.ProjectAndFolderCards.card"
+                      publication={item}
+                      size={size}
+                      layout={layout}
+                    />
                   </React.Fragment>
                 );
               })}
@@ -453,14 +475,14 @@ class ProjectAndFolderCards extends PureComponent<
               // Ideally would have been solved with CSS grid, but... IE11
               */}
               {!hasMore &&
-                (layout === 'threecolumns' || list.length > 6) &&
-                (list.length + 1) % 3 === 0 && (
+                (layout === 'threecolumns' || topLevel.length > 6) &&
+                (topLevel.length + 1) % 3 === 0 && (
                   <MockProjectCard className={layout} />
                 )}
 
               {!hasMore &&
-                (layout === 'threecolumns' || list.length > 6) &&
-                (list.length - 1) % 3 === 0 && (
+                (layout === 'threecolumns' || topLevel.length > 6) &&
+                (topLevel.length - 1) % 3 === 0 && (
                   <>
                     <MockProjectCard className={layout} />
                     <MockProjectCard className={layout} />
@@ -483,7 +505,9 @@ class ProjectAndFolderCards extends PureComponent<
                 bgColor={rgba(theme.colorText, 0.08)}
                 bgHoverColor={rgba(theme.colorText, 0.12)}
                 fontWeight="500"
-                className="e2e-project-cards-show-more-button"
+                className={`e2e-project-cards-show-more-button ${
+                  loadingMore ? 'loading' : ''
+                }`}
               />
             )}
           </Footer>
@@ -500,7 +524,7 @@ const ProjectAndFolderCardsWithHOCs = withTheme(
 );
 
 const Data = adopt<DataProps, InputProps>({
-  tenant: <GetTenant />,
+  tenant: <GetAppConfiguration />,
   windowSize: <GetWindowSize />,
   adminPublications: ({ render, ...props }) => (
     <GetAdminPublications

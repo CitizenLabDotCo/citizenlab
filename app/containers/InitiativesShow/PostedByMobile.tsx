@@ -34,8 +34,8 @@ const PostedBy = memo<Props>(({ authorId, className }) => {
     const authorName = (
       <UserName
         userId={authorId}
-        emphasize
-        linkToProfile
+        fontWeight={500}
+        isLinkToProfile
         hideLastName
         color="white"
       />

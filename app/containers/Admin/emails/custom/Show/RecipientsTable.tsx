@@ -50,7 +50,7 @@ class RecipientsTable extends React.PureComponent<Props> {
                 isNilOrError(user) ? null : (
                   <>
                     <TextCell>
-                      <Avatar userId={user.id} size="30px" />
+                      <Avatar userId={user.id} size={30} />
                     </TextCell>
                     <TextCell>
                       {user.attributes.first_name} {user.attributes.last_name}

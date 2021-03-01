@@ -13,7 +13,7 @@
     <link
       rel="preload"
       crossorigin="anonymous"
-      href="/larsseit.woff2"
+      href="/larsseit-regular.woff2"
       as="font"
       type="font/woff2"
     />
@@ -31,7 +31,6 @@
       as="font"
       type="font/woff2"
     />
-    <script src="https://polyfill.io/v3/polyfill.min.js?flags=gated&features=Intl.~locale.en,Intl.~locale.en-GB,Intl.~locale.en-CA,Intl.~locale.fr-BE,Intl.~locale.fr-FR,Intl.~locale.nl-BE,Intl.~locale.nl-NL,Intl.~locale.de-DE,Intl.~locale.da-DK,Intl.~locale.nb-NO,Intl.~locale.es-ES,Intl.~locale.es-CL,Intl.~locale.pl-PL,Intl.~locale.hu-HU,Intl.~locale.kl-GL,Intl.~locale.ro-RO,Intl.~locale.pt-BR"></script>
     <style>
       html,
       body {
@@ -57,8 +56,9 @@
       }
 
       .app-loading-spinner {
-        width: 32px;
-        height: 32px;
+        flex: 0 0 30px;
+        width: 30px;
+        height: 30px;
         animation: spin 800ms infinite linear;
         border-style: solid;
         border-right-color: transparent !important;
@@ -89,36 +89,10 @@
     </div>
 
     <script>
-      window.myCallbackFunc = function () {};
+      window.myCallbackFunc = function () {
+        window.googleMaps = true;
+      };
     </script>
-
-    <!-- Matomo -->
-    <script type="text/javascript">
-      var _paq = (window._paq = window._paq || []);
-      _paq.push(['disableCookies']);
-      _paq.push(['enableLinkTracking']);
-      (function () {
-        var u = 'https://citizenlab.matomo.cloud/';
-        _paq.push(['setTrackerUrl', u + 'matomo.php']);
-        _paq.push(['setSiteId', '<%= matomoSiteId %>']);
-        var d = document,
-          g = d.createElement('script'),
-          s = d.getElementsByTagName('script')[0];
-        g.type = 'text/javascript';
-        g.async = true;
-        g.src = '//cdn.matomo.cloud/citizenlab.matomo.cloud/matomo.js';
-        s.parentNode.insertBefore(g, s);
-      })();
-    </script>
-    <noscript
-      ><p>
-        <img
-          src="https://citizenlab.matomo.cloud/matomo.php?idsite=<%= matomoSiteId %>&amp;rec=1"
-          style="border: 0;"
-          alt=""
-        /></p
-    ></noscript>
-    <!-- End Matomo Code -->
 
     <script
       async

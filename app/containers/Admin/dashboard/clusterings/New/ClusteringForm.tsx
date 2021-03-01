@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { Form, Field, InjectedFormikProps } from 'formik';
 
 // Components
-import FormikInputMultiloc from 'components/UI/FormikInputMultiloc';
+import FormikInputMultilocWithLocaleSwitcher from 'components/UI/FormikInputMultilocWithLocaleSwitcher';
 import FormikMultipleSelect from 'components/UI/FormikMultipleSelect';
 import FormikToggle from 'components/UI/FormikToggle';
 import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
@@ -77,7 +77,7 @@ class ClusteringForm extends PureComponent<
           <SectionField>
             <Field
               name="title_multiloc"
-              component={FormikInputMultiloc}
+              component={FormikInputMultilocWithLocaleSwitcher}
               label={<FormattedMessage {...messages.fieldTitle} />}
             />
             {touched.title_multiloc && (
@@ -90,7 +90,7 @@ class ClusteringForm extends PureComponent<
 
           <SectionField>
             <Label>
-              <FormattedMessage {...messages.fieldLevels} />
+              <FormattedMessage {...messages.fieldAttributes} />
             </Label>
             <Field name="levels" component={LevelsInput} />
           </SectionField>
@@ -99,14 +99,16 @@ class ClusteringForm extends PureComponent<
             <Field
               name="drop_empty"
               component={FormikToggle}
-              label={<FormattedMessage {...messages.fieldDropEmpty} />}
+              label={
+                <FormattedMessage {...messages.fieldExcludeEmptyCluster} />
+              }
             />
           </SectionField>
         </Section>
 
         <Section>
           <SectionTitle>
-            <FormattedMessage {...messages.titleFilters} />
+            <FormattedMessage {...messages.titleInputFilters} />
           </SectionTitle>
 
           <SectionField>
@@ -145,7 +147,7 @@ class ClusteringForm extends PureComponent<
 
           <SectionField>
             <Label>
-              <FormattedMessage {...messages.fieldIdeaStatus} />
+              <FormattedMessage {...messages.fieldStatuses} />
             </Label>
             <GetIdeaStatuses>
               {(ideaStatuses) =>

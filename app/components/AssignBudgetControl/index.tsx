@@ -11,14 +11,18 @@ import { IParticipationContextType } from 'typings';
 
 // components
 import Button from 'components/UI/Button';
+import Tippy from '@tippyjs/react';
 import { Icon } from 'cl2-component-library';
+import AssignBudgetDisabled from 'components/AssignBudgetControl/AssignBudgetDisabled';
 
 // services
 import { addBasket, updateBasket } from 'services/baskets';
 
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetAppConfiguration';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import GetBasket, { GetBasketChildProps } from 'resources/GetBasket';
@@ -27,7 +31,7 @@ import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
 
 // tracking
 import { injectTracks } from 'utils/analytics';
-import tracks from 'containers/ProjectsShowPage/pb/tracks';
+import tracks from 'containers/ProjectsShowPage/shared/pb/tracks';
 
 // utils
 import streams from 'utils/streams';
@@ -44,7 +48,7 @@ import messages from './messages';
 import styled from 'styled-components';
 import { fontSizes, colors } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
-import PBExpenses from 'containers/ProjectsShowPage/pb/PBExpenses';
+import PBExpenses from 'containers/ProjectsShowPage/shared/pb/PBExpenses';
 import { darken } from 'polished';
 
 const IdeaCardContainer = styled.div`
@@ -59,6 +63,7 @@ const IdeaPageContainer = styled.div`
 `;
 
 const BudgetBox = styled.div`
+  background-color: white;
   width: 100%;
   height: 95px;
   display: flex;
@@ -67,9 +72,8 @@ const BudgetBox = styled.div`
   justify-content: center;
   margin-bottom: 5px;
   position: relative;
-  border-radius: ${(props: any) => props.theme.borderRadius};
-  background: ${colors.background};
   border: solid 1px ${colors.separation};
+  border-radius: ${(props: any) => props.theme.borderRadius};
 `;
 
 const Budget = styled.div`
@@ -78,17 +82,23 @@ const Budget = styled.div`
   font-weight: 500;
 `;
 
-const IdeaCardButton = styled(Button)`
-  margin-right: 12px;
+const ButtonWrapper = styled.div``;
+
+const TooltipContent = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 15px;
 `;
 
-const AssignedLabel = styled.div`
+const IdeaCardButton = styled(Button)``;
+
+const AssignedContainer = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  margin-bottom: 15px;
 `;
 
-const ControlWrapperHorizontalRule: any = styled.hr`
+const ControlWrapperHorizontalRule = styled.hr`
   width: 100%;
   border: none;
   height: 1px;
@@ -99,7 +109,8 @@ const ControlWrapperHorizontalRule: any = styled.hr`
 const AssignedIcon = styled(Icon)`
   height: 39px;
   color: ${colors.adminTextColor};
-  margin-bottom: 4px;
+  margin-right: 15px;
+  margin-bottom: 10px;
 `;
 
 const AssignedText = styled.div`
@@ -112,8 +123,6 @@ const AssignedText = styled.div`
 const ActionsWrapper = styled.div`
   margin-top: 5px;
   display: flex;
-  flex-direction: row;
-  align-items: flex-start;
   color: ${colors.label};
 `;
 
@@ -150,7 +159,7 @@ interface InputProps {
 
 interface DataProps {
   authUser: GetAuthUserChildProps;
-  tenant: GetTenantChildProps;
+  tenant: GetAppConfigurationChildProps;
   locale: GetLocaleChildProps;
   idea: GetIdeaChildProps;
   basket: GetBasketChildProps;
@@ -238,7 +247,8 @@ class AssignBudgetControl extends PureComponent<
 
       if (
         isNilOrError(authUser) &&
-        (budgetingEnabled || budgetingDisabledReason === 'not_verified')
+        (budgetingDisabledReason === 'not_signed_in' ||
+          budgetingDisabledReason === 'not_verified')
       ) {
         openSignUpInModal({
           verification: budgetingDisabledReason === 'not_verified',
@@ -360,42 +370,72 @@ class AssignBudgetControl extends PureComponent<
       const fullClassName = `e2e-assign-budget ${className}`;
 
       if (view === 'ideaCard') {
+        const budgetingEnabled =
+          idea.attributes.action_descriptor.budgeting?.enabled;
+        const budgetingDisabledReason =
+          idea.attributes.action_descriptor.budgeting?.disabled_reason;
+        const budgetingDescriptor = idea.attributes.action_descriptor.budgeting;
+
+        const tippyContent =
+          !!authUser && !budgetingEnabled && !!budgetingDisabledReason ? (
+            <TooltipContent
+              id="tooltip-content"
+              className="e2e-disabled-tooltip"
+            >
+              <AssignBudgetDisabled
+                budgetingDescriptor={budgetingDescriptor}
+                participationContextId={participationContextId}
+                participationContextType={participationContextType}
+              />
+            </TooltipContent>
+          ) : null;
+
         return (
           <IdeaCardContainer className={fullClassName} aria-live="polite">
-            <IdeaCardButton
-              onClick={this.assignBudget}
-              processing={processing}
-              bgColor={
-                disabled
-                  ? colors.disabledPrimaryButtonBg
-                  : isInBasket
-                  ? colors.adminSecondaryTextColor
-                  : colors.adminTextColor
-              }
-              bgHoverColor={
-                disabled ? colors.disabledPrimaryButtonBg : undefined
-              }
-              icon={!isInBasket ? 'basket-plus' : 'remove'}
-              className={`e2e-assign-budget-button ${
-                isInBasket ? 'in-basket' : 'not-in-basket'
-              }`}
-              ariaLabel={
-                !isInBasket
-                  ? formatMessage(messages.assign)
-                  : formatMessage(messages.undo)
-              }
-            />
+            <Tippy
+              disabled={!tippyContent}
+              interactive={true}
+              placement="bottom"
+              content={tippyContent || <></>}
+              theme="light"
+              hideOnClick={false}
+            >
+              <ButtonWrapper tabIndex={!budgetingEnabled ? 0 : -1}>
+                <IdeaCardButton
+                  onClick={this.assignBudget}
+                  disabled={!!authUser && !budgetingEnabled}
+                  processing={processing}
+                  bgColor={
+                    isInBasket
+                      ? colors.adminSecondaryTextColor
+                      : colors.adminTextColor
+                  }
+                  iconSize="18px"
+                  icon={!isInBasket ? 'basket-plus' : 'remove'}
+                  className={`e2e-assign-budget-button ${
+                    isInBasket ? 'in-basket' : 'not-in-basket'
+                  }`}
+                  ariaLabel={
+                    !isInBasket
+                      ? formatMessage(messages.assign)
+                      : formatMessage(messages.undo)
+                  }
+                />
+              </ButtonWrapper>
+            </Tippy>
           </IdeaCardContainer>
         );
       } else if (view === 'ideaPage') {
         return (
           <IdeaPageContainer className={fullClassName} aria-live="polite">
             {isInBasket && !processing ? (
-              <AssignedLabel>
-                <AssignedIcon name="basket-checkmark" />
-                <AssignedText>
-                  <FormattedMessage {...messages.assigned} />
-                </AssignedText>
+              <>
+                <AssignedContainer>
+                  <AssignedIcon ariaHidden name="basket-checkmark" />
+                  <AssignedText>
+                    <FormattedMessage {...messages.assigned} />
+                  </AssignedText>
+                </AssignedContainer>
                 <ActionsWrapper>
                   <ActionButton onClick={this.assignBudget}>
                     <FormattedMessage {...messages.undo} />
@@ -405,7 +445,7 @@ class AssignBudgetControl extends PureComponent<
                     <FormattedMessage {...messages.backToOverview} />
                   </ActionButton>
                 </ActionsWrapper>
-              </AssignedLabel>
+              </>
             ) : (
               <>
                 <Budget>
@@ -460,7 +500,7 @@ class AssignBudgetControl extends PureComponent<
 
 const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
-  tenant: <GetTenant />,
+  tenant: <GetAppConfiguration />,
   locale: <GetLocale />,
   idea: ({ ideaId, render }) => <GetIdea ideaId={ideaId}>{render}</GetIdea>,
   project: ({ projectId, render }) => (

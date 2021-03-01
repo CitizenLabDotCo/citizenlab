@@ -109,7 +109,7 @@ export interface IAction {
 export interface Props {
   actions: IAction[];
   label?: string | JSX.Element;
-  ariaLabel?: string;
+  ariaLabel?: string | JSX.Element;
   className?: string;
   color?: string;
   id?: string;
@@ -158,7 +158,7 @@ export default class MoreActionsMenu extends PureComponent<Props, State> {
     }
 
     return (
-      <Container className={className}>
+      <Container className={className || ''}>
         <Tippy
           placement="bottom"
           interactive={true}

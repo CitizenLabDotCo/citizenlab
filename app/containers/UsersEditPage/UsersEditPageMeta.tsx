@@ -9,8 +9,8 @@ import { InjectedIntlProps } from 'react-intl';
 
 // hooks
 import useLocale from 'hooks/useLocale';
-import useTenantLocales from 'hooks/useTenantLocales';
-import useTenant from 'hooks/useTenant';
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import useAppConfiguration from 'hooks/useAppConfiguration';
 import useAuthUser from 'hooks/useAuthUser';
 
 // services
@@ -29,9 +29,9 @@ interface Props {
 const UsersEditPageMeta = React.memo<Props & InjectedIntlProps>(
   ({ intl, user }) => {
     const locale = useLocale();
-    const tenantLocales = useTenantLocales();
+    const tenantLocales = useAppConfigurationLocales();
     const authUser = useAuthUser();
-    const tenant = useTenant();
+    const tenant = useAppConfiguration();
 
     if (
       !isNilOrError(tenantLocales) &&
@@ -66,8 +66,8 @@ const UsersEditPageMeta = React.memo<Props & InjectedIntlProps>(
           <title>
             {`
             ${
-              authUser && authUser.data.attributes.unread_notifications
-                ? `(${authUser.data.attributes.unread_notifications}) `
+              authUser && authUser.attributes.unread_notifications
+                ? `(${authUser.attributes.unread_notifications}) `
                 : ''
             }
             ${usersEditPageIndexTitle}`}

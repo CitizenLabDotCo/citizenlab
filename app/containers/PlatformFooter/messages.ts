@@ -9,13 +9,21 @@ export default defineMessages({
     id: 'app.containers.footer.information',
     defaultMessage: 'Information',
   },
-  'terms-and-conditions': {
+  termsAndConditions: {
     id: 'app.containers.footer.terms-and-conditions',
     defaultMessage: 'Terms and Conditions',
   },
-  'privacy-policy': {
+  privacyPolicy: {
     id: 'app.containers.footer.privacy-policy',
     defaultMessage: 'Privacy policy',
+  },
+  accessibilityStatement: {
+    id: 'app.containers.footer.accessibility-statement',
+    defaultMessage: 'Accessibility statement',
+  },
+  cookiePolicy: {
+    id: 'app.containers.footer.cookie-policy',
+    defaultMessage: 'Cookie policy',
   },
   cookieSettings: {
     id: 'app.containers.footer.cookieSettings',

@@ -39,7 +39,9 @@ import styled from 'styled-components';
 
 const Container = styled.div`
   background: ${colors.background};
-  min-height: calc(100vh - ${(props) => props.theme.menuHeight}px - 1px);
+  min-height: calc(
+    100vh - ${(props) => props.theme.menuHeight + props.theme.footerHeight}px
+  );
 
   ${media.smallerThanMaxTablet`
     min-height: calc(100vh - ${(props) => props.theme.mobileMenuHeight}px - ${(
@@ -50,7 +52,9 @@ const Container = styled.div`
 
 const PageContainer = styled.main`
   width: 100%;
-  min-height: calc(100vh - ${(props) => props.theme.menuHeight}px - 1px);
+  min-height: calc(
+    100vh - ${(props) => props.theme.menuHeight + props.theme.footerHeight}px
+  );
   position: relative;
 
   ${media.smallerThanMaxTablet`
@@ -95,6 +99,7 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
       description: null,
       selectedTopics: [],
       budget: null,
+      proposedBudget: null,
       position: '',
       position_coordinates: null,
       submitError: false,
@@ -156,7 +161,7 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
       !isPrivilegedUser &&
       (authUser === null ||
         (!isNilOrError(project) &&
-          !project.attributes.action_descriptor.posting.enabled))
+          !project.attributes.action_descriptor.posting_idea.enabled))
     ) {
       clHistory.replace(
         this.props.previousPathName || (!authUser ? '/sign-up' : '/')
@@ -180,6 +185,7 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
           description,
           selectedTopics,
           budget,
+          proposedBudget,
           position,
           position_coordinates,
           imageFile,
@@ -193,6 +199,7 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
           isString(position) && !isEmpty(position) ? position : null;
         const ideaObject: IIdeaAdd = {
           budget,
+          proposed_budget: proposedBudget,
           author_id: authUser.id,
           publication_status: 'published',
           title_multiloc: ideaTitle,
@@ -250,9 +257,9 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
   };
 
   render() {
-    const { authUser, project } = this.props;
+    const { project } = this.props;
 
-    if (!isNilOrError(authUser) && !isNilOrError(project)) {
+    if (!isNilOrError(project)) {
       return (
         <Container id="e2e-idea-new-page">
           <IdeasNewMeta />

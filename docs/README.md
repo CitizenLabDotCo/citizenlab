@@ -1,10 +1,476 @@
 # Changelog
 
+## Next release
+
+### Fixed
+
+- Don't show empty space inside of the idea card when no avatar is present
+
+### Changed
+
+- Improved layout of project event listings on mobile devices
+
+## 2021-02-26
+
+### Fixed
+
+- France Connect button hover state now complies with the vendor's guidelines.
+
+## 2021-02-24
+
+### Fixed
+- The project page no longer shows an eternal spinner when the user has no access to see the project
+
+
+## 2021-02-18
+
+### Added
+- The password fields show an error when the password is too short
+- The password fields have a 'show password' button to let people check their password while typing
+- The password fields have a strength checker with appropriate informative message on how to increase the strength
+- France Connect as a verification method.
+
+### Fixed
+- Notifications for started phases are no longer triggered for unpublished projects and folders.
+
+## 2021-02-17
+
+### Changed
+- All input fields for multiple locales now use the components with locale switchers, resulting in a cleaner and more compact UI.
+- Copy improvements
+
+## 2021-02-12
+
+### Fixed
+- Fixed Azure AD login for some Azure setups (Schagen)
+
+### Changed
+- When searching for an idea, the search operation no longer searches on the author's name. This was causing severe performance issues and slowness of the paltforms.
+
+## 2021-02-10
+
+### Added
+- Automatic tagging
+
+## 2021-02-08
+
+### Fixed
+- Fixed a bug preventing registration fields and poll questions from reordering correctly.
+- Fixed a bug causing errors in new platforms.
+
+## 2021-02-04
+### Fixed
+- Fixed a bug causing the projects list in the navbar and projects page to display projects outside of folders when they're contained within them.
+
+## 2021-01-29
+
+### Added
+- Ability to redirect URLs through AdminHQ
+- Accessibility statement link in the footer
+
+### Fixed
+- Fixed issue affecting project managers that blocked access to their managed projects, when these are placed inside a folder.
+
+## 2021-01-28
+
+### Fixed
+- A bug in Admin project edit page that did not allow a user to Go Back to the projects list after switching tabs
+- Scrolling on the admin users page
+
+## 2021-01-26
+
+### Added
+- Folder admin rights. Folder admins or 'managers' can be assigned per folder. They can create projects inside folders they have rights for, and moderate/change the folder and all projects that are inside.
+- The 'from' and 'reply-to' emails can be customized by cluster (by our developers, not in Admin HQ). E.g. Benelux notification emails could be sent out by notifications@citizenlab.eu, US emails could be sent out by notifications@citizenlab.us etc., as long as those emails are owned by us. We can choose any email for "reply-to", so also email addresses we don't own. This means "reply-to" could potentially be configured to be an email address of the city, e.g. support@leuven.be. It is currently not possible to customize the reply-to (except for manual campaigns) and from fields for individual tenants.
+- When a survey requires the user to be signed-in, we now show the sign in/up form directly on the page when not logged in (instead of the green infobox with a link to the sign-up popup)
+
+### Fixed
+- The 'reply-to' field of our emails showed up twice in recipient's email clients, now only once.
+
+### Changed
+- Added the recipient first and last name to the 'to' email field in their email client, so not only their email adress is shown.
+- The links in the footer can now expand to multiple lines, and therefore accomodate more items (e.g. soon the addition of a link to the accesibility statement)
+
+## 2021-01-21
+
+### Added
+- Added right-to-left rendering to emails
+
+## 2021-01-18
+
+### Fixed
+- Access rights tab for participatory budget projects
+- Admin moderation page access
+
+## 2021-01-15
+
+### Changed
+- Copy improvements across different languages
+
+## 2021-01-14
+
+### Added
+- Ability to customize the input term for a project
+
+### Changed
+- The word 'idea' was removed from as many places as possible from the platform, replaced with more generic copy.
+
+## 2021-01-13
+
+### Changed
+- Idea cards redesign
+- Project folder page redesign
+- Project folders now have a single folder card image instead of 5 folder images in the admin settings
+- By default 24 instead of 12 ideas or shown now on the project page
+
+## 2020-12-17
+
+### Fixed
+- When creating a project from a template, only templates that are supported by the tenant's locale will show up
+- Fixed several layout, interaction and data issues in the manual tagging feature of the Admin Processing page, making it ready for external use.
+- Fixed project managers access of the Admin Processing page.
+
+### Added
+- Admin activity feed access for project managers
+- Added empty state to processing list when no project is selected
+- Keyboard shortcut tooltip for navigation buttons of the Admin Processing page
+
+### Changed
+- Reduced spacing in sidebar menu, allowing for more items to be displayed
+- Style changes on the Admin Processing page
+
+## 2020-12-08
+
+### Fixed
+- Issues with password reset and invitation emails
+- No more idea duplicates showing up on idea overview pages
+- Images no longer disappear from a body of an idea, or description of a project on phase, if placed at the bottom.
+
+### Changed
+- Increased color contrast of inactive timeline phases text to meet accesibility standard
+- Increased color contrast of event card left-hand event dates to meet accesibility standard
+- Increased color contrast of List/Map toggle component to meet accesibility standard
+
+### Added
+- Ability to tag ideas manually and automatically in the admin.
+
+## 2020-12-02
+
+### Changed
+- By default the last active phase instead of the last phase is now selected when a timeline project has no active phase
+
+### Fixed
+- The empty white popup box won't pop up anymore after clicking the map view in non-ideation phases.
+- Styling mistakes in the idea page voting and participatory budget boxes.
+- The tooltip shown when hovering over a disabled idea posting button in the project page sticky top bar is no longer partially hidden
+
+## 2020-12-01
+
+### Changed
+- Ideas are now still editable when idea posting is disabled for a project.
+
+## 2020-11-30
+
+### Added
+- Ability to create new and edit existing idea statuses
+
+### Fixed
+- The page no longer refreshes when accepting the cookie policy
+
+### Changed
+- Segment is no longer used to connect other tools, instead following tools are integrated natively
+  - Google Analytics
+  - Google Tag Manager
+  - Intercom
+  - Satismeter
+  - Segment, disabled by default
+- Error messages for invitations, logins and password resets are now clearer.
+
+## 2020-11-27
+
+### Fixed
+
+- Social authentication with Google when the user has no avatar.
+
+### Changed
+
+- Random user demographics on project copy.
+
+## 2020-11-26
+
+### Added
+- Some specific copy for Vitry-sur-Seine
+
+## 2020-11-25
+
+### Fixed
+- Sections with extra padding or funky widths in Admin were returned to normal
+- Added missing copy from previous release
+- Copy improvements in French
+
+### Changed
+- Proposal and idea descriptions now require 30 characters instead of the previous 500
+
+## 2020-11-23
+
+### Added
+- Some specific copy for Sterling Council
+
+### Fixed
+- The Admin UI is no longer exposed to regular (and unauthenticated) users
+- Clicking the toggle button of a custom registration field (in Admin > Settings > Registration fields) no longer duplicated the row
+- Buttons added in the WYSIWYG editor now have the correct color when hovered
+- The cookie policy and accessibility statement are not editable anymore from Admin > Settings > Pages
+
+### Changed
+
+**Project page:**
+
+- Show all events at bottom of page instead of only upcoming events
+- Reduced padding of sticky top bar
+- Only show sticky top bar when an action button (e.g. 'Post an idea') is present, and you've scrolled past it.
+
+**Project page right-hand sidebar:**
+
+- Show 'See the ideas' button when the project has ended and the last phase was an ideation phase
+- Show 'X ideas in the final phase' when the project has ended and the last phase was an ideation phase
+- 'X phases' is now clickable and scrolls to the timeline when clicked
+- 'X upcoming events' changed to 'X events', and event count now counts all events, not only upcoming events
+
+**Admin project configuration page:**
+
+- Replaced 'Project images' upload widget in back-office (Project > General) with 'Project card image', reduced the max count from 5 to 1 and updated the corresponding tooltip with new recommended image dimensions
+
+**Idea page:**
+
+- The map modal now shows address on top of the map when opened
+- Share button copy change from "share idea" to "share"
+- Right-hand sidebar is sticky now when its height allows it (= when the viewport is taller than the sidebar)
+- Comment box now has an animation when it expands
+- Adjusted scroll-to position when pressing 'Add a comment' to make sure the comment box is always fully visible in the viewport.
+
+**Other:**
+
+- Adjusted FileDisplay (downloadable files for a project or idea) link style to show underline by default, and increased contrast of hover color
+- Reduced width of DateTimePicker, and always show arrows for time input
+
+## 2020-11-20 (2)
+
+### Fixed
+- The project header image is screen reader friendly.
+- The similar ideas feature doesn't make backend requests anymore when it's not enabled.
+
+### Changed
+- Areas are requested with a max. of 500 now, so more areas are visible in e.g. the admin dashboard.
+
+## 2020-11-18
+
+### Added
+- Archived project folder cards on the homepage will now have an "Archived" label, the same way archived projects do\
+- Improved support for right-to-left layout
+- Experimental processing feature that allows admins and project managers to automatically assign tags to a set of ideas.
+
+### Fixed
+- Projects without idea sorting methods are no longer invalid.
+- Surveys tab now shows for projects with survey phases.
+
+### Changed
+- Moved welcome email from cl2-emails to cl2-back
+
+## 2020-11-16
+
+### Added
+- Admins can now select the default sort order for ideas in ideation and participatory budgeting projects, per project
+
+### Changed
+- The default sort order of ideas is now "Trending" instead of "Random" for every project if left unchanged
+- Improved sign in/up loading speed
+- Removed link to survey in the project page sidebar when not logged in. Instead it will show plain none-clickable text (e.g. '1 survey')
+
+### Fixed
+- Custom project slugs can now contain alphanumeric Arabic characters
+- Project Topics table now updates if a topic is deleted or reordered.
+- Empty lines with formatting (like bold or italic) in a Quill editor are now removed if not used as paragraphs.
+
+## 2020-11-10
+
+### Added
+
+#### Integration of trial management into AdminHQ
+- The lifecycle of the trials created from AdminHQ and from the website has been unified.
+- After 14 days, a trial platform goes to Purgatory (`expired_trial`) and is no longer accessible. Fourteen days later, the expired trial will be removed altogether (at this point, there is no way back).
+- The end date of a trial can be modified in AdminHQ (> Edit tenant > Internal tab).
+
+## 2020-11-06
+
+### Added
+- Social sharing via WhatsApp
+- Ability to edit the project URL
+- Fragment to embed a form directly into the new proposal page, for regular users only
+
+### Fixed
+- The project about section is visibile in mobile view again
+- Maps will no longer overflow on page resizes
+
+## 2020-11-05
+
+### Added
+- Reordering of and cleaner interface for managing custom registration field options
+- An 'add proposal' button in the proposals admin
+- Fragment to user profile page to manage party membership settings (CD&V)
+- "User not found" message when visiting a profile for a user that was deleted or could not be found
+
+### Changed
+- Proposal title max. length error message
+- Moved delete functionality for projects and project folders to the admin overview
+
+### Fixed
+- The automatic scroll to the survey on survey project page
+
+## 2020-11-03
+
+### Fixed
+- Fixed broken date picker for phase start and end date
+
+## 2020-10-30
+
+### Added
+
+- Initial Right to left layout for Arabic language
+- Idea description WYSIWYG editor now supports adding images and/or buttons
+
+## 2020-10-27
+
+### Added
+
+- Support for Arabic
+
+## 2020-10-22
+
+### Added
+- Project edit button on project page for admins/project manager
+- Copy for Sterling Council
+
+### Fixed
+- Links will open in a new tab or stay on the same page depending on their context. Links to places on the platform will open on the same page, unless it breaks the flow (i.e. going to the T&C policy while signing up). Otherwise, they will open in a new tab.
+
+### Changed
+- In the project management rights no ambiguous 'no options' message will be shown anymore when you place your cursor in the search field
+
+## 2020-10-16
+
+### Added
+- Ability to reorder geographic areas
+
+### Fixed
+- Stretched images in 'avatar bubbles'
+- Input fields where other people can be @mentioned don't grow too wide anymore
+- Linebar charts overlapping elements in the admin dashboard
+
+## 2020-10-14
+
+### Changed
+- Project page redesign
+
+## 2020-10-09
+
+### Added
+- Map configuration tool in AdminHQ (to configure maps and layers at the project level).
+
+## 2020-10-08
+
+### Added
+- Project reports
+
+### Changed
+- Small styling fixes
+- Smart group support multiple area codes
+- Layout refinements for the new idea page
+- More compact idea/proposal comment input
+- Proposal 'how does it work' redesign
+
+## 2020-10-01
+
+### Changed
+- Idea page redesign
+
+## 2020-09-25
+
+### Fixed
+- The "Go to platform" button in custom email campaigns now works in Norwegian
+
+### Added
+- Granular permissions for proposals
+- Possibility to restrict survey access to registered users only
+- Logging project published events
+
+### Changed
+- Replaced `posting_enabled` in the proposal settings by the posting proposal granular permission
+- Granular permissions are always granted to admins
+
+## 2020-09-22
+
+### Added
+- Accessibility statement
+
+## 2020-09-17
+
+### Added
+- Support for checkbox, number and (free) text values when initializing custom fields through excel invites.
+
+### Changed
+- Copy update for German, Romanian, Spanish (CL), and French (BE).
+
+## 2020-09-15
+
+### Added
+- Support Enalyzer as a new survey provider
+- Registration fields can now be hidden, meaning the user can't see or change them, typically controlled by an outside integration. They can still be used in smart groups.
+- Registration fields can now be pre-populated using the invites excel
+
+## 2020-09-08
+
+### Fixed
+- Custom buttons (e.g. in project descriptions) have correct styling in Safari.
+- Horizontal bar chart overflow in Admin > Dashboard > Users tab
+- User graphs for registration fields that are not used are not shown anymore in Admin > Dashboard > Users tab
+
+### Added
+- Pricing plan feature flags for smart groups and project access rights
+
+## 2020-09-01
+
+### Fixed
+- IE11 no longer gives an error on places that use the intersection observer: project cards, most images, ...
+
+### Added
+
+- New platform setting: 'Abbreviated user names'. When enabled, user names are shown on the platform as first name + initial of last name (Jane D. instead of Jane Doe). This setting is intended for new platforms only. Once this options has been enabled, you MUST NOT change it back.
+- You can now export all charts in the admin dashboard as xlsx or svg.
+- Translation improvements (email nl...)
+
+### Changed
+- The about us (CitizenLab) section has been removed from the cookie policy
+
+## 2020-08-27
+
+### Added
+
+- Support for rich text in field descriptions in the idea form.
+- New "Proposed Budget" field in the idea form.
+
+### Changed
+
+- Passwords are checked against a list of common passwords before validation.
+- Improving the security around xlsx exports (escaping formulas, enforcing access restrictions, etc.)
+- Adding request throttling (rate-limiting) rules.
+- Improving the consistency of the focus style.
+
 ## 2020-07-30
 
 ### Added
 - Pricing plans in AdminHQ (Pricing plan limitations are not enforced).
-- Showing the number of deviations from the pricing plan defaults in the tenant listing of AdminHQ.  
+- Showing the number of deviations from the pricing plan defaults in the tenant listing of AdminHQ.
 
 ### Changed
 - Tidying up the form for creating new tenants in AdminHQ (removing unused features, adding titles and descriptions, reordering features, adding new feature flags, removing fields for non-relevant locales).
@@ -16,7 +482,7 @@
 
 ### Changed
 - Userid instead of email is used for hidden field in surveys (Leiden)
-- New projects have 'draft' status by default 
+- New projects have 'draft' status by default
 
 ### Fixed
 - Topics filter in ideas overview works again
@@ -55,7 +521,10 @@
 - It's no longer needed to manually refresh after deleting your account for a consistent UI
 - It's no longer needed to manually refresh after using the admin toggle in the user overview
 - The sign-in/up flow now correctly asks the user to verify if the smart group has other rules besides verification
-- `demo` is no longer an available option for `organization_type` in admin HQ
+-
+
+
+demo` is no longer an available option for `organization_type` in admin HQ
 - An error is shown when saving a typeform URL with `?email=xxxx` in the URL, which prevented emails to be linked to survey results
 - On mobile, the info container in the proposal info page now has the right width
 - A general issue with storing cookies if fixed, noticable by missing data in GA, Intercom not showing and the cookie consent repeatedly appearing

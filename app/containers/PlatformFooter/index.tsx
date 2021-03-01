@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import { reportError } from 'utils/loggingUtils';
 import { adopt } from 'react-adopt';
+import { isNilOrError } from 'utils/helperUtils';
 
 // utils
 import Link from 'utils/cl-router/Link';
@@ -24,112 +25,109 @@ import tracks from './tracks';
 
 // services
 import { removeUrlLocale } from 'services/locale';
-import { LEGAL_PAGES } from 'services/pages';
+import { LEGAL_PAGES, TLegalPage } from 'services/pages';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetWindowSize, {
   GetWindowSizeChildProps,
 } from 'resources/GetWindowSize';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetAppConfiguration';
 
 // style
-import styled from 'styled-components';
-import { rgba } from 'polished';
-import { media, colors, fontSizes, viewportWidths } from 'utils/styleUtils';
+import styled, { css } from 'styled-components';
+import { transparentize } from 'polished';
+import {
+  media,
+  colors,
+  fontSizes,
+  viewportWidths,
+  isRtl,
+} from 'utils/styleUtils';
 
-const Container = styled.footer`
-  width: 100%;
+const Container = styled.footer<{ insideModal?: boolean }>`
   display: flex;
   flex-direction: column;
   align-items: stretch;
   position: relative;
 
   ${media.smallerThanMaxTablet`
-    padding-bottom: ${(props) => props.theme.mobileMenuHeight}px;
+    margin-top: 0px;
+    padding-bottom: ${({ insideModal, theme: { mobileMenuHeight } }) =>
+      insideModal ? 0 : mobileMenuHeight}px;
   `}
 `;
 
-const Inner = styled.div`
-  width: 100%;
-  min-height: ${(props) => props.theme.footerHeight}px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding-left: 28px;
-  padding-right: 28px;
-  padding-top: 12px;
-  padding-bottom: 12px;
-  background: #fff;
-  border-top: solid 1px #e8e8e8;
+const ShortFeedbackContainer = styled.div`
+  ${media.biggerThanMaxTablet`
+    position: absolute;
+    top: -25px;
+    left: 25px;
+    z-index: 3;
+
+    ${isRtl`
+      left: auto;
+      right: 25px;
+    `}
+  `}
 
   ${media.smallerThanMaxTablet`
     display: flex;
-    flex-direction: column;
     justify-content: center;
-  `}
-
-  ${media.smallerThanMinTablet`
-    padding: 15px;
-    border-top: solid 1px #e8e8e8;
-
-    &.showShortFeedback {
-      border-top: none;
-    }
+    background: ${colors.background};
+    background: ${(props) => transparentize(0.9, props.theme.colorText)};
+    border-top: solid 1px #ccc;
   `}
 `;
 
-const ShortFeedback: any = styled.div`
-  width: 100%;
-  display: flex;
-
-  ${media.biggerThanMinTablet`
-    position: absolute;
-    z-index: 5;
-    top: -41px;
-    left: 0px;
-  `}
-
-  ${media.smallerThanMinTablet`
-    border-top: solid 1px ${({ theme }) => rgba(theme.colorText, 0.3)};
-    border-bottom: solid 1px ${({ theme }) => rgba(theme.colorText, 0.3)};
-  `}
-`;
-
-const ShortFeedbackInner: any = styled.div`
-  color: ${({ theme }) => theme.colorText};
-  font-size: ${fontSizes.small}px;
-  font-weight: 300;
-  line-height: normal;
+const ShortFeedback = styled.div`
   display: flex;
   align-items: center;
-  padding: 12px 25px;
-  background: ${({ theme }) => rgba(theme.colorText, 0.08)};
 
-  ${media.smallerThanMinTablet`
-    width: 100%;
+  ${isRtl`
+    flex-direction: row-reverse;
+  `}
+
+  ${media.smallerThanMaxTablet`
     justify-content: center;
+    margin: 0;
+    margin-top: 10px;
+    margin-bottom: 10px;
   `}
 `;
 
 const ThankYouNote = styled.span`
-  font-weight: 300;
+  color: ${({ theme }) => theme.colorText};
+  font-size: ${fontSizes.small}px;
+  font-weight: 400;
+  line-height: normal;
 `;
 
 const FeedbackQuestion = styled.span`
+  color: ${({ theme }) => theme.colorText};
+  font-size: ${fontSizes.small}px;
+  font-weight: 400;
+  line-height: normal;
   margin-right: 15px;
 
-  ${media.smallerThanMinTablet`
-    margin-right: 10px;
+  ${isRtl`
+    margin-right: 0;
+    margin-left: 15px;
   `}
 `;
 
-const Buttons = styled.div`
+const FeedbackButtons = styled.div`
   display: flex;
+  align-items: center;
 `;
 
 const FeedbackButton = styled.button`
   color: ${({ theme }) => theme.colorText};
-  font-weight: 500;
+  font-size: ${fontSizes.small}px;
+  font-weight: 600;
+  line-height: normal;
   text-align: left;
   text-transform: uppercase;
   display: flex;
@@ -137,37 +135,112 @@ const FeedbackButton = styled.button`
   justify-content: center;
   padding: 0;
   margin: 0;
-  margin-left: 12px;
-  margin-right: 12px;
-  margin-bottom: -3px;
-  z-index: 1;
   cursor: pointer;
+  appearance: none;
 
-  ${media.smallerThanMinTablet`
-    margin-left: 8px;
-    margin-right: 8px;
-  `}
+  &.hasLeftMargin {
+    margin-left: 14px;
+  }
 
   &:hover {
     text-decoration: underline;
   }
 `;
 
-const PagesNav = styled.nav`
-  color: ${colors.label};
-  font-weight: 300;
-  text-align: center;
+const FooterContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 28px;
+  padding-right: 28px;
+  padding-top: 11px;
+  padding-bottom: 11px;
+  background: #fff;
+  border-top: solid 1px #ccc;
   overflow: hidden;
 
   ${media.smallerThanMaxTablet`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 15px 10px;
+    background: #f4f4f4;
+  `}
+`;
+
+const PagesNav = styled.nav`
+  ${media.smallerThanMaxTablet`
+    width: 90vw;
     margin-top: 15px;
     margin-bottom: 15px;
   `}
 `;
 
+const PagesNavList = styled.ul`
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+  ${media.smallerThanMaxTablet`
+    flex-wrap: wrap;
+    justify-content: center;
+  `}
+
+  & li {
+    margin-right: 10px;
+
+    &:after {
+      color: ${colors.label};
+      font-size: ${fontSizes.small}px;
+      font-weight: 400;
+      content: '•';
+      margin-left: 10px;
+    }
+
+    &:last-child {
+      margin-right: 0px;
+
+      &:after {
+        margin-left: 0px;
+        content: '';
+      }
+    }
+  }
+`;
+
+const PagesNavListItem = styled.li`
+  color: ${colors.label};
+  font-size: ${fontSizes.small}px;
+  line-height: normal;
+  font-weight: 400;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+`;
+
 const StyledButton = styled.button`
   color: ${colors.label};
-  font-weight: 300;
+  font-size: ${fontSizes.small}px;
+  font-weight: 400;
+  line-height: normal;
+  hyphens: auto;
+  padding: 0;
+  margin: 0;
+  border: none;
+  cursor: pointer;
+
+  &:hover {
+    color: #000;
+    text-decoration: underline;
+  }
+`;
+
+const linkStyle = css`
+  color: ${colors.label};
+  font-weight: 400;
   font-size: ${fontSizes.small}px;
   line-height: 21px;
   text-decoration: none;
@@ -184,30 +257,11 @@ const StyledButton = styled.button`
 `;
 
 const StyledLink = styled(Link)`
-  color: ${colors.label};
-  font-weight: 300;
-  font-size: ${fontSizes.small}px;
-  line-height: 21px;
-  text-decoration: none;
-  hyphens: auto;
-  padding: 0;
-  margin: 0;
-  border: none;
-  cursor: pointer;
-
-  &:hover {
-    color: #000;
-    text-decoration: underline;
-  }
+  ${linkStyle}
 `;
 
-const Bullet = styled.span`
-  color: ${colors.label};
-  font-weight: 300;
-  font-size: ${fontSizes.small}px;
-  line-height: 21px;
-  margin-left: 10px;
-  margin-right: 10px;
+const StyledA = styled.a`
+  ${linkStyle}
 `;
 
 const Right = styled.div`
@@ -225,16 +279,12 @@ const Right = styled.div`
 `;
 
 const PoweredBy = styled.div`
-  color: ${colors.label};
-  font-size: ${fontSizes.base}px;
-  font-weight: 300;
-  text-decoration: none;
   display: flex;
   align-items: center;
   outline: none;
   padding-right: 20px;
   margin-right: 24px;
-  border-right: 2px solid ${colors.adminBackground};
+  border-right: 2px solid ${colors.separation};
 
   ${media.smallerThanMinTablet`
     flex-direction: column;
@@ -246,36 +296,47 @@ const PoweredBy = styled.div`
 `;
 
 const PoweredByText = styled.span`
-  margin-right: 5px;
+  color: ${colors.label};
+  font-size: ${fontSizes.small}px;
+  font-weight: 400;
+  line-height: normal;
+  margin-right: 8px;
+
+  ${media.smallerThan1280px`
+    display: none;
+  `}
+
+  ${media.smallerThanMaxTablet`
+    display: block;
+  `}
 
   ${media.smallerThanMinTablet`
-    margin: 0;
     margin-bottom: 10px;
   `}
 `;
 
 const CitizenlabLink = styled.a`
-  width: 151px;
-  height: 27px;
+  width: 130px;
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-top: 4px;
   cursor: pointer;
 `;
 
 const StyledSendFeedback = styled(SendFeedback)`
   ${media.smallerThanMinTablet`
-    margin-top: 25px;
+    margin-top: 20px;
   `}
 `;
 
 const ShortFeedbackFormModalFooter = styled.div`
-  width: 100%;
   display: flex;
 `;
 
 const CitizenLabLogo = styled(Icon)`
-  fill: ${colors.secondaryText};
+  height: 28px;
+  fill: ${colors.label};
 
   &:hover {
     fill: #000;
@@ -285,11 +346,13 @@ const CitizenLabLogo = styled(Icon)`
 interface InputProps {
   showShortFeedback?: boolean;
   className?: string;
+  insideModal?: boolean;
 }
 
 interface DataProps {
   locale: GetLocaleChildProps;
   windowSize: GetWindowSizeChildProps;
+  tenant: GetAppConfigurationChildProps;
 }
 
 interface Props extends DataProps, InputProps {}
@@ -377,6 +440,45 @@ class PlatformFooter extends PureComponent<Props, State> {
     eventEmitter.emit('openConsentManager');
   };
 
+  getHasCustomizedA11yFooterLink = () => {
+    const { tenant } = this.props;
+
+    if (!isNilOrError(tenant)) {
+      if (
+        // Hillerod
+        tenant.id === '6964ee76-97bb-4106-8be0-cfba7a027240' ||
+        // Linz
+        tenant.id === '7413b333-a14a-4a3a-a037-da6ac4caf440'
+      ) {
+        return true;
+      }
+    }
+
+    return false;
+  };
+
+  getCustomizedA11yHref = () => {
+    const { tenant } = this.props;
+
+    if (!isNilOrError(tenant)) {
+      if (
+        // Hillerod
+        tenant.id === '6964ee76-97bb-4106-8be0-cfba7a027240'
+      ) {
+        return 'https://www.was.digst.dk/hillerod-citizenlab-co-da-DK';
+      }
+
+      if (
+        // Linz
+        tenant.id === '7413b333-a14a-4a3a-a037-da6ac4caf440'
+      ) {
+        return 'https://res.cloudinary.com/citizenlabco/image/upload/v1611739984/Linz_Web_Content_Accessibility_Guidlines_WCAG_2.1_nduhob.pdf';
+      }
+    }
+
+    return null;
+  };
+
   render() {
     const {
       shortFeedbackButtonClicked,
@@ -384,17 +486,28 @@ class PlatformFooter extends PureComponent<Props, State> {
       feedbackSubmitting,
       feedbackSubmitted,
     } = this.state;
-    const { showShortFeedback, className, windowSize } = this.props;
+    const {
+      showShortFeedback,
+      className,
+      windowSize,
+      insideModal,
+    } = this.props;
     const smallerThanSmallTablet = windowSize
       ? windowSize <= viewportWidths.smallTablet
       : false;
+    const hasCustomizedA11yFooterLink = this.getHasCustomizedA11yFooterLink();
+    const customizedA11yHref = this.getCustomizedA11yHref();
 
     return (
-      <Container id="hook-footer" className={className}>
+      <Container
+        insideModal={insideModal}
+        id="hook-footer"
+        className={className}
+      >
         {showShortFeedback && (
           <>
-            <ShortFeedback>
-              <ShortFeedbackInner>
+            <ShortFeedbackContainer>
+              <ShortFeedback>
                 {shortFeedbackButtonClicked ? (
                   feedbackModalOpen ? (
                     <ThankYouNote>
@@ -410,22 +523,23 @@ class PlatformFooter extends PureComponent<Props, State> {
                     <FeedbackQuestion>
                       <FormattedMessage {...messages.feedbackQuestion} />
                     </FeedbackQuestion>
-                    <Buttons>
+                    <FeedbackButtons>
                       <FeedbackButton
                         onClick={this.handleFeedbackButtonClick('yes')}
                       >
                         <FormattedMessage {...messages.yes} />
                       </FeedbackButton>
                       <FeedbackButton
+                        className="hasLeftMargin"
                         onClick={this.handleFeedbackButtonClick('no')}
                       >
                         <FormattedMessage {...messages.no} />
                       </FeedbackButton>
-                    </Buttons>
+                    </FeedbackButtons>
                   </>
                 )}
-              </ShortFeedbackInner>
-            </ShortFeedback>
+              </ShortFeedback>
+            </ShortFeedbackContainer>
 
             <Modal
               width={500}
@@ -463,26 +577,59 @@ class PlatformFooter extends PureComponent<Props, State> {
           </>
         )}
 
-        <Inner className={showShortFeedback ? 'showShortFeedback' : ''}>
+        <FooterContainer
+          className={showShortFeedback ? 'showShortFeedback' : ''}
+        >
           <PagesNav>
-            {LEGAL_PAGES.map((slug, index) => (
-              <React.Fragment key={slug}>
-                <StyledLink
-                  to={`/pages/${slug}`}
-                  className={index === 0 ? 'first' : ''}
-                >
-                  <FormattedMessage {...messages[slug]} />
+            <PagesNavList>
+              {LEGAL_PAGES.map((slug: TLegalPage, index) => {
+                return (
+                  <React.Fragment key={slug}>
+                    <PagesNavListItem>
+                      {slug === 'accessibility-statement' &&
+                      hasCustomizedA11yFooterLink &&
+                      customizedA11yHref ? (
+                        <StyledA
+                          href={customizedA11yHref}
+                          className={index === 0 ? 'first' : ''}
+                        >
+                          <FormattedMessage
+                            {...messages.accessibilityStatement}
+                          />
+                        </StyledA>
+                      ) : (
+                        <StyledLink
+                          to={`/pages/${slug}`}
+                          className={index === 0 ? 'first' : ''}
+                        >
+                          <FormattedMessage
+                            {...{
+                              information: messages.information,
+                              'terms-and-conditions':
+                                messages.termsAndConditions,
+                              'privacy-policy': messages.privacyPolicy,
+                              'cookie-policy': messages.cookiePolicy,
+                              'accessibility-statement':
+                                messages.accessibilityStatement,
+                            }[slug]}
+                          />
+                        </StyledLink>
+                      )}
+                    </PagesNavListItem>
+                  </React.Fragment>
+                );
+              })}
+              <PagesNavListItem>
+                <StyledButton onClick={this.openConsentManager}>
+                  <FormattedMessage {...messages.cookieSettings} />
+                </StyledButton>
+              </PagesNavListItem>
+              <PagesNavListItem>
+                <StyledLink to="/site-map">
+                  <FormattedMessage {...messages.siteMap} />
                 </StyledLink>
-                <Bullet aria-hidden>•</Bullet>
-              </React.Fragment>
-            ))}
-            <StyledButton onClick={this.openConsentManager}>
-              <FormattedMessage {...messages.cookieSettings} />
-            </StyledButton>
-            <Bullet aria-hidden>•</Bullet>
-            <StyledLink to="/site-map">
-              <FormattedMessage {...messages.siteMap} />
-            </StyledLink>
+              </PagesNavListItem>
+            </PagesNavList>
           </PagesNav>
 
           <Right>
@@ -490,7 +637,7 @@ class PlatformFooter extends PureComponent<Props, State> {
               <PoweredByText>
                 <FormattedMessage {...messages.poweredBy} />
               </PoweredByText>
-              <CitizenlabLink href="https://www.citizenlab.co/">
+              <CitizenlabLink href="https://www.citizenlab.co/" target="_blank">
                 <CitizenLabLogo
                   name="citizenlab-footer-logo"
                   title="CitizenLab"
@@ -500,7 +647,7 @@ class PlatformFooter extends PureComponent<Props, State> {
 
             <StyledSendFeedback showFeedbackText={smallerThanSmallTablet} />
           </Right>
-        </Inner>
+        </FooterContainer>
       </Container>
     );
   }
@@ -509,6 +656,7 @@ class PlatformFooter extends PureComponent<Props, State> {
 const Data = adopt<Props>({
   locale: <GetLocale />,
   windowSize: <GetWindowSize />,
+  tenant: <GetAppConfiguration />,
 });
 
 export default (inputProps: InputProps) => (

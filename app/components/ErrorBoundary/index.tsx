@@ -28,11 +28,15 @@ const StyledButton = styled.button`
   }
 `;
 
+interface InputProps {
+  children: React.ReactNode;
+}
+
 interface DataProps {
   authUser: GetAuthUserChildProps;
 }
 
-interface Props extends DataProps {}
+interface Props extends InputProps, DataProps {}
 
 type State = {
   hasError: boolean;
@@ -44,10 +48,12 @@ class ErrorBoundary extends Component<Props & InjectedIntlProps, State> {
     this.state = { hasError: false };
   }
 
-  componentDidCatch(error, errorInfo) {
-    // Display fallback UI
-    this.setState({ hasError: true });
+  static getDerivedStateFromError(_error) {
+    // Update state so the next render will show the fallback UI.
+    return { hasError: true };
+  }
 
+  componentDidCatch(error, errorInfo) {
     // Report to Sentry
     withScope((scope) => {
       Object.keys(errorInfo).forEach((key) => {
@@ -101,6 +107,8 @@ class ErrorBoundary extends Component<Props & InjectedIntlProps, State> {
   };
 
   render() {
+    const { children } = this.props;
+
     if (this.state.hasError) {
       return (
         <Container>
@@ -117,14 +125,17 @@ class ErrorBoundary extends Component<Props & InjectedIntlProps, State> {
         </Container>
       );
     }
-    return this.props.children;
+
+    return children;
   }
 }
 
 const ErrorBoundaryWithIntl = injectIntl(ErrorBoundary);
 
-export default (props) => (
+export default (inputProps: InputProps) => (
   <GetAuthUser>
-    {(authUser) => <ErrorBoundaryWithIntl authUser={authUser} {...props} />}
+    {(authUser) => {
+      return <ErrorBoundaryWithIntl authUser={authUser} {...inputProps} />;
+    }}
   </GetAuthUser>
 );

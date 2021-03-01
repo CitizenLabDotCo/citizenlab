@@ -1,6 +1,7 @@
 import adminRoutes from 'containers/Admin/routes';
 import Loadable from 'react-loadable';
 import { LoadableLoadingCitizen } from 'components/UI/LoadableLoading';
+import moduleConfiguration from 'modules';
 
 export default function createRoutes() {
   return [
@@ -178,15 +179,6 @@ export default function createRoutes() {
           }),
         },
         {
-          path: 'folders/:slug',
-          name: 'Project folder page',
-          component: Loadable({
-            loader: () => import('containers/ProjectFolderShowPage'),
-            loading: LoadableLoadingCitizen,
-            delay: 500,
-          }),
-        },
-        {
           path: 'projects/:slug',
           name: 'Project page',
           component: Loadable({
@@ -197,81 +189,17 @@ export default function createRoutes() {
           indexRoute: {
             name: 'Project page',
             component: Loadable({
-              loader: () => import('containers/ProjectsShowPage/main'),
+              loader: () => import('containers/ProjectsShowPage'),
               loading: LoadableLoadingCitizen,
               delay: 500,
             }),
           },
           childRoutes: [
             {
-              path: 'process',
-              name: "Project's process page",
+              path: '*',
+              name: 'Project page',
               component: Loadable({
-                loader: () => import('containers/ProjectsShowPage/process'),
-                loading: LoadableLoadingCitizen,
-                delay: 500,
-              }),
-            },
-            {
-              path: 'timeline',
-              name: "Project's process page",
-              component: Loadable({
-                loader: () => import('containers/ProjectsShowPage/process'),
-                loading: LoadableLoadingCitizen,
-                delay: 500,
-              }),
-            },
-            {
-              path: 'info',
-              name: "Project's info page",
-              component: Loadable({
-                loader: () => import('containers/ProjectsShowPage/info'),
-                loading: LoadableLoadingCitizen,
-                delay: 500,
-              }),
-            },
-            {
-              path: 'events',
-              name: "Project's events page",
-              component: Loadable({
-                loader: () => import('containers/ProjectsShowPage/events'),
-                loading: LoadableLoadingCitizen,
-                delay: 500,
-              }),
-            },
-            {
-              path: 'ideas',
-              name: "Project's ideas page",
-              component: Loadable({
-                loader: () => import('containers/ProjectsShowPage/ideas'),
-                loading: LoadableLoadingCitizen,
-                delay: 500,
-              }),
-            },
-            {
-              path: 'survey',
-              name: "Project's survey page",
-              component: Loadable({
-                loader: () => import('containers/ProjectsShowPage/survey'),
-                loading: LoadableLoadingCitizen,
-                delay: 500,
-              }),
-            },
-            {
-              path: 'poll',
-              name: "Project's poll page",
-              component: Loadable({
-                loader: () => import('containers/ProjectsShowPage/poll'),
-                loading: LoadableLoadingCitizen,
-                delay: 500,
-              }),
-            },
-            {
-              path: 'volunteering',
-              name: "Project's volunteering page",
-              component: Loadable({
-                loader: () =>
-                  import('containers/ProjectsShowPage/volunteering'),
+                loader: () => import('containers/ProjectsShowPage'),
                 loading: LoadableLoadingCitizen,
                 delay: 500,
               }),
@@ -283,6 +211,15 @@ export default function createRoutes() {
           name: 'cookiePolicy',
           component: Loadable({
             loader: () => import('containers/CookiePolicy'),
+            loading: LoadableLoadingCitizen,
+            delay: 500,
+          }),
+        },
+        {
+          path: 'pages/accessibility-statement',
+          name: 'accessibilityStatement',
+          component: Loadable({
+            loader: () => import('containers/AccessibilityStatement'),
             loading: LoadableLoadingCitizen,
             delay: 500,
           }),
@@ -344,6 +281,7 @@ export default function createRoutes() {
             delay: 500,
           }),
         },
+        ...moduleConfiguration.routes.citizen,
         {
           path: '*',
           name: 'notfound',

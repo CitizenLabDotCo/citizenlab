@@ -1,14 +1,13 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, lazy, Suspense } from 'react';
 import { sortBy, last, isUndefined, isString } from 'lodash-es';
-import { isNilOrError } from 'utils/helperUtils';
+import { isNilOrError, getFormattedBudget } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
 
+// services
+import { getInputTerm } from 'services/participationContexts';
+
 // typings
-import { IParticipationContextType, Locale } from 'typings';
-import {
-  IIdeaCustomFieldsSchemas,
-  CustomFieldCodes,
-} from 'services/ideaCustomFields';
+import { IParticipationContextType } from 'typings';
 
 // analytics
 import { trackEvent } from 'utils/analytics';
@@ -18,38 +17,34 @@ import tracks from './tracks';
 import { withRouter, WithRouterProps } from 'react-router';
 
 // components
-import Sharing from 'components/Sharing';
+import IdeaSharingButton from './Buttons/IdeaSharingButton';
 import IdeaMeta from './IdeaMeta';
-import DropdownMap from 'components/PostShowComponents/DropdownMap';
-import Topics from 'components/PostShowComponents/Topics';
 import Title from 'components/PostShowComponents/Title';
+import IdeaProposedBudget from './IdeaProposedBudget';
 import Body from 'components/PostShowComponents/Body';
-import ContentFooter from 'components/PostShowComponents/ContentFooter';
 import Image from 'components/PostShowComponents/Image';
 import OfficialFeedback from 'components/PostShowComponents/OfficialFeedback';
 import Modal from 'components/UI/Modal';
-import VoteWrapper from './VoteWrapper';
-import AssignBudgetWrapper from './AssignBudgetWrapper';
-import FileAttachments from 'components/UI/FileAttachments';
+import AssignBudgetWrapper from './CTABox/ParticipatoryBudgetingCTABox/BudgetAssignment/AssignBudgetWrapper';
 import SharingModalContent from 'components/PostShowComponents/SharingModalContent';
 import FeatureFlag from 'components/FeatureFlag';
-import SimilarIdeas from './SimilarIdeas';
-import IdeaStatus from './IdeaStatus';
-import IdeaPostedBy from './IdeaPostedBy';
-import IdeaAuthor from './IdeaAuthor';
-import Footer from 'components/PostShowComponents/Footer';
+import IdeaMoreActions from './IdeaMoreActions';
 import { Spinner } from 'cl2-component-library';
-import ActionBar from './ActionBar';
-import TranslateButton from 'components/PostShowComponents/TranslateButton';
-import PlatformFooter from 'containers/PlatformFooter';
+import GoBackButton from './GoBackButton';
+import TranslateButton from 'components/UI/TranslateButton';
+const LazyComments = lazy(() =>
+  import('components/PostShowComponents/Comments')
+);
+import LoadingComments from 'components/PostShowComponents/Comments/LoadingComments';
+import MetaInformation from './MetaInformation';
+import MobileSharingButtonComponent from './Buttons/MobileSharingButtonComponent';
+import RightColumnDesktop from './RightColumnDesktop';
 
 // utils
 import { pastPresentOrFuture } from 'utils/dateUtils';
+import isFieldEnabled from './isFieldEnabled';
 
 // resources
-import GetResourceFiles, {
-  GetResourceFilesChildProps,
-} from 'resources/GetResourceFiles';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetIdeaImages, {
   GetIdeaImagesChildProps,
@@ -57,7 +52,6 @@ import GetIdeaImages, {
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetWindowSize, {
   GetWindowSizeChildProps,
 } from 'resources/GetWindowSize';
@@ -70,6 +64,11 @@ import GetPermission, {
 import GetIdeaCustomFieldsSchemas, {
   GetIdeaCustomFieldsSchemasChildProps,
 } from 'resources/GetIdeaCustomFieldsSchemas';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetAppConfiguration';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import GetComments, { GetCommentsChildProps } from 'resources/GetComments';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -77,25 +76,17 @@ import { FormattedMessage } from 'utils/cl-intl';
 import injectIntl from 'utils/cl-intl/injectIntl';
 import messages from './messages';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
+import { getInputTermMessage } from 'utils/i18n';
 
 // animations
 import CSSTransition from 'react-transition-group/CSSTransition';
 
 // style
 import styled from 'styled-components';
-import {
-  media,
-  colors,
-  fontSizes,
-  viewportWidths,
-  defaultCardStyle,
-} from 'utils/styleUtils';
-import { ScreenReaderOnly } from 'utils/a11y';
+import { media, viewportWidths, isRtl } from 'utils/styleUtils';
 import {
   columnsGapDesktop,
-  rightColumnWidthDesktop,
   columnsGapTablet,
-  rightColumnWidthTablet,
   pageContentMaxWidth,
 } from './styleConstants';
 
@@ -105,35 +96,37 @@ const contentFadeInDelay = 150;
 
 const Loading = styled.div`
   width: 100vw;
-  height: calc(100vh - ${(props) => props.theme.menuHeight}px);
+  height: calc(
+    100vh - ${(props) => props.theme.menuHeight + props.theme.footerHeight}px
+  );
   display: flex;
   align-items: center;
   justify-content: center;
 
   ${media.smallerThanMaxTablet`
-    height: calc(100vh - ${(props) => props.theme.mobileTopBarHeight}px);
+    height: calc(100vh - ${({ theme: { mobileTopBarHeight } }) =>
+      mobileTopBarHeight}px);
+  `}
+
+  ${media.smallerThanMinTablet`
+    height: calc(100vh - ${({ theme: { mobileTopBarHeight } }) =>
+      mobileTopBarHeight}px);
   `}
 `;
 
-const Container = styled.main<{ insideModal: boolean }>`
+const Container = styled.main`
   display: flex;
   flex-direction: column;
   min-height: calc(
-    100vh -
-      ${(props) =>
-        props.insideModal
-          ? props.theme.menuHeight
-          : props.theme.menuHeight + props.theme.footerHeight}px
+    100vh - ${(props) => props.theme.menuHeight + props.theme.footerHeight}px
   );
   background: #fff;
   opacity: 0;
 
   ${media.smallerThanMaxTablet`
-    min-height: calc(100vh - ${(props) =>
-      props.insideModal
-        ? props.theme.mobileMenuHeight
-        : props.theme.mobileMenuHeight}px - ${(props) =>
-    props.theme.mobileTopBarHeight}px);
+    min-height: calc(100vh - ${({
+      theme: { mobileMenuHeight, mobileTopBarHeight },
+    }) => mobileMenuHeight + mobileTopBarHeight}px);
   `}
 
   &.content-enter {
@@ -154,13 +147,11 @@ const Container = styled.main<{ insideModal: boolean }>`
 const IdeaContainer = styled.div`
   width: 100%;
   max-width: ${pageContentMaxWidth}px;
-  display: flex;
-  flex-direction: column;
   margin: 0;
   margin-left: auto;
   margin-right: auto;
   padding: 0;
-  padding-top: 60px;
+  padding-top: 40px;
   padding-left: 60px;
   padding-right: 60px;
   position: relative;
@@ -200,113 +191,82 @@ const LeftColumn = styled.div`
   `}
 `;
 
-const StyledTranslateButtonMobile = styled(TranslateButton)`
-  display: none;
-  width: fit-content;
-  margin-bottom: 40px;
-
-  ${media.smallerThanMinTablet`
-    display: block;
-  `}
+const StyledTranslateButton = styled(TranslateButton)`
+  margin-bottom: 20px;
 `;
 
 const IdeaHeader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   margin-top: -5px;
-  margin-bottom: 28px;
+  margin-bottom: 25px;
+
+  ${isRtl`
+    flex-direction: row-reverse;
+  `}
 
   ${media.smallerThanMaxTablet`
     margin-top: 0px;
-    margin-bottom: 45px;
+    margin-bottom: 25px;
   `}
 `;
 
-const StyledMobileIdeaPostedBy = styled(IdeaPostedBy)`
-  margin-top: 4px;
-
-  ${media.biggerThanMaxTablet`
-    display: none;
-  `}
-`;
-
-const StyledMobileIdeaStatus = styled(IdeaStatus)`
-  margin-bottom: 30px;
-
-  ${media.biggerThanMaxTablet`
-    display: none;
-  `}
-`;
-
-const StyledIdeaAuthor = styled(IdeaAuthor)`
-  margin-left: -4px;
-  margin-bottom: 50px;
-
+const StyledIdeaMoreActions = styled(IdeaMoreActions)`
   ${media.smallerThanMaxTablet`
     display: none;
   `}
 `;
 
-const StyledDropdownMap = styled(DropdownMap)`
-  margin-bottom: 40px;
-
-  ${media.smallerThanMaxTablet`
-    margin-bottom: 20px;
-  `}
-`;
-
-const RightColumn = styled.div`
-  flex: 1;
-  margin: 0;
-  padding: 0;
-`;
-
-const RightColumnDesktop = styled(RightColumn)`
-  flex: 0 0 ${rightColumnWidthDesktop}px;
-  width: ${rightColumnWidthDesktop}px;
-
-  ${media.tablet`
-    flex: 0 0 ${rightColumnWidthTablet}px;
-    width: ${rightColumnWidthTablet}px;
-  `}
-
-  ${media.smallerThanMaxTablet`
-    display: none;
-  `}
-`;
-
-const MetaContent = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-`;
-
-const ControlWrapper = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 45px;
-  padding: 35px;
-  border: 1px solid #e0e0e0;
-  ${defaultCardStyle};
-`;
-
-const ControlWrapperHorizontalRule = styled.hr`
-  width: 100%;
-  border: none;
-  height: 1px;
-  background-color: ${colors.separation};
-  margin: 35px 0;
-`;
-
-const VoteLabel = styled.div`
-  color: ${colors.label};
-  font-size: ${fontSizes.base}px;
-  font-weight: 400;
-  margin-bottom: 12px;
+const MobileIdeaMoreActions = styled(IdeaMoreActions)`
   display: none;
 
   ${media.smallerThanMaxTablet`
     display: block;
   `}
+`;
+
+const TopBar = styled.div`
+  display: flex;
+  justify-content: space-between;
+
+  ${isRtl`
+    flex-direction: row-reverse;
+  `}
+`;
+
+const StyledGoBackButton = styled(GoBackButton)`
+  margin-bottom: 40px;
+  display: block;
+
+  ${media.smallerThanMaxTablet`
+    display: none;
+  `}
+`;
+
+const BodySectionTitle = styled.h2`
+  font-size: ${(props) => props.theme.fontSizes.large}px;
+  font-weight: 500;
+  line-height: 28px;
+  padding: 0;
+  margin: 0;
+  margin-bottom: 15px;
+`;
+
+const StyledBody = styled(Body)`
+  margin-bottom: 40px;
+
+  ${media.smallerThanMaxTablet`
+  margin-bottom: 25px;
+  `}
+`;
+
+const StyledIdeaProposedBudget = styled(IdeaProposedBudget)`
+  margin-bottom: 20px;
+`;
+
+const MobileMetaInformation = styled(MetaInformation)`
+  margin-bottom: 30px;
 `;
 
 const AssignBudgetControlMobile = styled.div`
@@ -318,20 +278,7 @@ const AssignBudgetControlMobile = styled.div`
   `}
 `;
 
-const SharingWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
-const StyledSimilarIdeas = styled(SimilarIdeas)`
-  margin-top: 45px;
-`;
-
-const SharingMobile = styled(Sharing)`
-  padding: 0;
-  margin: 0;
-  margin-top: 40px;
-
+const MobileIdeaSharingButton = styled(IdeaSharingButton)`
   ${media.biggerThanMaxTablet`
     display: none;
   `}
@@ -339,26 +286,32 @@ const SharingMobile = styled(Sharing)`
 
 const StyledOfficialFeedback = styled(OfficialFeedback)`
   margin-top: 80px;
+  margin-bottom: 80px;
+`;
+
+const Comments = styled.div`
+  margin-bottom: 100px;
 `;
 
 interface DataProps {
   idea: GetIdeaChildProps;
   locale: GetLocaleChildProps;
+  authUser: GetAuthUserChildProps;
   project: GetProjectChildProps;
   phases: GetPhasesChildProps;
   ideaImages: GetIdeaImagesChildProps;
-  ideaFiles: GetResourceFilesChildProps;
-  authUser: GetAuthUserChildProps;
   windowSize: GetWindowSizeChildProps;
   officialFeedbacks: GetOfficialFeedbacksChildProps;
   postOfficialFeedbackPermission: GetPermissionChildProps;
   ideaCustomFieldsSchemas: GetIdeaCustomFieldsSchemasChildProps;
+  tenant: GetAppConfigurationChildProps;
+  comments: GetCommentsChildProps;
 }
 
 interface InputProps {
-  ideaId: string | null;
+  ideaId: string;
   projectId: string;
-  insideModal?: boolean;
+  insideModal: boolean;
   className?: string;
 }
 
@@ -415,7 +368,7 @@ export class IdeasShow extends PureComponent<
 
   static getDerivedStateFromProps(nextProps: Props, prevState: State) {
     const { actionInfos } = prevState;
-    const { idea, project, phases } = nextProps;
+    const { idea, project, phases, authUser } = nextProps;
     let stateToUpdate: Partial<State> | null = null;
 
     if (
@@ -426,13 +379,14 @@ export class IdeasShow extends PureComponent<
     ) {
       const upvotesCount = idea.attributes.upvotes_count;
       const downvotesCount = idea.attributes.downvotes_count;
-      const votingEnabled = idea.attributes.action_descriptor.voting.enabled;
+      const votingEnabled =
+        idea.attributes.action_descriptor.voting_idea.enabled;
       const votingDisabledReason =
-        idea.attributes.action_descriptor.voting.disabled_reason;
+        idea.attributes.action_descriptor.voting_idea.disabled_reason;
       const cancellingEnabled =
-        idea.attributes.action_descriptor.voting.cancelling_enabled;
+        idea.attributes.action_descriptor.voting_idea.cancelling_enabled;
       const votingFutureEnabled =
-        idea.attributes.action_descriptor.voting.future_enabled;
+        idea.attributes.action_descriptor.voting_idea.future_enabled;
       const pbProject =
         project.attributes.process_type === 'continuous' &&
         project.attributes.participation_method === 'budgeting'
@@ -464,10 +418,15 @@ export class IdeasShow extends PureComponent<
         pbProject ||
         (pbPhase && (pbPhaseIsActive || (lastPhaseHasPassed && pbPhaseIsLast)))
       );
+      const isSignedIn = !isNilOrError(authUser);
       const shouldVerify =
-        !votingEnabled && votingDisabledReason === 'not_verified';
+        !votingEnabled && votingDisabledReason === 'not_verified' && isSignedIn;
       const verifiedButNotPermitted =
         !shouldVerify && votingDisabledReason === 'not_permitted';
+      const shouldSignIn =
+        !votingEnabled &&
+        (votingDisabledReason === 'not_signed_in' ||
+          (votingDisabledReason === 'not_verified' && !isSignedIn));
       const showVoteControl = !!(
         !showBudgetControl &&
         (votingEnabled ||
@@ -476,6 +435,7 @@ export class IdeasShow extends PureComponent<
           upvotesCount > 0 ||
           downvotesCount > 0 ||
           shouldVerify ||
+          shouldSignIn ||
           verifiedButNotPermitted)
       );
       const budgetingDescriptor =
@@ -544,31 +504,21 @@ export class IdeasShow extends PureComponent<
     });
   };
 
-  isFieldEnabled = (
-    fieldCode: CustomFieldCodes,
-    ideaCustomFieldsSchemas: IIdeaCustomFieldsSchemas,
-    locale: Locale
-  ) => {
-    return (
-      ideaCustomFieldsSchemas.ui_schema_multiloc[locale][fieldCode][
-        'ui:widget'
-      ] !== 'hidden'
-    );
-  };
-
   render() {
     const {
-      ideaFiles,
       locale,
       idea,
       localize,
       ideaImages,
-      authUser,
       windowSize,
       className,
       postOfficialFeedbackPermission,
       projectId,
       ideaCustomFieldsSchemas,
+      tenant,
+      insideModal,
+      project,
+      phases,
     } = this.props;
     const {
       loaded,
@@ -581,25 +531,20 @@ export class IdeasShow extends PureComponent<
 
     if (
       !isNilOrError(idea) &&
-      !isNilOrError(ideaCustomFieldsSchemas) &&
       !isNilOrError(locale) &&
+      !isNilOrError(tenant) &&
+      !isNilOrError(ideaCustomFieldsSchemas) &&
       loaded
     ) {
       // If the user deletes their profile, authorId can be null
-      const authorId = idea?.relationships?.author?.data?.id || null;
-      const ideaPublishedAt = idea.attributes.published_at;
+      const authorId = idea.relationships?.author?.data?.id || null;
       const titleMultiloc = idea.attributes.title_multiloc;
       const ideaTitle = localize(titleMultiloc);
-      // If you're not an admin/mod, statusId can be null
-      const statusId = idea?.relationships?.idea_status?.data?.id || null;
+      const statusId = idea?.relationships?.idea_status?.data?.id;
       const ideaImageLarge =
         ideaImages?.[0]?.attributes?.versions?.large || null;
-      const ideaGeoPosition = idea?.attributes?.location_point_geojson || null;
-      const ideaAddress = idea?.attributes?.location_description || null;
-      const topicIds =
-        idea?.relationships?.topics?.data?.map((item) => item.id) || [];
-      const ideaUrl = location.href;
       const ideaId = idea.id;
+      const proposedBudget = idea.attributes?.proposed_budget;
       const ideaBody = localize(idea?.attributes?.body_multiloc);
       const participationContextType =
         actionInfos?.participationContextType || null;
@@ -614,35 +559,12 @@ export class IdeasShow extends PureComponent<
       const smallerThanLargeTablet = windowSize
         ? windowSize <= viewportWidths.largeTablet
         : false;
-      const smallerThanSmallTablet = windowSize
-        ? windowSize <= viewportWidths.smallTablet
-        : false;
-      const topicsEnabled = this.isFieldEnabled(
-        'topic_ids',
-        ideaCustomFieldsSchemas,
-        locale
-      );
-      const locationEnabled = this.isFieldEnabled(
-        'location',
-        ideaCustomFieldsSchemas,
-        locale
-      );
-      const attachmentsEnabled = this.isFieldEnabled(
-        'attachments',
+      const proposedBudgetEnabled = isFieldEnabled(
+        'proposed_budget',
         ideaCustomFieldsSchemas,
         locale
       );
 
-      const utmParams = !isNilOrError(authUser)
-        ? {
-            source: 'share_idea',
-            campaign: 'share_content',
-            content: authUser.id,
-          }
-        : {
-            source: 'share_idea',
-            campaign: 'share_content',
-          };
       const showTranslateButton =
         !isNilOrError(idea) &&
         !isNilOrError(locale) &&
@@ -652,28 +574,21 @@ export class IdeasShow extends PureComponent<
         <>
           <IdeaMeta ideaId={ideaId} />
 
-          <ActionBar
-            ideaId={ideaId}
-            translateButtonClicked={translateButtonClicked}
-            onTranslateIdea={this.onTranslateIdea}
-          />
-
           <IdeaContainer>
-            <FeatureFlag name="machine_translations">
-              {showTranslateButton && smallerThanSmallTablet && (
-                <StyledTranslateButtonMobile
-                  translateButtonClicked={translateButtonClicked}
-                  onClick={this.onTranslateIdea}
-                />
-              )}
-            </FeatureFlag>
+            <TopBar>
+              <StyledGoBackButton
+                projectId={projectId}
+                insideModal={insideModal}
+              />
+              <StyledIdeaMoreActions
+                idea={idea}
+                hasLeftMargin={true}
+                projectId={projectId}
+              />
+            </TopBar>
 
             <Content id="e2e-idea-show-page-content">
               <LeftColumn>
-                {topicsEnabled && topicIds.length > 0 && (
-                  <Topics postType="idea" topicIds={topicIds} />
-                )}
-
                 <IdeaHeader>
                   <Title
                     postType="idea"
@@ -682,42 +597,45 @@ export class IdeasShow extends PureComponent<
                     locale={locale}
                     translateButtonClicked={translateButtonClicked}
                   />
-
-                  {smallerThanLargeTablet && (
-                    <StyledMobileIdeaPostedBy authorId={authorId} />
-                  )}
-                </IdeaHeader>
-
-                {statusId && smallerThanLargeTablet && (
-                  <StyledMobileIdeaStatus tagName="h2" statusId={statusId} />
-                )}
-
-                {biggerThanLargeTablet && (
-                  <StyledIdeaAuthor
-                    ideaId={ideaId}
-                    authorId={authorId}
-                    ideaPublishedAt={ideaPublishedAt}
+                  <MobileIdeaMoreActions
+                    idea={idea}
+                    hasLeftMargin={true}
+                    projectId={projectId}
                   />
-                )}
+                </IdeaHeader>
 
                 {ideaImageLarge && (
                   <Image src={ideaImageLarge} alt="" id="e2e-idea-image" />
                 )}
 
-                {locationEnabled && ideaGeoPosition && ideaAddress && (
-                  <StyledDropdownMap
-                    address={ideaAddress}
-                    position={ideaGeoPosition}
-                    projectId={projectId}
-                  />
+                <FeatureFlag name="machine_translations">
+                  {showTranslateButton && (
+                    <StyledTranslateButton
+                      translateButtonClicked={translateButtonClicked}
+                      onClick={this.onTranslateIdea}
+                    />
+                  )}
+                </FeatureFlag>
+
+                {proposedBudgetEnabled && proposedBudget && (
+                  <>
+                    <BodySectionTitle>
+                      <FormattedMessage {...messages.proposedBudgetTitle} />
+                    </BodySectionTitle>
+                    <StyledIdeaProposedBudget
+                      formattedBudget={getFormattedBudget(
+                        locale,
+                        proposedBudget,
+                        tenant.attributes.settings.core.currency
+                      )}
+                    />
+                    <BodySectionTitle>
+                      <FormattedMessage {...messages.bodyTitle} />
+                    </BodySectionTitle>
+                  </>
                 )}
-                <ScreenReaderOnly>
-                  <FormattedMessage
-                    tagName="h2"
-                    {...messages.invisibleTitleContent}
-                  />
-                </ScreenReaderOnly>
-                <Body
+
+                <StyledBody
                   postType="idea"
                   postId={ideaId}
                   locale={locale}
@@ -725,9 +643,14 @@ export class IdeasShow extends PureComponent<
                   translateButtonClicked={translateButtonClicked}
                 />
 
-                {attachmentsEnabled &&
-                  !isNilOrError(ideaFiles) &&
-                  ideaFiles.length > 0 && <FileAttachments files={ideaFiles} />}
+                {smallerThanLargeTablet && (
+                  <MobileMetaInformation
+                    ideaId={ideaId}
+                    projectId={projectId}
+                    statusId={statusId}
+                    authorId={authorId}
+                  />
+                )}
 
                 {showBudgetControl &&
                   participationContextId &&
@@ -745,178 +668,106 @@ export class IdeasShow extends PureComponent<
                     </AssignBudgetControlMobile>
                   )}
 
+                <MobileIdeaSharingButton
+                  ideaId={ideaId}
+                  buttonComponent={<MobileSharingButtonComponent />}
+                />
+
                 <StyledOfficialFeedback
                   postId={ideaId}
                   postType="idea"
                   permissionToPost={postOfficialFeedbackPermission}
                 />
 
-                <ContentFooter
-                  postType="idea"
-                  postId={ideaId}
-                  publishedAt={ideaPublishedAt}
-                  commentsCount={idea.attributes.comments_count}
-                />
-
-                {smallerThanLargeTablet && (
-                  <SharingMobile
-                    context="idea"
-                    url={ideaUrl}
-                    twitterMessage={formatMessage(messages.twitterMessage, {
-                      ideaTitle,
-                    })}
-                    emailSubject={formatMessage(messages.emailSharingSubject, {
-                      ideaTitle,
-                    })}
-                    emailBody={formatMessage(messages.emailSharingBody, {
-                      ideaUrl,
-                      ideaTitle,
-                    })}
-                    utmParams={utmParams}
-                  />
-                )}
+                <Comments>
+                  <Suspense fallback={<LoadingComments />}>
+                    <LazyComments postId={ideaId} postType="idea" />
+                  </Suspense>
+                </Comments>
               </LeftColumn>
 
               {biggerThanLargeTablet && (
-                <RightColumnDesktop>
-                  <MetaContent>
-                    {(showVoteControl || showBudgetControl || statusId) && (
-                      <ControlWrapper className="e2e-vote-controls-desktop">
-                        {(showVoteControl || showBudgetControl) && (
-                          <ScreenReaderOnly>
-                            {showVoteControl && (
-                              <FormattedMessage
-                                tagName="h2"
-                                {...messages.a11y_voteControl}
-                              />
-                            )}
-                            {showBudgetControl && (
-                              <FormattedMessage
-                                tagName="h2"
-                                {...messages.a11y_budgetControl}
-                              />
-                            )}
-                          </ScreenReaderOnly>
-                        )}
-                        {showVoteControl && (
-                          <>
-                            <VoteLabel>
-                              <FormattedMessage {...messages.voteOnThisIdea} />
-                            </VoteLabel>
-
-                            <VoteWrapper
-                              ideaId={ideaId}
-                              projectId={projectId}
-                            />
-                          </>
-                        )}
-
-                        {showBudgetControl &&
-                          participationContextId &&
-                          participationContextType &&
-                          budgetingDescriptor && (
-                            <AssignBudgetWrapper
-                              ideaId={ideaId}
-                              projectId={projectId}
-                              participationContextId={participationContextId}
-                              participationContextType={
-                                participationContextType
-                              }
-                              budgetingDescriptor={budgetingDescriptor}
-                            />
-                          )}
-
-                        {(showVoteControl || showBudgetControl) && (
-                          <ControlWrapperHorizontalRule aria-hidden />
-                        )}
-
-                        {statusId && (
-                          <IdeaStatus tagName="h3" statusId={statusId} />
-                        )}
-                      </ControlWrapper>
-                    )}
-
-                    <SharingWrapper>
-                      <Sharing
-                        context="idea"
-                        url={ideaUrl}
-                        twitterMessage={formatMessage(messages.twitterMessage, {
-                          ideaTitle,
-                        })}
-                        emailSubject={formatMessage(
-                          messages.emailSharingSubject,
-                          { ideaTitle }
-                        )}
-                        emailBody={formatMessage(messages.emailSharingBody, {
-                          ideaUrl,
-                          ideaTitle,
-                        })}
-                        utmParams={utmParams}
-                      />
-                    </SharingWrapper>
-
-                    <FeatureFlag name="similar_ideas">
-                      <StyledSimilarIdeas ideaId={ideaId} />
-                    </FeatureFlag>
-                  </MetaContent>
-                </RightColumnDesktop>
+                <Suspense fallback={<Spinner />}>
+                  <RightColumnDesktop
+                    ideaId={ideaId}
+                    projectId={projectId}
+                    statusId={statusId}
+                    authorId={authorId}
+                    showVoteControl={showVoteControl}
+                    showBudgetControl={showBudgetControl}
+                    participationContextId={participationContextId}
+                    participationContextType={participationContextType}
+                    budgetingDescriptor={budgetingDescriptor}
+                    insideModal={insideModal}
+                  />
+                </Suspense>
               )}
             </Content>
           </IdeaContainer>
-
-          <Footer postId={ideaId} postType="idea" />
-
-          {this.props.insideModal && <PlatformFooter />}
         </>
       );
     }
 
-    return (
-      <>
-        {!loaded && (
-          <Loading>
-            <Spinner />
-          </Loading>
-        )}
+    if (!isNilOrError(project)) {
+      const inputTerm = getInputTerm(
+        project.attributes.process_type,
+        project,
+        phases
+      );
 
-        <CSSTransition
-          classNames="content"
-          in={loaded}
-          timeout={{
-            enter: contentFadeInDuration + contentFadeInDelay,
-            exit: 0,
-          }}
-          enter={true}
-          exit={false}
-        >
-          <Container
-            id="e2e-idea-show"
-            className={className}
-            insideModal={!!this.props.insideModal}
+      return (
+        <>
+          {!loaded && (
+            <Loading>
+              <Spinner />
+            </Loading>
+          )}
+          <CSSTransition
+            classNames="content"
+            in={loaded}
+            timeout={{
+              enter: contentFadeInDuration + contentFadeInDelay,
+              exit: 0,
+            }}
+            enter={true}
+            exit={false}
           >
-            {content}
-          </Container>
-        </CSSTransition>
+            <Container id="e2e-idea-show" className={className}>
+              {content}
+            </Container>
+          </CSSTransition>
 
-        <FeatureFlag name="ideaflow_social_sharing">
-          <Modal
-            opened={!!ideaIdForSocialSharing}
-            close={this.closeIdeaSocialSharingModal}
-            hasSkipButton={true}
-            skipText={<FormattedMessage {...messages.skipSharing} />}
-          >
-            {ideaIdForSocialSharing && (
-              <SharingModalContent
-                postType="idea"
-                postId={ideaIdForSocialSharing}
-                title={formatMessage(messages.shareTitle)}
-                subtitle={formatMessage(messages.shareSubtitle)}
-              />
-            )}
-          </Modal>
-        </FeatureFlag>
-      </>
-    );
+          <FeatureFlag name="ideaflow_social_sharing">
+            <Modal
+              opened={!!ideaIdForSocialSharing}
+              close={this.closeIdeaSocialSharingModal}
+              hasSkipButton={true}
+              skipText={<FormattedMessage {...messages.skipSharing} />}
+            >
+              {ideaIdForSocialSharing && (
+                <SharingModalContent
+                  postType="idea"
+                  postId={ideaIdForSocialSharing}
+                  title={formatMessage(
+                    getInputTermMessage(inputTerm, {
+                      idea: messages.sharingModalTitle,
+                      option: messages.optionSharingModalTitle,
+                      project: messages.projectSharingModalTitle,
+                      question: messages.questionSharingModalTitle,
+                      issue: messages.issueSharingModalTitle,
+                      contribution: messages.contributionSharingModalTitle,
+                    })
+                  )}
+                  subtitle={formatMessage(messages.sharingModalSubtitle)}
+                />
+              )}
+            </Modal>
+          </FeatureFlag>
+        </>
+      );
+    }
+
+    return null;
   }
 }
 
@@ -926,16 +777,12 @@ const IdeasShowWithHOCs = injectLocalize<Props>(
 
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
+  tenant: <GetAppConfiguration />,
   authUser: <GetAuthUser />,
   windowSize: <GetWindowSize />,
   idea: ({ ideaId, render }) => <GetIdea ideaId={ideaId}>{render}</GetIdea>,
   ideaImages: ({ ideaId, render }) => (
     <GetIdeaImages ideaId={ideaId}>{render}</GetIdeaImages>
-  ),
-  ideaFiles: ({ ideaId, render }) => (
-    <GetResourceFiles resourceId={ideaId} resourceType="idea">
-      {render}
-    </GetResourceFiles>
   ),
   project: ({ projectId, render }) => (
     <GetProject projectId={projectId}>{render}</GetProject>
@@ -956,10 +803,17 @@ const Data = adopt<DataProps, InputProps>({
       {render}
     </GetPermission>
   ),
-  ideaCustomFieldsSchemas: ({ projectId, render }) => (
-    <GetIdeaCustomFieldsSchemas projectId={projectId}>
+  ideaCustomFieldsSchemas: ({ projectId, render }) => {
+    return (
+      <GetIdeaCustomFieldsSchemas projectId={projectId}>
+        {render}
+      </GetIdeaCustomFieldsSchemas>
+    );
+  },
+  comments: ({ ideaId, render }) => (
+    <GetComments postId={ideaId} postType="idea">
       {render}
-    </GetIdeaCustomFieldsSchemas>
+    </GetComments>
   ),
 });
 

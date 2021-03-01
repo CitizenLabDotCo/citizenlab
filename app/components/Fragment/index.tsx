@@ -1,12 +1,15 @@
 import React, { PureComponent } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
+import qs from 'qs';
 
 // styling
 import styled from 'styled-components';
 
 // resources
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetAppConfiguration';
 import GetFeatureFlag, {
   GetFeatureFlagChildProps,
 } from 'resources/GetFeatureFlag';
@@ -18,15 +21,16 @@ const StyledIframe = styled.iframe`
 `;
 
 interface DataProps {
-  tenant: GetTenantChildProps;
+  tenant: GetAppConfigurationChildProps;
   fragmentsFeatureFlag: GetFeatureFlagChildProps;
 }
 
 interface InputProps {
   name: string;
   title?: string;
-  children: any;
+  children?: any;
   className?: string;
+  queryParameters?: { [key: string]: string };
 }
 
 interface Props extends DataProps, InputProps {}
@@ -50,9 +54,10 @@ class Fragment extends PureComponent<Props, State> {
   }
 
   fragmentUrl = (): string => {
-    const { tenant } = this.props;
+    const { tenant, queryParameters } = this.props;
     if (!isNilOrError(tenant)) {
-      return `/fragments/${tenant.id}/${this.props.name}.html`;
+      const params = qs.stringify(queryParameters, { addQueryPrefix: true });
+      return `/fragments/${tenant.id}/${this.props.name}.html${params}`;
     } else {
       return '';
     }
@@ -103,13 +108,13 @@ class Fragment extends PureComponent<Props, State> {
         />
       );
     } else {
-      return children;
+      return children || null;
     }
   }
 }
 
 const Data = adopt<DataProps, InputProps>({
-  tenant: <GetTenant />,
+  tenant: <GetAppConfiguration />,
   fragmentsFeatureFlag: <GetFeatureFlag name="fragments" />,
 });
 

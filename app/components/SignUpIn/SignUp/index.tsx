@@ -22,7 +22,9 @@ import ReactResizeDetector from 'react-resize-detector';
 
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetAppConfiguration';
 import GetUserCustomFieldsSchema, {
   GetUserCustomFieldsSchemaChildProps,
 } from 'resources/GetUserCustomFieldsSchema';
@@ -45,8 +47,7 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from 'components/SignUpIn/tracks';
 
 // style
-import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
+import styled, { withTheme } from 'styled-components';
 import { HeaderSubtitle } from 'components/UI/Modal';
 
 // typings
@@ -73,6 +74,7 @@ export type TSignUpSteps =
 export interface InputProps {
   metaData: ISignUpInMetaData;
   windowHeight: number;
+  customHeader?: JSX.Element;
   onSignUpCompleted: () => void;
   onGoToSignIn: () => void;
   className?: string;
@@ -80,11 +82,13 @@ export interface InputProps {
 
 interface DataProps {
   authUser: GetAuthUserChildProps;
-  tenant: GetTenantChildProps;
+  tenant: GetAppConfigurationChildProps;
   customFieldsSchema: GetUserCustomFieldsSchemaChildProps;
 }
 
-interface Props extends InputProps, DataProps {}
+interface Props extends InputProps, DataProps {
+  theme: any;
+}
 
 interface State {
   steps: (
@@ -324,6 +328,7 @@ class SignUp extends PureComponent<Props & InjectedIntlProps, State> {
       tenant,
       metaData,
       windowHeight,
+      customHeader,
       className,
       intl: { formatMessage },
     } = this.props;
@@ -371,28 +376,37 @@ class SignUp extends PureComponent<Props & InjectedIntlProps, State> {
                 handleHeight
                 onResize={this.onResize}
               >
-                <StyledHeaderContainer inModal={!!metaData.inModal}>
-                  <StyledHeaderTitle inModal={!!metaData.inModal}>
-                    <FormattedMessage {...messages.signUp2} />
-                  </StyledHeaderTitle>
+                <div>
+                  <StyledHeaderContainer
+                    className="signupinheadercontainer"
+                    inModal={!!metaData.inModal}
+                  >
+                    {!customHeader ? (
+                      <StyledHeaderTitle inModal={!!metaData.inModal}>
+                        <FormattedMessage {...messages.signUp2} />
+                      </StyledHeaderTitle>
+                    ) : (
+                      customHeader
+                    )}
 
-                  {hasHeaderSubtitle && (
-                    <HeaderSubtitle>
-                      {showStepsCount ? (
-                        <FormattedMessage
-                          {...messages.headerSubtitle}
-                          values={{
-                            activeStepNumber,
-                            stepName,
-                            totalStepsCount,
-                          }}
-                        />
-                      ) : (
-                        stepName
-                      )}
-                    </HeaderSubtitle>
-                  )}
-                </StyledHeaderContainer>
+                    {hasHeaderSubtitle && (
+                      <HeaderSubtitle>
+                        {showStepsCount ? (
+                          <FormattedMessage
+                            {...messages.headerSubtitle}
+                            values={{
+                              activeStepNumber,
+                              stepName,
+                              totalStepsCount,
+                            }}
+                          />
+                        ) : (
+                          stepName
+                        )}
+                      </HeaderSubtitle>
+                    )}
+                  </StyledHeaderContainer>
+                </div>
               </ReactResizeDetector>
             </div>
           )}
@@ -402,6 +416,7 @@ class SignUp extends PureComponent<Props & InjectedIntlProps, State> {
             windowHeight={`${windowHeight}px`}
             headerHeight={headerHeight}
             ref={this.setRef}
+            className="signupincontentcontainer"
           >
             {error ? (
               <Error text={error} animate={false} marginBottom="30px" />
@@ -414,7 +429,8 @@ class SignUp extends PureComponent<Props & InjectedIntlProps, State> {
                 ].includes(activeStep) &&
                   !isEmpty(helperText) && (
                     <SignUpHelperText
-                      textColor={colors.text}
+                      className="signuphelpertext"
+                      textColor={this.props.theme.colorText}
                       fontSize="base"
                       fontWeight={300}
                     >
@@ -475,11 +491,11 @@ class SignUp extends PureComponent<Props & InjectedIntlProps, State> {
 
 const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
-  tenant: <GetTenant />,
+  tenant: <GetAppConfiguration />,
   customFieldsSchema: <GetUserCustomFieldsSchema />,
 });
 
-const SignUpWithHoC = injectIntl(SignUp);
+const SignUpWithHoC = injectIntl(withTheme(SignUp));
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>

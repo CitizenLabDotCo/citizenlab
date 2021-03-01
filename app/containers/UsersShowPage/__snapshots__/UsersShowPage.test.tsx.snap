@@ -52,14 +52,16 @@ exports[`<UsersShowPage /> renders correctly by default 1`] = `
       selectTab={[Function]}
       userId="522ae8cc-a5ed-4d31-9aa0-470904934ec6"
     />
-    <UsersShowPage__StyledContentContainer>
+    <UsersShowPage__StyledContentContainer
+      maxWidth={1166}
+    >
       <UsersShowPage__UserIdeas>
         <Memo()
           authorId="522ae8cc-a5ed-4d31-9aa0-470904934ec6"
           invisibleTitleMessage={
             Object {
-              "defaultMessage": "All the ideas posted by this user",
-              "id": "app.containers.UsersShowPage.invisibleTitleIdeasList",
+              "defaultMessage": "All posts submitted by this participant",
+              "id": "app.containers.UsersShowPage.invisibleTitlePostsList",
             }
           }
           type="load-more"
@@ -118,17 +120,50 @@ exports[`<UsersShowPage /> renders correctly on the other tab 1`] = `
       userSlug="test-citizenlab"
     />
     <WrappedUserNavbar
-      currentTab="comments"
+      currentTab="ideas"
       selectTab={[Function]}
       userId="522ae8cc-a5ed-4d31-9aa0-470904934ec6"
     />
-    <UsersShowPage__StyledContentContainer>
-      <WrappedUserComments
-        userId="522ae8cc-a5ed-4d31-9aa0-470904934ec6"
-      />
+    <UsersShowPage__StyledContentContainer
+      maxWidth={1166}
+    >
+      <UsersShowPage__UserIdeas>
+        <Memo()
+          authorId="522ae8cc-a5ed-4d31-9aa0-470904934ec6"
+          invisibleTitleMessage={
+            Object {
+              "defaultMessage": "All posts submitted by this participant",
+              "id": "app.containers.UsersShowPage.invisibleTitlePostsList",
+            }
+          }
+          type="load-more"
+        />
+      </UsersShowPage__UserIdeas>
     </UsersShowPage__StyledContentContainer>
   </UsersShowPage__Container>
 </Fragment>
 `;
 
-exports[`<UsersShowPage /> renders correctly with an erroneous user 1`] = `""`;
+exports[`<UsersShowPage /> renders correctly with an erroneous user 1`] = `
+<UsersShowPage__NotFoundContainer
+  className=""
+>
+  <HelmetWrapper
+    defer={true}
+    encodeSpecialCharacters={true}
+  >
+    <meta
+      content="404"
+      name="prerender-status-code"
+    />
+  </HelmetWrapper>
+  <p>
+    We couldn't find this user's profile. If it was here before, it may have been deleted.
+  </p>
+  <Memo()
+    icon="arrow-back"
+    linkTo="/"
+    text="Go back to the previous page"
+  />
+</UsersShowPage__NotFoundContainer>
+`;

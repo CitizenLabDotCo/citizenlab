@@ -78,7 +78,7 @@ export default class ExportCommentsButton extends React.PureComponent<
           <FormattedMessage {...messages.exportIdeasCommentsProjects} />
         )}
         {exportType === 'selected_posts' && (
-          <FormattedMessage {...messages.exportSelectedIdeasComments} />
+          <FormattedMessage {...messages.exportSelectedInputsComments} />
         )}
       </Button>
     );

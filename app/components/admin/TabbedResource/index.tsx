@@ -121,7 +121,7 @@ type Props = {
 
 type State = {};
 
-function urlMatch(tabUrl: string) {
+function getRegularExpression(tabUrl: string) {
   return new RegExp(`^\/([a-zA-Z]{2,3}(-[a-zA-Z]{2,3})?)(${tabUrl})(\/)?$`);
 }
 
@@ -129,13 +129,23 @@ class TabbedResource extends React.PureComponent<
   Props & WithRouterProps,
   State
 > {
+  activeClassForTab = (tab: TabProps) => {
+    const {
+      location: { pathname },
+    } = this.props;
+
+    return tab.active ||
+      (pathname && getRegularExpression(tab.url).test(location.pathname))
+      ? 'active'
+      : '';
+  };
+
   render() {
     const {
       children,
       resource: { title, subtitle, publicLink },
       messages,
       tabs,
-      location,
     } = this.props;
 
     return (
@@ -161,13 +171,7 @@ class TabbedResource extends React.PureComponent<
                   <FeatureFlag key={tab.url} name={tab.feature}>
                     <Tab
                       key={tab.url}
-                      className={`${tab.name} ${
-                        location &&
-                        location.pathname &&
-                        urlMatch(tab.url).test(location.pathname)
-                          ? 'active'
-                          : ''
-                      }`}
+                      className={`${tab.name} ${this.activeClassForTab(tab)}`}
                     >
                       <Link to={tab.url}>{tab.label}</Link>
                     </Tab>
@@ -177,13 +181,7 @@ class TabbedResource extends React.PureComponent<
                 return (
                   <Tab
                     key={tab.url}
-                    className={`${tab.name} ${
-                      location &&
-                      location.pathname &&
-                      urlMatch(tab.url).test(location.pathname)
-                        ? 'active'
-                        : ''
-                    }`}
+                    className={`${tab.name} ${this.activeClassForTab(tab)}`}
                   >
                     <Link to={tab.url}>{tab.label}</Link>
                   </Tab>

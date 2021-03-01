@@ -12,7 +12,10 @@ import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // typings
-import { ParticipationMethod } from 'services/participationContexts';
+import {
+  ParticipationMethod,
+  IdeaDefaultSortMethod,
+} from 'services/participationContexts';
 import { InputProps as GetIdeasInputProps } from 'resources/GetIdeas';
 import { MessageDescriptor, IParticipationContextType } from 'typings';
 
@@ -23,6 +26,7 @@ const Container = styled.div`
 interface Props extends GetIdeasInputProps {
   showViewToggle?: boolean | undefined;
   defaultView?: 'card' | 'map' | null | undefined;
+  defaultSortingMethod?: IdeaDefaultSortMethod;
   participationMethod?: ParticipationMethod | null;
   participationContextId?: string | null;
   participationContextType?: IParticipationContextType | null;
@@ -35,7 +39,7 @@ interface Props extends GetIdeasInputProps {
 const IdeaCards = memo<Props>(
   ({ className, invisibleTitleMessage, ...props }) => {
     return (
-      <Container className={className}>
+      <Container className={className || ''}>
         <ScreenReaderOnly>
           <FormattedMessage tagName="h2" {...invisibleTitleMessage} />
         </ScreenReaderOnly>

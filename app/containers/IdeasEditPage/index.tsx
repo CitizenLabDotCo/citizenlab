@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import { adopt } from 'react-adopt';
 import { isString, isEmpty } from 'lodash-es';
 import { Subscription, combineLatest, of } from 'rxjs';
 import { switchMap, map, first } from 'rxjs/operators';
@@ -14,7 +15,7 @@ import IdeasEditMeta from './IdeasEditMeta';
 
 // services
 import { localeStream } from 'services/locale';
-import { currentTenantStream } from 'services/tenant';
+import { currentAppConfigurationStream } from 'services/appConfiguration';
 import { ideaByIdStream, updateIdea } from 'services/ideas';
 import {
   ideaImageStream,
@@ -23,10 +24,13 @@ import {
 } from 'services/ideaImages';
 import { hasPermission } from 'services/permissions';
 import { addIdeaFile, deleteIdeaFile } from 'services/ideaFiles';
+import { getInputTerm } from 'services/participationContexts';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
+import injectLocalize, { InjectedLocalized } from 'utils/localize';
+import { getInputTermMessage } from 'utils/i18n';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
@@ -44,6 +48,9 @@ import styled from 'styled-components';
 import GetResourceFileObjects, {
   GetResourceFileObjectsChildProps,
 } from 'resources/GetResourceFileObjects';
+import GetProject, { GetProjectChildProps } from 'resources/GetProject';
+import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
+import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 
 const Container = styled.div`
   background: ${colors.background};
@@ -68,7 +75,7 @@ const FormContainer = styled.main`
 
 const Title = styled.h1`
   width: 100%;
-  color: #333;
+  color: ${colors.label};
   font-size: ${fontSizes.xxxxl}px;
   line-height: 42px;
   font-weight: 500;
@@ -89,40 +96,48 @@ const ButtonBarContainer = styled.div`
   border-top: solid 1px #ddd;
 `;
 
-interface Props {
+interface InputProps {
   params: {
     ideaId: string;
   };
-  remoteIdeaFiles: GetResourceFileObjectsChildProps;
 }
 
+interface DataProps {
+  remoteIdeaFiles: GetResourceFileObjectsChildProps;
+  project: GetProjectChildProps;
+  idea: GetIdeaChildProps;
+  phases: GetPhasesChildProps;
+}
+
+interface Props extends InputProps, DataProps {}
+
 interface State {
-  projectId: string | null;
   locale: Locale;
   ideaSlug: string | null;
   titleMultiloc: Multiloc | null;
   descriptionMultiloc: Multiloc | null;
   selectedTopics: string[];
   budget: number | null;
+  proposedBudget: number | null;
   address: string | null;
   imageFile: UploadFile[];
   imageId: string | null;
   loaded: boolean;
 }
 
-class IdeaEditPage extends PureComponent<Props, State> {
+class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
   subscriptions: Subscription[];
 
   constructor(props: Props) {
     super(props as any);
     this.state = {
-      projectId: null,
       locale: 'en',
       ideaSlug: null,
       titleMultiloc: null,
       descriptionMultiloc: null,
       selectedTopics: [],
       budget: null,
+      proposedBudget: null,
       address: null,
       imageFile: [],
       imageId: null,
@@ -134,7 +149,7 @@ class IdeaEditPage extends PureComponent<Props, State> {
   componentDidMount() {
     const { ideaId } = this.props.params;
     const locale$ = localeStream().observable;
-    const currentTenantLocales$ = currentTenantStream().observable.pipe(
+    const currentTenantLocales$ = currentAppConfigurationStream().observable.pipe(
       map(
         (currentTenant) => currentTenant.data.attributes.settings.core.locales
       )
@@ -187,13 +202,13 @@ class IdeaEditPage extends PureComponent<Props, State> {
             selectedTopics:
               idea.data.relationships.topics?.data.map((topic) => topic.id) ||
               [],
-            projectId: idea.data.relationships.project.data.id,
             loaded: true,
             ideaSlug: idea.data.attributes.slug,
             titleMultiloc: idea.data.attributes.title_multiloc,
             descriptionMultiloc: idea.data.attributes.body_multiloc,
             address: idea.data.attributes.location_description,
             budget: idea.data.attributes.budget,
+            proposedBudget: idea.data.attributes.proposed_budget,
             imageFile: ideaImage ? [ideaImage] : [],
             imageId: ideaImage && ideaImage.id ? ideaImage.id : null,
           });
@@ -229,6 +244,7 @@ class IdeaEditPage extends PureComponent<Props, State> {
       selectedTopics,
       address: ideaFormAddress,
       budget,
+      proposedBudget,
       ideaFiles,
       ideaFilesToRemove,
     } = ideaFormOutput;
@@ -265,6 +281,7 @@ class IdeaEditPage extends PureComponent<Props, State> {
 
     const updateIdeaPromise = updateIdea(ideaId, {
       budget,
+      proposed_budget: proposedBudget,
       title_multiloc: {
         ...titleMultiloc,
         [locale]: title,
@@ -295,16 +312,16 @@ class IdeaEditPage extends PureComponent<Props, State> {
 
   render() {
     if (this.state && this.state.loaded) {
-      const { remoteIdeaFiles } = this.props;
+      const { remoteIdeaFiles, project, idea, phases } = this.props;
       const {
         locale,
-        projectId,
         titleMultiloc,
         descriptionMultiloc,
         selectedTopics,
         address,
         imageFile,
         budget,
+        proposedBudget,
       } = this.state;
       const title = locale && titleMultiloc ? titleMultiloc[locale] || '' : '';
       const description =
@@ -312,13 +329,30 @@ class IdeaEditPage extends PureComponent<Props, State> {
           ? descriptionMultiloc[locale] || ''
           : null;
 
-      if (projectId) {
+      if (!isNilOrError(project) && !isNilOrError(idea)) {
+        const projectId = project.id;
+        const ideaId = idea.id;
+        const inputTerm = getInputTerm(
+          project.attributes.process_type,
+          project,
+          phases
+        );
+
         return (
           <Container id="e2e-idea-edit-page">
-            <IdeasEditMeta />
+            <IdeasEditMeta ideaId={ideaId} projectId={projectId} />
             <FormContainer>
               <Title>
-                <FormattedMessage {...messages.formTitle} />
+                <FormattedMessage
+                  {...getInputTermMessage(inputTerm, {
+                    idea: messages.formTitle,
+                    option: messages.optionFormTitle,
+                    project: messages.projectFormTitle,
+                    question: messages.questionFormTitle,
+                    issue: messages.issueFormTitle,
+                    contribution: messages.contributionFormTitle,
+                  })}
+                />
               </Title>
 
               <IdeaForm
@@ -327,6 +361,7 @@ class IdeaEditPage extends PureComponent<Props, State> {
                 description={description}
                 selectedTopics={selectedTopics}
                 budget={budget}
+                proposedBudget={proposedBudget}
                 address={address || ''}
                 imageFile={imageFile}
                 onSubmit={this.handleIdeaFormOutput}
@@ -337,7 +372,7 @@ class IdeaEditPage extends PureComponent<Props, State> {
 
               <ButtonBarContainer>
                 <IdeasEditButtonBar
-                  id="e2e-idea-edit-save-button"
+                  elementId="e2e-idea-edit-save-button"
                   form="idea-form"
                 />
               </ButtonBarContainer>
@@ -345,17 +380,46 @@ class IdeaEditPage extends PureComponent<Props, State> {
           </Container>
         );
       }
-      return null;
     }
 
     return null;
   }
 }
 
-export default (props: Props) => (
-  <GetResourceFileObjects resourceId={props.params.ideaId} resourceType="idea">
-    {(remoteIdeaFiles) => (
-      <IdeaEditPage {...props} remoteIdeaFiles={remoteIdeaFiles} />
-    )}
-  </GetResourceFileObjects>
-);
+const Data = adopt<DataProps, InputProps>({
+  remoteIdeaFiles: ({ params: { ideaId }, render }) => (
+    <GetResourceFileObjects resourceId={ideaId} resourceType="idea">
+      {render}
+    </GetResourceFileObjects>
+  ),
+  idea: ({ params: { ideaId }, render }) => {
+    return <GetIdea ideaId={ideaId}>{render}</GetIdea>;
+  },
+  project: ({ idea, render }) => {
+    return (
+      <GetProject
+        projectId={
+          !isNilOrError(idea) ? idea.relationships.project.data.id : null
+        }
+      >
+        {render}
+      </GetProject>
+    );
+  },
+  phases: ({ project, render }) => {
+    return (
+      <GetPhases projectId={!isNilOrError(project) ? project.id : null}>
+        {render}
+      </GetPhases>
+    );
+  },
+});
+const IdeaEditPageWithHOCs = injectLocalize<Props>(IdeaEditPage);
+
+export default (inputProps: InputProps) => {
+  return (
+    <Data {...inputProps}>
+      {(dataProps) => <IdeaEditPageWithHOCs {...inputProps} {...dataProps} />}
+    </Data>
+  );
+};

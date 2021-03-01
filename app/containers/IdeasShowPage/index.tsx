@@ -21,7 +21,9 @@ import styled from 'styled-components';
 import { fontSizes, colors, media } from 'utils/styleUtils';
 
 const IdeaNotFoundWrapper = styled.div`
-  height: calc(100vh - ${(props) => props.theme.menuHeight}px - 1px);
+  height: calc(
+    100vh - ${(props) => props.theme.menuHeight + props.theme.footerHeight}px
+  );
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -44,7 +46,6 @@ const StyledIdeaShowPageTopBar = styled(IdeaShowPageTopBar)`
 
 const StyledIdeasShow = styled(IdeasShow)`
   background: #fff;
-  margin-top: ${(props) => props.theme.mobileTopBarHeight}px;
 
   ${media.biggerThanMaxTablet`
     margin-top: 0px;
@@ -66,7 +67,7 @@ const IdeasShowPage = memo<Props>(({ idea }) => {
     return (
       <IdeaNotFoundWrapper>
         <p>
-          <FormattedMessage {...messages.noIdeaFoundHere} />
+          <FormattedMessage {...messages.noResultsFound} />
         </p>
         <Button linkTo="/ideas" text={goBackToListMessage} icon="arrow-back" />
       </IdeaNotFoundWrapper>
@@ -80,6 +81,7 @@ const IdeasShowPage = memo<Props>(({ idea }) => {
         <StyledIdeasShow
           ideaId={idea.id}
           projectId={idea.relationships.project.data.id}
+          insideModal={false}
         />
       </Container>
     );

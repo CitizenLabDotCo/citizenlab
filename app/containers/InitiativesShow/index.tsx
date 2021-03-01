@@ -14,7 +14,7 @@ import { withRouter, WithRouterProps } from 'react-router';
 import Modal from 'components/UI/Modal';
 import FileAttachments from 'components/UI/FileAttachments';
 import { Spinner } from 'cl2-component-library';
-import Sharing from 'components/Sharing';
+import SharingButtons from 'components/Sharing/SharingButtons';
 import FeatureFlag from 'components/FeatureFlag';
 import SharingModalContent from 'components/PostShowComponents/SharingModalContent';
 
@@ -24,10 +24,8 @@ import DropdownMap from 'components/PostShowComponents/DropdownMap';
 import Body from 'components/PostShowComponents/Body';
 import Image from 'components/PostShowComponents/Image';
 import Footer from 'components/PostShowComponents/Footer';
-import ContentFooter from 'components/PostShowComponents/ContentFooter';
 import OfficialFeedback from 'components/PostShowComponents/OfficialFeedback';
-import TranslateButton from 'components/PostShowComponents/TranslateButton';
-import PlatformFooter from 'containers/PlatformFooter';
+import TranslateButton from 'components/UI/TranslateButton';
 import InitiativeMeta from './InitiativeMeta';
 import PostedBy from './PostedBy';
 import PostedByMobile from './PostedByMobile';
@@ -56,7 +54,9 @@ import GetOfficialFeedbacks, {
 import GetPermission, {
   GetPermissionChildProps,
 } from 'resources/GetPermission';
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetAppConfiguration';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -98,7 +98,9 @@ const Loading = styled.div`
 const Container = styled.main`
   display: flex;
   flex-direction: column;
-  min-height: calc(100vh - ${(props) => props.theme.menuHeight}px);
+  min-height: calc(
+    100vh - ${(props) => props.theme.menuHeight + props.theme.footerHeight}px
+  );
 
   ${media.smallerThanMaxTablet`
     min-height: calc(100vh - ${(props) => props.theme.mobileMenuHeight}px - ${(
@@ -167,6 +169,14 @@ const LeftColumn = styled.div`
 
   ${media.smallerThanMaxTablet`
     padding: 0;
+  `}
+`;
+
+const StyledTopics = styled(Topics)`
+  margin-bottom: 30px;
+
+  ${media.smallerThanMaxTablet`
+    margin-bottom: 5px;
   `}
 `;
 
@@ -280,7 +290,7 @@ const SharingWrapper = styled.div`
   flex-direction: column;
 `;
 
-const SharingMobile = styled(Sharing)`
+const SharingButtonsMobile = styled(SharingButtons)`
   padding: 0;
   margin: 0;
   margin-top: 40px;
@@ -309,12 +319,11 @@ interface DataProps {
   windowSize: GetWindowSizeChildProps;
   officialFeedbacks: GetOfficialFeedbacksChildProps;
   postOfficialFeedbackPermission: GetPermissionChildProps;
-  tenant: GetTenantChildProps;
+  tenant: GetAppConfigurationChildProps;
 }
 
 interface InputProps {
   initiativeId: string | null;
-  insideModal?: boolean;
   className?: string;
 }
 
@@ -333,7 +342,7 @@ export class InitiativesShow extends PureComponent<
   State
 > {
   officialFeedbackElement = createRef<HTMLDivElement>();
-  timeoutRef: number;
+  timeoutRef: NodeJS.Timeout;
 
   constructor(props) {
     super(props);
@@ -455,7 +464,6 @@ export class InitiativesShow extends PureComponent<
       const initiativeHeaderImageLarge =
         initiative?.attributes?.header_bg?.large;
       const authorId = initiative?.relationships?.author?.data?.id;
-      const initiativePublishedAt = initiative?.attributes?.published_at;
       const initiativeTitle = localize(initiative?.attributes?.title_multiloc);
       const initiativeImageLarge =
         initiativeImages?.[0]?.attributes?.versions?.large;
@@ -548,7 +556,7 @@ export class InitiativesShow extends PureComponent<
           <InitiativeContainer>
             <Content>
               <LeftColumn>
-                <Topics postType="initiative" topicIds={topicIds} />
+                <StyledTopics postType="initiative" topicIds={topicIds} />
 
                 {isDesktop && (
                   <InitiativeHeader>
@@ -621,18 +629,14 @@ export class InitiativesShow extends PureComponent<
                   />
                 </div>
 
-                <ContentFooter
-                  postType="initiative"
-                  postId={initiativeId}
-                  publishedAt={initiativePublishedAt}
-                  commentsCount={initiative.attributes.comments_count}
-                />
-
                 {isNotDesktop && (
-                  <SharingMobile
+                  <SharingButtonsMobile
                     context="initiative"
                     url={initiativeUrl}
                     twitterMessage={formatMessage(messages.twitterMessage, {
+                      initiativeTitle,
+                    })}
+                    whatsAppMessage={formatMessage(messages.whatsAppMessage, {
                       initiativeTitle,
                     })}
                     emailSubject={formatMessage(messages.emailSharingSubject, {
@@ -664,13 +668,19 @@ export class InitiativesShow extends PureComponent<
                       id="e2e-initiative-vote-control"
                     />
                     <SharingWrapper>
-                      <Sharing
+                      <SharingButtons
                         id="e2e-initiative-sharing-component"
                         context="initiative"
                         url={initiativeUrl}
                         twitterMessage={formatMessage(messages.twitterMessage, {
                           initiativeTitle,
                         })}
+                        whatsAppMessage={formatMessage(
+                          messages.whatsAppMessage,
+                          {
+                            initiativeTitle,
+                          }
+                        )}
                         emailSubject={formatMessage(
                           messages.emailSharingSubject,
                           { initiativeTitle }
@@ -689,8 +699,6 @@ export class InitiativesShow extends PureComponent<
           </InitiativeContainer>
 
           {loaded && <Footer postId={initiativeId} postType="initiative" />}
-
-          {this.props.insideModal && <PlatformFooter />}
         </>
       );
     }
@@ -749,7 +757,7 @@ const InitiativesShowWithHOCs = injectLocalize<Props>(
 
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
-  tenant: <GetTenant />,
+  tenant: <GetAppConfiguration />,
   authUser: <GetAuthUser />,
   windowSize: <GetWindowSize />,
   initiative: ({ initiativeId, render }) => (

@@ -6,11 +6,16 @@ import FilterSelector from 'components/FilterSelector';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
+import {
+  IdeaDefaultSortMethod,
+  ideaDefaultSortMethodFallback,
+} from 'services/participationContexts';
 
 type Props = {
   id?: string | undefined;
   alignment: 'left' | 'right';
   onChange: (value: string) => void;
+  defaultSortingMethod?: IdeaDefaultSortMethod;
 };
 
 type State = {
@@ -21,7 +26,9 @@ class SortFilterDropdown extends PureComponent<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
-      selectedValue: ['random'],
+      selectedValue: [
+        props.defaultSortingMethod || ideaDefaultSortMethodFallback,
+      ],
     };
   }
 
@@ -36,8 +43,8 @@ class SortFilterDropdown extends PureComponent<Props, State> {
     const { alignment } = this.props;
     const { selectedValue } = this.state;
     const options = [
-      { text: <FormattedMessage {...messages.random} />, value: 'random' },
       { text: <FormattedMessage {...messages.trending} />, value: 'trending' },
+      { text: <FormattedMessage {...messages.random} />, value: 'random' },
       { text: <FormattedMessage {...messages.popular} />, value: 'popular' },
       { text: <FormattedMessage {...messages.newest} />, value: 'new' },
       { text: <FormattedMessage {...messages.oldest} />, value: '-new' },

@@ -1,16 +1,12 @@
-import React, { memo, useCallback } from 'react';
+import React, { memo } from 'react';
 import { adopt } from 'react-adopt';
 
 // components
 import HelmetIntl from 'components/HelmetIntl';
-import TabbedResource from 'components/admin/TabbedResource';
-import Summary from './summary';
+import DashboardTabs from './components/DashboardTabs';
 
 // resource
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetFeatureFlag, {
-  GetFeatureFlagChildProps,
-} from 'resources/GetFeatureFlag';
 
 // permissions
 import { isAdmin, isProjectModerator } from 'services/permissions/roles';
@@ -29,6 +25,7 @@ export const ControlBar = styled.div`
   display: flex;
   justify-content: space-between;
   margin-bottom: 30px;
+  width: 100%;
 `;
 
 export const GraphsContainer = styled.div`
@@ -81,7 +78,7 @@ export const GraphCardInner = styled.div`
   padding-left: 20px;
   padding-right: 20px;
   padding-bottom: 35px;
-  border: solid 1px ${colors.adminBorder};
+  border: solid 1px #ccc;
   border-radius: ${(props: any) => props.theme.borderRadius};
   background: ${colors.adminContentBackground};
   p {
@@ -182,6 +179,7 @@ export const GraphCardTitle = styled.h3`
 `;
 
 export const GraphCardFigureContainer = styled.div`
+  margin-left: 10px;
   display: flex;
   align-items: center;
 `;
@@ -203,14 +201,12 @@ export const GraphCardFigureChange = styled.span`
   }
 `;
 
-export type IGraphUnit = 'users' | 'ideas' | 'comments';
+export type IGraphUnit = 'users' | 'ideas' | 'comments' | 'votes';
 
 export type IResolution = 'day' | 'week' | 'month';
 
 interface Props {
   authUser: GetAuthUserChildProps;
-  insightsEnabled: GetFeatureFlagChildProps;
-  geographicDashboardEnabled: GetFeatureFlagChildProps;
   children: JSX.Element;
 }
 
@@ -225,24 +221,48 @@ export const chartTheme = (theme) => {
     chartLabelColor: colors.adminSecondaryTextColor,
     barHoverColor: rgba(colors.clIconAccent, 0.25),
     chartLabelSize: 13,
-    animationBegin: 50,
-    animationDuration: 500,
+    animationBegin: 10,
+    animationDuration: 200,
+    cartesianGridColor: '#f5f5f5',
+    newBarFill: '#073F80',
+    newLineColor: '#7FBBCA',
   };
 };
 
 export const DashboardsPage = memo(
   ({
-    insightsEnabled,
-    geographicDashboardEnabled,
     authUser,
     children,
     intl: { formatMessage },
   }: Props & InjectedIntlProps) => {
-    const staticTabs = [
+    const tabs = [
       { label: formatMessage(messages.tabSummary), url: '/admin/dashboard' },
       {
         label: formatMessage(messages.tabUsers),
         url: '/admin/dashboard/users',
+      },
+      {
+        label: formatMessage(messages.tabReports),
+        url: '/admin/dashboard/reports',
+        feature: 'project_reports',
+      },
+      {
+        label: formatMessage(messages.tabInsights),
+        url: '/admin/dashboard/insights',
+        feature: 'clustering',
+      },
+      {
+        label: formatMessage(messages.tabMap),
+        url: '/admin/dashboard/map',
+        feature: 'geographic_dashboard',
+      },
+    ];
+    const moderatorTabs = [
+      { label: formatMessage(messages.tabSummary), url: '/admin/dashboard' },
+      {
+        label: formatMessage(messages.tabReports),
+        url: '/admin/dashboard/reports',
+        feature: 'project_reports',
       },
     ];
 
@@ -251,41 +271,27 @@ export const DashboardsPage = memo(
       subtitle: formatMessage(messages.subtitleDashboard),
     };
 
-    const tabs = useCallback(() => {
-      return [
-        ...staticTabs,
-        ...(insightsEnabled
-          ? [
-              {
-                label: formatMessage(messages.tabInsights),
-                url: '/admin/dashboard/insights',
-              },
-            ]
-          : []),
-        ...(geographicDashboardEnabled
-          ? [
-              {
-                label: formatMessage(messages.tabMap),
-                url: '/admin/dashboard/map',
-              },
-            ]
-          : []),
-      ];
-    }, [insightsEnabled, geographicDashboardEnabled])();
-
     if (authUser) {
       if (isAdmin({ data: authUser })) {
         return (
-          <TabbedResource resource={resource} tabs={tabs}>
+          <DashboardTabs resource={resource} tabs={tabs}>
             <HelmetIntl
               title={messages.helmetTitle}
               description={messages.helmetDescription}
             />
             {children}
-          </TabbedResource>
+          </DashboardTabs>
         );
       } else if (isProjectModerator({ data: authUser })) {
-        return <Summary onlyModerator />;
+        return (
+          <DashboardTabs resource={resource} tabs={moderatorTabs}>
+            <HelmetIntl
+              title={messages.helmetTitle}
+              description={messages.helmetDescription}
+            />
+            {children}
+          </DashboardTabs>
+        );
       }
     }
 
@@ -297,8 +303,6 @@ const DashboardsPageWithHoC = injectIntl(DashboardsPage);
 
 const Data = adopt({
   authUser: <GetAuthUser />,
-  insightsEnabled: <GetFeatureFlag name="clustering" />,
-  geographicDashboardEnabled: <GetFeatureFlag name="geographic_dashboard" />,
 });
 
 export default (props) => (

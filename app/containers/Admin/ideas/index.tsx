@@ -1,94 +1,67 @@
-import React, { PureComponent } from 'react';
-import { adopt } from 'react-adopt';
+import React, { memo } from 'react';
+
+// router
+import { withRouter, WithRouterProps } from 'react-router';
 
 // components
 import HelmetIntl from 'components/HelmetIntl';
-import PageWrapper from 'components/admin/PageWrapper';
-import PostManager from 'components/admin/PostManager';
-import { PageTitle, SectionDescription } from 'components/admin/Section';
+import TabbedResource, { TabProps } from 'components/admin/TabbedResource';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
+import { InjectedIntlProps } from 'react-intl';
+import { injectIntl } from 'utils/cl-intl';
 
-// styling
-import styled from 'styled-components';
-
-// resources
-import GetProjects, {
-  GetProjectsChildProps,
-  PublicationStatus,
-} from 'resources/GetProjects';
-
-const HeaderContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  padding: 0;
-  margin: 0;
-  margin-bottom: 30px;
-`;
-
-const Left = styled.div`
-  margin-right: 80px;
-`;
+// hooks
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 export interface Props {
-  projects: GetProjectsChildProps;
+  children: JSX.Element;
 }
 
-class IdeaDashboard extends PureComponent<Props> {
-  render() {
-    const { projects } = this.props;
+const IdeasPage = memo(
+  ({
+    intl: { formatMessage },
+    location,
+    children,
+  }: Props & InjectedIntlProps & WithRouterProps) => {
+    const ideaStatusCustomisationEnabled = useFeatureFlag(
+      'custom_idea_statuses'
+    );
+    const resource = {
+      title: formatMessage(messages.inputManagerPageTitle),
+      subtitle: formatMessage(messages.inputManagerPageSubtitle),
+    };
+
+    const getTabs = () => {
+      const tabs: TabProps[] = [
+        {
+          label: formatMessage(messages.tabManage),
+          url: '/admin/ideas',
+        },
+      ];
+
+      if (ideaStatusCustomisationEnabled) {
+        tabs.push({
+          label: formatMessage(messages.tabStatuses),
+          url: '/admin/ideas/statuses',
+          active: location.pathname.includes('/admin/ideas/statuses'),
+        });
+      }
+
+      return tabs;
+    };
 
     return (
-      <>
+      <TabbedResource resource={resource} tabs={getTabs()}>
         <HelmetIntl
-          title={messages.helmetTitle}
-          description={messages.helmetDescription}
+          title={messages.inputManagerMetaTitle}
+          description={messages.inputManagerMetaDescription}
         />
-        <HeaderContainer>
-          <Left>
-            <PageTitle>
-              <FormattedMessage {...messages.header} />
-            </PageTitle>
-            <SectionDescription>
-              <FormattedMessage {...messages.headerSubtitle} />
-            </SectionDescription>
-          </Left>
-        </HeaderContainer>
-
-        <PageWrapper>
-          {projects && projects.projectsList !== undefined && (
-            <PostManager
-              type="AllIdeas"
-              visibleFilterMenus={['projects', 'topics', 'statuses']}
-              projects={projects.projectsList}
-            />
-          )}
-        </PageWrapper>
-      </>
+        {children}
+      </TabbedResource>
     );
   }
-}
-
-const publicationStatuses: PublicationStatus[] = [
-  'draft',
-  'published',
-  'archived',
-];
-
-const Data = adopt<Props>({
-  projects: (
-    <GetProjects
-      pageSize={250}
-      sort="new"
-      publicationStatuses={publicationStatuses}
-      filterCanModerate={true}
-    />
-  ),
-});
-
-export default () => (
-  <Data>{(dataProps) => <IdeaDashboard {...dataProps} />}</Data>
 );
+
+export default withRouter(injectIntl(IdeasPage));

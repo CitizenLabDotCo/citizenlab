@@ -12,6 +12,9 @@ import settingsAreasRoutes from './settings/areas/routes';
 import customFieldRoutes from './settings/registration/CustomFields/routes';
 import pagesRoutes from './pages/routes';
 import emailsRoutes from './emails/routes';
+import ideasRoutes from './ideas/routes';
+
+import moduleConfiguration from 'modules';
 
 import { hasPermission } from 'services/permissions';
 import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
@@ -19,7 +22,7 @@ import { isUUID } from 'utils/helperUtils';
 
 import Loadable from 'react-loadable';
 import { LoadableLoadingAdmin } from 'components/UI/LoadableLoading';
-import { currentTenantStream } from 'services/tenant';
+import { currentAppConfigurationStream } from 'services/appConfiguration';
 import { combineLatest } from 'rxjs';
 import { authUserStream } from 'services/auth';
 import { isModerator } from 'services/permissions/roles';
@@ -32,7 +35,7 @@ const isUserAuthorized = (nextState, replace) => {
       item: { type: 'route', path: pathname },
       action: 'access',
     }),
-    currentTenantStream().observable,
+    currentAppConfigurationStream().observable,
     authUserStream().observable
   ).subscribe(([accessAthorized, tenant, authUser]) => {
     if (!accessAthorized) {
@@ -86,8 +89,9 @@ export default () => ({
     initiativesRoutes(),
     usersRoutes(),
     projectsRoutes(),
+
     {
-      path: 'settings/registration/custom_fields',
+      path: 'settings/registration/custom-fields',
       ...customFieldRoutes(),
     },
     settingsRoutes(),
@@ -95,26 +99,11 @@ export default () => ({
     pagesRoutes(),
     invitationsRoutes(),
     emailsRoutes(),
-    {
-      path: 'moderation',
-      component: Loadable({
-        loader: () => import('containers/Admin/moderation'),
-        loading: LoadableLoadingAdmin,
-        delay: 500,
-      }),
-    },
+    ideasRoutes(),
     {
       path: 'workshops',
       component: Loadable({
         loader: () => import('containers/Admin/workshops'),
-        loading: LoadableLoadingAdmin,
-        delay: 500,
-      }),
-    },
-    {
-      path: 'ideas',
-      component: Loadable({
-        loader: () => import('containers/Admin/ideas'),
         loading: LoadableLoadingAdmin,
         delay: 500,
       }),
@@ -143,5 +132,14 @@ export default () => ({
         delay: 500,
       }),
     },
+    {
+      path: 'processing',
+      component: Loadable({
+        loader: () => import('containers/Admin/processing'),
+        loading: LoadableLoadingAdmin,
+        delay: 500,
+      }),
+    },
+    ...moduleConfiguration.routes.admin,
   ],
 });

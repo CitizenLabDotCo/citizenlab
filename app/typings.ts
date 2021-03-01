@@ -9,6 +9,12 @@ declare global {
   }
   interface Window {
     _paq: any;
+    googleMaps?: boolean;
+    Intercom?: any;
+    intercomSettings: any;
+    attachEvent?: any;
+    satismeter?: any;
+    dataLayer?: any[];
   }
 }
 
@@ -21,15 +27,26 @@ export interface IHttpMethod {
   method: 'PUT' | 'POST' | 'GET' | 'PATCH' | 'DELETE';
 }
 
+export type ILocationInfo =
+  | {
+      location_description: string;
+      location_point_geojson: {
+        type: 'Point';
+        coordinates: number[];
+      };
+    }
+  | {
+      location_description: undefined;
+      error: 'not_found';
+      location_point_geojson: {
+        type: 'Point';
+        coordinates: number[];
+      };
+    };
+
 export type IParticipationContextType = 'project' | 'phase';
 
-export type ICitizenAction =
-  | 'commenting'
-  | 'voting'
-  | 'posting'
-  | 'taking_poll'
-  | 'taking_survey'
-  | 'budgeting';
+export type IPCAction = IProjectAction | IIdeaAction;
 
 export interface ITheme {
   theme: {
@@ -38,6 +55,19 @@ export interface ITheme {
       menuBg: string;
     };
   };
+}
+
+export interface ITab {
+  label: string;
+  url: string;
+  active?: boolean;
+  feature?: string;
+  name?: string;
+}
+
+export interface InsertTabOptions {
+  tabConfiguration: ITab;
+  insertAfterTabName?: string;
 }
 
 export interface ILinks {
@@ -70,6 +100,9 @@ export interface Message {
 }
 
 import { Messages } from 'react-intl';
+import { IProjectAction } from 'services/projects';
+import { IIdeaAction } from 'services/ideas';
+import { FormikActions } from 'formik';
 export type MessageDescriptor = Messages['key'];
 
 export type Locale = keyof typeof appLocalePairs;
@@ -103,6 +136,7 @@ export interface CLError {
   row?: number;
   rows?: number[];
   ideas_count?: number;
+  payload?: Object;
 }
 
 export interface CLErrors {
@@ -134,6 +168,21 @@ export type IGraphPoint = {
   name: string;
   value: number;
   code: string;
+  color?: string;
+  ordering?: number;
 };
 
+export type ITopicSingleValue = {
+  nameMultiloc: Multiloc;
+  value: number;
+  code: string;
+};
+
+export type IParticipationByTopic = ITopicSingleValue[];
+
 export type IGraphFormat = IGraphPoint[];
+
+export type FormikSubmitHandler<V> = (
+  values: V,
+  actions: FormikActions<V>
+) => void;

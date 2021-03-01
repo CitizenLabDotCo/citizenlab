@@ -72,7 +72,7 @@ const SortableProjectTopicList = memo(
     };
 
     const handleReorderTopicProject = (projectTopicId, newOrder) => {
-      reorderProjectTopic(projectTopicId, newOrder);
+      reorderProjectTopic(projectTopicId, newOrder, projectId);
     };
 
     const closeSendConfirmationModal = () => {
@@ -88,11 +88,11 @@ const SortableProjectTopicList = memo(
           {isLastSelectedTopic && (
             <StyledWarning>
               <FormattedMessage
-                {...messages.fewerThanOneTopicWarning}
+                {...messages.lastTopicWarning}
                 values={{
                   ideaFormLink: (
                     <StyledLink to={`/admin/projects/${projectId}/ideaform`}>
-                      <FormattedMessage {...messages.ideaForm} />
+                      <FormattedMessage {...messages.inputForm} />
                     </StyledLink>
                   ),
                 }}
@@ -104,11 +104,12 @@ const SortableProjectTopicList = memo(
             onReorder={handleReorderTopicProject}
             className="projects-list e2e-admin-projects-list"
             id="e2e-admin-published-projects-list"
+            key={projectTopics.length}
           >
-            {({ itemsList, handleDragRow, handleDropRow }) =>
-              itemsList.map(
-                (projectTopic: IProjectTopicData, index: number) => {
-                  return (
+            {({ itemsList, handleDragRow, handleDropRow }) => (
+              <>
+                {itemsList.map(
+                  (projectTopic: IProjectTopicData, index: number) => (
                     <SortableRow
                       id={projectTopic.id}
                       key={index}
@@ -142,10 +143,10 @@ const SortableProjectTopicList = memo(
                         <FormattedMessage {...messages.delete} />
                       </Button>
                     </SortableRow>
-                  );
-                }
-              )
-            }
+                  )
+                )}
+              </>
+            )}
           </SortableList>
           <Modal
             opened={showConfirmationModal}
@@ -154,7 +155,7 @@ const SortableProjectTopicList = memo(
           >
             <ModalContentContainer>
               <Content>
-                <FormattedMessage {...messages.topicDeletionWarning} />
+                <FormattedMessage {...messages.generalTopicDeletionWarning} />
               </Content>
               <ButtonsWrapper>
                 <Button

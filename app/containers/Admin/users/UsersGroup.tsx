@@ -2,8 +2,8 @@
 import React from 'react';
 import { adopt } from 'react-adopt';
 import { withRouter, WithRouterProps } from 'react-router';
-import { Formik, FormikErrors } from 'formik';
-import { isEmpty, values as getValues, every, isString } from 'lodash-es';
+import { Formik } from 'formik';
+import { isEmpty, isString } from 'lodash-es';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -14,7 +14,6 @@ import streams from 'utils/streams';
 import UsersHeader from './UsersHeader';
 import Modal from 'components/UI/Modal';
 import NormalGroupForm, { NormalFormValues } from './NormalGroupForm';
-import RulesGroupForm, { RulesFormValues } from './RulesGroupForm';
 import UserManager from './UserManager';
 
 // Events
@@ -44,12 +43,13 @@ import tracks from './tracks';
 // Typings
 import { CLErrorsJSON } from 'typings';
 import { isCLErrorJSON } from 'utils/errorUtils';
+import Outlet from 'components/Outlet';
 
 export interface InputProps {}
 
 interface DataProps {
   group: GetGroupChildProps;
-  verificationActive: GetFeatureFlagChildProps;
+  isVerificationEnabled: GetFeatureFlagChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -79,12 +79,6 @@ export class UsersGroup extends React.PureComponent<
     this.setState({ groupEditionModal: false });
   };
 
-  renderForm = (type: 'normal' | 'rules') => (props) => {
-    if (type === 'normal') return <NormalGroupForm {...props} />;
-    if (type === 'rules') return <RulesGroupForm {...props} />;
-    return null;
-  };
-
   openGroupEditionModal = () => {
     const { group, trackEditGroup } = this.props;
 
@@ -100,7 +94,7 @@ export class UsersGroup extends React.PureComponent<
   };
 
   handleSubmitForm = (groupId: string) => (
-    values: NormalFormValues | RulesFormValues,
+    values: NormalFormValues,
     { setErrors, setSubmitting, setStatus }
   ) => {
     updateGroup(groupId, { ...values })
@@ -172,43 +166,31 @@ export class UsersGroup extends React.PureComponent<
     }
   };
 
-  validateRulesWithFeatureFlag = (values: RulesFormValues) => {
-    const errors: FormikErrors<RulesFormValues> = {};
+  renderNormalGroupForm = (props) => <NormalGroupForm {...props} />;
 
-    if (every(getValues(values.title_multiloc), isEmpty)) {
-      errors.title_multiloc = [{ error: 'blank' }] as any;
+  renderModalHeader = () => {
+    const { groupEditionModal } = this.state;
+    if (groupEditionModal === 'manual') {
+      return <FormattedMessage {...messages.modalHeaderManual} />;
     }
-
-    if (
-      !this.props.verificationActive &&
-      values.rules.find((rule) => rule.ruleType === 'verified')
-    ) {
-      errors.rules = 'verificationDisabled' as any;
-    }
-
-    return errors;
+    return (
+      <Outlet
+        id="app.containers.Admin.users.UsersGroup.header"
+        type={groupEditionModal}
+      />
+    );
   };
 
   render() {
     const { group } = this.props;
     const { groupEditionModal, search } = this.state;
-    let ModalHeader;
-
-    switch (groupEditionModal) {
-      case 'manual':
-        ModalHeader = <FormattedMessage {...messages.modalHeaderManual} />;
-        break;
-      case 'rules':
-        ModalHeader = <FormattedMessage {...messages.modalHeaderRules} />;
-        break;
-    }
 
     if (!isNilOrError(group)) {
       return (
         <>
           <UsersHeader
             title={group.attributes.title_multiloc}
-            smartGroup={group.attributes.membership_type === 'rules'}
+            groupType={group.attributes.membership_type}
             onEdit={this.openGroupEditionModal}
             onDelete={this.deleteGroup(group.id)}
             onSearch={this.searchGroup}
@@ -222,7 +204,7 @@ export class UsersGroup extends React.PureComponent<
           />
 
           <Modal
-            header={ModalHeader}
+            header={this.renderModalHeader()}
             fixedHeight={true}
             opened={groupEditionModal !== false}
             close={this.closeGroupEditionModal}
@@ -232,19 +214,18 @@ export class UsersGroup extends React.PureComponent<
                 <Formik
                   initialValues={group.attributes}
                   validate={NormalGroupForm.validate}
-                  render={this.renderForm('normal')}
+                  render={this.renderNormalGroupForm}
                   onSubmit={this.handleSubmitForm(group.id)}
                 />
               )}
 
-              {groupEditionModal === 'rules' && (
-                <Formik
-                  initialValues={group.attributes}
-                  validate={this.validateRulesWithFeatureFlag}
-                  render={this.renderForm('rules')}
-                  onSubmit={this.handleSubmitForm(group.id)}
-                />
-              )}
+              <Outlet
+                id="app.containers.Admin.users.UsersGroup.form"
+                initialValues={group.attributes}
+                type={groupEditionModal}
+                onSubmit={this.handleSubmitForm(group.id)}
+                isVerificationEnabled={this.props.isVerificationEnabled}
+              />
             </>
           </Modal>
         </>
@@ -265,7 +246,7 @@ const Data = adopt<DataProps, InputProps & WithRouterProps>({
   group: ({ params, render }) => (
     <GetGroup id={params.groupId}>{render}</GetGroup>
   ),
-  verificationActive: <GetFeatureFlag name="verification" />,
+  isVerificationEnabled: <GetFeatureFlag name="verification" />,
 });
 
 export default (inputProps: InputProps & WithRouterProps) => (

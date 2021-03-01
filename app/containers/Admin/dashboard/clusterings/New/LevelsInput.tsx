@@ -76,7 +76,7 @@ class FormikInput extends PureComponent<FieldProps<TLevel[]>, State> {
               onClick={this.handleRemoveLevel(i)}
             />
             <FormattedMessage
-              {...(i === 0 ? messages.firstLevel : messages.thenLevel)}
+              {...(i === 0 ? messages.firstGroup : messages.thenLevel)}
               values={{
                 level: (
                   <b>
@@ -88,14 +88,21 @@ class FormikInput extends PureComponent<FieldProps<TLevel[]>, State> {
           </Level>
         ))}
         <AddLevel key="new-level" depth={value.length + 1}>
-          {this.availableLevels().map((level, index) => (
+          {this.availableLevels().map((level: TLevel, index) => (
             <AddButton
               key={`level_${level}_${index}`}
               onClick={this.handleAddLevel(level)}
               buttonStyle="secondary-outlined"
               icon="plus-circle"
             >
-              <FormattedMessage {...messages[`level_${level}`]} />
+              <FormattedMessage
+                {...{
+                  project: messages.level_project,
+                  topic: messages.level_topic,
+                  area: messages.level_area,
+                  clustering: messages.level_description,
+                }[level]}
+              />
             </AddButton>
           ))}
         </AddLevel>

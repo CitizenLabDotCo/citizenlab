@@ -6,7 +6,9 @@ import { Helmet } from 'react-helmet';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetAppConfiguration';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
@@ -16,8 +18,6 @@ import GetIdeaImages, {
 } from 'resources/GetIdeaImages';
 
 // i18n
-import messages from './messages';
-import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
 
@@ -37,7 +37,7 @@ interface DataProps {
   project: GetProjectChildProps;
   author: GetUserChildProps;
   locale: GetLocaleChildProps;
-  tenant: GetTenantChildProps;
+  tenant: GetAppConfigurationChildProps;
   authUser: GetAuthUserChildProps;
   ideaImages: GetIdeaImagesChildProps;
 }
@@ -54,15 +54,11 @@ const IdeaMeta = memo<Props & InjectedIntlProps & InjectedLocalized>(
     author,
     project,
     localize,
-    intl: { formatMessage },
   }) => {
     if (!isNilOrError(locale) && !isNilOrError(tenant) && !isNilOrError(idea)) {
       const { title_multiloc, body_multiloc } = idea.attributes;
       const tenantLocales = tenant.attributes.settings.core.locales;
       const localizedTitle = localize(title_multiloc, 50);
-      const ideaTitle = formatMessage(messages.metaTitle, {
-        ideaTitle: localizedTitle,
-      });
       const ideaDescription = stripHtml(localize(body_multiloc), 250);
       const ideaImage =
         !isNilOrError(ideaImages) && ideaImages.length > 0
@@ -73,9 +69,6 @@ const IdeaMeta = memo<Props & InjectedIntlProps & InjectedLocalized>(
         !isNilOrError(project) &&
         localize(project.attributes.title_multiloc, 20);
       const projectSlug = !isNilOrError(project) && project.attributes.slug;
-      const ideaOgTitle = formatMessage(messages.metaOgTitle, {
-        ideaTitle: localizedTitle,
-      });
       const ideaAuthorName = !isNilOrError(author)
         ? `${author.attributes.first_name} ${author.attributes.last_name}`
         : 'anonymous';
@@ -83,7 +76,7 @@ const IdeaMeta = memo<Props & InjectedIntlProps & InjectedLocalized>(
       const articleJson = {
         '@type': 'Article',
         image: ideaImage,
-        headline: ideaTitle,
+        headline: localizedTitle,
         author: ideaAuthorName,
         mainEntityOfPage: {
           '@type': 'WebPage',
@@ -143,19 +136,16 @@ const IdeaMeta = memo<Props & InjectedIntlProps & InjectedLocalized>(
                 ? `(${authUser.attributes.unread_notifications}) `
                 : ''
             }
-            ${ideaTitle}`}
+            ${localizedTitle}`}
           </title>
           {getCanonicalLink()}
           {getAlternateLinks(tenantLocales)}
-          <meta name="title" content={ideaTitle} />
+          <meta name="title" content={localizedTitle} />
           <meta name="description" content={ideaDescription} />
 
           <meta property="og:type" content="article" />
-          <meta property="og:title" content={ideaOgTitle} />
-          <meta
-            property="og:description"
-            content={formatMessage(messages.ideaOgDescription)}
-          />
+          <meta property="og:title" content={localizedTitle} />
+          <meta property="ideaOgDescription" content={ideaDescription} />
           {ideaImage && <meta property="og:image" content={ideaImage} />}
           <meta
             property="og:image:width"
@@ -166,11 +156,8 @@ const IdeaMeta = memo<Props & InjectedIntlProps & InjectedLocalized>(
             content={`${imageSizes.ideaImg.fb[1]}`}
           />
 
-          <meta name="twitter:title" content={ideaOgTitle} />
-          <meta
-            name="twitter:description"
-            content={formatMessage(messages.ideaOgDescription)}
-          />
+          <meta name="twitter:title" content={localizedTitle} />
+          <meta name="twitter:description" content={ideaDescription} />
           {ideaImage && <meta name="twitter:image" content={ideaImage} />}
           <meta name="twitter:card" content="summary_large_image" />
 
@@ -208,13 +195,11 @@ const Data = adopt<DataProps, InputProps>({
     </GetUser>
   ),
   locale: <GetLocale />,
-  tenant: <GetTenant />,
+  tenant: <GetAppConfiguration />,
   authUser: <GetAuthUser />,
 });
 
-const IdeaMetaWithHoc = injectIntl<Props>(
-  injectLocalize<Props & InjectedIntlProps>(IdeaMeta)
-);
+const IdeaMetaWithHoc = injectLocalize<Props>(IdeaMeta);
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>

@@ -1,12 +1,13 @@
 import React, { PureComponent } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
+import { isNilOrError, getFormattedBudget } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
 import { get } from 'lodash-es';
 
 // components
-import IdeaAuthor from 'containers/IdeasShow/IdeaAuthor';
 import Title from 'components/PostShowComponents/Title';
+import PostedBy from 'containers/IdeasShow/PostedBy';
 import Body from 'components/PostShowComponents/Body';
+import IdeaProposedBudget from 'containers/IdeasShow/IdeaProposedBudget';
 import DropdownMap from 'components/PostShowComponents/DropdownMap';
 import OfficialFeedback from 'components/PostShowComponents/OfficialFeedback';
 import Comments from 'components/PostShowComponents/Comments';
@@ -21,6 +22,7 @@ import { Top, Content, Container } from '../PostPreview';
 
 // services
 import { deleteIdea } from 'services/ideas';
+import { ProcessType } from 'services/projects';
 
 // resources
 import GetResourceFiles, {
@@ -30,7 +32,10 @@ import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import GetIdeaImages, {
   GetIdeaImagesChildProps,
 } from 'resources/GetIdeaImages';
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetAppConfiguration';
+import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetPermission, {
   GetPermissionChildProps,
@@ -48,7 +53,11 @@ import { colors, fontSizes } from 'utils/styleUtils';
 import { darken } from 'polished';
 
 const StyledTitle = styled(Title)`
-  margin-bottom: 30px;
+  margin-bottom: 20px;
+`;
+
+const StyledPostedBy = styled(PostedBy)`
+  margin-bottom: 20px;
 `;
 
 const Row = styled.div`
@@ -96,6 +105,12 @@ const IdeaImage = styled.img`
 
 const StyledBody = styled(Body)`
   margin-bottom: 20px;
+`;
+
+const BodySectionTitle = styled.h2`
+  font-size: ${(props) => props.theme.fontSizes.medium}px;
+  font-weight: 400;
+  line-height: 28px;
 `;
 
 const StyledMap = styled(DropdownMap)`
@@ -156,7 +171,8 @@ interface DataProps {
   idea: GetIdeaChildProps;
   ideaImages: GetIdeaImagesChildProps;
   ideaFiles: GetResourceFilesChildProps;
-  tenant: GetTenantChildProps;
+  tenant: GetAppConfigurationChildProps;
+  locale: GetLocaleChildProps;
   project: GetProjectChildProps;
   postOfficialFeedbackPermission: GetPermissionChildProps;
 }
@@ -167,14 +183,19 @@ export class IdeaContent extends PureComponent<
   Props & InjectedLocalized & InjectedIntlProps,
   State
 > {
-  handleClickDelete = () => {
-    const { idea, closePreview } = this.props;
-    const message = this.props.intl.formatMessage(
-      messages.deleteIdeaConfirmation
-    );
+  handleClickDelete = (processType: ProcessType) => () => {
+    const {
+      idea,
+      closePreview,
+      intl: { formatMessage },
+    } = this.props;
+    const deleteConfirmationMessage = {
+      continuous: messages.deleteInputConfirmation,
+      timeline: messages.deleteInputInTimelineConfirmation,
+    }[processType];
 
     if (!isNilOrError(idea)) {
-      if (window.confirm(message)) {
+      if (window.confirm(formatMessage(deleteConfirmationMessage))) {
         deleteIdea(idea.id);
         closePreview();
       }
@@ -189,10 +210,16 @@ export class IdeaContent extends PureComponent<
       ideaImages,
       ideaFiles,
       tenant,
+      locale,
       handleClickEdit,
     } = this.props;
 
-    if (!isNilOrError(idea)) {
+    if (
+      !isNilOrError(idea) &&
+      !isNilOrError(locale) &&
+      !isNilOrError(tenant) &&
+      !isNilOrError(project)
+    ) {
       const ideaId = idea.id;
       const ideaTitle = localize(idea.attributes.title_multiloc);
       const ideaImageLarge =
@@ -201,6 +228,11 @@ export class IdeaContent extends PureComponent<
           : null;
       const ideaGeoPosition = idea.attributes.location_point_geojson || null;
       const ideaAddress = idea.attributes.location_description || null;
+      // AuthorId can be null if user has been deleted
+      const authorId = idea.relationships.author.data?.id || null;
+      const proposedBudget = idea.attributes.proposed_budget;
+      const currency = tenant.attributes.settings.core.currency;
+      const processType = project.attributes.process_type;
 
       return (
         <Container>
@@ -211,7 +243,7 @@ export class IdeaContent extends PureComponent<
             <Button
               icon="delete"
               buttonStyle="text"
-              onClick={this.handleClickDelete}
+              onClick={this.handleClickDelete(processType)}
             >
               <FormattedMessage {...messages.delete} />
             </Button>
@@ -236,6 +268,7 @@ export class IdeaContent extends PureComponent<
             )}
 
             <StyledTitle postId={ideaId} postType="idea" title={ideaTitle} />
+            <StyledPostedBy ideaId={ideaId} authorId={authorId} />
             <Row>
               <Left>
                 {ideaImageLarge && (
@@ -245,16 +278,30 @@ export class IdeaContent extends PureComponent<
                     className="e2e-ideaImage"
                   />
                 )}
-                <IdeaAuthor
-                  authorId={get(idea, 'relationships.author.data.id', null)}
-                  ideaPublishedAt={idea.attributes.published_at}
-                  ideaId={ideaId}
-                />
+
+                {proposedBudget && (
+                  <>
+                    <BodySectionTitle>
+                      <FormattedMessage {...messages.proposedBudgetTitle} />
+                    </BodySectionTitle>
+                    <IdeaProposedBudget
+                      formattedBudget={getFormattedBudget(
+                        locale,
+                        proposedBudget,
+                        currency
+                      )}
+                    />
+                    <BodySectionTitle>
+                      <FormattedMessage {...messages.bodyTitle} />
+                    </BodySectionTitle>
+                  </>
+                )}
 
                 <StyledBody
                   postId={ideaId}
                   postType="idea"
                   body={localize(idea.attributes.body_multiloc)}
+                  locale={locale}
                 />
 
                 {!isNilOrError(project) && ideaGeoPosition && ideaAddress && (
@@ -280,13 +327,13 @@ export class IdeaContent extends PureComponent<
               <Right>
                 <VotePreview ideaId={ideaId} />
 
-                {idea.attributes.budget && !isNilOrError(tenant) && (
+                {idea.attributes.budget && (
                   <>
                     <BudgetBox>
                       <FormattedNumber
                         value={idea.attributes.budget}
                         style="currency"
-                        currency={tenant.attributes.settings.core.currency}
+                        currency={currency}
                         minimumFractionDigits={0}
                         maximumFractionDigits={0}
                       />
@@ -301,7 +348,7 @@ export class IdeaContent extends PureComponent<
                         <IconTooltip
                           content={
                             <FormattedMessage
-                              {...messages.basketsCountTooltip}
+                              {...messages.pbItemCountTooltip}
                             />
                           }
                         />
@@ -322,7 +369,8 @@ export class IdeaContent extends PureComponent<
 }
 
 const Data = adopt<DataProps, InputProps>({
-  tenant: <GetTenant />,
+  tenant: <GetAppConfiguration />,
+  locale: <GetLocale />,
   idea: ({ ideaId, render }) => <GetIdea ideaId={ideaId}>{render}</GetIdea>,
   project: ({ idea, render }) => (
     <GetProject projectId={get(idea, 'relationships.project.data.id')}>

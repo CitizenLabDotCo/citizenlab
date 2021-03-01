@@ -2,6 +2,18 @@ import { Multiloc, GraphqlMultiloc, Locale } from 'typings';
 import { keys, uniq, isArray, isObject, isEmpty, get, has } from 'lodash-es';
 import { isNilOrError, convertToGraphqlLocale } from 'utils/helperUtils';
 import { truncate } from 'utils/textUtils';
+import { InputTerm } from 'services/participationContexts';
+
+type IInputTermMessages = {
+  [key in InputTerm]: ReactIntl.FormattedMessage.MessageDescriptor;
+};
+
+export const getInputTermMessage = (
+  inputType: InputTerm,
+  messages: IInputTermMessages
+) => {
+  return messages[inputType];
+};
 
 export function getLocalized(
   multiloc: Multiloc | GraphqlMultiloc | null | undefined,

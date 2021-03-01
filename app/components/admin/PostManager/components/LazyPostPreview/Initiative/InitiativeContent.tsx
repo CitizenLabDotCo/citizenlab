@@ -30,6 +30,7 @@ import GetInitiative, {
 import GetInitiativeImages, {
   GetInitiativeImagesChildProps,
 } from 'resources/GetInitiativeImages';
+import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 
 // i18n
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
@@ -114,6 +115,7 @@ interface DataProps {
   initiative: GetInitiativeChildProps;
   initiativeImages: GetInitiativeImagesChildProps;
   initiativeFiles: GetResourceFilesChildProps;
+  locale: GetLocaleChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -143,9 +145,10 @@ export class InitiativeContent extends PureComponent<
       initiativeImages,
       initiativeFiles,
       handleClickEdit,
+      locale,
     } = this.props;
 
-    if (!isNilOrError(initiative)) {
+    if (!isNilOrError(initiative) && !isNilOrError(locale)) {
       const initiativeId = initiative.id;
       const initiativeTitle = localize(initiative.attributes.title_multiloc);
       const initiativeImageLarge =
@@ -207,6 +210,7 @@ export class InitiativeContent extends PureComponent<
                   postId={initiativeId}
                   postType="initiative"
                   body={localize(initiative.attributes.body_multiloc)}
+                  locale={locale}
                 />
 
                 {initiativeGeoPosition && initiativeAddress && (
@@ -266,6 +270,7 @@ const Data = adopt<DataProps, InputProps>({
       {render}
     </GetInitiativeImages>
   ),
+  locale: <GetLocale />,
 });
 
 const InitiativeContentWithHOCs = injectIntl(injectLocalize(InitiativeContent));

@@ -1,13 +1,14 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  title: {
-    id: 'app.containers.AdminPage.ProjectIdeaForm.title',
-    defaultMessage: 'Idea form',
+  inputForm: {
+    id: 'app.containers.AdminPage.ProjectIdeaForm.inputForm',
+    defaultMessage: 'Input form',
   },
-  description: {
-    id: 'app.containers.AdminPage.ProjectIdeaForm.description',
-    defaultMessage: 'Define the structure of an idea for this project.',
+  postDescription: {
+    id: 'app.containers.AdminPage.ProjectIdeaForm.postDescription',
+    defaultMessage:
+      'Specify what information should be provided, add short descriptions or instructions to guide participant responses and specify whether each field is optional or required',
   },
   save: {
     id: 'app.containers.AdminPage.ProjectIdeaForm.save',
@@ -45,14 +46,12 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectIdeaForm.required',
     defaultMessage: 'Required',
   },
-  enabledTooltip: {
-    id: 'app.containers.AdminPage.ProjectIdeaForm.enabledTooltip',
-    defaultMessage:
-      'Enable this field for people who want to create an idea for this project.',
+  enabledTooltipContent: {
+    id: 'app.containers.AdminPage.ProjectIdeaForm.enabledTooltipContent',
+    defaultMessage: 'Include this field.',
   },
-  requiredTooltip: {
-    id: 'app.containers.AdminPage.ProjectIdeaForm.requiredTooltip',
-    defaultMessage:
-      'Require people to complete this field when creating an idea.',
+  requiredTooltipContent: {
+    id: 'app.containers.AdminPage.ProjectIdeaForm.requiredTooltipContent',
+    defaultMessage: 'Require this field to be filled in.',
   },
 });

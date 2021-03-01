@@ -55,9 +55,10 @@ export async function addProjectTopic(projectId: string, topicId: string) {
 
 export async function reorderProjectTopic(
   projectTopicId: string,
-  newOrder: number
+  newOrder: number,
+  projectId: string
 ) {
-  return await streams.update(
+  const response = await streams.update(
     `${API_PATH}/projects_topics/${projectTopicId}/reorder`,
     projectTopicId,
     {
@@ -66,6 +67,12 @@ export async function reorderProjectTopic(
       },
     }
   );
+
+  streams.fetchAllWith({
+    apiEndpoint: [`${apiEndpoint}/${projectId}/projects_topics`],
+  });
+
+  return response;
 }
 
 export function projectTopicsStream(

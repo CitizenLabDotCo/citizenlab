@@ -62,7 +62,12 @@ const PostedBy = memo<Props>(
   ({ authorId, className, showAboutInitiatives }) => {
     if (authorId) {
       const authorName = (
-        <UserName userId={authorId} emphasize linkToProfile hideLastName />
+        <UserName
+          userId={authorId}
+          fontWeight={500}
+          isLinkToProfile={true}
+          hideLastName={true}
+        />
       );
 
       return (

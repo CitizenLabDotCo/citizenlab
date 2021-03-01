@@ -48,6 +48,7 @@ export interface IInviteError {
   row?: number | undefined;
   rows?: number[] | undefined;
   value?: number | string | undefined;
+  payload?: Object;
 }
 
 type AdminRole = {

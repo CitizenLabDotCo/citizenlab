@@ -45,9 +45,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.tabPages',
     defaultMessage: 'Pages',
   },
-  tabRegistration: {
-    id: 'app.containers.AdminPage.SettingsPage.tabRegistration',
-    defaultMessage: 'Registration',
+  tabRegistrationFields: {
+    id: 'app.containers.AdminPage.SettingsPage.tabRegistrationFields',
+    defaultMessage: 'Registration fields',
   },
   tabTopics: {
     id: 'app.containers.AdminPage.SettingsPage.tabTopics',
@@ -167,14 +167,14 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.saveSuccessMessage',
     defaultMessage: 'Your changes have been saved.',
   },
-  titleRegistrationFields: {
-    id: 'app.containers.AdminPage.SettingsPage.titleRegistrationFields',
+  titleRegistration: {
+    id: 'app.containers.AdminPage.SettingsPage.titleRegistration',
     defaultMessage: 'Registration fields',
   },
-  subtitleRegistrationFields: {
-    id: 'app.containers.AdminPage.SettingsPage.subtitleRegistrationFields',
+  subtitleRegistration: {
+    id: 'app.containers.AdminPage.SettingsPage.subtitleRegistration',
     defaultMessage:
-      'Define what specific information you want to ask people while creating an account. Use this information to create Smart Groups and give particular user groups access to certain projects.',
+      'Specify what information people are asked to provide when signing up.',
   },
   tabAreas: {
     id: 'app.containers.AdminPage.SettingsPage.tabAreas',

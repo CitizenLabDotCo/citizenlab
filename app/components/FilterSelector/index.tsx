@@ -15,7 +15,7 @@ import ValuesList from './valuesList';
 
 // style
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
+import { media, isRtl } from 'utils/styleUtils';
 
 const Container = styled.div`
   display: inline-block;
@@ -28,6 +28,10 @@ const Container = styled.div`
       margin-right: 30px;
     `}
 
+    ${media.smallerThanMinTablet`
+      margin-right: 25px;
+    `}
+
     ${media.smallPhone`
       margin-right: 20px;
     `}
@@ -36,6 +40,24 @@ const Container = styled.div`
   &.last {
     margin-right: 0px;
   }
+
+  ${isRtl`
+    &:not(:last-child) {
+      margin-left: 40px;
+
+      ${media.smallerThanMaxTablet`
+        margin-left: 30px;
+      `}
+
+      ${media.smallPhone`
+        margin-left: 20px;
+      `}
+    }
+
+    &.last {
+      margin-left: 0px;
+    }
+  `}
 `;
 
 export interface IFilterSelectorValue {

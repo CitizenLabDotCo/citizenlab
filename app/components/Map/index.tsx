@@ -5,12 +5,13 @@ import { isNilOrError } from 'utils/helperUtils';
 require('leaflet-simplestyle');
 
 // components
-import ReactResizeDetector from 'react-resize-detector';
 import { Icon } from 'cl2-component-library';
 import Legend from './Legend';
 
 // resources
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetAppConfiguration';
 import GetMapConfig, { GetMapConfigChildProps } from 'resources/GetMapConfig';
 
 // Map
@@ -94,6 +95,7 @@ const CloseIcon = styled(Icon)`
 const LeafletMapContainer = styled.div<{ mapHeight: number }>`
   flex: 1;
   height: ${(props) => props.mapHeight}px;
+  overflow: hidden;
 
   .leaflet-container {
     height: 100%;
@@ -149,7 +151,7 @@ export interface InputProps {
 }
 
 interface DataProps {
-  tenant: GetTenantChildProps;
+  tenant: GetAppConfigurationChildProps;
   mapConfig: GetMapConfigChildProps;
 }
 
@@ -273,7 +275,7 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
 
     const baseLayer = Leaflet.tileLayer(tile_provider, {
       attribution:
-        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+        '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>',
       subdomains: ['a', 'b', 'c'],
     });
 
@@ -424,10 +426,6 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
       );
   };
 
-  onMapElementResize = () => {
-    this.map && this.map.invalidateSize();
-  };
-
   handleBoxOnClose = (event: FormEvent) => {
     event.preventDefault();
     this.props.onBoxClose && this.props.onBoxClose(event);
@@ -454,13 +452,7 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
               id="e2e-map"
               ref={this.bindMapContainer}
               mapHeight={mapHeight}
-            >
-              <ReactResizeDetector
-                handleWidth
-                handleHeight
-                onResize={this.onMapElementResize}
-              />
-            </LeafletMapContainer>
+            />
           </MapContainer>
           {projectId && <Legend projectId={projectId} />}
         </Container>
@@ -479,8 +471,8 @@ export default ({ projectId, ...inputProps }: InputProps) =>
       {(mapConfig: GetMapConfigChildProps) => {
         if (isError(mapConfig) || mapConfig) {
           return (
-            <GetTenant>
-              {(tenant: GetTenantChildProps) => {
+            <GetAppConfiguration>
+              {(tenant: GetAppConfigurationChildProps) => {
                 return (
                   <CLMapWithHOCs
                     tenant={tenant}
@@ -490,7 +482,7 @@ export default ({ projectId, ...inputProps }: InputProps) =>
                   />
                 );
               }}
-            </GetTenant>
+            </GetAppConfiguration>
           );
         }
 
@@ -498,11 +490,11 @@ export default ({ projectId, ...inputProps }: InputProps) =>
       }}
     </GetMapConfig>
   ) : (
-    <GetTenant>
-      {(tenant: GetTenantChildProps) => {
+    <GetAppConfiguration>
+      {(tenant: GetAppConfigurationChildProps) => {
         return (
           <CLMapWithHOCs tenant={tenant} mapConfig={null} {...inputProps} />
         );
       }}
-    </GetTenant>
+    </GetAppConfiguration>
   );

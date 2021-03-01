@@ -1,10 +1,17 @@
 import React from 'react';
-import { Subject, combineLatest } from 'rxjs';
-import { mapValues, isFunction, get } from 'lodash-es';
-import { isNilOrError } from 'utils/helperUtils';
-import { currentTenantStream, ITenantData } from 'services/tenant';
-import { authUserStream } from 'services/auth';
-import snippet from '@segment/snippet';
+import { Subject, Observable, concat, combineLatest } from 'rxjs';
+import {
+  buffer,
+  filter,
+  pairwise,
+  mergeAll,
+  take,
+  distinctUntilChanged,
+  map,
+} from 'rxjs/operators';
+import { isEqual, mapValues } from 'lodash-es';
+import eventEmitter from 'utils/eventEmitter';
+
 import {
   isAdmin,
   isSuperAdmin,
@@ -12,6 +19,18 @@ import {
 } from 'services/permissions/roles';
 import { IUser } from 'services/users';
 import { removeUrlLocale, localeStream } from 'services/locale';
+import {
+  IAppConfigurationData,
+  currentAppConfigurationStream,
+} from 'services/appConfiguration';
+
+import {
+  getDestinationConfig,
+  IDestination,
+  isDestinationActive,
+} from 'components/ConsentManager/destinations';
+import { ISavedDestinations } from 'components/ConsentManager/consent';
+import { authUserStream } from 'services/auth';
 
 export interface IEvent {
   name: string;
@@ -27,142 +46,68 @@ export interface IPageChange {
   };
 }
 
-const tenant$ = currentTenantStream().observable;
-const authUser$ = authUserStream().observable;
-const events$ = new Subject<IEvent>();
-const pageChanges$ = new Subject<IPageChange>();
+export const events$ = new Subject<IEvent>();
+export const pageChanges$ = new Subject<IPageChange>();
 
-combineLatest(tenant$, authUser$, events$).subscribe(
-  ([tenant, user, event]) => {
-    window._paq.push([
-      'trackEvent',
-      event.name,
-      ...(Object.values(event.properties || {}) || []).filter(
-        (item) => typeof item === 'string'
-      ),
-    ]);
-    console.log('sent event', [
-      'trackEvent',
-      event.name,
-      ...(Object.values(event.properties || {}) || []).filter(
-        (item) => typeof item === 'string'
-      ),
-    ]);
-    if (!isNilOrError(tenant) && isFunction(get(window, 'analytics.track'))) {
-      analytics.track(
-        event.name,
-        {
-          ...tenantInfo(tenant.data),
-          location: window?.location?.pathname,
-          ...event.properties,
-        },
-        { integrations: integrations(user) }
+const destinationConsentChanged$ = eventEmitter
+  .observeEvent<ISavedDestinations[]>('destinationConsentChanged')
+  .pipe(distinctUntilChanged(isEqual));
+
+/** Returns stream that emits when the given destination should initialize. Only
+ * emits if the given destination is active and the user gave consent. Can emit
+ * more then once.
+ */
+export const initializeFor = (destination: IDestination) => {
+  return combineLatest([
+    destinationConsentChanged$,
+    currentAppConfigurationStream().observable,
+    authUserStream().observable,
+  ]).pipe(
+    filter(([consent, tenant, user]) => {
+      const config = getDestinationConfig(destination);
+      return (
+        consent.eventValue[destination] &&
+        (!config || isDestinationActive(config, tenant.data, user?.data))
       );
-    }
-  }
-);
+    })
+  );
+};
 
-localeStream().observable.subscribe((locale) => {
-  window._paq.push(['setCustomDimension', 3, locale]);
-});
+/** Returns buffered version of the given stream, that only starts emiting
+ * buffered values one by one when the given destination is initialized */
+export const bufferUntilInitialized = <T>(
+  destination: IDestination,
+  o$: Observable<T>
+): Observable<T> => {
+  return concat(
+    o$.pipe(buffer(initializeFor(destination).pipe(take(1))), mergeAll()),
+    o$
+  );
+};
 
-tenant$.subscribe((tenant) => {
-  if (!isNilOrError(tenant)) {
-    window._paq.push(['setCustomDimension', 1, tenant.data.attributes.name]);
-    window._paq.push(['setCustomDimension', 2, tenant.data.id]);
-  }
-});
-//
-const exp = new RegExp(
-  '(?<before>^/(ideas|initiatives|projects|users|folders|workshops|admin/(projects(/(folders|templates))|emails/custom)?)/)(?<match>([A-Za-z0-9]|-)*)(?<after>/?(.*))',
-  'g'
-);
-pageChanges$.subscribe(({ path }) => {
-  const unlocalizedPath = removeUrlLocale(path);
-  const pathParts = exp.exec(unlocalizedPath)?.groups;
-  console.log('hi');
-  console.log([
-    'trackPageView',
-    pathParts
-      ? `${pathParts.before}identifier${pathParts.after}`
-      : unlocalizedPath,
-    pathParts ? { dimension4: pathParts.match } : undefined,
-  ]);
-  window._paq.push(['setCustomUrl', unlocalizedPath]);
-  window._paq.push([
-    'trackPageView',
-    pathParts
-      ? `${pathParts.before}identifier${pathParts.after}`
-      : unlocalizedPath,
-    pathParts ? { dimension4: pathParts.match } : undefined,
-  ]);
-
-  const content = document.getElementById('app');
-  window._paq.push(['FormAnalytics::scanForForms', content]);
-
-  if (isFunction(get(window, 'analytics.page'))) {
-    analytics.page('');
-  }
-});
-
-combineLatest(tenant$, authUser$).subscribe(([tenant, user]) => {
-  if (user?.data?.id) {
-    window._paq.push(['setUserId', user.data.id]);
-  }
-  if (
-    !isNilOrError(tenant) &&
-    isFunction(get(window, 'analytics.identify')) &&
-    isFunction(get(window, 'analytics.group'))
-  ) {
-    if (user) {
-      analytics.identify(
-        user.data.id,
-        {
-          ...tenantInfo(tenant.data),
-          email: user.data.attributes.email,
-          firstName: user.data.attributes.first_name,
-          lastName: user.data.attributes.last_name,
-          createdAt: user.data.attributes.created_at,
-          avatar: user.data.attributes.avatar
-            ? user.data.attributes.avatar.large
-            : null,
-          birthday: user.data.attributes.birthyear,
-          gender: user.data.attributes.gender,
-          locale: user.data.attributes.locale,
-          isSuperAdmin: isSuperAdmin(user),
-          isAdmin: isAdmin(user),
-          isProjectModerator: isProjectModerator(user),
-          highestRole: user.data.attributes.highest_role,
-        },
-        {
-          integrations: integrations(user),
-          Intercom: { hideDefaultLauncher: !isAdmin(user) },
-        } as any
+/** Returns stream that emits when the given destination should shut itself down.
+ */
+export const shutdownFor = (destination: IDestination) => {
+  return combineLatest([
+    destinationConsentChanged$,
+    currentAppConfigurationStream().observable,
+    authUserStream().observable,
+  ]).pipe(
+    map(([consent, tenant, user]) => {
+      const config = getDestinationConfig(destination);
+      return (
+        consent.eventValue[destination] &&
+        (!config || isDestinationActive(config, tenant.data, user?.data))
       );
-      analytics.group(
-        tenant.data.id,
-        {
-          ...tenantInfo(tenant.data),
-          name: tenant.data.attributes.name,
-          website: tenant.data.attributes.settings.core.organization_site,
-          avatar:
-            tenant.data.attributes.logo && tenant.data.attributes.logo.medium,
-          tenantLocales: tenant.data.attributes.settings.core.locales,
-        },
-        { integrations: integrations(user) }
-      );
-    } else {
-      // no user
-      analytics.identify(tenantInfo(tenant.data), {
-        integrations: integrations(user),
-        Intercom: { hideDefaultLauncher: true },
-      } as any);
-      window._paq.push(['resetUserId']);
-    }
-  }
-});
+    }),
+    pairwise(),
+    filter(([previousActive, currentActive]) => {
+      return previousActive && !currentActive;
+    })
+  );
+};
 
-export function tenantInfo(tenant: ITenantData) {
+export function tenantInfo(tenant: IAppConfigurationData) {
   return {
     tenantId: tenant && tenant.id,
     tenantName: tenant && tenant.attributes.name,
@@ -172,21 +117,6 @@ export function tenantInfo(tenant: ITenantData) {
     tenantLifecycleStage:
       tenant && tenant.attributes.settings.core.lifecycle_stage,
   };
-}
-
-export function integrations(user: IUser | null) {
-  const output = {
-    Intercom: false,
-    SatisMeter: false,
-  };
-  if (user) {
-    const highestRole = user.data.attributes.highest_role;
-    output['Intercom'] =
-      highestRole === 'admin' || highestRole === 'project_moderator';
-    output['SatisMeter'] =
-      highestRole === 'admin' || highestRole === 'project_moderator';
-  }
-  return output;
 }
 
 export function trackPage(path: string, properties: {} = {}) {
@@ -204,6 +134,7 @@ export function trackEventByName(eventName: string, properties: {} = {}) {
   });
 }
 
+/** @deprecated Use `trackEventByName` instead */
 export function trackEvent(event: IEvent) {
   events$.next({
     properties: event.properties || {},
@@ -211,6 +142,7 @@ export function trackEvent(event: IEvent) {
   });
 }
 
+/** @deprecated Directly call trackEventByName instead */
 export const injectTracks = <P>(events: { [key: string]: IEvent }) => (
   component: React.ComponentClass<P>
 ) => {
@@ -229,18 +161,4 @@ export const injectTracks = <P>(events: { [key: string]: IEvent }) => (
 
     return wrappedComponent;
   };
-};
-
-export const initializeAnalytics = () => {
-  // Initialize segments window.analytics object
-  const contents = snippet.min({
-    host: 'cdn.segment.com',
-    load: false,
-    page: false,
-  });
-
-  // tslint:disable-next-line:no-eval
-  eval(contents);
-
-  trackPage(window.location.pathname);
 };

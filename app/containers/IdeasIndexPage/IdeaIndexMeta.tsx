@@ -10,9 +10,9 @@ import { InjectedIntlProps } from 'react-intl';
 
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetTenantLocales, {
-  GetTenantLocalesChildProps,
-} from 'resources/GetTenantLocales';
+import GetAppConfigurationLocales, {
+  GetAppConfigurationLocalesChildProps,
+} from 'resources/GetAppConfigurationLocales';
 
 // utils
 import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
@@ -22,7 +22,7 @@ interface InputProps {}
 
 interface DataProps {
   authUser: GetAuthUserChildProps;
-  tenantLocales: GetTenantLocalesChildProps;
+  tenantLocales: GetAppConfigurationLocalesChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -31,8 +31,10 @@ const IdeaMeta = React.memo<Props & InjectedIntlProps>(
   ({ intl, authUser, tenantLocales }) => {
     const { formatMessage } = intl;
     const { location } = window;
-    const ideasIndexTitle = formatMessage(messages.metaTitle);
-    const ideasIndexDescription = formatMessage(messages.metaDescription);
+    const ideasIndexTitle = formatMessage(messages.inputsIndexMetaTitle);
+    const ideasIndexDescription = formatMessage(
+      messages.inputsIndexMetaDescription
+    );
 
     return (
       <Helmet>
@@ -60,7 +62,7 @@ const IdeaMeta = React.memo<Props & InjectedIntlProps>(
 const IdeaMetaWithHoc = injectIntl<Props>(IdeaMeta);
 
 const Data = adopt<DataProps, InputProps>({
-  tenantLocales: <GetTenantLocales />,
+  tenantLocales: <GetAppConfigurationLocales />,
   authUser: <GetAuthUser />,
 });
 

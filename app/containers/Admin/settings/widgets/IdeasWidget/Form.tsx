@@ -408,7 +408,7 @@ class WidgetForm extends PureComponent<
         <StyledCollapse
           opened={openedCollapse === 'ideas'}
           onToggle={this.handleCollapseToggle('ideas')}
-          label={<FormattedMessage {...messages.titleIdeaContent} />}
+          label={<FormattedMessage {...messages.titleInputSelection} />}
         >
           <StyledSection>
             <SectionField>
@@ -461,7 +461,7 @@ class WidgetForm extends PureComponent<
 
             <SectionField>
               <Label>
-                <FormattedMessage {...messages.fieldLimit} />
+                <FormattedMessage {...messages.fieldInputsLimit} />
               </Label>
               <Field name="limit" component={FormikInput} type="number" />
               {touched.limit && (

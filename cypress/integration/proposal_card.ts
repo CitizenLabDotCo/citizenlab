@@ -59,7 +59,7 @@ describe('Proposal card component', () => {
       cy.wait(2000);
       cy.location('pathname').should(
         'eq',
-        `/en-GB/initiatives/${initiativeTitle}`
+        `/en/initiatives/${initiativeTitle}`
       );
       cy.get('#e2e-initiative-show');
     });

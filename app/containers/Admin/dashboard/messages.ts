@@ -15,6 +15,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.tabUsers',
     defaultMessage: 'Users',
   },
+  tabReports: {
+    id: 'app.containers.AdminPage.DashboardPage.tabReports',
+    defaultMessage: 'Reports',
+  },
   tabInsights: {
     id: 'app.containers.AdminPage.DashboardPage.tabInsights',
     defaultMessage: 'Insights',
@@ -32,21 +36,33 @@ export default defineMessages({
     defaultMessage: 'Dashboard for activities on the platform',
   },
   // All tabs
+  day: {
+    id: 'app.containers.AdminPage.DashboardPage.day',
+    defaultMessage: 'day',
+  },
+  week: {
+    id: 'app.containers.AdminPage.DashboardPage.week',
+    defaultMessage: 'week',
+  },
+  month: {
+    id: 'app.containers.AdminPage.DashboardPage.month',
+    defaultMessage: 'month',
+  },
   users: {
     id: 'app.containers.AdminPage.DashboardPage.users',
     defaultMessage: 'Users',
   },
-  ideas: {
-    id: 'app.containers.AdminPage.DashboardPage.ideas',
-    defaultMessage: 'Ideas',
+  inputs: {
+    id: 'app.containers.AdminPage.DashboardPage.inputs',
+    defaultMessage: 'Inputs',
   },
   votes: {
     id: 'app.containers.AdminPage.DashboardPage.votes',
     defaultMessage: 'Votes',
   },
-  ideaVotes: {
-    id: 'app.containers.AdminPage.DashboardPage.ideaVotes',
-    defaultMessage: 'Votes on ideas',
+  fiveInputsWithMostVotes: {
+    id: 'app.containers.AdminPage.DashboardPage.fiveInputsWithMostVotes',
+    defaultMessage: 'Top 5 inputs by votes',
   },
   comments: {
     id: 'app.containers.AdminPage.DashboardPage.comments',
@@ -131,22 +147,19 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.activeUsersByTimeTitle',
     defaultMessage: 'Active users',
   },
-  activeUsersDescription: {
-    id: 'app.containers.AdminPage.DashboardPage.activeUsersDescription',
+  numberOfActiveParticipantsDescription: {
+    id:
+      'app.containers.AdminPage.DashboardPage.numberOfActiveParticipantsDescription',
     defaultMessage:
-      'The number of users that either voted, commented or posted an idea on a given day.',
+      'The number of participants that posted inputs, voted or commented.',
   },
-  ideasByTimeTitle: {
-    id: 'app.containers.AdminPage.DashboardPage.ideasByTimeTitle',
-    defaultMessage: 'Ideas',
+  inputsByStatusTitle: {
+    id: 'app.containers.AdminPage.DashboardPage.inputsByStatusTitle',
+    defaultMessage: 'Inputs by status',
   },
   commentsByTimeTitle: {
     id: 'app.containers.AdminPage.DashboardPage.commentsByTimeTitle',
     defaultMessage: 'Comments',
-  },
-  ideaVotesByTimeTitle: {
-    id: 'app.containers.AdminPage.DashboardPage.ideaVotesByTimeTitle',
-    defaultMessage: 'Votes on ideas',
   },
   numberOfVotesUp: {
     id: 'app.containers.AdminPage.DashboardPage.numberOfVotesUp',
@@ -159,6 +172,22 @@ export default defineMessages({
   numberOfVotesTotal: {
     id: 'app.containers.AdminPage.DashboardPage.numberOfVotesTotal',
     defaultMessage: 'Total votes',
+  },
+  cumulatedTotal: {
+    id: 'app.containers.AdminPage.DashboardPage.cumulatedTotal',
+    defaultMessage: 'Cumulated Total',
+  },
+  total: {
+    id: 'app.containers.AdminPage.DashboardPage.total',
+    defaultMessage: 'Total',
+  },
+  totalForPeriod: {
+    id: 'app.containers.AdminPage.DashboardPage.totalForPeriod',
+    defaultMessage: 'This {period}',
+  },
+  perPeriod: {
+    id: 'app.containers.AdminPage.DashboardPage.perPeriod',
+    defaultMessage: 'Per {period}',
   },
   participationPerProject: {
     id: 'app.containers.AdminPage.DashboardPage.participationPerProject',
@@ -223,14 +252,23 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage._blank',
     defaultMessage: 'unknown',
   },
-  outsideArea: {
-    id: 'app.containers.AdminPage.DashboardPage.outsideArea',
-    defaultMessage: 'Somewhere else',
+  true: {
+    id: 'app.containers.AdminPage.DashboardPage.true',
+    defaultMessage: 'true',
   },
-  top10activeUsersDescription: {
-    id: 'app.containers.AdminPage.DashboardPage.top10activeUsersDescription',
+  false: {
+    id: 'app.containers.AdminPage.DashboardPage.false',
+    defaultMessage: 'false',
+  },
+  otherArea: {
+    id: 'app.containers.AdminPage.DashboardPage.otherArea',
+    defaultMessage: 'Other',
+  },
+  mostActiveUsersRankingDescription: {
+    id:
+      'app.containers.AdminPage.DashboardPage.mostActiveUsersRankingDescription',
     defaultMessage:
-      'A user gets 5 points per posted idea, 3 points per posted comment and 1 point per vote.',
+      'The ranking is based on the number of inputs (5 points per input), comments (3 points per comment) and votes (1 point per vote) submitted by each participant.',
   },
   mostActiveUsers: {
     id: 'app.containers.AdminPage.DashboardPage.mostActiveUsers',
@@ -249,15 +287,15 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.titleDashboard',
     defaultMessage: 'Dashboard',
   },
-  mapHelperText: {
-    id: 'app.containers.AdminPage.DashboardPage.mapHelperText',
+  mapExplanationText: {
+    id: 'app.containers.AdminPage.DashboardPage.mapExplanationText',
     defaultMessage:
-      'This map shows ideas at locations that are automatically detected from the idea text. Some locations can be inaccurate. Ideas for which no locations were found are not shown.',
+      'This map automatically detects locations from the title and description of the input. The location data may not be accurate; inputs where no locational data is detected are not displayed.',
   },
-  startLoadingMessage: {
-    id: 'app.containers.AdminPage.DashboardPage.startLoadingMessage',
+  automaticLoadingMessage: {
+    id: 'app.containers.AdminPage.DashboardPage.automaticLoadingMessage',
     defaultMessage:
-      'Currently crunching all your data to spot locations. Bear with me, this might take some time.',
+      'Automatic location detection underway. Please wait until the processing is complete.',
   },
   thenLoadingMessage: {
     id: 'app.containers.AdminPage.DashboardPage.thenLoadingMessage',
@@ -267,5 +305,110 @@ export default defineMessages({
   lastLoadingMessage: {
     id: 'app.containers.AdminPage.DashboardPage.lastLoadingMessage',
     defaultMessage: 'It should be almost ready, hang on!',
+  },
+  downloadAsImage: {
+    id: 'app.containers.AdminPage.DashboardPage.ExportMenu.downloadAsImage',
+    defaultMessage: 'Download as image',
+  },
+  downloadXlsx: {
+    id: 'app.containers.AdminPage.DashboardPage.ExportMenu.downloadXlsx',
+    defaultMessage: 'Download Excel',
+  },
+  fromFilter: {
+    id: 'app.containers.AdminPage.DashboardPage.ExportMenu.FileName.fromFilter',
+    defaultMessage: 'from',
+  },
+  untilFilter: {
+    id:
+      'app.containers.AdminPage.DashboardPage.ExportMenu.FileName.untilFilter',
+    defaultMessage: 'until',
+  },
+  projectFilter: {
+    id:
+      'app.containers.AdminPage.DashboardPage.ExportMenu.FileName.projectFilter',
+    defaultMessage: 'project',
+  },
+  groupFilter: {
+    id:
+      'app.containers.AdminPage.DashboardPage.ExportMenu.FileName.groupFilter',
+    defaultMessage: 'group',
+  },
+  topicFilter: {
+    id:
+      'app.containers.AdminPage.DashboardPage.ExportMenu.FileName.topicFilter',
+    defaultMessage: 'topic',
+  },
+  participants: {
+    id: 'app.containers.AdminPage.DashboardPage.Report.participants',
+    defaultMessage: 'participants',
+  },
+  totalUsers: {
+    id: 'app.containers.AdminPage.DashboardPage.Report.totalUsers',
+    defaultMessage: 'total users on the platform',
+  },
+  // Report
+  selectAProject: {
+    id: 'app.containers.Dashboards.ReportsTab.selectAProject',
+    defaultMessage: 'What project are you interested in ?',
+  },
+  sectionWho: {
+    id: 'app.containers.Dashboards.ReportsTab.sectionWho',
+    defaultMessage: 'Who participated ?',
+  },
+  sectionWhatInput: {
+    id: 'app.containers.Dashboards.ReportsTab.sectionWhatInput',
+    defaultMessage: 'What input did you collect?',
+  },
+  participantsOverTimeTitle: {
+    id: 'app.containers.Dashboards.ReportsTab.participantsOverTimeTitle',
+    defaultMessage: 'Participants',
+  },
+  timelineType: {
+    id: 'app.containers.AdminPage.DashboardPage.timelineType',
+    defaultMessage: 'Timeline',
+  },
+  continuousType: {
+    id: 'app.containers.AdminPage.DashboardPage.continuousType',
+    defaultMessage: 'Continuous',
+  },
+  projectType: {
+    id: 'app.containers.AdminPage.DashboardPage.projectType',
+    defaultMessage: 'Project type : {projectType}',
+  },
+  fromTo: {
+    id: 'app.containers.AdminPage.DashboardPage.fromTo',
+    defaultMessage: 'from {from} to {to}',
+  },
+  noPhase: {
+    id: 'app.containers.AdminPage.DashboardPage.noPhase',
+    defaultMessage: 'No phase created for this project',
+  },
+  ideationAndFeedback: {
+    id: 'app.containers.AdminPage.ReportsTab.ideationAndFeedback',
+    defaultMessage: 'ideation and feedback',
+  },
+  information: {
+    id: 'app.containers.AdminPage.ReportsTab.information',
+    defaultMessage: 'information',
+  },
+  survey: {
+    id: 'app.containers.AdminPage.ReportsTab.survey',
+    defaultMessage: 'survey',
+  },
+  budgeting: {
+    id: 'app.containers.AdminPage.ReportsTab.budgeting',
+    defaultMessage: 'budgeting',
+  },
+  poll: {
+    id: 'app.containers.AdminPage.ReportsTab.poll',
+    defaultMessage: 'poll',
+  },
+  volunteering: {
+    id: 'app.containers.AdminPage.ReportsTab.volunteering',
+    defaultMessage: 'volunteering',
+  },
+  customFieldTitleExport: {
+    id: 'app.containers.AdminPage.ReportsTab.customFieldTitleExport',
+    defaultMessage: '{fieldName}_repartition',
   },
 });

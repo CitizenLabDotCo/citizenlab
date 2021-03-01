@@ -33,9 +33,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SideBar.workshops',
     defaultMessage: 'Workshops',
   },
-  ideas: {
-    id: 'app.containers.AdminPage.SideBar.ideas',
-    defaultMessage: 'Ideas',
+  inputManager: {
+    id: 'app.containers.AdminPage.SideBar.inputManager',
+    defaultMessage: 'Input manager',
   },
   settings: {
     id: 'app.containers.AdminPage.SideBar.settings',
@@ -44,6 +44,10 @@ export default defineMessages({
   emails: {
     id: 'app.containers.AdminPage.SideBar.emails',
     defaultMessage: 'Emails',
+  },
+  processing: {
+    id: 'app.containers.AdminPage.SideBar.processing',
+    defaultMessage: 'Processing',
   },
   guide: {
     id: 'app.containers.AdminPage.SideBar.guide',

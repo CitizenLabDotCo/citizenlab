@@ -11,7 +11,7 @@ import CommentFooter from './CommentFooter';
 import { Icon } from 'cl2-component-library';
 
 // services
-import { canModerate } from 'services/permissions/rules/projectPermissions';
+import { canModerateProject } from 'services/permissions/rules/projectPermissions';
 
 // resources
 import GetComment, { GetCommentChildProps } from 'resources/GetComment';
@@ -24,67 +24,22 @@ import messages from './messages';
 
 // style
 import styled from 'styled-components';
-import { media, colors, fontSizes } from 'utils/styleUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
 
-const Container = styled.div`
-  &.child {
-    background: #fbfbfb;
-    border-bottom-left-radius: 3px;
-    border-bottom-right-radius: 3px;
-  }
-`;
+const Container = styled.div``;
 
 const ContainerInner = styled.div`
-  padding-top: 25px;
-  padding-bottom: 35px;
   position: relative;
 
-  &.parent {
-    padding-top: 28px;
-  }
-
-  &.hasBottomBorder {
-    border-bottom: solid 1px #e8e8e8;
-  }
-
-  &.lastComment {
-    border-bottom: none;
-  }
-
-  &.parent {
-    padding-left: 35px;
-    padding-right: 35px;
-  }
-
   &.child {
-    margin-left: 75px;
-    margin-right: 35px;
+    margin-top: 20px;
+    margin-left: 38px;
   }
-
-  ${media.smallerThanMinTablet`
-    padding-top: 20px;
-    padding-bottom: 25px;
-
-    &.parent {
-      padding-left: 20px;
-      padding-right: 20px;
-    }
-
-    &.child {
-      margin-left: 40px;
-      margin-right: 20px;
-    }
-  `}
-
-  ${media.phone`
-    &.child {
-      margin-left: 20px;
-    }
-  `}
 `;
 
 const Content = styled.div`
   display: flex;
+  margin-left: 39px;
 `;
 
 const BodyAndFooter = styled.div`
@@ -113,9 +68,7 @@ interface InputProps {
   projectId?: string | null;
   commentId: string;
   commentType: 'parent' | 'child';
-  hasBottomBorder?: boolean;
   hasChildComments?: boolean;
-  canReply?: boolean;
   last?: boolean;
   className?: string;
 }
@@ -133,9 +86,7 @@ interface State {
 
 class Comment extends PureComponent<Props & InjectedIntlProps, State> {
   static defaultProps = {
-    hasBottomBorder: true,
     hasChildComment: false,
-    canReply: true,
     last: false,
   };
 
@@ -166,11 +117,9 @@ class Comment extends PureComponent<Props & InjectedIntlProps, State> {
       commentType,
       comment,
       author,
-      hasBottomBorder,
       hasChildComments,
       last,
       className,
-      canReply,
     } = this.props;
     const { editing } = this.state;
 
@@ -181,18 +130,18 @@ class Comment extends PureComponent<Props & InjectedIntlProps, State> {
         (commentType === 'parent' && !hasChildComments) ||
         (commentType === 'child' && last === true);
       const moderator =
-        !isNilOrError(author) && canModerate(projectId, { data: author });
+        !isNilOrError(author) &&
+        canModerateProject(projectId, { data: author });
 
       return (
         <Container
+          id={commentId}
           className={`${className || ''} ${commentType} ${
             commentType === 'parent' ? 'e2e-parentcomment' : 'e2e-childcomment'
           } e2e-comment`}
         >
           <ContainerInner
-            className={`${commentType} ${lastComment ? 'lastComment' : ''} ${
-              hasBottomBorder ? 'hasBottomBorder' : ''
-            }`}
+            className={`${commentType} ${lastComment ? 'lastComment' : ''}`}
           >
             {comment.attributes.publication_status === 'published' && (
               <>
@@ -203,6 +152,7 @@ class Comment extends PureComponent<Props & InjectedIntlProps, State> {
                   commentType={commentType}
                   commentCreatedAt={comment.attributes.created_at}
                   moderator={moderator}
+                  className={commentType === 'parent' ? 'marginBottom' : ''}
                 />
 
                 <Content>
@@ -222,7 +172,6 @@ class Comment extends PureComponent<Props & InjectedIntlProps, State> {
                       commentId={commentId}
                       commentType={commentType}
                       onEditing={this.onEditing}
-                      canReply={canReply}
                     />
                   </BodyAndFooter>
                 </Content>

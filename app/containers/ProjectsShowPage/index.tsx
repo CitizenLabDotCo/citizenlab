@@ -1,53 +1,59 @@
-import React, { PureComponent } from 'react';
-import { adopt } from 'react-adopt';
+import React, { memo, useMemo } from 'react';
 import { isError, isUndefined } from 'lodash-es';
-import { isNilOrError } from 'utils/helperUtils';
+import { isNilOrError, isApiError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
+import clHistory from 'utils/cl-router/history';
 
 // components
-import ProjectsShowPageMeta from './ProjectsShowPageMeta';
-import Header from './Header';
-import Button from 'components/UI/Button';
+import ProjectHelmet from './shared/header/ProjectHelmet';
+import ProjectNotFound from './shared/header/ProjectNotFound';
+import ProjectNotVisible from './shared/header/ProjectNotVisible';
+import ProjectHeader from './shared/header/ProjectHeader';
+import ProjectEvents from './shared/events';
+import ContinuousIdeas from './continuous/Ideas';
+import ContinuousSurvey from './continuous/Survey';
+import ContinuousPoll from './continuous/Poll';
+import ContinuousVolunteering from './continuous/Volunteering';
+import TimelineContainer from './timeline';
 import { Spinner } from 'cl2-component-library';
+import ForbiddenRoute from 'components/routing/forbiddenRoute';
 
-// resources
-import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
-import GetProject, { GetProjectChildProps } from 'resources/GetProject';
-import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
-import GetEvents, { GetEventsChildProps } from 'resources/GetEvents';
-
-// i18n
-import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
+// hooks
+import useLocale from 'hooks/useLocale';
+import useAppConfiguration from 'hooks/useAppConfiguration';
+import useProject from 'hooks/useProject';
+import usePhases from 'hooks/usePhases';
+import useEvents from 'hooks/useEvents';
+import useAuthUser from 'hooks/useAuthUser';
 
 // style
 import styled from 'styled-components';
-import { media, fontSizes, colors } from 'utils/styleUtils';
+import { media, colors } from 'utils/styleUtils';
 
-const Container = styled.main`
+// typings
+import { IProjectData } from 'services/projects';
+
+const Container = styled.main<{ background: string }>`
   flex: 1 0 auto;
   height: 100%;
-  min-height: calc(100vh - ${(props) => props.theme.menuHeight}px - 1px);
+  min-height: calc(
+    100vh - ${(props) => props.theme.menuHeight + props.theme.footerHeight}px
+  );
   display: flex;
   flex-direction: column;
-  background: #fff;
-
-  &.greyBackground {
-    background: ${colors.background};
-  }
+  align-items: center;
+  background: ${(props) => props.background};
 
   ${media.smallerThanMaxTablet`
-    min-height: calc(100vh - ${(props) => props.theme.mobileMenuHeight}px - ${(
-    props
-  ) => props.theme.mobileTopBarHeight}px);
-    background: ${colors.background};
+    min-height: calc(100vh - ${({ theme: { mobileMenuHeight } }) =>
+      mobileMenuHeight}px - ${({ theme: { mobileTopBarHeight } }) =>
+    mobileTopBarHeight}px);
   `}
 
-  ${media.biggerThanMinTablet`
-    &.loaded {
-      min-height: 900px;
-    }
+  ${media.smallerThanMinTablet`
+    min-height: calc(100vh - ${({ theme: { mobileMenuHeight } }) =>
+      mobileMenuHeight}px - ${({ theme: { mobileTopBarHeight } }) =>
+    mobileTopBarHeight}px);
   `}
 `;
 
@@ -58,112 +64,110 @@ const Loading = styled.div`
   justify-content: center;
 `;
 
-const Content = styled.div`
-  flex: 1 0 auto;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
+const ContentWrapper = styled.div`
+  width: 100%;
 `;
 
-const ProjectNotFoundWrapper = styled.div`
-  height: 100%;
-  flex: 1 0 auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 4rem;
-  font-size: ${fontSizes.large}px;
-  color: ${colors.label};
-`;
-
-export interface InputProps {}
-
-interface DataProps {
-  locale: GetLocaleChildProps;
-  tenant: GetTenantChildProps;
-  project: GetProjectChildProps;
-  phases: GetPhasesChildProps;
-  events: GetEventsChildProps;
+interface Props {
+  project: IProjectData | Error | null | undefined;
 }
 
-interface Props extends InputProps, DataProps {}
+const ProjectsShowPage = memo<Props>(({ project }) => {
+  const projectId = !isNilOrError(project) ? project.id : undefined;
+  const projectNotFound = isError(project);
+  const processType = !isNilOrError(project)
+    ? project.attributes.process_type
+    : undefined;
 
-interface State {
-  hasEvents: boolean;
-  loaded: boolean;
-}
+  const locale = useLocale();
+  const tenant = useAppConfiguration();
+  const phases = usePhases(projectId);
+  const events = useEvents(projectId);
+  const user = useAuthUser();
 
-class ProjectsShowPage extends PureComponent<Props & WithRouterProps, State> {
-  render() {
-    const { children, locale, tenant, project, phases, events } = this.props;
-    const { slug } = this.props.params;
-    const projectNotFound = isError(project);
-    const loading =
+  const loading = useMemo(() => {
+    return (
       isUndefined(locale) ||
       isUndefined(tenant) ||
       isUndefined(project) ||
       isUndefined(phases) ||
-      isUndefined(events);
-    const currentPath = location.pathname;
-    const lastUrlSegment = currentPath.substr(currentPath.lastIndexOf('/') + 1);
+      isUndefined(events)
+    );
+  }, [locale, tenant, project, phases, events]);
 
-    return (
-      <>
-        <ProjectsShowPageMeta projectSlug={slug} />
-        <Container
-          className={`${
-            lastUrlSegment === 'events' || lastUrlSegment === 'info'
-              ? 'greyBackground'
-              : ''
-          } ${!loading ? 'loaded' : 'loading'}`}
-        >
-          {projectNotFound ? (
-            <ProjectNotFoundWrapper>
-              <p>
-                <FormattedMessage {...messages.noProjectFoundHere} />
-              </p>
-              <Button
-                linkTo="/projects"
-                text={<FormattedMessage {...messages.goBackToList} />}
-                icon="arrow-back"
-              />
-            </ProjectNotFoundWrapper>
-          ) : loading ? (
-            <Loading>
-              <Spinner />
-            </Loading>
-          ) : (
-            <>
-              <Header projectSlug={this.props.params.slug} />
-              <Content>{children}</Content>
-            </>
-          )}
-        </Container>
-      </>
+  const isUnauthorized = useMemo(() => {
+    if (!isApiError(project)) return false;
+
+    return project.json.errors.base[0].error === 'Unauthorized!';
+  }, [project]);
+
+  const userSignedInButUnauthorized = !isNilOrError(user) && isUnauthorized;
+  const userNotSignedInAndUnauthorized = isNilOrError(user) && isUnauthorized;
+
+  let content: JSX.Element | null = null;
+
+  if (userNotSignedInAndUnauthorized) return <ForbiddenRoute />;
+
+  if (userSignedInButUnauthorized) {
+    content = <ProjectNotVisible />;
+  } else if (loading) {
+    content = (
+      <Loading>
+        <Spinner />
+      </Loading>
+    );
+  } else if (projectNotFound) {
+    content = <ProjectNotFound />;
+  } else if (projectId && processType) {
+    content = (
+      <ContentWrapper id="e2e-project-page">
+        <ProjectHeader projectId={projectId} />
+        {processType === 'continuous' ? (
+          <>
+            <ContinuousIdeas projectId={projectId} />
+            <ContinuousSurvey projectId={projectId} />
+            <ContinuousPoll projectId={projectId} />
+            <ContinuousVolunteering projectId={projectId} />
+          </>
+        ) : (
+          <TimelineContainer projectId={projectId} />
+        )}
+        <ProjectEvents projectId={projectId} />
+      </ContentWrapper>
     );
   }
-}
 
-const Data = adopt<DataProps, InputProps & WithRouterProps>({
-  locale: <GetLocale />,
-  tenant: <GetTenant />,
-  project: ({ params, render }) => (
-    <GetProject projectSlug={params.slug}>{render}</GetProject>
-  ),
-  phases: ({ project, render }) => (
-    <GetPhases projectId={!isNilOrError(project) ? project.id : null}>
-      {render}
-    </GetPhases>
-  ),
-  events: ({ project, render }) => (
-    <GetEvents projectId={!isNilOrError(project) ? project.id : null}>
-      {render}
-    </GetEvents>
-  ),
+  const bgColor =
+    !isNilOrError(events) && events.length > 0 ? '#fff' : colors.background;
+
+  return (
+    <Container background={bgColor}>
+      {!isNilOrError(project) && <ProjectHelmet project={project} />}
+      {content}
+    </Container>
+  );
 });
 
-export default withRouter((inputProps: InputProps & WithRouterProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <ProjectsShowPage {...inputProps} {...dataProps} />}
-  </Data>
-));
+const ProjectsShowPageWrapper = memo<WithRouterProps>(
+  ({ location: { pathname }, params: { slug } }) => {
+    const project = useProject({ projectSlug: slug });
+
+    const urlSegments = pathname
+      .replace(/^\/|\/$/g, '')
+      .split('/')
+      .filter((segment) => segment !== '');
+
+    if (urlSegments.length > 3 && urlSegments[1] === 'projects') {
+      // redirect old childRoutes (e.g. /info, /process, ...) to the project index location
+      clHistory.replace(`/${urlSegments.slice(1, 3).join('/')}`);
+    } else if (slug) {
+      return <ProjectsShowPage project={project} />;
+    }
+
+    return null;
+  }
+);
+
+const ProjectsShowPageWrapperWithHoC = withRouter(ProjectsShowPageWrapper);
+
+export default ProjectsShowPageWrapperWithHoC;

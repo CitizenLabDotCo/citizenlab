@@ -10,7 +10,7 @@ exports[`<Container /> renders correclty when no destinations are allowed by the
         handleCancelBack={[Function]}
         handleCancelConfirm={[Function]}
         handleSave={[Function]}
-        mode="noDestinations"
+        mode="preferenceForm"
         validate={[Function]}
       />
     }
@@ -22,16 +22,27 @@ exports[`<Container /> renders correclty when no destinations are allowed by the
     }
     opened={true}
   >
-    <Component
-      aria-modal={true}
-      role="dialog"
-    >
-      <FormattedMessage
-        defaultMessage="No trackers are enabled on your platform"
-        id="app.components.ConsentManager.Banner.noDestinations"
-        tagName="h1"
-      />
-    </Component>
+    <PreferencesDialog
+      categoryDestinations={
+        Object {
+          "advertising": Array [],
+          "analytics": Array [
+            "google_analytics",
+          ],
+          "functional": Array [
+            "intercom",
+          ],
+        }
+      }
+      onChange={[Function]}
+      preferences={
+        Object {
+          "advertising": undefined,
+          "analytics": undefined,
+          "functional": undefined,
+        }
+      }
+    />
   </LoadableModal>
 </Fragment>
 `;

@@ -129,10 +129,10 @@ const UserNavbar = memo<Props>((props) => {
         aria-selected={currentTab === 'ideas'}
       >
         <Border aria-hidden />
-        <TabIcon name="idea2" ariaHidden />
+        <TabIcon name="idea" ariaHidden />
         {!isNilOrError(ideasCount) && (
           <FormattedMessage
-            {...messages.ideasWithCount}
+            {...messages.postsWithCount}
             values={{ ideasCount }}
           />
         )}

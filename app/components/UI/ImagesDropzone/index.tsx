@@ -232,11 +232,16 @@ class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
 
   componentDidMount() {
     this.setUrlObjects();
+    this.removeExcessImages();
   }
 
   componentDidUpdate(prevProps: Props) {
     if (prevProps.images !== this.props.images) {
       this.setUrlObjects();
+    }
+
+    if (!prevProps.images || prevProps.images.length === 0) {
+      this.removeExcessImages();
     }
 
     if (prevProps.errorMessage !== this.props.errorMessage) {
@@ -248,6 +253,25 @@ class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
       this.setState({ errorMessage });
     }
   }
+
+  removeExcessImages = () => {
+    // Logic to automatically trigger removal of the images that exceed the maxNumberOfImages treshold
+    // E.g. the maxNumberOfImages has been reduced from 5 to 1, but the server still returns 5 images and so this.props.images
+    // array will have a length of 5 instead of the new max. allowed length of 1. In this case onRemove() will be triggered
+    // for this.props.images[1] up to this.props.images[4] when this.props.images is loaded
+    if (
+      this.props.images &&
+      this.props.images.length > this.props.maxNumberOfImages
+    ) {
+      for (
+        let step = this.props.maxNumberOfImages;
+        step < this.props.images.length;
+        step += 1
+      ) {
+        this.props.onRemove(this.props.images[step]);
+      }
+    }
+  };
 
   componentWillMount() {
     forEach(this.state.urlObjects, (urlObject) =>
@@ -379,7 +403,7 @@ class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
     const objectFit = this.props.objectFit || 'cover';
 
     return (
-      <Container className={className}>
+      <Container className={className || ''}>
         <ContentWrapper>
           {(maxNumberOfImages > 1 ||
             (maxNumberOfImages === 1 && isEmpty(images))) && (
@@ -429,7 +453,7 @@ class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
 
           {images &&
             images.length > 0 &&
-            images.map((image, index) => (
+            images.slice(0, maxNumberOfImages).map((image, index) => (
               <Box
                 key={index}
                 maxWidth={maxImagePreviewWidth}

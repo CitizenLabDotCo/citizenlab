@@ -23,7 +23,9 @@ Array [
 `;
 
 exports[`<UsersDashboard /> renders correctly 1`] = `
-<Fragment>
+<ThemeProvider
+  theme={[Function]}
+>
   <dashboard__ControlBar>
     <TimeControl
       endAtMoment={"2010-01-01T04:06:07.000Z"}
@@ -31,13 +33,6 @@ exports[`<UsersDashboard /> renders correctly 1`] = `
     />
   </dashboard__ControlBar>
   <ChartFilters
-    configuration={
-      Object {
-        "showGroupFilter": true,
-        "showProjectFilter": false,
-        "showTopicFilter": false,
-      }
-    }
     groupFilterOptions={
       Array [
         Object {
@@ -56,22 +51,15 @@ exports[`<UsersDashboard /> renders correctly 1`] = `
     projectFilterOptions={null}
     topicFilterOptions={null}
   />
-  <ThemeProvider
-    theme={[Function]}
-  >
-    <dashboard__GraphsContainer>
-      <AgeChart
-        endAt="2010-01-01T04:06:07.000Z"
-      />
-      <Component
-        endAt="2010-01-01T04:06:07.000Z"
-      />
-      <WithTheme(MostActiveUsersList)
-        className="dynamicHeight"
-        endAt="2010-01-01T04:06:07.000Z"
-        infoMessage="A user gets 5 points per posted idea, 3 points per posted comment and 1 point per vote."
-      />
-    </dashboard__GraphsContainer>
-  </ThemeProvider>
-</Fragment>
+  <dashboard__GraphsContainer>
+    <Component
+      endAt="2010-01-01T04:06:07.000Z"
+    />
+    <WithTheme(MostActiveUsersList)
+      className="dynamicHeight"
+      endAt="2010-01-01T04:06:07.000Z"
+      infoMessage="The ranking is based on the number of inputs (5 points per input), comments (3 points per comment) and votes (1 point per vote) submitted by each participant."
+    />
+  </dashboard__GraphsContainer>
+</ThemeProvider>
 `;

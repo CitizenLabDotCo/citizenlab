@@ -14,7 +14,7 @@ import messages from './messages';
 import GetAdminPublications, {
   GetAdminPublicationsChildProps,
 } from 'resources/GetAdminPublications';
-import ProjectFolder from './ProjectFolder';
+import Outlet from 'components/Outlet';
 
 const AllProjectsLink = styled(Link)`
   display: block;
@@ -34,7 +34,7 @@ interface Props extends InputProps, DataProps {}
 const ProjectsSection = ({ adminPublications, projectsSectionRef }: Props) => {
   if (
     !isNilOrError(adminPublications) &&
-    !isNilOrError(adminPublications.list)
+    !isNilOrError(adminPublications.topLevel)
   ) {
     return (
       <>
@@ -44,21 +44,18 @@ const ProjectsSection = ({ adminPublications, projectsSectionRef }: Props) => {
         <AllProjectsLink to="/projects" id="projects-section">
           <FormattedMessage {...messages.allProjects} />
         </AllProjectsLink>
-        {adminPublications.list.map((adminPublication) =>
-          adminPublication.publicationType === 'project' ? (
-            <Project
-              key={adminPublication.id}
+        {adminPublications.topLevel.map((adminPublication) => (
+          <React.Fragment key={adminPublication.id}>
+            {adminPublication.publicationType === 'project' && (
+              <Project adminPublication={adminPublication} hightestTitle="h3" />
+            )}
+            <Outlet
+              id="app.containers.SiteMap.ProjectsSection.listitem"
               adminPublication={adminPublication}
               hightestTitle="h3"
             />
-          ) : (
-            <ProjectFolder
-              key={adminPublication.id}
-              adminPublication={adminPublication}
-              hightestTitle="h3"
-            />
-          )
-        )}
+          </React.Fragment>
+        ))}
       </>
     );
   }

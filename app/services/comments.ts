@@ -292,7 +292,7 @@ export async function markForDeletion(
   reason?: DeleteReason
 ) {
   if (reason && reason.reason_code !== 'other') {
-    delete reason.other_reason;
+    reason.other_reason = null;
   }
 
   const response = await request(

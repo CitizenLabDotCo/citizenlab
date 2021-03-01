@@ -1,20 +1,19 @@
 // libraries
 import React, { PureComponent } from 'react';
 import moment, { Moment } from 'moment';
-import { ThemeProvider } from 'styled-components';
 import { adopt } from 'react-adopt';
 import localize, { InjectedLocalized } from 'utils/localize';
+import { ThemeProvider } from 'styled-components';
 
 // resources
 import GetGroups, { GetGroupsChildProps } from 'resources/GetGroups';
 
 // components
-import { chartTheme, GraphsContainer, ControlBar } from '../';
-import TimeControl from '../components/TimeControl';
 import ChartFilters from '../components/ChartFilters';
+import { GraphsContainer, ControlBar, chartTheme } from '../';
+import TimeControl from '../components/TimeControl';
 import RegistrationFieldsToGraphs from './RegistrationFieldsToGraphs';
 import MostActiveUsersList from './charts/MostActiveUsersList';
-import AgeChart from './charts/AgeChart';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
@@ -35,6 +34,7 @@ interface State {
   startAtMoment?: Moment | null;
   endAtMoment: Moment | null;
   currentGroupFilter: string | undefined;
+  currentGroupFilterLabel: string | undefined;
 }
 
 interface DataProps {
@@ -57,6 +57,7 @@ export class UsersDashboard extends PureComponent<
       startAtMoment: undefined,
       endAtMoment: moment(),
       currentGroupFilter: undefined,
+      currentGroupFilterLabel: undefined,
     };
   }
 
@@ -69,7 +70,10 @@ export class UsersDashboard extends PureComponent<
 
   handleOnGroupFilter = (filter) => {
     this.props.trackFilterOnGroup({ extra: { group: filter } });
-    this.setState({ currentGroupFilter: filter.value });
+    this.setState({
+      currentGroupFilter: filter.value,
+      currentGroupFilterLabel: filter.label,
+    });
   };
 
   generateGroupFilterOptions = () => {
@@ -95,15 +99,20 @@ export class UsersDashboard extends PureComponent<
   };
 
   render() {
-    const { currentGroupFilter, endAtMoment, startAtMoment } = this.state;
+    const {
+      currentGroupFilter,
+      endAtMoment,
+      startAtMoment,
+      currentGroupFilterLabel,
+    } = this.state;
     const startAt = startAtMoment && startAtMoment.toISOString();
     const endAt = endAtMoment && endAtMoment.toISOString();
     const infoMessage = this.props.intl.formatMessage(
-      messages.top10activeUsersDescription
+      messages.mostActiveUsersRankingDescription
     );
 
     return (
-      <>
+      <ThemeProvider theme={chartTheme}>
         <ControlBar>
           <TimeControl
             startAtMoment={startAtMoment}
@@ -113,11 +122,6 @@ export class UsersDashboard extends PureComponent<
         </ControlBar>
 
         <ChartFilters
-          configuration={{
-            showProjectFilter: false,
-            showGroupFilter: true,
-            showTopicFilter: false,
-          }}
           currentProjectFilter={undefined}
           currentGroupFilter={currentGroupFilter}
           currentTopicFilter={undefined}
@@ -129,28 +133,22 @@ export class UsersDashboard extends PureComponent<
           onTopicFilter={null}
         />
 
-        <ThemeProvider theme={chartTheme}>
-          <GraphsContainer>
-            <AgeChart
-              startAt={startAt}
-              endAt={endAt}
-              currentGroupFilter={currentGroupFilter}
-            />
-            <RegistrationFieldsToGraphs
-              startAt={startAt}
-              endAt={endAt}
-              currentGroupFilter={currentGroupFilter}
-            />
-            <MostActiveUsersList
-              currentGroupFilter={currentGroupFilter}
-              startAt={startAt}
-              endAt={endAt}
-              infoMessage={infoMessage}
-              className="dynamicHeight"
-            />
-          </GraphsContainer>
-        </ThemeProvider>
-      </>
+        <GraphsContainer>
+          <RegistrationFieldsToGraphs
+            startAt={startAt}
+            endAt={endAt}
+            currentGroupFilter={currentGroupFilter}
+            currentGroupFilterLabel={currentGroupFilterLabel}
+          />
+          <MostActiveUsersList
+            currentGroupFilter={currentGroupFilter}
+            startAt={startAt}
+            endAt={endAt}
+            infoMessage={infoMessage}
+            className="dynamicHeight"
+          />
+        </GraphsContainer>
+      </ThemeProvider>
     );
   }
 }

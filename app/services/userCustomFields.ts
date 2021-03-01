@@ -2,7 +2,9 @@ import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 import { IRelationship, Multiloc } from 'typings';
 
-export type IInputType =
+export const userCustomFieldsSchemaApiEndpoint = `${API_PATH}/users/custom_fields/schema`;
+
+export type IUserCustomFieldInputType =
   | 'text'
   | 'number'
   | 'multiline_text'
@@ -18,11 +20,12 @@ export interface IUserCustomFieldData {
     key: string;
     title_multiloc: Multiloc;
     description_multiloc: Multiloc;
-    input_type: IInputType;
+    input_type: IUserCustomFieldInputType;
     required: boolean;
     code: string | null;
     enabled: boolean;
     ordering: number;
+    hidden: boolean;
     created_at: string;
     updated_at: string;
   };
@@ -31,6 +34,14 @@ export interface IUserCustomFieldData {
       data: IRelationship;
     };
   };
+}
+
+export interface IUserCustomField {
+  data: IUserCustomFieldData;
+}
+
+export interface IUserCustomFields {
+  data: IUserCustomFieldData[];
 }
 
 export interface UserCustomFieldsInfos {
@@ -44,6 +55,10 @@ export function isBuiltInField(field: IUserCustomFieldData) {
   return !!field.attributes.code;
 }
 
+export function isHiddenField(field: IUserCustomFieldData) {
+  return !!field.attributes.hidden;
+}
+
 export interface IUserCustomField {
   data: IUserCustomFieldData;
 }
@@ -52,28 +67,7 @@ export interface IUserCustomFields {
   data: IUserCustomFieldData[];
 }
 
-export interface IUserCustomFieldOptionsData {
-  id: string;
-  type: string;
-  attributes: {
-    key: string;
-    title_multiloc: Multiloc;
-    ordering: number;
-    created_at: string;
-    updated_at: string;
-  };
-  relationships: {
-    custom_field_options: {
-      data: IRelationship;
-    };
-  };
-}
-
-export interface IUserCustomFieldOptions {
-  data: IUserCustomFieldOptionsData[];
-}
-
-export function customFieldForUsersStream(
+export function userCustomFieldStream(
   customFieldId: string,
   streamParams: IStreamParams | null = null
 ) {
@@ -83,7 +77,7 @@ export function customFieldForUsersStream(
   });
 }
 
-export function customFieldsForUsersStream(
+export function userCustomFieldsStream(
   streamParams: IStreamParams | null = null
 ) {
   return streams.get<IUserCustomFields>({
@@ -96,7 +90,7 @@ export function customFieldsSchemaForUsersStream(
   streamParams: IStreamParams | null = null
 ) {
   return streams.get<any>({
-    apiEndpoint: `${API_PATH}/users/custom_fields/schema`,
+    apiEndpoint: userCustomFieldsSchemaApiEndpoint,
     ...streamParams,
   });
 }
@@ -127,44 +121,5 @@ export function deleteUserCustomField(customFieldId: string) {
   return streams.delete(
     `${API_PATH}/users/custom_fields/${customFieldId}`,
     customFieldId
-  );
-}
-
-export function userCustomFieldOptionsStream(
-  customFieldId: string,
-  streamParams: IStreamParams | null = null
-) {
-  return streams.get<IUserCustomFieldOptions>({
-    apiEndpoint: `${API_PATH}/users/custom_fields/${customFieldId}/custom_field_options`,
-    ...streamParams,
-  });
-}
-
-export function addUserCustomFieldOption(customFieldId: string, data) {
-  return streams.add<IUserCustomField>(
-    `${API_PATH}/users/custom_fields/${customFieldId}/custom_field_options`,
-    { custom_field_option: data }
-  );
-}
-
-export function updateUserCustomFieldOption(
-  customFieldId: string,
-  optionId: string,
-  object
-) {
-  return streams.update<IUserCustomFieldOptions>(
-    `${API_PATH}/users/custom_fields/${customFieldId}/custom_field_options/${optionId}`,
-    optionId,
-    { custom_field_option: object }
-  );
-}
-
-export function deleteUserCustomFieldOption(
-  customFieldId: string,
-  optionId: string
-) {
-  return streams.delete(
-    `${API_PATH}/users/custom_fields/${customFieldId}/custom_field_options/${optionId}`,
-    optionId
   );
 }

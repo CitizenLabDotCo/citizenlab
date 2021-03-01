@@ -5,6 +5,10 @@ export default defineMessages({
     id: 'app.components.Comments.invisibleTitleComments',
     defaultMessage: 'Comments',
   },
+  cancel: {
+    id: 'app.components.Comments.cancel',
+    defaultMessage: 'Cancel',
+  },
   official: {
     id: 'app.components.Comments.official',
     defaultMessage: 'Official',
@@ -37,29 +41,22 @@ export default defineMessages({
     id: 'app.containers.Comments.cancelCommentEdit',
     defaultMessage: 'Cancel',
   },
-  commentingDisabledProjectInactive: {
-    id: 'app.components.Comments.commentingDisabledProjectInactive',
+  commentingDisabledInactiveProject: {
+    id: 'app.components.Comments.commentingDisabledInactiveProject',
     defaultMessage:
-      "Commenting on this idea is not possible because '{projectName}' is currently not active.",
+      'Commenting is not possible because this project is currently not active.',
   },
-  commentingDisabledInContext: {
-    id: 'app.components.Comments.commentingDisabledInContext',
-    defaultMessage:
-      "Commenting on ideas in '{projectName}' is currently disabled.",
+  commentingDisabledProject: {
+    id: 'app.components.Comments.commentingDisabledProject',
+    defaultMessage: 'Commenting in this project is currently disabled.',
   },
-  commentingDisabledIdeaNotInCurrentPhase: {
-    id: 'app.components.Comments.commentingDisabledIdeaNotInCurrentPhase',
-    defaultMessage:
-      "Commenting on this idea is not possible since it's no longer or not yet in consideration.",
+  commentingDisabledInCurrentPhase: {
+    id: 'app.components.Comments.commentingDisabledInCurrentPhase',
+    defaultMessage: 'Commenting is not possible in the current phase.',
   },
-  commentingDisabledNotVerified: {
-    id: 'app.components.Comments.commentingDisabledNotVerified',
-    defaultMessage:
-      'Commenting on this idea requires verification of your account. {verificationLink}',
-  },
-  commentingNotPermitted: {
-    id: 'app.components.Comments.commentingNotPermitted',
-    defaultMessage: 'Commenting on this idea is currently not allowed',
+  commentingDisabledUnverified: {
+    id: 'app.components.Comments.commentingDisabledUnverified',
+    defaultMessage: '{verifyIdentityLink} to comment.',
   },
   commentingMaybeNotPermitted: {
     id: 'app.components.Comments.commentingMaybeNotPermitted',
@@ -70,6 +67,24 @@ export default defineMessages({
     id: 'app.containers.Comments.signInToComment',
     defaultMessage: 'Please {signUpLink} or {signInLink} to comment.',
   },
+  commentingInitiativeNotPermitted: {
+    id: 'app.components.Comments.commentingInitiativeNotPermitted',
+    defaultMessage: "You don't have the rights to comment.",
+  },
+  commentingInitiativeMaybeNotPermitted: {
+    id: 'app.components.Comments.commentingInitiativeMaybeNotPermitted',
+    defaultMessage:
+      'Not all users are allowed to comment. Please {signUpLink} or {signInLink} to see whether you comply.',
+  },
+  signInToCommentInitiative: {
+    id: 'app.containers.Comments.signInToCommentInitiative',
+    defaultMessage: 'Please {signUpLink} or {signInLink} to comment.',
+  },
+  signInAndVerifyToCommentInitiative: {
+    id: 'app.containers.Comments.signInAndVerifyToCommentInitiative',
+    defaultMessage:
+      'You need a verified account to comment, please {signUpLink} or {signInLink}.',
+  },
   signInLinkText: {
     id: 'app.containers.Comments.signInLinkText',
     defaultMessage: 'log in',
@@ -78,9 +93,9 @@ export default defineMessages({
     id: 'app.containers.Comments.signUpLinkText',
     defaultMessage: 'sign up',
   },
-  verificationLinkText: {
-    id: 'app.containers.Comments.verificationLinkText',
-    defaultMessage: 'Verify your account now.',
+  verifyIdentityLinkText: {
+    id: 'app.containers.Comments.verifyIdentityLinkText',
+    defaultMessage: 'Verify your identity',
   },
   adminCommentDeletionCancelButton: {
     id: 'app.containers.Comments.adminCommentDeletionCancelButton',
@@ -154,10 +169,6 @@ export default defineMessages({
   seeOriginal: {
     id: 'app.components.Comments.seeOriginal',
     defaultMessage: 'See original',
-  },
-  noComments: {
-    id: 'app.components.Comments.noComments',
-    defaultMessage: 'There are no comments yet.',
   },
   loadingMoreComments: {
     id: 'app.containers.Comments.loadingMoreComments',

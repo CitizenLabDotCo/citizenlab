@@ -6,7 +6,9 @@ import styled from 'styled-components';
 import { media, colors, fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div`
-  min-height: calc(100vh - ${(props) => props.theme.menuHeight}px - 1px);
+  min-height: calc(
+    100vh - ${(props) => props.theme.menuHeight + props.theme.footerHeight}px
+  );
   display: flex;
   flex-direction: column;
   background: ${colors.background};
@@ -20,7 +22,7 @@ const Container = styled.div`
 `;
 
 const Title = styled.h1`
-  color: ${colors.text};
+  color: ${({ theme }) => theme.colorText};
   font-size: ${fontSizes.xxxxl}px;
   line-height: 40px;
   font-weight: 500;

@@ -6,13 +6,17 @@ import AdminBadge from './AdminBadge';
 
 // style
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
+import { media, colors, fontSizes, isRtl } from 'utils/styleUtils';
 
 const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 13px;
+  margin-bottom: 2px;
+
+  ${isRtl`
+    flex-direction: row-reverse;
+  `}
 `;
 
 const Left = styled.div`
@@ -34,6 +38,7 @@ const StyledAuthor = styled(Author)`
 `;
 
 interface InputProps {
+  className?: string;
   projectId?: string | null;
   authorId: string | null;
   commentId: string;
@@ -54,22 +59,28 @@ export default class CommentHeader extends PureComponent<Props, State> {
       commentType,
       commentCreatedAt,
       moderator,
+      className,
     } = this.props;
+    const hasAuthorId = !!authorId;
 
     return (
-      <Container>
+      <Container className={className || ''}>
         <Left>
           <StyledAuthor
             authorId={authorId}
-            notALink={authorId ? false : true}
-            size="32px"
+            isLinkToProfile={hasAuthorId}
+            size={30}
             projectId={projectId}
             showModeration={moderator}
             createdAt={commentCreatedAt}
             avatarBadgeBgColor={commentType === 'child' ? '#fbfbfb' : '#fff'}
+            horizontalLayout={true}
+            color={colors.label}
+            fontSize={fontSizes.base}
+            fontWeight={400}
+            underline={true}
           />
         </Left>
-
         <Right>{moderator && <AdminBadge />}</Right>
       </Container>
     );

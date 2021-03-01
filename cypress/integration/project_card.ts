@@ -43,7 +43,7 @@ describe('Project card component', () => {
     cy.get('@projectCard').get('.e2e-project-card-time-remaining');
     cy.get('@projectCard')
       .get('.e2e-project-card-cta')
-      .contains('Post your idea');
+      .contains('Submit your idea');
   });
 
   after(() => {

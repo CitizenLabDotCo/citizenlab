@@ -21,7 +21,7 @@ import messages from './messages';
 
 // style
 import styled from 'styled-components';
-import { media, colors, fontSizes } from 'utils/styleUtils';
+import { media, colors, fontSizes, stylingConsts } from 'utils/styleUtils';
 import { lighten } from 'polished';
 
 // resources
@@ -33,10 +33,12 @@ import GetInitiativesCount, {
   GetInitiativesCountChildProps,
 } from 'resources/GetInitiativesCount';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import Outlet from 'components/Outlet';
 
 const Menu = styled.div`
+  z-index: 10;
   flex: 0 0 auto;
-  width: 260px;
+  width: 210px;
 
   @media print {
     display: none;
@@ -49,14 +51,14 @@ const Menu = styled.div`
 
 const MenuInner = styled.nav`
   flex: 0 0 auto;
-  width: 260px;
+  width: 210px;
   display: flex;
   flex-direction: column;
   align-items: center;
   position: fixed;
   top: 0;
   bottom: 0;
-  padding-top: 119px;
+  padding-top: ${stylingConsts.menuHeight + 10}px;
   background: ${colors.adminMenuBackground};
 
   ${media.smallerThan1200px`
@@ -156,6 +158,7 @@ class Sidebar extends PureComponent<
 > {
   constructor(props: Props & InjectedIntlProps & WithRouterProps & Tracks) {
     super(props);
+
     this.state = {
       navItems: [
         {
@@ -171,19 +174,6 @@ class Sidebar extends PureComponent<
             ),
         },
         {
-          id: 'moderation',
-          link: '/admin/moderation',
-          iconName: 'moderation',
-          message: 'moderation',
-          featureName: 'moderation',
-          isActive: (pathName) =>
-            pathName.startsWith(
-              `${
-                getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''
-              }/admin/moderation`
-            ),
-        },
-        {
           id: 'projects',
           link: '/admin/projects',
           iconName: 'folder',
@@ -193,6 +183,19 @@ class Sidebar extends PureComponent<
               `${
                 getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''
               }/admin/projects`
+            ),
+        },
+        {
+          id: 'processing',
+          link: '/admin/processing',
+          iconName: 'processing',
+          featureName: 'manual_tagging',
+          message: 'processing',
+          isActive: (pathName) =>
+            pathName.startsWith(
+              `${
+                getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''
+              }/admin/processing`
             ),
         },
         {
@@ -211,8 +214,8 @@ class Sidebar extends PureComponent<
         {
           id: 'ideas',
           link: '/admin/ideas',
-          iconName: 'ideas',
-          message: 'ideas',
+          iconName: 'idea2',
+          message: 'inputManager',
           isActive: (pathName) =>
             pathName.startsWith(
               `${
@@ -315,6 +318,30 @@ class Sidebar extends PureComponent<
     return prevState;
   }
 
+  handleInsertNavItem = ({
+    insertAfterNavItemId,
+    navItemConfiguration,
+  }: {
+    insertAfterNavItemId?: string;
+    navItemConfiguration: NavItem;
+  }) => {
+    this.setState(({ navItems }) => {
+      const insertIndex =
+        navItems.findIndex((navItem) => navItem.id === insertAfterNavItemId) +
+        1;
+      if (insertIndex > 0) {
+        return {
+          navItems: [
+            ...navItems.slice(0, insertIndex),
+            navItemConfiguration,
+            ...navItems.slice(insertIndex),
+          ],
+        };
+      }
+      return { navItems: [...navItems, navItemConfiguration] };
+    });
+  };
+
   render() {
     const { formatMessage } = this.props.intl;
     const { navItems } = this.state;
@@ -325,6 +352,10 @@ class Sidebar extends PureComponent<
 
     return (
       <Menu>
+        <Outlet
+          id="app.containers.Admin.sideBar.navItems"
+          onData={this.handleInsertNavItem}
+        />
         <MenuInner id="sidebar">
           {navItems.map((route) => {
             if (route.id === 'emails') {

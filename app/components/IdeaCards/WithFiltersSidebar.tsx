@@ -8,7 +8,7 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // components
-import IdeaCard from 'components/IdeaCard';
+import IdeaCard from 'components/IdeaCard/Compact';
 import IdeasMap from 'components/IdeasMap';
 import { Icon, Spinner } from 'cl2-component-library';
 import SortFilterDropdown from './SortFilterDropdown';
@@ -40,8 +40,6 @@ import messages from './messages';
 import { InjectedIntlProps } from 'react-intl';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 
-// utils
-
 // style
 import styled, { withTheme } from 'styled-components';
 import {
@@ -50,19 +48,24 @@ import {
   fontSizes,
   viewportWidths,
   defaultCardStyle,
+  isRtl,
 } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { rgba } from 'polished';
 
 // typings
-import { ParticipationMethod } from 'services/participationContexts';
+import {
+  IdeaDefaultSortMethod,
+  ParticipationMethod,
+  ideaDefaultSortMethodFallback,
+} from 'services/participationContexts';
 import { IParticipationContextType } from 'typings';
 
 const gapWidth = 35;
 
 const Container = styled.div`
   width: 100%;
-  max-width: 1345px;
+  max-width: 1445px;
   margin-left: auto;
   margin-right: auto;
   display: flex;
@@ -104,6 +107,10 @@ const AboveContent = styled.div<{ filterColumnWidth: number }>`
   justify-content: space-between;
   margin-right: ${({ filterColumnWidth }) => filterColumnWidth + gapWidth}px;
   margin-bottom: 22px;
+
+  ${isRtl`
+    flex-direction: row-reverse;
+  `}
 
   ${media.smallerThanMaxTablet`
     margin-right: 0;
@@ -186,9 +193,9 @@ const EmptyContainerInner = styled.div`
 `;
 
 const IdeaIcon = styled(Icon)`
-  flex: 0 0 48px;
-  width: 48px;
-  height: 48px;
+  flex: 0 0 30px;
+  width: 30px;
+  height: 30px;
   fill: ${colors.label};
 `;
 
@@ -203,7 +210,7 @@ const EmptyMessage = styled.div`
 `;
 
 const EmptyMessageMainLine = styled.div`
-  color: ${colors.text};
+  color: ${({ theme }) => theme.colorText};
   font-size: ${fontSizes.xl}px;
   font-weight: 500;
   line-height: normal;
@@ -223,27 +230,17 @@ const EmptyMessageSubLine = styled.div`
 const IdeasList = styled.div`
   margin-left: -13px;
   margin-right: -13px;
+  margin-top: -10px;
   display: flex;
   flex-wrap: wrap;
 `;
 
 const StyledIdeaCard = styled(IdeaCard)`
   flex-grow: 0;
-  width: calc(100% * (1 / 3) - 26px);
-  margin-left: 13px;
-  margin-right: 13px;
+  width: calc(50% - 20px);
+  margin: 10px;
 
-  @media (max-width: 1440px) and (min-width: 1279px) {
-    width: calc(100% * (1 / 3) - 16px);
-    margin-left: 8px;
-    margin-right: 8px;
-  }
-
-  @media (max-width: 1279px) and (min-width: 768px) {
-    width: calc(100% * (1 / 2) - 26px);
-  }
-
-  ${media.smallerThanMinTablet`
+  ${media.smallerThan1100px`
     width: 100%;
   `};
 `;
@@ -254,9 +251,11 @@ const ContentRight = styled.div<{ filterColumnWidth: number }>`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  align-items: stretch;
+  align-self: flex-start;
   margin-left: ${gapWidth}px;
   position: relative;
+  position: sticky;
+  top: 100px;
 `;
 
 const FiltersSidebarContainer = styled.div`
@@ -325,6 +324,7 @@ const ShowMoreButton = styled(Button)``;
 
 interface InputProps extends GetIdeasInputProps {
   showViewToggle?: boolean | undefined;
+  defaultSortingMethod?: IdeaDefaultSortMethod;
   defaultView?: 'card' | 'map' | null | undefined;
   participationMethod?: ParticipationMethod | null;
   participationContextId?: string | null;
@@ -517,8 +517,6 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
   };
 
   filterMessage = (<FormattedMessage {...messages.filter} />);
-  searchPlaceholder = this.props.intl.formatMessage(messages.searchPlaceholder);
-  searchAriaLabel = this.props.intl.formatMessage(messages.searchPlaceholder);
 
   render() {
     const {
@@ -530,6 +528,7 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
       participationMethod,
       participationContextId,
       participationContextType,
+      defaultSortingMethod,
       ideas,
       ideasFilterCounts,
       windowSize,
@@ -541,8 +540,13 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
     const hasIdeas = !isNilOrError(list) && list.length > 0;
     const showListView = selectedView === 'card';
     const showMapView = selectedView === 'map';
-    const biggerThanLargeTablet =
-      windowSize && windowSize >= viewportWidths.largeTablet;
+    const biggerThanLargeTablet = !!(
+      windowSize && windowSize >= viewportWidths.largeTablet
+    );
+    const smallerThan1440px = !!(windowSize && windowSize <= 1440);
+    const smallerThanPhone = !!(
+      windowSize && windowSize <= viewportWidths.phone
+    );
     const filterColumnWidth = windowSize && windowSize < 1400 ? 340 : 352;
     const filtersActive =
       selectedIdeaFilters.search ||
@@ -563,7 +567,7 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
         <ScreenReaderOnly aria-live="polite">
           {ideasFilterCounts && (
             <FormattedMessage
-              {...messages.a11y_totalIdeas}
+              {...messages.a11y_totalItems}
               values={{ ideasCount: ideasFilterCounts.total }}
             />
           )}
@@ -572,6 +576,7 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
         <DesktopSearchInput
           setClearButtonRef={this.handleDesktopSearchInputClearButtonRef}
           onChange={this.handleSearchOnChange}
+          debounce={1500}
         />
         <StyledIdeasStatusFilter
           selectedStatusId={selectedIdeaFilters.idea_status}
@@ -626,13 +631,13 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
                           newIdeasFilterCounts &&
                           isNumber(newIdeasFilterCounts.total) ? (
                             <FormattedMessage
-                              {...messages.showXIdeas}
+                              {...messages.showXResults}
                               values={{
                                 ideasCount: newIdeasFilterCounts.total,
                               }}
                             />
                           ) : (
-                            <FormattedMessage {...messages.showIdeas} />
+                            <FormattedMessage {...messages.showResults} />
                           );
 
                         return (
@@ -673,11 +678,10 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
                     onClick={this.selectView}
                   />
                 )}
-
                 {!isNilOrError(ideasFilterCounts) && (
                   <IdeasCount>
                     <FormattedMessage
-                      {...messages.xIdeas}
+                      {...messages.xResults}
                       values={{ ideasCount: ideasFilterCounts.total }}
                     />
                   </IdeasCount>
@@ -689,6 +693,7 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
               {!showMapView && (
                 <AboveContentRight>
                   <SortFilterDropdown
+                    defaultSortingMethod={defaultSortingMethod || null}
                     onChange={this.handleSortOnChange}
                     alignment="right"
                   />
@@ -713,6 +718,14 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
                         participationMethod={participationMethod}
                         participationContextId={participationContextId}
                         participationContextType={participationContextType}
+                        hideImage={biggerThanLargeTablet && smallerThan1440px}
+                        hideImagePlaceholder={smallerThan1440px}
+                        hideIdeaStatus={
+                          !!(
+                            (biggerThanLargeTablet && smallerThan1440px) ||
+                            smallerThanPhone
+                          )
+                        }
                       />
                     ))}
                   </IdeasList>
@@ -743,10 +756,10 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
                       <IdeaIcon name="idea" ariaHidden />
                       <EmptyMessage>
                         <EmptyMessageMainLine>
-                          <FormattedMessage {...messages.noFilteredIdeas} />
+                          <FormattedMessage {...messages.noFilteredResults} />
                         </EmptyMessageMainLine>
                         <EmptyMessageSubLine>
-                          <FormattedMessage {...messages.tryOtherFilter} />
+                          <FormattedMessage {...messages.tryDifferentFilters} />
                         </EmptyMessageSubLine>
                       </EmptyMessage>
                     </EmptyContainerInner>
@@ -780,7 +793,13 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
 const Data = adopt<DataProps, InputProps>({
   windowSize: <GetWindowSize />,
   ideas: ({ render, children, ...getIdeasInputProps }) => (
-    <GetIdeas {...getIdeasInputProps} pageSize={12} sort="random">
+    <GetIdeas
+      {...getIdeasInputProps}
+      pageSize={12}
+      sort={
+        getIdeasInputProps.defaultSortingMethod || ideaDefaultSortMethodFallback
+      }
+    >
       {render}
     </GetIdeas>
   ),

@@ -26,7 +26,9 @@ import { darken } from 'polished';
 
 const Container = styled.div`
   width: 100%;
-  min-height: calc(100vh - ${(props) => props.theme.menuHeight}px - 1px);
+  min-height: calc(
+    100vh - ${(props) => props.theme.menuHeight + props.theme.footerHeight}px
+  );
   display: flex;
   justify-content: center;
   padding: 50px;
@@ -46,7 +48,9 @@ const Container = styled.div`
 const ContainerInner = styled.div`
   width: 100%;
   max-width: 1050px;
-  min-height: calc(100vh - ${(props) => props.theme.menuHeight}px - 1px);
+  min-height: calc(
+    100vh - ${(props) => props.theme.menuHeight + props.theme.footerHeight}px
+  );
   display: flex;
   flex-direction: column;
   align-items: stretch;
@@ -124,7 +128,7 @@ const ProjectTemplatePreviewPageCitizen = memo<Props & WithRouterProps>(
       } else {
         const link = (
           // tslint:disable-next-line
-          <a href="mailto:support@citizenlab.co">
+          <a href="mailto:support@citizenlab.co" target="_blank">
             <FormattedMessage {...messages.citizenlabExpert} />
           </a>
         );

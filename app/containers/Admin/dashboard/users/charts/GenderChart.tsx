@@ -2,7 +2,6 @@
 import React, { PureComponent } from 'react';
 import { Subscription, BehaviorSubject } from 'rxjs';
 import { distinctUntilChanged, switchMap } from 'rxjs/operators';
-import { map } from 'lodash-es';
 
 // utils
 import shallowCompare from 'utils/shallowCompare';
@@ -16,6 +15,7 @@ import messages from '../../messages';
 import { withTheme } from 'styled-components';
 
 // components
+import ExportMenu from '../../components/ExportMenu';
 import {
   NoDataContainer,
   GraphCardHeader,
@@ -27,7 +27,11 @@ import {
 import { PieChart, Pie, Tooltip, Cell, ResponsiveContainer } from 'recharts';
 
 // services
-import { usersByGenderStream, IUsersByGender } from 'services/stats';
+import {
+  usersByGenderStream,
+  IUsersByGender,
+  usersByGenderXlsxEndpoint,
+} from 'services/stats';
 
 type State = {
   serie: { name: string; value: number; code: string }[] | null;
@@ -40,6 +44,7 @@ interface QueryProps {
 }
 
 interface Props extends QueryProps {
+  currentGroupFilterLabel: string | undefined;
   className?: string;
 }
 
@@ -53,12 +58,14 @@ const labelColors = {
 class GenderChart extends PureComponent<Props & InjectedIntlProps, State> {
   private subscriptions: Subscription[];
   private queryProps$: BehaviorSubject<QueryProps>;
+  private currentChart: React.RefObject<any>;
 
   constructor(props: Props & InjectedIntlProps) {
     super(props);
     this.state = {
       serie: null,
     };
+    this.currentChart = React.createRef();
   }
 
   componentDidMount() {
@@ -109,23 +116,28 @@ class GenderChart extends PureComponent<Props & InjectedIntlProps, State> {
   }
 
   convertToGraphFormat = (data: IUsersByGender) => {
-    const res = map(data.series.users, (value, key) => ({
-      value,
-      name: this.props.intl.formatMessage(messages[key]),
-      code: key,
+    const res = Object.keys(labelColors).map((gender) => ({
+      value: data.series.users[gender] || 0,
+      name: this.props.intl.formatMessage(messages[gender]),
+      code: gender,
     }));
     return res.length > 0 ? res : null;
   };
 
+  formatEntry(entry) {
+    return `${entry.name} : ${entry.value}`;
+  }
+
   render() {
+    const { colorMain, animationDuration, animationBegin } = this.props[
+      'theme'
+    ];
     const {
-      colorMain,
-      chartLabelSize,
-      chartLabelColor,
-      animationDuration,
-      animationBegin,
-    } = this.props['theme'];
-    const { className } = this.props;
+      className,
+      intl: { formatMessage },
+      currentGroupFilter,
+      currentGroupFilterLabel,
+    } = this.props;
     const { serie } = this.state;
 
     return (
@@ -135,6 +147,15 @@ class GenderChart extends PureComponent<Props & InjectedIntlProps, State> {
             <GraphCardTitle>
               <FormattedMessage {...messages.usersByGenderTitle} />
             </GraphCardTitle>
+            {serie && (
+              <ExportMenu
+                name={formatMessage(messages.usersByGenderTitle)}
+                svgNode={this.currentChart}
+                xlsxEndpoint={usersByGenderXlsxEndpoint}
+                currentGroupFilterLabel={currentGroupFilterLabel}
+                currentGroupFilter={currentGroupFilter}
+              />
+            )}
           </GraphCardHeader>
           {!serie ? (
             <NoDataContainer>
@@ -143,16 +164,16 @@ class GenderChart extends PureComponent<Props & InjectedIntlProps, State> {
           ) : (
             <PieChartStyleFixesDiv>
               <ResponsiveContainer height={175} width="100%" minWidth={175}>
-                <PieChart>
+                <PieChart ref={this.currentChart}>
                   <Pie
-                    isAnimationActive={false}
+                    isAnimationActive={true}
                     animationDuration={animationDuration}
                     animationBegin={animationBegin}
                     data={serie}
                     dataKey="value"
-                    innerRadius={60}
+                    outerRadius={60}
                     fill={colorMain}
-                    label={{ fill: chartLabelColor, fontSize: chartLabelSize }}
+                    label={this.formatEntry}
                   >
                     {serie.map((entry, index) => (
                       <Cell

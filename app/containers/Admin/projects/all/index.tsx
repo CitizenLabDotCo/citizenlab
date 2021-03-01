@@ -28,6 +28,8 @@ import { PageTitle, SectionDescription } from 'components/admin/Section';
 import HasPermission from 'components/HasPermission';
 import ProjectTemplatePreviewPageAdmin from 'components/ProjectTemplatePreview/ProjectTemplatePreviewPageAdmin';
 import { Spinner } from 'cl2-component-library';
+import Outlet from 'components/Outlet';
+
 const ModeratorProjectList = React.lazy(() =>
   import('./Lists/ModeratorProjectList')
 );
@@ -50,7 +52,7 @@ const ProjectTemplatePreviewContainer = styled.div`
   }
 `;
 
-const StyledCreateProject = styled(CreateProject)`
+const CreateProjectWrapper = styled.div`
   margin-bottom: 18px;
 `;
 
@@ -195,6 +197,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
   render() {
     const { selectedProjectTemplateId } = this.state;
     const { authUser, className } = this.props;
+
     const userIsAdmin = !isNilOrError(authUser)
       ? isAdmin({ data: authUser })
       : false;
@@ -220,7 +223,13 @@ class AdminProjectsList extends PureComponent<Props, State> {
             </HasPermission>
           </SectionDescription>
 
-          {userIsAdmin && <StyledCreateProject />}
+          <CreateProjectWrapper>
+            {userIsAdmin ? (
+              <CreateProject />
+            ) : (
+              <Outlet id="app.containers.AdminPage.projects.all.createProjectNotAdmin" />
+            )}
+          </CreateProjectWrapper>
 
           <PageWrapper>
             <ListsContainer>

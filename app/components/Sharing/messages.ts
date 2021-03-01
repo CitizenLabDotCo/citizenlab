@@ -9,6 +9,10 @@ export default defineMessages({
     id: 'app.components.Sharing.shareViaMessenger',
     defaultMessage: 'Share via Messenger',
   },
+  shareViaWhatsApp: {
+    id: 'app.components.Sharing.shareViaWhatsApp',
+    defaultMessage: 'Share via WhatsApp',
+  },
   shareOnTwitter: {
     id: 'app.components.Sharing.shareOnTwitter',
     defaultMessage: 'Share on Twitter',
@@ -29,8 +33,8 @@ export default defineMessages({
     id: 'app.components.Sharing.shareThisFolder',
     defaultMessage: 'Share',
   },
-  shareIdea: {
-    id: 'app.components.Sharing.shareIdea',
-    defaultMessage: 'Share this idea',
+  share: {
+    id: 'app.components.Sharing.share',
+    defaultMessage: 'Share',
   },
 });

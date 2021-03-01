@@ -20,10 +20,12 @@ import messages from './messages';
 
 // style
 import styled from 'styled-components';
-import { fontSizes, colors, media } from 'utils/styleUtils';
+import { fontSizes, colors } from 'utils/styleUtils';
 
 const InitiativeNotFoundWrapper = styled.div`
-  height: calc(100vh - ${(props) => props.theme.menuHeight}px - 1px);
+  height: calc(
+    100vh - ${(props) => props.theme.menuHeight + props.theme.footerHeight}px
+  );
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -44,13 +46,7 @@ const StyledInitiativeShowPageTopBar = styled(InitiativeShowPageTopBar)`
   z-index: 1000;
 `;
 
-const StyledInitiativesShow = styled(InitiativesShow)`
-  margin-top: ${(props) => props.theme.mobileTopBarHeight}px;
-
-  ${media.biggerThanMaxTablet`
-    margin-top: 0px;
-  `}
-`;
+const StyledInitiativesShow = styled(InitiativesShow)``;
 
 interface InputProps {}
 

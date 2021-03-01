@@ -1,0 +1,94 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ConsentManager /> parses tenant setting and user to show active destinations in categories admin user acts properly when all disabled 1`] = `
+Object {
+  "advertising": Array [],
+  "analytics": Array [],
+  "functional": Array [],
+}
+`;
+
+exports[`<ConsentManager /> parses tenant setting and user to show active destinations in categories admin user acts properly when all enabled 1`] = `
+Object {
+  "advertising": Array [],
+  "analytics": Array [
+    "google_analytics",
+    "satismeter",
+  ],
+  "functional": Array [
+    "intercom",
+  ],
+}
+`;
+
+exports[`<ConsentManager /> parses tenant setting and user to show active destinations in categories admin user acts properly when only satismeter disabled 1`] = `
+Object {
+  "advertising": Array [],
+  "analytics": Array [
+    "google_analytics",
+  ],
+  "functional": Array [
+    "intercom",
+  ],
+}
+`;
+
+exports[`<ConsentManager /> parses tenant setting and user to show active destinations in categories super admin user acts properly when all disabled 1`] = `
+Object {
+  "advertising": Array [],
+  "analytics": Array [],
+  "functional": Array [],
+}
+`;
+
+exports[`<ConsentManager /> parses tenant setting and user to show active destinations in categories super admin user acts properly when all enabled 1`] = `
+Object {
+  "advertising": Array [],
+  "analytics": Array [
+    "google_analytics",
+  ],
+  "functional": Array [],
+}
+`;
+
+exports[`<ConsentManager /> parses tenant setting and user to show active destinations in categories unsingned user acts properly when all disabled 1`] = `
+Object {
+  "advertising": Array [],
+  "analytics": Array [],
+  "functional": Array [],
+}
+`;
+
+exports[`<ConsentManager /> parses tenant setting and user to show active destinations in categories unsingned user acts properly when all enabled 1`] = `
+Object {
+  "advertising": Array [],
+  "analytics": Array [
+    "google_analytics",
+  ],
+  "functional": Array [],
+}
+`;
+
+exports[`<ConsentManager /> sets the cookie accept accepts all when no cookie was set 1`] = `
+Object {
+  "advertising": true,
+  "analytics": true,
+  "functional": true,
+  "savedChoices": Object {
+    "google_analytics": true,
+  },
+}
+`;
+
+exports[`<ConsentManager /> sets the cookie accept sets preferences to true when previous cookie was set without overwriting false values 1`] = `
+Object {
+  "advertising": false,
+  "analytics": true,
+  "functional": true,
+  "savedChoices": Object {
+    "google_analytics": true,
+    "intercom": true,
+    "satismeter": true,
+  },
+}
+`;

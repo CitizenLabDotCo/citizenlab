@@ -5,9 +5,9 @@ import { distinctUntilChanged, switchMap, filter } from 'rxjs/operators';
 import shallowCompare from 'utils/shallowCompare';
 import { isNilOrError } from 'utils/helperUtils';
 import {
-  IPermissionData,
   phasePermissions,
-} from 'services/participationContextPermissions';
+  IPCPermissionData,
+} from 'services/actionPermissions';
 
 interface InputProps {
   phaseId?: string | null;
@@ -22,14 +22,10 @@ interface Props extends InputProps {
 }
 
 interface State {
-  permissions: IPermissionData[] | undefined | null | Error;
+  permissions: IPCPermissionData[] | undefined | null | Error;
 }
 
-export type GetPhasePermissionsChildProps =
-  | IPermissionData[]
-  | undefined
-  | null
-  | Error;
+export type GetPhasePermissionsChildProps = State['permissions'];
 
 export default class GetPhasePermissions extends React.Component<Props, State> {
   private inputProps$: BehaviorSubject<InputProps>;

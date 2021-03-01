@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import styled from 'styled-components';
 
@@ -14,11 +14,15 @@ import {
   RowButton,
   ActionsRowContainer,
 } from './StyledComponents';
-import { IconNames, StatusLabel } from 'cl2-component-library';
+import DeleteProjectButton from './DeleteProjectButton';
 import PublicationStatusLabel from './PublicationStatusLabel';
+import { IconNames, StatusLabel } from 'cl2-component-library';
+import Error from 'components/UI/Error';
 
 // resources
-import GetProjectGroups from 'resources/GetProjectGroups';
+import useProjectGroups from 'hooks/useProjectGroups';
+import { canModerateProject } from 'services/permissions/rules/projectPermissions';
+import useAuthUser from 'hooks/useAuthUser';
 
 // types
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
@@ -27,6 +31,12 @@ const StyledStatusLabel = styled(StatusLabel)`
   margin-right: 5px;
   margin-top: 4px;
   margin-bottom: 4px;
+`;
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
 `;
 
 interface Props {
@@ -39,6 +49,7 @@ interface Props {
         processing?: boolean;
       }
     | 'manage'
+    | 'delete'
   )[];
   hidePublicationStatusLabel?: boolean;
   className?: string;
@@ -50,6 +61,14 @@ export default ({
   hidePublicationStatusLabel,
   className,
 }: Props) => {
+  const [isBeingDeleted, setIsBeingDeleted] = useState<boolean>(false);
+  const [deletionError, setDeletionError] = useState<string>('');
+  const authUser = useAuthUser();
+
+  const projectGroups = useProjectGroups({
+    projectId: publication.publicationId,
+  });
+
   const ManageButton = (
     <RowButton
       className={`
@@ -60,84 +79,98 @@ export default ({
       icon="edit"
       type="button"
       key="manage"
+      disabled={
+        isBeingDeleted ||
+        (!isNilOrError(authUser) &&
+          !canModerateProject(publication.publicationId, { data: authUser }))
+      }
     >
       <FormattedMessage {...messages.editButtonLabel} />
     </RowButton>
   );
   const publicationStatus = publication.attributes.publication_status;
 
+  const DeleteButton = (
+    <DeleteProjectButton
+      publication={publication}
+      setDeleteIsProcessing={setIsBeingDeleted}
+      setDeletionError={setDeletionError}
+      processing={isBeingDeleted}
+      key="delete"
+    />
+  );
+
+  const renderRowButton = (action) => (
+    <RowButton
+      key={action.icon}
+      type="button"
+      className={[
+        'e2e-admin-edit-publication',
+        publication.attributes.publication_title_multiloc?.['en-GB'],
+      ]
+        .filter((item) => item)
+        .join(' ')}
+      onClick={action.handler(publication.publicationId)}
+      buttonStyle="secondary"
+      icon={action.icon}
+      processing={action.processing}
+      disabled={isBeingDeleted}
+    >
+      {action.buttonContent}
+    </RowButton>
+  );
+
   return (
-    <RowContent className={`e2e-admin-projects-list-item ${className}`}>
-      <RowContentInner className="expand primary">
-        <RowTitle value={publication.attributes.publication_title_multiloc} />
-        {publication.attributes?.publication_visible_to === 'groups' && (
-          <GetProjectGroups projectId={publication.publicationId}>
-            {(projectGroups) => {
-              if (!isNilOrError(projectGroups)) {
-                return (
-                  <StyledStatusLabel
-                    text={
-                      projectGroups.length > 0 ? (
-                        <FormattedMessage
-                          {...messages.xGroupsHaveAccess}
-                          values={{ groupCount: projectGroups.length }}
-                        />
-                      ) : (
-                        <FormattedMessage {...messages.onlyAdminsCanView} />
-                      )
-                    }
-                    backgroundColor="clBlue"
-                    icon="lock"
-                  />
-                );
-              }
-
-              return null;
-            }}
-          </GetProjectGroups>
-        )}
-        {publication.attributes?.publication_visible_to === 'admins' && (
-          <StyledStatusLabel
-            text={<FormattedMessage {...messages.onlyAdminsCanView} />}
-            backgroundColor="clBlue"
-            icon="lock"
-          />
-        )}
-
-        {!hidePublicationStatusLabel && (
-          <PublicationStatusLabel publicationStatus={publicationStatus} />
-        )}
-      </RowContentInner>
-      {actions ? (
-        <ActionsRowContainer>
-          {actions.map((action) =>
-            action === 'manage' ? (
-              ManageButton
-            ) : (
-              <RowButton
-                key={action.icon}
-                type="button"
-                className={`
-                e2e-admin-edit-publication
-                ${
-                  publication.attributes.publication_title_multiloc?.[
-                    'en-GB'
-                  ] || ''
+    <Container className={className}>
+      <RowContent className="e2e-admin-projects-list-item">
+        <RowContentInner className="expand primary">
+          <RowTitle value={publication.attributes.publication_title_multiloc} />
+          {publication.attributes?.publication_visible_to === 'groups' &&
+            !isNilOrError(projectGroups) && (
+              <StyledStatusLabel
+                text={
+                  projectGroups.length > 0 ? (
+                    <FormattedMessage
+                      {...messages.xGroupsHaveAccess}
+                      values={{ groupCount: projectGroups.length }}
+                    />
+                  ) : (
+                    <FormattedMessage {...messages.onlyAdminsCanView} />
+                  )
                 }
-              `}
-                onClick={action.handler(publication.publicationId)}
-                buttonStyle="secondary"
-                icon={action.icon}
-                processing={action.processing}
-              >
-                {action.buttonContent}
-              </RowButton>
-            )
+                backgroundColor="clBlue"
+                icon="lock"
+              />
+            )}
+          {publication.attributes?.publication_visible_to === 'admins' && (
+            <StyledStatusLabel
+              text={<FormattedMessage {...messages.onlyAdminsCanView} />}
+              backgroundColor="clBlue"
+              icon="lock"
+            />
           )}
-        </ActionsRowContainer>
-      ) : (
-        ManageButton
-      )}
-    </RowContent>
+
+          {!hidePublicationStatusLabel && (
+            <PublicationStatusLabel publicationStatus={publicationStatus} />
+          )}
+        </RowContentInner>
+        {actions ? (
+          <ActionsRowContainer>
+            {actions.map((action) => {
+              if (action === 'delete') {
+                return DeleteButton;
+              } else if (action === 'manage') {
+                return ManageButton;
+              } else {
+                return renderRowButton(action);
+              }
+            })}
+          </ActionsRowContainer>
+        ) : (
+          ManageButton
+        )}
+      </RowContent>
+      {deletionError && <Error text={deletionError} />}
+    </Container>
   );
 };

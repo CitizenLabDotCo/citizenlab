@@ -14,13 +14,13 @@ describe('when logged out', () => {
   it('shows the home page link with correct href', () => {
     cy.get('#e2e-home-page-link')
       .should('have.attr', 'href')
-      .and('include', '/en-GB/');
+      .and('include', '/en/');
   });
 
   it('shows the link to the initiatives overview page with correct href', () => {
     cy.get('#e2e-initiative-other-link')
       .should('have.attr', 'href')
-      .and('include', '/en-GB/initiatives');
+      .and('include', '/en/initiatives');
   });
 
   it('shows the initiative title', () => {
@@ -29,7 +29,7 @@ describe('when logged out', () => {
 
   it('shows a link to author profile', () => {
     cy.get('#e2e-initiative-posted-by .e2e-author-link').click();
-    cy.location('pathname').should('eq', '/en-GB/profile/casey-luettgen');
+    cy.location('pathname').should('eq', '/en/profile/casey-luettgen');
   });
 
   it('shows the initiative body', () => {
@@ -50,10 +50,6 @@ describe('when logged out', () => {
 
     // Get child comment
     cy.get('#e2e-parent-and-childcomments').find('.e2e-childcomment');
-  });
-
-  it('shows the initiative content footer', () => {
-    cy.get('#e2e-initiative-content-footer');
   });
 });
 

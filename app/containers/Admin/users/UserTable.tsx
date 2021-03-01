@@ -12,10 +12,6 @@ import UserTableRow from './UserTableRow';
 // Services
 import { IUserData, IRole, updateUser } from 'services/users';
 
-// Utils
-import { API_PATH } from 'containers/App/constants';
-import streams from 'utils/streams';
-
 // Resources
 import { GetUsersChildProps, SortAttribute } from 'resources/GetUsers';
 import { GetAuthUserChildProps } from 'resources/GetAuthUser';
@@ -114,14 +110,7 @@ class UsersTable extends PureComponent<Props & Tracks, State> {
         newRoles = [...get(user, 'attributes.roles', []), { type: 'admin' }];
       }
 
-      updateUser(user.id, { roles: newRoles }).then(() => {
-        setTimeout(() => {
-          streams.fetchAllWith({
-            dataId: [user.id],
-            apiEndpoint: [`${API_PATH}/groups`, `${API_PATH}/users`],
-          });
-        }, 2000);
-      });
+      updateUser(user.id, { roles: newRoles });
     }
   };
 

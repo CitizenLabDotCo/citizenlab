@@ -89,7 +89,8 @@ interface State {
 
 class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
   static titleMinLength = 10;
-  static bodyMinLength = process.env.NODE_ENV === 'development' ? 10 : 500;
+  static titleMaxLength = 72;
+  static bodyMinLength = process.env.NODE_ENV === 'development' ? 10 : 30;
   static requiredFields = ['title_multiloc', 'body_multiloc', 'topic_ids'];
 
   titleInputElement: HTMLInputElement | null;
@@ -159,15 +160,23 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
       const title = title_multiloc
         ? title_multiloc[this.props.locale]
         : undefined;
+
       if (
         title &&
-        title.length < InitiativeForm.titleMinLength &&
-        title.length > 0
+        title.length > 0 &&
+        title.length < InitiativeForm.titleMinLength
       ) {
-        return { message: messages.titleLengthError };
+        return { message: messages.titleMinLengthError };
+      } else if (
+        title &&
+        title.length > 0 &&
+        title.length > InitiativeForm.titleMaxLength
+      ) {
+        return { message: messages.titleMaxLengthError };
       } else if (!title || title === '') {
         return { message: messages.titleEmptyError };
       }
+
       return undefined;
     },
     body_multiloc: () => {
@@ -178,7 +187,7 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
         stripHtmlTags(body).length < InitiativeForm.bodyMinLength &&
         body.length > 0
       ) {
-        return { message: messages.descriptionLengthError };
+        return { message: messages.descriptionBodyLengthError };
       } else if (!body || body === '') {
         return { message: messages.descriptionEmptyError };
       }
@@ -220,6 +229,7 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
 
   handleOnPublish = () => {
     const { errors, touched } = this.state;
+
     if (Object.values(errors).every((val) => val === undefined)) {
       this.props.onPublish();
     } else {
@@ -233,6 +243,7 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
           () => undefined
         )();
       });
+
       this.setState({ touched: newTouched, errors: newErrors });
 
       if (newErrors.title_multiloc && this.titleInputElement) {
@@ -343,6 +354,8 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
 
     const { touched, errors } = this.state;
 
+    const mapsLoaded = window.googleMaps;
+
     if (!isNilOrError(topics)) {
       const availableTopics = topics.filter(
         (topic) => !isNilOrError(topic)
@@ -356,7 +369,7 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
             <SectionField id="e2e-initiative-form-title-section">
               <FormLabel
                 labelMessage={messages.titleLabel}
-                subtextMessage={messages.titleLabelSubtext}
+                subtextMessage={messages.titleLabelSubtext2}
               >
                 <Input
                   type="text"
@@ -367,9 +380,13 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
                   onBlur={this.onBlur('title_multiloc')}
                   autocomplete="off"
                   setRef={this.handleTitleInputSetRef}
+                  maxCharCount={72}
                 />
                 {touched.title_multiloc && errors.title_multiloc ? (
-                  <Error message={errors.title_multiloc.message} />
+                  <Error
+                    id="e2e-proposal-title-error"
+                    text={formatMessage(errors.title_multiloc.message)}
+                  />
                 ) : (
                   apiErrors &&
                   apiErrors.title_multiloc && (
@@ -397,7 +414,7 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
                 setRef={this.handleDescriptionSetRef}
               />
               {touched.body_multiloc && errors.body_multiloc ? (
-                <Error message={errors.body_multiloc.message} />
+                <Error text={formatMessage(errors.body_multiloc.message)} />
               ) : (
                 apiErrors &&
                 apiErrors.body_multiloc && (
@@ -424,27 +441,29 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
                 availableTopics={availableTopics}
               />
               {touched.topic_ids && errors.topic_ids ? (
-                <Error message={errors.topic_ids.message} />
+                <Error text={formatMessage(errors.topic_ids.message)} />
               ) : (
                 apiErrors &&
                 apiErrors.topic_ids && <Error apiErrors={apiErrors.topic_ids} />
               )}
             </SectionField>
-            <SectionField>
-              <FormLabel
-                labelMessage={messages.locationLabel}
-                subtextMessage={messages.locationLabelSubtext}
-                optional
-              >
-                <LocationInput
-                  className="e2e-initiative-location-input"
-                  value={position || ''}
-                  onChange={onChangePosition}
-                  onBlur={this.onBlur('position')}
-                  placeholder={formatMessage(messages.locationPlaceholder)}
-                />
-              </FormLabel>
-            </SectionField>
+            {mapsLoaded && (
+              <SectionField>
+                <FormLabel
+                  labelMessage={messages.locationLabel}
+                  subtextMessage={messages.locationLabelSubtext}
+                  optional
+                >
+                  <LocationInput
+                    className="e2e-initiative-location-input"
+                    value={position || ''}
+                    onChange={onChangePosition}
+                    onBlur={this.onBlur('position')}
+                    placeholder={formatMessage(messages.locationPlaceholder)}
+                  />
+                </FormLabel>
+              </SectionField>
+            )}
           </StyledFormSection>
           <StyledFormSection>
             <FormSectionTitle message={messages.formAttachmentsSectionTitle} />
@@ -485,7 +504,7 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
                 onRemove={this.removeImage}
               />
               {touched.image && errors.image && (
-                <Error message={errors.image.message} />
+                <Error text={formatMessage(errors.image.message)} />
               )}
             </SectionField>
             <SectionField>

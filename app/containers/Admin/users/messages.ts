@@ -119,9 +119,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.Users.GroupCreation.step1CreateButtonSmart',
     defaultMessage: 'Create a smart group',
   },
-  step1ReadMore: {
-    id: 'app.containers.AdminPage.Users.GroupCreation.step1ReadMore',
-    defaultMessage: 'Read More about it',
+  step1LearnMoreGroups: {
+    id: 'app.containers.AdminPage.Users.GroupCreation.step1LearnMoreGroups',
+    defaultMessage: 'Learn more about groups',
   },
   readMoreLink: {
     id: 'app.containers.AdminPage.Users.GroupCreation.readMoreLink',
@@ -136,18 +136,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.Users.GroupCreation.modalHeaderManual',
     defaultMessage: 'Define a group name',
   },
-  modalHeaderRules: {
-    id: 'app.containers.AdminPage.Users.GroupCreation.modalHeaderRules',
-    defaultMessage: 'Define your smart group settings',
-  },
   fieldGroupName: {
     id: 'app.containers.AdminPage.Users.GroupCreation.fieldGroupName',
     defaultMessage: 'Name of the group',
-  },
-  rulesExplanation: {
-    id: 'app.containers.AdminPage.Users.GroupCreation.rulesExplanation',
-    defaultMessage:
-      'Users matching all of the following conditions will be automatically added to the group:',
   },
   select: {
     id: 'app.containers.AdminPage.Users.GroupsPanel.select',
@@ -195,14 +186,5 @@ export default defineMessages({
   exportSelectedUsers: {
     id: 'app.containers.AdminPage.Users.UsersGroup.exportSelectedUsers',
     defaultMessage: 'Export selected users',
-  },
-  rulesError: {
-    id: 'app.containers.AdminPage.Users.UsersGroup.rulesError',
-    defaultMessage: 'Some conditions are incomplete',
-  },
-  verificationDisabled: {
-    id: 'app.containers.AdminPage.Users.UsersGroup.verificationDisabled',
-    defaultMessage:
-      'Verification is disabled for your platform, remove the verification rule or contact support.',
   },
 });

@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { memo } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
 import clHistory from 'utils/cl-router/history';
@@ -10,14 +10,18 @@ import { IParticipationContextType } from 'typings';
 // services
 import {
   getIdeaPostingRules,
-  DisabledReasons,
-} from 'services/ideaPostingRules';
+  IIdeaPostingDisabledReason,
+} from 'services/actionTakingRules';
+import { getInputTerm } from 'services/participationContexts';
+
+// resources
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
+import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // components
-import Button, { ButtonContainerProps } from 'components/UI/Button';
+import Button, { Props as ButtonProps } from 'components/UI/Button';
 import Tippy from '@tippyjs/react';
 import { Icon } from 'cl2-component-library';
 
@@ -25,6 +29,7 @@ import { Icon } from 'cl2-component-library';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
+import { getInputTermMessage } from 'utils/i18n';
 
 // utils
 import { openSignUpInModal } from 'components/SignUpIn/events';
@@ -63,7 +68,7 @@ const TooltipContentIcon = styled(Icon)`
 
 const TooltipContentText = styled.div`
   flex: 1 1 auto;
-  color: ${colors.text};
+  color: ${({ theme }) => theme.colorText};
   font-size: ${fontSizes.base}px;
   line-height: normal;
   font-weight: 400;
@@ -101,197 +106,159 @@ const TooltipContentText = styled.div`
 interface DataProps {
   project: GetProjectChildProps;
   phase: GetPhaseChildProps;
+  phases: GetPhasesChildProps;
   authUser: GetAuthUserChildProps;
 }
 
-interface InputProps extends Omit<ButtonContainerProps, 'onClick'> {
-  projectId?: string | undefined | null;
+interface InputProps extends Omit<ButtonProps, 'onClick'> {
+  id?: string;
+  projectId: string;
   phaseId?: string | undefined | null;
   latLng?: LatLng | null;
   inMap?: boolean;
   className?: string;
-  participationContextType: IParticipationContextType | null;
+  participationContextType: IParticipationContextType;
 }
 
 interface Props extends InputProps, DataProps {}
 
-interface State {}
-
-class IdeaButton extends PureComponent<Props & InjectedIntlProps, State> {
-  locationRef = window.location.href;
-
-  disabledMessages: {
-    [key in DisabledReasons]: ReactIntl.FormattedMessage.MessageDescriptor;
-  } = {
-    notPermitted: messages.postingNotPermitted,
-    maybeNotPermitted: messages.postingMaybeNotPermitted,
-    postingDisabled: messages.postingHereImpossible,
-    projectInactive: messages.postingProjectInactive,
-    notActivePhase: messages.postingNotActivePhase,
-    futureEnabled: messages.postingHereImpossible,
-    notVerified: messages.postingNotVerified,
-  };
-
-  redirectToIdeaForm = () => {
-    const { project, latLng } = this.props;
-
-    if (!isNilOrError(project)) {
-      trackEventByName(tracks.redirectedToIdeaFrom);
-
-      clHistory.push({
-        pathname: `/projects/${project.attributes.slug}/ideas/new`,
-        search: latLng
-          ? stringify(
-              { lat: latLng.lat, lng: latLng.lng },
-              { addQueryPrefix: true }
-            )
-          : undefined,
-      });
-    }
-  };
-
-  onClick = (event: React.FormEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-
-    trackEventByName(tracks.postYourIdeaButtonClicked);
-
-    const {
-      project,
-      authUser,
-      participationContextType,
-      phaseId,
-      projectId,
-    } = this.props;
-    const pcType = participationContextType;
-    const pcId = pcType === 'phase' ? phaseId : projectId;
-    const postingDisabledReason = !isNilOrError(project)
-      ? project.attributes.action_descriptor.posting.disabled_reason
-      : null;
-
-    // if not logged in
-    if (isNilOrError(authUser) && !isNilOrError(project)) {
-      this.signUp();
-    }
-
-    // if logged in but not verified and verification required
-    if (
-      !isNilOrError(authUser) &&
-      postingDisabledReason === 'not_verified' &&
-      pcType &&
-      pcId
-    ) {
-      this.verify();
-    }
-
-    // if logegd in and posting allowed
-    if (
-      !isNilOrError(authUser) &&
-      !isNilOrError(project) &&
-      !postingDisabledReason
-    ) {
-      this.redirectToIdeaForm();
-    }
-  };
-
-  signIn = (event?: React.MouseEvent) => {
-    this.signUpIn('signin')(event);
-  };
-
-  signUp = (event?: React.MouseEvent) => {
-    this.signUpIn('signup')(event);
-  };
-
-  signUpIn = (flow: 'signup' | 'signin') => (event?: React.MouseEvent) => {
-    event?.preventDefault();
-
-    const {
-      project,
-      authUser,
-      participationContextType,
-      phaseId,
-      projectId,
-    } = this.props;
-    const pcType = participationContextType;
-    const pcId = pcType === 'phase' ? phaseId : projectId;
-    const postingDisabledReason = !isNilOrError(project)
-      ? project.attributes.action_descriptor.posting.disabled_reason
-      : null;
-
-    if (isNilOrError(authUser) && !isNilOrError(project)) {
-      trackEventByName(tracks.signUpInModalOpened);
-      openSignUpInModal({
-        flow,
-        verification: postingDisabledReason === 'not_verified',
-        verificationContext: !!(
-          postingDisabledReason === 'not_verified' &&
-          pcId &&
-          pcType
-        )
-          ? {
-              action: 'posting',
-              id: pcId,
-              type: pcType,
-            }
-          : undefined,
-        action: () => this.redirectToIdeaForm(),
-      });
-    }
-  };
-
-  verify = (event?: React.MouseEvent) => {
-    event?.preventDefault();
-
-    const { participationContextType, projectId, phaseId } = this.props;
-    const pcType = participationContextType;
-    const pcId = pcType === 'phase' ? phaseId : projectId;
-
-    if (pcId && pcType) {
-      trackEventByName(tracks.verificationModalOpened);
-      openVerificationModal({
-        context: {
-          action: 'posting',
-          id: pcId,
-          type: pcType,
-        },
-      });
-    }
-  };
-
-  render() {
-    const {
+const IdeaButton = memo<Props & InjectedIntlProps>(
+  ({
+    id,
+    project,
+    phase,
+    phases,
+    authUser,
+    participationContextType,
+    phaseId,
+    projectId,
+    inMap,
+    className,
+    latLng,
+    intl: { formatMessage },
+    ...buttonContainerProps
+  }) => {
+    const disabledMessages: {
+      [key in IIdeaPostingDisabledReason]: ReactIntl.FormattedMessage.MessageDescriptor;
+    } = {
+      notPermitted: messages.postingNoPermission,
+      postingDisabled: messages.postingDisabled,
+      projectInactive: messages.postingInactive,
+      futureEnabled: messages.postingNotYetPossible,
+      notActivePhase: messages.postingInNonActivePhases,
+      maybeNotPermitted: messages.postingMayNotBePermitted,
+    };
+    const { show, enabled, disabledReason, action } = getIdeaPostingRules({
       project,
       phase,
       authUser,
-      inMap,
-      className,
-      intl: { formatMessage },
-    } = this.props;
-    const { show, enabled } = getIdeaPostingRules({ project, phase, authUser });
-    let { disabledReason } = getIdeaPostingRules({ project, phase, authUser });
+    });
+
+    const onClick = (event: React.FormEvent<HTMLButtonElement>) => {
+      event.preventDefault();
+
+      trackEventByName(tracks.postYourIdeaButtonClicked);
+
+      // if not logged in
+      if (action === 'sign_in_up' || 'sign_in_up_and_verify') {
+        signUp();
+      }
+
+      // if logged in but not verified and verification required
+      if (action === 'verify') {
+        verify();
+      }
+
+      // if logegd in and posting allowed
+      if (enabled === true) {
+        redirectToIdeaForm();
+      }
+    };
+
+    const redirectToIdeaForm = () => {
+      if (!isNilOrError(project)) {
+        trackEventByName(tracks.redirectedToIdeaFrom);
+
+        clHistory.push({
+          pathname: `/projects/${project.attributes.slug}/ideas/new`,
+          search: latLng
+            ? stringify(
+                { lat: latLng.lat, lng: latLng.lng },
+                { addQueryPrefix: true }
+              )
+            : undefined,
+        });
+      }
+    };
+
+    const verify = (event?: React.MouseEvent) => {
+      event?.preventDefault();
+
+      const pcType = participationContextType;
+      const pcId = pcType === 'phase' ? phaseId : projectId;
+
+      if (pcId && pcType) {
+        trackEventByName(tracks.verificationModalOpened);
+        openVerificationModal({
+          context: {
+            action: 'posting_idea',
+            id: pcId,
+            type: pcType,
+          },
+        });
+      }
+    };
+
+    const signIn = (event?: React.MouseEvent) => {
+      signUpIn('signin')(event);
+    };
+
+    const signUp = (event?: React.MouseEvent) => {
+      signUpIn('signup')(event);
+    };
+
+    const signUpIn = (flow: 'signup' | 'signin') => (
+      event?: React.MouseEvent
+    ) => {
+      event?.preventDefault();
+
+      const pcType = participationContextType;
+      const pcId = pcType === 'phase' ? phaseId : projectId;
+
+      const shouldVerify = action === 'sign_in_up_and_verify';
+
+      if (isNilOrError(authUser) && !isNilOrError(project)) {
+        trackEventByName(tracks.signUpInModalOpened);
+        openSignUpInModal({
+          flow,
+          verification: shouldVerify,
+          verificationContext: !!(shouldVerify && pcId && pcType)
+            ? {
+                action: 'posting_idea',
+                id: pcId,
+                type: pcType,
+              }
+            : undefined,
+          action: () => redirectToIdeaForm(),
+        });
+      }
+    };
 
     const verificationLink = (
-      <a href="" role="button" onClick={this.verify}>
+      <button onClick={verify}>
         {formatMessage(messages.verificationLinkText)}
-      </a>
+      </button>
     );
 
     const signUpLink = (
-      <a href="" role="button" onClick={this.signUp}>
-        {formatMessage(messages.signUpLinkText)}
-      </a>
+      <button onClick={signUp}>{formatMessage(messages.signUpLinkText)}</button>
     );
 
     const signInLink = (
-      <a href="" role="button" onClick={this.signIn}>
-        {formatMessage(messages.signInLinkText)}
-      </a>
+      <button onClick={signIn}>{formatMessage(messages.signInLinkText)}</button>
     );
 
     if (show) {
-      const isSignedIn = !isNilOrError(authUser);
-      const isButtonDisabled = isSignedIn
-        ? !!disabledReason
-        : !!disabledReason && disabledReason !== 'notVerified';
       const tippyContent =
         !enabled && !!disabledReason ? (
           <TooltipContent
@@ -302,7 +269,7 @@ class IdeaButton extends PureComponent<Props & InjectedIntlProps, State> {
             <TooltipContentIcon name="lock-outlined" ariaHidden />
             <TooltipContentText>
               <FormattedMessage
-                {...this.disabledMessages[disabledReason]}
+                {...disabledMessages[disabledReason]}
                 values={{ verificationLink, signUpLink, signInLink }}
               />
             </TooltipContentText>
@@ -310,10 +277,6 @@ class IdeaButton extends PureComponent<Props & InjectedIntlProps, State> {
         ) : null;
 
       if (inMap && !enabled && !!disabledReason) {
-        if (!authUser && disabledReason === 'notVerified') {
-          disabledReason = 'maybeNotPermitted';
-        }
-
         return (
           <TooltipContent
             id="tooltip-content"
@@ -323,7 +286,7 @@ class IdeaButton extends PureComponent<Props & InjectedIntlProps, State> {
             <TooltipContentIcon name="lock-outlined" ariaHidden />
             <TooltipContentText>
               <FormattedMessage
-                {...this.disabledMessages[disabledReason]}
+                {...disabledMessages[disabledReason]}
                 values={{ verificationLink, signUpLink, signInLink }}
               />
             </TooltipContentText>
@@ -331,45 +294,65 @@ class IdeaButton extends PureComponent<Props & InjectedIntlProps, State> {
         );
       }
 
-      return (
-        <Container className={className || ''}>
-          <Tippy
-            disabled={!isButtonDisabled}
-            interactive={true}
-            placement="bottom"
-            content={tippyContent || <></>}
-            theme="light"
-            hideOnClick={false}
-          >
-            <ButtonWrapper
-              tabIndex={isButtonDisabled ? 0 : -1}
-              className={`e2e-idea-button ${
-                isButtonDisabled ? 'disabled' : ''
-              } ${disabledReason ? disabledReason : ''}`}
+      if (!isNilOrError(project)) {
+        const inputTerm = getInputTerm(
+          project.attributes.process_type,
+          project,
+          phases
+        );
+
+        return (
+          <Container id={id || ''} className={className || ''}>
+            <Tippy
+              disabled={!tippyContent}
+              interactive={true}
+              placement="bottom"
+              content={tippyContent || <></>}
+              theme="light"
+              hideOnClick={false}
             >
-              <Button
-                {...this.props}
-                aria-describedby="tooltip-content"
-                onClick={this.onClick}
-                disabled={isButtonDisabled}
-                ariaDisabled={false}
+              <ButtonWrapper
+                tabIndex={!enabled ? 0 : -1}
+                className={`e2e-idea-button ${!enabled ? 'disabled' : ''} ${
+                  disabledReason ? disabledReason : ''
+                }`}
               >
-                <FormattedMessage {...messages.startAnIdea} />
-              </Button>
-            </ButtonWrapper>
-          </Tippy>
-        </Container>
-      );
+                <Button
+                  {...buttonContainerProps}
+                  aria-describedby="tooltip-content"
+                  onClick={onClick}
+                  disabled={!enabled}
+                  ariaDisabled={false}
+                >
+                  <FormattedMessage
+                    {...getInputTermMessage(inputTerm, {
+                      idea: messages.submitYourIdea,
+                      option: messages.addAnOption,
+                      project: messages.addAProject,
+                      question: messages.addAQuestion,
+                      issue: messages.submitAnIssue,
+                      contribution: messages.addAContribution,
+                    })}
+                  />
+                </Button>
+              </ButtonWrapper>
+            </Tippy>
+          </Container>
+        );
+      }
     }
 
     return null;
   }
-}
+);
 
 const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
   project: ({ projectId, render }) => (
     <GetProject projectId={projectId}>{render}</GetProject>
+  ),
+  phases: ({ projectId, render }) => (
+    <GetPhases projectId={projectId}>{render}</GetPhases>
   ),
   phase: ({ phaseId, render }) => <GetPhase id={phaseId}>{render}</GetPhase>,
 });

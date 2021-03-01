@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 
 // components
-import TranslateButton from './TranslateButton';
+import TranslateButton from 'components/UI/TranslateButton';
 import FeatureFlag from 'components/FeatureFlag';
 
 // styles

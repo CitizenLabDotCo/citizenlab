@@ -75,14 +75,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.createAProjectFromATemplate',
     defaultMessage: 'Create a project from a template',
   },
-  newProjectFolder: {
-    id: 'app.containers.AdminPage.projects.all.newProjectFolder',
-    defaultMessage: 'Create a project folder',
-  },
-  projectsAndFolders: {
-    id: 'app.containers.AdminPage.projects.all.projectsAndFolders',
-    defaultMessage: 'Projects and folders',
-  },
   existingProjects: {
     id: 'app.containers.AdminPage.projects.all.existingProjects',
     defaultMessage: 'Existing projects',

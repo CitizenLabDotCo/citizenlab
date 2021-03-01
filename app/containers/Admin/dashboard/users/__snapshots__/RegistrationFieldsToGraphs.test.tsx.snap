@@ -8,14 +8,14 @@ Array [
     "value": 1,
   },
   Object {
-    "code": "no",
-    "name": "No",
-    "value": 7,
-  },
-  Object {
     "code": "retired_politician",
     "name": "Retired politician",
     "value": 2,
+  },
+  Object {
+    "code": "no",
+    "name": "No",
+    "value": 7,
   },
   Object {
     "code": "_blank",
@@ -49,6 +49,7 @@ Array [
     key="2"
     startAt="someTimeAgo"
     stream={[MockFunction]}
+    xlsxEndpoint="testendpoint/users_by_custom_field_as_xlsx/4145ae1d-da1e-4984-a043-e1269eb37cd4"
   />,
   <WrappedPieChartByCategory
     convertToGraphFormat={[Function]}
@@ -60,6 +61,7 @@ Array [
     key="3"
     startAt="someTimeAgo"
     stream={[MockFunction]}
+    xlsxEndpoint="testendpoint/users_by_custom_field_as_xlsx/a0e5a642-a67d-4f73-bb52-35af018a903c"
   />,
 ]
 `;

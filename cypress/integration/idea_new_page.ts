@@ -100,7 +100,7 @@ describe('Idea new page', () => {
     cy.wait(3000);
 
     // verify the content of the newly created idea page
-    cy.location('pathname').should('eq', `/en-GB/ideas/${ideaTitle}`);
+    cy.location('pathname').should('eq', `/en/ideas/${ideaTitle}`);
     cy.get('#e2e-idea-show');
     cy.get('#e2e-idea-show').find('#e2e-idea-title').contains(ideaTitle);
     cy.get('#e2e-idea-show')
@@ -111,7 +111,7 @@ describe('Idea new page', () => {
       .find('.e2e-idea-topic')
       .should('have.length', 1);
     cy.get('#e2e-idea-show')
-      .find('#e2e-map-toggle')
+      .find('#e2e-map-popup')
       .contains('Boulevard Anspach');
     cy.get('#e2e-idea-show')
       .find('.e2e-author-link .e2e-username')

@@ -19,7 +19,9 @@ const ProjectAndFolderCards = React.lazy(() =>
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetAppConfiguration';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetPage, { GetPageChildProps } from 'resources/GetPage';
 
@@ -36,10 +38,16 @@ import messages from './messages';
 // style
 import styled, { withTheme } from 'styled-components';
 import { media, fontSizes, colors } from 'utils/styleUtils';
+import GetInitiativesPermissions, {
+  GetInitiativesPermissionsChildProps,
+} from 'resources/GetInitiativesPermissions';
+import FeatureFlag from 'components/FeatureFlag';
 
 const Container = styled.main`
   height: 100%;
-  min-height: calc(100vh - ${(props) => props.theme.menuHeight}px - 1px);
+  min-height: calc(
+    100vh - ${(props) => props.theme.menuHeight + props.theme.footerHeight}px
+  );
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -137,9 +145,10 @@ export interface InputProps {
 
 interface DataProps {
   locale: GetLocaleChildProps;
-  tenant: GetTenantChildProps;
+  tenant: GetAppConfigurationChildProps;
   authUser: GetAuthUserChildProps;
   homepageInfoPage: GetPageChildProps;
+  postingPermission: GetInitiativesPermissionsChildProps;
 }
 
 interface Props extends InputProps, DataProps {
@@ -158,7 +167,13 @@ class LandingPage extends PureComponent<Props, State> {
   };
 
   render() {
-    const { locale, tenant, authUser, homepageInfoPage } = this.props;
+    const {
+      locale,
+      tenant,
+      authUser,
+      homepageInfoPage,
+      postingPermission,
+    } = this.props;
 
     if (
       !isNilOrError(locale) &&
@@ -171,8 +186,7 @@ class LandingPage extends PureComponent<Props, State> {
       );
       const customSectionBodyMultiloc =
         homepageInfoPage.attributes.body_multiloc;
-      const postingProposalsEnabled =
-        tenant.attributes.settings.initiatives?.posting_enabled;
+      const postingProposalsEnabled = !!postingPermission?.enabled;
 
       // tranlate header slogan into a h2 wih a fallback
       const headerSloganMultiLoc =
@@ -206,7 +220,9 @@ class LandingPage extends PureComponent<Props, State> {
                     </Suspense>
                   </SectionContainer>
                 </ProjectSection>
-                {postingProposalsEnabled && <StyledInitiativesCTABox />}
+                <FeatureFlag name="initiatives">
+                  {postingProposalsEnabled && <StyledInitiativesCTABox />}
+                </FeatureFlag>
               </StyledContentContainer>
 
               {showCustomSection && (
@@ -265,9 +281,10 @@ class LandingPage extends PureComponent<Props, State> {
 
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
-  tenant: <GetTenant />,
+  tenant: <GetAppConfiguration />,
   authUser: <GetAuthUser />,
   homepageInfoPage: <GetPage slug="homepage-info" />,
+  postingPermission: <GetInitiativesPermissions action="posting_initiative" />,
 });
 
 const LandingPageWithHoC = withTheme(LandingPage);

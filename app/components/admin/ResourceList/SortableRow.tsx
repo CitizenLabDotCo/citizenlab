@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { findDOMNode } from 'react-dom';
-import { DragSource, DropTarget } from 'react-dnd';
+import { DragSource, DropTarget } from 'react-dnd-cjs';
 import { Row } from 'components/admin/ResourceList';
 import { Icon } from 'semantic-ui-react';
 
@@ -13,7 +13,7 @@ const DragHandle = styled.div`
 `;
 
 // TODO: type checking doesn't work for this component
-interface Props {
+export interface Props {
   connectDragSource: any;
   connectDropTarget: any;
   isDragging: boolean;
@@ -22,7 +22,7 @@ interface Props {
   className?: string;
   lastItem: boolean;
   moveRow: (fromIndex: number, toIndex: number) => void;
-  dropRow: (itemId: string, toIndex, number) => void;
+  dropRow: (itemId: string, toIndex: number) => void;
 }
 
 type State = {};
@@ -34,16 +34,23 @@ class SortableRow extends React.Component<Props, State> {
       connectDragSource,
       isDragging,
       lastItem,
+      className,
+      children,
     } = this.props;
     const opacity = isDragging ? 0 : 1;
+
+    if (!children) {
+      return null;
+    }
+
     return connectDropTarget(
       connectDragSource(
-        <div style={{ opacity }} className={this.props.className}>
+        <div style={{ opacity }} className={className}>
           <Row isLastItem={lastItem}>
             <DragHandle>
               <Icon name="sort" />
             </DragHandle>
-            {this.props.children}
+            {children}
           </Row>
         </div>
       )
@@ -106,9 +113,8 @@ const dropTarget = {
     monitor.getItem().index = toIndex;
   },
   drop(props, monitor) {
-    const { id } = monitor.getItem();
-    const toIndex = props.index;
-    props.dropRow(id, toIndex);
+    const { id, index } = monitor.getItem();
+    props.dropRow(id, index);
   },
 };
 

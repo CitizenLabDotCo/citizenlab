@@ -5,8 +5,10 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // services
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
-import { updateTenant } from 'services/tenant';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetAppConfiguration';
+import { updateAppConfiguration } from 'services/appConfiguration';
 
 // components
 import {
@@ -81,7 +83,7 @@ interface InputProps {
 
 interface DataProps {
   locale: GetLocaleChildProps;
-  tenant: GetTenantChildProps;
+  tenant: GetAppConfigurationChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -92,7 +94,6 @@ interface FormValues {
   threshold_reached_message: Multiloc;
   voting_threshold: number;
   enabled: boolean;
-  posting_enabled: boolean;
 }
 
 interface State {
@@ -136,7 +137,6 @@ class InitiativesSettingsPage extends PureComponent<
             initiativesSettings.threshold_reached_message,
           voting_threshold: initiativesSettings.voting_threshold,
           enabled: initiativesSettings.enabled,
-          posting_enabled: initiativesSettings.posting_enabled,
         },
       });
     }
@@ -198,7 +198,7 @@ class InitiativesSettingsPage extends PureComponent<
       this.setState({ processing: true });
 
       try {
-        await updateTenant(tenant.id, {
+        await updateAppConfiguration({
           settings: {
             initiatives: formValues,
           },
@@ -229,25 +229,6 @@ class InitiativesSettingsPage extends PureComponent<
         formValues: {
           ...formValues,
           enabled: !enabled,
-          posting_enabled: !enabled,
-        },
-      };
-    });
-  };
-
-  handlePostingEnabledOnChange = (event: React.FormEvent) => {
-    event.preventDefault();
-
-    this.setState(({ formValues }) => {
-      const { posting_enabled, enabled } = formValues;
-
-      return {
-        formValues: {
-          ...formValues,
-          // if proposal submission is turned on,
-          // posting of new proposals is automatically as well
-          enabled: posting_enabled === false ? true : enabled,
-          posting_enabled: !posting_enabled,
         },
       };
     });
@@ -324,21 +305,6 @@ class InitiativesSettingsPage extends PureComponent<
               <StyledToggle
                 checked={formValues.enabled}
                 onChange={this.handleEnabledOnChange}
-                label={<FormattedMessage {...messages.enabledToggle} />}
-              />
-            </SectionField>
-            <SectionField>
-              <SubSectionTitleWithDescription>
-                <FormattedMessage {...messages.fieldPostingEnabled} />
-              </SubSectionTitleWithDescription>
-              <StyledSectionDescription>
-                <FormattedMessage
-                  {...messages.showProposalPostingEnabledInfo}
-                />
-              </StyledSectionDescription>
-              <StyledToggle
-                checked={formValues.posting_enabled}
-                onChange={this.handlePostingEnabledOnChange}
                 label={<FormattedMessage {...messages.enabledToggle} />}
               />
             </SectionField>
@@ -469,7 +435,7 @@ class InitiativesSettingsPage extends PureComponent<
 
 const Data = adopt<DataProps>({
   locale: <GetLocale />,
-  tenant: <GetTenant />,
+  tenant: <GetAppConfiguration />,
 });
 
 const InitiativesSettingsPageWithHoC = injectIntl<Props>(

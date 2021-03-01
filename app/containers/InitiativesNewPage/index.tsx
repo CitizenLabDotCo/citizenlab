@@ -8,46 +8,38 @@ import { withRouter, WithRouterProps } from 'react-router';
 import { reverseGeocode } from 'utils/locationTools';
 import { parse } from 'qs';
 
-// services
-import { isAdmin, isSuperAdmin, isModerator } from 'services/permissions/roles';
-
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import { PreviousPathnameContext } from 'context';
 import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
+import { isAdmin } from 'services/permissions/roles';
 
 // components
 import InitiativesNewMeta from './InitiativesNewMeta';
 import InitiativesNewFormWrapper from './InitiativesNewFormWrapper';
 import PageLayout from 'components/InitiativeForm/PageLayout';
 import { ITopicData } from 'services/topics';
+import { ILocationInfo } from 'typings';
+import GetInitiativesPermissions, {
+  GetInitiativesPermissionsChildProps,
+} from 'resources/GetInitiativesPermissions';
 
 interface DataProps {
   authUser: GetAuthUserChildProps;
   locale: GetLocaleChildProps;
-  tenant: GetTenantChildProps;
   previousPathName: string | null;
   topics: GetTopicsChildProps;
+  postingPermission: GetInitiativesPermissionsChildProps;
 }
 
 interface Props extends DataProps {}
 
 interface State {
-  locationInfo:
-    | undefined
-    | null
-    | {
-        location_description: string;
-        location_point_geojson: {
-          type: 'Point';
-          coordinates: number[];
-        };
-      };
+  locationInfo: undefined | null | ILocationInfo;
 }
 
 export class InitiativesNewPage extends React.PureComponent<
@@ -73,20 +65,34 @@ export class InitiativesNewPage extends React.PureComponent<
     this.redirectIfNotPermittedOnPage();
 
     if (isNumber(lat) && isNumber(lng)) {
-      reverseGeocode([lat, lng]).then((location_description) => {
-        this.setState({
-          locationInfo: {
-            // When an idea is posted through the map, we Google Maps gets an approximate address,
-            // but we also keep the exact coordinates from the click so the location indicator keeps its initial position on the map
-            // and doesn't readjust together with the address correction/approximation
-            location_description,
-            location_point_geojson: {
-              type: 'Point',
-              coordinates: [lng, lat],
+      // When an idea is posted through the map, we Google Maps gets an approximate address,
+      // but we also keep the exact coordinates from the click so the location indicator keeps its initial position on the map
+      // and doesn't readjust together with the address correction/approximation
+      reverseGeocode([lat, lng])
+        .then((location_description) => {
+          this.setState({
+            locationInfo: {
+              location_description,
+              location_point_geojson: {
+                type: 'Point',
+                coordinates: [lng, lat],
+              },
             },
-          },
+          });
+        })
+        // todo handle this error better in the form /display
+        .catch(() => {
+          this.setState({
+            locationInfo: {
+              location_description: undefined,
+              error: 'not_found',
+              location_point_geojson: {
+                type: 'Point',
+                coordinates: [lng, lat],
+              },
+            },
+          });
         });
-      });
     } else {
       this.setState({ locationInfo: null });
     }
@@ -97,41 +103,29 @@ export class InitiativesNewPage extends React.PureComponent<
       this.redirectIfNotPermittedOnPage();
     }
 
-    if (prevProps.tenant !== this.props.tenant) {
+    if (
+      prevProps.postingPermission !== this.props.postingPermission &&
+      !isNilOrError(this.props.postingPermission)
+    ) {
       this.redirectIfPostingNotEnabled();
     }
   }
 
   redirectIfNotPermittedOnPage = () => {
     const { authUser } = this.props;
-    const isPrivilegedUser =
-      !isNilOrError(authUser) &&
-      (isAdmin({ data: authUser }) ||
-        isModerator({ data: authUser }) ||
-        isSuperAdmin({ data: authUser }));
 
-    if (!isPrivilegedUser && authUser === null) {
+    if (authUser === null) {
       clHistory.replace('/sign-up');
     }
   };
 
   redirectIfPostingNotEnabled() {
-    if (!this.isPostingProposalEnabled()) {
+    if (
+      this.props.postingPermission?.enabled !== true &&
+      !isNilOrError(this.props.authUser)
+    ) {
       clHistory.replace('/initiatives');
     }
-  }
-
-  isPostingProposalEnabled() {
-    const { tenant } = this.props;
-
-    if (
-      !isNilOrError(tenant) &&
-      !isNilOrError(tenant.attributes.settings.initiatives)
-    ) {
-      return tenant.attributes.settings.initiatives.posting_enabled;
-    }
-
-    return false;
   }
 
   render() {
@@ -152,7 +146,7 @@ export class InitiativesNewPage extends React.PureComponent<
     return (
       <>
         <InitiativesNewMeta />
-        <PageLayout>
+        <PageLayout isAdmin={isAdmin({ data: authUser })}>
           <InitiativesNewFormWrapper
             locale={locale}
             topics={initiativeTopics}
@@ -166,7 +160,6 @@ export class InitiativesNewPage extends React.PureComponent<
 
 const Data = adopt<DataProps>({
   authUser: <GetAuthUser />,
-  tenant: <GetTenant />,
   locale: <GetLocale />,
   topics: <GetTopics exclude_code={'custom'} />,
   previousPathName: ({ render }) => (
@@ -174,6 +167,7 @@ const Data = adopt<DataProps>({
       {render as any}
     </PreviousPathnameContext.Consumer>
   ),
+  postingPermission: <GetInitiativesPermissions action="posting_initiative" />,
 });
 
 export default withRouter((inputProps: WithRouterProps) => (

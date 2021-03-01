@@ -1,23 +1,37 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  startAnIdea: {
-    id: 'app.containers.IdeaButton.startAnIdea',
-    defaultMessage: 'Start an idea',
+  submitYourIdea: {
+    id: 'app.containers.IdeaButton.submitYourIdea',
+    defaultMessage: 'Submit your idea',
   },
-  postingHereImpossible: {
-    id: 'app.containers.IdeaButton.postingHereImpossible',
-    defaultMessage: 'Posting an idea here is currently impossible.',
+  addAnOption: {
+    id: 'app.containers.IdeaButton.addAnOption',
+    defaultMessage: 'Add an option',
   },
-  postingNotPermitted: {
-    id: 'app.containers.IdeaButton.postingNotPermitted',
-    defaultMessage:
-      "Unfortunately, You don't have the rights to post ideas here.",
+  addAProject: {
+    id: 'app.containers.IdeaButton.addAProject',
+    defaultMessage: 'Add a project',
   },
-  postingMaybeNotPermitted: {
-    id: 'app.containers.IdeaButton.postingMaybeNotPermitted',
-    defaultMessage:
-      'Only certain users can post ideas here. Please sign in first.',
+  addAQuestion: {
+    id: 'app.containers.IdeaButton.addAQuestion',
+    defaultMessage: 'Add a question',
+  },
+  submitAnIssue: {
+    id: 'app.containers.IdeaButton.submitAnIssue',
+    defaultMessage: 'Submit an issue',
+  },
+  addAContribution: {
+    id: 'app.containers.IdeaButton.addAContribution',
+    defaultMessage: 'Add a contribution',
+  },
+  postingDisabled: {
+    id: 'app.containers.IdeaButton.postingDisabled',
+    defaultMessage: 'New submissions are not currently being accepted',
+  },
+  postingNoPermission: {
+    id: 'app.containers.IdeaButton.postingNoPermission',
+    defaultMessage: 'New submissions are only enabled for certain groups',
   },
   signInLinkText: {
     id: 'app.containers.IdeaButton.signInLinkText',
@@ -27,19 +41,24 @@ export default defineMessages({
     id: 'app.containers.IdeaButton.signUpLinkText',
     defaultMessage: 'sign up',
   },
-  postingProjectInactive: {
-    id: 'app.containers.IdeaButton.postingProjectInactive',
-    defaultMessage: 'This project is not yet or no longer accepting new ideas.',
+  postingInactive: {
+    id: 'app.containers.IdeaButton.postingInactive',
+    defaultMessage: 'New submissions are not currently being accepted.',
   },
-  postingNotActivePhase: {
-    id: 'app.containers.IdeaButton.postingNotActivePhase',
-    defaultMessage: "You can't post ideas in a past or future phase.",
+  postingInNonActivePhases: {
+    id: 'app.containers.IdeaButton.postingInNonActivePhases',
+    defaultMessage: 'New submissions can only be added in active phases.',
   },
-  postingNotVerified: {
-    id: 'app.containers.IdeaButton.postingNotVerified',
+  postingNotYetPossible: {
+    id: 'app.containers.IdeaButton.postingNotYetPossible',
+    defaultMessage: 'New submissions are not yet accepted here.',
+  },
+  postingMayNotBePermitted: {
+    id: 'app.containers.IdeaButton.postingMayNotBePermitted',
     defaultMessage:
-      'You need to verify your account to post an idea here. {verificationLink}',
+      'Please {signInLink} to the platform to see what actions you can take.',
   },
+
   verificationLinkText: {
     id: 'app.containers.IdeaButton.verificationLinkText',
     defaultMessage: 'Verify your account now.',

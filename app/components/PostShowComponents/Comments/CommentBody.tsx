@@ -11,9 +11,9 @@ import { updateComment, IUpdatedComment } from 'services/comments';
 
 // Resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetTenantLocales, {
-  GetTenantLocalesChildProps,
-} from 'resources/GetTenantLocales';
+import GetAppConfigurationLocales, {
+  GetAppConfigurationLocalesChildProps,
+} from 'resources/GetAppConfigurationLocales';
 import GetComment, { GetCommentChildProps } from 'resources/GetComment';
 import GetMachineTranslation from 'resources/GetMachineTranslation';
 
@@ -31,7 +31,7 @@ import Error from 'components/UI/Error';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 // Styling
-import styled from 'styled-components';
+import styled, { withTheme } from 'styled-components';
 
 // Typings
 import { CLErrorsJSON, CLErrors } from 'typings';
@@ -41,10 +41,6 @@ const Container = styled.div``;
 
 const CommentWrapper = styled.div`
   white-space: pre-line;
-
-  &.child {
-    margin-top: 7px;
-  }
 `;
 
 const CommentText = styled.div`
@@ -77,11 +73,13 @@ interface InputProps {
 
 interface DataProps {
   locale: GetLocaleChildProps;
-  tenantLocales: GetTenantLocalesChildProps;
+  tenantLocales: GetAppConfigurationLocalesChildProps;
   comment: GetCommentChildProps;
 }
 
-interface Props extends InputProps, DataProps {}
+interface Props extends InputProps, DataProps {
+  theme: any;
+}
 
 export interface State {
   commentContent: string;
@@ -227,7 +225,14 @@ class CommentBody extends PureComponent<Props, State> {
   };
 
   render() {
-    const { editing, commentType, locale, commentId, className } = this.props;
+    const {
+      editing,
+      commentType,
+      locale,
+      commentId,
+      className,
+      theme,
+    } = this.props;
 
     const {
       commentContent,
@@ -247,7 +252,7 @@ class CommentBody extends PureComponent<Props, State> {
 
         content = (
           <CommentWrapper className={`e2e-comment-body ${commentType}`}>
-            <QuillEditedContent fontWeight={300}>
+            <QuillEditedContent fontWeight={400} textColor={theme.colorText}>
               <div aria-live="polite">
                 {translateButtonClicked ? (
                   <GetMachineTranslation
@@ -279,7 +284,7 @@ class CommentBody extends PureComponent<Props, State> {
       } else {
         content = (
           <StyledForm onSubmit={this.onSubmit}>
-            <QuillEditedContent fontWeight={300}>
+            <QuillEditedContent fontWeight={400} textColor={theme.colorText}>
               <MentionsTextArea
                 name="body"
                 value={editableCommentContent}
@@ -317,9 +322,11 @@ class CommentBody extends PureComponent<Props, State> {
   }
 }
 
+const CommentBodyWithHoC = withTheme(CommentBody);
+
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
-  tenantLocales: <GetTenantLocales />,
+  tenantLocales: <GetAppConfigurationLocales />,
   comment: ({ commentId, render }) => (
     <GetComment id={commentId}>{render}</GetComment>
   ),
@@ -327,6 +334,6 @@ const Data = adopt<DataProps, InputProps>({
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {(dataProps) => <CommentBody {...inputProps} {...dataProps} />}
+    {(dataProps) => <CommentBodyWithHoC {...inputProps} {...dataProps} />}
   </Data>
 );

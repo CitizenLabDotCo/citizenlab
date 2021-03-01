@@ -21,8 +21,12 @@ import {
   IVerificationMethod,
   IDLookupMethod,
 } from 'services/verificationMethods';
-import { IParticipationContextType, ICitizenAction } from 'typings';
 import { isNilOrError } from 'utils/helperUtils';
+import {
+  ContextShape,
+  TVerificationSteps,
+  IVerificationError,
+} from './VerificationModal';
 
 const Container = styled.div`
   display: flex;
@@ -43,41 +47,6 @@ const Loading = styled.div`
   justify-content: center;
 `;
 
-export type ProjectContext = {
-  id: string;
-  type: IParticipationContextType;
-  action: ICitizenAction;
-};
-
-export type ErrorContext = { error: 'taken' | 'not_entitled' | null };
-
-export type ContextShape = ProjectContext | ErrorContext | null;
-
-export function isProjectContext(obj: ContextShape): obj is ProjectContext {
-  return (obj as ProjectContext)?.id !== undefined;
-}
-
-export function isErrorContext(obj: ContextShape): obj is ErrorContext {
-  return (obj as ErrorContext)?.error !== undefined;
-}
-
-export function isProjectOrErrorContext(obj: ContextShape) {
-  if (obj === null) {
-    return 'null';
-  } else if ((obj as any).error !== undefined) {
-    return 'ProjectContext';
-  } else {
-    return 'ErrorContext';
-  }
-}
-
-export type TVerificationSteps =
-  | 'method-selection'
-  | 'success'
-  | 'error'
-  | null
-  | IVerificationMethod['attributes']['name'];
-
 export interface Props {
   context: ContextShape; // TODO change to pass in additionnal rules info
   initialActiveStep: TVerificationSteps;
@@ -88,6 +57,7 @@ export interface Props {
   onSkipped?: () => void;
   onError?: () => void;
   className?: string;
+  error?: IVerificationError | null | undefined;
 }
 
 const VerificationSteps = memo<Props>(
@@ -101,6 +71,7 @@ const VerificationSteps = memo<Props>(
     onComplete,
     onSkipped,
     onError,
+    error,
   }) => {
     const [activeStep, setActiveStep] = useState<TVerificationSteps>(
       initialActiveStep || 'method-selection'
@@ -115,11 +86,7 @@ const VerificationSteps = memo<Props>(
         onComplete();
       }
 
-      if (
-        activeStep === 'error' &&
-        (context === null || isErrorContext(context)) &&
-        onError
-      ) {
+      if (activeStep === 'error' && (context === null || error) && onError) {
         onError();
       }
     }, [onComplete, onError, context, activeStep]);
@@ -138,7 +105,7 @@ const VerificationSteps = memo<Props>(
 
     const goToSuccessStep = useCallback(() => {
       if (!isNilOrError(authUser)) {
-        streams.reset(authUser).then(() => {
+        streams.reset({ data: authUser }).then(() => {
           setActiveStep('success');
           setMethod(null);
         });
@@ -188,17 +155,16 @@ const VerificationSteps = memo<Props>(
           id="e2e-verification-wizard-root"
           className={className || ''}
         >
-          {activeStep === 'method-selection' &&
-            (context === null || isProjectContext(context)) && (
-              <VerificationMethods
-                context={context}
-                showHeader={showHeader}
-                inModal={inModal}
-                skippable={skippable}
-                onSkipped={onVerificationSkipped}
-                onMethodSelected={onMethodSelected}
-              />
-            )}
+          {activeStep === 'method-selection' && (
+            <VerificationMethods
+              context={context}
+              showHeader={showHeader}
+              inModal={inModal}
+              skippable={skippable}
+              onSkipped={onVerificationSkipped}
+              onMethodSelected={onMethodSelected}
+            />
+          )}
 
           {activeStep === 'cow' && (
             <VerificationFormCOW

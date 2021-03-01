@@ -3,22 +3,17 @@ import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import moment, { Moment } from 'moment';
 import { ThemeProvider } from 'styled-components';
+import { chartTheme } from '../index';
 
 // components
-import {
-  chartTheme,
-  GraphsContainer,
-  ControlBar,
-  Column,
-  IResolution,
-} from '../';
+import { GraphsContainer, ControlBar, Column, IResolution } from '../';
 import BarChartActiveUsersByTime from './charts/BarChartActiveUsersByTime';
+import LineBarChart from './charts/LineBarChart';
 import ChartFilters from '../components/ChartFilters';
-import CumulativeAreaChart from './charts/CumulativeAreaChart';
 import SelectableResourceByProjectChart from './charts/SelectableResourceByProjectChart';
 import SelectableResourceByTopicChart from './charts/SelectableResourceByTopicChart';
 import ResolutionControl from '../components/ResolutionControl';
-import LineChartVotesByTime from './charts/LineChartVotesByTime';
+import LineBarChartVotesByTime from './charts/LineBarChartVotesByTime';
 import TimeControl from '../components/TimeControl';
 
 // typings
@@ -46,9 +41,17 @@ import { ITopicData } from 'services/topics';
 import {
   usersByTimeCumulativeStream,
   activeUsersByTimeStream,
+  usersByTimeStream,
+  commentsByTimeStream,
   ideasByTimeCumulativeStream,
   commentsByTimeCumulativeStream,
+  activeUsersByTimeXlsxEndpoint,
+  ideasByTimeCumulativeXlsxEndpoint,
+  commentsByTimeCumulativeXlsxEndpoint,
+  ideasByTimeStream,
+  usersByTimeXlsxEndpoint,
 } from 'services/stats';
+import IdeasByStatusChart from '../components/IdeasByStatusChart';
 
 export type IResource = 'ideas' | 'comments' | 'votes';
 
@@ -69,8 +72,11 @@ interface State {
   startAtMoment?: Moment | null | undefined;
   endAtMoment: Moment | null;
   currentProjectFilter: string | undefined;
+  currentProjectFilterLabel: string | undefined;
   currentGroupFilter: string | undefined;
+  currentGroupFilterLabel: string | undefined;
   currentTopicFilter: string | undefined;
+  currentTopicFilterLabel: string | undefined;
   currentResourceByTopic: IResource;
   currentResourceByProject: IResource;
   projectFilterOptions: IOption[];
@@ -109,8 +115,11 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
           ? projectsList[0].id
           : undefined
         : undefined,
+      currentProjectFilterLabel: undefined,
       currentGroupFilter: undefined,
+      currentGroupFilterLabel: undefined,
       currentTopicFilter: undefined,
+      currentTopicFilterLabel: undefined,
       currentResourceByTopic: 'ideas',
       currentResourceByProject: 'ideas',
       projectFilterOptions: this.generateProjectOptions(),
@@ -119,9 +128,9 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
     };
 
     this.resourceOptions = [
-      { value: 'ideas', label: formatMessage(messages.ideas) },
+      { value: 'ideas', label: formatMessage(messages.inputs) },
       { value: 'comments', label: formatMessage(messages.comments) },
-      { value: 'votes', label: formatMessage(messages.ideaVotes) },
+      { value: 'votes', label: formatMessage(messages.votes) },
     ];
   }
 
@@ -178,17 +187,26 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
 
   handleOnProjectFilter = (filter) => {
     this.props.trackFilterOnProject({ extra: { project: filter } });
-    this.setState({ currentProjectFilter: filter.value });
+    this.setState({
+      currentProjectFilter: filter.value,
+      currentProjectFilterLabel: filter.label,
+    });
   };
 
   handleOnGroupFilter = (filter) => {
     this.props.trackFilterOnGroup({ extra: { group: filter } });
-    this.setState({ currentGroupFilter: filter.value });
+    this.setState({
+      currentGroupFilter: filter.value,
+      currentGroupFilterLabel: filter.label,
+    });
   };
 
   handleOnTopicFilter = (filter) => {
     this.props.trackFilterOnTopic({ extra: { topic: filter } });
-    this.setState({ currentTopicFilter: filter.value });
+    this.setState({
+      currentTopicFilter: filter.value,
+      currentTopicFilterLabel: filter.label,
+    });
   };
 
   onResourceByTopicChange = (option) => {
@@ -291,6 +309,7 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
       groupFilterOptions,
       topicFilterOptions,
     } = this.state;
+
     const startAt = startAtMoment && startAtMoment.toISOString();
     const endAt = endAtMoment && endAtMoment.toISOString();
 
@@ -300,11 +319,13 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
       intl: { formatMessage },
     } = this.props;
 
-    const infoMessage = formatMessage(messages.activeUsersDescription);
+    const infoMessage = formatMessage(
+      messages.numberOfActiveParticipantsDescription
+    );
 
     if (projects && !isNilOrError(projectsList)) {
       return (
-        <>
+        <ThemeProvider theme={chartTheme}>
           <ControlBar>
             <TimeControl
               startAtMoment={startAtMoment}
@@ -316,13 +337,7 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
               onChange={this.handleChangeResolution}
             />
           </ControlBar>
-
           <ChartFilters
-            configuration={{
-              showProjectFilter: true,
-              showGroupFilter: true,
-              showTopicFilter: true,
-            }}
             currentProjectFilter={currentProjectFilter}
             currentGroupFilter={currentGroupFilter}
             currentTopicFilter={currentTopicFilter}
@@ -333,78 +348,91 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
             onGroupFilter={this.handleOnGroupFilter}
             onTopicFilter={this.handleOnTopicFilter}
           />
-
-          <ThemeProvider theme={chartTheme}>
-            <GraphsContainer>
-              <CumulativeAreaChart
-                graphTitleMessageKey="usersByTimeTitle"
-                graphUnit="users"
+          <GraphsContainer>
+            <LineBarChart
+              graphUnit="users"
+              graphUnitMessageKey="users"
+              graphTitle={formatMessage(messages.usersByTimeTitle)}
+              startAt={startAt}
+              endAt={endAt}
+              xlsxEndpoint={usersByTimeXlsxEndpoint}
+              lineStream={usersByTimeCumulativeStream}
+              barStream={usersByTimeStream}
+              className="e2e-active-users-chart"
+              {...this.state}
+            />
+            <BarChartActiveUsersByTime
+              graphUnit="users"
+              graphUnitMessageKey="activeUsers"
+              graphTitle={formatMessage(messages.activeUsersByTimeTitle)}
+              startAt={startAt}
+              endAt={endAt}
+              xlsxEndpoint={activeUsersByTimeXlsxEndpoint}
+              stream={activeUsersByTimeStream}
+              infoMessage={infoMessage}
+              className="e2e-active-users-chart"
+              {...this.state}
+            />
+            <LineBarChart
+              graphTitle={formatMessage(messages.inputs)}
+              graphUnit="ideas"
+              graphUnitMessageKey="ideas"
+              startAt={startAt}
+              endAt={endAt}
+              xlsxEndpoint={ideasByTimeCumulativeXlsxEndpoint}
+              className="e2e-ideas-chart"
+              lineStream={ideasByTimeCumulativeStream}
+              barStream={ideasByTimeStream}
+              {...this.state}
+            />
+            <LineBarChart
+              graphTitle={formatMessage(messages.commentsByTimeTitle)}
+              graphUnit="comments"
+              graphUnitMessageKey="comments"
+              startAt={startAt}
+              endAt={endAt}
+              xlsxEndpoint={commentsByTimeCumulativeXlsxEndpoint}
+              className="e2e-comments-chart"
+              lineStream={commentsByTimeCumulativeStream}
+              barStream={commentsByTimeStream}
+              {...this.state}
+            />
+            <Column>
+              <LineBarChartVotesByTime
+                className="fullWidth e2e-votes-chart"
                 startAt={startAt}
                 endAt={endAt}
-                stream={usersByTimeCumulativeStream}
-                className="e2e-users-by-time-cumulative-chart"
                 {...this.state}
               />
-              <BarChartActiveUsersByTime
-                graphUnit="users"
-                graphUnitMessageKey="activeUsers"
-                graphTitleMessageKey="activeUsersByTimeTitle"
+              <SelectableResourceByProjectChart
+                className="dynamicHeight fullWidth e2e-resource-by-project-chart"
+                onResourceByProjectChange={this.onResourceByProjectChange}
+                resourceOptions={this.resourceOptions}
+                projectOptions={projectFilterOptions}
                 startAt={startAt}
                 endAt={endAt}
-                stream={activeUsersByTimeStream}
-                infoMessage={infoMessage}
-                className="e2e-active-users-chart"
                 {...this.state}
               />
-              <CumulativeAreaChart
-                graphTitleMessageKey="ideasByTimeTitle"
-                graphUnit="ideas"
+            </Column>
+            <Column>
+              <IdeasByStatusChart
+                className="fullWidth dynamicHeight"
                 startAt={startAt}
                 endAt={endAt}
-                stream={ideasByTimeCumulativeStream}
-                className="e2e-ideas-chart"
                 {...this.state}
               />
-              <CumulativeAreaChart
-                graphTitleMessageKey="commentsByTimeTitle"
-                graphUnit="comments"
+              <SelectableResourceByTopicChart
+                className="fullWidth dynamicHeight e2e-resource-by-topic-chart"
+                topicOptions={topicFilterOptions}
+                onResourceByTopicChange={this.onResourceByTopicChange}
+                resourceOptions={this.resourceOptions}
                 startAt={startAt}
                 endAt={endAt}
-                stream={commentsByTimeCumulativeStream}
-                className="e2e-comments-chart"
                 {...this.state}
               />
-              <Column>
-                <LineChartVotesByTime
-                  className="fullWidth e2e-votes-chart"
-                  startAt={startAt}
-                  endAt={endAt}
-                  {...this.state}
-                />
-                <SelectableResourceByProjectChart
-                  className="dynamicHeight fullWidth e2e-resource-by-project-chart"
-                  onResourceByProjectChange={this.onResourceByProjectChange}
-                  resourceOptions={this.resourceOptions}
-                  projectOptions={projectFilterOptions}
-                  startAt={startAt}
-                  endAt={endAt}
-                  {...this.state}
-                />
-              </Column>
-              <Column>
-                <SelectableResourceByTopicChart
-                  className="fullWidth dynamicHeight e2e-resource-by-topic-chart"
-                  topicOptions={topicFilterOptions}
-                  onResourceByTopicChange={this.onResourceByTopicChange}
-                  resourceOptions={this.resourceOptions}
-                  startAt={startAt}
-                  endAt={endAt}
-                  {...this.state}
-                />
-              </Column>
-            </GraphsContainer>
-          </ThemeProvider>
-        </>
+            </Column>
+          </GraphsContainer>
+        </ThemeProvider>
       );
     }
     return null;

@@ -18,8 +18,10 @@ import GetInitiativeStatus, {
   GetInitiativeStatusChildProps,
 } from 'resources/GetInitiativeStatus';
 import { IInitiativeData } from 'services/initiatives';
-import { ITenantSettings } from 'services/tenant';
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import { IAppConfigurationSettings } from 'services/appConfiguration';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetAppConfiguration';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import { addVote, deleteVote } from 'services/initiativeVotes';
 import ProposedNotVoted from './ProposedNotVoted';
@@ -30,6 +32,12 @@ import Answered from './Answered';
 import Ineligible from './Ineligible';
 import Custom from './Custom';
 import { openSignUpInModal } from 'components/SignUpIn/events';
+import GetInitiativesPermissions, {
+  GetInitiativesPermissionsChildProps,
+} from 'resources/GetInitiativesPermissions';
+import { IInitiativeDisabledReason } from 'hooks/useInitiativesPermissions';
+import { trackEventByName } from 'utils/analytics';
+import { openVerificationModal } from 'components/Verification/verificationModalEvents';
 
 const Container = styled.div`
   ${media.biggerThanMaxTablet`
@@ -47,11 +55,12 @@ const Container = styled.div`
 interface VoteControlComponentProps {
   initiative: IInitiativeData;
   initiativeStatus: IInitiativeStatusData;
-  initiativeSettings: ITenantSettings['initiatives'];
+  initiativeSettings: IAppConfigurationSettings['initiatives'];
   userVoted: boolean;
   onVote?: () => void;
   onCancelVote?: () => void;
   onScrollToOfficialFeedback?: () => void;
+  disabledReason?: IInitiativeDisabledReason | null | undefined;
 }
 
 type TComponentMap = {
@@ -98,10 +107,11 @@ interface InputProps {
 }
 
 interface DataProps {
-  tenant: GetTenantChildProps;
+  tenant: GetAppConfigurationChildProps;
   initiative: GetInitiativeChildProps;
   initiativeStatus: GetInitiativeStatusChildProps;
   authUser: GetAuthUserChildProps;
+  votingPermission: GetInitiativesPermissionsChildProps;
 }
 
 interface State {}
@@ -110,16 +120,55 @@ interface Props extends InputProps, DataProps {}
 
 class VoteControl extends PureComponent<Props, State> {
   handleOnvote = () => {
-    const { initiative, authUser } = this.props;
+    const { votingPermission } = this.props;
+    const requiredAction = votingPermission?.action;
+    switch (requiredAction) {
+      case 'sign_in_up':
+        trackEventByName(
+          'Sign up/in modal opened in response to clicking vote initiative'
+        );
+        openSignUpInModal({
+          flow: 'signup',
+          verification: false,
+          verificationContext: undefined,
+          action: () => this.vote(),
+        });
+        break;
+      case 'sign_in_up_and_verify':
+        trackEventByName(
+          'Sign up/in modal opened in response to clicking vote initiative'
+        );
+        openSignUpInModal({
+          flow: 'signup',
+          verification: true,
+          verificationContext: {
+            type: 'initiative',
+            action: 'voting_initiative',
+          },
+          action: () => this.vote(),
+        });
+        break;
+      case 'verify':
+        trackEventByName(
+          'Verification modal opened in response to clicking vote initiative'
+        );
+        openVerificationModal({
+          context: {
+            action: 'voting_initiative',
+            type: 'initiative',
+          },
+        });
+        break;
+      default:
+        this.vote();
+    }
+  };
+
+  vote = () => {
+    const { initiative } = this.props;
 
     if (!isNilOrError(initiative)) {
-      if (!isNilOrError(authUser)) {
-        addVote(initiative.id, { mode: 'up' });
-      } else {
-        openSignUpInModal({
-          action: () => this.handleOnvote(),
-        });
-      }
+      addVote(initiative.id, { mode: 'up' });
     }
   };
 
@@ -142,8 +191,8 @@ class VoteControl extends PureComponent<Props, State> {
       className,
       onScrollToOfficialFeedback,
       id,
+      votingPermission,
     } = this.props;
-
     if (
       isNilOrError(initiative) ||
       isNilOrError(initiativeStatus) ||
@@ -186,6 +235,7 @@ class VoteControl extends PureComponent<Props, State> {
           onVote={this.handleOnvote}
           onCancelVote={this.handleOnCancelVote}
           onScrollToOfficialFeedback={onScrollToOfficialFeedback}
+          disabledReason={votingPermission?.disabledReason}
         />
       </Container>
     );
@@ -193,7 +243,7 @@ class VoteControl extends PureComponent<Props, State> {
 }
 
 const Data = adopt<DataProps, InputProps>({
-  tenant: <GetTenant />,
+  tenant: <GetAppConfiguration />,
   authUser: <GetAuthUser />,
   initiative: ({ initiativeId, render }) => (
     <GetInitiative id={initiativeId}>{render}</GetInitiative>
@@ -215,6 +265,7 @@ const Data = adopt<DataProps, InputProps>({
 
     return null;
   },
+  votingPermission: <GetInitiativesPermissions action="voting_initiative" />,
 });
 
 export default (inputProps: InputProps) => (
