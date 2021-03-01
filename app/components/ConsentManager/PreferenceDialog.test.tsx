@@ -10,6 +10,7 @@ import PreferencesDialog from './PreferencesDialog';
 
 // mock utilities
 jest.mock('utils/cl-intl');
+jest.mock('services/appConfiguration');
 
 describe('<ConsentManager />', () => {
   let onChange: Jest.Mock;
@@ -69,9 +70,7 @@ describe('<ConsentManager />', () => {
       <PreferencesDialog
         onChange={onChange}
         categoryDestinations={categoryDestinations}
-        analytics={preferences.analytics}
-        advertising={preferences.advertising}
-        functional={preferences.functional}
+        preferences={preferences}
       />
     );
     expect(wrapper).toMatchSnapshot();
@@ -85,9 +84,7 @@ describe('<ConsentManager />', () => {
           advertising: [],
           functional: [],
         }}
-        analytics={preferences.analytics}
-        advertising={preferences.advertising}
-        functional={preferences.functional}
+        preferences={preferences}
       />
     );
     expect(wrapper).toMatchSnapshot();

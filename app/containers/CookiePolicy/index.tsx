@@ -1,5 +1,5 @@
 // libraries
-import React, { memo } from 'react';
+import React, { memo, lazy, Suspense } from 'react';
 import { Helmet } from 'react-helmet';
 
 // i18n
@@ -10,69 +10,25 @@ import { InjectedIntlProps } from 'react-intl';
 // events
 import eventEmitter from 'utils/eventEmitter';
 
-// services
-import { LEGAL_PAGES } from 'services/pages';
-
 // components
-import Link from 'utils/cl-router/Link';
-import ContentContainer from 'components/ContentContainer';
-import { Icon } from 'cl2-component-library';
 import Fragment from 'components/Fragment';
+import { Spinner } from 'cl2-component-library';
+const PagesFooterNavigation = lazy(() =>
+  import('containers/PagesShowPage/PagesFooterNavigation')
+);
+import {
+  Container,
+  StyledContentContainer,
+  PageContent,
+  PageTitle,
+  PageDescription,
+} from 'containers/PagesShowPage';
 
 // styles
 import styled from 'styled-components';
-import { colors, fontSizes, media, defaultCardStyle } from 'utils/styleUtils';
+import { colors } from 'utils/styleUtils';
 import { darken } from 'polished';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
-
-// these styled components should be imported from PagesShowPage for consistency.
-// but : https://github.com/styled-components/styled-components/issues/1063
-
-const Container = styled.div`
-  min-height: calc(100vh - ${(props) => props.theme.menuHeight}px - 1px);
-  display: flex;
-  flex-direction: column;
-  background: ${colors.background};
-
-  ${media.smallerThanMaxTablet`
-    min-height: calc(100vh - ${(props) => props.theme.mobileMenuHeight}px - ${(
-    props
-  ) => props.theme.mobileTopBarHeight}px);
-  `}
-`;
-
-const StyledContentContainer = styled(ContentContainer)`
-  max-width: calc(${(props) => props.theme.maxPageWidth}px - 100px);
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 30px;
-`;
-
-const PageContent = styled.main`
-  flex-shrink: 0;
-  flex-grow: 1;
-  background: #fff;
-  padding-top: 60px;
-  padding-bottom: 60px;
-`;
-
-const PageTitle = styled.h1`
-  color: ${colors.text};
-  font-size: ${fontSizes.xxxxl}px;
-  line-height: normal;
-  font-weight: 600;
-  text-align: left;
-  margin: 0;
-  padding: 0;
-  padding-top: 0px;
-  padding-bottom: 40px;
-
-  ${media.smallerThanMaxTablet`
-    font-size: ${fontSizes.xxxl};
-  `}
-`;
-
-const PageDescription = styled.div``;
 
 const StyledButton = styled.button`
   color: ${colors.clBlueDark};
@@ -86,44 +42,6 @@ const StyledButton = styled.button`
     color: ${darken(0.15, colors.clBlueDark)};
     text-decoration: underline;
   }
-`;
-
-const PagesNavWrapper = styled.div`
-  width: 100%;
-`;
-
-const PagesNav = styled.nav`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  justify-content: space-between;
-  list-style: none;
-  margin: 0 auto;
-  padding-top: 90px;
-  padding-bottom: 80px;
-`;
-
-const StyledLink = styled(Link)`
-  color: #666;
-  font-size: ${fontSizes.large}px;
-  font-weight: 400;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 15px;
-  padding: 20px 23px;
-  transition: all 80ms ease-out;
-  ${defaultCardStyle};
-
-  &:hover {
-    color: #000;
-    text-decoration: underline;
-  }
-`;
-
-const LinkIcon = styled(Icon)`
-  width: 10px;
 `;
 
 const CookiePolicy = memo((props: InjectedIntlProps) => {
@@ -165,21 +83,6 @@ const CookiePolicy = memo((props: InjectedIntlProps) => {
                           {...messages.changePreferencesButtonText}
                         />
                       </StyledButton>
-                    ),
-                  }}
-                />
-                <FormattedMessage tagName="h2" {...messages.whoAreWeTitle} />
-                <FormattedMessage
-                  tagName="p"
-                  {...messages.whoAreWeContent}
-                  values={{
-                    citizenLabLink: (
-                      <a
-                        target="_blank"
-                        href={formatMessage(messages.citizenLabHref)}
-                      >
-                        CitizenLab
-                      </a>
                     ),
                   }}
                 />
@@ -267,35 +170,15 @@ const CookiePolicy = memo((props: InjectedIntlProps) => {
                     ),
                   }}
                 />
-                <FormattedMessage
-                  tagName="p"
-                  {...messages.contact}
-                  values={{
-                    contactLink: (
-                      <a href="mailto:support@citizenlab.co" role="button">
-                        <FormattedMessage {...messages.contactLinkText} />
-                      </a>
-                    ),
-                  }}
-                />
               </QuillEditedContent>
             </PageDescription>
           </Fragment>
         </StyledContentContainer>
       </PageContent>
 
-      <PagesNavWrapper>
-        <PagesNav>
-          <StyledContentContainer>
-            {LEGAL_PAGES.map((pageSlug) => (
-              <StyledLink to={`/pages/${pageSlug}`} key={pageSlug}>
-                <FormattedMessage {...messages[`${pageSlug}PageName`]} />
-                <LinkIcon name="chevron-right" />
-              </StyledLink>
-            ))}
-          </StyledContentContainer>
-        </PagesNav>
-      </PagesNavWrapper>
+      <Suspense fallback={<Spinner />}>
+        <PagesFooterNavigation currentPageSlug="cookie-policy" />
+      </Suspense>
     </Container>
   );
 });

@@ -23,11 +23,15 @@ import { media, colors, fontSizes } from 'utils/styleUtils';
 
 // resources
 import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetAppConfiguration';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 const Container = styled.div`
-  min-height: calc(100vh - ${(props) => props.theme.menuHeight}px - 1px);
+  min-height: calc(
+    100vh - ${(props) => props.theme.menuHeight + props.theme.footerHeight}px
+  );
   display: flex;
   flex-direction: column;
   background: ${colors.background};
@@ -111,7 +115,7 @@ const NavItem = styled.button`
 
 interface DataProps {
   projects: GetProjectsChildProps;
-  tenant: GetTenantChildProps;
+  tenant: GetAppConfigurationChildProps;
   authUser: GetAuthUserChildProps;
 }
 
@@ -277,6 +281,13 @@ const SiteMap = ({ projects, tenant, authUser }: Props) => {
                     <FormattedMessage {...messages.privacyPolicyLink} />
                   </Link>
                 </li>
+                <li>
+                  <Link to="/pages/accessibility-statement">
+                    <FormattedMessage
+                      {...messages.accessibilityStatementLink}
+                    />
+                  </Link>
+                </li>
               </ul>
 
               <H2 ref={userSpaceSection} tabIndex={-1}>
@@ -354,7 +365,7 @@ const Data = adopt<DataProps>({
   projects: (
     <GetProjects publicationStatuses={['draft', 'published', 'archived']} />
   ),
-  tenant: <GetTenant />,
+  tenant: <GetAppConfiguration />,
   authUser: <GetAuthUser />,
 });
 

@@ -75,7 +75,7 @@ export default memo<Props>(({ onClose, className }) => {
       <Container id="e2e-verification-success" className={className}>
         <ImageAvatarContainer aria-hidden>
           <img src={illustration} alt="" role="presentation" />
-          <StyledAvatar userId={authUser.data.id} size="96px" verified />
+          <StyledAvatar userId={authUser.id} size={96} addVerificationBadge />
         </ImageAvatarContainer>
         <Title className="e2e-user-verified-success-modal-content">
           <strong>

@@ -2,11 +2,17 @@ import React, { memo } from 'react';
 
 // components
 import { Icon } from 'cl2-component-library';
-import LazyImage from 'components/LazyImage';
+import Image from 'components/UI/Image';
 
 // style
 import styled from 'styled-components';
-import { media, colors, fontSizes, defaultCardStyle } from 'utils/styleUtils';
+import {
+  media,
+  colors,
+  fontSizes,
+  defaultCardStyle,
+  defaultCardHoverStyle,
+} from 'utils/styleUtils';
 
 // intl
 import messages from './messages';
@@ -29,12 +35,7 @@ const Container: any = styled(Link)`
   }
 
   ${media.biggerThanMinTablet`
-    transition: all 200ms ease;
-
-    &:hover, &:focus {
-      box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.12);
-      transform: translate(0px, -2px);
-    }
+    ${defaultCardHoverStyle};
   `}
 `;
 
@@ -105,13 +106,12 @@ const SuccessImagePlaceholderIcon = styled(Icon)`
   fill: #fff;
 `;
 
-const SuccessImage = styled(LazyImage)`
+const SuccessImage = styled(Image)`
   width: 100%;
   height: 100%;
   position: absolute;
   top: 0;
   left: 0;
-  background: #fff;
 `;
 
 interface InputProps {
@@ -130,7 +130,7 @@ const SuccessCard = memo(({ page, imageUrl, pageSlug, location }: Props) => {
   if (isNilOrError(page)) return null;
 
   return (
-    <Container to={`/pages/${pageSlug}`} target="_blank">
+    <Container to={`/pages/${pageSlug}`}>
       <SuccessImageContainer>
         <SuccessImagePlaceholder>
           <SuccessImagePlaceholderIcon name="successStory" />

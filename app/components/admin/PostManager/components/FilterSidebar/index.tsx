@@ -3,6 +3,7 @@ import { isEmpty } from 'lodash-es';
 import { IPhaseData } from 'services/phases';
 import { IProjectData } from 'services/projects';
 import { IIdeaStatusData } from 'services/ideaStatuses';
+import { IInitiativeStatusData } from 'services/initiativeStatuses';
 import { Segment, Menu, Popup } from 'semantic-ui-react';
 import PhasesMenu from './FilterSidebarPhases';
 import TopicsMenu from './FilterSidebarTopics';
@@ -30,7 +31,7 @@ const InfoIcon = styled(Icon)`
 interface Props {
   phases?: IPhaseData[];
   projects?: IProjectData[];
-  statuses: IIdeaStatusData[];
+  statuses: IIdeaStatusData[] | IInitiativeStatusData[];
   topics: ITopicData[];
   selectedTopics?: string[] | null;
   selectedPhase?: string | null;
@@ -50,8 +51,24 @@ class FilterSidebar extends React.PureComponent<Props & InjectedIntlProps> {
     this.props.onChangeActiveFilterMenu(data.id);
   };
 
-  tabName = (message: string, selection, key) => {
-    const title = this.props.intl.formatMessage(messages[message]);
+  tabName = (
+    messageKey: 'statusesTab' | 'timelineTab' | 'topicsTab' | 'projectsTab',
+    selection,
+    key: 'phases' | 'projects' | 'topics' | 'statuses'
+  ) => {
+    const titleMessage = {
+      statusesTab: messages.statusesTab,
+      timelineTab: messages.timelineTab,
+      topicsTab: messages.topicsTab,
+      projectsTab: messages.projectsTab,
+    }[messageKey];
+    const tooltipMessage = {
+      statusesTab: messages.statusesTabTooltipContent,
+      timelineTab: messages.timelineTabTooltipText,
+      topicsTab: messages.topicsTabTooltipText,
+      projectsTab: messages.projectsTabTooltipContent,
+    }[messageKey];
+    const title = this.props.intl.formatMessage(titleMessage);
     const active = this.props.activeFilterMenu === key;
     const selectionSign = isEmpty(selection) ? '' : '*';
     return (
@@ -60,9 +77,7 @@ class FilterSidebar extends React.PureComponent<Props & InjectedIntlProps> {
         {selectionSign}&nbsp;
         {active ? (
           <Popup
-            content={this.props.intl.formatMessage(
-              messages[`${message}Tooltip`]
-            )}
+            content={this.props.intl.formatMessage(tooltipMessage)}
             trigger={
               <button>
                 <InfoIcon name="info3" />

@@ -5,7 +5,11 @@ import { ICampaignData, updateCampaign } from 'services/campaigns';
 import { isNilOrError } from 'utils/helperUtils';
 import T from 'components/T';
 import { Toggle } from 'cl2-component-library';
-import { List, Row, TextCell } from 'components/admin/ResourceList';
+import {
+  List as AutomatedEmailsList,
+  Row,
+  TextCell,
+} from 'components/admin/ResourceList';
 import Warning from 'components/UI/Warning';
 import styled from 'styled-components';
 // i18n
@@ -41,7 +45,7 @@ class AutomatedCampaigns extends React.PureComponent<
         <StyledWarning
           text={<FormattedMessage {...messages.automatedEmailCampaignsInfo} />}
         />
-        <List>
+        <AutomatedEmailsList>
           {campaigns.map((campaign) => (
             <Row key={campaign.id}>
               <Toggle
@@ -64,7 +68,7 @@ class AutomatedCampaigns extends React.PureComponent<
               </div> */}
             </Row>
           ))}
-        </List>
+        </AutomatedEmailsList>
       </>
     );
   }

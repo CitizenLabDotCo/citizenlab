@@ -2,10 +2,6 @@ export const AUTH_PATH = '/auth';
 export const API_PATH = '/web_api/v1';
 export const ADMIN_TEMPLATES_GRAPHQL_PATH = '/admin_templates_api/graphql';
 export const GOOGLE_MAPS_API_KEY = 'AIzaSyDRtFe1KRBnGfDy_ijw6yCYsYnEkQRl9Cw';
-export const CL_GA_TRACKING_ID = 'UA-65562281-44';
-export const CL_GA_TRACKER_NAME = 'CitizenLab2';
-export const CL_SEGMENT_API_KEY =
-  process.env.SEGMENT_API_KEY || 'sIoYsVoTTCBmrcs7yAz1zRFRGhAofBlg';
 export const API_HOST =
   process.env.API_HOST ||
   (typeof window === 'undefined' ? 'localhost' : window.location.hostname);
@@ -46,6 +42,7 @@ export const locales = [
   'hu-HU',
   'ro-RO',
   'pt-BR',
+  'ar-SA',
 ];
 
 export const graphqlLocales = [
@@ -56,7 +53,6 @@ export const graphqlLocales = [
   'nb',
   'da',
   'es',
-  'ach',
   'enGb',
   'enCa',
   'frBe',
@@ -73,6 +69,7 @@ export const graphqlLocales = [
   'huHu',
   'roRo',
   'ptBr',
+  'arSa',
 ];
 
 // the locales we really support, ie we have translations for these ect
@@ -94,7 +91,7 @@ export const appLocalePairs = {
   'hu-HU': 'Magyar',
   'ro-RO': 'Română',
   'pt-BR': 'Português (Brasil)',
-  ach: 'Acholi',
+  'ar-SA': 'عربى',
 };
 
 export const appGraphqlLocalePairs = {
@@ -105,7 +102,6 @@ export const appGraphqlLocalePairs = {
   nb: 'nb',
   da: 'da',
   es: 'es',
-  ach: 'ach',
   enGb: 'en-GB',
   enCa: 'en-CA',
   frBe: 'fr-BE',
@@ -122,6 +118,7 @@ export const appGraphqlLocalePairs = {
   huHu: 'hu-HU',
   roRo: 'ro-RO',
   ptBr: 'pt-BR',
+  arSa: 'ar',
 };
 
 export const shortenedAppLocalePairs = {
@@ -142,9 +139,10 @@ export const shortenedAppLocalePairs = {
   'hu-HU': 'Magyar',
   'ro-RO': 'Română',
   'pt-BR': 'Português',
-  ach: 'Acholi',
+  'ar-SA': 'عربى',
 };
 
+// see https://www.ge.com/digital/documentation/predix-services/c_custom_locale_support.html
 export const appLocalesMomentPairs = {
   'en-GB': 'en-gb',
   'en-CA': 'en-ca',
@@ -162,4 +160,5 @@ export const appLocalesMomentPairs = {
   'hu-HU': 'hu',
   'ro-RO': 'ro',
   'pt-BR': 'pt',
+  'ar-SA': 'ar',
 };

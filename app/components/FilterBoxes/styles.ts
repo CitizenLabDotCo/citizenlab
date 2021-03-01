@@ -1,4 +1,4 @@
-import { fontSizes } from 'utils/styleUtils';
+import { fontSizes, isRtl } from 'utils/styleUtils';
 import styled from 'styled-components';
 
 export const Header = styled.div`
@@ -8,6 +8,10 @@ export const Header = styled.div`
   margin-bottom: 20px;
   margin-left: 18px;
   margin-right: 22px;
+
+  ${isRtl`
+    margin-left: auto;
+  `}
 `;
 
 export const Title = styled.div`

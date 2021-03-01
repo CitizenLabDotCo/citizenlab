@@ -17,7 +17,6 @@ import useUserCustomFieldsSchema from 'hooks/useUserCustomFieldsSchema';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import { isProjectContext } from 'components/Verification/VerificationSteps';
 
 // events
 import {
@@ -47,10 +46,7 @@ const SignUpInModal = memo<Props>(({ className, onMounted }) => {
 
   const authUser = useAuthUser();
   const participationConditions = useParticipationConditions(
-    metaData?.verificationContext &&
-      isProjectContext(metaData?.verificationContext)
-      ? metaData?.verificationContext
-      : null
+    metaData?.verificationContext
   );
   const customFieldsSchema = useUserCustomFieldsSchema();
 
@@ -62,7 +58,7 @@ const SignUpInModal = memo<Props>(({ className, onMounted }) => {
     signUpActiveStep === 'verification' && hasParticipationConditions
   )
     ? 820
-    : 550;
+    : 580;
   const modalNoClose = !!(
     metaData?.error !== true &&
     (signUpActiveStep === 'verification' ||
@@ -120,7 +116,7 @@ const SignUpInModal = memo<Props>(({ className, onMounted }) => {
     const hasAction = isFunction(metaData?.action);
     const requiresVerification = !!metaData?.verification;
     const authUserIsVerified =
-      !isNilOrError(authUser) && authUser.data.attributes.verified;
+      !isNilOrError(authUser) && authUser.attributes.verified;
 
     if (hasAction && (!requiresVerification || authUserIsVerified)) {
       metaData?.action?.();

@@ -17,6 +17,12 @@ import {
   hexToRgb,
 } from 'cl2-component-library';
 
+import { css } from 'styled-components';
+
+const isRtl = (style, ...args) => css`
+  ${(props) => (props.theme.isRtl ? css(style, ...args) : '')}
+`;
+
 export {
   viewportWidths,
   media,
@@ -34,4 +40,5 @@ export {
   remCalc,
   calculateContrastRatio,
   hexToRgb,
+  isRtl,
 };

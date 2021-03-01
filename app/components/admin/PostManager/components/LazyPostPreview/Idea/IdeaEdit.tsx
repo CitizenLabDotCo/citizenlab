@@ -17,7 +17,7 @@ import { Content, Top, Container } from '../PostPreview';
 
 // services
 import { localeStream } from 'services/locale';
-import { currentTenantStream } from 'services/tenant';
+import { currentAppConfigurationStream } from 'services/appConfiguration';
 import { ideaByIdStream, updateIdea } from 'services/ideas';
 import {
   ideaImageStream,
@@ -75,6 +75,7 @@ interface State {
   descriptionMultiloc: Multiloc | null;
   selectedTopics: string[];
   budget: number | null;
+  proposedBudget: number | null;
   address: string | null;
   imageFile: UploadFile[];
   imageId: string | null;
@@ -95,6 +96,7 @@ class IdeaEdit extends PureComponent<Props, State> {
       descriptionMultiloc: null,
       selectedTopics: [],
       budget: null,
+      proposedBudget: null,
       address: null,
       imageFile: [],
       imageId: null,
@@ -108,7 +110,7 @@ class IdeaEdit extends PureComponent<Props, State> {
   componentDidMount() {
     const { ideaId } = this.props;
     const locale$ = localeStream().observable;
-    const currentTenantLocales$ = currentTenantStream().observable.pipe(
+    const currentTenantLocales$ = currentAppConfigurationStream().observable.pipe(
       map(
         (currentTenant) => currentTenant.data.attributes.settings.core.locales
       )
@@ -167,6 +169,7 @@ class IdeaEdit extends PureComponent<Props, State> {
             descriptionMultiloc: idea.data.attributes.body_multiloc,
             address: idea.data.attributes.location_description,
             budget: idea.data.attributes.budget,
+            proposedBudget: idea.data.attributes.proposed_budget,
             imageFile: ideaImage ? [ideaImage] : [],
             imageId: ideaImage && ideaImage.id ? ideaImage.id : null,
           });
@@ -201,6 +204,7 @@ class IdeaEdit extends PureComponent<Props, State> {
       selectedTopics,
       address: ideaFormAddress,
       budget,
+      proposedBudget,
       ideaFiles,
       ideaFilesToRemove,
     } = ideaFormOutput;
@@ -237,6 +241,7 @@ class IdeaEdit extends PureComponent<Props, State> {
 
     const updateIdeaPromise = updateIdea(ideaId, {
       budget,
+      proposed_budget: proposedBudget,
       title_multiloc: {
         ...titleMultiloc,
         [locale]: title,
@@ -283,6 +288,7 @@ class IdeaEdit extends PureComponent<Props, State> {
         submitError,
         processing,
         budget,
+        proposedBudget,
       } = this.state;
       const title = locale && titleMultiloc ? titleMultiloc[locale] || '' : '';
       const description =
@@ -314,6 +320,7 @@ class IdeaEdit extends PureComponent<Props, State> {
                 description={description}
                 selectedTopics={selectedTopics}
                 budget={budget}
+                proposedBudget={proposedBudget}
                 address={address || ''}
                 imageFile={imageFile}
                 onSubmit={this.handleIdeaFormOutput}

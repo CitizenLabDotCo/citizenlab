@@ -28,14 +28,16 @@ import {
   FormikErrors,
 } from 'formik';
 import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
-import FormikInputMultiloc from 'components/UI/FormikInputMultiloc';
+import FormikInputMultilocWithLocaleSwitcher from 'components/UI/FormikInputMultilocWithLocaleSwitcher';
 import FormikSelect from 'components/UI/FormikSelect';
 import Error from 'components/UI/Error';
 
 // resources
 import GetGroups, { GetGroupsChildProps } from 'resources/GetGroups';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetAppConfiguration';
 
 const StyledSection = styled(Section)`
   margin-bottom: 2.5rem;
@@ -71,7 +73,7 @@ interface InputProps {
 
 interface DataProps {
   user: GetAuthUserChildProps;
-  tenant: GetTenantChildProps;
+  tenant: GetAppConfigurationChildProps;
 }
 
 interface Props
@@ -210,17 +212,13 @@ class CampaignForm extends React.Component<
           <StyledSectionTitle>
             <FormattedMessage {...messages.fieldSubject} />
           </StyledSectionTitle>
-          <SectionField>
+          <SectionField className="e2e-campaign_subject_multiloc">
             <FastField
               name="subject_multiloc"
-              component={FormikInputMultiloc}
+              component={FormikInputMultilocWithLocaleSwitcher}
               label={<FormattedMessage {...messages.fieldSubject} />}
               labelTooltipText={
-                <IconTooltip
-                  content={
-                    <FormattedMessage {...messages.fieldSubjectTooltip} />
-                  }
-                />
+                <FormattedMessage {...messages.fieldSubjectTooltip} />
               }
               maxCharCount={80}
             />
@@ -235,7 +233,7 @@ class CampaignForm extends React.Component<
           <StyledSectionTitle>
             <FormattedMessage {...messages.fieldBody} />
           </StyledSectionTitle>
-          <SectionField>
+          <SectionField className="e2e-campaign_body_multiloc">
             <FastField
               name="body_multiloc"
               render={this.renderFormikQuillMultiloc}
@@ -269,7 +267,7 @@ class CampaignForm extends React.Component<
 
 const Data = adopt<DataProps, InputProps>({
   user: ({ render }) => <GetAuthUser>{render}</GetAuthUser>,
-  tenant: ({ render }) => <GetTenant>{render}</GetTenant>,
+  tenant: ({ render }) => <GetAppConfiguration>{render}</GetAppConfiguration>,
 });
 
 const CampaignFormWithHOCs = injectIntl(localize<InputProps>(CampaignForm));

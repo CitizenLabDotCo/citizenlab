@@ -1,27 +1,29 @@
-/*
- * AdminPage.IdeaDashboard Messages
- *
- * This contains all the text for the AdminPage.IdeaDashboard component.
- */
-
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  helmetTitle: {
-    id: 'app.containers.AdminPage.IdeaDashboard.helmetTitle',
-    defaultMessage: 'Admin - ideas dashboard',
+  inputManagerMetaTitle: {
+    id: 'app.containers.admin.ideas.all.inputManagerMetaTitle',
+    defaultMessage: 'Input manager | Participation platform of {orgName}',
   },
-  helmetDescription: {
-    id: 'app.containers.AdminPage.IdeaDashboard.helmetDescription',
-    defaultMessage: 'Idea list in admin backoffice',
+  inputManagerMetaDescription: {
+    id: 'app.containers.admin.ideas.all.inputManagerMetaDescription',
+    defaultMessage: 'Manage inputs and their statuses.',
   },
-  header: {
-    id: 'app.containers.admin.ideas.all.header',
-    defaultMessage: 'Ideas',
+  inputManagerPageTitle: {
+    id: 'app.containers.admin.ideas.all.inputManagerPageTitle',
+    defaultMessage: 'Input manager',
   },
-  headerSubtitle: {
-    id: 'app.containers.admin.ideas.all.headerSubtitle',
+  inputManagerPageSubtitle: {
+    id: 'app.containers.admin.ideas.all.inputManagerPageSubtitle',
     defaultMessage:
-      'Get a complete overview of all the ideas of all projects. Add themes, change the status by dragging and dropping them to one of the left columns or edit the ideas. If you want to use other statuses or topics, hand us your personal list via support@citizenlab.co.',
+      'Give feedback, add topics and move inputs from one project to another',
+  },
+  tabManage: {
+    id: 'app.containers.admin.ideas.all.tabManage',
+    defaultMessage: 'Manage',
+  },
+  tabStatuses: {
+    id: 'app.containers.admin.ideas.all.tabStatuses',
+    defaultMessage: 'Statuses',
   },
 });

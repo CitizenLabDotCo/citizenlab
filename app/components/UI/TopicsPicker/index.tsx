@@ -2,7 +2,7 @@ import React, { memo, useCallback, MouseEvent } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 // styles
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
+import { colors, fontSizes, isRtl } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { darken, lighten } from 'polished';
 
@@ -22,6 +22,10 @@ const TopicsContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   margin-bottom: 10px;
+
+  ${isRtl`
+    justify-content: flex-end;
+  `}
 `;
 
 const TopicSwitch = styled.button`

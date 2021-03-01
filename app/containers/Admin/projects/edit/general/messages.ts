@@ -13,16 +13,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.noTitleErrorMessage',
     defaultMessage: 'Please enter a project title',
   },
-  deleteProjectConfirmation: {
-    id: 'app.containers.AdminPage.ProjectEdit.deleteProjectConfirmation',
-    defaultMessage:
-      'Are you sure you want to delete this project? This cannot be undone.',
-  },
-  deleteProjectError: {
-    id: 'app.containers.AdminPage.ProjectEdit.deleteProjectError',
-    defaultMessage:
-      'There was an error deleting this project, please try again later.',
-  },
   statusLabel: {
     id: 'app.containers.AdminPage.ProjectEdit.statusLabel',
     defaultMessage: 'Publication status',
@@ -96,23 +86,23 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.areasSelectionLabel',
     defaultMessage: 'Selection',
   },
-  headerImageLabel: {
-    id: 'app.containers.AdminPage.ProjectEdit.headerImageLabel',
-    defaultMessage: 'Header Image',
+  headerImageLabelText: {
+    id: 'app.containers.AdminPage.ProjectEdit.headerImageLabelText',
+    defaultMessage: 'Header image',
   },
   headerImageLabelTooltip: {
     id: 'app.containers.AdminPage.ProjectEdit.headerImageLabelTooltip',
     defaultMessage:
       'This image will be shown on top of the project page. The ideal dimensions are described in {imageSupportArticleLink}.',
   },
-  projectImageLabel: {
-    id: 'app.containers.AdminPage.ProjectEdit.projectImageLabel',
-    defaultMessage: 'Project Images',
+  projectCardImageLabelText: {
+    id: 'app.containers.AdminPage.ProjectEdit.projectCardImageLabelText',
+    defaultMessage: 'Project card image',
   },
-  projectImageLabelTooltip: {
-    id: 'app.containers.AdminPage.ProjectEdit.projectImageLabelTooltip',
+  projectCardImageLabelTooltip: {
+    id: 'app.containers.AdminPage.ProjectEdit.projectCardImageLabelTooltip',
     defaultMessage:
-      'The first added project image will be shown on the project card on the home page. All images are shown on the project page. The ideal dimensions are described in {imageSupportArticleLink}.',
+      'This image will be shown on the project card on the home page. The ideal dimensions are a width of 1440 pixels and a height between 1440 and 720 pixels.',
   },
   fileUploadLabel: {
     id: 'app.containers.AdminPage.ProjectEdit.fileUploadLabel',
@@ -122,19 +112,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.fileUploadLabelTooltip',
     defaultMessage:
       'Files should not be larger than 50Mb. Added files will be shown on the project information page.',
-  },
-  deleteProjectLabel: {
-    id: 'app.containers.AdminPage.ProjectEdit.deleteProjectLabel',
-    defaultMessage: 'Remove this project',
-  },
-  deleteProjectLabelTooltip: {
-    id: 'app.containers.AdminPage.ProjectEdit.deleteProjectLabelTooltip',
-    defaultMessage:
-      'This action will delete the project and all of its content. If you want to keep it but not show it anymore, change its publication status to ‘draft’. Or to ‘archived’ when it should remain visible while blocking participation.',
-  },
-  deleteProjectButton: {
-    id: 'app.containers.AdminPage.ProjectEdit.deleteProjectButton',
-    defaultMessage: 'Remove',
   },
   saveProject: {
     id: 'app.containers.AdminPage.ProjectEdit.saveProject',
@@ -165,5 +142,32 @@ export default defineMessages({
   projectName: {
     id: 'app.containers.AdminPage.ProjectEdit.projectName',
     defaultMessage: 'Project name',
+  },
+  projectUrl: {
+    id: 'app.containers.AdminPage.ProjectEdit.projectUrl',
+    defaultMessage: 'Project URL',
+  },
+  urlSlugLabel: {
+    id: 'app.containers.AdminPage.ProjectEdit.urlSlugLabel',
+    defaultMessage: 'Project slug',
+  },
+  urlSlugTooltip: {
+    id: 'app.containers.AdminPage.ProjectEdit.urlSlugTooltip',
+    defaultMessage:
+      "You can specify the last part of your project page's URL (called the slug). For example, the current project's URL is {currentProjectURL}, where {currentProjectSlug} is the slug.",
+  },
+  urlSlugBrokenLinkWarning: {
+    id: 'app.containers.AdminPage.ProjectEdit.urlSlugBrokenLinkWarning',
+    defaultMessage:
+      'If you change the project URL, links to the project page using the old URL will no longer work.',
+  },
+  regexError: {
+    id: 'app.containers.AdminPage.ProjectEdit.regexError',
+    defaultMessage:
+      'The slug can only contain regular, lowercase letters (a-z), numbers (0-9) and hyphens (-). The first and last characters cannot be hyphens. Consecutive hyphens (--) are forbidden.',
+  },
+  resultingURL: {
+    id: 'app.containers.AdminPage.ProjectEdit.resultingURL',
+    defaultMessage: 'Resulting project URL',
   },
 });

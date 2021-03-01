@@ -3,7 +3,7 @@ import { shallow } from 'enzyme';
 
 import { AdminProjectPoll } from './';
 
-import { getMockProject } from 'services/__mocks__/projects';
+import { getProject } from 'services/__mocks__/projects';
 import {
   mockPhaseInformationData,
   mockPhasePollData,
@@ -21,7 +21,7 @@ jest.mock('components/FeatureFlag', () => 'FeatureFlag');
 describe('<AdminProjectPoll/>', () => {
   describe('boundaries', () => {
     it('is feature flagged under the name poll from the root', () => {
-      const mockProject = getMockProject('projectId', 'continuous', 'poll');
+      const mockProject = getProject('projectId', 'continuous', 'poll');
       const wrapper = shallow(
         <AdminProjectPoll project={mockProject} phases={null} locale={'en'} />
       );
@@ -33,14 +33,14 @@ describe('<AdminProjectPoll/>', () => {
       expect(wrapper.type()).toBeNull();
     });
     it('renders null if phases is null and project is continuous', () => {
-      const mockProject = getMockProject('projectId', 'timeline');
+      const mockProject = getProject('projectId', 'timeline');
 
       const wrapper = shallow(<AdminProjectPoll project={mockProject} />);
 
       expect(wrapper.type()).toBeNull();
     });
     it("renders null if continuous project's PM is not poll", () => {
-      const mockProject = getMockProject(
+      const mockProject = getProject(
         'projectId',
         'continuous',
         'survey',
@@ -52,7 +52,7 @@ describe('<AdminProjectPoll/>', () => {
       expect(wrapper.type()).toBeNull();
     });
     it('renders null if timeline project has no polling phase', () => {
-      const mockProject = getMockProject('projectId', 'timeline');
+      const mockProject = getProject('projectId', 'timeline');
       const mockPhases = [
         mockPhaseInformationData,
         mockPhaseInformationData,
@@ -70,7 +70,7 @@ describe('<AdminProjectPoll/>', () => {
   });
   describe('Continuous project', () => {
     it('renders the right content for a continuous project with polling PM', () => {
-      const mockProject = getMockProject('projectId', 'continuous', 'poll');
+      const mockProject = getProject('projectId', 'continuous', 'poll');
       const wrapper = shallow(
         <AdminProjectPoll project={mockProject} phases={null} locale={'en'} />
       );
@@ -86,7 +86,7 @@ describe('<AdminProjectPoll/>', () => {
   });
   describe('Polling phases', () => {
     it('renders the right content for a timeline project with one polling phase', () => {
-      const mockProject = getMockProject('projectId', 'timeline');
+      const mockProject = getProject('projectId', 'timeline');
       const mockPhases = [
         mockPhaseInformationData,
         mockPhasePollData,
@@ -109,7 +109,7 @@ describe('<AdminProjectPoll/>', () => {
       });
     });
     it('renders the right content for a timeline project with two polling phases', () => {
-      const mockProject = getMockProject('projectId', 'timeline');
+      const mockProject = getProject('projectId', 'timeline');
       const mockPhases = [
         mockPhaseInformationData,
         mockPhasePollData,

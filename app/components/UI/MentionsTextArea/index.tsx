@@ -21,15 +21,35 @@ import { Locale } from 'typings';
 
 const Container = styled.div`
   position: relative;
+  cursor: text;
+  background: #fff;
 
   & .hasBorder textarea:focus {
     border-color: ${colors.focussedBorder} !important;
     box-shadow: ${defaultStyles.boxShadowFocused} !important;
   }
 
-  .textareaWrapper__suggestions__list li:last-child {
+  & .textareaWrapper__suggestions__list li:last-child {
     border: none !important;
   }
+
+  & .textareaWrapper__highlighter,
+  & textarea {
+    background: transparent !important;
+  }
+
+  & textarea::placeholder {
+    opacity: 1 !important;
+    color: #767676 !important;
+  }
+
+  & .textareaWrapper__highlighter > strong {
+    z-index: 2;
+  }
+`;
+
+const StyledMentionsInput = styled(MentionsInput)`
+  word-break: break-word;
 `;
 
 export interface InputProps {
@@ -92,6 +112,25 @@ class MentionsTextArea extends PureComponent<Props, State> {
   }
 
   componentDidMount() {
+    const style = this.getStyle();
+    const mentionStyle = {
+      paddingTop: '3px',
+      paddingBottom: '3px',
+      paddingLeft: '0px',
+      paddingRight: '1px',
+      borderRadius: '3px',
+      backgroundColor: transparentize(0.85, this.props.theme.colorText),
+    };
+    this.setState({ style, mentionStyle });
+  }
+
+  componentDidUpdate(prevProps: Props, _prevState: State) {
+    if (this.props.rows !== prevProps.rows) {
+      this.setState({ style: this.getStyle() });
+    }
+  }
+
+  getStyle = () => {
     const { rows } = this.props;
 
     const style = {
@@ -120,6 +159,7 @@ class MentionsTextArea extends PureComponent<Props, State> {
           background: this.props.background,
           appearance: 'none',
           WebkitAppearance: 'none',
+          transition: 'min-height 180ms cubic-bezier(0.165, 0.84, 0.44, 1)',
         },
         suggestions: {
           list: {
@@ -143,38 +183,23 @@ class MentionsTextArea extends PureComponent<Props, State> {
       },
     };
 
-    const mentionStyle = {
-      paddingTop: '3px',
-      paddingBottom: '3px',
-      paddingLeft: '0px',
-      paddingRight: '1px',
-      borderRadius: '3px',
-      backgroundColor: transparentize(0.9, this.props.theme.colorText),
-    };
-
-    this.setState({ style, mentionStyle });
-  }
+    return style;
+  };
 
   mentionDisplayTransform = (_id, display) => {
     return `@${display}`;
   };
 
   handleOnChange = (event) => {
-    if (this.props.onChange) {
-      this.props.onChange(event.target.value, this.props.locale);
-    }
+    this.props?.onChange?.(event.target.value, this.props.locale);
   };
 
   handleOnFocus = () => {
-    if (this.props.onFocus) {
-      this.props.onFocus();
-    }
+    this.props?.onFocus?.();
   };
 
   handleOnBlur = () => {
-    if (this.props.onBlur) {
-      this.props.onBlur();
-    }
+    this.props?.onBlur?.();
   };
 
   setRef = () => {
@@ -236,7 +261,7 @@ class MentionsTextArea extends PureComponent<Props, State> {
     if (style) {
       return (
         <Container className={className}>
-          <MentionsInput
+          <StyledMentionsInput
             id={id}
             style={style}
             className={`textareaWrapper ${
@@ -261,7 +286,7 @@ class MentionsTextArea extends PureComponent<Props, State> {
               appendSpaceOnAdd={true}
               style={mentionStyle}
             />
-          </MentionsInput>
+          </StyledMentionsInput>
           {children}
           <Error text={error} />
         </Container>

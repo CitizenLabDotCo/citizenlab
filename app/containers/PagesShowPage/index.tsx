@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, Suspense, lazy } from 'react';
 import { adopt } from 'react-adopt';
 import { isUndefined } from 'lodash-es';
 import { withRouter, WithRouterProps } from 'react-router';
@@ -8,19 +8,19 @@ import { isNilOrError } from 'utils/helperUtils';
 // components
 import { Helmet } from 'react-helmet';
 import ContentContainer from 'components/ContentContainer';
-import { Icon } from 'cl2-component-library';
+import { Icon, Spinner } from 'cl2-component-library';
 import Fragment from 'components/Fragment';
 import FileAttachments from 'components/UI/FileAttachments';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
-
-// services
-import { PageLink } from 'services/pageLink';
+const PagesFooterNavigation = lazy(() =>
+  import('containers/PagesShowPage/PagesFooterNavigation')
+);
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetTenantLocales, {
-  GetTenantLocalesChildProps,
-} from 'resources/GetTenantLocales';
+import GetAppConfigurationLocales, {
+  GetAppConfigurationLocalesChildProps,
+} from 'resources/GetAppConfigurationLocales';
 import GetPage, { GetPageChildProps } from 'resources/GetPage';
 import GetPageLinks, { GetPageLinksChildProps } from 'resources/GetPageLinks';
 import GetResourceFiles, {
@@ -39,8 +39,10 @@ import styled from 'styled-components';
 import { media, colors, fontSizes, defaultCardStyle } from 'utils/styleUtils';
 import ResolveTextVariables from 'components/ResolveTextVariables';
 
-const Container = styled.div`
-  min-height: calc(100vh - ${(props) => props.theme.menuHeight}px - 1px);
+export const Container = styled.div`
+  min-height: calc(
+    100vh - ${(props) => props.theme.menuHeight + props.theme.footerHeight}px
+  );
   display: flex;
   flex-direction: column;
   background: ${colors.background};
@@ -52,7 +54,7 @@ const Container = styled.div`
   `}
 `;
 
-const StyledContentContainer = styled(ContentContainer)`
+export const StyledContentContainer = styled(ContentContainer)`
   max-width: calc(${(props) => props.theme.maxPageWidth}px - 100px);
   margin-left: auto;
   margin-right: auto;
@@ -67,7 +69,7 @@ const AttachmentsContainer = styled.div`
   padding-right: 20px;
 `;
 
-const PageContent = styled.main`
+export const PageContent = styled.main`
   flex-shrink: 0;
   flex-grow: 1;
   background: #fff;
@@ -75,8 +77,8 @@ const PageContent = styled.main`
   padding-bottom: 60px;
 `;
 
-const PageTitle = styled.h1`
-  color: ${colors.text};
+export const PageTitle = styled.h1`
+  color: ${({ theme }) => theme.colorText};
   font-size: ${fontSizes.xxxxl}px;
   line-height: normal;
   font-weight: 600;
@@ -91,25 +93,9 @@ const PageTitle = styled.h1`
   `}
 `;
 
-const PageDescription = styled.div``;
+export const PageDescription = styled.div``;
 
-const PagesNavWrapper = styled.div`
-  width: 100%;
-`;
-
-const PagesNav = styled.nav`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  justify-content: space-between;
-  list-style: none;
-  margin: 0 auto;
-  padding-top: 90px;
-  padding-bottom: 80px;
-`;
-
-const StyledLink = styled(Link)`
+export const StyledLink = styled(Link)`
   color: #666;
   font-size: ${fontSizes.large}px;
   font-weight: 400;
@@ -127,7 +113,7 @@ const StyledLink = styled(Link)`
   }
 `;
 
-const LinkIcon = styled(Icon)`
+export const LinkIcon = styled(Icon)`
   width: 13px;
   height: 13px;
 `;
@@ -136,7 +122,7 @@ interface InputProps {}
 
 interface DataProps {
   locale: GetLocaleChildProps;
-  tenantLocales: GetTenantLocalesChildProps;
+  tenantLocales: GetAppConfigurationLocalesChildProps;
   page: GetPageChildProps;
   pageFiles: GetResourceFilesChildProps;
   pageLinks: GetPageLinksChildProps;
@@ -220,28 +206,9 @@ class PagesShowPage extends PureComponent<
             )}
           </PageContent>
 
-          {!isNilOrError(pageLinks) && pageLinks.length > 0 && (
-            <PagesNavWrapper>
-              <PagesNav>
-                <StyledContentContainer>
-                  {pageLinks
-                    .filter((pageLink) => !isNilOrError(pageLink))
-                    .map((pageLink: PageLink) => (
-                      <StyledLink
-                        className={`e2e-page-link-to-${pageLink.attributes.linked_page_slug}`}
-                        to={`/pages/${pageLink.attributes.linked_page_slug}`}
-                        key={pageLink.id}
-                      >
-                        <T
-                          value={pageLink.attributes.linked_page_title_multiloc}
-                        />
-                        <LinkIcon name="chevron-right" />
-                      </StyledLink>
-                    ))}
-                </StyledContentContainer>
-              </PagesNav>
-            </PagesNavWrapper>
-          )}
+          <Suspense fallback={<Spinner />}>
+            <PagesFooterNavigation currentPageSlug={pageSlug} />
+          </Suspense>
         </Container>
       );
     }
@@ -252,7 +219,7 @@ class PagesShowPage extends PureComponent<
 
 const Data = adopt<DataProps, InputProps & WithRouterProps>({
   locale: <GetLocale />,
-  tenantLocales: <GetTenantLocales />,
+  tenantLocales: <GetAppConfigurationLocales />,
   page: ({ params, render }) => <GetPage slug={params.slug}>{render}</GetPage>,
   pageFiles: ({ page, render }) => (
     <GetResourceFiles

@@ -14,10 +14,14 @@ import AssignBudgetDisabled from 'components/AssignBudgetControl/AssignBudgetDis
 import Author from 'components/Author';
 
 // resources
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetAppConfiguration';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import GetIdeaImage, { GetIdeaImageChildProps } from 'resources/GetIdeaImage';
 import GetUser, { GetUserChildProps } from 'resources/GetUser';
+import GetProject, { GetProjectChildProps } from 'resources/GetProject';
+import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
@@ -27,14 +31,19 @@ import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import { FormattedNumber, InjectedIntlProps } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
+import { getInputTermMessage } from 'utils/i18n';
+
 // styles
 import styled from 'styled-components';
-import { fontSizes, colors } from 'utils/styleUtils';
+import { fontSizes, colors, isRtl } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 
 // typings
 import { IOpenPostPageModalEvent } from 'containers/App';
-import { ParticipationMethod } from 'services/participationContexts';
+import {
+  ParticipationMethod,
+  getInputTerm,
+} from 'services/participationContexts';
 import { IParticipationContextType } from 'typings';
 
 const IdeaBudget = styled.div`
@@ -64,6 +73,10 @@ const FooterInner = styled.div`
   padding-left: 20px;
   padding-right: 20px;
   margin-bottom: 20px;
+
+  ${isRtl`
+    flex-direction: row-reverse;
+  `}
 `;
 
 const Spacer = styled.div`
@@ -76,6 +89,11 @@ const CommentIcon = styled(Icon)`
   fill: ${colors.label};
   margin-right: 6px;
   margin-top: 2px;
+
+  ${isRtl`
+    margin-right: 0;
+    margin-left: 6px;
+  `}
 `;
 
 const CommentCount = styled.div`
@@ -88,6 +106,10 @@ const CommentInfo = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
+
+  ${isRtl`
+    flex-direction: row-reverse;
+ `}
 
   &:not(.enabled) {
     opacity: 0.71;
@@ -108,10 +130,12 @@ export interface InputProps {
 }
 
 interface DataProps {
-  tenant: GetTenantChildProps;
+  tenant: GetAppConfigurationChildProps;
   idea: GetIdeaChildProps;
   ideaImage: GetIdeaImageChildProps;
   ideaAuthor: GetUserChildProps;
+  project: GetProjectChildProps;
+  phases: GetPhasesChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -138,13 +162,14 @@ class IdeaCard extends PureComponent<
     const prevIdea = prevProps.idea;
 
     if (!isNilOrError(idea) && !isNilOrError(prevIdea)) {
-      const votingEnabled = idea.attributes.action_descriptor.voting.enabled;
+      const votingEnabled =
+        idea.attributes.action_descriptor.voting_idea.enabled;
       const prevVotingEnabled =
-        prevIdea.attributes.action_descriptor.voting.enabled;
+        prevIdea.attributes.action_descriptor.voting_idea.enabled;
       const votingDisabledReason =
-        idea.attributes.action_descriptor.voting.disabled_reason;
+        idea.attributes.action_descriptor.voting_idea.disabled_reason;
       const prevVotingDisabledReason =
-        prevIdea.attributes.action_descriptor.voting.disabled_reason;
+        prevIdea.attributes.action_descriptor.voting_idea.disabled_reason;
       const ideaBudgetingEnabled =
         idea.attributes?.action_descriptor?.budgeting?.enabled;
       const prevIdeaBudgetingEnabled =
@@ -198,6 +223,8 @@ class IdeaCard extends PureComponent<
       ideaImage,
       ideaAuthor,
       tenant,
+      project,
+      phases,
       participationMethod,
       participationContextId,
       participationContextType,
@@ -209,24 +236,36 @@ class IdeaCard extends PureComponent<
     if (
       !isNilOrError(tenant) &&
       !isNilOrError(idea) &&
+      !isNilOrError(project) &&
       !isUndefined(ideaImage) &&
       !isUndefined(ideaAuthor)
     ) {
-      const votingDescriptor = idea?.attributes?.action_descriptor?.voting;
+      const votingDescriptor = idea?.attributes?.action_descriptor?.voting_idea;
       const commentingDescriptor =
-        idea?.attributes?.action_descriptor?.commenting;
+        idea?.attributes?.action_descriptor?.commenting_idea;
       const budgetingDescriptor =
         idea?.attributes?.action_descriptor?.budgeting;
-      const projectId = idea?.relationships?.project.data?.id;
+      const projectId = project.id;
       const ideaTitle = localize(idea.attributes.title_multiloc);
-      const a11y_ideaTitle = (
+      const processType = project.attributes.process_type;
+      const inputTerm = getInputTerm(processType, project, phases);
+      const a11y_postTitle = (
         <ScreenReaderOnly>
-          {formatMessage(messages.a11y_ideaTitle)}
+          {formatMessage(
+            getInputTermMessage(inputTerm, {
+              idea: messages.a11y_ideaTitle,
+              option: messages.a11y_optionTitle,
+              project: messages.a11y_projectTitle,
+              question: messages.a11y_questionTitle,
+              issue: messages.a11y_issueTitle,
+              contribution: messages.a11y_contributionTitle,
+            })
+          )}
         </ScreenReaderOnly>
       );
       const title = (
         <span>
-          {a11y_ideaTitle}
+          {a11y_postTitle}
           {ideaTitle}
         </span>
       );
@@ -274,8 +313,7 @@ class IdeaCard extends PureComponent<
             <StyledAuthor
               authorId={ideaAuthorId}
               createdAt={idea.attributes.published_at}
-              size="34px"
-              notALink
+              size={34}
             />
           }
           footer={
@@ -284,11 +322,12 @@ class IdeaCard extends PureComponent<
                 <FooterInner>
                   {participationMethod !== 'budgeting' && (
                     <VoteControl
+                      style="border"
                       ideaId={idea.id}
                       disabledVoteClick={this.disabledVoteClick}
                       size="2"
                       ariaHidden={true}
-                      showDownvote={votingDescriptor.downvoting_enabled}
+                      showDownvote={votingDescriptor?.downvoting_enabled}
                     />
                   )}
 
@@ -374,7 +413,7 @@ class IdeaCard extends PureComponent<
 }
 
 const Data = adopt<DataProps, InputProps>({
-  tenant: <GetTenant />,
+  tenant: <GetAppConfiguration />,
   idea: ({ ideaId, render }) => <GetIdea ideaId={ideaId}>{render}</GetIdea>,
   ideaImage: ({ ideaId, idea, render }) => (
     <GetIdeaImage
@@ -387,6 +426,24 @@ const Data = adopt<DataProps, InputProps>({
   ideaAuthor: ({ idea, render }) => (
     <GetUser id={get(idea, 'relationships.author.data.id')}>{render}</GetUser>
   ),
+  project: ({ idea, render }) => {
+    return (
+      <GetProject
+        projectId={
+          !isNilOrError(idea) ? idea.relationships.project.data.id : null
+        }
+      >
+        {render}
+      </GetProject>
+    );
+  },
+  phases: ({ project, render }) => {
+    return (
+      <GetPhases projectId={!isNilOrError(project) ? project.id : null}>
+        {render}
+      </GetPhases>
+    );
+  },
 });
 
 const IdeaCardWithHoC = injectIntl(injectLocalize(IdeaCard));

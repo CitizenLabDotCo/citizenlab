@@ -8,11 +8,13 @@ import { isPage } from 'utils/helperUtils';
 
 // style
 import styled from 'styled-components';
-import { fontSizes, colors } from 'utils/styleUtils';
-import { darken } from 'polished';
+import { fontSizes, colors, isRtl } from 'utils/styleUtils';
 
 const Text = styled.span`
-  color: ${(props: any) => props.theme.colorText};
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: ${colors.text};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
   line-height: 26px;
@@ -23,12 +25,17 @@ const Text = styled.span`
 `;
 
 const DropdownIcon = styled(Icon)`
-  width: 11px;
+  width: 10px;
   height: 7px;
-  fill: ${({ theme }) => theme.colorText};
+  fill: ${colors.text};
   margin-left: 4px;
-  margin-top: 2px;
+  margin-top: 4px;
   transition: all 100ms ease-out;
+
+  ${isRtl`
+    margin-left: 0;
+    margin-right: 4px;
+  `}
 `;
 
 const Container = styled.button`
@@ -40,6 +47,11 @@ const Container = styled.button`
   padding: 0;
   margin: 0;
   position: relative;
+  width: 100%;
+
+  ${isRtl`
+    flex-direction: row-reverse;
+  `}
 
   &.adminpage {
     ${Text} {
@@ -55,21 +67,12 @@ const Container = styled.button`
   &:focus,
   &.opened {
     ${Text} {
-      color: ${({ theme }) => darken(0.15, theme.colorText)};
+      color: #000;
+      text-decoration: underline;
     }
 
     ${DropdownIcon} {
-      fill: ${({ theme }) => darken(0.15, theme.colorText)};
-    }
-
-    &.adminpage {
-      ${Text} {
-        color: ${darken(0.15, colors.adminTextColor)};
-      }
-
-      ${DropdownIcon} {
-        fill: ${darken(0.15, colors.adminTextColor)};
-      }
+      fill: #000;
     }
   }
 `;

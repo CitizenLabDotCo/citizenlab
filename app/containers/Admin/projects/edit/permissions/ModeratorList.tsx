@@ -73,7 +73,7 @@ class ModeratorList extends PureComponent<Props & InjectedIntlProps> {
                 key={moderator.id}
                 isLastItem={index === moderators.length - 1}
               >
-                <Avatar userId={moderator.id} size="30px" />
+                <Avatar userId={moderator.id} size={30} />
                 <p className="expand">{displayName}</p>
                 <p className="expand">{moderator.attributes.email}</p>
                 <Button

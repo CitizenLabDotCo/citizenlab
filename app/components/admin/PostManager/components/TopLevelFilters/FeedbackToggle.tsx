@@ -132,26 +132,19 @@ export class FeedbackToggle extends React.PureComponent<Props, State> {
   };
 
   render() {
-    const { value, feedbackNeededCount, type } = this.props;
+    const { value, feedbackNeededCount } = this.props;
 
     return (
       <Container
         id="e2e-feedback_needed_filter_toggle"
         className="feedback_needed_filter_toggle"
       >
-        <StyledLabel onClick={this.handleOnClick}>
-          {type === 'Initiatives' ? (
-            <FormattedMessage {...messages.anyFeedbackStatusInitiatives} />
-          ) : type === 'AllIdeas' || type === 'ProjectIdeas' ? (
-            <FormattedMessage {...messages.anyFeedbackStatusIdeas} />
-          ) : null}
-        </StyledLabel>
         <ToggleContainer onClick={this.handleOnClick} checked={value}>
           <input type="checkbox" role="checkbox" aria-checked={value} />
           <i />
         </ToggleContainer>
         <StyledLabel onClick={this.handleOnClick}>
-          <FormattedMessage {...messages.needFeedback} />
+          <FormattedMessage {...messages.inputsNeedFeedbackToggle} />
           {!isNilOrError(feedbackNeededCount.count) && (
             <CountBadge count={feedbackNeededCount.count} />
           )}

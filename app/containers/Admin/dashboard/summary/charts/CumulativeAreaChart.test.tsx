@@ -1,6 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 jest.mock('utils/cl-intl');
+jest.mock('services/appConfiguration');
 import { intl } from 'utils/cl-intl';
 import { CumulativeAreaChart } from './CumulativeAreaChart';
 import {
@@ -29,7 +30,7 @@ describe('<CumulativeAreaChart />', () => {
       <CumulativeAreaChart
         intl={intl}
         theme={chartTheme({})}
-        graphTitleMessageKey="commentsByTimeTitle"
+        graphTitle="commentsByTimeTitle"
         graphUnit="comments"
         startAt={'05-12-2018'}
         endAt={'06-12-2018'}
@@ -47,7 +48,7 @@ describe('<CumulativeAreaChart />', () => {
       <CumulativeAreaChart
         intl={intl}
         theme={chartTheme({})}
-        graphTitleMessageKey="commentsByTimeTitle"
+        graphTitle="commentsByTimeTitle"
         graphUnit="comments"
         startAt={'05-12-2018'}
         endAt={'06-12-2018'}

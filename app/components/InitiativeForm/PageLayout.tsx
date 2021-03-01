@@ -8,6 +8,7 @@ import GoBackButton from 'components/UI/GoBackButton';
 import TipsBox from './TipsBox';
 import ContentContainer from 'components/ContentContainer';
 import CollapsibleTipsAndInfo from './CollapsibleTipsAndInfo';
+import Fragment from 'components/Fragment';
 
 // style
 import { media, colors, fontSizes } from 'utils/styleUtils';
@@ -19,7 +20,9 @@ import messages from './messages';
 
 const Container = styled.main`
   background: ${colors.background};
-  min-height: calc(100vh - ${(props) => props.theme.menuHeight}px - 1px);
+  min-height: calc(
+    100vh - ${(props) => props.theme.menuHeight + props.theme.footerHeight}px
+  );
   width: 100%;
   position: relative;
 `;
@@ -121,6 +124,7 @@ const StyledTipsBox = styled(TipsBox)`
 interface Props {
   children: JSX.Element | null;
   className?: string;
+  isAdmin: boolean;
 }
 
 export default class PageLayout extends React.PureComponent<Props> {
@@ -129,8 +133,19 @@ export default class PageLayout extends React.PureComponent<Props> {
   };
 
   render() {
-    const { children, className } = this.props;
+    const { children, className, isAdmin } = this.props;
 
+    const pageContent = (
+      <TwoColumns>
+        <div>
+          <StyledCollapsibleTipsAndInfo />
+          {children}
+        </div>
+        <TipsContainer>
+          <StyledTipsBox />
+        </TipsContainer>
+      </TwoColumns>
+    );
     return (
       <Container className={className}>
         <TopLine>
@@ -151,15 +166,11 @@ export default class PageLayout extends React.PureComponent<Props> {
           </HeaderTitle>
         </Header>
         <StyledContentContainer mode="page">
-          <TwoColumns>
-            <div>
-              <StyledCollapsibleTipsAndInfo />
-              {children}
-            </div>
-            <TipsContainer>
-              <StyledTipsBox />
-            </TipsContainer>
-          </TwoColumns>
+          {isAdmin ? (
+            pageContent
+          ) : (
+            <Fragment name="external-proposal-form">{pageContent}</Fragment>
+          )}
         </StyledContentContainer>
       </Container>
     );

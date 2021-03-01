@@ -50,18 +50,24 @@ export default defineMessages({
     id: 'app.components.InitiativeForm.titleEmptyError',
     defaultMessage: 'Please provide a title',
   },
-  titleLengthError: {
-    id: 'app.components.InitiativeForm.titleLengthError',
-    defaultMessage: 'The initiative title must be at least 10 characters long',
+  titleMinLengthError: {
+    id: 'app.components.InitiativeForm.titleMinLengthError',
+    defaultMessage:
+      'The provided title is too short. Please add a title that is between 10 and 72 characters long.',
+  },
+  titleMaxLengthError: {
+    id: 'app.components.InitiativeForm.titleMaxLengthError',
+    defaultMessage:
+      'The provided title is too long. Please add a title that is between 10 and 72 characters long.',
   },
   titleLabel: {
     id: 'app.components.InitiativeForm.titleLabel',
     defaultMessage: 'Title',
   },
-  titleLabelSubtext: {
-    id: 'app.components.InitiativeForm.titleLabelSubtext',
+  titleLabelSubtext2: {
+    id: 'app.components.InitiativeForm.titleLabelSubtext2',
     defaultMessage:
-      'Choose a descriptive, yet concise title (min. 10 characters)',
+      'Choose a descriptive, yet concise title (min. 10 characters, max. 72 characters)',
   },
   descriptionLabel: {
     id: 'app.components.InitiativeForm.descriptionLabel',
@@ -75,10 +81,10 @@ export default defineMessages({
     id: 'app.components.InitiativeForm.descriptionEmptyError',
     defaultMessage: 'Please provide a description',
   },
-  descriptionLengthError: {
-    id: 'app.components.InitiativeForm.descriptionLengthError',
+  descriptionBodyLengthError: {
+    id: 'app.components.InitiativeForm.descriptionBodyLengthError',
     defaultMessage:
-      'The initiative description must be at least 500 characters long',
+      'The initiative description must be at least 30 characters long',
   },
   formDetailsSectionTitle: {
     id: 'app.components.InitiativeForm.formDetailsSectionTitle',

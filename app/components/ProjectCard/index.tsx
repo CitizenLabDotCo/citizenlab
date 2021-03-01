@@ -1,5 +1,4 @@
-import React, { PureComponent } from 'react';
-import { adopt } from 'react-adopt';
+import React, { memo, useState } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { isEmpty, get, isNumber, round } from 'lodash-es';
 import moment from 'moment';
@@ -11,20 +10,20 @@ import Link from 'utils/cl-router/Link';
 
 // components
 import { Icon } from 'cl2-component-library';
-import LazyImage from 'components/LazyImage';
+import Image from 'components/UI/Image';
 import AvatarBubbles from 'components/AvatarBubbles';
 
 // services
 import { getProjectUrl } from 'services/projects';
-import { getIdeaPostingRules } from 'services/ideaPostingRules';
+import { getInputTerm } from 'services/participationContexts';
+import { getIdeaPostingRules } from 'services/actionTakingRules';
 
 // resources
-import GetProject, { GetProjectChildProps } from 'resources/GetProject';
-import GetProjectImages, {
-  GetProjectImagesChildProps,
-} from 'resources/GetProjectImages';
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
+import useProject from 'hooks/useProject';
+import usePhase from 'hooks/usePhase';
+import usePhases from 'hooks/usePhases';
+import useAuthUser from 'hooks/useAuthUser';
+import useProjectImages from 'hooks/useProjectImages';
 
 // i18n
 import T from 'components/T';
@@ -38,20 +37,21 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // style
-import styled, { withTheme } from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 import {
   media,
   colors,
   fontSizes,
   defaultCardStyle,
   defaultCardHoverStyle,
+  isRtl,
 } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { rgba, darken } from 'polished';
+import { getInputTermMessage } from 'utils/i18n';
 
-const Container = styled(Link)`
+const Container = styled(Link)<{ hideDescriptionPreview?: boolean }>`
   width: calc(33% - 12px);
-  min-height: 560px;
   display: flex;
   flex-direction: column;
   margin-bottom: 25px;
@@ -65,6 +65,10 @@ const Container = styled(Link)`
     flex-direction: row;
     align-items: stretch;
     justify-content: space-between;
+
+    ${isRtl`
+        flex-direction: row-reverse;
+    `}
 
     ${media.smallerThanMinTablet`
       width: 100%;
@@ -83,6 +87,12 @@ const Container = styled(Link)`
   }
 
   &.small {
+    min-height: 540px;
+
+    &.hideDescriptionPreview {
+      min-height: 490px;
+    }
+
     &.threecolumns {
       ${media.smallerThanMaxTablet`
         width: calc(50% - 13px);
@@ -99,10 +109,14 @@ const Container = styled(Link)`
     `}
   }
 
-  &.small,
   &.medium {
     padding-top: 20px;
     padding-bottom: 30px;
+  }
+
+  &.small {
+    padding-top: 18px;
+    padding-bottom: 25px;
   }
 
   &.desktop {
@@ -133,6 +147,11 @@ const ProjectImageContainer = styled.div`
     border-top-left-radius: 4px;
     border-bottom-left-radius: 4px;
   }
+
+  &.small {
+    height: 224px;
+    flex-basis: 224px;
+  }
 `;
 
 const ProjectImagePlaceholder = styled.div`
@@ -148,13 +167,12 @@ const ProjectImagePlaceholderIcon = styled(Icon)`
   fill: #fff;
 `;
 
-const ProjectImage = styled(LazyImage)`
+const ProjectImage = styled(Image)`
   width: 100%;
   height: 100%;
   position: absolute;
   top: 0;
   left: 0;
-  background: #fff;
 `;
 
 const ProjectContent = styled.div`
@@ -184,6 +202,15 @@ const ProjectContent = styled.div`
       padding-right: 20px;
     `};
   }
+
+  ${isRtl`
+    align-items: flex-end;
+
+    &.large {
+        padding-right: 68px;
+        padding-left: 32px;
+    }
+  `}
 `;
 
 const ContentHeaderHeight = 39;
@@ -210,7 +237,7 @@ const ContentHeader = styled.div`
     &.large {
       margin-bottom: 0px;
       padding-bottom: ${ContentHeaderBottomMargin}px;
-      border-bottom: solid 1px #e8e8e8;
+      border-bottom: solid 1px #e0e0e0;
     }
   }
 
@@ -250,7 +277,7 @@ const TimeRemaining = styled.div`
   color: ${({ theme }) => theme.colorText};
   font-size: ${fontSizes.small}px;
   font-weight: 400;
-  margin-bottom: 8px;
+  margin-bottom: 7px;
 `;
 
 const ProgressBar = styled.div`
@@ -281,19 +308,12 @@ const ProjectLabel = styled.div`
   font-weight: 400;
   text-align: center;
   white-space: nowrap;
-  padding-left: 16px;
-  padding-right: 16px;
-  padding-top: 10px;
-  padding-bottom: 10px;
+  padding-left: 14px;
+  padding-right: 14px;
+  padding-top: 8px;
+  padding-bottom: 8px;
   border-radius: ${(props: any) => props.theme.borderRadius};
   background: ${({ theme }) => rgba(theme.colorSecondary, 0.1)};
-  transition: all 200ms ease;
-  cursor: pointer;
-
-  &:hover {
-    color: ${({ theme }) => darken(0.2, theme.colorSecondary)};
-    background: ${({ theme }) => rgba(theme.colorSecondary, 0.15)};
-  }
 `;
 
 const ContentBody = styled.div`
@@ -317,13 +337,17 @@ const ProjectTitle = styled.h3`
   margin: 0;
   padding: 0;
 
+  ${isRtl`
+    text-align: right;
+    `}
+
   &:hover {
     text-decoration: underline;
   }
 `;
 
 const ProjectDescription = styled.div`
-  color: ${colors.label};
+  color: ${darken(0.1, colors.label)};
   font-size: ${fontSizes.base}px;
   line-height: normal;
   font-weight: 300;
@@ -331,19 +355,23 @@ const ProjectDescription = styled.div`
   word-wrap: break-word;
   word-break: break-word;
   margin-top: 15px;
+
+  ${isRtl`
+   text-align: right;
+ `}
 `;
 
 const ContentFooter = styled.div`
-  height: 53px;
+  height: 45px;
   flex-shrink: 0;
   flex-grow: 0;
-  flex-basis: 53px;
+  flex-basis: 45px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding-top: 16px;
   margin-top: 30px;
-  border-top: solid 1px #e8e8e8;
+  border-top: solid 1px #e0e0e0;
 
   &.hidden {
     border: none;
@@ -430,81 +458,66 @@ export interface InputProps {
   projectId: string;
   size: 'small' | 'medium' | 'large';
   layout?: 'dynamic' | 'threecolumns' | 'twocolumns';
+  hideDescriptionPreview?: boolean;
   className?: string;
 }
 
-interface DataProps {
-  project: GetProjectChildProps;
-  projectImages: GetProjectImagesChildProps;
-  authUser: GetAuthUserChildProps;
-  phase: GetPhaseChildProps;
-}
+interface Props extends InputProps, InjectedIntlProps {}
 
-interface Props extends InputProps, DataProps {
-  theme?: any;
-}
+const ProjectCard = memo<Props>(
+  ({
+    projectId,
+    size,
+    layout,
+    hideDescriptionPreview,
+    className,
+    intl: { formatMessage },
+  }) => {
+    const project = useProject({ projectId });
+    const authUser = useAuthUser();
+    const projectImages = useProjectImages({ projectId });
+    const currentPhaseId =
+      !isNilOrError(project) && project.relationships.current_phase?.data?.id
+        ? project.relationships.current_phase.data.id
+        : null;
+    const phase = usePhase(currentPhaseId);
+    const phases = usePhases(projectId);
+    const theme: any = useTheme();
 
-interface State {
-  visible: boolean;
-}
+    const [visible, setVisible] = useState(false);
 
-class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
-  constructor(props) {
-    super(props);
-    this.state = {
-      visible: false,
+    const handleIntersection = (
+      event: IntersectionObserverEntry,
+      unobserve: () => void
+    ) => {
+      if (event.isIntersecting) {
+        setVisible(true);
+        unobserve();
+      }
     };
-  }
 
-  handleIntersection = (
-    event: IntersectionObserverEntry,
-    unobserve: () => void
-  ) => {
-    if (event.isIntersecting) {
-      this.setState({ visible: true });
-      unobserve();
-    }
-  };
+    const handleProjectCardOnClick = (projectId: string) => () => {
+      trackEventByName(tracks.clickOnProjectCard, { extra: { projectId } });
+    };
 
-  handleProjectCardOnClick = (projectId: string) => () => {
-    trackEventByName(tracks.clickOnProjectCard, { extra: { projectId } });
-  };
+    const handleCTAOnClick = (projectId: string) => () => {
+      trackEventByName(tracks.clickOnProjectCardCTA, { extra: { projectId } });
+    };
 
-  handleCTAOnClick = (projectId: string) => () => {
-    trackEventByName(tracks.clickOnProjectCardCTA, { extra: { projectId } });
-  };
-
-  handleProjectTitleOnClick = (projectId: string) => () => {
-    trackEventByName(tracks.clickOnProjectTitle, { extra: { projectId } });
-  };
-
-  render() {
-    const { visible } = this.state;
-    const {
-      authUser,
-      project,
-      phase,
-      size,
-      projectImages,
-      intl: { formatMessage },
-      layout,
-      className,
-    } = this.props;
+    const handleProjectTitleOnClick = (projectId: string) => () => {
+      trackEventByName(tracks.clickOnProjectTitle, { extra: { projectId } });
+    };
 
     if (!isNilOrError(project)) {
       const postingPermission = getIdeaPostingRules({
         project,
-        phase,
-        authUser,
+        phase: !isNilOrError(phase) ? phase : null,
+        authUser: !isNilOrError(authUser) ? authUser : null,
       });
       const participationMethod = !isNilOrError(phase)
         ? phase.attributes.participation_method
         : project.attributes.participation_method;
-      const canPost = !!(
-        (!isNilOrError(phase)
-          ? phase.attributes.posting_enabled
-          : project.attributes.posting_enabled) && postingPermission.enabled
-      );
+      const canPost = !!postingPermission.enabled;
       const canVote = !!(
         (!isNilOrError(phase)
           ? phase.attributes.voting_enabled
@@ -515,7 +528,7 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
         (!isNilOrError(phase)
           ? phase.attributes.commenting_enabled
           : project.attributes.commenting_enabled) &&
-        get(project, 'attributes.action_descriptor.commenting.enabled')
+        get(project, 'attributes.action_descriptor.commenting_idea.enabled')
       );
       const imageUrl =
         !isNilOrError(projectImages) && projectImages.length > 0
@@ -548,6 +561,8 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
         : null;
       let countdown: JSX.Element | null = null;
       let ctaMessage: JSX.Element | null = null;
+      const processType = project.attributes.process_type;
+      const inputTerm = getInputTerm(processType, project, phases);
 
       if (isArchived) {
         countdown = (
@@ -581,7 +596,7 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
                 values={{ timeRemaining }}
               />
             </TimeRemaining>
-            <Observer onChange={this.handleIntersection}>
+            <Observer onChange={handleIntersection}>
               <ProgressBar aria-hidden>
                 <ProgressBarOverlay
                   progress={progress}
@@ -602,13 +617,35 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
       } else if (participationMethod === 'poll') {
         ctaMessage = <FormattedMessage {...messages.takeThePoll} />;
       } else if (participationMethod === 'ideation' && canPost) {
-        ctaMessage = <FormattedMessage {...messages.postYourIdea} />;
+        ctaMessage = (
+          <FormattedMessage
+            {...getInputTermMessage(inputTerm, {
+              idea: messages.submitYourIdea,
+              option: messages.addYourOption,
+              project: messages.submitYourProject,
+              question: messages.joinDiscussion,
+              issue: messages.submitAnIssue,
+              contribution: messages.contributeYourInput,
+            })}
+          />
+        );
       } else if (participationMethod === 'ideation' && canVote) {
         ctaMessage = <FormattedMessage {...messages.vote} />;
       } else if (participationMethod === 'ideation' && canComment) {
         ctaMessage = <FormattedMessage {...messages.comment} />;
       } else if (participationMethod === 'ideation') {
-        ctaMessage = <FormattedMessage {...messages.viewTheIdeas} />;
+        ctaMessage = (
+          <FormattedMessage
+            {...getInputTermMessage(inputTerm, {
+              idea: messages.viewTheIdeas,
+              option: messages.viewTheOptions,
+              project: messages.viewTheProjects,
+              question: messages.viewTheQuestions,
+              issue: messages.viewTheIssues,
+              contribution: messages.viewTheContributions,
+            })}
+          />
+        );
       }
 
       const contentHeader = (
@@ -628,7 +665,7 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
               className={`${size} ${countdown ? 'hasProgressBar' : ''}`}
             >
               <ProjectLabel
-                onClick={this.handleCTAOnClick(project.id)}
+                onClick={handleCTAOnClick(project.id)}
                 className="e2e-project-card-cta"
               >
                 {ctaMessage}
@@ -654,13 +691,20 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
 
       return (
         <Container
-          className={`${className} ${layout} ${size} ${
-            isArchived ? 'archived' : ''
-          } ${
-            !(bowser.mobile || bowser.tablet) ? 'desktop' : 'mobile'
-          } e2e-project-card e2e-admin-publication-card`}
+          className={[
+            className || '',
+            layout,
+            size,
+            'e2e-project-card',
+            'e2e-admin-publication-card',
+            isArchived ? 'archived' : '',
+            !(bowser.mobile || bowser.tablet) ? 'desktop' : 'mobile',
+            hideDescriptionPreview ? 'hideDescriptionPreview' : '',
+          ]
+            .filter((item) => item)
+            .join(' ')}
           to={projectUrl}
-          onClick={this.handleProjectCardOnClick(project.id)}
+          onClick={handleProjectCardOnClick(project.id)}
         >
           {screenReaderContent}
           {size !== 'large' && contentHeader}
@@ -679,24 +723,26 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
             <ContentBody className={size} aria-hidden>
               <ProjectTitle
                 className="e2e-project-card-project-title"
-                onClick={this.handleProjectTitleOnClick(project.id)}
+                onClick={handleProjectTitleOnClick(project.id)}
               >
                 <T value={project.attributes.title_multiloc} />
               </ProjectTitle>
 
-              <T value={project.attributes.description_preview_multiloc}>
-                {(description) => {
-                  if (!isEmpty(description)) {
-                    return (
-                      <ProjectDescription className="e2e-project-card-project-description-preview">
-                        {description}
-                      </ProjectDescription>
-                    );
-                  }
+              {!hideDescriptionPreview && (
+                <T value={project.attributes.description_preview_multiloc}>
+                  {(description) => {
+                    if (!isEmpty(description)) {
+                      return (
+                        <ProjectDescription className="e2e-project-card-project-description-preview">
+                          {description}
+                        </ProjectDescription>
+                      );
+                    }
 
-                  return null;
-                }}
-              </T>
+                    return null;
+                  }}
+                </T>
+              )}
             </ContentBody>
 
             <ContentFooter className={`${size} ${!showFooter ? 'hidden' : ''}`}>
@@ -705,9 +751,9 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
                   <AvatarBubbles
                     size={32}
                     limit={3}
-                    userCountBgColor={this.props.theme.colorMain}
+                    userCountBgColor={theme.colorMain}
                     avatarIds={avatarIds}
-                    userCount={project.attributes.avatars_count}
+                    userCount={project.attributes.participants_count}
                   />
                 )}
               </ContentFooterLeft>
@@ -716,10 +762,20 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
                 <ProjectMetaItems>
                   {showIdeasCount && (
                     <MetaItem className="first">
-                      <MetaItemIcon ariaHidden name="idea2" />
+                      <MetaItemIcon ariaHidden name="idea" />
                       <MetaItemText aria-hidden>{ideasCount}</MetaItemText>
                       <ScreenReaderOnly>
-                        {formatMessage(messages.xIdeas, { ideasCount })}
+                        {formatMessage(
+                          getInputTermMessage(inputTerm, {
+                            idea: messages.xIdeas,
+                            option: messages.xOptions,
+                            contribution: messages.xContributions,
+                            project: messages.xProjects,
+                            issue: messages.xIssues,
+                            question: messages.xQuestions,
+                          }),
+                          { ideasCount }
+                        )}
                       </ScreenReaderOnly>
                     </MetaItem>
                   )}
@@ -743,30 +799,8 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
 
     return null;
   }
-}
-
-const Data = adopt<DataProps, InputProps>({
-  authUser: <GetAuthUser />,
-  project: ({ projectId, render }) => (
-    <GetProject projectId={projectId}>{render}</GetProject>
-  ),
-  projectImages: ({ projectId, render }) => (
-    <GetProjectImages projectId={projectId}>{render}</GetProjectImages>
-  ),
-  phase: ({ project, render }) => (
-    <GetPhase id={get(project, 'relationships.current_phase.data.id')}>
-      {render}
-    </GetPhase>
-  ),
-});
-
-const ProjectCardWithHoC = withTheme(injectIntl<Props>(ProjectCard));
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => {
-      const props = { ...inputProps, ...dataProps };
-      return <ProjectCardWithHoC {...props} />;
-    }}
-  </Data>
 );
+
+const ProjectCardWithHoC = injectIntl(ProjectCard);
+
+export default ProjectCardWithHoC;

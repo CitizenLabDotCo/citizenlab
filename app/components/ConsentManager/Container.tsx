@@ -13,7 +13,7 @@ import LoadableModal from 'components/Loadable/Modal';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
-import { CustomPreferences, CategorizedDestinations } from './';
+import { CategorizedDestinations, IPreferences } from './';
 
 import styled from 'styled-components';
 
@@ -27,9 +27,10 @@ export const ButtonContainer = styled.div`
 interface Props {
   setPreferences: Function;
   resetPreferences: () => void;
+  accept: () => void;
   saveConsent: () => void;
   isConsentRequired: boolean;
-  preferences: CustomPreferences;
+  preferences: IPreferences;
   categorizedDestinations: CategorizedDestinations;
 }
 
@@ -38,7 +39,7 @@ interface State {
   isCancelling: boolean;
 }
 
-export class Container extends PureComponent<Props, State> {
+export default class Container extends PureComponent<Props, State> {
   subscriptions: Subscription[] = [];
 
   constructor(props) {
@@ -73,12 +74,6 @@ export class Container extends PureComponent<Props, State> {
     });
   };
 
-  handleBannerAccept = () => {
-    const { saveConsent } = this.props;
-
-    saveConsent();
-  };
-
   handleCategoryChange = (category: string, value: boolean) => {
     const { setPreferences } = this.props;
 
@@ -92,7 +87,7 @@ export class Container extends PureComponent<Props, State> {
     const { preferences, categorizedDestinations } = this.props;
     for (const category of Object.keys(categorizedDestinations)) {
       if (categorizedDestinations[category].length > 0) {
-        res = res && !(preferences[category] === null);
+        res = res && !(preferences[category] === undefined);
       }
     }
     return res;
@@ -116,9 +111,7 @@ export class Container extends PureComponent<Props, State> {
   handleCancel = () => {
     const { resetPreferences, isConsentRequired, preferences } = this.props;
 
-    const isEmpty = Object.keys(preferences).every(
-      (e) => preferences[e] === null
-    );
+    const isEmpty = Object.values(preferences).every((e) => e === undefined);
 
     // Only show the cancel confirmation if there's unconsented destinations...
     // or if the user made a choice and we want to confirm aborting it
@@ -149,6 +142,7 @@ export class Container extends PureComponent<Props, State> {
       preferences,
       isConsentRequired,
       categorizedDestinations,
+      accept,
     } = this.props;
     const { isDialogOpen, isCancelling } = this.state;
     const noDestinations = Object.values(categorizedDestinations).every(
@@ -177,35 +171,23 @@ export class Container extends PureComponent<Props, State> {
             />
           }
         >
-          {noDestinations && (
-            <ContentContainer role="dialog" aria-modal>
-              <FormattedMessage {...messages.noDestinations} tagName="h1" />
-            </ContentContainer>
-          )}
-          {!noDestinations && !isCancelling && (
+          {!isCancelling ? (
             <PreferencesDialog
               onChange={this.handleCategoryChange}
               categoryDestinations={categorizedDestinations}
-              analytics={preferences.analytics}
-              advertising={preferences.advertising}
-              functional={preferences.functional}
+              preferences={preferences}
             />
-          )}
-          {!noDestinations && isCancelling && (
+          ) : (
             <ContentContainer role="dialog" aria-modal>
               <FormattedMessage {...messages.confirmation} tagName="h1" />
             </ContentContainer>
           )}
         </LoadableModal>
+
         {isConsentRequired && (
-          <Banner
-            onAccept={this.handleBannerAccept}
-            onChangePreferences={this.openDialog}
-          />
+          <Banner onAccept={accept} onChangePreferences={this.openDialog} />
         )}
       </>
     );
   }
 }
-
-export default Container;

@@ -120,7 +120,7 @@ jobs:
             - /root/.npm
           key: v1-npm-cache-{{ checksum "package.json" }}
       - run:
-          command: SEGMENT_API_KEY=$SEGMENT_API_KEY_STAGING npm run build:staging
+          command: SEGMENT_API_KEY=$SEGMENT_API_KEY_STAGING SENTRY_DSN=$SENTRY_DSN_STAGING npm run build:staging
           no_output_timeout: '30m'
       - run:
           command: rm build/*.map
@@ -129,6 +129,21 @@ jobs:
           command: |
             aws s3 sync build/ s3://cl2-front-staging/ --acl public-read --exclude "index.html"
             aws s3 cp build/index.html s3://cl2-front-staging/index.html --acl public-read --cache-control no-cache
+
+  license-check:
+    docker:
+      - image: licensefinder/license_finder
+    working_directory: /scan
+    resource_class: small
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+          - v1-npm-cache-{{ checksum "package.json" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-npm-cache-
+      - run: npm ci
+      - run: /bin/bash -lc "cd /scan && license_finder"
 
   # deploy_crowdin:
   #   docker:
@@ -176,7 +191,7 @@ jobs:
             - /root/.npm
           key: v1-npm-cache-{{ checksum "package.json" }}
       - run:
-          command: SEGMENT_API_KEY=$SEGMENT_API_KEY_PRODUCTION npm run build
+          command: SEGMENT_API_KEY=$SEGMENT_API_KEY_PRODUCTION SENTRY_DSN=$SENTRY_DSN_PRODUCTION npm run build
           no_output_timeout: '30m'
       - run:
           command: rm build/*.map
@@ -253,6 +268,7 @@ workflows:
             branches:
               ignore:
                 - crowdin_master
+                - /l10n_.*/
                 - master
                 - production
       - lint:
@@ -260,13 +276,21 @@ workflows:
             branches:
               ignore:
                 - crowdin_master
+                - /l10n_.*/
                 - master
                 - production
+      - license-check:
+          filters:
+            branches:
+              ignore:
+                - crowdin_master
+                - /l10n_.*/
       - build:
           filters:
             branches:
               ignore:
                 - crowdin_master
+                - /l10n_.*/
                 - master
                 - production
       - extract_intl:
@@ -274,6 +298,7 @@ workflows:
             branches:
               ignore:
                 - crowdin_master
+                - /l10n_.*/
                 - master
                 - production
       - deploy_demo:
@@ -295,6 +320,7 @@ workflows:
             - deploy_demo
             - reset_ci_tenants
           command: npx cypress run --spec 'cypress/integration/*.ts' --config baseUrl=https://e2e.stg.citizenlab.co
+          store_artifacts: true
           filters:
             branches:
               only:

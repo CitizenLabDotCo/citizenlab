@@ -2,6 +2,7 @@
 import React, { PureComponent, MouseEvent, FormEvent } from 'react';
 import { get, includes } from 'lodash-es';
 import { adopt } from 'react-adopt';
+import { Subscription } from 'rxjs';
 import { withRouter, WithRouterProps } from 'react-router';
 import { locales } from 'containers/App/constants';
 import bowser from 'bowser';
@@ -22,7 +23,9 @@ import tracks from './tracks';
 
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetAppConfiguration';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetAdminPublications, {
   GetAdminPublicationsChildProps,
@@ -35,6 +38,7 @@ import { isAdmin } from 'services/permissions/roles';
 // utils
 import { isNilOrError, isPage } from 'utils/helperUtils';
 import { openSignUpInModal } from 'components/SignUpIn/events';
+import eventEmitter from 'utils/eventEmitter';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -46,18 +50,20 @@ import { InjectedIntlProps } from 'react-intl';
 // style
 import styled from 'styled-components';
 import { rgba, darken } from 'polished';
-import { colors, media, fontSizes, defaultStyles } from 'utils/styleUtils';
+import { media, fontSizes, isRtl } from 'utils/styleUtils';
+import Outlet from 'components/Outlet';
+import ProjectsListItem from './components/ProjectsListItem';
 
-const Container = styled.header`
+const Container = styled.header<{ position: 'fixed' | 'absolute' }>`
   width: 100vw;
   height: ${({ theme }) => theme.menuHeight}px;
   display: flex;
   align-items: stretch;
-  position: fixed;
+  position: ${(props) => props.position};
   top: 0;
   left: 0;
   background: ${({ theme }) => theme.navbarBackgroundColor || '#fff'};
-  box-shadow: ${defaultStyles.boxShadow};
+  box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.1);
   z-index: 1004;
 
   &.hideNavbar {
@@ -68,8 +74,7 @@ const Container = styled.header`
 
   &.citizenPage {
     ${media.smallerThanMaxTablet`
-      position: relative;
-      top: auto;
+      position: absolute;
     `}
   }
 
@@ -87,6 +92,11 @@ const ContainerInner = styled.div`
   justify-content: space-between;
   padding-left: 20px;
   position: relative;
+  ${isRtl`
+    padding-left: 0px;
+    padding-right: 20px;
+    flex-direction: row-reverse;
+    `}
 
   ${media.smallerThanMinTablet`
     padding-left: 15px;
@@ -97,6 +107,9 @@ const Left = styled.div`
   display: flex;
   align-items: center;
   height: ${({ theme }) => theme.menuHeight}px;
+  ${isRtl`
+    flex-direction: row-reverse;
+    `}
 `;
 
 const LogoLink = styled(Link)`
@@ -123,6 +136,11 @@ const NavigationItems = styled.nav`
 
   ${media.smallerThanMaxTablet`
     display: none;
+  `}
+  ${isRtl`
+    margin-right: 35px;
+    margin-left: 0;
+    flex-direction: row-reverse;
   `}
 `;
 
@@ -240,6 +258,9 @@ const NavigationDropdownItem = styled.button`
         theme.navbarActiveItemBorderColor || theme.colorMain};
     }
   }
+  ${isRtl`
+     flex-direction: row-reverse;
+  `}
 `;
 
 const NavigationDropdownItemIcon = styled(Icon)`
@@ -248,31 +269,19 @@ const NavigationDropdownItemIcon = styled(Icon)`
   fill: inherit;
   margin-left: 4px;
   margin-top: 3px;
+  ${isRtl`
+    margin-left: 0;
+    margin-right: 4px;
+  `}
 `;
 
 const ProjectsList = styled.div`
   display: flex;
   flex-direction: column;
   align-items: stretch;
-`;
-
-const ProjectsListItem = styled(Link)`
-  color: ${colors.label};
-  font-size: ${fontSizes.base}px;
-  font-weight: 400;
-  line-height: 21px;
-  text-decoration: none;
-  padding: 10px;
-  margin-bottom: 4px;
-  background: transparent;
-  border-radius: ${(props: any) => props.theme.borderRadius};
-
-  &:hover,
-  &:focus {
-    color: #000;
-    background: ${colors.clDropdownHoverBackground};
-    text-decoration: none;
-  }
+  ${isRtl`
+    text-align: right;
+  `}
 `;
 
 const ProjectsListFooter = styled(Link)`
@@ -315,6 +324,21 @@ const Right = styled.div`
   ${media.smallerThanMinTablet`
     margin-right: 20px;
   `}
+  ${isRtl`
+    flex-direction: row-reverse;
+    margin-left: 30px;
+
+    &.ie {
+      margin-left: 50px;
+    }
+    ${media.desktop`
+        margin-left: 40px;
+    `}
+
+    ${media.smallerThanMinTablet`
+        margin-left: 20px;
+    `}
+    `}
 `;
 
 const StyledLoadableLanguageSelector = styled(LoadableLanguageSelector)`
@@ -322,6 +346,13 @@ const StyledLoadableLanguageSelector = styled(LoadableLanguageSelector)`
 
   ${media.smallerThanMinTablet`
     padding-left: 15px;
+  `}
+  ${isRtl`
+    padding-left: 0px;
+    padding-right: 20px;
+  ${media.smallerThanMinTablet`
+    padding-right: 15px;
+  `}
   `}
 `;
 
@@ -339,6 +370,19 @@ const RightItem = styled.div`
 
   ${media.smallerThanMinTablet`
     margin-left: 30px;
+  `}
+
+  ${isRtl`
+    margin-right: 40px;
+    margin-left: 0;
+    ${media.smallerThanMinTablet`
+        margin-right: 30px;
+    `}
+    &.noLeftMargin {
+        margin-left: 0;
+        margin-right: 0px;
+    }
+
   `}
 `;
 
@@ -407,7 +451,7 @@ interface InputProps {
 
 interface DataProps {
   authUser: GetAuthUserChildProps;
-  tenant: GetTenantChildProps;
+  tenant: GetAppConfigurationChildProps;
   locale: GetLocaleChildProps;
   adminPublications: GetAdminPublicationsChildProps;
 }
@@ -416,23 +460,42 @@ interface Props extends InputProps, DataProps {}
 
 interface State {
   projectsDropdownOpened: boolean;
+  fullscreenModalOpened: boolean;
 }
 
 class Navbar extends PureComponent<
   Props & WithRouterProps & InjectedIntlProps & InjectedLocalized,
   State
 > {
+  subscriptions: Subscription[];
+
   constructor(props) {
     super(props);
     this.state = {
       projectsDropdownOpened: false,
+      fullscreenModalOpened: false,
     };
+  }
+
+  componentDidMount() {
+    this.subscriptions = [
+      eventEmitter.observeEvent('cardClick').subscribe(() => {
+        this.setState({ fullscreenModalOpened: true });
+      }),
+      eventEmitter.observeEvent('fullscreenModalClosed').subscribe(() => {
+        this.setState({ fullscreenModalOpened: false });
+      }),
+    ];
   }
 
   componentDidUpdate(prevProps: Props & WithRouterProps & InjectedIntlProps) {
     if (prevProps.location !== this.props.location) {
       this.setState({ projectsDropdownOpened: false });
     }
+  }
+
+  componentWillUnmount() {
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   toggleProjectsDropdown = (event: FormEvent) => {
@@ -481,7 +544,7 @@ class Navbar extends PureComponent<
       intl: { formatMessage },
       adminPublications,
     } = this.props;
-    const { projectsDropdownOpened } = this.state;
+    const { projectsDropdownOpened, fullscreenModalOpened } = this.state;
     const tenantLocales = !isNilOrError(tenant)
       ? tenant.attributes.settings.core.locales
       : [];
@@ -498,32 +561,38 @@ class Navbar extends PureComponent<
     const firstUrlSegment = urlSegments[0];
     const secondUrlSegment = urlSegments[1];
     const lastUrlSegment = urlSegments[urlSegments.length - 1];
-    const onIdeaPage =
+    const isIdeaPage =
       urlSegments.length === 3 &&
       includes(locales, firstUrlSegment) &&
       secondUrlSegment === 'ideas' &&
       lastUrlSegment !== 'new';
-    const onInitiativePage =
+    const isInitiativePage =
       urlSegments.length === 3 &&
       includes(locales, firstUrlSegment) &&
       secondUrlSegment === 'initiatives' &&
       lastUrlSegment !== 'new';
-    const adminPage = isPage('admin', location.pathname);
-    const initiativeFormPage = isPage('initiative_form', location.pathname);
-    const ideaFormPage = isPage('idea_form', location.pathname);
-    const ideaEditPage = isPage('idea_edit', location.pathname);
-    const initiativeEditPage = isPage('initiative_edit', location.pathname);
-    const emailSettingsPage = isPage('email-settings', location.pathname);
+    const isAdminPage = isPage('admin', location.pathname);
+    const isInitiativeFormPage = isPage('initiative_form', location.pathname);
+    const isIdeaFormPage = isPage('idea_form', location.pathname);
+    const isIdeaEditPage = isPage('idea_edit', location.pathname);
+    const isInitiativeEditPage = isPage('initiative_edit', location.pathname);
+    const isEmailSettingsPage = isPage('email-settings', location.pathname);
+    const isProjectPage = !!(
+      !fullscreenModalOpened &&
+      urlSegments.length === 3 &&
+      urlSegments[0] === locale &&
+      urlSegments[1] === 'projects'
+    );
     const totalProjectsListLength =
-      !isNilOrError(adminPublications) && adminPublications.list
-        ? adminPublications.list.length
+      !isNilOrError(adminPublications) && adminPublications.topLevel
+        ? adminPublications.topLevel.length
         : 0;
     const showMobileNav =
-      !adminPage &&
-      !ideaFormPage &&
-      !initiativeFormPage &&
-      !ideaEditPage &&
-      !initiativeEditPage;
+      !isAdminPage &&
+      !isIdeaFormPage &&
+      !isInitiativeFormPage &&
+      !isIdeaEditPage &&
+      !isInitiativeEditPage;
 
     return (
       <>
@@ -534,11 +603,12 @@ class Navbar extends PureComponent<
         <Container
           id="e2e-navbar"
           className={`${
-            adminPage ? 'admin' : 'citizenPage'
+            isAdminPage ? 'admin' : 'citizenPage'
           } ${'alwaysShowBorder'} ${
-            onIdeaPage || onInitiativePage ? 'hideNavbar' : ''
+            isIdeaPage || isInitiativePage ? 'hideNavbar' : ''
           }`}
           ref={this.handleRef}
+          position={isProjectPage ? 'absolute' : 'fixed'}
         >
           <ContainerInner>
             <Left>
@@ -564,8 +634,8 @@ class Navbar extends PureComponent<
                 </NavigationItem>
 
                 {!isNilOrError(adminPublications) &&
-                  adminPublications.list &&
-                  adminPublications.list.length > 0 && (
+                  adminPublications.topLevel &&
+                  adminPublications.topLevel.length > 0 && (
                     <NavigationDropdown>
                       <NavigationDropdownItem
                         tabIndex={0}
@@ -594,20 +664,25 @@ class Navbar extends PureComponent<
                         onClickOutside={this.toggleProjectsDropdown}
                         content={
                           <ProjectsList>
-                            {adminPublications.list.map(
+                            {adminPublications.topLevel.map(
                               (item: IAdminPublicationContent) => (
-                                <ProjectsListItem
-                                  key={item.publicationId}
-                                  to={`/${
-                                    item.publicationType === 'project'
-                                      ? 'projects'
-                                      : 'folders'
-                                  }/${item.attributes.publication_slug}`}
-                                >
-                                  {localize(
-                                    item.attributes.publication_title_multiloc
+                                <React.Fragment key={item.publicationId}>
+                                  {item.publicationType === 'project' && (
+                                    <ProjectsListItem
+                                      to={`/projects/${item.attributes.publication_slug}`}
+                                    >
+                                      {localize(
+                                        item.attributes
+                                          .publication_title_multiloc
+                                      )}
+                                    </ProjectsListItem>
                                   )}
-                                </ProjectsListItem>
+                                  <Outlet
+                                    id="app.containers.Navbar.projectlist.item"
+                                    publication={item}
+                                    localize={localize}
+                                  />
+                                </React.Fragment>
                               )
                             )}
                           </ProjectsList>
@@ -633,7 +708,7 @@ class Navbar extends PureComponent<
                   >
                     <NavigationItemBorder />
                     <NavigationItemText>
-                      <FormattedMessage {...messages.pageIdeas} />
+                      <FormattedMessage {...messages.pageInputs} />
                     </NavigationItemText>
                   </NavigationItem>
                 </FeatureFlag>
@@ -666,7 +741,7 @@ class Navbar extends PureComponent<
             </Left>
             <StyledRightFragment name="navbar-right">
               <Right className={bowser.msie ? 'ie' : ''}>
-                {!emailSettingsPage && (
+                {!isEmailSettingsPage && (
                   <>
                     {isNilOrError(authUser) && (
                       <RightItem className="login noLeftMargin">
@@ -731,7 +806,7 @@ class Navbar extends PureComponent<
 
 const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
-  tenant: <GetTenant />,
+  tenant: <GetAppConfiguration />,
   locale: <GetLocale />,
   adminPublications: (
     <GetAdminPublications

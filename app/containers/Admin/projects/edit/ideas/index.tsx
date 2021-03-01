@@ -45,10 +45,10 @@ class AdminProjectIdeas extends React.PureComponent<
       <>
         <StyledDiv>
           <SectionTitle>
-            <FormattedMessage {...messages.titleIdeas} />
+            <FormattedMessage {...messages.titleInputManager} />
           </SectionTitle>
           <SectionDescription>
-            <FormattedMessage {...messages.subtitleIdeas} />
+            <FormattedMessage {...messages.subtitleInputManager} />
           </SectionDescription>
         </StyledDiv>
 

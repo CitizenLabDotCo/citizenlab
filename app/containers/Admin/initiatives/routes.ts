@@ -1,5 +1,6 @@
 import Loadable from 'react-loadable';
 import { LoadableLoadingAdmin } from 'components/UI/LoadableLoading';
+import moduleConfiguration from 'modules';
 
 export default () => ({
   name: 'Admin initiatives',
@@ -23,5 +24,6 @@ export default () => ({
         loading: () => null,
       }),
     },
+    ...moduleConfiguration.routes['admin.initiatives'],
   ],
 });

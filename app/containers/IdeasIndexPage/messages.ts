@@ -1,13 +1,13 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  pageTitle: {
-    id: 'app.containers.IdeasIndexPage.pageTitle',
-    defaultMessage: 'Ideas',
+  inputsPageTitle: {
+    id: 'app.containers.IdeasIndexPage.inputsPageTitle',
+    defaultMessage: 'Inputs',
   },
-  invisibleIdeasListTitle: {
-    id: 'app.containers.IdeasIndexPage.invisibleIdeasListTitle',
-    defaultMessage: 'All the ideas posted in {orgName}',
+  a11y_IdeasListTitle: {
+    id: 'app.containers.IdeasIndexPage.a11y_IdeasListTitle',
+    defaultMessage: 'All inputs posted in {orgName}',
   },
   loadMore: {
     id: 'app.containers.IdeasIndexPage.loadMore',
@@ -17,13 +17,13 @@ export default defineMessages({
     id: 'app.containers.IdeasIndexPage.loading',
     defaultMessage: 'Loading...',
   },
-  metaTitle: {
-    id: 'app.containers.IdeasIndexPage.metaTitle',
-    defaultMessage: 'All Ideas • {orgName}',
+  inputsIndexMetaTitle: {
+    id: 'app.containers.IdeasIndexPage.inputsIndexMetaTitle',
+    defaultMessage: 'All inputs | {orgName}',
   },
-  metaDescription: {
-    id: 'app.containers.IdeasIndexPage.metaDescription',
+  inputsIndexMetaDescription: {
+    id: 'app.containers.IdeasIndexPage.inputsIndexMetaDescription',
     defaultMessage:
-      'Explore all ideas that have been posted on the CitizenLab platform of {orgName}. \n Come leave your comments and cast your vote!',
+      'Explore all inputs posted on the participation platform of {orgName}.',
   },
 });

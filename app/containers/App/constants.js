@@ -1,14 +1,10 @@
 'use strict';
 exports.__esModule = true;
-exports.appLocalesMomentPairs = exports.shortenedAppLocalePairs = exports.appGraphqlLocalePairs = exports.appLocalePairs = exports.graphqlLocales = exports.locales = exports.DEFAULT_LOCALE = exports.GRAPHQL_PORT = exports.GRAPHQL_HOST = exports.API_PORT = exports.API_HOST = exports.CL_SEGMENT_API_KEY = exports.CL_GA_TRACKER_NAME = exports.CL_GA_TRACKING_ID = exports.GOOGLE_MAPS_API_KEY = exports.ADMIN_TEMPLATES_GRAPHQL_PATH = exports.API_PATH = exports.AUTH_PATH = void 0;
+exports.appLocalesMomentPairs = exports.shortenedAppLocalePairs = exports.appGraphqlLocalePairs = exports.appLocalePairs = exports.graphqlLocales = exports.locales = exports.DEFAULT_LOCALE = exports.GRAPHQL_PORT = exports.GRAPHQL_HOST = exports.API_PORT = exports.API_HOST = exports.GOOGLE_MAPS_API_KEY = exports.ADMIN_TEMPLATES_GRAPHQL_PATH = exports.API_PATH = exports.AUTH_PATH = void 0;
 exports.AUTH_PATH = '/auth';
 exports.API_PATH = '/web_api/v1';
 exports.ADMIN_TEMPLATES_GRAPHQL_PATH = '/admin_templates_api/graphql';
 exports.GOOGLE_MAPS_API_KEY = 'AIzaSyDRtFe1KRBnGfDy_ijw6yCYsYnEkQRl9Cw';
-exports.CL_GA_TRACKING_ID = 'UA-65562281-44';
-exports.CL_GA_TRACKER_NAME = 'CitizenLab2';
-exports.CL_SEGMENT_API_KEY =
-  process.env.SEGMENT_API_KEY || 'sIoYsVoTTCBmrcs7yAz1zRFRGhAofBlg';
 exports.API_HOST =
   process.env.API_HOST ||
   (typeof window === 'undefined' ? 'localhost' : window.location.hostname);
@@ -48,6 +44,7 @@ exports.locales = [
   'hu-HU',
   'ro-RO',
   'pt-BR',
+  'ar-SA',
 ];
 exports.graphqlLocales = [
   'en',
@@ -57,7 +54,6 @@ exports.graphqlLocales = [
   'nb',
   'da',
   'es',
-  'ach',
   'enGb',
   'enCa',
   'frBe',
@@ -74,6 +70,7 @@ exports.graphqlLocales = [
   'huHu',
   'roRo',
   'ptBr',
+  'arSa',
 ];
 // the locales we really support, ie we have translations for these ect
 exports.appLocalePairs = {
@@ -94,7 +91,7 @@ exports.appLocalePairs = {
   'hu-HU': 'Magyar',
   'ro-RO': 'Română',
   'pt-BR': 'Português (Brasil)',
-  ach: 'Acholi',
+  'ar-SA': 'عربى',
 };
 exports.appGraphqlLocalePairs = {
   en: 'en',
@@ -104,7 +101,6 @@ exports.appGraphqlLocalePairs = {
   nb: 'nb',
   da: 'da',
   es: 'es',
-  ach: 'ach',
   enGb: 'en-GB',
   enCa: 'en-CA',
   frBe: 'fr-BE',
@@ -121,6 +117,7 @@ exports.appGraphqlLocalePairs = {
   huHu: 'hu-HU',
   roRo: 'ro-RO',
   ptBr: 'pt-BR',
+  arSa: 'ar',
 };
 exports.shortenedAppLocalePairs = {
   en: 'English',
@@ -140,8 +137,9 @@ exports.shortenedAppLocalePairs = {
   'hu-HU': 'Magyar',
   'ro-RO': 'Română',
   'pt-BR': 'Português',
-  ach: 'Acholi',
+  'ar-SA': 'عربى',
 };
+// see https://www.ge.com/digital/documentation/predix-services/c_custom_locale_support.html
 exports.appLocalesMomentPairs = {
   'en-GB': 'en-gb',
   'en-CA': 'en-ca',
@@ -159,4 +157,5 @@ exports.appLocalesMomentPairs = {
   'hu-HU': 'hu',
   'ro-RO': 'ro',
   'pt-BR': 'pt',
+  'ar-SA': 'ar',
 };

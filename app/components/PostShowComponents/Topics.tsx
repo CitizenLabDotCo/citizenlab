@@ -1,16 +1,15 @@
 import React, { memo } from 'react';
-import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
-// resources
-import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
+// hooks
+import useTopics from 'hooks/useTopics';
 
 // i18n
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
 
 // styling
 import styled from 'styled-components';
-import { fontSizes, media } from 'utils/styleUtils';
+import { fontSizes, isRtl } from 'utils/styleUtils';
 import { transparentize } from 'polished';
 
 // typings
@@ -19,10 +18,9 @@ import { ITopicData } from 'services/topics';
 const Container = styled.div`
   display: flex;
   flex-wrap: wrap;
-  margin-bottom: 10px;
 
-  ${media.smallerThanMaxTablet`
-    margin-bottom: 5px;
+  ${isRtl`
+    flex-direction: row-reverse;
   `}
 `;
 
@@ -30,27 +28,28 @@ const Topic = styled.div`
   color: ${({ theme }) => theme.colorSecondary};
   font-size: ${fontSizes.small}px;
   font-weight: 400;
-  padding: 6px 14px;
+  padding: 6px 12px;
   margin-right: 5px;
   margin-bottom: 5px;
-  background: ${({ theme }) => transparentize(0.92, theme.colorSecondary)};
+  background: ${({ theme }) => transparentize(0.91, theme.colorSecondary)};
   border-radius: ${(props: any) => props.theme.borderRadius};
+
+  ${isRtl`
+    margin-right: 0;
+    margin-left: 5px;
+  `}
 `;
 
-interface InputProps {
+interface Props {
   topicIds: string[];
   className?: string;
   postType: 'idea' | 'initiative';
 }
 
-interface DataProps {
-  topics: GetTopicsChildProps;
-}
-
-interface Props extends InputProps, DataProps {}
-
 const Topics = memo<Props & InjectedLocalized>(
-  ({ topics, localize, className, postType }) => {
+  ({ topicIds, className, postType, localize }) => {
+    const topics = useTopics({ topicIds });
+
     if (!isNilOrError(topics) && topics.length > 0) {
       return (
         <Container id={`e2e-${postType}-topics`} className={className}>
@@ -73,14 +72,4 @@ const Topics = memo<Props & InjectedLocalized>(
 
 const TopicsWithHoCs = injectLocalize<Props>(Topics);
 
-const Data = adopt<DataProps, InputProps>({
-  topics: ({ topicIds, render }) => (
-    <GetTopics topicIds={topicIds}>{render}</GetTopics>
-  ),
-});
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <TopicsWithHoCs {...inputProps} {...dataProps} />}
-  </Data>
-);
+export default TopicsWithHoCs;

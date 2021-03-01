@@ -129,6 +129,7 @@ const config = {
         GRAPHQL_PORT: JSON.stringify(process.env.GRAPHQL_PORT),
         CROWDIN_PLUGIN_ENABLED: !!process.env.CROWDIN_PLUGIN_ENABLED,
         SEGMENT_API_KEY: JSON.stringify(process.env.SEGMENT_API_KEY),
+        INTERCOM_APP_ID: JSON.stringify(process.env.INTERCOM_APP_ID),
         SENTRY_DSN: JSON.stringify(process.env.SENTRY_DSN),
         CI: JSON.stringify(process.env.CI),
         CIRCLECI: JSON.stringify(process.env.CIRCLECI),
@@ -183,7 +184,13 @@ const config = {
 
   resolve: {
     modules: [path.join(process.cwd(), 'app'), 'node_modules'],
-    extensions: ['.wasm', '.mjs', '.js', '.jsx', '.ts', '.tsx', '.json']
+    extensions: ['.wasm', '.mjs', '.js', '.jsx', '.ts', '.tsx', '.json'],
+    alias: {
+      'polished': path.resolve('./node_modules/polished'),
+      'moment': path.resolve('./node_modules/moment'),
+      'react': path.resolve('./node_modules/react'),
+      'styled-components': path.resolve('./node_modules/styled-components'),
+    }
   },
 };
 

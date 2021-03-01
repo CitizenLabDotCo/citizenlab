@@ -1,6 +1,6 @@
 import React from 'react';
-import { DragDropContext } from 'react-dnd';
-import HTML5Backend from 'react-dnd-html5-backend';
+import { DragDropContext } from 'react-dnd-cjs';
+import HTML5Backend from 'react-dnd-html5-backend-cjs';
 import { InjectedIntlProps } from 'react-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -104,7 +104,7 @@ class TopicList extends React.PureComponent<Props & InjectedIntlProps, State> {
           </SectionTitle>
           <SectionDescription>
             <FormattedMessage
-              {...messages.topicManagerDescription}
+              {...messages.descriptionTopicManagerText}
               values={{
                 adminProjectsLink: (
                   <StyledLink to="/admin/projects/">
@@ -158,9 +158,7 @@ class TopicList extends React.PureComponent<Props & InjectedIntlProps, State> {
           >
             <ModalContentContainer>
               <Content>
-                <FormattedMessage
-                  {...messages.topicDeletionConfirmationMessage}
-                />
+                <FormattedMessage {...messages.deleteTopicConfirmation} />
               </Content>
               <ButtonsWrapper>
                 <Button

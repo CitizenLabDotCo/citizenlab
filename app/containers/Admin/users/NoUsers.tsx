@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import styled from 'styled-components';
 import Link from 'utils/cl-router/Link';
 
@@ -7,6 +7,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import { Icon } from 'cl2-component-library';
 import { colors, fontSizes } from 'utils/styleUtils';
 import { darken } from 'polished';
+import { MembershipType } from 'services/groups';
 
 const NoUsersPage = styled.div`
   display: flex;
@@ -40,39 +41,40 @@ const SFormattedMessage = styled.div`
 `;
 
 interface Props {
-  smartGroup?: boolean;
+  groupType?: MembershipType;
   noSuchSearchResult?: boolean;
 }
 
-export default class NoUsers extends React.PureComponent<Props> {
-  render() {
-    if (this.props.noSuchSearchResult) {
-      return (
-        <NoUsersPage>
-          <Icon name="search" />
-          <FormattedMessage {...messages.noUserMatchesYourSearch} />
-        </NoUsersPage>
-      );
-    }
+const NoUsers = memo(({ groupType, noSuchSearchResult }: Props) => {
+  if (noSuchSearchResult) {
     return (
       <NoUsersPage>
-        <Icon name="blankPage" />
-        <FormattedMessage {...messages.emptyGroup} />
-        {!this.props.smartGroup && (
-          <SFormattedMessage>
-            <FormattedMessage
-              {...messages.goToAllUsers}
-              values={{
-                allUsersLink: (
-                  <Link to="/admin/users/">
-                    <FormattedMessage {...messages.allUsers} />
-                  </Link>
-                ),
-              }}
-            />
-          </SFormattedMessage>
-        )}
+        <Icon name="search" />
+        <FormattedMessage {...messages.noUserMatchesYourSearch} />
       </NoUsersPage>
     );
   }
-}
+
+  return (
+    <NoUsersPage>
+      <Icon name="blankPage" />
+      <FormattedMessage {...messages.emptyGroup} />
+      {groupType === 'manual' && (
+        <SFormattedMessage>
+          <FormattedMessage
+            {...messages.goToAllUsers}
+            values={{
+              allUsersLink: (
+                <Link to="/admin/users/">
+                  <FormattedMessage {...messages.allUsers} />
+                </Link>
+              ),
+            }}
+          />
+        </SFormattedMessage>
+      )}
+    </NoUsersPage>
+  );
+});
+
+export default NoUsers;

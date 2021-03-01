@@ -1,6 +1,6 @@
 import React from 'react';
 import { adopt } from 'react-adopt';
-import { ISuccessStory } from 'services/tenant';
+import { ISuccessStory } from 'services/appConfiguration';
 import GetPage, { GetPageChildProps } from 'resources/GetPage';
 import { isNilOrError } from 'utils/helperUtils';
 import T from 'components/T';

@@ -1,25 +1,21 @@
-import React, { PureComponent } from 'react';
-
-// components
+import React from 'react';
 import HelmetIntl from 'components/HelmetIntl';
 
 // i18n
 import messages from './messages';
 
-type Props = {};
+type Props = {
+  children: React.ReactNode;
+};
 
-type State = {};
+const ProjectDashboard = ({ children }: Props) => (
+  <>
+    <HelmetIntl
+      title={messages.helmetTitle}
+      description={messages.helmetDescription}
+    />
+    {children}
+  </>
+);
 
-export default class ProjectDashboard extends PureComponent<Props, State> {
-  render() {
-    return (
-      <>
-        <HelmetIntl
-          title={messages.helmetTitle}
-          description={messages.helmetDescription}
-        />
-        {this.props.children}
-      </>
-    );
-  }
-}
+export default ProjectDashboard;

@@ -10,6 +10,12 @@ export type InitiativePublicationStatus =
   | 'archived'
   | 'spam';
 
+export type IInitiativeAction =
+  | 'posting_initiative'
+  | 'commenting_initiative'
+  | 'voting_initiative'
+  | 'comment_voting_initiative';
+
 export interface IInitiativeData {
   id: string;
   type: 'initiatives';
@@ -121,6 +127,11 @@ export interface InitiativeActivity {
     user: { data: IRelationship };
   };
 }
+
+export type InitiativeDisabledReason =
+  | 'not_permitted'
+  | 'not_verified'
+  | 'not_signed_in';
 
 export function initiativeByIdStream(initiativeId: string) {
   return streams.get<IInitiative>({
@@ -235,5 +246,18 @@ export interface IInitiativesFilterCounts {
 export function initiativeActivities(initiativeId: string) {
   return streams.get<{ data: InitiativeActivity[] }>({
     apiEndpoint: `${API_PATH}/initiatives/${initiativeId}/activities`,
+  });
+}
+
+export type IInitiativeActionDescriptors = {
+  [key in IInitiativeAction]: {
+    enabled: boolean;
+    disabled_reason: InitiativeDisabledReason | null;
+  };
+};
+
+export function getInitiativeActionDescriptors() {
+  return streams.get<IInitiativeActionDescriptors>({
+    apiEndpoint: `${API_PATH}/action_descriptors/initiatives`,
   });
 }

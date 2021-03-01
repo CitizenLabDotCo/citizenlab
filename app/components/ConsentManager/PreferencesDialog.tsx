@@ -4,7 +4,7 @@ import React, { PureComponent } from 'react';
 import CategoryCard from './CategoryCard';
 
 // Typing
-import { IDestination } from './';
+import { CategorizedDestinations, IPreferences } from '.';
 
 // Styling
 import styled from 'styled-components';
@@ -30,15 +30,11 @@ export const ContentContainer = styled.div`
 
 interface Props {
   onChange: (category, value) => void;
-  categoryDestinations: {
-    analytics: IDestination[];
-    advertising: IDestination[];
-    functional: IDestination[];
-  };
-  analytics: boolean | null;
-  advertising: boolean | null;
-  functional: boolean | null;
+  categoryDestinations: CategorizedDestinations;
+  preferences: IPreferences;
 }
+
+const doNothing = () => () => {};
 
 export default class PreferencesDialog extends PureComponent<Props> {
   static displayName = 'PreferencesDialog';
@@ -48,13 +44,7 @@ export default class PreferencesDialog extends PureComponent<Props> {
   };
 
   render() {
-    const {
-      categoryDestinations,
-      functional,
-      advertising,
-      analytics,
-    } = this.props;
-    const checkCategories = { analytics, advertising, functional };
+    const { categoryDestinations, preferences } = this.props;
     return (
       <ContentContainer id="e2e-preference-dialog">
         {Object.keys(categoryDestinations).map((category) => {
@@ -64,13 +54,21 @@ export default class PreferencesDialog extends PureComponent<Props> {
                 key={category}
                 category={category}
                 destinations={categoryDestinations[category]}
-                checked={checkCategories[category]}
+                checked={preferences[category]}
                 handleChange={this.handleChange}
               />
             );
           }
           return;
         })}
+        <CategoryCard
+          key={'required'}
+          category={'required'}
+          destinations={[]}
+          checked={true}
+          handleChange={doNothing}
+          disableUncheck={true}
+        />
       </ContentContainer>
     );
   }

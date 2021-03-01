@@ -12,10 +12,12 @@ import messages from './messages';
 
 // style
 import styled from 'styled-components';
-import { media, fontSizes, colors } from 'utils/styleUtils';
+import { media, fontSizes, colors, isRtl } from 'utils/styleUtils';
 
 const Container = styled.main`
-  min-height: calc(100vh - ${(props) => props.theme.menuHeight}px - 1px);
+  min-height: calc(
+    100vh - ${(props) => props.theme.menuHeight + props.theme.footerHeight}px
+  );
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -40,7 +42,7 @@ const StyledContentContainer = styled(ContentContainer)`
 `;
 
 const PageTitle = styled.h1`
-  color: ${colors.text};
+  color: ${({ theme }) => theme.colorText};
   font-size: ${fontSizes.xxxxl}px;
   line-height: normal;
   font-weight: 500;
@@ -57,6 +59,12 @@ const PageTitle = styled.h1`
   ${media.smallerThanMinTablet`
     font-size: ${fontSizes.xxxl}px;
   `}
+
+ ${isRtl`
+  ${media.smallerThanMaxTablet`
+    text-align: right;
+  `}
+ `}
 `;
 
 export default memo(() => (
@@ -65,7 +73,7 @@ export default memo(() => (
     <Container>
       <StyledContentContainer maxWidth="100%">
         <PageTitle>
-          <FormattedMessage {...messages.pageTitle} />
+          <FormattedMessage {...messages.inputsPageTitle} />
         </PageTitle>
         <IdeaCards
           type="load-more"
@@ -73,7 +81,7 @@ export default memo(() => (
           projectPublicationStatus="published"
           showViewToggle={false}
           showFiltersSidebar={true}
-          invisibleTitleMessage={messages.invisibleIdeasListTitle}
+          invisibleTitleMessage={messages.a11y_IdeasListTitle}
         />
       </StyledContentContainer>
       <CityLogoSection />

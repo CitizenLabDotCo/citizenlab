@@ -21,6 +21,8 @@ import GetIdeaMarkers, {
 import GetWindowSize, {
   GetWindowSizeChildProps,
 } from 'resources/GetWindowSize';
+import GetProject, { GetProjectChildProps } from 'resources/GetProject';
+import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
 
 // i18n
 import FormattedMessage from 'utils/cl-intl/FormattedMessage';
@@ -52,6 +54,8 @@ interface InputProps {
 interface DataProps {
   ideaMarkers: GetIdeaMarkersChildProps;
   windowSize: GetWindowSizeChildProps;
+  project: GetProjectChildProps;
+  phase: GetPhaseChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -112,8 +116,12 @@ export class IdeasMap extends PureComponent<Props & WithRouterProps, State> {
 
   onMapClick = (map: Leaflet.Map, position: Leaflet.LatLng) => {
     this.setState({ selectedLatLng: position });
+    const { project, phase } = this.props;
+    const ideaPostingEnabled =
+      (!isNilOrError(project) && project.attributes.posting_enabled) ||
+      (!isNilOrError(phase) && phase.attributes.posting_enabled);
 
-    if (this.props.projectIds && this.ideaButtonRef) {
+    if (ideaPostingEnabled && this.ideaButtonRef) {
       Leaflet.popup()
         .setLatLng(position)
         .setContent(this.ideaButtonRef)
@@ -143,10 +151,6 @@ export class IdeasMap extends PureComponent<Props & WithRouterProps, State> {
     return height;
   };
 
-  noIdeasWithLocationMessage = (
-    <FormattedMessage {...messages.noIdeasWithLocation} />
-  );
-
   render() {
     const { phaseId, projectIds, ideaMarkers, className } = this.props;
     const {
@@ -155,15 +159,19 @@ export class IdeasMap extends PureComponent<Props & WithRouterProps, State> {
       selectedLatLng: selectedPosition,
     } = this.state;
     const mapHeight = this.getMapHeight();
+    const projectId =
+      projectIds && projectIds.length === 1 ? projectIds[0] : null;
 
     return (
       <Container className={className}>
         {ideaMarkers && ideaMarkers.length > 0 && points.length === 0 && (
-          <StyledWarning text={this.noIdeasWithLocationMessage} />
+          <StyledWarning
+            text={<FormattedMessage {...messages.nothingOnMapWarning} />}
+          />
         )}
 
         <ScreenReaderOnly>
-          <FormattedMessage {...messages.mapTitle} />
+          <FormattedMessage {...messages.a11y_mapTitle} />
         </ScreenReaderOnly>
 
         <Map
@@ -181,13 +189,13 @@ export class IdeasMap extends PureComponent<Props & WithRouterProps, State> {
           }
         />
 
-        {projectIds && projectIds.length === 1 && (
+        {projectId && (
           <IdeaButtonWrapper
             className="create-idea-wrapper"
             ref={this.setIdeaButtonRef}
           >
             <IdeaButton
-              projectId={projectIds[0]}
+              projectId={projectId}
               phaseId={phaseId || undefined}
               participationContextType={phaseId ? 'phase' : 'project'}
               latLng={selectedPosition}
@@ -200,19 +208,21 @@ export class IdeasMap extends PureComponent<Props & WithRouterProps, State> {
   }
 }
 
-const Data = adopt<DataProps, InputProps>({
+const Data = adopt<DataProps, InputProps & WithRouterProps>({
+  project: ({ params, render }) => (
+    <GetProject projectSlug={params.slug}>{render}</GetProject>
+  ),
   windowSize: <GetWindowSize />,
   ideaMarkers: ({ projectIds, phaseId, render }) => (
     <GetIdeaMarkers projectIds={projectIds} phaseId={phaseId}>
       {render}
     </GetIdeaMarkers>
   ),
+  phase: ({ phaseId, render }) => <GetPhase id={phaseId}>{render}</GetPhase>,
 });
 
-const IdeasMapWithRouter = withRouter(IdeasMap);
-
-export default (inputProps: InputProps) => (
+export default withRouter((inputProps: InputProps & WithRouterProps) => (
   <Data {...inputProps}>
-    {(dataProps) => <IdeasMapWithRouter {...inputProps} {...dataProps} />}
+    {(dataProps) => <IdeasMap {...inputProps} {...dataProps} />}
   </Data>
-);
+));

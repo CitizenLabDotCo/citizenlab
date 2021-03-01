@@ -33,7 +33,9 @@ import GetInitiativeAllowedTransitions, {
 import GetInitiative, {
   GetInitiativeChildProps,
 } from 'resources/GetInitiative';
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetAppConfiguration';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // analytics
@@ -55,7 +57,7 @@ const Container = styled.div``;
 
 interface DataProps {
   authUser: GetAuthUserChildProps;
-  tenant: GetTenantChildProps;
+  tenant: GetAppConfigurationChildProps;
   statuses: GetInitiativeStatusesChildProps;
   initiative: GetInitiativeChildProps;
   prospectAssignees: GetUsersChildProps;
@@ -232,7 +234,7 @@ class FeedbackSettings extends PureComponent<PropsWithHoCs> {
 }
 
 const Data = adopt<DataProps, InputProps>({
-  tenant: <GetTenant />,
+  tenant: <GetAppConfiguration />,
   authUser: <GetAuthUser />,
   initiative: ({ initiativeId, render }) => (
     <GetInitiative id={initiativeId}>{render}</GetInitiative>

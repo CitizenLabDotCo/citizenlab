@@ -9,43 +9,66 @@ import {
   isSuperAdmin,
 } from '../roles';
 import { IUser } from 'services/users';
-import { ITenantData } from 'services/tenant';
+import { IAppConfigurationData } from 'services/appConfiguration';
 
-definePermissionRule(
-  'route',
-  'access',
-  (item: IRouteItem, user: IUser | null, tenant: ITenantData) => {
-    if (/^\/admin/.test(item.path)) {
-      if (isSuperAdmin(user)) {
-        return true;
-      }
-      if (tenant.attributes.settings.core.lifecycle_stage === 'churned') {
-        return false;
-      }
+export const MODERATOR_ROUTES = [
+  '/admin/projects',
+  '/admin/emails',
+  '/admin/ideas',
+  '/admin/workshops',
+  '/admin/processing',
+  '/admin/dashboard',
+  '/admin/moderation',
+];
 
-      if (isAdmin(user)) {
-        return true;
-      }
+export const isModeratorRoute = (item: IRouteItem) => {
+  return MODERATOR_ROUTES.includes(item.path);
+};
 
-      if (
-        (isModerator(user) && item.path === '/admin/dashboard') ||
-        item.path === '/admin/projects' ||
-        item.path === '/admin/emails' ||
-        item.path === '/admin/ideas' ||
-        item.path === '/admin/workshops'
-      ) {
-        return true;
-      }
+export const isModeratedProjectRoute = (
+  item: IRouteItem,
+  user: IUser | null
+) => {
+  const idRegexp = /^\/admin\/projects\/([a-z0-9-]+)\//;
+  const matches = idRegexp.exec(item.path);
+  const pathProjectId = matches && matches[1];
+  return (pathProjectId && isProjectModerator(user, pathProjectId)) || false;
+};
 
-      // Try to find a project ID in the URL
-      const idRegexp = /^\/admin\/projects\/([a-z0-9-]+)\//;
-      const matches = idRegexp.exec(item.path);
-      const pathProjectId = matches && matches[1];
-      if (pathProjectId && isProjectModerator(user, pathProjectId)) return true;
+export const isAdminRoute = (item: IRouteItem) => {
+  return /^\/admin/.test(item.path);
+};
 
-      return false;
-    } else {
+export const tenantIsChurned = (tenant: IAppConfigurationData) => {
+  return tenant.attributes.settings.core.lifecycle_stage === 'churned';
+};
+
+export const canAccessRoute = (
+  item: IRouteItem,
+  user: IUser | null,
+  tenant: IAppConfigurationData
+) => {
+  if (isAdminRoute(item)) {
+    if (isSuperAdmin(user)) {
       return true;
     }
+
+    if (tenantIsChurned(tenant)) {
+      return false;
+    }
+
+    if (isAdmin(user)) {
+      return true;
+    }
+
+    if (isModerator(user) && isModeratorRoute(item)) {
+      return true;
+    }
+
+    return isModeratedProjectRoute(item, user);
+  } else {
+    return true;
   }
-);
+};
+
+definePermissionRule('route', 'access', canAccessRoute);

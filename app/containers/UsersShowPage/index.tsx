@@ -1,28 +1,47 @@
-import React, { PureComponent } from 'react';
+import React, { useState, useContext, memo } from 'react';
+import { Helmet } from 'react-helmet';
+import { PreviousPathnameContext } from 'context';
 import { isNilOrError } from 'utils/helperUtils';
+import { isError } from 'lodash-es';
 import { withRouter, WithRouterProps } from 'react-router';
 
 // components
 import IdeaCards from 'components/IdeaCards';
 import ContentContainer from 'components/ContentContainer';
 import UsersShowPageMeta from './UsersShowPageMeta';
-
-// resources
-import GetUser, { GetUserChildProps } from 'resources/GetUser';
+import Button from 'components/UI/Button';
 
 // i18n
+import { injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
+
+// hooks
+import useUser from 'hooks/useUser';
 
 // style
 import styled from 'styled-components';
-import { media, colors } from 'utils/styleUtils';
+import { media, colors, fontSizes } from 'utils/styleUtils';
 import UserHeader from './UserHeader';
 import UserNavbar from './UserNavbar';
 import UserComments from './UserComments';
-import { adopt } from 'react-adopt';
+import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
+
+const NotFoundContainer = styled.main`
+  min-height: calc(100vh - ${(props) => props.theme.menuHeight}px - 1px - 4rem);
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 4rem;
+  font-size: ${fontSizes.large}px;
+  color: ${colors.label};
+`;
 
 const Container = styled.main`
-  min-height: calc(100vh - ${(props) => props.theme.menuHeight}px - 1px);
+  min-height: calc(
+    100vh - ${(props) => props.theme.menuHeight + props.theme.footerHeight}px
+  );
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -54,43 +73,43 @@ const UserIdeas = styled.div`
   justify-content: center;
 `;
 
-interface InputProps {
+interface Props {
   className?: string;
 }
 
-interface DataProps {
-  user: GetUserChildProps;
-}
-
-interface Props extends InputProps, DataProps {}
-
 export type UserTab = 'ideas' | 'comments';
 
-interface State {
-  currentTab: UserTab;
-  savedScrollIndex: number;
-}
+export const UsersShowPage = memo<Props & WithRouterProps & InjectedIntlProps>(
+  ({ className, params, intl: { formatMessage } }) => {
+    const [currentTab, setCurrentTab] = useState<UserTab>('ideas');
+    const [savedScrollIndex, setSavedScrollIndex] = useState<number>(0);
 
-export class UsersShowPage extends PureComponent<Props, State> {
-  constructor(props) {
-    super(props);
-    this.state = {
-      currentTab: 'ideas',
-      savedScrollIndex: 0,
+    const previousPathName = useContext(PreviousPathnameContext);
+
+    const user = useUser({ slug: params.slug });
+
+    const changeTab = (toTab: UserTab) => () => {
+      const oldScroll = savedScrollIndex;
+      setCurrentTab(toTab);
+      setSavedScrollIndex(window.pageYOffset);
+      window.scrollTo(0, oldScroll);
     };
-  }
 
-  changeTab = (toTab: UserTab) => () => {
-    const oldScroll = this.state.savedScrollIndex;
-    this.setState({ currentTab: toTab, savedScrollIndex: window.pageYOffset });
-    window.scrollTo(0, oldScroll);
-  };
-
-  render() {
-    const { user, className } = this.props;
-    const { currentTab } = this.state;
-
-    if (!isNilOrError(user)) {
+    if (isError(user)) {
+      return (
+        <NotFoundContainer className={className || ''}>
+          <Helmet>
+            <meta name="prerender-status-code" content="404" />
+          </Helmet>
+          <p>{formatMessage(messages.user404NotFound)}</p>
+          <Button
+            linkTo={previousPathName || '/'}
+            text={formatMessage(messages.goBackToPreviousPage)}
+            icon="arrow-back"
+          />
+        </NotFoundContainer>
+      );
+    } else if (!isNilOrError(user)) {
       return (
         <>
           <UsersShowPageMeta user={user} />
@@ -99,17 +118,17 @@ export class UsersShowPage extends PureComponent<Props, State> {
 
             <UserNavbar
               currentTab={currentTab}
-              selectTab={this.changeTab}
+              selectTab={changeTab}
               userId={user.id}
             />
 
-            <StyledContentContainer>
+            <StyledContentContainer maxWidth={maxPageWidth}>
               {currentTab === 'ideas' && (
                 <UserIdeas>
                   <IdeaCards
                     type="load-more"
                     authorId={user.id}
-                    invisibleTitleMessage={messages.invisibleTitleIdeasList}
+                    invisibleTitleMessage={messages.invisibleTitlePostsList}
                   />
                 </UserIdeas>
               )}
@@ -120,17 +139,8 @@ export class UsersShowPage extends PureComponent<Props, State> {
         </>
       );
     }
-
     return null;
   }
-}
+);
 
-const Data = adopt<DataProps, InputProps & WithRouterProps>({
-  user: ({ params, render }) => <GetUser slug={params.slug}>{render}</GetUser>,
-});
-
-export default withRouter((inputProps: InputProps & WithRouterProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <UsersShowPage {...inputProps} {...dataProps} />}
-  </Data>
-));
+export default withRouter(injectIntl(UsersShowPage));

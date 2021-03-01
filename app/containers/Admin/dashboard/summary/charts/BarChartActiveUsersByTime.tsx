@@ -14,6 +14,7 @@ import { IResourceByTime, IUsersByTime } from 'services/stats';
 import { IGraphFormat } from 'typings';
 
 // components
+import ExportMenu from '../../components/ExportMenu';
 import {
   BarChart,
   Bar,
@@ -62,15 +63,19 @@ type Props = {
   className?: string;
   graphUnit: IGraphUnit;
   graphUnitMessageKey: string;
-  graphTitleMessageKey: string;
+  graphTitle: string;
   startAt: string | null | undefined;
   endAt: string | null;
   resolution: IResolution;
-  currentProjectFilter: string | undefined;
-  currentGroupFilter: string | undefined;
-  currentTopicFilter: string | undefined;
+  currentProjectFilter?: string | undefined;
+  currentGroupFilter?: string | undefined;
+  currentTopicFilter?: string | undefined;
   stream: (streamParams?: IStreamParams | null) => IStream<IUsersByTime>;
   infoMessage?: string;
+  currentProjectFilterLabel?: string | undefined;
+  currentGroupFilterLabel?: string | undefined;
+  currentTopicFilterLabel?: string | undefined;
+  xlsxEndpoint: string;
 };
 
 class BarChartActiveUsersByTime extends React.PureComponent<
@@ -78,12 +83,15 @@ class BarChartActiveUsersByTime extends React.PureComponent<
   State
 > {
   subscription: Subscription;
+  currentChart: React.RefObject<any>;
 
   constructor(props: Props) {
     super(props as any);
     this.state = {
       serie: null,
     };
+
+    this.currentChart = React.createRef();
   }
 
   componentDidMount() {
@@ -203,29 +211,26 @@ class BarChartActiveUsersByTime extends React.PureComponent<
   };
 
   render() {
-    const { formatMessage } = this.props.intl;
-    const {
-      className,
-      graphTitleMessageKey,
-      graphUnitMessageKey,
-      infoMessage,
-    } = this.props;
+    const { className, graphTitle, infoMessage } = this.props;
     const { serie } = this.state;
     const {
-      chartFill,
       chartLabelSize,
       chartLabelColor,
       barHoverColor,
       animationBegin,
       animationDuration,
+      newBarFill,
     } = this.props['theme'];
+
+    const noData =
+      !serie || serie.every((item) => isEmpty(item)) || serie.length <= 0;
 
     return (
       <GraphCard className={className}>
         <GraphCardInner>
           <GraphCardHeader>
             <GraphCardTitle>
-              <FormattedMessage {...messages[graphTitleMessageKey]} />
+              {graphTitle}
               {infoMessage && (
                 <Popup
                   basic
@@ -239,20 +244,28 @@ class BarChartActiveUsersByTime extends React.PureComponent<
                 />
               )}
             </GraphCardTitle>
+            {!noData && (
+              <ExportMenu
+                svgNode={this.currentChart}
+                name={graphTitle}
+                {...this.props}
+              />
+            )}
           </GraphCardHeader>
-          {!serie ? (
+          {noData ? (
             <NoDataContainer>
               <FormattedMessage {...messages.noData} />
             </NoDataContainer>
           ) : (
             <StyledResponsiveContainer>
-              <BarChart data={serie}>
+              <BarChart data={serie} ref={this.currentChart}>
                 <Bar
                   dataKey="value"
-                  name={formatMessage(messages[graphUnitMessageKey])}
-                  fill={chartFill}
+                  name={graphTitle}
+                  fill={newBarFill}
                   animationDuration={animationDuration}
                   animationBegin={animationBegin}
+                  isAnimationActive={true}
                 />
                 <XAxis
                   dataKey="name"

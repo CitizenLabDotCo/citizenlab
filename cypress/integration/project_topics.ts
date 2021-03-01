@@ -33,8 +33,9 @@ describe('Project topics', () => {
 
       // Add custom topic
       cy.get('#e2e-add-custom-topic-button').click();
-      cy.get('#e2e-topic-name-en-GB').type(topicTitle);
+      cy.get('#e2e-topic-name').type(topicTitle);
       cy.get('.e2e-submit-wrapper-button').click();
+      cy.wait(1000);
       cy.get('.e2e-admin-list-row').contains(topicTitle);
 
       // Go to our project topic settings
@@ -48,8 +49,9 @@ describe('Project topics', () => {
       // create a topic
       cy.visit('admin/settings/topics');
       cy.get('#e2e-add-custom-topic-button').click();
-      cy.get('#e2e-topic-name-en-GB').type(topicTitle);
+      cy.get('#e2e-topic-name').type(topicTitle);
       cy.get('.e2e-submit-wrapper-button').click();
+      cy.wait(1000);
       cy.get('.e2e-admin-list-row').contains(topicTitle);
 
       // and check that our topic is there initially
@@ -81,8 +83,9 @@ describe('Project topics', () => {
       // create a topic
       cy.visit('admin/settings/topics');
       cy.get('#e2e-add-custom-topic-button').click();
-      cy.get('#e2e-topic-name-en-GB').type(topicTitle);
+      cy.get('#e2e-topic-name').type(topicTitle);
       cy.get('.e2e-submit-wrapper-button').click();
+      cy.wait(1000);
       cy.get('.e2e-admin-list-row').contains(topicTitle);
 
       // and check that our topic is there initially
@@ -97,8 +100,9 @@ describe('Project topics', () => {
         .first()
         .find('#e2e-custom-topic-edit-button')
         .click();
-      cy.get('#e2e-topic-name-en-GB').type(editedTopicTitle);
+      cy.get('#e2e-topic-name').type(editedTopicTitle);
       cy.get('.e2e-submit-wrapper-button').click();
+      cy.wait(1000);
       cy.get('.e2e-admin-list-row').contains(editedTopicTitle);
 
       // Go to our project topic settings and check that name has chang
@@ -116,8 +120,9 @@ describe('Project topics', () => {
       // create a topic
       cy.visit('admin/settings/topics');
       cy.get('#e2e-add-custom-topic-button').click();
-      cy.get('#e2e-topic-name-en-GB').type(topicTitle);
+      cy.get('#e2e-topic-name').type(topicTitle);
       cy.get('.e2e-submit-wrapper-button').click();
+      cy.wait(1000);
       cy.get('.e2e-admin-list-row').contains(topicTitle);
 
       // Go to our project topic settings
@@ -127,6 +132,7 @@ describe('Project topics', () => {
       cy.get('#e2e-project-topic-multiselect').click();
       cy.get('#react-select-2-option-0').click();
       cy.get('#e2e-add-project-topic-button').click();
+      cy.wait(1000);
       cy.get('.e2e-admin-list-row').contains(topicTitle);
 
       // Go to idea form for our project
@@ -143,8 +149,9 @@ describe('Project topics', () => {
       // create a topic
       cy.visit('admin/settings/topics');
       cy.get('#e2e-add-custom-topic-button').click();
-      cy.get('#e2e-topic-name-en-GB').type(topicTitle);
+      cy.get('#e2e-topic-name').type(topicTitle);
       cy.get('.e2e-submit-wrapper-button').click();
+      cy.wait(1000);
       cy.get('.e2e-admin-list-row').contains(topicTitle);
 
       // Go to our project topic settings
@@ -154,6 +161,7 @@ describe('Project topics', () => {
       cy.get('#e2e-project-topic-multiselect').click();
       cy.get('#react-select-2-option-0').click();
       cy.get('#e2e-add-project-topic-button').click();
+      cy.wait(1000);
       cy.get('.e2e-admin-list-row').contains(topicTitle);
 
       // Go to idea form for our project
@@ -174,6 +182,7 @@ describe('Project topics', () => {
         .click();
       // Confirm in the modal
       cy.get('#e2e-project-topic-delete-confirm-button').click();
+      cy.wait(1000);
       cy.get('.e2e-admin-list-row').contains(topicTitle).should('not.exist');
 
       // Go to idea form for our project
@@ -192,8 +201,9 @@ describe('Project topics', () => {
       // create a topic in the topic manager
       cy.visit('admin/settings/topics');
       cy.get('#e2e-add-custom-topic-button').click();
-      cy.get('#e2e-topic-name-en-GB').type(topicTitle);
+      cy.get('#e2e-topic-name').type(topicTitle);
       cy.get('.e2e-submit-wrapper-button').click();
+      cy.wait(1000);
 
       // Go to our project topic settings
       cy.visit(`admin/projects/${projectId}/topics`);
@@ -202,12 +212,14 @@ describe('Project topics', () => {
       cy.get('#e2e-project-topic-multiselect').click();
       cy.get('#react-select-2-option-0').click();
       cy.get('#e2e-add-project-topic-button').click();
+      cy.wait(1000);
 
       // Go to idea manager for our project
       cy.visit(`admin/projects/${projectId}/ideas`);
 
       // Open topics tab
       cy.get('#topics').click();
+      cy.wait(1000);
 
       // Find our newly added topic in the filters
       cy.get('#e2e-idea-manager-topic-filters').contains(topicTitle);
@@ -219,8 +231,9 @@ describe('Project topics', () => {
       // create a topic in the topic manager
       cy.visit('admin/settings/topics');
       cy.get('#e2e-add-custom-topic-button').click();
-      cy.get('#e2e-topic-name-en-GB').type(topicTitle);
+      cy.get('#e2e-topic-name').type(topicTitle);
       cy.get('.e2e-submit-wrapper-button').click();
+      cy.wait(1000);
 
       // Go to our project topic settings
       cy.visit(`admin/projects/${projectId}/topics`);
@@ -229,6 +242,7 @@ describe('Project topics', () => {
       cy.get('#e2e-project-topic-multiselect').click();
       cy.get('#react-select-2-option-0').click();
       cy.get('#e2e-add-project-topic-button').click();
+      cy.wait(1000);
 
       // Go to idea manager for our project
       cy.visit(`admin/projects/${projectId}/ideas`);
@@ -238,6 +252,7 @@ describe('Project topics', () => {
 
       // Open topics tab
       cy.get('#topics').click();
+      cy.wait(1000);
 
       // Find our newly added topic in the filters
       cy.get('#e2e-idea-manager-topic-filters').contains(topicTitle);
@@ -253,12 +268,14 @@ describe('Project topics', () => {
 
       // Confirm in modal
       cy.get('#e2e-project-topic-delete-confirm-button').click();
+      cy.wait(1000);
 
       // Go to idea manager for our project
       cy.visit(`admin/projects/${projectId}/ideas`);
 
       // Open topics tab
       cy.get('#topics').click();
+      cy.wait(1000);
 
       // Verify the topic is not selectable in the idea manager topics tab
       cy.get('#e2e-idea-manager-topic-filters')

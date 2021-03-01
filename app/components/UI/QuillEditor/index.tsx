@@ -125,11 +125,12 @@ const Container = styled.div<{
     box-shadow: none;
     border: 1px solid ${colors.border};
     border-bottom: 0;
+    transition: box-shadow 100ms ease-out;
   }
 
   &.focus:not(.error) .ql-toolbar.ql-snow + .ql-container.ql-snow {
     border-color: ${colors.focussedBorder};
-    box-shadow: ${defaultStyles.boxShadowFocused};
+    box-shadow: inset ${defaultStyles.boxShadowFocused};
   }
 
   &.error .ql-toolbar.ql-snow + .ql-container.ql-snow {
@@ -138,7 +139,7 @@ const Container = styled.div<{
 
   &.error.focus .ql-toolbar.ql-snow + .ql-container.ql-snow {
     border-color: ${colors.clRedError};
-    box-shadow: ${defaultStyles.boxShadowError};
+    box-shadow: inset ${defaultStyles.boxShadowError};
   }
 
   .ql-toolbar.ql-snow + .ql-container.ql-snow {
@@ -252,8 +253,6 @@ class CustomButton extends Inline {
   static create(value) {
     const node = super.create();
     node.setAttribute('href', value);
-    node.setAttribute('type', 'button');
-    node.setAttribute('target', '_blank');
     node.setAttribute('rel', 'noorefferer');
     return node;
   }

@@ -1,79 +1,56 @@
 import { randomString, randomEmail } from '../support/commands';
 
-describe('Cookie consent form', () => {
+describe('Cookie consent form for not-signed-in users', () => {
+  before(() => {
+    cy.visit('/');
+    cy.get('#e2e-landing-page');
+    cy.wait(500);
+  });
+
+  it('Shows the correct options when not signed in', () => {
+    cy.get('#e2e-cookie-banner');
+    cy.get('#e2e-cookie-banner').find('.integration-open-modal').click();
+    cy.get('#e2e-preference-dialog').contains('Google Analytics');
+    cy.get('#e2e-preference-dialog').should('not.contain.text', 'SatisMeter');
+  });
+});
+
+describe('Cookie consent form for signed-in users', () => {
   const firstName = randomString();
   const lastName = randomString();
   const email = randomEmail();
   const password = randomString();
-  let userId: string = null as any;
 
   before(() => {
-    cy.apiSignup(firstName, lastName, email, password).then(
-      (user) => (userId = user.body.data.id)
-    );
-  });
-  it('Shows the correct destinations when unsigned', () => {
-    cy.visit('/');
-    cy.get('#e2e-cookie-banner').find('.integration-open-modal').click();
-    cy.get('#e2e-preference-dialog').contains('Google Analytics');
-    cy.get('#e2e-preference-dialog').should('not.contain.text', 'SatisMeter');
-  });
-  it('Shows the correct destinations when signed up as normal user', () => {
-    cy.setLoginCookie(email, password);
-    cy.wait(500);
-    cy.visit('/');
-    cy.get('#e2e-cookie-banner').find('.integration-open-modal').click();
-    cy.get('#e2e-preference-dialog').contains('Google Analytics');
-    cy.get('#e2e-preference-dialog').should('not.contain.text', 'SatisMeter');
-  });
-  it('Shows the correct destinations when signed up as admin user', () => {
-    cy.setAdminLoginCookie();
-    cy.wait(500);
-    cy.visit('/');
-    cy.get('#e2e-cookie-banner').find('.integration-open-modal').click();
-    cy.get('#e2e-preference-dialog').contains('Google Analytics');
-  });
-  it('Lets you pick your categories and save', () => {
-    cy.visit('/');
-    cy.get('#e2e-cookie-banner').find('.integration-open-modal').click();
-    cy.get('#e2e-preference-dialog')
-      .get('.e2e-category')
-      .each((question) => question.find('label').first().click());
-    cy.get('#e2e-preferences-save').click();
-  });
-  it('When you get admin, lets you consent to admin destintions', () => {
-    if (!location.origin.includes('localhost')) {
+    cy.apiSignup(firstName, lastName, email, password).then((user) => {
       cy.setLoginCookie(email, password);
       cy.wait(500);
       cy.visit('/');
-
-      cy.acceptCookies();
-
-      cy.apiLogin('admin@citizenlab.co', 'testtest').then((response) => {
-        const adminJwt = response.body.jwt;
-
-        return cy.request({
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${adminJwt}`,
-          },
-          method: 'PATCH',
-          url: `web_api/v1/users/${userId}`,
-          body: {
-            user: {
-              email,
-              password,
-              roles: [{ type: 'admin' }],
-            },
-          },
-        });
-      });
-
+      cy.get('#e2e-landing-page');
       cy.wait(500);
-      cy.visit('/');
-      cy.wait(500);
-      cy.get('#e2e-cookie-banner').find('.integration-open-modal').click();
-      cy.get('#e2e-preference-dialog').contains('SatisMeter');
-    }
+    });
+  });
+
+  it('Shows the correct options when signed up as normal user', () => {
+    cy.get('#e2e-cookie-banner');
+    cy.get('#e2e-cookie-banner').find('.integration-open-modal').click();
+    cy.get('#e2e-preference-dialog').contains('Google Analytics');
+    cy.get('#e2e-preference-dialog').should('not.contain.text', 'SatisMeter');
+  });
+});
+
+describe('Cookie consent form for signed-in admins', () => {
+  before(() => {
+    cy.setAdminLoginCookie();
+    cy.wait(500);
+    cy.visit('/');
+    cy.get('#e2e-landing-page');
+    cy.wait(500);
+  });
+
+  it('Shows the correct options when signed up as admin user', () => {
+    cy.get('#e2e-cookie-banner');
+    cy.get('#e2e-cookie-banner').find('.integration-open-modal').click();
+    cy.get('#e2e-preference-dialog').contains('Google Analytics');
   });
 });

@@ -1,5 +1,5 @@
-const columnsGapDesktop = 100;
-const rightColumnWidthDesktop = 360;
+const columnsGapDesktop = 90;
+const rightColumnWidthDesktop = 350;
 const columnsGapTablet = 60;
 const rightColumnWidthTablet = 300;
 const pageContentMaxWidth = 1210;

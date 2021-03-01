@@ -10,13 +10,13 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.descriptionTab',
     defaultMessage: 'Description',
   },
-  ideasTab: {
-    id: 'app.containers.AdminPage.ProjectEdit.ideasTab',
-    defaultMessage: 'Ideas',
+  inputManagerTab: {
+    id: 'app.containers.AdminPage.ProjectEdit.inputManagerTab',
+    defaultMessage: 'Input manager',
   },
-  ideaFormTab: {
-    id: 'app.containers.AdminPage.ProjectEdit.ideaFormTab',
-    defaultMessage: 'Idea form',
+  inputFormTab: {
+    id: 'app.containers.AdminPage.ProjectEdit.inputFormTab',
+    defaultMessage: 'Input form',
   },
   volunteeringTab: {
     id: 'app.containers.AdminPage.ProjectEdit.volunteeringTab',
@@ -50,6 +50,26 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.addNewIdea',
     defaultMessage: 'Add an idea',
   },
+  addNewProject: {
+    id: 'app.containers.AdminPage.ProjectEdit.addNewProject',
+    defaultMessage: 'Add a project',
+  },
+  addNewIssue: {
+    id: 'app.containers.AdminPage.ProjectEdit.addNewIssue',
+    defaultMessage: 'Add an issue',
+  },
+  addNewQuestion: {
+    id: 'app.containers.AdminPage.ProjectEdit.addNewQuestion',
+    defaultMessage: 'Add a question',
+  },
+  addNewOption: {
+    id: 'app.containers.AdminPage.ProjectEdit.addNewOption',
+    defaultMessage: 'Add an option',
+  },
+  addNewContribution: {
+    id: 'app.containers.AdminPage.ProjectEdit.addNewContribution',
+    defaultMessage: 'Add a contribution',
+  },
   viewPublicProject: {
     id: 'app.containers.AdminPage.ProjectEdit.viewPublicProject',
     defaultMessage: 'View project',
@@ -63,90 +83,90 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.noBudgetingAmountErrorMessage',
     defaultMessage: 'Not a valid amount',
   },
-  participationMethod: {
-    id: 'app.containers.AdminPage.ProjectEdit.participationMethod',
-    defaultMessage: 'Participation method',
+  participationMethodTitleText: {
+    id: 'app.containers.AdminPage.ProjectEdit.participationMethodTitleText',
+    defaultMessage: 'What do you want to do?',
   },
   participationMethodTooltip: {
     id: 'app.containers.AdminPage.ProjectEdit.participationMethodTooltip',
     defaultMessage: 'Choose how users can participate.',
   },
-  information: {
-    id: 'app.containers.AdminPage.ProjectEdit.information',
-    defaultMessage: 'Information',
+  shareInformation: {
+    id: 'app.containers.AdminPage.ProjectEdit.shareInformation',
+    defaultMessage: 'Share information',
   },
-  informationDescription: {
-    id: 'app.containers.AdminPage.ProjectEdit.informationDescription',
+  shareInformationDescription: {
+    id: 'app.containers.AdminPage.ProjectEdit.shareInformationDescription',
+    defaultMessage: 'Provide information to participants.',
+  },
+  inputAndFeedback: {
+    id: 'app.containers.AdminPage.ProjectEdit.inputAndFeedback',
+    defaultMessage: 'Collect input and feedback',
+  },
+  inputAndFeedbackDescription: {
+    id: 'app.containers.AdminPage.ProjectEdit.inputAndFeedbackDescription',
     defaultMessage:
-      'Users can only read the information you provide, they cannot participate actively.',
+      'Create or collect inputs, votes and/or comments. Pick between different types of inputs: idea collection, option analysis, question and answer, issue identification and more.',
   },
-  ideation: {
-    id: 'app.containers.AdminPage.ProjectEdit.ideation',
-    defaultMessage: 'Ideation',
+  createSurveyText: {
+    id: 'app.containers.AdminPage.ProjectEdit.createSurveyText',
+    defaultMessage: 'Create an advanced survey',
   },
-  ideationDescription: {
-    id: 'app.containers.AdminPage.ProjectEdit.ideationDescription',
-    defaultMessage: 'Users can post ideas, comment on other ideas and/or vote.',
+  createSurveyDescription: {
+    id: 'app.containers.AdminPage.ProjectEdit.createSurveyDescription',
+    defaultMessage: 'Embed a Typeform, Google Form or Enalyzer survey.',
   },
-  survey: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey',
-    defaultMessage: 'Survey',
-  },
-  surveyDescription: {
-    id: 'app.containers.AdminPage.ProjectEdit.surveyDescription',
-    defaultMessage:
-      'You integrate a survey in which the users can participate.',
-  },
-  participatoryBudgeting: {
-    id: 'app.containers.AdminPage.ProjectEdit.participatoryBudgeting',
-    defaultMessage: 'Participatory Budgeting',
-  },
-  participatoryBudgetingDescription: {
+  conductParticipatoryBudgetingText: {
     id:
-      'app.containers.AdminPage.ProjectEdit.participatoryBudgetingDescription',
+      'app.containers.AdminPage.ProjectEdit.conductParticipatoryBudgetingText',
+    defaultMessage: 'Conduct a budget allocation exercise',
+  },
+  conductParticipatoryBudgetingDescriptionText: {
+    id:
+      'app.containers.AdminPage.ProjectEdit.conductParticipatoryBudgetingDescriptionText',
     defaultMessage:
-      'Users can select ideas until their selection reaches a predefined budget threshold.',
+      'Assign a budget to projects and ask participants to select their preferred projects that fit within a total budget.',
   },
-  poll: {
-    id: 'app.containers.AdminPage.ProjectEdit.poll',
-    defaultMessage: 'Poll',
+  createPoll: {
+    id: 'app.containers.AdminPage.ProjectEdit.createPoll',
+    defaultMessage: 'Create a poll',
   },
-  pollDescription: {
-    id: 'app.containers.AdminPage.ProjectEdit.pollDescription',
-    defaultMessage: 'Users can answer a short multiple-choice questionnaire.',
+  createPollDescription: {
+    id: 'app.containers.AdminPage.ProjectEdit.createPollDescription',
+    defaultMessage: 'Set up a multiple-choice questionnaire.',
   },
-  volunteering: {
-    id: 'app.containers.AdminPage.ProjectEdit.volunteering',
-    defaultMessage: 'Volunteering',
+  findVolunteers: {
+    id: 'app.containers.AdminPage.ProjectEdit.findVolunteers',
+    defaultMessage: 'Find volunteers',
   },
-  volunteeringDescription: {
-    id: 'app.containers.AdminPage.ProjectEdit.volunteeringDescription',
-    defaultMessage: 'Users can volunteer for the causes you define.',
+  findVolunteersDescriptionText: {
+    id: 'app.containers.AdminPage.ProjectEdit.findVolunteersDescriptionText',
+    defaultMessage: 'Ask participants to volunteer for activities and causes.',
   },
   amountPerCitizen: {
     id: 'app.containers.AdminPage.ProjectEdit.amountPerCitizen',
     defaultMessage: 'Amount per citizen, in {currency}',
   },
-  postingEnabled: {
-    id: 'app.containers.AdminPage.ProjectEdit.postingEnabled',
-    defaultMessage: 'Posting ideas',
+  inputPostingEnabled: {
+    id: 'app.containers.AdminPage.ProjectEdit.inputPostingEnabled',
+    defaultMessage: 'Submitting inputs',
   },
-  commentingEnabled: {
-    id: 'app.containers.AdminPage.ProjectEdit.commentingEnabled',
-    defaultMessage: 'Commenting',
+  inputCommentingEnabled: {
+    id: 'app.containers.AdminPage.ProjectEdit.inputCommentingEnabled',
+    defaultMessage: 'Commenting on inputs',
   },
-  votingEnabled: {
-    id: 'app.containers.AdminPage.ProjectEdit.votingEnabled',
-    defaultMessage: 'Voting',
+  inputVotingEnabled: {
+    id: 'app.containers.AdminPage.ProjectEdit.inputVotingEnabled',
+    defaultMessage: 'Voting on inputs',
   },
   votingMethod: {
     id: 'app.containers.AdminPage.ProjectEdit.votingMethod',
     defaultMessage: 'Voting method',
   },
-  votingMethodTooltip: {
-    id: 'app.containers.AdminPage.ProjectEdit.votingMethodTooltip',
+  votingMaximumTooltip: {
+    id: 'app.containers.AdminPage.ProjectEdit.votingMaximumTooltip',
     defaultMessage:
-      'The option ‘Limited’ lets you define what maximum number of votes one user can cast. ‘Unlimited’ allows to vote on as many ideas as wanted.',
+      'You can set the maximum number of times that a participant can vote.',
   },
   votingLimit: {
     id: 'app.containers.AdminPage.ProjectEdit.votingLimit',
@@ -156,10 +176,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.downvoting',
     defaultMessage: 'Downvoting',
   },
-  downvotingTooltip: {
-    id: 'app.containers.AdminPage.ProjectEdit.downvotingTooltip',
+  disableDownvotingTooltip: {
+    id: 'app.containers.AdminPage.ProjectEdit.disableDownvotingTooltip',
     defaultMessage:
-      "By disabling, people can only upvote an idea. As a consequence, you'll have less information on what people think about that idea.",
+      'This will disable downvoting, but upvoting will still be enabled. You can disable voting completely in the Actions section of this tab.',
   },
   downvotingDisabled: {
     id: 'app.containers.AdminPage.ProjectEdit.downvotingDisabled',
@@ -203,14 +223,23 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.disabled',
     defaultMessage: 'Disabled',
   },
-  defaultDisplay: {
-    id: 'app.containers.AdminPage.ProjectEdit.defaultDisplay',
-    defaultMessage: 'Ideas displayed by default as:',
+  inputsDefaultView: {
+    id: 'app.containers.AdminPage.ProjectEdit.inputsDefaultView',
+    defaultMessage: 'Default view',
   },
-  presentationModeTooltip: {
-    id: 'app.containers.AdminPage.ProjectEdit.presentationModeTooltip',
+  defaultSorting: {
+    id: 'app.containers.AdminPage.ProjectEdit.defaultSorting',
+    defaultMessage: 'Sorting',
+  },
+  inputsDefaultViewTooltip: {
+    id: 'app.containers.AdminPage.ProjectEdit.inputsDefaultViewTooltip',
     defaultMessage:
-      'You can choose how the ideas are presented by default: as cards in a list or as pins on a map.',
+      "Choose the default view of participant's inputs: cards in a grid view or pins on a map. Participants can manually switch between the two views.",
+  },
+  defaultPostSortingTooltip: {
+    id: 'app.containers.AdminPage.ProjectEdit.defaultPostSortingTooltip',
+    defaultMessage:
+      'You can set the default order for posts to be displayed on the main project page.',
   },
   cardDisplay: {
     id: 'app.containers.AdminPage.ProjectEdit.cardDisplay',
@@ -219,6 +248,26 @@ export default defineMessages({
   mapDisplay: {
     id: 'app.containers.AdminPage.ProjectEdit.mapDisplay',
     defaultMessage: 'Map',
+  },
+  trendingSortingMethod: {
+    id: 'app.containers.AdminPage.ProjectEdit.trendingSortingMethod',
+    defaultMessage: 'Trending',
+  },
+  randomSortingMethod: {
+    id: 'app.containers.AdminPage.ProjectEdit.randomSortingMethod',
+    defaultMessage: 'Random',
+  },
+  popularSortingMethod: {
+    id: 'app.containers.AdminPage.ProjectEdit.popularSortingMethod',
+    defaultMessage: 'Most voted',
+  },
+  newestSortingMethod: {
+    id: 'app.containers.AdminPage.ProjectEdit.newestFirstSortingMethod',
+    defaultMessage: 'Most recent',
+  },
+  oldestSortingMethod: {
+    id: 'app.containers.AdminPage.ProjectEdit.oldestFirstSortingMethod',
+    defaultMessage: 'Oldest',
   },
   surveyService: {
     id: 'app.containers.AdminPage.ProjectEdit.surveyService',
@@ -241,6 +290,10 @@ export default defineMessages({
   typeform: {
     id: 'app.containers.AdminPage.ProjectEdit.typeform',
     defaultMessage: 'Typeform',
+  },
+  enalyzer: {
+    id: 'app.containers.AdminPage.ProjectEdit.enalyzer',
+    defaultMessage: 'Enalyzer',
   },
   survey_monkey: {
     id: 'app.containers.AdminPage.ProjectEdit.survey_monkey',
@@ -273,13 +326,55 @@ export default defineMessages({
       'app.containers.AdminPage.ProjectEdit.SurveyResults.exportSurveyResults',
     defaultMessage: 'Export survey results',
   },
-  titleIdeas: {
-    id: 'app.components.admin.PostManager.titleIdeas',
-    defaultMessage: 'Manage idea',
+  titleInputManager: {
+    id: 'app.containers.AdminPage.ProjectEdit.PostManager.titleInputManager',
+    defaultMessage: 'Input manager',
   },
-  subtitleIdeas: {
-    id: 'app.components.admin.PostManager.subtitleIdeas',
+  subtitleInputManager: {
+    id: 'app.containers.AdminPage.ProjectEdit.PostManager.subtitleInputManager',
     defaultMessage:
-      'Get an overview of all the ideas inside your project. Add themes and change the status by dragging and dropping ideas to one of the left columns, or edit the ideas.',
+      'Give feedback, assign topics or copy inputs to the next project phase.',
+  },
+  hiddenFieldsTip: {
+    id: 'app.components.admin.PostManager.hiddenFieldsTip',
+    defaultMessage:
+      'Tip: add {hiddenFieldsLink} when setting up your Typeform survey to keep track of who has responded to your survey.',
+  },
+  hiddenFieldsLinkText: {
+    id: 'app.components.admin.PostManager.hiddenFieldsLink',
+    defaultMessage: 'hidden fields',
+  },
+  hiddenFieldsSupportArticleUrl: {
+    id: 'app.components.admin.PostManager.hiddenFieldsSupportArticleUrl',
+    defaultMessage: 'https://support.citizenlab.co/en/articles/1641202',
+  },
+  ideaTerm: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.ideaTerm',
+    defaultMessage: 'Idea',
+  },
+  projectTerm: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectTerm',
+    defaultMessage: 'Project',
+  },
+  questionTerm: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.questionTerm',
+    defaultMessage: 'Question',
+  },
+  optionTerm: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.optionTerm',
+    defaultMessage: 'Option',
+  },
+  issueTerm: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.issueTerm',
+    defaultMessage: 'Issue',
+  },
+  contributionTerm: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.contributionTerm',
+    defaultMessage: 'Contribution',
+  },
+  inputTermSelectLabel: {
+    id:
+      'app.components.app.containers.AdminPage.ProjectEdit.inputTermSelectLabel',
+    defaultMessage: 'What should an input be called?',
   },
 });

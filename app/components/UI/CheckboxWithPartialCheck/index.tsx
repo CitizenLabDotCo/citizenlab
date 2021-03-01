@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
+import { colors, fontSizes, isRtl } from 'utils/styleUtils';
 import { Icon } from 'cl2-component-library';
 import { get } from 'lodash-es';
 // https://www.w3.org/TR/2016/WD-wai-aria-practices-1.1-20160317/examples/checkbox/checkbox-2.html
@@ -9,6 +9,10 @@ const Container = styled.div<{ size: string }>`
   display: flex;
   align-items: center;
   cursor: pointer;
+
+  ${isRtl`
+    flex-direction: row-reverse;
+  `}
 
   &.hasNoLabel {
     flex: 0 0 ${({ size }) => parseInt(size, 10) + 2}px;
@@ -67,6 +71,11 @@ const Label = styled.label`
   font-size: ${fontSizes.base}px;
   line-height: normal;
   margin-left: 10px;
+
+  ${isRtl`
+    margin-left: 0;
+    margin-right: 10px;
+  `}
 `;
 
 type DefaultProps = {

@@ -6,34 +6,21 @@ import 'jest-styled-components';
 
 // component to test
 import CategoryCard from './CategoryCard';
+import { registerDestination } from './destinations';
 
 // mock utilities
+jest.mock('services/appConfiguration');
 jest.mock('utils/cl-intl');
 
 describe('<CategoryCard />', () => {
   const category = 'analytics';
 
-  const categoryDestinations = {
-    analytics: [
-      {
-        name: 'Google Analytics',
-        description:
-          'Google Analytics is the most popular marketing tool for the web. It’s free and provides a wide range of features. It’s especially good at measuring traffic sources and ad campaigns.',
-        category: 'Analytics',
-        website: 'http://google.com/analytics',
-        id: 'Google Analytics',
-      },
-      {
-        name: 'MarketingTool',
-        description:
-          'MarketingTool is the most popular marketing tool for the web. It’s free and provides a wide range of features. It’s especially good at measuring traffic sources and ad campaigns.',
-        category: 'Tag Managers',
-        website: 'http://random.com/marketing',
-        id: 'MarketingTool',
-      },
-    ],
-  };
-
+  const destinations = ['google_analytics'];
+  registerDestination({
+    key: 'google_analytics',
+    category: 'analytics',
+    name: () => 'Google Analytics',
+  });
   const handleChange = jest.fn();
 
   beforeEach(() => {});
@@ -43,7 +30,7 @@ describe('<CategoryCard />', () => {
       <CategoryCard
         key={category}
         category={category}
-        destinations={categoryDestinations[category]}
+        destinations={destinations}
         checked={null}
         handleChange={handleChange}
       />
@@ -55,7 +42,7 @@ describe('<CategoryCard />', () => {
       <CategoryCard
         key={category}
         category={category}
-        destinations={categoryDestinations[category]}
+        destinations={destinations}
         checked={true}
         handleChange={handleChange}
       />
@@ -67,7 +54,7 @@ describe('<CategoryCard />', () => {
       <CategoryCard
         key={category}
         category={category}
-        destinations={categoryDestinations[category]}
+        destinations={destinations}
         checked={false}
         handleChange={handleChange}
       />
@@ -82,7 +69,7 @@ describe('<CategoryCard />', () => {
       <CategoryCard
         key={category}
         category={category}
-        destinations={categoryDestinations[category]}
+        destinations={destinations}
         checked={null}
         handleChange={handleChange}
       />

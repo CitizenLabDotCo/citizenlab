@@ -15,6 +15,7 @@ import CampaignsConsentForm from './CampaignsConsentForm';
 import ProfileDeletion from './ProfileDeletion';
 import VerificationStatus from './VerificationStatus';
 import UsersEditPageMeta from './UsersEditPageMeta';
+import FragmentForm from './FragmentForm';
 
 // Styles
 import styled from 'styled-components';
@@ -22,7 +23,7 @@ import { colors } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 
 // Hooks
-import useTenant from 'hooks/useTenant';
+import useAppConfiguration from 'hooks/useAppConfiguration';
 import useAuthUser from 'hooks/useAuthUser';
 
 const Container = styled.main`
@@ -42,7 +43,7 @@ const Container = styled.main`
 const Wrapper = styled.div``;
 
 export default () => {
-  const tenant = useTenant();
+  const tenant = useAppConfiguration();
   const authUser = useAuthUser();
   const loaded = tenant !== undefined && authUser !== undefined;
 
@@ -53,7 +54,7 @@ export default () => {
   if (loaded && !isNilOrError(tenant) && !isNilOrError(authUser)) {
     return (
       <Container id="e2e-user-edit-profile-page">
-        <UsersEditPageMeta user={authUser.data} />
+        <UsersEditPageMeta user={authUser} />
         <ScreenReaderOnly>
           <FormattedMessage
             tagName="h1"
@@ -63,6 +64,7 @@ export default () => {
         <Wrapper>
           <VerificationStatus />
           <ProfileForm />
+          <FragmentForm />
           <ProfileDeletion />
           <CampaignsConsentForm />
         </Wrapper>

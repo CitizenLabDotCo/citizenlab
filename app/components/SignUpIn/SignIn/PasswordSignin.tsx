@@ -8,13 +8,16 @@ import Link from 'utils/cl-router/Link';
 
 // components
 import { Input } from 'cl2-component-library';
+import PasswordInput from 'components/UI/PasswordInput';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import { FormLabel } from 'components/UI/FormComponents';
 import { Options, Option } from 'components/SignUpIn/styles';
 
 // resources
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetAppConfiguration';
 import GetWindowSize, {
   GetWindowSizeChildProps,
 } from 'resources/GetWindowSize';
@@ -76,7 +79,7 @@ export interface InputProps {
 }
 
 interface DataProps {
-  tenant: GetTenantChildProps;
+  tenant: GetAppConfigurationChildProps;
   windowSize: GetWindowSizeChildProps;
   passwordLoginEnabled: boolean | null;
   googleLoginEnabled: boolean | null;
@@ -92,8 +95,8 @@ type State = {
   password: string | null;
   processing: boolean;
   emailError: string | null;
-  passwordError: string | null;
   signInError: string | null;
+  hasEmptyPasswordError: boolean;
 };
 
 class PasswordSignin extends PureComponent<
@@ -110,8 +113,8 @@ class PasswordSignin extends PureComponent<
       password: null,
       processing: false,
       emailError: null,
-      passwordError: null,
       signInError: null,
+      hasEmptyPasswordError: false,
     };
     this.emailInputElement = null;
     this.passwordInputElement = null;
@@ -136,7 +139,7 @@ class PasswordSignin extends PureComponent<
   handlePasswordOnChange = (password: string) => {
     this.setState({
       password,
-      passwordError: null,
+      hasEmptyPasswordError: false,
       signInError: null,
     });
   };
@@ -149,18 +152,19 @@ class PasswordSignin extends PureComponent<
   handleGoToSignUp = (event: React.FormEvent) => {
     event.preventDefault();
 
-    if (this.props.metaData?.inModal) {
+    if (this.props.metaData?.inModal || this.props.metaData?.noPushLinks) {
       this.props.onGoToSignUp();
     } else {
       clHistory.push('/sign-up');
     }
   };
 
-  validate(email: string | null, password: string | null) {
+  validate(email: string | null) {
     const {
       intl: { formatMessage },
       tenant,
     } = this.props;
+    const { password } = this.state;
     const phone =
       !isNilOrError(tenant) && tenant.attributes.settings.password_login?.phone;
     const hasEmailError = !phone && (!email || !isValidEmail(email));
@@ -169,21 +173,19 @@ class PasswordSignin extends PureComponent<
         ? formatMessage(messages.noEmailError)
         : formatMessage(messages.noValidEmailError)
       : null;
-    const passwordError = !password
-      ? formatMessage(messages.noPasswordError)
-      : null;
+    const hasEmptyPasswordError = !password;
 
-    this.setState({ emailError, passwordError });
+    this.setState({ emailError, hasEmptyPasswordError });
 
     if (emailError && this.emailInputElement) {
       this.emailInputElement.focus();
     }
 
-    if (passwordError && this.passwordInputElement) {
+    if (!emailError && hasEmptyPasswordError && this.passwordInputElement) {
       this.passwordInputElement.focus();
     }
 
-    return !emailError && !passwordError;
+    return !emailError && !hasEmptyPasswordError;
   }
 
   handleOnSubmit = async (event: React.FormEvent) => {
@@ -193,7 +195,7 @@ class PasswordSignin extends PureComponent<
     const { formatMessage } = this.props.intl;
     const { email, password } = this.state;
 
-    if (this.validate(email, password) && email && password) {
+    if (this.validate(email) && email && password) {
       try {
         this.setState({ processing: true });
         const user = await signIn(email, password);
@@ -223,8 +225,8 @@ class PasswordSignin extends PureComponent<
       password,
       processing,
       emailError,
-      passwordError,
       signInError,
+      hasEmptyPasswordError,
     } = this.state;
     const {
       className,
@@ -271,7 +273,7 @@ class PasswordSignin extends PureComponent<
               onChange={this.handleEmailOnChange}
               setRef={this.handleEmailInputSetRef}
               autocomplete="email"
-              autoFocus={!!isDesktop}
+              autoFocus={!!(isDesktop && !this.props.metaData?.noAutofocus)}
             />
           </FormElement>
 
@@ -280,14 +282,14 @@ class PasswordSignin extends PureComponent<
               htmlFor="password"
               labelMessage={messages.passwordLabel}
             />
-            <Input
-              type="password"
+            <PasswordInput
               id="password"
-              value={password}
-              error={passwordError}
+              password={password}
               onChange={this.handlePasswordOnChange}
               setRef={this.handlePasswordInputSetRef}
               autocomplete="current-password"
+              isLoginPasswordInput
+              errors={{ emptyError: hasEmptyPasswordError }}
             />
           </FormElement>
 
@@ -297,7 +299,7 @@ class PasswordSignin extends PureComponent<
                 onClick={this.handleOnSubmit}
                 processing={processing}
                 text={formatMessage(messages.submit)}
-                className="e2e-submit-signin"
+                id="e2e-signin-password-submit-button"
               />
             </ButtonWrapper>
             <Error marginTop="10px" text={signInError} />
@@ -315,7 +317,11 @@ class PasswordSignin extends PureComponent<
           </Option>
           <Option>
             {enabledProviders.length > 1 ? (
-              <button onClick={this.handleGoToLogInOptions} className="link">
+              <button
+                id="e2e-login-options"
+                onClick={this.handleGoToLogInOptions}
+                className="link"
+              >
                 <FormattedMessage {...messages.backToLoginOptions} />
               </button>
             ) : (
@@ -324,8 +330,8 @@ class PasswordSignin extends PureComponent<
                 values={{
                   goToOtherFlowLink: (
                     <button
+                      id="e2e-goto-signup"
                       onClick={this.handleGoToSignUp}
-                      className="link e2e-sign-up-link"
                     >
                       {formatMessage(messages.signUp)}
                     </button>
@@ -343,7 +349,7 @@ class PasswordSignin extends PureComponent<
 const PasswordSigninWithHoC = withRouter<Props>(injectIntl(PasswordSignin));
 
 const Data = adopt<DataProps, {}>({
-  tenant: <GetTenant />,
+  tenant: <GetAppConfiguration />,
   windowSize: <GetWindowSize />,
   passwordLoginEnabled: <GetFeatureFlag name="password_login" />,
   googleLoginEnabled: <GetFeatureFlag name="google_login" />,

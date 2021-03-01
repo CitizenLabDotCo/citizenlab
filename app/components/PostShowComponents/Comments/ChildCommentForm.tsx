@@ -1,14 +1,16 @@
 // libraries
-import React, { PureComponent, FormEvent } from 'react';
+import React, { PureComponent } from 'react';
 import { Subscription } from 'rxjs';
 import { filter, tap } from 'rxjs/operators';
-import { trim, isEmpty } from 'lodash-es';
+import { trim } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import Button from 'components/UI/Button';
 import MentionsTextArea from 'components/UI/MentionsTextArea';
+import Avatar from 'components/Avatar';
+import clickOutside from 'utils/containers/clickOutside';
 
 // tracking
 import { trackEventByName } from 'utils/analytics';
@@ -24,6 +26,7 @@ import {
   addCommentToIdeaComment,
   addCommentToInitiativeComment,
 } from 'services/comments';
+import { canModerateProject } from 'services/permissions/rules/projectPermissions';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
@@ -38,24 +41,38 @@ import { commentReplyButtonClicked$, commentAdded } from './events';
 // style
 import styled from 'styled-components';
 import { hideVisually } from 'polished';
-import { media, viewportWidths } from 'utils/styleUtils';
+import { colors, defaultStyles, viewportWidths } from 'utils/styleUtils';
 
-const Container = styled.div``;
+const Container = styled.div`
+  display: flex;
+`;
+
+const StyledAvatar = styled(Avatar)`
+  margin-left: -4px;
+  margin-right: 5px;
+  margin-top: 3px;
+`;
+
+const FormContainer = styled(clickOutside)`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+`;
 
 const Form = styled.form`
+  flex: 1;
   background: #fff;
-  border-top: solid 1px #ebebeb;
-  border-bottom: solid 3px #fff;
-  transition: all 100ms ease;
+  border: 1px solid ${colors.border};
+  border-radius: ${(props: any) => props.theme.borderRadius};
 
-  &.hidden {
-    display: none;
+  &:not(.focused):hover {
+    border-color: ${colors.hoveredBorder};
   }
 
   &.focused {
-    background: #fff;
-    border-radius: 0px;
-    border-bottom-color: ${({ theme }) => theme.colorSecondary};
+    border-color: ${colors.focussedBorder};
+    box-shadow: ${defaultStyles.boxShadowFocused};
   }
 `;
 
@@ -63,28 +80,16 @@ const HiddenLabel = styled.span`
   ${hideVisually()}
 `;
 
-const FormInner = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  padding-top: 25px;
-  padding-bottom: 25px;
-  padding-left: 35px;
-  padding-right: 35px;
-
-  ${media.smallerThanMinTablet`
-    padding-left: 20px;
-    padding-right: 20px;
-  `}
-`;
-
-const TextareaWrapper = styled.div`
-  margin-bottom: 10px;
-`;
-
 const ButtonWrapper = styled.div`
   display: flex;
   justify-content: flex-end;
+  margin-top: 14px;
+  margin-bottom: 10px;
+  margin-right: 10px;
+`;
+
+const CancelButton = styled(Button)`
+  margin-right: 8px;
 `;
 
 interface InputProps {
@@ -106,14 +111,11 @@ interface Props extends InputProps, DataProps {}
 
 interface State {
   inputValue: string;
-  visible: boolean;
   focused: boolean;
   processing: boolean;
   errorMessage: string | null;
   canSubmit: boolean;
 }
-
-const useCapture = true;
 
 class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
   textareaElement: HTMLTextAreaElement;
@@ -123,7 +125,6 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
     super(props);
     this.state = {
       inputValue: '',
-      visible: false,
       focused: false,
       processing: false,
       errorMessage: null,
@@ -132,8 +133,6 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
   }
 
   componentDidMount() {
-    window.addEventListener('keydown', this.handleKeypress, useCapture);
-
     this.subscriptions = [
       commentReplyButtonClicked$
         .pipe(
@@ -149,42 +148,12 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
         .subscribe(({ eventValue }) => {
           const { authorFirstName, authorLastName, authorSlug } = eventValue;
           const inputValue = `@[${authorFirstName} ${authorLastName}](${authorSlug}) `;
-
-          this.setState({ inputValue, visible: true, focused: true });
-
-          if (this.textareaElement) {
-            setTimeout(() => {
-              this.textareaElement.scrollIntoView({
-                behavior: 'smooth',
-                block: 'center',
-                inline: 'center',
-              });
-            }, 100);
-
-            setTimeout(() => {
-              this.textareaElement.focus();
-            }, 300);
-
-            setTimeout(() => {
-              this.setCaretAtEnd(this.textareaElement);
-            }, 350);
-          }
+          this.setState({ inputValue, focused: true });
         }),
     ];
   }
 
-  componentDidUpdate(_prevProps: Props, prevState: State) {
-    if (
-      prevState.focused &&
-      !this.state.focused &&
-      isEmpty(this.state.inputValue)
-    ) {
-      this.setState({ visible: false });
-    }
-  }
-
   componentWillUnmount() {
-    window.removeEventListener('keydown', this.handleKeypress, useCapture);
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
@@ -197,20 +166,7 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
     }
   }
 
-  handleKeypress = (event) => {
-    if (
-      this.state.visible &&
-      event.type === 'keydown' &&
-      event.key === 'Escape'
-    ) {
-      event.preventDefault();
-      event.stopImmediatePropagation();
-      event.stopPropagation();
-      this.setState({ visible: false });
-    }
-  };
-
-  handleTextareaOnChange = (inputValue: string) => {
+  onChange = (inputValue: string) => {
     this.setState(({ focused }) => ({
       inputValue,
       errorMessage: null,
@@ -218,7 +174,7 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
     }));
   };
 
-  handleTextareaOnFocus = () => {
+  onFocus = () => {
     const { postId, postType, parentId } = this.props;
 
     trackEventByName(tracks.focusChildCommentEditor, {
@@ -232,13 +188,11 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
     this.setState({ focused: true });
   };
 
-  handleTextareaOnBlur = () => {
-    this.setState({ focused: false });
+  onCancel = () => {
+    this.setState({ focused: false, inputValue: '' });
   };
 
-  handleSubmit = async (event: FormEvent) => {
-    event.preventDefault();
-
+  onSubmit = async () => {
     const {
       postId,
       postType,
@@ -297,7 +251,6 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
         this.setState({
           inputValue: '',
           processing: false,
-          visible: false,
           focused: false,
         });
       } catch (error) {
@@ -312,6 +265,22 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
 
   setRef = (element: HTMLTextAreaElement) => {
     this.textareaElement = element;
+
+    if (this.textareaElement) {
+      this.textareaElement.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center',
+        inline: 'center',
+      });
+
+      setTimeout(() => {
+        this.textareaElement.focus();
+      }, 100);
+
+      setTimeout(() => {
+        this.setCaretAtEnd(this.textareaElement);
+      }, 200);
+    }
   };
 
   placeholder = this.props.intl.formatMessage(
@@ -319,6 +288,7 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
   );
 
   render() {
+    const { focused } = this.state;
     const {
       postId,
       postType,
@@ -328,68 +298,77 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
       className,
     } = this.props;
 
-    if (!isNilOrError(authUser)) {
+    if (!isNilOrError(authUser) && focused) {
       const {
         inputValue,
         canSubmit,
         processing,
         errorMessage,
-        visible,
         focused,
       } = this.state;
-      const isButtonVisible = (inputValue && inputValue.length > 0) || focused;
-      const smallerThanSmallTablet = windowSize
-        ? windowSize <= viewportWidths.smallTablet
-        : false;
+      const isModerator =
+        !isNilOrError(authUser) &&
+        canModerateProject(postId, { data: authUser });
+      const smallerThanSmallTablet =
+        !isNilOrError(windowSize) && windowSize <= viewportWidths.smallTablet;
 
       return (
-        <Container className={`${className} e2e-childcomment-form`}>
-          <Form
-            className={`${visible ? 'visible' : 'hidden'} ${
-              focused ? 'focused' : 'blurred'
-            }`}
-            onSubmit={this.handleSubmit}
+        <Container className={`${className || ''} e2e-childcomment-form`}>
+          <StyledAvatar
+            userId={authUser?.id}
+            size={30}
+            isLinkToProfile={!!authUser?.id}
+            moderator={isModerator}
+          />
+          <FormContainer
+            onClickOutside={this.onCancel}
+            closeOnClickOutsideEnabled={false}
           >
-            <label>
-              <HiddenLabel>
-                <FormattedMessage {...messages.replyToComment} />
-              </HiddenLabel>
-              <FormInner>
-                <TextareaWrapper>
-                  <MentionsTextArea
-                    postId={postId}
-                    postType={postType}
-                    name="comment"
-                    className={`childcommentform-${parentId}`}
-                    placeholder={this.placeholder}
-                    rows={smallerThanSmallTablet ? 3 : 2}
-                    value={inputValue}
-                    error={errorMessage}
-                    onChange={this.handleTextareaOnChange}
-                    onFocus={this.handleTextareaOnFocus}
-                    onBlur={this.handleTextareaOnBlur}
-                    getTextareaRef={this.setRef}
-                    fontWeight="300"
-                    padding="10px 0px"
-                    borderRadius="none"
-                    border="none"
-                    boxShadow="none"
-                  />
-                </TextareaWrapper>
-                <ButtonWrapper className={isButtonVisible ? 'visible' : ''}>
+            <Form className={focused ? 'focused' : ''}>
+              <label>
+                <HiddenLabel>
+                  <FormattedMessage {...messages.replyToComment} />
+                </HiddenLabel>
+                <MentionsTextArea
+                  postId={postId}
+                  postType={postType}
+                  name="comment"
+                  className={`childcommentform-${parentId}`}
+                  placeholder={this.placeholder}
+                  rows={3}
+                  value={inputValue}
+                  error={errorMessage}
+                  onChange={this.onChange}
+                  onFocus={this.onFocus}
+                  fontWeight="300"
+                  padding="10px"
+                  borderRadius="none"
+                  border="none"
+                  boxShadow="none"
+                  getTextareaRef={this.setRef}
+                />
+                <ButtonWrapper>
+                  <CancelButton
+                    disabled={processing}
+                    onClick={this.onCancel}
+                    buttonStyle="secondary"
+                    padding={smallerThanSmallTablet ? '6px 12px' : undefined}
+                  >
+                    <FormattedMessage {...messages.cancel} />
+                  </CancelButton>
                   <Button
                     className="e2e-submit-childcomment"
                     processing={processing}
-                    icon="send"
-                    onClick={this.handleSubmit}
+                    onClick={this.onSubmit}
                     disabled={!canSubmit}
+                    padding={smallerThanSmallTablet ? '6px 12px' : undefined}
                   >
                     <FormattedMessage {...messages.publishComment} />
                   </Button>
                 </ButtonWrapper>
-              </FormInner>
-            </label>
-          </Form>
+              </label>
+            </Form>
+          </FormContainer>
         </Container>
       );
     }

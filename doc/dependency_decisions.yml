@@ -1,0 +1,109 @@
+---
+- - :permit
+  - MIT
+  - &1
+    :who:
+    :why:
+    :versions: []
+    :when: 2020-11-17 20:42:54.118268261 Z
+- - :permit
+  - ISC
+  - *1
+- - :permit
+  - Apache 2.0
+  - *1
+- - :permit
+  - Simplified BSD
+  - *1
+- - :permit
+  - New BSD
+  - *1
+- - :ignore_group
+  - devDependencies
+  - :who:
+    :why:
+    :versions: []
+    :when: 2020-11-17 21:29:23.501214786 Z
+- - :permit
+  - BSD Zero Clause License
+  - &2
+    :who:
+    :why:
+    :versions: []
+    :when: 2020-11-17 21:51:56.229743127 Z
+- - :permit
+  - W3C
+  - *2
+- - :permit
+  - Public Domain
+  - :who:
+    :why:
+    :versions: []
+    :when: 2020-11-17 21:55:38.021605310 Z
+- - :license
+  - create-react-context
+  - MIT
+  - :who:
+    :why:
+    :versions: []
+    :when: 2020-11-17 22:01:06.496732224 Z
+- - :license
+  - '@segment/top-domain'
+  - MIT
+  - :who:
+    :why:
+    :versions: []
+    :when: 2020-11-17 22:05:23.032988188 Z
+- - :permit
+  - W3C-20150513
+  - :who:
+    :why:
+    :versions: []
+    :when: 2020-11-17 22:09:26.676265763 Z
+- - :license
+  - component-clone
+  - MIT
+  - :who:
+    :why:
+    :versions: []
+    :when: 2020-11-17 22:13:10.471055755 Z
+- - :license
+  - component-raf
+  - MIT
+  - :who:
+    :why:
+    :versions: []
+    :when: 2020-11-17 22:13:32.340319811 Z
+- - :license
+  - component-type
+  - MIT
+  - :who:
+    :why:
+    :versions: []
+    :when: 2020-11-17 22:13:40.874193458 Z
+- - :license
+  - component-url
+  - MIT
+  - :who:
+    :why:
+    :versions: []
+    :when: 2020-11-17 22:13:48.539736876 Z
+- - :license
+  - is-core-module
+  - MIT
+  - :who:
+    :why:
+    :versions: []
+    :when: 2020-11-17 22:14:30.517372612 Z
+- - :heed_group
+  - devDependencies
+  - :who:
+    :why:
+    :versions: []
+    :when: 2020-11-17 22:19:24.448208209 Z
+- - :ignore_group
+  - devDependencies
+  - :who:
+    :why:
+    :versions: []
+    :when: 2020-11-17 22:22:52.085784129 Z

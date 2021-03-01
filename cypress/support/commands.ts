@@ -93,7 +93,7 @@ export function login(email: string, password: string) {
   cy.get('#e2e-sign-in-container');
   cy.get('#email').type(email);
   cy.get('#password').type(password);
-  cy.get('.e2e-submit-signin').click();
+  cy.get('#e2e-signin-password-submit-button').click();
   cy.get('#e2e-sign-up-in-modal').should('not.exist');
   cy.get('#e2e-user-menu-container');
   cy.wait(500);
@@ -122,7 +122,7 @@ export function setLoginCookie(email: string, password: string) {
 }
 
 export function setAdminLoginCookie() {
-  cy.setLoginCookie('admin@citizenlab.co', 'testtest');
+  cy.setLoginCookie('admin@citizenlab.co', 'democracy2.0');
 }
 
 export function apiSignup(
@@ -141,7 +141,7 @@ export function apiSignup(
       user: {
         email,
         password,
-        locale: 'en-GB',
+        locale: 'en',
         first_name: firstName,
         last_name: lastName,
       },
@@ -155,7 +155,7 @@ export function apiCreateAdmin(
   email: string,
   password: string
 ) {
-  return cy.apiLogin('admin@citizenlab.co', 'testtest').then((response) => {
+  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     return cy.request({
@@ -169,7 +169,7 @@ export function apiCreateAdmin(
         user: {
           email,
           password,
-          locale: 'en-GB',
+          locale: 'en',
           first_name: firstName,
           last_name: lastName,
           roles: [{ type: 'admin' }],
@@ -180,7 +180,7 @@ export function apiCreateAdmin(
 }
 
 export function apiRemoveUser(userId: string) {
-  return cy.apiLogin('admin@citizenlab.co', 'testtest').then((response) => {
+  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     return cy.request({
@@ -201,7 +201,7 @@ export function apiCreateModeratorForProject(
   password: string,
   projectId: string
 ) {
-  return cy.apiLogin('admin@citizenlab.co', 'testtest').then((response) => {
+  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     return cy.request({
@@ -215,7 +215,7 @@ export function apiCreateModeratorForProject(
         user: {
           email,
           password,
-          locale: 'en-GB',
+          locale: 'en',
           first_name: firstName,
           last_name: lastName,
           roles: [
@@ -252,7 +252,7 @@ export function getIdeaById(ideaId: string) {
 }
 
 export function getProjectBySlug(projectSlug: string) {
-  return cy.apiLogin('admin@citizenlab.co', 'testtest').then((response) => {
+  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     return cy.request({
@@ -267,7 +267,7 @@ export function getProjectBySlug(projectSlug: string) {
 }
 
 export function getProjectById(projectId: string) {
-  return cy.apiLogin('admin@citizenlab.co', 'testtest').then((response) => {
+  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     return cy.request({
@@ -302,7 +302,7 @@ export function getInitiativeStatuses() {
 }
 
 export function getAuthUser() {
-  return cy.apiLogin('admin@citizenlab.co', 'testtest').then((response) => {
+  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     return cy.request({
@@ -327,7 +327,7 @@ export function getArea(areaId: string) {
 }
 
 export function getUserBySlug(userSlug: string) {
-  return cy.apiLogin('admin@citizenlab.co', 'testtest').then((response) => {
+  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     return cy.request({
@@ -358,7 +358,7 @@ export function apiCreateIdea(
     };
   }
 
-  return cy.apiLogin('admin@citizenlab.co', 'testtest').then((response) => {
+  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     return cy.request({
@@ -373,11 +373,11 @@ export function apiCreateIdea(
           project_id: projectId,
           publication_status: 'published',
           title_multiloc: {
-            'en-GB': ideaTitle,
+            en: ideaTitle,
             'nl-BE': ideaTitle,
           },
           body_multiloc: {
-            'en-GB': ideaContent,
+            en: ideaContent,
             'nl-BE': ideaContent,
           },
           location_point_geojson: locationGeoJSON,
@@ -389,7 +389,7 @@ export function apiCreateIdea(
 }
 
 export function apiRemoveIdea(ideaId: string) {
-  return cy.apiLogin('admin@citizenlab.co', 'testtest').then((response) => {
+  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     return cy.request({
@@ -430,7 +430,7 @@ export function apiCreateInitiative({
     };
   }
 
-  return cy.apiLogin('admin@citizenlab.co', 'testtest').then((response) => {
+  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
     adminJwt = response.body.jwt;
 
     return cy.request({
@@ -444,11 +444,11 @@ export function apiCreateInitiative({
         initiative: {
           publication_status: 'published',
           title_multiloc: {
-            'en-GB': initiativeTitle,
+            en: initiativeTitle,
             'nl-BE': initiativeTitle,
           },
           body_multiloc: {
-            'en-GB': initiativeContent,
+            en: initiativeContent,
             'nl-BE': initiativeContent,
           },
           location_point_geojson: locationGeoJSON,
@@ -462,7 +462,7 @@ export function apiCreateInitiative({
 }
 
 export function apiRemoveInitiative(initiativeId: string) {
-  return cy.apiLogin('admin@citizenlab.co', 'testtest').then((response) => {
+  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     return cy.request({
@@ -500,7 +500,7 @@ export function apiCreateOfficialFeedbackForIdea(
   officialFeedbackContent: string,
   officialFeedbackAuthor: string
 ) {
-  return cy.apiLogin('admin@citizenlab.co', 'testtest').then((response) => {
+  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     return cy.request({
@@ -513,11 +513,11 @@ export function apiCreateOfficialFeedbackForIdea(
       body: {
         official_feedback: {
           body_multiloc: {
-            'en-GB': officialFeedbackContent,
+            en: officialFeedbackContent,
             'nl-BE': officialFeedbackContent,
           },
           author_multiloc: {
-            'en-GB': officialFeedbackAuthor,
+            en: officialFeedbackAuthor,
             'nl-BE': officialFeedbackAuthor,
           },
         },
@@ -531,7 +531,7 @@ export function apiCreateOfficialFeedbackForInitiative(
   officialFeedbackContent: string,
   officialFeedbackAuthor: string
 ) {
-  return cy.apiLogin('admin@citizenlab.co', 'testtest').then((response) => {
+  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     return cy.request({
@@ -544,11 +544,11 @@ export function apiCreateOfficialFeedbackForInitiative(
       body: {
         official_feedback: {
           body_multiloc: {
-            'en-GB': officialFeedbackContent,
+            en: officialFeedbackContent,
             'nl-BE': officialFeedbackContent,
           },
           author_multiloc: {
-            'en-GB': officialFeedbackAuthor,
+            en: officialFeedbackAuthor,
             'nl-BE': officialFeedbackAuthor,
           },
         },
@@ -575,7 +575,7 @@ export function apiAddComment(
       body: {
         comment: {
           body_multiloc: {
-            'en-GB': commentContent,
+            en: commentContent,
             'nl-BE': commentContent,
           },
           parent_id: commentParentId,
@@ -583,32 +583,34 @@ export function apiAddComment(
       },
     });
   } else {
-    return cy.apiLogin('admin@citizenlab.co', 'testtest').then((response) => {
-      const adminJwt = response.body.jwt;
+    return cy
+      .apiLogin('admin@citizenlab.co', 'democracy2.0')
+      .then((response) => {
+        const adminJwt = response.body.jwt;
 
-      return cy.request({
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${adminJwt}`,
-        },
-        method: 'POST',
-        url: `web_api/v1/${postType}s/${postId}/comments`,
-        body: {
-          comment: {
-            body_multiloc: {
-              'en-GB': commentContent,
-              'nl-BE': commentContent,
-            },
-            parent_id: commentParentId,
+        return cy.request({
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${adminJwt}`,
           },
-        },
+          method: 'POST',
+          url: `web_api/v1/${postType}s/${postId}/comments`,
+          body: {
+            comment: {
+              body_multiloc: {
+                en: commentContent,
+                'nl-BE': commentContent,
+              },
+              parent_id: commentParentId,
+            },
+          },
+        });
       });
-    });
   }
 }
 
 export function apiRemoveComment(commentId: string) {
-  return cy.apiLogin('admin@citizenlab.co', 'testtest').then((response) => {
+  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     return cy.request({
@@ -653,7 +655,7 @@ export function apiCreateProject({
   surveyUrl?: string;
   surveyService?: 'typeform' | 'survey_monkey' | 'google_forms';
 }) {
-  return cy.apiLogin('admin@citizenlab.co', 'testtest').then((response) => {
+  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     return cy.request({
@@ -670,15 +672,15 @@ export function apiCreateProject({
             publication_status: publicationStatus,
           },
           title_multiloc: {
-            'en-GB': title,
+            en: title,
             'nl-BE': title,
           },
           description_preview_multiloc: {
-            'en-GB': descriptionPreview,
+            en: descriptionPreview,
             'nl-BE': descriptionPreview,
           },
           description_multiloc: {
-            'en-GB': description,
+            en: description,
             'nl-BE': description,
           },
           default_assignee_id: assigneeId,
@@ -708,7 +710,7 @@ export function apiCreateFolder({
   publicationStatus?: 'draft' | 'published' | 'archived';
   projectIds?: string[];
 }) {
-  return cy.apiLogin('admin@citizenlab.co', 'testtest').then((response) => {
+  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     cy.request({
@@ -725,15 +727,15 @@ export function apiCreateFolder({
             publication_status: publicationStatus,
           },
           title_multiloc: {
-            'en-GB': title,
+            en: title,
             'nl-BE': title,
           },
           description_preview_multiloc: {
-            'en-GB': descriptionPreview,
+            en: descriptionPreview,
             'nl-BE': descriptionPreview,
           },
           description_multiloc: {
-            'en-GB': description,
+            en: description,
             'nl-BE': description,
           },
         },
@@ -743,7 +745,7 @@ export function apiCreateFolder({
 }
 
 export function apiAddProjectsToFolder(projectIds: string[], folderId: string) {
-  return cy.apiLogin('admin@citizenlab.co', 'testtest').then((response) => {
+  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     projectIds.map((projectId) => {
@@ -760,7 +762,7 @@ export function apiAddProjectsToFolder(projectIds: string[], folderId: string) {
   });
 }
 export function apiRemoveProject(projectId: string) {
-  return cy.apiLogin('admin@citizenlab.co', 'testtest').then((response) => {
+  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     return cy.request({
@@ -775,7 +777,7 @@ export function apiRemoveProject(projectId: string) {
 }
 
 export function apiRemoveFolder(folderId: string) {
-  return cy.apiLogin('admin@citizenlab.co', 'testtest').then((response) => {
+  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     return cy.request({
@@ -795,7 +797,7 @@ export function apiAddPoll(
   questions: { title: string; type: 'single_option' | 'multiple_options' }[],
   options: string[][]
 ) {
-  return cy.apiLogin('admin@citizenlab.co', 'testtest').then((response) => {
+  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     questions.forEach((question, index) => {
@@ -850,7 +852,7 @@ export function apiCreatePhase(
   surveyUrl?: string,
   surveyService?: 'typeform' | 'survey_monkey' | 'google_forms'
 ) {
-  return cy.apiLogin('admin@citizenlab.co', 'testtest').then((response) => {
+  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     return cy.request({
@@ -865,14 +867,14 @@ export function apiCreatePhase(
           start_at: startAt,
           end_at: endAt,
           title_multiloc: {
-            'en-GB': title,
+            en: title,
             'nl-BE': title,
           },
           participation_method: participationMethod,
           posting_enabled: canPost,
           voting_enabled: canVote,
           commenting_enabled: canComment,
-          description_multiloc: { 'en-GB': description },
+          description_multiloc: { en: description },
           survey_embed_url: surveyUrl,
           survey_service: surveyService,
         },
@@ -886,7 +888,7 @@ export function apiCreateCustomField(
   enabled: boolean,
   required: boolean
 ) {
-  return cy.apiLogin('admin@citizenlab.co', 'testtest').then((response) => {
+  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     return cy.request({
@@ -902,7 +904,7 @@ export function apiCreateCustomField(
           required,
           input_type: 'text',
           title_multiloc: {
-            'en-GB': fieldName,
+            en: fieldName,
             'nl-BE': fieldName,
           },
         },
@@ -912,7 +914,7 @@ export function apiCreateCustomField(
 }
 
 export function apiRemoveCustomField(fieldId: string) {
-  return cy.apiLogin('admin@citizenlab.co', 'testtest').then((response) => {
+  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     return cy.request({

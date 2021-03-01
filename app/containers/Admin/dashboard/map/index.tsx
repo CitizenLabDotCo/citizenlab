@@ -87,7 +87,9 @@ class DashboardMap extends PureComponent<Props & InjectedLocalized, State> {
   componentDidMount() {
     setTimeout(() => {
       this.setState({
-        loadingMessage: <FormattedMessage {...messages.startLoadingMessage} />,
+        loadingMessage: (
+          <FormattedMessage {...messages.automaticLoadingMessage} />
+        ),
       });
       setTimeout(() => {
         this.setState({
@@ -151,7 +153,7 @@ class DashboardMap extends PureComponent<Props & InjectedLocalized, State> {
     return (
       <div>
         <StyledWarning
-          text={<FormattedMessage {...messages.mapHelperText} />}
+          text={<FormattedMessage {...messages.mapExplanationText} />}
         />
         <MapWrapper>
           <StyledMap

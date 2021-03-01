@@ -12,7 +12,7 @@ import T from 'components/T';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 // styles
-import { colors, fontSizes, media } from 'utils/styleUtils';
+import { colors, fontSizes, media, isRtl } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import styled from 'styled-components';
 import { transparentize } from 'polished';
@@ -32,15 +32,15 @@ import {
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetTenantLocales, {
-  GetTenantLocalesChildProps,
-} from 'resources/GetTenantLocales';
+import GetAppConfigurationLocales, {
+  GetAppConfigurationLocalesChildProps,
+} from 'resources/GetAppConfigurationLocales';
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   border-radius: ${(props: any) => props.theme.borderRadius};
-  color: ${colors.text};
+  color: ${({ theme }) => theme.colorText};
   font-size: ${fontSizes.base}px;
   font-weight: 300;
   padding: 30px;
@@ -67,7 +67,7 @@ const Body = styled.div`
   margin-bottom: 30px;
 
   a {
-    color: ${colors.clBlueDark};
+    color: ${colors.clBlueDarker};
 
     &:hover {
       color: ${colors.clBlueDarker};
@@ -83,13 +83,17 @@ const Footer = styled.div`
 const Author = styled.span`
   color: ${colors.text};
   font-size: ${fontSizes.base}px;
-  font-weight: 500;
+  font-weight: 600;
+
+  ${isRtl`
+    text-align: left;
+  `}
 `;
 
 const DatesPostedEdited = styled.span`
   color: ${colors.text};
-  font-size: ${fontSizes.small}px;
-  font-weight: 300;
+  font-size: ${fontSizes.base}px;
+  font-weight: 400;
   display: flex;
   align-items: center;
 
@@ -97,6 +101,13 @@ const DatesPostedEdited = styled.span`
     flex-direction: column;
     align-items: flex-start;
   `}
+
+  ${isRtl`
+    justify-content: flex-end;
+    ${media.smallerThanMinTablet`
+        align-items: flex-end;
+    `}
+ `}
 `;
 
 const DatePosted = styled.span``;
@@ -125,11 +136,20 @@ const StyledMoreActionsMenu = styled(MoreActionsMenu)`
     top: 5px;
     right: 5px;
   `}
+
+  ${isRtl`
+    right: auto;
+    left: 15px;
+
+    ${media.smallerThanMinTablet`
+        left: 5px;
+    `}
+`}
 `;
 
 interface DataProps {
   locale: GetLocaleChildProps;
-  tenantLocales: GetTenantLocalesChildProps;
+  tenantLocales: GetAppConfigurationLocalesChildProps;
 }
 
 interface InputProps {
@@ -278,7 +298,7 @@ export class OfficialFeedbackPost extends PureComponent<
               this.getPostBodyText(body_multiloc, locale, tenantLocales)}
           </ScreenReaderOnly>
 
-          <QuillEditedContent fontWeight={300}>
+          <QuillEditedContent fontWeight={400}>
             <Body className="e2e-official-feedback-post-body">
               <div
                 dangerouslySetInnerHTML={{
@@ -326,7 +346,7 @@ export class OfficialFeedbackPost extends PureComponent<
 
 const Data = adopt<DataProps, {}>({
   locale: <GetLocale />,
-  tenantLocales: <GetTenantLocales />,
+  tenantLocales: <GetAppConfigurationLocales />,
 });
 
 const OfficialFeedbackPostWithIntl = injectIntl<Props>(OfficialFeedbackPost);

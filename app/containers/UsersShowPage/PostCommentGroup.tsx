@@ -8,7 +8,7 @@ import GetPost, { GetPostChildProps } from 'resources/GetPost';
 import GetUser, { GetUserChildProps } from 'resources/GetUser';
 
 // permissions
-import { canModerate } from 'services/permissions/rules/projectPermissions';
+import { canModerateProject } from 'services/permissions/rules/projectPermissions';
 
 // typings
 import { ICommentData } from 'services/comments';
@@ -172,7 +172,7 @@ export class PostCommentGroup extends PureComponent<Props> {
         <Container>
           <ScreenReaderOnly>
             {postType === 'idea' ? (
-              <FormattedMessage {...messages.a11y_ideaPostedIn} />
+              <FormattedMessage {...messages.a11y_postCommentPostedIn} />
             ) : (
               <FormattedMessage {...messages.a11y_initiativePostedIn} />
             )}
@@ -181,13 +181,13 @@ export class PostCommentGroup extends PureComponent<Props> {
             <PostLinkLeft>
               <StyledIcon
                 ariaHidden
-                name={postType === 'idea' ? 'idea2' : 'initiatives'}
+                name={postType === 'idea' ? 'idea' : 'initiatives'}
               />
               <T value={title_multiloc} className="text" />
             </PostLinkLeft>
             <PostLinkRight>
               {postType === 'idea' ? (
-                <FormattedMessage {...messages.seeIdea} />
+                <FormattedMessage {...messages.seePost} />
               ) : (
                 <FormattedMessage {...messages.seeInitiative} />
               )}
@@ -203,7 +203,7 @@ export class PostCommentGroup extends PureComponent<Props> {
                   commentId={comment.id}
                   commentType="parent"
                   commentCreatedAt={comment.attributes.created_at}
-                  moderator={canModerate(projectId, { data: user })}
+                  moderator={canModerateProject(projectId, { data: user })}
                 />
                 <CommentBody
                   commentId={comment.id}

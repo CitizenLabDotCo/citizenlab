@@ -1,9 +1,8 @@
 // Libraries
-import React, { PureComponent } from 'react';
+import React, { memo } from 'react';
 import { Multiloc } from 'typings';
 
 // Components
-import { Icon } from 'cl2-component-library';
 import Button from 'components/UI/Button';
 import T from 'components/T';
 import SearchInput from 'components/UI/SearchInput';
@@ -12,13 +11,11 @@ import SearchInput from 'components/UI/SearchInput';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
-// tracking
-import { injectTracks } from 'utils/analytics';
-import tracks from './tracks';
-
 // Styling
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
+import Outlet from 'components/Outlet';
+import { MembershipType } from 'services/groups';
 
 const TitleWrapper = styled.div`
   min-height: 105px;
@@ -52,14 +49,6 @@ const Spacer = styled.div`
   flex: 1;
 `;
 
-const SmartGroupIcon = styled(Icon)`
-  flex: 0 0 13px;
-  width: 13px;
-  fill: ${colors.adminOrangeIcons};
-  margin-top: 10px;
-  margin-right: 12px;
-`;
-
 const TextAndButtons = styled.div`
   h1 {
     display: inline;
@@ -82,52 +71,55 @@ const StyledSearchInput = styled(SearchInput)`
   width: 250px;
 `;
 
+const EditGroupButton = styled(Button)``;
+const DeleteGroupButton = styled(Button)``;
+
 interface Props {
   title?: Multiloc;
-  smartGroup?: boolean;
+  groupType?: MembershipType;
   onEdit?: () => void;
   onDelete?: () => void;
   onSearch: (newValue: string) => void;
 }
-interface State {}
 
-interface Tracks {
-  trackSearchInput: Function;
-}
+const UsersHeader = memo(
+  ({ title, groupType, onEdit, onDelete, onSearch }: Props) => {
+    const handleSearchChange = (newValue: string) => {
+      onSearch(newValue);
+    };
 
-class UsersHeader extends PureComponent<Props & Tracks, State> {
-  handleSearchChange = (newValue: string) => {
-    this.props.onSearch(newValue);
-  };
-
-  render() {
-    if (this.props.title) {
+    if (title) {
       return (
         <OnlyRow>
-          {this.props.smartGroup && <SmartGroupIcon name="lightningBolt" />}
+          {groupType && (
+            <Outlet
+              id="app.containers.Admin.users.UsersHeader.icon"
+              type={groupType}
+            />
+          )}
           <TextAndButtons>
-            <T as="h1" value={this.props.title} />
+            <T as="h1" value={title} />
             <Buttons>
-              <Button
+              <EditGroupButton
                 iconTitle={<FormattedMessage {...messages.editGroup} />}
                 hiddenText={<FormattedMessage {...messages.editGroup} />}
                 padding=".65em"
                 icon="edit"
-                buttonStyle="text"
-                onClick={this.props.onEdit}
+                buttonStyle="secondary"
+                onClick={onEdit}
               />
-              <Button
+              <DeleteGroupButton
                 iconTitle={<FormattedMessage {...messages.deleteGroup} />}
                 hiddenText={<FormattedMessage {...messages.deleteGroup} />}
                 padding=".65em"
                 icon="delete"
                 buttonStyle="text"
-                onClick={this.props.onDelete}
+                onClick={onDelete}
               />
             </Buttons>
           </TextAndButtons>
           <Spacer />
-          <StyledSearchInput onChange={this.handleSearchChange} />
+          <StyledSearchInput onChange={handleSearchChange} />
         </OnlyRow>
       );
     }
@@ -139,14 +131,12 @@ class UsersHeader extends PureComponent<Props & Tracks, State> {
             <FormattedMessage tagName="h1" {...messages.allUsers} />
           </TextAndButtons>
           <Spacer />
-          <StyledSearchInput onChange={this.handleSearchChange} />
+          <StyledSearchInput onChange={handleSearchChange} />
         </FirstRow>
         <FormattedMessage tagName="h2" {...messages.usersSubtitle} />
       </TitleWrapper>
     );
   }
-}
+);
 
-export default injectTracks<Props>({
-  trackSearchInput: tracks.searchInput,
-})(UsersHeader);
+export default UsersHeader;

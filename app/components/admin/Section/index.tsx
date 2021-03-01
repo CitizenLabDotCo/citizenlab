@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { remCalc, colors, fontSizes } from 'utils/styleUtils';
+import { remCalc, colors, fontSizes, isRtl } from 'utils/styleUtils';
 import Link from 'utils/cl-router/Link';
 
 export const Section = styled.div`
@@ -16,6 +16,8 @@ export const SectionField = styled.div`
   transition: all 200ms ease-in-out;
   width: 100%;
   max-width: 540px;
+  display: flex;
+  flex-direction: column;
 
   &.fullWidth {
     max-width: 100%;
@@ -24,6 +26,10 @@ export const SectionField = styled.div`
   .editor {
     width: 120%;
   }
+
+  ${isRtl`
+    align-items: flex-end;
+  `}
 `;
 
 export const PageTitle = styled.h1`
@@ -43,6 +49,7 @@ export const SectionTitle = styled.h2`
 `;
 
 export const SubSectionTitle = styled.h3`
+  color: ${colors.adminTextColor};
   font-size: ${fontSizes.large}px;
   font-weight: 500;
   line-height: ${remCalc(30)};

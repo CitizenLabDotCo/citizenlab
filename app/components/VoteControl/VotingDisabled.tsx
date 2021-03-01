@@ -69,7 +69,7 @@ const StyledButton = styled.button`
 
 interface InputProps {
   projectId: string;
-  votingDescriptor: IIdeaData['attributes']['action_descriptor']['voting'];
+  votingDescriptor: IIdeaData['attributes']['action_descriptor']['voting_idea'];
 }
 
 interface DataProps {
@@ -99,7 +99,7 @@ class VotingDisabled extends PureComponent<Props, State> {
       if (pcId && pcType) {
         openVerificationModal({
           context: {
-            action: 'voting',
+            action: 'voting_idea',
             id: pcId,
             type: pcType,
           },
@@ -118,22 +118,22 @@ class VotingDisabled extends PureComponent<Props, State> {
 
     if (disabled_reason === 'project_inactive') {
       return future_enabled
-        ? messages.votingDisabledPossibleLater
+        ? messages.votingPossibleLater
         : messages.votingDisabledProjectInactive;
     } else if (disabled_reason === 'voting_disabled' && future_enabled) {
-      return messages.votingDisabledPossibleLater;
+      return messages.votingPossibleLater;
     } else if (disabled_reason === 'voting_limited_max_reached') {
       return messages.votingDisabledMaxReached;
     } else if (disabled_reason === 'idea_not_in_current_phase') {
       return future_enabled
-        ? messages.votingDisabledPhaseNotYetStarted
-        : messages.votingDisabledPhaseCompleted;
+        ? messages.votingDisabledFutureEnabled
+        : messages.votingDisabledPhaseOver;
     } else if (disabled_reason === 'not_permitted') {
-      return messages.votingDisabledNotPermitted;
+      return messages.votingNotPermitted;
     } else if (authUser && disabled_reason === 'not_verified') {
-      return messages.votingDisabledNotVerified;
+      return messages.votingNotVerified;
     } else {
-      return messages.votingDisabled;
+      return messages.votingNotEnabled;
     }
   };
 
@@ -187,7 +187,7 @@ class VotingDisabled extends PureComponent<Props, State> {
         onClick={this.onVerify}
         onMouseDown={this.removeFocus}
       >
-        <FormattedMessage {...messages.verificationLinkText} />
+        <FormattedMessage {...messages.linkToVerificationText} />
       </StyledButton>
     );
 

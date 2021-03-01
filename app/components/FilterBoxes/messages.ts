@@ -17,10 +17,10 @@ export default defineMessages({
     id: 'app.components.FilterBoxes.topicsTitle',
     defaultMessage: 'Topics',
   },
-  a11y_numberOfIdeas: {
-    id: 'app.components.FilterBoxes.a11y_numberOfIdeas',
+  a11y_numberOfInputs: {
+    id: 'app.components.FilterBoxes.a11y_numberOfInputs',
     defaultMessage:
-      '{ideaCount, plural, no {# ideas} one {# idea} other {# ideas}}',
+      '{inputsCount, plural, no {# inputs} one {# input} other {# inputs}}',
   },
   a11y_numberOfInitiatives: {
     id: 'app.components.FilterBoxes.a11y_numberOfInitiatives',

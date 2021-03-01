@@ -3,17 +3,21 @@ import { get } from 'lodash-es';
 import { Subscription } from 'rxjs';
 
 // services
-import { currentTenantStream, ITenant } from 'services/tenant';
+import {
+  currentAppConfigurationStream,
+  IAppConfiguration,
+  AppConfigurationSettingsFeatureNames,
+} from 'services/appConfiguration';
 
 type children = (renderProps: GetFeatureFlagChildProps) => JSX.Element | null;
 
 interface Props {
-  name?: string;
+  name?: AppConfigurationSettingsFeatureNames;
   children?: children;
 }
 
 interface State {
-  tenantSettings: ITenant['data']['attributes']['settings'] | null;
+  tenantSettings: IAppConfiguration['data']['attributes']['settings'] | null;
 }
 
 export type GetFeatureFlagChildProps = boolean;
@@ -30,7 +34,7 @@ export default class GetFeatureFlag extends PureComponent<Props, State> {
   }
 
   componentDidMount() {
-    const currentTenant$ = currentTenantStream().observable;
+    const currentTenant$ = currentAppConfigurationStream().observable;
 
     this.subscription = currentTenant$.subscribe((currentTenant) => {
       this.setState({ tenantSettings: currentTenant.data.attributes.settings });
@@ -50,7 +54,5 @@ export default class GetFeatureFlag extends PureComponent<Props, State> {
       (get(tenantSettings, `${name}.allowed`) === true &&
         get(tenantSettings, `${name}.enabled`) === true);
     return (children as children)(showFeature);
-
-    // return children ? children(showFeature) : null;
   }
 }

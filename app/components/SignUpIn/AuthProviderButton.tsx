@@ -30,13 +30,13 @@ const Container = styled.div`
   align-items: stretch;
   border-radius: ${(props: any) => props.theme.borderRadius};
   border: solid 1px #ccc;
-  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.05);
+  box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.05);
   background: #fff;
   transition: all 100ms ease-out;
 
   &:hover {
     border-color: ${darken(0.3, '#ccc')};
-    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.1);
   }
 `;
 
@@ -98,6 +98,7 @@ const ButtonWrapper = styled.div`
 const ContinueButton = styled(Button)``;
 
 interface Props {
+  id?: string;
   flow: TSignUpInFlow;
   authProvider: AuthProvider;
   className?: string;
@@ -106,7 +107,7 @@ interface Props {
 }
 
 const AuthProviderButton = memo<Props>(
-  ({ flow, authProvider, className, onContinue, children }) => {
+  ({ flow, authProvider, className, onContinue, children, id }) => {
     const [expanded, setExpanded] = useState(false);
     const [tacAccepted, setTacAccepted] = useState(false);
     const [tacError, setTacError] = useState(false);
@@ -164,7 +165,7 @@ const AuthProviderButton = memo<Props>(
     );
 
     return (
-      <Container className={className}>
+      <Container className={className} id={id}>
         <Button
           icon={authProvider as any}
           iconSize="22px"
@@ -175,10 +176,8 @@ const AuthProviderButton = memo<Props>(
           fullWidth={true}
           justify="left"
           whiteSpace="wrap"
-          textColor={colors.text}
-          borderColor="transparent"
-          borderHoverColor="transparent"
           onClick={handleExpandButtonClicked}
+          padding="10px 18px"
         >
           {children}
         </Button>

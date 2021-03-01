@@ -4,7 +4,22 @@ import streams, { IStreamParams } from 'utils/streams';
 
 const apiEndpoint = `${API_PATH}/pages`;
 
-export const LEGAL_PAGES = [
+export type TLegalPage =
+  | 'information'
+  | 'terms-and-conditions'
+  | 'privacy-policy'
+  | 'cookie-policy'
+  | 'accessibility-statement';
+
+export const LEGAL_PAGES: TLegalPage[] = [
+  'information',
+  'terms-and-conditions',
+  'privacy-policy',
+  'cookie-policy',
+  'accessibility-statement',
+];
+
+export const LEGAL_PAGES_ALLOWED_TO_EDIT: TLegalPage[] = [
   'information',
   'terms-and-conditions',
   'privacy-policy',
@@ -16,7 +31,19 @@ export interface IPageData {
   attributes: {
     title_multiloc: Multiloc;
     body_multiloc: Multiloc;
-    slug: string;
+    slug: // to be found in cl2-back: config/tenant_templates/base.yml
+    | 'information'
+      | 'cookie-policy'
+      | 'privacy-policy'
+      | 'terms-and-conditions'
+      | 'accessibility-statement'
+      | 'homepage-info'
+      | 'initiatives'
+      | 'initiatives-success-1'
+      | 'initiatives-success-2'
+      | 'initiatives-success-3'
+      // if a custom page gets added, it can be different than the strings above
+      | string;
     created_at: string;
     updated_at: string;
   };

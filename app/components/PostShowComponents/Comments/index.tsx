@@ -1,25 +1,22 @@
 // libraries
 import React, { memo, useState, useCallback } from 'react';
-import { get, isUndefined, isEmpty } from 'lodash-es';
+import { get, isUndefined } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import Observer from '@researchgate/react-intersection-observer';
 
 // resources
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetPost, { GetPostChildProps } from 'resources/GetPost';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetComments, { GetCommentsChildProps } from 'resources/GetComments';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import { isAdmin } from 'services/permissions/roles';
 
 // components
-import LoadingComments from './LoadingComments';
 import ParentCommentForm from './ParentCommentForm';
 import Comments from './Comments';
 import CommentingDisabled from './CommentingDisabled';
-import Warning from 'components/UI/Warning';
+import CommentSorting from './CommentSorting';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -27,17 +24,63 @@ import messages from './messages';
 
 // style
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
-import { ScreenReaderOnly } from 'utils/a11y';
+import { colors, fontSizes, media, isRtl } from 'utils/styleUtils';
 
 // typings
 import { CommentsSort } from 'services/comments';
 import { IdeaCommentingDisabledReason } from 'services/ideas';
+import CommentingInitiativeDisabled from './CommentingInitiativeDisabled';
+
+// analytics
+import { trackEventByName } from 'utils/analytics';
+import tracks from './tracks';
 
 const Container = styled.div``;
 
-const StyledWarning = styled(Warning)`
-  margin-bottom: 20px;
+const StyledParentCommentForm = styled(ParentCommentForm)`
+  margin-bottom: 25px;
+`;
+
+const Header = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 30px;
+
+  ${isRtl`
+    flex-direction: row-reverse;
+  `}
+`;
+
+const Title = styled.h1`
+  color: ${(props: any) => props.theme.colorText};
+  font-size: ${fontSizes.xxl}px;
+  font-weight: 500;
+  line-height: normal;
+  margin: 0;
+  padding: 0;
+  display: flex;
+
+  ${isRtl`
+    flex-direction: row-reverse;
+  `}
+
+  ${media.smallerThanMaxTablet`
+    font-size: ${fontSizes.xxl}px;
+  `}
+`;
+
+const CommentCount = styled.span`
+  margin-left: 5px;
+`;
+
+const StyledCommentSorting = styled(CommentSorting)`
+  display: flex;
+  justify-content: flex-end;
+
+  ${media.smallerThanMinTablet`
+    justify-content: flex-start;
+  `}
 `;
 
 const LoadMore = styled.div`
@@ -66,7 +109,6 @@ export interface InputProps {
 }
 
 interface DataProps {
-  authUser: GetAuthUserChildProps;
   post: GetPostChildProps;
   comments: GetCommentsChildProps;
   project: GetProjectChildProps;
@@ -75,7 +117,7 @@ interface DataProps {
 interface Props extends InputProps, DataProps {}
 
 const CommentsSection = memo<Props>(
-  ({ postId, postType, authUser, post, comments, project, className }) => {
+  ({ postId, postType, post, comments, project, className }) => {
     const [sortOrder, setSortOrder] = useState<CommentsSort>('-new');
     const [posting, setPosting] = useState(false);
     const {
@@ -88,6 +130,7 @@ const CommentsSection = memo<Props>(
     } = comments;
 
     const handleSortOrderChange = useCallback((sortOrder: CommentsSort) => {
+      trackEventByName(tracks.clickCommentsSortOrder);
       onChangeSort(sortOrder);
       setSortOrder(sortOrder);
     }, []);
@@ -106,89 +149,79 @@ const CommentsSection = memo<Props>(
       setPosting(isPosting);
     }, []);
 
-    if (!isNilOrError(post)) {
+    if (
+      !isNilOrError(post) &&
+      !isNilOrError(commentsList) &&
+      !isUndefined(project)
+    ) {
       const commentingEnabled = get(
         post,
-        'attributes.action_descriptor.commenting.enabled',
+        'attributes.action_descriptor.commenting_idea.enabled',
         true
       ) as boolean;
       const commentingDisabledReason = get(
         post,
-        'attributes.action_descriptor.commenting.disabled_reason',
+        'attributes.action_descriptor.commenting_idea.disabled_reason',
         null
       ) as IdeaCommentingDisabledReason | null;
-      const userIsAdmin = !isNilOrError(authUser)
-        ? isAdmin({ data: authUser })
-        : false;
-      const loaded =
-        !isNilOrError(post) &&
-        !isNilOrError(commentsList) &&
-        !isUndefined(project);
       const phaseId = isNilOrError(project)
         ? undefined
         : project.relationships?.current_phase?.data?.id;
+      const commentCount = post.attributes.comments_count;
 
       return (
         <Container className={className || ''}>
-          <ScreenReaderOnly>
-            <FormattedMessage
-              tagName="h2"
-              {...messages.invisibleTitleComments}
+          <Header>
+            <Title id="comments-main-title">
+              <FormattedMessage {...messages.invisibleTitleComments} />
+              {commentCount > 0 && (
+                <CommentCount>({commentCount})</CommentCount>
+              )}
+            </Title>
+            <StyledCommentSorting
+              onChange={handleSortOrderChange}
+              selectedValue={[sortOrder]}
             />
-          </ScreenReaderOnly>
+          </Header>
 
-          {loaded && !isNilOrError(commentsList) ? (
-            <>
-              {/*
-              Show warning messages when there are no comments and you're logged in as an admin.
-              Otherwise the comment section would be empty (because admins don't see the parent comment box), which might look weird or confusing
-            */}
-              {isEmpty(commentsList) && userIsAdmin && (
-                <StyledWarning>
-                  <FormattedMessage {...messages.noComments} />
-                </StyledWarning>
-              )}
-
-              <CommentingDisabled
-                commentingEnabled={commentingEnabled}
-                commentingDisabledReason={commentingDisabledReason}
-                projectId={get(post, 'relationships.project.data.id')}
-                phaseId={phaseId}
-                postId={postId}
-                postType={postType}
-              />
-
-              <Comments
-                postId={postId}
-                postType={postType}
-                comments={commentsList}
-                sortOrder={sortOrder}
-                loading={loadingInital}
-                onSortOrderChange={handleSortOrderChange}
-              />
-
-              {hasMore && !loadingMore && (
-                <Observer onChange={handleIntersection} rootMargin="3000px">
-                  <LoadMore />
-                </Observer>
-              )}
-
-              {loadingMore && !posting && (
-                <LoadingMore>
-                  <LoadingMoreMessage>
-                    <FormattedMessage {...messages.loadingMoreComments} />
-                  </LoadingMoreMessage>
-                </LoadingMore>
-              )}
-
-              <ParentCommentForm
-                postId={postId}
-                postType={postType}
-                postingComment={handleCommentPosting}
-              />
-            </>
+          {postType === 'idea' ? (
+            <CommentingDisabled
+              commentingEnabled={commentingEnabled}
+              commentingDisabledReason={commentingDisabledReason}
+              projectId={get(post, 'relationships.project.data.id')}
+              phaseId={phaseId}
+              postId={postId}
+              postType={postType}
+            />
           ) : (
-            <LoadingComments />
+            <CommentingInitiativeDisabled />
+          )}
+
+          <StyledParentCommentForm
+            postId={postId}
+            postType={postType}
+            postingComment={handleCommentPosting}
+          />
+
+          <Comments
+            postId={postId}
+            postType={postType}
+            allComments={commentsList}
+            loading={loadingInital}
+          />
+
+          {hasMore && !loadingMore && (
+            <Observer onChange={handleIntersection} rootMargin="3000px">
+              <LoadMore />
+            </Observer>
+          )}
+
+          {loadingMore && !posting && (
+            <LoadingMore>
+              <LoadingMoreMessage>
+                <FormattedMessage {...messages.loadingMoreComments} />
+              </LoadingMoreMessage>
+            </LoadingMore>
           )}
         </Container>
       );
@@ -199,7 +232,6 @@ const CommentsSection = memo<Props>(
 );
 
 const Data = adopt<DataProps, InputProps>({
-  authUser: <GetAuthUser />,
   post: ({ postId, postType, render }) => (
     <GetPost id={postId} type={postType}>
       {render}

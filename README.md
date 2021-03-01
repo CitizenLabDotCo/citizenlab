@@ -12,7 +12,6 @@
 
 1. `git clone` the repository
 2. Run `npm install` in the root of the repository
-3. Optional: If you want to be able to run the end-to-end tests, run `npm run e2e-setup`
 
 ## Running
 
@@ -45,6 +44,8 @@ To run the e2e tests in watcher mode:
 ```
 npm run cypress:open
 ```
+
+**Note**: The e2e tests depend on some data being available in the back-end. To set it up for testing, see [e2e tests in cl2-back](https://github.com/CitizenLabDotCo/cl2-back#end-to-end-tests).
 
 ## Unit and integration tests
 

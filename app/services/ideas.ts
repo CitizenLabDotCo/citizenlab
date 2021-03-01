@@ -3,30 +3,38 @@ import streams, { IStreamParams } from 'utils/streams';
 import { IRelationship, Multiloc } from 'typings';
 import { first } from 'rxjs/operators';
 import { get } from 'lodash-es';
+import { CommentingDisabledReason } from './projects';
 
 export type IdeaPublicationStatus = 'draft' | 'published' | 'archived' | 'spam';
+
+// keys in ideas.attributes.action_descriptor
+export type IIdeaAction =
+  | 'voting_idea'
+  | 'commenting_idea'
+  | 'comment_voting_idea'
+  | 'budgeting';
+
 export type IdeaVotingDisabledReason =
   | 'project_inactive'
+  | 'not_ideation'
   | 'voting_disabled'
+  | 'downvoting_disabled'
+  | 'not_signed_in'
   | 'voting_limited_max_reached'
   | 'idea_not_in_current_phase'
   | 'not_permitted'
-  | 'not_verified'
-  | null
-  | undefined;
+  | 'not_verified';
+
 export type IdeaCommentingDisabledReason =
-  | 'project_inactive'
-  | 'commenting_disabled'
-  | 'not_permitted'
   | 'idea_not_in_current_phase'
-  | 'not_verified'
-  | null
-  | undefined;
+  | CommentingDisabledReason;
+
 export type IdeaBudgetingDisabledReason =
   | 'project_inactive'
   | 'idea_not_in_current_phase'
   | 'not_permitted'
   | 'not_verified'
+  | 'not_signed_in'
   | null
   | undefined;
 
@@ -46,23 +54,24 @@ export interface IIdeaData {
     location_point_geojson: GeoJSON.Point;
     location_description: string | null;
     budget: number | null;
+    proposed_budget: number | null;
     created_at: string;
     updated_at: string;
     published_at: string;
     action_descriptor: {
-      voting: {
+      voting_idea: {
         enabled: boolean;
         future_enabled: string | null;
-        disabled_reason: IdeaVotingDisabledReason;
+        disabled_reason: IdeaVotingDisabledReason | null;
         cancelling_enabled: boolean;
         downvoting_enabled: boolean;
       };
-      commenting: {
+      commenting_idea: {
         enabled: boolean;
         future_enabled: string | null;
-        disabled_reason: IdeaCommentingDisabledReason;
+        disabled_reason: IdeaCommentingDisabledReason | null;
       };
-      comment_voting: {
+      comment_voting_idea: {
         enabled: boolean;
       };
       budgeting?: {
@@ -94,8 +103,8 @@ export interface IIdeaData {
     project: {
       data: IRelationship;
     };
-    idea_status?: {
-      data: IRelationship | null;
+    idea_status: {
+      data: IRelationship;
     };
     user_vote?: {
       data: IRelationship;
@@ -166,6 +175,7 @@ export interface IIdeaAdd {
   location_point_geojson: GeoJSON.Point | null;
   location_description: string | null;
   budget: number | null;
+  proposed_budget: number | null;
 }
 
 export interface IIdeasFilterCounts {
@@ -194,6 +204,12 @@ export function ideaBySlugStream(ideaSlug: string) {
 export function ideasStream(streamParams: IStreamParams | null = null) {
   return streams.get<IIdeas>({
     apiEndpoint: `${API_PATH}/ideas`,
+    ...streamParams,
+  });
+}
+export function ideasMiniStream(streamParams: IStreamParams | null = null) {
+  return streams.get<IIdeas>({
+    apiEndpoint: `${API_PATH}/ideas/mini`,
     ...streamParams,
   });
 }
@@ -282,7 +298,7 @@ export function ideaActivities(ideaId: string) {
   });
 }
 
-export function similarIdeas(
+export function similarIdeasStream(
   ideaId: string,
   streamParams: IStreamParams | null = null
 ) {

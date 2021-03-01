@@ -4,22 +4,27 @@ import { ImageSizes, Multiloc, Locale } from 'typings';
 
 const apiEndpoint = `${API_PATH}/users`;
 
-export type IProjectModerator = {
+export type IProjectModeratorRole = {
   type: 'project_moderator';
   project_id: string;
 };
 
-type IAdmin = {
+type IAdminRole = {
   type: 'admin';
 };
 
-export type IRole = IAdmin | IProjectModerator;
+export type IRole =
+  | IAdminRole
+  | IProjectModeratorRole
+  | IProjectFolderModeratorRole;
 
 export interface IUserData {
   id: string;
   type: string;
   attributes: {
-    first_name: string | null;
+    first_name: string;
+    // CL1 legacy: last names used to not be required
+    // or when signing up with Google, it can be null too
     last_name: string | null;
     slug: string;
     locale: Locale;
@@ -66,7 +71,7 @@ export interface IUserUpdate {
   password?: string;
   locale?: string;
   avatar?: string;
-  roles?: any[];
+  roles?: IRole[];
   birthyear?: number;
   gender?: string;
   domicile?: string;
@@ -105,6 +110,11 @@ export async function updateUser(userId: string, object: IUserUpdate) {
     userId,
     { user: object }
   );
+
+  await streams.fetchAllWith({
+    dataId: [userId],
+    apiEndpoint: [`${API_PATH}/groups`, `${API_PATH}/users`],
+  });
   return response;
 }
 

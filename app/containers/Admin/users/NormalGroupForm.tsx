@@ -4,7 +4,7 @@ import { isEmpty, values as getValues, every } from 'lodash-es';
 
 // Formik
 import { Form, Field, InjectedFormikProps, FormikErrors } from 'formik';
-import FormikInputMultiloc from 'components/UI/FormikInputMultiloc';
+import FormikInputMultilocWithLocaleSwitcher from 'components/UI/FormikInputMultilocWithLocaleSwitcher';
 import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
 
 // i18n
@@ -20,10 +20,12 @@ import { Multiloc } from 'typings';
 export interface Props {}
 export interface NormalFormValues {
   title_multiloc: Multiloc;
+  membership_type: MembershipType;
 }
 
 // Style
 import styled from 'styled-components';
+import { MembershipType } from 'services/groups';
 
 export const Fill = styled.div`
   padding-top: 40px;
@@ -65,7 +67,7 @@ export default class NormalGroupForm extends React.Component<
             <Field
               id="group-title-field"
               name="title_multiloc"
-              component={FormikInputMultiloc}
+              component={FormikInputMultilocWithLocaleSwitcher}
               label={<FormattedMessage {...messages.fieldGroupName} />}
             />
             {touched.title_multiloc && (

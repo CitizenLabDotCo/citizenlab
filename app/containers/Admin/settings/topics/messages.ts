@@ -1,10 +1,10 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  topicManagerDescription: {
-    id: 'app.containers.AdminPage.SettingsPage.topicManagerDescription',
+  descriptionTopicManagerText: {
+    id: 'app.containers.AdminPage.SettingsPage.descriptionTopicManagerText',
     defaultMessage:
-      'Topics are selected by users to categorize their ideas. Here you can add and delete the topics available on your platform. Go to the {adminProjectsLink} to manage the available topics for each project.',
+      'Topics can be added to help categorise inputs. Here you can add and delete topics that you would like to use on your platform. You can add the topics to specific projects in the {adminProjectsLink}.',
   },
   titleTopicManager: {
     id: 'app.containers.AdminPage.SettingsPage.titleTopicManager',
@@ -43,11 +43,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.confirmHeader',
     defaultMessage: 'Are you sure you want to delete this topic?',
   },
-  topicDeletionConfirmationMessage: {
-    id:
-      'app.containers.AdminPage.SettingsPage.topicDeletionConfirmationMessage',
+  deleteTopicConfirmation: {
+    id: 'app.containers.AdminPage.SettingsPage.deleteTopicConfirmation',
     defaultMessage:
-      'This will also remove all existing references to that topic for ideas. This change will apply to all of your projects.',
+      'This will delete the topic, including from all existing inputs. This change will apply to all projects.',
   },
   cancel: {
     id: 'app.containers.AdminPage.SettingsPage.cancel',

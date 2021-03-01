@@ -10,10 +10,12 @@ import { InjectedIntlProps } from 'react-intl';
 
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetTenantLocales, {
-  GetTenantLocalesChildProps,
-} from 'resources/GetTenantLocales';
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAppConfigurationLocales, {
+  GetAppConfigurationLocalesChildProps,
+} from 'resources/GetAppConfigurationLocales';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetAppConfiguration';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 
 // services
@@ -31,8 +33,8 @@ interface InputProps {
 
 interface DataProps {
   authUser: GetAuthUserChildProps;
-  tenantLocales: GetTenantLocalesChildProps;
-  tenant: GetTenantChildProps;
+  tenantLocales: GetAppConfigurationLocalesChildProps;
+  tenant: GetAppConfigurationChildProps;
   locale: GetLocaleChildProps;
 }
 
@@ -67,11 +69,14 @@ const UsersShowPageMeta: React.SFC<Props & InjectedIntlProps> = ({
       firstName,
       lastName,
     });
-    const usersShowPageDescription = formatMessage(messages.metaDescription, {
-      firstName,
-      lastName,
-      tenantName,
-    });
+    const usersShowPageDescription = formatMessage(
+      messages.userShowPageMetaDescription,
+      {
+        firstName,
+        lastName,
+        tenantName,
+      }
+    );
 
     return (
       <Helmet>
@@ -101,8 +106,8 @@ const UsersShowPageMeta: React.SFC<Props & InjectedIntlProps> = ({
 const UsersShowPageMetaWithHoc = injectIntl<Props>(UsersShowPageMeta);
 
 const Data = adopt<DataProps, InputProps>({
-  tenantLocales: <GetTenantLocales />,
-  tenant: <GetTenant />,
+  tenantLocales: <GetAppConfigurationLocales />,
+  tenant: <GetAppConfiguration />,
   authUser: <GetAuthUser />,
   locale: <GetLocale />,
 });

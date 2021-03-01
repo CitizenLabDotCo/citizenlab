@@ -21,7 +21,7 @@ describe('Admin: add project', () => {
         cy.get('.e2e-projecstatus-draft').click();
 
         // Type random project titles for these required fields
-        cy.get('#project-title-en-GB').type(projectTitleEN);
+        cy.get('#project-title-en').type(projectTitleEN);
         cy.get('#project-title-nl-BE').type(projectTitleNL);
 
         // Submit project
@@ -41,7 +41,7 @@ describe('Admin: add project', () => {
         cy.get('.e2e-projecstatus-published').click();
 
         // Type random project titles for these required fields
-        cy.get('#project-title-en-GB').type(projectTitleEN);
+        cy.get('#project-title-en').type(projectTitleEN);
         cy.get('#project-title-nl-BE').type(projectTitleNL);
 
         // Submit project
@@ -61,7 +61,7 @@ describe('Admin: add project', () => {
         cy.get('.e2e-projecstatus-archived').click();
 
         // Type random project titles for these required fields
-        cy.get('#project-title-en-GB').type(projectTitleEN);
+        cy.get('#project-title-en').type(projectTitleEN);
         cy.get('#project-title-nl-BE').type(projectTitleNL);
 
         // Submit project
@@ -83,7 +83,7 @@ describe('Admin: add project', () => {
         cy.get('.e2e-projecstatus-published').click();
 
         // Type random project titles for these required fields
-        cy.get('#project-title-en-GB').type(projectTitleEN);
+        cy.get('#project-title-en').type(projectTitleEN);
         cy.get('#project-title-nl-BE').type(projectTitleNL);
 
         // Select 'Selection' as Areas option
@@ -120,7 +120,7 @@ describe('Admin: add project', () => {
             return cy.getArea(areaId);
           })
           .then((areaData) => {
-            const area = areaData.body.data.attributes.title_multiloc['en-GB'];
+            const area = areaData.body.data.attributes.title_multiloc['en'];
             expect(area).to.eq('Carrotgem');
           });
       });

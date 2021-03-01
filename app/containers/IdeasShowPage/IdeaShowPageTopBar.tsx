@@ -34,7 +34,7 @@ import { IdeaVotingDisabledReason } from 'services/ideas';
 
 const Container = styled.div`
   height: ${(props) => props.theme.mobileTopBarHeight}px;
-  background: #fff;
+  background-color: ${colors.background};
   border-bottom: solid 1px ${lighten(0.4, colors.label)};
 `;
 
@@ -83,8 +83,8 @@ const GoBackButton = styled.button`
   cursor: pointer;
   background: #fff;
   border-radius: 50%;
-  border: solid 1px ${lighten(0.2, colors.label)};
   transition: all 100ms ease-out;
+  box-shadow: 0px 4px 3px rgba(0, 0, 0, 0.05);
 
   &:hover {
     border-color: #000;
@@ -129,6 +129,8 @@ const IdeaShowPageTopBar = memo<Props>(
 
         if (insideModal) {
           eventEmitter.emit('closeIdeaModal');
+        } else if (!isNilOrError(project)) {
+          clHistory.push(`/projects/${project.attributes.slug}`);
         } else {
           clHistory.push('/');
         }
@@ -153,7 +155,7 @@ const IdeaShowPageTopBar = memo<Props>(
           if (pcId && pcType) {
             openVerificationModal({
               context: {
-                action: 'voting',
+                action: 'voting_idea',
                 id: pcId,
                 type: pcType,
               },
@@ -178,7 +180,7 @@ const IdeaShowPageTopBar = memo<Props>(
           <TopBarInner>
             <Left>
               <GoBackButton onClick={onGoBack}>
-                <GoBackIcon name="arrow-back" />
+                <GoBackIcon ariaHidden name="arrow-back" />
               </GoBackButton>
               <GoBackLabel>
                 <FormattedMessage {...messages.goBack} />
@@ -186,11 +188,13 @@ const IdeaShowPageTopBar = memo<Props>(
             </Left>
             <Right>
               <VoteControl
+                style="shadow"
                 size="1"
                 ideaId={ideaId}
                 disabledVoteClick={onDisabledVoteClick}
                 showDownvote={
-                  idea.attributes.action_descriptor.voting.downvoting_enabled
+                  idea.attributes.action_descriptor.voting_idea
+                    .downvoting_enabled
                 }
               />
             </Right>

@@ -27,7 +27,7 @@ describe('Idea form settings', () => {
   describe('Enabled setting', () => {
     describe('Location enabled', () => {
       it('Shows the list/view toggle above the idea cards', () => {
-        cy.visit(`projects/${projectTitle}/ideas`);
+        cy.visit(`projects/${projectTitle}`);
         cy.get('#e2e-ideas-container');
         cy.get('.e2e-list-map-viewbuttons').should('exist');
       });
@@ -74,7 +74,7 @@ describe('Idea form settings', () => {
         });
 
         // check that location is initially on idea show page
-        cy.get('#e2e-map-toggle').contains('Brussel, België');
+        cy.get('#e2e-map-popup').contains('Brussel, België');
 
         // go to idea form settings of this idea's project
         cy.visit(`admin/projects/${projectId}/ideaform`);
@@ -89,14 +89,14 @@ describe('Idea form settings', () => {
         cy.visit(`/ideas/${ideaTitle}`);
         cy.get('#e2e-idea-show-page-content');
         cy.wait(1000);
-        cy.get('#e2e-map-toggle').should('not.exist');
+        cy.get('#e2e-map-popup').should('not.exist');
       });
 
       it("Doesn't show the list/view toggle above the idea cards", () => {
         // check that the list/view toggle is initially above the idea cards
-        cy.visit(`projects/${projectTitle}/ideas`);
+        cy.visit(`projects/${projectTitle}`);
         cy.get('#e2e-ideas-container');
-        cy.get('.e2e-list-map-viewbuttons').should('exist');
+        cy.get('.e2e-list-map-viewbuttons');
 
         // go to idea form settings of our newly created project
         cy.visit(`admin/projects/${projectId}/ideaform`);
@@ -107,7 +107,7 @@ describe('Idea form settings', () => {
         cy.get('#e2e-ideaform-settings-submit').click();
 
         // verify that the list/view toggle buttons are not there anymore
-        cy.visit(`projects/${projectTitle}/ideas`);
+        cy.visit(`projects/${projectTitle}`);
         cy.get('#e2e-ideas-container');
         cy.get('.e2e-list-map-viewbuttons').should('not.exist');
       });
@@ -149,7 +149,7 @@ describe('Idea form settings', () => {
 
             // find topics error on idea form page and check we stay on the idea form page
             cy.get('#e2e-new-idea-topics-error');
-            cy.location('pathname').should('eq', `/en-GB/ideas/edit/${ideaId}`);
+            cy.location('pathname').should('eq', `/en/ideas/edit/${ideaId}`);
           });
         });
       });
@@ -178,7 +178,7 @@ describe('Idea form settings', () => {
           cy.get('#e2e-new-idea-topics-error');
           cy.location('pathname').should(
             'eq',
-            `/en-GB/projects/${projectSlug}/ideas/new`
+            `/en/projects/${projectSlug}/ideas/new`
           );
         });
       });

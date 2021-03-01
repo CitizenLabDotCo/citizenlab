@@ -12,7 +12,7 @@ import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
 
 // components
 import ContentContainer from 'components/ContentContainer';
-import ProjectCard from './ProjectCard';
+import ProjectSelectionCard from './ProjectSelectionCard';
 import Button from 'components/UI/Button';
 import ButtonBar from 'components/ButtonBar';
 import { Spinner } from 'cl2-component-library';
@@ -23,11 +23,13 @@ import messages from './messages';
 
 // styling
 import styled from 'styled-components';
-import { media, fontSizes, colors } from 'utils/styleUtils';
+import { media, fontSizes, colors, isRtl } from 'utils/styleUtils';
 
 const Loading = styled.div`
   width: 100%;
-  height: calc(100vh - ${(props) => props.theme.menuHeight}px - 1px);
+  height: calc(
+    100vh - ${(props) => props.theme.menuHeight + props.theme.footerHeight}px
+  );
   display: flex;
   align-items: center;
   justify-content: center;
@@ -41,7 +43,9 @@ const Loading = styled.div`
 
 const Container = styled.main`
   width: 100%;
-  min-height: calc(100vh - ${(props) => props.theme.menuHeight}px - 1px);
+  min-height: calc(
+    100vh - ${(props) => props.theme.menuHeight + props.theme.footerHeight}px
+  );
   background: ${colors.background};
 
   ${media.smallerThanMaxTablet`
@@ -80,6 +84,9 @@ const PageTitle = styled.h1`
   &:not(.noProjects) {
     ${media.smallerThanMaxTablet`
       text-align: left;
+      ${isRtl`
+        text-align: right;
+      `}
     `}
   }
 `;
@@ -88,6 +95,10 @@ const ColumnsContainer = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+
+  ${isRtl`
+   flex-direction: row-reverse;
+ `}
 
   ${media.smallerThanMaxTablet`
     flex-direction: column;
@@ -180,6 +191,14 @@ const ButtonBarInner = styled.div`
   ${media.smallerThanMaxTablet`
     margin-left: 35px;
   `}
+
+  ${isRtl`
+    flex-direction: row-reverse;
+    .Button {
+        margin-right: auto;
+        margin-left: 10px;
+    }
+ `}
 `;
 
 const EmptyStateContainer = styled.div`
@@ -287,7 +306,7 @@ class IdeasProjectSelectPage extends PureComponent<
                       <ProjectsList>
                         {cityProjects.map((project) => (
                           <ProjectCardWrapper key={project.id}>
-                            <ProjectCard
+                            <ProjectSelectionCard
                               onClick={this.handleProjectClick(project)}
                               projectId={project.id}
                               selected={selectedProjectId === project.id}
@@ -315,7 +334,7 @@ class IdeasProjectSelectPage extends PureComponent<
                       )}
                       <ProjectsList>
                         <ProjectCardWrapper>
-                          <ProjectCard
+                          <ProjectSelectionCard
                             key={openProject.id}
                             onClick={this.handleProjectClick(openProject)}
                             projectId={openProject.id}

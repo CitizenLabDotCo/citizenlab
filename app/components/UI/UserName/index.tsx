@@ -1,161 +1,114 @@
 import React from 'react';
 import { adopt } from 'react-adopt';
-import styled from 'styled-components';
-import { get } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
-
-// styles
-import { darken } from 'polished';
-import { colors } from 'utils/styleUtils';
-
-// i18n
-import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
 
 // resources
 import GetUser, { GetUserChildProps } from 'resources/GetUser';
 
 // components
-import FeatureFlag from 'components/FeatureFlag';
-import Link from 'utils/cl-router/Link';
+import Name from './Name';
 
-const Container = styled.div`
-  display: inline-block;
-`;
-
-const Name = styled.div<{ color?: string; emphasize?: boolean }>`
-  color: ${({ color, theme }) => color || theme.colorText};
-  font-weight: ${({ emphasize }) => (emphasize ? 500 : 'normal')};
-  text-decoration: none;
-  hyphens: auto;
-
-  &.linkToProfile {
-    transition: all 80ms ease-out;
-
-    &:hover {
-      cursor: pointer;
-      color: ${({ color, theme }) => darken(0.15, color || theme.colorText)};
-      text-decoration: underline;
-    }
-
-    &.canModerate {
-      color: ${colors.clRedError};
-
-      &:hover {
-        color: ${darken(0.15, colors.clRedError)};
-      }
-    }
-  }
-
-  &.deleted-user {
-    font-style: italic;
-  }
-`;
-
-const Badge = styled.div`
-  color: #fff;
-  font-size: 10px;
-  line-height: normal;
-  border-radius: ${(props: any) => props.theme.borderRadius};
-  padding: 1px 6px;
-  display: inline-block;
-  text-transform: uppercase;
-  text-align: center;
-  font-weight: 600;
-  margin-top: 2px;
-  background-color: ${(props: any) => props.color};
-`;
+// i18n
+import { injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
+import messages from './messages';
 
 interface DataProps {
   user: GetUserChildProps;
 }
 
-interface InputProps {
-  userId: string | null;
-  hideLastName?: boolean;
-  className?: string;
-  linkToProfile?: boolean;
-  emphasize?: boolean;
-  canModerate?: boolean;
+interface StyleProps {
+  fontWeight?: number;
+  fontSize?: number;
+  underline?: boolean;
   color?: string;
-  verificationBadge?: boolean;
+  canModerate?: boolean;
+}
+
+interface InputProps extends StyleProps {
+  // if user was deleted, userId can be null
+  userId: string | null;
+  className?: string;
+  isLinkToProfile?: boolean;
+  hideLastName?: boolean;
 }
 
 interface Props extends InputProps, DataProps {}
 
-const UserName = ({
-  user,
-  className,
-  hideLastName,
-  linkToProfile,
-  emphasize,
-  canModerate,
-  color,
-  verificationBadge,
-}: Props) => {
-  if (!isNilOrError(user)) {
-    const firstName = get(user, 'attributes.first_name', '');
-    const lastName = get(user, 'attributes.last_name', '');
-    const nameComponent = (
-      <Name
-        emphasize={emphasize}
-        className={`${linkToProfile ? 'linkToProfile' : ''}
-          ${canModerate ? 'canModerate' : ''}
-          e2e-username`}
-        color={color}
-      >
-        {`${firstName} ${hideLastName ? '' : lastName}`}
-      </Name>
-    );
-    const verificationBadgeComponent = (isVerified?: boolean) => (
-      <FeatureFlag name="verification">
-        <Badge color={isVerified ? colors.clGreen : colors.label}>
-          {isVerified ? (
-            <FormattedMessage {...messages.verified} />
-          ) : (
-            <FormattedMessage {...messages.notVerified} />
-          )}
-        </Badge>
-      </FeatureFlag>
-    );
+const UserName = (props: Props & InjectedIntlProps) => {
+  const {
+    intl: { formatMessage },
+    user,
+    className,
+    isLinkToProfile,
+    hideLastName,
+    ...styleProps
+  } = props;
+  let isUnknownUser = false;
 
-    if (linkToProfile) {
-      return (
-        <Link
-          to={`/profile/${user.attributes.slug}`}
-          className={`e2e-author-link ${className || ''}`}
-        >
-          <Container>
-            {nameComponent}
-            {verificationBadge &&
-              verificationBadgeComponent(user.attributes.verified)}
-          </Container>
-        </Link>
-      );
+  const getName = () => {
+    if (!isNilOrError(user)) {
+      const firstName = user.attributes.first_name;
+      const lastName = user.attributes.last_name;
+      if (firstName) {
+        // Sometimes we have a user, but names don't load (only seen in dev mode)
+        // Built in this check to make sure we don't show an empty space (in production)
+        // See Name.tsx for why only firstName is required
+        return `${firstName} ${!hideLastName && lastName ? lastName : ''}`;
+      }
     }
 
+    isUnknownUser = true;
+    return formatMessage(messages.deletedUser);
+  };
+
+  const getProfileLink = () => {
+    if (
+      !isNilOrError(user) &&
+      // It only makes sense to link to profile when we see a name,
+      // we don't want to link to the profile of an unknown user
+      user.attributes.first_name &&
+      user.attributes.slug
+    ) {
+      return `/profile/${user.attributes.slug}`;
+    }
+
+    return null;
+  };
+
+  const name = getName();
+  const profileLink = getProfileLink();
+
+  const NameComponent = (
+    <Name
+      name={name}
+      className={className}
+      isUnknownUser={isUnknownUser || isNilOrError(user)}
+      isLinkToProfile={isLinkToProfile}
+      {...styleProps}
+    />
+  );
+
+  if (isLinkToProfile && profileLink) {
     return (
-      <Container className={className || ''}>
-        {nameComponent}
-        {verificationBadge &&
-          verificationBadgeComponent(user.attributes.verified)}
-      </Container>
+      <Link to={profileLink} className={`e2e-author-link ${className || ''}`}>
+        {NameComponent}
+      </Link>
     );
   }
 
-  return (
-    <Name color={color} className={`${className} deleted-user e2e-username`}>
-      <FormattedMessage {...messages.deletedUser} />
-    </Name>
-  );
+  return NameComponent;
 };
 
 const Data = adopt<DataProps, InputProps>({
   user: ({ userId, render }) => <GetUser id={userId}>{render}</GetUser>,
 });
 
+const UserNameWithHOCs = injectIntl(UserName);
+
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {(dataProps) => <UserName {...inputProps} {...dataProps} />}
+    {(dataProps) => <UserNameWithHOCs {...inputProps} {...dataProps} />}
   </Data>
 );

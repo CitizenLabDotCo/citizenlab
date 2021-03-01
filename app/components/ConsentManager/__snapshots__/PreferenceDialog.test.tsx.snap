@@ -62,11 +62,28 @@ exports[`<ConsentManager /> renders correctly when there are destinations 1`] = 
     handleChange={[Function]}
     key="functional"
   />
+  <CategoryCard
+    category="required"
+    checked={true}
+    destinations={Array []}
+    disableUncheck={true}
+    handleChange={[Function]}
+    key="required"
+  />
 </PreferencesDialog__ContentContainer>
 `;
 
 exports[`<ConsentManager /> renders correctly when there are no destinations 1`] = `
 <PreferencesDialog__ContentContainer
   id="e2e-preference-dialog"
-/>
+>
+  <CategoryCard
+    category="required"
+    checked={true}
+    destinations={Array []}
+    disableUncheck={true}
+    handleChange={[Function]}
+    key="required"
+  />
+</PreferencesDialog__ContentContainer>
 `;

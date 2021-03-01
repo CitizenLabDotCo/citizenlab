@@ -12,7 +12,7 @@ import messages from './messages';
 
 // style
 import styled from 'styled-components';
-import { fontSizes, colors } from 'utils/styleUtils';
+import { fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div`
   display: flex;
@@ -25,7 +25,7 @@ const CheckboxWrapper = styled.div`
 `;
 
 const ConsentText = styled.div`
-  color: ${colors.text};
+  color: ${(props: any) => props.theme.colorText};
   font-size: ${fontSizes.small}px;
   line-height: 21px;
   font-weight: 300;
@@ -34,7 +34,7 @@ const ConsentText = styled.div`
   word-break: break-word;
 
   a {
-    color: ${colors.text};
+    color: ${(props: any) => props.theme.colorText};
     font-weight: 400;
     text-decoration: underline;
     overflow-wrap: break-word;
@@ -116,7 +116,7 @@ const Consent = memo<Props & InjectedIntlProps>(
                   {...messages.iHaveReadAndAgreeTo}
                   values={{
                     link: (
-                      <Link target="_blank" to="/pages/privacy-policy">
+                      <Link to="/pages/privacy-policy">
                         <FormattedMessage {...messages.thePrivacyPolicy} />
                       </Link>
                     ),

@@ -1,0 +1,22 @@
+{
+  "churn": {
+    "changes": [
+      { "file_path": "app/services/areas.js", "times_changed": 5 },
+      { "file_path": "app/services/ideas.js", "times_changed": 3 },
+      { "file_path": "app/services/projects.js", "times_changed": 3 },
+      { "file_path": "app/services/topics.js", "times_changed": 3 },
+      { "file_path": "app/services/users.js", "times_changed": 3 },
+      { "file_path": "app/services/auth.js", "times_changed": 3 }
+    ],
+    "class_churn": [],
+    "method_churn": [],
+    "changed_files": [
+      "app/components/admin/ResourceList/SortableRow.tsx",
+      "app/containers/Admin/projects/all/Lists/AdminProjectList.tsx",
+      "app/modules/project_folders/admin/components/ProjectFolderRow/index.tsx",
+      "app/modules/project_folders/index.tsx"
+    ],
+    "changed_classes": [],
+    "changed_methods": []
+  }
+}

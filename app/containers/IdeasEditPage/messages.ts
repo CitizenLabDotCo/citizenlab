@@ -5,6 +5,26 @@ export default defineMessages({
     id: 'app.containers.IdeasEditPage.formTitle',
     defaultMessage: 'Edit idea',
   },
+  optionFormTitle: {
+    id: 'app.containers.IdeasEditPage.optionFormTitle',
+    defaultMessage: 'Edit option',
+  },
+  projectFormTitle: {
+    id: 'app.containers.IdeasEditPage.projectFormTitle',
+    defaultMessage: 'Edit project',
+  },
+  questionFormTitle: {
+    id: 'app.containers.IdeasEditPage.questionFormTitle',
+    defaultMessage: 'Edit question',
+  },
+  issueFormTitle: {
+    id: 'app.containers.IdeasEditPage.issueFormTitle',
+    defaultMessage: 'Edit issue',
+  },
+  contributionFormTitle: {
+    id: 'app.containers.IdeasEditPage.contributionFormTitle',
+    defaultMessage: 'Edit contribution',
+  },
   save: {
     id: 'app.containers.IdeasEditPage.save',
     defaultMessage: 'Save',
@@ -13,22 +33,21 @@ export default defineMessages({
     id: 'app.containers.IdeasEditPage.submitError',
     defaultMessage: 'Something went wrong. Please try again later.',
   },
-  submit: {
-    id: 'app.containers.IdeasEditPage.submit',
-    defaultMessage: 'Submit idea',
+  editedPostSave: {
+    id: 'app.containers.IdeasEditPage.editedPostSave',
+    defaultMessage: 'Save',
   },
-  fileOrImageError: {
-    id: 'app.containers.IdeasEditPage.fileOrImageError',
+  fileUploadError: {
+    id: 'app.containers.IdeasEditPage.fileUploadError',
     defaultMessage:
-      'Your idea was submitted, but a file failed to be uploaded, please edit your idea to try again.',
+      'One or more files failed to upload. Please check the file size and format and try again.',
   },
-  metaTitle: {
-    id: 'app.containers.IdeasEditPage.metaTitle',
-    defaultMessage: 'Edit your idea for {projectName} | {orgName}',
+  ideasEditMetaTitle: {
+    id: 'app.containers.IdeasEditPage.ideasEditMetaTitle',
+    defaultMessage: 'Edit {postTitle} | {projectName}',
   },
-  metaDescription: {
-    id: 'app.containers.IdeasEditPage.metaDescription',
-    defaultMessage:
-      'Edit your idea. Add new and change old information to make it even better.',
+  ideasEditMetaDescription: {
+    id: 'app.containers.IdeasEditPage.ideasEditMetaDescription',
+    defaultMessage: 'Edit your post. Add new and change old information.',
   },
 });

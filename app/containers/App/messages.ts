@@ -9,9 +9,9 @@ export default defineMessages({
     id: 'app.containers.App.metaTitle',
     defaultMessage: 'Citizen engagement platform of {orgName} | CitizenLab',
   },
-  metaDescription: {
-    id: 'app.containers.App.metaDescription',
+  appMetaDescription: {
+    id: 'app.containers.App.appMetaDescription',
     defaultMessage:
-      'Welcome to the online citizen engagement platform of {orgName}.\nExplore local projects and vote on your favourite ideas. Come participate in the discussions!',
+      'Welcome to the online participation platform of {orgName}. \nExplore local projects and engage in the discussion!',
   },
 });

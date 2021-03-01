@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import useLocalize from 'hooks/useLocalize';
 import useMapConfig from 'hooks/useMapConfig';
 import { isNilOrError } from 'utils/helperUtils';
-import { media } from 'utils/styleUtils';
+import { media, isRtl } from 'utils/styleUtils';
 
 const LegendContainer = styled.div`
   background-color: white;
@@ -23,6 +23,12 @@ const Item = styled.li`
   flex: 1 0 calc(50% - 10px);
   margin-right: 10px;
 
+  ${isRtl`
+    margin-right: 0;
+    margin-left: 10px;
+    flex-direction: row-reverse;
+  `}
+
   &:not(:last-child) {
     margin-bottom: 10px;
   }
@@ -37,6 +43,11 @@ const ColorLabel = styled.div`
   height: 20px;
   background-color: ${(props) => props.color};
   margin-right: 10px;
+
+  ${isRtl`
+    margin-right: 0;
+    margin-left: 10px;
+  `}
 `;
 
 interface Props {
@@ -45,10 +56,15 @@ interface Props {
 
 const Legend = memo(({ projectId }: Props) => {
   const mapConfig = useMapConfig({ projectId });
-  const legend = !isNilOrError(mapConfig) && mapConfig.attributes.legend;
   const localize = useLocalize();
 
-  if (legend) {
+  if (
+    !isNilOrError(mapConfig) &&
+    mapConfig.attributes.legend &&
+    mapConfig.attributes.legend.length !== 0
+  ) {
+    const legend = mapConfig.attributes.legend;
+
     return (
       <LegendContainer>
         <LegendItems>

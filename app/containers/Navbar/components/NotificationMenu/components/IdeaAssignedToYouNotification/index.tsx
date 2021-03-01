@@ -101,7 +101,7 @@ class IdeaAssignedToYouNotification extends React.PureComponent<Props, State> {
         <NotificationWrapper
           linkTo={linkTo}
           timing={notification.attributes.created_at}
-          icon="idea2"
+          icon="idea"
           isRead={!!notification.attributes.read_at}
         >
           {this.getNotificationMessage()}

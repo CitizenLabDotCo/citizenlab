@@ -1,63 +1,43 @@
-import React, { PureComponent } from 'react';
-import { adopt } from 'react-adopt';
+import React, { memo } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
-// Resources
-import GetProject, { GetProjectChildProps } from 'resources/GetProject';
+// hooks
+import useProject from 'hooks/useProject';
 
-// Components
-import ContentContainer from 'components/ContentContainer';
+// components
 import Warning from 'components/UI/Warning';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
-// Style
+// style
 import styled from 'styled-components';
 
-const StyledContentContainer = styled(ContentContainer)``;
+const Container = styled.div`
+  width: 100%;
+`;
 
-interface InputProps {
+interface Props {
   projectId: string;
   className?: string;
 }
 
-interface DataProps {
-  project: GetProjectChildProps;
-}
+const ProjectArchivedIndicator = memo<Props>(({ projectId, className }) => {
+  const project = useProject({ projectId });
 
-interface Props extends InputProps, DataProps {}
-
-interface State {}
-
-class ProjectArchivedIndicator extends PureComponent<Props, State> {
-  render() {
-    const { project, className } = this.props;
-
-    if (
-      !isNilOrError(project) &&
-      project.attributes.publication_status === 'archived'
-    ) {
-      return (
-        <StyledContentContainer className={className}>
-          <Warning text={<FormattedMessage {...messages.archivedProject} />} />
-        </StyledContentContainer>
-      );
-    }
-
-    return null;
+  if (
+    !isNilOrError(project) &&
+    project.attributes.publication_status === 'archived'
+  ) {
+    return (
+      <Container className={className || ''}>
+        <Warning text={<FormattedMessage {...messages.archivedProject} />} />
+      </Container>
+    );
   }
-}
 
-const Data = adopt<DataProps, InputProps>({
-  project: ({ projectId, render }) => (
-    <GetProject projectId={projectId}>{render}</GetProject>
-  ),
+  return null;
 });
 
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <ProjectArchivedIndicator {...inputProps} {...dataProps} />}
-  </Data>
-);
+export default ProjectArchivedIndicator;

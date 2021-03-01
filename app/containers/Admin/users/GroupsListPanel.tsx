@@ -16,7 +16,6 @@ import events, { MembershipAdd } from './events';
 
 // Components
 import Button from 'components/UI/Button';
-import { Icon } from 'cl2-component-library';
 import T from 'components/T';
 
 // i18n
@@ -31,6 +30,7 @@ import tracks from './tracks';
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 import { rgba } from 'polished';
+import Outlet from 'components/Outlet';
 
 const Container = styled.div`
   flex: 1;
@@ -121,13 +121,6 @@ const MenuLink = styled(Link)`
       background-color: ${rgba(colors.clGreen, 0)};
     }
   }
-`;
-
-const LightningBolt = styled(Icon)`
-  flex: 0 0 18px;
-  height: 18px;
-  fill: ${colors.adminOrangeIcons};
-  margin-right: 4px;
 `;
 
 const GroupName = styled.div`
@@ -257,9 +250,10 @@ export class GroupsListPanel extends React.PureComponent<
                 activeClassName="active"
                 className={highlightedGroups.has(group.id) ? 'highlight' : ''}
               >
-                {group.attributes.membership_type === 'rules' && (
-                  <LightningBolt name="lightningBolt" />
-                )}
+                <Outlet
+                  id="app.containers.Admin.users.GroupsListPanel.listitem.icon"
+                  type={group.attributes.membership_type}
+                />
                 <GroupName>
                   <T value={group.attributes.title_multiloc} />
                 </GroupName>

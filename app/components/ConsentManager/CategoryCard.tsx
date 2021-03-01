@@ -5,7 +5,10 @@ import { transparentize } from 'polished';
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import { Radio } from 'cl2-component-library';
-import { IDestination } from './';
+import { getDestinationConfig, IDestination } from './destinations';
+import useAppConfiguration from 'hooks/useAppConfiguration';
+import { isNilOrError } from 'utils/helperUtils';
+import { IAppConfiguration } from 'services/appConfiguration';
 
 const Container = styled.div`
   display: flex;
@@ -76,59 +79,90 @@ interface Props {
   category: string;
   destinations: IDestination[];
   checked: boolean;
+  disableUncheck?: boolean;
   handleChange: (
     category: string,
     value: boolean
   ) => (e: FormEvent<HTMLInputElement>) => void;
 }
 
+const DestinationName = ({
+  tenant,
+  destination,
+}: {
+  tenant: IAppConfiguration | null;
+  destination: IDestination;
+}) => {
+  const config = getDestinationConfig(destination);
+  if (config?.name && tenant) {
+    return <>{config.name(tenant.data)}</>;
+  } else if (config) {
+    return <>{config.key}</>;
+  } else {
+    return null;
+  }
+};
+
 const CategoryCard = ({
   category,
   destinations,
   checked,
   handleChange,
-}: Props) => (
-  <Container className="e2e-category">
-    <TextContainer>
-      <FormattedMessage
-        id={`${category}-label`}
-        tagName="h2"
-        {...messages[category]}
-      />
-      <StyledFieldset>
-        <Radio
-          onChange={handleChange(category, true)}
-          currentValue={checked}
-          value={true}
-          name={category}
-          id={`${category}-radio-true`}
-          label={<FormattedMessage {...messages.allow} />}
-          isRequired
+  disableUncheck,
+}: Props) => {
+  const tenant = useAppConfiguration();
+
+  return (
+    <Container className="e2e-category">
+      <TextContainer>
+        <FormattedMessage
+          id={`${category}-label`}
+          tagName="h2"
+          {...messages[category]}
         />
-        <Radio
-          onChange={handleChange(category, false)}
-          currentValue={checked}
-          value={false}
-          name={category}
-          id={`${category}-radio-false`}
-          label={<FormattedMessage {...messages.disallow} />}
-          isRequired
-        />
-      </StyledFieldset>
-      <FormattedMessage tagName="p" {...messages[`${category}Purpose`]} />
-      <p>
-        <Tools>
-          <FormattedMessage {...messages.tools} />:
-        </Tools>
-        {destinations.map((d, index) => (
-          <Fragment key={d.id}>
-            {index !== 0 && <Separator>•</Separator>}
-            <SSpan>{d.name}</SSpan>
-          </Fragment>
-        ))}
-      </p>
-    </TextContainer>
-  </Container>
-);
+        <StyledFieldset>
+          <Radio
+            onChange={handleChange(category, true)}
+            currentValue={checked}
+            value={true}
+            name={category}
+            id={`${category}-radio-true`}
+            label={<FormattedMessage {...messages.allow} />}
+            isRequired
+          />
+          <Radio
+            onChange={handleChange(category, false)}
+            currentValue={checked}
+            value={false}
+            name={category}
+            id={`${category}-radio-false`}
+            label={<FormattedMessage {...messages.disallow} />}
+            isRequired
+            disabled={disableUncheck}
+          />
+        </StyledFieldset>
+        <FormattedMessage tagName="p" {...messages[`${category}Purpose`]} />
+        {destinations.length > 0 && (
+          <p>
+            <Tools>
+              <FormattedMessage {...messages.tools} />:
+            </Tools>
+            {destinations.map((d, index) => (
+              <Fragment key={d}>
+                {index !== 0 && <Separator>•</Separator>}
+                <SSpan>
+                  <DestinationName
+                    tenant={!isNilOrError(tenant) ? tenant : null}
+                    destination={d}
+                  />
+                </SSpan>
+              </Fragment>
+            ))}
+          </p>
+        )}
+      </TextContainer>
+    </Container>
+  );
+};
 
 export default CategoryCard;

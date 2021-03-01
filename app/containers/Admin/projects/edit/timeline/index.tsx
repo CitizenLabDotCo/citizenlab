@@ -129,56 +129,60 @@ class AdminProjectTimelineIndex extends React.PureComponent<
                 </div>
               </HeadRow>
 
-              {phases.map((phase, index) => {
-                const startAt = moment(phase.attributes.start_at).format('LL');
-                const endAt = moment(phase.attributes.end_at).format('LL');
+              <>
+                {phases.map((phase, index) => {
+                  const startAt = moment(phase.attributes.start_at).format(
+                    'LL'
+                  );
+                  const endAt = moment(phase.attributes.end_at).format('LL');
 
-                return (
-                  <Row
-                    className={`e2e-phase-line ${
-                      phases.length === index + 1 ? 'last' : ''
-                    }`}
-                    id={`e2e-phase_${phase.id}`}
-                    key={phase.id}
-                  >
-                    <OrderLabel
-                      className={pastPresentOrFuture([
-                        phase.attributes.start_at,
-                        phase.attributes.end_at,
-                      ])}
+                  return (
+                    <Row
+                      className={`e2e-phase-line ${
+                        phases.length === index + 1 ? 'last' : ''
+                      }`}
+                      id={`e2e-phase_${phase.id}`}
+                      key={phase.id}
                     >
-                      {index + 1}
-                    </OrderLabel>
-                    <div className="expand">
-                      <h1 className="e2e-phase-title">
-                        <T value={phase.attributes.title_multiloc} />
-                      </h1>
-                      <p>
-                        {startAt} → {endAt}
-                      </p>
-                    </div>
-                    <Button
-                      className="e2e-delete-phase"
-                      icon="delete"
-                      buttonStyle="text"
-                      onClick={this.createDeleteClickHandler(
-                        projectId,
-                        phase.id
-                      )}
-                    >
-                      <FormattedMessage {...messages.deletePhaseButton} />
-                    </Button>
-                    <Button
-                      className="e2e-edit-phase"
-                      icon="edit"
-                      buttonStyle="secondary"
-                      linkTo={`/admin/projects/${projectId}/timeline/${phase.id}`}
-                    >
-                      <FormattedMessage {...messages.editPhaseButton} />
-                    </Button>
-                  </Row>
-                );
-              })}
+                      <OrderLabel
+                        className={pastPresentOrFuture([
+                          phase.attributes.start_at,
+                          phase.attributes.end_at,
+                        ])}
+                      >
+                        {index + 1}
+                      </OrderLabel>
+                      <div className="expand">
+                        <h1 className="e2e-phase-title">
+                          <T value={phase.attributes.title_multiloc} />
+                        </h1>
+                        <p>
+                          {startAt} → {endAt}
+                        </p>
+                      </div>
+                      <Button
+                        className="e2e-delete-phase"
+                        icon="delete"
+                        buttonStyle="text"
+                        onClick={this.createDeleteClickHandler(
+                          projectId,
+                          phase.id
+                        )}
+                      >
+                        <FormattedMessage {...messages.deletePhaseButton} />
+                      </Button>
+                      <Button
+                        className="e2e-edit-phase"
+                        icon="edit"
+                        buttonStyle="secondary"
+                        linkTo={`/admin/projects/${projectId}/timeline/${phase.id}`}
+                      >
+                        <FormattedMessage {...messages.editPhaseButton} />
+                      </Button>
+                    </Row>
+                  );
+                })}
+              </>
             </StyledList>
           </div>
         )}

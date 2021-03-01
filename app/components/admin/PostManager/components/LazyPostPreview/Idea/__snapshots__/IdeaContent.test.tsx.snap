@@ -25,20 +25,57 @@ exports[`<IdeaContent /> renders correctly when an idea is provided 1`] = `
     </Button>
   </Top>
   <Content>
+    <IdeaContent__BelongsToProject>
+      <FormattedMessage
+        defaultMessage="Posted in {projectLink}"
+        id="app.containers.IdeasShow.postedIn"
+        values={
+          Object {
+            "projectLink": <IdeaContent__ProjectLink
+              className="e2e-project-link"
+              to="/projects/undefined_slug"
+            >
+              <T
+                value={
+                  Object {
+                    "en": "undefined project Title",
+                  }
+                }
+              />
+            </IdeaContent__ProjectLink>,
+          }
+        }
+      />
+    </IdeaContent__BelongsToProject>
     <IdeaContent__StyledTitle
       postId="myIdeasiD"
       postType="idea"
       title="Doloribus quam molestiae ut."
     />
+    <IdeaContent__StyledPostedBy
+      authorId="8ea3a61c-e1bd-4756-a54d-c092553abccd"
+      ideaId="myIdeasiD"
+    />
     <IdeaContent__Row>
       <IdeaContent__Left>
-        <IdeaAuthor
-          authorId="8ea3a61c-e1bd-4756-a54d-c092553abccd"
-          ideaId="myIdeasiD"
-          ideaPublishedAt="2019-03-19T00: 00: 00.000Z"
+        <IdeaContent__BodySectionTitle>
+          <FormattedMessage
+            defaultMessage="Proposed budget"
+            id="app.containers.IdeasShow.proposedBudgetTitle"
+          />
+        </IdeaContent__BodySectionTitle>
+        <IdeaProposedBudget
+          formattedBudget="€45"
         />
+        <IdeaContent__BodySectionTitle>
+          <FormattedMessage
+            defaultMessage="Description"
+            id="app.containers.IdeasShow.bodyTitle"
+          />
+        </IdeaContent__BodySectionTitle>
         <IdeaContent__StyledBody
           body="<p>Ea ea aut. Quasi corrupti iste. Delectus eum voluptates.</p><p>Est harum voluptates. Et fugit enim. Suscipit inventore ullam.</p><p>Eos mollitia omnis. Laudantium porro perferendis. Minus in aut.</p>"
+          locale="en"
           postId="myIdeasiD"
           postType="idea"
         />
@@ -56,6 +93,35 @@ exports[`<IdeaContent /> renders correctly when an idea is provided 1`] = `
         <VotePreview
           ideaId="myIdeasiD"
         />
+        <IdeaContent__BudgetBox>
+          <FormattedNumber
+            currency="EUR"
+            maximumFractionDigits={0}
+            minimumFractionDigits={0}
+            style="currency"
+            value={60}
+          />
+          <IdeaContent__Picks>
+            <FormattedMessage
+              defaultMessage="Picks: {picksNumber}"
+              id="app.components.admin.PostManager.PostPreview.picks"
+              values={
+                Object {
+                  "picksNumber": 0,
+                }
+              }
+            />
+             
+            <IconTooltip
+              content={
+                <FormattedMessage
+                  defaultMessage="The number of times this has been included in other participants' participatory budgets"
+                  id="app.components.admin.PostManager.PostPreview.pbItemCountTooltip"
+                />
+              }
+            />
+          </IdeaContent__Picks>
+        </IdeaContent__BudgetBox>
         <FeedbackSettings
           ideaId="myIdeasiD"
         />

@@ -44,8 +44,6 @@ const MenuItemLink = styled(Link)`
   justify-content: space-between;
   padding-left: 5px;
   padding-right: 15px;
-  padding-bottom: 1px;
-  margin-bottom: 8px;
   cursor: pointer;
   border-radius: ${(props: any) => props.theme.borderRadius};
   transition: background-color 80ms ease-out;
@@ -110,6 +108,10 @@ const IconWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+
+  &.processing svg {
+    height: 31px;
+  }
 `;
 
 type Props = {
@@ -127,7 +129,7 @@ export default ({ route }: Props) => {
         }`}
         to={route.link}
       >
-        <IconWrapper>
+        <IconWrapper className={route.iconName}>
           <Icon name={route.iconName} />
         </IconWrapper>
         <Text>

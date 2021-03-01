@@ -1,12 +1,14 @@
 import eventEmitter from 'utils/eventEmitter';
 import {
-  ContextShape,
   TVerificationSteps,
-} from 'components/Verification/VerificationSteps';
+  ContextShape,
+  IVerificationError,
+} from './VerificationModal';
 
 export interface OpenVerificationModalData {
   step: TVerificationSteps;
   context: ContextShape | null;
+  error?: IVerificationError | null;
 }
 
 enum VerificationModalEvents {
@@ -17,6 +19,7 @@ enum VerificationModalEvents {
 interface IOpenVerificationModalParams {
   context?: ContextShape;
   step?: TVerificationSteps;
+  error?: IVerificationError | null;
 }
 
 export function openVerificationModal(params?: IOpenVerificationModalParams) {

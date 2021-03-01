@@ -34,6 +34,10 @@ export default defineMessages({
     id: 'containers.SiteMap.privacyPolicyLink',
     defaultMessage: 'Privacy Policy',
   },
+  accessibilityStatementLink: {
+    id: 'containers.SiteMap.accessibilityStatementLink',
+    defaultMessage: 'Accessibility statement',
+  },
   projectsSection: {
     id: 'containers.SiteMap.projectsSection',
     defaultMessage: 'Projects of {orgName}',
@@ -61,6 +65,26 @@ export default defineMessages({
   projectIdeas: {
     id: 'containers.SiteMap.projectIdeas',
     defaultMessage: 'Ideas',
+  },
+  contributions: {
+    id: 'app.containers.SiteMap.contributions',
+    defaultMessage: 'Contributions',
+  },
+  issues: {
+    id: 'app.containers.SiteMap.issues',
+    defaultMessage: 'Issues',
+  },
+  options: {
+    id: 'app.containers.SiteMap.options',
+    defaultMessage: 'Options',
+  },
+  questions: {
+    id: 'app.containers.SiteMap.questions',
+    defaultMessage: 'Questions',
+  },
+  projects: {
+    id: 'app.containers.SiteMap.projects',
+    defaultMessage: 'Projects',
   },
   projectPoll: {
     id: 'containers.SiteMap.projectPoll',

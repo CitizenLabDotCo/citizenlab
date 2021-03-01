@@ -7,7 +7,7 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // components
-import IdeaCard from 'components/IdeaCard';
+import IdeaCard from 'components/IdeaCard/Compact';
 import IdeasMap from 'components/IdeasMap';
 import { Icon, Spinner } from 'cl2-component-library';
 import TopicFilterDropdown from './TopicFilterDropdown';
@@ -45,11 +45,16 @@ import {
   fontSizes,
   viewportWidths,
   defaultCardStyle,
+  isRtl,
 } from 'utils/styleUtils';
 import { rgba } from 'polished';
 
 // typings
-import { ParticipationMethod } from 'services/participationContexts';
+import {
+  IdeaDefaultSortMethod,
+  ParticipationMethod,
+  ideaDefaultSortMethodFallback,
+} from 'services/participationContexts';
 import { IParticipationContextType } from 'typings';
 import { withRouter, WithRouterProps } from 'react-router';
 import { CustomFieldCodes } from 'services/ideaCustomFields';
@@ -74,102 +79,115 @@ const FiltersArea = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
+
+  ${isRtl`
+    flex-direction: row-reverse;
+  `}
 
   &.mapView {
     justify-content: flex-end;
+    margin-bottom: 15px;
+
+    ${media.smallerThanMinTablet`
+      margin-bottom: 0px;
+    `}
   }
 
-  ${media.smallerThanMaxTablet`
+  ${media.biggerThanMinTablet`
+    &.mapView {
+      margin-top: -65px;
+    }
+  `}
+
+  ${media.smallerThanMinTablet`
     flex-direction: column;
     align-items: stretch;
+    margin-bottom: 30px;
   `}
 `;
 
 const FilterArea = styled.div`
   display: flex;
   align-items: center;
+`;
 
-  ${media.smallerThanMaxTablet`
+const LeftFilterArea = styled(FilterArea)`
+  flex: 1 1 auto;
+
+  &.hidden {
+    display: none;
+  }
+
+  ${media.smallerThanMinTablet`
+    display: flex;
+    flex-direction: column;
     align-items: stretch;
   `}
 `;
 
-const LeftFilterArea = styled(FilterArea)`
-  &.hidden {
-    display: none;
-  }
-
-  ${media.smallerThanMaxTablet`
-    width: 100%;
-    margin-bottom: 22px;
-  `}
-`;
-
 const RightFilterArea = styled(FilterArea)`
+  display: flex;
+  align-items: center;
+
   &.hidden {
     display: none;
   }
-
-  ${media.smallerThanMaxTablet`
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-  `}
-
-  ${media.smallerThanMinTablet`
-    width: 100%;
-    display: flex;
-    flex-direction: column-reverse;
-  `}
 `;
 
 const DropdownFilters = styled.div`
-  ${media.smallerThanMinTablet`
-    &.hasViewButtons {
-      margin-top: 20px;
-    }
-  `}
+  display: flex;
+  align-items: center;
 
   &.hidden {
     display: none;
   }
 `;
 
-const StyledViewButtons = styled(ViewButtons)`
-  margin-left: 25px;
+const DesktopViewButtons = styled(ViewButtons)`
+  margin-left: 40px;
 
-  ${media.smallerThanMaxTablet`
-    margin-left: 0px;
+  ${media.smallerThanMinTablet`
+    display: none;
   `}
+`;
+
+const MobileViewButtons = styled(ViewButtons)`
+  margin-bottom: 15px;
 `;
 
 const StyledSearchInput = styled(SearchInput)`
   width: 300px;
   margin-right: 30px;
 
-  ${media.smallerThanMaxTablet`
+  ${isRtl`
+    margin-right: 0;
+    margin-left: auto;
+  `}
+
+  ${media.smallerThanMinTablet`
     width: 100%;
     margin-right: 0px;
+    margin-left: 0px;
+    margin-bottom: 20px;
   `}
 `;
 
-const IdeasList: any = styled.div`
-  margin-left: -13px;
-  margin-right: -13px;
+const IdeasList = styled.div`
+  margin-left: -12px;
+  margin-right: -12px;
   display: flex;
   flex-wrap: wrap;
+
+  ${isRtl`
+    flex-direction: row-reverse;
+  `}
 `;
 
 const StyledIdeaCard = styled(IdeaCard)`
   flex-grow: 0;
-  width: calc(100% * (1 / 3) - 26px);
-  margin-left: 13px;
-  margin-right: 13px;
-
-  ${media.smallerThanMaxTablet`
-    width: calc(100% * (1/2) - 26px);
-  `};
+  width: calc(50% - 20px);
+  margin: 10px;
 
   ${media.smallerThanMinTablet`
     width: 100%;
@@ -189,22 +207,23 @@ const EmptyContainer = styled.div`
 `;
 
 const IdeaIcon = styled(Icon)`
-  width: 43px;
-  height: 43px;
+  flex: 0 0 26px;
+  width: 26px;
+  height: 26px;
   fill: ${colors.label};
 `;
 
 const EmptyMessage = styled.div`
   padding-left: 20px;
   padding-right: 20px;
-  margin-top: 20px;
+  margin-top: 12px;
   margin-bottom: 30px;
 `;
 
 const EmptyMessageLine = styled.div`
   color: ${colors.label};
-  font-size: ${fontSizes.medium}px;
-  font-weight: 500;
+  font-size: ${fontSizes.base}px;
+  font-weight: 400;
   line-height: normal;
   text-align: center;
 `;
@@ -228,6 +247,7 @@ const ListView = styled.div``;
 
 interface InputProps extends GetIdeasInputProps {
   showViewToggle?: boolean | undefined;
+  defaultSortingMethod?: IdeaDefaultSortMethod;
   defaultView?: 'card' | 'map' | null | undefined;
   participationMethod?: ParticipationMethod | null;
   participationContextId?: string | null;
@@ -315,7 +335,7 @@ class WithoutFiltersSidebar extends PureComponent<
 
     if (!isNilOrError(ideaCustomFieldsSchemas) && !isNilOrError(locale)) {
       return (
-        ideaCustomFieldsSchemas.ui_schema_multiloc[locale][fieldCode][
+        ideaCustomFieldsSchemas.ui_schema_multiloc?.[locale]?.[fieldCode]?.[
           'ui:widget'
         ] !== 'hidden'
       );
@@ -324,15 +344,13 @@ class WithoutFiltersSidebar extends PureComponent<
     return true;
   };
 
-  searchPlaceholder = this.props.intl.formatMessage(messages.searchPlaceholder);
-  searchAriaLabel = this.props.intl.formatMessage(messages.searchPlaceholder);
-
   render() {
     const { selectedView } = this.state;
     const {
       participationMethod,
       participationContextId,
       participationContextType,
+      defaultSortingMethod,
       windowSize,
       ideas,
       className,
@@ -349,20 +367,46 @@ class WithoutFiltersSidebar extends PureComponent<
     const showListView =
       !locationEnabled || (locationEnabled && selectedView === 'card');
     const showMapView = locationEnabled && selectedView === 'map';
-    const biggerThanLargeTablet =
-      windowSize && windowSize >= viewportWidths.largeTablet;
+    const smallerThanBigTablet = !!(
+      windowSize && windowSize <= viewportWidths.largeTablet
+    );
+    const smallerThanSmallTablet = !!(
+      windowSize && windowSize <= viewportWidths.smallTablet
+    );
+    const biggerThanSmallTablet = !!(
+      windowSize && windowSize >= viewportWidths.smallTablet
+    );
+    const biggerThanLargeTablet = !!(
+      windowSize && windowSize >= viewportWidths.largeTablet
+    );
+    const smallerThan1100px = !!(windowSize && windowSize <= 1100);
+    const smallerThanPhone = !!(
+      windowSize && windowSize <= viewportWidths.phone
+    );
 
     return (
-      <Container id="e2e-ideas-container" className={className}>
+      <Container
+        id="e2e-ideas-container"
+        className={`${className || ''} ${showMapView ? 'mapView' : 'listView'}`}
+      >
         <FiltersArea
           id="e2e-ideas-filters"
-          className={`${showMapView && 'mapView'}`}
+          className={`${showMapView ? 'mapView' : 'listView'}`}
         >
-          <LeftFilterArea className={`${showMapView && 'hidden'}`}>
-            <StyledSearchInput
-              className="e2e-search-ideas-input"
-              onChange={this.handleSearchOnChange}
-            />
+          <LeftFilterArea>
+            {showViewButtons && smallerThanSmallTablet && (
+              <MobileViewButtons
+                selectedView={selectedView}
+                onClick={this.selectView}
+              />
+            )}
+
+            {!showMapView && (
+              <StyledSearchInput
+                className="e2e-search-ideas-input"
+                onChange={this.handleSearchOnChange}
+              />
+            )}
           </LeftFilterArea>
 
           <RightFilterArea>
@@ -374,6 +418,7 @@ class WithoutFiltersSidebar extends PureComponent<
               <SelectSort
                 onChange={this.handleSortOnChange}
                 alignment={biggerThanLargeTablet ? 'right' : 'left'}
+                defaultSortingMethod={defaultSortingMethod || null}
               />
               {allowProjectsFilter && (
                 <ProjectFilterDropdown onChange={this.handleProjectsOnChange} />
@@ -387,8 +432,8 @@ class WithoutFiltersSidebar extends PureComponent<
               )}
             </DropdownFilters>
 
-            {showViewButtons && (
-              <StyledViewButtons
+            {showViewButtons && !smallerThanSmallTablet && (
+              <DesktopViewButtons
                 selectedView={selectedView}
                 onClick={this.selectView}
               />
@@ -413,6 +458,14 @@ class WithoutFiltersSidebar extends PureComponent<
                         participationMethod={participationMethod}
                         participationContextId={participationContextId}
                         participationContextType={participationContextType}
+                        hideImage={
+                          smallerThanBigTablet && biggerThanSmallTablet
+                        }
+                        hideImagePlaceholder={smallerThanBigTablet}
+                        hideIdeaStatus={
+                          (biggerThanLargeTablet && smallerThan1100px) ||
+                          smallerThanPhone
+                        }
                       />
                     ))}
                   </IdeasList>
@@ -421,7 +474,7 @@ class WithoutFiltersSidebar extends PureComponent<
                     <IdeaIcon ariaHidden name="idea" />
                     <EmptyMessage>
                       <EmptyMessageLine>
-                        <FormattedMessage {...messages.noFilteredIdeas} />
+                        <FormattedMessage {...messages.noFilteredResults} />
                       </EmptyMessageLine>
                     </EmptyMessage>
                   </EmptyContainer>
@@ -464,7 +517,13 @@ const Data = adopt<DataProps, InputProps & WithRouterProps>({
   locale: <GetLocale />,
   windowSize: <GetWindowSize />,
   ideas: ({ render, ...getIdeasInputProps }) => (
-    <GetIdeas {...getIdeasInputProps} pageSize={12} sort="random">
+    <GetIdeas
+      {...getIdeasInputProps}
+      pageSize={24}
+      sort={
+        getIdeasInputProps.defaultSortingMethod || ideaDefaultSortMethodFallback
+      }
+    >
       {render}
     </GetIdeas>
   ),

@@ -59,7 +59,7 @@ class ClusterDetails extends PureComponent<Props> {
           </>
         )}
         <h4>
-          <FormattedMessage {...messages.clusterContains} />
+          <FormattedMessage {...messages.clusterContainsSelectedInputs} />
         </h4>
         <List>
           {ideaIds.map((id) => (

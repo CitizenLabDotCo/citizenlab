@@ -133,10 +133,10 @@ export default defineMessages({
     id: 'containers.Admin.onboarding.manageArticle1Title',
     defaultMessage: 'Moderate inside your projects',
   },
-  manageArticle1Description: {
-    id: 'containers.Admin.onboarding.manageArticle1Description',
+  giveFeedback: {
+    id: 'containers.Admin.onboarding.giveFeedback',
     defaultMessage:
-      'Don’t make your audience wait for your feedback. Interact with them regularly. Leave a comment, send them an email. Reach out to them individually or to a group per age, area, or project that they participated in.',
+      'Give feedback by adding or changing the status or providing an update.',
   },
   manageArticle2Link: {
     id: 'containers.Admin.onboarding.manageArticle2Link',
@@ -150,18 +150,6 @@ export default defineMessages({
     id: 'containers.Admin.onboarding.manageArticle2Description',
     defaultMessage:
       'Create groups to be able to contact specific groups or define permissions per group.',
-  },
-  manageArticle3Link: {
-    id: 'containers.Admin.onboarding.manageArticle3Link',
-    defaultMessage: '/unused',
-  },
-  manageArticle3Title: {
-    id: 'containers.Admin.onboarding.manageArticle3Title',
-    defaultMessage: 'Not yet used',
-  },
-  manageArticle3Description: {
-    id: 'containers.Admin.onboarding.manageArticle3Description',
-    defaultMessage: 'Not yet used',
   },
   // Decide section
   decideSectionTitle: {
@@ -177,14 +165,14 @@ export default defineMessages({
     id: 'containers.Admin.onboarding.decideArticle1Link',
     defaultMessage: '/admin/ideas',
   },
-  decideArticle1Title: {
-    id: 'containers.Admin.onboarding.decideArticle1Title',
-    defaultMessage: 'Manage the ideas',
+  manageInputs: {
+    id: 'containers.Admin.onboarding.manageInputs',
+    defaultMessage: 'Manage the inputs',
   },
-  decideArticle1Description: {
-    id: 'containers.Admin.onboarding.decideArticle1Description',
+  decideArticle1Description2: {
+    id: 'containers.Admin.onboarding.decideArticle1Description2',
     defaultMessage:
-      'Add topics to ideas or change the idea status. Mark ideas as spam if they are offending. The author is notified when you change the status or comment on his/her idea.',
+      'Add topics to inputs, move inputs from one phase to another, change their status or mark them as spam.',
   },
   decideArticle2Link: {
     id: 'containers.Admin.onboarding.decideArticle2Link',
@@ -198,17 +186,5 @@ export default defineMessages({
     id: 'containers.Admin.onboarding.decideArticle2Description',
     defaultMessage:
       'Get immediate and easy-to-grasp analytics, and monitor closely what’s happening on the platform.',
-  },
-  decideArticle3Link: {
-    id: 'containers.Admin.onboarding.decideArticle3Link',
-    defaultMessage: '/unused',
-  },
-  decideArticle3Title: {
-    id: 'containers.Admin.onboarding.decideArticle3Title',
-    defaultMessage: 'Not yet used',
-  },
-  decideArticle3Description: {
-    id: 'containers.Admin.onboarding.decideArticle3Description',
-    defaultMessage: 'Not yet used',
   },
 });

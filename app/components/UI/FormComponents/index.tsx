@@ -6,6 +6,7 @@ import {
   invisibleA11yText,
   media,
   defaultCardStyle,
+  isRtl,
 } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage, IMessageInfo } from 'utils/cl-intl';
@@ -77,6 +78,10 @@ export const FormLabelStyled = styled.label`
   &.invisible {
     ${invisibleA11yText}
   }
+
+  ${isRtl`
+    text-align: right;
+`}
 `;
 
 export const FormSubtextStyled = styled.div`
@@ -112,6 +117,7 @@ export interface FormLabelProps extends FormLabelGenericProps {
   labelMessage: Messages['key'];
   labelMessageValues?: OriginalFormattedMessage.Props['values'];
   subtext?: string;
+  subtextSupportsHtml?: boolean;
   subtextMessage?: Messages['key'];
   subtextMessageValues?: OriginalFormattedMessage.Props['values'];
 }
@@ -121,6 +127,7 @@ export const FormLabel = memo<FormLabelProps>(
     labelMessage,
     labelMessageValues,
     subtext,
+    subtextSupportsHtml,
     subtextMessage,
     subtextMessageValues,
     id,
@@ -146,18 +153,21 @@ export const FormLabel = memo<FormLabelProps>(
           {')'}
         </OptionalText>
       )}
-      {(subtextMessage || subtext) && (
+      {subtextMessage && (
         <FormSubtextStyled>
-          {subtextMessage ? (
-            <FormattedMessage
-              {...subtextMessage}
-              values={subtextMessageValues}
-            />
+          <FormattedMessage {...subtextMessage} values={subtextMessageValues} />
+        </FormSubtextStyled>
+      )}
+      {!subtextMessage && subtext && (
+        <FormSubtextStyled>
+          {subtextSupportsHtml === true ? (
+            <div dangerouslySetInnerHTML={{ __html: subtext || '' }} />
           ) : (
             subtext
           )}
         </FormSubtextStyled>
       )}
+
       {!noSpace && <Spacer />}
       {children}
     </FormLabelStyled>

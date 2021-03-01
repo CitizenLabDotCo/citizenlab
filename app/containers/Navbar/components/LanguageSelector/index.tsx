@@ -10,12 +10,14 @@ import { updateLocale } from 'services/locale';
 
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetAppConfiguration';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 
 // style
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
+import { colors, fontSizes, isRtl } from 'utils/styleUtils';
 
 // i18n
 import { shortenedAppLocalePairs } from 'containers/App/constants';
@@ -38,6 +40,10 @@ const DropdownButtonIcon = styled(Icon)`
   margin-top: 1px;
   margin-left: 4px;
   transition: all 100ms ease-out;
+  ${isRtl`
+    margin-left: 0;
+    margin-right: 4px;
+  `}
 `;
 
 const DropdownButton = styled.button`
@@ -46,6 +52,10 @@ const DropdownButton = styled.button`
   padding: 0;
   display: flex;
   align-items: center;
+
+  ${isRtl`
+    flex-direction: row-reverse;
+  `}
 `;
 
 const Container = styled.div`
@@ -102,7 +112,7 @@ interface InputProps {
 }
 
 interface DataProps {
-  tenant: GetTenantChildProps;
+  tenant: GetAppConfigurationChildProps;
   authUser: GetAuthUserChildProps;
   locale: GetLocaleChildProps;
 }
@@ -144,6 +154,7 @@ class LanguageSelector extends PureComponent<Props, State> {
     if (!isNilOrError(tenant) && !isNilOrError(locale)) {
       const tenantLocales = tenant.attributes.settings.core.locales;
       const currentlySelectedLocale = locale;
+      const isRtl = !!locale.startsWith('ar');
 
       return (
         <Container
@@ -164,8 +175,10 @@ class LanguageSelector extends PureComponent<Props, State> {
           <Dropdown
             width="180px"
             top="68px"
-            right="0px"
-            mobileRight="5px"
+            right={!isRtl ? '0px' : undefined}
+            left={isRtl ? '0px' : undefined}
+            mobileRight={!isRtl ? '5px' : undefined}
+            mobileLeft={isRtl ? '5px' : undefined}
             opened={dropdownOpened}
             onClickOutside={this.toggleDropdown}
             content={
@@ -199,7 +212,7 @@ class LanguageSelector extends PureComponent<Props, State> {
 }
 
 const Data = adopt<DataProps, InputProps>({
-  tenant: <GetTenant />,
+  tenant: <GetAppConfiguration />,
   authUser: <GetAuthUser />,
   locale: <GetLocale />,
 });

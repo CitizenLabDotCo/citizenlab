@@ -2,10 +2,11 @@ import React, { memo, Suspense, lazy } from 'react';
 
 // components
 import LoadingComments from './Comments/LoadingComments';
+const LazyComments = lazy(() => import('./Comments'));
 
 // styling
 import styled from 'styled-components';
-import { media, colors } from 'utils/styleUtils';
+import { media } from 'utils/styleUtils';
 import {
   columnsGapDesktop,
   rightColumnWidthDesktop,
@@ -17,9 +18,6 @@ import {
 const Container = styled.div`
   flex: 1 1 auto;
   width: 100%;
-  margin-top: 50px;
-  background: ${colors.background};
-  border-top: 1px solid ${colors.adminSeparation};
 `;
 
 const Content = styled.div`
@@ -58,11 +56,9 @@ interface Props {
   postType: 'idea' | 'initiative';
 }
 
-const LazyComments = lazy(() => import('./Comments'));
-
 const Footer = memo<Props>(({ postId, postType, className }) => {
   return (
-    <Container className={className}>
+    <Container className={className || ''}>
       <Content>
         <ContentInner>
           <Suspense fallback={<LoadingComments />}>

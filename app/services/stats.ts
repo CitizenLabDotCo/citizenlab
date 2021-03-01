@@ -4,13 +4,31 @@ import { Multiloc } from 'typings';
 
 const apiEndpoint = `${API_PATH}/stats`;
 
-export type IResourceByTime = IIdeasByTime | IUsersByTime | ICommentsByTime;
+export type IResourceByTime =
+  | IIdeasByTime
+  | IUsersByTime
+  | ICommentsByTime
+  | IVotesByTime;
 
 // Ideas
 export interface IIdeasByTime {
   series: {
     ideas: {
       [key: string]: number;
+    };
+  };
+}
+export interface IIdeasByStatus {
+  series: {
+    ideas: {
+      [key: string]: number;
+    };
+  };
+  idea_status: {
+    [key: string]: {
+      title_multiloc: Multiloc;
+      color: string;
+      ordering: number;
     };
   };
 }
@@ -49,12 +67,24 @@ export interface ICount {
   count: number;
 }
 
+export function ideasByStatusStream(streamParams: IStreamParams | null = null) {
+  return streams.get<IIdeasByStatus>({
+    apiEndpoint: `${apiEndpoint}/ideas_by_status`,
+    ...streamParams,
+  });
+}
+export const ideasByStatusXlsxEndpoint = `${apiEndpoint}/ideas_by_status_as_xlsx`;
+
+export const ideasByTimeXlsxEndpoint = `${apiEndpoint}/ideas_by_time_as_xlsx`;
+
 export function ideasByTimeStream(streamParams: IStreamParams | null = null) {
   return streams.get<IIdeasByTime>({
     apiEndpoint: `${apiEndpoint}/ideas_by_time`,
     ...streamParams,
   });
 }
+
+export const ideasByTimeCumulativeXlsxEndpoint = `${apiEndpoint}/ideas_by_time_cumulative_as_xlsx`;
 
 export function ideasByTimeCumulativeStream(
   streamParams: IStreamParams | null = null
@@ -65,12 +95,16 @@ export function ideasByTimeCumulativeStream(
   });
 }
 
+export const ideasByTopicXlsxEndpoint = `${apiEndpoint}/ideas_by_topic_as_xlsx`;
+
 export function ideasByTopicStream(streamParams: IStreamParams | null = null) {
   return streams.get<IIdeasByTopic>({
     apiEndpoint: `${apiEndpoint}/ideas_by_topic`,
     ...streamParams,
   });
 }
+
+export const ideasByProjectXlsxEndpoint = `${apiEndpoint}/ideas_by_project_as_xlsx`;
 
 export function ideasByProjectStream(
   streamParams: IStreamParams | null = null
@@ -169,6 +203,8 @@ export interface IUserEngagementScore {
   };
 }
 
+export const usersByGenderXlsxEndpoint = `${apiEndpoint}/users_by_gender_as_xlsx`;
+
 export function usersByGenderStream(streamParams: IStreamParams | null = null) {
   return streams.get<IUsersByGender>({
     apiEndpoint: `${apiEndpoint}/users_by_gender`,
@@ -176,12 +212,16 @@ export function usersByGenderStream(streamParams: IStreamParams | null = null) {
   });
 }
 
+export const userXlsxEndpoint = `${apiEndpoint}/users_count_as_xlsx`;
+
 export function usersCount(streamParams: IStreamParams | null = null) {
   return streams.get<IUsersCount>({
     apiEndpoint: `${apiEndpoint}/users_count`,
     ...streamParams,
   });
 }
+
+export const usersByBirthyearXlsxEndpoint = `${apiEndpoint}/users_by_birthyear_as_xlsx`;
 
 export function usersByBirthyearStream(
   streamParams: IStreamParams | null = null
@@ -192,6 +232,8 @@ export function usersByBirthyearStream(
   });
 }
 
+export const usersByDomicileXlsxEndpoint = `${apiEndpoint}/users_by_domicile_as_xlsx`;
+
 export function usersByDomicileStream(
   streamParams: IStreamParams | null = null
 ) {
@@ -201,12 +243,25 @@ export function usersByDomicileStream(
   });
 }
 
+export const usersByTimeXlsxEndpoint = `${apiEndpoint}/users_by_time_as_xlsx`;
+
 export function usersByTimeStream(streamParams: IStreamParams | null = null) {
   return streams.get<IUsersByTime>({
     apiEndpoint: `${apiEndpoint}/users_by_time`,
     ...streamParams,
   });
 }
+
+export function commentsByTimeStream(
+  streamParams: IStreamParams | null = null
+) {
+  return streams.get<ICommentsByTime>({
+    apiEndpoint: `${apiEndpoint}/comments_by_time`,
+    ...streamParams,
+  });
+}
+
+export const usersByTimeCumulativeXlsxEndpoint = `${apiEndpoint}/users_by_time_cumulative_as_xlsx`;
 
 export function usersByTimeCumulativeStream(
   streamParams: IStreamParams | null = null
@@ -217,6 +272,8 @@ export function usersByTimeCumulativeStream(
   });
 }
 
+export const activeUsersByTimeXlsxEndpoint = `${apiEndpoint}/active_users_by_time_as_xlsx`;
+
 export function activeUsersByTimeStream(
   streamParams: IStreamParams | null = null
 ) {
@@ -226,6 +283,20 @@ export function activeUsersByTimeStream(
   });
 }
 
+export const activeUsersByTimeCumulativeXlsxEndpoint = `${apiEndpoint}/active_users_by_time_cumulative_as_xlsx`;
+
+export function activeUsersByTimeCumulativeStream(
+  streamParams: IStreamParams | null = null
+) {
+  return streams.get<IUsersByTime>({
+    apiEndpoint: `${apiEndpoint}/active_users_by_time_cumulative`,
+    ...streamParams,
+  });
+}
+
+export const usersByRegFieldXlsxEndpoint = (customFieldId: string) =>
+  `${apiEndpoint}/users_by_custom_field_as_xlsx/${customFieldId}`;
+
 export function usersByRegFieldStream(
   streamParams: IStreamParams | null = null,
   customFieldId: string
@@ -233,6 +304,7 @@ export function usersByRegFieldStream(
   return streams.get<IUsersByRegistrationField>({
     apiEndpoint: `${apiEndpoint}/users_by_custom_field/${customFieldId}`,
     ...streamParams,
+    cacheStream: false,
   });
 }
 
@@ -280,6 +352,8 @@ export interface ICommentsByProject {
   };
 }
 
+export const commentsByTimeCumulativeXlsxEndpoint = `${apiEndpoint}/comments_by_time_cumulative_as_xlsx`;
+
 export function commentsByTimeCumulativeStream(
   streamParams: IStreamParams | null = null
 ) {
@@ -289,6 +363,8 @@ export function commentsByTimeCumulativeStream(
   });
 }
 
+export const commentsByTopicXlsxEndpoint = `${apiEndpoint}/comments_by_topic_as_xlsx`;
+
 export function commentsByTopicStream(
   streamParams: IStreamParams | null = null
 ) {
@@ -297,6 +373,8 @@ export function commentsByTopicStream(
     ...streamParams,
   });
 }
+
+export const commentsByProjectXlsxEndpoint = `${apiEndpoint}/comments_by_project_as_xlsx`;
 
 export function commentsByProjectStream(
   streamParams: IStreamParams | null = null
@@ -316,9 +394,9 @@ export function commentsCountForUser(userId: string) {
 // Votes
 export interface IVotesByTime {
   series: {
-    votes: {
-      [key: string]: number;
-    };
+    up: { [key: string]: number };
+    down: { [key: string]: number };
+    total: { [key: string]: number };
   };
 }
 
@@ -387,6 +465,8 @@ export interface IVotesByDomicile {
   };
 }
 
+export const votesByTimeCumulativeXlsxEndpoint = `${apiEndpoint}/votes_by_time_cumulative_as_xlsx`;
+
 export function votesByTimeCumulativeStream(
   streamParams: IStreamParams | null = null
 ) {
@@ -395,6 +475,16 @@ export function votesByTimeCumulativeStream(
     ...streamParams,
   });
 }
+export const votesByTimeXlsxEndpoint = `${apiEndpoint}/votes_by_time_as_xlsx`;
+
+export function votesByTimeStream(streamParams: IStreamParams | null = null) {
+  return streams.get<IVotesByTime>({
+    apiEndpoint: `${apiEndpoint}/votes_by_time`,
+    ...streamParams,
+  });
+}
+
+export const votesByTopicXlsxEndpoint = `${apiEndpoint}/votes_by_topic_as_xlsx`;
 
 export function votesByTopicStream(streamParams: IStreamParams | null = null) {
   return streams.get<IVotesByTopic>({
@@ -402,6 +492,8 @@ export function votesByTopicStream(streamParams: IStreamParams | null = null) {
     ...streamParams,
   });
 }
+
+export const votesByProjectXlsxEndpoint = `${apiEndpoint}/votes_by_project_as_xlsx`;
 
 export function votesByProjectStream(
   streamParams: IStreamParams | null = null
@@ -412,12 +504,16 @@ export function votesByProjectStream(
   });
 }
 
+export const votesByGenderXlsxEndpoint = `${apiEndpoint}/votes_by_gender_as_xlsx`;
+
 export function votesByGenderStream(streamParams: IStreamParams | null = null) {
   return streams.get<IVotesByGender>({
     apiEndpoint: `${apiEndpoint}/votes_by_gender`,
     ...streamParams,
   });
 }
+
+export const votesByBirthyearXlsxEndpoint = `${apiEndpoint}/votes_by_birthyear_as_xlsx`;
 
 export function votesByBirthyearStream(
   streamParams: IStreamParams | null = null
@@ -427,6 +523,8 @@ export function votesByBirthyearStream(
     ...streamParams,
   });
 }
+
+export const votesByDomicileXlsxEndpoint = `${apiEndpoint}/votes_by_domicile_as_xlsx`;
 
 export function votesByDomicileStream(
   streamParams: IStreamParams | null = null

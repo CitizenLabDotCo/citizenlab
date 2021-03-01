@@ -3,18 +3,22 @@ import { InjectedIntlProps } from 'react-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
 import GetAreas, { GetAreasChildProps } from 'resources/GetAreas';
-import { deleteArea } from 'services/areas';
+import { reorderArea, IAreaData, deleteArea } from 'services/areas';
 
 import messages from '../messages';
 import T from 'components/T';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 
 import {
+  SortableList,
+  SortableRow,
+  TextCell,
+} from 'components/admin/ResourceList';
+import {
   Section,
   SectionDescription,
   SectionTitle,
 } from 'components/admin/Section';
-import { List, Row, TextCell } from 'components/admin/ResourceList';
 import Button from 'components/UI/Button';
 import { ButtonWrapper } from 'components/admin/PageWrapper';
 import AreaTermConfig from './AreaTermConfig';
@@ -57,6 +61,10 @@ class AreaList extends React.PureComponent<Props & InjectedIntlProps, State> {
     }
   };
 
+  handleReorderArea = (areaId: string, newOrder: number) => {
+    reorderArea(areaId, newOrder);
+  };
+
   render() {
     const { terminologyOpened } = this.state;
     const {
@@ -93,29 +101,48 @@ class AreaList extends React.PureComponent<Props & InjectedIntlProps, State> {
             <FormattedMessage {...messages.addAreaButton} />
           </Button>
         </ButtonWrapper>
-        <List>
-          {areas.map((area, index) => (
-            <Row key={area.id} isLastItem={index === areas.length - 1}>
-              <TextCell className="expand">
-                <T value={area.attributes.title_multiloc} />
-              </TextCell>
-              <Button
-                onClick={this.handleDeleteClick(area.id)}
-                buttonStyle="text"
-                icon="delete"
-              >
-                <FormattedMessage {...messages.deleteButtonLabel} />
-              </Button>
-              <Button
-                linkTo={`/admin/settings/areas/${area.id}`}
-                buttonStyle="secondary"
-                icon="edit"
-              >
-                <FormattedMessage {...messages.editButtonLabel} />
-              </Button>
-            </Row>
-          ))}
-        </List>
+        <SortableList
+          items={areas}
+          onReorder={this.handleReorderArea}
+          className="areas-list e2e-admin-areas-list"
+          id="e2e-admin-areas-list"
+          key={areas.length}
+        >
+          {({ itemsList, handleDragRow, handleDropRow }) => (
+            <>
+              {itemsList.map((item: IAreaData, index: number) => {
+                return (
+                  <SortableRow
+                    key={item.id}
+                    id={item.id}
+                    index={index}
+                    moveRow={handleDragRow}
+                    dropRow={handleDropRow}
+                    lastItem={index === areas.length - 1}
+                  >
+                    <TextCell className="expand">
+                      <T value={item.attributes.title_multiloc} />
+                    </TextCell>
+                    <Button
+                      onClick={this.handleDeleteClick(item.id)}
+                      buttonStyle="text"
+                      icon="delete"
+                    >
+                      <FormattedMessage {...messages.deleteButtonLabel} />
+                    </Button>
+                    <Button
+                      linkTo={`/admin/settings/areas/${item.id}`}
+                      buttonStyle="secondary"
+                      icon="edit"
+                    >
+                      <FormattedMessage {...messages.editButtonLabel} />
+                    </Button>
+                  </SortableRow>
+                );
+              })}
+            </>
+          )}
+        </SortableList>
       </Section>
     );
   }

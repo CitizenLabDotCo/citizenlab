@@ -1,12 +1,11 @@
-import React, { PureComponent } from 'react';
-import { Subscription } from 'rxjs';
+import React, { memo, useState, useEffect } from 'react';
 import { withRouter, WithRouterProps } from 'react-router';
-import {
-  globalState,
-  IAdminFullWidth,
-  IAdminNoPadding,
-  IGlobalStateService,
-} from 'services/globalState';
+import { globalState } from 'services/globalState';
+
+// permissions
+import useAuthUser from 'hooks/useAuthUser';
+import { hasPermission } from 'services/permissions';
+import HasPermission from 'components/HasPermission';
 
 // components
 import Sidebar from './sideBar/';
@@ -14,6 +13,7 @@ import styled from 'styled-components';
 import { colors, media } from 'utils/styleUtils';
 
 // utils
+import clHistory from 'utils/cl-router/history';
 import { endsWith } from 'utils/helperUtils';
 
 // stlying
@@ -55,10 +55,11 @@ const RightColumn = styled.div`
   flex-grow: 1;
   flex-shrink: 1;
   flex-basis: 0;
+  margin: auto;
   display: flex;
   flex-direction: column;
-  max-width: 1200px;
-  min-height: calc(100vh - ${(props) => props.theme.menuHeight}px - 1px);
+  max-width: 1400px;
+  min-height: calc(100vh - ${(props) => props.theme.menuHeight}px);
   padding-top: 45px;
   padding-right: 51px;
   padding-bottom: 0px;
@@ -85,73 +86,82 @@ const RightColumn = styled.div`
 
 type Props = {
   className?: string;
+  children: React.ReactNode;
 };
 
-type State = {
-  adminFullWidth: boolean;
-  adminNoPadding: boolean;
-};
+const AdminPage = memo<Props & WithRouterProps>(
+  ({ className, children, location: { pathname } }) => {
+    const authUser = useAuthUser();
 
-class AdminPage extends PureComponent<Props & WithRouterProps, State> {
-  FullWidth: IGlobalStateService<IAdminFullWidth>;
-  NoPadding: IGlobalStateService<IAdminNoPadding>;
-  subscriptions: Subscription[];
+    const [adminFullWidth, setAdminFullWidth] = useState(false);
+    const [adminNoPadding, setAdminNoPadding] = useState(false);
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      adminFullWidth: false,
-      adminNoPadding: false,
-    };
-    this.FullWidth = globalState.init('AdminFullWidth', { enabled: false });
-    this.NoPadding = globalState.init('AdminNoPadding', { enabled: false });
-  }
+    useEffect(() => {
+      const subscriptions = [
+        globalState
+          .init('AdminFullWidth', { enabled: false })
+          .observable.subscribe(({ enabled }) => setAdminFullWidth(enabled)),
+        globalState
+          .init('AdminNoPadding', { enabled: false })
+          .observable.subscribe(({ enabled }) => setAdminNoPadding(enabled)),
+      ];
+      return () => {
+        subscriptions.forEach((subscription) => subscription.unsubscribe());
+      };
+    }, []);
 
-  componentDidMount() {
-    const FullWidth$ = this.FullWidth.observable;
-    const NoPadding$ = this.NoPadding.observable;
+    const userCanViewAdmin = () =>
+      hasPermission({
+        action: 'access',
+        item: { type: 'route', path: '/admin' },
+      });
 
-    this.subscriptions = [
-      FullWidth$.subscribe(({ enabled }) =>
-        this.setState({ adminFullWidth: enabled })
-      ),
-      NoPadding$.subscribe(({ enabled }) =>
-        this.setState({ adminNoPadding: enabled })
-      ),
-    ];
-  }
+    useEffect(() => {
+      if (
+        authUser === null ||
+        (authUser !== undefined && !userCanViewAdmin())
+      ) {
+        clHistory.push('/');
+      }
+    }, [authUser]);
 
-  componentWillUnmount() {
-    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
-  }
+    if (!userCanViewAdmin()) {
+      return null;
+    }
 
-  render() {
-    const {
-      children,
-      className,
-      location: { pathname },
-    } = this.props;
-    const { adminNoPadding } = this.state;
-    const adminFullWidth =
-      this.state.adminFullWidth === true ||
-      endsWith(pathname, 'admin/moderation');
-    const adminWhiteBg = endsWith(pathname, 'admin/moderation');
+    const noPadding =
+      adminNoPadding ||
+      pathname.includes('admin/dashboard') ||
+      pathname.includes('admin/processing');
+
+    const fullWidth =
+      adminFullWidth === true ||
+      endsWith(pathname, 'admin/moderation') ||
+      pathname.includes('admin/dashboard') ||
+      pathname.includes('admin/processing');
+    const whiteBg =
+      endsWith(pathname, 'admin/moderation') ||
+      pathname.includes('admin/dashboard') ||
+      pathname.includes('admin/processing');
 
     return (
-      <>
-        <Container className={`${className} ${adminWhiteBg ? 'whiteBg' : ''}`}>
+      <HasPermission
+        item={{ type: 'route', path: '/admin/dashboard' }}
+        action="access"
+      >
+        <Container className={`${className} ${whiteBg ? 'whiteBg' : ''}`}>
           <Sidebar />
           <RightColumn
-            className={`${adminFullWidth && 'fullWidth'} ${
-              adminNoPadding && 'noPadding'
+            className={`${fullWidth && 'fullWidth'} ${
+              noPadding && 'noPadding'
             }`}
           >
             {children}
           </RightColumn>
         </Container>
-      </>
+      </HasPermission>
     );
   }
-}
+);
 
 export default withRouter<Props>(AdminPage);
