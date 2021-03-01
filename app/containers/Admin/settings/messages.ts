@@ -244,4 +244,8 @@ export default defineMessages({
     defaultMessage:
       'This is shown on the top of the second page of the sign-up form (additional registration fields)',
   },
+  fields: {
+    id: 'app.containers.AdminPage.SettingsPage.fields',
+    defaultMessage: 'Fields',
+  },
 });

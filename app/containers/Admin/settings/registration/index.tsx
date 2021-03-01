@@ -44,7 +44,6 @@ const SettingsRegistrationTab = (_props: Props) => {
   const [isFormSubmitting, setIsFormSubmitting] = useState(false);
   const [isFormSaved, setIsFormSaved] = useState(false);
   const [errors, setErrors] = useState<{ [fieldName: string]: CLError[] }>({});
-
   const [attributesDiff, setAttributesDiff] = useState<
     IUpdatedAppConfigurationProperties
   >({});
@@ -105,12 +104,6 @@ const SettingsRegistrationTab = (_props: Props) => {
           <SectionDescription>
             <FormattedMessage {...messages.signupFormTooltip} />
           </SectionDescription>
-          {/* <SubSectionTitle>
-          <FormattedMessage {...messages.signupFormText} />
-          <IconTooltip
-            content={<FormattedMessage {...messages.signupFormTooltip} />}
-          />
-        </SubSectionTitle> */}
           <form onSubmit={handleSubmit}>
             <SectionField>
               <InputMultilocWithLocaleSwitcher
@@ -171,8 +164,7 @@ const SettingsRegistrationTab = (_props: Props) => {
         </SignUpFieldsSection>
         <Section>
           <SectionTitle>
-            Fields
-            {/* <FormattedMessage {...messages.signupFormText} /> */}
+            <FormattedMessage {...messages.fields} />
           </SectionTitle>
           <SectionDescription>
             <FormattedMessage {...messages.subtitleRegistration} />
