@@ -35,7 +35,7 @@ const Container = styled.div`
 `;
 
 const StyledAuthProviderButton = styled(AuthProviderButton)`
-  margin-bottom: 20px;
+  margin-bottom: 18px;
 `;
 
 interface InputProps {
