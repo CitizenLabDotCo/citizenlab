@@ -9,6 +9,7 @@ Gem::Specification.new do |s|
   s.version     = Surveys::VERSION
   s.authors     = ["Koen Gremmelprez"]
   s.email       = ["koen@citizenlab.co"]
+  s.licenses    = ['AGPLv3']
   s.summary     = "Contains everything to support surveys as a participation method"
 
   s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]

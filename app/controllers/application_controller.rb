@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::API
   include Knock::Authenticable
   include Pundit
+  include Finder::Pundit
 
   before_action :authenticate_user, if: :secure_controller?
   after_action :verify_authorized, except: :index

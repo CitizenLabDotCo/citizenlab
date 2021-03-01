@@ -158,6 +158,8 @@ RSpec.configure do |config|
   config.after(:each) do
     # Reset tentant back to `public`
     Apartment::Tenant.reset
+  rescue ActiveRecord::StatementInvalid
+  else
     # Rollback transaction
     DatabaseCleaner.clean
   end

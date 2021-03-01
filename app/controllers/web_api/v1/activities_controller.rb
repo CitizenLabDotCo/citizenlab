@@ -3,26 +3,24 @@ class WebApi::V1::ActivitiesController < ApplicationController
   skip_after_action :verify_policy_scoped
 
   def index
-    @activities = policy_scope(Activity).where(
-      item_id: @post_id,
-      item_type: @post_type,
-      action: ['published', 'changed_status', 'changed_title', 'changed_body']
-    )
-      .includes(:user)
-      .order(acted_at: :desc)
-      .page(params.dig(:page, :number))
-      .per(params.dig(:page, :size))
+    @activities = ActivitiesFinder.find(finder_params, includes: :user, authorize_with: current_user).records
 
     render json: linked_json(
-      @activities, 
-      WebApi::V1::ActivitySerializer, 
+      @activities,
+      WebApi::V1::ActivitySerializer,
       params: fastjson_params,
       include: [:user]
-      )
+    )
   end
 
-
   private
+
+  def finder_params
+    params.merge(
+      post: { id: @post_id, type: @post_type },
+      action: %w[published changed_status changed_title changed_body]
+    )
+  end
 
   def set_post_type_and_id
     @post_type = params[:post]
