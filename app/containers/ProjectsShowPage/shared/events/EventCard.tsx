@@ -35,9 +35,8 @@ import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 const Container = styled.div`
   width: 100%;
-  padding: 23px;
+  padding: 17px;
   display: flex;
-  flex-direction: row;
   ${defaultCardStyle};
   box-shadow: none;
   border: solid 1px #ccc;
@@ -48,8 +47,8 @@ const Container = styled.div`
 `;
 
 const EventDateBlocks = styled.div`
-  flex: 0 0 80px;
-  width: 80px;
+  flex: 0 0 75px;
+  width: 75px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -57,9 +56,9 @@ const EventDateBlocks = styled.div`
 
   ${media.smallerThanMinTablet`
     flex: 1;
-    width: auto;
+    width: 100%;
     flex-direction: row;
-    margin-bottom: 20px;
+    margin-bottom: 18px;
   `}
 `;
 
@@ -73,8 +72,8 @@ const Separator = styled.div`
 `;
 
 const EventDateBlockWrapper = styled.div`
-  flex: 0 0 80px;
-  width: 80px;
+  flex: 0 0 75px;
+  width: 75px;
   display: flex;
   flex-direction: column;
   justify-content: stretch;
@@ -84,8 +83,6 @@ const EventDateBlockWrapper = styled.div`
   }
 
   ${media.smallerThanMinTablet`
-    flex: 1;
-    width: auto;
     margin: 0;
 
     &.second {
@@ -105,16 +102,11 @@ const EventDateBlockLabel = styled.div`
 `;
 
 const EventDateBlock = styled.div`
-  flex: 0 0 80px;
-  width: 80px;
+  flex: 0 0 75px;
+  width: 75px;
   display: flex;
   flex-direction: column;
   justify-content: stretch;
-
-  ${media.smallerThanMinTablet`
-    flex: 1;
-    width: auto;
-  `}
 `;
 
 const EventDate = styled.div`
@@ -122,13 +114,13 @@ const EventDate = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: stretch;
-  padding-top: 9px;
-  padding-bottom: 9px;
+  padding-top: 6px;
+  padding-bottom: 6px;
   border-radius: ${(props: any) => props.theme.borderRadius};
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
-  background: #f4f4f4;
-  border: solid 1px ${colors.label};
+  background: #f5f6f7;
+  border: solid 1px #ccc;
   border-bottom: none;
 `;
 
@@ -155,7 +147,7 @@ const EventYear = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 7px;
+  padding: 6px;
   border-radius: ${(props: any) => props.theme.borderRadius};
   border-top-left-radius: 0;
   border-top-right-radius: 0;
@@ -166,37 +158,29 @@ const EventInformation = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
-  margin-left: 30px;
+  margin-left: 20px;
 
   ${media.smallerThanMinTablet`
-    border: none;
     margin: 0px;
   `}
 `;
 
+const EventMetaAndTitle = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  margin-bottom: 20px;
+`;
+
 const EventMeta = styled.div`
+  color: ${colors.label};
+  font-size: ${fontSizes.base}px;
+  font-weight: 400;
+  line-height: normal;
   display: flex;
   flex-direction: column;
   align-items: stretch;
   margin-bottom: 5px;
-`;
-
-const EventMetaItem = styled.div`
-  display: flex;
-  align-items: center;
-
-  &.hasTopMargin {
-    margin-top: 10px;
-  }
-`;
-
-const EventMetaItemText = styled.div`
-  color: ${(props: any) => props.theme.colorText};
-  font-size: ${fontSizes.base}px;
-  font-weight: 300;
-  line-height: normal;
-  display: flex;
-  flex-direction: column;
 `;
 
 const EventTitle = styled.h3`
@@ -206,7 +190,6 @@ const EventTitle = styled.h3`
   line-height: normal;
   padding: 0;
   margin: 0;
-  margin-bottom: 20px;
 `;
 
 const EventDescription = styled.div``;
@@ -341,15 +324,13 @@ const EventCard = memo<Props>(({ event, className }) => {
         </EventDateBlocks>
 
         <EventInformation>
-          <EventMeta>
-            <EventMetaItem>
-              <EventMetaItemText>{eventDateTime}</EventMetaItemText>
-            </EventMetaItem>
-          </EventMeta>
+          <EventMetaAndTitle>
+            <EventMeta>{eventDateTime}</EventMeta>
 
-          <EventTitle>
-            <T value={event.attributes.title_multiloc} />
-          </EventTitle>
+            <EventTitle>
+              <T value={event.attributes.title_multiloc} />
+            </EventTitle>
+          </EventMetaAndTitle>
 
           {smallerThanLargeTablet && hasLocation && (
             <EventLocation>
