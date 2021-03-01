@@ -224,7 +224,7 @@ export default defineMessages({
   },
   signupFormTooltip: {
     id: 'app.containers.AdminPage.SettingsPage.signupFormTooltip',
-    defaultMessage: 'Add a short description at the top of the sign-up form',
+    defaultMessage: 'Add a short description at the top of the sign-up form.',
   },
   firstPage: {
     id: 'app.containers.AdminPage.SettingsPage.firstPage',
