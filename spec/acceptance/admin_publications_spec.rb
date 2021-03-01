@@ -183,6 +183,7 @@ resource "AdminPublication" do
 
       example "Listed admin publications have correct visible children count", document: false do
         do_request(folder: nil)
+        expect(status).to eq(200)
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 3
         expect(json_response[:data].map{|d| d.dig(:relationships, :publication, :data, :type)}.count('folder')).to eq 1
@@ -193,11 +194,21 @@ resource "AdminPublication" do
       example "Visible children count should take account with applied filters", document: false do
         @projects.first.admin_publication.update! publication_status: 'archived'
         do_request(folder: nil, publication_statuses: ['published'])
+        expect(status).to eq(200)
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 2
         expect(json_response[:data].map{|d| d.dig(:relationships, :publication, :data, :type)}.count('folder')).to eq 1
         expect(json_response[:data].map{|d| d.dig(:relationships, :publication, :data, :type)}.count('project')).to eq 1
         expect(json_response[:data].select{|d| d.dig(:relationships, :publication, :data, :type) == 'folder'}.first.dig(:attributes, :visible_children_count)).to eq 1
+      end
+
+      example "Returns an empty list success response when there are no projects or folders", document: false do
+        Project.all.each(&:destroy!)
+        ProjectFolders::Folder.all.each(&:destroy!)
+        do_request(folder: nil, publication_statuses: ['published'])
+        expect(status).to eq(200)
+        json_response = json_parse(response_body)
+        expect(json_response[:data].size).to eq 0
       end
     end
   end
