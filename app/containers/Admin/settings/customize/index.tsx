@@ -646,9 +646,9 @@ class SettingsCustomizeTab extends PureComponent<
 
           <Section key={'project_header'}>
             <SubSectionTitle>
-              <FormattedMessage {...messages.project_header} />
+              <FormattedMessage {...messages.projects_header} />
               <IconTooltip
-                content={formatMessage(messages.project_header_tooltip)}
+                content={formatMessage(messages.projects_header_tooltip)}
               />
             </SubSectionTitle>
             <SectionField>

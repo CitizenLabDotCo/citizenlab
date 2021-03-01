@@ -210,12 +210,12 @@ export default defineMessages({
     id: 'app.components.AdminPage.SettingsPage.bannerHeaderSignedIn',
     defaultMessage: 'Banner header for signed-in users',
   },
-  project_header: {
-    id: 'app.containers.AdminPage.SettingsPage.project_header',
-    defaultMessage: 'Project header',
+  projects_header: {
+    id: 'app.containers.AdminPage.SettingsPage.projects_header',
+    defaultMessage: 'Projects header',
   },
-  project_header_tooltip: {
-    id: 'app.containers.AdminPage.SettingsPage.project_header_tooltip',
+  projects_header_tooltip: {
+    id: 'app.containers.AdminPage.SettingsPage.project_headers_tooltip',
     defaultMessage: 'This text is shown on the homepage above the projects.',
   },
   signupFormText: {
