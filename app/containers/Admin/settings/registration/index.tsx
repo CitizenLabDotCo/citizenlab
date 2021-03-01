@@ -61,31 +61,23 @@ const SettingsRegistrationTab = (_props: Props) => {
     });
   };
 
-  const validateForm = () => {
-    return true;
-  };
-
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    setIsFormSubmitting(true);
     event.preventDefault();
 
-    if (validateForm()) {
-      setIsFormSubmitting(true);
-      setIsFormSaved(false);
+    setIsFormSubmitting(true);
+    setIsFormSaved(false);
 
-      try {
-        await updateAppConfiguration(
-          attributesDiff as IUpdatedAppConfigurationProperties
-        );
+    try {
+      await updateAppConfiguration(
+        attributesDiff as IUpdatedAppConfigurationProperties
+      );
 
-        setIsFormSubmitting(false);
-        setIsFormSaved(true);
-        setAttributesDiff({});
-      } catch (error) {
-        setIsFormSubmitting(true);
-        setIsFormSaved(false);
-        setErrors(isCLErrorJSON(error) ? error.json.errors : error);
-      }
+      setIsFormSubmitting(false);
+      setIsFormSaved(true);
+      setAttributesDiff({});
+    } catch (error) {
+      setIsFormSubmitting(false);
+      setErrors(isCLErrorJSON(error) ? error.json.errors : error);
     }
   };
 
