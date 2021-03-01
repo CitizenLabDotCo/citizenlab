@@ -2,6 +2,11 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import getSubmitState from 'utils/getSubmitState';
 import { isCLErrorJSON } from 'utils/errorUtils';
+import { CLError, Multiloc } from 'typings';
+import { isNilOrError } from 'utils/helperUtils';
+
+// hooks
+import useAppConfiguration from 'hooks/useAppConfiguration';
 
 import {
   IUpdatedAppConfigurationProperties,
@@ -40,11 +45,27 @@ interface IAttributesDiff {
 }
 
 const SettingsRegistrationTab = (_props: Props) => {
+  const appConfig = useAppConfiguration();
   const [isFormSubmitting, setIsFormSubmitting] = useState(false);
   const [isFormSaved, setIsFormSaved] = useState(false);
-  const [attributesDiff, setAttributesDiff] = useState<IAttributesDiff>({});
+  const [errors, setErrors] = useState<{ [fieldName: string]: CLError[] }>({});
 
-  const handleProjectHeaderOnChange = () => {};
+  const [attributesDiff, setAttributesDiff] = useState<
+    IUpdatedAppConfigurationProperties
+  >({});
+
+  const handlePageOnChange = (propertyName: string) => (multiloc: Multiloc) => {
+    setAttributesDiff({
+      ...attributesDiff,
+      settings: {
+        ...(attributesDiff.settings || {}),
+        core: {
+          ...(attributesDiff.settings?.core || {}),
+          [propertyName]: multiloc,
+        },
+      },
+    });
+  };
 
   const validateForm = () => {
     return true;
@@ -69,88 +90,105 @@ const SettingsRegistrationTab = (_props: Props) => {
       } catch (error) {
         setIsFormSubmitting(true);
         setIsFormSaved(false);
-        // setErrors(isCLErrorJSON(error) ? error.json.errors : error);
+        setErrors(isCLErrorJSON(error) ? error.json.errors : error);
       }
     }
   };
-  return (
-    <>
-      <SignUpFieldsSection key={'signup_fields'}>
-        <SectionTitle>
+
+  if (!isNilOrError(appConfig)) {
+    const latestAppConfigCoreSettings = {
+      ...appConfig.data.attributes,
+      ...attributesDiff,
+    }.settings.core;
+
+    return (
+      <>
+        <SignUpFieldsSection key={'signup_fields'}>
+          <SectionTitle>
+            <FormattedMessage {...messages.signupFormText} />
+          </SectionTitle>
+          <SectionDescription>
+            <FormattedMessage {...messages.signupFormTooltip} />
+          </SectionDescription>
+          {/* <SubSectionTitle>
           <FormattedMessage {...messages.signupFormText} />
-        </SectionTitle>
-        <SectionDescription>
-          <FormattedMessage {...messages.signupFormTooltip} />
-        </SectionDescription>
-        {/* <SubSectionTitle>
-        <FormattedMessage {...messages.signupFormText} />
-        <IconTooltip
-          content={<FormattedMessage {...messages.signupFormTooltip} />}
-        />
-      </SubSectionTitle> */}
-        <form onSubmit={handleSubmit}>
-          <SectionField>
-            <InputMultilocWithLocaleSwitcher
-              type="text"
-              valueMultiloc={{}}
-              onChange={handleProjectHeaderOnChange}
-              label={
-                <LabelTooltip>
-                  <FormattedMessage {...messages.firstPage} />
-                  <IconTooltip
-                    content={
-                      <FormattedMessage {...messages.firstPageTooltip} />
-                    }
-                  />
-                </LabelTooltip>
-              }
-            />
-          </SectionField>
-          <SectionField>
-            <InputMultilocWithLocaleSwitcher
-              type="text"
-              valueMultiloc={{}}
-              onChange={handleProjectHeaderOnChange}
-              label={
-                <LabelTooltip>
-                  <FormattedMessage {...messages.secondPage} />
-                  <IconTooltip
-                    content={
-                      <FormattedMessage {...messages.secondPageTooltip} />
-                    }
-                  />
-                </LabelTooltip>
-              }
-            />
-          </SectionField>
-          <SubmitWrapper
-            loading={isFormSubmitting}
-            status={getSubmitState({
-              saved: isFormSaved,
-              errors: null,
-              diff: attributesDiff,
-            })}
-            messages={{
-              buttonSave: messages.save,
-              buttonSuccess: messages.saveSuccess,
-              messageError: messages.saveErrorMessage,
-              messageSuccess: messages.saveSuccessMessage,
-            }}
+          <IconTooltip
+            content={<FormattedMessage {...messages.signupFormTooltip} />}
           />
-        </form>
-      </SignUpFieldsSection>
-      <Section>
-        <SectionTitle>
-          Fields
-          {/* <FormattedMessage {...messages.signupFormText} /> */}
-        </SectionTitle>
-        <SectionDescription>
-          <FormattedMessage {...messages.subtitleRegistration} />
-        </SectionDescription>
-        <AllCustomFields />
-      </Section>
-    </>
-  );
+        </SubSectionTitle> */}
+          <form onSubmit={handleSubmit}>
+            <SectionField>
+              <InputMultilocWithLocaleSwitcher
+                type="text"
+                valueMultiloc={
+                  latestAppConfigCoreSettings?.signup_helper_text || null
+                }
+                onChange={handlePageOnChange('signup_helper_text')}
+                label={
+                  <LabelTooltip>
+                    <FormattedMessage {...messages.firstPage} />
+                    <IconTooltip
+                      content={
+                        <FormattedMessage {...messages.firstPageTooltip} />
+                      }
+                    />
+                  </LabelTooltip>
+                }
+              />
+            </SectionField>
+            <SectionField>
+              <InputMultilocWithLocaleSwitcher
+                type="text"
+                valueMultiloc={
+                  latestAppConfigCoreSettings?.custom_fields_signup_helper_text ||
+                  null
+                }
+                onChange={handlePageOnChange(
+                  'custom_fields_signup_helper_text'
+                )}
+                label={
+                  <LabelTooltip>
+                    <FormattedMessage {...messages.secondPage} />
+                    <IconTooltip
+                      content={
+                        <FormattedMessage {...messages.secondPageTooltip} />
+                      }
+                    />
+                  </LabelTooltip>
+                }
+              />
+            </SectionField>
+            <SubmitWrapper
+              loading={isFormSubmitting}
+              status={getSubmitState({
+                errors,
+                saved: isFormSaved,
+                diff: attributesDiff,
+              })}
+              messages={{
+                buttonSave: messages.save,
+                buttonSuccess: messages.saveSuccess,
+                messageError: messages.saveErrorMessage,
+                messageSuccess: messages.saveSuccessMessage,
+              }}
+            />
+          </form>
+        </SignUpFieldsSection>
+        <Section>
+          <SectionTitle>
+            Fields
+            {/* <FormattedMessage {...messages.signupFormText} /> */}
+          </SectionTitle>
+          <SectionDescription>
+            <FormattedMessage {...messages.subtitleRegistration} />
+          </SectionDescription>
+          <AllCustomFields />
+        </Section>
+      </>
+    );
+  }
+
+  return null;
 };
 
 export default SettingsRegistrationTab;
