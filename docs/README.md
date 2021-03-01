@@ -2,18 +2,20 @@
 
 ## Next release
 
-### Fixed
+### Added
+- In the admin (Settings > Registration tab), admins can now directly set the helper texts on top of the forms (both for step 1 and 2). 
+- The admin Settings > Homepage and style tab has two new fields: one to allow customization for copy of the banner signed-in user see (on the landing page) and one to set the text that's shown underneath this banner and above the projects/folders (also on the landing page). 
 
+### Fixed
 - Don't show empty space inside of the idea card when no avatar is present
 
 ### Changed
-
 - Improved layout of project event listings on mobile devices
+- The admin Settings > Homepage and style tab has undergone copy improvements and has been rearranged 
 
 ## 2021-02-26
 
 ### Fixed
-
 - France Connect button hover state now complies with the vendor's guidelines.
 
 ## 2021-02-24
