@@ -121,7 +121,7 @@ export default defineMessages({
   },
   bannerHeaderSignedOutTooltip: {
     id: 'app.containers.AdminPage.SettingsPage.bannerHeaderSignedOutTooltip',
-    defaultMessage: 'This text is shown on the banner image',
+    defaultMessage: 'This text is shown on the banner image.',
   },
   titleMaxCharError: {
     id: 'app.containers.AdminPage.SettingsPage.titleMaxCharError',
