@@ -11,7 +11,6 @@ import useAppConfiguration from 'hooks/useAppConfiguration';
 import {
   IUpdatedAppConfigurationProperties,
   updateAppConfiguration,
-  IAppConfigurationSettings,
 } from 'services/appConfiguration';
 
 // components
@@ -39,10 +38,6 @@ const SignUpFieldsSection = styled.div`
 `;
 
 interface Props {}
-
-interface IAttributesDiff {
-  settings?: Partial<IAppConfigurationSettings>;
-}
 
 const SettingsRegistrationTab = (_props: Props) => {
   const appConfig = useAppConfiguration();
