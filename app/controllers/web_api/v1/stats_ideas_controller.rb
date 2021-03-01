@@ -14,10 +14,10 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
 
   def ideas_count
     ideas = StatIdeaPolicy::Scope.new(current_user, Idea.published).resolve
-      .where(published_at: @start_at..@end_at)
-    ideas = PostsFilteringService.new.apply_common_idea_index_filters ideas, params
+                                 .where(published_at: @start_at..@end_at)
+    @result = IdeasFinder.find(params, scope: ideas, authorize_with: current_user)
 
-    render json: { count: ideas.count }
+    render json: { count: @result.count }
   end
 
   def ideas_by_topic_serie

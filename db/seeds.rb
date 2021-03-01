@@ -669,7 +669,6 @@ if Apartment::Tenant.current == 'localhost'
         location_description: rand(2) == 0 ? nil : Faker::Address.street_address,
         budget: rand(3) == 0 ? nil : (rand(10 ** (rand(3) + 2)) + 50).round(-1),
         proposed_budget: rand(3) == 0 ? nil : (rand(10 ** (rand(3) + 2)) + 50).round(-1),
-        assignee: rand(5) == 0 ? rand_instance(User.admin.or(User.project_moderator(project.id))) : nil
       })
 
       [0,0,1,1,2][rand(5)].times do |i|

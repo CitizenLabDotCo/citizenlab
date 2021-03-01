@@ -24,7 +24,6 @@ resource "Ideas" do
     parameter :projects, 'Filter by projects (OR)', required: false
     parameter :phase, 'Filter by project phase', required: false
     parameter :author, 'Filter by author (user id)', required: false
-    parameter :assignee, 'Filter by assignee (user id)', required: false
     parameter :idea_status, 'Filter by status (idea status id)', required: false
     parameter :search, 'Filter by searching in title and body', required: false
     parameter :sort, "Either 'new', '-new', 'trending', '-trending', 'popular', '-popular', 'author_name', '-author_name', 'upvotes_count', '-upvotes_count', 'downvotes_count', '-downvotes_count', 'status', '-status', 'baskets_count', '-baskets_count', 'random'", required: false
@@ -190,16 +189,6 @@ resource "Ideas" do
       expect(json_response[:data][0][:id]).to eq i.id
     end
 
-    example "List all ideas for an assignee" do
-      a = create(:admin)
-      i = create(:idea, assignee: a)
-
-      do_request assignee: a.id
-      json_response = json_parse(response_body)
-      expect(json_response[:data].size).to eq 1
-      expect(json_response[:data][0][:id]).to eq i.id
-    end
-
     example "List all ideas that need feedback" do
       TenantTemplateService.new.resolve_and_apply_template('base')
       i = create(:idea, idea_status: IdeaStatus.find_by(code: 'proposed'))
@@ -296,7 +285,6 @@ resource "Ideas" do
     parameter :projects, 'Filter by projects (OR)', required: false
     parameter :phase, 'Filter by project phase', required: false
     parameter :author, 'Filter by author (user id)', required: false
-    parameter :assignee, 'Filter by assignee (user id)', required: false
     parameter :idea_status, 'Filter by status (idea status id)', required: false
     parameter :search, 'Filter by searching in title and body', required: false
     parameter :publication_status, "Return only ideas with the specified publication status; returns all pusblished ideas by default", required: false
@@ -484,7 +472,6 @@ resource "Ideas" do
     parameter :projects, 'Filter by projects (OR)', required: false
     parameter :phase, 'Filter by project phase', required: false
     parameter :author, 'Filter by author (user id)', required: false
-    parameter :assignee, 'Filter by assignee (user id)', required: false
     parameter :idea_status, 'Filter by status (idea status id)', required: false
     parameter :search, 'Filter by searching in title and body', required: false
     parameter :publication_status, "Return only ideas with the specified publication status; returns all pusblished ideas by default", required: false
@@ -586,7 +573,6 @@ resource "Ideas" do
       parameter :project_id, "The identifier of the project that hosts the idea", extra: ""
       parameter :phase_ids, "The phases the idea is part of, defaults to the current only, only allowed by admins"
       parameter :author_id, "The user id of the user owning the idea", extra: "Required if not draft"
-      parameter :assignee_id, "The user id of the admin/moderator that takes ownership. Set automatically if not provided. Only allowed for admins/moderators."
       parameter :idea_status_id, "The status of the idea, only allowed for admins", extra: "Defaults to status with code 'proposed'"
       parameter :publication_status, "Publication status", required: true, extra: "One of #{Post::PUBLICATION_STATUSES.join(",")}"
       parameter :title_multiloc, "Multi-locale field with the idea title", required: true, extra: "Maximum 100 characters"
@@ -764,7 +750,6 @@ resource "Ideas" do
       parameter :project_id, "The idea of the project that hosts the idea", extra: ""
       parameter :phase_ids, "The phases the idea is part of, defaults to the current only, only allowed by admins"
       parameter :author_id, "The user id of the user owning the idea", extra: "Required if not draft"
-      parameter :assignee_id, "The user id of the admin/moderator that takes ownership. Only allowed for admins/moderators."
       parameter :idea_status_id, "The status of the idea, only allowed for admins"
       parameter :publication_status, "Either #{Post::PUBLICATION_STATUSES.join(', ')}"
       parameter :title_multiloc, "Multi-locale field with the idea title", extra: "Maximum 100 characters"
@@ -837,17 +822,6 @@ resource "Ideas" do
     end
 
     describe do
-      let(:assignee_id) { create(:admin).id }
-
-      example "Changing the assignee as a non-admin does not work", document: false do
-        do_request
-        expect(status).to be 200
-        json_response = json_parse(response_body)
-        expect(json_response.dig(:data,:relationships,:assignee)).to be_nil
-      end
-    end
-
-    describe do
       let(:budget) { 1800 }
 
       example "Change the participatory budget as a non-admin does not work", document: false do
@@ -864,26 +838,6 @@ resource "Ideas" do
         @user = create(:admin)
         token = Knock::AuthToken.new(payload: @user.to_token_payload).token
         header 'Authorization', "Bearer #{token}"
-      end
-
-      describe do
-        let(:idea_status_id) { create(:idea_status).id }
-
-        example_request "Change the idea status (as an admin)" do
-          expect(status).to be 200
-          json_response = json_parse(response_body)
-          expect(json_response.dig(:data,:relationships,:idea_status,:data,:id)).to eq idea_status_id
-        end
-      end
-
-      describe do
-        let(:assignee_id) { create(:admin).id }
-
-        example_request "Change the assignee (as an admin)" do
-          expect(status).to be 200
-          json_response = json_parse(response_body)
-          expect(json_response.dig(:data,:relationships,:assignee,:data,:id)).to eq assignee_id
-        end
       end
 
       describe do
@@ -942,16 +896,6 @@ resource "Ideas" do
           expect(status).to be 200
           json_response = json_parse(response_body)
           expect(json_response.dig(:data,:relationships,:idea_status,:data,:id)).to eq idea_status_id
-        end
-      end
-
-      describe do
-        let(:assignee_id) { create(:admin).id }
-
-        example_request "Change the assignee (as a moderator)" do
-          expect(status).to be 200
-          json_response = json_parse(response_body)
-          expect(json_response.dig(:data,:relationships,:assignee,:data,:id)).to eq assignee_id
         end
       end
     end
