@@ -20,6 +20,7 @@ Bundler.require(*Rails.groups)
 
 module Cl2Back
   class Application < Rails::Application
+    require_dependency Rails.root.join('lib/citizen_lab')
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 6.0
     # Settings in config/environments/* take precedence over those specified here.
@@ -44,7 +45,6 @@ module Cl2Back
     # error from files in the lib directory to other files
     # that need to be loaded.
     config.eager_load_paths << Rails.root.join('lib')
-    config.skylight.environments = %w[staging]
 
     config.action_dispatch.perform_deep_munge = false
     config.session_store :cookie_store, key: '_interslice_session'

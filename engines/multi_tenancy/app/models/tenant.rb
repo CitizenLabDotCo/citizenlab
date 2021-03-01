@@ -45,13 +45,13 @@ class Tenant < ApplicationRecord
   end
 
   def self.settings_json_schema_str
-    ActiveSupport::Deprecation.warn('Tenant::settings_json_schema_str is deprecated. Use AppConfiguration::settings_json_schema_str instead.')
-    AppConfiguration.settings_json_schema_str
+    ActiveSupport::Deprecation.warn('Tenant::settings_json_schema_str is deprecated. Use AppConfiguration::Settings.json_schema_str_str instead.')
+    AppConfiguration::Settings.json_schema_str
   end
 
   def self.settings_json_schema
-    ActiveSupport::Deprecation.warn('Tenant::settings_json_schema is deprecated. Use AppConfiguration::settings_json_schema instead.')
-    AppConfiguration.settings_json_schema
+    ActiveSupport::Deprecation.warn('Tenant::settings_json_schema is deprecated. Use AppConfiguration::Settings.json_schema_schema instead.')
+    AppConfiguration::Settings.json_schema
   end
 
   def self.style(*path)
@@ -65,7 +65,7 @@ class Tenant < ApplicationRecord
   end
 
   def self.style_json_schema
-    ActiveSupport::Deprecation.warn('Tenant::settings_json_schema is deprecated. Use AppConfiguration::settings_json_schema instead.')
+    ActiveSupport::Deprecation.warn('Tenant::style_json_schema is deprecated. Use AppConfiguration::style_json_schema instead.')
     AppConfiguration.style_json_schema
   end
 
@@ -267,7 +267,7 @@ class Tenant < ApplicationRecord
 
   def validate_missing_feature_dependencies
     ss = SettingsService.new
-    missing_dependencies = ss.missing_dependencies(settings, self.class.settings_json_schema)
+    missing_dependencies = ss.missing_dependencies(settings, AppConfiguration::Settings.json_schema)
     unless missing_dependencies.empty?
       errors.add(:settings, "has unactive features that other features are depending on: #{missing_dependencies}")
     end
