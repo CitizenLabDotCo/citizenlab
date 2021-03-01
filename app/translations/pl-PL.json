@@ -1420,6 +1420,7 @@
   "app.containers.AdminPage.SettingsPage.fieldTitleTooltip": "Nazwa, którą wybierzesz dla każdego obszaru będzie widoczna dla mieszkańców podczas rejestracji i podczas filtrowania projektów.",
   "app.containers.AdminPage.SettingsPage.fieldTopicTitle": "Nazwa tematu",
   "app.containers.AdminPage.SettingsPage.fieldTopicTitleTooltip": "Nazwa, którą wybierzesz dla każdego tematu, będzie widoczna dla użytkowników platformy.",
+  "app.containers.AdminPage.SettingsPage.fields": "",
   "app.containers.AdminPage.SettingsPage.firstPage": "",
   "app.containers.AdminPage.SettingsPage.firstPageTooltip": "",
   "app.containers.AdminPage.SettingsPage.header": "Baner na stronie głównej",

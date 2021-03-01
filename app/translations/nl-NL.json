@@ -1420,6 +1420,7 @@
   "app.containers.AdminPage.SettingsPage.fieldTitleTooltip": "De naam die je voor elk gebied kiest is zichtbaar voor gebruikers tijdens hun registratie en bij het filteren van de projecten.",
   "app.containers.AdminPage.SettingsPage.fieldTopicTitle": "Naam thema",
   "app.containers.AdminPage.SettingsPage.fieldTopicTitleTooltip": "De naam die je voor elk thema kiest zal zichtbaar zijn voor de burgers.",
+  "app.containers.AdminPage.SettingsPage.fields": "",
   "app.containers.AdminPage.SettingsPage.firstPage": "",
   "app.containers.AdminPage.SettingsPage.firstPageTooltip": "",
   "app.containers.AdminPage.SettingsPage.header": "Banner startpagina",

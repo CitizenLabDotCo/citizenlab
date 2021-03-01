@@ -1420,6 +1420,7 @@
   "app.containers.AdminPage.SettingsPage.fieldTitleTooltip": "El nombre que elija para cada área será visible para los ciudadanos durante el registro y cuando filtren los proyectos.",
   "app.containers.AdminPage.SettingsPage.fieldTopicTitle": "Nombre del tema",
   "app.containers.AdminPage.SettingsPage.fieldTopicTitleTooltip": "El nombre que elijas en los temas será visible para los ciudadanos.",
+  "app.containers.AdminPage.SettingsPage.fields": "",
   "app.containers.AdminPage.SettingsPage.firstPage": "",
   "app.containers.AdminPage.SettingsPage.firstPageTooltip": "",
   "app.containers.AdminPage.SettingsPage.header": "Banner de la página de inicio",

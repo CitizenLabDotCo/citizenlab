@@ -1420,6 +1420,7 @@
   "app.containers.AdminPage.SettingsPage.fieldTitleTooltip": "The name you choose for each area will be visible for citizens during signup and when filtering projects.",
   "app.containers.AdminPage.SettingsPage.fieldTopicTitle": "Topic name",
   "app.containers.AdminPage.SettingsPage.fieldTopicTitleTooltip": "The name you choose for each topic will be visible to the platform users.",
+  "app.containers.AdminPage.SettingsPage.fields": "Fields",
   "app.containers.AdminPage.SettingsPage.firstPage": "First page",
   "app.containers.AdminPage.SettingsPage.firstPageTooltip": "This is shown on the top of the first page of the sign-up form (name, email, password)",
   "app.containers.AdminPage.SettingsPage.header": "Homepage banner",
