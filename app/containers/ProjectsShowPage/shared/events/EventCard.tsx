@@ -40,10 +40,6 @@ const Container = styled.div`
   ${defaultCardStyle};
   box-shadow: none;
   border: solid 1px #ccc;
-
-  ${media.smallerThanMinTablet`
-    flex-direction: column;
-  `}
 `;
 
 const EventDateBlocks = styled.div`
@@ -51,14 +47,11 @@ const EventDateBlocks = styled.div`
   width: 75px;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: stretch;
+  align-items: stretch;
 
   ${media.smallerThanMinTablet`
-    flex: 1;
-    width: 100%;
-    flex-direction: row;
-    margin-bottom: 18px;
+    flex: 0 0 60px;
+    width: 60x;
   `}
 `;
 
@@ -72,24 +65,13 @@ const Separator = styled.div`
 `;
 
 const EventDateBlockWrapper = styled.div`
-  flex: 0 0 75px;
-  width: 75px;
   display: flex;
   flex-direction: column;
-  justify-content: stretch;
+  align-items: stretch;
 
   &.second {
-    margin-top: 15px;
+    margin-top: 14px;
   }
-
-  ${media.smallerThanMinTablet`
-    margin: 0;
-
-    &.second {
-      margin: 0;
-      margin-left: 20px;
-    }
-  `}
 `;
 
 const EventDateBlockLabel = styled.div`
@@ -102,11 +84,9 @@ const EventDateBlockLabel = styled.div`
 `;
 
 const EventDateBlock = styled.div`
-  flex: 0 0 75px;
-  width: 75px;
   display: flex;
   flex-direction: column;
-  justify-content: stretch;
+  align-items: stretch;
 `;
 
 const EventDate = styled.div`
@@ -114,14 +94,17 @@ const EventDate = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: stretch;
-  padding-top: 6px;
-  padding-bottom: 6px;
+  padding: 6px;
   border-radius: ${(props: any) => props.theme.borderRadius};
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
   background: #f5f6f7;
   border: solid 1px #ccc;
   border-bottom: none;
+
+  ${media.smallerThanMinTablet`
+    padding: 4px;
+  `}
 `;
 
 const EventMonth = styled.div`
@@ -137,6 +120,10 @@ const EventDay = styled.div`
   font-size: 18px;
   line-height: normal;
   font-weight: 400;
+
+  ${media.smallerThanMinTablet`
+    font-size: 16px;
+  `}
 `;
 
 const EventYear = styled.div`
@@ -152,6 +139,10 @@ const EventYear = styled.div`
   border-top-left-radius: 0;
   border-top-right-radius: 0;
   background: ${colors.label};
+
+  ${media.smallerThanMinTablet`
+    font-size: 14px;
+  `}
 `;
 
 const EventInformation = styled.div`
@@ -159,10 +150,6 @@ const EventInformation = styled.div`
   display: flex;
   flex-direction: column;
   margin-left: 20px;
-
-  ${media.smallerThanMinTablet`
-    margin: 0px;
-  `}
 `;
 
 const EventMetaAndTitle = styled.div`
