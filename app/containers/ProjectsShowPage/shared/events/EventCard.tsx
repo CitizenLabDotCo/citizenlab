@@ -56,7 +56,7 @@ const EventDateBlocks = styled.div`
 
   ${media.smallerThanMinTablet`
     flex: 1;
-    width: auto;
+    width: 100%;
     flex-direction: row;
     margin-bottom: 18px;
   `}
@@ -83,8 +83,6 @@ const EventDateBlockWrapper = styled.div`
   }
 
   ${media.smallerThanMinTablet`
-    flex: 1;
-    width: auto;
     margin: 0;
 
     &.second {
@@ -116,8 +114,8 @@ const EventDate = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: stretch;
-  padding-top: 8px;
-  padding-bottom: 8px;
+  padding-top: 6px;
+  padding-bottom: 6px;
   border-radius: ${(props: any) => props.theme.borderRadius};
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
@@ -149,7 +147,7 @@ const EventYear = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 7px;
+  padding: 6px;
   border-radius: ${(props: any) => props.theme.borderRadius};
   border-top-left-radius: 0;
   border-top-right-radius: 0;
