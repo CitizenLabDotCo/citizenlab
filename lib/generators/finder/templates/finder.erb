@@ -1,0 +1,13 @@
+# frozen_string_literal: true
+
+## <% if @module_name.present? %><%= @module_name.camelize %>::<% end %><%= class_name %>Finder.find
+class <% if @module_name.present? %><%= @module_name.camelize %>::<% end %><%= class_name %>Finder < ApplicationFinder
+  default_sort :created_at
+  sortable_attributes %w[]
+  sort_scopes({})
+<% unless methods.present? %>end<% else %>
+  private
+
+  <% if methods.length == 1 %>def <%= methods.last %>; end<% else %><% methods[0..-2].each do |method| %>def <%= method %>; end<% end %>
+  def <%= methods.last %>; end<% end %>
+end<% end %>

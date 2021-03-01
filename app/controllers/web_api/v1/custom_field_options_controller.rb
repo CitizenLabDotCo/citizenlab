@@ -3,9 +3,7 @@ class WebApi::V1::CustomFieldOptionsController < ApplicationController
   before_action :set_custom_field, only: [:index, :create]
 
   def index
-    @options = policy_scope(CustomFieldOption)
-      .where(custom_field: @custom_field)
-      .order(:ordering)
+    @options = policy_scope(CustomFieldOption).where(custom_field: @custom_field).order(:ordering)
     render json: WebApi::V1::CustomFieldOptionSerializer.new(@options, params: fastjson_params).serialized_json
   end
 
@@ -23,7 +21,7 @@ class WebApi::V1::CustomFieldOptionsController < ApplicationController
     if @option.save
       SideFxCustomFieldOptionService.new.after_create(@option, current_user)
       render json: WebApi::V1::CustomFieldOptionSerializer.new(
-        @option, 
+        @option,
         params: fastjson_params
         ).serialized_json, status: :created
     else
@@ -38,7 +36,7 @@ class WebApi::V1::CustomFieldOptionsController < ApplicationController
     if @option.save
       SideFxCustomFieldOptionService.new.after_update(@option, current_user)
       render json: WebApi::V1::CustomFieldOptionSerializer.new(
-        @option.reload, 
+        @option.reload,
         params: fastjson_params
         ).serialized_json, status: :ok
     else
@@ -50,7 +48,7 @@ class WebApi::V1::CustomFieldOptionsController < ApplicationController
     if @option.insert_at(permitted_attributes(@option)[:ordering])
       SideFxCustomFieldOptionService.new.after_update(@option, current_user)
       render json: WebApi::V1::CustomFieldOptionSerializer.new(
-        @option.reload, 
+        @option.reload,
         params: fastjson_params
         ).serialized_json, status: :ok
     else
