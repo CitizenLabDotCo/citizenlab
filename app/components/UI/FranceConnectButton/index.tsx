@@ -3,7 +3,8 @@ import { FormattedMessage } from 'utils/cl-intl';
 import styled from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
 import messages from './messages';
-import logo from './franceconnect.svg';
+import FranceConnectLogo from './FranceConnectLogo';
+import { ScreenReaderOnly } from 'utils/a11y';
 
 const FranceConnectButtonWrapper = styled.div`
   display: flex;
@@ -20,10 +21,19 @@ const FranceConnectButtonLink = styled.button`
   cursor: pointer;
   padding: 0;
   margin: 0;
-  margin-bottom: 2px;
+  margin-bottom: 8px;
+  border: none;
+
+  #france-connect-background {
+    transition: fill 0.2s ease-in-out;
+  }
 
   &:disabled {
     cursor: not-allowed;
+  }
+
+  &:hover #Fond {
+    fill: #2183f0;
   }
 `;
 
@@ -31,7 +41,9 @@ const SubSocialButtonLink = styled.a`
   color: ${(props: any) => props.theme.colorText};
   font-size: ${fontSizes.small}px;
   font-weight: 300;
-  text-decoration: underline;
+  text-decoration: none;
+  transition: all 0.2s ease-in-out;
+  line-height: 1;
 
   &:hover {
     color: #000;
@@ -48,7 +60,8 @@ const FranceConnectButton = ({ onClick, logoAlt }: Props): ReactElement => {
   return (
     <FranceConnectButtonWrapper>
       <FranceConnectButtonLink onClick={onClick}>
-        <img src={logo} alt={logoAlt} />
+        <FranceConnectLogo />
+        <ScreenReaderOnly>{logoAlt}</ScreenReaderOnly>
       </FranceConnectButtonLink>
       <SubSocialButtonLink
         href="https://app.franceconnect.gouv.fr/en-savoir-plus"
