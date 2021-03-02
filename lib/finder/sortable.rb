@@ -54,7 +54,7 @@ module Finder
     private
 
     def _sort_records
-      @_sort_method = _default_sort || params[:sort]
+      @_sort_method = params.delete(:sort) || _default_sort
       return unless _sort_method
 
       if _sort_scopes&.key? _sort_method

@@ -56,7 +56,7 @@ module Finder
 
     def _filter_records
       params.each do |param, value|
-        send("#{param}_condition", value) if respond_to?("#{param}_condition", true) && !value.nil?
+        send("#{param}_condition", value) if respond_to?("#{param}_condition", true)
       end
     end
 

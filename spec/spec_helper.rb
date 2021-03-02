@@ -156,7 +156,7 @@ RSpec.configure do |config|
   end
 
   config.after(:each) do
-    # Reset tentant back to `public`
+    # Reset tenant back to `public`
     Apartment::Tenant.reset
   rescue ActiveRecord::StatementInvalid
   else
