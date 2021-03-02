@@ -1134,8 +1134,6 @@
   "app.containers.AdminPage.ProjectEdit.MapTab.supportArticleUrl": "",
   "app.containers.AdminPage.ProjectEdit.MapTab.zoomLabel": "",
   "app.containers.AdminPage.ProjectEdit.MapTab.zoomLabelTooltip": "",
-  "app.containers.AdminPage.ProjectEdit.PollTab.addOption": "Add an option",
-  "app.containers.AdminPage.ProjectEdit.PollTab.addQuestion": "Add a question",
   "app.containers.AdminPage.ProjectEdit.PollTab.addAnswerChoice": "Add an answer choice",
   "app.containers.AdminPage.ProjectEdit.PollTab.addPollQuestion": "Add a poll question",
   "app.containers.AdminPage.ProjectEdit.PollTab.applyQuestionSettings": "Apply",
