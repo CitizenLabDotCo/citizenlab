@@ -131,3 +131,5 @@ class WebApi::V1::ProjectsController < ::ApplicationController
     authorize @project
   end
 end
+
+WebApi::V1::ProjectsController.include_if_ee('ProjectFolders::WebApi::V1::Patches::ProjectsController')
