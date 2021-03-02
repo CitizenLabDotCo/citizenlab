@@ -10,4 +10,4 @@ module IdeaAssignment
   end
 end
 
-User.include(IdeaAssignment::Extensions::User)
+User.include_if_ee('IdeaAssignment::Extensions::User')

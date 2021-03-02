@@ -10,4 +10,4 @@ module IdeaAssignment
   end
 end
 
-IdeaPolicy.include(IdeaAssignment::Extensions::IdeaPolicy)
+IdeaPolicy.include_if_ee('IdeaAssignment::Extensions::IdeaPolicy')

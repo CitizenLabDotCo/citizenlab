@@ -1,5 +1,5 @@
 module IdeaAssignment
-  module MonkeyPatches
+  module Patches
     module SideFxModeratorService
       def after_destroy(moderator, project, _current_user)
         remove_idea_assignments(moderator, project)
@@ -15,4 +15,4 @@ module IdeaAssignment
   end
 end
 
-::SideFxIdeaService.prepend(IdeaAssignment::MonkeyPatches::SideFxModeratorService)
+::SideFxIdeaService.prepend_if_ee('IdeaAssignment::MonkeyPatches::SideFxModeratorService')

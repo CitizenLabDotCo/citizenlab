@@ -21,4 +21,4 @@ module IdeaAssignment
   end
 end
 
-Idea.include(IdeaAssignment::Extensions::Idea)
+Idea.include_if_ee('IdeaAssignment::Extensions::Idea')

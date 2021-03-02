@@ -1,5 +1,5 @@
 module IdeaAssignment
-  module MonkeyPatches
+  module Patches
     module SideFxIdeaService
       def before_update(idea, user)
         super
@@ -30,4 +30,4 @@ module IdeaAssignment
   end
 end
 
-::SideFxIdeaService.prepend(IdeaAssignment::MonkeyPatches::SideFxIdeaService)
+::SideFxIdeaService.prepend_if_ee('IdeaAssignment::Patches::SideFxIdeaService')

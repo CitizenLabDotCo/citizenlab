@@ -1,5 +1,5 @@
 module IdeaAssignment
-  module MonkeyPatches
+  module Patches
     module SideFxUserService
       def after_update(user, current_user)
         super
@@ -18,4 +18,4 @@ module IdeaAssignment
   end
 end
 
-::SideFxUserService.prepend(IdeaAssignment::MonkeyPatches::SideFxUserService)
+::SideFxUserService.prepend_if_ee('IdeaAssignment::MonkeyPatches::SideFxUserService')

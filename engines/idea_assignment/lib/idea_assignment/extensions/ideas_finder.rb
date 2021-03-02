@@ -8,4 +8,4 @@ module IdeaAssignment
   end
 end
 
-IdeasFinder.include(IdeaAssignment::Extensions::IdeasFinder)
+IdeasFinder.include_if_ee('IdeaAssignment::Extensions::IdeasFinder')
