@@ -2,7 +2,7 @@
 
 require 'citizen_lab/mixins/feature_specification'
 
-module IdeaAssigment
+module IdeaAssignment
   module FeatureSpecification
     extend CitizenLab::Mixins::FeatureSpecification
 
