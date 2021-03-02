@@ -94,7 +94,7 @@ export const appLocalePairs = {
   'ro-RO': 'Română',
   'pt-BR': 'Português (Brasil)',
   'ar-SA': 'عربى',
-  mi: 'Maori',
+  mi: 'Māori',
 };
 
 export const appGraphqlLocalePairs = {
@@ -144,7 +144,7 @@ export const shortenedAppLocalePairs = {
   'ro-RO': 'Română',
   'pt-BR': 'Português',
   'ar-SA': 'عربى',
-  mi: 'Maori',
+  mi: 'Māori',
 };
 
 // see https://www.ge.com/digital/documentation/predix-services/c_custom_locale_support.html
