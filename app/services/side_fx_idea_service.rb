@@ -16,8 +16,6 @@ class SideFxIdeaService
 
   def before_update(idea, user)
     idea.body_multiloc = TextImageService.new.swap_data_images(idea, :body_multiloc)
-    idea.assignee = nil if idea.project_id_changed? && !ProjectPolicy.new(idea.assignee, idea.project).moderate?
-
     before_publish idea, user if idea.publication_status_change == %w[draft published]
   end
 
@@ -32,12 +30,6 @@ class SideFxIdeaService
     if idea.idea_status_id_previously_changed?
       LogActivityJob.perform_later(idea, 'changed_status', user, idea.updated_at.to_i,
                                    payload: { change: idea.idea_status_id_previous_change })
-    end
-
-    if idea.assignee_id_previously_changed?
-      initiating_user = @automatic_assignment ? nil : user
-      LogActivityJob.perform_later(idea, 'changed_assignee', initiating_user, idea.updated_at.to_i,
-                                   payload: { change: idea.assignee_id_previous_change })
     end
 
     if idea.title_multiloc_previously_changed?
@@ -67,7 +59,6 @@ class SideFxIdeaService
 
   def before_publish(idea, _user)
     set_phase(idea)
-    set_assignee(idea)
   end
 
   def after_publish(idea, user)
@@ -82,13 +73,6 @@ class SideFxIdeaService
       ph&.can_contain_ideas?
     end
     idea.phases = [phase] if phase
-  end
-
-  def set_assignee(idea)
-    return unless idea.project&.default_assignee && !idea.assignee
-
-    idea.assignee = idea.project.default_assignee
-    @automatic_assignment = true
   end
 
   def add_autovote(idea)
