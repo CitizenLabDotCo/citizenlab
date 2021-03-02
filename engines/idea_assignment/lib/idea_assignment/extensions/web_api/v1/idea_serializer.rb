@@ -6,7 +6,7 @@ module IdeaAssignment
           def self.included(base)
             base.class_eval do
               belongs_to :assignee,
-                         if: proc { |object, params| config.can_moderate?(object, params) },
+                         if: proc { |object, params| can_moderate?(object, params) },
                          record_type: :user,
                          serializer: ::WebApi::V1::UserSerializer
             end
