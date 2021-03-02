@@ -7,7 +7,7 @@ module Extensions
             belongs_to :assignee,
                        if: proc { |object, params| config.can_moderate?(object, params) },
                        record_type: :user,
-                       serializer: WebApi::V1::UserSerializer
+                       serializer: ::WebApi::V1::UserSerializer
           end
         end
       end
