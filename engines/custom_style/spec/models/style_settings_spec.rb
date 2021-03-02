@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.shared_examples_for "TenantStyle" do
+RSpec.shared_examples_for 'StyleSettings' do
 
   let (:model) { described_class }
 
