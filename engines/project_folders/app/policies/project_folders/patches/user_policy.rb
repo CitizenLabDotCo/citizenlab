@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 module ProjectFolders
-  module MonkeyPatches
+  module Patches
     module UserPolicy
       def role_permitted_params
         super.tap do |params|
