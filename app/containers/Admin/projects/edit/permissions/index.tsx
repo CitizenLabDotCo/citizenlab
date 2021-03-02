@@ -95,6 +95,7 @@ interface DataProps {
   projectVisibilityEnabled: GetFeatureFlagChildProps;
   projectManagementEnabled: GetFeatureFlagChildProps;
   ideaAssignmentEnabled: GetFeatureFlagChildProps;
+  granularPermissionsEnabled: GetFeatureFlagChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -293,6 +294,7 @@ class ProjectPermissions extends PureComponent<
       projectVisibilityEnabled,
       projectManagementEnabled,
       ideaAssignmentEnabled,
+      granularPermissionsEnabled,
     } = this.props;
 
     const { project, unsavedVisibleTo, loading, saving, status } = this.state;
@@ -307,7 +309,7 @@ class ProjectPermissions extends PureComponent<
               <FormattedMessage {...messages.participationAccessRightsTitle} />
             </StyledSectionTitle>
 
-            {projectVisibilityEnabled && (
+            {(projectVisibilityEnabled || granularPermissionsEnabled) && (
               <SubSection>
                 <StyledSectionField>
                   <SubSectionTitle>
@@ -431,6 +433,7 @@ const Data = adopt<DataProps, WithRouterProps>({
     <GetModerators projectId={params.projectId}>{render}</GetModerators>
   ),
   projectVisibilityEnabled: <GetFeatureFlag name="project_visibility" />,
+  granularPermissionsEnabled: <GetFeatureFlag name="granular_permissions" />,
   projectManagementEnabled: <GetFeatureFlag name="project_management" />,
   ideaAssignmentEnabled: <GetFeatureFlag name="idea_assignment" />,
 });
