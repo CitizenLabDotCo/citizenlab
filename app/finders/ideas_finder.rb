@@ -15,8 +15,8 @@ class IdeasFinder < ApplicationFinder
   sort_scope '-author_name', ['users.first_name DESC', 'users.last_name DESC']
   sort_scope 'status',       order_status: :asc
   sort_scope '-status',      order_status: :desc
-  sort_scope 'trending',     ->(ideas) { sort_trending(ideas.includes(:idea_trending_info)) }
-  sort_scope '-trending',    ->(ideas) { sort_trending(ideas.includes(:idea_trending_info)).reverse }
+  sort_scope 'trending',     ->(ideas) { TrendingIdeaService.new.sort_trending(ideas) }
+  sort_scope '-trending',    ->(ideas) { TrendingIdeaService.new.sort_trending(ideas).reverse }
 
   private
 
