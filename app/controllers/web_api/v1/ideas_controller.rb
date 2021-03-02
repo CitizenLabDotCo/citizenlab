@@ -79,7 +79,7 @@ class WebApi::V1::IdeasController < ApplicationController
   end
 
   def filter_counts
-    @result = IdeasFinder.find(params, authorize_with: current_user, includes: %i[idea_trending_info])
+    @result = IdeasFinder.find(params, scope: policy_scope(Idea), current_user: current_user, includes: %i[idea_trending_info])
     @ideas = @result.records.where(publication_status: 'published')
     counts = {
       'idea_status_id' => {},
