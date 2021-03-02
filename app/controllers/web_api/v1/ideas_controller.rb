@@ -11,6 +11,7 @@ class WebApi::V1::IdeasController < ApplicationController
     @result = IdeasFinder.find(
       params,
       scope: policy_scope(Idea).where(publication_status: 'published'),
+      current_user: current_user,
       includes: [
         :idea_images, :idea_trending_info,
         {
@@ -29,6 +30,7 @@ class WebApi::V1::IdeasController < ApplicationController
     @result = IdeasFinder.find(
       params,
       scope: policy_scope(Idea).where(publication_status: 'published'),
+      current_user: current_user,
       includes: %i[idea_trending_info]
     )
     @ideas = @result.records
@@ -40,6 +42,7 @@ class WebApi::V1::IdeasController < ApplicationController
     @ideas = IdeasFinder.find(
       params,
       scope: policy_scope(Idea).where(publication_status: 'published'),
+      current_user: current_user,
       includes: %i[author topics areas project idea_status idea_files]
     ).records
 
@@ -50,6 +53,7 @@ class WebApi::V1::IdeasController < ApplicationController
     @result = IdeasFinder.find(
       params,
       scope: policy_scope(Idea).where(publication_status: 'published'),
+      current_user: current_user,
       includes: %i[author topics areas project idea_status idea_files]
     )
     @ideas = @result.records
