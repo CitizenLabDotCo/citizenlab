@@ -2,6 +2,10 @@
 
 ## Next release
 
+/
+
+## 2021-03-02
+
 ### Fixed
 
 - Don't show empty space inside of the idea card when no avatar is present
