@@ -33,7 +33,7 @@ ar:
       "official_feedback_on_your_initiative": تحديث على مُقترحي
       "password_reset": تمت إعادة تعيين كلمة المرور
       "project_moderation_rights_received": تم استلام حقوق الإشراف على المشروع
-      "project_folder_moderation_rights_received": Project folder moderation rights received
+      "project_folder_moderation_rights_received": تم استلام حقوق الإشراف على مجلد المشروع
       "project_phase_started": مرحلة مشروع جديدة
       "project_phase_upcoming": مرحلة مشروع جديدة قادمة
       "status_change_of_commented_idea": تغيرت حالة فكرة كنت قد علقت عليها
@@ -83,7 +83,7 @@ ar:
       "official_feedback_on_your_initiative": تحديث على مُقترحك - جميع المستخدمين
       "password_reset": تمت إعادة تعيين كلمة المرور - جميع المستخدمين
       "project_moderation_rights_received": تم استلام حقوق الإشراف على المشروع - مديري المشاريع
-      "project_folder_moderation_rights_received": Project folder moderation rights received
+      "project_folder_moderation_rights_received": تم استلام حقوق الإشراف على مجلد المشروع
       "project_phase_started": مرحلة مشروع جديدة - جميع المستخدمين
       "project_phase_upcoming": مرحلة مشروع جديدة قائمة - المسؤولين ومديري المشاريع
       "status_change_of_commented_idea": تغيرت حالة فكرة كنت قد علقتَ عليها - جميع المستخدمين
@@ -410,20 +410,20 @@ ar:
       title_you_became_moderator: 'لقد أصبحت مدير المشروع'
       x_ideas: '%{numberOfIdeas} أفكار'
     project_folder_moderation_rights_received:
-      cta_view_folder_button: 'View this folder'
-      message_added_as_folderadmin: 'You''ve been given administrator rights on %{organizationName}''s participation platform for the following folder:'
-      no_projects: 'No projects yet'
-      preheader: 'An adminstrator of the participation platform of %{organizationName} just made you a manager of the following projects folder'
-      subject: 'You became a project folder manager on the platform of %{organizationName}'
-      text_manage_folder: 'A folder is way to organize several participation projects together. As a folder admin, you can edit the folder and folder description and create new projects (to delete projects, contact your platform administrator). You will also have project management rights over all projects within the folder, allowing you to edit the projects, manage the inputs and email participants.'
-      text_moderate_analyse_input: 'Once the projects are launched, the first inputs will start coming in. You''ll receive weekly reports with the key activities so that you can stay on top of what’s happening. The Post Manager in your admin view will help you see and manage the input, including assigning statuses and responding to posts and comments.'
-      text_design_participatory_process: 'You can manage the different participation projects within your folder - configure the participation method, add a project description, attach images, and communicate related events. You can also manage how participants interact with your projects, including setting access rights and configuring the posting, voting and commenting settings.'
-      title_design_participatory_process: 'Design the participatory process'
-      title_moderate_analyse_input: 'Moderate and analyse the input'
-      title_manage_folder: 'Manage the folder settings and create new projects.'
-      title_what_can_you_do_folderadmin: 'What can you do as a folder administrator?'
-      title_added_as_folderadmin: 'You''ve been added as a folder administrator'
-      x_projects: '%{numberOfProjects} projects'
+      cta_view_folder_button: 'شاهد هذا المجلد'
+      message_added_as_folderadmin: 'لقد تم منحك حقوق المسؤول  %{organizationName} على منصة المشاركة للمجلد التالي:'
+      no_projects: 'لا توجد مشاريع بعد'
+      preheader: 'قام مسؤول منصة المشاركة %{organizationName} للتو بتعيينك مديراً لمجلد المشاريع التالية'
+      subject: 'أصبحت مدير مجلد المشروع على منصة %{organizationName}'
+      text_manage_folder: 'المجلد هو وسيلة لتنظيم العديد من مشاريع المشاركة معًا. بصفتك مسؤول المجلد، يمكنك تحرير المجلد ووصف المجلد وإنشاء مشاريع جديدة (لحذف المشاريع، اتصل بمسؤول المنصة). ستتمتع أيضًا بحقوق إدارة المشروع في جميع المشاريع داخل المجلد، مما يسمح لك بتحرير المشاريع وإدارة المدخلات والبريد الإلكتروني للمشاركين.'
+      text_moderate_analyse_input: 'بمجرد إطلاق المشاريع، ستبدأ المدخلات الأولى في الظهور. ستتلقى تقارير أسبوعية بالأنشطة الرئيسية حتى تتمكن من البقاء على اطلاع بما يحدث. سيساعدك مدير النشر في عرض المسؤول في رؤية المدخلات وإدارتها، بما في ذلك تعيين الحالات والرد على المنشورات والتعليقات.'
+      text_design_participatory_process: 'يمكنك إدارة مشاريع المشاركة المختلفة داخل مجلدك - تكوين طريقة المشاركة وإضافة وصف المشروع وإرفاق الصور والإبلاغ عن الأحداث ذات الصلة. يمكنك أيضاً إدارة كيفية تفاعل المشاركين مع مشاريعك، بما في ذلك تعيين حقوق الوصول وتكوين إعدادات النشر والتصويت والتعليق.'
+      title_design_participatory_process: 'صمّم عملية المشاركة'
+      title_moderate_analyse_input: 'قم بالإشراف على المُدخلات وتحليلها'
+      title_manage_folder: 'إدارة إعدادات المجلد وإنشاء مشاريع جديدة.'
+      title_what_can_you_do_folderadmin: 'ماذا يمكنك أن تفعل كمسؤول مجلد؟'
+      title_added_as_folderadmin: 'لقد تمت إضافتك كمسؤول مجلد'
+      x_projects: '%{numberOfProjects} مشاريع'
     password_reset:
       cta_reset_password: 'إعادة تعيين كلمة المرور'
       message_you_reset_your_password: 'لقد طلبت إعادة تعيين كلمة المرور لمنصة مشاركة %{organizationName}. انقر فوق الزر أدناه لاختيار كلمة مرور جديدة وآمنة. تنتهي صلاحية الرابط خلال ساعة واحدة.'
