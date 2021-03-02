@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.version     = CustomStatuses::VERSION
   s.authors     = ["CitizenLab"]
   s.email       = ["developers@citizenlab.co"]
-  s.summary     = "Allows customization of the idea and initiative statuses by exposing the #create, #update and #destroy actions for the statuses' endpoints"
+  s.summary     = "CitizenLab extension: Allows customization of idea statuses."
 
   s.files = Dir["{app,config,db,lib}/**/*", "README.md"]
 
