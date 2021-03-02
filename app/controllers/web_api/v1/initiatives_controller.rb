@@ -21,7 +21,7 @@ class WebApi::V1::InitiativesController < ApplicationController
   def index_xlsx
     authorize :initiative, :index_xlsx?
     @result = InitiativesFinder.find(
-      finder_params,
+      params,
       current_user: current_user,
       scope: policy_scope(Initiative).where(publication_status: 'published'),
       includes: %i[author initiative_status topics areas]
