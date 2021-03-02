@@ -53,7 +53,7 @@ export default defineMessages({
     defaultMessage: 'Users',
   },
   inputs: {
-    id: 'app.containers.AdminPage.DashboardPage.inputs ',
+    id: 'app.containers.AdminPage.DashboardPage.inputs',
     defaultMessage: 'Inputs',
   },
   votes: {

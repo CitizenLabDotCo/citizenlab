@@ -30,16 +30,9 @@ import { getInputTermMessage } from 'utils/i18n';
 
 // style
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
 import { selectPhase } from 'containers/ProjectsShowPage/timeline/events';
 
-const Container = styled.div`
-  margin-top: 20px;
-
-  ${media.smallerThanMaxTablet`
-    margin-top: 30px;
-  `}
-`;
+const Container = styled.div``;
 
 // const AllocateBudgetButton = styled(Button)`
 //   margin-bottom: 10px;

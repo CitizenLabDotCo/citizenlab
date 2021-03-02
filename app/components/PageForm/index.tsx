@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 // Components
 import FormikInput from 'components/UI/FormikInput';
-import FormikInputMultiloc from 'components/UI/FormikInputMultiloc';
+import FormikInputMultilocWithLocaleSwitcher from 'components/UI/FormikInputMultilocWithLocaleSwitcher';
 import FormikQuillMultiloc from 'components/UI/QuillEditor/FormikQuillMultiloc';
 import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
 import { Section, SectionField } from 'components/admin/Section';
@@ -111,7 +111,7 @@ class PageForm extends React.Component<InjectedFormikProps<Props, FormValues>> {
             <SectionField>
               <Field
                 name="title_multiloc"
-                component={FormikInputMultiloc}
+                component={FormikInputMultilocWithLocaleSwitcher}
                 label={<FormattedMessage {...messages.pageTitle} />}
               />
               {touched.title_multiloc && (

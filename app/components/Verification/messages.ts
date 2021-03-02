@@ -121,4 +121,8 @@ export default defineMessages({
     id: 'app.components.VerificationModal.close',
     defaultMessage: 'Close',
   },
+  verificationButtonAltText: {
+    id: 'app.containers.verificationModal.verificationButtonAltText',
+    defaultMessage: 'Verify with {loginMechanismName}',
+  },
 });

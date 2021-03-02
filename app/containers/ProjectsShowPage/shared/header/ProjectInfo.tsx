@@ -65,8 +65,8 @@ const Left = styled.div`
 `;
 
 const Right = styled.div`
-  flex: 0 0 300px;
-  width: 300px;
+  flex: 0 0 310px;
+  width: 310px;
   margin-left: 120px;
 
   ${isRtl`

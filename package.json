@@ -107,6 +107,7 @@
     "react-loadable": "5.5.0",
     "react-medium-image-zoom": "3.x",
     "react-mentions": "2.x",
+    "react-password-strength-bar": "0.3.2",
     "react-places-autocomplete": "6.x",
     "react-range": "1.8.7",
     "react-resize-detector": "6.6.0",
