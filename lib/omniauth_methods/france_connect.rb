@@ -26,7 +26,7 @@ module OmniauthMethods
       return unless configuration.feature_activated?('franceconnect_login')
 
       env['omniauth.strategy'].options.merge!(
-        scope: [:openid, :profile, :email, :address],
+        scope: [:openid, :profile, :email],
         response_type: :code,
         state: true, # required by France connect
         nonce: true, # required by France connect
@@ -37,9 +37,9 @@ module OmniauthMethods
         client_options: {
           identifier: configuration.settings("franceconnect_login", "identifier"),
           secret: configuration.settings("franceconnect_login", "secret"),
-          port: 443,
           scheme: 'https',
           host: host,
+          port: 443,
           redirect_uri: redirect_uri(configuration),
           authorization_endpoint: '/api/v1/authorize',
           token_endpoint: '/api/v1/token',
@@ -54,7 +54,6 @@ module OmniauthMethods
                           .order(created_at: :desc)
                           .limit(1)
                         &.first
-
       id_token = last_identity.auth_hash.dig('credentials', 'id_token')
 
       url_params = {
