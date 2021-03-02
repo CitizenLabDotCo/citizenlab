@@ -19,14 +19,5 @@ module IdeaAssigment
     end
   end
 end
-# "idea_assignment": {
-#   "type": "object",
-#   "title": "Assign Ideas",
-#   "description": "Ideas can be assigned to specific admin and project managers to respond to.",
-#   "additionalProperties": false,
-#   "required": ["allowed", "enabled"],
-#   "properties": {
-#     "allowed": { "type": "boolean", "default": true},
-#     "enabled": { "type": "boolean", "default": true}
-#   }
-# },
+
+AppConfiguration::Settings.add_feature(IdeaAssignment::FeatureSpecification)

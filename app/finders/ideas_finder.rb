@@ -4,10 +4,10 @@
 class IdeasFinder < ApplicationFinder
   sortable_attributes 'ideas.upvotes_count', 'ideas.downvotes_count', 'ideas.baskets_count'
 
+  delegate :sort_trending, to: :_trending_service
+
   sort_scope 'new',          order_new: :desc
   sort_scope '-new',         order_new: :asc
-  sort_scope 'trending',     ->(ideas) { TrendingIdeaService.new.sort_trending(ideas) }
-  sort_scope '-trending',    ->(ideas) { TrendingIdeaService.new.sort_trending(ideas).reverse }
   sort_scope 'popular',      order_popular: :desc
   sort_scope '-popular',     order_popular: :asc
   sort_scope 'random',       :order_random
@@ -15,6 +15,8 @@ class IdeasFinder < ApplicationFinder
   sort_scope '-author_name', ['users.first_name DESC', 'users.last_name DESC']
   sort_scope 'status',       order_status: :asc
   sort_scope '-status',      order_status: :desc
+  sort_scope 'trending',     ->(ideas) { sort_trending(ideas.includes(:idea_trending_info)) }
+  sort_scope '-trending',    ->(ideas) { sort_trending(ideas.includes(:idea_trending_info)).reverse }
 
   private
 
@@ -75,5 +77,9 @@ class IdeasFinder < ApplicationFinder
 
   def _search_restricted?
     UserDisplayNameService.new(AppConfiguration.instance, current_user).restricted?
+  end
+
+  def _trending_service
+    @_trending_service ||= TrendingIdeaService.new
   end
 end
