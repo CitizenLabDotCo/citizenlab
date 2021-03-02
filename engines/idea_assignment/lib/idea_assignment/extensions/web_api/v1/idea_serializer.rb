@@ -1,13 +1,15 @@
-module Extensions
-  module WebApi
-    module V1
-      module IdeaSerializer
-        def self.included(base)
-          base.class_eval do
-            belongs_to :assignee,
-                       if: proc { |object, params| config.can_moderate?(object, params) },
-                       record_type: :user,
-                       serializer: ::WebApi::V1::UserSerializer
+module IdeaAssignment
+  module Extensions
+    module WebApi
+      module V1
+        module IdeaSerializer
+          def self.included(base)
+            base.class_eval do
+              belongs_to :assignee,
+                         if: proc { |object, params| config.can_moderate?(object, params) },
+                         record_type: :user,
+                         serializer: ::WebApi::V1::UserSerializer
+            end
           end
         end
       end
@@ -15,4 +17,4 @@ module Extensions
   end
 end
 
-::WebApi::V1::IdeaSerializer.include(Extensions::WebApi::V1::IdeaSerializer)
+::WebApi::V1::IdeaSerializer.include(IdeaAssignment::Extensions::WebApi::V1::IdeaSerializer)
