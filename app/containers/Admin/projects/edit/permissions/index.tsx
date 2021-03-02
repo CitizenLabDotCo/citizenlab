@@ -46,14 +46,13 @@ import styled from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
 import Outlet from 'components/Outlet';
 
-export const StyledSection = styled(Section)`
+const StyledSection = styled(Section)`
   margin-bottom: 50px;
 `;
 
-export const SubSection = styled(Section)`
+const SubSection = styled(Section)`
   margin-bottom: 40px;
 `;
-
 const ModeratorSubSection = styled(SubSection)`
   margin-bottom: 20px;
 `;
@@ -366,12 +365,10 @@ class ProjectPermissions extends PureComponent<
               </SubSection>
             )}
 
-            <SubSection>
-              <Outlet
-                id="app.containers.Admin.project.edit.permissions"
-                project={project.data}
-              />
-            </SubSection>
+            <Outlet
+              id="app.containers.Admin.project.edit.permissions"
+              project={project.data}
+            />
           </StyledSection>
 
           {(projectManagementEnabled || ideaAssignmentEnabled) && (
