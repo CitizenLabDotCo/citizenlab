@@ -4,7 +4,7 @@ import projectFoldersConfiguration from './project_folders';
 import smartGroupsConfiguration from './smart_groups';
 import granularPermissionsConfiguration from './granular_permissions';
 import moderationConfiguration from './moderation';
-
+import customMapsConfiguration from './custom_maps';
 import googleTagManagerConfiguration from './google_tag_manager';
 import googleAnalyticsConfiguration from './google_analytics';
 import intercomConfiguration from './intercom';
@@ -46,6 +46,10 @@ export default loadModules([
   },
   {
     configuration: moderationConfiguration,
+    isEnabled: true,
+  },
+  {
+    configuration: customMapsConfiguration,
     isEnabled: true,
   },
 ]);
