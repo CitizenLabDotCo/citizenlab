@@ -42,7 +42,7 @@ const Container = styled.div`
 
 const Title = styled.h1`
   color: ${(props: any) => props.theme.colorText};
-  font-size: ${fontSizes.xxxxl}px;
+  font-size: ${fontSizes.xxxl}px;
   line-height: normal;
   font-weight: 600;
   text-align: left;
@@ -55,10 +55,6 @@ const Title = styled.h1`
 
   ${isRtl`
     text-align: right;
-  `}
-
-  ${media.smallerThan1280px`
-    font-size: ${fontSizes.xxxl}px;
   `}
 
   ${media.smallerThan1100px`
@@ -172,7 +168,7 @@ const ProjectFolderDescription = memo<Props & InjectedIntlProps>(
               <div>
                 <QuillEditedContent
                   textColor={theme.colorText}
-                  fontSize="medium"
+                  fontSize={windowWidth <= 1439 ? 'base' : 'medium'}
                   className="e2e-folder-description"
                 >
                   <T
