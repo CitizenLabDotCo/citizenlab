@@ -1,10 +1,5 @@
 # frozen_string_literal: true
 
-require 'project_folders/monkey_patches/admin_publication_policy'
-require 'project_folders/monkey_patches/project_policy'
-require 'project_folders/monkey_patches/project_serializer'
-require 'project_folders/monkey_patches/user_policy'
-
 # rubocop:disable Lint/SuppressedException
 begin
   require 'factory_bot_rails'
