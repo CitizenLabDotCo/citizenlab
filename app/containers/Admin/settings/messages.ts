@@ -82,13 +82,13 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.color_text',
     defaultMessage: 'Text color',
   },
-  bannerOverlayColor: {
-    id: 'app.containers.AdminPage.SettingsPage.bannerOverlayColor',
-    defaultMessage: 'Banner overlay color',
+  imageOverlayColor: {
+    id: 'app.containers.AdminPage.SettingsPage.imageOverlayColor',
+    defaultMessage: 'Image overlay color',
   },
-  bannerOverlayOpacity: {
-    id: 'app.containers.AdminPage.SettingsPage.bannerOverlayOpacity',
-    defaultMessage: 'Banner overlay opacity',
+  imageOverlayOpacity: {
+    id: 'app.containers.AdminPage.SettingsPage.imageOverlayOpacity',
+    defaultMessage: 'Image overlay opacity',
   },
   logo: {
     id: 'app.containers.AdminPage.SettingsPage.logo',
@@ -117,7 +117,7 @@ export default defineMessages({
   },
   bannerHeaderSignedOut: {
     id: 'app.containers.AdminPage.SettingsPage.bannerHeaderSignedOut',
-    defaultMessage: 'Banner header for non-signed in visitors',
+    defaultMessage: 'Header text for non-registered visitors',
   },
   bannerHeaderSignedOutTooltip: {
     id: 'app.containers.AdminPage.SettingsPage.bannerHeaderSignedOutTooltip',
@@ -130,7 +130,7 @@ export default defineMessages({
   },
   bannerHeaderSignedOutSubtitle: {
     id: 'app.containers.AdminPage.SettingsPage.bannerHeaderSignedOutSubtitle',
-    defaultMessage: 'Banner sub-header for non-signed in visitors',
+    defaultMessage: 'Sub-header text for non-registered visitors',
   },
   subtitleMaxCharError: {
     id: 'app.containers.AdminPage.SettingsPage.subtitleMaxCharError',
@@ -208,7 +208,7 @@ export default defineMessages({
   },
   bannerHeaderSignedIn: {
     id: 'app.components.AdminPage.SettingsPage.bannerHeaderSignedIn',
-    defaultMessage: 'Banner header for signed-in users',
+    defaultMessage: 'Header text for registered users',
   },
   projects_header: {
     id: 'app.containers.AdminPage.SettingsPage.projects_header',
