@@ -3,11 +3,16 @@
 ## <% if @module_name.present? %><%= @module_name.camelize %>::<% end %><%= class_name %>Finder.find
 class <% if @module_name.present? %><%= @module_name.camelize %>::<% end %><%= class_name %>Finder < ApplicationFinder
   default_sort :created_at
-  sortable_attributes %w[]
-  sort_scopes({})
+  sortable_attributes 'created_at'
+  sort_scope 'new', created_at: :desc
 <% unless methods.present? %>end<% else %>
   private
-
-  <% if methods.length == 1 %>def <%= methods.last %>; end<% else %><% methods[0..-2].each do |method| %>def <%= method %>; end<% end %>
-  def <%= methods.last %>; end<% end %>
+  <% if methods.length > 1 %><% methods[0..-2].each do |method| %>
+  def <%= method %>_condition(<%= method %>)
+    # your filtering logic for params[:<%= method %>] (<%= method %> == params[:<%= method %>])
+  end
+  <% end %>
+  def <%= methods.last %>_condition(<%= methods.last %>)
+    # your filtering logic for params[:<%= methods.last %>] (<%= methods.last %> == params[:<%= methods.last %>])
+  end<% end %>
 end<% end %>

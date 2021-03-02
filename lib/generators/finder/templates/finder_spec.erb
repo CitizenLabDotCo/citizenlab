@@ -4,22 +4,38 @@ require 'rails_helper'
 
 describe <% if @module_name.present? %><%= @module_name.camelize %>::<% end %><%= class_name %>Finder do
   subject(:result) { described_class.find(params, **options) }
+
   let(:params) { {} }
   let(:options) { {} }
+  let(:result_record_ids) { result.records.pluck(:id) }
 
   before do
     create_list(:<%= class_name.underscore.singularize %>, 5)
   end
 
-  describe '#find' do
-    context 'When no params or options are received' do
-      it 'is successful' do
-        expect(result).to be_a_success
-      end
+  context 'when no params or options are received' do
+    it 'is successful' do
+      expect(result).to be_a_success
+    end
 
-      it 'returns all' do
-        expect(result.count).to eq <%= class_name.singularize %>.count
-      end
+    it 'returns all' do
+      expect(result.count).to eq <%= class_name.singularize %>.count
     end
   end
-end
+<% methods.each do |method| %>
+  describe '#<%= method %>_condition' do
+    let(:expected_record_ids) { <% if @module_name.present? %><%= @module_name.camelize %>::<% end %><%= class_name.singularize %>.all.pluck(:id) }
+
+    before do
+      params[:<%= method %>] = '<%= method %>'
+    end
+
+    it 'is successful' do
+      expect(result).to be_a_success
+    end
+
+    it 'returns the correct records' do
+      expect(result_record_ids).to match_array expected_record_ids
+    end
+  end
+<% end %>end
