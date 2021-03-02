@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 module ProjectFolders
-  module MonkeyPatches
+  module Patches
     module ProjectPolicy
       module Scope
         def resolve
