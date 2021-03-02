@@ -571,7 +571,7 @@ class SettingsCustomizeTab extends PureComponent<
             </SectionField>
             <ColorPickerSectionField>
               <Label>
-                <FormattedMessage {...messages.bannerOverlayColor} />
+                <FormattedMessage {...messages.imageOverlayColor} />
               </Label>
               <ColorPickerInput
                 type="text"
@@ -584,7 +584,7 @@ class SettingsCustomizeTab extends PureComponent<
             </ColorPickerSectionField>
             <SectionField>
               <Label>
-                <FormattedMessage {...messages.bannerOverlayOpacity} />
+                <FormattedMessage {...messages.imageOverlayOpacity} />
               </Label>
               <RangeInput
                 step={1}
