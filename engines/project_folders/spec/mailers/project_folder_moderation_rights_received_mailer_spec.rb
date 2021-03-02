@@ -36,7 +36,7 @@ RSpec.describe ProjectFolders::EmailCampaigns::ProjectFolderModerationRightsRece
     end
 
     it 'assigns the message box title (title_what_can_you_do_moderator)' do
-      expect(mail.body.encoded).to match('What can you do as a folder administrator?')
+      expect(mail.body.encoded).to I18n.t('email_campaigns.project_moderation_rights_received.title_what_can_you_do_moderator')
     end
 
     it 'assigns moderate CTA' do
