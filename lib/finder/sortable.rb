@@ -3,11 +3,13 @@
 module Finder
   ## Defines the sorting methods used by a Finder.
   module Sortable
-    extend ActiveSupport::Concern
-
     def self.included(base)
       base.class_eval do
         extend ClassMethods
+
+        attr_accessor :_sort_method
+
+        delegate :_default_sort, :_default_sort_order, :_sortable_attributes, :_sort_scopes, to: :class
       end
     end
 
@@ -47,11 +49,7 @@ module Finder
       end
     end
 
-    attr_accessor :_sort_method
-
     private
-
-    delegate :_default_sort, :_default_sort_order, :_sortable_attributes, :_sort_scopes, to: :class
 
     def _sort_records
       @_sort_method = _default_sort || params[:sort]
