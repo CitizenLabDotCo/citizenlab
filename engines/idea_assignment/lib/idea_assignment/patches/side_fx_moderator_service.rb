@@ -15,4 +15,4 @@ module IdeaAssignment
   end
 end
 
-::SideFxIdeaService.prepend_if_ee('IdeaAssignment::MonkeyPatches::SideFxModeratorService')
+::SideFxIdeaService.prepend_if_ee('IdeaAssignment::Patches::SideFxModeratorService')
