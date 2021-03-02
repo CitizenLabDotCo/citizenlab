@@ -100,6 +100,18 @@ export type OutletsPropertyMap = {
       navItemConfiguration: NavItem;
     }) => void;
   };
+  'app.containers.AdminPage.projects.edit.map': {};
+  'app.containers.Admin.projects.edit.tabs.map': {
+    projectId: string;
+    formatMessage: (
+      messageDescriptor: MessageDescriptor,
+      values?: { [key: string]: MessageValue } | undefined
+    ) => string;
+    onData: (data: {
+      insertAfterTabName?: string;
+      tabConfiguration: ITab;
+    }) => void;
+  };
 };
 
 type Outlet<Props> = FunctionComponent<Props> | FunctionComponent<Props>[];

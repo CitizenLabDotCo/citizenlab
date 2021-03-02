@@ -30,7 +30,7 @@ const Item = styled.li`
   line-height: normal;
   display: flex;
   align-items: center;
-  margin-bottom: 15px;
+  padding-bottom: 15px;
   min-height: 26px;
   -webkit-column-break-inside: avoid;
   page-break-inside: avoid;
