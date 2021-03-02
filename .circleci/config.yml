@@ -60,6 +60,7 @@ jobs:
     parallelism: 4
     environment:
       RAILS_ENV: test
+      CITIZENLAB_EE: true
     steps:
       - checkout:
           path: /tmp/cl2-back
@@ -91,6 +92,7 @@ jobs:
     working_directory: /cl2_back
     environment:
       RAILS_ENV: test
+      CITIZENLAB_EE: true
     steps:
       - checkout:
           path: /tmp/cl2-back
@@ -111,6 +113,7 @@ jobs:
     working_directory: /cl2_back
     environment:
       RAILS_ENV: test
+      CITIZENLAB_EE: true
     steps:
       - checkout:
           path: /tmp/cl2-back
