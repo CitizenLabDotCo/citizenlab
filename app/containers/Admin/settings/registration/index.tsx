@@ -18,6 +18,8 @@ import AllCustomFields from './CustomFields/All';
 import {
   Section,
   SectionTitle,
+  SubSectionTitle,
+  SubSectionTitleWithDescription,
   SectionField,
   SectionDescription,
 } from 'components/admin/Section';
@@ -89,10 +91,16 @@ const SettingsRegistrationTab = (_props: Props) => {
 
     return (
       <>
+        <SectionTitle>
+          <FormattedMessage {...messages.registrationTitle} />
+        </SectionTitle>
+        <SectionDescription>
+          <FormattedMessage {...messages.registrationTabDescription} />
+        </SectionDescription>
         <SignUpFieldsSection key={'signup_fields'}>
-          <SectionTitle>
+          <SubSectionTitleWithDescription>
             <FormattedMessage {...messages.signupFormText} />
-          </SectionTitle>
+          </SubSectionTitleWithDescription>
           <SectionDescription>
             <FormattedMessage {...messages.signupFormTooltip} />
           </SectionDescription>
@@ -106,11 +114,9 @@ const SettingsRegistrationTab = (_props: Props) => {
                 onChange={handlePageOnChange('signup_helper_text')}
                 label={
                   <LabelTooltip>
-                    <FormattedMessage {...messages.firstPage} />
+                    <FormattedMessage {...messages.step1} />
                     <IconTooltip
-                      content={
-                        <FormattedMessage {...messages.firstPageTooltip} />
-                      }
+                      content={<FormattedMessage {...messages.step1Tooltip} />}
                     />
                   </LabelTooltip>
                 }
@@ -128,11 +134,9 @@ const SettingsRegistrationTab = (_props: Props) => {
                 )}
                 label={
                   <LabelTooltip>
-                    <FormattedMessage {...messages.secondPage} />
+                    <FormattedMessage {...messages.step2} />
                     <IconTooltip
-                      content={
-                        <FormattedMessage {...messages.secondPageTooltip} />
-                      }
+                      content={<FormattedMessage {...messages.step2Tooltip} />}
                     />
                   </LabelTooltip>
                 }
@@ -155,9 +159,9 @@ const SettingsRegistrationTab = (_props: Props) => {
           </form>
         </SignUpFieldsSection>
         <Section>
-          <SectionTitle>
-            <FormattedMessage {...messages.fields} />
-          </SectionTitle>
+          <SubSectionTitleWithDescription>
+            <FormattedMessage {...messages.registrationFields} />
+          </SubSectionTitleWithDescription>
           <SectionDescription>
             <FormattedMessage {...messages.subtitleRegistration} />
           </SectionDescription>

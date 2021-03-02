@@ -220,32 +220,37 @@ export default defineMessages({
   },
   signupFormText: {
     id: 'app.containers.AdminPage.SettingsPage.signupFormText',
-    defaultMessage: 'Sign-up form text',
+    defaultMessage: 'Registration helper text',
   },
   signupFormTooltip: {
     id: 'app.containers.AdminPage.SettingsPage.signupFormTooltip',
     defaultMessage: 'Add a short description at the top of the sign-up form.',
   },
-  firstPage: {
-    id: 'app.containers.AdminPage.SettingsPage.firstPage',
-    defaultMessage: 'First page',
+  step1: {
+    id: 'app.containers.AdminPage.SettingsPage.step1',
+    defaultMessage: 'Step 1 (email and password)',
   },
-  secondPage: {
-    id: 'app.containers.AdminPage.SettingsPage.secondPage',
-    defaultMessage: 'Second page',
+  step2: {
+    id: 'app.containers.AdminPage.SettingsPage.step2',
+    defaultMessage: 'Step 2 (registration questions)',
   },
-  firstPageTooltip: {
-    id: 'app.containers.AdminPage.SettingsPage.firstPageTooltip',
+  step1Tooltip: {
+    id: 'app.containers.AdminPage.SettingsPage.step1Tooltip',
     defaultMessage:
       'This is shown on the top of the first page of the sign-up form (name, email, password).',
   },
-  secondPageTooltip: {
-    id: 'app.containers.AdminPage.SettingsPage.secondPageTooltip',
+  step2Tooltip: {
+    id: 'app.containers.AdminPage.SettingsPage.step2Tooltip',
     defaultMessage:
       'This is shown on the top of the second page of the sign-up form (additional registration fields).',
   },
-  fields: {
-    id: 'app.containers.AdminPage.SettingsPage.fields',
-    defaultMessage: 'Fields',
+  registrationFields: {
+    id: 'app.containers.AdminPage.SettingsPage.registrationFields',
+    defaultMessage: 'Registration fields',
+  },
+  registrationTabDescription: {
+    id: 'app.containers.AdminPage.SettingsPage.registrationTabDescription',
+    defaultMessage:
+      'Provide a short description at the top of your registration form. Add and configure the registration fields for your platform.',
   },
 });
