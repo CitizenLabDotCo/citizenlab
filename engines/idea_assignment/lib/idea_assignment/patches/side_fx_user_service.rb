@@ -18,4 +18,4 @@ module IdeaAssignment
   end
 end
 
-::SideFxUserService.prepend_if_ee('IdeaAssignment::MonkeyPatches::SideFxUserService')
+::SideFxUserService.prepend_if_ee('IdeaAssignment::Patches::SideFxUserService')
