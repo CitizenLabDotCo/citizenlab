@@ -18,7 +18,6 @@ import AllCustomFields from './CustomFields/All';
 import {
   Section,
   SectionTitle,
-  SubSectionTitle,
   SubSectionTitleWithDescription,
   SectionField,
   SectionDescription,
