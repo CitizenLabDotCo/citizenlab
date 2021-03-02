@@ -145,6 +145,7 @@ gem 'intercom', '~> 4.1'
 gem 'mjml-rails', '~> 4.4'
 
 gem 'admin_api', path: 'engines/admin_api'
+gem 'custom_style', path: 'engines/custom_style'
 gem 'email_campaigns', path: 'engines/email_campaigns'
 gem 'frontend', path: 'engines/frontend'
 gem 'geographic_dashboard', path: 'engines/geographic_dashboard'
