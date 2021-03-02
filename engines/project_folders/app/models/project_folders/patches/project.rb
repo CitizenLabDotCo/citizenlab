@@ -76,15 +76,15 @@ module ProjectFolders
       end
 
       def new_folder_moderators
-        return User.none unless folder&.id
+        return ::User.none unless folder&.id
 
-        User.project_folder_moderator(folder&.id)
+        ::User.project_folder_moderator(folder&.id)
       end
 
       def old_folder_moderators
-        return User.none unless folder_was.is_a?(ProjectFolders::Folder)
+        return ::User.none unless folder_was.is_a?(ProjectFolders::Folder)
 
-        User.project_folder_moderator(folder_was.id)
+        ::User.project_folder_moderator(folder_was.id)
       end
     end
   end
