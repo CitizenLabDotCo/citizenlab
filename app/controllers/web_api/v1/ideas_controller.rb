@@ -10,7 +10,7 @@ class WebApi::V1::IdeasController < ApplicationController
   def index
     @result = IdeasFinder.find(
       params,
-      authorize_with: current_user,
+      scope: policy_scope(Idea).where(publication_status: 'published'),
       includes: [
         :idea_images, :idea_trending_info,
         {
@@ -20,7 +20,7 @@ class WebApi::V1::IdeasController < ApplicationController
         }
       ]
     )
-    @ideas = @result.records.where(publication_status: 'published')
+    @ideas = @result.records
 
     render json: linked_json(@ideas, WebApi::V1::IdeaSerializer, serialization_options)
   end
@@ -28,10 +28,10 @@ class WebApi::V1::IdeasController < ApplicationController
   def index_mini
     @result = IdeasFinder.find(
       params,
-      authorize_with: current_user,
+      scope: policy_scope(Idea).where(publication_status: 'published'),
       includes: %i[idea_trending_info]
     )
-    @ideas = @result.records.where(publication_status: 'published')
+    @ideas = @result.records
 
     render json: linked_json(@ideas, WebApi::V1::IdeaMiniSerializer, params: fastjson_params(pcs: ParticipationContextService.new))
   end
@@ -39,9 +39,9 @@ class WebApi::V1::IdeasController < ApplicationController
   def index_idea_markers
     @ideas = IdeasFinder.find(
       params,
-      authorize_with: current_user,
+      scope: policy_scope(Idea).where(publication_status: 'published'),
       includes: %i[author topics areas project idea_status idea_files]
-    ).records.where(publication_status: 'published')
+    ).records
 
     render json: linked_json(@ideas, WebApi::V1::PostMarkerSerializer, params: fastjson_params)
   end
@@ -49,10 +49,10 @@ class WebApi::V1::IdeasController < ApplicationController
   def index_xlsx
     @result = IdeasFinder.find(
       params,
-      authorize_with: current_user,
+      scope: policy_scope(Idea).where(publication_status: 'published'),
       includes: %i[author topics areas project idea_status idea_files]
     )
-    @ideas = @result.records.where(publication_status: 'published')
+    @ideas = @result.records
 
     I18n.with_locale(current_user&.locale) do
       xlsx = XlsxService.new.generate_ideas_xlsx @ideas, view_private_attributes: Pundit.policy!(current_user, User).view_private_attributes?
@@ -63,10 +63,10 @@ class WebApi::V1::IdeasController < ApplicationController
   def index_with_tags_xlsx
     @result = IdeasFinder.find(
       params,
-      authorize_with: current_user,
+      scope: policy_scope(Idea).where(publication_status: 'published'),
       includes: %i[author topics areas project idea_status idea_files]
     )
-    @ideas = @result.records.where(publication_status: 'published')
+    @ideas = @result.records
 
     I18n.with_locale(current_user&.locale) do
       xlsx = XlsxService.new.generate_ideas_xlsx @ideas, view_private_attributes: Pundit.policy!(current_user, User).view_private_attributes?, with_tags: true
