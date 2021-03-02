@@ -345,18 +345,4 @@ describe InitiativesFinder do
       expect(record_ids).to match_array Initiative.where(id: ids).pluck(:id)
     end
   end
-
-  context 'with authorize options' do
-    let(:user) { create(:user) }
-    let(:params) { {} }
-    let(:options) { { authorize_with: user } }
-
-    it 'is successful' do
-      expect(result).to be_a_success
-    end
-
-    it 'returns the initiatives visible to the user' do
-      expect(result.records).to match_array Pundit.policy_scope(user, Initiative)
-    end
-  end
 end
