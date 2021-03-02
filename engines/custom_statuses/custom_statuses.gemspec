@@ -7,7 +7,7 @@ require "custom_statuses/version"
 Gem::Specification.new do |s|
   s.name        = "custom_statuses"
   s.version     = CustomStatuses::VERSION
-  s.authors     = ["Citizenlab"]
+  s.authors     = ["CitizenLab"]
   s.email       = ["developers@citizenlab.co"]
   s.summary     = "Allows customization of the idea and initiative statuses by exposing the #create, #update and #destroy actions for the statuses' endpoints"
 
