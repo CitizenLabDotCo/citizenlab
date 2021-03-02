@@ -1,5 +1,15 @@
 # Changelog
 
+## Next release
+
+### Fixed
+
+- Don't show empty space inside of the idea card when no avatar is present
+
+### Changed
+
+- Improved layout of project event listings on mobile devices
+
 ## 2021-02-26
 
 ### Fixed

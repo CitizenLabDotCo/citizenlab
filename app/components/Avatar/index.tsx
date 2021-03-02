@@ -135,6 +135,7 @@ const Avatar = memo(
     ...props
   }: Props & InjectedIntlProps) => {
     const user = useUser({ userId });
+
     if (!isNilOrError(user)) {
       const { slug, avatar, verified } = user.attributes;
       const profileLink = `/profile/${slug}`;
@@ -155,10 +156,13 @@ const Avatar = memo(
       const borderColor = props.borderColor || 'transparent';
       const bgColor = props.bgColor || 'transparent';
 
-      const avatarComponentMainContent = getAvatarComponentMainContent();
-      function getAvatarComponentMainContent() {
-        if (avatarSrc) {
-          return (
+      if (!avatarSrc && hideIfNoAvatar) {
+        return null;
+      }
+
+      const AvatarComponent = (
+        <Container aria-hidden className={className} size={containerSize}>
+          {avatarSrc && (
             <AvatarImage
               className={`avatarImage ${
                 hasHoverEffect ? 'hasHoverEffect' : ''
@@ -174,9 +178,9 @@ const Avatar = memo(
               bgColor={bgColor}
               padding={padding}
             />
-          );
-        } else if (!hideIfNoAvatar) {
-          return (
+          )}
+
+          {!avatarSrc && !hideIfNoAvatar && (
             <AvatarIcon
               className={`avatarIcon ${hasHoverEffect ? 'hasHoverEffect' : ''}`}
               name="user"
@@ -191,14 +195,8 @@ const Avatar = memo(
               bgColor={bgColor}
               padding={padding}
             />
-          );
-        } else {
-          return null;
-        }
-      }
-      const AvatarComponent = (
-        <Container aria-hidden className={className} size={containerSize}>
-          {avatarComponentMainContent}
+          )}
+
           {moderator && (
             <BadgeIcon
               name="clShield"
