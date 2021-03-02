@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'callable'
-require 'finder/authorization'
 require 'finder/error'
 require 'finder/helpers'
 require 'finder/inflectors'
@@ -11,7 +10,6 @@ module Finder
   ## Finder::Base
   class Base
     include Callable
-    include Finder::Authorization
     include Finder::Helpers
     include Finder::Inflectors
     include Finder::Sortable
@@ -19,16 +17,16 @@ module Finder
     ## You can now use #find instead of call.
     callable_with :find, error_class: Finder::Error, default_error: 'Something went wrong'
 
-    def initialize(params, scope: nil, includes: [], **options)
+    def initialize(params, scope: nil, includes: [], current_user: nil)
       @params            = params.respond_to?(:permit!) ? params.permit! : params
-      @options           = options
+      @current_user      = current_user
       @base_scope        = scope || _base_scope
       @records           = @base_scope.includes(includes)
     end
 
     protected
 
-    attr_reader :params, :records, :options
+    attr_reader :params, :records, :current_user
 
     delegate :table_name, to: :_klass
 
@@ -44,7 +42,6 @@ module Finder
 
     def do_find
       _abort_if_records_class_invalid
-      _authorize_records
       _filter_records
       _sort_records
       _paginate_records
