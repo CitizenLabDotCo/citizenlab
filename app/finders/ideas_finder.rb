@@ -4,8 +4,6 @@
 class IdeasFinder < ApplicationFinder
   sortable_attributes 'ideas.upvotes_count', 'ideas.downvotes_count', 'ideas.baskets_count'
 
-  delegate :sort_trending, to: :_trending_service
-
   sort_scope 'new',          order_new: :desc
   sort_scope '-new',         order_new: :asc
   sort_scope 'popular',      order_popular: :desc
@@ -77,9 +75,5 @@ class IdeasFinder < ApplicationFinder
 
   def _search_restricted?
     UserDisplayNameService.new(AppConfiguration.instance, current_user).restricted?
-  end
-
-  def _trending_service
-    @_trending_service ||= TrendingIdeaService.new
   end
 end
