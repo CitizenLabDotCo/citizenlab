@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { IProjectData } from 'services/projects';
 import styled from 'styled-components';
 
