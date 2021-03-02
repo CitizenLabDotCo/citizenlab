@@ -235,7 +235,7 @@ class SettingsCustomizeTab extends PureComponent<
       }
     });
 
-    this.handleCoreMultilocSettingOnChange('header_title');
+    this.handleCoreMultilocSettingOnChange('header_title')(titleMultiloc);
     this.setState({
       titleError,
     });
@@ -251,7 +251,7 @@ class SettingsCustomizeTab extends PureComponent<
       }
     });
 
-    this.handleCoreMultilocSettingOnChange('header_slogan');
+    this.handleCoreMultilocSettingOnChange('header_slogan')(subtitleMultiloc);
     this.setState({
       subtitleError,
     });
