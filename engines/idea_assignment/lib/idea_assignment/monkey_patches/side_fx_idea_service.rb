@@ -30,4 +30,4 @@ module IdeaAssignment
   end
 end
 
-::SideFxIdeaService.prepend(MonkeyPatches::SideFxIdeaService)
+::SideFxIdeaService.prepend(IdeaAssignment::MonkeyPatches::SideFxIdeaService)

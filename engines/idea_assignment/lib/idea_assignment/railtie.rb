@@ -7,5 +7,9 @@ module IdeaAssignment
     end
 
     config.to_prepare(&method(:activate).to_proc)
+
+    config.to_prepare do
+      AppConfiguration::Settings.add_feature(IdeaAssignment::FeatureSpecification)
+    end
   end
 end
