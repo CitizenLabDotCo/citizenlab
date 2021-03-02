@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'callable'
-require 'finder/authorization'
 require 'finder/error'
 require 'finder/helpers'
 require 'finder/inflectors'
