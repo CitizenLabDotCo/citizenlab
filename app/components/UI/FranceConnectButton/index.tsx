@@ -5,12 +5,30 @@ import { fontSizes } from 'utils/styleUtils';
 import messages from './messages';
 import FranceConnectLogo from './FranceConnectLogo';
 import { ScreenReaderOnly } from 'utils/a11y';
+import { colors } from 'utils/styleUtils';
 
 const FranceConnectButtonWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  margin-bottom: 20px;
+  align-items: center;
+  padding: 20px;
+  background: ${colors.background};
+  border-radius: ${(props) => props.theme.borderRadius};
+`;
+
+const FranceConnectTitle = styled.p`
+  color: ${(props: any) => props.theme.colorText};
+  font-size: ${fontSizes.base}px;
+  text-align: center;
+  font-weight: bold;
+  margin-bottom: 4px;
+`;
+
+const FranceConnectSubTitle = styled.p`
+  color: ${(props: any) => props.theme.colorText};
+  font-size: ${fontSizes.base}px;
+  text-align: center;
+  margin-bottom: 2rem;
 `;
 
 const FranceConnectButtonLink = styled.button`
@@ -59,6 +77,16 @@ interface Props {
 const FranceConnectButton = ({ onClick, logoAlt }: Props): ReactElement => {
   return (
     <FranceConnectButtonWrapper>
+      <FranceConnectTitle>
+        <FormattedMessage
+          {...messages.useFranceConnectToLoginCreateOrVerifyYourAccount}
+        />
+      </FranceConnectTitle>
+      <FranceConnectSubTitle>
+        <FormattedMessage
+          {...messages.franceConnectIsTheSolutionProposedByTheGovernment}
+        />
+      </FranceConnectSubTitle>
       <FranceConnectButtonLink onClick={onClick}>
         <FranceConnectLogo />
         <ScreenReaderOnly>{logoAlt}</ScreenReaderOnly>
