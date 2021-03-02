@@ -1,4 +1,4 @@
-module MonkeyPatches
+module Extensions
   module WebApi
     module V1
       module IdeaSerializer
@@ -15,4 +15,4 @@ module MonkeyPatches
   end
 end
 
-::WebApi::V1::IdeaSerializer.prepend(MonkeyPatches::WebApi::V1::IdeaSerializer)
+::WebApi::V1::IdeaSerializer.include(Extensions::WebApi::V1::IdeaSerializer)
