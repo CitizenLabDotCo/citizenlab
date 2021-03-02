@@ -1,5 +1,5 @@
 class ApplicationPolicy
-  include CitizenLab::ExtendablePolicy
+  include ExtendablePolicy
 
   attr_reader :user, :record
 
