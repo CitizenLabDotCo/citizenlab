@@ -8,7 +8,7 @@
   "UI.FormComponents.required": "required",
   "app.ccomponents.InitiativeCards.noInitiativesForFilter": "{tenantName, select, stirlingcouncil {No petitions found} other {No proposals found}}",
   "app.components.AdminPage.SettingsPage.bannerHeaderSignedIn": "Header text for registered users",
-  "app.components.AdminPage.SettingsPage.contrastRatioTooLow": "Warning: the colourr you selected doesn't have a high enough contrast. This may result in text that's hard to read. Choose a darker colour to optimise readability.",
+  "app.components.AdminPage.SettingsPage.contrastRatioTooLow": "Warning: the colour you selected doesn't have a high enough contrast. This may result in text that's hard to read. Choose a darker colour to optimise readability.",
   "app.components.AdminPage.SettingsPage.customSectionLabel": "Content",
   "app.components.AdminPage.SettingsPage.homePageCustomizableSection": "Homepage customisable section",
   "app.components.AdminPage.SettingsPage.homePageCustomizableSectionTooltip": "This empty section at the bottom of the homepage can be customised with your own images, text and links.",
