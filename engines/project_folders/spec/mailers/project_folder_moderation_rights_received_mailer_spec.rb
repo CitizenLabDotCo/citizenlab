@@ -35,8 +35,8 @@ RSpec.describe ProjectFolders::EmailCampaigns::ProjectFolderModerationRightsRece
       expect(mail.from).to all(end_with('@citizenlab.co'))
     end
 
-    it 'assigns the message box title (title_what_can_you_do_moderator)' do
-      title = I18n.t('email_campaigns.project_moderation_rights_received.title_what_can_you_do_moderator')
+    it 'assigns the message box title (title_what_can_you_do_folderadmin)' do
+      title = I18n.t('email_campaigns.project_folder_moderation_rights_received.title_what_can_you_do_folderadmin')
       expect(mail.body.encoded).to match(title)
     end
 
