@@ -14,5 +14,3 @@ module IdeaAssignment
     end
   end
 end
-
-::SideFxIdeaService.prepend_if_ee('IdeaAssignment::Patches::SideFxModeratorService')

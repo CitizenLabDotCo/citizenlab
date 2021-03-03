@@ -77,3 +77,5 @@ class IdeasFinder < ApplicationFinder
     UserDisplayNameService.new(AppConfiguration.instance, current_user).restricted?
   end
 end
+
+IdeasFinder.include_if_ee('IdeaAssignment::Extensions::IdeasFinder')

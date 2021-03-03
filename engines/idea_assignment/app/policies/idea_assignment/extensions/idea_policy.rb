@@ -9,5 +9,3 @@ module IdeaAssignment
     end
   end
 end
-
-IdeaPolicy.include_if_ee('IdeaAssignment::Extensions::IdeaPolicy')

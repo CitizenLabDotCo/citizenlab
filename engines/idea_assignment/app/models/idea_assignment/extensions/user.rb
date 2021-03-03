@@ -9,5 +9,3 @@ module IdeaAssignment
     end
   end
 end
-
-User.include_if_ee('IdeaAssignment::Extensions::User')

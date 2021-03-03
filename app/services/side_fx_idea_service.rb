@@ -100,3 +100,5 @@ class SideFxIdeaService
     Seo::ScrapeFacebookJob.perform_later(url)
   end
 end
+
+::SideFxIdeaService.prepend_if_ee('IdeaAssignment::Patches::SideFxIdeaService')

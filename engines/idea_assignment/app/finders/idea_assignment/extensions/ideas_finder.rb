@@ -7,5 +7,3 @@ module IdeaAssignment
     end
   end
 end
-
-IdeasFinder.include_if_ee('IdeaAssignment::Extensions::IdeasFinder')
