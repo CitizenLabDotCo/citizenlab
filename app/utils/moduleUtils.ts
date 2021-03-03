@@ -85,6 +85,9 @@ export type OutletsPropertyMap = {
   'app.containers.Admin.project.edit.permissions': {
     project: IProjectData;
   };
+  'app.containers.Admin.project.edit.permissions.inputAssignment': {
+    projectId: string;
+  };
   'app.containers.Admin.initiatives.tabs': {
     formatMessage: (
       messageDescriptor: MessageDescriptor,
