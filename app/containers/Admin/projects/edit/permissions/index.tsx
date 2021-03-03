@@ -23,6 +23,7 @@ import {
 import Moderators from './Moderators';
 import IdeaAssignment from './IdeaAssignment';
 import Link from 'utils/cl-router/Link';
+import Outlet from 'components/Outlet';
 
 // services
 import { projectByIdStream, updateProject, IProject } from 'services/projects';
@@ -44,7 +45,6 @@ import GetFeatureFlag, {
 // style
 import styled from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
-import Outlet from 'components/Outlet';
 
 const StyledSection = styled(Section)`
   margin-bottom: 50px;
@@ -421,6 +421,10 @@ class ProjectPermissions extends PureComponent<
                   <IdeaAssignment projectId={projectId} />
                 </IdeaAssignmentSection>
               )}
+              <Outlet
+                id="app.containers.Admin.project.edit.permissions.inputAssignment"
+                projectId={project.data.id}
+              />
             </StyledSection>
           )}
         </>

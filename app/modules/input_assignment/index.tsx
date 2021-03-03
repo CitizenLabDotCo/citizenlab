@@ -1,7 +1,7 @@
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import React, { ReactNode } from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
-import IdeaAssignment from './admin/components/IdeaAssignment';
+import InputAssignment from './admin/containers';
 
 type RenderOnFeatureFlagProps = {
   children: ReactNode;
@@ -19,9 +19,11 @@ const RenderOnFeatureFlag = ({ children }: RenderOnFeatureFlagProps) => {
 
 const configuration: ModuleConfiguration = {
   outlets: {
-    'app.containers.Admin.project.edit.permissions.ideaAssignment': (props) => (
+    'app.containers.Admin.project.edit.permissions.inputAssignment': (
+      props
+    ) => (
       <RenderOnFeatureFlag>
-        <IdeaAssignment {...props} />
+        <InputAssignment {...props} />
       </RenderOnFeatureFlag>
     ),
   },
