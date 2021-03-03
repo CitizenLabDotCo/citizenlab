@@ -1,5 +1,5 @@
 // Libraries
-import React, { PureComponent } from 'react';
+import React, { memo, useState } from 'react';
 import { get } from 'lodash-es';
 import { first } from 'rxjs/operators';
 import { isNilOrError, isNonEmptyString } from 'utils/helperUtils';
@@ -7,9 +7,6 @@ import { isNilOrError, isNonEmptyString } from 'utils/helperUtils';
 // Services
 import { findMembership, addMembership } from 'services/moderators';
 import { IGroupMembershipsFoundUserData } from 'services/groupMemberships';
-
-// Resources
-import { GetModeratorsChildProps } from 'resources/GetModerators';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -26,6 +23,7 @@ import selectStyles from 'components/UI/MultipleSelect/styles';
 
 // Typings
 import { IOption } from 'typings';
+import useModerators from 'modules/project_management/hooks/useProjectManagers';
 
 const Container = styled.div`
   width: 100%;
@@ -55,112 +53,98 @@ interface Props {
   projectId: string;
 }
 
-interface State {
-  selection: IOption[];
-  loading: boolean;
-  processing: boolean;
-  searchInput: string;
-}
-
 function isModerator(user: IGroupMembershipsFoundUserData) {
   return get(user.attributes, 'is_moderator') !== undefined;
 }
 
-class MembersAdd extends PureComponent<Props & InjectedIntlProps, State> {
-  constructor(props: Props & InjectedIntlProps) {
-    super(props);
-    this.state = {
-      selection: [],
-      loading: false,
-      processing: false,
-      searchInput: '',
-    };
-  }
+const UserSearch = memo(
+  ({ projectId, intl: { formatMessage } }: Props & InjectedIntlProps) => {
+    const [selection, setSelection] = useState<IOption[]>([]);
+    const [loading, setLoading] = useState(false);
+    const [processing, setProcessing] = useState(false);
+    const [searchInput, setSearchInput] = useState('');
+    const moderators = useModerators(projectId);
 
-  getOptions = (users: IGroupMembershipsFoundUserData[]) => {
-    return users
-      .filter((user) => {
-        let userIsNotYetModerator = true;
-        const { moderators } = this.props;
+    const getOptions = (users: IGroupMembershipsFoundUserData[]) => {
+      return users
+        .filter((user) => {
+          let userIsNotYetModerator = true;
 
-        if (!isNilOrError(moderators)) {
-          moderators.forEach((moderator) => {
-            if (moderator.id === user.id) {
-              userIsNotYetModerator = false;
-            }
-          });
-        }
+          if (!isNilOrError(moderators)) {
+            moderators.forEach((moderator) => {
+              if (moderator.id === user.id) {
+                userIsNotYetModerator = false;
+              }
+            });
+          }
 
-        return userIsNotYetModerator;
-      })
-      .map((user) => {
-        return {
-          value: user.id,
-          label: `${user.attributes.first_name} ${user.attributes.last_name}`,
-          email: `${user.attributes.email}`,
-          disabled: isModerator(user)
-            ? get(user.attributes, 'is_moderator')
-            : get(user.attributes, 'is_member'),
-        };
-      });
-  };
-
-  loadOptions = (inputValue: string, callback) => {
-    if (inputValue) {
-      this.setState({ loading: true });
-
-      findMembership(this.props.projectId, {
-        queryParameters: {
-          search: inputValue,
-        },
-      })
-        .observable.pipe(first())
-        .subscribe((response) => {
-          const options = this.getOptions(response.data);
-          this.setState({ loading: false });
-          callback(options);
+          return userIsNotYetModerator;
+        })
+        .map((user) => {
+          return {
+            value: user.id,
+            label: `${user.attributes.first_name} ${user.attributes.last_name}`,
+            email: `${user.attributes.email}`,
+            disabled: isModerator(user)
+              ? get(user.attributes, 'is_moderator')
+              : get(user.attributes, 'is_member'),
+          };
         });
-    }
-  };
+    };
 
-  handleOnChange = async (selection: IOption[]) => {
-    this.setState({ selection });
-  };
+    const loadOptions = (inputValue: string, callback) => {
+      if (inputValue) {
+        setLoading(true);
 
-  handleOnAddModeratorsClick = async () => {
-    const { selection } = this.state;
-
-    if (selection && selection.length > 0) {
-      this.setState({ processing: true });
-      const promises = selection.map((item) =>
-        addMembership(this.props.projectId, item.value)
-      );
-
-      try {
-        await Promise.all(promises);
-        this.setState({ selection: [], processing: false });
-      } catch {
-        this.setState({ selection: [], processing: false });
+        findMembership(projectId, {
+          queryParameters: {
+            search: inputValue,
+          },
+        })
+          .observable.pipe(first())
+          .subscribe((response) => {
+            const options = getOptions(response.data);
+            setLoading(false);
+            callback(options);
+          });
       }
-    }
-  };
+    };
 
-  setSearchInput = (inputValue: string) => {
-    this.setState({ searchInput: inputValue });
-  };
+    const handleOnChange = async (selection: IOption[]) => {
+      setSelection(selection);
+    };
 
-  noOptionsMessage = (inputValue: string) => {
-    if (!isNonEmptyString(inputValue)) {
-      return null;
-    }
-    return this.props.intl.formatMessage(messages.noOptions);
-  };
+    const handleOnAddModeratorsClick = async () => {
+      if (selection && selection.length > 0) {
+        setProcessing(true);
+        const promises = selection.map((item) =>
+          addMembership(projectId, item.value)
+        );
 
-  render() {
-    const { selection, searchInput } = this.state;
-    const { formatMessage } = this.props.intl;
+        try {
+          await Promise.all(promises);
+          setSelection([]);
+          setProcessing(false);
+        } catch {
+          setSelection([]);
+          setProcessing(false);
+        }
+      }
+    };
+
+    const handleSearchInputOnChange = (inputValue: string) => {
+      setSearchInput(inputValue);
+    };
+
+    const noOptionsMessage = (inputValue: string) => {
+      if (!isNonEmptyString(inputValue)) {
+        return null;
+      }
+      return formatMessage(messages.noOptions);
+    };
 
     const isDropdownIconHidden = !isNonEmptyString(searchInput);
+
     return (
       <Container>
         <SelectGroupsContainer>
@@ -169,15 +153,15 @@ class MembersAdd extends PureComponent<Props & InjectedIntlProps, State> {
             isMulti={true}
             cacheOptions={false}
             defaultOptions={false}
-            loadOptions={this.loadOptions}
-            isLoading={this.state.loading}
-            isDisabled={this.state.processing}
+            loadOptions={loadOptions}
+            isLoading={loading}
+            isDisabled={processing}
             value={selection}
-            onChange={this.handleOnChange}
+            onChange={handleOnChange}
             placeholder={formatMessage(messages.searchUsers)}
             styles={selectStyles}
-            noOptionsMessage={this.noOptionsMessage}
-            onInputChange={this.setSearchInput}
+            noOptionsMessage={noOptionsMessage}
+            onInputChange={handleSearchInputOnChange}
             components={
               isDropdownIconHidden && {
                 DropdownIndicator: () => null,
@@ -190,14 +174,14 @@ class MembersAdd extends PureComponent<Props & InjectedIntlProps, State> {
             buttonStyle="cl-blue"
             icon="plus-circle"
             padding="13px 16px"
-            onClick={this.handleOnAddModeratorsClick}
+            onClick={handleOnAddModeratorsClick}
             disabled={!selection || selection.length === 0}
-            processing={this.state.processing}
+            processing={processing}
           />
         </SelectGroupsContainer>
       </Container>
     );
   }
-}
+);
 
-export default injectIntl<Props>(MembersAdd);
+export default injectIntl(UserSearch);
