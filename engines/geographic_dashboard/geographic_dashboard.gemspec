@@ -7,10 +7,9 @@ require 'geographic_dashboard/version'
 Gem::Specification.new do |spec|
   spec.name        = 'geographic_dashboard'
   spec.version     = GeographicDashboard::VERSION
-  spec.authors     = ['']
-  spec.email       = ['']
+  spec.authors     = ['CitizenLab']
+  spec.email       = ['developers@citizenlab.co']
   spec.summary     = 'The Engine responsible for geotagging ideas.'
-  spec.license     = 'MIT'
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
   # to allow pushing to a single host or delete this section to allow pushing to any host.
