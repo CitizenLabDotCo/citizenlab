@@ -48,9 +48,7 @@ module Finder
         @_sort_scopes ||= {}.with_indifferent_access
       end
     end
-
-    attr_accessor :_sort_method
-
+    
     private
 
     def _sort_records
