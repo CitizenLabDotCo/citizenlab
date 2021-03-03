@@ -54,9 +54,9 @@ ActiveRecord::Schema.define(version: 2021_02_11_144443) do
     t.string "header_bg"
     t.string "favicon"
     t.jsonb "settings", default: {}
-    t.jsonb "style", default: {}
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.jsonb "style", default: {}
   end
 
   create_table "areas", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
