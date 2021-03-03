@@ -151,3 +151,5 @@ module Frontend
 
   end
 end
+
+Frontend::UrlService.prepend_if_ee('ProjectFolders::Extensions::Frontend::UrlService')
