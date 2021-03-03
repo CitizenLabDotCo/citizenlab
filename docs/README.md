@@ -1,8 +1,12 @@
 # Changelog
 
-## Next release
+### Next Release
 
-/
+
+## 2021-03-03
+
+### Added
+- Users are now notified in app and via email when they're assigned as folder administrators.
 
 ## 2021-03-02
 
