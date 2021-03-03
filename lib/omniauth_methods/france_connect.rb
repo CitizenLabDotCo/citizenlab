@@ -30,7 +30,7 @@ module OmniauthMethods
         response_type: :code,
         state: true, # required by France connect
         nonce: true, # required by France connect
-        issuer: "https://#{host}", # the integration env is now using 'https'
+        issuer: issuer, # the integration env is now using 'https'
         client_auth_method: 'Custom', # France connect does not use BASIC authentication
         acr_values: 'eidas1',
         client_signing_alg: :HS256, # hashing function of France Connect
@@ -72,6 +72,10 @@ module OmniauthMethods
       when "production" then
         'app.franceconnect.gouv.fr'
       end
+    end
+
+    def issuer
+      "https://#{host}"
     end
 
     def updateable_user_attrs
