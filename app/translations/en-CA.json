@@ -1450,7 +1450,7 @@
   "app.containers.AdminPage.SettingsPage.step2Tooltip": "",
   "app.containers.AdminPage.SettingsPage.subtitleAreas": "Define the geographic areas that you would like to use for your platform, such as neighborhoods, boroughs or districts. You can associate these geographic areas with projects (filterable on the landing page) or ask participants to select their area of residence as a registration field to create Smart Groups and define access rights.",
   "app.containers.AdminPage.SettingsPage.subtitleBasic": "Choose how people will see your organization name, select the languages of your platform and link to your website.",
-  "app.containers.AdminPage.SettingsPage.subtitleCustomize": "Apply your own style and add personal messages.",
+  "app.containers.AdminPage.SettingsPage.subtitleHomepageStyle": "",
   "app.containers.AdminPage.SettingsPage.subtitleMaxCharError": "The provided subtitle exceeds the maximum allowed character limit of 90",
   "app.containers.AdminPage.SettingsPage.subtitleRegistration": "Specify what information people are asked to provide when signing up.",
   "app.containers.AdminPage.SettingsPage.subtitleTerminology": "Terminology",
