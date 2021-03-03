@@ -50,10 +50,15 @@ const StyledSection = styled(Section)`
   margin-bottom: 50px;
 `;
 
-const SubSection = styled(Section)`
-  margin-bottom: 40px;
+const ViewingRightsSection = styled(Section)`
+  margin-bottom: 30px;
 `;
-const ModeratorSubSection = styled(SubSection)`
+
+const IdeaAssignmentSection = styled(Section)`
+  margin-bottom: 30px;
+`;
+
+const ModeratorSubSection = styled(Section)`
   margin-bottom: 20px;
 `;
 
@@ -310,7 +315,7 @@ class ProjectPermissions extends PureComponent<
             </StyledSectionTitle>
 
             {(projectVisibilityEnabled || granularPermissionsEnabled) && (
-              <SubSection>
+              <ViewingRightsSection>
                 <StyledSectionField>
                   <SubSectionTitle>
                     <FormattedMessage {...messages.viewingRightsTitle} />
@@ -364,7 +369,7 @@ class ProjectPermissions extends PureComponent<
                     }}
                   />
                 )}
-              </SubSection>
+              </ViewingRightsSection>
             )}
 
             <Outlet
@@ -389,7 +394,7 @@ class ProjectPermissions extends PureComponent<
               )}
 
               {ideaAssignmentEnabled && (
-                <SubSection>
+                <IdeaAssignmentSection>
                   <SubSectionTitle>
                     <FormattedMessage
                       {...messages.inputAssignmentSectionTitle}
@@ -414,7 +419,7 @@ class ProjectPermissions extends PureComponent<
                     />
                   </SubSectionTitle>
                   <IdeaAssignment projectId={projectId} />
-                </SubSection>
+                </IdeaAssignmentSection>
               )}
             </StyledSection>
           )}

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { IProjectData } from 'services/projects';
 import styled from 'styled-components';
 
@@ -9,9 +9,9 @@ import messages from './messages';
 // components
 import Timeline from './Timeline';
 import Continuous from './Continuous';
-import { SubSection, SubSectionTitle } from 'components/admin/Section';
+import { Section, SubSectionTitle } from 'components/admin/Section';
 
-const StyledSubSection = styled(SubSection)`
+const StyledSection = styled(Section)`
   margin-bottom: 50px;
 `;
 
@@ -23,7 +23,7 @@ const Granular = ({ project }: Props) => {
   const projectId = project.id;
 
   return (
-    <StyledSubSection>
+    <StyledSection>
       <SubSectionTitle>
         <FormattedMessage {...messages.granularPermissionsTitle} />
       </SubSectionTitle>
@@ -33,7 +33,7 @@ const Granular = ({ project }: Props) => {
       {project && project.attributes.process_type === 'continuous' && (
         <Continuous projectId={projectId} />
       )}
-    </StyledSubSection>
+    </StyledSection>
   );
 };
 
