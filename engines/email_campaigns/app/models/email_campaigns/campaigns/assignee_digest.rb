@@ -61,7 +61,6 @@ module EmailCampaigns
       end
     end
 
-
     private
 
     def user_filter_admins_moderators_only users_scope, options={}
