@@ -6,12 +6,12 @@ import Button from 'components/UI/Button';
 import { List, Row } from 'components/admin/ResourceList';
 import Avatar from 'components/Avatar';
 import { isNilOrError } from 'utils/helperUtils';
-import { deleteModerator } from 'services/moderators';
+import { deleteProjectModerator } from 'modules/project_management/services/projectModerators';
 import { InjectedIntlProps } from 'react-intl';
 import styled from 'styled-components';
 
 // hooks
-import useProjectManagers from 'modules/project_management/hooks/useProjectManagers';
+import useProjectModerators from 'modules/project_management/hooks/useProjectModerators';
 import useAuthUser from 'hooks/useAuthUser';
 
 const PendingInvitation = styled.span`
@@ -28,7 +28,7 @@ interface Props {
 
 const ModeratorList = memo(
   ({ projectId, intl: { formatMessage } }: Props & InjectedIntlProps) => {
-    const moderators = useProjectManagers(projectId);
+    const moderators = useProjectModerators(projectId);
     const authUser = useAuthUser();
 
     const handleDeleteClick = (projectId: string, moderatorId: string) => (
@@ -40,7 +40,7 @@ const ModeratorList = memo(
       );
 
       if (window.confirm(deleteMessage)) {
-        deleteModerator(projectId, moderatorId);
+        deleteProjectModerator(projectId, moderatorId);
       }
     };
 

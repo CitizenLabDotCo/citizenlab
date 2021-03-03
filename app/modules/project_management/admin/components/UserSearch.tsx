@@ -5,7 +5,10 @@ import { first } from 'rxjs/operators';
 import { isNilOrError, isNonEmptyString } from 'utils/helperUtils';
 
 // Services
-import { findMembership, addMembership } from 'services/moderators';
+import {
+  findMembership,
+  addMembership,
+} from 'modules/project_management/services/projectModerators';
 import { IGroupMembershipsFoundUserData } from 'services/groupMemberships';
 
 // i18n
@@ -23,7 +26,7 @@ import selectStyles from 'components/UI/MultipleSelect/styles';
 
 // Typings
 import { IOption } from 'typings';
-import useModerators from 'modules/project_management/hooks/useProjectManagers';
+import useProjectModerators from 'modules/project_management/hooks/useProjectModerators';
 
 const Container = styled.div`
   width: 100%;
@@ -63,7 +66,7 @@ const UserSearch = memo(
     const [loading, setLoading] = useState(false);
     const [processing, setProcessing] = useState(false);
     const [searchInput, setSearchInput] = useState('');
-    const moderators = useModerators(projectId);
+    const moderators = useProjectModerators(projectId);
 
     const getOptions = (users: IGroupMembershipsFoundUserData[]) => {
       return users
