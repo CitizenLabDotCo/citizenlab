@@ -20,7 +20,7 @@ module ProjectFolders
       end
 
       def activity_triggers
-        { 'ProjectFolders::Notifications::ProjectFolderModerationRightsReceived': { 'created': true } }
+        { 'ProjectFolders::Notifications::ProjectFolderModerationRightsReceived' => { 'created' => true } }
       end
 
       def filter_notification_recipient(users_scope, activity:, **_unused_options)
@@ -29,6 +29,7 @@ module ProjectFolders
 
       def generate_commands(recipient:, activity:, **_unused_options)
         notification = activity.item
+        folder = ProjectFolders::Folder.find(activity.payload[:project_folder_id])
         [{
           event_payload: {
             project_folder_id: notification.post.id,
