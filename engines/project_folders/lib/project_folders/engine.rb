@@ -9,6 +9,8 @@ end
 
 module ProjectFolders
   class Engine < ::Rails::Engine
+    extend ClassMethods
+
     isolate_namespace ProjectFolders
 
     config.generators.api_only = true
@@ -20,21 +22,26 @@ module ProjectFolders
     config.to_prepare do
       require 'project_folders/feature_specification'
       AppConfiguration::Settings.add_feature(ProjectFolders::FeatureSpecification)
-    end
 
-    config.to_prepare do
-      next unless defined? ::Seo::ApplicationController
+      # Adding folder admin rights campaign to email campaigns.
+      if defined? ::EmailCampaigns::ApplicationCampaign
+        ::EmailCampaigns::DeliveryService.add_campaign_types(
+          ::ProjectFolders::EmailCampaigns::Campaigns::ProjectFolderModerationRightsReceived
+        )
+      end
 
-      ::Seo::ApplicationController.outlet 'seo.sitemap' do |locals|
-        folders = ProjectFolders::Folder
+      # Adding project folders to the sitemap.
+      if defined? ::Seo::ApplicationController
+        ::Seo::ApplicationController.outlet 'seo.sitemap' do |locals|
+          folders = ProjectFolders::Folder
                     .select(
                       :'project_folders_folders.id', :'project_folders_folders.slug',
                       :'project_folders_folders.updated_at', :'admin_publications.publication_status',
                       :'admin_publications.publication_type', :'admin_publications.publication_id'
                     )
-                    .includes(:admin_publication)
-                    .where(admin_publications: { publication_status: %w[published archived] })
-        { partial: 'seo/sitemap', locals: { folders: folders, **locals } }
+                    .includes(:admin_publication).where(admin_publications: { publication_status: %w[published archived] })
+          { partial: 'seo/sitemap', locals: { folders: folders, **locals } }
+        end
       end
     end
   end
