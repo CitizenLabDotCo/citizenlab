@@ -9,7 +9,7 @@
     border-radius="5px">
     <mj-text>
       <h2 style="font-size: 18px; margin-top: 10px; margin-bottom: 10px;">
-        <%= localize_for_recipient(event.project_title_multiloc) %>
+        <%= localize_for_recipient(event.project_folder_title_multiloc) %>
       </h2>
       <p style="margin-top: 10px">
         <% if event.project_folder_projects_count.zero? %>
