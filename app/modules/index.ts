@@ -10,6 +10,7 @@ import googleAnalyticsConfiguration from './google_analytics';
 import intercomConfiguration from './intercom';
 import satismeterConfiguration from './satismeter';
 import segmentConfiguration from './segment';
+import projectManagementConfiguration from './project_management';
 
 export default loadModules([
   {
@@ -46,6 +47,10 @@ export default loadModules([
   },
   {
     configuration: moderationConfiguration,
+    isEnabled: true,
+  },
+  {
+    configuration: projectManagementConfiguration,
     isEnabled: true,
   },
 ]);
