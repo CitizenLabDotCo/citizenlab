@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { IUserData } from 'services/users';
-import { projectManagersStream } from 'modules/project_management/services/projectManagers';
+import { moderatorsStream } from 'modules/project_management/services/projectManagers';
 
 export default function useProjectManagers(projectId: string) {
   const [projectManagers, setProjectManagers] = useState<
@@ -8,7 +8,7 @@ export default function useProjectManagers(projectId: string) {
   >(undefined);
 
   useEffect(() => {
-    const subscription = projectManagersStream(projectId).observable.subscribe(
+    const subscription = moderatorsStream(projectId).observable.subscribe(
       (response) => {
         setProjectManagers(response.data);
       }
