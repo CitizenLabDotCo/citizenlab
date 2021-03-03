@@ -42,7 +42,6 @@ module NLP
           areas:                idea.areas.map{|ar| ar.id},
           upvotes_count:        idea.upvotes_count,
           downvotes_count:      idea.downvotes_count,
-          comments:             encode_comments(idea),
           updated_at:           idea.updated_at.iso8601,
           published_at:         idea.published_at.iso8601
         }
@@ -71,6 +70,7 @@ module NLP
         }
       end
     end
+
 
     def encode_areas
       Area.all.map do |area|

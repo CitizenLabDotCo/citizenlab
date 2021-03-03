@@ -25,7 +25,7 @@ class User < ApplicationRecord
                   :using => { :tsearch => {:prefix => true} }
 
   scope :by_username, -> (username) {
-    AppConfiguration.instance.has_feature?("abbreviated_user_names") ? by_first_name(username) : by_full_name(username)
+    AppConfiguration.instance.feature_activated?("abbreviated_user_names") ? by_first_name(username) : by_full_name(username)
   }
 
   has_many :ideas, foreign_key: :author_id, dependent: :nullify
@@ -175,7 +175,7 @@ class User < ApplicationRecord
     email = request.params["auth"]["email"]
 
     # Hack to embed phone numbers in email
-    if AppConfiguration.instance.has_feature?('password_login') && AppConfiguration.instance.settings('password_login','phone')
+    if AppConfiguration.instance.feature_activated?('password_login') && AppConfiguration.instance.settings('password_login','phone')
       phone_service = PhoneService.new
       if phone_service.phone_or_email(email) == :phone
         pattern = AppConfiguration.instance.settings('password_login', 'phone_email_pattern')
@@ -294,7 +294,7 @@ class User < ApplicationRecord
 
   def generate_slug
     return if self.slug.present?
-    if AppConfiguration.instance.has_feature?("abbreviated_user_names")
+    if AppConfiguration.instance.feature_activated?("abbreviated_user_names")
       self.slug = SecureRandom.uuid
     elsif self.first_name.present?
       self.slug = SlugService.new.generate_slug self, self.full_name
@@ -354,3 +354,5 @@ class User < ApplicationRecord
     ROLES_JSON_SCHEMA
   end
 end
+
+User.prepend_if_ee('ProjectFolders::Patches::User')
