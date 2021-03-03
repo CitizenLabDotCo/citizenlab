@@ -24,12 +24,12 @@ module ProjectFolders
       end
 
       def filter_notification_recipient(users_scope, activity:, **_unused_options)
-        users_scope.where(id: activity.item.recipient.id)
+        users_scope.where(id: activity.item.id)
       end
 
       def generate_commands(recipient:, activity:, **_unused_options)
         # notification = activity.item
-        folder = ProjectFolders::Folder.find(activity.payload[:project_folder_id])
+        folder = ProjectFolders::Folder.find(activity.payload['project_folder_id'])
         [{
           event_payload: {
             project_folder_id: folder.id,
