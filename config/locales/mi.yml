@@ -1,0 +1,370 @@
+mi:
+  symbols:
+    outside: somewhere else
+  idea_statuses:
+    proposed: proposed
+    proposed_description: This idea has been proposed to the city
+    viewed: viewed
+    viewed_description: This idea has been seen by someone from the city
+    under_consideration: under consideration
+    under_consideration_description: This idea has been taken into consideration by the city
+    accepted: accepted
+    accepted_description: This idea has been accepted and will be implemented by the city
+    implemented: implemented
+    implemented_description: This idea has been implemented by the city
+    rejected: rejected
+    rejected_description: This idea has been rejected
+  initiative_statuses:
+    proposed: proposed
+    proposed_description: proposed
+    expired: expired
+    expired_description: expired
+    threshold_reached: threshold reached
+    threshold_reached_description: threshold reached
+    answered: answered
+    answered_description: answered
+    ineligible: ineligible
+    ineligible_description: ineligible
+  topics:
+    nature: Nature and biodiversity
+    nature_description: Nature and biodiversity
+    waste: Cleanliness and waste
+    waste_description: Cleanliness and waste
+    sustainability: Sustainable development
+    sustainability_description: Sustainable development
+    mobility: Mobility
+    mobility_description: Mobility
+    technology: Energy and technology
+    technology_description: Energy and technology
+    economy: Work, economy and tourism
+    economy_description: Work, economy and tourism
+    housing: Housing
+    housing_description: Housing
+    public_space: Public spaces and buildings
+    public_space_description: Public spaces and buildings
+    safety: Safety
+    safety_description: Safety
+    education: Education and youth
+    education_description: Education and youth
+    culture: Culture, sports and events
+    culture_description: Culture, sports and events
+    health: Health and welfare
+    health_description: Health and welfare
+    inclusion: Social inclusion
+    inclusion_description: Social inclusion
+    community: Community development
+    community_description: Community development
+    services: Public services
+    services_description: Public services
+    other: Other
+    other_description: Other
+  pages:
+    terms_and_conditions_title: Terms & conditions
+    terms_and_conditions_body: >
+      <p>This online engagement platform aims to give as many people as possible the opportunity to think about the future of the city or institution that, together with CitizenLab, has set up this platform. These contributions are subject to a number of rules to keep the debate open and constructive. Below you can find the general conditions of our platform, as we are convinced that clear rules provide the best guarantee for a constructive online community.</p>
+      <p>Because CitizenLab appreciates the feedback of the users of their platform, your ideas are welcomed to further improve the platform. You can forward your suggestions to support@citizenlab.co.</p>
+      <h2>Who can register on the online engagement platform?</h2>
+      <p>Anyone who wants to, can follow the debate online. Everyone can read the submitted ideas and reactions. If you want to participate in the debate yourself (sharing your own ideas, responding to other ideas or supporting existing contributions), you have to create an account. Only registered participants can make an active contribution to the online ideas platform.</p>
+      <p>You can register via your e-mail address or create an account by simply linking it to your Facebook or Google profile.</p>
+      <p>The creation of an account by a user does not give this user ownership over the account. CitizenLab reserves the right to refuse, suspend or delete accounts, for example if the user does not comply with the following rules or has previously been denied or removed from this user's account.</p>
+      <p>Each account must comply with the following rules: </p>
+      <ul>
+       <li>
+       <strong>Every account is strictly personal</strong>
+       <p>
+       Each account must be unique and linked to a natural person. Every user has the right to create one account. If it is determined that one person has multiple accounts, CitizenLab reserves the right to delete all these accounts. Every user must have reached at least the age of 12 years.
+       </p>
+       </li>
+       <li>
+       <strong>An account cannot be transferred to another person</strong>
+       <p>
+       Since each account is strictly linked to one specific person, this account cannot be transferred to another person without the permission of CitizenLab. This transfer ban must be considered in the broadest sense. CitizenLab reserves the right to refuse or delete this account in case of infringements.
+       </p>
+       </li>
+       <li>
+       <strong>An account cannot be used for commercial purposes</strong>
+       <p>
+       The CitizenLab platform is intended to increase participation. An account can therefore only be used in that sense. Any use of the account for the sole purpose of enjoying a commercial advantage is prohibited.
+       </p>
+       </li>
+       <li>
+       <strong>The account information must always remain confidential</strong>
+       <p>
+       It is not allowed for another person than the actual person who created the account, to use this account. The person who creates the account must ensure that (s)he keeps the password and login details. We advise you to use a "strong" password (a password with a combination of lowercase, uppercase letters and numbers). CitizenLab can under no circumstances be held responsible for any loss or damage incurred to the account if the above conditions are not met by the user. CitizenLab cannot be held responsible for theft of your account, for example by 'phishing', either. CitizenLab will never ask its users for personal data such as a login or password via e-mail. If personal data is requested, the user will always be redirected to the platform of CitizenLab.
+       </p>
+       </li>
+      </ul>
+      <h2>Limitations to content and use of the platform</h2>
+      <p>To ensure that the CitizenLab platform is working properly and that you can communicate and connect with others, there are some restrictions on the type of content that can be published via the platform:</p>
+      <ul>
+       <li>
+       <strong>Offensive behaviour</strong>
+       <p>
+       We firmly believe in freedom of speech. However, in order to ensure that the platform can be used in a constructive way by the users, with respect for different opinions and without people having to be afraid to express their opinions or convictions, we do not allow offensive behaviour that harasses, intimidates or uses fear to silence another user.
+       </p>
+       <p>Accounts and related accounts with which the actions below are performed can be temporarily blocked and / or permanently deleted.</p>
+       <p>
+       <ul>
+       <li>Violent threats (direct or indirect): You may not threaten or promote violence, including the promotion of terrorism.</li>
+       <li>Harassment: You may not incite to or be involved in deliberately insulting or harassing others. Here are some factors that we can take into account when assessing abusive behaviour: whether the main purpose of the reported account is harassing or sending offensive messages to others; whether the reported behaviour is unidirectional or contains threats; whether the reported account encourages others to intimidate another account; and whether the reported account sends intimidating messages to an account from multiple accounts.</li>
+       <li>Hatred: You may not promote violence against other people or directly attack or threaten them on the basis of race, ethnic background, nationality, sexual orientation, gender, gender identity, philosophical affiliation, age, disability or illness. We also do not allow accounts whose main purpose is to incite others to do harm on the basis of these categories.</li>
+       <li>Misuse of multiple accounts: Creating multiple accounts for overlapping use to avoid temporary or permanent suspension of an individual account is not allowed.</li>
+       <li>Private data: you may not publish or post confidential data and private information of others without their express authorization and consent. These data include, for example, credit card numbers, address details, telephone numbers or data that constitute the personal privacy of a person.</li>
+       <li>Impersonation: you may not be allowed to enter via the platform if someone else deceives, confuses or threatens in a manner that actually decks or threatens others.</li>
+       </ul>
+       </p>
+       </li>
+       <li>
+       <strong>Spam</strong>
+       <p>We strive at all times to protect the CitizenLab platform user from technical abuse and spam. Accounts in which the actions below are performed can be temporarily blocked or permanently deleted.</p>
+       <ul>
+       <li>Malware / phishing / viruses / worms / Trojans: You may not post malicious content or links to such content for the purpose of damaging or disrupting someone else's browsers or computers, or of violating someone's privacy.</li>
+       <li>Spam: You cannot use the CitizenLab platform to spam people. </li>
+       </ul>
+       </li>
+       </ul>
+      <h2>Infringement of applicable laws</h2>
+      <p>The use of the account may not in any way infringe applicable laws. This includes infringements against privacy legislation, intellectual property rights, the criminal code,...</p>
+      <p>The account may not be used in any way to promote illegal activities.</p>
+      <h2>In case of breaches of the aforementioned rules </h2>
+      <p>Citizenlab reserves the right, if it detects infringements on the aforementioned rules, to delete the relevant messages and even suspend or permanently delete user profiles. </p>
+      <p>CitizenLab cannot be held liable in any way for messages posted by users or third parties, which violate the above rules. The web administrator will strictly supervise that these rules are not violated. If a user detects an infringement, one can always report this to the following e-mail address: support@citizenlab.co.</p>
+      <p>It is possible that files can be downloaded via the platform, whether or not due to a user, or that users place harmful hyperlinks. Every download by a user or click on a hyperlink, placed by a user, is done at their own risk and any damage incurred is completely and solely the responsibility of this user.</p>
+      <h2>Intellectual property rights</h2>
+      <p>CitizenLab respects the intellectual property rights of others and expects that users of this platform also respect these rights. CitizenLab reserves the right to remove content that infringes intellectual property rights. Repeated infringements of intellectual property rights of any kind by a user will give rise to the suspension or removal of the account by CitizenLab.</p>
+      <p>Infringements against intellectual property rights can be reported via the following e-mail address: support@citizenlab.co</p>
+      <h2>Property rights CitizenLab</h2>
+      <p>CitizenLab's platform is protected by intellectual property rights that relate to content, source code, database, etc. The use of this platform in no way means a transfer of these intellectual rights to the users of the platform. Every user must be aware of these rights and must act accordingly.</p>
+      <p>It is thus forbidden to reproduce, distribute, modify or transmit the platform and its contents without permission.</p>
+    cookie_policy_title: Cookie Policy
+    privacy_policy_title: Privacy Policy
+    privacy_policy_body: >
+      <p>Responsible for the processing of the Data:</p>
+      <p>CitizenLab NV - Anspachlaan 65 - 1000 Brussels - Belgium</p>
+      <p>Contact e-mail address: support@citizenlab.co</p>
+      <p>Organization: //insert client contacts</p>
+      <h2>1. PRIVACY POLICY</h2>
+      <p>This ‘Privacy Policy’ applies to the ‘Personal Data’ collected by CitizenLab on behalf of the organization through this website.</p>
+      <h2>2. WHAT ARE PERSONAL DATA?</h2>
+      <p>In this Privacy Policy, Personal Data refers to information that makes it possible to identify you. An identifiable person is someone who can be identified, either directly or indirectly, in particular by referring to an identification number or to one or more factors that are linked to physical, physiological, mental, economic, cultural or social identity. A typical example of personal information is your name and email address.</p>
+      <h2>3. WHAT PERSONAL DATA DO WE COLLECT?</h2>
+      <p>We might collect your Personal Data from the following three sources:</p>
+      <h3>3.1 Personal Data that you provide during the registration process on the Platform, some of which are optional.</h3>
+      <p>The personal data that we might collect from you are:</p>
+      <ul>
+       <li>First and last name</li>
+       <li>E-mail address</li>
+       <li>Year of birth</li>
+       <li>Gender</li>
+       <li>Area of residence</li>
+       <li>Preferred language</li>
+      </ul>
+      <p>This list can be extended on request of the organization. If you choose to sign-in via a 3rd party authentication provider as Google Accounts, Facebook or FranceConnect, we will get this data from them. If you choose to verify your identity with a 3rd party identity provider as COW, FranceConnect or CSAM, we will get this information from them.</p>
+      <h3>3.2 Personal data that you provide when taking participative action on our platform.</h3>
+      <p>Every action you take on the platform (voting, posting an idea, writing a comment, answering a poll,…) is registered and stored. This data is also linked to your registration data (3.1), implying that the organization can link your platform profile to this participation data.</p>
+      <h3>3.3 Personal Data that we collect when you visit our platform.</h3>
+      <p>We (and third party processors acting on our behalf) collect information about usage of our platform for assessing the good functioning and security of the platform. To this end, we collect technical information that can identify you, such as your IP address and browser details. By using our services you agree to this data being collected.</p>
+      <p>We also gather usage data to improve our services, you can opt-out of this collection at all time from the consent manager.</p>
+      <h2>4. HOW DO WE USE PERSONAL DATA?</h2>
+      <p>We might use your personal data for the following purposes:</p>
+      <ul>
+       <li>First and foremost, to communicate your input to the organization with relevant context, and to draw aggregated reports of all the data collected on this platform to assist their decision-making.</li>
+       <li>To create and maintain your user profile on this website.</li>
+       <li>To manage the identification and authentication of users.</li>
+       <li>To provide information about your community and/or alert you when activities on the platform may interest you. You can opt-out of user emails from your user profile at any time.</li>
+      <li>To improve our services and monitor their functionalities.</li>
+      </ul>
+      <p>The personal data is only stored and processed for the period required for the purpose of the processing. After that, the data will be deleted or anonymized.</p>
+      <h2>5. WITH WHOM DO WE SHARE YOUR PERSONAL DATA?</h2>
+      <p>We share your personal data with the organization on behalf of which we gather this data. We share your data to the sub-processors working on our behalf. We will never sell or rent your personal data to other service providers, nor will we share your Personal Data with any service providers who are not compliant with the GDPR.</p>
+      <h2>6. WHERE DO WE TRANSFER YOUR PERSONAL DATA TO?</h2>
+      <p>We only transfer your Personal Data to service providers established outside the European Economic Area if they comply to art 44 GDPR. All US-based service providers comply to Privacy Shield, which means they have to uphold to the privacy and security standards of the GDPR even though the are based in the US.</p>
+      <h2>7. WHAT RIGHTS DO YOU HAVE?</h2>
+      <p>You have the right to view your personal data at any time, as well as the right to be informed of the use that Citizenlab makes of your personal data.</p>
+      <h3>7.1 Right to rectification, erasure and restriction of processing</h3>
+      <p>You are free to decide whether or not to provide your personal data to Citizenlab. In addition, you always have the right to request Citizenlab to correct, supplement or remove your personal data. You acknowledge that a refusal to provide or a request for the erasure of personal data means that certain services can no longer be delivered. You may also request that the processing of your personal data is limited. If you choose to remove your account from the platform, the personal data that was collected about you will be removed from our servers. Some personal information about you might remain in the logging data we keep for security and legal reasons for up to 30 days.</p>
+      <h3>7.2 Right to object</h3>
+      <p>You have the right to object to the processing of your personal data for serious and legitimate reasons. In addition, you always have the right to object to the use of your personal data for direct marketing purposes; in such cases, you do not have to state reasons.</p>
+      <h3>7.3 Right to data portability</h3>
+      <p>You have the right to obtain the personal data you have provided to Citizenlab in a structured, typical and machine-readable form and/or have such transferred to different controllers.</p>
+      <h3>7.4 Right to withdraw consent</h3>
+      <p>Insofar as the processing is based on your prior consent, you have the right to withdraw this approval.</p>
+      <h3>7.5 Exercising your rights</h3>
+      <p>You can exercise your rights by contacting Citizenlab to this end, either by email to support@citizenlab.co, by post to Anspachlaan 65, 1000 Brussels, Belgium or by using the “Contact us” form on our Website, provided you enclose a copy of the front of your identity card.</p>
+      <h3>7.6 Automated decision-making and profiling</h3>
+      <p>The processing of your personal data does not include profiling and shall also not be subjected by Citizenlab to automated decision-making.</p>
+      <h3>7.7 Right to lodge a complaint</h3>
+      <p>You have the right to lodge a complaint to the Privacy authority of your country, or the Belgian Privacy Authority under which authority CitizenLab falls: Drukpersstraat 35, 1000 Brussels, Belgium, Tel +32 (0)2 274 48 00, Fax +32 (0)2 274 48 35, e-mail: contact@adp-gba.be. This does not affect relief before a civil court.</p>
+      <h2>8. ADDITIONAL INFORMATION ON DATA COLLECTION AND PROCESSING</h2>
+      <h3>Legal procedures</h3>
+      <p>CitizenLab and the Organization we process this data for might use the Personal Data of the User for legal purposes, for the court or legal proceedings preceding phases in the event of unlawful use of this Application or the related services. The User is aware that CitizenLab and the Organization we work with might be obliged to disclose the personal data at the request of competent government institutions for the processing of the Data. The legal basis for this processing is the acceptance of the terms and conditions (contractual basis) and given consent.</p>
+      <h3>Security Measures</h3>
+      <p>Citizenlab has developed security measures which have been adjusted at the technological and organisational level to prevent the destruction, loss, falsification, changing, prohibited access or the erroneous disclosure to third parties of personal data as well as any other prohibited processing of this data. Under no circumstances can Citizenlab be held liable for any direct or indirect loss resulting from the incorrect or unlawful use of your personal data by a third party. You must at all times comply with the security instructions, including by preventing all prohibited access to your login details and password. You are solely responsible for the use made from the website on your computer, IP-address and your identification details, as well as for the confidentiality of such.</p>
+      <h3>Changes to this privacy policy</h3>
+      <p>CitizenLab reserves the right to change this privacy policy at any time by notifying Users on this page. We encourage you to check this page for possible changes. The date of the last change is indicated at the bottom of the page. If a User objects to any change in the policy, the User must not continue to use this Application. Unless otherwise indicated, the valid Privacy Policy applicable at that time applies to all Personal Data that we have collected.</p>
+      <p><em>Most recent update: 17/12/2019</em></p>
+    infopage_title: Information Page
+    infopage_body: "<p>This <strong>all-in-one participation platform</strong> is an initiative of your municipality or organisation and can be used for different public consultation processes: collecting ideas, voting, discussing, surveys, polls, participatory budgeting, online mapping, scenario planning, support for advisory boards and committees, ...</p>\n<p>On the home page, you'll see which <strong>processes are active </strong>and in which <strong>phase </strong>they currently are.</p>\n<p><img data-cl2-text-image-text-reference=\"e2c7bc7a-017d-4887-a3cb-b94185617a59\" alt=\"Horizontal separation rule\" data-align=\"center\" style=\"display: block; margin: auto;\"></p>\n<h2>How do I sign in on the platform?</h2>\n<p>Signing in is done easily by giving your first and last name and your e-mail address. You could also use your Google or Facebook account. Only your first and last name will be visible to others.</p>\n<h2>Can I use the platform myself, e.g. to organise a public consultation?</h2>\n<p>Absolutely. Ask the responsible within your municipality or organisation to give you the needed permission rights to become a project moderator. Once granted these permissions, you can set up your own project and timeline and share the information you want (video, documents, images, ...). This will also allow you to invite others to the platform, enabling them to post ideas within your project, vote or comment.</p>\n<h2>Can I participate as an association/organisation/committee? </h2>\n<p>Yes, that's possible. Given that only your first and last name are visible to others on the platform, you can simply use your organisation's name while setting up your profile.</p>\n<h2>Why would I use this platform and not create a website myself?</h2>\n<p>A team of dedicated developers and specialists in online participation (<a href=\"https://www.citizenlab.co/en\" target=\"_blank\">CitizenLab,</a> commissioned by your municipality or organisation) is improving and updating this platform on a daily basis. Even the smallest bug gets tackled immediately and if you have creative proposals, they can help you pointing out which features of the platform can be used for this or which ones are in the pipeline.</p>\n<p><img data-cl2-text-image-text-reference=\"392d0e47-e5f9-41ab-9ceb-affac617b8b1\" alt=\"Horizontal separation rule\" data-align=\"center\" style=\"display: block; margin: auto;\"></p>\n<p><strong><em>Need more information?</em></strong><em> Do you want to use the platform? Questions or feedback? Contact the responsible within your municipality or organisation. Or contact CitizenLab through support@citizenlab.co.</em></p><strong>"
+    homepage_info_title: ""
+    homepage_info_body: ""
+    initiatives_title: Proposals
+    initiatives_body: >
+      <img style="margin-bottom: 30px" data-cl2-text-image-text-reference="b4e659ab-2830-48fd-b3ce-96e16856262f" height="374.3745928338762" width="819" alt=""> <h2>What's a citizen's proposal?</h2> <p>As a resident of $|orgName| you can place your proposal on the agenda via this platform. These proposals are preferably concrete ideas that are linked to local policy and arise from a need, desire or dream. It can be your own proposal or a collaborative one. Maybe you'd like to change or improve an existing situation or start a new project.</p> <p>The involvement of $|orgName| in the implementation of your proposal must be both necessary and possible. In an ideal scenario, you're also available for further reflection or cooperation, but that is not an obligation. "Reducing the speed limit on the highway to 80 km/h" is therefore not a strong proposal, while "Turning the main street into a pedestrian area" is. So bring on your proposals! If more information is needed, you'll receive an update or reaction.</p><h2>Why post a proposal on this platform?</h2> <p>This is the official participation platform of $|orgName|, which offers the following benefits:</p> <ul> <li>$|orgName| is officially involved as this platform's owner, and actively monitors what happens here. When you post a proposal, the person in charge automatically receives a message. You don't have to contact them to make sure your proposal is taken into account.</li> <li>This platform has been developed specifically for official participatory actions, like citizens' proposals. Every element, from the user experience to the step-by-step approach, is built precisely for this purpose. When using traditional social media, your proposal could disappear into the overload of stimuli, and an ordinary e-mail quickly disappears into a full inbox.</li> <li>Your fellow citizens are also present on this platform. They can support and refine your proposal. The more creative your proposal is and the more support it manages to gather, the more chance it will be implemented!</li> </ul> <h2>How do you get started?</h2> <p>First, check whether your proposal meets the following criteria:</p> <p>$|initiativesEligibilityCriteria|</p> <h2>What can you expect when your proposal reaches $|initiativesVotingThreshold| votes within $|initiativesDaysLimit| days?</h2> <p>$|initiativesThresholdReachedMessage|</p> <h2>What happens to the proposals that do not receive $|initiativesVotingThreshold| votes on time? </h2> <p>That happens, but don't worry. Your proposal will remain on the platform. The status of your proposal will automatically change to 'Expired'. As a result, voting will no longer be possible. If you wish, you can choose to delete your own proposal at any time.</p>
+    initiatives_success_1_title: River Shuttle
+    initiatives_success_1_body: >
+      <p><em>Liège (BE)</em></p> <p><strong>Topic: Mobility</strong></p> <img style="margin-bottom: 30px" data-cl2-text-image-text-reference="3302395e-0a1b-4be8-8ab2-9fc0dff61d4d" alt=""> <h2>How it started</h2> <p>Liège, one of Belgium's biggest cities, opened up their participation platform to crowdsource input for their 'City Plan', a multi-annual strategic plan containing policy priorities for the city.</p> <p>After an open call for ideas, the city regrouped these ideas in bigger thematic clusters. The 'River Shuttle' proposal started from one of these clusters and was opened up for voting to all inhabitants.</p> <p>Over 15% of Liège's 200,000 inhabitants browsed the platform and casted their votes.</p> <h2>The project</h2> <p>Liège successfully already used a river shuttle service for touristic purposes during 2 summer seasons, allowing tourists to discover the city from the Meuse river. This inspired at least 9 citizens to give input on how they thought this service could be improved and expanded. What they had in common was:</p> <ul> <li>the desire to start focusing this shuttle service on commuters too,</li> <li>to expand the service from summer only to year-round, and</li> <li>to add several stops to the shuttle's trajectory.</li> </ul> <p>Their combined input collected a total of 1336 votes and was regrouped in 1 cluster, further shaped through comments of other citizens.</p> <p>The city of Liège listened to this proposal and decided to act upon it. Today, an in-depth study is being done on how the shuttle service can indeed be expanded. The results of this study will be used for future implementation.</p> <h2>Succes factors</h2> <ul> <li>Basis infrastructure present: The implementation of this proposal doesn't need to start from zero. The infrastructure, in this case the biggest cost, is already there, as is the experience with the exploitation and the legal framework.</li> <li>Part of wider process: Because this proposal originated in Liège's 'City Plan' process, the citizens behind the proposal benefited from the city-wide communication actions. Also, given the buy-in of decision-makers and the involvement of the city administration, a proper and structured follow-up was guaranteed.</li> <li>Linked to widely shared problem: Although the shuttle service suggested in this proposal will never be used by all Liégeois, it does aim to solve a bigger problem that does impact all people living in the city, namely traffic congestion.</li> </ul> <p><em>More context: </em><a href="https://www.citizenlab.co/case-studies-en/liege" target="_blank"><em>CitizenLab case Liège</em></a></p> <p>Do you know an inspiring citizen proposal that should be added to this list? <a href="mailto:support@citizenlab.co" target="_blank">Add your own inspiring citizen proposal to the list</a>!</p>
+    initiatives_success_2_title: "1030/0"
+    initiatives_success_2_body: >
+      <p><em>Schaerbeek (BE)</em></p> <p><strong>Topic: Mobility</strong></p> <img style="margin-bottom: 30px" data-cl2-text-image-text-reference="033f5120-1f24-4d8b-ad89-82b94eb3c0db" height="450" width="675" alt=""> <h2>How it started</h2> <p>Several streets in Schaerbeek have long been unsafe for vulnerable road users. After a fatal traffic accident in July 2017 in the 'zone 30', some citizens decided to take action. </p> <h2>The project</h2> <p>1030/0 is a citizens' movement that stands up for road safety and better mobility in Schaerbeek. The four main axes of their operation are:</p> <ul> <li>Vision Zero: zero kill, zero heavy casualties in traffic.</li> <li>Quality of life: a "municipality 30" where the active road user can travel efficiently and safely, but also a municipality with space for meetings and socialising. </li> <li>Special attention to the most vulnerable on the road: children, the elderly, people with disabilities.</li> <li>Health: improving road safety makes it possible to promote active modes of transport and combat air pollution.</li> </ul> <p>What they have obtained so far:</p> <ul> <li>Zone 30 obtained.</li> <li>Vision Zero was taken over as an official policy line.</li> <li>The municipality has drawn up a strategic road safety note.</li> <li>The police bicycle brigade has been (re)established.</li> <li>Extra resources for speed control have been freed up.</li> <li>Since 2019, there is a system of 'living streets' established.</li> </ul> <h2>Succes factors</h2> <ul> <li>Large mobilization: several demonstrations with 60-200 participants each.</li> <li>Proactive media approach: building good relationships and thinking visually and narratively . Especially on the Flemish side there was already a lot of media attention for the proposal.</li> <li>Theme is very popular among the population.</li> <li>Perseverance and outdoors: in just one year's time, they organised 20 different actions.</li> </ul> <h2>Bottlenecks</h2> <ul> <li>Diversity is a working point, not only in terms of origin but also in terms of age. It is being improved through collaborations with local youth centres and non-profits.</li> <li>French-speaking media are more difficult to reach.</li> </ul> <h2>Contact</h2> <p>Email: <a href="mailto:collectif1030.0@gmail.com" target="_blank">collectif1030.0@gmail.com</a></p> <p>Website: <a href="www.facebook.com/1030zero" target="_blank">www.facebook.com/1030zero</a></p>
+      <p><em>Source: </em><em>Burgervuur - De Wakkere Burger</em></a></p> <p>Do you know an inspiring citizen proposal that should be added to this list? <a href="mailto:support@citizenlab.co" target="_blank">Add your own inspiring citizen proposal to the list!</a>!</p>
+    initiatives_success_3_title: Picnic tables at playgrounds
+    initiatives_success_3_body: >
+      <p><em>Wortegem-Petegem (BE)</em></p> <p><strong>Topic: Squares and streets</strong></p> <img style="margin-bottom: 30px" data-cl2-text-image-text-reference="7430afb9-bbd4-49f3-a894-c7d41e642de7" height="552" width="736" alt=""> <h2>How it started</h2> <p>This proposal originated from a participatory budgeting project of Wortegem-Petegem. This small Belgian municipality with 6.500 inhabitants, opened up 100.000€ of its budget for crowdsourced proposals. </p> <p>Citizens were invited to share their proposals on the digital participation platform of Wortegem-Petegem during a two month period. </p> <p>After a qualitative selection by the administration, 40 proposals out of a total of 55 were withheld and opened up to voting by all inhabitants. The voting happened both online and during an offline event in which all proposals were presented live by their initiators.</p> <h2>The project</h2> <p>The idea for the proposal is straight-forward: add picnic tables at every playground in Wortegem-Petegem. Not only does this allow (grand-)parents to rest while their (grand-)children are playing, it also allows to meet other people from your municipality in the meantime.</p> <p>As it was one of the most popular proposals in the participatory budgeting project, Wortegem-Petegem decided to implement it. Picnic tables have been installed on 6 locations since.</p> <h2>Succes factors</h2> <ul> <li>Clear process and follow-up: Wortegem-Petegem had a clear process worked out before starting to collect citizen proposals, including collaboration between the different departments. There was also a steady and personal follow-up, to make sure all citizens involved were kept in the loop of steps taken and upcoming plans. And there was the commit to implement all withheld proposals before the end of the following summer period.</li> <li>High level of participation: 14% of the voting population (14 years or older) of Wortegem-Petegem voted on their favourite proposals.</li> <li>This citizen proposal was well-scoped, with a clear finality and limited fixed cost and maintenance costs.</li> </ul> <p><em>Context: </em><a href="https://www.citizenlab.co/case-studies-nl/wortegem-petegem" target="_blank"><em>CitizenLab case (NL)</em></a></p> <p>Do you know an inspiring citizen proposal that should be added to this list? <a href="mailto:support@citizenlab.co" target="_blank">Add your own inspiring citizen proposal to the list!</a>!</p>
+  projects:
+    open_idea_project_title: An idea? Bring it to your council!
+    open_idea_project_description_preview: Maybe you have an idea that doesn't fit with one of the existing projects? Than post it here, gather support and get it on the political agenda!
+    open_idea_project_description: >
+      <p>Here, you can start your own idea if it doesn't fit within one of the existing projects.</p><p><strong>The objective?</strong> To get your idea on the political agenda.</p><p><strong>How?</strong> By gathering support, namely at least 100 votes in 3 months. You can do that by first making your idea 'attractive'. Write it in a clear and engaging way, add images, give strong arguments based on facts, add attachments with further details or background information, ... After you've done that, start sharing your idea on social media or through email. Invite people to join the discussion on your idea, or simply convince them to support it by voting in favour.</p><p><strong>About what?</strong> Your idea can be about a lot of things, as long as it is related to your city and its policy. It can be a problem you experience, a solution you envision or even a combination of both. It can be wild and on the long term, or very tangible and a quick win.</p><p><strong>And then? </strong>Did you reach 100 votes in 3 months? Congratulations! The city will now take your idea in consideration. If your idea is considered to be feasible and does not harm specific groups or individuals, you will get the chance to present your proposal during the council meeting. During that same meeting, the council members will give you direct feedback on what they will or won't do with your idea and why. If you don't gather 100 votes in 3 months, your proposal won't be considered.</p><p>We're curious to learn about your ideas!</p>
+  events:
+    council_meeting_title: Council Meeting
+    council_meeting_description: >
+      <p>During this council meeting, those citizen initiatives that gained 100 votes in less than 3 months, will be presented.</p><p>The council will then share their view on each idea.</p>
+  custom_fields:
+    users:
+      gender:
+        title: Gender
+      birthyear:
+        title: Year of birth
+      domicile:
+        title: Place of residence
+      education:
+        title: Education
+    ideas:
+      title:
+        title: Title
+        description:
+      body:
+        title: Description
+        description:
+      topic_ids:
+        title: Topics
+        description:
+      location:
+        title: Location
+        description:
+      proposed_budget:
+        title: Proposed Budget
+        description:
+      images:
+        title: Images
+        description:
+      attachments:
+        title: Attachments
+        description:
+  custom_field_options:
+    gender:
+      male: Male
+      female: Female
+      unspecified: Other
+    domicile:
+      outside: Somewhere else
+    education:
+      ISCED2: Lower secondary education
+      ISCED3: Upper secondary education
+      ISCED4: Post-secondary non-tertiary education
+      ISCED5: Short-cycle tertiary education
+      ISCED6: Bachelor or equivalent
+      ISCED7: Master or equivalent
+      ISCED8: Doctoral or equivalent
+  initiatives:
+    default_threshold_reached_message: >
+      <p>The initiators are invited to present their proposal at the next council meeting. We will provide an official update.</p>
+    default_eligibility_criteria: >
+      <ul>
+      <li>It must fall within the policy areas and competencies of local policy</li>
+      <li>It serves the public interest rather than your individual interest</li>
+      <li>It does not discriminate based on gender, race, age, or background</li>
+      <li>It does not harm others</li>
+      </ul>
+  smart_group_rules:
+    is_empty: "%{property} has no value"
+    not_is_empty: "%{property} has any value"
+    custom_field_checkbox:
+      is_checked: "%{property} checked"
+      not_is_checked: "%{property} not checked"
+    custom_field_date:
+      is_before: "%{property} is before %{value}"
+      is_exactly: "%{property} is %{value}"
+      is_after: "%{property} is after %{value}"
+    custom_field_number:
+      is_equal: "%{property} equals %{value}"
+      not_is_equal: "%{property} doesn't equal %{value}"
+      is_larger_than: "%{property} is larger than %{value}"
+      is_larger_than_or_equal: "%{property} is larger than or equals %{value}"
+      is_smaller_than: "%{property} is smaller than %{value}"
+      is_smaller_than_or_equal: "%{property} is smaller than or equals %{value}"
+    custom_field_select:
+      has_value: "%{property} is %{value}"
+      not_has_value: "%{property} isn't %{value}"
+      is_one_of: "%{property} has one of the following values: %{value}"
+      not_is_one_of: "%{property} does not have any of the following values: %{value}"
+    custom_field_text:
+      is: "%{property} is %{value}"
+      not_is: "%{property} is not %{value}"
+      contains: "%{property} contains %{value}"
+      not_contains: "%{property} doesn't contain %{value}"
+      begins_with: "%{property} begins with %{value}"
+      not_begins_with: "%{property} doesn't begin with %{value}"
+      ends_on: "%{property} ends on %{value}"
+      not_ends_on: "%{property} doesn't end on %{value}"
+    email:
+      property: "e-mail"
+    lives_in:
+      has_value_outside: "%{property} is somewhere else"
+      not_has_value_outside: "%{property} is not somewhere else"
+    participated_in_idea_status:
+      in: "Participation in an idea with status %{value}"
+      not_in: "No participation in an idea with status %{value}"
+      posted_in: "Posted an idea with status %{value}"
+      not_posted_in: "Did not post an idea with status %{value}"
+      commented_in: "Commented on an idea with status %{value}"
+      not_commented_in: "Did not comment on an idea with status %{value}"
+      voted_idea_in: "Voted on an idea with status %{value}"
+      not_voted_idea_in: "Did not vote on an idea with status %{value}"
+      voted_comment_in: "Voted on a comment on an idea with status %{value}"
+      not_voted_comment_in: "Did not vote on a comment on an idea with status %{value}"
+    participated_in_project:
+      in: "Participation in an idea in the project %{value}"
+      not_in: "No participation in an idea in the project %{value}"
+      posted_in: "Posted an idea in the project %{value}"
+      not_posted_in: "Did not post an idea in the project %{value}"
+      commented_in: "Commented on an idea in the project %{value}"
+      not_commented_in: "Did not comment on an idea in the project %{value}"
+      voted_idea_in: "Voted on an idea in the project %{value}"
+      not_voted_idea_in: "Did not vote on an idea in the project %{value}"
+      voted_comment_in: "Voted on a comment on an idea in the project %{value}"
+      not_voted_comment_in: "Did not vote on a comment on an idea in the project %{value}"
+      budgeted_in: "Assigned a budget in the project %{value}"
+      not_budgeted_in: "Didn't assign a budget in the project %{value}"
+      volunteered_in: "Volunteered in the project %{value}"
+      not_volunteered_in: "Didn't volunteer in the project %{value}"
+    participated_in_topic:
+      in: "Participation in an idea with topic %{value}"
+      not_in: "No participation in an idea with topic %{value}"
+      posted_in: "Posted an idea with topic %{value}"
+      not_posted_in: "Did not post an idea with topic %{value}"
+      commented_in: "Commented on an idea with topic %{value}"
+      not_commented_in: "Did not comment on an idea with topic %{value}"
+      voted_idea_in: "Voted on an idea with topic %{value}"
+      not_voted_idea_in: "Did not vote on an idea with topic %{value}"
+      voted_comment_in: "Voted on a comment on an idea with topic %{value}"
+      not_voted_comment_in: "Did not vote on a comment on an idea with topic %{value}"
+    registration_completed_at:
+      property: "registration"
+    role:
+      is_admin: "Role is admin"
+      not_is_admin: "Role is not admin"
+      is_project_moderator: "Role is project manager"
+      not_is_project_moderator: "Role is not project manager"
+      is_normal_user: "Role is normal user"
+      not_is_normal_user: "Role is not normal user"
