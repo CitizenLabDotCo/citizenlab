@@ -355,3 +355,4 @@ class User < ApplicationRecord
 end
 
 User.include_if_ee('IdeaAssignment::Extensions::User')
+User.prepend_if_ee('ProjectFolders::Patches::User')
