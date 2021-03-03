@@ -23,18 +23,15 @@ module ProjectFolders
       require 'project_folders/feature_specification'
       AppConfiguration::Settings.add_feature(ProjectFolders::FeatureSpecification)
 
-      add_folder_moderator_campaign if defined? ::EmailCampaigns
-      add_project_folders_to_sitemap if defined? ::Seo::ApplicationController
-    end
-
-    class ClassMethods
-      def add_folder_moderator_campaign
+      # Adding folder admin rights campaign to email campaigns.
+      if defined? ::EmailCampaigns
         ::EmailCampaigns::DeliveryService.add_campaign_types(
           ::ProjectFolders::EmailCampaigns::Campaigns::ProjectFolderModerationRightsReceived
         )
       end
 
-      def add_project_folders_to_sitemap
+      # Adding project folders to the sitemap.
+      if defined? ::Seo::ApplicationController
         ::Seo::ApplicationController.outlet 'seo.sitemap' do |locals|
           folders = ProjectFolders::Folder
                     .select(
