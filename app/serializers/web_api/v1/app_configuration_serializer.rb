@@ -1,5 +1,5 @@
 class WebApi::V1::AppConfigurationSerializer < WebApi::V1::BaseSerializer
-  attributes :name, :host, :style
+  attributes :name, :host
 
   attribute :logo do |object|
     object.logo && object.logo.versions.map{|k, v| [k.to_s, v.url]}.to_h
@@ -17,3 +17,6 @@ class WebApi::V1::AppConfigurationSerializer < WebApi::V1::BaseSerializer
     object.public_settings
   end
 end
+
+WebApi::V1::AppConfigurationSerializer.include_if_ee('CustomStyle::WebApi::V1::Patches::AppConfigurationSerializer')
+

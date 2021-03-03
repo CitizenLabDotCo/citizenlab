@@ -25,13 +25,14 @@ module OmniauthMethods
     def omniauth_setup(configuration, env)
       return unless configuration.feature_activated?('franceconnect_login')
 
-      env['omniauth.strategy'].options.merge!({
+      env['omniauth.strategy'].options.merge!(
         scope: [:openid, :profile, :email, :address],
         response_type: :code,
         state: true, # required by France connect
         nonce: true, # required by France connect
         issuer: "https://#{host}", # the integration env is now using 'https'
         client_auth_method: 'Custom', # France connect does not use BASIC authentication
+        acr_values: 'eidas1',
         client_signing_alg: :HS256, # hashing function of France Connect
         client_options: {
           identifier: configuration.settings("franceconnect_login", "identifier"),
@@ -44,7 +45,7 @@ module OmniauthMethods
           token_endpoint: '/api/v1/token',
           userinfo_endpoint: '/api/v1/userinfo'
         }
-      })
+      )
     end
 
     def logout_url(user)
