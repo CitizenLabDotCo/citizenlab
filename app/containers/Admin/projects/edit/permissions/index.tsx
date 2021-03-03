@@ -20,7 +20,6 @@ import {
   SectionTitle,
   SectionField,
 } from 'components/admin/Section';
-import Moderators from './Moderators';
 import IdeaAssignment from './IdeaAssignment';
 import Link from 'utils/cl-router/Link';
 
@@ -52,9 +51,6 @@ const StyledSection = styled(Section)`
 
 const SubSection = styled(Section)`
   margin-bottom: 40px;
-`;
-const ModeratorSubSection = styled(SubSection)`
-  margin-bottom: 20px;
 `;
 
 export const StyledSectionTitle = styled(SectionTitle)`
@@ -368,7 +364,7 @@ class ProjectPermissions extends PureComponent<
             )}
 
             <Outlet
-              id="app.containers.Admin.project.edit.permissions"
+              id="app.containers.Admin.project.edit.permissions.granular"
               project={project.data}
             />
           </StyledSection>
@@ -379,14 +375,10 @@ class ProjectPermissions extends PureComponent<
                 <FormattedMessage {...messages.moderationRightsTitle} />
               </StyledSectionTitle>
 
-              {projectManagementEnabled && (
-                <ModeratorSubSection>
-                  <Moderators
-                    moderators={this.props.moderators}
-                    projectId={projectId}
-                  />
-                </ModeratorSubSection>
-              )}
+              <Outlet
+                id="app.containers.Admin.project.edit.permissions.projectManagement"
+                projectId={project.data.id}
+              />
 
               {ideaAssignmentEnabled && (
                 <SubSection>
