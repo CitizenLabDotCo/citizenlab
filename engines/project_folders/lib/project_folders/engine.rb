@@ -9,6 +9,8 @@ end
 
 module ProjectFolders
   class Engine < ::Rails::Engine
+    extend ClassMethods
+
     isolate_namespace ProjectFolders
 
     config.generators.api_only = true
@@ -25,22 +27,24 @@ module ProjectFolders
       add_project_folders_to_sitemap if defined? ::Seo::ApplicationController
     end
 
-    def self.add_folder_moderator_campaign
-      ::EmailCampaigns::DeliveryService.add_campaign_types(
-        ::ProjectFolders::EmailCampaigns::Campaigns::ProjectFolderModerationRightsReceived
-      )
-    end
+    class ClassMethods
+      def add_folder_moderator_campaign
+        ::EmailCampaigns::DeliveryService.add_campaign_types(
+          ::ProjectFolders::EmailCampaigns::Campaigns::ProjectFolderModerationRightsReceived
+        )
+      end
 
-    def self.add_project_folders_to_sitemap
-      ::Seo::ApplicationController.outlet 'seo.sitemap' do |locals|
-        folders = ProjectFolders::Folder
-                  .select(
-                    :'project_folders_folders.id', :'project_folders_folders.slug',
-                    :'project_folders_folders.updated_at', :'admin_publications.publication_status',
-                    :'admin_publications.publication_type', :'admin_publications.publication_id'
-                  )
-                  .includes(:admin_publication).where(admin_publications: { publication_status: %w[published archived] })
-        { partial: 'seo/sitemap', locals: { folders: folders, **locals } }
+      def add_project_folders_to_sitemap
+        ::Seo::ApplicationController.outlet 'seo.sitemap' do |locals|
+          folders = ProjectFolders::Folder
+                    .select(
+                      :'project_folders_folders.id', :'project_folders_folders.slug',
+                      :'project_folders_folders.updated_at', :'admin_publications.publication_status',
+                      :'admin_publications.publication_type', :'admin_publications.publication_id'
+                    )
+                    .includes(:admin_publication).where(admin_publications: { publication_status: %w[published archived] })
+          { partial: 'seo/sitemap', locals: { folders: folders, **locals } }
+        end
       end
     end
   end
