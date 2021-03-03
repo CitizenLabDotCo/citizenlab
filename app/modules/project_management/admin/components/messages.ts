@@ -13,65 +13,6 @@ export default defineMessages({
     id: 'app.components.UserSearch.noOptions',
     defaultMessage: 'No options',
   },
-  // permissionsEveryoneLabel: {
-  //   id: 'app.containers.admin.project.permissions.permissionsEveryoneLabel',
-  //   defaultMessage: 'Everyone',
-  // },
-  // permissionsAdministrators: {
-  //   id: 'app.containers.admin.project.permissions.permissionsAdministrators',
-  //   defaultMessage: 'Administrators',
-  // },
-  // permissionsSelectionLabel: {
-  //   id: 'app.containers.admin.project.permissions.permissionsSelectionLabel',
-  //   defaultMessage: 'Selection',
-  // },
-  // viewingRightsTitle: {
-  //   id: 'app.containers.admin.project.permissions.viewingRightsTitle',
-  //   defaultMessage: 'Who can see this project?',
-  // },
-  // add: {
-  //   id: 'app.containers.AdminPage.groups.permissions.add',
-  //   defaultMessage: 'Add',
-  // },
-  // groupsMultipleSelectPlaceholder: {
-  //   id:
-  //     'app.containers.AdminPage.groups.permissions.groupsMultipleSelectPlaceholder',
-  //   defaultMessage: 'Select one or more groups',
-  // },
-  // members: {
-  //   id: 'app.containers.AdminPage.groups.permissions.members',
-  //   defaultMessage:
-  //     '{count, plural, =0 {No members} one {1 member} other {{count} members}}',
-  // },
-  // deleteButtonLabel: {
-  //   id: 'app.containers.AdminPage.groups.permissions.deleteButtonLabel',
-  //   defaultMessage: 'Delete',
-  // },
-  // editButtonLabel: {
-  //   id: 'app.containers.AdminPage.groups.permissions.editButtonLabel',
-  //   defaultMessage: 'Edit',
-  // },
-  // groupDeletionConfirmation: {
-  //   id: 'app.containers.AdminPage.groups.permissions.groupDeletionConfirmation',
-  //   defaultMessage:
-  //     'Are you sure you want to remove this group from the project?',
-  // },
-  // save: {
-  //   id: 'app.containers.AdminPage.groups.permissions.save',
-  //   defaultMessage: 'Save',
-  // },
-  // saveSuccess: {
-  //   id: 'app.containers.AdminPage.groups.permissions.saveSuccess',
-  //   defaultMessage: 'Success!',
-  // },
-  // saveErrorMessage: {
-  //   id: 'app.containers.AdminPage.groups.permissions.saveErrorMessage',
-  //   defaultMessage: 'Something went wrong, please try again later.',
-  // },
-  // saveSuccessMessage: {
-  //   id: 'app.containers.AdminPage.groups.permissions.saveSuccessMessage',
-  //   defaultMessage: 'Your changes have been saved.',
-  // },
   pendingInvitation: {
     id: 'app.containers.AdminPage.groups.permissions.pendingInvitation',
     defaultMessage: 'Pending invitation',
@@ -93,29 +34,4 @@ export default defineMessages({
     id: 'app.containers.AdminPage.groups.permissions.moderatorsNotFound',
     defaultMessage: 'Moderators not found',
   },
-  // inputAssignmentSectionTitle: {
-  //   id: 'app.containers.AdminPage.ProjectEdit.inputAssignmentSectionTitle',
-  //   defaultMessage: 'Who is responsible for processing the inputs?',
-  // },
-  // inputAssignmentTooltipText: {
-  //   id: 'app.containers.AdminPage.ProjectEdit.inputAssignmentTooltipText',
-  //   defaultMessage:
-  //     'All new inputs in this project will be assigned to this person. The assignee can be changed in the {ideaManagerLink}.',
-  // },
-  // inputManagerLinkText: {
-  //   id: 'app.containers.AdminPage.ProjectEdit.inputManagerLinkText',
-  //   defaultMessage: 'input manager',
-  // },
-  // unassigned: {
-  //   id: 'app.containers.AdminPage.ProjectEdit.unassigned',
-  //   defaultMessage: 'Unassigned',
-  // },
-  // participationAccessRightsTitle: {
-  //   id: 'app.containers.AdminPage.ProjectEdit.participationAccessRightsTitle',
-  //   defaultMessage: 'Participation',
-  // },
-  // moderationRightsTitle: {
-  //   id: 'app.containers.AdminPage.ProjectEdit.moderationRightsTitle',
-  //   defaultMessage: 'Moderation',
-  // },
 });
