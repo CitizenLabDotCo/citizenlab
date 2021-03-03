@@ -24,7 +24,7 @@ module ProjectFolders
       AppConfiguration::Settings.add_feature(ProjectFolders::FeatureSpecification)
 
       # Adding folder admin rights campaign to email campaigns.
-      if defined? ::EmailCampaigns
+      if defined? ::EmailCampaigns::ApplicationCampaign
         ::EmailCampaigns::DeliveryService.add_campaign_types(
           ::ProjectFolders::EmailCampaigns::Campaigns::ProjectFolderModerationRightsReceived
         )
