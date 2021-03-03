@@ -26,7 +26,6 @@ module Verification
       def locked_custom_fields
         [:birthyear, :gender]
       end
-
     end
   end
 end
