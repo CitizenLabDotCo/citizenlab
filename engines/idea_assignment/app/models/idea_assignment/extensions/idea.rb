@@ -20,5 +20,3 @@ module IdeaAssignment
     end
   end
 end
-
-Idea.include_if_ee('IdeaAssignment::Extensions::Idea')

@@ -353,3 +353,5 @@ class User < ApplicationRecord
     ROLES_JSON_SCHEMA
   end
 end
+
+User.include_if_ee('IdeaAssignment::Extensions::User')

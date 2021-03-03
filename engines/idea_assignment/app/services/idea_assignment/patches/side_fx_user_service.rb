@@ -17,5 +17,3 @@ module IdeaAssignment
     end
   end
 end
-
-::SideFxUserService.prepend_if_ee('IdeaAssignment::Patches::SideFxUserService')

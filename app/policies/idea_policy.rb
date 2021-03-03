@@ -100,3 +100,5 @@ class IdeaPolicy < ApplicationPolicy
     user&.admin? || (record.class != Class && user&.project_moderator?(record.project_id))
   end
 end
+
+IdeaPolicy.include_if_ee('IdeaAssignment::Extensions::IdeaPolicy')
