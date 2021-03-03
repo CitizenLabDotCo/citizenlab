@@ -1,15 +1,37 @@
 class NotificationToSerializerMapper
   include Callable
-  extend ClassMethods
 
-  self.notification_serializer_map = {
+  class << self
+    attr_writer :map
+
+    def map
+      @map ||= {}
+    end
+
+    def add_to_map(serializer_pairs)
+      map.merge!(serializer_pairs)
+    end
+  end
+
+  attr_reader :notification_class
+
+  delegate :map, to: :class
+
+  def initialize(notification_class)
+    @notification_class = notification_class
+  end
+
+  def call
+    map[notification_class]
+  end
+
+  add_to_map(
     ::Notifications::AdminRightsReceived => WebApi::V1::Notifications::AdminRightsReceivedSerializer,
     ::Notifications::CommentDeletedByAdmin => WebApi::V1::Notifications::CommentDeletedByAdminSerializer,
     ::Notifications::CommentMarkedAsSpam => WebApi::V1::Notifications::CommentMarkedAsSpamSerializer,
     ::Notifications::CommentOnYourComment => WebApi::V1::Notifications::CommentOnYourCommentSerializer,
     ::Notifications::CommentOnYourIdea => WebApi::V1::Notifications::CommentOnYourIdeaSerializer,
     ::Notifications::CommentOnYourInitiative => WebApi::V1::Notifications::CommentOnYourInitiativeSerializer,
-    ::Notifications::IdeaAssignedToYou => WebApi::V1::Notifications::IdeaAssignedToYouSerializer,
     ::Notifications::IdeaMarkedAsSpam => WebApi::V1::Notifications::IdeaMarkedAsSpamSerializer,
     ::Notifications::InitiativeAssignedToYou => WebApi::V1::Notifications::InitiativeAssignedToYouSerializer,
     ::Notifications::InitiativeMarkedAsSpam => WebApi::V1::Notifications::InitiativeMarkedAsSpamSerializer,
@@ -32,31 +54,5 @@ class NotificationToSerializerMapper
     ::Notifications::StatusChangeOnVotedIdea => WebApi::V1::Notifications::StatusChangeOnVotedIdeaSerializer,
     ::Notifications::StatusChangeOnVotedInitiative => WebApi::V1::Notifications::StatusChangeOnVotedInitiativeSerializer,
     ::Notifications::ThresholdReachedForAdmin => WebApi::V1::Notifications::ThresholdReachedForAdminSerializer
-  }
-
-  attr_reader :notification_class
-
-  delegate :map, to: :class
-
-  def initialize(notification_class)
-    @notification_class = notification_class
-  end
-
-  def call
-    map[notification_class]
-  end
-
-  module ClassMethods
-    def map
-      @map ||= {}
-    end
-
-    def add_set(notification_klass, serializer_klass)
-      map[notification_klass] = serializer_klass
-    end
-
-    def notification_serializer_map=(hash_map)
-      @map = hash_map
-    end
-  end
+  )
 end

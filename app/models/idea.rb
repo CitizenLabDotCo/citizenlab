@@ -47,9 +47,7 @@ class Idea < ApplicationRecord
   end
   after_update :fix_comments_count_on_projects
 
-  scope :with_al
-Idea.include_if_ee('IdeaAssignment::Extensions::Idea')
-  ids|
+  scope :with_all_topics, (Proc.new do |topic_ids|
     uniq_topic_ids = topic_ids.uniq
     joins(:ideas_topics)
     .where(ideas_topics: {topic_id: uniq_topic_ids})
@@ -134,5 +132,4 @@ Idea.include_if_ee('IdeaAssignment::Extensions::Idea')
     end
   end
 end
-
 Idea.include_if_ee('IdeaAssignment::Extensions::Idea')
