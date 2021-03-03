@@ -11,6 +11,9 @@ import {
 } from 'modules/project_management/services/projectModerators';
 import { IGroupMembershipsFoundUserData } from 'services/groupMemberships';
 
+// hooks
+import useProjectModerators from 'modules/project_management/hooks/useProjectModerators';
+
 // i18n
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
@@ -26,7 +29,6 @@ import selectStyles from 'components/UI/MultipleSelect/styles';
 
 // Typings
 import { IOption } from 'typings';
-import useProjectModerators from 'modules/project_management/hooks/useProjectModerators';
 
 const Container = styled.div`
   width: 100%;
