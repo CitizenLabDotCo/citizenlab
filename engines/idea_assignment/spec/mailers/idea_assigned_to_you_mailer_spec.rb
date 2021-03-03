@@ -1,9 +1,9 @@
 require 'rails_helper'
 
-RSpec.describe IdeaAssignmentIdeaAssignment::EmailCampaigns::IdeaAssignedToYouMailer, type: :mailer do
+RSpec.describe IdeaAssignment::EmailCampaigns::IdeaAssignedToYouMailer, type: :mailer do
   describe 'campaign_mail' do
     let!(:recipient) { create(:user, locale: 'en') }
-    let!(:campaign) { IdeaAssignmentIdeaAssignment::EmailCampaigns::Campaigns::IdeaAssignedToYou.create! }
+    let!(:campaign) { IdeaAssignment::EmailCampaigns::Campaigns::IdeaAssignedToYou.create! }
     let(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
 
     let(:assigned_at) { Time.now }
