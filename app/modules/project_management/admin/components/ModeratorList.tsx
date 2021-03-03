@@ -1,4 +1,4 @@
-import React, { PureComponent, FormEvent } from 'react';
+import React, { memo, FormEvent } from 'react';
 import { isError } from 'lodash-es';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from './messages';
@@ -7,10 +7,12 @@ import { List, Row } from 'components/admin/ResourceList';
 import Avatar from 'components/Avatar';
 import { isNilOrError } from 'utils/helperUtils';
 import { deleteModerator } from 'services/moderators';
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import { GetModeratorsChildProps } from 'resources/GetModerators';
 import { InjectedIntlProps } from 'react-intl';
 import styled from 'styled-components';
+
+// hooks
+import useProjectManagers from 'modules/project_management/hooks/useProjectManagers';
+import useAuthUser from 'hooks/useAuthUser';
 
 const PendingInvitation = styled.span`
   font-style: italic;
@@ -20,40 +22,37 @@ const UnknownName = styled.span`
   font-style: italic;
 `;
 
-interface InputProps {
+interface Props {
   projectId: string;
-  moderators: GetModeratorsChildProps;
 }
 
-interface DataProps {
-  authUser: GetAuthUserChildProps;
-}
+const ModeratorList = memo(
+  ({ projectId, intl: { formatMessage } }: Props & InjectedIntlProps) => {
+    const moderators = useProjectManagers(projectId);
+    const authUser = useAuthUser();
 
-interface Props extends InputProps, DataProps {}
+    const handleDeleteClick = (projectId: string, moderatorId: string) => (
+      event: FormEvent
+    ) => {
+      event.preventDefault();
+      const deleteMessage = formatMessage(
+        messages.moderatorDeletionConfirmation
+      );
 
-class ModeratorList extends PureComponent<Props & InjectedIntlProps> {
-  handleDeleteClick = (projectId: string, moderatorId: string) => (
-    event: FormEvent
-  ) => {
-    const deleteMessage = this.props.intl.formatMessage(
-      messages.moderatorDeletionConfirmation
-    );
-    event.preventDefault();
+      if (window.confirm(deleteMessage)) {
+        deleteModerator(projectId, moderatorId);
+      }
+    };
 
-    if (window.confirm(deleteMessage)) {
-      deleteModerator(projectId, moderatorId);
+    // TO TEST
+    if (isError(moderators)) {
+      return <FormattedMessage {...messages.moderatorsNotFound} />;
     }
-  };
 
-  render() {
-    const { moderators, projectId, authUser } = this.props;
-    const { formatMessage } = this.props.intl;
-
-    return (
-      <List>
-        {authUser &&
-          !isNilOrError(moderators) &&
-          moderators.map((moderator, index) => {
+    if (!isNilOrError(authUser) && !isNilOrError(moderators)) {
+      return (
+        <List>
+          {moderators.map((moderator, index) => {
             const firstName = moderator.attributes.first_name;
             const lastName = moderator.attributes.last_name;
             const invitationPending =
@@ -77,7 +76,7 @@ class ModeratorList extends PureComponent<Props & InjectedIntlProps> {
                 <p className="expand">{displayName}</p>
                 <p className="expand">{moderator.attributes.email}</p>
                 <Button
-                  onClick={this.handleDeleteClick(projectId, moderator.id)}
+                  onClick={handleDeleteClick(projectId, moderator.id)}
                   buttonStyle="text"
                   icon="delete"
                   disabled={authUser.id === moderator.id}
@@ -87,18 +86,12 @@ class ModeratorList extends PureComponent<Props & InjectedIntlProps> {
               </Row>
             );
           })}
-        {isError(moderators) && (
-          <FormattedMessage {...messages.moderatorsNotFound} />
-        )}
-      </List>
-    );
+        </List>
+      );
+    }
+
+    return null;
   }
-}
-
-const ModeratorListWithHoc = injectIntl<Props>(ModeratorList);
-
-export default (props) => (
-  <GetAuthUser {...props}>
-    {(authUser) => <ModeratorListWithHoc authUser={authUser} {...props} />}
-  </GetAuthUser>
 );
+
+export default injectIntl(ModeratorList);
