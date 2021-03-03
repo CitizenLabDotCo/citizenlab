@@ -33,6 +33,7 @@ pt:
       "official_feedback_on_your_initiative": Actualização sobre a minha proposta
       "password_reset": Redefinir a senha
       "project_moderation_rights_received": Direitos de moderação de projetos recebidos
+      "project_folder_moderation_rights_received": Direitos de moderação da pasta de projetos recebidos
       "project_phase_started": Nova fase do projeto
       "project_phase_upcoming": Próxima nova fase do projeto
       "status_change_of_commented_idea": Alteração  de status de uma idéia que comentei
@@ -82,6 +83,7 @@ pt:
       "official_feedback_on_your_initiative": Update on your proposal - all users
       "password_reset": Password reset - all users
       "project_moderation_rights_received": Project moderation rights received - project managers
+      "project_folder_moderation_rights_received": Direitos de moderação da pasta de projetos recebidos
       "project_phase_started": New project phase - all users
       "project_phase_upcoming": Upcoming new project phase - admins and project managers
       "status_change_of_commented_idea": Status change of an idea you commented on - all users
@@ -407,6 +409,21 @@ pt:
       title_what_can_you_do_moderator: 'O que você pode fazer como administrador do projeto?'
       title_you_became_moderator: 'Você se tornou um administrador de projeto'
       x_ideas: '%{numberOfIdeas} ideias'
+    project_folder_moderation_rights_received:
+      cta_view_folder_button: 'Visualizar essa pasta'
+      message_added_as_folderadmin: 'Você recebeu direitos de administrador na plataforma de participação de %{organizationName} para a seguinte pasta:'
+      no_projects: 'Nenhum projeto por enquanto'
+      preheader: 'Um administrador da plataforma de participação de %{organizationName} acabou de tornar você um gerente da seguinte pasta de projetos'
+      subject: 'Você se tornou um gerente de pasta de projetos na plataforma de %{organizationName}'
+      text_manage_folder: 'Uma pasta é uma maneira de organizar vários projetos de participação em conjunto. Como administrador de pasta, você pode editar a pasta e a descrição da pasta e criar novos projetos (para excluir projetos, entre em contato com o administrador da sua plataforma). Você também terá direitos de gerenciamento de projeto sobre todos os projetos dentro da pasta, o que permite que você edite os projetos, gerencie as entradas e envie e-mails para os participantes.'
+      text_moderate_analyse_input: 'Assim que os projetos forem lançados, as primeiras entradas começarão a surgir. Você receberá relatórios semanais com as principais atividades para que possa ficar atualizado sobre o que está acontecendo. O Gerenciador de Posts na sua visualização de administrador ajudará você a ver e gerenciar a entrada, incluindo atribuir status e responder posts e comentários.'
+      text_design_participatory_process: 'Você pode gerenciar os projetos de participação dentro da sua pasta — configure o método de participação, adicione uma descrição ao projeto, anexe imagens e comunique eventos relacionados. Você também pode gerenciar como os participantes interagem com os seus projetos, incluindo a definição de direitos de acesso e a configuração de postagens, votações e comentários.'
+      title_design_participatory_process: 'Desenhar o processo participativo'
+      title_moderate_analyse_input: 'Dirigir e analisar os dados introduzidos'
+      title_manage_folder: 'Gerencie as configurações de pasta e crie novos projetos.'
+      title_what_can_you_do_folderadmin: 'O que você pode fazer como administrador de pasta?'
+      title_added_as_folderadmin: 'Você foi adicionado como administrador de pasta'
+      x_projects: '%{numberOfProjects} projetos'
     password_reset:
       cta_reset_password: 'Resetar sua senha'
       message_you_reset_your_password: 'Você solicitou uma nova senha para a plataforma de participação de %{organizationName}. Clique no botão abaixo para escolher uma nova senha segura. O link expira em 1 hora.'
