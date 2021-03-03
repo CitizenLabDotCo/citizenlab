@@ -26,7 +26,7 @@ const configuration: ModuleConfiguration = {
     ],
   },
   outlets: {
-    'app.containers.Admin.project.edit.permissions': (props) => (
+    'app.containers.Admin.project.edit.permissions.granular': (props) => (
       <RenderOnFeatureFlag>
         <Granular {...props} />
       </RenderOnFeatureFlag>

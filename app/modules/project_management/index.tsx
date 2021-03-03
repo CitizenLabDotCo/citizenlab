@@ -17,7 +17,9 @@ const RenderOnFeatureFlag = ({ children }: RenderOnFeatureFlagProps) => {
 
 const configuration: ModuleConfiguration = {
   outlets: {
-    'app.containers.Admin.project.edit.permissions': (props) => (
+    'app.containers.Admin.project.edit.permissions.projectManagement': (
+      props
+    ) => (
       <RenderOnFeatureFlag>
         <ProjectManagement {...props} />
       </RenderOnFeatureFlag>
