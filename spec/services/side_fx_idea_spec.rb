@@ -49,10 +49,10 @@ describe SideFxIdeaService do
   describe 'after_create' do
     it "logs a 'published' action job when publication_state is published" do
       idea = create(:idea, publication_status: 'published', author: user)
-      expect { service.after_create(idea, user) }
-        .to have_enqueued_job(LogActivityJob).with(idea, 'published', user, idea.created_at.to_i).exactly(1).times
-                                             .and have_enqueued_job(LogActivityJob).with(idea, 'first_published_by_user', user,
-                                                                                         idea.created_at.to_i).exactly(1).times
+      expect {service.after_create(idea, user)}.
+        to have_enqueued_job(LogActivityJob).with(idea, 'published', user, idea.created_at.to_i).exactly(1).times
+        .and have_enqueued_job(LogActivityJob).with(idea, 'first_published_by_user', user, idea.created_at.to_i).exactly(1).times
+        .and have_enqueued_job(Seo::ScrapeFacebookJob).exactly(1).times
     end
 
     it "doesn't log a 'published' action job when publication_state is draft" do
@@ -132,9 +132,10 @@ describe SideFxIdeaService do
     it "logs a 'changed' action job when the idea has changed" do
       idea = create(:idea)
       old_idea_title = idea.title_multiloc
-      idea.update(title_multiloc: { 'en': 'something else' })
-      expect { service.after_update(idea, user) }
-        .to have_enqueued_job(LogActivityJob).with(idea, 'changed', any_args).exactly(1).times
+      idea.update(title_multiloc: {'en': 'something else'})
+      expect {service.after_update(idea, user)}.
+        to have_enqueued_job(LogActivityJob).with(idea, 'changed', any_args).exactly(1).times
+        .and have_enqueued_job(Seo::ScrapeFacebookJob).exactly(1).times
     end
 
     it "logs a 'changed_title' action job when the title has changed" do

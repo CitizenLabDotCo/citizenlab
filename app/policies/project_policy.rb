@@ -127,7 +127,7 @@ class ProjectPolicy < ApplicationPolicy
       description_preview_multiloc: CL2_SUPPORTED_LOCALES,
       area_ids: []
     ]
-    shared += [:downvoting_enabled] if AppConfiguration.instance.has_feature? 'disable_downvoting'
+    shared += [:downvoting_enabled] if AppConfiguration.instance.feature_activated? 'disable_downvoting'
     shared
   end
 
@@ -152,3 +152,7 @@ class ProjectPolicy < ApplicationPolicy
     user&.active? && (user.admin? || (record.id && user.project_moderator?(record.id)))
   end
 end
+
+ProjectPolicy.prepend_if_ee('ProjectFolders::Patches::ProjectPolicy')
+ProjectPolicy::Scope.prepend_if_ee('ProjectFolders::Patches::ProjectPolicy::Scope')
+

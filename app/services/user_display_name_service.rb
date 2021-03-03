@@ -63,7 +63,7 @@ class UserDisplayNameService
   end
 
   def restricted?
-    !admin? && @app_configuration.has_feature?("abbreviated_user_names")
+    !admin? && @app_configuration.feature_activated?("abbreviated_user_names")
   end
 
   private

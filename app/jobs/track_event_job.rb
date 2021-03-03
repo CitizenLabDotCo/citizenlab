@@ -1,23 +1,16 @@
+# frozen_string_literal: true
+
 class TrackEventJob < ApplicationJob
   queue_as :default
   # creates or updates users in tracking destinations
 
-  def run activity
-    tenant = nil
-
-    begin
-      tenant = Tenant.current
-      if tenant
-        if tenant.has_feature?('intercom')
-          intercom_service = TrackIntercomService.new()
-          intercom_service.track(activity, tenant)
-        end
-        if tenant.has_feature?('segment')
-          segment_service = TrackSegmentService.new()
-          segment_service.track(activity, tenant)
-        end
-      end
-    rescue ActiveRecord::RecordNotFound => e
-    end
+  def run(activity)
+    app_config = AppConfiguration.instance
+  rescue ActiveRecord::RecordNotFound
+    # Ignored
+    # TODO We'd better not silently ignore those events
+  else
+    TrackIntercomService.new.track_activity(activity) if app_config.feature_activated?('intercom')
+    TrackSegmentService.new.track_activity(activity)  if app_config.feature_activated?('segment')
   end
 end
