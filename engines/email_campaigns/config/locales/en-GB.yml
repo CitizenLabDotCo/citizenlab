@@ -33,6 +33,7 @@ en-GB:
       "official_feedback_on_your_initiative": Update on my proposal
       "password_reset": Password reset
       "project_moderation_rights_received": Project moderation rights received
+      "project_folder_moderation_rights_received": Folder manager rights received
       "project_phase_started": New project phase
       "project_phase_upcoming": Upcoming new project phase
       "status_change_of_commented_idea": Status change of an idea I commented on
@@ -82,6 +83,7 @@ en-GB:
       "official_feedback_on_your_initiative": Update on your proposal - all users
       "password_reset": Password reset - all users
       "project_moderation_rights_received": Project moderation rights received - project managers
+      "project_folder_moderation_rights_received": Folder manager rights received
       "project_phase_started": New project phase - all users
       "project_phase_upcoming": Upcoming new project phase - admins and project managers
       "status_change_of_commented_idea": Status change of an idea you commented on - all users
@@ -407,6 +409,21 @@ en-GB:
       title_what_can_you_do_moderator: 'What can you do as a project manager?'
       title_you_became_moderator: 'You became a project manager'
       x_ideas: '%{numberOfIdeas} ideas'
+    project_folder_moderation_rights_received:
+      cta_view_folder_button: 'View this folder'
+      message_added_as_folderadmin: 'You''ve been given folder manager rights on %{organizationName}''s participation platform for the following folder:'
+      no_projects: 'No projects yet'
+      preheader: 'An administrator of the participation platform of %{organizationName} just made you a manager of the following folder'
+      subject: 'You became a project folder manager on the participation platform of %{organizationName}'
+      text_manage_folder: 'A folder is way to organize several participation projects together. As a folder manager, you can edit the folder and folder description and create new projects (to delete projects, contact your platform administrator). You will also have project management rights over all projects within the folder, allowing you to edit the projects, manage the inputs and email participants.'
+      text_moderate_analyse_input: 'Once the projects are launched, the first inputs will start coming in. You''ll receive weekly reports with the key activities so that you can stay on top of what’s happening. The Input Manager in your ''Manage Platform'' panel allows you to see and manage the input, including assigning statuses and responding to posts and comments.'
+      text_design_participatory_process: 'You can manage the different participation projects within your folder - configure the participation method, add a project description, attach images, and communicate related events. You can also manage how participants interact with your projects, including setting access rights and configuring the posting, voting and commenting settings.'
+      title_design_participatory_process: 'Design the participatory process'
+      title_moderate_analyse_input: 'Moderate and analyse the input'
+      title_manage_folder: 'Manage the folder settings and create new projects.'
+      title_what_can_you_do_folderadmin: 'What can you do as a folder manager?'
+      title_added_as_folderadmin: 'You''ve been added as a folder manager'
+      x_projects: '%{numberOfProjects} projects'
     password_reset:
       cta_reset_password: 'Reset your password'
       message_you_reset_your_password: 'You requested a password reset for the participation platform of %{organizationName}. Click the button below to choose a new, safe password. The link expires in 1 hour.'
