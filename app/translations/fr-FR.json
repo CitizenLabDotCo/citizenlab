@@ -1437,7 +1437,7 @@
   "app.containers.AdminPage.SettingsPage.projects_header": "Projects header",
   "app.containers.AdminPage.SettingsPage.registrationFields": "Champs d'inscription",
   "app.containers.AdminPage.SettingsPage.registrationTabDescription": "Provide a short description at the top of your registration form. Add and configure the registration fields for your platform.",
-  "app.containers.AdminPage.SettingsPage.registrationTitle": "Registration",
+  "app.containers.AdminPage.SettingsPage.registrationTitle": "Inscription",
   "app.containers.AdminPage.SettingsPage.save": "Enregistrer",
   "app.containers.AdminPage.SettingsPage.saveErrorMessage": "Une erreur est survenue. Veuillez réessayer.",
   "app.containers.AdminPage.SettingsPage.saveSuccess": "Enregistré !",
