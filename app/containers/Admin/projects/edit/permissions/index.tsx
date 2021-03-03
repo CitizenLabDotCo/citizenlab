@@ -33,9 +33,6 @@ import {
 } from 'services/groupsProjects';
 
 // resources
-import GetModerators, {
-  GetModeratorsChildProps,
-} from 'resources/GetModerators';
 import GetFeatureFlag, {
   GetFeatureFlagChildProps,
 } from 'resources/GetFeatureFlag';
@@ -87,7 +84,6 @@ const StyledLink = styled(Link)`
 interface InputProps {}
 
 interface DataProps {
-  moderators: GetModeratorsChildProps;
   projectVisibilityEnabled: GetFeatureFlagChildProps;
   projectManagementEnabled: GetFeatureFlagChildProps;
   ideaAssignmentEnabled: GetFeatureFlagChildProps;
@@ -421,9 +417,6 @@ class ProjectPermissions extends PureComponent<
 const ProjectPermissionsWithHoC = injectIntl(ProjectPermissions);
 
 const Data = adopt<DataProps, WithRouterProps>({
-  moderators: ({ params, render }) => (
-    <GetModerators projectId={params.projectId}>{render}</GetModerators>
-  ),
   projectVisibilityEnabled: <GetFeatureFlag name="project_visibility" />,
   granularPermissionsEnabled: <GetFeatureFlag name="granular_permissions" />,
   projectManagementEnabled: <GetFeatureFlag name="project_management" />,
