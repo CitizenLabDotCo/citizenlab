@@ -4,8 +4,6 @@ module Frontend
   # The main purpose of this service is to decouple all assumptions the backend
   # makes about the frontend URLs into a single location.
   class UrlService
-    prepend_if_ee('ProjectFolders::Extensions::Frontend::UrlService')
-
     def model_to_url(model_instance, options = {})
       case model_instance
       when Project
@@ -153,3 +151,5 @@ module Frontend
 
   end
 end
+
+Frontend::UrlService.prepend_if_ee('ProjectFolders::Extensions::Frontend::UrlService')
