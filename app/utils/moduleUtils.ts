@@ -82,8 +82,11 @@ export type OutletsPropertyMap = {
   'app.containers.Admin.users.UsersHeader.icon': {
     type: GroupCreationModal;
   };
-  'app.containers.Admin.project.edit.permissions': {
+  'app.containers.Admin.project.edit.permissions.granular': {
     project: IProjectData;
+  };
+  'app.containers.Admin.project.edit.permissions.projectManagement': {
+    projectId: string;
   };
   'app.containers.Admin.initiatives.tabs': {
     formatMessage: (
