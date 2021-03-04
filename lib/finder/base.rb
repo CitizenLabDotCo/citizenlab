@@ -35,7 +35,7 @@ module Finder
     def find
       do_find
       result.records = records
-      result.count = records.count
+      result.count = records.length
     rescue ActiveRecord::StatementInvalid, PG::InFailedSqlTransaction, PG::UndefinedTable => e
       raise Finder::Error, e
     end
