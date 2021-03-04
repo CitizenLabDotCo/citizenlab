@@ -1,7 +1,12 @@
 # Changelog
 
-### Next Release
 
+
+## 2021-03-04
+
+### Changes
+- The FranceConnect button to login, signup or verify your account now displays the messages required by the vendor.
+- Updated the look of the FranceConnect button to login, signup or verify your account to feature the latests changes required by the vendor.
 
 ## 2021-03-03
 
