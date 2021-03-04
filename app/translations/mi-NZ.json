@@ -310,7 +310,7 @@
   "app.components.ProjectCard.finished": "Finished",
   "app.components.ProjectCard.joinDiscussion": "Join the discussion",
   "app.components.ProjectCard.learnMore": "Learn more",
-  "app.components.ProjectCard.remaining": "{timeRemaining} remaining",
+  "app.components.ProjectCard.remaining": "{timeRemaining} e toe ana",
   "app.components.ProjectCard.submitAnIssue": "Submit an issue",
   "app.components.ProjectCard.submitYourIdea": "Submit your idea",
   "app.components.ProjectCard.submitYourProject": "Submit your project",
