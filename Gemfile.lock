@@ -132,6 +132,14 @@ PATH
       verification
 
 PATH
+  remote: engines/id_cow
+  specs:
+    id_cow (0.1.0)
+      rails (~> 6.0.0)
+      savon (~> 2.12.0)
+      verification
+
+PATH
   remote: engines/machine_translations
   specs:
     machine_translations (0.1.0)
@@ -237,7 +245,6 @@ PATH
       apartment (~> 2.2.1)
       pundit (~> 2.0)
       rails (~> 6.0.0)
-      savon (~> 2.12.0)
 
 PATH
   remote: engines/volunteering
@@ -869,6 +876,7 @@ DEPENDENCIES
   ice_cube!
   id_bosa_fas!
   id_clave_unica!
+  id_cow!
   intercom (~> 4.1)
   kaminari (~> 1.2)
   knock!
