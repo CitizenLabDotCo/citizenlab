@@ -7,21 +7,19 @@ import Image from 'components/UI/Image';
 
 // styling
 import styled from 'styled-components';
-import { transparentize } from 'polished';
 import {
   defaultCardStyle,
   defaultCardHoverStyle,
   media,
-  colors,
-  fontSizes,
 } from 'utils/styleUtils';
 
 const cardPadding = '17px';
 const cardInnerHeight = '162px';
+const cardInnerHeightExtended = '180px';
 
 const Container = styled(Link)`
   width: 100%;
-  min-height: calc(162px + ${cardPadding} + ${cardPadding});
+  min-height: calc(${cardInnerHeight} + ${cardPadding} + ${cardPadding});
   display: flex;
   align-items: center;
   padding: ${cardPadding};
@@ -33,7 +31,14 @@ const Container = styled(Link)`
     transform: translate(0px, -2px);
   }
 
+  @media (max-width: 1220px) and (min-width: 1023px) {
+    min-height: calc(
+      ${cardInnerHeightExtended} + ${cardPadding} + ${cardPadding}
+    );
+  }
+
   ${media.smallerThanMinTablet`
+    min-height: unset;
     flex-direction: column;
     align-items: stretch;
   `}
@@ -46,12 +51,13 @@ const IdeaCardImageWrapper = styled.div<{ hasImage: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-right: 23px;
+  margin-right: 18px;
   overflow: hidden;
   border-radius: ${(props: any) => props.theme.borderRadius};
-  /* border: solid 1px ${transparentize(0.75, colors.label)}; */
-  /* border: ${({ hasImage }) =>
-    hasImage ? `solid 1px ${colors.separation}` : 'none'}; */
+
+  @media (max-width: 1220px) and (min-width: 1023px) {
+    height: ${cardInnerHeightExtended};
+  }
 
   ${media.smallerThanMinTablet`
     width: 100%;
@@ -66,28 +72,36 @@ const IdeaCardImage = styled(Image)`
 `;
 
 const ContentWrapper = styled.div`
-  min-height: ${cardInnerHeight};
+  height: ${cardInnerHeight};
   flex: 0 1 100%;
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  padding-top: 2px;
+  padding-top: 0px;
   padding-bottom: 2px;
+
+  @media (max-width: 1220px) and (min-width: 1023px) {
+    height: ${cardInnerHeightExtended};
+  }
+
+  ${media.smallerThanMinTablet`
+    height: unset;
+  `}
 `;
 
 const Header = styled.header`
   padding: 0;
   margin: 0;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 
-  ${media.smallerThanMaxTablet`
-    margin-bottom: 12px;
+  ${media.smallerThanMinTablet`
+    margin-bottom: 15px;
   `}
 `;
 
 const Title = styled.h3`
   color: ${(props) => props.theme.colorText};
-  font-size: 20px;
+  font-size: 21px;
   font-weight: 500;
   display: -webkit-box;
   -webkit-line-clamp: 3;
@@ -100,16 +114,14 @@ const Title = styled.h3`
   overflow-wrap: break-word;
   word-wrap: break-word;
   word-break: break-word;
-
-  ${media.smallerThanMaxTablet`
-    font-size: ${fontSizes.large};
-    line-height: 23px;
-    max-height: 96px;
-  `}
 `;
 
 const Body = styled.div`
   flex-grow: 1;
+
+  ${media.smallerThanMinTablet`
+    margin-bottom: 25px;
+  `}
 `;
 
 interface Props {
