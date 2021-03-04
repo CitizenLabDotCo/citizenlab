@@ -90,7 +90,7 @@ module Finder
     end
 
     def _sort_method_suffix
-      @_sort_method_suffix ||= _sort_method.split(/\.|-/).last
+      @_sort_method_suffix ||= _sort_method.delete_prefix('-')
     end
 
     def _sort_order

@@ -167,6 +167,23 @@ describe IdeasFinder do
     end
   end
 
+  describe '#bounding_box_condition' do
+    let(:bounding_box) { '[51.208758, 3.224363, 50.000667, 5.715281]' }
+    let(:expected_record_ids) { Idea.with_bounding_box(bounding_box).pluck(:id) }
+
+    before do
+      params[:bounding_box] = bounding_box
+    end
+
+    it 'is successful' do
+      expect(result).to be_a_success
+    end
+
+    it 'returns the correct records' do
+      expect(result_record_ids).to match_array expected_record_ids
+    end
+  end
+
   describe '#filter_trending_condition' do
     let(:expected_record_ids) { TrendingIdeaService.new.filter_trending(Idea.joins(:idea_trending_info)).pluck(:id) }
 

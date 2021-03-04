@@ -2,7 +2,7 @@
 
 ## IdeasFinder.find
 class IdeasFinder < ApplicationFinder
-  sortable_attributes 'ideas.upvotes_count', 'ideas.downvotes_count', 'ideas.baskets_count'
+  sortable_attributes 'upvotes_count', 'downvotes_count', 'baskets_count'
 
   sort_scope 'new',          order_new: :desc
   sort_scope '-new',         order_new: :asc
