@@ -3,7 +3,7 @@ module IdeaAssignment
     module SideFxIdeaService
       def before_update(idea, user)
         super
-        idea.assignee = nil if idea.project_id_changed? && !ProjectPolicy.new(idea.assignee, idea.project).moderate?
+        idea.assignee = nil if idea.project_id_changed? && !::ProjectPolicy.new(idea.assignee, idea.project).moderate?
       end
 
       def after_update(idea, user)

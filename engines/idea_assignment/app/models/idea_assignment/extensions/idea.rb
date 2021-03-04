@@ -9,7 +9,7 @@ module IdeaAssignment
       end
 
       def assignee_can_moderate_project
-        return unless assignee && project && !ProjectPolicy.new(assignee, project).moderate?
+        return unless assignee && project && !::ProjectPolicy.new(assignee, project).moderate?
 
         errors.add(
           :assignee_id,
