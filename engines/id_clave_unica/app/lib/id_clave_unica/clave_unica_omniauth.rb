@@ -24,7 +24,7 @@ module IdClaveUnica
         options[:response_type] = :code
         options[:state] = true
         options[:nonce] = true
-        options[:issuer] = "https://#{host}"
+        options[:issuer] = issuer
         options[:send_scope_to_token_endpoint] = false
         options[:client_options] = {
           identifier: config[:client_id],
@@ -42,6 +42,10 @@ module IdClaveUnica
 
     def host
       'accounts.claveunica.gob.cl'
+    end
+
+    def issuer
+      "https://#{host}"
     end
 
     def updateable_user_attrs
