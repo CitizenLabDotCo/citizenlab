@@ -1,4 +1,5 @@
 require 'rails_helper'
+require_relative '../factories/notifications'
 
 describe WebApi::V1::Notifications::NotificationSerializer do
   def expect_serializer_to_hide_name(user_1, user_2, admin, notification_factory_name, serializer_class)
