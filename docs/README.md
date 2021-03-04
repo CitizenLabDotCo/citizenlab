@@ -1,5 +1,6 @@
 # Changelog
 
+## Next release
 
 ### Added
 - In the admin (Settings > Registration tab), admins can now directly set the helper texts on top of the sign-up form (both for step 1 and 2). 
