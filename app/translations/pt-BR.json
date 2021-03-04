@@ -2177,7 +2177,7 @@
   "app.containers.SignIn.signUp": "faça o login",
   "app.containers.SignIn.somethingWentWrong": "Alguma coisa deu errado e não te podemos cadastrar agora mesmo. Por favor, tente novamente mais tarde.",
   "app.containers.SignIn.submit": "Iniciar Sessão",
-  "app.containers.SignIn.useFranceConnectToLoginCreateOrVerifyYourAccount": "Use FranceConnect to Login, Signup or Verify your account.",
+  "app.containers.SignIn.useFranceConnectToLoginCreateOrVerifyYourAccount": "Use FranceConnect to log in, sign up or verify your account.",
   "app.containers.SignIn.whatIsFranceConnect": "O que é a France Connect?",
   "app.containers.SignUp.backToSignUpOptions": "Voltar às opções de cadastro",
   "app.containers.SignUp.close": "Fechar",

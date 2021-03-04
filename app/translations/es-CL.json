@@ -2177,7 +2177,7 @@
   "app.containers.SignIn.signUp": "Inscríbete",
   "app.containers.SignIn.somethingWentWrong": "Algo salió mal! No podemos registrarte ahora. Por favor intenta nuevamente en unos minutos.",
   "app.containers.SignIn.submit": "Inicia sesión",
-  "app.containers.SignIn.useFranceConnectToLoginCreateOrVerifyYourAccount": "Use FranceConnect to Login, Signup or Verify your account.",
+  "app.containers.SignIn.useFranceConnectToLoginCreateOrVerifyYourAccount": "Use FranceConnect to log in, sign up or verify your account.",
   "app.containers.SignIn.whatIsFranceConnect": "¿Qué es France Connect?",
   "app.containers.SignUp.backToSignUpOptions": "Volver a las opciones de registro",
   "app.containers.SignUp.close": "Cerrar",
