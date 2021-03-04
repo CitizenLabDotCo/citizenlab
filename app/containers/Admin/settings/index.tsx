@@ -106,7 +106,7 @@ class SettingsPage extends React.PureComponent<
 
     const tabNames = tabs.map((tab) => tab.name);
 
-    let enabledTabs: TabProps[] = [];
+    let enabledTabs: TabProps[] = tabs;
 
     tabNames.forEach((tabName) => {
       if (tabName && tabHideConditions?.[tabName]?.()) {
