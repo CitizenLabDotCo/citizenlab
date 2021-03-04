@@ -22,7 +22,7 @@ const Tab: FC<Props> = ({ projectId, onData, formatMessage }) => {
         label: formatMessage(messages.mapTab),
         name: 'map',
         url: `/admin/projects/${projectId}/map`,
-        // feature: 'mapping',
+        feature: 'custom_maps',
       },
       insertAfterTabName: 'ideaform',
     });
