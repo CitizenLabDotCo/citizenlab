@@ -64,7 +64,7 @@ export interface IIdeaData {
         future_enabled: string | null;
         disabled_reason: IdeaVotingDisabledReason | null;
         cancelling_enabled: boolean;
-        downvoting_enabled: boolean;
+        downvoting_enabled: boolean | null;
       };
       commenting_idea: {
         enabled: boolean;
