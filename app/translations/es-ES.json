@@ -430,6 +430,7 @@
   "app.components.VerificationModal.userVerifiedSubtitle": "Tu identidad ha sido verificada. Ahora eres un integrante con todos los derechos en esta comunidad.",
   "app.components.VerificationModal.userVerifiedTitle": "¡Ahora estás verificado!",
   "app.components.VerificationModal.verifyBOSA": "Verificar con su nombre o con su Ci",
+  "app.components.VerificationModal.verifyClaveUnica": "",
   "app.components.VerificationModal.verifyNow": "Verificar ahora",
   "app.components.VerificationModal.verifyYourIdentity": "Verifica tu identidad",
   "app.components.VoteControl.budgetingFutureEnabled": "Puedes asignar tu presupuesto a partir de {enabledFromDate}.",

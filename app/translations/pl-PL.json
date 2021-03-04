@@ -430,6 +430,7 @@
   "app.components.VerificationModal.userVerifiedSubtitle": "Twoja tożsamość została zweryfikowana. Jesteś teraz pełnoprawnym członkiem społeczności na tej platformie.",
   "app.components.VerificationModal.userVerifiedTitle": "Zostałeś zweryfikowany!",
   "app.components.VerificationModal.verifyBOSA": "Weryfikacja za pomocą identyfikatora elektronicznego lub eID",
+  "app.components.VerificationModal.verifyClaveUnica": "",
   "app.components.VerificationModal.verifyNow": "Zweryfikuj teraz",
   "app.components.VerificationModal.verifyYourIdentity": "Zweryfikuj swoją tożsamość",
   "app.components.VoteControl.budgetingFutureEnabled": "Możesz przydzielić swój budżet zaczynając od {enabledFromDate}.",

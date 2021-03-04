@@ -430,6 +430,7 @@
   "app.components.VerificationModal.userVerifiedSubtitle": "تم التحقق من هويتك. أنت تتمتع الآن بعضوية كاملة في المجتمع على هذه المنصة.",
   "app.components.VerificationModal.userVerifiedTitle": "تم التحقق من هويتك الآن!",
   "app.components.VerificationModal.verifyBOSA": "تحقق باستخدام itsme أو eID",
+  "app.components.VerificationModal.verifyClaveUnica": "",
   "app.components.VerificationModal.verifyNow": "تحقق الآن",
   "app.components.VerificationModal.verifyYourIdentity": "تحقق من هويتك",
   "app.components.VoteControl.budgetingFutureEnabled": "يُمكنك تخصيص ميزانيتك بداية من {enabledFromDate}. ",

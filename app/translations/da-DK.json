@@ -430,6 +430,7 @@
   "app.components.VerificationModal.userVerifiedSubtitle": "Din identitet er verificeret. Du er nu et fuldt medlem af fællesskabet på denne platform.",
   "app.components.VerificationModal.userVerifiedTitle": "Du er nu verificeret!",
   "app.components.VerificationModal.verifyBOSA": "Verificer med itsme eller eID",
+  "app.components.VerificationModal.verifyClaveUnica": "",
   "app.components.VerificationModal.verifyNow": "Verificer nu",
   "app.components.VerificationModal.verifyYourIdentity": "{tenantName, select, DeloitteDK {Bekræft din bruger} other {Bekræft din identitet}}",
   "app.components.VoteControl.budgetingFutureEnabled": "Du kan tildele dit budget startende fra {enabledFromDate}.",
