@@ -371,18 +371,6 @@ export class AdminProjectEdition extends PureComponent<
 
   insertMapTab = (mapTab: IMapTab) => {
     this.setState({ mapTab });
-
-    // const insertIndex =
-    //   tabbedProps.tabs.findIndex((tab) => tab.name === insertAfterTabName) + 1;
-    // if (insertIndex > 0) {
-    //   tabbedProps.tabs = [
-    //     ...tabbedProps.tabs.slice(0, insertIndex),
-    //     tabConfiguration,
-    //     ...tabbedProps.tabs.slice(insertIndex),
-    //   ];
-    // } else {
-    //   tabbedProps.tabs = [...tabbedProps.tabs, tabConfiguration];
-    // }
   };
 
   render() {
@@ -398,6 +386,7 @@ export class AdminProjectEdition extends PureComponent<
       children as React.ReactElement<any>,
       { project }
     );
+    const { mapTab } = this.state;
     const tabbedProps = {
       resource: {
         title: !isNilOrError(project)
@@ -407,6 +396,22 @@ export class AdminProjectEdition extends PureComponent<
       // TODO: optimization would be to use useMemo for tabs, as they get recalculated on every click
       tabs: !isNilOrError(project) ? this.getTabs(project.id, project) : [],
     };
+
+    if (mapTab) {
+      const insertIndex =
+        tabbedProps.tabs.findIndex(
+          (tab) => tab.name === mapTab.insertAfterTabName
+        ) + 1;
+      if (insertIndex > 0) {
+        tabbedProps.tabs = [
+          ...tabbedProps.tabs.slice(0, insertIndex),
+          mapTab.tabConfiguration,
+          ...tabbedProps.tabs.slice(insertIndex),
+        ];
+      } else {
+        tabbedProps.tabs = [...tabbedProps.tabs, mapTab.tabConfiguration];
+      }
+    }
 
     console.log('tabbedProps', tabbedProps);
     console.log('mapTab', this.state.mapTab);
