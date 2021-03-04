@@ -5,7 +5,7 @@ module ProjectFolders
 
       validates :project_folder, presence: true
 
-      ACTIVITY_TRIGGERS = { 'User': { 'project_folder_moderation_rights_given': true } }.freeze
+      ACTIVITY_TRIGGERS = { 'User' => { 'project_folder_moderation_rights_given' => true } }.freeze
       EVENT_NAME = 'Project Folder moderation rights received'.freeze
 
       def self.make_notifications_on(activity)
