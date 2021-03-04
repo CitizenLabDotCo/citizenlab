@@ -431,6 +431,18 @@
         }
       },
 
+      "custom_maps": {
+        "type": "object",
+        "title": "Custom Map Configuration",
+        "description": "Adds an extra tab to the project settings where admins can customize the project map",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false}
+        }
+      },
+
       "geographic_dashboard": {
         "type": "object",
         "title": "Geographic Dashboard",
