@@ -134,6 +134,9 @@ const AuthProviders = memo<Props & InjectedIntlProps>(
       [goToOtherFlow]
     );
 
+    const phone =
+      !isNilOrError(tenant) && tenant.attributes.settings.password_login?.phone;
+
     return (
       <Container className={className}>
         {franceconnectLoginEnabled && (
@@ -158,9 +161,17 @@ const AuthProviders = memo<Props & InjectedIntlProps>(
             id="e2e-login-with-email"
           >
             {flow === 'signup' ? (
-              <FormattedMessage {...messages.signUpWithEmail} />
+              <FormattedMessage
+                {...(phone
+                  ? messages.signUpWithPhoneOrEmail
+                  : messages.signUpWithEmail)}
+              />
             ) : (
-              <FormattedMessage {...messages.logInWithEmail} />
+              <FormattedMessage
+                {...(phone
+                  ? messages.logInWithPhoneOrEmail
+                  : messages.logInWithEmail)}
+              />
             )}
           </StyledAuthProviderButton>
         )}
