@@ -6,7 +6,8 @@ import clHistory from 'utils/cl-router/history';
 
 // components
 import AuthProviderButton from './AuthProviderButton';
-import franceConnectLogo from 'components/SignUpIn/svg/franceconnect.svg';
+import Or from 'components/UI/Or';
+import FranceConnectButton from 'components/UI/FranceConnectButton';
 
 // resources
 import GetAppConfiguration, {
@@ -21,7 +22,6 @@ import messages from './SignUp/messages';
 
 // styling
 import styled from 'styled-components';
-import { fontSizes } from 'utils/styleUtils';
 import { Options, Option } from 'components/SignUpIn/styles';
 
 // typings
@@ -36,62 +36,6 @@ const Container = styled.div`
 
 const StyledAuthProviderButton = styled(AuthProviderButton)`
   margin-bottom: 18px;
-`;
-
-const Or = styled.div`
-  display: flex;
-  align-items: center;
-  margin-top: 15px;
-  margin-bottom: 25px;
-`;
-
-const Line = styled.span`
-  flex: 1;
-  height: 1px;
-  background: #e0e0e0;
-`;
-
-const OrText = styled.div`
-  color: ${(props: any) => props.theme.colorText};
-  font-size: ${fontSizes.base}px;
-  font-weight: 300;
-  text-transform: lowercase;
-  padding-left: 10px;
-  padding-right: 10px;
-`;
-
-const FranceConnectButtonWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  margin-bottom: 20px;
-`;
-
-const FranceConnectButton = styled.button`
-  flex-grow: 0;
-  flex-shrink: 1;
-  flex-basis: auto;
-  text-align: left;
-  cursor: pointer;
-  padding: 0;
-  margin: 0;
-  margin-bottom: 2px;
-
-  &:disabled {
-    cursor: not-allowed;
-  }
-`;
-
-const SubSocialButtonLink = styled.a`
-  color: ${(props: any) => props.theme.colorText};
-  font-size: ${fontSizes.small}px;
-  font-weight: 300;
-  text-decoration: underline;
-
-  &:hover {
-    color: #000;
-    text-decoration: underline;
-  }
 `;
 
 interface InputProps {
@@ -192,11 +136,26 @@ const AuthProviders = memo<Props & InjectedIntlProps>(
 
     return (
       <Container className={className}>
+        {franceconnectLoginEnabled && (
+          <FranceConnectButton
+            onClick={handleOnFranceConnectSelected}
+            logoAlt={formatMessage(messages.signUpButtonAltText, {
+              loginMechanismName: 'FranceConnect',
+            })}
+          />
+        )}
+
+        {(passwordLoginEnabled ||
+          facebookLoginEnabled ||
+          azureAdLoginEnabled) &&
+          franceconnectLoginEnabled && <Or />}
+
         {passwordLoginEnabled && (
           <StyledAuthProviderButton
             flow={flow}
             authProvider="email"
             onContinue={handleOnAuthProviderSelected}
+            id="e2e-login-with-email"
           >
             {flow === 'signup' ? (
               <FormattedMessage {...messages.signUpWithEmail} />
@@ -237,38 +196,6 @@ const AuthProviders = memo<Props & InjectedIntlProps>(
               values={{ azureProviderName }}
             />
           </StyledAuthProviderButton>
-        )}
-
-        {(passwordLoginEnabled ||
-          facebookLoginEnabled ||
-          azureAdLoginEnabled) &&
-          franceconnectLoginEnabled && (
-            <Or aria-hidden>
-              <Line />
-              <OrText>
-                <FormattedMessage {...messages.or} />
-              </OrText>
-              <Line />
-            </Or>
-          )}
-
-        {franceconnectLoginEnabled && (
-          <FranceConnectButtonWrapper>
-            <FranceConnectButton onClick={handleOnFranceConnectSelected}>
-              <img
-                src={franceConnectLogo}
-                alt={formatMessage(messages.signUpButtonAltText, {
-                  loginMechanismName: 'FranceConnect',
-                })}
-              />
-            </FranceConnectButton>
-            <SubSocialButtonLink
-              href="https://app.franceconnect.gouv.fr/en-savoir-plus"
-              target="_blank"
-            >
-              <FormattedMessage {...messages.whatIsFranceConnect} />
-            </SubSocialButtonLink>
-          </FranceConnectButtonWrapper>
         )}
 
         <Options>

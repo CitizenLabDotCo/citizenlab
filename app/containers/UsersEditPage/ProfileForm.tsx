@@ -10,12 +10,19 @@ import GetLockedFields, {
   GetLockedFieldsChildProps,
 } from 'resources/GetLockedFields';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetAppConfiguration';
 
 // utils
 import { Formik } from 'formik';
 
 // components
 import Error from 'components/UI/Error';
+import PasswordInput, {
+  hasPasswordMinimumLength,
+} from 'components/UI/PasswordInput';
+import PasswordInputIconTooltip from 'components/UI/PasswordInput/PasswordInputIconTooltip';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import { convertUrlToUploadFile } from 'utils/fileTools';
 import { SectionField } from 'components/admin/Section';
@@ -24,7 +31,8 @@ import {
   FormLabel,
   FormSectionTitle,
 } from 'components/UI/FormComponents';
-import { Input, IconTooltip, Select } from 'cl2-component-library';
+
+import { Input, Select, IconTooltip } from 'cl2-component-library';
 import QuillEditor from 'components/UI/QuillEditor';
 
 // i18n
@@ -44,11 +52,34 @@ import { isCLErrorJSON } from 'utils/errorUtils';
 
 import Outlet from 'components/Outlet';
 
+const InputContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
+const StyledIconTooltip = styled(IconTooltip)`
+  margin-left: 5px;
+`;
+
+const LabelContainer = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const StyledFormLabel = styled(FormLabel)`
+  width: max-content;
+  margin-right: 5px;
+`;
+
+const StyledPasswordInputIconTooltip = styled(PasswordInputIconTooltip)`
+  margin-bottom: 4px;
+`;
+
 // Types
 interface InputProps {}
 
 interface DataProps {
   authUser: GetAuthUserChildProps;
+  tenant: GetAppConfigurationChildProps;
   lockedFields: GetLockedFieldsChildProps;
 }
 
@@ -64,16 +95,8 @@ interface State {
   extraFormData: {
     [field in ExtraFormDataKey]?: ExtraFormDataConfiguration;
   };
+  hasPasswordMinimumLengthError: boolean;
 }
-
-const InputContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-`;
-
-const StyledIconTooltip = styled(IconTooltip)`
-  margin-left: 5px;
-`;
 
 type Props = InputProps & DataProps & InjectedIntlProps & InjectedLocalized;
 
@@ -85,6 +108,7 @@ class ProfileForm extends PureComponent<Props, State> {
     this.state = {
       avatar: null,
       extraFormData: {},
+      hasPasswordMinimumLengthError: false,
     };
   }
 
@@ -178,6 +202,7 @@ class ProfileForm extends PureComponent<Props, State> {
       touched,
     } = props;
     const { lockedFields, authUser } = this.props;
+    const { hasPasswordMinimumLengthError } = this.state;
 
     // Won't be called with a nil or error user.
     if (isNilOrError(authUser)) return null;
@@ -248,6 +273,20 @@ class ProfileForm extends PureComponent<Props, State> {
       } else {
         setFieldValue(fieldName, value);
       }
+    };
+
+    const handlePasswordOnChange = (password: string) => {
+      const { tenant } = this.props;
+
+      this.setState({
+        hasPasswordMinimumLengthError: hasPasswordMinimumLength(
+          password,
+          !isNilOrError(tenant)
+            ? tenant.attributes.settings.password_login?.minimum_length
+            : undefined
+        ),
+      });
+      setFieldValue('password', password);
     };
 
     const createBlurHandler = (fieldName: string) => () => {
@@ -381,16 +420,20 @@ class ProfileForm extends PureComponent<Props, State> {
           </SectionField>
 
           <SectionField>
-            <FormLabel htmlFor="password" labelMessage={messages.password} />
-            <Input
-              type="password"
-              name="password"
+            <LabelContainer>
+              <StyledFormLabel
+                labelMessage={messages.password}
+                htmlFor="profile-password-input"
+              />
+              <StyledPasswordInputIconTooltip />
+            </LabelContainer>
+            <PasswordInput
               id="password"
-              value={values.password}
-              onChange={createChangeHandler('password')}
+              password={values.password}
+              onChange={handlePasswordOnChange}
               onBlur={createBlurHandler('password')}
+              errors={{ minimumLengthError: hasPasswordMinimumLengthError }}
             />
-            <Error apiErrors={errors.password} />
           </SectionField>
 
           <SectionField>
@@ -451,6 +494,7 @@ const ProfileFormWithHocs = injectIntl<InputProps>(localize(ProfileForm));
 
 const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
+  tenant: <GetAppConfiguration />,
   lockedFields: <GetLockedFields />,
 });
 
