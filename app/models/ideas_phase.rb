@@ -1,7 +1,7 @@
 class IdeasPhase < ApplicationRecord
-  belongs_to :idea
-  belongs_to :phase
-  counter_culture :phase, column_name: 'ideas_count', touch: true
+  belongs_to :idea, touch: true
+  belongs_to :phase, touch: true
+  counter_culture :phase, column_name: :ideas_count
 
   validates :idea, :phase, presence: true
   validates :phase_id, uniqueness: {scope: :idea_id}
