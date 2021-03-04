@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 require 'rails_helper'
-require Rails.root.join 'engines/frontend/spec/models/style_settings_spec.rb'
 
 RSpec.describe AppConfiguration, type: :model do
 
