@@ -30,13 +30,13 @@ resource 'Projects' do
                 'The user id of the admin or moderator that gets assigned to ideas by default. Defaults to unassigned',
                 required: false
       # expect(json_response.dig(:data,:relationships,:default_assignee,:data,:id)).to eq default_assignee_id
+    end
 
-      example 'Set default assignee to unassigned', document: false do
-        project.update!(default_assignee: create(:admin))
-        do_request(project: { default_assignee_id: nil })
-        json_response = json_parse(response_body)
-        expect(json_response.dig(:data, :relationships, :default_assignee, :data, :id)).to be_nil
-      end
+    example 'Set default assignee to unassigned', document: false do
+      project.update!(default_assignee: create(:admin))
+      do_request(project: { default_assignee_id: nil })
+      json_response = json_parse(response_body)
+      expect(json_response.dig(:data, :relationships, :default_assignee, :data, :id)).to be_nil
     end
   end
 end
