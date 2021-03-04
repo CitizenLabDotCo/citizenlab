@@ -1,7 +1,7 @@
 FactoryBot.define do
-  factory :assigned_idea do
+  factory :assigned_idea, parent: :idea do
     transient do
-      assigned_at { Time.now }
+      assigned_at { Time.zone.now }
     end
     after(:create) do |idea, evaluator|
       assignee = create(:moderator, project: idea.project)

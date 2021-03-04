@@ -73,6 +73,10 @@ class IdeasFinder < ApplicationFinder
     publication_status ? where(publication_status: publication_status) : where(publication_status: 'published')
   end
 
+  def bounding_box_condition(bounding_box)
+    scope(:with_bounding_box, bounding_box) if bounding_box.present?
+  end
+
   def _search_restricted?
     UserDisplayNameService.new(AppConfiguration.instance, current_user).restricted?
   end
