@@ -4,6 +4,15 @@
 
 /
 
+## 2021-03-05
+
+### Added
+- Copy to clarify sign up/log in possibilities with phone number
+
+### Fixed
+- Downvote button (thumbs down) on input card is displayed for archived projects
+
+
 ## 2021-03-04
 
 ### Added
