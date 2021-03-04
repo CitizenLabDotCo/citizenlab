@@ -296,36 +296,6 @@
         }
       },
 
-      "franceconnect_login": {
-        "type": "object",
-        "title": "FranceConnect Login",
-        "description":  "Allow users to register and sign in with a FranceConnect account.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "required-settings": ["environment", "identifier", "secret"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false},
-          "enabled": { "type": "boolean", "default": false},
-          "environment": {
-            "type": "string",
-            "title": "Environment",
-            "description": "Live on the production FranceConnect environment or still testing on their integration environment?",
-            "enum": ["production", "integration"],
-            "default": "production",
-            "private": true
-          },
-          "identifier": {
-            "title": "Identifier",
-            "type": "string",
-            "private": true
-          },
-          "secret": {
-            "title": "Secret Key",
-            "type": "string",
-            "private": true
-          }
-        }
-      },
 
       "integration_onze_stad_app": {
         "type": "object",
