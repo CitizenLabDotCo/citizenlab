@@ -1,6 +1,4 @@
 class NotificationToSerializerMapper
-  include Callable
-
   class << self
     attr_writer :map
 
@@ -13,17 +11,7 @@ class NotificationToSerializerMapper
     end
   end
 
-  attr_reader :notification_class
-
   delegate :map, to: :class
-
-  def initialize(notification_class)
-    @notification_class = notification_class
-  end
-
-  def call
-    map[notification_class]
-  end
 
   add_to_map(
     ::Notifications::AdminRightsReceived => WebApi::V1::Notifications::AdminRightsReceivedSerializer,
