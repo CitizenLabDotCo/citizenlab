@@ -124,4 +124,4 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
 end
 
 WebApi::V1::ProjectSerializer.prepend_if_ee('ProjectFolders::WebApi::V1::Patches::ProjectSerializer')
-WebApi::V1::ProjectSerializer.include_if_ee('IdeaAssignment::WebApi::V1::Extensions::ProjectSerializer')
+WebApi::V1::ProjectSerializer.include_if_ee('IdeaAssignment::Extensions::WebApi::V1::ProjectSerializer')
