@@ -2,7 +2,6 @@ module Verification
   class VerificationService
 
     @all_methods = [
-      Methods::Cow.new,
       Methods::Bogus.new,
       OmniauthMethods::FranceConnect.new,
       Methods::IdCardLookup.new,
