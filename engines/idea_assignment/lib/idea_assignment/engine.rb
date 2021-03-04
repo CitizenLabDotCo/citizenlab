@@ -1,5 +1,5 @@
 module IdeaAssignment
-  class Railtie < ::Rails::Engine
+  class Engine < ::Rails::Engine
     isolate_namespace IdeaAssignment
 
     config.to_prepare do
