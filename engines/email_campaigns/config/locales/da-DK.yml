@@ -33,6 +33,7 @@ da:
       "official_feedback_on_your_initiative": Opdatering på mit borgerforslag
       "password_reset": Nulstilling af adgangskode
       "project_moderation_rights_received": Rettigheder til projektmoderering modtaget
+      "project_folder_moderation_rights_received": Projekt-mappens moderationsrettigheder modtaget
       "project_phase_started": Ny projektfase
       "project_phase_upcoming": Kommende ny projektfase
       "status_change_of_commented_idea": Statusændring af en idé jeg har kommenteret på
@@ -82,6 +83,7 @@ da:
       "official_feedback_on_your_initiative": Update on your proposal - all users
       "password_reset": Password reset - all users
       "project_moderation_rights_received": Project moderation rights received - project managers
+      "project_folder_moderation_rights_received": Projekt-mappens moderationsrettigheder modtaget
       "project_phase_started": New project phase - all users
       "project_phase_upcoming": Upcoming new project phase - admins and project managers
       "status_change_of_commented_idea": Status change of an idea you commented on - all users
@@ -407,6 +409,21 @@ da:
       title_what_can_you_do_moderator: 'Hvad kan du gøre som projektmoderator'
       title_you_became_moderator: 'Du er blevet projektleder'
       x_ideas: '%{numberOfIdeas} ideer'
+    project_folder_moderation_rights_received:
+      cta_view_folder_button: 'Se på denne mappe'
+      message_added_as_folderadmin: 'Du er blevet tilføjet som administrator og modtaget rettigheder på %{organizationName}s deltagelsesplatform for følgende mappe:'
+      no_projects: 'Ingen projekter endnu'
+      preheader: 'En administrator af %{organizationName} deltagelsesplatformen har lige tilføjet dig som leder af følgende projektmappe'
+      subject: 'Du blev projektmappe leder på dette %{organizationName}s platform'
+      text_manage_folder: 'En mappe er en måde at organisere flere projekter med flere deltagere sammen. Som mappe-administrator kan du redigere mappen, redigere mappebeskrivelsen og oprette nye projekter (hvis du vil slette projekter, skal du kontakte din platformadministrator). Også, du har rettighederne til projektadministration over alle projekter i mappen. Dette giver dig mulighed for at redigere projekterne, administrere input og administrere e-post deltagere.'
+      text_moderate_analyse_input: 'Når projekterne er lanceret, begynder du at modtage de første input. Du modtager ugentlige rapporter med de primære aktiviteter. På den måde kan du blive informeret om, hvad der sker. Post-administratoren i din administratorvisning hjælper dig med at se på og administrere input. Deres rolle inkluderer tildeling af status og svar på post og kommentarer.'
+      text_design_participatory_process: 'Du kan administrere de forskellige deltagelsesprojekter i din mappe, konfigurere deltagelsesmetoden, tilføje en projektbeskrivelse, tilføje billeder og sende kommunikation om lignende begivenheder. Også, du kan administrere, hvordan deltagerne interagerer med dine projekter, dette inkluderer tildeling af adgangsrettigheder samt konfiguration af indstillingerne for posting, afstemning og kommentar.'
+      title_design_participatory_process: 'Design deltagelsesprocessen'
+      title_moderate_analyse_input: 'Moderér og analyser input'
+      title_manage_folder: 'Administrer mappeindstillingerne og opret nye projekter.'
+      title_what_can_you_do_folderadmin: 'Hvilke handlinger kan du udføre som en mappe-administrator?'
+      title_added_as_folderadmin: 'Du er blevet tilføjet som en mappe-administrator'
+      x_projects: '%{numberOfProjects} projekter'
     password_reset:
       cta_reset_password: 'Nulstil din adgangskode'
       message_you_reset_your_password: 'Du anmodede om en nulstilling af din adgangskode på %{organizationName}s deltagelsesplatform. Klik på nedenstående knap, for at vælge en ny og sikker adgangskode. Linket udløber om 1 time.'
