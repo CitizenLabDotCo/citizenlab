@@ -145,7 +145,7 @@ interface Routes {
   citizen: RouteConfiguration[];
   admin: RouteConfiguration[];
   'admin.initiatives': RouteConfiguration[];
-  blehzolg: RouteConfiguration[];
+  adminProjectMapTab: RouteConfiguration[];
 }
 
 export interface ParsedModuleConfiguration {
@@ -242,7 +242,10 @@ export const loadModules = (modules: Modules): ParsedModuleConfiguration => {
         mergedRoutes?.['admin.initiatives'],
         RouteTypes.ADMIN
       ),
-      blehzolg: parseModuleRoutes(mergedRoutes?.['blehzolg'], RouteTypes.ADMIN),
+      adminProjectMapTab: parseModuleRoutes(
+        mergedRoutes?.['adminProjectMapTab'],
+        RouteTypes.ADMIN
+      ),
     },
     beforeMountApplication: callLifecycleMethods('beforeMountApplication'),
     afterMountApplication: callLifecycleMethods('afterMountApplication'),
