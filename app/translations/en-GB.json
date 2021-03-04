@@ -7,13 +7,9 @@
   "UI.FormComponents.optional": "optional",
   "UI.FormComponents.required": "required",
   "app.ccomponents.InitiativeCards.noInitiativesForFilter": "{tenantName, select, stirlingcouncil {No petitions found} other {No proposals found}}",
-<<<<<<< HEAD
   "app.components.AdminPage.SettingsPage.bannerHeaderSignedIn": "",
-  "app.components.AdminPage.SettingsPage.contrastRatioTooLow": "Warning: the color you selected doesn't have a high enough contrast. This may result in text that's hard to read. Choose a darker color to optimize readability.",
-=======
   "app.components.AdminPage.SettingsPage.contrastRatioTooLow": "Warning: the colour you selected doesn't have a high enough contrast. This may result in text that's hard to read. Choose a darker colour to optimise readability.",
   "app.components.AdminPage.SettingsPage.customSectionInfo": "This content is shown at the bottom of your homepage. You can change it at any time.",
->>>>>>> a19a88401cbb6f26dfa77a6dee63bf445faa1342
   "app.components.AdminPage.SettingsPage.customSectionLabel": "Content",
   "app.components.AdminPage.SettingsPage.homePageCustomizableSection": "",
   "app.components.AdminPage.SettingsPage.homePageCustomizableSectionTooltip": "",
@@ -1425,15 +1421,12 @@
   "app.containers.AdminPage.SettingsPage.fieldTopicTitle": "Topic name",
   "app.containers.AdminPage.SettingsPage.fieldTopicTitleTooltip": "The name you choose for each topic will be visible to the platform users.",
   "app.containers.AdminPage.SettingsPage.header": "Homepage banner",
-<<<<<<< HEAD
-=======
   "app.containers.AdminPage.SettingsPage.headerOverlayColor": "Header overlay colour",
   "app.containers.AdminPage.SettingsPage.headerOverlayOpacity": "Signed out header overlay opacity",
   "app.containers.AdminPage.SettingsPage.headerSubtitleLabel": "Banner subtitle",
   "app.containers.AdminPage.SettingsPage.headerSubtitleTooltip": "Shown below the header title on the home page. Tell your users why they should register on your platform.",
   "app.containers.AdminPage.SettingsPage.headerTitleLabel": "Banner title",
   "app.containers.AdminPage.SettingsPage.headerTitleTooltip": "Shown on the header image on the home page to people who aren't logged in yet. Tell them what this platform is about.",
->>>>>>> a19a88401cbb6f26dfa77a6dee63bf445faa1342
   "app.containers.AdminPage.SettingsPage.header_bg": "Banner image",
   "app.containers.AdminPage.SettingsPage.header_bgTooltip": "This image is shown on top of your homepage. The recommended dimensions are 1440x480.",
   "app.containers.AdminPage.SettingsPage.helmetDescription": "Admin settings page",
