@@ -388,7 +388,6 @@ interface Props {
   disabledVoteClick?: (disabled_reason?: IdeaVotingDisabledReason) => void;
   ariaHidden?: boolean;
   className?: string;
-  showDownvote: boolean;
   style: 'border' | 'shadow' | 'compact';
 }
 
@@ -835,7 +834,6 @@ class VoteControl extends PureComponent<
       className,
       intl: { formatMessage },
       ariaHidden,
-      showDownvote,
       style,
     } = this.props;
     const {
@@ -847,12 +845,11 @@ class VoteControl extends PureComponent<
       upvotesCount,
       downvotesCount,
     } = this.state;
-    const votingEnabled =
-      idea?.data.attributes.action_descriptor.voting_idea.enabled;
-    const cancellingEnabled =
-      idea?.data.attributes.action_descriptor.voting_idea.cancelling_enabled;
-    const votingDisabledReason =
-      idea?.data.attributes.action_descriptor.voting_idea.disabled_reason;
+    const votingDescriptor =
+      idea?.data.attributes.action_descriptor.voting_idea;
+    const votingEnabled = votingDescriptor?.enabled;
+    const cancellingEnabled = votingDescriptor?.cancelling_enabled;
+    const votingDisabledReason = votingDescriptor?.disabled_reason;
     const isSignedIn = !isNilOrError(authUser);
     const isVerified =
       !isNilOrError(authUser) && authUser.data.attributes.verified;
@@ -866,6 +863,12 @@ class VoteControl extends PureComponent<
       (myVoteMode === 'down' && cancellingEnabled) ||
       (!isVerified && votingDisabledReason === 'not_verified') ||
       (!isSignedIn && votingDisabledReason === 'not_signed_in');
+    // if a project is inactive (archived), downvoting_enabled is
+    // null, hence the boolean check
+    const showDownvote =
+      typeof votingDescriptor?.downvoting_enabled === 'boolean'
+        ? votingDescriptor?.downvoting_enabled
+        : true;
 
     if (!showVoteControl) return null;
 

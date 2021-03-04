@@ -157,6 +157,25 @@ const CompactIdeaCard = memo<Props & InjectedLocalized>(
       .filter((item) => typeof item === 'string' && item !== '')
       .join(' ');
 
+    const getFooter = () => {
+      if (participationMethod === 'budgeting') {
+        return (
+          <FooterWithBudgetControl
+            idea={idea}
+            openIdea={onCardClick}
+            participationContextId={participationContextId}
+            participationContextType={participationContextType}
+          />
+        );
+      } else if (participationMethod === 'ideation') {
+        return (
+          <FooterWithVoteControl idea={idea} hideIdeaStatus={hideIdeaStatus} />
+        );
+      } else {
+        return <></>;
+      }
+    };
+
     return (
       <Card
         onClick={onCardClick}
@@ -198,21 +217,7 @@ const CompactIdeaCard = memo<Props & InjectedLocalized>(
             </Body>
           </BodyWrapper>
         }
-        footer={
-          participationMethod === 'budgeting' ? (
-            <FooterWithBudgetControl
-              idea={idea}
-              openIdea={onCardClick}
-              participationContextId={participationContextId}
-              participationContextType={participationContextType}
-            />
-          ) : (
-            <FooterWithVoteControl
-              idea={idea}
-              hideIdeaStatus={hideIdeaStatus}
-            />
-          )
-        }
+        footer={getFooter()}
       />
     );
   }
