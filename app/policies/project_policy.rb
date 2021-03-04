@@ -117,7 +117,6 @@ class ProjectPolicy < ApplicationPolicy
       :survey_service,
       :max_budget,
       :presentation_mode,
-      :default_assignee_id,
       :poll_anonymous,
       :ideas_order,
       :input_term,
@@ -155,4 +154,4 @@ end
 
 ProjectPolicy.prepend_if_ee('ProjectFolders::Patches::ProjectPolicy')
 ProjectPolicy::Scope.prepend_if_ee('ProjectFolders::Patches::ProjectPolicy::Scope')
-
+ProjectPolicy.include_if_ee('IdeaAssignment::Extensions::ProjectPolicy')
