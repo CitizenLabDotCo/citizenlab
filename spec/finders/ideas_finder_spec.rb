@@ -168,7 +168,7 @@ describe IdeasFinder do
   end
 
   describe '#bounding_box_condition' do
-    let(:bounding_box) { '[51.208758, 3.224363, 50.000667, 5.715281]' }
+    let(:bounding_box) { '[51.208758,3.224363,50.000667,5.715281]' }
     let(:expected_record_ids) { Idea.with_bounding_box(bounding_box).pluck(:id) }
 
     before do
