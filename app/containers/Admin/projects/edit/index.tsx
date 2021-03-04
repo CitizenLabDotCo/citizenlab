@@ -154,12 +154,6 @@ export class AdminProjectEdition extends PureComponent<
         feature: 'idea_custom_fields',
         name: 'ideaform',
       },
-      // {
-      //   label: formatMessage(messages.mapTab),
-      //   url: `${baseTabsUrl}/map`,
-      //   // feature: 'mapping',
-      //   name: 'map',
-      // },
       {
         label: formatMessage(messages.phasesTab),
         url: `${baseTabsUrl}/timeline`,
