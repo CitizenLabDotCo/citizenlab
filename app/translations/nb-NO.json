@@ -777,7 +777,7 @@
   "app.containers.Admin.Processing.upAndDownArrow": "Up and down arrows allow you to highlight the previous or next input in the list",
   "app.containers.Admin.Users.GroupsHeader.deleteGroup": "Delete Group",
   "app.containers.Admin.Users.GroupsHeader.editGroup": "Edit Group",
-  "app.containers.Admin.Users.GroupsPanel.allUsers": "Users",
+  "app.containers.Admin.Users.GroupsPanel.allUsers": "Brukere",
   "app.containers.Admin.Users.GroupsPanel.groupsTitle": "Groups",
   "app.containers.Admin.Users.GroupsPanel.usersSubtitle": "Create groups and add users to them.",
   "app.containers.Admin.Users.admin": "Admin",
