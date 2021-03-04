@@ -128,7 +128,7 @@ const IdeaShowPageTopBar = memo<Props>(({ ideaId, insideModal, className }) => {
         clHistory.push('/');
       }
     },
-    [insideModal]
+    [insideModal, project]
   );
 
   const onDisabledVoteClick = useCallback(
