@@ -635,7 +635,6 @@ if Apartment::Tenant.current == 'localhost'
        end
 
       if rand(5) == 0
-        project.default_assignee = rand_instance User.admin.or(User.project_moderator(project.id))
         project.save!
       end
     end

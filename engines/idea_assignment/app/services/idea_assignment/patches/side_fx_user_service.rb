@@ -13,6 +13,9 @@ module IdeaAssignment
         user.assigned_ideas
             .where.not(project: moderatable_projects)
             .update(assignee_id: nil, updated_at: DateTime.now)
+        user.default_assigned_projects
+            .where.not(id: moderatable_projects)
+            .update(default_assignee_id: nil, updated_at: DateTime.now)
       end
     end
   end
