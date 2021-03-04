@@ -146,6 +146,7 @@ gem "mjml-rails", "~> 4.4"
 gem 'intercom', '~> 4.1'
 
 gem 'admin_api', path: 'engines/admin_api'
+gem 'custom_statuses', path: 'engines/custom_statuses'
 gem 'custom_style', path: 'engines/custom_style'
 gem 'email_campaigns', path: 'engines/email_campaigns'
 gem 'frontend', path: 'engines/frontend'
