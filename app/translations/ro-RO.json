@@ -430,6 +430,7 @@
   "app.components.VerificationModal.userVerifiedSubtitle": "Identitatea ta a fost verificată. Acum ești membru cu drepturi depline al comunității de pe această platformă.",
   "app.components.VerificationModal.userVerifiedTitle": "Acum sunteți verificat!",
   "app.components.VerificationModal.verifyBOSA": "Verificați cu itsme sau eID",
+  "app.components.VerificationModal.verifyClaveUnica": "",
   "app.components.VerificationModal.verifyNow": "Verifică acum",
   "app.components.VerificationModal.verifyYourIdentity": "Verificați-vă identitatea",
   "app.components.VoteControl.budgetingFutureEnabled": "You can allocate your budget starting from {enabledFromDate}.",

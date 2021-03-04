@@ -430,6 +430,7 @@
   "app.components.VerificationModal.userVerifiedSubtitle": "Kinaassutsit uppernarsarneqarpoq. Platformimi uani ataatsimoornermut ilaasortanngorputit.",
   "app.components.VerificationModal.userVerifiedTitle": "Massakkut uppernarsineqarputit!",
   "app.components.VerificationModal.verifyBOSA": "Itsme imaluunniit eID atorlugu uppernarsaruk",
+  "app.components.VerificationModal.verifyClaveUnica": "",
   "app.components.VerificationModal.verifyNow": "Maanna uppernarsaagit",
   "app.components.VerificationModal.verifyYourIdentity": "{tenantName, select, DeloitteDK {Atuisuunerit uppernarsaruk} other {Kinaassutsit uppernarsaruk}}",
   "app.components.VoteControl.budgetingFutureEnabled": "You can allocate your budget starting from {enabledFromDate}.",

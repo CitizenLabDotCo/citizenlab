@@ -430,6 +430,7 @@
   "app.components.VerificationModal.userVerifiedSubtitle": "Your identity has been verified. You’re now a full member of the community on this platform.",
   "app.components.VerificationModal.userVerifiedTitle": "You’re now verified!",
   "app.components.VerificationModal.verifyBOSA": "Verify with itsme or eID",
+  "app.components.VerificationModal.verifyClaveUnica": "",
   "app.components.VerificationModal.verifyNow": "Verify now",
   "app.components.VerificationModal.verifyYourIdentity": "Verify your identity",
   "app.components.VoteControl.budgetingFutureEnabled": "You can allocate your budget starting from {enabledFromDate}.",

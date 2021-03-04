@@ -430,6 +430,7 @@
   "app.components.VerificationModal.userVerifiedSubtitle": "Identiteten din har blitt bekreftet . Du er nå medlem av fellesskapet på denne platformen.",
   "app.components.VerificationModal.userVerifiedTitle": "Du er nå verifisert!",
   "app.components.VerificationModal.verifyBOSA": "Verifiser med itsme eller eID",
+  "app.components.VerificationModal.verifyClaveUnica": "",
   "app.components.VerificationModal.verifyNow": "Bekreft nå",
   "app.components.VerificationModal.verifyYourIdentity": "Bekreft identiteten din",
   "app.components.VoteControl.budgetingFutureEnabled": "Du kan fordele ditt budsjett fra den {enabledFromDate}.",

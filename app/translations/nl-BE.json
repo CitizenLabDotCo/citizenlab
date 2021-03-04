@@ -430,6 +430,7 @@
   "app.components.VerificationModal.userVerifiedSubtitle": "Je identiteit is geverifieerd. Je bent nu een volwaardig lid van de gemeenschap op dit platform.",
   "app.components.VerificationModal.userVerifiedTitle": "Je bent nu geverifieerd!",
   "app.components.VerificationModal.verifyBOSA": "Verifieer met itsme of e-ID",
+  "app.components.VerificationModal.verifyClaveUnica": "",
   "app.components.VerificationModal.verifyNow": "Verifieer je nu",
   "app.components.VerificationModal.verifyYourIdentity": "Verifieer je identiteit",
   "app.components.VoteControl.budgetingFutureEnabled": "Je kan je budget verdelen vanaf {enabledFromDate}.",
