@@ -8,10 +8,9 @@ exports[`IdeasMap renders correctly 1`] = `
       id="app.components.IdeasMap.a11y_mapTitle"
     />
   </a11y__ScreenReaderOnly>
-  <Component
+  <WithLocalize(Component)
     boxContent={null}
     fitBounds={true}
-    mapHeight={400}
     onBoxClose={[Function]}
     onMapClick={[Function]}
     onMarkerClick={[Function]}
@@ -21,7 +20,7 @@ exports[`IdeasMap renders correctly 1`] = `
   <IdeasMap__IdeaButtonWrapper
     className="create-idea-wrapper"
   >
-    <Component
+    <_default
       inMap={true}
       latLng={null}
       participationContextType="phase"

@@ -52,7 +52,7 @@ exports[`<UsersDashboard /> renders correctly 1`] = `
     topicFilterOptions={null}
   />
   <dashboard__GraphsContainer>
-    <Component
+    <_default
       endAt="2010-01-01T04:06:07.000Z"
     />
     <WithTheme(MostActiveUsersList)
