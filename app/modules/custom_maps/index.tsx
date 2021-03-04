@@ -4,7 +4,7 @@ import Tab from './admin/components/Tab';
 
 const configuration: ModuleConfiguration = {
   routes: {
-    blehzolg: [
+    adminProjectMapTab: [
       {
         path: '/:locale/admin/projects/:projectId/map',
         name: 'admin projects map',
