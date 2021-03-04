@@ -24,17 +24,19 @@ resource 'Projects' do
   patch 'web_api/v1/projects/:id' do
     let(:project) { create(:project, process_type: 'continuous') }
     let(:id) { project.id }
+    let(:default_assignee_id) { nil }
 
     with_options scope: :project do
       parameter :default_assignee_id,
                 'The user id of the admin or moderator that gets assigned to ideas by default. Defaults to unassigned',
                 required: false
-      # expect(json_response.dig(:data,:relationships,:default_assignee,:data,:id)).to eq default_assignee_id
+    end
+
+    before do
+      project.update!(default_assignee: create(:admin))
     end
 
     example 'Set default assignee to unassigned', document: false do
-      project.update!(default_assignee: create(:admin))
-      do_request(project: { default_assignee_id: nil })
       json_response = json_parse(response_body)
       expect(json_response.dig(:data, :relationships, :default_assignee, :data, :id)).to be_nil
     end
