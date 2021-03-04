@@ -64,7 +64,7 @@ const ProjectFolderProjectCards = memo<{
             hideDescriptionPreview={hideDescriptionPreview}
             className={
               filteredList.length === 1 ||
-              (windowWidth > 1100 && windowWidth < 1250)
+              (windowWidth > 1000 && windowWidth < 1350)
                 ? 'oneCardPerRow'
                 : ''
             }
