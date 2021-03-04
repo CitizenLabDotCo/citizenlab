@@ -1458,6 +1458,7 @@
   "app.containers.AdminPage.SettingsPage.tabCustomize": "Startpagina en stijl",
   "app.containers.AdminPage.SettingsPage.tabPages": "Pagina's",
   "app.containers.AdminPage.SettingsPage.tabRegistration": "Registratiegegevens",
+  "app.containers.AdminPage.SettingsPage.tabRegistrationFields": "",
   "app.containers.AdminPage.SettingsPage.tabSettings": "Algemeen",
   "app.containers.AdminPage.SettingsPage.tabTopics": "Thema's",
   "app.containers.AdminPage.SettingsPage.tabWidgets": "Widget",
