@@ -24,7 +24,7 @@ resource "Verification Id Cards", admin_api: true do
     end
 
     before do
-      @idea_card = create(:verification_id_card)
+      @idea_card = create(:id_id_card_lookup_id_card)
     end
 
     let(:card_ids) {[
@@ -43,7 +43,7 @@ resource "Verification Id Cards", admin_api: true do
 
     example "Replaces all id cards with the CSV file contents" do
       expect{do_request}
-        .to have_enqueued_job(Verification::LoadIdCardsJob)
+        .to have_enqueued_job(IdIdCardLookup::LoadIdCardsJob)
         .with(card_ids)
       expect(status).to eq(201)
       expect{@idea_card.reload}.to raise_error(ActiveRecord::RecordNotFound)
@@ -52,7 +52,7 @@ resource "Verification Id Cards", admin_api: true do
 
   get "admin_api/verification_id_cards/count" do
     before do
-      @idea_card = create(:verification_id_card)
+      @idea_card = create(:id_id_card_lookup_id_card)
     end
 
     example_request "Count id cards in the system" do

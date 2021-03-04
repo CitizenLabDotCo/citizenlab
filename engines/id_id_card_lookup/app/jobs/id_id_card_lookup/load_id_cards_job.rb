@@ -1,4 +1,4 @@
-module Verification
+module IdIdCardLookup
   class LoadIdCardsJob < ApplicationJob
     queue_as :default
 

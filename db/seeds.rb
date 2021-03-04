@@ -892,7 +892,7 @@ if Apartment::Tenant.current == 'localhost'
     InitiativeStatusService.new.automated_transitions!
 
     10.times do |i|
-      Verification::IdCard.create!(card_id: i.to_s*3)
+      IdIdCardLookup::IdCard.create!(card_id: i.to_s*3)
     end
 
     3.times do |i|

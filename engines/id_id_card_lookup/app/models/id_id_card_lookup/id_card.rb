@@ -1,4 +1,4 @@
-module Verification
+module IdIdCardLookup
   class IdCard < ApplicationRecord
 
     validates :hashed_card_id, presence: true, uniqueness: true

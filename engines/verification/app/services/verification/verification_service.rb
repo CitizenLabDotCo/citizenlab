@@ -1,9 +1,7 @@
 module Verification
   class VerificationService
 
-    @all_methods = [
-      Methods::IdCardLookup.new,
-    ]
+    @all_methods = []
 
     class << self
       attr_reader :all_methods

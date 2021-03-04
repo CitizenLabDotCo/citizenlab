@@ -1,6 +1,6 @@
 require "rails_helper"
 
-describe Verification::IdCardService do
+describe IdIdCardLookup::IdCardService do
 
   describe "normalize" do
     it "removes all whitespace" do

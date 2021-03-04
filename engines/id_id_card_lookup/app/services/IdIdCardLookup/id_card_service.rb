@@ -1,4 +1,4 @@
-module Verification
+module IdIdCardLookup
   class IdCardService
 
     def encode card_id
