@@ -3,8 +3,6 @@ import { LoadableLoadingAdmin } from 'components/UI/LoadableLoading';
 import moduleConfiguration from 'modules';
 
 export default () => {
-  console.log(moduleConfiguration.routes['adminProjectMapTab']);
-
   return {
     path: 'projects',
     name: 'admin projects',

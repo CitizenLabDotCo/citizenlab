@@ -413,9 +413,6 @@ export class AdminProjectEdition extends PureComponent<
       }
     }
 
-    console.log('tabbedProps', tabbedProps);
-    console.log('mapTab', this.state.mapTab);
-
     if (!isNilOrError(project) && phases !== undefined) {
       const inputTerm = getInputTerm(
         project.attributes.process_type,
