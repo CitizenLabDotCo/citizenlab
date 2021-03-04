@@ -1,18 +1,20 @@
 Rails.application.routes.draw do
-  mount PublicApi::Engine => '/api', as: 'public_api'
-  mount AdminApi::Engine => '/admin_api', as: 'admin_api', defaults: {format: :json}
-  mount EmailCampaigns::Engine => '', as: 'email_campaigns'
-  mount MachineTranslations::Engine => '', as: 'machine_translations'
-  mount NLP::Engine => '', as: 'nlp'
-  mount Onboarding::Engine => '', as: 'onboarding'
-  mount Surveys::Engine => '', as: 'surveys'
-  mount Frontend::Engine => '', as: 'frontend'
-  mount Polls::Engine => '', as: 'polls'
-  mount Verification::Engine => '', as: 'verification'
-  mount Volunteering::Engine => '', as: 'volunteering'
-  mount Maps::Engine => '', as: 'maps'
-  mount Tagging::Engine => '', as: 'tagging'
+  
+  mount AdminApi::Engine => "/admin_api", as: 'admin_api', defaults: {format: :json}
+  mount CustomStatuses::Engine => "", as: 'custom_statuses'
+  mount EmailCampaigns::Engine => "", as: 'email_campaigns'
+  mount Frontend::Engine => "", as: 'frontend'
+  mount MachineTranslations::Engine => "", as: 'machine_translations'
+  mount Maps::Engine => "", as: 'maps'
+  mount NLP::Engine => "", as: 'nlp'
+  mount Onboarding::Engine => "", as: 'onboarding'
+  mount Polls::Engine => "", as: 'polls'
+  mount PublicApi::Engine => "/api", as: 'public_api'
   mount Seo::Engine => '', as: 'seo'
+  mount Surveys::Engine => "", as: 'surveys'
+  mount Tagging::Engine => "", as: 'tagging'
+  mount Verification::Engine => "", as: 'verification'
+  mount Volunteering::Engine => "", as: 'volunteering'
 
   namespace :web_api, :defaults => {:format => :json} do
     namespace :v1 do
@@ -70,8 +72,8 @@ Rails.application.routes.draw do
         get :allowed_transitions, on: :member
       end
 
-      resources :idea_statuses
-      resources :initiative_statuses, only: [:index, :show]
+      resources :idea_statuses, only: %i[index show]
+      resources :initiative_statuses, only: %i[index show]
 
       # auth
       post 'user_token' => 'user_token#create'
