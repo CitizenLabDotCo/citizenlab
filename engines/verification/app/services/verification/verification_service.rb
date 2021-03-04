@@ -2,7 +2,6 @@ module Verification
   class VerificationService
 
     @all_methods = [
-      OmniauthMethods::FranceConnect.new,
       Methods::IdCardLookup.new,
     ]
 
