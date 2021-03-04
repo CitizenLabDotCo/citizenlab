@@ -1,6 +1,6 @@
-module OmniauthMethods
-  class FranceConnect
-    include Verification::Methods::FranceConnect
+module IdFranceconnect
+  class FranceconnectOmniauth
+    include FranceconnectVerification
 
     def profile_to_user_attrs(auth)
       # Todo: Do something smart with the address auth.extra.raw_info.address.formatted
