@@ -22,7 +22,7 @@ class Idea < ApplicationRecord
 
   has_many :tagging_taggings
   has_many :tagging_tags, through: :tagging_taggings
-  has_and_belongs_to_many :tagging_pending_tasks, class_name: 'Tagging::PendingTask', join_table: :tagging_pending_tasks_ideas 
+  has_and_belongs_to_many :tagging_pending_tasks, class_name: 'Tagging::PendingTask', join_table: :tagging_pending_tasks_ideas
   has_many :ideas_topics, dependent: :destroy
   has_many :topics, through: :ideas_topics
   has_many :areas_ideas, dependent: :destroy
@@ -37,6 +37,8 @@ class Idea < ApplicationRecord
   has_many :idea_images, -> { order(:ordering) }, dependent: :destroy
   has_many :idea_files, -> { order(:ordering) }, dependent: :destroy
   has_one :idea_trending_info
+
+  after_update :update_phase_ideas_count
 
   validates_numericality_of :proposed_budget, greater_than_or_equal_to: 0, allow_nil: true
   with_options unless: :draft? do |idea|
@@ -143,5 +145,9 @@ class Idea < ApplicationRecord
     if project_id_previously_changed?
       Comment.counter_culture_fix_counts only: [[:idea, :project]]
     end
+  end
+
+  def update_phase_ideas_count
+    IdeasPhase.counter_culture_fix_counts only: %i[phase]
   end
 end
