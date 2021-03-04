@@ -1,6 +1,5 @@
 # Changelog
 
-## Next release
 
 ### Added
 - In the admin (Settings > Registration tab), admins can now directly set the helper texts on top of the sign-up form (both for step 1 and 2). 
@@ -9,10 +8,25 @@
 ### Changed
 - The admin Settings > Homepage and style tab has undergone copy improvements and has been rearranged 
 
+## 2021-03-04
+
+### Changes
+- The FranceConnect button to login, signup or verify your account now displays the messages required by the vendor.
+- Updated the look of the FranceConnect button to login, signup or verify your account to feature the latests changes required by the vendor.
+
+## 2021-03-03
+
+### Added
+- Users are now notified in app and via email when they're assigned as folder administrators.
+
 ## 2021-03-02
 
 ### Fixed
 - Don't show empty space inside of the idea card when no avatar is present
+
+### Added
+
+- Maori as languages option
 
 ### Changed
 - Improved layout of project event listings on mobile devices
