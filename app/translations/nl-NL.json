@@ -777,7 +777,7 @@
   "app.containers.Admin.Processing.upAndDownArrow": "Met de pijlen omhoog en omlaag kun je naar de vorige of volgende input gaan",
   "app.containers.Admin.Users.GroupsHeader.deleteGroup": "Verwijder groep",
   "app.containers.Admin.Users.GroupsHeader.editGroup": "Bewerk groep",
-  "app.containers.Admin.Users.GroupsPanel.allUsers": "Geregistreerde gebruikers",
+  "app.containers.Admin.Users.GroupsPanel.allUsers": "Gebruikers",
   "app.containers.Admin.Users.GroupsPanel.groupsTitle": "Groepen",
   "app.containers.Admin.Users.GroupsPanel.usersSubtitle": "Beheer alle gebruikers op je platform. Maak manuele of slimme groepen aan om hen te segmenteren.",
   "app.containers.Admin.Users.admin": "Beheerder",
