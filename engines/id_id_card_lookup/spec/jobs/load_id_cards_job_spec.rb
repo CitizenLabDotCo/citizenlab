@@ -1,8 +1,8 @@
 require 'rails_helper'
 
-RSpec.describe Verification::LoadIdCardsJob, type: :job do
+RSpec.describe IdIdCardLookup::LoadIdCardsJob, type: :job do
   
-  subject(:job) { Verification::LoadIdCardsJob.new }
+  subject(:job) { IdIdCardLookup::LoadIdCardsJob.new }
 
   describe '#perform' do
 
@@ -20,7 +20,7 @@ RSpec.describe Verification::LoadIdCardsJob, type: :job do
 
     it "loads all given card_ids" do
       job.perform(card_ids)
-      expect(Verification::IdCard.count).to eq 9
+      expect(IdIdCardLookup::IdCard.count).to eq 9
     end
   end
 end
