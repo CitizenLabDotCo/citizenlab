@@ -27,3 +27,5 @@ class AdminPublicationPolicy < ApplicationPolicy
     [:ordering]
   end
 end
+
+AdminPublicationPolicy.prepend_if_ee('ProjectFolders::Patches::AdminPublicationPolicy')

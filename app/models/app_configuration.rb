@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class AppConfiguration < ApplicationRecord
-  include Frontend::StyleSettings
-
   mount_base64_uploader :logo, LogoUploader
   mount_base64_uploader :header_bg, AppHeaderBgUploader
   mount_base64_uploader :favicon, FaviconUploader
@@ -207,3 +205,5 @@ class AppConfiguration < ApplicationRecord
     tenant.disable_config_sync.save
   end
 end
+
+AppConfiguration.include_if_ee('CustomStyle::StyleSettings')

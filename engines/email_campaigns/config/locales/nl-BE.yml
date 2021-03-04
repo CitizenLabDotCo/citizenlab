@@ -33,6 +33,7 @@ nl-BE:
       "official_feedback_on_your_initiative": Update op mijn voorstel
       "password_reset": Herstel wachtwoord
       "project_moderation_rights_received": Projectbeheerdersrechten ontvangen
+      "project_folder_moderation_rights_received": Mapbeheerdersrechten ontvangen
       "project_phase_started": Nieuwe projectfase
       "project_phase_upcoming": Opkomende nieuwe projectfase
       "status_change_of_commented_idea": Statuswijziging van een idee waar ik op reageerde
@@ -82,6 +83,7 @@ nl-BE:
       "official_feedback_on_your_initiative": Update op jouw voorstel - alle gebruikers
       "password_reset": Wachtwoord resetten - alle gebruikers
       "project_moderation_rights_received": Projectmoderatorrechten ontvangen - projectbeheerders
+      "project_folder_moderation_rights_received": Mapbeheerdersrechten ontvangen
       "project_phase_started": Nieuwe projectfase - alle gebruikers
       "project_phase_upcoming": Opkomende nieuwe projectfase - admins en projectbeheerders
       "status_change_of_commented_idea": Statuswijziging van een idee waar je op reageerde - alle gebruikers
@@ -407,6 +409,21 @@ nl-BE:
       title_what_can_you_do_moderator: 'Wat kan je doen als projectbeheerder?'
       title_you_became_moderator: 'Je werd net projectbeheerder'
       x_ideas: '%{numberOfIdeas} ideeën'
+    project_folder_moderation_rights_received:
+      cta_view_folder_button: 'Bekijk deze map'
+      message_added_as_folderadmin: 'Je hebt beheerdersrechten gekregen op %{organizationName}''s participatieplatform voor de volgende map:'
+      no_projects: 'Nog geen projecten'
+      preheader: 'Een beheerder van het platform van %{organizationName} heeft jou zojuist mapbeheerder gemaakt van de volgende map:'
+      subject: 'Je bent nu mapbeheerder op het participatieplatform van %{organizationName}'
+      text_manage_folder: 'Een map is een manier om verschillende participatieprojecten samen te organiseren. Als mapbeheerder kan je de map en de mapbeschrijving bewerken en nieuwe projecten aanmaken (neem contact op met een platformbeheerder om projecten te verwijderen). Je hebt ook projectbeheerderrechten over alle projecten binnen de map, waardoor je de projecten kan bewerken, de inputs kan beheren en deelnemers kan e-mailen.'
+      text_moderate_analyse_input: "Zodra de projecten zijn gelanceerd beginnen de eerste inputs binnen te komen. U ontvangt wekelijkse rapporten met de belangrijkste activiteiten, zodat u op de hoogte kunt blijven van wat er gebeurt. De Post Manager in uw adminweergave zal u helpen de input te zien en beheren, inclusief het toekennen van statussen en het reageren op berichten en commentaren.\n"
+      text_design_participatory_process: "U kunt de verschillende participatieprojecten in uw map beheren - configureer de participatiemethode, voeg een projectbeschrijving toe, afbeeldingen bijvoegen, en gerelateerde evenementen communiceren. U kunt ook instellen hoe deelnemers met uw projecten omgaan, waaronder het instellen van toegangsrechten en het configureren van de instellingen voor posten, stemmen en commentaar geven.\n"
+      title_design_participatory_process: 'Geef het participatieproces vorm'
+      title_moderate_analyse_input: 'Beheer en analyseer de input'
+      title_manage_folder: 'Beheer de mapinstellingen en maak nieuwe projecten.'
+      title_what_can_you_do_folderadmin: 'Wat kan je doen als mapbeheerder?'
+      title_added_as_folderadmin: 'Je werd net mapbeheerder'
+      x_projects: '%{numberOfProjects} projecten'
     password_reset:
       cta_reset_password: 'Stel je wachtwoord opnieuw in'
       message_you_reset_your_password: 'Je vroeg een reset van je wachtwoord om je aan te melden op het participatieplatform van %{organizationName}. Klik op onderstaande knop om een nieuw, veilig wachtwoord in te stellen. De link is 1 uur geldig.'

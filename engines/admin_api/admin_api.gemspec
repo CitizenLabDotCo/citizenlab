@@ -19,6 +19,7 @@ Gem::Specification.new do |s|
   s.add_dependency "apartment", "~> 2.2.1"
   s.add_dependency "graphql", "~> 1.8.0"
   s.add_dependency "kaminari", "~> 1.2"
+  s.add_dependency "custom_style"
 
   s.add_development_dependency "rspec_api_documentation"
   s.add_development_dependency "rspec-rails"

@@ -354,3 +354,5 @@ class User < ApplicationRecord
     ROLES_JSON_SCHEMA
   end
 end
+
+User.prepend_if_ee('ProjectFolders::Patches::User')

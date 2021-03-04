@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_11_144443) do
+ActiveRecord::Schema.define(version: 2021_02_17_112905) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -565,6 +565,7 @@ ActiveRecord::Schema.define(version: 2021_02_11_144443) do
     t.uuid "phase_id"
     t.string "post_type"
     t.string "post_status_type"
+    t.uuid "project_folder_id"
     t.index ["created_at"], name: "index_notifications_on_created_at"
     t.index ["initiating_user_id"], name: "index_notifications_on_initiating_user_id"
     t.index ["invite_id"], name: "index_notifications_on_invite_id"
