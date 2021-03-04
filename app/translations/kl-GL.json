@@ -324,7 +324,7 @@
   "app.components.ProjectCard.viewTheQuestions": "Apeqqutit takukkit",
   "app.components.ProjectCard.vote": "{tenantName, select, DeloitteDK {Peqataagit} other {Taasigit}}",
   "app.components.ProjectCard.xComments": "{commentsCount, plural, one {# oqaaseqaatit} other {# oqaaseqaatit}}",
-  "app.components.ProjectCard.xContributions": "{ideasCount, plural, one {# contribution} other {# contributions}}",
+  "app.components.ProjectCard.xContributions": "{ideasCount, plural, no {# ilanngussaqanngilaq} one {# ilanngussaq} other {# ilanngussat}}",
   "app.components.ProjectCard.xIdeas": "{ideasCount, plural, =0 {no isumassarsiat} one {# isumassarsiat} other {# isumassarsiat}}",
   "app.components.ProjectCard.xIssues": "{ideasCount, plural, one {# issue} other {# issues}}",
   "app.components.ProjectCard.xOptions": "{ideasCount, plural, one {# option} other {# options}}",
