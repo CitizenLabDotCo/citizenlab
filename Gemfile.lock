@@ -81,7 +81,6 @@ PATH
   specs:
     custom_statuses (0.1.0)
       active_model_serializers (~> 0.10.7)
-      apartment (~> 2.2.1)
       pundit (~> 2.0)
       rails (~> 6.0.0)
 
