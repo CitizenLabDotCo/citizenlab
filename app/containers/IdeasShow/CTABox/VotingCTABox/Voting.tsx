@@ -78,7 +78,6 @@ class VoteWrapper extends PureComponent<Props, State> {
             ideaId={ideaId}
             disabledVoteClick={this.disabledVoteClick}
             size="3"
-            showDownvote={votingDescriptor.downvoting_enabled}
           />
         )}
         {error === 'votingDisabled' && (

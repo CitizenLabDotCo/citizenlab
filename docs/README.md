@@ -2,7 +2,9 @@
 
 ## Next release
 
-/
+### Fixed
+- Downvote button (thumbs down) on input card is displayed for archived projects
+
 
 ## 2021-03-04
 

@@ -57,47 +57,41 @@ interface Props {
   className?: string;
 }
 
-const CompactIdeaCard = memo<Props>(({ idea, hideIdeaStatus, className }) => {
-  const ideaStatusId = idea?.relationships?.idea_status?.data.id;
-  const isDownVotingEnabled = !!idea?.attributes?.action_descriptor?.voting_idea
-    ?.downvoting_enabled;
-  const commentingDescriptor =
-    idea?.attributes?.action_descriptor?.commenting_idea;
-  const isCommentingEnabled = !!(
-    commentingDescriptor.enabled ||
-    commentingDescriptor.disabled_reason === 'not_signed_in'
-  );
+const FooterWithVoteControl = memo<Props>(
+  ({ idea, hideIdeaStatus, className }) => {
+    const ideaStatusId = idea?.relationships?.idea_status?.data.id;
+    const commentingDescriptor =
+      idea?.attributes?.action_descriptor?.commenting_idea;
+    const isCommentingEnabled = !!(
+      commentingDescriptor.enabled ||
+      commentingDescriptor.disabled_reason === 'not_signed_in'
+    );
 
-  return (
-    <Container className={className || ''}>
-      <Left>
-        <VoteControl
-          style="compact"
-          ideaId={idea.id}
-          size="1"
-          ariaHidden
-          showDownvote={isDownVotingEnabled}
-        />
+    return (
+      <Container className={className || ''}>
+        <Left>
+          <VoteControl style="compact" ideaId={idea.id} size="1" ariaHidden />
 
-        <CommentsCount
-          className={[
-            'e2e-ideacard-comment-count',
-            isCommentingEnabled ? 'enabled' : 'disabled',
-          ]
-            .filter((item) => item)
-            .join(' ')}
-        >
-          <CommentIcon name="comments" />
-          {idea.attributes.comments_count}
-        </CommentsCount>
-      </Left>
-      {!hideIdeaStatus && (
-        <Right>
-          <StyledStatusBadge statusId={ideaStatusId} />
-        </Right>
-      )}
-    </Container>
-  );
-});
+          <CommentsCount
+            className={[
+              'e2e-ideacard-comment-count',
+              isCommentingEnabled ? 'enabled' : 'disabled',
+            ]
+              .filter((item) => item)
+              .join(' ')}
+          >
+            <CommentIcon name="comments" />
+            {idea.attributes.comments_count}
+          </CommentsCount>
+        </Left>
+        {!hideIdeaStatus && (
+          <Right>
+            <StyledStatusBadge statusId={ideaStatusId} />
+          </Right>
+        )}
+      </Container>
+    );
+  }
+);
 
-export default CompactIdeaCard;
+export default FooterWithVoteControl;
