@@ -36,7 +36,7 @@ resource 'Projects' do
       project.update!(default_assignee: create(:admin))
     end
 
-    example 'Set default assignee to unassigned', document: false do
+    example_request 'Set default assignee to unassigned', document: false do
       json_response = json_parse(response_body)
       expect(json_response.dig(:data, :relationships, :default_assignee, :data, :id)).to be_nil
     end
