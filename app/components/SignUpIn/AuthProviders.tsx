@@ -139,6 +139,20 @@ const AuthProviders = memo<Props & InjectedIntlProps>(
 
     return (
       <Container className={className}>
+        {franceconnectLoginEnabled && (
+          <FranceConnectButton
+            onClick={handleOnFranceConnectSelected}
+            logoAlt={formatMessage(messages.signUpButtonAltText, {
+              loginMechanismName: 'FranceConnect',
+            })}
+          />
+        )}
+
+        {(passwordLoginEnabled ||
+          facebookLoginEnabled ||
+          azureAdLoginEnabled) &&
+          franceconnectLoginEnabled && <Or />}
+
         {passwordLoginEnabled && (
           <StyledAuthProviderButton
             flow={flow}
@@ -193,20 +207,6 @@ const AuthProviders = memo<Props & InjectedIntlProps>(
               values={{ azureProviderName }}
             />
           </StyledAuthProviderButton>
-        )}
-
-        {(passwordLoginEnabled ||
-          facebookLoginEnabled ||
-          azureAdLoginEnabled) &&
-          franceconnectLoginEnabled && <Or />}
-
-        {franceconnectLoginEnabled && (
-          <FranceConnectButton
-            onClick={handleOnFranceConnectSelected}
-            logoAlt={formatMessage(messages.signUpButtonAltText, {
-              loginMechanismName: 'FranceConnect',
-            })}
-          />
         )}
 
         <Options>
