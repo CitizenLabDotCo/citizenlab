@@ -154,6 +154,14 @@ PATH
       verification
 
 PATH
+  remote: engines/id_id_card_lookup
+  specs:
+    id_id_card_lookup (0.1.0)
+      rails (~> 6.0.0)
+      savon (~> 2.12.0)
+      verification
+
+PATH
   remote: engines/machine_translations
   specs:
     machine_translations (0.1.0)
@@ -893,6 +901,7 @@ DEPENDENCIES
   id_clave_unica!
   id_cow!
   id_franceconnect!
+  id_id_card_lookup!
   intercom (~> 4.1)
   kaminari (~> 1.2)
   knock!

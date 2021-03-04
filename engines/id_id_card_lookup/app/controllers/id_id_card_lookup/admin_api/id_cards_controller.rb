@@ -1,4 +1,4 @@
-module Verification
+module IdIdCardLookup
   module AdminApi
     class IdCardsController < ::AdminApi::AdminApiController
 
