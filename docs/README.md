@@ -1,6 +1,5 @@
 # Changelog
 
-### Next Release
 
 ### Added
 - In the admin (Settings > Registration tab), admins can now directly set the helper texts on top of the sign-up form (both for step 1 and 2). 
@@ -8,6 +7,12 @@
 
 ### Changed
 - The admin Settings > Homepage and style tab has undergone copy improvements and has been rearranged 
+
+## 2021-03-04
+
+### Changes
+- The FranceConnect button to login, signup or verify your account now displays the messages required by the vendor.
+- Updated the look of the FranceConnect button to login, signup or verify your account to feature the latests changes required by the vendor.
 
 ## 2021-03-03
 
