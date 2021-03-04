@@ -1458,6 +1458,7 @@
   "app.containers.AdminPage.SettingsPage.tabCustomize": "Página inicial e estilo",
   "app.containers.AdminPage.SettingsPage.tabPages": "Páginas",
   "app.containers.AdminPage.SettingsPage.tabRegistration": "Inscrição",
+  "app.containers.AdminPage.SettingsPage.tabRegistrationFields": "",
   "app.containers.AdminPage.SettingsPage.tabSettings": "Geral",
   "app.containers.AdminPage.SettingsPage.tabTopics": "Administrador do tema",
   "app.containers.AdminPage.SettingsPage.tabWidgets": "Ferramentas",

@@ -1458,6 +1458,7 @@
   "app.containers.AdminPage.SettingsPage.tabCustomize": "الصفحة الرئيسية والنمط",
   "app.containers.AdminPage.SettingsPage.tabPages": "الصفحات",
   "app.containers.AdminPage.SettingsPage.tabRegistration": "Registration",
+  "app.containers.AdminPage.SettingsPage.tabRegistrationFields": "",
   "app.containers.AdminPage.SettingsPage.tabSettings": "عام",
   "app.containers.AdminPage.SettingsPage.tabTopics": "مدير الموضوع",
   "app.containers.AdminPage.SettingsPage.tabWidgets": "عنصر الواجهة",

@@ -1458,6 +1458,7 @@
   "app.containers.AdminPage.SettingsPage.tabCustomize": "Homepage and style",
   "app.containers.AdminPage.SettingsPage.tabPages": "Sider",
   "app.containers.AdminPage.SettingsPage.tabRegistration": "Registration",
+  "app.containers.AdminPage.SettingsPage.tabRegistrationFields": "",
   "app.containers.AdminPage.SettingsPage.tabSettings": "General",
   "app.containers.AdminPage.SettingsPage.tabTopics": "Topic manager",
   "app.containers.AdminPage.SettingsPage.tabWidgets": "Widget",
