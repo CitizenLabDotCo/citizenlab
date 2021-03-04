@@ -48,7 +48,7 @@ module Finder
         @_sort_scopes ||= {}.with_indifferent_access
       end
     end
-    
+
     private
 
     def _sort_records
@@ -90,7 +90,7 @@ module Finder
     end
 
     def _sort_method_suffix
-      @_sort_method_suffix ||= _sort_method.delete_prefix('-')
+      @_sort_method_suffix ||= _sort_method.split(/\.|-/).last
     end
 
     def _sort_order
