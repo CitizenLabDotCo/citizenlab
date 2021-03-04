@@ -3,15 +3,15 @@ module CustomStatuses
     extend CitizenLab::Mixins::FeatureSpecification
 
     def self.feature_name
-      'custom_statuses'
+      'custom_idea_statuses'
     end
 
     def self.feature_title
-      'Custom Statuses'
+      'Custom Idea Statuses'
     end
 
     def self.feature_description
-      'Allows customization of the idea and initiative statuses.'
+      'Allows admin to define custom idea statuses.'
     end
   end
 end
