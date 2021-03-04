@@ -26,6 +26,10 @@ class IdeasFinder < ApplicationFinder
     where(project_id: project_ids)
   end
 
+  def project_condition(project_id)
+    where(project_id: project_id)
+  end
+
   def topics_condition(topics)
     return if topics.blank?
 

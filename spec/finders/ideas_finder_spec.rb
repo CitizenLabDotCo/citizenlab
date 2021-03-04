@@ -41,6 +41,23 @@ describe IdeasFinder do
     end
   end
 
+  describe '#project_condition' do
+    let(:project_id) { Project.pick(:id) }
+    let(:expected_record_ids) { Idea.where(project_id: project_id).pluck(:id) }
+
+    before do
+      params[:project] = project_id
+    end
+
+    it 'is successful' do
+      expect(result).to be_a_success
+    end
+
+    it 'returns the correct records' do
+      expect(result_record_ids).to match_array expected_record_ids
+    end
+  end
+
   describe '#topics_condition' do
     let(:topic_ids) { Topic.first(2).pluck(:id) }
     let(:expected_record_ids) do
