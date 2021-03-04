@@ -60,7 +60,7 @@
     "ajv": "6.12.5",
     "apollo-boost": "0.4.7",
     "bowser": "1.x",
-    "cl2-component-library": "0.6.14",
+    "cl2-component-library": "^0.7.8",
     "clipboard-polyfill": "2.8.6",
     "compression": "1.7.4",
     "core-js": "3.8.2",

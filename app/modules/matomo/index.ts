@@ -14,12 +14,12 @@ import {
   IDestinationConfig,
   registerDestination,
 } from 'components/ConsentManager/destinations';
-import { isAdmin, isModerator, isSuperAdmin } from 'services/permissions/roles';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 import { removeUrlLocale } from 'services/locale';
 
-// TODO MOTOMO_KEY
-export const MATOMO_KEY = process.env.MATOMO_KEY;
+const env = process.env.NODE_ENV;
+export const MATOMO_URL = process.env.MATOMO_URL || '//matomo.hq.citizenlab.co';
+export const MATOMO_CL_SITE = env === 'production' ? '3' : '2';
 
 declare module 'components/ConsentManager/destinations' {
   export interface IDestinationMap {
@@ -34,7 +34,7 @@ const exp = new RegExp(
 
 const destinationConfig: IDestinationConfig = {
   key: 'matomo',
-  category: 'functional',
+  category: 'analytics',
   feature_flag: 'matomo',
   name: () => 'Matomo',
 };
@@ -46,38 +46,49 @@ const configuration: ModuleConfiguration = {
       authUserStream().observable,
       initializeFor('matomo'),
     ]).subscribe(([tenant, user, _]) => {
-      if (!MATOMO_KEY) return;
-      // TODO init script
-
+      if (!MATOMO_URL) return;
       /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
-      const _paq = (window._paq = window._paq || []);
 
-      _paq.push(['setDocumentTitle', document.domain + '/' + document.title]);
-      _paq.push(['trackPageView']);
-      _paq.push(['enableLinkTracking']);
+      window._paq.push([
+        'setDocumentTitle',
+        `${document.domain}/${document.title}`,
+      ]);
+      window._paq.push(['trackPageView']);
+      window._paq.push(['enableLinkTracking']);
+      window._paq.push(['setDomains', `${tenant.data.attributes.host}/*`]);
+      window._paq.push(['setCookieDomain', `${tenant.data.attributes.host}/*`]);
+      if (!isNilOrError(user)) {
+        window._paq.push(['setUserId', user.data.id]);
+      } else {
+        window._paq.push(['resetUserId']);
+      }
+
       (function () {
-        const u = 'https://citizenlab.matomo.cloud/';
-        _paq.push(['setTrackerUrl', u + 'matomo.php']);
-        _paq.push(['setSiteId', '1']);
-        const d = document,
-          g = d.createElement('script'),
-          s = d.getElementsByTagName('script')[0];
+        // Send all of the tracking data to the global site used for product analytics
+        window._paq.push(['setTrackerUrl', `${MATOMO_URL}/matomo.php`]);
+        window._paq.push(['setSiteId', MATOMO_CL_SITE]);
+
+        // Send tracking data to the tenant-specific site
+        if (tenant.data.attributes.settings.matomo?.site_id) {
+          window._paq.push([
+            'addTracker',
+            `${MATOMO_URL}/matomo.php`,
+            tenant.data.attributes.settings.matomo?.site_id,
+          ]);
+        }
+
+        // TODO reset tracking if user changes ? check if tracker is there before calling this ?
+        const d = document;
+        const g = d.createElement('script');
+        const s = d.getElementsByTagName('script')[0];
         g.type = 'text/javascript';
         g.async = true;
-        g.src = '//cdn.matomo.cloud/citizenlab.matomo.cloud/matomo.js';
-        s.parentNode.insertBefore(g, s);
-
-        // TODO try and load this if matomo script failed ? (IE user accepted and browser blocked)
-        // <noscript
-        //   ><p>
-        //     <img
-        //       src="https://citizenlab.matomo.cloud/matomo.php?idsite=1&amp;rec=1"
-        //       style="border: 0;"
-        //       alt=""
-        //     /></p
-        // ></noscript>
+        g.src = `${MATOMO_URL}/matomo.js`;
+        g.id = 'internal_matomo_analytics';
+        s.parentNode?.insertBefore(g, s);
       })();
 
+      // TODO Setup custom dimensions
       if (!isNilOrError(tenant)) {
         window._paq.push([
           'setCustomDimension',
@@ -89,7 +100,6 @@ const configuration: ModuleConfiguration = {
     });
 
     shutdownFor('matomo').subscribe(() => {
-      // TODO sutdown script
       window._paq.push(['resetUserId']);
     });
 
@@ -105,7 +115,7 @@ const configuration: ModuleConfiguration = {
         window._paq.push([
           'trackEvent',
           event.name,
-          ...(Object.values(event.properties || {}) || []).filter(
+          ...(Object.values(properties || {}) || []).filter(
             (item) => typeof item === 'string'
           ),
         ]);
