@@ -92,8 +92,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.MapTab.here',
     defaultMessage: 'here',
   },
-  centerLngLabel: {
-    id: 'app.containers.AdminPage.ProjectEdit.MapTab.centerLngLabel',
+  lngLabel: {
+    id: 'app.containers.AdminPage.ProjectEdit.MapTab.lngLabel',
     defaultMessage: 'Default longitude',
   },
   centerLngLabelTooltip: {
@@ -101,8 +101,8 @@ export default defineMessages({
     defaultMessage:
       'The longitude of the default map center point. Accepts a value between -180 and 180.',
   },
-  centerLatLabel: {
-    id: 'app.containers.AdminPage.ProjectEdit.MapTab.centerLatLabel',
+  latLabel: {
+    id: 'app.containers.AdminPage.ProjectEdit.MapTab.latLabel',
     defaultMessage: 'Default latitude',
   },
   centerLatLabelTooltip: {
