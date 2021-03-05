@@ -420,7 +420,6 @@ export class AdminProjectEdition extends PureComponent<
             id="app.containers.Admin.projects.edit.tabs.map"
             projectId={project.id}
             onData={this.insertMapTab}
-            formatMessage={formatMessage}
           />
           <TopContainer>
             <GoBackButton onClick={this.goBack} />

@@ -81,14 +81,6 @@ export default () => {
               loading: () => null,
             }),
           },
-          // {
-          //   path: '/:locale/admin/projects/:projectId/map',
-          //   name: 'admin projects map',
-          //   component: Loadable({
-          //     loader: () => import('containers/Admin/projects/edit/map'),
-          //     loading: () => null,
-          //   }),
-          // },
           {
             path: '/:locale/admin/projects/:projectId/topics',
             name: 'admin projects topics',
