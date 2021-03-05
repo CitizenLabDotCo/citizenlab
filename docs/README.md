@@ -7,7 +7,8 @@
 ## 2021-03-05
 
 ### Changed
-- Chaned the default style of the map
+- Changed the default style of the map
+- Proposals/Initiatives are now sorted by most recent by default
 
 ### Added
 - Custom maps (Project settings > Map): Admins now have the capability to customize the map shown inside of a project. They can do so by uploading geoJson files as layers on the map, and customizing those layers through the back-office UI (e.g. changing colors, marker icons, tooltip text, sort order, map legend, default zoom level, default center point).
