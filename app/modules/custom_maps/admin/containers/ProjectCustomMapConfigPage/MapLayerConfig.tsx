@@ -30,7 +30,6 @@ import {
 
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
@@ -110,7 +109,7 @@ const getEditableTitleMultiloc = (
   return null;
 };
 
-const MapLayerConfig = memo<Props & InjectedIntlProps & InjectedLocalized>(
+const MapLayerConfig = memo<Props & InjectedIntlProps>(
   ({ projectId, mapLayerId, className, onClose, intl: { formatMessage } }) => {
     const tenantLocales = useAppConfigurationLocales();
     const mapConfig = useMapConfig({ projectId });
@@ -354,4 +353,4 @@ const MapLayerConfig = memo<Props & InjectedIntlProps & InjectedLocalized>(
   }
 );
 
-export default injectIntl(injectLocalize(MapLayerConfig));
+export default injectIntl(MapLayerConfig);

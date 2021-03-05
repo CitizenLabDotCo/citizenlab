@@ -125,7 +125,7 @@ export default defineMessages({
   },
   mapCenterAndZoom: {
     id: 'app.containers.AdminPage.ProjectEdit.MapTab.mapCenterAndZoom',
-    defaultMessage: 'Map default center & zoom',
+    defaultMessage: 'Map default center and zoom',
   },
   mapCenterAndZoomTooltip: {
     id: 'app.containers.AdminPage.ProjectEdit.MapTab.mapCenterAndZoomTooltip',
@@ -142,11 +142,11 @@ export default defineMessages({
   },
   goToDefaultMapView: {
     id: 'app.components.admin.PostManager.goToDefaultMapView',
-    defaultMessage: `Pan & zoom to the default center point & zoom level`,
+    defaultMessage: `Pan and zoom to the default center point and zoom level`,
   },
   setAsDefaultMapView: {
     id: 'app.components.admin.PostManager.setAsDefaultMapView',
-    defaultMessage: `Save the current center point & zoom level as the map defaults`,
+    defaultMessage: `Save the current center point and zoom level as the map defaults`,
   },
   currentLat: {
     id: 'app.components.admin.PostManager.currentLat',

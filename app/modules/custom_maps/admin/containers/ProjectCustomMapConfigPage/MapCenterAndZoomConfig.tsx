@@ -220,7 +220,7 @@ const MapCenterAndZoomConfig = memo<Props & InjectedIntlProps>(
               content={
                 <FormattedMessage
                   {...messages.mapCenterAndZoomTooltip}
-                  values={{ button: <CopyIcon name="save" /> }}
+                  values={{ button: <CopyIcon title="save" name="save" /> }}
                 />
               }
             />
