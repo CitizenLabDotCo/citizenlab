@@ -892,7 +892,8 @@ resource "Ideas" do
         before do
           @project = create(:project_with_phases, with_permissions: true)
           @idea.project = @project
-          @idea.phases = [@project.phases.first]
+          @phase = @project.phases.first
+          @idea.phases = [@phase]
           @idea.save
         end
         let(:phase_ids) { @project.phases.last(2).map(&:id) }
@@ -901,7 +902,7 @@ resource "Ideas" do
           expect(status).to be 200
           json_response = json_parse(response_body)
           expect(json_response.dig(:data,:relationships,:phases,:data).map{|d| d[:id]}).to match_array phase_ids
-          expect(@project.phases.reload.first.ideas_count).to eq 1
+          expect(@phase.reload.ideas_count).to eq 1
         end
 
         example "Changes the ideas count of a phase when the phases change" do
