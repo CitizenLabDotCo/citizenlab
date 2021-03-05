@@ -70,7 +70,6 @@
     "focus-visible": "5.2.0",
     "formik": "1.x",
     "graphql": "14.6.0",
-    "geojson-validation": "1.0.2",
     "identity-obj-proxy": "3.0.0",
     "intersection-observer": "0.12.0",
     "intl": "1.2.5",
