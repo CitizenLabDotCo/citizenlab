@@ -888,27 +888,56 @@ resource "Ideas" do
         end
       end
 
-      describe do
-        before do
-          @project = create(:project_with_phases, with_permissions: true)
-          @idea.project = @project
-          @phase = @project.phases.first
-          @idea.phases = [@phase]
-          @idea.save
-        end
-        let(:phase_ids) { @project.phases.last(2).map(&:id) }
+      describe 'phase_ids' do
+        let(:phase) { @project.phases.first }
 
-        example_request "Change the idea phases (as an admin or moderator)" do
-          expect(status).to be 200
-          json_response = json_parse(response_body)
-          expect(json_response.dig(:data,:relationships,:phases,:data).map{|d| d[:id]}).to match_array phase_ids
-          expect(@phase.reload.ideas_count).to eq 1
+        context 'when passing some phase ids' do
+          before do
+            @project = create(:project_with_phases, with_permissions: true)
+            @idea.project = @project
+            @idea.save
+            do_request(idea: { phase_ids: phase_ids })
+          end
+
+          let(:phase_ids) { [phase].map(&:id) }
+
+          example 'returns a 200 status' do
+            expect(status).to be 200
+          end
+
+          example 'Change the idea phases (as an admin or moderator)' do
+            json_response = json_parse(response_body)
+            expect(json_response.dig(:data, :relationships, :phases, :data).map { |d| d[:id] }).to match_array phase_ids
+          end
+
+          example 'Changes the ideas count of a phase' do
+            expect(phase.reload.ideas_count).to eq 1
+          end
         end
 
-        example "Changes the ideas count of a phase when the phases change" do
-          do_request(idea: { phase_ids: [] })
-          expect(status).to be 200
-          expect(@project.phases.reload.first.ideas_count).to eq 0
+        context 'when passing an empty array of phase ids' do
+          before do
+            @project = create(:project_with_phases, with_permissions: true)
+            @idea.project = @project
+            @idea.phases = [phase]
+            @idea.save
+            do_request(idea: { phase_ids: phase_ids })
+          end
+
+          let(:phase_ids) { [] }
+
+          example 'returns a 200 status' do
+            expect(status).to be 200
+          end
+
+          example 'Change the idea phases (as an admin or moderator)' do
+            json_response = json_parse(response_body)
+            expect(json_response.dig(:data, :relationships, :phases, :data).map { |d| d[:id] }).to match_array phase_ids
+          end
+
+          example 'Changes the ideas count of a phase when the phases change' do
+            expect(phase.reload.ideas_count).to eq 0
+          end
         end
       end
 
