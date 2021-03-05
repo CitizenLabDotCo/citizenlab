@@ -1,33 +1,27 @@
 import React, { PureComponent } from 'react';
 import { Subscription } from 'rxjs';
-import { switchMap, tap, map as rxMap } from 'rxjs/operators';
 import { map, isEmpty, isEqual, difference } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import { withRouter, WithRouterProps } from 'react-router';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // components
-import { Radio, IconTooltip } from 'cl2-component-library';
-import ProjectGroupsList from './ProjectGroupsList';
-import SubmitWrapper from 'components/admin/SubmitWrapper';
+import { IconTooltip } from 'cl2-component-library';
 import {
   Section,
   SubSectionTitle,
   SectionTitle,
-  SectionField,
 } from 'components/admin/Section';
 import Moderators from './Moderators';
 import IdeaAssignment from './IdeaAssignment';
 import Link from 'utils/cl-router/Link';
 
 // services
-import { projectByIdStream, updateProject, IProject } from 'services/projects';
+import { updateProject, IProject } from 'services/projects';
 import {
-  groupsProjectsByProjectIdStream,
   addGroupProject,
   deleteGroupProject,
   IGroupsProjects,
@@ -43,15 +37,10 @@ import GetFeatureFlag, {
 
 // style
 import styled from 'styled-components';
-import { fontSizes } from 'utils/styleUtils';
 import Outlet from 'components/Outlet';
 
 const StyledSection = styled(Section)`
   margin-bottom: 50px;
-`;
-
-const ViewingRightsSection = styled(Section)`
-  margin-bottom: 30px;
 `;
 
 const IdeaAssignmentSection = styled(Section)`
@@ -64,27 +53,6 @@ const ModeratorSubSection = styled(Section)`
 
 export const StyledSectionTitle = styled(SectionTitle)`
   margin-bottom: 30px;
-`;
-
-const StyledSectionField = styled(SectionField)`
-  margin-bottom: 5px;
-`;
-
-const RadioButtonsWrapper = styled.fieldset`
-  border: none;
-  padding: 0;
-  margin-bottom: 10px;
-`;
-
-const StyledRadio = styled(Radio)`
-  margin-bottom: 10px;
-  cursor: pointer;
-
-  .text {
-    font-size: ${fontSizes.base}px;
-    font-weight: 400;
-    line-height: 22px;
-  }
 `;
 
 const StyledLink = styled(Link)`
@@ -116,10 +84,7 @@ interface State {
   status: 'disabled' | 'enabled' | 'error' | 'success';
 }
 
-class ProjectPermissions extends PureComponent<
-  Props & InjectedIntlProps & WithRouterProps,
-  State
-> {
+class ProjectPermissions extends PureComponent<Props & WithRouterProps, State> {
   subscriptions: Subscription[];
 
   constructor(props) {
@@ -135,58 +100,6 @@ class ProjectPermissions extends PureComponent<
       status: 'disabled',
     };
     this.subscriptions = [];
-  }
-
-  componentDidMount() {
-    if (this.props.params.projectId) {
-      const projectId = this.props.params.projectId;
-      const project$ = projectByIdStream(projectId).observable.pipe(
-        tap((project) => {
-          this.setState({
-            savedVisibleTo: project.data.attributes.visible_to,
-            unsavedVisibleTo: project.data.attributes.visible_to,
-          });
-        })
-      );
-
-      this.subscriptions = [
-        project$
-          .pipe(
-            switchMap((project) => {
-              return groupsProjectsByProjectIdStream(
-                project.data.id
-              ).observable.pipe(
-                rxMap((groupsProjects) => ({
-                  project,
-                  groupsProjects,
-                }))
-              );
-            })
-          )
-          .subscribe(({ project, groupsProjects }) => {
-            this.setState((state) => {
-              const oldGroupsProjects = state.loading
-                ? groupsProjects
-                : state.oldGroupsProjects;
-              const newGroupsProjects = groupsProjects;
-              const status =
-                state.unsavedVisibleTo === 'groups' &&
-                !isEqual(newGroupsProjects, oldGroupsProjects)
-                  ? 'enabled'
-                  : state.status;
-              const loading = false;
-
-              return {
-                project,
-                oldGroupsProjects,
-                newGroupsProjects,
-                status,
-                loading,
-              };
-            });
-          }),
-      ];
-    }
   }
 
   componentWillUnmount() {
@@ -293,8 +206,6 @@ class ProjectPermissions extends PureComponent<
   };
 
   render() {
-    const { formatMessage } = this.props.intl;
-
     const {
       projectVisibilityEnabled,
       projectManagementEnabled,
@@ -302,7 +213,7 @@ class ProjectPermissions extends PureComponent<
       granularPermissionsEnabled,
     } = this.props;
 
-    const { project, unsavedVisibleTo, loading, saving, status } = this.state;
+    const { project, unsavedVisibleTo, loading } = this.state;
 
     if (!loading && unsavedVisibleTo && project) {
       const projectId = project.data.id;
@@ -310,67 +221,18 @@ class ProjectPermissions extends PureComponent<
       return (
         <>
           <StyledSection>
-            <StyledSectionTitle>
-              <FormattedMessage {...messages.participationAccessRightsTitle} />
-            </StyledSectionTitle>
-
             {(projectVisibilityEnabled || granularPermissionsEnabled) && (
-              <ViewingRightsSection>
-                <StyledSectionField>
-                  <SubSectionTitle>
-                    <FormattedMessage {...messages.viewingRightsTitle} />
-                  </SubSectionTitle>
-
-                  <RadioButtonsWrapper>
-                    <StyledRadio
-                      onChange={this.handlePermissionTypeChange}
-                      currentValue={unsavedVisibleTo}
-                      name="permissionsType"
-                      label={formatMessage(messages.permissionsEveryoneLabel)}
-                      value="public"
-                      id="permissions-all"
-                    />
-                    <StyledRadio
-                      onChange={this.handlePermissionTypeChange}
-                      currentValue={unsavedVisibleTo}
-                      name="permissionsType"
-                      label={formatMessage(messages.permissionsAdministrators)}
-                      value="admins"
-                      id="permissions-administrators"
-                    />
-                    <StyledRadio
-                      onChange={this.handlePermissionTypeChange}
-                      currentValue={unsavedVisibleTo}
-                      name="permissionsType"
-                      label={formatMessage(messages.permissionsSelectionLabel)}
-                      value="groups"
-                      id="permissions-selection"
-                    />
-                  </RadioButtonsWrapper>
-                </StyledSectionField>
-
-                {unsavedVisibleTo === 'groups' && (
-                  <ProjectGroupsList
-                    projectId={projectId}
-                    onAddButtonClicked={this.handleGroupsAdded}
-                  />
-                )}
-
-                {unsavedVisibleTo !== 'groups' && (
-                  <SubmitWrapper
-                    loading={saving}
-                    status={status}
-                    onClick={this.saveChanges}
-                    messages={{
-                      buttonSave: messages.save,
-                      buttonSuccess: messages.saveSuccess,
-                      messageError: messages.saveErrorMessage,
-                      messageSuccess: messages.saveSuccessMessage,
-                    }}
-                  />
-                )}
-              </ViewingRightsSection>
+              <StyledSectionTitle>
+                <FormattedMessage
+                  {...messages.participationAccessRightsTitle}
+                />
+              </StyledSectionTitle>
             )}
+
+            <Outlet
+              id="app.containers.Admin.project.edit.permissions.projectVisibility"
+              projectId={project.data.id}
+            />
 
             <Outlet
               id="app.containers.Admin.project.edit.permissions"
@@ -431,8 +293,6 @@ class ProjectPermissions extends PureComponent<
   }
 }
 
-const ProjectPermissionsWithHoC = injectIntl(ProjectPermissions);
-
 const Data = adopt<DataProps, WithRouterProps>({
   moderators: ({ params, render }) => (
     <GetModerators projectId={params.projectId}>{render}</GetModerators>
@@ -446,9 +306,7 @@ const Data = adopt<DataProps, WithRouterProps>({
 const WrappedProjectPermissions = withRouter(
   (inputProps: InputProps & WithRouterProps) => (
     <Data {...inputProps}>
-      {(dataProps) => (
-        <ProjectPermissionsWithHoC {...inputProps} {...dataProps} />
-      )}
+      {(dataProps) => <ProjectPermissions {...inputProps} {...dataProps} />}
     </Data>
   )
 );

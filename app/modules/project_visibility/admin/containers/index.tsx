@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
-import { map, isEmpty, isEqual, difference } from 'lodash-es';
+import { isEmpty, isEqual } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
@@ -64,6 +64,7 @@ const ProjectVisibility = ({
   projectId,
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
+  const project = useProject({ projectId });
   const [unsavedVisibleTo, setUnsavedVisibleTo] = useState<
     'public' | 'admins' | 'groups'
   >('public');
@@ -76,13 +77,37 @@ const ProjectVisibility = ({
   >('disabled');
   const [
     newGroupsProjects,
-    setNewGroupProjects,
+    setNewGroupsProjects,
   ] = useState<IGroupsProjects | null>(null);
   const [
     oldGroupsProjects,
-    setOldGroupProjects,
+    setOldGroupsProjects,
   ] = useState<IGroupsProjects | null>(null);
-  const project = useProject({ projectId });
+
+  useEffect(() => {
+    const subscription = groupsProjectsByProjectIdStream(
+      projectId
+    ).observable.subscribe((groupsProjects) => {
+      setOldGroupsProjects(isSaving ? groupsProjects : oldGroupsProjects);
+      setNewGroupsProjects(groupsProjects);
+      setStatus(
+        unsavedVisibleTo === 'groups' &&
+          !isEqual(newGroupsProjects, oldGroupsProjects)
+          ? 'enabled'
+          : status
+      );
+      setIsSaving(false);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  useEffect(() => {
+    if (!isNilOrError(project)) {
+      setSavedVisibleTo(project.attributes.visible_to);
+      setUnsavedVisibleTo(project.attributes.visible_to);
+    }
+  }, [project]);
 
   const handlePermissionTypeChange = (
     unsavedVisibleTo: 'public' | 'groups' | 'admins'
@@ -120,7 +145,7 @@ const ProjectVisibility = ({
       }
 
       if (unsavedVisibleTo === 'groups') {
-        setOldGroupProjects(newGroupsProjects);
+        setOldGroupsProjects(newGroupsProjects);
       }
 
       try {
