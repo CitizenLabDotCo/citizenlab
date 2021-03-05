@@ -11,7 +11,7 @@ import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // components
-import { Radio, IconTooltip } from 'cl2-component-library';
+import { Radio } from 'cl2-component-library';
 import ProjectGroupsList from './ProjectGroupsList';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import {
@@ -21,8 +21,6 @@ import {
   SectionField,
 } from 'components/admin/Section';
 import Moderators from './Moderators';
-import IdeaAssignment from './IdeaAssignment';
-import Link from 'utils/cl-router/Link';
 import Outlet from 'components/Outlet';
 
 // services
@@ -54,10 +52,6 @@ const ViewingRightsSection = styled(Section)`
   margin-bottom: 30px;
 `;
 
-const IdeaAssignmentSection = styled(Section)`
-  margin-bottom: 30px;
-`;
-
 const ModeratorSubSection = styled(Section)`
   margin-bottom: 20px;
 `;
@@ -84,12 +78,6 @@ const StyledRadio = styled(Radio)`
     font-size: ${fontSizes.base}px;
     font-weight: 400;
     line-height: 22px;
-  }
-`;
-
-const StyledLink = styled(Link)`
-  &:hover {
-    text-decoration: underline;
   }
 `;
 
@@ -393,34 +381,6 @@ class ProjectPermissions extends PureComponent<
                 </ModeratorSubSection>
               )}
 
-              {ideaAssignmentEnabled && (
-                <IdeaAssignmentSection>
-                  <SubSectionTitle>
-                    <FormattedMessage
-                      {...messages.inputAssignmentSectionTitle}
-                    />
-                    <IconTooltip
-                      content={
-                        <FormattedMessage
-                          {...messages.inputAssignmentTooltipText}
-                          values={{
-                            ideaManagerLink: (
-                              <StyledLink
-                                to={`/admin/projects/${projectId}/ideas`}
-                              >
-                                <FormattedMessage
-                                  {...messages.inputManagerLinkText}
-                                />
-                              </StyledLink>
-                            ),
-                          }}
-                        />
-                      }
-                    />
-                  </SubSectionTitle>
-                  <IdeaAssignment projectId={projectId} />
-                </IdeaAssignmentSection>
-              )}
               <Outlet
                 id="app.containers.Admin.project.edit.permissions.inputAssignment"
                 projectId={project.data.id}
