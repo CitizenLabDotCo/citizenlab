@@ -11,7 +11,7 @@ import {
 } from 'components/admin/Section';
 import { Radio } from 'cl2-component-library';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
-import ProjectGroupsList from './ProjectGroupsList';
+import ProjectGroupsList from '../components/ProjectGroupsList';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -85,8 +85,7 @@ const ProjectVisibility = ({
     setUnsavedVisibleTo(unsavedVisibleTo);
     setStatus(
       unsavedVisibleTo === 'groups' &&
-        (state.newGroupsProjects === null ||
-          isEmpty(state.newGroupsProjects.data))
+        (newGroupsProjects === null || isEmpty(newGroupsProjects.data))
         ? 'disabled'
         : 'enabled'
     );
