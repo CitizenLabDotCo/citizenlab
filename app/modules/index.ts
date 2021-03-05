@@ -11,7 +11,6 @@ import googleAnalyticsConfiguration from './google_analytics';
 import intercomConfiguration from './intercom';
 import satismeterConfiguration from './satismeter';
 import segmentConfiguration from './segment';
-import inputAssignmentConfiguration from './input_assignment';
 
 export default loadModules([
   {
