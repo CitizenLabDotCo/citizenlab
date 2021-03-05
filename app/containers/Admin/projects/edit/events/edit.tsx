@@ -8,8 +8,8 @@ import { isNilOrError } from 'utils/helperUtils';
 import clHistory from 'utils/cl-router/history';
 
 // components
-import InputMultiloc from 'components/UI/InputMultiloc';
-import QuillMultiloc from 'components/UI/QuillEditor/QuillMultiloc';
+import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
+import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 import ErrorComponent from 'components/UI/Error';
 import DateTimePicker from 'components/admin/DateTimePicker';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
@@ -295,7 +295,7 @@ class AdminProjectEventEdit extends PureComponent<Props, State> {
           >
             <Section>
               <SectionField>
-                <InputMultiloc
+                <InputMultilocWithLocaleSwitcher
                   id="title"
                   label={<FormattedMessage {...messages.titleLabel} />}
                   type="text"
@@ -306,7 +306,7 @@ class AdminProjectEventEdit extends PureComponent<Props, State> {
               </SectionField>
 
               <SectionField>
-                <InputMultiloc
+                <InputMultilocWithLocaleSwitcher
                   id="location"
                   label={<FormattedMessage {...messages.locationLabel} />}
                   type="text"
@@ -339,7 +339,7 @@ class AdminProjectEventEdit extends PureComponent<Props, State> {
               </SectionField>
 
               <SectionField className="fullWidth">
-                <QuillMultiloc
+                <QuillMultilocWithLocaleSwitcher
                   id="description"
                   label={this.descriptionLabel}
                   valueMultiloc={eventAttrs.description_multiloc}

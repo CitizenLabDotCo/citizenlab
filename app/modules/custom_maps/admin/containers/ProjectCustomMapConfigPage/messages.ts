@@ -48,10 +48,19 @@ export default defineMessages({
     defaultMessage:
       'Customize the map view, including uploading and styling map layers and setting the map center and zoom level.',
   },
-  layersTitleTooltip: {
-    id: 'app.containers.AdminPage.ProjectEdit.MapTab.layersTitleTooltip',
+  supportArticle: {
+    id: 'app.containers.AdminPage.ProjectEdit.MapTab.supportArticle',
+    defaultMessage: 'support article',
+  },
+  supportArticleUrl: {
+    id: 'app.containers.AdminPage.ProjectEdit.MapTab.supportArticleUrl',
     defaultMessage:
-      'We currently support GeoJSON files. Read the support article for tips on how to convert and style map layers.',
+      'https://support.citizenlab.co/en/articles/4910983-customize-your-project-map',
+  },
+  layersTooltip: {
+    id: 'app.containers.AdminPage.ProjectEdit.MapTab.layersTooltip',
+    defaultMessage:
+      'We currently support GeoJSON files. Read the {supportArticle} for tips on how to convert and style map layers.',
   },
   edit: {
     id: 'app.containers.AdminPage.ProjectEdit.MapTab.edit',
@@ -68,7 +77,7 @@ export default defineMessages({
   layerColorTooltip: {
     id: 'app.containers.AdminPage.ProjectEdit.MapTab.layerColorTooltip',
     defaultMessage:
-      'This color is applied to all features within the map layer. Marker sizes, line widths and fill opacity are fixed by default.',
+      'All features in the layer will be styled with this color. This color will also overwrite any existing styling in your GeoJSON file.',
   },
   layerIconName: {
     id: 'app.containers.AdminPage.ProjectEdit.MapTab.layerIconName',
@@ -83,39 +92,45 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.MapTab.here',
     defaultMessage: 'here',
   },
-  centerLabel: {
-    id: 'app.containers.AdminPage.ProjectEdit.MapTab.centerLabel',
-    defaultMessage: 'Default center coordinates',
+  centerLngLabel: {
+    id: 'app.containers.AdminPage.ProjectEdit.MapTab.centerLngLabel',
+    defaultMessage: 'Default longitude',
   },
-  centerLabelTooltip: {
-    id: 'app.containers.AdminPage.ProjectEdit.MapTab.centerLabelTooltip',
+  centerLngLabelTooltip: {
+    id: 'app.containers.AdminPage.ProjectEdit.MapTab.centerLngLabelTooltip',
     defaultMessage:
-      'Set the default center of the map using latitude and longitude coordinates',
+      'The longitude of the default map center point. Accepts a value between -180 and 180.',
+  },
+  centerLatLabel: {
+    id: 'app.containers.AdminPage.ProjectEdit.MapTab.centerLatLabel',
+    defaultMessage: 'Default latitude',
+  },
+  centerLatLabelTooltip: {
+    id: 'app.containers.AdminPage.ProjectEdit.MapTab.centerLatLabelTooltip',
+    defaultMessage:
+      'The latitude of the default map center point. Accepts a value between -90 and 90.',
   },
   zoomLabel: {
     id: 'app.containers.AdminPage.ProjectEdit.MapTab.zoomLabel',
-    defaultMessage: 'Default zoom level',
+    defaultMessage: 'Map zoom level',
   },
   zoomLabelTooltip: {
     id: 'app.containers.AdminPage.ProjectEdit.MapTab.zoomLabelTooltip',
     defaultMessage:
-      'Set how zoomed in the map is by default. Choose a value between 1 and 17, where 1 is fully zoomed out (the entire world is visible) and 17 is fully zoomed in (blocks and buildings are visible)',
+      'The default zoom level of the map. Accepts a value between 1 and 17, where 1 is fully zoomed out (the entire world is visible) and 17 is fully zoomed in (blocks and buildings are visible)',
   },
   editLayer: {
     id: 'app.containers.AdminPage.ProjectEdit.MapTab.editLayer',
     defaultMessage: 'Edit layer',
   },
-  currentCenterCoordinates: {
-    id: 'app.containers.AdminPage.ProjectEdit.MapTab.currentCenterCoordinates',
-    defaultMessage: 'Current center coordinates',
-  },
-  currentZoomLevel: {
-    id: 'app.containers.AdminPage.ProjectEdit.MapTab.currentZoomLevel',
-    defaultMessage: 'Current zoom level',
-  },
   mapCenterAndZoom: {
     id: 'app.containers.AdminPage.ProjectEdit.MapTab.mapCenterAndZoom',
-    defaultMessage: 'Map center & zoom',
+    defaultMessage: 'Map default center and zoom',
+  },
+  mapCenterAndZoomTooltip: {
+    id: 'app.containers.AdminPage.ProjectEdit.MapTab.mapCenterAndZoomTooltip',
+    defaultMessage:
+      'The default center point and zoom level of the map. Manually adjust the values below, or click on the {button} button in the top right corner of the map to save the current center point and zoom level of the map as the default values.',
   },
   deleteConfirmation: {
     id: 'app.components.admin.PostManager.deleteConfirmation',
@@ -124,5 +139,29 @@ export default defineMessages({
   importError: {
     id: 'app.components.admin.PostManager.importError',
     defaultMessage: `The selected file could not be imported because it's not a valid GeoJSON file`,
+  },
+  goToDefaultMapView: {
+    id: 'app.components.admin.PostManager.goToDefaultMapView',
+    defaultMessage: `Pan and zoom to the default center point and zoom level`,
+  },
+  setAsDefaultMapView: {
+    id: 'app.components.admin.PostManager.setAsDefaultMapView',
+    defaultMessage: `Save the current center point and zoom level as the map defaults`,
+  },
+  currentLat: {
+    id: 'app.components.admin.PostManager.currentLat',
+    defaultMessage: `Center latitude`,
+  },
+  currentLng: {
+    id: 'app.components.admin.PostManager.currentLng',
+    defaultMessage: `Center longitude`,
+  },
+  currentZoomLevel: {
+    id: 'app.components.admin.PostManager.currentZoomLevel',
+    defaultMessage: `Zoom level`,
+  },
+  saved: {
+    id: 'app.components.admin.PostManager.saved',
+    defaultMessage: `Saved`,
   },
 });

@@ -1,22 +1,35 @@
 import React, { memo, useEffect, useState } from 'react';
-import { isEmpty, cloneDeep } from 'lodash-es';
+import { isEmpty, cloneDeep, forOwn } from 'lodash-es';
+import { isNilOrError } from 'utils/helperUtils';
 
 // services
-import { updateProjectMapLayer } from 'services/mapLayers';
+import { updateProjectMapLayer, IMapLayerAttributes } from 'services/mapLayers';
+
+// hooks
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import useMapConfig from 'hooks/useMapConfig';
 
 // components
-import { Section, SectionField } from 'components/admin/Section';
+import {
+  Section,
+  SectionField,
+  SubSectionTitle,
+} from 'components/admin/Section';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
-import { Label, ColorPickerInput, Select } from 'cl2-component-library';
+import { ColorPickerInput, Select } from 'cl2-component-library';
 
 // utils
-import { getLayerColor, getLayerType, makiIconNames } from 'utils/map';
+import {
+  getLayerColor,
+  getLayerType,
+  makiIconNames,
+  getUnnamedLayerTitleMultiloc,
+} from 'utils/map';
 
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
@@ -25,21 +38,23 @@ import styled from 'styled-components';
 
 // typing
 import { Multiloc, IOption } from 'typings';
-import { IMapLayerAttributes } from 'services/mapLayers';
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  background: #fff;
 `;
 
 const StyledSection = styled(Section)`
   margin-bottom: 10px;
+  padding-top: 25px;
+  border-top: solid 1px #ccc;
 `;
 
 const Footer = styled.div`
   display: flex;
   align-items: center;
+  padding-bottom: 25px;
+  border-bottom: solid 1px #ccc;
 `;
 
 const FooterLeft = styled.div`
@@ -59,7 +74,7 @@ const CancelButton = styled(Button)`
 
 interface Props {
   projectId: string;
-  mapLayer: IMapLayerAttributes;
+  mapLayerId: string;
   className?: string;
   onClose: () => void;
 }
@@ -78,15 +93,37 @@ const makiIconOptions: IOption[] = makiIconNames.map((makiIconName) => {
   };
 });
 
-const LayerConfig = memo<Props & InjectedIntlProps & InjectedLocalized>(
-  ({ projectId, mapLayer, className, onClose, intl: { formatMessage } }) => {
+const getEditableTitleMultiloc = (
+  mapLayer: IMapLayerAttributes | undefined
+) => {
+  const mutiloc = {};
+
+  if (mapLayer?.title_multiloc) {
+    forOwn(mapLayer.title_multiloc, (value: string, key) => {
+      mutiloc[key] = value === 'Unnamed layer' ? '' : value;
+    });
+
+    return mutiloc as Multiloc;
+  }
+
+  return null;
+};
+
+const MapLayerConfig = memo<Props & InjectedIntlProps>(
+  ({ projectId, mapLayerId, className, onClose, intl: { formatMessage } }) => {
+    const tenantLocales = useAppConfigurationLocales();
+    const mapConfig = useMapConfig({ projectId });
+
+    const mapLayer =
+      mapConfig?.attributes?.layers?.find((layer) => layer.id === mapLayerId) ||
+      undefined;
     const type = getLayerType(mapLayer);
 
     const [touched, setTouched] = useState(false);
     const [processing, setProcessing] = useState(false);
     const [errors, setErrors] = useState<{ [key: string]: any }>({});
     const [formValues, setFormValues] = useState<IFormValues>({
-      title_multiloc: mapLayer?.title_multiloc || null,
+      title_multiloc: getEditableTitleMultiloc(mapLayer),
       color: getLayerColor(mapLayer),
       markerSymbol:
         mapLayer?.geojson?.features?.[0]?.properties?.['marker-symbol'] || '',
@@ -97,7 +134,7 @@ const LayerConfig = memo<Props & InjectedIntlProps & InjectedLocalized>(
     useEffect(() => {
       formChange(
         {
-          title_multiloc: mapLayer?.title_multiloc || null,
+          title_multiloc: getEditableTitleMultiloc(mapLayer),
           color: getLayerColor(mapLayer),
           markerSymbol:
             mapLayer?.geojson?.features?.[0]?.properties?.['marker-symbol'] ||
@@ -162,10 +199,18 @@ const LayerConfig = memo<Props & InjectedIntlProps & InjectedLocalized>(
     };
 
     const handleOnSubmit = async () => {
-      const { title_multiloc } = formValues;
+      let { title_multiloc } = formValues;
 
-      if (!processing && validate() && title_multiloc) {
+      if (!processing && validate() && title_multiloc && mapLayer) {
         formProcessing();
+
+        const isTitleMultilocEmpty = Object.getOwnPropertyNames(
+          title_multiloc
+        ).every((key) => isEmpty((title_multiloc as Multiloc)[key]));
+
+        if (isTitleMultilocEmpty && mapConfig && !isNilOrError(tenantLocales)) {
+          title_multiloc = getUnnamedLayerTitleMultiloc(tenantLocales);
+        }
 
         const geojson = cloneDeep(
           mapLayer?.geojson || {}
@@ -174,10 +219,10 @@ const LayerConfig = memo<Props & InjectedIntlProps & InjectedLocalized>(
         geojson?.features.forEach((feature) => {
           feature.properties = {
             ...feature.properties,
-            // 'fill-opacity': 0.3,
-            // 'stroke-width': 4,
-            // 'stroke-opacity': 1,
-            // 'marker-size': 'medium',
+            'fill-opacity': 0.3,
+            'stroke-width': 3,
+            'stroke-opacity': 1,
+            'marker-size': 'medium',
             'marker-symbol': formValues.markerSymbol,
             tooltipContent: formValues.tooltipContent,
           };
@@ -206,6 +251,10 @@ const LayerConfig = memo<Props & InjectedIntlProps & InjectedLocalized>(
 
     return (
       <Container className={className || ''}>
+        <SubSectionTitle>
+          <FormattedMessage {...messages.editLayer} />
+        </SubSectionTitle>
+
         <StyledSection>
           <SectionField>
             <InputMultilocWithLocaleSwitcher
@@ -260,13 +309,12 @@ const LayerConfig = memo<Props & InjectedIntlProps & InjectedLocalized>(
           )}
 
           <SectionField>
-            <Label>
-              <FormattedMessage {...messages.layerColor} />
-            </Label>
             <ColorPickerInput
               type="text"
               value={formValues.color}
               onChange={handleColorOnChange}
+              label={formatMessage(messages.layerColor)}
+              labelTooltipText={formatMessage(messages.layerColorTooltip)}
             />
           </SectionField>
         </StyledSection>
@@ -305,4 +353,4 @@ const LayerConfig = memo<Props & InjectedIntlProps & InjectedLocalized>(
   }
 );
 
-export default injectIntl(injectLocalize(LayerConfig));
+export default injectIntl(MapLayerConfig);

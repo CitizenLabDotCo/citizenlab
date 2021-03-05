@@ -9,6 +9,7 @@ import { withRouter, WithRouterProps } from 'react-router';
 import GoBackButton from 'components/UI/GoBackButton';
 import Button from 'components/UI/Button';
 import TabbedResource, { TabProps } from 'components/admin/TabbedResource';
+import Outlet from 'components/Outlet';
 
 // resources
 import GetFeatureFlag, {
@@ -33,7 +34,7 @@ import tracks from './tracks';
 import styled from 'styled-components';
 
 // typings
-// services
+import { ITab } from 'typings';
 import { getInputTerm } from 'services/participationContexts';
 import { IProjectData } from 'services/projects';
 
@@ -59,6 +60,11 @@ interface ITracks {
   clickNewIdea: ({ extra: object }) => void;
 }
 
+interface IMapTab {
+  tabConfiguration: ITab;
+  insertAfterTabName?: string;
+}
+
 export interface InputProps {}
 
 interface DataProps {
@@ -76,6 +82,7 @@ interface DataProps {
 
 interface State {
   goBackUrl: string | null;
+  mapTab: IMapTab | null;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -88,12 +95,14 @@ export class AdminProjectEdition extends PureComponent<
     super(props);
     this.state = {
       goBackUrl: null,
+      mapTab: null,
     };
   }
 
   componentDidMount() {
     this.setState({
       goBackUrl: this.props.previousPathName,
+      mapTab: null,
     });
   }
 
@@ -144,12 +153,6 @@ export class AdminProjectEdition extends PureComponent<
         url: `${baseTabsUrl}/ideaform`,
         feature: 'idea_custom_fields',
         name: 'ideaform',
-      },
-      {
-        label: formatMessage(messages.mapTab),
-        url: `${baseTabsUrl}/map`,
-        // feature: 'mapping',
-        name: 'map',
       },
       {
         label: formatMessage(messages.phasesTab),
@@ -360,6 +363,10 @@ export class AdminProjectEdition extends PureComponent<
     });
   };
 
+  insertMapTab = (mapTab: IMapTab) => {
+    this.setState({ mapTab });
+  };
+
   render() {
     const {
       project,
@@ -373,6 +380,7 @@ export class AdminProjectEdition extends PureComponent<
       children as React.ReactElement<any>,
       { project }
     );
+    const { mapTab } = this.state;
     const tabbedProps = {
       resource: {
         title: !isNilOrError(project)
@@ -383,6 +391,22 @@ export class AdminProjectEdition extends PureComponent<
       tabs: !isNilOrError(project) ? this.getTabs(project.id, project) : [],
     };
 
+    if (mapTab) {
+      const insertIndex =
+        tabbedProps.tabs.findIndex(
+          (tab) => tab.name === mapTab.insertAfterTabName
+        ) + 1;
+      if (insertIndex > 0) {
+        tabbedProps.tabs = [
+          ...tabbedProps.tabs.slice(0, insertIndex),
+          mapTab.tabConfiguration,
+          ...tabbedProps.tabs.slice(insertIndex),
+        ];
+      } else {
+        tabbedProps.tabs = [...tabbedProps.tabs, mapTab.tabConfiguration];
+      }
+    }
+
     if (!isNilOrError(project) && phases !== undefined) {
       const inputTerm = getInputTerm(
         project.attributes.process_type,
@@ -392,6 +416,11 @@ export class AdminProjectEdition extends PureComponent<
 
       return (
         <>
+          <Outlet
+            id="app.containers.Admin.projects.edit.tabs.map"
+            projectId={project.id}
+            onData={this.insertMapTab}
+          />
           <TopContainer>
             <GoBackButton onClick={this.goBack} />
             <ActionsContainer>

@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
-import Leaflet from 'leaflet';
+import { popup, LatLng, Map as LeafletMap } from 'leaflet';
 import { withRouter, WithRouterProps } from 'react-router';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -27,7 +27,6 @@ import messages from './messages';
 
 // Styling
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
 
 // Typing
 import { IGeotaggedInitiativeData } from 'services/initiatives';
@@ -37,14 +36,6 @@ const Container = styled.div`
   > .create-initiative-wrapper {
     display: none;
   }
-`;
-
-const StyledMap = styled(Map)`
-  height: 800px;
-
-  ${media.smallerThan1100px`
-    height: calc(100vh - 180px);
-  `}
 `;
 
 const StyledWarning = styled(Warning)`
@@ -140,12 +131,12 @@ export class InitiativesMap extends PureComponent<
     this.setState({ selectedInitiativeId: null });
   };
 
-  onMapClick = (map: Leaflet.Map, position: Leaflet.LatLng) => {
+  onMapClick = (map: LeafletMap, position: LatLng) => {
     const { lat, lng } = position;
     this.setState({ lat, lng });
 
     if (this.addInitiativeButtonElement) {
-      Leaflet.popup()
+      popup()
         .setLatLng(position)
         .setContent(this.addInitiativeButtonElement)
         .openOn(map);
@@ -170,7 +161,7 @@ export class InitiativesMap extends PureComponent<
             <StyledWarning text={this.noInitiativesWithLocationMessage} />
           )}
 
-        <StyledMap
+        <Map
           points={points}
           onMarkerClick={this.toggleInitiative}
           boxContent={

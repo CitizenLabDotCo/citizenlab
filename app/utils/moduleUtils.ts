@@ -15,6 +15,7 @@ import Loadable from 'react-loadable';
 import { IGroupDataAttributes, MembershipType } from 'services/groups';
 import {
   FormikSubmitHandler,
+  InsertTabOptions,
   ITab,
   MessageDescriptor,
   Multiloc,
@@ -89,15 +90,19 @@ export type OutletsPropertyMap = {
       messageDescriptor: MessageDescriptor,
       values?: { [key: string]: MessageValue } | undefined
     ) => string;
-    onData: (data: {
-      insertAfterTabName?: string;
-      tabConfiguration: ITab;
-    }) => void;
+    onData: (data: InsertTabOptions) => void;
   };
   'app.containers.Admin.sideBar.navItems': {
     onData: (data: {
       insertAfterNavItemId?: string;
       navItemConfiguration: NavItem;
+    }) => void;
+  };
+  'app.containers.Admin.projects.edit.tabs.map': {
+    projectId: string;
+    onData: (data: {
+      insertAfterTabName?: string;
+      tabConfiguration: ITab;
     }) => void;
   };
 };
@@ -133,6 +138,7 @@ interface Routes {
   citizen: RouteConfiguration[];
   admin: RouteConfiguration[];
   'admin.initiatives': RouteConfiguration[];
+  adminProjectMapTab: RouteConfiguration[];
 }
 
 export interface ParsedModuleConfiguration {
@@ -229,8 +235,28 @@ export const loadModules = (modules: Modules): ParsedModuleConfiguration => {
         mergedRoutes?.['admin.initiatives'],
         RouteTypes.ADMIN
       ),
+      adminProjectMapTab: parseModuleRoutes(
+        mergedRoutes?.['adminProjectMapTab'],
+        RouteTypes.ADMIN
+      ),
     },
     beforeMountApplication: callLifecycleMethods('beforeMountApplication'),
     afterMountApplication: callLifecycleMethods('afterMountApplication'),
   };
+};
+
+export const insertTab = ({
+  tabConfiguration,
+  insertAfterTabName,
+}: InsertTabOptions) => (tabs: ITab[]): ITab[] => {
+  const insertIndex =
+    tabs.findIndex((tab) => tab.name === insertAfterTabName) + 1;
+
+  return insertIndex > 0
+    ? [
+        ...tabs.slice(0, insertIndex),
+        tabConfiguration,
+        ...tabs.slice(insertIndex),
+      ]
+    : [...tabs, tabConfiguration];
 };

@@ -208,7 +208,7 @@ export interface IProjectFormState {
   projectImagesToRemove: UploadFile[];
   projectFiles: UploadFile[];
   projectFilesToRemove: UploadFile[];
-  noTitleError: Multiloc | null;
+  titleError: Multiloc | null;
   apiErrors: { [fieldName: string]: CLError[] };
   saved: boolean;
   areas: IAreaData[];
