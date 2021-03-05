@@ -134,18 +134,44 @@ const AuthProviders = memo<Props & InjectedIntlProps>(
       [goToOtherFlow]
     );
 
+    const phone =
+      !isNilOrError(tenant) && tenant.attributes.settings.password_login?.phone;
+
     return (
       <Container className={className}>
+        {franceconnectLoginEnabled && (
+          <FranceConnectButton
+            onClick={handleOnFranceConnectSelected}
+            logoAlt={formatMessage(messages.signUpButtonAltText, {
+              loginMechanismName: 'FranceConnect',
+            })}
+          />
+        )}
+
+        {(passwordLoginEnabled ||
+          facebookLoginEnabled ||
+          azureAdLoginEnabled) &&
+          franceconnectLoginEnabled && <Or />}
+
         {passwordLoginEnabled && (
           <StyledAuthProviderButton
             flow={flow}
             authProvider="email"
             onContinue={handleOnAuthProviderSelected}
+            id="e2e-login-with-email"
           >
             {flow === 'signup' ? (
-              <FormattedMessage {...messages.signUpWithEmail} />
+              <FormattedMessage
+                {...(phone
+                  ? messages.signUpWithPhoneOrEmail
+                  : messages.signUpWithEmail)}
+              />
             ) : (
-              <FormattedMessage {...messages.logInWithEmail} />
+              <FormattedMessage
+                {...(phone
+                  ? messages.logInWithPhoneOrEmail
+                  : messages.logInWithEmail)}
+              />
             )}
           </StyledAuthProviderButton>
         )}
@@ -181,20 +207,6 @@ const AuthProviders = memo<Props & InjectedIntlProps>(
               values={{ azureProviderName }}
             />
           </StyledAuthProviderButton>
-        )}
-
-        {(passwordLoginEnabled ||
-          facebookLoginEnabled ||
-          azureAdLoginEnabled) &&
-          franceconnectLoginEnabled && <Or />}
-
-        {franceconnectLoginEnabled && (
-          <FranceConnectButton
-            onClick={handleOnFranceConnectSelected}
-            logoAlt={formatMessage(messages.signUpButtonAltText, {
-              loginMechanismName: 'FranceConnect',
-            })}
-          />
         )}
 
         <Options>
