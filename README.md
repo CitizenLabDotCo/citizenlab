@@ -275,6 +275,10 @@ require './engines/blorgh/spec/factories/blorghs.rb'
 
 10. If some of your engine's models have relationships with models outside the engine, don't forget to add e.g. `has_many` dependencies in decorator files in you engine's `model` folder.
 
+11. For feature engines, copy over `lib/blorgh/feature_specification.rb` and `spec/lib/settings_spec.rb` and edit according to your engine's specifications.
+
+12. If needed, create a `bin` folder with in it the desired binaries (e.g. `rake`).
+
 
 ## Adding smart group rules
 
