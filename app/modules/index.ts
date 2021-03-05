@@ -4,6 +4,7 @@ import projectFoldersConfiguration from './project_folders';
 import smartGroupsConfiguration from './smart_groups';
 import granularPermissionsConfiguration from './granular_permissions';
 import moderationConfiguration from './moderation';
+import ideaAssignmentConfiguration from './idea_assignment';
 
 import googleTagManagerConfiguration from './google_tag_manager';
 import googleAnalyticsConfiguration from './google_analytics';
@@ -50,7 +51,7 @@ export default loadModules([
     isEnabled: true,
   },
   {
-    configuration: inputAssignmentConfiguration,
+    configuration: ideaAssignmentConfiguration,
     isEnabled: true,
   },
 ]);
