@@ -173,6 +173,10 @@ if ['public','example_org'].include? Apartment::Tenant.current
         zoom_level: 12,
         osm_relation_id: 2404021
       },
+      custom_maps: {
+        enabled: true,
+        allowed: true
+      },
       user_custom_fields: {
         enabled: true,
         allowed: true
