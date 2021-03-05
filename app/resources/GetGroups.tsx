@@ -1,13 +1,5 @@
 import React from 'react';
-import {
-  isEqual,
-  get,
-  isString,
-  omitBy,
-  isNil,
-  isError,
-  isBoolean,
-} from 'lodash-es';
+import { isEqual, get, isString, omitBy, isNil, isError } from 'lodash-es';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { distinctUntilChanged, mergeScan, map } from 'rxjs/operators';
 import { getGroups, IGroups, IGroupData } from 'services/groups';
@@ -19,7 +11,6 @@ export interface InputProps {
   pageNumber?: number;
   pageSize?: number;
   membershipType?: MembershipType;
-  cache?: boolean;
 }
 
 interface IQueryParameters {
@@ -90,9 +81,6 @@ export default class GetGroups extends React.Component<Props, State> {
         .pipe(
           distinctUntilChanged((x, y) => shallowCompare(x, y)),
           mergeScan<IQueryParameters, IAccumulator>((acc, queryParameters) => {
-            const cacheStream = isBoolean(this.props.cache)
-              ? this.props.cache
-              : true;
             const isLoadingMore =
               acc.queryParameters['page[number]'] !==
               queryParameters['page[number]'];
@@ -107,7 +95,6 @@ export default class GetGroups extends React.Component<Props, State> {
 
             return getGroups({
               queryParameters,
-              cacheStream,
             }).observable.pipe(
               map((groups: IGroups | Error) => {
                 const selfLink = get(groups, 'links.self');
