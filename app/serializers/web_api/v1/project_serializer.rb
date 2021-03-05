@@ -126,3 +126,5 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
     ProjectPolicy.new(current_user(params), object).moderate?
   end
 end
+
+WebApi::V1::ProjectSerializer.prepend_if_ee('ProjectFolders::WebApi::V1::Patches::ProjectSerializer')

@@ -182,5 +182,6 @@ class Project < ApplicationRecord
       end
     end
   end
-
 end
+
+Project.prepend_if_ee('ProjectFolders::Patches::Project')

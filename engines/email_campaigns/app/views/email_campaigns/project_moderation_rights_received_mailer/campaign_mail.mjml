@@ -1,19 +1,19 @@
 <!-- Project preview -->
-<mj-section 
-  padding="20px 25px 0" 
-  border-radius="5px" 
+<mj-section
+  padding="20px 25px 0"
+  border-radius="5px"
   text-align="left">
-  <mj-column 
+  <mj-column
     padding="25px"
     background-color="#F2F6F8"
     border-radius="5px">
     <mj-text>
       <h2 style="font-size: 18px; margin-top: 10px; margin-bottom: 10px;">
-        <%= localize_for_recipient(event.project_title_multiloc) %>   
+        <%= localize_for_recipient(event.project_title_multiloc) %>
       </h2>
       <p style="margin-top: 10px">
         <% if event.project_ideas_count == 0 %>
-          <%= format_message("no_ideas") %> 
+          <%= format_message("no_ideas") %>
         <% else %>
           <%= format_message("x_ideas", values: { numberOfIdeas: event.project_ideas_count }) %>
         <% end %>
@@ -25,18 +25,18 @@
   <mj-column>
     <mj-button
       href="<%= url_service.admin_project_ideas_url(event.project_id) %>"
-      border-radius="5px" 
-      background-color="#044D6C" 
-      color="#fff" 
+      border-radius="5px"
+      background-color="#044D6C"
+      color="#fff"
       width="100%"
       padding="0 25px"><%= format_message('cta_moderate_project') %></mj-button>
   </mj-column>
 </mj-section>
 
 <!-- What can you do as a moderator? -->
-<mj-section 
+<mj-section
   padding="0 30px 80px">
-  <mj-column 
+  <mj-column
     padding="50px 30px"
     background-color="#F2F6F8"
     border-radius="5px">

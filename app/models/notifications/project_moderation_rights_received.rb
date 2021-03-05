@@ -11,7 +11,7 @@ module Notifications
       recipient_id = activity.item_id
       initiator_id = activity.user_id
       project_id = activity.payload['project_id']
-      
+
       if project_id && recipient_id
         [self.new(
            recipient_id: recipient_id,
@@ -22,6 +22,5 @@ module Notifications
         []
       end
     end
-
   end
 end

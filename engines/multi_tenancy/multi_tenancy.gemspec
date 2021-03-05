@@ -8,6 +8,7 @@ Gem::Specification.new do |spec|
   spec.name        = "multi_tenancy"
   spec.version     = MultiTenancy::VERSION
   spec.authors     = ["Adrien Dessy"]
+  spec.licenses    = ['CitizenLab Commercial License']
   spec.email       = ["adrien@citizenlab.co"]
   spec.summary     = "Multi-tenancy support for CitizenLab participation platform"
 

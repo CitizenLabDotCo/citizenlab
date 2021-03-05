@@ -355,7 +355,7 @@ Following the callstack, you will be able to understand that extra queries are b
 
 The second alternative is to switch:
 
-````ruby
+```ruby
 # config/application.rb
 Bullet.raise = true
 ```
@@ -364,3 +364,17 @@ And add the gem a `:testing` group as well, it will then fail tests when errors 
 
 ### In case an issue should be ignored (e.g. some gems)
 Add it to the `Bullet.stacktrace_excludes = []` blacklist in `config/application.rb`
+
+## Dependency license management
+
+We use [license_finder](https://github.com/pivotal/LicenseFinder) to check whether the licenses of our gems are compatible with our own. CI runs it for you.
+
+When you add a gem, you don't have to do anything if it comes with a license we previously approved. If it's a new license, you can use the license_finder CLI to approve the license, also for future dependencies.
+```bash
+docker-compose run web license_finder permitted_licenses add "the license name"
+```
+If the license is unkown to rubygems, you can directly approve a gem.
+```bash
+docker-compose run web license_finder approvals add some_awesome_new_gem
+```
+Only approve a license or gem if you're sure there are no compatibility issues. License_finder stores its information in `doc/dependency_decisions.yml`
