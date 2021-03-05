@@ -1,6 +1,5 @@
 import React, { memo, useState } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { valid } from 'geojson-validation';
 
 // services
 import { createProjectMapLayer } from 'services/mapLayers';
@@ -83,16 +82,14 @@ const GeoJsonImportButton = memo<Props>(
         setImportError(false);
 
         if (mapConfigId && !isNilOrError(tenantLocales)) {
-          if (valid(geojson)) {
-            const title_multiloc = getUnnamedLayerTitleMultiloc(tenantLocales);
-
+          try {
             createProjectMapLayer(projectId, {
               geojson,
-              title_multiloc,
               id: mapConfigId,
+              title_multiloc: getUnnamedLayerTitleMultiloc(tenantLocales),
               default_enabled: true,
             });
-          } else {
+          } catch {
             setImportError(true);
           }
         }
