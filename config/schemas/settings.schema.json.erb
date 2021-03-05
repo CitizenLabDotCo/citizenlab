@@ -526,9 +526,15 @@
         "properties": {
           "allowed": { "type": "boolean", "default": true},
           "enabled": { "type": "boolean", "default": true},
-          "site_id": {
+          "tenant_site_id": {
             "type": "string",
-            "description": "The unique ID of your matomo site"
+            "description": "The unique ID of the matomo site tracking this tenant.",
+            "default": "<%= ENV.fetch('DEFAULT_MATOMO_TENANT_SITE_ID', '') %>"
+          },
+          "product_site_id": {
+            "type": "string",
+            "description": "The unique ID of the matomo site tracking this tenant for product analytics",
+            "default": "<%= ENV.fetch('MATOMO_PRODUCT_SITE_ID', '') %>"
           }
         }
       },
