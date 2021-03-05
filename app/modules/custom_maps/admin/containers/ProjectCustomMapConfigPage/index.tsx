@@ -153,7 +153,7 @@ const ProjectCustomMapConfigPage = memo<
         tile_provider: defaultTileProvider,
         center_geojson: {
           type: 'Point',
-          coordinates: [defaultLat, defaultLng],
+          coordinates: [defaultLng, defaultLat],
         },
         zoom_level: defaultZoom.toString(),
       });

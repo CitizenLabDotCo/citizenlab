@@ -231,7 +231,8 @@ const MapCenterAndZoomConfig = memo<Props & InjectedIntlProps>(
           type="text"
           value={formValues.defaultLat}
           onChange={handleCenterLatOnChange}
-          label={formatMessage(messages.centerLatLabel)}
+          label={formatMessage(messages.latLabel)}
+          // label="Latitude"
           labelTooltipText={formatMessage(messages.centerLatLabelTooltip)}
         />
 
@@ -239,7 +240,8 @@ const MapCenterAndZoomConfig = memo<Props & InjectedIntlProps>(
           type="text"
           value={formValues.defaultLng}
           onChange={handleCenterLngOnChange}
-          label={formatMessage(messages.centerLngLabel)}
+          label={formatMessage(messages.lngLabel)}
+          // label="Longitude"
           labelTooltipText={formatMessage(messages.centerLngLabelTooltip)}
         />
 
