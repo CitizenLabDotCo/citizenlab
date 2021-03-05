@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
 import { map, isEmpty, isEqual, difference } from 'lodash-es';
+import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import {
@@ -26,6 +27,9 @@ import {
   deleteGroupProject,
   IGroupsProjects,
 } from 'services/groupsProjects';
+
+// hooks
+import useProject from 'hooks/useProject';
 
 const ViewingRightsSection = styled(Section)`
   margin-bottom: 30px;
@@ -78,6 +82,7 @@ const ProjectVisibility = ({
     oldGroupsProjects,
     setOldGroupProjects,
   ] = useState<IGroupsProjects | null>(null);
+  const project = useProject({ projectId });
 
   const handlePermissionTypeChange = (
     unsavedVisibleTo: 'public' | 'groups' | 'admins'
@@ -92,12 +97,12 @@ const ProjectVisibility = ({
   };
 
   const saveChanges = async () => {
-    if (project && savedVisibleTo && unsavedVisibleTo) {
+    if (!isNilOrError(project) && savedVisibleTo && unsavedVisibleTo) {
       let promises: Promise<any>[] = [];
 
       if (unsavedVisibleTo !== savedVisibleTo) {
         promises = [
-          updateProject(project.data.id, { visible_to: unsavedVisibleTo }),
+          updateProject(project.id, { visible_to: unsavedVisibleTo }),
         ];
       }
 
