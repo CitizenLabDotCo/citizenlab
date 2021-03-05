@@ -257,6 +257,13 @@ if ['public','example_org'].include? Apartment::Tenant.current
         destinations: 'InvasiveTracking',
         container_id: ENV.fetch("DEFAULT_GTM_CONTAINER_ID")
       },
+      # Running into a weird issue when trying to add this to the seeds.
+      # Not looking into it since we don't usually need analytics in dev
+      # matomo: {
+      #   enabled: true,
+      #   allowed: true,
+      #   site_id: 4
+      # },
       smart_groups: {
         enabled: true,
         allowed: true

@@ -516,6 +516,22 @@
           }
         }
       },
+      "matomo": {
+        "type": "object",
+        "title": "Matomo Integration",
+        "description": "Integrates Matomo with the front-end",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "required-settings": ["container_id"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true},
+          "site_id": {
+            "type": "string",
+            "description": "The unique ID of your matomo site"
+          }
+        }
+      },
 
       "participatory_budgeting": {
         "type": "object",
