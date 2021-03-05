@@ -121,7 +121,7 @@ export default class GetInitiatives extends React.Component<Props, State> {
   static defaultProps = {
     pageNumber: 1,
     pageSize: 12,
-    sort: 'random',
+    sort: 'new',
   };
 
   constructor(props: Props) {
