@@ -30,7 +30,6 @@ export interface InputProps {
   ideaStatusId?: string;
   projectPublicationStatus?: ProjectPublicationStatus;
   boundingBox?: number[];
-  cache?: boolean;
   assignee?: string;
   feedbackNeeded?: boolean;
 }
