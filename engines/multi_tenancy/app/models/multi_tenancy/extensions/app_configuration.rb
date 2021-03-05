@@ -34,5 +34,3 @@ module MultiTenancy
     end
   end
 end
-
-AppConfiguration.include(MultiTenancy::Extensions::AppConfiguration)
