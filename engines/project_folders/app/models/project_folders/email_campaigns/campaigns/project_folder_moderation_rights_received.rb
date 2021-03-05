@@ -20,21 +20,22 @@ module ProjectFolders
       end
 
       def activity_triggers
-        { 'ProjectFolders::Notifications::ProjectFolderModerationRightsReceived': { 'created': true } }
+        { 'ProjectFolders::Notifications::ProjectFolderModerationRightsReceived' => { 'created' => true } }
       end
 
       def filter_notification_recipient(users_scope, activity:, **_unused_options)
-        users_scope.where(id: activity.item.recipient.id)
+        users_scope.where(id: activity.item.id)
       end
 
       def generate_commands(recipient:, activity:, **_unused_options)
-        notification = activity.item
+        # notification = activity.item
+        folder = ProjectFolders::Folder.find(activity.payload['project_folder_id'])
         [{
           event_payload: {
-            project_folder_id: notification.post.id,
-            project_folder_title_multiloc: notification.post.title_multiloc,
-            project_folder_projects_count: notification.post.projects.count,
-            project_folder_url: admin_project_folder_url(notification.post.id, locale: recipient.locale)
+            project_folder_id: folder.id,
+            project_folder_title_multiloc: folder.title_multiloc,
+            project_folder_projects_count: folder.projects.count,
+            project_folder_url: admin_project_folder_url(folder.id, locale: recipient.locale)
           }
         }]
       end
