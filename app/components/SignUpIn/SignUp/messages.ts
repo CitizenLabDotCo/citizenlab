@@ -77,10 +77,6 @@ export default defineMessages({
     id: 'app.containers.SignUp.noPasswordError',
     defaultMessage: 'Your password cannot be empty',
   },
-  noValidPasswordError: {
-    id: 'app.containers.SignUp.noValidPasswordError',
-    defaultMessage: 'The password must be at least 8 characters long',
-  },
   continue: {
     id: 'app.containers.SignUp.continue',
     defaultMessage: 'Continue',
@@ -161,6 +157,14 @@ export default defineMessages({
   logInWithEmail: {
     id: 'app.containers.SignUp.logInWithEmail',
     defaultMessage: 'Log in with Email',
+  },
+  signUpWithPhoneOrEmail: {
+    id: 'app.containers.SignUp.signUpWithPhoneOrEmail',
+    defaultMessage: 'Sign up with Phone or Email',
+  },
+  logInWithPhoneOrEmail: {
+    id: 'app.containers.SignUp.logInWithPhoneOrEmail',
+    defaultMessage: 'Log in with Phone or Email',
   },
   continueWithGoogle: {
     id: 'app.containers.SignUp.continueWithGoogle',

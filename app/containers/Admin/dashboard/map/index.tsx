@@ -54,7 +54,6 @@ const StyledWarning = styled(Warning)`
 
 const StyledMap = styled(Map)`
   width: 100%;
-  height: 600px;
 `;
 
 const Panel = styled.div`
@@ -161,6 +160,7 @@ class DashboardMap extends PureComponent<Props & InjectedLocalized, State> {
           <StyledMap
             points={this.getPoints(ideas)}
             onMarkerClick={this.handleIdeaClick}
+            mapHeight="600px"
           />
           {panelOpened && (
             <Panel>

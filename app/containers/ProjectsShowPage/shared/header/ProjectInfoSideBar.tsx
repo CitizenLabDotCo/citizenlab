@@ -36,11 +36,17 @@ import { getInputTermMessage } from 'utils/i18n';
 
 // style
 import styled from 'styled-components';
-import { fontSizes, colors, isRtl } from 'utils/styleUtils';
+import { fontSizes, colors, isRtl, media } from 'utils/styleUtils';
 import { selectPhase } from 'containers/ProjectsShowPage/timeline/events';
 
-const Container = styled.div`
-  width: 100%;
+const Container = styled.div``;
+
+const About = styled.div`
+  padding: 20px;
+  padding-top: 0px;
+  padding-bottom: 5px;
+  border: solid 1px #ccc;
+  border-radius: ${(props: any) => props.theme.borderRadius};
 `;
 
 const Title = styled.h2`
@@ -49,7 +55,7 @@ const Title = styled.h2`
   line-height: normal;
   font-weight: 500;
   margin: 0;
-  margin-bottom: 14px;
+  margin-bottom: 20px;
   padding: 0;
   padding-top: 12px;
 `;
@@ -58,8 +64,6 @@ const List = styled.ul`
   margin: 0;
   padding: 0;
   list-style: none;
-  border-top: solid 1px #ccc;
-  border-bottom: solid 1px #ccc;
 `;
 
 const ListItem = styled.li`
@@ -115,7 +119,13 @@ const ListItemButton = styled.button`
   }
 `;
 
-const About = styled.div``;
+const StyledProjectActionButtons = styled(ProjectActionButtons)`
+  margin-top: 20px;
+
+  ${media.smallerThanMaxTablet`
+    margin-top: 30px;
+  `}
+`;
 
 interface Props {
   projectId: string;
@@ -413,8 +423,8 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
               </ListItemButton>
             </ListItem>
           </List>
-          <ProjectActionButtons projectId={projectId} />
         </About>
+        <StyledProjectActionButtons projectId={projectId} />
         <ProjectSharingModal
           projectId={project.id}
           opened={shareModalOpened}

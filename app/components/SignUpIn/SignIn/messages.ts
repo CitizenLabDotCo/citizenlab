@@ -49,17 +49,9 @@ export default defineMessages({
     id: 'app.containers.SignIn.goToSignUp',
     defaultMessage: "Don't have an account? {goToOtherFlowLink}",
   },
-  or: {
-    id: 'app.containers.SignIn.or',
-    defaultMessage: 'Or',
-  },
   signUp: {
     id: 'app.containers.SignIn.signUp',
     defaultMessage: 'Sign up',
-  },
-  whatIsFranceConnect: {
-    id: 'app.containers.SignIn.whatIsFranceConnect',
-    defaultMessage: 'What is France Connect?',
   },
   somethingWentWrongText: {
     id: 'app.containers.SignIn.somethingWentWrong',

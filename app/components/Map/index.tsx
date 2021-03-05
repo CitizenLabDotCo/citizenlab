@@ -1,12 +1,19 @@
 import React, { memo, useState, useEffect } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { isEqual, compact, isUndefined, isEmpty } from 'lodash-es';
+import {
+  isEqual,
+  compact,
+  isUndefined,
+  isEmpty,
+  reverse,
+  cloneDeep,
+} from 'lodash-es';
 
 // Map
-import L from 'leaflet';
-import 'leaflet-simplestyle';
-import 'leaflet.markercluster';
 import 'leaflet/dist/leaflet.css';
+import L from 'leaflet';
+import 'leaflet.markercluster';
+import './simplestyle';
 import marker from 'leaflet/dist/images/marker-icon.png';
 import marker2x from 'leaflet/dist/images/marker-icon-2x.png';
 import markerShadow from 'leaflet/dist/images/marker-shadow.png';
@@ -32,13 +39,17 @@ import usePrevious from 'hooks/usePrevious';
 import { getCenter, getZoomLevel, getTileProvider } from 'utils/map';
 
 // events
-import { broadcastMapCenter, broadcastMapZoom } from './events';
+import {
+  broadcastMapCenter,
+  broadcastMapZoom,
+  setMapLatLngZoom$,
+} from './events';
 
 // i18n
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
 
 // styling
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { darken } from 'polished';
 import { media, defaultOutline, defaultCardStyle } from 'utils/styleUtils';
 import ideaMarkerIcon from './idea-marker.svg';
@@ -63,20 +74,13 @@ const fallbackLegendMarker = L.icon({
 });
 
 const Container = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: stretch;
-  justify-content: stretch;
-  flex-direction: column;
-  ${defaultCardStyle}
+  ${defaultCardStyle};
+  border: solid 1px #ccc;
 `;
 
-const MapContainer = styled.div`
+const MapWrapper = styled.div`
   flex: 1;
   display: flex;
-  align-items: stretch;
-  justify-content: stretch;
   position: relative;
 `;
 
@@ -132,13 +136,28 @@ const CloseIcon = styled(Icon)`
   fill: #000;
 `;
 
-const LeafletMapContainer = styled.div`
+const LeafletMapContainer = styled.div<{ mapHeight: string | undefined }>`
   flex: 1;
   overflow: hidden;
 
-  .leaflet-container {
-    height: 100%;
-  }
+  ${(props) => {
+    const { mapHeight } = props;
+
+    if (mapHeight) {
+      return css`
+        height: ${mapHeight};
+      `;
+    }
+
+    return css`
+      height: calc(100vh - 300px);
+      max-height: 700px;
+
+      ${media.smallerThan1100px`
+        height: calc(100vh - 180px);
+      `}
+    `;
+  }}
 
   .marker-cluster-custom {
     background: #004949;
@@ -162,6 +181,7 @@ interface Props {
   points?: Point[];
   areas?: GeoJSON.Polygon[];
   zoom?: number;
+  mapHeight?: string;
   boxContent?: JSX.Element | null;
   onBoxClose?: (event: React.FormEvent) => void;
   onMarkerClick?: (id: string, data: any) => void;
@@ -176,6 +196,7 @@ const Map = memo<Props & InjectedLocalized>(
     projectId,
     centerCoordinates,
     zoom,
+    mapHeight,
     points,
     boxContent,
     onBoxClose,
@@ -187,7 +208,7 @@ const Map = memo<Props & InjectedLocalized>(
     hideLegend,
   }) => {
     const appConfig = useAppConfiguration();
-    const mapConfig = useMapConfig({ projectId, prefetchMapLayers: true });
+    const mapConfig = useMapConfig({ projectId });
 
     const [map, setMap] = useState<L.Map | null>(null);
     const [layerControl, setLayerControl] = useState<L.Control.Layers | null>(
@@ -197,9 +218,6 @@ const Map = memo<Props & InjectedLocalized>(
     const [defaultCenter, setDefaultCenter] = useState(
       getCenter(centerCoordinates, appConfig, mapConfig)
     );
-    // const [defaultZoom, setDefaultZoom] = useState(
-    //   getZoomLevel(zoom, appConfig, mapConfig)
-    // );
     const [markers, setMarkers] = useState<L.Marker<any>[]>([]);
     const [
       markerClusterGroup,
@@ -212,11 +230,18 @@ const Map = memo<Props & InjectedLocalized>(
     const prevPoints = usePrevious(points);
 
     useEffect(() => {
+      const subscriptions = [
+        setMapLatLngZoom$.subscribe(({ lat, lng, zoom }) => {
+          if (map) {
+            map.setView([lat, lng], zoom);
+          }
+        }),
+      ];
+
       return () => {
+        subscriptions.forEach((subscription) => subscription.unsubscribe());
         map?.off('moveend');
         map?.off('zoomend');
-        broadcastMapCenter(null);
-        broadcastMapZoom(null);
       };
     }, [map]);
 
@@ -234,11 +259,6 @@ const Map = memo<Props & InjectedLocalized>(
       );
     }, [appConfig, mapConfig, centerCoordinates]);
 
-    // set default zoom
-    // useEffect(() => {
-    //   setDefaultZoom(getZoomLevel(zoom, appConfig, mapConfig));
-    // }, [appConfig, mapConfig, zoom]);
-
     // init map
     useEffect(() => {
       if (!isNilOrError(appConfig) && !isUndefined(mapConfig) && !map) {
@@ -255,7 +275,7 @@ const Map = memo<Props & InjectedLocalized>(
           tileSize: 512,
           zoomOffset: -1,
           minZoom: 1,
-          maxZoom: 17,
+          maxZoom: 20,
           crossOrigin: true,
           subdomains: ['a', 'b', 'c'],
           attribution:
@@ -312,7 +332,7 @@ const Map = memo<Props & InjectedLocalized>(
           mapConfig.attributes.layers.length > 0
         ) {
           newLayerControl = L.control.layers().addTo(map);
-          newLayers = mapConfig?.attributes?.layers
+          newLayers = reverse(cloneDeep(mapConfig?.attributes?.layers))
             ?.filter((layer) => !isEmpty(layer.geojson))
             .map(({ geojson, title_multiloc, marker_svg_url }) => {
               const layer = L.geoJSON(geojson, {
@@ -436,7 +456,7 @@ const Map = memo<Props & InjectedLocalized>(
 
     return (
       <Container className={className || ''}>
-        <MapContainer>
+        <MapWrapper>
           {!isNilOrError(boxContent) && (
             <BoxContainer>
               <CloseButton onClick={handleBoxOnClose}>
@@ -447,8 +467,12 @@ const Map = memo<Props & InjectedLocalized>(
             </BoxContainer>
           )}
 
-          <LeafletMapContainer id="mapid" className="e2e-map" />
-        </MapContainer>
+          <LeafletMapContainer
+            id="mapid"
+            className="e2e-map"
+            mapHeight={mapHeight}
+          />
+        </MapWrapper>
         {projectId && !hideLegend && <Legend projectId={projectId} />}
       </Container>
     );

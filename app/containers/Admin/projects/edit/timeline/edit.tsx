@@ -30,8 +30,8 @@ import { convertUrlToUploadFileObservable } from 'utils/fileTools';
 
 // Components
 import { Label } from 'cl2-component-library';
-import InputMultiloc from 'components/UI/InputMultiloc';
-import QuillMultiloc from 'components/UI/QuillEditor/QuillMultiloc';
+import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
+import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 import Error from 'components/UI/Error';
 import DateRangePicker from 'components/admin/DateRangePicker';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
@@ -430,7 +430,7 @@ class AdminProjectTimelineEdit extends PureComponent<
           <PhaseForm onSubmit={this.handleOnSubmit}>
             <Section>
               <SectionField>
-                <InputMultiloc
+                <InputMultilocWithLocaleSwitcher
                   id="title"
                   label={<FormattedMessage {...messages.titleLabel} />}
                   type="text"
@@ -465,7 +465,7 @@ class AdminProjectTimelineEdit extends PureComponent<
               </SectionField>
 
               <SectionField className="fullWidth">
-                <QuillMultiloc
+                <QuillMultilocWithLocaleSwitcher
                   id="description"
                   label={this.quillMultilocLabel}
                   valueMultiloc={phaseAttrs.description_multiloc}

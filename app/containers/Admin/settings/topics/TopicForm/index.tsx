@@ -6,7 +6,7 @@ import messages from '../messages';
 import { InjectedIntlProps } from 'react-intl';
 
 import { Form, Field, InjectedFormikProps } from 'formik';
-import FormikInputMultiloc from 'components/UI/FormikInputMultiloc';
+import FormikInputMultilocWithLocaleSwitcher from 'components/UI/FormikInputMultilocWithLocaleSwitcher';
 import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
 
 import { Section, SectionField } from 'components/admin/Section';
@@ -41,7 +41,7 @@ class TopicForm extends React.Component<
           <SectionField>
             <Field
               name="title_multiloc"
-              component={FormikInputMultiloc}
+              component={FormikInputMultilocWithLocaleSwitcher}
               label={<FormattedMessage {...messages.fieldTopicTitle} />}
               labelTooltipText={formatMessage(messages.fieldTopicTitleTooltip)}
               id="e2e-topic-name"

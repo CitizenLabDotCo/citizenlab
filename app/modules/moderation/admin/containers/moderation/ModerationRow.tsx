@@ -95,7 +95,7 @@ const ModerationRow = memo<Props & InjectedIntlProps>(
         idea: messages.post,
         comment: messages.comment,
         initiative: messages.initiative,
-      }[moderation.attributes?.moderatable_type.toLowerCase()]
+      }[moderation.attributes?.moderatable_type.toLowerCase()] as any
     );
     const bgColor = selected
       ? rgba(colors.adminTextColor, 0.1)
@@ -171,11 +171,11 @@ const ModerationRow = memo<Props & InjectedIntlProps>(
               >
                 <BelongsToType>
                   <FormattedMessage
-                    {...{
+                    {...({
                       idea: messages.post,
                       project: messages.project,
                       initiative: messages.initiative,
-                    }[key]}
+                    }[key] as any)}
                   />
                   :
                 </BelongsToType>
