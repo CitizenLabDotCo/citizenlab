@@ -18,9 +18,8 @@ import { ModuleConfiguration } from 'utils/moduleUtils';
 import createRoutes from 'routes';
 import matchPath, { getAllPathsFromRoutes } from './matchPath';
 
-const env = process.env.NODE_ENV;
-export const MATOMO_URL = process.env.MATOMO_URL || '//matomo.hq.citizenlab.co';
-export const MATOMO_CL_SITE = env === 'production' ? '4' : '2';
+export const MATOMO_HOST =
+  process.env.MATOMO_HOST || '//matomo.hq.citizenlab.co';
 
 declare module 'components/ConsentManager/destinations' {
   export interface IDestinationMap {
@@ -42,7 +41,7 @@ const configuration: ModuleConfiguration = {
       authUserStream().observable,
       initializeFor('matomo'),
     ]).subscribe(([tenant, user, _]) => {
-      if (!MATOMO_URL) return;
+      if (!MATOMO_HOST) return;
       /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
       window._paq = window._paq || [];
 
@@ -57,29 +56,32 @@ const configuration: ModuleConfiguration = {
 
       (function () {
         // Send all of the tracking data to the global site used for product analytics
-        window._paq.push(['setTrackerUrl', `${MATOMO_URL}/matomo.php`]);
-        window._paq.push(['setSiteId', MATOMO_CL_SITE]);
+        if (tenant.data.attributes.settings.matomo?.product_site_id) {
+          window._paq.push(['setTrackerUrl', `${MATOMO_HOST}/matomo.php`]);
+          window._paq.push([
+            'setSiteId',
+            tenant.data.attributes.settings.matomo?.product_site_id,
+          ]);
+        }
         // Send tracking data to the tenant-specific site
-        if (tenant.data.attributes.settings.matomo?.site_id) {
+        if (tenant.data.attributes.settings.matomo?.tenant_site_id) {
           window._paq.push([
             'addTracker',
-            `${MATOMO_URL}/matomo.php`,
-            tenant.data.attributes.settings.matomo?.site_id,
+            `${MATOMO_HOST}/matomo.php`,
+            tenant.data.attributes.settings.matomo?.tenant_site_id,
           ]);
         }
 
-        // TODO reset tracking if user changes ? check if tracker is there before calling this ?
         const d = document;
         const g = d.createElement('script');
         const s = d.getElementsByTagName('script')[0];
         g.type = 'text/javascript';
         g.async = true;
-        g.src = `${MATOMO_URL}/matomo.js`;
+        g.src = `${MATOMO_HOST}/matomo.js`;
         g.id = 'internal_matomo_analytics';
         s.parentNode?.insertBefore(g, s);
       })();
 
-      // TODO Setup custom dimensions
       if (!isNilOrError(tenant)) {
         window._paq.push([
           'setCustomDimension',
@@ -120,7 +122,6 @@ const configuration: ModuleConfiguration = {
       currentAppConfigurationStream().observable,
     ]).subscribe(([pageChange, _]) => {
       if (window._paq) {
-        // TODO get url from pagechange
         window._paq.push(['setCustomUrl', pageChange.path]);
 
         // sorts out path and params for this pathname
@@ -129,8 +130,10 @@ const configuration: ModuleConfiguration = {
           exact: true,
         });
 
-        if (routeMatch.isExact) {
+        if (routeMatch?.isExact) {
           window._paq.push(['trackPageView', routeMatch.path]);
+        } else {
+          window._paq.push(['trackPageView']);
         }
       }
     });
