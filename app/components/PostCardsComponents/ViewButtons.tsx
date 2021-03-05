@@ -1,9 +1,12 @@
-import React, { memo, useCallback } from 'react';
+import React, { memo, FormEvent } from 'react';
 import { trackEventByName } from 'utils/analytics';
+
+// components
+import Button from 'components/UI/Button';
 
 // styling
 import styled from 'styled-components';
-import { media, fontSizes, colors, defaultStyles } from 'utils/styleUtils';
+import { colors } from 'utils/styleUtils';
 import { darken } from 'polished';
 
 // i18n
@@ -20,58 +23,9 @@ const Container = styled.div`
   border-radius: ${(props: any) => props.theme.borderRadius};
 `;
 
-const ViewButton = styled.button`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  background: transparent;
-  padding: 0;
-  margin: 0;
-  border-radius: ${(props: any) => props.theme.borderRadius};
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  transition: all 100ms ease-out;
+const ListButton = styled(Button)``;
 
-  &.active {
-    background: #fff;
-    box-shadow: ${defaultStyles.boxShadow};
-  }
-
-  &:not(.active):hover {
-    text-decoration: underline;
-  }
-
-  > span {
-    color: ${colors.text};
-    font-size: ${fontSizes.base}px;
-    font-weight: 400;
-    line-height: normal;
-    padding-left: 15px;
-    padding-right: 15px;
-    padding-top: 9px;
-    padding-bottom: 9px;
-
-    ${media.smallerThanMinTablet`
-      padding: 10px;
-    `}
-  }
-
-  ${media.smallerThanMinTablet`
-    flex: 1;
-  `}
-`;
-
-const ListButton = styled(ViewButton)`
-  border-top-left-radius: ${(props: any) => props.theme.borderRadius};
-  border-bottom-left-radius: ${(props: any) => props.theme.borderRadius};
-  border-right: none;
-`;
-
-const MapButton = styled(ViewButton)`
-  border-top-right-radius: ${(props: any) => props.theme.borderRadius};
-  border-bottom-right-radius: ${(props: any) => props.theme.borderRadius};
+const MapButton = styled(Button)`
   margin-left: 4px;
 `;
 
@@ -81,52 +35,60 @@ interface Props {
   onClick: (selectedView: 'card' | 'map') => void;
 }
 
-const ViewButtons = memo<Props>(
-  ({ className, selectedView, onClick }: Props) => {
-    const showListView = selectedView === 'card';
-    const showMapView = selectedView === 'map';
+const ViewButtons = memo<Props>(({ className, selectedView, onClick }) => {
+  const isListViewSelected = selectedView === 'card';
+  const isMapViewSelected = selectedView === 'map';
 
-    const handleOnClick = (selectedView: 'card' | 'map') => (
-      event: React.FormEvent
-    ) => {
-      event.preventDefault();
-      onClick(selectedView);
-      trackEventByName(tracks.toggleDisplay, {
-        locationButtonWasClicked: location.pathname,
-        selectedDisplayMode: selectedView,
-      });
-    };
+  const handleOnClick = (selectedView: 'card' | 'map') => (
+    event: FormEvent
+  ) => {
+    event.preventDefault();
+    onClick(selectedView);
+    trackEventByName(tracks.toggleDisplay, {
+      locationButtonWasClicked: location.pathname,
+      selectedDisplayMode: selectedView,
+    });
+  };
 
-    const removeFocus = useCallback((event: React.MouseEvent) => {
-      event.preventDefault();
-    }, []);
-
-    return (
-      <Container
-        className={`e2e-list-map-viewbuttons ${className}`}
-        role="tablist"
+  return (
+    <Container
+      className={`e2e-list-map-viewbuttons ${className || ''}`}
+      role="tablist"
+    >
+      <ListButton
+        buttonStyle="white"
+        icon="list2"
+        role="tab"
+        aria-selected={isListViewSelected}
+        onClick={handleOnClick('card')}
+        padding="7px 12px"
+        textColor={colors.text}
+        textDecorationHover={!isListViewSelected ? 'underline' : undefined}
+        bgColor={!isListViewSelected ? 'transparent' : undefined}
+        bgHoverColor={!isListViewSelected ? 'transparent' : undefined}
+        boxShadowHover={!isListViewSelected ? 'none' : undefined}
+        fullWidth={true}
       >
-        <ListButton
-          role="tab"
-          aria-selected={showListView}
-          onMouseDown={removeFocus}
-          onClick={handleOnClick('card')}
-          className={`${showListView ? 'active' : ''}`}
-        >
-          <FormattedMessage {...messages.list} />
-        </ListButton>
-        <MapButton
-          role="tab"
-          aria-selected={showMapView}
-          onMouseDown={removeFocus}
-          onClick={handleOnClick('map')}
-          className={`${showMapView ? 'active' : ''}`}
-        >
-          <FormattedMessage {...messages.map} />
-        </MapButton>
-      </Container>
-    );
-  }
-);
+        <FormattedMessage {...messages.list} />
+      </ListButton>
+      <MapButton
+        buttonStyle="white"
+        icon="map"
+        role="tab"
+        aria-selected={isMapViewSelected}
+        onClick={handleOnClick('map')}
+        padding="7px 12px"
+        textColor={colors.text}
+        textDecorationHover={!isMapViewSelected ? 'underline' : undefined}
+        bgColor={!isMapViewSelected ? 'transparent' : undefined}
+        bgHoverColor={!isMapViewSelected ? 'transparent' : undefined}
+        boxShadowHover={!isMapViewSelected ? 'none' : undefined}
+        fullWidth={true}
+      >
+        <FormattedMessage {...messages.map} />
+      </MapButton>
+    </Container>
+  );
+});
 
 export default ViewButtons;

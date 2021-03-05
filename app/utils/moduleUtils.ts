@@ -98,6 +98,13 @@ export type OutletsPropertyMap = {
       navItemConfiguration: NavItem;
     }) => void;
   };
+  'app.containers.Admin.projects.edit.tabs.map': {
+    projectId: string;
+    onData: (data: {
+      insertAfterTabName?: string;
+      tabConfiguration: ITab;
+    }) => void;
+  };
 };
 
 type Outlet<Props> = FunctionComponent<Props> | FunctionComponent<Props>[];
@@ -131,6 +138,7 @@ interface Routes {
   citizen: RouteConfiguration[];
   admin: RouteConfiguration[];
   'admin.initiatives': RouteConfiguration[];
+  adminProjectMapTab: RouteConfiguration[];
 }
 
 export interface ParsedModuleConfiguration {
@@ -225,6 +233,10 @@ export const loadModules = (modules: Modules): ParsedModuleConfiguration => {
       admin: parseModuleRoutes(mergedRoutes.admin, RouteTypes.ADMIN),
       'admin.initiatives': parseModuleRoutes(
         mergedRoutes?.['admin.initiatives'],
+        RouteTypes.ADMIN
+      ),
+      adminProjectMapTab: parseModuleRoutes(
+        mergedRoutes?.['adminProjectMapTab'],
         RouteTypes.ADMIN
       ),
     },
