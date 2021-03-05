@@ -8,6 +8,7 @@ import Link from 'utils/cl-router/Link';
 
 // components
 import { Input } from 'cl2-component-library';
+import PasswordInput from 'components/UI/PasswordInput';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import { FormLabel } from 'components/UI/FormComponents';
@@ -94,8 +95,8 @@ type State = {
   password: string | null;
   processing: boolean;
   emailError: string | null;
-  passwordError: string | null;
   signInError: string | null;
+  hasEmptyPasswordError: boolean;
 };
 
 class PasswordSignin extends PureComponent<
@@ -112,8 +113,8 @@ class PasswordSignin extends PureComponent<
       password: null,
       processing: false,
       emailError: null,
-      passwordError: null,
       signInError: null,
+      hasEmptyPasswordError: false,
     };
     this.emailInputElement = null;
     this.passwordInputElement = null;
@@ -138,7 +139,7 @@ class PasswordSignin extends PureComponent<
   handlePasswordOnChange = (password: string) => {
     this.setState({
       password,
-      passwordError: null,
+      hasEmptyPasswordError: false,
       signInError: null,
     });
   };
@@ -158,11 +159,12 @@ class PasswordSignin extends PureComponent<
     }
   };
 
-  validate(email: string | null, password: string | null) {
+  validate(email: string | null) {
     const {
       intl: { formatMessage },
       tenant,
     } = this.props;
+    const { password } = this.state;
     const phone =
       !isNilOrError(tenant) && tenant.attributes.settings.password_login?.phone;
     const hasEmailError = !phone && (!email || !isValidEmail(email));
@@ -171,21 +173,19 @@ class PasswordSignin extends PureComponent<
         ? formatMessage(messages.noEmailError)
         : formatMessage(messages.noValidEmailError)
       : null;
-    const passwordError = !password
-      ? formatMessage(messages.noPasswordError)
-      : null;
+    const hasEmptyPasswordError = !password;
 
-    this.setState({ emailError, passwordError });
+    this.setState({ emailError, hasEmptyPasswordError });
 
     if (emailError && this.emailInputElement) {
       this.emailInputElement.focus();
     }
 
-    if (passwordError && this.passwordInputElement) {
+    if (!emailError && hasEmptyPasswordError && this.passwordInputElement) {
       this.passwordInputElement.focus();
     }
 
-    return !emailError && !passwordError;
+    return !emailError && !hasEmptyPasswordError;
   }
 
   handleOnSubmit = async (event: React.FormEvent) => {
@@ -195,7 +195,7 @@ class PasswordSignin extends PureComponent<
     const { formatMessage } = this.props.intl;
     const { email, password } = this.state;
 
-    if (this.validate(email, password) && email && password) {
+    if (this.validate(email) && email && password) {
       try {
         this.setState({ processing: true });
         const user = await signIn(email, password);
@@ -225,8 +225,8 @@ class PasswordSignin extends PureComponent<
       password,
       processing,
       emailError,
-      passwordError,
       signInError,
+      hasEmptyPasswordError,
     } = this.state;
     const {
       className,
@@ -282,14 +282,14 @@ class PasswordSignin extends PureComponent<
               htmlFor="password"
               labelMessage={messages.passwordLabel}
             />
-            <Input
-              type="password"
+            <PasswordInput
               id="password"
-              value={password}
-              error={passwordError}
+              password={password}
               onChange={this.handlePasswordOnChange}
               setRef={this.handlePasswordInputSetRef}
               autocomplete="current-password"
+              isLoginPasswordInput
+              errors={{ emptyError: hasEmptyPasswordError }}
             />
           </FormElement>
 
@@ -299,7 +299,7 @@ class PasswordSignin extends PureComponent<
                 onClick={this.handleOnSubmit}
                 processing={processing}
                 text={formatMessage(messages.submit)}
-                className="e2e-submit-signin"
+                id="e2e-signin-password-submit-button"
               />
             </ButtonWrapper>
             <Error marginTop="10px" text={signInError} />
@@ -317,7 +317,11 @@ class PasswordSignin extends PureComponent<
           </Option>
           <Option>
             {enabledProviders.length > 1 ? (
-              <button onClick={this.handleGoToLogInOptions} className="link">
+              <button
+                id="e2e-login-options"
+                onClick={this.handleGoToLogInOptions}
+                className="link"
+              >
                 <FormattedMessage {...messages.backToLoginOptions} />
               </button>
             ) : (
@@ -326,8 +330,8 @@ class PasswordSignin extends PureComponent<
                 values={{
                   goToOtherFlowLink: (
                     <button
+                      id="e2e-goto-signup"
                       onClick={this.handleGoToSignUp}
-                      className="link e2e-sign-up-link"
                     >
                       {formatMessage(messages.signUp)}
                     </button>
