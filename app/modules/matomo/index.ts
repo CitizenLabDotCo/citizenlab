@@ -15,22 +15,18 @@ import {
   registerDestination,
 } from 'components/ConsentManager/destinations';
 import { ModuleConfiguration } from 'utils/moduleUtils';
-import { removeUrlLocale } from 'services/locale';
+import createRoutes from 'routes';
+import matchPath, { getAllPathsFromRoutes } from './matchPath';
 
 const env = process.env.NODE_ENV;
 export const MATOMO_URL = process.env.MATOMO_URL || '//matomo.hq.citizenlab.co';
-export const MATOMO_CL_SITE = env === 'production' ? '3' : '2';
+export const MATOMO_CL_SITE = env === 'production' ? '4' : '2';
 
 declare module 'components/ConsentManager/destinations' {
   export interface IDestinationMap {
     matomo: 'matomo';
   }
 }
-
-const exp = new RegExp(
-  '(?<before>^/(ideas|initiatives|projects|users|folders|workshops|admin/(projects(/(folders|templates))|emails/custom)?)/)(?<match>([A-Za-z0-9]|-)*)(?<after>/?(.*))',
-  'g'
-);
 
 const destinationConfig: IDestinationConfig = {
   key: 'matomo',
@@ -48,12 +44,8 @@ const configuration: ModuleConfiguration = {
     ]).subscribe(([tenant, user, _]) => {
       if (!MATOMO_URL) return;
       /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+      window._paq = window._paq || [];
 
-      window._paq.push([
-        'setDocumentTitle',
-        `${document.domain}/${document.title}`,
-      ]);
-      window._paq.push(['trackPageView']);
       window._paq.push(['enableLinkTracking']);
       window._paq.push(['setDomains', `${tenant.data.attributes.host}/*`]);
       window._paq.push(['setCookieDomain', `${tenant.data.attributes.host}/*`]);
@@ -67,7 +59,6 @@ const configuration: ModuleConfiguration = {
         // Send all of the tracking data to the global site used for product analytics
         window._paq.push(['setTrackerUrl', `${MATOMO_URL}/matomo.php`]);
         window._paq.push(['setSiteId', MATOMO_CL_SITE]);
-
         // Send tracking data to the tenant-specific site
         if (tenant.data.attributes.settings.matomo?.site_id) {
           window._paq.push([
@@ -100,7 +91,7 @@ const configuration: ModuleConfiguration = {
     });
 
     shutdownFor('matomo').subscribe(() => {
-      window._paq.push(['resetUserId']);
+      window._paq = undefined;
     });
 
     combineLatest([
@@ -122,22 +113,25 @@ const configuration: ModuleConfiguration = {
       }
     });
 
-    pageChanges$.subscribe((pageChange) => {
+    const allAppPaths = getAllPathsFromRoutes(createRoutes()[0]);
+
+    combineLatest([
+      bufferUntilInitialized('matomo', pageChanges$),
+      currentAppConfigurationStream().observable,
+    ]).subscribe(([pageChange, _]) => {
       if (window._paq) {
         // TODO get url from pagechange
-        const unlocalizedPath = removeUrlLocale(pageChange.path);
-        const pathParts = exp.exec(unlocalizedPath)?.groups;
-        window._paq.push(['setCustomUrl', unlocalizedPath]);
-        window._paq.push([
-          'trackPageView',
-          pathParts
-            ? `${pathParts.before}identifier${pathParts.after}`
-            : unlocalizedPath,
-          pathParts ? { dimension4: pathParts.match } : undefined,
-        ]);
+        window._paq.push(['setCustomUrl', pageChange.path]);
 
-        const content = document.getElementById('app');
-        window._paq.push(['FormAnalytics::scanForForms', content]);
+        // sorts out path and params for this pathname
+        const routeMatch = matchPath(pageChange.path, {
+          path: allAppPaths,
+          exact: true,
+        });
+
+        if (routeMatch.isExact) {
+          window._paq.push(['trackPageView', routeMatch.path]);
+        }
       }
     });
 

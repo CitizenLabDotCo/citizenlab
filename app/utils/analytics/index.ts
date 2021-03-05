@@ -13,13 +13,6 @@ import { isEqual, mapValues } from 'lodash-es';
 import eventEmitter from 'utils/eventEmitter';
 
 import {
-  isAdmin,
-  isSuperAdmin,
-  isProjectModerator,
-} from 'services/permissions/roles';
-import { IUser } from 'services/users';
-import { removeUrlLocale, localeStream } from 'services/locale';
-import {
   IAppConfigurationData,
   currentAppConfigurationStream,
 } from 'services/appConfiguration';
