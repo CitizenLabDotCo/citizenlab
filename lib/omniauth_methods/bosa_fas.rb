@@ -47,7 +47,5 @@ module OmniauthMethods
     def updateable_user_attrs
       [:first_name, :last_name]
     end
-
   end
-
 end

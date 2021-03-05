@@ -168,7 +168,7 @@ class OmniauthCallbackController < ApplicationController
 
   def handle_verification auth, user
     configuration = AppConfiguration.instance
-    if configuration.has_feature?('verification')
+    if configuration.feature_activated?('verification')
       verification_service = Verification::VerificationService.new
       if verification_service.is_active?(configuration, auth.provider)
         verification_service.verify_omniauth(auth: auth, user: user)

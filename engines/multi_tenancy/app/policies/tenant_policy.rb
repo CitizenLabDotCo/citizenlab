@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 class TenantPolicy < ApplicationPolicy
   class Scope
     attr_reader :user, :scope
 
     def initialize(user, scope)
-      @user  = user
+      @user = user
       @scope = scope
     end
 

@@ -29,7 +29,7 @@ module EmailCampaigns
     end
 
     def create
-      @campaign = EmailCampaigns::DeliveryService::CAMPAIGN_CLASSES.select do |claz|
+      @campaign = EmailCampaigns::DeliveryService.campaign_classes.select do |claz|
         claz.campaign_name == params[:campaign][:campaign_name]
       end.first.new(campaign_params)
       @campaign.author ||= current_user
@@ -39,7 +39,7 @@ module EmailCampaigns
       if @campaign.save
         SideFxCampaignService.new.after_create(@campaign, current_user)
         render json: WebApi::V1::CampaignSerializer.new(
-          @campaign, 
+          @campaign,
           params: fastjson_params
           ).serialized_json, status: :created
       else
@@ -63,7 +63,7 @@ module EmailCampaigns
       if saved
         SideFxCampaignService.new.after_update(@campaign, current_user)
         render json: WebApi::V1::CampaignSerializer.new(
-          @campaign, 
+          @campaign,
           params: fastjson_params
           ).serialized_json, status: :ok
       else
@@ -88,7 +88,7 @@ module EmailCampaigns
         EmailCampaigns::DeliveryService.new.send_now(@campaign)
         SideFxCampaignService.new.after_send(@campaign, current_user)
         render json: WebApi::V1::CampaignSerializer.new(
-          @campaign.reload, 
+          @campaign.reload,
           params: fastjson_params
           ).serialized_json
       else
@@ -113,9 +113,9 @@ module EmailCampaigns
         .page(params.dig(:page, :number))
         .per(params.dig(:page, :size))
       render json: linked_json(
-        @deliveries, 
-        WebApi::V1::DeliverySerializer, 
-        params: fastjson_params, 
+        @deliveries,
+        WebApi::V1::DeliverySerializer,
+        params: fastjson_params,
         include: [:user]
         )
     end

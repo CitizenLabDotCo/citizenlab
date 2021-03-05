@@ -8,6 +8,7 @@ AllCops:
   AutoCorrect: false
   Exclude:
   - 'db/schema.rb'
+  - '**/*.builder'
   - '**/.*.*'
   - '**/bin/**/*'
 

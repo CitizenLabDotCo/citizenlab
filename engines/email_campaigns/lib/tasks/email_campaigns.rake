@@ -20,7 +20,7 @@ namespace :email_campaigns do
     end
   end
 
-  desc 'Removes campaigns with a type that no longer exists in `EmailCampaigns::DeliveryService::CAMPAIGN_CLASSES`'
+  desc 'Removes campaigns with a type that no longer exists in `EmailCampaigns::DeliveryService.campaign_classes`'
   task remove_deprecated: :environment do |_t, _args|
     service = EmailCampaigns::AssureCampaignsService.new
     Tenant.find_each do |tenant|
