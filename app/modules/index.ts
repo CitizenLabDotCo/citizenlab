@@ -6,6 +6,7 @@ import granularPermissionsConfiguration from './granular_permissions';
 import moderationConfiguration from './moderation';
 import geographicDashboardConfiguration from './geographic_dashboard';
 
+import customMapsConfiguration from './custom_maps';
 import googleTagManagerConfiguration from './google_tag_manager';
 import googleAnalyticsConfiguration from './google_analytics';
 import intercomConfiguration from './intercom';
@@ -51,6 +52,10 @@ export default loadModules([
   },
   {
     configuration: geographicDashboardConfiguration,
+    isEnabled: true,
+  },
+  {
+    configuration: customMapsConfiguration,
     isEnabled: true,
   },
 ]);
