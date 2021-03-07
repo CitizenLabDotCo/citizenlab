@@ -28,7 +28,7 @@ class Idea < ApplicationRecord
   has_many :areas_ideas, dependent: :destroy
   has_many :areas, through: :areas_ideas
   has_many :ideas_phases, dependent: :destroy
-  has_many :phases, through: :ideas_phases
+  has_many :phases, through: :ideas_phases, after_add: :update_phase_ideas_count, after_remove: :update_phase_ideas_count
   has_many :baskets_ideas, dependent: :destroy
   has_many :baskets, through: :baskets_ideas
   has_many :text_images, as: :imageable, dependent: :destroy
@@ -37,8 +37,6 @@ class Idea < ApplicationRecord
   has_many :idea_images, -> { order(:ordering) }, dependent: :destroy
   has_many :idea_files, -> { order(:ordering) }, dependent: :destroy
   has_one :idea_trending_info
-
-  after_update :update_phase_ideas_count
 
   validates_numericality_of :proposed_budget, greater_than_or_equal_to: 0, allow_nil: true
   with_options unless: :draft? do |idea|
@@ -147,7 +145,7 @@ class Idea < ApplicationRecord
     end
   end
 
-  def update_phase_ideas_count
+  def update_phase_ideas_count(_)
     IdeasPhase.counter_culture_fix_counts only: %i[phase]
   end
 end
