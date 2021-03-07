@@ -106,13 +106,12 @@ const HeaderContent = styled.div`
 `;
 
 const HeaderTitle = styled.h1<{ hasHeader: boolean }>`
+  width: 100%;
+  color: ${({ hasHeader, theme }) => (hasHeader ? '#fff' : theme.colorMain)};
   font-size: ${({ theme }) =>
     theme.signedOutHeaderTitleFontSize || fontSizes.xxxxl}px;
   font-weight: ${({ theme }) => theme.signedOutHeaderTitleFontWeight || 600};
   line-height: normal;
-  width: 100%;
-  max-width: 600px;
-  color: ${({ hasHeader, theme }) => (hasHeader ? '#fff' : theme.colorMain)};
   text-align: center;
   margin: 0;
   padding: 0;
@@ -123,13 +122,11 @@ const HeaderTitle = styled.h1<{ hasHeader: boolean }>`
 `;
 
 const HeaderSubtitle = styled.h2<{ hasHeader: boolean }>`
+  width: 100%;
+  color: ${({ hasHeader, theme }) => (hasHeader ? '#fff' : theme.colorMain)};
   font-size: ${fontSizes.xl}px;
   line-height: 28px;
   font-weight: 400;
-  width: 100%;
-  max-width: 375px;
-  color: ${({ hasHeader, theme }) => (hasHeader ? '#fff' : theme.colorMain)};
-  max-width: 980px;
   text-align: center;
   text-decoration: none;
   overflow-wrap: break-word;

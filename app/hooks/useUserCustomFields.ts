@@ -7,7 +7,6 @@ import {
 
 interface Props {
   inputTypes?: IUserCustomFieldInputType[];
-  cache?: boolean;
 }
 
 export default function useUserCustomFields({ inputTypes }: Props) {

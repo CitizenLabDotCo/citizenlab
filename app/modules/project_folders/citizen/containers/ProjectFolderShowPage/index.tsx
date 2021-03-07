@@ -64,6 +64,11 @@ const Loading = styled.div`
 const StyledContentContainer = styled(ContentContainer)`
   padding-top: 30px;
   background: #fff;
+
+  @media (min-width: 1100px) {
+    padding-left: 60px;
+    padding-right: 60px;
+  }
 `;
 
 const ButtonBar = styled.div`
@@ -110,8 +115,8 @@ const StyledProjectFolderDescription = styled(ProjectFolderDescription)`
 const StyledProjectFolderProjectCards = styled(ProjectFolderProjectCards)`
   flex: 0 0 800px;
   width: 800px;
-  padding: 25px;
-  padding-bottom: 5px;
+  padding: 20px;
+  padding-bottom: 0px;
   margin-left: 80px;
   margin-top: 4px;
   background: ${colors.background};
@@ -217,7 +222,7 @@ const ProjectFolderShowPage = memo<{
                       adminPublication.list?.filter(
                         (item) => item.publicationType === 'project'
                       )?.length === 1 ||
-                      (windowWidth > 1100 && windowWidth < 1250)
+                      (windowWidth > 1000 && windowWidth < 1350)
                         ? 'oneCardPerRow'
                         : ''
                     }
