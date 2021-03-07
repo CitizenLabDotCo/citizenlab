@@ -48,3 +48,12 @@ RSpec/DescribeClass:
   Exclude:
   - '**/spec/acceptance/**/*'
   - '**/spec/lint/**/*'
+Rspec/SharedContext:
+  Exclude:
+  - '**/spec/acceptance/**/*'
+Rspec/MultipleMemoizedHelpers:
+  Exclude:
+  - '**/spec/acceptance/**/*'
+Rspec/EmptyExampleGroup:
+  Exclude:
+  - '**/spec/acceptance/**/*'
