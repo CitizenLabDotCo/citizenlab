@@ -175,18 +175,6 @@
         }
       },
 
-      "custom_idea_statuses": {
-        "type": "object",
-        "title": "Custom Idea Statuses",
-        "description":  "Allows admin to define custom idea statuses.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
-        }
-      },
-
       "password_login": {
         "type": "object",
         "title": "Password Login",
@@ -428,6 +416,18 @@
             "title": "OSM Relation ID",
             "description": "The boundary of the municipality/organisation is specified by its Relation ID in OpenStreetMap (OSM). You can find the Relation ID at https://www.openstreetmap.org. Search for the place, click on the correct result and you'll find the Relation ID if the result is a relation (e.g. \"Relation: Knokke-Heist (4569)\"). If there is no relation defined for the place (e.g. Scheveningen), search for the next largest administrative territory (e.g. The Hague)."
           }
+        }
+      },
+
+      "custom_maps": {
+        "type": "object",
+        "title": "Custom Map Configuration",
+        "description": "Adds an extra tab to the project settings where admins can customize the project map",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false}
         }
       },
 

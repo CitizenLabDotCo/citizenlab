@@ -207,3 +207,4 @@ class AppConfiguration < ApplicationRecord
 end
 
 AppConfiguration.include_if_ee('CustomStyle::StyleSettings')
+AppConfiguration.include_if_ee('MultiTenancy::Extensions::AppConfiguration')
