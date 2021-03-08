@@ -37,6 +37,26 @@ const destinationConfig: IDestinationConfig = {
 
 const configuration: ModuleConfiguration = {
   beforeMountApplication: () => {
+    const allAppPaths = getAllPathsFromRoutes(createRoutes()[0]);
+
+    function tackMatomoPageview(path) {
+      const locale = getUrlLocale(path);
+      locale && window._paq.push(['setCustomDimension', 3, locale]);
+      window._paq.push(['setCustomUrl', path]);
+
+      // sorts out path and params for this pathname
+      const routeMatch = matchPath(path, {
+        path: allAppPaths,
+        exact: true,
+      });
+
+      if (routeMatch?.isExact) {
+        window._paq.push(['trackPageView', routeMatch.path]);
+      } else {
+        window._paq.push(['trackPageView']);
+      }
+    }
+
     combineLatest([
       currentAppConfigurationStream().observable,
       authUserStream().observable,
@@ -99,6 +119,8 @@ const configuration: ModuleConfiguration = {
         ]);
         window._paq.push(['setCustomDimension', 2, appConfiguration.data.id]);
       }
+
+      tackMatomoPageview(window.location.pathname);
     });
 
     shutdownFor('matomo').subscribe(() => {
@@ -124,28 +146,12 @@ const configuration: ModuleConfiguration = {
       }
     });
 
-    const allAppPaths = getAllPathsFromRoutes(createRoutes()[0]);
-
     combineLatest([
       bufferUntilInitialized('matomo', pageChanges$),
       currentAppConfigurationStream().observable,
     ]).subscribe(([pageChange, _]) => {
       if (window._paq) {
-        const locale = getUrlLocale(pageChange.path);
-        locale && window._paq.push(['setCustomDimension', 3, locale]);
-        window._paq.push(['setCustomUrl', pageChange.path]);
-
-        // sorts out path and params for this pathname
-        const routeMatch = matchPath(pageChange.path, {
-          path: allAppPaths,
-          exact: true,
-        });
-
-        if (routeMatch?.isExact) {
-          window._paq.push(['trackPageView', routeMatch.path]);
-        } else {
-          window._paq.push(['trackPageView']);
-        }
+        tackMatomoPageview(pageChange.path);
       }
     });
 
