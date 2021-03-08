@@ -178,6 +178,7 @@ class PagesShowPage extends PureComponent<
         );
         pageSlug = '';
       }
+
       return (
         <Container className={`e2e-page-${pageSlug}`}>
           <Helmet>

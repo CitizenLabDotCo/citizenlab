@@ -1,3 +1,6 @@
+// Adapted from https://github.com/ReactTraining/react-router/blob/master/packages/react-router/modules/matchPath.js
+// Because I couldn't find an equivalent in react router v3
+
 import { pathToRegexp } from 'path-to-regexp';
 import { RouteConfiguration } from 'utils/moduleUtils';
 
@@ -17,7 +20,7 @@ function compilePath(path, options) {
 
   if (cacheCount < cacheLimit) {
     pathCache[path] = result;
-    cacheCount++;
+    cacheCount += 1;
   }
 
   return result;
@@ -41,9 +44,9 @@ function matchPath(pathname, options = {} as any) {
     if (matched) return matched;
 
     const { regexp, keys } = compilePath(path, {
-      end: exact,
       strict,
       sensitive,
+      end: exact,
     });
     const match = regexp.exec(pathname);
 
@@ -56,8 +59,8 @@ function matchPath(pathname, options = {} as any) {
 
     return {
       path, // the path used to match
-      url: path === '/' && url === '' ? '/' : url, // the matched portion of the URL
       isExact, // whether or not we matched exactly
+      url: path === '/' && url === '' ? '/' : url, // the matched portion of the URL
       params: keys.reduce((memo, key, index) => {
         memo[key.name] = values[index];
         return memo;
