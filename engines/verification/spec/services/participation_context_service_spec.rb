@@ -144,7 +144,6 @@ describe ParticipationContextService do
   describe "cancelling_votes_disabled_reasons" do
 
     let(:user) { create(:user) }
-    let(:reasons) { ParticipationContextService::VOTING_DISABLED_REASONS }
 
     context "timeline project" do
       it "returns 'not_verified' if it's in the current phase and voting is not permitted and a permitted group requires verification" do
@@ -158,7 +157,7 @@ describe ParticipationContextService do
           group_ids: [create(:group).id, verified_members.id]
           )
         idea = create(:idea, project: project, phases: [project.phases[2]])
-        expect(service.cancelling_votes_disabled_reason_for_idea(idea, idea.author)).to eq reasons[:not_verified]
+        expect(service.cancelling_votes_disabled_reason_for_idea(idea, idea.author)).to eq 'not_verified'
       end
     end
 
@@ -171,7 +170,7 @@ describe ParticipationContextService do
         permission.update!(permitted_by: 'groups', 
           group_ids: [create(:group).id, verified_members.id]
           )
-        expect(service.cancelling_votes_disabled_reason_for_idea(idea, idea.author)).to eq reasons[:not_verified]
+        expect(service.cancelling_votes_disabled_reason_for_idea(idea, idea.author)).to eq 'not_verified'
       end
     end
   end
