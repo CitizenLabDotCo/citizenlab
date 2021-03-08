@@ -132,7 +132,7 @@ resource "Votes" do
       example_request "[error] Upvote an idea in a project where voting is not permitted" do
         expect(status).to eq 401
         json_response = json_parse(response_body)
-        expect(json_response[:errors][:base][0][:error]).to eq ParticipationContextService::VOTING_DISABLED_REASONS[:not_permitted]
+        expect(json_response[:errors][:base][0][:error]).to eq 'not_permitted'
         expect(@idea.reload.upvotes_count).to eq 2
         expect(@idea.reload.downvotes_count).to eq 0
       end

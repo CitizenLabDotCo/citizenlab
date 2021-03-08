@@ -398,7 +398,7 @@ describe ParticipationContextService do
           current_phase_attrs: {voting_idea_permitted: false} 
           )
         idea = create(:idea, project: project, phases: [project.phases[2]])
-        expect(service.cancelling_votes_disabled_reason_for_idea(idea, idea.author)).to eq reasons[:not_permitted]
+        expect(service.cancelling_votes_disabled_reason_for_idea(idea, idea.author)).to eq 'not_permitted'
       end
 
       it "returns 'project_inactive' when the timeline has past" do
@@ -437,7 +437,7 @@ describe ParticipationContextService do
         permission.update!(permitted_by: 'groups', 
           group_ids: create_list(:group, 2).map(&:id)
           )
-        expect(service.cancelling_votes_disabled_reason_for_idea(idea, idea.author)).to eq reasons[:not_permitted]
+        expect(service.cancelling_votes_disabled_reason_for_idea(idea, idea.author)).to eq 'not_permitted'
       end
 
       it "returns 'project_inactive' when the project is archived" do
