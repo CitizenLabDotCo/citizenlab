@@ -230,7 +230,7 @@ class ParticipationContextService
     return nil unless project.timeline?
 
     @timeline_service.future_phases(project, time).find do |phase|
-      phase.posting_enabled && context_permission(phase, 'posting_idea')&.granted_to?(user)
+      phase.posting_enabled && !@permission_service.denied?(user, 'posting_idea', phase)
     end
   end
 
@@ -238,7 +238,7 @@ class ParticipationContextService
     return nil unless project.timeline?
 
     @timeline_service.future_phases(project, time).find do |phase|
-      phase.can_contain_ideas? && phase.commenting_enabled && context_permission(phase, 'commenting_idea')&.granted_to?(user)
+      phase.can_contain_ideas? && phase.commenting_enabled && !@permission_service.denied?(user, 'commenting_idea', phase)
     end
   end
 
@@ -246,7 +246,7 @@ class ParticipationContextService
     return nil unless project.timeline?
 
     @timeline_service.future_phases(project, time).find do |phase|
-      phase.can_contain_ideas? && phase.voting_enabled && context_permission(phase, 'voting_idea')&.granted_to?(user)
+      phase.can_contain_ideas? && phase.voting_enabled && !@permission_service.denied?(user, 'voting_idea', phase)
     end
   end
 
@@ -258,7 +258,7 @@ class ParticipationContextService
     return nil unless project.timeline?
 
     @timeline_service.future_phases(project, time).find do |phase|
-      context_permission(phase, 'budgeting')&.granted_to?(user)
+      !@permission_service.denied?(user, 'budgeting', phase)
     end
   end
 
@@ -271,7 +271,7 @@ class ParticipationContextService
   def allocated_budget(project)
     Idea.from(project.ideas.select('budget * baskets_count as allocated_budget')).sum(:allocated_budget)
   end
-
+  
   def allocated_budgets(projects)
     Idea.from(Idea.where(project: projects).select('project_id, budget * baskets_count as allocated_budget')).group(:project_id).sum(:allocated_budget)
   end
@@ -290,12 +290,5 @@ class ParticipationContextService
 
   def calculate_votes_in_context(context, user)
     user.votes.where(votable_id: context.ideas).count
-  end
-
-  def context_permission(context, action)
-    # We use ruby #find instead of SQL to have a higher chance of hitting
-    # ActiveRecord's query cache, since this can be repeated a lot for the
-    # same context.
-    context.permissions.includes(:groups).find { |permission| permission.action == action }
   end
 end
