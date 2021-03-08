@@ -79,6 +79,6 @@ class PermissionsService
   def denied?(user, action, resource = nil)
     scope = resource&.permission_scope
     permission = Permission.includes(:groups).find_by(permission_scope: scope, action: action)
-    permission.denied?(user)
+    permission&.denied?(user) # not denied by default (= when there is no permission)
   end
 end
