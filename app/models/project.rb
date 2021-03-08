@@ -112,6 +112,12 @@ class Project < ApplicationRecord
     self
   end
 
+  def permission_scope
+    return TimelineService.new.current_phase(self) if timeline?
+    
+    self
+  end
+
   def allocated_budget
     Idea.from(ideas.select('budget * baskets_count as allocated_budget')).sum(:allocated_budget)
   end
