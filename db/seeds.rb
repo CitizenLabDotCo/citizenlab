@@ -260,6 +260,8 @@ if ['public','example_org'].include? Apartment::Tenant.current
       matomo: {
         enabled: true,
         allowed: true,
+        product_site_id: ENV.fetch('MATOMO_PRODUCT_SITE_ID', ''),
+        tenant_site_id: ENV.fetch('DEFAULT_MATOMO_TENANT_SITE_ID', '')
       },
       smart_groups: {
         enabled: true,
