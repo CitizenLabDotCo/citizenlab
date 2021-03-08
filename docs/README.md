@@ -5,6 +5,7 @@
 ### Fixed
 
 - Don't show empty space inside of the idea card when no avatar is present
+- Allows for sending front-end events to our self-hosted matomo analytics tool
 
 ### Changed
 

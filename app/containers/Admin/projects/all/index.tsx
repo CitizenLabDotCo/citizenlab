@@ -132,7 +132,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
               this.unlisten = clHistory.listen(() =>
                 this.closeTemplatePreview()
               );
-              trackPage(url);
+              trackPage(this.url);
             }
 
             window.scrollTo(0, 0);

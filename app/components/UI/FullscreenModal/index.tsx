@@ -158,7 +158,7 @@ class FullscreenModal extends PureComponent<Props, State> {
       window.addEventListener('keydown', this.handleKeypress, useCapture);
       this.unlisten = clHistory.listen(() => this.props.close());
 
-      trackPage(url, { modal: true });
+      trackPage(this.url, { modal: true });
     }
   };
 
