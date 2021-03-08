@@ -48,7 +48,7 @@ class Permission < ApplicationRecord
       when 'groups'
         if requires_verification? && !user&.verified?
           :not_verified
-        elsif (group_ids & user.group_ids).blank?
+        elsif user.nil? || (group_ids & user.group_ids).blank?
           :not_permitted
         end
       when 'admins_moderators'
