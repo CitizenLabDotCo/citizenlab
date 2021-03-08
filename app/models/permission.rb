@@ -29,19 +29,40 @@ class Permission < ApplicationRecord
     end
   }
 
+  def granted_to?(user)
+    !denied?(user)
+  end
 
-  def granted_to? user
-    project_id = permission_scope&.project&.id
-  	case permitted_by
-  	when 'everyone'
-  		true
-    when 'users'
-      !!user
-  	when 'groups'
-  		user && (user.admin_or_moderator?(project_id) || (group_ids & user.group_ids).present?)
-  	when 'admins_moderators'
-      user&.admin_or_moderator?(project_id)
-  	end
+  # @param [User] user
+  # @return [String, NilClass] Reason if denied, nil otherwise.
+  def denied?(user)
+    return if permitted_by == 'everyone'
+    return if user&.admin?
+    return if moderator?(user)
+
+    reason =
+      case permitted_by
+      when 'users'
+        :not_signed_in unless user
+      when 'groups'
+        if requires_verification? && !user&.verified?
+          :not_verified
+        elsif (group_ids & user.group_ids).blank?
+          :not_permitted
+        end
+      when 'admins_moderators'
+        :not_permitted
+      else
+        raise "Unsupported permitted_by: '#{permitted_by}'."
+      end
+
+    reason&.to_s
+  end
+
+  def requires_verification?
+    return unless permitted_by == 'groups'
+
+    Verification::VerificationService.new.find_verification_group(groups)
   end
 
   def participation_conditions
@@ -54,12 +75,20 @@ class Permission < ApplicationRecord
       end.map(&:description_multiloc)
     end.reject { |rules| rules.empty? }
   end
-
-
+  
   private
 
   def set_permitted_by
   	self.permitted_by ||= 'users'
+  end
+
+  # @param [User] user
+  # @return [Boolean]
+  def moderator?(user)
+    return if user.nil?
+    return unless permission_scope.respond_to?(:moderators)
+
+    permission_scope.moderators.include?(user)
   end
 
 end
