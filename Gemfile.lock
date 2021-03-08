@@ -129,6 +129,14 @@ PATH
       rails (~> 6.0.0)
 
 PATH
+  remote: engines/matomo
+  specs:
+    matomo (0.1.0)
+      active_model_serializers (~> 0.10.7)
+      pundit (~> 2.0)
+      rails (~> 6.0.0)
+
+PATH
   remote: engines/multi_tenancy
   specs:
     multi_tenancy (0.1.0)
@@ -854,6 +862,7 @@ DEPENDENCIES
   machine_translations!
   mailgun-ruby (~> 1.2.0)
   maps!
+  matomo!
   mini_magick (~> 4.9)
   mjml-rails (~> 4.4)
   multi_tenancy!

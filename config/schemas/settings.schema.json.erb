@@ -516,28 +516,6 @@
           }
         }
       },
-      "matomo": {
-        "type": "object",
-        "title": "Matomo Integration",
-        "description": "Integrates Matomo with the front-end",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "required-settings": ["container_id"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true},
-          "tenant_site_id": {
-            "type": "string",
-            "description": "The unique ID of the matomo site tracking this tenant.",
-            "default": "<%= ENV.fetch('DEFAULT_MATOMO_TENANT_SITE_ID', '') %>"
-          },
-          "product_site_id": {
-            "type": "string",
-            "description": "The unique ID of the matomo site tracking this tenant for product analytics",
-            "default": "<%= ENV.fetch('MATOMO_PRODUCT_SITE_ID', '') %>"
-          }
-        }
-      },
 
       "participatory_budgeting": {
         "type": "object",
