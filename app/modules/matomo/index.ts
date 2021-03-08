@@ -17,6 +17,7 @@ import {
 import { ModuleConfiguration } from 'utils/moduleUtils';
 import createRoutes from 'routes';
 import matchPath, { getAllPathsFromRoutes } from './matchPath';
+import { getUrlLocale } from 'services/locale';
 
 export const MATOMO_HOST =
   process.env.MATOMO_HOST || '//matomo.hq.citizenlab.co';
@@ -40,14 +41,22 @@ const configuration: ModuleConfiguration = {
       currentAppConfigurationStream().observable,
       authUserStream().observable,
       initializeFor('matomo'),
-    ]).subscribe(([tenant, user, _]) => {
+    ]).subscribe(([appConfiguration, user, _]) => {
       if (!MATOMO_HOST) return;
       /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
       window._paq = window._paq || [];
 
       window._paq.push(['enableLinkTracking']);
-      window._paq.push(['setDomains', `${tenant.data.attributes.host}/*`]);
-      window._paq.push(['setCookieDomain', `${tenant.data.attributes.host}/*`]);
+      window._paq.push(['enableHeartBeatTimer']);
+      window._paq.push([
+        'setDomains',
+        `${appConfiguration.data.attributes.host}/*`,
+      ]);
+      window._paq.push([
+        'setCookieDomain',
+        `${appConfiguration.data.attributes.host}/*`,
+      ]);
+
       if (!isNilOrError(user)) {
         window._paq.push(['setUserId', user.data.id]);
       } else {
@@ -56,19 +65,19 @@ const configuration: ModuleConfiguration = {
 
       (function () {
         // Send all of the tracking data to the global site used for product analytics
-        if (tenant.data.attributes.settings.matomo?.product_site_id) {
+        if (appConfiguration.data.attributes.settings.matomo?.product_site_id) {
           window._paq.push(['setTrackerUrl', `${MATOMO_HOST}/matomo.php`]);
           window._paq.push([
             'setSiteId',
-            tenant.data.attributes.settings.matomo?.product_site_id,
+            appConfiguration.data.attributes.settings.matomo?.product_site_id,
           ]);
         }
         // Send tracking data to the tenant-specific site
-        if (tenant.data.attributes.settings.matomo?.tenant_site_id) {
+        if (appConfiguration.data.attributes.settings.matomo?.tenant_site_id) {
           window._paq.push([
             'addTracker',
             `${MATOMO_HOST}/matomo.php`,
-            tenant.data.attributes.settings.matomo?.tenant_site_id,
+            appConfiguration.data.attributes.settings.matomo?.tenant_site_id,
           ]);
         }
 
@@ -82,13 +91,13 @@ const configuration: ModuleConfiguration = {
         s.parentNode?.insertBefore(g, s);
       })();
 
-      if (!isNilOrError(tenant)) {
+      if (!isNilOrError(appConfiguration)) {
         window._paq.push([
           'setCustomDimension',
           1,
-          tenant.data.attributes.name,
+          appConfiguration.data.attributes.name,
         ]);
-        window._paq.push(['setCustomDimension', 2, tenant.data.id]);
+        window._paq.push(['setCustomDimension', 2, appConfiguration.data.id]);
       }
     });
 
@@ -122,6 +131,8 @@ const configuration: ModuleConfiguration = {
       currentAppConfigurationStream().observable,
     ]).subscribe(([pageChange, _]) => {
       if (window._paq) {
+        const locale = getUrlLocale(pageChange.path);
+        locale && window._paq.push(['setCustomDimension', 3, locale]);
         window._paq.push(['setCustomUrl', pageChange.path]);
 
         // sorts out path and params for this pathname
