@@ -71,14 +71,14 @@ class PermissionsService
     commenting_initiative_disabled_reason(user)
   end
 
-  # +resource+ is +nil+ for actions that are run within the global scope and 
+  # +resource+ is +nil+ for actions that are run within the global scope and
   # are not tied to any resource.
   #
   # @param [#permission_scope, NilClass] resource
   # @return [String, nil] Reason if denied, nil otherwise.
-  def denied?(user, action, resource=nil)
-    scope = resource || resource.permission_scope
-    permission = Permission.find_by(permission_scope: scope, action: action)
+  def denied?(user, action, resource = nil)
+    scope = resource&.permission_scope
+    permission = Permission.includes(:groups).find_by(permission_scope: scope, action: action)
     permission.denied?(user)
   end
 end
