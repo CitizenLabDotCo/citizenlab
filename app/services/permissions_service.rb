@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class PermissionsService
 
   ACTIONS = {
@@ -9,25 +11,6 @@ class PermissionsService
     'volunteering' => %w(),
     nil => %w(posting_initiative voting_initiative commenting_initiative)
   }
-
-  POSTING_DISABLED_REASONS = {
-    not_permitted: 'not_permitted',
-    not_signed_in: 'not_signed_in',
-    not_verified: 'not_verified'
-  }
-
-  COMMENTING_DISABLED_REASONS = {
-    not_permitted: 'not_permitted',
-    not_signed_in: 'not_signed_in',
-    not_verified: 'not_verified'
-  }
-
-  VOTING_DISABLED_REASONS = {
-    not_permitted: 'not_permitted',
-    not_signed_in: 'not_signed_in',
-    not_verified: 'not_verified'
-  }
-
 
   def initialize
     @verification_service = Verification::VerificationService.new
@@ -43,7 +26,7 @@ class PermissionsService
     end
   end
 
-  def update_permissions_for_context participation_context
+  def update_permissions_for_context(participation_context)
     if participation_context.participation_context?
       actions = ACTIONS[participation_context.participation_method]
       participation_context.permissions.where.not(action: actions).each(&:destroy!)
@@ -68,87 +51,34 @@ class PermissionsService
     end
   end
 
-  def posting_initiative_disabled_reason user
-    if !(permission = global_permission('posting_initiative'))&.granted_to?(user)
-      if requires_verification?(permission) && !user&.verified
-        POSTING_DISABLED_REASONS[:not_verified]
-      elsif not_signed_in? user, permission
-        POSTING_DISABLED_REASONS[:not_signed_in]
-      else
-        POSTING_DISABLED_REASONS[:not_permitted]
-      end
-    else
-      nil
-    end
+  def posting_initiative_disabled_reason(user)
+    denied?(user, 'posting_initiative')
   end
 
-  def commenting_initiative_disabled_reason user
-    if !(permission = global_permission('commenting_initiative'))&.granted_to?(user)
-      if requires_verification?(permission) && !user&.verified
-        COMMENTING_DISABLED_REASONS[:not_verified]
-      elsif not_signed_in? user, permission
-        COMMENTING_DISABLED_REASONS[:not_signed_in]
-      else
-        COMMENTING_DISABLED_REASONS[:not_permitted]
-      end
-    else
-      nil
-    end
+  def commenting_initiative_disabled_reason(user)
+    denied?(user, 'commenting_initiative')
   end
 
-  def voting_initiative_disabled_reason user
-    if !(permission = global_permission('voting_initiative'))&.granted_to?(user)
-      if requires_verification?(permission) && !user&.verified
-        VOTING_DISABLED_REASONS[:not_verified]
-      elsif not_signed_in? user, permission
-        VOTING_DISABLED_REASONS[:not_signed_in]
-      else
-        VOTING_DISABLED_REASONS[:not_permitted]
-      end
-    else
-      nil
-    end
+  def voting_initiative_disabled_reason(user)
+    denied?(user, 'voting_initiative')
   end
 
-  def cancelling_votes_disabled_reason_for_initiative user
-    if !(permission = global_permission('voting_initiative'))&.granted_to?(user)
-      if requires_verification?(permission) && !user&.verified
-        VOTING_DISABLED_REASONS[:not_verified]
-      elsif not_signed_in? user, permission
-        VOTING_DISABLED_REASONS[:not_signed_in]
-      else
-        VOTING_DISABLED_REASONS[:not_permitted]
-      end
-    else
-      nil
-    end
+  def cancelling_votes_disabled_reason_for_initiative(user)
+    denied?(user, 'voting_initiative')
   end
 
-  def voting_disabled_reason_for_initiative_comment user
-    commenting_initiative_disabled_reason user
+  def voting_disabled_reason_for_initiative_comment(user)
+    commenting_initiative_disabled_reason(user)
   end
 
-
-  private
-
-  def global_permission action
-    Permission.includes(:groups).find_by(permission_scope: nil, action: action)
+  # +resource+ is +nil+ for actions that are run within the global scope and 
+  # are not tied to any resource.
+  #
+  # @param [#permission_scope, NilClass] resource
+  # @return [String, nil] Reason if denied, nil otherwise.
+  def denied?(user, action, resource=nil)
+    scope = resource || resource.permission_scope
+    permission = Permission.find_by(permission_scope: scope, action: action)
+    permission.denied?(user)
   end
-
-  def requires_verification? permission
-    permission &&
-      permission.permitted_by == 'groups' &&
-      @verification_service.find_verification_group(groups_by_permission_id(permission.id))
-  end
-
-  def groups_by_permission_id id
-    Permission.includes(:groups).find{|permission| permission.id == id}.groups
-  end
-
-  def not_signed_in? user, permission
-    permission &&
-      permission.permitted_by == 'users' &&
-      !user
-  end
-
 end
