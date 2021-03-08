@@ -6,10 +6,12 @@ resource "Ideas" do
 
   explanation "Proposals from citizens to the city."
 
+  let(:user) { create(:user) }
+
   before do
     header "Content-Type", "application/json"
     @ideas = ['published','published','draft','published','spam','published','published'].map { |ps|  create(:idea, publication_status: ps)}
-    @user = create(:user)
+    @user = user
     token = Knock::AuthToken.new(payload: @user.to_token_payload).token
     header 'Authorization', "Bearer #{token}"
   end
@@ -886,19 +888,56 @@ resource "Ideas" do
         end
       end
 
-      describe do
-        before do
-          @project = create(:project_with_phases, with_permissions: true)
-          @idea.project = @project
-          @idea.phases = [@project.phases.first]
-          @idea.save
-        end
-        let(:phase_ids) { @project.phases.last(2).map(&:id) }
+      describe 'phase_ids' do
+        let(:phase) { @project.phases.first }
 
-        example_request "Change the idea phases (as an admin or moderator)" do
-          expect(status).to be 200
-          json_response = json_parse(response_body)
-          expect(json_response.dig(:data,:relationships,:phases,:data).map{|d| d[:id]}).to match_array phase_ids
+        context 'when passing some phase ids' do
+          before do
+            @project = create(:project_with_phases, with_permissions: true)
+            @idea.project = @project
+            @idea.save
+            do_request(idea: { phase_ids: phase_ids })
+          end
+
+          let(:phase_ids) { [phase].map(&:id) }
+
+          example 'returns a 200 status' do
+            expect(status).to be 200
+          end
+
+          example 'Change the idea phases (as an admin or moderator)' do
+            json_response = json_parse(response_body)
+            expect(json_response.dig(:data, :relationships, :phases, :data).map { |d| d[:id] }).to match_array phase_ids
+          end
+
+          example 'Changes the ideas count of a phase' do
+            expect(phase.reload.ideas_count).to eq 1
+          end
+        end
+
+        context 'when passing an empty array of phase ids' do
+          before do
+            @project = create(:project_with_phases, with_permissions: true)
+            @idea.project = @project
+            @idea.phases = [phase]
+            @idea.save
+            do_request(idea: { phase_ids: phase_ids })
+          end
+
+          let(:phase_ids) { [] }
+
+          example 'returns a 200 status' do
+            expect(status).to be 200
+          end
+
+          example 'Change the idea phases (as an admin or moderator)' do
+            json_response = json_parse(response_body)
+            expect(json_response.dig(:data, :relationships, :phases, :data).map { |d| d[:id] }).to match_array phase_ids
+          end
+
+          example 'Changes the ideas count of a phase when the phases change' do
+            expect(phase.reload.ideas_count).to eq 0
+          end
         end
       end
 
@@ -991,17 +1030,40 @@ resource "Ideas" do
   end
 
   delete "web_api/v1/ideas/:id" do
-    before do
-      @project = create(:continuous_project, with_permissions: true)
-      @idea = create(:idea_with_topics, author: @user, publication_status: 'published', project: @project)
-    end
-    let(:id) { @idea.id }
+    context 'when the idea belongs to a continuous project' do
+      before do
+        @project = create(:continuous_project, with_permissions: true)
+        @idea = create(:idea_with_topics, author: @user, publication_status: 'published', project: @project)
+      end
+      let(:id) { @idea.id }
 
-    example_request "Delete an idea" do
-      expect(response_status).to eq 200
-      expect{Idea.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
-      expect(@idea.project.reload.ideas_count).to eq 0
+      example_request "Delete an idea" do
+        expect(response_status).to eq 200
+        expect{Idea.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
+        expect(@idea.project.reload.ideas_count).to eq 0
+      end
+    end
+
+    context 'when the idea belongs to a timeline project' do
+      let!(:idea) { create(:idea, author: user, project: project, publication_status: 'published') }
+      let(:project) { create(:project_with_phases, with_permissions: true) }
+      let(:phase) { project.phases.first }
+      let(:id) { idea.id }
+
+      before do
+        allow_any_instance_of(IdeaPolicy).to receive(:destroy?).and_return(true)
+        idea.ideas_phases.create!(phase: phase)
+      end
+
+      example 'the count starts at 1' do
+        expect(phase.reload.ideas_count).to eq 1
+      end
+
+      example_request "Delete an idea" do
+        expect(response_status).to eq 200
+        expect{Idea.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
+        expect(phase.reload.ideas_count).to eq 0
+      end
     end
   end
-
 end
