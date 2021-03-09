@@ -510,23 +510,33 @@ class Streams {
         (streamId) => {
           const stream = this.streams[streamId];
 
-          if (!stream.cacheStream) {
-            promises.push(stream.fetch());
-          } else {
+          if (
+            stream.cacheStream &&
+            stream.type === 'singleObject' &&
+            !isArray(response?.['data'])
+          ) {
+            stream.observer.next(() => this.deepFreeze(response));
+          } else if (
+            stream.cacheStream &&
+            stream.type === 'arrayOfObjects' &&
+            response?.['data']
+          ) {
             stream.observer.next((previous) => {
+              let data: any;
+
+              if (isArray(response['data'])) {
+                data = [...previous?.data, ...response['data']];
+              } else {
+                data = [...previous?.data, response['data']];
+              }
+
               return this.deepFreeze({
-                ...(previous || {}),
-                data: Array.isArray(previous.data)
-                  ? [
-                      ...(previous?.data || []),
-                      { ...(response?.['data'] || {}) },
-                    ]
-                  : {
-                      ...(previous?.data || {}),
-                      ...(response?.['data'] || {}),
-                    },
+                ...previous,
+                data,
               });
             });
+          } else {
+            promises.push(stream.fetch());
           }
         }
       );
