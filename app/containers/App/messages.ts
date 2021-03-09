@@ -14,8 +14,4 @@ export default defineMessages({
     defaultMessage:
       'Welcome to the online participation platform of {orgName}. \nExplore local projects and engage in the discussion!',
   },
-  testMaori2: {
-    id: 'app.containers.App.testMaori2',
-    defaultMessage: 'Testing maori',
-  },
 });
