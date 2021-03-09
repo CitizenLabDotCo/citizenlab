@@ -60,27 +60,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.groups.permissions.saveSuccessMessage',
     defaultMessage: 'Your changes have been saved.',
   },
-  pendingInvitation: {
-    id: 'app.containers.AdminPage.groups.permissions.pendingInvitation',
-    defaultMessage: 'Pending invitation',
-  },
-  unknownName: {
-    id: 'app.containers.AdminPage.groups.permissions.unknownName',
-    defaultMessage: 'Unknown name',
-  },
-  moderatorDeletionConfirmation: {
-    id:
-      'app.containers.AdminPage.groups.permissions.moderatorDeletionConfirmation',
-    defaultMessage: 'Are you sure?',
-  },
-  deleteModeratorLabel: {
-    id: 'app.containers.AdminPage.groups.permissions.deleteModeratorLabel',
-    defaultMessage: 'Delete',
-  },
-  moderatorsNotFound: {
-    id: 'app.containers.AdminPage.groups.permissions.moderatorsNotFound',
-    defaultMessage: 'Moderators not found',
-  },
   moderatorsSectionTitle: {
     id: 'app.containers.AdminPage.ProjectEdit.moderatorsSectionTitle',
     defaultMessage: 'Who can moderate this project?',
