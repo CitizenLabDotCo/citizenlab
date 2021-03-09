@@ -5,7 +5,6 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
-
 gem "rbtrace"
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
@@ -49,6 +48,7 @@ group :development do
   gem 'bullet'
   gem 'listen', '>= 3.0.5', '< 3.2'
   gem 'pry'
+  gem 'pry-stack_explorer'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
@@ -64,7 +64,9 @@ end
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 # gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
-gem "pundit", "~> 2.0"
+# Latest version (2.4.1) of Pundit on RubyGems is quite outdated (2019-08-14).
+# This newer version from Git adds reason to Pundit::NotAuthorized.
+gem "pundit", git: 'https://github.com/varvet/pundit', branch: 'master', ref: '973b63b396c2a98099caf5eefd1c6841416eddfa'
 gem "active_model_serializers", "~> 0.10.8"
 
 # See https://github.com/nsarno/knock/issues/250
