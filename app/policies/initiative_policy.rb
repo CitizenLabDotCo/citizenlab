@@ -17,13 +17,12 @@ class InitiativePolicy < ApplicationPolicy
   end
 
   def create?
-    ps = PermissionsService.new 
     record.draft? ||
     (user&.active? && user.admin?) ||
     (
       user&.active? &&
       record.author_id == user.id &&
-      !PermissionsService.new.posting_initiative_disabled_reason(user)
+      !PermissionsService.new.denied?(user, 'posting_initiative')
     )
   end
 

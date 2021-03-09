@@ -59,26 +59,6 @@ class PermissionsService
     Permission.select(&:invalid?).each(&:destroy!)
   end
 
-  def posting_initiative_disabled_reason(user)
-    denied?(user, 'posting_initiative')
-  end
-
-  def commenting_initiative_disabled_reason(user)
-    denied?(user, 'commenting_initiative')
-  end
-
-  def voting_initiative_disabled_reason(user)
-    denied?(user, 'voting_initiative')
-  end
-
-  def cancelling_votes_disabled_reason_for_initiative(user)
-    denied?(user, 'voting_initiative')
-  end
-
-  def voting_disabled_reason_for_initiative_comment(user)
-    commenting_initiative_disabled_reason(user)
-  end
-
   # +resource+ is +nil+ for actions that are run within the global scope and
   # are not tied to any resource.
   #

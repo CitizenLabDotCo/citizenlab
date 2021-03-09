@@ -25,7 +25,7 @@ class CommentVotePolicy < ApplicationPolicy
       when Idea.name
         !ParticipationContextService.new.voting_disabled_reason_for_idea_comment record.votable, user
       when Initiative.name
-        !PermissionsService.new.voting_disabled_reason_for_initiative_comment user
+        !PermissionsService.new.denied?(user, 'commenting_initiative')
       else
         false
       end
