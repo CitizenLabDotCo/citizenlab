@@ -30,6 +30,10 @@ class ApplicationPolicy
     Pundit.policy_scope!(user, record.class)
   end
 
+  def raise_not_authorized(reason)
+    raise Pundit::NotAuthorizedError, reason: reason
+  end
+
   class Scope
     attr_reader :user, :scope
 

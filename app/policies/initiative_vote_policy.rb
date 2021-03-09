@@ -20,33 +20,31 @@ class InitiativeVotePolicy < ApplicationPolicy
   end
 
   def create?
-    (user&.active? && (record.user_id == user.id) && check_voting_allowed(record, user))
-  end
+    return unless user&.active? && owner?
 
-  def show?
-    (user&.active? && (record.user_id == user.id || user.admin?))
+    reason = PermissionsService.new.denied?(user, 'voting_initiative')
+    reason ? raise_not_authorized(reason) : true
+  end
+  
+  def destroy?
+    create?
   end
 
   def up?
-    (user&.active? && (record.user_id == user.id) && check_changing_votes_allowed(record, user))
+    create?
   end
 
   def down?
     false
   end
 
-  def destroy?
-    (user&.active? && (record.user_id == user.id) && check_cancelling_votes_allowed(record, user))
+  def show?
+    user&.active? && (owner? || user.admin?)
   end
 
   private
 
-  def check_changing_votes_allowed vote, user
-    check_voting_allowed(vote, user) && check_cancelling_votes_allowed(vote, user)
+  def owner?
+    record.user_id == user.id
   end
-
-  def check_voting_allowed(_vote, user)
-    !PermissionsService.new.denied?(user, 'voting_initiative')
-  end
-  alias_method :check_cancelling_votes_allowed, :check_voting_allowed
 end

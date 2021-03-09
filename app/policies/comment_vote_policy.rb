@@ -4,7 +4,7 @@ class CommentVotePolicy < ApplicationPolicy
     attr_reader :user, :scope
 
     def initialize(user, scope)
-      @user  = user
+      @user = user
       @scope = scope
     end
 
@@ -20,22 +20,22 @@ class CommentVotePolicy < ApplicationPolicy
   end
 
   def create?
-    if user&.active? && (record.user_id == user.id) 
-      case record.votable&.post_type
-      when Idea.name
-        !ParticipationContextService.new.voting_disabled_reason_for_idea_comment record.votable, user
-      when Initiative.name
-        !PermissionsService.new.denied?(user, 'commenting_initiative')
-      else
-        false
-      end
-    else 
-      false
-    end
+    return unless user&.active? && (record.user_id == user.id)
+
+    reason = case record.votable&.post_type
+             when 'Idea'
+               ParticipationContextService.new.voting_disabled_reason_for_idea_comment(record.votable, user)
+             when 'Initiative'
+               PermissionsService.new.denied?(user, 'commenting_initiative')
+             else
+               raise Pundit::NotAuthorizedError
+             end
+
+    reason ? raise_not_authorized(reason) : true
   end
 
   def show?
-    (user&.active? && (record.user_id == user.id || user.admin?))
+    user&.active? && (record.user_id == user.id || user.admin?)
   end
 
   def up?
@@ -49,5 +49,4 @@ class CommentVotePolicy < ApplicationPolicy
   def destroy?
     create?
   end
-  
 end
