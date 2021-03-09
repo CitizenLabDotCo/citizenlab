@@ -1663,7 +1663,6 @@
   "app.containers.App.appMetaDescription": "Welcome to the online participation platform of {orgName}. \nExplore local projects and engage in the discussion!",
   "app.containers.App.loading": "Atuaaneq …",
   "app.containers.App.metaTitle": "Innuttaasunik peqataatsinermut isaaffik uannga {orgName} | CitizenLab",
-  "app.containers.App.testMaori2": "",
   "app.containers.CampaignsConsentForm.adminCategory": "Aqutsisoq",
   "app.containers.CampaignsConsentForm.ally_categoryLabel": "Suussusermut tassunga e-mailit",
   "app.containers.CampaignsConsentForm.buttonSuccessLabel": "iluatsilluarpoq",
