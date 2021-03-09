@@ -5,6 +5,7 @@ resource 'Projects' do
   explanation 'Ideas have to be posted in a city project, or they can be posted in the open idea box.'
 
   before do
+    header 'Content-Type', 'application/json'
     admin_header_token
   end
 
@@ -31,8 +32,7 @@ resource 'Projects' do
       project.update!(default_assignee: create(:admin))
     end
 
-    example 'Set default assignee to unassigned', document: false do
-      do_request(project: { default_assignee_id: default_assignee_id })
+    example_request 'Set default assignee to unassigned', document: false do
       json_response = json_parse(response_body)
       expect(json_response.dig(:data, :relationships, :default_assignee, :data, :id)).to be_nil
     end

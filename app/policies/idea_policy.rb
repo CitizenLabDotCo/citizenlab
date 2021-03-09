@@ -101,4 +101,4 @@ class IdeaPolicy < ApplicationPolicy
   end
 end
 
-IdeaPolicy.include_if_ee('IdeaAssignment::Extensions::IdeaPolicy')
+IdeaPolicy.prepend_if_ee('IdeaAssignment::Patches::IdeaPolicy')
