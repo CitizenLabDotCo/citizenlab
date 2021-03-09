@@ -1663,7 +1663,6 @@
   "app.containers.App.appMetaDescription": "Witamy na internetowej platformie uczestnictwa {orgName}. \nPoznaj lokalne projekty i zaangażuj się w dyskusję!",
   "app.containers.App.loading": "Ładowanie...",
   "app.containers.App.metaTitle": "Platforma obywatelskiego zaangażowania {orgName} | CitizenLab",
-  "app.containers.App.testMaori2": "Testing maori",
   "app.containers.CampaignsConsentForm.adminCategory": "Admin",
   "app.containers.CampaignsConsentForm.ally_categoryLabel": "Wiadomości e-mail w tej kategorii",
   "app.containers.CampaignsConsentForm.buttonSuccessLabel": "Sukces",
