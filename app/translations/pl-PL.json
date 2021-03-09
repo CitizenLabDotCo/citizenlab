@@ -297,7 +297,6 @@
   "app.components.PostComponents.SharingModalContent.whatsAppMessageProposal": "Właśnie wysłałem propozycję na {orgName}: {postTitle}",
   "app.components.PostComponents.linkToHomePage": "Link do strony głównej",
   "app.components.PostComponents.readMore": "Przeczytaj więcej...",
-  "app.components.Project.projectModeratorIndicator": "Jesteś menadżerem tego projektu",
   "app.components.ProjectArchivedIndicator.archivedProject": "Niestety, nie możesz już uczestniczyć w tym projekcie, ponieważ został on zarchiwizowany",
   "app.components.ProjectCard.a11y_projectDescription": "Opis projektu:",
   "app.components.ProjectCard.a11y_projectTitle": "Tytuł projektu:",

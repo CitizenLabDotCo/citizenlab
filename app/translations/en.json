@@ -297,7 +297,6 @@
   "app.components.PostComponents.SharingModalContent.whatsAppMessageProposal": "I just posted a proposal for {orgName}: {postTitle}",
   "app.components.PostComponents.linkToHomePage": "Link to home page",
   "app.components.PostComponents.readMore": "Read more...",
-  "app.components.Project.projectModeratorIndicator": "You're a project manager of this project",
   "app.components.ProjectArchivedIndicator.archivedProject": "Unfortunately, you can't participate in this project anymore because it has been archived",
   "app.components.ProjectCard.a11y_projectDescription": "Project description:",
   "app.components.ProjectCard.a11y_projectTitle": "Project title:",
