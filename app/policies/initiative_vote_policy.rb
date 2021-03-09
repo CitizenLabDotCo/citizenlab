@@ -39,19 +39,14 @@ class InitiativeVotePolicy < ApplicationPolicy
     (user&.active? && (record.user_id == user.id) && check_cancelling_votes_allowed(record, user))
   end
 
-
   private
 
   def check_changing_votes_allowed vote, user
     check_voting_allowed(vote, user) && check_cancelling_votes_allowed(vote, user)
   end
 
-  def check_voting_allowed vote, user
-    !PermissionsService.new.voting_initiative_disabled_reason user
+  def check_voting_allowed(_vote, user)
+    !PermissionsService.new.denied?(user, 'voting_initiative')
   end
-
-  def check_cancelling_votes_allowed vote, user
-    !PermissionsService.new.cancelling_votes_disabled_reason_for_initiative user
-  end
-
+  alias_method :check_cancelling_votes_allowed, :check_voting_allowed
 end
