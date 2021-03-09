@@ -463,8 +463,9 @@ class PlatformFooter extends PureComponent<Props, State> {
     if (
       isNilOrError(appConfiguration) ||
       !this.getHasCustomizedA11yFooterLink()
-    )
+    ) {
       return null;
+    }
 
     return appConfiguration.attributes.settings
       .custom_accessibility_statement_link.url;
