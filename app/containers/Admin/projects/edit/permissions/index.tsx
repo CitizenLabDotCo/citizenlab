@@ -1,7 +1,4 @@
-import React, { PureComponent } from 'react';
-import { Subscription } from 'rxjs';
-import { map, isEqual, difference } from 'lodash-es';
-import { adopt } from 'react-adopt';
+import React, { memo } from 'react';
 import { withRouter, WithRouterProps } from 'react-router';
 
 // i18n
@@ -19,21 +16,8 @@ import Moderators from './Moderators';
 import IdeaAssignment from './IdeaAssignment';
 import Link from 'utils/cl-router/Link';
 
-// services
-import { IProject } from 'services/projects';
-import {
-  addGroupProject,
-  deleteGroupProject,
-  IGroupsProjects,
-} from 'services/groupsProjects';
-
-// resources
-import GetModerators, {
-  GetModeratorsChildProps,
-} from 'resources/GetModerators';
-import GetFeatureFlag, {
-  GetFeatureFlagChildProps,
-} from 'resources/GetFeatureFlag';
+// hooks
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // style
 import styled from 'styled-components';
@@ -61,192 +45,80 @@ const StyledLink = styled(Link)`
   }
 `;
 
-interface InputProps {}
+interface Props {}
 
-interface DataProps {
-  moderators: GetModeratorsChildProps;
-  projectVisibilityEnabled: GetFeatureFlagChildProps;
-  projectManagementEnabled: GetFeatureFlagChildProps;
-  ideaAssignmentEnabled: GetFeatureFlagChildProps;
-  granularPermissionsEnabled: GetFeatureFlagChildProps;
-}
-
-interface Props extends InputProps, DataProps {}
-
-interface State {
-  project: IProject | null;
-  oldGroupsProjects: IGroupsProjects | null;
-  newGroupsProjects: IGroupsProjects | null;
-  savedVisibleTo: 'public' | 'admins' | 'groups';
-  unsavedVisibleTo: 'public' | 'admins' | 'groups';
-  loading: boolean;
-  saving: boolean;
-  status: 'disabled' | 'enabled' | 'error' | 'success';
-}
-
-class ProjectPermissions extends PureComponent<Props & WithRouterProps, State> {
-  subscriptions: Subscription[];
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      project: null,
-      oldGroupsProjects: null,
-      newGroupsProjects: null,
-      savedVisibleTo: 'public',
-      unsavedVisibleTo: 'public',
-      loading: true,
-      saving: false,
-      status: 'disabled',
-    };
-    this.subscriptions = [];
-  }
-
-  componentWillUnmount() {
-    const {
-      project,
-      unsavedVisibleTo,
-      oldGroupsProjects,
-      newGroupsProjects,
-    } = this.state;
-    const oldGroupsProjectIds = oldGroupsProjects
-      ? map(oldGroupsProjects.data, (groupsProject) => groupsProject.id)
-      : [];
-    const newGroupsProjectsIds = newGroupsProjects
-      ? map(newGroupsProjects.data, (groupsProject) => groupsProject.id)
-      : [];
-
-    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
-
-    if (
-      project &&
-      unsavedVisibleTo === 'groups' &&
-      !isEqual(oldGroupsProjectIds, newGroupsProjectsIds)
-    ) {
-      const groupsProjectIdsToRemove = difference(
-        newGroupsProjectsIds,
-        oldGroupsProjectIds
-      );
-      const groupsProjectIdsToAdd = difference(
-        oldGroupsProjectIds,
-        newGroupsProjectsIds
-      );
-
-      Promise.all<any>([
-        ...groupsProjectIdsToRemove.map((groupsProjectId) =>
-          deleteGroupProject(groupsProjectId)
-        ),
-        ...groupsProjectIdsToAdd.map((groupsProjectId) =>
-          addGroupProject(project.data.id, groupsProjectId)
-        ),
-      ]);
-    }
-  }
-
-  render() {
-    const {
-      projectVisibilityEnabled,
-      projectManagementEnabled,
-      ideaAssignmentEnabled,
-      granularPermissionsEnabled,
-    } = this.props;
-
-    const { project, unsavedVisibleTo, loading } = this.state;
-
-    if (!loading && unsavedVisibleTo && project) {
-      const projectId = project.data.id;
-
-      return (
-        <>
-          <StyledSection>
-            {(projectVisibilityEnabled || granularPermissionsEnabled) && (
-              <StyledSectionTitle>
-                <FormattedMessage
-                  {...messages.participationAccessRightsTitle}
-                />
-              </StyledSectionTitle>
-            )}
-
-            <Outlet
-              id="app.containers.Admin.project.edit.permissions.projectVisibility"
-              projectId={project.data.id}
-            />
-
-            <Outlet
-              id="app.containers.Admin.project.edit.permissions"
-              project={project.data}
-            />
-          </StyledSection>
-
-          {(projectManagementEnabled || ideaAssignmentEnabled) && (
-            <StyledSection>
-              <StyledSectionTitle>
-                <FormattedMessage {...messages.moderationRightsTitle} />
-              </StyledSectionTitle>
-
-              {projectManagementEnabled && (
-                <ModeratorSubSection>
-                  <Moderators
-                    moderators={this.props.moderators}
-                    projectId={projectId}
-                  />
-                </ModeratorSubSection>
-              )}
-
-              {ideaAssignmentEnabled && (
-                <IdeaAssignmentSection>
-                  <SubSectionTitle>
-                    <FormattedMessage
-                      {...messages.inputAssignmentSectionTitle}
-                    />
-                    <IconTooltip
-                      content={
-                        <FormattedMessage
-                          {...messages.inputAssignmentTooltipText}
-                          values={{
-                            ideaManagerLink: (
-                              <StyledLink
-                                to={`/admin/projects/${projectId}/ideas`}
-                              >
-                                <FormattedMessage
-                                  {...messages.inputManagerLinkText}
-                                />
-                              </StyledLink>
-                            ),
-                          }}
-                        />
-                      }
-                    />
-                  </SubSectionTitle>
-                  <IdeaAssignment projectId={projectId} />
-                </IdeaAssignmentSection>
-              )}
-            </StyledSection>
+const ProjectPermissions = memo(
+  ({ params: { projectId } }: Props & WithRouterProps) => {
+    const projectVisibilityEnabled = useFeatureFlag('project_visibility');
+    const granularPermissionsEnabled = useFeatureFlag('granular_permissions');
+    const projectManagementEnabled = useFeatureFlag('project_management');
+    const ideaAssignmentEnabled = useFeatureFlag('idea_assignment');
+    return (
+      <>
+        <StyledSection>
+          {(projectVisibilityEnabled || granularPermissionsEnabled) && (
+            <StyledSectionTitle>
+              <FormattedMessage {...messages.participationAccessRightsTitle} />
+            </StyledSectionTitle>
           )}
-        </>
-      );
-    }
 
-    return null;
+          <Outlet
+            id="app.containers.Admin.project.edit.permissions.projectVisibility"
+            projectId={projectId}
+          />
+
+          {/* <Outlet
+          id="app.containers.Admin.project.edit.permissions"
+          project={project.data}
+        /> */}
+        </StyledSection>
+
+        {(projectManagementEnabled || ideaAssignmentEnabled) && (
+          <StyledSection>
+            <StyledSectionTitle>
+              <FormattedMessage {...messages.moderationRightsTitle} />
+            </StyledSectionTitle>
+
+            {/* {projectManagementEnabled && (
+              <ModeratorSubSection>
+                <Moderators
+                  moderators={this.props.moderators}
+                  projectId={projectId}
+                />
+              </ModeratorSubSection>
+            )} */}
+
+            {ideaAssignmentEnabled && (
+              <IdeaAssignmentSection>
+                <SubSectionTitle>
+                  <FormattedMessage {...messages.inputAssignmentSectionTitle} />
+                  <IconTooltip
+                    content={
+                      <FormattedMessage
+                        {...messages.inputAssignmentTooltipText}
+                        values={{
+                          ideaManagerLink: (
+                            <StyledLink
+                              to={`/admin/projects/${projectId}/ideas`}
+                            >
+                              <FormattedMessage
+                                {...messages.inputManagerLinkText}
+                              />
+                            </StyledLink>
+                          ),
+                        }}
+                      />
+                    }
+                  />
+                </SubSectionTitle>
+                <IdeaAssignment projectId={projectId} />
+              </IdeaAssignmentSection>
+            )}
+          </StyledSection>
+        )}
+      </>
+    );
   }
-}
-
-const Data = adopt<DataProps, WithRouterProps>({
-  moderators: ({ params, render }) => (
-    <GetModerators projectId={params.projectId}>{render}</GetModerators>
-  ),
-  projectVisibilityEnabled: <GetFeatureFlag name="project_visibility" />,
-  granularPermissionsEnabled: <GetFeatureFlag name="granular_permissions" />,
-  projectManagementEnabled: <GetFeatureFlag name="project_management" />,
-  ideaAssignmentEnabled: <GetFeatureFlag name="idea_assignment" />,
-});
-
-const WrappedProjectPermissions = withRouter(
-  (inputProps: InputProps & WithRouterProps) => (
-    <Data {...inputProps}>
-      {(dataProps) => <ProjectPermissions {...inputProps} {...dataProps} />}
-    </Data>
-  )
 );
 
-export default WrappedProjectPermissions;
+export default withRouter(ProjectPermissions);
