@@ -14,6 +14,279 @@ describe IdeasFinder do
     create_list(:idea_with_areas, 5, project: create(:project_with_phases))
   end
 
+  context 'when passing a sort param' do
+    let(:params) { { sort: sort } }
+
+    describe '#sort_scopes (new)' do
+      let(:sort) { 'new' }
+      let(:expected_record_ids) { Idea.order_new(:desc).pluck(:id) }
+
+      it 'is successful' do
+        expect(result).to be_a_success
+      end
+
+      it 'returns the sorted records' do
+        expect(result_record_ids).to match_array expected_record_ids
+      end
+    end
+
+    describe '#sort_scopes (-new)' do
+      let(:sort) { '-new' }
+      let(:expected_record_ids) { Idea.order_new(:asc).pluck(:id) }
+
+      it 'is successful' do
+        expect(result).to be_a_success
+      end
+
+      it 'returns the sorted records' do
+        expect(result_record_ids).to match_array expected_record_ids
+      end
+    end
+
+    describe '#sort_scopes (status)' do
+      let(:sort) { 'status' }
+      let(:expected_record_ids) { Idea.order_status(:desc).pluck(:id) }
+
+      it 'is successful' do
+        expect(result).to be_a_success
+      end
+
+      it 'returns the sorted records' do
+        expect(result_record_ids).to match_array expected_record_ids
+      end
+    end
+
+    describe '#sort_scopes (-status)' do
+      let(:sort) { '-status' }
+      let(:expected_record_ids) { Idea.order_status(:asc).pluck(:id) }
+
+      it 'is successful' do
+        expect(result).to be_a_success
+      end
+
+      it 'returns the sorted records' do
+        expect(result_record_ids).to match_array expected_record_ids
+      end
+    end
+
+    describe '#sort_scopes (trending)' do
+      let(:sort) { 'trending' }
+      let(:expected_record_ids) do
+        TrendingIdeaService.new.sort_trending(Idea.includes(:idea_trending_info).all).pluck(:id)
+      end
+
+      context 'when joining idea_trending_info' do
+        let(:options) { { includes: %i[idea_trending_info] } }
+
+        it 'is successful' do
+          expect(result).to be_a_success
+        end
+
+        it 'returns the sorted records' do
+          expect(result_record_ids).to match_array expected_record_ids
+        end
+      end
+
+      context 'when not joining idea_trending_info' do
+        it 'is a failure' do
+          expect(result).to be_a_failure
+        end
+      end
+    end
+
+    describe '#sort_scopes (-trending)' do
+      let(:sort) { '-trending' }
+      let(:expected_record_ids) do
+        TrendingIdeaService.new.sort_trending(Idea.includes(:idea_trending_info).all).reverse.pluck(:id)
+      end
+
+      context 'when joining idea_trending_info' do
+        let(:options) { { includes: %i[idea_trending_info] } }
+
+        it 'is successful' do
+          expect(result).to be_a_success
+        end
+
+        it 'returns the sorted records' do
+          expect(result_record_ids).to match_array expected_record_ids
+        end
+      end
+
+      context 'when not joining idea_trending_info' do
+        it 'is a failure' do
+          expect(result).to be_a_failure
+        end
+      end
+    end
+
+    describe '#sort_scopes (author_name)' do
+      let(:sort) { 'author_name' }
+      let(:expected_record_ids) do
+        Idea.includes(:author).order('users.first_name ASC', 'users.last_name ASC').pluck(:id)
+      end
+
+      context 'when joining author' do
+        let(:options) { { includes: %i[author] } }
+
+        it 'is successful' do
+          expect(result).to be_a_success
+        end
+
+        it 'returns the sorted records' do
+          expect(result_record_ids).to match_array expected_record_ids
+        end
+      end
+
+      context 'when not joining author' do
+        it 'is a failure' do
+          expect(result).to be_a_failure
+        end
+      end
+    end
+
+    describe '#sort_scopes (-author_name)' do
+      let(:sort) { '-author_name' }
+      let(:expected_record_ids) do
+        Idea.includes(:author).order('users.first_name DESC', 'users.last_name DESC').pluck(:id)
+      end
+
+      context 'when joining author' do
+        let(:options) { { includes: %i[author] } }
+
+        it 'is successful' do
+          expect(result).to be_a_success
+        end
+
+        it 'returns the sorted records' do
+          expect(result_record_ids).to match_array expected_record_ids
+        end
+      end
+
+      context 'when not joining author' do
+        it 'is a failure' do
+          expect(result).to be_a_failure
+        end
+      end
+    end
+
+    describe '#sort_scopes (popular)' do
+      let(:sort) { 'popular' }
+      let(:expected_record_ids) { Idea.order_popular(:desc).pluck(:id) }
+
+      it 'is successful' do
+        expect(result).to be_a_success
+      end
+
+      it 'returns the sorted records' do
+        expect(result_record_ids).to match_array expected_record_ids
+      end
+    end
+
+    describe '#sort_scopes (-popular)' do
+      let(:sort) { '-popular' }
+      let(:expected_record_ids) { Idea.order_popular(:asc).pluck(:id) }
+
+      it 'is successful' do
+        expect(result).to be_a_success
+      end
+
+      it 'returns the sorted records' do
+        expect(result_record_ids).to match_array expected_record_ids
+      end
+    end
+
+    describe '#sort_scopes (random)' do
+      let(:sort) { 'random' }
+      let(:expected_record_ids) { Idea.order_random.pluck(:id) }
+
+      it 'is successful' do
+        expect(result).to be_a_success
+      end
+
+      it 'returns the sorted records' do
+        expect(result_record_ids).to match_array expected_record_ids
+      end
+    end
+
+    describe '#sortable_attributes (upvotes_count)' do
+      let(:sort) { 'upvotes_count' }
+      let(:expected_record_ids) { Idea.order(upvotes_count: :desc).pluck(:id) }
+
+      it 'is successful' do
+        expect(result).to be_a_success
+      end
+
+      it 'returns the sorted records' do
+        expect(result_record_ids).to match_array expected_record_ids
+      end
+    end
+
+    describe '#sortable_attributes (-upvotes_count)' do
+      let(:sort) { '-upvotes_count' }
+      let(:expected_record_ids) { Idea.order(upvotes_count: :asc).pluck(:id) }
+
+      it 'is successful' do
+        expect(result).to be_a_success
+      end
+
+      it 'returns the sorted records' do
+        expect(result_record_ids).to match_array expected_record_ids
+      end
+    end
+
+    describe '#sortable_attributes (downvotes_count)' do
+      let(:sort) { 'downvotes_count' }
+      let(:expected_record_ids) { Idea.order(downvotes_count: :desc).pluck(:id) }
+
+      it 'is successful' do
+        expect(result).to be_a_success
+      end
+
+      it 'returns the sorted records' do
+        expect(result_record_ids).to match_array expected_record_ids
+      end
+    end
+
+    describe '#sortable_attributes (-downvotes_count)' do
+      let(:sort) { '-downvotes_count' }
+      let(:expected_record_ids) { Idea.order(downvotes_count: :asc).pluck(:id) }
+
+      it 'is successful' do
+        expect(result).to be_a_success
+      end
+
+      it 'returns the sorted records' do
+        expect(result_record_ids).to match_array expected_record_ids
+      end
+    end
+
+    describe '#sortable_attributes (baskets_count)' do
+      let(:sort) { 'baskets_count' }
+      let(:expected_record_ids) { Idea.order(baskets_count: :desc).pluck(:id) }
+
+      it 'is successful' do
+        expect(result).to be_a_success
+      end
+
+      it 'returns the sorted records' do
+        expect(result_record_ids).to match_array expected_record_ids
+      end
+    end
+
+    describe '#sortable_attributes (-baskets_count)' do
+      let(:sort) { '-baskets_count' }
+      let(:expected_record_ids) { Idea.order(baskets_count: :asc).pluck(:id) }
+
+      it 'is successful' do
+        expect(result).to be_a_success
+      end
+
+      it 'returns the sorted records' do
+        expect(result_record_ids).to match_array expected_record_ids
+      end
+    end
+  end
+
   context 'when no params or options are received' do
     it 'is successful' do
       expect(result).to be_a_success
