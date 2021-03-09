@@ -33,7 +33,7 @@ resource "Permissions" do
       example_request "List all permissions of a project" do
         expect(status).to eq(200)
         json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq PermissionsService::ACTIONS['ideation'].size
+        expect(json_response[:data].size).to eq CitizenLab::Permissions::ScopeTypes::Project.actions(@project).size
       end
     end
 
@@ -46,7 +46,7 @@ resource "Permissions" do
       example_request "List all permissions of a phase" do
         expect(status).to eq(200)
         json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq PermissionsService::ACTIONS['ideation'].size
+        expect(json_response[:data].size).to eq CitizenLab::Permissions::ScopeTypes::Phase.actions(@phase).size
       end
     end
 
@@ -59,7 +59,7 @@ resource "Permissions" do
       example_request "List all global permissions" do
         expect(status).to eq(200)
         json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq PermissionsService::ACTIONS[nil].size
+        expect(json_response[:data].size).to eq CitizenLab::Permissions::ScopeTypes::Global.actions.size
       end
     end
 

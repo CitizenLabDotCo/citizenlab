@@ -15,7 +15,7 @@ module CitizenLab
           }.freeze
 
           # @param [Project, Phase] scope
-          def actions(scope)
+          def actions(scope = nil)
             return ACTIONS.values.flatten unless scope
 
             ACTIONS[scope.participation_method]
