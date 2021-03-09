@@ -11,7 +11,7 @@
         "description": "The container for general settings. The core system should always be enabled.",
         "required-settings": ["organization_type", "timezone", "currency", "locales", "color_main", "color_secondary","color_text", "lifecycle_stage"],
         "additionalProperties": false,
-        "required": ["allowed", "enabled"],
+        "required": ["allowed", "enabled", "reply_to_email"],
         "properties": {
           "allowed": { "type": "boolean", "default": true},
           "enabled": { "type": "boolean", "default": true},
@@ -86,6 +86,13 @@
             "type": "string",
             "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$",
             "default": "#163A7D"
+          },
+          "reply_to_email": {
+            "title": "Reply-to email",
+            "description": "The email used in the reply-to field when users receive emails from automated campaigns.",
+            "type": "string",
+            "format": "email",
+            "default": "support@citizenlab.co"
           },
           "header_title": {
             "title": "Homepage Title",
