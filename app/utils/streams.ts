@@ -513,13 +513,14 @@ class Streams {
           if (
             stream.cacheStream &&
             stream.type === 'singleObject' &&
+            !isEmpty(response?.['data']) &&
             !isArray(response?.['data'])
           ) {
-            stream.observer.next(() => this.deepFreeze(response));
+            stream.observer.next(this.deepFreeze(response));
           } else if (
             stream.cacheStream &&
             stream.type === 'arrayOfObjects' &&
-            response?.['data']
+            !isEmpty(response?.['data'])
           ) {
             stream.observer.next((previous) => {
               let data: any;
