@@ -100,7 +100,6 @@ class PermissionsService
   end
 
   def add_missing_actions(scope, actions = nil)
-    require 'pry' ; binding.pry
     missing_actions = missing_actions(scope, actions)
     permissions_hashes = missing_actions.map { |action| { action: action } }
     Permission.create(permissions_hashes) { |p| p.permission_scope = scope }
