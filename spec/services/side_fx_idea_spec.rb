@@ -52,37 +52,6 @@ describe SideFxIdeaService do
     end
   end
 
-  describe 'before_update' do
-    let(:original_project) { create(:project) }
-    let(:idea) { create(:idea, project: original_project, assignee: assignee) }
-
-    context "when there's an assignee and the project has changed" do
-      let(:assignee) { create(:moderator, project: original_project) }
-
-      it "unassigns the assignee if she can't moderate the new project" do
-        idea.project = create(:project)
-        expect { service.before_update(idea, nil) }.to change(idea, :assignee).from(assignee).to(nil)
-      end
-
-      it "doesn't change the assignee if she can moderate the new project" do
-        new_project = create(:project)
-        assignee.add_role('project_moderator', project_id: new_project.id)
-        assignee.save
-        idea.project = new_project
-        expect { service.before_update(idea, nil) }.not_to change(idea, :assignee)
-      end
-    end
-
-    context "when there's an (invalid) assignee and the project doesn't change" do
-      let(:assignee) { nil }
-
-      it "doesn't unassign" do
-        idea.assignee = create(:user)
-        expect { service.before_update(idea, nil) }.not_to change(idea, :assignee)
-      end
-    end
-  end
-
   describe 'after_update' do
     it "logs a 'published' action job when publication_state goes from draft to published, as well as a first idea published log when the idea was first published" do
       idea = create(:idea, publication_status: 'draft', author: user)
@@ -131,18 +100,6 @@ describe SideFxIdeaService do
       expect { service.after_update(idea, user) }
         .to have_enqueued_job(LogActivityJob).with(idea, 'changed_status', user, idea.updated_at.to_i,
                                                    payload: { change: [old_idea_status.id, new_idea_status.id] }).exactly(1).times
-    end
-
-    it "logs a 'changed_assignee' action job when the assignee has changed" do
-      idea = create(:idea, assignee: create(:admin))
-      old_assignee = idea.assignee
-      new_assignee = create(:admin)
-      idea.assignee = new_assignee
-      service.before_update(idea, user)
-      idea.save!
-      expect { service.after_update(idea, user) }
-        .to have_enqueued_job(LogActivityJob).with(idea, 'changed_assignee', user, idea.updated_at.to_i,
-                                                   payload: { change: [old_assignee.id, new_assignee.id] }).exactly(1).times
     end
   end
 
