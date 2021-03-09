@@ -2,14 +2,18 @@
 
 module CitizenLab
   module Permissions
-    module Scopes
+    module ScopeTypes
       module Global
         def self.actions(_scope)
           %w[posting_initiative voting_initiative commenting_initiative]
         end
 
-        def self.scope_types
-          [nil]
+        def self.scope_type
+          nil
+        end
+        
+        def self.scope_class
+          nil
         end
       end
     end
