@@ -2,6 +2,26 @@
 
 class PermissionsService
 
+  class << self
+    def add_scope(scope_spec)
+      scopes << scope_spec
+    end
+
+    def scopes
+      @scopes ||= []
+    end
+
+    def scope_types
+      scopes.map(&:scope_types).flatten
+    end
+
+    def actions(scope)
+      permission_scope_type = scope.nil? ? nil : scope.class.to_s
+      scope_description = scopes.find { |desc| desc.scope_types.include?(permission_scope_type) }
+      scope_description.actions(scope)
+    end
+  end
+
   ACTIONS = {
     'information' => %w(),
     'ideation' => %w(posting_idea voting_idea commenting_idea),
@@ -17,38 +37,30 @@ class PermissionsService
   end
 
   def update_global_permissions
-    actions = ACTIONS[nil]
-    Permission.where(permission_scope: nil).where.not(action: actions).each(&:destroy!)
-    actions&.select do |action|
-      !Permission.where(permission_scope: nil).find_by action: action
-    end.map do |action|
-      Permission.create! action: action
-    end
+    update_permissions_for_scope(nil)
   end
 
   def update_permissions_for_context(participation_context)
-    if participation_context.participation_context?
-      actions = ACTIONS[participation_context.participation_method]
-      participation_context.permissions.where.not(action: actions).each(&:destroy!)
-      actions&.select do |action|
-        !participation_context.permissions.find_by action: action
-      end.map do |action|
-        participation_context.permissions.create! action: action
-      end
-    end
+    return unless participation_context.participation_context?
+    
+    update_permissions_for_scope(participation_context)
   end
 
   def update_all_permissions
-    PermissionsService.new.update_global_permissions
-    Project.all.each do |project|
-      PermissionsService.new.update_permissions_for_context project
-      project.phases.each do |phase|
-        PermissionsService.new.update_permissions_for_context phase
-      end
+    update_global_permissions
+    
+    self.class.scope_types.without(nil).each do |type|
+      model_class = type.constantize
+      model_class.all.each { |scope| update_permissions_for_scope(scope) }
     end
-    Permission.all.each do |permission|
-      permission.destroy! if !permission.valid?
-    end
+    
+    Permissions.select(&:invalid?).each(&:destroy!)
+  end
+
+  def update_permissions_for_scope(scope)
+    actions = self.class.actions(scope)
+    remove_extras_actions(scope, actions)
+    add_missing_actions(scope, actions)
   end
 
   def posting_initiative_disabled_reason(user)
@@ -81,4 +93,27 @@ class PermissionsService
     permission = Permission.includes(:groups).find_by(permission_scope: scope, action: action)
     permission ? permission.denied?(user) : 'not_permitted' # denied by default (= when there is no permission)
   end
+
+  private
+
+  def remove_extras_actions(scope, actions = nil)
+    actions ||= self.class.actions(scope)
+    Permissions.where(scope: scope)
+               .where.not(action: actions)
+               .destroy_all
+  end
+
+  def add_missing_actions(scope, actions = nil)
+    missing_actions = missing_actions(scope, actions)
+    permissions_hashes = missing_actions.map { |action| { action: action } }
+    Permission.create(permissions_hashes) { permission.scope = scope }
+  end
+
+  def missing_actions(scope, actions = nil)
+    actions ||= self.class.actions(scope)
+    actions - Permission.where(permission_scope: scope).pluck(:action)
+  end
 end
+
+PermissionsService.add_scope(CitizenLab::Permissions::Scopes::Global)
+PermissionsService.add_scope(CitizenLab::Permissions::Scopes::ParticipationContext)
