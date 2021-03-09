@@ -1,5 +1,6 @@
 import React, { memo } from 'react';
 import { withRouter, WithRouterProps } from 'react-router';
+import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -18,6 +19,7 @@ import Link from 'utils/cl-router/Link';
 
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import useProject from 'hooks/useProject';
 
 // style
 import styled from 'styled-components';
@@ -53,71 +55,81 @@ const ProjectPermissions = memo(
     const granularPermissionsEnabled = useFeatureFlag('granular_permissions');
     const projectManagementEnabled = useFeatureFlag('project_management');
     const ideaAssignmentEnabled = useFeatureFlag('idea_assignment');
-    return (
-      <>
-        <StyledSection>
-          {(projectVisibilityEnabled || granularPermissionsEnabled) && (
-            <StyledSectionTitle>
-              <FormattedMessage {...messages.participationAccessRightsTitle} />
-            </StyledSectionTitle>
-          )}
+    const project = useProject({ projectId });
 
-          <Outlet
-            id="app.containers.Admin.project.edit.permissions.projectVisibility"
-            projectId={projectId}
-          />
-
-          {/* <Outlet
-          id="app.containers.Admin.project.edit.permissions"
-          project={project.data}
-        /> */}
-        </StyledSection>
-
-        {(projectManagementEnabled || ideaAssignmentEnabled) && (
+    if (!isNilOrError(project)) {
+      return (
+        <>
           <StyledSection>
-            <StyledSectionTitle>
-              <FormattedMessage {...messages.moderationRightsTitle} />
-            </StyledSectionTitle>
-
-            {/* {projectManagementEnabled && (
-              <ModeratorSubSection>
-                <Moderators
-                  moderators={this.props.moderators}
-                  projectId={projectId}
+            {(projectVisibilityEnabled || granularPermissionsEnabled) && (
+              <StyledSectionTitle>
+                <FormattedMessage
+                  {...messages.participationAccessRightsTitle}
                 />
-              </ModeratorSubSection>
-            )} */}
-
-            {ideaAssignmentEnabled && (
-              <IdeaAssignmentSection>
-                <SubSectionTitle>
-                  <FormattedMessage {...messages.inputAssignmentSectionTitle} />
-                  <IconTooltip
-                    content={
-                      <FormattedMessage
-                        {...messages.inputAssignmentTooltipText}
-                        values={{
-                          ideaManagerLink: (
-                            <StyledLink
-                              to={`/admin/projects/${projectId}/ideas`}
-                            >
-                              <FormattedMessage
-                                {...messages.inputManagerLinkText}
-                              />
-                            </StyledLink>
-                          ),
-                        }}
-                      />
-                    }
-                  />
-                </SubSectionTitle>
-                <IdeaAssignment projectId={projectId} />
-              </IdeaAssignmentSection>
+              </StyledSectionTitle>
             )}
+
+            <Outlet
+              id="app.containers.Admin.project.edit.permissions.projectVisibility"
+              projectId={projectId}
+            />
+
+            <Outlet
+              id="app.containers.Admin.project.edit.permissions"
+              project={project}
+            />
           </StyledSection>
-        )}
-      </>
-    );
+
+          {(projectManagementEnabled || ideaAssignmentEnabled) && (
+            <StyledSection>
+              <StyledSectionTitle>
+                <FormattedMessage {...messages.moderationRightsTitle} />
+              </StyledSectionTitle>
+
+              {/* {projectManagementEnabled && (
+                <ModeratorSubSection>
+                  <Moderators
+                    moderators={this.props.moderators}
+                    projectId={projectId}
+                  />
+                </ModeratorSubSection>
+              )} */}
+
+              {ideaAssignmentEnabled && (
+                <IdeaAssignmentSection>
+                  <SubSectionTitle>
+                    <FormattedMessage
+                      {...messages.inputAssignmentSectionTitle}
+                    />
+                    <IconTooltip
+                      content={
+                        <FormattedMessage
+                          {...messages.inputAssignmentTooltipText}
+                          values={{
+                            ideaManagerLink: (
+                              <StyledLink
+                                to={`/admin/projects/${projectId}/ideas`}
+                              >
+                                <FormattedMessage
+                                  {...messages.inputManagerLinkText}
+                                />
+                              </StyledLink>
+                            ),
+                          }}
+                        />
+                      }
+                    />
+                  </SubSectionTitle>
+                  <IdeaAssignment projectId={projectId} />
+                </IdeaAssignmentSection>
+              )}
+            </StyledSection>
+          )}
+        </>
+      );
+    }
+
+    return null;
   }
 );
 
