@@ -3,7 +3,7 @@ module IdeaAssignment
     module EmailCampaigns
       module Campaigns
         module NewIdeaForAdmin
-          def filter_recipient(recipient:, activity:, time: nil)
+          def filter_recipient(users_scope, activity:, time: nil)
             idea = activity.item
 
             super - [idea&.assignee_id]
