@@ -23,7 +23,6 @@ import messages from './messages';
 import { updateProject } from 'services/projects';
 import {
   groupsProjectsByProjectIdStream,
-  addGroupProject,
   deleteGroupProject,
   IGroupsProjects,
 } from 'services/groupsProjects';
