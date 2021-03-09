@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import { reportError } from 'utils/loggingUtils';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
+import { isEmpty } from 'lodash-es';
 
 // utils
 import Link from 'utils/cl-router/Link';
@@ -352,7 +353,7 @@ interface InputProps {
 interface DataProps {
   locale: GetLocaleChildProps;
   windowSize: GetWindowSizeChildProps;
-  tenant: GetAppConfigurationChildProps;
+  appConfiguration: GetAppConfigurationChildProps;
 }
 
 interface Props extends DataProps, InputProps {}
@@ -441,42 +442,32 @@ class PlatformFooter extends PureComponent<Props, State> {
   };
 
   getHasCustomizedA11yFooterLink = () => {
-    const { tenant } = this.props;
+    const { appConfiguration } = this.props;
 
-    if (!isNilOrError(tenant)) {
-      if (
-        // Hillerod
-        tenant.id === '6964ee76-97bb-4106-8be0-cfba7a027240' ||
-        // Linz
-        tenant.id === '7413b333-a14a-4a3a-a037-da6ac4caf440'
-      ) {
-        return true;
-      }
-    }
-
-    return false;
+    return (
+      !isNilOrError(appConfiguration) &&
+      appConfiguration.attributes.settings.custom_accessibility_statement_link
+        .enabled &&
+      appConfiguration.attributes.settings.custom_accessibility_statement_link
+        .allowed &&
+      !isEmpty(
+        appConfiguration.attributes.settings.custom_accessibility_statement_link
+          .url
+      )
+    );
   };
 
   getCustomizedA11yHref = () => {
-    const { tenant } = this.props;
+    const { appConfiguration } = this.props;
 
-    if (!isNilOrError(tenant)) {
-      if (
-        // Hillerod
-        tenant.id === '6964ee76-97bb-4106-8be0-cfba7a027240'
-      ) {
-        return 'https://www.was.digst.dk/hillerod-citizenlab-co-da-DK';
-      }
+    if (
+      isNilOrError(appConfiguration) ||
+      !this.getHasCustomizedA11yFooterLink()
+    )
+      return null;
 
-      if (
-        // Linz
-        tenant.id === '7413b333-a14a-4a3a-a037-da6ac4caf440'
-      ) {
-        return 'https://res.cloudinary.com/citizenlabco/image/upload/v1611739984/Linz_Web_Content_Accessibility_Guidlines_WCAG_2.1_nduhob.pdf';
-      }
-    }
-
-    return null;
+    return appConfiguration.attributes.settings
+      .custom_accessibility_statement_link.url;
   };
 
   render() {
@@ -656,7 +647,7 @@ class PlatformFooter extends PureComponent<Props, State> {
 const Data = adopt<Props>({
   locale: <GetLocale />,
   windowSize: <GetWindowSize />,
-  tenant: <GetAppConfiguration />,
+  appConfiguration: <GetAppConfiguration />,
 });
 
 export default (inputProps: InputProps) => (
