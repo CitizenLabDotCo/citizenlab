@@ -72,7 +72,7 @@ describe IdeasFinder do
     describe '#sort_scopes (trending)' do
       let(:sort) { 'trending' }
       let(:expected_record_ids) do
-        TrendingIdeaService.new.sort_trending(Idea.includes(:idea_trending_info).all).pluck(:id)
+        TrendingIdeaService.new.sort_trending(Idea.includes(:idea_trending_info).all).map(&:id)
       end
 
       context 'when joining idea_trending_info' do
@@ -97,7 +97,7 @@ describe IdeasFinder do
     describe '#sort_scopes (-trending)' do
       let(:sort) { '-trending' }
       let(:expected_record_ids) do
-        TrendingIdeaService.new.sort_trending(Idea.includes(:idea_trending_info).all).reverse.pluck(:id)
+        TrendingIdeaService.new.sort_trending(Idea.includes(:idea_trending_info).all).reverse.map(&:id)
       end
 
       context 'when joining idea_trending_info' do
