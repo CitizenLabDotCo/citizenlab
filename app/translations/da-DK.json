@@ -297,7 +297,6 @@
   "app.components.PostComponents.SharingModalContent.whatsAppMessageProposal": "Jeg har lige sendt et borgerforslag til {orgName}: {postTitle}",
   "app.components.PostComponents.linkToHomePage": "Link til hjemmeside",
   "app.components.PostComponents.readMore": "Læs mere...",
-  "app.components.Project.projectModeratorIndicator": "{tenantName, select, DeloitteDK {Du er en moderator på dette verdensmål.} other {Du er en moderator på dette projekt.}}",
   "app.components.ProjectArchivedIndicator.archivedProject": "{tenantName, select, DeloitteDK {Desværre kan du ikke længere deltage i dette verdensmål, da det er blevet arkiveret} other {Desværre kan du ikke længere deltage i dette projekt, da det er blevet arkiveret}}",
   "app.components.ProjectCard.a11y_projectDescription": "Projektbeskrivelse:",
   "app.components.ProjectCard.a11y_projectTitle": "Projekttitel",
