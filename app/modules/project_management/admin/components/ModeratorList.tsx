@@ -44,7 +44,6 @@ const ModeratorList = memo(
       }
     };
 
-    // TO TEST
     if (isError(moderators)) {
       return <FormattedMessage {...messages.moderatorsNotFound} />;
     }
