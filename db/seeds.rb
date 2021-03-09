@@ -181,6 +181,10 @@ if ['public','example_org'].include? Apartment::Tenant.current
         enabled: true,
         allowed: true
       },
+      custom_accessibility_statement_link: {
+        enabled: false,
+        allowed: false
+      },
       user_custom_fields: {
         enabled: true,
         allowed: true
