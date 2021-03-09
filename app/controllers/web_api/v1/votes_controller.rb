@@ -143,45 +143,10 @@ class WebApi::V1::VotesController < ApplicationController
   end
 
   def vote_params
-    params.require(:vote).permit(
-      :user_id,
-      :mode,
-    )
+    params.require(:vote).permit(:user_id, :mode)
   end
 
   def secure_controller?
     false
-  end
-
-  def user_not_authorized exception
-    vote = exception.record
-    pcs = ParticipationContextService.new
-    ps = PermissionsService.new
-    reason =
-      case vote.votable
-      when Idea
-        (
-          pcs.voting_disabled_reason_for_idea_vote(vote, vote.user) ||
-          pcs.cancelling_votes_disabled_reason_for_idea(vote.votable, vote.user)
-        )
-      when Initiative
-        vote.mode == 'down' ? 'downvoting_not_supported' : ps.denied?(vote.user, 'voting_initiative')
-      when Comment
-        case vote.votable.post_type
-        when Idea.name
-          pcs.voting_disabled_reason_for_idea_comment vote.votable, vote.user
-        when Initiative.name
-          ps.denied?(vote.user, 'commenting_initiative')
-        else
-          raise "No voting disabled reasons can be determined for #{vote.votable.post_type} model"
-        end
-      else
-        raise "No voting disabled reasons can be determined for #{vote.votable_type} model"
-      end
-    if reason
-      render json: { errors: { base: [{ error: reason }] } }, status: :unauthorized
-      return
-    end
-    render json: { errors: { base: [{ error: 'Unauthorized!' }] } }, status: :unauthorized
   end
 end
