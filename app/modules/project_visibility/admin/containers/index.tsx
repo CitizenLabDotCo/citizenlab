@@ -93,7 +93,7 @@ const ProjectVisibility = ({
     });
 
     return () => subscription.unsubscribe();
-  }, []);
+  }, [projectId]);
 
   useEffect(() => {
     if (!isNilOrError(project)) {
@@ -131,9 +131,7 @@ const ProjectVisibility = ({
       ) {
         promises = [
           ...promises,
-          ...newGroups.data.map((groupsProject) =>
-            deleteGroupProject(groupsProject.id)
-          ),
+          ...newGroups.data.map((group) => deleteGroupProject(group.id)),
         ];
       }
 
