@@ -516,10 +516,15 @@ class Streams {
             stream.observer.next((previous) => {
               return this.deepFreeze({
                 ...(previous || {}),
-                data: {
-                  ...(previous?.data || {}),
-                  ...(response?.['data'] || {}),
-                },
+                data: Array.isArray(previous.data)
+                  ? [
+                      ...(previous?.data || []),
+                      { ...(response?.['data'] || {}) },
+                    ]
+                  : {
+                      ...(previous?.data || {}),
+                      ...(response?.['data'] || {}),
+                    },
               });
             });
           }
