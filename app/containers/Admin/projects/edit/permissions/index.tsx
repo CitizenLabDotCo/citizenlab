@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { Subscription } from 'rxjs';
-import { map, isEmpty, isEqual, difference } from 'lodash-es';
+import { map, isEqual, difference } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import { withRouter, WithRouterProps } from 'react-router';
 
@@ -20,7 +20,7 @@ import IdeaAssignment from './IdeaAssignment';
 import Link from 'utils/cl-router/Link';
 
 // services
-import { updateProject, IProject } from 'services/projects';
+import { IProject } from 'services/projects';
 import {
   addGroupProject,
   deleteGroupProject,
@@ -142,68 +142,6 @@ class ProjectPermissions extends PureComponent<Props & WithRouterProps, State> {
       ]);
     }
   }
-
-  saveChanges = async () => {
-    const {
-      project,
-      newGroupsProjects,
-      savedVisibleTo,
-      unsavedVisibleTo,
-    } = this.state;
-
-    if (project && savedVisibleTo && unsavedVisibleTo) {
-      let promises: Promise<any>[] = [];
-
-      if (unsavedVisibleTo !== savedVisibleTo) {
-        promises = [
-          updateProject(project.data.id, { visible_to: unsavedVisibleTo }),
-        ];
-      }
-
-      if (
-        unsavedVisibleTo !== 'groups' &&
-        newGroupsProjects !== null &&
-        !isEmpty(newGroupsProjects.data)
-      ) {
-        promises = [
-          ...promises,
-          ...newGroupsProjects.data.map((groupsProject) =>
-            deleteGroupProject(groupsProject.id)
-          ),
-        ];
-      }
-
-      if (unsavedVisibleTo === 'groups') {
-        this.setState({ oldGroupsProjects: newGroupsProjects });
-      }
-
-      try {
-        this.setState({ saving: true });
-        await Promise.all(promises);
-        this.setState({ saving: false, status: 'success' });
-      } catch (error) {
-        this.setState({ saving: false, status: 'error' });
-      }
-    }
-  };
-
-  handlePermissionTypeChange = (
-    unsavedVisibleTo: 'public' | 'groups' | 'admins'
-  ) => {
-    this.setState((state) => ({
-      unsavedVisibleTo,
-      status:
-        unsavedVisibleTo === 'groups' &&
-        (state.newGroupsProjects === null ||
-          isEmpty(state.newGroupsProjects.data))
-          ? 'disabled'
-          : 'enabled',
-    }));
-  };
-
-  handleGroupsAdded = () => {
-    this.saveChanges();
-  };
 
   render() {
     const {
