@@ -75,24 +75,17 @@ const ProjectVisibility = ({
   const [status, setStatus] = useState<
     'disabled' | 'enabled' | 'error' | 'success'
   >('disabled');
-  const [
-    newGroupsProjects,
-    setNewGroupsProjects,
-  ] = useState<IGroupsProjects | null>(null);
-  const [
-    oldGroupsProjects,
-    setOldGroupsProjects,
-  ] = useState<IGroupsProjects | null>(null);
+  const [newGroups, setNewGroups] = useState<IGroupsProjects | null>(null);
+  const [oldGroups, setOldGroups] = useState<IGroupsProjects | null>(null);
 
   useEffect(() => {
     const subscription = groupsProjectsByProjectIdStream(
       projectId
-    ).observable.subscribe((groupsProjects) => {
-      setOldGroupsProjects(isSaving ? groupsProjects : oldGroupsProjects);
-      setNewGroupsProjects(groupsProjects);
+    ).observable.subscribe((groups) => {
+      setOldGroups(isSaving ? groups : oldGroups);
+      setNewGroups(groups);
       setStatus(
-        unsavedVisibleTo === 'groups' &&
-          !isEqual(newGroupsProjects, oldGroupsProjects)
+        unsavedVisibleTo === 'groups' && !isEqual(newGroups, oldGroups)
           ? 'enabled'
           : status
       );
@@ -115,7 +108,7 @@ const ProjectVisibility = ({
     setUnsavedVisibleTo(unsavedVisibleTo);
     setStatus(
       unsavedVisibleTo === 'groups' &&
-        (newGroupsProjects === null || isEmpty(newGroupsProjects.data))
+        (newGroups === null || isEmpty(newGroups.data))
         ? 'disabled'
         : 'enabled'
     );
@@ -133,19 +126,19 @@ const ProjectVisibility = ({
 
       if (
         unsavedVisibleTo !== 'groups' &&
-        newGroupsProjects !== null &&
-        !isEmpty(newGroupsProjects.data)
+        newGroups !== null &&
+        !isEmpty(newGroups.data)
       ) {
         promises = [
           ...promises,
-          ...newGroupsProjects.data.map((groupsProject) =>
+          ...newGroups.data.map((groupsProject) =>
             deleteGroupProject(groupsProject.id)
           ),
         ];
       }
 
       if (unsavedVisibleTo === 'groups') {
-        setOldGroupsProjects(newGroupsProjects);
+        setOldGroups(newGroups);
       }
 
       try {
