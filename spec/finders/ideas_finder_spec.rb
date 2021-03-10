@@ -75,22 +75,12 @@ describe IdeasFinder do
         TrendingIdeaService.new.sort_trending(Idea.includes(:idea_trending_info).all).map(&:id)
       end
 
-      context 'when joining idea_trending_info' do
-        let(:options) { { includes: %i[idea_trending_info] } }
-
-        it 'is successful' do
-          expect(result).to be_a_success
-        end
-
-        it 'returns the sorted records' do
-          expect(result_record_ids).to match_array expected_record_ids
-        end
+      it 'is successful' do
+        expect(result).to be_a_success
       end
 
-      context 'when not joining idea_trending_info' do
-        it 'is a failure' do
-          expect(result).to be_a_failure
-        end
+      it 'returns the sorted records' do
+        expect(result_record_ids).to match_array expected_record_ids
       end
     end
 
@@ -100,22 +90,12 @@ describe IdeasFinder do
         TrendingIdeaService.new.sort_trending(Idea.includes(:idea_trending_info).all).reverse.map(&:id)
       end
 
-      context 'when joining idea_trending_info' do
-        let(:options) { { includes: %i[idea_trending_info] } }
-
-        it 'is successful' do
-          expect(result).to be_a_success
-        end
-
-        it 'returns the sorted records' do
-          expect(result_record_ids).to match_array expected_record_ids
-        end
+      it 'is successful' do
+        expect(result).to be_a_success
       end
 
-      context 'when not joining idea_trending_info' do
-        it 'is a failure' do
-          expect(result).to be_a_failure
-        end
+      it 'returns the sorted records' do
+        expect(result_record_ids).to match_array expected_record_ids
       end
     end
 
@@ -475,7 +455,7 @@ describe IdeasFinder do
   end
 
   describe '#filter_trending_condition' do
-    let(:expected_record_ids) { TrendingIdeaService.new.filter_trending(Idea.joins(:idea_trending_info)).pluck(:id) }
+    let(:expected_record_ids) { TrendingIdeaService.new.filter_trending(Idea.all).pluck(:id) }
 
     before do
       params[:filter_trending] = true
