@@ -27,7 +27,7 @@ const configuration: ModuleConfiguration = {
         container: () => import('./admin/containers/new'),
       },
       {
-        path: 'statuses/edit',
+        path: 'statuses/:id',
         container: () => import('./admin/containers/edit'),
       },
     ],
