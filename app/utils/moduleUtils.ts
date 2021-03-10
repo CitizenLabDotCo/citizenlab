@@ -105,6 +105,7 @@ export type OutletsPropertyMap = {
       tabConfiguration: ITab;
     }) => void;
   };
+  'app.containers.Admin.projects.all': {};
 };
 
 type Outlet<Props> = FunctionComponent<Props> | FunctionComponent<Props>[];

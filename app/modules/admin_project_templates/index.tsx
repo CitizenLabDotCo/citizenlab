@@ -4,9 +4,7 @@ import AdminProjectTemplates from './admin/containers';
 
 const configuration: ModuleConfiguration = {
   outlets: {
-    'app.containers.Admin.project.edit.permissions': (props) => (
-      <AdminProjectTemplates />
-    ),
+    'app.containers.Admin.projects.all': (_props) => <AdminProjectTemplates />,
   },
 };
 
