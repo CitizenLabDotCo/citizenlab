@@ -159,6 +159,13 @@
             "title": "Geographic Unit",
             "description": "What a geographic unit should be called on this platform (e.g., neighbourhood, district, etc.)? Input the singular form here with all lowercase letters. If left blank, this field defaults to 'area'.",
             "$ref": "#/definitions/multiloc_string"
+          },
+          "reply_to_email": {
+            "title": "Reply-to email",
+            "description": "The email used in the reply-to field when users receive emails from automated campaigns.",
+            "type": "string",
+            "format": "email",
+            "default": "support@citizenlab.co"
           }
         }
       },
@@ -181,10 +188,18 @@
         "description": "Allow users to register with an email and password.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
-        "required-settings": ["phone"],
+        "required-settings": ["minimum_length", "phone"],
         "properties": {
           "allowed": { "type": "boolean", "default": true},
           "enabled": { "type": "boolean", "default": true},
+          "minimum_length": {
+            "type": "number",
+            "title": "Minimum password length",
+            "description": "The minimum number of characters required for a user password. The default value is 8 (min. 5, max. 72). Longer passwords are generally more secure. Changes to the min. password length will only apply to users that create a new account or update their existing password (existing accounts remain the same).",
+            "minimum": 5,
+            "maximum": 72,
+            "default": 8
+          },
           "phone": {
             "title": "Phone",
             "description": "Allow users to register with a phone number. This option is not advised, please check with development team before enabling this field.",
