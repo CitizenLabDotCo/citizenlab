@@ -6,18 +6,19 @@ RSpec.describe UpdateMemberCountJob, type: :job do
   describe '#perform' do
     it 'updates the given group with argument' do
       group = create(:group)
-
-      expect(group).to have_received(:update_memberships_count!)
+      create_list(:user, 3, manual_groups: [group])
 
       job.perform(group)
+      expect(group.memberships_count).to eq 3
     end
 
     it 'updates all groups without argument' do
-      create_list(:group, 5)
-
-      expect(Group).to have_received(:find_each).with(&:update_memberships_count!)
+      create_list(:group, 5).each do |group|
+        create_list(:user, 2, manual_groups: [group])
+      end
 
       job.perform
+      expect(Group.distinct.pluck(:memberships_count)).to eq [2]
     end
   end
 end
