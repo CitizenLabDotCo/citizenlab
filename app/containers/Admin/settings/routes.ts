@@ -33,16 +33,16 @@ export default () => ({
       }),
     },
     {
-      path: 'registration',
+      path: 'pages',
       component: Loadable({
-        loader: () => import('containers/Admin/settings/registration'),
+        loader: () => import('containers/Admin/settings/pages'),
         loading: () => null,
       }),
     },
     {
-      path: 'pages',
+      path: 'registration',
       component: Loadable({
-        loader: () => import('containers/Admin/settings/pages'),
+        loader: () => import('containers/Admin/settings/registration'),
         loading: () => null,
       }),
     },
