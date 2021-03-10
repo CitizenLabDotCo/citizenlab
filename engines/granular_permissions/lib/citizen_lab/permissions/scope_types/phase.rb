@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'citizen_lab/permissions/scope_types/mixins/participation_context'
+
 module CitizenLab
   module Permissions
     module ScopeTypes

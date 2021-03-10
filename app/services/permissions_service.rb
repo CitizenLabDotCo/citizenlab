@@ -96,5 +96,3 @@ class PermissionsService
 end
 
 PermissionsService.register_scope_type(CitizenLab::Permissions::ScopeTypes::Global)
-PermissionsService.register_scope_type(CitizenLab::Permissions::ScopeTypes::Project)
-PermissionsService.register_scope_type(CitizenLab::Permissions::ScopeTypes::Phase)
