@@ -42,6 +42,7 @@ group :development, :test do
   gem 'rubocop-rspec', require: false
   gem 'simplecov-rcov'
   gem 'simplecov'
+  gem "test-prof", "~> 1.0"
  end
 
 group :development do

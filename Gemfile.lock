@@ -779,6 +779,7 @@ GEM
       activesupport (>= 3)
       attr_required (>= 0.0.5)
       httpclient (>= 2.4)
+    test-prof (1.0.2)
     thor (1.0.1)
     thread (0.2.2)
     thread_safe (0.3.6)
@@ -914,6 +915,7 @@ DEPENDENCIES
   spring-watcher-listen (~> 2.0.0)
   surveys!
   tagging!
+  test-prof (~> 1.0)
   verification!
   volunteering!
   webmock (~> 3.4)

@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe CommentVotePolicy do
 
-  subject { CommentVotePolicy.new(user, vote) }
+  subject(:policy) { CommentVotePolicy.new(user, vote) }
   let(:scope) { CommentVotePolicy::Scope.new(user, Vote) }
   let(:project) { create(:continuous_project, with_permissions: true) }
   let(:idea) { create(:idea, project: project)}
@@ -74,10 +74,10 @@ describe CommentVotePolicy do
     let(:user) { vote.user }
 
     it { should permit(:show) }
-    it { should_not permit(:create) }
-    it { should_not permit(:up) }
+    it { expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError) }
+    it { expect { policy.up? }.to raise_error(Pundit::NotAuthorizedError) }
     it { should_not permit(:down) }
-    it { should_not permit(:destroy) }
+    it { expect { policy.destroy? }.to raise_error(Pundit::NotAuthorizedError) }
 
     it "should not index the vote" do
       expect(scope.resolve.size).to eq 1
@@ -90,10 +90,10 @@ describe CommentVotePolicy do
     let(:user) { vote.user }
 
     it { should permit(:show) }
-    it { should_not permit(:create) }
-    it { should_not permit(:up) }
+    it { expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError) }
+    it { expect { policy.up? }.to raise_error(Pundit::NotAuthorizedError) }
     it { should_not permit(:down) }
-    it { should_not permit(:destroy) }
+    it { expect { policy.destroy? }.to raise_error(Pundit::NotAuthorizedError) }
 
     it "should index the vote" do
       expect(scope.resolve.size).to eq 1
@@ -109,11 +109,11 @@ describe CommentVotePolicy do
     end
 
     it { should permit(:show) }
-    it { should_not permit(:create) }
-    it { should_not permit(:up) }
+    it { expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError) }
+    it { expect { policy.up? }.to raise_error(Pundit::NotAuthorizedError) }
     it { should_not permit(:down) }
-    it { should_not permit(:destroy) }
-
+    it { expect { policy.destroy? }.to raise_error(Pundit::NotAuthorizedError) }
+    
     it "should index the vote" do
       expect(scope.resolve.size).to eq 1
     end
