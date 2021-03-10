@@ -1,23 +1,12 @@
+# frozen_string_literal: true
+
 class TrackUserJob < ApplicationJob
   queue_as :default
   # creates or updates users in tracking destinations
 
   def run(user)
-    tenant = nil
-
-    begin
-      tenant = Tenant.current
-      if tenant
-        if tenant.has_feature?('intercom')
-          intercom_service = TrackIntercomService.new()
-          intercom_service.identify_user(user, tenant)
-        end
-        if tenant.has_feature?('segment')
-          segment_service = TrackSegmentService.new()
-          segment_service.identify_user(user, tenant)
-        end
-      end
-    rescue ActiveRecord::RecordNotFound => e
-    end
+    app_config = AppConfiguration.instance
+    TrackIntercomService.new.identify_user(user) if app_config.feature_activated?('intercom')
+    TrackSegmentService.new.identify_user(user)  if app_config.feature_activated?('segment')
   end
 end

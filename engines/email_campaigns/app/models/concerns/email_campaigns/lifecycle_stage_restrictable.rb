@@ -21,7 +21,7 @@ module EmailCampaigns
     end
 
     def allowed_lifecycle_stage? options={}
-      self.class.allowed_lifecycle_stages.include?(Tenant.settings('core', 'lifecycle_stage'))
+      self.class.allowed_lifecycle_stages.include?(AppConfiguration.instance.settings('core', 'lifecycle_stage'))
     end
   end
 end

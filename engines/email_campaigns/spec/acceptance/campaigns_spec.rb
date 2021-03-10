@@ -25,8 +25,8 @@ resource "Campaigns" do
       parameter :number, "Page number"
       parameter :size, "Number of campaigns per page"
     end
-    parameter :campaign_names, "An array of campaign names that should be returned. Possible values are #{EmailCampaigns::DeliveryService::CAMPAIGN_CLASSES.map(&:campaign_name).join(', ')}", required: false
-    parameter :without_campaign_names, "An array of campaign names that should not be returned. Possible values are #{EmailCampaigns::DeliveryService::CAMPAIGN_CLASSES.map(&:campaign_name).join(', ')}", required: false
+    parameter :campaign_names, "An array of campaign names that should be returned. Possible values are #{EmailCampaigns::DeliveryService.campaign_classes.map(&:campaign_name).join(', ')}", required: false
+    parameter :without_campaign_names, "An array of campaign names that should not be returned. Possible values are #{EmailCampaigns::DeliveryService.campaign_classes.map(&:campaign_name).join(', ')}", required: false
 
 
     example_request "List all campaigns" do
@@ -72,7 +72,7 @@ resource "Campaigns" do
 
   post "web_api/v1/campaigns" do
     with_options scope: :campaign do
-      parameter :campaign_name, "The type of campaign. One of #{EmailCampaigns::DeliveryService::CAMPAIGN_CLASSES.map(&:campaign_name).join(', ')}", required: true
+      parameter :campaign_name, "The type of campaign. One of #{EmailCampaigns::DeliveryService.campaign_classes.map(&:campaign_name).join(', ')}", required: true
       parameter :sender, "Who is shown as the sender towards the recipients, either #{EmailCampaigns::SenderConfigurable::SENDERS.join(' or ')}", required: true
       parameter :reply_to, "The e-mail of the reply-to address. Defaults to the author", required: false
       parameter :subject_multiloc, "The of the email, as a multiloc string, maximal #{EmailCampaigns::ContentConfigurable::MAX_SUBJECT_LEN}", required: true

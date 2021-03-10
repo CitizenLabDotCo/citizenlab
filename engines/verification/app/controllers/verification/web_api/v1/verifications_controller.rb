@@ -43,7 +43,7 @@ module Verification
             raise RuntimeError.new("Unknown verification method #{params[:method_name]}")
           end
 
-          unless AppConfiguration.instance.has_feature?('verification')
+          unless AppConfiguration.instance.feature_activated?('verification')
             raise Pundit::NotAuthorizedError.new
           end
 

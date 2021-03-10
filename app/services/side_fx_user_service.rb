@@ -9,7 +9,7 @@ class SideFxUserService
 
     # Hack to embed phone numbers in email
     app_config = AppConfiguration.instance
-    if app_config.has_feature?('password_login') && app_config.settings('password_login','phone')
+    if app_config.feature_activated?('password_login') && app_config.settings('password_login','phone')
       phone_service = PhoneService.new
       if phone_service.phone_or_email(user.email) == :phone
         pattern = app_config.settings('password_login', 'phone_email_pattern')
@@ -64,6 +64,8 @@ class SideFxUserService
           .update_all(default_assignee_id: nil, updated_at: DateTime.now)
         user.assigned_ideas
           .where.not(project: moderatable_projects)
+          .update_all(assignee_id: nil, updated_at: DateTime.now)
+        user.assigned_initiatives
           .update_all(assignee_id: nil, updated_at: DateTime.now)
       end
     end

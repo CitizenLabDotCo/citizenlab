@@ -66,7 +66,7 @@ RSpec.describe EmailCampaigns::AdminDigestMailer, type: :mailer do
     end
 
     it 'assigns organisation name' do
-      expect(mail.body.encoded).to match(Tenant.current.settings.dig('core', 'organization_name', 'en'))
+      expect(mail.body.encoded).to match(AppConfiguration.instance.settings('core', 'organization_name', 'en'))
     end
 
     it 'shows all ideas' do
@@ -79,7 +79,7 @@ RSpec.describe EmailCampaigns::AdminDigestMailer, type: :mailer do
 
     it 'assigns home url' do
       expect(mail.body.encoded)
-        .to match(Frontend::UrlService.new.home_url(tenant: Tenant.current, locale: 'en'))
+        .to match(Frontend::UrlService.new.home_url(app_configuration: AppConfiguration.instance, locale: 'en'))
     end
   end
 end

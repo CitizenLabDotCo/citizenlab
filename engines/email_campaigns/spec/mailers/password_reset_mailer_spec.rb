@@ -34,7 +34,7 @@ RSpec.describe EmailCampaigns::PasswordResetMailer, type: :mailer do
     end
 
     it 'assigns organisation name' do
-      expect(mail.body.encoded).to match(Tenant.current.settings.dig('core', 'organization_name')['en'])
+      expect(mail.body.encoded).to match(AppConfiguration.instance.settings('core', 'organization_name')['en'])
     end
 
     it 'assigns reset password url' do

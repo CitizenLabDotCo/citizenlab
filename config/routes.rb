@@ -1,18 +1,21 @@
 Rails.application.routes.draw do
-
-  mount PublicApi::Engine => "/api", as: 'public_api'
+  
   mount AdminApi::Engine => "/admin_api", as: 'admin_api', defaults: {format: :json}
+  mount CustomStatuses::Engine => "", as: 'custom_statuses'
   mount EmailCampaigns::Engine => "", as: 'email_campaigns'
+  mount Frontend::Engine => "", as: 'frontend'
+  mount GeographicDashboard::Engine => '', as: 'geographic_dashboard'
   mount MachineTranslations::Engine => "", as: 'machine_translations'
+  mount Maps::Engine => "", as: 'maps'
   mount NLP::Engine => "", as: 'nlp'
   mount Onboarding::Engine => "", as: 'onboarding'
-  mount Surveys::Engine => "", as: 'surveys'
-  mount Frontend::Engine => "", as: 'frontend'
   mount Polls::Engine => "", as: 'polls'
+  mount PublicApi::Engine => "/api", as: 'public_api'
+  mount Seo::Engine => '', as: 'seo'
+  mount Surveys::Engine => "", as: 'surveys'
+  mount Tagging::Engine => "", as: 'tagging'
   mount Verification::Engine => "", as: 'verification'
   mount Volunteering::Engine => "", as: 'volunteering'
-  mount Maps::Engine => "", as: 'maps'
-  mount Tagging::Engine => "", as: 'tagging'
 
   namespace :web_api, :defaults => {:format => :json} do
     namespace :v1 do
@@ -70,8 +73,8 @@ Rails.application.routes.draw do
         get :allowed_transitions, on: :member
       end
 
-      resources :idea_statuses
-      resources :initiative_statuses, only: [:index, :show]
+      resources :idea_statuses, only: %i[index show]
+      resources :initiative_statuses, only: %i[index show]
 
       # auth
       post 'user_token' => 'user_token#create'
@@ -115,9 +118,6 @@ Rails.application.routes.draw do
 
       resource :app_configuration, only: [:show, :update]
 
-      resources :tenants, only: [:update] do
-        get :current, on: :collection
-      end
       resources :pages do
         resources :files, defaults: {container_type: 'Page'}, shallow: false
         get 'by_slug/:slug', on: :collection, to: 'pages#by_slug'
