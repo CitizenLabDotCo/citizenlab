@@ -30,14 +30,14 @@ module SmartGroups
     # This method is very carefully written to do it all in
     # 2 queries, so beware when editing
     def groups_for_user(user)
-      Group.where(membership_type: 'rules').map do |group|
+      ::Group.where(membership_type: 'rules').map do |group|
         # We're using `id: [user.id]` instead of `id: user.id` to
         # workaround this rails/arel issue:
         # https://github.com/rails/rails/issues/20077
         Group
           .where(id: group.id)
-          .where(filter(User.where(id: [user.id]), group.rules).arel.exists)
-      end.inject(:or) || Group.none
+          .where(filter(::User.where(id: [user.id]), group.rules).arel.exists)
+      end.inject(:or) || ::Group.none
     end
 
     def generate_rules_json_schema

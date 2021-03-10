@@ -16,7 +16,7 @@ module SmartGroups
           }
 
           scope :using_custom_field, lambda { |custom_field|
-            subquery = Group.select('jsonb_array_elements(rules) as rule, id')
+            subquery = ::Group.select('jsonb_array_elements(rules) as rule, id')
             where(membership_type: 'rules')
               .joins("LEFT OUTER JOIN (#{subquery.to_sql}) as r ON groups.id = r.id")
               .where("r.rule->>'customFieldId' = ?", custom_field.id)
@@ -24,7 +24,7 @@ module SmartGroups
           }
 
           scope :using_custom_field_option, lambda { |custom_field_option|
-            subquery = Group.select('jsonb_array_elements(rules) as rule, id')
+            subquery = ::Group.select('jsonb_array_elements(rules) as rule, id')
             where(membership_type: 'rules')
               .joins("LEFT OUTER JOIN (#{subquery.to_sql}) as r ON groups.id = r.id")
               .where("r.rule->>'value' = ?", custom_field_option.id)

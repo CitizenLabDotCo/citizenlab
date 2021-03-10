@@ -8,10 +8,10 @@ module SmartGroups
       end
 
       def check_group_references
-        return unless Group.using_custom_field_option(self).exists?
+        return unless ::Group.using_custom_field_option(self).exists?
 
         errors.add(:base, :dangling_group_references,
-                   message: Group.using_custom_field_option(self).all.map(&:id).join(','))
+                   message: ::Group.using_custom_field_option(self).all.map(&:id).join(','))
         throw :abort
       end
     end
