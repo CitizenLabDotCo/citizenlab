@@ -188,10 +188,18 @@
         "description": "Allow users to register with an email and password.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
-        "required-settings": ["phone"],
+        "required-settings": ["minimum_length", "phone"],
         "properties": {
           "allowed": { "type": "boolean", "default": true},
           "enabled": { "type": "boolean", "default": true},
+          "minimum_length": {
+            "type": "number",
+            "title": "Minimum password length",
+            "description": "The minimum number of characters required for a user password. The default value is 8 (min. 5, max. 72). Longer passwords are generally more secure. Changes to the min. password length will only apply to users that create a new account or update their existing password (existing accounts remain the same).",
+            "minimum": 5,
+            "maximum": 72,
+            "default": 8
+          },
           "phone": {
             "title": "Phone",
             "description": "Allow users to register with a phone number. This option is not advised, please check with development team before enabling this field.",
