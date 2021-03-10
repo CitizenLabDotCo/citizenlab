@@ -73,7 +73,7 @@ resource 'Groups' do
       with_options scope: :group do
         parameter :title_multiloc, 'The title of the group in multiple locales'
         parameter :membership_type,
-                  "Whether members are manually or automatically added. Either #{Group::MEMBERSHIP_TYPES.join(', ')}"
+                  "Whether members are manually or automatically added. Either #{Group.membership_types.join(', ')}"
         parameter :rules,
                   "In case of 'rules' membership type, the user criteria to be a member. Conforms to this json schema: #{JSON.pretty_generate(SmartGroups::RulesService.new.generate_rules_json_schema)}"
       end

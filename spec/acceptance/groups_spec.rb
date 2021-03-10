@@ -22,7 +22,7 @@ resource 'Groups' do
         parameter :size, 'Number of groups per page'
       end
       parameter :membership_type,
-                "If set, only return groups of given membership_type. Either #{Group::MEMBERSHIP_TYPES.join(' or ')}", required: false
+                "If set, only return groups of given membership_type. Either #{Group.membership_types.join(' or ')}", required: false
 
       example 'List all groups' do
         g1 = create(:group)
@@ -48,7 +48,7 @@ resource 'Groups' do
       with_options scope: :group do
         parameter :title_multiloc, 'The title of the group in multiple locales', required: true
         parameter :membership_type,
-                  "Whether members are manually or automatically added. Either #{Group::MEMBERSHIP_TYPES.join(', ')}. Defaults to 'manual'"
+                  "Whether members are manually or automatically added. Either #{Group.membership_types.join(', ')}. Defaults to 'manual'"
       end
       ValidationErrorHelper.new.error_fields(self, Group)
 
@@ -68,7 +68,7 @@ resource 'Groups' do
       with_options scope: :group do
         parameter :title_multiloc, 'The title of the group in multiple locales'
         parameter :membership_type,
-                  "Whether members are manually or automatically added. Either #{Group::MEMBERSHIP_TYPES.join(', ')}"
+                  "Whether members are manually or automatically added. Either #{Group.membership_types.join(', ')}"
       end
       ValidationErrorHelper.new.error_fields(self, Group)
 
