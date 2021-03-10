@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  
+
   mount AdminApi::Engine => "/admin_api", as: 'admin_api', defaults: {format: :json}
   mount CustomStatuses::Engine => "", as: 'custom_statuses'
   mount EmailCampaigns::Engine => "", as: 'email_campaigns'
@@ -12,6 +12,7 @@ Rails.application.routes.draw do
   mount Polls::Engine => "", as: 'polls'
   mount PublicApi::Engine => "/api", as: 'public_api'
   mount Seo::Engine => '', as: 'seo'
+  mount SmartGroups::Engine => '', as: 'smart_groups'
   mount Surveys::Engine => "", as: 'surveys'
   mount Tagging::Engine => "", as: 'tagging'
   mount Verification::Engine => "", as: 'verification'
@@ -124,14 +125,11 @@ Rails.application.routes.draw do
       end
 
       # :action is already used as param, so we chose :permission_action instead
-      resources :permissions, param: :permission_action do
-        get 'participation_conditions', on: :member
-      end
+      resources :permissions, param: :permission_action
+
       concern :participation_context do
         # :action is already used as param, so we chose :permission_action instead
-        resources :permissions, param: :permission_action do
-          get 'participation_conditions', on: :member
-        end
+        resources :permissions, param: :permission_action
       end
 
       # Events and phases are split in two because we cannot have a non-shallow

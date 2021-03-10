@@ -14,7 +14,7 @@ class Permission < ApplicationRecord
 
 
   scope :for_user, -> (user) {
-    if user&.admin? 
+    if user&.admin?
       all
     elsif user
       permissions_for_everyone_ids = where(permitted_by: ['everyone', 'users']).ids
@@ -43,18 +43,6 @@ class Permission < ApplicationRecord
       user&.admin_or_moderator?(project_id)
   	end
   end
-
-  def participation_conditions
-    service = SmartGroupsService.new
-    groups.select(&:rules?).map do |group|
-      group.rules.select do |rule|
-        rule['ruleType'] != 'verified'
-      end.map do |rule|
-        service.parse_json_rule rule
-      end.map(&:description_multiloc)
-    end.reject { |rules| rules.empty? }
-  end
-
 
   private
 

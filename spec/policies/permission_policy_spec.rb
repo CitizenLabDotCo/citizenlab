@@ -11,7 +11,6 @@ describe PermissionPolicy do
 
     it { should_not permit(:show)         }
     it { should_not permit(:update)       }
-    it { should permit(:participation_conditions) }
 
     it "should index some permissions" do
       expect(scope.resolve.size).to eq 1
@@ -25,7 +24,6 @@ describe PermissionPolicy do
 
     it { should_not permit(:show)         }
     it { should_not permit(:update)       }
-    it { should permit(:participation_conditions) }
 
     it "should index some permissions" do
       expect(scope.resolve.size).to eq 1
@@ -44,7 +42,6 @@ describe PermissionPolicy do
 
     it { should_not permit(:show)         }
     it { should_not permit(:update)       }
-    it { should permit(:participation_conditions) }
 
     it "should index some permissions" do
       expect(scope.resolve.size).to eq 1
@@ -57,7 +54,6 @@ describe PermissionPolicy do
 
     it { should permit(:show)             }
     it { should permit(:update)           }
-    it { should permit(:participation_conditions) }
 
     it "should index the permission" do
       expect(scope.resolve.size).to eq 1
@@ -71,7 +67,6 @@ describe PermissionPolicy do
 
     it { should permit(:show)             }
     it { should permit(:update)           }
-    it { should permit(:participation_conditions) }
 
     it "should index the permission" do
       expect(scope.resolve.size).to be > 0
@@ -85,7 +80,6 @@ describe PermissionPolicy do
 
     it { should_not permit(:show)         }
     it { should_not permit(:update)       }
-    it { should permit(:participation_conditions) }
 
     it "should not index the permission" do
       expect(scope.resolve.size).to eq 0

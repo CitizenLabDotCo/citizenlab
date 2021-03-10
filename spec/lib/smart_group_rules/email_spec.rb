@@ -1,13 +1,13 @@
 require "rails_helper"
 
-describe SmartGroupRules::Email do
+describe SmartGroups::Rules::Email do
 
   let(:valid_json_rule) {{
     'ruleType' => 'email',
     'predicate' => 'is',
     'value' => 'hello@citizenlab.co'
   }}
-  let(:valid_rule) { SmartGroupRules::Email.from_json(valid_json_rule) }
+  let(:valid_rule) { SmartGroups::Rules::Email.from_json(valid_json_rule) }
 
   describe "from_json" do
 
@@ -38,83 +38,83 @@ describe SmartGroupRules::Email do
     }
 
     it "correctly filters on 'is' predicate" do
-      rule = SmartGroupRules::Email.new('is', 'sebi@hotmail.com')
-      expect(rule.filter(User).count).to eq 1 
+      rule = SmartGroups::Rules::Email.new('is', 'sebi@hotmail.com')
+      expect(rule.filter(User).count).to eq 1
     end
 
     it "correctly filters on 'not_is' predicate" do
-      rule = SmartGroupRules::Email.new('not_is', 'sebi@hotmail.com')
+      rule = SmartGroups::Rules::Email.new('not_is', 'sebi@hotmail.com')
       expect(rule.filter(User).count).to eq User.count - 1
     end
 
     it "correctly filters on 'contains' predicate" do
-      rule = SmartGroupRules::Email.new('contains', 'll')
+      rule = SmartGroups::Rules::Email.new('contains', 'll')
       expect(rule.filter(User).count).to eq 2
     end
 
     it "correctly filters on 'not_contains' predicate" do
-      rule = SmartGroupRules::Email.new('not_contains', 'll')
+      rule = SmartGroups::Rules::Email.new('not_contains', 'll')
       expect(rule.filter(User).count).to eq User.count - 2
     end
 
     it "correctly filters on 'begins_with' predicate" do
-      rule = SmartGroupRules::Email.new('begins_with', 'gerard')
+      rule = SmartGroups::Rules::Email.new('begins_with', 'gerard')
       expect(rule.filter(User).count).to eq 1
     end
 
     it "correctly filters on 'not_begins_with' predicate" do
-      rule = SmartGroupRules::Email.new('not_begins_with', 'gerard')
+      rule = SmartGroups::Rules::Email.new('not_begins_with', 'gerard')
       expect(rule.filter(User).count).to eq User.count - 1
     end
 
     it "correctly filters on 'ends_on' predicate" do
-      rule = SmartGroupRules::Email.new('ends_on', 'citizenlab.co')
+      rule = SmartGroups::Rules::Email.new('ends_on', 'citizenlab.co')
       expect(rule.filter(User).count).to eq 2
     end
 
     it "correctly filters on 'not_ends_on' predicate" do
-      rule = SmartGroupRules::Email.new('not_ends_on', 'citizenlab.co')
+      rule = SmartGroups::Rules::Email.new('not_ends_on', 'citizenlab.co')
       expect(rule.filter(User).count).to eq User.count - 2
     end
   end
 
   describe "description_multiloc" do
-    let(:email_is_rule) {SmartGroupRules::Email.from_json({
+    let(:email_is_rule) {SmartGroups::Rules::Email.from_json({
       'ruleType'      => 'email',
       'predicate'     => 'is',
       'value'         => 'sebi@citizenlab.co'
     })}
-    let(:email_not_is_rule) {SmartGroupRules::Email.from_json({
+    let(:email_not_is_rule) {SmartGroups::Rules::Email.from_json({
       'ruleType'      => 'email',
       'predicate'     => 'not_is',
       'value'         => 'sebi@citizenlab.co'
     })}
-    let(:email_contains_rule) {SmartGroupRules::Email.from_json({
+    let(:email_contains_rule) {SmartGroups::Rules::Email.from_json({
       'ruleType'      => 'email',
       'predicate'     => 'contains',
       'value'         => '@citizenlab'
     })}
-    let(:email_not_contains_rule) {SmartGroupRules::Email.from_json({
+    let(:email_not_contains_rule) {SmartGroups::Rules::Email.from_json({
       'ruleType'      => 'email',
       'predicate'     => 'not_contains',
       'value'         => '@citizenlab'
     })}
-    let(:email_begins_with_rule) {SmartGroupRules::Email.from_json({
+    let(:email_begins_with_rule) {SmartGroups::Rules::Email.from_json({
       'ruleType'      => 'email',
       'predicate'     => 'begins_with',
       'value'         => 'sebi'
     })}
-    let(:email_not_begins_with_rule) {SmartGroupRules::Email.from_json({
+    let(:email_not_begins_with_rule) {SmartGroups::Rules::Email.from_json({
       'ruleType'      => 'email',
       'predicate'     => 'not_begins_with',
       'value'         => 'sebi'
     })}
-    let(:email_ends_on_rule) {SmartGroupRules::Email.from_json({
+    let(:email_ends_on_rule) {SmartGroups::Rules::Email.from_json({
       'ruleType'      => 'email',
       'predicate'     => 'ends_on',
       'value'         => 'citizenlab.co'
     })}
-    let(:email_not_ends_on_rule) {SmartGroupRules::Email.from_json({
+    let(:email_not_ends_on_rule) {SmartGroups::Rules::Email.from_json({
       'ruleType'      => 'email',
       'predicate'     => 'not_ends_on',
       'value'         => 'citizenlab.co'

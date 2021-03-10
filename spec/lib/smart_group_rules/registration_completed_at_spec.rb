@@ -1,6 +1,6 @@
 require "rails_helper"
 
-describe SmartGroupRules::RegistrationCompletedAt do
+describe SmartGroups::Rules::RegistrationCompletedAt do
 
 
   describe "validations" do
@@ -10,7 +10,7 @@ describe SmartGroupRules::RegistrationCompletedAt do
       'predicate' => 'is_before',
       'value' => (Date.today - 1.day)
     }}
-    let(:valid_rule) { SmartGroupRules::RegistrationCompletedAt.from_json(valid_json_rule) }
+    let(:valid_rule) { SmartGroups::Rules::RegistrationCompletedAt.from_json(valid_json_rule) }
 
     it "successfully validate the valid rule" do
       expect(valid_rule).to be_valid
@@ -33,56 +33,56 @@ describe SmartGroupRules::RegistrationCompletedAt do
       }
 
       it "correctly filters on 'is_before' predicate" do
-        rule = SmartGroupRules::RegistrationCompletedAt.new('is_before', Date.today)
+        rule = SmartGroups::Rules::RegistrationCompletedAt.new('is_before', Date.today)
         expect(rule.filter(User).count).to eq 2
       end
 
       it "correctly filters on 'is_after' predicate" do
-        rule = SmartGroupRules::RegistrationCompletedAt.new('is_after', Date.today)
+        rule = SmartGroups::Rules::RegistrationCompletedAt.new('is_after', Date.today)
         expect(rule.filter(User).count).to eq 1
       end
 
       it "correctly filters on 'is_exactly' predicate" do
-        rule = SmartGroupRules::RegistrationCompletedAt.new('is_exactly', Date.today)
+        rule = SmartGroups::Rules::RegistrationCompletedAt.new('is_exactly', Date.today)
         expect(rule.filter(User).count).to eq 1
       end
 
       it "correctly filters on 'is_empty' predicate" do
-        rule = SmartGroupRules::RegistrationCompletedAt.new('is_empty')
-        expect(rule.filter(User).count).to eq 1 
+        rule = SmartGroups::Rules::RegistrationCompletedAt.new('is_empty')
+        expect(rule.filter(User).count).to eq 1
       end
 
       it "correctly filters on 'not_is_empty' predicate" do
-        rule = SmartGroupRules::RegistrationCompletedAt.new('not_is_empty')
+        rule = SmartGroups::Rules::RegistrationCompletedAt.new('not_is_empty')
         expect(rule.filter(User).count).to eq User.count - 1
       end
 
     end
- 
+
   end
 
   describe "description_multiloc" do
-    
-    let(:registration_completed_at_is_before_rule) {SmartGroupRules::RegistrationCompletedAt.from_json({
+
+    let(:registration_completed_at_is_before_rule) {SmartGroups::Rules::RegistrationCompletedAt.from_json({
       'ruleType'      => 'registration_completed_at',
       'predicate'     => 'is_before',
       'value'         => '2019-11-12'
     })}
-    let(:registration_completed_at_is_after_rule) {SmartGroupRules::RegistrationCompletedAt.from_json({
+    let(:registration_completed_at_is_after_rule) {SmartGroups::Rules::RegistrationCompletedAt.from_json({
       'ruleType'      => 'registration_completed_at',
       'predicate'     => 'is_after',
       'value'         => '2019-11-12'
     })}
-    let(:registration_completed_at_is_exactly_rule) {SmartGroupRules::RegistrationCompletedAt.from_json({
+    let(:registration_completed_at_is_exactly_rule) {SmartGroups::Rules::RegistrationCompletedAt.from_json({
       'ruleType'      => 'registration_completed_at',
       'predicate'     => 'is_exactly',
       'value'         => '2019-11-12'
     })}
-    let(:registration_completed_at_is_empty_rule) {SmartGroupRules::RegistrationCompletedAt.from_json({
+    let(:registration_completed_at_is_empty_rule) {SmartGroups::Rules::RegistrationCompletedAt.from_json({
       'ruleType'      => 'registration_completed_at',
       'predicate'     => 'is_empty'
     })}
-    let(:registration_completed_at_not_is_empty_rule) {SmartGroupRules::RegistrationCompletedAt.from_json({
+    let(:registration_completed_at_not_is_empty_rule) {SmartGroups::Rules::RegistrationCompletedAt.from_json({
       'ruleType'      => 'registration_completed_at',
       'predicate'     => 'not_is_empty'
     })}
@@ -117,7 +117,7 @@ describe SmartGroupRules::RegistrationCompletedAt do
         'nl-NL' => 'registratie heeft om het even welke waarde'
       })
     end
-    
+
   end
 
 end

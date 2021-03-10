@@ -1,4 +1,4 @@
-module SmartGroupRules
+module SmartGroups::Rules
   class Verified
     include ActiveModel::Validations
 
@@ -12,7 +12,7 @@ module SmartGroupRules
     validates :value, presence: true, if: :needs_value?
 
     def self.to_json_schema
-      [   
+      [
         {
           "type": "object",
           "required" => ["ruleType", "predicate"],
