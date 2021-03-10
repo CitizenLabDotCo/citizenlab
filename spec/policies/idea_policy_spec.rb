@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe IdeaPolicy do
-  subject { IdeaPolicy.new(user, idea) }
+  subject(:policy) { IdeaPolicy.new(user, idea) }
   let(:scope) { IdeaPolicy::Scope.new(user, project.ideas) }
 
   context "on idea in a public project" do
@@ -12,7 +12,7 @@ describe IdeaPolicy do
       let(:user) { nil }
 
       it { should     permit(:show)    }
-      it { should_not permit(:create)  }
+      it { expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError) }
       it { should_not permit(:update)  }
       it { should_not permit(:destroy) }
 
@@ -96,7 +96,7 @@ describe IdeaPolicy do
       let(:user) { nil }
 
       it { should_not permit(:show)    }
-      it { should_not permit(:create)  }
+      it { expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError) }
       it { should_not permit(:update)  }
       it { should_not permit(:destroy) }
 
@@ -109,7 +109,7 @@ describe IdeaPolicy do
       let(:user) { create(:user) }
 
       it { should_not permit(:show)    }
-      it { should_not permit(:create)  }
+      it { expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError) }
       it { should_not permit(:update)  }
       it { should_not permit(:destroy) }
 
@@ -151,7 +151,7 @@ describe IdeaPolicy do
     let!(:idea) { create(:idea, project: project) }
 
     it { should_not permit(:show)    }
-    it { should_not permit(:create)  }
+    it { expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError) }
     it { should_not permit(:update)  }
     it { should_not permit(:destroy) }
 
@@ -166,7 +166,7 @@ describe IdeaPolicy do
     let!(:idea) { create(:idea, project: project) }
 
     it { should_not permit(:show)    }
-    it { should_not permit(:create)  }
+    it { expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError) }
     it { should_not permit(:update)  }
     it { should_not permit(:destroy) }
     it "should not index the idea"  do
@@ -180,7 +180,7 @@ describe IdeaPolicy do
     let!(:idea) { create(:idea, project: project) }
 
     it { should permit(:show)    }
-    it { should_not permit(:create)  }
+    it { expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError) }
     it { should_not permit(:update)  }
     it { should_not permit(:destroy) }
     it "should index the idea"  do
@@ -197,7 +197,7 @@ describe IdeaPolicy do
     let!(:idea) { create(:idea, project: project) }
 
     it { should_not permit(:show)    }
-    it { should_not permit(:create)  }
+    it { expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError) }
     it { should_not permit(:update)  }
     it { should_not permit(:destroy) }
     it "should not index the idea"  do
@@ -214,7 +214,7 @@ describe IdeaPolicy do
     let!(:idea) { create(:idea, project: project) }
 
     it { should permit(:show)    }
-    it { should_not permit(:create)  }
+    it { expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError) }
     it { should_not permit(:update)  }
     it { should_not permit(:destroy) }
     it "should index the idea"  do
@@ -247,7 +247,7 @@ describe IdeaPolicy do
     let!(:idea) { create(:idea, author: user, project: project) }
 
     it { should     permit(:show) }
-    it { should_not permit(:create) }
+    it { expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError) }
     it { should     permit(:update) }
     it { should     permit(:destroy) }
     it "should index the idea"  do
@@ -264,7 +264,7 @@ describe IdeaPolicy do
       let(:user) { nil }
 
       it { should_not permit(:show)    }
-      it { should_not permit(:create)  }
+      it { expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError) }
       it { should_not permit(:update)  }
       it { should_not permit(:destroy) }
 
@@ -277,7 +277,7 @@ describe IdeaPolicy do
       let(:user) { create(:user) }
 
       it { should_not permit(:show)    }
-      it { should_not permit(:create)  }
+      it { expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError) }
       it { should_not permit(:update)  }
       it { should_not permit(:destroy) }
 
@@ -309,7 +309,7 @@ describe IdeaPolicy do
       let(:user) { nil }
 
       it { should permit(:show)    }
-      it { should_not permit(:create)  }
+      it { expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError) }
       it { should_not permit(:update)  }
       it { should_not permit(:destroy) }
 
@@ -322,7 +322,7 @@ describe IdeaPolicy do
       let(:user) { author }
 
       it { should permit(:show)    }
-      it { should_not permit(:create)  }
+      it { expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError) }
       it { should_not permit(:update)  }
       it { should_not permit(:destroy) }
 
@@ -359,7 +359,7 @@ describe IdeaPolicy do
       let(:user) { nil }
 
       it { should permit(:show)    }
-      it { should_not permit(:create)  }
+      it { expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError) }
       it { should_not permit(:update)  }
       it { should_not permit(:destroy) }
 
@@ -372,7 +372,7 @@ describe IdeaPolicy do
       let(:user) { author }
 
       it { should permit(:show)    }
-      it { should_not permit(:create)  }
+      it { expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError) }
       it { should_not permit(:update)  }
       it { should_not permit(:destroy) }
 
