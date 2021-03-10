@@ -1,17 +1,13 @@
-class SideFxParticipationContextService
+# frozen_string_literal: true
 
+class SideFxParticipationContextService
   include SideFxHelper
 
-  def initialize permissions_service=PermissionsService.new
-    @permissions_service = permissions_service
-  end
+  def before_create(pc, user); end
 
-  def before_create pc, user
-  end
-
-  def after_create pc, user
-    @permissions_service.update_permissions_for_context pc
-    Surveys::WebhookManagerJob.perform_later('participation_context_created',
+  def after_create(pc, _user)
+    Surveys::WebhookManagerJob.perform_later(
+      'participation_context_created',
       pc,
       pc.participation_method,
       pc.survey_service,
@@ -19,12 +15,11 @@ class SideFxParticipationContextService
     )
   end
 
-  def before_update pc, user
-  end
+  def before_update(pc, user); end
 
-  def after_update pc, user
-    @permissions_service.update_permissions_for_context pc
-    Surveys::WebhookManagerJob.perform_later('participation_context_changed',
+  def after_update(pc, _user)
+    Surveys::WebhookManagerJob.perform_later(
+      'participation_context_changed',
       pc,
       pc.participation_method_previous_change&.dig(0) || pc.participation_method,
       pc.participation_method,
@@ -35,8 +30,9 @@ class SideFxParticipationContextService
     )
   end
 
-  def before_destroy pc, user
-    Surveys::WebhookManagerJob.perform_later('participation_context_to_be_deleted',
+  def before_destroy(pc, _user)
+    Surveys::WebhookManagerJob.perform_later(
+      'participation_context_to_be_deleted',
       pc.id,
       pc.participation_method,
       pc.survey_service,
@@ -44,8 +40,7 @@ class SideFxParticipationContextService
     )
   end
 
-  def after_destroy frozen_pc, user
-
-  end
-
+  def after_destroy(frozen_pc, user); end
 end
+
+SideFxParticipationContextService.prepend_if_ee('GranularPermissions::Patches::SideFxParticipationContextService')
