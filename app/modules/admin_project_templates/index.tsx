@@ -1,6 +1,6 @@
 import React from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
-import AdminProjectTemplates from './admin/containers';
+import AdminProjectTemplates from './admin';
 
 const configuration: ModuleConfiguration = {
   outlets: {
