@@ -1,6 +1,6 @@
 require "rails_helper"
 
-describe SmartGroupsService do
+describe SmartGroups::RulesService do
   let(:service) { SmartGroupsService.new }
   let(:metaschema) { JSON::Validator.validator_for_name("draft4").metaschema }
 
@@ -53,22 +53,22 @@ describe SmartGroupsService do
 
     it "successfully validates valid custom field date rule" do
       schema = service.generate_rules_json_schema
-      invalid_rule = { 
-        'ruleType' => 'custom_field_date', 
-        'customFieldId' => create(:custom_field_date).id, 
-        'predicate' => 'is_before', 
-        'value' => '2018-05-04' 
+      invalid_rule = {
+        'ruleType' => 'custom_field_date',
+        'customFieldId' => create(:custom_field_date).id,
+        'predicate' => 'is_before',
+        'value' => '2018-05-04'
       }
       expect(JSON::Validator.validate(schema, [invalid_rule])).to be true
     end
 
     it "rejects invalid custom field date rule" do
       schema = service.generate_rules_json_schema
-      invalid_rule = { 
-        'ruleType' => 'custom_field_date', 
-        'customFieldId' => create(:custom_field_date).id, 
-        'predicate' => 'is_before', 
-        'value' => 'garbage' 
+      invalid_rule = {
+        'ruleType' => 'custom_field_date',
+        'customFieldId' => create(:custom_field_date).id,
+        'predicate' => 'is_before',
+        'value' => 'garbage'
       }
       expect(JSON::Validator.validate(schema, [invalid_rule])).to be false
     end

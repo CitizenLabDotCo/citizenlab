@@ -52,8 +52,9 @@ class Group < ApplicationRecord
     membership_type == 'manual'
   end
 
-  # The manual? case is covered by counter_culture in membership.rb
-  def update_memberships_count!; end
+  def update_memberships_count!
+    update!(memberships_count: Membership.where(group: group).where(user: User.active).count)
+  end
 
   private
 

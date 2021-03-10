@@ -10,7 +10,7 @@ RSpec.describe Notification, type: :model do
   describe "all notification subclass factories" do
     before do
       # Make sure that we can find all notification
-      # subclasses, but without enabling eager 
+      # subclasses, but without enabling eager
       # loading for the other tests.
       Cl2Back::Application.eager_load!
     end
@@ -105,7 +105,7 @@ RSpec.describe Notification, type: :model do
       phase = create(:active_phase, with_permissions: true)
       project = phase.project
       project.visible_to = 'groups'
-      project.groups << create(:smart_group)
+      project.groups << create(:group)
       moderator = create(:moderator, project: project)
       other_moderator = create(:moderator, email: 'koen@test.com') # member
       admin = create(:admin)

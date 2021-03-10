@@ -26,7 +26,8 @@ class WebApi::V1::GroupsController < ApplicationController
 
   # insert
   def create
-    @group = Group.new(group_params)
+    @group = Group.new
+    @group.assign_attributes group_params
     authorize @group
     SideFxGroupService.new.before_create(@group, current_user)
     if @group.save
@@ -74,10 +75,6 @@ class WebApi::V1::GroupsController < ApplicationController
   end
 
   def group_params
-    params.require(:group).permit(
-      :membership_type,
-      title_multiloc: CL2_SUPPORTED_LOCALES,
-      rules: [:ruleType, :customFieldId, :predicate, :value, value: []]
-    )
+    permitted_attributes(@group)
   end
 end
