@@ -6,7 +6,6 @@ import React, {
   useRef,
   MouseEvent,
 } from 'react';
-import { get } from 'lodash-es';
 import clHistory from 'utils/cl-router/history';
 
 // components
@@ -17,7 +16,7 @@ import AdminProjectEditGeneral from 'containers/Admin/projects/edit/general';
 import { HeaderTitle } from './StyledComponents';
 
 // hooks
-import useAppConfiguration from 'hooks/useAppConfiguration';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
@@ -175,12 +174,7 @@ const CreateProject = memo<Props & InjectedIntlProps>(({ className, intl }) => {
     },
   ];
 
-  const tenant = useAppConfiguration();
-  const projectTemplatesEnabled: boolean = get(
-    tenant,
-    'data.attributes.settings.admin_project_templates.enabled',
-    false
-  );
+  const projectTemplatesEnabled = useFeatureFlag('admin_project_templates');
 
   const [expanded, setExpanded] = useState(false);
   const [selectedTabValue, setSelectedTabValue] = useState(tabs[0].value);
