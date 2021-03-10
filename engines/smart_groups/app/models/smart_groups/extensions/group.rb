@@ -4,7 +4,7 @@ module SmartGroups
       def self.included(base)
         base.class_eval do
           validates :rules, if: :rules?, json: {
-            schema: -> { SmartGroupsService.new.generate_rules_json_schema },
+            schema: -> { SmartGroups::RulesService.new.generate_rules_json_schema },
             message: lambda { |errors|
                        errors.map do |e|
                          { fragment: e[:fragment], error: e[:failed_attribute], human_message: e[:message] }
