@@ -7,6 +7,8 @@ import { DashboardsPage } from './';
 
 // mock utilities
 jest.mock('utils/cl-intl');
+jest.mock('components/Outlet', () => 'Outlet');
+
 import { mockAdmin, mockProjectModerator } from 'services/__mocks__/auth';
 const Intl = require('utils/cl-intl/__mocks__/');
 const { intl } = Intl;
