@@ -1,7 +1,6 @@
 import Loadable from 'react-loadable';
 import { LoadableLoadingAdmin } from 'components/UI/LoadableLoading';
 import topicsRoutes from './topics/routes';
-import moduleConfiguration from 'modules';
 
 export default () => ({
   path: 'settings',
