@@ -1,7 +1,7 @@
 require './engines/verification/lib/smart_group_rules/verified'
 
 module SmartGroups
-  class Service
+  class RulesService
     RULE_TYPE_TO_CLASS = [
       SmartGroups::Rules::CustomFieldText,
       SmartGroups::Rules::CustomFieldSelect,

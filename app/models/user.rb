@@ -145,14 +145,7 @@ class User < ApplicationRecord
     where.not(invite_status: 'pending').or(where(invite_status: nil))
   }
 
-
-  scope :in_group, -> (group) {
-    if group.rules?
-      SmartGroupsService.new.filter(self.all, group.rules)
-    elsif group.manual?
-      joins(:memberships).where(memberships: {group_id: group.id})
-    end
-  }
+  scope :in_group, -> (group) { joins(:memberships).where(memberships: {group_id: group.id}) }
 
   scope :in_any_group, -> (groups) {
     user_ids = groups
@@ -282,13 +275,12 @@ class User < ApplicationRecord
   end
 
   def groups
-    manual_groups + SmartGroupsService.new.groups_for_user(self)
+    manual_groups
   end
 
   def group_ids
-    manual_group_ids + SmartGroupsService.new.groups_for_user(self).pluck(:id)
+    manual_group_ids
   end
-
 
   private
 
@@ -356,3 +348,5 @@ class User < ApplicationRecord
 end
 
 User.prepend_if_ee('ProjectFolders::Patches::User')
+User.prepend_if_ee('SmartGroups::Patches::User')
+User.include_if_ee('SmartGroups::Extensions::User')

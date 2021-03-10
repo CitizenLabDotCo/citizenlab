@@ -36,7 +36,6 @@ class SideFxProjectService
 
   def before_destroy project, user
     @sfx_pc.before_destroy project, user if project.participation_context?
-    SmartGroupsService.new.filter_by_rule_value(Group.all, project.id).destroy_all
   end
 
   def after_destroy frozen_project, user
@@ -73,3 +72,5 @@ class SideFxProjectService
   end
 
 end
+
+SideFxProjectService.prepend_if_ee('SmartGroups::Patches::SideFxProjectService')

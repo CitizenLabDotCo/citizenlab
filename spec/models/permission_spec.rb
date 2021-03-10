@@ -18,24 +18,12 @@ RSpec.describe Permission, type: :model do
       @permission_everyone.update!(permitted_by: 'everyone')
       @g1 = create(:group)
       @g2 = create(:group)
-      @cl_veterans = create(:smart_group, rules: [
-        {
-          ruleType: 'email',
-          predicate: 'ends_on',
-          value: 'citizenlab.co'
-        },
-        {
-          ruleType: 'custom_field_number',
-          customFieldId: create(:custom_field_number, title_multiloc: {'en' => 'Birthyear?'}, key: 'birthyear', code: 'birthyear').id,
-          predicate: 'is_smaller_than_or_equal',
-          value: 1988
-        }
-      ])
       @permission_groups1 = @current_phase.permissions.find_by action: 'commenting_idea'
-      @permission_groups1.update!(permitted_by: 'groups', groups: [@g1,@cl_veterans])
+      @permission_groups1.update!(permitted_by: 'groups', groups: [@g1])
       @permission_groups2 = @current_phase.permissions.find_by action: 'voting_idea'
       @permission_groups2.update!(permitted_by: 'groups', groups: [@g2])
     end
+
     it 'returns all permissions for admins' do
       expect(Permission.for_user(create(:admin)).count).to eq Permission.count
     end
@@ -61,7 +49,7 @@ RSpec.describe Permission, type: :model do
       @g1.save!
       @g2.add_member member
       @g2.save!
-      expect(Permission.for_user(member).count).to eq 3
+      expect(Permission.for_user(member).count).to eq 2
     end
   end
 end
