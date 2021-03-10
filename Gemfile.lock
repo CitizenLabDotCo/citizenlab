@@ -86,6 +86,14 @@ PATH
       rails (~> 6.0.0)
 
 PATH
+  remote: engines/custom_statuses
+  specs:
+    custom_statuses (0.1.0)
+      active_model_serializers (~> 0.10.7)
+      pundit (~> 2.0)
+      rails (~> 6.0.0)
+
+PATH
   remote: engines/custom_style
   specs:
     custom_style (0.1.0)
@@ -110,6 +118,12 @@ PATH
     frontend (0.1.0)
       apartment (~> 2.2.1)
       rails (~> 6.0.0)
+
+PATH
+  remote: engines/geographic_dashboard
+  specs:
+    geographic_dashboard (0.1.0)
+      rails (~> 6.0.3, >= 6.0.3.2)
 
 PATH
   remote: engines/machine_translations
@@ -839,6 +853,7 @@ DEPENDENCIES
   carrierwave (~> 2.0.2)
   carrierwave-base64 (~> 2.6)
   counter_culture (~> 2.1)
+  custom_statuses!
   custom_style!
   dalli
   database_cleaner
@@ -848,6 +863,7 @@ DEPENDENCIES
   fast_jsonapi!
   fog-aws
   frontend!
+  geographic_dashboard!
   groupdate
   ice_cube!
   intercom (~> 4.1)
