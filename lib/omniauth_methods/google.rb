@@ -3,7 +3,7 @@ module OmniauthMethods
 
     # @param [AppConfiguration] configuration
     def omniauth_setup(configuration, env)
-      if configuration.has_feature?('google_login')
+      if configuration.feature_activated?('google_login')
         env['omniauth.strategy'].options[:client_id] = configuration.settings("google_login", "client_id")
         env['omniauth.strategy'].options[:client_secret] = configuration.settings("google_login", "client_secret")
         env['omniauth.strategy'].options[:image_size] = 640

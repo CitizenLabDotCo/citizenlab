@@ -201,4 +201,21 @@ namespace :inconsistent_data do
       end
     end
   end
+
+  task :fix_initiatives_with_non_admin_assignees => :environment do
+    Tenant.all.each do |tenant|
+      Apartment::Tenant.switch(tenant.schema_name) do
+        Initiative.where.not(assignee: User.admin).update_all(assignee_id: nil)
+      end
+    end
+  end
+
+  task :fix_authored_campaigns_without_authors => :environment do
+    Tenant.all.each do |tenant|
+      Apartment::Tenant.switch(tenant.schema_name) do
+        EmailCampaigns::Campaigns::Manual.where(sender: 'author').where(author_id: nil)
+          .update_all(sender: 'organization')
+      end
+    end
+  end
 end

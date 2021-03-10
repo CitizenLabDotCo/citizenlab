@@ -9,6 +9,7 @@ Gem::Specification.new do |s|
   s.version     = Frontend::VERSION
   s.authors     = ["Koen Gremmelprez"]
   s.email       = ["koen@citizenlab.co"]
+  s.licenses    = ['AGPLv3']
   s.summary     = "Contains all functionoality needed for cl2-front, unrelated to any core business domain"
 
   s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]

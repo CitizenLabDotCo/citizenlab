@@ -10,6 +10,7 @@ Gem::Specification.new do |s|
   s.authors     = ["Koen Gremmelprez"]
   s.email       = ["koen@citizenlab.co"]
   s.summary     = "Sends out the campaign emails as scheduled"
+  s.licenses    = ['AGPLv3']
 
   s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
 

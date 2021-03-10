@@ -26,7 +26,7 @@ resource "Initiatives" do
     parameter :areas, 'Filter by areas (OR)', required: false
     parameter :initiative_status, 'Filter by status (initiative status id)', required: false
     parameter :assignee, 'Filter by assignee (user id)', required: false
-    parameter :search, 'Filter by searching in title, body and author name', required: false
+    parameter :search, 'Filter by searching in title and body', required: false
     parameter :feedback_needed, "Filter out initiatives that need feedback", required: false
     parameter :sort, "Either 'new', '-new', 'author_name', '-author_name', 'upvotes_count', '-upvotes_count', 'status', '-status', 'random'", required: false
 
@@ -180,7 +180,7 @@ resource "Initiatives" do
     parameter :topics, 'Filter by topics (OR)', required: false
     parameter :areas, 'Filter by areas (OR)', required: false
     parameter :assignee, 'Filter by assignee (user id)', required: false
-    parameter :search, 'Filter by searching in title, body and author name', required: false
+    parameter :search, 'Filter by searching in title and body', required: false
 
     example "List all markers within a bounding box" do
       do_request(bounding_box: "[51.208758,3.224363,50.000667,5.715281]") # Bruges-Bastogne
@@ -258,7 +258,7 @@ resource "Initiatives" do
     parameter :author, 'Filter by author (user id)', required: false
     parameter :assignee, 'Filter by assignee (user id)', required: false
     parameter :initiative_status, 'Filter by status (initiative status id)', required: false
-    parameter :search, 'Filter by searching in title, body and author name', required: false
+    parameter :search, 'Filter by searching in title and body', required: false
     parameter :publication_status, "Return only initiatives with the specified publication status; returns all pusblished initiatives by default", required: false
 
     example_request "List initiative counts per filter option" do

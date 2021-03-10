@@ -13,7 +13,8 @@ module EmailCampaigns
     end
 
     def header_message
-      if tenant.name == 'Stad Leuven'
+      # TODO: tech debt
+      if app_configuration.name == 'Stad Leuven'
         '<p style="margin-bottom: 20px;">
            Bedankt om je eerste idee te delen. We houden je verder op de hoogte van de volgende stappen binnen dit project.
          </p>'.html_safe

@@ -11,46 +11,46 @@ class LifecycleStageNotChurnedCampaign < EmailCampaigns::Campaign
 end
 
 RSpec.describe EmailCampaigns::LifecycleStageRestrictable, type: :model do
-  
+
   before do
-    @tenant = Tenant.current
+    @app_configuration = AppConfiguration.instance
   end
 
-  context "on a campaign limited to demo and active tenants" do
+  context "on a campaign limited to demo and active platforms" do
     before do
       @campaign = LifecycleStageActiveAndDemoCampaign.create
     end
 
     describe "run_before_send_hooks" do
-      it "returns true when the tenant is active" do
-        @tenant.settings['core']['lifecycle_stage'] = 'active'
-        @tenant.save!
+      it "returns true when the platform is active" do
+        @app_configuration.settings['core']['lifecycle_stage'] = 'active'
+        @app_configuration.save!
         expect(@campaign.run_before_send_hooks).to be_truthy
       end
 
-      it "returns false when the tenant is churned" do
-        @tenant.settings['core']['lifecycle_stage'] = 'churned'
-        @tenant.save!
+      it "returns false when the platform is churned" do
+        @app_configuration.settings['core']['lifecycle_stage'] = 'churned'
+        @app_configuration.save!
         expect(@campaign.run_before_send_hooks).to be_falsy
       end
     end
   end
 
-  context "on a campaign limited to non-demo tenants" do
+  context "on a campaign limited to non-demo platforms" do
     before do
       @campaign = LifecycleStageNotChurnedCampaign.create
     end
 
     describe "run_before_send_hooks" do
-      it "returns true when the tenant is active" do
-        @tenant.settings['core']['lifecycle_stage'] = 'active'
-        @tenant.save!
+      it "returns true when the platform is active" do
+        @app_configuration.settings['core']['lifecycle_stage'] = 'active'
+        @app_configuration.save!
         expect(@campaign.run_before_send_hooks).to be_truthy
       end
 
-      it "returns false when the tenant is demo" do
-        @tenant.settings['core']['lifecycle_stage'] = 'demo'
-        @tenant.save!
+      it "returns false when the platform is demo" do
+        @app_configuration.settings['core']['lifecycle_stage'] = 'demo'
+        @app_configuration.save!
         expect(@campaign.run_before_send_hooks).to be_falsy
       end
     end

@@ -34,6 +34,7 @@ en:
       "official_feedback_on_your_initiative": Update on my initiative
       "password_reset": Password reset
       "project_moderation_rights_received": Project moderation rights received
+      "project_folder_moderation_rights_received": Project folder moderation rights received
       "project_phase_started": New project phase
       "project_phase_upcoming": Upcoming new project phase
       "status_change_of_commented_idea": Status change of an idea I commented on
@@ -84,6 +85,7 @@ en:
       "official_feedback_on_your_initiative": Update on your initiative - all users
       "password_reset": Password reset - all users
       "project_moderation_rights_received": Project moderation rights received - project moderators
+      "project_folder_moderation_rights_received": Project folder moderation rights received
       "project_phase_started": New project phase - all users
       "project_phase_upcoming": Upcoming new project phase - admins and project moderators
       "status_change_of_commented_idea": Status change of an idea you commented on - all users

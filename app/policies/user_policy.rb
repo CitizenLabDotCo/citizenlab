@@ -102,3 +102,5 @@ class UserPolicy < ApplicationPolicy
     [*simple_keys, array_keys.map{|k| [k, []]}.to_h]
   end
 end
+
+UserPolicy.prepend_if_ee('ProjectFolders::Patches::UserPolicy')

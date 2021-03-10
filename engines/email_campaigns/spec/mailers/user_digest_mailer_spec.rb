@@ -35,11 +35,11 @@ RSpec.describe EmailCampaigns::UserDigestMailer, type: :mailer do
     end
 
     it 'assigns organisation name' do
-      expect(mail.body.encoded).to match(Tenant.current.settings.dig('core', 'organization_name')['en'])
+      expect(mail.body.encoded).to match(AppConfiguration.instance.settings('core', 'organization_name')['en'])
     end
 
     it 'assigns home url' do
-      expect(mail.body.encoded).to match(Frontend::UrlService.new.home_url(tenant: Tenant.current, locale: 'en'))
+      expect(mail.body.encoded).to match(Frontend::UrlService.new.home_url(app_configuration: AppConfiguration.instance, locale: 'en'))
     end
   end
 end

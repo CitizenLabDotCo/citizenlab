@@ -25,13 +25,7 @@ class WebApi::V1::AppConfigurationsController < ApplicationController
 
   # Update the configuration attributes according to config params without saving it.
   def update_configuration!(configuration, params)
-    configuration.attributes = {
-        settings:  configuration.settings.deep_merge!(params[:settings].to_h),
-        style:     configuration.style.deep_merge!(params[:style].to_h),
-        logo:      params[:logo],
-        header_bg: params[:header_bg],
-        favicon:   params[:favicon],
-    }.compact
+    configuration.attributes = configuration.attributes.deep_merge(params).compact
     remove_images!(configuration, params)
     configuration
   end
@@ -47,8 +41,9 @@ class WebApi::V1::AppConfigurationsController < ApplicationController
   end
 
   def config_params
-    return @config_params if @config_params
-    @config_params = params.require(:app_configuration)
-                           .permit(:logo, :header_bg, :favicon, settings: {}, style: {})
+    @config_params ||= params.require(:app_configuration)
+                             .permit(:logo, :header_bg, :favicon, settings: {})
   end
 end
+
+WebApi::V1::AppConfigurationsController.prepend_if_ee('CustomStyle::WebApi::V1::Patches::AppConfigurationsController')

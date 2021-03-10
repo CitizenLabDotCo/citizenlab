@@ -58,12 +58,12 @@ class UserDisplayNameService
   # @param [User, nil] user
   # @return [String]
   def last_name!(user)
-    return nil if user.nil?
+    return nil if user&.last_name.nil?
     can_see_fullname_of?(user) ? user.last_name : self.class.initial(user.last_name)
   end
 
   def restricted?
-    !admin? && @app_configuration.has_feature?("abbreviated_user_names")
+    !admin? && @app_configuration.feature_activated?("abbreviated_user_names")
   end
 
   private

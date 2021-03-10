@@ -7,7 +7,7 @@ module EmailCampaigns
     skip_after_action :verify_authorized
 
     before_action :verify, only: [:create]
-    around_action :switch_tenant
+    around_action :switch_tenant  # MT_TODO to be injected from the multi-tenant engine
 
 
     MAILGUN_STATUS_MAPPING = {
@@ -66,12 +66,11 @@ module EmailCampaigns
       end
     end
 
+    # TODO_MT to be added from the multi-tenancy engine
     def switch_tenant
       tenant_id = params.dig(:'event-data', :'user-variables', :'cl_tenant_id')
       if tenant_id
-        Apartment::Tenant.switch(Tenant.find(tenant_id).schema_name) do
-          yield
-        end
+        Tenant.find(tenant_id).switch { yield }
       else
         head :not_acceptable
       end

@@ -74,7 +74,7 @@ namespace :checks do
   def validation_errors object
     return object.errors.details if !object.valid?
     if object.class.name == 'User' && !object.custom_field_values.values.select{|v| v.class == Array ? v.include?(nil) : v.nil?}.empty?
-      return {custom_field_values: "Contains null values"}
+      return { custom_field_values: [{ error: "Contains null values", value: object.custom_field_values }] }
     end
   end
 
