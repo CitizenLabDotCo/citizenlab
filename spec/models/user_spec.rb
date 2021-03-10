@@ -387,8 +387,7 @@ RSpec.describe User, type: :model do
       group1 = create(:group)
       group2 = create(:group)
       user1 = create(:user, email: 'jos@test.com', manual_groups: [group2])
-      user2 = create(:user, email: 'jules@test.com')
-      user3 = create(:user)
+      user2 = create(:user, email: 'jules@test.com', manual_groups: [group1])
       user4 = create(:user, manual_groups: [group2])
 
       expect(User.in_any_group([group1, group2])).to match_array [user1, user2, user4]
