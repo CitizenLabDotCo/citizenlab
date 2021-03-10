@@ -15,8 +15,8 @@ import {
   StyledHeaderTitle,
   StyledModalContentContainer,
 } from 'components/SignUpIn/styles';
-import ReactResizeDetector from 'react-resize-detector';
 import Outlet from 'components/Outlet';
+import ReactResizeDetector from 'react-resize-detector/build/withPolyfill';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';

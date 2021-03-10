@@ -35,6 +35,14 @@ type Localize = (
   maxChar?: number | undefined
 ) => string;
 
+export type ITabsOutlet = {
+  formatMessage: (
+    messageDescriptor: MessageDescriptor,
+    values?: { [key: string]: MessageValue } | undefined
+  ) => string;
+  onData: (data: InsertTabOptions) => void;
+};
+
 export type OutletsPropertyMap = {
   'app.containers.Navbar.projectlist.item': {
     publication: IAdminPublicationContent;
@@ -120,17 +128,19 @@ export type OutletsPropertyMap = {
   'app.containers.Admin.project.edit.permissions': {
     project: IProjectData;
   };
-  'app.containers.Admin.initiatives.tabs': {
-    formatMessage: (
-      messageDescriptor: MessageDescriptor,
-      values?: { [key: string]: MessageValue } | undefined
-    ) => string;
-    onData: (data: InsertTabOptions) => void;
-  };
+  'app.containers.Admin.initiatives.tabs': ITabsOutlet;
+  'app.containers.Admin.dashboards.tabs': ITabsOutlet;
   'app.containers.Admin.sideBar.navItems': {
     onData: (data: {
       insertAfterNavItemId?: string;
       navItemConfiguration: NavItem;
+    }) => void;
+  };
+  'app.containers.Admin.projects.edit.tabs.map': {
+    projectId: string;
+    onData: (data: {
+      insertAfterTabName?: string;
+      tabConfiguration: ITab;
     }) => void;
   };
 };
@@ -167,6 +177,8 @@ interface Routes {
   admin: RouteConfiguration[];
   'admin.settings': RouteConfiguration[];
   'admin.initiatives': RouteConfiguration[];
+  'admin.dashboards': RouteConfiguration[];
+  adminProjectMapTab: RouteConfiguration[];
 }
 
 export interface ParsedModuleConfiguration {
@@ -266,6 +278,14 @@ export const loadModules = (modules: Modules): ParsedModuleConfiguration => {
       ),
       'admin.initiatives': parseModuleRoutes(
         mergedRoutes?.['admin.initiatives'],
+        RouteTypes.ADMIN
+      ),
+      'admin.dashboards': parseModuleRoutes(
+        mergedRoutes?.['admin.dashboards'],
+        RouteTypes.ADMIN
+      ),
+      adminProjectMapTab: parseModuleRoutes(
+        mergedRoutes?.['adminProjectMapTab'],
         RouteTypes.ADMIN
       ),
     },
