@@ -39,12 +39,4 @@ export default defineMessages({
     id: 'app.containers.AdminPage.projects.all.existingProjects',
     defaultMessage: 'Existing projects',
   },
-  fromATemplate: {
-    id: 'app.containers.AdminPage.ProjectEdit.fromATemplate',
-    defaultMessage: 'From a template',
-  },
-  fromScratch: {
-    id: 'app.containers.AdminPage.ProjectEdit.fromScratch',
-    defaultMessage: 'From scratch',
-  },
 });
