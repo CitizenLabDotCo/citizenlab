@@ -1,4 +1,4 @@
-require './engines/verification/lib/smart_group_rules/verified'
+require './engines/verification/lib/smart_groups/rules/verified'
 
 module SmartGroups
   class RulesService

@@ -349,4 +349,3 @@ end
 
 User.prepend_if_ee('ProjectFolders::Patches::User')
 User.prepend_if_ee('SmartGroups::Patches::User')
-User.include_if_ee('SmartGroups::Extensions::User')
