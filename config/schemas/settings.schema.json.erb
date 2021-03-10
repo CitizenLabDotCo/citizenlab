@@ -159,6 +159,13 @@
             "title": "Geographic Unit",
             "description": "What a geographic unit should be called on this platform (e.g., neighbourhood, district, etc.)? Input the singular form here with all lowercase letters. If left blank, this field defaults to 'area'.",
             "$ref": "#/definitions/multiloc_string"
+          },
+          "reply_to_email": {
+            "title": "Reply-to email",
+            "description": "The email used in the reply-to field when users receive emails from automated campaigns.",
+            "type": "string",
+            "format": "email",
+            "default": "support@citizenlab.co"
           }
         }
       },
