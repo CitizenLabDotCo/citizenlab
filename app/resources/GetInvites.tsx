@@ -15,14 +15,7 @@ import {
 } from 'rxjs/operators';
 import { IInviteData, invitesStream } from 'services/invites';
 import shallowCompare from 'utils/shallowCompare';
-import {
-  isEqual,
-  omitBy,
-  isString,
-  isEmpty,
-  isNil,
-  isBoolean,
-} from 'lodash-es';
+import { isEqual, omitBy, isString, isEmpty, isNil } from 'lodash-es';
 import {
   getPageNumberFromUrl,
   getSortAttribute,
@@ -52,7 +45,6 @@ export interface InputProps {
   sort?: Sort;
   search?: string;
   inviteStatus?: string[];
-  cache?: boolean;
 }
 
 interface IQueryParameters {
@@ -141,9 +133,6 @@ export default class GetInvites extends React.Component<Props, State> {
         .pipe(
           map(([queryParameters, search]) => ({ ...queryParameters, search })),
           switchMap((queryParameters) => {
-            const cacheStream = isBoolean(this.props.cache)
-              ? this.props.cache
-              : true;
             const oldPageNumber = this.state.queryParameters['page[number]'];
             const newPageNumber = queryParameters['page[number]'];
             queryParameters['page[number]'] =
@@ -151,7 +140,6 @@ export default class GetInvites extends React.Component<Props, State> {
 
             return invitesStream({
               queryParameters,
-              cacheStream,
             }).observable.pipe(
               map((invites) => ({ invites, queryParameters }))
             );

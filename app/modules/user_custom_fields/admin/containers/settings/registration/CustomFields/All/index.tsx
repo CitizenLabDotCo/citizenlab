@@ -294,7 +294,7 @@ const CustomFieldsListWithHoCs = DragDropContext(HTML5Backend)(
 );
 
 export default (inputProps: InputProps) => (
-  <GetUserCustomFields cache={false}>
+  <GetUserCustomFields>
     {(customFields) => (
       <CustomFieldsListWithHoCs
         {...inputProps}

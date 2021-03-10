@@ -8,12 +8,8 @@ const indexPath = (projectFolderId: string) =>
 const showPath = (projectFolderId: string, moderatorId: string) =>
   `${indexPath(projectFolderId)}/${moderatorId}`;
 
-export function folderModeratorsStream(
-  projectFolderId: string,
-  cacheStream?: boolean
-) {
+export function folderModeratorsStream(projectFolderId: string) {
   return streams.get<IUsers>({
-    cacheStream,
     apiEndpoint: indexPath(projectFolderId),
     queryParameters: { project_folder_id: projectFolderId },
   });

@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
-import Leaflet from 'leaflet';
+import { popup, LatLng, Map as LeafletMap } from 'leaflet';
 import { withRouter, WithRouterProps } from 'react-router';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -30,7 +30,6 @@ import messages from './messages';
 
 // Styling
 import styled from 'styled-components';
-import { viewportWidths } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 
 const Container = styled.div`
@@ -63,7 +62,7 @@ interface Props extends InputProps, DataProps {}
 interface State {
   points: Point[];
   selectedIdeaId: string | null;
-  selectedLatLng: Leaflet.LatLng | null;
+  selectedLatLng: LatLng | null;
 }
 
 export class IdeasMap extends PureComponent<Props & WithRouterProps, State> {
@@ -114,7 +113,7 @@ export class IdeasMap extends PureComponent<Props & WithRouterProps, State> {
     this.setState({ selectedIdeaId: null });
   };
 
-  onMapClick = (map: Leaflet.Map, position: Leaflet.LatLng) => {
+  onMapClick = (map: LeafletMap, position: LatLng) => {
     this.setState({ selectedLatLng: position });
     const { project, phase } = this.props;
     const ideaPostingEnabled =
@@ -122,10 +121,7 @@ export class IdeasMap extends PureComponent<Props & WithRouterProps, State> {
       (!isNilOrError(phase) && phase.attributes.posting_enabled);
 
     if (ideaPostingEnabled && this.ideaButtonRef) {
-      Leaflet.popup()
-        .setLatLng(position)
-        .setContent(this.ideaButtonRef)
-        .openOn(map);
+      popup().setLatLng(position).setContent(this.ideaButtonRef).openOn(map);
     }
 
     return;
@@ -135,22 +131,6 @@ export class IdeasMap extends PureComponent<Props & WithRouterProps, State> {
     this.ideaButtonRef = element;
   };
 
-  getMapHeight = () => {
-    const { windowSize } = this.props;
-    const smallerThanMaxTablet = windowSize
-      ? windowSize <= viewportWidths.largeTablet
-      : false;
-    const smallerThanMinTablet = windowSize
-      ? windowSize <= viewportWidths.smallTablet
-      : false;
-    const height = smallerThanMinTablet
-      ? 400
-      : smallerThanMaxTablet
-      ? 500
-      : 550;
-    return height;
-  };
-
   render() {
     const { phaseId, projectIds, ideaMarkers, className } = this.props;
     const {
@@ -158,7 +138,6 @@ export class IdeasMap extends PureComponent<Props & WithRouterProps, State> {
       points,
       selectedLatLng: selectedPosition,
     } = this.state;
-    const mapHeight = this.getMapHeight();
     const projectId =
       projectIds && projectIds.length === 1 ? projectIds[0] : null;
 
@@ -183,7 +162,6 @@ export class IdeasMap extends PureComponent<Props & WithRouterProps, State> {
             selectedIdeaId ? <IdeaPreview ideaId={selectedIdeaId} /> : null
           }
           onBoxClose={this.deselectIdea}
-          mapHeight={mapHeight}
           projectId={
             projectIds && projectIds.length === 1 ? projectIds[0] : null
           }
