@@ -5,7 +5,7 @@ describe InitiativeVotePolicy do
     PermissionsService.new.update_global_permissions
   end
 
-  subject { InitiativeVotePolicy.new(user, vote) }
+  subject(:policy) { InitiativeVotePolicy.new(user, vote) }
   let(:scope) { InitiativeVotePolicy::Scope.new(user, Vote) }
   let(:votable) { create(:initiative)}
   let!(:vote) { create(:vote, votable: votable) }
@@ -16,7 +16,7 @@ describe InitiativeVotePolicy do
     it { should_not permit(:show) }
     it { should_not permit(:create) }
     it { should_not permit(:up) }
-    it { should_not permit(:down) }
+    it { expect { policy.down? }.to raise_error(Pundit::NotAuthorizedError) }
     it { should_not permit(:destroy) }
 
     it "should not index the vote" do
@@ -30,7 +30,7 @@ describe InitiativeVotePolicy do
     it { should_not permit(:show) }
     it { should_not permit(:create) }
     it { should_not permit(:up) }
-    it { should_not permit(:down) }
+    it { expect { policy.down? }.to raise_error(Pundit::NotAuthorizedError) }
     it { should_not permit(:destroy) }
 
     it "should not index the vote" do
@@ -44,7 +44,7 @@ describe InitiativeVotePolicy do
     it { should     permit(:show) }
     it { should     permit(:create) }
     it { should     permit(:up) }
-    it { should_not permit(:down) }
+    it { expect { policy.down? }.to raise_error(Pundit::NotAuthorizedError) }
     it { should     permit(:destroy) }
 
     it "should index the vote" do
@@ -58,7 +58,7 @@ describe InitiativeVotePolicy do
     it { should     permit(:show) }
     it { should_not permit(:create) }
     it { should_not permit(:up) }
-    it { should_not permit(:down) }
+    it { expect { policy.down? }.to raise_error(Pundit::NotAuthorizedError) }
     it { should_not permit(:destroy) }
 
     it "should index the vote" do

@@ -25,7 +25,7 @@ class InitiativeVotePolicy < ApplicationPolicy
     reason = PermissionsService.new.denied?(user, 'voting_initiative')
     reason ? raise_not_authorized(reason) : true
   end
-  
+
   def destroy?
     create?
   end
@@ -35,7 +35,7 @@ class InitiativeVotePolicy < ApplicationPolicy
   end
 
   def down?
-    false
+    raise_not_authorized('downvoting_not_supported')
   end
 
   def show?
