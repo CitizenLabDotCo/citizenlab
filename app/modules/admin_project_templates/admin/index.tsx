@@ -1,11 +1,4 @@
-import React, {
-  memo,
-  useState,
-  useCallback,
-  useEffect,
-  useRef,
-  MouseEvent,
-} from 'react';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 
 // components
@@ -17,6 +10,10 @@ import AdminProjectEditGeneral from 'containers/Admin/projects/edit/general';
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
+
+// tracking
+import { trackEventByName } from 'utils/analytics';
+import tracks from '../tracks';
 
 const StyledTabs = styled(Tabs)`
   margin-bottom: 25px;
@@ -40,6 +37,7 @@ const AdminProjectTemplates = ({
     },
   ];
   const [selectedTabValue, setSelectedTabValue] = useState(tabs[0].value);
+  const isFirstRun = useRef(true);
 
   const handleTabOnClick = useCallback(
     (newSelectedTabValue: string) => {
@@ -47,6 +45,19 @@ const AdminProjectTemplates = ({
     },
     [selectedTabValue]
   );
+
+  useEffect(() => {
+    if (isFirstRun.current) {
+      isFirstRun.current = false;
+      return;
+    }
+
+    if (selectedTabValue === 'template') {
+      trackEventByName(tracks.createProjectFromTemplateTabSelected);
+    } else if (selectedTabValue === 'scratch') {
+      trackEventByName(tracks.createProjectFromScratchTabSelected);
+    }
+  }, [selectedTabValue]);
 
   return (
     <>
