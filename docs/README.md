@@ -1,8 +1,9 @@
 # Changelog
 
-## Next release
+## 2021-03-09
 
-/
+### Fixed
+- Fixed a crash that would occur when tring to add tags to an idea
 
 ## 2021-03-09
 
