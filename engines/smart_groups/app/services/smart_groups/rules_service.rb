@@ -34,7 +34,7 @@ module SmartGroups
         # We're using `id: [user.id]` instead of `id: user.id` to
         # workaround this rails/arel issue:
         # https://github.com/rails/rails/issues/20077
-        Group
+        ::Group
           .where(id: group.id)
           .where(filter(::User.where(id: [user.id]), group.rules).arel.exists)
       end.inject(:or) || ::Group.none
