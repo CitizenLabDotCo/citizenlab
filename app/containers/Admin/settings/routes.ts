@@ -34,13 +34,19 @@ export default () => ({
       }),
     },
     {
+      path: 'registration',
+      component: Loadable({
+        loader: () => import('containers/Admin/settings/registration'),
+        loading: () => null,
+      }),
+    },
+    {
       path: 'pages',
       component: Loadable({
         loader: () => import('containers/Admin/settings/pages'),
         loading: () => null,
       }),
     },
-    ...moduleConfiguration.routes['admin.settings'],
     topicsRoutes(),
     {
       path: 'widgets',

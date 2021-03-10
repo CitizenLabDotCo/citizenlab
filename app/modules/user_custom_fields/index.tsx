@@ -21,14 +21,6 @@ const RenderOnCustomFields = ({ children }) => {
 };
 
 const configuration: ModuleConfiguration = {
-  routes: {
-    'admin.settings': [
-      {
-        path: 'registration',
-        container: () => import('./admin/containers/settings/registration'),
-      },
-    ],
-  },
   outlets: {
     'app.containers.Admin.dashboard.users.graphs': RegistrationFieldsToGraphs,
     'app.components.SignUpIn.SignUp.step': (props) => (
