@@ -24,7 +24,7 @@ class IdeaVotePolicy < ApplicationPolicy
     return unless active? && owner?
     return unless record.votable
 
-    reason = voting_disabled_reason_for_idea_vote(record, user)
+    reason = participation_context_service.voting_disabled_reason_for_idea_vote(record, user)
     reason ? raise_not_authorized(reason) : true
   end
 
