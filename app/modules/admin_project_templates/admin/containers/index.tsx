@@ -7,7 +7,7 @@ import useAppConfiguration from 'hooks/useAppConfiguration';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import { trackEventByName } from 'utils/analytics';
 import { get, isEmpty } from 'lodash-es';
-import tracks from './tracks';
+import tracks from '../../tracks';
 
 import ProjectTemplateCards from './ProjectTemplateCards';
 
