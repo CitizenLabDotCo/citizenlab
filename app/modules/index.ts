@@ -4,6 +4,8 @@ import projectFoldersConfiguration from './project_folders';
 import smartGroupsConfiguration from './smart_groups';
 import granularPermissionsConfiguration from './granular_permissions';
 import moderationConfiguration from './moderation';
+import geographicDashboardConfiguration from './geographic_dashboard';
+
 import customMapsConfiguration from './custom_maps';
 import googleTagManagerConfiguration from './google_tag_manager';
 import googleAnalyticsConfiguration from './google_analytics';
@@ -46,6 +48,10 @@ export default loadModules([
   },
   {
     configuration: moderationConfiguration,
+    isEnabled: true,
+  },
+  {
+    configuration: geographicDashboardConfiguration,
     isEnabled: true,
   },
   {
