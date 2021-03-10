@@ -31,7 +31,7 @@ resource 'Groups' do
     post 'web_api/v1/groups' do
       with_options scope: :group do
         parameter :rules,
-                  "In case of 'rules' membership type, the user criteria to be a member. Conforms to this json schema: #{JSON.pretty_generate(SmartGroupsService.new.generate_rules_json_schema)}"
+                  "In case of 'rules' membership type, the user criteria to be a member. Conforms to this json schema: #{JSON.pretty_generate(SmartGroups::RulesService.new.generate_rules_json_schema)}"
       end
       ValidationErrorHelper.new.error_fields(self, Group)
 
@@ -75,7 +75,7 @@ resource 'Groups' do
         parameter :membership_type,
                   "Whether members are manually or automatically added. Either #{Group::MEMBERSHIP_TYPES.join(', ')}"
         parameter :rules,
-                  "In case of 'rules' membership type, the user criteria to be a member. Conforms to this json schema: #{JSON.pretty_generate(SmartGroupsService.new.generate_rules_json_schema)}"
+                  "In case of 'rules' membership type, the user criteria to be a member. Conforms to this json schema: #{JSON.pretty_generate(SmartGroups::RulesService.new.generate_rules_json_schema)}"
       end
       ValidationErrorHelper.new.error_fields(self, Group)
 

@@ -2,7 +2,7 @@ module SmartGroups
   module Extensions
     module Permission
       def participation_conditions
-        service = SmartGroupsService.new
+        service = SmartGroups::RulesService.new
         groups.select(&:rules?).map do |group|
           group.rules.select do |rule|
             rule['ruleType'] != 'verified'

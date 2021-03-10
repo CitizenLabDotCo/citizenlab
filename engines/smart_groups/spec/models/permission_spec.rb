@@ -34,7 +34,7 @@ RSpec.describe Permission, type: :model do
 
       permission = create(:permission, permitted_by: 'groups', groups: [cl_verified, manual, verified, veterans])
 
-      service = SmartGroupsService.new
+      service = SmartGroups::RulesService.new
       expect(permission.participation_conditions).to match [
         [
           service.parse_json_rule(email_rule).description_multiloc

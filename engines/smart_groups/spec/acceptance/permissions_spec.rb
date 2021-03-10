@@ -3,7 +3,7 @@ require 'rspec_api_documentation/dsl'
 
 
 resource "Permissions" do
- 
+
   explanation 'These determine who (e.g. groups) can take which actions (e.g. posting, voting) in a participation context'
 
   before do
@@ -159,7 +159,7 @@ resource "Permissions" do
     end
 
     get "web_api/v1/projects/:project_id/permissions/:action/participation_conditions" do
-      before do 
+      before do
         @rule = {'ruleType' => 'email', 'predicate' => 'ends_on', 'value' => 'test.com'}
         @groups = [create(:group), create(:smart_group, rules: [@rule])]
         @permission = @project.permissions.first
@@ -170,12 +170,12 @@ resource "Permissions" do
       example_request "Get the participation conditions of a user" do
         expect(status).to eq 200
         json_response = json_parse(response_body)
-        expect(json_response).to eq [[SmartGroupsService.new.parse_json_rule(@rule).description_multiloc.symbolize_keys]]
+        expect(json_response).to eq [[SmartGroups::RulesService.new.parse_json_rule(@rule).description_multiloc.symbolize_keys]]
       end
     end
 
     get "web_api/v1/phases/:phase_id/permissions/:action/participation_conditions" do
-      before do 
+      before do
         @rule = {'ruleType' => 'email', 'predicate' => 'ends_on', 'value' => 'test.com'}
         @groups = [create(:group), create(:smart_group, rules: [@rule])]
         @permission = @phase.permissions.first
@@ -186,7 +186,7 @@ resource "Permissions" do
       example_request "Get the participation conditions of a user" do
         expect(status).to eq 200
         json_response = json_parse(response_body)
-        expect(json_response).to eq [[SmartGroupsService.new.parse_json_rule(@rule).description_multiloc.symbolize_keys]]
+        expect(json_response).to eq [[SmartGroups::RulesService.new.parse_json_rule(@rule).description_multiloc.symbolize_keys]]
       end
     end
   end
