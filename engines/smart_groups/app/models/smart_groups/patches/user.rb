@@ -6,7 +6,7 @@ module SmartGroups
           scope :in_group, lambda { |group|
             return SmartGroups::RulesService.new.filter(all, group.rules) if group.rules?
 
-            super
+            joins(:memberships).where(memberships: { group_id: group.id })
           }
         end
       end
