@@ -86,8 +86,6 @@ class ParticipationContextService
       POSTING_DISABLED_REASONS[:not_ideation]
     elsif !context.posting_enabled
       POSTING_DISABLED_REASONS[:posting_disabled]
-    else
-      @permission_service.denied?(user, 'posting_idea', context)
     end
   end
 
@@ -114,8 +112,6 @@ class ParticipationContextService
       COMMENTING_DISABLED_REASONS[:not_supported]
     elsif !context.commenting_enabled
       COMMENTING_DISABLED_REASONS[:commenting_disabled]
-    else
-      @permission_service.denied?(user, 'commenting_idea', context)
     end
   end
 
@@ -157,8 +153,6 @@ class ParticipationContextService
       VOTING_DISABLED_REASONS[:voting_disabled]
     elsif user && voting_limit_reached?(context, user)
       VOTING_DISABLED_REASONS[:voting_limited_max_reached]
-    else
-      @permission_service.denied?(user, 'voting_idea', context)
     end
   end
 
@@ -172,8 +166,6 @@ class ParticipationContextService
       VOTING_DISABLED_REASONS[:idea_not_in_current_phase]
     elsif !context.voting_enabled
       VOTING_DISABLED_REASONS[:voting_disabled]
-    else
-      @permission_service.denied?(user, 'voting_idea', context)
     end
   end
 
@@ -187,8 +179,6 @@ class ParticipationContextService
       TAKING_SURVEY_DISABLED_REASONS[:project_inactive]
     elsif !context.survey?
       TAKING_SURVEY_DISABLED_REASONS[:not_survey]
-    else
-      @permission_service.denied?(user, 'taking_survey', context)
     end
   end
 
@@ -204,8 +194,6 @@ class ParticipationContextService
       TAKING_POLL_DISABLED_REASONS[:not_poll]
     elsif user && context.poll_responses.exists?(user: user)
       TAKING_POLL_DISABLED_REASONS[:already_responded]
-    else
-      @permission_service.denied?(user, 'taking_poll', context)
     end
   end
 
@@ -219,47 +207,27 @@ class ParticipationContextService
   end
 
   def budgeting_disabled_reason_for_context(context, user)
-    if !context
-      BUDGETING_DISABLED_REASONS[:project_inactive]
-    else
-      @permission_service.denied?(user, 'budgeting', context)
-    end
+    BUDGETING_DISABLED_REASONS[:project_inactive] if !context
   end
 
   def future_posting_idea_enabled_phase(project, user, time = Time.zone.now)
-    return nil unless project.timeline?
-
-    @timeline_service.future_phases(project, time).find do |phase|
-      phase.posting_enabled && !@permission_service.denied?(user, 'posting_idea', phase)
-    end
+    future_phases(project, time).find { |phase| !posting_idea_disabled_reason_for_context(phase, user) }
   end
 
   def future_commenting_idea_enabled_phase(project, user, time = Time.zone.now)
-    return nil unless project.timeline?
-
-    @timeline_service.future_phases(project, time).find do |phase|
-      phase.can_contain_ideas? && phase.commenting_enabled && !@permission_service.denied?(user, 'commenting_idea', phase)
-    end
+    future_phases(project, time).find { |phase| !commenting_idea_disabled_reason_for_context(phase, user) }
   end
 
   def future_voting_idea_enabled_phase(project, user, time = Time.zone.now)
-    return nil unless project.timeline?
-
-    @timeline_service.future_phases(project, time).find do |phase|
-      phase.can_contain_ideas? && phase.voting_enabled && !@permission_service.denied?(user, 'voting_idea', phase)
-    end
+    future_phases(project, time).find { |phase| !voting_idea_disabled_reason_for_context(phase, user) }
   end
 
   def future_comment_voting_idea_enabled_phase(project, user, time = Time.zone.now)
-    future_commenting_idea_enabled_phase project, user, time
+    future_commenting_idea_enabled_phase(project, user, time)
   end
 
   def future_budgeting_enabled_phase(project, user, time = Time.zone.now)
-    return nil unless project.timeline?
-
-    @timeline_service.future_phases(project, time).find do |phase|
-      !@permission_service.denied?(user, 'budgeting', phase)
-    end
+    future_phases(project, time).find { |phase| !budgeting_disabled_reason_for_context(phase, user) }
   end
 
   def moderating_participation_context_ids(user)
@@ -271,12 +239,16 @@ class ParticipationContextService
   def allocated_budget(project)
     Idea.from(project.ideas.select('budget * baskets_count as allocated_budget')).sum(:allocated_budget)
   end
-  
+
   def allocated_budgets(projects)
     Idea.from(Idea.where(project: projects).select('project_id, budget * baskets_count as allocated_budget')).group(:project_id).sum(:allocated_budget)
   end
 
   private
+
+  def future_phases(project, time)
+    project.timeline? ? @timeline_service.future_phases(project, time) : []
+  end
 
   def voting_limit_reached?(context, user)
     return unless context.voting_limited?
@@ -292,3 +264,5 @@ class ParticipationContextService
     user.votes.where(votable_id: context.ideas).count
   end
 end
+
+ParticipationContextService.prepend_if_ee('GranularPermissions::Patches::ParticipationContextService')
