@@ -4,7 +4,7 @@
 
 ### Added
 - CitizenLab admins can now change the link to the accessibility statement via AdminHQ.
-- "from-to" field in emails from campaigns can be customized for each platform
+- "Reply-to" field in emails from campaigns can be customized for each platform
 - Customizable minimal required password length for each platform
 
 
