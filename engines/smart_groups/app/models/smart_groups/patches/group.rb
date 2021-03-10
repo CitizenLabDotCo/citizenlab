@@ -2,7 +2,7 @@ module SmartGroups
   module Patches
     module Group
       def member?(user)
-        return SmartGroups::Service.new.groups_for_user(user).exists?(id: id) if rules?
+        return SmartGroups::RulesService.new.groups_for_user(user).exists?(id: id) if rules?
 
         super
       end
@@ -20,7 +20,7 @@ module SmartGroups
       end
 
       def members
-        return SmartGroups::Service.new.filter(User, rules) if rules?
+        return SmartGroups::RulesService.new.filter(User, rules) if rules?
 
         super
       end
@@ -32,7 +32,7 @@ module SmartGroups
       end
 
       def member_ids
-        return SmartGroups::Service.new.filter(User, rules).ids if rules?
+        return SmartGroups::RulesService.new.filter(User, rules).ids if rules?
 
         super
       end
