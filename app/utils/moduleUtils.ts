@@ -175,7 +175,6 @@ type RecursivePartial<T> = {
 interface Routes {
   citizen: RouteConfiguration[];
   admin: RouteConfiguration[];
-  'admin.settings': RouteConfiguration[];
   'admin.initiatives': RouteConfiguration[];
   'admin.dashboards': RouteConfiguration[];
   adminProjectMapTab: RouteConfiguration[];
@@ -272,10 +271,6 @@ export const loadModules = (modules: Modules): ParsedModuleConfiguration => {
     routes: {
       citizen: parseModuleRoutes(mergedRoutes?.citizen),
       admin: parseModuleRoutes(mergedRoutes?.admin, RouteTypes.ADMIN),
-      'admin.settings': parseModuleRoutes(
-        mergedRoutes?.['admin.settings'],
-        RouteTypes.ADMIN
-      ),
       'admin.initiatives': parseModuleRoutes(
         mergedRoutes?.['admin.initiatives'],
         RouteTypes.ADMIN
