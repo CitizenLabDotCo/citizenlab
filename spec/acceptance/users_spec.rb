@@ -392,6 +392,7 @@ resource "Users" do
               create(:membership, user: usr, group: @group)
             end
           end
+
           let(:group) { @group.id }
           let(:users) { @selected.map(&:id) }
 

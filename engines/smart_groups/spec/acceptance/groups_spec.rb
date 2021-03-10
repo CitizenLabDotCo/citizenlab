@@ -30,13 +30,16 @@ resource 'Groups' do
 
     post 'web_api/v1/groups' do
       with_options scope: :group do
+        parameter :title_multiloc, 'The title of the group in multiple locales'
+        parameter :membership_type,
+                  "Whether members are manually or automatically added. Either #{Group.membership_types.join(', ')}"
         parameter :rules,
                   "In case of 'rules' membership type, the user criteria to be a member. Conforms to this json schema: #{JSON.pretty_generate(SmartGroups::RulesService.new.generate_rules_json_schema)}"
       end
       ValidationErrorHelper.new.error_fields(self, Group)
 
       describe do
-        let(:group) { build(:group) }
+        let(:group) { build(:smart_group) }
         let(:title_multiloc) { group.title_multiloc }
         let(:membership_type) { 'rules' }
         let(:rules) { [{ ruleType: 'role', predicate: 'is_admin' }] }
@@ -56,15 +59,15 @@ resource 'Groups' do
           not_really_member = create(:user, email: 'kk@kk.com', registration_completed_at: nil)
         end
 
-        let(:title_multiloc) { build(:group).title_multiloc }
+        let(:title_multiloc) { build(:smart_group).title_multiloc }
         let(:membership_type) { 'rules' }
         let(:rules) { [{ ruleType: 'email', predicate: 'contains', value: 'k' }] }
 
         example_request 'Membership count should only count active users', document: false do
           expect(response_status).to eq 201
           json_response = json_parse(response_body)
-          group = Group.find json_response.dig(:data, :id)
-          expect(group.memberships_count).to eq 1
+          group = ::Group.find json_response.dig(:data, :id)
+          expect(group.reload.memberships_count).to eq 1
         end
       end
     end

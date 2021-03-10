@@ -28,7 +28,7 @@ module SmartGroups
       end
 
       def members
-        return SmartGroups::RulesService.new.filter(User, rules) if rules?
+        return SmartGroups::RulesService.new.filter(::User, rules) if rules?
 
         super
       end
@@ -40,7 +40,7 @@ module SmartGroups
       end
 
       def member_ids
-        return SmartGroups::RulesService.new.filter(User, rules).ids if rules?
+        return SmartGroups::RulesService.new.filter(::User, rules).ids if rules?
 
         super
       end
@@ -52,7 +52,7 @@ module SmartGroups
       end
 
       def update_memberships_count!
-        update(memberships_count: members.active.count) if rules?
+        return update(memberships_count: members.active.count) if rules?
 
         super
       end
