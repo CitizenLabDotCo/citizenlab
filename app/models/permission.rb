@@ -1,16 +1,16 @@
 # frozen_string_literal: true
 
 class Permission < ApplicationRecord
-  ACTIONS = %w[posting_idea voting_idea commenting_idea posting_initiative voting_initiative commenting_initiative budgeting taking_survey taking_poll].freeze
   PERMITTED_BIES = %w[everyone users groups admins_moderators].freeze
 
   belongs_to :permission_scope, polymorphic: true, optional: true
   has_many :groups_permissions, dependent: :destroy
   has_many :groups, through: :groups_permissions
 
-  validates :action, presence: true, inclusion: { in: ACTIONS }
+  validates :action, presence: true, inclusion: { in: PermissionsService.all_actions }
   validates :permitted_by, presence: true, inclusion: { in: PERMITTED_BIES }
   validates :action, uniqueness: { scope: %i[permission_scope_id permission_scope_type] }
+  validates :permission_scope_type, inclusion: { in: PermissionsService.scope_types }
 
   before_validation :set_permitted_by, on: :create
 
