@@ -47,6 +47,7 @@ import {
   viewportWidths,
   isRtl,
 } from 'utils/styleUtils';
+import GetFeatureFlag from 'resources/GetFeatureFlag';
 
 const Container = styled.footer<{ insideModal?: boolean }>`
   display: flex;
@@ -354,6 +355,7 @@ interface DataProps {
   locale: GetLocaleChildProps;
   windowSize: GetWindowSizeChildProps;
   appConfiguration: GetAppConfigurationChildProps;
+  customizedA11yHrefEnabled: boolean;
 }
 
 interface Props extends DataProps, InputProps {}
@@ -442,14 +444,11 @@ class PlatformFooter extends PureComponent<Props, State> {
   };
 
   getHasCustomizedA11yFooterLink = () => {
-    const { appConfiguration } = this.props;
+    const { customizedA11yHrefEnabled, appConfiguration } = this.props;
 
     return (
       !isNilOrError(appConfiguration) &&
-      appConfiguration.attributes.settings.custom_accessibility_statement_link
-        .enabled &&
-      appConfiguration.attributes.settings.custom_accessibility_statement_link
-        .allowed &&
+      customizedA11yHrefEnabled &&
       !isEmpty(
         appConfiguration.attributes.settings.custom_accessibility_statement_link
           .url
@@ -649,6 +648,9 @@ const Data = adopt<Props>({
   locale: <GetLocale />,
   windowSize: <GetWindowSize />,
   appConfiguration: <GetAppConfiguration />,
+  customizedA11yHrefEnabled: (
+    <GetFeatureFlag name="custom_accessibility_statement_link" />
+  ),
 });
 
 export default (inputProps: InputProps) => (
