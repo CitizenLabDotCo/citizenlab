@@ -51,3 +51,5 @@ class Permission < ApplicationRecord
   end
 
 end
+
+Permission.include_if_ee('SmartGroups::Extensions::Permission')
