@@ -49,9 +49,7 @@ module SmartGroups
         super
       end
 
-      private
-
-      def membership_types
+      def self.membership_types
         %w[manual rules]
       end
     end
