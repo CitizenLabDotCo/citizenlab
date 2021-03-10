@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe IdeaVotePolicy do
 
-  subject { IdeaVotePolicy.new(user, vote) }
+  subject(:policy) { IdeaVotePolicy.new(user, vote) }
   let(:scope) { IdeaVotePolicy::Scope.new(user, Vote) }
   let(:project) { create(:continuous_project, with_permissions: true) }
   let(:votable) { create(:idea, project: project)}
@@ -71,10 +71,10 @@ describe IdeaVotePolicy do
     let!(:vote) { create(:vote, votable: idea, user: user) }
 
     it { should     permit(:show) }
-    it { should_not permit(:create) }
-    it { should_not permit(:up) }
-    it { should_not permit(:down) }
-    it { should_not permit(:destroy) }
+    it { expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError) }
+    it { expect { policy.up? }.to raise_error(Pundit::NotAuthorizedError) }
+    it { expect { policy.down? }.to raise_error(Pundit::NotAuthorizedError) }
+    it { expect { policy.destroy? }.to raise_error(Pundit::NotAuthorizedError) }
     it "should index the vote"  do
       expect(scope.resolve.size).to eq 1
     end
@@ -87,10 +87,10 @@ describe IdeaVotePolicy do
     let!(:vote) { create(:vote, votable: idea, user: user) }
 
     it { should     permit(:show) }
-    it { should_not permit(:create) }
-    it { should_not permit(:up) }
-    it { should_not permit(:down) }
-    it { should_not permit(:destroy) }
+    it { expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError) }
+    it { expect { policy.up? }.to raise_error(Pundit::NotAuthorizedError) }
+    it { expect { policy.down? }.to raise_error(Pundit::NotAuthorizedError) }
+    it { expect { policy.destroy? }.to raise_error(Pundit::NotAuthorizedError) }
     it "should index the vote"  do
       expect(scope.resolve.size).to eq 1
     end
@@ -107,10 +107,10 @@ describe IdeaVotePolicy do
     let!(:vote) { create(:vote, votable: idea, user: user) }
 
     it { should     permit(:show) }
-    it { should_not permit(:create) }
-    it { should_not permit(:up) }
-    it { should_not permit(:down) }
-    it { should_not permit(:destroy) }
+    it { expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError) }
+    it { expect { policy.up? }.to raise_error(Pundit::NotAuthorizedError) }
+    it { expect { policy.down? }.to raise_error(Pundit::NotAuthorizedError) }
+    it { expect { policy.destroy? }.to raise_error(Pundit::NotAuthorizedError) }
     it "should index the vote"  do
       expect(scope.resolve.size).to eq 1
     end
