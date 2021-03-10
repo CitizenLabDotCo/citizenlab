@@ -9,9 +9,9 @@ import React, {
 import clHistory from 'utils/cl-router/history';
 
 // components
+import Outlet from 'components/Outlet';
 import { Icon } from 'cl2-component-library';
 import Tabs, { ITabItem } from 'components/UI/Tabs';
-import ProjectTemplatesContainer from './ProjectTemplatesContainer';
 import AdminProjectEditGeneral from 'containers/Admin/projects/edit/general';
 import { HeaderTitle } from './StyledComponents';
 
@@ -268,19 +268,7 @@ const CreateProject = memo<Props & InjectedIntlProps>(({ className, intl }) => {
         >
           <CreateProjectContentInner>
             {projectTemplatesEnabled ? (
-              <>
-                <StyledTabs
-                  className="e2e-create-project-tabs"
-                  items={tabs}
-                  selectedValue={selectedTabValue}
-                  onClick={handleTabOnClick}
-                />
-                {selectedTabValue === 'template' ? (
-                  <ProjectTemplatesContainer />
-                ) : (
-                  <AdminProjectEditGeneral />
-                )}
-              </>
+              <Outlet id="app.containers.Admin.projects.all" />
             ) : (
               <AdminProjectEditGeneral />
             )}

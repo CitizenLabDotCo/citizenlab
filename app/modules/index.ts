@@ -10,6 +10,7 @@ import googleAnalyticsConfiguration from './google_analytics';
 import intercomConfiguration from './intercom';
 import satismeterConfiguration from './satismeter';
 import segmentConfiguration from './segment';
+import adminProjectTemplatesConfiguration from './admin_project_templates';
 
 export default loadModules([
   {
@@ -50,6 +51,10 @@ export default loadModules([
   },
   {
     configuration: customMapsConfiguration,
+    isEnabled: true,
+  },
+  {
+    configuration: adminProjectTemplatesConfiguration,
     isEnabled: true,
   },
 ]);
