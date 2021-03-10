@@ -16,7 +16,7 @@ module GranularPermissions
       end
 
       def cancelling_votes_disabled_reason_for_idea(idea, user)
-        super || @permission_service.denied?(user, 'voting_idea', context)
+        super || @permission_service.denied?(user, 'voting_idea', get_participation_context(idea.project))
       end
 
       def taking_survey_disabled_reason_for_context(context, user)
