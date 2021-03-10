@@ -1,6 +1,14 @@
 module SmartGroups
   module Patches
     module Group
+      def self.prepended(base)
+        base.class_eval do
+          def self.membership_types
+            %w[manual rules]
+          end
+        end
+      end
+
       def member?(user)
         return SmartGroups::RulesService.new.groups_for_user(user).exists?(id: id) if rules?
 
@@ -47,10 +55,6 @@ module SmartGroups
         update(memberships_count: members.active.count) if rules?
 
         super
-      end
-
-      def self.membership_types
-        %w[manual rules]
       end
     end
   end
