@@ -3,7 +3,6 @@ import React, {
   useState,
   useCallback,
   useEffect,
-  useRef,
   MouseEvent,
 } from 'react';
 import clHistory from 'utils/cl-router/history';
@@ -11,7 +10,6 @@ import clHistory from 'utils/cl-router/history';
 // components
 import Outlet from 'components/Outlet';
 import { Icon } from 'cl2-component-library';
-import Tabs, { ITabItem } from 'components/UI/Tabs';
 import AdminProjectEditGeneral from 'containers/Admin/projects/edit/general';
 import { HeaderTitle } from './StyledComponents';
 
@@ -148,10 +146,6 @@ const CreateProjectButton = styled.button`
   }
 `;
 
-const StyledTabs = styled(Tabs)`
-  margin-bottom: 25px;
-`;
-
 export interface INewProjectCreatedEvent {
   projectId?: string;
 }
@@ -161,25 +155,8 @@ interface Props {
 }
 
 const CreateProject = memo<Props & InjectedIntlProps>(({ className, intl }) => {
-  const tabs: ITabItem[] = [
-    {
-      value: 'template',
-      label: intl.formatMessage(messages.fromATemplate),
-      icon: 'template',
-    },
-    {
-      value: 'scratch',
-      label: intl.formatMessage(messages.fromScratch),
-      icon: 'scratch',
-    },
-  ];
-
   const projectTemplatesEnabled = useFeatureFlag('admin_project_templates');
-
   const [expanded, setExpanded] = useState(false);
-  const [selectedTabValue, setSelectedTabValue] = useState(tabs[0].value);
-
-  const isFirstRun = useRef(true);
 
   useEffect(() => {
     const subscription = eventEmitter
@@ -212,26 +189,6 @@ const CreateProject = memo<Props & InjectedIntlProps>(({ className, intl }) => {
 
     setExpanded(!expanded);
   }, [expanded]);
-
-  const handleTabOnClick = useCallback(
-    (newSelectedTabValue: string) => {
-      setSelectedTabValue(newSelectedTabValue);
-    },
-    [selectedTabValue]
-  );
-
-  useEffect(() => {
-    if (isFirstRun.current) {
-      isFirstRun.current = false;
-      return;
-    }
-
-    if (selectedTabValue === 'template') {
-      trackEventByName(tracks.createProjectFromTemplateTabSelected);
-    } else if (selectedTabValue === 'scratch') {
-      trackEventByName(tracks.createProjectFromScratchTabSelected);
-    }
-  }, [selectedTabValue]);
 
   return (
     <Container className={className}>
