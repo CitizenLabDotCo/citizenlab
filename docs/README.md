@@ -1,15 +1,15 @@
 # Changelog
 
-## 2021-03-09
-
-### Fixed
-- Fixed a crash that would occur when tring to add tags to an idea
-
-## 2021-03-09
+## 2021-03-10
 
 ### Added
 - CitizenLab admins can now change the link to the accessibility statement via AdminHQ.
 
+
+## 2021-03-09
+
+### Fixed
+- Fixed a crash that would occur when tring to add tags to an idea
 
 ## 2021-03-08
 
