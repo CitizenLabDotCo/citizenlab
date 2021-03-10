@@ -5,7 +5,7 @@ import eventEmitter from 'utils/eventEmitter';
 
 // analytics
 import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
+import tracks from '../../tracks';
 
 // components
 import Button from 'components/UI/Button';
