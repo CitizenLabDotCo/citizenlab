@@ -1,13 +1,13 @@
 require "rails_helper"
 
-describe SmartGroupRules::ParticipatedInIdeaStatus do
+describe SmartGroups::Rules::ParticipatedInIdeaStatus do
 
   let(:valid_json_rule) {{
     'ruleType' => 'participated_in_idea_status',
     'predicate' => 'in',
     'value' => create(:idea_status).id
   }}
-  let(:valid_rule) { SmartGroupRules::ParticipatedInIdeaStatus.from_json(valid_json_rule) }
+  let(:valid_rule) { SmartGroups::Rules::ParticipatedInIdeaStatus.from_json(valid_json_rule) }
 
   describe "from_json" do
 
@@ -42,52 +42,52 @@ describe SmartGroupRules::ParticipatedInIdeaStatus do
     end
 
     it "correctly filters on 'in' predicate" do
-      rule = SmartGroupRules::ParticipatedInIdeaStatus.new('in', @idea_status1.id)
+      rule = SmartGroups::Rules::ParticipatedInIdeaStatus.new('in', @idea_status1.id)
       expect(rule.filter(User)).to match_array [@user1, @user2, @user3]
     end
 
     it "correctly filters on 'not_in' predicate" do
-      rule = SmartGroupRules::ParticipatedInIdeaStatus.new('not_in', @idea_status2.id)
+      rule = SmartGroups::Rules::ParticipatedInIdeaStatus.new('not_in', @idea_status2.id)
       expect(rule.filter(User)).to match_array [@user1, @user2, @user4]
     end
 
     it "correctly filters on 'posted_in' predicate" do
-      rule = SmartGroupRules::ParticipatedInIdeaStatus.new('posted_in', @idea_status1.id)
+      rule = SmartGroups::Rules::ParticipatedInIdeaStatus.new('posted_in', @idea_status1.id)
       expect(rule.filter(User)).to match_array [@user1]
     end
 
     it "correctly filters on 'not_posted_in' predicate" do
-      rule = SmartGroupRules::ParticipatedInIdeaStatus.new('not_posted_in', @idea_status1.id)
+      rule = SmartGroups::Rules::ParticipatedInIdeaStatus.new('not_posted_in', @idea_status1.id)
       expect(rule.filter(User)).to match_array [@user2, @user3, @user4]
     end
 
     it "correctly filters on 'commented_in' predicate" do
-      rule = SmartGroupRules::ParticipatedInIdeaStatus.new('commented_in', @idea_status1.id)
+      rule = SmartGroups::Rules::ParticipatedInIdeaStatus.new('commented_in', @idea_status1.id)
       expect(rule.filter(User)).to match_array [@user3]
     end
 
     it "correctly filters on 'not_commented_in' predicate" do
-      rule = SmartGroupRules::ParticipatedInIdeaStatus.new('not_commented_in', @idea_status1.id)
+      rule = SmartGroups::Rules::ParticipatedInIdeaStatus.new('not_commented_in', @idea_status1.id)
       expect(rule.filter(User)).to match_array [@user1, @user2, @user4]
     end
 
     it "correctly filters on 'voted_idea_in' predicate" do
-      rule = SmartGroupRules::ParticipatedInIdeaStatus.new('voted_idea_in', @idea_status1.id)
+      rule = SmartGroups::Rules::ParticipatedInIdeaStatus.new('voted_idea_in', @idea_status1.id)
       expect(rule.filter(User)).to match_array [@user2]
     end
 
     it "correctly filters on 'not_voted_idea_in' predicate" do
-      rule = SmartGroupRules::ParticipatedInIdeaStatus.new('not_voted_idea_in', @idea_status1.id)
+      rule = SmartGroups::Rules::ParticipatedInIdeaStatus.new('not_voted_idea_in', @idea_status1.id)
       expect(rule.filter(User)).to match_array [@user1, @user3, @user4]
     end
 
     it "correctly filters on 'voted_comment_in' predicate" do
-      rule = SmartGroupRules::ParticipatedInIdeaStatus.new('voted_comment_in', @idea_status1.id)
+      rule = SmartGroups::Rules::ParticipatedInIdeaStatus.new('voted_comment_in', @idea_status1.id)
       expect(rule.filter(User)).to match_array []
     end
 
     it "correctly filters on 'not_voted_comment_in' predicate" do
-      rule = SmartGroupRules::ParticipatedInIdeaStatus.new('not_voted_comment_in', @idea_status2.id)
+      rule = SmartGroups::Rules::ParticipatedInIdeaStatus.new('not_voted_comment_in', @idea_status2.id)
       expect(rule.filter(User)).to match_array [@user1, @user2, @user3, @user4]
     end
 
@@ -100,52 +100,52 @@ describe SmartGroupRules::ParticipatedInIdeaStatus do
       'nl-NL' => 'in de prullenmand'
     }) }
 
-    let(:participated_in_idea_status_in_rule) {SmartGroupRules::ParticipatedInIdeaStatus.from_json({
+    let(:participated_in_idea_status_in_rule) {SmartGroups::Rules::ParticipatedInIdeaStatus.from_json({
       'ruleType'      => 'participated_in_idea_status',
       'predicate'     => 'in',
       'value'         => idea_status.id
     })}
-    let(:participated_not_in_idea_status_in_rule) {SmartGroupRules::ParticipatedInIdeaStatus.from_json({
+    let(:participated_not_in_idea_status_in_rule) {SmartGroups::Rules::ParticipatedInIdeaStatus.from_json({
       'ruleType'      => 'participated_in_idea_status',
       'predicate'     => 'not_in',
       'value'         => idea_status.id
     })}
-    let(:participated_posted_in_idea_status_in_rule) {SmartGroupRules::ParticipatedInIdeaStatus.from_json({
+    let(:participated_posted_in_idea_status_in_rule) {SmartGroups::Rules::ParticipatedInIdeaStatus.from_json({
       'ruleType'      => 'participated_in_idea_status',
       'predicate'     => 'posted_in',
       'value'         => idea_status.id
     })}
-    let(:participated_not_posted_in_idea_status_in_rule) {SmartGroupRules::ParticipatedInIdeaStatus.from_json({
+    let(:participated_not_posted_in_idea_status_in_rule) {SmartGroups::Rules::ParticipatedInIdeaStatus.from_json({
       'ruleType'      => 'participated_in_idea_status',
       'predicate'     => 'not_posted_in',
       'value'         => idea_status.id
     })}
-    let(:participated_commented_in_idea_status_in_rule) {SmartGroupRules::ParticipatedInIdeaStatus.from_json({
+    let(:participated_commented_in_idea_status_in_rule) {SmartGroups::Rules::ParticipatedInIdeaStatus.from_json({
       'ruleType'      => 'participated_in_idea_status',
       'predicate'     => 'commented_in',
       'value'         => idea_status.id
     })}
-    let(:participated_not_commented_in_idea_status_in_rule) {SmartGroupRules::ParticipatedInIdeaStatus.from_json({
+    let(:participated_not_commented_in_idea_status_in_rule) {SmartGroups::Rules::ParticipatedInIdeaStatus.from_json({
       'ruleType'      => 'participated_in_idea_status',
       'predicate'     => 'not_commented_in',
       'value'         => idea_status.id
     })}
-    let(:participated_voted_idea_in_idea_status_in_rule) {SmartGroupRules::ParticipatedInIdeaStatus.from_json({
+    let(:participated_voted_idea_in_idea_status_in_rule) {SmartGroups::Rules::ParticipatedInIdeaStatus.from_json({
       'ruleType'      => 'participated_in_idea_status',
       'predicate'     => 'voted_idea_in',
       'value'         => idea_status.id
     })}
-    let(:participated_not_voted_idea_in_idea_status_in_rule) {SmartGroupRules::ParticipatedInIdeaStatus.from_json({
+    let(:participated_not_voted_idea_in_idea_status_in_rule) {SmartGroups::Rules::ParticipatedInIdeaStatus.from_json({
       'ruleType'      => 'participated_in_idea_status',
       'predicate'     => 'not_voted_idea_in',
       'value'         => idea_status.id
     })}
-    let(:participated_voted_comment_in_idea_status_in_rule) {SmartGroupRules::ParticipatedInIdeaStatus.from_json({
+    let(:participated_voted_comment_in_idea_status_in_rule) {SmartGroups::Rules::ParticipatedInIdeaStatus.from_json({
       'ruleType'      => 'participated_in_idea_status',
       'predicate'     => 'voted_comment_in',
       'value'         => idea_status.id
     })}
-    let(:participated_not_voted_comment_in_idea_status_in_rule) {SmartGroupRules::ParticipatedInIdeaStatus.from_json({
+    let(:participated_not_voted_comment_in_idea_status_in_rule) {SmartGroups::Rules::ParticipatedInIdeaStatus.from_json({
       'ruleType'      => 'participated_in_idea_status',
       'predicate'     => 'not_voted_comment_in',
       'value'         => idea_status.id

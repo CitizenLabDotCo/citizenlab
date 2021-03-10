@@ -1,6 +1,6 @@
 require "rails_helper"
 
-describe SmartGroupRules::CustomFieldCheckbox do
+describe SmartGroups::Rules::CustomFieldCheckbox do
 
 
   describe "validations" do
@@ -12,7 +12,7 @@ describe SmartGroupRules::CustomFieldCheckbox do
       'customFieldId' => custom_field.id,
       'predicate' => 'is_checked'
     }}
-    let(:valid_rule) { SmartGroupRules::CustomFieldCheckbox.from_json(valid_json_rule) }
+    let(:valid_rule) { SmartGroups::Rules::CustomFieldCheckbox.from_json(valid_json_rule) }
 
     it "successfully validate the valid rule" do
       expect(valid_rule).to be_valid
@@ -37,16 +37,16 @@ describe SmartGroupRules::CustomFieldCheckbox do
       }
 
       it "correctly filters on 'is_checked' predicate" do
-        rule = SmartGroupRules::CustomFieldCheckbox.new(custom_field.id, 'is_checked')
+        rule = SmartGroups::Rules::CustomFieldCheckbox.new(custom_field.id, 'is_checked')
         expect(rule.filter(User).count).to eq 2
       end
 
       it "correctly filters on 'not_is_checked' predicate" do
-        rule = SmartGroupRules::CustomFieldCheckbox.new(custom_field.id, 'not_is_checked')
+        rule = SmartGroups::Rules::CustomFieldCheckbox.new(custom_field.id, 'not_is_checked')
         expect(rule.filter(User).count).to eq 3
       end
     end
- 
+
   end
 
   describe "description_multiloc" do
@@ -55,13 +55,13 @@ describe SmartGroupRules::CustomFieldCheckbox do
       'fr-FR' => 'J\'accepte de partager mes biscuits',
       'nl-NL' => 'Ik ga akkoord om mijn koekjes te delen'
     })}
-    
-    let(:custom_field_checkbox_is_checked_rule) {SmartGroupRules::CustomFieldCheckbox.from_json({
+
+    let(:custom_field_checkbox_is_checked_rule) {SmartGroups::Rules::CustomFieldCheckbox.from_json({
       'ruleType'      => 'custom_field_checkbox',
       'predicate'     => 'is_checked',
       'customFieldId' => checkbox.id
     })}
-    let(:custom_field_checkbox_not_is_checked_rule) {SmartGroupRules::CustomFieldCheckbox.from_json({
+    let(:custom_field_checkbox_not_is_checked_rule) {SmartGroups::Rules::CustomFieldCheckbox.from_json({
       'ruleType'      => 'custom_field_checkbox',
       'predicate'     => 'not_is_checked',
       'customFieldId' => checkbox.id

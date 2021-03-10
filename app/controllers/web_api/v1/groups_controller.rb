@@ -7,8 +7,8 @@ class WebApi::V1::GroupsController < ApplicationController
 
     @groups = @groups.where(membership_type: params[:membership_type]) if params[:membership_type]
     @groups = @groups.order_new
-    
-    @groups = @groups 
+
+    @groups = @groups
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
   	render json: linked_json(@groups, WebApi::V1::GroupSerializer, params: fastjson_params)
@@ -32,7 +32,7 @@ class WebApi::V1::GroupsController < ApplicationController
     if @group.save
       SideFxGroupService.new.after_create(@group, current_user)
       render json: WebApi::V1::GroupSerializer.new(
-        @group.reload, 
+        @group.reload,
         params: fastjson_params
         ).serialized_json, status: :created
     else
@@ -48,7 +48,7 @@ class WebApi::V1::GroupsController < ApplicationController
     if @group.save
       SideFxGroupService.new.after_update(@group, current_user)
       render json: WebApi::V1::GroupSerializer.new(
-        @group.reload, 
+        @group.reload,
         params: fastjson_params
         ).serialized_json, status: :ok
     else
@@ -75,10 +75,9 @@ class WebApi::V1::GroupsController < ApplicationController
 
   def group_params
     params.require(:group).permit(
-      :membership_type, 
+      :membership_type,
       title_multiloc: CL2_SUPPORTED_LOCALES,
       rules: [:ruleType, :customFieldId, :predicate, :value, value: []]
     )
   end
-
 end

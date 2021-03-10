@@ -1,11 +1,11 @@
 class WebApi::V1::PermissionsController < ApplicationController
-  before_action :set_permission, only: [:show, :update, :participation_conditions]
+  before_action :set_permission, only: [:show, :update]
 
   def index
     @permissions = policy_scope(Permission)
       .where(permission_scope_id: params[params[:parent_param]])
       .order(created_at: :desc)
-      
+
     @permissions = @permissions
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
@@ -23,18 +23,13 @@ class WebApi::V1::PermissionsController < ApplicationController
     if @permission.save
       # SideFxPermissionService.new.after_update(@permission, current_user)
       render json: WebApi::V1::PermissionSerializer.new(
-        @permission, 
+        @permission,
         params: fastjson_params
         ).serialized_json, status: :ok
     else
       render json: { errors: @permission.errors.details }, status: :unprocessable_entity
     end
   end
-
-  def participation_conditions
-    render json: @permission.participation_conditions, status: :ok
-  end
-
 
   private
 
