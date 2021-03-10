@@ -130,6 +130,7 @@ if ['public','example_org'].include? Apartment::Tenant.current
         allowed: true,
         enabled: true,
         phone: false,
+        minimum_length: 8
       },
       facebook_login: {
         allowed: true,
