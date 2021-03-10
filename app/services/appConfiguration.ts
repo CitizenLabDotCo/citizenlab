@@ -93,6 +93,11 @@ export interface IAppConfigurationSettings {
     identifier: string;
     secret: string;
   };
+  custom_accessibility_statement_link: {
+    allowed: boolean;
+    enabled: boolean;
+    url?: string;
+  };
   manual_project_sorting?: AppConfigurationFeature;
   admin_project_templates?: AppConfigurationFeature;
   pages?: AppConfigurationFeature;
