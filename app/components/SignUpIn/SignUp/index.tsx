@@ -18,7 +18,7 @@ import {
   StyledHeaderTitle,
   StyledModalContentContainer,
 } from 'components/SignUpIn/styles';
-import ReactResizeDetector from 'react-resize-detector';
+import ReactResizeDetector from 'react-resize-detector/build/withPolyfill';
 
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
@@ -314,8 +314,10 @@ class SignUp extends PureComponent<Props & InjectedIntlProps, State> {
     clHistory.push('/sign-in');
   };
 
-  onResize = (_width, height) => {
-    this.setState({ headerHeight: `${Math.round(height) + 2}px` });
+  onResize = (_width: number | undefined, height: number | undefined) => {
+    if (height) {
+      this.setState({ headerHeight: `${Math.round(height) + 2}px` });
+    }
   };
 
   setRef = (element: HTMLDivElement) => {

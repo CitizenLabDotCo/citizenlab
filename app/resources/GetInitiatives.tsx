@@ -3,7 +3,6 @@ import {
   get,
   isString,
   isEqual,
-  isBoolean,
   omit,
   cloneDeep,
   omitBy,
@@ -54,7 +53,6 @@ export interface InputProps {
   initiativeStatusId?: string;
   publicationStatus?: PublicationStatus;
   boundingBox?: number[];
-  cache?: boolean;
   assignee?: string;
   feedbackNeeded?: boolean;
 }
@@ -123,7 +121,7 @@ export default class GetInitiatives extends React.Component<Props, State> {
   static defaultProps = {
     pageNumber: 1,
     pageSize: 12,
-    sort: 'random',
+    sort: 'new',
   };
 
   constructor(props: Props) {
@@ -212,9 +210,6 @@ export default class GetInitiatives extends React.Component<Props, State> {
 
                 return initiativesStream({ queryParameters }).observable.pipe(
                   map((initiatives) => {
-                    const cacheStream = isBoolean(this.props.cache)
-                      ? this.props.cache
-                      : true;
                     const selfLink = get(initiatives, 'links.self');
                     const lastLink = get(initiatives, 'links.last');
                     const hasMore =
@@ -224,7 +219,6 @@ export default class GetInitiatives extends React.Component<Props, State> {
 
                     return {
                       queryParameters,
-                      cacheStream,
                       hasMore,
                       initiatives: !isLoadingMore
                         ? initiatives.data
@@ -255,9 +249,6 @@ export default class GetInitiatives extends React.Component<Props, State> {
         queryParameters$
           .pipe(
             switchMap((queryParameters) => {
-              const cacheStream = isBoolean(this.props.cache)
-                ? this.props.cache
-                : true;
               const oldPageNumber = this.state.queryParameters['page[number]'];
               const newPageNumber = queryParameters['page[number]'];
               queryParameters['page[number]'] =
@@ -265,7 +256,6 @@ export default class GetInitiatives extends React.Component<Props, State> {
 
               return initiativesStream({
                 queryParameters,
-                cacheStream,
               }).observable.pipe(
                 map((initiatives) => ({ queryParameters, initiatives }))
               );
