@@ -27,6 +27,10 @@ class PermissionsService
       permission_scope_type = scope.nil? ? nil : scope.class.to_s
       scope_spec_hash[permission_scope_type].actions(scope)
     end
+    
+    def all_actions
+      scope_specs.map(&:actions).flatten
+    end
   end
 
   def initialize
