@@ -505,7 +505,7 @@ resource "Users" do
 
         example "Update a user" do
           oldtimers = create(:group)
-          create(:membership, group: group, user: @user)
+          create(:membership, group: oldtimers, user: @user)
           project = create(:continuous_project, with_permissions: true)
           granted_permission = project.permissions.find_by(action: 'posting_idea')
           granted_permission.update!(permitted_by: 'groups', groups: [oldtimers])
