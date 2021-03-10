@@ -7,7 +7,6 @@ class Group < ApplicationRecord
   has_many :users, through: :memberships
   private :memberships, :memberships=, :membership_ids, :membership_ids=
   private :users, :users=, :user_ids, :user_ids=
-  private_class_method :membership_types
   has_many :groups_permissions, dependent: :destroy
   has_many :permissions, through: :groups_permissions
 
