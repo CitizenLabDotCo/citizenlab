@@ -1,5 +1,5 @@
 import React from 'react';
-import { isBoolean, isString } from 'lodash-es';
+import { isString } from 'lodash-es';
 import { BehaviorSubject, Subscription, of } from 'rxjs';
 import { distinctUntilChanged, switchMap, tap } from 'rxjs/operators';
 import shallowCompare from 'utils/shallowCompare';
@@ -9,7 +9,6 @@ import { isNilOrError } from 'utils/helperUtils';
 interface InputProps {
   id: string | null | undefined;
   resetOnChange?: boolean;
-  cache?: boolean;
 }
 
 type children = (renderProps: GetBasketChildProps) => JSX.Element | null;
@@ -30,7 +29,6 @@ export default class GetBasket extends React.Component<Props, State> {
 
   static defaultProps = {
     resetOnChange: true,
-    cache: true,
   };
 
   constructor(props: Props) {
@@ -41,8 +39,7 @@ export default class GetBasket extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    const { id, cache, resetOnChange } = this.props;
-    const cacheStream = isBoolean(cache) ? cache : true;
+    const { id, resetOnChange } = this.props;
 
     this.inputProps$ = new BehaviorSubject({ id });
 
@@ -53,7 +50,7 @@ export default class GetBasket extends React.Component<Props, State> {
           tap(() => resetOnChange && this.setState({ basket: undefined })),
           switchMap(({ id }) => {
             if (isString(id)) {
-              return basketByIdStream(id, { cacheStream }).observable;
+              return basketByIdStream(id).observable;
             }
 
             return of(null);

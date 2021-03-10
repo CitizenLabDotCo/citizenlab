@@ -177,6 +177,7 @@ const AuthProviderButton = memo<Props>(
           justify="left"
           whiteSpace="wrap"
           onClick={handleExpandButtonClicked}
+          padding="10px 18px"
         >
           {children}
         </Button>

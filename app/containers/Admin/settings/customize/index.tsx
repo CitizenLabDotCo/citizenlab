@@ -63,6 +63,11 @@ const WideSectionField = styled(SectionField)`
   max-width: calc(${(props) => props.theme.maxPageWidth}px - 100px);
 `;
 
+const LabelTooltip = styled.div`
+  display: flex;
+  margin-right: 20px;
+`;
+
 interface DataProps {
   homepageInfoPage: GetPageChildProps;
 }
@@ -221,56 +226,34 @@ class SettingsCustomizeTab extends PureComponent<
   };
 
   handleTitleOnChange = (titleMultiloc: Multiloc) => {
-    this.setState((state) => {
-      const { formatMessage } = this.props.intl;
-      const titleError = {} as Multiloc;
+    const { formatMessage } = this.props.intl;
+    const titleError = {} as Multiloc;
 
-      forOwn(titleMultiloc, (title, locale) => {
-        if (size(trim(title)) > 45) {
-          titleError[locale] = formatMessage(messages.titleMaxCharError);
-        }
-      });
+    forOwn(titleMultiloc, (title, locale) => {
+      if (size(trim(title)) > 45) {
+        titleError[locale] = formatMessage(messages.titleMaxCharError);
+      }
+    });
 
-      return {
-        titleError,
-        attributesDiff: {
-          ...state.attributesDiff,
-          settings: {
-            ...get(state.attributesDiff, 'settings', {}),
-            core: {
-              ...get(state.attributesDiff, 'settings.core', {}),
-              header_title: titleMultiloc,
-            },
-          },
-        },
-      };
+    this.handleCoreMultilocSettingOnChange('header_title')(titleMultiloc);
+    this.setState({
+      titleError,
     });
   };
 
   handleSubtitleOnChange = (subtitleMultiloc: Multiloc) => {
-    this.setState((state) => {
-      const { formatMessage } = this.props.intl;
-      const subtitleError = {} as Multiloc;
+    const { formatMessage } = this.props.intl;
+    const subtitleError = {} as Multiloc;
 
-      forOwn(subtitleMultiloc, (subtitle, locale) => {
-        if (size(trim(subtitle)) > 90) {
-          subtitleError[locale] = formatMessage(messages.subtitleMaxCharError);
-        }
-      });
+    forOwn(subtitleMultiloc, (subtitle, locale) => {
+      if (size(trim(subtitle)) > 90) {
+        subtitleError[locale] = formatMessage(messages.subtitleMaxCharError);
+      }
+    });
 
-      return {
-        subtitleError,
-        attributesDiff: {
-          ...state.attributesDiff,
-          settings: {
-            ...get(state.attributesDiff, 'settings', {}),
-            core: {
-              ...get(state.attributesDiff, 'settings.core', {}),
-              header_slogan: subtitleMultiloc,
-            },
-          },
-        },
-      };
+    this.handleCoreMultilocSettingOnChange('header_slogan')(subtitleMultiloc);
+    this.setState({
+      subtitleError,
     });
   };
 
@@ -418,6 +401,23 @@ class SettingsCustomizeTab extends PureComponent<
     }));
   };
 
+  handleCoreMultilocSettingOnChange = (propertyName: string) => (
+    multiloc: Multiloc
+  ) => {
+    this.setState((state) => ({
+      attributesDiff: {
+        ...state.attributesDiff,
+        settings: {
+          ...get(state.attributesDiff, 'settings', {}),
+          core: {
+            ...get(state.attributesDiff, 'settings.core', {}),
+            [propertyName]: multiloc,
+          },
+        },
+      },
+    }));
+  };
+
   /*
   Below values are intentionally defined outside of render() for better performance
   because references stay the same this way, e.g. onClick={this.handleLogoOnAdd} vs onClick={this.handleUploadOnAdd('logo')},
@@ -427,11 +427,6 @@ class SettingsCustomizeTab extends PureComponent<
   handleHeaderBgOnAdd = this.handleUploadOnAdd('header_bg');
   handleLogoOnRemove = this.handleUploadOnRemove('logo');
   handleHeaderBgOnRemove = this.handleUploadOnRemove('header_bg');
-  headerTitleLabel = (<FormattedMessage {...messages.headerTitleLabel} />);
-  headerSubtitleLabel = (
-    <FormattedMessage {...messages.headerSubtitleLabel} />
-  );
-  customSectionLabel = (<FormattedMessage {...messages.customSectionLabel} />);
 
   render() {
     const { locale, tenant } = this.state;
@@ -453,18 +448,27 @@ class SettingsCustomizeTab extends PureComponent<
         contrastRatio,
       } = this.state;
 
+      const latestAppConfigStyleSettings = {
+        ...tenant.data.attributes,
+        ...attributesDiff,
+      }.style;
+      const latestAppConfigCoreSettings = {
+        ...tenant.data.attributes,
+        ...attributesDiff,
+      }.settings.core;
+
       return (
         <form onSubmit={this.save}>
           <Section key={'branding'}>
             <SectionTitle>
-              <FormattedMessage {...messages.titleCustomize} />
+              <FormattedMessage {...messages.titleHomepageStyle} />
             </SectionTitle>
             <SectionDescription>
-              <FormattedMessage {...messages.subtitleCustomize} />
+              <FormattedMessage {...messages.subtitleHomepageStyle} />
             </SectionDescription>
 
             <SubSectionTitle>
-              <FormattedMessage {...messages.titleBranding} />
+              <FormattedMessage {...messages.titlePlatformBranding} />
             </SubSectionTitle>
 
             {['color_main', 'color_secondary', 'color_text'].map(
@@ -476,7 +480,13 @@ class SettingsCustomizeTab extends PureComponent<
                 return (
                   <ColorPickerSectionField key={colorName}>
                     <Label>
-                      <FormattedMessage {...messages[colorName]} />
+                      <FormattedMessage
+                        {...{
+                          color_main: messages.color_primary,
+                          color_secondary: messages.color_secondary,
+                          color_text: messages.color_text,
+                        }[colorName]}
+                      />
                     </Label>
                     <ColorPickerInput
                       type="text"
@@ -515,44 +525,6 @@ class SettingsCustomizeTab extends PureComponent<
               }
             )}
 
-            <ColorPickerSectionField>
-              <Label>
-                <FormattedMessage {...messages.headerOverlayColor} />
-              </Label>
-              <ColorPickerInput
-                type="text"
-                value={
-                  get(attributesDiff, 'style.signedOutHeaderOverlayColor') ||
-                  get(
-                    tenant,
-                    'data.attributes.style.signedOutHeaderOverlayColor'
-                  ) ||
-                  this.props.theme.colorMain
-                }
-                onChange={this.handleHeaderOverlayColorOnChange}
-              />
-            </ColorPickerSectionField>
-
-            <SectionField>
-              <Label>
-                <FormattedMessage {...messages.headerOverlayOpacity} />
-              </Label>
-              <RangeInput
-                step={1}
-                min={0}
-                max={100}
-                value={
-                  get(attributesDiff, 'style.signedOutHeaderOverlayOpacity') ||
-                  get(
-                    tenant,
-                    'data.attributes.style.signedOutHeaderOverlayOpacity'
-                  ) ||
-                  90
-                }
-                onChange={this.handleHeaderOverlayOpacityOnChange}
-              />
-            </SectionField>
-
             <SectionField key={'logo'}>
               <Label htmlFor="tenant-logo-dropzone">
                 <FormattedMessage {...messages.logo} />
@@ -577,7 +549,6 @@ class SettingsCustomizeTab extends PureComponent<
             <SubSectionTitle>
               <FormattedMessage {...messages.header} />
             </SubSectionTitle>
-
             <SectionField key={'header_bg'}>
               <Label htmlFor="landingpage-header-dropzone">
                 <FormattedMessage {...messages.header_bg} />
@@ -598,48 +569,113 @@ class SettingsCustomizeTab extends PureComponent<
                 errorMessage={headerError}
               />
             </SectionField>
-
+            <ColorPickerSectionField>
+              <Label>
+                <FormattedMessage {...messages.imageOverlayColor} />
+              </Label>
+              <ColorPickerInput
+                type="text"
+                value={
+                  latestAppConfigStyleSettings?.signedOutHeaderOverlayColor ||
+                  this.props.theme.colorMain
+                }
+                onChange={this.handleHeaderOverlayColorOnChange}
+              />
+            </ColorPickerSectionField>
+            <SectionField>
+              <Label>
+                <FormattedMessage {...messages.imageOverlayOpacity} />
+              </Label>
+              <RangeInput
+                step={1}
+                min={0}
+                max={100}
+                value={
+                  latestAppConfigStyleSettings?.signedOutHeaderOverlayOpacity ||
+                  90
+                }
+                onChange={this.handleHeaderOverlayOpacityOnChange}
+              />
+            </SectionField>
             <SectionField>
               <InputMultilocWithLocaleSwitcher
                 type="text"
-                valueMultiloc={
-                  get(attributesDiff, 'settings.core.header_title') ||
-                  get(tenant, 'data.attributes.settings.core.header_title')
+                valueMultiloc={latestAppConfigCoreSettings?.['header_title']}
+                label={
+                  <LabelTooltip>
+                    <FormattedMessage {...messages.bannerHeaderSignedOut} />
+                    <IconTooltip
+                      content={
+                        <FormattedMessage
+                          {...messages.bannerHeaderSignedOutTooltip}
+                        />
+                      }
+                    />
+                  </LabelTooltip>
                 }
-                label={this.headerTitleLabel}
-                labelTooltipText={formatMessage(messages.headerTitleTooltip)}
                 maxCharCount={this.titleMaxCharCount}
                 onChange={this.handleTitleOnChange}
                 errorMultiloc={titleError}
               />
             </SectionField>
-
+            <SectionField>
+              <InputMultilocWithLocaleSwitcher
+                type="text"
+                valueMultiloc={latestAppConfigCoreSettings?.['header_slogan']}
+                label={formatMessage(messages.bannerHeaderSignedOutSubtitle)}
+                maxCharCount={this.subtitleMaxCharCount}
+                onChange={this.handleSubtitleOnChange}
+                errorMultiloc={subtitleError}
+              />
+            </SectionField>
             <SectionField>
               <InputMultilocWithLocaleSwitcher
                 type="text"
                 valueMultiloc={
-                  get(attributesDiff, 'settings.core.header_slogan') ||
-                  get(tenant, 'data.attributes.settings.core.header_slogan')
+                  latestAppConfigCoreSettings?.[
+                    'custom_onboarding_fallback_message'
+                  ]
                 }
-                label={this.headerSubtitleLabel}
-                labelTooltipText={formatMessage(messages.headerSubtitleTooltip)}
-                maxCharCount={this.subtitleMaxCharCount}
-                onChange={this.handleSubtitleOnChange}
-                errorMultiloc={subtitleError}
+                label={formatMessage(messages.bannerHeaderSignedIn)}
+                onChange={this.handleCoreMultilocSettingOnChange(
+                  'custom_onboarding_fallback_message'
+                )}
+              />
+            </SectionField>
+          </Section>
+
+          <Section key={'project_header'}>
+            <SubSectionTitle>
+              <FormattedMessage {...messages.projects_header} />
+              <IconTooltip
+                content={formatMessage(messages.projects_header_tooltip)}
+              />
+            </SubSectionTitle>
+            <SectionField>
+              <InputMultilocWithLocaleSwitcher
+                type="text"
+                valueMultiloc={
+                  latestAppConfigCoreSettings?.['currently_working_on_text']
+                }
+                onChange={this.handleCoreMultilocSettingOnChange(
+                  'currently_working_on_text'
+                )}
               />
             </SectionField>
           </Section>
 
           <Section>
             <SubSectionTitle>
-              <FormattedMessage {...messages.homePageCustomSection} />
+              <FormattedMessage {...messages.homePageCustomizableSection} />
             </SubSectionTitle>
 
             <WideSectionField>
               <QuillMultilocWithLocaleSwitcher
                 id="custom-section"
-                label={this.customSectionLabel}
-                labelTooltipText={formatMessage(messages.customSectionInfo)}
+                label={formatMessage(messages.customSectionLabel)}
+                labelTooltipText={formatMessage(
+                  messages.homePageCustomizableSectionTooltip
+                )}
                 valueMultiloc={
                   attributesDiff.homepage_info ||
                   get(homepageInfoPage, 'attributes.body_multiloc')
