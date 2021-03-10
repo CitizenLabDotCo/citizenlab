@@ -1,5 +1,3 @@
-
-
 module SmartGroups
   module Extensions
     module CustomField

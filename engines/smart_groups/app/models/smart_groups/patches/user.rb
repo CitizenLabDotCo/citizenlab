@@ -1,6 +1,6 @@
 module SmartGroups
   module Patches
-    module Group
+    module User
       def self.prepended(base)
         base.class_eval do
           scope :in_group, lambda { |group|
