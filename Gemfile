@@ -167,3 +167,5 @@ gem 'surveys', path: 'engines/surveys'
 gem 'tagging', path: 'engines/tagging'
 gem 'verification', path: 'engines/verification'
 gem 'volunteering', path: 'engines/volunteering'
+
+gem 'granular_permissions', path: 'engines/granular_permissions'
