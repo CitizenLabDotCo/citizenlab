@@ -15,7 +15,7 @@ RSpec.describe UpdateMemberCountJob, type: :job do
     it 'updates all groups without argument' do
       create_list(:group, 5)
 
-      expect(Group.all).to have_received(:update_memberships_count!)
+      expect(Group).to have_received(:find_each).with(&:update_memberships_count!)
 
       job.perform
     end
