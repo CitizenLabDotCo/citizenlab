@@ -7,7 +7,7 @@ class Permission < ApplicationRecord
   has_many :groups_permissions, dependent: :destroy
   has_many :groups, through: :groups_permissions
 
-  validates :action, presence: true, inclusion: { in: PermissionsService.all_actions }
+  validates :action, presence: true, inclusion: { in: :available_actions }
   validates :permitted_by, presence: true, inclusion: { in: PERMITTED_BIES }
   validates :action, uniqueness: { scope: %i[permission_scope_id permission_scope_type] }
   validates :permission_scope_type, inclusion: { in: PermissionsService.scope_types }
@@ -22,8 +22,8 @@ class Permission < ApplicationRecord
       moderating_context_ids = ParticipationContextService.new.moderating_participation_context_ids(user)
       moderating_permissions_ids = where(permission_scope_id: moderating_context_ids).ids
       group_permission_ids = joins(:groups_permissions)
-                             .where(permitted_by: 'groups')
-                             .where(groups_permissions: { group_id: user.group_ids }).ids
+                               .where(permitted_by: 'groups')
+                               .where(groups_permissions: { group_id: user.group_ids }).ids
       where(id: (permissions_for_everyone_ids + moderating_permissions_ids + group_permission_ids).uniq)
     else
       where(permitted_by: 'everyone')
@@ -41,21 +41,18 @@ class Permission < ApplicationRecord
     return if user&.admin?
     return if moderator?(user)
 
-    reason =
-      case permitted_by
-      when 'users'
-        :not_signed_in unless user
-      when 'groups'
-        if requires_verification? && !user&.verified?
-          :not_verified
-        elsif user.nil? || (group_ids & user.group_ids).blank?
-          :not_permitted
-        end
-      when 'admins_moderators'
-        :not_permitted
-      else
-        raise "Unsupported permitted_by: '#{permitted_by}'."
-      end
+    reason = case permitted_by
+             when 'users' then :not_signed_in unless user
+             when 'admins_moderators' then :not_permitted
+             when 'groups'
+             if requires_verification? && !user&.verified?
+                 :not_verified
+               elsif user.nil? || (group_ids & user.group_ids).blank?
+                 :not_permitted
+               end
+             else
+               raise "Unsupported permitted_by: '#{permitted_by}'."
+             end
 
     reason&.to_s
   end
@@ -78,6 +75,10 @@ class Permission < ApplicationRecord
   end
 
   private
+
+  def available_actions
+    PermissionsService.actions(permission_scope)
+  end
 
   def set_permitted_by
     self.permitted_by ||= 'users'
