@@ -17,7 +17,7 @@ import Warning from 'components/UI/Warning';
 // intl
 import { FormattedMessage } from 'utils/cl-intl';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
-import messages from '../messages';
+import messages from './messages';
 
 // tracking
 import { trackEventByName } from 'utils/analytics';

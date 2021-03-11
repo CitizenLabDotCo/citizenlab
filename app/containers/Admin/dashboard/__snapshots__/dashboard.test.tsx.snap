@@ -1,93 +1,119 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<DashboardsPage /> renders correctly with a project moderator user 1`] = `
-<withRouter(Component)
-  resource={
-    Object {
-      "subtitle": "Get immediate and easy-to-grasp analytics into what’s moving on the platform.",
-      "title": "Dashboard",
-    }
-  }
-  tabs={
-    Array [
-      Object {
-        "label": "Summary",
-        "url": "/admin/dashboard",
-      },
-      Object {
-        "feature": "project_reports",
-        "label": "Reports",
-        "url": "/admin/dashboard/reports",
-      },
-    ]
-  }
->
-  <HelmetIntl
-    description={
-      Object {
-        "defaultMessage": "Dashboard for activities on the platform",
-        "id": "app.containers.AdminPage.DashboardPage.helmetDescription",
-      }
-    }
-    title={
-      Object {
-        "defaultMessage": "Admin dashboard page",
-        "id": "app.containers.AdminPage.DashboardPage.helmetTitle",
-      }
-    }
+<Fragment>
+  <Outlet
+    formatMessage={[Function]}
+    id="app.containers.Admin.dashboards.tabs"
+    onData={[Function]}
   />
-</withRouter(Component)>
+  <withRouter(Component)
+    resource={
+      Object {
+        "subtitle": "Get immediate and easy-to-grasp analytics into what’s moving on the platform.",
+        "title": "Dashboard",
+      }
+    }
+    tabs={
+      Array [
+        Object {
+          "label": "Summary",
+          "name": "dashboard",
+          "url": "/admin/dashboard",
+        },
+        Object {
+          "label": "Users",
+          "name": "users",
+          "url": "/admin/dashboard/users",
+        },
+        Object {
+          "feature": "project_reports",
+          "label": "Reports",
+          "name": "project_reports",
+          "url": "/admin/dashboard/reports",
+        },
+        Object {
+          "feature": "clustering",
+          "label": "Insights",
+          "name": "clustering",
+          "url": "/admin/dashboard/insights",
+        },
+      ]
+    }
+  >
+    <HelmetIntl
+      description={
+        Object {
+          "defaultMessage": "Dashboard for activities on the platform",
+          "id": "app.containers.AdminPage.DashboardPage.helmetDescription",
+        }
+      }
+      title={
+        Object {
+          "defaultMessage": "Admin dashboard page",
+          "id": "app.containers.AdminPage.DashboardPage.helmetTitle",
+        }
+      }
+    />
+  </withRouter(Component)>
+</Fragment>
 `;
 
 exports[`<DashboardsPage /> renders correctly with an admin user 1`] = `
-<withRouter(Component)
-  resource={
-    Object {
-      "subtitle": "Get immediate and easy-to-grasp analytics into what’s moving on the platform.",
-      "title": "Dashboard",
-    }
-  }
-  tabs={
-    Array [
-      Object {
-        "label": "Summary",
-        "url": "/admin/dashboard",
-      },
-      Object {
-        "label": "Users",
-        "url": "/admin/dashboard/users",
-      },
-      Object {
-        "feature": "project_reports",
-        "label": "Reports",
-        "url": "/admin/dashboard/reports",
-      },
-      Object {
-        "feature": "clustering",
-        "label": "Insights",
-        "url": "/admin/dashboard/insights",
-      },
-      Object {
-        "feature": "geographic_dashboard",
-        "label": "Map",
-        "url": "/admin/dashboard/map",
-      },
-    ]
-  }
->
-  <HelmetIntl
-    description={
-      Object {
-        "defaultMessage": "Dashboard for activities on the platform",
-        "id": "app.containers.AdminPage.DashboardPage.helmetDescription",
-      }
-    }
-    title={
-      Object {
-        "defaultMessage": "Admin dashboard page",
-        "id": "app.containers.AdminPage.DashboardPage.helmetTitle",
-      }
-    }
+<Fragment>
+  <Outlet
+    formatMessage={[Function]}
+    id="app.containers.Admin.dashboards.tabs"
+    onData={[Function]}
   />
-</withRouter(Component)>
+  <withRouter(Component)
+    resource={
+      Object {
+        "subtitle": "Get immediate and easy-to-grasp analytics into what’s moving on the platform.",
+        "title": "Dashboard",
+      }
+    }
+    tabs={
+      Array [
+        Object {
+          "label": "Summary",
+          "name": "dashboard",
+          "url": "/admin/dashboard",
+        },
+        Object {
+          "label": "Users",
+          "name": "users",
+          "url": "/admin/dashboard/users",
+        },
+        Object {
+          "feature": "project_reports",
+          "label": "Reports",
+          "name": "project_reports",
+          "url": "/admin/dashboard/reports",
+        },
+        Object {
+          "feature": "clustering",
+          "label": "Insights",
+          "name": "clustering",
+          "url": "/admin/dashboard/insights",
+        },
+      ]
+    }
+  >
+    <HelmetIntl
+      description={
+        Object {
+          "defaultMessage": "Dashboard for activities on the platform",
+          "id": "app.containers.AdminPage.DashboardPage.helmetDescription",
+        }
+      }
+      title={
+        Object {
+          "defaultMessage": "Admin dashboard page",
+          "id": "app.containers.AdminPage.DashboardPage.helmetTitle",
+        }
+      }
+    />
+  </withRouter(Component)>
+</Fragment>
 `;
