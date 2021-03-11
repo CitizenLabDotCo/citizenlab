@@ -297,7 +297,6 @@
   "app.components.PostComponents.SharingModalContent.whatsAppMessageProposal": "لقد نشرت للتو اقتراحاً لـ {اسم المنظمة}: {عنوان آخر}",
   "app.components.PostComponents.linkToHomePage": "اربط بالصفحة الرئيسية",
   "app.components.PostComponents.readMore": "اقرأ المزيد...",
-  "app.components.Project.projectModeratorIndicator": "أنت مدير المشروع لهذا المشروع",
   "app.components.ProjectArchivedIndicator.archivedProject": "للأسف، لا يمكنك المشاركة في هذا المشروع بعد الآن لأنه قد تمت أرشفته",
   "app.components.ProjectCard.a11y_projectDescription": "وصف المشروع:",
   "app.components.ProjectCard.a11y_projectTitle": "عنوان المشروع:",

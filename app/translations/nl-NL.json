@@ -297,7 +297,6 @@
   "app.components.PostComponents.SharingModalContent.whatsAppMessageProposal": "Ik heb net een initiatief gepost voor {orgName}: {postTitle}",
   "app.components.PostComponents.linkToHomePage": "Link naar de homepagina",
   "app.components.PostComponents.readMore": "Lees meer...",
-  "app.components.Project.projectModeratorIndicator": "Je bent een projectbeheerder van dit project",
   "app.components.ProjectArchivedIndicator.archivedProject": "Je kan niet langer deelnemen aan dit project omdat het gearchiveerd is",
   "app.components.ProjectCard.a11y_projectDescription": "Projectbeschrijving:",
   "app.components.ProjectCard.a11y_projectTitle": "Titel van het project:",
