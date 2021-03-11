@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import ReactDOM from 'react-dom';
+import { createPortal } from 'react-dom';
 import eventEmitter from 'utils/eventEmitter';
 import { Subscription } from 'rxjs';
 import { FocusOn } from 'react-focus-on';
@@ -226,7 +226,7 @@ export default class SideModal extends PureComponent<Props, State> {
     const modalPortalElement = document?.getElementById('modal-portal');
 
     if (modalPortalElement) {
-      return ReactDOM.createPortal(
+      return createPortal(
         <CSSTransition
           classNames="modal"
           in={opened}

@@ -64,7 +64,7 @@ export interface IIdeaData {
         future_enabled: string | null;
         disabled_reason: IdeaVotingDisabledReason | null;
         cancelling_enabled: boolean;
-        downvoting_enabled: boolean;
+        downvoting_enabled: boolean | null;
       };
       commenting_idea: {
         enabled: boolean;
@@ -211,6 +211,7 @@ export function ideasMiniStream(streamParams: IStreamParams | null = null) {
   return streams.get<IIdeas>({
     apiEndpoint: `${API_PATH}/ideas/mini`,
     ...streamParams,
+    cacheStream: false,
   });
 }
 
@@ -237,6 +238,17 @@ export function geotaggedIdeasStream(
 ) {
   return streams.get<{ data: IGeotaggedIdeaData[]; links: IIdeaLinks }>({
     apiEndpoint: `${API_PATH}/ideas/geotagged`,
+    ...streamParams,
+    cacheStream: false,
+  });
+}
+
+export function similarIdeasStream(
+  ideaId: string,
+  streamParams: IStreamParams | null = null
+) {
+  return streams.get<{ data: IMinimalIdeaData[] }>({
+    apiEndpoint: `${API_PATH}/ideas/${ideaId}/similar`,
     ...streamParams,
     cacheStream: false,
   });
@@ -295,15 +307,5 @@ export async function deleteIdea(ideaId: string) {
 export function ideaActivities(ideaId: string) {
   return streams.get<{ data: IdeaActivity[] }>({
     apiEndpoint: `${API_PATH}/ideas/${ideaId}/activities`,
-  });
-}
-
-export function similarIdeasStream(
-  ideaId: string,
-  streamParams: IStreamParams | null = null
-) {
-  return streams.get<{ data: IMinimalIdeaData[] }>({
-    apiEndpoint: `${API_PATH}/ideas/${ideaId}/similar`,
-    ...streamParams,
   });
 }
