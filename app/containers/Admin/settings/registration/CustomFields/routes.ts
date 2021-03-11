@@ -7,13 +7,6 @@ export default () => ({
     loading: LoadableLoadingAdmin,
     delay: 500,
   }),
-  indexRoute: {
-    component: Loadable({
-      loader: () => import('./All'),
-      loading: LoadableLoadingAdmin,
-      delay: 500,
-    }),
-  },
   childRoutes: [
     {
       path: 'new',
