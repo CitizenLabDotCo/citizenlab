@@ -1,5 +1,6 @@
 import Loadable from 'react-loadable';
 import { LoadableLoadingAdmin } from 'components/UI/LoadableLoading';
+import moduleConfiguration from 'modules';
 
 export default () => ({
   name: 'Admin Ideas',
@@ -16,27 +17,5 @@ export default () => ({
       delay: 500,
     }),
   },
-  childRoutes: [
-    {
-      path: 'statuses',
-      component: Loadable({
-        loader: () => import('./statuses/all'),
-        loading: () => null,
-      }),
-    },
-    {
-      path: 'statuses/new',
-      component: Loadable({
-        loader: () => import('./statuses/new'),
-        loading: () => null,
-      }),
-    },
-    {
-      path: 'statuses/:id',
-      component: Loadable({
-        loader: () => import('./statuses/edit'),
-        loading: () => null,
-      }),
-    },
-  ],
+  childRoutes: moduleConfiguration.routes['admin.ideas'],
 });

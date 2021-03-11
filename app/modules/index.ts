@@ -12,6 +12,7 @@ import googleAnalyticsConfiguration from './google_analytics';
 import intercomConfiguration from './intercom';
 import satismeterConfiguration from './satismeter';
 import segmentConfiguration from './segment';
+import customIdeaStatusesConfiguration from './custom_idea_statuses';
 
 export default loadModules([
   {
@@ -48,6 +49,10 @@ export default loadModules([
   },
   {
     configuration: moderationConfiguration,
+    isEnabled: true,
+  },
+  {
+    configuration: customIdeaStatusesConfiguration,
     isEnabled: true,
   },
   {

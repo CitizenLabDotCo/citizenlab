@@ -93,6 +93,9 @@ export type OutletsPropertyMap = {
   'app.containers.Admin.project.edit.permissions': {
     project: IProjectData;
   };
+  'app.containers.Admin.ideas.tabs': {
+    onData: (data: InsertTabOptions) => void;
+  };
   'app.containers.Admin.initiatives.tabs': ITabsOutlet;
   'app.containers.Admin.dashboards.tabs': ITabsOutlet;
   'app.containers.Admin.sideBar.navItems': {
@@ -141,6 +144,7 @@ interface Routes {
   citizen: RouteConfiguration[];
   admin: RouteConfiguration[];
   'admin.initiatives': RouteConfiguration[];
+  'admin.ideas': RouteConfiguration[];
   'admin.dashboards': RouteConfiguration[];
   adminProjectMapTab: RouteConfiguration[];
 }
@@ -237,6 +241,10 @@ export const loadModules = (modules: Modules): ParsedModuleConfiguration => {
       admin: parseModuleRoutes(mergedRoutes.admin, RouteTypes.ADMIN),
       'admin.initiatives': parseModuleRoutes(
         mergedRoutes?.['admin.initiatives'],
+        RouteTypes.ADMIN
+      ),
+      'admin.ideas': parseModuleRoutes(
+        mergedRoutes?.['admin.ideas'],
         RouteTypes.ADMIN
       ),
       'admin.dashboards': parseModuleRoutes(
