@@ -148,7 +148,8 @@ class User < ApplicationRecord
     where.not(invite_status: 'pending').or(where(invite_status: nil))
   }
 
-  scope :in_group, -> (group) { joins(:memberships).where(memberships: {group_id: group.id}) }
+  IN_GROUP_PROC = ->(group) { joins(:memberships).where(memberships: { group_id: group.id }) }
+  scope :in_group, IN_GROUP_PROC
 
   scope :in_any_group, -> (groups) {
     user_ids = groups

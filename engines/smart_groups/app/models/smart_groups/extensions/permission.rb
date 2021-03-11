@@ -3,13 +3,18 @@ module SmartGroups
     module Permission
       def participation_conditions
         service = SmartGroups::RulesService.new
-        groups.select(&:rules?).map do |group|
-          group.rules.select do |rule|
-            rule['ruleType'] != 'verified'
-          end.map do |rule|
-            service.parse_json_rule rule
-          end.map(&:description_multiloc)
-        end.reject { |rules| rules.empty? }
+
+        not_verified_rule = ->(rule) { rule['ruleType'] != 'verified' }
+        parse_rule_json   = ->(rule) { service.parse_json_rule(rule) }
+
+        rules = groups.where(membership_type: 'rules').map do |group|
+          group.rules
+               .select(&not_verified_rule)
+               .map(&parse_rule_json)
+               .map(&:description_multiloc)
+        end
+
+        rules.reject(&:empty?)
       end
     end
   end
