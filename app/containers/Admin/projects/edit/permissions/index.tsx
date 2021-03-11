@@ -38,8 +38,8 @@ const ProjectPermissions = memo(
             projectId={projectId}
             project={project}
           >
-            {(children) => {
-              if (children) {
+            {(outletComponents) => {
+              if (outletComponents) {
                 return (
                   <StyledSection>
                     <StyledSectionTitle>
@@ -47,7 +47,7 @@ const ProjectPermissions = memo(
                         {...messages.participationAccessRightsTitle}
                       />
                     </StyledSectionTitle>
-                    {children}
+                    {outletComponents}
                   </StyledSection>
                 );
               }
@@ -59,14 +59,14 @@ const ProjectPermissions = memo(
             id="app.containers.Admin.project.edit.permissions.moderatorRights"
             projectId={projectId}
           >
-            {(children) => {
-              if (children) {
+            {(outletComponents) => {
+              if (outletComponents) {
                 return (
                   <StyledSection>
                     <StyledSectionTitle>
                       <FormattedMessage {...messages.moderationRightsTitle} />
                     </StyledSectionTitle>
-                    {children}
+                    {outletComponents}
                   </StyledSection>
                 );
               }
