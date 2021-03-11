@@ -1,67 +1,54 @@
-import React, { memo } from 'react';
+import React, { memo, useState } from 'react';
 
-// router
-import { withRouter, WithRouterProps } from 'react-router';
+// module
+import { InsertTabOptions, ITab } from 'typings';
+import { insertTab } from 'utils/moduleUtils';
 
 // components
 import HelmetIntl from 'components/HelmetIntl';
-import TabbedResource, { TabProps } from 'components/admin/TabbedResource';
+import TabbedResource from 'components/admin/TabbedResource';
+import Outlet from 'components/Outlet';
 
 // i18n
 import messages from './messages';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 
-// hooks
-import useFeatureFlag from 'hooks/useFeatureFlag';
-
 export interface Props {
   children: JSX.Element;
 }
 
 const IdeasPage = memo(
-  ({
-    intl: { formatMessage },
-    location,
-    children,
-  }: Props & InjectedIntlProps & WithRouterProps) => {
-    const ideaStatusCustomisationEnabled = useFeatureFlag(
-      'custom_idea_statuses'
-    );
+  ({ intl: { formatMessage }, children }: Props & InjectedIntlProps) => {
+    const [tabs, setTabs] = useState<ITab[]>([
+      {
+        label: formatMessage(messages.tabManage),
+        name: 'manage',
+        url: '/admin/ideas',
+      },
+    ]);
+
     const resource = {
       title: formatMessage(messages.inputManagerPageTitle),
       subtitle: formatMessage(messages.inputManagerPageSubtitle),
     };
 
-    const getTabs = () => {
-      const tabs: TabProps[] = [
-        {
-          label: formatMessage(messages.tabManage),
-          url: '/admin/ideas',
-        },
-      ];
-
-      if (ideaStatusCustomisationEnabled) {
-        tabs.push({
-          label: formatMessage(messages.tabStatuses),
-          url: '/admin/ideas/statuses',
-          active: location.pathname.includes('/admin/ideas/statuses'),
-        });
-      }
-
-      return tabs;
-    };
+    const handleData = (insertTabOptions: InsertTabOptions) =>
+      setTabs(insertTab(insertTabOptions));
 
     return (
-      <TabbedResource resource={resource} tabs={getTabs()}>
-        <HelmetIntl
-          title={messages.inputManagerMetaTitle}
-          description={messages.inputManagerMetaDescription}
-        />
-        {children}
-      </TabbedResource>
+      <>
+        <Outlet id="app.containers.Admin.ideas.tabs" onData={handleData} />
+        <TabbedResource resource={resource} tabs={tabs}>
+          <HelmetIntl
+            title={messages.inputManagerMetaTitle}
+            description={messages.inputManagerMetaDescription}
+          />
+          {children}
+        </TabbedResource>
+      </>
     );
   }
 );
 
-export default withRouter(injectIntl(IdeasPage));
+export default injectIntl(IdeasPage);
