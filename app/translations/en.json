@@ -2277,7 +2277,7 @@
   "app.containers.SignUpInPage.signInPageMetaDescription": "Log into the participation platform of {orgName} to join the conversation!",
   "app.containers.SignUpInPage.signUpMetaTitle": "Sign up for the CitizenLab platform of {tenantName} | CitizenLab",
   "app.containers.SignUpInPage.signUpPageMetaDescription": "Sign up for the participation platform of {orgName} to join the conversation!",
-  "app.containers.SignUpInPage.slogan": "Sign up to join the conversation!",
+  "app.containers.SignUpInPage.slogan": "We need your opinion to create a better city!",
   "app.containers.SiteMap.contributions": "Contributions",
   "app.containers.SiteMap.issues": "Issues",
   "app.containers.SiteMap.options": "Options",
