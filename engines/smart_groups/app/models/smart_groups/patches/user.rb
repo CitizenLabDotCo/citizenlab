@@ -6,7 +6,7 @@ module SmartGroups
           scope :in_group, lambda { |group|
             return SmartGroups::RulesService.new.filter(all, group.rules) if group.rules?
 
-            ::User::IN_GROUP_PROC.call(call)
+            ::User::IN_GROUP_PROC.call(group)
           }
         end
       end
