@@ -1,6 +1,6 @@
 import React, { memo, useState, useEffect } from 'react';
 import { adopt } from 'react-adopt';
-import { insertTab } from 'utils/moduleUtils';
+import { insertConfiguration } from 'utils/moduleUtils';
 
 // components
 import HelmetIntl from 'components/HelmetIntl';
@@ -24,7 +24,7 @@ import { media, colors, fontSizes } from 'utils/styleUtils';
 import { rgba } from 'polished';
 
 // typings
-import { InsertTabOptions, ITab } from 'typings';
+import { InsertConfigurationOptions, ITab } from 'typings';
 
 export const ControlBar = styled.div`
   display: flex;
@@ -292,8 +292,8 @@ export const DashboardsPage = memo(
       subtitle: formatMessage(messages.subtitleDashboard),
     };
 
-    const handleData = (insertTabOptions: InsertTabOptions) =>
-      setTabs(insertTab(insertTabOptions));
+    const handleData = (insertTabOptions: InsertConfigurationOptions<ITab>) =>
+      setTabs(insertConfiguration(insertTabOptions));
 
     if (
       !authUser ||

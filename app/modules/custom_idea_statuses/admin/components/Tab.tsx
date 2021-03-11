@@ -1,5 +1,5 @@
 import { FC, useEffect } from 'react';
-import { InsertTabOptions } from 'typings';
+import { InsertConfigurationOptions, ITab } from 'typings';
 import { withRouter, WithRouterProps } from 'react-router';
 
 // i18n
@@ -8,7 +8,7 @@ import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
 interface Props {
-  onData: (data: InsertTabOptions) => void;
+  onData: (data: InsertConfigurationOptions<ITab>) => void;
 }
 
 const Tab: FC<Props & WithRouterProps & InjectedIntlProps> = ({
@@ -19,12 +19,13 @@ const Tab: FC<Props & WithRouterProps & InjectedIntlProps> = ({
   useEffect(
     () =>
       onData({
-        tabConfiguration: {
+        configuration: {
+          name: 'custom_idea_statuses',
           label: formatMessage(messages.tabStatuses),
           url: '/admin/ideas/statuses',
           active: location.pathname.includes('/admin/ideas/statuses'),
         },
-        insertAfterTabName: 'manage',
+        insertAfterName: 'manage',
       }),
     []
   );
