@@ -26,7 +26,6 @@ export interface InputProps {
   areas?: string[];
   initiativeStatusId?: string;
   boundingBox?: number[];
-  cache?: boolean;
   assignee?: string;
   feedbackNeeded?: boolean;
 }
