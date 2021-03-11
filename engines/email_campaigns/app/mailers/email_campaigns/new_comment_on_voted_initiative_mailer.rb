@@ -15,7 +15,7 @@ module EmailCampaigns
     end
 
     def header_title
-      format_message('main_header', values: { firstName: comment_author })
+      format_message('main_header', values: { firstName: recipient_first_name })
     end
 
     def header_message

@@ -87,6 +87,39 @@ RSpec.describe User, type: :model do
     end
   end
 
+  describe 'password' do
+    it 'is valid when longer than minimum length' do
+      settings = AppConfiguration.instance.settings
+      settings['password_login'] = {
+        'enabled' => true,
+        'allowed' => true,
+        'minimum_length' => 5
+      }
+      AppConfiguration.instance.update! settings: settings
+
+      u = build(:user, password: 'zen3F28')
+      expect(u).to be_valid
+    end
+
+    it 'is invalid when shorter than minimum length' do
+      settings = AppConfiguration.instance.settings
+      settings['password_login'] = {
+        'enabled' => true,
+        'allowed' => true,
+        'minimum_length' => 5
+      }
+      AppConfiguration.instance.update! settings: settings
+
+      u = build(:user, password: 'FetGaVW856')
+      expect(u).to be_valid
+
+      settings['password_login']['minimum_length'] = 12
+      AppConfiguration.instance.update! settings: settings
+
+      expect(u).to be_invalid
+    end
+  end
+
   describe "bio sanitizer" do
     it "sanitizes script tags in the body" do
       user = create(:user, bio_multiloc: {

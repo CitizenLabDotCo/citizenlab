@@ -130,6 +130,7 @@ if ['public','example_org'].include? Apartment::Tenant.current
         allowed: true,
         enabled: true,
         phone: false,
+        minimum_length: 8
       },
       facebook_login: {
         allowed: true,
@@ -180,6 +181,10 @@ if ['public','example_org'].include? Apartment::Tenant.current
       custom_topics: {
         enabled: true,
         allowed: true
+      },
+      custom_accessibility_statement_link: {
+        enabled: false,
+        allowed: false
       },
       user_custom_fields: {
         enabled: true,
