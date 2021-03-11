@@ -9,7 +9,8 @@ import { isEqual, clone } from 'lodash-es';
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
-import messages from '../messages';
+import messages from './messages';
+import customfieldMessages from 'containers/admin/settings/registration/CustomFields/messages';
 import T from 'components/T';
 
 // components
@@ -18,6 +19,12 @@ import Button from 'components/UI/Button';
 import { ButtonWrapper } from 'components/admin/PageWrapper';
 import { List, SortableRow, TextCell } from 'components/admin/ResourceList';
 import { Toggle, Badge, IconTooltip } from 'cl2-component-library';
+
+import {
+  Section,
+  SubSectionTitleWithDescription,
+  SectionDescription,
+} from 'components/admin/Section';
 
 // services
 import {
@@ -184,7 +191,13 @@ class CustomFields extends Component<Props & InjectedIntlProps, State> {
     let lastItem = false;
 
     return (
-      <>
+      <Section>
+        <SubSectionTitleWithDescription>
+          <FormattedMessage {...messages.registrationFields} />
+        </SubSectionTitleWithDescription>
+        <SectionDescription>
+          <FormattedMessage {...messages.subtitleRegistration} />
+        </SectionDescription>
         <FeatureFlag name="user_custom_fields">
           <ButtonWrapper>
             <Button
@@ -244,18 +257,18 @@ class CustomFields extends Component<Props & InjectedIntlProps, State> {
                   </TextCellContent>
                   {field.attributes.required && (
                     <StyledBadge className="inverse" color={colors.clRed}>
-                      <FormattedMessage {...messages.required} />
+                      <FormattedMessage {...customfieldMessages.required} />
                     </StyledBadge>
                   )}
                 </StyledTextCell>
                 {isBuiltInField(field) && (
                   <div>
-                    <FormattedMessage {...messages.defaultField} />
+                    <FormattedMessage {...customfieldMessages.defaultField} />
                   </div>
                 )}
                 {isHiddenField(field) && (
                   <div>
-                    <FormattedMessage {...messages.hiddenField} />
+                    <FormattedMessage {...customfieldMessages.hiddenField} />
                   </div>
                 )}
                 <Buttons>
@@ -266,7 +279,9 @@ class CustomFields extends Component<Props & InjectedIntlProps, State> {
                       buttonStyle="text"
                       icon="delete"
                     >
-                      <FormattedMessage {...messages.deleteButtonLabel} />
+                      <FormattedMessage
+                        {...customfieldMessages.deleteButtonLabel}
+                      />
                     </Button>
                   )}
                   {!isHiddenField(field) && (
@@ -276,7 +291,9 @@ class CustomFields extends Component<Props & InjectedIntlProps, State> {
                       buttonStyle="secondary"
                       icon="edit"
                     >
-                      <FormattedMessage {...messages.editButtonLabel} />
+                      <FormattedMessage
+                        {...customfieldMessages.editButtonLabel}
+                      />
                     </Button>
                   )}
                 </Buttons>
@@ -284,7 +301,7 @@ class CustomFields extends Component<Props & InjectedIntlProps, State> {
             );
           })}
         </List>
-      </>
+      </Section>
     );
   }
 }
