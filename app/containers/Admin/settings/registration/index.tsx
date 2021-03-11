@@ -14,11 +14,9 @@ import {
 } from 'services/appConfiguration';
 
 // components
-import AllCustomFields from './CustomFields/All';
 import messages from 'containers/Admin/settings/messages';
 
 import {
-  Section,
   SectionTitle,
   SubSectionTitleWithDescription,
   SectionField,
@@ -30,6 +28,7 @@ import SubmitWrapper from 'components/admin/SubmitWrapper';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
+import Outlet from 'components/Outlet';
 
 const LabelTooltip = styled.div`
   display: flex;
@@ -158,15 +157,7 @@ const SettingsRegistrationTab = (_props: Props) => {
             />
           </form>
         </SignUpFieldsSection>
-        <Section>
-          <SubSectionTitleWithDescription>
-            <FormattedMessage {...messages.registrationFields} />
-          </SubSectionTitleWithDescription>
-          <SectionDescription>
-            <FormattedMessage {...messages.subtitleRegistration} />
-          </SectionDescription>
-          <AllCustomFields />
-        </Section>
+        <Outlet id="app.containers.Admin.settings.registration" />
       </>
     );
   }
