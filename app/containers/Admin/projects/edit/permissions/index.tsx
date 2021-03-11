@@ -46,8 +46,12 @@ const StyledSection = styled(Section)`
   margin-bottom: 50px;
 `;
 
-const SubSection = styled(Section)`
-  margin-bottom: 40px;
+const ViewingRightsSection = styled(Section)`
+  margin-bottom: 30px;
+`;
+
+const IdeaAssignmentSection = styled(Section)`
+  margin-bottom: 30px;
 `;
 
 export const StyledSectionTitle = styled(SectionTitle)`
@@ -301,63 +305,61 @@ class ProjectPermissions extends PureComponent<
               <FormattedMessage {...messages.participationAccessRightsTitle} />
             </StyledSectionTitle>
 
-            {(projectVisibilityEnabled || granularPermissionsEnabled) && (
-              <SubSection>
-                <StyledSectionField>
-                  <SubSectionTitle>
-                    <FormattedMessage {...messages.viewingRightsTitle} />
-                  </SubSectionTitle>
+            <ViewingRightsSection>
+              <StyledSectionField>
+                <SubSectionTitle>
+                  <FormattedMessage {...messages.viewingRightsTitle} />
+                </SubSectionTitle>
 
-                  <RadioButtonsWrapper>
-                    <StyledRadio
-                      onChange={this.handlePermissionTypeChange}
-                      currentValue={unsavedVisibleTo}
-                      name="permissionsType"
-                      label={formatMessage(messages.permissionsEveryoneLabel)}
-                      value="public"
-                      id="permissions-all"
-                    />
-                    <StyledRadio
-                      onChange={this.handlePermissionTypeChange}
-                      currentValue={unsavedVisibleTo}
-                      name="permissionsType"
-                      label={formatMessage(messages.permissionsAdministrators)}
-                      value="admins"
-                      id="permissions-administrators"
-                    />
-                    <StyledRadio
-                      onChange={this.handlePermissionTypeChange}
-                      currentValue={unsavedVisibleTo}
-                      name="permissionsType"
-                      label={formatMessage(messages.permissionsSelectionLabel)}
-                      value="groups"
-                      id="permissions-selection"
-                    />
-                  </RadioButtonsWrapper>
-                </StyledSectionField>
-
-                {unsavedVisibleTo === 'groups' && (
-                  <ProjectGroupsList
-                    projectId={projectId}
-                    onAddButtonClicked={this.handleGroupsAdded}
+                <RadioButtonsWrapper>
+                  <StyledRadio
+                    onChange={this.handlePermissionTypeChange}
+                    currentValue={unsavedVisibleTo}
+                    name="permissionsType"
+                    label={formatMessage(messages.permissionsEveryoneLabel)}
+                    value="public"
+                    id="permissions-all"
                   />
-                )}
-
-                {unsavedVisibleTo !== 'groups' && (
-                  <SubmitWrapper
-                    loading={saving}
-                    status={status}
-                    onClick={this.saveChanges}
-                    messages={{
-                      buttonSave: messages.save,
-                      buttonSuccess: messages.saveSuccess,
-                      messageError: messages.saveErrorMessage,
-                      messageSuccess: messages.saveSuccessMessage,
-                    }}
+                  <StyledRadio
+                    onChange={this.handlePermissionTypeChange}
+                    currentValue={unsavedVisibleTo}
+                    name="permissionsType"
+                    label={formatMessage(messages.permissionsAdministrators)}
+                    value="admins"
+                    id="permissions-administrators"
                   />
-                )}
-              </SubSection>
-            )}
+                  <StyledRadio
+                    onChange={this.handlePermissionTypeChange}
+                    currentValue={unsavedVisibleTo}
+                    name="permissionsType"
+                    label={formatMessage(messages.permissionsSelectionLabel)}
+                    value="groups"
+                    id="permissions-selection"
+                  />
+                </RadioButtonsWrapper>
+              </StyledSectionField>
+
+              {unsavedVisibleTo === 'groups' && (
+                <ProjectGroupsList
+                  projectId={projectId}
+                  onAddButtonClicked={this.handleGroupsAdded}
+                />
+              )}
+
+              {unsavedVisibleTo !== 'groups' && (
+                <SubmitWrapper
+                  loading={saving}
+                  status={status}
+                  onClick={this.saveChanges}
+                  messages={{
+                    buttonSave: messages.save,
+                    buttonSuccess: messages.saveSuccess,
+                    messageError: messages.saveErrorMessage,
+                    messageSuccess: messages.saveSuccessMessage,
+                  }}
+                />
+              )}
+            </ViewingRightsSection>
 
             <Outlet
               id="app.containers.Admin.project.edit.permissions.granular"
@@ -365,47 +367,43 @@ class ProjectPermissions extends PureComponent<
             />
           </StyledSection>
 
-          {(projectManagementEnabled || ideaAssignmentEnabled) && (
-            <StyledSection>
-              <StyledSectionTitle>
-                <FormattedMessage {...messages.moderationRightsTitle} />
-              </StyledSectionTitle>
+          <StyledSection>
+            <StyledSectionTitle>
+              <FormattedMessage {...messages.moderationRightsTitle} />
+            </StyledSectionTitle>
 
-              <Outlet
-                id="app.containers.Admin.project.edit.permissions.projectManagement"
-                projectId={project.data.id}
-              />
+            <Outlet
+              id="app.containers.Admin.project.edit.permissions.projectManagement"
+              projectId={project.data.id}
+            />
 
-              {ideaAssignmentEnabled && (
-                <SubSection>
-                  <SubSectionTitle>
-                    <FormattedMessage
-                      {...messages.inputAssignmentSectionTitle}
-                    />
-                    <IconTooltip
-                      content={
-                        <FormattedMessage
-                          {...messages.inputAssignmentTooltipText}
-                          values={{
-                            ideaManagerLink: (
-                              <StyledLink
-                                to={`/admin/projects/${projectId}/ideas`}
-                              >
-                                <FormattedMessage
-                                  {...messages.inputManagerLinkText}
-                                />
-                              </StyledLink>
-                            ),
-                          }}
-                        />
-                      }
-                    />
-                  </SubSectionTitle>
-                  <IdeaAssignment projectId={projectId} />
-                </SubSection>
-              )}
-            </StyledSection>
-          )}
+            {ideaAssignmentEnabled && (
+              <IdeaAssignmentSection>
+                <SubSectionTitle>
+                  <FormattedMessage {...messages.inputAssignmentSectionTitle} />
+                  <IconTooltip
+                    content={
+                      <FormattedMessage
+                        {...messages.inputAssignmentTooltipText}
+                        values={{
+                          ideaManagerLink: (
+                            <StyledLink
+                              to={`/admin/projects/${projectId}/ideas`}
+                            >
+                              <FormattedMessage
+                                {...messages.inputManagerLinkText}
+                              />
+                            </StyledLink>
+                          ),
+                        }}
+                      />
+                    }
+                  />
+                </SubSectionTitle>
+                <IdeaAssignment projectId={projectId} />
+              </IdeaAssignmentSection>
+            )}
+          </StyledSection>
         </>
       );
     }
