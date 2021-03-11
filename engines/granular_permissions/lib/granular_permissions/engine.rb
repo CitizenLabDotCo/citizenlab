@@ -2,7 +2,7 @@
 
 module GranularPermissions
   class Engine < ::Rails::Engine
-    isolate_namespace GranularPermissions
+    # isolate_namespace GranularPermissions
     config.generators.api_only = true
 
     def self.register_feature
