@@ -165,11 +165,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.registrationTitle',
     defaultMessage: 'Registration',
   },
-  subtitleRegistration: {
-    id: 'app.containers.AdminPage.SettingsPage.subtitleRegistration',
-    defaultMessage:
-      'Specify what information people are asked to provide when signing up.',
-  },
   tabAreas: {
     id: 'app.containers.AdminPage.SettingsPage.tabAreas',
     defaultMessage: 'Areas',
@@ -243,10 +238,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.step2Tooltip',
     defaultMessage:
       'This is shown on the top of the second page of the sign-up form (additional registration fields).',
-  },
-  registrationFields: {
-    id: 'app.containers.AdminPage.SettingsPage.registrationFields',
-    defaultMessage: 'Registration fields',
   },
   registrationTabDescription: {
     id: 'app.containers.AdminPage.SettingsPage.registrationTabDescription',

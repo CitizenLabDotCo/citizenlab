@@ -76,20 +76,12 @@ export default defineMessages({
       'app.containers.AdminPage.SettingsPage.CustomSignupFields.editButtonLabel',
     defaultMessage: 'Edit',
   },
-  customFieldDeletionConfirmation: {
-    id:
-      'app.containers.AdminPage.SettingsPage.CustomSignupFields.customFieldDeletionConfirmation',
-    defaultMessage: 'Are you sure you want to delete this custom field?',
-  },
+
   listTitle: {
     id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.listTitle',
     defaultMessage: 'Custom fields',
   },
-  addAFieldButton: {
-    id:
-      'app.containers.AdminPage.SettingsPage.CustomSignupFields.addAFieldButton',
-    defaultMessage: 'Add field',
-  },
+
   addANewRegistrationField: {
     id:
       'app.containers.AdminPage.SettingsPage.CustomSignupFields.addANewRegistrationField',
@@ -149,16 +141,5 @@ export default defineMessages({
   answerOption: {
     id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.answerOption',
     defaultMessage: 'Answer option',
-  },
-  domicileManagementInfo: {
-    id:
-      'app.containers.AdminPage.SettingsPage.CustomSignupFields.domicileManagementInfo',
-    defaultMessage:
-      'Answer options for place of residence can be set in the {geographicAreasTabLink}.',
-  },
-  geographicAreasTabLinkText: {
-    id:
-      'app.containers.AdminPage.SettingsPage.CustomSignupFields.geographicAreasTabLinkText',
-    defaultMessage: 'Geographic areas tab',
   },
 });
