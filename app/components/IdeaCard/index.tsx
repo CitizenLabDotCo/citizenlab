@@ -320,14 +320,13 @@ class IdeaCard extends PureComponent<
             <>
               {!showVotingDisabled && !showAssignBudgetDisabled && (
                 <FooterInner>
-                  {participationMethod !== 'budgeting' && (
+                  {participationMethod === 'ideation' && (
                     <VoteControl
                       style="border"
                       ideaId={idea.id}
                       disabledVoteClick={this.disabledVoteClick}
                       size="2"
                       ariaHidden={true}
-                      showDownvote={votingDescriptor?.downvoting_enabled}
                     />
                   )}
 

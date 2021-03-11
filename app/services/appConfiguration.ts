@@ -44,7 +44,6 @@ export interface IAppConfigurationSettings {
     color_menu_bg?: string | null;
     currency: string;
     custom_onboarding_fallback_message?: Multiloc | null;
-    /* following three are used in the back-end */
     custom_onboarding_message?: Multiloc | null;
     custom_onboarding_button?: Multiloc | null;
     custom_onboarding_link?: string | null;
@@ -93,6 +92,11 @@ export interface IAppConfigurationSettings {
     environment: string;
     identifier: string;
     secret: string;
+  };
+  custom_accessibility_statement_link: {
+    allowed: boolean;
+    enabled: boolean;
+    url?: string;
   };
   manual_project_sorting?: AppConfigurationFeature;
   admin_project_templates?: AppConfigurationFeature;

@@ -13,7 +13,6 @@ import {
   SubSectionTitle,
   SectionTitle,
 } from 'components/admin/Section';
-import Moderators from './Moderators';
 import IdeaAssignment from './IdeaAssignment';
 import Link from 'utils/cl-router/Link';
 
@@ -31,10 +30,6 @@ const StyledSection = styled(Section)`
 
 const IdeaAssignmentSection = styled(Section)`
   margin-bottom: 30px;
-`;
-
-const ModeratorSubSection = styled(Section)`
-  margin-bottom: 20px;
 `;
 
 export const StyledSectionTitle = styled(SectionTitle)`
@@ -75,18 +70,17 @@ const ProjectPermissions = memo(
             />
 
             <Outlet
-              id="app.containers.Admin.project.edit.permissions"
+              id="app.containers.Admin.project.edit.permissions.granular"
               project={project}
             />
           </StyledSection>
 
-          {(projectManagementEnabled || ideaAssignmentEnabled) && (
-            <StyledSection>
-              <StyledSectionTitle>
-                <FormattedMessage {...messages.moderationRightsTitle} />
-              </StyledSectionTitle>
+          <StyledSection>
+            <StyledSectionTitle>
+              <FormattedMessage {...messages.moderationRightsTitle} />
+            </StyledSectionTitle>
 
-              {/* {projectManagementEnabled && (
+            {/* {projectManagementEnabled && (
                 <ModeratorSubSection>
                   <Moderators
                     moderators={this.props.moderators}
@@ -95,36 +89,38 @@ const ProjectPermissions = memo(
                 </ModeratorSubSection>
               )} */}
 
-              {ideaAssignmentEnabled && (
-                <IdeaAssignmentSection>
-                  <SubSectionTitle>
-                    <FormattedMessage
-                      {...messages.inputAssignmentSectionTitle}
-                    />
-                    <IconTooltip
-                      content={
-                        <FormattedMessage
-                          {...messages.inputAssignmentTooltipText}
-                          values={{
-                            ideaManagerLink: (
-                              <StyledLink
-                                to={`/admin/projects/${projectId}/ideas`}
-                              >
-                                <FormattedMessage
-                                  {...messages.inputManagerLinkText}
-                                />
-                              </StyledLink>
-                            ),
-                          }}
-                        />
-                      }
-                    />
-                  </SubSectionTitle>
-                  <IdeaAssignment projectId={projectId} />
-                </IdeaAssignmentSection>
-              )}
-            </StyledSection>
-          )}
+            <Outlet
+              id="app.containers.Admin.project.edit.permissions.projectManagement"
+              projectId={projectId}
+            />
+
+            {ideaAssignmentEnabled && (
+              <IdeaAssignmentSection>
+                <SubSectionTitle>
+                  <FormattedMessage {...messages.inputAssignmentSectionTitle} />
+                  <IconTooltip
+                    content={
+                      <FormattedMessage
+                        {...messages.inputAssignmentTooltipText}
+                        values={{
+                          ideaManagerLink: (
+                            <StyledLink
+                              to={`/admin/projects/${projectId}/ideas`}
+                            >
+                              <FormattedMessage
+                                {...messages.inputManagerLinkText}
+                              />
+                            </StyledLink>
+                          ),
+                        }}
+                      />
+                    }
+                  />
+                </SubSectionTitle>
+                <IdeaAssignment projectId={projectId} />
+              </IdeaAssignmentSection>
+            )}
+          </StyledSection>
         </>
       );
     }
