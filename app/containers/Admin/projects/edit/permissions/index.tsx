@@ -309,12 +309,14 @@ class ProjectPermissions extends PureComponent<
 
       return (
         <>
-          <StyledSection>
-            <StyledSectionTitle>
-              <FormattedMessage {...messages.participationAccessRightsTitle} />
-            </StyledSectionTitle>
+          {(projectVisibilityEnabled || granularPermissionsEnabled) && (
+            <StyledSection>
+              <StyledSectionTitle>
+                <FormattedMessage
+                  {...messages.participationAccessRightsTitle}
+                />
+              </StyledSectionTitle>
 
-            {(projectVisibilityEnabled || granularPermissionsEnabled) && (
               <ViewingRightsSection>
                 <StyledSectionField>
                   <SubSectionTitle>
@@ -370,13 +372,13 @@ class ProjectPermissions extends PureComponent<
                   />
                 )}
               </ViewingRightsSection>
-            )}
 
-            <Outlet
-              id="app.containers.Admin.project.edit.permissions"
-              project={project.data}
-            />
-          </StyledSection>
+              <Outlet
+                id="app.containers.Admin.project.edit.permissions"
+                project={project.data}
+              />
+            </StyledSection>
+          )}
 
           {(projectManagementEnabled || ideaAssignmentEnabled) && (
             <StyledSection>
