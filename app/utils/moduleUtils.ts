@@ -143,6 +143,7 @@ export type OutletsPropertyMap = {
       tabConfiguration: ITab;
     }) => void;
   };
+  'app.containers.Admin.settings.registration': {};
 };
 
 type Outlet<Props> = FunctionComponent<Props> | FunctionComponent<Props>[];
