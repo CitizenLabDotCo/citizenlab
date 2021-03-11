@@ -43,7 +43,6 @@ class ParticipationContextService
     @memoized_votes_in_context = Hash.new { |hash, key| hash[key] = {} }
     @timeline_service = TimelineService.new
     @verification_service = Verification::VerificationService.new
-    @permission_service = PermissionsService.new
   end
 
   def get_participation_context(project)
@@ -86,6 +85,8 @@ class ParticipationContextService
       POSTING_DISABLED_REASONS[:not_ideation]
     elsif !context.posting_enabled
       POSTING_DISABLED_REASONS[:posting_disabled]
+    else
+      permission_denied?(user, 'posting_idea', context)
     end
   end
 
@@ -112,6 +113,8 @@ class ParticipationContextService
       COMMENTING_DISABLED_REASONS[:not_supported]
     elsif !context.commenting_enabled
       COMMENTING_DISABLED_REASONS[:commenting_disabled]
+    else
+      permission_denied?(user, 'commenting_idea', context)
     end
   end
 
@@ -153,6 +156,8 @@ class ParticipationContextService
       VOTING_DISABLED_REASONS[:voting_disabled]
     elsif user && voting_limit_reached?(context, user)
       VOTING_DISABLED_REASONS[:voting_limited_max_reached]
+    else
+      permission_denied?(user, 'voting_idea', context)
     end
   end
 
@@ -166,6 +171,8 @@ class ParticipationContextService
       VOTING_DISABLED_REASONS[:idea_not_in_current_phase]
     elsif !context.voting_enabled
       VOTING_DISABLED_REASONS[:voting_disabled]
+    else
+      permission_denied?(user, 'voting_idea', get_participation_context(idea.project))
     end
   end
 
@@ -179,6 +186,8 @@ class ParticipationContextService
       TAKING_SURVEY_DISABLED_REASONS[:project_inactive]
     elsif !context.survey?
       TAKING_SURVEY_DISABLED_REASONS[:not_survey]
+    else
+      permission_denied?(user, 'taking_survey', context)
     end
   end
 
@@ -194,6 +203,8 @@ class ParticipationContextService
       TAKING_POLL_DISABLED_REASONS[:not_poll]
     elsif user && context.poll_responses.exists?(user: user)
       TAKING_POLL_DISABLED_REASONS[:already_responded]
+    else
+      permission_denied?(user, 'taking_poll', context)
     end
   end
 
@@ -207,7 +218,9 @@ class ParticipationContextService
   end
 
   def budgeting_disabled_reason_for_context(context, user)
-    BUDGETING_DISABLED_REASONS[:project_inactive] if !context
+    BUDGETING_DISABLED_REASONS[:project_inactive] unless context
+
+    permission_denied?(user, 'budgeting', context)
   end
 
   def future_posting_idea_enabled_phase(project, user, time = Time.zone.now)
@@ -262,5 +275,11 @@ class ParticipationContextService
 
   def calculate_votes_in_context(context, user)
     user.votes.where(votable_id: context.ideas).count
+  end
+
+  private
+
+  def permission_denied?(user, _action, _context)
+    'not_signed_in' unless user
   end
 end
