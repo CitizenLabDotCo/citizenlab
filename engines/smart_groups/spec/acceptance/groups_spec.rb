@@ -11,7 +11,7 @@ resource 'Groups' do
 
   context 'when authenticated' do
     before do
-      admin_header_token
+      header_token_for(create(:admin, email: 'something_without_ruled_letters@co.co'))
     end
 
     get 'web_api/v1/groups' do
