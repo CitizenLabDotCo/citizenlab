@@ -18,7 +18,6 @@ import GetFeatureFlag, {
   GetFeatureFlagChildProps,
 } from 'resources/GetFeatureFlag';
 import { reject } from 'lodash-es';
-import Outlet from 'components/Outlet';
 import { insertTab } from 'utils/moduleUtils';
 import { InsertTabOptions } from 'typings';
 
@@ -56,6 +55,11 @@ class SettingsPage extends React.PureComponent<
           url: '/admin/settings/customize',
         },
         {
+          name: 'registration',
+          label: formatMessage(messages.tabRegistrationFields),
+          url: '/admin/settings/registration',
+        },
+        {
           label: formatMessage(messages.tabTopics),
           url: '/admin/settings/topics',
           name: 'topics',
@@ -78,10 +82,6 @@ class SettingsPage extends React.PureComponent<
       ],
     };
   }
-
-  handleData = (insertTabOptions: InsertTabOptions) => {
-    this.setState(({ tabs }) => ({ tabs: insertTab(insertTabOptions)(tabs) }));
-  };
 
   getTabs = () => {
     const { widgetsEnabled, customTopicsEnabled } = this.props;
@@ -126,24 +126,18 @@ class SettingsPage extends React.PureComponent<
     };
 
     return (
-      <>
-        <Outlet
-          id="app.containers.Admin.settings.SettingsPage"
-          onData={this.handleData}
+      <TabbedResource
+        resource={resource}
+        // TODO: optimization would be to use useMemo for tabs,
+        // as they get recalculated on every click
+        tabs={this.getTabs()}
+      >
+        <HelmetIntl
+          title={messages.helmetTitle}
+          description={messages.helmetDescription}
         />
-        <TabbedResource
-          resource={resource}
-          // TODO: optimization would be to use useMemo for tabs,
-          // as they get recalculated on every click
-          tabs={this.getTabs()}
-        >
-          <HelmetIntl
-            title={messages.helmetTitle}
-            description={messages.helmetDescription}
-          />
-          {children}
-        </TabbedResource>
-      </>
+        {children}
+      </TabbedResource>
     );
   }
 }
