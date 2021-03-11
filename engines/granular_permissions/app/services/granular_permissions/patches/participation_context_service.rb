@@ -3,32 +3,12 @@
 module GranularPermissions
   module Patches
     module ParticipationContextService
-      def posting_idea_disabled_reason_for_context(context, user)
-        super || @permission_service.denied?(user, 'posting_idea', context)
+      def permission_denied?(user, action, context)
+        permissions_service.denied?(user, action, context)
       end
-
-      def commenting_idea_disabled_reason_for_context(context, user)
-        super || @permission_service.denied?(user, 'commenting_idea', context)
-      end
-
-      def voting_idea_disabled_reason_for_context(context, user)
-        super || @permission_service.denied?(user, 'voting_idea', context)
-      end
-
-      def cancelling_votes_disabled_reason_for_idea(idea, user)
-        super || @permission_service.denied?(user, 'voting_idea', get_participation_context(idea.project))
-      end
-
-      def taking_survey_disabled_reason_for_context(context, user)
-        super || @permission_service.denied?(user, 'taking_survey', context)
-      end
-
-      def taking_poll_disabled_reason_for_context(context, user)
-        super || @permission_service.denied?(user, 'taking_poll', context)
-      end
-
-      def budgeting_disabled_reason_for_context(context, user)
-        super || @permission_service.denied?(user, 'budgeting', context)
+      
+      def permissions_service
+        @permissions_service ||= ::PermissionsService.new
       end
     end
   end

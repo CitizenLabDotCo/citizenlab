@@ -45,7 +45,7 @@ class Permission < ApplicationRecord
              when 'users' then :not_signed_in unless user
              when 'admins_moderators' then :not_permitted
              when 'groups'
-             if requires_verification? && !user&.verified?
+               if requires_verification? && !user&.verified?
                  :not_verified
                elsif user.nil? || (group_ids & user.group_ids).blank?
                  :not_permitted
