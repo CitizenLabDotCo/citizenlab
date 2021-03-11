@@ -264,5 +264,3 @@ class ParticipationContextService
     user.votes.where(votable_id: context.ideas).count
   end
 end
-
-ParticipationContextService.prepend_if_ee('GranularPermissions::Patches::ParticipationContextService')
