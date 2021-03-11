@@ -20,7 +20,6 @@ import {
   SectionTitle,
   SectionField,
 } from 'components/admin/Section';
-import Moderators from './Moderators';
 import IdeaAssignment from './IdeaAssignment';
 import Link from 'utils/cl-router/Link';
 
@@ -34,9 +33,6 @@ import {
 } from 'services/groupsProjects';
 
 // resources
-import GetModerators, {
-  GetModeratorsChildProps,
-} from 'resources/GetModerators';
 import GetFeatureFlag, {
   GetFeatureFlagChildProps,
 } from 'resources/GetFeatureFlag';
@@ -56,10 +52,6 @@ const ViewingRightsSection = styled(Section)`
 
 const IdeaAssignmentSection = styled(Section)`
   margin-bottom: 30px;
-`;
-
-const ModeratorSubSection = styled(Section)`
-  margin-bottom: 20px;
 `;
 
 export const StyledSectionTitle = styled(SectionTitle)`
@@ -96,7 +88,6 @@ const StyledLink = styled(Link)`
 interface InputProps {}
 
 interface DataProps {
-  moderators: GetModeratorsChildProps;
   projectVisibilityEnabled: GetFeatureFlagChildProps;
   projectManagementEnabled: GetFeatureFlagChildProps;
   ideaAssignmentEnabled: GetFeatureFlagChildProps;
@@ -309,122 +300,110 @@ class ProjectPermissions extends PureComponent<
 
       return (
         <>
-          {(projectVisibilityEnabled || granularPermissionsEnabled) && (
-            <StyledSection>
-              <StyledSectionTitle>
-                <FormattedMessage
-                  {...messages.participationAccessRightsTitle}
+          <StyledSection>
+            <StyledSectionTitle>
+              <FormattedMessage {...messages.participationAccessRightsTitle} />
+            </StyledSectionTitle>
+
+            <ViewingRightsSection>
+              <StyledSectionField>
+                <SubSectionTitle>
+                  <FormattedMessage {...messages.viewingRightsTitle} />
+                </SubSectionTitle>
+
+                <RadioButtonsWrapper>
+                  <StyledRadio
+                    onChange={this.handlePermissionTypeChange}
+                    currentValue={unsavedVisibleTo}
+                    name="permissionsType"
+                    label={formatMessage(messages.permissionsEveryoneLabel)}
+                    value="public"
+                    id="permissions-all"
+                  />
+                  <StyledRadio
+                    onChange={this.handlePermissionTypeChange}
+                    currentValue={unsavedVisibleTo}
+                    name="permissionsType"
+                    label={formatMessage(messages.permissionsAdministrators)}
+                    value="admins"
+                    id="permissions-administrators"
+                  />
+                  <StyledRadio
+                    onChange={this.handlePermissionTypeChange}
+                    currentValue={unsavedVisibleTo}
+                    name="permissionsType"
+                    label={formatMessage(messages.permissionsSelectionLabel)}
+                    value="groups"
+                    id="permissions-selection"
+                  />
+                </RadioButtonsWrapper>
+              </StyledSectionField>
+
+              {unsavedVisibleTo === 'groups' && (
+                <ProjectGroupsList
+                  projectId={projectId}
+                  onAddButtonClicked={this.handleGroupsAdded}
                 />
-              </StyledSectionTitle>
-
-              <ViewingRightsSection>
-                <StyledSectionField>
-                  <SubSectionTitle>
-                    <FormattedMessage {...messages.viewingRightsTitle} />
-                  </SubSectionTitle>
-
-                  <RadioButtonsWrapper>
-                    <StyledRadio
-                      onChange={this.handlePermissionTypeChange}
-                      currentValue={unsavedVisibleTo}
-                      name="permissionsType"
-                      label={formatMessage(messages.permissionsEveryoneLabel)}
-                      value="public"
-                      id="permissions-all"
-                    />
-                    <StyledRadio
-                      onChange={this.handlePermissionTypeChange}
-                      currentValue={unsavedVisibleTo}
-                      name="permissionsType"
-                      label={formatMessage(messages.permissionsAdministrators)}
-                      value="admins"
-                      id="permissions-administrators"
-                    />
-                    <StyledRadio
-                      onChange={this.handlePermissionTypeChange}
-                      currentValue={unsavedVisibleTo}
-                      name="permissionsType"
-                      label={formatMessage(messages.permissionsSelectionLabel)}
-                      value="groups"
-                      id="permissions-selection"
-                    />
-                  </RadioButtonsWrapper>
-                </StyledSectionField>
-
-                {unsavedVisibleTo === 'groups' && (
-                  <ProjectGroupsList
-                    projectId={projectId}
-                    onAddButtonClicked={this.handleGroupsAdded}
-                  />
-                )}
-
-                {unsavedVisibleTo !== 'groups' && (
-                  <SubmitWrapper
-                    loading={saving}
-                    status={status}
-                    onClick={this.saveChanges}
-                    messages={{
-                      buttonSave: messages.save,
-                      buttonSuccess: messages.saveSuccess,
-                      messageError: messages.saveErrorMessage,
-                      messageSuccess: messages.saveSuccessMessage,
-                    }}
-                  />
-                )}
-              </ViewingRightsSection>
-
-              <Outlet
-                id="app.containers.Admin.project.edit.permissions"
-                project={project.data}
-              />
-            </StyledSection>
-          )}
-
-          {(projectManagementEnabled || ideaAssignmentEnabled) && (
-            <StyledSection>
-              <StyledSectionTitle>
-                <FormattedMessage {...messages.moderationRightsTitle} />
-              </StyledSectionTitle>
-
-              {projectManagementEnabled && (
-                <ModeratorSubSection>
-                  <Moderators
-                    moderators={this.props.moderators}
-                    projectId={projectId}
-                  />
-                </ModeratorSubSection>
               )}
 
-              {ideaAssignmentEnabled && (
-                <IdeaAssignmentSection>
-                  <SubSectionTitle>
-                    <FormattedMessage
-                      {...messages.inputAssignmentSectionTitle}
-                    />
-                    <IconTooltip
-                      content={
-                        <FormattedMessage
-                          {...messages.inputAssignmentTooltipText}
-                          values={{
-                            ideaManagerLink: (
-                              <StyledLink
-                                to={`/admin/projects/${projectId}/ideas`}
-                              >
-                                <FormattedMessage
-                                  {...messages.inputManagerLinkText}
-                                />
-                              </StyledLink>
-                            ),
-                          }}
-                        />
-                      }
-                    />
-                  </SubSectionTitle>
-                  <IdeaAssignment projectId={projectId} />
-                </IdeaAssignmentSection>
+              {unsavedVisibleTo !== 'groups' && (
+                <SubmitWrapper
+                  loading={saving}
+                  status={status}
+                  onClick={this.saveChanges}
+                  messages={{
+                    buttonSave: messages.save,
+                    buttonSuccess: messages.saveSuccess,
+                    messageError: messages.saveErrorMessage,
+                    messageSuccess: messages.saveSuccessMessage,
+                  }}
+                />
               )}
-            </StyledSection>
-          )}
+            </ViewingRightsSection>
+
+            <Outlet
+              id="app.containers.Admin.project.edit.permissions.granular"
+              project={project.data}
+            />
+          </StyledSection>
+
+          <StyledSection>
+            <StyledSectionTitle>
+              <FormattedMessage {...messages.moderationRightsTitle} />
+            </StyledSectionTitle>
+
+            <Outlet
+              id="app.containers.Admin.project.edit.permissions.projectManagement"
+              projectId={project.data.id}
+            />
+
+            {ideaAssignmentEnabled && (
+              <IdeaAssignmentSection>
+                <SubSectionTitle>
+                  <FormattedMessage {...messages.inputAssignmentSectionTitle} />
+                  <IconTooltip
+                    content={
+                      <FormattedMessage
+                        {...messages.inputAssignmentTooltipText}
+                        values={{
+                          ideaManagerLink: (
+                            <StyledLink
+                              to={`/admin/projects/${projectId}/ideas`}
+                            >
+                              <FormattedMessage
+                                {...messages.inputManagerLinkText}
+                              />
+                            </StyledLink>
+                          ),
+                        }}
+                      />
+                    }
+                  />
+                </SubSectionTitle>
+                <IdeaAssignment projectId={projectId} />
+              </IdeaAssignmentSection>
+            )}
+          </StyledSection>
         </>
       );
     }
@@ -436,9 +415,6 @@ class ProjectPermissions extends PureComponent<
 const ProjectPermissionsWithHoC = injectIntl(ProjectPermissions);
 
 const Data = adopt<DataProps, WithRouterProps>({
-  moderators: ({ params, render }) => (
-    <GetModerators projectId={params.projectId}>{render}</GetModerators>
-  ),
   projectVisibilityEnabled: <GetFeatureFlag name="project_visibility" />,
   granularPermissionsEnabled: <GetFeatureFlag name="granular_permissions" />,
   projectManagementEnabled: <GetFeatureFlag name="project_management" />,

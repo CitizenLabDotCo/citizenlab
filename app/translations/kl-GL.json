@@ -297,7 +297,6 @@
   "app.components.PostComponents.SharingModalContent.whatsAppMessageProposal": "I just posted a proposal for {orgName}: {postTitle}",
   "app.components.PostComponents.linkToHomePage": "Nittartakkamut iserneq innersuussut",
   "app.components.PostComponents.readMore": "Atuarnerugit...",
-  "app.components.Project.projectModeratorIndicator": "{tenantName, select, DeloitteDK {Nunarsuaq tamakkerlugu anguniakkanut uunga oqallinnermi aqutsisuuvutit.} other {Suliniummut uunga oqallinnermi aqutsisuuvutit.}}",
   "app.components.ProjectArchivedIndicator.archivedProject": "{tenantName, select, DeloitteDK {Ajoraluartumik uunga nunarsuaq tamakkerlugu anguniakkanut peqataasinnaajunnaarputit, toqqorneqarmat} other {Ajoraluartumik uunga suliamut peqataasinnaajunnaarputit, toqqorneqarmat}}",
   "app.components.ProjectCard.a11y_projectDescription": "Suliassap allaaserineqarnera:",
   "app.components.ProjectCard.a11y_projectTitle": "Suliniutip taaguutaa",

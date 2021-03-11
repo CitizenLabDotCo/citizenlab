@@ -7,13 +7,16 @@ export interface IModeratorsFoundUsers {
   data: IGroupMembershipsFoundUserData[];
 }
 
-export function moderatorsStream(projectId: string) {
+export function projectModeratorsStream(projectId: string) {
   return streams.get<IUsers>({
     apiEndpoint: `${API_PATH}/projects/${projectId}/moderators`,
   });
 }
 
-export async function deleteModerator(projectId: string, moderatorId: string) {
+export async function deleteProjectModerator(
+  projectId: string,
+  moderatorId: string
+) {
   const response = await streams.delete(
     `${API_PATH}/projects/${projectId}/moderators/${moderatorId}`,
     moderatorId

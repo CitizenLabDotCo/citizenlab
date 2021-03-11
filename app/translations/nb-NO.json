@@ -297,7 +297,6 @@
   "app.components.PostComponents.SharingModalContent.whatsAppMessageProposal": "Jeg publiserte nettopp et forslag for {orgName}: {postTitle}",
   "app.components.PostComponents.linkToHomePage": "Lenke til nettside",
   "app.components.PostComponents.readMore": "Les mer...",
-  "app.components.Project.projectModeratorIndicator": "Du er en moderator for dette prosjektet",
   "app.components.ProjectArchivedIndicator.archivedProject": "Dessverre kan du ikke delta i dette prosjektet lenger, fordi det har blitt arkivert",
   "app.components.ProjectCard.a11y_projectDescription": "Prosjektbeskrivelse:",
   "app.components.ProjectCard.a11y_projectTitle": "Prosjekttittel:",
