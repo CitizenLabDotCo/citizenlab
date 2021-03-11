@@ -63,8 +63,8 @@ const InitiativesPage = memo<InjectedIntlProps & WithRouterProps>(
       });
     };
 
-    const handleData = (insertTabOptions: InsertConfigurationOptions<ITab>) =>
-      setTabs(insertConfiguration<ITab>(insertTabOptions));
+    const handleData = (data: InsertConfigurationOptions<ITab>) =>
+      setTabs(insertConfiguration<ITab>(data));
 
     const { pathname } = location;
     return (

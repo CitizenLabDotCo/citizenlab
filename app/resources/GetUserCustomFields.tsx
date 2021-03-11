@@ -5,7 +5,6 @@ import {
   IUserCustomFieldData,
   IUserCustomFieldInputType,
 } from 'services/userCustomFields';
-import { isBoolean } from 'lodash-es';
 
 interface InputProps {}
 
@@ -16,7 +15,6 @@ type children = (
 interface Props extends InputProps {
   children?: children;
   inputTypes?: IUserCustomFieldInputType[];
-  cache?: boolean;
 }
 
 interface State {
@@ -39,10 +37,8 @@ export default class GetCustomFields extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    const { inputTypes, cache } = this.props;
-    const cacheStream = isBoolean(cache) ? cache : true;
+    const { inputTypes } = this.props;
     const userCustomFields$ = userCustomFieldsStream({
-      cacheStream,
       queryParameters: { input_types: inputTypes },
     }).observable;
 

@@ -3,7 +3,6 @@ import {
   get,
   isString,
   isEqual,
-  isBoolean,
   omit,
   cloneDeep,
   omitBy,
@@ -76,7 +75,6 @@ export interface InputProps {
   publicationStatus?: PublicationStatus;
   projectPublicationStatus?: ProjectPublicationStatus;
   boundingBox?: number[];
-  cache?: boolean;
   assignee?: string;
   feedbackNeeded?: boolean;
   // prop mini Gets stripped down ideas containing only title, should never be cached,
@@ -249,9 +247,6 @@ export default class GetIdeas extends React.Component<Props, State> {
 
                 return stream({ queryParameters }).observable.pipe(
                   map((ideas) => {
-                    const cacheStream = isBoolean(this.props.cache)
-                      ? this.props.cache
-                      : true;
                     const selfLink = get(ideas, 'links.self');
                     const lastLink = get(ideas, 'links.last');
                     const hasMore =
@@ -261,7 +256,6 @@ export default class GetIdeas extends React.Component<Props, State> {
 
                     return {
                       queryParameters,
-                      cacheStream,
                       hasMore,
                       ideas: !isLoadingMore
                         ? ideas.data
@@ -288,9 +282,6 @@ export default class GetIdeas extends React.Component<Props, State> {
         queryParameters$
           .pipe(
             switchMap((queryParameters) => {
-              const cacheStream = isBoolean(this.props.cache)
-                ? this.props.cache
-                : true;
               const oldPageNumber = this.state.queryParameters['page[number]'];
               const newPageNumber = queryParameters['page[number]'];
               queryParameters['page[number]'] =
@@ -300,7 +291,6 @@ export default class GetIdeas extends React.Component<Props, State> {
 
               return stream({
                 queryParameters,
-                cacheStream,
               }).observable.pipe(map((ideas) => ({ queryParameters, ideas })));
             })
           )

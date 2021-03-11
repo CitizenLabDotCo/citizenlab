@@ -33,6 +33,14 @@ type Localize = (
   maxChar?: number | undefined
 ) => string;
 
+export type ITabsOutlet = {
+  formatMessage: (
+    messageDescriptor: MessageDescriptor,
+    values?: { [key: string]: MessageValue } | undefined
+  ) => string;
+  onData: (data: InsertConfigurationOptions<ITab>) => void;
+};
+
 export type OutletsPropertyMap = {
   'app.containers.Navbar.projectlist.item': {
     publication: IAdminPublicationContent;
@@ -89,13 +97,11 @@ export type OutletsPropertyMap = {
   'app.containers.Admin.project.edit.permissions': {
     project: IProjectData;
   };
-  'app.containers.Admin.initiatives.tabs': {
-    formatMessage: (
-      messageDescriptor: MessageDescriptor,
-      values?: { [key: string]: MessageValue } | undefined
-    ) => string;
+  'app.containers.Admin.ideas.tabs': {
     onData: (data: InsertConfigurationOptions<ITab>) => void;
   };
+  'app.containers.Admin.initiatives.tabs': ITabsOutlet;
+  'app.containers.Admin.dashboards.tabs': ITabsOutlet;
   'app.containers.Admin.sideBar.navItems': {
     onData: (data: InsertConfigurationOptions<NavItem>) => void;
   };
@@ -118,6 +124,13 @@ export type OutletsPropertyMap = {
         CellConfiguration<IdeaHeaderCellComponentProps>
       >
     ) => void;
+  };
+  'app.containers.Admin.projects.edit.tabs.map': {
+    projectId: string;
+    onData: (data: {
+      insertAfterTabName?: string;
+      tabConfiguration: ITab;
+    }) => void;
   };
 };
 
@@ -152,6 +165,9 @@ interface Routes {
   citizen: RouteConfiguration[];
   admin: RouteConfiguration[];
   'admin.initiatives': RouteConfiguration[];
+  'admin.ideas': RouteConfiguration[];
+  'admin.dashboards': RouteConfiguration[];
+  adminProjectMapTab: RouteConfiguration[];
 }
 
 export interface ParsedModuleConfiguration {
@@ -246,6 +262,18 @@ export const loadModules = (modules: Modules): ParsedModuleConfiguration => {
       admin: parseModuleRoutes(mergedRoutes.admin, RouteTypes.ADMIN),
       'admin.initiatives': parseModuleRoutes(
         mergedRoutes?.['admin.initiatives'],
+        RouteTypes.ADMIN
+      ),
+      'admin.ideas': parseModuleRoutes(
+        mergedRoutes?.['admin.ideas'],
+        RouteTypes.ADMIN
+      ),
+      'admin.dashboards': parseModuleRoutes(
+        mergedRoutes?.['admin.dashboards'],
+        RouteTypes.ADMIN
+      ),
+      adminProjectMapTab: parseModuleRoutes(
+        mergedRoutes?.['adminProjectMapTab'],
         RouteTypes.ADMIN
       ),
     },
