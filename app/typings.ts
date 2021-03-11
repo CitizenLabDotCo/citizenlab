@@ -64,11 +64,6 @@ export interface ITab {
   name?: string;
 }
 
-export interface InsertTabOptions {
-  tabConfiguration: ITab;
-  insertAfterTabName?: string;
-}
-
 export interface ILinks {
   self: string;
   first: string;

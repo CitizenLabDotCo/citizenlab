@@ -21,7 +21,6 @@ import { IGroupDataAttributes, MembershipType } from 'services/groups';
 import { ParticipationMethod } from 'services/participationContexts';
 import {
   FormikSubmitHandler,
-  InsertTabOptions,
   ITab,
   MessageDescriptor,
   Multiloc,
@@ -121,9 +120,6 @@ export type OutletsPropertyMap = {
     onChange: () => void;
     onSubmit: (data: { key: string; formData: Object }) => void;
     onData: (data: { key: string; data: Object }) => void;
-  };
-  'app.containers.Admin.settings.SettingsPage': {
-    onData: (data: InsertTabOptions) => void;
   };
   'app.containers.Admin.project.edit.permissions': {
     project: IProjectData;

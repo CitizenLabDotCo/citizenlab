@@ -5,7 +5,6 @@ import CustomFieldGraphs from './admin/components/CustomFieldGraphs';
 import RegistrationFieldsToGraphs from './admin/components/RegistrationFieldsToGraphs';
 import AllCustomFields from './admin/components/CustomFields/All';
 
-import Tab from './admin/components/Tab';
 import CustomFieldsStep from './citizen/components/CustomFieldsStep';
 import UserCustomFieldsForm from './citizen/components/UserCustomFieldsForm';
 import useUserCustomFieldsSchema from './hooks/useUserCustomFieldsSchema';
@@ -88,7 +87,6 @@ const configuration: ModuleConfiguration = {
         <UserCustomFieldsForm {...props} />
       </RenderOnCustomFields>
     ),
-    'app.containers.Admin.settings.SettingsPage': (props) => <Tab {...props} />,
     'app.containers.Admin.settings.registration': AllCustomFields,
   },
 };
