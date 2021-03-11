@@ -22,6 +22,7 @@ RSpec.describe Permission, type: :model do
       @permission_groups1.update!(permitted_by: 'groups', groups: [@g1])
       @permission_groups2 = @current_phase.permissions.find_by action: 'voting_idea'
       @permission_groups2.update!(permitted_by: 'groups', groups: [@g2])
+      create(:custom_field_number, title_multiloc: {'en' => 'Birthyear?'}, key: 'birthyear', code: 'birthyear')
     end
 
     it 'returns all permissions for admins' do
@@ -49,7 +50,7 @@ RSpec.describe Permission, type: :model do
       @g1.save!
       @g2.add_member member
       @g2.save!
-      expect(Permission.for_user(member).count).to eq 2
+      expect(Permission.for_user(member).count).to eq 3
     end
   end
 end
