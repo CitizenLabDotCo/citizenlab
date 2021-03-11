@@ -12,13 +12,16 @@ import { Formik } from 'formik';
 import { updateIdeaStatus } from 'services/ideaStatuses';
 
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
+import messages from './messages';
 import { isCLErrorJSON } from 'utils/errorUtils';
 
 // components
 import { Section, SectionTitle } from 'components/admin/Section';
 import GoBackButton from 'components/UI/GoBackButton';
-import IdeaStatusForm, { FormValues, validate } from '../IdeaStatusForm';
+import IdeaStatusForm, {
+  FormValues,
+  validate,
+} from '../components/IdeaStatusForm';
 
 const StyledGoBackButton = styled(GoBackButton)`
   margin-bottom: 25px;
