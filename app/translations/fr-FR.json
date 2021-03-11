@@ -519,7 +519,7 @@
   "app.components.admin.PostManager.feedbackAuthorPlaceholder": "Choisissez comment les autres voient votre nom",
   "app.components.admin.PostManager.feedbackBodyPlaceholder": "Expliquez ce changement de statut",
   "app.components.admin.PostManager.goToDefaultMapView": "Aller à la centralisation et au niveau de zoom par défaut",
-  "app.components.admin.PostManager.hiddenFieldsLink": "champ cachés",
+  "app.components.admin.PostManager.hiddenFieldsLink": "champ caché",
   "app.components.admin.PostManager.hiddenFieldsSupportArticleUrl": "https://support.citizenlab.co/fr/articles/1641202-comment-ajouter-integrer-une-enquete-a-un-projet-de-participation-sur-votre-plateforme",
   "app.components.admin.PostManager.hiddenFieldsTip": "Conseil : ajoutez un {hiddenFieldsLink} lors de la configuration de votre enquête Typeform pour savoir qui y a répondu.",
   "app.components.admin.PostManager.importError": "Le fichier sélectionné n'a pas pu être importé car il ne s'agit pas d'un fichier GeoJSON valide",
