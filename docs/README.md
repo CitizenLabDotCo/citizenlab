@@ -1,5 +1,11 @@
 # Changelog
 
+## 2021-03-11
+
+### Changed
+- Tenants are now ordered alphabetically in AdminHQ
+
+
 ## 2021-03-10
 
 ### Added
