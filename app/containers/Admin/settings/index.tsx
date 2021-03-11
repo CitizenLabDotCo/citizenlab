@@ -18,8 +18,6 @@ import GetFeatureFlag, {
   GetFeatureFlagChildProps,
 } from 'resources/GetFeatureFlag';
 import { reject } from 'lodash-es';
-import { insertTab } from 'utils/moduleUtils';
-import { InsertTabOptions } from 'typings';
 
 export interface InputProps {}
 
