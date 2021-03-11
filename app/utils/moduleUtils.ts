@@ -21,6 +21,7 @@ import { IGroupDataAttributes, MembershipType } from 'services/groups';
 import { ParticipationMethod } from 'services/participationContexts';
 import {
   FormikSubmitHandler,
+  InsertTabOptions,
   ITab,
   MessageDescriptor,
   Multiloc,
