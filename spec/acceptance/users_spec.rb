@@ -502,25 +502,6 @@ resource "Users" do
       let(:first_name) { "Edmond" }
 
       describe do
-        let(:custom_field_values) {{birthyear: 1984}}
-
-        example "Update a user" do
-          oldtimers = create(:group)
-          create(:membership, group: oldtimers, user: @user)
-          project = create(:continuous_project, with_permissions: true)
-          granted_permission = project.permissions.find_by(action: 'posting_idea')
-          granted_permission.update!(permitted_by: 'groups', groups: [oldtimers])
-          do_request
-          expect(response_status).to eq 200
-          json_response = json_parse(response_body)
-          expect(json_response.dig(:data, :attributes, :first_name)).to eq "Edmond"
-          expect(json_response.dig(:data, :relationships, :granted_permissions, :data).size).to eq 1
-          expect(json_response.dig(:included).select{|i| i[:type] == 'permission'}.first&.dig(:attributes, :permitted_by)).to eq 'groups'
-          expect(json_response.dig(:included).select{|i| i[:type] == 'project'}.first&.dig(:attributes, :slug)).to eq project.slug
-        end
-      end
-
-      describe do
         before do
           @user = create(:admin)
           token = Knock::AuthToken.new(payload: @user.to_token_payload).token
