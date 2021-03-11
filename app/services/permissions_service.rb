@@ -47,12 +47,6 @@ class PermissionsService
     update_permissions_for_scope(nil)
   end
 
-  def update_permissions_for_context(participation_context)
-    return unless participation_context.participation_context?
-
-    update_permissions_for_scope(participation_context)
-  end
-
   def update_all_permissions
     update_global_permissions
 

@@ -17,6 +17,7 @@ module CitizenLab
           # @param [Project, Phase] scope
           def actions(scope = nil)
             return ACTIONS.values.flatten unless scope
+            return [] unless scope.participation_context?
 
             ACTIONS[scope.participation_method]
           end
