@@ -23,6 +23,60 @@ const RenderOnCustomFields = ({ children }) => {
 };
 
 const configuration: ModuleConfiguration = {
+  routes: {
+    admin: [
+      {
+        path: 'settings/registration/custom-fields',
+        container: () => import('./admin/containers/CustomFields/'),
+        childRoutes: [
+          {
+            path: 'new',
+            container: () =>
+              import(
+                './admin/containers/CustomFields/RegistrationCustomFieldNew'
+              ),
+          },
+          {
+            path: ':userCustomFieldId',
+            container: () =>
+              import(
+                './admin/containers/CustomFields/RegistrationCustomFieldEdit'
+              ),
+            childRoutes: [
+              {
+                path: 'field-settings',
+                container: () =>
+                  import(
+                    './admin/containers/CustomFields/RegistrationCustomFieldEdit/RegistrationCustomFieldSettings'
+                  ),
+              },
+              {
+                path: 'options',
+                container: () =>
+                  import(
+                    './admin/containers/CustomFields/RegistrationCustomFieldEdit/RegistrationCustomFieldOptions'
+                  ),
+              },
+              {
+                path: 'options/new',
+                container: () =>
+                  import(
+                    './admin/containers/CustomFields/RegistrationCustomFieldEdit/RegistrationCustomFieldOptionsNew'
+                  ),
+              },
+              {
+                path: 'options/:userCustomFieldOptionId',
+                container: () =>
+                  import(
+                    './admin/containers/CustomFields/RegistrationCustomFieldEdit/RegistrationCustomFieldOptionsEdit'
+                  ),
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
   outlets: {
     'app.containers.Admin.dashboard.users.graphs': RegistrationFieldsToGraphs,
     'app.components.SignUpIn.SignUp.step': (props) => (
