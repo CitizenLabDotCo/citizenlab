@@ -11,7 +11,7 @@ module CitizenLab
         def self.scope_type
           nil
         end
-        
+
         def self.scope_class
           nil
         end
