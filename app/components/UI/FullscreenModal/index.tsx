@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import ReactDOM from 'react-dom';
+import { createPortal } from 'react-dom';
 import { Subscription, fromEvent } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { adopt } from 'react-adopt';
@@ -232,7 +232,7 @@ class FullscreenModal extends PureComponent<Props, State> {
     }
 
     if (animateInOut) {
-      return ReactDOM.createPortal(
+      return createPortal(
         <CSSTransition
           classNames="modal"
           in={opened}
@@ -252,7 +252,7 @@ class FullscreenModal extends PureComponent<Props, State> {
     }
 
     if (!animateInOut && opened && modalPortalElement) {
-      return ReactDOM.createPortal(modalContent, modalPortalElement);
+      return createPortal(modalContent, modalPortalElement);
     }
 
     return null;

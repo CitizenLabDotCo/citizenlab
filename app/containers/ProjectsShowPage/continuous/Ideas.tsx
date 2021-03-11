@@ -92,6 +92,7 @@ const IdeasContainer = memo<Props>(({ projectId, className }) => {
                   })}
                 />
               </StyledProjectPageSectionTitle>
+
               <IdeaCards
                 type="load-more"
                 projectIds={projectIds}
