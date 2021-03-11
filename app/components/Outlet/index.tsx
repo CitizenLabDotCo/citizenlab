@@ -7,7 +7,9 @@ type CustomPropsMap = {
 };
 
 type CustomOutletProps = CustomPropsMap[keyof CustomPropsMap];
-type children = (renderProps: any) => JSX.Element | null;
+type children = (
+  renderProps: JSX.Element | JSX.Element[]
+) => JSX.Element | null;
 type InputProps = {
   children: children;
 };
