@@ -13,6 +13,7 @@ require 'action_cable/engine'
 # require 'active_storage/engine'
 # require 'sprockets/railtie'
 # require 'rails/test_unit/railtie'
+require 'citizen_lab/railtie'
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -20,7 +21,7 @@ Bundler.require(*Rails.groups)
 
 module Cl2Back
   class Application < Rails::Application
-    require_dependency Rails.root.join('lib/citizen_lab')
+    # require_dependency Rails.root.join('lib/citizen_lab')
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 6.0
     # Settings in config/environments/* take precedence over those specified here.

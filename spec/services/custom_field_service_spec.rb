@@ -10,9 +10,9 @@ describe CustomFieldService do
     let (:title_multiloc) {{'en' => 'size', 'nl-NL' => 'grootte'}}
     let (:description_multiloc) {{'en' => 'How big is it?', 'nl-NL' => 'Hoe groot is het?'}}
     let(:fields) {[
-      create(:custom_field, 
-        key: 'field1', 
-        input_type: 'text', 
+      create(:custom_field,
+        key: 'field1',
+        input_type: 'text',
         title_multiloc: title_multiloc,
         description_multiloc: description_multiloc
       )
@@ -61,8 +61,8 @@ describe CustomFieldService do
         create(:custom_field, key: 'field8', input_type: 'multiselect', required: true),
         create(:custom_field, key: 'field9', input_type: 'files', required: true),
       ]
-      create(:custom_field_option, key: 'option_1', custom_field: fields[2], ordering: 1) 
-      create(:custom_field_option, key: 'option_3', custom_field: fields[2], ordering: 3) 
+      create(:custom_field_option, key: 'option_1', custom_field: fields[2], ordering: 1)
+      create(:custom_field_option, key: 'option_3', custom_field: fields[2], ordering: 3)
       create(:custom_field_option, key: 'option_2', custom_field: fields[2], ordering: 2)
       create(:custom_field_option, key: 'option_a', custom_field: fields[3], ordering: 1)
       create(:custom_field_option, key: 'option_b', custom_field: fields[3], ordering: 2)
@@ -71,7 +71,7 @@ describe CustomFieldService do
 
       schema = service.fields_to_json_schema(fields, locale)
       expect(JSON::Validator.validate!(metaschema, schema)).to be true
-      expect(schema).to match(        
+      expect(schema).to match(
         {:type=>"object",
          :additionalProperties=>false,
          :properties=>
@@ -150,12 +150,13 @@ describe CustomFieldService do
       expect(schema.dig(:properties, 'domicile', :enum)).to match (Area.all.order(created_at: :desc).map(&:id).push('outside'))
     end
 
-    it "it creates a valid schema for the built in idea custom fields" do
-      custom_form = create(:custom_form)
-      fields = IdeaCustomFieldService.new.db_and_built_in_fields(custom_form)
-      schema = service.fields_to_json_schema(fields, locale)
-      expect(JSON::Validator.validate!(metaschema, schema)).to be true
-    end
+    # ICF: extract
+    # it "it creates a valid schema for the built in idea custom fields" do
+    #   custom_form = create(:custom_form)
+    #   fields = IdeaCustomFieldService.new.db_and_built_in_fields(custom_form)
+    #   schema = service.fields_to_json_schema(fields, locale)
+    #   expect(JSON::Validator.validate!(metaschema, schema)).to be true
+    # end
   end
 
   describe "fields_to_ui_schema" do

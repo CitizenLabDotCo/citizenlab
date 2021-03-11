@@ -210,7 +210,7 @@ class Tenant < ApplicationRecord
 
   def create_app_configuration
     switch do
-      AppConfiguration.create(
+      AppConfiguration.create!(
         id: id,
         name: name,
         host: host,

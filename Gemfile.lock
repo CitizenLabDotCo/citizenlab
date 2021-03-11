@@ -117,6 +117,12 @@ PATH
       rails (~> 6.0.3, >= 6.0.3.2)
 
 PATH
+  remote: engines/idea_custom_fields
+  specs:
+    idea_custom_fields (0.1.0)
+      rails (~> 6.0.3, >= 6.0.3.2)
+
+PATH
   remote: engines/machine_translations
   specs:
     machine_translations (0.1.0)
@@ -233,6 +239,12 @@ PATH
       kaminari (~> 1.2)
       pundit (~> 2.0)
       rails (~> 6.0.0)
+
+PATH
+  remote: gems/citizen_lab
+  specs:
+    citizen_lab (0.1.0)
+      rails (~> 6.0.3, >= 6.0.3.2)
 
 GEM
   remote: https://rubygems.org/
@@ -838,6 +850,7 @@ DEPENDENCIES
   byebug
   carrierwave (~> 2.0.2)
   carrierwave-base64 (~> 2.6)
+  citizen_lab!
   counter_culture (~> 2.1)
   custom_statuses!
   custom_style!
@@ -852,6 +865,7 @@ DEPENDENCIES
   geographic_dashboard!
   groupdate
   ice_cube!
+  idea_custom_fields!
   intercom (~> 4.1)
   kaminari (~> 1.2)
   knock!

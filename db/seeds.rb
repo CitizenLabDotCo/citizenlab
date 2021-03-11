@@ -898,12 +898,13 @@ if Apartment::Tenant.current == 'localhost'
         Project.where(participation_method: ['ideation', 'budgeting']).all.shuffle.first
       end
 
-      if project
-        custom_form = project.custom_form || CustomForm.create!(project: project)
-        custom_field = IdeaCustomFieldService.new.find_or_build_field(custom_form, ['title','body','location'].shuffle.first)
-        custom_field.description_multiloc = create_for_some_locales{Faker::Lorem.sentence}
-        custom_field.save!
-      end
+      # ICF: extract
+      # if project
+      #   custom_form = project.custom_form || CustomForm.create!(project: project)
+      #   custom_field = IdeaCustomFieldService.new.find_or_build_field(custom_form, ['title','body','location'].shuffle.first)
+      #   custom_field.description_multiloc = create_for_some_locales{Faker::Lorem.sentence}
+      #   custom_field.save!
+      # end
     end
 
 

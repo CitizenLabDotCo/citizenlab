@@ -4,11 +4,11 @@ class CustomField < ApplicationRecord
   has_many :custom_field_options, dependent: :destroy
   belongs_to :resource, polymorphic: true, optional: true
 
-  FIELDABLE_TYPES = %w(User CustomForm)
+  FIELDABLE_TYPES = %w(User)
   INPUT_TYPES = %w(text number multiline_text select multiselect checkbox date files)
   CODES = %w(gender birthyear domicile education title body topic_ids location proposed_budget images attachments)
 
-  validates :resource_type, presence: true, inclusion: {in: FIELDABLE_TYPES}
+  validates :resource_type, presence: true, inclusion: { in: -> { fieldable_types } }
   validates :key, presence: true, uniqueness: {scope: [:resource_type, :resource_id]}, format: { with: /\A[a-zA-Z0-9_]+\z/,
     message: "only letters, numbers and underscore" }
   validates :input_type, presence: true, inclusion: INPUT_TYPES
@@ -18,7 +18,6 @@ class CustomField < ApplicationRecord
   validates :enabled, inclusion: {in: [true, false]}
   validates :hidden, inclusion: {in: [true, false]}
   validates :code, inclusion: {in: CODES}, uniqueness: {scope: [:resource_type, :resource_id]}, allow_nil: true
-
 
   before_validation :set_default_enabled
   before_validation :generate_key, on: :create
@@ -32,6 +31,10 @@ class CustomField < ApplicationRecord
   scope :hidden, -> { where(hidden: true) }
   scope :support_multiple_values, -> { where(input_type: 'multiselect') }
   scope :support_single_value, -> { where.not(input_type: 'multiselect') }
+
+  def fieldable_types
+    FIELDABLE_TYPES
+  end
 
   def support_options?
     %w(select multiselect).include?(input_type)
@@ -68,3 +71,5 @@ class CustomField < ApplicationRecord
     self.description_multiloc = service.linkify_multiloc(self.description_multiloc)
   end
 end
+
+CustomField.prepend_if_ee('IdeaCustomFields::Patches::CustomField')
