@@ -1,8 +1,8 @@
 import React, { memo, useState } from 'react';
 
 // module
-import { InsertTabOptions, ITab } from 'typings';
-import { insertTab } from 'utils/moduleUtils';
+import { InsertConfigurationOptions, ITab } from 'typings';
+import { insertConfiguration } from 'utils/moduleUtils';
 
 // components
 import HelmetIntl from 'components/HelmetIntl';
@@ -33,12 +33,16 @@ const IdeasPage = memo(
       subtitle: formatMessage(messages.inputManagerPageSubtitle),
     };
 
-    const handleData = (insertTabOptions: InsertTabOptions) =>
-      setTabs(insertTab(insertTabOptions));
+    const handleData = (insertTabOptions: InsertConfigurationOptions<ITab>) =>
+      setTabs(insertConfiguration(insertTabOptions));
 
     return (
       <>
-        <Outlet id="app.containers.Admin.ideas.tabs" onData={handleData} />
+        <Outlet
+          id="app.containers.Admin.ideas.tabs"
+          formatMessage={formatMessage}
+          onData={handleData}
+        />
         <TabbedResource resource={resource} tabs={tabs}>
           <HelmetIntl
             title={messages.inputManagerMetaTitle}
