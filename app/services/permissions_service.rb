@@ -88,5 +88,3 @@ class PermissionsService
     actions - Permission.where(permission_scope: scope).pluck(:action)
   end
 end
-
-PermissionsService.register_scope_type(CitizenLab::Permissions::ScopeTypes::Global)
