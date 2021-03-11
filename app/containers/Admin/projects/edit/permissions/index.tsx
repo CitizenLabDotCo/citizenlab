@@ -357,7 +357,7 @@ class ProjectPermissions extends PureComponent<
 
           <StyledSection>
             <StyledSectionTitle>
-              <FormattedMessage {...messages.participationAccessRightsTitle} />
+              <FormattedMessage {...messages.moderationRightsTitle} />
             </StyledSectionTitle>
 
             <Outlet
