@@ -1,6 +1,11 @@
 class MultilocValidator < ActiveModel::EachValidator
 
   def validate_each(record, attribute, value)
+    if value&.values&.include? nil
+      locales = value.keys.select{|l| value[l].nil?}
+      record.errors.add(attribute, :contains_nil_values, message: "nil values (for #{locales}) cannot be accepted. Either the key should be removed, or the value should be replaced by an empty string") 
+    end
+
     sanitizer = SanitizationService.new
     if (options[:presence] && !value.kind_of?(Hash)) || (!options[:presence] && !(value.kind_of?(Hash) || value.nil?))
       record.errors[attribute] << (options[:message] || "is not a translation hash")
