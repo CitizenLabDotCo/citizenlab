@@ -61,7 +61,7 @@ interface Props {
   openIdea: (e: FormEvent) => void;
 }
 
-const CompactIdeaCard = memo<Props>(
+const FooterWithBudgetControl = memo<Props>(
   ({ idea, participationContextId, participationContextType, openIdea }) => {
     const tenant = useAppConfiguration();
 
@@ -110,4 +110,4 @@ const CompactIdeaCard = memo<Props>(
   }
 );
 
-export default CompactIdeaCard;
+export default FooterWithBudgetControl;
