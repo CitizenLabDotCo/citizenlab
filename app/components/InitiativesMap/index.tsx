@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
-import Leaflet from 'leaflet';
+import { popup, LatLng, Map as LeafletMap } from 'leaflet';
 import { withRouter, WithRouterProps } from 'react-router';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -27,7 +27,6 @@ import messages from './messages';
 
 // Styling
 import styled from 'styled-components';
-import { viewportWidths } from 'utils/styleUtils';
 
 // Typing
 import { IGeotaggedInitiativeData } from 'services/initiatives';
@@ -132,39 +131,18 @@ export class InitiativesMap extends PureComponent<
     this.setState({ selectedInitiativeId: null });
   };
 
-  onMapClick = (map: Leaflet.Map, position: Leaflet.LatLng) => {
+  onMapClick = (map: LeafletMap, position: LatLng) => {
     const { lat, lng } = position;
     this.setState({ lat, lng });
 
     if (this.addInitiativeButtonElement) {
-      Leaflet.popup()
+      popup()
         .setLatLng(position)
         .setContent(this.addInitiativeButtonElement)
         .openOn(map);
     }
 
     return;
-  };
-
-  getMapHeight = () => {
-    const { windowSize } = this.props;
-    const smallerThanMaxTablet = windowSize
-      ? windowSize <= viewportWidths.largeTablet
-      : false;
-    const smallerThanMinTablet = windowSize
-      ? windowSize <= viewportWidths.smallTablet
-      : false;
-    let height = 550;
-
-    if (smallerThanMinTablet) {
-      height = 400;
-    }
-
-    if (smallerThanMaxTablet) {
-      height = 500;
-    }
-
-    return height;
   };
 
   noInitiativesWithLocationMessage = (
@@ -174,7 +152,6 @@ export class InitiativesMap extends PureComponent<
   render() {
     const { initiativeMarkers, className } = this.props;
     const { selectedInitiativeId, points, lat, lng } = this.state;
-    const mapHeight = this.getMapHeight();
 
     return (
       <Container className={className}>
@@ -194,7 +171,6 @@ export class InitiativesMap extends PureComponent<
           }
           onBoxClose={this.deselectInitiative}
           onMapClick={this.onMapClick}
-          mapHeight={mapHeight}
         />
 
         <div
