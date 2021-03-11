@@ -1,13 +1,5 @@
 module CitizenLab
-  module EngineExtension
-    # initializer 'account.append_migrations' do |app|
-    #   break if app.root.to_s == root.to_s
-
-    #   config.paths['db/migrate'].expanded.each do |path|
-    #     app.config.paths['db/migrate'].push(path)
-    #   end
-    # end
-
+  module Engine
     def self.included(base)
       base.class_eval do
         def self.module_name
@@ -29,6 +21,14 @@ module CitizenLab
         end
 
         config.to_prepare(&method(:add_feature_spec).to_proc)
+
+        initializer 'citizen_lab.append_migrations' do |app|
+          break if app.root.to_s == root.to_s
+
+          config.paths['db/migrate'].expanded.each do |path|
+            app.config.paths['db/migrate'].push(path)
+          end
+        end
       end
     end
   end

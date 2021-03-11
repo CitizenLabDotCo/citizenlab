@@ -8,7 +8,7 @@ class CustomField < ApplicationRecord
   INPUT_TYPES = %w(text number multiline_text select multiselect checkbox date files)
   CODES = %w(gender birthyear domicile education title body topic_ids location proposed_budget images attachments)
 
-  validates :resource_type, presence: true, inclusion: { in: -> { fieldable_types } }
+  validates :resource_type, presence: true, inclusion: { in: -> { FIELDABLE_TYPES } }
   validates :key, presence: true, uniqueness: {scope: [:resource_type, :resource_id]}, format: { with: /\A[a-zA-Z0-9_]+\z/,
     message: "only letters, numbers and underscore" }
   validates :input_type, presence: true, inclusion: INPUT_TYPES

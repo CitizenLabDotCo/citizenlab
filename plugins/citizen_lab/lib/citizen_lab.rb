@@ -6,9 +6,9 @@ require 'pathname'
 module CitizenLab
   # Your code goes here...
 
-  def self.root
-    Pathname.new(File.expand_path('..', __dir__))
-  end
+  # def self.root
+  #   Pathname.new(File.expand_path('..', __dir__))
+  # end
 
   def self.ee?
     @ee ||= Rails.root.join('engines/multi_tenancy').exist? && %w[true 1].include?(ENV['CITIZENLAB_EE'].to_s)

@@ -241,7 +241,7 @@ PATH
       rails (~> 6.0.0)
 
 PATH
-  remote: gems/citizen_lab
+  remote: plugins/citizen_lab
   specs:
     citizen_lab (0.1.0)
       rails (~> 6.0.3, >= 6.0.3.2)

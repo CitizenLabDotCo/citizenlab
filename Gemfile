@@ -165,4 +165,4 @@ gem 'tagging', path: 'engines/tagging'
 gem 'verification', path: 'engines/verification'
 gem 'volunteering', path: 'engines/volunteering'
 
-gem 'citizen_lab', path: 'gems/citizen_lab'
+gem 'citizen_lab', path: 'plugins/citizen_lab'
