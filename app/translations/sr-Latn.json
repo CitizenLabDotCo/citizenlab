@@ -1807,7 +1807,7 @@
   "app.containers.IdeasEditPage.questionFormTitle": "Izmenite pitanje",
   "app.containers.IdeasEditPage.save": "Sačuvajte",
   "app.containers.IdeasEditPage.submitError": "Nismo uspeli da sačuvamo vaše izmene. Pokušajte kasnije ili kontaktirajte support@citizenlab.co.",
-  "app.containers.IdeasIndexPage.a11y_IdeasListTitle": "All posts on {orgName}",
+  "app.containers.IdeasIndexPage.a11y_IdeasListTitle": "Sve ideje • {orgName}",
   "app.containers.IdeasIndexPage.inputsIndexMetaDescription": "Istražite sve unose koji su postavljeni na participativnoj platformi {orgName}.",
   "app.containers.IdeasIndexPage.inputsIndexMetaTitle": "Sve ideje • {orgName}",
   "app.containers.IdeasIndexPage.inputsPageTitle": "Objave",
