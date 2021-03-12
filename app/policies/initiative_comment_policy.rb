@@ -17,12 +17,10 @@ class InitiativeCommentPolicy < ApplicationPolicy
   end
 
   def create?
-    (
-      user&.active? && 
-      (record.author_id == user.id) &&
-      check_commenting_allowed(record, user)
-    ) || 
-    (user&.active? && user.admin?)
+    return unless active?
+    return true if admin?
+
+    owner? && commenting_allowed?(user)
   end
 
   def children?
@@ -53,11 +51,16 @@ class InitiativeCommentPolicy < ApplicationPolicy
     attrs
   end
 
-
   private
 
-  def check_commenting_allowed comment, user
-    !PermissionsService.new.denied?(user, 'commenting_initiative')
+  def commenting_allowed?(user)
+    user # signed-in users can comment
   end
-
+  
+  def owner?
+    user && (record.author_id == user.id)
+  end
 end
+
+InitiativeCommentPolicy.prepend_if_ee('GranularPermissions::Patches::InitiativeCommentPolicy')
+

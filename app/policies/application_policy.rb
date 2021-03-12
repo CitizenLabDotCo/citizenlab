@@ -46,4 +46,18 @@ class ApplicationPolicy
       scope
     end
   end
+  
+  private
+
+  def admin?
+    user&.admin?
+  end
+
+  def owner?
+    user && record.user_id == user.id
+  end
+
+  def active?
+    user&.active?
+  end
 end
