@@ -19,7 +19,7 @@ module NLP
         {
           body: ActionView::Base.full_sanitizer.sanitize(idea.body_multiloc[locale]),
           id: idea.id,
-          title: ActionView::Base.full_sanitizer.sanitize(idea.body_multiloc[locale])
+          title: idea.title_multiloc[locale]
         }
       }.reject { |item| item[:body].blank? }
     end
