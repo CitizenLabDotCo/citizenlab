@@ -298,7 +298,6 @@
   "app.components.PostComponents.SharingModalContent.whatsAppMessageProposal": "Upravo sam objavio/la predlog za {orgName}: {postTitle}",
   "app.components.PostComponents.linkToHomePage": "Link do početne stranice",
   "app.components.PostComponents.readMore": "Pročitajte više...",
-  "app.components.Project.projectModeratorIndicator": "Vi ste projektni menadžer ovog projekta",
   "app.components.ProjectArchivedIndicator.archivedProject": "Nažalost, više ne možete učestvovati u ovom projektu jer je arhiviran",
   "app.components.ProjectCard.a11y_projectDescription": "Opis projekta",
   "app.components.ProjectCard.a11y_projectTitle": "Naziv projekta:",
