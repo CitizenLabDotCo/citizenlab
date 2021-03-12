@@ -1,9 +1,9 @@
 class MultilocValidator < ActiveModel::EachValidator
 
   def validate_each(record, attribute, value)
-    if value&.values&.include? nil
-      locales = value.keys.select{|l| value[l].nil?}
-      record.errors.add(attribute, :contains_nil_values, message: "nil values (for #{locales}) cannot be accepted. Either the key should be removed, or the value should be replaced by an empty string") 
+    if value&.values && !value.values.all?{|v| v.is_a? String}
+      locales = value.keys.select{|l| !value[l].is_a?(String)}
+      record.errors.add(attribute, :values_not_all_strings, message: "non-string values (for #{locales}) cannot be accepted. Either the key should be removed, or the value should be replaced by an empty string") 
     end
 
     sanitizer = SanitizationService.new
