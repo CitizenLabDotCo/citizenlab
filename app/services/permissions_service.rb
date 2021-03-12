@@ -27,7 +27,7 @@ class PermissionsService
       permission_scope_type = scope.nil? ? nil : scope.class.to_s
       scope_spec_hash[permission_scope_type].actions(scope)
     end
-    
+
     def all_actions
       scope_specs.map(&:actions).flatten
     end
@@ -65,7 +65,13 @@ class PermissionsService
   def denied?(user, action, resource = nil)
     scope = resource&.permission_scope
     permission = Permission.includes(:groups).find_by(permission_scope: scope, action: action)
-    permission ? permission.denied?(user) : 'not_permitted' # denied by default (= when there is no permission)
+
+    if permission
+      permission.denied?(user)
+    else
+      update_permissions_for_scope(scope&.class)
+      denied?(user, action, resource)
+    end
   end
 
   private

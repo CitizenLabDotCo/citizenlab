@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class InitiativePolicy < ApplicationPolicy
   class Scope
     attr_reader :user, :scope
@@ -8,31 +10,29 @@ class InitiativePolicy < ApplicationPolicy
     end
 
     def resolve
-      scope.where(publication_status: ['published', 'closed'])
+      scope.where(publication_status: %w[published closed])
     end
   end
 
   def index_xlsx?
-    user&.active? && user.admin?
+    active? && admin?
   end
 
   def create?
-    record.draft? ||
-    (user&.active? && user.admin?) ||
-    (
-      user&.active? &&
-      record.author_id == user.id &&
-      !PermissionsService.new.denied?(user, 'posting_initiative')
-    )
+    return true if record.draft?
+    return true if active? && admin?
+
+    reason = posting_denied?(user)
+    raise_not_authorized(reason) if reason
+
+    active? && owner?
   end
 
   def show?
-    (
-      user&.active? &&
-      record.author_id == user.id
-    ) ||
-    (user&.active? && user.admin?) ||
-    %w(draft published closed).include?(record.publication_status)
+    return true if active? && owner?
+    return true if active? && admin?
+
+    %w[draft published closed].include?(record.publication_status)
   end
 
   def by_slug?
@@ -48,7 +48,7 @@ class InitiativePolicy < ApplicationPolicy
   end
 
   def allowed_transitions?
-    user&.admin?
+    admin?
   end
 
   def permitted_attributes
@@ -57,22 +57,31 @@ class InitiativePolicy < ApplicationPolicy
       :author_id,
       :location_description,
       :header_bg,
-      location_point_geojson: [:type, coordinates: []],
-      title_multiloc: CL2_SUPPORTED_LOCALES,
-      body_multiloc: CL2_SUPPORTED_LOCALES,
-      topic_ids: [],
-      area_ids: []
+      { location_point_geojson: [:type, { coordinates: [] }],
+        title_multiloc: CL2_SUPPORTED_LOCALES,
+        body_multiloc: CL2_SUPPORTED_LOCALES,
+        topic_ids: [],
+        area_ids: [] }
     ]
-    if user&.admin?
-      [:assignee_id, *shared]
-    else
-      shared
-    end
+
+    admin? ? [:assignee_id, *shared] : shared
   end
 
   # Helper method that is not part of the pundit conventions but is used
   # publicly
   def moderate?
-    user&.active? && user.admin?
+    active? && admin?
+  end
+
+  private
+
+  def posting_denied?(user)
+    'not_signed_in' unless user
+  end
+  
+  def owner?
+    user && record.author_id == user.id
   end
 end
+
+InitiativePolicy.prepend_if_ee('GranularPermissions::Patches::InitiativePolicy')
