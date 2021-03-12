@@ -1,9 +1,31 @@
 # Changelog
 
+## 2021-03-11
+
+### Changed
+- Tenants are now ordered alphabetically in AdminHQ
+
+### Added
+- Serbian (Latin) is now a language option.
+
+
+## 2021-03-10
+
+### Added
+- CitizenLab admins can now change the link to the accessibility statement via AdminHQ.
+- "Reply-to" field in emails from campaigns can be customized for each platform
+- Customizable minimal required password length for each platform
+
+
 ## 2021-03-09
 
 ### Fixed
 - Fixed a crash that would occur when tring to add tags to an idea
+
+## 2021-03-08
+
+### Fixed
+- Phase pages now display the correct count of ideas (not retroactive - will only affect phases modified from today onwards).
 
 ## 2021-03-05
 
