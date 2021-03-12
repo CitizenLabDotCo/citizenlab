@@ -190,6 +190,44 @@ namespace :inconsistent_data do
     end
   end
 
+  task :fix_null_values_in_multilocs => :environment do
+    Tenant.all.each do |tenant|
+      Apartment::Tenant.switch(tenant.schema_name) do
+        puts "Processing #{tenant.host}..."
+        Cl2DataListingService.new.cl2_tenant_models.each do |claz|
+          claz.column_names.select do |col|
+            col.end_with? '_multiloc'
+          end.each do |col|
+            tups = if claz.columns_hash[col].type == :jsonb
+              sql = <<-SQL
+                SELECT *
+                FROM #{claz.table_name}
+                JOIN jsonb_each_text(#{claz.table_name}.#{col}) e
+                ON true
+                WHERE e.value IS NULL
+              SQL
+              ActiveRecord::Base.connection.execute sql
+            else
+              claz.all.select do |obj|
+                obj[col].values.include? nil
+              end
+            end
+            if tups.count > 0
+              tups.map{|tup| tup['id']}.each do |id|
+                obj = claz.find id
+                multiloc = obj[col]
+                multiloc.keys.each do |k|
+                  multiloc.delete(k) if multiloc[k].nil?
+                end
+                obj.update_attribute col, multiloc
+              end
+            end
+          end
+        end
+      end
+    end
+  end
+
   task :fix_machine_translations_without_translatables_for_initiatives => :environment do
     # Can be deleted later
 
