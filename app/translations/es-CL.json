@@ -1578,7 +1578,6 @@
   "app.containers.AdminPage.groups.permissions.add": "Añadir",
   "app.containers.AdminPage.groups.permissions.deleteButtonLabel": "Eliminar",
   "app.containers.AdminPage.groups.permissions.deleteModeratorLabel": "Eliminar",
-  "app.containers.AdminPage.groups.permissions.editButtonLabel": "Editar",
   "app.containers.AdminPage.groups.permissions.granularPermissionsTitle": "¿Quién puede contribuir (en cada fase del proyecto)?",
   "app.containers.AdminPage.groups.permissions.groupDeletionConfirmation": "¿Está seguro que desea eliminar este grupo del proyecto?",
   "app.containers.AdminPage.groups.permissions.groupsMultipleSelectPlaceholder": "Selecciona el(los) grupo(s)",
