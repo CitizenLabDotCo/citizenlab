@@ -1,4 +1,4 @@
-import { ReactNode, FunctionComponent } from 'react';
+import { FunctionComponent } from 'react';
 import {
   LoadableLoadingAdmin,
   LoadableLoadingCitizen,
@@ -8,6 +8,7 @@ import { NormalFormValues } from 'containers/Admin/users/NormalGroupForm';
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
 import { IProjectData, IUpdatedProjectProperties } from 'services/projects';
 import { onProjectFormStateChange } from 'containers/Admin/projects/edit/general';
+import { OutletRenderProps } from 'components/Outlet';
 import { mergeWith, castArray } from 'lodash-es';
 
 import Loadable from 'react-loadable';
@@ -92,11 +93,11 @@ export type OutletsPropertyMap = {
   'app.containers.Admin.project.edit.permissions.participationRights': {
     project: IProjectData;
     projectId: string;
-    children: ReactNode;
+    children: OutletRenderProps;
   };
   'app.containers.Admin.project.edit.permissions.moderatorRights': {
     projectId: string;
-    children: ReactNode;
+    children: OutletRenderProps;
   };
   'app.containers.Admin.ideas.tabs': {
     onData: (data: InsertTabOptions) => void;
