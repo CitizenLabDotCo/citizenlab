@@ -1,6 +1,6 @@
-import React, { memo } from 'react';
-import useOutlet from 'hooks/useOutlet';
-import { OutletsPropertyMap } from 'utils/moduleUtils';
+import React, { memo, useContext } from 'react';
+import { OutletsPropertyMap, OutletId } from 'utils/moduleUtils';
+import { OutletsContext } from 'containers/OutletsProvider';
 
 type CustomPropsMap = {
   [P in keyof OutletsPropertyMap]: { id: P } & OutletsPropertyMap[P];
@@ -13,6 +13,11 @@ type children = (
 type InputProps = {
   children?: children;
 };
+
+function useOutlet(identifier: OutletId) {
+  const outlets = useContext(OutletsContext);
+  return outlets[identifier];
+}
 
 type Props = InputProps & CustomOutletProps;
 
