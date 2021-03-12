@@ -213,7 +213,6 @@ namespace :inconsistent_data do
               end
             end
             if tups.count > 0
-              byebug if claz.name != User.name
               tups.map{|tup| tup['id']}.each do |id|
                 obj = claz.find id
                 multiloc = obj[col]
