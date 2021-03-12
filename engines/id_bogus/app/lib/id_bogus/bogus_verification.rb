@@ -3,7 +3,7 @@ module IdBogus
   class BogusVerification
     include Verification::VerificationMethod
 
-    def veritication_method_type
+    def verification_method_type
       :manual_sync
     end
 
