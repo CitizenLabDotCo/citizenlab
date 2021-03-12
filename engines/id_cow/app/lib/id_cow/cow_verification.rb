@@ -17,7 +17,7 @@ module IdCow
       }
     }
 
-    def veritication_method_type
+    def verification_method_type
       :manual_sync
     end
 

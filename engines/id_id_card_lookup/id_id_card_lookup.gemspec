@@ -15,6 +15,7 @@ Gem::Specification.new do |s|
   s.add_dependency "rails", "~> 6.0.0"
   s.add_dependency "verification"
   s.add_dependency "savon", "~> 2.12.0"
+  s.add_dependency "admin_api"
 
   s.add_development_dependency "rspec_api_documentation"
   s.add_development_dependency "rspec-rails"

@@ -4,7 +4,7 @@ module IdClaveUnica
   module ClaveUnicaVerification
     include Verification::VerificationMethod
 
-    def veritication_method_type
+    def verification_method_type
       :omniauth
     end
 

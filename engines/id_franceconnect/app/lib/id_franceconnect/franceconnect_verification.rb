@@ -2,7 +2,7 @@ module IdFranceconnect
   module FranceconnectVerification
     include Verification::VerificationMethod
 
-    def veritication_method_type
+    def verification_method_type
       :omniauth
     end
 
