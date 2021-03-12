@@ -14,10 +14,7 @@ class WebApi::V1::VotesController < ApplicationController
   end
 
   def show
-    render json: WebApi::V1::VoteSerializer.new(
-      @vote, 
-      params: fastjson_params
-      ).serialized_json
+    render json: WebApi::V1::VoteSerializer.new(@vote, params: fastjson_params).serialized_json
   end
 
   def create
@@ -29,7 +26,6 @@ class WebApi::V1::VotesController < ApplicationController
 
     SideFxVoteService.new.before_create(@vote, current_user)
 
-    saved = nil
     begin
       saved = @vote.save
     rescue ActiveRecord::RecordNotUnique => e
