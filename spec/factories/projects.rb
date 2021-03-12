@@ -114,7 +114,7 @@ FactoryBot.define do
         end
 
         start_at = active_phase.end_at
-        phases_after.chars.map(&:to_sym).each do |sequence_char|
+        phases_after.to_s.chars.map(&:to_sym).each do |sequence_char|
           phase_config = evaluator.phases_config[sequence_char].clone || {}
           project.phases << create(:phase,
             start_at: start_at + 1,
