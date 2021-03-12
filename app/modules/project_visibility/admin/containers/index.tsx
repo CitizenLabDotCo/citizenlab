@@ -18,6 +18,7 @@ import ProjectGroupsList from '../components/ProjectGroupsList';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
+import permissionsMessages from 'containers/Admin/projects/edit/permissions/messages';
 
 // services
 import { updateProject } from 'services/projects';
@@ -166,7 +167,7 @@ const ProjectVisibility = ({
             onChange={handlePermissionTypeChange}
             currentValue={unsavedVisibleTo}
             name="permissionsType"
-            label={formatMessage(messages.permissionsEveryoneLabel)}
+            label={formatMessage(permissionsMessages.permissionsEveryoneLabel)}
             value="public"
             id="permissions-all"
           />
@@ -174,7 +175,7 @@ const ProjectVisibility = ({
             onChange={handlePermissionTypeChange}
             currentValue={unsavedVisibleTo}
             name="permissionsType"
-            label={formatMessage(messages.permissionsAdministrators)}
+            label={formatMessage(permissionsMessages.permissionsAdministrators)}
             value="admins"
             id="permissions-administrators"
           />
@@ -182,7 +183,7 @@ const ProjectVisibility = ({
             onChange={handlePermissionTypeChange}
             currentValue={unsavedVisibleTo}
             name="permissionsType"
-            label={formatMessage(messages.permissionsSelectionLabel)}
+            label={formatMessage(permissionsMessages.permissionsSelectionLabel)}
             value="groups"
             id="permissions-selection"
           />
