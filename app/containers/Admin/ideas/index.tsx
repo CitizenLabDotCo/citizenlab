@@ -38,7 +38,11 @@ const IdeasPage = memo(
 
     return (
       <>
-        <Outlet id="app.containers.Admin.ideas.tabs" onData={handleData} />
+        <Outlet
+          id="app.containers.Admin.ideas.tabs"
+          formatMessage={formatMessage}
+          onData={handleData}
+        />
         <TabbedResource resource={resource} tabs={tabs}>
           <HelmetIntl
             title={messages.inputManagerMetaTitle}
