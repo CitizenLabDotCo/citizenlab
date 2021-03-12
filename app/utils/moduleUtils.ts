@@ -1,3 +1,4 @@
+import { FunctionComponent } from 'react';
 import {
   LoadableLoadingAdmin,
   LoadableLoadingCitizen,
@@ -7,9 +8,8 @@ import { NormalFormValues } from 'containers/Admin/users/NormalGroupForm';
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
 import { IProjectData, IUpdatedProjectProperties } from 'services/projects';
 import { onProjectFormStateChange } from 'containers/Admin/projects/edit/general';
+import { OutletRenderProps } from 'components/Outlet';
 import { mergeWith, castArray } from 'lodash-es';
-
-import { FunctionComponent } from 'react';
 
 import Loadable from 'react-loadable';
 import { IGroupDataAttributes, MembershipType } from 'services/groups';
@@ -94,11 +94,14 @@ export type OutletsPropertyMap = {
   'app.containers.Admin.users.UsersHeader.icon': {
     type: GroupCreationModal;
   };
-  'app.containers.Admin.project.edit.permissions.granular': {
+  'app.containers.Admin.project.edit.permissions.participationRights': {
     project: IProjectData;
-  };
-  'app.containers.Admin.project.edit.permissions.projectManagement': {
     projectId: string;
+    children: OutletRenderProps;
+  };
+  'app.containers.Admin.project.edit.permissions.moderatorRights': {
+    projectId: string;
+    children: OutletRenderProps;
   };
   'app.containers.Admin.ideas.tabs': {
     onData: (data: InsertConfigurationOptions<ITab>) => void;
