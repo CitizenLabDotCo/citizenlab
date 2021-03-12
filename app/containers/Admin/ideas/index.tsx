@@ -33,8 +33,8 @@ const IdeasPage = memo(
       subtitle: formatMessage(messages.inputManagerPageSubtitle),
     };
 
-    const handleData = (insertTabOptions: InsertConfigurationOptions<ITab>) =>
-      setTabs(insertConfiguration(insertTabOptions));
+    const handleData = (data: InsertConfigurationOptions<ITab>) =>
+      setTabs(insertConfiguration(data));
 
     return (
       <>
