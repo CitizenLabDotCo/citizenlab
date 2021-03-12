@@ -17,7 +17,9 @@ interface Props {
 }
 
 interface State {
-  tenantSettings: IAppConfiguration['data']['attributes']['settings'] | null;
+  appConfigurationSettings:
+    | IAppConfiguration['data']['attributes']['settings']
+    | null;
 }
 
 export type GetFeatureFlagChildProps = boolean;
@@ -28,7 +30,7 @@ export default class GetFeatureFlag extends PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      tenantSettings: null,
+      appConfigurationSettings: null,
     };
     this.subscription = null;
   }
@@ -37,7 +39,9 @@ export default class GetFeatureFlag extends PureComponent<Props, State> {
     const currentTenant$ = currentAppConfigurationStream().observable;
 
     this.subscription = currentTenant$.subscribe((currentTenant) => {
-      this.setState({ tenantSettings: currentTenant.data.attributes.settings });
+      this.setState({
+        appConfigurationSettings: currentTenant.data.attributes.settings,
+      });
     });
   }
 
@@ -47,12 +51,12 @@ export default class GetFeatureFlag extends PureComponent<Props, State> {
   }
 
   render() {
-    const { tenantSettings } = this.state;
+    const { appConfigurationSettings } = this.state;
     const { name, children } = this.props;
     const showFeature =
       !name ||
-      (get(tenantSettings, `${name}.allowed`) === true &&
-        get(tenantSettings, `${name}.enabled`) === true);
+      (get(appConfigurationSettings, `${name}.allowed`) === true &&
+        get(appConfigurationSettings, `${name}.enabled`) === true);
     return (children as children)(showFeature);
   }
 }

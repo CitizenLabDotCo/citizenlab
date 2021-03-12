@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ChangeEvent } from 'react';
 import { combineLatest } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { uniq, isEmpty, get } from 'lodash-es';
@@ -26,15 +26,19 @@ import { FormattedRelative, InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import messages from '../../messages';
 
-// style
-import AssigneeSelect from './AssigneeSelect';
-
 // analytics
 import { trackEventByName } from 'utils/analytics';
 import tracks from '../../tracks';
 import { TFilterMenu, ManagerType } from '../..';
 import { TitleLink, StyledRow } from './Row';
 import SubRow from './SubRow';
+import {
+  CellConfiguration,
+  InsertConfigurationOptions,
+  Override,
+} from 'typings';
+import { insertConfiguration } from 'utils/moduleUtils';
+import Outlet from 'components/Outlet';
 
 type InputProps = {
   type: ManagerType;
@@ -50,13 +54,111 @@ type InputProps = {
   nothingHappens: (event) => void;
 };
 
+export type IdeaCellComponentProps = {
+  idea: IIdeaData;
+  selection: Set<string>;
+  onChange?: (event: unknown) => void;
+  onClick?: (event: unknown) => void;
+};
+
 type Props = InputProps & {
   connectDragSource: any;
 };
 
+type State = {
+  cells: CellConfiguration<IdeaCellComponentProps>[];
+};
+
 class IdeaRow extends React.PureComponent<
-  Props & InjectedIntlProps & InjectedLocalized
+  Props & InjectedIntlProps & InjectedLocalized,
+  State
 > {
+  constructor(props) {
+    super(props);
+
+    const { onClickCheckbox, onClickTitle } = props;
+
+    this.state = {
+      cells: [
+        {
+          name: 'selection',
+          cellProps: { collapsing: true },
+          onChange: onClickCheckbox,
+          Component: ({
+            selection,
+            idea,
+            onChange,
+          }: Override<
+            IdeaCellComponentProps,
+            {
+              onChange: (event: ChangeEvent<HTMLInputElement>) => void;
+            }
+          >) => {
+            return (
+              <Checkbox
+                checked={!!selection.has(idea.id)}
+                onChange={onChange}
+                size="21px"
+              />
+            );
+          },
+        },
+        {
+          name: 'title',
+          onClick: onClickTitle,
+          Component: ({ idea, onClick }) => {
+            return (
+              <TitleLink
+                className="e2e-idea-manager-idea-title"
+                onClick={onClick}
+              >
+                <T value={idea.attributes.title_multiloc} />
+              </TitleLink>
+            );
+          },
+        },
+        {
+          name: 'published_on',
+          Component: ({ idea }) => {
+            return <FormattedRelative value={idea.attributes.published_at} />;
+          },
+        },
+        {
+          name: 'up',
+          cellProps: { singleLine: true },
+          Component: ({ idea }) => {
+            return (
+              <>
+                <Icon name="thumbs up" />
+                {idea.attributes.upvotes_count}
+              </>
+            );
+          },
+        },
+        {
+          name: 'down',
+          cellProps: { singleLine: true },
+          Component: ({ idea }: IdeaCellComponentProps) => {
+            return (
+              <>
+                <Icon name="thumbs down" />
+                {idea.attributes.downvotes_count}
+              </>
+            );
+          },
+        },
+        {
+          name: 'picks',
+          cellProps: { singleLine: true },
+          featureFlag: 'participatory_budgeting',
+          Component: ({ idea }: IdeaCellComponentProps) => {
+            return <>{idea.attributes.baskets_count}</>;
+          },
+        },
+      ],
+    };
+  }
+
   onUpdateIdeaPhases = (selectedPhases) => {
     updateIdea(this.props.idea.id, {
       phase_ids: selectedPhases,
@@ -83,17 +185,45 @@ class IdeaRow extends React.PureComponent<
       idea: ideaId,
     });
   };
-  onUpdateIdeaAssignee = (assigneeId: string | undefined) => {
-    const { idea } = this.props;
-    const ideaId = idea.id;
 
-    updateIdea(ideaId, { assignee_id: assigneeId || null });
+  renderCell = (
+    { idea, selection }: IdeaCellComponentProps,
+    {
+      cellProps = {},
+      name,
+      Component,
+      onChange,
+      onClick,
+      featureFlag,
+    }: CellConfiguration<IdeaCellComponentProps>
+  ) => {
+    const handlers = {
+      ...(onChange ? { onChange } : {}),
+      ...(onClick ? { onClick } : {}),
+    };
 
-    trackEventByName(tracks.changeIdeaAssignment, {
-      location: 'Idea Manager',
-      method: 'Changed through the dropdown n the table overview',
-      idea: ideaId,
-    });
+    const Content = (
+      <Table.Cell {...cellProps} key={name}>
+        <Component idea={idea} selection={selection} {...handlers} />
+      </Table.Cell>
+    );
+
+    if (!featureFlag) return Content;
+    return (
+      <FeatureFlag name={featureFlag} key={name}>
+        {Content}
+      </FeatureFlag>
+    );
+  };
+
+  handleData = (
+    insertCellOptions: InsertConfigurationOptions<
+      CellConfiguration<IdeaCellComponentProps>
+    >
+  ) => {
+    this.setState(({ cells }) => ({
+      cells: insertConfiguration(insertCellOptions)(cells),
+    }));
   };
 
   render() {
@@ -105,10 +235,9 @@ class IdeaRow extends React.PureComponent<
       phases,
       statuses,
       className,
-      onClickCheckbox,
-      onClickTitle,
-      nothingHappens,
     } = this.props;
+
+    const { cells } = this.state;
 
     const selectedStatus: string | undefined = get(
       idea,
@@ -116,13 +245,15 @@ class IdeaRow extends React.PureComponent<
     );
     const selectedPhases = idea.relationships.phases.data.map((p) => p.id);
     const selectedTopics = idea.relationships.topics?.data.map((p) => p.id);
-    const attrs = idea.attributes;
     const active = selection.has(idea.id);
     const projectId = get(idea, 'relationships.project.data.id');
-    const assigneeId = get(idea, 'relationships.assignee.data.id');
 
     return (
       <>
+        <Outlet
+          id="app.components.admin.PostManager.components.PostTable.IdeaRow.cells"
+          onData={this.handleData}
+        />
         <WrappedRow
           className={`${className} e2e-idea-manager-idea-row`}
           as={StyledRow}
@@ -131,42 +262,9 @@ class IdeaRow extends React.PureComponent<
             instance && connectDragSource(findDOMNode(instance));
           }}
         >
-          <Table.Cell collapsing={true}>
-            <Checkbox
-              checked={!!active}
-              onChange={onClickCheckbox}
-              size="21px"
-            />
-          </Table.Cell>
-          <Table.Cell>
-            <TitleLink
-              className="e2e-idea-manager-idea-title"
-              onClick={onClickTitle}
-            >
-              <T value={attrs.title_multiloc} />
-            </TitleLink>
-          </Table.Cell>
-          <Table.Cell onClick={nothingHappens} singleLine>
-            <AssigneeSelect
-              onAssigneeChange={this.onUpdateIdeaAssignee}
-              projectId={projectId}
-              assigneeId={assigneeId}
-            />
-          </Table.Cell>
-          <Table.Cell>
-            <FormattedRelative value={attrs.published_at} />
-          </Table.Cell>
-          <Table.Cell singleLine>
-            <Icon name="thumbs up" />
-            {attrs.upvotes_count}
-          </Table.Cell>
-          <Table.Cell singleLine>
-            <Icon name="thumbs down" />
-            {attrs.downvotes_count}
-          </Table.Cell>
-          <FeatureFlag name="participatory_budgeting">
-            <Table.Cell singleLine>{attrs.baskets_count}</Table.Cell>
-          </FeatureFlag>
+          {cells.map((cellConfiguration) =>
+            this.renderCell({ idea, selection }, cellConfiguration)
+          )}
         </WrappedRow>
         <SubRow
           {...{
