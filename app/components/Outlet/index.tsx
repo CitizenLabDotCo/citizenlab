@@ -11,7 +11,7 @@ type children = (
   renderProps: JSX.Element | JSX.Element[]
 ) => JSX.Element | null;
 type InputProps = {
-  children: children;
+  children?: children;
 };
 
 type Props = InputProps & CustomOutletProps;
