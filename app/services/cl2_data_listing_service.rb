@@ -15,7 +15,7 @@ class Cl2DataListingService
         Tenant.name
       ].include? claz.name
     end.select do |claz|
-      claz.superclass.name == 'ApplicationRecord' && !views.include?(claz.table_name)
+      claz.superclass.name == ApplicationRecord.name && !views.include?(claz.table_name)
     end
   end
 
