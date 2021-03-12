@@ -129,7 +129,7 @@ resource "Ideas" do
     end
 
     example "List all ideas in a project" do
-      l = create(:project, with_permissions: true)
+      l = create(:project)
       i = create(:idea, project: l)
 
       do_request projects: [l.id]
@@ -151,7 +151,7 @@ resource "Ideas" do
     end
 
     example "List all ideas in a phase of a project" do
-      pr = create(:project_with_phases, with_permissions: true)
+      pr = create(:project_with_phases)
       ph1 = pr.phases.first
       ph2 = pr.phases.second
       i1 = create(:idea, phases: [ph1], project: pr)
@@ -317,7 +317,7 @@ resource "Ideas" do
     end
 
     example "List all idea markers in a phase of a project", document: false do
-      pr = create(:project_with_phases, with_permissions: true)
+      pr = create(:project_with_phases)
       ph1 = pr.phases.first
       ph2 = pr.phases.second
       i1 = create(:idea, phases: [ph1], project: pr)
@@ -604,7 +604,7 @@ resource "Ideas" do
     response_field :base, "Array containing objects with signature { error: #{ParticipationContextService::POSTING_DISABLED_REASONS.values.join(' | ')} }", scope: :errors
 
     let(:idea) { build(:idea) }
-    let(:project) { create(:continuous_project, with_permissions: true) }
+    let(:project) { create(:continuous_project) }
     let(:project_id) { project.id }
     let(:publication_status) { 'published' }
     let(:title_multiloc) { idea.title_multiloc }
@@ -638,7 +638,7 @@ resource "Ideas" do
     end
 
     describe 'For projects without ideas_order' do
-      let(:project) { create(:continuous_project, with_permissions: true) }
+      let(:project) { create(:continuous_project) }
 
       before do
         project.update_attribute(:ideas_order, nil)
@@ -658,7 +658,7 @@ resource "Ideas" do
 
     describe do
       let(:idea) { build(:idea) }
-      let(:project) { create(:continuous_project, with_permissions: true) }
+      let(:project) { create(:continuous_project) }
       let(:project_id) { project.id }
       let(:title_multiloc) { {'en' => 'I have a fantastic Idea but with a superduper extremely long title so someone should do something about this or else it may look bad in the UI and no one would read it anyways'} } # { idea.title_multiloc }
       let(:body_multiloc) { idea.body_multiloc }
@@ -681,7 +681,7 @@ resource "Ideas" do
     end
 
     describe do
-      let(:project) { create(:project_with_current_phase, with_permissions: true, current_phase_attrs: {
+      let(:project) { create(:project_with_current_phase, current_phase_attrs: {
         participation_method: 'information'
       })}
 
@@ -700,26 +700,21 @@ resource "Ideas" do
       end
     end
 
-    describe do
+    example_group "with granular permissions", skip: !CitizenLab.ee? do
+      let(:group) { create(:group) }
+
       before do
-        permission = project.permissions.where(action: 'posting_idea').first
-        permission.update!(permitted_by: 'groups', groups: create_list(:group, 2))
+        project.permissions.find_by(action: 'posting_idea')
+               .update!(permitted_by: 'groups', groups: [group])
       end
-      example_request "[error] Create an idea in a project with groups posting permission" do
+
+      example_request "[error] Create an idea in a project with groups posting permission", document: false do
         expect(response_status).to eq 401
       end
-    end
 
-    describe do
-      before do
-        permission = project.permissions.where(action: 'posting_idea').first
-        groups = create_list(:group, 2)
-        g = groups.first
-        g.add_member @user
-        g.save!
-        permission.update!(permitted_by: 'groups', groups: groups)
-      end
-      example_request "Create an idea in a project with groups posting permission" do
+      example "Create an idea in a project with groups posting permission" do
+        group.add_member(@user).save!
+        do_request
         expect(response_status).to eq 201
       end
     end
@@ -732,7 +727,7 @@ resource "Ideas" do
       end
 
       describe do
-        let(:project) { create(:project_with_current_phase, with_permissions: true, phases_config: {sequence: "xxcx"}) }
+        let(:project) { create(:project_with_current_phase, phases_config: {sequence: "xxcx"}) }
         let(:phase_ids) { project.phases.shuffle.take(2).map(&:id) }
 
         example_request "Creating an idea in specific phases" do
@@ -743,7 +738,7 @@ resource "Ideas" do
       end
 
       describe do
-        let(:project) { create(:project_with_active_ideation_phase, with_permissions: true) }
+        let(:project) { create(:project_with_active_ideation_phase) }
         let(:other_project) { create(:project_with_active_ideation_phase) }
         let(:phase_ids) { [other_project.phases.first.id] }
 
@@ -758,7 +753,7 @@ resource "Ideas" do
 
   patch "web_api/v1/ideas/:id" do
     before do
-      @project = create(:continuous_project, with_permissions: true)
+      @project = create(:continuous_project)
       @idea =  create(:idea, author: @user, project: @project)
     end
 
@@ -893,7 +888,7 @@ resource "Ideas" do
 
         context 'when passing some phase ids' do
           before do
-            @project = create(:project_with_phases, with_permissions: true)
+            @project = create(:project_with_phases)
             @idea.project = @project
             @idea.save
             do_request(idea: { phase_ids: phase_ids })
@@ -917,7 +912,7 @@ resource "Ideas" do
 
         context 'when passing an empty array of phase ids' do
           before do
-            @project = create(:project_with_phases, with_permissions: true)
+            @project = create(:project_with_phases)
             @idea.project = @project
             @idea.phases = [phase]
             @idea.save
@@ -1014,7 +1009,7 @@ resource "Ideas" do
 
   patch "web_api/v1/ideas/:id" do
     before do
-      @project = create(:continuous_project, with_permissions: true)
+      @project = create(:continuous_project)
       @idea =  create(:idea, author: @user, publication_status: 'draft', project: @project)
     end
     parameter :publication_status, "Either #{Post::PUBLICATION_STATUSES.join(', ')}", required: true, scope: :idea
@@ -1032,7 +1027,7 @@ resource "Ideas" do
   delete "web_api/v1/ideas/:id" do
     context 'when the idea belongs to a continuous project' do
       before do
-        @project = create(:continuous_project, with_permissions: true)
+        @project = create(:continuous_project)
         @idea = create(:idea_with_topics, author: @user, publication_status: 'published', project: @project)
       end
       let(:id) { @idea.id }
@@ -1046,7 +1041,7 @@ resource "Ideas" do
 
     context 'when the idea belongs to a timeline project' do
       let!(:idea) { create(:idea, author: user, project: project, publication_status: 'published') }
-      let(:project) { create(:project_with_phases, with_permissions: true) }
+      let(:project) { create(:project_with_phases) }
       let(:phase) { project.phases.first }
       let(:id) { idea.id }
 
