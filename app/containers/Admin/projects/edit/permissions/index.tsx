@@ -39,20 +39,16 @@ const ProjectPermissions = memo(
             project={project}
           >
             {(outletComponents) => {
-              if (outletComponents) {
-                return (
-                  <StyledSection>
-                    <StyledSectionTitle>
-                      <FormattedMessage
-                        {...messages.participationAccessRightsTitle}
-                      />
-                    </StyledSectionTitle>
-                    {outletComponents}
-                  </StyledSection>
-                );
-              }
-
-              return null;
+              return (
+                <StyledSection>
+                  <StyledSectionTitle>
+                    <FormattedMessage
+                      {...messages.participationAccessRightsTitle}
+                    />
+                  </StyledSectionTitle>
+                  {outletComponents}
+                </StyledSection>
+              );
             }}
           </Outlet>
           <Outlet
@@ -60,18 +56,14 @@ const ProjectPermissions = memo(
             projectId={projectId}
           >
             {(outletComponents) => {
-              if (outletComponents) {
-                return (
-                  <StyledSection>
-                    <StyledSectionTitle>
-                      <FormattedMessage {...messages.moderationRightsTitle} />
-                    </StyledSectionTitle>
-                    {outletComponents}
-                  </StyledSection>
-                );
-              }
-
-              return null;
+              return (
+                <StyledSection>
+                  <StyledSectionTitle>
+                    <FormattedMessage {...messages.moderationRightsTitle} />
+                  </StyledSectionTitle>
+                  {outletComponents}
+                </StyledSection>
+              );
             }}
           </Outlet>
         </>
