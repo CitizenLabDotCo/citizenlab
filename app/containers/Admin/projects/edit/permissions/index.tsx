@@ -7,17 +7,9 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // components
-import { IconTooltip } from 'cl2-component-library';
-import {
-  Section,
-  SubSectionTitle,
-  SectionTitle,
-} from 'components/admin/Section';
-import IdeaAssignment from './IdeaAssignment';
-import Link from 'utils/cl-router/Link';
+import { Section, SectionTitle } from 'components/admin/Section';
 
 // hooks
-import useFeatureFlag from 'hooks/useFeatureFlag';
 import useProject from 'hooks/useProject';
 
 // style
@@ -28,99 +20,52 @@ const StyledSection = styled(Section)`
   margin-bottom: 50px;
 `;
 
-const IdeaAssignmentSection = styled(Section)`
-  margin-bottom: 30px;
-`;
-
 export const StyledSectionTitle = styled(SectionTitle)`
   margin-bottom: 30px;
-`;
-
-const StyledLink = styled(Link)`
-  &:hover {
-    text-decoration: underline;
-  }
 `;
 
 interface Props {}
 
 const ProjectPermissions = memo(
   ({ params: { projectId } }: Props & WithRouterProps) => {
-    const projectVisibilityEnabled = useFeatureFlag('project_visibility');
-    const granularPermissionsEnabled = useFeatureFlag('granular_permissions');
-    const projectManagementEnabled = useFeatureFlag('project_management');
-    const ideaAssignmentEnabled = useFeatureFlag('idea_assignment');
     const project = useProject({ projectId });
 
     if (!isNilOrError(project)) {
       return (
         <>
-          <StyledSection>
-            {(projectVisibilityEnabled || granularPermissionsEnabled) && (
-              <StyledSectionTitle>
-                <FormattedMessage
-                  {...messages.participationAccessRightsTitle}
-                />
-              </StyledSectionTitle>
-            )}
-
-            <Outlet
-              id="app.containers.Admin.project.edit.permissions.projectVisibility"
-              projectId={projectId}
-            />
-
-            <Outlet
-              id="app.containers.Admin.project.edit.permissions.granular"
-              project={project}
-            />
-          </StyledSection>
-
-          <StyledSection>
-            <StyledSectionTitle>
-              <FormattedMessage {...messages.moderationRightsTitle} />
-            </StyledSectionTitle>
-
-            {/* {projectManagementEnabled && (
-                <ModeratorSubSection>
-                  <Moderators
-                    moderators={this.props.moderators}
-                    projectId={projectId}
-                  />
-                </ModeratorSubSection>
-              )} */}
-
-            <Outlet
-              id="app.containers.Admin.project.edit.permissions.projectManagement"
-              projectId={projectId}
-            />
-
-            {ideaAssignmentEnabled && (
-              <IdeaAssignmentSection>
-                <SubSectionTitle>
-                  <FormattedMessage {...messages.inputAssignmentSectionTitle} />
-                  <IconTooltip
-                    content={
-                      <FormattedMessage
-                        {...messages.inputAssignmentTooltipText}
-                        values={{
-                          ideaManagerLink: (
-                            <StyledLink
-                              to={`/admin/projects/${projectId}/ideas`}
-                            >
-                              <FormattedMessage
-                                {...messages.inputManagerLinkText}
-                              />
-                            </StyledLink>
-                          ),
-                        }}
-                      />
-                    }
-                  />
-                </SubSectionTitle>
-                <IdeaAssignment projectId={projectId} />
-              </IdeaAssignmentSection>
-            )}
-          </StyledSection>
+          <Outlet
+            id="app.containers.Admin.project.edit.permissions.participationRights"
+            projectId={projectId}
+            project={project}
+          >
+            {(outletComponents) => {
+              return (
+                <StyledSection>
+                  <StyledSectionTitle>
+                    <FormattedMessage
+                      {...messages.participationAccessRightsTitle}
+                    />
+                  </StyledSectionTitle>
+                  {outletComponents}
+                </StyledSection>
+              );
+            }}
+          </Outlet>
+          <Outlet
+            id="app.containers.Admin.project.edit.permissions.moderatorRights"
+            projectId={projectId}
+          >
+            {(outletComponents) => {
+              return (
+                <StyledSection>
+                  <StyledSectionTitle>
+                    <FormattedMessage {...messages.moderationRightsTitle} />
+                  </StyledSectionTitle>
+                  {outletComponents}
+                </StyledSection>
+              );
+            }}
+          </Outlet>
         </>
       );
     }
