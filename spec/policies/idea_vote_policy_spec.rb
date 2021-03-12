@@ -1,119 +1,102 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe IdeaVotePolicy do
+  subject(:policy) { described_class.new(user, vote) }
 
-  subject(:policy) { IdeaVotePolicy.new(user, vote) }
   let(:scope) { IdeaVotePolicy::Scope.new(user, Vote) }
-  let(:project) { create(:continuous_project, with_permissions: true) }
-  let(:votable) { create(:idea, project: project)}
+  let(:project) { create(:continuous_project) }
+  let(:votable) { create(:idea, project: project) }
   let!(:vote) { create(:vote, votable: votable) }
 
-  context "for a visitor" do 
-  	let(:user) { nil }
+  context 'for a visitor' do
+    let(:user) { nil }
 
-    it { should_not permit(:show) }
-    it { should_not permit(:create) }
-    it { should_not permit(:up) }
-    it { should_not permit(:down) }
-    it { should_not permit(:destroy) }
+    it { is_expected.not_to permit(:show) }
+    it { is_expected.not_to permit(:create) }
+    it { is_expected.not_to permit(:up) }
+    it { is_expected.not_to permit(:down) }
+    it { is_expected.not_to permit(:destroy) }
 
-    it "should not index the vote" do
+    it 'does not index the vote' do
       expect(scope.resolve.size).to eq 0
     end
   end
 
-  context "for a mortal user on a vote of another user" do 
-  	let(:user) { create(:user) }
+  context 'for a mortal user on a vote of another user' do
+    let(:user) { create(:user) }
 
-    it { should_not permit(:show) }
-    it { should_not permit(:create) }
-    it { should_not permit(:up) }
-    it { should_not permit(:down) }
-    it { should_not permit(:destroy) }
+    it { is_expected.not_to permit(:show) }
+    it { is_expected.not_to permit(:create) }
+    it { is_expected.not_to permit(:up) }
+    it { is_expected.not_to permit(:down) }
+    it { is_expected.not_to permit(:destroy) }
 
-    it "should not index the vote" do
+    it 'does not index the vote' do
       expect(scope.resolve.size).to eq 0
     end
   end
 
-  context "for a mortal user who owns the vote" do 
-  	let(:user) { vote.user }
+  context 'for a mortal user who owns the vote' do
+    let(:user) { vote.user }
 
-    it { should permit(:show) }
-    it { should permit(:create) }
-    it { should permit(:up) }
-    it { should permit(:down) }
-    it { should permit(:destroy) }
+    it { is_expected.to permit(:show) }
+    it { is_expected.to permit(:create) }
+    it { is_expected.to permit(:up) }
+    it { is_expected.to permit(:down) }
+    it { is_expected.to permit(:destroy) }
 
-    it "should index the vote" do
+    it 'indexes the vote' do
       expect(scope.resolve.size).to eq 1
     end
   end
 
-  context "for an admin" do 
-  	let(:user) { create(:admin) }
+  context 'for an admin' do
+    let(:user) { create(:admin) }
 
-    it { should     permit(:show) }
-    it { should_not permit(:create) }
-    it { should_not permit(:up) }
-    it { should_not permit(:down) }
-    it { should_not permit(:destroy) }
+    it { is_expected.to     permit(:show) }
+    it { is_expected.not_to permit(:create) }
+    it { is_expected.not_to permit(:up) }
+    it { is_expected.not_to permit(:down) }
+    it { is_expected.not_to permit(:destroy) }
 
-    it "should index the vote" do
+    it 'indexes the vote' do
       expect(scope.resolve.size).to eq 1
     end
   end
 
   context "for a mortal user who owns the vote on an idea in a private groups project where she's not member of a manual group with access" do
     let!(:user) { create(:user) }
-    let!(:project) { create(:private_groups_project, with_permissions: true) }
+    let!(:project) { create(:private_groups_project) }
     let!(:idea) { create(:idea, project: project) }
     let!(:vote) { create(:vote, votable: idea, user: user) }
 
-    it { should     permit(:show) }
+    it { is_expected.to permit(:show) }
     it { expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError) }
     it { expect { policy.up? }.to raise_error(Pundit::NotAuthorizedError) }
     it { expect { policy.down? }.to raise_error(Pundit::NotAuthorizedError) }
     it { expect { policy.destroy? }.to raise_error(Pundit::NotAuthorizedError) }
-    it "should index the vote"  do
+
+    it 'indexes the vote' do
       expect(scope.resolve.size).to eq 1
     end
   end
 
-  context "for a mortal user who owns the vote on an idea in a project where voting is disabled" do
+  context 'for a mortal user who owns the vote on an idea in a project where voting is disabled' do
     let!(:user) { create(:user) }
     let!(:project) { create(:continuous_project, voting_enabled: false) }
     let!(:idea) { create(:idea, project: project) }
     let!(:vote) { create(:vote, votable: idea, user: user) }
 
-    it { should     permit(:show) }
+    it { is_expected.to permit(:show) }
     it { expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError) }
     it { expect { policy.up? }.to raise_error(Pundit::NotAuthorizedError) }
     it { expect { policy.down? }.to raise_error(Pundit::NotAuthorizedError) }
     it { expect { policy.destroy? }.to raise_error(Pundit::NotAuthorizedError) }
-    it "should index the vote"  do
+
+    it 'indexes the vote' do
       expect(scope.resolve.size).to eq 1
     end
   end
-
-  context "for a mortal user who owns the vote on an idea in a project where voting is not permitted" do
-    let!(:user) { create(:user) }
-    let!(:project) { 
-      p = create(:continuous_project, with_permissions: true) 
-      p.permissions.find_by(action: 'voting_idea').update!(permitted_by: 'admins_moderators')
-      p
-    }
-    let!(:idea) { create(:idea, project: project) }
-    let!(:vote) { create(:vote, votable: idea, user: user) }
-
-    it { should     permit(:show) }
-    it { expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError) }
-    it { expect { policy.up? }.to raise_error(Pundit::NotAuthorizedError) }
-    it { expect { policy.down? }.to raise_error(Pundit::NotAuthorizedError) }
-    it { expect { policy.destroy? }.to raise_error(Pundit::NotAuthorizedError) }
-    it "should index the vote"  do
-      expect(scope.resolve.size).to eq 1
-    end
-  end
-
 end
