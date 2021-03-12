@@ -4,7 +4,7 @@ class InitiativeVotePolicy < ApplicationPolicy
     attr_reader :user, :scope
 
     def initialize(user, scope)
-      @user  = user
+      @user = user
       @scope = scope
     end
 
@@ -22,7 +22,7 @@ class InitiativeVotePolicy < ApplicationPolicy
   def create?
     return unless user&.active? && owner?
 
-    reason = PermissionsService.new.denied?(user, 'voting_initiative')
+    reason = voting_denied?(user)
     reason ? raise_not_authorized(reason) : true
   end
 
@@ -39,12 +39,14 @@ class InitiativeVotePolicy < ApplicationPolicy
   end
 
   def show?
-    user&.active? && (owner? || user.admin?)
+    active? && (owner? || admin?)
   end
 
   private
 
-  def owner?
-    record.user_id == user.id
+  def voting_denied?(user)
+    :not_signed_in unless user
   end
 end
+
+# InitiativeVotePolicy.prepend(GranularPermissions::Patches::InitiativeVotePolicy)
