@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
-import { isEmpty, isEqual } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
@@ -11,7 +10,6 @@ import {
   SectionField,
 } from 'components/admin/Section';
 import { Radio } from 'cl2-component-library';
-import SubmitWrapper from 'components/admin/SubmitWrapper';
 import ProjectGroupsList from '../components/ProjectGroupsList';
 
 // i18n
@@ -22,11 +20,6 @@ import permissionsMessages from 'containers/Admin/projects/edit/permissions/mess
 
 // services
 import { updateProject } from 'services/projects';
-import {
-  groupsProjectsByProjectIdStream,
-  deleteGroupProject,
-  IGroupsProjects,
-} from 'services/groupsProjects';
 
 // hooks
 import useProject from 'hooks/useProject';
@@ -65,94 +58,25 @@ const ProjectVisibility = ({
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
   const project = useProject({ projectId });
-  const [unsavedVisibleTo, setUnsavedVisibleTo] = useState<
-    'public' | 'admins' | 'groups'
-  >('public');
-  const [savedVisibleTo, setSavedVisibleTo] = useState<
-    'public' | 'admins' | 'groups'
-  >('public');
-  const [isSaving, setIsSaving] = useState(false);
-  const [status, setStatus] = useState<
-    'disabled' | 'enabled' | 'error' | 'success'
-  >('disabled');
-  const [newGroups, setNewGroups] = useState<IGroupsProjects | null>(null);
-  const [oldGroups, setOldGroups] = useState<IGroupsProjects | null>(null);
 
-  useEffect(() => {
-    const subscription = groupsProjectsByProjectIdStream(
-      projectId
-    ).observable.subscribe((groups) => {
-      setOldGroups(isSaving ? groups : oldGroups);
-      setNewGroups(groups);
-      setStatus(
-        unsavedVisibleTo === 'groups' && !isEqual(newGroups, oldGroups)
-          ? 'enabled'
-          : status
-      );
-      setIsSaving(false);
-    });
-
-    return () => subscription.unsubscribe();
-  }, [projectId]);
+  const [projectVisibility, setProjectVisibility] = useState<
+    'public' | 'admins' | 'groups'
+  >(!isNilOrError(project) ? project.attributes.visible_to : 'public');
 
   useEffect(() => {
     if (!isNilOrError(project)) {
-      setSavedVisibleTo(project.attributes.visible_to);
-      setUnsavedVisibleTo(project.attributes.visible_to);
+      setProjectVisibility(project.attributes.visible_to);
     }
   }, [project]);
 
   const handlePermissionTypeChange = (
-    unsavedVisibleTo: 'public' | 'groups' | 'admins'
+    projectVisibility: 'public' | 'groups' | 'admins'
   ) => {
-    setUnsavedVisibleTo(unsavedVisibleTo);
-    setStatus(
-      unsavedVisibleTo === 'groups' &&
-        (newGroups === null || isEmpty(newGroups.data))
-        ? 'disabled'
-        : 'enabled'
-    );
+    updateProject(projectId, { visible_to: projectVisibility });
   };
 
-  const saveChanges = async () => {
-    if (!isNilOrError(project) && savedVisibleTo && unsavedVisibleTo) {
-      let promises: Promise<any>[] = [];
-
-      if (unsavedVisibleTo !== savedVisibleTo) {
-        promises = [
-          updateProject(project.id, { visible_to: unsavedVisibleTo }),
-        ];
-      }
-
-      if (
-        unsavedVisibleTo !== 'groups' &&
-        newGroups !== null &&
-        !isEmpty(newGroups.data)
-      ) {
-        promises = [
-          ...promises,
-          ...newGroups.data.map((group) => deleteGroupProject(group.id)),
-        ];
-      }
-
-      if (unsavedVisibleTo === 'groups') {
-        setOldGroups(newGroups);
-      }
-
-      try {
-        setIsSaving(true);
-        await Promise.all(promises);
-        setIsSaving(false);
-        setStatus('success');
-      } catch (error) {
-        setIsSaving(false);
-        setStatus('error');
-      }
-    }
-  };
-
-  const handleGroupsAdded = () => {
-    saveChanges();
+  const noOp = () => {
+    // empty
   };
 
   return (
@@ -165,7 +89,7 @@ const ProjectVisibility = ({
         <RadioButtonsWrapper>
           <StyledRadio
             onChange={handlePermissionTypeChange}
-            currentValue={unsavedVisibleTo}
+            currentValue={projectVisibility}
             name="permissionsType"
             label={formatMessage(permissionsMessages.permissionsEveryoneLabel)}
             value="public"
@@ -173,7 +97,7 @@ const ProjectVisibility = ({
           />
           <StyledRadio
             onChange={handlePermissionTypeChange}
-            currentValue={unsavedVisibleTo}
+            currentValue={projectVisibility}
             name="permissionsType"
             label={formatMessage(permissionsMessages.permissionsAdministrators)}
             value="admins"
@@ -181,7 +105,7 @@ const ProjectVisibility = ({
           />
           <StyledRadio
             onChange={handlePermissionTypeChange}
-            currentValue={unsavedVisibleTo}
+            currentValue={projectVisibility}
             name="permissionsType"
             label={formatMessage(permissionsMessages.permissionsSelectionLabel)}
             value="groups"
@@ -190,25 +114,8 @@ const ProjectVisibility = ({
         </RadioButtonsWrapper>
       </StyledSectionField>
 
-      {unsavedVisibleTo === 'groups' && (
-        <ProjectGroupsList
-          projectId={projectId}
-          onAddButtonClicked={handleGroupsAdded}
-        />
-      )}
-
-      {unsavedVisibleTo !== 'groups' && (
-        <SubmitWrapper
-          loading={isSaving}
-          status={status}
-          onClick={saveChanges}
-          messages={{
-            buttonSave: messages.save,
-            buttonSuccess: messages.saveSuccess,
-            messageError: messages.saveErrorMessage,
-            messageSuccess: messages.saveSuccessMessage,
-          }}
-        />
+      {projectVisibility === 'groups' && (
+        <ProjectGroupsList projectId={projectId} onAddButtonClicked={noOp} />
       )}
     </ViewingRightsSection>
   );
