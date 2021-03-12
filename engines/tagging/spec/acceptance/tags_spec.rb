@@ -14,7 +14,7 @@ resource "Tags" do
 
   get 'web_api/v1/tags' do
     before do
-      @project = create(:project_with_current_phase, with_permissions: true)
+      @project = create(:project_with_current_phase)
 
       @ideas = create_list(:idea, 5, project: @project)
 
