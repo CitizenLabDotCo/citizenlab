@@ -49,4 +49,4 @@ class InitiativeVotePolicy < ApplicationPolicy
   end
 end
 
-# InitiativeVotePolicy.prepend(GranularPermissions::Patches::InitiativeVotePolicy)
+InitiativeVotePolicy.prepend_if_ee('GranularPermissions::Patches::InitiativeVotePolicy')
