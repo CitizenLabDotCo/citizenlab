@@ -292,8 +292,8 @@ export const DashboardsPage = memo(
       subtitle: formatMessage(messages.subtitleDashboard),
     };
 
-    const handleData = (insertTabOptions: InsertConfigurationOptions<ITab>) =>
-      setTabs(insertConfiguration(insertTabOptions));
+    const handleData = (data: InsertConfigurationOptions<ITab>) =>
+      setTabs(insertConfiguration(data));
 
     if (
       !authUser ||

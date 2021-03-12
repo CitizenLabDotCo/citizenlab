@@ -582,6 +582,7 @@ class PlatformFooter extends PureComponent<Props, State> {
                       customizedA11yHref ? (
                         <StyledA
                           href={customizedA11yHref}
+                          target={hasCustomizedA11yFooterLink && '_blank'}
                           className={index === 0 ? 'first' : ''}
                         >
                           <FormattedMessage

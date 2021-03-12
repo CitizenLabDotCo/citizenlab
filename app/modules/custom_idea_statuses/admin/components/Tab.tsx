@@ -20,7 +20,7 @@ const Tab: FC<Props & WithRouterProps & InjectedIntlProps> = ({
     () =>
       onData({
         configuration: {
-          name: 'custom_idea_statuses',
+          name: 'statuses',
           label: formatMessage(messages.tabStatuses),
           url: '/admin/ideas/statuses',
           active: location.pathname.includes('/admin/ideas/statuses'),

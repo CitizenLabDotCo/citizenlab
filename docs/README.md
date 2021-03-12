@@ -1,5 +1,14 @@
 # Changelog
 
+## 2021-03-11
+
+### Changed
+- Tenants are now ordered alphabetically in AdminHQ
+
+### Added
+- Serbian (Latin) is now a language option.
+
+
 ## 2021-03-10
 
 ### Added

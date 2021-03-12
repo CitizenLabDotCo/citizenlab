@@ -6,13 +6,13 @@ const Tab: FC<ITabsOutlet> = ({ onData, formatMessage }) => {
   useEffect(
     () =>
       onData({
-        tabConfiguration: {
+        configuration: {
           label: formatMessage(messages.tabMap),
           name: 'geographic_dashboard',
           url: '/admin/dashboard/map',
           feature: 'geographic_dashboard',
         },
-        insertAfterTabName: 'users',
+        insertAfterName: 'users',
       }),
     []
   );

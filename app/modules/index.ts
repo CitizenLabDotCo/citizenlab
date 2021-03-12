@@ -61,6 +61,10 @@ export default loadModules([
     isEnabled: true,
   },
   {
+    configuration: ideaAssignmentConfiguration,
+    isEnabled: true,
+  },
+  {
     configuration: customIdeaStatusesConfiguration,
     isEnabled: true,
   },
