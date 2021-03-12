@@ -17,9 +17,9 @@ import tracks from './tracks';
 
 // styles
 import styled from 'styled-components';
-import { InsertTabOptions, ITab } from 'typings';
+import { InsertConfigurationOptions, ITab } from 'typings';
 import Outlet from 'components/Outlet';
-import { insertTab } from 'utils/moduleUtils';
+import { insertConfiguration } from 'utils/moduleUtils';
 
 const TopContainer = styled.div`
   width: 100%;
@@ -63,8 +63,8 @@ const InitiativesPage = memo<InjectedIntlProps & WithRouterProps>(
       });
     };
 
-    const handleData = (insertTabOptions: InsertTabOptions) =>
-      setTabs(insertTab(insertTabOptions));
+    const handleData = (data: InsertConfigurationOptions<ITab>) =>
+      setTabs(insertConfiguration<ITab>(data));
 
     const { pathname } = location;
     return (
