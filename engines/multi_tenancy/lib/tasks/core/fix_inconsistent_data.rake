@@ -194,7 +194,7 @@ namespace :inconsistent_data do
     Tenant.all.each do |tenant|
       Apartment::Tenant.switch(tenant.schema_name) do
         puts "Processing #{tenant.host}..."
-        Cl2DataListingService.new.cl2_tenant_models.each do |claz|
+        Cl2DataListingService.new.cl2_schema_root_models.shuffle.each do |claz|
           claz.column_names.select do |col|
             col.end_with? '_multiloc'
           end.each do |col|
@@ -213,6 +213,7 @@ namespace :inconsistent_data do
               end
             end
             if tups.count > 0
+              byebug if claz.name != User.name
               tups.map{|tup| tup['id']}.each do |id|
                 obj = claz.find id
                 multiloc = obj[col]
