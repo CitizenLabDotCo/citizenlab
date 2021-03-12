@@ -255,7 +255,7 @@ class ProjectGroupsList extends PureComponent<
 
     const groupsList =
       !loading && projectGroups && projectGroups.length > 0 ? (
-        <List>
+        <List key={projectGroups.length}>
           {projectGroups.map((projectGroup, index) => (
             <Row
               key={projectGroup.group_project_id}
