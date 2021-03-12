@@ -3,6 +3,12 @@
 class Permission < ApplicationRecord
   PERMITTED_BIES = %w[everyone users groups admins_moderators].freeze
 
+  DENIED_REASONS = {
+    not_verified: 'not_verified',
+    not_permitted: 'not_permitted',
+    not_signed_in: 'not_signed_in'
+  }.freeze
+
   belongs_to :permission_scope, polymorphic: true, optional: true
   has_many :groups_permissions, dependent: :destroy
   has_many :groups, through: :groups_permissions
@@ -54,7 +60,7 @@ class Permission < ApplicationRecord
                raise "Unsupported permitted_by: '#{permitted_by}'."
              end
 
-    reason&.to_s
+    DENIED_REASONS[reason]
   end
 
   def requires_verification?
