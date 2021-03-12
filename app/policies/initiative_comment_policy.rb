@@ -61,6 +61,3 @@ class InitiativeCommentPolicy < ApplicationPolicy
     user && (record.author_id == user.id)
   end
 end
-
-InitiativeCommentPolicy.prepend_if_ee('GranularPermissions::Patches::InitiativeCommentPolicy')
-
