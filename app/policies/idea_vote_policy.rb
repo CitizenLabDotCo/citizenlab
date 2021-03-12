@@ -65,16 +65,4 @@ class IdeaVotePolicy < ApplicationPolicy
   def participation_context_service
     @participation_context_service ||= ParticipationContextService.new
   end
-
-  def admin?
-    user&.admin?
-  end
-
-  def owner?
-    record.user_id == user.id
-  end
-
-  def active?
-    user&.active?
-  end
 end
