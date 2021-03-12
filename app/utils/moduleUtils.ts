@@ -102,9 +102,6 @@ export type OutletsPropertyMap = {
     projectId: string;
     children: ReactNode;
   };
-  'app.containers.Admin.project.edit.permissions.projectManagement': {
-    projectId: string;
-  };
   'app.containers.Admin.initiatives.tabs': ITabsOutlet;
   'app.containers.Admin.ideas.tabs': ITabsOutlet;
   'app.containers.Admin.dashboards.tabs': ITabsOutlet;
