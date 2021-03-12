@@ -4,6 +4,7 @@ import projectFoldersConfiguration from './project_folders';
 import smartGroupsConfiguration from './smart_groups';
 import granularPermissionsConfiguration from './granular_permissions';
 import moderationConfiguration from './moderation';
+import ideaAssignmentConfiguration from './idea_assignment';
 import geographicDashboardConfiguration from './geographic_dashboard';
 
 import customMapsConfiguration from './custom_maps';
@@ -54,6 +55,10 @@ export default loadModules([
   },
   {
     configuration: projectManagementConfiguration,
+    isEnabled: true,
+  },
+  {
+    configuration: ideaAssignmentConfiguration,
     isEnabled: true,
   },
   {

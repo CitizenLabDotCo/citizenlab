@@ -14,8 +14,9 @@ import { FunctionComponent } from 'react';
 import Loadable from 'react-loadable';
 import { IGroupDataAttributes, MembershipType } from 'services/groups';
 import {
+  CellConfiguration,
   FormikSubmitHandler,
-  InsertTabOptions,
+  InsertConfigurationOptions,
   ITab,
   MessageDescriptor,
   Multiloc,
@@ -23,6 +24,9 @@ import {
 import { IUserData } from 'services/users';
 import { MessageValue } from 'react-intl';
 import { NavItem } from 'containers/Admin/sideBar';
+import { ManagerType } from 'components/admin/PostManager';
+import { IdeaCellComponentProps } from 'components/admin/PostManager/components/PostTable/IdeaRow';
+import { IdeaHeaderCellComponentProps } from 'components/admin/PostManager/components/PostTable/IdeaHeaderRow';
 
 type Localize = (
   multiloc: Multiloc | null | undefined,
@@ -34,7 +38,7 @@ export type ITabsOutlet = {
     messageDescriptor: MessageDescriptor,
     values?: { [key: string]: MessageValue } | undefined
   ) => string;
-  onData: (data: InsertTabOptions) => void;
+  onData: (data: InsertConfigurationOptions<ITab>) => void;
 };
 
 export type OutletsPropertyMap = {
@@ -97,15 +101,32 @@ export type OutletsPropertyMap = {
     projectId: string;
   };
   'app.containers.Admin.ideas.tabs': {
-    onData: (data: InsertTabOptions) => void;
+    onData: (data: InsertConfigurationOptions<ITab>) => void;
   };
   'app.containers.Admin.initiatives.tabs': ITabsOutlet;
   'app.containers.Admin.dashboards.tabs': ITabsOutlet;
   'app.containers.Admin.sideBar.navItems': {
-    onData: (data: {
-      insertAfterNavItemId?: string;
-      navItemConfiguration: NavItem;
-    }) => void;
+    onData: (data: InsertConfigurationOptions<NavItem>) => void;
+  };
+  'app.components.admin.PostManager.topActionBar': {
+    assignee?: string | null;
+    projectId?: string | null;
+    handleAssigneeFilterChange: (value: string) => void;
+    type: ManagerType;
+  };
+  'app.components.admin.PostManager.components.PostTable.IdeaRow.cells': {
+    onData: (
+      data: InsertConfigurationOptions<
+        CellConfiguration<IdeaCellComponentProps>
+      >
+    ) => void;
+  };
+  'app.components.admin.PostManager.components.PostTable.IdeaHeaderRow.cells': {
+    onData: (
+      data: InsertConfigurationOptions<
+        CellConfiguration<IdeaHeaderCellComponentProps>
+      >
+    ) => void;
   };
   'app.containers.Admin.projects.edit.tabs.map': {
     projectId: string;
@@ -264,18 +285,18 @@ export const loadModules = (modules: Modules): ParsedModuleConfiguration => {
   };
 };
 
-export const insertTab = ({
-  tabConfiguration,
-  insertAfterTabName,
-}: InsertTabOptions) => (tabs: ITab[]): ITab[] => {
+export const insertConfiguration = <T extends { name: string }>({
+  configuration,
+  insertAfterName,
+}: InsertConfigurationOptions<T>) => (items: T[]): T[] => {
   const insertIndex =
-    tabs.findIndex((tab) => tab.name === insertAfterTabName) + 1;
+    items.findIndex((item) => item.name === insertAfterName) + 1;
 
   return insertIndex > 0
     ? [
-        ...tabs.slice(0, insertIndex),
-        tabConfiguration,
-        ...tabs.slice(insertIndex),
+        ...items.slice(0, insertIndex),
+        configuration,
+        ...items.slice(insertIndex),
       ]
-    : [...tabs, tabConfiguration];
+    : [...items, configuration];
 };
