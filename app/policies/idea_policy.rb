@@ -34,7 +34,7 @@ class IdeaPolicy < ApplicationPolicy
     return true if user&.active_admin_or_moderator?(record.project_id)
 
     reason = ParticipationContextService.new.posting_idea_disabled_reason_for_project(record.project, user)
-    raise Pundit::NotAuthorizedError, reason: reason if reason
+    raise_not_authorized(reason) if reason
 
     active_owner? && ProjectPolicy.new(user, record.project).show?
   end
