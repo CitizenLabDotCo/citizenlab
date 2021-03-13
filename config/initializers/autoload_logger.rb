@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
-if Rails.env.development?
-  Rails.autoloaders.logger = Rails.logger
-  Rails.autoloaders.log!
-end
+# Uncomment the lines below if you'd like to see logs of rails autoloading mechanism.
+
+# if Rails.env.development?
+#   Rails.autoloaders.logger = Rails.logger
+#   Rails.autoloaders.log!
+# end
