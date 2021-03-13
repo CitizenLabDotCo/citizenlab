@@ -1,6 +1,6 @@
 module CustomMaps
   class LegendItem < ApplicationRecord
-    self.table_name = 'legend_items'
+    self.table_name = 'maps_legend_items'
 
     acts_as_list column: :ordering, top_of_list: 0, add_new_at: :bottom, scope: [:map_config_id]
 

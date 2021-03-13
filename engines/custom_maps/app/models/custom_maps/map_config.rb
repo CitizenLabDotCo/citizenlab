@@ -1,6 +1,6 @@
 module CustomMaps
   class MapConfig < ApplicationRecord
-    self.table_name = 'map_configs'
+    self.table_name = 'maps_map_configs'
 
     belongs_to :project
     has_many :layers, -> { order(:ordering) }, class_name: 'CustomMaps::Layer', dependent: :destroy
