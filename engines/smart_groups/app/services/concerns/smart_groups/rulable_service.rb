@@ -15,6 +15,10 @@ module SmartGroups
         rules.push(rule_classes)
       end
 
+      def add_rule(rule_class)
+        rules.push(rule_class)
+      end
+
       def rules_by_type
         rules.index_by(&:rule_type)
       end
