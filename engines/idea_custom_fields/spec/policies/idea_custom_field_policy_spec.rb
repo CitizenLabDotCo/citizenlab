@@ -1,8 +1,9 @@
 require 'rails_helper'
 
-describe IdeaCustomFieldPolicy do
-  subject { IdeaCustomFieldPolicy.new(user, idea_custom_field) }
-  let(:scope) { IdeaCustomFieldPolicy::Scope.new(user, CustomField) }
+describe IdeaCustomFields::CustomFieldPolicy do
+  subject { described_class.new(user, idea_custom_field) }
+
+  let(:scope) { described_class::Scope.new(user, CustomField) }
 
   let(:custom_form) { create(:custom_form) }
   let!(:project) { create(:project, custom_form: custom_form) }
