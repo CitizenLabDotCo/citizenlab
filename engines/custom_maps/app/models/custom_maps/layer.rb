@@ -1,6 +1,6 @@
 module CustomMaps
   class Layer < ApplicationRecord
-    self.table_name = 'layers'
+    self.table_name = 'maps_layers'
 
     attribute :geojson_file
 
