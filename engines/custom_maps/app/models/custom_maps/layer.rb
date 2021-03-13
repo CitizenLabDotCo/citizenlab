@@ -1,5 +1,7 @@
 module CustomMaps
   class Layer < ApplicationRecord
+    self.table_name = 'layers'
+
     attribute :geojson_file
 
     GEOJSON_SCHEMA = CustomMaps::Engine.root.join('config','schemas','geojson.json_schema').to_s
