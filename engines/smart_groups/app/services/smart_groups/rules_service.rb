@@ -2,52 +2,12 @@ require './engines/verification/lib/smart_groups/rules/verified'
 
 module SmartGroups
   class RulesService
-    RULE_TYPE_TO_CLASS = [
-      SmartGroups::Rules::CustomFieldText,
-      SmartGroups::Rules::CustomFieldSelect,
-      SmartGroups::Rules::CustomFieldCheckbox,
-      SmartGroups::Rules::CustomFieldDate,
-      SmartGroups::Rules::CustomFieldNumber,
-      SmartGroups::Rules::Role,
-      SmartGroups::Rules::Email,
-      SmartGroups::Rules::LivesIn,
-      SmartGroups::Rules::RegistrationCompletedAt,
-      SmartGroups::Rules::ParticipatedInProject,
-      SmartGroups::Rules::ParticipatedInTopic,
-      SmartGroups::Rules::ParticipatedInIdeaStatus,
-      SmartGroups::Rules::Verified
-    ].index_by do |smart_group_class|
-      smart_group_class.rule_type
-    end
-
-    def filter(users_scope, json_rules)
-      rules = parse_json_rules json_rules
-      result = rules.inject(users_scope) do |memo, rule|
-        rule.filter(memo)
-      end
-    end
-
-    # This method is very carefully written to do it all in
-    # 2 queries, so beware when editing
-    def groups_for_user(user)
-      ::Group.where(membership_type: 'rules').map do |group|
-        # We're using `id: [user.id]` instead of `id: user.id` to
-        # workaround this rails/arel issue:
-        # https://github.com/rails/rails/issues/20077
-        ::Group
-          .where(id: group.id)
-          .where(filter(::User.where(id: [user.id]), group.rules).arel.exists)
-      end.inject(:or) || ::Group.none
-    end
-
-    def generate_rules_json_schema
+    JSON_SCHEMA_SKELETON = lambda { |rules_json_schema|
       {
         'description' => 'Schema for validating the rules used in smart groups',
         'type' => 'array',
         'items' => {
-          'anyOf' => each_rule.flat_map do |rule_claz|
-            rule_claz.to_json_schema
-          end
+          'anyOf' => rules_json_schema
         },
         'definitions' => {
           'uuid' => {
@@ -64,12 +24,68 @@ module SmartGroups
           }
         }
       }
+    }
+
+    class<< self
+      def rules
+        @rules ||= []
+      end
+
+      def add_rules(*rule_classes)
+        rules.push(rule_classes)
+      end
+
+      def rules_by_type
+        rules.index_by(&:rule_type)
+      end
+    end
+
+    delegate :rules_by_type, :rules, to: :class
+
+    add_rules SmartGroups::Rules::CustomFieldText,
+              SmartGroups::Rules::CustomFieldSelect,
+              SmartGroups::Rules::CustomFieldCheckbox,
+              SmartGroups::Rules::CustomFieldDate,
+              SmartGroups::Rules::CustomFieldNumber,
+              SmartGroups::Rules::Role,
+              SmartGroups::Rules::Email,
+              SmartGroups::Rules::LivesIn,
+              SmartGroups::Rules::RegistrationCompletedAt,
+              SmartGroups::Rules::ParticipatedInProject,
+              SmartGroups::Rules::ParticipatedInTopic,
+              SmartGroups::Rules::ParticipatedInIdeaStatus
+
+    # This method is very carefully written to do it all in
+    # 2 queries, so beware when editing
+    def groups_for_user(user)
+      # We're using `id: [user.id]` instead of `id: user.id` to
+      # workaround this rails/arel issue:
+      # https://github.com/rails/rails/issues/20077
+      user_relation_object = ::User.where(id: [user.id])
+      groups_in_common_for_users(user_relation_object)
+    end
+
+    def groups_in_common_for_users(users)
+      ::Group.rules.select { |group| users_belong_to_group?(users, group) }.inject(:or) ||
+        ::Group.none
+    end
+
+    def users_belong_to_group?(group, users)
+      ::Group.where(id: group.id)
+             .where(filter(users, group.rules).arel.exists)
+    end
+
+    def filter(users_scope, group_json_rules)
+      parse_json_rules(group_json_rules)
+        .inject(users_scope) { |memo, rule| rule.filter(memo) }
+    end
+
+    def generate_rules_json_schema
+      JSON_SCHEMA_SKELETON.call(rules_by_type_to_json_schema)
     end
 
     def parse_json_rules(json_rules)
-      json_rules.map do |json_rule|
-        parse_json_rule json_rule
-      end
+      json_rules.map { |json_rule| parse_json_rule(json_rule) }
     end
 
     def parse_json_rule(json_rule)
@@ -89,12 +105,16 @@ module SmartGroups
 
     private
 
-    def each_rule
-      RULE_TYPE_TO_CLASS.values.each
+    def rules_by_type_to_json_schema
+      each_rule.flat_map(&:to_json_schema)
     end
 
-    def rule_type_to_class(rule_type)
-      RULE_TYPE_TO_CLASS[rule_type]
+    def each_rule
+      rules_by_type.values.each
+    end
+
+    def rules_by_type(rule_type)
+      rules_by_type[rule_type]
     end
   end
 end
