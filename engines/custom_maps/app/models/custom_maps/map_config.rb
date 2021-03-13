@@ -1,5 +1,7 @@
 module CustomMaps
   class MapConfig < ApplicationRecord
+    self.table_name = 'map_configs'
+
     belongs_to :project
     has_many :layers, -> { order(:ordering) }, class_name: 'CustomMaps::Layer', dependent: :destroy
     has_many :legend_items, -> { order(:ordering) }, class_name: 'CustomMaps::LegendItem', dependent: :destroy

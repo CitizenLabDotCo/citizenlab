@@ -185,3 +185,4 @@ class Project < ApplicationRecord
 end
 
 Project.prepend_if_ee('ProjectFolders::Patches::Project')
+Project.include_if_ee('CustomMaps::Extensions::Project')
