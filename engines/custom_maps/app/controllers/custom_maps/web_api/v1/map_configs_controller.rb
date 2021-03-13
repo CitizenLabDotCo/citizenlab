@@ -1,7 +1,7 @@
 module CustomMaps
   module WebApi
     module V1
-      class MapConfigsController < ::Maps::WebApi::V1::MapConfigsController
+      class MapConfigsController < CustomMapsController
         before_action :set_map_config, only: %i[update destroy]
 
         def create
@@ -30,10 +30,22 @@ module CustomMaps
           end
         end
 
+        def show
+          @project = Project.includes(map_config: %i[layers legend_items]).find(params[:project_id])
+          authorize @project
+          @map_config = @project.map_config
+          render json: serialized_map_config, status: :ok
+        end
+
         private
 
         def set_map_config
-          @map_config = ::Maps::MapConfig.find_by!(project_id: params[:project_id])
+          @map_config = CustomMaps::MapConfig.find_by!(project_id: params[:project_id])
+        end
+
+        def serialized_map_config
+          CustomMaps::WebApi::V1::MapConfigSerializer.new(@map_config, params: fastjson_params)
+                                               .serialized_json
         end
 
         def map_config_params

@@ -3,7 +3,7 @@ FactoryBot.define do
     "https://some.map.service/maps/basic/{z}/{x}/{y}/#{n}.png?key=abcdefg"
   end
 
-  factory :map_config, class: 'Maps::MapConfig' do
+  factory :map_config, class: 'CustomMaps::MapConfig' do
     project
 
     trait :with_positioning do

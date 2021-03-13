@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Maps::MapConfig, type: :model do
+RSpec.describe CustomMaps::MapConfig, type: :model do
 
   describe "Default factory" do
     it "is valid" do

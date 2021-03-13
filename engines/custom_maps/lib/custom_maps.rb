@@ -1,4 +1,4 @@
-require "custom_maps/engine"
+require "maps/engine"
 
 module CustomMaps
   # Your code goes here...

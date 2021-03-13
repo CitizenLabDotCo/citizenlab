@@ -1,8 +1,8 @@
-module Maps
+module CustomMaps
   class MapConfig < ApplicationRecord
     belongs_to :project
-    has_many :layers, -> { order(:ordering) }, class_name: 'Maps::Layer', dependent: :destroy
-    has_many :legend_items, -> { order(:ordering) }, class_name: 'Maps::LegendItem', dependent: :destroy
+    has_many :layers, -> { order(:ordering) }, class_name: 'CustomMaps::Layer', dependent: :destroy
+    has_many :legend_items, -> { order(:ordering) }, class_name: 'CustomMaps::LegendItem', dependent: :destroy
 
     validates :zoom_level, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 20 }, allow_nil: true
     validates :tile_provider, format: { with: %r{\Ahttps://.+\z} }, allow_nil: true

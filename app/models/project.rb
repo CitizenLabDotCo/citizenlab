@@ -1,6 +1,6 @@
 class Project < ApplicationRecord
   include ParticipationContext
-  include Maps::ProjectDecorator
+  include CustomMaps::ProjectDecorator
   mount_base64_uploader :header_bg, ProjectHeaderBgUploader
 
   DESCRIPTION_PREVIEW_JSON_SCHEMA = ERB.new(File.read(Rails.root.join('config', 'schemas', 'project_description_preview.json_schema.erb'))).result(binding)

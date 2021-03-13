@@ -1,8 +1,8 @@
 module CustomMaps
   module WebApi
     module V1
-      class LayersController < ::Maps::WebApi::V1::LayersController
-        skip_before_action :set_layer, only: %i[create]
+      class LayersController < CustomMapsController
+        before_action :set_layer, except: %i[create]
 
         def create
           @map_config = @project.map_config
@@ -31,6 +31,10 @@ module CustomMaps
           end
         end
 
+        def show
+          render json: serialized_layer
+        end
+
         def reorder
           if @layer.insert_at(params.dig(:layer, :ordering))
             render json: serialized_layer, status: :ok
@@ -54,8 +58,16 @@ module CustomMaps
                 end
         end
 
+        def serialized_layer
+          CustomMaps::WebApi::V1::LayerSerializer.new(@layer).serialized_json
+        end
+
         def layer_errors
           { errors: @layer.errors.details }
+        end
+
+        def set_layer
+          @layer = CustomMaps::Layer.find(params[:id])
         end
       end
     end

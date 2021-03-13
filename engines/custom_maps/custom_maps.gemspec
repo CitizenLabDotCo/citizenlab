@@ -4,24 +4,20 @@ $:.push File.expand_path('lib', __dir__)
 require 'custom_maps/version'
 
 # Describe your gem and declare its dependencies:
-Gem::Specification.new do |spec|
-  spec.name        = 'custom_maps'
-  spec.version     = CustomMaps::VERSION
-  spec.authors     = ['CitizenLab']
-  spec.email       = ['developers@citizenlab.co']
-  spec.summary     = 'Custom Map Configuration.'
-  spec.description = 'Adds an extra tab to the project settings where admins can customize the project map.'
+Gem::Specification.new do |s|
+  s.name        = 'custom_maps'
+  s.version     = CustomMaps::VERSION
+  s.authors     = ['CitizenLab']
+  s.email       = ['developers@citizenlab.co']
+  s.licenses    = ['CitizenLab Commercial License']
+  s.summary     = 'Contains everything to configure maps on the platform'
 
-  # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
-  # to allow pushing to a single host or delete this section to allow pushing to any host.
-  if spec.respond_to?(:metadata)
-    spec.metadata['allowed_push_host'] = "TODO: Set to 'http://mygemserver.com'"
-  else
-    raise 'RubyGems 2.0 or newer is required to protect against ' \
-      'public gem pushes.'
-  end
+  s.files = Dir['{app,config,db,lib}/**/*', 'MIT-LICENSE', 'Rakefile', 'README.md']
 
-  spec.files = Dir['{app,config,db,lib}/**/*', 'Rakefile', 'README.md']
+  s.add_dependency 'apartment', '~> 2.2.1'
+  s.add_dependency 'pundit', '~> 2.0'
+  s.add_dependency 'rails', '~> 6.0.0'
 
-  spec.add_dependency 'rails', '~> 6.0.3', '>= 6.0.3.2'
+  s.add_development_dependency 'rspec_api_documentation'
+  s.add_development_dependency 'rspec-rails'
 end

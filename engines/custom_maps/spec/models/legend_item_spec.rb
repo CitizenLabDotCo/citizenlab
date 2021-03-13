@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Maps::LegendItem, type: :model do
+RSpec.describe CustomMaps::LegendItem, type: :model do
 
   describe "Default factory" do
     it "is valid" do
