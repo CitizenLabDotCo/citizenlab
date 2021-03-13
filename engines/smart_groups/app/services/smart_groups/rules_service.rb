@@ -1,6 +1,6 @@
 module SmartGroups
   class RulesService
-    include Rulable
+    include RulableService
 
     add_rules SmartGroups::Rules::CustomFieldText,
               SmartGroups::Rules::CustomFieldSelect,
@@ -89,36 +89,6 @@ module SmartGroups
 
     def rules_by_type_to_json_schema
       each_rule.flat_map(&:to_json_schema)
-    end
-
-    module Rulable
-      def self.included(base)
-        base.class_eval do
-          class<< self
-            def rules
-              @rules ||= []
-            end
-
-            def add_rules(*rule_classes)
-              rules.push(rule_classes)
-            end
-
-            def rules_by_type
-              rules.index_by(&:rule_type)
-            end
-
-            def each_rule
-              rules_by_type.values.each
-            end
-
-            def rule_by_type(rule_type)
-              rules_by_type[rule_type]
-            end
-          end
-
-          delegate :rules_by_type, :rules, :each_rule, :rule_by_type, to: :class
-        end
-      end
     end
   end
 end
