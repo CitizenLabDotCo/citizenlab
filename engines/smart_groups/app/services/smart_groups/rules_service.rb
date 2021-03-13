@@ -1,46 +1,6 @@
-require './engines/verification/lib/smart_groups/rules/verified'
-
 module SmartGroups
   class RulesService
-    JSON_SCHEMA_SKELETON = lambda { |rules_json_schema|
-      {
-        'description' => 'Schema for validating the rules used in smart groups',
-        'type' => 'array',
-        'items' => {
-          'anyOf' => rules_json_schema
-        },
-        'definitions' => {
-          'uuid' => {
-            'type' => 'string',
-            'pattern' => '^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$'
-          },
-          'customFieldId' => {
-            'description' => 'The ID of a custom field',
-            '$ref' => '#/definitions/uuid'
-          },
-          'customFieldOptionId' => {
-            'description' => 'The ID of a custom field option',
-            '$ref' => '#/definitions/uuid'
-          }
-        }
-      }
-    }
-
-    class<< self
-      def rules
-        @rules ||= []
-      end
-
-      def add_rules(*rule_classes)
-        rules.push(rule_classes)
-      end
-
-      def rules_by_type
-        rules.index_by(&:rule_type)
-      end
-    end
-
-    delegate :rules_by_type, :rules, to: :class
+    include Rulable
 
     add_rules SmartGroups::Rules::CustomFieldText,
               SmartGroups::Rules::CustomFieldSelect,
@@ -54,6 +14,28 @@ module SmartGroups
               SmartGroups::Rules::ParticipatedInProject,
               SmartGroups::Rules::ParticipatedInTopic,
               SmartGroups::Rules::ParticipatedInIdeaStatus
+
+    JSON_SCHEMA_SKELETON = {
+      'description' => 'Schema for validating the rules used in smart groups',
+      'type' => 'array',
+      'items' => {
+        'anyOf' => []
+      },
+      'definitions' => {
+        'uuid' => {
+          'type' => 'string',
+          'pattern' => '^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$'
+        },
+        'customFieldId' => {
+          'description' => 'The ID of a custom field',
+          '$ref' => '#/definitions/uuid'
+        },
+        'customFieldOptionId' => {
+          'description' => 'The ID of a custom field option',
+          '$ref' => '#/definitions/uuid'
+        }
+      }
+    }.freeze
 
     # This method is very carefully written to do it all in
     # 2 queries, so beware when editing
@@ -81,7 +63,7 @@ module SmartGroups
     end
 
     def generate_rules_json_schema
-      JSON_SCHEMA_SKELETON.call(rules_by_type_to_json_schema)
+      JSON_SCHEMA_SKELETON.dup.merge('items' => { 'anyOf' => rules_by_type_to_json_schema })
     end
 
     def parse_json_rules(json_rules)
@@ -109,12 +91,34 @@ module SmartGroups
       each_rule.flat_map(&:to_json_schema)
     end
 
-    def each_rule
-      rules_by_type.values.each
-    end
+    module Rulable
+      def self.included(base)
+        base.class_eval do
+          class<< self
+            def rules
+              @rules ||= []
+            end
 
-    def rules_by_type(rule_type)
-      rules_by_type[rule_type]
+            def add_rules(*rule_classes)
+              rules.push(rule_classes)
+            end
+
+            def rules_by_type
+              rules.index_by(&:rule_type)
+            end
+
+            def each_rule
+              rules_by_type.values.each
+            end
+
+            def rule_by_type(rule_type)
+              rules_by_type[rule_type]
+            end
+          end
+
+          delegate :rules_by_type, :rules, :each_rule, :rule_by_type, to: :class
+        end
+      end
     end
   end
 end
