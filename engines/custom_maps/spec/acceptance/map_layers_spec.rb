@@ -24,6 +24,22 @@ resource 'Map Layers' do
     header 'Content-Type', 'application/json'
   end
 
+  shared_examples 'successful GET map layers' do
+    get 'web_api/v1/projects/:project_id/map_config/layers/:id' do
+      let(:layer) { map_config.layers.first }
+      let(:id)    { layer.id }
+
+      example_request 'Get a map layer of a project' do
+        expect(status).to eq 200
+        expect(attributes['title_multiloc']).to   eq layer.title_multiloc
+        expect(attributes['geojson']).to          eq layer.geojson
+        expect(attributes['default_enabled']).to  eq layer.default_enabled
+        expect(attributes['marker_svg_url']).to   eq layer.marker_svg_url
+        expect(attributes['ordering']).to         eq layer.ordering
+      end
+    end
+  end
+
   shared_examples 'unauthorized POST, PATCH and DELETE map layer' do
     post 'web_api/v1/projects/:project_id/map_config/layers', document: false do
       example_request 'Cannot create a map config for a project' do
@@ -60,6 +76,7 @@ resource 'Map Layers' do
   end
 
   context 'when not logged in' do
+    include_examples 'successful GET map layers'
     include_examples 'unauthorized POST, PATCH and DELETE map layer'
   end
 
@@ -68,6 +85,7 @@ resource 'Map Layers' do
       user_header_token
     end
 
+    include_examples 'successful GET map layers'
     include_examples 'unauthorized POST, PATCH and DELETE map layer'
   end
 
@@ -75,6 +93,8 @@ resource 'Map Layers' do
     before do
       admin_header_token
     end
+
+    include_examples 'successful GET map layers'
 
     post 'web_api/v1/projects/:project_id/map_config/layers' do
       with_options scope: :layer, required: true, with_example: true do
@@ -171,7 +191,7 @@ resource 'Map Layers' do
       let(:ordering)        { 0 }
 
       context 'when passing a geojson object' do
-        let(:geojson) { JSON.parse(File.read(Maps::Engine.root.join('spec/fixtures/brussels-districts.geojson'))) }
+        let(:geojson) { JSON.parse(File.read(CustomMaps::Engine.root.join('spec/fixtures/brussels-districts.geojson'))) }
 
         example_request 'Updates a map layer successfully using a geojson object' do
           expect(status).to eq 200
@@ -203,7 +223,7 @@ resource 'Map Layers' do
       end
 
       context 'when passing both a geojson object and file' do
-        let(:geojson) { JSON.parse(File.read(Maps::Engine.root.join('spec/fixtures/brussels-districts.geojson'))) }
+        let(:geojson) { JSON.parse(File.read(CustomMaps::Engine.root.join('spec/fixtures/brussels-districts.geojson'))) }
 
         let(:geojson_file) do
           {
@@ -280,6 +300,6 @@ resource 'Map Layers' do
   end
 
   def encode_json_file_as_base64(filename)
-    "data:application/json;base64,#{Base64.encode64(File.read(Maps::Engine.root.join('spec', 'fixtures', filename)))}"
+    "data:application/json;base64,#{Base64.encode64(File.read(CustomMaps::Engine.root.join('spec', 'fixtures', filename)))}"
   end
 end

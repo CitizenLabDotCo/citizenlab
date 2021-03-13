@@ -1194,7 +1194,7 @@ class TenantTemplateService
   end
 
   def yml_maps_map_configs
-    Maps::MapConfig.all.map do |map_config|
+    CustomMaps::MapConfig.all.map do |map_config|
       yml_map_config = {
         'project_ref'            => lookup_ref(map_config.project_id, :project),
         'center_geojson'         => map_config.center_geojson,
@@ -1209,7 +1209,7 @@ class TenantTemplateService
   end
 
   def yml_maps_layers
-    Maps::Layer.all.map do |layer|
+    CustomMaps::Layer.all.map do |layer|
       yml_layer = {
         'map_config_ref'  => lookup_ref(layer.map_config_id, :maps_map_config),
         'title_multiloc'  => layer.title_multiloc,
@@ -1224,7 +1224,7 @@ class TenantTemplateService
   end
 
   def yml_maps_legend_items
-    Maps::LegendItem.all.map do |legend_item|
+    CustomMaps::LegendItem.all.map do |legend_item|
       {
         'map_config_ref' => lookup_ref(legend_item.map_config_id, :maps_map_config),
         'title_multiloc' => legend_item.title_multiloc,

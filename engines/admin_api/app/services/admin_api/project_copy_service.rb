@@ -133,7 +133,7 @@ module AdminApi
         'updated_at'                   => shift_timestamp(@project.updated_at, shift_timestamps)&.iso8601,
         'remote_header_bg_url'         => @project.header_bg_url,
         'visible_to'                   => @project.visible_to,
-        'description_preview_multiloc' => @project.description_preview_multiloc, 
+        'description_preview_multiloc' => @project.description_preview_multiloc,
         'process_type'                 => @project.process_type,
         'admin_publication_attributes' => { 'publication_status' => new_publication_status || @project.admin_publication.publication_status },
         'custom_form_ref'              => lookup_ref(@project.custom_form_id, :custom_form),
@@ -289,7 +289,7 @@ module AdminApi
     end
 
     def yml_maps_map_configs shift_timestamps: 0
-      Maps::MapConfig.where(project_id: @project.id).map do |map_config|
+      CustomMaps::MapConfig.where(project_id: @project.id).map do |map_config|
         yml_map_config = {
           'project_ref'            => lookup_ref(map_config.project_id, :project),
           'center_geojson'         => map_config.center_geojson,
@@ -348,8 +348,8 @@ module AdminApi
           yml_user = service.anonymized_attributes AppConfiguration.instance.settings('core', 'locales'), user: u
           yml_user
         else
-           yml_user = { 
-            'email'                     => u.email, 
+           yml_user = {
+            'email'                     => u.email,
             'password_digest'           => u.password_digest,
             'created_at'                => shift_timestamp(u.created_at, shift_timestamps)&.iso8601,
             'updated_at'                => shift_timestamp(u.updated_at, shift_timestamps)&.iso8601,
@@ -495,7 +495,7 @@ module AdminApi
         }
       end
     end
-        
+
     def yml_idea_images shift_timestamps: 0
       IdeaImage.where(idea_id: @project.ideas.published.where.not(author_id: nil).ids).map do |i|
         {
