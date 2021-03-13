@@ -133,8 +133,6 @@ RSpec.configure do |config|
     require './engines/verification/spec/factories/id_cards.rb'
     require './engines/volunteering/spec/factories/causes.rb'
     require './engines/volunteering/spec/factories/volunteers.rb'
-    require './engines/maps/spec/factories/legend_items.rb'
-    require './engines/maps/spec/factories/layers.rb'
 
     # Clean all tables to start
     DatabaseCleaner.clean_with :truncation, {:except => %w[spatial_ref_sys]}
