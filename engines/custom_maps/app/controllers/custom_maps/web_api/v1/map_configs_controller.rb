@@ -1,7 +1,7 @@
 module CustomMaps
   module WebApi
     module V1
-      class MapConfigsController < CustomMapsController
+      class MapConfigsController < ApplicationController
         before_action :set_map_config, only: %i[update destroy]
 
         def create

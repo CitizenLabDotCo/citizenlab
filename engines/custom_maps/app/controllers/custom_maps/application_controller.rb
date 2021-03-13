@@ -1,5 +1,5 @@
 module CustomMaps
-  class CustomMapsController < ::ApplicationController
+  class ApplicationController < ::ApplicationController
     before_action :set_project
     skip_before_action :authenticate_user, only: %i[show]
 

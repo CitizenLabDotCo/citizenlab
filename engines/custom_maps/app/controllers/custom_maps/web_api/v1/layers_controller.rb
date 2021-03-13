@@ -1,7 +1,7 @@
 module CustomMaps
   module WebApi
     module V1
-      class LayersController < CustomMapsController
+      class LayersController < ApplicationController
         before_action :set_layer, except: %i[create]
 
         def create
