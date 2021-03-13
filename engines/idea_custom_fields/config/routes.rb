@@ -1,2 +1,12 @@
 IdeaCustomFields::Engine.routes.draw do
+  namespace :web_api, defaults: { format: :json } do
+    namespace :v1 do
+      resources :projects, only: [] do
+        resources :custom_fields, only: %i[index show] do
+          get 'schema', on: :collection
+          patch 'by_code/:code', action: 'upsert_by_code', on: :collection
+        end
+      end
+    end
+  end
 end

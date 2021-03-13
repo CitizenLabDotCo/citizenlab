@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  
+
   mount AdminApi::Engine => "/admin_api", as: 'admin_api', defaults: {format: :json}
   mount CustomStatuses::Engine => "", as: 'custom_statuses'
   mount EmailCampaigns::Engine => "", as: 'email_campaigns'
@@ -166,10 +166,7 @@ Rails.application.routes.draw do
         resources :moderators, except: [:update] do
           get :users_search, on: :collection
         end
-        resources :custom_fields, controller: 'idea_custom_fields', only: %i[index show] do
-          get 'schema', on: :collection
-          patch 'by_code/:code', action: 'upsert_by_code', on: :collection
-        end
+
         get 'by_slug/:slug', on: :collection, to: 'projects#by_slug'
       end
       resources :admin_publications, only: %i[index show] do
