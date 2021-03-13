@@ -12,7 +12,7 @@ module SmartGroups
       end
 
       def add_rules(*rule_classes)
-        rules.push(rule_classes)
+        rules.push(*rule_classes)
       end
 
       def add_rule(rule_class)
