@@ -24,7 +24,7 @@ resource "Project", admin_api: true do
     let(:project) { create(:project_xl, phases_count: 8) }
     let(:new_slug) { 'awesome-project' }
     let(:new_publication_status) { 'draft' }
-    let(:id) { project.id } 
+    let(:id) { project.id }
 
     example_request "Export a project template" do
       expect(status).to eq 200
@@ -36,7 +36,6 @@ resource "Project", admin_api: true do
       expect(template['models']['phase'].map{|h| h['start_at']}).to match project.phases.map(&:start_at).map(&:iso8601)
       expect(template['models']['project_image'].map{|h| h['remote_image_url']}).to match project.project_images.map(&:image_url)
       expect(template['models']['project'].first.dig('admin_publication_attributes', 'publication_status')).to eq 'draft'
-
     end
   end
 
@@ -66,7 +65,5 @@ resource "Project", admin_api: true do
         expect(template['models']['phase'].map{|h| h['start_at']}).to match project_copy.phases.map(&:start_at).map(&:iso8601)
       end
     end
-
   end
-
 end
