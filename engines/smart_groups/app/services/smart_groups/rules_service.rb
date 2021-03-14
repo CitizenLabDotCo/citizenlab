@@ -48,11 +48,11 @@ module SmartGroups
     end
 
     def groups_in_common_for_users(users)
-      ::Group.rules.select { |group| users_belong_to_group?(users, group) }.inject(:or) ||
+      ::Group.rules.map { |group| group_if_users_included(users, group) }.inject(:or) ||
         ::Group.none
     end
 
-    def users_belong_to_group?(users, group)
+    def group_if_users_included(users, group)
       ::Group.where(id: group.id)
              .where(filter(users, group.rules).arel.exists)
     end
