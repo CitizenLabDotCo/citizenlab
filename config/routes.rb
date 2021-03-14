@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   mount EmailCampaigns::Engine => "", as: 'email_campaigns'
   mount Frontend::Engine => "", as: 'frontend'
   mount GeographicDashboard::Engine => '', as: 'geographic_dashboard'
+  mount IdeaCustomFields::Engine => '', as: 'idea_custom_fields'
   mount MachineTranslations::Engine => "", as: 'machine_translations'
   mount Maps::Engine => "", as: 'maps'
   mount NLP::Engine => "", as: 'nlp'
