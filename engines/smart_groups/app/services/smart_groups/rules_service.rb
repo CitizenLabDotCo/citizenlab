@@ -48,7 +48,7 @@ module SmartGroups
     end
 
     def groups_in_common_for_users(users)
-      ::Group.rules.select { |group| users_belong_to_group?(users, group) }.inject(:or) ||
+      ::Group.rules.to_a.select { |group| users_belong_to_group?(users, group) }.inject(:or) ||
         ::Group.none
     end
 
