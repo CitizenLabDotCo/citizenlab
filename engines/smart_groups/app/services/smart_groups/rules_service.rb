@@ -52,7 +52,7 @@ module SmartGroups
         ::Group.none
     end
 
-    def users_belong_to_group?(group, users)
+    def users_belong_to_group?(users, group)
       ::Group.where(id: group.id)
              .where(filter(users, group.rules).arel.exists)
     end
