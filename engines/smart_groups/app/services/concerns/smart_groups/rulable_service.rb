@@ -3,7 +3,7 @@ module SmartGroups
     extend ActiveSupport::Concern
 
     included do
-      delegate :rules_by_type, :rules, :each_rule, :rule_by_type, to: :class
+      delegate :rule_classes_by_type, :rules, :each_rule, :rule_type_to_class, to: :class
     end
 
     class_methods do
@@ -19,16 +19,16 @@ module SmartGroups
         rules.push(rule_class)
       end
 
-      def rules_by_type
+      def rule_classes_by_type
         rules.index_by(&:rule_type)
       end
 
       def each_rule
-        rules_by_type.values.each
+        rule_classes_by_type.values.each
       end
 
-      def rule_by_type(rule_type)
-        rules_by_type[rule_type]
+      def rule_type_to_class(rule_type)
+        rule_classes_by_type[rule_type]
       end
     end
   end
