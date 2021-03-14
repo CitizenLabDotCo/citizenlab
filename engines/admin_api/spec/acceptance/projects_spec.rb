@@ -41,6 +41,7 @@ resource "Project", admin_api: true do
 
   post "admin_api/projects/template_import" do
     parameter :tenant_id, "The tenant id in which to import the project", required: true
+
     with_options scope: :project do
       parameter :template_yaml, "The yml template for the project to import", required: true
     end
