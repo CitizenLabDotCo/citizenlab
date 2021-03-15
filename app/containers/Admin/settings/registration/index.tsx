@@ -30,7 +30,7 @@ import SubmitWrapper from 'components/admin/SubmitWrapper';
 import { FormattedMessage } from 'utils/cl-intl';
 import Outlet from 'components/Outlet';
 
-const LabelTooltip = styled.div`
+export const LabelTooltip = styled.div`
   display: flex;
 `;
 
@@ -121,7 +121,14 @@ const SettingsRegistrationTab = (_props: Props) => {
                 }
               />
             </SectionField>
-            <SectionField>
+            <Outlet
+              id="app.containers.Admin.settings.registrationHelperText"
+              onChange={handlePageOnChange}
+              value={
+                latestAppConfigCoreSettings?.custom_fields_signup_helper_text
+              }
+            />
+            {/* <SectionField>
               <InputMultilocWithLocaleSwitcher
                 type="text"
                 valueMultiloc={
@@ -140,7 +147,7 @@ const SettingsRegistrationTab = (_props: Props) => {
                   </LabelTooltip>
                 }
               />
-            </SectionField>
+            </SectionField> */}
             <SubmitWrapper
               loading={isFormSubmitting}
               status={getSubmitState({

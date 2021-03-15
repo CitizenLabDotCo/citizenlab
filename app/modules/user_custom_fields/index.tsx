@@ -8,6 +8,7 @@ import AllCustomFields from './admin/components/CustomFields/All';
 import CustomFieldsStep from './citizen/components/CustomFieldsStep';
 import UserCustomFieldsForm from './citizen/components/UserCustomFieldsForm';
 import useUserCustomFieldsSchema from './hooks/useUserCustomFieldsSchema';
+import RegistrationQuestions from './admin/components/RegistrationQuestions';
 
 const RenderOnCustomFields = ({ children }) => {
   const userCustomFieldsSchema = useUserCustomFieldsSchema();
@@ -88,6 +89,7 @@ const configuration: ModuleConfiguration = {
       </RenderOnCustomFields>
     ),
     'app.containers.Admin.settings.registration': AllCustomFields,
+    'app.containers.Admin.settings.registrationHelperText': RegistrationQuestions,
   },
 };
 
