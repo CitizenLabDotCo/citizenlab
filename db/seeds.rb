@@ -270,6 +270,12 @@ if ['public','example_org'].include? Apartment::Tenant.current
         destinations: 'InvasiveTracking',
         container_id: ENV.fetch("DEFAULT_GTM_CONTAINER_ID")
       },
+      matomo: {
+        enabled: true,
+        allowed: true,
+        product_site_id: ENV.fetch('MATOMO_PRODUCT_SITE_ID', ''),
+        tenant_site_id: ENV.fetch('DEFAULT_MATOMO_TENANT_SITE_ID', '')
+      },
       smart_groups: {
         enabled: true,
         allowed: true
