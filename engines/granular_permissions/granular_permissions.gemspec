@@ -7,12 +7,12 @@ require "granular_permissions/version"
 Gem::Specification.new do |spec|
   spec.name        = "granular_permissions"
   spec.version     = GranularPermissions::VERSION
-  spec.authors     = ["Adrien Dessy"]
-  spec.email       = ["adrien@citizenlab.co"]
+  spec.authors     = ["CitizenLab"]
+  spec.email       = ["developers@citizenlab.co"]
   spec.summary     = "CitizenLab extension: granular permissions for actions in the scope of a participation context."
   spec.license     = 'CitizenLab Commercial License'
 
-  spec.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
+  spec.files = Dir["{app,config,db,lib}/**/*", "Rakefile", "README.md"]
 
   spec.add_dependency "rails", "~> 6.0.3", ">= 6.0.3.2"
   spec.add_dependency "pundit", "~> 2.0"
