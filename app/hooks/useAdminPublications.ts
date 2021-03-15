@@ -16,8 +16,6 @@ export interface InputProps {
   areaFilter?: string[];
   publicationStatusFilter: PublicationStatus[];
   noEmptyFolder?: boolean;
-  // TODO: remove folder id
-  folderId?: string | null;
 }
 
 export type IAdminPublicationContent = {
@@ -41,7 +39,7 @@ export type IAdminPublicationContent = {
 export interface ChildrenOfProps {
   id?: string;
 }
-export interface IOutput {
+export interface IUseAdminPublicationsOutput {
   list: IAdminPublicationContent[] | undefined | null;
   topLevel: IAdminPublicationContent[];
   hasMore: boolean;

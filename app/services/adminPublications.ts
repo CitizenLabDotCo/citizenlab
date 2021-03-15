@@ -50,7 +50,7 @@ export interface IAdminPublications {
 
 interface IQueryParametersWithPS {
   publication_statuses: PublicationStatus[];
-  folder?: string | null;
+  parent_id?: string | null;
   areas?: string[];
   topics?: string[];
   [key: string]: any;

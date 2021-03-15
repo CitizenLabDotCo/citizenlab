@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 import { H3, H4 } from 'containers/SiteMap';
@@ -8,10 +8,11 @@ import Link from 'utils/cl-router/Link';
 // intl
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from 'containers/SiteMap/messages';
-import { IAdminPublicationContent } from 'hooks/useAdminPublications';
-import GetAdminPublications, {
-  GetAdminPublicationsChildProps,
-} from 'resources/GetAdminPublications';
+import {
+  IAdminPublicationContent,
+  IUseAdminPublicationsOutput,
+} from 'hooks/useAdminPublications';
+import GetAdminPublications from 'resources/GetAdminPublications';
 import Project from 'containers/SiteMap/Project';
 
 interface InputProps {
@@ -19,7 +20,7 @@ interface InputProps {
   hightestTitle: 'h3' | 'h4';
 }
 interface DataProps {
-  childProjects: GetAdminPublicationsChildProps;
+  adminPublicationsHook: IUseAdminPublicationsOutput;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -27,9 +28,14 @@ interface Props extends InputProps, DataProps {}
 const ProjectFolderSitemap = ({
   adminPublication,
   hightestTitle,
-  childProjects,
+  adminPublicationsHook: { childrenOf },
 }: Props) => {
   const TitleComponent = hightestTitle === 'h3' ? H3 : H4;
+
+  const childProjects = useMemo(() => childrenOf(adminPublication), [
+    childrenOf,
+    adminPublication,
+  ]);
 
   return (
     <>
@@ -44,8 +50,8 @@ const ProjectFolderSitemap = ({
             <FormattedMessage {...messages.folderInfo} />
           </Link>
         </li>
-        {!isNilOrError(childProjects.list) &&
-          childProjects.list.map((adminPublication) => (
+        {!isNilOrError(childProjects) &&
+          childProjects.map((adminPublication) => (
             <Project
               key={adminPublication.id}
               hightestTitle="h4"
@@ -58,10 +64,9 @@ const ProjectFolderSitemap = ({
 };
 
 const Data = adopt<DataProps, InputProps>({
-  childProjects: ({ render, adminPublication }) => (
+  adminPublicationsHook: ({ render }) => (
     <GetAdminPublications
       publicationStatusFilter={['published', 'archived', 'draft']}
-      folderId={adminPublication.publicationId}
     >
       {render}
     </GetAdminPublications>
