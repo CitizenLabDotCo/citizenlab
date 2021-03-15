@@ -17,7 +17,6 @@ export default function useAdminPublicationsPrefetchProjects({
   areaFilter,
   publicationStatusFilter,
   noEmptyFolder,
-  folderId,
 }: InputProps) {
   const [list, setList] = useState<
     IAdminPublicationContent[] | undefined | null
@@ -62,7 +61,6 @@ export default function useAdminPublicationsPrefetchProjects({
         'page[number]': pageNumber,
         'page[size]': pageSize,
         filter_empty_folders: noEmptyFolder,
-        folder: folderId,
       },
     })
       .observable.pipe(

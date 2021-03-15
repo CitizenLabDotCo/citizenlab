@@ -1,21 +1,24 @@
 import { FC } from 'react';
 import useAdminPublications, {
   InputProps as HookProps,
-  IOutput,
+  IUseAdminPublicationsOutput,
 } from 'hooks/useAdminPublications';
 import { omit } from 'lodash-es';
 import useAdminPublicationsPrefetchProjects from 'hooks/useAdminPublicationPrefetchProjects';
 
-export interface GetAdminPublicationsChildProps extends IOutput {}
+export interface GetAdminPublicationsChildProps
+  extends IUseAdminPublicationsOutput {}
 
-type children = (renderProps: IOutput) => JSX.Element | null;
+type children = (
+  renderProps: IUseAdminPublicationsOutput
+) => JSX.Element | null;
 
 interface Props extends HookProps {
   prefetchProjects?: boolean;
 }
 
 const GetAdminPublications: FC<Props> = (props) => {
-  let adminPublications: IOutput;
+  let adminPublications: IUseAdminPublicationsOutput;
   if (props.prefetchProjects) {
     adminPublications = useAdminPublicationsPrefetchProjects(
       omit(props, ['children', 'prefetchProjects'])
