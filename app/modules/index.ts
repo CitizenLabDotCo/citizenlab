@@ -13,6 +13,7 @@ import googleAnalyticsConfiguration from './google_analytics';
 import intercomConfiguration from './intercom';
 import satismeterConfiguration from './satismeter';
 import segmentConfiguration from './segment';
+import matomoConfiguration from './matomo';
 import customIdeaStatusesConfiguration from './custom_idea_statuses';
 
 export default loadModules([
@@ -26,6 +27,10 @@ export default loadModules([
   },
   {
     configuration: googleTagManagerConfiguration,
+    isEnabled: true,
+  },
+  {
+    configuration: matomoConfiguration,
     isEnabled: true,
   },
   {
