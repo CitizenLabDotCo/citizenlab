@@ -1,5 +1,5 @@
 module CitizenLab
-  module Engine
+  module EngineConfig
     def self.included(base)
       base.class_eval do
         def self.module_name

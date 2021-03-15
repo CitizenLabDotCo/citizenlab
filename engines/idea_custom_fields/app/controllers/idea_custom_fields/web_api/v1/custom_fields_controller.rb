@@ -14,7 +14,7 @@ module IdeaCustomFields
                                                                         custom_fields_scope: @custom_fields)
       end
 
-      render json: WebApi::V1::CustomFieldSerializer.new(@custom_fields, params: fastjson_params).serialized_json
+      render json: ::WebApi::V1::CustomFieldSerializer.new(@custom_fields, params: fastjson_params).serialized_json
     end
 
     def schema
@@ -29,7 +29,7 @@ module IdeaCustomFields
     end
 
     def show
-      render json: WebApi::V1::CustomFieldSerializer.new(@custom_field, params: fastjson_params).serialized_json
+      render json: ::WebApi::V1::CustomFieldSerializer.new(@custom_field, params: fastjson_params).serialized_json
     end
 
     def upsert_by_code
@@ -57,7 +57,7 @@ module IdeaCustomFields
         else
           SideFxCustomFieldService.new.after_create(@custom_field, current_user)
         end
-        render json: WebApi::V1::CustomFieldSerializer.new(
+        render json: ::WebApi::V1::CustomFieldSerializer.new(
           @custom_field.reload,
           params: fastjson_params
         ).serialized_json, status: :ok

@@ -1,5 +1,5 @@
 module IdeaCustomFields
   class Engine < ::Rails::Engine
-    include ::CitizenLab::Engine
+    include ::CitizenLab::EngineConfig
   end
 end
