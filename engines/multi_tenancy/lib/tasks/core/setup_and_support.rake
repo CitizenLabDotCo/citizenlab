@@ -226,7 +226,7 @@ namespace :setup_and_support do
     end
   end
 
-  desc "Add map layer"
+  desc "Add one map legend to a project"
   task :add_map_legend, [:host,:project_slug,:legend_title,:color] => [:environment] do |t, args|
     Apartment::Tenant.switch(args[:host].gsub '.', '_') do
       project = Project.find_by slug: args[:project_slug]
@@ -235,6 +235,15 @@ namespace :setup_and_support do
         title_multiloc: {Tenant.current.settings.dig('core','locales').first => args[:legend_title]},
         color: args[:color]
         )
+    end
+  end
+
+  desc "Delete map legends of a project"
+  task :delete_map_legends, [:host,:project_slug] => [:environment] do |t, args|
+    Apartment::Tenant.switch(args[:host].gsub '.', '_') do
+      project = Project.find_by slug: args[:project_slug]
+      config = project.map_config || CustomMaps::MapConfig.create!(project: project)
+      config.legend_items.each(&:destroy!)
     end
   end
 
