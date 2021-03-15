@@ -16,7 +16,7 @@ class Permission < ApplicationRecord
   validates :action, presence: true, inclusion: { in: :available_actions }
   validates :permitted_by, presence: true, inclusion: { in: PERMITTED_BIES }
   validates :action, uniqueness: { scope: %i[permission_scope_id permission_scope_type] }
-  validates :permission_scope_type, inclusion: { in: PermissionsService.scope_types }
+  validates :permission_scope_type, inclusion: { in: ->(_r) { PermissionsService.scope_types } }
 
   before_validation :set_permitted_by, on: :create
 

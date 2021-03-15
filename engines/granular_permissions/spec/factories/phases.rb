@@ -7,7 +7,7 @@ FactoryBot.modify do
     end
 
     after(:create) do |phase, _evaluator|
-      PermissionsService.new.update_permissions_for_scope(phase)
+      PermissionsService.new.update_permissions_for_scope(phase) if PermissionsService.scope_types.include?('Phase')
     end
 
     after(:create) do |phase, evaluator|
