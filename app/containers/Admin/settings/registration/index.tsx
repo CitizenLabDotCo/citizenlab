@@ -124,9 +124,7 @@ const SettingsRegistrationTab = (_props: Props) => {
             <Outlet
               id="app.containers.Admin.settings.registrationHelperText"
               onChange={handlePageOnChange}
-              value={
-                latestAppConfigCoreSettings?.custom_fields_signup_helper_text
-              }
+              latestAppConfigCoreSettings={latestAppConfigCoreSettings}
             />
             {/* <SectionField>
               <InputMultilocWithLocaleSwitcher
