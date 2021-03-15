@@ -107,7 +107,6 @@ class ParticipationContextService
   end
 
   def commenting_idea_disabled_reason_for_context(context, user)
-    require 'pry' ; binding.pry 
     if !context
       COMMENTING_DISABLED_REASONS[:project_inactive]
     elsif !context.can_contain_ideas?
@@ -284,3 +283,5 @@ class ParticipationContextService
     'not_signed_in' unless user
   end
 end
+
+ParticipationContextService.prepend_if_ee('GranularPermissions::Patches::ParticipationContextService')
