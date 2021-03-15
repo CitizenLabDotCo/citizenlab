@@ -229,19 +229,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.step1',
     defaultMessage: 'Step 1 (email and password)',
   },
-  step2: {
-    id: 'app.containers.AdminPage.SettingsPage.step2',
-    defaultMessage: 'Step 2 (registration questions)',
-  },
   step1Tooltip: {
     id: 'app.containers.AdminPage.SettingsPage.step1Tooltip',
     defaultMessage:
       'This is shown on the top of the first page of the sign-up form (name, email, password).',
-  },
-  step2Tooltip: {
-    id: 'app.containers.AdminPage.SettingsPage.step2Tooltip',
-    defaultMessage:
-      'This is shown on the top of the second page of the sign-up form (additional registration fields).',
   },
   registrationTabDescription: {
     id: 'app.containers.AdminPage.SettingsPage.registrationTabDescription',

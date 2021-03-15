@@ -29,6 +29,7 @@ import {
 import { IUserData } from 'services/users';
 import { MessageValue } from 'react-intl';
 import { NavItem } from 'containers/Admin/sideBar';
+import { IAppConfigurationSettingsCore } from 'services/appConfiguration';
 
 type Localize = (
   multiloc: Multiloc | null | undefined,
@@ -141,6 +142,10 @@ export type OutletsPropertyMap = {
     }) => void;
   };
   'app.containers.Admin.settings.registration': {};
+  'app.containers.Admin.settings.registrationHelperText': {
+    onChange: (propertyName: string) => (multiloc: Multiloc) => void;
+    latestAppConfigCoreSettings: IAppConfigurationSettingsCore;
+  };
 };
 
 type Outlet<Props> = FunctionComponent<Props> | FunctionComponent<Props>[];
