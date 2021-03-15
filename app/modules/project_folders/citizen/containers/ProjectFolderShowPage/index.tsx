@@ -172,7 +172,7 @@ const ProjectFolderShowPage = memo<{
 
   const childProjects = useMemo(() => {
     if (isNilOrError(projectFolder.relationships.admin_publication)) {
-      return [];
+      return undefined;
     }
 
     return adminPublicationChildrenOf({
