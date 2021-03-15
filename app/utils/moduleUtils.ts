@@ -144,7 +144,9 @@ export type OutletsPropertyMap = {
   'app.containers.Admin.settings.registration': {};
   'app.containers.Admin.settings.registrationHelperText': {
     onChange: (propertyName: string) => (multiloc: Multiloc) => void;
-    latestAppConfigCoreSettings: IAppConfigurationSettingsCore;
+    latestAppConfigCoreSettings?:
+      | IAppConfigurationSettingsCore
+      | Partial<IAppConfigurationSettingsCore>;
   };
 };
 
