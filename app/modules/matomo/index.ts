@@ -67,9 +67,9 @@ const configuration: ModuleConfiguration = {
       if (
         !appConfiguration.data.attributes.settings.matomo?.product_site_id &&
         appConfiguration.data.attributes.settings.matomo?.tenant_site_id
-      )
+      ) {
         return;
-
+      }
       /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
       window._paq = window._paq || [];
 
