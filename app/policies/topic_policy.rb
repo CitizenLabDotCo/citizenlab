@@ -15,4 +15,7 @@ class TopicPolicy < ApplicationPolicy
   def show?
     true
   end
+
+
+  TopicPolicy.include_if_ee('CustomTopics::Extensions::TopicPolicy')
 end
