@@ -38,10 +38,10 @@ import ExportMenu from './components/ExportMenu';
 import IdeasCount from './components/IdeasCount';
 import InitiativesCount from './components/InitiativesCount';
 import { Input } from 'semantic-ui-react';
-import AssigneeFilter from './components/TopLevelFilters/AssigneeFilter';
 import FeedbackToggle from './components/TopLevelFilters/FeedbackToggle';
 import LazyPostPreview from './components/LazyPostPreview';
 import LazyStatusChangeModal from './components/StatusChangeModal/LazyStatusChangeModal';
+import Outlet from 'components/Outlet';
 
 const StyledExportMenu = styled(ExportMenu)`
   margin-left: auto;
@@ -87,10 +87,6 @@ const StyledInput = styled(Input)`
   max-width: 260px;
   display: flex;
   width: 100%;
-`;
-
-const StyledAssigneeFilter = styled(AssigneeFilter)`
-  margin-right: 20px;
 `;
 
 export type ManagerType =
@@ -320,7 +316,8 @@ export class PostManager extends React.PureComponent<Props, State> {
       return (
         <>
           <TopActionBar>
-            <StyledAssigneeFilter
+            <Outlet
+              id="app.components.admin.PostManager.topActionBar"
               assignee={selectedAssignee}
               projectId={type === 'ProjectIdeas' ? projectId : null}
               handleAssigneeFilterChange={onChangeAssignee}

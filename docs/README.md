@@ -1,9 +1,20 @@
 # Changelog
 
+## 2021-03-11
+
+### Changed
+- Tenants are now ordered alphabetically in AdminHQ
+
+### Added
+- Serbian (Latin) is now a language option.
+
+
 ## 2021-03-10
 
 ### Added
 - CitizenLab admins can now change the link to the accessibility statement via AdminHQ.
+- "Reply-to" field in emails from campaigns can be customized for each platform
+- Customizable minimal required password length for each platform
 
 
 ## 2021-03-09
