@@ -107,6 +107,7 @@ class ParticipationContextService
   end
 
   def commenting_idea_disabled_reason_for_context(context, user)
+    require 'pry' ; binding.pry 
     if !context
       COMMENTING_DISABLED_REASONS[:project_inactive]
     elsif !context.can_contain_ideas?
@@ -218,7 +219,7 @@ class ParticipationContextService
   end
 
   def budgeting_disabled_reason_for_context(context, user)
-    BUDGETING_DISABLED_REASONS[:project_inactive] unless context
+    return BUDGETING_DISABLED_REASONS[:project_inactive] unless context
 
     permission_denied?(user, 'budgeting', context)
   end
