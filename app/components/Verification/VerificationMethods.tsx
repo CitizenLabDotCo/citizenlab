@@ -158,7 +158,7 @@ const ButtonsContainer = styled.div`
     `}
 
     &.withoutContext {
-      max-width: 473px;
+      max-width: 650px;
     }
   }
 `;
@@ -337,6 +337,18 @@ const VerificationMethods = memo<Props & InjectedIntlProps>(
                 inModal ? 'inModal' : ''
               }`}
             >
+              {franceConnectVerification && (
+                <FranceConnectButton
+                  onClick={onVerifyFranceConnectButtonClick}
+                  logoAlt={formatMessage(messages.verificationButtonAltText, {
+                    loginMechanismName: 'FranceConnect',
+                  })}
+                />
+              )}
+
+              {!isEmpty(alternativeMethods) &&
+                !isEmpty(filteredVerificationMethods) && <Or />}
+
               {filteredVerificationMethods.map((method, index) => (
                 <MethodButton
                   key={method.id}
@@ -367,18 +379,6 @@ const VerificationMethods = memo<Props & InjectedIntlProps>(
                     'Bogus verification (testing)'}
                 </MethodButton>
               ))}
-
-              {!isEmpty(alternativeMethods) &&
-                !isEmpty(filteredVerificationMethods) && <Or />}
-
-              {franceConnectVerification && (
-                <FranceConnectButton
-                  onClick={onVerifyFranceConnectButtonClick}
-                  logoAlt={formatMessage(messages.verificationButtonAltText, {
-                    loginMechanismName: 'FranceConnect',
-                  })}
-                />
-              )}
             </ButtonsContainer>
           </Content>
 

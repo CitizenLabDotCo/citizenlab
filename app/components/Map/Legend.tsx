@@ -2,47 +2,69 @@ import React, { memo } from 'react';
 import styled from 'styled-components';
 import useLocalize from 'hooks/useLocalize';
 import useMapConfig from 'hooks/useMapConfig';
-import { isNilOrError } from 'utils/helperUtils';
-import { media, isRtl } from 'utils/styleUtils';
+import { media, isRtl, fontSizes, colors } from 'utils/styleUtils';
+import { Multiloc } from 'typings';
+import { getLayerColor, getLayerIcon } from 'utils/map';
+import { Icon, IconNames } from 'cl2-component-library';
+import bowser from 'bowser';
 
-const LegendContainer = styled.div`
-  background-color: white;
-  padding: 30px;
+const Container = styled.div`
+  padding: 20px;
+  padding-bottom: 5px;
 `;
 
 const LegendItems = styled.ul`
   list-style: none;
   padding: 0;
   margin: 0;
-  display: flex;
-  flex-wrap: wrap;
+  columns: 2;
+
+  ${media.smallerThanMinTablet`
+    columns: 1;
+  `}
 `;
 
 const Item = styled.li`
+  color: ${colors.text};
+  font-size: ${fontSizes.base}px;
+  line-height: normal;
   display: flex;
-  flex: 1 0 calc(50% - 10px);
-  margin-right: 10px;
+  align-items: center;
+  padding-bottom: 15px;
+  min-height: 26px;
+  -webkit-column-break-inside: avoid;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  overflow: hidden;
 
   ${isRtl`
-    margin-right: 0;
-    margin-left: 10px;
     flex-direction: row-reverse;
-  `}
-
-  &:not(:last-child) {
-    margin-bottom: 10px;
-  }
-
-  ${media.smallerThanMinTablet`
-    flex: 1 0 calc(100% - 10px);
   `}
 `;
 
 const ColorLabel = styled.div`
-  width: 20px;
-  height: 20px;
-  background-color: ${(props) => props.color};
+  flex: 0 0 18px;
+  width: 18px;
+  height: 18px;
   margin-right: 10px;
+  background-color: ${(props) => props.color};
+  border-radius: ${(props: any) => props.theme.borderRadius};
+
+  ${isRtl`
+    margin-right: 0;
+    margin-left: 10px;
+  `}
+`;
+
+const StyledIcon = styled(Icon)<{ color: string }>`
+  fill: ${(props) => props.color};
+  flex: 0 0 18px;
+  width: 18px;
+  margin-right: 10px;
+
+  &.ie {
+    height: 18px;
+  }
 
   ${isRtl`
     margin-right: 0;
@@ -52,35 +74,64 @@ const ColorLabel = styled.div`
 
 interface Props {
   projectId: string;
+  className?: string;
 }
 
-const Legend = memo(({ projectId }: Props) => {
+interface ILegendItem {
+  title_multiloc: Multiloc;
+  color: string;
+  iconName?: IconNames;
+}
+
+const Legend = memo<Props>(({ projectId, className }) => {
   const mapConfig = useMapConfig({ projectId });
   const localize = useLocalize();
+  let hasCustomLegend = false;
+  let legend: ILegendItem[] = [];
 
-  if (
-    !isNilOrError(mapConfig) &&
-    mapConfig.attributes.legend &&
-    mapConfig.attributes.legend.length !== 0
+  if (mapConfig?.attributes?.legend && mapConfig.attributes.legend.length > 0) {
+    hasCustomLegend = true;
+    legend = mapConfig.attributes.legend;
+  } else if (
+    mapConfig?.attributes?.layers &&
+    mapConfig.attributes.layers.length > 0
   ) {
-    const legend = mapConfig.attributes.legend;
+    legend = mapConfig.attributes.layers.map((layer) => ({
+      title_multiloc: layer.title_multiloc,
+      color: getLayerColor(layer),
+      iconName: getLayerIcon(layer),
+    }));
+  }
 
+  if (legend && legend.length > 0) {
     return (
-      <LegendContainer>
+      <Container className={`${className || ''} legendcontainer`}>
         <LegendItems>
           {legend.map((legendItem, index) => {
             const color = legendItem.color;
+            const iconName = legendItem?.iconName;
             const label = localize(legendItem.title_multiloc);
 
             return (
-              <Item key={`legend-item-${index}`}>
-                <ColorLabel color={color} />
+              <Item
+                key={`legend-item-${index} ${index === 0 ? 'first' : ''} ${
+                  index === legend.length - 1 ? 'last' : ''
+                }`}
+              >
+                {hasCustomLegend && color && <ColorLabel color={color} />}
+                {!hasCustomLegend && color && iconName && (
+                  <StyledIcon
+                    name={iconName}
+                    color={color}
+                    className={bowser.msie ? 'ie' : ''}
+                  />
+                )}
                 {label}
               </Item>
             );
           })}
         </LegendItems>
-      </LegendContainer>
+      </Container>
     );
   }
 

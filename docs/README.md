@@ -1,27 +1,90 @@
 # Changelog
 
-## Next release
+## 2021-03-16
 
-### Fixed
-
-- Don't show empty space inside of the idea card when no avatar is present
+### Added
 - Allows for sending front-end events to our self-hosted matomo analytics tool
 
-### Changed
+## 2021-03-11
 
+### Changed
+- Tenants are now ordered alphabetically in AdminHQ
+
+### Added
+- Serbian (Latin) is now a language option.
+
+
+## 2021-03-10
+
+### Added
+- CitizenLab admins can now change the link to the accessibility statement via AdminHQ.
+- "Reply-to" field in emails from campaigns can be customized for each platform
+- Customizable minimal required password length for each platform
+
+
+## 2021-03-09
+
+### Fixed
+- Fixed a crash that would occur when tring to add tags to an idea
+
+## 2021-03-08
+
+### Fixed
+- Phase pages now display the correct count of ideas (not retroactive - will only affect phases modified from today onwards).
+
+## 2021-03-05
+
+### Changed
+- Changed the default style of the map
+- Proposals/Initiatives are now sorted by most recent by default
+
+### Added
+- Custom maps (Project settings > Map): Admins now have the capability to customize the map shown inside of a project. They can do so by uploading geoJson files as layers on the map, and customizing those layers through the back-office UI (e.g. changing colors, marker icons, tooltip text, sort order, map legend, default zoom level, default center point).
+
+### Fixed
+- Fixed a crash that could potentially occur when opening an idea page and afterwards going back to the project page
+
+## 2021-03-04
+
+### Added
+- In the admin (Settings > Registration tab), admins can now directly set the helper texts on top of the sign-up form (both for step 1 and 2).
+- The admin Settings > Homepage and style tab has two new fields: one to allow customization for copy of the banner signed-in users see (on the landing page) and one to set the copy that's shown underneath this banner and above the projects/folders (also on the landing page).
+- Copy to clarify sign up/log in possibilities with phone number
+
+### Changed
+- The admin Settings > Homepage and style tab has undergone copy improvements and has been rearranged
+- The FranceConnect button to login, signup or verify your account now displays the messages required by the vendor.
+- Updated the look of the FranceConnect button to login, signup or verify your account to feature the latests changes required by the vendor.
+
+### Fixed
+- Downvote button (thumbs down) on input card is displayed for archived projects
+
+## 2021-03-03
+
+### Added
+- Users are now notified in app and via email when they're assigned as folder administrators.
+
+## 2021-03-02
+
+### Fixed
+- Don't show empty space inside of the idea card when no avatar is present
+
+### Added
+
+- Maori as languages option
+
+### Changed
 - Improved layout of project event listings on mobile devices
 
 ## 2021-02-26
 
 ### Fixed
-
 - France Connect button hover state now complies with the vendor's guidelines.
 
 ## 2021-02-24
 
 ### Fixed
 - The project page no longer shows an eternal spinner when the user has no access to see the project
-
 
 ## 2021-02-18
 
