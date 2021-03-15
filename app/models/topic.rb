@@ -1,11 +1,12 @@
 class Topic < ApplicationRecord
+  # Must be prepended first to work for class methods
+  Topic.prepend_if_ee 'CustomTopics::Patches::Topic'
 
   DEFAULT_CODES = %w(nature waste sustainability mobility technology economy housing public_space safety education culture health inclusion community services other)
+  
   def self.codes
-    # DEFAULT_CODES
-    DEFAULT_CODES + ['custom']
+    DEFAULT_CODES
   end
-
 
   acts_as_list column: :ordering, top_of_list: 0, add_new_at: :top
   
@@ -19,18 +20,16 @@ class Topic < ApplicationRecord
   validates :title_multiloc, presence: true, multiloc: {presence: true}
   validates :description_multiloc, multiloc: {presence: false}
   validates :code, inclusion: {in: codes}
-  #TODO Settle on iconset and validate icon to be part of it
 
   before_validation :strip_title
 
-
-  scope :order_new, -> (direction=:desc) {order(created_at: direction, id: direction)}
-
+  scope :order_new, -> (direction=:desc) {
+    order(created_at: direction, id: direction)
+  }
   scope :defaults, -> {
     where(code: DEFAULT_CODES)
   }
   
-
 
   private
 
@@ -39,7 +38,4 @@ class Topic < ApplicationRecord
       self.title_multiloc[key] = value.strip
     end
   end
-
-  
-  Topic.prepend_if_ee('CustomTopics::Patches::Topic')
 end

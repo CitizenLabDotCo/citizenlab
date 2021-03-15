@@ -12,8 +12,7 @@ module CustomTopics
 
       module ClassMethods
         def codes
-          # super.push CUSTOM_CODE
-          DEFAULT_CODES + [CUSTOM_CODE]
+          super.push CUSTOM_CODE
         end
       end
 
