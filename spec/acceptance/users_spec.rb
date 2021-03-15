@@ -542,10 +542,12 @@ resource "Users" do
           expect(response_status).to eq 200
           json_response = json_parse(response_body)
           expect(json_response.dig(:data, :attributes, :first_name)).to eq "Edmond"
-          expect(json_response.dig(:included).select{|i| i[:type] == 'permission'}.first&.dig(:attributes, :permitted_by)).to eq 'groups'
-          expect(json_response.dig(:included).select{|i| i[:type] == 'project'}.first&.dig(:attributes, :slug)).to eq project.slug
-          
-          expect(json_response.dig(:data, :relationships, :granted_permissions, :data).size).to eq(1) if CitizenLab.ee?
+
+          if CitizenLab.ee?
+            expect(json_response.dig(:included).select{|i| i[:type] == 'project'}.first&.dig(:attributes, :slug)).to eq project.slug
+            expect(json_response.dig(:included).select{|i| i[:type] == 'permission'}.first&.dig(:attributes, :permitted_by)).to eq 'groups'
+            expect(json_response.dig(:data, :relationships, :granted_permissions, :data).size).to eq(1)
+          end
         end
       end
 
