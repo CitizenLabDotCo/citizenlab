@@ -20,23 +20,23 @@ module AdminApi
       @template = {'models' => {}}
 
       # TODO deal with linking idea_statuses, topics, custom field values and maybe areas and groups
-      @template['models']['custom_form']           = yml_custom_forms shift_timestamps: shift_timestamps
-      @template['models']['custom_field']          = yml_custom_fields shift_timestamps: shift_timestamps
-      @template['models']['custom_field_option']   = yml_custom_field_options shift_timestamps: shift_timestamps
-      @template['models']['project']               = yml_projects new_slug: new_slug, new_publication_status: new_publication_status, new_title_multiloc: new_title_multiloc, shift_timestamps: shift_timestamps
-      @template['models']['project_file']          = yml_project_files shift_timestamps: shift_timestamps
-      @template['models']['project_image']         = yml_project_images shift_timestamps: shift_timestamps
-      @template['models']['phase']                 = yml_phases timeline_start_at: timeline_start_at, shift_timestamps: shift_timestamps
-      @template['models']['phase_file']            = yml_phase_files shift_timestamps: shift_timestamps
-      @template['models']['event']                 = yml_events shift_timestamps: shift_timestamps
-      @template['models']['event_file']            = yml_event_files shift_timestamps: shift_timestamps
-      @template['models']['permission']            = yml_permissions shift_timestamps: shift_timestamps
-      @template['models']['polls/question']        = yml_poll_questions shift_timestamps: shift_timestamps
-      @template['models']['polls/option']          = yml_poll_options shift_timestamps: shift_timestamps
-      @template['models']['volunteering/cause']    = yml_volunteering_causes shift_timestamps: shift_timestamps
-      @template['models']['maps/map_config']       = yml_maps_map_configs shift_timestamps: shift_timestamps
-      @template['models']['maps/layer']            = yml_maps_layers shift_timestamps: shift_timestamps
-      @template['models']['maps/legend_item']      = yml_maps_legend_items shift_timestamps: shift_timestamps
+      @template['models']['custom_form']             = yml_custom_forms shift_timestamps: shift_timestamps
+      @template['models']['custom_field']            = yml_custom_fields shift_timestamps: shift_timestamps
+      @template['models']['custom_field_option']     = yml_custom_field_options shift_timestamps: shift_timestamps
+      @template['models']['project']                 = yml_projects new_slug: new_slug, new_publication_status: new_publication_status, new_title_multiloc: new_title_multiloc, shift_timestamps: shift_timestamps
+      @template['models']['project_file']            = yml_project_files shift_timestamps: shift_timestamps
+      @template['models']['project_image']           = yml_project_images shift_timestamps: shift_timestamps
+      @template['models']['phase']                   = yml_phases timeline_start_at: timeline_start_at, shift_timestamps: shift_timestamps
+      @template['models']['phase_file']              = yml_phase_files shift_timestamps: shift_timestamps
+      @template['models']['event']                   = yml_events shift_timestamps: shift_timestamps
+      @template['models']['event_file']              = yml_event_files shift_timestamps: shift_timestamps
+      @template['models']['permission']              = yml_permissions shift_timestamps: shift_timestamps
+      @template['models']['polls/question']          = yml_poll_questions shift_timestamps: shift_timestamps
+      @template['models']['polls/option']            = yml_poll_options shift_timestamps: shift_timestamps
+      @template['models']['volunteering/cause']      = yml_volunteering_causes shift_timestamps: shift_timestamps
+      @template['models']['custom_maps/map_config']  = yml_maps_map_configs shift_timestamps: shift_timestamps
+      @template['models']['custom_maps/layer']       = yml_maps_layers shift_timestamps: shift_timestamps
+      @template['models']['custom_maps/legend_item'] = yml_maps_legend_items shift_timestamps: shift_timestamps
 
       if include_ideas
         @template['models']['user']                = yml_users anonymize_users, shift_timestamps: shift_timestamps
@@ -133,7 +133,7 @@ module AdminApi
         'updated_at'                   => shift_timestamp(@project.updated_at, shift_timestamps)&.iso8601,
         'remote_header_bg_url'         => @project.header_bg_url,
         'visible_to'                   => @project.visible_to,
-        'description_preview_multiloc' => @project.description_preview_multiloc, 
+        'description_preview_multiloc' => @project.description_preview_multiloc,
         'process_type'                 => @project.process_type,
         'admin_publication_attributes' => { 'publication_status' => new_publication_status || @project.admin_publication.publication_status },
         'custom_form_ref'              => lookup_ref(@project.custom_form_id, :custom_form),
@@ -289,7 +289,7 @@ module AdminApi
     end
 
     def yml_maps_map_configs shift_timestamps: 0
-      Maps::MapConfig.where(project_id: @project.id).map do |map_config|
+      CustomMaps::MapConfig.where(project_id: @project.id).map do |map_config|
         yml_map_config = {
           'project_ref'            => lookup_ref(map_config.project_id, :project),
           'center_geojson'         => map_config.center_geojson,
@@ -348,8 +348,8 @@ module AdminApi
           yml_user = service.anonymized_attributes AppConfiguration.instance.settings('core', 'locales'), user: u
           yml_user
         else
-           yml_user = { 
-            'email'                     => u.email, 
+           yml_user = {
+            'email'                     => u.email,
             'password_digest'           => u.password_digest,
             'created_at'                => shift_timestamp(u.created_at, shift_timestamps)&.iso8601,
             'updated_at'                => shift_timestamp(u.updated_at, shift_timestamps)&.iso8601,
@@ -495,7 +495,7 @@ module AdminApi
         }
       end
     end
-        
+
     def yml_idea_images shift_timestamps: 0
       IdeaImage.where(idea_id: @project.ideas.published.where.not(author_id: nil).ids).map do |i|
         {

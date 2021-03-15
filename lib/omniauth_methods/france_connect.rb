@@ -26,7 +26,7 @@ module OmniauthMethods
       return unless configuration.feature_activated?('franceconnect_login')
 
       env['omniauth.strategy'].options.merge!(
-        scope: [:openid, :profile, :email, :address],
+        scope: [:openid, :profile, :email],
         response_type: :code,
         state: true, # required by France connect
         nonce: true, # required by France connect
