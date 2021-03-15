@@ -78,7 +78,7 @@ module IdeaCustomFields
 
     def set_custom_form
       @project = Project.find(params[:project_id])
-      @custom_form = CustomForm.first_or_initialize_by(project: @project)
+      @custom_form = CustomForm.find_or_initialize_by(project: @project)
     end
 
     def set_custom_field
