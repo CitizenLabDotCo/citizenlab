@@ -1,3 +1,5 @@
+require 'koala'
+
 module Seo
   class FacebookHandler
     attr_reader :access_token
