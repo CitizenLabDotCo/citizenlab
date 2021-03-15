@@ -126,26 +126,6 @@ const SettingsRegistrationTab = (_props: Props) => {
               onChange={handlePageOnChange}
               latestAppConfigCoreSettings={latestAppConfigCoreSettings}
             />
-            {/* <SectionField>
-              <InputMultilocWithLocaleSwitcher
-                type="text"
-                valueMultiloc={
-                  latestAppConfigCoreSettings?.custom_fields_signup_helper_text ||
-                  null
-                }
-                onChange={handlePageOnChange(
-                  'custom_fields_signup_helper_text'
-                )}
-                label={
-                  <LabelTooltip>
-                    <FormattedMessage {...messages.step2} />
-                    <IconTooltip
-                      content={<FormattedMessage {...messages.step2Tooltip} />}
-                    />
-                  </LabelTooltip>
-                }
-              />
-            </SectionField> */}
             <SubmitWrapper
               loading={isFormSubmitting}
               status={getSubmitState({
