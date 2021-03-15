@@ -16,5 +16,13 @@ FactoryBot.define do
     trait :by_users do
       permitted_by { 'users' }
     end
+
+    factory :global_permission do
+      permission_scope_id { nil }
+      permission_scope_type { nil }
+
+      permitted_by { 'users' }
+      groups { [] }
+    end
   end
 end

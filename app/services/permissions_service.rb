@@ -7,6 +7,10 @@ class PermissionsService
       scope_spec_hash[scope_spec.scope_type] = scope_spec
     end
 
+    def clear_scope_types
+      @scope_spec_hash = {}
+    end
+
     def scope_spec_hash
       @scope_spec_hash ||= {}
     end
