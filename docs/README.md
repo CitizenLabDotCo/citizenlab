@@ -1,5 +1,10 @@
 # Changelog
 
+## Next Release
+
+### Fixed
+- The sitemap no longer shows all projects and folder under each folder.
+
 ## 2021-03-11
 
 ### Changed
