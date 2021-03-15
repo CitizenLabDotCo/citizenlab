@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.version     = Matomo::VERSION
   s.authors     = ['CitizenLab']
   s.email       = ['developers@citizenlab.co']
-  s.licenses    = ['AGPLv3']
+  s.licenses    = ['CitizenLab Commercial License']
   s.summary     = "Enables sending front-end events to matomo for analytics"
 
   s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
