@@ -236,6 +236,7 @@ PATH
   specs:
     verification (0.1.0)
       apartment (~> 2.2.1)
+      granular_permissions
       pundit (~> 2.0)
       rails (~> 6.0.0)
       savon (~> 2.12.0)
