@@ -4,13 +4,17 @@ import projectFoldersConfiguration from './project_folders';
 import smartGroupsConfiguration from './smart_groups';
 import granularPermissionsConfiguration from './granular_permissions';
 import moderationConfiguration from './moderation';
+import ideaAssignmentConfiguration from './idea_assignment';
+import geographicDashboardConfiguration from './geographic_dashboard';
 
+import customMapsConfiguration from './custom_maps';
 import googleTagManagerConfiguration from './google_tag_manager';
 import googleAnalyticsConfiguration from './google_analytics';
 import intercomConfiguration from './intercom';
 import satismeterConfiguration from './satismeter';
 import segmentConfiguration from './segment';
 import matomoConfiguration from './matomo';
+import customIdeaStatusesConfiguration from './custom_idea_statuses';
 
 export default loadModules([
   {
@@ -51,6 +55,22 @@ export default loadModules([
   },
   {
     configuration: moderationConfiguration,
+    isEnabled: true,
+  },
+  {
+    configuration: ideaAssignmentConfiguration,
+    isEnabled: true,
+  },
+  {
+    configuration: customIdeaStatusesConfiguration,
+    isEnabled: true,
+  },
+  {
+    configuration: geographicDashboardConfiguration,
+    isEnabled: true,
+  },
+  {
+    configuration: customMapsConfiguration,
     isEnabled: true,
   },
 ]);

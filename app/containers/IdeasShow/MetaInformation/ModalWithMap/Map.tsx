@@ -9,13 +9,14 @@ export interface Props {
 const MapComponent = memo<Props>(({ position, projectId }) => {
   const points: any = [{ ...position }];
   const center = position.coordinates;
+  const centerCoordinates = [center[1], center[0]];
 
   return (
     <Map
-      points={points}
-      center={center}
-      mapHeight={400}
       projectId={projectId}
+      points={points}
+      centerCoordinates={centerCoordinates}
+      zoom={15}
     />
   );
 });
