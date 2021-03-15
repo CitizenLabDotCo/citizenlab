@@ -14,7 +14,7 @@ import { completeRegistration } from 'services/users';
 // i18n
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
-import messages from '../../../../components/SignUpIn/SignUp/messages';
+import messages from 'components/SignUpIn/SignUp/messages';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
