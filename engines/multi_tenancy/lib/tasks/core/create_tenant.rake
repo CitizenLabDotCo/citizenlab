@@ -86,6 +86,7 @@ namespace :cl2_back do
           enabled: true,
           allowed: true,
           phone: false,
+          minimum_length: 8
         },
         participatory_budgeting: {
           enabled: true,
