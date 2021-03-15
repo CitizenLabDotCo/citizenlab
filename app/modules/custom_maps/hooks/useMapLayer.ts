@@ -4,7 +4,7 @@ import {
   IMapLayer,
   IMapLayerData,
   mapLayerByProjectMapConfigStream,
-} from 'services/mapLayers';
+} from '../services/mapLayers';
 import { isNilOrError } from 'utils/helperUtils';
 
 export interface Props {

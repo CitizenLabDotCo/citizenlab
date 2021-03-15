@@ -1,6 +1,13 @@
 import React, { memo, useState, useEffect } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { isEqual, compact } from 'lodash-es';
+import {
+  isEqual,
+  compact,
+  isUndefined,
+  isEmpty,
+  reverse,
+  cloneDeep,
+} from 'lodash-es';
 
 // Map
 import 'leaflet/dist/leaflet.css';
@@ -21,13 +28,15 @@ L.Icon.Default.mergeOptions({
 
 // components
 import { Icon } from 'cl2-component-library';
+import Legend from './Legend';
 
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
+import useMapConfig from '../../../hooks/useMapConfig';
 import usePrevious from 'hooks/usePrevious';
 
 // utils
-import { getCenter, getZoomLevel, getTileProvider } from 'utils/map';
+import { getCenter, getZoomLevel, getTileProvider } from '../../../utils/map';
 
 // events
 import {
@@ -44,6 +53,7 @@ import styled, { css } from 'styled-components';
 import { darken } from 'polished';
 import { media, defaultOutline, defaultCardStyle } from 'utils/styleUtils';
 import ideaMarkerIcon from './idea-marker.svg';
+import legendMarkerIcon from './legend-marker.svg';
 
 export interface Point extends GeoJSON.Point {
   data?: any;
@@ -53,6 +63,12 @@ export interface Point extends GeoJSON.Point {
 
 const ideaMarker = L.icon({
   iconUrl: ideaMarkerIcon,
+  iconSize: [29, 41],
+  iconAnchor: [14, 41],
+});
+
+const fallbackLegendMarker = L.icon({
+  iconUrl: legendMarkerIcon,
   iconSize: [29, 41],
   iconAnchor: [14, 41],
 });
@@ -159,7 +175,8 @@ const LeafletMapContainer = styled.div<{ mapHeight: string | undefined }>`
   }
 `;
 
-export interface IMapProps {
+interface Props {
+  projectId?: string | null;
   centerCoordinates?: GeoJSON.Position;
   points?: Point[];
   areas?: GeoJSON.Polygon[];
@@ -170,13 +187,13 @@ export interface IMapProps {
   onMarkerClick?: (id: string, data: any) => void;
   onMapClick?: (map: L.Map, position: L.LatLng) => void;
   fitBounds?: boolean;
-  className?: string;
-  projectId?: string | null;
   hideLegend?: boolean;
+  className?: string;
 }
 
-const Map = memo<IMapProps & InjectedLocalized>(
+const Map = memo<Props & InjectedLocalized>(
   ({
+    projectId,
     centerCoordinates,
     zoom,
     mapHeight,
@@ -187,12 +204,19 @@ const Map = memo<IMapProps & InjectedLocalized>(
     onMarkerClick,
     fitBounds,
     className,
+    localize,
+    hideLegend,
   }) => {
     const appConfig = useAppConfiguration();
+    const mapConfig = useMapConfig({ projectId });
 
     const [map, setMap] = useState<L.Map | null>(null);
+    const [layerControl, setLayerControl] = useState<L.Control.Layers | null>(
+      null
+    );
+    const [layers, setLayers] = useState<L.Layer[]>([]);
     const [defaultCenter, setDefaultCenter] = useState(
-      getCenter(centerCoordinates, appConfig)
+      getCenter(centerCoordinates, appConfig, mapConfig)
     );
     const [markers, setMarkers] = useState<L.Marker<any>[]>([]);
     const [
@@ -200,6 +224,7 @@ const Map = memo<IMapProps & InjectedLocalized>(
       setMarkerClusterGroup,
     ] = useState<L.MarkerClusterGroup | null>(null);
 
+    const prevMapConfig = usePrevious(mapConfig);
     const prevMap = usePrevious(map);
     const prevMarkers = usePrevious(markers);
     const prevPoints = usePrevious(points);
@@ -222,20 +247,28 @@ const Map = memo<IMapProps & InjectedLocalized>(
 
     // set default center
     useEffect(() => {
-      const newDefaultCenter = getCenter(centerCoordinates, appConfig);
+      const newDefaultCenter = getCenter(
+        centerCoordinates,
+        appConfig,
+        mapConfig
+      );
       setDefaultCenter((defaultCenter) =>
         !isEqual(defaultCenter, newDefaultCenter)
           ? newDefaultCenter
           : defaultCenter
       );
-    }, [appConfig, centerCoordinates]);
+    }, [appConfig, mapConfig, centerCoordinates]);
 
     // init map
     useEffect(() => {
-      if (!isNilOrError(appConfig) && !map) {
-        const tileProvider = getTileProvider(appConfig);
-        const defaultCenter = getCenter(centerCoordinates, appConfig);
-        const defaultZoom = getZoomLevel(zoom, appConfig);
+      if (!isNilOrError(appConfig) && !isUndefined(mapConfig) && !map) {
+        const tileProvider = getTileProvider(appConfig, mapConfig);
+        const defaultCenter = getCenter(
+          centerCoordinates,
+          appConfig,
+          mapConfig
+        );
+        const defaultZoom = getZoomLevel(zoom, appConfig, mapConfig);
         const map = L.map('mapid');
 
         L.tileLayer(tileProvider, {
@@ -273,7 +306,80 @@ const Map = memo<IMapProps & InjectedLocalized>(
 
         setMap(map);
       }
-    }, [map, appConfig, centerCoordinates, zoom, onMapClick]);
+    }, [map, appConfig, mapConfig, centerCoordinates, zoom, onMapClick]);
+
+    // set layers and layerControl
+    useEffect(() => {
+      if (map && (prevMapConfig !== mapConfig || prevMap !== map)) {
+        let newLayers: L.Layer[] = [];
+        let newLayerControl: L.Control.Layers | null = null;
+
+        // first remove old layers and layerControl
+        if (layerControl) {
+          map.removeControl(layerControl);
+        }
+
+        if (layers && layers.length > 0) {
+          layers.forEach((layer) => {
+            map.removeLayer(layer);
+          });
+        }
+
+        if (
+          map &&
+          mapConfig &&
+          mapConfig?.attributes?.layers &&
+          mapConfig.attributes.layers.length > 0
+        ) {
+          newLayerControl = L.control.layers().addTo(map);
+          newLayers = reverse(cloneDeep(mapConfig?.attributes?.layers))
+            ?.filter((layer) => !isEmpty(layer.geojson))
+            .map(({ geojson, title_multiloc, marker_svg_url }) => {
+              const layer = L.geoJSON(geojson, {
+                useSimpleStyle: true,
+                useMakiMarkers: true,
+                pointToLayer: (_feature, latlng) => {
+                  const customLegendMarker =
+                    marker_svg_url && require(`${marker_svg_url}`);
+                  return L.marker(latlng, {
+                    icon: customLegendMarker || fallbackLegendMarker,
+                  });
+                },
+                onEachFeature: (feature, layer) => {
+                  if (
+                    feature.properties &&
+                    feature.properties.popupContent &&
+                    Object.values(feature.properties.popupContent).some(
+                      (x) => x && x !== ''
+                    )
+                  ) {
+                    layer.bindPopup(localize(feature.properties.popupContent));
+                  }
+
+                  if (
+                    feature.properties &&
+                    feature.properties.tooltipContent &&
+                    Object.values(feature.properties.tooltipContent).some(
+                      (x) => x && x !== ''
+                    )
+                  ) {
+                    layer.bindTooltip(
+                      localize(feature.properties.tooltipContent)
+                    );
+                  }
+                },
+              } as any).addTo(map);
+
+              newLayerControl?.addOverlay(layer, localize(title_multiloc));
+
+              return layer;
+            });
+        }
+
+        setLayers(newLayers);
+        setLayerControl(newLayerControl);
+      }
+    }, [prevMap, map, prevMapConfig, mapConfig, layerControl, layers]);
 
     // set markers
     useEffect(() => {
@@ -367,6 +473,7 @@ const Map = memo<IMapProps & InjectedLocalized>(
             mapHeight={mapHeight}
           />
         </MapWrapper>
+        {projectId && !hideLegend && <Legend projectId={projectId} />}
       </Container>
     );
   }

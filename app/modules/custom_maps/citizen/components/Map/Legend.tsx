@@ -1,10 +1,10 @@
 import React, { memo } from 'react';
 import styled from 'styled-components';
 import useLocalize from 'hooks/useLocalize';
-import useMapConfig from 'hooks/useMapConfig';
+import useMapConfig from '../../../hooks/useMapConfig';
 import { media, isRtl, fontSizes, colors } from 'utils/styleUtils';
 import { Multiloc } from 'typings';
-import { getLayerColor, getLayerIcon } from 'utils/map';
+import { getLayerColor, getLayerIcon } from '../../../utils/map';
 import { Icon, IconNames } from 'cl2-component-library';
 import bowser from 'bowser';
 

@@ -1,6 +1,7 @@
 import React from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 import Tab from './admin/components/Tab';
+import Map from './citizen/components/Map';
 
 const configuration: ModuleConfiguration = {
   routes: {
@@ -19,6 +20,8 @@ const configuration: ModuleConfiguration = {
     'app.containers.Admin.projects.edit.tabs.map': (props) => (
       <Tab {...props} />
     ),
+    'app.components.IdeasMap.map': (props) => <Map {...props} />,
+    'app.components.DropdownMap.map': (props) => <Map {...props} />,
   },
 };
 

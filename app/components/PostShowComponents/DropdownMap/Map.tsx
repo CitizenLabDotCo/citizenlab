@@ -1,5 +1,6 @@
 import React, { memo } from 'react';
 import Map from 'components/Map';
+import Outlet from 'components/Outlet';
 
 export interface Props {
   position: GeoJSON.Point;
@@ -11,12 +12,20 @@ const MapComponent = memo<Props>(({ position, projectId }) => {
   const center = position.coordinates;
   const centerCoordinates = [center[1], center[0]];
 
-  return (
+  const Fallback = () => (
     <Map
       points={points}
       centerCoordinates={centerCoordinates}
       projectId={projectId}
       mapHeight="400px"
+    />
+  );
+
+  return (
+    <Outlet
+      id="app.components.DropdownMap.map"
+      projectId={projectId}
+      fallback={<Fallback />}
     />
   );
 });
