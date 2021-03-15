@@ -33,7 +33,7 @@ describe ParticipationContextService do
 
   describe "commenting_idea_disabled_reason_for_project" do
     let(:user) { create(:user) }
-    let(:project) { create(:project_with_current_phase) } 
+    let(:project) { create(:project_with_current_phase) }
     let(:permission) do
       service
         .get_participation_context(project).permissions
@@ -44,7 +44,7 @@ describe ParticipationContextService do
       it "returns `not_signed_in` when user needs to be signed in" do
         permission.update!(permitted_by: 'users')
         expect(service.commenting_idea_disabled_reason_for_project(project, nil)).to eq 'not_signed_in'
-        
+
         idea = create(:idea, project: project, phases: [project.phases[2]])
         expect(service.commenting_disabled_reason_for_idea(idea, nil)).to eq 'not_signed_in'
       end
@@ -52,20 +52,13 @@ describe ParticipationContextService do
       it "returns `not_permitted` commenting is not permitted for the user" do
         permission.update!(permitted_by: 'groups', groups: create_list(:group, 2))
         expect(service.commenting_idea_disabled_reason_for_project(project, user)).to eq 'not_permitted'
-        
+
         idea = create(:idea, project: project, phases: [project.phases[2]])
         expect(service.commenting_disabled_reason_for_idea(idea, user)).to eq 'not_permitted'
       end
     end
 
     context " for continuous project" do
-      it "returns 'commenting_disabled' when commenting is disabled in a continuous project" do
-        project = create(:continuous_project)
-        expect(service.commenting_idea_disabled_reason_for_project(project, create(:user))).to eq 'commenting_disabled'
-        idea = create(:idea, project: project)
-        expect(service.commenting_disabled_reason_for_idea(idea, user)).to eq 'commenting_disabled'
-      end
-
       it "returns 'not_permitted' when commenting is disabled in a continuous project" do
         project = create(:continuous_project)
         permission = project.permissions.find_by(action: 'commenting_idea')
@@ -76,10 +69,10 @@ describe ParticipationContextService do
         idea = create(:idea, project: project)
         expect(service.commenting_disabled_reason_for_idea(idea, user)).to eq 'not_permitted'
       end
-      
+
     end
   end
-  
+
   describe "voting_disabled_reasons" do
 
     let(:user) { create(:user) }
@@ -92,7 +85,7 @@ describe ParticipationContextService do
         service.get_participation_context(project).permissions
                .find_by(action: 'voting_idea')
       end
-      
+
       it "returns `not_signed_in` when user needs to be signed in" do
         permission.update!(permitted_by: 'users')
         expect(service.voting_idea_disabled_reason_for_project(project, nil)).to eq 'not_signed_in'
@@ -144,17 +137,18 @@ describe ParticipationContextService do
     let(:reasons) { ParticipationContextService::VOTING_DISABLED_REASONS }
 
     context "timeline project" do
+      let(:project) do
+        create(:project_with_current_phase, current_phase_attrs: { permissions_config: { voting_idea: false } })
+      end
+      let(:idea) { create(:idea, project: project, phases: [project.phases[2]]) }
+
       it "returns `not_signed_in` if it's in the current phase and user needs to be signed in" do
-        project = create(:project_with_current_phase, current_phase_attrs: {voting_idea_permitted: false})
-        idea = create(:idea, project: project, phases: [project.phases[2]])
-        permission = service.get_participation_context(project).permissions.find_by(action: 'voting_idea')
-        permission.update!(permitted_by: 'users')
+        service.get_participation_context(project).permissions.find_by(action: 'voting_idea')
+               .update!(permitted_by: 'users')
         expect(service.cancelling_votes_disabled_reason_for_idea(idea, nil)).to eq 'not_signed_in'
       end
 
       it "returns 'not_permitted' if it's in the current phase and voting is not permitted" do
-        project = create(:project_with_current_phase, current_phase_attrs: {voting_idea_permitted: false})
-        idea = create(:idea, project: project, phases: [project.phases[2]])
         expect(service.cancelling_votes_disabled_reason_for_idea(idea, idea.author)).to eq 'not_permitted'
       end
     end
@@ -234,7 +228,7 @@ describe ParticipationContextService do
     context "for timeline projects" do
       it "returns `not_signed_in` when user needs to be signed in" do
         project = create(:project_with_current_phase,
-          current_phase_attrs: {participation_method: 'budgeting', max_budget: 10000})
+          current_phase_attrs: { participation_method: 'budgeting', max_budget: 10000 })
         idea = create(:idea, project: project, phases: [project.phases[2]])
         permission = service.get_participation_context(project).permissions.find_by(action: 'budgeting')
         permission.update!(permitted_by: 'users')
@@ -243,7 +237,7 @@ describe ParticipationContextService do
 
       it "returns `not_permitted` when the idea is in the current phase and budgeting is not permitted" do
         project = create(:project_with_current_phase,
-          current_phase_attrs: {participation_method: 'budgeting', max_budget: 10000})
+          current_phase_attrs: { participation_method: 'budgeting', max_budget: 10000 })
         idea = create(:idea, project: project, phases: [project.phases[2]])
         permission = service.get_participation_context(project).permissions.find_by(action: 'budgeting')
         permission.update!(permitted_by: 'groups',
@@ -271,7 +265,7 @@ describe ParticipationContextService do
       end
 
       it "returns 'project_inactive' when the project is archived" do
-        project = create(:continuous_budgeting_project, admin_publication_attributes: {publication_status: 'archived'})
+        project = create(:continuous_budgeting_project, admin_publication_attributes: { publication_status: 'archived' })
         idea = create(:idea, project: project)
         expect(service.budgeting_disabled_reason_for_idea(idea, create(:user))).to eq 'project_inactive'
       end
@@ -283,9 +277,9 @@ describe ParticipationContextService do
       project = create(:project_with_current_phase,
         phases_config: {
           sequence: "xcxxxxxy",
-          x: {posting_idea_permitted: false},
-          y: {posting_idea_permitted: true},
-          c: {posting_idea_permitted: false}
+          x: { permissions_config: { posting_idea: false } },
+          y: { permissions_config: { posting_idea: true } },
+          c: { permissions_config: { posting_idea: false } }
         }
       )
       expect(service.future_posting_idea_enabled_phase(project, create(:user))).to eq project.phases.order(:start_at)[7]
@@ -295,7 +289,7 @@ describe ParticipationContextService do
       project = create(:project_with_current_phase,
         phases_config: {
           sequence: "xcyyy",
-          y: {posting_idea_permitted: false},
+          y: { permissions_config: { posting_idea: false } },
         }
       )
       expect(service.future_posting_idea_enabled_phase(project, create(:user))).to be_nil
@@ -307,9 +301,9 @@ describe ParticipationContextService do
       project = create(:project_with_current_phase,
         phases_config: {
           sequence: "xcxxxxxy",
-          x: {voting_idea_permitted: false},
-          y: {voting_idea_permitted: true},
-          c: {voting_idea_permitted: false}
+          x: { permissions_config: { voting_idea: false } },
+          y: { permissions_config: { voting_idea: true } },
+          c: { permissions_config: { voting_idea: false } }
         }
       )
       expect(service.future_voting_idea_enabled_phase(project, create(:user))).to eq project.phases.order(:start_at)[7]
@@ -319,7 +313,7 @@ describe ParticipationContextService do
       project = create(:project_with_current_phase,
         phases_config: {
           sequence: "xcyyy",
-          y: {voting_idea_permitted: false},
+          y: { permissions_config: { voting_idea: false } },
         }
       )
       expect(service.future_voting_idea_enabled_phase(project, create(:user))).to be_nil
@@ -331,9 +325,9 @@ describe ParticipationContextService do
       project = create(:project_with_current_phase,
         phases_config: {
           sequence: "xcxxxxxy",
-          x: {commenting_idea_permitted: false},
-          y: {commenting_idea_permitted: true},
-          c: {commenting_idea_permitted: false}
+          x: { permissions_config: { commenting_idea: false } },
+          y: { permissions_config: { commenting_idea: true } },
+          c: { permissions_config: { commenting_idea: false } }
         }
       )
       expect(service.future_commenting_idea_enabled_phase(project, create(:user))).to eq project.phases.order(:start_at)[7]
@@ -343,7 +337,7 @@ describe ParticipationContextService do
       project = create(:project_with_current_phase,
         phases_config: {
           sequence: "xcyyy",
-          y: {commenting_idea_permitted: false},
+          y: { permissions_config: { commenting_idea: false } }
         }
       )
       expect(service.future_commenting_idea_enabled_phase(project, create(:user))).to be_nil
