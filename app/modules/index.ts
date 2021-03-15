@@ -25,7 +25,7 @@ export default loadModules([
   },
   {
     configuration: userCustomFieldsConfiguration,
-    isEnabled: false,
+    isEnabled: true,
   },
   {
     configuration: googleTagManagerConfiguration,
