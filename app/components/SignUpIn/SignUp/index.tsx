@@ -356,7 +356,7 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
               {activeStep === 'password-signup' && (
                 <PasswordSignup
                   metaData={metaData}
-                  hasNextStep={enabledSteps.length > 1}
+                  hasNextStep={activeStepNumber < totalStepsCount}
                   onCompleted={handleStepCompleted}
                   onGoToSignIn={onGoToSignIn}
                   onGoBack={handleGoBack}
