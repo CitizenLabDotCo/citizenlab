@@ -3,11 +3,11 @@ import {
   mapConfigByProjectStream,
   IMapConfigData,
   IMapConfig,
-} from 'services/mapConfigs';
+} from '../services/mapConfigs';
 import { isNilOrError } from 'utils/helperUtils';
 import { combineLatest, of, Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
-import { mapLayerByProjectMapConfigStream } from 'services/mapLayers';
+import { mapLayerByProjectMapConfigStream } from '../services/mapLayers';
 
 export interface Props {
   projectId?: string | null;

@@ -1,4 +1,7 @@
-import useMapConfig, { Props as HookProps, IOutput } from 'hooks/useMapConfig';
+import useMapConfig, {
+  Props as HookProps,
+  IOutput,
+} from '../hooks/useMapConfig';
 
 export type GetMapConfigChildProps = IOutput;
 

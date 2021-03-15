@@ -21,6 +21,7 @@ import {
   MessageDescriptor,
   Multiloc,
 } from 'typings';
+import { IMapProps } from './../components/Map/index';
 import { IUserData } from 'services/users';
 import { MessageValue } from 'react-intl';
 import { NavItem } from 'containers/Admin/sideBar';
@@ -132,6 +133,8 @@ export type OutletsPropertyMap = {
       tabConfiguration: ITab;
     }) => void;
   };
+  'app.components.IdeasMap.map': IMapProps;
+  'app.components.DropdownMap.map': IMapProps;
 };
 
 type Outlet<Props> = FunctionComponent<Props> | FunctionComponent<Props>[];
