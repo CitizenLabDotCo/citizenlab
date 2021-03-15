@@ -1,6 +1,5 @@
 class Project < ApplicationRecord
   include ParticipationContext
-  include Maps::ProjectDecorator
   mount_base64_uploader :header_bg, ProjectHeaderBgUploader
 
   DESCRIPTION_PREVIEW_JSON_SCHEMA = ERB.new(File.read(Rails.root.join('config', 'schemas', 'project_description_preview.json_schema.erb'))).result(binding)
@@ -185,3 +184,4 @@ end
 
 Project.prepend_if_ee('ProjectFolders::Patches::Project')
 Project.include_if_ee('IdeaCustomFields::Extensions::Project')
+Project.include_if_ee('CustomMaps::Extensions::Project')
