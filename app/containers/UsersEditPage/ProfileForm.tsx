@@ -213,12 +213,20 @@ class ProfileForm extends PureComponent<Props, State> {
 
     const { formatMessage } = this.props.intl;
 
+    const isExtraFormDataTouched = () =>
+      Object.values(this.state.extraFormData).some(
+        (value) => !isEmpty(value) && Object.keys(value ?? {}).length > 1
+      );
+
     const getStatus = () => {
       let returnValue: 'enabled' | 'disabled' | 'error' | 'success' = 'enabled';
 
       if (isSubmitting) {
         returnValue = 'disabled';
-      } else if ((!isEmpty(touched) && !isValid) || status === 'error') {
+      } else if (
+        (!isEmpty(touched) && !isValid && !isExtraFormDataTouched()) ||
+        status === 'error'
+      ) {
         returnValue = 'error';
       } else if (isEmpty(touched) && status === 'success') {
         returnValue = 'success';
@@ -236,13 +244,15 @@ class ProfileForm extends PureComponent<Props, State> {
       key: ExtraFormDataKey;
       formData: Object;
     }) => {
-      this.setState(({ extraFormData }) => ({
-        extraFormData: {
-          ...extraFormData,
-          [key]: { ...(extraFormData?.[key] ?? {}), formData },
-        },
-      }));
-      submitForm();
+      this.setState(
+        ({ extraFormData }) => ({
+          extraFormData: {
+            ...extraFormData,
+            [key]: { ...(extraFormData?.[key] ?? {}), formData },
+          },
+        }),
+        () => submitForm()
+      );
     };
 
     const handleOnSubmit = () => {
