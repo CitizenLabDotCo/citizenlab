@@ -1,5 +1,10 @@
 # Changelog
 
+## Next release
+
+### Fixed
+- The input fields for multiple locales provides an error messages when there's an error for at least one of the languages.
+
 ## 2021-03-11
 
 ### Changed
