@@ -62,11 +62,6 @@ interface ITracks {
   clickNewIdea: ({ extra: object }) => void;
 }
 
-interface IMapTab {
-  tabConfiguration: ITab;
-  insertAfterTabName?: string;
-}
-
 export interface InputProps {}
 
 interface DataProps {
@@ -85,7 +80,6 @@ interface DataProps {
 interface State {
   tabs: ITab[];
   goBackUrl: string | null;
-  mapTab: IMapTab | null;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -157,14 +151,12 @@ export class AdminProjectEdition extends PureComponent<
         },
       ],
       goBackUrl: null,
-      mapTab: null,
     };
   }
 
   componentDidMount() {
     this.setState({
       goBackUrl: this.props.previousPathName,
-      mapTab: null,
     });
   }
 
@@ -388,7 +380,6 @@ export class AdminProjectEdition extends PureComponent<
       children as React.ReactElement<any>,
       { project }
     );
-    const { mapTab } = this.state;
     const tabbedProps = {
       resource: {
         title: !isNilOrError(project)
@@ -397,22 +388,6 @@ export class AdminProjectEdition extends PureComponent<
       },
       tabs: !isNilOrError(project) ? this.getTabs(project.id, project) : [],
     };
-
-    if (mapTab) {
-      const insertIndex =
-        tabbedProps.tabs.findIndex(
-          (tab) => tab.name === mapTab.insertAfterTabName
-        ) + 1;
-      if (insertIndex > 0) {
-        tabbedProps.tabs = [
-          ...tabbedProps.tabs.slice(0, insertIndex),
-          mapTab.tabConfiguration,
-          ...tabbedProps.tabs.slice(insertIndex),
-        ];
-      } else {
-        tabbedProps.tabs = [...tabbedProps.tabs, mapTab.tabConfiguration];
-      }
-    }
 
     if (!isNilOrError(project) && phases !== undefined) {
       const inputTerm = getInputTerm(
