@@ -172,6 +172,10 @@ export interface IAppConfigurationSettings {
     destinations: string;
     container_id: string;
   };
+  matomo?: AppConfigurationFeature & {
+    tenant_site_id: string;
+    product_site_id: string;
+  };
   redirects?: {
     enabled: boolean;
     allowed: boolean;
