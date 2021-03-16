@@ -17,6 +17,13 @@ import segmentConfiguration from './segment';
 import matomoConfiguration from './matomo';
 import customIdeaStatusesConfiguration from './custom_idea_statuses';
 
+import idBosaFasConfiguration from './id_bosa_fas';
+import idCowConfiguration from './id_cow';
+import idBogusConfiguration from './id_bogus';
+import idIdCardLookupConfiguration from './id_id_card_lookup';
+import IdFranceConnectConfiguration from './id_franceconnect';
+import IdClaveUnicaConfiguration from './id_clave_unica';
+
 export default loadModules([
   {
     configuration: projectFoldersConfiguration,
@@ -76,6 +83,30 @@ export default loadModules([
   },
   {
     configuration: customMapsConfiguration,
+    isEnabled: true,
+  },
+  {
+    configuration: idBosaFasConfiguration,
+    isEnabled: true,
+  },
+  {
+    configuration: idCowConfiguration,
+    isEnabled: true,
+  },
+  {
+    configuration: idBogusConfiguration,
+    isEnabled: true,
+  },
+  {
+    configuration: idIdCardLookupConfiguration,
+    isEnabled: true,
+  },
+  {
+    configuration: IdFranceConnectConfiguration,
+    isEnabled: true,
+  },
+  {
+    configuration: IdClaveUnicaConfiguration,
     isEnabled: true,
   },
 ]);
