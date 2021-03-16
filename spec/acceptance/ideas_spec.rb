@@ -536,7 +536,7 @@ resource "Ideas" do
     example_request "Get one idea by id" do
       expect(status).to eq 200
       json_response = json_parse(response_body)
-
+      
       expect(json_response.dig(:data, :id)).to eq idea.id
       expect(json_response.dig(:data, :type)).to eq 'idea'
       expect(json_response.dig(:data, :attributes)).to include(
@@ -546,7 +546,7 @@ resource "Ideas" do
           commenting_idea: {enabled: false, disabled_reason: 'not_permitted', future_enabled: nil},
           voting_idea: {enabled: false, downvoting_enabled: true, disabled_reason: 'not_permitted', future_enabled: nil, cancelling_enabled: false},
           comment_voting_idea: {enabled: false, disabled_reason: 'not_permitted', future_enabled: nil},
-          budgeting: {enabled: false, disabled_reason: 'not_permitted', future_enabled: nil}}
+          budgeting: {enabled: false, disabled_reason: 'not_budgeting', future_enabled: nil}}
         )
       expect(json_response.dig(:data, :relationships)).to include(
         topics: {
