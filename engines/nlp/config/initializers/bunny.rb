@@ -10,9 +10,9 @@ if (ENV.fetch("RABBITMQ_URI", false))
 
     channel = connection.create_channel
     exchange = channel.topic('cl2nlp', :durable => true)
-    queue = channel.queue('zeroshot.inference', :durable => true)
+    queue = channel.queue('zeroshot_results', :durable => true)
 
-    queue.bind(exchange)
+    queue.bind(exchange,'zeroshot.inference')
 
     puts ' [*] Waiting for automatic taggings'
 
