@@ -1,7 +1,6 @@
 class Initiative < ApplicationRecord
   include MachineTranslations::InitiativeDecorator
   include Post
-  include Moderatable
 
   mount_base64_uploader :header_bg, InitiativeHeaderBgUploader
 
@@ -127,4 +126,6 @@ class Initiative < ApplicationRecord
     end
   end
 
+
+  Initiative.include_if_ee 'Moderation::Extensions::Moderation'
 end
