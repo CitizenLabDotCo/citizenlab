@@ -1,4 +1,5 @@
 import React, { memo, useCallback, Fragment } from 'react';
+import { isEmpty } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
@@ -7,6 +8,8 @@ import Avatar from 'components/Avatar';
 import T from 'components/T';
 import Button from 'components/UI/Button';
 import { Title, Subtitle } from './styles';
+import FranceConnectButton from 'components/UI/FranceConnectButton';
+import Or from 'components/UI/Or';
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
@@ -15,7 +18,8 @@ import useVerificationMethods from 'hooks/useVerificationMethods';
 
 // i18n
 import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
 
 // style
 import styled from 'styled-components';
@@ -138,16 +142,6 @@ const ContextItem = styled.span`
   `}
 `;
 
-const Or = styled.span`
-  color: ${(props: any) => props.theme.colorText};
-  font-size: ${fontSizes.small}px;
-  margin-top: 5px;
-  margin-bottom: 10px;
-  justify-content: center;
-  display: flex;
-  align-items: center;
-`;
-
 const ButtonsContainer = styled.div`
   width: 100%;
   display: flex;
@@ -164,7 +158,7 @@ const ButtonsContainer = styled.div`
     `}
 
     &.withoutContext {
-      max-width: 473px;
+      max-width: 650px;
     }
   }
 `;
@@ -194,7 +188,7 @@ interface Props {
   className?: string;
 }
 
-const VerificationMethods = memo<Props>(
+const VerificationMethods = memo<Props & InjectedIntlProps>(
   ({
     context,
     showHeader,
@@ -203,18 +197,32 @@ const VerificationMethods = memo<Props>(
     onMethodSelected,
     onSkipped,
     className,
+    intl: { formatMessage },
   }) => {
     const participationConditions = useParticipationConditions(context);
 
     const authUser = useAuthUser();
     const verificationMethods = useVerificationMethods();
-    const filteredVerificationMethods = !isNilOrError(verificationMethods)
-      ? verificationMethods.data.filter((method) =>
-          ['cow', 'bosa_fas', 'bogus', 'id_card_lookup'].includes(
-            method.attributes.name
+
+    const filterMethods = (methods: string[]) =>
+      !isNilOrError(verificationMethods)
+        ? verificationMethods.data.filter((method) =>
+            methods.includes(method.attributes.name)
           )
-        )
-      : [];
+        : [];
+
+    const filteredVerificationMethods = filterMethods([
+      'cow',
+      'bosa_fas',
+      'bogus',
+      'id_card_lookup',
+    ]);
+
+    const alternativeMethods = filterMethods(['franceconnect']);
+
+    const franceConnectVerification = alternativeMethods.find(
+      ({ attributes }) => attributes.name === 'franceconnect'
+    );
 
     const withContext =
       !isNilOrError(participationConditions) &&
@@ -223,6 +231,13 @@ const VerificationMethods = memo<Props>(
     const onVerifyBOSAButtonClick = useCallback(() => {
       const jwt = getJwt();
       window.location.href = `${AUTH_PATH}/bosa_fas?token=${jwt}&pathname=${removeUrlLocale(
+        window.location.pathname
+      )}`;
+    }, []);
+
+    const onVerifyFranceConnectButtonClick = useCallback(() => {
+      const jwt = getJwt();
+      window.location.href = `${AUTH_PATH}/franceconnect?token=${jwt}&pathname=${removeUrlLocale(
         window.location.pathname
       )}`;
     }, []);
@@ -309,9 +324,7 @@ const VerificationMethods = memo<Props>(
                       rules
                     ) : (
                       <Fragment key={index}>
-                        <Or>
-                          <FormattedMessage {...messages.or} />
-                        </Or>
+                        <Or />
                         {rules}
                       </Fragment>
                     );
@@ -324,6 +337,18 @@ const VerificationMethods = memo<Props>(
                 inModal ? 'inModal' : ''
               }`}
             >
+              {franceConnectVerification && (
+                <FranceConnectButton
+                  onClick={onVerifyFranceConnectButtonClick}
+                  logoAlt={formatMessage(messages.verificationButtonAltText, {
+                    loginMechanismName: 'FranceConnect',
+                  })}
+                />
+              )}
+
+              {!isEmpty(alternativeMethods) &&
+                !isEmpty(filteredVerificationMethods) && <Or />}
+
               {filteredVerificationMethods.map((method, index) => (
                 <MethodButton
                   key={method.id}
@@ -376,4 +401,4 @@ const VerificationMethods = memo<Props>(
   }
 );
 
-export default VerificationMethods;
+export default injectIntl(VerificationMethods);

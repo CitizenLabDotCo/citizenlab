@@ -225,7 +225,7 @@ class App extends PureComponent<Props, State> {
 
             uniq(
               tenant.data.attributes.settings.core.locales
-                .filter((locale) => locale !== 'en' && locale !== 'ach')
+                .filter((locale) => locale !== 'en')
                 .map((locale) => appLocalesMomentPairs[locale])
             ).forEach((locale) => require(`moment/locale/${locale}.js`));
           })

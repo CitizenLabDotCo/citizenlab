@@ -3,9 +3,13 @@ import { shallow } from 'enzyme';
 jest.mock('utils/cl-intl');
 jest.mock('services/stats');
 jest.mock('services/appConfiguration');
-import { intl } from 'utils/cl-intl';
+jest.mock('components/Outlet', () => 'Outlet');
+
 import { BarChartByCategory } from './BarChartByCategory';
 import { chartTheme } from '../..';
+
+const Intl = require('utils/cl-intl/__mocks__/');
+const { intl } = Intl;
 
 const convertToGraphFormat = jest.fn();
 const stream = jest.fn();

@@ -9,6 +9,7 @@ import { withRouter, WithRouterProps } from 'react-router';
 import GoBackButton from 'components/UI/GoBackButton';
 import Button from 'components/UI/Button';
 import TabbedResource from 'components/admin/TabbedResource';
+import Outlet from 'components/Outlet';
 
 // resources
 import GetFeatureFlag, {
@@ -33,13 +34,11 @@ import tracks from './tracks';
 import styled from 'styled-components';
 
 // typings
-// services
+import { InsertConfigurationOptions, ITab } from 'typings';
 import { getInputTerm } from 'services/participationContexts';
 import { IProjectData } from 'services/projects';
 
-import Outlet from 'components/Outlet';
-import { InsertTabOptions, ITab } from 'typings';
-import { insertTab } from 'utils/moduleUtils';
+import { insertConfiguration } from 'utils/moduleUtils';
 
 const TopContainer = styled.div`
   width: 100%;
@@ -63,6 +62,11 @@ interface ITracks {
   clickNewIdea: ({ extra: object }) => void;
 }
 
+interface IMapTab {
+  tabConfiguration: ITab;
+  insertAfterTabName?: string;
+}
+
 export interface InputProps {}
 
 interface DataProps {
@@ -81,6 +85,7 @@ interface DataProps {
 interface State {
   tabs: ITab[];
   goBackUrl: string | null;
+  mapTab: IMapTab | null;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -152,12 +157,14 @@ export class AdminProjectEdition extends PureComponent<
         },
       ],
       goBackUrl: null,
+      mapTab: null,
     };
   }
 
   componentDidMount() {
     this.setState({
       goBackUrl: this.props.previousPathName,
+      mapTab: null,
     });
   }
 
@@ -235,6 +242,25 @@ export class AdminProjectEdition extends PureComponent<
         return false;
       },
       ideaform: function isIdeaformTabHidden() {
+        if (
+          (processType === 'continuous' &&
+            participationMethod !== 'ideation' &&
+            participationMethod !== 'budgeting') ||
+          (processType === 'timeline' &&
+            !isNilOrError(phases) &&
+            phases.filter((phase) => {
+              return (
+                phase.attributes.participation_method === 'ideation' ||
+                phase.attributes.participation_method === 'budgeting'
+              );
+            }).length === 0)
+        ) {
+          return true;
+        }
+
+        return false;
+      },
+      map: function isMapTabHidden() {
         if (
           (processType === 'continuous' &&
             participationMethod !== 'ideation' &&
@@ -343,9 +369,9 @@ export class AdminProjectEdition extends PureComponent<
     });
   };
 
-  handleData = (insertTabOptions: InsertTabOptions) => {
+  handleData = (insertTabOptions: InsertConfigurationOptions<ITab>) => {
     this.setState(({ tabs }) => ({
-      tabs: insertTab(insertTabOptions)(tabs),
+      tabs: insertConfiguration(insertTabOptions)(tabs),
     }));
   };
 
@@ -362,17 +388,33 @@ export class AdminProjectEdition extends PureComponent<
       children as React.ReactElement<any>,
       { project }
     );
+    const { mapTab } = this.state;
     const tabbedProps = {
       resource: {
         title: !isNilOrError(project)
           ? localize(project.attributes.title_multiloc)
           : formatMessage(messages.newProject),
       },
-      // TODO: optimization would be to use useMemo for tabs, as they get recalculated on every click
       tabs: !isNilOrError(project) ? this.getTabs(project.id, project) : [],
     };
 
-    if (!isNilOrError(project)) {
+    if (mapTab) {
+      const insertIndex =
+        tabbedProps.tabs.findIndex(
+          (tab) => tab.name === mapTab.insertAfterTabName
+        ) + 1;
+      if (insertIndex > 0) {
+        tabbedProps.tabs = [
+          ...tabbedProps.tabs.slice(0, insertIndex),
+          mapTab.tabConfiguration,
+          ...tabbedProps.tabs.slice(insertIndex),
+        ];
+      } else {
+        tabbedProps.tabs = [...tabbedProps.tabs, mapTab.tabConfiguration];
+      }
+    }
+
+    if (!isNilOrError(project) && phases !== undefined) {
       const inputTerm = getInputTerm(
         project.attributes.process_type,
         project,
@@ -383,6 +425,7 @@ export class AdminProjectEdition extends PureComponent<
         <>
           <Outlet
             id="app.containers.Admin.projects.edit"
+            projectId={project.id}
             onData={this.handleData}
           />
           <TopContainer>
