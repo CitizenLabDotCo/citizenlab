@@ -6,12 +6,14 @@ import React, {
   MouseEvent,
 } from 'react';
 import clHistory from 'utils/cl-router/history';
-
+import { insertConfiguration } from 'utils/moduleUtils';
+import { InsertConfigurationOptions } from 'typings';
 // components
 import Outlet from 'components/Outlet';
 import { Icon } from 'cl2-component-library';
 import AdminProjectEditGeneral from 'containers/Admin/projects/edit/general';
 import { HeaderTitle } from './StyledComponents';
+import Tabs, { ITabItem } from 'components/UI/Tabs';
 
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -146,6 +148,10 @@ const CreateProjectButton = styled.button`
   }
 `;
 
+const StyledTabs = styled(Tabs)`
+  margin-bottom: 25px;
+`;
+
 export interface INewProjectCreatedEvent {
   projectId?: string;
 }
@@ -154,86 +160,116 @@ interface Props {
   className?: string;
 }
 
-const CreateProject = memo<Props & InjectedIntlProps>(({ className, intl }) => {
-  const projectTemplatesEnabled = useFeatureFlag('admin_project_templates');
-  const [expanded, setExpanded] = useState(false);
+const CreateProject = memo<Props & InjectedIntlProps>(
+  ({ className, intl: { formatMessage } }) => {
+    const projectTemplatesEnabled = useFeatureFlag('admin_project_templates');
+    const [tabs, setTabs] = useState<ITabItem[]>([
+      {
+        name: 'scratch',
+        label: formatMessage(messages.fromScratch),
+        icon: 'scratch',
+      },
+    ]);
+    const [selectedTabValue, setSelectedTabValue] = useState(tabs[0].name);
+    const [expanded, setExpanded] = useState(false);
+    useEffect(() => {
+      const subscription = eventEmitter
+        .observeEvent<INewProjectCreatedEvent>('NewProjectCreated')
+        .subscribe(({ eventValue }) => {
+          const projectId = eventValue?.projectId;
 
-  useEffect(() => {
-    const subscription = eventEmitter
-      .observeEvent<INewProjectCreatedEvent>('NewProjectCreated')
-      .subscribe(({ eventValue }) => {
-        const projectId = eventValue?.projectId;
+          if (projectId) {
+            setTimeout(() => {
+              clHistory.push({
+                pathname: `/admin/projects/${projectId}/edit`,
+              });
+            }, 1000);
+          }
+        });
 
-        if (projectId) {
-          setTimeout(() => {
-            clHistory.push({
-              pathname: `/admin/projects/${projectId}/edit`,
-            });
-          }, 1000);
-        }
-      });
+      return () => subscription.unsubscribe();
+    }, []);
 
-    return () => subscription.unsubscribe();
-  }, []);
+    const removeFocus = useCallback((event: MouseEvent<HTMLElement>) => {
+      event.preventDefault();
+    }, []);
 
-  const removeFocus = useCallback((event: MouseEvent<HTMLElement>) => {
-    event.preventDefault();
-  }, []);
+    const handleExpandCollapse = useCallback(() => {
+      if (expanded) {
+        trackEventByName(tracks.createProjectSectionCollapsed);
+      } else {
+        trackEventByName(tracks.createProjectSectionExpanded);
+      }
 
-  const handleExpandCollapse = useCallback(() => {
-    if (expanded) {
-      trackEventByName(tracks.createProjectSectionCollapsed);
-    } else {
-      trackEventByName(tracks.createProjectSectionExpanded);
-    }
+      setExpanded(!expanded);
+    }, [expanded]);
 
-    setExpanded(!expanded);
-  }, [expanded]);
+    const handleTabOnClick = useCallback(
+      (newSelectedTabValue: string) => {
+        setSelectedTabValue(newSelectedTabValue);
+      },
+      [selectedTabValue]
+    );
 
-  return (
-    <Container className={className}>
-      <CreateProjectButton
-        className={`e2e-create-project-expand-collapse-button ${
-          expanded ? 'expanded' : 'collapsed'
-        }`}
-        aria-label={intl.formatMessage(messages.createAProjectFromATemplate)}
-        onMouseDown={removeFocus}
-        onClick={handleExpandCollapse}
-      >
-        <HeaderTitle>
-          <FormattedMessage {...messages.createAProject} />
-        </HeaderTitle>
-        <Expand>
-          <ExpandIconWrapper>
-            <ExpandIcon
-              name="chevron-right"
-              className={expanded ? 'expanded' : 'collapsed'}
-            />
-          </ExpandIconWrapper>
-        </Expand>
-      </CreateProjectButton>
-      <CSSTransition
-        classNames="content"
-        in={expanded}
-        timeout={duartion}
-        mounOnEnter={true}
-        unmountOnExit={true}
-        enter={true}
-      >
-        <CreateProjectContent
-          className={`${expanded ? 'expanded' : 'collapsed'}`}
+    const handleData = (data: InsertConfigurationOptions<ITabItem>) =>
+      setTabs(insertConfiguration(data));
+
+    return (
+      <Container className={className}>
+        <CreateProjectButton
+          className={`e2e-create-project-expand-collapse-button ${
+            expanded ? 'expanded' : 'collapsed'
+          }`}
+          aria-label={formatMessage(messages.createAProjectFromATemplate)}
+          onMouseDown={removeFocus}
+          onClick={handleExpandCollapse}
         >
-          <CreateProjectContentInner>
-            {projectTemplatesEnabled ? (
-              <Outlet id="app.containers.Admin.projects.all.createProject" />
-            ) : (
+          <HeaderTitle>
+            <FormattedMessage {...messages.createAProject} />
+          </HeaderTitle>
+          <Expand>
+            <ExpandIconWrapper>
+              <ExpandIcon
+                name="chevron-right"
+                className={expanded ? 'expanded' : 'collapsed'}
+              />
+            </ExpandIconWrapper>
+          </Expand>
+        </CreateProjectButton>
+        <CSSTransition
+          classNames="content"
+          in={expanded}
+          timeout={duartion}
+          mounOnEnter={true}
+          unmountOnExit={true}
+          enter={true}
+        >
+          <CreateProjectContent
+            className={`${expanded ? 'expanded' : 'collapsed'}`}
+          >
+            <CreateProjectContentInner>
+              {tabs.length > 1 && (
+                <StyledTabs
+                  className="e2e-create-project-tabs"
+                  items={tabs}
+                  selectedValue={selectedTabValue}
+                  onClick={handleTabOnClick}
+                />
+              )}
+              {selectedTabValue === 'template' && projectTemplatesEnabled && (
+                <Outlet
+                  id="app.containers.Admin.projects.all.createProject"
+                  onData={handleData}
+                />
+              )}
+              {selectedTabValue === 'scratch' && <AdminProjectEditGeneral />}
               <AdminProjectEditGeneral />
-            )}
-          </CreateProjectContentInner>
-        </CreateProjectContent>
-      </CSSTransition>
-    </Container>
-  );
-});
+            </CreateProjectContentInner>
+          </CreateProjectContent>
+        </CSSTransition>
+      </Container>
+    );
+  }
+);
 
 export default injectIntl(CreateProject);

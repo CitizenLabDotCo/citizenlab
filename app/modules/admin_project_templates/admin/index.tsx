@@ -34,17 +34,17 @@ const CreateProjectContainer = ({
 }: Props & InjectedIntlProps) => {
   const tabs: ITabItem[] = [
     {
-      value: 'template',
+      name: 'template',
       label: formatMessage(messages.fromATemplate),
       icon: 'template',
     },
-    {
-      value: 'scratch',
-      label: formatMessage(messages.fromScratch),
-      icon: 'scratch',
-    },
+    // {
+    //   name: 'scratch',
+    //   label: formatMessage(messages.fromScratch),
+    //   icon: 'scratch',
+    // },
   ];
-  const [selectedTabValue, setSelectedTabValue] = useState(tabs[0].value);
+  const [selectedTabValue, setSelectedTabValue] = useState(tabs[0].name);
   const isFirstRun = useRef(true);
 
   const handleTabOnClick = useCallback(
