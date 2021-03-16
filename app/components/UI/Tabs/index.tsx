@@ -71,7 +71,7 @@ const Tab = styled.button<{ index: number }>`
 `;
 
 export interface ITabItem {
-  value: string;
+  name: string;
   label: string | JSX.Element;
   icon?: IconNames;
 }
@@ -98,18 +98,18 @@ const Tabs = memo<Props>(({ items, selectedValue, onClick, className }) => {
     <Container className={className} role="tablist">
       {items.map((item: ITabItem, index) => (
         <Tab
-          id={item.value}
+          id={item.name}
           index={index + 1}
           role="tab"
-          aria-selected={selectedValue === item.value}
-          aria-controls={item.value}
-          key={item.value}
-          className={`${selectedValue === item.value ? 'selected' : ''} ${
+          aria-selected={selectedValue === item.name}
+          aria-controls={item.name}
+          key={item.name}
+          className={`${selectedValue === item.name ? 'selected' : ''} ${
             index === 0 ? 'first' : ''
           } ${index + 1 === items.length ? 'last' : ''}`}
           onMouseDown={removeFocus}
           onClick={handleTabOnClick}
-          data-itemvalue={item.value}
+          data-itemvalue={item.name}
         >
           <TabText>{item.label}</TabText>
           {item.icon && <TabIcon name={item.icon} />}

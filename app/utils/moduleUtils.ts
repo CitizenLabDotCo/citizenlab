@@ -12,6 +12,7 @@ import { NormalFormValues } from 'containers/Admin/users/NormalGroupForm';
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
 import { IProjectData, IUpdatedProjectProperties } from 'services/projects';
 import { onProjectFormStateChange } from 'containers/Admin/projects/edit/general';
+import { ITabItem } from 'components/UI/Tabs';
 import { mergeWith, castArray } from 'lodash-es';
 
 import { FunctionComponent } from 'react';
@@ -165,7 +166,9 @@ export type OutletsPropertyMap = {
       tabConfiguration: ITab;
     }) => void;
   };
-  'app.containers.Admin.projects.all.createProject': {};
+  'app.containers.Admin.projects.all.createProject': {
+    onData: (data: InsertConfigurationOptions<ITabItem>) => void;
+  };
   'app.containers.Admin.settings.registration': {};
   'app.containers.Admin.settings.registrationHelperText': {
     onChange: (propertyName: string) => (multiloc: Multiloc) => void;
