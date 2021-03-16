@@ -127,5 +127,5 @@ class Initiative < ApplicationRecord
   end
 
 
-  Initiative.include_if_ee 'Moderation::Extensions::Moderation'
+  Initiative.include_if_ee 'Moderation::Extensions::Moderatable'
 end

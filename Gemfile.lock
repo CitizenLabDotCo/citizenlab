@@ -141,6 +141,14 @@ PATH
       rails (~> 6.0.0)
 
 PATH
+  remote: engines/moderation
+  specs:
+    moderation (0.1.0)
+      active_model_serializers (~> 0.10.7)
+      pundit (~> 2.0)
+      rails (~> 6.0.0)
+
+PATH
   remote: engines/multi_tenancy
   specs:
     multi_tenancy (0.1.0)
@@ -870,6 +878,7 @@ DEPENDENCIES
   matomo!
   mini_magick (~> 4.9)
   mjml-rails (~> 4.4)
+  moderation!
   multi_tenancy!
   nlp!
   okcomputer
