@@ -71,12 +71,12 @@ class PermissionsService
     permission = Permission.includes(:groups).find_by(permission_scope: scope, action: action)
 
     if permission.blank? && self.class.actions(scope)
-      update_permissions_for_scope(scope&.class)
+      update_permissions_for_scope(scope)
       permission = Permission.includes(:groups).find_by(permission_scope: scope, action: action)
     end
 
-    raise "Unkown action '#{action}' for resource: #{resource}" unless permission
-    
+    raise "Unknown action '#{action}' for resource: #{resource}" unless permission
+
     permission.denied?(user)
   end
 
