@@ -559,7 +559,6 @@ export class IdeasShow extends PureComponent<
       const smallerThanLargeTablet = windowSize
         ? windowSize <= viewportWidths.largeTablet
         : false;
-
       const proposedBudgetEnabled = isFieldEnabled(
         'proposed_budget',
         ideaCustomFieldsSchemas,
