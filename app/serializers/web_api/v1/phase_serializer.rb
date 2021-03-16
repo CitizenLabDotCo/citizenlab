@@ -9,8 +9,6 @@ class WebApi::V1::PhaseSerializer < WebApi::V1::BaseSerializer
 
   belongs_to :project
 
-  has_many :permissions
-
   has_one :user_basket, if: Proc.new { |object, params|
     signed_in? object, params
   } do |object, params|
@@ -28,3 +26,5 @@ class WebApi::V1::PhaseSerializer < WebApi::V1::BaseSerializer
     end
   end
 end
+
+WebApi::V1::PhaseSerializer.prepend_if_ee('GranularPermissions::WebApi::V1::Patches::PhaseSerializer')
