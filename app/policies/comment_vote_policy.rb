@@ -28,7 +28,7 @@ class CommentVotePolicy < ApplicationPolicy
              when 'Initiative'
                denied_for_initiative?(user)
              else
-               raise Pundit::NotAuthorizedError
+               raise ArgumentError, "Comment voting policy not implemented for #{record.votable&.post_type}"
              end
 
     reason ? raise_not_authorized(reason) : true
