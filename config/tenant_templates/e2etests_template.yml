@@ -8217,7 +8217,7 @@ models:
     group_ref: *verifiedCharlie
   - permission_ref: *1119
     group_ref: *verifiedCharlie
-  verification/id_cards:
+  id_id_card_lookup/id_cards:
     - card_id: "a111"
     - card_id: "b222"
     - card_id: "c333"
