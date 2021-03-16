@@ -1,11 +1,19 @@
-import React, { useState, useCallback, useEffect, useRef } from 'react';
+import React, {
+  lazy,
+  Suspense,
+  useState,
+  useCallback,
+  useEffect,
+  useRef,
+} from 'react';
 import styled from 'styled-components';
 
 // components
 import Tabs, { ITabItem } from 'components/UI/Tabs';
-import ProjectTemplatesContainer from './containers';
-import AdminProjectEditGeneral from 'containers/Admin/projects/edit/general';
-
+import ProjectTemplates from './containers';
+const AdminProjectEditGeneral = lazy(() =>
+  import('containers/Admin/projects/edit/general')
+);
 // i18n
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
@@ -21,7 +29,7 @@ const StyledTabs = styled(Tabs)`
 
 interface Props {}
 
-const AdminProjectTemplates = ({
+const CreateProjectContainer = ({
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
   const tabs: ITabItem[] = [
@@ -68,12 +76,14 @@ const AdminProjectTemplates = ({
         onClick={handleTabOnClick}
       />
       {selectedTabValue === 'template' ? (
-        <ProjectTemplatesContainer />
+        <ProjectTemplates />
       ) : (
-        <AdminProjectEditGeneral />
+        <Suspense fallback={null}>
+          <AdminProjectEditGeneral />
+        </Suspense>
       )}
     </>
   );
 };
 
-export default injectIntl(AdminProjectTemplates);
+export default injectIntl(CreateProjectContainer);
