@@ -53,7 +53,7 @@ export interface Props {
   showHeader?: boolean;
   inModal: boolean;
   skippable?: boolean;
-  onComplete?: () => void;
+  onCompleted?: () => void;
   onSkipped?: () => void;
   onError?: () => void;
   className?: string;
@@ -68,7 +68,7 @@ const VerificationSteps = memo<Props>(
     showHeader,
     inModal,
     skippable,
-    onComplete,
+    onCompleted,
     onSkipped,
     onError,
     error,
@@ -82,14 +82,14 @@ const VerificationSteps = memo<Props>(
     const verificationMethods = useVerificationMethods();
 
     useEffect(() => {
-      if (activeStep === 'success' && onComplete) {
-        onComplete();
+      if (activeStep === 'success' && onCompleted) {
+        onCompleted();
       }
 
       if (activeStep === 'error' && (context === null || error) && onError) {
         onError();
       }
-    }, [onComplete, onError, context, activeStep]);
+    }, [onCompleted, onError, context, activeStep]);
 
     const onMethodSelected = useCallback(
       (selectedMethod: IVerificationMethod) => {
