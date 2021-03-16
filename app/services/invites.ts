@@ -81,6 +81,7 @@ export function invitesStream(streamParams: IStreamParams | null = null) {
   return streams.get<IInvites>({
     apiEndpoint: `${API_PATH}/invites`,
     ...streamParams,
+    cacheStream: false,
   });
 }
 

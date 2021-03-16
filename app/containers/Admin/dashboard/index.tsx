@@ -1,9 +1,11 @@
-import React, { memo } from 'react';
+import React, { memo, useState, useEffect } from 'react';
 import { adopt } from 'react-adopt';
+import { insertConfiguration } from 'utils/moduleUtils';
 
 // components
 import HelmetIntl from 'components/HelmetIntl';
 import DashboardTabs from './components/DashboardTabs';
+import Outlet from 'components/Outlet';
 
 // resource
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
@@ -20,6 +22,9 @@ import { injectIntl } from 'utils/cl-intl';
 import styled from 'styled-components';
 import { media, colors, fontSizes } from 'utils/styleUtils';
 import { rgba } from 'polished';
+
+// typings
+import { InsertConfigurationOptions, ITab } from 'typings';
 
 export const ControlBar = styled.div`
   display: flex;
@@ -235,67 +240,86 @@ export const DashboardsPage = memo(
     children,
     intl: { formatMessage },
   }: Props & InjectedIntlProps) => {
-    const tabs = [
-      { label: formatMessage(messages.tabSummary), url: '/admin/dashboard' },
+    const [tabs, setTabs] = useState<ITab[]>([
+      {
+        label: formatMessage(messages.tabSummary),
+        url: '/admin/dashboard',
+        name: 'dashboard',
+      },
       {
         label: formatMessage(messages.tabUsers),
         url: '/admin/dashboard/users',
+        name: 'users',
       },
       {
         label: formatMessage(messages.tabReports),
         url: '/admin/dashboard/reports',
         feature: 'project_reports',
+        name: 'project_reports',
       },
       {
         label: formatMessage(messages.tabInsights),
         url: '/admin/dashboard/insights',
         feature: 'clustering',
+        name: 'clustering',
       },
-      {
-        label: formatMessage(messages.tabMap),
-        url: '/admin/dashboard/map',
-        feature: 'geographic_dashboard',
-      },
-    ];
+    ]);
+
     const moderatorTabs = [
-      { label: formatMessage(messages.tabSummary), url: '/admin/dashboard' },
+      {
+        label: formatMessage(messages.tabSummary),
+        url: '/admin/dashboard',
+        name: 'dashboard',
+      },
       {
         label: formatMessage(messages.tabReports),
         url: '/admin/dashboard/reports',
         feature: 'project_reports',
+        name: 'project_reports',
       },
     ];
+
+    useEffect(() => {
+      if (authUser && isProjectModerator({ data: authUser })) {
+        setTabs(moderatorTabs);
+      }
+
+      return () => setTabs([]);
+    }, [isProjectModerator, authUser]);
 
     const resource = {
       title: formatMessage(messages.titleDashboard),
       subtitle: formatMessage(messages.subtitleDashboard),
     };
 
-    if (authUser) {
-      if (isAdmin({ data: authUser })) {
-        return (
-          <DashboardTabs resource={resource} tabs={tabs}>
-            <HelmetIntl
-              title={messages.helmetTitle}
-              description={messages.helmetDescription}
-            />
-            {children}
-          </DashboardTabs>
-        );
-      } else if (isProjectModerator({ data: authUser })) {
-        return (
-          <DashboardTabs resource={resource} tabs={moderatorTabs}>
-            <HelmetIntl
-              title={messages.helmetTitle}
-              description={messages.helmetDescription}
-            />
-            {children}
-          </DashboardTabs>
-        );
-      }
+    const handleData = (data: InsertConfigurationOptions<ITab>) =>
+      setTabs(insertConfiguration(data));
+
+    if (
+      !authUser ||
+      (authUser &&
+        !isAdmin({ data: authUser }) &&
+        !isProjectModerator({ data: authUser }))
+    ) {
+      return null;
     }
 
-    return null;
+    return (
+      <>
+        <Outlet
+          id="app.containers.Admin.dashboards.tabs"
+          onData={handleData}
+          formatMessage={formatMessage}
+        />
+        <DashboardTabs resource={resource} tabs={tabs}>
+          <HelmetIntl
+            title={messages.helmetTitle}
+            description={messages.helmetDescription}
+          />
+          {children}
+        </DashboardTabs>
+      </>
+    );
   }
 );
 
