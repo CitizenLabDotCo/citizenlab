@@ -19,7 +19,6 @@ class InitiativePolicy < ApplicationPolicy
   end
 
   def create?
-    require 'pry' ; binding.pry 
     return true if record.draft?
     return true if active? && admin?
 
