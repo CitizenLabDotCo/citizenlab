@@ -129,13 +129,6 @@ jobs:
       - run: aws s3 sync doc/public_api s3://developers.citizenlab.co/api-docs/public_api/$CIRCLE_BRANCH --delete --acl public-read
       - run: aws s3 sync doc/admin_api s3://developers.citizenlab.co/api-docs/admin_api/$CIRCLE_BRANCH --delete --acl public-read
 
-  deploy-cl-docs-portal:
-    resource_class: small
-    docker:
-      - image: byrnedo/alpine-curl
-    steps:
-      - run: "curl -u $CIRCLE_API_TOKEN: -d build_parameters[CIRCLE_JOB]=build https://circleci.com/api/v1.1/project/github/CitizenLabDotCo/cl-docs-portal/tree/master"
-
   push-deployment-docker-image:
     resource_class: small
     docker:
@@ -243,10 +236,6 @@ workflows:
             branches:
               ignore:
                 - crowdin_master
-      - deploy-cl-docs-portal:
-          context: docker-hub-access
-          requires:
-            - web-api-docs
       - push-deployment-docker-image:
           context: docker-hub-access
           requires:
