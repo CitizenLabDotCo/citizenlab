@@ -7,7 +7,7 @@ const configuration: ModuleConfiguration = {
     'admin.projects': [
       {
         path: '/:locale/admin/projects/:projectId/ideaform',
-        name: 'admin projects idea form',
+        name: 'ideaform',
         container: () => import('./admin/containers/projects/edit/ideaform'),
       },
     ],
