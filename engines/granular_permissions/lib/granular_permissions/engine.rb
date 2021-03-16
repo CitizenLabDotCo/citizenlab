@@ -27,7 +27,6 @@ module GranularPermissions
       PermissionsService.register_scope_type(CitizenLab::Permissions::ScopeTypes::Project)
       PermissionsService.register_scope_type(CitizenLab::Permissions::ScopeTypes::Phase)
       PermissionsService.register_scope_type(CitizenLab::Permissions::ScopeTypes::Global)
-      PermissionsService.new.update_all_permissions
     end
 
     config.to_prepare do
