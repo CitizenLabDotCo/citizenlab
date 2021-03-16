@@ -157,6 +157,7 @@ PATH
   remote: engines/id_id_card_lookup
   specs:
     id_id_card_lookup (0.1.0)
+      admin_api
       rails (~> 6.0.0)
       savon (~> 2.12.0)
       verification
