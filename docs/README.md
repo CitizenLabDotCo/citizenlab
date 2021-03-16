@@ -1,5 +1,19 @@
 # Changelog
 
+## 2021-03-16
+
+### Added
+- Allows for sending front-end events to our self-hosted matomo analytics tool
+
+## 2021-03-11
+
+### Changed
+- Tenants are now ordered alphabetically in AdminHQ
+
+### Added
+- Serbian (Latin) is now a language option.
+
+
 ## 2021-03-10
 
 ### Added
