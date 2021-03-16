@@ -14,7 +14,7 @@ class WebApi::V1::PhaseSerializer < WebApi::V1::BaseSerializer
   } do |object, params|
     user_basket object, params
   end
-
+  
   def self.user_basket object, params
     preloaded_user_basket = params.dig(:user_baskets, object.id)&.first
     if preloaded_user_basket
@@ -27,4 +27,4 @@ class WebApi::V1::PhaseSerializer < WebApi::V1::BaseSerializer
   end
 end
 
-WebApi::V1::PhaseSerializer.prepend_if_ee('GranularPermissions::WebApi::V1::Patches::PhaseSerializer')
+WebApi::V1::PhaseSerializer.include_if_ee('GranularPermissions::WebApi::V1::Patches::PhaseSerializer')

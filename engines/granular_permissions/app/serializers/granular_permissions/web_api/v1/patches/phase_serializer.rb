@@ -5,8 +5,8 @@ module GranularPermissions
     module V1
       module Patches
         module PhaseSerializer
-          def self.included(_base)
-            has_many :permissions
+          def self.included(base)
+            base.class_eval { has_many :permissions }
           end
         end
       end
