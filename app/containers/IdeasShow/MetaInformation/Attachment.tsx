@@ -42,7 +42,7 @@ export interface Props {
   file: IPhaseFileData | IIdeaFileData | IEventFileData;
 }
 
-const DropdownMap = memo<Props>(({ className, file }) => {
+const Attachment = memo<Props>(({ className, file }) => {
   return (
     <Container className={className}>
       <PaperclipIcon name="paperclip" ariaHidden />
@@ -58,4 +58,4 @@ const DropdownMap = memo<Props>(({ className, file }) => {
   );
 });
 
-export default DropdownMap;
+export default Attachment;

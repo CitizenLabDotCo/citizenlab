@@ -3,10 +3,12 @@ import { isNilOrError } from 'utils/helperUtils';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 import CustomFieldGraphs from './admin/components/CustomFieldGraphs';
 import RegistrationFieldsToGraphs from './admin/components/RegistrationFieldsToGraphs';
-import Tab from './admin/components/Tab';
+import AllCustomFields from './admin/components/CustomFields/All';
+
 import CustomFieldsStep from './citizen/components/CustomFieldsStep';
 import UserCustomFieldsForm from './citizen/components/UserCustomFieldsForm';
 import useUserCustomFieldsSchema from './hooks/useUserCustomFieldsSchema';
+import RegistrationQuestions from './admin/components/RegistrationQuestions';
 
 const RenderOnCustomFields = ({ children }) => {
   const userCustomFieldsSchema = useUserCustomFieldsSchema();
@@ -22,10 +24,56 @@ const RenderOnCustomFields = ({ children }) => {
 
 const configuration: ModuleConfiguration = {
   routes: {
-    'admin.settings': [
+    admin: [
       {
-        path: 'registration',
-        container: () => import('./admin/containers/settings/registration'),
+        path: 'settings/registration/custom-fields',
+        container: () => import('./admin/containers/CustomFields/'),
+        childRoutes: [
+          {
+            path: 'new',
+            container: () =>
+              import(
+                './admin/containers/CustomFields/RegistrationCustomFieldNew'
+              ),
+          },
+          {
+            path: ':userCustomFieldId',
+            container: () =>
+              import(
+                './admin/containers/CustomFields/RegistrationCustomFieldEdit'
+              ),
+            childRoutes: [
+              {
+                path: 'field-settings',
+                container: () =>
+                  import(
+                    './admin/containers/CustomFields/RegistrationCustomFieldEdit/RegistrationCustomFieldSettings'
+                  ),
+              },
+              {
+                path: 'options',
+                container: () =>
+                  import(
+                    './admin/containers/CustomFields/RegistrationCustomFieldEdit/RegistrationCustomFieldOptions'
+                  ),
+              },
+              {
+                path: 'options/new',
+                container: () =>
+                  import(
+                    './admin/containers/CustomFields/RegistrationCustomFieldEdit/RegistrationCustomFieldOptionsNew'
+                  ),
+              },
+              {
+                path: 'options/:userCustomFieldOptionId',
+                container: () =>
+                  import(
+                    './admin/containers/CustomFields/RegistrationCustomFieldEdit/RegistrationCustomFieldOptionsEdit'
+                  ),
+              },
+            ],
+          },
+        ],
       },
     ],
   },
@@ -40,7 +88,8 @@ const configuration: ModuleConfiguration = {
         <UserCustomFieldsForm {...props} />
       </RenderOnCustomFields>
     ),
-    'app.containers.Admin.settings.SettingsPage': (props) => <Tab {...props} />,
+    'app.containers.Admin.settings.registration': AllCustomFields,
+    'app.containers.Admin.settings.registrationHelperText': RegistrationQuestions,
   },
 };
 

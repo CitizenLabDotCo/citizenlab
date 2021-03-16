@@ -15,8 +15,8 @@ import {
   StyledHeaderTitle,
   StyledModalContentContainer,
 } from 'components/SignUpIn/styles';
-import ReactResizeDetector from 'react-resize-detector';
 import Outlet from 'components/Outlet';
+import ReactResizeDetector from 'react-resize-detector/build/withPolyfill';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -356,7 +356,7 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
               {activeStep === 'password-signup' && (
                 <PasswordSignup
                   metaData={metaData}
-                  hasNextStep={enabledSteps.length > 1}
+                  hasNextStep={activeStepNumber < totalStepsCount}
                   onCompleted={handleStepCompleted}
                   onGoToSignIn={onGoToSignIn}
                   onGoBack={handleGoBack}

@@ -16,43 +16,44 @@ export type ISuccessStory = {
 };
 export type AppConfigurationSettingsFeatureNames = keyof IAppConfigurationSettings;
 
+export type IAppConfigurationSettingsCore = {
+  allowed: boolean;
+  enabled: boolean;
+  locales: Locale[];
+  timezone: string;
+  organization_name: Multiloc;
+  organization_site?: string;
+  organization_type: 'small_city' | 'medium_city' | 'large_city' | 'generic';
+  lifecycle_stage:
+    | 'trial'
+    | 'expired_trial'
+    | 'demo'
+    | 'active'
+    | 'churned'
+    | 'not_applicable';
+  header_title?: Multiloc | null;
+  header_slogan?: Multiloc | null;
+  meta_title?: Multiloc | null;
+  meta_description?: Multiloc | null;
+  signup_helper_text?: Multiloc | null;
+  custom_fields_signup_helper_text?: Multiloc | null;
+  color_main: string | null;
+  color_secondary: string | null;
+  color_text: string | null;
+  color_menu_bg?: string | null;
+  currency: string;
+  custom_onboarding_fallback_message?: Multiloc | null;
+  custom_onboarding_message?: Multiloc | null;
+  custom_onboarding_button?: Multiloc | null;
+  custom_onboarding_link?: string | null;
+  currently_working_on_text?: Multiloc | null;
+  segment_destinations_blacklist: string[] | null;
+  areas_term?: Multiloc;
+  area_term?: Multiloc;
+};
+
 export interface IAppConfigurationSettings {
-  core: {
-    allowed: boolean;
-    enabled: boolean;
-    locales: Locale[];
-    timezone: string;
-    organization_name: Multiloc;
-    organization_site?: string;
-    organization_type: 'small_city' | 'medium_city' | 'large_city' | 'generic';
-    lifecycle_stage:
-      | 'trial'
-      | 'expired_trial'
-      | 'demo'
-      | 'active'
-      | 'churned'
-      | 'not_applicable';
-    header_title?: Multiloc | null;
-    header_slogan?: Multiloc | null;
-    meta_title?: Multiloc | null;
-    meta_description?: Multiloc | null;
-    signup_helper_text?: Multiloc | null;
-    custom_fields_signup_helper_text?: Multiloc | null;
-    color_main: string | null;
-    color_secondary: string | null;
-    color_text: string | null;
-    color_menu_bg?: string | null;
-    currency: string;
-    custom_onboarding_fallback_message?: Multiloc | null;
-    /* following three are used in the back-end */
-    custom_onboarding_message?: Multiloc | null;
-    custom_onboarding_button?: Multiloc | null;
-    custom_onboarding_link?: string | null;
-    currently_working_on_text?: Multiloc | null;
-    segment_destinations_blacklist: string[] | null;
-    areas_term?: Multiloc;
-    area_term?: Multiloc;
-  };
+  core: IAppConfigurationSettingsCore;
   demographic_fields?: {
     allowed: boolean;
     enabled: boolean;
@@ -65,6 +66,7 @@ export interface IAppConfigurationSettings {
     allowed: boolean;
     enabled: boolean;
     phone?: boolean;
+    minimum_length?: number;
     phone_email_pattern?: string;
   };
   facebook_login?: {
@@ -92,6 +94,11 @@ export interface IAppConfigurationSettings {
     environment: string;
     identifier: string;
     secret: string;
+  };
+  custom_accessibility_statement_link: {
+    allowed: boolean;
+    enabled: boolean;
+    url?: string;
   };
   manual_project_sorting?: AppConfigurationFeature;
   admin_project_templates?: AppConfigurationFeature;
@@ -166,6 +173,10 @@ export interface IAppConfigurationSettings {
   google_tag_manager?: AppConfigurationFeature & {
     destinations: string;
     container_id: string;
+  };
+  matomo?: AppConfigurationFeature & {
+    tenant_site_id: string;
+    product_site_id: string;
   };
   redirects?: {
     enabled: boolean;
