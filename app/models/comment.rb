@@ -83,5 +83,5 @@ class Comment < ApplicationRecord
   end
 
 
-  Comment.include_if_ee 'Moderation::Extensions::Moderation'
+  Comment.include_if_ee 'Moderation::Extensions::Moderatable'
 end

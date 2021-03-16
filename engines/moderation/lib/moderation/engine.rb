@@ -3,8 +3,8 @@ module Moderation
     isolate_namespace Moderation
 
     config.to_prepare do
-      require 'custom_statuses/feature_specification'
-      AppConfiguration::Settings.add_feature(Moderation::FeatureSpecification)
+      require 'moderation/feature_specification'
+      AppConfiguration::Settings.add_feature FeatureSpecification
     end
   end
 end

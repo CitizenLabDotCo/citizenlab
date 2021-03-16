@@ -7,7 +7,7 @@ module Moderation
     end
 
     def self.feature_title
-      'M0deration'
+      'Moderation'
     end
 
     def self.feature_description

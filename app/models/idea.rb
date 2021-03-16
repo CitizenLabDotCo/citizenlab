@@ -149,5 +149,5 @@ class Idea < ApplicationRecord
   end
 
 
-  Idea.include_if_ee 'Moderation::Extensions::Moderation'
+  Idea.include_if_ee 'Moderation::Extensions::Moderatable'
 end
