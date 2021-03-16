@@ -225,7 +225,7 @@ const CreateProject = memo<Props & InjectedIntlProps>(({ className, intl }) => {
         >
           <CreateProjectContentInner>
             {projectTemplatesEnabled ? (
-              <Outlet id="app.containers.Admin.projects.all" />
+              <Outlet id="app.containers.Admin.projects.all.createProject" />
             ) : (
               <AdminProjectEditGeneral />
             )}

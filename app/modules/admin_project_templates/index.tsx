@@ -1,10 +1,12 @@
 import React from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
-import AdminProjectTemplates from './admin';
+import CreateProject from './admin';
 
 const configuration: ModuleConfiguration = {
   outlets: {
-    'app.containers.Admin.projects.all': (_props) => <AdminProjectTemplates />,
+    'app.containers.Admin.projects.all.createProject': (_props) => (
+      <CreateProject />
+    ),
   },
 };
 

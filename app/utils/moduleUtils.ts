@@ -165,7 +165,7 @@ export type OutletsPropertyMap = {
       tabConfiguration: ITab;
     }) => void;
   };
-  'app.containers.Admin.projects.all': {};
+  'app.containers.Admin.projects.all.createProject': {};
   'app.containers.Admin.settings.registration': {};
   'app.containers.Admin.settings.registrationHelperText': {
     onChange: (propertyName: string) => (multiloc: Multiloc) => void;
