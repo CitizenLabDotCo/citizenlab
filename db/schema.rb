@@ -307,6 +307,11 @@ ActiveRecord::Schema.define(version: 2021_03_12_123927) do
     t.index ["project_id"], name: "index_groups_projects_on_project_id"
   end
 
+  create_table "id_id_card_lookup_id_cards", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "hashed_card_id"
+    t.index ["hashed_card_id"], name: "index_id_id_card_lookup_id_cards_on_hashed_card_id"
+  end
+
   create_table "idea_files", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "idea_id"
     t.string "file"
@@ -976,11 +981,6 @@ ActiveRecord::Schema.define(version: 2021_03_12_123927) do
     t.index "lower((email)::text)", name: "users_unique_lower_email_idx", unique: true
     t.index ["email"], name: "index_users_on_email"
     t.index ["slug"], name: "index_users_on_slug", unique: true
-  end
-
-  create_table "verification_id_cards", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "hashed_card_id"
-    t.index ["hashed_card_id"], name: "index_verification_id_cards_on_hashed_card_id"
   end
 
   create_table "verification_verifications", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
