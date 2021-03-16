@@ -356,6 +356,11 @@ if ['public','example_org'].include? Apartment::Tenant.current
             secret: 'fake_secret'
           },
           {
+            name: 'clave_unica',
+            client_id: 'fake_identifier',
+            client_secret: 'fake_secret'
+          },
+          {
             name: 'bogus'
           },
           {
@@ -893,7 +898,7 @@ if Apartment::Tenant.current == 'localhost'
     InitiativeStatusService.new.automated_transitions!
 
     10.times do |i|
-      Verification::IdCard.create!(card_id: i.to_s*3)
+      IdIdCardLookup::IdCard.create!(card_id: i.to_s*3)
     end
 
     3.times do |i|
