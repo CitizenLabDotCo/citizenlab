@@ -25,6 +25,7 @@ class ParticipationContextService
 
   BUDGETING_DISABLED_REASONS = {
     project_inactive: 'project_inactive',
+    not_budgeting: 'not_budgeting',
     idea_not_in_current_phase: 'idea_not_in_current_phase'
   }.freeze
 
@@ -218,9 +219,13 @@ class ParticipationContextService
   end
 
   def budgeting_disabled_reason_for_context(context, user)
-    return BUDGETING_DISABLED_REASONS[:project_inactive] unless context
-
-    permission_denied?(user, 'budgeting', context)
+    if !context
+      BUDGETING_DISABLED_REASONS[:project_inactive]
+    elsif !context.budgeting?
+      BUDGETING_DISABLED_REASONS[:not_budgeting]
+    else
+      permission_denied?(user, 'taking_poll', context)
+    end
   end
 
   def future_posting_idea_enabled_phase(project, user, time = Time.zone.now)
