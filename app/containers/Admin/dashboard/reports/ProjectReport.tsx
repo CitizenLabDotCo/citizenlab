@@ -11,9 +11,6 @@ import messages from '../messages';
 import { IResolution, GraphsContainer } from '..';
 import GetIdeas, { GetIdeasChildProps } from 'resources/GetIdeas';
 import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
-import GetUserCustomFields, {
-  GetUserCustomFieldsChildProps,
-} from 'resources/GetUserCustomFields';
 import {
   activeUsersByTimeCumulativeXlsxEndpoint,
   activeUsersByTimeStream,
@@ -40,8 +37,9 @@ import IdeasByStatusChart from '../components/IdeasByStatusChart';
 import ParticipationPerTopic from './charts/ParticipationPerTopic';
 import ResolutionControl from '../components/ResolutionControl';
 import T from 'components/T';
-import CustomFieldComparison from './CustomFieldComparison';
 import BarChartActiveUsersByTime from '../summary/charts/BarChartActiveUsersByTime';
+
+import Outlet from 'components/Outlet';
 
 const Section = styled.div`
   margin-bottom: 20px;
@@ -82,7 +80,6 @@ interface InputProps {
 interface DataProps {
   phases: GetPhasesChildProps;
   mostVotedIdeas: GetIdeasChildProps;
-  customFields: GetUserCustomFieldsChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -92,7 +89,6 @@ const ProjectReport = memo(
     project,
     phases,
     mostVotedIdeas,
-    customFields,
     intl: { formatMessage, formatDate },
   }: Props & InjectedIntlProps) => {
     const localize = useLocalize();
@@ -237,24 +233,13 @@ const ProjectReport = memo(
                 currentProjectFilter={project.id}
                 currentProjectFilterLabel={projectTitle}
               />
-              {participationMethods !== ['information'] &&
-                startAt &&
-                endAt &&
-                !isNilOrError(customFields) &&
-                customFields.map(
-                  (customField) =>
-                    // only show enabled fields, only supported number field is birthyear.
-                    customField.attributes.enabled &&
-                    (customField.attributes.input_type === 'number'
-                      ? customField.attributes.code === 'birthyear'
-                      : true) && (
-                      <CustomFieldComparison
-                        customField={customField}
-                        currentProject={project.id}
-                        key={customField.id}
-                      />
-                    )
-                )}
+              <Outlet
+                id="app.containers.Admin.dashboard.reports.ProjectReport.graphs"
+                startAt={startAt}
+                endAt={endAt}
+                participationMethods={participationMethods}
+                project={project}
+              />
             </GraphsContainer>
           </Section>
         )}
@@ -350,11 +335,6 @@ const Data = adopt<DataProps, InputProps>({
     >
       {render}
     </GetIdeas>
-  ),
-  customFields: (
-    <GetUserCustomFields
-      inputTypes={['select', 'multiselect', 'checkbox', 'number']}
-    />
   ),
 });
 
