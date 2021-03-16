@@ -311,6 +311,14 @@ export const loadModules = (modules: Modules): ParsedModuleConfiguration => {
         mergedRoutes?.['admin.dashboards'],
         RouteTypes.ADMIN
       ),
+      'admin.settings': parseModuleRoutes(
+        mergedRoutes?.['admin.dashboards'],
+        RouteTypes.ADMIN
+      ),
+      'admin.projects': parseModuleRoutes(
+        mergedRoutes?.['admin.dashboards'],
+        RouteTypes.ADMIN
+      ),
     },
     beforeMountApplication: callLifecycleMethods('beforeMountApplication'),
     afterMountApplication: callLifecycleMethods('afterMountApplication'),
