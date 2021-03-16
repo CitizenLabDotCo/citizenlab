@@ -19,6 +19,7 @@ class InitiativePolicy < ApplicationPolicy
   end
 
   def create?
+    require 'pry' ; binding.pry 
     return true if record.draft?
     return true if active? && admin?
 
@@ -84,4 +85,4 @@ class InitiativePolicy < ApplicationPolicy
   end
 end
 
-# InitiativePolicy.prepend_if_ee('GranularPermissions::Patches::InitiativePolicy')
+InitiativePolicy.prepend_if_ee('GranularPermissions::Patches::InitiativePolicy')
