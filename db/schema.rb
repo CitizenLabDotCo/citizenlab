@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_17_112905) do
+ActiveRecord::Schema.define(version: 2021_03_16_165251) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -269,7 +269,7 @@ ActiveRecord::Schema.define(version: 2021_02_17_112905) do
     t.uuid "project_id"
     t.jsonb "title_multiloc", default: {}
     t.jsonb "description_multiloc", default: {}
-    t.json "location_multiloc", default: {}
+    t.jsonb "location_multiloc", default: {}
     t.datetime "start_at"
     t.datetime "end_at"
     t.datetime "created_at", null: false
@@ -305,6 +305,11 @@ ActiveRecord::Schema.define(version: 2021_02_17_112905) do
     t.index ["group_id", "project_id"], name: "index_groups_projects_on_group_id_and_project_id", unique: true
     t.index ["group_id"], name: "index_groups_projects_on_group_id"
     t.index ["project_id"], name: "index_groups_projects_on_project_id"
+  end
+
+  create_table "id_id_card_lookup_id_cards", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "hashed_card_id"
+    t.index ["hashed_card_id"], name: "index_id_id_card_lookup_id_cards_on_hashed_card_id"
   end
 
   create_table "idea_files", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -537,7 +542,7 @@ ActiveRecord::Schema.define(version: 2021_02_17_112905) do
     t.index ["user_id"], name: "index_memberships_on_user_id"
   end
 
-  create_table "moderation_statuses", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "moderation_moderation_statuses", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "moderatable_id"
     t.string "moderatable_type"
     t.string "status"
@@ -978,11 +983,6 @@ ActiveRecord::Schema.define(version: 2021_02_17_112905) do
     t.index ["slug"], name: "index_users_on_slug", unique: true
   end
 
-  create_table "verification_id_cards", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "hashed_card_id"
-    t.index ["hashed_card_id"], name: "index_verification_id_cards_on_hashed_card_id"
-  end
-
   create_table "verification_verifications", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "user_id"
     t.string "method_name", null: false
@@ -1154,9 +1154,9 @@ ActiveRecord::Schema.define(version: 2021_02_17_112905) do
       ideas.body_multiloc AS content_body_multiloc,
       ideas.slug AS content_slug,
       ideas.published_at AS created_at,
-      moderation_statuses.status AS moderation_status
+      moderation_moderation_statuses.status AS moderation_status
      FROM ((ideas
-       LEFT JOIN moderation_statuses ON ((moderation_statuses.moderatable_id = ideas.id)))
+       LEFT JOIN moderation_moderation_statuses ON ((moderation_moderation_statuses.moderatable_id = ideas.id)))
        LEFT JOIN projects ON ((projects.id = ideas.project_id)))
   UNION ALL
    SELECT initiatives.id,
@@ -1172,9 +1172,9 @@ ActiveRecord::Schema.define(version: 2021_02_17_112905) do
       initiatives.body_multiloc AS content_body_multiloc,
       initiatives.slug AS content_slug,
       initiatives.published_at AS created_at,
-      moderation_statuses.status AS moderation_status
+      moderation_moderation_statuses.status AS moderation_status
      FROM (initiatives
-       LEFT JOIN moderation_statuses ON ((moderation_statuses.moderatable_id = initiatives.id)))
+       LEFT JOIN moderation_moderation_statuses ON ((moderation_moderation_statuses.moderatable_id = initiatives.id)))
   UNION ALL
    SELECT comments.id,
       'Comment'::text AS moderatable_type,
@@ -1189,9 +1189,9 @@ ActiveRecord::Schema.define(version: 2021_02_17_112905) do
       comments.body_multiloc AS content_body_multiloc,
       NULL::character varying AS content_slug,
       comments.created_at,
-      moderation_statuses.status AS moderation_status
+      moderation_moderation_statuses.status AS moderation_status
      FROM (((comments
-       LEFT JOIN moderation_statuses ON ((moderation_statuses.moderatable_id = comments.id)))
+       LEFT JOIN moderation_moderation_statuses ON ((moderation_moderation_statuses.moderatable_id = comments.id)))
        LEFT JOIN ideas ON ((ideas.id = comments.post_id)))
        LEFT JOIN projects ON ((projects.id = ideas.project_id)))
     WHERE ((comments.post_type)::text = 'Idea'::text)
@@ -1209,9 +1209,9 @@ ActiveRecord::Schema.define(version: 2021_02_17_112905) do
       comments.body_multiloc AS content_body_multiloc,
       NULL::character varying AS content_slug,
       comments.created_at,
-      moderation_statuses.status AS moderation_status
+      moderation_moderation_statuses.status AS moderation_status
      FROM ((comments
-       LEFT JOIN moderation_statuses ON ((moderation_statuses.moderatable_id = comments.id)))
+       LEFT JOIN moderation_moderation_statuses ON ((moderation_moderation_statuses.moderatable_id = comments.id)))
        LEFT JOIN initiatives ON ((initiatives.id = comments.post_id)))
     WHERE ((comments.post_type)::text = 'Initiative'::text);
   SQL
