@@ -4,10 +4,12 @@ files:
     update_option: update_without_changes
     languages_mapping:
       locale:
-        en-US: en
+        en: en
+        'no': nb-NO
   - source: /engines/email_campaigns/config/locales/en.yml
     translation: /engines/email_campaigns/config/locales/%locale%.yml
     update_option: update_without_changes
     languages_mapping:
       locale:
         en-US: en
+        'no': nb-NO
