@@ -1578,7 +1578,6 @@
   "app.containers.AdminPage.groups.permissions.add": "Dodajte",
   "app.containers.AdminPage.groups.permissions.deleteButtonLabel": "Izbriši",
   "app.containers.AdminPage.groups.permissions.deleteModeratorLabel": "Izbriši",
-  "app.containers.AdminPage.groups.permissions.editButtonLabel": "Izmenite",
   "app.containers.AdminPage.groups.permissions.granularPermissionsTitle": "Ko može dati doprinos (po projektnoj fazi)?",
   "app.containers.AdminPage.groups.permissions.groupDeletionConfirmation": "Da li ste sigurni da želite da uklonite ovu grupu iz projekta?",
   "app.containers.AdminPage.groups.permissions.groupsMultipleSelectPlaceholder": "Izabrane grupe",
