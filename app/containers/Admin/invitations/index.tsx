@@ -18,10 +18,12 @@ const InvitationsPage = React.memo((props: Props & InjectedIntlProps) => {
     {
       label: props.intl.formatMessage(messages.tabInviteUsers),
       url: '/admin/invitations',
+      name: 'invitations',
     },
     {
       label: props.intl.formatMessage(messages.tabAllInvitations),
       url: '/admin/invitations/all',
+      name: 'all',
     },
   ];
   const resource = {
