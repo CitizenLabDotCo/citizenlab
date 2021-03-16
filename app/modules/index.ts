@@ -2,6 +2,7 @@ import { loadModules } from 'utils/moduleUtils';
 
 import projectFoldersConfiguration from './project_folders';
 import smartGroupsConfiguration from './smart_groups';
+import userCustomFieldsConfiguration from './user_custom_fields';
 import granularPermissionsConfiguration from './granular_permissions';
 import moderationConfiguration from './moderation';
 import ideaAssignmentConfiguration from './idea_assignment';
@@ -14,6 +15,7 @@ import satismeterConfiguration from './satismeter';
 import segmentConfiguration from './segment';
 import projectVisibilityConfiguration from './project_visibility';
 import projectManagementConfiguration from './project_management';
+import matomoConfiguration from './matomo';
 import customIdeaStatusesConfiguration from './custom_idea_statuses';
 
 export default loadModules([
@@ -26,7 +28,15 @@ export default loadModules([
     isEnabled: true,
   },
   {
+    configuration: userCustomFieldsConfiguration,
+    isEnabled: true,
+  },
+  {
     configuration: googleTagManagerConfiguration,
+    isEnabled: true,
+  },
+  {
+    configuration: matomoConfiguration,
     isEnabled: true,
   },
   {
@@ -46,11 +56,11 @@ export default loadModules([
     isEnabled: true,
   },
   {
-    configuration: granularPermissionsConfiguration,
+    configuration: moderationConfiguration,
     isEnabled: true,
   },
   {
-    configuration: moderationConfiguration,
+    configuration: granularPermissionsConfiguration,
     isEnabled: true,
   },
   {

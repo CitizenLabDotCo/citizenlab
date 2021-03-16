@@ -1,5 +1,10 @@
 import { FunctionComponent } from 'react';
 import {
+  TSignUpStepConfigurationObject,
+  TSignUpSteps,
+} from 'components/SignUpIn/SignUp';
+
+import {
   LoadableLoadingAdmin,
   LoadableLoadingCitizen,
 } from 'components/UI/LoadableLoading';
@@ -13,6 +18,7 @@ import { mergeWith, castArray } from 'lodash-es';
 
 import Loadable from 'react-loadable';
 import { IGroupDataAttributes, MembershipType } from 'services/groups';
+import { ParticipationMethod } from 'services/participationContexts';
 import {
   CellConfiguration,
   FormikSubmitHandler,
@@ -24,6 +30,7 @@ import {
 import { IUserData } from 'services/users';
 import { MessageValue } from 'react-intl';
 import { NavItem } from 'containers/Admin/sideBar';
+import { IAppConfigurationSettingsCore } from 'services/appConfiguration';
 import { ManagerType } from 'components/admin/PostManager';
 import { IdeaCellComponentProps } from 'components/admin/PostManager/components/PostTable/IdeaRow';
 import { IdeaHeaderCellComponentProps } from 'components/admin/PostManager/components/PostTable/IdeaHeaderRow';
@@ -94,6 +101,32 @@ export type OutletsPropertyMap = {
   'app.containers.Admin.users.UsersHeader.icon': {
     type: GroupCreationModal;
   };
+  'app.containers.Admin.dashboard.users.graphs': {
+    startAt?: string | null;
+    endAt: string | null;
+    currentGroupFilter?: string;
+    currentGroupFilterLabel?: string;
+  };
+  'app.components.SignUpIn.SignUp.step': {
+    onData: (data: {
+      key: TSignUpSteps;
+      configuration: TSignUpStepConfigurationObject;
+    }) => void;
+    step: TSignUpSteps;
+    onCompleted: () => void;
+  };
+  'app.containers.Admin.dashboard.reports.ProjectReport.graphs': {
+    startAt: string;
+    endAt: string;
+    participationMethods: ParticipationMethod[];
+    project: IProjectData;
+  };
+  'app.containers.UserEditPage.ProfileForm.forms': {
+    authUser: IUserData;
+    onChange: () => void;
+    onSubmit: (data: { key: string; formData: Object }) => void;
+    onData: (data: { key: string; data: Object }) => void;
+  };
   'app.containers.Admin.project.edit.permissions.participationRights': {
     project: IProjectData;
     projectId: string;
@@ -135,6 +168,13 @@ export type OutletsPropertyMap = {
       insertAfterTabName?: string;
       tabConfiguration: ITab;
     }) => void;
+  };
+  'app.containers.Admin.settings.registration': {};
+  'app.containers.Admin.settings.registrationHelperText': {
+    onChange: (propertyName: string) => (multiloc: Multiloc) => void;
+    latestAppConfigCoreSettings?:
+      | IAppConfigurationSettingsCore
+      | Partial<IAppConfigurationSettingsCore>;
   };
 };
 
@@ -191,6 +231,7 @@ export type ModuleConfiguration = RecursivePartial<
   /** this function triggers after the Root component mounted */
   afterMountApplication?: () => void;
 };
+
 type Modules = {
   configuration: ModuleConfiguration;
   isEnabled: boolean;
@@ -262,8 +303,8 @@ export const loadModules = (modules: Modules): ParsedModuleConfiguration => {
   return {
     outlets: mergedOutlets,
     routes: {
-      citizen: parseModuleRoutes(mergedRoutes.citizen),
-      admin: parseModuleRoutes(mergedRoutes.admin, RouteTypes.ADMIN),
+      citizen: parseModuleRoutes(mergedRoutes?.citizen),
+      admin: parseModuleRoutes(mergedRoutes?.admin, RouteTypes.ADMIN),
       'admin.initiatives': parseModuleRoutes(
         mergedRoutes?.['admin.initiatives'],
         RouteTypes.ADMIN

@@ -8,6 +8,7 @@ declare global {
     displayName?: string;
   }
   interface Window {
+    _paq: any;
     googleMaps?: boolean;
     Intercom?: any;
     intercomSettings: any;
