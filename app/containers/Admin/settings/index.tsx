@@ -28,48 +28,62 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-interface State {}
+interface State {
+  tabs: TabProps[];
+}
 
 class SettingsPage extends React.PureComponent<
   Props & InjectedIntlProps & WithRouterProps,
   State
 > {
-  getTabs = () => {
-    const { widgetsEnabled, customTopicsEnabled } = this.props;
+  constructor(props) {
+    super(props);
     const { formatMessage } = this.props.intl;
 
-    let tabs: TabProps[] = [
-      {
-        label: formatMessage(messages.tabSettings),
-        url: '/admin/settings/general',
-      },
-      {
-        label: formatMessage(messages.tabCustomize),
-        url: '/admin/settings/customize',
-      },
-      {
-        label: formatMessage(messages.tabRegistrationFields),
-        url: '/admin/settings/registration',
-      },
-      {
-        label: formatMessage(messages.tabTopics),
-        url: '/admin/settings/topics',
-        name: 'topics',
-      },
-      {
-        label: formatMessage(messages.tabAreas),
-        url: '/admin/settings/areas',
-      },
-      {
-        label: formatMessage(messages.tabPages),
-        url: '/admin/settings/pages',
-      },
-      {
-        label: formatMessage(messages.tabWidgets),
-        url: '/admin/settings/widgets',
-        name: 'widgets',
-      },
-    ];
+    this.state = {
+      tabs: [
+        {
+          name: 'general',
+          label: formatMessage(messages.tabSettings),
+          url: '/admin/settings/general',
+        },
+        {
+          name: 'customize',
+          label: formatMessage(messages.tabCustomize),
+          url: '/admin/settings/customize',
+        },
+        {
+          name: 'registration',
+          label: formatMessage(messages.tabRegistration),
+          url: '/admin/settings/registration',
+        },
+        {
+          label: formatMessage(messages.tabTopics),
+          url: '/admin/settings/topics',
+          name: 'topics',
+        },
+        {
+          name: 'areas',
+          label: formatMessage(messages.tabAreas),
+          url: '/admin/settings/areas',
+        },
+        {
+          name: 'pages',
+          label: formatMessage(messages.tabPages),
+          url: '/admin/settings/pages',
+        },
+        {
+          label: formatMessage(messages.tabWidgets),
+          url: '/admin/settings/widgets',
+          name: 'widgets',
+        },
+      ],
+    };
+  }
+
+  getTabs = () => {
+    const { widgetsEnabled, customTopicsEnabled } = this.props;
+    const { tabs } = this.state;
 
     const tabHideConditions = {
       topics: function isTopicsTabHidden() {
@@ -90,13 +104,15 @@ class SettingsPage extends React.PureComponent<
 
     const tabNames = tabs.map((tab) => tab.name);
 
+    let enabledTabs: TabProps[] = tabs;
+
     tabNames.forEach((tabName) => {
-      if (tabName && tabHideConditions[tabName]()) {
-        tabs = reject(tabs, { name: tabName });
+      if (tabName && tabHideConditions?.[tabName]?.()) {
+        enabledTabs = reject(enabledTabs, { name: tabName });
       }
     });
 
-    return tabs;
+    return enabledTabs;
   };
 
   render() {

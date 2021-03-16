@@ -1,5 +1,5 @@
 import React from 'react';
-import { isBoolean, isString } from 'lodash-es';
+import { isString } from 'lodash-es';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { distinctUntilChanged, switchMap, filter } from 'rxjs/operators';
 import shallowCompare from 'utils/shallowCompare';
@@ -14,7 +14,6 @@ type children = (renderProps: GetGroupChildProps) => JSX.Element | null;
 
 interface Props extends InputProps {
   children?: children;
-  cache?: boolean;
 }
 
 interface State {
@@ -36,7 +35,6 @@ export default class GetGroup extends React.Component<Props, State> {
 
   componentDidMount() {
     const { id } = this.props;
-    const cacheStream = isBoolean(this.props.cache) ? this.props.cache : true;
 
     this.inputProps$ = new BehaviorSubject({ id });
 
@@ -45,7 +43,7 @@ export default class GetGroup extends React.Component<Props, State> {
         .pipe(
           distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
           filter(({ id }) => isString(id)),
-          switchMap(({ id }) => getGroup(id, { cacheStream }).observable)
+          switchMap(({ id }) => getGroup(id).observable)
         )
         .subscribe((group) =>
           this.setState({ group: !isNilOrError(group) ? group.data : group })
