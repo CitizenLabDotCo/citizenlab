@@ -10,7 +10,7 @@ if (ENV.fetch("RABBITMQ_URI", false))
 
     channel = connection.create_channel
     exchange = channel.topic('cl2nlp', :durable => true)
-    queue = channel.queue('zeroshot_results', :durable => true)
+    queue = channel.queue('cl2_back.zeroshot_results', :durable => true)
 
     queue.bind(exchange,'zeroshot.inference')
 
