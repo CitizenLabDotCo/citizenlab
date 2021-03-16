@@ -224,7 +224,7 @@ class ParticipationContextService
     elsif !context.budgeting?
       BUDGETING_DISABLED_REASONS[:not_budgeting]
     else
-      permission_denied?(user, 'taking_poll', context)
+      permission_denied?(user, 'budgeting', context)
     end
   end
 
