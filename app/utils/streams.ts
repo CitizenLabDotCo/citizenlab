@@ -28,11 +28,14 @@ import request from 'utils/request';
 import { authApiEndpoint } from 'services/auth';
 import { currentAppConfigurationEndpoint } from 'services/appConfiguration';
 import { currentOnboardingCampaignsApiEndpoint } from 'services/onboardingCampaigns';
-import { userCustomFieldsSchemaApiEndpoint } from 'services/userCustomFields';
 import { IUser } from 'services/users';
 import stringify from 'json-stable-stringify';
 import { reportError } from 'utils/loggingUtils';
 import { isUUID } from 'utils/helperUtils';
+
+// TO FIX : close streams via lifecycle
+// tslint:disable-next-line
+import { userCustomFieldsSchemaApiEndpoint } from 'modules/user_custom_fields/services/userCustomFields';
 
 export type pureFn<T> = (arg: T) => T;
 type fetchFn = () => Promise<any>;
