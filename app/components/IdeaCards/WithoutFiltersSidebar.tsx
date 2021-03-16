@@ -27,12 +27,9 @@ import GetIdeas, {
   InputProps as GetIdeasInputProps,
 } from 'resources/GetIdeas';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
-
 import GetIdeaCustomFieldsSchemas, {
   GetIdeaCustomFieldsSchemasChildProps,
 } from 'resources/GetIdeaCustomFieldsSchemas';
-import { CustomFieldCodes } from 'services/ideaCustomFields';
-
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 
 // i18n
@@ -60,6 +57,7 @@ import {
 } from 'services/participationContexts';
 import { IParticipationContextType } from 'typings';
 import { withRouter, WithRouterProps } from 'react-router';
+import { CustomFieldCodes } from 'services/ideaCustomFields';
 
 const Container = styled.div`
   width: 100%;
