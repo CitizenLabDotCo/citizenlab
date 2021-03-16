@@ -86,6 +86,7 @@ namespace :cl2_back do
           enabled: true,
           allowed: true,
           phone: false,
+          minimum_length: 8
         },
         participatory_budgeting: {
           enabled: true,
@@ -118,6 +119,12 @@ namespace :cl2_back do
         google_tag_manager: {
           enabled: false,
           allowed: false
+        },
+        matomo: {
+          enabled: true,
+          allowed: true,
+          product_site_id: ENV.fetch('MATOMO_PRODUCT_SITE_ID', ''),
+          tenant_site_id: ENV.fetch('DEFAULT_MATOMO_TENANT_SITE_ID', '')
         },
         surveys: {
           enabled: true,
