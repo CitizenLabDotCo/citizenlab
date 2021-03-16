@@ -74,8 +74,11 @@ resource 'Votes' do
 
   post 'web_api/v1/initiatives/:initiative_id/votes/up' do
     ValidationErrorHelper.new.error_fields(self, Vote)
-    response_field :base, "Array containing objects with signature { error: #{ParticipationContextService::VOTING_DISABLED_REASONS.values.join(' | ')} }", scope: :errors
 
+    disabled_reasons = ParticipationContextService::VOTING_DISABLED_REASONS.values
+    disabled_reasons += Permission::DENIED_REASONS.values if CitizenLab.ee?
+    response_field :base, "Array containing objects with signature { error: #{disabled_reasons.join(' | ')} }", scope: :errors
+    
     let(:initiative_id) { @initiative.id }
 
     example_request "Upvote an initiative that doesn't have your vote yet" do
@@ -105,8 +108,11 @@ resource 'Votes' do
 
   post 'web_api/v1/initiatives/:initiative_id/votes/down' do
     ValidationErrorHelper.new.error_fields(self, Vote)
-    response_field :base, "Array containing objects with signature { error: #{ParticipationContextService::VOTING_DISABLED_REASONS.values.join(' | ')} }", scope: :errors
 
+    disabled_reasons = ParticipationContextService::VOTING_DISABLED_REASONS.values
+    disabled_reasons += Permission::DENIED_REASONS.values if CitizenLab.ee?
+    response_field :base, "Array containing objects with signature { error: #{disabled_reasons.join(' | ')} }", scope: :errors
+    
     let(:initiative_id) { @initiative.id }
 
     example_request "[error] Downvote an initiative that doesn't have your vote yet" do
