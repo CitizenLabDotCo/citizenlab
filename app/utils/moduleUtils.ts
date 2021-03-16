@@ -311,7 +311,7 @@ export const loadModules = (modules: Modules): ParsedModuleConfiguration => {
         RouteTypes.ADMIN
       ),
       'admin.projects': parseModuleRoutes(
-        mergedRoutes?.['admin.dashboards'],
+        mergedRoutes?.['admin.projects'],
         RouteTypes.ADMIN
       ),
     },

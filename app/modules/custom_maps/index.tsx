@@ -7,7 +7,7 @@ const configuration: ModuleConfiguration = {
     'admin.projects': [
       {
         path: '/:locale/admin/projects/:projectId/map',
-        name: 'admin projects map',
+        name: 'map',
         container: () =>
           import('./admin/containers/ProjectCustomMapConfigPage'),
       },
