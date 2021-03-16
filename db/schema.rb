@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_04_203413) do
+ActiveRecord::Schema.define(version: 2021_03_12_123927) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -269,7 +269,7 @@ ActiveRecord::Schema.define(version: 2021_03_04_203413) do
     t.uuid "project_id"
     t.jsonb "title_multiloc", default: {}
     t.jsonb "description_multiloc", default: {}
-    t.json "location_multiloc", default: {}
+    t.jsonb "location_multiloc", default: {}
     t.datetime "start_at"
     t.datetime "end_at"
     t.datetime "created_at", null: false
