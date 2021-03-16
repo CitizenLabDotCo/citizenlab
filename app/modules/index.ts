@@ -21,7 +21,7 @@ import idBosaFasConfiguration from './id_bosa_fas';
 import idCowConfiguration from './id_cow';
 import idBogusConfiguration from './id_bogus';
 import idIdCardLookupConfiguration from './id_id_card_lookup';
-import IdFraneConnectConfiguration from './id_franceconnect';
+import IdFranceConnectConfiguration from './id_franceconnect';
 import IdClaveUnicaConfiguration from './id_clave_unica';
 
 export default loadModules([
@@ -102,7 +102,7 @@ export default loadModules([
     isEnabled: true,
   },
   {
-    configuration: IdFraneConnectConfiguration,
+    configuration: IdFranceConnectConfiguration,
     isEnabled: true,
   },
   {
