@@ -21,12 +21,13 @@ module GranularPermissions
     end
 
     def self.register_permission_scopes
-      require 'citizen_lab/permissions/scope_types/global'
       require 'citizen_lab/permissions/scope_types/project'
       require 'citizen_lab/permissions/scope_types/phase'
-      PermissionsService.register_scope_type(CitizenLab::Permissions::ScopeTypes::Global)
+      require 'citizen_lab/permissions/scope_types/global'
       PermissionsService.register_scope_type(CitizenLab::Permissions::ScopeTypes::Project)
       PermissionsService.register_scope_type(CitizenLab::Permissions::ScopeTypes::Phase)
+      PermissionsService.register_scope_type(CitizenLab::Permissions::ScopeTypes::Global)
+      PermissionsService.new.update_all_permissions
     end
 
     config.to_prepare do
