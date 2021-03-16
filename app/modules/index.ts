@@ -12,6 +12,7 @@ import googleAnalyticsConfiguration from './google_analytics';
 import intercomConfiguration from './intercom';
 import satismeterConfiguration from './satismeter';
 import segmentConfiguration from './segment';
+import projectVisibilityConfiguration from './project_visibility';
 import projectManagementConfiguration from './project_management';
 import customIdeaStatusesConfiguration from './custom_idea_statuses';
 
@@ -53,7 +54,7 @@ export default loadModules([
     isEnabled: true,
   },
   {
-    configuration: ideaAssignmentConfiguration,
+    configuration: projectVisibilityConfiguration,
     isEnabled: true,
   },
   {
