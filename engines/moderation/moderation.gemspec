@@ -8,6 +8,7 @@ Gem::Specification.new do |s|
   s.name        = 'moderation'
   s.version     = Moderation::VERSION
   s.authors     = ['CitizenLab']
+  s.licenses    = ['CitizenLab Commercial License']
   s.email       = ['developers@citizenlab.co']
   s.summary     = 'CitizenLab extension: Moderations are pieces of user-generated content that need to be moderated.'
 
