@@ -160,6 +160,8 @@ interface Props {
   className?: string;
 }
 
+export type TTabValue = 'scratch' | TProjectTemplatesTabValue;
+
 const CreateProject = memo<Props & InjectedIntlProps>(
   ({ className, intl: { formatMessage } }) => {
     const projectTemplatesEnabled = useFeatureFlag('admin_project_templates');
@@ -170,7 +172,11 @@ const CreateProject = memo<Props & InjectedIntlProps>(
         icon: 'scratch',
       },
     ]);
-    const [selectedTabValue, setSelectedTabValue] = useState(tabs[0].name);
+    const tabValues = tabs.map((tab) => tab.name) as TTabValue[];
+
+    const [selectedTabValue, setSelectedTabValue] = useState<TTabValue>(
+      tabValues[0]
+    );
     const [expanded, setExpanded] = useState(false);
     useEffect(() => {
       const subscription = eventEmitter
@@ -205,7 +211,7 @@ const CreateProject = memo<Props & InjectedIntlProps>(
     }, [expanded]);
 
     const handleTabOnClick = useCallback(
-      (newSelectedTabValue: string) => {
+      (newSelectedTabValue: TTabValue) => {
         setSelectedTabValue(newSelectedTabValue);
       },
       [selectedTabValue]
@@ -260,6 +266,7 @@ const CreateProject = memo<Props & InjectedIntlProps>(
                 <Outlet
                   id="app.containers.Admin.projects.all.createProject"
                   onData={handleData}
+                  selectedTabValue={selectedTabValue}
                 />
               )}
               {selectedTabValue === 'scratch' && <AdminProjectEditGeneral />}
