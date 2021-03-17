@@ -80,7 +80,6 @@ const LeafletConfig = memo<Props & IMapConfigProps>(
           return localize(feature?.properties?.tooltipContent);
         },
         layerPopup: (_layer: L.GeoJSON, feature: GeoJSON.Feature) => {
-          console.log(localize(feature?.properties?.popupContent));
           return localize(feature?.properties?.popupContent);
         },
         layerOverlay: (geojsonLayer: GeoJSONLayer) => {
