@@ -171,11 +171,11 @@ interface Props {
 const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
   const moderationStatuses = [
     {
-      value: 'unread',
+      name: 'unread',
       label: intl.formatMessage(messages.unread),
     },
     {
-      value: 'read',
+      name: 'read',
       label: intl.formatMessage(messages.read),
     },
   ];
@@ -239,11 +239,11 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
   );
 
   const handleOnModerationStatusChange = useCallback(
-    (value: TModerationStatuses) => {
+    (name: TModerationStatuses) => {
       trackEventByName(
-        value === 'read' ? tracks.viewedTabClicked : tracks.notViewedTabClicked
+        name === 'read' ? tracks.viewedTabClicked : tracks.notViewedTabClicked
       );
-      onModerationStatusChange(value);
+      onModerationStatusChange(name);
     },
     [onModerationStatusChange]
   );
