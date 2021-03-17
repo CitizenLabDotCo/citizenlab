@@ -97,7 +97,7 @@ resource "Idea Custom Fields" do
           expect(json_response.dig(:data,:attributes,:enabled)).to eq enabled
           expect(json_response.dig(:data,:attributes,:description_multiloc).stringify_keys).to match description_multiloc
           expect(CustomField.count).to eq 1
-          expect(CustomForm.count).to eq 1
+          expect(IdeaCustomFields::CustomForm.count).to eq 1
           expect(project.reload.custom_form).to eq IdeaCustomFields::CustomForm.first
         end
       end
