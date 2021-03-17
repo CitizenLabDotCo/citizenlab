@@ -1,6 +1,24 @@
 class Cl2DataListingService
 
-  def cl2_tenant_models
+  
+
+  def cl2_global_models
+    [PublicApi::ApiClient, Tenant]
+  end
+
+  def cl2_schema_root_models
+    cl2_schema_models.select do |claz|
+      claz.superclass.name == ApplicationRecord.name
+    end
+  end
+
+  def cl2_schema_leaf_models
+    cl2_schema_models.select do |claz|
+      claz.descendants.empty?
+    end
+  end
+
+  def cl2_schema_models
     # After https://github.com/rails/rails/issues/37006.
     # It seems that we need to use Zeitwerk::Loader.eager_load_all
     # instead of Rails.application.eager_load!.
@@ -15,12 +33,8 @@ class Cl2DataListingService
         Tenant.name
       ].include? claz.name
     end.select do |claz|
-      claz.descendants.empty? && !views.include?(claz.table_name)
+      !views.include? claz.table_name
     end
-  end
-
-  def cl2_root_models
-    [PublicApi::ApiClient, Tenant]
   end
 
   def timestamp_attributes model_class
