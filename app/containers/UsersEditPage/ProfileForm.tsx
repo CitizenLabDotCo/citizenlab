@@ -6,9 +6,6 @@ import streams from 'utils/streams';
 
 // services
 import { updateUser, mapUserToDiff } from 'services/users';
-import GetUserCustomFieldsSchema, {
-  GetUserCustomFieldsSchemaChildProps,
-} from 'resources/GetUserCustomFieldsSchema';
 import GetLockedFields, {
   GetLockedFieldsChildProps,
 } from 'resources/GetLockedFields';
@@ -19,7 +16,6 @@ import GetAppConfiguration, {
 
 // utils
 import { Formik } from 'formik';
-import eventEmitter from 'utils/eventEmitter';
 
 // components
 import Error from 'components/UI/Error';
@@ -35,7 +31,7 @@ import {
   FormLabel,
   FormSectionTitle,
 } from 'components/UI/FormComponents';
-import UserCustomFieldsForm from 'components/UserCustomFieldsForm';
+
 import { Input, Select, IconTooltip } from 'cl2-component-library';
 import QuillEditor from 'components/UI/QuillEditor';
 
@@ -53,6 +49,8 @@ import styled from 'styled-components';
 // typings
 import { IOption, UploadFile, CLErrorsJSON } from 'typings';
 import { isCLErrorJSON } from 'utils/errorUtils';
+
+import Outlet from 'components/Outlet';
 
 const InputContainer = styled.div`
   display: flex;
@@ -80,15 +78,23 @@ const StyledPasswordInputIconTooltip = styled(PasswordInputIconTooltip)`
 interface InputProps {}
 
 interface DataProps {
-  userCustomFieldsSchema: GetUserCustomFieldsSchemaChildProps;
   authUser: GetAuthUserChildProps;
   tenant: GetAppConfigurationChildProps;
   lockedFields: GetLockedFieldsChildProps;
 }
 
+export type ExtraFormDataKey = 'custom_field_values';
+
+export interface ExtraFormDataConfiguration {
+  formData?: Object;
+  submit?: () => void;
+}
+
 interface State {
   avatar: UploadFile[] | null;
-  userCustomFieldsFormData: any;
+  extraFormData: {
+    [field in ExtraFormDataKey]?: ExtraFormDataConfiguration;
+  };
   hasPasswordMinimumLengthError: boolean;
 }
 
@@ -101,7 +107,7 @@ class ProfileForm extends PureComponent<Props, State> {
     super(props as any);
     this.state = {
       avatar: null,
-      userCustomFieldsFormData: null,
+      extraFormData: {},
       hasPasswordMinimumLengthError: false,
     };
   }
@@ -149,21 +155,18 @@ class ProfileForm extends PureComponent<Props, State> {
   }
 
   handleFormikSubmit = async (values, formikActions) => {
-    let newValues = values;
     const { setSubmitting, resetForm, setErrors, setStatus } = formikActions;
-    const { userCustomFieldsSchema, authUser } = this.props;
+    const { authUser } = this.props;
 
     if (isNilOrError(authUser)) return;
 
-    if (
-      !isNilOrError(userCustomFieldsSchema) &&
-      userCustomFieldsSchema.hasCustomFields
-    ) {
-      newValues = {
-        ...values,
-        custom_field_values: this.state.userCustomFieldsFormData,
-      };
-    }
+    const newValues = Object.entries(this.state.extraFormData).reduce(
+      (acc, [key, extraFormDataConfiguration]) => ({
+        ...acc,
+        [key]: extraFormDataConfiguration?.formData,
+      }),
+      values
+    );
 
     setStatus('');
 
@@ -198,19 +201,11 @@ class ProfileForm extends PureComponent<Props, State> {
       status,
       touched,
     } = props;
-    const { userCustomFieldsSchema, lockedFields, authUser } = this.props;
+    const { lockedFields, authUser } = this.props;
     const { hasPasswordMinimumLengthError } = this.state;
 
     // Won't be called with a nil or error user.
     if (isNilOrError(authUser)) return null;
-
-    const hasCustomFields =
-      !isNilOrError(userCustomFieldsSchema) &&
-      userCustomFieldsSchema.hasCustomFields;
-
-    const customFieldsValues =
-      this.state.userCustomFieldsFormData ||
-      authUser.attributes.custom_field_values;
 
     const lockedFieldsNames = isNilOrError(lockedFields)
       ? []
@@ -218,12 +213,20 @@ class ProfileForm extends PureComponent<Props, State> {
 
     const { formatMessage } = this.props.intl;
 
+    const isExtraFormDataTouched = () =>
+      Object.values(this.state.extraFormData).some(
+        (value) => !isEmpty(value) && Object.keys(value ?? {}).length > 1
+      );
+
     const getStatus = () => {
       let returnValue: 'enabled' | 'disabled' | 'error' | 'success' = 'enabled';
 
       if (isSubmitting) {
         returnValue = 'disabled';
-      } else if ((!isEmpty(touched) && !isValid) || status === 'error') {
+      } else if (
+        (!isEmpty(touched) && !isValid && !isExtraFormDataTouched()) ||
+        status === 'error'
+      ) {
         returnValue = 'error';
       } else if (isEmpty(touched) && status === 'success') {
         returnValue = 'success';
@@ -232,22 +235,44 @@ class ProfileForm extends PureComponent<Props, State> {
       return returnValue;
     };
 
-    const handleCustomFieldsFormOnChange = (formData) => {
-      this.setState({ userCustomFieldsFormData: formData });
-      setStatus('enabled');
-    };
+    const handleFormOnChange = () => setStatus('enabled');
 
-    const handleCustomFieldsFormOnSubmit = (formData) => {
-      this.setState({ userCustomFieldsFormData: formData });
-      submitForm();
+    const handleFormOnSubmit = ({
+      key,
+      formData,
+    }: {
+      key: ExtraFormDataKey;
+      formData: Object;
+    }) => {
+      this.setState(
+        ({ extraFormData }) => ({
+          extraFormData: {
+            ...extraFormData,
+            [key]: { ...(extraFormData?.[key] ?? {}), formData },
+          },
+        }),
+        () => submitForm()
+      );
     };
 
     const handleOnSubmit = () => {
-      if (hasCustomFields) {
-        eventEmitter.emit('customFieldsSubmitEvent');
-      } else {
-        submitForm();
-      }
+      const { extraFormData } = this.state;
+      Object.values(extraFormData).forEach((configuration) =>
+        configuration?.submit?.()
+      );
+      submitForm();
+    };
+
+    const handleOutletData = ({
+      key,
+      data,
+    }: {
+      key: ExtraFormDataKey;
+      data: ExtraFormDataConfiguration;
+    }) => {
+      this.setState(({ extraFormData }) => ({
+        extraFormData: { ...extraFormData, [key]: data },
+      }));
     };
 
     const createChangeHandler = (fieldName: string) => (value) => {
@@ -434,13 +459,13 @@ class ProfileForm extends PureComponent<Props, State> {
           </SectionField>
         </form>
 
-        {hasCustomFields && (
-          <UserCustomFieldsForm
-            formData={customFieldsValues}
-            onChange={handleCustomFieldsFormOnChange}
-            onSubmit={handleCustomFieldsFormOnSubmit}
-          />
-        )}
+        <Outlet
+          id="app.containers.UserEditPage.ProfileForm.forms"
+          authUser={authUser}
+          onChange={handleFormOnChange}
+          onSubmit={handleFormOnSubmit}
+          onData={handleOutletData}
+        />
 
         <SubmitWrapper
           status={getStatus()}
@@ -481,7 +506,6 @@ const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
   tenant: <GetAppConfiguration />,
   lockedFields: <GetLockedFields />,
-  userCustomFieldsSchema: <GetUserCustomFieldsSchema />,
 });
 
 export default (inputProps: InputProps) => (
