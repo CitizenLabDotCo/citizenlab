@@ -1,5 +1,3 @@
-return unless defined? ::EmailCampaigns::ApplicationMailer
-
 module IdeaAssignment
   module EmailCampaigns
     class IdeaAssignedToYouMailer < ::EmailCampaigns::ApplicationMailer

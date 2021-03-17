@@ -1,5 +1,3 @@
-return unless defined? EmailCampaigns
-
 module IdeaAssignment
   module EmailCampaigns
     class Campaigns::IdeaAssignedToYou < ::EmailCampaigns::Campaign
