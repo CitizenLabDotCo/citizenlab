@@ -1,5 +1,7 @@
 class AddAssignedAtToInitiatives < ActiveRecord::Migration[5.2]
   def change
+    return if column_exists? :initiatives, :assigned_at
+
     add_column :initiatives, :assigned_at, :timestamp
 
     now = Time.zone.now
