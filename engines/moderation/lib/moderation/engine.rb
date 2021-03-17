@@ -4,7 +4,7 @@ module Moderation
 
     config.to_prepare do
       require 'moderation/feature_specification'
-      AppConfiguration::Settings.add_feature FeatureSpecification
+      AppConfiguration::Settings.add_feature ::Moderation::FeatureSpecification
     end
   end
 end
