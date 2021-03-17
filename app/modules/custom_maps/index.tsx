@@ -1,7 +1,7 @@
 import React from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 import Tab from './admin/components/Tab';
-import Map from './citizen/components/Map';
+import Map from './shared/components/Map';
 
 const configuration: ModuleConfiguration = {
   routes: {
