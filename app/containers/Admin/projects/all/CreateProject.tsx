@@ -174,6 +174,7 @@ const CreateProject = memo<Props & InjectedIntlProps>(
       tabValues[0]
     );
     const [expanded, setExpanded] = useState(false);
+
     useEffect(() => {
       const subscription = eventEmitter
         .observeEvent<INewProjectCreatedEvent>('NewProjectCreated')
@@ -208,6 +209,9 @@ const CreateProject = memo<Props & InjectedIntlProps>(
 
     const handleTabOnClick = useCallback(
       (newSelectedTabValue: TTabValue) => {
+        trackEventByName(tracks.createdProject, {
+          selectedTabValue,
+        });
         setSelectedTabValue(newSelectedTabValue);
       },
       [selectedTabValue]

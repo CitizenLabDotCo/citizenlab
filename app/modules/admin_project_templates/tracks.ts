@@ -10,9 +10,5 @@ export default {
     "Project template card 'Use template' button clicked",
   moreDetailsButtonClicked:
     "Project template card 'More details' button clicked",
-  useTemplateModalClosed: 'Use templatye modal closed',
-  createProjectFromScratchTabSelected:
-    "'Create a project from scratch' tab selected",
-  createProjectFromTemplateTabSelected:
-    "'Create a project from a template' tab selected",
+  useTemplateModalClosed: 'Use template modal closed',
 };
