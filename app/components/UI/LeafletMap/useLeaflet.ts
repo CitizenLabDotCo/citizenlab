@@ -88,7 +88,7 @@ export default function useLeaflet(
   const allFeatures = useMemo(() => {
     const markersGroup = L.featureGroup(markers);
 
-    let all = [...layers, markersGroup];
+    const all = [...layers, markersGroup];
 
     markerClusterGroup && all.push(markerClusterGroup);
 
@@ -155,7 +155,7 @@ export default function useLeaflet(
       onZoomHandler: broadcastMapZoom,
     };
 
-    let newMap = service.setup(mapId, options);
+    const newMap = service.setup(mapId, options);
 
     setMap(newMap);
   };
@@ -237,7 +237,7 @@ export default function useLeaflet(
   ]);
 
   const refitBoundsToAllContent = () => {
-    if (!map || isEmpty(allBounds)) {
+    if (!map || isEmpty(allBounds) || !fitBounds) {
       return;
     }
 

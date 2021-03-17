@@ -150,8 +150,8 @@ const Map = memo<Props & InjectedLocalized>(
       center,
       tileProvider,
       fitBounds,
-      onClick: onMapClick,
       onMarkerClick,
+      onClick: onMapClick,
       marker: ideaMarkerIcon,
       layerMarker: (geojsonLayer: GeoJSONLayer, _latlng: L.LatLng) => {
         return geojsonLayer.marker_svg_url || legendMarkerIcon;

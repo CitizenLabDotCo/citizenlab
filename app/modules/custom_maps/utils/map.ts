@@ -29,7 +29,7 @@ export const getCenter = (
     return baseGetCenter(centerCoordinates, appConfig);
   }
 
-  let center: L.LatLngExpression = [projectCenterLat, projectCenterLong];
+  const center: L.LatLngExpression = [projectCenterLat, projectCenterLong];
 
   return center;
 };
