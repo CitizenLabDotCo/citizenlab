@@ -40,7 +40,7 @@ module IdeaCustomFields
         # Row-level locking of the project record
         # See https://www.2ndquadrant.com/en/blog/postgresql-anti-patterns-read-modify-write-cycles/
         @project = Project.lock.find(params[:project_id])
-        @custom_form = CustomForm.find_or_initialize_by(project: @project)
+        @custom_form = IdeaCustomFields::CustomForm.find_or_initialize_by(project: @project)
 
         @custom_field = CustomFieldsService.new.find_or_build_field(@custom_form, params[:code])
         @custom_field.assign_attributes custom_field_params
@@ -78,7 +78,7 @@ module IdeaCustomFields
 
     def set_custom_form
       @project = Project.find(params[:project_id])
-      @custom_form = CustomForm.find_or_initialize_by(project: @project)
+      @custom_form = IdeaCustomFields::CustomForm.find_or_initialize_by(project: @project)
     end
 
     def set_custom_field

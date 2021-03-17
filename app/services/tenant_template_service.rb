@@ -359,7 +359,7 @@ class TenantTemplateService
   end
 
   def yml_custom_forms
-    CustomForm.all.map do |c|
+    IdeaCustomFields::CustomForm.all.map do |c|
       yml_custom_form = {
         'created_at'           => c.created_at.to_s,
         'updated_at'           => c.updated_at.to_s,

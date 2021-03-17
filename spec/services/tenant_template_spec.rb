@@ -131,7 +131,7 @@ describe TenantTemplateService do
             created_at: 2020-02-18 22:46:33 UTC
             updated_at: 2020-02-18 22:46:33 UTC
           custom_field:
-            - resource_type: CustomForm
+            - resource_type: IdeaCustomFields::CustomForm
               resource_ref: *1
               key: body
               input_type: multiline_text
@@ -140,7 +140,7 @@ describe TenantTemplateService do
               description_multiloc:
                 nl-BE: Debitis expedita qui nostrum.
               code: body
-            - resource_type: CustomForm
+            - resource_type: IdeaCustomFields::CustomForm
               resource_ref: *2
               key: title
               input_type: text
@@ -156,7 +156,7 @@ describe TenantTemplateService do
 
         expect(CustomForm.count).to eq 2
         expect(CustomField.count).to eq 2
-        expect(CustomField.all.map(&:resource)).to match_array CustomForm.all
+        expect(CustomField.all.map(&:resource)).to match_array IdeaCustomFields::CustomForm.all
     end
 
     it "associates attribute refs correctly" do

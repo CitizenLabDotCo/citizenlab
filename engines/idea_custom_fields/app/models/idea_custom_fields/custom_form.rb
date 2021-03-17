@@ -1,5 +1,5 @@
 module IdeaCustomFields
-  class CustomForm < ApplicationRecord
+  class IdeaCustomFields::CustomForm < ApplicationRecord
     self.table_name = 'custom_forms'
 
     has_one :project
