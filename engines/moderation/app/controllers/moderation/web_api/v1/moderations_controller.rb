@@ -27,7 +27,6 @@ module Moderation
       )
       authorize @moderation
 
-
       if moderation_params[:moderation_status]
         @moderation_status = @moderation.moderation_status
         if !@moderation_status
