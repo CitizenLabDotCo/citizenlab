@@ -335,9 +335,20 @@ export const loadModules = (modules: Modules): ParsedModuleConfiguration => {
 export const insertConfiguration = <T extends { name: string }>({
   configuration,
   insertAfterName,
+  insertBeforeName,
 }: InsertConfigurationOptions<T>) => (items: T[]): T[] => {
-  const insertIndex =
-    items.findIndex((item) => item.name === insertAfterName) + 1;
+  function getInsertIndex() {
+    if (insertAfterName) {
+      return items.findIndex((item) => item.name === insertAfterName) + 1;
+    }
+
+    if (insertBeforeName) {
+      return items.findIndex((item) => item.name === insertAfterName) - 1;
+    }
+
+    return -1;
+  }
+  const insertIndex = getInsertIndex();
 
   return insertIndex > 0
     ? [

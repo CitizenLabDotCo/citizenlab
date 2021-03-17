@@ -5,7 +5,10 @@ import messages from './messages';
 import { ITabItem } from 'components/UI/Tabs';
 
 type Props = {
-  onData: (data: { insertAfterName?: string; configuration: ITabItem }) => void;
+  onData: (data: {
+    insertBeforeName?: string;
+    configuration: ITabItem;
+  }) => void;
 };
 
 const Tab: FC<Props & InjectedIntlProps> = ({
@@ -19,7 +22,7 @@ const Tab: FC<Props & InjectedIntlProps> = ({
         label: formatMessage(messages.fromATemplate),
         icon: 'template',
       },
-      insertAfterName: 'scratch',
+      insertBeforeName: 'scratch',
     });
   }, []);
 
