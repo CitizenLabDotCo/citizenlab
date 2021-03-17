@@ -1,7 +1,8 @@
 import React from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 import Tab from './admin/components/Tab';
-import Map from './shared/components/Map';
+import LeafletConfig from './shared/components/Map/LeafletConfig';
+import Legend from './shared/components/Map/Legend';
 
 const configuration: ModuleConfiguration = {
   routes: {
@@ -20,8 +21,8 @@ const configuration: ModuleConfiguration = {
     'app.containers.Admin.projects.edit.tabs.map': (props) => (
       <Tab {...props} />
     ),
-    'app.components.IdeasMap.map': (props) => <Map {...props} />,
-    'app.components.DropdownMap.map': (props) => <Map {...props} />,
+    'app.components.Map.leafletConfig': (props) => <LeafletConfig {...props} />,
+    'app.components.Map.Legend': (props) => <Legend {...props} />,
   },
 };
 

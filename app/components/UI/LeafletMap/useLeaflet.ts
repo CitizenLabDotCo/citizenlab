@@ -37,7 +37,7 @@ L.Icon.Default.mergeOptions({
   shadowUrl: markerShadow,
 });
 
-export interface IUseLeafletOptions {
+export interface ILeafletMapConfig {
   center?: L.LatLngExpression;
   zoom?: number;
   tileProvider?: string;
@@ -59,17 +59,17 @@ export default function useLeaflet(
     center,
     zoom,
     tileProvider,
+    points,
     fitBounds = true,
     onClick,
     onMarkerClick,
     geoJsonLayers,
-    points,
     marker,
     layerMarker,
     layerOverlay,
     layerTooltip,
     layerPopup,
-  }: IUseLeafletOptions
+  }: ILeafletMapConfig
 ) {
   // State and memos
   const [map, setMap] = useState<L.Map | null>(null);
@@ -141,7 +141,6 @@ export default function useLeaflet(
   );
 
   // Effects
-
   const setup = () => {
     if (map) {
       return;
@@ -237,11 +236,12 @@ export default function useLeaflet(
   ]);
 
   const refitBoundsToAllContent = () => {
-    if (!map || isEmpty(allBounds) || !fitBounds) {
+    // Remove || true if you'd like to activate auto-fitting to all bounds.
+    if (!map || isEmpty(allBounds) || !fitBounds || true) {
       return;
     }
 
-    service.refitBounds(map, allBounds, { fitBounds });
+    // service.refitBounds(map, allBounds, { fitBounds });
   };
   useEffect(refitBoundsToAllContent, [allBounds, map, fitBounds]);
 

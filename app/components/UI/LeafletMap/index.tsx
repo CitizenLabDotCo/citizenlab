@@ -1,7 +1,7 @@
 import React, { memo, ReactElement } from 'react';
 import styled, { css } from 'styled-components';
 import { darken } from 'polished';
-import useLeaflet, { IUseLeafletOptions } from './useLeaflet';
+import useLeaflet, { ILeafletMapConfig } from './useLeaflet';
 import { media } from 'utils/styleUtils';
 
 const LeafletMapContainer = styled.div<{ mapHeight: string | undefined }>`
@@ -55,7 +55,7 @@ const LeafletMap = memo(
     className,
     mapHeight,
     ...useLeafletOptions
-  }: BaseProps & IUseLeafletOptions): ReactElement => {
+  }: BaseProps & ILeafletMapConfig): ReactElement => {
     useLeaflet(id, useLeafletOptions);
 
     return (
