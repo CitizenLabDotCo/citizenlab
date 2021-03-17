@@ -35,6 +35,7 @@ import { IAppConfigurationSettingsCore } from 'services/appConfiguration';
 import { ManagerType } from 'components/admin/PostManager';
 import { IdeaCellComponentProps } from 'components/admin/PostManager/components/PostTable/IdeaRow';
 import { IdeaHeaderCellComponentProps } from 'components/admin/PostManager/components/PostTable/IdeaHeaderRow';
+import { TTabValue } from 'containers/Admin/projects/all/CreateProject';
 
 type Localize = (
   multiloc: Multiloc | null | undefined,
@@ -168,6 +169,7 @@ export type OutletsPropertyMap = {
   };
   'app.containers.Admin.projects.all.createProject': {
     onData: (data: InsertConfigurationOptions<ITabItem>) => void;
+    selectedTabValue: TTabValue;
   };
   'app.containers.Admin.settings.registration': {};
   'app.containers.Admin.settings.registrationHelperText': {
