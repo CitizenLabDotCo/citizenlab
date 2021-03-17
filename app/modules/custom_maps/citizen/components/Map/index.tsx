@@ -140,7 +140,7 @@ const Map = memo<Props & InjectedLocalized>(
         return [];
       }
 
-      return mapConfig.attributes.layers;
+      return mapConfig.attributes.layers as GeoJSONLayer[];
     }, [projectId, mapConfig]);
 
     const leafletMapProps = {
