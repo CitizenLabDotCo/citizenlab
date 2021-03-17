@@ -167,10 +167,16 @@ export class IdeasMap extends PureComponent<Props & WithRouterProps, State> {
           <FormattedMessage {...messages.a11y_mapTitle} />
         </ScreenReaderOnly>
 
-        <Outlet
-          id="app.components.IdeasMap.map"
+        <Map
           projectId={projectId}
-          fallback={<DefaultMap />}
+          points={points}
+          onMarkerClick={this.toggleIdea}
+          onMapClick={this.onMapClick}
+          fitBounds={true}
+          boxContent={
+            selectedIdeaId ? <IdeaPreview ideaId={selectedIdeaId} /> : null
+          }
+          onBoxClose={this.deselectIdea}
         />
 
         {projectId && (

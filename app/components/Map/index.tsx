@@ -1,9 +1,10 @@
-import React, { memo, useMemo } from 'react';
+import React, { memo, useMemo, useState, useCallback } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import LeafletMap from 'components/UI/LeafletMap';
 import { Icon } from 'cl2-component-library';
+import Outlet from 'components/Outlet';
 
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
@@ -18,6 +19,7 @@ import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import styled from 'styled-components';
 import { media, defaultOutline, defaultCardStyle } from 'utils/styleUtils';
 import ideaMarkerIcon from './idea-marker.svg';
+import { ILeafletMapConfig } from 'components/UI/LeafletMap/useLeaflet';
 
 export interface Point extends GeoJSON.Point {
   data?: any;
@@ -106,6 +108,7 @@ export interface IMapProps {
 
 const Map = memo<IMapProps & InjectedLocalized>(
   ({
+    projectId,
     centerCoordinates,
     zoomLevel,
     mapHeight,
@@ -116,8 +119,20 @@ const Map = memo<IMapProps & InjectedLocalized>(
     onMarkerClick,
     fitBounds,
     className,
+    hideLegend,
   }) => {
     const appConfig = useAppConfiguration();
+
+    const baseLeafletConfig = {
+      centerCoordinates,
+      zoomLevel,
+      mapHeight,
+      points,
+      boxContent,
+      onBoxClose,
+      onMapClick,
+      onMarkerClick,
+    };
 
     const center = useMemo(() => {
       return getCenter(centerCoordinates, appConfig);
@@ -131,16 +146,25 @@ const Map = memo<IMapProps & InjectedLocalized>(
       return getTileProvider(appConfig);
     }, [appConfig]);
 
-    const leafletMapProps = {
-      points,
-      zoom,
-      center,
-      tileProvider,
-      fitBounds,
-      onMarkerClick,
-      onClick: onMapClick,
-      marker: ideaMarkerIcon,
-    };
+    const [leafletMapConfig, setLeafletMapConfig] = useState<ILeafletMapConfig>(
+      {
+        points,
+        zoom,
+        center,
+        tileProvider,
+        fitBounds,
+        onMarkerClick,
+        onClick: onMapClick,
+        marker: ideaMarkerIcon,
+      }
+    );
+
+    const handleLeafletConfigChange = useCallback(
+      (newConfig: ILeafletMapConfig) => {
+        setLeafletMapConfig({ ...leafletMapConfig, ...newConfig });
+      },
+      [leafletMapConfig, setLeafletMapConfig]
+    );
 
     const handleBoxOnClose = (event: React.FormEvent) => {
       event.preventDefault();
@@ -164,9 +188,19 @@ const Map = memo<IMapProps & InjectedLocalized>(
             id="mapid"
             className="e2e-map"
             mapHeight={mapHeight}
-            {...leafletMapProps}
+            {...leafletMapConfig}
+          />
+          <Outlet
+            id="app.components.Map.leafletConfig"
+            projectId={projectId}
+            leafletConfig={leafletMapConfig}
+            onLeafletConfigChange={handleLeafletConfigChange}
+            {...baseLeafletConfig}
           />
         </MapWrapper>
+        {!hideLegend && (
+          <Outlet id="app.components.Map.Legend" projectId={projectId} />
+        )}
       </Container>
     );
   }

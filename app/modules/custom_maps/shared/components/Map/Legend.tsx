@@ -73,7 +73,7 @@ const StyledIcon = styled(Icon)<{ color: string }>`
 `;
 
 interface Props {
-  projectId: string;
+  projectId?: string | null;
   className?: string;
 }
 
@@ -84,6 +84,10 @@ interface ILegendItem {
 }
 
 const Legend = memo<Props>(({ projectId, className }) => {
+  if (!projectId) {
+    return null;
+  }
+
   const mapConfig = useMapConfig({ projectId });
   const localize = useLocalize();
   let hasCustomLegend = false;

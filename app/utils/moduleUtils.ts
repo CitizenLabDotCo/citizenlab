@@ -1,3 +1,4 @@
+import { ILeafletMapConfig } from 'components/UI/LeafletMap/useLeaflet';
 import {
   LoadableLoadingAdmin,
   LoadableLoadingCitizen,
@@ -133,8 +134,14 @@ export type OutletsPropertyMap = {
       tabConfiguration: ITab;
     }) => void;
   };
-  'app.components.IdeasMap.map': IMapProps;
-  'app.components.DropdownMap.map': IMapProps;
+  'app.components.Map.leafletConfig': IMapProps & {
+    leafletConfig: ILeafletMapConfig;
+    onLeafletConfigChange: (data: ILeafletMapConfig) => void;
+  };
+  'app.components.Map.Legend': {
+    projectId?: string | null;
+    className?: string;
+  };
 };
 
 type Outlet<Props> = FunctionComponent<Props> | FunctionComponent<Props>[];
