@@ -169,7 +169,6 @@ export type OutletsPropertyMap = {
     }) => void;
   };
   'app.containers.Admin.projects.all.createProject': {
-    onData: (data: InsertConfigurationOptions<ITabItem>) => void;
     selectedTabValue: TTabValue;
   };
   'app.containers.Admin.projects.all.createProject.tabs': {
