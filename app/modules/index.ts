@@ -2,6 +2,7 @@ import { loadModules } from 'utils/moduleUtils';
 
 import projectFoldersConfiguration from './project_folders';
 import smartGroupsConfiguration from './smart_groups';
+import userCustomFieldsConfiguration from './user_custom_fields';
 import granularPermissionsConfiguration from './granular_permissions';
 import moderationConfiguration from './moderation';
 import ideaAssignmentConfiguration from './idea_assignment';
@@ -13,7 +14,15 @@ import googleAnalyticsConfiguration from './google_analytics';
 import intercomConfiguration from './intercom';
 import satismeterConfiguration from './satismeter';
 import segmentConfiguration from './segment';
+import matomoConfiguration from './matomo';
 import customIdeaStatusesConfiguration from './custom_idea_statuses';
+
+import idBosaFasConfiguration from './id_bosa_fas';
+import idCowConfiguration from './id_cow';
+import idBogusConfiguration from './id_bogus';
+import idIdCardLookupConfiguration from './id_id_card_lookup';
+import IdFranceConnectConfiguration from './id_franceconnect';
+import IdClaveUnicaConfiguration from './id_clave_unica';
 
 export default loadModules([
   {
@@ -25,7 +34,15 @@ export default loadModules([
     isEnabled: true,
   },
   {
+    configuration: userCustomFieldsConfiguration,
+    isEnabled: true,
+  },
+  {
     configuration: googleTagManagerConfiguration,
+    isEnabled: true,
+  },
+  {
+    configuration: matomoConfiguration,
     isEnabled: true,
   },
   {
@@ -66,6 +83,30 @@ export default loadModules([
   },
   {
     configuration: customMapsConfiguration,
+    isEnabled: true,
+  },
+  {
+    configuration: idBosaFasConfiguration,
+    isEnabled: true,
+  },
+  {
+    configuration: idCowConfiguration,
+    isEnabled: true,
+  },
+  {
+    configuration: idBogusConfiguration,
+    isEnabled: true,
+  },
+  {
+    configuration: idIdCardLookupConfiguration,
+    isEnabled: true,
+  },
+  {
+    configuration: IdFranceConnectConfiguration,
+    isEnabled: true,
+  },
+  {
+    configuration: IdClaveUnicaConfiguration,
     isEnabled: true,
   },
 ]);

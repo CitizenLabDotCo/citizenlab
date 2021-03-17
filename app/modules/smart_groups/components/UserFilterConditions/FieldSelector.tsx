@@ -4,16 +4,18 @@ import { Select } from 'cl2-component-library';
 import { isNilOrError } from 'utils/helperUtils';
 
 import { IOption } from 'typings';
+
 import {
   TRule,
   TStaticRuleType,
   TCustomRuleType,
   ruleTypeConstraints,
 } from './rules';
+
 import {
   IUserCustomFieldData,
   IUserCustomFieldInputType,
-} from 'services/userCustomFields';
+} from 'modules/user_custom_fields/services/userCustomFields';
 
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
@@ -21,7 +23,7 @@ import messages from './messages';
 
 // hooks
 import useLocalize from 'hooks/useLocalize';
-import useUserCustomFields from 'hooks/useUserCustomFields';
+import useUserCustomFields from 'modules/user_custom_fields/hooks/useUserCustomFields';
 
 export interface FieldDescriptor {
   ruleType?: TRule['ruleType'];
