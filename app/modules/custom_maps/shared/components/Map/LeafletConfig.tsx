@@ -1,7 +1,7 @@
 import { memo, useMemo, useEffect } from 'react';
 
 // components
-import { IMapProps } from 'components/Map';
+import { IMapConfigProps } from 'components/Map';
 
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
@@ -27,7 +27,7 @@ interface Props {
   projectId: string;
 }
 
-const Map = memo<Props & IMapProps>(
+const LeafletConfig = memo<Props & IMapConfigProps>(
   ({
     onLeafletConfigChange,
     projectId,
@@ -80,6 +80,7 @@ const Map = memo<Props & IMapProps>(
           return localize(feature?.properties?.tooltipContent);
         },
         layerPopup: (_layer: L.GeoJSON, feature: GeoJSON.Feature) => {
+          console.log(localize(feature?.properties?.popupContent));
           return localize(feature?.properties?.popupContent);
         },
         layerOverlay: (geojsonLayer: GeoJSONLayer) => {
@@ -105,4 +106,4 @@ const Map = memo<Props & IMapProps>(
   }
 );
 
-export default Map;
+export default LeafletConfig;
