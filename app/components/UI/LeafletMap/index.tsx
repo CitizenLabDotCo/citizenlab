@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React, { memo, ReactElement } from 'react';
 import styled, { css } from 'styled-components';
 import { darken } from 'polished';
 import useLeaflet, { IUseLeafletOptions } from './useLeaflet';
@@ -49,15 +49,23 @@ interface BaseProps {
   mapHeight?: string;
 }
 
-export default function LeafletMap({
-  id,
-  className,
-  mapHeight,
-  ...useLeafletOptions
-}: BaseProps & IUseLeafletOptions): ReactElement {
-  useLeaflet(id, useLeafletOptions);
+const LeafletMap = memo(
+  ({
+    id,
+    className,
+    mapHeight,
+    ...useLeafletOptions
+  }: BaseProps & IUseLeafletOptions): ReactElement => {
+    useLeaflet(id, useLeafletOptions);
 
-  return (
-    <LeafletMapContainer id={id} className={className} mapHeight={mapHeight} />
-  );
-}
+    return (
+      <LeafletMapContainer
+        id={id}
+        className={className}
+        mapHeight={mapHeight}
+      />
+    );
+  }
+);
+
+export default LeafletMap;

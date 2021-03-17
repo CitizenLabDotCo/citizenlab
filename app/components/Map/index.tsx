@@ -138,7 +138,7 @@ const Map = memo<IMapProps & InjectedLocalized>(
       tileProvider,
       fitBounds,
       onClick: onMapClick,
-      onMarkerClick: onMarkerClick,
+      onMarkerClick,
       marker: ideaMarkerIcon,
     };
 
