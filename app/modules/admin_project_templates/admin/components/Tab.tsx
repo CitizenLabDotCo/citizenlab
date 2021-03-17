@@ -3,12 +3,10 @@ import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 import { ITabItem } from 'components/UI/Tabs';
+import { InsertConfigurationOptions } from 'typings';
 
 type Props = {
-  onData: (data: {
-    insertBeforeName?: string;
-    configuration: ITabItem;
-  }) => void;
+  onData: (data: InsertConfigurationOptions<ITabItem>) => void;
 };
 
 const Tab: FC<Props & InjectedIntlProps> = ({
