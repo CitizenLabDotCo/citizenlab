@@ -15,9 +15,6 @@ import AdminProjectEditGeneral from 'containers/Admin/projects/edit/general';
 import { HeaderTitle } from './StyledComponents';
 import Tabs, { ITabItem } from 'components/UI/Tabs';
 
-// hooks
-import useFeatureFlag from 'hooks/useFeatureFlag';
-
 // utils
 import eventEmitter from 'utils/eventEmitter';
 
@@ -164,7 +161,6 @@ export type TTabValue = 'scratch' | TProjectTemplatesTabValue;
 
 const CreateProject = memo<Props & InjectedIntlProps>(
   ({ className, intl: { formatMessage } }) => {
-    const projectTemplatesEnabled = useFeatureFlag('admin_project_templates');
     const [tabs, setTabs] = useState<ITabItem[]>([
       {
         name: 'scratch',
@@ -262,13 +258,11 @@ const CreateProject = memo<Props & InjectedIntlProps>(
                   onClick={handleTabOnClick}
                 />
               )}
-              {selectedTabValue === 'template' && projectTemplatesEnabled && (
-                <Outlet
-                  id="app.containers.Admin.projects.all.createProject"
-                  onData={handleData}
-                  selectedTabValue={selectedTabValue}
-                />
-              )}
+              <Outlet
+                id="app.containers.Admin.projects.all.createProject"
+                onData={handleData}
+                selectedTabValue={selectedTabValue}
+              />
               {selectedTabValue === 'scratch' && <AdminProjectEditGeneral />}
               <AdminProjectEditGeneral />
             </CreateProjectContentInner>
