@@ -17,7 +17,7 @@ module Moderation
       @moderations = @moderations
         .page(params.dig(:page, :number))
         .per(params.dig(:page, :size))
-      render json: linked_json(@moderations, ::WebApi::V1::ModerationSerializer, params: fastjson_params)
+      render json: linked_json(@moderations, WebApi::V1::ModerationSerializer, params: fastjson_params)
     end
 
     def update
@@ -42,7 +42,7 @@ module Moderation
         end
       end
 
-      render json: ::WebApi::V1::ModerationSerializer.new(
+      render json: WebApi::V1::ModerationSerializer.new(
         @moderation.reload, 
         params: fastjson_params
         ).serialized_json, status: :ok
