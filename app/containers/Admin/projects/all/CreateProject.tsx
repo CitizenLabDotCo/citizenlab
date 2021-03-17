@@ -157,7 +157,11 @@ interface Props {
   className?: string;
 }
 
-export type TTabValue = 'scratch' | TProjectTemplatesTabValue;
+export interface ITabNamesMap {
+  scratch: 'scratch';
+}
+
+export type TTabName = ITabNamesMap[keyof ITabNamesMap];
 
 const CreateProject = memo<Props & InjectedIntlProps>(
   ({ className, intl: { formatMessage } }) => {
@@ -168,9 +172,9 @@ const CreateProject = memo<Props & InjectedIntlProps>(
         icon: 'scratch',
       },
     ]);
-    const tabValues = tabs.map((tab) => tab.name) as TTabValue[];
+    const tabValues = tabs.map((tab) => tab.name) as TTabName[];
 
-    const [selectedTabValue, setSelectedTabValue] = useState<TTabValue>(
+    const [selectedTabValue, setSelectedTabValue] = useState<TTabName>(
       tabValues[0]
     );
     const [expanded, setExpanded] = useState(false);
@@ -208,7 +212,7 @@ const CreateProject = memo<Props & InjectedIntlProps>(
     }, [expanded]);
 
     const handleTabOnClick = useCallback(
-      (newSelectedTabValue: TTabValue) => {
+      (newSelectedTabValue: TTabName) => {
         trackEventByName(tracks.createdProject, {
           selectedTabValue,
         });
