@@ -250,6 +250,10 @@ const CreateProject = memo<Props & InjectedIntlProps>(
             className={`${expanded ? 'expanded' : 'collapsed'}`}
           >
             <CreateProjectContentInner>
+              <Outlet
+                id="app.containers.Admin.projects.all.createProject.tabs"
+                onData={handleData}
+              />
               {tabs.length > 1 && (
                 <StyledTabs
                   className="e2e-create-project-tabs"

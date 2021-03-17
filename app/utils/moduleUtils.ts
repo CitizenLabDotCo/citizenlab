@@ -171,6 +171,9 @@ export type OutletsPropertyMap = {
     onData: (data: InsertConfigurationOptions<ITabItem>) => void;
     selectedTabValue: TTabValue;
   };
+  'app.containers.Admin.projects.all.createProject.tabs': {
+    onData: (data: InsertConfigurationOptions<ITabItem>) => void;
+  };
   'app.containers.Admin.settings.registration': {};
   'app.containers.Admin.settings.registrationHelperText': {
     onChange: (propertyName: string) => (multiloc: Multiloc) => void;

@@ -1,6 +1,7 @@
 import React, { ReactNode } from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 import CreateProject from './admin';
+import Tab from './admin/components/Tab';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import { TTabValue } from 'containers/Admin/projects/all/CreateProject';
 
@@ -40,6 +41,11 @@ const configuration: ModuleConfiguration = {
         <RenderOnSelectedTabValue selectedTabValue={props.selectedTabValue}>
           <CreateProject />
         </RenderOnSelectedTabValue>
+      </RenderOnFeatureFlag>
+    ),
+    'app.containers.Admin.projects.all.createProject.tabs': (props) => (
+      <RenderOnFeatureFlag>
+        <Tab {...props} />
       </RenderOnFeatureFlag>
     ),
   },
