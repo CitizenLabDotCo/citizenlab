@@ -400,7 +400,6 @@ export class AdminProjectEdition extends PureComponent<
         <>
           <Outlet
             id="app.containers.Admin.projects.edit"
-            projectId={project.id}
             onData={this.handleData}
           />
           <TopContainer>
