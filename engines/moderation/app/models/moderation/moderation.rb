@@ -16,9 +16,9 @@ module Moderation
         )
       case status
       when 'read'
-        moderations.where("moderation_moderation_statuses.status = 'read'") # .where(moderation_statuses: {status: 'read'})
+        moderations.where(moderation_moderation_statuses: {status: 'read'})
       when 'unread'
-        moderations.where("moderation_moderation_statuses.status IN ('unread', NULL)") # .where(moderation_statuses: {status: ['unread', nil]})
+        moderations.where(moderation_moderation_statuses: {status: ['unread', nil]})
       end
     end)
 
