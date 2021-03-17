@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_16_165251) do
+ActiveRecord::Schema.define(version: 2021_03_17_093551) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -1247,5 +1247,80 @@ ActiveRecord::Schema.define(version: 2021_03_16_165251) do
       initiatives.slug,
       initiatives.official_feedbacks_count
      FROM initiatives;
+  SQL
+  create_view "moderation_moderations", sql_definition: <<-SQL
+      SELECT ideas.id,
+      'Idea'::text AS moderatable_type,
+      NULL::text AS post_type,
+      NULL::uuid AS post_id,
+      NULL::text AS post_slug,
+      NULL::jsonb AS post_title_multiloc,
+      projects.id AS project_id,
+      projects.slug AS project_slug,
+      projects.title_multiloc AS project_title_multiloc,
+      ideas.title_multiloc AS content_title_multiloc,
+      ideas.body_multiloc AS content_body_multiloc,
+      ideas.slug AS content_slug,
+      ideas.published_at AS created_at,
+      moderation_moderation_statuses.status AS moderation_status
+     FROM ((ideas
+       LEFT JOIN moderation_moderation_statuses ON ((moderation_moderation_statuses.moderatable_id = ideas.id)))
+       LEFT JOIN projects ON ((projects.id = ideas.project_id)))
+  UNION ALL
+   SELECT initiatives.id,
+      'Initiative'::text AS moderatable_type,
+      NULL::text AS post_type,
+      NULL::uuid AS post_id,
+      NULL::text AS post_slug,
+      NULL::jsonb AS post_title_multiloc,
+      NULL::uuid AS project_id,
+      NULL::character varying AS project_slug,
+      NULL::jsonb AS project_title_multiloc,
+      initiatives.title_multiloc AS content_title_multiloc,
+      initiatives.body_multiloc AS content_body_multiloc,
+      initiatives.slug AS content_slug,
+      initiatives.published_at AS created_at,
+      moderation_moderation_statuses.status AS moderation_status
+     FROM (initiatives
+       LEFT JOIN moderation_moderation_statuses ON ((moderation_moderation_statuses.moderatable_id = initiatives.id)))
+  UNION ALL
+   SELECT comments.id,
+      'Comment'::text AS moderatable_type,
+      'Idea'::text AS post_type,
+      ideas.id AS post_id,
+      ideas.slug AS post_slug,
+      ideas.title_multiloc AS post_title_multiloc,
+      projects.id AS project_id,
+      projects.slug AS project_slug,
+      projects.title_multiloc AS project_title_multiloc,
+      NULL::jsonb AS content_title_multiloc,
+      comments.body_multiloc AS content_body_multiloc,
+      NULL::character varying AS content_slug,
+      comments.created_at,
+      moderation_moderation_statuses.status AS moderation_status
+     FROM (((comments
+       LEFT JOIN moderation_moderation_statuses ON ((moderation_moderation_statuses.moderatable_id = comments.id)))
+       LEFT JOIN ideas ON ((ideas.id = comments.post_id)))
+       LEFT JOIN projects ON ((projects.id = ideas.project_id)))
+    WHERE ((comments.post_type)::text = 'Idea'::text)
+  UNION ALL
+   SELECT comments.id,
+      'Comment'::text AS moderatable_type,
+      'Initiative'::text AS post_type,
+      initiatives.id AS post_id,
+      initiatives.slug AS post_slug,
+      initiatives.title_multiloc AS post_title_multiloc,
+      NULL::uuid AS project_id,
+      NULL::character varying AS project_slug,
+      NULL::jsonb AS project_title_multiloc,
+      NULL::jsonb AS content_title_multiloc,
+      comments.body_multiloc AS content_body_multiloc,
+      NULL::character varying AS content_slug,
+      comments.created_at,
+      moderation_moderation_statuses.status AS moderation_status
+     FROM ((comments
+       LEFT JOIN moderation_moderation_statuses ON ((moderation_moderation_statuses.moderatable_id = comments.id)))
+       LEFT JOIN initiatives ON ((initiatives.id = comments.post_id)))
+    WHERE ((comments.post_type)::text = 'Initiative'::text);
   SQL
 end

@@ -10,16 +10,16 @@ module Moderation
         :using => { :tsearch => {:prefix => true} }
 
     scope :with_moderation_status, (Proc.new do |status|
-      moderations = joins("LEFT JOIN moderation_statuses \
-          ON moderation_statuses.moderatable_id = moderations.id AND \
-             moderation_statuses.moderatable_type = moderations.moderatable_type"
+      moderations = joins("LEFT JOIN moderation_moderation_statuses \
+          ON moderation_moderation_statuses.moderatable_id = moderation_moderations.id AND \
+             moderation_moderation_statuses.moderatable_type = moderation_moderations.moderatable_type"
         )
-        case status
-        when 'read'
-          moderations.where(moderation_statuses: {status: 'read'})
-        when 'unread'
-          moderations.where(moderation_statuses: {status: ['unread', nil]})
-        end
+      case status
+      when 'read'
+        moderations.where("moderation_moderation_statuses.status = 'read'") # .where(moderation_statuses: {status: 'read'})
+      when 'unread'
+        moderations.where("moderation_moderation_statuses.status IN ('unread', NULL)") # .where(moderation_statuses: {status: ['unread', nil]})
+      end
     end)
 
 
