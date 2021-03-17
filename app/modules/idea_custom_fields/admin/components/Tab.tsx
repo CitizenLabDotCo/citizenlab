@@ -17,7 +17,7 @@ const Tab: FC<Props & InjectedIntlProps> = ({
   useEffect(() => {
     onData({
       configuration: {
-        label: formatMessage(messages.ideaFormTab),
+        label: formatMessage(messages.inputFormTab),
         url: `ideaform`,
         feature: 'idea_custom_fields',
         name: 'ideaform',
