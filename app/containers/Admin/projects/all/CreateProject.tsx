@@ -268,7 +268,6 @@ const CreateProject = memo<Props & InjectedIntlProps>(
               )}
               <Outlet
                 id="app.containers.Admin.projects.all.createProject"
-                onData={handleData}
                 selectedTabValue={selectedTabValue}
               />
               {selectedTabValue === 'scratch' && <AdminProjectEditGeneral />}
