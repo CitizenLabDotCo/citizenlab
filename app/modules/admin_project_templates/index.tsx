@@ -3,10 +3,12 @@ import { ModuleConfiguration } from 'utils/moduleUtils';
 import ProjectTemplates from './admin/containers';
 import Tab from './admin/components/Tab';
 import useFeatureFlag from 'hooks/useFeatureFlag';
-import { TTabValue } from 'containers/Admin/projects/all/CreateProject';
+import { TTabName } from 'containers/Admin/projects/all/CreateProject';
 
 declare module 'containers/Admin/projects/all/CreateProject' {
-  type TProjectTemplatesTabValue = 'template';
+  export interface ITabNamesMap {
+    template: 'template';
+  }
 }
 
 type RenderOnFeatureFlagProps = {
@@ -14,7 +16,7 @@ type RenderOnFeatureFlagProps = {
 };
 
 type RenderOnSelectedTabValueProps = {
-  selectedTabValue: TTabValue;
+  selectedTabValue: TTabName;
   children: ReactNode;
 };
 
