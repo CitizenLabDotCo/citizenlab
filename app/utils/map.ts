@@ -1,5 +1,6 @@
 import { isNilOrError } from 'utils/helperUtils';
 import { IAppConfiguration } from 'services/appConfiguration';
+import { DEFAULT_TILE_PROVIDER } from 'components/UI/LeafletMap/config';
 
 export const getCenter = (
   centerCoordinates: GeoJSON.Position | undefined,
@@ -39,9 +40,10 @@ export const getZoomLevel = (
 };
 
 export const getTileProvider = (
-  _appConfig: IAppConfiguration | undefined | null | Error
+  appConfig: IAppConfiguration | undefined | null | Error
 ) => {
-  const fallbackProvider =
-    'https://api.maptiler.com/maps/77632ac6-e168-429c-8b1b-76599ce796e3/{z}/{x}/{y}@2x.png?key=DIZiuhfkZEQ5EgsaTk6D';
-  return fallbackProvider;
+  const tileProvider =
+    !isNilOrError(appConfig) &&
+    (appConfig?.data?.attributes?.settings?.maps?.tile_provider as string);
+  return tileProvider || DEFAULT_TILE_PROVIDER;
 };

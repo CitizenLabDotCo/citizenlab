@@ -1,3 +1,4 @@
+import { flatten } from 'lodash-es';
 import {
   Locale,
   Multiloc,
@@ -5,7 +6,6 @@ import {
   IParticipationContextType,
   CLErrorsJSON,
 } from 'typings';
-import { isString } from 'util';
 import { trim } from 'lodash-es';
 import { removeUrlLocale } from 'services/locale';
 
@@ -199,4 +199,41 @@ export function getUrlSegments(pathname: string | null) {
   }
 
   return [];
+}
+
+export function findNestedProperty(object: any, property: string): any[] {
+  var result = [];
+
+  if (!isObject(object) && !Array.isArray(object)) {
+    return [];
+  }
+
+  Object.keys(object).forEach((prop) => {
+    if (prop === property) {
+      result.push(object[prop]);
+    } else {
+      let nestedProperty = findNestedProperty(object[prop], property);
+      if (nestedProperty) {
+        result.push(nestedProperty);
+      }
+    }
+  });
+
+  return flatten(result);
+}
+
+export function isFunction(f): f is Function {
+  return f instanceof Function;
+}
+
+export function isString(s): s is string {
+  return typeof s === 'string';
+}
+
+export function isObject(s): s is object {
+  return typeof s === 'object';
+}
+
+export function isOrReturnsString(s: any, ...args: any[]): s is Function {
+  return isString(s) || (isFunction(s) && isString(s(...args)));
 }
