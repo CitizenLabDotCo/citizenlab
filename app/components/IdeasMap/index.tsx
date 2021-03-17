@@ -13,7 +13,6 @@ import Map, { Point } from 'components/Map';
 import Warning from 'components/UI/Warning';
 import IdeaPreview from './IdeaPreview';
 import IdeaButton from 'components/IdeaButton';
-import Outlet from 'components/Outlet';
 
 // Resources
 import GetIdeaMarkers, {
@@ -141,19 +140,6 @@ export class IdeasMap extends PureComponent<Props & WithRouterProps, State> {
     } = this.state;
     const projectId =
       projectIds && projectIds.length === 1 ? projectIds[0] : null;
-
-    const DefaultMap = () => (
-      <Map
-        points={points}
-        onMarkerClick={this.toggleIdea}
-        onMapClick={this.onMapClick}
-        fitBounds={true}
-        boxContent={
-          selectedIdeaId ? <IdeaPreview ideaId={selectedIdeaId} /> : null
-        }
-        onBoxClose={this.deselectIdea}
-      />
-    );
 
     return (
       <Container className={className}>
