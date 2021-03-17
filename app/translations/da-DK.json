@@ -2469,7 +2469,7 @@
   "app.errors.avatar_carrierwave_processing_error": "Kunne ikke behandle avatar.",
   "app.errors.avatar_extension_blacklist_error": "Filtypen til avatarbilledet er ikke tilladt. Tilladte filtyper er: jpg, jpeg, gif og png.",
   "app.errors.avatar_extension_whitelist_error": "Filtypen til avatarbilledet er ikke tilladt. Tilladte filtyper er: jpg, jpeg, gif og png.",
-  "app.errors.cannot_contain_ideas": "The participation method you selected does not support this type of post. Please edit your selection and try again.",
+  "app.errors.cannot_contain_ideas": "Den valgte metode til borgerinddragelse understøtter ikke denne type indlæg. Redigér dit valg, og prøv igen.",
   "app.errors.cant_change_after_first_response": "You can no longer change this, since some users already responded",
   "app.errors.email_already_active": "E-mailadressen {value} fundet i række {row} tilhører allerede en registreret bruger",
   "app.errors.email_already_invited": "E-mailadressen {value} fundet i række {row} er allerede inviteret",
