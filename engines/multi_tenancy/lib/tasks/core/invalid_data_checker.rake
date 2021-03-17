@@ -5,7 +5,7 @@ namespace :checks do
     issues = {}
     summary = { durations: {}, issues: {} }
 
-    Cl2DataListingService.new.cl2_root_models.each do |claz|
+    Cl2DataListingService.new.cl2_global_models.each do |claz|
       claz.all.find_each do |object|
         errors = validation_errors object
         if errors
@@ -23,7 +23,7 @@ namespace :checks do
     end.each do |tenant|
       Apartment::Tenant.switch(tenant.schema_name) do
         puts "Processing #{tenant.host}..."
-        Cl2DataListingService.new.cl2_tenant_models.select do |claz|
+        Cl2DataListingService.new.cl2_schema_leaf_models.select do |claz|
           !skip_class_for_inconsistent_data_checking? claz
         end.each do |claz|
           t1 = Time.now

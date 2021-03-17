@@ -287,6 +287,7 @@ class TenantTemplateService
         "ProjectFolder" => ProjectFolders::Folder,
         "ProjectFolderFile" => ProjectFolders::File,
         "ProjectFolderImage" => ProjectFolders::Image,
+        "Verification::IdCard" => IdIdCardLookup::IdCard
     }
 
     class_name = model_name.classify

@@ -202,6 +202,11 @@ namespace :cl2_back do
               secret: 'fake_secret'
             },
             {
+              name: 'clave_unica',
+              client_id: 'fake_identifier',
+              client_secret: 'fake_secret'
+            },
+            {
               name: 'bogus'
             },
             {
