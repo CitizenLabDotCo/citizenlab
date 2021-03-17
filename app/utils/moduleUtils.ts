@@ -12,7 +12,7 @@ import { NormalFormValues } from 'containers/Admin/users/NormalGroupForm';
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
 import { IProjectData, IUpdatedProjectProperties } from 'services/projects';
 import { onProjectFormStateChange } from 'containers/Admin/projects/edit/general';
-import { mergeWith, castArray } from 'lodash-es';
+import { mergeWith, castArray, clamp } from 'lodash-es';
 
 import { FunctionComponent } from 'react';
 
@@ -327,9 +327,10 @@ export const insertConfiguration = <T extends { name: string }>({
   const foundIndex = items.findIndex(
     (item) => item.name === (insertAfterName || insertBeforeName)
   );
-  const insertIndex = Math.max(
+  const insertIndex = clamp(
+    insertAfterName ? foundIndex + 1 : foundIndex - 1,
     0,
-    Math.min(insertAfterName ? foundIndex + 1 : foundIndex - 1, items.length)
+    items.length
   );
 
   return insertIndex > 0
