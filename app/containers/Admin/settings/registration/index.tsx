@@ -14,9 +14,9 @@ import {
 } from 'services/appConfiguration';
 
 // components
-import AllCustomFields from './CustomFields/All';
+import messages from 'containers/Admin/settings/messages';
+
 import {
-  Section,
   SectionTitle,
   SubSectionTitleWithDescription,
   SectionField,
@@ -28,9 +28,9 @@ import SubmitWrapper from 'components/admin/SubmitWrapper';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
+import Outlet from 'components/Outlet';
 
-const LabelTooltip = styled.div`
+export const LabelTooltip = styled.div`
   display: flex;
 `;
 
@@ -121,26 +121,11 @@ const SettingsRegistrationTab = (_props: Props) => {
                 }
               />
             </SectionField>
-            <SectionField>
-              <InputMultilocWithLocaleSwitcher
-                type="text"
-                valueMultiloc={
-                  latestAppConfigCoreSettings?.custom_fields_signup_helper_text ||
-                  null
-                }
-                onChange={handlePageOnChange(
-                  'custom_fields_signup_helper_text'
-                )}
-                label={
-                  <LabelTooltip>
-                    <FormattedMessage {...messages.step2} />
-                    <IconTooltip
-                      content={<FormattedMessage {...messages.step2Tooltip} />}
-                    />
-                  </LabelTooltip>
-                }
-              />
-            </SectionField>
+            <Outlet
+              id="app.containers.Admin.settings.registrationHelperText"
+              onChange={handlePageOnChange}
+              latestAppConfigCoreSettings={latestAppConfigCoreSettings}
+            />
             <SubmitWrapper
               loading={isFormSubmitting}
               status={getSubmitState({
@@ -157,15 +142,7 @@ const SettingsRegistrationTab = (_props: Props) => {
             />
           </form>
         </SignUpFieldsSection>
-        <Section>
-          <SubSectionTitleWithDescription>
-            <FormattedMessage {...messages.registrationFields} />
-          </SubSectionTitleWithDescription>
-          <SectionDescription>
-            <FormattedMessage {...messages.subtitleRegistration} />
-          </SectionDescription>
-          <AllCustomFields />
-        </Section>
+        <Outlet id="app.containers.Admin.settings.registration" />
       </>
     );
   }
