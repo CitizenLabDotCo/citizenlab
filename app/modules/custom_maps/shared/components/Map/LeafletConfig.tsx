@@ -24,7 +24,7 @@ import { ILeafletMapConfig } from 'components/UI/LeafletMap/useLeaflet';
 interface Props {
   leafletConfig: ILeafletMapConfig;
   onLeafletConfigChange: (newLeafletConfig: ILeafletMapConfig) => void;
-  projectId: string;
+  projectId?: string | null;
 }
 
 const LeafletConfig = memo<Props & IMapConfigProps>(
