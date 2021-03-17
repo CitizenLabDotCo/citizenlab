@@ -167,7 +167,11 @@ export class IdeasMap extends PureComponent<Props & WithRouterProps, State> {
           <FormattedMessage {...messages.a11y_mapTitle} />
         </ScreenReaderOnly>
 
-        <Outlet id="app.components.IdeasMap.map" fallback={<DefaultMap />} />
+        <Outlet
+          id="app.components.IdeasMap.map"
+          projectId={projectId}
+          fallback={<DefaultMap />}
+        />
 
         {projectId && (
           <IdeaButtonWrapper
