@@ -142,126 +142,125 @@ export default function useLeaflet(
 
   // Effects
 
-  // setup the map with
-  useEffect(
-    function setup() {
-      if (map) {
-        return;
-      }
-      const options = {
-        tileProvider,
-        onClick,
-        zoom,
-        center,
-        onMoveHandler: broadcastMapCenter,
-        onZoomHandler: broadcastMapZoom,
-      };
+  const setup = () => {
+    if (map) {
+      return;
+    }
+    const options = {
+      tileProvider,
+      onClick,
+      zoom,
+      center,
+      onMoveHandler: broadcastMapCenter,
+      onZoomHandler: broadcastMapZoom,
+    };
 
-      let newMap = service.setup(mapId, options);
+    let newMap = service.setup(mapId, options);
 
-      setMap(newMap);
-    },
-    [mapId, tileProvider, onClick, zoom]
-  );
+    setMap(newMap);
+  };
+  useEffect(setup, [mapId, tileProvider, onClick, zoom]);
 
-  useEffect(
-    function refreshCenterAndZoom() {
-      if (!map || (center !== prevCenter && zoom !== prevZoom)) {
-        return;
-      }
+  const refreshCenterAndZoom = () => {
+    if (!map || (center !== prevCenter && zoom !== prevZoom)) {
+      return;
+    }
 
-      service.changeView(map, center, zoom);
-    },
-    [map, center, prevCenter, zoom, prevZoom]
-  );
+    service.changeView(map, center, zoom);
+  };
+  useEffect(refreshCenterAndZoom, [map, center, prevCenter, zoom, prevZoom]);
 
-  useEffect(
-    function refreshLayers() {
-      if (!map || prevGeoJsonLayers === geoJsonLayers) {
-        return;
-      }
+  const refreshLayers = () => {
+    if (!map || prevGeoJsonLayers === geoJsonLayers) {
+      return;
+    }
 
-      service.removeControl(map, layerControl);
-      service.removeLayers(map, layers);
+    service.removeControl(map, layerControl);
+    service.removeLayers(map, layers);
 
-      const newLayerControl = service.addLayersControl(map);
+    const newLayerControl = service.addLayersControl(map);
 
-      setLayerControl(newLayerControl);
-      addGeoJsonLayers(newLayerControl);
-    },
-    [
-      map,
-      geoJsonLayers,
-      prevGeoJsonLayers,
-      layerControl,
-      layers,
-      addGeoJsonLayers,
-    ]
-  );
+    setLayerControl(newLayerControl);
+    addGeoJsonLayers(newLayerControl);
+  };
+  useEffect(refreshLayers, [
+    map,
+    geoJsonLayers,
+    prevGeoJsonLayers,
+    layerControl,
+    layers,
+    addGeoJsonLayers,
+  ]);
 
-  useEffect(
-    function refreshMarkers() {
-      if (!map || (prevPoints === points && prevMap === map)) {
-        return;
-      }
+  const refreshMarkers = () => {
+    if (!map || (prevPoints === points && prevMap === map)) {
+      return;
+    }
 
-      const options = { fitBounds };
+    const options = { fitBounds };
 
-      const newMarkers = service.addMarkersToMap(map, points, marker, options);
+    const newMarkers = service.addMarkersToMap(map, points, marker, options);
 
-      setMarkers(newMarkers);
-    },
-    [fitBounds, map, prevMap, points, prevPoints, marker]
-  );
+    setMarkers(newMarkers);
+  };
+  useEffect(refreshMarkers, [
+    fitBounds,
+    map,
+    prevMap,
+    points,
+    prevPoints,
+    marker,
+  ]);
 
-  useEffect(
-    function refreshClusterGroups() {
-      if (!map || (prevMap === map && prevMarkers === markers)) {
-        return;
-      }
+  const refreshClusterGroups = () => {
+    if (!map || (prevMap === map && prevMarkers === markers)) {
+      return;
+    }
 
-      if (markerClusterGroup) {
-        service.removeLayer(map, markerClusterGroup);
-      }
+    if (markerClusterGroup) {
+      service.removeLayer(map, markerClusterGroup);
+    }
 
-      const newMarkerClusterGroup = service.addClusterGroup(map, markers, {
-        onClick: onMarkerClick,
-      });
+    const newMarkerClusterGroup = service.addClusterGroup(map, markers, {
+      onClick: onMarkerClick,
+    });
 
-      setMarkerClusterGroup(newMarkerClusterGroup);
-    },
-    [markerClusterGroup, prevMap, map, prevMarkers, markers, onMarkerClick]
-  );
+    setMarkerClusterGroup(newMarkerClusterGroup);
+  };
+  useEffect(refreshClusterGroups, [
+    markerClusterGroup,
+    prevMap,
+    map,
+    prevMarkers,
+    markers,
+    onMarkerClick,
+  ]);
 
-  useEffect(
-    function refitBoundsToAllContent() {
-      if (!map || isEmpty(allBounds)) {
-        return;
-      }
+  const refitBoundsToAllContent = () => {
+    if (!map || isEmpty(allBounds)) {
+      return;
+    }
 
-      service.refitBounds(map, allBounds, { fitBounds });
-    },
-    [allBounds, map, fitBounds]
-  );
+    service.refitBounds(map, allBounds, { fitBounds });
+  };
+  useEffect(refitBoundsToAllContent, [allBounds, map, fitBounds]);
 
-  useEffect(
-    function hookSubscriptions() {
-      const subscriptions = [
-        setMapLatLngZoom$.subscribe(({ lat, lng, zoom }) => {
-          if (map) {
-            map.setView([lat, lng], zoom);
-          }
-        }),
-      ];
+  const wireUpSubscriptions = () => {
+    const subscriptions = [
+      setMapLatLngZoom$.subscribe(({ lat, lng, zoom }) => {
+        if (map) {
+          map.setView([lat, lng], zoom);
+        }
+      }),
+    ];
 
-      return () => {
-        subscriptions.forEach((subscription) => subscription.unsubscribe());
-        map?.off('moveend');
-        map?.off('zoomend');
-      };
-    },
-    [map]
-  );
+    return () => {
+      subscriptions.forEach((subscription) => subscription.unsubscribe());
+      map?.off('moveend');
+      map?.off('zoomend');
+    };
+  };
+  useEffect(wireUpSubscriptions, [map]);
 
   return map;
 }
