@@ -15,7 +15,7 @@ import ModeratorList from '../components/ModeratorList';
 import UserSearch from '../components/UserSearch';
 
 const ModeratorSubSection = styled(Section)`
-  margin-bottom: 25px;
+  margin-bottom: 30px;
 `;
 
 const StyledA = styled.a`

@@ -12,7 +12,7 @@ import Continuous from './Continuous';
 import { Section, SubSectionTitle } from 'components/admin/Section';
 
 const StyledSection = styled(Section)`
-  margin-bottom: 50px;
+  margin-bottom: 30px;
 `;
 
 interface Props {
