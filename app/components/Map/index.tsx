@@ -7,7 +7,6 @@ import { Icon } from 'cl2-component-library';
 
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
-import useLocalize from 'hooks/useLocalize';
 
 // utils
 import { getCenter, getZoomLevel, getTileProvider } from 'utils/map';
@@ -16,8 +15,7 @@ import { getCenter, getZoomLevel, getTileProvider } from 'utils/map';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
 
 // styling
-import styled, { css } from 'styled-components';
-import { darken } from 'polished';
+import styled from 'styled-components';
 import { media, defaultOutline, defaultCardStyle } from 'utils/styleUtils';
 import ideaMarkerIcon from './idea-marker.svg';
 
@@ -171,7 +169,7 @@ const Map = memo<IMapProps & InjectedLocalized>(
         </MapWrapper>
       </Container>
     );
-  };
+  }
 );
 
 export default injectLocalize(Map);
