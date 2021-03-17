@@ -271,7 +271,6 @@ const CreateProject = memo<Props & InjectedIntlProps>(
                 selectedTabValue={selectedTabValue}
               />
               {selectedTabValue === 'scratch' && <AdminProjectEditGeneral />}
-              <AdminProjectEditGeneral />
             </CreateProjectContentInner>
           </CreateProjectContent>
         </CSSTransition>
