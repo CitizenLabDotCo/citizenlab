@@ -12,9 +12,6 @@ import useAppConfiguration from 'hooks/useAppConfiguration';
 // utils
 import { getCenter, getZoomLevel, getTileProvider } from 'utils/map';
 
-// i18n
-import injectLocalize, { InjectedLocalized } from 'utils/localize';
-
 // styling
 import styled from 'styled-components';
 import { media, defaultOutline, defaultCardStyle } from 'utils/styleUtils';
@@ -90,23 +87,26 @@ const CloseIcon = styled(Icon)`
   fill: #000;
 `;
 
-export interface IMapProps {
+export interface IMapConfigProps {
   centerCoordinates?: GeoJSON.Position;
   points?: Point[];
-  areas?: GeoJSON.Polygon[];
   zoomLevel?: number;
+  areas?: GeoJSON.Polygon[];
   mapHeight?: string;
-  boxContent?: JSX.Element | null;
-  onBoxClose?: (event: React.FormEvent) => void;
   onMarkerClick?: (id: string, data: any) => void;
   onMapClick?: (map: L.Map, position: L.LatLng) => void;
   fitBounds?: boolean;
+}
+
+export interface IMapProps {
+  onBoxClose?: (event: React.FormEvent) => void;
   className?: string;
   projectId?: string | null;
   hideLegend?: boolean;
+  boxContent?: JSX.Element | null;
 }
 
-const Map = memo<IMapProps & InjectedLocalized>(
+const Map = memo<IMapProps & IMapConfigProps>(
   ({
     projectId,
     centerCoordinates,
@@ -123,13 +123,12 @@ const Map = memo<IMapProps & InjectedLocalized>(
   }) => {
     const appConfig = useAppConfiguration();
 
-    const baseLeafletConfig = {
+    const baseMapConfigProps: IMapConfigProps = {
       centerCoordinates,
       zoomLevel,
       mapHeight,
       points,
-      boxContent,
-      onBoxClose,
+      fitBounds,
       onMapClick,
       onMarkerClick,
     };
@@ -195,7 +194,7 @@ const Map = memo<IMapProps & InjectedLocalized>(
             projectId={projectId}
             leafletConfig={leafletMapConfig}
             onLeafletConfigChange={handleLeafletConfigChange}
-            {...baseLeafletConfig}
+            {...baseMapConfigProps}
           />
         </MapWrapper>
         {!hideLegend && (
@@ -206,4 +205,4 @@ const Map = memo<IMapProps & InjectedLocalized>(
   }
 );
 
-export default injectLocalize(Map);
+export default Map;
