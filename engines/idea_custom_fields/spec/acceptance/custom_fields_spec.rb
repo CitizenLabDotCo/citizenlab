@@ -29,7 +29,7 @@ resource "Idea Custom Fields" do
       token = Knock::AuthToken.new(payload: @user.to_token_payload).token
       header 'Authorization', "Bearer #{token}"
     end
-  
+
     get "web_api/v1/projects/:project_id/custom_fields" do
       let(:project) { create(:project) }
       let(:project_id) { project.id }
@@ -98,7 +98,7 @@ resource "Idea Custom Fields" do
           expect(json_response.dig(:data,:attributes,:description_multiloc).stringify_keys).to match description_multiloc
           expect(CustomField.count).to eq 1
           expect(CustomForm.count).to eq 1
-          expect(project.reload.custom_form).to eq CustomForm.first
+          expect(project.reload.custom_form).to eq IdeaCustomFields::CustomForm.first
         end
       end
 

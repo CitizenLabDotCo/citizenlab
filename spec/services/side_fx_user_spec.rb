@@ -8,7 +8,7 @@ describe SideFxUserService do
   describe "before_create" do
     it "set registration_completed_at if there's no user custom fields and the user is not invited" do
       user.update(registration_completed_at: nil)
-      create(:custom_field, resource_type: 'CustomForm')
+      create(:custom_field, resource_type: 'IdeaCustomFields::CustomForm')
       service.before_create(user, current_user)
       expect(user.registration_completed_at).to be_present
     end
