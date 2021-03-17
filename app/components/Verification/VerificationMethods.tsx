@@ -1,5 +1,4 @@
 import React, { memo, useCallback, Fragment } from 'react';
-import { isEmpty } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
@@ -8,7 +7,6 @@ import Avatar from 'components/Avatar';
 import T from 'components/T';
 import Button from 'components/UI/Button';
 import { Title, Subtitle } from './styles';
-import FranceConnectButton from 'components/UI/FranceConnectButton';
 import Or from 'components/UI/Or';
 
 // hooks
@@ -18,8 +16,7 @@ import useVerificationMethods from 'hooks/useVerificationMethods';
 
 // i18n
 import messages from './messages';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 
 // style
 import styled from 'styled-components';
@@ -27,10 +24,8 @@ import { colors, fontSizes, media } from 'utils/styleUtils';
 
 // typings
 import { IVerificationMethod } from 'services/verificationMethods';
-import { AUTH_PATH } from 'containers/App/constants';
-import { getJwt } from 'utils/auth/jwt';
-import { removeUrlLocale } from 'services/locale';
 import { ContextShape } from './VerificationModal';
+import Outlet from 'components/Outlet';
 
 const Container = styled.div`
   display: flex;
@@ -163,14 +158,6 @@ const ButtonsContainer = styled.div`
   }
 `;
 
-const MethodButton = styled(Button)`
-  margin-bottom: 15px;
-
-  &.last {
-    margin-bottom: 0px;
-  }
-`;
-
 const SkipButtonContainer = styled.div`
   width: 100%;
   display: flex;
@@ -188,7 +175,7 @@ interface Props {
   className?: string;
 }
 
-const VerificationMethods = memo<Props & InjectedIntlProps>(
+const VerificationMethods = memo<Props>(
   ({
     context,
     showHeader,
@@ -197,60 +184,21 @@ const VerificationMethods = memo<Props & InjectedIntlProps>(
     onMethodSelected,
     onSkipped,
     className,
-    intl: { formatMessage },
   }) => {
     const participationConditions = useParticipationConditions(context);
 
     const authUser = useAuthUser();
     const verificationMethods = useVerificationMethods();
 
-    const filterMethods = (methods: string[]) =>
-      !isNilOrError(verificationMethods)
-        ? verificationMethods.data.filter((method) =>
-            methods.includes(method.attributes.name)
-          )
-        : [];
-
-    const filteredVerificationMethods = filterMethods([
-      'cow',
-      'bosa_fas',
-      'bogus',
-      'id_card_lookup',
-    ]);
-
-    const alternativeMethods = filterMethods(['franceconnect']);
-
-    const franceConnectVerification = alternativeMethods.find(
-      ({ attributes }) => attributes.name === 'franceconnect'
-    );
-
     const withContext =
       !isNilOrError(participationConditions) &&
       participationConditions.length > 0;
 
-    const onVerifyBOSAButtonClick = useCallback(() => {
-      const jwt = getJwt();
-      window.location.href = `${AUTH_PATH}/bosa_fas?token=${jwt}&pathname=${removeUrlLocale(
-        window.location.pathname
-      )}`;
-    }, []);
-
-    const onVerifyFranceConnectButtonClick = useCallback(() => {
-      const jwt = getJwt();
-      window.location.href = `${AUTH_PATH}/franceconnect?token=${jwt}&pathname=${removeUrlLocale(
-        window.location.pathname
-      )}`;
-    }, []);
-
-    const onSelectMethodButtonClick = useCallback(
-      (method) => () => {
-        if (method.attributes.name === 'bosa_fas') {
-          onVerifyBOSAButtonClick();
-        } else {
-          onMethodSelected(method);
-        }
+    const handleOnMethodSelected = useCallback(
+      (method: IVerificationMethod) => () => {
+        onMethodSelected(method);
       },
-      [onVerifyBOSAButtonClick, onMethodSelected]
+      [onMethodSelected]
     );
 
     const onSkipButtonClicked = useCallback(() => {
@@ -269,7 +217,7 @@ const VerificationMethods = memo<Props & InjectedIntlProps>(
     }
 
     if (
-      verificationMethods !== undefined &&
+      !isNilOrError(verificationMethods) &&
       participationConditions !== undefined
     ) {
       return (
@@ -337,47 +285,14 @@ const VerificationMethods = memo<Props & InjectedIntlProps>(
                 inModal ? 'inModal' : ''
               }`}
             >
-              {franceConnectVerification && (
-                <FranceConnectButton
-                  onClick={onVerifyFranceConnectButtonClick}
-                  logoAlt={formatMessage(messages.verificationButtonAltText, {
-                    loginMechanismName: 'FranceConnect',
-                  })}
-                />
-              )}
-
-              {!isEmpty(alternativeMethods) &&
-                !isEmpty(filteredVerificationMethods) && <Or />}
-
-              {filteredVerificationMethods.map((method, index) => (
-                <MethodButton
+              {verificationMethods.data.map((method, index) => (
+                <Outlet
                   key={method.id}
-                  id={`e2e-${method.attributes.name}-button`}
-                  className={
-                    index + 1 === filteredVerificationMethods.length
-                      ? 'last'
-                      : ''
-                  }
-                  icon="shieldVerified"
-                  iconSize="22px"
-                  onClick={onSelectMethodButtonClick(method)}
-                  buttonStyle="white"
-                  fullWidth={true}
-                  justify="left"
-                  whiteSpace="wrap"
-                >
-                  {method.attributes.name === 'cow' && (
-                    <FormattedMessage {...messages.verifyCow} />
-                  )}
-                  {method.attributes.name === 'bosa_fas' && (
-                    <FormattedMessage {...messages.verifyBOSA} />
-                  )}
-                  {method.attributes.name === 'id_card_lookup' && (
-                    <T value={method.attributes.method_name_multiloc} />
-                  )}
-                  {method.attributes.name === 'bogus' &&
-                    'Bogus verification (testing)'}
-                </MethodButton>
+                  id="app.components.VerificationModal.button"
+                  method={method}
+                  onMethodSelected={handleOnMethodSelected(method)}
+                  last={index + 1 === verificationMethods.data.length}
+                />
               ))}
             </ButtonsContainer>
           </Content>
@@ -401,4 +316,4 @@ const VerificationMethods = memo<Props & InjectedIntlProps>(
   }
 );
 
-export default injectIntl(VerificationMethods);
+export default VerificationMethods;
