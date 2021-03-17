@@ -28,11 +28,9 @@ module IdeaAssignment
           ::IdeaAssignment::WebApi::V1::Notifications::IdeaAssignedToYouSerializer
       )
 
-      if defined? ::EmailCampaigns
-        ::EmailCampaigns::DeliveryService.add_campaign_types(
-          ::IdeaAssignment::EmailCampaigns::Campaigns::IdeaAssignedToYou
-        )
-      end
+      ::EmailCampaigns::DeliveryService.add_campaign_types(
+        ::IdeaAssignment::EmailCampaigns::Campaigns::IdeaAssignedToYou
+      )
     end
   end
 end
