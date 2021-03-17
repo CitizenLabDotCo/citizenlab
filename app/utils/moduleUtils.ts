@@ -134,7 +134,6 @@ export type OutletsPropertyMap = {
     onData: (data: InsertConfigurationOptions<ITab>) => void;
   };
   'app.containers.Admin.projects.edit': {
-    projectId: string;
     onData: (data: InsertConfigurationOptions<ITab>) => void;
   };
   'app.containers.Admin.initiatives.tabs': ITabsOutlet;
@@ -323,9 +322,15 @@ export const loadModules = (modules: Modules): ParsedModuleConfiguration => {
 export const insertConfiguration = <T extends { name: string }>({
   configuration,
   insertAfterName,
+  insertBeforeName,
 }: InsertConfigurationOptions<T>) => (items: T[]): T[] => {
-  const insertIndex =
-    items.findIndex((item) => item.name === insertAfterName) + 1;
+  const foundIndex = items.findIndex(
+    (item) => item.name === (insertAfterName || insertBeforeName)
+  );
+  const insertIndex = Math.max(
+    0,
+    Math.min(insertAfterName ? foundIndex + 1 : foundIndex - 1, items.length)
+  );
 
   return insertIndex > 0
     ? [

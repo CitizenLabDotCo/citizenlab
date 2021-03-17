@@ -5,12 +5,10 @@ import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 type Props = {
-  projectId: string;
   onData: (data: InsertConfigurationOptions<ITab>) => void;
 };
 
 const Tab: FC<Props & InjectedIntlProps> = ({
-  projectId,
   onData,
   intl: { formatMessage },
 }) => {
@@ -19,10 +17,10 @@ const Tab: FC<Props & InjectedIntlProps> = ({
       configuration: {
         label: formatMessage(messages.mapTab),
         name: 'map',
-        url: `/admin/projects/${projectId}/map`,
+        url: `map`,
         feature: 'custom_maps',
       },
-      insertAfterName: 'ideaform',
+      insertBeforeName: 'phases',
     });
   }, []);
 
