@@ -5,8 +5,10 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // services
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
-import { updateTenant } from 'services/tenant';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetAppConfiguration';
+import { updateAppConfiguration } from 'services/appConfiguration';
 
 // components
 import {
@@ -81,7 +83,7 @@ interface InputProps {
 
 interface DataProps {
   locale: GetLocaleChildProps;
-  tenant: GetTenantChildProps;
+  tenant: GetAppConfigurationChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -196,7 +198,7 @@ class InitiativesSettingsPage extends PureComponent<
       this.setState({ processing: true });
 
       try {
-        await updateTenant(tenant.id, {
+        await updateAppConfiguration({
           settings: {
             initiatives: formValues,
           },
@@ -433,7 +435,7 @@ class InitiativesSettingsPage extends PureComponent<
 
 const Data = adopt<DataProps>({
   locale: <GetLocale />,
-  tenant: <GetTenant />,
+  tenant: <GetAppConfiguration />,
 });
 
 const InitiativesSettingsPageWithHoC = injectIntl<Props>(

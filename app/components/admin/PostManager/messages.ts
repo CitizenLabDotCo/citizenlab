@@ -1,6 +1,18 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
+  assignedToMe: {
+    id: 'app.components.admin.PostManager.assignedToMe',
+    defaultMessage: 'Assigned to me',
+  },
+  assignedTo: {
+    id: 'app.components.admin.PostManager.assignedTo',
+    defaultMessage: 'Assigned to {assigneeName}',
+  },
+  noOne: {
+    id: 'app.components.admin.PostManager.noOne',
+    defaultMessage: 'Unassigned',
+  },
   inputManagerHeader: {
     id: 'app.components.admin.PostManager.inputManagerHeader',
     defaultMessage: 'Inputs',
@@ -8,14 +20,6 @@ export default defineMessages({
   inputsNeedFeedbackToggle: {
     id: 'app.components.admin.PostManager.inputsNeedFeedbackToggle',
     defaultMessage: 'Only show inputs that need feedback',
-  },
-  anyAssignment: {
-    id: 'app.components.admin.PostManager.anyAssignment',
-    defaultMessage: 'Any administrator',
-  },
-  assignedToMe: {
-    id: 'app.components.admin.PostManager.assignedToMe',
-    defaultMessage: 'Assigned to me',
   },
   delete: {
     id: 'app.components.admin.PostManager.delete',
@@ -53,10 +57,6 @@ export default defineMessages({
   edit: {
     id: 'app.components.admin.PostManager.edit',
     defaultMessage: 'Edit',
-  },
-  assignedTo: {
-    id: 'app.components.admin.PostManager.assignedTo',
-    defaultMessage: 'Assigned to {assigneeName}',
   },
   title: {
     id: 'app.components.admin.PostManager.title',
@@ -177,10 +177,6 @@ export default defineMessages({
   exportSelectedInitiativesComments: {
     id: 'app.components.admin.PostManager.exportSelectedInitiativesComments',
     defaultMessage: 'Export comments for selected initiatives (.xslx)',
-  },
-  noOne: {
-    id: 'app.components.admin.PostManager.noOne',
-    defaultMessage: 'Unassigned',
   },
   exports: {
     id: 'app.components.admin.PostManager.exports',

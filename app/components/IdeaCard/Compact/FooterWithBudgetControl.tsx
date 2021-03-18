@@ -10,7 +10,7 @@ import { IParticipationContextType } from 'typings';
 import { IIdeaData } from 'services/ideas';
 
 // hooks
-import useTenant from 'hooks/useTenant';
+import useAppConfiguration from 'hooks/useAppConfiguration';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -61,9 +61,9 @@ interface Props {
   openIdea: (e: FormEvent) => void;
 }
 
-const CompactIdeaCard = memo<Props>(
+const FooterWithBudgetControl = memo<Props>(
   ({ idea, participationContextId, participationContextType, openIdea }) => {
-    const tenant = useTenant();
+    const tenant = useAppConfiguration();
 
     if (isNilOrError(tenant)) {
       return null;
@@ -110,4 +110,4 @@ const CompactIdeaCard = memo<Props>(
   }
 );
 
-export default CompactIdeaCard;
+export default FooterWithBudgetControl;

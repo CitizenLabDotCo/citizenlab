@@ -76,10 +76,12 @@ const AdminProjectFolderEdition = memo<
         {
           label: formatMessage(messages.projectFolderProjectsTab),
           url: `/admin/projects/folders/${projectFolderId}`,
+          name: 'index',
         },
         {
           label: formatMessage(messages.projectFolderSettingsTab),
           url: `/admin/projects/folders/${projectFolderId}/settings`,
+          name: 'settings',
         },
       ],
     };
@@ -90,6 +92,7 @@ const AdminProjectFolderEdition = memo<
         tabs: tabbedProps.tabs.concat({
           label: formatMessage(messages.projectFolderPermissionsTab),
           url: `/admin/projects/folders/${projectFolderId}/permissions`,
+          name: 'permissions',
         }),
       };
     }

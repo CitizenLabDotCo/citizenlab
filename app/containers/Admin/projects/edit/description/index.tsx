@@ -4,7 +4,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
 
 // Hooks
-import useTenantLocales from 'hooks/useTenantLocales';
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useProject from 'hooks/useProject';
 
 // Services
@@ -64,7 +64,7 @@ const ProjectDescription = memo<Props & InjectedIntlProps & WithRouterProps>(
       description_multiloc: null,
     });
 
-    const tenantLocales = useTenantLocales();
+    const tenantLocales = useAppConfigurationLocales();
     const project = useProject({ projectId: props.params.projectId });
 
     useEffect(() => {

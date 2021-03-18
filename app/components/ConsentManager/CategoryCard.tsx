@@ -6,9 +6,9 @@ import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import { Radio } from 'cl2-component-library';
 import { getDestinationConfig, IDestination } from './destinations';
-import useTenant from 'hooks/useTenant';
+import useAppConfiguration from 'hooks/useAppConfiguration';
 import { isNilOrError } from 'utils/helperUtils';
-import { ITenant } from 'services/tenant';
+import { IAppConfiguration } from 'services/appConfiguration';
 
 const Container = styled.div`
   display: flex;
@@ -90,7 +90,7 @@ const DestinationName = ({
   tenant,
   destination,
 }: {
-  tenant: ITenant | null;
+  tenant: IAppConfiguration | null;
   destination: IDestination;
 }) => {
   const config = getDestinationConfig(destination);
@@ -110,7 +110,7 @@ const CategoryCard = ({
   handleChange,
   disableUncheck,
 }: Props) => {
-  const tenant = useTenant();
+  const tenant = useAppConfiguration();
 
   return (
     <Container className="e2e-category">

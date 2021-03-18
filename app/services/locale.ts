@@ -33,7 +33,7 @@
 import { BehaviorSubject, combineLatest } from 'rxjs';
 import { first, map, distinctUntilChanged, filter } from 'rxjs/operators';
 import { includes, isEqual, get } from 'lodash-es';
-import { currentTenantStream } from 'services/tenant';
+import { currentAppConfigurationStream } from 'services/appConfiguration';
 import { authUserStream } from 'services/auth';
 import { updateUser } from 'services/users';
 import { Locale } from 'typings';
@@ -41,7 +41,7 @@ import { locales } from 'containers/App/constants';
 import { setCookieLocale, getCookieLocale } from 'utils/localeCookie';
 
 const LocaleSubject: BehaviorSubject<Locale> = new BehaviorSubject(null as any);
-const $tenantLocales = currentTenantStream().observable.pipe(
+const $tenantLocales = currentAppConfigurationStream().observable.pipe(
   map((tenant) => get(tenant, 'data.attributes.settings.core.locales')),
   distinctUntilChanged((prev, next) => !isEqual(prev, next))
 );

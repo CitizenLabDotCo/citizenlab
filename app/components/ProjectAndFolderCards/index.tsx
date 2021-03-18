@@ -12,7 +12,9 @@ import LoadingBox from './LoadingBox';
 import Button from 'components/UI/Button';
 
 // resources
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetAppConfiguration';
 import GetWindowSize, {
   GetWindowSizeChildProps,
 } from 'resources/GetWindowSize';
@@ -226,7 +228,7 @@ interface InputProps extends UseAdminPublicationInputProps {
 }
 
 interface DataProps {
-  tenant: GetTenantChildProps;
+  tenant: GetAppConfigurationChildProps;
   windowSize: GetWindowSizeChildProps;
   adminPublications: GetAdminPublicationsChildProps;
 }
@@ -522,15 +524,10 @@ const ProjectAndFolderCardsWithHOCs = withTheme(
 );
 
 const Data = adopt<DataProps, InputProps>({
-  tenant: <GetTenant />,
+  tenant: <GetAppConfiguration />,
   windowSize: <GetWindowSize />,
   adminPublications: ({ render, ...props }) => (
-    <GetAdminPublications
-      pageSize={6}
-      noEmptyFolder
-      prefetchProjects
-      {...props}
-    >
+    <GetAdminPublications pageSize={6} prefetchProjects {...props}>
       {render}
     </GetAdminPublications>
   ),
