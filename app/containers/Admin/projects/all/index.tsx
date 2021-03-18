@@ -1,24 +1,15 @@
-import React, { PureComponent, Suspense } from 'react';
-import { Subscription } from 'rxjs';
-import { adopt } from 'react-adopt';
+import React, { memo, Suspense } from 'react';
+import { withRouter, WithRouterProps } from 'react-router';
 import { isNilOrError } from 'utils/helperUtils';
-import { isString, isFunction } from 'lodash-es';
-import clHistory from 'utils/cl-router/history';
-import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
-
-// tracking
-import { trackPage } from 'utils/analytics';
 
 // resources
-import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import useAuthUser from 'hooks/useAuthUser';
 
 // localisation
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // utils
-import eventEmitter from 'utils/eventEmitter';
 import { isAdmin } from 'services/permissions/roles';
 
 // components
@@ -45,12 +36,6 @@ const CreateAndEditProjectsContainer = styled.div`
   }
 `;
 
-const ProjectTemplatePreviewContainer = styled.div`
-  &.hidden {
-    display: none;
-  }
-`;
-
 const CreateProjectWrapper = styled.div`
   margin-bottom: 18px;
 `;
@@ -70,134 +55,15 @@ export const ListHeader = styled.div`
   }
 `;
 
-export interface InputProps {
+export interface Props {
   className?: string;
 }
 
-interface DataProps {
-  locale: GetLocaleChildProps;
-  authUser: GetAuthUserChildProps;
-}
-
-interface Props extends InputProps, DataProps {}
-
-interface State {
-  selectedProjectTemplateId: string | null;
-}
-
-const useCapture = false;
-
-class AdminProjectsList extends PureComponent<Props, State> {
-  subscriptions: Subscription[];
-  unlisten: Function | null = null;
-  url: string | null | undefined = null;
-  goBackUrl: string | null | undefined = null;
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      selectedProjectTemplateId: null,
-    };
-    this.subscriptions = [];
-  }
-
-  componentDidMount() {
-    // OS-105
-    this.subscriptions = [
-      eventEmitter
-        .observeEvent<string>('ProjectTemplateCardClicked')
-        .subscribe(({ eventValue }) => {
-          if (isString(eventValue)) {
-            const selectedProjectTemplateId = eventValue;
-            const { locale } = this.props;
-            const url = `/admin/projects/templates/${selectedProjectTemplateId}`;
-
-            if (!isNilOrError(locale) && url) {
-              this.url = `${window.location.origin}/${locale}${url}`;
-              this.goBackUrl = 'window.location.href';
-              this.goBackUrl = `${window.location.origin}/${locale}${
-                removeLocale(window.location.pathname).pathname
-              }`;
-              window.history.pushState({ path: this.url }, '', this.url);
-              window.addEventListener(
-                'popstate',
-                this.handlePopstateEvent,
-                useCapture
-              );
-              window.addEventListener(
-                'keydown',
-                this.handleKeypress,
-                useCapture
-              );
-              this.unlisten = clHistory.listen(() =>
-                this.closeTemplatePreview()
-              );
-              trackPage(this.url);
-            }
-
-            window.scrollTo(0, 0);
-            this.setState({ selectedProjectTemplateId });
-          }
-        }),
-    ];
-  }
-
-  componentDidUpdate(_prevProps: Props, prevState: State) {
-    if (
-      prevState.selectedProjectTemplateId &&
-      !this.state.selectedProjectTemplateId
-    ) {
-      this.cleanup();
-    }
-  }
-
-  componentWillUnmount() {
-    this.cleanup();
-    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
-  }
-
-  closeTemplatePreview = () => {
-    this.setState({ selectedProjectTemplateId: null });
-  };
-
-  cleanup = () => {
-    if (this.goBackUrl) {
-      window.removeEventListener(
-        'popstate',
-        this.handlePopstateEvent,
-        useCapture
-      );
-      window.removeEventListener('keydown', this.handleKeypress, useCapture);
-
-      if (window.location.href === this.url) {
-        window.history.pushState({ path: this.goBackUrl }, '', this.goBackUrl);
-      }
-    }
-
-    this.url = null;
-    this.goBackUrl = null;
-
-    if (isFunction(this.unlisten)) {
-      this.unlisten();
-      this.unlisten = null;
-    }
-  };
-
-  handlePopstateEvent = () => {
-    this.closeTemplatePreview();
-  };
-
-  handleKeypress = (event: KeyboardEvent) => {
-    if (event.type === 'keydown' && event.key === 'Escape') {
-      event.preventDefault();
-      this.closeTemplatePreview();
-    }
-  };
-
-  render() {
-    const { selectedProjectTemplateId } = this.state;
-    const { authUser, className } = this.props;
-
+const AdminProjectsList = memo(
+  ({ className, params }: Props & WithRouterProps) => {
+    const { projectTemplateId } = params;
+    console.log(projectTemplateId);
+    const authUser = useAuthUser();
     const userIsAdmin = !isNilOrError(authUser)
       ? isAdmin({ data: authUser })
       : false;
@@ -205,7 +71,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
     return (
       <Container className={className}>
         <CreateAndEditProjectsContainer
-          className={selectedProjectTemplateId ? 'hidden' : ''}
+        // className={selectedProjectTemplateId ? 'hidden' : ''}
         >
           <PageTitle>
             <FormattedMessage {...messages.overviewPageTitle} />
@@ -239,29 +105,10 @@ class AdminProjectsList extends PureComponent<Props, State> {
             </ListsContainer>
           </PageWrapper>
         </CreateAndEditProjectsContainer>
-        {/* // OS-105 */}
-        {/* <ProjectTemplatePreviewContainer
-          className={!selectedProjectTemplateId ? 'hidden' : ''}
-        >
-          {selectedProjectTemplateId && (
-            <ProjectTemplatePreviewPageAdmin
-              projectTemplateId={selectedProjectTemplateId}
-              goBack={this.closeTemplatePreview}
-            />
-          )}
-        </ProjectTemplatePreviewContainer> */}
+        {/* <Outlet id="" /> */}
       </Container>
     );
   }
-}
-
-const Data = adopt<DataProps, InputProps>({
-  locale: <GetLocale />,
-  authUser: <GetAuthUser />,
-});
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <AdminProjectsList {...inputProps} {...dataProps} />}
-  </Data>
 );
+
+export default withRouter(AdminProjectsList);
