@@ -8,7 +8,7 @@ import ProjectTemplateCard from './ProjectTemplateCard';
 import SearchInput from 'components/UI/SearchInput';
 import { Spinner } from 'cl2-component-library';
 import Button from 'components/UI/Button';
-import DepartmentFilter from './DepartmentFilter';
+import DepartmentFilter from '../components/DepartmentFilter';
 import PurposeFilter from './PurposeFilter';
 import ParticipationLevelFilter from './ParticipationLevelFilter';
 

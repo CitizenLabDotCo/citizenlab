@@ -16,20 +16,20 @@ import FilterSelector, {
 // i18n
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
-import messages from './messages';
+import messages from '../containers/messages';
 
 interface Props {
   onChange: (value: string[]) => void;
 }
 
-const DepartmentFilter = memo<Props & InjectedIntlProps>(
+const ParticipationlevelFilter = memo<Props & InjectedIntlProps>(
   ({ intl: { formatMessage }, onChange }) => {
     const localize = useLocalize();
     const graphqlTenantLocales = useGraphqlTenantLocales();
 
-    const DEPARTMENTS_QUERY = gql`
+    const PARTICIPATIONLEVELS_QUERY = gql`
     {
-      departments {
+      participationLevels {
         nodes {
           id
           titleMultiloc {
@@ -42,12 +42,12 @@ const DepartmentFilter = memo<Props & InjectedIntlProps>(
 
     const [selectedValues, setSelectedValues] = useState<string[]>([]);
 
-    const { data } = useQuery(DEPARTMENTS_QUERY);
+    const { data } = useQuery(PARTICIPATIONLEVELS_QUERY);
 
     let options: IFilterSelectorValue[] = [];
 
     if (data) {
-      options = data.departments.nodes.map((node) => ({
+      options = data.participationLevels.nodes.map((node) => ({
         value: node.id,
         text: localize(node.titleMultiloc),
       }));
@@ -60,8 +60,8 @@ const DepartmentFilter = memo<Props & InjectedIntlProps>(
 
     return (
       <FilterSelector
-        title={formatMessage(messages.departments)}
-        name={formatMessage(messages.departments)}
+        title={formatMessage(messages.participationLevels)}
+        name={formatMessage(messages.participationLevels)}
         selected={selectedValues}
         values={options}
         onChange={handleOnChange}
@@ -74,4 +74,4 @@ const DepartmentFilter = memo<Props & InjectedIntlProps>(
   }
 );
 
-export default injectIntl(DepartmentFilter);
+export default injectIntl(ParticipationlevelFilter);

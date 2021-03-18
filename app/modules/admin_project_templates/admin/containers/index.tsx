@@ -8,8 +8,7 @@ import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import { trackEventByName } from 'utils/analytics';
 import { get, isEmpty } from 'lodash-es';
 import tracks from '../../tracks';
-
-import ProjectTemplateCards from './ProjectTemplateCards';
+import ProjectTemplateCards from '../components/ProjectTemplateCards';
 
 interface Props {
   className?: string;
