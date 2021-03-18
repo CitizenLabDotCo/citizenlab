@@ -29,6 +29,14 @@ const Wrapper = styled.div`
   height: calc(100vh - ${(props) => props.theme.menuHeight}px);
   display: flex;
   background: #fff;
+  position: fixed;
+  right: 0;
+  top: ${(props) => props.theme.menuHeight}px;
+  left: 210px;
+  bottom: 0;
+  ${media.smallerThan1280px`
+    left: 80px;
+  `}
 `;
 
 const LeftPanel = styled(GroupsListPanel)`

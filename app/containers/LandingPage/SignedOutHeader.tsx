@@ -8,7 +8,9 @@ import AvatarBubbles from 'components/AvatarBubbles';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetAppConfiguration';
 
 // tracking
 import { trackEventByName } from 'utils/analytics';
@@ -104,13 +106,12 @@ const HeaderContent = styled.div`
 `;
 
 const HeaderTitle = styled.h1<{ hasHeader: boolean }>`
+  width: 100%;
+  color: ${({ hasHeader, theme }) => (hasHeader ? '#fff' : theme.colorMain)};
   font-size: ${({ theme }) =>
     theme.signedOutHeaderTitleFontSize || fontSizes.xxxxl}px;
   font-weight: ${({ theme }) => theme.signedOutHeaderTitleFontWeight || 600};
   line-height: normal;
-  width: 100%;
-  max-width: 600px;
-  color: ${({ hasHeader, theme }) => (hasHeader ? '#fff' : theme.colorMain)};
   text-align: center;
   margin: 0;
   padding: 0;
@@ -121,13 +122,11 @@ const HeaderTitle = styled.h1<{ hasHeader: boolean }>`
 `;
 
 const HeaderSubtitle = styled.h2<{ hasHeader: boolean }>`
+  width: 100%;
+  color: ${({ hasHeader, theme }) => (hasHeader ? '#fff' : theme.colorMain)};
   font-size: ${fontSizes.xl}px;
   line-height: 28px;
   font-weight: 400;
-  width: 100%;
-  max-width: 375px;
-  color: ${({ hasHeader, theme }) => (hasHeader ? '#fff' : theme.colorMain)};
-  max-width: 980px;
   text-align: center;
   text-decoration: none;
   overflow-wrap: break-word;
@@ -161,7 +160,7 @@ export interface InputProps {
 
 interface DataProps {
   locale: GetLocaleChildProps;
-  tenant: GetTenantChildProps;
+  tenant: GetAppConfigurationChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -241,7 +240,7 @@ class SignedOutHeader extends PureComponent<
 
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
-  tenant: <GetTenant />,
+  tenant: <GetAppConfiguration />,
 });
 
 const SignedOutHeaderWithHoC = injectIntl(injectLocalize(SignedOutHeader));

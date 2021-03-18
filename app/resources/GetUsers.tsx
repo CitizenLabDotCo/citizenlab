@@ -1,5 +1,5 @@
 import React from 'react';
-import { isNil, omitBy, isBoolean, get } from 'lodash-es';
+import { isNil, omitBy, get } from 'lodash-es';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { distinctUntilChanged, switchMap, map } from 'rxjs/operators';
 import { usersStream, IUserData } from 'services/users';
@@ -29,7 +29,6 @@ export interface InputProps {
   sort?: Sort;
   search?: string;
   groupId?: string;
-  cache?: boolean;
   canModerateProject?: string;
   canModerate?: boolean;
   canAdmin?: boolean;
@@ -104,9 +103,6 @@ export default class GetUsers extends React.Component<Props, State> {
         .pipe(
           distinctUntilChanged((x, y) => shallowCompare(x, y)),
           switchMap((queryParameters) => {
-            const cacheStream = isBoolean(this.props.cache)
-              ? this.props.cache
-              : true;
             const oldPageNumber = this.state.queryParameters['page[number]'];
             const newPageNumber = queryParameters['page[number]'];
             queryParameters['page[number]'] =
@@ -114,7 +110,6 @@ export default class GetUsers extends React.Component<Props, State> {
 
             return usersStream({
               queryParameters,
-              cacheStream,
             }).observable.pipe(map((users) => ({ users, queryParameters })));
           })
         )

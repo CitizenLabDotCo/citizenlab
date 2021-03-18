@@ -18,8 +18,8 @@ exports[`<UserHeader /> renders correctly on some user with a bio 1`] = `
 exports[`<UserHeader /> renders correctly on some user without a bio 1`] = `
 <UserHeader__Container>
   <UserHeader__UserAvatar>
-    <WrappedAvatar
-      size="150px"
+    <InjectIntl(WithIntl(Component))
+      size={150}
       userId="522ae8cc-a5ed-4d31-9aa0-470904934ec6"
     />
   </UserHeader__UserAvatar>

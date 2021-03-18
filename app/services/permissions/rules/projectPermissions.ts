@@ -27,15 +27,21 @@ definePermissionRule(
   }
 );
 
-export const canModerate = (
+export function canModerateProject(
   projectId: string | null | undefined,
   user: IUser
-) => isAdmin(user) || isProjectModerator(user, projectId);
+) {
+  if (projectId) {
+    return isAdmin(user) || isProjectModerator(user, projectId);
+  }
+
+  return isAdmin(user);
+}
 
 definePermissionRule(
   'project',
   'moderate',
   (project: IProjectData, user: IUser) => {
-    return canModerate(project.id, user);
+    return canModerateProject(project.id, user);
   }
 );

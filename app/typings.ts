@@ -8,6 +8,7 @@ declare global {
     displayName?: string;
   }
   interface Window {
+    _paq: any;
     googleMaps?: boolean;
     Intercom?: any;
     intercomSettings: any;
@@ -15,6 +16,14 @@ declare global {
     satismeter?: any;
     dataLayer?: any[];
   }
+}
+
+export interface ITab {
+  label: string;
+  url: string;
+  active?: boolean;
+  feature?: string;
+  name: string;
 }
 
 export interface IRelationship {
@@ -56,6 +65,29 @@ export interface ITheme {
   };
 }
 
+export interface ITab {
+  name: string;
+  label: string;
+  url: string;
+  active?: boolean;
+  feature?: string;
+}
+
+export type CellConfiguration<ComponentProps> = {
+  name: string;
+  onChange?: (event: unknown) => void;
+  onClick?: (event: unknown) => void;
+  featureFlag?: string;
+  cellProps?: TableCellProps;
+  Component: FC<ComponentProps>;
+};
+
+export interface InsertConfigurationOptions<T extends { name: string }> {
+  configuration: T;
+  insertAfterName?: string;
+  insertBeforeName?: string;
+}
+
 export interface ILinks {
   self: string;
   first: string;
@@ -89,6 +121,8 @@ import { Messages } from 'react-intl';
 import { IProjectAction } from 'services/projects';
 import { IIdeaAction } from 'services/ideas';
 import { FormikActions } from 'formik';
+import { FC } from 'react';
+import { TableCellProps } from 'semantic-ui-react';
 export type MessageDescriptor = Messages['key'];
 
 export type Locale = keyof typeof appLocalePairs;
@@ -172,3 +206,5 @@ export type FormikSubmitHandler<V> = (
   values: V,
   actions: FormikActions<V>
 ) => void;
+
+export type Override<T, U> = Pick<T, Exclude<keyof T, keyof U>> & U;

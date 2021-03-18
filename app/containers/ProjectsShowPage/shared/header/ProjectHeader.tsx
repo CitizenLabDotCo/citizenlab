@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { canModerate } from 'services/permissions/rules/projectPermissions';
+import { canModerateProject } from 'services/permissions/rules/projectPermissions';
 
 // components
 import ContentContainer from 'components/ContentContainer';
@@ -65,7 +65,7 @@ const StyledProjectArchivedIndicator = styled(ProjectArchivedIndicator)<{
   margin-top: ${(props) => (props.hasHeaderImage ? '-20px' : '0px')};
   margin-bottom: 25px;
 
-  ${media.smallerThanMinTablet`
+  ${media.smallerThanMaxTablet`
     display: none;
   `}
 `;
@@ -84,7 +84,8 @@ const ProjectHeader = memo<Props & InjectedIntlProps>(
     if (!isNilOrError(locale) && !isNilOrError(project)) {
       const projectHeaderImageLargeUrl = project?.attributes?.header_bg?.large;
       const userCanEditProject =
-        !isNilOrError(authUser) && canModerate(project.id, { data: authUser });
+        !isNilOrError(authUser) &&
+        canModerateProject(project.id, { data: authUser });
 
       return (
         <Container className={className || ''}>

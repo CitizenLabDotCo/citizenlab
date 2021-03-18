@@ -7,6 +7,7 @@ import Avatar from 'components/Avatar';
 import T from 'components/T';
 import Button from 'components/UI/Button';
 import { Title, Subtitle } from './styles';
+import Or from 'components/UI/Or';
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
@@ -23,10 +24,8 @@ import { colors, fontSizes, media } from 'utils/styleUtils';
 
 // typings
 import { IVerificationMethod } from 'services/verificationMethods';
-import { AUTH_PATH } from 'containers/App/constants';
-import { getJwt } from 'utils/auth/jwt';
-import { removeUrlLocale } from 'services/locale';
 import { ContextShape } from './VerificationModal';
+import Outlet from 'components/Outlet';
 
 const Container = styled.div`
   display: flex;
@@ -138,16 +137,6 @@ const ContextItem = styled.span`
   `}
 `;
 
-const Or = styled.span`
-  color: ${(props: any) => props.theme.colorText};
-  font-size: ${fontSizes.small}px;
-  margin-top: 5px;
-  margin-bottom: 10px;
-  justify-content: center;
-  display: flex;
-  align-items: center;
-`;
-
 const ButtonsContainer = styled.div`
   width: 100%;
   display: flex;
@@ -164,16 +153,8 @@ const ButtonsContainer = styled.div`
     `}
 
     &.withoutContext {
-      max-width: 473px;
+      max-width: 650px;
     }
-  }
-`;
-
-const MethodButton = styled(Button)`
-  margin-bottom: 15px;
-
-  &.last {
-    margin-bottom: 0px;
   }
 `;
 
@@ -208,34 +189,16 @@ const VerificationMethods = memo<Props>(
 
     const authUser = useAuthUser();
     const verificationMethods = useVerificationMethods();
-    const filteredVerificationMethods = !isNilOrError(verificationMethods)
-      ? verificationMethods.data.filter((method) =>
-          ['cow', 'bosa_fas', 'bogus', 'id_card_lookup'].includes(
-            method.attributes.name
-          )
-        )
-      : [];
 
     const withContext =
       !isNilOrError(participationConditions) &&
       participationConditions.length > 0;
 
-    const onVerifyBOSAButtonClick = useCallback(() => {
-      const jwt = getJwt();
-      window.location.href = `${AUTH_PATH}/bosa_fas?token=${jwt}&pathname=${removeUrlLocale(
-        window.location.pathname
-      )}`;
-    }, []);
-
-    const onSelectMethodButtonClick = useCallback(
-      (method) => () => {
-        if (method.attributes.name === 'bosa_fas') {
-          onVerifyBOSAButtonClick();
-        } else {
-          onMethodSelected(method);
-        }
+    const handleOnMethodSelected = useCallback(
+      (method: IVerificationMethod) => () => {
+        onMethodSelected(method);
       },
-      [onVerifyBOSAButtonClick, onMethodSelected]
+      [onMethodSelected]
     );
 
     const onSkipButtonClicked = useCallback(() => {
@@ -254,7 +217,7 @@ const VerificationMethods = memo<Props>(
     }
 
     if (
-      verificationMethods !== undefined &&
+      !isNilOrError(verificationMethods) &&
       participationConditions !== undefined
     ) {
       return (
@@ -267,7 +230,7 @@ const VerificationMethods = memo<Props>(
               <AboveTitle aria-hidden>
                 <StyledAvatar
                   userId={!isNilOrError(authUser) ? authUser.id : null}
-                  size="55px"
+                  size={55}
                 />
                 <ShieldIcon name="verify_dark" />
               </AboveTitle>
@@ -309,9 +272,7 @@ const VerificationMethods = memo<Props>(
                       rules
                     ) : (
                       <Fragment key={index}>
-                        <Or>
-                          <FormattedMessage {...messages.or} />
-                        </Or>
+                        <Or />
                         {rules}
                       </Fragment>
                     );
@@ -324,35 +285,14 @@ const VerificationMethods = memo<Props>(
                 inModal ? 'inModal' : ''
               }`}
             >
-              {filteredVerificationMethods.map((method, index) => (
-                <MethodButton
+              {verificationMethods.data.map((method, index) => (
+                <Outlet
                   key={method.id}
-                  id={`e2e-${method.attributes.name}-button`}
-                  className={
-                    index + 1 === filteredVerificationMethods.length
-                      ? 'last'
-                      : ''
-                  }
-                  icon="shieldVerified"
-                  iconSize="22px"
-                  onClick={onSelectMethodButtonClick(method)}
-                  buttonStyle="white"
-                  fullWidth={true}
-                  justify="left"
-                  whiteSpace="wrap"
-                >
-                  {method.attributes.name === 'cow' && (
-                    <FormattedMessage {...messages.verifyCow} />
-                  )}
-                  {method.attributes.name === 'bosa_fas' && (
-                    <FormattedMessage {...messages.verifyBOSA} />
-                  )}
-                  {method.attributes.name === 'id_card_lookup' && (
-                    <T value={method.attributes.method_name_multiloc} />
-                  )}
-                  {method.attributes.name === 'bogus' &&
-                    'Bogus verification (testing)'}
-                </MethodButton>
+                  id="app.components.VerificationModal.button"
+                  method={method}
+                  onMethodSelected={handleOnMethodSelected(method)}
+                  last={index + 1 === verificationMethods.data.length}
+                />
               ))}
             </ButtonsContainer>
           </Content>
