@@ -30,22 +30,17 @@ class IdeaPolicy < ApplicationPolicy
   end
 
   def create?
-    pcs = ParticipationContextService.new
-    record.draft? ||
-    user&.active_admin_or_moderator?(record.project_id) ||
-    (
-      user&.active? &&
-      record.author_id == user.id &&
-      !pcs.posting_idea_disabled_reason_for_project(record.project, user) &&
-      ProjectPolicy.new(user, record.project).show?
-    )
+    return true if record.draft?
+    return true if user&.active_admin_or_moderator?(record.project_id)
+
+    reason = ParticipationContextService.new.posting_idea_disabled_reason_for_project(record.project, user)
+    raise_not_authorized(reason) if reason
+
+    active_owner? && ProjectPolicy.new(user, record.project).show?
   end
 
   def show?
-    (
-      user&.active? &&
-      record.author_id == user.id
-    ) ||
+    active_owner? ||
     user&.active_admin_or_moderator?(record.project_id) ||
     (
       ProjectPolicy.new(user, record.project).show? &&
@@ -65,8 +60,7 @@ class IdeaPolicy < ApplicationPolicy
     pcs_posting_reason = pcs.posting_idea_disabled_reason_for_project(record.project, user)
     record.draft? || user&.active_admin_or_moderator?(record.project_id) ||
       (
-        user&.active? &&
-        record.author_id == user.id &&
+        active_owner? &&
         (pcs_posting_reason.nil? || bypassable_reasons.include?(pcs_posting_reason)) &&
         ProjectPolicy.new(user, record.project).show?
       )
@@ -94,5 +88,11 @@ class IdeaPolicy < ApplicationPolicy
     else
       shared
     end
+  end
+
+  private
+
+  def active_owner?
+    user&.active? && record.author_id == user.id
   end
 end
