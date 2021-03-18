@@ -1,5 +1,10 @@
 # Changelog
 ### 2021-03-18
+
+### Fixed
+- Admin>Dashboard>Users tab is no longer hidden for admins that manage projects.
+- The password input no longer shows the password when hitting ENTER.
+
 ### Changed
 - Empty folders are now shown in the landing page, navbar, projects page and sitemap.
 - The sitemap no longer shows all projects and folder under each folder.
