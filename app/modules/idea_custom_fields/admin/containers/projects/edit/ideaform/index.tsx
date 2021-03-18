@@ -3,20 +3,19 @@ import { isNilOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
 import { isEmpty } from 'lodash-es';
 
-// hooks
+// module specific
 import useIdeaCustomFields from 'hooks/useIdeaCustomFields';
-
-// services
 import {
   updateIdeaCustomField,
   IUpdatedIdeaCustomFieldProperties,
 } from 'services/ideaCustomFields';
+import IdeaCustomField from 'modules/idea_custom_fields/admin/containers/projects/edit/ideaform/IdeaCustomField';
 
 // components
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import { Success } from 'cl2-component-library';
-import IdeaCustomField from './IdeaCustomField';
+
 import {
   Section,
   SectionTitle,
