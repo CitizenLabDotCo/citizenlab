@@ -412,6 +412,8 @@ const Processing = memo<Props & InjectedIntlProps>(
           <StyledModal
             opened={confirmationModalOpen}
             close={handleCloseConfirmationModal}
+            noClose={true}
+            closeOnClickOutside={true}
           >
             <QuillEditedContent textColor={colors.adminTextColor}>
               <WarningTitle>
