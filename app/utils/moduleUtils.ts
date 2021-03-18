@@ -7,6 +7,8 @@ import {
   LoadableLoadingAdmin,
   LoadableLoadingCitizen,
 } from 'components/UI/LoadableLoading';
+import { ISignUpInMetaData } from 'components/SignUpIn';
+
 import { GroupCreationModal } from 'containers/Admin/users';
 import { NormalFormValues } from 'containers/Admin/users/NormalGroupForm';
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
@@ -47,6 +49,18 @@ export type ITabsOutlet = {
     values?: { [key: string]: MessageValue } | undefined
   ) => string;
   onData: (data: InsertConfigurationOptions<ITab>) => void;
+};
+
+export type SignUpStepOutletProps = {
+  onData: (data: {
+    key: TSignUpSteps;
+    configuration: TSignUpStepConfigurationObject;
+  }) => void;
+  step: TSignUpSteps;
+  metaData: ISignUpInMetaData;
+  onCompleted: () => void;
+  onSkipped: () => void;
+  onError: () => void;
 };
 
 export type OutletsPropertyMap = {
@@ -108,14 +122,7 @@ export type OutletsPropertyMap = {
     currentGroupFilter?: string;
     currentGroupFilterLabel?: string;
   };
-  'app.components.SignUpIn.SignUp.step': {
-    onData: (data: {
-      key: TSignUpSteps;
-      configuration: TSignUpStepConfigurationObject;
-    }) => void;
-    step: TSignUpSteps;
-    onCompleted: () => void;
-  };
+  'app.components.SignUpIn.SignUp.step': SignUpStepOutletProps;
   'app.containers.Admin.dashboard.reports.ProjectReport.graphs': {
     startAt: string;
     endAt: string;
