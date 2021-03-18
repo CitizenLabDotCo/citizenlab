@@ -5,7 +5,7 @@ module ProjectVisibility
     module Project
       VISIBLE_TOS = %w[public groups admins].freeze
 
-      def included(base)
+      def self.included(base)
         base.class_eval do
           validates :visible_to, presence: true, inclusion: { in: VISIBLE_TOS }
           before_validation :set_visible_to, on: :create
