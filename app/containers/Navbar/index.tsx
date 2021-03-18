@@ -809,10 +809,7 @@ const Data = adopt<DataProps, InputProps>({
   tenant: <GetAppConfiguration />,
   locale: <GetLocale />,
   adminPublications: (
-    <GetAdminPublications
-      publicationStatusFilter={['published', 'archived']}
-      noEmptyFolder
-    />
+    <GetAdminPublications publicationStatusFilter={['published', 'archived']} />
   ),
 });
 

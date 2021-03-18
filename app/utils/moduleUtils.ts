@@ -1,4 +1,9 @@
 import {
+  TSignUpStepConfigurationObject,
+  TSignUpSteps,
+} from 'components/SignUpIn/SignUp';
+
+import {
   LoadableLoadingAdmin,
   LoadableLoadingCitizen,
 } from 'components/UI/LoadableLoading';
@@ -7,12 +12,13 @@ import { NormalFormValues } from 'containers/Admin/users/NormalGroupForm';
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
 import { IProjectData, IUpdatedProjectProperties } from 'services/projects';
 import { onProjectFormStateChange } from 'containers/Admin/projects/edit/general';
-import { mergeWith, castArray } from 'lodash-es';
+import { mergeWith, castArray, clamp } from 'lodash-es';
 
 import { FunctionComponent } from 'react';
 
 import Loadable from 'react-loadable';
 import { IGroupDataAttributes, MembershipType } from 'services/groups';
+import { ParticipationMethod } from 'services/participationContexts';
 import {
   CellConfiguration,
   FormikSubmitHandler,
@@ -24,9 +30,11 @@ import {
 import { IUserData } from 'services/users';
 import { MessageValue } from 'react-intl';
 import { NavItem } from 'containers/Admin/sideBar';
+import { IAppConfigurationSettingsCore } from 'services/appConfiguration';
 import { ManagerType } from 'components/admin/PostManager';
 import { IdeaCellComponentProps } from 'components/admin/PostManager/components/PostTable/IdeaRow';
 import { IdeaHeaderCellComponentProps } from 'components/admin/PostManager/components/PostTable/IdeaHeaderRow';
+import { IVerificationMethod } from 'services/verificationMethods';
 
 type Localize = (
   multiloc: Multiloc | null | undefined,
@@ -94,10 +102,39 @@ export type OutletsPropertyMap = {
   'app.containers.Admin.users.UsersHeader.icon': {
     type: GroupCreationModal;
   };
+  'app.containers.Admin.dashboard.users.graphs': {
+    startAt?: string | null;
+    endAt: string | null;
+    currentGroupFilter?: string;
+    currentGroupFilterLabel?: string;
+  };
+  'app.components.SignUpIn.SignUp.step': {
+    onData: (data: {
+      key: TSignUpSteps;
+      configuration: TSignUpStepConfigurationObject;
+    }) => void;
+    step: TSignUpSteps;
+    onCompleted: () => void;
+  };
+  'app.containers.Admin.dashboard.reports.ProjectReport.graphs': {
+    startAt: string;
+    endAt: string;
+    participationMethods: ParticipationMethod[];
+    project: IProjectData;
+  };
+  'app.containers.UserEditPage.ProfileForm.forms': {
+    authUser: IUserData;
+    onChange: () => void;
+    onSubmit: (data: { key: string; formData: Object }) => void;
+    onData: (data: { key: string; data: Object }) => void;
+  };
   'app.containers.Admin.project.edit.permissions': {
     project: IProjectData;
   };
   'app.containers.Admin.ideas.tabs': {
+    onData: (data: InsertConfigurationOptions<ITab>) => void;
+  };
+  'app.containers.Admin.projects.edit': {
     onData: (data: InsertConfigurationOptions<ITab>) => void;
   };
   'app.containers.Admin.initiatives.tabs': ITabsOutlet;
@@ -125,12 +162,24 @@ export type OutletsPropertyMap = {
       >
     ) => void;
   };
-  'app.containers.Admin.projects.edit.tabs.map': {
-    projectId: string;
-    onData: (data: {
-      insertAfterTabName?: string;
-      tabConfiguration: ITab;
-    }) => void;
+  'app.containers.Admin.settings.registration': {};
+  'app.containers.Admin.settings.registrationHelperText': {
+    onChange: (propertyName: string) => (multiloc: Multiloc) => void;
+    latestAppConfigCoreSettings?:
+      | IAppConfigurationSettingsCore
+      | Partial<IAppConfigurationSettingsCore>;
+  };
+  'app.components.VerificationModal.button': {
+    method: IVerificationMethod;
+    onMethodSelected: () => void;
+    last: boolean;
+  };
+  'app.components.VerificationModal.methodStep': {
+    method: IVerificationMethod;
+    onCancel: () => void;
+    onVerified: () => void;
+    showHeader?: boolean;
+    inModal: boolean;
   };
 };
 
@@ -164,10 +213,10 @@ type RecursivePartial<T> = {
 interface Routes {
   citizen: RouteConfiguration[];
   admin: RouteConfiguration[];
+  'admin.projects': RouteConfiguration[];
   'admin.initiatives': RouteConfiguration[];
   'admin.ideas': RouteConfiguration[];
   'admin.dashboards': RouteConfiguration[];
-  adminProjectMapTab: RouteConfiguration[];
 }
 
 export interface ParsedModuleConfiguration {
@@ -187,6 +236,7 @@ export type ModuleConfiguration = RecursivePartial<
   /** this function triggers after the Root component mounted */
   afterMountApplication?: () => void;
 };
+
 type Modules = {
   configuration: ModuleConfiguration;
   isEnabled: boolean;
@@ -258,8 +308,8 @@ export const loadModules = (modules: Modules): ParsedModuleConfiguration => {
   return {
     outlets: mergedOutlets,
     routes: {
-      citizen: parseModuleRoutes(mergedRoutes.citizen),
-      admin: parseModuleRoutes(mergedRoutes.admin, RouteTypes.ADMIN),
+      citizen: parseModuleRoutes(mergedRoutes?.citizen),
+      admin: parseModuleRoutes(mergedRoutes?.admin, RouteTypes.ADMIN),
       'admin.initiatives': parseModuleRoutes(
         mergedRoutes?.['admin.initiatives'],
         RouteTypes.ADMIN
@@ -272,8 +322,8 @@ export const loadModules = (modules: Modules): ParsedModuleConfiguration => {
         mergedRoutes?.['admin.dashboards'],
         RouteTypes.ADMIN
       ),
-      adminProjectMapTab: parseModuleRoutes(
-        mergedRoutes?.['adminProjectMapTab'],
+      'admin.projects': parseModuleRoutes(
+        mergedRoutes?.['admin.projects'],
         RouteTypes.ADMIN
       ),
     },
@@ -285,9 +335,16 @@ export const loadModules = (modules: Modules): ParsedModuleConfiguration => {
 export const insertConfiguration = <T extends { name: string }>({
   configuration,
   insertAfterName,
+  insertBeforeName,
 }: InsertConfigurationOptions<T>) => (items: T[]): T[] => {
-  const insertIndex =
-    items.findIndex((item) => item.name === insertAfterName) + 1;
+  const foundIndex = items.findIndex(
+    (item) => item.name === (insertAfterName || insertBeforeName)
+  );
+  const insertIndex = clamp(
+    insertAfterName ? foundIndex + 1 : foundIndex - 1,
+    0,
+    items.length
+  );
 
   return insertIndex > 0
     ? [

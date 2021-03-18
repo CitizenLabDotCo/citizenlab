@@ -46,15 +46,14 @@ const ProjectsSection = ({ adminPublications, projectsSectionRef }: Props) => {
         </AllProjectsLink>
         {adminPublications.topLevel.map((adminPublication) => (
           <React.Fragment key={adminPublication.id}>
-            {adminPublication.publicationType === 'project' ? (
+            {adminPublication.publicationType === 'project' && (
               <Project adminPublication={adminPublication} hightestTitle="h3" />
-            ) : (
-              <Outlet
-                id="app.containers.SiteMap.ProjectsSection.listitem"
-                adminPublication={adminPublication}
-                hightestTitle="h3"
-              />
             )}
+            <Outlet
+              id="app.containers.SiteMap.ProjectsSection.listitem"
+              adminPublication={adminPublication}
+              hightestTitle="h3"
+            />
           </React.Fragment>
         ))}
       </>
@@ -67,7 +66,6 @@ const Data = adopt<DataProps, InputProps>({
   adminPublications: (
     <GetAdminPublications
       publicationStatusFilter={['draft', 'published', 'archived']}
-      noEmptyFolder
     />
   ),
 });

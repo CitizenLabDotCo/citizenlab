@@ -8,6 +8,7 @@ declare global {
     displayName?: string;
   }
   interface Window {
+    _paq: any;
     googleMaps?: boolean;
     Intercom?: any;
     intercomSettings: any;
@@ -15,6 +16,14 @@ declare global {
     satismeter?: any;
     dataLayer?: any[];
   }
+}
+
+export interface ITab {
+  label: string;
+  url: string;
+  active?: boolean;
+  feature?: string;
+  name: string;
 }
 
 export interface IRelationship {
@@ -76,6 +85,7 @@ export type CellConfiguration<ComponentProps> = {
 export interface InsertConfigurationOptions<T extends { name: string }> {
   configuration: T;
   insertAfterName?: string;
+  insertBeforeName?: string;
 }
 
 export interface ILinks {

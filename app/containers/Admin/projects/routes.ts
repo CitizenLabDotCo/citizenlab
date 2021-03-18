@@ -74,14 +74,6 @@ export default () => {
             }),
           },
           {
-            path: '/:locale/admin/projects/:projectId/ideaform',
-            name: 'admin projects idea form',
-            component: Loadable({
-              loader: () => import('containers/Admin/projects/edit/ideaform'),
-              loading: () => null,
-            }),
-          },
-          {
             path: '/:locale/admin/projects/:projectId/topics',
             name: 'admin projects topics',
             component: Loadable({
@@ -214,7 +206,7 @@ export default () => {
               loading: () => null,
             }),
           },
-          ...moduleConfiguration.routes['adminProjectMapTab'],
+          ...moduleConfiguration.routes['admin.projects'],
         ],
       },
     ],

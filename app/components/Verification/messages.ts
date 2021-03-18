@@ -13,33 +13,21 @@ export default defineMessages({
     id: 'app.components.VerificationModal.toParticipateInThisProject',
     defaultMessage: 'to participate in this project',
   },
+  showHelp: {
+    id: 'app.components.VerificationModal.showHelp',
+    defaultMessage: 'Where can I find my ID Serial Number?',
+  },
   or: {
     id: 'app.components.VerificationModal.or',
     defaultMessage: 'or',
   },
-  verifyCow: {
-    id: 'app.components.VerificationModal.verifyCow',
-    defaultMessage: 'Verify using COW',
-  },
-  showCOWHelp: {
-    id: 'app.components.VerificationModal.showCOWHelp',
-    defaultMessage: 'Where can I find my ID Serial Number ?',
+  takenFormError: {
+    id: 'app.components.VerificationModal.takenFormError',
+    defaultMessage: 'Already taken.',
   },
   emptyFieldError: {
     id: 'app.components.VerificationModal.emptyFieldError',
     defaultMessage: 'This field cannot be empty.',
-  },
-  invalidRunError: {
-    id: 'app.components.VerificationModal.invalidRunError',
-    defaultMessage: 'Invalid RUN',
-  },
-  invalidIdSerialError: {
-    id: 'app.components.VerificationModal.invalidIdSerialError',
-    defaultMessage: 'Invalid ID serial',
-  },
-  takenFormError: {
-    id: 'app.components.VerificationModal.takenFormError',
-    defaultMessage: 'Already taken.',
   },
   noMatchFormError: {
     id: 'app.components.VerificationModal.noMatchFormError',
@@ -109,10 +97,6 @@ export default defineMessages({
     id: 'app.components.VerificationModal.verifyNow',
     defaultMessage: 'Verify now',
   },
-  verifyBOSA: {
-    id: 'app.components.VerificationModal.verifyBOSA',
-    defaultMessage: 'Verify with itsme or eID',
-  },
   skipThisStep: {
     id: 'app.components.VerificationModal.skipThisStep',
     defaultMessage: 'Skip this step',
@@ -120,9 +104,5 @@ export default defineMessages({
   close: {
     id: 'app.components.VerificationModal.close',
     defaultMessage: 'Close',
-  },
-  verificationButtonAltText: {
-    id: 'app.containers.verificationModal.verificationButtonAltText',
-    defaultMessage: 'Verify with {loginMechanismName}',
   },
 });

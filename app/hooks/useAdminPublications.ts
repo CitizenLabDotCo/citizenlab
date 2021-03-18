@@ -15,7 +15,6 @@ export interface InputProps {
   pageSize?: number;
   areaFilter?: string[];
   publicationStatusFilter: PublicationStatus[];
-  noEmptyFolder?: boolean;
 }
 
 export type IAdminPublicationContent = {
@@ -55,7 +54,6 @@ export default function useAdminPublications({
   pageSize = 1000,
   areaFilter,
   publicationStatusFilter,
-  noEmptyFolder,
 }: InputProps) {
   const [list, setList] = useState<
     IAdminPublicationContent[] | undefined | null
@@ -99,7 +97,6 @@ export default function useAdminPublications({
         publication_statuses: publicationStatuses,
         'page[number]': pageNumber,
         'page[size]': pageSize,
-        filter_empty_folders: noEmptyFolder,
       },
     })
       .observable.pipe(distinctUntilChanged())

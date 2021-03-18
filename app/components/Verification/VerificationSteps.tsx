@@ -3,10 +3,8 @@ import streams from 'utils/streams';
 
 // components
 import VerificationMethods from './VerificationMethods';
-import VerificationFormCOW from './VerificationFormCOW';
-import VerificationFormBogus from './VerificationFormBogus';
-import VerificationFormLookup from './VerificationFormLookup';
 import { Spinner } from 'cl2-component-library';
+import Outlet from 'components/Outlet';
 
 // resource hooks
 import useAuthUser from 'hooks/useAuthUser';
@@ -17,10 +15,7 @@ import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 
 // typings
-import {
-  IVerificationMethod,
-  IDLookupMethod,
-} from 'services/verificationMethods';
+import { IVerificationMethod } from 'services/verificationMethods';
 import { isNilOrError } from 'utils/helperUtils';
 import {
   ContextShape,
@@ -53,7 +48,7 @@ export interface Props {
   showHeader?: boolean;
   inModal: boolean;
   skippable?: boolean;
-  onComplete?: () => void;
+  onCompleted?: () => void;
   onSkipped?: () => void;
   onError?: () => void;
   className?: string;
@@ -68,7 +63,7 @@ const VerificationSteps = memo<Props>(
     showHeader,
     inModal,
     skippable,
-    onComplete,
+    onCompleted,
     onSkipped,
     onError,
     error,
@@ -76,29 +71,25 @@ const VerificationSteps = memo<Props>(
     const [activeStep, setActiveStep] = useState<TVerificationSteps>(
       initialActiveStep || 'method-selection'
     );
-    const [method, setMethod] = useState<IDLookupMethod | null>(null);
+    const [method, setMethod] = useState<IVerificationMethod | null>(null);
 
     const authUser = useAuthUser();
     const verificationMethods = useVerificationMethods();
 
     useEffect(() => {
-      if (activeStep === 'success' && onComplete) {
-        onComplete();
+      if (activeStep === 'success' && onCompleted) {
+        onCompleted();
       }
 
       if (activeStep === 'error' && (context === null || error) && onError) {
         onError();
       }
-    }, [onComplete, onError, context, activeStep]);
+    }, [onCompleted, onError, context, activeStep]);
 
     const onMethodSelected = useCallback(
       (selectedMethod: IVerificationMethod) => {
-        const { name } = selectedMethod.attributes;
-        if (name === 'id_card_lookup') {
-          // if the method name is id_card_lookup, then the method type is IDLookupMethod
-          setMethod(selectedMethod as IDLookupMethod);
-        }
-        setActiveStep(name);
+        setMethod(selectedMethod);
+        setActiveStep('method-step');
       },
       []
     );
@@ -112,28 +103,12 @@ const VerificationSteps = memo<Props>(
       }
     }, [authUser]);
 
-    const onCowCancel = useCallback(() => {
-      setActiveStep('method-selection');
-    }, []);
-
-    const onCowVerified = useCallback(() => {
-      goToSuccessStep();
-    }, [goToSuccessStep]);
-
-    const onBogusCancel = useCallback(() => {
-      setActiveStep('method-selection');
-    }, []);
-
-    const onBogusVerified = useCallback(() => {
-      goToSuccessStep();
-    }, [goToSuccessStep]);
-
-    const onLookupCancel = useCallback(() => {
+    const onStepCancel = useCallback(() => {
       setActiveStep('method-selection');
       setMethod(null);
     }, []);
 
-    const onLookupVerified = useCallback(() => {
+    const onStepVerified = useCallback(() => {
       goToSuccessStep();
     }, [goToSuccessStep]);
 
@@ -166,31 +141,14 @@ const VerificationSteps = memo<Props>(
             />
           )}
 
-          {activeStep === 'cow' && (
-            <VerificationFormCOW
-              showHeader={showHeader}
-              inModal={inModal}
-              onCancel={onCowCancel}
-              onVerified={onCowVerified}
-            />
-          )}
-
-          {activeStep === 'bogus' && (
-            <VerificationFormBogus
-              showHeader={showHeader}
-              inModal={inModal}
-              onCancel={onBogusCancel}
-              onVerified={onBogusVerified}
-            />
-          )}
-
-          {activeStep === 'id_card_lookup' && method && (
-            <VerificationFormLookup
+          {activeStep === 'method-step' && method && (
+            <Outlet
+              id="app.components.VerificationModal.methodStep"
               method={method}
               showHeader={showHeader}
               inModal={inModal}
-              onCancel={onLookupCancel}
-              onVerified={onLookupVerified}
+              onCancel={onStepCancel}
+              onVerified={onStepVerified}
             />
           )}
         </Container>
