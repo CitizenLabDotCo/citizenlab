@@ -6,7 +6,7 @@ import clHistory from 'utils/cl-router/history';
 // components
 import Button from 'components/UI/Button';
 import ProjectTemplatePreview from '../components/ProjectTemplatePreview';
-import UseTemplateModal from 'components/ProjectTemplatePreview/UseTemplateModal';
+import UseTemplateModal from '../components/UseTemplateModal';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
