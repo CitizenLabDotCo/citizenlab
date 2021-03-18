@@ -4,7 +4,7 @@ import ProjectTemplates from './admin/containers';
 import Tab from './admin/components/Tab';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import { TTabName } from 'containers/Admin/projects/all/CreateProject';
-
+import ProjectTemplatePreviewContainerAdmin from './admin/containers/ProjectTemplatePreviewContainerAdmin';
 declare module 'containers/Admin/projects/all/CreateProject' {
   export interface ITabNamesMap {
     template: 'template';
@@ -56,6 +56,7 @@ const configuration: ModuleConfiguration = {
     ],
   },
   outlets: {
+    'app.containers.Admin.projects.all.container': ProjectTemplatePreviewContainerAdmin,
     'app.containers.Admin.projects.all.createProject': (props) => (
       <RenderOnFeatureFlag>
         <RenderOnSelectedTabValue selectedTabValue={props.selectedTabValue}>

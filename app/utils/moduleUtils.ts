@@ -68,6 +68,13 @@ export type OutletsPropertyMap = {
   };
   'app.containers.AdminPage.projects.all.createProjectNotAdmin': {};
   'app.containers.AdminPage.projects.all.projectsAndFolders.actions': {};
+  'app.containers.Admin.projects.all.createProject': {
+    selectedTabValue: TTabName;
+  };
+  'app.containers.Admin.projects.all.createProject.tabs': {
+    onData: (data: InsertConfigurationOptions<ITabItem>) => void;
+  };
+  'app.containers.Admin.projects.all.container': {};
   'app.components.ProjectAndFolderCards.card': {
     publication: IAdminPublicationContent;
     size: 'small' | 'medium' | 'large';
@@ -163,12 +170,6 @@ export type OutletsPropertyMap = {
         CellConfiguration<IdeaHeaderCellComponentProps>
       >
     ) => void;
-  };
-  'app.containers.Admin.projects.all.createProject': {
-    selectedTabValue: TTabName;
-  };
-  'app.containers.Admin.projects.all.createProject.tabs': {
-    onData: (data: InsertConfigurationOptions<ITabItem>) => void;
   };
   'app.containers.Admin.settings.registration': {};
   'app.containers.Admin.settings.registrationHelperText': {

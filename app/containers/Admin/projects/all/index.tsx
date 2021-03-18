@@ -62,7 +62,6 @@ export interface Props {
 const AdminProjectsList = memo(
   ({ className, params }: Props & WithRouterProps) => {
     const { projectTemplateId } = params;
-    console.log(projectTemplateId);
     const authUser = useAuthUser();
     const userIsAdmin = !isNilOrError(authUser)
       ? isAdmin({ data: authUser })
@@ -71,7 +70,7 @@ const AdminProjectsList = memo(
     return (
       <Container className={className}>
         <CreateAndEditProjectsContainer
-        // className={selectedProjectTemplateId ? 'hidden' : ''}
+          className={projectTemplateId ? 'hidden' : ''}
         >
           <PageTitle>
             <FormattedMessage {...messages.overviewPageTitle} />
@@ -105,7 +104,7 @@ const AdminProjectsList = memo(
             </ListsContainer>
           </PageWrapper>
         </CreateAndEditProjectsContainer>
-        {/* <Outlet id="" /> */}
+        <Outlet id="app.containers.Admin.projects.all.container" />
       </Container>
     );
   }

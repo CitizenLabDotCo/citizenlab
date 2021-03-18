@@ -87,7 +87,7 @@ const Component = ({}: Props) => {
           subscription.unsubscribe();
         };
       });
-  }, []);
+  }, [locale]);
 
   useEffect(() => {
     cleanup();
