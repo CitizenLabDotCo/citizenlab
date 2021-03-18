@@ -6,7 +6,7 @@ import { withRouter, WithRouterProps } from 'react-router';
 
 // components
 import HelmetIntl from 'components/HelmetIntl';
-import TabbedResource, { TabProps } from 'components/admin/TabbedResource';
+import TabbedResource from 'components/admin/TabbedResource';
 
 // i18n
 import messages from './messages';
@@ -18,6 +18,7 @@ import GetFeatureFlag, {
   GetFeatureFlagChildProps,
 } from 'resources/GetFeatureFlag';
 import { reject } from 'lodash-es';
+import { ITab } from 'typings';
 
 export interface InputProps {}
 
@@ -29,7 +30,7 @@ interface DataProps {
 interface Props extends InputProps, DataProps {}
 
 interface State {
-  tabs: TabProps[];
+  tabs: ITab[];
 }
 
 class SettingsPage extends React.PureComponent<
@@ -104,7 +105,7 @@ class SettingsPage extends React.PureComponent<
 
     const tabNames = tabs.map((tab) => tab.name);
 
-    let enabledTabs: TabProps[] = tabs;
+    let enabledTabs: ITab[] = [];
 
     tabNames.forEach((tabName) => {
       if (tabName && tabHideConditions?.[tabName]?.()) {
@@ -124,12 +125,7 @@ class SettingsPage extends React.PureComponent<
     };
 
     return (
-      <TabbedResource
-        resource={resource}
-        // TODO: optimization would be to use useMemo for tabs,
-        // as they get recalculated on every click
-        tabs={this.getTabs()}
-      >
+      <TabbedResource resource={resource} tabs={this.getTabs()}>
         <HelmetIntl
           title={messages.helmetTitle}
           description={messages.helmetDescription}
