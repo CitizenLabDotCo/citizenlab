@@ -9,8 +9,7 @@ import tracks from '../../tracks';
 
 // components
 import Button from 'components/UI/Button';
-// OS-105
-import UseTemplateModal from 'components/ProjectTemplatePreview/UseTemplateModal';
+import UseTemplateModal from './UseTemplateModal';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
