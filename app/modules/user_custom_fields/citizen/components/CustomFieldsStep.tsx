@@ -152,7 +152,6 @@ const CustomFieldsStep: FC<Props & InjectedIntlProps> = memo(
       event.preventDefault();
       trackEventByName(tracks.signUpCustomFieldsStepSkipped);
       !isNilOrError(authUser) && (await completeRegistration({}));
-      await new Promise((resolve) => setTimeout(resolve, 2000));
       onCompleted();
     };
 
