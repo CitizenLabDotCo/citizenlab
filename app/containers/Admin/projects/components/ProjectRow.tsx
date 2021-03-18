@@ -21,6 +21,8 @@ import Error from 'components/UI/Error';
 
 // resources
 import useProjectGroups from 'hooks/useProjectGroups';
+import { canModerateProject } from 'services/permissions/rules/projectPermissions';
+import useAuthUser from 'hooks/useAuthUser';
 
 // types
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
@@ -61,6 +63,7 @@ export default ({
 }: Props) => {
   const [isBeingDeleted, setIsBeingDeleted] = useState<boolean>(false);
   const [deletionError, setDeletionError] = useState<string>('');
+  const authUser = useAuthUser();
 
   const projectGroups = useProjectGroups({
     projectId: publication.publicationId,
@@ -76,7 +79,11 @@ export default ({
       icon="edit"
       type="button"
       key="manage"
-      disabled={isBeingDeleted}
+      disabled={
+        isBeingDeleted ||
+        (!isNilOrError(authUser) &&
+          !canModerateProject(publication.publicationId, { data: authUser }))
+      }
     >
       <FormattedMessage {...messages.editButtonLabel} />
     </RowButton>

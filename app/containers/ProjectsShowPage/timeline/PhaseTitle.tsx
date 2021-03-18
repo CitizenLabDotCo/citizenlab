@@ -5,7 +5,7 @@ import moment from 'moment';
 
 // hooks
 import useLocale from 'hooks/useLocale';
-import useTenant from 'hooks/useTenant';
+import useAppConfiguration from 'hooks/useAppConfiguration';
 import usePhases from 'hooks/usePhases';
 import useWindowSize from 'hooks/useWindowSize';
 
@@ -100,14 +100,14 @@ const HeaderTitle = styled.h2`
 
 const HeaderSubtitle = styled.div`
   color: ${colors.label};
-  font-size: ${fontSizes.small}px;
+  font-size: ${fontSizes.base}px;
   line-height: normal;
   font-weight: 400;
   display: flex;
   align-items: center;
   margin: 0;
   padding: 0;
-  margin-top: 4px;
+  margin-top: 5px;
 
   ${isRtl`
     flex-direction: row-reverse;
@@ -122,7 +122,7 @@ interface Props {
 
 const PhaseTitle = memo<Props>(({ projectId, selectedPhaseId, className }) => {
   const locale = useLocale();
-  const tenant = useTenant();
+  const tenant = useAppConfiguration();
   const phases = usePhases(projectId);
   const { windowWidth } = useWindowSize();
 
@@ -163,16 +163,8 @@ const PhaseTitle = memo<Props>(({ projectId, selectedPhaseId, className }) => {
       'YYYY-MM-DD'
     );
     const endMoment = moment(selectedPhase?.attributes.end_at, 'YYYY-MM-DD');
-    const startDate = new Intl.DateTimeFormat(locale, {
-      day: 'numeric',
-      month: 'short',
-      year: 'numeric',
-    }).format(startMoment.toDate());
-    const endDate = new Intl.DateTimeFormat(locale, {
-      day: 'numeric',
-      month: 'short',
-      year: 'numeric',
-    }).format(endMoment.toDate());
+    const startDate = startMoment.format('LL');
+    const endDate = endMoment.format('LL');
 
     if (smallerThanSmallTablet && selectedPhaseTitle && selectedPhaseNumber) {
       selectedPhaseTitle = `${selectedPhaseNumber}. ${selectedPhaseTitle}`;

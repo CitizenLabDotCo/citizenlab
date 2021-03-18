@@ -23,7 +23,9 @@ import { media, colors, fontSizes } from 'utils/styleUtils';
 
 // resources
 import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetAppConfiguration';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 const Container = styled.div`
@@ -113,7 +115,7 @@ const NavItem = styled.button`
 
 interface DataProps {
   projects: GetProjectsChildProps;
-  tenant: GetTenantChildProps;
+  tenant: GetAppConfigurationChildProps;
   authUser: GetAuthUserChildProps;
 }
 
@@ -363,7 +365,7 @@ const Data = adopt<DataProps>({
   projects: (
     <GetProjects publicationStatuses={['draft', 'published', 'archived']} />
   ),
-  tenant: <GetTenant />,
+  tenant: <GetAppConfiguration />,
   authUser: <GetAuthUser />,
 });
 

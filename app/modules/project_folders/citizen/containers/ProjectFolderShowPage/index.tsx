@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useMemo } from 'react';
 import { isError, isUndefined } from 'lodash-es';
 import { withRouter, WithRouterProps } from 'react-router';
 import { isNilOrError } from 'utils/helperUtils';
@@ -16,7 +16,7 @@ import ContentContainer from 'components/ContentContainer';
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
 import useLocale from 'hooks/useLocale';
-import useTenant from 'hooks/useTenant';
+import useAppConfiguration from 'hooks/useAppConfiguration';
 import useProjectFolder from 'modules/project_folders/hooks/useProjectFolder';
 import useAdminPublicationPrefetchProjects from 'hooks/useAdminPublicationPrefetchProjects';
 import useWindowSize from 'hooks/useWindowSize';
@@ -64,6 +64,11 @@ const Loading = styled.div`
 const StyledContentContainer = styled(ContentContainer)`
   padding-top: 30px;
   background: #fff;
+
+  @media (min-width: 1100px) {
+    padding-left: 60px;
+    padding-right: 60px;
+  }
 `;
 
 const ButtonBar = styled.div`
@@ -110,8 +115,8 @@ const StyledProjectFolderDescription = styled(ProjectFolderDescription)`
 const StyledProjectFolderProjectCards = styled(ProjectFolderProjectCards)`
   flex: 0 0 800px;
   width: 800px;
-  padding: 25px;
-  padding-bottom: 5px;
+  padding: 20px;
+  padding-bottom: 0px;
   margin-left: 80px;
   margin-top: 4px;
   background: ${colors.background};
@@ -153,20 +158,33 @@ const ProjectFolderShowPage = memo<{
 }>(({ projectFolder }) => {
   const authUser = useAuthUser();
   const locale = useLocale();
-  const tenant = useTenant();
-  const adminPublication = useAdminPublicationPrefetchProjects({
-    folderId: projectFolder.id,
+  const tenant = useAppConfiguration();
+  const {
+    childrenOf: adminPublicationChildrenOf,
+    list: adminPublicationsList,
+  } = useAdminPublicationPrefetchProjects({
     publicationStatusFilter: ['published', 'archived'],
   });
   const { windowWidth } = useWindowSize();
 
   const smallerThan1100px = windowWidth ? windowWidth <= 1100 : false;
   const folderNotFound = isError(projectFolder);
+
+  const childProjects = useMemo(() => {
+    if (isNilOrError(projectFolder.relationships.admin_publication)) {
+      return;
+    }
+
+    return adminPublicationChildrenOf({
+      id: projectFolder.relationships.admin_publication?.data?.id,
+    });
+  }, [adminPublicationChildrenOf, projectFolder]);
+
   const loading =
     isUndefined(locale) ||
     isUndefined(tenant) ||
     isUndefined(projectFolder) ||
-    isUndefined(adminPublication?.list);
+    isUndefined(adminPublicationsList);
 
   const userCanEditProject =
     !isNilOrError(authUser) && isAdmin({ data: authUser });
@@ -212,12 +230,12 @@ const ProjectFolderShowPage = memo<{
                     projectFolder={projectFolder}
                   />
                   <StyledProjectFolderProjectCards
-                    list={adminPublication.list}
+                    list={childProjects}
                     className={
-                      adminPublication.list?.filter(
+                      childProjects?.filter(
                         (item) => item.publicationType === 'project'
                       )?.length === 1 ||
-                      (windowWidth > 1100 && windowWidth < 1250)
+                      (windowWidth > 1000 && windowWidth < 1350)
                         ? 'oneCardPerRow'
                         : ''
                     }
@@ -234,9 +252,7 @@ const ProjectFolderShowPage = memo<{
                 </StyledContentContainer>
                 <CardsWrapper>
                   <ContentContainer maxWidth={maxPageWidth}>
-                    <StyledProjectFolderProjectCards
-                      list={adminPublication.list}
-                    />
+                    <StyledProjectFolderProjectCards list={childProjects} />
                   </ContentContainer>
                 </CardsWrapper>
               </>

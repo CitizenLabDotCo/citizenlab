@@ -16,7 +16,9 @@ import {
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetAppConfiguration';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetOnboardingCampaigns, {
   GetOnboardingCampaignsChildProps,
@@ -288,7 +290,7 @@ export interface InputProps {
 
 interface DataProps {
   locale: GetLocaleChildProps;
-  tenant: GetTenantChildProps;
+  tenant: GetAppConfigurationChildProps;
   authUser: GetAuthUserChildProps;
   onboardingCampaigns: GetOnboardingCampaignsChildProps;
 }
@@ -390,10 +392,10 @@ class SignedInHeader extends PureComponent<Props, State> {
                 <Icons>
                   <StyledAvatar
                     userId={authUser?.id}
-                    size="50px"
+                    size={50}
                     fillColor="#fff"
-                    padding="0px"
-                    borderThickness="0px"
+                    padding={0}
+                    borderThickness={0}
                   />
                   <CompleteProfileIcon name="completeProfile" ariaHidden />
                 </Icons>
@@ -449,10 +451,10 @@ class SignedInHeader extends PureComponent<Props, State> {
                   <AvatarAndShield aria-hidden>
                     <StyledAvatar
                       userId={authUser?.id}
-                      size="50px"
+                      size={50}
                       fillColor="#fff"
-                      padding="0px"
-                      borderThickness="0px"
+                      padding={0}
+                      borderThickness={0}
                     />
                     <ShieldIcon name="verify_light" />
                   </AvatarAndShield>
@@ -570,7 +572,7 @@ class SignedInHeader extends PureComponent<Props, State> {
 
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
-  tenant: <GetTenant />,
+  tenant: <GetAppConfiguration />,
   authUser: <GetAuthUser />,
   onboardingCampaigns: <GetOnboardingCampaigns />,
 });

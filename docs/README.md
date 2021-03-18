@@ -1,8 +1,161 @@
 # Changelog
+### 2021-03-18
+### Changed
+- Empty folders are now shown in the landing page, navbar, projects page and sitemap.
+- The sitemap no longer shows all projects and folder under each folder.
 
-## Next release 
 
-/
+### Added
+- Allows for sending front-end events to our self-hosted matomo analytics tool
+
+## 2021-03-11
+
+### Changed
+- Tenants are now ordered alphabetically in AdminHQ
+
+- Serbian (Latin) is now a language option.
+
+
+## 2021-03-10
+
+### Added
+- CitizenLab admins can now change the link to the accessibility statement via AdminHQ.
+- "Reply-to" field in emails from campaigns can be customized for each platform
+- Customizable minimal required password length for each platform
+
+
+## 2021-03-09
+
+### Fixed
+- Fixed a crash that would occur when tring to add tags to an idea
+
+## 2021-03-08
+
+### Fixed
+- Phase pages now display the correct count of ideas (not retroactive - will only affect phases modified from today onwards).
+
+## 2021-03-05
+
+### Changed
+- Changed the default style of the map
+- Proposals/Initiatives are now sorted by most recent by default
+
+### Added
+- Custom maps (Project settings > Map): Admins now have the capability to customize the map shown inside of a project. They can do so by uploading geoJson files as layers on the map, and customizing those layers through the back-office UI (e.g. changing colors, marker icons, tooltip text, sort order, map legend, default zoom level, default center point).
+
+### Fixed
+- Fixed a crash that could potentially occur when opening an idea page and afterwards going back to the project page
+
+## 2021-03-04
+
+### Added
+- In the admin (Settings > Registration tab), admins can now directly set the helper texts on top of the sign-up form (both for step 1 and 2).
+- The admin Settings > Homepage and style tab has two new fields: one to allow customization for copy of the banner signed-in users see (on the landing page) and one to set the copy that's shown underneath this banner and above the projects/folders (also on the landing page).
+- Copy to clarify sign up/log in possibilities with phone number
+
+### Changed
+- The admin Settings > Homepage and style tab has undergone copy improvements and has been rearranged
+- The FranceConnect button to login, signup or verify your account now displays the messages required by the vendor.
+- Updated the look of the FranceConnect button to login, signup or verify your account to feature the latests changes required by the vendor.
+
+### Fixed
+- Downvote button (thumbs down) on input card is displayed for archived projects
+
+## 2021-03-03
+
+### Added
+- Users are now notified in app and via email when they're assigned as folder administrators.
+
+## 2021-03-02
+
+### Fixed
+- Don't show empty space inside of the idea card when no avatar is present
+
+### Added
+
+- Maori as languages option
+
+### Changed
+- Improved layout of project event listings on mobile devices
+
+## 2021-02-26
+
+### Fixed
+- France Connect button hover state now complies with the vendor's guidelines.
+
+## 2021-02-24
+
+### Fixed
+- The project page no longer shows an eternal spinner when the user has no access to see the project
+
+## 2021-02-18
+
+### Added
+- The password fields show an error when the password is too short
+- The password fields have a 'show password' button to let people check their password while typing
+- The password fields have a strength checker with appropriate informative message on how to increase the strength
+- France Connect as a verification method.
+
+### Fixed
+- Notifications for started phases are no longer triggered for unpublished projects and folders.
+
+## 2021-02-17
+
+### Changed
+- All input fields for multiple locales now use the components with locale switchers, resulting in a cleaner and more compact UI.
+- Copy improvements
+
+## 2021-02-12
+
+### Fixed
+- Fixed Azure AD login for some Azure setups (Schagen)
+
+### Changed
+- When searching for an idea, the search operation no longer searches on the author's name. This was causing severe performance issues and slowness of the paltforms.
+
+## 2021-02-10
+
+### Added
+- Automatic tagging
+
+## 2021-02-08
+
+### Fixed
+- Fixed a bug preventing registration fields and poll questions from reordering correctly.
+- Fixed a bug causing errors in new platforms.
+
+## 2021-02-04
+### Fixed
+- Fixed a bug causing the projects list in the navbar and projects page to display projects outside of folders when they're contained within them.
+
+## 2021-01-29
+
+### Added
+- Ability to redirect URLs through AdminHQ
+- Accessibility statement link in the footer
+
+### Fixed
+- Fixed issue affecting project managers that blocked access to their managed projects, when these are placed inside a folder.
+
+## 2021-01-28
+
+### Fixed
+- A bug in Admin project edit page that did not allow a user to Go Back to the projects list after switching tabs
+- Scrolling on the admin users page
+
+## 2021-01-26
+
+### Added
+- Folder admin rights. Folder admins or 'managers' can be assigned per folder. They can create projects inside folders they have rights for, and moderate/change the folder and all projects that are inside.
+- The 'from' and 'reply-to' emails can be customized by cluster (by our developers, not in Admin HQ). E.g. Benelux notification emails could be sent out by notifications@citizenlab.eu, US emails could be sent out by notifications@citizenlab.us etc., as long as those emails are owned by us. We can choose any email for "reply-to", so also email addresses we don't own. This means "reply-to" could potentially be configured to be an email address of the city, e.g. support@leuven.be. It is currently not possible to customize the reply-to (except for manual campaigns) and from fields for individual tenants.
+- When a survey requires the user to be signed-in, we now show the sign in/up form directly on the page when not logged in (instead of the green infobox with a link to the sign-up popup)
+
+### Fixed
+- The 'reply-to' field of our emails showed up twice in recipient's email clients, now only once.
+
+### Changed
+- Added the recipient first and last name to the 'to' email field in their email client, so not only their email adress is shown.
+- The links in the footer can now expand to multiple lines, and therefore accomodate more items (e.g. soon the addition of a link to the accesibility statement)
 
 ## 2021-01-21
 

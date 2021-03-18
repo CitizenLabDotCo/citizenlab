@@ -6,7 +6,7 @@ import MultipleSelect from 'components/UI/MultipleSelect';
 
 // resources
 import GetAreas, { GetAreasChildProps } from 'resources/GetAreas';
-import useTenant from 'hooks/useTenant';
+import useAppConfiguration from 'hooks/useAppConfiguration';
 
 // i18n
 import messages from './messages';
@@ -45,7 +45,7 @@ interface Props extends InputProps, DataProps {}
 
 const AreaFilter = memo<Props & InjectedLocalized>(
   ({ selectedAreaIds, onChange, className, localize, areas }) => {
-    const tenant = useTenant();
+    const tenant = useAppConfiguration();
 
     const selectedOptions = useMemo(() => {
       if (!isNilOrError(areas) && selectedAreaIds) {

@@ -256,7 +256,7 @@ export class PollAdminForm extends PureComponent<Props, State> {
             icon="plus-circle"
             onClick={this.startNewQuestion}
           >
-            <FormattedMessage {...messages.addQuestion} />
+            <FormattedMessage {...messages.addPollQuestion} />
           </Button>
         )}
       </>

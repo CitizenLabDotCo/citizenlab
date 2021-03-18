@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { distinctUntilChanged } from 'rxjs/operators';
 import {
   listAdminPublications,
@@ -8,13 +8,13 @@ import {
 import { PublicationStatus } from 'services/projects';
 import { isNilOrError } from 'utils/helperUtils';
 import { unionBy, isString } from 'lodash-es';
+import useFeatureFlag from 'hooks/useFeatureFlag';
+import { IRelationship } from 'typings';
 
 export interface InputProps {
   pageSize?: number;
   areaFilter?: string[];
   publicationStatusFilter: PublicationStatus[];
-  noEmptyFolder?: boolean;
-  folderId?: string | null;
 }
 
 export type IAdminPublicationContent = {
@@ -22,14 +22,30 @@ export type IAdminPublicationContent = {
   publicationType: AdminPublicationType;
   publicationId: string;
   attributes: IAdminPublicationData['attributes'];
+  relationships: {
+    children: {
+      data: IRelationship[];
+    };
+    parent: {
+      data?: IRelationship;
+    };
+    publication: {
+      data: IRelationship;
+    };
+  };
 };
 
-export interface IOutput {
+export interface ChildrenOfProps {
+  id?: string;
+}
+export interface IUseAdminPublicationsOutput {
   list: IAdminPublicationContent[] | undefined | null;
+  topLevel: IAdminPublicationContent[];
   hasMore: boolean;
   loadingInitial: boolean;
   loadingMore: boolean;
   onLoadMore: () => void;
+  childrenOf: ({ id }: ChildrenOfProps) => IAdminPublicationContent[];
   onChangeAreas: (areas: string[] | null) => void;
   onChangePublicationStatus: (publicationStatuses: PublicationStatus[]) => void;
 }
@@ -38,8 +54,6 @@ export default function useAdminPublications({
   pageSize = 1000,
   areaFilter,
   publicationStatusFilter,
-  noEmptyFolder,
-  folderId,
 }: InputProps) {
   const [list, setList] = useState<
     IAdminPublicationContent[] | undefined | null
@@ -52,6 +66,7 @@ export default function useAdminPublications({
   const [publicationStatuses, setPublicationStatuses] = useState<
     PublicationStatus[]
   >(publicationStatusFilter);
+  const isProjectFoldersEnabled = useFeatureFlag('project_folders');
 
   const onLoadMore = useCallback(() => {
     if (hasMore) {
@@ -79,11 +94,9 @@ export default function useAdminPublications({
     const subscription = listAdminPublications({
       queryParameters: {
         areas,
-        folder: folderId,
         publication_statuses: publicationStatuses,
         'page[number]': pageNumber,
         'page[size]': pageSize,
-        filter_empty_folders: noEmptyFolder,
       },
     })
       .observable.pipe(distinctUntilChanged())
@@ -106,6 +119,7 @@ export default function useAdminPublications({
                 publicationId,
                 publicationType,
                 id: adminPublication.id,
+                relationships: adminPublication.relationships,
                 attributes: {
                   ...adminPublication.attributes,
                 },
@@ -132,11 +146,39 @@ export default function useAdminPublications({
     return () => subscription.unsubscribe();
   }, [pageNumber, pageSize, areas, publicationStatuses]);
 
+  const topLevel = useMemo<IAdminPublicationContent[]>(() => {
+    if (isNilOrError(list)) return [];
+
+    if (isProjectFoldersEnabled) {
+      return list.filter(({ relationships }) => !relationships.parent.data);
+    }
+
+    return list;
+  }, [list, isProjectFoldersEnabled]);
+
+  const childrenOf = useCallback(
+    ({ id: publicationId }: ChildrenOfProps) => {
+      if (isNilOrError(list)) return [];
+
+      const publication = list.find(({ id }) => id === publicationId);
+      if (isNilOrError(publication)) return [];
+
+      const childPublicationIds = publication.relationships.children.data.map(
+        ({ id }) => id
+      );
+
+      return list.filter(({ id }) => childPublicationIds.includes(id));
+    },
+    [list]
+  );
+
   return {
+    topLevel,
     list,
     hasMore,
     loadingInitial,
     loadingMore,
+    childrenOf,
     onLoadMore,
     onChangeAreas,
     onChangePublicationStatus,

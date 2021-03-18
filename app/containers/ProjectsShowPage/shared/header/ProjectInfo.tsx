@@ -13,7 +13,7 @@ import Fragment from 'components/Fragment';
 import Button from 'components/UI/Button';
 import FileAttachments from 'components/UI/FileAttachments';
 import ProjectInfoSideBar from './ProjectInfoSideBar';
-import ReactResizeDetector from 'react-resize-detector';
+import ReactResizeDetector from 'react-resize-detector/build/withPolyfill';
 import ProjectArchivedIndicator from 'components/ProjectArchivedIndicator';
 
 // hooks
@@ -65,8 +65,8 @@ const Left = styled.div`
 `;
 
 const Right = styled.div`
-  flex: 0 0 300px;
-  width: 300px;
+  flex: 0 0 310px;
+  width: 310px;
   margin-left: 120px;
 
   ${isRtl`
@@ -191,8 +191,10 @@ const ProjectInfo = memo<Props>(({ projectId, className }) => {
     []
   );
 
-  const onResize = (_width, height) => {
-    setDescriptionHeight(height);
+  const onResize = (_width: number | undefined, height: number | undefined) => {
+    if (height) {
+      setDescriptionHeight(height);
+    }
   };
 
   if (!isNilOrError(project)) {

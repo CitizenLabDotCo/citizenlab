@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useState } from 'react';
 import { withRouter, WithRouterProps } from 'react-router';
 
 // components
@@ -17,6 +17,9 @@ import tracks from './tracks';
 
 // styles
 import styled from 'styled-components';
+import { InsertConfigurationOptions, ITab } from 'typings';
+import Outlet from 'components/Outlet';
+import { insertConfiguration } from 'utils/moduleUtils';
 
 const TopContainer = styled.div`
   width: 100%;
@@ -37,21 +40,18 @@ const ActionsContainer = styled.div`
 `;
 const InitiativesPage = memo<InjectedIntlProps & WithRouterProps>(
   ({ children, intl: { formatMessage }, location }) => {
-    const tabs = [
+    const [tabs, setTabs] = useState<ITab[]>([
       {
         label: formatMessage(messages.settingsTab),
+        name: 'initiatives',
         url: '/admin/initiatives',
       },
       {
         label: formatMessage(messages.manageTab),
+        name: 'manage',
         url: '/admin/initiatives/manage',
       },
-      {
-        label: formatMessage(messages.permissionTab),
-        url: '/admin/initiatives/permissions',
-        feature: 'granular_permissions',
-      },
-    ];
+    ]);
 
     const resource = {
       title: formatMessage(messages.titleInitiatives),
@@ -63,9 +63,17 @@ const InitiativesPage = memo<InjectedIntlProps & WithRouterProps>(
       });
     };
 
+    const handleData = (data: InsertConfigurationOptions<ITab>) =>
+      setTabs(insertConfiguration<ITab>(data));
+
     const { pathname } = location;
     return (
       <>
+        <Outlet
+          id="app.containers.Admin.initiatives.tabs"
+          onData={handleData}
+          formatMessage={formatMessage}
+        />
         <TopContainer>
           <ActionsContainer>
             <Button

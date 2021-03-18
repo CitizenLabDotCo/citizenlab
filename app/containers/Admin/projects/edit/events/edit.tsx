@@ -8,8 +8,8 @@ import { isNilOrError } from 'utils/helperUtils';
 import clHistory from 'utils/cl-router/history';
 
 // components
-import InputMultiloc from 'components/UI/InputMultiloc';
-import QuillMultiloc from 'components/UI/QuillEditor/QuillMultiloc';
+import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
+import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 import ErrorComponent from 'components/UI/Error';
 import DateTimePicker from 'components/admin/DateTimePicker';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
@@ -26,7 +26,10 @@ import messages from './messages';
 
 // services
 import { localeStream } from 'services/locale';
-import { currentTenantStream, ITenant } from 'services/tenant';
+import {
+  currentAppConfigurationStream,
+  IAppConfiguration,
+} from 'services/appConfiguration';
 import { IProjectData } from 'services/projects';
 import {
   eventStream,
@@ -60,7 +63,7 @@ interface Props extends DataProps {
 
 interface State {
   locale: Locale | null;
-  currentTenant: ITenant | null;
+  currentTenant: IAppConfiguration | null;
   event: IEvent | null;
   attributeDiff: IUpdatedEventProperties;
   errors:
@@ -102,7 +105,7 @@ class AdminProjectEventEdit extends PureComponent<Props, State> {
   componentDidMount() {
     const { remoteEventFiles } = this.props;
     const locale$ = localeStream().observable;
-    const currentTenant$ = currentTenantStream().observable;
+    const currentTenant$ = currentAppConfigurationStream().observable;
     const event$ = this.props.params.id
       ? eventStream(this.props.params.id).observable
       : of(null);
@@ -292,7 +295,7 @@ class AdminProjectEventEdit extends PureComponent<Props, State> {
           >
             <Section>
               <SectionField>
-                <InputMultiloc
+                <InputMultilocWithLocaleSwitcher
                   id="title"
                   label={<FormattedMessage {...messages.titleLabel} />}
                   type="text"
@@ -303,7 +306,7 @@ class AdminProjectEventEdit extends PureComponent<Props, State> {
               </SectionField>
 
               <SectionField>
-                <InputMultiloc
+                <InputMultilocWithLocaleSwitcher
                   id="location"
                   label={<FormattedMessage {...messages.locationLabel} />}
                   type="text"
@@ -336,7 +339,7 @@ class AdminProjectEventEdit extends PureComponent<Props, State> {
               </SectionField>
 
               <SectionField className="fullWidth">
-                <QuillMultiloc
+                <QuillMultilocWithLocaleSwitcher
                   id="description"
                   label={this.descriptionLabel}
                   valueMultiloc={eventAttrs.description_multiloc}

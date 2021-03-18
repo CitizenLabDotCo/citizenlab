@@ -33,6 +33,9 @@ import GetInitiativesCount, {
   GetInitiativesCountChildProps,
 } from 'resources/GetInitiativesCount';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import Outlet from 'components/Outlet';
+import { InsertConfigurationOptions } from 'typings';
+import { insertConfiguration } from 'utils/moduleUtils';
 
 const Menu = styled.div`
   z-index: 10;
@@ -137,7 +140,7 @@ interface State {
 }
 
 export type NavItem = {
-  id: string;
+  name: string;
   link: string;
   iconName: IconNames;
   message: string;
@@ -157,10 +160,11 @@ class Sidebar extends PureComponent<
 > {
   constructor(props: Props & InjectedIntlProps & WithRouterProps & Tracks) {
     super(props);
+
     this.state = {
       navItems: [
         {
-          id: 'insights',
+          name: 'insights',
           link: '/admin/dashboard',
           iconName: 'stats',
           message: 'dashboard',
@@ -172,20 +176,7 @@ class Sidebar extends PureComponent<
             ),
         },
         {
-          id: 'moderation',
-          link: '/admin/moderation',
-          iconName: 'moderation',
-          message: 'moderation',
-          featureName: 'moderation',
-          isActive: (pathName) =>
-            pathName.startsWith(
-              `${
-                getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''
-              }/admin/moderation`
-            ),
-        },
-        {
-          id: 'projects',
+          name: 'projects',
           link: '/admin/projects',
           iconName: 'folder',
           message: 'projects',
@@ -197,7 +188,7 @@ class Sidebar extends PureComponent<
             ),
         },
         {
-          id: 'processing',
+          name: 'processing',
           link: '/admin/processing',
           iconName: 'processing',
           featureName: 'manual_tagging',
@@ -210,7 +201,7 @@ class Sidebar extends PureComponent<
             ),
         },
         {
-          id: 'workshops',
+          name: 'workshops',
           link: '/admin/workshops',
           iconName: 'workshops',
           message: 'workshops',
@@ -223,7 +214,7 @@ class Sidebar extends PureComponent<
             ),
         },
         {
-          id: 'ideas',
+          name: 'ideas',
           link: '/admin/ideas',
           iconName: 'idea2',
           message: 'inputManager',
@@ -235,7 +226,7 @@ class Sidebar extends PureComponent<
             ),
         },
         {
-          id: 'initiatives',
+          name: 'initiatives',
           link: '/admin/initiatives',
           iconName: 'initiativesAdminMenuIcon',
           message: 'initiatives',
@@ -249,7 +240,7 @@ class Sidebar extends PureComponent<
             ),
         },
         {
-          id: 'users',
+          name: 'userinserts',
           link: '/admin/users',
           iconName: 'users',
           message: 'users',
@@ -261,7 +252,7 @@ class Sidebar extends PureComponent<
             ),
         },
         {
-          id: 'invitations',
+          name: 'invitations',
           link: '/admin/invitations',
           iconName: 'invitations',
           message: 'invitations',
@@ -273,7 +264,7 @@ class Sidebar extends PureComponent<
             ),
         },
         {
-          id: 'emails',
+          name: 'emails',
           link: '/admin/emails',
           iconName: 'emails',
           message: 'emails',
@@ -285,7 +276,7 @@ class Sidebar extends PureComponent<
             ),
         },
         {
-          id: 'settings',
+          name: 'settings',
           link: '/admin/settings/general',
           iconName: 'setting',
           message: 'settings',
@@ -305,29 +296,38 @@ class Sidebar extends PureComponent<
     if (
       !isNilOrError(ideasCount.count) &&
       ideasCount.count !==
-        prevState.navItems.find((item) => item.id === 'ideas').count
+        prevState.navItems.find((navItem) => navItem.name === 'ideas').count
     ) {
       const { navItems } = prevState;
       const nextNavItems = navItems;
-      const ideasIndex = navItems.findIndex((item) => item.id === 'ideas');
+      const ideasIndex = navItems.findIndex(
+        (navItem) => navItem.name === 'ideas'
+      );
       nextNavItems[ideasIndex].count = ideasCount.count;
       return { navItems: nextNavItems };
     }
     if (
       !isNilOrError(initiativesCount.count) &&
       initiativesCount.count !==
-        prevState.navItems.find((item) => item.id === 'initiatives').count
+        prevState.navItems.find((navItem) => navItem.name === 'initiatives')
+          .count
     ) {
       const { navItems } = prevState;
       const nextNavItems = navItems;
       const initiativesIndex = navItems.findIndex(
-        (item) => item.id === 'initiatives'
+        (navItem) => navItem.name === 'initiatives'
       );
       nextNavItems[initiativesIndex].count = initiativesCount.count;
       return { navItems: nextNavItems };
     }
     return prevState;
   }
+
+  handleData = (insertNavItemOptions: InsertConfigurationOptions<NavItem>) => {
+    this.setState(({ navItems }) => ({
+      navItems: insertConfiguration(insertNavItemOptions)(navItems),
+    }));
+  };
 
   render() {
     const { formatMessage } = this.props.intl;
@@ -339,34 +339,38 @@ class Sidebar extends PureComponent<
 
     return (
       <Menu>
+        <Outlet
+          id="app.containers.Admin.sideBar.navItems"
+          onData={this.handleData}
+        />
         <MenuInner id="sidebar">
-          {navItems.map((route) => {
-            if (route.id === 'emails') {
+          {navItems.map((navItem) => {
+            if (navItem.name === 'emails') {
               return (
-                <GetFeatureFlag name="manual_emailing" key={route.id}>
+                <GetFeatureFlag name="manual_emailing" key={navItem.name}>
                   {(manualEmailing) => (
                     <GetFeatureFlag name="automated_emailing_control">
                       {(automatedEmailing) =>
                         manualEmailing || automatedEmailing ? (
-                          <MenuItem route={route} key={route.id} />
+                          <MenuItem route={navItem} key={navItem.name} />
                         ) : null
                       }
                     </GetFeatureFlag>
                   )}
                 </GetFeatureFlag>
               );
-            } else if (route.featureName) {
+            } else if (navItem.featureName) {
               return (
                 <FeatureFlag
-                  name={route.featureName}
-                  onlyCheckAllowed={route.onlyCheckAllowed}
-                  key={route.id}
+                  name={navItem.featureName}
+                  onlyCheckAllowed={navItem.onlyCheckAllowed}
+                  key={navItem.name}
                 >
-                  <MenuItem route={route} key={route.id} />
+                  <MenuItem route={navItem} key={navItem.name} />
                 </FeatureFlag>
               );
             } else {
-              return <MenuItem route={route} key={route.id} />;
+              return <MenuItem route={navItem} key={navItem.name} />;
             }
           })}
           <Spacer />

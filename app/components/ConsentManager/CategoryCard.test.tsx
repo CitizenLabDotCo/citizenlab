@@ -9,7 +9,7 @@ import CategoryCard from './CategoryCard';
 import { registerDestination } from './destinations';
 
 // mock utilities
-jest.mock('services/tenant');
+jest.mock('services/appConfiguration');
 jest.mock('utils/cl-intl');
 
 describe('<CategoryCard />', () => {

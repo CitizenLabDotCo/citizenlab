@@ -10,9 +10,9 @@ import Button from 'components/UI/Button';
 
 // Resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetTenantLocales, {
-  GetTenantLocalesChildProps,
-} from 'resources/GetTenantLocales';
+import GetAppConfigurationLocales, {
+  GetAppConfigurationLocalesChildProps,
+} from 'resources/GetAppConfigurationLocales';
 
 // Typings
 import { Multiloc, Locale } from 'typings';
@@ -38,7 +38,7 @@ interface InputProps {
 
 interface DataProps {
   locale: GetLocaleChildProps;
-  tenantLocales: GetTenantLocalesChildProps;
+  tenantLocales: GetAppConfigurationLocalesChildProps;
 }
 
 export interface Props extends DataProps, InputProps {}
@@ -156,7 +156,7 @@ export class FormOptionRow extends PureComponent<Props, State> {
 
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
-  tenantLocales: <GetTenantLocales />,
+  tenantLocales: <GetAppConfigurationLocales />,
 });
 
 const FormOptionRowWithData = (inputProps: InputProps) => (

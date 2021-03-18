@@ -11,10 +11,15 @@ import { convertUrlToUploadFile } from 'utils/fileTools';
 import getSubmitState from 'utils/getSubmitState';
 
 // services
-import { updateTenant, IUpdatedTenantProperties } from 'services/tenant';
+import {
+  updateAppConfiguration,
+  IUpdatedAppConfigurationProperties,
+} from 'services/appConfiguration';
 
 // resources
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetAppConfiguration';
 
 // intl
 import messages from './messages';
@@ -51,7 +56,7 @@ interface IAttributesDiff {
 }
 
 interface Props {
-  tenant: GetTenantChildProps;
+  tenant: GetAppConfigurationChildProps;
 }
 
 type State = {
@@ -112,9 +117,8 @@ class Favicon extends PureComponent<Props, State> {
       this.setState({ loading: true, saved: false });
 
       try {
-        await updateTenant(
-          tenant.id,
-          this.state.attributesDiff as IUpdatedTenantProperties
+        await updateAppConfiguration(
+          this.state.attributesDiff as IUpdatedAppConfigurationProperties
         );
         this.setState({ loading: false, saved: true, attributesDiff: {} });
       } catch (error) {
@@ -201,5 +205,7 @@ class Favicon extends PureComponent<Props, State> {
 }
 
 export default () => (
-  <GetTenant>{(tenant) => <Favicon tenant={tenant} />}</GetTenant>
+  <GetAppConfiguration>
+    {(tenant) => <Favicon tenant={tenant} />}
+  </GetAppConfiguration>
 );

@@ -7,13 +7,12 @@ import { Icon } from 'semantic-ui-react';
 
 const DragHandle = styled.div`
   cursor: move;
-  padding: 1rem;
+  padding: 1rem 0;
   height: 100%;
-  align-self: flex-start;
 `;
 
 // TODO: type checking doesn't work for this component
-interface Props {
+export interface Props {
   connectDragSource: any;
   connectDropTarget: any;
   isDragging: boolean;
@@ -34,16 +33,23 @@ class SortableRow extends React.Component<Props, State> {
       connectDragSource,
       isDragging,
       lastItem,
+      className,
+      children,
     } = this.props;
     const opacity = isDragging ? 0 : 1;
+
+    if (!children) {
+      return null;
+    }
+
     return connectDropTarget(
       connectDragSource(
-        <div style={{ opacity }} className={this.props.className}>
+        <div style={{ opacity }} className={className}>
           <Row isLastItem={lastItem}>
-            <DragHandle>
+            <DragHandle className="sortablerow-draghandle">
               <Icon name="sort" />
             </DragHandle>
-            {this.props.children}
+            {children}
           </Row>
         </div>
       )
@@ -106,9 +112,8 @@ const dropTarget = {
     monitor.getItem().index = toIndex;
   },
   drop(props, monitor) {
-    const { id } = monitor.getItem();
-    const toIndex = props.index;
-    props.dropRow(id, toIndex);
+    const { id, index } = monitor.getItem();
+    props.dropRow(id, index);
   },
 };
 

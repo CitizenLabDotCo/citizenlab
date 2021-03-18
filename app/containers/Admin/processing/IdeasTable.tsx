@@ -386,7 +386,6 @@ const Data = adopt<DataProps, InputProps>({
         type="paginated"
         pageSize={200000}
         projectIds={projectFilterIds}
-        cache={false}
         mini={true}
         sort="new"
       >

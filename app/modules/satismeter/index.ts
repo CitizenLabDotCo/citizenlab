@@ -11,7 +11,7 @@ import {
   IDestinationConfig,
 } from 'components/ConsentManager/destinations';
 import { isAdmin, isModerator, isSuperAdmin } from 'services/permissions/roles';
-import { currentTenantStream } from 'services/tenant';
+import { currentAppConfigurationStream } from 'services/appConfiguration';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 
 declare module 'components/ConsentManager/destinations' {
@@ -34,7 +34,7 @@ const destinationConfig: IDestinationConfig = {
 const configuration: ModuleConfiguration = {
   beforeMountApplication: () => {
     combineLatest([
-      currentTenantStream().observable,
+      currentAppConfigurationStream().observable,
       authUserStream().observable,
       initializeFor('satismeter'),
     ]).subscribe(([tenant, user, _]) => {

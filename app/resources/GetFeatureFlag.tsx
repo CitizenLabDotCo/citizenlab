@@ -4,20 +4,22 @@ import { Subscription } from 'rxjs';
 
 // services
 import {
-  currentTenantStream,
-  ITenant,
-  TenantSettingsFeatureNames,
-} from 'services/tenant';
+  currentAppConfigurationStream,
+  IAppConfiguration,
+  AppConfigurationSettingsFeatureNames,
+} from 'services/appConfiguration';
 
 type children = (renderProps: GetFeatureFlagChildProps) => JSX.Element | null;
 
 interface Props {
-  name?: TenantSettingsFeatureNames;
+  name?: AppConfigurationSettingsFeatureNames;
   children?: children;
 }
 
 interface State {
-  tenantSettings: ITenant['data']['attributes']['settings'] | null;
+  appConfigurationSettings:
+    | IAppConfiguration['data']['attributes']['settings']
+    | null;
 }
 
 export type GetFeatureFlagChildProps = boolean;
@@ -28,16 +30,18 @@ export default class GetFeatureFlag extends PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      tenantSettings: null,
+      appConfigurationSettings: null,
     };
     this.subscription = null;
   }
 
   componentDidMount() {
-    const currentTenant$ = currentTenantStream().observable;
+    const currentTenant$ = currentAppConfigurationStream().observable;
 
     this.subscription = currentTenant$.subscribe((currentTenant) => {
-      this.setState({ tenantSettings: currentTenant.data.attributes.settings });
+      this.setState({
+        appConfigurationSettings: currentTenant.data.attributes.settings,
+      });
     });
   }
 
@@ -47,14 +51,12 @@ export default class GetFeatureFlag extends PureComponent<Props, State> {
   }
 
   render() {
-    const { tenantSettings } = this.state;
+    const { appConfigurationSettings } = this.state;
     const { name, children } = this.props;
     const showFeature =
       !name ||
-      (get(tenantSettings, `${name}.allowed`) === true &&
-        get(tenantSettings, `${name}.enabled`) === true);
+      (get(appConfigurationSettings, `${name}.allowed`) === true &&
+        get(appConfigurationSettings, `${name}.enabled`) === true);
     return (children as children)(showFeature);
-
-    // return children ? children(showFeature) : null;
   }
 }

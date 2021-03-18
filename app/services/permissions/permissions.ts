@@ -2,7 +2,10 @@ import { authUserStream } from 'services/auth';
 import { IUser } from 'services/users';
 import { isObject } from 'lodash-es';
 import { combineLatest } from 'rxjs';
-import { currentTenantStream, ITenantData } from 'services/tenant';
+import {
+  currentAppConfigurationStream,
+  IAppConfigurationData,
+} from 'services/appConfiguration';
 import { map } from 'rxjs/operators';
 
 export type TPermissionItem = IResourceData | IRouteItem | TResourceType;
@@ -21,7 +24,7 @@ interface IPermissionRule {
   (
     resource: TPermissionItem | null,
     user: IUser | null,
-    tenant: ITenantData,
+    tenant: IAppConfigurationData,
     context?: any
   ): boolean;
 }
@@ -73,7 +76,7 @@ const hasPermission = ({
 }) => {
   return combineLatest(
     authUserStream().observable,
-    currentTenantStream().observable
+    currentAppConfigurationStream().observable
   ).pipe(
     map(([user, tenant]) => {
       if (!item) {

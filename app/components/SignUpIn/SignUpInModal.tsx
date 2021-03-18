@@ -13,7 +13,6 @@ import { completeRegistration } from 'services/users';
 import useIsMounted from 'hooks/useIsMounted';
 import useAuthUser from 'hooks/useAuthUser';
 import useParticipationConditions from 'hooks/useParticipationConditions';
-import useUserCustomFieldsSchema from 'hooks/useUserCustomFieldsSchema';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -27,6 +26,10 @@ import {
 
 // style
 import styled from 'styled-components';
+
+// TO FIX : handle no close logic in a generic way
+// tslint:disable-next-line
+import useUserCustomFieldsSchema from 'modules/user_custom_fields/hooks/useUserCustomFieldsSchema';
 
 const Container = styled.div``;
 
@@ -95,7 +98,7 @@ const SignUpInModal = memo<Props>(({ className, onMounted }) => {
   }, [authUser]);
 
   const onClose = useCallback(() => {
-    // If the user presses the close button (x) in the modal top right corner when the cusom-fields step is shown and
+    // If the user presses the close button (x) in the modal top right corner when the custom-fields step is shown and
     // when this step -does not- have required fields, then this action is the equivalent of pressing the 'skip this step' button
     // and therefore should trigger completeRegistration() in order for the user to have a valid account.
     // If completeRegistration() is not executed, the user will be logged in but will not have a valid account and therefore

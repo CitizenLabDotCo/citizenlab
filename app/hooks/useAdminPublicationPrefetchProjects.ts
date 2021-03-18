@@ -1,18 +1,21 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { combineLatest } from 'rxjs';
 import { switchMap, map, distinctUntilChanged } from 'rxjs/operators';
 import { listAdminPublications } from 'services/adminPublications';
 import { projectsStream, PublicationStatus } from 'services/projects';
 import { isNilOrError } from 'utils/helperUtils';
 import { unionBy, isString } from 'lodash-es';
-import { IAdminPublicationContent, InputProps } from './useAdminPublications';
+import {
+  IAdminPublicationContent,
+  InputProps,
+  ChildrenOfProps,
+} from './useAdminPublications';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 export default function useAdminPublicationsPrefetchProjects({
   pageSize = 1000,
   areaFilter,
   publicationStatusFilter,
-  noEmptyFolder,
-  folderId,
 }: InputProps) {
   const [list, setList] = useState<
     IAdminPublicationContent[] | undefined | null
@@ -25,6 +28,7 @@ export default function useAdminPublicationsPrefetchProjects({
   const [publicationStatuses, setPublicationStatuses] = useState<
     PublicationStatus[]
   >(publicationStatusFilter);
+  const isProjectFoldersEnabled = useFeatureFlag('project_folders');
 
   const onLoadMore = useCallback(() => {
     if (hasMore) {
@@ -55,8 +59,6 @@ export default function useAdminPublicationsPrefetchProjects({
         publication_statuses: publicationStatuses,
         'page[number]': pageNumber,
         'page[size]': pageSize,
-        filter_empty_folders: noEmptyFolder,
-        folder: folderId,
       },
     })
       .observable.pipe(
@@ -102,6 +104,7 @@ export default function useAdminPublicationsPrefetchProjects({
                 publicationId,
                 publicationType,
                 id: adminPublication.id,
+                relationships: adminPublication.relationships,
                 attributes: {
                   ...adminPublication.attributes,
                 },
@@ -128,11 +131,39 @@ export default function useAdminPublicationsPrefetchProjects({
     return () => subscription.unsubscribe();
   }, [pageNumber, pageSize, areas, publicationStatuses]);
 
+  const topLevel = useMemo<IAdminPublicationContent[]>(() => {
+    if (isNilOrError(list)) return [];
+
+    if (isProjectFoldersEnabled) {
+      return list.filter(({ relationships }) => !relationships.parent.data);
+    }
+
+    return list;
+  }, [list, isProjectFoldersEnabled]);
+
+  const childrenOf = useCallback(
+    ({ id: publicationId }: ChildrenOfProps) => {
+      if (isNilOrError(list)) return [];
+
+      const publication = list.find(({ id }) => id === publicationId);
+      if (isNilOrError(publication)) return [];
+
+      const childPublicationIds = publication.relationships.children.data.map(
+        ({ id }) => id
+      );
+
+      return list.filter(({ id }) => childPublicationIds.includes(id));
+    },
+    [list]
+  );
+
   return {
+    topLevel,
     list,
     hasMore,
     loadingInitial,
     loadingMore,
+    childrenOf,
     onLoadMore,
     onChangeAreas,
     onChangePublicationStatus,
