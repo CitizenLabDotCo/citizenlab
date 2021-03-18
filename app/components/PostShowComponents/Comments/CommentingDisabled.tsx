@@ -18,7 +18,7 @@ import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // events
-import { openVerificationModal } from 'components/Verification/verificationModalEvents';
+import { openVerificationModal } from 'modules/verification/citizen/components/verificationModalEvents';
 import { openSignUpInModal } from 'components/SignUpIn/events';
 
 // styling

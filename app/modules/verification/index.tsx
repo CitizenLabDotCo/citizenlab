@@ -1,6 +1,6 @@
 import React from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
-import VerificationSignUpSteps from './citizen/VerificationSignUpSteps';
+import VerificationSignUpSteps from './citizen/components/VerificationSignUpSteps';
 
 const configuration: ModuleConfiguration = {
   routes: {

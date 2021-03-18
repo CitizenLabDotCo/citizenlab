@@ -17,7 +17,7 @@ import {
   Footer,
   SubmitButton,
   CancelButton,
-} from 'components/Verification/styles';
+} from 'modules/verification/citizen/components/styles';
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';

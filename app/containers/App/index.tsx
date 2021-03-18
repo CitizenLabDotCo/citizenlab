@@ -38,7 +38,7 @@ import { PreviousPathnameContext } from 'context';
 import { openSignUpInModal } from 'components/SignUpIn/events';
 
 // verification
-import { openVerificationModal } from 'components/Verification/verificationModalEvents';
+import { openVerificationModal } from 'modules/verification/citizen/components/verificationModalEvents';
 
 // analytics
 import ConsentManager from 'components/ConsentManager';
@@ -54,7 +54,7 @@ import LoadableUserDeleted from 'components/UserDeletedModalContent/LoadableUser
 import ErrorBoundary from 'components/ErrorBoundary';
 import { LiveAnnouncer } from 'react-aria-live';
 const VerificationModal = lazy(() =>
-  import('components/Verification/VerificationModal')
+  import('modules/verification/citizen/components/VerificationModal')
 );
 const SignUpInModal = lazy(() => import('components/SignUpIn/SignUpInModal'));
 const PostPageFullscreenModal = lazy(() => import('./PostPageFullscreenModal'));
