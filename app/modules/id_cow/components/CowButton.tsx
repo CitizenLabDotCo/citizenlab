@@ -4,7 +4,7 @@ import React, { useCallback } from 'react';
 import { IVerificationMethod } from 'services/verificationMethods';
 
 // components
-import VerificationMethodButton from 'components/Verification/VerificationMethodButton';
+import VerificationMethodButton from 'modules/verification/citizen/components/VerificationMethodButton';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';

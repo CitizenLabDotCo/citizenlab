@@ -28,7 +28,7 @@ import messages from './messages';
 
 // events
 import { openSignUpInModal } from 'components/SignUpIn/events';
-import { openVerificationModal } from 'components/Verification/verificationModalEvents';
+import { openVerificationModal } from 'modules/verification/citizen/components/verificationModalEvents';
 
 import styled from 'styled-components';
 

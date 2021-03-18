@@ -17,7 +17,7 @@ import {
   openVerificationModal$,
   closeVerificationModal$,
   closeVerificationModal,
-} from 'components/Verification/verificationModalEvents';
+} from 'modules/verification/citizen/components/verificationModalEvents';
 
 // style
 import styled from 'styled-components';

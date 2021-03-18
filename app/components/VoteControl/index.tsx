@@ -36,7 +36,7 @@ import { phaseStream, IPhase, getCurrentPhase } from 'services/phases';
 import { pastPresentOrFuture } from 'utils/dateUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { openSignUpInModal } from 'components/SignUpIn/events';
-import { openVerificationModal } from 'components/Verification/verificationModalEvents';
+import { openVerificationModal } from 'modules/verification/citizen/components/verificationModalEvents';
 
 // style
 import styled, { css, keyframes } from 'styled-components';
