@@ -38,20 +38,14 @@ const RenderOnSelectedTabValue = ({
 
 const configuration: ModuleConfiguration = {
   routes: {
-    // citizen: [
-    //   {
-    //     path: 'templates/:projectTemplateId',
-    //     name: 'project template preview page',
-    //     container: () => import('./')
-    //     component: Loadable({
-    //       loader: () =>
-    //         import(
-    //           'components/ProjectTemplatePreview/ProjectTemplatePreviewPageCitizen'
-    //         ),
-    //       loading: () => null,
-    //     }),
-    //   },
-    // ],
+    citizen: [
+      {
+        path: 'templates/:projectTemplateId',
+        name: 'project template preview page',
+        container: () =>
+          import('./citizen/containers/ProjectTemplatePreviewPageCitizen'),
+      },
+    ],
     'admin.project_templates': [
       {
         path: 'templates/:projectTemplateId',
