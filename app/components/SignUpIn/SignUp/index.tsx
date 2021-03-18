@@ -61,7 +61,6 @@ const SignUpHelperText = styled(QuillEditedContent)`
 export interface TSignUpStepsMap {
   'auth-providers': 'auth-providers';
   'password-signup': 'password-signup';
-  // verification: 'verification';
   success: 'success';
 }
 
