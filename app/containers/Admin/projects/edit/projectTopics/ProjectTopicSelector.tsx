@@ -1,5 +1,5 @@
 // Libraries
-import React, { memo, useMemo, useState } from 'react';
+import React, { memo, useState } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
 
@@ -116,17 +116,12 @@ const ProjectTopicSelector = memo(
       return [];
     };
 
-    const multiSelectOptions = useMemo(() => getOptions(), [
-      topics,
-      projectTopics,
-    ]);
-
     return (
       <Container>
         <SelectGroupsContainer>
           <StyledMultipleSelect
             value={selectedTopicOptions}
-            options={multiSelectOptions}
+            options={getOptions()}
             onChange={handleTopicSelectionChange}
             id="e2e-project-topic-multiselect"
           />

@@ -6,7 +6,7 @@ import { withRouter, WithRouterProps } from 'react-router';
 
 // components
 import HelmetIntl from 'components/HelmetIntl';
-import TabbedResource, { TabProps } from 'components/admin/TabbedResource';
+import TabbedResource from 'components/admin/TabbedResource';
 
 // i18n
 import messages from './messages';
@@ -18,6 +18,7 @@ import GetFeatureFlag, {
   GetFeatureFlagChildProps,
 } from 'resources/GetFeatureFlag';
 import { reject } from 'lodash-es';
+import { ITab } from 'typings';
 
 export interface InputProps {}
 
@@ -28,48 +29,62 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-interface State {}
+interface State {
+  tabs: ITab[];
+}
 
 class SettingsPage extends React.PureComponent<
   Props & InjectedIntlProps & WithRouterProps,
   State
 > {
-  getTabs = () => {
-    const { widgetsEnabled, customTopicsEnabled } = this.props;
+  constructor(props) {
+    super(props);
     const { formatMessage } = this.props.intl;
 
-    let tabs: TabProps[] = [
-      {
-        label: formatMessage(messages.tabSettings),
-        url: '/admin/settings/general',
-      },
-      {
-        label: formatMessage(messages.tabCustomize),
-        url: '/admin/settings/customize',
-      },
-      {
-        label: formatMessage(messages.tabRegistrationFields),
-        url: '/admin/settings/registration',
-      },
-      {
-        label: formatMessage(messages.tabTopics),
-        url: '/admin/settings/topics',
-        name: 'topics',
-      },
-      {
-        label: formatMessage(messages.tabAreas),
-        url: '/admin/settings/areas',
-      },
-      {
-        label: formatMessage(messages.tabPages),
-        url: '/admin/settings/pages',
-      },
-      {
-        label: formatMessage(messages.tabWidgets),
-        url: '/admin/settings/widgets',
-        name: 'widgets',
-      },
-    ];
+    this.state = {
+      tabs: [
+        {
+          name: 'general',
+          label: formatMessage(messages.tabSettings),
+          url: '/admin/settings/general',
+        },
+        {
+          name: 'customize',
+          label: formatMessage(messages.tabCustomize),
+          url: '/admin/settings/customize',
+        },
+        {
+          name: 'registration',
+          label: formatMessage(messages.tabRegistration),
+          url: '/admin/settings/registration',
+        },
+        {
+          label: formatMessage(messages.tabTopics),
+          url: '/admin/settings/topics',
+          name: 'topics',
+        },
+        {
+          name: 'areas',
+          label: formatMessage(messages.tabAreas),
+          url: '/admin/settings/areas',
+        },
+        {
+          name: 'pages',
+          label: formatMessage(messages.tabPages),
+          url: '/admin/settings/pages',
+        },
+        {
+          label: formatMessage(messages.tabWidgets),
+          url: '/admin/settings/widgets',
+          name: 'widgets',
+        },
+      ],
+    };
+  }
+
+  getTabs = () => {
+    const { widgetsEnabled, customTopicsEnabled } = this.props;
+    const { tabs } = this.state;
 
     const tabHideConditions = {
       topics: function isTopicsTabHidden() {
@@ -90,13 +105,15 @@ class SettingsPage extends React.PureComponent<
 
     const tabNames = tabs.map((tab) => tab.name);
 
+    let enabledTabs: ITab[] = [];
+
     tabNames.forEach((tabName) => {
-      if (tabName && tabHideConditions[tabName]()) {
-        tabs = reject(tabs, { name: tabName });
+      if (tabName && tabHideConditions?.[tabName]?.()) {
+        enabledTabs = reject(enabledTabs, { name: tabName });
       }
     });
 
-    return tabs;
+    return enabledTabs;
   };
 
   render() {
@@ -108,12 +125,7 @@ class SettingsPage extends React.PureComponent<
     };
 
     return (
-      <TabbedResource
-        resource={resource}
-        // TODO: optimization would be to use useMemo for tabs,
-        // as they get recalculated on every click
-        tabs={this.getTabs()}
-      >
+      <TabbedResource resource={resource} tabs={this.getTabs()}>
         <HelmetIntl
           title={messages.helmetTitle}
           description={messages.helmetDescription}

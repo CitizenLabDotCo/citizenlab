@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { Subscription, combineLatest } from 'rxjs';
-import { currentTenantStream } from 'services/tenant';
+import { currentAppConfigurationStream } from 'services/appConfiguration';
 // tslint:disable-next-line:no-vanilla-formatted-messages
 import {
   injectIntl as originalInjectIntl,
@@ -41,7 +41,7 @@ function buildComponent<P>(
 
     componentDidMount() {
       const locale$ = localeStream().observable;
-      const currentTenant$ = currentTenantStream().observable;
+      const currentTenant$ = currentAppConfigurationStream().observable;
 
       this.subscriptions = [
         combineLatest(locale$, currentTenant$).subscribe(([locale, tenant]) => {

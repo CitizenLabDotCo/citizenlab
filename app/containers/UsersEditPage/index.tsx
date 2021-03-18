@@ -23,7 +23,7 @@ import { colors } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 
 // Hooks
-import useTenant from 'hooks/useTenant';
+import useAppConfiguration from 'hooks/useAppConfiguration';
 import useAuthUser from 'hooks/useAuthUser';
 
 const Container = styled.main`
@@ -43,7 +43,7 @@ const Container = styled.main`
 const Wrapper = styled.div``;
 
 export default () => {
-  const tenant = useTenant();
+  const tenant = useAppConfiguration();
   const authUser = useAuthUser();
   const loaded = tenant !== undefined && authUser !== undefined;
 

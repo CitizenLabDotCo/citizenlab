@@ -24,7 +24,10 @@ import {
 
 // services
 import { localeStream } from 'services/locale';
-import { currentTenantStream, ITenant } from 'services/tenant';
+import {
+  currentAppConfigurationStream,
+  IAppConfiguration,
+} from 'services/appConfiguration';
 import { ITopicData } from 'services/topics';
 import { projectByIdStream, IProject, IProjectData } from 'services/projects';
 import { phasesStream, IPhaseData } from 'services/phases';
@@ -125,7 +128,7 @@ interface Props extends InputProps, DataProps {}
 
 interface State {
   locale: Locale | null;
-  tenant: ITenant | null;
+  tenant: IAppConfiguration | null;
   pbContext: IProjectData | IPhaseData | null;
   projects: IOption[] | null;
   title: string;
@@ -190,7 +193,7 @@ class IdeaForm extends PureComponent<
   componentDidMount() {
     const { projectId } = this.props;
     const locale$ = localeStream().observable;
-    const tenant$ = currentTenantStream().observable;
+    const tenant$ = currentAppConfigurationStream().observable;
     const project$: Observable<IProject | null> = projectByIdStream(projectId)
       .observable;
     const ideaCustomFieldsSchemas$ = ideaCustomFieldsSchemasStream(

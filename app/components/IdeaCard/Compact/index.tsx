@@ -2,6 +2,7 @@ import React, { memo, FormEvent } from 'react';
 import { IOpenPostPageModalEvent } from 'containers/App';
 
 // components
+import UserName from 'components/UI/UserName';
 import Card from 'components/UI/Card/Compact';
 import { Icon } from 'cl2-component-library';
 import Avatar from 'components/Avatar';
@@ -32,11 +33,11 @@ import { colors, fontSizes } from 'utils/styleUtils';
 
 const BodyWrapper = styled.div`
   display: flex;
-  align-items: center;
+  align-items: flex-start;
 `;
 
 const StyledAvatar = styled(Avatar)`
-  margin-right: 8px;
+  margin-right: 6px;
   margin-left: -4px;
   margin-top: -2px;
 `;
@@ -48,16 +49,29 @@ const Body = styled.div`
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
-  line-height: 20px;
-  max-height: 40px;
+  line-height: 21px;
+  max-height: 42px;
   overflow: hidden;
   overflow-wrap: break-word;
   word-wrap: break-word;
   word-break: break-word;
+`;
 
-  & strong {
-    font-weight: 500;
-  }
+const StyledUserName = styled(UserName)`
+  font-size: ${fontSizes.small}px;
+  font-weight: 500;
+  color: ${darken(0.1, colors.label)};
+  font-weight: 500;
+`;
+
+const Separator = styled.span`
+  margin-left: 4px;
+  margin-right: 4px;
+`;
+
+const TimeAgo = styled.span`
+  font-weight: 500;
+  margin-right: 5px;
 `;
 
 const ImagePlaceholderContainer = styled.div`
@@ -73,11 +87,6 @@ const ImagePlaceholderContainer = styled.div`
 const ImagePlaceholderIcon = styled(Icon)`
   width: 34px;
   fill: ${transparentize(0.62, colors.label)};
-`;
-
-const Separator = styled.span`
-  display: inline-block;
-  margin: 0 5px;
 `;
 
 interface Props {
@@ -148,6 +157,25 @@ const CompactIdeaCard = memo<Props & InjectedLocalized>(
       .filter((item) => typeof item === 'string' && item !== '')
       .join(' ');
 
+    const getFooter = () => {
+      if (participationMethod === 'budgeting') {
+        return (
+          <FooterWithBudgetControl
+            idea={idea}
+            openIdea={onCardClick}
+            participationContextId={participationContextId}
+            participationContextType={participationContextType}
+          />
+        );
+      } else if (participationMethod === 'ideation') {
+        return (
+          <FooterWithVoteControl idea={idea} hideIdeaStatus={hideIdeaStatus} />
+        );
+      } else {
+        return <></>;
+      }
+    };
+
     return (
       <Card
         onClick={onCardClick}
@@ -170,39 +198,26 @@ const CompactIdeaCard = memo<Props & InjectedLocalized>(
           <BodyWrapper>
             {authorId && (
               <StyledAvatar
-                size={34}
+                size={36}
                 userId={authorId}
                 hideIfNoAvatar={true}
                 fillColor={transparentize(0.6, colors.label)}
               />
             )}
             <Body>
-              <strong>
+              <StyledUserName userId={authorId || null} />
+              <Separator aria-hidden>&bull;</Separator>
+              <TimeAgo>
                 <FormattedRelative
                   value={idea.attributes.created_at}
                   style="numeric"
                 />
-              </strong>
-              <Separator aria-hidden>&bull;</Separator>
+              </TimeAgo>
               {bodyText}
             </Body>
           </BodyWrapper>
         }
-        footer={
-          participationMethod === 'budgeting' ? (
-            <FooterWithBudgetControl
-              idea={idea}
-              openIdea={onCardClick}
-              participationContextId={participationContextId}
-              participationContextType={participationContextType}
-            />
-          ) : (
-            <FooterWithVoteControl
-              idea={idea}
-              hideIdeaStatus={hideIdeaStatus}
-            />
-          )
-        }
+        footer={getFooter()}
       />
     );
   }

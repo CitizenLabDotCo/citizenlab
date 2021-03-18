@@ -98,6 +98,7 @@ const ButtonWrapper = styled.div`
 const ContinueButton = styled(Button)``;
 
 interface Props {
+  id?: string;
   flow: TSignUpInFlow;
   authProvider: AuthProvider;
   className?: string;
@@ -106,7 +107,7 @@ interface Props {
 }
 
 const AuthProviderButton = memo<Props>(
-  ({ flow, authProvider, className, onContinue, children }) => {
+  ({ flow, authProvider, className, onContinue, children, id }) => {
     const [expanded, setExpanded] = useState(false);
     const [tacAccepted, setTacAccepted] = useState(false);
     const [tacError, setTacError] = useState(false);
@@ -164,7 +165,7 @@ const AuthProviderButton = memo<Props>(
     );
 
     return (
-      <Container className={className}>
+      <Container className={className} id={id}>
         <Button
           icon={authProvider as any}
           iconSize="22px"
@@ -176,6 +177,7 @@ const AuthProviderButton = memo<Props>(
           justify="left"
           whiteSpace="wrap"
           onClick={handleExpandButtonClicked}
+          padding="10px 18px"
         >
           {children}
         </Button>

@@ -18,9 +18,9 @@ const PagesFooterNavigation = lazy(() =>
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetTenantLocales, {
-  GetTenantLocalesChildProps,
-} from 'resources/GetTenantLocales';
+import GetAppConfigurationLocales, {
+  GetAppConfigurationLocalesChildProps,
+} from 'resources/GetAppConfigurationLocales';
 import GetPage, { GetPageChildProps } from 'resources/GetPage';
 import GetPageLinks, { GetPageLinksChildProps } from 'resources/GetPageLinks';
 import GetResourceFiles, {
@@ -122,7 +122,7 @@ interface InputProps {}
 
 interface DataProps {
   locale: GetLocaleChildProps;
-  tenantLocales: GetTenantLocalesChildProps;
+  tenantLocales: GetAppConfigurationLocalesChildProps;
   page: GetPageChildProps;
   pageFiles: GetResourceFilesChildProps;
   pageLinks: GetPageLinksChildProps;
@@ -220,7 +220,7 @@ class PagesShowPage extends PureComponent<
 
 const Data = adopt<DataProps, InputProps & WithRouterProps>({
   locale: <GetLocale />,
-  tenantLocales: <GetTenantLocales />,
+  tenantLocales: <GetAppConfigurationLocales />,
   page: ({ params, render }) => <GetPage slug={params.slug}>{render}</GetPage>,
   pageFiles: ({ page, render }) => (
     <GetResourceFiles

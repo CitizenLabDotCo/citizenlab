@@ -22,7 +22,7 @@ import { colors, fontSizes } from 'utils/styleUtils';
 // types
 import { GetCommentChildProps } from 'resources/GetComment';
 import { GetLocaleChildProps } from 'resources/GetLocale';
-import { GetTenantLocalesChildProps } from 'resources/GetTenantLocales';
+import { GetAppConfigurationLocalesChildProps } from 'resources/GetAppConfigurationLocales';
 
 const Container = styled.li`
   display: flex;
@@ -51,7 +51,7 @@ const TranslateButton = styled.button`
 interface Props {
   comment: GetCommentChildProps;
   locale: GetLocaleChildProps;
-  tenantLocales: GetTenantLocalesChildProps;
+  tenantLocales: GetAppConfigurationLocalesChildProps;
   className?: string;
 }
 

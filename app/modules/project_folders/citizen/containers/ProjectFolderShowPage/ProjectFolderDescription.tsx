@@ -10,7 +10,7 @@ import { isNilOrError } from 'utils/helperUtils';
 // components
 import FileAttachments from 'components/UI/FileAttachments';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
-import ReactResizeDetector from 'react-resize-detector';
+import ReactResizeDetector from 'react-resize-detector/build/withPolyfill';
 import Button from 'components/UI/Button';
 
 // services
@@ -42,7 +42,7 @@ const Container = styled.div`
 
 const Title = styled.h1`
   color: ${(props: any) => props.theme.colorText};
-  font-size: ${fontSizes.xxxxl}px;
+  font-size: ${fontSizes.xxxl}px;
   line-height: normal;
   font-weight: 600;
   text-align: left;
@@ -55,10 +55,6 @@ const Title = styled.h1`
 
   ${isRtl`
     text-align: right;
-  `}
-
-  ${media.smallerThan1280px`
-    font-size: ${fontSizes.xxxl}px;
   `}
 
   ${media.smallerThan1100px`
@@ -146,8 +142,13 @@ const ProjectFolderDescription = memo<Props & InjectedIntlProps>(
       []
     );
 
-    const onResize = (_width, height) => {
-      setDescriptionHeight(height);
+    const onResize = (
+      _width: number | undefined,
+      height: number | undefined
+    ) => {
+      if (height) {
+        setDescriptionHeight(height);
+      }
     };
 
     if (!isNilOrError(projectFolder)) {
@@ -167,7 +168,7 @@ const ProjectFolderDescription = memo<Props & InjectedIntlProps>(
               <div>
                 <QuillEditedContent
                   textColor={theme.colorText}
-                  fontSize="medium"
+                  fontSize={windowWidth <= 1439 ? 'base' : 'medium'}
                   className="e2e-folder-description"
                 >
                   <T

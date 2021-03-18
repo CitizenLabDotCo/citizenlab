@@ -576,6 +576,7 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
         <DesktopSearchInput
           setClearButtonRef={this.handleDesktopSearchInputClearButtonRef}
           onChange={this.handleSearchOnChange}
+          debounce={1500}
         />
         <StyledIdeasStatusFilter
           selectedStatusId={selectedIdeaFilters.idea_status}

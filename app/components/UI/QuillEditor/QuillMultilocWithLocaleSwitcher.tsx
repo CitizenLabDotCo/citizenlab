@@ -9,7 +9,7 @@ import { IconTooltip, LocaleSwitcher, Label } from 'cl2-component-library';
 
 // hooks
 import useLocale from 'hooks/useLocale';
-import useTenantLocales from 'hooks/useTenantLocales';
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
 // style
 import styled from 'styled-components';
@@ -64,7 +64,7 @@ const QuillMutilocWithLocaleSwitcher = memo<Props>((props) => {
   const [selectedLocale, setSelectedLocale] = useState<Locale | null>(null);
 
   const locale = useLocale();
-  const tenantLocales = useTenantLocales();
+  const tenantLocales = useAppConfigurationLocales();
 
   useEffect(() => {
     !isNilOrError(locale) && setSelectedLocale(locale);

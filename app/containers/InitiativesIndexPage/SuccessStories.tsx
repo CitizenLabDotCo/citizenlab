@@ -11,7 +11,9 @@ import { media, colors, fontSizes } from 'utils/styleUtils';
 
 // data
 import { adopt } from 'react-adopt';
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetAppConfiguration';
 import { isNilOrError } from 'utils/helperUtils';
 
 // intl
@@ -20,7 +22,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 interface InputProps {}
 interface DataProps {
-  tenant: GetTenantChildProps;
+  tenant: GetAppConfigurationChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -98,7 +100,7 @@ const SuccessStories = memo(({ tenant }: Props) => {
 });
 
 const Data = adopt<DataProps, InputProps>({
-  tenant: <GetTenant />,
+  tenant: <GetAppConfiguration />,
 });
 
 export default (inputProps: InputProps) => (
