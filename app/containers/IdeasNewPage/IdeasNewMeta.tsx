@@ -13,9 +13,9 @@ import { getInputTermMessage } from 'utils/i18n';
 
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetTenantLocales, {
-  GetTenantLocalesChildProps,
-} from 'resources/GetTenantLocales';
+import GetAppConfigurationLocales, {
+  GetAppConfigurationLocalesChildProps,
+} from 'resources/GetAppConfigurationLocales';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 
@@ -31,7 +31,7 @@ interface InputProps {}
 
 interface DataProps {
   authUser: GetAuthUserChildProps;
-  locales: GetTenantLocalesChildProps;
+  locales: GetAppConfigurationLocalesChildProps;
   project: GetProjectChildProps;
   phases: GetPhasesChildProps;
 }
@@ -108,7 +108,7 @@ const IdeasNewMeta = React.memo<Props>(
 const IdeasNewMetaWithHoc = injectIntl(injectLocalize(IdeasNewMeta));
 
 const Data = adopt<DataProps, InputProps & WithRouterProps>({
-  locales: <GetTenantLocales />,
+  locales: <GetAppConfigurationLocales />,
   authUser: <GetAuthUser />,
   project: ({ params, render }) => (
     <GetProject projectSlug={params.slug}>{render}</GetProject>

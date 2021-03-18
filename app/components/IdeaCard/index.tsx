@@ -14,7 +14,9 @@ import AssignBudgetDisabled from 'components/AssignBudgetControl/AssignBudgetDis
 import Author from 'components/Author';
 
 // resources
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetAppConfiguration';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import GetIdeaImage, { GetIdeaImageChildProps } from 'resources/GetIdeaImage';
 import GetUser, { GetUserChildProps } from 'resources/GetUser';
@@ -128,7 +130,7 @@ export interface InputProps {
 }
 
 interface DataProps {
-  tenant: GetTenantChildProps;
+  tenant: GetAppConfigurationChildProps;
   idea: GetIdeaChildProps;
   ideaImage: GetIdeaImageChildProps;
   ideaAuthor: GetUserChildProps;
@@ -318,14 +320,13 @@ class IdeaCard extends PureComponent<
             <>
               {!showVotingDisabled && !showAssignBudgetDisabled && (
                 <FooterInner>
-                  {participationMethod !== 'budgeting' && (
+                  {participationMethod === 'ideation' && (
                     <VoteControl
                       style="border"
                       ideaId={idea.id}
                       disabledVoteClick={this.disabledVoteClick}
                       size="2"
                       ariaHidden={true}
-                      showDownvote={votingDescriptor?.downvoting_enabled}
                     />
                   )}
 
@@ -411,7 +412,7 @@ class IdeaCard extends PureComponent<
 }
 
 const Data = adopt<DataProps, InputProps>({
-  tenant: <GetTenant />,
+  tenant: <GetAppConfiguration />,
   idea: ({ ideaId, render }) => <GetIdea ideaId={ideaId}>{render}</GetIdea>,
   ideaImage: ({ ideaId, idea, render }) => (
     <GetIdeaImage

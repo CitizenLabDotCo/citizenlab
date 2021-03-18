@@ -12,7 +12,7 @@ import {
   CLError,
 } from 'typings';
 import { IAreaData } from './areas';
-import { ITenant } from 'services/tenant';
+import { IAppConfiguration } from 'services/appConfiguration';
 
 import streams, { IStreamParams } from 'utils/streams';
 import {
@@ -208,13 +208,13 @@ export interface IProjectFormState {
   projectImagesToRemove: UploadFile[];
   projectFiles: UploadFile[];
   projectFilesToRemove: UploadFile[];
-  noTitleError: Multiloc | null;
+  titleError: Multiloc | null;
   apiErrors: { [fieldName: string]: CLError[] };
   saved: boolean;
   areas: IAreaData[];
   areaType: 'all' | 'selection';
   locale: Locale;
-  currentTenant: ITenant | null;
+  currentTenant: IAppConfiguration | null;
   areasOptions: IOption[];
   submitState: ISubmitState;
   slug: string | null;

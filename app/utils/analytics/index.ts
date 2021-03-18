@@ -12,7 +12,10 @@ import {
 import { isEqual, mapValues } from 'lodash-es';
 import eventEmitter from 'utils/eventEmitter';
 
-import { ITenantData, currentTenantStream } from 'services/tenant';
+import {
+  IAppConfigurationData,
+  currentAppConfigurationStream,
+} from 'services/appConfiguration';
 
 import {
   getDestinationConfig,
@@ -50,7 +53,7 @@ const destinationConsentChanged$ = eventEmitter
 export const initializeFor = (destination: IDestination) => {
   return combineLatest([
     destinationConsentChanged$,
-    currentTenantStream().observable,
+    currentAppConfigurationStream().observable,
     authUserStream().observable,
   ]).pipe(
     filter(([consent, tenant, user]) => {
@@ -80,7 +83,7 @@ export const bufferUntilInitialized = <T>(
 export const shutdownFor = (destination: IDestination) => {
   return combineLatest([
     destinationConsentChanged$,
-    currentTenantStream().observable,
+    currentAppConfigurationStream().observable,
     authUserStream().observable,
   ]).pipe(
     map(([consent, tenant, user]) => {
@@ -97,7 +100,7 @@ export const shutdownFor = (destination: IDestination) => {
   );
 };
 
-export function tenantInfo(tenant: ITenantData) {
+export function tenantInfo(tenant: IAppConfigurationData) {
   return {
     tenantId: tenant && tenant.id,
     tenantName: tenant && tenant.attributes.name,

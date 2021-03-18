@@ -10,7 +10,7 @@ import PreferencesDialog from './PreferencesDialog';
 
 // mock utilities
 jest.mock('utils/cl-intl');
-jest.mock('services/tenant');
+jest.mock('services/appConfiguration');
 
 describe('<ConsentManager />', () => {
   let onChange: Jest.Mock;

@@ -3,7 +3,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { clickSocialSharingLink } from '../utils';
 
 // hooks
-import useTenant from 'hooks/useTenant';
+import useAppConfiguration from 'hooks/useAppConfiguration';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
@@ -23,7 +23,7 @@ const Messenger = ({
   url,
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
-  const tenant = useTenant();
+  const tenant = useAppConfiguration();
   const handleClick = (href: string) => () => {
     clickSocialSharingLink(href);
     onClick();

@@ -1,6 +1,6 @@
 import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import useTenant from 'hooks/useTenant';
+import useAppConfiguration from 'hooks/useAppConfiguration';
 import { FacebookButton } from 'react-social';
 
 // i18n
@@ -22,7 +22,7 @@ const Facebook = ({
   url,
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
-  const tenant = useTenant();
+  const tenant = useAppConfiguration();
   const handleClick = () => {
     onClick();
   };

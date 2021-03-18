@@ -10,7 +10,7 @@ import { InjectedIntlProps } from 'react-intl';
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
-import useTenantLocales from 'hooks/useTenantLocales';
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useIdea from 'hooks/useIdea';
 import useProject from 'hooks/useProject';
 import useLocalize from 'hooks/useLocalize';
@@ -30,7 +30,7 @@ const IdeasNewMeta = memo(
     ideaId,
     projectId,
   }: Props & InjectedIntlProps) => {
-    const tenantLocales = useTenantLocales();
+    const tenantLocales = useAppConfigurationLocales();
     const authUser = useAuthUser();
     const idea = useIdea({ ideaId });
     const project = useProject({ projectId });

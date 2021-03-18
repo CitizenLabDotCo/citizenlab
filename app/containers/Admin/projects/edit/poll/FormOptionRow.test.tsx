@@ -27,7 +27,10 @@ jest.mock('components/admin/ResourceList', () => ({
   TextCell: 'TextCell',
   Row: 'Row',
 }));
-jest.mock('components/UI/InputMultiloc', () => 'InputMultiloc');
+jest.mock(
+  'components/UI/InputMultilocWithLocaleSwitcher',
+  () => 'InputMultilocWithLocaleSwitcher'
+);
 jest.mock('components/UI/Button', () => 'Button');
 jest.mock('utils/cl-intl', () => ({ FormattedMessage: 'FormattedMessage' }));
 

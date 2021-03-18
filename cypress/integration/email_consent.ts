@@ -7,8 +7,11 @@ describe('email consent', () => {
 
   it('lets admins create a custom email, this email contains a link to unsubscribe and turns off subscription', () => {
     // creates a custom email
-    cy.get('.e2e-multiloc-input').find('input').first().type('Test subject');
-    cy.get('.e2e-multiloc-editor')
+    cy.get('.e2e-campaign_subject_multiloc')
+      .find('input')
+      .first()
+      .type('Test subject');
+    cy.get('.e2e-campaign_body_multiloc')
       .find('.ql-editor')
       .first()
       .type('Test content');

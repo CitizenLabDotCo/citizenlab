@@ -4,7 +4,7 @@ import { fontSizes } from 'utils/styleUtils';
 
 import { IInitiativeData } from 'services/initiatives';
 import { IInitiativeStatusData } from 'services/initiativeStatuses';
-import { ITenantSettings } from 'services/tenant';
+import { IAppConfigurationSettings } from 'services/appConfiguration';
 
 import { Icon } from 'cl2-component-library';
 import { StatusWrapper, StatusExplanation } from './SharedStyles';
@@ -44,7 +44,7 @@ const Buttons = styled.div`
 interface InputProps {
   initiative: IInitiativeData;
   initiativeStatus: IInitiativeStatusData;
-  initiativeSettings: NonNullable<ITenantSettings['initiatives']>;
+  initiativeSettings: NonNullable<IAppConfigurationSettings['initiatives']>;
   userVoted: boolean;
   onVote: () => void;
   onScrollToOfficialFeedback: () => void;

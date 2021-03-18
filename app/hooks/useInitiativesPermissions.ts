@@ -5,7 +5,7 @@ import {
 } from 'services/initiatives';
 import { isNilOrError } from 'utils/helperUtils';
 import { ActionPermission } from 'services/actionTakingRules';
-import { currentTenantStream } from 'services/tenant';
+import { currentAppConfigurationStream } from 'services/appConfiguration';
 import { authUserStream } from 'services/auth';
 import { combineLatest } from 'rxjs';
 
@@ -24,7 +24,7 @@ export default function useInitiativesPermissions(action: IInitiativeAction) {
   useEffect(() => {
     const subscription = combineLatest(
       getInitiativeActionDescriptors().observable,
-      currentTenantStream().observable,
+      currentAppConfigurationStream().observable,
       authUserStream().observable
     ).subscribe(([actionDescriptors, tenant, authUser]) => {
       if (!isNilOrError(tenant) && !isNilOrError(actionDescriptors)) {

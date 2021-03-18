@@ -23,7 +23,7 @@ describe('Idea voting permissions', () => {
       cy.get('#password').type(password);
       cy.get('.e2e-terms-and-conditions .e2e-checkbox').click();
       cy.get('.e2e-privacy-checkbox .e2e-checkbox').click();
-      cy.get('#e2e-signup-password-button').click();
+      cy.get('#e2e-signup-password-submit-button').click();
 
       // verification step check
       cy.get(
@@ -136,7 +136,7 @@ describe('Idea voting permissions', () => {
       cy.get('#password').type(password);
       cy.get('.e2e-terms-and-conditions .e2e-checkbox').click();
       cy.get('.e2e-privacy-checkbox .e2e-checkbox').click();
-      cy.get('#e2e-signup-password-button').click();
+      cy.get('#e2e-signup-password-submit-button').click();
 
       // success check
       cy.get('#e2e-signup-success-container', { timeout: 20000 });
