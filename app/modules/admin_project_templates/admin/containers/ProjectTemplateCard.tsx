@@ -9,6 +9,7 @@ import tracks from '../../tracks';
 
 // components
 import Button from 'components/UI/Button';
+// OS-105
 import UseTemplateModal from 'components/ProjectTemplatePreview/UseTemplateModal';
 
 // i18n

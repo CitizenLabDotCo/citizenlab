@@ -234,6 +234,7 @@ export default function createRoutes() {
           }),
         },
         {
+          // OS-105
           path: 'templates/:projectTemplateId',
           name: 'project template preview page',
           component: Loadable({

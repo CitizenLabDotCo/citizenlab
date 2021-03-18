@@ -243,6 +243,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
         <ProjectTemplatePreviewContainer
           className={!selectedProjectTemplateId ? 'hidden' : ''}
         >
+          // OS-105
           {selectedProjectTemplateId && (
             <ProjectTemplatePreviewPageAdmin
               projectTemplateId={selectedProjectTemplateId}
