@@ -10,7 +10,7 @@ import UseTemplateModal from 'components/ProjectTemplatePreview/UseTemplateModal
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../components/messages';
+import messages from './messages';
 
 // analytics
 import { trackEventByName } from 'utils/analytics';

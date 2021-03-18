@@ -33,4 +33,73 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.noTemplatesFound',
     defaultMessage: 'No templates found',
   },
+  copyLink: {
+    id: 'app.components.ProjectTemplatePreview.copyLink',
+    defaultMessage: 'Copy link',
+  },
+  copied: {
+    id: 'app.components.ProjectTemplatePreview.copied',
+    defaultMessage: 'Copied',
+  },
+  alsoUsedIn: {
+    id: 'app.components.ProjectTemplatePreview.alsoUsedIn',
+    defaultMessage: 'Also used in these cities:',
+  },
+  createProject: {
+    id: 'app.components.ProjectTemplatePreview.createProject',
+    defaultMessage: 'Create project',
+  },
+  typeProjectName: {
+    id: 'app.components.ProjectTemplatePreview.typeProjectName',
+    defaultMessage: 'Type the name of the project',
+  },
+  projectTitle: {
+    id: 'app.components.ProjectTemplatePreview.projectTitle',
+    defaultMessage: 'The title of your project',
+  },
+  projectStartDate: {
+    id: 'app.components.ProjectTemplatePreview.projectStartDate',
+    defaultMessage: 'The start date of your project',
+  },
+  projectTitleError: {
+    id: 'app.components.ProjectTemplatePreview.projectTitleError',
+    defaultMessage: 'Please type a project title',
+  },
+  projectTitleMultilocError: {
+    id: 'app.components.ProjectTemplatePreview.projectTitleMultilocError',
+    defaultMessage: 'Please type a project title for all languages',
+  },
+  projectNoStartDateError: {
+    id: 'app.components.ProjectTemplatePreview.projectNoStartDateError',
+    defaultMessage: 'Please select a start date for the project',
+  },
+  projectInvalidStartDateError: {
+    id: 'app.components.ProjectTemplatePreview.projectInvalidStartDateError',
+    defaultMessage:
+      'The selected date is invalid. Please provide a date in the following format: YYYY-MM-DD',
+  },
+  responseError: {
+    id: 'app.components.ProjectTemplatePreview.responseError',
+    defaultMessage: 'Oops, something went wrong.',
+  },
+  close: {
+    id: 'app.components.ProjectTemplatePreview.close',
+    defaultMessage: 'Close',
+  },
+  successMessage: {
+    id: 'app.components.ProjectTemplatePreview.successMessage',
+    defaultMessage: 'The project was successfully created!',
+  },
+  goBackTo: {
+    id: 'app.components.ProjectTemplatePreview.goBackTo',
+    defaultMessage: 'Go back to the {goBackLink}.',
+  },
+  projectsOverviewPage: {
+    id: 'app.components.ProjectTemplatePreview.projectsOverviewPage',
+    defaultMessage: 'projects overview page',
+  },
+  createProjectBasedOn: {
+    id: 'app.components.ProjectTemplatePreview.createProjectBasedOn',
+    defaultMessage: "Create a project based on the template '{templateTitle}'",
+  },
 });

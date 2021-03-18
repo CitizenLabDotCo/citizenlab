@@ -11,4 +11,7 @@ export default {
   moreDetailsButtonClicked:
     "Project template card 'More details' button clicked",
   useTemplateModalClosed: 'Use template modal closed',
+  linkCopied: 'Project template preview page link copied',
+  useTemplateModalCreateProjectButtonClicked:
+    "Use template modal 'Create project' button clicked",
 };

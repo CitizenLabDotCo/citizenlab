@@ -5,7 +5,7 @@ import { withRouter, WithRouterProps } from 'react-router';
 import clHistory from 'utils/cl-router/history';
 
 // components
-import ProjectTemplatePreview from './ProjectTemplatePreview';
+import ProjectTemplatePreview from '../components/ProjectTemplatePreview';
 import { Icon } from 'cl2-component-library';
 
 // utils
