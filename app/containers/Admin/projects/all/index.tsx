@@ -26,7 +26,6 @@ import CreateProject from './CreateProject';
 import PageWrapper from 'components/admin/PageWrapper';
 import { PageTitle, SectionDescription } from 'components/admin/Section';
 import HasPermission from 'components/HasPermission';
-import ProjectTemplatePreviewPageAdmin from 'components/ProjectTemplatePreview/ProjectTemplatePreviewPageAdmin';
 import { Spinner } from 'cl2-component-library';
 import Outlet from 'components/Outlet';
 
@@ -103,6 +102,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
   }
 
   componentDidMount() {
+    // OS-105
     this.subscriptions = [
       eventEmitter
         .observeEvent<string>('ProjectTemplateCardClicked')
@@ -239,18 +239,17 @@ class AdminProjectsList extends PureComponent<Props, State> {
             </ListsContainer>
           </PageWrapper>
         </CreateAndEditProjectsContainer>
-
-        <ProjectTemplatePreviewContainer
+        {/* // OS-105 */}
+        {/* <ProjectTemplatePreviewContainer
           className={!selectedProjectTemplateId ? 'hidden' : ''}
         >
-          // OS-105
           {selectedProjectTemplateId && (
             <ProjectTemplatePreviewPageAdmin
               projectTemplateId={selectedProjectTemplateId}
               goBack={this.closeTemplatePreview}
             />
           )}
-        </ProjectTemplatePreviewContainer>
+        </ProjectTemplatePreviewContainer> */}
       </Container>
     );
   }

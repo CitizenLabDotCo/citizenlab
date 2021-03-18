@@ -234,18 +234,6 @@ export default function createRoutes() {
           }),
         },
         {
-          // OS-105
-          path: 'templates/:projectTemplateId',
-          name: 'project template preview page',
-          component: Loadable({
-            loader: () =>
-              import(
-                'components/ProjectTemplatePreview/ProjectTemplatePreviewPageCitizen'
-              ),
-            loading: () => null,
-          }),
-        },
-        {
           path: 'password-recovery',
           name: 'passwordRecovery',
           component: Loadable({
