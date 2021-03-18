@@ -188,10 +188,18 @@
         "description": "Allow users to register with an email and password.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
-        "required-settings": ["phone"],
+        "required-settings": ["minimum_length", "phone"],
         "properties": {
           "allowed": { "type": "boolean", "default": true},
           "enabled": { "type": "boolean", "default": true},
+          "minimum_length": {
+            "type": "number",
+            "title": "Minimum password length",
+            "description": "The minimum number of characters required for a user password. The default value is 8 (min. 5, max. 72). Longer passwords are generally more secure. Changes to the min. password length will only apply to users that create a new account or update their existing password (existing accounts remain the same).",
+            "minimum": 5,
+            "maximum": 72,
+            "default": 8
+          },
           "phone": {
             "title": "Phone",
             "description": "Allow users to register with a phone number. This option is not advised, please check with development team before enabling this field.",
@@ -288,36 +296,6 @@
         }
       },
 
-      "franceconnect_login": {
-        "type": "object",
-        "title": "FranceConnect Login",
-        "description":  "Allow users to register and sign in with a FranceConnect account.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "required-settings": ["environment", "identifier", "secret"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false},
-          "enabled": { "type": "boolean", "default": false},
-          "environment": {
-            "type": "string",
-            "title": "Environment",
-            "description": "Live on the production FranceConnect environment or still testing on their integration environment?",
-            "enum": ["production", "integration"],
-            "default": "production",
-            "private": true
-          },
-          "identifier": {
-            "title": "Identifier",
-            "type": "string",
-            "private": true
-          },
-          "secret": {
-            "title": "Secret Key",
-            "type": "string",
-            "private": true
-          }
-        }
-      },
 
       "integration_onze_stad_app": {
         "type": "object",
@@ -380,7 +358,7 @@
 
       "maps": {
         "type": "object",
-        "title": "Maps",
+        "title": "CustomMaps",
         "description":  "Enable maps for all projects.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
@@ -423,18 +401,6 @@
             "title": "OSM Relation ID",
             "description": "The boundary of the municipality/organisation is specified by its Relation ID in OpenStreetMap (OSM). You can find the Relation ID at https://www.openstreetmap.org. Search for the place, click on the correct result and you'll find the Relation ID if the result is a relation (e.g. \"Relation: Knokke-Heist (4569)\"). If there is no relation defined for the place (e.g. Scheveningen), search for the next largest administrative territory (e.g. The Hague)."
           }
-        }
-      },
-
-      "custom_maps": {
-        "type": "object",
-        "title": "Custom Map Configuration",
-        "description": "Adds an extra tab to the project settings where admins can customize the project map",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false},
-          "enabled": { "type": "boolean", "default": false}
         }
       },
 
