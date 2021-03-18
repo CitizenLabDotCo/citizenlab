@@ -15,8 +15,6 @@ export interface InputProps {
   pageSize?: number;
   areaFilter?: string[];
   publicationStatusFilter: PublicationStatus[];
-  // TODO: remove folder id
-  folderId?: string | null;
 }
 
 export type IAdminPublicationContent = {
@@ -40,7 +38,7 @@ export type IAdminPublicationContent = {
 export interface ChildrenOfProps {
   id?: string;
 }
-export interface IOutput {
+export interface IUseAdminPublicationsOutput {
   list: IAdminPublicationContent[] | undefined | null;
   topLevel: IAdminPublicationContent[];
   hasMore: boolean;

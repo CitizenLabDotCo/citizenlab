@@ -16,7 +16,6 @@ export default function useAdminPublicationsPrefetchProjects({
   pageSize = 1000,
   areaFilter,
   publicationStatusFilter,
-  folderId,
 }: InputProps) {
   const [list, setList] = useState<
     IAdminPublicationContent[] | undefined | null
@@ -60,7 +59,6 @@ export default function useAdminPublicationsPrefetchProjects({
         publication_statuses: publicationStatuses,
         'page[number]': pageNumber,
         'page[size]': pageSize,
-        folder: folderId,
       },
     })
       .observable.pipe(
