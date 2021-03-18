@@ -244,6 +244,12 @@ PATH
       rails (~> 6.0.3, >= 6.0.3.2)
 
 PATH
+  remote: engines/project_visibility
+  specs:
+    project_visibility (0.1.0)
+      rails (~> 6.0.3, >= 6.0.3.2)
+
+PATH
   remote: engines/public_api
   specs:
     public_api (0.1.0)
@@ -961,6 +967,7 @@ DEPENDENCIES
   polls!
   premailer-rails (~> 1.10.3)
   project_folders!
+  project_visibility!
   pry
   pry-stack_explorer
   public_api!

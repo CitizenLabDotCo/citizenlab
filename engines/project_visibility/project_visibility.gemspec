@@ -1,19 +1,18 @@
 $:.push File.expand_path("lib", __dir__)
 
 # Maintain your gem's version:
-require "granular_permissions/version"
+require "project_visibility/version"
 
 # Describe your gem and declare its dependencies:
 Gem::Specification.new do |spec|
-  spec.name        = "granular_permissions"
-  spec.version     = GranularPermissions::VERSION
+  spec.name        = "project_visibility"
+  spec.version     = ProjectVisibility::VERSION
   spec.authors     = ["CitizenLab"]
   spec.email       = ["developers@citizenlab.co"]
-  spec.summary     = "CitizenLab extension: granular permissions for actions in the scope of a participation context."
+  spec.summary     = "CitizenLab extension: Allows to configure project visibility."
   spec.license     = 'CitizenLab Commercial License'
 
   spec.files = Dir["{app,config,db,lib}/**/*", "README.md"]
 
   spec.add_dependency "rails", "~> 6.0.3", ">= 6.0.3.2"
-  spec.add_dependency "pundit", "~> 2.0"
 end
