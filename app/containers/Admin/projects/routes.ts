@@ -21,6 +21,7 @@ export default () => {
     },
     childRoutes: [
       {
+        // OS-105
         path: 'templates/:projectTemplateId',
         name: 'admin project template preview page',
         component: Loadable({
