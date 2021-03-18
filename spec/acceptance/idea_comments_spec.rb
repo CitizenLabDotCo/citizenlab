@@ -8,7 +8,7 @@ resource "Comments" do
 
   before do
     header "Content-Type", "application/json"
-    @project = create(:continuous_project, with_permissions: true)
+    @project = create(:continuous_project)
     @idea = create(:idea, project: @project)
   end
 
@@ -324,7 +324,7 @@ resource "Comments" do
 
       describe do
         before do
-          project = create(:continuous_budgeting_project, with_permissions: true)
+          project = create(:continuous_budgeting_project)
           @idea.project = project
           @idea.save!
         end
