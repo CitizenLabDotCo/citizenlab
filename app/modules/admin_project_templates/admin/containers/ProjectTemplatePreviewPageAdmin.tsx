@@ -41,6 +41,7 @@ export interface Props {
 
 const ProjectTemplatePreviewPageAdmin = memo<Props & WithRouterProps>(
   ({ params, projectTemplateId, goBack, className }) => {
+    // OS-105: needed?
     const templateId: string | undefined =
       projectTemplateId || get(params, 'projectTemplateId');
 
