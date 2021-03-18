@@ -8,7 +8,6 @@ describe PermissionPolicy do
   let(:scope) { PermissionPolicy::Scope.new(user, Permission) }
 
   before(:all) do # rubocop:disable RSpec/BeforeAfterAll
-    PermissionsService.clear_scope_types
     PermissionsService.register_scope_type(CitizenLab::Permissions::ScopeTypes::Project)
   end
 
