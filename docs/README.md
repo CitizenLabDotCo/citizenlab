@@ -1,5 +1,10 @@
 # Changelog
 
+### 2021-03-18
+
+### Changed
+- Empty folders are now shown in the landing page, navbar, projects page and sitemap.
+
 ## 2021-03-16
 
 ### Added

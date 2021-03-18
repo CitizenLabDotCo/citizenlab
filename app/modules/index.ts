@@ -3,6 +3,7 @@ import { loadModules } from 'utils/moduleUtils';
 import projectFoldersConfiguration from './project_folders';
 import smartGroupsConfiguration from './smart_groups';
 import userCustomFieldsConfiguration from './user_custom_fields';
+import ideaCustomFieldsConfiguration from './idea_custom_fields';
 import granularPermissionsConfiguration from './granular_permissions';
 import moderationConfiguration from './moderation';
 import ideaAssignmentConfiguration from './idea_assignment';
@@ -35,6 +36,10 @@ export default loadModules([
   },
   {
     configuration: userCustomFieldsConfiguration,
+    isEnabled: true,
+  },
+  {
+    configuration: ideaCustomFieldsConfiguration,
     isEnabled: true,
   },
   {
