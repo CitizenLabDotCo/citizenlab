@@ -28,11 +28,14 @@ import request from 'utils/request';
 import { authApiEndpoint } from 'services/auth';
 import { currentAppConfigurationEndpoint } from 'services/appConfiguration';
 import { currentOnboardingCampaignsApiEndpoint } from 'services/onboardingCampaigns';
-import { userCustomFieldsSchemaApiEndpoint } from 'services/userCustomFields';
 import { IUser } from 'services/users';
 import stringify from 'json-stable-stringify';
 import { reportError } from 'utils/loggingUtils';
 import { isUUID } from 'utils/helperUtils';
+
+// TO FIX : close streams via lifecycle
+// tslint:disable-next-line
+import { userCustomFieldsSchemaApiEndpoint } from 'modules/user_custom_fields/services/userCustomFields';
 
 export type pureFn<T> = (arg: T) => T;
 type fetchFn = () => Promise<any>;
@@ -510,23 +513,34 @@ class Streams {
         (streamId) => {
           const stream = this.streams[streamId];
 
-          if (!stream.cacheStream) {
-            promises.push(stream.fetch());
-          } else {
+          if (
+            stream.cacheStream &&
+            stream.type === 'singleObject' &&
+            !isEmpty(response?.['data']) &&
+            !isArray(response?.['data'])
+          ) {
+            stream.observer.next(this.deepFreeze(response));
+          } else if (
+            stream.cacheStream &&
+            stream.type === 'arrayOfObjects' &&
+            !isEmpty(response?.['data'])
+          ) {
             stream.observer.next((previous) => {
+              let data: any;
+
+              if (isArray(response['data'])) {
+                data = [...previous?.data, ...response['data']];
+              } else {
+                data = [...previous?.data, response['data']];
+              }
+
               return this.deepFreeze({
-                ...(previous || {}),
-                data: Array.isArray(previous.data)
-                  ? [
-                      ...(previous?.data || []),
-                      { ...(response?.['data'] || {}) },
-                    ]
-                  : {
-                      ...(previous?.data || {}),
-                      ...(response?.['data'] || {}),
-                    },
+                ...previous,
+                data,
               });
             });
+          } else {
+            promises.push(stream.fetch());
           }
         }
       );
