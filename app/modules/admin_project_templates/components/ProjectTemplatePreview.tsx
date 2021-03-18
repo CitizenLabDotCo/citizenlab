@@ -21,7 +21,7 @@ import messages from './messages';
 
 // analytics
 import { trackEventByName } from 'utils/analytics';
-import tracks from '../../tracks';
+import tracks from '../tracks';
 
 // style
 import styled from 'styled-components';
