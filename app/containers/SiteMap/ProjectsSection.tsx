@@ -67,7 +67,6 @@ const Data = adopt<DataProps, InputProps>({
     <GetAdminPublications
       publicationStatusFilter={['draft', 'published', 'archived']}
       folderId={null}
-      noEmptyFolder
     />
   ),
 });

@@ -13,7 +13,7 @@ import { IAdminPublicationContent } from 'hooks/useAdminPublications';
 import { IProjectData, IUpdatedProjectProperties } from 'services/projects';
 import { onProjectFormStateChange } from 'containers/Admin/projects/edit/general';
 import { ITabItem } from 'components/UI/Tabs';
-import { mergeWith, castArray } from 'lodash-es';
+import { mergeWith, castArray, clamp } from 'lodash-es';
 
 import { FunctionComponent } from 'react';
 
@@ -35,7 +35,7 @@ import { IAppConfigurationSettingsCore } from 'services/appConfiguration';
 import { ManagerType } from 'components/admin/PostManager';
 import { IdeaCellComponentProps } from 'components/admin/PostManager/components/PostTable/IdeaRow';
 import { IdeaHeaderCellComponentProps } from 'components/admin/PostManager/components/PostTable/IdeaHeaderRow';
-import { TTabValue } from 'containers/Admin/projects/all/CreateProject';
+import { TTabName } from 'containers/Admin/projects/all/CreateProject';
 import { IVerificationMethod } from 'services/verificationMethods';
 
 type Localize = (
@@ -136,6 +136,9 @@ export type OutletsPropertyMap = {
   'app.containers.Admin.ideas.tabs': {
     onData: (data: InsertConfigurationOptions<ITab>) => void;
   };
+  'app.containers.Admin.projects.edit': {
+    onData: (data: InsertConfigurationOptions<ITab>) => void;
+  };
   'app.containers.Admin.initiatives.tabs': ITabsOutlet;
   'app.containers.Admin.dashboards.tabs': ITabsOutlet;
   'app.containers.Admin.sideBar.navItems': {
@@ -161,15 +164,8 @@ export type OutletsPropertyMap = {
       >
     ) => void;
   };
-  'app.containers.Admin.projects.edit.tabs.map': {
-    projectId: string;
-    onData: (data: {
-      insertAfterTabName?: string;
-      tabConfiguration: ITab;
-    }) => void;
-  };
   'app.containers.Admin.projects.all.createProject': {
-    selectedTabValue: TTabValue;
+    selectedTabValue: TTabName;
   };
   'app.containers.Admin.projects.all.createProject.tabs': {
     onData: (data: InsertConfigurationOptions<ITabItem>) => void;
@@ -225,10 +221,10 @@ type RecursivePartial<T> = {
 interface Routes {
   citizen: RouteConfiguration[];
   admin: RouteConfiguration[];
+  'admin.projects': RouteConfiguration[];
   'admin.initiatives': RouteConfiguration[];
   'admin.ideas': RouteConfiguration[];
   'admin.dashboards': RouteConfiguration[];
-  adminProjectMapTab: RouteConfiguration[];
   'admin.project_templates': RouteConfiguration[];
 }
 
@@ -335,8 +331,8 @@ export const loadModules = (modules: Modules): ParsedModuleConfiguration => {
         mergedRoutes?.['admin.dashboards'],
         RouteTypes.ADMIN
       ),
-      adminProjectMapTab: parseModuleRoutes(
-        mergedRoutes?.['adminProjectMapTab'],
+      'admin.projects': parseModuleRoutes(
+        mergedRoutes?.['admin.projects'],
         RouteTypes.ADMIN
       ),
       'admin.project_templates': parseModuleRoutes(
@@ -354,18 +350,14 @@ export const insertConfiguration = <T extends { name: string }>({
   insertAfterName,
   insertBeforeName,
 }: InsertConfigurationOptions<T>) => (items: T[]): T[] => {
-  function getInsertIndex() {
-    if (insertAfterName) {
-      return items.findIndex((item) => item.name === insertAfterName) + 1;
-    }
-
-    if (insertBeforeName) {
-      return items.findIndex((item) => item.name === insertAfterName) - 1;
-    }
-
-    return -1;
-  }
-  const insertIndex = getInsertIndex();
+  const foundIndex = items.findIndex(
+    (item) => item.name === (insertAfterName || insertBeforeName)
+  );
+  const insertIndex = clamp(
+    insertAfterName ? foundIndex + 1 : foundIndex - 1,
+    0,
+    items.length
+  );
 
   return insertIndex > 0
     ? [
