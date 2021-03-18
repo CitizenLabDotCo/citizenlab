@@ -17,7 +17,7 @@ module ProjectVisibility
     config.factory_bot.definition_file_paths += [factories_path] if defined?(FactoryBotRails)
 
     def self.register_feature
-      require 'granular_permissions/feature_specification'
+      require 'project_visibility/feature_specification'
       AppConfiguration::Settings.add_feature(ProjectVisibility::FeatureSpecification)
     end
 
