@@ -5,7 +5,7 @@ import { withRouter, WithRouterProps } from 'react-router';
 import clHistory from 'utils/cl-router/history';
 
 // components
-import ProjectTemplatePreview from '../components/ProjectTemplatePreview';
+import ProjectTemplatePreview from '../../components/ProjectTemplatePreview';
 import { Icon } from 'cl2-component-library';
 
 // utils
@@ -17,7 +17,7 @@ import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
+import messages from '../../admin/containers/messages';
 
 // styling
 import styled from 'styled-components';
