@@ -1,8 +1,7 @@
-import React from 'react';
-// import React, { ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 import styled from 'styled-components';
 import { ModuleConfiguration } from 'utils/moduleUtils';
-// import useFeatureFlag from 'hooks/useFeatureFlag';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import AssigneeFilter from './admin/components/AssigneeFilter';
 import IdeaHeaderCell from './admin/components/IdeaHeaderCell';
@@ -13,19 +12,19 @@ const StyledAssigneeFilter = styled(AssigneeFilter)`
   margin-right: 20px;
 `;
 
-// type RenderOnFeatureFlagProps = {
-//   children: ReactNode;
-// };
+type RenderOnFeatureFlagProps = {
+  children: ReactNode;
+};
 
-// const RenderOnFeatureFlag = ({ children }: RenderOnFeatureFlagProps) => {
-//   const isEnabled = useFeatureFlag('idea_assignment');
+const RenderOnFeatureFlag = ({ children }: RenderOnFeatureFlagProps) => {
+  const isEnabled = useFeatureFlag('idea_assignment');
 
-//   if (isEnabled) {
-//     return <>{children}</>;
-//   }
+  if (isEnabled) {
+    return <>{children}</>;
+  }
 
-//   return null;
-// };
+  return null;
+};
 
 const configuration: ModuleConfiguration = {
   outlets: {
@@ -37,9 +36,9 @@ const configuration: ModuleConfiguration = {
     'app.containers.Admin.project.edit.permissions.moderatorRights': (
       props
     ) => (
-      // <RenderOnFeatureFlag>
-      <InputAssignment {...props} />
-      // </RenderOnFeatureFlag>
+      <RenderOnFeatureFlag>
+        <InputAssignment {...props} />
+      </RenderOnFeatureFlag>
     ),
   },
 };
