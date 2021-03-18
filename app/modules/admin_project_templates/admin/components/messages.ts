@@ -33,18 +33,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.noTemplatesFound',
     defaultMessage: 'No templates found',
   },
-  copyLink: {
-    id: 'app.components.ProjectTemplatePreview.copyLink',
-    defaultMessage: 'Copy link',
-  },
-  copied: {
-    id: 'app.components.ProjectTemplatePreview.copied',
-    defaultMessage: 'Copied',
-  },
-  alsoUsedIn: {
-    id: 'app.components.ProjectTemplatePreview.alsoUsedIn',
-    defaultMessage: 'Also used in these cities:',
-  },
   createProject: {
     id: 'app.components.ProjectTemplatePreview.createProject',
     defaultMessage: 'Create project',
