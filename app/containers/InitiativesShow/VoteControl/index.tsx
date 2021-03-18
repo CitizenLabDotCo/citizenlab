@@ -18,8 +18,10 @@ import GetInitiativeStatus, {
   GetInitiativeStatusChildProps,
 } from 'resources/GetInitiativeStatus';
 import { IInitiativeData } from 'services/initiatives';
-import { ITenantSettings } from 'services/tenant';
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import { IAppConfigurationSettings } from 'services/appConfiguration';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetAppConfiguration';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import { addVote, deleteVote } from 'services/initiativeVotes';
 import ProposedNotVoted from './ProposedNotVoted';
@@ -53,7 +55,7 @@ const Container = styled.div`
 interface VoteControlComponentProps {
   initiative: IInitiativeData;
   initiativeStatus: IInitiativeStatusData;
-  initiativeSettings: ITenantSettings['initiatives'];
+  initiativeSettings: IAppConfigurationSettings['initiatives'];
   userVoted: boolean;
   onVote?: () => void;
   onCancelVote?: () => void;
@@ -105,7 +107,7 @@ interface InputProps {
 }
 
 interface DataProps {
-  tenant: GetTenantChildProps;
+  tenant: GetAppConfigurationChildProps;
   initiative: GetInitiativeChildProps;
   initiativeStatus: GetInitiativeStatusChildProps;
   authUser: GetAuthUserChildProps;
@@ -241,7 +243,7 @@ class VoteControl extends PureComponent<Props, State> {
 }
 
 const Data = adopt<DataProps, InputProps>({
-  tenant: <GetTenant />,
+  tenant: <GetAppConfiguration />,
   authUser: <GetAuthUser />,
   initiative: ({ initiativeId, render }) => (
     <GetInitiative id={initiativeId}>{render}</GetInitiative>

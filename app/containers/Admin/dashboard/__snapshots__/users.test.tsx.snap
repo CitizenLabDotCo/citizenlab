@@ -52,8 +52,9 @@ exports[`<UsersDashboard /> renders correctly 1`] = `
     topicFilterOptions={null}
   />
   <dashboard__GraphsContainer>
-    <Component
+    <Outlet
       endAt="2010-01-01T04:06:07.000Z"
+      id="app.containers.Admin.dashboard.users.graphs"
     />
     <WithTheme(MostActiveUsersList)
       className="dynamicHeight"

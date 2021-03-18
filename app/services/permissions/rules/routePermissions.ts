@@ -9,7 +9,7 @@ import {
   isSuperAdmin,
 } from '../roles';
 import { IUser } from 'services/users';
-import { ITenantData } from 'services/tenant';
+import { IAppConfigurationData } from 'services/appConfiguration';
 
 export const MODERATOR_ROUTES = [
   '/admin/projects',
@@ -39,14 +39,14 @@ export const isAdminRoute = (item: IRouteItem) => {
   return /^\/admin/.test(item.path);
 };
 
-export const tenantIsChurned = (tenant: ITenantData) => {
+export const tenantIsChurned = (tenant: IAppConfigurationData) => {
   return tenant.attributes.settings.core.lifecycle_stage === 'churned';
 };
 
 export const canAccessRoute = (
   item: IRouteItem,
   user: IUser | null,
-  tenant: ITenantData
+  tenant: IAppConfigurationData
 ) => {
   if (isAdminRoute(item)) {
     if (isSuperAdmin(user)) {

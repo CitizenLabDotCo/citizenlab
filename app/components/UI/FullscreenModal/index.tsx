@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import ReactDOM from 'react-dom';
+import { createPortal } from 'react-dom';
 import { Subscription, fromEvent } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { adopt } from 'react-adopt';
@@ -148,9 +148,8 @@ class FullscreenModal extends PureComponent<Props, State> {
     const { locale, url, goBackUrl } = this.props;
 
     if (!isNilOrError(locale) && url) {
-      this.url = `${window.location.origin}/${locale}${
-        removeLocale(url).pathname
-      }`;
+      const { pathname } = removeLocale(url);
+      this.url = `${window.location.origin}/${locale}${pathname}`;
       this.goBackUrl = `${window.location.origin}/${locale}${
         removeLocale(goBackUrl || window.location.pathname).pathname
       }`;
@@ -158,6 +157,7 @@ class FullscreenModal extends PureComponent<Props, State> {
       window.addEventListener('popstate', this.handlePopstateEvent, useCapture);
       window.addEventListener('keydown', this.handleKeypress, useCapture);
       this.unlisten = clHistory.listen(() => this.props.close());
+
       trackPage(this.url, { modal: true });
     }
   };
@@ -232,7 +232,7 @@ class FullscreenModal extends PureComponent<Props, State> {
     }
 
     if (animateInOut) {
-      return ReactDOM.createPortal(
+      return createPortal(
         <CSSTransition
           classNames="modal"
           in={opened}
@@ -252,7 +252,7 @@ class FullscreenModal extends PureComponent<Props, State> {
     }
 
     if (!animateInOut && opened && modalPortalElement) {
-      return ReactDOM.createPortal(modalContent, modalPortalElement);
+      return createPortal(modalContent, modalPortalElement);
     }
 
     return null;

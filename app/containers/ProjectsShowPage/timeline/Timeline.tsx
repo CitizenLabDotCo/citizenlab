@@ -17,7 +17,7 @@ import { Icon } from 'cl2-component-library';
 
 // hooks
 import useLocale from 'hooks/useLocale';
-import useTenant from 'hooks/useTenant';
+import useAppConfiguration from 'hooks/useAppConfiguration';
 import usePhases from 'hooks/usePhases';
 
 // services
@@ -218,7 +218,7 @@ interface Props {
 
 const Timeline = memo<Props>(({ projectId, className }) => {
   const locale = useLocale();
-  const currentTenant = useTenant();
+  const currentTenant = useAppConfiguration();
   const phases = usePhases(projectId);
 
   const [selectedPhase, setSelectedPhase] = useState<IPhaseData | null>(null);

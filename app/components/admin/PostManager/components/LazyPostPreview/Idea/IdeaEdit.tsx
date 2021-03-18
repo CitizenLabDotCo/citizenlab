@@ -17,7 +17,7 @@ import { Content, Top, Container } from '../PostPreview';
 
 // services
 import { localeStream } from 'services/locale';
-import { currentTenantStream } from 'services/tenant';
+import { currentAppConfigurationStream } from 'services/appConfiguration';
 import { ideaByIdStream, updateIdea } from 'services/ideas';
 import {
   ideaImageStream,
@@ -110,7 +110,7 @@ class IdeaEdit extends PureComponent<Props, State> {
   componentDidMount() {
     const { ideaId } = this.props;
     const locale$ = localeStream().observable;
-    const currentTenantLocales$ = currentTenantStream().observable.pipe(
+    const currentTenantLocales$ = currentAppConfigurationStream().observable.pipe(
       map(
         (currentTenant) => currentTenant.data.attributes.settings.core.locales
       )

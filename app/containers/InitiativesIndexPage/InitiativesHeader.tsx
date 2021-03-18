@@ -8,7 +8,9 @@ import InitiativeInfoContent from './InitiativeInfoContent';
 
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetAppConfiguration';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -93,7 +95,7 @@ export interface InputProps {
 
 interface DataProps {
   authUser: GetAuthUserChildProps;
-  tenant: GetTenantChildProps;
+  tenant: GetAppConfigurationChildProps;
   postingPermission: GetInitiativesPermissionsChildProps;
 }
 
@@ -152,7 +154,7 @@ class InitiativesHeader extends PureComponent<Props, State> {
 
 const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
-  tenant: <GetTenant />,
+  tenant: <GetAppConfiguration />,
   postingPermission: <GetInitiativesPermissions action="posting_initiative" />,
 });
 

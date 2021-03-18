@@ -26,13 +26,16 @@ import {
 } from 'lodash-es';
 import request from 'utils/request';
 import { authApiEndpoint } from 'services/auth';
-import { currentTenantApiEndpoint } from 'services/tenant';
+import { currentAppConfigurationEndpoint } from 'services/appConfiguration';
 import { currentOnboardingCampaignsApiEndpoint } from 'services/onboardingCampaigns';
-import { userCustomFieldsSchemaApiEndpoint } from 'services/userCustomFields';
 import { IUser } from 'services/users';
 import stringify from 'json-stable-stringify';
 import { reportError } from 'utils/loggingUtils';
 import { isUUID } from 'utils/helperUtils';
+
+// TO FIX : close streams via lifecycle
+// tslint:disable-next-line
+import { userCustomFieldsSchemaApiEndpoint } from 'modules/user_custom_fields/services/userCustomFields';
 
 export type pureFn<T> = (arg: T) => T;
 type fetchFn = () => Promise<any>;
@@ -97,7 +100,7 @@ class Streams {
     Object.keys(this.streams).forEach((streamId) => {
       if (
         streamId === authApiEndpoint ||
-        streamId === currentTenantApiEndpoint ||
+        streamId === currentAppConfigurationEndpoint ||
         streamId === userCustomFieldsSchemaApiEndpoint
       ) {
         promisesToAwait.push(this.streams[streamId].fetch());
@@ -402,53 +405,51 @@ class Streams {
 
           this.streams[streamId].type = 'unknown';
 
-          if (data !== 'inital') {
-            data = isFunction(current) ? current(data) : current;
+          data = isFunction(current) ? current(data) : current;
 
-            if (isObject(data) && !isEmpty(data)) {
-              const innerData = data['data'];
+          if (isObject(data) && !isEmpty(data)) {
+            const innerData = data['data'];
 
-              if (isArray(innerData)) {
-                this.streams[streamId].type = 'arrayOfObjects';
-                innerData
-                  .filter((item) => has(item, 'id'))
-                  .forEach((item) => {
-                    const dataId = item.id;
-                    dataIds[dataId] = true;
-                    if (cacheStream) {
-                      this.resourcesByDataId[dataId] = this.deepFreeze({
-                        data: item,
-                      });
-                    }
-                    this.addStreamIdByDataIdIndex(
-                      streamId,
-                      isQueryStream,
-                      dataId
-                    );
-                  });
-              } else if (isObject(innerData) && has(innerData, 'id')) {
-                const dataId = innerData['id'];
-                this.streams[streamId].type = 'singleObject';
-                dataIds[dataId] = true;
-                if (cacheStream) {
-                  this.resourcesByDataId[dataId] = this.deepFreeze({
-                    data: innerData,
-                  });
-                }
-                this.addStreamIdByDataIdIndex(streamId, isQueryStream, dataId);
-              }
-
-              if (has(data, 'included')) {
-                data['included']
-                  .filter((item) => item.id)
-                  .forEach((item) => {
-                    this.resourcesByDataId[item.id] = this.deepFreeze({
+            if (isArray(innerData)) {
+              this.streams[streamId].type = 'arrayOfObjects';
+              innerData
+                .filter((item) => has(item, 'id'))
+                .forEach((item) => {
+                  const dataId = item.id;
+                  dataIds[dataId] = true;
+                  if (cacheStream) {
+                    this.resourcesByDataId[dataId] = this.deepFreeze({
                       data: item,
                     });
-                  });
-
-                data = omit(data, 'included');
+                  }
+                  this.addStreamIdByDataIdIndex(
+                    streamId,
+                    isQueryStream,
+                    dataId
+                  );
+                });
+            } else if (isObject(innerData) && has(innerData, 'id')) {
+              const dataId = innerData['id'];
+              this.streams[streamId].type = 'singleObject';
+              dataIds[dataId] = true;
+              if (cacheStream) {
+                this.resourcesByDataId[dataId] = this.deepFreeze({
+                  data: innerData,
+                });
               }
+              this.addStreamIdByDataIdIndex(streamId, isQueryStream, dataId);
+            }
+
+            if (has(data, 'included')) {
+              data['included']
+                .filter((item) => item.id)
+                .forEach((item) => {
+                  this.resourcesByDataId[item.id] = this.deepFreeze({
+                    data: item,
+                  });
+                });
+
+              data = omit(data, 'included');
             }
           }
 
@@ -512,15 +513,34 @@ class Streams {
         (streamId) => {
           const stream = this.streams[streamId];
 
-          if (!stream.cacheStream) {
-            promises.push(stream.fetch());
-          } else {
-            stream.observer.next((previous) =>
-              this.deepFreeze({
+          if (
+            stream.cacheStream &&
+            stream.type === 'singleObject' &&
+            !isEmpty(response?.['data']) &&
+            !isArray(response?.['data'])
+          ) {
+            stream.observer.next(this.deepFreeze(response));
+          } else if (
+            stream.cacheStream &&
+            stream.type === 'arrayOfObjects' &&
+            !isEmpty(response?.['data'])
+          ) {
+            stream.observer.next((previous) => {
+              let data: any;
+
+              if (isArray(response['data'])) {
+                data = [...previous?.data, ...response['data']];
+              } else {
+                data = [...previous?.data, response['data']];
+              }
+
+              return this.deepFreeze({
                 ...previous,
-                data: [...previous.data, response['data']],
-              })
-            );
+                data,
+              });
+            });
+          } else {
+            promises.push(stream.fetch());
           }
         }
       );

@@ -11,12 +11,12 @@ import {
   MODERATOR_ROUTES,
 } from 'services/permissions/rules/routePermissions';
 import { IUser } from 'services/users';
-import { ITenantData } from 'services/tenant';
+import { IAppConfigurationData } from 'services/appConfiguration';
 
 const canUserAccessAdminFolderRoute = (
   item: IRouteItem,
   user: IUser | null,
-  tenant: ITenantData
+  tenant: IAppConfigurationData
 ) => {
   return (
     canAccessRoute(item, user, tenant) ||

@@ -235,7 +235,7 @@ class InvitesTable extends React.PureComponent<Props, State> {
 }
 
 export default (inputProps: InputProps) => (
-  <GetInvites cache={false}>
+  <GetInvites>
     {(invites) => <InvitesTable {...inputProps} {...invites} />}
   </GetInvites>
 );

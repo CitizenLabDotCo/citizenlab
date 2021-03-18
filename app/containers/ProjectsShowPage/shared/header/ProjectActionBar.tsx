@@ -1,5 +1,5 @@
 import React, { memo, useState, useEffect } from 'react';
-import ReactDOM from 'react-dom';
+import { createPortal } from 'react-dom';
 import { isNilOrError } from 'utils/helperUtils';
 import { CSSTransition } from 'react-transition-group';
 
@@ -81,8 +81,8 @@ const Left = styled.div`
 `;
 
 const Right = styled.div`
-  flex: 0 0 300px;
-  width: 300px;
+  flex: 0 0 310px;
+  width: 310px;
   display: flex;
   align-items: center;
   margin-left: 15px;
@@ -198,7 +198,7 @@ const ProjectActionBar = memo<Props>(({ projectId, className }) => {
       publication_status,
     } = project.attributes;
 
-    return ReactDOM.createPortal(
+    return createPortal(
       <Container
         className={`${className || ''} ${isVisible ? 'visible' : 'hidden'}`}
       >
@@ -226,7 +226,7 @@ const ProjectActionBar = memo<Props>(({ projectId, className }) => {
                       projectId={project.id}
                       participationContextType="project"
                       fontWeight="500"
-                      width={!smallerThanLargeTablet ? '300px' : undefined}
+                      width={!smallerThanLargeTablet ? '310px' : undefined}
                     />
                   </CSSTransition>
                 )}
@@ -246,7 +246,7 @@ const ProjectActionBar = memo<Props>(({ projectId, className }) => {
                     phaseId={currentPhase?.id}
                     participationContextType="phase"
                     fontWeight="500"
-                    width={!smallerThanLargeTablet ? '300px' : undefined}
+                    width={!smallerThanLargeTablet ? '310px' : undefined}
                   />
                 </CSSTransition>
               )}

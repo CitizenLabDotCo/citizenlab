@@ -7,7 +7,7 @@ import { StatusExplanation } from './SharedStyles';
 
 import { IInitiativeData } from 'services/initiatives';
 import { IInitiativeStatusData } from 'services/initiativeStatuses';
-import { ITenantSettings } from 'services/tenant';
+import { IAppConfigurationSettings } from 'services/appConfiguration';
 
 import CountDown from './CountDown';
 import ProgressBar from 'components/UI/ProgressBar';
@@ -61,7 +61,7 @@ const StyledButton = styled(Button)`
 interface InputProps {
   initiative: IInitiativeData;
   initiativeStatus: IInitiativeStatusData;
-  initiativeSettings: NonNullable<ITenantSettings['initiatives']>;
+  initiativeSettings: NonNullable<IAppConfigurationSettings['initiatives']>;
   userVoted: boolean;
   onVote: () => void;
 }

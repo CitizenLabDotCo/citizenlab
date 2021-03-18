@@ -3,7 +3,11 @@ import { get } from 'lodash-es';
 import { Subscription } from 'rxjs';
 
 // services
-import { currentTenantStream, ITenant, ITenantData } from 'services/tenant';
+import {
+  currentAppConfigurationStream,
+  IAppConfiguration,
+  IAppConfigurationData,
+} from 'services/appConfiguration';
 import { isNilOrError } from 'utils/helperUtils';
 
 interface Props {
@@ -13,12 +17,12 @@ interface Props {
 }
 
 interface State {
-  currentTenant: ITenant | null;
+  currentTenant: IAppConfiguration | null;
 }
 
 export const isFeatureActive = (
   feature: string,
-  tenant: ITenantData,
+  tenant: IAppConfigurationData,
   options?: { onlyCheckAllowed?: boolean }
 ) => {
   return (
@@ -41,7 +45,7 @@ export default class FeatureFlag extends PureComponent<Props, State> {
   }
 
   componentDidMount() {
-    const currentTenant$ = currentTenantStream().observable;
+    const currentTenant$ = currentAppConfigurationStream().observable;
     this.subscription = currentTenant$.subscribe((currentTenant) =>
       this.setState({ currentTenant })
     );
