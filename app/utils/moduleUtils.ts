@@ -229,6 +229,7 @@ interface Routes {
   'admin.ideas': RouteConfiguration[];
   'admin.dashboards': RouteConfiguration[];
   adminProjectMapTab: RouteConfiguration[];
+  'admin.project_templates': RouteConfiguration[];
 }
 
 export interface ParsedModuleConfiguration {
@@ -336,6 +337,10 @@ export const loadModules = (modules: Modules): ParsedModuleConfiguration => {
       ),
       adminProjectMapTab: parseModuleRoutes(
         mergedRoutes?.['adminProjectMapTab'],
+        RouteTypes.ADMIN
+      ),
+      'admin.project_templates': parseModuleRoutes(
+        mergedRoutes?.['admin.project_templates'],
         RouteTypes.ADMIN
       ),
     },
