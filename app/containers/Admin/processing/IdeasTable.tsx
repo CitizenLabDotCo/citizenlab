@@ -302,7 +302,6 @@ const IdeasTable = memo<Props & InjectedIntlProps>(
             <thead>
               {!previewPostId && (
                 <tr>
-                  {' '}
                   <th className="checkbox">
                     <StyledCheckbox
                       checked={
@@ -328,7 +327,7 @@ const IdeasTable = memo<Props & InjectedIntlProps>(
                   </th>
                   <th className="tags">
                     <FormattedMessage {...messages.tags} />
-                  </th>{' '}
+                  </th>
                 </tr>
               )}
             </thead>
