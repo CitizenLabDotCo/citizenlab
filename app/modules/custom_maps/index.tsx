@@ -4,21 +4,17 @@ import Tab from './admin/components/Tab';
 
 const configuration: ModuleConfiguration = {
   routes: {
-    adminProjectMapTab: [
+    'admin.projects': [
       {
         path: '/:locale/admin/projects/:projectId/map',
-        name: 'admin projects map',
+        name: 'map',
         container: () =>
-          import(
-            'modules/custom_maps/admin/containers/ProjectCustomMapConfigPage'
-          ),
+          import('./admin/containers/ProjectCustomMapConfigPage'),
       },
     ],
   },
   outlets: {
-    'app.containers.Admin.projects.edit.tabs.map': (props) => (
-      <Tab {...props} />
-    ),
+    'app.containers.Admin.projects.edit': (props) => <Tab {...props} />,
   },
 };
 

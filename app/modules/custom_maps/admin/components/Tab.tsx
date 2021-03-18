@@ -1,31 +1,26 @@
 import { FC, useEffect } from 'react';
 import { InjectedIntlProps } from 'react-intl';
-import { ITab } from 'typings';
+import { InsertConfigurationOptions, ITab } from 'typings';
 import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 type Props = {
-  projectId: string;
-  onData: (data: {
-    insertAfterTabName?: string;
-    tabConfiguration: ITab;
-  }) => void;
+  onData: (data: InsertConfigurationOptions<ITab>) => void;
 };
 
 const Tab: FC<Props & InjectedIntlProps> = ({
-  projectId,
   onData,
   intl: { formatMessage },
 }) => {
   useEffect(() => {
     onData({
-      tabConfiguration: {
+      configuration: {
         label: formatMessage(messages.mapTab),
         name: 'map',
-        url: `/admin/projects/${projectId}/map`,
+        url: `map`,
         feature: 'custom_maps',
       },
-      insertAfterTabName: 'ideaform',
+      insertBeforeName: 'phases',
     });
   }, []);
 

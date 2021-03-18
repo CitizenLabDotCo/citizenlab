@@ -20,7 +20,7 @@ interface InputProps {
   hightestTitle: 'h3' | 'h4';
 }
 interface DataProps {
-  adminPublicationsHook: IUseAdminPublicationsOutput;
+  adminPublications: IUseAdminPublicationsOutput;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -28,7 +28,7 @@ interface Props extends InputProps, DataProps {}
 const ProjectFolderSitemap = ({
   adminPublication,
   hightestTitle,
-  adminPublicationsHook: { childrenOf },
+  adminPublications: { childrenOf },
 }: Props) => {
   const TitleComponent = hightestTitle === 'h3' ? H3 : H4;
 
@@ -64,7 +64,7 @@ const ProjectFolderSitemap = ({
 };
 
 const Data = adopt<DataProps, InputProps>({
-  adminPublicationsHook: ({ render }) => (
+  adminPublications: ({ render }) => (
     <GetAdminPublications
       publicationStatusFilter={['published', 'archived', 'draft']}
     >

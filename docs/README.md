@@ -1,16 +1,18 @@
 # Changelog
-
-## Next Release
-
-### Fixed
+### 2021-03-18
+### Changed
+- Empty folders are now shown in the landing page, navbar, projects page and sitemap.
 - The sitemap no longer shows all projects and folder under each folder.
+
+
+### Added
+- Allows for sending front-end events to our self-hosted matomo analytics tool
 
 ## 2021-03-11
 
 ### Changed
 - Tenants are now ordered alphabetically in AdminHQ
 
-### Added
 - Serbian (Latin) is now a language option.
 
 
