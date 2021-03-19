@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module ProjectVisibility
+module ProjectPermissions
   module Patches
     module WebApi
       module V1
