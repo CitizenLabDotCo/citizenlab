@@ -120,6 +120,12 @@ namespace :cl2_back do
           enabled: false,
           allowed: false
         },
+        matomo: {
+          enabled: true,
+          allowed: true,
+          product_site_id: ENV.fetch('MATOMO_PRODUCT_SITE_ID', ''),
+          tenant_site_id: ENV.fetch('DEFAULT_MATOMO_TENANT_SITE_ID', '')
+        },
         surveys: {
           enabled: true,
           allowed: true
@@ -194,6 +200,11 @@ namespace :cl2_back do
               environment: 'integration',
               identifier: 'fake_identifier',
               secret: 'fake_secret'
+            },
+            {
+              name: 'clave_unica',
+              client_id: 'fake_identifier',
+              client_secret: 'fake_secret'
             },
             {
               name: 'bogus'
