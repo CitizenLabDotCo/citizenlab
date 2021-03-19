@@ -16,13 +16,15 @@ module ProjectPermissions
     factories_path = File.expand_path('../../spec/factories', __dir__)
     config.factory_bot.definition_file_paths += [factories_path] if defined?(FactoryBotRails)
 
-    def self.register_feature
-      require 'project_permissions/feature_specification'
-      AppConfiguration::Settings.add_feature(ProjectPermissions::FeatureSpecification)
+    def self.register_features
+      require 'project_permissions/feature_specifications/project_visibility'
+      require 'project_permissions/feature_specifications/project_management'
+      AppConfiguration::Settings.add_feature(ProjectPermissions::FeatureSpecifications::ProjectVisibility)
+      AppConfiguration::Settings.add_feature(ProjectPermissions::FeatureSpecifications::ProjectManagement)
     end
 
     config.to_prepare do
-      ProjectPermissions::Engine.register_feature
+      ProjectPermissions::Engine.register_features
     end
   end
 end
