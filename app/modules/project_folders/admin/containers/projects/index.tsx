@@ -128,8 +128,8 @@ class AdminFolderProjectsList extends Component<
     const projectsInFolder = adminPublications.childrenOf({
       // shouldn't this be the projectFolder id instead of relationship?
       // And can't a folder have multiple relationships (projects inside of the folder)?
-      // Finally, we should try to not use 'id'. It wasn't clear to me what this id means
-      // was it a folder id? project id? both?
+      // Also, we should try to not use 'id'. It wasn't clear to me what this id means
+      // was it a folder id? project id? both? I've changed it to publicationId now
       publicationId: projectFolder.relationships.admin_publication.data?.id,
     });
     const otherProjects = !isNilOrError(allPublications)
