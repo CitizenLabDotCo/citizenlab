@@ -1,5 +1,4 @@
 import React, { memo } from 'react';
-import { adopt } from 'react-adopt';
 import { get } from 'lodash-es';
 import { withRouter, WithRouterProps } from 'react-router';
 import clHistory from 'utils/cl-router/history';
@@ -13,7 +12,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { isAdmin } from 'services/permissions/roles';
 
 // resources
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import useAuthUser from 'hooks/useAuthUser';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -104,19 +103,14 @@ const InfoboxText = styled.div`
   }
 `;
 
-export interface InputProps {
+export interface Props {
   projectTemplateId: string;
   className?: string;
 }
 
-interface DataProps {
-  authUser: GetAuthUserChildProps;
-}
-
-interface Props extends InputProps, DataProps {}
-
-const ProjectTemplatePreviewPageCitizen = memo<Props & WithRouterProps>(
-  ({ params, className, authUser }) => {
+const ProjectTemplatePreviewCitizen = memo<Props & WithRouterProps>(
+  ({ params, className }) => {
+    const authUser = useAuthUser();
     const projectTemplateId: string | undefined = get(
       params,
       'projectTemplateId'
@@ -164,21 +158,4 @@ const ProjectTemplatePreviewPageCitizen = memo<Props & WithRouterProps>(
   }
 );
 
-const ProjectTemplatePreviewPageCitizenWithHoC = withRouter(
-  ProjectTemplatePreviewPageCitizen
-);
-
-const Data = adopt<DataProps, InputProps>({
-  authUser: <GetAuthUser />,
-});
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => (
-      <ProjectTemplatePreviewPageCitizenWithHoC
-        {...inputProps}
-        {...dataProps}
-      />
-    )}
-  </Data>
-);
+export default withRouter(ProjectTemplatePreviewCitizen);
