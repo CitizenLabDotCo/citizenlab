@@ -10,6 +10,7 @@ import ideaAssignmentConfiguration from './idea_assignment';
 import geographicDashboardConfiguration from './geographic_dashboard';
 
 import customMapsConfiguration from './custom_maps';
+import customTopicsConfiguration from './custom_topics';
 import googleTagManagerConfiguration from './google_tag_manager';
 import googleAnalyticsConfiguration from './google_analytics';
 import intercomConfiguration from './intercom';
@@ -88,6 +89,10 @@ export default loadModules([
   },
   {
     configuration: customMapsConfiguration,
+    isEnabled: true,
+  },
+  {
+    configuration: customTopicsConfiguration,
     isEnabled: true,
   },
   {
