@@ -3,7 +3,6 @@ import ProjectTemplatePreviewAdmin from './ProjectTemplatePreviewAdmin';
 import eventEmitter from 'utils/eventEmitter';
 import useLocale from 'hooks/useLocale';
 import { isNilOrError } from 'utils/helperUtils';
-import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
 import { trackPage } from 'utils/analytics';
 import clHistory from 'utils/cl-router/history';
 
@@ -63,17 +62,17 @@ const Component = ({ onRender }: Props) => {
       .subscribe(({ eventValue }) => {
         if (typeof eventValue === 'string') {
           const selectedProjectTemplateId = eventValue;
-          const url = `/admin/projects/templates/${selectedProjectTemplateId}`;
+          setSelectedProjectTemplateId(selectedProjectTemplateId);
 
-          if (!isNilOrError(locale) && url) {
-            setUrl(`${window.location.origin}/${locale}${url}`);
-            setGoBackUrl('window.location.href');
-            setGoBackUrl(
-              `${window.location.origin}/${locale}${
-                removeLocale(window.location.pathname).pathname
-              }`
-            );
-            window.history.pushState({ path: url }, '', url);
+          if (!isNilOrError(locale)) {
+            const currentUrl = window.location.href;
+            const newPath = `/${locale}/admin/projects/templates/${selectedProjectTemplateId}`;
+            const newUrl = `${window.location.origin}${newPath}`;
+            setUrl(newUrl);
+            setGoBackUrl(currentUrl);
+
+            // still to check, in old code newPath below was what is now newUrl
+            // window.history.pushState({ path: newPath }, '', newUrl);
             window.addEventListener(
               'popstate',
               handlePopstateEvent,
@@ -81,11 +80,10 @@ const Component = ({ onRender }: Props) => {
             );
             window.addEventListener('keydown', handleKeypress, useCapture);
             setUnlisten(clHistory.listen(() => closeTemplatePreview()));
-            trackPage(url);
+            trackPage(newUrl);
           }
 
           window.scrollTo(0, 0);
-          setSelectedProjectTemplateId(selectedProjectTemplateId);
         }
 
         return () => {
