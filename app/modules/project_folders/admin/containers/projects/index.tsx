@@ -140,6 +140,8 @@ class AdminFolderProjectsList extends Component<
       : null;
 
     const inFolderFinalList =
+      // what is the purpose of this one? folders can't contain folders, so aren't we
+      // sure already that everything in here is a project?
       !isNilOrError(projectsInFolder) && projectsInFolder.length > 0
         ? projectsInFolder.filter((item) => item.publicationType === 'project')
         : null;
