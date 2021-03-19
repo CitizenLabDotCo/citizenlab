@@ -1,15 +1,15 @@
 $:.push File.expand_path("lib", __dir__)
 
 # Maintain your gem's version:
-require "project_visibility/version"
+require "project_permissions/version"
 
 # Describe your gem and declare its dependencies:
 Gem::Specification.new do |spec|
-  spec.name        = "project_visibility"
-  spec.version     = ProjectVisibility::VERSION
+  spec.name        = "project_permissions"
+  spec.version     = ProjectPermissions::VERSION
   spec.authors     = ["CitizenLab"]
   spec.email       = ["developers@citizenlab.co"]
-  spec.summary     = "CitizenLab extension: Allows to configure project visibility."
+  spec.summary     = "CitizenLab extension: Adds new configurations options for project permissions."
   spec.license     = 'CitizenLab Commercial License'
 
   spec.files = Dir["{app,config,db,lib}/**/*", "README.md"]

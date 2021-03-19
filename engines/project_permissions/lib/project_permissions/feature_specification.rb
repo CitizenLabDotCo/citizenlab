@@ -2,7 +2,7 @@
 
 require 'citizen_lab/mixins/feature_specification'
 
-module ProjectVisibility
+module ProjectPermissions
   module FeatureSpecification
     extend CitizenLab::Mixins::FeatureSpecification
 

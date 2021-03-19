@@ -244,9 +244,9 @@ PATH
       rails (~> 6.0.3, >= 6.0.3.2)
 
 PATH
-  remote: engines/project_visibility
+  remote: engines/project_permissions
   specs:
-    project_visibility (0.1.0)
+    project_permissions (0.1.0)
       rails (~> 6.0.3, >= 6.0.3.2)
 
 PATH
@@ -967,7 +967,7 @@ DEPENDENCIES
   polls!
   premailer-rails (~> 1.10.3)
   project_folders!
-  project_visibility!
+  project_permissions!
   pry
   pry-stack_explorer
   public_api!
