@@ -83,6 +83,7 @@ class SettingsPage extends React.PureComponent<
   }
 
   getTabs = () => {
+    debugger;
     const { widgetsEnabled, customTopicsEnabled } = this.props;
     const { tabs } = this.state;
 
@@ -105,7 +106,7 @@ class SettingsPage extends React.PureComponent<
 
     const tabNames = tabs.map((tab) => tab.name);
 
-    let enabledTabs: ITab[] = [];
+    let enabledTabs: ITab[] = this.state.tabs;
 
     tabNames.forEach((tabName) => {
       if (tabName && tabHideConditions?.[tabName]?.()) {
