@@ -134,8 +134,7 @@ class AdminFolderProjectsList extends Component<
       !isNilOrError(allPublications) && allPublications
         ? allPublications.filter(
             (item) =>
-              item.publicationType === 'project' &&
-              !item.relationships.parent.data?.id
+              item.publicationType === 'project' && item.attributes.depth === 0
           )
         : null;
 
