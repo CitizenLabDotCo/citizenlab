@@ -67,7 +67,6 @@ export interface InputProps {}
 interface DataProps {
   surveys_enabled: boolean | null;
   typeform_enabled: boolean | null;
-  customTopicsEnabled: GetFeatureFlagChildProps;
   phases: GetPhasesChildProps;
   project: GetProjectChildProps;
   projectVisibilityEnabled: GetFeatureFlagChildProps;
@@ -128,11 +127,6 @@ export class AdminProjectEdition extends PureComponent<
           name: 'phases',
         },
         {
-          label: formatMessage(messages.topicsTab),
-          url: `topics`,
-          name: 'topics',
-        },
-        {
           label: formatMessage(messages.volunteeringTab),
           url: `volunteering`,
           feature: 'volunteering',
@@ -168,7 +162,6 @@ export class AdminProjectEdition extends PureComponent<
       typeform_enabled,
       surveys_enabled,
       phases,
-      customTopicsEnabled,
       projectVisibilityEnabled,
       granularPermissionsEnabled,
       projectManagementEnabled,
@@ -278,9 +271,9 @@ export class AdminProjectEdition extends PureComponent<
 
         return false;
       },
+      // TODO
       topics: function isTopicsTabHidden() {
         if (
-          !customTopicsEnabled ||
           (processType === 'continuous' &&
             participationMethod !== 'ideation' &&
             participationMethod !== 'budgeting') ||
@@ -452,7 +445,6 @@ const AdminProjectEditionWithHoCs = withRouter(
 const Data = adopt<DataProps, InputProps & WithRouterProps>({
   surveys_enabled: <GetFeatureFlag name="surveys" />,
   typeform_enabled: <GetFeatureFlag name="typeform_surveys" />,
-  customTopicsEnabled: <GetFeatureFlag name="custom_topics" />,
   projectVisibilityEnabled: <GetFeatureFlag name="project_visibility" />,
   granularPermissionsEnabled: <GetFeatureFlag name="granular_permissions" />,
   projectManagementEnabled: <GetFeatureFlag name="project_management" />,

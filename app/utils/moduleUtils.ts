@@ -137,6 +137,9 @@ export type OutletsPropertyMap = {
   'app.containers.Admin.projects.edit': {
     onData: (data: InsertConfigurationOptions<ITab>) => void;
   };
+  'app.containers.Admin.settings.tabs': {
+    onData: (data: InsertConfigurationOptions<ITab>) => void;
+  };
   'app.containers.Admin.initiatives.tabs': ITabsOutlet;
   'app.containers.Admin.dashboards.tabs': ITabsOutlet;
   'app.containers.Admin.sideBar.navItems': {
@@ -193,14 +196,14 @@ export type Outlets = OutletComponents<OutletsPropertyMap>;
 
 export type OutletId = keyof Outlets;
 
-export interface RouteConfiguration {
+export type RouteConfiguration = {
   path?: string;
   name?: string;
-  container: () => Promise<any>;
+  container?: () => Promise<any>;
   type?: string;
   indexRoute?: RouteConfiguration;
   childRoutes?: RouteConfiguration[];
-}
+};
 
 type RecursivePartial<T> = {
   [P in keyof T]?: T[P] extends (infer U)[]
@@ -217,6 +220,7 @@ interface Routes {
   'admin.initiatives': RouteConfiguration[];
   'admin.ideas': RouteConfiguration[];
   'admin.dashboards': RouteConfiguration[];
+  'admin.settings': RouteConfiguration[];
 }
 
 export interface ParsedModuleConfiguration {
@@ -257,12 +261,16 @@ const convertConfigurationToRoute = ({
 }: RouteConfiguration) => ({
   path,
   name,
-  component: Loadable({
-    loader,
-    loading:
-      type === RouteTypes.ADMIN ? LoadableLoadingAdmin : LoadableLoadingCitizen,
-    delay: 500,
-  }),
+  component:
+    loader &&
+    Loadable({
+      loader,
+      loading:
+        type === RouteTypes.ADMIN
+          ? LoadableLoadingAdmin
+          : LoadableLoadingCitizen,
+      delay: 500,
+    }),
   indexRoute:
     indexRoute && convertConfigurationToRoute({ ...indexRoute, type }),
   childRoutes:
@@ -324,6 +332,10 @@ export const loadModules = (modules: Modules): ParsedModuleConfiguration => {
       ),
       'admin.projects': parseModuleRoutes(
         mergedRoutes?.['admin.projects'],
+        RouteTypes.ADMIN
+      ),
+      'admin.settings': parseModuleRoutes(
+        mergedRoutes?.['admin.settings'],
         RouteTypes.ADMIN
       ),
     },

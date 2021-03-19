@@ -1,5 +1,4 @@
 import React from 'react';
-import { adopt } from 'react-adopt';
 
 // router
 import { withRouter, WithRouterProps } from 'react-router';
@@ -13,21 +12,13 @@ import messages from './messages';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 
-// resources
-import GetFeatureFlag, {
-  GetFeatureFlagChildProps,
-} from 'resources/GetFeatureFlag';
-import { reject } from 'lodash-es';
-import { ITab } from 'typings';
+import { InsertConfigurationOptions, ITab } from 'typings';
+import { insertConfiguration } from 'utils/moduleUtils';
+import Outlet from 'components/Outlet';
 
 export interface InputProps {}
 
-interface DataProps {
-  widgetsEnabled: GetFeatureFlagChildProps;
-  customTopicsEnabled: GetFeatureFlagChildProps;
-}
-
-interface Props extends InputProps, DataProps {}
+export interface Props extends InputProps {}
 
 interface State {
   tabs: ITab[];
@@ -59,11 +50,6 @@ class SettingsPage extends React.PureComponent<
           url: '/admin/settings/registration',
         },
         {
-          label: formatMessage(messages.tabTopics),
-          url: '/admin/settings/topics',
-          name: 'topics',
-        },
-        {
           name: 'areas',
           label: formatMessage(messages.tabAreas),
           url: '/admin/settings/areas',
@@ -73,47 +59,21 @@ class SettingsPage extends React.PureComponent<
           label: formatMessage(messages.tabPages),
           url: '/admin/settings/pages',
         },
+        // TODO check widget's feature flag
         {
           label: formatMessage(messages.tabWidgets),
           url: '/admin/settings/widgets',
           name: 'widgets',
+          feature: 'widgets',
         },
       ],
     };
   }
 
-  getTabs = () => {
-    const { widgetsEnabled, customTopicsEnabled } = this.props;
-    const { tabs } = this.state;
-
-    const tabHideConditions = {
-      topics: function isTopicsTabHidden() {
-        if (!customTopicsEnabled) {
-          return true;
-        }
-
-        return false;
-      },
-      widgets: function isWidgetsTabHidden() {
-        if (!widgetsEnabled) {
-          return true;
-        }
-
-        return false;
-      },
-    };
-
-    const tabNames = tabs.map((tab) => tab.name);
-
-    let enabledTabs: ITab[] = [];
-
-    tabNames.forEach((tabName) => {
-      if (tabName && tabHideConditions?.[tabName]?.()) {
-        enabledTabs = reject(enabledTabs, { name: tabName });
-      }
-    });
-
-    return enabledTabs;
+  handleData = (insertTabOptions: InsertConfigurationOptions<ITab>) => {
+    this.setState(({ tabs }) => ({
+      tabs: insertConfiguration(insertTabOptions)(tabs),
+    }));
   };
 
   render() {
@@ -125,26 +85,21 @@ class SettingsPage extends React.PureComponent<
     };
 
     return (
-      <TabbedResource resource={resource} tabs={this.getTabs()}>
-        <HelmetIntl
-          title={messages.helmetTitle}
-          description={messages.helmetDescription}
+      <>
+        <Outlet
+          id="app.containers.Admin.settings.tabs"
+          onData={this.handleData}
         />
-        {children}
-      </TabbedResource>
+        <TabbedResource resource={resource} tabs={this.state.tabs}>
+          <HelmetIntl
+            title={messages.helmetTitle}
+            description={messages.helmetDescription}
+          />
+          {children}
+        </TabbedResource>
+      </>
     );
   }
 }
 
-const SettingsPageWithHocs = withRouter(injectIntl(SettingsPage));
-
-const Data = adopt<DataProps, InputProps>({
-  widgetsEnabled: <GetFeatureFlag name="widgets" />,
-  customTopicsEnabled: <GetFeatureFlag name="custom_topics" />,
-});
-
-export default (inputProps: InputProps & WithRouterProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <SettingsPageWithHocs {...inputProps} {...dataProps} />}
-  </Data>
-);
+export default withRouter(injectIntl(SettingsPage));
