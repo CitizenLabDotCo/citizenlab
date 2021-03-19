@@ -8,8 +8,11 @@ module ProjectFolders
       LogActivityJob.perform_later(folder, 'created', user, folder.created_at.to_i)
     end
 
-    def after_update folder, user
+    def before_update folder, user
       folder.description_multiloc = TextImageService.new.swap_data_images(folder, :description_multiloc)
+    end
+
+    def after_update folder, user
       LogActivityJob.perform_later(folder, 'changed', user, folder.updated_at.to_i)
     end
 
