@@ -1,5 +1,5 @@
 class WebApi::V1::AdminPublicationSerializer < WebApi::V1::BaseSerializer
-  attributes :ordering, :publication_status
+  attributes :ordering, :publication_status, :depth
 
   attribute :publication_title_multiloc do |object|
     object.publication.title_multiloc
