@@ -135,7 +135,7 @@ export default function useAdminPublicationsPrefetchProjects({
   }, [pageNumber, pageSize, areas, publicationStatuses, rootLevelOnly]);
 
   const childrenOf = useCallback(
-    ({ publicationId: publicationId }: ChildrenOfProps) => {
+    ({ id: publicationId }: ChildrenOfProps) => {
       if (isNilOrError(list)) return [];
 
       const publication = list.find(({ id }) => id === publicationId);
