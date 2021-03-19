@@ -15,7 +15,7 @@ interface Props {
   graphqlTenantLocales: string[];
 }
 
-const ProjectTemplatesContainer = memo(
+const CreateProjectFromTemplate = memo(
   ({ graphqlTenantLocales, className }: Props): ReactElement => {
     const tenant = useAppConfiguration();
 
@@ -183,17 +183,17 @@ const ProjectTemplatesContainer = memo(
   }
 );
 
-const ProjectTemplatesContainerWithGraphqlLocales = memo((props) => {
+const CreateProjectFromTemplateWithGraphqlLocales = memo((props) => {
   const graphqlTenantLocales = useGraphqlTenantLocales();
 
   if (isNilOrError(graphqlTenantLocales)) return null;
 
   return (
-    <ProjectTemplatesContainer
+    <CreateProjectFromTemplate
       graphqlTenantLocales={graphqlTenantLocales}
       {...props}
     />
   );
 });
 
-export default ProjectTemplatesContainerWithGraphqlLocales;
+export default CreateProjectFromTemplateWithGraphqlLocales;

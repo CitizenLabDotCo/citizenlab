@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
-import ProjectTemplates from './admin/containers';
+import CreateProjectFromTemplate from './admin/containers/CreateProjectFromTemplate';
 import Tab from './admin/components/Tab';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import { TTabName } from 'containers/Admin/projects/all/CreateProject';
@@ -56,11 +56,13 @@ const configuration: ModuleConfiguration = {
     ],
   },
   outlets: {
-    'app.containers.Admin.projects.all.container': ProjectTemplatePreviewContainerAdmin,
+    'app.containers.Admin.projects.all.container': () => {
+      return <ProjectTemplatePreviewContainerAdmin />;
+    },
     'app.containers.Admin.projects.all.createProject': (props) => (
       <RenderOnFeatureFlag>
         <RenderOnSelectedTabValue selectedTabValue={props.selectedTabValue}>
-          <ProjectTemplates />
+          <CreateProjectFromTemplate />
         </RenderOnSelectedTabValue>
       </RenderOnFeatureFlag>
     ),
