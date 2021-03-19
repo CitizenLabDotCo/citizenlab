@@ -1,4 +1,6 @@
 class Topic < ApplicationRecord
+  # Must be prepended first to work for class methods
+  Topic.prepend_if_ee 'CustomTopics::Patches::Topic'
   
   DEFAULT_CODES = %w(nature waste sustainability mobility technology economy housing public_space safety education culture health inclusion community services other)
   
@@ -37,5 +39,3 @@ class Topic < ApplicationRecord
     end
   end
 end
-
-Topic.prepend_if_ee 'CustomTopics::Patches::Topic'
