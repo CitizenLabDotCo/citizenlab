@@ -14,7 +14,7 @@ export interface InputProps {
   pageSize?: number;
   areaFilter?: string[];
   publicationStatusFilter: PublicationStatus[];
-  topLevelOnly?: boolean;
+  rootLevelOnly?: boolean;
 }
 
 export type IAdminPublicationContent = {
@@ -53,7 +53,7 @@ export default function useAdminPublications({
   pageSize = 1000,
   areaFilter,
   publicationStatusFilter,
-  topLevelOnly,
+  rootLevelOnly,
 }: InputProps) {
   const [list, setList] = useState<
     IAdminPublicationContent[] | undefined | null
@@ -97,7 +97,7 @@ export default function useAdminPublications({
       'page[size]': pageSize,
     };
 
-    if (topLevelOnly) {
+    if (rootLevelOnly) {
       queryParameters['depth'] = 0;
     }
 
@@ -149,7 +149,7 @@ export default function useAdminPublications({
       });
 
     return () => subscription.unsubscribe();
-  }, [pageNumber, pageSize, areas, publicationStatuses, topLevelOnly]);
+  }, [pageNumber, pageSize, areas, publicationStatuses, rootLevelOnly]);
 
   const childrenOf = useCallback(
     ({ id: publicationId }: ChildrenOfProps) => {

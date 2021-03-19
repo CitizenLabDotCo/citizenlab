@@ -66,7 +66,7 @@ const Data = adopt<DataProps, InputProps>({
   adminPublications: (
     <GetAdminPublications
       publicationStatusFilter={['draft', 'published', 'archived']}
-      topLevelOnly
+      rootLevelOnly
     />
   ),
 });
