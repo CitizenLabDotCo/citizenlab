@@ -51,7 +51,7 @@ const configuration: ModuleConfiguration = {
         path: 'templates/:projectTemplateId',
         name: 'admin project template preview page',
         container: () =>
-          import('./admin/containers/ProjectTemplatePreviewPageAdmin'),
+          import('./admin/containers/ProjectTemplatePreviewAdmin'),
       },
     ],
   },
