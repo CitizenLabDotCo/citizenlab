@@ -106,6 +106,7 @@ PATH
   remote: engines/idea_assignment
   specs:
     idea_assignment (0.1.0)
+      email_campaigns
       rails (~> 6.0.3, >= 6.0.3.2)
 
 PATH
