@@ -522,7 +522,12 @@ const Data = adopt<DataProps, InputProps>({
   tenant: <GetAppConfiguration />,
   windowSize: <GetWindowSize />,
   adminPublications: ({ render, ...props }) => (
-    <GetAdminPublications pageSize={6} prefetchProjects topLevelOnly {...props}>
+    <GetAdminPublications
+      pageSize={6}
+      prefetchProjects
+      rootLevelOnly
+      {...props}
+    >
       {render}
     </GetAdminPublications>
   ),
