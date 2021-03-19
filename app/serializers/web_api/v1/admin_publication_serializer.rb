@@ -30,8 +30,5 @@ class WebApi::V1::AdminPublicationSerializer < WebApi::V1::BaseSerializer
 
   has_many :children, record_type: :admin_publication
 end
-<<<<<<< HEAD
-=======
 
 WebApi::V1::AdminPublicationSerializer.include_if_ee('ProjectVisibility::Patches::WebApi::V1::AdminPublicationSerializer')
->>>>>>> 4982a269decde0c8b6fa514afdd126b2d28129dd
