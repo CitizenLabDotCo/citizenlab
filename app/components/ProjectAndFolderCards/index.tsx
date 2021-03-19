@@ -283,17 +283,17 @@ class ProjectAndFolderCards extends PureComponent<
 
     if (
       !isNilOrError(adminPublications) &&
-      adminPublications.topLevel &&
-      adminPublications.topLevel.length > 0 &&
+      adminPublications.list &&
+      adminPublications.list.length > 0 &&
       windowSize &&
       layout === 'dynamic'
     ) {
-      const initialCount = size(adminPublications.topLevel.slice(0, 6));
+      const initialCount = size(adminPublications.list.slice(0, 6));
       const isOdd = (number: number) => number % 2 === 1;
       const biggerThanSmallTablet = windowSize >= viewportWidths.smallTablet;
       const biggerThanLargeTablet = windowSize >= viewportWidths.largeTablet;
 
-      const cardSizes = adminPublications.topLevel.map((_project, index) => {
+      const cardSizes = adminPublications.list.map((_project, index) => {
         let cardSize: 'small' | 'medium' | 'large' =
           biggerThanSmallTablet && !biggerThanLargeTablet ? 'medium' : 'small';
 
@@ -370,13 +370,8 @@ class ProjectAndFolderCards extends PureComponent<
   render() {
     const { cardSizes, areas } = this.state;
     const { tenant, showTitle, layout, theme, adminPublications } = this.props;
-    const {
-      loadingInitial,
-      loadingMore,
-      hasMore,
-      topLevel,
-    } = adminPublications;
-    const hasPublications = topLevel && topLevel.length > 0;
+    const { loadingInitial, loadingMore, hasMore, list } = adminPublications;
+    const hasPublications = list && list.length > 0;
     const objectFitCoverSupported =
       window['CSS'] && CSS.supports('object-fit: cover');
 
@@ -437,9 +432,9 @@ class ProjectAndFolderCards extends PureComponent<
             </EmptyContainer>
           )}
 
-          {!loadingInitial && hasPublications && topLevel && (
+          {!loadingInitial && hasPublications && list && (
             <ProjectsList id="e2e-projects-list">
-              {topLevel.map((item: IAdminPublicationContent, index: number) => {
+              {list.map((item: IAdminPublicationContent, index: number) => {
                 const projectOrFolderId = item.publicationId;
                 const projectOrFolderType = item.publicationType;
                 const size =
@@ -475,14 +470,14 @@ class ProjectAndFolderCards extends PureComponent<
               // Ideally would have been solved with CSS grid, but... IE11
               */}
               {!hasMore &&
-                (layout === 'threecolumns' || topLevel.length > 6) &&
-                (topLevel.length + 1) % 3 === 0 && (
+                (layout === 'threecolumns' || list.length > 6) &&
+                (list.length + 1) % 3 === 0 && (
                   <MockProjectCard className={layout} />
                 )}
 
               {!hasMore &&
-                (layout === 'threecolumns' || topLevel.length > 6) &&
-                (topLevel.length - 1) % 3 === 0 && (
+                (layout === 'threecolumns' || list.length > 6) &&
+                (list.length - 1) % 3 === 0 && (
                   <>
                     <MockProjectCard className={layout} />
                     <MockProjectCard className={layout} />
@@ -527,7 +522,7 @@ const Data = adopt<DataProps, InputProps>({
   tenant: <GetAppConfiguration />,
   windowSize: <GetWindowSize />,
   adminPublications: ({ render, ...props }) => (
-    <GetAdminPublications pageSize={6} prefetchProjects {...props}>
+    <GetAdminPublications pageSize={6} prefetchProjects topLevelOnly {...props}>
       {render}
     </GetAdminPublications>
   ),

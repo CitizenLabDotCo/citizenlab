@@ -22,13 +22,11 @@ describe('Landing page - not signed in', () => {
     cy.get('.e2e-signed-out-header-subtitle');
 
     // shows 6 project cards in the correct layout configuration
-    cy.get('.e2e-admin-publication-card').should('have.length', 6);
+    cy.get('.e2e-admin-publication-card').should('have.length', 4);
     cy.get('.e2e-admin-publication-card').eq(0).should('have.class', 'large');
-    cy.get('.e2e-admin-publication-card').eq(1).should('have.class', 'medium');
-    cy.get('.e2e-admin-publication-card').eq(2).should('have.class', 'medium');
+    cy.get('.e2e-admin-publication-card').eq(1).should('have.class', 'small');
+    cy.get('.e2e-admin-publication-card').eq(2).should('have.class', 'small');
     cy.get('.e2e-admin-publication-card').eq(3).should('have.class', 'small');
-    cy.get('.e2e-admin-publication-card').eq(4).should('have.class', 'small');
-    cy.get('.e2e-admin-publication-card').eq(5).should('have.class', 'small');
 
     // shows a "show more" button underneath the project cards
     cy.get('.e2e-project-cards-show-more-button');
@@ -58,25 +56,25 @@ describe('Landing page - signed in', () => {
     // shows the "complete your profile" header by default
     cy.get('.e2e-signed-in-header');
     cy.get(
-      '#e2e-singed-in-header-verifiaction .e2e-singed-in-header-accept-btn'
+      '#e2e-signed-in-header-verification .e2e-signed-in-header-accept-btn'
     ).click();
     cy.get('#e2e-verification-wizard-root');
     cy.get('.e2e-modal-close-button').click();
     cy.get(
-      '#e2e-singed-in-header-verifiaction .e2e-singed-in-header-verification-skip-btn'
+      '#e2e-signed-in-header-verification .e2e-signed-in-header-verification-skip-btn'
     ).click();
     cy.get(
-      '#e2e-singed-in-header-complete-profile .e2e-singed-in-header-accept-btn a'
+      '#e2e-signed-in-header-complete-profile .e2e-signed-in-header-accept-btn a'
     )
       .should('have.attr', 'href')
       .and('include', '/en/profile/edit');
 
     // shows the "custom CTA" header when skipping the "complete your profile" header
-    cy.get('#e2e-singed-in-header-complete-profile')
-      .get('.e2e-singed-in-header-complete-skip-btn')
+    cy.get('#e2e-signed-in-header-complete-profile')
+      .get('.e2e-signed-in-header-complete-skip-btn')
       .click();
     cy.wait(1000);
-    cy.get('#e2e-singed-in-header-default-cta');
+    cy.get('#e2e-signed-in-header-default-cta');
   });
 
   after(() => {

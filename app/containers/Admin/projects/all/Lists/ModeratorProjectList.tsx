@@ -20,8 +20,9 @@ import messages from '../messages';
 interface Props {}
 
 const ModeratorProjectList = memo<Props>(() => {
-  const { topLevel: topLevelAdminPublications } = useAdminPublications({
+  const { list: topLevelAdminPublications } = useAdminPublications({
     publicationStatusFilter: ['published', 'draft', 'archived'],
+    topLevelOnly: true,
   });
   const isProjectFoldersEnabled = useFeatureFlag('project_folders');
 

@@ -120,7 +120,7 @@ class AdminFolderProjectsList extends Component<
   render() {
     const { adminPublications, authUser, projectFolder } = this.props;
     const { processing } = this.state;
-    const { topLevel: topLevelPublications } = adminPublications;
+    const { list: topLevelPublications } = adminPublications;
 
     if (isNilOrError(projectFolder)) return null;
 
@@ -271,7 +271,10 @@ const Data = adopt<DataProps, WithRouterProps>({
     </GetProjectFolder>
   ),
   adminPublications: ({ render }) => (
-    <GetAdminPublications publicationStatusFilter={publicationStatuses}>
+    <GetAdminPublications
+      publicationStatusFilter={publicationStatuses}
+      topLevelOnly
+    >
       {render}
     </GetAdminPublications>
   ),
