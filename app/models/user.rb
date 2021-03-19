@@ -222,8 +222,9 @@ class User < ApplicationRecord
     admin? && !!(email =~ /citizen\-?lab\.(eu|be|fr|ch|de|nl|co|uk|us|cl|dk|pl)$/i)
   end
 
-  def project_moderator? project_id=nil
-    !!self.roles.find{|r| r["type"] == "project_moderator" && (project_id.nil? || r["project_id"] == project_id)}
+  def project_moderator?(project_id = nil)
+    moderated_projects = moderatable_project_ids
+    project_id ? moderated_projects.include?(project_id) : moderated_projects.present?
   end
 
   def admin_or_moderator? project_id
@@ -247,9 +248,9 @@ class User < ApplicationRecord
   end
 
   def moderatable_project_ids
-    self.roles
-      .select{|role| role['type'] == 'project_moderator'}
-      .map{|role| role['project_id']}.compact
+    roles.select { |role| role['type'] == 'project_moderator' }
+         .map { |role| role['project_id'] }
+         .compact
   end
 
   def moderatable_projects
