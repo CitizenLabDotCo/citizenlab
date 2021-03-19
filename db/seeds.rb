@@ -270,6 +270,12 @@ if ['public','example_org'].include? Apartment::Tenant.current
         destinations: 'InvasiveTracking',
         container_id: ENV.fetch("DEFAULT_GTM_CONTAINER_ID")
       },
+      matomo: {
+        enabled: true,
+        allowed: true,
+        product_site_id: ENV.fetch('MATOMO_PRODUCT_SITE_ID', ''),
+        tenant_site_id: ENV.fetch('DEFAULT_MATOMO_TENANT_SITE_ID', '')
+      },
       smart_groups: {
         enabled: true,
         allowed: true
@@ -348,6 +354,11 @@ if ['public','example_org'].include? Apartment::Tenant.current
             environment: 'integration',
             identifier: 'fake_identifier',
             secret: 'fake_secret'
+          },
+          {
+            name: 'clave_unica',
+            client_id: 'fake_identifier',
+            client_secret: 'fake_secret'
           },
           {
             name: 'bogus'
@@ -887,7 +898,7 @@ if Apartment::Tenant.current == 'localhost'
     InitiativeStatusService.new.automated_transitions!
 
     10.times do |i|
-      Verification::IdCard.create!(card_id: i.to_s*3)
+      IdIdCardLookup::IdCard.create!(card_id: i.to_s*3)
     end
 
     3.times do |i|

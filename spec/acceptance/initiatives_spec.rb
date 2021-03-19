@@ -318,7 +318,6 @@ resource "Initiatives" do
   post "web_api/v1/initiatives" do
     before do
       create(:initiative_status, code: 'proposed')
-      PermissionsService.new.update_global_permissions
     end
 
     with_options scope: :initiative do
@@ -391,26 +390,23 @@ resource "Initiatives" do
       end
     end
 
-    describe do
+    example_group 'with granular permissions', skip: !CitizenLab.ee? do
+      let(:group) { create(:group) }
+
       before do
-        permission = Permission.where(permission_scope: nil, action: 'posting_initiative').first
-        permission.update!(permitted_by: 'groups', groups: create_list(:group, 2))
+        PermissionsService.new.update_global_permissions
+        Permission.find_by(permission_scope: nil, action: 'posting_initiative')
+                  .update!(permitted_by: 'groups', groups: [group])
       end
-      example_request "[error] Create an idea in a project with groups posting permission" do
+
+      example '[error] Not authorized to create an initiative', document: false do
+        do_request
         expect(response_status).to eq 401
       end
-    end
 
-    describe do
-      before do
-        permission = Permission.where(permission_scope: nil, action: 'posting_initiative').first
-        groups = create_list(:group, 2)
-        g = groups.first
-        g.add_member @user
-        g.save!
-        permission.update!(permitted_by: 'groups', groups: groups)
-      end
-      example_request "Create an idea in a project with groups posting permission" do
+      example 'Create an initiative (group permission)' do
+        group.add_member(@user).save!
+        do_request
         expect(response_status).to eq 201
       end
     end
@@ -420,7 +416,6 @@ resource "Initiatives" do
     before do
       create(:initiative_status, code: 'proposed')
       @initiative =  create(:initiative, author: @user)
-      PermissionsService.new.update_global_permissions
     end
 
     with_options scope: :initiative do
@@ -520,7 +515,6 @@ resource "Initiatives" do
   patch "web_api/v1/initiatives/:id" do
     before do
       @initiative =  create(:initiative, author: @user, publication_status: 'draft')
-      PermissionsService.new.update_global_permissions
     end
     parameter :publication_status, "Either #{Post::PUBLICATION_STATUSES.join(', ')}", required: true, scope: :initiative
     
@@ -537,7 +531,6 @@ resource "Initiatives" do
   delete "web_api/v1/initiatives/:id" do
     before do
       @initiative = create(:initiative_with_topics, author: @user, publication_status: 'published')
-      PermissionsService.new.update_global_permissions
     end
     let(:id) { @initiative.id }
 

@@ -65,6 +65,15 @@ GIT
   specs:
     que (1.0.0.beta4)
 
+GIT
+  remote: https://github.com/varvet/pundit
+  revision: 973b63b396c2a98099caf5eefd1c6841416eddfa
+  ref: 973b63b396c2a98099caf5eefd1c6841416eddfa
+  branch: master
+  specs:
+    pundit (2.1.0)
+      activesupport (>= 3.0.0)
+
 PATH
   remote: engines/admin_api
   specs:
@@ -133,6 +142,59 @@ PATH
       rails (~> 6.0.3, >= 6.0.3.2)
 
 PATH
+  remote: engines/granular_permissions
+  specs:
+    granular_permissions (0.1.0)
+      pundit (~> 2.0)
+      rails (~> 6.0.3, >= 6.0.3.2)
+
+PATH
+  remote: engines/id_bogus
+  specs:
+    id_bogus (0.1.0)
+      rails (~> 6.0.0)
+      verification
+
+PATH
+  remote: engines/id_bosa_fas
+  specs:
+    id_bosa_fas (0.1.0)
+      rails (~> 6.0.0)
+      verification
+
+PATH
+  remote: engines/id_clave_unica
+  specs:
+    id_clave_unica (0.1.0)
+      omniauth_openid_connect (~> 0.3.3)
+      rails (~> 6.0.0)
+      verification
+
+PATH
+  remote: engines/id_cow
+  specs:
+    id_cow (0.1.0)
+      rails (~> 6.0.0)
+      savon (~> 2.12.0)
+      verification
+
+PATH
+  remote: engines/id_franceconnect
+  specs:
+    id_franceconnect (0.1.0)
+      rails (~> 6.0.0)
+      verification
+
+PATH
+  remote: engines/id_id_card_lookup
+  specs:
+    id_id_card_lookup (0.1.0)
+      admin_api
+      rails (~> 6.0.0)
+      savon (~> 2.12.0)
+      verification
+
+PATH
   remote: engines/machine_translations
   specs:
     machine_translations (0.1.0)
@@ -140,6 +202,12 @@ PATH
       apartment (~> 2.2.1)
       easy_translate
       pundit (~> 2.0)
+      rails (~> 6.0.0)
+
+PATH
+  remote: engines/matomo
+  specs:
+    matomo (0.1.0)
       rails (~> 6.0.0)
 
 PATH
@@ -181,6 +249,12 @@ PATH
   remote: engines/project_folders
   specs:
     project_folders (0.1.0)
+      rails (~> 6.0.3, >= 6.0.3.2)
+
+PATH
+  remote: engines/project_visibility
+  specs:
+    project_visibility (0.1.0)
       rails (~> 6.0.3, >= 6.0.3.2)
 
 PATH
@@ -228,9 +302,9 @@ PATH
   specs:
     verification (0.1.0)
       apartment (~> 2.2.1)
+      granular_permissions
       pundit (~> 2.0)
       rails (~> 6.0.0)
-      savon (~> 2.12.0)
 
 PATH
   remote: engines/volunteering
@@ -356,6 +430,8 @@ GEM
       rubyzip (~> 1.2, >= 1.2.1)
     bcrypt (3.1.13)
     bindata (2.4.4)
+    binding_of_caller (0.8.0)
+      debug_inspector (>= 0.0.1)
     bootsnap (1.4.6)
       msgpack (~> 1.0)
     builder (3.2.4)
@@ -391,6 +467,7 @@ GEM
       addressable
     dalli (2.7.9)
     database_cleaner (1.7.0)
+    debug_inspector (1.0.0)
     declarative (0.0.20)
     declarative-option (0.1.0)
     diff-lcs (1.3)
@@ -461,7 +538,7 @@ GEM
       mime-types (~> 3.0)
       multi_xml (>= 0.5.2)
     httpclient (2.8.3)
-    httpi (2.4.4)
+    httpi (2.4.5)
       rack
       socksify
     i18n (1.7.1)
@@ -591,11 +668,12 @@ GEM
     pry (0.13.1)
       coderay (~> 1.1)
       method_source (~> 1.0)
+    pry-stack_explorer (0.4.13)
+      binding_of_caller (~> 0.7)
+      pry (~> 0.13)
     public_suffix (4.0.1)
     puma (4.3.5)
       nio4r (~> 2.0)
-    pundit (2.0.0)
-      activesupport (>= 3.0.0)
     que-web (0.9.3)
       que (~> 1.0.0.beta3)
       sinatra
@@ -736,7 +814,7 @@ GEM
     ruby_dep (1.5.0)
     rubyzip (1.3.0)
     safe_yaml (1.0.4)
-    savon (2.12.0)
+    savon (2.12.1)
       akami (~> 1.2)
       builder (>= 2.1.2)
       gyoku (~> 1.2)
@@ -788,6 +866,7 @@ GEM
       activesupport (>= 3)
       attr_required (>= 0.0.5)
       httpclient (>= 2.4)
+    test-prof (1.0.2)
     thor (1.0.1)
     thread (0.2.2)
     thread_safe (0.3.6)
@@ -807,7 +886,8 @@ GEM
     validate_url (1.0.8)
       activemodel (>= 3.0.0)
       public_suffix
-    wasabi (3.5.0)
+    wasabi (3.6.1)
+      addressable
       httpi (~> 2.0)
       nokogiri (>= 1.4.2)
     webfinger (1.1.0)
@@ -860,8 +940,15 @@ DEPENDENCIES
   fog-aws
   frontend!
   geographic_dashboard!
+  granular_permissions!
   groupdate
   ice_cube!
+  id_bogus!
+  id_bosa_fas!
+  id_clave_unica!
+  id_cow!
+  id_franceconnect!
+  id_id_card_lookup!
   intercom (~> 4.1)
   kaminari (~> 1.2)
   knock!
@@ -870,6 +957,7 @@ DEPENDENCIES
   listen (>= 3.0.5, < 3.2)
   machine_translations!
   mailgun-ruby (~> 1.2.0)
+  matomo!
   mini_magick (~> 4.9)
   mjml-rails (~> 4.4)
   multi_tenancy!
@@ -888,10 +976,12 @@ DEPENDENCIES
   polls!
   premailer-rails (~> 1.10.3)
   project_folders!
+  project_visibility!
   pry
+  pry-stack_explorer
   public_api!
   puma
-  pundit (~> 2.0)
+  pundit!
   que!
   que-web
   rack-attack (~> 6)
@@ -925,6 +1015,7 @@ DEPENDENCIES
   spring-watcher-listen (~> 2.0.0)
   surveys!
   tagging!
+  test-prof (~> 1.0)
   verification!
   volunteering!
   webmock (~> 3.4)
