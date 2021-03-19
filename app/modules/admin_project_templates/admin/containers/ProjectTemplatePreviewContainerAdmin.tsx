@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import ProjectTemplatePreviewPageAdmin from './ProjectTemplatePreviewPageAdmin';
+import ProjectTemplatePreviewAdmin from './ProjectTemplatePreviewAdmin';
 import eventEmitter from 'utils/eventEmitter';
 import useLocale from 'hooks/useLocale';
 import { isNilOrError } from 'utils/helperUtils';
@@ -11,7 +11,7 @@ interface Props {}
 
 const useCapture = false;
 
-const Component = ({}: Props) => {
+const Component = (_props: Props) => {
   const locale = useLocale();
   const [selectedProjectTemplateId, setSelectedProjectTemplateId] = useState<
     string | null
@@ -19,9 +19,11 @@ const Component = ({}: Props) => {
   const [url, setUrl] = useState<string | null>(null);
   const [goBackUrl, setGoBackUrl] = useState<string | null>(null);
   const [unlisten, setUnlisten] = useState<Function | null>(null);
+
   const closeTemplatePreview = () => {
     setSelectedProjectTemplateId(null);
   };
+
   const cleanup = () => {
     if (goBackUrl) {
       window.removeEventListener('popstate', handlePopstateEvent, useCapture);
@@ -40,6 +42,7 @@ const Component = ({}: Props) => {
       setUnlisten(null);
     }
   };
+
   const handlePopstateEvent = () => {
     closeTemplatePreview();
   };
@@ -95,7 +98,7 @@ const Component = ({}: Props) => {
 
   if (selectedProjectTemplateId) {
     return (
-      <ProjectTemplatePreviewPageAdmin
+      <ProjectTemplatePreviewAdmin
         projectTemplateId={selectedProjectTemplateId}
         goBack={closeTemplatePreview}
       />
