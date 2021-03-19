@@ -21,7 +21,7 @@ FactoryBot.define do
     after(:create) do |folder, evaluator|
       if evaluator.projects
         AdminPublication.where(publication: evaluator.projects)
-          .update_all(parent_id: folder.admin_publication.id)
+                        .update(parent_id: folder.admin_publication.id)
       end
     end
   end
