@@ -17,4 +17,9 @@ class AdminPublicationsFilteringService
     project_publications.or(other_publications)
   end
 
+  add_filter('depth') do |scope, options|
+    return scope unless options[:depth]
+
+    scope.where(depth: options[:depth])
+  end
 end
