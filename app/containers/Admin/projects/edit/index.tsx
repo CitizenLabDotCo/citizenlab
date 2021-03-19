@@ -245,25 +245,6 @@ export class AdminProjectEdition extends PureComponent<
 
         return false;
       },
-      map: function isMapTabHidden() {
-        if (
-          (processType === 'continuous' &&
-            participationMethod !== 'ideation' &&
-            participationMethod !== 'budgeting') ||
-          (processType === 'timeline' &&
-            !isNilOrError(phases) &&
-            phases.filter((phase) => {
-              return (
-                phase.attributes.participation_method === 'ideation' ||
-                phase.attributes.participation_method === 'budgeting'
-              );
-            }).length === 0)
-        ) {
-          return true;
-        }
-
-        return false;
-      },
       phases: function isPhasesTabHidden() {
         if (processType !== 'timeline') {
           return true;
