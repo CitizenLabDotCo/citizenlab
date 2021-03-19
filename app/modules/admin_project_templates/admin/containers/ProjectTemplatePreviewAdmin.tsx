@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useState } from 'react';
+import React, { memo, useCallback, useEffect, useState } from 'react';
 import { get } from 'lodash-es';
 import { withRouter, WithRouterProps } from 'react-router';
 import clHistory from 'utils/cl-router/history';
@@ -37,10 +37,11 @@ export interface Props {
   projectTemplateId: string;
   goBack?: () => void;
   className?: string;
+  onRender?: (hasRendered: boolean) => void;
 }
 
 const ProjectTemplatePreviewAdmin = memo<Props & WithRouterProps>(
-  ({ params, projectTemplateId, goBack, className }) => {
+  ({ params, projectTemplateId, goBack, className, onRender }) => {
     // OS-105: needed?
     const templateId: string | undefined =
       projectTemplateId || get(params, 'projectTemplateId');
@@ -60,6 +61,12 @@ const ProjectTemplatePreviewAdmin = memo<Props & WithRouterProps>(
     const onGoBack = useCallback(() => {
       goBack ? goBack() : clHistory.push('/admin/projects');
     }, []);
+
+    useEffect(() => {
+      if (onRender) {
+        onRender(true);
+      }
+    }, [onRender]);
 
     if (templateId) {
       return (

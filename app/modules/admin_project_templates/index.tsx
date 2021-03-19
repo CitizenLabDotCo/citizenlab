@@ -56,8 +56,8 @@ const configuration: ModuleConfiguration = {
     ],
   },
   outlets: {
-    'app.containers.Admin.projects.all.container': () => {
-      return <ProjectTemplatePreviewContainerAdmin />;
+    'app.containers.Admin.projects.all.container': (props) => {
+      return <ProjectTemplatePreviewContainerAdmin onRender={props.onRender} />;
     },
     'app.containers.Admin.projects.all.createProject': (props) => (
       <RenderOnFeatureFlag>

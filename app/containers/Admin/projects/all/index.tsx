@@ -1,4 +1,4 @@
-import React, { memo, Suspense } from 'react';
+import React, { memo, Suspense, useState } from 'react';
 import { withRouter, WithRouterProps } from 'react-router';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -66,11 +66,15 @@ const AdminProjectsList = memo(
     const userIsAdmin = !isNilOrError(authUser)
       ? isAdmin({ data: authUser })
       : false;
+    const [outletRendered, setOutletRendered] = useState(false);
+    const handleOnRender = (hasRendered: boolean) => {
+      setOutletRendered(hasRendered);
+    };
 
     return (
       <Container className={className}>
         <CreateAndEditProjectsContainer
-          className={projectTemplateId ? 'hidden' : ''}
+          className={outletRendered ? 'hidden' : ''}
         >
           <PageTitle>
             <FormattedMessage {...messages.overviewPageTitle} />
@@ -104,7 +108,10 @@ const AdminProjectsList = memo(
             </ListsContainer>
           </PageWrapper>
         </CreateAndEditProjectsContainer>
-        <Outlet id="app.containers.Admin.projects.all.container" />
+        <Outlet
+          id="app.containers.Admin.projects.all.container"
+          onRender={handleOnRender}
+        />
       </Container>
     );
   }
