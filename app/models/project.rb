@@ -1,6 +1,5 @@
 class Project < ApplicationRecord
   include ParticipationContext
-  include Maps::ProjectDecorator
   mount_base64_uploader :header_bg, ProjectHeaderBgUploader
 
   DESCRIPTION_PREVIEW_JSON_SCHEMA = ERB.new(File.read(Rails.root.join('config', 'schemas', 'project_description_preview.json_schema.erb'))).result(binding)
@@ -30,7 +29,6 @@ class Project < ApplicationRecord
   has_one :admin_publication, as: :publication, dependent: :destroy
   accepts_nested_attributes_for :admin_publication, update_only: true
 
-  VISIBLE_TOS = %w(public groups admins)
   PROCESS_TYPES = %w(timeline continuous)
   INTERNAL_ROLES = %w(open_idea_box)
 
@@ -38,7 +36,6 @@ class Project < ApplicationRecord
   validates :description_multiloc, multiloc: {presence: false}
   validates :description_preview_multiloc, multiloc: {presence: false}
   validates :slug, presence: true, uniqueness: true
-  validates :visible_to, presence: true, inclusion: {in: VISIBLE_TOS}
   validates :description_preview_multiloc, json: {
     schema: DESCRIPTION_PREVIEW_JSON_SCHEMA,
     message: ->(errors) { errors.map{|e| {fragment: e[:fragment], error: e[:failed_attribute], human_message: e[:message]} } },
@@ -52,7 +49,6 @@ class Project < ApplicationRecord
 
   before_validation :set_process_type, on: :create
   before_validation :generate_slug, on: :create
-  before_validation :set_visible_to, on: :create
   before_validation :sanitize_description_multiloc, if: :description_multiloc
   before_validation :sanitize_description_preview_multiloc, if: :description_preview_multiloc
   before_validation :strip_title
@@ -112,6 +108,12 @@ class Project < ApplicationRecord
     self
   end
 
+  def permission_scope
+    return TimelineService.new.current_phase(self) if timeline?
+    
+    self
+  end
+
   def allocated_budget
     Idea.from(ideas.select('budget * baskets_count as allocated_budget')).sum(:allocated_budget)
   end
@@ -157,10 +159,6 @@ class Project < ApplicationRecord
     self.description_preview_multiloc = service.remove_multiloc_empty_trailing_tags(self.description_preview_multiloc)
   end
 
-  def set_visible_to
-    self.visible_to ||= 'public'
-  end
-
   def set_process_type
     self.process_type ||= 'timeline'
   end
@@ -184,4 +182,6 @@ class Project < ApplicationRecord
   end
 end
 
+Project.include_if_ee('CustomMaps::Extensions::Project')
 Project.prepend_if_ee('ProjectFolders::Patches::Project')
+Project.include_if_ee('ProjectVisibility::Patches::Project')

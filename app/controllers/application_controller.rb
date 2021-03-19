@@ -46,8 +46,10 @@ class ApplicationController < ActionController::API
     render json: { errors: { base: [{ error: exception.error_key, message: exception.message }] } }, status: exception.code
   end
 
-  def user_not_authorized
-    render json: { errors: { base: [{ error: 'Unauthorized!' }] } }, status: :unauthorized
+  # @param [Pundit::NotAuthorized] exception
+  def user_not_authorized(exception)
+    reason = exception.reason || 'Unauthorized!'
+    render json: { errors: { base: [{ error: reason }] } }, status: :unauthorized
   end
 
   # Used by semantic logger to include in every log line

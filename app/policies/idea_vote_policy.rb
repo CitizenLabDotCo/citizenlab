@@ -1,5 +1,6 @@
-class IdeaVotePolicy < ApplicationPolicy
+# frozen_string_literal: true
 
+class IdeaVotePolicy < ApplicationPolicy
   class Scope
     attr_reader :user, :scope
 
@@ -20,46 +21,48 @@ class IdeaVotePolicy < ApplicationPolicy
   end
 
   def create?
-    (user&.active? && (record.user_id == user.id) && check_voting_allowed(record, user))
+    return unless active? && owner?
+    return unless record.votable
+
+    reason = participation_context_service.voting_disabled_reason_for_idea_vote(record, user)
+    reason ? raise_not_authorized(reason) : true
   end
 
   def show?
-    (user&.active? && (record.user_id == user.id || user.admin?))
+    active? && (owner? || admin?)
   end
 
   def up?
-    (user&.active? && (record.user_id == user.id) && check_changing_votes_allowed(record, user))
+    return unless active? && owner?
+    return unless record.votable
+
+    reason = changing_vote_disabled?(record)
+    reason ? raise_not_authorized(reason) : true
   end
 
-  def down?
-    (user&.active? && (record.user_id == user.id) && check_changing_votes_allowed(record, user))
+  def down? 
+    up?
   end
 
   def destroy?
-    (user&.active? && (record.user_id == user.id) && check_cancelling_votes_allowed(record, user))
-  end
+    return unless active? && owner?
+    return unless (idea = record.votable)
 
+    reason = participation_context_service.cancelling_votes_disabled_reason_for_idea(idea, user)
+    reason ? raise_not_authorized(reason) : true
+  end
 
   private
 
-  def check_changing_votes_allowed vote, user
-    check_voting_allowed(vote, user) && check_cancelling_votes_allowed(vote, user)
+  def changing_vote_disabled?(vote)
+    reason = participation_context_service.voting_disabled_reason_for_idea_vote(vote, user)
+    if (idea = vote.votable)
+      reason ||= participation_context_service.cancelling_votes_disabled_reason_for_idea(idea, user)
+    end
+    reason
   end
 
-  def check_voting_allowed vote, user
-    pcs = ParticipationContextService.new
-    # Not using voting_disabled_reason_for_idea because
-    # voting_disabled_reason_for_idea_vote also checks if
-    # downvoting is disabled (and therefore needs the
-    # vote object).
-    vote.votable && !pcs.voting_disabled_reason_for_idea_vote(vote, user)
+  def participation_context_service
+    @participation_context_service ||= ParticipationContextService.new
   end
-
-  def check_cancelling_votes_allowed vote, user
-    pcs = ParticipationContextService.new
-
-    idea = vote.votable
-    idea && !pcs.cancelling_votes_disabled_reason_for_idea(idea, user)
-  end
-
 end
