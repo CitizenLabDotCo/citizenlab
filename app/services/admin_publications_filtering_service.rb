@@ -18,6 +18,10 @@ class AdminPublicationsFilteringService
   end
 
   add_filter('depth') do |scope, options|
+    @children_counts = Hash.new(0).tap do |counts|
+      parent_ids = scope.pluck(:parent_id).compact
+      parent_ids.each { |id| counts[id] += 1 }
+    end
     options[:depth] ? scope.where(depth: options[:depth]) : scope
   end
 end
