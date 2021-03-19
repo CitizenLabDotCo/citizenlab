@@ -130,7 +130,7 @@ class AdminFolderProjectsList extends Component<
       // And can't a folder have multiple relationships (projects inside of the folder)?
       // Also, we should try to not use 'id'. It wasn't clear to me what this id means
       // was it a folder id? project id? both? I've changed it to publicationId now
-      publicationId: projectFolder.relationships.admin_publication.data?.id,
+      id: projectFolder.relationships.admin_publication.data?.id,
     });
     const otherProjects = !isNilOrError(allPublications)
       ? allPublications.filter(
