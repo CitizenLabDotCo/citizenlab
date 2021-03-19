@@ -176,7 +176,7 @@ const ProjectFolderShowPage = memo<{
     }
 
     return adminPublicationChildrenOf({
-      id: projectFolder.relationships.admin_publication?.data?.id,
+      publicationId: projectFolder.relationships.admin_publication?.data?.id,
     });
   }, [adminPublicationChildrenOf, projectFolder]);
 
