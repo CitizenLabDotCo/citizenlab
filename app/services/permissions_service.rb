@@ -1,154 +1,102 @@
+# frozen_string_literal: true
+
 class PermissionsService
 
-  ACTIONS = {
-    'information' => %w(),
-    'ideation' => %w(posting_idea voting_idea commenting_idea),
-    'survey' => %w(taking_survey),
-    'poll' => %w(taking_poll),
-    'budgeting' => %w(commenting_idea budgeting),
-    'volunteering' => %w(),
-    nil => %w(posting_initiative voting_initiative commenting_initiative)
-  }
+  class << self
+    def register_scope_type(scope_spec)
+      scope_spec_hash[scope_spec.scope_type] = scope_spec
+    end
 
-  POSTING_DISABLED_REASONS = {
-    not_permitted: 'not_permitted',
-    not_signed_in: 'not_signed_in',
-    not_verified: 'not_verified'
-  }
+    def clear_scope_types
+      @scope_spec_hash = {}
+    end
 
-  COMMENTING_DISABLED_REASONS = {
-    not_permitted: 'not_permitted',
-    not_signed_in: 'not_signed_in',
-    not_verified: 'not_verified'
-  }
+    def scope_spec_hash
+      @scope_spec_hash ||= {}
+    end
 
-  VOTING_DISABLED_REASONS = {
-    not_permitted: 'not_permitted',
-    not_signed_in: 'not_signed_in',
-    not_verified: 'not_verified'
-  }
+    def scope_specs
+      scope_spec_hash.values
+    end
 
+    def scope_types
+      scope_spec_hash.keys
+    end
+
+    def scope_type_classes
+      scope_types.without(nil).map(&:constantize)
+    end
+
+    def actions(scope)
+      permission_scope_type = scope.nil? ? nil : scope.class.to_s
+      scope_spec_hash[permission_scope_type].actions(scope)
+    end
+
+    def all_actions
+      scope_specs.map(&:actions).flatten
+    end
+  end
 
   def initialize
     @verification_service = Verification::VerificationService.new
   end
 
-  def update_global_permissions
-    actions = ACTIONS[nil]
-    Permission.where(permission_scope: nil).where.not(action: actions).each(&:destroy!)
-    actions&.select do |action|
-      !Permission.where(permission_scope: nil).find_by action: action
-    end.map do |action|
-      Permission.create! action: action
-    end
+  def update_permissions_for_scope(scope)
+    actions = self.class.actions(scope)
+    remove_extras_actions(scope, actions)
+    add_missing_actions(scope, actions)
   end
 
-  def update_permissions_for_context participation_context
-    if participation_context.participation_context?
-      actions = ACTIONS[participation_context.participation_method]
-      participation_context.permissions.where.not(action: actions).each(&:destroy!)
-      actions&.select do |action|
-        !participation_context.permissions.find_by action: action
-      end.map do |action|
-        participation_context.permissions.create! action: action
-      end
-    end
+  def update_global_permissions
+    update_permissions_for_scope(nil)
   end
 
   def update_all_permissions
-    PermissionsService.new.update_global_permissions
-    Project.all.each do |project|
-      PermissionsService.new.update_permissions_for_context project
-      project.phases.each do |phase|
-        PermissionsService.new.update_permissions_for_context phase
-      end
+    update_global_permissions
+
+    self.class.scope_type_classes.each do |model_class|
+      model_class.all.each { |scope| update_permissions_for_scope(scope) }
     end
-    Permission.all.each do |permission|
-      permission.destroy! if !permission.valid?
-    end
+
+    Permission.select(&:invalid?).each(&:destroy!)
   end
 
-  def posting_initiative_disabled_reason user
-    if !(permission = global_permission('posting_initiative'))&.granted_to?(user)
-      if requires_verification?(permission) && !user&.verified
-        POSTING_DISABLED_REASONS[:not_verified]
-      elsif not_signed_in? user, permission
-        POSTING_DISABLED_REASONS[:not_signed_in]
-      else
-        POSTING_DISABLED_REASONS[:not_permitted]
-      end
-    else
-      nil
+  # +resource+ is +nil+ for actions that are run within the global scope and
+  # are not tied to any resource.
+  #
+  # @param [#permission_scope, NilClass] resource
+  # @return [String, nil] Reason if denied, nil otherwise.
+  def denied?(user, action, resource = nil)
+    scope = resource&.permission_scope
+    permission = Permission.includes(:groups).find_by(permission_scope: scope, action: action)
+
+    if permission.blank? && self.class.actions(scope)
+      update_permissions_for_scope(scope)
+      permission = Permission.includes(:groups).find_by(permission_scope: scope, action: action)
     end
-  end
 
-  def commenting_initiative_disabled_reason user
-    if !(permission = global_permission('commenting_initiative'))&.granted_to?(user)
-      if requires_verification?(permission) && !user&.verified
-        COMMENTING_DISABLED_REASONS[:not_verified]
-      elsif not_signed_in? user, permission
-        COMMENTING_DISABLED_REASONS[:not_signed_in]
-      else
-        COMMENTING_DISABLED_REASONS[:not_permitted]
-      end
-    else
-      nil
-    end
-  end
+    raise "Unknown action '#{action}' for resource: #{resource}" unless permission
 
-  def voting_initiative_disabled_reason user
-    if !(permission = global_permission('voting_initiative'))&.granted_to?(user)
-      if requires_verification?(permission) && !user&.verified
-        VOTING_DISABLED_REASONS[:not_verified]
-      elsif not_signed_in? user, permission
-        VOTING_DISABLED_REASONS[:not_signed_in]
-      else
-        VOTING_DISABLED_REASONS[:not_permitted]
-      end
-    else
-      nil
-    end
+    permission.denied?(user)
   end
-
-  def cancelling_votes_disabled_reason_for_initiative user
-    if !(permission = global_permission('voting_initiative'))&.granted_to?(user)
-      if requires_verification?(permission) && !user&.verified
-        VOTING_DISABLED_REASONS[:not_verified]
-      elsif not_signed_in? user, permission
-        VOTING_DISABLED_REASONS[:not_signed_in]
-      else
-        VOTING_DISABLED_REASONS[:not_permitted]
-      end
-    else
-      nil
-    end
-  end
-
-  def voting_disabled_reason_for_initiative_comment user
-    commenting_initiative_disabled_reason user
-  end
-
 
   private
 
-  def global_permission action
-    Permission.includes(:groups).find_by(permission_scope: nil, action: action)
+  def remove_extras_actions(scope, actions = nil)
+    actions ||= self.class.actions(scope)
+    Permission.where(permission_scope: scope)
+              .where.not(action: actions)
+              .destroy_all
   end
 
-  def requires_verification? permission
-    permission &&
-      permission.permitted_by == 'groups' &&
-      @verification_service.find_verification_group(groups_by_permission_id(permission.id))
+  def add_missing_actions(scope, actions = nil)
+    missing_actions = missing_actions(scope, actions)
+    permissions_hashes = missing_actions.map { |action| { action: action } }
+    Permission.create(permissions_hashes) { |p| p.permission_scope = scope }
   end
 
-  def groups_by_permission_id id
-    Permission.includes(:groups).find{|permission| permission.id == id}.groups
+  def missing_actions(scope, actions = nil)
+    actions ||= self.class.actions(scope)
+    actions - Permission.where(permission_scope: scope).pluck(:action)
   end
-
-  def not_signed_in? user, permission
-    permission &&
-      permission.permitted_by == 'users' &&
-      !user
-  end
-
 end

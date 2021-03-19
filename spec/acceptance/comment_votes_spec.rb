@@ -11,7 +11,7 @@ resource "Comment Votes" do
     token = Knock::AuthToken.new(payload: @user.to_token_payload).token
     header 'Authorization', "Bearer #{token}"
     header "Content-Type", "application/json"
-    @project = create(:continuous_project, with_permissions: true)
+    @project = create(:continuous_project)
     @idea = create(:idea, project: @project)
     @comment = create(:comment, post: @idea)
     @votes = create_list(:vote, 2, votable: @comment)
@@ -72,10 +72,7 @@ resource "Comment Votes" do
     end
 
     describe do
-      before do
-        @comment.update! post: create(:initiative)
-        PermissionsService.new.update_global_permissions
-      end
+      before { @comment.update!(post: create(:initiative)) }
 
       example_request "Create a vote on a comment of an initiative", document: false do
         expect(response_status).to eq 201
