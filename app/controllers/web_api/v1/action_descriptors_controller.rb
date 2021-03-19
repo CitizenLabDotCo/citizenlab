@@ -1,37 +1,25 @@
-class WebApi::V1::ActionDescriptorsController < ApplicationController
+# frozen_string_literal: true
 
+class WebApi::V1::ActionDescriptorsController < ApplicationController
   skip_after_action :verify_authorized, only: [:initiatives]
 
   def initiatives
     ps = PermissionsService.new
-    posting_disabled_reason = ps.posting_initiative_disabled_reason current_user
-    commenting_disabled_reason = ps.commenting_initiative_disabled_reason current_user
-    voting_disabled_reason = ps.voting_initiative_disabled_reason current_user
-    cancelling_votes_disabled_reason = ps.cancelling_votes_disabled_reason_for_initiative current_user
-    comment_voting_disabled_reason = ps.voting_disabled_reason_for_initiative_comment current_user
+    posting_disabled_reason = ps.denied?(current_user, 'posting_initiative')
+    commenting_disabled_reason = ps.denied?(current_user, 'commenting_initiative')
+    voting_disabled_reason = ps.denied?(current_user, 'voting_initiative')
 
-    render(json: {
-      posting_initiative: {
-        enabled: !posting_disabled_reason,
-        disabled_reason: posting_disabled_reason
-      },
-      commenting_initiative: {
-        enabled: !commenting_disabled_reason,
-        disabled_reason: commenting_disabled_reason
-      },
-      voting_initiative: {
-        enabled: !voting_disabled_reason,
-        disabled_reason: voting_disabled_reason
-      },
-      cancelling_initiative_votes: {
-        enabled: !cancelling_votes_disabled_reason,
-        disabled_reason: cancelling_votes_disabled_reason
-      },
-      comment_voting_initiative: {
-        enabled: !comment_voting_disabled_reason,
-        disabled_reason: comment_voting_disabled_reason
-      },
-    })
+    descriptors = {
+      posting_initiative: { disabled_reason: posting_disabled_reason },
+      commenting_initiative: { disabled_reason: commenting_disabled_reason },
+      voting_initiative: { disabled_reason: voting_disabled_reason }
+    }
+
+    descriptors.each { |_, desc| desc[:enabled] = !desc[:disabled_reason] }
+    descriptors[:comment_voting_initiative] = descriptors[:commenting_initiative]
+    descriptors[:cancelling_initiative_votes] = descriptors[:voting_initiative]
+
+    render(json: descriptors)
   end
 
   def secure_controller?

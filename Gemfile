@@ -42,12 +42,14 @@ group :development, :test do
   gem 'rubocop-rspec', require: false
   gem 'simplecov'
   gem 'simplecov-rcov'
+  gem "test-prof", "~> 1.0"
 end
 
 group :development do
   gem 'bullet'
   gem 'listen', '>= 3.0.5', '< 3.2'
   gem 'pry'
+  gem 'pry-stack_explorer'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'redcarpet'
   gem 'spring'
@@ -63,8 +65,10 @@ end
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 # gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
-gem 'active_model_serializers', '~> 0.10.8'
-gem 'pundit', '~> 2.0'
+# Latest version (2.4.1) of Pundit on RubyGems is quite outdated (2019-08-14).
+# This newer version from Git adds reason to Pundit::NotAuthorized.
+gem "pundit", git: 'https://github.com/varvet/pundit', branch: 'master', ref: '973b63b396c2a98099caf5eefd1c6841416eddfa'
+gem "active_model_serializers", "~> 0.10.8"
 
 # See https://github.com/nsarno/knock/issues/250
 # Installs v2.2 which is not available on rubygems.org
@@ -152,15 +156,25 @@ gem 'custom_style', path: 'engines/custom_style'
 gem 'email_campaigns', path: 'engines/email_campaigns'
 gem 'frontend', path: 'engines/frontend'
 gem 'geographic_dashboard', path: 'engines/geographic_dashboard'
+gem 'granular_permissions', path: 'engines/granular_permissions'
+gem 'id_bogus', path: 'engines/id_bogus'
+gem 'id_bosa_fas', path: 'engines/id_bosa_fas'
+gem 'id_clave_unica', path: 'engines/id_clave_unica'
+gem 'id_cow', path: 'engines/id_cow'
+gem 'id_franceconnect', path: 'engines/id_franceconnect'
+gem 'id_id_card_lookup', path: 'engines/id_id_card_lookup'
 gem 'machine_translations', path: 'engines/machine_translations'
+gem 'matomo', path: 'engines/matomo'
 gem 'multi_tenancy', path: 'engines/multi_tenancy'
 gem 'nlp', path: 'engines/nlp'
 gem 'onboarding', path: 'engines/onboarding'
 gem 'polls', path: 'engines/polls'
 gem 'project_folders', path: 'engines/project_folders'
+gem 'project_visibility', path: 'engines/project_visibility'
 gem 'public_api', path: 'engines/public_api'
 gem 'seo', path: 'engines/seo'
 gem 'surveys', path: 'engines/surveys'
 gem 'tagging', path: 'engines/tagging'
 gem 'verification', path: 'engines/verification'
 gem 'volunteering', path: 'engines/volunteering'
+
