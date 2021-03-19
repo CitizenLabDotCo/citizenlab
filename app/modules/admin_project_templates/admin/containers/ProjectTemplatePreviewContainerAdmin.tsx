@@ -7,11 +7,13 @@ import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
 import { trackPage } from 'utils/analytics';
 import clHistory from 'utils/cl-router/history';
 
-interface Props {}
+interface Props {
+  onRender: (hasRendered: boolean) => void;
+}
 
 const useCapture = false;
 
-const Component = (_props: Props) => {
+const Component = ({ onRender }: Props) => {
   const locale = useLocale();
   const [selectedProjectTemplateId, setSelectedProjectTemplateId] = useState<
     string | null
@@ -22,6 +24,7 @@ const Component = (_props: Props) => {
 
   const closeTemplatePreview = () => {
     setSelectedProjectTemplateId(null);
+    onRender(false);
   };
 
   const cleanup = () => {
@@ -101,6 +104,7 @@ const Component = (_props: Props) => {
       <ProjectTemplatePreviewAdmin
         projectTemplateId={selectedProjectTemplateId}
         goBack={closeTemplatePreview}
+        onRender={onRender}
       />
     );
   }
