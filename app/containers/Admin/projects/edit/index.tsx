@@ -271,26 +271,6 @@ export class AdminProjectEdition extends PureComponent<
 
         return false;
       },
-      // TODO
-      topics: function isTopicsTabHidden() {
-        if (
-          (processType === 'continuous' &&
-            participationMethod !== 'ideation' &&
-            participationMethod !== 'budgeting') ||
-          (processType === 'timeline' &&
-            !isNilOrError(phases) &&
-            phases.filter((phase) => {
-              return (
-                phase.attributes.participation_method === 'ideation' ||
-                phase.attributes.participation_method === 'budgeting'
-              );
-            }).length === 0)
-        ) {
-          return true;
-        }
-
-        return false;
-      },
       volunteering: function isVolunteeringTabHidden() {
         if (
           (processType === 'continuous' &&
@@ -327,7 +307,11 @@ export class AdminProjectEdition extends PureComponent<
     let cleanedTabs = tabs;
 
     tabNames.forEach((tabName) => {
-      if (tabName && tabHideConditions[tabName]()) {
+      if (
+        tabName &&
+        tabHideConditions[tabName] &&
+        tabHideConditions[tabName]()
+      ) {
         cleanedTabs = reject(cleanedTabs, { name: tabName });
       }
     });
@@ -394,6 +378,8 @@ export class AdminProjectEdition extends PureComponent<
           <Outlet
             id="app.containers.Admin.projects.edit"
             onData={this.handleData}
+            project={project}
+            phases={phases}
           />
           <TopContainer>
             <GoBackButton onClick={this.goBack} />
