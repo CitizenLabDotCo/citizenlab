@@ -126,25 +126,15 @@ class AdminFolderProjectsList extends Component<
     if (isNilOrError(projectFolder)) return null;
 
     const projectsInFolder = adminPublications.childrenOf({
-      // shouldn't this be the projectFolder id instead of relationship?
-      // And can't a folder have multiple relationships (projects inside of the folder)?
-      // Also, we should try to not use 'id'. It wasn't clear to me what this id means
-      // was it a folder id? project id? both? I've changed it to publicationId now
       id: projectFolder.relationships.admin_publication.data?.id,
     });
+
     const otherProjects = !isNilOrError(allPublications)
       ? allPublications.filter(
           (item) =>
             item.publicationType === 'project' && item.attributes.depth === 0
         )
       : null;
-
-    const inFolderFinalList =
-      // what is the purpose of this one? folders can't contain folders, so aren't we
-      // sure already that everything in here is a project?
-      !isNilOrError(projectsInFolder) && projectsInFolder.length > 0
-        ? projectsInFolder.filter((item) => item.publicationType === 'project')
-        : null;
 
     const projectFolderId = projectFolder.id;
     return (
@@ -157,10 +147,10 @@ class AdminFolderProjectsList extends Component<
             <Spacer />
           </ListHeader>
 
-          {inFolderFinalList ? (
+          {!isNilOrError(projectsInFolder) && projectsInFolder.length > 0 ? (
             <SortableList
-              key={`IN_FOLDER_LIST${inFolderFinalList.length}`}
-              items={inFolderFinalList}
+              key={`IN_FOLDER_LIST${projectsInFolder.length}`}
+              items={projectsInFolder}
               onReorder={this.handleReorder}
               className="projects-list e2e-admin-folder-projects-list"
               id="e2e-admin-folders-projects-list"
