@@ -45,7 +45,7 @@ export interface IUseAdminPublicationsOutput {
   loadingMore: boolean;
   onLoadMore: () => void;
   childrenOf: ({
-    publicationId: id,
+    publicationId,
   }: ChildrenOfProps) => IAdminPublicationContent[];
   onChangeAreas: (areas: string[] | null) => void;
   onChangePublicationStatus: (publicationStatuses: PublicationStatus[]) => void;
@@ -154,7 +154,7 @@ export default function useAdminPublications({
   }, [pageNumber, pageSize, areas, publicationStatuses, rootLevelOnly]);
 
   const childrenOf = useCallback(
-    ({ publicationId: publicationId }: ChildrenOfProps) => {
+    ({ publicationId }: ChildrenOfProps) => {
       if (isNilOrError(list)) return [];
 
       const publication = list.find(({ id }) => id === publicationId);
