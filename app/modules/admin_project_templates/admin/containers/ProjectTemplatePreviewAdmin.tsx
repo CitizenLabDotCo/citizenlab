@@ -39,7 +39,7 @@ export interface Props {
   className?: string;
 }
 
-const ProjectTemplatePreviewPageAdmin = memo<Props & WithRouterProps>(
+const ProjectTemplatePreviewAdmin = memo<Props & WithRouterProps>(
   ({ params, projectTemplateId, goBack, className }) => {
     // OS-105: needed?
     const templateId: string | undefined =
@@ -96,4 +96,4 @@ const ProjectTemplatePreviewPageAdmin = memo<Props & WithRouterProps>(
   }
 );
 
-export default withRouter(ProjectTemplatePreviewPageAdmin);
+export default withRouter(ProjectTemplatePreviewAdmin);
