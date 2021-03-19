@@ -35,11 +35,11 @@ describe "seedfile", slow_test: true do
       expect(CustomFieldOption.count).to be > 0
       expect(CustomField.with_resource_type('CustomForm').count).to be > 0
       expect(Invite.count).to be > 0
-      expect(Verification::IdCard.count).to be 10
+      expect(IdIdCardLookup::IdCard.count).to be 10
       expect(EmailCampaigns::UnsubscriptionToken.count).to be > 0
-      expect(Maps::MapConfig.count).to be 1
-      expect(Maps::Layer.count).to be 2
-      expect(Maps::LegendItem.count).to be 7
+      expect(CustomMaps::MapConfig.count).to be 1
+      expect(CustomMaps::Layer.count).to be 2
+      expect(CustomMaps::LegendItem.count).to be 7
       expect(Volunteering::Cause.count).to be 5
       expect(Volunteering::Volunteer.count).to be > 10
     end

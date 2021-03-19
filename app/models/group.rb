@@ -55,20 +55,18 @@ class Group < ApplicationRecord
     end
   end
 
-  def add_member user
-    if manual?
-      users << user
-    else
-      raise "can't add a member to the rules group #{id}"
-    end
+  def add_member(user)
+    raise "can't add a member to the rules group #{id}" unless manual?
+
+    users << user
+    self
   end
 
-  def remove_member user
-    if manual?
-      users.delete user
-    else
-      raise "can't remove a member from the rules group #{id}"
-    end
+  def remove_member(user)
+    raise "can't remove a member from the rules group #{id}" unless manual?
+
+    users.delete user
+    self
   end
 
   def members

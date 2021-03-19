@@ -26,6 +26,23 @@ describe MultilocValidator do
   let(:presence_subject) { Validatable.new }
   let(:nonpresence_subject) { Validatable2.new }
 
+  context 'without nil values' do
+    it 'is valid' do
+      nonpresence_subject.multiloc_field = {'en' => 'somevalue', 'nl-BE' => ''}
+      expect(nonpresence_subject).to be_valid
+    end
+  end
+
+  context 'with nil values for some locales' do
+    it 'is invalid' do
+      nonpresence_subject.multiloc_field = {'en' => 'somevalue', 'fr-FR' => nil}
+      expect(nonpresence_subject).to be_invalid
+
+      nonpresence_subject.multiloc_field = {'en' => 'somevalue', 'fr-FR' => false, "nl-BE" => ''}
+      expect(nonpresence_subject).to be_invalid
+    end
+  end
+
   context 'with one locale value' do
     it 'is valid' do
       presence_subject.multiloc_field = {"en" => 'somevalue'}
