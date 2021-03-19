@@ -83,7 +83,6 @@ class SettingsPage extends React.PureComponent<
   }
 
   getTabs = () => {
-    debugger;
     const { widgetsEnabled, customTopicsEnabled } = this.props;
     const { tabs } = this.state;
 
