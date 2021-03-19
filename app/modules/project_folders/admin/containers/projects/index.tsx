@@ -121,27 +121,22 @@ class AdminFolderProjectsList extends Component<
     const { adminPublications, authUser, projectFolder } = this.props;
     const { processing } = this.state;
     const { list: allPublications } = adminPublications;
+    const userIsAdmin = authUser && isAdmin({ data: authUser });
 
     if (isNilOrError(projectFolder)) return null;
 
     const projectsInFolder = adminPublications.childrenOf({
-      id: projectFolder?.relationships?.admin_publication?.data?.id,
+      id: projectFolder.relationships.admin_publication.data?.id,
     });
-
-    const userIsAdmin = authUser && isAdmin({ data: authUser });
-
-    const otherProjects =
-      !isNilOrError(allPublications) && allPublications
-        ? allPublications.filter(
-            (item) =>
-              item.publicationType === 'project' && item.attributes.depth === 0
-          )
-        : null;
+    const otherProjects = !isNilOrError(allPublications)
+      ? allPublications.filter(
+          (item) =>
+            item.publicationType === 'project' && item.attributes.depth === 0
+        )
+      : null;
 
     const inFolderFinalList =
-      !isNilOrError(projectsInFolder) &&
-      projectsInFolder &&
-      projectsInFolder.length > 0
+      !isNilOrError(projectsInFolder) && projectsInFolder.length > 0
         ? projectsInFolder.filter((item) => item.publicationType === 'project')
         : null;
 
