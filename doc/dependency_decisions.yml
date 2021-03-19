@@ -179,12 +179,6 @@
     :versions: []
     :when: 2021-02-26 08:24:10.943461100 Z
 - - :approve
-  - custom_topics
-  - :who: 
-    :why: 
-    :versions: []
-    :when: 2021-03-05 16:38:06.886486000 Z
-- - :approve
   - geographic_dashboard
   - :who: 
     :why: 
