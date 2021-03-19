@@ -120,7 +120,7 @@ class AdminFolderProjectsList extends Component<
   render() {
     const { adminPublications, authUser, projectFolder } = this.props;
     const { processing } = this.state;
-    const { list: rootLevelPublications } = adminPublications;
+    const { list: allPublications } = adminPublications;
 
     if (isNilOrError(projectFolder)) return null;
 
@@ -131,9 +131,11 @@ class AdminFolderProjectsList extends Component<
     const userIsAdmin = authUser && isAdmin({ data: authUser });
 
     const otherProjects =
-      !isNilOrError(rootLevelPublications) && rootLevelPublications
-        ? rootLevelPublications.filter(
-            (item) => item.publicationType === 'project'
+      !isNilOrError(allPublications) && allPublications
+        ? allPublications.filter(
+            (item) =>
+              item.publicationType === 'project' &&
+              !item.relationships.parent.data?.id
           )
         : null;
 
@@ -271,10 +273,7 @@ const Data = adopt<DataProps, WithRouterProps>({
     </GetProjectFolder>
   ),
   adminPublications: ({ render }) => (
-    <GetAdminPublications
-      publicationStatusFilter={publicationStatuses}
-      rootLevelOnly
-    >
+    <GetAdminPublications publicationStatusFilter={publicationStatuses}>
       {render}
     </GetAdminPublications>
   ),
