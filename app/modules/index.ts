@@ -24,6 +24,7 @@ import idBogusConfiguration from './id_bogus';
 import idIdCardLookupConfiguration from './id_id_card_lookup';
 import IdFranceConnectConfiguration from './id_franceconnect';
 import IdClaveUnicaConfiguration from './id_clave_unica';
+import verificationConfiguration from './verification';
 
 export default loadModules([
   {
@@ -112,6 +113,10 @@ export default loadModules([
   },
   {
     configuration: IdClaveUnicaConfiguration,
+    isEnabled: true,
+  },
+  {
+    configuration: verificationConfiguration,
     isEnabled: true,
   },
 ]);
