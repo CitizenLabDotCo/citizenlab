@@ -7,7 +7,11 @@ import { map, flatten, uniq } from 'lodash-es';
 import { colors, fontSizes } from 'utils/styleUtils';
 
 // typings
-import { Node, ParentNode, ideasUnder } from 'services/clusterings';
+import {
+  Node,
+  ParentNode,
+  ideasUnder,
+} from 'modules/clusterings/services/clusterings';
 
 // components
 import GenderChart from './GenderChart';
@@ -20,7 +24,7 @@ import ComparisonLegend from './ComparisonLegend';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../../messages';
+import messages from '../../../messages';
 
 // analytics
 import { trackEventByName } from 'utils/analytics';

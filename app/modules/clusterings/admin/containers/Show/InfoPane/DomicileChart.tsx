@@ -10,31 +10,44 @@ import {
   ReferenceLine,
   ResponsiveContainer,
 } from 'recharts';
-import { votesByGenderStream, IVotesByGender } from 'services/stats';
+import { votesByDomicileStream, IVotesByDomicile } from 'services/stats';
+import GetAreas, { GetAreasChildProps } from 'resources/GetAreas';
+import { isNilOrError } from 'utils/helperUtils';
+import localize, { InjectedLocalized } from 'utils/localize';
 import styled, { withTheme } from 'styled-components';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
-import messages from '../../messages';
+import messages from '../../../messages';
 
-type Props = {
+interface InputProps {
   ideaIdsComparisons: string[][];
   normalization: 'absolute' | 'relative';
-  theme: any;
-};
+}
 
-type State = {
+interface DataProps {
+  areas: GetAreasChildProps;
+}
+
+interface Props extends InputProps, DataProps {
+  theme: any;
+}
+
+interface State {
   series: any[];
-};
+}
 
 const Container = styled.div``;
 
-class GenderChart extends PureComponent<Props & InjectedIntlProps, State> {
+class DomicileChart extends PureComponent<
+  Props & InjectedIntlProps & InjectedLocalized,
+  State
+> {
   subscription: Subscription;
 
-  constructor(props: Props) {
-    super(props as any);
+  constructor(props) {
+    super(props);
     this.state = {
       series: [],
     };
@@ -57,20 +70,37 @@ class GenderChart extends PureComponent<Props & InjectedIntlProps, State> {
     this.subscription.unsubscribe();
   }
 
-  convertToGraphFormat = (series: IVotesByGender[]) => {
-    return ['male', 'female', 'unspecified', '_blank'].map((gender) => {
-      const record = {
-        gender,
-        label: this.props.intl.formatMessage(messages[gender]),
-      };
-      series.forEach((serie, index) => {
-        record[`up ${index + 1}`] = serie.series.up[gender] || 0;
-        record[`down ${index + 1}`] = -serie.series.down[gender] || 0;
-        record[`sum ${index + 1}`] =
-          serie.series.up[gender] - serie.series.down[gender] || 0;
+  convertToGraphFormat = (series: IVotesByDomicile[]) => {
+    if (!isNilOrError(this.props.areas)) {
+      const areaBucketsRecord = this.props.areas.map((area) => {
+        const record = {
+          label: this.props.localize(area.attributes.title_multiloc),
+        };
+
+        series.forEach((serie, serieIndex) => {
+          record[`up ${serieIndex + 1}`] = serie.series.up[area.id] || 0;
+          record[`down ${serieIndex + 1}`] = -serie.series.down[area.id] || 0;
+          record[`total ${serieIndex + 1}`] = serie.series.total[area.id] || 0;
+        });
+
+        return record;
       });
-      return record;
-    });
+
+      const blankRecord = {
+        label: this.props.intl.formatMessage(messages['_blank']),
+      };
+      series.forEach((serie, serieIndex) => {
+        blankRecord[`up ${serieIndex + 1}`] = serie.series.up['_blank'] || 0;
+        blankRecord[`down ${serieIndex + 1}`] =
+          -serie.series.down['_blank'] || 0;
+        blankRecord[`total ${serieIndex + 1}`] =
+          serie.series.total['_blank'] || 0;
+      });
+
+      return [...areaBucketsRecord, blankRecord];
+    } else {
+      return [];
+    }
   };
 
   resubscribe() {
@@ -78,7 +108,7 @@ class GenderChart extends PureComponent<Props & InjectedIntlProps, State> {
     this.subscription = combineLatest(
       this.props.ideaIdsComparisons.map(
         (ideaIds) =>
-          votesByGenderStream({
+          votesByDomicileStream({
             queryParameters: {
               ideas: ideaIds,
               normalization: this.props.normalization,
@@ -93,12 +123,11 @@ class GenderChart extends PureComponent<Props & InjectedIntlProps, State> {
   render() {
     const { series } = this.state;
     const { ideaIdsComparisons, theme } = this.props;
-
     if (isEmpty(series)) return null;
 
     return (
       <Container className={this.props['className']}>
-        <ResponsiveContainer width="100%" aspect={400 / 250}>
+        <ResponsiveContainer width="100%" aspect={2}>
           <BarChart
             data={series}
             stackOffset="sign"
@@ -153,4 +182,14 @@ class GenderChart extends PureComponent<Props & InjectedIntlProps, State> {
   }
 }
 
-export default withTheme(injectIntl(GenderChart));
+const DomicileChartWithHOCs = withTheme(
+  localize<Props>(injectIntl<Props & InjectedLocalized>(DomicileChart))
+);
+
+export default (inputProps: InputProps) => (
+  <GetAreas>
+    {(areas) =>
+      areas ? <DomicileChartWithHOCs {...inputProps} areas={areas} /> : null
+    }
+  </GetAreas>
+);
