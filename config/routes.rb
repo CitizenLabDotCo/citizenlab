@@ -7,7 +7,6 @@ Rails.application.routes.draw do
   mount Frontend::Engine => "", as: 'frontend'
   mount GeographicDashboard::Engine => '', as: 'geographic_dashboard'
   mount MachineTranslations::Engine => "", as: 'machine_translations'
-  mount Moderation::Engine => "", as: 'moderation'
   mount NLP::Engine => "", as: 'nlp'
   mount Onboarding::Engine => "", as: 'onboarding'
   mount Polls::Engine => "", as: 'polls'
