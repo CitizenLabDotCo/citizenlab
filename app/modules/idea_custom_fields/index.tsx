@@ -6,10 +6,9 @@ const configuration: ModuleConfiguration = {
   routes: {
     'admin.projects': [
       {
-        path: '/:locale/admin/projects/:projectId/map',
-        name: 'map',
-        container: () =>
-          import('./admin/containers/ProjectCustomMapConfigPage'),
+        path: '/:locale/admin/projects/:projectId/ideaform',
+        name: 'ideaform',
+        container: () => import('./admin/containers/projects/edit/ideaform'),
       },
     ],
   },
