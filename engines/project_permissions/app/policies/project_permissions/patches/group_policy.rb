@@ -5,13 +5,13 @@ module ProjectPermissions
     module GroupPolicy
       module Scope
         def resolve_for_active
-          return super if user.& admin?
+          return super if user.admin?
 
           moderated_projects = Project.where(id: user.moderatable_project_ids)
           return scope.all if moderated_projects.any? { |p| p.visible_to == 'public' }
 
           group_ids = groups_associated_to(moderated_projects)
-          group_ids.present? ? scope.where(id: group_ids) : scope.none
+          group_ids.present? ? scope.where(id: group_ids) : scope.none # skip the DB query if we can
         end
 
         def groups_associated_to(projects)

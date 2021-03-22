@@ -11,14 +11,14 @@ class GroupPolicy < ApplicationPolicy
 
     def resolve
       return scope.none unless user&.active?
-      
+
       resolve_for_active
     end
 
     private
 
     def resolve_for_active
-      user&.admin? ? scope.all : scope.none
+      user.admin? ? scope.all : scope.none
     end
   end
 
