@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ProjectPolicy < ApplicationPolicy
   class Scope
     attr_reader :user, :scope
@@ -36,7 +38,7 @@ class ProjectPolicy < ApplicationPolicy
            .where(admin_publications: { publication_status: %w[published archived] })
     end
 
-    def filter_for_normal_user scope, user
+    def filter_for_normal_user(scope, user)
       scope
         .where("projects.visible_to = 'public' OR \
           (projects.visible_to = 'groups' AND EXISTS(SELECT 1 FROM groups_projects WHERE project_id = projects.id AND group_id IN (?)))", user.group_ids)
@@ -64,25 +66,16 @@ class ProjectPolicy < ApplicationPolicy
     end
   end
 
-
   def index_xlsx?
     moderate?
   end
 
   def create?
-    user&.active? && user.admin?
+    active? && admin?
   end
 
   def show?
-    moderate? || (
-      %w(published archived).include?(record.admin_publication.publication_status) && (
-        record.visible_to == 'public' || (
-          user &&
-          record.visible_to == 'groups' &&
-          (record.groups.ids & user.group_ids).any?
-        )
-      )
-    )
+    moderate? || show_to_non_moderators?
   end
 
   def by_slug?
@@ -98,15 +91,13 @@ class ProjectPolicy < ApplicationPolicy
   end
 
   def destroy?
-    user&.active? && user.admin?
+    active? && admin?
   end
-
 
   def shared_permitted_attributes
     shared = [
       :slug,
       :header_bg,
-      :visible_to,
       :participation_method,
       :posting_enabled,
       :commenting_enabled,
@@ -121,12 +112,15 @@ class ProjectPolicy < ApplicationPolicy
       :poll_anonymous,
       :ideas_order,
       :input_term,
-      admin_publication_attributes: [:publication_status],
-      title_multiloc: CL2_SUPPORTED_LOCALES,
-      description_multiloc: CL2_SUPPORTED_LOCALES,
-      description_preview_multiloc: CL2_SUPPORTED_LOCALES,
-      area_ids: []
+      {
+        admin_publication_attributes: [:publication_status],
+        title_multiloc: CL2_SUPPORTED_LOCALES,
+        description_multiloc: CL2_SUPPORTED_LOCALES,
+        description_preview_multiloc: CL2_SUPPORTED_LOCALES,
+        area_ids: []
+      }
     ]
+
     shared += [:downvoting_enabled] if AppConfiguration.instance.feature_activated? 'disable_downvoting'
     shared
   end
@@ -134,12 +128,10 @@ class ProjectPolicy < ApplicationPolicy
   def permitted_attributes_for_create
     attrs = shared_permitted_attributes
     attrs.unshift(:process_type)
-    attrs
   end
 
   def permitted_attributes_for_update
-    attrs = shared_permitted_attributes
-    attrs
+    shared_permitted_attributes
   end
 
   def permitted_attributes_for_reorder
@@ -149,10 +141,23 @@ class ProjectPolicy < ApplicationPolicy
   # Helper method that is not part of the pundit conventions but is used
   # publicly
   def moderate?
-    user&.active? && (user.admin? || (record.id && user.project_moderator?(record.id)))
+    return unless active?
+
+    moderate_for_active?
+  end
+
+  private
+
+  def moderate_for_active?
+    admin?
+  end
+
+  def show_to_non_moderators?
+    %w[published archived].include?(record.admin_publication.publication_status)
   end
 end
 
 ProjectPolicy.prepend_if_ee('ProjectFolders::Patches::ProjectPolicy')
 ProjectPolicy::Scope.prepend_if_ee('ProjectFolders::Patches::ProjectPolicy::Scope')
 
+ProjectPolicy.prepend_if_ee('ProjectPermissions::Patches::ProjectPolicy')
