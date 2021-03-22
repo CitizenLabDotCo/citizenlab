@@ -60,28 +60,21 @@ const Component = ({ onRender }: Props) => {
     const subscription = eventEmitter
       .observeEvent<string>('ProjectTemplateCardClicked')
       .subscribe(({ eventValue }) => {
-        if (typeof eventValue === 'string') {
+        if (typeof eventValue === 'string' && !isNilOrError(locale)) {
           const selectedProjectTemplateId = eventValue;
+          const currentUrl = window.location.href;
+          const newPath = `/${locale}/admin/projects/templates/${selectedProjectTemplateId}`;
+          const newUrl = `${window.location.origin}${newPath}`;
+
           setSelectedProjectTemplateId(selectedProjectTemplateId);
+          setUrl(newUrl);
+          setGoBackUrl(currentUrl);
 
-          if (!isNilOrError(locale)) {
-            const currentUrl = window.location.href;
-            const newPath = `/${locale}/admin/projects/templates/${selectedProjectTemplateId}`;
-            const newUrl = `${window.location.origin}${newPath}`;
-            setUrl(newUrl);
-            setGoBackUrl(currentUrl);
-
-            // still to check, in old code newPath below was what is now newUrl
-            // window.history.pushState({ path: newPath }, '', newUrl);
-            window.addEventListener(
-              'popstate',
-              handlePopstateEvent,
-              useCapture
-            );
-            window.addEventListener('keydown', handleKeypress, useCapture);
-            setUnlisten(clHistory.listen(() => closeTemplatePreview()));
-            trackPage(newUrl);
-          }
+          window.history.pushState({ path: newUrl }, '', newUrl);
+          window.addEventListener('popstate', handlePopstateEvent, useCapture);
+          window.addEventListener('keydown', handleKeypress, useCapture);
+          setUnlisten(clHistory.listen(() => closeTemplatePreview()));
+          trackPage(newUrl);
 
           window.scrollTo(0, 0);
         }
