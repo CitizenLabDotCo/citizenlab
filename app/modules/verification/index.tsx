@@ -12,6 +12,7 @@ const configuration: ModuleConfiguration = {
       <VerificationSignUpSteps {...props} />
     ),
     'app.containers.UserEditPage.content': () => <VerificationStatus />,
+    'app.containers.Navbar.UserMenu.UserNameContainer': () => null,
   },
 };
 
