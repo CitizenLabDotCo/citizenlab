@@ -1,5 +1,4 @@
 import React, { memo, Suspense, useState } from 'react';
-import { withRouter, WithRouterProps } from 'react-router';
 import { isNilOrError } from 'utils/helperUtils';
 
 // resources
@@ -59,62 +58,59 @@ export interface Props {
   className?: string;
 }
 
-const AdminProjectsList = memo(
-  ({ className, params }: Props & WithRouterProps) => {
-    const { projectTemplateId } = params;
-    const authUser = useAuthUser();
-    const userIsAdmin = !isNilOrError(authUser)
-      ? isAdmin({ data: authUser })
-      : false;
-    const [outletRendered, setOutletRendered] = useState(false);
-    const handleOnRender = (hasRendered: boolean) => {
-      setOutletRendered(hasRendered);
-    };
+const AdminProjectsList = memo(({ className }: Props) => {
+  const authUser = useAuthUser();
+  const userIsAdmin = !isNilOrError(authUser)
+    ? isAdmin({ data: authUser })
+    : false;
+  const [outletRendered, setOutletRendered] = useState(false);
+  const handleOnRender = (hasRendered: boolean) => {
+    setOutletRendered(hasRendered);
+  };
 
-    return (
-      <Container className={className}>
-        <CreateAndEditProjectsContainer
-          className={outletRendered ? 'hidden' : ''}
-        >
-          <PageTitle>
-            <FormattedMessage {...messages.overviewPageTitle} />
-          </PageTitle>
+  return (
+    <Container className={className}>
+      <CreateAndEditProjectsContainer
+        className={outletRendered ? 'hidden' : ''}
+      >
+        <PageTitle>
+          <FormattedMessage {...messages.overviewPageTitle} />
+        </PageTitle>
 
-          <SectionDescription>
-            <HasPermission
-              item={{ type: 'route', path: '/admin/projects/new' }}
-              action="access"
-            >
-              <FormattedMessage {...messages.overviewPageSubtitle} />
-              <HasPermission.No>
-                <FormattedMessage {...messages.overviewPageSubtitleModerator} />
-              </HasPermission.No>
-            </HasPermission>
-          </SectionDescription>
+        <SectionDescription>
+          <HasPermission
+            item={{ type: 'route', path: '/admin/projects/new' }}
+            action="access"
+          >
+            <FormattedMessage {...messages.overviewPageSubtitle} />
+            <HasPermission.No>
+              <FormattedMessage {...messages.overviewPageSubtitleModerator} />
+            </HasPermission.No>
+          </HasPermission>
+        </SectionDescription>
 
-          <CreateProjectWrapper>
-            {userIsAdmin ? (
-              <CreateProject />
-            ) : (
-              <Outlet id="app.containers.AdminPage.projects.all.createProjectNotAdmin" />
-            )}
-          </CreateProjectWrapper>
+        <CreateProjectWrapper>
+          {userIsAdmin ? (
+            <CreateProject />
+          ) : (
+            <Outlet id="app.containers.AdminPage.projects.all.createProjectNotAdmin" />
+          )}
+        </CreateProjectWrapper>
 
-          <PageWrapper>
-            <ListsContainer>
-              <Suspense fallback={<Spinner />}>
-                {userIsAdmin ? <AdminProjectList /> : <ModeratorProjectList />}
-              </Suspense>
-            </ListsContainer>
-          </PageWrapper>
-        </CreateAndEditProjectsContainer>
-        <Outlet
-          id="app.containers.Admin.projects.all.container"
-          onRender={handleOnRender}
-        />
-      </Container>
-    );
-  }
-);
+        <PageWrapper>
+          <ListsContainer>
+            <Suspense fallback={<Spinner />}>
+              {userIsAdmin ? <AdminProjectList /> : <ModeratorProjectList />}
+            </Suspense>
+          </ListsContainer>
+        </PageWrapper>
+      </CreateAndEditProjectsContainer>
+      <Outlet
+        id="app.containers.Admin.projects.all.container"
+        onRender={handleOnRender}
+      />
+    </Container>
+  );
+});
 
-export default withRouter(AdminProjectsList);
+export default AdminProjectsList;
