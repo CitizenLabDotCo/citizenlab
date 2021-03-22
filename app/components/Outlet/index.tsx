@@ -6,7 +6,11 @@ type CustomPropsMap = {
   [P in keyof OutletsPropertyMap]: { id: P } & OutletsPropertyMap[P];
 };
 
-type Props = CustomPropsMap[keyof CustomPropsMap];
+type InputProps = {
+  onRender?: (hasRendered: boolean) => void;
+};
+
+type Props = InputProps & CustomPropsMap[keyof CustomPropsMap];
 
 const Outlet = ({ id, ...props }: Props) => {
   const components = useOutlet(id);
