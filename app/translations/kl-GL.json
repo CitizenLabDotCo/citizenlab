@@ -2477,7 +2477,7 @@
   "app.errors.email_domain_blacklisted": "Please use a different email domain to register.",
   "app.errors.email_invalid": "Please use a valid email address.",
   "app.errors.email_taken": "Konto taama e-maililik pigineqareerpoq. Isiinnarsinnaavutit.",
-  "app.errors.email_taken_by_invite": "{value} allamit ilanngutitinneqarnissaminik utaqqisumit atorneqareersimavoq. Spam-indbakkit takujuk, imaluunniit nassaarisinnaanngikkukku uunga attavigitigut support@citizenlab.co.",
+  "app.errors.email_taken_by_invite": "{value} allamit ilanngutitinneqarnissaminik utaqqisumit atorneqareersimavoq. Spam-indbakkit takujuk, imaluunniit nassaarisinnaanngikkukku uunga attavigitigut {supportEmail}.",
   "app.errors.emails_duplicate": "E-mailadressimut uunga {value} assingusut duplikatværdit ataaseq arlallilluunniit titarnerni quleriiaani ukunani nassaarineqarput(r): {rows}",
   "app.errors.error": "Kukkuneq:",
   "app.errors.file_extension_whitelist_error": "Filip ikkunniakkavit formatia atorneqarsinnaanngilaq.",
