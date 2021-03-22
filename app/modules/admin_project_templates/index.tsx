@@ -58,9 +58,13 @@ const configuration: ModuleConfiguration = {
   outlets: {
     'app.containers.Admin.projects.all.container': (props) => {
       return (
-        <ProjectTemplatePreviewAdminWithEventWrapper
-          onRender={props.onRender}
-        />
+        <RenderOnFeatureFlag>
+          <RenderOnSelectedTabValue selectedTabValue={props.selectedTabValue}>
+            <ProjectTemplatePreviewAdminWithEventWrapper
+              onRender={props.onRender}
+            />
+          </RenderOnSelectedTabValue>
+        </RenderOnFeatureFlag>
       );
     },
     'app.containers.Admin.projects.all.createProject': (props) => (
