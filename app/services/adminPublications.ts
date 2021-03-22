@@ -25,6 +25,7 @@ export interface IAdminPublicationData {
   attributes: {
     parent_id?: string;
     ordering: number;
+    depth: number;
     publication_status: PublicationStatus;
     visible_children_count: number;
     publication_title_multiloc: Multiloc;
@@ -50,7 +51,6 @@ export interface IAdminPublications {
 
 interface IQueryParametersWithPS {
   publication_statuses: PublicationStatus[];
-  folder?: string | null;
   areas?: string[];
   topics?: string[];
   [key: string]: any;
