@@ -17,26 +17,21 @@ const Component = ({ onRender }: Props) => {
   const [selectedProjectTemplateId, setSelectedProjectTemplateId] = useState<
     string | null
   >(null);
-  const [url, setUrl] = useState<string | null>(null);
   const [goBackUrl, setGoBackUrl] = useState<string | null>(null);
   const [unlisten, setUnlisten] = useState<Function | null>(null);
 
   const closeTemplatePreview = () => {
     setSelectedProjectTemplateId(null);
     onRender(false);
+    window.history.pushState({ path: goBackUrl }, '', goBackUrl);
   };
 
   const cleanup = () => {
     if (goBackUrl) {
       window.removeEventListener('popstate', handlePopstateEvent, useCapture);
       window.removeEventListener('keydown', handleKeypress, useCapture);
-
-      if (window.location.href === url) {
-        window.history.pushState({ path: goBackUrl }, '', goBackUrl);
-      }
     }
 
-    setUrl(null);
     setGoBackUrl(null);
 
     if (typeof unlisten === 'function') {
@@ -67,7 +62,6 @@ const Component = ({ onRender }: Props) => {
           const newUrl = `${window.location.origin}${newPath}`;
 
           setSelectedProjectTemplateId(selectedProjectTemplateId);
-          setUrl(newUrl);
           setGoBackUrl(currentUrl);
 
           window.history.pushState({ path: newUrl }, '', newUrl);
