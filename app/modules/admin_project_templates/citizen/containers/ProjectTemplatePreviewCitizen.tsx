@@ -104,7 +104,6 @@ const InfoboxText = styled.div`
 `;
 
 export interface Props {
-  projectTemplateId: string;
   className?: string;
 }
 
