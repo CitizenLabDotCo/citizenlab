@@ -1,14 +1,6 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  departments: {
-    id: 'app.containers.AdminPage.ProjectEdit.departments',
-    defaultMessage: 'Departments',
-  },
-  purposes: {
-    id: 'app.containers.AdminPage.ProjectEdit.purposes',
-    defaultMessage: 'Purposes',
-  },
   participationLevels: {
     id: 'app.containers.AdminPage.ProjectEdit.participationLevels',
     defaultMessage: 'Participation levels',
