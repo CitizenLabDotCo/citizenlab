@@ -180,6 +180,12 @@ const CreateProject = memo<Props & InjectedIntlProps>(
     const [expanded, setExpanded] = useState(false);
 
     useEffect(() => {
+      // when inserting tabs, always reset the default selected tab
+      // to the first tab
+      setSelectedTabValue(tabValues[0]);
+    }, [tabs]);
+
+    useEffect(() => {
       const subscription = eventEmitter
         .observeEvent<INewProjectCreatedEvent>('NewProjectCreated')
         .subscribe(({ eventValue }) => {
