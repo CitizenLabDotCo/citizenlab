@@ -2477,7 +2477,7 @@
   "app.errors.email_domain_blacklisted": "Por favor, use um domínio de e-mail diferente para registrar.",
   "app.errors.email_invalid": "Por favor, use um endereço de e-mail válido.",
   "app.errors.email_taken": "Existe um cadastro com este e-mail. você pode fazer o login.",
-  "app.errors.email_taken_by_invite": "{value} você já tem um convite pendente. Verifique sua pasta de spam ou contate support@citizenlab.co se você não conseguir encontrá-la.",
+  "app.errors.email_taken_by_invite": "{value} você já tem um convite pendente. Verifique sua pasta de spam ou contate {supportEmail} se você não conseguir encontrá-la.",
   "app.errors.emails_duplicate": "Um ou mais valores duplicados para o endereço de e-mail {value} foram encontrados na(s) linha(s) seguinte(s): {rows}",
   "app.errors.error": "Erro:",
   "app.errors.file_extension_whitelist_error": "O formato do arquivo que você tentou carregar não é suportado.",

@@ -42,6 +42,7 @@ export type IAppConfigurationSettingsCore = {
   color_text: string | null;
   color_menu_bg?: string | null;
   currency: string;
+  reply_to_email: string;
   custom_onboarding_fallback_message?: Multiloc | null;
   custom_onboarding_message?: Multiloc | null;
   custom_onboarding_button?: Multiloc | null;
