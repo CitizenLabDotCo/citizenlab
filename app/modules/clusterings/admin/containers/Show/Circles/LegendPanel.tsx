@@ -4,7 +4,7 @@ import { colors, fontSizes } from 'utils/styleUtils';
 import clickOutside from 'utils/containers/clickOutside';
 
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../../messages';
+import messages from '../../../messages';
 
 const Container = styled(clickOutside)`
   width: 100%;
