@@ -8,7 +8,7 @@ import { withRouter, WithRouterProps } from 'react-router';
 // components
 import GoBackButton from 'components/UI/GoBackButton';
 import Button from 'components/UI/Button';
-import TabbedResource, { TabProps } from 'components/admin/TabbedResource';
+import TabbedResource from 'components/admin/TabbedResource';
 import Outlet from 'components/Outlet';
 
 // resources
@@ -34,9 +34,11 @@ import tracks from './tracks';
 import styled from 'styled-components';
 
 // typings
-import { ITab } from 'typings';
+import { InsertConfigurationOptions, ITab } from 'typings';
 import { getInputTerm } from 'services/participationContexts';
 import { IProjectData } from 'services/projects';
+
+import { insertConfiguration } from 'utils/moduleUtils';
 
 const TopContainer = styled.div`
   width: 100%;
@@ -60,11 +62,6 @@ interface ITracks {
   clickNewIdea: ({ extra: object }) => void;
 }
 
-interface IMapTab {
-  tabConfiguration: ITab;
-  insertAfterTabName?: string;
-}
-
 export interface InputProps {}
 
 interface DataProps {
@@ -81,8 +78,8 @@ interface DataProps {
 }
 
 interface State {
+  tabs: ITab[];
   goBackUrl: string | null;
-  mapTab: IMapTab | null;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -93,22 +90,80 @@ export class AdminProjectEdition extends PureComponent<
 > {
   constructor(props) {
     super(props);
+    const {
+      intl: { formatMessage },
+    } = props;
+
     this.state = {
+      tabs: [
+        {
+          label: formatMessage(messages.generalTab),
+          url: `edit`,
+          name: 'general',
+        },
+        {
+          label: formatMessage(messages.descriptionTab),
+          url: `description`,
+          name: 'description',
+        },
+        {
+          label: formatMessage(messages.inputManagerTab),
+          url: `ideas`,
+          name: 'ideas',
+        },
+        {
+          label: formatMessage(messages.pollTab),
+          url: `poll`,
+          feature: 'polls',
+          name: 'poll',
+        },
+        {
+          label: formatMessage(messages.surveyResultsTab),
+          url: `survey-results`,
+          name: 'survey-results',
+        },
+        {
+          label: formatMessage(messages.phasesTab),
+          url: `timeline`,
+          name: 'phases',
+        },
+        {
+          label: formatMessage(messages.topicsTab),
+          url: `topics`,
+          name: 'topics',
+        },
+        {
+          label: formatMessage(messages.volunteeringTab),
+          url: `volunteering`,
+          feature: 'volunteering',
+          name: 'volunteering',
+        },
+        {
+          label: formatMessage(messages.eventsTab),
+          url: `events`,
+          name: 'events',
+        },
+        {
+          label: formatMessage(messages.permissionsTab),
+          url: `permissions`,
+          feature: 'private_projects',
+          name: 'permissions',
+        },
+      ],
       goBackUrl: null,
-      mapTab: null,
     };
   }
 
   componentDidMount() {
     this.setState({
       goBackUrl: this.props.previousPathName,
-      mapTab: null,
     });
   }
 
   getTabs = (projectId: string, project: IProjectData) => {
+    const { tabs } = this.state;
     const baseTabsUrl = `/admin/projects/${projectId}`;
-    const { formatMessage } = this.props.intl;
+
     const {
       typeform_enabled,
       surveys_enabled,
@@ -121,67 +176,6 @@ export class AdminProjectEdition extends PureComponent<
     } = this.props;
     const processType = project.attributes.process_type;
     const participationMethod = project.attributes.participation_method;
-    let tabs: TabProps[] = [
-      {
-        label: formatMessage(messages.generalTab),
-        url: `${baseTabsUrl}/edit`,
-        name: 'general',
-      },
-      {
-        label: formatMessage(messages.descriptionTab),
-        url: `${baseTabsUrl}/description`,
-        name: 'description',
-      },
-      {
-        label: formatMessage(messages.inputManagerTab),
-        url: `${baseTabsUrl}/ideas`,
-        name: 'ideas',
-      },
-      {
-        label: formatMessage(messages.pollTab),
-        url: `${baseTabsUrl}/poll`,
-        feature: 'polls',
-        name: 'poll',
-      },
-      {
-        label: formatMessage(messages.surveyResultsTab),
-        url: `${baseTabsUrl}/survey-results`,
-        name: 'survey-results',
-      },
-      {
-        label: formatMessage(messages.inputFormTab),
-        url: `${baseTabsUrl}/ideaform`,
-        feature: 'idea_custom_fields',
-        name: 'ideaform',
-      },
-      {
-        label: formatMessage(messages.phasesTab),
-        url: `${baseTabsUrl}/timeline`,
-        name: 'phases',
-      },
-      {
-        label: formatMessage(messages.topicsTab),
-        url: `${baseTabsUrl}/topics`,
-        name: 'topics',
-      },
-      {
-        label: formatMessage(messages.volunteeringTab),
-        url: `${baseTabsUrl}/volunteering`,
-        feature: 'volunteering',
-        name: 'volunteering',
-      },
-      {
-        label: formatMessage(messages.eventsTab),
-        url: `${baseTabsUrl}/events`,
-        name: 'events',
-      },
-      {
-        label: formatMessage(messages.permissionsTab),
-        url: `${baseTabsUrl}/permissions`,
-        feature: 'private_projects',
-        name: 'permissions',
-      },
-    ];
 
     const tabHideConditions = {
       general: function isGeneralTabHidden() {
@@ -337,14 +331,18 @@ export class AdminProjectEdition extends PureComponent<
     };
 
     const tabNames = tabs.map((tab) => tab.name);
+    let cleanedTabs = tabs;
 
     tabNames.forEach((tabName) => {
       if (tabName && tabHideConditions[tabName]()) {
-        tabs = reject(tabs, { name: tabName });
+        cleanedTabs = reject(cleanedTabs, { name: tabName });
       }
     });
 
-    return tabs;
+    return cleanedTabs.map((tab) => ({
+      ...tab,
+      url: `${baseTabsUrl}/${tab.url}`,
+    }));
   };
 
   goBack = () => {
@@ -363,8 +361,10 @@ export class AdminProjectEdition extends PureComponent<
     });
   };
 
-  insertMapTab = (mapTab: IMapTab) => {
-    this.setState({ mapTab });
+  handleData = (insertTabOptions: InsertConfigurationOptions<ITab>) => {
+    this.setState(({ tabs }) => ({
+      tabs: insertConfiguration(insertTabOptions)(tabs),
+    }));
   };
 
   render() {
@@ -380,32 +380,14 @@ export class AdminProjectEdition extends PureComponent<
       children as React.ReactElement<any>,
       { project }
     );
-    const { mapTab } = this.state;
     const tabbedProps = {
       resource: {
         title: !isNilOrError(project)
           ? localize(project.attributes.title_multiloc)
           : formatMessage(messages.newProject),
       },
-      // TODO: optimization would be to use useMemo for tabs, as they get recalculated on every click
       tabs: !isNilOrError(project) ? this.getTabs(project.id, project) : [],
     };
-
-    if (mapTab) {
-      const insertIndex =
-        tabbedProps.tabs.findIndex(
-          (tab) => tab.name === mapTab.insertAfterTabName
-        ) + 1;
-      if (insertIndex > 0) {
-        tabbedProps.tabs = [
-          ...tabbedProps.tabs.slice(0, insertIndex),
-          mapTab.tabConfiguration,
-          ...tabbedProps.tabs.slice(insertIndex),
-        ];
-      } else {
-        tabbedProps.tabs = [...tabbedProps.tabs, mapTab.tabConfiguration];
-      }
-    }
 
     if (!isNilOrError(project) && phases !== undefined) {
       const inputTerm = getInputTerm(
@@ -417,9 +399,8 @@ export class AdminProjectEdition extends PureComponent<
       return (
         <>
           <Outlet
-            id="app.containers.Admin.projects.edit.tabs.map"
-            projectId={project.id}
-            onData={this.insertMapTab}
+            id="app.containers.Admin.projects.edit"
+            onData={this.handleData}
           />
           <TopContainer>
             <GoBackButton onClick={this.goBack} />
