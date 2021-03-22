@@ -21,6 +21,10 @@ ProjectFolders::Engine::config.to_prepare do
     scope
   end
 
+  AdminPublicationsFilteringService.add_filter('depth') do |scope, options|
+    options[:depth] ? scope.where(depth: options[:depth]) : scope
+  end
+
   AdminPublicationsFilteringService.add_filter("by_folder") do |scope, options|
     next scope unless options.key? :folder
 
@@ -32,5 +36,4 @@ ProjectFolders::Engine::config.to_prepare do
       scope.where(parent_id: folder)  # .or(folder) Maybe we should add the folder itself
     end
   end
-
 end
