@@ -280,7 +280,11 @@ export const DashboardsPage = memo(
     ];
 
     useEffect(() => {
-      if (authUser && isProjectModerator({ data: authUser })) {
+      if (
+        authUser &&
+        !isAdmin({ data: authUser }) &&
+        isProjectModerator({ data: authUser })
+      ) {
         setTabs(moderatorTabs);
       }
 

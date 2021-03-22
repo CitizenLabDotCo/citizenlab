@@ -75,7 +75,6 @@ interface Props {
 }
 
 const BosaFasButton = ({ method, last }: Props) => {
-
   const handleOnClick = useCallback(() => {
     const jwt = getJwt();
     window.location.href = `${AUTH_PATH}/clave_unica?token=${jwt}&pathname=${removeUrlLocale(
@@ -84,10 +83,7 @@ const BosaFasButton = ({ method, last }: Props) => {
   }, []);
 
   return (
-    <Container
-      key={method.id}
-      className={last ? 'last' : ''}
-    >
+    <Container key={method.id} className={last ? 'last' : ''}>
       <ButtonWrapper
         onClick={handleOnClick}
         id={`e2e-${method.attributes.name}-button`}
