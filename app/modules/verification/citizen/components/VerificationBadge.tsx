@@ -1,7 +1,7 @@
 import React from 'react';
 import FeatureFlag from 'components/FeatureFlag';
 import styled from 'styled-components';
-import messages from './messages';
+import messages from '../../../../containers/Navbar/components/UserMenu/messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import { colors } from 'utils/styleUtils';
 
