@@ -175,7 +175,7 @@ const CreateProject = memo<Props & InjectedIntlProps>(
     const tabValues = tabs.map((tab) => tab.name) as TTabName[];
 
     const [selectedTabValue, setSelectedTabValue] = useState<TTabName>(
-      tabValues[0]
+      'scratch'
     );
     const [expanded, setExpanded] = useState(false);
 
