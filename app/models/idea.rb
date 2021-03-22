@@ -148,6 +148,6 @@ class Idea < ApplicationRecord
     IdeasPhase.counter_culture_fix_counts only: %i[phase]
   end
 
-
-  Idea.include_if_ee 'Moderation::Extensions::Moderatable'
 end
+
+Idea.include_if_ee 'Moderation::Concerns::Moderatable'
