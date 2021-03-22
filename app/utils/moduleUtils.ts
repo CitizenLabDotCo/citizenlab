@@ -188,6 +188,7 @@ export type OutletsPropertyMap = {
     showHeader?: boolean;
     inModal: boolean;
   };
+  'app.containers.UserEditPage.content': {};
 };
 
 type Outlet<Props> = FunctionComponent<Props> | FunctionComponent<Props>[];
