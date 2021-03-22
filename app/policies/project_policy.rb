@@ -6,19 +6,12 @@ class ProjectPolicy < ApplicationPolicy
 
     def initialize(user, scope)
       @user  = user
-      @scope = scope
+      @scope = scope.includes(:admin_publication)
     end
 
     def resolve
-      if user&.admin?
-        scope.all
-      elsif user&.project_moderator?
-        Project.where(id: user.moderatable_project_ids + filter_for_normal_user(normal_user_result, user))
-      elsif user
-        filter_for_normal_user normal_user_result, user
-      else
-        normal_user_result.where visible_to: 'public'
-      end
+      resolve_for_visitors
+        .or resolve_for_admin
     end
 
     def moderatable
@@ -33,15 +26,12 @@ class ProjectPolicy < ApplicationPolicy
 
     private
 
-    def normal_user_result
-      scope.left_outer_joins(:admin_publication)
-           .where(admin_publications: { publication_status: %w[published archived] })
+    def resolve_for_admin
+      user&.admin? ? scope : scope.none
     end
 
-    def filter_for_normal_user(scope, user)
-      scope
-        .where("projects.visible_to = 'public' OR \
-          (projects.visible_to = 'groups' AND EXISTS(SELECT 1 FROM groups_projects WHERE project_id = projects.id AND group_id IN (?)))", user.group_ids)
+    def resolve_for_visitors
+      scope.where(admin_publications: { publication_status: %w[published archived] })
     end
   end
 
@@ -56,13 +46,7 @@ class ProjectPolicy < ApplicationPolicy
     end
 
     def resolve
-      if record.visible_to == 'public' && record.admin_publication.publication_status != 'draft'
-        scope.all
-      elsif record.visible_to == 'groups' && record.admin_publication.publication_status != 'draft'
-        scope.in_any_group(record.groups).or(scope.admin).or(scope.project_moderator(record.id))
-      else
-        scope.admin.or(scope.project_moderator(record.id))
-      end
+      record.admin_publication.publication_status == 'draft' ? scope.admin : scope.all
     end
   end
 
@@ -161,3 +145,5 @@ ProjectPolicy.prepend_if_ee('ProjectFolders::Patches::ProjectPolicy')
 ProjectPolicy::Scope.prepend_if_ee('ProjectFolders::Patches::ProjectPolicy::Scope')
 
 ProjectPolicy.prepend_if_ee('ProjectPermissions::Patches::ProjectPolicy')
+ProjectPolicy::Scope.prepend_if_ee('ProjectPermissions::Patches::ProjectPolicy::Scope')
+ProjectPolicy::InverseScope.prepend_if_ee('ProjectPermissions::Patches::ProjectPolicy::InverseScope')

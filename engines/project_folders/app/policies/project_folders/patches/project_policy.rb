@@ -5,19 +5,19 @@ module ProjectFolders
     module ProjectPolicy
       module Scope
         def resolve
-          if user&.project_folder_moderator? && !user&.admin?
-            folder_publication_ids = user.moderated_project_folders
-                                         .includes(:admin_publication)
-                                         .pluck('admin_publications.id')
+          super.or resolve_for_project_folder_moderator_only
+        end
 
-            all_ids = user.moderatable_project_ids + filter_for_normal_user(normal_user_result, user)
+        private
 
-            scope.includes(:admin_publication)
-                 .where(admin_publications: { parent_id: folder_publication_ids })
-                 .or(scope.includes(:admin_publication).where(projects: { id: all_ids }))
-          else
-            super
-          end
+        def resolve_for_project_folder_moderator_only
+          return scope.none unless user&.project_folder_moderator?
+
+          folder_publication_ids = user.moderated_project_folders
+                                       .includes(:admin_publication)
+                                       .pluck('admin_publications.id')
+
+          scope.where(admin_publications: { parent_id: folder_publication_ids })
         end
       end
 
