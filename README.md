@@ -266,16 +266,9 @@ end
 gem 'blorgh', path: 'engines/blorgh'
 ```
 
-8. If you're going to add endpoints to your engine, don't forget to mount it in the main `routes.rb` file.
+8. If you added a gem to `blorgh.gemspec`, you'll also need to `require` it in `lib/blorgh.rb`.
 
-9. If you added a factory into your engine, you have to add this line to `spec_helper.rb`:
-```
-require './engines/blorgh/spec/factories/blorghs.rb'
-```
-
-10. If you added a gem to `blorgh.gemspec`, you'll also need to `require` it in `lib/blorgh.rb`.
-
-11. If some of your engine's models have relationships with models outside the engine, don't forget to add e.g. `has_many` dependencies in decorator files in you engine's `model` folder.
+9. If some of your engine's models have relationships with models outside the engine, don't forget to add e.g. `has_many` dependencies in decorator files in you engine's `model` folder.
 
 
 ## Adding smart group rules
