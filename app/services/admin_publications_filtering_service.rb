@@ -16,12 +16,4 @@ class AdminPublicationsFilteringService
     other_publications = scope.where.not(publication_type: Project.name)
     project_publications.or(other_publications)
   end
-
-  add_filter('depth') do |scope, options|
-    @children_counts = Hash.new(0).tap do |counts|
-      parent_ids = scope.pluck(:parent_id).compact
-      parent_ids.each { |id| counts[id] += 1 }
-    end
-    options[:depth] ? scope.where(depth: options[:depth]) : scope
-  end
 end
