@@ -22,7 +22,7 @@ import {
 import { colors } from 'utils/styleUtils';
 
 // svg
-import illustration from './illustration.svg';
+import illustration from 'components/Verification/illustration.svg';
 
 interface Props {
   opened: boolean;
