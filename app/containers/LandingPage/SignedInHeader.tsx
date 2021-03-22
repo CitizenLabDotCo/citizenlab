@@ -387,7 +387,7 @@ class SignedInHeader extends PureComponent<Props, State> {
             enter={true}
             exit={true}
           >
-            <HeaderContentCompleteProfile id="e2e-singed-in-header-complete-profile">
+            <HeaderContentCompleteProfile id="e2e-signed-in-header-complete-profile">
               <Left>
                 <Icons>
                   <StyledAvatar
@@ -416,7 +416,7 @@ class SignedInHeader extends PureComponent<Props, State> {
                   borderColor="#fff"
                   textColor="#fff"
                   fontWeight="500"
-                  className="e2e-singed-in-header-complete-skip-btn"
+                  className="e2e-signed-in-header-complete-skip-btn"
                 />
                 <AcceptButton
                   text={<FormattedMessage {...messages.completeProfile} />}
@@ -425,7 +425,7 @@ class SignedInHeader extends PureComponent<Props, State> {
                   textColor={theme.colorMain}
                   textHoverColor={theme.colorMain}
                   fontWeight="500"
-                  className="e2e-singed-in-header-accept-btn"
+                  className="e2e-signed-in-header-accept-btn"
                 />
               </Right>
             </HeaderContentCompleteProfile>
@@ -445,7 +445,7 @@ class SignedInHeader extends PureComponent<Props, State> {
             enter={true}
             exit={true}
           >
-            <HeaderContentCompleteProfile id="e2e-singed-in-header-verifiaction">
+            <HeaderContentCompleteProfile id="e2e-signed-in-header-verification">
               <Left>
                 <Icons>
                   <AvatarAndShield aria-hidden>
@@ -475,7 +475,7 @@ class SignedInHeader extends PureComponent<Props, State> {
                   borderColor="#fff"
                   textColor="#fff"
                   fontWeight="500"
-                  className="e2e-singed-in-header-verification-skip-btn"
+                  className="e2e-signed-in-header-verification-skip-btn"
                 />
                 <AcceptButton
                   text={<FormattedMessage {...messages.verifyNow} />}
@@ -484,7 +484,7 @@ class SignedInHeader extends PureComponent<Props, State> {
                   textColor={theme.colorMain}
                   textHoverColor={theme.colorMain}
                   fontWeight="500"
-                  className="e2e-singed-in-header-accept-btn"
+                  className="e2e-signed-in-header-accept-btn"
                 />
               </Right>
             </HeaderContentCompleteProfile>
@@ -504,7 +504,7 @@ class SignedInHeader extends PureComponent<Props, State> {
             enter={true}
             exit={true}
           >
-            <HeaderContentCustomCta id="e2e-singed-in-header-custom-cta">
+            <HeaderContentCustomCta id="e2e-signed-in-header-custom-cta">
               <Left>
                 <Text>
                   <T
@@ -550,7 +550,7 @@ class SignedInHeader extends PureComponent<Props, State> {
             enter={true}
             exit={true}
           >
-            <HeaderContentDefault id="e2e-singed-in-header-default-cta">
+            <HeaderContentDefault id="e2e-signed-in-header-default-cta">
               {defaultMessage && !isEmpty(defaultMessage) ? (
                 <T as="h2" value={defaultMessage} supportHtml />
               ) : (

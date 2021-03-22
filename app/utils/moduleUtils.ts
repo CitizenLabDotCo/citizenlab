@@ -14,7 +14,7 @@ import { NormalFormValues } from 'containers/Admin/users/NormalGroupForm';
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
 import { IProjectData, IUpdatedProjectProperties } from 'services/projects';
 import { onProjectFormStateChange } from 'containers/Admin/projects/edit/general';
-import { mergeWith, castArray } from 'lodash-es';
+import { mergeWith, castArray, clamp } from 'lodash-es';
 
 import { FunctionComponent } from 'react';
 
@@ -141,6 +141,9 @@ export type OutletsPropertyMap = {
   'app.containers.Admin.ideas.tabs': {
     onData: (data: InsertConfigurationOptions<ITab>) => void;
   };
+  'app.containers.Admin.projects.edit': {
+    onData: (data: InsertConfigurationOptions<ITab>) => void;
+  };
   'app.containers.Admin.initiatives.tabs': ITabsOutlet;
   'app.containers.Admin.dashboards.tabs': ITabsOutlet;
   'app.containers.Admin.sideBar.navItems': {
@@ -165,13 +168,6 @@ export type OutletsPropertyMap = {
         CellConfiguration<IdeaHeaderCellComponentProps>
       >
     ) => void;
-  };
-  'app.containers.Admin.projects.edit.tabs.map': {
-    projectId: string;
-    onData: (data: {
-      insertAfterTabName?: string;
-      tabConfiguration: ITab;
-    }) => void;
   };
   'app.containers.Admin.settings.registration': {};
   'app.containers.Admin.settings.registrationHelperText': {
@@ -224,10 +220,10 @@ type RecursivePartial<T> = {
 interface Routes {
   citizen: RouteConfiguration[];
   admin: RouteConfiguration[];
+  'admin.projects': RouteConfiguration[];
   'admin.initiatives': RouteConfiguration[];
   'admin.ideas': RouteConfiguration[];
   'admin.dashboards': RouteConfiguration[];
-  adminProjectMapTab: RouteConfiguration[];
 }
 
 export interface ParsedModuleConfiguration {
@@ -333,8 +329,8 @@ export const loadModules = (modules: Modules): ParsedModuleConfiguration => {
         mergedRoutes?.['admin.dashboards'],
         RouteTypes.ADMIN
       ),
-      adminProjectMapTab: parseModuleRoutes(
-        mergedRoutes?.['adminProjectMapTab'],
+      'admin.projects': parseModuleRoutes(
+        mergedRoutes?.['admin.projects'],
         RouteTypes.ADMIN
       ),
     },
@@ -346,9 +342,16 @@ export const loadModules = (modules: Modules): ParsedModuleConfiguration => {
 export const insertConfiguration = <T extends { name: string }>({
   configuration,
   insertAfterName,
+  insertBeforeName,
 }: InsertConfigurationOptions<T>) => (items: T[]): T[] => {
-  const insertIndex =
-    items.findIndex((item) => item.name === insertAfterName) + 1;
+  const foundIndex = items.findIndex(
+    (item) => item.name === (insertAfterName || insertBeforeName)
+  );
+  const insertIndex = clamp(
+    insertAfterName ? foundIndex + 1 : foundIndex - 1,
+    0,
+    items.length
+  );
 
   return insertIndex > 0
     ? [
