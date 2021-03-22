@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 class IdeaPolicy < ApplicationPolicy
   class Scope
     attr_reader :user, :scope
 
     def initialize(user, scope)
-      @user  = user
+      @user = user
       @scope = scope
     end
 
@@ -11,22 +13,28 @@ class IdeaPolicy < ApplicationPolicy
       if user&.admin?
         scope.all
       elsif user
-        scope.where(project: Pundit.policy_scope(user, Project), publication_status: ['published', 'closed'])
+        scope.where(project: Pundit.policy_scope(user, Project), publication_status: %w[published closed])
       else
-        scope
-          .left_outer_joins(project: [:admin_publication])
-          .where(publication_status: ['published', 'closed'])
-          .where(projects: {visible_to: 'public', admin_publications: {publication_status: ['published', 'archived']}})
+        resolve_for_visitor
       end
+    end
+
+    private
+
+    def resolve_for_visitor
+      scope
+        .left_outer_joins(project: [:admin_publication])
+        .where(publication_status: %w[published closed])
+        .where(projects: { admin_publications: { publication_status: %w[published archived] } })
     end
   end
 
   def index_xlsx?
-    user&.admin?
+    admin?
   end
 
   def index_mini?
-    user&.admin?
+    admin?
   end
 
   def create?
@@ -36,16 +44,16 @@ class IdeaPolicy < ApplicationPolicy
     reason = ParticipationContextService.new.posting_idea_disabled_reason_for_project(record.project, user)
     raise_not_authorized(reason) if reason
 
-    active_owner? && ProjectPolicy.new(user, record.project).show?
+    active? && owner? && ProjectPolicy.new(user, record.project).show?
   end
 
   def show?
-    active_owner? ||
-    user&.active_admin_or_moderator?(record.project_id) ||
-    (
-      ProjectPolicy.new(user, record.project).show? &&
-      %w(draft published closed).include?(record.publication_status)
-    )
+    active? && owner? ||
+      user&.active_admin_or_moderator?(record.project_id) ||
+      (
+        ProjectPolicy.new(user, record.project).show? &&
+          %w[draft published closed].include?(record.publication_status)
+      )
   end
 
   def by_slug?
@@ -60,9 +68,9 @@ class IdeaPolicy < ApplicationPolicy
     pcs_posting_reason = pcs.posting_idea_disabled_reason_for_project(record.project, user)
     record.draft? || user&.active_admin_or_moderator?(record.project_id) ||
       (
-        active_owner? &&
-        (pcs_posting_reason.nil? || bypassable_reasons.include?(pcs_posting_reason)) &&
-        ProjectPolicy.new(user, record.project).show?
+        active? && owner? &&
+          (pcs_posting_reason.nil? || bypassable_reasons.include?(pcs_posting_reason)) &&
+          ProjectPolicy.new(user, record.project).show?
       )
   end
 
@@ -77,14 +85,14 @@ class IdeaPolicy < ApplicationPolicy
       :author_id,
       :location_description,
       :proposed_budget,
-      location_point_geojson: [:type, coordinates: []],
-      title_multiloc: CL2_SUPPORTED_LOCALES,
-      body_multiloc: CL2_SUPPORTED_LOCALES,
-      topic_ids: [],
-      area_ids: []
+      { location_point_geojson: [:type, { coordinates: [] }],
+        title_multiloc: CL2_SUPPORTED_LOCALES,
+        body_multiloc: CL2_SUPPORTED_LOCALES,
+        topic_ids: [],
+        area_ids: [] }
     ]
-    if user&.admin? || (record.class != Class && user&.project_moderator?(record.project_id))
-      [:idea_status_id, :budget, :assignee_id] + shared + [phase_ids: []]
+    if admin? || (record.class != Class && user&.project_moderator?(record.project_id))
+      %i[idea_status_id budget assignee_id] + shared + [phase_ids: []]
     else
       shared
     end
@@ -92,7 +100,9 @@ class IdeaPolicy < ApplicationPolicy
 
   private
 
-  def active_owner?
-    user&.active? && record.author_id == user.id
+  def owner?
+    record.author_id == user.id
   end
 end
+
+IdeaPolicy::Scope.prepend_if_ee('ProjectPermissions::Patches::IdeaPolicy::Scope')
