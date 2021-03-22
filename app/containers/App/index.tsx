@@ -92,6 +92,7 @@ import { media, getTheme } from 'utils/styleUtils';
 // typings
 import { SSOParams } from 'services/singleSignOn';
 import { Locale } from 'typings';
+import Outlet from 'components/Outlet';
 
 const Container = styled.div`
   display: flex;
@@ -467,6 +468,12 @@ class App extends PureComponent<Props, State> {
     this.setState({ verificationModalMounted: true });
   };
 
+  handleModalMounted = (id: string) => {
+    if (id === 'verification') {
+      this.verificationModalMounted();
+    }
+  };
+
   render() {
     const { location, children } = this.props;
     const {
@@ -540,13 +547,10 @@ class App extends PureComponent<Props, State> {
                     </Suspense>
                   </ErrorBoundary>
 
-                  <ErrorBoundary>
-                    <Suspense fallback={null}>
-                      <VerificationModal
-                        onMounted={this.verificationModalMounted}
-                      />
-                    </Suspense>
-                  </ErrorBoundary>
+                  <Outlet
+                    id="app.containers.App.modals"
+                    onMounted={this.handleModalMounted}
+                  />
 
                   <ErrorBoundary>
                     <div id="modal-portal" />

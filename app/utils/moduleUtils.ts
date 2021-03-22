@@ -192,6 +192,7 @@ export type OutletsPropertyMap = {
   'app.containers.Navbar.UserMenu.UserNameContainer': {
     isVerified: boolean;
   };
+  'app.containers.App.modals': { onMounted: (id: string) => void };
 };
 
 type Outlet<Props> = FunctionComponent<Props> | FunctionComponent<Props>[];
