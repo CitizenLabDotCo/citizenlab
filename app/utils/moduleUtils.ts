@@ -193,6 +193,11 @@ export type OutletsPropertyMap = {
     isVerified: boolean;
   };
   'app.containers.App.modals': { onMounted: (id: string) => void };
+  'app.components.Avatar.badges': {
+    user: IUserData;
+    addVerificationBadge?: boolean | null;
+    badgeSize: number;
+  };
 };
 
 type Outlet<Props> = FunctionComponent<Props> | FunctionComponent<Props>[];
