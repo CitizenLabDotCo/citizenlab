@@ -1,11 +1,6 @@
-import { BadgeIcon } from 'components/Avatar';
 import ErrorBoundary from 'components/ErrorBoundary';
-import FeatureFlag from 'components/FeatureFlag';
 import React, { Suspense } from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
-
-import { colors } from 'utils/styleUtils';
-
 import VerificationBadge from './citizen/components/VerificationBadge';
 import VerificationModal from './citizen/components/VerificationModal';
 import VerificationSignUpSteps from './citizen/components/VerificationSignUpSteps';
@@ -30,24 +25,6 @@ const configuration: ModuleConfiguration = {
         </Suspense>
       </ErrorBoundary>
     ),
-    'app.components.Avatar.badges': ({
-      addVerificationBadge,
-      user,
-      badgeSize,
-    }) => {
-      if (user?.attributes?.verified && addVerificationBadge) {
-        return (
-          <FeatureFlag name="verification">
-            <BadgeIcon
-              name="checkmark-full"
-              size={badgeSize}
-              fill={colors.clGreen}
-            />
-          </FeatureFlag>
-        );
-      }
-      return null;
-    },
   },
 };
 

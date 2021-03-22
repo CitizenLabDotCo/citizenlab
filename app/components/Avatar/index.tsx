@@ -22,7 +22,6 @@ import { InjectedIntlProps } from 'react-intl';
 import styled from 'styled-components';
 import { lighten } from 'polished';
 import { colors } from 'utils/styleUtils';
-import Outlet from 'components/Outlet';
 
 export const Container = styled.div<{ size: number }>`
   flex: 0 0 ${({ size }) => size}px;
@@ -98,7 +97,7 @@ const AvatarIcon = styled(Icon)<{
   }
 `;
 
-export const BadgeIcon = styled(Icon)<{ size: number; fill: string }>`
+const BadgeIcon = styled(Icon)<{ size: number; fill: string }>`
   fill: ${({ fill }) => fill};
   width: ${({ size }) => size}px;
   height: ${({ size }) => size}px;
@@ -138,7 +137,7 @@ const Avatar = memo(
     const user = useUser({ userId });
 
     if (!isNilOrError(user)) {
-      const { slug, avatar } = user.attributes;
+      const { slug, avatar, verified } = user.attributes;
       const profileLink = `/profile/${slug}`;
       // In dev mode, slug is sometimes undefined,
       // while !isNilOrError(user) passes... To be solved properly
@@ -206,12 +205,15 @@ const Avatar = memo(
             />
           )}
 
-          <Outlet
-            id="app.components.Avatar.badges"
-            user={user}
-            addVerificationBadge={addVerificationBadge}
-            badgeSize={badgeSize}
-          />
+          {verified && addVerificationBadge && (
+            <FeatureFlag name="verification">
+              <BadgeIcon
+                name="checkmark-full"
+                size={badgeSize}
+                fill={colors.clGreen}
+              />
+            </FeatureFlag>
+          )}
         </Container>
       );
 
