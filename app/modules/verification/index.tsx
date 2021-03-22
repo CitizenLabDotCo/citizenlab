@@ -1,5 +1,6 @@
 import React from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
+import VerificationBadge from './citizen/components/VerificationBadge';
 import VerificationSignUpSteps from './citizen/components/VerificationSignUpSteps';
 import VerificationStatus from './citizen/components/VerificationStatus';
 
@@ -12,7 +13,9 @@ const configuration: ModuleConfiguration = {
       <VerificationSignUpSteps {...props} />
     ),
     'app.containers.UserEditPage.content': () => <VerificationStatus />,
-    'app.containers.Navbar.UserMenu.UserNameContainer': () => null,
+    'app.containers.Navbar.UserMenu.UserNameContainer': (props) => (
+      <VerificationBadge {...props} />
+    ),
   },
 };
 

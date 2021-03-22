@@ -189,7 +189,9 @@ export type OutletsPropertyMap = {
     inModal: boolean;
   };
   'app.containers.UserEditPage.content': {};
-  'app.containers.Navbar.UserMenu.UserNameContainer': {};
+  'app.containers.Navbar.UserMenu.UserNameContainer': {
+    isVerified: boolean;
+  };
 };
 
 type Outlet<Props> = FunctionComponent<Props> | FunctionComponent<Props>[];
