@@ -12,7 +12,7 @@ interface Props {
 
 const useCapture = false;
 
-const Component = ({ onRender }: Props) => {
+const ProjectTemplatePreviewAdminWithEventWrapper = ({ onRender }: Props) => {
   const locale = useLocale();
   const [selectedProjectTemplateId, setSelectedProjectTemplateId] = useState<
     string | null
@@ -97,4 +97,4 @@ const Component = ({ onRender }: Props) => {
   return null;
 };
 
-export default Component;
+export default ProjectTemplatePreviewAdminWithEventWrapper;

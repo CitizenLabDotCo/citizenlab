@@ -4,7 +4,7 @@ import CreateProjectFromTemplate from './admin/containers/CreateProjectFromTempl
 import Tab from './admin/components/Tab';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import { TTabName } from 'containers/Admin/projects/all/CreateProject';
-import ProjectTemplatePreviewContainerAdmin from './admin/containers/ProjectTemplatePreviewContainerAdmin';
+import ProjectTemplatePreviewAdminWithEventWrapper from './admin/containers/ProjectTemplatePreviewAdminWithEventWrapper';
 declare module 'containers/Admin/projects/all/CreateProject' {
   export interface ITabNamesMap {
     template: 'template';
@@ -57,7 +57,11 @@ const configuration: ModuleConfiguration = {
   },
   outlets: {
     'app.containers.Admin.projects.all.container': (props) => {
-      return <ProjectTemplatePreviewContainerAdmin onRender={props.onRender} />;
+      return (
+        <ProjectTemplatePreviewAdminWithEventWrapper
+          onRender={props.onRender}
+        />
+      );
     },
     'app.containers.Admin.projects.all.createProject': (props) => (
       <RenderOnFeatureFlag>
