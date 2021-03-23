@@ -58,6 +58,15 @@ Rails.application.routes.draw do
         get :filter_counts, on: :collection
       end
 
+      # We named the param :permission_action, bc :action is already taken (controller action).
+      concern :permissionable do
+        resources :permissions, param: :permission_action, only: %i[update show index]
+      end
+
+      concerns :permissionable # for the global permission scope (with parent_param = nil)
+      resources :phases, only: [], concerns: :permissionable, defaults: { parent_param: :phase_id }
+      resources :projects, only: [], concerns: :permissionable, defaults: { parent_param: :project_id }
+
       resources :initiatives,
         concerns: [:votable, :spam_reportable, :post],
         defaults: { votable: 'Initiative', spam_reportable: 'Initiative', post: 'Initiative' } do
