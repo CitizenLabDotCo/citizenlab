@@ -10,10 +10,6 @@ namespace :cl2back do
         config.cleanup_settings
         config.save!
       end
-
-      # Cleanup settings is no longer supported for tenants.
-      # tenant.cleanup_settings
-      # tenant.save
     end
   end
 end
