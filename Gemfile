@@ -105,10 +105,10 @@ gem 'rgeo-geojson'
 gem 'rubyzip', '~> 1.3.0'
 
 gem 'okcomputer'
-gem 'omniauth' # , '~> 1.7.1'
+gem 'omniauth', '~> 1.9.1'
+gem 'omniauth-rails_csrf_protection'
 gem 'omniauth-facebook'
 gem 'omniauth-google-oauth2'
-gem 'omniauth-twitter'
 gem 'sentry-raven'
 gem 'simple_segment', '~>1.2'
 # This fork was made to update the version of jws which is
