@@ -85,8 +85,8 @@ gem 'activerecord-postgis-adapter', '~> 6.0.0'
 # required by Rails 6.0.1.
 gem 'apartment', github: 'influitive/apartment', branch: 'development'
 gem 'api-pagination', '~> 4.8.2'
-gem 'carrierwave', '~> 2.0.2'
-gem 'carrierwave-base64', '~> 2.6'
+gem 'carrierwave', '~> 2.2.0'
+gem 'carrierwave-base64', '~> 2.8.1'
 gem 'kaminari', '~> 1.2'
 
 gem 'rails-i18n', '~> 6.0.0'
