@@ -16,9 +16,9 @@ describe PermissionPolicy do
         %w[a1 a2]
       end
 
-      def self.scope_type; end
+      def self.scope_type; nil end
 
-      def self.scope_class; end
+      def self.scope_class; nil end
     end
 
     PermissionsService.clear_scope_types
