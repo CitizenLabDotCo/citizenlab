@@ -8,9 +8,6 @@ import VerificationSignUpSteps from './citizen/components/VerificationSignUpStep
 import VerificationStatus from './citizen/components/VerificationStatus';
 
 const configuration: ModuleConfiguration = {
-  routes: {
-    admin: [],
-  },
   outlets: {
     'app.components.SignUpIn.SignUp.step': (props) => (
       <VerificationSignUpSteps {...props} />
