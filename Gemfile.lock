@@ -478,7 +478,7 @@ GEM
       railties (>= 4.2.0)
     faker (2.8.0)
       i18n (>= 1.6, < 1.8)
-    faraday (0.15.4)
+    faraday (0.17.4)
       multipart-post (>= 1.2, < 3)
     ffi (1.9.25)
     fog-aws (3.5.2)
@@ -599,7 +599,7 @@ GEM
     minitest (5.14.4)
     mjml-rails (4.4.0)
     msgpack (1.3.3)
-    multi_json (1.14.1)
+    multi_json (1.15.0)
     multi_xml (0.6.0)
     multipart-post (2.1.1)
     mustache (1.1.0)
@@ -611,9 +611,8 @@ GEM
       mini_portile2 (~> 2.5.0)
       racc (~> 1.4)
     nori (2.6.0)
-    oauth (0.5.4)
-    oauth2 (1.4.1)
-      faraday (>= 0.8, < 0.16.0)
+    oauth2 (1.4.7)
+      faraday (>= 0.8, < 2.0)
       jwt (>= 1.0, < 3.0)
       multi_json (~> 1.3)
       multi_xml (~> 0.5)
@@ -622,21 +621,19 @@ GEM
     omniauth (1.9.1)
       hashie (>= 3.4.6)
       rack (>= 1.6.2, < 3)
-    omniauth-facebook (5.0.0)
+    omniauth-facebook (8.0.0)
       omniauth-oauth2 (~> 1.2)
-    omniauth-google-oauth2 (0.6.0)
+    omniauth-google-oauth2 (0.8.2)
       jwt (>= 2.0)
-      omniauth (>= 1.1.1)
-      omniauth-oauth2 (>= 1.5)
-    omniauth-oauth (1.1.0)
-      oauth
-      omniauth (~> 1.0)
-    omniauth-oauth2 (1.6.0)
       oauth2 (~> 1.1)
-      omniauth (~> 1.9)
-    omniauth-twitter (1.4.0)
-      omniauth-oauth (~> 1.1)
-      rack
+      omniauth (~> 1.1)
+      omniauth-oauth2 (>= 1.6)
+    omniauth-oauth2 (1.7.1)
+      oauth2 (~> 1.4)
+      omniauth (>= 1.9, < 3)
+    omniauth-rails_csrf_protection (0.1.2)
+      actionpack (>= 4.2)
+      omniauth (>= 1.3.1)
     omniauth_openid_connect (0.3.3)
       addressable (~> 2.5)
       omniauth (~> 1.9)
@@ -954,11 +951,11 @@ DEPENDENCIES
   multi_tenancy!
   nlp!
   okcomputer
-  omniauth
+  omniauth (~> 1.9.1)
   omniauth-azure-activedirectory!
   omniauth-facebook
   omniauth-google-oauth2
-  omniauth-twitter
+  omniauth-rails_csrf_protection
   omniauth_openid_connect (~> 0.3.3)
   onboarding!
   openid_connect!
