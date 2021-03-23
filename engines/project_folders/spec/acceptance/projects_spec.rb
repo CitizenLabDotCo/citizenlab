@@ -57,10 +57,11 @@ resource 'Projects' do
 
         json_response = json_parse(response_body)
         ids = json_response[:data].map { |project| project[:id] }
+        
         projects = Project.includes(:admin_publication)
                           .where(admin_publications: { publication_status: %w[published archived] })
-                          .where(projects: { visible_to: 'public' })
-                          .or(projects_within_folder)
+        projects = projects.where(projects: { visible_to: 'public' }) if CitizenLab.ee?
+        projects = projects.or(projects_within_folder)
 
         expect(ids).to match_array projects.pluck(:id)
       end
@@ -76,7 +77,6 @@ resource 'Projects' do
         parameter :header_bg, "Base64 encoded header image"
         parameter :area_ids, "Array of ids of the associated areas"
         parameter :topic_ids, "Array of ids of the associated topics"
-        parameter :visible_to, "Defines who can see the project, either #{Project::VISIBLE_TOS.join(",")}. Defaults to public.", required: false
         parameter :participation_method, "Only for continuous projects. Either #{ParticipationContext::PARTICIPATION_METHODS.join(",")}. Defaults to ideation.", required: false
         parameter :posting_enabled, "Only for continuous projects. Can citizens post ideas in this project? Defaults to true", required: false
         parameter :commenting_enabled, "Only for continuous projects. Can citizens post comment in this project? Defaults to true", required: false
@@ -92,6 +92,10 @@ resource 'Projects' do
         parameter :poll_anonymous, "Are users associated with their answer? Defaults to false. Only applies if participation_method is 'poll'", required: false
         parameter :folder_id, "The ID of the project folder (can be set to nil for top-level projects)", required: false
         parameter :ideas_order, 'The default order of ideas.'
+
+        if CitizenLab.ee? 
+          parameter :visible_to, "Defines who can see the project, either #{Project::VISIBLE_TOS.join(",")}. Defaults to public.", required: false
+        end
       end
 
       with_options scope: [:project, :admin_publication_attributes] do
