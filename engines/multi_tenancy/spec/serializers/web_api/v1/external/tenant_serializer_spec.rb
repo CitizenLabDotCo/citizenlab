@@ -29,7 +29,11 @@ describe 'WebApi::V1::External::TenantSerializer' do
             'success_stories' => [],
             'voting_threshold' => 300,
             'eligibility_criteria' => { 'en' => 'Eligibility criteria' },
-            'threshold_reached_message' => { 'en' => 'Threshold reached' } } },
+            'threshold_reached_message' => { 'en' => 'Threshold reached' } },
+        'custom_style' => {
+          'allowed' => true,
+          'enabled' => true
+        } },
       style: {},
       logo: { 'small' => nil, 'medium' => nil, 'large' => nil },
       header_bg: { 'large' => nil, 'medium' => nil, 'small' => nil } }
