@@ -461,9 +461,10 @@ class App extends PureComponent<Props, State> {
     if (id === 'verification') {
       this.setState({ verificationModalMounted: true });
     }
-    if (id === 'signup') {
-      this.setState({ signUpInModalMounted: true });
-    }
+  };
+
+  handleSignUpInModalMounted = () => {
+    this.setState({ signUpInModalMounted: true });
   };
 
   render() {
@@ -536,7 +537,7 @@ class App extends PureComponent<Props, State> {
                   <ErrorBoundary>
                     <Suspense fallback={null}>
                       <SignUpInModal
-                        onMounted={() => this.handleModalMounted('signup')}
+                        onMounted={this.handleSignUpInModalMounted}
                       />
                     </Suspense>
                   </ErrorBoundary>
