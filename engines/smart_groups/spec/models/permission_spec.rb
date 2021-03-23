@@ -48,9 +48,9 @@ RSpec.describe Permission, type: :model do
 
   describe 'for_user' do
     before do
-      @p1 = create(:project_with_current_phase, phases_config: {sequence: "xcx"}, with_permissions: true)
+      @p1 = create(:project_with_current_phase, phases_config: {sequence: "xcx"})
       @past_phase, @current_phase, @future_phase = @p1.phases.sort_by(&:end_at)
-      @p2 = create(:continuous_project, with_permissions: true)
+      @p2 = create(:continuous_project)
       Permission.all.each{|pm| pm.update!(permitted_by: 'admins_moderators')}
       @permission_everyone = @current_phase.permissions.find_by action: 'posting_idea'
       @permission_everyone.update!(permitted_by: 'everyone')
