@@ -355,7 +355,7 @@
   "app.components.ProjectTemplatePreview.seeMoreTemplates": "Meer sjablonen bekijken",
   "app.components.ProjectTemplatePreview.successMessage": "Het project werd met succes aangemaakt!",
   "app.components.ProjectTemplatePreview.typeProjectName": "Typ de naam van het project in",
-  "app.components.ProjectTemplatePreview.useTemplate": "",
+  "app.components.ProjectTemplatePreview.useTemplate": "Dit sjabloon gebruiken",
   "app.components.QuillEditor.alignCenter": "Centreer tekst",
   "app.components.QuillEditor.alignLeft": "Links uitlijnen",
   "app.components.QuillEditor.alignRight": "Rechts uitlijnen",
