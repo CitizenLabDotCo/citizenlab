@@ -303,6 +303,8 @@ PATH
       granular_permissions
       pundit (~> 2.0)
       rails (~> 6.0.0)
+      savon (~> 2.12.0)
+      smart_groups
 
 PATH
   remote: engines/volunteering
