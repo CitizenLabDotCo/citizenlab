@@ -59,7 +59,7 @@ end
 group :test do
   gem 'rubyXL'
   gem 'shoulda-matchers', '~> 3.1'
-  gem 'webmock', '~> 3.4'
+  gem 'webmock', '~> 3.12'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
