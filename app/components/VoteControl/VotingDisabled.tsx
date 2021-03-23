@@ -20,7 +20,7 @@ import { FormattedDate } from 'react-intl';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // utils
-import { openVerificationModal } from 'modules/verification/citizen/components/verificationModalEvents';
+import { openVerificationModal } from 'components/Verification/VerificationModalEvents';
 
 // styling
 import styled from 'styled-components';

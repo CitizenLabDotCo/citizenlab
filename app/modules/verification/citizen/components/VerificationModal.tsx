@@ -14,19 +14,23 @@ import useWindowSize from 'hooks/useWindowSize';
 
 // events
 import {
+  ContextShape,
+  InitiativeContext,
+  IVerificationError,
+  TVerificationSteps,
+} from 'components/Verification/VerificationModalEvents';
+
+import {
   openVerificationModal$,
   closeVerificationModal$,
   closeVerificationModal,
-} from 'modules/verification/citizen/components/verificationModalEvents';
+} from './VerificationModalEvents';
 
 // style
 import styled from 'styled-components';
 import { viewportWidths } from 'utils/styleUtils';
 
 // typings
-import { IParticipationContextType, IPCAction } from 'typings';
-import { IInitiativeAction } from 'services/initiatives';
-
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -36,40 +40,11 @@ const Container = styled.div`
   padding-right: 20px;
 `;
 
-export type ProjectContext = {
-  id: string;
-  type: IParticipationContextType;
-  action: IPCAction;
-};
-
-export type InitiativeContext = {
-  type: 'initiative';
-  action: IInitiativeAction;
-};
-
-export type IVerificationError = 'taken' | 'not_entitled' | null;
-
-export type ContextShape =
-  | ProjectContext
-  | InitiativeContext
-  | null
-  | undefined;
-
-export function isProjectContext(obj: ContextShape): obj is ProjectContext {
-  return (obj as ProjectContext)?.id !== undefined;
-}
 export function isInitiativeContext(
   obj: ContextShape
 ): obj is InitiativeContext {
   return (obj as InitiativeContext)?.type === 'initiative';
 }
-
-export type TVerificationSteps =
-  | 'method-selection'
-  | 'method-step'
-  | 'success'
-  | 'error'
-  | null;
 
 export interface Props {
   className?: string;

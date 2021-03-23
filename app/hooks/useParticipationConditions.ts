@@ -5,7 +5,8 @@ import {
   getGlobalParticipationConditions,
   getPCParticipationConditions,
 } from 'services/participationConditions';
-import { ContextShape } from 'modules/verification/citizen/components/VerificationModal';
+
+import { ContextShape } from 'components/Verification/VerificationModalEvents';
 
 // doesn't react to prop changes, which is ok here because components are unmounted btwn uses
 
