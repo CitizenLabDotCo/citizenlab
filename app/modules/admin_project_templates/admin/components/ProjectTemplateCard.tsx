@@ -14,6 +14,7 @@ import UseTemplateModal from './UseTemplateModal';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
+import componentMessages from '../components/messages';
 
 // style
 import styled from 'styled-components';
@@ -159,7 +160,7 @@ const ProjectTemplateCard = memo<Props>(
             bgColor={darken(0.05, colors.lightGreyishBlue)}
             bgHoverColor={darken(0.1, colors.lightGreyishBlue)}
           >
-            <FormattedMessage {...messages.useTemplate} />
+            <FormattedMessage {...componentMessages.useTemplate} />
           </UseTemplateButton>
 
           <MoreDetailsButton
