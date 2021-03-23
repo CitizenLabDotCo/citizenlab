@@ -11,8 +11,8 @@ module SmartGroups
     private
 
     def set_permission
-      @permission = Permission.find_by!(action: params[:permission_action],
-                                        permission_scope_id: params[params[:parent_param]])
+      @permission = ::Permission.find_by!(action: params[:permission_action],
+                                          permission_scope_id: params[params[:parent_param]])
     end
   end
 end
