@@ -28,10 +28,6 @@ class WebApi::V1::PermissionsController < ApplicationController
     end
   end
 
-  def participation_conditions
-    render json: @permission.participation_conditions, status: :ok
-  end
-
   private
 
   def serialize(permission)

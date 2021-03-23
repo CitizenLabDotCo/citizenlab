@@ -1,26 +1,49 @@
 require 'rails_helper'
 
 RSpec.describe Permission, type: :model do
+  describe "#for_user" do
+    before(:all) do
+      # rubocop:disable RSpec/BeforeAfterAll
+      @scope_types = PermissionsService.instance_variable_get(:@scope_spec_hash)
 
-  describe 'for_user' do
-    before do
-      @p1 = create(:project_with_current_phase, phases_config: {sequence: "xcx"})
-      @past_phase, @current_phase, @future_phase = @p1.phases.sort_by(&:end_at)
-      @p2 = create(:continuous_project)
-      Permission.all.each{|pm| pm.update!(permitted_by: 'admins_moderators')}
-      @permission_everyone = @current_phase.permissions.find_by action: 'posting_idea'
-      @permission_everyone.update!(permitted_by: 'everyone')
-      @g1 = create(:group)
-      @g2 = create(:group)
-      @permission_groups1 = @current_phase.permissions.find_by action: 'commenting_idea'
-      @permission_groups1.update!(permitted_by: 'groups', groups: [@g1])
-      @permission_groups2 = @current_phase.permissions.find_by action: 'voting_idea'
-      @permission_groups2.update!(permitted_by: 'groups', groups: [@g2])
-      create(:custom_field_number, title_multiloc: {'en' => 'Birthyear?'}, key: 'birthyear', code: 'birthyear')
+      # rubocop:disable Style/SingleLineMethods Layout/EmptyLineBetweenDefs
+      dummy_global_scope = Module.new do
+        def self.actions(_scope = nil) %w[a1 a2 a3 a4 a5] end
+        def self.scope_type; nil end
+        def self.scope_class; nil end
+      end
+      # rubocop:enable Style/SingleLineMethods Layout/EmptyLineBetweenDefs
+
+      PermissionsService.clear_scope_types
+      PermissionsService.register_scope_type(dummy_global_scope)
     end
 
-    it 'returns all permissions for admins' do
-      expect(Permission.for_user(create(:admin)).count).to eq Permission.count
+    after(:all) do
+      # Restore registered scope-types as they were before the tests.
+      PermissionsService.instance_variable_set(:@scope_spec_hash, @scope_types)
+    end
+
+    before(:each) { described_class.destroy_all }
+
+    # +let!(permissions)+ must be run after +before(:each)+ which deletes all permission records
+    let!(:permissions) do
+      [
+        create(:global_permission, :by_everyone, action: 'a1'),
+        create(:global_permission, :by_users, action: 'a2'),
+        create(:global_permission, :by_admins_moderators, action: 'a3'),
+        create(:global_permission, permitted_by: 'groups', groups: [manual_grp], action: 'a4')
+      ]
+    end
+    let(:manual_grp) { create(:group) }
+
+    context "when user is admin" do
+      let(:admin) { build(:admin) }
+
+      it { expect(described_class.for_user(admin)).to match permissions }
+    end
+
+    context "when not logged in" do
+      it { expect(described_class.for_user(nil)).to match [permissions[0]] }
     end
 
     context 'when user is logged in' do
@@ -35,14 +58,6 @@ RSpec.describe Permission, type: :model do
 
       it {
         expect(described_class.for_user(user)).to match [permissions[0], permissions[1], permissions[3]]
-      }
-    end
-
-    context 'when user belongs to the authorized smart group' do
-      let(:user) { create(:user, email: 'info@citizenlab.co', birthyear: 1980) }
-
-      it {
-        expect(described_class.for_user(user)).to match [permissions[0], permissions[1], permissions[4]]
       }
     end
   end
