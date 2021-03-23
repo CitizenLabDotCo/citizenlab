@@ -32,6 +32,7 @@ import { openSignUpInModal } from 'components/SignUpIn/events';
 // styling
 import styled from 'styled-components';
 import { defaultCardStyle, fontSizes, media } from 'utils/styleUtils';
+import { openVerificationModal } from 'components/Verification/VerificationModalEvents';
 
 const Container = styled.div`
   position: relative;
