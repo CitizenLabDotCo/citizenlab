@@ -9,6 +9,8 @@ end
 
 module GranularPermissions
   class Engine < ::Rails::Engine
+    isolate_namespace GranularPermissions
+
     config.generators.api_only = true
 
     # Sharing the factories to make them accessible from to the main app / other engines.
