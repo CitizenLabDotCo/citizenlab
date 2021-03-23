@@ -91,9 +91,9 @@ gem 'kaminari', '~> 1.2'
 
 gem 'rails-i18n', '~> 6.0.0'
 
-gem 'awesome_nested_set', '~> 3.2.0'
+gem 'awesome_nested_set', '~> 3.4.0'
 gem 'axlsx', '3.0.0.pre'
-gem 'counter_culture', '~> 2.1'
+gem 'counter_culture', '~> 2.8'
 gem 'fog-aws'
 gem 'groupdate' # , "~> 3.2.0"
 gem 'liquid', '~> 4.0'
