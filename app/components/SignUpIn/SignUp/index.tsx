@@ -220,7 +220,6 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
     };
 
     const onResize = (_width, height) => {
-      console.log('zolg');
       setHeaderHeight(`${Math.round(height) + 2}px`);
     };
 
