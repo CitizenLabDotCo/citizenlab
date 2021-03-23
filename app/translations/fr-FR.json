@@ -355,7 +355,6 @@
   "app.components.ProjectTemplatePreview.seeMoreTemplates": "Voir plus de modèles",
   "app.components.ProjectTemplatePreview.successMessage": "Le projet a été créé avec succès !",
   "app.components.ProjectTemplatePreview.typeProjectName": "Tapez le nom du projet",
-  "app.components.ProjectTemplatePreview.useTemplate": "Utiliser le modèle",
   "app.components.QuillEditor.alignCenter": "Centrer le texte",
   "app.components.QuillEditor.alignLeft": "Aligner à gauche",
   "app.components.QuillEditor.alignRight": "Aligner à droite",
