@@ -355,7 +355,6 @@
   "app.components.ProjectTemplatePreview.seeMoreTemplates": "شاهد المزيد من القوالب",
   "app.components.ProjectTemplatePreview.successMessage": "تم إنشاء المشروع بنجاح!",
   "app.components.ProjectTemplatePreview.typeProjectName": "اكتب اسم المشروع",
-  "app.components.ProjectTemplatePreview.useTemplate": "استخدم هذا القالب",
   "app.components.QuillEditor.alignCenter": "توسيط النص",
   "app.components.QuillEditor.alignLeft": "محاذاة إلى اليسار",
   "app.components.QuillEditor.alignRight": "محاذاة إلى اليمين",
