@@ -9,4 +9,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.unassigned',
     defaultMessage: 'Unassigned',
   },
+  permissionsTab: {
+    id: 'app.modules.idea_assignment.admin.components.permissionsTab',
+    defaultMessage: 'Access rights',
+  },
 });
