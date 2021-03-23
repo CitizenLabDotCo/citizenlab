@@ -355,7 +355,7 @@
   "app.components.ProjectTemplatePreview.seeMoreTemplates": "Zobacz więcej szablonów",
   "app.components.ProjectTemplatePreview.successMessage": "Projekt został pomyślnie stworzony!",
   "app.components.ProjectTemplatePreview.typeProjectName": "Wpisz nazwę projektu",
-  "app.components.ProjectTemplatePreview.useTemplate": "",
+  "app.components.ProjectTemplatePreview.useTemplate": "Użyj tego szablonu",
   "app.components.QuillEditor.alignCenter": "Wyśrodkowanie",
   "app.components.QuillEditor.alignLeft": "Wyrównanie do lewej",
   "app.components.QuillEditor.alignRight": "Wyrównanie do prawej",

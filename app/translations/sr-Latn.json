@@ -355,7 +355,7 @@
   "app.components.ProjectTemplatePreview.seeMoreTemplates": "Pogledajte još šablona",
   "app.components.ProjectTemplatePreview.successMessage": "Projekat je uspešno kreiran!",
   "app.components.ProjectTemplatePreview.typeProjectName": "Unesite naziv projekta",
-  "app.components.ProjectTemplatePreview.useTemplate": "",
+  "app.components.ProjectTemplatePreview.useTemplate": "Koristite ovaj šablon",
   "app.components.QuillEditor.alignCenter": "Centrirajte tekst",
   "app.components.QuillEditor.alignLeft": "Pomerite levo",
   "app.components.QuillEditor.alignRight": "Pomerite desno",
