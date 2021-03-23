@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-Rails.application.routes.draw do
+GranularPermissions::Engine.routes.draw do
   namespace :web_api, defaults: { format: :json } do
     namespace :v1 do
       concern :permissionable do
@@ -15,4 +15,8 @@ Rails.application.routes.draw do
       resources :projects, only: [], concerns: :permissionable, defaults: { parent_param: :project_id }
     end
   end
+end
+
+Rails.application.routes.draw do
+  mount GranularPermissions::Engine => '', as: 'granular_permissions'
 end
