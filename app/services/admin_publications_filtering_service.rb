@@ -16,5 +16,4 @@ class AdminPublicationsFilteringService
     other_publications = scope.where.not(publication_type: Project.name)
     project_publications.or(other_publications)
   end
-
 end
