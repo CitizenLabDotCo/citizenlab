@@ -24,4 +24,8 @@ export default defineMessages({
     defaultMessage:
       'Are you sure you want to remove this group from the project?',
   },
+  permissionsTab: {
+    id: 'app.containers.AdminPage.ProjectEdit.permissionsTab',
+    defaultMessage: 'Access rights',
+  },
 });
