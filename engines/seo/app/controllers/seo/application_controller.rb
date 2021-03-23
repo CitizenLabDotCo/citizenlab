@@ -9,10 +9,11 @@ module Seo
     layout false
 
     def sitemap
-      @projects    = ProjectPolicy::Scope.new(nil, Project).resolve
+      statuses     = %w[published archived]
       @initiatives = Initiative.select(:slug, :updated_at, :publication_status).where(publication_status: statuses)
       @pages       = Page.select(:slug, :updated_at, :publication_status).where(publication_status: statuses)
-      @ideas       = Idea.select(:slug, :updatprojeed_at, :project_id).where(project_id: @projects.ids)
+      @projects    = ProjectPolicy::Scope.new(nil, Project).resolve
+      @ideas       = Idea.select(:slug, :updated_at, :project_id).where(project_id: @projects.map(&:id))
     end
 
     def robots; end
