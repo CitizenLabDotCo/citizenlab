@@ -1,88 +1,87 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe PermissionPolicy do
-  subject { PermissionPolicy.new(user, permission) }
+  subject { described_class.new(user, permission) }
+
   let(:scope) { PermissionPolicy::Scope.new(user, Permission) }
 
-  context "for a visitor" do
-    let!(:permission) { create(:permission, permitted_by: 'everyone') }
-    let!(:denied_permission) { create(:permission, permitted_by: 'admins_moderators') }
+  before(:all) do # rubocop:disable RSpec/BeforeAfterAll
+    @scope_types = PermissionsService.instance_variable_get(:@scope_spec_hash)
+
+    dummy_global_scope = Module.new do
+      def self.actions(_scope = nil)
+        %w[a1 a2]
+      end
+
+      def self.scope_type; end
+
+      def self.scope_class; end
+    end
+
+    PermissionsService.clear_scope_types
+    PermissionsService.register_scope_type(dummy_global_scope)
+  end
+
+  after(:all) do
+    # Restore registered scope-types as they were before the tests.
+    PermissionsService.instance_variable_set(:@scope_spec_hash, @scope_types)
+  end
+
+  context 'for a visitor' do
     let(:user) { nil }
+    let!(:permission) { create(:global_permission, :by_everyone, action: 'a1') }
 
-    it { should_not permit(:show)         }
-    it { should_not permit(:update)       }
+    it { is_expected.not_to permit(:show)         }
+    it { is_expected.not_to permit(:update)       }
 
-    it "should index some permissions" do
+    it 'indexes some permissions' do
       expect(scope.resolve.size).to eq 1
     end
   end
 
-  context "for a user" do
-    let!(:permission) { create(:permission, permitted_by: 'everyone') }
-    let!(:denied_permission) { create(:permission, permitted_by: 'admins_moderators') }
-    let(:user) { nil }
-
-    it { should_not permit(:show)         }
-    it { should_not permit(:update)       }
-
-    it "should index some permissions" do
-      expect(scope.resolve.size).to eq 1
-    end
-  end
-
-  context "for a member of a group with granular permissions" do
-    let(:group) { create(:group) }
-    let!(:permission) { create(:permission, permitted_by: 'groups', groups: [group]) }
-    let!(:denied_permission) { create(:permission, permitted_by: 'admins_moderators') }
+  context 'for a user' do
     let(:user) { create(:user) }
+    let!(:permission) { create(:global_permission, :by_everyone, action: 'a1') }
 
     before do
       group.members << user
     end
 
-    it { should_not permit(:show)         }
-    it { should_not permit(:update)       }
+    it { is_expected.not_to permit(:show)         }
+    it { is_expected.not_to permit(:update)       }
 
-    it "should index some permissions" do
+    it 'indexes some permissions' do
       expect(scope.resolve.size).to eq 1
     end
   end
 
-  context "for an admin" do
+  context 'for an admin' do
     let(:user) { create(:admin) }
     let!(:permission) { create(:permission, permitted_by: 'admins_moderators') }
 
-    it { should permit(:show)             }
-    it { should permit(:update)           }
+    before do
+      group.members << user
+    end
 
-    it "should index the permission" do
+    it { is_expected.to permit(:show)             }
+    it { is_expected.to permit(:update)           }
+
+    it 'indexes some permissions' do
       expect(scope.resolve.size).to eq 1
     end
   end
 
-  context "for a moderator of the project to which the permission belongs" do
-    let(:project) { create(:continuous_project, participation_method: 'ideation', with_permissions: true) }
-    let(:user) { create(:moderator, project: project) }
-    let(:permission) { project.permissions.first }
+  context 'for an admin' do
+    let(:user) { create(:admin) }
+    let!(:permission) { create(:global_permission, :by_admins_moderators, action: 'a1') }
 
-    it { should permit(:show)             }
-    it { should permit(:update)           }
+    it { is_expected.not_to permit(:show)         }
+    it { is_expected.not_to permit(:update)       }
 
-    it "should index the permission" do
-      expect(scope.resolve.size).to be > 0
-    end
-  end
-
-  context "for a moderator of another project" do
-    let(:project) { create(:continuous_project, participation_method: 'ideation', with_permissions: true) }
-    let(:permission) { project.permissions.first }
-    let(:user) { create(:moderator, project: create(:project)) }
-
-    it { should_not permit(:show)         }
-    it { should_not permit(:update)       }
-
-    it "should not index the permission" do
-      expect(scope.resolve.size).to eq 0
+    it 'indexes the permission' do
+      expect(scope.resolve.size).to eq 1
     end
   end
 end

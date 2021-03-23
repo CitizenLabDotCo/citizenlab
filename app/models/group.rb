@@ -26,10 +26,12 @@ class Group < ApplicationRecord
 
   def add_member(user)
     users << user
+    self
   end
 
   def remove_member(user)
     users.delete user
+    self
   end
 
   def members

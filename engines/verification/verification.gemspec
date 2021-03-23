@@ -15,6 +15,7 @@ Gem::Specification.new do |s|
   s.files = Dir['{app,config,db,lib}/**/*', 'Rakefile', 'README.md']
 
   s.add_dependency 'apartment', '~> 2.2.1'
+  s.add_dependency 'granular_permissions'
   s.add_dependency 'pundit', '~> 2.0'
   s.add_dependency 'rails', '~> 6.0.0'
   s.add_dependency 'savon', '~> 2.12.0'
