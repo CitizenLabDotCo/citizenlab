@@ -3,6 +3,7 @@
 module GranularPermissions
   class WebApi::V1::Permissions::ParticipationConditionsController < ApplicationController
     before_action :set_permission, only: %i[index]
+    skip_after_action :verify_policy_scoped, only: %i[index]
 
     def index
       render json: @permission.participation_conditions, status: :ok
@@ -11,7 +12,7 @@ module GranularPermissions
     private
 
     def set_permission
-      @permission = authorize Permission.find_by!(action: permission_action, permission_scope_id: permission_scope_id)
+      @permission = Permission.find_by!(action: permission_action, permission_scope_id: permission_scope_id)
     end
 
     def permission_scope_id
