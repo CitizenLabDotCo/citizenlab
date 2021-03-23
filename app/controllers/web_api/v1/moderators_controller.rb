@@ -2,13 +2,13 @@ class WebApi::V1::ModeratorsController < ApplicationController
 
   before_action :do_authorize, except: [:index]
   before_action :set_moderator, only: [:show, :destroy]
-  
+
   skip_after_action :verify_authorized, only: [:users_search]
   skip_after_action :verify_policy_scoped, only: [:index]
 
   class Moderator < OpenStruct
     def self.policy_class
-      ModeratorPolicy
+      ProjectPermissions::ModeratorPolicy
     end
   end
 
