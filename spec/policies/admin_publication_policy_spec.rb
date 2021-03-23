@@ -4,7 +4,7 @@ describe AdminPublicationPolicy do
   subject { AdminPublicationPolicy.new(user, admin_publication) }
   let(:scope) { AdminPublicationPolicy::Scope.new(user, AdminPublication) }
 
-  context "on a public project" do 
+  context "on a public project" do
     let!(:admin_publication) { create(:project).admin_publication }
     context "for a visitor" do
       let(:user) { nil }
@@ -57,7 +57,6 @@ describe AdminPublicationPolicy do
 
       it "should not index the project holder"  do
         expect(scope.resolve.size).to eq 0
-
       end
     end
 
