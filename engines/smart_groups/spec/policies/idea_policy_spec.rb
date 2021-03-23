@@ -9,7 +9,7 @@ describe IdeaPolicy do
     let!(:group) { create(:smart_group, rules: [
       {ruleType: 'email', predicate: 'is', value: 'user@test.com'}
     ])}
-    let!(:project) { create(:project, visible_to: 'groups', groups: [group], with_permissions: true)}
+    let!(:project) { create(:project, visible_to: 'groups', groups: [group])}
     let!(:idea) { create(:idea, project: project) }
 
     it { should_not permit(:show)    }
@@ -26,7 +26,7 @@ describe IdeaPolicy do
     let!(:group) { create(:smart_group, rules: [
       {ruleType: 'email', predicate: 'is', value: 'user@test.com'}
     ])}
-    let!(:project) { create(:project, visible_to: 'groups', groups: [group], with_permissions: true)}
+    let!(:project) { create(:project, visible_to: 'groups', groups: [group])}
     let!(:idea) { create(:idea, project: project) }
 
     it { should permit(:show)    }
