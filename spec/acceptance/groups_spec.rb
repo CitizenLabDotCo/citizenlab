@@ -61,7 +61,7 @@ resource 'Groups' do
                   "Whether members are manually or automatically added. Either #{Group.membership_types.join(', ')}. Defaults to 'manual'"
         if CitizenLab.ee?
           parameter :rules,
-                    "In case of 'rules' membership type, the user criteria to be a member. Conforms to this json schema: #{JSON.pretty_generate(SmartGroupsService.new.generate_rules_json_schema)}"
+                    "In case of 'rules' membership type, the user criteria to be a member. Conforms to this json schema: #{JSON.pretty_generate(SmartGroups::RulesService.new.generate_rules_json_schema)}"
         end
       end
       ValidationErrorHelper.new.error_fields(self, Group)
@@ -122,7 +122,7 @@ resource 'Groups' do
                   "Whether members are manually or automatically added. Either #{Group.membership_types.join(', ')}"
         if CitizenLab.ee?
           parameter :rules,
-                    "In case of 'rules' membership type, the user criteria to be a member. Conforms to this json schema: #{JSON.pretty_generate(SmartGroupsService.new.generate_rules_json_schema)}"
+                    "In case of 'rules' membership type, the user criteria to be a member. Conforms to this json schema: #{JSON.pretty_generate(SmartGroups::RulesService.new.generate_rules_json_schema)}"
         end
       end
       ValidationErrorHelper.new.error_fields(self, Group)
