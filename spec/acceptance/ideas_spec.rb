@@ -6,10 +6,12 @@ resource "Ideas" do
 
   explanation "Proposals from citizens to the city."
 
+  let(:user) { create(:user) }
+
   before do
     header "Content-Type", "application/json"
     @ideas = ['published','published','draft','published','spam','published','published'].map { |ps|  create(:idea, publication_status: ps)}
-    @user = create(:user)
+    @user = user
     token = Knock::AuthToken.new(payload: @user.to_token_payload).token
     header 'Authorization', "Bearer #{token}"
   end
@@ -24,6 +26,7 @@ resource "Ideas" do
     parameter :projects, 'Filter by projects (OR)', required: false
     parameter :phase, 'Filter by project phase', required: false
     parameter :author, 'Filter by author (user id)', required: false
+    parameter :assignee, 'Filter by assignee (user id)', required: false if CitizenLab.ee?
     parameter :idea_status, 'Filter by status (idea status id)', required: false
     parameter :search, 'Filter by searching in title and body', required: false
     parameter :sort, "Either 'new', '-new', 'trending', '-trending', 'popular', '-popular', 'author_name', '-author_name', 'upvotes_count', '-upvotes_count', 'downvotes_count', '-downvotes_count', 'status', '-status', 'baskets_count', '-baskets_count', 'random'", required: false
@@ -126,7 +129,7 @@ resource "Ideas" do
     end
 
     example "List all ideas in a project" do
-      l = create(:project, with_permissions: true)
+      l = create(:project)
       i = create(:idea, project: l)
 
       do_request projects: [l.id]
@@ -148,7 +151,7 @@ resource "Ideas" do
     end
 
     example "List all ideas in a phase of a project" do
-      pr = create(:project_with_phases, with_permissions: true)
+      pr = create(:project_with_phases)
       ph1 = pr.phases.first
       ph2 = pr.phases.second
       i1 = create(:idea, phases: [ph1], project: pr)
@@ -187,6 +190,18 @@ resource "Ideas" do
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 1
       expect(json_response[:data][0][:id]).to eq i.id
+    end
+
+    if CitizenLab.ee?
+      example "List all ideas for an assignee" do
+        a = create(:admin)
+        i = create(:idea, assignee: a)
+
+        do_request assignee: a.id
+        json_response = json_parse(response_body)
+        expect(json_response[:data].size).to eq 1
+        expect(json_response[:data][0][:id]).to eq i.id
+      end
     end
 
     example "List all ideas that need feedback" do
@@ -285,6 +300,7 @@ resource "Ideas" do
     parameter :projects, 'Filter by projects (OR)', required: false
     parameter :phase, 'Filter by project phase', required: false
     parameter :author, 'Filter by author (user id)', required: false
+    parameter :assignee, 'Filter by assignee (user id)', required: false if CitizenLab.ee?
     parameter :idea_status, 'Filter by status (idea status id)', required: false
     parameter :search, 'Filter by searching in title and body', required: false
     parameter :publication_status, "Return only ideas with the specified publication status; returns all pusblished ideas by default", required: false
@@ -303,7 +319,7 @@ resource "Ideas" do
     end
 
     example "List all idea markers in a phase of a project", document: false do
-      pr = create(:project_with_phases, with_permissions: true)
+      pr = create(:project_with_phases)
       ph1 = pr.phases.first
       ph2 = pr.phases.second
       i1 = create(:idea, phases: [ph1], project: pr)
@@ -472,6 +488,7 @@ resource "Ideas" do
     parameter :projects, 'Filter by projects (OR)', required: false
     parameter :phase, 'Filter by project phase', required: false
     parameter :author, 'Filter by author (user id)', required: false
+    parameter :assignee, 'Filter by assignee (user id)', required: false if CitizenLab.ee?
     parameter :idea_status, 'Filter by status (idea status id)', required: false
     parameter :search, 'Filter by searching in title and body', required: false
     parameter :publication_status, "Return only ideas with the specified publication status; returns all pusblished ideas by default", required: false
@@ -528,10 +545,10 @@ resource "Ideas" do
         slug: idea.slug,
         budget: idea.budget,
         action_descriptor: {
-          commenting_idea: {enabled: false, disabled_reason: 'not_permitted', future_enabled: nil},
-          voting_idea: {enabled: false, downvoting_enabled: true, disabled_reason: 'not_permitted', future_enabled: nil, cancelling_enabled: false},
-          comment_voting_idea: {enabled: false, disabled_reason: 'not_permitted', future_enabled: nil},
-          budgeting: {enabled: false, disabled_reason: 'not_permitted', future_enabled: nil}}
+          commenting_idea: {enabled: true, disabled_reason: nil, future_enabled: nil},
+          voting_idea: {enabled: true, downvoting_enabled: true, disabled_reason: nil, future_enabled: nil, cancelling_enabled: true},
+          comment_voting_idea: {enabled: true, disabled_reason: nil, future_enabled: nil},
+          budgeting: {enabled: false, disabled_reason: 'not_budgeting', future_enabled: nil}}
         )
       expect(json_response.dig(:data, :relationships)).to include(
         topics: {
@@ -573,6 +590,7 @@ resource "Ideas" do
       parameter :project_id, "The identifier of the project that hosts the idea", extra: ""
       parameter :phase_ids, "The phases the idea is part of, defaults to the current only, only allowed by admins"
       parameter :author_id, "The user id of the user owning the idea", extra: "Required if not draft"
+      parameter :assignee_id, "The user id of the admin/moderator that takes ownership. Set automatically if not provided. Only allowed for admins/moderators." if CitizenLab.ee?
       parameter :idea_status_id, "The status of the idea, only allowed for admins", extra: "Defaults to status with code 'proposed'"
       parameter :publication_status, "Publication status", required: true, extra: "One of #{Post::PUBLICATION_STATUSES.join(",")}"
       parameter :title_multiloc, "Multi-locale field with the idea title", required: true, extra: "Maximum 100 characters"
@@ -588,7 +606,7 @@ resource "Ideas" do
     response_field :base, "Array containing objects with signature { error: #{ParticipationContextService::POSTING_DISABLED_REASONS.values.join(' | ')} }", scope: :errors
 
     let(:idea) { build(:idea) }
-    let(:project) { create(:continuous_project, with_permissions: true) }
+    let(:project) { create(:continuous_project) }
     let(:project_id) { project.id }
     let(:publication_status) { 'published' }
     let(:title_multiloc) { idea.title_multiloc }
@@ -622,7 +640,7 @@ resource "Ideas" do
     end
 
     describe 'For projects without ideas_order' do
-      let(:project) { create(:continuous_project, with_permissions: true) }
+      let(:project) { create(:continuous_project) }
 
       before do
         project.update_attribute(:ideas_order, nil)
@@ -642,7 +660,7 @@ resource "Ideas" do
 
     describe do
       let(:idea) { build(:idea) }
-      let(:project) { create(:continuous_project, with_permissions: true) }
+      let(:project) { create(:continuous_project) }
       let(:project_id) { project.id }
       let(:title_multiloc) { {'en' => 'I have a fantastic Idea but with a superduper extremely long title so someone should do something about this or else it may look bad in the UI and no one would read it anyways'} } # { idea.title_multiloc }
       let(:body_multiloc) { idea.body_multiloc }
@@ -665,7 +683,7 @@ resource "Ideas" do
     end
 
     describe do
-      let(:project) { create(:project_with_current_phase, with_permissions: true, current_phase_attrs: {
+      let(:project) { create(:project_with_current_phase, current_phase_attrs: {
         participation_method: 'information'
       })}
 
@@ -684,26 +702,21 @@ resource "Ideas" do
       end
     end
 
-    describe do
+    example_group "with granular permissions", skip: !CitizenLab.ee? do
+      let(:group) { create(:group) }
+
       before do
-        permission = project.permissions.where(action: 'posting_idea').first
-        permission.update!(permitted_by: 'groups', groups: create_list(:group, 2))
+        project.permissions.find_by(action: 'posting_idea')
+               .update!(permitted_by: 'groups', groups: [group])
       end
-      example_request "[error] Create an idea in a project with groups posting permission" do
+
+      example_request "[error] Create an idea in a project with groups posting permission", document: false do
         expect(response_status).to eq 401
       end
-    end
 
-    describe do
-      before do
-        permission = project.permissions.where(action: 'posting_idea').first
-        groups = create_list(:group, 2)
-        g = groups.first
-        g.add_member @user
-        g.save!
-        permission.update!(permitted_by: 'groups', groups: groups)
-      end
-      example_request "Create an idea in a project with groups posting permission" do
+      example "Create an idea in a project with groups posting permission" do
+        group.add_member(@user).save!
+        do_request
         expect(response_status).to eq 201
       end
     end
@@ -716,7 +729,7 @@ resource "Ideas" do
       end
 
       describe do
-        let(:project) { create(:project_with_current_phase, with_permissions: true, phases_config: {sequence: "xxcx"}) }
+        let(:project) { create(:project_with_current_phase, phases_config: {sequence: "xxcx"}) }
         let(:phase_ids) { project.phases.shuffle.take(2).map(&:id) }
 
         example_request "Creating an idea in specific phases" do
@@ -727,7 +740,7 @@ resource "Ideas" do
       end
 
       describe do
-        let(:project) { create(:project_with_active_ideation_phase, with_permissions: true) }
+        let(:project) { create(:project_with_active_ideation_phase) }
         let(:other_project) { create(:project_with_active_ideation_phase) }
         let(:phase_ids) { [other_project.phases.first.id] }
 
@@ -742,7 +755,7 @@ resource "Ideas" do
 
   patch "web_api/v1/ideas/:id" do
     before do
-      @project = create(:continuous_project, with_permissions: true)
+      @project = create(:continuous_project)
       @idea =  create(:idea, author: @user, project: @project)
     end
 
@@ -750,6 +763,7 @@ resource "Ideas" do
       parameter :project_id, "The idea of the project that hosts the idea", extra: ""
       parameter :phase_ids, "The phases the idea is part of, defaults to the current only, only allowed by admins"
       parameter :author_id, "The user id of the user owning the idea", extra: "Required if not draft"
+      parameter :assignee_id, "The user id of the admin/moderator that takes ownership. Only allowed for admins/moderators." if CitizenLab.ee?
       parameter :idea_status_id, "The status of the idea, only allowed for admins"
       parameter :publication_status, "Either #{Post::PUBLICATION_STATUSES.join(', ')}"
       parameter :title_multiloc, "Multi-locale field with the idea title", extra: "Maximum 100 characters"
@@ -821,6 +835,19 @@ resource "Ideas" do
       end
     end
 
+    if CitizenLab.ee?
+      describe do
+        let(:assignee_id) { create(:admin).id }
+
+        example "Changing the assignee as a non-admin does not work", document: false do
+          do_request
+          expect(status).to be 200
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data,:relationships,:assignee)).to be_nil
+        end
+      end
+    end
+
     describe do
       let(:budget) { 1800 }
 
@@ -841,18 +868,77 @@ resource "Ideas" do
       end
 
       describe do
-        before do
-          @project = create(:project_with_phases, with_permissions: true)
-          @idea.project = @project
-          @idea.phases = [@project.phases.first]
-          @idea.save
-        end
-        let(:phase_ids) { @project.phases.last(2).map(&:id) }
+        let(:idea_status_id) { create(:idea_status).id }
 
-        example_request "Change the idea phases (as an admin or moderator)" do
+        example_request "Change the idea status (as an admin)" do
           expect(status).to be 200
           json_response = json_parse(response_body)
-          expect(json_response.dig(:data,:relationships,:phases,:data).map{|d| d[:id]}).to match_array phase_ids
+          expect(json_response.dig(:data,:relationships,:idea_status,:data,:id)).to eq idea_status_id
+        end
+      end
+
+      if CitizenLab.ee?
+        describe do
+          let(:assignee_id) { create(:admin).id }
+
+          example_request "Change the assignee (as an admin)" do
+            expect(status).to be 200
+            json_response = json_parse(response_body)
+            expect(json_response.dig(:data,:relationships,:assignee,:data,:id)).to eq assignee_id
+          end
+        end
+      end
+
+      describe 'phase_ids' do
+        let(:phase) { @project.phases.first }
+
+        context 'when passing some phase ids' do
+          before do
+            @project = create(:project_with_phases)
+            @idea.project = @project
+            @idea.save
+            do_request(idea: { phase_ids: phase_ids })
+          end
+
+          let(:phase_ids) { [phase].map(&:id) }
+
+          example 'returns a 200 status' do
+            expect(status).to be 200
+          end
+
+          example 'Change the idea phases (as an admin or moderator)' do
+            json_response = json_parse(response_body)
+            expect(json_response.dig(:data, :relationships, :phases, :data).map { |d| d[:id] }).to match_array phase_ids
+          end
+
+          example 'Changes the ideas count of a phase' do
+            expect(phase.reload.ideas_count).to eq 1
+          end
+        end
+
+        context 'when passing an empty array of phase ids' do
+          before do
+            @project = create(:project_with_phases)
+            @idea.project = @project
+            @idea.phases = [phase]
+            @idea.save
+            do_request(idea: { phase_ids: phase_ids })
+          end
+
+          let(:phase_ids) { [] }
+
+          example 'returns a 200 status' do
+            expect(status).to be 200
+          end
+
+          example 'Change the idea phases (as an admin or moderator)' do
+            json_response = json_parse(response_body)
+            expect(json_response.dig(:data, :relationships, :phases, :data).map { |d| d[:id] }).to match_array phase_ids
+          end
+
+          example 'Changes the ideas count of a phase when the phases change' do
+            expect(phase.reload.ideas_count).to eq 0
+          end
         end
       end
 
@@ -898,6 +984,18 @@ resource "Ideas" do
           expect(json_response.dig(:data,:relationships,:idea_status,:data,:id)).to eq idea_status_id
         end
       end
+
+      if CitizenLab.ee?
+        describe do
+          let(:assignee_id) { create(:admin).id }
+
+          example_request "Change the assignee (as a moderator)" do
+            expect(status).to be 200
+            json_response = json_parse(response_body)
+            expect(json_response.dig(:data,:relationships,:assignee,:data,:id)).to eq assignee_id
+          end
+        end
+      end
     end
 
     context "when unauthorized" do
@@ -919,7 +1017,7 @@ resource "Ideas" do
 
   patch "web_api/v1/ideas/:id" do
     before do
-      @project = create(:continuous_project, with_permissions: true)
+      @project = create(:continuous_project)
       @idea =  create(:idea, author: @user, publication_status: 'draft', project: @project)
     end
     parameter :publication_status, "Either #{Post::PUBLICATION_STATUSES.join(', ')}", required: true, scope: :idea
@@ -935,17 +1033,40 @@ resource "Ideas" do
   end
 
   delete "web_api/v1/ideas/:id" do
-    before do
-      @project = create(:continuous_project, with_permissions: true)
-      @idea = create(:idea_with_topics, author: @user, publication_status: 'published', project: @project)
-    end
-    let(:id) { @idea.id }
+    context 'when the idea belongs to a continuous project' do
+      before do
+        @project = create(:continuous_project)
+        @idea = create(:idea_with_topics, author: @user, publication_status: 'published', project: @project)
+      end
+      let(:id) { @idea.id }
 
-    example_request "Delete an idea" do
-      expect(response_status).to eq 200
-      expect{Idea.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
-      expect(@idea.project.reload.ideas_count).to eq 0
+      example_request "Delete an idea" do
+        expect(response_status).to eq 200
+        expect{Idea.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
+        expect(@idea.project.reload.ideas_count).to eq 0
+      end
+    end
+
+    context 'when the idea belongs to a timeline project' do
+      let!(:idea) { create(:idea, author: user, project: project, publication_status: 'published') }
+      let(:project) { create(:project_with_phases) }
+      let(:phase) { project.phases.first }
+      let(:id) { idea.id }
+
+      before do
+        allow_any_instance_of(IdeaPolicy).to receive(:destroy?).and_return(true)
+        idea.ideas_phases.create!(phase: phase)
+      end
+
+      example 'the count starts at 1' do
+        expect(phase.reload.ideas_count).to eq 1
+      end
+
+      example_request "Delete an idea" do
+        expect(response_status).to eq 200
+        expect{Idea.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
+        expect(phase.reload.ideas_count).to eq 0
+      end
     end
   end
-
 end

@@ -87,6 +87,18 @@ resource "Stats - Ideas" do
         json_response = json_parse(response_body)
         expect(json_response[:count]).to eq Idea.published.count - 1
       end
+
+      if CitizenLab.ee?
+        example "Count all ideas that need feedback for a specific assignee" do
+          assignee = create(:admin)
+          create(:idea, idea_status: @proposed, assignee: assignee)
+          do_request assignee: assignee.id
+
+          expect(response_status).to eq 200
+          json_response = json_parse(response_body)
+          expect(json_response[:count]).to eq 1
+        end
+      end
     end
   end
 
