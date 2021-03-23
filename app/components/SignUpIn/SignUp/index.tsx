@@ -17,8 +17,12 @@ import {
 import Outlet from 'components/Outlet';
 import ReactResizeDetector from 'react-resize-detector/build/withPolyfill';
 
+// hooks
+import useAppConfiguration from 'hooks/useAppConfiguration';
+import useAuthUser, { TAuthUser } from 'hooks/useAuthUser';
+
 // utils
-import { isNilOrError } from 'utils/helperUtils';
+import { isNilOrError, isUndefinedOrError } from 'utils/helperUtils';
 import { handleOnSSOClick } from 'services/singleSignOn';
 
 // events
@@ -41,11 +45,7 @@ import { HeaderSubtitle } from 'components/UI/Modal';
 // typings
 import { ISignUpInMetaData } from 'components/SignUpIn';
 import { Multiloc } from 'typings';
-import useAuthUser from 'hooks/useAuthUser';
-
 import { IUserData } from 'services/users';
-
-import useAppConfiguration from 'hooks/useAppConfiguration';
 import { IAppConfigurationData } from 'services/appConfiguration';
 
 const Container = styled.div`
@@ -112,6 +112,11 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
 
     const modalContentRef = useRef<HTMLDivElement>(null);
 
+    // activeStepRef and authUserRef are used in getNextStep
+    // because activeStep and authUser are out-of-sync there
+    const activeStepRef = useRef<TSignUpSteps | null>(null);
+    const authUserRef = useRef<TAuthUser>(authUser);
+
     const [configuration, setConfiguration] = useState<
       TSignUpStepConfiguration
     >({
@@ -168,20 +173,23 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
     );
 
     const [error, setError] = useState<string>();
-    const [activeStep, setActiveStep] = useState<TSignUpSteps>(enabledSteps[0]);
+    const [activeStep, setActiveStep] = useState<TSignUpSteps | null>(null);
     const [headerHeight, setHeaderHeight] = useState<string>('100px');
 
     const activeStepConfiguration = useMemo<
       TSignUpStepConfigurationObject | undefined
-    >(() => configuration?.[activeStep], [activeStep, configuration]);
+    >(() => configuration?.[activeStep || ''], [activeStep, configuration]);
 
     const getNextStep = () => {
-      const step = enabledSteps[indexOf(enabledSteps, activeStep) + 1];
-      if (!step) return undefined;
-      const isActive = configuration?.[step]?.isActive?.(
-        !isNilOrError(authUser) ? authUser : undefined
+      const authUserValue = !isNilOrError(authUserRef.current)
+        ? authUserRef.current
+        : undefined;
+      const startFromIndex = indexOf(enabledSteps, activeStepRef.current) + 1;
+      const stepsToCheck = enabledSteps.slice(startFromIndex);
+      const step = stepsToCheck.find((step) =>
+        configuration?.[step]?.isActive?.(authUserValue)
       );
-      return isActive ? step : undefined;
+      return step;
     };
 
     const goToNextStep = () => {
@@ -190,33 +198,36 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
       }
 
       const nextStep = getNextStep();
+
       if (!nextStep) {
         handleFlowCompleted();
         return;
       }
+
       setActiveStep(nextStep);
     };
 
-    const onResize = (_width, height) =>
+    const onResize = (_width, height) => {
       setHeaderHeight(`${Math.round(height) + 2}px`);
+    };
 
     const handleStepCompleted = () => {
-      configuration?.[activeStep]?.onCompleted?.();
+      configuration?.[activeStep || '']?.onCompleted?.();
       goToNextStep();
     };
 
     const handleStepSkipped = () => {
-      configuration?.[activeStep]?.onSkipped?.();
+      configuration?.[activeStep || '']?.onSkipped?.();
       goToNextStep();
     };
 
     const handleStepError = () => {
-      configuration?.[activeStep]?.onError?.();
+      configuration?.[activeStep || '']?.onError?.();
       setError(formatMessage(messages.somethingWentWrongText));
     };
 
     const handleSelectedInStep = (data: unknown) => {
-      configuration?.[activeStep]?.onSelected?.(data);
+      configuration?.[activeStep || '']?.onSelected?.(data);
     };
 
     const handleFlowCompleted = () => {
@@ -224,13 +235,41 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
       onSignUpCompleted();
     };
 
-    const handleOnOutletData = ({ key, configuration }) =>
+    const handleOnOutletData = ({ key, configuration }) => {
       setConfiguration((oldConfiguration) => ({
         ...oldConfiguration,
         [key]: configuration,
       }));
+    };
 
-    const handleGoBack = () => setActiveStep('auth-providers');
+    const handleGoBack = () => {
+      setActiveStep('auth-providers');
+    };
+
+    // update authUserRef whenever authUser changes
+    useEffect(() => {
+      authUserRef.current = authUser;
+    }, [authUser]);
+
+    // update activeStepRef whenever activeStep changes
+    useEffect(() => {
+      activeStepRef.current = activeStep;
+    }, [activeStep]);
+
+    // this useEffect is needed to deal with the scenario in which
+    // a user gets sent to an external page (e.g. for sso or verification),
+    // and afterwards back to the platform to complete their registration.
+    // if the activeStep has not been set yet, but the authUser is either null or an object
+    // we request the next step in the registration process and set it if there's a step remaining
+    useEffect(() => {
+      if (activeStep === null && !isUndefinedOrError(authUserRef.current)) {
+        const nextStep = getNextStep();
+
+        if (nextStep) {
+          setActiveStep(nextStep);
+        }
+      }
+    });
 
     useEffect(() => {
       trackEventByName(tracks.signUpFlowEntered);
@@ -252,6 +291,7 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
     }, []);
 
     useEffect(() => signUpActiveStepChange(activeStep), [activeStep]);
+
     useEffect(() => {
       if (metaData?.error) {
         setError(formatMessage(messages.somethingWentWrongText));
