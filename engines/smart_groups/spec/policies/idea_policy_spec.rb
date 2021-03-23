@@ -12,7 +12,10 @@ describe IdeaPolicy do
                { ruleType: 'email', predicate: 'is', value: 'user@test.com' }
              ])
     end
-    let!(:project) { create(:project, visible_to: 'groups', groups: [group]) }
+
+    let!(:project) do
+      create(:project, visible_to: 'groups', groups: [group])
+    end
     let!(:idea) { create(:idea, project: project) }
 
     it { is_expected.not_to permit(:show) }
