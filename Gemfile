@@ -148,6 +148,7 @@ gem 'rack-attack', '~> 6'
 gem 'intercom', '~> 4.1'
 gem 'mjml-rails', '~> 4.4'
 
+gem 'clusterings', path: 'engines/clusterings'
 gem 'admin_api', path: 'engines/admin_api'
 gem 'custom_maps', path: 'engines/custom_maps'
 gem 'custom_statuses', path: 'engines/custom_statuses'
@@ -176,4 +177,3 @@ gem 'surveys', path: 'engines/surveys'
 gem 'tagging', path: 'engines/tagging'
 gem 'verification', path: 'engines/verification'
 gem 'volunteering', path: 'engines/volunteering'
-

@@ -273,7 +273,6 @@ Rails.application.routes.draw do
       end
 
       resources :baskets, except: [:index]
-      resources :clusterings
 
       resources :avatars, only: [:index, :show]
       resources :moderations, only: [:index] do
