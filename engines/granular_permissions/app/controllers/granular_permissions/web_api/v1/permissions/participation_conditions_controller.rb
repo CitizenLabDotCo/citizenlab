@@ -1,4 +1,4 @@
-module SmartGroups
+module GranularPermissions
   class WebApi::V1::Permissions::ParticipationConditionsController < ApplicationController
     before_action :set_permission, only: %i[participation_conditions]
     skip_after_action :verify_policy_scoped, only: %i[index]
