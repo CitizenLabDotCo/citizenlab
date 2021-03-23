@@ -35,6 +35,9 @@ const VerificationOnboardingStep = ({
   contentDelay,
   theme,
 }) => {
+  const handleSkip = () => onSkip(onboardingCampaigns.name);
+  const handleAccept = () => onAccept(onboardingCampaigns.name);
+
   return (
     <CSSTransition
       classNames="content"
@@ -72,7 +75,7 @@ const VerificationOnboardingStep = ({
           <SkipButton
             buttonStyle="primary-outlined"
             text={<FormattedMessage {...messages.doItLater} />}
-            onClick={() => onSkip(onboardingCampaigns.name)}
+            onClick={handleSkip}
             borderColor="#fff"
             textColor="#fff"
             fontWeight="500"
@@ -81,7 +84,7 @@ const VerificationOnboardingStep = ({
           <AcceptButton
             text={<FormattedMessage {...messages.verifyNow} />}
             buttonStyle="primary-inverse"
-            onClick={() => onAccept(onboardingCampaigns.name)}
+            onClick={handleAccept}
             textColor={theme.colorMain}
             textHoverColor={theme.colorMain}
             fontWeight="500"
