@@ -59,11 +59,9 @@ const configuration: ModuleConfiguration = {
     'app.containers.Admin.projects.all.container': (props) => {
       return (
         <RenderOnFeatureFlag>
-          <RenderOnSelectedTabValue selectedTabValue={props.selectedTabValue}>
-            <ProjectTemplatePreviewAdminWithEventWrapper
-              onRender={props.onRender}
-            />
-          </RenderOnSelectedTabValue>
+          <ProjectTemplatePreviewAdminWithEventWrapper
+            onRender={props.onRender}
+          />
         </RenderOnFeatureFlag>
       );
     },

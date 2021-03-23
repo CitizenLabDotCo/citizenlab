@@ -76,7 +76,6 @@ export type OutletsPropertyMap = {
   };
   'app.containers.Admin.projects.all.container': {
     onRender: (hasRendered: boolean) => void;
-    selectedTabValue: TTabName;
   };
   'app.components.ProjectAndFolderCards.card': {
     publication: IAdminPublicationContent;
