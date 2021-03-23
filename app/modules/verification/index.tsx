@@ -3,6 +3,7 @@ import React, { Suspense } from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 import VerificationBadge from './citizen/components/VerificationBadge';
 import VerificationModal from './citizen/components/VerificationModal';
+import VerificationOnboardingStep from './citizen/components/VerificationOnboardingStep';
 import VerificationSignUpSteps from './citizen/components/VerificationSignUpSteps';
 import VerificationStatus from './citizen/components/VerificationStatus';
 
@@ -25,6 +26,7 @@ const configuration: ModuleConfiguration = {
         </Suspense>
       </ErrorBoundary>
     ),
+    'app.containers.LandingPage.onboardingCampaigns': VerificationOnboardingStep,
   },
 };
 

@@ -37,6 +37,10 @@ import { ManagerType } from 'components/admin/PostManager';
 import { IdeaCellComponentProps } from 'components/admin/PostManager/components/PostTable/IdeaRow';
 import { IdeaHeaderCellComponentProps } from 'components/admin/PostManager/components/PostTable/IdeaHeaderRow';
 import { IVerificationMethod } from 'services/verificationMethods';
+import {
+  IOnboardingCampaignNames,
+  IOnboardingCampaigns,
+} from 'services/onboardingCampaigns';
 
 type Localize = (
   multiloc: Multiloc | null | undefined,
@@ -193,6 +197,15 @@ export type OutletsPropertyMap = {
     isVerified: boolean;
   };
   'app.containers.App.modals': { onMounted: (id: string) => void };
+  'app.containers.LandingPage.onboardingCampaigns': {
+    onboardingCampaigns: IOnboardingCampaigns;
+    contentTimeout: number;
+    contentDelay: number;
+    authUser: IUserData;
+    theme: unknown;
+    onSkip: (name: IOnboardingCampaignNames) => void;
+    onAccept: (name: IOnboardingCampaignNames) => void;
+  };
 };
 
 type Outlet<Props> = FunctionComponent<Props> | FunctionComponent<Props>[];
