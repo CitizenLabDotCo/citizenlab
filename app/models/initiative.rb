@@ -1,5 +1,4 @@
 class Initiative < ApplicationRecord
-  include MachineTranslations::InitiativeDecorator
   include Post
   include Moderatable
 
@@ -128,3 +127,5 @@ class Initiative < ApplicationRecord
   end
 
 end
+
+Initiative.include_if_ee 'MachineTranslations::Concerns::Translatable'
