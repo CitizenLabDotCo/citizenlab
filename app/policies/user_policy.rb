@@ -45,7 +45,7 @@ class UserPolicy < ApplicationPolicy
   end
 
   def destroy?
-     (user&.id.present? && record.id == user.id) || (user&.active? && user.admin?)
+     record.id == user&.id || (user&.active? && user.admin?)
   end
 
   def ideas_count?
