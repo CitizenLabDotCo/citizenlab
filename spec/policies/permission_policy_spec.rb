@@ -6,6 +6,7 @@ describe PermissionPolicy do
   subject { described_class.new(user, permission) }
 
   let(:scope) { PermissionPolicy::Scope.new(user, Permission) }
+  let(:group) { create(:group) }
 
   before(:all) do # rubocop:disable RSpec/BeforeAfterAll
     @scope_types = PermissionsService.instance_variable_get(:@scope_spec_hash)
@@ -31,7 +32,6 @@ describe PermissionPolicy do
 
   context 'for a visitor' do
     let(:user) { nil }
-    let(:group) { create(:group) }
     let!(:permission) { create(:global_permission, :by_everyone, action: 'a1') }
 
     it { is_expected.not_to permit(:show)         }
@@ -44,7 +44,6 @@ describe PermissionPolicy do
 
   context 'for a user' do
     let(:user) { create(:user) }
-    let(:group) { create(:group) }
     let!(:permission) { create(:global_permission, :by_everyone, action: 'a1') }
 
     before do
@@ -61,7 +60,6 @@ describe PermissionPolicy do
 
   context 'for an admin' do
     let(:user) { create(:admin) }
-    let(:group) { create(:group) }
     let!(:permission) { create(:permission, permitted_by: 'admins_moderators') }
 
     before do
@@ -78,7 +76,6 @@ describe PermissionPolicy do
 
   context 'for an admin' do
     let(:user) { create(:admin) }
-    let(:group) { create(:group) }
     let!(:permission) { create(:global_permission, :by_admins_moderators, action: 'a1') }
 
     it { is_expected.not_to permit(:show)         }
