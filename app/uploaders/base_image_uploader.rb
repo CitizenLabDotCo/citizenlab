@@ -12,7 +12,7 @@ class BaseImageUploader < BaseUploader
     "#{secure_token}.#{file.extension}" if original_filename.present?
   end
 
-  def extension_whitelist
+  def extension_allowlist
     %w(jpg jpeg gif png)
   end
 
