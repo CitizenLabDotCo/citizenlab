@@ -223,8 +223,7 @@ class User < ApplicationRecord
   end
 
   def project_moderator?(project_id = nil)
-    moderated_projects = moderatable_project_ids
-    project_id ? moderated_projects.include?(project_id) : moderated_projects.present?
+    project_id ? moderated_projects.include?(project_id) : roles.pluck('type').include?('project_moderator')
   end
 
   def admin_or_moderator? project_id
