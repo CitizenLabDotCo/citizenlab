@@ -384,9 +384,6 @@ GEM
     addressable (2.7.0)
       public_suffix (>= 2.0.2, < 5.0)
     aes_key_wrap (1.0.1)
-    after_commit_action (1.1.0)
-      activerecord (>= 3.0.0)
-      activesupport (>= 3.0.0)
     akami (1.3.1)
       gyoku (>= 0.4.0)
       nokogiri
@@ -394,7 +391,7 @@ GEM
     api-pagination (4.8.2)
     ast (2.4.1)
     attr_required (1.0.1)
-    awesome_nested_set (3.2.0)
+    awesome_nested_set (3.4.0)
       activerecord (>= 4.0.0, < 7.0)
     aws-eventstream (1.0.3)
     aws-partitions (1.248.0)
@@ -432,7 +429,7 @@ GEM
       uniform_notifier (~> 1.11)
     bunny (2.14.3)
       amq-protocol (~> 2.3, >= 2.3.0)
-    byebug (11.0.1)
+    byebug (11.1.3)
     carrierwave (2.2.0)
       activemodel (>= 5.0.0)
       activesupport (>= 5.0.0)
@@ -449,10 +446,9 @@ GEM
       activesupport
     coderay (1.1.3)
     concurrent-ruby (1.1.8)
-    counter_culture (2.2.4)
+    counter_culture (2.8.0)
       activerecord (>= 4.2)
       activesupport (>= 4.2)
-      after_commit_action (~> 1.0)
     crack (0.4.3)
       safe_yaml (~> 1.0.0)
     crass (1.0.6)
@@ -477,8 +473,8 @@ GEM
     factory_bot_rails (5.1.1)
       factory_bot (~> 5.1.0)
       railties (>= 4.2.0)
-    faker (2.8.0)
-      i18n (>= 1.6, < 1.8)
+    faker (2.17.0)
+      i18n (>= 1.6, < 2)
     faraday (0.17.4)
       multipart-post (>= 1.2, < 3)
     ffi (1.15.0)
@@ -534,7 +530,7 @@ GEM
     httpi (2.4.5)
       rack
       socksify
-    i18n (1.7.1)
+    i18n (1.8.9)
       concurrent-ruby (~> 1.0)
     image_processing (1.12.1)
       mini_magick (>= 4.9.5, < 5)
@@ -618,7 +614,7 @@ GEM
       multi_json (~> 1.3)
       multi_xml (~> 0.5)
       rack (>= 1.2, < 3)
-    okcomputer (1.18.0)
+    okcomputer (1.18.4)
     omniauth (1.9.1)
       hashie (>= 3.4.6)
       rack (>= 1.6.2, < 3)
@@ -907,7 +903,7 @@ DEPENDENCIES
   admin_api!
   apartment!
   api-pagination (~> 4.8.2)
-  awesome_nested_set (~> 3.2.0)
+  awesome_nested_set (~> 3.4.0)
   aws-sdk-s3 (~> 1)
   axlsx (= 3.0.0.pre)
   bcrypt (~> 3.1.7)
@@ -917,7 +913,7 @@ DEPENDENCIES
   byebug
   carrierwave (~> 2.2.0)
   carrierwave-base64 (~> 2.8.1)
-  counter_culture (~> 2.1)
+  counter_culture (~> 2.8)
   custom_maps!
   custom_statuses!
   custom_style!
