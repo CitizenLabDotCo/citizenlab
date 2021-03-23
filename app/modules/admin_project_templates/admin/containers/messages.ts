@@ -22,4 +22,8 @@ export default defineMessages({
     id: 'app.components.ProjectTemplatePreview.citizenlabExpert',
     defaultMessage: 'CitizenLab expert',
   },
+  useTemplate: {
+    id: 'app.components.ProjectTemplatePreview.useTemplate',
+    defaultMessage: 'Use this template',
+  },
 });
