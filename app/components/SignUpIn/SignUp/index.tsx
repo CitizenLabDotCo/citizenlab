@@ -219,8 +219,10 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
       setActiveStep(nextStep);
     };
 
-    const onResize = (_width, height) =>
+    const onResize = (_width, height) => {
+      console.log('zolg');
       setHeaderHeight(`${Math.round(height) + 2}px`);
+    };
 
     const handleStepCompleted = () => {
       configuration?.[activeStep || '']?.onCompleted?.();
