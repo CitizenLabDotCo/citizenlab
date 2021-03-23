@@ -1,12 +1,12 @@
 Rails.application.routes.draw do
-  
+
   mount AdminApi::Engine => "/admin_api", as: 'admin_api', defaults: {format: :json}
+  mount CustomMaps::Engine => "", as: 'custom_maps'
   mount CustomStatuses::Engine => "", as: 'custom_statuses'
   mount EmailCampaigns::Engine => "", as: 'email_campaigns'
   mount Frontend::Engine => "", as: 'frontend'
   mount GeographicDashboard::Engine => '', as: 'geographic_dashboard'
   mount MachineTranslations::Engine => "", as: 'machine_translations'
-  mount Maps::Engine => "", as: 'maps'
   mount NLP::Engine => "", as: 'nlp'
   mount Onboarding::Engine => "", as: 'onboarding'
   mount Polls::Engine => "", as: 'polls'
@@ -123,17 +123,6 @@ Rails.application.routes.draw do
         get 'by_slug/:slug', on: :collection, to: 'pages#by_slug'
       end
 
-      # :action is already used as param, so we chose :permission_action instead
-      resources :permissions, param: :permission_action do
-        get 'participation_conditions', on: :member
-      end
-      concern :participation_context do
-        # :action is already used as param, so we chose :permission_action instead
-        resources :permissions, param: :permission_action do
-          get 'participation_conditions', on: :member
-        end
-      end
-
       # Events and phases are split in two because we cannot have a non-shallow
       # resource (i.e. files) nested in a shallow resource. File resources have
       # to be shallow so we can determine their container class. See e.g.
@@ -143,17 +132,11 @@ Rails.application.routes.draw do
         resources :files, defaults: { container_type: 'Event' }, shallow: false
       end
 
-      resources :phases,
-                only: %i[show edit update destroy],
-                concerns: %i[participation_context],
-                defaults: { parent_param: :phase_id } do
+      resources :phases, only: %i[show edit update destroy] do
         resources :files, defaults: { container_type: 'Phase' }, shallow: false
       end
 
-      resources :projects,
-                concerns: %i[participation_context],
-                defaults: { parent_param: :project_id } do
-
+      resources :projects do
         resources :events, only: %i[index new create]
         resources :projects_topics, only: [:index]
         resources :topics, only: %i[index reorder] do
@@ -297,8 +280,6 @@ Rails.application.routes.draw do
         patch ':moderatable_type/:moderatable_id' => 'moderations#update', on: :collection
       end
     end
-
-
   end
 
   get '/auth/:provider/callback', to: 'omniauth_callback#create'

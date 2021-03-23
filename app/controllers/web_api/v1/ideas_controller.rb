@@ -214,18 +214,6 @@ class WebApi::V1::IdeasController < ApplicationController
     authorize @idea
   end
 
-  def user_not_authorized exception
-    pcs = ParticipationContextService.new
-    if exception.query == "create?"
-      reason = pcs.posting_idea_disabled_reason_for_project(exception.record.project, current_user)
-      if reason
-        render json: { errors: { base: [{ error: reason }] } }, status: :unauthorized
-        return
-      end
-    end
-    render json: { errors: { base: [{ error: 'Unauthorized!' }] } }, status: :unauthorized
-  end
-
   def search_and_sort params
     search_last_names = !UserDisplayNameService.new(AppConfiguration.instance, current_user).restricted?
     @ideas = PostsFilteringService.new.apply_common_idea_index_filters @ideas, params, search_last_names

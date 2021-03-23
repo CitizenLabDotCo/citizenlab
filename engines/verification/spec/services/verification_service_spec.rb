@@ -21,11 +21,11 @@ describe Verification::VerificationService do
     it "executes side fx hooks" do
       params = {
         user: user,
-        method_name: 'cow',
-        verification_parameters: {run: "12.025.365-6", id_serial: "A001529382"}
+        method_name: 'bogus',
+        verification_parameters: {desired_error: nil}
       }
 
-      allow_any_instance_of(Verification::Methods::Cow)
+      allow_any_instance_of(IdBogus::BogusVerification)
         .to receive(:verify_sync)
         .and_return({uid: 'fakeuuid'})
 
@@ -50,7 +50,7 @@ describe Verification::VerificationService do
         verification_parameters: {}
       }
 
-      allow_any_instance_of(Verification::Methods::Bogus)
+      allow_any_instance_of(IdBogus::BogusVerification)
         .to receive(:verify_sync)
         .and_return({
           uid: '123',
@@ -78,7 +78,7 @@ describe Verification::VerificationService do
         verification_parameters: {}
       }
 
-      allow_any_instance_of(Verification::Methods::Bogus)
+      allow_any_instance_of(IdBogus::BogusVerification)
         .to receive(:verify_sync)
         .and_return({
           uid: '123',
@@ -107,7 +107,7 @@ describe Verification::VerificationService do
 
       expect(Verification::Verification.count).to eq 0
 
-      expect_any_instance_of(Verification::Methods::Cow)
+      expect_any_instance_of(IdCow::CowVerification)
         .to receive(:verify_sync)
         .with(params[:verification_parameters])
         .and_return({uid: '001529382'})
@@ -133,7 +133,7 @@ describe Verification::VerificationService do
         verification_parameters: {run: "12.025.365-6", id_serial: "A001529382"}
       }
 
-      expect_any_instance_of(Verification::Methods::Cow)
+      expect_any_instance_of(IdCow::CowVerification)
         .to receive(:verify_sync)
         .with(params1[:verification_parameters])
         .and_return({uid: '001529382'})
@@ -146,7 +146,7 @@ describe Verification::VerificationService do
         verification_parameters: {run: "12.025.365-6", id_serial: "A001529382"}
       }
 
-      expect_any_instance_of(Verification::Methods::Cow)
+      expect_any_instance_of(IdCow::CowVerification)
         .to receive(:verify_sync)
         .with(params2[:verification_parameters])
         .and_return({uid: '001529382'})

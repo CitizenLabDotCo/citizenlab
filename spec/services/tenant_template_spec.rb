@@ -15,9 +15,9 @@ describe TenantTemplateService do
   end
 
   describe "resolve_and_apply_template", template_test: true do
-    
+
     TenantTemplateService.new.available_templates(external_subfolder: 'test')[:external].map do |template|
-      it "Successfully applies '#{template}' template" do 
+      it "Successfully applies '#{template}' template" do
         locales = TenantTemplateService.new.required_locales(template, external_subfolder: 'test')
         locales = ['en'] if locales.blank?
         name = template.split('_').join('')
@@ -69,9 +69,9 @@ describe TenantTemplateService do
   end
 
   describe "resolve_and_apply_template", slow_test: true do
-    
+
     TenantTemplateService.new.available_templates[:internal].map do |template|
-      it "Successfully applies '#{template}' template" do 
+      it "Successfully applies '#{template}' template" do
         name = template.split('_').join('')
         locales = TenantTemplateService.new.required_locales(template, external_subfolder: 'test')
         locales = ['en'] if locales.blank?
@@ -212,9 +212,9 @@ describe TenantTemplateService do
       expect(EmailCampaigns::UnsubscriptionToken.count).to be > 0
       expect(Volunteering::Cause.count).to be 5
       expect(Volunteering::Volunteer.count).to be > 0
-      expect(Maps::MapConfig.count).to be 1
-      expect(Maps::Layer.count).to be 2
-      expect(Maps::LegendItem.count).to be 7
+      expect(CustomMaps::MapConfig.count).to be 1
+      expect(CustomMaps::Layer.count).to be 2
+      expect(CustomMaps::LegendItem.count).to be 7
     end
 
     it "correctly generates and links attributes references" do

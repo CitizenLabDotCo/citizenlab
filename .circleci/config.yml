@@ -129,13 +129,6 @@ jobs:
       - run: aws s3 sync doc/public_api s3://developers.citizenlab.co/api-docs/public_api/$CIRCLE_BRANCH --delete --acl public-read
       - run: aws s3 sync doc/admin_api s3://developers.citizenlab.co/api-docs/admin_api/$CIRCLE_BRANCH --delete --acl public-read
 
-  deploy-cl-docs-portal:
-    resource_class: small
-    docker:
-      - image: byrnedo/alpine-curl
-    steps:
-      - run: "curl -u $CIRCLE_API_TOKEN: -d build_parameters[CIRCLE_JOB]=build https://circleci.com/api/v1.1/project/github/CitizenLabDotCo/cl-docs-portal/tree/master"
-
   push-deployment-docker-image:
     resource_class: small
     docker:
@@ -243,10 +236,6 @@ workflows:
             branches:
               ignore:
                 - crowdin_master
-      - deploy-cl-docs-portal:
-          context: docker-hub-access
-          requires:
-            - web-api-docs
       - push-deployment-docker-image:
           context: docker-hub-access
           requires:
@@ -317,6 +306,18 @@ workflows:
           compose_file: docker-compose-production.yml
           env_file: ".env-web"
           stack_name: "cl2"
+      - deploy-to-swarm:
+          requires:
+            - test
+            - push-deployment-docker-image
+          filters:
+            branches:
+              only:
+                - production
+          ssh_host: "35.179.69.215"
+          compose_file: docker-compose-production.yml
+          env_file: ".env-web"
+          stack_name: "cl2"
   check-for-inconsistent-data:
     triggers:
       - schedule:
@@ -346,6 +347,12 @@ workflows:
       # US West
       - check-for-inconsistent-data:
           ssh_host: "52.13.59.174"
+          compose_file: docker-compose-production.yml
+          env_file: ".env-web"
+          stack_name: "cl2"
+      # UK
+      - check-for-inconsistent-data:
+          ssh_host: "35.179.69.215"
           compose_file: docker-compose-production.yml
           env_file: ".env-web"
           stack_name: "cl2"
