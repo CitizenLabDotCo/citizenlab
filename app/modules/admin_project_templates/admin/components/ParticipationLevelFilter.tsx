@@ -16,7 +16,7 @@ import FilterSelector, {
 // i18n
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
-import messages from '../containers/messages';
+import messages from './messages';
 
 interface Props {
   onChange: (value: string[]) => void;
