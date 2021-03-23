@@ -1,17 +1,19 @@
 import { FC, useEffect } from 'react';
-import { MessageValue } from 'react-intl';
-import { InsertConfigurationOptions, MessageDescriptor, ITab } from 'typings';
+import { InsertConfigurationOptions, ITab } from 'typings';
+
+// i18n
+import { injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
 type Props = {
   onData: (data: InsertConfigurationOptions<ITab>) => void;
-  formatMessage: (
-    messageDescriptor: MessageDescriptor,
-    values?: { [key: string]: MessageValue } | undefined
-  ) => string;
 };
 
-const Tab: FC<Props> = ({ onData, formatMessage }) => {
+const Tab: FC<Props & InjectedIntlProps> = ({
+  onData,
+  intl: { formatMessage },
+}) => {
   useEffect(
     () =>
       onData({
@@ -28,4 +30,4 @@ const Tab: FC<Props> = ({ onData, formatMessage }) => {
   return null;
 };
 
-export default Tab;
+export default injectIntl(Tab);
