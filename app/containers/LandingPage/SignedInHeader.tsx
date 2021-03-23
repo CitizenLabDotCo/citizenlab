@@ -40,7 +40,8 @@ import T from 'components/T';
 // style
 import styled, { withTheme } from 'styled-components';
 import { ScreenReaderOnly } from 'utils/a11y';
-import { media, fontSizes, colors, isRtl } from 'utils/styleUtils';
+import { media, fontSizes, isRtl } from 'utils/styleUtils';
+import Outlet from 'components/Outlet';
 
 const contentTimeout = 350;
 const contentEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
@@ -175,7 +176,7 @@ const HeaderContent = styled.div`
   `}
 `;
 
-const HeaderContentCompleteProfile = styled(HeaderContent)``;
+export const HeaderContentCompleteProfile = styled(HeaderContent)``;
 const HeaderContentCustomCta = styled(HeaderContent)``;
 const HeaderContentDefault = styled(HeaderContent)`
   justify-content: center;
@@ -189,7 +190,7 @@ const HeaderContentDefault = styled(HeaderContent)`
   `}
 `;
 
-const Left = styled.div`
+export const Left = styled.div`
   display: flex;
   align-items: center;
   margin-right: 60px;
@@ -203,7 +204,7 @@ const Left = styled.div`
   `}
 `;
 
-const Icons = styled.div`
+export const Icons = styled.div`
   display: flex;
   margin-right: 30px;
 
@@ -223,9 +224,9 @@ const CompleteProfileIcon = styled(Icon)`
   margin-left: -3px;
 `;
 
-const Text = styled.div``;
+export const Text = styled.div``;
 
-const Right = styled.div`
+export const Right = styled.div`
   flex-shrink: 0;
   display: flex;
 
@@ -245,7 +246,7 @@ const Right = styled.div`
   `}
 `;
 
-const SkipButton = styled(Button)`
+export const SkipButton = styled(Button)`
   margin-right: 10px;
 
   ${media.smallerThanMinTablet`
@@ -259,29 +260,22 @@ const SkipButton = styled(Button)`
   `}
 `;
 
-const AcceptButton = styled(Button)`
+export const AcceptButton = styled(Button)`
   ${media.smallerThanMinTablet`
     order: 1;
     margin-bottom: 10px;
   `}
 `;
 
-const AvatarAndShield = styled.div`
+export const AvatarAndShield = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
 `;
 
-const StyledAvatar = styled(Avatar)`
+export const StyledAvatar = styled(Avatar)`
   margin-right: -3px;
   z-index: 2;
-`;
-
-const ShieldIcon = styled(Icon)`
-  fill: ${colors.label};
-  width: 50px;
-  height: 56px;
-  margin-left: -3px;
 `;
 
 export interface InputProps {
@@ -302,15 +296,17 @@ interface Props extends InputProps, DataProps {
 interface State {}
 
 class SignedInHeader extends PureComponent<Props, State> {
-  handleSkipButtonClick = (name: IOnboardingCampaignNames) => () => {
+  handleSkip = (name: IOnboardingCampaignNames) => () => {
     trackEventByName(tracks.clickSkipButton, {
       extra: { location: 'signed-in header', context: name },
     });
     dismissOnboardingCampaign(name);
   };
 
-  handleVerify = () => {
-    openVerificationModal();
+  handleAccept = (name: IOnboardingCampaignNames) => {
+    if (name === 'verification') {
+      openVerificationModal();
+    }
   };
 
   render() {
@@ -412,7 +408,7 @@ class SignedInHeader extends PureComponent<Props, State> {
                 <SkipButton
                   buttonStyle="primary-outlined"
                   text={<FormattedMessage {...messages.doItLater} />}
-                  onClick={this.handleSkipButtonClick(onboardingCampaigns.name)}
+                  onClick={this.handleSkip(onboardingCampaigns.name)}
                   borderColor="#fff"
                   textColor="#fff"
                   fontWeight="500"
@@ -431,64 +427,16 @@ class SignedInHeader extends PureComponent<Props, State> {
             </HeaderContentCompleteProfile>
           </CSSTransition>
 
-          {/* With verification */}
-          <CSSTransition
-            classNames="content"
-            in={onboardingCampaigns.name === 'verification'}
-            timeout={
-              onboardingCampaigns.name === 'verification'
-                ? contentTimeout + contentDelay
-                : contentTimeout
-            }
-            mountOnEnter={true}
-            unmountOnExit={true}
-            enter={true}
-            exit={true}
-          >
-            <HeaderContentCompleteProfile id="e2e-signed-in-header-verification">
-              <Left>
-                <Icons>
-                  <AvatarAndShield aria-hidden>
-                    <StyledAvatar
-                      userId={authUser?.id}
-                      size={50}
-                      fillColor="#fff"
-                      padding={0}
-                      borderThickness={0}
-                    />
-                    <ShieldIcon name="verify_light" />
-                  </AvatarAndShield>
-                </Icons>
-                <Text>
-                  <FormattedMessage
-                    {...messages.verifyYourIdentity}
-                    tagName="h2"
-                  />
-                </Text>
-              </Left>
-
-              <Right>
-                <SkipButton
-                  buttonStyle="primary-outlined"
-                  text={<FormattedMessage {...messages.doItLater} />}
-                  onClick={this.handleSkipButtonClick(onboardingCampaigns.name)}
-                  borderColor="#fff"
-                  textColor="#fff"
-                  fontWeight="500"
-                  className="e2e-signed-in-header-verification-skip-btn"
-                />
-                <AcceptButton
-                  text={<FormattedMessage {...messages.verifyNow} />}
-                  buttonStyle="primary-inverse"
-                  onClick={this.handleVerify}
-                  textColor={theme.colorMain}
-                  textHoverColor={theme.colorMain}
-                  fontWeight="500"
-                  className="e2e-signed-in-header-accept-btn"
-                />
-              </Right>
-            </HeaderContentCompleteProfile>
-          </CSSTransition>
+          <Outlet
+            id="app.containers.LandingPage.onboardingCampaigns"
+            onboardingCampaigns={onboardingCampaigns}
+            contentTimeout={contentTimeout}
+            contentDelay={contentDelay}
+            authUser={authUser}
+            theme={theme}
+            onSkip={this.handleSkip}
+            onAccept={this.handleAccept}
+          />
 
           {/* Second header state - custom CTA */}
           <CSSTransition
@@ -519,7 +467,7 @@ class SignedInHeader extends PureComponent<Props, State> {
                 <SkipButton
                   buttonStyle="primary-outlined"
                   text={<FormattedMessage {...messages.doItLater} />}
-                  onClick={this.handleSkipButtonClick(onboardingCampaigns.name)}
+                  onClick={this.handleSkip(onboardingCampaigns.name)}
                   borderColor="#fff"
                   textColor="#fff"
                   fontWeight="500"
