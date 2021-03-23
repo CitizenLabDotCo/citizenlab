@@ -97,8 +97,7 @@ class User < ApplicationRecord
 
   EMAIL_DOMAIN_BLACKLIST = File.readlines(Rails.root.join('config', 'domain_blacklist.txt')).map(&:strip)
   validate :validate_email_domain_blacklist
-
-  ROLES_JSON_SCHEMA = Rails.root.join('config', 'schemas', 'user_roles.json_schema').to_s
+  
   validates :roles, json: { schema: -> { roles_json_schema }, message: ->(errors) { errors } }
 
   before_validation :set_cl1_migrated, on: :create
@@ -112,33 +111,12 @@ class User < ApplicationRecord
     .group('users.id')
   }
 
-  scope :admin, -> {
-    where("roles @> '[{\"type\":\"admin\"}]'")
-  }
-
-  scope :not_admin, -> {
-    where.not("roles @> '[{\"type\":\"admin\"}]'")
-  }
-
-  scope :project_moderator, -> (project_id=nil) {
-    if project_id
-      where("roles @> ?", JSON.generate([{type: 'project_moderator', project_id: project_id}]))
-    else
-      where("roles @> '[{\"type\":\"project_moderator\"}]'")
-    end
-  }
-
-  scope :not_project_moderator, -> {
-    where.not("roles @> '[{\"type\":\"project_moderator\"}]'")
-  }
-
-  scope :normal_user, -> {
-    where("roles = '[]'::jsonb")
-  }
-
-  scope :not_normal_user, -> {
-    where.not("roles = '[]'::jsonb")
-  }
+  scope :admin, -> { where("roles @> '[{\"type\":\"admin\"}]'") }
+  scope :not_admin, -> { where.not("roles @> '[{\"type\":\"admin\"}]'") }
+  scope :project_moderator, ->(_project_id = nil) { User.none }
+  scope :not_project_moderator, -> { User.all }
+  scope :normal_user, -> { where("roles = '[]'::jsonb") }
+  scope :not_normal_user, -> { where.not("roles = '[]'::jsonb") }
 
   scope :active, -> {
     where("registration_completed_at IS NOT NULL AND invite_status is distinct from 'pending'")
@@ -222,18 +200,19 @@ class User < ApplicationRecord
     admin? && !!(email =~ /citizen\-?lab\.(eu|be|fr|ch|de|nl|co|uk|us|cl|dk|pl)$/i)
   end
 
-  def project_moderator? project_id=nil
-    !!self.roles.find{|r| r["type"] == "project_moderator" && (project_id.nil? || r["project_id"] == project_id)}
+  def project_moderator?(_project_id = nil)
+    false
   end
-
-  def admin_or_moderator? project_id
+  
+  def admin_or_moderator?(project_id)
     admin? || (project_id && project_moderator?(project_id))
   end
-
-  def active_admin_or_moderator? project_id
+  
+  def active_admin_or_moderator?(project_id)
     active? && admin_or_moderator?(project_id)
   end
 
+  # here
   def highest_role
     if super_admin?
       :super_admin
@@ -247,9 +226,7 @@ class User < ApplicationRecord
   end
 
   def moderatable_project_ids
-    self.roles
-      .select{|role| role['type'] == 'project_moderator'}
-      .map{|role| role['project_id']}.compact
+    []
   end
 
   def moderatable_projects
@@ -366,8 +343,9 @@ class User < ApplicationRecord
   end
 
   def roles_json_schema
-    ROLES_JSON_SCHEMA
+    Rails.root.join('config', 'schemas', 'user_roles.json_schema').to_s
   end
 end
 
 User.prepend_if_ee('ProjectFolders::Patches::User')
+User.prepend_if_ee('ProjectPermissions::Patches::User')
