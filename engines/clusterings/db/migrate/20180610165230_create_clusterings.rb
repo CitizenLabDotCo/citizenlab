@@ -4,6 +4,7 @@ class CreateClusterings < ActiveRecord::Migration[5.1]
       t.jsonb :title_multiloc, default: {}
       t.jsonb :structure, default: {}
 
+
       t.timestamps
     end
   end

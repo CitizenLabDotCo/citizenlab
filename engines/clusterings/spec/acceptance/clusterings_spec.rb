@@ -3,7 +3,7 @@ require 'rspec_api_documentation/dsl'
 
 
 resource "Clusterings" do
- 
+
   explanation "A clustering is a specific hierarchical classification of ideas, used for analysis"
 
   before do
@@ -53,7 +53,7 @@ resource "Clusterings" do
       parameter :minimal_upvotes, "Minimal amount of upvotes", request: false
       parameter :minimal_downvotes, "Minimal amount of downvotes", request: false
     end
-    ValidationErrorHelper.new.error_fields(self, Clustering)
+    ValidationErrorHelper.new.error_fields(self, Clusterings::Clustering)
     before do
       @topic = create(:topic)
       @project = create(:project, topics: [@topic])
@@ -88,9 +88,9 @@ resource "Clusterings" do
   patch "web_api/v1/clusterings/:id" do
     with_options scope: :clustering do
       parameter :title_multiloc, "The title of the clustering, as a multiloc string"
-      parameter :structure, "The whole clustering definition. Should comply to following JSON schema: #{Clustering::STRUCTURE_JSON_SCHEMA}", required: false
+      parameter :structure, "The whole clustering definition. Should comply to following JSON schema: #{Clusterings::Clustering::STRUCTURE_JSON_SCHEMA}", required: false
     end
-    ValidationErrorHelper.new.error_fields(self, Clustering)
+    ValidationErrorHelper.new.error_fields(self, Clusterings::Clustering)
 
     let(:clustering) { create(:clustering) }
     let(:id) { clustering.id }
@@ -114,11 +114,11 @@ resource "Clusterings" do
     let!(:id) { create(:clustering).id }
 
     example "Delete a clustering" do
-      old_count = Clustering.count
+      old_count = Clusterings::Clustering.count
       do_request
       expect(response_status).to eq 200
-      expect{Clustering.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
-      expect(Clustering.count).to eq (old_count - 1)
+      expect{Clusterings::Clustering.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
+      expect(Clusterings::Clustering.count).to eq (old_count - 1)
     end
   end
 
