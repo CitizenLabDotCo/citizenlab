@@ -258,6 +258,7 @@ resource "Projects" do
         parameter :survey_service, "The name of the service of the survey. Either #{Surveys::SurveyParticipationContext::SURVEY_SERVICES.join(",")}", required: false
         parameter :max_budget, "The maximal budget amount each citizen can spend during participatory budgeting.", required: false
         parameter :presentation_mode, "Describes the presentation of the project's items (i.e. ideas), either #{ParticipationContext::PRESENTATION_MODES.join(",")}. Defaults to card.", required: false
+        parameter :default_assignee_id, "The user id of the admin or moderator that gets assigned to ideas by default. Defaults to unassigned", required: false if CitizenLab.ee?
         parameter :poll_anonymous, "Are users associated with their answer? Defaults to false. Only applies if participation_method is 'poll'", required: false
         parameter :folder_id, "The ID of the project folder (can be set to nil for top-level projects)", required: false
         parameter :ideas_order, 'The default order of ideas.'
@@ -283,6 +284,10 @@ resource "Projects" do
         let(:visible_to) { 'admins' }
         let(:publication_status) { 'draft' }
 
+        if CitizenLab.ee?
+          let(:default_assignee_id) { create(:admin).id }
+        end
+
         example_request "Create a timeline project" do
           expect(response_status).to eq 201
           json_response = json_parse(response_body)
@@ -293,6 +298,9 @@ resource "Projects" do
           expect(json_response.dig(:data,:relationships,:areas,:data).map{|d| d[:id]}).to match_array area_ids
           expect(json_response.dig(:data,:attributes,:visible_to)).to eq 'admins'
           expect(json_response[:included].select{|inc| inc[:type] == 'admin_publication'}.first.dig(:attributes, :publication_status)).to eq 'draft'
+          if CitizenLab.ee?
+            expect(json_response.dig(:data,:relationships,:default_assignee,:data,:id)).to eq default_assignee_id
+          end
           expect(json_response.dig(:data,:attributes,:header_bg)).to be_present
           # New projects are added to the top
           expect(json_response[:included].select{|inc| inc[:type] == 'admin_publication'}.first.dig(:attributes, :ordering)).to eq 0
@@ -423,6 +431,7 @@ resource "Projects" do
         parameter :survey_service, "The name of the service of the survey. Either #{Surveys::SurveyParticipationContext::SURVEY_SERVICES.join(",")}", required: false
         parameter :max_budget, "The maximal budget amount each citizen can spend during participatory budgeting.", required: false
         parameter :presentation_mode, "Describes the presentation of the project's items (i.e. ideas), either #{Project::PRESENTATION_MODES.join(",")}.", required: false
+        parameter :default_assignee_id, "The user id of the admin or moderator that gets assigned to ideas by default. Set to null to default to unassigned", required: false if CitizenLab.ee?
         parameter :poll_anonymous, "Are users associated with their answer? Only applies if participation_method is 'poll'. Can't be changed after first answer.", required: false
         parameter :folder_id, "The ID of the project folder (can be set to nil for top-level projects)"
         parameter :ideas_order, 'The default order of ideas.'
@@ -444,6 +453,10 @@ resource "Projects" do
       let(:publication_status) { 'archived' }
       let(:ideas_order) { 'new' }
 
+      if CitizenLab.ee?
+        let(:default_assignee_id) { create(:admin).id }
+      end
+
       example "Update a project" do
         old_publcation_ids = AdminPublication.ids
         do_request
@@ -464,6 +477,9 @@ resource "Projects" do
         expect(json_response.dig(:data,:attributes,:input_term)).to eq 'idea'
         expect(json_response.dig(:data,:attributes,:presentation_mode)).to eq 'card'
         expect(json_response[:included].select{|inc| inc[:type] == 'admin_publication'}.first.dig(:attributes, :publication_status)).to eq 'archived'
+        if CitizenLab.ee?
+          expect(json_response.dig(:data,:relationships,:default_assignee,:data,:id)).to eq default_assignee_id
+        end
       end
 
       example "Add a project to a folder" do
@@ -494,6 +510,15 @@ resource "Projects" do
         do_request(project: {area_ids: []})
         json_response = json_parse(response_body)
         expect(json_response.dig(:data,:relationships,:areas,:data).size).to eq 0
+      end
+
+      if CitizenLab.ee?
+        example "Set default assignee to unassigned", document: false do
+          @project.update!(default_assignee: create(:admin))
+          do_request(project: {default_assignee_id: nil})
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data,:relationships,:default_assignee,:data,:id)).to be_nil
+        end
       end
 
       example "Disable downvoting", document: false do
