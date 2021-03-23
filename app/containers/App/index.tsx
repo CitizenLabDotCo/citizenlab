@@ -53,9 +53,6 @@ import LoadableModal from 'components/Loadable/Modal';
 import LoadableUserDeleted from 'components/UserDeletedModalContent/LoadableUserDeleted';
 import ErrorBoundary from 'components/ErrorBoundary';
 import { LiveAnnouncer } from 'react-aria-live';
-const VerificationModal = lazy(() =>
-  import('modules/verification/citizen/components/VerificationModal')
-);
 const SignUpInModal = lazy(() => import('components/SignUpIn/SignUpInModal'));
 const PostPageFullscreenModal = lazy(() => import('./PostPageFullscreenModal'));
 
@@ -460,17 +457,12 @@ class App extends PureComponent<Props, State> {
     this.setState({ mobileNavbarRef });
   };
 
-  singUpInModalMounted = () => {
-    this.setState({ signUpInModalMounted: true });
-  };
-
-  verificationModalMounted = () => {
-    this.setState({ verificationModalMounted: true });
-  };
-
   handleModalMounted = (id: string) => {
     if (id === 'verification') {
-      this.verificationModalMounted();
+      this.setState({ verificationModalMounted: true });
+    }
+    if (id === 'signup') {
+      this.setState({ signUpInModalMounted: true });
     }
   };
 
@@ -543,7 +535,9 @@ class App extends PureComponent<Props, State> {
 
                   <ErrorBoundary>
                     <Suspense fallback={null}>
-                      <SignUpInModal onMounted={this.singUpInModalMounted} />
+                      <SignUpInModal
+                        onMounted={() => this.handleModalMounted('signup')}
+                      />
                     </Suspense>
                   </ErrorBoundary>
 
