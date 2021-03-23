@@ -60,7 +60,7 @@ export type SignUpStepOutletProps = {
     key: TSignUpSteps;
     configuration: TSignUpStepConfigurationObject;
   }) => void;
-  step: TSignUpSteps;
+  step: TSignUpSteps | null;
   metaData: ISignUpInMetaData;
   onCompleted: () => void;
   onSkipped: () => void;
