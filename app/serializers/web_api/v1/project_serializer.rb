@@ -1,7 +1,7 @@
 class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
   include WebApi::V1::ParticipationContextSerializer
 
-  attributes :title_multiloc, :description_preview_multiloc, :slug, :visible_to, :process_type, :ideas_count, :comments_count, :internal_role, :created_at, :updated_at
+  attributes :title_multiloc, :description_preview_multiloc, :slug, :process_type, :ideas_count, :comments_count, :internal_role, :created_at, :updated_at
 
   attribute :publication_status do |object|
     object.admin_publication.publication_status
@@ -128,3 +128,4 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
 end
 
 WebApi::V1::ProjectSerializer.prepend_if_ee('ProjectFolders::WebApi::V1::Patches::ProjectSerializer')
+WebApi::V1::ProjectSerializer.include_if_ee('ProjectPermissions::Patches::WebApi::V1::ProjectSerializer')

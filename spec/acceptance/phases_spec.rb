@@ -41,12 +41,13 @@ resource "Phases" do
         voting_method: 'unlimited',
         ideas_count: 2
         )
-      expect(json_response.dig(:data, :relationships)).to include(
-        project: {
+
+      expect(json_response.dig(:data, :relationships, :project)).to match({
           data: {id: @phases.first.project_id, type: 'project'}
-        },
-        permissions: {data: []}
-        )
+      })
+
+      expect(json_response.dig(:data, :relationships, :permissions, :data).size)
+        .to eq(PermissionsService.actions(@phases.first).length) if CitizenLab.ee?
     end
   end
 

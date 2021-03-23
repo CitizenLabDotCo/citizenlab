@@ -14,10 +14,7 @@ class WebApi::V1::VotesController < ApplicationController
   end
 
   def show
-    render json: WebApi::V1::VoteSerializer.new(
-      @vote, 
-      params: fastjson_params
-      ).serialized_json
+    render json: WebApi::V1::VoteSerializer.new(@vote, params: fastjson_params).serialized_json
   end
 
   def create
@@ -29,7 +26,6 @@ class WebApi::V1::VotesController < ApplicationController
 
     SideFxVoteService.new.before_create(@vote, current_user)
 
-    saved = nil
     begin
       saved = @vote.save
     rescue ActiveRecord::RecordNotUnique => e
@@ -143,51 +139,10 @@ class WebApi::V1::VotesController < ApplicationController
   end
 
   def vote_params
-    params.require(:vote).permit(
-      :user_id,
-      :mode,
-    )
+    params.require(:vote).permit(:user_id, :mode)
   end
 
   def secure_controller?
     false
   end
-
-  def user_not_authorized exception
-    vote = exception.record
-    pcs = ParticipationContextService.new
-    ps = PermissionsService.new
-    reason = if vote.votable.kind_of? Idea
-      ( 
-        pcs.voting_disabled_reason_for_idea_vote(vote, vote.user) ||
-        pcs.cancelling_votes_disabled_reason_for_idea(vote.votable, vote.user)
-      )
-    elsif vote.votable.kind_of? Initiative
-      if vote.mode == 'down'
-        'downvoting_not_supported'
-      else
-        (
-          ps.voting_initiative_disabled_reason(vote.user) ||
-          ps.cancelling_votes_disabled_reason_for_initiative(vote.user)
-        )
-      end
-    elsif vote.votable.kind_of? Comment
-      case vote.votable.post_type
-      when Idea.name
-        pcs.voting_disabled_reason_for_idea_comment vote.votable, vote.user
-      when Initiative.name
-        ps.voting_disabled_reason_for_initiative_comment vote.user
-      else
-        raise "No voting disabled reasons can be determined for #{vote.votable.post_type} model" 
-      end
-    else
-      raise "No voting disabled reasons can be determined for #{vote.votable_type} model"
-    end
-    if reason
-      render json: { errors: { base: [{ error: reason }] } }, status: :unauthorized
-      return
-    end
-    render json: { errors: { base: [{ error: 'Unauthorized!' }] } }, status: :unauthorized
-  end
-
 end

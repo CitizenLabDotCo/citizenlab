@@ -156,7 +156,7 @@ namespace :setup_and_support do
     Apartment::Tenant.switch(args[:host].gsub '.', '_') do
       translator = MachineTranslations::MachineTranslationService.new
       data_listing = Cl2DataListingService.new
-      data_listing.cl2_tenant_models.each do |claz|
+      data_listing.cl2_schema_leaf_models.each do |claz|
         claz.find_each do |object|
           changes = {}
           data_listing.multiloc_attributes(claz).each do |ml|

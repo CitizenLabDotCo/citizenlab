@@ -121,6 +121,17 @@ resource "User Custom Field Options" do
         expect{CustomFieldOption.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
       end
 
+      if CitizenLab.ee?
+        example "[error] Delete a custom field option that's still referenced in a rules group" do
+          group = create(:smart_group, rules: [
+            {ruleType: 'custom_field_select', customFieldId: @custom_field.id, predicate: 'has_value', value: id}
+          ])
+          do_request
+          expect(response_status).to eq 422
+          expect(CustomFieldOption.find(id)).to be_present
+        end
+      end
+
       example "Deleting a custom field option that's still referenced in a user's setting", document: false do
         custom_field_values = {@custom_field.key => custom_field_option.key}
         user = create(:user, custom_field_values: custom_field_values)

@@ -1,12 +1,6 @@
 require 'rails_helper'
 
-
 RSpec.describe Permission, type: :model do
-  describe "Default factory" do
-    it "is valid" do
-      expect(build(:permission)).to be_valid
-    end
-  end
 
   describe 'for_user' do
     before do
@@ -29,28 +23,57 @@ RSpec.describe Permission, type: :model do
       expect(Permission.for_user(create(:admin)).count).to eq Permission.count
     end
 
-    it 'returns all permissions of a project for a moderator' do
-      expect(@p1.permissions.for_user(create(:moderator, project: @p1)).count).to eq @p1.permissions.count
+    context 'when user is logged in' do
+      let(:user) { create(:user) }
+
+      it { expect(described_class.for_user(user)).to match permissions[0..1] }
     end
 
-    it 'returns permissions for everyone to mortal users' do
-      expect(Permission.for_user(create(:user)).count).to eq 1
+    context 'when user belongs to the authorized manual group' do
+      let(:user) { create(:user) }
+      before { manual_grp.add_member(user).save! }
+
+      it {
+        expect(described_class.for_user(user)).to match [permissions[0], permissions[1], permissions[3]]
+      }
     end
 
-    it 'returns the group permissions for group members' do
-      member = create(:user, birthyear: 1992)
-      @g1.add_member member
-      @g1.save!
-      expect(Permission.for_user(member).count).to eq 2
+    context 'when user belongs to the authorized smart group' do
+      let(:user) { create(:user, email: 'info@citizenlab.co', birthyear: 1980) }
+
+      it {
+        expect(described_class.for_user(user)).to match [permissions[0], permissions[1], permissions[4]]
+      }
+    end
+  end
+
+  describe '#denied?' do
+    let(:everyone_permission) { build(:permission, :by_everyone) }
+    let(:users_permission) { build(:permission, :by_users) }
+    let(:admins_mods_permission) { build(:permission, :by_admins_moderators) }
+
+    context 'when not signed in' do
+      let(:user) { nil }
+
+      it { expect(everyone_permission).not_to be_denied(user) }
+      it { expect(users_permission.denied?(user)).to eq('not_signed_in') }
+      it { expect(admins_mods_permission.denied?(user)).to eq('not_permitted') }
     end
 
-    it 'returns the group permissions for a user in multiple groups, without errors' do
-      member = create(:user, birthyear: 1992)
-      @g1.add_member member
-      @g1.save!
-      @g2.add_member member
-      @g2.save!
-      expect(Permission.for_user(member).count).to eq 3
+    context 'when user is admin' do
+      let(:admin) { build(:admin) }
+
+      it { expect(everyone_permission).not_to be_denied(admin) }
+      it { expect(users_permission).not_to be_denied(admin) }
+      it { expect(admins_mods_permission).not_to be_denied(admin) }
+    end
+
+    context 'when signed in' do
+      let(:user) { build(:user) }
+
+      it { expect(everyone_permission).not_to be_denied(user) }
+      it { expect(users_permission).not_to be_denied(user) }
+      it { expect(admins_mods_permission).to be_denied(user) }
     end
   end
 end
