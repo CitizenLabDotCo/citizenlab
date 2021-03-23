@@ -11,6 +11,7 @@ import UseTemplateModal from '../components/UseTemplateModal';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
+import componentMessages from '../components/messages';
 
 // analytics
 import { trackEventByName } from 'utils/analytics';
@@ -81,7 +82,7 @@ const ProjectTemplatePreviewAdmin = memo<Props & WithRouterProps>(
               </Button>
             )}
             <Button onClick={onOpenModal} buttonStyle="admin-dark">
-              <FormattedMessage {...messages.useTemplate} />
+              <FormattedMessage {...componentMessages.useTemplate} />
             </Button>
           </AdminHeader>
 
