@@ -16,13 +16,17 @@ const configuration: ModuleConfiguration = {
     'app.containers.Navbar.UserMenu.UserNameContainer': (props) => (
       <VerificationBadge {...props} />
     ),
-    'app.containers.App.modals': ({ onMounted }) => (
-      <ErrorBoundary>
-        <Suspense fallback={null}>
-          <VerificationModal onMounted={() => onMounted('verification')} />
-        </Suspense>
-      </ErrorBoundary>
-    ),
+    'app.containers.App.modals': ({ onMounted }) => {
+      const handleMounted = () => onMounted('verification');
+
+      return (
+        <ErrorBoundary>
+          <Suspense fallback={null}>
+            <VerificationModal onMounted={handleMounted} />
+          </Suspense>
+        </ErrorBoundary>
+      );
+    },
     'app.containers.LandingPage.onboardingCampaigns': VerificationOnboardingStep,
   },
 };
