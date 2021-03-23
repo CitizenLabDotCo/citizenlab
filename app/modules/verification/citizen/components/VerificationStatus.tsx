@@ -19,9 +19,7 @@ import messages from '../../../../containers/UsersEditPage/messages';
 import styled from 'styled-components';
 import { fontSizes, colors, media } from 'utils/styleUtils';
 import { darken } from 'polished';
-
-// events
-import { openVerificationModal } from 'modules/verification/citizen/components/verificationModalEvents';
+import { openVerificationModal } from 'components/Verification/VerificationModalEvents';
 
 const Container = styled(FormSection)`
   display: flex;

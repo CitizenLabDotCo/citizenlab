@@ -38,7 +38,7 @@ import { PreviousPathnameContext } from 'context';
 import { openSignUpInModal } from 'components/SignUpIn/events';
 
 // verification
-import { openVerificationModal } from 'modules/verification/citizen/components/verificationModalEvents';
+import { openVerificationModal } from 'components/Verification/VerificationModalEvents';
 
 // analytics
 import ConsentManager from 'components/ConsentManager';

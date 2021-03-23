@@ -11,7 +11,7 @@ import SignIn from 'components/SignUpIn/SignIn';
 
 // styling
 import styled from 'styled-components';
-import { ContextShape } from 'modules/verification/citizen/components/VerificationModal';
+import { ContextShape } from 'components/Verification/VerificationModalEvents';
 
 // typings
 

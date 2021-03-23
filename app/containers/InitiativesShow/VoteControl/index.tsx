@@ -37,7 +37,7 @@ import GetInitiativesPermissions, {
 } from 'resources/GetInitiativesPermissions';
 import { IInitiativeDisabledReason } from 'hooks/useInitiativesPermissions';
 import { trackEventByName } from 'utils/analytics';
-import { openVerificationModal } from 'modules/verification/citizen/components/verificationModalEvents';
+import { openVerificationModal } from 'components/Verification/VerificationModalEvents';
 
 const Container = styled.div`
   ${media.biggerThanMaxTablet`
