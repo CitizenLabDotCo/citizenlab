@@ -35,7 +35,7 @@ const VerificationOnboardingStep = ({
   contentDelay,
   theme,
 }) => {
-  const handleSkip = () => onSkip(onboardingCampaigns.name);
+  const handleSkip = () => onSkip(onboardingCampaigns.name)();
   const handleAccept = () => onAccept(onboardingCampaigns.name);
 
   return (
