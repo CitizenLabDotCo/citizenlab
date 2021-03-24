@@ -12,7 +12,7 @@ module Verification
           super.merge(not_verified: 'not_verified')
         end
       end
-      
+
       def denied_when_permitted_by_groups?(user)
         if requires_verification? && !user&.verified?
           :not_verified
@@ -24,7 +24,7 @@ module Verification
       def requires_verification?
         return unless permitted_by == 'groups'
 
-        Verification::VerificationService.new.find_verification_group(groups)
+        VerificationService.new.find_verification_group(groups)
       end
     end
   end
