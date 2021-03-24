@@ -342,7 +342,7 @@ class User < ApplicationRecord
       :password,
       :too_short,
       message: 'The chosen password is shorter than the minimum required character length',
-      count: minimum_length
+      count: password_min_length
     )
   end
 
