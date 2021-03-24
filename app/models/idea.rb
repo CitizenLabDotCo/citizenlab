@@ -22,13 +22,13 @@ class Idea < ApplicationRecord
 
   has_many :tagging_taggings
   has_many :tagging_tags, through: :tagging_taggings
-  has_and_belongs_to_many :tagging_pending_tasks, class_name: 'Tagging::PendingTask', join_table: :tagging_pending_tasks_ideas 
+  has_and_belongs_to_many :tagging_pending_tasks, class_name: 'Tagging::PendingTask', join_table: :tagging_pending_tasks_ideas
   has_many :ideas_topics, dependent: :destroy
   has_many :topics, through: :ideas_topics
   has_many :areas_ideas, dependent: :destroy
   has_many :areas, through: :areas_ideas
   has_many :ideas_phases, dependent: :destroy
-  has_many :phases, through: :ideas_phases
+  has_many :phases, through: :ideas_phases, after_add: :update_phase_ideas_count, after_remove: :update_phase_ideas_count
   has_many :baskets_ideas, dependent: :destroy
   has_many :baskets, through: :baskets_ideas
   has_many :text_images, as: :imageable, dependent: :destroy
@@ -143,5 +143,9 @@ class Idea < ApplicationRecord
     if project_id_previously_changed?
       Comment.counter_culture_fix_counts only: [[:idea, :project]]
     end
+  end
+
+  def update_phase_ideas_count(_)
+    IdeasPhase.counter_culture_fix_counts only: %i[phase]
   end
 end

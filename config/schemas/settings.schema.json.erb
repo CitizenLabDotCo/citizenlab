@@ -159,6 +159,13 @@
             "title": "Geographic Unit",
             "description": "What a geographic unit should be called on this platform (e.g., neighbourhood, district, etc.)? Input the singular form here with all lowercase letters. If left blank, this field defaults to 'area'.",
             "$ref": "#/definitions/multiloc_string"
+          },
+          "reply_to_email": {
+            "title": "Reply-to email",
+            "description": "The email used in the reply-to field when users receive emails from automated campaigns.",
+            "type": "string",
+            "format": "email",
+            "default": "support@citizenlab.co"
           }
         }
       },
@@ -175,28 +182,24 @@
         }
       },
 
-      "custom_idea_statuses": {
-        "type": "object",
-        "title": "Custom Idea Statuses",
-        "description":  "Allows admin to define custom idea statuses.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
-        }
-      },
-
       "password_login": {
         "type": "object",
         "title": "Password Login",
         "description": "Allow users to register with an email and password.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
-        "required-settings": ["phone"],
+        "required-settings": ["minimum_length", "phone"],
         "properties": {
           "allowed": { "type": "boolean", "default": true},
           "enabled": { "type": "boolean", "default": true},
+          "minimum_length": {
+            "type": "number",
+            "title": "Minimum password length",
+            "description": "The minimum number of characters required for a user password. The default value is 8 (min. 5, max. 72). Longer passwords are generally more secure. Changes to the min. password length will only apply to users that create a new account or update their existing password (existing accounts remain the same).",
+            "minimum": 5,
+            "maximum": 72,
+            "default": 8
+          },
           "phone": {
             "title": "Phone",
             "description": "Allow users to register with a phone number. This option is not advised, please check with development team before enabling this field.",
@@ -293,36 +296,6 @@
         }
       },
 
-      "franceconnect_login": {
-        "type": "object",
-        "title": "FranceConnect Login",
-        "description":  "Allow users to register and sign in with a FranceConnect account.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "required-settings": ["environment", "identifier", "secret"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false},
-          "enabled": { "type": "boolean", "default": false},
-          "environment": {
-            "type": "string",
-            "title": "Environment",
-            "description": "Live on the production FranceConnect environment or still testing on their integration environment?",
-            "enum": ["production", "integration"],
-            "default": "production",
-            "private": true
-          },
-          "identifier": {
-            "title": "Identifier",
-            "type": "string",
-            "private": true
-          },
-          "secret": {
-            "title": "Secret Key",
-            "type": "string",
-            "private": true
-          }
-        }
-      },
 
       "integration_onze_stad_app": {
         "type": "object",
@@ -385,7 +358,7 @@
 
       "maps": {
         "type": "object",
-        "title": "Maps",
+        "title": "CustomMaps",
         "description":  "Enable maps for all projects.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
@@ -428,18 +401,6 @@
             "title": "OSM Relation ID",
             "description": "The boundary of the municipality/organisation is specified by its Relation ID in OpenStreetMap (OSM). You can find the Relation ID at https://www.openstreetmap.org. Search for the place, click on the correct result and you'll find the Relation ID if the result is a relation (e.g. \"Relation: Knokke-Heist (4569)\"). If there is no relation defined for the place (e.g. Scheveningen), search for the next largest administrative territory (e.g. The Hague)."
           }
-        }
-      },
-
-      "geographic_dashboard": {
-        "type": "object",
-        "title": "Geographic Dashboard",
-        "description":  "Shows a map with automatically detected idea locations. PoC, not yet stable.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false},
-          "enabled": { "type": "boolean", "default": false}
         }
       },
 
@@ -789,6 +750,25 @@
         }
       },
 
+      "custom_accessibility_statement_link": {
+        "type": "object",
+        "title": "Custom A11y Statement Link",
+        "description":  "Allows the Front-End to direct the user to a different accessibility statement link than our own.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "required-settings": ["url"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false},
+          "url": {
+            "title": "URL",
+            "description": "The link to the page to which users should be redirected when clicking on the accessibility statement link within the footer.",
+            "type": "string",
+            "format": "uri"
+          }
+        }
+      },
+
       "idea_custom_fields": {
         "type": "object",
         "title": "Custom Idea Fields",
@@ -993,43 +973,7 @@
           "enabled": { "type": "boolean", "default": false}
         }
       },
-
-      "project_management": {
-        "type": "object",
-        "title": "Project Managers",
-        "description": "Enable the project manager role (users who have some administrative rights at a project level).",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
-        }
-      },
-
-      "granular_permissions": {
-        "type": "object",
-        "title": "Granular Permissions",
-        "description": "Admin can specify permissions for specific projects and project phases (e.g., who can post, vote, etc.).",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
-        }
-      },
-
-      "project_visibility": {
-        "type": "object",
-        "title": "Project Visibility",
-        "description": "Admin can make projects visible only to certain groups of users (e.g., admin only, smart groups).",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
-        }
-      },
-
+      
       "private_projects": {
         "type": "object",
         "title": "Private projects",

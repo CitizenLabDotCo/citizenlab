@@ -27,6 +27,7 @@ resource "AdminPublication" do
         parameter :number, "Page number"
         parameter :size, "Number of projects per page"
       end
+      parameter :depth, 'Filter by depth (AND)', required: false
       parameter :topics, 'Filter by topics (AND)', required: false
       parameter :areas, 'Filter by areas (AND)', required: false
       parameter :folder, "Filter by folder (project folder id)", required: false
@@ -42,7 +43,7 @@ resource "AdminPublication" do
       end
 
       example "List all top-level admin publications" do
-        do_request(folder: nil)
+        do_request(depth: 0)
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 7
         expect(json_response[:data].map{|d| d.dig(:relationships, :publication, :data, :type)}.count('folder')).to eq 2
