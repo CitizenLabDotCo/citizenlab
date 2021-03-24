@@ -1,5 +1,4 @@
 class Idea < ApplicationRecord
-  include MachineTranslations::IdeaDecorator
   include Post
 
   belongs_to :project, touch: true
@@ -151,3 +150,4 @@ class Idea < ApplicationRecord
 end
 
 Idea.include_if_ee 'Moderation::Concerns::Moderatable'
+Idea.include_if_ee 'MachineTranslations::Concerns::Translatable'
