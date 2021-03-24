@@ -36,7 +36,7 @@ module ProjectPermissions
           @user = User.find create_moderator_params[:user_id]
           @user.add_role 'project_moderator', project_id: params[:project_id]
           if @user.save
-            SideFxModeratorService.new.after_create(@user, Project.find(params[:project_id]), current_user)
+            ProjectPermissions::SideFxModeratorService.new.after_create(@user, Project.find(params[:project_id]), current_user)
             render json: ::WebApi::V1::UserSerializer.new(
               @user,
               params: fastjson_params
@@ -50,7 +50,7 @@ module ProjectPermissions
         def destroy
           @moderator.delete_role 'project_moderator', project_id: params[:project_id]
           if @moderator.save
-            SideFxModeratorService.new.after_destroy(@moderator, Project.find(params[:project_id]), current_user)
+            ProjectPermissions::SideFxModeratorService.new.after_destroy(@moderator, Project.find(params[:project_id]), current_user)
             head :ok
           else
             head 500
