@@ -45,7 +45,7 @@ export function addTooltipToLayer(
   layer: L.GeoJSON,
   feature: GeoJSON.Feature,
   tooltipStringOrFunction?: ITooltipStringOrObjectOrFunctionForLayer
-): void {
+) {
   if (!tooltipStringOrFunction) {
     return;
   }
@@ -68,8 +68,8 @@ export function addLayerOverlay(
   layerControl: L.Control.Layers,
   geoJSONLayer: GeoJSONLayer,
   overlayStringOrOptionsOrFunction: IOverlayStringOrObjectOrFunctionForLayer
-): void {
-  let overlayContent;
+) {
+  let overlayContent: string | undefined = undefined;
 
   if (isString(overlayStringOrOptionsOrFunction)) {
     overlayContent = overlayStringOrOptionsOrFunction;
@@ -87,7 +87,7 @@ export function layerMarker(
   latlng: L.LatLng,
   markerStringOrOptionsOrFunction: IMarkerStringOrObjectOrFunctionForLayer,
   options = {}
-): L.Marker {
+) {
   let marker: L.Icon;
 
   if (isString(markerStringOrOptionsOrFunction)) {
@@ -109,17 +109,17 @@ export function layerMarker(
 
 export function addLayers(
   map: L.Map,
-  layersGeoJson: GeoJSONLayer[],
+  geoJsonLayers: GeoJSONLayer[],
   { layerControl, overlay, popup, tooltip, marker }
-): L.GeoJSON[] {
-  return reverse(cloneDeep(layersGeoJson))
-    ?.filter((layerObject) => !isEmpty(layerObject.geojson))
-    .map((layerObject) => {
+) {
+  const layers = reverse(cloneDeep(geoJsonLayers))
+    ?.filter((geoJsonLayer) => !isEmpty(geoJsonLayer.geojson))
+    .map((geoJsonLayer) => {
       const options = {
         useSimpleStyle: true,
         useMakiMarkers: true,
         pointToLayer: (_feature, latlng) => {
-          layerMarker(layerObject, latlng, marker);
+          return layerMarker(geoJsonLayer, latlng, marker);
         },
         onEachFeature: (feature, layer) => {
           addTooltipToLayer(layer, feature, tooltip);
@@ -127,23 +127,30 @@ export function addLayers(
         },
       };
 
-      const layer = L.geoJSON(layerObject.geojson, options as any).addTo(map);
+      const layer = L.geoJSON(geoJsonLayer.geojson, options as any).addTo(map);
 
-      if (!isNilOrError(layerControl) && !isNilOrError(overlay)) {
-        addLayerOverlay(layer, layerControl, layerObject, overlay);
-      }
-
-      return layer as L.GeoJSON;
+      return {
+        layer,
+        geoJsonLayer,
+      };
     });
+
+  reverse(cloneDeep(layers)).forEach(({ layer, geoJsonLayer }) => {
+    if (!isNilOrError(layerControl) && !isNilOrError(overlay)) {
+      addLayerOverlay(layer, layerControl, geoJsonLayer, overlay);
+    }
+  });
+
+  return layers.map(({ layer }) => layer);
 }
 
-export function removeLayers(map: L.Map, leafletLayers: L.Layer[]): void {
+export function removeLayers(map: L.Map, leafletLayers: L.Layer[]) {
   leafletLayers.forEach((layer) => {
     removeLayer(map, layer);
   });
 }
 
-export function removeLayer(map: L.Map, leafletLayer: L.Layer): void {
+export function removeLayer(map: L.Map, leafletLayer: L.Layer) {
   if (leafletLayer) {
     map.removeLayer(leafletLayer);
   }
