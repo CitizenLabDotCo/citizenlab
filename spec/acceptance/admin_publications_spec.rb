@@ -32,7 +32,7 @@ resource "AdminPublication" do
       parameter :areas, 'Filter by areas (AND)', required: false
       parameter :folder, "Filter by folder (project folder id)", required: false
       parameter :publication_statuses, "Return only publications with the specified publication statuses (i.e. given an array of publication statuses); always includes folders; returns all publications by default", required: false
-      parameter :filter_empty_folders, "Filter out folders with no visible children for the current user", required: false
+      parameter :remove_childless_parents, 'Use the visibility rules of children on the parent and remove the empty ones', required: false
 
       example_request "List all admin publications" do
         expect(status).to eq(200)
@@ -161,9 +161,7 @@ resource "AdminPublication" do
 
   context 'when citizen' do
     before do
-      @user = create(:user)
-      token = Knock::AuthToken.new(payload: @user.to_token_payload).token
-      header 'Authorization', "Bearer #{token}"
+      user_header_token
 
       @projects = ['published','published','draft','draft','published','archived']
         .map { |ps|  create(:project, admin_publication_attributes: {publication_status: ps})}
@@ -201,6 +199,11 @@ resource "AdminPublication" do
         expect(json_response[:data].map{|d| d.dig(:relationships, :publication, :data, :type)}.count('folder')).to eq 1
         expect(json_response[:data].map{|d| d.dig(:relationships, :publication, :data, :type)}.count('project')).to eq 1
         expect(json_response[:data].select{|d| d.dig(:relationships, :publication, :data, :type) == 'folder'}.first.dig(:attributes, :visible_children_count)).to eq 1
+      end
+
+      example 'Lists top level publications when passing depth=0' do
+        do_request(depth: 0)
+        expect(response_length).to eq 2
       end
 
       example "Returns an empty list success response when there are no publications", document: false do

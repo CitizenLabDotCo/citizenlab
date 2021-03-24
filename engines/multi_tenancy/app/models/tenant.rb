@@ -188,6 +188,12 @@ class Tenant < ApplicationRecord
     find_by!(host: host_name).switch!
   end
 
+  def self.switch_each(&blk)
+    find_each do |tenant|
+      tenant.switch(&blk)
+    end
+  end
+
   def changed_lifecycle_stage?
     return false unless settings_previously_changed?
 

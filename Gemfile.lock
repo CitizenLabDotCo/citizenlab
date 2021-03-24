@@ -760,6 +760,10 @@ GEM
       rspec-core (~> 3.9.0)
       rspec-expectations (~> 3.9.0)
       rspec-mocks (~> 3.9.0)
+    rspec-activemodel-mocks (1.1.0)
+      activemodel (>= 3.0)
+      activesupport (>= 3.0)
+      rspec-mocks (>= 2.99, < 4.0)
     rspec-core (3.9.1)
       rspec-support (~> 3.9.1)
     rspec-expectations (3.9.1)
@@ -995,6 +999,7 @@ DEPENDENCIES
   rest-client
   rgeo-geojson
   rinku (~> 2)
+  rspec-activemodel-mocks
   rspec-rails
   rspec_api_documentation
   rspec_junit_formatter

@@ -15,6 +15,8 @@ namespace :fix_existing_tenants do
         fixes += Vote.counter_culture_fix_counts(skip_unsupported: true).map{|fix| fix[:tenant] = tenant.host; fix}
         fixes += EmailCampaigns::Delivery.counter_culture_fix_counts(skip_unsupported: true).map{|fix| fix[:tenant] = tenant.host; fix}
         fixes += Volunteering::Volunteer.counter_culture_fix_counts(skip_unsupported: true).map{|fix| fix[:tenant] = tenant.host; fix}
+        fixes += AdminPublication.counter_culture_fix_counts(skip_unsupported: true).map{|fix| fix[:tenant] = tenant.host; fix}
+        fixes += AdminPublication.find_each { |admin_publication| admin_publication.send(:update_counter_cache) }.map{|fix| fix[:tenant] = tenant.host; fix}
       end
     end
 
