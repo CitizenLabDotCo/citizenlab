@@ -51,6 +51,7 @@ const TagContainer = styled.td`
 `;
 
 const ContentTitle = styled.div`
+  padding-left: 10px;
   display: inline-block;
   font-size: ${fontSizes.base}px;
   font-weight: 400;
@@ -69,7 +70,7 @@ interface Props {
   openPreview: (id: string) => void;
   rowRef?: RefObject<any>;
   taggings: ITagging[];
-  showTagColumn: boolean;
+  isManualTaggingMode: boolean;
   processing: boolean;
 }
 
@@ -85,7 +86,7 @@ const ProcessingRow = memo<Props & InjectedIntlProps>(
     highlighted,
     rowRef,
     taggings,
-    showTagColumn,
+    isManualTaggingMode,
     processing,
   }) => {
     const contentTitle = omitBy(
@@ -106,7 +107,7 @@ const ProcessingRow = memo<Props & InjectedIntlProps>(
         _event.preventDefault();
         trackEventByName('Processing Table Row', {
           action: 'selected one row',
-          context: `${showTagColumn ? 'filter view' : 'tagging view'}`,
+          context: `${isManualTaggingMode ? 'tagging view' : 'filter view'}`,
         });
         onSelect(idea.id);
       },
@@ -148,16 +149,18 @@ const ProcessingRow = memo<Props & InjectedIntlProps>(
         ref={rowRef}
         key={idea.id}
       >
-        <td className="checkbox">
-          <StyledCheckbox checked={selected} onChange={handleOnChecked} />
-        </td>
+        {!isManualTaggingMode && (
+          <td className="checkbox">
+            <StyledCheckbox checked={selected} onChange={handleOnChecked} />
+          </td>
+        )}
 
         <td className="title">
           <ContentTitle onClick={handleClick}>
             {localize(contentTitle)}
           </ContentTitle>
         </td>
-        {showTagColumn && ideaTaggings && (
+        {!isManualTaggingMode && ideaTaggings && (
           <TagContainer className="tags">
             {ideaTaggings.map((tagging) => (
               <StyledTagWrapper
