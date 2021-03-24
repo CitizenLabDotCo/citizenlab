@@ -4,8 +4,9 @@ module ProjectPermissions
   module Patches
     module User
       def self.prepended(base)
+        base.singleton_class.prepend(ClassMethods)
         base.class_eval do
-          scope :project_moderator, -> (project_id = nil) {
+          scope :project_moderator, ->(project_id = nil) {
             if project_id
               where("roles @> ?", JSON.generate([{ type: 'project_moderator', project_id: project_id }]))
             else
@@ -16,6 +17,12 @@ module ProjectPermissions
           scope :not_project_moderator, -> {
             where.not("roles @> '[{\"type\":\"project_moderator\"}]'")
           }
+        end
+      end
+
+      module ClassMethods
+        def enabled_roles
+          super << 'project_moderator'
         end
       end
 

@@ -4,6 +4,7 @@ module ProjectFolders
   module Patches
     module User
       def self.prepended(base)
+        base.singleton_class.prepend(ClassMethods)
         base.class_eval do
           scope :project_folder_moderator, lambda { |*project_folder_ids|
             return where("roles @> '[{\"type\":\"project_folder_moderator\"}]'") if project_folder_ids.empty?
@@ -27,21 +28,9 @@ module ProjectFolders
         end
       end
 
-      def roles_json_schema
-        Rails.root.join('engines/project_folders/config/schemas/user_roles.json_schema').to_s
-      end
-
-      def highest_role
-        if super_admin?
-          :super_admin
-        elsif admin?
-          :admin
-        elsif project_folder_moderator?
-          :project_folder_moderator
-        elsif project_moderator?
-          :project_moderator
-        else
-          :user
+      module ClassMethods
+        def enabled_roles
+          super << 'project_folder_moderator'
         end
       end
 
