@@ -264,7 +264,6 @@ class XlsxService
       { header: 'last_name', f: ->(u) { u.last_name } },
       { header: 'slug', f: ->(u) { u.slug }, skip_sanitization: true },
       { header: 'gender', f: ->(u) { u.gender } },
-      { header: 'verified', f: ->(u) { u.verified }, skip_sanitization: true },
       { header: 'birthyear', f: ->(u) { u.birthyear } },
       { header: 'domicile', f: ->(u) { @@multiloc_service.t(areas[u.domicile]&.title_multiloc) } },
       { header: 'education', f: ->(u) { u.education } },
