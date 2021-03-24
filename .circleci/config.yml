@@ -79,8 +79,6 @@ jobs:
       RAILS_ENV: test
       CITIZENLAB_EE: true
     steps:
-      - checkout:
-          path: /citizenlab
       - wait-for-postgres
       - run: |
           rake db:create
