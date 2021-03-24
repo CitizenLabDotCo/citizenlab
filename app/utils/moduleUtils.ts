@@ -341,6 +341,9 @@ export const insertConfiguration = <T extends { name: string }>({
   insertAfterName,
   insertBeforeName,
 }: InsertConfigurationOptions<T>) => (items: T[]): T[] => {
+  const itemAlreadyInserted = items.some(
+    (item) => item.name === configuration.name
+  );
   const foundIndex = items.findIndex(
     (item) => item.name === (insertAfterName || insertBeforeName)
   );
@@ -350,11 +353,15 @@ export const insertConfiguration = <T extends { name: string }>({
     items.length
   );
 
-  return insertIndex > 0
-    ? [
-        ...items.slice(0, insertIndex),
-        configuration,
-        ...items.slice(insertIndex),
-      ]
-    : [...items, configuration];
+  if (itemAlreadyInserted) {
+    return [...items];
+  } else {
+    return insertIndex > 0
+      ? [
+          ...items.slice(0, insertIndex),
+          configuration,
+          ...items.slice(insertIndex),
+        ]
+      : [...items, configuration];
+  }
 };
