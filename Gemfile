@@ -33,6 +33,7 @@ group :development, :test do
   gem 'factory_bot_rails'
   gem 'license_finder'
   gem 'rack-mini-profiler'
+  gem 'rspec-activemodel-mocks'
   gem 'rspec_api_documentation'
   gem 'rspec_junit_formatter'
   gem 'rspec-rails'
