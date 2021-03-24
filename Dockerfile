@@ -57,7 +57,6 @@ WORKDIR $INSTALL_PATH
 
 COPY Gemfile Gemfile.lock ./
 COPY engines ./engines
-COPY plugins ./plugins
 # This is going to copy in the Gemfile and Gemfile.lock from our
 # work station at a path relative to the Dockerfile to the
 # my_dockerized_app/ path inside of the Docker image.

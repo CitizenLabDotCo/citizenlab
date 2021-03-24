@@ -134,12 +134,6 @@ PATH
       rails (~> 6.0.3, >= 6.0.3.2)
 
 PATH
-  remote: engines/idea_custom_fields
-  specs:
-    idea_custom_fields (0.1.0)
-      rails (~> 6.0.3, >= 6.0.3.2)
-
-PATH
   remote: engines/granular_permissions
   specs:
     granular_permissions (0.1.0)
@@ -191,6 +185,12 @@ PATH
       rails (~> 6.0.0)
       savon (~> 2.12.0)
       verification
+
+PATH
+  remote: engines/idea_custom_fields
+  specs:
+    idea_custom_fields (0.1.0)
+      rails (~> 6.0.3, >= 6.0.3.2)
 
 PATH
   remote: engines/machine_translations
@@ -313,12 +313,6 @@ PATH
       kaminari (~> 1.2)
       pundit (~> 2.0)
       rails (~> 6.0.0)
-
-PATH
-  remote: plugins/citizen_lab
-  specs:
-    citizen_lab (0.1.0)
-      rails (~> 6.0.3, >= 6.0.3.2)
 
 GEM
   remote: https://rubygems.org/
@@ -930,7 +924,6 @@ DEPENDENCIES
   byebug
   carrierwave (~> 2.0.2)
   carrierwave-base64 (~> 2.6)
-  citizen_lab!
   counter_culture (~> 2.1)
   custom_maps!
   custom_statuses!
@@ -947,13 +940,13 @@ DEPENDENCIES
   granular_permissions!
   groupdate
   ice_cube!
-  idea_custom_fields!
   id_bogus!
   id_bosa_fas!
   id_clave_unica!
   id_cow!
   id_franceconnect!
   id_id_card_lookup!
+  idea_custom_fields!
   intercom (~> 4.1)
   kaminari (~> 1.2)
   knock!
