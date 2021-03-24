@@ -1,8 +1,6 @@
 version: 2.1
 
 parameters:
-  citizenlab_sha:
-    type: string
 
   citizenlab_branch:
     type: string
@@ -21,7 +19,7 @@ jobs:
 
       - add_ssh_keys:
           fingerprints:
-            - "<here's the finger print>"
+            - "94:9a:7c:8d:50:73:cc:28:06:47:d7:98:91:0b:00:ff"
       - run: |
           git clone git@github.com:CitizenLabDotCo/citizenlab --depth 5 --branch << pipeline.parameters.citizenlab_branch >> /citizenlab
 
