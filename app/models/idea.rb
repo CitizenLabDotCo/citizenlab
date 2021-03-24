@@ -1,6 +1,5 @@
 class Idea < ApplicationRecord
   include Post
-  include Moderatable
 
   belongs_to :project, touch: true
   belongs_to :idea_status, optional: true
@@ -147,6 +146,8 @@ class Idea < ApplicationRecord
   def update_phase_ideas_count(_)
     IdeasPhase.counter_culture_fix_counts only: %i[phase]
   end
+
 end
 
+Idea.include_if_ee 'Moderation::Concerns::Moderatable'
 Idea.include_if_ee 'MachineTranslations::Concerns::Translatable'
