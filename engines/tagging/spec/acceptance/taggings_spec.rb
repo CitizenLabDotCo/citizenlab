@@ -1,28 +1,28 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-resource "Taggings" do
-
-  explanation "The link between a tag and a piece of content (ideas for now)"
+resource 'Taggings' do
+  explanation 'The link between a tag and a piece of content (ideas for now)'
 
   before do
-    header "Content-Type", "application/json"
+    header 'Content-Type', 'application/json'
     @user = create(:admin)
     token = Knock::AuthToken.new(payload: @user.to_token_payload).token
     header 'Authorization', "Bearer #{token}"
   end
 
-  post "web_api/v1/taggings" do
-    parameter :idea_id, "The idea to tag", required: true
-    parameter :tag_id, "The id of the tag to assign", required: false
-    parameter :tag_attributes, "The content to create a tag and assign it", required: false
-
+  post 'web_api/v1/taggings' do
+    parameter :idea_id, 'The idea to tag', required: true
+    parameter :tag_id, 'The id of the tag to assign', required: false
+    parameter :tag_attributes, 'The content to create a tag and assign it', required: false
 
     context do
       let(:idea_id) { create(:idea).id }
       let(:tag_id) { Tagging::Tag.create(title_multiloc: { en: 'Fish' }).id }
 
-      example_request "Create a tagging with tag_id" do
+      example_request 'Create a tagging with tag_id' do
         expect(response_status).to eq 201
       end
     end
@@ -31,15 +31,15 @@ resource "Taggings" do
       let(:idea_id) { create(:idea).id }
       let(:tag_attributes) { { title_multiloc: { en: 'Apples' } } }
 
-      example_request "Create a tagging with tag attributes" do
+      example_request 'Create a tagging with tag attributes' do
         expect(response_status).to eq 201
       end
     end
   end
 
-  get "web_api/v1/taggings" do
-    parameter :idea_ids, "The ideas to get the tags for", required: false
-    parameter :assignment_method, "An assignment method filter", required: false
+  get 'web_api/v1/taggings' do
+    parameter :idea_ids, 'The ideas to get the tags for', required: false
+    parameter :assignment_method, 'An assignment method filter', required: false
 
     before do
       @ideas = create_list(:idea, 5)
@@ -76,25 +76,25 @@ resource "Taggings" do
     end
 
     example 'List automatic taggings' do
-      do_request assignment_method: "automatic"
+      do_request assignment_method: 'automatic'
       expect(status).to eq(200)
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 3
     end
 
     example 'List manual taggings' do
-      do_request assignment_method: "manual"
+      do_request assignment_method: 'manual'
       expect(status).to eq(200)
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 3
     end
   end
 
-  get "web_api/v1/taggings/:id" do
+  get 'web_api/v1/taggings/:id' do
     before do
       @ideas = create_list(:idea, 1)
       @fish = Tagging::Tag.create(title_multiloc: { en: 'Fish' })
-      @tagging = Tagging::Tagging.create(idea_id: @ideas[0].id, tag_id:  @fish.id, assignment_method: 'automatic', confidence_score: 0.22)
+      @tagging = Tagging::Tagging.create(idea_id: @ideas[0].id, tag_id: @fish.id, assignment_method: 'automatic', confidence_score: 0.22)
     end
 
     example 'Get a tagging by id' do
@@ -104,7 +104,7 @@ resource "Taggings" do
     end
   end
 
-  delete "web_api/v1/taggings/:id" do
+  delete 'web_api/v1/taggings/:id' do
     before do
       @ideas = create_list(:idea, 2)
       @tag = Tagging::Tag.create(title_multiloc: { en: 'Banana' })
@@ -122,7 +122,7 @@ resource "Taggings" do
       rescue ActiveRecord::RecordNotFound
       end
       expect(Tagging::Tag.find(@lone_tag.id)).to raise_error(ActiveRecord::RecordNotFound)
-      rescue ActiveRecord::RecordNotFound
+    rescue ActiveRecord::RecordNotFound
     end
 
     example 'Destroy a tagging' do
@@ -136,11 +136,11 @@ resource "Taggings" do
     end
   end
 
-  patch "web_api/v1/taggings/:id" do
+  patch 'web_api/v1/taggings/:id' do
     before do
       @ideas = create_list(:idea, 2)
       @tag = Tagging::Tag.create(title_multiloc: { en: 'Banana' })
-      @tagging = Tagging::Tagging.create(idea_id: @ideas[0].id, tag_id:  @tag.id, assignment_method: 'automatic', confidence_score: 0.22)
+      @tagging = Tagging::Tagging.create(idea_id: @ideas[0].id, tag_id: @tag.id, assignment_method: 'automatic', confidence_score: 0.22)
     end
 
     example 'Update a tagging from automatic to manual' do
@@ -151,29 +151,28 @@ resource "Taggings" do
     end
   end
 
-  post "web_api/v1/taggings/generate" do
-    parameter :idea_ids, "The ideas to tag", required: false
-    parameter :projects, "The project containing the ideas to tag", required: false
-    parameter :tag_ids, "The id of the tags to assign", required: false
-    parameter :tags, "The content to create a tag and assign it", required: false
-
+  post 'web_api/v1/taggings/generate' do
+    parameter :idea_ids, 'The ideas to tag', required: false
+    parameter :projects, 'The project containing the ideas to tag', required: false
+    parameter :tag_ids, 'The id of the tags to assign', required: false
+    parameter :tags, 'The content to create a tag and assign it', required: false
 
     before do
-      @project = create(:project_with_current_phase, with_permissions: true)
+      @project = create(:project_with_current_phase)
       @ideas = create_list(:idea, 5, project: @project)
-      Tagging::Tag.create(title_multiloc: {'en' => 'label', 'fr-BE' => 'label'})
-      Tagging::Tag.create(title_multiloc: {'en' => 'item'})
-      Tagging::Tag.create(title_multiloc: {'en' => 'another tag'})
-      @tags = Tagging::Tag.all()
+      Tagging::Tag.create(title_multiloc: { 'en' => 'label', 'fr-BE' => 'label' })
+      Tagging::Tag.create(title_multiloc: { 'en' => 'item' })
+      Tagging::Tag.create(title_multiloc: { 'en' => 'another tag' })
+      @tags = Tagging::Tag.all
     end
 
-    example "Generates taggings from tag_ids" do
+    example 'Generates taggings from tag_ids' do
       response = {
-                "batches" => [{
-                  "task_id"=>"424bf84c-904e-4377-9d94-e0e9dfe70be3",
-                  "doc_ids" =>  @ideas.map(&:id)
-                }]
-            }
+        'batches' => [{
+          'task_id' => '424bf84c-904e-4377-9d94-e0e9dfe70be3',
+          'doc_ids' => @ideas.map(&:id)
+        }]
+      }
       allow_any_instance_of(NLP::TaggingSuggestionService).to receive(:suggest).and_return(response)
 
       do_request idea_ids: @ideas.map(&:id), tag_ids: @tags.map(&:id)
@@ -181,21 +180,19 @@ resource "Taggings" do
       expect(Tagging::PendingTask.count).to eq 1
     end
 
-    example "Generates taggings from new tags" do
+    example 'Generates taggings from new tags' do
       response = {
-                "batches" => [{
-                  "task_id"=>"424bf84c-904e-4377-9d94-e0e9dfe70be3",
-                  "doc_ids" =>  @ideas.map(&:id)
-                }]
-            }
+        'batches' => [{
+          'task_id' => '424bf84c-904e-4377-9d94-e0e9dfe70be3',
+          'doc_ids' => @ideas.map(&:id)
+        }]
+      }
       allow_any_instance_of(NLP::TaggingSuggestionService).to receive(:suggest).and_return(response)
 
-      do_request idea_ids: @ideas.map(&:id), tags: [ 'Lalalal' ,  'chachacha', 'lilila', 'leela', 'lou' ]
+      do_request idea_ids: @ideas.map(&:id), tags: %w[Lalalal chachacha lilila leela lou]
 
       expect(response_status).to eq 200
       expect(Tagging::PendingTask.count).to eq 1
     end
-
   end
-
 end

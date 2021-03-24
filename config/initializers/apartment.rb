@@ -117,7 +117,8 @@ end
 # Rails.application.config.middleware.use 'Apartment::Elevators::Generic', lambda { |request|
 #   request.host.split('.').first
 # }
-Rails.application.config.middleware.use RescuedApartmentMiddleware
+
+Rails.application.config.middleware.insert_after ActionDispatch::Session::CookieStore, RescuedApartmentMiddleware
 
 # Rails.application.config.middleware.use RescuedApartmentElevator, Proc.new { |request| puts request.path; request.host.gsub(/\./, "_") }
 # Rails.application.config.middleware.use Apartment::Elevators::Domain

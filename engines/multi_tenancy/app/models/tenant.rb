@@ -184,6 +184,10 @@ class Tenant < ApplicationRecord
     Apartment::Tenant.switch!(schema_name)
   end
 
+  def self.switch_to(host_name)
+    find_by!(host: host_name).switch!
+  end
+
   def changed_lifecycle_stage?
     return false unless settings_previously_changed?
 
