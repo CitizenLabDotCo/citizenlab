@@ -4,7 +4,7 @@ class InitiativeVotePolicy < ApplicationPolicy
     attr_reader :user, :scope
 
     def initialize(user, scope)
-      @user  = user
+      @user = user
       @scope = scope
     end
 
@@ -20,38 +20,33 @@ class InitiativeVotePolicy < ApplicationPolicy
   end
 
   def create?
-    (user&.active? && (record.user_id == user.id) && check_voting_allowed(record, user))
-  end
+    return unless user&.active? && owner?
 
-  def show?
-    (user&.active? && (record.user_id == user.id || user.admin?))
-  end
-
-  def up?
-    (user&.active? && (record.user_id == user.id) && check_changing_votes_allowed(record, user))
-  end
-
-  def down?
-    false
+    reason = voting_denied?(user)
+    reason ? raise_not_authorized(reason) : true
   end
 
   def destroy?
-    (user&.active? && (record.user_id == user.id) && check_cancelling_votes_allowed(record, user))
+    create?
   end
 
+  def up?
+    create?
+  end
+
+  def down?
+    raise_not_authorized('downvoting_not_supported')
+  end
+
+  def show?
+    active? && (owner? || admin?)
+  end
 
   private
 
-  def check_changing_votes_allowed vote, user
-    check_voting_allowed(vote, user) && check_cancelling_votes_allowed(vote, user)
+  def voting_denied?(user)
+    :not_signed_in unless user
   end
-
-  def check_voting_allowed vote, user
-    !PermissionsService.new.voting_initiative_disabled_reason user
-  end
-
-  def check_cancelling_votes_allowed vote, user
-    !PermissionsService.new.cancelling_votes_disabled_reason_for_initiative user
-  end
-
 end
+
+InitiativeVotePolicy.prepend_if_ee('GranularPermissions::Patches::InitiativeVotePolicy')
