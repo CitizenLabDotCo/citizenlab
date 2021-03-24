@@ -15,7 +15,7 @@ module Verification
       include VerificationMethod
 
       # The type of verification method. Either :manual_sync or :omniauth
-      def veritication_method_type
+      def verification_method_type
         :manual_sync
       end
 
@@ -110,7 +110,7 @@ module Verification
     class DNA
       include VerificationMethod
 
-      def veritication_method_type
+      def verification_method_type
         :manual_sync
       end
 

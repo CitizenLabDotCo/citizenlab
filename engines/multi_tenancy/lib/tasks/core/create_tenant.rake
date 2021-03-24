@@ -30,6 +30,10 @@ namespace :cl2_back do
             en: 'If you don\'t want to register, use hello@citizenlab.co/democrazy as email/password'
           }
         },
+        custom_style: {
+          enabled: true,
+          allowed: true
+        },
         private_projects: {
           enabled: true,
           allowed: true
@@ -86,6 +90,7 @@ namespace :cl2_back do
           enabled: true,
           allowed: true,
           phone: false,
+          minimum_length: 8
         },
         participatory_budgeting: {
           enabled: true,
@@ -118,6 +123,12 @@ namespace :cl2_back do
         google_tag_manager: {
           enabled: false,
           allowed: false
+        },
+        matomo: {
+          enabled: true,
+          allowed: true,
+          product_site_id: ENV.fetch('MATOMO_PRODUCT_SITE_ID', ''),
+          tenant_site_id: ENV.fetch('DEFAULT_MATOMO_TENANT_SITE_ID', '')
         },
         surveys: {
           enabled: true,
@@ -193,6 +204,11 @@ namespace :cl2_back do
               environment: 'integration',
               identifier: 'fake_identifier',
               secret: 'fake_secret'
+            },
+            {
+              name: 'clave_unica',
+              client_id: 'fake_identifier',
+              client_secret: 'fake_secret'
             },
             {
               name: 'bogus'

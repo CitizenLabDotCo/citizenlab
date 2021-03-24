@@ -10,13 +10,13 @@ if (ENV.fetch("RABBITMQ_URI", false))
 
     channel = connection.create_channel
     exchange = channel.topic('cl2nlp', :durable => true)
-    queue = channel.queue('zeroshot.inference', :durable => true)
+    queue = channel.queue('cl2_back.zeroshot_results', :durable => true)
 
-    queue.bind(exchange)
+    queue.bind(exchange, routing_key: 'zeroshot.inference')
 
-    puts ' [*] Waiting for automatic taggings'
+    puts '[*] Waiting for automatic taggings'
 
-    queue.subscribe() do |_delivery_info, _properties, payload|
+    queue.subscribe do |_delivery_info, _properties, payload|
       puts "Received #{payload}"
       Tagging::AutomaticTaggingService.new.save_tags_from_prediction(JSON.parse(payload))
     end

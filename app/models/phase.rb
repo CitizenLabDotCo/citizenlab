@@ -52,6 +52,10 @@ class Phase < ApplicationRecord
   def ends_before?(date)
     end_at.iso8601 < date.to_date.iso8601
   end
+  
+  def permission_scope
+    self
+  end
 
   private
 

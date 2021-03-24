@@ -27,6 +27,7 @@ resource "AdminPublication" do
         parameter :number, "Page number"
         parameter :size, "Number of projects per page"
       end
+      parameter :depth, 'Filter by depth (AND)', required: false
       parameter :topics, 'Filter by topics (AND)', required: false
       parameter :areas, 'Filter by areas (AND)', required: false
       parameter :folder, "Filter by folder (project folder id)", required: false
@@ -42,7 +43,7 @@ resource "AdminPublication" do
       end
 
       example "List all top-level admin publications" do
-        do_request(folder: nil)
+        do_request(depth: 0)
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 7
         expect(json_response[:data].map{|d| d.dig(:relationships, :publication, :data, :type)}.count('folder')).to eq 2
@@ -183,6 +184,7 @@ resource "AdminPublication" do
 
       example "Listed admin publications have correct visible children count", document: false do
         do_request(folder: nil)
+        expect(status).to eq(200)
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 3
         expect(json_response[:data].map{|d| d.dig(:relationships, :publication, :data, :type)}.count('folder')).to eq 1
@@ -193,11 +195,20 @@ resource "AdminPublication" do
       example "Visible children count should take account with applied filters", document: false do
         @projects.first.admin_publication.update! publication_status: 'archived'
         do_request(folder: nil, publication_statuses: ['published'])
+        expect(status).to eq(200)
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 2
         expect(json_response[:data].map{|d| d.dig(:relationships, :publication, :data, :type)}.count('folder')).to eq 1
         expect(json_response[:data].map{|d| d.dig(:relationships, :publication, :data, :type)}.count('project')).to eq 1
         expect(json_response[:data].select{|d| d.dig(:relationships, :publication, :data, :type) == 'folder'}.first.dig(:attributes, :visible_children_count)).to eq 1
+      end
+
+      example "Returns an empty list success response when there are no publications", document: false do
+        AdminPublication.publication_types.each{|claz| claz.all.each(&:destroy!)}
+        do_request(publication_statuses: ['published'])
+        expect(status).to eq(200)
+        json_response = json_parse(response_body)
+        expect(json_response[:data].size).to eq 0
       end
     end
   end
