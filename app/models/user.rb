@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class User < ApplicationRecord
   include EmailCampaigns::UserDecorator
   include Verification::UserDecorator
@@ -6,26 +8,70 @@ class User < ApplicationRecord
   include Volunteering::UserDecorator
   include PgSearch
 
-  GENDERS = %w(male female unspecified)
-  INVITE_STATUSES = %w(pending accepted)
+  GENDERS = %w[male female unspecified].freeze
+  INVITE_STATUSES = %w[pending accepted].freeze
+
+  class << self
+    def roles_json_schema
+      _roles_json_schema.deep_dup.tap do |schema|
+        # Remove the schemas for roles that are not enabled.
+        schema['items']['oneOf'] = schema.dig('items', 'oneOf').select do |role_schema|
+          role_name = role_schema.dig('properties', 'type', 'enum', 0)
+          enabled_roles.include?(role_name)
+        end
+      end
+    end
+
+    # Returns (and memoize) the schema of all declared roles without restrictions.
+    def _roles_json_schema
+      @_roles_json_schema ||= JSON.parse(File.read(Rails.root.join('config/schemas/user_roles.json_schema')))
+    end
+
+    def enabled_roles
+      ['admin']
+    end
+
+    def find_by_cimail(email)
+      where('lower(email) = lower(?)', email).first
+    end
+
+    # This method is used by knock to get the user.
+    # Default is by email, but we want to compare
+    # case insensitively and forbid login for
+    # invitees.
+    def from_token_request(request)
+      email = request.params['auth']['email']
+
+      # Hack to embed phone numbers in email
+      if AppConfiguration.instance.feature_activated?('password_login') && AppConfiguration.instance.settings('password_login', 'phone')
+        phone_service = PhoneService.new
+        if phone_service.phone_or_email(email) == :phone
+          pattern = AppConfiguration.instance.settings('password_login', 'phone_email_pattern')
+          email = pattern.gsub('__PHONE__', phone_service.normalize_phone(email))
+        end
+      end
+
+      not_invited.find_by cimail: email
+    end
+  end
 
   has_secure_password validations: false
   mount_base64_uploader :avatar, AvatarUploader
 
   pg_search_scope :search_by_all,
-    :against => [:first_name, :last_name, :email],
-    :using => { :tsearch => {:prefix => true} }
+                  against: %i[first_name last_name email],
+                  using: { tsearch: { prefix: true } }
 
   pg_search_scope :by_full_name,
-                  :against => [:first_name, :last_name],
-                  :using => { :tsearch => {:prefix => true} }
+                  against: %i[first_name last_name],
+                  using: { tsearch: { prefix: true } }
 
   pg_search_scope :by_first_name,
-                  :against => [:first_name],
-                  :using => { :tsearch => {:prefix => true} }
+                  against: [:first_name],
+                  using: { tsearch: { prefix: true } }
 
-  scope :by_username, -> (username) {
-    AppConfiguration.instance.feature_activated?("abbreviated_user_names") ? by_first_name(username) : by_full_name(username)
+  scope :by_username, lambda { |username|
+    AppConfiguration.instance.feature_activated?('abbreviated_user_names') ? by_first_name(username) : by_full_name(username)
   }
 
   has_many :ideas, foreign_key: :author_id, dependent: :nullify
@@ -58,20 +104,20 @@ class User < ApplicationRecord
   validates :email, uniqueness: true, allow_nil: true
   validates :slug, uniqueness: true, presence: true, unless: :invite_pending?
   validates :email, format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i }, allow_nil: true
-  validates :locale, inclusion: { in: proc {AppConfiguration.instance.settings('core','locales')} }
-  validates :bio_multiloc, multiloc: {presence: false}
-  validates :gender, inclusion: {in: GENDERS}, allow_nil: true
-  validates :birthyear, numericality: {only_integer: true, greater_than_or_equal_to: 1900, less_than: Time.now.year}, allow_nil: true
-  validates :domicile, inclusion: {in: proc {['outside'] + Area.select(:id).map(&:id)}}, allow_nil: true
+  validates :locale, inclusion: { in: proc { AppConfiguration.instance.settings('core', 'locales') } }
+  validates :bio_multiloc, multiloc: { presence: false }
+  validates :gender, inclusion: { in: GENDERS }, allow_nil: true
+  validates :birthyear, numericality: { only_integer: true, greater_than_or_equal_to: 1900, less_than: Time.zone.now.year }, allow_nil: true
+  validates :domicile, inclusion: { in: proc { ['outside'] + Area.select(:id).map(&:id) } }, allow_nil: true
   # Follows ISCED2011 scale
-  validates :education, numericality: {only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 8}, allow_nil: true
+  validates :education, numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 8 }, allow_nil: true
 
-  validates :invite_status, inclusion: {in: INVITE_STATUSES}, allow_nil: true
+  validates :invite_status, inclusion: { in: INVITE_STATUSES }, allow_nil: true
 
   validates :custom_field_values, json: {
-    schema: lambda { CustomFieldService.new.fields_to_json_schema(CustomField.with_resource_type('User')) },
+    schema: -> { CustomFieldService.new.fields_to_json_schema(CustomField.with_resource_type('User')) },
     message: ->(errors) { errors }
-  }, if: [:custom_field_values_changed?, :active?]
+  }, if: %i[custom_field_values_changed? active?]
 
   validates :password, length: { maximum: 72 }, allow_nil: true
   # Custom validation is required to deal with the
@@ -80,9 +126,13 @@ class User < ApplicationRecord
   validate :validate_password_not_common
 
   validate do |record|
-    record.errors.add(:last_name, :blank) unless (record.last_name.present? or record.cl1_migrated or record.invite_pending?)
-    record.errors.add(:password, :blank) unless (record.password_digest.present? or record.identities.any? or record.invite_pending?)
-    if record.email && (duplicate_user = User.find_by_cimail(record.email)).present? && duplicate_user.id != id
+    unless record.last_name.present? || record.cl1_migrated || record.invite_pending?
+      record.errors.add(:last_name, :blank)
+    end
+    unless record.password_digest.present? || record.identities.any? || record.invite_pending?
+      record.errors.add(:password, :blank)
+    end
+    if record.email && (duplicate_user = User.find_by(cimail: record.email)).present? && duplicate_user.id != id
       if duplicate_user.invite_pending?
         ErrorsService.new.remove record.errors, :email, :taken, value: record.email
         record.errors.add(:email, :taken_by_invite, value: record.email, inviter_email: duplicate_user.invitee_invite&.inviter&.email)
@@ -97,75 +147,43 @@ class User < ApplicationRecord
 
   EMAIL_DOMAIN_BLACKLIST = File.readlines(Rails.root.join('config', 'domain_blacklist.txt')).map(&:strip)
   validate :validate_email_domain_blacklist
-  
-  validates :roles, json: { schema: -> { roles_json_schema }, message: ->(errors) { errors } }
+
+  validates :roles, json: { schema: -> { User.roles_json_schema }, message: ->(errors) { errors } }
 
   before_validation :set_cl1_migrated, on: :create
   before_validation :generate_slug
   before_validation :sanitize_bio_multiloc, if: :bio_multiloc
 
-  scope :order_role, -> (direction=:asc) {
-    joins("LEFT OUTER JOIN (SELECT jsonb_array_elements(roles) as ro, id FROM users) as r ON users.id = r.id")
-    .order(Arel.sql("(roles @> '[{\"type\":\"admin\"}]')::integer #{direction}"))
-    .reverse_order
-    .group('users.id')
-  }
-
   scope :admin, -> { where("roles @> '[{\"type\":\"admin\"}]'") }
   scope :not_admin, -> { where.not("roles @> '[{\"type\":\"admin\"}]'") }
-  scope :project_moderator, ->(_project_id = nil) { User.none }
-  scope :not_project_moderator, -> { User.all }
   scope :normal_user, -> { where("roles = '[]'::jsonb") }
   scope :not_normal_user, -> { where.not("roles = '[]'::jsonb") }
+  scope :not_invited, -> { where.not(invite_status: 'pending').or(where(invite_status: nil)) }
+  scope :active, -> { where("registration_completed_at IS NOT NULL AND invite_status is distinct from 'pending'") }
 
-  scope :active, -> {
-    where("registration_completed_at IS NOT NULL AND invite_status is distinct from 'pending'")
+  scope :order_role, lambda { |direction = :asc|
+    joins('LEFT OUTER JOIN (SELECT jsonb_array_elements(roles) as ro, id FROM users) as r ON users.id = r.id')
+      .order(Arel.sql("(roles @> '[{\"type\":\"admin\"}]')::integer #{direction}"))
+      .reverse_order
+      .group('users.id')
   }
 
-  scope :not_invited, -> {
-    where.not(invite_status: 'pending').or(where(invite_status: nil))
-  }
-
-
-  scope :in_group, -> (group) {
+  scope :in_group, lambda { |group|
     if group.rules?
-      SmartGroupsService.new.filter(self.all, group.rules)
+      SmartGroupsService.new.filter(all, group.rules)
     elsif group.manual?
-      joins(:memberships).where(memberships: {group_id: group.id})
+      joins(:memberships).where(memberships: { group_id: group.id })
     end
   }
 
-  scope :in_any_group, -> (groups) {
-    user_ids = groups
-      .flat_map do |group|
-        in_group(group).ids
-      end
-      .uniq
+  scope :in_any_group, lambda { |groups|
+    user_ids = groups.flat_map { |group| in_group(group).ids }.uniq
     where(id: user_ids)
   }
 
-  def self.find_by_cimail email
-    where('lower(email) = lower(?)', email).first
-  end
-
-  # This method is used by knock to get the user.
-  # Default is by email, but we want to compare
-  # case insensitively and forbid login for
-  # invitees.
-  def self.from_token_request request
-    email = request.params["auth"]["email"]
-
-    # Hack to embed phone numbers in email
-    if AppConfiguration.instance.feature_activated?('password_login') && AppConfiguration.instance.settings('password_login','phone')
-      phone_service = PhoneService.new
-      if phone_service.phone_or_email(email) == :phone
-        pattern = AppConfiguration.instance.settings('password_login', 'phone_email_pattern')
-        email = pattern.gsub('__PHONE__', phone_service.normalize_phone(email))
-      end
-    end
-
-    not_invited.find_by_cimail email
-  end
+  # Dummy scopes to be overridden
+  scope :project_moderator, ->(_project_id = nil) { User.none }
+  scope :not_project_moderator, -> { User.all }
 
   def to_token_payload
     {
@@ -192,37 +210,42 @@ class User < ApplicationRecord
     [first_name, last_name].compact.join(' ')
   end
 
-  def admin?
-    roles.any? { |r| r['type'] == 'admin' }
-  end
-
-  def super_admin?
-    admin? && !!(email =~ /citizen\-?lab\.(eu|be|fr|ch|de|nl|co|uk|us|cl|dk|pl)$/i)
-  end
-
-  def project_moderator?(_project_id = nil)
-    false
-  end
-  
-  def admin_or_moderator?(project_id)
-    admin? || (project_id && project_moderator?(project_id))
-  end
-  
-  def active_admin_or_moderator?(project_id)
-    active? && admin_or_moderator?(project_id)
-  end
-
-  # here
   def highest_role
     if super_admin?
       :super_admin
     elsif admin?
       :admin
+    elsif project_folder_moderator?
+      :project_folder_moderator
     elsif project_moderator?
       :project_moderator
     else
       :user
     end
+  end
+
+  def super_admin?
+    admin? && !!(email =~ /citizen-?lab\.(eu|be|fr|ch|de|nl|co|uk|us|cl|dk|pl)$/i)
+  end
+
+  def admin?
+    roles.any? { |r| r['type'] == 'admin' }
+  end
+
+  def project_folder_moderator?(_project_folder_id = nil)
+    false
+  end
+
+  def project_moderator?(_project_id = nil)
+    false
+  end
+
+  def admin_or_moderator?(project_id)
+    admin? || (project_id && project_moderator?(project_id))
+  end
+
+  def active_admin_or_moderator?(project_id)
+    active? && admin_or_moderator?(project_id)
   end
 
   def moderatable_project_ids
@@ -242,7 +265,7 @@ class User < ApplicationRecord
     roles.delete({ 'type' => type.to_s }.merge(options.stringify_keys))
   end
 
-  def authenticate unencrypted_password
+  def authenticate(unencrypted_password)
     if !password_digest
       false
     elsif cl1_authenticate(unencrypted_password)
@@ -253,12 +276,12 @@ class User < ApplicationRecord
     end
   end
 
-  def member_of? group_id
-    !self.memberships.select{ |m| m.group_id == group_id }.empty?
+  def member_of?(group_id)
+    !memberships.select { |m| m.group_id == group_id }.empty?
   end
 
   def active?
-    self.registration_completed_at.present? && !self.invite_pending?
+    registration_completed_at.present? && !invite_pending?
   end
 
   def groups
@@ -269,26 +292,26 @@ class User < ApplicationRecord
     manual_group_ids + SmartGroupsService.new.groups_for_user(self).pluck(:id)
   end
 
-
   private
 
   def generate_slug
-    return if self.slug.present?
-    if AppConfiguration.instance.feature_activated?("abbreviated_user_names")
+    return if slug.present?
+
+    if AppConfiguration.instance.feature_activated?('abbreviated_user_names')
       self.slug = SecureRandom.uuid
-    elsif self.first_name.present?
-      self.slug = SlugService.new.generate_slug self, self.full_name
+    elsif first_name.present?
+      self.slug = SlugService.new.generate_slug self, full_name
     end
   end
 
   def sanitize_bio_multiloc
     service = SanitizationService.new
     self.bio_multiloc = service.sanitize_multiloc(
-      self.bio_multiloc,
-      %i{title alignment list decoration link video}
+      bio_multiloc,
+      %i[title alignment list decoration link video]
     )
-    self.bio_multiloc = service.remove_multiloc_empty_trailing_tags(self.bio_multiloc)
-    self.bio_multiloc = service.linkify_multiloc(self.bio_multiloc)
+    self.bio_multiloc = service.remove_multiloc_empty_trailing_tags(bio_multiloc)
+    self.bio_multiloc = service.linkify_multiloc(bio_multiloc)
   end
 
   def set_cl1_migrated
@@ -304,46 +327,43 @@ class User < ApplicationRecord
   end
 
   def validate_email_domain_blacklist
-    if email.present?
-      domain = email.split('@')&.last
-      if domain && EMAIL_DOMAIN_BLACKLIST.include?(domain.strip.downcase)
-        errors.add(:email, :domain_blacklisted, value: domain)
-      end
+    return unless email.present?
+
+    domain = email.split('@')&.last
+    if domain && EMAIL_DOMAIN_BLACKLIST.include?(domain.strip.downcase)
+      errors.add(:email, :domain_blacklisted, value: domain)
     end
   end
 
   def validate_minimum_password_length
-    minimum_length = AppConfiguration.instance.settings('password_login', 'minimum_length')
-    if self.password && password.size < (minimum_length || 0)
-      self.errors.add(
-        :password,
-        :too_short,
-        message: 'The chosen password is shorter than the minimum required character length',
-        count: minimum_length
-      )
-    end
+    return unless password && password.size < password_min_length
+
+    errors.add(
+      :password,
+      :too_short,
+      message: 'The chosen password is shorter than the minimum required character length',
+      count: minimum_length
+    )
+  end
+
+  def password_min_length
+    AppConfiguration.instance.settings('password_login', 'minimum_length') || 0
   end
 
   def validate_password_not_common
-    if self.password && CommonPassword.check(self.password)
-      self.errors.add(
-        :password,
-        :too_common,
-        message: 'The chosen password matched with our common password blacklist'
-      )
-    end
+    return unless password && CommonPassword.check(password)
+    
+    errors.add(
+      :password,
+      :too_common,
+      message: 'The chosen password matched with our common password blacklist'
+    )
   end
 
   def remove_initiated_notifications
     initiator_notifications.each do |notification|
-      if !notification.update initiating_user_id: nil
-        notification.destroy!
-      end
+      notification.destroy! unless notification.update initiating_user_id: nil
     end
-  end
-
-  def roles_json_schema
-    Rails.root.join('config', 'schemas', 'user_roles.json_schema').to_s
   end
 end
 
