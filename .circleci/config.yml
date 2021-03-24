@@ -1,0 +1,43 @@
+version: 2.1
+
+parameters:
+  citizenlab_sha:
+    type: string
+
+  citizenlab_branch:
+    type: string
+    default: master
+
+jobs:
+  # *************** back ***************
+  
+  back-build-ee-docker-image:
+    working_directory: /citizenlab/back
+    docker:
+      - image: docker:stable-git
+    steps:
+      - checkout:
+          path: /citizenlab-private
+
+      - add_ssh_keys:
+          fingerprints:
+            - "<here's the finger print>"
+      - run: |
+          git clone git@github.com:CitizenLabDotCo/citizenlab --depth 5 --branch << pipeline.parameters.citizenlab_branch >> /citizenlab
+
+      - setup_remote_docker:
+          docker_layer_caching: true
+
+      - run: |
+          docker build -t citizenlabdotco/back-ee:$CIRCLE_SHA1 .
+      - run: |
+          docker login -u $DOCKER_USER -p $DOCKER_PASS
+          docker push citizenlabdotco/back-ee:$CIRCLE_SHA1
+
+workflows:
+  version: 2
+
+  back:
+    jobs:
+      - back-build-ee-docker-image:
+          context: docker-hub-access
