@@ -4,7 +4,7 @@ class CommentVotePolicy < ApplicationPolicy
     attr_reader :user, :scope
 
     def initialize(user, scope)
-      @user  = user
+      @user = user
       @scope = scope
     end
 
@@ -20,22 +20,22 @@ class CommentVotePolicy < ApplicationPolicy
   end
 
   def create?
-    if user&.active? && (record.user_id == user.id) 
-      case record.votable&.post_type
-      when Idea.name
-        !ParticipationContextService.new.voting_disabled_reason_for_idea_comment record.votable, user
-      when Initiative.name
-        !PermissionsService.new.voting_disabled_reason_for_initiative_comment user
-      else
-        false
-      end
-    else 
-      false
-    end
+    return unless active? && owner?
+
+    reason = case record.votable&.post_type
+             when 'Idea'
+               ParticipationContextService.new.voting_disabled_reason_for_idea_comment(record.votable, user)
+             when 'Initiative'
+               denied_for_initiative?(user)
+             else
+               raise ArgumentError, "Comment voting policy not implemented for #{record.votable&.post_type}"
+             end
+
+    reason ? raise_not_authorized(reason) : true
   end
 
   def show?
-    (user&.active? && (record.user_id == user.id || user.admin?))
+    active? && (owner? || admin?)
   end
 
   def up?
@@ -49,5 +49,13 @@ class CommentVotePolicy < ApplicationPolicy
   def destroy?
     create?
   end
-  
+
+  private
+
+  def denied_for_initiative?(user)
+    :not_signed_in unless user
+  end
 end
+
+CommentVotePolicy.prepend_if_ee('GranularPermissions::Patches::CommentVotePolicy')
+

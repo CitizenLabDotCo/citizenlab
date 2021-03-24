@@ -16,7 +16,7 @@ namespace :cl2back do
       raise 'Attempted to shift timestamps of active tenant!' if tenant.settings.dig('core', 'lifecycle_stage') == 'active'
       raise 'Attempted to shift timestamps of churned tenant!' if tenant.settings.dig('core', 'lifecycle_stage') == 'churned'
       Apartment::Tenant.switch(tenant.schema_name) do
-        data_listing.cl2_tenant_models.each do |claz|
+        data_listing.cl2_schema_leaf_models.each do |claz|
           timestamp_attrs = data_listing.timestamp_attributes claz
           timestamp_attrs.delete('created_at') if claz.name == Activity.name
           if timestamp_attrs.present?

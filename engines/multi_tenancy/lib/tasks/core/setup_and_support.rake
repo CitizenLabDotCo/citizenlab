@@ -156,10 +156,10 @@ namespace :setup_and_support do
     Apartment::Tenant.switch(args[:host].gsub '.', '_') do
       translator = MachineTranslations::MachineTranslationService.new
       data_listing = Cl2DataListingService.new
-      data_listing.cl2_tenant_models.each do |claz|
+      data_listing.cl2_schema_leaf_models.each do |claz|
         claz.find_each do |object|
           changes = {}
-          data_listing.multiloc_attributes(claz).each do |ml| 
+          data_listing.multiloc_attributes(claz).each do |ml|
             value = object.send ml
             if value.present? && value[args[:locale_from]].present? && !value[args[:locale_to]].present?
               changes[ml] = value.clone
@@ -175,7 +175,7 @@ namespace :setup_and_support do
   desc "Birthyear select"
   task :birthyear_select, [:host,:json_url] => [:environment] do |t, args|
     errors = []
-    
+
     multiloc = JSON.parse(open(args[:json_url]).read)
     Apartment::Tenant.switch(args[:host].gsub '.', '_') do
       title_multiloc = CL2_SUPPORTED_LOCALES.map do |locale|
@@ -226,15 +226,24 @@ namespace :setup_and_support do
     end
   end
 
-  desc "Add map layer"
+  desc "Add one map legend to a project"
   task :add_map_legend, [:host,:project_slug,:legend_title,:color] => [:environment] do |t, args|
     Apartment::Tenant.switch(args[:host].gsub '.', '_') do
       project = Project.find_by slug: args[:project_slug]
-      config = project.map_config || Maps::MapConfig.create!(project: project)
+      config = project.map_config || CustomMaps::MapConfig.create!(project: project)
       config.legend_items.create!(
         title_multiloc: {Tenant.current.settings.dig('core','locales').first => args[:legend_title]},
         color: args[:color]
         )
+    end
+  end
+
+  desc "Delete map legends of a project"
+  task :delete_map_legends, [:host,:project_slug] => [:environment] do |t, args|
+    Apartment::Tenant.switch(args[:host].gsub '.', '_') do
+      project = Project.find_by slug: args[:project_slug]
+      config = project.map_config || CustomMaps::MapConfig.create!(project: project)
+      config.legend_items.each(&:destroy!)
     end
   end
 
@@ -245,7 +254,7 @@ namespace :setup_and_support do
     Apartment::Tenant.switch(args[:host].gsub '.', '_') do
       users = User.where(email: emails)
       group = Group.create!(title_multiloc: {locale => args[:title]}, membership_type: 'manual', members: users)
-      users.each do |u| 
+      users.each do |u|
         group.add_member u
       end
       group.save!
@@ -260,10 +269,10 @@ namespace :setup_and_support do
       data.each do |d|
         idea = Idea.find_by slug: d['slug'].strip
         if idea
-          d['add_upvotes'].to_i.times do 
+          d['add_upvotes'].to_i.times do
             add_anonymous_vote idea, 'up'
           end
-          d['add_downvotes'].to_i.times do 
+          d['add_downvotes'].to_i.times do
             add_anonymous_vote idea, 'down'
           end
         else
