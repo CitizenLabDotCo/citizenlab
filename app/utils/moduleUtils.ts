@@ -346,7 +346,7 @@ export const insertConfiguration = <T extends { name: string }>({
     items.length
   );
 
-  return insertIndex > 0
+  return insertIndex >= 0
     ? [
         ...items.slice(0, insertIndex),
         configuration,
