@@ -15,7 +15,7 @@ const Tab: FC<Props & InjectedIntlProps> = ({
   useEffect(() => {
     onData({
       configuration: {
-        label: formatMessage(messages.settingsTopicsTab),
+        label: formatMessage(messages.tabTopics),
         name: 'topics',
         url: '/admin/settings/topics',
         feature: 'custom_topics',
