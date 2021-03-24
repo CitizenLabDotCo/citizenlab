@@ -8,7 +8,7 @@ module Verification
       end
 
       module ClassMethods
-        def denied_reason
+        def denied_reasons
           super.merge(not_verified: 'not_verified')
         end
       end

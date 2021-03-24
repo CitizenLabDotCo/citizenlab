@@ -29,7 +29,7 @@ class Permission < ApplicationRecord
       where(permitted_by: 'everyone')
     end
   }
-  
+
   def self.denied_reasons
     DENIED_REASONS
   end
