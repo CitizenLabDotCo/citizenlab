@@ -101,7 +101,6 @@ class ProjectPolicy < ApplicationPolicy
     user&.active? && user.admin?
   end
 
-
   def shared_permitted_attributes
     shared = [
       :slug,
@@ -137,8 +136,7 @@ class ProjectPolicy < ApplicationPolicy
   end
 
   def permitted_attributes_for_update
-    attrs = shared_permitted_attributes
-    attrs
+    shared_permitted_attributes
   end
 
   def permitted_attributes_for_reorder
