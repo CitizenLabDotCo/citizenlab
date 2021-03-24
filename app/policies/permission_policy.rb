@@ -19,4 +19,8 @@ class PermissionPolicy < ApplicationPolicy
   def update?
     user&.active_admin_or_moderator? record.permission_scope&.project&.id
   end
+
+  def participation_conditions?
+    true
+  end
 end
