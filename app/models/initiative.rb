@@ -1,6 +1,5 @@
 class Initiative < ApplicationRecord
   include Post
-  include Moderatable
 
   mount_base64_uploader :header_bg, InitiativeHeaderBgUploader
 
@@ -128,4 +127,5 @@ class Initiative < ApplicationRecord
 
 end
 
+Initiative.include_if_ee 'Moderation::Concerns::Moderatable'
 Initiative.include_if_ee 'MachineTranslations::Concerns::Translatable'
