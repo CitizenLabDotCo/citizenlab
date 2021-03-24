@@ -10,7 +10,7 @@ jobs:
   # *************** back ***************
   
   back-build-ee-docker-image:
-    working_directory: /citizenlab/back
+    working_directory: /
     docker:
       - image: docker:stable-git
     steps:
