@@ -1,5 +1,4 @@
 class Comment < ApplicationRecord
-  include MachineTranslations::CommentDecorator
 
   acts_as_nested_set dependent: :destroy, counter_cache: :children_count
 
@@ -85,3 +84,4 @@ class Comment < ApplicationRecord
 end
 
 Comment.include_if_ee 'Moderation::Concerns::Moderatable'
+Comment.include_if_ee 'MachineTranslations::Concerns::Translatable'

@@ -30,6 +30,10 @@ namespace :cl2_back do
             en: 'If you don\'t want to register, use hello@citizenlab.co/democrazy as email/password'
           }
         },
+        custom_style: {
+          enabled: true,
+          allowed: true
+        },
         private_projects: {
           enabled: true,
           allowed: true
