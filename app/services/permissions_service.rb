@@ -37,10 +37,6 @@ class PermissionsService
     end
   end
 
-  def initialize
-    @verification_service = Verification::VerificationService.new
-  end
-
   def update_permissions_for_scope(scope)
     actions = self.class.actions(scope)
     remove_extras_actions(scope, actions)
