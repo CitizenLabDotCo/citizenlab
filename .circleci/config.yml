@@ -6,6 +6,39 @@ parameters:
     type: string
     default: master
 
+executors:
+  cl2-back:
+    parameters:
+      image-tag:
+        type: string
+    docker:
+      - image: citizenlabdotco/back-ee:<< parameters.image-tag >>
+        auth:
+          username: $DOCKER_USER
+          password: $DOCKER_PASS
+        environment:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_HOST: localhost
+      - image: 'postgres:12.4'
+        environment:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+
+commands:
+  wait-for-postgres:
+    steps:
+      - run:
+          name: Waiting for Postgres to be ready
+          command: |
+            for i in `seq 1 10`;
+            do
+              nc -z localhost 5432 && echo Success && exit 0
+              echo -n .
+              sleep 1
+            done
+            echo Failed waiting for Postgres && exit 1
+
 jobs:
   # *************** back ***************
   
@@ -23,14 +56,42 @@ jobs:
       - run: |
           git clone git@github.com:CitizenLabDotCo/citizenlab --depth 5 --branch << pipeline.parameters.citizenlab_branch >> /citizenlab
 
+      - run: |
+          cd /citizenlab-private && sh scripts/enable_ee.sh
+
       - setup_remote_docker:
           docker_layer_caching: true
 
       - run: |
-          docker build -t citizenlabdotco/back-ee:$CIRCLE_SHA1 .
+          docker build -t citizenlabdotco/back-ee:$CIRCLE_SHA1 -f /citizenlab/back/Dockerfile /citizenlab/.
       - run: |
           docker login -u $DOCKER_USER -p $DOCKER_PASS
           docker push citizenlabdotco/back-ee:$CIRCLE_SHA1
+
+  back-test:
+    resource_class: small
+    executor:
+      name: cl2-back
+      image-tag: $CIRCLE_SHA1
+    working_directory: /citizenlab/back
+    parallelism: 4
+    environment:
+      RAILS_ENV: test
+      CITIZENLAB_EE: true
+    steps:
+      - checkout:
+          path: /citizenlab
+      - wait-for-postgres
+      - run: |
+          rake db:create
+          rake db:schema:load
+      - run: |
+          TESTFILES=$(circleci tests glob "spec/**/*_spec.rb" "engines/*/spec/**/*_spec.rb" | circleci tests split  --split-by=timings)
+          echo $TESTFILES
+          bundle exec rspec --format documentation --format RspecJunitFormatter -o spec/reports/rspec.xml -- ${TESTFILES}
+      - store_test_results:
+          path: spec/reports
+
 
 workflows:
   version: 2
@@ -39,3 +100,7 @@ workflows:
     jobs:
       - back-build-ee-docker-image:
           context: docker-hub-access
+      - back-test:
+          context: docker-hub-access
+          requires:
+            - back-build-ee-docker-image
