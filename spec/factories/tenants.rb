@@ -67,6 +67,10 @@ FactoryBot.define do
           "threshold_reached_message" => {"en" => "Threshold reached"},
           "eligibility_criteria" => {"en" => "Eligibility criteria"},
           "success_stories" => []
+        },
+        "custom_style" => {
+          "enabled" => true,
+          "allowed" => true
         }
       }
     }

@@ -538,7 +538,7 @@ resource "Ideas" do
     example_request "Get one idea by id" do
       expect(status).to eq 200
       json_response = json_parse(response_body)
-
+      
       expect(json_response.dig(:data, :id)).to eq idea.id
       expect(json_response.dig(:data, :type)).to eq 'idea'
       expect(json_response.dig(:data, :attributes)).to include(

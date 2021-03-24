@@ -26,7 +26,7 @@ class Idea < ApplicationRecord
   has_many :areas_ideas, dependent: :destroy
   has_many :areas, through: :areas_ideas
   has_many :ideas_phases, dependent: :destroy
-  has_many :phases, through: :ideas_phases
+  has_many :phases, through: :ideas_phases, after_add: :update_phase_ideas_count, after_remove: :update_phase_ideas_count
   has_many :baskets_ideas, dependent: :destroy
   has_many :baskets, through: :baskets_ideas
   has_many :text_images, as: :imageable, dependent: :destroy
@@ -130,6 +130,10 @@ class Idea < ApplicationRecord
     if project_id_previously_changed?
       Comment.counter_culture_fix_counts only: [[:idea, :project]]
     end
+  end
+
+  def update_phase_ideas_count(_)
+    IdeasPhase.counter_culture_fix_counts only: %i[phase]
   end
 end
 Idea.include_if_ee('IdeaAssignment::Extensions::Idea')

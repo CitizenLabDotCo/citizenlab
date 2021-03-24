@@ -62,6 +62,7 @@ module ProjectFolders
     def update
       @project_folder.assign_attributes project_folder_params
       authorize @project_folder
+      SideFxService.new.before_update(@project_folder, current_user)
       if @project_folder.save
         SideFxService.new.after_update(@project_folder, current_user)
         render json: WebApi::V1::FolderSerializer.new(

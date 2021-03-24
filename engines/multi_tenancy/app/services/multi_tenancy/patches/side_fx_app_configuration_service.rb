@@ -4,7 +4,7 @@ module MultiTenancy
   module Patches
     module SideFxAppConfigurationService
 
-      def after_update(app_config, current_user)
+      def after_update(app_config, current_user = nil)
         super
         MultiTenancy::TrackTenantJob.perform_later(Tenant.current)
       end

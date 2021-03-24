@@ -5,8 +5,11 @@ namespace :cl2back do
   task :clean_tenant_settings => :environment do
     Tenant.all.each do |tenant|
       puts "Cleaning tenant settings for tenant #{tenant.name}"
-      tenant.cleanup_settings
-      tenant.save
+      Apartment::Tenant.switch(tenant.schema_name) do
+        config = AppConfiguration.instance
+        config.cleanup_settings
+        config.save!
+      end
     end
   end
 end
