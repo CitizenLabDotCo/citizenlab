@@ -160,6 +160,7 @@ describe('Initaitve manager', () => {
     });
   });
 
+  // OS-133
   describe('Assignee select', () => {
     const firstName = randomString(5);
     const lastName = randomString(5);

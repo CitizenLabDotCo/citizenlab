@@ -1,5 +1,6 @@
 import { randomString, randomEmail } from '../support/commands';
 
+// OS-133
 describe('Idea voting permissions', () => {
   describe('a project that requires verification to vote', () => {
     it('sends non-registred user to sign up, verifies the user and votes successfully', () => {

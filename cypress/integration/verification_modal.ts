@@ -1,5 +1,6 @@
 import { randomString, randomEmail } from '../support/commands';
 
+// OS-133
 describe('Verification modal', () => {
   describe('shows the additionnal rules', () => {
     const firstName = randomString();
