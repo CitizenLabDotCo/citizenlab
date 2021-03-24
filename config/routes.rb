@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-
   mount AdminApi::Engine => "/admin_api", as: 'admin_api', defaults: {format: :json}
   mount CustomMaps::Engine => "", as: 'custom_maps'
   mount CustomStatuses::Engine => "", as: 'custom_statuses'

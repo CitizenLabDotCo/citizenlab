@@ -38,16 +38,16 @@ class Group < ApplicationRecord
     users
   end
 
-  def members=(*args)
-    self.users = *args
+  def members=(*users)
+    self.users = users.flatten
   end
 
   def member_ids
     user_ids
   end
 
-  def member_ids=(*args)
-    self.user_ids = *args
+  def member_ids=(*user_ids)
+    self.user_ids = user_ids.flatten
   end
 
   def manual?
