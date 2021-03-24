@@ -1,5 +1,5 @@
 module SmartGroups
-  module Extensions
+  module Patches
     module Permission
       def participation_conditions
         service = SmartGroups::RulesService.new

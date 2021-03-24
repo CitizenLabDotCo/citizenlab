@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class WebApi::V1::PermissionsController < ApplicationController
-  before_action :set_permission, only: %i[show update]
+  before_action :set_permission, only: %i[show update participation_conditions]
 
   def index
     @permissions = policy_scope(Permission)
@@ -26,6 +26,10 @@ class WebApi::V1::PermissionsController < ApplicationController
     else
       render json: { errors: @permission.errors.details }, status: :unprocessable_entity
     end
+  end
+
+  def participation_conditions
+    render json: @permission.participation_conditions, status: :ok
   end
 
   private

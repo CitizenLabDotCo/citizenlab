@@ -69,6 +69,10 @@ class Permission < ApplicationRecord
     Verification::VerificationService.new.find_verification_group(groups)
   end
 
+  def participation_conditions
+    []
+  end
+
   private
 
   def available_actions
@@ -89,4 +93,4 @@ class Permission < ApplicationRecord
   end
 end
 
-Permission.include_if_ee('SmartGroups::Extensions::Permission')
+Permission.prpend_if_ee('SmartGroups::Patches::Permission')
