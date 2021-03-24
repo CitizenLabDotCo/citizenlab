@@ -128,13 +128,6 @@ PATH
       rails (~> 6.0.0)
 
 PATH
-  remote: engines/idea_assignment
-  specs:
-    idea_assignment (0.1.0)
-      email_campaigns
-      rails (~> 6.0.3, >= 6.0.3.2)
-
-PATH
   remote: engines/geographic_dashboard
   specs:
     geographic_dashboard (0.1.0)
@@ -192,6 +185,13 @@ PATH
       rails (~> 6.0.0)
       savon (~> 2.12.0)
       verification
+
+PATH
+  remote: engines/idea_assignment
+  specs:
+    idea_assignment (0.1.0)
+      email_campaigns
+      rails (~> 6.0.3, >= 6.0.3.2)
 
 PATH
   remote: engines/machine_translations
@@ -941,13 +941,13 @@ DEPENDENCIES
   granular_permissions!
   groupdate
   ice_cube!
-  idea_assignment!
   id_bogus!
   id_bosa_fas!
   id_clave_unica!
   id_cow!
   id_franceconnect!
   id_id_card_lookup!
+  idea_assignment!
   intercom (~> 4.1)
   kaminari (~> 1.2)
   knock!
