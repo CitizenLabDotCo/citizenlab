@@ -1,7 +1,7 @@
 module IdeaAssignment
   module Patches
     module ProjectPolicy
-      def permitted_attributes_for_update
+      def shared_permitted_attributes
         super.tap do |attributes|
           attributes.push(:default_assignee_id)
         end
