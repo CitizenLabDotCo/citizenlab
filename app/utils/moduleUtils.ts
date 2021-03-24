@@ -356,7 +356,7 @@ export const insertConfiguration = <T extends { name: string }>({
   if (itemAlreadyInserted) {
     return [...items];
   } else {
-    return insertIndex > 0
+    return insertIndex >= 0
       ? [
           ...items.slice(0, insertIndex),
           configuration,
