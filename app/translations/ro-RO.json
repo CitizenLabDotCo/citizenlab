@@ -2508,7 +2508,7 @@
   "app.errors.unknown_group": "Grupul {value} găsit în rândul {row} nu este un grup cunoscut",
   "app.errors.unknown_locale": "Limbajul {value} găsit în rândul {row} nu este un limbaj configurat",
   "app.errors.unparseable_excel": "Fișierul Excel selectat nu a putut fi procesat.",
-  "app.modules.granular_permissions.admin.components.permissionsTab": "",
+  "app.modules.granular_permissions.admin.components.projectPermissionsTab": "",
   "app.modules.id_cow.cancel": "Anulare",
   "app.modules.id_cow.emptyFieldError": "Acest câmp nu poate fi gol.",
   "app.modules.id_cow.invalidIdSerialError": "Seria ID-ului nu este valabilă",

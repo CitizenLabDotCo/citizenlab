@@ -2508,7 +2508,7 @@
   "app.errors.unknown_group": "Ataatsimoortut {value} titarnerni quleriiaani nassaarineqartut {row} ilisimaneqanngillat",
   "app.errors.unknown_locale": "Oqaatsit {value} titarnerni quleriiaani nassaarineqartut {row} atortussanngortinneqarsimanngillat",
   "app.errors.unparseable_excel": "Excel-fil toqqagaq suliarineqarsinnaanngilaq",
-  "app.modules.granular_permissions.admin.components.permissionsTab": "",
+  "app.modules.granular_permissions.admin.components.projectPermissionsTab": "",
   "app.modules.id_cow.cancel": "Cancel",
   "app.modules.id_cow.emptyFieldError": "This field cannot be empty.",
   "app.modules.id_cow.invalidIdSerialError": "Invalid ID serial",

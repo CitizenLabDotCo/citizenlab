@@ -2508,7 +2508,7 @@
   "app.errors.unknown_group": "El grupo {value} en la fila {row} no es un grupo conocido",
   "app.errors.unknown_locale": "El idioma {value} en la fila {row} no es un idioma configurado",
   "app.errors.unparseable_excel": "El archivo de Excel seleccionado podría no ser procesado.",
-  "app.modules.granular_permissions.admin.components.permissionsTab": "",
+  "app.modules.granular_permissions.admin.components.projectPermissionsTab": "",
   "app.modules.id_cow.cancel": "Cancelar",
   "app.modules.id_cow.emptyFieldError": "Esto no puede estar vacío",
   "app.modules.id_cow.invalidIdSerialError": "CI número de serie/ documento inválido",

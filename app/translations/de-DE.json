@@ -2508,7 +2508,7 @@
   "app.errors.unknown_group": "Die Gruppe {value} in der Zeile {row} ist ungültig oder unbekannt.",
   "app.errors.unknown_locale": "Die Sprache {value} in der Zeile {row} ist derzeit nicht konfiguriert.",
   "app.errors.unparseable_excel": "Die ausgewählte Datei konnte nicht verarbeitet werden.",
-  "app.modules.granular_permissions.admin.components.permissionsTab": "",
+  "app.modules.granular_permissions.admin.components.projectPermissionsTab": "",
   "app.modules.id_cow.cancel": "Abbrechen",
   "app.modules.id_cow.emptyFieldError": "Dies kann nicht leer sein",
   "app.modules.id_cow.invalidIdSerialError": "Ungültige ID seriell",

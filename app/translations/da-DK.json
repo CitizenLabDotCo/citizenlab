@@ -2508,7 +2508,7 @@
   "app.errors.unknown_group": "Gruppen {value} fundet i række {row} er ikke en kendt gruppe",
   "app.errors.unknown_locale": "Sproget {value} fundet i række {row} er ikke et konfigureret sprog",
   "app.errors.unparseable_excel": "Den valgte Excel-fil kunne ikke behandles",
-  "app.modules.granular_permissions.admin.components.permissionsTab": "",
+  "app.modules.granular_permissions.admin.components.projectPermissionsTab": "",
   "app.modules.id_cow.cancel": "Annuller",
   "app.modules.id_cow.emptyFieldError": "Dette kan ikke være tomt",
   "app.modules.id_cow.invalidIdSerialError": "Ugyldig ID-serie",
