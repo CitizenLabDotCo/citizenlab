@@ -41,12 +41,13 @@ resource "Phases" do
         voting_method: 'unlimited',
         ideas_count: 2
         )
-      expect(json_response.dig(:data, :relationships)).to include(
-        project: {
+
+      expect(json_response.dig(:data, :relationships, :project)).to match({
           data: {id: @phases.first.project_id, type: 'project'}
-        },
-        permissions: {data: []}
-        )
+      })
+
+      expect(json_response.dig(:data, :relationships, :permissions, :data).size)
+        .to eq(PermissionsService.actions(@phases.first).length) if CitizenLab.ee?
     end
   end
 
@@ -263,11 +264,9 @@ resource "Phases" do
         let(:phase) { create(:phase, project: @project, participation_method: 'ideation', ideas: ideas) }
         let(:participation_method) { 'information' }
 
-        example "[error] Make a phase with ideas an information phase", document: true do
+        example "Make a phase with ideas an information phase" do
           do_request
-          expect(response_status).to eq 422
-          json_response = json_parse(response_body)
-          expect(json_response.dig(:errors, :base)).to eq [{error: 'cannot_contain_ideas', ideas_count: 2}]
+          expect(response_status).to eq 200
         end
       end
     end

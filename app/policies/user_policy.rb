@@ -45,7 +45,7 @@ class UserPolicy < ApplicationPolicy
   end
 
   def destroy?
-    user&.active? && (record.id == user.id || user.admin?)
+     record.id == user&.id || (user&.active? && user.admin?)
   end
 
   def ideas_count?
@@ -102,3 +102,5 @@ class UserPolicy < ApplicationPolicy
     [*simple_keys, array_keys.map{|k| [k, []]}.to_h]
   end
 end
+
+UserPolicy.prepend_if_ee('ProjectFolders::Patches::UserPolicy')

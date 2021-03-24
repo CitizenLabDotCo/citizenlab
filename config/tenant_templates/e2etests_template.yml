@@ -8217,7 +8217,7 @@ models:
     group_ref: *verifiedCharlie
   - permission_ref: *1119
     group_ref: *verifiedCharlie
-  verification/id_cards:
+  id_id_card_lookup/id_cards:
     - card_id: "a111"
     - card_id: "b222"
     - card_id: "c333"
@@ -8226,8 +8226,8 @@ models:
     - card_id: "f666"
     - card_id: "g777"
     - card_id: "h888"
-    - card_id: "i999" 
-  maps/map_config:
+    - card_id: "i999"
+  custom_maps/map_config:
   - &map_config1
     project_ref: *76
     center_geojson:
@@ -8238,7 +8238,7 @@ models:
     zoom_level: 14.0
     created_at: 2020-03-18 13:32:07 UTC
     updated_at: 2020-03-18 13:32:07 UTC
-  maps/layer:
+  custom_maps/layer:
   - &layer1
     map_config_ref: *map_config1
     title_multiloc:
@@ -15781,7 +15781,7 @@ models:
           marker-symbol: toilets
     created_at: 2020-03-18 13:32:07 UTC
     updated_at: 2020-03-18 13:32:07 UTC
-  maps/legend_item:
+  custom_maps/legend_item:
   - map_config_ref: *map_config1
     title_multiloc:
       fr-BE: Laeken

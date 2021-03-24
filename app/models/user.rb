@@ -73,7 +73,10 @@ class User < ApplicationRecord
     message: ->(errors) { errors }
   }, if: [:custom_field_values_changed?, :active?]
 
-  validates :password, length: { in: 5..72 }, allow_nil: true
+  validates :password, length: { maximum: 72 }, allow_nil: true
+  # Custom validation is required to deal with the
+  # dynamic nature of the minimum password length.
+  validate :validate_minimum_password_length
   validate :validate_password_not_common
 
   validate do |record|
@@ -332,6 +335,18 @@ class User < ApplicationRecord
     end
   end
 
+  def validate_minimum_password_length
+    minimum_length = AppConfiguration.instance.settings('password_login', 'minimum_length')
+    if self.password && password.size < (minimum_length || 0)
+      self.errors.add(
+        :password,
+        :too_short,
+        message: 'The chosen password is shorter than the minimum required character length',
+        count: minimum_length
+      )
+    end
+  end
+
   def validate_password_not_common
     if self.password && CommonPassword.check(self.password)
       self.errors.add(
@@ -354,3 +369,5 @@ class User < ApplicationRecord
     ROLES_JSON_SCHEMA
   end
 end
+
+User.prepend_if_ee('ProjectFolders::Patches::User')
