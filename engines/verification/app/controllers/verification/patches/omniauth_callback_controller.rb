@@ -21,7 +21,7 @@ module Verification
         omniauth_params = request.env['omniauth.params'].except('token')
 
         begin
-          @user = Knock::AuthToken.new(token: request.env['omniauth.params']['token']).entity_for(User)
+          @user = Knock::AuthToken.new(token: request.env['omniauth.params']['token']).entity_for(::User)
           if @user&.invite_not_pending?
             begin
               handle_verification(auth, @user)
@@ -30,9 +30,9 @@ module Verification
                 Frontend::UrlService.new.verification_success_url(locale: @user.locale, pathname: omniauth_params['pathname']),
                 omniauth_params.merge('verification_success': true).except('pathname')
               ))
-            rescue Verification::VerificationService::VerificationTakenError
+            rescue VerificationService::VerificationTakenError
               fail_verification('taken')
-            rescue Verification::VerificationService::NotEntitledError
+            rescue VerificationService::NotEntitledError
               fail_verification('not_entitled')
             end
           end
@@ -41,7 +41,7 @@ module Verification
         end
       end
 
-      def fail_verification error
+      def fail_verification(error)
         omniauth_params = request.env['omniauth.params'].except('token', 'pathname')
         redirect_to(add_uri_params(
           Frontend::UrlService.new.verification_failure_url(pathname: request.env['omniauth.params']['pathname']),
@@ -50,7 +50,7 @@ module Verification
       end
 
       def verification_service
-        @verification_service ||= Verification::VerificationService.new
+        @verification_service ||= VerificationService.new
       end
     end
   end
