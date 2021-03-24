@@ -34,7 +34,7 @@ interface Props extends InputProps, DataProps {}
 const ProjectsSection = ({ adminPublications, projectsSectionRef }: Props) => {
   if (
     !isNilOrError(adminPublications) &&
-    !isNilOrError(adminPublications.topLevel)
+    !isNilOrError(adminPublications.list)
   ) {
     return (
       <>
@@ -44,7 +44,7 @@ const ProjectsSection = ({ adminPublications, projectsSectionRef }: Props) => {
         <AllProjectsLink to="/projects" id="projects-section">
           <FormattedMessage {...messages.allProjects} />
         </AllProjectsLink>
-        {adminPublications.topLevel.map((adminPublication) => (
+        {adminPublications.list.map((adminPublication) => (
           <React.Fragment key={adminPublication.id}>
             {adminPublication.publicationType === 'project' && (
               <Project adminPublication={adminPublication} hightestTitle="h3" />
@@ -66,8 +66,7 @@ const Data = adopt<DataProps, InputProps>({
   adminPublications: (
     <GetAdminPublications
       publicationStatusFilter={['draft', 'published', 'archived']}
-      folderId={null}
-      noEmptyFolder
+      rootLevelOnly
     />
   ),
 });
