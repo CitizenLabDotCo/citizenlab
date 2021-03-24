@@ -193,18 +193,6 @@ class WebApi::V1::IdeasController < ApplicationController
     authorize @idea
   end
 
-  def user_not_authorized exception
-    pcs = ParticipationContextService.new
-    if exception.query == "create?"
-      reason = pcs.posting_idea_disabled_reason_for_project(exception.record.project, current_user)
-      if reason
-        render json: { errors: { base: [{ error: reason }] } }, status: :unauthorized
-        return
-      end
-    end
-    render json: { errors: { base: [{ error: 'Unauthorized!' }] } }, status: :unauthorized
-  end
-
   def authorize_project_or_ideas
     if params[:project].present?
       authorize Project.find(params[:project]), :index_xlsx?
