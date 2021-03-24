@@ -59,7 +59,7 @@ class AnonymizeUserService
     else
       random_registration user: user
     end
-    verified = random_verified
+
     {
       'first_name'                => first_name,
       'last_name'                 => last_name,
@@ -71,7 +71,6 @@ class AnonymizeUserService
       'bio_multiloc'              => bio,
       'registration_completed_at' => registration,
       'created_at'                => registration,
-      'verified'                  => verified,
     }
   end
 
@@ -94,7 +93,7 @@ class AnonymizeUserService
   end
 
   def random_birthyear
-    min_age, max_age = pick_weighted ({
+    min_age, max_age = weighted_choice({
       [14,20]  => 7,
       [20,30]  => 22,
       [30,40]  => 32,
@@ -109,15 +108,9 @@ class AnonymizeUserService
     Date.today.year - age
   end
 
-  def pick_weighted weighted
-    sum = weighted.inject(0) do |sum, item_and_weight|
-      sum += item_and_weight[1]
-    end
-    target = rand(sum)
-    weighted.each do |item, weight|
-      return item if target <= weight
-      target -= weight
-    end
+  # Weighted random sampling [Efraimidis, Spirakis - 2006]
+  def weighted_choice(weighted)
+    weighted.max_by { |_, weight| rand ** (1.0 / weight) }.first
   end
 
   def random_first_name gender
@@ -177,12 +170,6 @@ class AnonymizeUserService
       Faker::Date.between(from: start_at, to: Time.now)
     end
   end
-
-  def random_verified
-    pick_weighted({
-      false => 3,
-      true => 1
-    })
-  end
-
 end
+
+AnonymizeUserService.prepend_if_ee('Verification::Patches::AnonymizeUserService')
