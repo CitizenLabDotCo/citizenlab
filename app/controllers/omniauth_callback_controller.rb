@@ -180,7 +180,6 @@ class OmniauthCallbackController < ApplicationController
     if authver_method.respond_to? :updateable_user_attrs
       attrs = authver_method.updateable_user_attrs
       update_hash = authver_method.profile_to_user_attrs(auth).slice(*attrs).compact
-      # byebug
       user.update!(update_hash)
     end
   end

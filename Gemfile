@@ -98,7 +98,7 @@ gem 'fog-aws'
 gem 'groupdate' # , "~> 3.2.0"
 gem 'liquid', '~> 4.0'
 gem 'mini_magick', '~> 4.9'
-gem 'pg_search', '~> 2.1.2'
+gem 'pg_search', '~> 2.3.5'
 gem 'premailer-rails', '~> 1.10.3'
 gem 'rest-client'
 gem 'rgeo-geojson'
