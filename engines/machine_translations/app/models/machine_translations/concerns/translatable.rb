@@ -1,4 +1,6 @@
-module MachineTranslations::InitiativeDecorator
+require 'active_support/concern'
+
+module MachineTranslations::Concerns::Translatable
   extend ActiveSupport::Concern
 
   included do
