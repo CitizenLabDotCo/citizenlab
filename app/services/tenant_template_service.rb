@@ -110,7 +110,7 @@ class TenantTemplateService
 
     Apartment::Tenant.switch(tenant.schema_name) do
       @template['models']['area']                                 = yml_areas
-      @template['models']['custom_form']                          = yml_custom_forms
+      @template['models']['idea_custom_fields/custom_form']       = yml_custom_forms
       @template['models']['custom_field']                         = yml_custom_fields
       @template['models']['custom_field_option']                  = yml_custom_field_options
       @template['models']['topic']                                = yml_topics

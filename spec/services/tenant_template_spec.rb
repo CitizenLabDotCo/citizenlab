@@ -123,7 +123,7 @@ describe TenantTemplateService do
       yml = <<~YAML
         ---
         models:
-          custom_form:
+          idea_custom_fields/custom_form:
           - &1
             created_at: 2020-02-18 22:46:33 UTC
             updated_at: 2020-02-18 22:46:33 UTC
