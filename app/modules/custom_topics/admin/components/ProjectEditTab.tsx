@@ -38,7 +38,7 @@ const ProjectEditTab: FC<Props & InjectedIntlProps> = ({
     ) &&
       onData({
         configuration: {
-          label: formatMessage(messages.projectEditTopicsTab),
+          label: formatMessage(messages.topicsTab),
           name: 'topics',
           url: 'topics',
           feature: 'custom_topics',
