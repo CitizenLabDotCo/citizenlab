@@ -94,49 +94,49 @@ export class AdminProjectEdition extends PureComponent<
       tabs: [
         {
           label: formatMessage(messages.generalTab),
-          url: `edit`,
+          url: 'edit',
           name: 'general',
         },
         {
           label: formatMessage(messages.descriptionTab),
-          url: `description`,
+          url: 'description',
           name: 'description',
         },
         {
           label: formatMessage(messages.inputManagerTab),
-          url: `ideas`,
+          url: 'ideas',
           name: 'ideas',
         },
         {
           label: formatMessage(messages.pollTab),
-          url: `poll`,
+          url: 'poll',
           feature: 'polls',
           name: 'poll',
         },
         {
           label: formatMessage(messages.surveyResultsTab),
-          url: `survey-results`,
+          url: 'survey-results',
           name: 'survey-results',
         },
         {
           label: formatMessage(messages.phasesTab),
-          url: `timeline`,
+          url: 'timeline',
           name: 'phases',
         },
         {
           label: formatMessage(messages.topicsTab),
-          url: `topics`,
+          url: 'topics',
           name: 'topics',
         },
         {
           label: formatMessage(messages.volunteeringTab),
-          url: `volunteering`,
+          url: 'volunteering',
           feature: 'volunteering',
           name: 'volunteering',
         },
         {
           label: formatMessage(messages.eventsTab),
-          url: `events`,
+          url: 'events',
           name: 'events',
         },
       ],
@@ -308,7 +308,11 @@ export class AdminProjectEdition extends PureComponent<
     let cleanedTabs = tabs;
 
     tabNames.forEach((tabName) => {
-      if (tabName && tabHideConditions[tabName]()) {
+      if (
+        tabName &&
+        tabHideConditions[tabName] &&
+        tabHideConditions[tabName]()
+      ) {
         cleanedTabs = reject(cleanedTabs, { name: tabName });
       }
     });
