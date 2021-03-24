@@ -2508,7 +2508,7 @@
   "app.errors.unknown_group": "Grupa {value} pronađena u redu {row} nije poznata grupa",
   "app.errors.unknown_locale": "Jezik {value} pronađen u redu {row} nije konfigurisani jezik",
   "app.errors.unparseable_excel": "Odabrana Excel datoteka nije mogla da se obradi.",
-  "app.modules.granular_permissions.admin.components.permissionsTab": "",
+  "app.modules.granular_permissions.admin.components.projectPermissionsTab": "",
   "app.modules.id_cow.cancel": "Prekid",
   "app.modules.id_cow.emptyFieldError": "Ovo polje ne može biti prazno.",
   "app.modules.id_cow.invalidIdSerialError": "Neispravan ID broj",

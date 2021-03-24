@@ -2508,7 +2508,7 @@
   "app.errors.unknown_group": "De groep {value} in rij {row} is geen geldige groep",
   "app.errors.unknown_locale": "De {value} van de taal in rij {row} is geen geconfigureerde taal",
   "app.errors.unparseable_excel": "Het geselecteerde Excel-bestand kan niet worden verwerkt.",
-  "app.modules.granular_permissions.admin.components.permissionsTab": "",
+  "app.modules.granular_permissions.admin.components.projectPermissionsTab": "",
   "app.modules.id_cow.cancel": "Annuleren",
   "app.modules.id_cow.emptyFieldError": "Dit mag niet leeg zijn.",
   "app.modules.id_cow.invalidIdSerialError": "Ongeldig ID-serienummer",
