@@ -63,15 +63,15 @@ const AdminProjectsList = memo(({ className }: Props) => {
   const userIsAdmin = !isNilOrError(authUser)
     ? isAdmin({ data: authUser })
     : false;
-  const [outlet2Rendered, setOutlet2Rendered] = useState(false);
-  const handleOutlet2OnRender = (hasRendered: boolean) => {
-    setOutlet2Rendered(hasRendered);
+  const [containerOutletRendered, setContainerOutletRendered] = useState(false);
+  const handleContainerOutletOnRender = (hasRendered: boolean) => {
+    setContainerOutletRendered(hasRendered);
   };
 
   return (
     <Container className={className}>
       <CreateAndEditProjectsContainer
-        className={outlet2Rendered ? 'hidden' : ''}
+        className={containerOutletRendered ? 'hidden' : ''}
       >
         <PageTitle>
           <FormattedMessage {...messages.overviewPageTitle} />
@@ -107,7 +107,7 @@ const AdminProjectsList = memo(({ className }: Props) => {
       </CreateAndEditProjectsContainer>
       <Outlet
         id="app.containers.Admin.projects.all.container"
-        onRender={handleOutlet2OnRender}
+        onRender={handleContainerOutletOnRender}
       />
     </Container>
   );
