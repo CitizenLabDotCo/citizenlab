@@ -1,5 +1,4 @@
 class Idea < ApplicationRecord
-  include MachineTranslations::IdeaDecorator
   include Post
   include Moderatable
 
@@ -149,3 +148,5 @@ class Idea < ApplicationRecord
     IdeasPhase.counter_culture_fix_counts only: %i[phase]
   end
 end
+
+Idea.include_if_ee 'MachineTranslations::Concerns::Translatable'
