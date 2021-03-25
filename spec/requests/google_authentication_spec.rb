@@ -55,7 +55,7 @@ describe "google authentication" do
         }
       }
     )
-    stub_request(:any, "https://lh3.googleusercontent.com/-Q2YP0Ju3enE/AAAAAAAAAAI/AAAAAAAAAAA/ACHi3rcvJkuBGnWEs_vjHZDTGaRUE7RXeg/mo/s640-c/photo.jpg")
+    stub_request(:any, /.*\/photo.jpg/)
       .to_return(
         status: 200,
         body: lambda { |request| File.new(Rails.root.join("spec/fixtures/female_avatar_2.jpg")) },

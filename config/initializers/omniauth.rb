@@ -20,6 +20,9 @@ OmniAuth.config.full_host = -> (_env) {
   AppConfiguration.instance&.base_backend_uri
 }
 
+# See https://github.com/omniauth/omniauth/wiki/Resolving-CVE-2015-9284
+OmniAuth.config.allowed_request_methods = [:post, :get]
+
 
 module OpenIDConnectPatch
   # Patch +OmniAuth::Strategies::OpenIDConnect+ to allow dynamic specification of the issuer.
