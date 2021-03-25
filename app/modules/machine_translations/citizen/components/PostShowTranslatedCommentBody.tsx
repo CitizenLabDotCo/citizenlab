@@ -2,13 +2,21 @@ import GetMachineTranslation from 'modules/machine_translations/resources/GetMac
 import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { CommentText } from 'components/PostShowComponents/Comments/CommentBody';
+import { Locale } from 'typings';
+
+interface Props {
+  translateButtonClicked: boolean;
+  commentContent: string;
+  locale: Locale;
+  commentId: string;
+}
 
 const PostShowTranslatedCommentBody = ({
   translateButtonClicked,
   commentContent,
   locale,
   commentId,
-}) => {
+}: Props) => {
   if (translateButtonClicked) {
     return (
       <GetMachineTranslation
