@@ -96,31 +96,6 @@ resource "AdminPublication" do
         expect(json_response[:data].size).to eq 3
         expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :id) }).to match_array [@empty_draft_folder.id, @folder.id, p1.id]
       end
-
-      example "List all top-level admin publications with visible child projects" do
-        create_list(:project_folder, 2)
-        do_request(folder: nil, filter_empty_folders: true)
-        json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 6
-        expect(json_response[:data].map{|d| d.dig(:relationships, :publication, :data, :type)}.count('folder')).to eq 1
-        expect(json_response[:data].map{|d| d.dig(:relationships, :publication, :data, :type)}.count('project')).to eq 5
-        expect(json_response[:data].select{|d| d.dig(:relationships, :publication, :data, :type) == 'folder'}.first.dig(:attributes, :visible_children_count)).to eq 3
-      end
-
-      example "Listing admin publications with visible child projects takes account with applied filters", document: false do
-        t1 = create(:topic)
-
-        p1 = @projects[1]
-        p1.topics << t1
-        p1.save!
-
-        create(:project_folder, projects: create_list(:project, 2))
-
-        do_request folder: nil, topics: [t1.id], filter_empty_folders: true
-        json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 1
-        expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :id) }).to match_array [@folder.id]
-      end
     end
 
     patch "web_api/v1/admin_publications/:id/reorder" do
@@ -199,11 +174,6 @@ resource "AdminPublication" do
         expect(json_response[:data].map{|d| d.dig(:relationships, :publication, :data, :type)}.count('folder')).to eq 1
         expect(json_response[:data].map{|d| d.dig(:relationships, :publication, :data, :type)}.count('project')).to eq 1
         expect(json_response[:data].select{|d| d.dig(:relationships, :publication, :data, :type) == 'folder'}.first.dig(:attributes, :visible_children_count)).to eq 1
-      end
-
-      example 'Lists top level publications when passing depth=0' do
-        do_request(depth: 0)
-        expect(response_length).to eq 5
       end
 
       example "Returns an empty list success response when there are no publications", document: false do
