@@ -1,3 +1,5 @@
+import React from 'react';
+
 import FeatureFlag from 'components/FeatureFlag';
 import TranslateButton from 'components/UI/TranslateButton';
 import styled from 'styled-components';
