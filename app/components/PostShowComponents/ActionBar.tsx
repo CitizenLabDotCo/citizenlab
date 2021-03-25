@@ -8,6 +8,9 @@ import FeatureFlag from 'components/FeatureFlag';
 import styled from 'styled-components';
 import { colors, media } from 'utils/styleUtils';
 import { postPageContentMaxWidth } from './styleConstants';
+import { GetLocaleChildProps } from 'resources/GetLocale';
+import { GetInitiativeChildProps } from 'resources/GetInitiative';
+import { isNilOrError } from 'utils/helperUtils';
 
 const Container = styled.div`
   width: 100%;
@@ -61,19 +64,26 @@ const StyledTranslateButton = styled(TranslateButton)`
 interface Props {
   rightContent: JSX.Element | null;
   leftContent: JSX.Element | null;
-  showTranslateButton: boolean;
   translateButtonClicked: boolean;
   onTranslate: () => void;
+  locale: GetLocaleChildProps;
+  initiative: GetInitiativeChildProps;
 }
 
 export default memo<Props>(
   ({
     rightContent,
     leftContent,
-    showTranslateButton,
     translateButtonClicked,
     onTranslate,
+    initiative,
+    locale,
   }) => {
+    const showTranslateButton =
+      !isNilOrError(initiative) &&
+      !isNilOrError(locale) &&
+      !initiative.attributes.title_multiloc[locale];
+
     return (
       <Container>
         <Inner>
