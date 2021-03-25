@@ -18,8 +18,6 @@ class Idea < ApplicationRecord
     column_name: 'comments_count',
     delta_magnitude: proc { |idea| idea.comments_count }
 
-  belongs_to :assignee, class_name: 'User', optional: true
-
   has_many :tagging_taggings
   has_many :tagging_tags, through: :tagging_taggings
   has_and_belongs_to_many :tagging_pending_tasks, class_name: 'Tagging::PendingTask', join_table: :tagging_pending_tasks_ideas
@@ -39,13 +37,13 @@ class Idea < ApplicationRecord
   has_one :idea_trending_info
 
   validates_numericality_of :proposed_budget, greater_than_or_equal_to: 0, allow_nil: true
-  with_options unless: :draft? do |idea|
-    idea.validates :idea_status, presence: true
-    idea.validates :project, presence: true
-    idea.validate :assignee_can_moderate_project
 
-    idea.before_validation :set_idea_status
-    idea.before_validation :sanitize_body_multiloc, if: :body_multiloc
+  with_options unless: :draft? do
+    validates :idea_status, presence: true
+    validates :project, presence: true
+
+    before_validation :set_idea_status
+    before_validation :sanitize_body_multiloc, if: :body_multiloc
   end
   after_update :fix_comments_count_on_projects
 
@@ -128,17 +126,6 @@ class Idea < ApplicationRecord
     self.idea_status ||= IdeaStatus.find_by!(code: 'proposed')
   end
 
-  def assignee_can_moderate_project
-    if self.assignee && self.project &&
-      !ProjectPolicy.new(self.assignee, self.project).moderate?
-      self.errors.add(
-        :assignee_id,
-        :assignee_can_not_moderate_project,
-        message: 'The assignee can not moderate the project of this idea'
-      )
-    end
-  end
-
   def fix_comments_count_on_projects
     if project_id_previously_changed?
       Comment.counter_culture_fix_counts only: [[:idea, :project]]
@@ -149,3 +136,4 @@ class Idea < ApplicationRecord
     IdeasPhase.counter_culture_fix_counts only: %i[phase]
   end
 end
+Idea.include_if_ee('IdeaAssignment::Extensions::Idea')

@@ -1,11 +1,11 @@
 require 'rails_helper'
 
-RSpec.describe EmailCampaigns::IdeaAssignedToYouMailer, type: :mailer do
+RSpec.describe IdeaAssignment::EmailCampaigns::IdeaAssignedToYouMailer, type: :mailer do
   describe 'campaign_mail' do
     let!(:recipient) { create(:user, locale: 'en') }
-    let!(:campaign) { EmailCampaigns::Campaigns::IdeaAssignedToYou.create! }
+    let!(:campaign) { IdeaAssignment::EmailCampaigns::Campaigns::IdeaAssignedToYou.create! }
     let(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
-    
+
     let(:assigned_at) { Time.now }
     let!(:idea) { create(:assigned_idea, author: recipient, assigned_at: assigned_at) }
     let(:author_name) { UserDisplayNameService.new(AppConfiguration.instance, recipient).display_name!(idea.author) }
@@ -27,7 +27,6 @@ RSpec.describe EmailCampaigns::IdeaAssignedToYouMailer, type: :mailer do
     before do
       EmailCampaigns::UnsubscriptionToken.create!(user_id: recipient.id)
     end
-
 
     it 'renders the subject' do
       expect(mail.subject).to start_with('You have an assignment on the platform of')
