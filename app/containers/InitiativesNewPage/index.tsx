@@ -65,6 +65,8 @@ export class InitiativesNewPage extends React.PureComponent<
     this.redirectIfNotPermittedOnPage();
 
     if (isNumber(lat) && isNumber(lng)) {
+      // OS-114
+
       // When an idea is posted through the map, we Google Maps gets an approximate address,
       // but we also keep the exact coordinates from the click so the location indicator keeps its initial position on the map
       // and doesn't readjust together with the address correction/approximation

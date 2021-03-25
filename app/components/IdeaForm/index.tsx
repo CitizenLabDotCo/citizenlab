@@ -646,6 +646,7 @@ class IdeaForm extends PureComponent<
       attachmentsError,
     } = this.state;
 
+    // OS-114
     const mapsLoaded = window.googleMaps;
 
     const tenantCurrency = tenant

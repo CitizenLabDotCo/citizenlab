@@ -128,6 +128,8 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
     if (isNumber(lat) && isNumber(lng)) {
       reverseGeocode([lat, lng]).then((position) => {
         this.globalState.set({
+          // OS-114
+
           // When an idea is posted through the map, Google Maps gets an approximate address,
           // but we also keep the exact coordinates from the click so the location indicator keeps its initial position on the map
           // and doesn't read just together with the address correction/approximation

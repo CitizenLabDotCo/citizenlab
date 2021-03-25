@@ -17,6 +17,7 @@ export async function convertToGeoJson(location: string) {
 export async function reverseGeocode(coordinates: number[]): Promise<string> {
   return new Promise((resolve: (value: string) => void, reject) => {
     try {
+      // OS-114
       const Geocoder: google.maps.Geocoder = new window['google']['maps'][
         'Geocoder'
       ]();

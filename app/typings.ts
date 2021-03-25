@@ -9,6 +9,7 @@ declare global {
   }
   interface Window {
     _paq: any;
+    // OS-114
     googleMaps?: boolean;
     Intercom?: any;
     intercomSettings: any;

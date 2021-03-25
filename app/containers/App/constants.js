@@ -4,6 +4,7 @@ exports.appLocalesMomentPairs = exports.shortenedAppLocalePairs = exports.appGra
 exports.AUTH_PATH = '/auth';
 exports.API_PATH = '/web_api/v1';
 exports.ADMIN_TEMPLATES_GRAPHQL_PATH = '/admin_templates_api/graphql';
+// OS-114
 exports.GOOGLE_MAPS_API_KEY = '***REMOVED***';
 exports.API_HOST =
   process.env.API_HOST ||

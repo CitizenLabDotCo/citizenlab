@@ -354,6 +354,7 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
 
     const { touched, errors } = this.state;
 
+    // OS-114
     const mapsLoaded = window.googleMaps;
 
     if (!isNilOrError(topics)) {

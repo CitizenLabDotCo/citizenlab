@@ -1,6 +1,7 @@
 export const AUTH_PATH = '/auth';
 export const API_PATH = '/web_api/v1';
 export const ADMIN_TEMPLATES_GRAPHQL_PATH = '/admin_templates_api/graphql';
+// OS-114
 export const GOOGLE_MAPS_API_KEY = '***REMOVED***';
 export const API_HOST =
   process.env.API_HOST ||
