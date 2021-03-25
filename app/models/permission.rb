@@ -3,12 +3,6 @@
 class Permission < ApplicationRecord
   PERMITTED_BIES = %w[everyone users groups admins_moderators].freeze
 
-  DENIED_REASONS = {
-    not_verified: 'not_verified',
-    not_permitted: 'not_permitted',
-    not_signed_in: 'not_signed_in'
-  }.freeze
-
   belongs_to :permission_scope, polymorphic: true, optional: true
   has_many :groups_permissions, dependent: :destroy
   has_many :groups, through: :groups_permissions
@@ -36,6 +30,10 @@ class Permission < ApplicationRecord
     end
   }
 
+  def self.denied_reasons
+    DENIED_REASONS
+  end
+
   def granted_to?(user)
     !denied?(user)
   end
@@ -50,23 +48,12 @@ class Permission < ApplicationRecord
     reason = case permitted_by
              when 'users' then :not_signed_in unless user
              when 'admins_moderators' then :not_permitted
-             when 'groups'
-               if requires_verification? && !user&.verified?
-                 :not_verified
-               elsif user.nil? || (group_ids & user.group_ids).blank?
-                 :not_permitted
-               end
+             when 'groups' then denied_when_permitted_by_groups?(user)
              else
                raise "Unsupported permitted_by: '#{permitted_by}'."
              end
 
-    DENIED_REASONS[reason]
-  end
-
-  def requires_verification?
-    return unless permitted_by == 'groups'
-
-    Verification::VerificationService.new.find_verification_group(groups)
+    Permission.denied_reasons[reason]
   end
 
   def participation_conditions
@@ -74,6 +61,16 @@ class Permission < ApplicationRecord
   end
 
   private
+
+  # Access reasons via Permission.denied_reasons
+  DENIED_REASONS = {
+    not_permitted: 'not_permitted',
+    not_signed_in: 'not_signed_in'
+  }.freeze
+
+  def denied_when_permitted_by_groups?(user)
+    :not_permitted if user.nil? || (group_ids & user.group_ids).blank?
+  end
 
   def available_actions
     PermissionsService.actions(permission_scope)
@@ -94,3 +91,4 @@ class Permission < ApplicationRecord
 end
 
 Permission.prepend_if_ee('SmartGroups::Patches::Permission')
+Permission.prepend_if_ee('Verification::Patches::Permission')

@@ -39,17 +39,17 @@ RSpec.describe Permission, type: :model do
     context "when user is admin" do
       let(:admin) { build(:admin) }
 
-      it { expect(described_class.for_user(admin)).to match permissions }
+      it { expect(described_class.for_user(admin)).to match_array permissions }
     end
 
     context "when not logged in" do
-      it { expect(described_class.for_user(nil)).to match [permissions[0]] }
+      it { expect(described_class.for_user(nil)).to match_array [permissions[0]] }
     end
 
     context 'when user is logged in' do
       let(:user) { create(:user) }
 
-      it { expect(described_class.for_user(user)).to match permissions[0..1] }
+      it { expect(described_class.for_user(user)).to match_array permissions[0..1] }
     end
 
     context 'when user belongs to the authorized manual group' do
@@ -57,7 +57,7 @@ RSpec.describe Permission, type: :model do
       before { manual_grp.add_member(user).save! }
 
       it {
-        expect(described_class.for_user(user)).to match [permissions[0], permissions[1], permissions[3]]
+        expect(described_class.for_user(user)).to match_array [permissions[0], permissions[1], permissions[3]]
       }
     end
   end
