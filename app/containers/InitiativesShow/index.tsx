@@ -78,7 +78,7 @@ import {
   rightColumnWidthTablet,
   pageContentMaxWidth,
 } from './styleConstants';
-import InitiativesTranslateButton from 'modules/machine_translations/citizen/components/InitiativesTranslateButton';
+
 import Outlet from 'components/Outlet';
 
 const contentFadeInDuration = 250;
