@@ -1,5 +1,5 @@
 class WebApi::V1::AdminPublicationSerializer < WebApi::V1::BaseSerializer
-  attributes :ordering, :publication_status
+  attributes :ordering, :publication_status, :depth
 
   attribute :publication_title_multiloc do |object|
     object.publication.title_multiloc
@@ -31,4 +31,4 @@ class WebApi::V1::AdminPublicationSerializer < WebApi::V1::BaseSerializer
   has_many :children, record_type: :admin_publication
 end
 
-WebApi::V1::AdminPublicationSerializer.include_if_ee('ProjectVisibility::Patches::WebApi::V1::AdminPublicationSerializer')
+WebApi::V1::AdminPublicationSerializer.include_if_ee('ProjectPermissions::Patches::WebApi::V1::AdminPublicationSerializer')
