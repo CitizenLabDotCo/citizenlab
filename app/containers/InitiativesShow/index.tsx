@@ -25,7 +25,6 @@ import Body from 'components/PostShowComponents/Body';
 import Image from 'components/PostShowComponents/Image';
 import Footer from 'components/PostShowComponents/Footer';
 import OfficialFeedback from 'components/PostShowComponents/OfficialFeedback';
-import TranslateButton from 'components/UI/TranslateButton';
 import InitiativeMeta from './InitiativeMeta';
 import PostedBy from './PostedBy';
 import PostedByMobile from './PostedByMobile';
@@ -80,6 +79,7 @@ import {
   pageContentMaxWidth,
 } from './styleConstants';
 import InitiativesTranslateButton from 'modules/machine_translations/citizen/components/InitiativesTranslateButton';
+import Outlet from 'components/Outlet';
 
 const contentFadeInDuration = 250;
 const contentFadeInEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
@@ -574,7 +574,8 @@ export class InitiativesShow extends PureComponent<
                   />
                 )}
 
-                <InitiativesTranslateButton
+                <Outlet
+                  id="app.containers.InitiativesShow.left"
                   windowSize={windowSize}
                   translateButtonClicked={translateButtonClicked}
                   onClick={this.onTranslateInitiative}

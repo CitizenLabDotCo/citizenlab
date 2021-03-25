@@ -10,13 +10,21 @@ const StyledTranslateButtonMobile = styled(TranslateButton)`
   margin-bottom: 20px;
 `;
 
+interface Props {
+  windowSize: GetWindowSizeChildProps;
+  translateButtonClicked: boolean;
+  onClick: () => void;
+  initiative: GetInitiativeChildProps;
+  locale: GetLocaleChildProps;
+}
+
 const InitiativesTranslateButton = ({
   windowSize,
   translateButtonClicked,
   onClick,
   initiative,
   locale,
-}) => {
+}: Props) => {
   const showTranslateButton =
     !isNilOrError(initiative) &&
     !isNilOrError(locale) &&
