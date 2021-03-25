@@ -128,7 +128,6 @@ RSpec.configure do |config|
     require './engines/polls/spec/factories/options.rb'
     require './engines/polls/spec/factories/responses.rb'
     require './engines/polls/spec/factories/response_options.rb'
-    require './engines/verification/spec/factories/verifications.rb'
     require './engines/volunteering/spec/factories/causes.rb'
     require './engines/volunteering/spec/factories/volunteers.rb'
 
