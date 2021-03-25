@@ -101,10 +101,6 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
     TimelineService.new.current_phase(object)
   end
 
-  belongs_to :default_assignee, record_type: :assignee, if: Proc.new { |object, params|
-    can_moderate? object, params
-  }
-
 
   def self.avatars_for_project object, params
     # TODO call only once (not a second time for counts)
@@ -128,4 +124,5 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
 end
 
 WebApi::V1::ProjectSerializer.prepend_if_ee('ProjectFolders::WebApi::V1::Patches::ProjectSerializer')
+WebApi::V1::ProjectSerializer.include_if_ee('IdeaAssignment::Extensions::WebApi::V1::ProjectSerializer')
 WebApi::V1::ProjectSerializer.include_if_ee('ProjectPermissions::Patches::WebApi::V1::ProjectSerializer')
