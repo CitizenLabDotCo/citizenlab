@@ -35,6 +35,8 @@ import { ManagerType } from 'components/admin/PostManager';
 import { IdeaCellComponentProps } from 'components/admin/PostManager/components/PostTable/IdeaRow';
 import { IdeaHeaderCellComponentProps } from 'components/admin/PostManager/components/PostTable/IdeaHeaderRow';
 import { IVerificationMethod } from 'services/verificationMethods';
+import { GetInitiativeChildProps } from 'resources/GetInitiative';
+import { GetLocaleChildProps } from 'resources/GetLocale';
 
 type Localize = (
   multiloc: Multiloc | null | undefined,
@@ -180,6 +182,12 @@ export type OutletsPropertyMap = {
     onVerified: () => void;
     showHeader?: boolean;
     inModal: boolean;
+  };
+  'app.components.PostShowComponents.ActionBar.right': {
+    translateButtonClicked: boolean;
+    onClick: () => void;
+    initiative: GetInitiativeChildProps;
+    locale: GetLocaleChildProps;
   };
 };
 

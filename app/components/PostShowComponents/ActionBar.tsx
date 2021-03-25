@@ -1,16 +1,13 @@
 import React, { memo } from 'react';
 
-// components
-import TranslateButton from 'components/UI/TranslateButton';
-import FeatureFlag from 'components/FeatureFlag';
-
 // styles
 import styled from 'styled-components';
 import { colors, media } from 'utils/styleUtils';
 import { postPageContentMaxWidth } from './styleConstants';
 import { GetLocaleChildProps } from 'resources/GetLocale';
 import { GetInitiativeChildProps } from 'resources/GetInitiative';
-import { isNilOrError } from 'utils/helperUtils';
+
+import Outlet from 'components/Outlet';
 
 const Container = styled.div`
   width: 100%;
@@ -55,12 +52,6 @@ const Right = styled.div`
   align-items: center;
 `;
 
-const StyledTranslateButton = styled(TranslateButton)`
-  ${media.smallerThanMinTablet`
-    display: none;
-  `}
-`;
-
 interface Props {
   rightContent: JSX.Element | null;
   leftContent: JSX.Element | null;
@@ -69,29 +60,6 @@ interface Props {
   locale: GetLocaleChildProps;
   initiative: GetInitiativeChildProps;
 }
-
-const ActionBarTranslateButton = ({
-  initiative,
-  locale,
-  onClick,
-  translateButtonClicked,
-}) => {
-  const showTranslateButton =
-    !isNilOrError(initiative) &&
-    !isNilOrError(locale) &&
-    !initiative.attributes.title_multiloc[locale];
-
-  return (
-    <FeatureFlag name="machine_translations">
-      {showTranslateButton && (
-        <StyledTranslateButton
-          translateButtonClicked={translateButtonClicked}
-          onClick={onClick}
-        />
-      )}
-    </FeatureFlag>
-  );
-};
 
 export default memo<Props>(
   ({
@@ -107,7 +75,8 @@ export default memo<Props>(
         <Inner>
           <Left>{leftContent}</Left>
           <Right>
-            <ActionBarTranslateButton
+            <Outlet
+              id="app.components.PostShowComponents.ActionBar.right"
               translateButtonClicked={translateButtonClicked}
               onClick={onTranslate}
               initiative={initiative}
