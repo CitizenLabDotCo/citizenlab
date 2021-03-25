@@ -666,18 +666,6 @@
         }
       },
 
-      "machine_translations": {
-        "type": "object",
-        "title": "Machine Translations",
-        "description":  "Allows users to see translated content.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
-        }
-      },
-
       "project_reports": {
         "type": "object",
         "title": "Project Reports",
@@ -914,18 +902,6 @@
         }
       },
 
-      "moderation": {
-        "type": "object",
-        "title": "Moderation",
-        "description": "Moderations are pieces of user-generated content that need to be moderated.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
-        }
-      },
-
       "manual_tagging": {
         "type": "object",
         "title": "Manual Tagging",
@@ -961,19 +937,7 @@
           "enabled": { "type": "boolean", "default": false}
         }
       },
-
-      "project_management": {
-        "type": "object",
-        "title": "Project Managers",
-        "description": "Enable the project manager role (users who have some administrative rights at a project level).",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
-        }
-      },
-
+      
       "private_projects": {
         "type": "object",
         "title": "Private projects",

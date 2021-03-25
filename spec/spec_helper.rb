@@ -123,7 +123,6 @@ RSpec.configure do |config|
     require './engines/email_campaigns/spec/factories/deliveries.rb'
     require './engines/email_campaigns/spec/factories/consents.rb'
     require './engines/email_campaigns/spec/factories/unsubscription_tokens.rb'
-    require './engines/machine_translations/spec/factories/machine_translations.rb'
     require './engines/surveys/spec/factories/responses.rb'
     require './engines/polls/spec/factories/questions.rb'
     require './engines/polls/spec/factories/options.rb'

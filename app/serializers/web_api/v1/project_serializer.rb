@@ -128,4 +128,4 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
 end
 
 WebApi::V1::ProjectSerializer.prepend_if_ee('ProjectFolders::WebApi::V1::Patches::ProjectSerializer')
-WebApi::V1::ProjectSerializer.include_if_ee('ProjectVisibility::Patches::WebApi::V1::ProjectSerializer')
+WebApi::V1::ProjectSerializer.include_if_ee('ProjectPermissions::Patches::WebApi::V1::ProjectSerializer')
