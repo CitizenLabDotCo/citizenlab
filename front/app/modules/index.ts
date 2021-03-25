@@ -25,93 +25,95 @@ import idIdCardLookupConfiguration from './id_id_card_lookup';
 import IdFranceConnectConfiguration from './id_franceconnect';
 import IdClaveUnicaConfiguration from './id_clave_unica';
 
+declare var CL_CONFIG: any;
+
 export default loadModules([
   {
     configuration: projectFoldersConfiguration,
-    isEnabled: true,
+    isEnabled: CL_CONFIG['modules']['commercial/project_folders'],
   },
   {
     configuration: smartGroupsConfiguration,
-    isEnabled: true,
+    isEnabled: CL_CONFIG['modules']['commercial/smart_groups'],
   },
   {
     configuration: userCustomFieldsConfiguration,
-    isEnabled: true,
+    isEnabled: CL_CONFIG['modules']['commercial/user_custom_fields'],
   },
   {
     configuration: ideaCustomFieldsConfiguration,
-    isEnabled: true,
+    isEnabled: CL_CONFIG['modules']['commercial/idea_custom_fields'],
   },
   {
     configuration: googleTagManagerConfiguration,
-    isEnabled: true,
+    isEnabled: CL_CONFIG['modules']['commercial/google_tag_manager'],
   },
   {
     configuration: matomoConfiguration,
-    isEnabled: true,
+    isEnabled: CL_CONFIG['modules']['commercial/matomo'],
   },
   {
     configuration: googleAnalyticsConfiguration,
-    isEnabled: true,
+    isEnabled: CL_CONFIG['modules']['commercial/google_analytics'],
   },
   {
     configuration: intercomConfiguration,
-    isEnabled: true,
+    isEnabled: CL_CONFIG['modules']['commercial/intercom'],
   },
   {
     configuration: satismeterConfiguration,
-    isEnabled: true,
+    isEnabled: CL_CONFIG['modules']['commercial/satismeter'],
   },
   {
     configuration: segmentConfiguration,
-    isEnabled: true,
+    isEnabled: CL_CONFIG['modules']['commercial/segment'],
   },
   {
     configuration: granularPermissionsConfiguration,
-    isEnabled: true,
+    isEnabled: CL_CONFIG['modules']['commercial/granular_permissions'],
   },
   {
     configuration: moderationConfiguration,
-    isEnabled: true,
+    isEnabled: CL_CONFIG['modules']['commercial/moderation'],
   },
   {
     configuration: ideaAssignmentConfiguration,
-    isEnabled: true,
+    isEnabled: CL_CONFIG['modules']['commercial/idea_assignment'],
   },
   {
     configuration: customIdeaStatusesConfiguration,
-    isEnabled: true,
+    isEnabled: CL_CONFIG['modules']['commercial/custom_idea_statuses'],
   },
   {
     configuration: geographicDashboardConfiguration,
-    isEnabled: true,
+    isEnabled: CL_CONFIG['modules']['commercial/geographic_dashboard'],
   },
   {
     configuration: customMapsConfiguration,
-    isEnabled: true,
+    isEnabled: CL_CONFIG['modules']['commercial/custom_maps'],
   },
   {
     configuration: idBosaFasConfiguration,
-    isEnabled: true,
+    isEnabled: CL_CONFIG['modules']['commercial/id_bosa_fas'],
   },
   {
     configuration: idCowConfiguration,
-    isEnabled: true,
+    isEnabled: CL_CONFIG['modules']['commercial/id_cow'],
   },
   {
     configuration: idBogusConfiguration,
-    isEnabled: true,
+    isEnabled: CL_CONFIG['modules']['commercial/id_bogus'],
   },
   {
     configuration: idIdCardLookupConfiguration,
-    isEnabled: true,
+    isEnabled: CL_CONFIG['modules']['commercial/id_id_card_lookup'],
   },
   {
     configuration: IdFranceConnectConfiguration,
-    isEnabled: true,
+    isEnabled: CL_CONFIG['modules']['commercial/id_franceconnect'],
   },
   {
     configuration: IdClaveUnicaConfiguration,
-    isEnabled: true,
+    isEnabled: CL_CONFIG['modules']['commercial/id_clave_unica'],
   },
 ]);

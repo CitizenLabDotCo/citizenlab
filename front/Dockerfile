@@ -9,4 +9,4 @@ ADD internals internals
 RUN npm install
 ADD . .
 
-CMD ["npm", "start:production"]
+CMD ["npm", "start"]
