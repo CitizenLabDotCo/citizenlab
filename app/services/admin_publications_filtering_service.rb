@@ -8,11 +8,18 @@ class AdminPublicationsFilteringService
   add_filter('remove_not_allowed_parents') do |visible_publications, options|
     next visible_publications unless ['true', true, '1'].include? options[:remove_not_allowed_parents]
 
-    parents_with_visible_children = visible_publications.where(id: visible_publications.pluck(:parent_id).compact.uniq)
-    parents_without_any_children  = visible_publications.where(children_allowed: true, children_count: 0)
-    non_parents                   = visible_publications.where(children_allowed: false)
+    public_project_ids = Project.where(visible_to: 'public').ids
+    publications_with_public_children = AdminPublication.where(publication_id: public_project_ids)
 
-    parents_with_visible_children.or(parents_without_any_children).or(non_parents)
+    allowed_children = visible_publications.or(publications_with_public_children)
+
+    parents_with_visible_children     = visible_publications.where(id: allowed_children.pluck(:parent_id).compact.uniq)
+    parents_without_any_children      = visible_publications.where(children_allowed: true, children_count: 0)
+    non_parents                       = visible_publications.where(children_allowed: false)
+
+    parents_with_visible_children.or(parents_without_any_children)
+                                 .or(non_parents)
+                                 .or(publications_with_public_children)
   end
 
   add_filter('by_publication_status') do |scope, options|
