@@ -28,7 +28,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // styles
 import styled from 'styled-components';
-import { transparentize, darken } from 'polished';
+import { transparentize } from 'polished';
 import { colors, fontSizes } from 'utils/styleUtils';
 
 const BodyWrapper = styled.div`
