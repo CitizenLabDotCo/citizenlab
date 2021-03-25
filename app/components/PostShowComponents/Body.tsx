@@ -11,7 +11,7 @@ import { Locale } from 'typings';
 import styled, { useTheme } from 'styled-components';
 import { viewportWidths } from 'utils/styleUtils';
 import useFeatureFlag from 'hooks/useFeatureFlag';
-import PostShowComponentsBody from 'modules/machine_translations/citizen/components/PostShowComponentsBody';
+import PostShowTranslatedBody from 'modules/machine_translations/citizen/components/PostShowTranslatedBody';
 
 const Container = styled.div``;
 
@@ -52,7 +52,7 @@ const Body = memo<Props>(
         >
           <div aria-live="polite">
             {isMachineTranslationsEnabled ? (
-              <PostShowComponentsBody
+              <PostShowTranslatedBody
                 postId={postId}
                 locale={locale}
                 postType={postType}
