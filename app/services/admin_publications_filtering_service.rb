@@ -1,21 +1,12 @@
 class AdminPublicationsFilteringService
   include Filterer
 
-  attr_reader :children_counts
+  attr_reader :visible_children_counts_by_parent_id
 
-  # NOTE: This service is very fragile and the order of filters matters for the Front-End.
+  # NOTE: This service is very fragile and the ORDER of filters matters for the Front-End, do not change it.
 
-  # The base scope:
-  #     In controllers, the only filtering perfomed before was AdminPublicationPolicy::Scope,
-  #     so the base scope is the result of permission filters.
-
-  # #filter_childless_parents
-  #   This filter makes sure that:
-  #     1. We show parent publications that have children the current_user can see.
-  #     2. We show parent publications that have no children.
-  #     3. We show parent publications with children that haven't been published yet but the user can see.
-  add_filter('filter_childless_parents') do |visible_publications, options|
-    next visible_publications unless ['true', true, '1'].include? options[:filter_childless_parents]
+  add_filter('remove_not_allowed_parents') do |visible_publications, options|
+    next visible_publications unless ['true', true, '1'].include? options[:remove_not_allowed_parents]
 
     parents_with_visible_children = visible_publications.where(id: visible_publications.pluck(:parent_id).compact.uniq)
     parents_without_any_children  = visible_publications.where(children_allowed: true, children_count: 0)
@@ -43,7 +34,7 @@ class AdminPublicationsFilteringService
     # TODO: this is a workaround (not a filter) to compute @children_counts before the 'top_level_only' and 'folder' filter.
     # It must be done before bc when keeping only top-level publications (by_folder with folder == ""), the
     # children counts cannot be longer properly computed ex post.
-    @children_counts = Hash.new(0).tap do |counts|
+    @visible_children_counts_by_parent_id = Hash.new(0).tap do |counts|
       parent_ids = scope.pluck(:parent_id).compact
       parent_ids.each { |id| counts[id] += 1 }
     end

@@ -41,13 +41,13 @@ describe AdminPublicationsFilteringService do
   end
 
   context 'when a normal user searching from the landing page (passing parsed params)' do
-    let(:options) { { depth: 0, filter_childless_parents: true, publication_statuses: %w[archived published] } }
+    let(:options) { { depth: 0, remove_not_allowed_parents: true, publication_statuses: %w[archived published] } }
 
     include_examples 'when a normal user searching from the landing page'
   end
 
   context 'when a normal user searching from the landing page (passing params as strings)' do
-    let(:options) { { depth: '0', filter_childless_parents: 'true', publication_statuses: %w[archived published] } }
+    let(:options) { { depth: '0', remove_not_allowed_parents: 'true', publication_statuses: %w[archived published] } }
 
     include_examples 'when a normal user searching from the landing page'
   end

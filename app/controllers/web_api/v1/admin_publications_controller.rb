@@ -1,5 +1,5 @@
 class WebApi::V1::AdminPublicationsController < ::ApplicationController
-  before_action :set_admin_publication, only: %i[reorder show children]
+  before_action :set_admin_publication, only: %i[reorder show]
 
   def index
     publication_filterer = AdminPublicationsFilteringService.new
@@ -16,7 +16,7 @@ class WebApi::V1::AdminPublicationsController < ::ApplicationController
       @publications,
       WebApi::V1::AdminPublicationSerializer,
       params: fastjson_params(
-        visible_children_count_by_parent_id: publication_filterer.children_counts
+        visible_children_count_by_parent_id: publication_filterer.visible_children_counts_by_parent_id
       )
     )
   end
