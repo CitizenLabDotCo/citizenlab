@@ -337,6 +337,33 @@ interface State {
   a11y_pronounceLatestOfficialFeedbackPost: boolean;
 }
 
+const InitiativesTranslateButton = ({
+  windowSize,
+  translateButtonClicked,
+  onClick,
+  initiative,
+  locale,
+}) => {
+  const showTranslateButton =
+    !isNilOrError(initiative) &&
+    !isNilOrError(locale) &&
+    !initiative.attributes.title_multiloc[locale];
+
+  const isNotDesktop = windowSize
+    ? windowSize <= viewportWidths.largeTablet
+    : false;
+
+  if (isNotDesktop && showTranslateButton) {
+    <FeatureFlag name="machine_translations">
+      <StyledTranslateButtonMobile
+        translateButtonClicked={translateButtonClicked}
+        onClick={onClick}
+      />
+    </FeatureFlag>;
+  }
+  return null;
+};
+
 export class InitiativesShow extends PureComponent<
   Props & InjectedIntlProps & InjectedLocalized & WithRouterProps,
   State
@@ -491,10 +518,6 @@ export class InitiativesShow extends PureComponent<
             source: 'share_initiative',
             campaign: 'share_content',
           };
-      const showTranslateButton =
-        !isNilOrError(initiative) &&
-        !isNilOrError(locale) &&
-        !initiative.attributes.title_multiloc[locale];
 
       content = (
         <>
@@ -582,14 +605,13 @@ export class InitiativesShow extends PureComponent<
                   />
                 )}
 
-                {isNotDesktop && showTranslateButton && (
-                  <FeatureFlag name="machine_translations">
-                    <StyledTranslateButtonMobile
-                      translateButtonClicked={translateButtonClicked}
-                      onClick={this.onTranslateInitiative}
-                    />
-                  </FeatureFlag>
-                )}
+                <InitiativesTranslateButton
+                  windowSize={windowSize}
+                  translateButtonClicked={translateButtonClicked}
+                  onClick={this.onTranslateInitiative}
+                  initiative={initiative}
+                  locale={locale}
+                />
 
                 {initiativeGeoPosition && initiativeAddress && (
                   <StyledDropdownMap
