@@ -34,7 +34,7 @@ const AdminHeader = styled.div`
 `;
 
 export interface Props {
-  projectTemplateId: string;
+  projectTemplateId?: string;
   goBack?: () => void;
   className?: string;
   onRender?: (hasRendered: boolean) => void;
@@ -88,7 +88,7 @@ const ProjectTemplatePreviewAdmin = memo<Props & WithRouterProps>(
           <ProjectTemplatePreview projectTemplateId={templateId} />
 
           <UseTemplateModal
-            projectTemplateId={projectTemplateId}
+            projectTemplateId={projectTemplateId as string}
             opened={modalOpened}
             emitSuccessEvent={true}
             showGoBackLink={true}
