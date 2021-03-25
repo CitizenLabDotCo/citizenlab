@@ -8,7 +8,7 @@ import {
   machineTranslationByIdeaIdStream,
   machineTranslationByCommentIdStream,
   machineTranslationByInitiativeIdStream,
-} from 'services/machineTranslations';
+} from 'modules/machine_translations/services/machineTranslations';
 import { isNilOrError } from 'utils/helperUtils';
 import { Locale } from 'typings';
 

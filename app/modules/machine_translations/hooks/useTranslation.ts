@@ -5,7 +5,7 @@ import {
   machineTranslationByIdeaIdStream,
   machineTranslationByCommentIdStream,
   machineTranslationByInitiativeIdStream,
-} from 'services/machineTranslations';
+} from 'modules/machine_translations/services/machineTranslations';
 
 interface Parameters {
   attributeName: 'body_multiloc' | 'title_multiloc';
