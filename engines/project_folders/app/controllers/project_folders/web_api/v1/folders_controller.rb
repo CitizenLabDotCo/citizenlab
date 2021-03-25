@@ -8,10 +8,6 @@ module ProjectFolders
       publications = policy_scope(AdminPublication)
       publications = service.filter(publications, params).where(publication_type: Folder.name)
 
-      # Not very satisfied with this ping-pong of SQL queries (knowing that the
-      # AdminPublicationsFilteringService is also making a request on projects).
-      # But could not find a way to eager-load the polymorphic type in the publication
-      # scope.
       @project_folders = Folder.where(id: publications.select(:publication_id))
                                .ordered
                                .includes(:images, admin_publication: [:children])
@@ -25,7 +21,7 @@ module ProjectFolders
       render json: linked_json(
           @project_folders,
           WebApi::V1::FolderSerializer,
-          params: fastjson_params(visible_children_count_by_parent_id: service.visible_children_count_by_parent_id),
+          params: fastjson_params(visible_children_count_by_parent_id: service.visible_children_counts_by_parent_id),
           include: [:admin_publication, :images]
       )
     end
