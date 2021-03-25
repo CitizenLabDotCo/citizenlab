@@ -39,6 +39,7 @@ import { GetInitiativeChildProps } from 'resources/GetInitiative';
 import { GetLocaleChildProps } from 'resources/GetLocale';
 import { ICommentData } from 'services/comments';
 import { GetAppConfigurationLocalesChildProps } from 'resources/GetAppConfigurationLocales';
+import { GetWindowSizeChildProps } from 'resources/GetWindowSize';
 
 type Localize = (
   multiloc: Multiloc | null | undefined,
@@ -195,6 +196,13 @@ export type OutletsPropertyMap = {
     comment: ICommentData;
     locale: GetLocaleChildProps;
     tenantLocales: GetAppConfigurationLocalesChildProps;
+  };
+  'app.containers.InitiativesShow.left': {
+    windowSize: GetWindowSizeChildProps;
+    translateButtonClicked: boolean;
+    onClick: () => void;
+    initiative: GetInitiativeChildProps;
+    locale: GetLocaleChildProps;
   };
 };
 
