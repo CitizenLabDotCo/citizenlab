@@ -13,6 +13,7 @@ import { Locale } from 'typings';
 // styling
 import styled, { useTheme } from 'styled-components';
 import { viewportWidths } from 'utils/styleUtils';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // // i18n
 // import { FormattedMessage } from 'utils/cl-intl';
@@ -35,6 +36,34 @@ interface Props {
   color?: string;
 }
 
+const TranslatedBody = ({
+  translateButtonClicked,
+  locale,
+  postId,
+  postType,
+  body,
+}) => {
+  const translation = useTranslation({
+    attributeName: 'body_multiloc',
+    localeTo: locale,
+    id: postId,
+    context: postType,
+  });
+
+  const content =
+    translateButtonClicked && !isNilOrError(translation)
+      ? translation.attributes.translation
+      : body;
+
+  return (
+    <span
+      dangerouslySetInnerHTML={{
+        __html: content,
+      }}
+    />
+  );
+};
+
 const Body = memo<Props>(
   ({
     postId,
@@ -51,12 +80,7 @@ const Body = memo<Props>(
       ? windowSize.windowWidth <= viewportWidths.smallTablet
       : false;
 
-    const translation = useTranslation({
-      attributeName: 'body_multiloc',
-      localeTo: locale,
-      id: postId,
-      context: postType,
-    });
+    const isMachineTranslationsEnabled = useFeatureFlag('machine_translations');
 
     return (
       <Container id={`e2e-${postType}-description`} className={className}>
@@ -66,11 +90,13 @@ const Body = memo<Props>(
           fontWeight={400}
         >
           <div aria-live="polite">
-            {translateButtonClicked && !isNilOrError(translation) ? (
-              <span
-                dangerouslySetInnerHTML={{
-                  __html: translation.attributes.translation,
-                }}
+            {isMachineTranslationsEnabled ? (
+              <TranslatedBody
+                postId={postId}
+                locale={locale}
+                postType={postType}
+                body={body}
+                translateButtonClicked={translateButtonClicked}
               />
             ) : (
               <span dangerouslySetInnerHTML={{ __html: body }} />
