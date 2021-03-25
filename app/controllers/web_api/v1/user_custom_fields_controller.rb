@@ -88,7 +88,6 @@ class WebApi::V1::UserCustomFieldsController < ApplicationController
 
   def get_ui_schema_multiloc(fields)
     custom_field_service.fields_to_ui_schema_multiloc(AppConfiguration.instance, fields)
-    # mark_locked_fields(ui_schema_multiloc) if current_user
   end
 
   def custom_field_service
