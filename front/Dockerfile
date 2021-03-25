@@ -1,12 +1,14 @@
-FROM node:12
+FROM node:12-alpine
 
-RUN apt-get update && apt-get install libpng12-0
+WORKDIR /front
 
-WORKDIR /cl2-front
+COPY citizenlab.config.json citizenlab.config.*.json /
 
-ADD package.json package.json
-ADD internals internals
+ADD front/package.json front/package-lock.json ./
+ADD front/internals internals
+
 RUN npm install
-ADD . .
+
+ADD front/. .
 
 CMD ["npm", "start"]
