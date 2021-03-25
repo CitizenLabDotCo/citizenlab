@@ -134,17 +134,17 @@ end
 
 ## Add the Actual Campaign
 
-1. Create campaign file in `engines/email_campaigns/app/models/email_campaigns/campaigns`. Include the desired concerns (e.g. `Consentable`, `RecipientConfigurable`, `Disableable`); `ContentConfigurable`, `SenderConfigurable` and `Trackable` only work for manual campaigns. If `Disableable` is not included, the campaign will still be listed by the frontend, but it will not be disableable. The `enabled` attribute can be set before validation to specify whether the campaign is enabled or disabled by default.
+1. Create campaign file in `engines/free/email_campaigns/app/models/email_campaigns/campaigns`. Include the desired concerns (e.g. `Consentable`, `RecipientConfigurable`, `Disableable`); `ContentConfigurable`, `SenderConfigurable` and `Trackable` only work for manual campaigns. If `Disableable` is not included, the campaign will still be listed by the frontend, but it will not be disableable. The `enabled` attribute can be set before validation to specify whether the campaign is enabled or disabled by default.
 
 2. Add the campaign class to `delivery_service.rb`.
 
-3. Add entries for the translations to `engines/email_campaigns/config/locales/en.yml` only.
+3. Add entries for the translations to `engines/free/email_campaigns/config/locales/en.yml` only.
 
 4. Run `rake email_campaigns:assure_campaign_records` to test it in development.
 
 
 ## Update the Specs
 
-1. Add a factory to `./engines/email_campaigns/spec/factories/campaigns.rb`.
+1. Add a factory to `./engines/free/email_campaigns/spec/factories/campaigns.rb`.
 
-2. Add a factory instance to `@campaigns` in `./engines/email_campaigns/spec/acceptance/consents_spec.rb`, if the campaign is consentable.
+2. Add a factory instance to `@campaigns` in `./engines/free/email_campaigns/spec/acceptance/consents_spec.rb`, if the campaign is consentable.

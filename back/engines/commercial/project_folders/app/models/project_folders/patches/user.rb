@@ -28,7 +28,7 @@ module ProjectFolders
       end
 
       def roles_json_schema
-        Rails.root.join('engines/project_folders/config/schemas/user_roles.json_schema').to_s
+        Rails.root.join('engines/commercial/project_folders/config/schemas/user_roles.json_schema').to_s
       end
 
       def highest_role
