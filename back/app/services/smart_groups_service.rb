@@ -1,4 +1,4 @@
-require './engines/verification/lib/smart_group_rules/verified'
+require './engines/commercial/verification/lib/smart_group_rules/verified'
 
 class SmartGroupsService
 
