@@ -43,7 +43,6 @@ class ParticipationContextService
   def initialize
     @memoized_votes_in_context = Hash.new { |hash, key| hash[key] = {} }
     @timeline_service = TimelineService.new
-    @verification_service = Verification::VerificationService.new
   end
 
   def get_participation_context(project)
