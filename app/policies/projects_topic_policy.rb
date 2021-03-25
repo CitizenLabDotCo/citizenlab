@@ -8,7 +8,7 @@ class ProjectsTopicPolicy < ApplicationPolicy
     end
 
     def resolve
-      scope.where(project: Pundit.policy_scope(user, Project).not_draft)
+      scope.where(project: Pundit.policy_scope(user, Project))
     end
   end
 

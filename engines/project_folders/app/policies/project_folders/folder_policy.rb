@@ -9,7 +9,15 @@ module ProjectFolders
       end
 
       def resolve
-        scope.all
+        if user&.admin? || user&.project_folder_moderator? || user&.project_moderator?
+          scope.all
+        else
+          published_folders
+        end
+      end
+
+      def published_folders
+        scope.includes(:admin_publication).where.not(admin_publications: { publication_status: 'draft' })
       end
     end
 

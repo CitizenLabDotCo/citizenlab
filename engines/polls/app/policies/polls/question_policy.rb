@@ -9,7 +9,7 @@ module Polls
       end
 
       def resolve
-        projects = Pundit.policy_scope(user, Project).not_draft
+        projects = Pundit.policy_scope(user, Project)
         phases = Pundit.policy_scope(user, Phase)
         scope
           .where(participation_context: projects)
