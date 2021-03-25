@@ -7,6 +7,6 @@ RSpec::Core::RakeTask.new('public_api:docs:generate' => :environment) do |t, tas
   ENV["DOCS_DIR"] = Rails.root.join('doc', 'public_api').to_s
   ENV["API_NAME"] = "CitizenLab Partner API"
 
-  t.pattern = 'engines/public_api/spec/acceptance/**/*_spec.rb'
+  t.pattern = 'engines/commercial/public_api/spec/acceptance/**/*_spec.rb'
   t.rspec_opts = ["--format RspecApiDocumentation::ApiFormatter"]
 end

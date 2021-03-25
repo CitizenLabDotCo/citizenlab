@@ -118,19 +118,19 @@ RSpec.configure do |config|
 
   # from https://github.com/influitive/apartment/wiki/Testing-Your-Application
   config.before(:suite) do
-    require './engines/email_campaigns/spec/factories/campaigns.rb'
-    require './engines/email_campaigns/spec/factories/campaigns_groups.rb'
-    require './engines/email_campaigns/spec/factories/deliveries.rb'
-    require './engines/email_campaigns/spec/factories/consents.rb'
-    require './engines/email_campaigns/spec/factories/unsubscription_tokens.rb'
-    require './engines/surveys/spec/factories/responses.rb'
-    require './engines/polls/spec/factories/questions.rb'
-    require './engines/polls/spec/factories/options.rb'
-    require './engines/polls/spec/factories/responses.rb'
-    require './engines/polls/spec/factories/response_options.rb'
-    require './engines/verification/spec/factories/verifications.rb'
-    require './engines/volunteering/spec/factories/causes.rb'
-    require './engines/volunteering/spec/factories/volunteers.rb'
+    require './engines/free/email_campaigns/spec/factories/campaigns.rb'
+    require './engines/free/email_campaigns/spec/factories/campaigns_groups.rb'
+    require './engines/free/email_campaigns/spec/factories/deliveries.rb'
+    require './engines/free/email_campaigns/spec/factories/consents.rb'
+    require './engines/free/email_campaigns/spec/factories/unsubscription_tokens.rb'
+    require './engines/free/surveys/spec/factories/responses.rb'
+    require './engines/free/polls/spec/factories/questions.rb'
+    require './engines/free/polls/spec/factories/options.rb'
+    require './engines/free/polls/spec/factories/responses.rb'
+    require './engines/free/polls/spec/factories/response_options.rb'
+    require './engines/commercial/verification/spec/factories/verifications.rb'
+    require './engines/free/volunteering/spec/factories/causes.rb'
+    require './engines/free/volunteering/spec/factories/volunteers.rb'
 
     # Clean all tables to start
     DatabaseCleaner.clean_with :truncation, {:except => %w[spatial_ref_sys]}
