@@ -6,7 +6,7 @@ import { isNilOrError } from 'utils/helperUtils';
 // components
 import CommentVote from './CommentVote';
 import CommentReplyButton from './CommentReplyButton';
-import CommentTranslateButton from '../../../modules/machine_translations/citizen/components/CommentTranslateButton';
+import CommentTranslateButton from 'modules/machine_translations/citizen/components/CommentTranslateButton';
 import CommentsMoreActions from './CommentsMoreActions';
 
 // resources
