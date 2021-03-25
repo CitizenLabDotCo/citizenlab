@@ -8,7 +8,7 @@ end
 gem 'rbtrace'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 6.0.3.1'
+gem 'rails', '~> 6.0.3.5'
 # Use postgresql as the database for Active Record
 gem 'pg' # , '~> 0.18'
 # Use Puma as the app server
@@ -59,7 +59,7 @@ end
 group :test do
   gem 'rubyXL'
   gem 'shoulda-matchers', '~> 3.1'
-  gem 'webmock', '~> 3.4'
+  gem 'webmock', '~> 3.12'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
@@ -85,30 +85,30 @@ gem 'activerecord-postgis-adapter', '~> 6.0.0'
 # required by Rails 6.0.1.
 gem 'apartment', github: 'influitive/apartment', branch: 'development'
 gem 'api-pagination', '~> 4.8.2'
-gem 'carrierwave', '~> 2.0.2'
-gem 'carrierwave-base64', '~> 2.6'
+gem 'carrierwave', '~> 2.2.0'
+gem 'carrierwave-base64', '~> 2.8.1'
 gem 'kaminari', '~> 1.2'
 
 gem 'rails-i18n', '~> 6.0.0'
 
-gem 'awesome_nested_set', '~> 3.2.0'
+gem 'awesome_nested_set', '~> 3.4.0'
 gem 'axlsx', '3.0.0.pre'
-gem 'counter_culture', '~> 2.1'
+gem 'counter_culture', '~> 2.8'
 gem 'fog-aws'
 gem 'groupdate' # , "~> 3.2.0"
 gem 'liquid', '~> 4.0'
 gem 'mini_magick', '~> 4.9'
-gem 'pg_search', '~> 2.1.2'
+gem 'pg_search', '~> 2.3.5'
 gem 'premailer-rails', '~> 1.10.3'
 gem 'rest-client'
 gem 'rgeo-geojson'
 gem 'rubyzip', '~> 1.3.0'
 
 gem 'okcomputer'
-gem 'omniauth' # , '~> 1.7.1'
+gem 'omniauth', '~> 1.9.1'
+gem 'omniauth-rails_csrf_protection'
 gem 'omniauth-facebook'
 gem 'omniauth-google-oauth2'
-gem 'omniauth-twitter'
 gem 'sentry-raven'
 gem 'simple_segment', '~>1.2'
 # This fork was made to update the version of jws which is
@@ -150,6 +150,7 @@ gem 'mjml-rails', '~> 4.4'
 
 gem 'admin_api', path: 'engines/admin_api'
 gem 'custom_maps', path: 'engines/custom_maps'
+gem 'custom_topics', path: 'engines/custom_topics'
 gem 'custom_statuses', path: 'engines/custom_statuses'
 gem 'custom_style', path: 'engines/custom_style'
 gem 'email_campaigns', path: 'engines/email_campaigns'
