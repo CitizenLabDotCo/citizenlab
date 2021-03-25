@@ -246,36 +246,31 @@ In this section, we explain what you need to do (and what you shouldn't forget) 
 
 1. Create a new folder in the `engines` folder and initialize it with an empty `app` folder. Initialize your engine with a nice `README` file.
 
-2. Copy the `bin` folder from another engine (no renamings required).
-
-3. Create a `config` folder with a `config/routes.rb` file initialized as:
+2. Create a `config` folder with a `config/routes.rb` file initialized as:
 ```
 Blorgh::Engine.routes.draw do
 
 end
 ```
 
-4. Create a `db` folder and in it an empty `migrate` folder.
+3. Create a `db` folder and in it an empty `migrate` folder.
 
-5. Create a `lib` folder with an empty `tasks` folder. Copy the `blorgh` folder (with `engine.rb` and `version.rb`) and `blorgh.rb` from another engine and do the necessary renamings in the copied files.
+4. Create a `lib` folder with an empty `tasks` folder. Copy the `blorgh` folder (with `engine.rb` and `version.rb`) and `blorgh.rb` from another engine and do the necessary renamings in the copied files.
 
-6. Copy over `blorgh.gemspec` and rename (no need to include `MIT-LICENSE` or `Rakefile`), remove/add dependencies if you know what you're doing.
+5. Copy over `blorgh.gemspec` and rename (no need to include `MIT-LICENSE` or `Rakefile`), remove/add dependencies if you know what you're doing.
 
-7. Add the following line to your `Gemfile`:
+6. Add the following line to your `Gemfile`:
 ```
 gem 'blorgh', path: 'engines/blorgh'
 ```
 
-8. If you're going to add endpoints to your engine, don't forget to mount it in the main `routes.rb` file.
+7. If you added a gem to `blorgh.gemspec`, you'll also need to `require` it in `lib/blorgh.rb`.
 
-9. If you added a factory into your engine, you have to add this line to `spec_helper.rb`:
-```
-require './engines/blorgh/spec/factories/blorghs.rb'
-```
+8. If some of your engine's models have relationships with models outside the engine, don't forget to add e.g. `has_many` dependencies in decorator files in you engine's `model` folder.
 
-10. If you added a gem to `blorgh.gemspec`, you'll also need to `require` it in `lib/blorgh.rb`.
+9. For feature engines, copy over `lib/blorgh/feature_specification.rb` and `spec/lib/settings_spec.rb` and edit according to your engine's specifications.
 
-11. If some of your engine's models have relationships with models outside the engine, don't forget to add e.g. `has_many` dependencies in decorator files in you engine's `model` folder.
+10. If needed, create a `bin` folder with in it the desired binaries (e.g. `rake`).
 
 
 ## Adding smart group rules

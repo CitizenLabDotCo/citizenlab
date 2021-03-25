@@ -20,6 +20,8 @@ gem 'puma' # , '~> 3.7'
 # Use ActiveModel has_secure_password
 gem 'bcrypt', '~> 3.1.7'
 
+gem 'mimemagic', '~> 0.3.6'
+
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
@@ -150,6 +152,7 @@ gem 'mjml-rails', '~> 4.4'
 
 gem 'admin_api', path: 'engines/admin_api'
 gem 'custom_maps', path: 'engines/custom_maps'
+gem 'custom_topics', path: 'engines/custom_topics'
 gem 'custom_statuses', path: 'engines/custom_statuses'
 gem 'custom_style', path: 'engines/custom_style'
 gem 'email_campaigns', path: 'engines/email_campaigns'
@@ -164,6 +167,7 @@ gem 'id_franceconnect', path: 'engines/id_franceconnect'
 gem 'id_id_card_lookup', path: 'engines/id_id_card_lookup'
 gem 'machine_translations', path: 'engines/machine_translations'
 gem 'matomo', path: 'engines/matomo'
+gem 'moderation', path: 'engines/moderation'
 gem 'multi_tenancy', path: 'engines/multi_tenancy'
 gem 'nlp', path: 'engines/nlp'
 gem 'onboarding', path: 'engines/onboarding'
