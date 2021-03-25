@@ -73,7 +73,7 @@ jobs:
     executor:
       name: cl2-back
       image-tag: $CIRCLE_SHA1
-    working_directory: /citizenlab/back
+    working_directory: /cl2_back
     parallelism: 4
     environment:
       RAILS_ENV: test
