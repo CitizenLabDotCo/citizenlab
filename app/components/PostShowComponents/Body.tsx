@@ -58,16 +58,6 @@ const Body = memo<Props>(
       context: postType,
     });
 
-    const getBodyText = (bodyText: string) => {
-      if (translateButtonClicked && !isNilOrError(translation)) {
-        return translation.attributes.translation;
-      }
-
-      return bodyText;
-    };
-
-    const bodyText = getBodyText(body);
-
     return (
       <Container id={`e2e-${postType}-description`} className={className}>
         <QuillEditedContent
@@ -76,7 +66,15 @@ const Body = memo<Props>(
           fontWeight={400}
         >
           <div aria-live="polite">
-            <span dangerouslySetInnerHTML={{ __html: bodyText }} />
+            {translateButtonClicked && !isNilOrError(translation) ? (
+              <span
+                dangerouslySetInnerHTML={{
+                  __html: translation.attributes.translation,
+                }}
+              />
+            ) : (
+              <span dangerouslySetInnerHTML={{ __html: body }} />
+            )}
           </div>
         </QuillEditedContent>
       </Container>
