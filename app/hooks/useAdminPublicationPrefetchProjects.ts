@@ -15,8 +15,12 @@ export default function useAdminPublicationsPrefetchProjects({
   pageSize = 1000,
   areaFilter,
   publicationStatusFilter,
-  rootLevelOnly,
+  rootLevelOnly = false,
+  removeEmptyParents = false,
 }: InputProps) {
+  const [all, setAll] = useState<IAdminPublicationContent[] | undefined | null>(
+    undefined
+  );
   const [list, setList] = useState<
     IAdminPublicationContent[] | undefined | null
   >(undefined);
@@ -57,11 +61,9 @@ export default function useAdminPublicationsPrefetchProjects({
       publication_statuses: publicationStatuses,
       'page[number]': pageNumber,
       'page[size]': pageSize,
+      filter_childless_parents: removeEmptyParents,
+      depth: rootLevelOnly && 0,
     };
-
-    if (rootLevelOnly) {
-      queryParameters['depth'] = 0;
-    }
 
     const subscription = listAdminPublications({ queryParameters })
       .observable.pipe(
@@ -132,22 +134,62 @@ export default function useAdminPublicationsPrefetchProjects({
       });
 
     return () => subscription.unsubscribe();
-  }, [pageNumber, pageSize, areas, publicationStatuses, rootLevelOnly]);
+  }, [
+    pageNumber,
+    pageSize,
+    areas,
+    publicationStatuses,
+    rootLevelOnly,
+    removeEmptyParents,
+  ]);
+
+  useEffect(() => {
+    const queryParameters = {
+      areas,
+      publication_statuses: publicationStatuses,
+    };
+
+    const subscription = listAdminPublications({ queryParameters })
+      .observable.pipe(distinctUntilChanged())
+      .subscribe((adminPublications) => {
+        const receivedItems = adminPublications.data
+          .map((adminPublication) => {
+            const publicationType =
+              adminPublication.relationships.publication.data.type;
+            const publicationId =
+              adminPublication.relationships.publication.data.id;
+
+            return {
+              publicationId,
+              publicationType,
+              id: adminPublication.id,
+              relationships: adminPublication.relationships,
+              attributes: {
+                ...adminPublication.attributes,
+              },
+            };
+          })
+          .filter((item) => item) as IAdminPublicationContent[];
+
+        setAll(receivedItems);
+      });
+
+    return () => subscription.unsubscribe();
+  }, [areas, publicationStatuses]);
 
   const childrenOf = useCallback(
     ({ id: publicationId }: ChildrenOfProps) => {
-      if (isNilOrError(list)) return [];
+      if (isNilOrError(all)) {
+        return [];
+      }
 
-      const publication = list.find(({ id }) => id === publicationId);
-      if (isNilOrError(publication)) return [];
-
-      const childPublicationIds = publication.relationships.children.data.map(
-        ({ id }) => id
+      return all.filter(
+        (publication) =>
+          !isNilOrError(publication.relationships.parent.data) &&
+          publication.relationships.parent.data.id === publicationId
       );
-
-      return list.filter(({ id }) => childPublicationIds.includes(id));
     },
-    [list]
+    [all]
   );
 
   return {

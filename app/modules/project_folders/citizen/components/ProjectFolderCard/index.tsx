@@ -339,7 +339,7 @@ const ProjectFolderCard = memo<Props>(
             aria-hidden
             className="e2e-folder-card-numberofprojects"
           >
-            {numberOfProjectsInFolder}
+            {numberOfProjectsInFolder !== 0 && numberOfProjectsInFolder}
           </MapIconDescription>
           <ScreenReaderOnly>
             <FormattedMessage
