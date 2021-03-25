@@ -6,14 +6,14 @@ import FeatureFlag from 'components/FeatureFlag';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../../../../components/PostShowComponents/Comments/messages';
+import messages from 'components/PostShowComponents/Comments/messages';
 
 // events
-import { commentTranslateButtonClicked } from '../../../../components/PostShowComponents/Comments/events';
+import { commentTranslateButtonClicked } from 'components/PostShowComponents/Comments/events';
 
 // analytics
 import { trackEventByName } from 'utils/analytics';
-import tracks from '../../../../components/PostShowComponents/Comments/tracks';
+import tracks from 'components/PostShowComponents/Comments/tracks';
 
 // style
 import styled from 'styled-components';
