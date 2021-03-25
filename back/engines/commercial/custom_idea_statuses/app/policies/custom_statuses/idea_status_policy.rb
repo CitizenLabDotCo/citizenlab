@@ -1,4 +1,4 @@
-module CustomStatuses
+module CustomIdeaStatuses
   class IdeaStatusPolicy < ApplicationPolicy
     def create?
       user&.active? && user&.admin?

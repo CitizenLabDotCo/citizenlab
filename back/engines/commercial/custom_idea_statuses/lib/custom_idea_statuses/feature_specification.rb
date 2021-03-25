@@ -1,4 +1,4 @@
-module CustomStatuses
+module CustomIdeaStatuses
   module FeatureSpecification
     extend CitizenLab::Mixins::FeatureSpecification
 
