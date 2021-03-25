@@ -1,0 +1,341 @@
+version: 2.1
+
+parameters:
+  # This parameter is used to trigger the main workflow
+  trigger:
+    type: boolean
+    default: true
+
+  back: # corresponds to the name of the package
+    type: boolean
+    default: false
+
+  front: # corresponds to the name of the package
+    type: boolean
+    default: false
+
+executors:
+  cl2-back:
+    parameters:
+      image-tag:
+        type: string
+    docker:
+      - image: citizenlabdotco/back-essential:<< parameters.image-tag >>
+        auth:
+          username: $DOCKER_USER
+          password: $DOCKER_PASS
+        environment:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_HOST: localhost
+      - image: 'postgis/postgis:12-3.1'
+        environment:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+
+commands:
+  wait-for-postgres:
+    steps:
+      - run:
+          name: Waiting for Postgres to be ready
+          command: |
+            for i in `seq 1 10`;
+            do
+              nc -z localhost 5432 && echo Success && exit 0
+              echo -n .
+              sleep 1
+            done
+            echo Failed waiting for Postgres && exit 1
+
+jobs:
+  trigger-workflows:
+    docker: 
+      - image: cimg/base:stable
+    steps:
+      - checkout
+      - run:
+          name: Trigger workflows
+          command: chmod +x .circleci/monorepo.sh && .circleci/monorepo.sh
+
+  trigger-private-workflows:
+    resource_class: small
+    docker:
+      - image: byrnedo/alpine-curl
+    steps:
+      - run: |
+          curl --request POST \
+            -u $CIRCLECI_API_TOKEN: \
+            --url https://circleci.com/api/v2/project/github/CitizenLabDotCo/citizenlab-ee/pipeline \
+            --header 'content-type: application/json' \
+            --data '{"branch":"master","parameters":{"citizenlab_branch": "$CIRCLE_BRANCH"}}'
+
+  # *************** back ***************
+  
+  back-build-essential-docker-image:
+    working_directory: /citizenlab
+    docker:
+      - image: docker:stable-git
+    steps:
+      - checkout:
+          path: /citizenlab
+
+      - setup_remote_docker:
+          docker_layer_caching: true
+
+      - run: |
+          docker build -t citizenlabdotco/back-essential:$CIRCLE_SHA1 -f back/Dockerfile .
+      - run: |
+          docker login -u $DOCKER_USER -p $DOCKER_PASS
+          docker push citizenlabdotco/back-essential:$CIRCLE_SHA1
+
+
+  back-test:
+    resource_class: small
+    executor:
+      name: cl2-back
+      image-tag: $CIRCLE_SHA1
+    working_directory: /cl2_back
+    parallelism: 4
+    environment:
+      RAILS_ENV: test
+    steps:
+      - wait-for-postgres
+      - run: |
+          rake db:create
+          rake db:schema:load
+      - run: |
+          TESTFILES=$(circleci tests glob "spec/**/*_spec.rb" "engines/*/*/spec/**/*_spec.rb" | circleci tests split  --split-by=timings)
+          echo $TESTFILES
+          bundle exec rspec --format documentation --format RspecJunitFormatter -o spec/reports/rspec.xml -- ${TESTFILES}
+      - store_test_results:
+          path: spec/reports
+
+  back-license-check:
+    resource_class: small
+    executor:
+      name: cl2-back
+      image-tag: $CIRCLE_SHA1
+    working_directory: /cl2_back
+    steps:
+      - run: license_finder
+
+  back-web-api-docs:
+    resource_class: small
+    executor:
+      name: cl2-back
+      image-tag: $CIRCLE_SHA1
+    working_directory: /cl2_back
+    environment:
+      RAILS_ENV: test
+    steps:
+      - wait-for-postgres
+      - run: |
+          rake db:create
+          rake db:schema:load
+      - run: bundle exec rake web_api:docs:generate
+      - run: apt-get -y install awscli
+      - run: aws s3 sync doc/api s3://developers.citizenlab.co/api-docs/essential/frontweb_api/$CIRCLE_BRANCH --delete --acl public-read
+
+  # *************** front ***************
+
+  front-test:
+    docker:
+      - image: citizenlabdotco/cl2-devops-front-buildenv
+    working_directory: /citizenlab/front
+    steps:
+      - checkout:
+          path: /citizenlab
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+          - v1-npm-cache-{{ checksum "package.json" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-npm-cache-
+      - run: npm ci
+      - save_cache:
+          paths:
+            - /root/.npm
+          key: v1-npm-cache-{{ checksum "package.json" }}
+      - run:
+          name: Run tests with JUnit as reporter
+          environment:
+            JEST_JUNIT_OUTPUT: "reports/junit/js-test-results.xml"
+          command: npm run test:ci
+      - store_test_results:
+          path: ./reports/junit
+      - store_artifacts:
+          path: ./reports/junit
+
+  front-lint:
+    docker:
+      - image: citizenlabdotco/cl2-devops-front-buildenv
+    working_directory: /citizenlab/front
+    steps:
+      - checkout:
+          path: /citizenlab
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+          - v1-npm-cache-{{ checksum "package.json" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-npm-cache-
+      - run: npm ci
+      - save_cache:
+          paths:
+            - /root/.npm
+          key: v1-npm-cache-{{ checksum "package.json" }}
+      - run: npm run lint:ts --silent
+
+  front-license-check:
+    docker:
+      - image: licensefinder/license_finder
+    working_directory: /citizenlab/front
+    resource_class: small
+    steps:
+      - checkout:
+          path: /citizenlab
+      - restore_cache:
+          keys:
+          - v1-npm-cache-{{ checksum "package.json" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-npm-cache-
+      - run: npm ci
+      - run: /bin/bash -lc "cd /citizenlab/front && license_finder"
+
+  front-build:
+    docker:
+      - image: citizenlabdotco/cl2-devops-front-buildenv
+    resource_class: medium+
+    working_directory: /citizenlab/front
+    steps:
+      - checkout:
+          path: /citizenlab
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+          - v1-npm-cache-{{ checksum "package.json" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-npm-cache-
+      - run: npm ci
+      - save_cache:
+          paths:
+            - /root/.npm
+          key: v1-npm-cache-{{ checksum "package.json" }}
+      - run:
+          command: TEST_BUILD="true" npm run build
+          no_output_timeout: '30m'
+
+  front-extract-intl:
+    docker:
+      - image: citizenlabdotco/cl2-devops-front-buildenv
+    working_directory: /citizenlab/front
+    steps:
+      - checkout:
+          path: /citizenlab
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+          - v1-npm-cache-{{ checksum "package.json" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-npm-cache-
+      - run: npm ci
+      - save_cache:
+          paths:
+            - /root/.npm
+          key: v1-npm-cache-{{ checksum "package.json" }}
+      - run: npm run extract-intl
+      - run: git add app/translations/*.json
+      - run: git config --global user.email "hello@citizenlab.co"
+      - run: git config --global user.name "CircleCI"
+      - add_ssh_keys:
+          fingerprints:
+            - "54:03:ca:0f:4e:7a:fc:fa:6e:30:ef:80:2e:da:02:c4"
+      - run: git diff --quiet app/translations && git diff --staged --quiet app/translations || git commit -m "Translations updated by CI (extract-intl)"
+      - run: git push origin $CIRCLE_BRANCH
+
+
+workflows:
+  version: 2
+
+  ci:
+    when: << pipeline.parameters.trigger >>
+    jobs:
+      - trigger-workflows
+      - trigger-private-workflows:
+          context: circleci-api-token
+
+  # *************** back ***************
+  back:
+    when: << pipeline.parameters.back >>
+    jobs:
+      - back-build-essential-docker-image:
+          context: docker-hub-access
+          filters:
+            branches:
+              ignore:
+                - crowdin_master
+      - back-test:
+          context: docker-hub-access
+          requires:
+            - back-build-essential-docker-image
+          filters:
+            branches:
+              ignore:
+                - crowdin_master
+      - back-license-check:
+          context: docker-hub-access
+          requires:
+            - back-build-essential-docker-image
+          filters:
+            branches:
+              ignore:
+                - crowdin_master
+      - back-web-api-docs:
+          context: docker-hub-access
+          requires:
+            - back-test
+          filters:
+            branches:
+              ignore:
+                - crowdin_master
+  # *************** front ***************
+  front:
+    when: << pipeline.parameters.front >>
+    jobs:
+      - front-test:
+          filters:
+            branches:
+              ignore:
+                - crowdin_master
+                - /l10n_.*/
+                - master
+      - front-lint:
+          filters:
+            branches:
+              ignore:
+                - crowdin_master
+                - /l10n_.*/
+                - master
+                - production
+      - front-license-check:
+          filters:
+            branches:
+              ignore:
+                - crowdin_master
+                - /l10n_.*/
+      - front-build:
+          filters:
+            branches:
+              ignore:
+                - crowdin_master
+                - /l10n_.*/
+                - master
+                - production
+      - front-extract-intl:
+          filters:
+            branches:
+              ignore:
+                - crowdin_master
+                - /l10n_.*/
+                - master
+                - production
