@@ -2,6 +2,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import React, { ReactNode } from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 import ProjectVisibility from './admin/containers/index';
+import Tab from './admin/components/Tab';
 
 type RenderOnFeatureFlagProps = {
   children: ReactNode;
@@ -24,6 +25,13 @@ const configuration: ModuleConfiguration = {
         <ProjectVisibility {...props} />
       </RenderOnFeatureFlag>
     ),
+    'app.containers.Admin.projects.edit': (props) => {
+      return (
+        <RenderOnFeatureFlag>
+          <Tab {...props} />
+        </RenderOnFeatureFlag>
+      );
+    },
   },
 };
 

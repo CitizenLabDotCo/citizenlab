@@ -70,10 +70,6 @@ interface DataProps {
   customTopicsEnabled: GetFeatureFlagChildProps;
   phases: GetPhasesChildProps;
   project: GetProjectChildProps;
-  projectVisibilityEnabled: GetFeatureFlagChildProps;
-  granularPermissionsEnabled: GetFeatureFlagChildProps;
-  projectManagementEnabled: GetFeatureFlagChildProps;
-  ideaAssignmentEnabled: GetFeatureFlagChildProps;
   previousPathName: string | null;
 }
 
@@ -98,56 +94,50 @@ export class AdminProjectEdition extends PureComponent<
       tabs: [
         {
           label: formatMessage(messages.generalTab),
-          url: `edit`,
+          url: 'edit',
           name: 'general',
         },
         {
           label: formatMessage(messages.descriptionTab),
-          url: `description`,
+          url: 'description',
           name: 'description',
         },
         {
           label: formatMessage(messages.inputManagerTab),
-          url: `ideas`,
+          url: 'ideas',
           name: 'ideas',
         },
         {
           label: formatMessage(messages.pollTab),
-          url: `poll`,
+          url: 'poll',
           feature: 'polls',
           name: 'poll',
         },
         {
           label: formatMessage(messages.surveyResultsTab),
-          url: `survey-results`,
+          url: 'survey-results',
           name: 'survey-results',
         },
         {
           label: formatMessage(messages.phasesTab),
-          url: `timeline`,
+          url: 'timeline',
           name: 'phases',
         },
         {
           label: formatMessage(messages.topicsTab),
-          url: `topics`,
+          url: 'topics',
           name: 'topics',
         },
         {
           label: formatMessage(messages.volunteeringTab),
-          url: `volunteering`,
+          url: 'volunteering',
           feature: 'volunteering',
           name: 'volunteering',
         },
         {
           label: formatMessage(messages.eventsTab),
-          url: `events`,
+          url: 'events',
           name: 'events',
-        },
-        {
-          label: formatMessage(messages.permissionsTab),
-          url: `permissions`,
-          feature: 'private_projects',
-          name: 'permissions',
         },
       ],
       goBackUrl: null,
@@ -169,10 +159,6 @@ export class AdminProjectEdition extends PureComponent<
       surveys_enabled,
       phases,
       customTopicsEnabled,
-      projectVisibilityEnabled,
-      granularPermissionsEnabled,
-      projectManagementEnabled,
-      ideaAssignmentEnabled,
     } = this.props;
     const processType = project.attributes.process_type;
     const participationMethod = project.attributes.participation_method;
@@ -316,25 +302,17 @@ export class AdminProjectEdition extends PureComponent<
       events: function isEventsTabHidden() {
         return false;
       },
-      permissions: function isPermissionsTabHidden() {
-        if (
-          !projectVisibilityEnabled &&
-          !granularPermissionsEnabled &&
-          !projectManagementEnabled &&
-          !ideaAssignmentEnabled
-        ) {
-          return true;
-        }
-
-        return false;
-      },
     };
 
     const tabNames = tabs.map((tab) => tab.name);
     let cleanedTabs = tabs;
 
     tabNames.forEach((tabName) => {
-      if (tabName && tabHideConditions[tabName]()) {
+      if (
+        tabName &&
+        tabHideConditions[tabName] &&
+        tabHideConditions[tabName]()
+      ) {
         cleanedTabs = reject(cleanedTabs, { name: tabName });
       }
     });
@@ -453,10 +431,6 @@ const Data = adopt<DataProps, InputProps & WithRouterProps>({
   surveys_enabled: <GetFeatureFlag name="surveys" />,
   typeform_enabled: <GetFeatureFlag name="typeform_surveys" />,
   customTopicsEnabled: <GetFeatureFlag name="custom_topics" />,
-  projectVisibilityEnabled: <GetFeatureFlag name="project_visibility" />,
-  granularPermissionsEnabled: <GetFeatureFlag name="granular_permissions" />,
-  projectManagementEnabled: <GetFeatureFlag name="project_management" />,
-  ideaAssignmentEnabled: <GetFeatureFlag name="idea_assignment" />,
   phases: ({ params, render }) => (
     <GetPhases projectId={params.projectId}>{render}</GetPhases>
   ),

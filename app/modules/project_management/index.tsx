@@ -2,7 +2,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import React, { ReactNode } from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 import ProjectManagement from './admin/containers/ProjectManagement';
-
+import Tab from './admin/components/Tab';
 type RenderOnFeatureFlagProps = {
   children: ReactNode;
 };
@@ -24,6 +24,13 @@ const configuration: ModuleConfiguration = {
         <ProjectManagement {...props} />
       </RenderOnFeatureFlag>
     ),
+    'app.containers.Admin.projects.edit': (props) => {
+      return (
+        <RenderOnFeatureFlag>
+          <Tab {...props} />
+        </RenderOnFeatureFlag>
+      );
+    },
   },
 };
 
