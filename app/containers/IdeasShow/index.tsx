@@ -88,7 +88,7 @@ import {
   columnsGapTablet,
   pageContentMaxWidth,
 } from './styleConstants';
-import IdeasShowTranslateButton from 'modules/machine_translations/citizen/components/IdeasShowTranslateButton';
+import Outlet from 'components/Outlet';
 
 const contentFadeInDuration = 250;
 const contentFadeInEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
@@ -599,7 +599,8 @@ export class IdeasShow extends PureComponent<
                   <Image src={ideaImageLarge} alt="" id="e2e-idea-image" />
                 )}
 
-                <IdeasShowTranslateButton
+                <Outlet
+                  id="app.containers.IdeasShow.left"
                   idea={idea}
                   locale={locale}
                   onClick={this.onTranslateIdea}

@@ -3,6 +3,7 @@ import React from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 import ActionBarTranslateButton from './citizen/components/ActionBarTranslateButton';
 import CommentTranslateButton from './citizen/components/CommentTranslateButton';
+import IdeasShowTranslateButton from './citizen/components/IdeasShowTranslateButton';
 import InitiativesTranslateButton from './citizen/components/InitiativesTranslateButton';
 
 const configuration: ModuleConfiguration = {
@@ -12,6 +13,7 @@ const configuration: ModuleConfiguration = {
       <CommentTranslateButton {...props} />
     ),
     'app.containers.InitiativesShow.left': InitiativesTranslateButton,
+    'app.containers.IdeasShow.left': IdeasShowTranslateButton,
   },
 };
 

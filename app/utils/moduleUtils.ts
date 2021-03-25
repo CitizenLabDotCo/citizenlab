@@ -40,6 +40,7 @@ import { GetLocaleChildProps } from 'resources/GetLocale';
 import { ICommentData } from 'services/comments';
 import { GetAppConfigurationLocalesChildProps } from 'resources/GetAppConfigurationLocales';
 import { GetWindowSizeChildProps } from 'resources/GetWindowSize';
+import { GetIdeaChildProps } from 'resources/GetIdea';
 
 type Localize = (
   multiloc: Multiloc | null | undefined,
@@ -202,6 +203,12 @@ export type OutletsPropertyMap = {
     translateButtonClicked: boolean;
     onClick: () => void;
     initiative: GetInitiativeChildProps;
+    locale: GetLocaleChildProps;
+  };
+  'app.containers.IdeasShow.left': {
+    translateButtonClicked: boolean;
+    onClick: () => void;
+    idea: GetIdeaChildProps;
     locale: GetLocaleChildProps;
   };
 };
