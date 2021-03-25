@@ -8,6 +8,10 @@ import Error from 'components/UI/Error';
 import { Spinner } from 'cl2-component-library';
 import UserCustomFieldsForm from 'modules/user_custom_fields/citizen/components/UserCustomFieldsForm';
 
+// hooks
+import useAuthUser from 'hooks/useAuthUser';
+import useUserCustomFieldsSchema from 'modules/user_custom_fields/hooks/useUserCustomFieldsSchema';
+
 // services
 import { completeRegistration } from 'services/users';
 
@@ -32,9 +36,6 @@ import {
   TSignUpSteps,
   TSignUpStepConfigurationObject,
 } from 'components/SignUpIn/SignUp';
-
-import useAuthUser from 'hooks/useAuthUser';
-import useUserCustomFieldsSchema from 'modules/user_custom_fields/hooks/useUserCustomFieldsSchema';
 
 const Loading = styled.div`
   padding-top: 15px;
@@ -87,7 +88,7 @@ type InputProps = {
     key: TSignUpSteps;
     configuration: TSignUpStepConfigurationObject;
   }) => void;
-  step: TSignUpSteps;
+  step: TSignUpSteps | null;
 };
 
 interface Props extends InputProps, InjectedIntlProps {}
@@ -135,9 +136,7 @@ const CustomFieldsStep: FC<Props & InjectedIntlProps> = memo(
         try {
           setProcessing(true);
           setUnknownError(null);
-
           await completeRegistration(formData);
-
           setProcessing(false);
           trackEventByName(tracks.signUpCustomFieldsStepCompleted);
           onCompleted();
@@ -151,13 +150,8 @@ const CustomFieldsStep: FC<Props & InjectedIntlProps> = memo(
 
     const skipStep = async (event: FormEvent) => {
       event.preventDefault();
-
       trackEventByName(tracks.signUpCustomFieldsStepSkipped);
-
-      if (!isNilOrError(authUser)) {
-        await completeRegistration({});
-      }
-
+      !isNilOrError(authUser) && (await completeRegistration({}));
       onCompleted();
     };
 

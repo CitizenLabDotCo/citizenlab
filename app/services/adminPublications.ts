@@ -25,6 +25,7 @@ export interface IAdminPublicationData {
   attributes: {
     parent_id?: string;
     ordering: number;
+    depth: number;
     publication_status: PublicationStatus;
     visible_children_count: number;
     publication_title_multiloc: Multiloc;

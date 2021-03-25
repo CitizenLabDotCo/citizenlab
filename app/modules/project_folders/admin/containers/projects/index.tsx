@@ -120,29 +120,21 @@ class AdminFolderProjectsList extends Component<
   render() {
     const { adminPublications, authUser, projectFolder } = this.props;
     const { processing } = this.state;
-    const { topLevel: topLevelPublications } = adminPublications;
+    const { list: allPublications } = adminPublications;
+    const userIsAdmin = authUser && isAdmin({ data: authUser });
 
     if (isNilOrError(projectFolder)) return null;
 
     const projectsInFolder = adminPublications.childrenOf({
-      id: projectFolder?.relationships?.admin_publication?.data?.id,
+      id: projectFolder.relationships.admin_publication.data?.id,
     });
 
-    const userIsAdmin = authUser && isAdmin({ data: authUser });
-
-    const otherProjects =
-      !isNilOrError(topLevelPublications) && topLevelPublications
-        ? topLevelPublications.filter(
-            (item) => item.publicationType === 'project'
-          )
-        : null;
-
-    const inFolderFinalList =
-      !isNilOrError(projectsInFolder) &&
-      projectsInFolder &&
-      projectsInFolder.length > 0
-        ? projectsInFolder.filter((item) => item.publicationType === 'project')
-        : null;
+    const otherProjects = !isNilOrError(allPublications)
+      ? allPublications.filter(
+          (item) =>
+            item.publicationType === 'project' && item.attributes.depth === 0
+        )
+      : null;
 
     const projectFolderId = projectFolder.id;
     return (
@@ -155,10 +147,10 @@ class AdminFolderProjectsList extends Component<
             <Spacer />
           </ListHeader>
 
-          {inFolderFinalList ? (
+          {!isNilOrError(projectsInFolder) && projectsInFolder.length > 0 ? (
             <SortableList
-              key={`IN_FOLDER_LIST${inFolderFinalList.length}`}
-              items={inFolderFinalList}
+              key={`IN_FOLDER_LIST${projectsInFolder.length}`}
+              items={projectsInFolder}
               onReorder={this.handleReorder}
               className="projects-list e2e-admin-folder-projects-list"
               id="e2e-admin-folders-projects-list"
