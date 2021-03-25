@@ -9,7 +9,7 @@ import {
   refitBounds,
 } from './setup';
 
-import { addLayersControl, removeControl } from './controls';
+import { addLayersControl, removeLayersControl } from './controls';
 import { addLayers, removeLayers, removeLayer } from './layers';
 import { addMarkersToMap, addClusterGroup } from './markers';
 
@@ -23,7 +23,7 @@ export default {
   addOnZoomHandler,
   refitBounds,
   addLayersControl,
-  removeControl,
+  removeLayersControl,
   addLayers,
   removeLayers,
   removeLayer,

@@ -1,4 +1,4 @@
-import React, { memo, useMemo, useState, useCallback } from 'react';
+import React, { memo, useMemo, useState } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
@@ -158,12 +158,12 @@ const Map = memo<IMapProps & IMapConfigProps>(
       }
     );
 
-    const handleLeafletConfigChange = useCallback(
-      (newConfig: ILeafletMapConfig) => {
-        setLeafletMapConfig({ ...leafletMapConfig, ...newConfig });
-      },
-      [leafletMapConfig, setLeafletMapConfig]
-    );
+    const handleLeafletConfigChange = (newConfig: ILeafletMapConfig) => {
+      setLeafletMapConfig((prevLeafletMapConfig) => ({
+        ...prevLeafletMapConfig,
+        ...newConfig,
+      }));
+    };
 
     const handleBoxOnClose = (event: React.FormEvent) => {
       event.preventDefault();

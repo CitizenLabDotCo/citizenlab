@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback, useMemo } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { isEmpty } from 'lodash-es';
 import usePrevious from 'hooks/usePrevious';
 
@@ -81,7 +81,7 @@ export default function useLeaflet(
     setMarkerClusterGroup,
   ] = useState<L.MarkerClusterGroup | null>(null);
 
-  const [layerControl, setLayerControl] = useState<L.Control.Layers | null>(
+  const [layersControl, setLayersControl] = useState<L.Control.Layers | null>(
     null
   );
 
@@ -100,51 +100,19 @@ export default function useLeaflet(
       (memo, l) => memo.extend(l.getBounds()),
       L.latLngBounds([])
     );
-  }, [points, layers, markerClusterGroup]);
+  }, [allFeatures]);
 
   // Prevstate
-  const prevMap = usePrevious(map);
   const prevMarkers = usePrevious(markers);
   const prevPoints = usePrevious(points);
-  const prevCenter = usePrevious(center);
-  const prevZoom = usePrevious(zoom);
   const prevGeoJsonLayers = usePrevious(geoJsonLayers);
-
-  // Callbacks
-  const addGeoJsonLayers = useCallback(
-    (layerControl) => {
-      if (!map || !geoJsonLayers) {
-        return;
-      }
-
-      const options = {
-        layerControl,
-        overlay: layerOverlay,
-        popup: layerPopup,
-        tooltip: layerTooltip,
-        marker: layerMarker,
-      };
-
-      const layers = service.addLayers(map, geoJsonLayers, options);
-
-      setLayers(layers);
-    },
-    [
-      map,
-      geoJsonLayers,
-      prevGeoJsonLayers,
-      layerOverlay,
-      layerPopup,
-      layerTooltip,
-      layerMarker,
-    ]
-  );
 
   // Effects
   const setup = () => {
     if (map) {
       return;
     }
+
     const options = {
       tileProvider,
       onClick,
@@ -158,41 +126,49 @@ export default function useLeaflet(
 
     setMap(newMap);
   };
-  useEffect(setup, [mapId, tileProvider, onClick, zoom]);
+  useEffect(setup, [map, mapId, tileProvider, onClick, zoom, center]);
 
   const refreshCenterAndZoom = () => {
-    if (!map || (center !== prevCenter && zoom !== prevZoom)) {
-      return;
+    if (map) {
+      service.changeView(map, center, zoom);
     }
-
-    service.changeView(map, center, zoom);
   };
-  useEffect(refreshCenterAndZoom, [map, center, prevCenter, zoom, prevZoom]);
+  useEffect(refreshCenterAndZoom, [map, center, zoom]);
 
   const refreshLayers = () => {
     if (!map || prevGeoJsonLayers === geoJsonLayers) {
       return;
     }
 
-    service.removeControl(map, layerControl);
+    service.removeLayersControl(map, layersControl);
     service.removeLayers(map, layers);
 
-    const newLayerControl = service.addLayersControl(map);
+    const newLayersControl = service.addLayersControl(map);
+    const newLayers = service.addLayers(map, geoJsonLayers, {
+      layersControl: newLayersControl,
+      overlay: layerOverlay,
+      popup: layerPopup,
+      tooltip: layerTooltip,
+      marker: layerMarker,
+    });
 
-    setLayerControl(newLayerControl);
-    addGeoJsonLayers(newLayerControl);
+    setLayers(newLayers);
+    setLayersControl(newLayersControl);
   };
   useEffect(refreshLayers, [
     map,
-    geoJsonLayers,
     prevGeoJsonLayers,
-    layerControl,
+    geoJsonLayers,
+    layerOverlay,
+    layerPopup,
+    layerTooltip,
+    layerMarker,
+    layersControl,
     layers,
-    addGeoJsonLayers,
   ]);
 
   const refreshMarkers = () => {
-    if (!map || (prevPoints === points && prevMap === map)) {
+    if (!map || prevPoints === points) {
       return;
     }
 
@@ -202,17 +178,10 @@ export default function useLeaflet(
 
     setMarkers(newMarkers);
   };
-  useEffect(refreshMarkers, [
-    fitBounds,
-    map,
-    prevMap,
-    points,
-    prevPoints,
-    marker,
-  ]);
+  useEffect(refreshMarkers, [fitBounds, map, points, prevPoints, marker]);
 
   const refreshClusterGroups = () => {
-    if (!map || (prevMap === map && prevMarkers === markers)) {
+    if (!map || prevMarkers === markers) {
       return;
     }
 
@@ -228,7 +197,6 @@ export default function useLeaflet(
   };
   useEffect(refreshClusterGroups, [
     markerClusterGroup,
-    prevMap,
     map,
     prevMarkers,
     markers,
