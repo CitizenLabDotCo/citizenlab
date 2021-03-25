@@ -30,6 +30,7 @@ import messages from './messages';
 // style
 import styled from 'styled-components';
 import { colors, fontSizes, isRtl } from 'utils/styleUtils';
+import Outlet from 'components/Outlet';
 
 const footerHeight = '30px';
 const footerTopMargin = '6px';
@@ -100,11 +101,6 @@ const StyledCommentVote = styled(CommentVote)`
 `;
 
 const StyledCommentReplyButton = styled(CommentReplyButton)`
-  height: ${footerHeight};
-  margin-top: ${footerTopMargin};
-`;
-
-const StyledCommentTranslateButton = styled(CommentTranslateButton)`
   height: ${footerHeight};
   margin-top: ${footerTopMargin};
 `;
@@ -191,7 +187,8 @@ class CommentFooter extends PureComponent<Props & InjectedIntlProps, State> {
               comment={comment}
               commentingPermissionInitiative={commentingPermissionInitiative}
             />
-            <StyledCommentTranslateButton
+            <Outlet
+              id="app.components.PostShowComponents.CommentFooter.left"
               comment={comment}
               locale={locale}
               tenantLocales={tenantLocales}

@@ -37,6 +37,8 @@ import { IdeaHeaderCellComponentProps } from 'components/admin/PostManager/compo
 import { IVerificationMethod } from 'services/verificationMethods';
 import { GetInitiativeChildProps } from 'resources/GetInitiative';
 import { GetLocaleChildProps } from 'resources/GetLocale';
+import { ICommentData } from 'services/comments';
+import { GetAppConfigurationLocalesChildProps } from 'resources/GetAppConfigurationLocales';
 
 type Localize = (
   multiloc: Multiloc | null | undefined,
@@ -188,6 +190,11 @@ export type OutletsPropertyMap = {
     onClick: () => void;
     initiative: GetInitiativeChildProps;
     locale: GetLocaleChildProps;
+  };
+  'app.components.PostShowComponents.CommentFooter.left': {
+    comment: ICommentData;
+    locale: GetLocaleChildProps;
+    tenantLocales: GetAppConfigurationLocalesChildProps;
   };
 };
 
