@@ -1,6 +1,6 @@
 import React, { memo /*, useState */ } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import useTranslation from 'hooks/useTranslation';
+import useTranslation from 'modules/machine_translations/hooks/useTranslation';
 import useWindowSize from 'hooks/useWindowSize';
 
 // components
