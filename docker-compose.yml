@@ -70,6 +70,7 @@ services:
       - ".env-front"
     volumes:
       - "./front:/front"
+      - /front/node_modules
     command: npm start
 
   # Include this and uncomment :mem_cache_store in
