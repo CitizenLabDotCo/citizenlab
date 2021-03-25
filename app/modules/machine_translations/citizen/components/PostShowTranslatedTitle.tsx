@@ -5,6 +5,7 @@ import GetMachineTranslation, {
   GetMachineTranslationChildProps,
 } from 'modules/machine_translations/resources/GetMachineTranslation';
 import { isNilOrError } from 'utils/helperUtils';
+import { Locale } from 'typings';
 
 const parseTranslation = (
   translation: GetMachineTranslationChildProps,
@@ -17,6 +18,16 @@ const parseTranslation = (
   return title;
 };
 
+interface Props {
+  postId: string;
+  postType: 'idea' | 'initiative';
+  title: string;
+  locale?: Locale;
+  translateButtonClicked?: boolean;
+  color?: string;
+  align: 'left' | 'center';
+}
+
 const PostShowTranslatedTitle = ({
   locale,
   translateButtonClicked,
@@ -25,7 +36,7 @@ const PostShowTranslatedTitle = ({
   color,
   align,
   title,
-}) => {
+}: Props) => {
   if (locale && translateButtonClicked) {
     return (
       <GetMachineTranslation
