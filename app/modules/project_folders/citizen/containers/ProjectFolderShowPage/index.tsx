@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useMemo } from 'react';
 import { isError, isUndefined } from 'lodash-es';
 import { withRouter, WithRouterProps } from 'react-router';
 import { isNilOrError } from 'utils/helperUtils';
@@ -159,19 +159,32 @@ const ProjectFolderShowPage = memo<{
   const authUser = useAuthUser();
   const locale = useLocale();
   const tenant = useAppConfiguration();
-  const adminPublication = useAdminPublicationPrefetchProjects({
-    folderId: projectFolder.id,
+  const {
+    childrenOf: adminPublicationChildrenOf,
+    list: adminPublicationsList,
+  } = useAdminPublicationPrefetchProjects({
     publicationStatusFilter: ['published', 'archived'],
   });
   const { windowWidth } = useWindowSize();
 
   const smallerThan1100px = windowWidth ? windowWidth <= 1100 : false;
   const folderNotFound = isError(projectFolder);
+
+  const childProjects = useMemo(() => {
+    if (isNilOrError(projectFolder.relationships.admin_publication)) {
+      return;
+    }
+
+    return adminPublicationChildrenOf({
+      id: projectFolder.relationships.admin_publication?.data?.id,
+    });
+  }, [adminPublicationChildrenOf, projectFolder]);
+
   const loading =
     isUndefined(locale) ||
     isUndefined(tenant) ||
     isUndefined(projectFolder) ||
-    isUndefined(adminPublication?.list);
+    isUndefined(adminPublicationsList);
 
   const userCanEditProject =
     !isNilOrError(authUser) && isAdmin({ data: authUser });
@@ -217,9 +230,9 @@ const ProjectFolderShowPage = memo<{
                     projectFolder={projectFolder}
                   />
                   <StyledProjectFolderProjectCards
-                    list={adminPublication.list}
+                    list={childProjects}
                     className={
-                      adminPublication.list?.filter(
+                      childProjects?.filter(
                         (item) => item.publicationType === 'project'
                       )?.length === 1 ||
                       (windowWidth > 1000 && windowWidth < 1350)
@@ -239,9 +252,7 @@ const ProjectFolderShowPage = memo<{
                 </StyledContentContainer>
                 <CardsWrapper>
                   <ContentContainer maxWidth={maxPageWidth}>
-                    <StyledProjectFolderProjectCards
-                      list={adminPublication.list}
-                    />
+                    <StyledProjectFolderProjectCards list={childProjects} />
                   </ContentContainer>
                 </CardsWrapper>
               </>

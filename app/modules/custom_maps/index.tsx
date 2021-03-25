@@ -6,23 +6,19 @@ import Legend from './shared/components/Map/Legend';
 
 const configuration: ModuleConfiguration = {
   routes: {
-    adminProjectMapTab: [
+    'admin.projects': [
       {
         path: '/:locale/admin/projects/:projectId/map',
-        name: 'admin projects map',
+        name: 'map',
         container: () =>
-          import(
-            'modules/custom_maps/admin/containers/ProjectCustomMapConfigPage'
-          ),
+          import('./admin/containers/ProjectCustomMapConfigPage'),
       },
     ],
   },
   outlets: {
-    'app.containers.Admin.projects.edit.tabs.map': (props) => (
-      <Tab {...props} />
-    ),
     'app.components.Map.leafletConfig': (props) => <LeafletConfig {...props} />,
     'app.components.Map.Legend': (props) => <Legend {...props} />,
+    'app.containers.Admin.projects.edit': (props) => <Tab {...props} />,
   },
 };
 

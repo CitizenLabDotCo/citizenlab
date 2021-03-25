@@ -81,7 +81,7 @@ export default function useLeaflet(
     setMarkerClusterGroup,
   ] = useState<L.MarkerClusterGroup | null>(null);
 
-  const [layerControl, setLayerControl] = useState<L.Control.Layers | null>(
+  const [layersControl, setLayersControl] = useState<L.Control.Layers | null>(
     null
   );
 
@@ -103,7 +103,6 @@ export default function useLeaflet(
   }, [allFeatures]);
 
   // Prevstate
-  const prevMap = usePrevious(map);
   const prevMarkers = usePrevious(markers);
   const prevPoints = usePrevious(points);
   const prevGeoJsonLayers = usePrevious(geoJsonLayers);
@@ -141,12 +140,12 @@ export default function useLeaflet(
       return;
     }
 
-    service.removeControl(map, layerControl);
+    service.removeLayersControl(map, layersControl);
     service.removeLayers(map, layers);
 
-    const newLayerControl = service.addLayersControl(map);
+    const newLayersControl = service.addLayersControl(map);
     const newLayers = service.addLayers(map, geoJsonLayers, {
-      layerControl: newLayerControl,
+      layersControl: newLayersControl,
       overlay: layerOverlay,
       popup: layerPopup,
       tooltip: layerTooltip,
@@ -154,7 +153,7 @@ export default function useLeaflet(
     });
 
     setLayers(newLayers);
-    setLayerControl(newLayerControl);
+    setLayersControl(newLayersControl);
   };
   useEffect(refreshLayers, [
     map,
@@ -164,7 +163,7 @@ export default function useLeaflet(
     layerPopup,
     layerTooltip,
     layerMarker,
-    layerControl,
+    layersControl,
     layers,
   ]);
 
@@ -179,14 +178,7 @@ export default function useLeaflet(
 
     setMarkers(newMarkers);
   };
-  useEffect(refreshMarkers, [
-    fitBounds,
-    map,
-    prevMap,
-    points,
-    prevPoints,
-    marker,
-  ]);
+  useEffect(refreshMarkers, [fitBounds, map, points, prevPoints, marker]);
 
   const refreshClusterGroups = () => {
     if (!map || prevMarkers === markers) {
@@ -205,7 +197,6 @@ export default function useLeaflet(
   };
   useEffect(refreshClusterGroups, [
     markerClusterGroup,
-    prevMap,
     map,
     prevMarkers,
     markers,

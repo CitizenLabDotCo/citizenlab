@@ -65,7 +65,7 @@ export function addTooltipToLayer(
 
 export function addLayerOverlay(
   layer: L.GeoJSON,
-  layerControl: L.Control.Layers,
+  layersControl: L.Control.Layers,
   geoJSONLayer: GeoJSONLayer,
   overlayStringOrOptionsOrFunction: IOverlayStringOrObjectOrFunctionForLayer
 ) {
@@ -78,7 +78,7 @@ export function addLayerOverlay(
   }
 
   if (isString(overlayContent)) {
-    layerControl.addOverlay(layer, overlayContent);
+    layersControl.addOverlay(layer, overlayContent);
   }
 }
 
@@ -110,7 +110,7 @@ export function layerMarker(
 export function addLayers(
   map: L.Map,
   geoJsonLayers: GeoJSONLayer[],
-  { layerControl, overlay, popup, tooltip, marker }
+  { layersControl, overlay, popup, tooltip, marker }
 ) {
   const layers = reverse(cloneDeep(geoJsonLayers))
     ?.filter((geoJsonLayer) => !isEmpty(geoJsonLayer.geojson))
@@ -136,8 +136,8 @@ export function addLayers(
     });
 
   reverse(cloneDeep(layers)).forEach(({ layer, geoJsonLayer }) => {
-    if (!isNilOrError(layerControl) && !isNilOrError(overlay)) {
-      addLayerOverlay(layer, layerControl, geoJsonLayer, overlay);
+    if (!isNilOrError(layersControl) && !isNilOrError(overlay)) {
+      addLayerOverlay(layer, layersControl, geoJsonLayer, overlay);
     }
   });
 
