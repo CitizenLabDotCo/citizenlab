@@ -59,7 +59,6 @@ class SettingsPage extends React.PureComponent<
           label: formatMessage(messages.tabPages),
           url: '/admin/settings/pages',
         },
-        // TODO check widget's feature flag
         {
           label: formatMessage(messages.tabWidgets),
           url: '/admin/settings/widgets',
