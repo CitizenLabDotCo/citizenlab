@@ -15,7 +15,7 @@ import GetAppConfigurationLocales, {
   GetAppConfigurationLocalesChildProps,
 } from 'resources/GetAppConfigurationLocales';
 import GetComment, { GetCommentChildProps } from 'resources/GetComment';
-import GetMachineTranslation from 'resources/GetMachineTranslation';
+import GetMachineTranslation from 'modules/machine_translations/resources/GetMachineTranslation';
 
 import { commentTranslateButtonClicked$ } from './events';
 
