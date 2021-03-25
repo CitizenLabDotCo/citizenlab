@@ -11,8 +11,8 @@ import moment from 'moment';
 import eventEmitter from 'utils/eventEmitter';
 
 // graphql
-import { gql } from 'apollo-boost';
-import { useQuery, useMutation } from '@apollo/react-hooks';
+import { gql, useQuery, useMutation } from '@apollo/client';
+import { client } from '../../utils/apolloUtils';
 
 // hooks
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
@@ -172,10 +172,11 @@ const UseTemplateModal = memo<Props & WithRouterProps & InjectedIntlProps>(
       }
     `;
 
-    const { data } = useQuery(TEMPLATE_TITLE_QUERY);
+    const { data } = useQuery(TEMPLATE_TITLE_QUERY, { client });
 
     const [applyProjectTemplate] = useMutation<any, IVariables>(
-      APPLY_PROJECT_TEMPLATE
+      APPLY_PROJECT_TEMPLATE,
+      { client }
     );
 
     const onCreateProject = useCallback(async () => {
