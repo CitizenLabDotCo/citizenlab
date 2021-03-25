@@ -1,4 +1,9 @@
 # Changelog
+### 2021-03-23
+
+### Fixed
+- Fix for broken sign-up flow when signing-up through social sign-on
+
 ### 2021-03-19
 
 ### Fixed
