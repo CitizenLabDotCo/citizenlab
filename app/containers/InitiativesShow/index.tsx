@@ -79,6 +79,7 @@ import {
   rightColumnWidthTablet,
   pageContentMaxWidth,
 } from './styleConstants';
+import InitiativesTranslateButton from 'modules/machine_translations/citizen/components/InitiativesTranslateButton';
 
 const contentFadeInDuration = 250;
 const contentFadeInEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
@@ -178,11 +179,6 @@ const StyledTopics = styled(Topics)`
   ${media.smallerThanMaxTablet`
     margin-bottom: 5px;
   `}
-`;
-
-const StyledTranslateButtonMobile = styled(TranslateButton)`
-  width: fit-content;
-  margin-bottom: 20px;
 `;
 
 const InitiativeHeader = styled.div`
@@ -336,33 +332,6 @@ interface State {
   translateButtonClicked: boolean;
   a11y_pronounceLatestOfficialFeedbackPost: boolean;
 }
-
-const InitiativesTranslateButton = ({
-  windowSize,
-  translateButtonClicked,
-  onClick,
-  initiative,
-  locale,
-}) => {
-  const showTranslateButton =
-    !isNilOrError(initiative) &&
-    !isNilOrError(locale) &&
-    !initiative.attributes.title_multiloc[locale];
-
-  const isNotDesktop = windowSize
-    ? windowSize <= viewportWidths.largeTablet
-    : false;
-
-  if (isNotDesktop && showTranslateButton) {
-    <FeatureFlag name="machine_translations">
-      <StyledTranslateButtonMobile
-        translateButtonClicked={translateButtonClicked}
-        onClick={onClick}
-      />
-    </FeatureFlag>;
-  }
-  return null;
-};
 
 export class InitiativesShow extends PureComponent<
   Props & InjectedIntlProps & InjectedLocalized & WithRouterProps,
