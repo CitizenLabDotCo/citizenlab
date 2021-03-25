@@ -6,11 +6,11 @@ module Verification
 
     def self.register_feature
       require 'verification/feature_specification'
-      AppConfiguration::Settings.add_feature(Verification::FeatureSpecification)
+      AppConfiguration::Settings.add_feature(::Verification::FeatureSpecification)
     end
 
     config.to_prepare do
-      Verification::Engine.register_feature
+      ::Verification::Engine.register_feature
     end
   end
 end
