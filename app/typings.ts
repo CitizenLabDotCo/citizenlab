@@ -61,7 +61,7 @@ export interface ITab {
   name: string;
   label: string;
   url: string;
-  active?: boolean;
+  active?: boolean | ((pathname: string) => boolean);
   feature?: string;
 }
 
