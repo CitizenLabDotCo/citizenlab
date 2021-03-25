@@ -1,14 +1,23 @@
 import React from 'react';
 import useTranslation from 'modules/machine_translations/hooks/useTranslation';
 import { isNilOrError } from 'utils/helperUtils';
+import { Locale } from 'typings';
 
-const PostShowComponentsBody = ({
+interface Props {
+  postId: string;
+  body: string;
+  locale: Locale;
+  translateButtonClicked?: boolean;
+  postType: 'idea' | 'initiative';
+}
+
+const PostShowTranslatedBody = ({
   translateButtonClicked,
   locale,
   postId,
   postType,
   body,
-}) => {
+}: Props) => {
   const translation = useTranslation({
     attributeName: 'body_multiloc',
     localeTo: locale,
@@ -30,4 +39,4 @@ const PostShowComponentsBody = ({
   );
 };
 
-export default PostShowComponentsBody;
+export default PostShowTranslatedBody;
