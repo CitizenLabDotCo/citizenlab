@@ -15,7 +15,7 @@ class ProjectPolicy < ApplicationPolicy
       elsif user
         filter_for_normal_user normal_user_result, user
       else
-        normal_user_result
+        normal_user_result.where visible_to: 'public'
       end
     end
 
@@ -32,7 +32,8 @@ class ProjectPolicy < ApplicationPolicy
     private
 
     def normal_user_result
-      scope.where(visible_to: 'public').not_draft
+      scope.left_outer_joins(:admin_publication)
+           .where(admin_publications: { publication_status: %w[published archived] })
     end
 
     def filter_for_normal_user scope, user
