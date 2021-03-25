@@ -2328,7 +2328,7 @@
   "app.containers.UsersEditPage.notificationsSubTitle": "¿Qué tipo de notificaciones por correo electrónico quiere recibir?",
   "app.containers.UsersEditPage.notificationsTitle": "Email notificaciones",
   "app.containers.UsersEditPage.password": "Elige una contraseña nueva",
-  "app.containers.UsersEditPage.privacyReasons": "Si le preocupa su privacidad, puede leer {conditionLink}.",
+  "app.containers.UsersEditPage.privacyReasons": "Si le preocupa su privacidad, puede leer {conditionsLink}.",
   "app.containers.UsersEditPage.processing": "Enviando...",
   "app.containers.UsersEditPage.reasonsToStayListTitle": "Antes que te vayas...",
   "app.containers.UsersEditPage.submit": "Guardar cambios",
