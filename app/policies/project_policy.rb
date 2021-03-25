@@ -32,7 +32,7 @@ class ProjectPolicy < ApplicationPolicy
     private
 
     def normal_user_result
-      scope.where(visible_to: 'public')
+      scope.where(visible_to: 'public').not_draft
     end
 
     def filter_for_normal_user scope, user

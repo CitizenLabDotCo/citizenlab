@@ -29,8 +29,8 @@ describe ProjectFolders::FolderPolicy do
         expect(scope.resolve).to include published_folder
       end
 
-      it 'returns the draft folder to the visitor' do
-        expect(scope.resolve).to include draft_folder
+      it 'does not return the draft folder to the visitor' do
+        expect(scope.resolve).not_to include draft_folder
       end
 
       it 'returns the archived folder to the visitor' do
@@ -50,8 +50,8 @@ describe ProjectFolders::FolderPolicy do
         expect(scope.resolve).to include published_folder
       end
 
-      it 'returns the draft folder to the user' do
-        expect(scope.resolve).to include draft_folder
+      it 'does not return the draft folder to the user' do
+        expect(scope.resolve).not_to include draft_folder
       end
 
       it 'returns the archived folder to the user' do
