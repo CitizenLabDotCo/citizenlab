@@ -57,6 +57,7 @@ const RegistrationCustomFieldEdit = memo(
           label: formatMessage(messages.fieldSettingsTab),
           url: `${baseTabsUrl}/field-settings`,
           className: 'field-settings',
+          name: 'fieldSettings',
         },
       ];
 
@@ -68,6 +69,7 @@ const RegistrationCustomFieldEdit = memo(
           label: formatMessage(messages.answerOptionsTab),
           url: `${baseTabsUrl}/options`,
           className: 'options',
+          name: 'options',
         });
       }
 

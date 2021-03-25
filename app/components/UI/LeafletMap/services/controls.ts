@@ -4,11 +4,11 @@ export function addLayersControl(map: L.Map) {
   return L.control.layers().addTo(map);
 }
 
-export function removeControl(
+export function removeLayersControl(
   map: L.Map,
-  layerControl?: L.Control.Layers | null
+  layersControl?: L.Control.Layers | null
 ) {
-  if (layerControl) {
-    map.removeControl(layerControl);
+  if (layersControl) {
+    map.removeControl(layersControl);
   }
 }

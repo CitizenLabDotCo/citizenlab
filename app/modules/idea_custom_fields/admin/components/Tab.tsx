@@ -1,12 +1,14 @@
 import { FC, useEffect } from 'react';
+
 import { InjectedIntlProps } from 'react-intl';
 import { InsertConfigurationOptions, ITab } from 'typings';
 import { injectIntl } from 'utils/cl-intl';
+
 import messages from './messages';
 
-type Props = {
+interface Props {
   onData: (data: InsertConfigurationOptions<ITab>) => void;
-};
+}
 
 const Tab: FC<Props & InjectedIntlProps> = ({
   onData,
@@ -15,15 +17,14 @@ const Tab: FC<Props & InjectedIntlProps> = ({
   useEffect(() => {
     onData({
       configuration: {
-        label: formatMessage(messages.mapTab),
-        name: 'map',
-        url: `map`,
-        feature: 'custom_maps',
+        label: formatMessage(messages.inputFormTab),
+        url: `ideaform`,
+        feature: 'idea_custom_fields',
+        name: 'ideaform',
       },
-      insertBeforeName: 'phases',
+      insertAfterName: 'survey-results',
     });
   }, []);
-
   return null;
 };
 

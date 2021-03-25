@@ -584,8 +584,8 @@ class Navbar extends PureComponent<
       urlSegments[1] === 'projects'
     );
     const totalProjectsListLength =
-      !isNilOrError(adminPublications) && adminPublications.topLevel
-        ? adminPublications.topLevel.length
+      !isNilOrError(adminPublications) && adminPublications.list
+        ? adminPublications.list.length
         : 0;
     const showMobileNav =
       !isAdminPage &&
@@ -634,8 +634,8 @@ class Navbar extends PureComponent<
                 </NavigationItem>
 
                 {!isNilOrError(adminPublications) &&
-                  adminPublications.topLevel &&
-                  adminPublications.topLevel.length > 0 && (
+                  adminPublications.list &&
+                  adminPublications.list.length > 0 && (
                     <NavigationDropdown>
                       <NavigationDropdownItem
                         tabIndex={0}
@@ -664,7 +664,7 @@ class Navbar extends PureComponent<
                         onClickOutside={this.toggleProjectsDropdown}
                         content={
                           <ProjectsList>
-                            {adminPublications.topLevel.map(
+                            {adminPublications.list.map(
                               (item: IAdminPublicationContent) => (
                                 <React.Fragment key={item.publicationId}>
                                   {item.publicationType === 'project' && (
@@ -811,8 +811,7 @@ const Data = adopt<DataProps, InputProps>({
   adminPublications: (
     <GetAdminPublications
       publicationStatusFilter={['published', 'archived']}
-      noEmptyFolder
-      folderId={null}
+      rootLevelOnly
     />
   ),
 });

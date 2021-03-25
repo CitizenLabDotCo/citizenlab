@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { distinctUntilChanged } from 'rxjs/operators';
 import {
   listAdminPublications,
@@ -8,16 +8,13 @@ import {
 import { PublicationStatus } from 'services/projects';
 import { isNilOrError } from 'utils/helperUtils';
 import { unionBy, isString } from 'lodash-es';
-import useFeatureFlag from 'hooks/useFeatureFlag';
 import { IRelationship } from 'typings';
 
 export interface InputProps {
   pageSize?: number;
   areaFilter?: string[];
   publicationStatusFilter: PublicationStatus[];
-  noEmptyFolder?: boolean;
-  // TODO: remove folder id
-  folderId?: string | null;
+  rootLevelOnly?: boolean;
 }
 
 export type IAdminPublicationContent = {
@@ -41,9 +38,8 @@ export type IAdminPublicationContent = {
 export interface ChildrenOfProps {
   id?: string;
 }
-export interface IOutput {
+export interface IUseAdminPublicationsOutput {
   list: IAdminPublicationContent[] | undefined | null;
-  topLevel: IAdminPublicationContent[];
   hasMore: boolean;
   loadingInitial: boolean;
   loadingMore: boolean;
@@ -57,7 +53,7 @@ export default function useAdminPublications({
   pageSize = 1000,
   areaFilter,
   publicationStatusFilter,
-  noEmptyFolder,
+  rootLevelOnly,
 }: InputProps) {
   const [list, setList] = useState<
     IAdminPublicationContent[] | undefined | null
@@ -70,7 +66,6 @@ export default function useAdminPublications({
   const [publicationStatuses, setPublicationStatuses] = useState<
     PublicationStatus[]
   >(publicationStatusFilter);
-  const isProjectFoldersEnabled = useFeatureFlag('project_folders');
 
   const onLoadMore = useCallback(() => {
     if (hasMore) {
@@ -95,14 +90,19 @@ export default function useAdminPublications({
   }, [pageSize]);
 
   useEffect(() => {
+    const queryParameters = {
+      areas,
+      publication_statuses: publicationStatuses,
+      'page[number]': pageNumber,
+      'page[size]': pageSize,
+    };
+
+    if (rootLevelOnly) {
+      queryParameters['depth'] = 0;
+    }
+
     const subscription = listAdminPublications({
-      queryParameters: {
-        areas,
-        publication_statuses: publicationStatuses,
-        'page[number]': pageNumber,
-        'page[size]': pageSize,
-        filter_empty_folders: noEmptyFolder,
-      },
+      queryParameters,
     })
       .observable.pipe(distinctUntilChanged())
       .subscribe((adminPublications) => {
@@ -149,17 +149,7 @@ export default function useAdminPublications({
       });
 
     return () => subscription.unsubscribe();
-  }, [pageNumber, pageSize, areas, publicationStatuses]);
-
-  const topLevel = useMemo<IAdminPublicationContent[]>(() => {
-    if (isNilOrError(list)) return [];
-
-    if (isProjectFoldersEnabled) {
-      return list.filter(({ relationships }) => !relationships.parent.data);
-    }
-
-    return list;
-  }, [list, isProjectFoldersEnabled]);
+  }, [pageNumber, pageSize, areas, publicationStatuses, rootLevelOnly]);
 
   const childrenOf = useCallback(
     ({ id: publicationId }: ChildrenOfProps) => {
@@ -178,7 +168,6 @@ export default function useAdminPublications({
   );
 
   return {
-    topLevel,
     list,
     hasMore,
     loadingInitial,

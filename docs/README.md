@@ -1,6 +1,15 @@
 # Changelog
+### 2021-03-19
 
-## 2021-03-16
+### Fixed
+- Admin>Dashboard>Users tab is no longer hidden for admins that manage projects.
+- The password input no longer shows the password when hitting ENTER.
+
+### Changed
+- Empty folders are now shown in the landing page, navbar, projects page and sitemap.
+- The sitemap no longer shows all projects and folder under each folder.
+- Images added to folder descriptions are now compressed, reducing load times in project and folder pages. 
+
 
 ### Added
 - Allows for sending front-end events to our self-hosted matomo analytics tool
@@ -10,7 +19,6 @@
 ### Changed
 - Tenants are now ordered alphabetically in AdminHQ
 
-### Added
 - Serbian (Latin) is now a language option.
 
 
