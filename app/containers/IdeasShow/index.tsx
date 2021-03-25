@@ -31,7 +31,6 @@ import FeatureFlag from 'components/FeatureFlag';
 import IdeaMoreActions from './IdeaMoreActions';
 import { Spinner } from 'cl2-component-library';
 import GoBackButton from './GoBackButton';
-import TranslateButton from 'components/UI/TranslateButton';
 const LazyComments = lazy(() =>
   import('components/PostShowComponents/Comments')
 );
@@ -89,6 +88,7 @@ import {
   columnsGapTablet,
   pageContentMaxWidth,
 } from './styleConstants';
+import IdeasShowTranslateButton from 'modules/machine_translations/citizen/components/IdeasShowTranslateButton';
 
 const contentFadeInDuration = 250;
 const contentFadeInEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
@@ -189,10 +189,6 @@ const LeftColumn = styled.div`
   ${media.smallerThanMaxTablet`
     padding: 0;
   `}
-`;
-
-const StyledTranslateButton = styled(TranslateButton)`
-  margin-bottom: 20px;
 `;
 
 const IdeaHeader = styled.div`
@@ -332,29 +328,6 @@ interface State {
   translateButtonClicked: boolean;
   actionInfos: IActionInfos | null;
 }
-
-const IdeasShowTranslateButton = ({
-  idea,
-  locale,
-  translateButtonClicked,
-  onClick,
-}) => {
-  const showTranslateButton =
-    !isNilOrError(idea) &&
-    !isNilOrError(locale) &&
-    !idea.attributes.title_multiloc[locale];
-
-  return (
-    <FeatureFlag name="machine_translations">
-      {showTranslateButton && (
-        <StyledTranslateButton
-          translateButtonClicked={translateButtonClicked}
-          onClick={onClick}
-        />
-      )}
-    </FeatureFlag>
-  );
-};
 
 export class IdeasShow extends PureComponent<
   Props & InjectedIntlProps & InjectedLocalized & WithRouterProps,
