@@ -9,3 +9,6 @@ fi
 
 cp -r back/engines/ee ../citizenlab/back/engines/ee
 echo "Copied back/engines/ee"
+
+cp .env-back ../citizenlab/.
+echo "Copied .env-back"

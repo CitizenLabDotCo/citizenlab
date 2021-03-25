@@ -1,5 +1,25 @@
 {
   "modules": {
+    "commercial/custom_maps": true,
+    "commercial/admin_api": true,
+    "commercial/custom_statuses": true,
+    "commercial/custom_style": true,
+    "commercial/geographic_dashboard": true,
+    "commercial/granular_permissions": true,
+    "commercial/id_bogus": true,
+    "commercial/id_bosa_fas": true,
+    "commercial/id_clave_unica": true,
+    "commercial/id_cow": true,
+    "commercial/id_franceconnect": true,
+    "commercial/id_id_card_lookup": true,
+    "commercial/machine_translations": true,
+    "commercial/matomo": true,
+    "commercial/nlp": true,
+    "commercial/project_folders": true,
+    "commercial/project_permissions": true,
+    "commercial/public_api": true,
+    "commercial/tagging": true,
+    "commercial/verification": true,
     "ee/multi_tenancy": true
   }
 }
