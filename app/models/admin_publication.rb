@@ -44,7 +44,7 @@ class AdminPublication < ApplicationRecord
   end
 
   def parent_allowed_to_have_children
-    return if depth.zero? || parent.children_allowed?
+    return if depth.zero? || parent.blank? || parent.children_allowed?
 
     errors.add(:parent, :children_not_allowed, message: 'The parent of this publication cannot have children.')
   end
