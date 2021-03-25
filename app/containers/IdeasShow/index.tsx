@@ -333,6 +333,29 @@ interface State {
   actionInfos: IActionInfos | null;
 }
 
+const IdeasShowTranslateButton = ({
+  idea,
+  locale,
+  translateButtonClicked,
+  onClick,
+}) => {
+  const showTranslateButton =
+    !isNilOrError(idea) &&
+    !isNilOrError(locale) &&
+    !idea.attributes.title_multiloc[locale];
+
+  return (
+    <FeatureFlag name="machine_translations">
+      {showTranslateButton && (
+        <StyledTranslateButton
+          translateButtonClicked={translateButtonClicked}
+          onClick={onClick}
+        />
+      )}
+    </FeatureFlag>
+  );
+};
+
 export class IdeasShow extends PureComponent<
   Props & InjectedIntlProps & InjectedLocalized & WithRouterProps,
   State
@@ -565,11 +588,6 @@ export class IdeasShow extends PureComponent<
         locale
       );
 
-      const showTranslateButton =
-        !isNilOrError(idea) &&
-        !isNilOrError(locale) &&
-        !idea.attributes.title_multiloc[locale];
-
       content = (
         <>
           <IdeaMeta ideaId={ideaId} />
@@ -608,14 +626,12 @@ export class IdeasShow extends PureComponent<
                   <Image src={ideaImageLarge} alt="" id="e2e-idea-image" />
                 )}
 
-                <FeatureFlag name="machine_translations">
-                  {showTranslateButton && (
-                    <StyledTranslateButton
-                      translateButtonClicked={translateButtonClicked}
-                      onClick={this.onTranslateIdea}
-                    />
-                  )}
-                </FeatureFlag>
+                <IdeasShowTranslateButton
+                  idea={idea}
+                  locale={locale}
+                  onClick={this.onTranslateIdea}
+                  translateButtonClicked={translateButtonClicked}
+                />
 
                 {proposedBudgetEnabled && proposedBudget && (
                   <>
