@@ -4,7 +4,7 @@ import { isNilOrError } from 'utils/helperUtils';
 // resources
 import GetMachineTranslation, {
   GetMachineTranslationChildProps,
-} from 'resources/GetMachineTranslation';
+} from 'modules/machine_translations/resources/GetMachineTranslation';
 
 // typings
 import { Locale } from 'typings';
