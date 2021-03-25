@@ -1,4 +1,3 @@
-import { ADMIN_TEMPLATES_GRAPHQL_PATH } from 'containers/App/constants';
 import { getJwt } from 'utils/auth/jwt';
 import {
   ApolloClient,
@@ -8,6 +7,7 @@ import {
   concat,
 } from '@apollo/client';
 
+const ADMIN_TEMPLATES_GRAPHQL_PATH = '/admin_templates_api/graphql';
 const httpLink = new HttpLink({ uri: ADMIN_TEMPLATES_GRAPHQL_PATH });
 const authMiddleware = new ApolloLink((operation, forward) => {
   const jwt = getJwt();
