@@ -1,5 +1,5 @@
 {
   "modules": {
-    "multi_tenancy": true
+    "ee/multi_tenancy": true
   }
 }
