@@ -12,7 +12,7 @@ class StatCommentPolicy < ApplicationPolicy
       if user&.active? && user.admin?
         scope.all
       elsif user&.active? && user.project_moderator?
-        projects = ProjectPolicy::Scope.new(user, Project.all).resolve
+        projects = ProjectPolicy::Scope.new(user, Project.all).resolve.not_draft
         # we're deliberately avoiding to join ideas to the main scope itself,
         # because it conflicts with other queries modifying the scope (e.g.
         # filtering on projects)
