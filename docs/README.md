@@ -1,10 +1,19 @@
 # Changelog
-### 2021-03-23
+
+## Next release
+/
+
+## 2021-03-23
+
+### Fixed
+- The input fields for multiple locales provides an error messages when there's an error for at least one of the languages.
+
+## 2021-03-23
 
 ### Fixed
 - Fix for broken sign-up flow when signing-up through social sign-on
 
-### 2021-03-19
+## 2021-03-19
 
 ### Fixed
 - Admin>Dashboard>Users tab is no longer hidden for admins that manage projects.
@@ -18,11 +27,6 @@
 
 ### Added
 - Allows for sending front-end events to our self-hosted matomo analytics tool
-
-## Next release
-
-### Fixed
-- The input fields for multiple locales provides an error messages when there's an error for at least one of the languages.
 
 ## 2021-03-11
 
