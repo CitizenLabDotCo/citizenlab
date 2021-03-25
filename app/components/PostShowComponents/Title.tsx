@@ -1,10 +1,4 @@
 import React, { memo } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-
-// resources
-import GetMachineTranslation, {
-  GetMachineTranslationChildProps,
-} from 'modules/machine_translations/resources/GetMachineTranslation';
 
 // typings
 import { Locale } from 'typings';
@@ -13,59 +7,11 @@ import { Locale } from 'typings';
 import styled from 'styled-components';
 import { media, fontSizes } from 'utils/styleUtils';
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import PostShowTranslatedTitle from 'modules/machine_translations/citizen/components/PostShowTranslatedTitle';
 
 const Container = styled.div<{ align: 'left' | 'center' }>`
   width: ${({ align }) => (align === 'left' ? '100%' : 'auto')};
 `;
-
-const parseTranslation = (
-  translation: GetMachineTranslationChildProps,
-  title
-) => {
-  if (!isNilOrError(translation)) {
-    return translation.attributes.translation;
-  }
-
-  return title;
-};
-
-const PostShowTitle = ({
-  locale,
-  translateButtonClicked,
-  postId,
-  postType,
-  color,
-  align,
-  title,
-}) => {
-  if (locale && translateButtonClicked) {
-    return (
-      <GetMachineTranslation
-        attributeName="title_multiloc"
-        localeTo={locale}
-        id={postId}
-        context={postType}
-      >
-        {(translation) => (
-          <Title
-            id={`e2e-${postType}-title`}
-            color={color}
-            align={align}
-            aria-live="polite"
-          >
-            {parseTranslation(translation, title)}
-          </Title>
-        )}
-      </GetMachineTranslation>
-    );
-  }
-
-  return (
-    <Title id={`e2e-${postType}-title`} color={color} align={align}>
-      {title}
-    </Title>
-  );
-};
 
 export const Title = styled.h1<{
   color: string | undefined;
@@ -115,7 +61,7 @@ const PostTitle = memo<Props>(
     return (
       <Container className={className} align={align}>
         {isMachineTranslationsEnabled ? (
-          <PostShowTitle
+          <PostShowTranslatedTitle
             title={title}
             postId={postId}
             postType={postType}
