@@ -20,7 +20,7 @@ executors:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
           POSTGRES_HOST: localhost
-      - image: 'postgres:12.4'
+      - image: 'postgis/postgis:12-3.1'
         environment:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
