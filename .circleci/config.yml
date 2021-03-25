@@ -90,6 +90,23 @@ jobs:
       - store_test_results:
           path: spec/reports
 
+  back-slow-tests:
+    resource_class: small
+    executor:
+      name: cl2-back
+      image-tag: $CIRCLE_SHA1
+    working_directory: /cl2_back
+    environment:
+      RAILS_ENV: test
+    steps:
+      - wait-for-postgres
+      - run: |
+          rake db:create
+          rake db:schema:load
+      - run: |
+          bundle exec rspec --format documentation --format RspecJunitFormatter -o spec/reports/rspec.xml -t slow_test
+      - store_test_results:
+          path: spec/reports
 
 workflows:
   version: 2
@@ -102,3 +119,11 @@ workflows:
           context: docker-hub-access
           requires:
             - back-build-ee-docker-image
+      - back-slow-tests:
+          context: docker-hub-access
+          requires:
+            - back-build-ee-docker-image
+          filters:
+            branches:
+              only:
+                - master
