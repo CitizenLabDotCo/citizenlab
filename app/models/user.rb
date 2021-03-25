@@ -1,6 +1,5 @@
 class User < ApplicationRecord
   include EmailCampaigns::UserDecorator
-  include Verification::UserDecorator
   include Onboarding::UserDecorator
   include Polls::UserDecorator
   include Volunteering::UserDecorator
@@ -365,3 +364,5 @@ end
 
 User.prepend_if_ee('ProjectFolders::Patches::User')
 User.prepend_if_ee('SmartGroups::Patches::User')
+User.include_if_ee('Verification::Patches::User')
+
