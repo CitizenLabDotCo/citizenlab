@@ -6,7 +6,6 @@ Rails.application.routes.draw do
   mount EmailCampaigns::Engine => "", as: 'email_campaigns'
   mount Frontend::Engine => "", as: 'frontend'
   mount GeographicDashboard::Engine => '', as: 'geographic_dashboard'
-  mount MachineTranslations::Engine => "", as: 'machine_translations'
   mount NLP::Engine => "", as: 'nlp'
   mount Onboarding::Engine => "", as: 'onboarding'
   mount Polls::Engine => "", as: 'polls'
@@ -276,9 +275,6 @@ Rails.application.routes.draw do
       resources :clusterings
 
       resources :avatars, only: [:index, :show]
-      resources :moderations, only: [:index] do
-        patch ':moderatable_type/:moderatable_id' => 'moderations#update', on: :collection
-      end
     end
   end
 

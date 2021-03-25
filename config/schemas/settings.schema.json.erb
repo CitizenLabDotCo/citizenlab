@@ -666,18 +666,6 @@
         }
       },
 
-      "machine_translations": {
-        "type": "object",
-        "title": "Machine Translations",
-        "description":  "Allows users to see translated content.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
-        }
-      },
-
       "project_reports": {
         "type": "object",
         "title": "Project Reports",
@@ -923,18 +911,6 @@
         "properties": {
           "allowed": { "type": "boolean", "default": true},
           "enabled": { "type": "boolean", "default": false}
-        }
-      },
-
-      "moderation": {
-        "type": "object",
-        "title": "Moderation",
-        "description": "Moderations are pieces of user-generated content that need to be moderated.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
         }
       },
 
