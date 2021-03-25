@@ -14,18 +14,19 @@ class AdminPublicationsFilteringService
   #     1. We show parent publications that have children the current_user can see.
   #     2. We show parent publications that have no children.
   #     3. We show parent publications with children that haven't been published yet but the user can see.
-  add_filter('filter_childless_parents') do |scope, options|
-    next scope unless ['true', true, '1'].include? options[:filter_childless_parents]
+  add_filter('filter_childless_parents') do |visible_publications, options|
+    next visible_publications unless ['true', true, '1'].include? options[:filter_childless_parents]
 
-    parents_without_visible_children = scope.where(id: scope.pluck(:parent_id).compact.uniq)
-    parents_without_any_children     = scope.where(children_allowed: true, children_count: 0)
-    non_parents                      = scope.where(children_allowed: false)
+    parents_with_visible_children = visible_publications.where(id: visible_publications.pluck(:parent_id).compact.uniq)
+    parents_without_any_children  = visible_publications.where(children_allowed: true, children_count: 0)
+    non_parents                   = visible_publications.where(children_allowed: false)
 
-    parents_without_visible_children.or(parents_without_any_children).or(non_parents)
+    parents_with_visible_children.or(parents_without_any_children).or(non_parents)
   end
 
   add_filter('by_publication_status') do |scope, options|
     publication_status = options[:publication_statuses]
+
     publication_status ? scope.where(publication_status: publication_status) : scope
   end
 
