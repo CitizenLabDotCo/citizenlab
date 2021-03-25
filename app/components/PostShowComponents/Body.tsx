@@ -45,23 +45,18 @@ const Body = memo<Props>(
     postType,
     color,
   }) => {
-    // const [readMoreButtonClicked, setReadMoreButtonClicked] = useState(false);
     const windowSize = useWindowSize();
     const theme: any = useTheme();
     const smallerThanSmallTablet = windowSize
       ? windowSize.windowWidth <= viewportWidths.smallTablet
       : false;
+
     const translation = useTranslation({
       attributeName: 'body_multiloc',
       localeTo: locale,
       id: postId,
       context: postType,
     });
-    // const initialWordsLimitToDisplay = 50;
-
-    // const readMore = () => {
-    //   setReadMoreButtonClicked(true);
-    // };
 
     const getBodyText = (bodyText: string) => {
       if (translateButtonClicked && !isNilOrError(translation)) {
@@ -71,24 +66,7 @@ const Body = memo<Props>(
       return bodyText;
     };
 
-    // const hasReadMore = (bodyText: string) => {
-    //   const wordsArray = bodyText.split(' ');
-    //   const numberOfWords = wordsArray.length;
-    //   const hasTooLongBody = numberOfWords > initialWordsLimitToDisplay;
-    //   return hasTooLongBody && !readMoreButtonClicked;
-    // };
-
     const bodyText = getBodyText(body);
-    // const bodyTextHasLoadMore = hasReadMore(bodyText);
-    // const showReadMoreButton = bodyTextHasReadMore && !readMoreButtonClicked;
-
-    // const bodyTextToDisplay = bodyTextHasLoadMore
-    //   ? bodyText
-    //       .split(' ')
-    //       .slice(0, initialWordsLimitToDisplay)
-    //       .join(' ')
-    //       .concat('...')
-    //   : bodyText;
 
     return (
       <Container id={`e2e-${postType}-description`} className={className}>
@@ -101,11 +79,6 @@ const Body = memo<Props>(
             <span dangerouslySetInnerHTML={{ __html: bodyText }} />
           </div>
         </QuillEditedContent>
-        {/* {showLoadMoreButton && (
-          <LoadMoreTextButton buttonStyle="text" onClick={loadMore}>
-            <FormattedMessage {...messages.readMore} />
-          </LoadMoreTextButton>
-        )} */}
       </Container>
     );
   }
