@@ -10,3 +10,7 @@ IdeaCustomFields::Engine.routes.draw do
     end
   end
 end
+
+Rails.application.routes.draw do
+  mount IdeaCustomFields::Engine => '', as: 'idea_custom_fields'
+end

@@ -2,12 +2,11 @@ Rails.application.routes.draw do
 
   mount AdminApi::Engine => "/admin_api", as: 'admin_api', defaults: {format: :json}
   mount CustomMaps::Engine => "", as: 'custom_maps'
+  mount CustomTopics::Engine => "", as: 'custom_topics'
   mount CustomStatuses::Engine => "", as: 'custom_statuses'
   mount EmailCampaigns::Engine => "", as: 'email_campaigns'
   mount Frontend::Engine => "", as: 'frontend'
   mount GeographicDashboard::Engine => '', as: 'geographic_dashboard'
-  mount IdeaCustomFields::Engine => '', as: 'idea_custom_fields'
-  mount MachineTranslations::Engine => "", as: 'machine_translations'
   mount NLP::Engine => "", as: 'nlp'
   mount Onboarding::Engine => "", as: 'onboarding'
   mount Polls::Engine => "", as: 'polls'
@@ -105,9 +104,7 @@ Rails.application.routes.draw do
         get 'comments_count', on: :member
       end
 
-      resources :topics do
-        patch 'reorder', on: :member
-      end
+      resources :topics, only: [:index, :show]
 
       resources :projects_topics, only: [:index, :show, :create, :reorder, :destroy] do
         patch 'reorder', on: :member
@@ -274,9 +271,6 @@ Rails.application.routes.draw do
       resources :clusterings
 
       resources :avatars, only: [:index, :show]
-      resources :moderations, only: [:index] do
-        patch ':moderatable_type/:moderatable_id' => 'moderations#update', on: :collection
-      end
     end
   end
 
