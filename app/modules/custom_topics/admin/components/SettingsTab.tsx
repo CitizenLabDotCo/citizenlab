@@ -19,6 +19,7 @@ const Tab: FC<Props & InjectedIntlProps> = ({
         name: 'topics',
         url: '/admin/settings/topics',
         feature: 'custom_topics',
+        active: (pathname) => pathname.includes('/admin/settings/topics'),
       },
       insertAfterName: 'registration',
     });

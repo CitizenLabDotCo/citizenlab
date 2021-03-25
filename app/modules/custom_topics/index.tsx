@@ -15,23 +15,18 @@ const configuration: ModuleConfiguration = {
     'admin.settings': [
       {
         path: '/:locale/admin/settings/topics',
-        name: 'admin topics',
-        indexRoute: {
-          name: 'admin topics index',
-          container: () => import('./admin/containers/TopicsSettings/all'),
-        },
-        childRoutes: [
-          {
-            path: '/:locale/admin/settings/topics/new',
-            name: 'admin topics new',
-            container: () => import('./admin/containers/TopicsSettings/New'),
-          },
-          {
-            path: '/:locale/admin/settings/topics/:topicId/edit',
-            name: 'admin topic edit',
-            container: () => import('./admin/containers/TopicsSettings/Edit'),
-          },
-        ],
+        name: 'admin topics index',
+        container: () => import('./admin/containers/TopicsSettings/all'),
+      },
+      {
+        path: '/:locale/admin/settings/topics/new',
+        name: 'admin topics new',
+        container: () => import('./admin/containers/TopicsSettings/New'),
+      },
+      {
+        path: '/:locale/admin/settings/topics/:topicId/edit',
+        name: 'admin topic edit',
+        container: () => import('./admin/containers/TopicsSettings/Edit'),
       },
     ],
   },
