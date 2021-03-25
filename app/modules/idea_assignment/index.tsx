@@ -6,6 +6,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import AssigneeFilter from './admin/components/AssigneeFilter';
 import IdeaHeaderCell from './admin/components/IdeaHeaderCell';
 import IdeaRowCell from './admin/components/IdeaRowCell';
+import Tab from './admin/components/Tab';
 import InputAssignment from './admin/containers/';
 
 const StyledAssigneeFilter = styled(AssigneeFilter)`
@@ -40,6 +41,13 @@ const configuration: ModuleConfiguration = {
         <InputAssignment {...props} />
       </RenderOnFeatureFlag>
     ),
+    'app.containers.Admin.projects.edit': (props) => {
+      return (
+        <RenderOnFeatureFlag>
+          <Tab {...props} />
+        </RenderOnFeatureFlag>
+      );
+    },
   },
 };
 

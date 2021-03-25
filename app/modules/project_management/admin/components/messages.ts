@@ -34,4 +34,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.groups.permissions.moderatorsNotFound',
     defaultMessage: 'Moderators not found',
   },
+  permissionsTab: {
+    id: 'app.modules.project_management.admin.components.permissionsTab',
+    defaultMessage: 'Access rights',
+  },
 });
