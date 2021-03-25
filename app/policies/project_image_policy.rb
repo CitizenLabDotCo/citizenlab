@@ -8,7 +8,7 @@ class ProjectImagePolicy < ApplicationPolicy
     end
 
     def resolve
-      scope.where(project: Pundit.policy_scope(user, Project))
+      scope.where(project: Pundit.policy_scope(user, Project).not_draft)
     end
   end
 

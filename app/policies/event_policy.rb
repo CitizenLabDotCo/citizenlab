@@ -8,7 +8,7 @@ class EventPolicy < ApplicationPolicy
     end
 
     def resolve
-      project_ids = Pundit.policy_scope(user, Project).pluck(:id)
+      project_ids = Pundit.policy_scope(user, Project).not_draft.pluck(:id)
       scope.where(project: project_ids)
     end
   end

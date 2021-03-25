@@ -4,25 +4,28 @@ module ProjectFolders
     before_action :set_project_folder, only: [:show, :update, :destroy]
 
     def index
-      @project_folders = policy_scope(Folder).includes(:images, admin_publication: [:children])
+      service = AdminPublicationsFilteringService.new
+      publications = policy_scope(AdminPublication)
+      publications = service.filter(publications, params).where(publication_type: Folder.name)
+
+      # Not very satisfied with this ping-pong of SQL queries (knowing that the
+      # AdminPublicationsFilteringService is also making a request on projects).
+      # But could not find a way to eager-load the polymorphic type in the publication
+      # scope.
+      @project_folders = Folder.where(id: publications.select(:publication_id))
+                               .ordered
+                               .includes(:images, admin_publication: [:children])
+                               .page(params.dig(:page, :number))
+                               .per(params.dig(:page, :size))
+
       @project_folders = @project_folders.where(id: params[:filter_ids]) if params[:filter_ids]
 
-      @project_folders = @project_folders
-                             .page(params.dig(:page, :number))
-                             .per(params.dig(:page, :size))
-
-      # Array of publication IDs for folders that
-      # still have visible children left.
-      parent_ids_for_visible_children = Pundit.policy_scope(current_user, Project)
-                                              .includes(:admin_publication).pluck('admin_publications.parent_id').compact
       # Caches the counts of visible children for
       # the current user.
-      visible_children_count_by_parent_id = Hash.new(0).tap { |h| parent_ids_for_visible_children.each { |id| h[id] += 1 } }
-
       render json: linked_json(
           @project_folders,
           WebApi::V1::FolderSerializer,
-          params: fastjson_params(visible_children_count_by_parent_id: visible_children_count_by_parent_id),
+          params: fastjson_params(visible_children_count_by_parent_id: service.visible_children_count_by_parent_id),
           include: [:admin_publication, :images]
       )
     end
