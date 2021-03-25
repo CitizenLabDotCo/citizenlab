@@ -20,8 +20,9 @@ import messages from '../messages';
 interface Props {}
 
 const ModeratorProjectList = memo<Props>(() => {
-  const { topLevel: topLevelAdminPublications } = useAdminPublications({
+  const { list: rootLevelAdminPublications } = useAdminPublications({
     publicationStatusFilter: ['published', 'draft', 'archived'],
+    rootLevelOnly: true,
   });
   const isProjectFoldersEnabled = useFeatureFlag('project_folders');
 
@@ -39,11 +40,11 @@ const ModeratorProjectList = memo<Props>(() => {
   };
 
   if (
-    !isNilOrError(topLevelAdminPublications) &&
-    topLevelAdminPublications &&
-    topLevelAdminPublications.length > 0
+    !isNilOrError(rootLevelAdminPublications) &&
+    rootLevelAdminPublications &&
+    rootLevelAdminPublications.length > 0
   ) {
-    if (topLevelAdminPublications && topLevelAdminPublications.length > 0) {
+    if (rootLevelAdminPublications && rootLevelAdminPublications.length > 0) {
       return (
         <>
           <ListHeader>
@@ -53,14 +54,14 @@ const ModeratorProjectList = memo<Props>(() => {
           </ListHeader>
 
           <List>
-            {topLevelAdminPublications.map((adminPublication, index) => {
+            {rootLevelAdminPublications.map((adminPublication, index) => {
               return (
                 !isProjectFoldersEnabled ||
                 (!adminPublication.relationships.parent.data && (
                   <Row
                     key={index}
                     id={adminPublication.id}
-                    isLastItem={index === topLevelAdminPublications.length - 1}
+                    isLastItem={index === rootLevelAdminPublications.length - 1}
                   >
                     {adminPublicationRow(adminPublication)}
                   </Row>
