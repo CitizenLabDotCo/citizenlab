@@ -1,0 +1,66 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<UsersDashboard /> reacts to group changes 1`] = `
+Array [
+  Object {
+    "label": "All Groups",
+    "value": "",
+  },
+]
+`;
+
+exports[`<UsersDashboard /> reacts to group changes 2`] = `
+Array [
+  Object {
+    "label": "All Groups",
+    "value": "",
+  },
+  Object {
+    "label": "Test Group",
+    "value": "test_group_id",
+  },
+]
+`;
+
+exports[`<UsersDashboard /> renders correctly 1`] = `
+<ThemeProvider
+  theme={[Function]}
+>
+  <dashboard__ControlBar>
+    <TimeControl
+      endAtMoment={"2010-01-01T04:06:07.000Z"}
+      onChange={[Function]}
+    />
+  </dashboard__ControlBar>
+  <ChartFilters
+    groupFilterOptions={
+      Array [
+        Object {
+          "label": "All Groups",
+          "value": "",
+        },
+        Object {
+          "label": "Test Group",
+          "value": "test_group_id",
+        },
+      ]
+    }
+    onGroupFilter={[Function]}
+    onProjectFilter={null}
+    onTopicFilter={null}
+    projectFilterOptions={null}
+    topicFilterOptions={null}
+  />
+  <dashboard__GraphsContainer>
+    <Outlet
+      endAt="2010-01-01T04:06:07.000Z"
+      id="app.containers.Admin.dashboard.users.graphs"
+    />
+    <WithTheme(MostActiveUsersList)
+      className="dynamicHeight"
+      endAt="2010-01-01T04:06:07.000Z"
+      infoMessage="The ranking is based on the number of inputs (5 points per input), comments (3 points per comment) and votes (1 point per vote) submitted by each participant."
+    />
+  </dashboard__GraphsContainer>
+</ThemeProvider>
+`;
