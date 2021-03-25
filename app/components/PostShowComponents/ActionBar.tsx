@@ -70,6 +70,29 @@ interface Props {
   initiative: GetInitiativeChildProps;
 }
 
+const ActionBarTranslateButton = ({
+  initiative,
+  locale,
+  onClick,
+  translateButtonClicked,
+}) => {
+  const showTranslateButton =
+    !isNilOrError(initiative) &&
+    !isNilOrError(locale) &&
+    !initiative.attributes.title_multiloc[locale];
+
+  return (
+    <FeatureFlag name="machine_translations">
+      {showTranslateButton && (
+        <StyledTranslateButton
+          translateButtonClicked={translateButtonClicked}
+          onClick={onClick}
+        />
+      )}
+    </FeatureFlag>
+  );
+};
+
 export default memo<Props>(
   ({
     rightContent,
@@ -79,24 +102,17 @@ export default memo<Props>(
     initiative,
     locale,
   }) => {
-    const showTranslateButton =
-      !isNilOrError(initiative) &&
-      !isNilOrError(locale) &&
-      !initiative.attributes.title_multiloc[locale];
-
     return (
       <Container>
         <Inner>
           <Left>{leftContent}</Left>
           <Right>
-            <FeatureFlag name="machine_translations">
-              {showTranslateButton && (
-                <StyledTranslateButton
-                  translateButtonClicked={translateButtonClicked}
-                  onClick={onTranslate}
-                />
-              )}
-            </FeatureFlag>
+            <ActionBarTranslateButton
+              translateButtonClicked={translateButtonClicked}
+              onClick={onTranslate}
+              initiative={initiative}
+              locale={locale}
+            />
             {rightContent}
           </Right>
         </Inner>
