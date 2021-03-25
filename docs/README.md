@@ -19,6 +19,11 @@
 ### Added
 - Allows for sending front-end events to our self-hosted matomo analytics tool
 
+## Next release
+
+### Fixed
+- The input fields for multiple locales provides an error messages when there's an error for at least one of the languages.
+
 ## 2021-03-11
 
 ### Changed
