@@ -526,7 +526,7 @@ const Data = adopt<DataProps, InputProps>({
       pageSize={6}
       prefetchProjects
       rootLevelOnly
-      removeEmptyParents
+      removeNotAllowedParents
       {...props}
     >
       {render}

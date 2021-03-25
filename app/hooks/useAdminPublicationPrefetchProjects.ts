@@ -16,7 +16,7 @@ export default function useAdminPublicationsPrefetchProjects({
   areaFilter,
   publicationStatusFilter,
   rootLevelOnly = false,
-  removeEmptyParents = false,
+  removeNotAllowedParents = false,
 }: InputProps) {
   const [all, setAll] = useState<IAdminPublicationContent[] | undefined | null>(
     undefined
@@ -61,7 +61,7 @@ export default function useAdminPublicationsPrefetchProjects({
       publication_statuses: publicationStatuses,
       'page[number]': pageNumber,
       'page[size]': pageSize,
-      filter_childless_parents: removeEmptyParents,
+      remove_not_allowed_parents: removeNotAllowedParents,
       depth: rootLevelOnly && 0,
     };
 
@@ -140,7 +140,7 @@ export default function useAdminPublicationsPrefetchProjects({
     areas,
     publicationStatuses,
     rootLevelOnly,
-    removeEmptyParents,
+    removeNotAllowedParents,
   ]);
 
   useEffect(() => {

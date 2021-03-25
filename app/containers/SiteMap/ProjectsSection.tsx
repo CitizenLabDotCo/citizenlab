@@ -67,7 +67,7 @@ const Data = adopt<DataProps, InputProps>({
     <GetAdminPublications
       publicationStatusFilter={['draft', 'published', 'archived']}
       rootLevelOnly
-      removeEmptyParents
+      removeNotAllowedParents
     />
   ),
 });
