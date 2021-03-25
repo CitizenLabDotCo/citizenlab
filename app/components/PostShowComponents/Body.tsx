@@ -1,11 +1,8 @@
 import React, { memo /*, useState */ } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-import useTranslation from 'modules/machine_translations/hooks/useTranslation';
 import useWindowSize from 'hooks/useWindowSize';
 
 // components
 import QuillEditedContent from 'components/UI/QuillEditedContent';
-// import Button from 'components/UI/Button';
 
 // typings
 import { Locale } from 'typings';
@@ -14,17 +11,9 @@ import { Locale } from 'typings';
 import styled, { useTheme } from 'styled-components';
 import { viewportWidths } from 'utils/styleUtils';
 import useFeatureFlag from 'hooks/useFeatureFlag';
-
-// // i18n
-// import { FormattedMessage } from 'utils/cl-intl';
-// import messages from './messages';
+import PostShowComponentsBody from 'modules/machine_translations/citizen/components/PostShowComponentsBody';
 
 const Container = styled.div``;
-
-// const ReadMoreTextButton = styled(Button)`
-//   text-decoration: underline;
-//   display: inline-block;
-// `;
 
 interface Props {
   postId: string;
@@ -35,34 +24,6 @@ interface Props {
   postType: 'idea' | 'initiative';
   color?: string;
 }
-
-const TranslatedBody = ({
-  translateButtonClicked,
-  locale,
-  postId,
-  postType,
-  body,
-}) => {
-  const translation = useTranslation({
-    attributeName: 'body_multiloc',
-    localeTo: locale,
-    id: postId,
-    context: postType,
-  });
-
-  const content =
-    translateButtonClicked && !isNilOrError(translation)
-      ? translation.attributes.translation
-      : body;
-
-  return (
-    <span
-      dangerouslySetInnerHTML={{
-        __html: content,
-      }}
-    />
-  );
-};
 
 const Body = memo<Props>(
   ({
@@ -91,7 +52,7 @@ const Body = memo<Props>(
         >
           <div aria-live="polite">
             {isMachineTranslationsEnabled ? (
-              <TranslatedBody
+              <PostShowComponentsBody
                 postId={postId}
                 locale={locale}
                 postType={postType}
