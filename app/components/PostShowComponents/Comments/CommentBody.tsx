@@ -15,7 +15,6 @@ import GetAppConfigurationLocales, {
   GetAppConfigurationLocalesChildProps,
 } from 'resources/GetAppConfigurationLocales';
 import GetComment, { GetCommentChildProps } from 'resources/GetComment';
-import GetMachineTranslation from 'modules/machine_translations/resources/GetMachineTranslation';
 
 import { commentTranslateButtonClicked$ } from './events';
 
@@ -38,38 +37,7 @@ import { CLErrorsJSON, CLErrors } from 'typings';
 import { isCLErrorJSON } from 'utils/errorUtils';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-const PostShowTranslatedCommentBody = ({
-  translateButtonClicked,
-  commentContent,
-  locale,
-  commentId,
-}) => {
-  if (translateButtonClicked) {
-    return (
-      <GetMachineTranslation
-        attributeName="body_multiloc"
-        localeTo={locale}
-        id={commentId}
-        context="comment"
-      >
-        {(translation) => {
-          let text: string = commentContent;
-
-          if (!isNilOrError(translation)) {
-            text = translation.attributes.translation.replace(
-              /<span\sclass="cl-mention-user"[\S\s]*?data-user-id="([\S\s]*?)"[\S\s]*?data-user-slug="([\S\s]*?)"[\S\s]*?>([\S\s]*?)<\/span>/gi,
-              '<a class="mention" data-link="/profile/$2" href="/profile/$2">$3</a>'
-            );
-          }
-
-          return <CommentText dangerouslySetInnerHTML={{ __html: text }} />;
-        }}
-      </GetMachineTranslation>
-    );
-  }
-
-  return <CommentText dangerouslySetInnerHTML={{ __html: commentContent }} />;
-};
+import PostShowTranslatedCommentBody from 'modules/machine_translations/citizen/components/PostShowTranslatedCommentBody';
 
 const Container = styled.div``;
 
@@ -77,7 +45,7 @@ const CommentWrapper = styled.div`
   white-space: pre-line;
 `;
 
-const CommentText = styled.div`
+export const CommentText = styled.div`
   display: inline;
 `;
 
