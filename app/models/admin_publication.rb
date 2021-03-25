@@ -17,10 +17,6 @@ class AdminPublication < ApplicationRecord
     where(publication_status: 'published')
   }
 
-  scope :with_children_with_status, lambda { |*publication_statuses|
-    includes(:children).where(children: { publication_status: publication_statuses })
-  }
-
   def archived?
     publication_status == 'archived'
   end
