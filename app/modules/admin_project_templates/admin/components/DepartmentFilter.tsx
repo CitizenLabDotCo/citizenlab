@@ -5,8 +5,8 @@ import useLocalize from 'hooks/useLocalize';
 import useGraphqlTenantLocales from 'hooks/useGraphqlTenantLocales';
 
 // graphql
-import { gql } from 'apollo-boost';
-import { useQuery } from '@apollo/react-hooks';
+import { gql, useQuery } from '@apollo/client';
+import { client } from '../../utils/apolloUtils';
 
 // components
 import FilterSelector, {
@@ -42,7 +42,7 @@ const DepartmentFilter = memo<Props & InjectedIntlProps>(
 
     const [selectedValues, setSelectedValues] = useState<string[]>([]);
 
-    const { data } = useQuery(DEPARTMENTS_QUERY);
+    const { data } = useQuery(DEPARTMENTS_QUERY, { client });
 
     let options: IFilterSelectorValue[] = [];
 
