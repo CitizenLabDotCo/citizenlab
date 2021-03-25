@@ -71,6 +71,7 @@ class AnonymizeUserService
       'bio_multiloc'              => bio,
       'registration_completed_at' => registration,
       'created_at'                => registration,
+      'verified'                  => random_verified
     }
   end
 
@@ -170,6 +171,11 @@ class AnonymizeUserService
       Faker::Date.between(from: start_at, to: Time.now)
     end
   end
-end
 
-AnonymizeUserService.prepend_if_ee('Verification::Patches::AnonymizeUserService')
+  def random_verified
+    weighted_choice({
+      false => 3,
+      true => 1
+    })
+  end
+end
