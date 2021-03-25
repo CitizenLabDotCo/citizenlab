@@ -11,10 +11,7 @@ module PublicApi
 
       def resolve
         # We base this on the same scope as a non-authenticated user
-        ::ProjectPolicy::Scope.new(nil, scope)
-                              .resolve
-                              .includes(:admin_publication)
-                              .where.not(admin_publications: { publication_status: 'draft' })
+        ::ProjectPolicy::Scope.new(nil, scope).resolve
       end
     end
 
