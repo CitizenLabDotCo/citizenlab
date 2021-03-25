@@ -197,7 +197,7 @@ export default function useAdminPublications({
 
   const childrenOf = useCallback(
     ({ id: publicationId }: ChildrenOfProps) => {
-      if (isNilOrError(all) || isNilOrError(list)) {
+      if (isNilOrError(all)) {
         return [];
       }
 
