@@ -23,6 +23,7 @@ import { colors, fontSizes } from 'utils/styleUtils';
 import { GetCommentChildProps } from 'resources/GetComment';
 import { GetLocaleChildProps } from 'resources/GetLocale';
 import { GetAppConfigurationLocalesChildProps } from 'resources/GetAppConfigurationLocales';
+import { ICommentData } from 'services/comments';
 
 const Container = styled.li`
   display: flex;
@@ -107,4 +108,7 @@ const CommentTranslateButton = memo<Props>(
   }
 );
 
-export default CommentTranslateButton;
+export default styled(CommentTranslateButton)`
+  height: 30px;
+  margin-top: 6px;
+`;
