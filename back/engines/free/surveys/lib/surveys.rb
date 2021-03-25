@@ -1,3 +1,4 @@
+require "httparty"
 require "surveys/engine"
 require "surveys/typeform/api"
 
