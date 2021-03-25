@@ -13,3 +13,7 @@ MachineTranslations::Engine.routes.draw do
     end
   end
 end
+
+Rails.application.routes.draw do
+  mount MachineTranslations::Engine => ''
+end
