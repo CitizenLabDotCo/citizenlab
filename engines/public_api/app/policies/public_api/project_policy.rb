@@ -5,7 +5,7 @@ module PublicApi
       attr_reader :api_client, :scope
 
       def initialize(api_client, scope)
-        @api_client  = api_client
+        @api_client = api_client
         @scope = scope
       end
 
@@ -18,11 +18,9 @@ module PublicApi
       end
     end
 
-
     def show?
       # We base this on the same rules a non-authenticated user
       ::ProjectPolicy.new(nil, record).show?
     end
-
   end
 end

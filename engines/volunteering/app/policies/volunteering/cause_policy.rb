@@ -9,7 +9,7 @@ module Volunteering
       end
 
       def resolve
-        projects = Pundit.policy_scope(user, Project)
+        projects = Pundit.policy_scope(user, Project).not_draft
         phases = Pundit.policy_scope(user, Phase)
         scope
           .where(participation_context: projects)
