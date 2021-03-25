@@ -203,7 +203,7 @@ resource "AdminPublication" do
 
       example 'Lists top level publications when passing depth=0' do
         do_request(depth: 0)
-        expect(response_length).to eq 2
+        expect(response_length).to eq 5
       end
 
       example "Returns an empty list success response when there are no publications", document: false do
