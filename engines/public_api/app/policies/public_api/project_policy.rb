@@ -13,7 +13,7 @@ module PublicApi
         # We base this on the same scope as a non-authenticated user
         ::ProjectPolicy::Scope.new(nil, scope)
                               .resolve
-                              .includes(:amin_publication)
+                              .includes(:admin_publication)
                               .where.not(admin_publications: { publication_status: 'draft' })
       end
     end
