@@ -36,6 +36,40 @@ import styled, { withTheme } from 'styled-components';
 // Typings
 import { CLErrorsJSON, CLErrors } from 'typings';
 import { isCLErrorJSON } from 'utils/errorUtils';
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
+const PostShowTranslatedCommentBody = ({
+  translateButtonClicked,
+  commentContent,
+  locale,
+  commentId,
+}) => {
+  if (translateButtonClicked) {
+    return (
+      <GetMachineTranslation
+        attributeName="body_multiloc"
+        localeTo={locale}
+        id={commentId}
+        context="comment"
+      >
+        {(translation) => {
+          let text: string = commentContent;
+
+          if (!isNilOrError(translation)) {
+            text = translation.attributes.translation.replace(
+              /<span\sclass="cl-mention-user"[\S\s]*?data-user-id="([\S\s]*?)"[\S\s]*?data-user-slug="([\S\s]*?)"[\S\s]*?>([\S\s]*?)<\/span>/gi,
+              '<a class="mention" data-link="/profile/$2" href="/profile/$2">$3</a>'
+            );
+          }
+
+          return <CommentText dangerouslySetInnerHTML={{ __html: text }} />;
+        }}
+      </GetMachineTranslation>
+    );
+  }
+
+  return <CommentText dangerouslySetInnerHTML={{ __html: commentContent }} />;
+};
 
 const Container = styled.div``;
 
@@ -244,38 +278,25 @@ class CommentBody extends PureComponent<Props, State> {
 
     let content: JSX.Element | null = null;
 
+    const isMachineTranslationsEnabled = useFeatureFlag('machine_translations');
+
     if (!isNilOrError(locale)) {
       if (!editing) {
-        const CommentBodyContent = ({ text }: { text: string }) => (
-          <CommentText dangerouslySetInnerHTML={{ __html: text }} />
-        );
-
         content = (
           <CommentWrapper className={`e2e-comment-body ${commentType}`}>
             <QuillEditedContent fontWeight={400} textColor={theme.colorText}>
               <div aria-live="polite">
-                {translateButtonClicked ? (
-                  <GetMachineTranslation
-                    attributeName="body_multiloc"
-                    localeTo={locale}
-                    id={commentId}
-                    context="comment"
-                  >
-                    {(translation) => {
-                      let text: string = commentContent;
-
-                      if (!isNilOrError(translation)) {
-                        text = translation.attributes.translation.replace(
-                          /<span\sclass="cl-mention-user"[\S\s]*?data-user-id="([\S\s]*?)"[\S\s]*?data-user-slug="([\S\s]*?)"[\S\s]*?>([\S\s]*?)<\/span>/gi,
-                          '<a class="mention" data-link="/profile/$2" href="/profile/$2">$3</a>'
-                        );
-                      }
-
-                      return <CommentBodyContent text={text} />;
-                    }}
-                  </GetMachineTranslation>
+                {isMachineTranslationsEnabled ? (
+                  <PostShowTranslatedCommentBody
+                    translateButtonClicked={translateButtonClicked}
+                    commentContent={commentContent}
+                    locale={locale}
+                    commentId={commentId}
+                  />
                 ) : (
-                  <CommentBodyContent text={commentContent} />
+                  <CommentText
+                    dangerouslySetInnerHTML={{ __html: commentContent }}
+                  />
                 )}
               </div>
             </QuillEditedContent>
