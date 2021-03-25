@@ -150,6 +150,7 @@ gem 'mjml-rails', '~> 4.4'
 
 gem 'admin_api', path: 'engines/admin_api'
 gem 'custom_maps', path: 'engines/custom_maps'
+gem 'custom_topics', path: 'engines/custom_topics'
 gem 'custom_statuses', path: 'engines/custom_statuses'
 gem 'custom_style', path: 'engines/custom_style'
 gem 'email_campaigns', path: 'engines/email_campaigns'

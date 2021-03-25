@@ -108,6 +108,14 @@ PATH
       rails (~> 6.0.0)
 
 PATH
+  remote: engines/custom_topics
+  specs:
+    custom_topics (0.1.0)
+      active_model_serializers (~> 0.10.7)
+      pundit (~> 2.0)
+      rails (~> 6.0.0)
+
+PATH
   remote: engines/email_campaigns
   specs:
     email_campaigns (0.1.0)
@@ -930,6 +938,7 @@ DEPENDENCIES
   custom_maps!
   custom_statuses!
   custom_style!
+  custom_topics!
   dalli
   database_cleaner
   email_campaigns!
