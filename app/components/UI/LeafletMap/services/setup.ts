@@ -57,7 +57,7 @@ export function changeView(
   zoom?: number
 ): void {
   map.setView(
-    (center || DEFAULT_CENTER) as L.LatLngExpression,
+    center || (DEFAULT_CENTER as L.LatLngExpression),
     zoom || DEFAULT_ZOOM
   );
 }
