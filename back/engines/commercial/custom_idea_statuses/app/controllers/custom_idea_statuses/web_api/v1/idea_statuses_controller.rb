@@ -1,4 +1,4 @@
-module CustomStatuses
+module CustomIdeaStatuses
   module WebApi
     module V1
       class IdeaStatusesController < ApplicationController
