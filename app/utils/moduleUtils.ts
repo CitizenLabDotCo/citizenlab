@@ -28,7 +28,7 @@ import {
   Multiloc,
 } from 'typings';
 import { IUserData } from 'services/users';
-import { MessageValue } from 'react-intl';
+import { Locale, MessageValue } from 'react-intl';
 import { NavItem } from 'containers/Admin/sideBar';
 import { IAppConfigurationSettingsCore } from 'services/appConfiguration';
 import { ManagerType } from 'components/admin/PostManager';
@@ -210,6 +210,28 @@ export type OutletsPropertyMap = {
     onClick: () => void;
     idea: GetIdeaChildProps;
     locale: GetLocaleChildProps;
+  };
+  'app.components.PostShowComponents.CommentBody.translation': {
+    translateButtonClicked: boolean;
+    commentContent: string;
+    locale: GetLocaleChildProps;
+    commentId: string;
+  };
+  'app.components.PostShowComponents.Body.translation': {
+    postId: string;
+    body: string;
+    locale: GetLocaleChildProps;
+    translateButtonClicked?: boolean;
+    postType: 'idea' | 'initiative';
+  };
+  'app.components.PostShowComponents.Title.translation': {
+    postId: string;
+    postType: 'idea' | 'initiative';
+    title: string;
+    locale?: GetLocaleChildProps;
+    translateButtonClicked?: boolean;
+    color?: string;
+    align: 'left' | 'center';
   };
 };
 
