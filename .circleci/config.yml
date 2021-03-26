@@ -2,6 +2,14 @@ version: 2.1
 
 parameters:
 
+  back:
+    type: boolean
+    default: false
+
+  front:
+    type: boolean
+    default: false
+
   citizenlab_branch:
     type: string
     default: master
@@ -53,6 +61,8 @@ commands:
   echo_pipeline_parameters:
     steps:
       - run: |
+          echo "back: << pipeline.parameters.back >>"
+          echo "front: << pipeline.parameters.front >>"
           echo "citizenlab_branch: << pipeline.parameters.citizenlab_branch >>"
           echo "citizenlab_sha: << pipeline.parameters.citizenlab_sha >>"
           echo "run_deploy: << pipeline.parameters.run_deploy >>"
@@ -74,9 +84,7 @@ jobs:
           fingerprints:
             - "94:9a:7c:8d:50:73:cc:28:06:47:d7:98:91:0b:00:ff"
       - run: |
-          git clone git@github.com:CitizenLabDotCo/citizenlab /citizenlab
-          cd /citizenlab
-          git checkout << pipeline.parameters.citizenlab_branch >>
+          git clone git@github.com:CitizenLabDotCo/citizenlab --depth 5 --branch << pipeline.parameters.citizenlab_branch >> /citizenlab
 
       - run: |
           cd /citizenlab-ee && sh scripts/enable_ee.sh
@@ -131,7 +139,7 @@ jobs:
       - store_test_results:
           path: spec/reports
 
-  trigger-deploy:
+  back-trigger-deploy:
     resource_class: small
     docker:
       - image: byrnedo/alpine-curl
@@ -146,7 +154,7 @@ jobs:
                   --url https://circleci.com/api/v2/project/github/CitizenLabDotCo/citizenlab-ee/pipeline \
                   --header 'content-type: application/json' \
                   --header 'x-attribution-login: '"$CIRCLE_USERNAME" \
-                  --data '{"branch": "'"$CIRCLE_BRANCH"'","parameters": {"image_tag": "<< pipeline.parameters.citizenlab_sha >>-'"$CIRCLE_SHA1"'", "run_deploy": true}}'
+                  --data '{"branch": "'"$CIRCLE_BRANCH"'","parameters": {"image_tag": "<< pipeline.parameters.citizenlab_sha >>-'"$CIRCLE_SHA1"'", "run_deploy": true, "back": true}}'
       - echo_pipeline_parameters
 
   back-push-deployment-docker-image:
@@ -192,7 +200,9 @@ workflows:
 
   back:
     when:
-      not: <<pipeline.parameters.run_deploy>>
+      and:
+        - not: <<pipeline.parameters.run_deploy>>
+        - << pipeline.parameters.back >>
     jobs:
       - back-build-ee-docker-image:
           context: docker-hub-access
@@ -209,7 +219,7 @@ workflows:
               only:
                 - master
                 - production
-      - trigger-deploy:
+      - back-trigger-deploy:
           context: circleci-api-token
           requires:
             - back-test
@@ -220,8 +230,11 @@ workflows:
                 - master
                 - production
 
-  deploy:
-    when: <<pipeline.parameters.run_deploy>>
+  back-deploy:
+    when:
+      and:
+        - <<pipeline.parameters.run_deploy>>
+        - << pipeline.parameters.back >>
     jobs:
       - back-push-deployment-docker-image:
           context: docker-hub-access
