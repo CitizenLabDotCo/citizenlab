@@ -54,7 +54,9 @@ jobs:
           fingerprints:
             - "94:9a:7c:8d:50:73:cc:28:06:47:d7:98:91:0b:00:ff"
       - run: |
-          git clone git@github.com:CitizenLabDotCo/citizenlab --depth 5 --branch << pipeline.parameters.citizenlab_branch >> /citizenlab
+          git clone git@github.com:CitizenLabDotCo/citizenlab /citizenlab
+          cd /citizenlab
+          git checkout << pipeline.parameters.citizenlab_branch >>
 
       - run: |
           cd /citizenlab-ee && sh scripts/enable_ee.sh
