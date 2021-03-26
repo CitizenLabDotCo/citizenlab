@@ -1,0 +1,89 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ConsentManager /> renders correctly when there are destinations 1`] = `
+<PreferencesDialog__ContentContainer
+  id="e2e-preference-dialog"
+>
+  <CategoryCard
+    category="analytics"
+    checked={true}
+    destinations={
+      Array [
+        Object {
+          "category": "Analytics",
+          "description": "Google Analytics is the most popular marketing tool for the web. It’s free and provides a wide range of features. It’s especially good at measuring traffic sources and ad campaigns.",
+          "id": "Google Analytics",
+          "name": "Google Analytics",
+          "website": "http://google.com/analytics",
+        },
+        Object {
+          "category": "Tag Managers",
+          "description": "MarketingTool is the most popular marketing tool for the web. It’s free and provides a wide range of features. It’s especially good at measuring traffic sources and ad campaigns.",
+          "id": "MarketingTool",
+          "name": "MarketingTool",
+          "website": "http://random.com/marketing",
+        },
+      ]
+    }
+    handleChange={[Function]}
+    key="analytics"
+  />
+  <CategoryCard
+    category="advertising"
+    checked={null}
+    destinations={
+      Array [
+        Object {
+          "category": "Advertising",
+          "description": "Advertising BS",
+          "id": "AdvertisingTool",
+          "name": "AdvertisingTool",
+          "website": "http://random.com/advertising",
+        },
+      ]
+    }
+    handleChange={[Function]}
+    key="advertising"
+  />
+  <CategoryCard
+    category="functional"
+    checked={null}
+    destinations={
+      Array [
+        Object {
+          "category": "Security & Fraud",
+          "description": "Actually might be handy",
+          "id": "FunctionalTool",
+          "name": "FunctionalTool",
+          "website": "http://random.com/securitycookie",
+        },
+      ]
+    }
+    handleChange={[Function]}
+    key="functional"
+  />
+  <CategoryCard
+    category="required"
+    checked={true}
+    destinations={Array []}
+    disableUncheck={true}
+    handleChange={[Function]}
+    key="required"
+  />
+</PreferencesDialog__ContentContainer>
+`;
+
+exports[`<ConsentManager /> renders correctly when there are no destinations 1`] = `
+<PreferencesDialog__ContentContainer
+  id="e2e-preference-dialog"
+>
+  <CategoryCard
+    category="required"
+    checked={true}
+    destinations={Array []}
+    disableUncheck={true}
+    handleChange={[Function]}
+    key="required"
+  />
+</PreferencesDialog__ContentContainer>
+`;

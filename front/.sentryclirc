@@ -1,0 +1,6 @@
+[defaults]
+project=cl2-front
+org=citizenlab
+
+[auth]
+token=96fb5e8d1b72466d84c8f48af16ded1f12030369cc6f4c36aecbdc452244c42b

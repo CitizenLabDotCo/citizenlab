@@ -1,0 +1,48 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Container /> renders correclty when no destinations are allowed by the tenant 1`] = `
+<Fragment>
+  <LoadableModal
+    close={[Function]}
+    footer={
+      <Footer
+        handleCancel={[Function]}
+        handleCancelBack={[Function]}
+        handleCancelConfirm={[Function]}
+        handleSave={[Function]}
+        mode="preferenceForm"
+        validate={[Function]}
+      />
+    }
+    header={
+      <FormattedMessage
+        defaultMessage="Your cookie preferences"
+        id="app.components.ConsentManager.Modal.PreferencesDialog.title"
+      />
+    }
+    opened={true}
+  >
+    <PreferencesDialog
+      categoryDestinations={
+        Object {
+          "advertising": Array [],
+          "analytics": Array [
+            "google_analytics",
+          ],
+          "functional": Array [
+            "intercom",
+          ],
+        }
+      }
+      onChange={[Function]}
+      preferences={
+        Object {
+          "advertising": undefined,
+          "analytics": undefined,
+          "functional": undefined,
+        }
+      }
+    />
+  </LoadableModal>
+</Fragment>
+`;
