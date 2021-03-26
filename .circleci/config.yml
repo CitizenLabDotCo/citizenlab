@@ -138,7 +138,9 @@ jobs:
                   --url https://circleci.com/api/v2/project/github/CitizenLabDotCo/citizenlab-ee/pipeline \
                   --header 'content-type: application/json' \
                   --header 'x-attribution-login: $CIRCLE_USERNAME' \
-                  --data '{"branch":"$CIRCLE_BRANCH","parameters":{"image_tag": "<< pipeline.parameters.citizenlab_sha >>-$CIRCLE_SHA1", "run_deploy": true}}'
+                  --data '{"branch": "$CIRCLE_BRANCH","parameters": {"image_tag": "<< pipeline.parameters.citizenlab_sha >>-$CIRCLE_SHA1", "run_deploy": true}}'
+      - run:
+          echo "Dummy step because a jobs can't have 1 'when' step"
 
   back-push-deployment-docker-image:
     resource_class: small
