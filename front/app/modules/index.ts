@@ -1,117 +1,119 @@
 import { loadModules } from 'utils/moduleUtils';
 
-import projectFoldersConfiguration from './project_folders';
-import smartGroupsConfiguration from './smart_groups';
-import userCustomFieldsConfiguration from './user_custom_fields';
-import ideaCustomFieldsConfiguration from './idea_custom_fields';
-import granularPermissionsConfiguration from './granular_permissions';
-import moderationConfiguration from './moderation';
-import ideaAssignmentConfiguration from './idea_assignment';
-import geographicDashboardConfiguration from './geographic_dashboard';
+import projectFoldersConfiguration from './commercial/project_folders';
+import smartGroupsConfiguration from './commercial/smart_groups';
+import userCustomFieldsConfiguration from './commercial/user_custom_fields';
+import ideaCustomFieldsConfiguration from './commercial/idea_custom_fields';
+import granularPermissionsConfiguration from './commercial/granular_permissions';
+import moderationConfiguration from './commercial/moderation';
+import ideaAssignmentConfiguration from './commercial/idea_assignment';
+import geographicDashboardConfiguration from './commercial/geographic_dashboard';
 
-import customMapsConfiguration from './custom_maps';
-import googleTagManagerConfiguration from './google_tag_manager';
-import googleAnalyticsConfiguration from './google_analytics';
-import intercomConfiguration from './intercom';
-import satismeterConfiguration from './satismeter';
-import segmentConfiguration from './segment';
-import matomoConfiguration from './matomo';
-import customIdeaStatusesConfiguration from './custom_idea_statuses';
+import customMapsConfiguration from './commercial/custom_maps';
+import googleTagManagerConfiguration from './commercial/google_tag_manager';
+import googleAnalyticsConfiguration from './commercial/google_analytics';
+import intercomConfiguration from './commercial/intercom';
+import satismeterConfiguration from './commercial/satismeter';
+import segmentConfiguration from './commercial/segment';
+import matomoConfiguration from './commercial/matomo';
+import customIdeaStatusesConfiguration from './commercial/custom_idea_statuses';
 
-import idBosaFasConfiguration from './id_bosa_fas';
-import idCowConfiguration from './id_cow';
-import idBogusConfiguration from './id_bogus';
-import idIdCardLookupConfiguration from './id_id_card_lookup';
-import IdFranceConnectConfiguration from './id_franceconnect';
-import IdClaveUnicaConfiguration from './id_clave_unica';
+import idBosaFasConfiguration from './commercial/id_bosa_fas';
+import idCowConfiguration from './commercial/id_cow';
+import idBogusConfiguration from './commercial/id_bogus';
+import idIdCardLookupConfiguration from './commercial/id_id_card_lookup';
+import IdFranceConnectConfiguration from './commercial/id_franceconnect';
+import IdClaveUnicaConfiguration from './commercial/id_clave_unica';
+
+declare var CL_CONFIG: any;
 
 export default loadModules([
   {
     configuration: projectFoldersConfiguration,
-    isEnabled: true,
+    isEnabled: CL_CONFIG['modules']['commercial/project_folders'],
   },
   {
     configuration: smartGroupsConfiguration,
-    isEnabled: true,
+    isEnabled: CL_CONFIG['modules']['commercial/smart_groups'],
   },
   {
     configuration: userCustomFieldsConfiguration,
-    isEnabled: true,
+    isEnabled: CL_CONFIG['modules']['commercial/user_custom_fields'],
   },
   {
     configuration: ideaCustomFieldsConfiguration,
-    isEnabled: true,
+    isEnabled: CL_CONFIG['modules']['commercial/idea_custom_fields'],
   },
   {
     configuration: googleTagManagerConfiguration,
-    isEnabled: true,
+    isEnabled: CL_CONFIG['modules']['commercial/google_tag_manager'],
   },
   {
     configuration: matomoConfiguration,
-    isEnabled: true,
+    isEnabled: CL_CONFIG['modules']['commercial/matomo'],
   },
   {
     configuration: googleAnalyticsConfiguration,
-    isEnabled: true,
+    isEnabled: CL_CONFIG['modules']['commercial/google_analytics'],
   },
   {
     configuration: intercomConfiguration,
-    isEnabled: true,
+    isEnabled: CL_CONFIG['modules']['commercial/intercom'],
   },
   {
     configuration: satismeterConfiguration,
-    isEnabled: true,
+    isEnabled: CL_CONFIG['modules']['commercial/satismeter'],
   },
   {
     configuration: segmentConfiguration,
-    isEnabled: true,
+    isEnabled: CL_CONFIG['modules']['commercial/segment'],
   },
   {
     configuration: granularPermissionsConfiguration,
-    isEnabled: true,
+    isEnabled: CL_CONFIG['modules']['commercial/granular_permissions'],
   },
   {
     configuration: moderationConfiguration,
-    isEnabled: true,
+    isEnabled: CL_CONFIG['modules']['commercial/moderation'],
   },
   {
     configuration: ideaAssignmentConfiguration,
-    isEnabled: true,
+    isEnabled: CL_CONFIG['modules']['commercial/idea_assignment'],
   },
   {
     configuration: customIdeaStatusesConfiguration,
-    isEnabled: true,
+    isEnabled: CL_CONFIG['modules']['commercial/custom_idea_statuses'],
   },
   {
     configuration: geographicDashboardConfiguration,
-    isEnabled: true,
+    isEnabled: CL_CONFIG['modules']['commercial/geographic_dashboard'],
   },
   {
     configuration: customMapsConfiguration,
-    isEnabled: true,
+    isEnabled: CL_CONFIG['modules']['commercial/custom_maps'],
   },
   {
     configuration: idBosaFasConfiguration,
-    isEnabled: true,
+    isEnabled: CL_CONFIG['modules']['commercial/id_bosa_fas'],
   },
   {
     configuration: idCowConfiguration,
-    isEnabled: true,
+    isEnabled: CL_CONFIG['modules']['commercial/id_cow'],
   },
   {
     configuration: idBogusConfiguration,
-    isEnabled: true,
+    isEnabled: CL_CONFIG['modules']['commercial/id_bogus'],
   },
   {
     configuration: idIdCardLookupConfiguration,
-    isEnabled: true,
+    isEnabled: CL_CONFIG['modules']['commercial/id_id_card_lookup'],
   },
   {
     configuration: IdFranceConnectConfiguration,
-    isEnabled: true,
+    isEnabled: CL_CONFIG['modules']['commercial/id_franceconnect'],
   },
   {
     configuration: IdClaveUnicaConfiguration,
-    isEnabled: true,
+    isEnabled: CL_CONFIG['modules']['commercial/id_clave_unica'],
   },
 ]);
