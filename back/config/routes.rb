@@ -1,19 +1,11 @@
 Rails.application.routes.draw do
 
-  mount AdminApi::Engine => "/admin_api", as: 'admin_api', defaults: {format: :json}
-  mount CustomMaps::Engine => "", as: 'custom_maps'
-  mount CustomTopics::Engine => "", as: 'custom_topics'
-  mount CustomIdeaStatuses::Engine => "", as: 'custom_idea_statuses'
   mount EmailCampaigns::Engine => "", as: 'email_campaigns'
   mount Frontend::Engine => "", as: 'frontend'
-  mount GeographicDashboard::Engine => '', as: 'geographic_dashboard'
-  mount NLP::Engine => "", as: 'nlp'
   mount Onboarding::Engine => "", as: 'onboarding'
   mount Polls::Engine => "", as: 'polls'
-  mount PublicApi::Engine => "/api", as: 'public_api'
   mount Seo::Engine => '', as: 'seo'
   mount Surveys::Engine => "", as: 'surveys'
-  mount Tagging::Engine => "", as: 'tagging'
   mount Verification::Engine => "", as: 'verification'
   mount Volunteering::Engine => "", as: 'volunteering'
 

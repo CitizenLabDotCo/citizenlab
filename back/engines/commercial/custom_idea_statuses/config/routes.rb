@@ -5,3 +5,7 @@ CustomIdeaStatuses::Engine.routes.draw do
     end
   end
 end
+
+Rails.application.routes.draw do
+  mount CustomIdeaStatuses::Engine => '', as: 'custom_idea_statuses'
+end
