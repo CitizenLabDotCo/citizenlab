@@ -72,7 +72,7 @@ describe SanitizationService do
     it "allows images to pass through when title feature is enabled" do
       input = <<~HTML
         <p>
-          <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" style="display: block;margin:auto;" width="313" height="160.33516960470087" data-align="center">
+          <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" style="display:block;margin:auto;" width="313" height="160.33516960470087" data-align="center">
         </p>
       HTML
       features = [:image]
@@ -82,7 +82,7 @@ describe SanitizationService do
     it "disallows images to pass through when image feature is disabled" do
       input = <<~HTML
         <p>
-          <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" style="display: block;margin:auto;" width="313" height="160.33516960470087" data-align="center">
+          <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" style="display:block;margin:auto;" width="313" height="160.33516960470087" data-align="center">
         </p>
       HTML
       features = []
@@ -91,7 +91,7 @@ describe SanitizationService do
 
     it "allows youtube video to pass through when video feature is enabled" do
       input = <<~HTML
-        "<iframe class="ql-video" frameborder="0" allowfullscreen="true" src="https://www.youtube.com/embed/Y1mtif1B8k0?showinfo=0" data-blot-formatter-unclickable-bound="true" width="497" height="248.5" style="display: block;margin:auto;cursor: nwse-resize;" data-align="center"></iframe>"
+        "<iframe class="ql-video" frameborder="0" allowfullscreen="true" src="https://www.youtube.com/embed/Y1mtif1B8k0?showinfo=0" data-blot-formatter-unclickable-bound="true" width="497" height="248.5" style="display:block;margin:auto;cursor:nwse-resize;" data-align="center"></iframe>"
       HTML
       features = [:video]
       expect(service.sanitize(input, features)).to eq input
@@ -99,7 +99,7 @@ describe SanitizationService do
 
     it "disallows unknown url iframe to pass through when video feature is enabled" do
       input = <<~HTML
-        "<iframe class="ql-video" frameborder="0" allowfullscreen="true" src="https://www.badTube.com/Y1mtif1B8k0" data-blot-formatter-unclickable-bound="true" width="497" height="248.5" style="display: block;margin:auto;cursor: nwse-resize;" data-align="center"></iframe>"
+        "<iframe class="ql-video" frameborder="0" allowfullscreen="true" src="https://www.badTube.com/Y1mtif1B8k0" data-blot-formatter-unclickable-bound="true" width="497" height="248.5" style="display:block;margin:auto;cursor:nwse-resize;" data-align="center"></iframe>"
       HTML
       features = [:video]
       expect(service.sanitize(input, features)).to eq "\"\"\n"
@@ -107,7 +107,7 @@ describe SanitizationService do
 
     it "disallows malicious urls iframe to pass through when video feature is enabled" do
       input = <<~HTML
-        "<iframe class="ql-video" frameborder="0" allowfullscreen="true" src="https://www.badTube.com/https://www.youtube.com/embed/Y1mtif1B8k0" data-blot-formatter-unclickable-bound="true" width="497" height="248.5" style="display: block;margin:auto;cursor: nwse-resize;" data-align="center"></iframe>"
+        "<iframe class="ql-video" frameborder="0" allowfullscreen="true" src="https://www.badTube.com/https://www.youtube.com/embed/Y1mtif1B8k0" data-blot-formatter-unclickable-bound="true" width="497" height="248.5" style="display:block;margin:auto;cursor:nwse-resize;" data-align="center"></iframe>"
       HTML
       features = [:video]
       expect(service.sanitize(input, features)).to eq "\"\"\n"
@@ -115,7 +115,7 @@ describe SanitizationService do
 
     it "disallows malicious urls iframe to pass through when video feature is enabled" do
       input = <<~HTML
-        "<iframe class="ql-video" frameborder="0" allowfullscreen="true" src="//wwwXyoutube.com/embed/IqajIYxbPOI" data-blot-formatter-unclickable-bound="true" width="497" height="248.5" style="display: block;margin:auto;cursor: nwse-resize;" data-align="center"></iframe>"
+        "<iframe class="ql-video" frameborder="0" allowfullscreen="true" src="//wwwXyoutube.com/embed/IqajIYxbPOI" data-blot-formatter-unclickable-bound="true" width="497" height="248.5" style="display:block;margin:auto;cursor:nwse-resize;" data-align="center"></iframe>"
       HTML
       features = [:video]
       expect(service.sanitize(input, features)).to eq "\"\"\n"
@@ -123,7 +123,7 @@ describe SanitizationService do
 
     it "allows vimeo iframe to pass through when video feature is enabled" do
       input = <<~HTML
-        "<iframe class="ql-video" frameborder="0" allowfullscreen="true" src="https://player.vimeo.com/video/76979871" data-blot-formatter-unclickable-bound="true" width="497" height="248.5" style="display: block;margin:auto;cursor: nwse-resize;" data-align="center"></iframe>"
+        "<iframe class="ql-video" frameborder="0" allowfullscreen="true" src="https://player.vimeo.com/video/76979871" data-blot-formatter-unclickable-bound="true" width="497" height="248.5" style="display:block;margin:auto;cursor:nwse-resize;" data-align="center"></iframe>"
       HTML
       features = [:video]
       expect(service.sanitize(input, features)).to eq input
@@ -131,7 +131,7 @@ describe SanitizationService do
 
     it "allows vimeo iframe to pass through when video feature is enabled" do
       input = <<~HTML
-        "<iframe class="ql-video" frameborder="0" allowfullscreen="true" src="https://vimeo.com/76979871" data-blot-formatter-unclickable-bound="true" width="497" height="248.5" style="display: block;margin:auto;cursor: nwse-resize;" data-align="center"></iframe>"
+        "<iframe class="ql-video" frameborder="0" allowfullscreen="true" src="https://vimeo.com/76979871" data-blot-formatter-unclickable-bound="true" width="497" height="248.5" style="display:block;margin:auto;cursor:nwse-resize;" data-align="center"></iframe>"
       HTML
       features = [:video]
       expect(service.sanitize(input, features)).to eq input
@@ -139,7 +139,7 @@ describe SanitizationService do
 
     it "allows wistia iframe to pass through when video feature is enabled" do
       input = <<~HTML
-        "<iframe class="ql-video" frameborder="0" allowfullscreen="true" src="//fast.wistia.net/embed/iframe/avk9twrrbn" data-blot-formatter-unclickable-bound="true" width="497" height="248.5" style="display: block;margin:auto;cursor: nwse-resize;" data-align="center"></iframe>"
+        "<iframe class="ql-video" frameborder="0" allowfullscreen="true" src="//fast.wistia.net/embed/iframe/avk9twrrbn" data-blot-formatter-unclickable-bound="true" width="497" height="248.5" style="display:block;margin:auto;cursor:nwse-resize;" data-align="center"></iframe>"
       HTML
       features = [:video]
       expect(service.sanitize(input, features)).to eq input
@@ -147,7 +147,7 @@ describe SanitizationService do
 
     it "allows dailymotion iframe to pass through when video feature is enabled" do
       input = <<~HTML
-        "<iframe class="ql-video" frameborder="0" allowfullscreen="true" src="https://www.dailymotion.com/embed/video/x7724ry" data-blot-formatter-unclickable-bound="true" width="497" height="248.5" style="display: block;margin:auto;cursor: nwse-resize;" data-align="center"></iframe>"
+        "<iframe class="ql-video" frameborder="0" allowfullscreen="true" src="https://www.dailymotion.com/embed/video/x7724ry" data-blot-formatter-unclickable-bound="true" width="497" height="248.5" style="display:block;margin:auto;cursor:nwse-resize;" data-align="center"></iframe>"
       HTML
       features = [:video]
       expect(service.sanitize(input, features)).to eq input
@@ -290,7 +290,7 @@ describe SanitizationService do
       html = <<~HTML
         <p>qweqweqweqwe</p>
         "
-        <p><iframe class="ql-video" frameborder="0" allowfullscreen="true" src="//wwwXyoutube.com/embed/IqajIYxbPOI" data-blot-formatter-unclickable-bound="true" width="497" height="248.5" style="display: block;margin:auto;cursor: nwse-resize;" data-align="center"></iframe></p>
+        <p><iframe class="ql-video" frameborder="0" allowfullscreen="true" src="//wwwXyoutube.com/embed/IqajIYxbPOI" data-blot-formatter-unclickable-bound="true" width="497" height="248.5" style="display:block;margin:auto;cursor:nwse-resize;" data-align="center"></iframe></p>
       HTML
       output = service.remove_empty_trailing_tags(html)
       expect(output).to eq html
@@ -300,7 +300,7 @@ describe SanitizationService do
       html = <<~HTML
         <p>qweqweqweqwe</p>
         "
-        <iframe class="ql-video" frameborder="0" allowfullscreen="true" src="//wwwXyoutube.com/embed/IqajIYxbPOI" data-blot-formatter-unclickable-bound="true" width="497" height="248.5" style="display: block;margin:auto;cursor: nwse-resize;" data-align="center"></iframe>
+        <iframe class="ql-video" frameborder="0" allowfullscreen="true" src="//wwwXyoutube.com/embed/IqajIYxbPOI" data-blot-formatter-unclickable-bound="true" width="497" height="248.5" style="display:block;margin:auto;cursor:nwse-resize;" data-align="center"></iframe>
       HTML
       output = service.remove_empty_trailing_tags(html)
       expect(output).to eq html

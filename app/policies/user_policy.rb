@@ -45,7 +45,7 @@ class UserPolicy < ApplicationPolicy
   end
 
   def destroy?
-    user&.active? && (record.id == user.id || user.admin?)
+     record.id == user&.id || (user&.active? && user.admin?)
   end
 
   def ideas_count?
@@ -74,9 +74,7 @@ class UserPolicy < ApplicationPolicy
 
   def permitted_attributes
     shared = [:first_name, :last_name, :email, :password, :avatar, :locale, custom_field_values: allowed_custom_field_keys, bio_multiloc: CL2_SUPPORTED_LOCALES]
-    shared += role_permitted_params if user&.admin?
-    locked_attributes = Verification::VerificationService.new.locked_attributes(record)
-    shared - locked_attributes
+    admin? ? shared + role_permitted_params : shared
   end
 
   def role_permitted_params
@@ -90,17 +88,19 @@ class UserPolicy < ApplicationPolicy
   private
 
   def allowed_custom_field_keys
-    locked_keys = Verification::VerificationService.new.locked_custom_fields(record)
-    enabled_fields = CustomField
-      .with_resource_type('User')
-      .where.not(key: locked_keys)
-      .enabled
-      .not_hidden
+    enabled_fields = enabled_custom_fields
     simple_keys = enabled_fields.support_single_value.pluck(:key).map(&:to_sym)
     array_keys = enabled_fields.support_multiple_values.pluck(:key).map(&:to_sym)
-
     [*simple_keys, array_keys.map{|k| [k, []]}.to_h]
+  end
+
+  def enabled_custom_fields
+    CustomField
+      .with_resource_type('User')
+      .enabled
+      .not_hidden
   end
 end
 
 UserPolicy.prepend_if_ee('ProjectFolders::Patches::UserPolicy')
+UserPolicy.prepend_if_ee('Verification::Patches::UserPolicy')

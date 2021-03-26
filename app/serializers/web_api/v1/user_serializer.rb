@@ -17,10 +17,6 @@ class WebApi::V1::UserSerializer < WebApi::V1::BaseSerializer
     CustomFieldService.remove_disabled_custom_fields(custom_field_values)
   end
 
-  attribute :verified, if: Proc.new {|object, params|
-    view_private_attributes? object, params
-  }
-
   attribute :avatar, if: Proc.new { |object|
     object.avatar
   } do |object|
@@ -40,3 +36,5 @@ class WebApi::V1::UserSerializer < WebApi::V1::BaseSerializer
     Pundit.policy!(current_user(params), object).view_private_attributes?
   end
 end
+
+WebApi::V1::UserSerializer.include_if_ee('Verification::Patches::WebApi::V1::UserSerializer')
