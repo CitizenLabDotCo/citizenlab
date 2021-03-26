@@ -112,8 +112,9 @@ resource "AdminPublication" do
           do_request
           expect(response_status).to eq 200
           json_response = json_parse(response_body)
-          expect(json_response.dig(:data,:attributes,:ordering)).to match ordering
-          expect(AdminPublication.find_by(ordering: ordering).id).to eq id
+          expect(json_response.dig(:data, :attributes, :ordering)).to eq ordering
+          expect(json_response.dig(:data, :id)).to eq id
+          expect(AdminPublication.where(ordering: ordering).ids).to include id
           expect(old_second_project.reload.ordering).to eq 2 # previous second is now third
         end
       end
