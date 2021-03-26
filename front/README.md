@@ -1,7 +1,5 @@
 # cl2-front
 
-[![CircleCI](https://circleci.com/gh/CitizenLabDotCo/cl2-front/tree/master.svg?style=svg&circle-token=46bc7ddacbeec9135870cb8765c2968f590ed7e6)](https://circleci.com/gh/CitizenLabDotCo/cl2-front/tree/master)
-
 ## Prerequisites
 
 - NodeJS (use nvm or a similar tool in order to be able to install different versions side by side)
