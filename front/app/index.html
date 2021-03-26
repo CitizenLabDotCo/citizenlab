@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="preload"
+      crossorigin="anonymous"
+      href="/larsseit-light.woff2"
+      as="font"
+      type="font/woff2"
+    />
+    <link
+      rel="preload"
+      crossorigin="anonymous"
+      href="/larsseit-regular.woff2"
+      as="font"
+      type="font/woff2"
+    />
+    <link
+      rel="preload"
+      crossorigin="anonymous"
+      href="/larsseit-medium.woff2"
+      as="font"
+      type="font/woff2"
+    />
+    <link
+      rel="preload"
+      crossorigin="anonymous"
+      href="/larsseit-bold.woff2"
+      as="font"
+      type="font/woff2"
+    />
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+      }
+
+      #app {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+
+      .app-loading-container {
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0;
+        padding: 0;
+      }
+
+      .app-loading-spinner {
+        flex: 0 0 30px;
+        width: 30px;
+        height: 30px;
+        animation: spin 800ms infinite linear;
+        border-style: solid;
+        border-right-color: transparent !important;
+        border-width: 3px;
+        border-color: #666;
+        border-radius: 50%;
+        padding: 0;
+        margin: 0;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="app">
+      <div class="app-loading-container">
+        <div class="app-loading-spinner"></div>
+      </div>
+    </div>
+
+    <script>
+      window.myCallbackFunc = function () {
+        window.googleMaps = true;
+      };
+    </script>
+
+    <script
+      async
+      defer
+      src="https://maps.googleapis.com/maps/api/js?key=***REMOVED***&libraries=places&callback=myCallbackFunc"
+    ></script>
+  </body>
+</html>
