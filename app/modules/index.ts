@@ -25,6 +25,8 @@ import idIdCardLookupConfiguration from './id_id_card_lookup';
 import IdFranceConnectConfiguration from './id_franceconnect';
 import IdClaveUnicaConfiguration from './id_clave_unica';
 
+import machineTranslationsConfiguration from './machine_translations';
+
 export default loadModules([
   {
     configuration: projectFoldersConfiguration,
@@ -112,6 +114,10 @@ export default loadModules([
   },
   {
     configuration: IdClaveUnicaConfiguration,
+    isEnabled: true,
+  },
+  {
+    configuration: machineTranslationsConfiguration,
     isEnabled: true,
   },
 ]);
