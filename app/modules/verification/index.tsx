@@ -1,5 +1,4 @@
-import ErrorBoundary from 'components/ErrorBoundary';
-import React, { Suspense } from 'react';
+import React from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 import VerificationBadge from './citizen/components/VerificationBadge';
 import VerificationModal from './citizen/components/VerificationModal';
@@ -17,15 +16,7 @@ const configuration: ModuleConfiguration = {
       <VerificationBadge {...props} />
     ),
     'app.containers.App.modals': ({ onMounted }) => {
-      const handleMounted = () => onMounted('verification');
-
-      return (
-        <ErrorBoundary>
-          <Suspense fallback={null}>
-            <VerificationModal onMounted={handleMounted} />
-          </Suspense>
-        </ErrorBoundary>
-      );
+      return <VerificationModal onMounted={onMounted} />;
     },
     'app.containers.LandingPage.onboardingCampaigns': VerificationOnboardingStep,
   },

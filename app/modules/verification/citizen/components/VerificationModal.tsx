@@ -29,6 +29,7 @@ import {
 // style
 import styled from 'styled-components';
 import { viewportWidths } from 'utils/styleUtils';
+import ErrorBoundary from 'components/ErrorBoundary';
 
 // typings
 const Container = styled.div`
@@ -48,7 +49,7 @@ export function isInitiativeContext(
 
 export interface Props {
   className?: string;
-  onMounted: () => void;
+  onMounted: (id: string) => void;
 }
 
 const VerificationModal = memo<Props>(({ className, onMounted }) => {
@@ -65,7 +66,7 @@ const VerificationModal = memo<Props>(({ className, onMounted }) => {
 
   useEffect(() => {
     if (isMounted() && onMounted) {
-      onMounted();
+      onMounted('verification');
     }
   }, [onMounted]);
 
@@ -105,30 +106,36 @@ const VerificationModal = memo<Props>(({ className, onMounted }) => {
   }, []);
 
   return (
-    <Modal
-      width={820}
-      padding={smallerThanSmallTablet ? '0px 5px 0px 5px' : '0px 20px 0px 20px'}
-      opened={opened}
-      close={onClose}
-      closeOnClickOutside={false}
-    >
-      <Container id="e2e-verification-modal" className={className || ''}>
-        {activeStep && activeStep !== 'success' && activeStep !== 'error' && (
-          <VerificationSteps
-            context={context}
-            inModal={true}
-            showHeader={true}
-            initialActiveStep={activeStep}
-            onCompleted={onCompleted}
-            onError={onError}
-          />
-        )}
+    <ErrorBoundary>
+      <Modal
+        width={820}
+        padding={
+          smallerThanSmallTablet ? '0px 5px 0px 5px' : '0px 20px 0px 20px'
+        }
+        opened={opened}
+        close={onClose}
+        closeOnClickOutside={false}
+      >
+        <Container id="e2e-verification-modal" className={className || ''}>
+          {activeStep && activeStep !== 'success' && activeStep !== 'error' && (
+            <VerificationSteps
+              context={context}
+              inModal={true}
+              showHeader={true}
+              initialActiveStep={activeStep}
+              onCompleted={onCompleted}
+              onError={onError}
+            />
+          )}
 
-        {activeStep === 'success' && <VerificationSuccess onClose={onClose} />}
+          {activeStep === 'success' && (
+            <VerificationSuccess onClose={onClose} />
+          )}
 
-        {activeStep === 'error' && <VerificationError error={error} />}
-      </Container>
-    </Modal>
+          {activeStep === 'error' && <VerificationError error={error} />}
+        </Container>
+      </Modal>
+    </ErrorBoundary>
   );
 });
 
