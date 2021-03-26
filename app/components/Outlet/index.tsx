@@ -17,7 +17,7 @@ type InputProps = {
 
 function useOutlet(identifier: OutletId) {
   const outlets = useContext(OutletsContext);
-  return outlets[identifier];
+  return outlets[identifier] ?? [];
 }
 
 type Props = InputProps & CustomOutletProps;
@@ -25,19 +25,15 @@ type Props = InputProps & CustomOutletProps;
 const Outlet = memo(({ children, id, ...props }: Props) => {
   const outletComponents = useOutlet(id);
 
-  if (outletComponents) {
-    const componentsToRender = outletComponents.map((Component, index) => (
-      <Component key={`${id}_${index}`} {...props} />
-    ));
+  const componentsToRender = outletComponents.map((Component, index) => (
+    <Component key={`${id}_${index}`} {...props} />
+  ));
 
-    if (children) {
-      return children(componentsToRender);
-    } else {
-      return <>{componentsToRender}</>;
-    }
+  if (children) {
+    return children(componentsToRender);
   }
 
-  return null;
+  return <>{componentsToRender}</>;
 });
 
 export default Outlet;
