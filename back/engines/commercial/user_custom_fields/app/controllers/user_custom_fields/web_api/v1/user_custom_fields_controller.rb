@@ -12,7 +12,7 @@ module UserCustomFields
                                                    .order(:ordering)
       @custom_fields = @custom_fields.where(input_type: params[:input_types]) if params[:input_types]
       
-      render json: WebApi::V1::CustomFieldSerializer.new(@custom_fields, params: fastjson_params).serialized_json
+      render json: ::WebApi::V1::CustomFieldSerializer.new(@custom_fields, params: fastjson_params).serialized_json
     end
 
     def schema
@@ -25,7 +25,7 @@ module UserCustomFields
     end
 
     def show
-      render json: WebApi::V1::CustomFieldSerializer.new(@custom_field, params: fastjson_params).serialized_json
+      render json: ::WebApi::V1::CustomFieldSerializer.new(@custom_field, params: fastjson_params).serialized_json
     end
 
     def create
@@ -37,7 +37,7 @@ module UserCustomFields
 
       if @custom_field.save
         SideFxCustomFieldService.new.after_create(@custom_field, current_user)
-        render json: WebApi::V1::CustomFieldSerializer.new(
+        render json: ::WebApi::V1::CustomFieldSerializer.new(
           @custom_field,
           params: fastjson_params
         ).serialized_json, status: :created
@@ -51,7 +51,7 @@ module UserCustomFields
       authorize @custom_field, policy_class: UserCustomFieldPolicy
       if @custom_field.save
         SideFxCustomFieldService.new.after_update(@custom_field, current_user)
-        render json: WebApi::V1::CustomFieldSerializer.new(
+        render json: ::WebApi::V1::CustomFieldSerializer.new(
           @custom_field.reload,
           params: fastjson_params
         ).serialized_json, status: :ok
@@ -63,7 +63,7 @@ module UserCustomFields
     def reorder
       if @custom_field.insert_at(custom_field_params(@custom_field)[:ordering])
         SideFxCustomFieldService.new.after_update(@custom_field, current_user)
-        render json: WebApi::V1::CustomFieldSerializer.new(
+        render json: ::WebApi::V1::CustomFieldSerializer.new(
           @custom_field.reload,
           params: fastjson_params
         ).serialized_json, status: :ok
