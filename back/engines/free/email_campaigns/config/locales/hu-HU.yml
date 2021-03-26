@@ -115,7 +115,7 @@ hu:
       inappropriate_reason: 'Your comment was considered to be inappropriate'
       irrelevant_reason: 'Your comment was considered to be irrelevant for that context'
       no_reason: 'No reason was specified'
-      subject: 'Your comment has been deleted on the platform of %{organizationName}'
+      subject: 'Your comment has been deleted from the platform of %{organizationName}'
       preheader: 'Your comment has been deleted'
     admin_digest:
       subject: 'Your weekly admin report of %{time}'
@@ -375,7 +375,7 @@ hu:
       by_author: 'by %{authorName}'
       updated: '%{officialName} wrote:'
       cta_view: 'Go to your idea'
-      event_description: '%{officialName} gave an update on your idea ''ideaTitle''. Click the button below to enter the conversation with %{officialName}.'
+      event_description: '%{officialName} gave an update on your idea ''%{ideaTitle}''. Click the button below to enter the conversation with %{officialName}.'
       main_header: 'You received an update from %{organizationName}'
       subject: 'You received an update from %{organizationName}'
       preheader: '%{officialName} left an official update on your idea'
@@ -487,7 +487,7 @@ hu:
       subject: 'The status of your proposal has changed'
       preheader: 'The status of your proposal has changed'
     user_digest:
-      subject: "Weekly update of %{organizationName}'s participation platform"
+      subject: "Your activity on the participation platform of %{organizationName}"
       commented: "%{authorFirstName} commented:"
       preheader: "Weekly overview of %{organizationName}"
       title_your_weekly_report: "Discover what happened last week"
@@ -506,8 +506,8 @@ hu:
       no_notifications: "No notifications"
       one_notification: "1 notification"
       multiple_notifications: "%{notifCount} notifications"
-      no_unread_notifications: "You've got no unread notifications. However, we invite you to visit the platform to discover what’s happening."
-      unread_notifications: "You've got unread notifications. We invite you to visit the platform to discover what’s happening."
+      no_unread_notifications: "You don't have any unread notifications. Visit the platform to contribute your input and generate new notifications!"
+      unread_notifications: "You have unread notifications. Visit the platform to discover what's happening!"
     threshold_reached_for_admin:
       by_author: 'by %{authorName}'
       cta_process_initiative: 'Take this initiative to the next steps'
@@ -520,7 +520,7 @@ hu:
       action_comment: '%{textComment} on existing ideas'
       action_published_idea: 'Published idea'
       action_send_email: 'Send your contacts an %{sendEmailLink}'
-      action_share_fb: 'Let your friends now on %{fbLink}'
+      action_share_fb: 'Let your friends know on %{fbLink}'
       action_share_link: 'Share it via any channel by copying the %{link}'
       action_share_twitter: 'Inform your followers on %{twitterLink}'
       add_image: 'Add an image'
@@ -543,7 +543,7 @@ hu:
       action_add_image: '%{addImageLink} to increase visibility'
       action_published_idea: 'Published idea'
       action_send_email: 'Send your contacts an %{sendEmailLink}'
-      action_share_fb: 'Let your friends now on %{fbLink}'
+      action_share_fb: 'Let your friends know on %{fbLink}'
       action_share_link: 'Share it via any channel by copying the %{link}'
       action_share_twitter: 'Inform your followers on %{twitterLink}'
       add_image: 'Add an image'
@@ -558,11 +558,11 @@ hu:
       subject: 'Your idea on the platform of %{organizationName}'
       message_next_steps: ""
     your_proposed_initiatives_digest:
-      subject: 'Weekly update of your proposal'
-      preheader: 'What happened to your proposal in the past week?'
-      title_your_weekly_report: 'How has your proposal been doing?'
-      text_introduction: 'Find the key numbers below and go to your proposal''s page to take action and gather enough support in time.'
-      cta_see_your_initiative: 'Go to your proposal'
+      subject: 'Weekly update of your proposals'
+      preheader: 'What happened with your proposals in the past week?'
+      title_your_weekly_report: 'How have your proposals been doing?'
+      text_introduction: 'Find the key numbers below and go to the platform to take action and gather enough support in time.'
+      cta_see_your_initiative: 'Go to your proposals'
       total_votes: 'Total votes'
       new_votes: 'New votes'
       remaining_votes: 'Votes remaining'
