@@ -4,12 +4,12 @@ describe AdminPublicationsFilteringService do
   subject(:result) { described_class.new.filter(base_scope, options) }
 
   let(:options) { {} }
-  let(:base_scope) { AdminPublication.all }
+  let(:base_scope) { AdminPublication.includes(:parent) }
 
   let!(:tree_mock) { MockAdminPublicationsTree.call }
 
   shared_examples 'when a normal user searching from the landing page' do
-    let(:base_scope) { Pundit.policy_scope(create(:user), AdminPublication) }
+    let(:base_scope) { Pundit.policy_scope(create(:user), AdminPublication.includes(:parent)) }
 
     it 'includes truly empty parents' do
       expect(result.ids).to include(*tree_mock.empty_parents.where(publication_status: %w[archived published]).ids)
@@ -53,7 +53,7 @@ describe AdminPublicationsFilteringService do
   end
 
   context 'when an admin searching from the admin dashboard' do
-    let(:base_scope) { Pundit.policy_scope(create(:admin), AdminPublication) }
+    let(:base_scope) { Pundit.policy_scope(create(:admin), AdminPublication.includes(:parent)) }
     let(:options) { {} }
 
     it 'includes all publications' do
