@@ -1,93 +1,88 @@
-version: '3.5'
+version: "3.8"
 
 services:
   postgres:
-    image: 'camptocamp/postgres:9.6'
+    image: "postgis/postgis:12-3.1"
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
     ports:
-      - '5432:5432'
+      - "5432:5432"
     volumes:
-      - 'postgres:/var/lib/postgresql/data'
-
-  redis:
-    image: 'redis:5.0.6-alpine'
-    command: redis-server
-    ports:
-      - '6379:6379'
-    volumes:
-      - 'redis:/var/lib/redis/data'
+      - "postgres:/var/lib/postgresql/data"
 
   web:
-    container_name: cl2-back-web
+    container_name: cl-back-web
     depends_on:
-      - 'postgres'
-      - 'redis'
-      - 'mailcatcher'
-      - 'rabbitmq'
+      - "postgres"
+      - "mailcatcher"
+      - "rabbitmq"
       # - 'memcached'
-    build: .
-    image: citizenlabdotco/cl2-back:latest
+    build:
+      context: .
+      dockerfile: back/Dockerfile
     ports:
-      - '4000:4000'
+      - "4000:4000"
     volumes:
-      - '.:/cl2_back'
+      - "./back:/cl2_back"
     env_file:
-      - '.env'
+      - ".env-back"
     tty: true
     stdin_open: true
-    secrets:
-      - cow_ssl_cert_file
-      - cow_ssl_cert_key_file
 
   que:
-    container_name: cl2-que
+    container_name: cl-que
     depends_on:
-      - 'postgres'
-      - 'mailcatcher'
-      - 'rabbitmq'
-    build: .
-    image: citizenlabdotco/cl2-back:latest
+      - "postgres"
+      - "mailcatcher"
+      - "rabbitmq"
+    build:
+      context: .
+      dockerfile: back/Dockerfile
     command: bundle exec que
     volumes:
-      - '.:/cl2_back'
+      - "./back:/cl2_back"
     env_file:
-      - '.env'
+      - "back/.env"
     tty: true
     stdin_open: true
 
   rabbitmq:
-    container_name: cl2-back-rabbit
-    image: 'rabbitmq:3.7-management'
+    container_name: cl-back-rabbit
+    image: "rabbitmq:3.7-management"
     ports:
       - "8088:15672"
     volumes:
-      - './rabbitmq_enabled_plugins:/etc/rabbitmq/enabled_plugins'
+      - "./back/rabbitmq_enabled_plugins:/etc/rabbitmq/enabled_plugins"
 
   mailcatcher:
-    image: 'schickling/mailcatcher'
+    image: "schickling/mailcatcher"
     ports:
-      - '1080:1080'
+      - "1080:1080"
+
+  front:
+    build:
+      context: .
+      dockerfile: front/Dockerfile
+    ports:
+      - "3000:3000"
+    env_file:
+      - ".env-front"
+    volumes:
+      - "./front:/front"
+      - /front/node_modules
+    command: npm start
 
   # Include this and uncomment :mem_cache_store in
   # `config/environments/development.rb` if you want to enable caching in
   # development
-
   # memcached:
   #   image: memcached:alpine
   #   command: memcached -m 64
 
-secrets:
-  cow_ssl_cert_file:
-    file: ./secrets/cow_ssl_cert_file.sample
-  cow_ssl_cert_key_file:
-    file: ./secrets/cow_ssl_cert_key_file.sample
-
 volumes:
-  redis:
   postgres:
 
 networks:
   default:
-    name: cl2-back
+    name: citizenlab
