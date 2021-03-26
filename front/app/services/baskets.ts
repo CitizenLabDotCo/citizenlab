@@ -1,0 +1,72 @@
+import { API_PATH } from 'containers/App/constants';
+import streams, { IStreamParams } from 'utils/streams';
+import { IRelationship } from 'typings';
+
+const apiEndpoint = `${API_PATH}/baskets`;
+
+export interface IBasketData {
+  id: string;
+  type: string;
+  attributes: {
+    submitted_at: string;
+    total_budget: number;
+    'budget_exceeds_limit?': false;
+  };
+  relationships: {
+    participation_context: {
+      data: IRelationship;
+    };
+    user: {
+      data: IRelationship;
+    };
+    ideas: {
+      data: IRelationship[];
+    };
+  };
+}
+
+export interface IBasket {
+  data: IBasketData;
+}
+
+export interface IBaskets {
+  data: IBasketData[];
+}
+
+export interface INewBasket {
+  user_id: string;
+  participation_context_id: string;
+  participation_context_type: 'Project' | 'Phase';
+  idea_ids?: string[];
+  submitted_at?: string | null;
+}
+
+export function basketsStream(streamParams: IStreamParams | null = null) {
+  return streams.get<IBaskets>({ apiEndpoint, ...streamParams });
+}
+
+export function basketByIdStream(
+  basketId: string,
+  streamParams: IStreamParams | null = null
+) {
+  return streams.get<IBasket>({
+    apiEndpoint: `${apiEndpoint}/${basketId}`,
+    ...streamParams,
+  });
+}
+
+export async function addBasket(object: INewBasket) {
+  const basket = await streams.add<IBasket>(apiEndpoint, { basket: object });
+  await streams.fetchAllWith({ dataId: [object.participation_context_id] });
+  return basket;
+}
+
+export function updateBasket(basketId: string, object: Partial<INewBasket>) {
+  return streams.update<IBasket>(`${apiEndpoint}/${basketId}`, basketId, {
+    basket: object,
+  });
+}
+
+export function deleteBasket(basketId: string) {
+  return streams.delete(`${apiEndpoint}/${basketId}`, basketId);
+}
