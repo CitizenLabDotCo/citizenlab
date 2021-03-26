@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 jest.mock('utils/cl-intl');
-jest.mock('../resources/GetUserCustomFields');
+jest.mock('../../resources/GetUserCustomFields');
 jest.mock('services/stats');
 jest.mock('components/Outlet', () => 'Outlet');
 
