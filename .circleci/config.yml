@@ -6,6 +6,18 @@ parameters:
     type: string
     default: master
 
+  citizenlab_sha:
+    type: string
+    default: ""
+
+  run_deploy:
+    type: boolean
+    default: false
+
+  image_tag:
+    type: string
+    default: ""
+
 executors:
   cl2-back:
     parameters:
@@ -65,16 +77,16 @@ jobs:
           docker_layer_caching: true
 
       - run: |
-          docker build -t citizenlabdotco/back-ee:$CIRCLE_SHA1 -f /citizenlab/back/Dockerfile /citizenlab/.
+          docker build -t citizenlabdotco/back-ee:<< pipeline.parameters.citizenlab_sha >>-$CIRCLE_SHA1 -f /citizenlab/back/Dockerfile /citizenlab/.
       - run: |
           docker login -u $DOCKER_USER -p $DOCKER_PASS
-          docker push citizenlabdotco/back-ee:$CIRCLE_SHA1
+          docker push citizenlabdotco/back-ee:<< pipeline.parameters.citizenlab_sha >>-$CIRCLE_SHA1
 
   back-test:
     resource_class: small
     executor:
       name: cl2-back
-      image-tag: $CIRCLE_SHA1
+      image-tag: << pipeline.parameters.citizenlab_sha >>-$CIRCLE_SHA1
     working_directory: /cl2_back
     parallelism: 4
     environment:
@@ -96,7 +108,7 @@ jobs:
     resource_class: small
     executor:
       name: cl2-back
-      image-tag: $CIRCLE_SHA1
+      image-tag: << pipeline.parameters.citizenlab_sha >>-$CIRCLE_SHA1
     working_directory: /cl2_back
     environment:
       RAILS_ENV: test
@@ -111,10 +123,41 @@ jobs:
       - store_test_results:
           path: spec/reports
 
+  trigger-deploy:
+    resource_class: small
+    docker:
+      - image: byrnedo/alpine-curl
+    steps:
+      - when:
+          condition:
+            equal: [<<pipeline.parameters.citizenlab_branch>>, "master"]
+          steps:
+            - run: |
+                curl --request POST \
+                  -u $CIRCLECI_API_TOKEN: \
+                  --url https://circleci.com/api/v2/project/github/CitizenLabDotCo/citizenlab-ee/pipeline \
+                  --header 'content-type: application/json' \
+                  --header 'x-attribution-login: $CIRCLE_USERNAME' \
+                  --data '{"branch":"$CIRCLE_BRANCH","parameters":{"image_tag": "<< pipeline.parameters.citizenlab_sha >>-$CIRCLE_SHA1", "run_deploy": true}}'
+
+  back-push-deployment-docker-image:
+    resource_class: small
+    docker:
+      - image: docker:stable-git
+    steps:
+      - setup_remote_docker
+      - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
+      - run: docker pull citizenlabdotco/back-ee:<< pipeline.parameters.image_tag >>
+      - run: docker tag citizenlabdotco/back-ee:<< pipeline.parameters.image_tag >> citizenlabdotco/back-ee:$CIRCLE_BRANCH
+      - deploy:
+          command: docker push citizenlabdotco/back-ee:$CIRCLE_BRANCH
+
 workflows:
   version: 2
 
   back:
+    when:
+      not: <<pipeline.parameters.run_deploy>>
     jobs:
       - back-build-ee-docker-image:
           context: docker-hub-access
@@ -130,3 +173,25 @@ workflows:
             branches:
               only:
                 - master
+                - production
+      - trigger-deploy:
+          context: circleci-api-token
+          requires:
+            - back-test
+            - back-slow-tests
+          filters:
+            branches:
+              only:
+                - master
+                - production
+
+  deploy:
+    when: <<pipeline.parameters.run_deploy>>
+    jobs:
+      - back-push-deployment-docker-image:
+          context: docker-hub-access
+          filters:
+            branches:
+              only:
+                - master
+                - production
