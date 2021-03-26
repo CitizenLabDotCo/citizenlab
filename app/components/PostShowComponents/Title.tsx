@@ -6,8 +6,7 @@ import { Locale } from 'typings';
 // styling
 import styled from 'styled-components';
 import { media, fontSizes } from 'utils/styleUtils';
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import PostShowTranslatedTitle from 'modules/machine_translations/citizen/components/PostShowTranslatedTitle';
+import Outlet from 'components/Outlet';
 
 const Container = styled.div<{ align: 'left' | 'center' }>`
   width: ${({ align }) => (align === 'left' ? '100%' : 'auto')};
@@ -56,25 +55,28 @@ const PostTitle = memo<Props>(
     color,
     align = 'center',
   }) => {
-    const isMachineTranslationsEnabled = useFeatureFlag('machine_translations');
-
     return (
       <Container className={className} align={align}>
-        {isMachineTranslationsEnabled ? (
-          <PostShowTranslatedTitle
-            title={title}
-            postId={postId}
-            postType={postType}
-            color={color}
-            align={align}
-            translateButtonClicked={translateButtonClicked}
-            locale={locale}
-          />
-        ) : (
-          <Title id={`e2e-${postType}-title`} color={color} align={align}>
-            {title}
-          </Title>
-        )}
+        <Outlet
+          id="app.components.PostShowComponents.Title.translation"
+          title={title}
+          postId={postId}
+          postType={postType}
+          color={color}
+          align={align}
+          translateButtonClicked={translateButtonClicked}
+          locale={locale}
+        >
+          {(outletComponents) =>
+            outletComponents.length > 0 ? (
+              <>{outletComponents}</>
+            ) : (
+              <Title id={`e2e-${postType}-title`} color={color} align={align}>
+                {title}
+              </Title>
+            )
+          }
+        </Outlet>
       </Container>
     );
   }

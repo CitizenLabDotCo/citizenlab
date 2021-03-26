@@ -10,8 +10,7 @@ import { Locale } from 'typings';
 // styling
 import styled, { useTheme } from 'styled-components';
 import { viewportWidths } from 'utils/styleUtils';
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import PostShowTranslatedBody from 'modules/machine_translations/citizen/components/PostShowTranslatedBody';
+import Outlet from 'components/Outlet';
 
 const Container = styled.div``;
 
@@ -41,8 +40,6 @@ const Body = memo<Props>(
       ? windowSize.windowWidth <= viewportWidths.smallTablet
       : false;
 
-    const isMachineTranslationsEnabled = useFeatureFlag('machine_translations');
-
     return (
       <Container id={`e2e-${postType}-description`} className={className}>
         <QuillEditedContent
@@ -51,17 +48,22 @@ const Body = memo<Props>(
           fontWeight={400}
         >
           <div aria-live="polite">
-            {isMachineTranslationsEnabled ? (
-              <PostShowTranslatedBody
-                postId={postId}
-                locale={locale}
-                postType={postType}
-                body={body}
-                translateButtonClicked={translateButtonClicked}
-              />
-            ) : (
-              <span dangerouslySetInnerHTML={{ __html: body }} />
-            )}
+            <Outlet
+              id="app.components.PostShowComponents.Body.translation"
+              postId={postId}
+              locale={locale}
+              postType={postType}
+              body={body}
+              translateButtonClicked={translateButtonClicked}
+            >
+              {(outletComponents) =>
+                outletComponents.length > 0 ? (
+                  <>{outletComponents}</>
+                ) : (
+                  <span dangerouslySetInnerHTML={{ __html: body }} />
+                )
+              }
+            </Outlet>
           </div>
         </QuillEditedContent>
       </Container>

@@ -35,9 +35,8 @@ import styled, { withTheme } from 'styled-components';
 // Typings
 import { CLErrorsJSON, CLErrors } from 'typings';
 import { isCLErrorJSON } from 'utils/errorUtils';
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
-import PostShowTranslatedCommentBody from 'modules/machine_translations/citizen/components/PostShowTranslatedCommentBody';
+import Outlet from 'components/Outlet';
 
 const Container = styled.div``;
 
@@ -246,26 +245,29 @@ class CommentBody extends PureComponent<Props, State> {
 
     let content: JSX.Element | null = null;
 
-    const isMachineTranslationsEnabled = useFeatureFlag('machine_translations');
-
     if (!isNilOrError(locale)) {
       if (!editing) {
         content = (
           <CommentWrapper className={`e2e-comment-body ${commentType}`}>
             <QuillEditedContent fontWeight={400} textColor={theme.colorText}>
               <div aria-live="polite">
-                {isMachineTranslationsEnabled ? (
-                  <PostShowTranslatedCommentBody
-                    translateButtonClicked={translateButtonClicked}
-                    commentContent={commentContent}
-                    locale={locale}
-                    commentId={commentId}
-                  />
-                ) : (
-                  <CommentText
-                    dangerouslySetInnerHTML={{ __html: commentContent }}
-                  />
-                )}
+                <Outlet
+                  id="app.components.PostShowComponents.CommentBody.translation"
+                  translateButtonClicked={translateButtonClicked}
+                  commentContent={commentContent}
+                  locale={locale}
+                  commentId={commentId}
+                >
+                  {(outletComponents) =>
+                    outletComponents.length > 0 ? (
+                      <>{outletComponents}</>
+                    ) : (
+                      <CommentText
+                        dangerouslySetInnerHTML={{ __html: commentContent }}
+                      />
+                    )
+                  }
+                </Outlet>
               </div>
             </QuillEditedContent>
           </CommentWrapper>
