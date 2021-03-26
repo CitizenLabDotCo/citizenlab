@@ -14,7 +14,6 @@ Rails.application.routes.draw do
   mount Seo::Engine => '', as: 'seo'
   mount Surveys::Engine => "", as: 'surveys'
   mount Tagging::Engine => "", as: 'tagging'
-  mount Verification::Engine => "", as: 'verification'
   mount Volunteering::Engine => "", as: 'volunteering'
 
   namespace :web_api, :defaults => {:format => :json} do
