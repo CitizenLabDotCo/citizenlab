@@ -1,7 +1,7 @@
 class AdminPublication < ApplicationRecord
   PUBLICATION_STATUSES = %w(draft published archived)
 
-  acts_as_nested_set dependent: :destroy, order_column: :ordering, touch: true, counter_cache: :children_count
+  acts_as_nested_set dependent: :destroy, order_column: :ordering, counter_cache: :children_count
   acts_as_list column: :ordering, top_of_list: 0, scope: [:parent_id], add_new_at: :top
 
   belongs_to :publication, polymorphic: true, touch: true
