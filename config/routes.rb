@@ -2,6 +2,8 @@ Rails.application.routes.draw do
 
   mount AdminApi::Engine => "/admin_api", as: 'admin_api', defaults: {format: :json}
   mount CustomMaps::Engine => "", as: 'custom_maps'
+  mount Clusterings::Engine => "", as: 'clusterings'
+  mount CustomTopics::Engine => "", as: 'custom_topics'
   mount CustomStatuses::Engine => "", as: 'custom_statuses'
   mount EmailCampaigns::Engine => "", as: 'email_campaigns'
   mount Frontend::Engine => "", as: 'frontend'

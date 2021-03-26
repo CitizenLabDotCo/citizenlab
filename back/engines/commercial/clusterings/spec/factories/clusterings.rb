@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :clustering do
+  factory :clustering, class: Clusterings::Clustering do
     title_multiloc {{
       "en": "Ideas overview #1"
     }}

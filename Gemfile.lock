@@ -924,10 +924,10 @@ DEPENDENCIES
   bullet
   bunny (>= 2.7.2)
   byebug
-  carrierwave (~> 2.0.2)
-  carrierwave-base64 (~> 2.6)
+  carrierwave (~> 2.2.0)
+  carrierwave-base64 (~> 2.8.1)
   clusterings!
-  counter_culture (~> 2.1)
+  counter_culture (~> 2.8)
   custom_maps!
   custom_statuses!
   custom_style!

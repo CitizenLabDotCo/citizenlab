@@ -1,4 +1,4 @@
-$:.push File.expand_path('lib', __dir__)
+$:.push File.expand_path("../lib", __FILE__)
 
 # Maintain your gem's version:
 require 'clusterings/version'
@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.authors     = ['CitizenLab']
   s.email       = ['developers@citizenlab.co']
   s.licenses    = ['CitizenLab Commercial License']
-  s.summary     = 'Contains everything to configure maps on the platform'
+  s.summary     = 'Adds an extra method to classify inputs with nlp.'
 
   s.files = Dir['{app,config,db,lib}/**/*', 'MIT-LICENSE', 'Rakefile', 'README.md']
 
