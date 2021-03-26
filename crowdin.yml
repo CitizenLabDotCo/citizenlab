@@ -1,0 +1,3 @@
+files:
+  - source: /front/app/translations/en.json
+    translation: /front/app/translations/%locale%.json
