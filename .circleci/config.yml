@@ -1,4 +1,6 @@
 version: 2.1
+orbs:
+  cypress: cypress-io/cypress@1.23.0
 
 parameters:
 
@@ -58,6 +60,7 @@ commands:
               sleep 1
             done
             echo Failed waiting for Postgres && exit 1
+
   echo_pipeline_parameters:
     steps:
       - run: |
@@ -68,15 +71,8 @@ commands:
           echo "run_deploy: << pipeline.parameters.run_deploy >>"
           echo "image_tag: << pipeline.parameters.image_tag >>"
 
-jobs:
-  # *************** back ***************
-  
-  back-build-ee-docker-image:
-    working_directory: /
-    docker:
-      - image: docker:stable-git
+  clone_citizenlab_and_enable_ee:
     steps:
-      - echo_pipeline_parameters
       - checkout:
           path: /citizenlab-ee
 
@@ -88,7 +84,16 @@ jobs:
 
       - run: |
           cd /citizenlab-ee && sh scripts/enable_ee.sh
+jobs:
+  # *************** back ***************
 
+  back-build-ee-docker-image:
+    working_directory: /
+    docker:
+      - image: docker:stable-git
+    steps:
+      - echo_pipeline_parameters
+      - clone_citizenlab_and_enable_ee
       - setup_remote_docker:
           docker_layer_caching: true
 
@@ -195,6 +200,105 @@ jobs:
       - deploy:
           command: ssh << parameters.ssh_user >>@<< parameters.ssh_host >> -o StrictHostKeyChecking=no "cd cl2-deployment && docker stack deploy --compose-file << parameters.compose_file >> << parameters.stack_name >> --with-registry-auth"
 
+  # *************** front ***************
+  front-test:
+    docker:
+      - image: citizenlabdotco/cl2-devops-front-buildenv
+    working_directory: /citizenlab/front
+    steps:
+      - clone_citizenlab_and_enable_ee
+      - restore_cache:
+          keys:
+          - v1-npm-cache-{{ checksum "package.json" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-npm-cache-
+      - run: npm ci
+      - save_cache:
+          paths:
+            - /root/.npm
+          key: v1-npm-cache-{{ checksum "package.json" }}
+      - run:
+          name: Run tests with JUnit as reporter
+          environment:
+            JEST_JUNIT_OUTPUT: "reports/junit/js-test-results.xml"
+          command: npm run test:ci
+      - store_test_results:
+          path: ./reports/junit
+      - store_artifacts:
+          path: ./reports/junit
+
+  front-trigger-deploy:
+    resource_class: small
+    docker:
+      - image: byrnedo/alpine-curl
+    steps:
+      - when:
+          condition:
+            equal: [<< pipeline.parameters.citizenlab_branch >>, master]
+          steps:
+            - run: |
+                curl --request POST \
+                  -u $CIRCLECI_API_TOKEN: \
+                  --url https://circleci.com/api/v2/project/github/CitizenLabDotCo/citizenlab-ee/pipeline \
+                  --header 'content-type: application/json' \
+                  --header 'x-attribution-login: '"$CIRCLE_USERNAME" \
+                  --data '{"branch": "'"$CIRCLE_BRANCH"'","parameters": {"citizenlab_branch": "<< pipeline.parameters.citizenlab_branch >>, "run_deploy": true, "front": true}}'
+      - echo_pipeline_parameters
+
+  front-deploy-staging:
+    docker:
+      - image: citizenlabdotco/cl2-devops-front-buildenv
+    resource_class: medium+
+    working_directory: /citizenlab/front
+    steps:
+      - clone_citizenlab_and_enable_ee
+      - restore_cache:
+          keys:
+          - v1-npm-cache-{{ checksum "package.json" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-npm-cache-
+      - run: npm ci
+      - save_cache:
+          paths:
+            - /root/.npm
+          key: v1-npm-cache-{{ checksum "package.json" }}
+      - run:
+          command: SEGMENT_API_KEY=$SEGMENT_API_KEY_STAGING SENTRY_DSN=$SENTRY_DSN_STAGING npm run build:staging
+          no_output_timeout: '30m'
+      - run:
+          command: rm build/*.map
+      - deploy:
+          name: Deploy to S3 if tests pass and branch is Master
+          command: |
+            aws s3 sync build/ s3://cl2-front-staging/ --acl public-read --exclude "index.html"
+            aws s3 cp build/index.html s3://cl2-front-staging/index.html --acl public-read --cache-control no-cache
+
+  front-reset-ci-tenant:
+    docker:
+      - image: citizenlabdotco/cl2-devops-front-buildenv
+    resource_class: small
+    steps:
+      - add_ssh_keys:
+          fingerprints:
+            - "50:78:bd:26:fb:8c:2d:96:38:ac:57:d2:08:46:96:da"
+      - run: ssh -o StrictHostKeyChecking=no -l ubuntu 52.29.30.188 "docker run --env-file cl2-deployment/.env-staging --rm citizenlabdotco/back-ee:master bundle exec rake cl2_back:create_tenant['e2e.stg.citizenlab.co','e2etests_template']"
+
+  front-test-lighthouse:
+    docker:
+      - image: citizenlabdotco/cl2-devops-front-buildenv
+        user: pptruser
+    resource_class: small
+    working_directory: /citizenlab/front
+    steps:
+      - clone_citizenlab_and_enable_ee
+      - run:
+          command: npm install lighthouse-ci@1.10.0
+      - run:
+          command: npx lighthouse-ci@1.10.0 https://demo.stg.citizenlab.co --performance=3 --report=/tmp
+      - store_artifacts:
+          path: /tmp/report.html
+          destination: lighthouse
+
 workflows:
   version: 2
 
@@ -254,3 +358,53 @@ workflows:
           compose_file: docker-compose-staging.yml
           stack_name: cl2-back-stg
           env_file: ".env-staging"
+
+  front:
+    when:
+      and:
+        - not: <<pipeline.parameters.run_deploy>>
+        - << pipeline.parameters.front >>
+    jobs:
+      - front-test
+      - front-trigger-deploy:
+          context: circleci-api-token
+          requires:
+            - front-test
+          filters:
+            branches:
+              only:
+                - master
+                - production
+  front-deploy:
+    when:
+      and:
+        - <<pipeline.parameters.run_deploy>>
+        - << pipeline.parameters.front >>
+    jobs:
+      - front-deploy-staging:
+          filters:
+            branches:
+              only:
+                - master
+                - production
+      - front-reset-ci-tenant:
+          filters:
+            branches:
+              only:
+                - master
+      - cypress/run:
+          requires:
+            - front-deploy-staging
+            - front-reset-ci-tenant
+          command: npx cypress run --spec 'cypress/integration/*.ts' --config baseUrl=https://e2e.stg.citizenlab.co
+          store_artifacts: true
+          filters:
+            branches:
+              only:
+                - master
+      - front-test-lighthouse:
+          requires:
+            - front-deploy-staging
+          filters:
+            branches:
+              only: master
