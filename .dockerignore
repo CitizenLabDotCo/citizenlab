@@ -1,7 +1,0 @@
-.git
-.dockerignore
-.byebug_history
-/log/*
-/tmp/*
-/public/uploads
-/secrets/*
