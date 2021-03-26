@@ -181,7 +181,6 @@ Rails.application.routes.draw do
         get 'users_by_domicile', **route_params
         get 'users_by_education', **route_params
         get 'users_engagement_scores', **route_params
-        get 'users_by_custom_field/:custom_field_id', action: :users_by_custom_field, **route_params
 
         get 'users_by_time_as_xlsx', **route_params
         get 'users_by_time_cumulative_as_xlsx', **route_params
@@ -190,7 +189,6 @@ Rails.application.routes.draw do
         get 'users_by_birthyear_as_xlsx', **route_params
         get 'users_by_domicile_as_xlsx', **route_params
         get 'users_by_education_as_xlsx', **route_params
-        get 'users_by_custom_field_as_xlsx/:custom_field_id', action: :users_by_custom_field_as_xlsx, **route_params
 
         route_params = {controller: 'stats_ideas'}
         get 'ideas_count', **route_params
