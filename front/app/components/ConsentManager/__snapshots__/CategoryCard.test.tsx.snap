@@ -1,0 +1,187 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<CategoryCard /> renders correctly when allowed 1`] = `
+<CategoryCard__Container
+  className="e2e-category"
+>
+  <CategoryCard__TextContainer>
+    <FormattedMessage
+      defaultMessage="Marketing and analytics"
+      id="app.components.ConsentManager.Modal.PreferencesDialog.analytics"
+      tagName="h2"
+    />
+    <CategoryCard__StyledFieldset>
+      <Radio
+        currentValue={true}
+        id="analytics-radio-true"
+        isRequired={true}
+        label={
+          <FormattedMessage
+            defaultMessage="Allow"
+            id="app.components.ConsentManager.Modal.PreferencesDialog.allow"
+          />
+        }
+        name="analytics"
+        value={true}
+      />
+      <Radio
+        currentValue={true}
+        id="analytics-radio-false"
+        isRequired={true}
+        label={
+          <FormattedMessage
+            defaultMessage="Disallow"
+            id="app.components.ConsentManager.Modal.PreferencesDialog.disallow"
+          />
+        }
+        name="analytics"
+        value={false}
+      />
+    </CategoryCard__StyledFieldset>
+    <FormattedMessage
+      defaultMessage="We use this tracking to understand better how you use the platform in order to learn and improve your navigation. This information is only used in mass analytics, and in no way to track individuals."
+      id="app.components.ConsentManager.Modal.PreferencesDialog.analyticsPurpose"
+      tagName="p"
+    />
+    <p>
+      <CategoryCard__Tools>
+        <FormattedMessage
+          defaultMessage="Tools"
+          id="app.components.ConsentManager.Modal.PreferencesDialog.tools"
+        />
+        :
+      </CategoryCard__Tools>
+      <CategoryCard__SSpan>
+        <DestinationName
+          destination="google_analytics"
+          tenant={null}
+        />
+      </CategoryCard__SSpan>
+    </p>
+  </CategoryCard__TextContainer>
+</CategoryCard__Container>
+`;
+
+exports[`<CategoryCard /> renders correctly when disallowed 1`] = `
+<CategoryCard__Container
+  className="e2e-category"
+>
+  <CategoryCard__TextContainer>
+    <FormattedMessage
+      defaultMessage="Marketing and analytics"
+      id="app.components.ConsentManager.Modal.PreferencesDialog.analytics"
+      tagName="h2"
+    />
+    <CategoryCard__StyledFieldset>
+      <Radio
+        currentValue={false}
+        id="analytics-radio-true"
+        isRequired={true}
+        label={
+          <FormattedMessage
+            defaultMessage="Allow"
+            id="app.components.ConsentManager.Modal.PreferencesDialog.allow"
+          />
+        }
+        name="analytics"
+        value={true}
+      />
+      <Radio
+        currentValue={false}
+        id="analytics-radio-false"
+        isRequired={true}
+        label={
+          <FormattedMessage
+            defaultMessage="Disallow"
+            id="app.components.ConsentManager.Modal.PreferencesDialog.disallow"
+          />
+        }
+        name="analytics"
+        value={false}
+      />
+    </CategoryCard__StyledFieldset>
+    <FormattedMessage
+      defaultMessage="We use this tracking to understand better how you use the platform in order to learn and improve your navigation. This information is only used in mass analytics, and in no way to track individuals."
+      id="app.components.ConsentManager.Modal.PreferencesDialog.analyticsPurpose"
+      tagName="p"
+    />
+    <p>
+      <CategoryCard__Tools>
+        <FormattedMessage
+          defaultMessage="Tools"
+          id="app.components.ConsentManager.Modal.PreferencesDialog.tools"
+        />
+        :
+      </CategoryCard__Tools>
+      <CategoryCard__SSpan>
+        <DestinationName
+          destination="google_analytics"
+          tenant={null}
+        />
+      </CategoryCard__SSpan>
+    </p>
+  </CategoryCard__TextContainer>
+</CategoryCard__Container>
+`;
+
+exports[`<CategoryCard /> renders correctly when null 1`] = `
+<CategoryCard__Container
+  className="e2e-category"
+>
+  <CategoryCard__TextContainer>
+    <FormattedMessage
+      defaultMessage="Marketing and analytics"
+      id="app.components.ConsentManager.Modal.PreferencesDialog.analytics"
+      tagName="h2"
+    />
+    <CategoryCard__StyledFieldset>
+      <Radio
+        currentValue={null}
+        id="analytics-radio-true"
+        isRequired={true}
+        label={
+          <FormattedMessage
+            defaultMessage="Allow"
+            id="app.components.ConsentManager.Modal.PreferencesDialog.allow"
+          />
+        }
+        name="analytics"
+        value={true}
+      />
+      <Radio
+        currentValue={null}
+        id="analytics-radio-false"
+        isRequired={true}
+        label={
+          <FormattedMessage
+            defaultMessage="Disallow"
+            id="app.components.ConsentManager.Modal.PreferencesDialog.disallow"
+          />
+        }
+        name="analytics"
+        value={false}
+      />
+    </CategoryCard__StyledFieldset>
+    <FormattedMessage
+      defaultMessage="We use this tracking to understand better how you use the platform in order to learn and improve your navigation. This information is only used in mass analytics, and in no way to track individuals."
+      id="app.components.ConsentManager.Modal.PreferencesDialog.analyticsPurpose"
+      tagName="p"
+    />
+    <p>
+      <CategoryCard__Tools>
+        <FormattedMessage
+          defaultMessage="Tools"
+          id="app.components.ConsentManager.Modal.PreferencesDialog.tools"
+        />
+        :
+      </CategoryCard__Tools>
+      <CategoryCard__SSpan>
+        <DestinationName
+          destination="google_analytics"
+          tenant={null}
+        />
+      </CategoryCard__SSpan>
+    </p>
+  </CategoryCard__TextContainer>
+</CategoryCard__Container>
+`;
