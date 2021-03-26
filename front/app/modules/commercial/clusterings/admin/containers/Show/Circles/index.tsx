@@ -15,7 +15,11 @@ import TopicCircleLabel from './TopicCircleLabel';
 import LegendPanel from './LegendPanel';
 
 import GetIdeas, { GetIdeasChildProps } from 'resources/GetIdeas';
-import { Node, ParentNode, CustomNode } from 'services/clusterings';
+import {
+  Node,
+  ParentNode,
+  CustomNode,
+} from 'modules/commercial/clusterings/services/clusterings';
 
 export type D3Node<N = Node> = {
   data: N;

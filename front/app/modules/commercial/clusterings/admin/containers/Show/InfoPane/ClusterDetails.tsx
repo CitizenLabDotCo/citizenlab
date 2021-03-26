@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { isEmpty } from 'lodash-es';
-import { ParentNode } from 'services/clusterings';
+import { ParentNode } from 'modules/commercial/clusterings/services/clusterings';
 import GetIdea from 'resources/GetIdea';
 
 import styled from 'styled-components';
@@ -9,7 +9,7 @@ import { fontSizes } from 'utils/styleUtils';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import T from 'components/T';
-import messages from '../../messages';
+import messages from '../../../messages';
 
 type Props = {
   ideaIds: string[];

@@ -8,6 +8,7 @@ import granularPermissionsConfiguration from './commercial/granular_permissions'
 import moderationConfiguration from './commercial/moderation';
 import ideaAssignmentConfiguration from './commercial/idea_assignment';
 import geographicDashboardConfiguration from './commercial/geographic_dashboard';
+import clusteringsConfiguration from './commercial/clusterings';
 
 import customMapsConfiguration from './commercial/custom_maps';
 import googleTagManagerConfiguration from './commercial/google_tag_manager';
@@ -75,6 +76,10 @@ export default loadModules([
   {
     configuration: moderationConfiguration,
     isEnabled: CL_CONFIG['modules']['commercial/moderation'],
+  },
+  {
+    configuration: clusteringsConfiguration,
+    isEnabled: CL_CONFIG['modules']['commercial/clusterings'],
   },
   {
     configuration: ideaAssignmentConfiguration,

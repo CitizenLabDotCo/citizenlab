@@ -4,10 +4,10 @@ import { isNilOrError } from 'utils/helperUtils';
 
 import GetClusterings, {
   GetClusteringsChildProps,
-} from 'resources/GetClusterings';
-import { deleteClustering } from 'services/clusterings';
+} from 'modules/commercial/clusterings/resources/GetClusterings';
+import { deleteClustering } from 'modules/commercial/clusterings/services/clusterings';
 
-import messages from '../messages';
+import messages from '../../messages';
 import T from 'components/T';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 

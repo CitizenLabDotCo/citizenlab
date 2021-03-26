@@ -207,4 +207,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.clusterViewer.details',
     defaultMessage: 'Details',
   },
+  tabInsights: {
+    id: 'app.containers.AdminPage.DashboardPage.tabInsights',
+    defaultMessage: 'Insights',
+  },
 });

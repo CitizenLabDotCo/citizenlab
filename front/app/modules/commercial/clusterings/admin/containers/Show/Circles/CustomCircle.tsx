@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { isNil } from 'lodash-es';
 import styled from 'styled-components';
 import { D3Node } from './';
-import { CustomNode } from 'services/clusterings';
+import { CustomNode } from 'modules/commercial/clusterings/services/clusterings';
 
 const StyledCircle: any = styled.circle`
   position: relative;

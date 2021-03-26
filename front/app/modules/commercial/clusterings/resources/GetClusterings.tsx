@@ -1,6 +1,9 @@
 import { Component } from 'react';
 import { Subscription } from 'rxjs';
-import { IClusteringData, clusteringsStream } from 'services/clusterings';
+import {
+  IClusteringData,
+  clusteringsStream,
+} from 'modules/commercial/clusterings/services/clusterings';
 import { isNilOrError } from 'utils/helperUtils';
 
 interface InputProps {}
