@@ -50,6 +50,13 @@ commands:
               sleep 1
             done
             echo Failed waiting for Postgres && exit 1
+  echo_pipeline_parameters:
+    steps:
+      - run: |
+          echo "citizenlab_branch: << pipeline.parameters.citizenlab_branch >>"
+          echo "citizenlab_sha: << pipeline.parameters.citizenlab_sha >>"
+          echo "run_deploy: << pipeline.parameters.run_deploy >>"
+          echo "image_tag: << pipeline.parameters.image_tag >>"
 
 jobs:
   # *************** back ***************
@@ -59,6 +66,7 @@ jobs:
     docker:
       - image: docker:stable-git
     steps:
+      - echo_pipeline_parameters
       - checkout:
           path: /citizenlab-ee
 
@@ -137,22 +145,47 @@ jobs:
                   -u $CIRCLECI_API_TOKEN: \
                   --url https://circleci.com/api/v2/project/github/CitizenLabDotCo/citizenlab-ee/pipeline \
                   --header 'content-type: application/json' \
-                  --header 'x-attribution-login: $CIRCLE_USERNAME' \
-                  --data '{"branch": "$CIRCLE_BRANCH","parameters": {"image_tag": "<< pipeline.parameters.citizenlab_sha >>-$CIRCLE_SHA1", "run_deploy": true}}'
-      - run:
-          echo "Dummy step because a jobs can't have 1 'when' step"
+                  --header 'x-attribution-login: '"$CIRCLE_USERNAME" \
+                  --data '{"branch": "'"$CIRCLE_BRANCH"'","parameters": {"image_tag": "<< pipeline.parameters.citizenlab_sha >>-'"$CIRCLE_SHA1"'", "run_deploy": true}}'
+      - echo_pipeline_parameters
 
   back-push-deployment-docker-image:
     resource_class: small
     docker:
       - image: docker:stable-git
     steps:
+      - echo_pipeline_parameters
       - setup_remote_docker
       - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
       - run: docker pull citizenlabdotco/back-ee:<< pipeline.parameters.image_tag >>
       - run: docker tag citizenlabdotco/back-ee:<< pipeline.parameters.image_tag >> citizenlabdotco/back-ee:$CIRCLE_BRANCH
       - deploy:
           command: docker push citizenlabdotco/back-ee:$CIRCLE_BRANCH
+
+  back-deploy-to-swarm:
+    resource_class: small
+    docker:
+      - image: buildo/alpine-ssh
+    parameters:
+      ssh_host:
+        type: string
+      ssh_user:
+        type: string
+        default: ubuntu
+      stack_name:
+        type: string
+        default: cl2-back
+      compose_file:
+        type: string
+        default: docker-compose-production.yml
+      env_file:
+        type: string
+        default: .env-production
+    steps:
+      - run:
+          command: ssh << parameters.ssh_user >>@<< parameters.ssh_host >> -o StrictHostKeyChecking=no "docker pull citizenlabdotco/back-ee:$CIRCLE_BRANCH && docker run --env-file cl2-deployment/<< parameters.env_file >> citizenlabdotco/back-ee:$CIRCLE_BRANCH rake db:migrate cl2back:clean_tenant_settings email_campaigns:assure_campaign_records fix_existing_tenants:update_permissions cl2back:clear_cache_store email_campaigns:remove_deprecated"
+      - deploy:
+          command: ssh << parameters.ssh_user >>@<< parameters.ssh_host >> -o StrictHostKeyChecking=no "cd cl2-deployment && docker stack deploy --compose-file << parameters.compose_file >> << parameters.stack_name >> --with-registry-auth"
 
 workflows:
   version: 2
@@ -197,3 +230,14 @@ workflows:
               only:
                 - master
                 - production
+      - back-deploy-to-swarm:
+          requires:
+            - back-push-deployment-docker-image
+          filters:
+            branches:
+              only:
+                - master
+          ssh_host: "52.29.30.188"
+          compose_file: docker-compose-staging.yml
+          stack_name: cl2-back-stg
+          env_file: ".env-staging"
