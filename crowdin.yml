@@ -13,8 +13,8 @@ files:
       locale:
         en: en
         'no': nb-NO
-  - source: /back/engines/email_campaigns/config/locales/en.yml
-    translation: /back/engines/email_campaigns/config/locales/%locale%.yml
+  - source: /back/engines/free/email_campaigns/config/locales/en.yml
+    translation: /back/engines/free/email_campaigns/config/locales/%locale%.yml
     update_option: update_without_changes
     languages_mapping:
       locale:
