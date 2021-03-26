@@ -1,9 +1,10 @@
 module Clusterings
   class Clustering < ApplicationRecord
+    self.table_name = 'clusterings'
 
     validates :title_multiloc, presence: true, multiloc: {presence: true}
 
-    STRUCTURE_JSON_SCHEMA = Rails.root.join('config', 'schemas', 'clustering_structure.json_schema').to_s
+    STRUCTURE_JSON_SCHEMA = Clusterings::Engine.root.join('config', 'schemas', 'clustering_structure.json_schema').to_s
     validate :structure_json_schema_validation
     ## We do json schema validation explicitely because
     ## otherwise validation takes forever. No idea why,
