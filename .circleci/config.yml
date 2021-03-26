@@ -130,7 +130,7 @@ jobs:
     steps:
       - when:
           condition:
-            equal: [<<pipeline.parameters.citizenlab_branch>>, "master"]
+            equal: [<< pipeline.parameters.citizenlab_branch >>, master]
           steps:
             - run: |
                 curl --request POST \
