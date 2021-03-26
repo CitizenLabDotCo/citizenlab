@@ -68,7 +68,7 @@ jobs:
             --url https://circleci.com/api/v2/project/github/CitizenLabDotCo/citizenlab-ee/pipeline \
             --header 'content-type: application/json' \
             --header 'x-attribution-login: $CIRCLE_USERNAME' \
-            --data '{"branch":"master","parameters":{"citizenlab_branch": "$CIRCLE_BRANCH"}}'
+            --data '{"branch":"master","parameters":{"citizenlab_branch": "$CIRCLE_BRANCH", "citizenlab_sha": "$CIRCLE_SHA1"}}'
 
   # *************** back ***************
   
