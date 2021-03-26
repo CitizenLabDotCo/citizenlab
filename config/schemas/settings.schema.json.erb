@@ -666,18 +666,6 @@
         }
       },
 
-      "machine_translations": {
-        "type": "object",
-        "title": "Machine Translations",
-        "description":  "Allows users to see translated content.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
-        }
-      },
-
       "project_reports": {
         "type": "object",
         "title": "Project Reports",
@@ -706,18 +694,6 @@
         "type": "object",
         "title": "Project Templates",
         "description":  "Enable the template library for admin to create new projects.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
-        }
-      },
-
-      "custom_topics": {
-        "type": "object",
-        "title": "Custom Topics",
-        "description": "Admin and project managers can customize idea topics.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
@@ -911,18 +887,6 @@
         "properties": {
           "allowed": { "type": "boolean", "default": true},
           "enabled": { "type": "boolean", "default": false}
-        }
-      },
-
-      "moderation": {
-        "type": "object",
-        "title": "Moderation",
-        "description": "Moderations are pieces of user-generated content that need to be moderated.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
         }
       },
 
