@@ -16,7 +16,6 @@ resource "User Custom Fields" do
       parameter :number, "Page number"
       parameter :size, "Number of custom fields per page"
     end
-
     parameter :input_types, "Array of input types. Only return custom fields for the given types. Allowed values: #{CustomField::INPUT_TYPES.join(", ")}", required: false
     
     example_request "List all custom fields" do
