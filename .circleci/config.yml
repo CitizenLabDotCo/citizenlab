@@ -261,9 +261,17 @@ workflows:
   ci:
     when: << pipeline.parameters.trigger >>
     jobs:
-      - trigger-workflows
+      - trigger-workflows:
+          filters:
+            branches:
+              ignore:
+                - crowdin_master
       - trigger-private-workflows:
           context: circleci-api-token
+          filters:
+            branches:
+              ignore:
+                - crowdin_master
 
   # *************** back ***************
   back:
