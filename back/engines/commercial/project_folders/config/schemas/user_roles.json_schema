@@ -1,0 +1,46 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "description": "Schema for validating the roles of a user",
+  "type": "array",
+  "uniqueItems": true,
+  "items": {
+    "oneOf": [
+      {
+        "type": "object",
+        "required": ["type"],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": ["admin"]
+          }
+        }
+      },
+      {
+        "type": "object",
+        "required": ["type", "project_id"],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": ["project_moderator"]
+          },
+          "project_id": {
+            "type": "string"
+          }
+        }
+      },
+      {
+        "type": "object",
+        "required": ["type", "project_folder_id"],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": ["project_folder_moderator"]
+          },
+          "project_folder_id": {
+            "type": "string"
+          }
+        }
+      }
+    ]
+  }
+}
