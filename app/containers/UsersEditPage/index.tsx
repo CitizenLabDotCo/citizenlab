@@ -63,7 +63,6 @@ export default () => {
         </ScreenReaderOnly>
         <Wrapper>
           <Outlet id="app.containers.UserEditPage.content" />
-          {/* <VerificationStatus /> */}
           <ProfileForm />
           <FragmentForm />
           <ProfileDeletion />
