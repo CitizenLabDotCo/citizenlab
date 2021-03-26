@@ -8,7 +8,7 @@ type CustomPropsMap = {
 
 type CustomOutletProps = CustomPropsMap[keyof CustomPropsMap];
 export type OutletRenderProps = (
-  renderProps: JSX.Element | JSX.Element[]
+  renderProps: JSX.Element[]
 ) => JSX.Element | null;
 type Children = OutletRenderProps;
 type InputProps = {
