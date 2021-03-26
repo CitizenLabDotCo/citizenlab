@@ -80,7 +80,6 @@ commands:
           fingerprints:
             - "94:9a:7c:8d:50:73:cc:28:06:47:d7:98:91:0b:00:ff"
       - run: |
-          rm -rf /citizenlab
           git clone git@github.com:CitizenLabDotCo/citizenlab --depth 5 --branch << pipeline.parameters.citizenlab_branch >> /citizenlab
 
       - run: |
@@ -205,7 +204,7 @@ jobs:
   front-test:
     docker:
       - image: citizenlabdotco/cl2-devops-front-buildenv
-    working_directory: /citizenlab/front
+    working_directory: /
     steps:
       - clone_citizenlab_and_enable_ee
       - restore_cache:
@@ -213,7 +212,7 @@ jobs:
           - v1-npm-cache-{{ checksum "package.json" }}
           # fallback to using the latest cache if no exact match is found
           - v1-npm-cache-
-      - run: npm ci
+      - run: cd /citizenlab/front && npm ci
       - save_cache:
           paths:
             - /root/.npm
@@ -222,7 +221,7 @@ jobs:
           name: Run tests with JUnit as reporter
           environment:
             JEST_JUNIT_OUTPUT: "reports/junit/js-test-results.xml"
-          command: npm run test:ci
+          command: cd /citizenlab/front && npm run test:ci
       - store_test_results:
           path: ./reports/junit
       - store_artifacts:
@@ -250,7 +249,7 @@ jobs:
     docker:
       - image: citizenlabdotco/cl2-devops-front-buildenv
     resource_class: medium+
-    working_directory: /citizenlab/front
+    working_directory: /
     steps:
       - clone_citizenlab_and_enable_ee
       - restore_cache:
@@ -258,21 +257,21 @@ jobs:
           - v1-npm-cache-{{ checksum "package.json" }}
           # fallback to using the latest cache if no exact match is found
           - v1-npm-cache-
-      - run: npm ci
+      - run: cd /citizenlab/front && npm ci
       - save_cache:
           paths:
             - /root/.npm
           key: v1-npm-cache-{{ checksum "package.json" }}
       - run:
-          command: SEGMENT_API_KEY=$SEGMENT_API_KEY_STAGING SENTRY_DSN=$SENTRY_DSN_STAGING npm run build:staging
+          command: cd /citizenlab/front && SEGMENT_API_KEY=$SEGMENT_API_KEY_STAGING SENTRY_DSN=$SENTRY_DSN_STAGING npm run build:staging
           no_output_timeout: '30m'
       - run:
-          command: rm build/*.map
+          command: cd /citizenlab/front && rm build/*.map
       - deploy:
           name: Deploy to S3 if tests pass and branch is Master
           command: |
-            aws s3 sync build/ s3://cl2-front-staging/ --acl public-read --exclude "index.html"
-            aws s3 cp build/index.html s3://cl2-front-staging/index.html --acl public-read --cache-control no-cache
+            cd /citizenlab/front && aws s3 sync build/ s3://cl2-front-staging/ --acl public-read --exclude "index.html"
+            cd /citizenlab/front && aws s3 cp build/index.html s3://cl2-front-staging/index.html --acl public-read --cache-control no-cache
 
   front-reset-ci-tenant:
     docker:
@@ -291,7 +290,6 @@ jobs:
     resource_class: small
     working_directory: /citizenlab/front
     steps:
-      - clone_citizenlab_and_enable_ee
       - run:
           command: npm install lighthouse-ci@1.10.0
       - run:
