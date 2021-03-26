@@ -6,7 +6,6 @@ Rails.application.routes.draw do
   mount Polls::Engine => "", as: 'polls'
   mount Seo::Engine => '', as: 'seo'
   mount Surveys::Engine => "", as: 'surveys'
-  mount Verification::Engine => "", as: 'verification'
   mount Volunteering::Engine => "", as: 'volunteering'
 
   namespace :web_api, :defaults => {:format => :json} do

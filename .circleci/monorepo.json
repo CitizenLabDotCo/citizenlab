@@ -2,7 +2,11 @@
   "root": ".",
   "pages": 3,
   "packages": {
-    "back": ["back/", "modules/*/back/"],
-    "front": ["front/", "modules/*/front/"]
+    "back": [
+      "back/"
+    ],
+    "front": [
+      "front/"
+    ]
   }
 }
