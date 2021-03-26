@@ -1,0 +1,444 @@
+2021-03-26 13:11:53[WARN] user: root
+ 
+USE eager loading detected
+  EmailCampaigns::Campaigns::StatusChangeOfCommentedInitiative => [:campaigns_groups]
+  Add to your query: .includes([:campaigns_groups])
+Call stack
+  /cl2_back/engines/free/email_campaigns/app/models/concerns/email_campaigns/recipient_configurable.rb:15:in `map'
+  /cl2_back/engines/free/email_campaigns/app/models/concerns/email_campaigns/recipient_configurable.rb:15:in `filter_users_in_groups'
+  /cl2_back/engines/free/email_campaigns/app/models/email_campaigns/campaign.rb:53:in `block in apply_recipient_filters'
+  /cl2_back/engines/free/email_campaigns/app/models/email_campaigns/campaign.rb:52:in `each'
+  /cl2_back/engines/free/email_campaigns/app/models/email_campaigns/campaign.rb:52:in `inject'
+  /cl2_back/engines/free/email_campaigns/app/models/email_campaigns/campaign.rb:52:in `apply_recipient_filters'
+  /cl2_back/engines/free/email_campaigns/app/services/email_campaigns/delivery_service.rb:132:in `block in assign_campaigns_recipients'
+  /cl2_back/engines/free/email_campaigns/app/services/email_campaigns/delivery_service.rb:131:in `each'
+  /cl2_back/engines/free/email_campaigns/app/services/email_campaigns/delivery_service.rb:131:in `flat_map'
+  /cl2_back/engines/free/email_campaigns/app/services/email_campaigns/delivery_service.rb:131:in `assign_campaigns_recipients'
+  /cl2_back/engines/free/email_campaigns/app/services/email_campaigns/delivery_service.rb:120:in `apply_send_pipeline'
+  /cl2_back/engines/free/email_campaigns/app/services/email_campaigns/delivery_service.rb:84:in `send_on_activity'
+  /cl2_back/engines/free/email_campaigns/app/jobs/email_campaigns/trigger_on_activity_job.rb:7:in `run'
+  /cl2_back/lib/active_job_que_extension.rb:38:in `perform'
+  /cl2_back/lib/apartment_active_job/monkey_patches/active_job/base.rb:13:in `block in execute'
+  /cl2_back/lib/apartment_active_job/monkey_patches/active_job/base.rb:13:in `execute'
+
+2021-03-26 13:11:53[WARN] user: root
+ 
+USE eager loading detected
+  EmailCampaigns::Campaigns::StatusChangeOfCommentedInitiative => [:groups]
+  Add to your query: .includes([:groups])
+Call stack
+  /cl2_back/engines/free/email_campaigns/app/models/concerns/email_campaigns/recipient_configurable.rb:15:in `map'
+  /cl2_back/engines/free/email_campaigns/app/models/concerns/email_campaigns/recipient_configurable.rb:15:in `filter_users_in_groups'
+  /cl2_back/engines/free/email_campaigns/app/models/email_campaigns/campaign.rb:53:in `block in apply_recipient_filters'
+  /cl2_back/engines/free/email_campaigns/app/models/email_campaigns/campaign.rb:52:in `each'
+  /cl2_back/engines/free/email_campaigns/app/models/email_campaigns/campaign.rb:52:in `inject'
+  /cl2_back/engines/free/email_campaigns/app/models/email_campaigns/campaign.rb:52:in `apply_recipient_filters'
+  /cl2_back/engines/free/email_campaigns/app/services/email_campaigns/delivery_service.rb:132:in `block in assign_campaigns_recipients'
+  /cl2_back/engines/free/email_campaigns/app/services/email_campaigns/delivery_service.rb:131:in `each'
+  /cl2_back/engines/free/email_campaigns/app/services/email_campaigns/delivery_service.rb:131:in `flat_map'
+  /cl2_back/engines/free/email_campaigns/app/services/email_campaigns/delivery_service.rb:131:in `assign_campaigns_recipients'
+  /cl2_back/engines/free/email_campaigns/app/services/email_campaigns/delivery_service.rb:120:in `apply_send_pipeline'
+  /cl2_back/engines/free/email_campaigns/app/services/email_campaigns/delivery_service.rb:84:in `send_on_activity'
+  /cl2_back/engines/free/email_campaigns/app/jobs/email_campaigns/trigger_on_activity_job.rb:7:in `run'
+  /cl2_back/lib/active_job_que_extension.rb:38:in `perform'
+  /cl2_back/lib/apartment_active_job/monkey_patches/active_job/base.rb:13:in `block in execute'
+  /cl2_back/lib/apartment_active_job/monkey_patches/active_job/base.rb:13:in `execute'
+
+2021-03-26 13:11:57[WARN] user: root
+ 
+USE eager loading detected
+  EmailCampaigns::Campaigns::StatusChangeOfCommentedInitiative => [:campaigns_groups]
+  Add to your query: .includes([:campaigns_groups])
+Call stack
+  /cl2_back/engines/free/email_campaigns/app/models/concerns/email_campaigns/recipient_configurable.rb:15:in `map'
+  /cl2_back/engines/free/email_campaigns/app/models/concerns/email_campaigns/recipient_configurable.rb:15:in `filter_users_in_groups'
+  /cl2_back/engines/free/email_campaigns/app/models/email_campaigns/campaign.rb:53:in `block in apply_recipient_filters'
+  /cl2_back/engines/free/email_campaigns/app/models/email_campaigns/campaign.rb:52:in `each'
+  /cl2_back/engines/free/email_campaigns/app/models/email_campaigns/campaign.rb:52:in `inject'
+  /cl2_back/engines/free/email_campaigns/app/models/email_campaigns/campaign.rb:52:in `apply_recipient_filters'
+  /cl2_back/engines/free/email_campaigns/app/services/email_campaigns/delivery_service.rb:132:in `block in assign_campaigns_recipients'
+  /cl2_back/engines/free/email_campaigns/app/services/email_campaigns/delivery_service.rb:131:in `each'
+  /cl2_back/engines/free/email_campaigns/app/services/email_campaigns/delivery_service.rb:131:in `flat_map'
+  /cl2_back/engines/free/email_campaigns/app/services/email_campaigns/delivery_service.rb:131:in `assign_campaigns_recipients'
+  /cl2_back/engines/free/email_campaigns/app/services/email_campaigns/delivery_service.rb:120:in `apply_send_pipeline'
+  /cl2_back/engines/free/email_campaigns/app/services/email_campaigns/delivery_service.rb:84:in `send_on_activity'
+  /cl2_back/engines/free/email_campaigns/app/jobs/email_campaigns/trigger_on_activity_job.rb:7:in `run'
+  /cl2_back/lib/active_job_que_extension.rb:38:in `perform'
+  /cl2_back/lib/apartment_active_job/monkey_patches/active_job/base.rb:13:in `block in execute'
+  /cl2_back/lib/apartment_active_job/monkey_patches/active_job/base.rb:13:in `execute'
+
+2021-03-26 13:11:57[WARN] user: root
+ 
+USE eager loading detected
+  EmailCampaigns::Campaigns::StatusChangeOfCommentedInitiative => [:groups]
+  Add to your query: .includes([:groups])
+Call stack
+  /cl2_back/engines/free/email_campaigns/app/models/concerns/email_campaigns/recipient_configurable.rb:15:in `map'
+  /cl2_back/engines/free/email_campaigns/app/models/concerns/email_campaigns/recipient_configurable.rb:15:in `filter_users_in_groups'
+  /cl2_back/engines/free/email_campaigns/app/models/email_campaigns/campaign.rb:53:in `block in apply_recipient_filters'
+  /cl2_back/engines/free/email_campaigns/app/models/email_campaigns/campaign.rb:52:in `each'
+  /cl2_back/engines/free/email_campaigns/app/models/email_campaigns/campaign.rb:52:in `inject'
+  /cl2_back/engines/free/email_campaigns/app/models/email_campaigns/campaign.rb:52:in `apply_recipient_filters'
+  /cl2_back/engines/free/email_campaigns/app/services/email_campaigns/delivery_service.rb:132:in `block in assign_campaigns_recipients'
+  /cl2_back/engines/free/email_campaigns/app/services/email_campaigns/delivery_service.rb:131:in `each'
+  /cl2_back/engines/free/email_campaigns/app/services/email_campaigns/delivery_service.rb:131:in `flat_map'
+  /cl2_back/engines/free/email_campaigns/app/services/email_campaigns/delivery_service.rb:131:in `assign_campaigns_recipients'
+  /cl2_back/engines/free/email_campaigns/app/services/email_campaigns/delivery_service.rb:120:in `apply_send_pipeline'
+  /cl2_back/engines/free/email_campaigns/app/services/email_campaigns/delivery_service.rb:84:in `send_on_activity'
+  /cl2_back/engines/free/email_campaigns/app/jobs/email_campaigns/trigger_on_activity_job.rb:7:in `run'
+  /cl2_back/lib/active_job_que_extension.rb:38:in `perform'
+  /cl2_back/lib/apartment_active_job/monkey_patches/active_job/base.rb:13:in `block in execute'
+  /cl2_back/lib/apartment_active_job/monkey_patches/active_job/base.rb:13:in `execute'
+
+2021-03-26 13:11:58[WARN] user: root
+ 
+USE eager loading detected
+  EmailCampaigns::Campaigns::StatusChangeOfCommentedInitiative => [:campaigns_groups]
+  Add to your query: .includes([:campaigns_groups])
+Call stack
+  /cl2_back/engines/free/email_campaigns/app/models/concerns/email_campaigns/recipient_configurable.rb:15:in `map'
+  /cl2_back/engines/free/email_campaigns/app/models/concerns/email_campaigns/recipient_configurable.rb:15:in `filter_users_in_groups'
+  /cl2_back/engines/free/email_campaigns/app/models/email_campaigns/campaign.rb:53:in `block in apply_recipient_filters'
+  /cl2_back/engines/free/email_campaigns/app/models/email_campaigns/campaign.rb:52:in `each'
+  /cl2_back/engines/free/email_campaigns/app/models/email_campaigns/campaign.rb:52:in `inject'
+  /cl2_back/engines/free/email_campaigns/app/models/email_campaigns/campaign.rb:52:in `apply_recipient_filters'
+  /cl2_back/engines/free/email_campaigns/app/services/email_campaigns/delivery_service.rb:132:in `block in assign_campaigns_recipients'
+  /cl2_back/engines/free/email_campaigns/app/services/email_campaigns/delivery_service.rb:131:in `each'
+  /cl2_back/engines/free/email_campaigns/app/services/email_campaigns/delivery_service.rb:131:in `flat_map'
+  /cl2_back/engines/free/email_campaigns/app/services/email_campaigns/delivery_service.rb:131:in `assign_campaigns_recipients'
+  /cl2_back/engines/free/email_campaigns/app/services/email_campaigns/delivery_service.rb:120:in `apply_send_pipeline'
+  /cl2_back/engines/free/email_campaigns/app/services/email_campaigns/delivery_service.rb:84:in `send_on_activity'
+  /cl2_back/engines/free/email_campaigns/app/jobs/email_campaigns/trigger_on_activity_job.rb:7:in `run'
+  /cl2_back/lib/active_job_que_extension.rb:38:in `perform'
+  /cl2_back/lib/apartment_active_job/monkey_patches/active_job/base.rb:13:in `block in execute'
+  /cl2_back/lib/apartment_active_job/monkey_patches/active_job/base.rb:13:in `execute'
+
+2021-03-26 13:11:58[WARN] user: root
+ 
+USE eager loading detected
+  EmailCampaigns::Campaigns::StatusChangeOfCommentedInitiative => [:groups]
+  Add to your query: .includes([:groups])
+Call stack
+  /cl2_back/engines/free/email_campaigns/app/models/concerns/email_campaigns/recipient_configurable.rb:15:in `map'
+  /cl2_back/engines/free/email_campaigns/app/models/concerns/email_campaigns/recipient_configurable.rb:15:in `filter_users_in_groups'
+  /cl2_back/engines/free/email_campaigns/app/models/email_campaigns/campaign.rb:53:in `block in apply_recipient_filters'
+  /cl2_back/engines/free/email_campaigns/app/models/email_campaigns/campaign.rb:52:in `each'
+  /cl2_back/engines/free/email_campaigns/app/models/email_campaigns/campaign.rb:52:in `inject'
+  /cl2_back/engines/free/email_campaigns/app/models/email_campaigns/campaign.rb:52:in `apply_recipient_filters'
+  /cl2_back/engines/free/email_campaigns/app/services/email_campaigns/delivery_service.rb:132:in `block in assign_campaigns_recipients'
+  /cl2_back/engines/free/email_campaigns/app/services/email_campaigns/delivery_service.rb:131:in `each'
+  /cl2_back/engines/free/email_campaigns/app/services/email_campaigns/delivery_service.rb:131:in `flat_map'
+  /cl2_back/engines/free/email_campaigns/app/services/email_campaigns/delivery_service.rb:131:in `assign_campaigns_recipients'
+  /cl2_back/engines/free/email_campaigns/app/services/email_campaigns/delivery_service.rb:120:in `apply_send_pipeline'
+  /cl2_back/engines/free/email_campaigns/app/services/email_campaigns/delivery_service.rb:84:in `send_on_activity'
+  /cl2_back/engines/free/email_campaigns/app/jobs/email_campaigns/trigger_on_activity_job.rb:7:in `run'
+  /cl2_back/lib/active_job_que_extension.rb:38:in `perform'
+  /cl2_back/lib/apartment_active_job/monkey_patches/active_job/base.rb:13:in `block in execute'
+  /cl2_back/lib/apartment_active_job/monkey_patches/active_job/base.rb:13:in `execute'
+
+2021-03-26 13:12:13[WARN] user: root
+ 
+USE eager loading detected
+  EmailCampaigns::Campaigns::StatusChangeOfYourInitiative => [:campaigns_groups]
+  Add to your query: .includes([:campaigns_groups])
+Call stack
+  /cl2_back/engines/free/email_campaigns/app/models/concerns/email_campaigns/recipient_configurable.rb:15:in `map'
+  /cl2_back/engines/free/email_campaigns/app/models/concerns/email_campaigns/recipient_configurable.rb:15:in `filter_users_in_groups'
+  /cl2_back/engines/free/email_campaigns/app/models/email_campaigns/campaign.rb:53:in `block in apply_recipient_filters'
+  /cl2_back/engines/free/email_campaigns/app/models/email_campaigns/campaign.rb:52:in `each'
+  /cl2_back/engines/free/email_campaigns/app/models/email_campaigns/campaign.rb:52:in `inject'
+  /cl2_back/engines/free/email_campaigns/app/models/email_campaigns/campaign.rb:52:in `apply_recipient_filters'
+  /cl2_back/engines/free/email_campaigns/app/services/email_campaigns/delivery_service.rb:132:in `block in assign_campaigns_recipients'
+  /cl2_back/engines/free/email_campaigns/app/services/email_campaigns/delivery_service.rb:131:in `each'
+  /cl2_back/engines/free/email_campaigns/app/services/email_campaigns/delivery_service.rb:131:in `flat_map'
+  /cl2_back/engines/free/email_campaigns/app/services/email_campaigns/delivery_service.rb:131:in `assign_campaigns_recipients'
+  /cl2_back/engines/free/email_campaigns/app/services/email_campaigns/delivery_service.rb:120:in `apply_send_pipeline'
+  /cl2_back/engines/free/email_campaigns/app/services/email_campaigns/delivery_service.rb:84:in `send_on_activity'
+  /cl2_back/engines/free/email_campaigns/app/jobs/email_campaigns/trigger_on_activity_job.rb:7:in `run'
+  /cl2_back/lib/active_job_que_extension.rb:38:in `perform'
+  /cl2_back/lib/apartment_active_job/monkey_patches/active_job/base.rb:13:in `block in execute'
+  /cl2_back/lib/apartment_active_job/monkey_patches/active_job/base.rb:13:in `execute'
+
+2021-03-26 13:12:13[WARN] user: root
+ 
+USE eager loading detected
+  EmailCampaigns::Campaigns::StatusChangeOfYourInitiative => [:groups]
+  Add to your query: .includes([:groups])
+Call stack
+  /cl2_back/engines/free/email_campaigns/app/models/concerns/email_campaigns/recipient_configurable.rb:15:in `map'
+  /cl2_back/engines/free/email_campaigns/app/models/concerns/email_campaigns/recipient_configurable.rb:15:in `filter_users_in_groups'
+  /cl2_back/engines/free/email_campaigns/app/models/email_campaigns/campaign.rb:53:in `block in apply_recipient_filters'
+  /cl2_back/engines/free/email_campaigns/app/models/email_campaigns/campaign.rb:52:in `each'
+  /cl2_back/engines/free/email_campaigns/app/models/email_campaigns/campaign.rb:52:in `inject'
+  /cl2_back/engines/free/email_campaigns/app/models/email_campaigns/campaign.rb:52:in `apply_recipient_filters'
+  /cl2_back/engines/free/email_campaigns/app/services/email_campaigns/delivery_service.rb:132:in `block in assign_campaigns_recipients'
+  /cl2_back/engines/free/email_campaigns/app/services/email_campaigns/delivery_service.rb:131:in `each'
+  /cl2_back/engines/free/email_campaigns/app/services/email_campaigns/delivery_service.rb:131:in `flat_map'
+  /cl2_back/engines/free/email_campaigns/app/services/email_campaigns/delivery_service.rb:131:in `assign_campaigns_recipients'
+  /cl2_back/engines/free/email_campaigns/app/services/email_campaigns/delivery_service.rb:120:in `apply_send_pipeline'
+  /cl2_back/engines/free/email_campaigns/app/services/email_campaigns/delivery_service.rb:84:in `send_on_activity'
+  /cl2_back/engines/free/email_campaigns/app/jobs/email_campaigns/trigger_on_activity_job.rb:7:in `run'
+  /cl2_back/lib/active_job_que_extension.rb:38:in `perform'
+  /cl2_back/lib/apartment_active_job/monkey_patches/active_job/base.rb:13:in `block in execute'
+  /cl2_back/lib/apartment_active_job/monkey_patches/active_job/base.rb:13:in `execute'
+
+2021-03-26 13:12:17[WARN] user: root
+ 
+USE eager loading detected
+  EmailCampaigns::Campaigns::StatusChangeOfYourInitiative => [:campaigns_groups]
+  Add to your query: .includes([:campaigns_groups])
+Call stack
+  /cl2_back/engines/free/email_campaigns/app/models/concerns/email_campaigns/recipient_configurable.rb:15:in `map'
+  /cl2_back/engines/free/email_campaigns/app/models/concerns/email_campaigns/recipient_configurable.rb:15:in `filter_users_in_groups'
+  /cl2_back/engines/free/email_campaigns/app/models/email_campaigns/campaign.rb:53:in `block in apply_recipient_filters'
+  /cl2_back/engines/free/email_campaigns/app/models/email_campaigns/campaign.rb:52:in `each'
+  /cl2_back/engines/free/email_campaigns/app/models/email_campaigns/campaign.rb:52:in `inject'
+  /cl2_back/engines/free/email_campaigns/app/models/email_campaigns/campaign.rb:52:in `apply_recipient_filters'
+  /cl2_back/engines/free/email_campaigns/app/services/email_campaigns/delivery_service.rb:132:in `block in assign_campaigns_recipients'
+  /cl2_back/engines/free/email_campaigns/app/services/email_campaigns/delivery_service.rb:131:in `each'
+  /cl2_back/engines/free/email_campaigns/app/services/email_campaigns/delivery_service.rb:131:in `flat_map'
+  /cl2_back/engines/free/email_campaigns/app/services/email_campaigns/delivery_service.rb:131:in `assign_campaigns_recipients'
+  /cl2_back/engines/free/email_campaigns/app/services/email_campaigns/delivery_service.rb:120:in `apply_send_pipeline'
+  /cl2_back/engines/free/email_campaigns/app/services/email_campaigns/delivery_service.rb:84:in `send_on_activity'
+  /cl2_back/engines/free/email_campaigns/app/jobs/email_campaigns/trigger_on_activity_job.rb:7:in `run'
+  /cl2_back/lib/active_job_que_extension.rb:38:in `perform'
+  /cl2_back/lib/apartment_active_job/monkey_patches/active_job/base.rb:13:in `block in execute'
+  /cl2_back/lib/apartment_active_job/monkey_patches/active_job/base.rb:13:in `execute'
+
+2021-03-26 13:12:17[WARN] user: root
+ 
+USE eager loading detected
+  EmailCampaigns::Campaigns::StatusChangeOfYourInitiative => [:groups]
+  Add to your query: .includes([:groups])
+Call stack
+  /cl2_back/engines/free/email_campaigns/app/models/concerns/email_campaigns/recipient_configurable.rb:15:in `map'
+  /cl2_back/engines/free/email_campaigns/app/models/concerns/email_campaigns/recipient_configurable.rb:15:in `filter_users_in_groups'
+  /cl2_back/engines/free/email_campaigns/app/models/email_campaigns/campaign.rb:53:in `block in apply_recipient_filters'
+  /cl2_back/engines/free/email_campaigns/app/models/email_campaigns/campaign.rb:52:in `each'
+  /cl2_back/engines/free/email_campaigns/app/models/email_campaigns/campaign.rb:52:in `inject'
+  /cl2_back/engines/free/email_campaigns/app/models/email_campaigns/campaign.rb:52:in `apply_recipient_filters'
+  /cl2_back/engines/free/email_campaigns/app/services/email_campaigns/delivery_service.rb:132:in `block in assign_campaigns_recipients'
+  /cl2_back/engines/free/email_campaigns/app/services/email_campaigns/delivery_service.rb:131:in `each'
+  /cl2_back/engines/free/email_campaigns/app/services/email_campaigns/delivery_service.rb:131:in `flat_map'
+  /cl2_back/engines/free/email_campaigns/app/services/email_campaigns/delivery_service.rb:131:in `assign_campaigns_recipients'
+  /cl2_back/engines/free/email_campaigns/app/services/email_campaigns/delivery_service.rb:120:in `apply_send_pipeline'
+  /cl2_back/engines/free/email_campaigns/app/services/email_campaigns/delivery_service.rb:84:in `send_on_activity'
+  /cl2_back/engines/free/email_campaigns/app/jobs/email_campaigns/trigger_on_activity_job.rb:7:in `run'
+  /cl2_back/lib/active_job_que_extension.rb:38:in `perform'
+  /cl2_back/lib/apartment_active_job/monkey_patches/active_job/base.rb:13:in `block in execute'
+  /cl2_back/lib/apartment_active_job/monkey_patches/active_job/base.rb:13:in `execute'
+
+2021-03-26 13:12:22[WARN] user: root
+ 
+USE eager loading detected
+  EmailCampaigns::Campaigns::StatusChangeOfYourInitiative => [:campaigns_groups]
+  Add to your query: .includes([:campaigns_groups])
+Call stack
+  /cl2_back/engines/free/email_campaigns/app/models/concerns/email_campaigns/recipient_configurable.rb:15:in `map'
+  /cl2_back/engines/free/email_campaigns/app/models/concerns/email_campaigns/recipient_configurable.rb:15:in `filter_users_in_groups'
+  /cl2_back/engines/free/email_campaigns/app/models/email_campaigns/campaign.rb:53:in `block in apply_recipient_filters'
+  /cl2_back/engines/free/email_campaigns/app/models/email_campaigns/campaign.rb:52:in `each'
+  /cl2_back/engines/free/email_campaigns/app/models/email_campaigns/campaign.rb:52:in `inject'
+  /cl2_back/engines/free/email_campaigns/app/models/email_campaigns/campaign.rb:52:in `apply_recipient_filters'
+  /cl2_back/engines/free/email_campaigns/app/services/email_campaigns/delivery_service.rb:132:in `block in assign_campaigns_recipients'
+  /cl2_back/engines/free/email_campaigns/app/services/email_campaigns/delivery_service.rb:131:in `each'
+  /cl2_back/engines/free/email_campaigns/app/services/email_campaigns/delivery_service.rb:131:in `flat_map'
+  /cl2_back/engines/free/email_campaigns/app/services/email_campaigns/delivery_service.rb:131:in `assign_campaigns_recipients'
+  /cl2_back/engines/free/email_campaigns/app/services/email_campaigns/delivery_service.rb:120:in `apply_send_pipeline'
+  /cl2_back/engines/free/email_campaigns/app/services/email_campaigns/delivery_service.rb:84:in `send_on_activity'
+  /cl2_back/engines/free/email_campaigns/app/jobs/email_campaigns/trigger_on_activity_job.rb:7:in `run'
+  /cl2_back/lib/active_job_que_extension.rb:38:in `perform'
+  /cl2_back/lib/apartment_active_job/monkey_patches/active_job/base.rb:13:in `block in execute'
+  /cl2_back/lib/apartment_active_job/monkey_patches/active_job/base.rb:13:in `execute'
+
+2021-03-26 13:12:22[WARN] user: root
+ 
+USE eager loading detected
+  EmailCampaigns::Campaigns::StatusChangeOfYourInitiative => [:groups]
+  Add to your query: .includes([:groups])
+Call stack
+  /cl2_back/engines/free/email_campaigns/app/models/concerns/email_campaigns/recipient_configurable.rb:15:in `map'
+  /cl2_back/engines/free/email_campaigns/app/models/concerns/email_campaigns/recipient_configurable.rb:15:in `filter_users_in_groups'
+  /cl2_back/engines/free/email_campaigns/app/models/email_campaigns/campaign.rb:53:in `block in apply_recipient_filters'
+  /cl2_back/engines/free/email_campaigns/app/models/email_campaigns/campaign.rb:52:in `each'
+  /cl2_back/engines/free/email_campaigns/app/models/email_campaigns/campaign.rb:52:in `inject'
+  /cl2_back/engines/free/email_campaigns/app/models/email_campaigns/campaign.rb:52:in `apply_recipient_filters'
+  /cl2_back/engines/free/email_campaigns/app/services/email_campaigns/delivery_service.rb:132:in `block in assign_campaigns_recipients'
+  /cl2_back/engines/free/email_campaigns/app/services/email_campaigns/delivery_service.rb:131:in `each'
+  /cl2_back/engines/free/email_campaigns/app/services/email_campaigns/delivery_service.rb:131:in `flat_map'
+  /cl2_back/engines/free/email_campaigns/app/services/email_campaigns/delivery_service.rb:131:in `assign_campaigns_recipients'
+  /cl2_back/engines/free/email_campaigns/app/services/email_campaigns/delivery_service.rb:120:in `apply_send_pipeline'
+  /cl2_back/engines/free/email_campaigns/app/services/email_campaigns/delivery_service.rb:84:in `send_on_activity'
+  /cl2_back/engines/free/email_campaigns/app/jobs/email_campaigns/trigger_on_activity_job.rb:7:in `run'
+  /cl2_back/lib/active_job_que_extension.rb:38:in `perform'
+  /cl2_back/lib/apartment_active_job/monkey_patches/active_job/base.rb:13:in `block in execute'
+  /cl2_back/lib/apartment_active_job/monkey_patches/active_job/base.rb:13:in `execute'
+
+2021-03-26 13:12:56[WARN] user: root
+GET /web_api/v1/action_descriptors/initiatives
+AVOID eager loading detected
+  Permission => [:groups, :groups_permissions]
+  Remove from your query: .includes([:groups, :groups_permissions])
+Call stack
+  /cl2_back/config/initializers/apartment.rb:93:in `block in call'
+  /cl2_back/config/initializers/apartment.rb:93:in `call'
+
+2021-03-26 13:12:57[WARN] user: root
+GET /web_api/v1/projects?filter_ids%5B%5D=d8be0222-1e5b-42b8-b02c-17d0b699a729&filter_ids%5B%5D=cbc6ffab-4121-494a-af77-b57697845ae4
+USE eager loading detected
+  AdminPublication => [:parent]
+  Add to your query: .includes([:parent])
+Call stack
+  /cl2_back/engines/commercial/project_folders/app/models/project_folders/patches/project.rb:16:in `folder'
+  /cl2_back/engines/commercial/project_folders/app/serializers/project_folders/web_api/v1/patches/project_serializer.rb:11:in `block (2 levels) in prepended'
+  /cl2_back/app/controllers/application_controller.rb:70:in `linked_json'
+  /cl2_back/app/controllers/web_api/v1/projects_controller.rb:38:in `index'
+  /cl2_back/config/initializers/apartment.rb:93:in `block in call'
+  /cl2_back/config/initializers/apartment.rb:93:in `call'
+
+2021-03-26 13:12:57[WARN] user: root
+GET /web_api/v1/projects?filter_ids%5B%5D=d8be0222-1e5b-42b8-b02c-17d0b699a729&filter_ids%5B%5D=cbc6ffab-4121-494a-af77-b57697845ae4
+USE eager loading detected
+  Project => [:topics]
+  Add to your query: .includes([:topics])
+Call stack
+  /cl2_back/app/controllers/application_controller.rb:70:in `linked_json'
+  /cl2_back/app/controllers/web_api/v1/projects_controller.rb:38:in `index'
+  /cl2_back/config/initializers/apartment.rb:93:in `block in call'
+  /cl2_back/config/initializers/apartment.rb:93:in `call'
+
+2021-03-26 13:12:57[WARN] user: root
+GET /web_api/v1/projects?filter_ids%5B%5D=d8be0222-1e5b-42b8-b02c-17d0b699a729&filter_ids%5B%5D=cbc6ffab-4121-494a-af77-b57697845ae4
+AVOID eager loading detected
+  Permission => [:groups, :groups_permissions]
+  Remove from your query: .includes([:groups, :groups_permissions])
+Call stack
+  /cl2_back/config/initializers/apartment.rb:93:in `block in call'
+  /cl2_back/config/initializers/apartment.rb:93:in `call'
+
+2021-03-26 13:13:30[WARN] user: root
+GET /web_api/v1/topics
+AVOID eager loading detected
+  Topic => [:projects_topics]
+  Remove from your query: .includes([:projects_topics])
+Call stack
+  /cl2_back/config/initializers/apartment.rb:93:in `block in call'
+  /cl2_back/config/initializers/apartment.rb:93:in `call'
+
+2021-03-26 13:13:30[WARN] user: root
+GET /web_api/v1/projects?page%5Bnumber%5D=1&page%5Bsize%5D=250&publication_statuses%5B%5D=draft&publication_statuses%5B%5D=published&publication_statuses%5B%5D=archived&filter_can_moderate=true
+USE eager loading detected
+  AdminPublication => [:parent]
+  Add to your query: .includes([:parent])
+Call stack
+  /cl2_back/engines/commercial/project_folders/app/models/project_folders/patches/project.rb:16:in `folder'
+  /cl2_back/engines/commercial/project_folders/app/serializers/project_folders/web_api/v1/patches/project_serializer.rb:11:in `block (2 levels) in prepended'
+  /cl2_back/app/controllers/application_controller.rb:70:in `linked_json'
+  /cl2_back/app/controllers/web_api/v1/projects_controller.rb:38:in `index'
+  /cl2_back/config/initializers/apartment.rb:93:in `block in call'
+  /cl2_back/config/initializers/apartment.rb:93:in `call'
+
+2021-03-26 13:13:30[WARN] user: root
+GET /web_api/v1/projects?page%5Bnumber%5D=1&page%5Bsize%5D=250&publication_statuses%5B%5D=draft&publication_statuses%5B%5D=published&publication_statuses%5B%5D=archived&filter_can_moderate=true
+USE eager loading detected
+  Project => [:topics]
+  Add to your query: .includes([:topics])
+Call stack
+  /cl2_back/app/controllers/application_controller.rb:70:in `linked_json'
+  /cl2_back/app/controllers/web_api/v1/projects_controller.rb:38:in `index'
+  /cl2_back/config/initializers/apartment.rb:93:in `block in call'
+  /cl2_back/config/initializers/apartment.rb:93:in `call'
+
+2021-03-26 13:13:30[WARN] user: root
+GET /web_api/v1/projects?page%5Bnumber%5D=1&page%5Bsize%5D=250&publication_statuses%5B%5D=draft&publication_statuses%5B%5D=published&publication_statuses%5B%5D=archived&filter_can_moderate=true
+AVOID eager loading detected
+  Permission => [:groups, :groups_permissions]
+  Remove from your query: .includes([:groups, :groups_permissions])
+Call stack
+  /cl2_back/config/initializers/apartment.rb:93:in `block in call'
+  /cl2_back/config/initializers/apartment.rb:93:in `call'
+
+2021-03-26 14:56:10[WARN] user: root
+GET /web_api/v1/action_descriptors/initiatives
+AVOID eager loading detected
+  Permission => [:groups, :groups_permissions]
+  Remove from your query: .includes([:groups, :groups_permissions])
+Call stack
+  /cl2_back/config/initializers/apartment.rb:93:in `block in call'
+  /cl2_back/config/initializers/apartment.rb:93:in `call'
+
+2021-03-26 14:56:13[WARN] user: root
+GET /web_api/v1/projects?filter_ids%5B%5D=d8be0222-1e5b-42b8-b02c-17d0b699a729&filter_ids%5B%5D=cbc6ffab-4121-494a-af77-b57697845ae4
+USE eager loading detected
+  AdminPublication => [:parent]
+  Add to your query: .includes([:parent])
+Call stack
+  /cl2_back/engines/commercial/project_folders/app/models/project_folders/patches/project.rb:16:in `folder'
+  /cl2_back/engines/commercial/project_folders/app/serializers/project_folders/web_api/v1/patches/project_serializer.rb:11:in `block (2 levels) in prepended'
+  /cl2_back/app/controllers/application_controller.rb:70:in `linked_json'
+  /cl2_back/app/controllers/web_api/v1/projects_controller.rb:38:in `index'
+  /cl2_back/config/initializers/apartment.rb:93:in `block in call'
+  /cl2_back/config/initializers/apartment.rb:93:in `call'
+
+2021-03-26 14:56:13[WARN] user: root
+GET /web_api/v1/projects?filter_ids%5B%5D=d8be0222-1e5b-42b8-b02c-17d0b699a729&filter_ids%5B%5D=cbc6ffab-4121-494a-af77-b57697845ae4
+USE eager loading detected
+  Project => [:topics]
+  Add to your query: .includes([:topics])
+Call stack
+  /cl2_back/app/controllers/application_controller.rb:70:in `linked_json'
+  /cl2_back/app/controllers/web_api/v1/projects_controller.rb:38:in `index'
+  /cl2_back/config/initializers/apartment.rb:93:in `block in call'
+  /cl2_back/config/initializers/apartment.rb:93:in `call'
+
+2021-03-26 14:56:13[WARN] user: root
+GET /web_api/v1/projects?filter_ids%5B%5D=d8be0222-1e5b-42b8-b02c-17d0b699a729&filter_ids%5B%5D=cbc6ffab-4121-494a-af77-b57697845ae4
+AVOID eager loading detected
+  Permission => [:groups, :groups_permissions]
+  Remove from your query: .includes([:groups, :groups_permissions])
+Call stack
+  /cl2_back/config/initializers/apartment.rb:93:in `block in call'
+  /cl2_back/config/initializers/apartment.rb:93:in `call'
+
+2021-03-26 14:56:25[WARN] user: root
+GET /web_api/v1/topics
+AVOID eager loading detected
+  Topic => [:projects_topics]
+  Remove from your query: .includes([:projects_topics])
+Call stack
+  /cl2_back/config/initializers/apartment.rb:93:in `block in call'
+  /cl2_back/config/initializers/apartment.rb:93:in `call'
+
+2021-03-26 14:56:26[WARN] user: root
+GET /web_api/v1/projects?page%5Bnumber%5D=1&page%5Bsize%5D=250&publication_statuses%5B%5D=draft&publication_statuses%5B%5D=published&publication_statuses%5B%5D=archived&filter_can_moderate=true
+USE eager loading detected
+  AdminPublication => [:parent]
+  Add to your query: .includes([:parent])
+Call stack
+  /cl2_back/engines/commercial/project_folders/app/models/project_folders/patches/project.rb:16:in `folder'
+  /cl2_back/engines/commercial/project_folders/app/serializers/project_folders/web_api/v1/patches/project_serializer.rb:11:in `block (2 levels) in prepended'
+  /cl2_back/app/controllers/application_controller.rb:70:in `linked_json'
+  /cl2_back/app/controllers/web_api/v1/projects_controller.rb:38:in `index'
+  /cl2_back/config/initializers/apartment.rb:93:in `block in call'
+  /cl2_back/config/initializers/apartment.rb:93:in `call'
+
+2021-03-26 14:56:26[WARN] user: root
+GET /web_api/v1/projects?page%5Bnumber%5D=1&page%5Bsize%5D=250&publication_statuses%5B%5D=draft&publication_statuses%5B%5D=published&publication_statuses%5B%5D=archived&filter_can_moderate=true
+USE eager loading detected
+  Project => [:topics]
+  Add to your query: .includes([:topics])
+Call stack
+  /cl2_back/app/controllers/application_controller.rb:70:in `linked_json'
+  /cl2_back/app/controllers/web_api/v1/projects_controller.rb:38:in `index'
+  /cl2_back/config/initializers/apartment.rb:93:in `block in call'
+  /cl2_back/config/initializers/apartment.rb:93:in `call'
+
+2021-03-26 14:56:26[WARN] user: root
+GET /web_api/v1/projects?page%5Bnumber%5D=1&page%5Bsize%5D=250&publication_statuses%5B%5D=draft&publication_statuses%5B%5D=published&publication_statuses%5B%5D=archived&filter_can_moderate=true
+AVOID eager loading detected
+  Permission => [:groups, :groups_permissions]
+  Remove from your query: .includes([:groups, :groups_permissions])
+Call stack
+  /cl2_back/config/initializers/apartment.rb:93:in `block in call'
+  /cl2_back/config/initializers/apartment.rb:93:in `call'
+
