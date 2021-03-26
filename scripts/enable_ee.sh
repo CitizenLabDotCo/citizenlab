@@ -7,7 +7,7 @@ else
   echo "Linked citizenlab/citizenlab.config.ee.json"
 fi
 
-cp -r back/engines/ee ../citizenlab/back/engines/ee
+cp -r back/engines/ee ../citizenlab/back/engines/.
 echo "Copied back/engines/ee"
 
 cp .env-back ../citizenlab/.
