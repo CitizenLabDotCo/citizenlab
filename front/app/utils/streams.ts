@@ -35,7 +35,7 @@ import { isUUID } from 'utils/helperUtils';
 
 // TO FIX : close streams via lifecycle
 // tslint:disable-next-line
-import { userCustomFieldsSchemaApiEndpoint } from 'modules/user_custom_fields/services/userCustomFields';
+import { userCustomFieldsSchemaApiEndpoint } from 'modules/commercial/user_custom_fields/services/userCustomFields';
 
 export type pureFn<T> = (arg: T) => T;
 type fetchFn = () => Promise<any>;
