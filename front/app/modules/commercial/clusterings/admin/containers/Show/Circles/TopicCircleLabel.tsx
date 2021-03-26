@@ -3,7 +3,7 @@ import GetTopic, { GetTopicChildProps } from 'resources/GetTopic';
 import T from 'components/T';
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
-import messages from '../../messages';
+import messages from '../../../messages';
 import { isNilOrError } from 'utils/helperUtils';
 import { round } from 'lodash-es';
 import { D3Node } from './';

@@ -6,7 +6,7 @@ import { FieldProps } from 'formik';
 import Button from 'components/UI/Button';
 
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
+import messages from '../../messages';
 
 const Level = styled.div<{ depth: number }>`
   margin-left: ${(props) => props.depth * 20}px;

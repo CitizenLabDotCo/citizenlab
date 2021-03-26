@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
-import { Node } from 'services/clusterings';
+import { Node } from 'modules/commercial/clusterings/services/clusterings';
 import GetIdea from 'resources/GetIdea';
 import T from 'components/T';
 import { isNilOrError } from 'utils/helperUtils';
