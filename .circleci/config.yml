@@ -67,6 +67,7 @@ jobs:
             -u $CIRCLECI_API_TOKEN: \
             --url https://circleci.com/api/v2/project/github/CitizenLabDotCo/citizenlab-ee/pipeline \
             --header 'content-type: application/json' \
+            --header 'x-attribution-login: $CIRCLE_USERNAME' \
             --data '{"branch":"master","parameters":{"citizenlab_branch": "$CIRCLE_BRANCH"}}'
 
   # *************** back ***************
