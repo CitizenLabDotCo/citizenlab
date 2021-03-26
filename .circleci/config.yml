@@ -8,7 +8,7 @@ parameters:
 
   citizenlab_sha:
     type: string
-    default: ""
+    default: "unknown"
 
   run_deploy:
     type: boolean
