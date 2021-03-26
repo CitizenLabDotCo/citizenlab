@@ -79,17 +79,6 @@ Rails.application.routes.draw do
       # auth
       post 'user_token' => 'user_token#create'
 
-
-      scope :users do
-        resources :custom_fields, controller: 'user_custom_fields' do
-          patch 'reorder', on: :member
-          get 'schema', on: :collection
-          resources :custom_field_options do
-            patch 'reorder', on: :member
-          end
-        end
-      end
-
       resources :users do
         resources :comments, only: [:index], controller: 'user_comments'
         get :me, on: :collection
