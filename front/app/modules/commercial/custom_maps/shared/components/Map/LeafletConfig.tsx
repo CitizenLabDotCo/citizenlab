@@ -62,11 +62,12 @@ const LeafletConfig = memo<Props & IMapConfigProps>(
       return mapConfig.attributes.layers as GeoJSONLayer[];
     }, [projectId, mapConfig]);
 
-    const tileOptions = {
-      attribution: '\u003ca href="https://www.maptiler.com/copyright/" target="_blank"\u003e\u0026copy; MapTiler\u003c/a\u003e \u003ca href="https://www.openstreetmap.org/copyright" target="_blank"\u003e\u0026copy; OpenStreetMap contributors\u003c/a\u003e'
-    };
-
     const newLeafletConfig = useMemo(() => {
+      const tileOptions = {
+        attribution:
+          '\u003ca href="https://www.maptiler.com/copyright/" target="_blank"\u003e\u0026copy; MapTiler\u003c/a\u003e \u003ca href="https://www.openstreetmap.org/copyright" target="_blank"\u003e\u0026copy; OpenStreetMap contributors\u003c/a\u003e',
+      };
+
       return {
         geoJsonLayers,
         points,
@@ -97,7 +98,6 @@ const LeafletConfig = memo<Props & IMapConfigProps>(
       zoom,
       center,
       tileProvider,
-      tileOptions,
       fitBounds,
       onMarkerClick,
       onMapClick,

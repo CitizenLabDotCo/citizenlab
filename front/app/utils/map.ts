@@ -44,5 +44,5 @@ export const getTileProvider = (
   const tileProvider =
     !isNilOrError(appConfig) &&
     (appConfig?.data?.attributes?.settings?.maps?.tile_provider as string);
-  return tileProvider;
+  return tileProvider || null;
 };

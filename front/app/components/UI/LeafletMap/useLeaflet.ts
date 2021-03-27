@@ -40,7 +40,7 @@ L.Icon.Default.mergeOptions({
 export interface ILeafletMapConfig {
   center?: L.LatLngExpression;
   zoom?: number;
-  tileProvider?: string;
+  tileProvider?: string | null;
   tileOptions?: object;
   fitBounds?: boolean;
   onClick?: IOnMapClickHandler;
@@ -76,6 +76,7 @@ export default function useLeaflet(
   // State and memos
   const [map, setMap] = useState<L.Map | null>(null);
   const [markers, setMarkers] = useState<L.Marker<any>[]>([]);
+  const [tileLayer, setTileLayer] = useState<L.Layer | null>(null);
   const [layers, setLayers] = useState<L.GeoJSON[]>([]);
 
   const [
@@ -104,8 +105,17 @@ export default function useLeaflet(
     );
   }, [allFeatures]);
 
+  const tileConfig = useMemo(
+    () => ({
+      tileProvider,
+      ...tileOptions,
+    }),
+    [tileProvider, tileOptions]
+  );
+
   // Prevstate
   const prevMarkers = usePrevious(markers);
+  const prevTileConfig = usePrevious(tileConfig);
   const prevPoints = usePrevious(points);
   const prevGeoJsonLayers = usePrevious(geoJsonLayers);
 
@@ -126,10 +136,43 @@ export default function useLeaflet(
     };
 
     const newMap = service.setup(mapId, options);
+    service.addTileLayer(newMap, tileProvider, tileOptions);
 
     setMap(newMap);
   };
-  useEffect(setup, [map, mapId, tileProvider, tileOptions, onClick, zoom, center]);
+  useEffect(setup, [
+    map,
+    mapId,
+    tileProvider,
+    tileOptions,
+    onClick,
+    zoom,
+    center,
+  ]);
+
+  const refreshTile = () => {
+    if (!map || (tileLayer && tileConfig === prevTileConfig)) {
+      return;
+    }
+
+    if (tileLayer) {
+      service.removeLayer(map, tileLayer);
+    }
+
+    const newTileLayer = service.addTileLayer(map, tileProvider, tileOptions);
+
+    if (newTileLayer) {
+      setTileLayer(newTileLayer);
+    }
+  };
+  useEffect(refreshTile, [
+    map,
+    tileProvider,
+    tileOptions,
+    tileLayer,
+    tileConfig,
+    prevTileConfig,
+  ]);
 
   const refreshCenterAndZoom = () => {
     if (map) {
