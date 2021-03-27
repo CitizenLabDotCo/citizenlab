@@ -175,6 +175,13 @@ PATH
       verification
 
 PATH
+  remote: engines/commercial/idea_assignment
+  specs:
+    idea_assignment (0.1.0)
+      email_campaigns
+      rails (~> 6.0.3, >= 6.0.3.2)
+
+PATH
   remote: engines/commercial/machine_translations
   specs:
     machine_translations (0.1.0)
@@ -224,6 +231,12 @@ PATH
       rails (~> 6.0.0)
 
 PATH
+  remote: engines/commercial/smart_groups
+  specs:
+    smart_groups (0.1.0)
+      rails (~> 6.0.3, >= 6.0.3.2)
+
+PATH
   remote: engines/commercial/tagging
   specs:
     tagging (0.1.0)
@@ -239,6 +252,8 @@ PATH
       granular_permissions
       pundit (~> 2.0)
       rails (~> 6.0.0)
+      savon (~> 2.12.0)
+      smart_groups
 
 PATH
   remote: engines/ee/multi_tenancy
@@ -952,6 +967,7 @@ DEPENDENCIES
   id_cow!
   id_franceconnect!
   id_id_card_lookup!
+  idea_assignment!
   intercom (~> 4.1)
   kaminari (~> 1.2)
   knock!
@@ -1015,6 +1031,7 @@ DEPENDENCIES
   simple_segment (~> 1.2)
   simplecov
   simplecov-rcov
+  smart_groups!
   spring
   spring-watcher-listen (~> 2.0.0)
   surveys!
