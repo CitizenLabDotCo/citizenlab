@@ -8,11 +8,9 @@
  *
  */
 
-
 /*******************************
             Elements
 *******************************/
-
 
 /*--------------------
         Form
@@ -67,17 +65,17 @@
 
 .ui.form textarea,
 .ui.form input:not([type]),
-.ui.form input[type="date"],
-.ui.form input[type="datetime-local"],
-.ui.form input[type="email"],
-.ui.form input[type="number"],
-.ui.form input[type="password"],
-.ui.form input[type="search"],
-.ui.form input[type="tel"],
-.ui.form input[type="time"],
-.ui.form input[type="text"],
-.ui.form input[type="file"],
-.ui.form input[type="url"] {
+.ui.form input[type='date'],
+.ui.form input[type='datetime-local'],
+.ui.form input[type='email'],
+.ui.form input[type='number'],
+.ui.form input[type='password'],
+.ui.form input[type='search'],
+.ui.form input[type='tel'],
+.ui.form input[type='time'],
+.ui.form input[type='text'],
+.ui.form input[type='file'],
+.ui.form input[type='url'] {
   width: 100%;
   vertical-align: top;
 }
@@ -88,17 +86,17 @@
   height: 1.21428571em;
 }
 .ui.form input:not([type]),
-.ui.form input[type="date"],
-.ui.form input[type="datetime-local"],
-.ui.form input[type="email"],
-.ui.form input[type="number"],
-.ui.form input[type="password"],
-.ui.form input[type="search"],
-.ui.form input[type="tel"],
-.ui.form input[type="time"],
-.ui.form input[type="text"],
-.ui.form input[type="file"],
-.ui.form input[type="url"] {
+.ui.form input[type='date'],
+.ui.form input[type='datetime-local'],
+.ui.form input[type='email'],
+.ui.form input[type='number'],
+.ui.form input[type='password'],
+.ui.form input[type='search'],
+.ui.form input[type='tel'],
+.ui.form input[type='time'],
+.ui.form input[type='text'],
+.ui.form input[type='file'],
+.ui.form input[type='url'] {
   font-family: 'Public Sans', 'Helvetica Neue', Arial, Helvetica, sans-serif;
   margin: 0em;
   outline: none;
@@ -107,12 +105,12 @@
   line-height: 1.21428571em;
   padding: 0.67857143em 1em;
   font-size: 1em;
-  background: #FFFFFF;
+  background: #ffffff;
   border: 1px solid rgba(34, 36, 38, 0.15);
   color: rgba(0, 0, 0, 0.87);
   border-radius: 0.28571429rem;
   -webkit-box-shadow: 0em 0em 0em 0em transparent inset;
-          box-shadow: 0em 0em 0em 0em transparent inset;
+  box-shadow: 0em 0em 0em 0em transparent inset;
   -webkit-transition: color 0.1s ease, border-color 0.1s ease;
   transition: color 0.1s ease, border-color 0.1s ease;
 }
@@ -123,13 +121,13 @@
   -webkit-appearance: none;
   tap-highlight-color: rgba(255, 255, 255, 0);
   padding: 0.78571429em 1em;
-  background: #FFFFFF;
+  background: #ffffff;
   border: 1px solid rgba(34, 36, 38, 0.15);
   outline: none;
   color: rgba(0, 0, 0, 0.87);
   border-radius: 0.28571429rem;
   -webkit-box-shadow: 0em 0em 0em 0em transparent inset;
-          box-shadow: 0em 0em 0em 0em transparent inset;
+  box-shadow: 0em 0em 0em 0em transparent inset;
   -webkit-transition: color 0.1s ease, border-color 0.1s ease;
   transition: color 0.1s ease, border-color 0.1s ease;
   font-size: 1em;
@@ -142,7 +140,7 @@
   max-height: 24em;
 }
 .ui.form textarea,
-.ui.form input[type="checkbox"] {
+.ui.form input[type='checkbox'] {
   vertical-align: top;
 }
 
@@ -162,11 +160,11 @@
   display: block;
   height: auto;
   width: 100%;
-  background: #FFFFFF;
+  background: #ffffff;
   border: 1px solid rgba(34, 36, 38, 0.15);
   border-radius: 0.28571429rem;
   -webkit-box-shadow: 0em 0em 0em 0em transparent inset;
-          box-shadow: 0em 0em 0em 0em transparent inset;
+  box-shadow: 0em 0em 0em 0em transparent inset;
   padding: 0.62em 1em;
   color: rgba(0, 0, 0, 0.87);
   -webkit-transition: color 0.1s ease, border-color 0.1s ease;
@@ -176,7 +174,6 @@
 /*--------------------
        Dropdown
 ---------------------*/
-
 
 /* Block */
 .ui.form .field > .selection.dropdown {
@@ -199,7 +196,6 @@
 /*--------------------
        UI Input
 ---------------------*/
-
 
 /* Block */
 .ui.form .field .ui.input,
@@ -233,8 +229,8 @@
 .ui.form .two.fields .ui.input input,
 .ui.form .wide.field .ui.input input {
   -webkit-box-flex: 1;
-      -ms-flex: 1 0 auto;
-          flex: 1 0 auto;
+  -ms-flex: 1 0 auto;
+  flex: 1 0 auto;
   width: 0px;
 }
 
@@ -259,9 +255,9 @@
 
 .ui.form .field .prompt.label {
   white-space: normal;
-  background: #FFFFFF !important;
-  border: 1px solid #E0B4B4 !important;
-  color: #9F3A38 !important;
+  background: #ffffff !important;
+  border: 1px solid #e0b4b4 !important;
+  color: #9f3a38 !important;
 }
 .ui.form .inline.fields .field .prompt,
 .ui.form .inline.field .prompt {
@@ -277,40 +273,37 @@
   left: 0em;
 }
 
-
 /*******************************
             States
 *******************************/
-
 
 /*--------------------
       Autofilled
 ---------------------*/
 
 .ui.form .field.field input:-webkit-autofill {
-  -webkit-box-shadow: 0px 0px 0px 100px #FFFFF0 inset !important;
-          box-shadow: 0px 0px 0px 100px #FFFFF0 inset !important;
-  border-color: #E5DFA1 !important;
+  -webkit-box-shadow: 0px 0px 0px 100px #fffff0 inset !important;
+  box-shadow: 0px 0px 0px 100px #fffff0 inset !important;
+  border-color: #e5dfa1 !important;
 }
 
 /* Focus */
 .ui.form .field.field input:-webkit-autofill:focus {
-  -webkit-box-shadow: 0px 0px 0px 100px #FFFFF0 inset !important;
-          box-shadow: 0px 0px 0px 100px #FFFFF0 inset !important;
-  border-color: #D5C315 !important;
+  -webkit-box-shadow: 0px 0px 0px 100px #fffff0 inset !important;
+  box-shadow: 0px 0px 0px 100px #fffff0 inset !important;
+  border-color: #d5c315 !important;
 }
 
 /* Error */
 .ui.form .error.error input:-webkit-autofill {
-  -webkit-box-shadow: 0px 0px 0px 100px #FFFAF0 inset !important;
-          box-shadow: 0px 0px 0px 100px #FFFAF0 inset !important;
-  border-color: #E0B4B4 !important;
+  -webkit-box-shadow: 0px 0px 0px 100px #fffaf0 inset !important;
+  box-shadow: 0px 0px 0px 100px #fffaf0 inset !important;
+  border-color: #e0b4b4 !important;
 }
 
 /*--------------------
       Placeholder
 ---------------------*/
-
 
 /* browsers require these rules separate */
 .ui.form ::-webkit-input-placeholder {
@@ -357,38 +350,37 @@
 ---------------------*/
 
 .ui.form input:not([type]):focus,
-.ui.form input[type="date"]:focus,
-.ui.form input[type="datetime-local"]:focus,
-.ui.form input[type="email"]:focus,
-.ui.form input[type="number"]:focus,
-.ui.form input[type="password"]:focus,
-.ui.form input[type="search"]:focus,
-.ui.form input[type="tel"]:focus,
-.ui.form input[type="time"]:focus,
-.ui.form input[type="text"]:focus,
-.ui.form input[type="file"]:focus,
-.ui.form input[type="url"]:focus {
+.ui.form input[type='date']:focus,
+.ui.form input[type='datetime-local']:focus,
+.ui.form input[type='email']:focus,
+.ui.form input[type='number']:focus,
+.ui.form input[type='password']:focus,
+.ui.form input[type='search']:focus,
+.ui.form input[type='tel']:focus,
+.ui.form input[type='time']:focus,
+.ui.form input[type='text']:focus,
+.ui.form input[type='file']:focus,
+.ui.form input[type='url']:focus {
   color: rgba(0, 0, 0, 0.95);
-  border-color: #85B7D9;
+  border-color: #85b7d9;
   border-radius: 0.28571429rem;
-  background: #FFFFFF;
+  background: #ffffff;
   -webkit-box-shadow: 0px 0em 0em 0em rgba(34, 36, 38, 0.35) inset;
-          box-shadow: 0px 0em 0em 0em rgba(34, 36, 38, 0.35) inset;
+  box-shadow: 0px 0em 0em 0em rgba(34, 36, 38, 0.35) inset;
 }
 .ui.form textarea:focus {
   color: rgba(0, 0, 0, 0.95);
-  border-color: #85B7D9;
+  border-color: #85b7d9;
   border-radius: 0.28571429rem;
-  background: #FFFFFF;
+  background: #ffffff;
   -webkit-box-shadow: 0px 0em 0em 0em rgba(34, 36, 38, 0.35) inset;
-          box-shadow: 0px 0em 0em 0em rgba(34, 36, 38, 0.35) inset;
+  box-shadow: 0px 0em 0em 0em rgba(34, 36, 38, 0.35) inset;
   -webkit-appearance: none;
 }
 
 /*--------------------
         Success
 ---------------------*/
-
 
 /* On Form */
 .ui.form.success .success.message:not(:empty) {
@@ -407,7 +399,6 @@
         Warning
 ---------------------*/
 
-
 /* On Form */
 .ui.form.warning .warning.message:not(:empty) {
   display: block;
@@ -424,7 +415,6 @@
 /*--------------------
         Error
 ---------------------*/
-
 
 /* On Form */
 .ui.form.error .error.message:not(:empty) {
@@ -444,68 +434,68 @@
 .ui.form .field.error label,
 .ui.form .fields.error .field .input,
 .ui.form .field.error .input {
-  color: #9F3A38;
+  color: #9f3a38;
 }
 .ui.form .fields.error .field .corner.label,
 .ui.form .field.error .corner.label {
-  border-color: #9F3A38;
-  color: #FFFFFF;
+  border-color: #9f3a38;
+  color: #ffffff;
 }
 .ui.form .fields.error .field textarea,
 .ui.form .fields.error .field select,
 .ui.form .fields.error .field input:not([type]),
-.ui.form .fields.error .field input[type="date"],
-.ui.form .fields.error .field input[type="datetime-local"],
-.ui.form .fields.error .field input[type="email"],
-.ui.form .fields.error .field input[type="number"],
-.ui.form .fields.error .field input[type="password"],
-.ui.form .fields.error .field input[type="search"],
-.ui.form .fields.error .field input[type="tel"],
-.ui.form .fields.error .field input[type="time"],
-.ui.form .fields.error .field input[type="text"],
-.ui.form .fields.error .field input[type="file"],
-.ui.form .fields.error .field input[type="url"],
+.ui.form .fields.error .field input[type='date'],
+.ui.form .fields.error .field input[type='datetime-local'],
+.ui.form .fields.error .field input[type='email'],
+.ui.form .fields.error .field input[type='number'],
+.ui.form .fields.error .field input[type='password'],
+.ui.form .fields.error .field input[type='search'],
+.ui.form .fields.error .field input[type='tel'],
+.ui.form .fields.error .field input[type='time'],
+.ui.form .fields.error .field input[type='text'],
+.ui.form .fields.error .field input[type='file'],
+.ui.form .fields.error .field input[type='url'],
 .ui.form .field.error textarea,
 .ui.form .field.error select,
 .ui.form .field.error input:not([type]),
-.ui.form .field.error input[type="date"],
-.ui.form .field.error input[type="datetime-local"],
-.ui.form .field.error input[type="email"],
-.ui.form .field.error input[type="number"],
-.ui.form .field.error input[type="password"],
-.ui.form .field.error input[type="search"],
-.ui.form .field.error input[type="tel"],
-.ui.form .field.error input[type="time"],
-.ui.form .field.error input[type="text"],
-.ui.form .field.error input[type="file"],
-.ui.form .field.error input[type="url"] {
-  background: #FFF6F6;
-  border-color: #E0B4B4;
-  color: #9F3A38;
+.ui.form .field.error input[type='date'],
+.ui.form .field.error input[type='datetime-local'],
+.ui.form .field.error input[type='email'],
+.ui.form .field.error input[type='number'],
+.ui.form .field.error input[type='password'],
+.ui.form .field.error input[type='search'],
+.ui.form .field.error input[type='tel'],
+.ui.form .field.error input[type='time'],
+.ui.form .field.error input[type='text'],
+.ui.form .field.error input[type='file'],
+.ui.form .field.error input[type='url'] {
+  background: #fff6f6;
+  border-color: #e0b4b4;
+  color: #9f3a38;
   border-radius: '';
   -webkit-box-shadow: none;
-          box-shadow: none;
+  box-shadow: none;
 }
 .ui.form .field.error textarea:focus,
 .ui.form .field.error select:focus,
 .ui.form .field.error input:not([type]):focus,
-.ui.form .field.error input[type="date"]:focus,
-.ui.form .field.error input[type="datetime-local"]:focus,
-.ui.form .field.error input[type="email"]:focus,
-.ui.form .field.error input[type="number"]:focus,
-.ui.form .field.error input[type="password"]:focus,
-.ui.form .field.error input[type="search"]:focus,
-.ui.form .field.error input[type="tel"]:focus,
-.ui.form .field.error input[type="time"]:focus,
-.ui.form .field.error input[type="text"]:focus,
-.ui.form .field.error input[type="file"]:focus,
-.ui.form .field.error input[type="url"]:focus {
-  background: #FFF6F6;
-  border-color: #E0B4B4;
-  color: #9F3A38;
+.ui.form .field.error input[type='date']:focus,
+.ui.form .field.error input[type='datetime-local']:focus,
+.ui.form .field.error input[type='email']:focus,
+.ui.form .field.error input[type='number']:focus,
+.ui.form .field.error input[type='password']:focus,
+.ui.form .field.error input[type='search']:focus,
+.ui.form .field.error input[type='tel']:focus,
+.ui.form .field.error input[type='time']:focus,
+.ui.form .field.error input[type='text']:focus,
+.ui.form .field.error input[type='file']:focus,
+.ui.form .field.error input[type='url']:focus {
+  background: #fff6f6;
+  border-color: #e0b4b4;
+  color: #9f3a38;
   -webkit-appearance: none;
   -webkit-box-shadow: none;
-          box-shadow: none;
+  box-shadow: none;
 }
 
 /* Preserve Native Select Stylings */
@@ -522,43 +512,43 @@
 .ui.form .field.error .ui.dropdown,
 .ui.form .field.error .ui.dropdown .text,
 .ui.form .field.error .ui.dropdown .item {
-  background: #FFF6F6;
-  color: #9F3A38;
+  background: #fff6f6;
+  color: #9f3a38;
 }
 .ui.form .fields.error .field .ui.dropdown,
 .ui.form .field.error .ui.dropdown {
-  border-color: #E0B4B4 !important;
+  border-color: #e0b4b4 !important;
 }
 .ui.form .fields.error .field .ui.dropdown:hover,
 .ui.form .field.error .ui.dropdown:hover {
-  border-color: #E0B4B4 !important;
+  border-color: #e0b4b4 !important;
 }
 .ui.form .fields.error .field .ui.dropdown:hover .menu,
 .ui.form .field.error .ui.dropdown:hover .menu {
-  border-color: #E0B4B4;
+  border-color: #e0b4b4;
 }
 .ui.form .fields.error .field .ui.multiple.selection.dropdown > .label,
 .ui.form .field.error .ui.multiple.selection.dropdown > .label {
-  background-color: #EACBCB;
-  color: #9F3A38;
+  background-color: #eacbcb;
+  color: #9f3a38;
 }
 
 /* Hover */
 .ui.form .fields.error .field .ui.dropdown .menu .item:hover,
 .ui.form .field.error .ui.dropdown .menu .item:hover {
-  background-color: #FBE7E7;
+  background-color: #fbe7e7;
 }
 
 /* Selected */
 .ui.form .fields.error .field .ui.dropdown .menu .selected.item,
 .ui.form .field.error .ui.dropdown .menu .selected.item {
-  background-color: #FBE7E7;
+  background-color: #fbe7e7;
 }
 
 /* Active */
 .ui.form .fields.error .field .ui.dropdown .menu .active.item,
 .ui.form .field.error .ui.dropdown .menu .active.item {
-  background-color: #FDCFCF !important;
+  background-color: #fdcfcf !important;
 }
 
 /*--------------------
@@ -569,20 +559,20 @@
 .ui.form .field.error .checkbox:not(.toggle):not(.slider) label,
 .ui.form .fields.error .field .checkbox:not(.toggle):not(.slider) .box,
 .ui.form .field.error .checkbox:not(.toggle):not(.slider) .box {
-  color: #9F3A38;
+  color: #9f3a38;
 }
 .ui.form .fields.error .field .checkbox:not(.toggle):not(.slider) label:before,
 .ui.form .field.error .checkbox:not(.toggle):not(.slider) label:before,
 .ui.form .fields.error .field .checkbox:not(.toggle):not(.slider) .box:before,
 .ui.form .field.error .checkbox:not(.toggle):not(.slider) .box:before {
-  background: #FFF6F6;
-  border-color: #E0B4B4;
+  background: #fff6f6;
+  border-color: #e0b4b4;
 }
 .ui.form .fields.error .field .checkbox label:after,
 .ui.form .field.error .checkbox label:after,
 .ui.form .fields.error .field .checkbox .box:after,
 .ui.form .field.error .checkbox .box:after {
-  color: #9F3A38;
+  color: #9f3a38;
 }
 
 /*--------------------
@@ -631,44 +621,42 @@
   width: 3em;
   height: 3em;
   -webkit-animation: form-spin 0.6s linear;
-          animation: form-spin 0.6s linear;
+  animation: form-spin 0.6s linear;
   -webkit-animation-iteration-count: infinite;
-          animation-iteration-count: infinite;
+  animation-iteration-count: infinite;
   border-radius: 500rem;
   border-color: #767676 rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1);
   border-style: solid;
   border-width: 0.2em;
   -webkit-box-shadow: 0px 0px 0px 1px transparent;
-          box-shadow: 0px 0px 0px 1px transparent;
+  box-shadow: 0px 0px 0px 1px transparent;
   visibility: visible;
   z-index: 101;
 }
 @-webkit-keyframes form-spin {
   from {
     -webkit-transform: rotate(0deg);
-            transform: rotate(0deg);
+    transform: rotate(0deg);
   }
   to {
     -webkit-transform: rotate(360deg);
-            transform: rotate(360deg);
+    transform: rotate(360deg);
   }
 }
 @keyframes form-spin {
   from {
     -webkit-transform: rotate(0deg);
-            transform: rotate(0deg);
+    transform: rotate(0deg);
   }
   to {
     -webkit-transform: rotate(360deg);
-            transform: rotate(360deg);
+    transform: rotate(360deg);
   }
 }
-
 
 /*******************************
          Element Types
 *******************************/
-
 
 /*--------------------
      Required Field
@@ -681,7 +669,7 @@
 .ui.form .required.field > .checkbox:after {
   margin: -0.2em 0em 0em 0.2em;
   content: '*';
-  color: #DB2828;
+  color: #db2828;
 }
 .ui.form .required.fields:not(.grouped) > .field > label:after,
 .ui.form .required.fields.grouped > label:after,
@@ -696,11 +684,9 @@
   left: 100%;
 }
 
-
 /*******************************
            Variations
 *******************************/
-
 
 /*--------------------
     Inverted Colors
@@ -722,28 +708,27 @@
 
 /* Inverted Field */
 .ui.inverted.form input:not([type]),
-.ui.inverted.form input[type="date"],
-.ui.inverted.form input[type="datetime-local"],
-.ui.inverted.form input[type="email"],
-.ui.inverted.form input[type="number"],
-.ui.inverted.form input[type="password"],
-.ui.inverted.form input[type="search"],
-.ui.inverted.form input[type="tel"],
-.ui.inverted.form input[type="time"],
-.ui.inverted.form input[type="text"],
-.ui.inverted.form input[type="file"],
-.ui.inverted.form input[type="url"] {
-  background: #FFFFFF;
+.ui.inverted.form input[type='date'],
+.ui.inverted.form input[type='datetime-local'],
+.ui.inverted.form input[type='email'],
+.ui.inverted.form input[type='number'],
+.ui.inverted.form input[type='password'],
+.ui.inverted.form input[type='search'],
+.ui.inverted.form input[type='tel'],
+.ui.inverted.form input[type='time'],
+.ui.inverted.form input[type='text'],
+.ui.inverted.form input[type='file'],
+.ui.inverted.form input[type='url'] {
+  background: #ffffff;
   border-color: rgba(255, 255, 255, 0.1);
   color: rgba(0, 0, 0, 0.87);
   -webkit-box-shadow: none;
-          box-shadow: none;
+  box-shadow: none;
 }
 
 /*--------------------
      Field Groups
 ---------------------*/
-
 
 /* Grouped Vertically */
 .ui.form .grouped.fields {
@@ -771,7 +756,6 @@
         Fields
 ---------------------*/
 
-
 /* Split fields */
 .ui.form .fields {
   display: -webkit-box;
@@ -779,21 +763,21 @@
   display: flex;
   -webkit-box-orient: horizontal;
   -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
   margin: 0em -0.5em 1em;
 }
 .ui.form .fields > .field {
   -webkit-box-flex: 0;
-      -ms-flex: 0 1 auto;
-          flex: 0 1 auto;
+  -ms-flex: 0 1 auto;
+  flex: 0 1 auto;
   padding-left: 0.5em;
   padding-right: 0.5em;
 }
 .ui.form .fields > .field:first-child {
   border-left: none;
   -webkit-box-shadow: none;
-          box-shadow: none;
+  box-shadow: none;
 }
 
 /* Other Combinations */
@@ -838,10 +822,12 @@
 @media only screen and (max-width: 767px) {
   .ui.form .fields {
     -ms-flex-wrap: wrap;
-        flex-wrap: wrap;
+    flex-wrap: wrap;
   }
-  .ui[class*="equal width"].form:not(.unstackable) .fields > .field,
-  .ui.form:not(.unstackable) [class*="equal width"].fields:not(.unstackable) > .field,
+  .ui[class*='equal width'].form:not(.unstackable) .fields > .field,
+  .ui.form:not(.unstackable)
+    [class*='equal width'].fields:not(.unstackable)
+    > .field,
   .ui.form:not(.unstackable) .two.fields:not(.unstackable) > .fields,
   .ui.form:not(.unstackable) .two.fields:not(.unstackable) > .field,
   .ui.form:not(.unstackable) .three.fields:not(.unstackable) > .fields,
@@ -956,12 +942,12 @@
      Equal Width
 ---------------------*/
 
-.ui[class*="equal width"].form .fields > .field,
-.ui.form [class*="equal width"].fields > .field {
+.ui[class*='equal width'].form .fields > .field,
+.ui.form [class*='equal width'].fields > .field {
   width: 100%;
   -webkit-box-flex: 1;
-      -ms-flex: 1 1 auto;
-          flex: 1 1 auto;
+  -ms-flex: 1 1 auto;
+  flex: 1 1 auto;
 }
 
 /*--------------------
@@ -971,8 +957,8 @@
 .ui.form .inline.fields {
   margin: 0em 0em 1em;
   -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
 }
 .ui.form .inline.fields .field {
   margin: 0em;
@@ -1030,8 +1016,8 @@
   display: -ms-flexbox;
   display: flex;
   -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
 }
 .ui.form .inline.fields .wide.field > input,
 .ui.form .inline.fields .wide.field > select {
@@ -1067,8 +1053,6 @@
   font-size: 1.71428571rem;
 }
 
-
 /*******************************
          Site Overrides
 *******************************/
-

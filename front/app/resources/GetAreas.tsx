@@ -34,7 +34,7 @@ export default class GetAreas extends React.Component<Props, State> {
 
     this.defaultQueryParameters = {
       'page[number]': 1 as number,
-      'page[size]': 500 as number,
+      'page[size]': 5000 as number,
     };
   }
 
