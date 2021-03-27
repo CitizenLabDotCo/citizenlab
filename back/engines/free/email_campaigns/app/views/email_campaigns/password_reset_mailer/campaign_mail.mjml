@@ -1,0 +1,13 @@
+<mj-section padding="30px 25px">
+  <mj-column>
+    <mj-text color="black">
+      <h1 style="font-size: 25px; margin-bottom: 40px;"><%= format_message('title_reset_your_password') %></h1>
+      <p style="margin-bottom: 40px;">
+        <%= format_message('message_you_reset_your_password', values: { organizationName: organization_name }) %>
+      </p>
+    </mj-text>
+    <mj-button align="left" background-color="#044D6C" color="#fff" border-radius="5px" href="<%= event.password_reset_url %>">
+      <%= format_message('cta_reset_password') %>
+    </mj-button>
+  </mj-column>
+</mj-section>

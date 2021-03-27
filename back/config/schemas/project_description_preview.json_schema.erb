@@ -1,0 +1,8 @@
+{
+	"description": "The description preview of a project (max 280 characters)",
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+     <%= CL2_SUPPORTED_LOCALES.map{|l| "\"#{l.to_s}\": {\"type\": \"string\", \"maxLength\": 280}" }.join(",") %>
+     } 
+ }

@@ -1,0 +1,125 @@
+<schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/COW/type/" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/" xmlns:content="http://schemas.xmlsoap.org/ws/2002/04/content-type/" xmlns:dime="http://schemas.xmlsoap.org/ws/2002/04/dime/wsdl/" xmlns:ref="http://schemas.xmlsoap.org/ws/2002/04/reference/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:stk="http://schemas.microsoft.com/soap-toolkit/wsdl-extension" xmlns:typens="http://tempuri.org/COW/type/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsdlns="http://tempuri.org/COW/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+   <!--request element-->
+   <xsd:simpleType name="RUTEmpresaType">
+      <xsd:restriction base="xsd:int"/>
+   </xsd:simpleType>
+   <xsd:simpleType name="DVEmpresaType">
+      <xsd:restriction base="xsd:string">
+         <xsd:minLength value="1"/>
+         <xsd:maxLength value="1"/>
+      </xsd:restriction>
+   </xsd:simpleType>
+   <xsd:simpleType name="CodTipoDocumentoType">
+      <xsd:restriction base="xsd:string">
+         <xsd:length value="1"/>
+         <xsd:enumeration value="C"/>
+         <xsd:enumeration value="P"/>
+         <xsd:enumeration value="S"/>
+         <xsd:enumeration value="T"/>
+         <xsd:enumeration value="D"/>
+      </xsd:restriction>
+   </xsd:simpleType>
+   <xsd:simpleType name="NumRUNType">
+      <xsd:restriction base="xsd:string">
+         <xsd:minLength value="1"/>
+         <xsd:maxLength value="15"/>
+      </xsd:restriction>
+   </xsd:simpleType>
+   <xsd:simpleType name="NumSerieType">
+      <xsd:restriction base="xsd:string">
+         <xsd:minLength value="1"/>
+      </xsd:restriction>
+   </xsd:simpleType>
+   <!--response element-->
+   <xsd:simpleType name="EstadoRespuestaType">
+      <xsd:restriction base="xsd:string">
+         <xsd:length value="3"/>
+         <xsd:enumeration value="000"/>
+         <xsd:enumeration value="201"/>
+         <xsd:enumeration value="206"/>
+         <xsd:enumeration value="207"/>
+         <xsd:enumeration value="301"/>
+      </xsd:restriction>
+   </xsd:simpleType>
+   <xsd:simpleType name="RUNPersonaType">
+      <xsd:restriction base="xsd:int"/>
+   </xsd:simpleType>
+   <xsd:simpleType name="DvPersonaType">
+      <xsd:restriction base="xsd:string">
+         <xsd:minLength value="1"/>
+         <xsd:maxLength value="1"/>
+      </xsd:restriction>
+   </xsd:simpleType>
+   <xsd:simpleType name="CodClaseDocumentoType">
+      <xsd:restriction base="xsd:int">
+         <xsd:enumeration value="10"/>
+         <xsd:enumeration value="11"/>
+         <xsd:enumeration value="20"/>
+         <xsd:enumeration value="21"/>
+         <xsd:enumeration value="22"/>
+         <xsd:enumeration value="23"/>
+         <xsd:enumeration value="24"/>
+         <xsd:enumeration value="30"/>
+         <xsd:enumeration value="40"/>
+         <xsd:enumeration value="50"/>
+      </xsd:restriction>
+   </xsd:simpleType>
+   <xsd:simpleType name="NumDocumentoType">
+      <xsd:restriction base="xsd:string">
+         <xsd:minLength value="1"/>
+         <xsd:maxLength value="15"/>
+      </xsd:restriction>
+   </xsd:simpleType>
+   <xsd:simpleType name="IndVigenciaType">
+      <xsd:restriction base="xsd:string">
+         <xsd:length value="1"/>
+         <xsd:enumeration value="N"/>
+         <xsd:enumeration value="S"/>
+      </xsd:restriction>
+   </xsd:simpleType>
+   <xsd:simpleType name="FhoVctoType">
+      <xsd:restriction base="xsd:string">
+         <xsd:minLength value="19"/>
+         <xsd:maxLength value="19"/>
+      </xsd:restriction>
+   </xsd:simpleType>
+   <xsd:simpleType name="IndBloqueoType">
+      <xsd:restriction base="xsd:string">
+         <xsd:minLength value="1"/>
+         <xsd:enumeration value="NO BLOQUEADO"/>
+         <xsd:enumeration value="DEFINITIVO"/>
+         <xsd:enumeration value="RENOVACION"/>
+         <xsd:enumeration value="TEMPORAL"/>
+         <xsd:enumeration value="TEMPORAL PERMANENTE"/>
+      </xsd:restriction>
+   </xsd:simpleType>
+   <!--operation request element-->
+   <xsd:element name="GetDataDocument">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element maxOccurs="1" minOccurs="1" name="RUTEmpresa" type="typens:RUTEmpresaType"/>
+            <xsd:element maxOccurs="1" minOccurs="1" name="DVEmpresa" type="typens:DVEmpresaType"/>
+            <xsd:element maxOccurs="1" minOccurs="1" name="CodTipoDocumento" type="typens:CodTipoDocumentoType"/>
+            <xsd:element maxOccurs="1" minOccurs="1" name="NumRUN" type="typens:NumRUNType"/>
+            <xsd:element maxOccurs="1" minOccurs="1" name="NumSerie" type="typens:NumSerieType"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <!--operation response element-->
+   <xsd:element name="GetDataDocumentResponse">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element maxOccurs="1" minOccurs="1" name="EstadoRespuesta" type="typens:EstadoRespuestaType"/>
+            <xsd:element maxOccurs="1" minOccurs="0" name="RUNPersona" type="typens:RUNPersonaType"/>
+            <xsd:element maxOccurs="1" minOccurs="0" name="DvPersona" type="typens:DvPersonaType"/>
+            <xsd:element maxOccurs="1" minOccurs="0" name="CodTipoDocumento" type="typens:CodTipoDocumentoType"/>
+            <xsd:element maxOccurs="1" minOccurs="0" name="CodClaseDocumento" type="typens:CodClaseDocumentoType"/>
+            <xsd:element maxOccurs="1" minOccurs="0" name="NumDocumento" type="typens:NumDocumentoType"/>
+            <xsd:element maxOccurs="1" minOccurs="0" name="NumSerie" type="typens:NumSerieType"/>
+            <xsd:element maxOccurs="1" minOccurs="0" name="IndVigencia" type="typens:IndVigenciaType"/>
+            <xsd:element maxOccurs="1" minOccurs="0" name="FhoVcto" type="typens:FhoVctoType"/>
+            <xsd:element maxOccurs="1" minOccurs="0" name="IndBloqueo" type="typens:IndBloqueoType"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+</schema>
