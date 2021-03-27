@@ -1,0 +1,2 @@
+<%= render 'email_campaigns/initiatives/status_change' %>
+<%= render partial: 'application/cta_button', locals: { href: event.post_url , message: format_message('cta_view_initiative') } %>
