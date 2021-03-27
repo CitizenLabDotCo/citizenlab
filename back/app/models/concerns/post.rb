@@ -37,7 +37,7 @@ module Post
     has_many :spam_reports, as: :spam_reportable, class_name: 'SpamReport', dependent: :destroy
     before_destroy :remove_notifications
     has_many :notifications, foreign_key: :post_id, dependent: :nullify
-    
+
     validates :publication_status, presence: true, inclusion: {in: PUBLICATION_STATUSES}
 
     with_options unless: :draft? do |post|
@@ -60,7 +60,7 @@ module Post
 
     scope :published, -> {where publication_status: 'published'}
 
-    scope :order_new, -> (direction=:desc) {order(published_at: direction, id: direction)}
+    scope :order_new, -> (direction=:desc) { order(published_at: direction) }
     scope :order_random, -> {
       modulus = RandomOrderingService.new.modulus_of_the_day
       order("(extract(epoch from #{table_name}.created_at) * 100)::bigint % #{modulus}, #{table_name}.id")
@@ -83,7 +83,7 @@ module Post
       self.publication_status == 'published'
     end
 
-    def score 
+    def score
       upvotes_count - downvotes_count
     end
 
@@ -91,7 +91,7 @@ module Post
       @author_name ||= author.nil? ? nil : author.full_name
     end
 
-    
+
     private
 
     def strip_title
@@ -122,6 +122,6 @@ module Post
         end
       end
     end
-    
+
   end
 end
