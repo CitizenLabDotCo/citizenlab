@@ -59,13 +59,6 @@ describe WebApi::V1::Notifications::NotificationSerializer do
       )
     end
 
-    it "serializes IdeaAssignedToYou correctly" do
-      expect_serializer_to_hide_name(
-          john, jane, admin, :idea_assigned_to_you,
-          WebApi::V1::Notifications::IdeaAssignedToYouSerializer
-      )
-    end
-
     it "serializes InitiativeAssignedToYouSerializer correctly" do
       expect_serializer_to_hide_name(
           john, jane, admin, :initiative_assigned_to_you,

@@ -4,13 +4,9 @@ class WebApi::V1::GroupsController < ApplicationController
 
   def index
     @groups = policy_scope(Group)
-
     @groups = @groups.where(membership_type: params[:membership_type]) if params[:membership_type]
     @groups = @groups.order_new
-
-    @groups = @groups
-      .page(params.dig(:page, :number))
-      .per(params.dig(:page, :size))
+    @groups = @groups.page(params.dig(:page, :number)).per(params.dig(:page, :size))
   	render json: linked_json(@groups, WebApi::V1::GroupSerializer, params: fastjson_params)
   end
 

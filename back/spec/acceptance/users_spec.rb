@@ -312,8 +312,8 @@ resource "Users" do
           expect(json_response[:data].map{|u| u[:id]}.reverse.take(2)).to match_array [admin.id,both.id]
         end
 
-        if CitizenLab.ee?
-        describe "List all users in group" do
+
+        describe "List all users in group", skip: !CitizenLab.ee? do
           example "with correct pagination", document: false do
             page_size = 5
             project = create(:project)
@@ -329,7 +329,6 @@ resource "Users" do
 
             expect(json_response[:links][:next]).to be_present
           end
-        end
         end
 
         example "List all users who can moderate a project" do
@@ -580,23 +579,25 @@ resource "Users" do
         end
       end
 
-      describe do
-        before do
-          @user = create(:admin)
-          token = Knock::AuthToken.new(payload: @user.to_token_payload).token
-          header 'Authorization', "Bearer #{token}"
-        end
-        let(:assignee) { create(:admin) }
-        let!(:assigned_idea) { create(:idea, assignee: assignee) }
-        let!(:assigned_initiative) { create(:initiative, assignee: assignee) }
-        let(:id) { assignee.id }
-        let(:roles) { [] }
+      if CitizenLab.ee?
+        describe do
+          before do
+            @user = create(:admin)
+            token = Knock::AuthToken.new(payload: @user.to_token_payload).token
+            header 'Authorization', "Bearer #{token}"
+          end
+          let(:assignee) { create(:admin) }
+          let!(:assigned_idea) { create(:idea, assignee: assignee) }
+          let!(:assigned_initiative) { create(:initiative, assignee: assignee) }
+          let(:id) { assignee.id }
+          let(:roles) { [] }
 
-        example_request "Remove user as assignee when losing admin rights" do
-          expect(response_status).to eq 200
-          expect(assignee.reload.admin?).to be_falsey
-          expect(assigned_idea.reload.assignee_id).not_to eq id
-          expect(assigned_initiative.reload.assignee_id).not_to eq id
+          example_request "Remove user as assignee when losing admin rights" do
+            expect(response_status).to eq 200
+            expect(assignee.reload.admin?).to be_falsey
+            expect(assigned_idea.reload.assignee_id).not_to eq id
+            expect(assigned_initiative.reload.assignee_id).not_to eq id
+          end
         end
       end
 
