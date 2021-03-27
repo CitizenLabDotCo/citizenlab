@@ -21,7 +21,6 @@ import tracks from './tracks';
 
 // style
 import styled from 'styled-components';
-import { darken } from 'polished';
 import {
   media,
   colors,
