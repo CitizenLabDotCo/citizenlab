@@ -74,21 +74,21 @@ commands:
   clone_citizenlab_and_enable_ee:
     steps:
       - checkout:
-          path: /citizenlab-ee
+          path: ~/citizenlab-ee
 
       - add_ssh_keys:
           fingerprints:
             - "94:9a:7c:8d:50:73:cc:28:06:47:d7:98:91:0b:00:ff"
       - run: |
-          git clone git@github.com:CitizenLabDotCo/citizenlab --depth 5 --branch << pipeline.parameters.citizenlab_branch >> /citizenlab
+          git clone git@github.com:CitizenLabDotCo/citizenlab --depth 5 --branch << pipeline.parameters.citizenlab_branch >> ~/citizenlab
 
       - run: |
-          cd /citizenlab-ee && sh scripts/enable_ee.sh
+          cd citizenlab-ee && sh scripts/enable_ee.sh
 jobs:
   # *************** back ***************
 
   back-build-ee-docker-image:
-    working_directory: /
+    working_directory: ~/
     docker:
       - image: docker:stable-git
     steps:
@@ -98,7 +98,7 @@ jobs:
           docker_layer_caching: true
 
       - run: |
-          docker build -t citizenlabdotco/back-ee:<< pipeline.parameters.citizenlab_sha >>-$CIRCLE_SHA1 -f /citizenlab/back/Dockerfile /citizenlab/.
+          docker build -t citizenlabdotco/back-ee:<< pipeline.parameters.citizenlab_sha >>-$CIRCLE_SHA1 -f citizenlab/back/Dockerfile citizenlab/.
       - run: |
           docker login -u $DOCKER_USER -p $DOCKER_PASS
           docker push citizenlabdotco/back-ee:<< pipeline.parameters.citizenlab_sha >>-$CIRCLE_SHA1
@@ -204,24 +204,24 @@ jobs:
   front-test:
     docker:
       - image: citizenlabdotco/cl2-devops-front-buildenv
-    working_directory: /
+    working_directory: ~/
     steps:
       - clone_citizenlab_and_enable_ee
       - restore_cache:
           keys:
-          - v1-npm-cache-{{ checksum "/citizenlab/front/package.json" }}
+          - v1-npm-cache-{{ checksum "citizenlab/front/package.json" }}
           # fallback to using the latest cache if no exact match is found
           - v1-npm-cache-
       - run: cd /citizenlab/front && npm ci
       - save_cache:
           paths:
             - /root/.npm
-          key: v1-npm-cache-{{ checksum "/citizenlab/front/package.json" }}
+          key: v1-npm-cache-{{ checksum "citizenlab/front/package.json" }}
       - run:
           name: Run tests with JUnit as reporter
           environment:
             JEST_JUNIT_OUTPUT: "reports/junit/js-test-results.xml"
-          command: cd /citizenlab/front && npm run test:ci
+          command: cd citizenlab/front && npm run test:ci
       - store_test_results:
           path: ./reports/junit
       - store_artifacts:
@@ -249,29 +249,29 @@ jobs:
     docker:
       - image: citizenlabdotco/cl2-devops-front-buildenv
     resource_class: medium+
-    working_directory: /
+    working_directory: ~/
     steps:
       - clone_citizenlab_and_enable_ee
       - restore_cache:
           keys:
-          - v1-npm-cache-{{ checksum "/citizenlab/front/package.json" }}
+          - v1-npm-cache-{{ checksum "citizenlab/front/package.json" }}
           # fallback to using the latest cache if no exact match is found
           - v1-npm-cache-
-      - run: cd /citizenlab/front && npm ci
+      - run: cd citizenlab/front && npm ci
       - save_cache:
           paths:
             - /root/.npm
-          key: v1-npm-cache-{{ checksum "/citizenlab/front/package.json" }}
+          key: v1-npm-cache-{{ checksum "citizenlab/front/package.json" }}
       - run:
-          command: cd /citizenlab/front && SEGMENT_API_KEY=$SEGMENT_API_KEY_STAGING SENTRY_DSN=$SENTRY_DSN_STAGING npm run build:staging
+          command: cd citizenlab/front && SEGMENT_API_KEY=$SEGMENT_API_KEY_STAGING SENTRY_DSN=$SENTRY_DSN_STAGING npm run build:staging
           no_output_timeout: '30m'
       - run:
-          command: cd /citizenlab/front && rm build/*.map
+          command: cd citizenlab/front && rm build/*.map
       - deploy:
           name: Deploy to S3 if tests pass and branch is Master
           command: |
-            cd /citizenlab/front && aws s3 sync build/ s3://cl2-front-staging/ --acl public-read --exclude "index.html"
-            cd /citizenlab/front && aws s3 cp build/index.html s3://cl2-front-staging/index.html --acl public-read --cache-control no-cache
+            cd citizenlab/front && aws s3 sync build/ s3://cl2-front-staging/ --acl public-read --exclude "index.html"
+            cd citizenlab/front && aws s3 cp build/index.html s3://cl2-front-staging/index.html --acl public-read --cache-control no-cache
 
   front-reset-ci-tenant:
     docker:
@@ -288,7 +288,7 @@ jobs:
       - image: citizenlabdotco/cl2-devops-front-buildenv
         user: pptruser
     resource_class: small
-    working_directory: /citizenlab/front
+    working_directory: ~/citizenlab/front
     steps:
       - run:
           command: npm install lighthouse-ci@1.10.0
@@ -303,12 +303,12 @@ jobs:
   e2e-tests:
     docker:
       - image: cimg/base:2021.03
-    working_directory: /
+    working_directory: ~/
     steps:
       - clone_citizenlab_and_enable_ee
       - setup_remote_docker
       - run: |
-          cd /citizenlab-ee/e2e
+          cd citizenlab-ee/e2e
           docker-compose run web rake db:create
           docker-compose run web rake db:migrate
           docker-compose run web rake cl2_back:create_tenant[localhost,e2etests_template]
