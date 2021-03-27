@@ -164,7 +164,7 @@ function create_pipeline {
     exit 0
   fi;
 
-  status_code=$(curl -s -u "${CIRCLE_USER_TOKEN}:" -o response.json -w "%{http_code}" -X POST --header "Content-Type: application/json" -d "$1" "${url}")
+  status_code=$(curl -s -u "${CIRCLE_USER_TOKEN}:" -o response.json -w "%{http_code}" -X POST --header "Content-Type: application/json" --header "x-attribution-login: ${CIRCLE_USERNAME}" -d "$1" "${url}")
 
   if [ "${status_code}" -ge "200" ] && [ "${status_code}" -lt "300" ]; then
       echo "API call succeeded [${status_code}]. Response: "

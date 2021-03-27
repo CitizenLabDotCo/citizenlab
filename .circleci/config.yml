@@ -67,7 +67,8 @@ jobs:
             -u $CIRCLECI_API_TOKEN: \
             --url https://circleci.com/api/v2/project/github/CitizenLabDotCo/citizenlab-ee/pipeline \
             --header 'content-type: application/json' \
-            --data '{"branch":"master","parameters":{"citizenlab_branch": "$CIRCLE_BRANCH"}}'
+            --header 'x-attribution-login: '"$CIRCLE_USERNAME" \
+            --data '{"branch":"master","parameters":{"citizenlab_branch": "'"$CIRCLE_BRANCH"'", "citizenlab_sha": "'"$CIRCLE_SHA1"'", "back": << pipeline.parameters.back >>, "front": << pipeline.parameters.front >>}}'
 
   # *************** back ***************
   
@@ -104,7 +105,7 @@ jobs:
           rake db:create
           rake db:schema:load
       - run: |
-          TESTFILES=$(circleci tests glob "spec/**/*_spec.rb" "engines/*/*/spec/**/*_spec.rb" | circleci tests split  --split-by=timings)
+          TESTFILES=$(circleci tests glob "spec/**/*_spec.rb" "engines/free/*/spec/**/*_spec.rb" | circleci tests split  --split-by=timings)
           echo $TESTFILES
           bundle exec rspec --format documentation --format RspecJunitFormatter -o spec/reports/rspec.xml -- ${TESTFILES}
       - store_test_results:
@@ -260,9 +261,24 @@ workflows:
   ci:
     when: << pipeline.parameters.trigger >>
     jobs:
-      - trigger-workflows
+      - trigger-workflows:
+          filters:
+            branches:
+              ignore:
+                - crowdin_master
+
+  private-ci:
+    when:
+      and:
+        - not: << pipeline.parameters.trigger >>
+        - or: [<< pipeline.parameters.back >>, << pipeline.parameters.front >>]
+    jobs:
       - trigger-private-workflows:
           context: circleci-api-token
+          filters:
+            branches:
+              ignore:
+                - crowdin_master
 
   # *************** back ***************
   back:
