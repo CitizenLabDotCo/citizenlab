@@ -30,12 +30,6 @@ FactoryBot.define do
     association :post, factory: :idea
   end
 
-  factory :idea_assigned_to_you, parent: :notification, class: 'Notifications::IdeaAssignedToYou' do
-    initiating_user
-    association :post, factory: :idea
-    project
-  end
-
   factory :idea_marked_as_spam, parent: :notification, class: 'Notifications::IdeaMarkedAsSpam' do
     association :post, factory: :idea
     project
