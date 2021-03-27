@@ -1,0 +1,49 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<UserHeader /> renders correctly on some user with a bio 1`] = `
+<UserHeader__Bio>
+  <WithTheme(QuillEditedContent)>
+    <T
+      supportHtml={true}
+      value={
+        Object {
+          "en": "Hi there ! ",
+        }
+      }
+    />
+  </WithTheme(QuillEditedContent)>
+</UserHeader__Bio>
+`;
+
+exports[`<UserHeader /> renders correctly on some user without a bio 1`] = `
+<UserHeader__Container>
+  <UserHeader__UserAvatar>
+    <InjectIntl(WithIntl(Component))
+      size={150}
+      userId="522ae8cc-a5ed-4d31-9aa0-470904934ec6"
+    />
+  </UserHeader__UserAvatar>
+  <UserHeader__UserInfo>
+    <UserHeader__FullName
+      id="e2e-usersshowpage-fullname"
+    >
+      Test
+       
+      Citizenlab
+    </UserHeader__FullName>
+    <UserHeader__JoinedAt>
+      <FormattedMessage
+        defaultMessage="Member since {date}"
+        id="app.containers.UsersShowPage.memberSince"
+        values={
+          Object {
+            "date": "November 26, 2018",
+          }
+        }
+      />
+    </UserHeader__JoinedAt>
+  </UserHeader__UserInfo>
+</UserHeader__Container>
+`;
+
+exports[`<UserHeader /> renders correctly when user is null 1`] = `null`;
