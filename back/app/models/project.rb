@@ -92,6 +92,10 @@ class Project < ApplicationRecord
     includes(:admin_publication).order('admin_publications.ordering')
   }
 
+  scope :not_draft, lambda {
+    includes(:admin_publication).where.not(admin_publications: { publication_status: 'draft' })
+  }
+
   def moderators
     User.project_moderator(id)
   end
@@ -110,7 +114,7 @@ class Project < ApplicationRecord
 
   def permission_scope
     return TimelineService.new.current_phase(self) if timeline?
-    
+
     self
   end
 
