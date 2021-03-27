@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class WebApi::V1::AdminPublicationSerializer < WebApi::V1::BaseSerializer
   attributes :ordering, :publication_status, :depth
 
@@ -31,4 +33,4 @@ class WebApi::V1::AdminPublicationSerializer < WebApi::V1::BaseSerializer
   has_many :children, record_type: :admin_publication
 end
 
-WebApi::V1::AdminPublicationSerializer.include_if_ee('ProjectPermissions::Patches::WebApi::V1::AdminPublicationSerializer')
+WebApi::V1::AdminPublicationSerializer.include(ProjectPermissions::Patches::WebApi::V1::AdminPublicationSerializer)

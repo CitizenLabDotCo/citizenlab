@@ -82,6 +82,7 @@ const Text = styled.div`
   max-width: 400px;
   color: ${colors.label};
   font-size: ${fontSizes.base}px;
+  font-weight: 300;
 
   ${media.smallerThanMinTablet`
     max-width: none;

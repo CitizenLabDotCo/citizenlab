@@ -3,11 +3,14 @@ import { isEmpty, cloneDeep, forOwn } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // services
-import { updateProjectMapLayer, IMapLayerAttributes } from 'services/mapLayers';
+import {
+  updateProjectMapLayer,
+  IMapLayerAttributes,
+} from '../../../services/mapLayers';
 
 // hooks
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-import useMapConfig from 'hooks/useMapConfig';
+import useMapConfig from '../../../hooks/useMapConfig';
 
 // components
 import {
@@ -26,7 +29,7 @@ import {
   getLayerType,
   makiIconNames,
   getUnnamedLayerTitleMultiloc,
-} from 'utils/map';
+} from '../../../utils/map';
 
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
