@@ -16,7 +16,7 @@ import useAuthUser from 'hooks/useAuthUser';
 import {
   addFolderModerator,
   deleteFolderModerator,
-} from '../../../services/moderators';
+} from '../../../services/projectFolderModerators';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
