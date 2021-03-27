@@ -395,9 +395,6 @@ workflows:
           requires:
             - front-deploy-staging
             - front-reset-ci-tenant
-          working_directory: /citizenlab/frontend
-          pre-steps:
-            - clone_citizenlab_and_enable_ee
           cache-key: v1-npm-cache-{{ checksum "/citizenlab/front/package.json" }}
           command: npx cypress run --spec 'cypress/integration/*.ts' --config baseUrl=https://e2e.stg.citizenlab.co
           store_artifacts: true
