@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="611" height="205" viewBox="0 0 611 205">
+    <defs>
+        <rect id="a" width="610.406" height="175.441" y="35" rx="5"/>
+    </defs>
+    <g fill="none" fillRule="evenodd">
+        <g transform="translate(0 -6)">
+            <use fill="#FFF" xlink:href="#a"/>
+            <rect width="609.406" height="174.441" x=".5" y="35.5" stroke="#A6A6A6" rx="5"/>
+        </g>
+        <text fill="#222" fill-opacity=".3" font-size="18" transform="translate(0 -6)">
+            <tspan x="22" y="64">Write a small description of yourself</tspan>
+        </text>
+        <text fill="#6B6B6B" font-size="16" font-weight="400" transform="translate(0 -6)">
+            <tspan x="0" y="18">Bio</tspan>
+        </text>
+        <path fill="#222" fill-opacity=".5" d="M40.25 3.5A6.248 6.248 0 0 0 34 9.75 6.248 6.248 0 0 0 40.25 16a6.248 6.248 0 0 0 6.25-6.25 6.248 6.248 0 0 0-6.25-6.25zm.625 10.625h-1.25v-1.25h1.25v1.25zm1.29-4.84l-.559.574c-.45.45-.731.829-.731 1.766h-1.25v-.313c0-.69.281-1.315.731-1.768l.778-.788A1.25 1.25 0 1 0 39 7.875h-1.25a2.5 2.5 0 1 1 5 0c0 .55-.222 1.047-.584 1.41z"/>
+    </g>
+</svg>
