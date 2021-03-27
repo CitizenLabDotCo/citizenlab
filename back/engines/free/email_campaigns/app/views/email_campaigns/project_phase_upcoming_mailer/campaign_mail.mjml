@@ -1,0 +1,16 @@
+<!-- Phase -->
+<mj-section
+  padding="25px"
+  border-radius="5px"
+  text-align="left">
+  <mj-column border-radius="5px" background-color="#F2F6F8" padding="25px" vertical-align="middle" >
+    <mj-text font-size="14px">
+      <%= format_message('new_phase', values: { phaseTitle: localize_for_recipient(event.phase_title_multiloc) }) %>
+      <p style="margin: 15px 0 0;">
+        <%= localize_for_recipient(event.phase_description_multiloc).first(140) %>
+      </p>
+    </mj-text>
+  </mj-column>
+</mj-section>
+
+<%= render partial: 'application/cta_button', locals: { href: event.phase_url , message: format_message('cta_view_phase') } %>
