@@ -1,0 +1,11 @@
+<mj-section
+  padding="25px"
+  text-align="left">
+  <mj-column background-color="#F2F6F8" padding="25px">
+    <mj-text font-size="14px">
+      <%= format_message('status_change', values: {
+        initiativeStatus: localize_for_recipient(event.initiative_status_title_multiloc)
+      }) %>
+    </mj-text>
+  </mj-column>
+</mj-section>
