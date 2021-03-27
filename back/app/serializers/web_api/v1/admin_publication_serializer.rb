@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class WebApi::V1::AdminPublicationSerializer < WebApi::V1::BaseSerializer
   attributes :ordering, :publication_status, :depth
 
