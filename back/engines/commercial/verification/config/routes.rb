@@ -12,3 +12,7 @@ Verification::Engine.routes.draw do
     end
   end
 end
+
+Rails.application.routes.draw do
+  mount Verification::Engine => "", as: 'verification'
+end

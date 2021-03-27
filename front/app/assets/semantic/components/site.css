@@ -26,7 +26,7 @@ body {
   overflow-x: hidden;
   min-width: 320px;
   background: #FFFFFF;
-  font-family: 'larsseit', 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  font-family: 'Public Sans', 'Helvetica Neue', Arial, Helvetica, sans-serif;
   font-size: 14px;
   line-height: 1.4285em;
   color: rgba(0, 0, 0, 0.87);
@@ -43,7 +43,7 @@ h2,
 h3,
 h4,
 h5 {
-  font-family: 'larsseit', 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  font-family: 'Public Sans', 'Helvetica Neue', Arial, Helvetica, sans-serif;
   line-height: 1.28571429em;
   margin: calc(2rem -  0.14285714em ) 0em 1rem;
   font-weight: bold;

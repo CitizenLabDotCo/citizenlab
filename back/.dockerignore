@@ -5,3 +5,4 @@
 /tmp/*
 /public/uploads
 /secrets/*
+!/secrets/*.example

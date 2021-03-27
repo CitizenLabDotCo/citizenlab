@@ -91,6 +91,10 @@ class Project < ApplicationRecord
     includes(:admin_publication).order('admin_publications.ordering')
   }
 
+  scope :not_draft, lambda {
+    includes(:admin_publication).where.not(admin_publications: { publication_status: 'draft' })
+  }
+
   def moderators
     User.project_moderator(id)
   end
@@ -181,7 +185,7 @@ class Project < ApplicationRecord
   end
 end
 
+Project.include(ProjectPermissions::Patches::Project)
 Project.include_if_ee('CustomMaps::Extensions::Project')
 Project.prepend_if_ee('ProjectFolders::Patches::Project')
 Project.include_if_ee('IdeaAssignment::Extensions::Project')
-Project.include_if_ee('ProjectPermissions::Patches::Project')
