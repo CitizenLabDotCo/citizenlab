@@ -231,8 +231,8 @@ if ['public','example_org'].include? Apartment::Tenant.current
         allowed: true
       },
       similar_ideas: {
-        enabled: false,
-        allowed: false
+        enabled: true,
+        allowed: true
       },
       manual_tagging: {
         enabled: true,
