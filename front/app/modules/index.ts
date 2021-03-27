@@ -78,16 +78,16 @@ export default loadModules([
     isEnabled: CL_CONFIG['modules']['commercial/moderation'],
   },
   {
-    configuration: clusteringsConfiguration,
-    isEnabled: CL_CONFIG['modules']['commercial/clusterings'],
-  },
-  {
     configuration: ideaAssignmentConfiguration,
     isEnabled: CL_CONFIG['modules']['commercial/idea_assignment'],
   },
   {
     configuration: customIdeaStatusesConfiguration,
     isEnabled: CL_CONFIG['modules']['commercial/custom_idea_statuses'],
+  },
+  {
+    configuration: clusteringsConfiguration,
+    isEnabled: CL_CONFIG['modules']['commercial/clusterings'],
   },
   {
     configuration: geographicDashboardConfiguration,
