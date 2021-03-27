@@ -23,7 +23,6 @@ class Project < ApplicationRecord
   has_many :project_files, -> { order(:ordering) }, dependent: :destroy
   before_destroy :remove_notifications
   has_many :notifications, foreign_key: :project_id, dependent: :nullify
-  belongs_to :default_assignee, class_name: 'User', optional: true
   belongs_to :custom_form, optional: true, dependent: :destroy
 
   has_one :admin_publication, as: :publication, dependent: :destroy
@@ -92,6 +91,10 @@ class Project < ApplicationRecord
     includes(:admin_publication).order('admin_publications.ordering')
   }
 
+  scope :not_draft, lambda {
+    includes(:admin_publication).where.not(admin_publications: { publication_status: 'draft' })
+  }
+
   def moderators
     User.project_moderator(id)
   end
@@ -110,7 +113,7 @@ class Project < ApplicationRecord
 
   def permission_scope
     return TimelineService.new.current_phase(self) if timeline?
-    
+
     self
   end
 
@@ -182,6 +185,7 @@ class Project < ApplicationRecord
   end
 end
 
+Project.include(ProjectPermissions::Patches::Project)
 Project.include_if_ee('CustomMaps::Extensions::Project')
 Project.prepend_if_ee('ProjectFolders::Patches::Project')
-Project.include_if_ee('ProjectPermissions::Patches::Project')
+Project.include_if_ee('IdeaAssignment::Extensions::Project')

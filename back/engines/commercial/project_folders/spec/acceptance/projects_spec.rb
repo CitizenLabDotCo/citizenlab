@@ -88,7 +88,6 @@ resource 'Projects' do
         parameter :survey_service, "The name of the service of the survey. Either #{Surveys::SurveyParticipationContext::SURVEY_SERVICES.join(",")}", required: false
         parameter :max_budget, "The maximal budget amount each citizen can spend during participatory budgeting.", required: false
         parameter :presentation_mode, "Describes the presentation of the project's items (i.e. ideas), either #{ParticipationContext::PRESENTATION_MODES.join(",")}. Defaults to card.", required: false
-        parameter :default_assignee_id, "The user id of the admin or moderator that gets assigned to ideas by default. Defaults to unassigned", required: false
         parameter :poll_anonymous, "Are users associated with their answer? Defaults to false. Only applies if participation_method is 'poll'", required: false
         parameter :folder_id, "The ID of the project folder (can be set to nil for top-level projects)", required: false
         parameter :ideas_order, 'The default order of ideas.'
@@ -109,7 +108,6 @@ resource 'Projects' do
         let(:area_ids) { create_list(:area, 2).map(&:id) }
         let(:visible_to) { 'admins' }
         let(:publication_status) { 'draft' }
-        let(:default_assignee_id) { create(:admin).id }
         let!(:other_folder_moderators) { create_list(:project_folder_moderator, 3, project_folder: project_folder) }
         let(:last_project) { Project.order(created_at: :desc).take }
 
@@ -202,7 +200,6 @@ resource 'Projects' do
         parameter :survey_service, "The name of the service of the survey. Either #{Surveys::SurveyParticipationContext::SURVEY_SERVICES.join(",")}", required: false
         parameter :max_budget, "The maximal budget amount each citizen can spend during participatory budgeting.", required: false
         parameter :presentation_mode, "Describes the presentation of the project's items (i.e. ideas), either #{ParticipationContext::PRESENTATION_MODES.join(",")}. Defaults to card.", required: false
-        parameter :default_assignee_id, "The user id of the admin or moderator that gets assigned to ideas by default. Defaults to unassigned", required: false
         parameter :poll_anonymous, "Are users associated with their answer? Defaults to false. Only applies if participation_method is 'poll'", required: false
         parameter :folder_id, "The ID of the project folder (can be set to nil for top-level projects)", required: false
         parameter :ideas_order, 'The default order of ideas.'
@@ -226,7 +223,6 @@ resource 'Projects' do
         let(:area_ids) { create_list(:area, 2).map(&:id) }
         let(:visible_to) { 'admins' }
         let(:publication_status) { 'draft' }
-        let(:default_assignee_id) { create(:admin).id }
 
         before do
           project.folder = project_folder

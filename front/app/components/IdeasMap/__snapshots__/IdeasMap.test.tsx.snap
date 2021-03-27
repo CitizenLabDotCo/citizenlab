@@ -8,7 +8,7 @@ exports[`IdeasMap renders correctly 1`] = `
       id="app.components.IdeasMap.a11y_mapTitle"
     />
   </a11y__ScreenReaderOnly>
-  <WithLocalize(Component)
+  <Memo()
     boxContent={null}
     fitBounds={true}
     onBoxClose={[Function]}

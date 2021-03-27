@@ -7,16 +7,17 @@ Rails.application.routes.draw do
   mount CustomIdeaStatuses::Engine => "", as: 'custom_idea_statuses'
   mount EmailCampaigns::Engine => "", as: 'email_campaigns'
   mount Frontend::Engine => "", as: 'frontend'
-  mount GeographicDashboard::Engine => '', as: 'geographic_dashboard'
-  mount NLP::Engine => "", as: 'nlp'
   mount Onboarding::Engine => "", as: 'onboarding'
   mount Polls::Engine => "", as: 'polls'
-  mount PublicApi::Engine => "/api", as: 'public_api'
   mount Seo::Engine => '', as: 'seo'
   mount Surveys::Engine => "", as: 'surveys'
-  mount Tagging::Engine => "", as: 'tagging'
-  mount Verification::Engine => "", as: 'verification'
   mount Volunteering::Engine => "", as: 'volunteering'
+
+  # It must come before +resource :ideas+, otherwise /web_api/v1/ideas/geotagged
+  # (unfortunate route naming) is captured by /web_api/v1/ideas/<idea-id>.
+  # Already tried +Rails.applications.routes.prepend+. That does not work:
+  # https://github.com/rails/rails/issues/11663
+  mount GeographicDashboard::Engine => '', as: 'geographic_dashboard' if CitizenLab.ee?
 
   namespace :web_api, :defaults => {:format => :json} do
     namespace :v1 do
@@ -276,6 +277,8 @@ Rails.application.routes.draw do
       resources :avatars, only: [:index, :show]
     end
   end
+
+
 
   get '/auth/:provider/callback', to: 'omniauth_callback#create'
   post '/auth/:provider/callback', to: 'omniauth_callback#create'
