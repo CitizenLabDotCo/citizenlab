@@ -302,7 +302,7 @@ jobs:
 
   e2e-tests:
     docker:
-      - image: cimg/base:2020.01
+      - image: cimg/base:2021.03
     working_directory: /
     steps:
       - clone_citizenlab_and_enable_ee
