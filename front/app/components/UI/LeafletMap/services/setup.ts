@@ -12,11 +12,10 @@ import { IOnMapClickHandler } from '../typings';
 
 export function setup(
   mapId,
-  { tileProvider, onClick, center, zoom, onMoveHandler, onZoomHandler, tileOptions }
+  { onClick, center, zoom, onMoveHandler, onZoomHandler }
 ) {
   const map = init(mapId);
 
-  addTileLayer(map, tileProvider, tileOptions);
   addOnClickHandler(map, onClick);
   changeView(map, center, zoom);
   addOnMoveHandler(map, onMoveHandler);
@@ -31,14 +30,17 @@ export function init(mapId: string): L.Map {
 
 export function addTileLayer(
   map: L.Map,
-  tileProvider: string | null,
+  tileProvider?: string | null,
   tileOptions?: object
-) {
+): L.Layer | void {
   if (!map) {
     return;
   }
 
-  L.tileLayer(tileProvider || DEFAULT_TILE_PROVIDER, { ...DEFAULT_TILE_OPTIONS, ...tileOptions }).addTo(map);
+  return L.tileLayer(tileProvider || DEFAULT_TILE_PROVIDER, {
+    ...DEFAULT_TILE_OPTIONS,
+    ...tileOptions,
+  }).addTo(map);
 }
 
 export function addOnClickHandler(
