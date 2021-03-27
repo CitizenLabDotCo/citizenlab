@@ -1,0 +1,35 @@
+# Don't check auto-generated stuff into git
+coverage
+build
+node_modules
+stats.json
+yarn-error.log
+# Cruft
+.DS_Store
+npm-debug.log
+.idea
+junit.xml
+esw
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
+
+# Tests logs and reports
+e2e/reports/*
+.awcache
+local.log
+tests_output/*
+browserstack.err
+.babel-cache/*
+.cache-loader/*
+
+cypress/videos/
+cypress/screenshots/
+
+# Storybook generated output
+.out/
+
+#Local VsCode config
+.vscode/launch.json
