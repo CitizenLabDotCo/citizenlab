@@ -1,0 +1,37 @@
+<tr style="border:1px solid #ecedee; background-color: #FFFFFF">
+  <td width="200" style="text-align: left;">
+    <a style="font-size: 14px; font-weight: 300; color: #000; text-decoration: none;" href="<%= serialized_idea.url %>">
+      <%= localize_for_recipient(serialized_idea.title_multiloc).first(80) %>
+    </a>
+    <br />
+    <span style="font-size: 12px; font-weight: 300; color: rgb(111, 119, 125)">
+      <% if days_since_publishing(serialized_idea) < 1 %>
+        <%= format_message('today_by_author', values: { author: serialized_idea.author_name }) %>
+      <% elsif days_since_publishing(serialized_idea) < 2 %>
+        <%= format_message('yesterday_by_author', values: { author: serialized_idea.author_name }) %>
+      <% else %>
+        <%= format_message('x_days_ago_by_author', values: { x: days_since_publishing(serialized_idea),  author: serialized_idea.author_name}) %>
+      <% end %>
+    </span>
+  </td>
+  <td style="width: 40px;">
+    <span style="font-size: 24px; font-weight: 700; color: rgb(111, 119, 125);">
+      <img width="18px" src="http://res.cloudinary.com/citizenlabco/image/upload/v1530712393/thumb_up_tmxhbw.png" alt="Thumbs up">
+    </span>
+    <span style="font-size: 14px; font-weight: 700;"><%= serialized_idea.upvotes_count %></span>
+
+  </td>
+  <td style="width: 40px">
+    <span style="font-size: 24px; font-weight: 700; color: rgb(111, 119, 125);">
+      <img width="18px" src="http://res.cloudinary.com/citizenlabco/image/upload/v1530712393/thumb_down_dydzme.png" alt="Thumbs down">
+    </span>
+    <span style="font-size: 14px; font-weight: 700;"><%= serialized_idea.downvotes_count %></span>
+
+  </td>
+  <td style="width: 40px">
+    <span style="font-size: 16px; font-weight: 700; color: rgb(111, 119, 125);">
+      <img width="18px" src="http://res.cloudinary.com/citizenlabco/image/upload/v1530712393/comment_srfoec.png" alt="Comment">
+    </span>
+    <span style="font-size: 14px; font-weight: 700;"><%= serialized_idea.comments_count %></span>
+  </td>
+</tr>
