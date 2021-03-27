@@ -13,6 +13,14 @@ module SmartGroups
     factories_path = File.expand_path('../../spec/factories', __dir__)
     config.factory_bot.definition_file_paths += [factories_path] if defined?(FactoryBotRails)
 
+    initializer 'citizen_lab.append_migrations' do |app|
+      break if app.root.to_s == root.to_s
+
+      config.paths['db/migrate'].expanded.each do |path|
+        app.config.paths['db/migrate'].push(path)
+      end
+    end
+
     if Rails.env.development? || Rails.env.test?
       config.autoload_paths << "#{config.root}/lib"
     else
