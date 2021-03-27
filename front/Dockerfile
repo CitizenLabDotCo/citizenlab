@@ -1,4 +1,4 @@
-FROM node:12-alpine
+FROM cypress/base:10
 
 WORKDIR /front
 
