@@ -5,8 +5,6 @@ class AppConfiguration < ApplicationRecord
   mount_base64_uploader :header_bg, AppHeaderBgUploader
   mount_base64_uploader :favicon, FaviconUploader
 
-  attr_accessor :tenant_sync_enabled
-
   validates :settings, presence: true, json: {
     schema: -> { AppConfiguration::Settings.json_schema_str },
     message: lambda { |errors|
@@ -23,9 +21,6 @@ class AppConfiguration < ApplicationRecord
   validate :validate_singleton, on: :create
 
   before_validation :validate_missing_feature_dependencies
-
-  after_save :update_tenant, if: :tenant_sync_enabled
-  after_initialize :custom_initialization
 
   module Settings
     extend CitizenLab::Mixins::SettingsSpecification
@@ -86,15 +81,6 @@ class AppConfiguration < ApplicationRecord
     end
   end
 
-  def custom_initialization
-    @tenant_sync_enabled = true
-  end
-
-  def disable_tenant_sync
-    self.tenant_sync_enabled = false
-    self
-  end
-
   # @return [AppConfiguration] self
   def cleanup_settings
     ss = SettingsService.new
@@ -111,7 +97,7 @@ class AppConfiguration < ApplicationRecord
   end
 
   def has_feature?(f)
-    ActiveSupport::Deprecation.warn("AppConfiguration#has_feature? is deprecated. Use AppConfiguration#feature_activated? instead.")
+    ActiveSupport::Deprecation.warn('AppConfiguration#has_feature? is deprecated. Use AppConfiguration#feature_activated? instead.')
     feature_activated?(f)
   end
 
@@ -138,7 +124,6 @@ class AppConfiguration < ApplicationRecord
   end
 
   def configuration
-    # [TODO] temporary
     Rails.logger.warn('Calling +configuration+ on an AppConfiguration', caller: caller)
     self
   end
@@ -150,12 +135,14 @@ class AppConfiguration < ApplicationRecord
 
   def base_frontend_uri
     return 'http://localhost:3000' if Rails.env.development?
+
     transport = Rails.env.test? ? 'http' : 'https'
     "#{transport}://#{host}"
   end
 
   def base_backend_uri
     return 'http://localhost:4000' if Rails.env.development?
+
     transport = Rails.env.test? ? 'http' : 'https'
     "#{transport}://#{host}"
   end
@@ -182,27 +169,14 @@ class AppConfiguration < ApplicationRecord
     return unless host.exclude?('.') || host.include?(' ') || host.include?('_') || (host =~ /[A-Z]/)
 
     errors.add(
-        :host,
-        :invalid_format,
-        message: 'The chosen host does not have a valid format'
-      )
-
+      :host,
+      :invalid_format,
+      message: 'The chosen host does not have a valid format'
+    )
   end
 
   def validate_singleton
     errors.add(:base, 'there can be only one instance of AppConfiguration') if AppConfiguration.count.positive?
-  end
-
-  def update_tenant
-    tenant = Tenant.current
-    attrs_delta = tenant.send(:attributes_delta, self, tenant)
-    return if attrs_delta.blank?
-
-    tenant.attributes = attrs_delta
-    tenant.remove_logo! if logo_previously_changed? && logo.blank?
-    tenant.remove_favicon! if favicon_previously_changed? && favicon.blank?
-    tenant.remove_header_bg! if header_bg_previously_changed? && header_bg.blank?
-    tenant.disable_config_sync.save
   end
 end
 
