@@ -298,6 +298,25 @@ jobs:
           path: /tmp/report.html
           destination: lighthouse
 
+# *************** e2e ******************
+
+  e2e-tests:
+    docker:
+      - image: cimg/base:2020.01
+    working_directory: /
+    steps:
+      - clone_citizenlab_and_enable_ee
+      - setup_remote_docker
+      - run: |
+          cd /citizenlab-ee/e2e
+          docker-compose run web rake db:create
+          docker-compose run web rake db:migrate
+          docker-compose run web rake cl2_back:create_tenant[localhost,e2etests_template]
+          docker-compose up -d
+      - run: |
+          docker-compose run front npm run cypress:run -- --config baseUrl=http://e2e-front:3000
+
+
 workflows:
   version: 2
 
@@ -408,3 +427,7 @@ workflows:
           filters:
             branches:
               only: master
+
+  debugging-ci:
+    jobs:
+      - e2e-tests
