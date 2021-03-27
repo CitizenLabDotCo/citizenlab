@@ -24,7 +24,7 @@ module Verification
 
     config.to_prepare do
       ::Verification::Engine.register_feature
-       ::SmartGroups::RulesService.add_rule(::Verification::SmartGroups::Rules::Verified)
+      ::SmartGroups::RulesService.add_rule(::Verification::SmartGroups::Rules::Verified)
     end
   end
 end
