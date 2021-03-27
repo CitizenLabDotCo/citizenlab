@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'verification/smart_groups/rules/verified'
 
 # rubocop:disable Lint/SuppressedException
 begin
@@ -24,7 +23,11 @@ module Verification
 
     config.to_prepare do
       ::Verification::Engine.register_feature
-      ::SmartGroups::RulesService.add_rule(::Verification::SmartGroups::Rules::Verified)
+
+      if defined? SmartGroups
+        require 'verification/smart_groups/rules/verified'
+        ::SmartGroups::RulesService.add_rule(::Verification::SmartGroups::Rules::Verified)
+      end
     end
   end
 end
