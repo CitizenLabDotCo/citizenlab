@@ -1,0 +1,207 @@
+<!-- Idea section-->
+<mj-section padding="20px 25px">
+  <mj-column>
+    <mj-text>
+      <h2>
+        <%= format_message('idea_section') %>
+      </h2>
+    </mj-text>
+  </mj-column>
+  </mj-section>
+<mj-section
+  background-color="#FFFFFF"
+  padding="40px 25px"
+  border="1px solid #EAEAEA"
+  border-radius="5px"
+>
+  <mj-column>
+    <mj-text font-size="28px" align="center" font-weight="700">
+      <%= event.need_feedback_assigned_ideas_count %>
+      <img
+        alt="Idea icon"
+        width="24px"
+        src="http://res.cloudinary.com/citizenlabco/image/upload/v1527512109/idea-icon_zfjmco.png"
+      />
+    </mj-text>
+    <mj-text font-size="16px" align="center">
+      <%= format_message("assigned_ideas") %>
+    </mj-text>
+  </mj-column>
+</mj-section>
+
+<mj-section padding="20px 25px 30px">
+  <mj-column>
+    <mj-text>
+      <h3>
+        <% if event.assigned_ideas.present? %>
+          <%= format_message('title_assignment_past_week') %>
+        <% else %>
+          <%= format_message('title_no_assignment_past_week') %>
+        <% end %>
+      </h3>
+    </mj-text>
+
+    <mj-raw><% event.assigned_ideas.each do |idea| %></mj-raw>
+      <mj-table cellpadding="15" padding-top="20px">
+        <% @diff_days = (Time.zone.today - idea.published_at.to_date).to_i %>
+        <tr style="border:1px solid #ecedee; background-color: #FFFFFF">
+          <td width="200" style="text-align: left;">
+            <a style="font-size: 14px; font-weight: 300; color: #000; text-decoration: none;" href="<%= idea.url %>">
+              <%= localize_for_recipient(idea.title_multiloc).first(80) %>
+            </a>
+            <br/>
+            <span style="font-size: 12px; font-weight: 300; color: rgb(111, 119, 125)">
+              <% if @diff_days < 1 %>
+                <%= format_message('today_by_author', values: { author: idea.author_name }) %>
+              <% elsif @diff_days < 2 %>
+                <%= format_message('yesterday_by_author', values: { author: idea.author_name }) %>
+              <% else %>
+                <%= format_message('x_days_ago_by_author', values: { x: @diff_days, author: idea.author_name }) %>
+              <% end %>
+            </span>
+          </td>
+          <td style="width: 40px;">
+            <span style="font-size: 24px; font-weight: 700; color: rgb(111, 119, 125);">
+              <img width="18px" src="http://res.cloudinary.com/citizenlabco/image/upload/v1530712393/thumb_up_tmxhbw.png" alt="Thumbs up">
+            </span>
+            <span style="font-size: 14px; font-weight: 700;"><%= idea.upvotes_count %></span>
+          </td>
+          <td style="width: 40px">
+            <span style="font-size: 24px; font-weight: 700; color: rgb(111, 119, 125);">
+              <img width="18px" src="http://res.cloudinary.com/citizenlabco/image/upload/v1530712393/thumb_down_dydzme.png" alt="Thumbs down">
+            </span>
+            <span style="font-size: 14px; font-weight: 700;"><%= idea.downvotes_count %></span>
+
+          </td>
+          <td style="width: 40px">
+            <span style="font-size: 16px; font-weight: 700; color: rgb(111, 119, 125);">
+              <img width="18px" src="http://res.cloudinary.com/citizenlabco/image/upload/v1530712393/comment_srfoec.png" alt="Comment">
+            </span>
+            <span style="font-size: 14px; font-weight: 700;"><%= idea.comments_count %></span>
+          </td>
+        </tr>
+      </mj-table>
+    <mj-raw><% end %></mj-raw>
+    <mj-text>&nbsp;</mj-text>
+  </mj-column>
+</mj-section>
+
+<!-- Initiative section -->
+
+<mj-section padding="20px 25px">
+  <mj-column>
+    <mj-text>
+      <h2 style="padding: 20px 0">
+        <%= format_message('initiative_section') %>
+      </h2>
+    </mj-text>
+  </mj-column>
+</mj-section>
+
+<mj-section padding="20px 25px 30px">
+  <mj-column>
+    <mj-text>
+      <h3 style="padding: 20px 0">
+        <% if event.assigned_initiatives.present? %>
+          <%= format_message('title_initiatives_past_week') %>
+        <% end %>
+      </h3>
+    </mj-text>
+
+    <mj-raw><% event.assigned_initiatives.each do |assigned_initiative| %></mj-raw>
+      <mj-table cellpadding="15" padding-top="20px">
+          <% @diff_days = (Time.zone.today - assigned_initiative.published_at.to_date).to_i %>
+          <tr style="border:1px solid #ecedee; background-color: #FFFFFF">
+            <td style="width: 80px;">
+              <span style="font-size: 24px; font-weight: 700; color: rgb(111, 119, 125);">
+                <img width="96px" src="<%= assigned_initiative.images.first&.versions&.small %>">
+              </span>
+            </td>
+            <td width="200" style="text-align: left;">
+              <a style="font-size: 14px; font-weight: 300; color: #000; text-decoration: none;" href="<%= assigned_initiative.url %>">
+                <%= localize_for_recipient(assigned_initiative.title_multiloc).first(80) %>
+              </a>
+              <br />
+              <span style="font-size: 12px; font-weight: 300; color: rgb(111, 119, 125)">
+                <% if @diff_days < 1 %>
+                  <%= format_message('today_by_author', values: { author: assigned_initiative.author_name }) %>
+                <% elsif @diff_days < 2 %>
+                  <%= format_message('yesterday_by_author', values: { author: assigned_initiative.author_name }) %>
+                <% else %>
+                  <%= format_message('x_days_ago_by_author', values:  { x: @diff_days, author: assigned_initiative.author_name }) %>
+                <% end %>
+              </span>
+            </td>
+            <td style="width: 40px;">
+              <span style="font-size: 24px; font-weight: 700; color: rgb(111, 119, 125);">
+                <img width="18px" src="http://res.cloudinary.com/citizenlabco/image/upload/v1530712393/thumb_up_tmxhbw.png" alt="Thumbs up">
+              </span>
+              <span style="font-size: 14px; font-weight: 700;"><%= assigned_initiative.upvotes_count %></span>
+            </td>
+            <td style="width: 40px">
+              <span style="font-size: 16px; font-weight: 700; color: rgb(111, 119, 125);">
+                <img width="18px" src="http://res.cloudinary.com/citizenlabco/image/upload/v1530712393/comment_srfoec.png" alt="Comment">
+              </span>
+              <span style="font-size: 14px; font-weight: 700;"><%= assigned_initiative.comments_count %></span>
+            </td>
+          </tr>
+        <mj-text>&nbsp;</mj-text>
+      </mj-table>
+    <mj-raw><% end %></mj-raw>
+  </mj-column>
+</mj-section>
+
+<mj-section padding="20px 25px 30px">
+  <mj-column>
+    <mj-text>
+      <h3 style="padding: 20px 0">
+        <% if event.succesful_assigned_initiatives.present? %>
+          <%= format_message('title_successful_initiatives_past_week') %>
+        <% end %>
+      </h3>
+    </mj-text>
+
+    <mj-raw><% event.succesful_assigned_initiatives.each do |succesful_assigned_initiative| %></mj-raw>
+      <mj-table cellpadding="15" padding-top="20px">
+          <% @diff_days = (Time.zone.today - succesful_assigned_initiative.published_at.to_date).to_i %>
+          <tr style="border:1px solid #ecedee; background-color: #FFFFFF">
+            <td style="width: 80px;">
+              <span style="font-size: 24px; font-weight: 700; color: rgb(111, 119, 125);">
+                <img width="96px" src="<%= succesful_assigned_initiative.images.first&.versions&.small %>">
+              </span>
+            </td>
+            <td width="200" style="text-align: left;">
+              <a style="font-size: 14px; font-weight: 300; color: #000; text-decoration: none;" href="<%= succesful_assigned_initiative.url %>">
+                <%= localize_for_recipient(succesful_assigned_initiative.title_multiloc).first(80) %>
+              </a>
+              <br />
+              <span style="font-size: 12px; font-weight: 300; color: rgb(111, 119, 125)">
+                <% if @diff_days < 1 %>
+                  <%= format_message('today_by_author', values: { author: succesful_assigned_initiative.author_name }) %>
+                <% elsif @diff_days < 2 %>
+                  <%= format_message('yesterday_by_author', values: { author: succesful_assigned_initiative.author_name }) %>
+                <% else %>
+                  <%= format_message('x_days_ago_by_author', values: { x: @diff_days, author: succesful_assigned_initiative.author_name }) %>
+                <% end %>
+              </span>
+            </td>
+            <td style="width: 40px;">
+              <span style="font-size: 24px; font-weight: 700; color: rgb(111, 119, 125);">
+                <img width="18px" src="http://res.cloudinary.com/citizenlabco/image/upload/v1530712393/thumb_up_tmxhbw.png" alt="Thumbs up">
+              </span>
+              <span style="font-size: 14px; font-weight: 700;"><%= succesful_assigned_initiative.upvotes_count %></span>
+            </td>
+            <td style="width: 40px">
+              <span style="font-size: 16px; font-weight: 700; color: rgb(111, 119, 125);">
+                <img width="18px" src="http://res.cloudinary.com/citizenlabco/image/upload/v1530712393/comment_srfoec.png" alt="Comment">
+              </span>
+              <span style="font-size: 14px; font-weight: 700;"><%= succesful_assigned_initiative.comments_count %></span>
+            </td>
+          </tr>
+        <mj-text>&nbsp;</mj-text>
+      </mj-table>
+    <mj-raw><% end %></mj-raw>
+  </mj-column>
+</mj-section>
+
+<%= render partial: 'application/cta_button', locals: { href: url_service.admin_ideas_url, message: format_message('cta_manage_your_input') } %>
