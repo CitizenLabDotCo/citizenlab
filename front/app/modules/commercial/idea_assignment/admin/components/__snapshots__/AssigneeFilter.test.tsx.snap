@@ -1,0 +1,36 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<AssigneeFilter /> processes options correctly 1`] = `
+Array [
+  Object {
+    "id": "e2e-assignee-filter-all-posts",
+    "text": "Any administrator",
+    "value": "all",
+  },
+  Object {
+    "id": "e2e-assignee-filter-assigned-to-user",
+    "text": "Assigned to me",
+    "value": "me",
+  },
+  Object {
+    "id": "e2e-assignee-filter-unassigned",
+    "text": "Unassigned",
+    "value": "unassigned",
+  },
+  Object {
+    "className": "e2e-assignee-filter-other-user",
+    "text": "Assigned to admin1 Citizenlab",
+    "value": "admin1",
+  },
+  Object {
+    "className": "e2e-assignee-filter-other-user",
+    "text": "Assigned to admin2 Citizenlab",
+    "value": "admin2",
+  },
+  Object {
+    "className": "e2e-assignee-filter-other-user",
+    "text": "Assigned to admin3 Citizenlab",
+    "value": "admin3",
+  },
+]
+`;
