@@ -9,3 +9,7 @@ Tagging::Engine.routes.draw do
     end
   end
 end
+
+Rails.application.routes.draw do
+  mount Tagging::Engine => '', as: 'tagging'
+end

@@ -17,7 +17,7 @@ RSpec.describe EmailCampaigns::Campaigns::NewIdeaForAdmin, type: :model do
       other_moderator = create(:moderator)
       admin = create(:admin)
 
-      expect(campaign.apply_recipient_filters(activity: create(:activity, item: idea, action: 'published')).ids).to match_array([admin.id, moderator.id])
+      expect(campaign.apply_recipient_filters(activity: create(:activity, item: idea, action: 'published')).map(&:id)).to match_array([admin.id, moderator.id])
     end
   end
 

@@ -154,7 +154,11 @@ RSpec.configure do |config|
   end
 
   config.after(:each) do
+    # Reset tenant back to `public`
     Apartment::Tenant.reset if CitizenLab.ee?
+  rescue ActiveRecord::StatementInvalid
+    # Ignore
+  ensure
     DatabaseCleaner.clean # Rollback transaction
   end
 
