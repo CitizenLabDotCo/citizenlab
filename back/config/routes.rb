@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   mount Seo::Engine => '', as: 'seo'
   mount Surveys::Engine => "", as: 'surveys'
   mount Volunteering::Engine => "", as: 'volunteering'
+  mount GeographicDashboard::Engine => '', as: 'geographic_dashboard'
 
   namespace :web_api, :defaults => {:format => :json} do
     namespace :v1 do
