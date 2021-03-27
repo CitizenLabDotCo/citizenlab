@@ -307,6 +307,7 @@ jobs:
     steps:
       - clone_citizenlab_and_enable_ee
       - setup_remote_docker
+      - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
       - run: |
           cd citizenlab-ee/e2e
           docker-compose run web rake db:create
@@ -430,4 +431,5 @@ workflows:
 
   debugging-ci:
     jobs:
-      - e2e-tests
+      - e2e-tests:
+          context: docker-hub-access
