@@ -56,6 +56,9 @@ const Right = styled.div`
 const Row = styled.div`
   display: flex;
   align-items: flex-start;
+  > * {
+    margin-right: 10px;
+  }
 `;
 
 const StyledSubtitle = styled.p`
@@ -212,7 +215,7 @@ const AutotagView = ({
   const handleNewTagFromSuggestion = (text: string) => (event) => {
     event.preventDefault();
     trackEventByName('Autotag View', { action: 'clicked on add suggestion' });
-    setNewTag(text);
+    setNewTagsList([...newTagsList, text]);
   };
 
   const handleRemoveExistingTagFromSelection = (removedTagID: string) => (
@@ -294,10 +297,12 @@ const AutotagView = ({
             <Button
               locale={locale}
               icon="plus-circle"
-              buttonStyle="text"
+              buttonStyle={'admin-dark-outlined'}
               onClick={handleAddNewTag}
               disabled={!isValidTag}
-            />
+            >
+              <FormattedMessage {...messages.addTag} />
+            </Button>
           </Row>
           <TagList>
             {selectedTagsList.map((tag, index) => (
@@ -347,18 +352,30 @@ const AutotagView = ({
           {activeTab === 'suggestions' ? (
             <SuggestionList>
               {tagSuggestions && tagSuggestions?.length > 0 ? (
-                tagSuggestions.map((suggestion, index) => (
-                  <Button
-                    key={index + localize(suggestion.title_multiloc)}
-                    locale={locale}
-                    icon="plus-circle"
-                    buttonStyle="text"
-                    onClick={handleNewTagFromSuggestion(
-                      localize(suggestion.title_multiloc)
-                    )}
-                    text={localize(suggestion.title_multiloc)}
-                  />
-                ))
+                tagSuggestions
+                  .filter(
+                    (suggestedTag) =>
+                      !newTagsList.includes(
+                        localize(suggestedTag.title_multiloc)
+                      ) &&
+                      !selectedTagsList.some(
+                        (existingTag) =>
+                          localize(existingTag.attributes.title_multiloc) ===
+                          localize(suggestedTag.title_multiloc)
+                      )
+                  )
+                  .map((suggestion, index) => (
+                    <Button
+                      key={index + localize(suggestion.title_multiloc)}
+                      locale={locale}
+                      icon="plus-circle"
+                      buttonStyle="text"
+                      onClick={handleNewTagFromSuggestion(
+                        localize(suggestion.title_multiloc)
+                      )}
+                      text={localize(suggestion.title_multiloc)}
+                    />
+                  ))
               ) : tagSuggestions === null || tagSuggestions?.length === 0 ? (
                 <StyledSubtitle>
                   <FormattedMessage {...messages.noSuggestions} />

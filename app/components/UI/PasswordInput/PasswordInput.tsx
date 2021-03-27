@@ -125,6 +125,7 @@ const PasswordInputComponent = ({
             onClick={handleOnClick}
             buttonStyle="text"
             height={'100%'}
+            type="button"
           >
             {showPassword ? (
               <EyeIcon

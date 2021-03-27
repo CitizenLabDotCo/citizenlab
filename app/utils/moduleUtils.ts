@@ -124,7 +124,7 @@ export type OutletsPropertyMap = {
       key: TSignUpSteps;
       configuration: TSignUpStepConfigurationObject;
     }) => void;
-    step: TSignUpSteps;
+    step: TSignUpSteps | null;
     onCompleted: () => void;
   };
   'app.containers.Admin.dashboard.reports.ProjectReport.graphs': {

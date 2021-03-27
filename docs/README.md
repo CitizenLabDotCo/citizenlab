@@ -1,11 +1,29 @@
 # Changelog
 
-### 2021-03-18
+## Next release
+/
+
+## 2021-03-25
+
+### Fixed
+- The input fields for multiple locales provides an error messages when there's an error for at least one of the languages.
+
+## 2021-03-23
+
+### Fixed
+- Fix for broken sign-up flow when signing-up through social sign-on
+
+## 2021-03-19
+
+### Fixed
+- Admin>Dashboard>Users tab is no longer hidden for admins that manage projects.
+- The password input no longer shows the password when hitting ENTER.
 
 ### Changed
 - Empty folders are now shown in the landing page, navbar, projects page and sitemap.
+- The sitemap no longer shows all projects and folder under each folder.
+- Images added to folder descriptions are now compressed, reducing load times in project and folder pages. 
 
-## 2021-03-16
 
 ### Added
 - Allows for sending front-end events to our self-hosted matomo analytics tool
@@ -15,7 +33,6 @@
 ### Changed
 - Tenants are now ordered alphabetically in AdminHQ
 
-### Added
 - Serbian (Latin) is now a language option.
 
 
