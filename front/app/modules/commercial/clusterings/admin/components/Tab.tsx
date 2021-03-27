@@ -14,19 +14,17 @@ interface Props {
 const Tab: FC<Props & WithRouterProps & InjectedIntlProps> = ({
   onData,
   intl: { formatMessage },
-  location,
 }) => {
   useEffect(
     () =>
       onData({
         configuration: {
           label: formatMessage(messages.tabInsights),
+          name: 'insights',
           url: '/admin/dashboard/insights',
           feature: 'clustering',
-          name: 'clustering',
-          active: location.pathname.includes('/admin/ideas/insights'),
         },
-        insertAfterName: 'reports',
+        insertAfterName: 'users',
       }),
     []
   );

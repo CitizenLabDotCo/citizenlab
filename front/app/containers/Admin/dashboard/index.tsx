@@ -291,7 +291,7 @@ export const DashboardsPage = memo(
     };
 
     const handleData = (data: InsertConfigurationOptions<ITab>) =>
-      setTabs(insertConfiguration(data));
+      setTabs((tabs) => insertConfiguration(data)(tabs));
 
     if (
       !authUser ||
