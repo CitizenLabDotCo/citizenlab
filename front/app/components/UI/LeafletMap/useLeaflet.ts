@@ -41,6 +41,7 @@ export interface ILeafletMapConfig {
   center?: L.LatLngExpression;
   zoom?: number;
   tileProvider?: string;
+  tileOptions?: object;
   fitBounds?: boolean;
   onClick?: IOnMapClickHandler;
   onMarkerClick?: (id: string, data: string) => void;
@@ -59,6 +60,7 @@ export default function useLeaflet(
     center,
     zoom,
     tileProvider,
+    tileOptions,
     points,
     fitBounds = true,
     onClick,
@@ -115,6 +117,7 @@ export default function useLeaflet(
 
     const options = {
       tileProvider,
+      tileOptions,
       onClick,
       zoom,
       center,
@@ -126,7 +129,7 @@ export default function useLeaflet(
 
     setMap(newMap);
   };
-  useEffect(setup, [map, mapId, tileProvider, onClick, zoom, center]);
+  useEffect(setup, [map, mapId, tileProvider, tileOptions, onClick, zoom, center]);
 
   const refreshCenterAndZoom = () => {
     if (map) {

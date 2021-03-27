@@ -1,6 +1,5 @@
 import { isNilOrError } from 'utils/helperUtils';
 import { IAppConfiguration } from 'services/appConfiguration';
-import { DEFAULT_TILE_PROVIDER } from 'components/UI/LeafletMap/config';
 
 export const getCenter = (
   centerCoordinates: GeoJSON.Position | undefined,
@@ -45,5 +44,5 @@ export const getTileProvider = (
   const tileProvider =
     !isNilOrError(appConfig) &&
     (appConfig?.data?.attributes?.settings?.maps?.tile_provider as string);
-  return tileProvider || DEFAULT_TILE_PROVIDER;
+  return tileProvider;
 };

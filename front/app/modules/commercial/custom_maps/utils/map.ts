@@ -57,7 +57,7 @@ export const getTileProvider = (
   mapConfig: IMapConfig
 ) => {
   if (isUndefinedOrError(mapConfig?.attributes?.tile_provider)) {
-    return baseGetTileProvider(appConfig);
+    return baseGetTileProvider(appConfig) || 'https://api.maptiler.com/maps/77632ac6-e168-429c-8b1b-76599ce796e3/{z}/{x}/{y}@2x.png?key=DIZiuhfkZEQ5EgsaTk6D';
   }
 
   return mapConfig?.attributes?.tile_provider;
