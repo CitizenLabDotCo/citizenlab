@@ -1,99 +1,52 @@
 class WebApi::V1::InitiativesController < ApplicationController
+  before_action :set_initiative, only: %i[show update destroy allowed_transitions]
+  skip_after_action :verify_authorized, only: %i[index_xlsx index_initiative_markers filter_counts]
 
-  before_action :set_initiative, only: [:show, :update, :destroy, :allowed_transitions]
-  skip_after_action :verify_authorized, only: [:index_xlsx, :index_initiative_markers, :filter_counts]
-  
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
-  
+
   def index
-    @initiatives = policy_scope(Initiative).includes(:author, :assignee, :topics, :areas)
-    search_last_names = !UserDisplayNameService.new(AppConfiguration.instance, current_user).restricted?
-    @initiatives = PostsFilteringService.new.apply_common_initiative_index_filters @initiatives, params, search_last_names
-
-    if params[:sort].present? && !params[:search].present?
-      @initiatives = case params[:sort]
-        when 'new'
-          @initiatives.order_new
-        when '-new'
-          @initiatives.order_new(:asc)
-        when "author_name"
-         @ideas.order("users.first_name ASC", "users.last_name ASC")
-        when "-author_name"
-         @ideas.order("users.first_name DESC", "users.last_name DESC")
-        when 'upvotes_count'
-          @initiatives.order(upvotes_count: :asc)
-        when '-upvotes_count'
-          @initiatives.order(upvotes_count: :desc)
-        when 'status'
-          @initiatives.order_status(:asc)
-        when '-status'
-          @initiatives.order_status(:desc)
-        when 'random'
-          @initiatives.order_random
-        when nil
-          @initiatives
-        else
-          raise 'Unsupported sort method'
-        end
-    end
-
-    @initiatives = @initiatives
-      .page(params.dig(:page, :number))
-      .per(params.dig(:page, :size))
-
-    serialization_options = if current_user
-      @initiative_ids = @initiatives.map(&:id)
-      votes = Vote.where(user: current_user, votable_id: @initiative_ids, votable_type: 'Initiative')
-      votes_by_initiative_id = votes.map{|vote| [vote.votable_id, vote]}.to_h
-      {
-        params: fastjson_params(vbii: votes_by_initiative_id, pcs: ParticipationContextService.new),
-        include: [:author, :user_vote, :initiative_images, :assignee]
-      }
-    else
-      {
-        params: fastjson_params(pcs: ParticipationContextService.new),
-        include: [:author, :initiative_images]
-      }
-    end
-
+    @result = InitiativesFinder.find(params, current_user: current_user,
+                                             scope: policy_scope(Initiative),
+                                             includes: %i[author assignee topics areas])
+    @initiatives = @result.records
     render json: linked_json(@initiatives, WebApi::V1::InitiativeSerializer, serialization_options)
   end
 
   def index_initiative_markers
-    @initiatives = policy_scope(Initiative)
-    search_last_names = !UserDisplayNameService.new(AppConfiguration.instance, current_user).restricted?
-    @initiatives = PostsFilteringService.new.apply_common_initiative_index_filters @initiatives, params, search_last_names
-    @initiatives = @initiatives.with_bounding_box(params[:bounding_box]) if params[:bounding_box].present?
-
-    @initiatives = @initiatives
-      .page(params.dig(:page, :number))
-      .per(params.dig(:page, :size))
+    @result = InitiativesFinder.find(params, current_user: current_user, scope: policy_scope(Initiative))
+    @initiatives = @result.records
     render json: linked_json(@initiatives, WebApi::V1::PostMarkerSerializer, params: fastjson_params)
   end
 
   def index_xlsx
     authorize :initiative, :index_xlsx?
-
-    @initiatives = policy_scope(Initiative)
-      .includes(:author, :topics, :areas, :initiative_status)
-      .where(publication_status: 'published')
-    @initiatives = @initiatives.where(id: params[:initiatives]) if params[:initiatives].present?
+    @result = InitiativesFinder.find(
+      params,
+      current_user: current_user,
+      scope: policy_scope(Initiative).where(publication_status: 'published'),
+      includes: %i[author initiative_status topics areas]
+    )
+    @initiatives = @result.records
 
     I18n.with_locale(current_user&.locale) do
-      xlsx = XlsxService.new.generate_initiatives_xlsx @initiatives, view_private_attributes: Pundit.policy!(current_user, User).view_private_attributes?
-      send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'initiatives.xlsx'
+      xlsx = XlsxService.new.generate_initiatives_xlsx @initiatives,
+                                                       view_private_attributes: Pundit.policy!(current_user,
+                                                                                               User).view_private_attributes?
+      send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                      filename: 'initiatives.xlsx'
     end
   end
 
   def filter_counts
     @initiatives = policy_scope(Initiative)
     search_last_names = !UserDisplayNameService.new(AppConfiguration.instance, current_user).restricted?
-    @initiatives = PostsFilteringService.new.apply_common_initiative_index_filters @initiatives, params, search_last_names
+    @initiatives = PostsFilteringService.new.apply_common_initiative_index_filters @initiatives, params,
+                                                                                   search_last_names
     counts = {
       'initiative_status_id' => {},
       'area_id' => {},
       'topic_id' => {}
-    } 
+    }
     @initiatives
       .joins('FULL OUTER JOIN initiatives_topics ON initiatives_topics.initiative_id = initiatives.id')
       .joins('FULL OUTER JOIN areas_initiatives ON areas_initiatives.initiative_id = initiatives.id')
@@ -102,7 +55,7 @@ class WebApi::V1::InitiativesController < ApplicationController
       .reorder(nil)  # Avoids SQL error on GROUP BY when a search string was used
       .group('GROUPING SETS (initiative_initiative_statuses.initiative_status_id, areas_initiatives.area_id, initiatives_topics.topic_id)')
       .each do |record|
-        %w(initiative_status_id area_id topic_id).each do |attribute|
+        %w[initiative_status_id area_id topic_id].each do |attribute|
           id = record.send attribute
           counts[attribute][id] = record.count if id
         end
@@ -113,10 +66,10 @@ class WebApi::V1::InitiativesController < ApplicationController
 
   def show
     render json: WebApi::V1::InitiativeSerializer.new(
-      @initiative, 
-      params: fastjson_params, 
-      include: [:author, :topics, :areas, :user_vote, :initiative_images]
-      ).serialized_json
+      @initiative,
+      params: fastjson_params,
+      include: %i[author topics areas user_vote initiative_images]
+    ).serialized_json
   end
 
   def by_slug
@@ -138,14 +91,13 @@ class WebApi::V1::InitiativesController < ApplicationController
       if @initiative.save
         service.after_create(@initiative, current_user)
         render json: WebApi::V1::InitiativeSerializer.new(
-          @initiative.reload, 
-          params: fastjson_params, 
-          include: [:author, :topics, :areas, :user_vote, :initiative_images]
-          ).serialized_json, status: :created
+          @initiative.reload,
+          params: fastjson_params,
+          include: %i[author topics areas user_vote initiative_images]
+        ).serialized_json, status: :created
       else
         render json: { errors: @initiative.errors.details }, status: :unprocessable_entity
       end
-
     end
   end
 
@@ -154,7 +106,7 @@ class WebApi::V1::InitiativesController < ApplicationController
 
     initiative_params = permitted_attributes(@initiative)
     @initiative.assign_attributes(initiative_params)
-    if initiative_params.keys.include?('header_bg') && initiative_params['header_bg'] == nil
+    if initiative_params.keys.include?('header_bg') && initiative_params['header_bg'].nil?
       # setting the header image attribute to nil will not remove the header image
       @initiative.remove_header_bg!
     end
@@ -179,8 +131,8 @@ class WebApi::V1::InitiativesController < ApplicationController
       render json: WebApi::V1::InitiativeSerializer.new(
         @initiative.reload,
         params: fastjson_params,
-        include: [:author, :topics, :areas, :user_vote, :initiative_images]
-        ).serialized_json, status: :ok
+        include: %i[author topics areas user_vote initiative_images]
+      ).serialized_json, status: :ok
     else
       render json: { errors: @initiative.errors.details }, status: :unprocessable_entity
     end
@@ -188,7 +140,7 @@ class WebApi::V1::InitiativesController < ApplicationController
 
   def destroy
     service = SideFxInitiativeService.new
-    
+
     service.before_destroy(@initiative, current_user)
     initiative = @initiative.destroy
     if initiative.destroyed?
@@ -204,7 +156,6 @@ class WebApi::V1::InitiativesController < ApplicationController
     render json: InitiativeStatusService.new.allowed_transitions(@initiative)
   end
 
-
   private
 
   def secure_controller?
@@ -216,4 +167,19 @@ class WebApi::V1::InitiativesController < ApplicationController
     authorize @initiative
   end
 
+  def serialization_options
+    votes = current_user.votes.where(votable_id: @initiatives.pluck(:id), votable_type: 'Initiative')
+                        .index_by { |vote| vote.votable_id }
+    default_params = fastjson_params(pcs: ParticipationContextService.new)
+
+    if current_user
+      { params: default_params.merge(vbii: votes), include: %i[author user_vote initiative_images assignee] }
+    else
+      { params: default_params, include: %i[author initiative_images] }
+    end
+  end
+
+  def display_names_restricted?
+    UserDisplayNameService.new(Tenant.current, current_user).restricted?
+  end
 end
