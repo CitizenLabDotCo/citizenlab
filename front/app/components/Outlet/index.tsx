@@ -1,4 +1,5 @@
 import React from 'react';
+import { isEmpty } from 'lodash-es';
 import useOutlet from 'hooks/useOutlet';
 import { OutletsPropertyMap } from 'utils/moduleUtils';
 
@@ -10,7 +11,10 @@ type Props = CustomPropsMap[keyof CustomPropsMap];
 
 const Outlet = ({ id, ...props }: Props) => {
   const components = useOutlet(id);
-  if (!components) return null;
+
+  if (!components || isEmpty(components)) {
+    return null;
+  }
 
   return (
     <>
