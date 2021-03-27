@@ -8,6 +8,7 @@ import granularPermissionsConfiguration from './commercial/granular_permissions'
 import moderationConfiguration from './commercial/moderation';
 import ideaAssignmentConfiguration from './commercial/idea_assignment';
 import geographicDashboardConfiguration from './commercial/geographic_dashboard';
+import adminProjectTemplatesConfiguration from './commercial/admin_project_templates';
 
 import customMapsConfiguration from './commercial/custom_maps';
 import googleTagManagerConfiguration from './commercial/google_tag_manager';
@@ -87,6 +88,10 @@ export default loadModules([
   {
     configuration: geographicDashboardConfiguration,
     isEnabled: CL_CONFIG['modules']['commercial/geographic_dashboard'],
+  },
+  {
+    configuration: adminProjectTemplatesConfiguration,
+    isEnabled: CL_CONFIG['modules']['commercial/admin_project_templates'],
   },
   {
     configuration: customMapsConfiguration,
