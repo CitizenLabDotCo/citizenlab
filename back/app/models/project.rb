@@ -186,6 +186,6 @@ class Project < ApplicationRecord
   end
 end
 
+Project.include(ProjectPermissions::Patches::Project)
 Project.include_if_ee('CustomMaps::Extensions::Project')
 Project.prepend_if_ee('ProjectFolders::Patches::Project')
-Project.include_if_ee('ProjectPermissions::Patches::Project')
