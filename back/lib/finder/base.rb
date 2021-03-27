@@ -55,13 +55,13 @@ module Finder
 
     def _filter_records
       params.each do |param, value|
-        send("#{param}_condition", value) if respond_to?("#{param}_condition", true)
+        @records = send("#{param}_condition", value) if respond_to?("#{param}_condition", true)
       end
     end
 
     def _paginate_records
       pagination_params = params[:page] || {}
-      filter_records { records.page(pagination_params[:number]).per(pagination_params[:size]) }
+      @records = records.page(pagination_params[:number]).per(pagination_params[:size])
     end
 
     def _base_scope
