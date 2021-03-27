@@ -73,6 +73,11 @@ class Initiative < ApplicationRecord
       .where('initiative_statuses.code = ?', 'threshold_reached')
   }
 
+  scope :no_feedback_needed, lambda {
+    includes(initiative_initiative_status: :initiative_status)
+      .where.not(initiative_statuses: { code: 'threshold_reached' })
+  }
+
   scope :proposed, -> {
     joins('LEFT OUTER JOIN initiative_initiative_statuses ON initiatives.id = initiative_initiative_statuses.initiative_id')
       .joins('LEFT OUTER JOIN initiative_statuses ON initiative_statuses.id = initiative_initiative_statuses.initiative_status_id')

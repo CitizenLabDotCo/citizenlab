@@ -9,17 +9,17 @@ import { SortableList, SortableRow } from 'components/admin/ResourceList';
 import GeoJsonImportButton from './GeoJsonImportButton';
 
 // hooks
-import useMapConfig from 'hooks/useMapConfig';
+import useMapConfig from '../../../hooks/useMapConfig';
 
 // services
 import {
   deleteProjectMapLayer,
   reorderProjectMapLayer,
   IMapLayerAttributes,
-} from 'services/mapLayers';
+} from '../../../services/mapLayers';
 
 // utils
-import { getLayerColor, getLayerIcon } from 'utils/map';
+import { getLayerColor, getLayerIcon } from '../../../utils/map';
 
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';

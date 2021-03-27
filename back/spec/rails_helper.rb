@@ -70,6 +70,7 @@ RSpec.configure do |config|
   config.include ApiHelper
   config.include ApiAuthenticationHelper
   config.include TenantHelper
+  config.include AcceptanceHelper
 end
 
 ActiveJob::Base.queue_adapter = :test
