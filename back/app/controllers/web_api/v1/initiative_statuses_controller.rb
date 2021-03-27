@@ -1,0 +1,23 @@
+class WebApi::V1::InitiativeStatusesController < ApplicationController
+  before_action :set_initiative_status, only: [:show]
+
+  def index
+    @initiative_statuses = policy_scope(InitiativeStatus).order(:ordering)
+    render json: WebApi::V1::InitiativeStatusSerializer.new(@initiative_statuses, params: fastjson_params).serialized_json
+  end
+
+  def show
+    render json: WebApi::V1::InitiativeStatusSerializer.new(@initiative_status, params: fastjson_params).serialized_json
+  end
+
+  private
+
+  def set_initiative_status
+    @initiative_status = InitiativeStatus.find(params[:id])
+    authorize @initiative_status
+  end
+
+  def secure_controller?
+    false
+  end
+end
