@@ -1,6 +1,6 @@
 version: 2.1
 orbs:
-  cypress: cypress-io/cypress@1.23.0
+  cypress: cypress-io/cypress@1.27.0
 
 parameters:
 
@@ -209,14 +209,14 @@ jobs:
       - clone_citizenlab_and_enable_ee
       - restore_cache:
           keys:
-          - v1-npm-cache-{{ checksum "package.json" }}
+          - v1-npm-cache-{{ checksum "/citizenlab/front/package.json" }}
           # fallback to using the latest cache if no exact match is found
           - v1-npm-cache-
       - run: cd /citizenlab/front && npm ci
       - save_cache:
           paths:
             - /root/.npm
-          key: v1-npm-cache-{{ checksum "package.json" }}
+          key: v1-npm-cache-{{ checksum "/citizenlab/front/package.json" }}
       - run:
           name: Run tests with JUnit as reporter
           environment:
@@ -254,14 +254,14 @@ jobs:
       - clone_citizenlab_and_enable_ee
       - restore_cache:
           keys:
-          - v1-npm-cache-{{ checksum "package.json" }}
+          - v1-npm-cache-{{ checksum "/citizenlab/front/package.json" }}
           # fallback to using the latest cache if no exact match is found
           - v1-npm-cache-
       - run: cd /citizenlab/front && npm ci
       - save_cache:
           paths:
             - /root/.npm
-          key: v1-npm-cache-{{ checksum "package.json" }}
+          key: v1-npm-cache-{{ checksum "/citizenlab/front/package.json" }}
       - run:
           command: cd /citizenlab/front && SEGMENT_API_KEY=$SEGMENT_API_KEY_STAGING SENTRY_DSN=$SENTRY_DSN_STAGING npm run build:staging
           no_output_timeout: '30m'
@@ -378,7 +378,7 @@ workflows:
     when:
       and:
         - <<pipeline.parameters.run_deploy>>
-        - << pipeline.parameters.front >>
+        - <<pipeline.parameters.front>>
     jobs:
       - front-deploy-staging:
           filters:
@@ -395,6 +395,10 @@ workflows:
           requires:
             - front-deploy-staging
             - front-reset-ci-tenant
+          working_directory: /citizenlab/frontend
+          pre-steps:
+            - clone_citizenlab_and_enable_ee
+          cache-key: v1-npm-cache-{{ checksum "/citizenlab/front/package.json" }}
           command: npx cypress run --spec 'cypress/integration/*.ts' --config baseUrl=https://e2e.stg.citizenlab.co
           store_artifacts: true
           filters:
