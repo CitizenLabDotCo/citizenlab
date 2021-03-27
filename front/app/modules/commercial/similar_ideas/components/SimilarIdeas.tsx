@@ -16,7 +16,7 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from '../tracks';
 
 // hooks
-import useSimilarIdeas from 'hooks/useSimilarIdeas';
+import useSimilarIdeas from '../hooks/useSimilarIdeas';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
