@@ -5,8 +5,10 @@ import smartGroupsConfiguration from './commercial/smart_groups';
 import userCustomFieldsConfiguration from './commercial/user_custom_fields';
 import ideaCustomFieldsConfiguration from './commercial/idea_custom_fields';
 import granularPermissionsConfiguration from './commercial/granular_permissions';
-import moderationConfiguration from './commercial/moderation';
+import projectVisibilityConfiguration from './commercial/project_visibility';
+import projectManagementConfiguration from './commercial/project_management';
 import ideaAssignmentConfiguration from './commercial/idea_assignment';
+import moderationConfiguration from './commercial/moderation';
 import geographicDashboardConfiguration from './commercial/geographic_dashboard';
 
 import customMapsConfiguration from './commercial/custom_maps';
@@ -71,6 +73,14 @@ export default loadModules([
   {
     configuration: granularPermissionsConfiguration,
     isEnabled: CL_CONFIG['modules']['commercial/granular_permissions'],
+  },
+  {
+    configuration: projectVisibilityConfiguration,
+    isEnabled: CL_CONFIG['modules']['commercial/project_visibility'],
+  },
+  {
+    configuration: projectManagementConfiguration,
+    isEnabled: CL_CONFIG['modules']['commercial/project_management'],
   },
   {
     configuration: moderationConfiguration,
