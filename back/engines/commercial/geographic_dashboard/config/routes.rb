@@ -7,7 +7,3 @@ GeographicDashboard::Engine.routes.draw do
     end
   end
 end
-
-# Rails.application.routes.draw do
-#   mount GeographicDashboard::Engine => '', as: 'geographic_dashboard'
-# end
