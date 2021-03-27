@@ -1,0 +1,37 @@
+<definitions name="COW" targetNamespace="http://tempuri.org/COW/wsdl/" xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:content="http://schemas.xmlsoap.org/ws/2002/04/content-type/" xmlns:dime="http://schemas.xmlsoap.org/ws/2002/04/dime/wsdl/" xmlns:ref="http://schemas.xmlsoap.org/ws/2002/04/reference/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:stk="http://schemas.microsoft.com/soap-toolkit/wsdl-extension" xmlns:typens="http://tempuri.org/COW/type/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsdlns="http://tempuri.org/COW/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+   <wsdl:documentation>6.1</wsdl:documentation>
+   <types>
+      <xsd:schema>
+         <xsd:import namespace="http://tempuri.org/COW/type/" schemaLocation="https://terceros.sidiv.registrocivil.cl:8443/InteroperabilityPlateform/TercerosCOWProxyService?WSDL&amp;fingerprint=5NVKQ3QRSAHTUMHO5XYK57VQJL3INZB6.xsd"/>
+      </xsd:schema>
+   </types>
+   <message name="GetDataDocument">
+      <part element="typens:GetDataDocument" name="parameter"/>
+   </message>
+   <message name="GetDataDocumentResponse">
+      <part element="typens:GetDataDocumentResponse" name="parameter"/>
+   </message>
+   <portType name="COW">
+      <operation name="GetDataDocument">
+         <input message="wsdlns:GetDataDocument"/>
+         <output message="wsdlns:GetDataDocumentResponse"/>
+      </operation>
+   </portType>
+   <binding name="MetodosServerSoapBinding" type="wsdlns:COW">
+      <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+      <operation name="GetDataDocument">
+         <soap:operation soapAction="http://tempuri.org/COW/action/MetodosServer.GetDataDocument"/>
+         <input>
+            <soap:body parts="parameter" use="literal"/>
+         </input>
+         <output>
+            <soap:body parts="parameter" use="literal"/>
+         </output>
+      </operation>
+   </binding>
+   <service name="Terceros COW">
+      <port binding="wsdlns:MetodosServerSoapBinding" name="COW">
+         <soap:address location="https://terceros.sidiv.registrocivil.cl:8443/InteroperabilityPlateform/TercerosCOWProxyService"/>
+      </port>
+   </service>
+</definitions>

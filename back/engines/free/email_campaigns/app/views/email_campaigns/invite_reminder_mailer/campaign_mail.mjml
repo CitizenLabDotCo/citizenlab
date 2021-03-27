@@ -1,0 +1,1 @@
+<%= render partial: 'application/cta_button', locals: { href: event.activate_invite_url, message: format_message('cta_accept_invitation') } %>
