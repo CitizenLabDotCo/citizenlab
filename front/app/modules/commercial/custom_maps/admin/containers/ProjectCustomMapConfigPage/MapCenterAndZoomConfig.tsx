@@ -3,11 +3,11 @@ import { isEmpty, inRange } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // services
-import { updateProjectMapConfig } from 'services/mapConfigs';
+import { updateProjectMapConfig } from '../../../services/mapConfigs';
 
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
-import useMapConfig from 'hooks/useMapConfig';
+import useMapConfig from '../../../hooks/useMapConfig';
 
 // components
 import { Input, IconTooltip, Icon } from 'cl2-component-library';
@@ -16,7 +16,7 @@ import Error from 'components/UI/Error';
 import { SubSectionTitle } from 'components/admin/Section';
 
 // utils
-import { getCenter, getZoomLevel } from 'utils/map';
+import { getCenter, getZoomLevel } from '../../../utils/map';
 
 // events
 import { setMapLatLngZoom } from 'components/Map/events';
