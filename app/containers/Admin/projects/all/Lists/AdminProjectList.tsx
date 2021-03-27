@@ -44,14 +44,15 @@ function handleReorderAdminPublication(itemId, newOrder) {
 }
 
 const AdminProjectList = memo<Props>((_props) => {
-  const { topLevel: topLevelAdminPublications } = useAdminPublications({
+  const { list: rootLevelAdminPublications } = useAdminPublications({
     publicationStatusFilter: ['published', 'archived', 'draft'],
+    rootLevelOnly: true,
   });
   const isProjectFoldersEnabled = useFeatureFlag('project_folders');
 
   if (
-    !isNilOrError(topLevelAdminPublications) &&
-    topLevelAdminPublications.length > 0
+    !isNilOrError(rootLevelAdminPublications) &&
+    rootLevelAdminPublications.length > 0
   ) {
     return (
       <>
@@ -66,11 +67,11 @@ const AdminProjectList = memo<Props>((_props) => {
           <Outlet id="app.containers.AdminPage.projects.all.projectsAndFolders.actions" />
         </StyledListHeader>
         <SortableList
-          items={topLevelAdminPublications}
+          items={rootLevelAdminPublications}
           onReorder={handleReorderAdminPublication}
           className="projects-list e2e-admin-projects-list"
           id="e2e-admin-published-projects-list"
-          key={topLevelAdminPublications.length}
+          key={rootLevelAdminPublications.length}
         >
           {({ itemsList, handleDragRow, handleDropRow }) => {
             return (
@@ -86,7 +87,7 @@ const AdminProjectList = memo<Props>((_props) => {
                           moveRow={handleDragRow}
                           dropRow={handleDropRow}
                           lastItem={
-                            index === topLevelAdminPublications.length - 1
+                            index === rootLevelAdminPublications.length - 1
                           }
                         >
                           {item.publicationType === 'project' && (

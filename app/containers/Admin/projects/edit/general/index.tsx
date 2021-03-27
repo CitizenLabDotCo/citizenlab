@@ -79,7 +79,7 @@ import styled from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
 
 // typings
-import { IOption, Locale, Multiloc, UploadFile } from 'typings';
+import { IOption, Multiloc, UploadFile } from 'typings';
 import { isNilOrError } from 'utils/helperUtils';
 import { INewProjectCreatedEvent } from '../../all/CreateProject';
 
@@ -448,13 +448,9 @@ class AdminProjectEditGeneral extends PureComponent<
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
-  handleTitleMultilocOnChange = (titleMultiloc: Multiloc, locale: Locale) => {
-    this.setState(({ titleError, projectAttributesDiff }) => ({
+  handleTitleMultilocOnChange = (titleMultiloc: Multiloc) => {
+    this.setState(({ projectAttributesDiff }) => ({
       submitState: 'enabled',
-      titleError: {
-        ...titleError,
-        [locale]: null,
-      },
       projectAttributesDiff: {
         ...projectAttributesDiff,
         title_multiloc: titleMultiloc,
@@ -645,7 +641,7 @@ class AdminProjectEditGeneral extends PureComponent<
     }
 
     this.setState({
-      titleError: !titleError || isEmpty(titleError) ? null : titleError,
+      titleError: !isEmpty(titleError) ? titleError : null,
     });
 
     return !hasErrors;
