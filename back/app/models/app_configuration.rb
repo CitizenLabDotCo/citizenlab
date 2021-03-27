@@ -97,7 +97,7 @@ class AppConfiguration < ApplicationRecord
   end
 
   def has_feature?(f)
-    ActiveSupport::Deprecation.warn("AppConfiguration#has_feature? is deprecated. Use AppConfiguration#feature_activated? instead.")
+    ActiveSupport::Deprecation.warn('AppConfiguration#has_feature? is deprecated. Use AppConfiguration#feature_activated? instead.')
     feature_activated?(f)
   end
 
@@ -169,11 +169,10 @@ class AppConfiguration < ApplicationRecord
     return unless host.exclude?('.') || host.include?(' ') || host.include?('_') || (host =~ /[A-Z]/)
 
     errors.add(
-        :host,
-        :invalid_format,
-        message: 'The chosen host does not have a valid format'
-      )
-
+      :host,
+      :invalid_format,
+      message: 'The chosen host does not have a valid format'
+    )
   end
 
   def validate_singleton
