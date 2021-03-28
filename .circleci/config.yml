@@ -111,7 +111,7 @@ commands:
           when: on_fail
           command: |
             curl \
-              -u "$GITHUB_USER":"$GITHUB_TOKEN"
+              -u "$GITHUB_USER":"$GITHUB_TOKEN" \
               -X POST \
               -H "Accept: application/vnd.github.v3+json" \
               https://api.github.com/repos/citizenlabdotco/citizenlab/statuses/<< pipeline.parameters.citizenlab_sha >> \
@@ -124,7 +124,7 @@ commands:
           when: on_success
           command: |
             curl \
-              -u "$GITHUB_USER":"$GITHUB_TOKEN"
+              -u "$GITHUB_USER":"$GITHUB_TOKEN" \
               -X POST \
               -H "Accept: application/vnd.github.v3+json" \
               https://api.github.com/repos/citizenlabdotco/citizenlab/statuses/<< pipeline.parameters.citizenlab_sha >> \
