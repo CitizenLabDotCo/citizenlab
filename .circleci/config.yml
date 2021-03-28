@@ -84,6 +84,56 @@ commands:
 
       - run: |
           cd /citizenlab-ee && sh scripts/enable_ee.sh
+
+  pending_citizenlab_github_status:
+    parameters:
+      description:
+        type: string
+    steps:
+      - run: |
+          curl \
+            -u "$GITHUB_USER":"$GITHUB_TOKEN"
+            -X POST \
+            -H "Accept: application/vnd.github.v3+json" \
+            https://api.github.com/repos/citizenlabdotco/citizenlab/statuses/<< pipeline.parameters.citizenlab_sha >> \
+            -d '{"state": "pending", \
+                  "description": "EE: << parameters.description >>", \
+                  "context": "CircleCI citizenlab-ee", \
+                  "target_url": "'"$CIRCLE_BUILD_URL"'" \
+            \}'
+
+  final_citizenlab_github_status:
+    parameters:
+      description:
+        type: string
+    steps:
+      - run:
+          when: on_failure
+          command: |
+            curl \
+              -u "$GITHUB_USER":"$GITHUB_TOKEN"
+              -X POST \
+              -H "Accept: application/vnd.github.v3+json" \
+              https://api.github.com/repos/citizenlabdotco/citizenlab/statuses/<< pipeline.parameters.citizenlab_sha >> \
+              -d '{"state": "failure", \
+                    "description": "EE: << parameters.description >>", \
+                    "context": "CircleCI citizenlab-ee", \
+                    "target_url": "'"$CIRCLE_BUILD_URL"'" \
+              \}'
+      - run:
+          when: on_success
+          command: |
+            curl \
+              -u "$GITHUB_USER":"$GITHUB_TOKEN"
+              -X POST \
+              -H "Accept: application/vnd.github.v3+json" \
+              https://api.github.com/repos/citizenlabdotco/citizenlab/statuses/<< pipeline.parameters.citizenlab_sha >> \
+              -d '{"state": "success", \
+                    "description": "EE: << parameters.description >>", \
+                    "context": "CircleCI citizenlab-ee", \
+                    "target_url": "'"$CIRCLE_BUILD_URL"'" \
+              \}'
+
 jobs:
   # *************** back ***************
 
@@ -93,6 +143,8 @@ jobs:
       - image: docker:stable-git
     steps:
       - echo_pipeline_parameters
+      - pending_citizenlab_github_status:
+          description: back-build-ee-docker-image
       - clone_citizenlab_and_enable_ee
       - setup_remote_docker:
           docker_layer_caching: true
@@ -102,7 +154,8 @@ jobs:
       - run: |
           docker login -u $DOCKER_USER -p $DOCKER_PASS
           docker push citizenlabdotco/back-ee:<< pipeline.parameters.citizenlab_sha >>-$CIRCLE_SHA1
-
+      - final_citizenlab_github_status:
+          description: back-build-ee-docker-image
   back-test:
     resource_class: small
     executor:
