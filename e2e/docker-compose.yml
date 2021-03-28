@@ -18,13 +18,15 @@ services:
       - "../.env-back"
     environment:
       POSTGRES_HOST: e2e-postgres
+      OVERRIDE_HOST: 'e2e.front'
 
   rabbitmq:
     container_name: e2e-rabbit
     image: "rabbitmq:3.7-management"
 
   front:
-    container_name: e2e-front
+    ipc: 'host' #See https://github.com/cypress-io/cypress/issues/350
+    container_name: 'e2e.front'
     build:
       context: ../../citizenlab/.
       dockerfile: front/Dockerfile
