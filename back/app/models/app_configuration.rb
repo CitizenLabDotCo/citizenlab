@@ -166,7 +166,7 @@ class AppConfiguration < ApplicationRecord
   def validate_host_format
     return if host == 'localhost'
 
-    return unless host.include?(' ') || host.include?('_') || (host =~ /[A-Z]/)
+    return unless host.exclude?('.') || host.include?(' ') || host.include?('_') || (host =~ /[A-Z]/)
 
     errors.add(
       :host,
