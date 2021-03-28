@@ -150,7 +150,7 @@ RSpec.configure do |config|
 
   config.before(:each) do
     DatabaseCleaner.start # Start transaction for this test
-    Apartment::Tenant.switch! 'example_org' if CitizenLab.ee? # Switch into the default tenant
+    Apartment::Tenant.switch!('example_org') if CitizenLab.ee? # Switch into the default tenant
   end
 
   config.after(:each) do
