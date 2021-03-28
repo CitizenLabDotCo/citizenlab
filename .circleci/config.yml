@@ -317,7 +317,7 @@ jobs:
           docker-compose up -d
       - run: |
           cd citizenlab-ee/e2e
-          docker-compose run front npm run cypress:run -- --config baseUrl=http://e2e-front:3000
+          docker-compose run front npm run cypress:run -- --config baseUrl=http://e2e.front:3000
 
 
 workflows:
