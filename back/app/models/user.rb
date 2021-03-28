@@ -3,7 +3,7 @@ class User < ApplicationRecord
   include Onboarding::UserDecorator
   include Polls::UserDecorator
   include Volunteering::UserDecorator
-  include PgSearch
+  include PgSearch::Model
 
   GENDERS = %w(male female unspecified)
   INVITE_STATUSES = %w(pending accepted)
