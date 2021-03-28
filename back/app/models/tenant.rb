@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# required for db:schema:load
-unless defined?(Tenant)
-  class Tenant < ApplicationRecord; end
+# Tenant must be defined in the core to run +db:schema:load+.
+class Tenant < ApplicationRecord
+  include_if_ee('MultiTenancy::Tenant')
 end
