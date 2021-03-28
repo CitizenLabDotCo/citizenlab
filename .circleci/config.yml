@@ -318,7 +318,7 @@ jobs:
           docker-compose up -d
       - run: |
           cd citizenlab-ee/e2e
-          docker-compose run front npm run -n cypress_run cypress:run -- --config baseUrl=http://e2e.front:3000
+          docker-compose run --name cypress_run front npm run cypress:run -- --config baseUrl=http://e2e.front:3000
       - run:
           command: docker cp cypress_run:/front/cypress/screenshots .
           when: always
