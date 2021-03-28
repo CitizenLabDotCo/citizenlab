@@ -144,18 +144,15 @@ gem 'rack-attack', '~> 6'
 gem 'intercom', '~> 4.1'
 gem 'mjml-rails', '~> 4.4'
 
-
-if ['1', 'true'].include?(ENV['CITIZENLAB_EE'])
-  # This branch must be used because the latest version (2.1.1)
-  # requires activerecord < 6.0.
-  gem 'apartment', github: 'influitive/apartment', branch: 'development'
-end
-
 require 'json'
 cl_config = JSON.load(File.new('../citizenlab.config.json'))
 if File.exists?('../citizenlab.config.ee.json')
   cl_config_ee = JSON.load(File.new('../citizenlab.config.ee.json'))
   cl_config["modules"] = cl_config["modules"].merge(cl_config_ee["modules"])
+
+  # This branch must be used because the latest version (2.1.1)
+  # requires activerecord < 6.0.
+  gem 'apartment', github: 'influitive/apartment', branch: 'development'
 end
  
 cl_config["modules"].each do |m, enabled|
