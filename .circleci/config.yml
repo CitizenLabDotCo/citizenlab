@@ -108,7 +108,7 @@ commands:
         type: string
     steps:
       - run:
-          when: on_failure
+          when: on_fail
           command: |
             curl \
               -u "$GITHUB_USER":"$GITHUB_TOKEN"
