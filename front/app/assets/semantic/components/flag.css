@@ -8,7 +8,6 @@
  *
  */
 
-
 /*******************************
              Flag
 *******************************/
@@ -24,20 +23,18 @@ i.flag:not(.icon) {
   speak: none;
   font-smoothing: antialiased;
   -webkit-backface-visibility: hidden;
-          backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
 /* Sprite */
 i.flag:not(.icon):before {
   display: inline-block;
   content: '';
-  background: url("./../themes/default/assets/images/flags.png") no-repeat -108px -1976px;
+  background: url('./../themes/default/assets/images/flags.png') no-repeat -108px -1976px;
   width: 16px;
   height: 11px;
 }
 
-
 /*******************************
          Site Overrides
 *******************************/
-

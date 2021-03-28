@@ -8,11 +8,9 @@
  *
  */
 
-
 /*******************************
             Container
 *******************************/
-
 
 /* All Sizes */
 .ui.container {
@@ -46,13 +44,13 @@
     margin-right: auto !important;
   }
   .ui.grid.container {
-    width: calc( 723px  +  2rem ) !important;
+    width: calc(723px + 2rem) !important;
   }
   .ui.relaxed.grid.container {
-    width: calc( 723px  +  3rem ) !important;
+    width: calc(723px + 3rem) !important;
   }
   .ui.very.relaxed.grid.container {
-    width: calc( 723px  +  5rem ) !important;
+    width: calc(723px + 5rem) !important;
   }
 }
 
@@ -64,13 +62,13 @@
     margin-right: auto !important;
   }
   .ui.grid.container {
-    width: calc( 933px  +  2rem ) !important;
+    width: calc(933px + 2rem) !important;
   }
   .ui.relaxed.grid.container {
-    width: calc( 933px  +  3rem ) !important;
+    width: calc(933px + 3rem) !important;
   }
   .ui.very.relaxed.grid.container {
-    width: calc( 933px  +  5rem ) !important;
+    width: calc(933px + 5rem) !important;
   }
 }
 
@@ -82,21 +80,19 @@
     margin-right: auto !important;
   }
   .ui.grid.container {
-    width: calc( 1127px  +  2rem ) !important;
+    width: calc(1127px + 2rem) !important;
   }
   .ui.relaxed.grid.container {
-    width: calc( 1127px  +  3rem ) !important;
+    width: calc(1127px + 3rem) !important;
   }
   .ui.very.relaxed.grid.container {
-    width: calc( 1127px  +  5rem ) !important;
+    width: calc(1127px + 5rem) !important;
   }
 }
-
 
 /*******************************
              Types
 *******************************/
-
 
 /* Text Container */
 .ui.text.container {
@@ -113,29 +109,26 @@
   width: 100%;
 }
 
-
 /*******************************
            Variations
 *******************************/
 
-.ui[class*="left aligned"].container {
+.ui[class*='left aligned'].container {
   text-align: left;
 }
-.ui[class*="center aligned"].container {
+.ui[class*='center aligned'].container {
   text-align: center;
 }
-.ui[class*="right aligned"].container {
+.ui[class*='right aligned'].container {
   text-align: right;
 }
 .ui.justified.container {
   text-align: justify;
   -webkit-hyphens: auto;
-      -ms-hyphens: auto;
-          hyphens: auto;
+  -ms-hyphens: auto;
+  hyphens: auto;
 }
-
 
 /*******************************
          Site Overrides
 *******************************/
-
