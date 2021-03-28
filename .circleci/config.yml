@@ -140,7 +140,7 @@ jobs:
   back-build-ee-docker-image:
     working_directory: /
     docker:
-      - image: docker:stable-git
+      - image: cimg/base:2021.03
     steps:
       - echo_pipeline_parameters
       - pending_citizenlab_github_status:
@@ -218,7 +218,7 @@ jobs:
   back-push-deployment-docker-image:
     resource_class: small
     docker:
-      - image: docker:stable-git
+      - image: cimg/base:2021.03
     steps:
       - echo_pipeline_parameters
       - setup_remote_docker
