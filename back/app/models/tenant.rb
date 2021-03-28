@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
-class Tenant < ApplicationRecord
-  # required for db:schema:load
+# required for db:schema:load
+unless defined?(Tenant)
+  class Tenant < ApplicationRecord; end
 end
