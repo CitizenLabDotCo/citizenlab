@@ -11,5 +11,15 @@ FactoryBot.define do
       "en" => "This idea has been presented to the mayor",
       "nl-BE" => "Het idee werd voorgesteld aan de burgemeester"
     }}
+
+    factory :idea_status_proposed do
+      code { 'proposed' }
+      title_multiloc { {'en' => 'proposed'} }
+    end
+
+    factory :idea_status_accepted do
+      code { 'accepted' }
+      title_multiloc { {'en' => 'accepted'} }
+    end
   end
 end
