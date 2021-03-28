@@ -98,10 +98,7 @@ commands:
               -X POST \
               -H "Accept: application/vnd.github.v3+json" \
               https://api.github.com/repos/citizenlabdotco/citizenlab/statuses/<< pipeline.parameters.citizenlab_sha >> \
-              -d '{"state": "pending", \
-                    "description": "EE: << parameters.description >>", \
-                    "context": "CircleCI citizenlab-ee", \
-                    "target_url": "'"$CIRCLE_BUILD_URL"'"}'
+              -d '{"state": "pending", "description": "EE: << parameters.description >>","context": "CircleCI citizenlab-ee","target_url": "'"$CIRCLE_BUILD_URL"'"}'
 
   final_citizenlab_github_status:
     parameters:
