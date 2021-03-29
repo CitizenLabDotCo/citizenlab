@@ -40,25 +40,6 @@ resource "Idea Custom Fields" do
       end
     end
 
-    # patch "web_api/v1/projects/:project_id/custom_fields/:id" do
-    #   with_options scope: :custom_field do
-    #     parameter :description_multiloc, "An optional description of the field, as shown to users, in multiple locales", required: false
-    #   end
-    #   ValidationErrorHelper.new.error_fields(self, CustomField)
-
-    #   let(:custom_form) { create(:custom_form) }
-    #   let(:project) { create(:project, custom_form: custom_form) }
-    #   let(:project_id) { project.id }
-    #   let(:id) { create(:custom_field, resource: custom_form).id }
-    #   let(:description_multiloc) { {"en" => "New description"} }
-
-    #   example_request "Update a custom field" do
-    #     expect(response_status).to eq 200
-    #     json_response = json_parse(response_body)
-    #     expect(json_response.dig(:data,:attributes,:description_multiloc).stringify_keys).to match description_multiloc
-    #   end
-    # end
-
     patch "web_api/v1/projects/:project_id/custom_fields/by_code/:code" do
       with_options scope: :custom_field do
         parameter :required, "Whether filling out the field is mandatory", required: false
