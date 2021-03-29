@@ -116,7 +116,6 @@ function getRegularExpression(tabUrl: string) {
 
 const DashboardTabs = memo<Props & WithRouterProps>(
   ({ children, tabs, location }) => {
-
     return (
       <>
         {tabs &&

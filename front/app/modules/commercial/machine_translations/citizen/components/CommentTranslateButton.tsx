@@ -6,14 +6,14 @@ import FeatureFlag from 'components/FeatureFlag';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
+import messages from 'components/PostShowComponents/Comments/messages';
 
 // events
-import { commentTranslateButtonClicked } from './events';
+import { commentTranslateButtonClicked } from 'components/PostShowComponents/Comments/events';
 
 // analytics
 import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
+import tracks from 'components/PostShowComponents/Comments/tracks';
 
 // style
 import styled from 'styled-components';
@@ -107,4 +107,7 @@ const CommentTranslateButton = memo<Props>(
   }
 );
 
-export default CommentTranslateButton;
+export default styled(CommentTranslateButton)`
+  height: 30px;
+  margin-top: 6px;
+`;

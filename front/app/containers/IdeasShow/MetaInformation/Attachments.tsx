@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import Attachment from './Attachment';
 import useResourceFiles from 'hooks/useResourceFiles';
-import { Header, Item } from './';
+import { Header, Item } from 'components/IdeasShowComponents/MetaInfoStyles';
 import { isNilOrError } from 'utils/helperUtils';
 
 // i18n

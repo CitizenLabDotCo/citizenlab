@@ -13,14 +13,12 @@ import Avatar from 'components/Avatar';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
+import messages from 'containers/UsersEditPage/messages';
 
 // styling
 import styled from 'styled-components';
 import { fontSizes, colors, media } from 'utils/styleUtils';
 import { darken } from 'polished';
-
-// events
 import { openVerificationModal } from 'components/Verification/verificationModalEvents';
 
 const Container = styled(FormSection)`
