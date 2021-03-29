@@ -13,7 +13,7 @@ import Avatar from 'components/Avatar';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../../../../containers/UsersEditPage/messages';
+import messages from 'containers/UsersEditPage/messages';
 
 // styling
 import styled from 'styled-components';
