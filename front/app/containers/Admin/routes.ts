@@ -111,14 +111,6 @@ export default () => ({
       }),
     },
     {
-      path: 'dashboard/insights/:clusteringId',
-      component: Loadable({
-        loader: () => import('./dashboard/clusterings/Show'),
-        loading: LoadableLoadingAdmin,
-        delay: 500,
-      }),
-    },
-    {
       path: 'guide',
       component: Loadable({
         loader: () => import('containers/Admin/guide'),

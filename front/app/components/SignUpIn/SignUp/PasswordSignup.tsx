@@ -423,6 +423,21 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
     }
   };
 
+  get emailErrors() {
+    const { tenant } = this.props;
+    const { apiErrors } = this.state;
+
+    return get(apiErrors, 'json.errors.email')?.map((error) => ({
+      ...error,
+      payload: {
+        supportEmail: isNilOrError(tenant)
+          ? 'support@citizenlab.co'
+          : tenant?.attributes?.settings?.core?.reply_to_email ||
+            'support@citizenlab.co',
+      },
+    }));
+  }
+
   render() {
     const {
       tenant,
@@ -585,10 +600,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
                 autocomplete="email"
                 setRef={this.handleEmailInputSetRef}
               />
-              <Error
-                fieldName={'email'}
-                apiErrors={get(apiErrors, 'json.errors.email')}
-              />
+              <Error fieldName={'email'} apiErrors={this.emailErrors} />
             </FormElement>
 
             <FormElement id="e2e-password-container">

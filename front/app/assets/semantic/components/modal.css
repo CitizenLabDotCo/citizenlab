@@ -8,7 +8,6 @@
  *
  */
 
-
 /*******************************
              Modal
 *******************************/
@@ -17,20 +16,22 @@
   display: none;
   z-index: 1001;
   text-align: left;
-  background: #FFFFFF;
+  background: #ffffff;
   border: none;
-  -webkit-box-shadow: 1px 3px 3px 0px rgba(0, 0, 0, 0.2), 1px 3px 15px 2px rgba(0, 0, 0, 0.2);
-          box-shadow: 1px 3px 3px 0px rgba(0, 0, 0, 0.2), 1px 3px 15px 2px rgba(0, 0, 0, 0.2);
+  -webkit-box-shadow: 1px 3px 3px 0px rgba(0, 0, 0, 0.2),
+    1px 3px 15px 2px rgba(0, 0, 0, 0.2);
+  box-shadow: 1px 3px 3px 0px rgba(0, 0, 0, 0.2),
+    1px 3px 15px 2px rgba(0, 0, 0, 0.2);
   -webkit-transform-origin: 50% 25%;
-          transform-origin: 50% 25%;
+  transform-origin: 50% 25%;
   -webkit-box-flex: 0;
-      -ms-flex: 0 0 auto;
-          flex: 0 0 auto;
+  -ms-flex: 0 0 auto;
+  flex: 0 0 auto;
   border-radius: 0.28571429rem;
   -webkit-user-select: text;
-     -moz-user-select: text;
-      -ms-user-select: text;
-          user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
   will-change: top, left, margin, transform, opacity;
 }
 .ui.modal > :first-child:not(.icon),
@@ -43,11 +44,9 @@
   border-bottom-right-radius: 0.28571429rem;
 }
 
-
 /*******************************
             Content
 *******************************/
-
 
 /*--------------
      Close
@@ -61,7 +60,7 @@
   z-index: 1;
   opacity: 0.8;
   font-size: 1.25em;
-  color: #FFFFFF;
+  color: #ffffff;
   width: 2.25rem;
   height: 2.25rem;
   padding: 0.625rem 0rem 0rem 0rem;
@@ -76,12 +75,12 @@
 
 .ui.modal > .header {
   display: block;
-  font-family: 'larsseit', 'Helvetica Neue', Arial, Helvetica, sans-serif;
-  background: #FFFFFF;
+  font-family: 'Public Sans', 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  background: #ffffff;
   margin: 0em;
   padding: 1.25rem 1.5rem;
   -webkit-box-shadow: none;
-          box-shadow: none;
+  box-shadow: none;
   color: rgba(0, 0, 0, 0.85);
   border-bottom: 1px solid rgba(34, 36, 38, 0.15);
 }
@@ -101,7 +100,7 @@
   font-size: 1em;
   line-height: 1.4;
   padding: 1.5rem;
-  background: #FFFFFF;
+  background: #ffffff;
 }
 .ui.modal > .image.content {
   display: -webkit-box;
@@ -109,48 +108,48 @@
   display: flex;
   -webkit-box-orient: horizontal;
   -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
 }
 
 /* Image */
 .ui.modal > .content > .image {
   display: block;
   -webkit-box-flex: 0;
-      -ms-flex: 0 1 auto;
-          flex: 0 1 auto;
+  -ms-flex: 0 1 auto;
+  flex: 0 1 auto;
   width: '';
   -ms-flex-item-align: top;
-      align-self: top;
+  align-self: top;
 }
-.ui.modal > [class*="top aligned"] {
+.ui.modal > [class*='top aligned'] {
   -ms-flex-item-align: top;
-      align-self: top;
+  align-self: top;
 }
-.ui.modal > [class*="middle aligned"] {
+.ui.modal > [class*='middle aligned'] {
   -ms-flex-item-align: middle;
-      align-self: middle;
+  align-self: middle;
 }
-.ui.modal > [class*="stretched"] {
+.ui.modal > [class*='stretched'] {
   -ms-flex-item-align: stretch;
-      align-self: stretch;
+  align-self: stretch;
 }
 
 /* Description */
 .ui.modal > .content > .description {
   display: block;
   -webkit-box-flex: 1;
-      -ms-flex: 1 0 auto;
-          flex: 1 0 auto;
+  -ms-flex: 1 0 auto;
+  flex: 1 0 auto;
   min-width: 0px;
   -ms-flex-item-align: top;
-      align-self: top;
+  align-self: top;
 }
 .ui.modal > .content > .icon + .description,
 .ui.modal > .content > .image + .description {
   -webkit-box-flex: 0;
-      -ms-flex: 0 1 auto;
-          flex: 0 1 auto;
+  -ms-flex: 0 1 auto;
+  flex: 0 1 auto;
   min-width: '';
   width: auto;
   padding-left: 2em;
@@ -169,7 +168,7 @@
 ---------------*/
 
 .ui.modal > .actions {
-  background: #F9FAFB;
+  background: #f9fafb;
   padding: 1rem 1rem;
   border-top: 1px solid rgba(34, 36, 38, 0.15);
   text-align: right;
@@ -181,7 +180,6 @@
 /*-------------------
        Responsive
 --------------------*/
-
 
 /* Modal Width */
 @media only screen and (max-width: 767px) {
@@ -245,8 +243,8 @@
   .ui.modal .image.content {
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
-        -ms-flex-direction: column;
-            flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
   }
   .ui.modal .content > .image {
     display: block;
@@ -266,10 +264,10 @@
     margin: 0em !important;
     padding: 1rem 0rem !important;
     -webkit-box-shadow: none;
-            box-shadow: none;
+    box-shadow: none;
   }
-  
-/* Let Buttons Stack */
+
+  /* Let Buttons Stack */
   .ui.modal > .actions {
     padding: 1rem 1rem 0rem !important;
   }
@@ -285,9 +283,8 @@
 
 .ui.inverted.dimmer > .ui.modal {
   -webkit-box-shadow: 1px 3px 10px 2px rgba(0, 0, 0, 0.2);
-          box-shadow: 1px 3px 10px 2px rgba(0, 0, 0, 0.2);
+  box-shadow: 1px 3px 10px 2px rgba(0, 0, 0, 0.2);
 }
-
 
 /*******************************
              Types
@@ -298,8 +295,8 @@
   border: none;
   border-radius: 0em;
   -webkit-box-shadow: none !important;
-          box-shadow: none !important;
-  color: #FFFFFF;
+  box-shadow: none !important;
+  color: #ffffff;
 }
 .ui.basic.modal > .header,
 .ui.basic.modal > .content,
@@ -307,7 +304,7 @@
   background-color: transparent;
 }
 .ui.basic.modal > .header {
-  color: #FFFFFF;
+  color: #ffffff;
 }
 .ui.basic.modal > .close {
   top: 1rem;
@@ -323,10 +320,9 @@
 /* Tablet and Mobile */
 @media only screen and (max-width: 991px) {
   .ui.basic.modal > .close {
-    color: #FFFFFF;
+    color: #ffffff;
   }
 }
-
 
 /*******************************
              States
@@ -341,19 +337,16 @@
   display: block;
 }
 
-
 /*******************************
            Variations
 *******************************/
-
 
 /*--------------
    Top Aligned
 ---------------*/
 
-
 /* Top Aligned Modal */
-.modals.dimmer[class*="top aligned"] .modal {
+.modals.dimmer[class*='top aligned'] .modal {
   margin: 5vh auto;
 }
 
@@ -361,15 +354,14 @@
     Scrolling
 ---------------*/
 
-
 /* Scrolling Dimmer */
 .scrolling.dimmable.dimmed {
   overflow: hidden;
 }
 .scrolling.dimmable > .dimmer {
   -webkit-box-pack: start;
-      -ms-flex-pack: start;
-          justify-content: flex-start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
 }
 .scrolling.dimmable.dimmed > .dimmer {
   overflow: auto;
@@ -577,8 +569,6 @@
   }
 }
 
-
 /*******************************
          Site Overrides
 *******************************/
-

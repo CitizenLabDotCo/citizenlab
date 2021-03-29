@@ -1,37 +1,5 @@
 class WebApi::V1::NotificationsController < ApplicationController
-
   # This mapping is needed to serialize a collection (of notifications) of different types.
-  MODEL_TO_SERIALIZER = {
-    ::Notifications::AdminRightsReceived                   => WebApi::V1::Notifications::AdminRightsReceivedSerializer,
-    ::Notifications::CommentDeletedByAdmin                 => WebApi::V1::Notifications::CommentDeletedByAdminSerializer,
-    ::Notifications::CommentMarkedAsSpam                   => WebApi::V1::Notifications::CommentMarkedAsSpamSerializer,
-    ::Notifications::CommentOnYourComment                  => WebApi::V1::Notifications::CommentOnYourCommentSerializer,
-    ::Notifications::CommentOnYourIdea                     => WebApi::V1::Notifications::CommentOnYourIdeaSerializer,
-    ::Notifications::CommentOnYourInitiative               => WebApi::V1::Notifications::CommentOnYourInitiativeSerializer,
-    ::Notifications::IdeaAssignedToYou                     => WebApi::V1::Notifications::IdeaAssignedToYouSerializer,
-    ::Notifications::IdeaMarkedAsSpam                      => WebApi::V1::Notifications::IdeaMarkedAsSpamSerializer,
-    ::Notifications::InitiativeAssignedToYou               => WebApi::V1::Notifications::InitiativeAssignedToYouSerializer,
-    ::Notifications::InitiativeMarkedAsSpam                => WebApi::V1::Notifications::InitiativeMarkedAsSpamSerializer,
-    ::Notifications::InviteAccepted                        => WebApi::V1::Notifications::InviteAcceptedSerializer,
-    ::Notifications::MentionInComment                      => WebApi::V1::Notifications::MentionInCommentSerializer,
-    ::Notifications::MentionInOfficialFeedback             => WebApi::V1::Notifications::MentionInOfficialFeedbackSerializer,
-    ::Notifications::OfficialFeedbackOnCommentedIdea       => WebApi::V1::Notifications::OfficialFeedbackOnCommentedIdeaSerializer,
-    ::Notifications::OfficialFeedbackOnCommentedInitiative => WebApi::V1::Notifications::OfficialFeedbackOnCommentedInitiativeSerializer,
-    ::Notifications::OfficialFeedbackOnVotedIdea           => WebApi::V1::Notifications::OfficialFeedbackOnVotedIdeaSerializer,
-    ::Notifications::OfficialFeedbackOnVotedInitiative     => WebApi::V1::Notifications::OfficialFeedbackOnVotedInitiativeSerializer,
-    ::Notifications::OfficialFeedbackOnYourIdea            => WebApi::V1::Notifications::OfficialFeedbackOnYourIdeaSerializer,
-    ::Notifications::OfficialFeedbackOnYourInitiative      => WebApi::V1::Notifications::OfficialFeedbackOnYourInitiativeSerializer,
-    ::Notifications::ProjectModerationRightsReceived       => WebApi::V1::Notifications::ProjectModerationRightsReceivedSerializer,
-    ::Notifications::ProjectPhaseStarted                   => WebApi::V1::Notifications::ProjectPhaseStartedSerializer,
-    ::Notifications::ProjectPhaseUpcoming                  => WebApi::V1::Notifications::ProjectPhaseUpcomingSerializer,
-    ::Notifications::StatusChangeOfYourIdea                => WebApi::V1::Notifications::StatusChangeOfYourIdeaSerializer,
-    ::Notifications::StatusChangeOfYourInitiative          => WebApi::V1::Notifications::StatusChangeOfYourInitiativeSerializer,
-    ::Notifications::StatusChangeOnCommentedIdea           => WebApi::V1::Notifications::StatusChangeOnCommentedIdeaSerializer,
-    ::Notifications::StatusChangeOnCommentedInitiative     => WebApi::V1::Notifications::StatusChangeOnCommentedInitiativeSerializer,
-    ::Notifications::StatusChangeOnVotedIdea               => WebApi::V1::Notifications::StatusChangeOnVotedIdeaSerializer,
-    ::Notifications::StatusChangeOnVotedInitiative         => WebApi::V1::Notifications::StatusChangeOnVotedInitiativeSerializer,
-    ::Notifications::ThresholdReachedForAdmin              => WebApi::V1::Notifications::ThresholdReachedForAdminSerializer
-  }
 
   before_action :set_notification, only: [:show, :mark_read]
   before_action do
@@ -51,10 +19,10 @@ class WebApi::V1::NotificationsController < ApplicationController
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
     render json: linked_json(
-      @notifications, 
-      WebApi::V1::Notifications::NotificationSerializer, 
+      @notifications,
+      WebApi::V1::Notifications::NotificationSerializer,
       params: fastjson_params,
-      serializers: MODEL_TO_SERIALIZER
+      serializers: NotificationToSerializerMapper.map
       )
   end
 
@@ -66,10 +34,10 @@ class WebApi::V1::NotificationsController < ApplicationController
 
     if @notifications.update_all(read_at: Time.now)
       render json: WebApi::V1::Notifications::NotificationSerializer.new(
-        Notification.find(ids), 
+        Notification.find(ids),
         params: fastjson_params,
-        serializers: MODEL_TO_SERIALIZER,
-        ).serialized_json 
+        serializers: NotificationToSerializerMapper.map,
+        ).serialized_json
     else
       head 500
     end
@@ -77,18 +45,18 @@ class WebApi::V1::NotificationsController < ApplicationController
 
   def show
     render json: WebApi::V1::Notifications::NotificationSerializer.new(
-      @notification, 
+      @notification,
       params: fastjson_params,
-      serializers: MODEL_TO_SERIALIZER,
+      serializers: NotificationToSerializerMapper.map,
       ).serialized_json
   end
 
   def mark_read
     if @notification.update(read_at: Time.now)
       render json: WebApi::V1::Notifications::NotificationSerializer.new(
-        @notification, 
+        @notification,
         params: fastjson_params,
-        serializers: MODEL_TO_SERIALIZER,
+        serializers: NotificationToSerializerMapper.map,
         ).serialized_json, status: :ok
     else
       head 500

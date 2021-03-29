@@ -11,19 +11,19 @@ import Tippy from '@tippyjs/react';
 
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
-import useMapConfig from 'hooks/useMapConfig';
+import useMapConfig from '../../../hooks/useMapConfig';
 
 // services
 import {
   createProjectMapConfig,
   updateProjectMapConfig,
-} from 'services/mapConfigs';
+} from '../../../services/mapConfigs';
 
 // events
 import { setMapLatLngZoom, mapCenter$, mapZoom$ } from 'components/Map/events';
 
 // utils
-import { getCenter, getZoomLevel, getTileProvider } from 'utils/map';
+import { getCenter, getZoomLevel, getTileProvider } from '../../../utils/map';
 import { isNilOrError } from 'utils/helperUtils';
 
 // i18n

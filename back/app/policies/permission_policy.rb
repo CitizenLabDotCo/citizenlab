@@ -21,7 +21,6 @@ class PermissionPolicy < ApplicationPolicy
   end
 
   def participation_conditions?
-    true # or user&.active?
+    true
   end
-
 end
