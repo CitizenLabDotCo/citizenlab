@@ -1,15 +1,15 @@
 require "rails_helper"
 
-describe IdeaCustomFieldService do
-  let(:service) { IdeaCustomFieldService.new }
+describe IdeaCustomFieldsService do
+  let(:service) { described_class.new }
 
-  describe "db_and_built_in_fields" do
+  describe "all_fields" do
 
     it "overrides built in custom fields with database custom fields by code" do
       custom_form = create(:custom_form)
       cf1 = create(:custom_field, resource: custom_form, code: 'title')
       cf2 = create(:custom_field, resource: custom_form, code: nil)
-      output = service.db_and_built_in_fields(custom_form)
+      output = service.all_fields(custom_form)
       expect(output).to include cf1
       expect(output).to include cf2
       expect(output.map(&:code)).to match_array [
@@ -26,7 +26,7 @@ describe IdeaCustomFieldService do
 
     it "outputs valid custom fields" do
       custom_form = create(:custom_form)
-      expect(service.db_and_built_in_fields(custom_form)).to all(be_valid)
+      expect(service.all_fields(custom_form)).to all(be_valid)
     end
 
     it "doesn't return anything outside of the passed custom_fields_scope" do
@@ -34,7 +34,7 @@ describe IdeaCustomFieldService do
       cf1 = create(:custom_field, resource: custom_form)
       cf2 = create(:custom_field, resource: custom_form)
       custom_fields_scope = CustomField.where(id: cf1)
-      output = service.db_and_built_in_fields(custom_form, custom_fields_scope: custom_fields_scope)
+      output = service.all_fields(custom_form, custom_fields_scope: custom_fields_scope)
       expect(output.size).to be > 1
       expect(output).not_to include(cf2)
     end
@@ -42,7 +42,7 @@ describe IdeaCustomFieldService do
     it "takes the order of the built-in fields" do
       custom_form = create(:custom_form)
       cf1 = create(:custom_field, resource: custom_form, code: 'location')
-      output = service.db_and_built_in_fields(custom_form)
+      output = service.all_fields(custom_form)
       expect(output).to include cf1
       expect(output.map(&:code)).to eq [
         'title',
@@ -54,7 +54,5 @@ describe IdeaCustomFieldService do
         'attachments',
       ]
     end
-
   end
-
 end

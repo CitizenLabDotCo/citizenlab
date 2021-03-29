@@ -3,8 +3,8 @@ import {
   ideaCustomFieldStream,
   IIdeaCustomField,
   IIdeaCustomFieldData,
-  CustomFieldCodes,
-} from 'services/ideaCustomFields';
+} from '../services/ideaCustomFields';
+import { CustomFieldCodes } from 'services/ideaCustomFieldsSchemas';
 import { Observable, of } from 'rxjs';
 import { isNilOrError } from 'utils/helperUtils';
 
