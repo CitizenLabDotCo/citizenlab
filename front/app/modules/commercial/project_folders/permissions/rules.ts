@@ -3,7 +3,7 @@ import {
   definePermissionRule,
   IRouteItem,
 } from 'services/permissions/permissions';
-import { isProjectFolderModerator } from './roles';
+import { isProjectFolderModerator, moderatesFolder } from './roles';
 import { isAdmin } from 'services/permissions/roles';
 import {
   canAccessRoute,
@@ -56,6 +56,6 @@ definePermissionRule(
   'project_folder',
   'moderate',
   (folder: IProjectFolderData, user: IUser) => {
-    return isProjectFolderModerator(user.data, folder.id);
+    return moderatesFolder(user.data, folder.id);
   }
 );

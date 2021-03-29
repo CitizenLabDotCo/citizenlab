@@ -62,7 +62,12 @@ resource "Stats - Votes" do
   context "with dependency on custom_fields" do
     before(:all) do
       Apartment::Tenant.switch!('example_org')
-      TenantTemplateService.new.resolve_and_apply_template('base', external_subfolder: false)
+
+      create(:custom_field_birthyear)
+      create(:custom_field_gender, :with_options)
+      create(:custom_field_domicile)
+      create(:custom_field_education, :with_options)
+
       CustomField.find_by(code: 'education').update(enabled: true)
     end
 

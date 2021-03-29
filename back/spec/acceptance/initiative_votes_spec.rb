@@ -11,10 +11,17 @@ resource 'Votes' do
     token = Knock::AuthToken.new(payload: @user.to_token_payload).token
     header 'Authorization', "Bearer #{token}"
     header 'Content-Type', 'application/json'
+
+    @status_proposed = create(:initiative_status_proposed)
+    @status_expired = create(:initiative_status_expired)
+    @status_threshold_reached = create(:initiative_status_threshold_reached)
+    @status_answered = create(:initiative_status_answered)
+    @status_ineligible = create(:initiative_status_ineligible)
+
     @initiative = create(:initiative)
-    TenantTemplateService.new.resolve_and_apply_template 'base', external_subfolder: false
+
     @initiative.initiative_status_changes.create!(
-      initiative_status: InitiativeStatus.find_by(code: 'proposed')
+      initiative_status: @status_proposed
     )
     @votes = create_list(:vote, 2, votable: @initiative, mode: 'up')
   end
@@ -68,7 +75,7 @@ resource 'Votes' do
 
       do_request
       expect(response_status).to eq 201
-      expect(@initiative.reload.initiative_status.code).to eq 'threshold_reached'
+      expect(@initiative.reload.initiative_status).to eq @status_threshold_reached
     end
   end
 

@@ -17,13 +17,18 @@ describe InitiativeStatusService do
         success_stories: []
       }
       configuration.save!
-      TenantTemplateService.new.resolve_and_apply_template 'base', external_subfolder: false
+
+      @status_proposed = create(:initiative_status_proposed)
+      @status_expired = create(:initiative_status_expired)
+      @status_threshold_reached = create(:initiative_status_threshold_reached)
+      @status_answered = create(:initiative_status_answered)
+      @status_ineligible = create(:initiative_status_ineligible)
     end
 
     it "transitions when voting threshold was reached" do 
       create(
         :initiative_status_change, 
-        initiative: @initiative, initiative_status: InitiativeStatus.find_by(code: 'proposed')
+        initiative: @initiative, initiative_status: @status_proposed
         )
       create_list(:vote, 3, votable: @initiative, mode: 'up')
 
@@ -35,7 +40,7 @@ describe InitiativeStatusService do
     it "transitions when expired" do 
       create(
         :initiative_status_change, 
-        initiative: @initiative, initiative_status: InitiativeStatus.find_by(code: 'proposed')
+        initiative: @initiative, initiative_status: @status_proposed
         )
 
       travel_to (Time.now + 22.days) do
@@ -47,7 +52,7 @@ describe InitiativeStatusService do
     it "remains proposed if not expired nor threshold reached" do 
       create(
         :initiative_status_change, 
-        initiative: @initiative, initiative_status: InitiativeStatus.find_by(code: 'proposed')
+        initiative: @initiative, initiative_status: @status_proposed
         )
       create_list(:vote, 1, votable: @initiative, mode: 'up')
 
@@ -61,15 +66,19 @@ describe InitiativeStatusService do
 
   describe "transition_type" do
     before do
-      TenantTemplateService.new.resolve_and_apply_template 'base', external_subfolder: false
+      @status_proposed = create(:initiative_status_proposed)
+      @status_expired = create(:initiative_status_expired)
+      @status_threshold_reached = create(:initiative_status_threshold_reached)
+      @status_answered = create(:initiative_status_answered)
+      @status_ineligible = create(:initiative_status_ineligible)
     end
 
     it "labels the threshold_reached status as automatic" do
-      expect(service.transition_type(InitiativeStatus.find_by(code: 'threshold_reached'))).to eq 'automatic'
+      expect(service.transition_type(@status_threshold_reached)).to eq 'automatic'
     end
 
     it "labels the ineligible status as manual" do
-      expect(service.transition_type(InitiativeStatus.find_by(code: 'ineligible'))).to eq 'manual'
+      expect(service.transition_type(@status_ineligible)).to eq 'manual'
     end
   end
 end

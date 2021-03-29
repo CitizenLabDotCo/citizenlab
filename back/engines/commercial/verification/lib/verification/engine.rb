@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+
 # rubocop:disable Lint/SuppressedException
 begin
   require 'factory_bot_rails'
@@ -22,6 +23,11 @@ module Verification
 
     config.to_prepare do
       ::Verification::Engine.register_feature
+
+      if defined? SmartGroups
+        require 'verification/smart_groups/rules/verified'
+        ::SmartGroups::RulesService.add_rule(::Verification::SmartGroups::Rules::Verified)
+      end
     end
   end
 end

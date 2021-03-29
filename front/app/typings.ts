@@ -18,14 +18,6 @@ declare global {
   }
 }
 
-export interface ITab {
-  label: string;
-  url: string;
-  active?: boolean;
-  feature?: string;
-  name: string;
-}
-
 export interface IRelationship {
   id: string;
   type: string;
@@ -69,7 +61,7 @@ export interface ITab {
   name: string;
   label: string;
   url: string;
-  active?: boolean;
+  active?: boolean | ((pathname: string) => boolean);
   feature?: string;
 }
 
