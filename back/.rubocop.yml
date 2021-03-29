@@ -13,13 +13,20 @@ AllCops:
   - '**/bin/**/*'
 
 Metrics/BlockLength:
-  ExcludedMethods: ['describe', 'context', 'shared_examples']
+  ExcludedMethods: ['describe', 'context', 'shared_examples', 'class_eval']
   Enabled: true
   Exclude:
   - '**/spec/**/*'
   - 'db/migrate/**/*'
   # Max: 25
 Metrics/MethodLength:
+  IgnoredMethods: ['included', 'prepended', 'extended']
+  Enabled: true
+  Exclude:
+  - 'db/migrate/**/*'
+  # Max: 10
+Metrics/AbcSize:
+  IgnoredMethods: ['included', 'prepended', 'extended']
   Enabled: true
   Exclude:
   - 'db/migrate/**/*'

@@ -8,7 +8,6 @@
  *
  */
 
-
 /*******************************
             Accordion
 *******************************/
@@ -66,16 +65,16 @@
   -webkit-transition: opacity 0.1s ease, -webkit-transform 0.1s ease;
   transition: opacity 0.1s ease, -webkit-transform 0.1s ease;
   transition: transform 0.1s ease, opacity 0.1s ease;
-  transition: transform 0.1s ease, opacity 0.1s ease, -webkit-transform 0.1s ease;
+  transition: transform 0.1s ease, opacity 0.1s ease,
+    -webkit-transform 0.1s ease;
   vertical-align: baseline;
   -webkit-transform: none;
-          transform: none;
+  transform: none;
 }
 
 /*--------------
     Coupling
 ---------------*/
-
 
 /* Menu */
 .ui.accordion.menu .item .title {
@@ -86,7 +85,7 @@
   float: right;
   margin: 0.21425em 0em 0em 1em;
   -webkit-transform: rotate(180deg);
-          transform: rotate(180deg);
+  transform: rotate(180deg);
 }
 
 /* Header */
@@ -95,7 +94,6 @@
   margin: 0em 0.25rem 0em 0rem;
 }
 
-
 /*******************************
             States
 *******************************/
@@ -103,18 +101,16 @@
 .ui.accordion .active.title .dropdown.icon,
 .ui.accordion .accordion .active.title .dropdown.icon {
   -webkit-transform: rotate(90deg);
-          transform: rotate(90deg);
+  transform: rotate(90deg);
 }
 .ui.accordion.menu .item .active.title > .dropdown.icon {
   -webkit-transform: rotate(90deg);
-          transform: rotate(90deg);
+  transform: rotate(90deg);
 }
-
 
 /*******************************
             Types
 *******************************/
-
 
 /*--------------
      Styled
@@ -126,9 +122,11 @@
 .ui.styled.accordion,
 .ui.styled.accordion .accordion {
   border-radius: 0.28571429rem;
-  background: #FFFFFF;
-  -webkit-box-shadow: 0px 1px 2px 0 rgba(34, 36, 38, 0.15), 0px 0px 0px 1px rgba(34, 36, 38, 0.15);
-          box-shadow: 0px 1px 2px 0 rgba(34, 36, 38, 0.15), 0px 0px 0px 1px rgba(34, 36, 38, 0.15);
+  background: #ffffff;
+  -webkit-box-shadow: 0px 1px 2px 0 rgba(34, 36, 38, 0.15),
+    0px 0px 0px 1px rgba(34, 36, 38, 0.15);
+  box-shadow: 0px 1px 2px 0 rgba(34, 36, 38, 0.15),
+    0px 0px 0px 1px rgba(34, 36, 38, 0.15);
 }
 .ui.styled.accordion .title,
 .ui.styled.accordion .accordion .title {
@@ -180,11 +178,9 @@
   color: rgba(0, 0, 0, 0.95);
 }
 
-
 /*******************************
             States
 *******************************/
-
 
 /*--------------
      Active
@@ -195,11 +191,9 @@
   display: block;
 }
 
-
 /*******************************
            Variations
 *******************************/
-
 
 /*--------------
      Fluid
@@ -218,8 +212,6 @@
   color: rgba(255, 255, 255, 0.9);
 }
 
-
 /*******************************
         User Overrides
 *******************************/
-

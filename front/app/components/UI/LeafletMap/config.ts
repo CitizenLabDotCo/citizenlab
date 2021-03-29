@@ -15,7 +15,8 @@ export const DEFAULT_BOUND_CONFIG: L.FitBoundsOptions = {
   padding: [50, 50],
 };
 
-export const DEFAULT_TILE_PROVIDER = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+export const DEFAULT_TILE_PROVIDER =
+  'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
 
 export const DEFAULT_TILE_OPTIONS = {
   tileSize: 512,
@@ -24,5 +25,6 @@ export const DEFAULT_TILE_OPTIONS = {
   maxZoom: 20,
   crossOrigin: true,
   subdomains: ['a', 'b', 'c'],
-  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+  attribution:
+    '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
 };

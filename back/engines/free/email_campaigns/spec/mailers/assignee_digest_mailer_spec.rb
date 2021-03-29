@@ -1,10 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe EmailCampaigns::AssigneeDigestMailer, type: :mailer do
-  describe 'AssigneeDigest' do
+  describe 'AssigneeDigest', skip: !CitizenLab.ee? do
     let!(:recipient) { create(:admin, locale: 'en') }
     let!(:campaign) { EmailCampaigns::Campaigns::AssigneeDigest.create! }
-    
+
     let(:assigned_at) { Time.now }
     let(:ideas) { create_list(:assigned_idea, 3, assigned_at: assigned_at) }
     let(:initiatives) { create_list(:assigned_initiative, 3, assigned_at: assigned_at) }

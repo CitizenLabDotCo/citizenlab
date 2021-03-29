@@ -27,7 +27,8 @@ export const getAppConfigurationData = (attributes = {}): IAppConfigurationData 
           color_secondary: '#551122',
           color_text: '#222222',
           currency: 'EUR',
-          segment_destinations_blacklist: null
+          segment_destinations_blacklist: null,
+          reply_to_email: 'not-support@citizenlab.co'
         },
         participatory_budgeting: {
           allowed: true,
