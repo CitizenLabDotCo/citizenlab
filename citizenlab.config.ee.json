@@ -6,6 +6,7 @@
     "commercial/custom_maps": true,
     "commercial/custom_style": true,
     "commercial/custom_topics": true,
+    "commercial/clusterings": true,
     "commercial/geographic_dashboard": true,
     "commercial/google_analytics": true,
     "commercial/google_tag_manager": true,
