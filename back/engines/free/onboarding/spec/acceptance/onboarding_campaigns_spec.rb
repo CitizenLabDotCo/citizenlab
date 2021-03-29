@@ -15,7 +15,7 @@ resource "Onboarding campaigns" do
 
   get "web_api/v1/onboarding_campaigns/current" do
 
-    response_field :name, "One of #{Onboarding::OnboardingService::CAMPAIGNS.join(' or ')}", scope: :attributes
+    response_field :name, "One of #{Onboarding::OnboardingService.campaigns.join(' or ')}", scope: :attributes
 
     context "for a user with an incomplete profile" do
       example_request "Get the current onboarding campaign" do
