@@ -13,8 +13,8 @@ module IdeaCustomFields
           scope.all
         elsif user&.project_moderator?
           scope
-            .joins("LEFT JOIN custom_forms ON custom_fields.resource_id = custom_forms.id")
-            .joins("LEFT JOIN projects ON projects.custom_form_id = custom_forms.id")
+            .joins("LEFT JOIN idea_custom_fields_custom_forms ON custom_fields.resource_id = idea_custom_fields_custom_forms.id")
+            .joins("LEFT JOIN projects ON projects.idea_custom_fields_custom_form_id = idea_custom_fields_custom_forms.id")
             .where("projects.id" => ProjectPolicy::Scope.new(user, Project).moderatable)
         else
           scope.none
