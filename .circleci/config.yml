@@ -137,6 +137,18 @@ jobs:
       - run: apt-get -y install awscli
       - run: aws s3 sync doc/api s3://developers.citizenlab.co/api-docs/essential/frontweb_api/$CIRCLE_BRANCH --delete --acl public-read
 
+  back-release-essential-image:
+    resource_class: small
+    docker:
+      - image: cimg/base:2021.03
+    steps:
+      - setup_remote_docker
+      - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
+      - run: docker pull citizenlabdotco/back-essential:$CIRCLE_SHA1
+      - run: docker tag citizenlabdotco/back-essential:$CIRCLE_SHA1 citizenlabdotco/back-essential
+      - deploy:
+          command: docker push citizenlabdotco/back-essential
+
   # *************** front ***************
 
   front-test:
@@ -254,6 +266,16 @@ jobs:
       - run: git diff --quiet app/translations && git diff --staged --quiet app/translations || git commit -m "Translations updated by CI (extract-intl)"
       - run: git push origin $CIRCLE_BRANCH
 
+  front-release-essential-image:
+    docker:
+      - image: cimg/base:2021.03
+    steps:
+      - setup_remote_docker
+      - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
+      - run: |
+          docker build -t citizenlabdotco/front-essential -f front/Dockerfile .
+      - deploy:
+          command: docker push citizenlabdotco/front-essential
 
 workflows:
   version: 2
@@ -266,6 +288,7 @@ workflows:
             branches:
               ignore:
                 - crowdin_master
+                - production
 
   private-ci:
     when:
@@ -332,7 +355,6 @@ workflows:
                 - crowdin_master
                 - /l10n_.*/
                 - master
-                - production
       - front-license-check:
           filters:
             branches:
@@ -346,7 +368,6 @@ workflows:
                 - crowdin_master
                 - /l10n_.*/
                 - master
-                - production
       - front-extract-intl:
           filters:
             branches:
@@ -355,3 +376,85 @@ workflows:
                 - /l10n_.*/
                 - master
                 - production
+
+  # *************** release ***************
+
+  release:
+    jobs:
+      - front-test:
+          filters:
+            branches:
+              only:
+                - production
+                - OS-187-deployment
+      - front-lint:
+          filters:
+            branches:
+              only:
+                - production
+                - OS-187-deployment
+      - front-license-check:
+          filters:
+            branches:
+              only:
+                - production
+                - OS-187-deployment
+      - front-build:
+          filters:
+            branches:
+              only:
+                - production
+                - OS-187-deployment
+      - back-build-essential-docker-image:
+          context: docker-hub-access
+          filters:
+            branches:
+              only:
+                - production
+                - OS-187-deployment
+      - back-test:
+          context: docker-hub-access
+          requires:
+            - back-build-essential-docker-image
+          filters:
+            branches:
+              only:
+                - production
+                - OS-187-deployment
+      - back-license-check:
+          context: docker-hub-access
+          requires:
+            - back-build-essential-docker-image
+          filters:
+            branches:
+              only:
+                - production
+                - OS-187-deployment
+      - front-release-essential-image:
+          context: docker-hub-access
+          requires:
+            - front-test
+            - front-license-check
+            - front-build
+            - front-lint
+            - back-test
+            - back-license-check
+          filters:
+            branches:
+              only:
+                - production
+                - OS-187-deployment
+      - back-release-essential-image:
+          context: docker-hub-access
+          requires:
+            - front-test
+            - front-license-check
+            - front-build
+            - front-lint
+            - back-test
+            - back-license-check
+          filters:
+            branches:
+              only:
+                - production
+                - OS-187-deployment
