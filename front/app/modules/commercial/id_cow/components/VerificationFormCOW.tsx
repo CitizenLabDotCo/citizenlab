@@ -20,7 +20,7 @@ import {
   SubmitButton,
   CancelButton,
   HelpImage,
-} from 'components/Verification/styles';
+} from 'modules/commercial/verification/citizen/components/styles';
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';

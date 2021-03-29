@@ -83,6 +83,16 @@ PATH
       custom_style
       graphql (~> 1.8.0)
       kaminari (~> 1.2)
+      multi_tenancy
+      rails (~> 6.0.0)
+
+PATH
+  remote: engines/commercial/clusterings
+  specs:
+    clusterings (0.1.0)
+      apartment (~> 2.2.1)
+      nlp
+      pundit (~> 2.0)
       rails (~> 6.0.0)
 
 PATH
@@ -937,6 +947,7 @@ DEPENDENCIES
   byebug
   carrierwave (~> 2.2.0)
   carrierwave-base64 (~> 2.8.1)
+  clusterings!
   counter_culture (~> 2.8)
   custom_idea_statuses!
   custom_maps!

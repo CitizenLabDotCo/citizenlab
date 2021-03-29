@@ -13,7 +13,6 @@ import messages from './messages';
 import ProfileForm from './ProfileForm';
 import CampaignsConsentForm from './CampaignsConsentForm';
 import ProfileDeletion from './ProfileDeletion';
-import VerificationStatus from './VerificationStatus';
 import UsersEditPageMeta from './UsersEditPageMeta';
 import FragmentForm from './FragmentForm';
 
@@ -25,6 +24,7 @@ import { ScreenReaderOnly } from 'utils/a11y';
 // Hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
 import useAuthUser from 'hooks/useAuthUser';
+import Outlet from 'components/Outlet';
 
 const Container = styled.main`
   width: 100%;
@@ -62,7 +62,7 @@ export default () => {
           />
         </ScreenReaderOnly>
         <Wrapper>
-          <VerificationStatus />
+          <Outlet id="app.containers.UserEditPage.content" />
           <ProfileForm />
           <FragmentForm />
           <ProfileDeletion />

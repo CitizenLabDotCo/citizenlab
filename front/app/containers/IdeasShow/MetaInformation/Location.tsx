@@ -7,7 +7,7 @@ import { isNilOrError } from 'utils/helperUtils';
 // components
 import { Icon, colors } from 'cl2-component-library';
 import ModalWithMap from './ModalWithMap';
-import { Header, Item } from './';
+import { Header, Item } from 'components/IdeasShowComponents/MetaInfoStyles';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
