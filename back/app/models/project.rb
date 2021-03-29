@@ -187,5 +187,10 @@ end
 Project.include(ProjectPermissions::Patches::Project)
 Project.include_if_ee('CustomMaps::Extensions::Project')
 Project.prepend_if_ee('ProjectFolders::Patches::Project')
+<<<<<<< HEAD
 Project.include_if_ee('IdeaAssignment::Extensions::Project')
 Project.include_if_ee('IdeaCustomFields::Extensions::Project')
+=======
+Project.include_if_ee('IdeaCustomFields::Extensions::Project')
+Project.include_if_ee('IdeaAssignment::Extensions::Project')
+>>>>>>> 0d9878bf9121ce4006fadc9fcc71d8472bc28860
