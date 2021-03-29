@@ -5,6 +5,7 @@ module IdeaCustomFields
         base.class_eval do
           belongs_to :custom_form,
                      class_name: 'IdeaCustomFields::CustomForm',
+                     foreign_key: 'idea_custom_fields_custom_form_id',
                      optional: true,
                      dependent: :destroy
         end

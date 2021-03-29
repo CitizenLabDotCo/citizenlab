@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_29_093406) do
+ActiveRecord::Schema.define(version: 2021_03_29_115031) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -177,11 +177,6 @@ ActiveRecord::Schema.define(version: 2021_03_29_093406) do
     t.index ["resource_type", "resource_id"], name: "index_custom_fields_on_resource_type_and_resource_id"
   end
 
-  create_table "custom_forms", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-  end
-
   create_table "email_campaigns_campaign_email_commands", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "campaign"
     t.uuid "recipient_id"
@@ -314,6 +309,11 @@ ActiveRecord::Schema.define(version: 2021_03_29_093406) do
   create_table "id_id_card_lookup_id_cards", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "hashed_card_id"
     t.index ["hashed_card_id"], name: "index_id_id_card_lookup_id_cards_on_hashed_card_id"
+  end
+
+  create_table "idea_custom_fields_custom_forms", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "idea_files", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -802,11 +802,11 @@ ActiveRecord::Schema.define(version: 2021_03_29_093406) do
     t.integer "comments_count", default: 0, null: false
     t.uuid "default_assignee_id"
     t.boolean "poll_anonymous", default: false, null: false
-    t.uuid "custom_form_id"
+    t.uuid "idea_custom_fields_custom_form_id"
     t.boolean "downvoting_enabled", default: true, null: false
     t.string "ideas_order"
     t.string "input_term", default: "idea"
-    t.index ["custom_form_id"], name: "index_projects_on_custom_form_id"
+    t.index ["idea_custom_fields_custom_form_id"], name: "index_projects_on_idea_custom_fields_custom_form_id"
     t.index ["slug"], name: "index_projects_on_slug", unique: true
   end
 
