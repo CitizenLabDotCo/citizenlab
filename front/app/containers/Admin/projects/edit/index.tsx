@@ -63,16 +63,6 @@ interface ITracks {
   clickNewIdea: ({ extra: object }) => void;
 }
 
-export interface ProjectTabOptions<T> {
-  tabOptions: T;
-  tabHideConditions: {
-    [tabName: string]: (
-      project: IProjectData,
-      phases: IPhaseData[] | null
-    ) => boolean;
-  };
-}
-
 export interface InputProps {}
 
 interface DataProps {
@@ -320,14 +310,10 @@ export class AdminProjectEdition extends PureComponent<
   };
 
   handleData = (
-    insertTabOptions: ProjectTabOptions<InsertConfigurationOptions<ITab>>
+    insertTabOptions: InsertConfigurationOptions<ITab>
   ) => {
-    this.setState(({ tabs, tabHideConditions }) => ({
-      tabs: insertConfiguration(insertTabOptions.tabOptions)(tabs),
-      tabHideConditions: {
-        ...tabHideConditions,
-        ...insertTabOptions.tabHideConditions,
-      },
+    this.setState(({ tabs }) => ({
+      tabs: insertConfiguration(insertTabOptions)(tabs),
     }));
   };
 
