@@ -12,7 +12,7 @@ import { userHasRole } from 'services/permissions/roles';
 import {
   isProjectFolderModerator,
   moderatesFolder,
-} from 'modules/project_folders/permissions/roles';
+} from 'modules/commercial/project_folders/permissions/roles';
 import { onProjectFormStateChange } from 'containers/Admin/projects/edit/general';
 
 // components
