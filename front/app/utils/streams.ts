@@ -33,8 +33,7 @@ import stringify from 'json-stable-stringify';
 import { reportError } from 'utils/loggingUtils';
 import { isUUID } from 'utils/helperUtils';
 
-// TO FIX : close streams via lifecycle
-import { userCustomFieldsSchemaApiEndpoint } from 'modules/commercial/user_custom_fields/services/userCustomFields';
+import modules from 'modules';
 
 export type pureFn<T> = (arg: T) => T;
 type fetchFn = () => Promise<any>;
@@ -96,11 +95,13 @@ class Streams {
     const promises: Promise<any>[] = [];
     const promisesToAwait: Promise<any>[] = [];
 
+    console.log(modules.streamsToReset);
+
     Object.keys(this.streams).forEach((streamId) => {
       if (
         streamId === authApiEndpoint ||
         streamId === currentAppConfigurationEndpoint ||
-        streamId === userCustomFieldsSchemaApiEndpoint
+        modules.streamsToReset.includes(streamId)
       ) {
         promisesToAwait.push(this.streams[streamId].fetch());
       } else if (this.isActiveStream(streamId)) {

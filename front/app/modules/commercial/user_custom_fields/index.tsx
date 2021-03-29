@@ -9,6 +9,7 @@ import CustomFieldsStep from './citizen/components/CustomFieldsStep';
 import UserCustomFieldsForm from './citizen/components/UserCustomFieldsForm';
 import useUserCustomFieldsSchema from './hooks/useUserCustomFieldsSchema';
 import RegistrationQuestions from './admin/components/RegistrationQuestions';
+import { userCustomFieldsSchemaApiEndpoint } from './services/userCustomFields';
 
 const RenderOnCustomFields = ({ children }) => {
   const userCustomFieldsSchema = useUserCustomFieldsSchema();
@@ -23,6 +24,7 @@ const RenderOnCustomFields = ({ children }) => {
 };
 
 const configuration: ModuleConfiguration = {
+  streamsToReset: [userCustomFieldsSchemaApiEndpoint],
   routes: {
     admin: [
       {
