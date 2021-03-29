@@ -9,6 +9,7 @@ FactoryBot.define do
       "nl-BE" => "<p>Hoe voelen de mensen zich?</p><p>Wat is de levensverwachting?</p>"
     }}
     icon { "medical" }
+    code { Topic::DEFAULT_CODES.first }
 
     factory :topic_nature do
       title_multiloc {{ 'en' => 'Nature' }}
