@@ -1,7 +1,7 @@
 require "rails_helper"
 
-describe IdeaCustomFieldService do
-  let(:service) { IdeaCustomFieldService.new }
+describe IdeaCustomFieldsService do
+  let(:service) { IdeaCustomFieldsService.new }
 
   describe "all_fields" do
 
