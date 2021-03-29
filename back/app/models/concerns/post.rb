@@ -1,7 +1,7 @@
 require 'active_support/concern'
 
 module Post
-  include PgSearch
+  include PgSearch::Model
   extend ActiveSupport::Concern
 
   MAX_TITLE_LEN = 80
