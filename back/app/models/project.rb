@@ -23,7 +23,6 @@ class Project < ApplicationRecord
   has_many :project_files, -> { order(:ordering) }, dependent: :destroy
   before_destroy :remove_notifications
   has_many :notifications, foreign_key: :project_id, dependent: :nullify
-  belongs_to :default_assignee, class_name: 'User', optional: true
 
   has_one :admin_publication, as: :publication, dependent: :destroy
   accepts_nested_attributes_for :admin_publication, update_only: true
@@ -89,6 +88,10 @@ class Project < ApplicationRecord
 
   scope :ordered, -> {
     includes(:admin_publication).order('admin_publications.ordering')
+  }
+
+  scope :not_draft, lambda {
+    includes(:admin_publication).where.not(admin_publications: { publication_status: 'draft' })
   }
 
   def moderators
@@ -181,7 +184,8 @@ class Project < ApplicationRecord
   end
 end
 
+Project.include(ProjectPermissions::Patches::Project)
 Project.include_if_ee('CustomMaps::Extensions::Project')
 Project.prepend_if_ee('ProjectFolders::Patches::Project')
-Project.include_if_ee('ProjectPermissions::Patches::Project')
+Project.include_if_ee('IdeaAssignment::Extensions::Project')
 Project.include_if_ee('IdeaCustomFields::Extensions::Project')

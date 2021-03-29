@@ -26,7 +26,7 @@ resource "Ideas" do
     parameter :projects, 'Filter by projects (OR)', required: false
     parameter :phase, 'Filter by project phase', required: false
     parameter :author, 'Filter by author (user id)', required: false
-    parameter :assignee, 'Filter by assignee (user id)', required: false
+    parameter :assignee, 'Filter by assignee (user id)', required: false if CitizenLab.ee?
     parameter :idea_status, 'Filter by status (idea status id)', required: false
     parameter :search, 'Filter by searching in title and body', required: false
     parameter :sort, "Either 'new', '-new', 'trending', '-trending', 'popular', '-popular', 'author_name', '-author_name', 'upvotes_count', '-upvotes_count', 'downvotes_count', '-downvotes_count', 'status', '-status', 'baskets_count', '-baskets_count', 'random'", required: false
@@ -192,14 +192,16 @@ resource "Ideas" do
       expect(json_response[:data][0][:id]).to eq i.id
     end
 
-    example "List all ideas for an assignee" do
-      a = create(:admin)
-      i = create(:idea, assignee: a)
+    if CitizenLab.ee?
+      example "List all ideas for an assignee" do
+        a = create(:admin)
+        i = create(:idea, assignee: a)
 
-      do_request assignee: a.id
-      json_response = json_parse(response_body)
-      expect(json_response[:data].size).to eq 1
-      expect(json_response[:data][0][:id]).to eq i.id
+        do_request assignee: a.id
+        json_response = json_parse(response_body)
+        expect(json_response[:data].size).to eq 1
+        expect(json_response[:data][0][:id]).to eq i.id
+      end
     end
 
     example "List all ideas that need feedback" do
@@ -231,17 +233,6 @@ resource "Ideas" do
       expect(json_response[:data][0][:id]).to eq i1.id
     end
 
-    example "List all ideas sorted by baskets count", document: false do
-      i1 = create(:idea)
-      baskets = create_list(:basket, 3, ideas: [i1])
-      SideFxBasketService.new.update_basket_counts
-
-      do_request sort: "-baskets_count"
-      json_response = json_parse(response_body)
-      expect(json_response[:data].size).to eq 6
-      expect(json_response[:data][0][:id]).to eq i1.id
-    end
-
     example "List all ideas by random ordering", document: false do
       i1 = create(:idea)
 
@@ -249,7 +240,6 @@ resource "Ideas" do
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 6
     end
-
 
     example "List all ideas includes the user_vote", document: false do
       vote = create(:vote, user: @user)
@@ -298,7 +288,7 @@ resource "Ideas" do
     parameter :projects, 'Filter by projects (OR)', required: false
     parameter :phase, 'Filter by project phase', required: false
     parameter :author, 'Filter by author (user id)', required: false
-    parameter :assignee, 'Filter by assignee (user id)', required: false
+    parameter :assignee, 'Filter by assignee (user id)', required: false if CitizenLab.ee?
     parameter :idea_status, 'Filter by status (idea status id)', required: false
     parameter :search, 'Filter by searching in title and body', required: false
     parameter :publication_status, "Return only ideas with the specified publication status; returns all pusblished ideas by default", required: false
@@ -486,7 +476,7 @@ resource "Ideas" do
     parameter :projects, 'Filter by projects (OR)', required: false
     parameter :phase, 'Filter by project phase', required: false
     parameter :author, 'Filter by author (user id)', required: false
-    parameter :assignee, 'Filter by assignee (user id)', required: false
+    parameter :assignee, 'Filter by assignee (user id)', required: false if CitizenLab.ee?
     parameter :idea_status, 'Filter by status (idea status id)', required: false
     parameter :search, 'Filter by searching in title and body', required: false
     parameter :publication_status, "Return only ideas with the specified publication status; returns all pusblished ideas by default", required: false
@@ -536,7 +526,7 @@ resource "Ideas" do
     example_request "Get one idea by id" do
       expect(status).to eq 200
       json_response = json_parse(response_body)
-      
+
       expect(json_response.dig(:data, :id)).to eq idea.id
       expect(json_response.dig(:data, :type)).to eq 'idea'
       expect(json_response.dig(:data, :attributes)).to include(
@@ -588,7 +578,7 @@ resource "Ideas" do
       parameter :project_id, "The identifier of the project that hosts the idea", extra: ""
       parameter :phase_ids, "The phases the idea is part of, defaults to the current only, only allowed by admins"
       parameter :author_id, "The user id of the user owning the idea", extra: "Required if not draft"
-      parameter :assignee_id, "The user id of the admin/moderator that takes ownership. Set automatically if not provided. Only allowed for admins/moderators."
+      parameter :assignee_id, "The user id of the admin/moderator that takes ownership. Set automatically if not provided. Only allowed for admins/moderators." if CitizenLab.ee?
       parameter :idea_status_id, "The status of the idea, only allowed for admins", extra: "Defaults to status with code 'proposed'"
       parameter :publication_status, "Publication status", required: true, extra: "One of #{Post::PUBLICATION_STATUSES.join(",")}"
       parameter :title_multiloc, "Multi-locale field with the idea title", required: true, extra: "Maximum 100 characters"
@@ -761,7 +751,7 @@ resource "Ideas" do
       parameter :project_id, "The idea of the project that hosts the idea", extra: ""
       parameter :phase_ids, "The phases the idea is part of, defaults to the current only, only allowed by admins"
       parameter :author_id, "The user id of the user owning the idea", extra: "Required if not draft"
-      parameter :assignee_id, "The user id of the admin/moderator that takes ownership. Only allowed for admins/moderators."
+      parameter :assignee_id, "The user id of the admin/moderator that takes ownership. Only allowed for admins/moderators." if CitizenLab.ee?
       parameter :idea_status_id, "The status of the idea, only allowed for admins"
       parameter :publication_status, "Either #{Post::PUBLICATION_STATUSES.join(', ')}"
       parameter :title_multiloc, "Multi-locale field with the idea title", extra: "Maximum 100 characters"
@@ -833,14 +823,16 @@ resource "Ideas" do
       end
     end
 
-    describe do
-      let(:assignee_id) { create(:admin).id }
+    if CitizenLab.ee?
+      describe do
+        let(:assignee_id) { create(:admin).id }
 
-      example "Changing the assignee as a non-admin does not work", document: false do
-        do_request
-        expect(status).to be 200
-        json_response = json_parse(response_body)
-        expect(json_response.dig(:data,:relationships,:assignee)).to be_nil
+        example "Changing the assignee as a non-admin does not work", document: false do
+          do_request
+          expect(status).to be 200
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data,:relationships,:assignee)).to be_nil
+        end
       end
     end
 
@@ -873,13 +865,15 @@ resource "Ideas" do
         end
       end
 
-      describe do
-        let(:assignee_id) { create(:admin).id }
+      if CitizenLab.ee?
+        describe do
+          let(:assignee_id) { create(:admin).id }
 
-        example_request "Change the assignee (as an admin)" do
-          expect(status).to be 200
-          json_response = json_parse(response_body)
-          expect(json_response.dig(:data,:relationships,:assignee,:data,:id)).to eq assignee_id
+          example_request "Change the assignee (as an admin)" do
+            expect(status).to be 200
+            json_response = json_parse(response_body)
+            expect(json_response.dig(:data,:relationships,:assignee,:data,:id)).to eq assignee_id
+          end
         end
       end
 
@@ -979,13 +973,15 @@ resource "Ideas" do
         end
       end
 
-      describe do
-        let(:assignee_id) { create(:admin).id }
+      if CitizenLab.ee?
+        describe do
+          let(:assignee_id) { create(:admin).id }
 
-        example_request "Change the assignee (as a moderator)" do
-          expect(status).to be 200
-          json_response = json_parse(response_body)
-          expect(json_response.dig(:data,:relationships,:assignee,:data,:id)).to eq assignee_id
+          example_request "Change the assignee (as a moderator)" do
+            expect(status).to be 200
+            json_response = json_parse(response_body)
+            expect(json_response.dig(:data,:relationships,:assignee,:data,:id)).to eq assignee_id
+          end
         end
       end
     end

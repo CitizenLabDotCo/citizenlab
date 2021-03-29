@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_19_161957) do
+ActiveRecord::Schema.define(version: 2021_03_29_093406) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -42,6 +42,8 @@ ActiveRecord::Schema.define(version: 2021_03_19_161957) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "depth", default: 0, null: false
+    t.boolean "children_allowed", default: true, null: false
+    t.integer "children_count", default: 0, null: false
     t.index ["depth"], name: "index_admin_publications_on_depth"
     t.index ["lft"], name: "index_admin_publications_on_lft"
     t.index ["ordering"], name: "index_admin_publications_on_ordering"
