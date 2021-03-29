@@ -1,0 +1,22 @@
+<!-- Idea description box -->
+<mj-section padding="0 25px 25px"
+            background-color="#fff"
+            border-radius="5px"
+            text-align="left">
+  <mj-column border="1px solid #eaeaea" padding="20px 25px" background-color="#fff" border-radius="5px">
+    <mj-text>
+      <h2 style="font-size: 18px; margin-top: 10px; margin-bottom: 10px;">
+        <%= localize_for_recipient(event.post_title_multiloc) %>
+      </h2>
+      <p style="margin-top: 10px; color: #84939E;">
+        <%= format_message('by_author', values: { authorName: event.post_author_name }) %>
+      </p>
+      <p style="margin-top: 10px; color: #84939E;">
+        <%= localize_for_recipient(event.post_body_multiloc).html_safe %>
+      </p>
+    </mj-text>
+  </mj-column>
+</mj-section>
+
+
+<%= render partial: 'application/cta_button', locals: { href: url_service.admin_ideas_url, message: format_message('cta_reply_to', values: { authorName: event.post_author_name }) } %>

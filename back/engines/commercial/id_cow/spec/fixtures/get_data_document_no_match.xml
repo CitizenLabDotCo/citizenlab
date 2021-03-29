@@ -1,0 +1,7 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+  <soap:Body xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+    <ns2:GetDataDocumentResponse xmlns:ns2="http://tempuri.org/COW/type/">
+      <ns2:EstadoRespuesta>301</ns2:EstadoRespuesta>
+    </ns2:GetDataDocumentResponse>
+  </soap:Body>
+</soapenv:Envelope>
