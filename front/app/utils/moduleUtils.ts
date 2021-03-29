@@ -39,6 +39,12 @@ import { ManagerType } from 'components/admin/PostManager';
 import { IdeaCellComponentProps } from 'components/admin/PostManager/components/PostTable/IdeaRow';
 import { IdeaHeaderCellComponentProps } from 'components/admin/PostManager/components/PostTable/IdeaHeaderRow';
 import { IVerificationMethod } from 'services/verificationMethods';
+import { GetInitiativeChildProps } from 'resources/GetInitiative';
+import { GetLocaleChildProps } from 'resources/GetLocale';
+import { ICommentData } from 'services/comments';
+import { GetAppConfigurationLocalesChildProps } from 'resources/GetAppConfigurationLocales';
+import { GetWindowSizeChildProps } from 'resources/GetWindowSize';
+import { GetIdeaChildProps } from 'resources/GetIdea';
 import {
   IOnboardingCampaignNames,
   IOnboardingCampaigns,
@@ -208,6 +214,52 @@ export type OutletsPropertyMap = {
     onVerified: () => void;
     showHeader?: boolean;
     inModal: boolean;
+  };
+  'app.components.PostShowComponents.ActionBar.right': {
+    translateButtonClicked: boolean;
+    onClick: () => void;
+    initiative: GetInitiativeChildProps;
+    locale: GetLocaleChildProps;
+  };
+  'app.components.PostShowComponents.CommentFooter.left': {
+    comment: ICommentData;
+    locale: GetLocaleChildProps;
+    tenantLocales: GetAppConfigurationLocalesChildProps;
+  };
+  'app.containers.InitiativesShow.left': {
+    windowSize: GetWindowSizeChildProps;
+    translateButtonClicked: boolean;
+    onClick: () => void;
+    initiative: GetInitiativeChildProps;
+    locale: GetLocaleChildProps;
+  };
+  'app.containers.IdeasShow.left': {
+    translateButtonClicked: boolean;
+    onClick: () => void;
+    idea: GetIdeaChildProps;
+    locale: GetLocaleChildProps;
+  };
+  'app.components.PostShowComponents.CommentBody.translation': {
+    translateButtonClicked: boolean;
+    commentContent: string;
+    locale: GetLocaleChildProps;
+    commentId: string;
+  };
+  'app.components.PostShowComponents.Body.translation': {
+    postId: string;
+    body: string;
+    locale: GetLocaleChildProps;
+    translateButtonClicked?: boolean;
+    postType: 'idea' | 'initiative';
+  };
+  'app.components.PostShowComponents.Title.translation': {
+    postId: string;
+    postType: 'idea' | 'initiative';
+    title: string;
+    locale?: GetLocaleChildProps;
+    translateButtonClicked?: boolean;
+    color?: string;
+    align: 'left' | 'center';
   };
   'app.containers.UserEditPage.content': {};
   'app.containers.Navbar.UserMenu.UserNameContainer': {
