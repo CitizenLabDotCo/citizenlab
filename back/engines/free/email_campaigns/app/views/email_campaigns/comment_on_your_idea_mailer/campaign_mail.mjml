@@ -1,0 +1,20 @@
+
+  <mj-section
+    padding="25px"
+    text-align="left">
+    <mj-column border-radius="5px" background-color="#F2F6F8" padding="25px" vertical-align="middle" >
+      <mj-text font-size="14px">
+        <%= format_message('commented', values: {
+          authorFirstName: "<span style=\"font-weight:bold; color: #000;\">
+            #{event.initiating_user_first_name&.upcase}
+          </span>"
+        }).html_safe %>
+        <p style="margin: 15px 0 0;">
+          <%= localize_for_recipient(event.comment_body_multiloc)[0..140]&.html_safe %>
+        </p>
+      </mj-text>
+    </mj-column>
+  </mj-section>
+
+  <!-- CTA button -->
+  <%= render partial: 'application/cta_button', locals: { href: event.comment_url, message: format_message('cta_reply_to', values: {commentAuthor: event.initiating_user_first_name&.capitalize}) } %>
