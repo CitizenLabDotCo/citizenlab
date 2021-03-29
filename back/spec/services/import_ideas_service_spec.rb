@@ -6,7 +6,13 @@ describe ImportIdeasService do
   let(:project_without_phases) { create(:project) }
 
   before do
-    TenantTemplateService.new.resolve_and_apply_template 'base', external_subfolder: false
+    create(:idea_status_proposed)
+    create(:topic_nature)
+    create(:topic_waste)
+    create(:topic_sustainability)
+    create(:topic_mobility)
+    create(:topic_technology)
+    create(:topic_economy)
     create_list(:user, 5)
   end
 
@@ -22,7 +28,7 @@ describe ImportIdeasService do
     it "aborts successfully" do
       idea_data = generate_idea_data(6)
       idea_data[3][:user_email] = 'nonexistinguser@citizenlab.co'
-      expect { service.import_ideas(idea_data) }.to raise_error
+      expect { service.import_ideas(idea_data) }.to raise_error(RuntimeError)
       expect(Idea.count).to eq(0)
     end
 

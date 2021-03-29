@@ -273,23 +273,6 @@ gem 'blorgh', path: 'engines/blorgh'
 10. If needed, create a `bin` folder with in it the desired binaries (e.g. `rake`).
 
 
-## Adding smart group rules
-
-1. Create your smart group rule in `lib/smart_group_rules`.
-
-2. Add your new rule to `RULE_TYPE_TO_CLASS` in `app/services/smart_groups_service.rb`.
-
-3. Add a spec to `spec/lib/smart_group_rules/`.
-
-4. Add your rule to `spec/models/group_spec.rb`.
-
-5. Add rule descriptions by overriding `description_value`, `description_rule_type` and `description_property` as desired, and by adding translations under the `smart_group_rules` key.
-
-6. Add specs for the rule descriptions in the spec file you created in `spec/lib/smart_group_rules/`.
-
-7. Create a frontend task to support the new smart groups rule.
-
-
 ## Running the profiler
 
 1. Run the backend

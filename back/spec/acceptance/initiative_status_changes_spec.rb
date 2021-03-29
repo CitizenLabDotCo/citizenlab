@@ -56,10 +56,15 @@ resource "InitiativeStatusChange" do
       token = Knock::AuthToken.new(payload: { sub: @user.id }).token
       header 'Authorization', "Bearer #{token}"
 
-      TenantTemplateService.new.resolve_and_apply_template 'base', external_subfolder: false
+      @status_proposed = create(:initiative_status_proposed)
+      @status_expired = create(:initiative_status_expired)
+      @status_threshold_reached = create(:initiative_status_threshold_reached)
+      @status_answered = create(:initiative_status_answered)
+      @status_ineligible = create(:initiative_status_ineligible)
+
       create(
         :initiative_status_change, 
-        initiative: @initiative, initiative_status: InitiativeStatus.find_by(code: 'threshold_reached')
+        initiative: @initiative, initiative_status: @status_threshold_reached
         )
     end
 
@@ -76,7 +81,7 @@ resource "InitiativeStatusChange" do
       ValidationErrorHelper.new.error_fields(self, InitiativeStatusChange)
 
       let(:initiative_id) { @initiative.id }
-      let(:initiative_status_id) { InitiativeStatus.find_by(code: 'answered').id }
+      let(:initiative_status_id) { @status_answered.id }
       let(:feedback) { build(:official_feedback) }
       let(:body_multiloc) { feedback.body_multiloc }
       let(:author_multiloc) { feedback.author_multiloc }
@@ -109,7 +114,7 @@ resource "InitiativeStatusChange" do
       end
 
       describe do
-        let(:initiative_status_id) { InitiativeStatus.find_by(code: 'expired').id }
+        let(:initiative_status_id) { @status_expired.id }
 
         example_request "[error] Create a status change through an invalid transition" do
           expect(response_status).to eq 422
@@ -119,7 +124,7 @@ resource "InitiativeStatusChange" do
       end
 
       describe do
-        let(:initiative_status_id) { InitiativeStatus.find_by(code: 'threshold_reached').id }
+        let(:initiative_status_id) { @status_threshold_reached.id }
 
         example_request "[error] Create a status change to the same status" do
           expect(response_status).to eq 422
@@ -136,10 +141,15 @@ resource "InitiativeStatusChange" do
       token = Knock::AuthToken.new(payload: { sub: @user.id }).token
       header 'Authorization', "Bearer #{token}"
 
-      TenantTemplateService.new.resolve_and_apply_template 'base', external_subfolder: false
+      @status_proposed = create(:initiative_status_proposed)
+      @status_expired = create(:initiative_status_expired)
+      @status_threshold_reached = create(:initiative_status_threshold_reached)
+      @status_answered = create(:initiative_status_answered)
+      @status_ineligible = create(:initiative_status_ineligible)
+
       create(
         :initiative_status_change, 
-        initiative: @initiative, initiative_status: InitiativeStatus.find_by(code: 'threshold_reached')
+        initiative: @initiative, initiative_status: @status_threshold_reached
         )
     end
 
@@ -156,7 +166,7 @@ resource "InitiativeStatusChange" do
       ValidationErrorHelper.new.error_fields(self, InitiativeStatusChange)
 
       let(:initiative_id) { @initiative.id }
-      let(:initiative_status_id) { InitiativeStatus.find_by(code: 'answered').id }
+      let(:initiative_status_id) { @status_answered.id }
       let(:feedback) { build(:official_feedback) }
       let(:body_multiloc) { feedback.body_multiloc }
       let(:author_multiloc) { feedback.author_multiloc }

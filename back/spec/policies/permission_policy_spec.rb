@@ -9,7 +9,7 @@ describe PermissionPolicy do
 
   before(:all) do # rubocop:disable RSpec/BeforeAfterAll
     @scope_types = PermissionsService.instance_variable_get(:@scope_spec_hash)
-  
+
     # rubocop:disable Style/SingleLineMethods
     dummy_global_scope = Module.new do
       def self.actions(_scope = nil) %w[a1 a2] end
@@ -23,8 +23,8 @@ describe PermissionPolicy do
     PermissionsService.clear_scope_types
     PermissionsService.register_scope_type(dummy_global_scope)
   end
-  
-  after(:all) do 
+
+  after(:all) do
     # Restore registered scope-types as they were before the tests.
     PermissionsService.instance_variable_set(:@scope_spec_hash, @scope_types)
   end

@@ -108,8 +108,8 @@ resource "Initiatives" do
     end
 
     example "List all initiatives that need feedback" do
-      TenantTemplateService.new.resolve_and_apply_template('base')
-      i = create(:initiative, initiative_status: InitiativeStatus.find_by(code: 'threshold_reached'))
+      threshold_reached = create(:initiative_status_threshold_reached)
+      i = create(:initiative, initiative_status: threshold_reached)
 
       do_request feedback_needed: true
       json_response = json_parse(response_body)
@@ -547,10 +547,10 @@ resource "Initiatives" do
       header 'Authorization', "Bearer #{token}"
 
       @initiative = create(:initiative)
-      TenantTemplateService.new.resolve_and_apply_template 'base', external_subfolder: false
+      threshold_reached = create(:initiative_status_threshold_reached)
       create(
         :initiative_status_change, 
-        initiative: @initiative, initiative_status: InitiativeStatus.find_by(code: 'threshold_reached')
+        initiative: @initiative, initiative_status: threshold_reached
         )
     end
     let(:id) { @initiative.id }

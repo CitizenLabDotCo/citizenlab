@@ -6,19 +6,15 @@ module Finder
     protected
 
     def where(*args)
-      @records = records.where(*args)
+      records.where(*args)
     end
 
     def order(arg)
-      @records = records.order(arg)
-    end
-
-    def filter_records(&blk)
-      @records = yield if blk
+      records.order(arg)
     end
 
     def scope(scope_name, *args)
-      @records = records.send(scope_name, *args) if records.respond_to?(scope_name)
+      records.send(scope_name, *args) if records.respond_to?(scope_name)
     end
 
     def beginning_of_day(param)
