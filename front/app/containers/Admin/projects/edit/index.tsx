@@ -90,7 +90,7 @@ interface DataProps {
 interface State {
   tabs: ITab[];
   goBackUrl: string | null;
-  tabHideConditions: { [fatureName: string]: (project, phases) => boolean };
+  tabHideConditions: { [featureName: string]: (project, phases) => boolean };
 }
 
 interface Props extends InputProps, DataProps {}
