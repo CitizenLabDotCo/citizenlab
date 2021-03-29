@@ -76,8 +76,7 @@ Rails.application.routes.draw do
       # auth
       post 'user_token' => 'user_token#create'
 
-      resources :users do
-        resources :comments, only: [:index], controller: 'user_comments'
+      resources :users, only: %i[index create update destroy] do
         get :me, on: :collection
         post :complete_registration, on: :collection
         get :as_xlsx, on: :collection, action: 'index_xlsx'
@@ -88,7 +87,10 @@ Rails.application.routes.draw do
         get 'ideas_count', on: :member
         get 'initiatives_count', on: :member
         get 'comments_count', on: :member
+
+        resources :comments, only: [:index], controller: 'user_comments'
       end
+      get 'users/:id', to: 'users#show', constraints: { id: /\b(?!custom_fields)\b\S+/ }
 
       resources :topics, only: [:index, :show]
 
