@@ -238,25 +238,6 @@ export class AdminProjectEdition extends PureComponent<
         events: function isEventsTabHidden() {
           return false;
         },
-        permissions: function isPermissionsTabHidden() {
-          const {
-            projectVisibilityEnabled,
-            granularPermissionsEnabled,
-            projectManagementEnabled,
-            ideaAssignmentEnabled,
-          } = props;
-
-          if (
-            !projectVisibilityEnabled &&
-            !granularPermissionsEnabled &&
-            !projectManagementEnabled &&
-            !ideaAssignmentEnabled
-          ) {
-            return true;
-          }
-
-          return false;
-        },
       },
       goBackUrl: null,
     };
