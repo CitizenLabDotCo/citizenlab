@@ -205,8 +205,8 @@ resource "Ideas" do
     end
 
     example "List all ideas that need feedback" do
-      TenantTemplateService.new.resolve_and_apply_template('base')
-      i = create(:idea, idea_status: IdeaStatus.find_by(code: 'proposed'))
+      proposed = create(:idea_status_proposed)
+      i = create(:idea, idea_status: proposed)
 
       do_request feedback_needed: true
       json_response = json_parse(response_body)
@@ -233,17 +233,6 @@ resource "Ideas" do
       expect(json_response[:data][0][:id]).to eq i1.id
     end
 
-    example "List all ideas sorted by baskets count", document: false do
-      i1 = create(:idea)
-      baskets = create_list(:basket, 3, ideas: [i1])
-      SideFxBasketService.new.update_basket_counts
-
-      do_request sort: "-baskets_count"
-      json_response = json_parse(response_body)
-      expect(json_response[:data].size).to eq 6
-      expect(json_response[:data][0][:id]).to eq i1.id
-    end
-
     example "List all ideas by random ordering", document: false do
       i1 = create(:idea)
 
@@ -251,7 +240,6 @@ resource "Ideas" do
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 6
     end
-
 
     example "List all ideas includes the user_vote", document: false do
       vote = create(:vote, user: @user)
@@ -538,7 +526,7 @@ resource "Ideas" do
     example_request "Get one idea by id" do
       expect(status).to eq 200
       json_response = json_parse(response_body)
-      
+
       expect(json_response.dig(:data, :id)).to eq idea.id
       expect(json_response.dig(:data, :type)).to eq 'idea'
       expect(json_response.dig(:data, :attributes)).to include(
