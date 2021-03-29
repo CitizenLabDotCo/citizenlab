@@ -6,7 +6,7 @@ describe SideFxUserService do
   let(:user) { create(:user) }
 
   describe 'before_create' do
-    it "set registration_completed_at if there's no user custom fields and the user is not invited" do
+    it "set registration_completed_at if there's no user custom fields and the user is not invited", skip: !CitizenLab.ee? do
       user.update(registration_completed_at: nil)
       create(:custom_field, resource_type: 'IdeaCustomFields::CustomForm')
       service.before_create(user, current_user)
