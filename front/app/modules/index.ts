@@ -10,6 +10,7 @@ import projectManagementConfiguration from './commercial/project_management';
 import ideaAssignmentConfiguration from './commercial/idea_assignment';
 import moderationConfiguration from './commercial/moderation';
 import geographicDashboardConfiguration from './commercial/geographic_dashboard';
+import machineTranslationsConfiguration from './commercial/machine_translations';
 
 import similarIdeaConfiguration from './commercial/similar_ideas';
 import clusteringsConfiguration from './commercial/clusterings';
@@ -22,6 +23,7 @@ import satismeterConfiguration from './commercial/satismeter';
 import segmentConfiguration from './commercial/segment';
 import matomoConfiguration from './commercial/matomo';
 import customIdeaStatusesConfiguration from './commercial/custom_idea_statuses';
+import verificationConfiguration from './commercial/verification';
 import customTopicsConfiguration from './commercial/custom_topics';
 
 import idBosaFasConfiguration from './commercial/id_bosa_fas';
@@ -141,5 +143,13 @@ export default loadModules([
   {
     configuration: IdClaveUnicaConfiguration,
     isEnabled: CL_CONFIG['modules']['commercial/id_clave_unica'],
+  },
+  {
+    configuration: machineTranslationsConfiguration,
+    isEnabled: CL_CONFIG['modules']['commercial/machine_translations'],
+  },
+  {
+    configuration: verificationConfiguration,
+    isEnabled: CL_CONFIG['modules']['commercial/verification'],
   },
 ]);
