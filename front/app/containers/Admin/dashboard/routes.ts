@@ -1,5 +1,3 @@
-import clusteringsRoutes from './clusterings/routes';
-
 import Loadable from 'react-loadable';
 import { LoadableLoadingAdmin } from 'components/UI/LoadableLoading';
 import moduleConfiguration from 'modules';
@@ -33,7 +31,6 @@ export default () => ({
         loading: () => null,
       }),
     },
-    clusteringsRoutes(),
     ...moduleConfiguration.routes['admin.dashboards'],
   ],
 });
