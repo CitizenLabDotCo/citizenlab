@@ -257,7 +257,7 @@ namespace :cl2_back do
 
 
     Apartment::Tenant.switch tenant.schema_name do
-      TenantTemplateService.new.resolve_and_apply_template tenant_template, external_subfolder: 'release'
+      MultiTenancy::TenantTemplateService.new.resolve_and_apply_template tenant_template, external_subfolder: 'release'
       User.create(
         roles: [{type: 'admin'}],
         first_name: 'Citizen',
