@@ -83,6 +83,7 @@ PATH
       custom_style
       graphql (~> 1.8.0)
       kaminari (~> 1.2)
+      multi_tenancy
       rails (~> 6.0.0)
 
 PATH
