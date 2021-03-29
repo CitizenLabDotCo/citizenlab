@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import {
   userCustomFieldOptionsStream,
   IUserCustomFieldOptionData,
-} from 'modules/user_custom_fields/services/userCustomFieldOptions';
+} from '../services/userCustomFieldOptions';
 
 export default function useUserCustomFieldOptions(customFieldId: string) {
   const [userCustomFieldOptions, setUserCustomFieldOptions] = useState<

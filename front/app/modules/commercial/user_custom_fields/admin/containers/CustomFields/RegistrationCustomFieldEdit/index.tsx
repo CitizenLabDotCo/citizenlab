@@ -13,7 +13,7 @@ import {
   IUserCustomFieldData,
   isBuiltInField,
   IUserCustomFieldInputType,
-} from 'modules/user_custom_fields/services/userCustomFields';
+} from '../../../../services/userCustomFields';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
@@ -21,7 +21,7 @@ import { InjectedIntlProps } from 'react-intl';
 import messages from '../messages';
 
 // hooks
-import useUserCustomField from 'modules/user_custom_fields/hooks/useUserCustomField';
+import useUserCustomField from '../../../../hooks/useUserCustomField';
 import useLocalize from 'hooks/useLocalize';
 
 const StyledGoBackButton = styled(GoBackButton)`

@@ -17,7 +17,7 @@ import ContentContainer from 'components/ContentContainer';
 import useAuthUser from 'hooks/useAuthUser';
 import useLocale from 'hooks/useLocale';
 import useAppConfiguration from 'hooks/useAppConfiguration';
-import useProjectFolder from 'modules/project_folders/hooks/useProjectFolder';
+import useProjectFolder from '../../../hooks/useProjectFolder';
 import useAdminPublicationPrefetchProjects from 'hooks/useAdminPublicationPrefetchProjects';
 import useWindowSize from 'hooks/useWindowSize';
 
@@ -31,7 +31,7 @@ import { maxPageWidth } from './styles';
 import { media, fontSizes, colors } from 'utils/styleUtils';
 
 // typings
-import { IProjectFolderData } from 'modules/project_folders/services/projectFolders';
+import { IProjectFolderData } from '../../../services/projectFolders';
 
 const Container = styled.main`
   flex: 1 0 auto;

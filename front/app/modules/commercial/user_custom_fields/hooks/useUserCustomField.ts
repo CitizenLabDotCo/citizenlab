@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import {
   userCustomFieldStream,
   IUserCustomFieldData,
-} from 'modules/user_custom_fields/services/userCustomFields';
+} from '../services/userCustomFields';
 
 export default function useUserCustomField(userCustomFieldId: string) {
   const [userCustomField, setUserCustomField] = useState<

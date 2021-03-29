@@ -1,8 +1,8 @@
 import React from 'react';
 import GetUserCustomFieldOptions, {
   GetUserCustomFieldOptionsChildProps,
-} from 'modules/user_custom_fields/resources/GetUserCustomFieldOptions';
-import { TRule } from 'modules/smart_groups/components/UserFilterConditions/rules';
+} from '../../resources/GetUserCustomFieldOptions';
+import { TRule } from 'modules/commercial/smart_groups/components/UserFilterConditions/rules';
 import { IOption } from 'typings';
 import MultipleSelect from 'components/UI/MultipleSelect';
 import localize, { InjectedLocalized } from 'utils/localize';

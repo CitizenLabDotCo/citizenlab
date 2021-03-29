@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 jest.mock('utils/cl-intl');
-jest.mock('modules/user_custom_fields/resources/GetUserCustomFields');
+jest.mock('../../resources/GetUserCustomFields');
 jest.mock('services/stats');
 jest.mock('components/Outlet', () => 'Outlet');
 
@@ -9,7 +9,7 @@ import {
   RegistrationFieldsToGraphs,
   Props,
 } from './RegistrationFieldsToGraphs';
-import { mockGetUserCustomFields } from 'modules/user_custom_fields/resources/__mocks__/GetUserCustomFields';
+import { mockGetUserCustomFields } from '../../resources/__mocks__/GetUserCustomFields';
 import { mockUsersByRegFields } from 'services/__mocks__/stats';
 import { localizeProps } from 'utils/testUtils/localizeProps';
 import { intl } from 'utils/cl-intl';

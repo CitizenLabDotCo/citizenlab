@@ -1,6 +1,6 @@
 import useUserCustomFieldsSchema, {
   UserCustomFieldsSchema,
-} from 'modules/user_custom_fields/hooks/useUserCustomFieldsSchema';
+} from '../hooks/useUserCustomFieldsSchema';
 
 interface InputProps {}
 

@@ -13,7 +13,7 @@ const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
 const MomentTimezoneDataPlugin = require('moment-timezone-data-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const SentryCliPlugin = require('@sentry/webpack-plugin');
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const argv = require('yargs').argv;
 const appLocalesMomentPairs = require(path.join(process.cwd(), 'app/containers/App/constants')).appLocalesMomentPairs;
 const API_HOST = process.env.API_HOST || 'localhost';
@@ -24,6 +24,12 @@ const DEV_WORKSHOPS_HOST = process.env.DEV_WORKSHOPS_HOST || 'localhost';
 const DEV_WORKSHOPS_PORT = process.env.DEV_WORKSHOPS_PORT || 4005;
 
 const currentYear = new Date().getFullYear();
+
+const clConfig = require(path.join(process.cwd(), '../citizenlab.config.json'))
+try {
+  const clConfigEe = require(path.join(process.cwd(), '../citizenlab.config.ee.json'))
+  clConfig["modules"] = { ...clConfig["modules"], ...clConfigEe["modules"] }
+} catch (e) { }
 
 const config = {
   entry: path.join(process.cwd(), 'app/root'),
@@ -137,6 +143,7 @@ const config = {
         CIRCLE_SHA1: JSON.stringify(process.env.CIRCLE_SHA1),
         CIRCLE_BRANCH: JSON.stringify(process.env.CIRCLE_BRANCH),
       },
+      CL_CONFIG: JSON.stringify(clConfig),
     }),
 
     new ForkTsCheckerWebpackPlugin({
@@ -153,7 +160,7 @@ const config = {
 
     // new BundleAnalyzerPlugin(),
 
-    isDev && new webpack.ProgressPlugin(),
+    // new webpack.ProgressPlugin(),
 
     // remove all moment locales except 'en' and the ones defined in appLocalesMomentPairs
     !isDev && new MomentLocalesPlugin({

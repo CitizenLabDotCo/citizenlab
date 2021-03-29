@@ -2,14 +2,17 @@ import React, { useMemo, memo, useCallback, useState } from 'react';
 import styled from 'styled-components';
 
 // hooks
-import { useProjectFolders } from 'modules/project_folders/hooks';
+import { useProjectFolders } from '../../../hooks';
 import useLocalize from 'hooks/useLocalize';
 import { IUserData } from 'services/users';
 
 // services
 import { IUpdatedProjectProperties } from 'services/projects';
 import { userHasRole } from 'services/permissions/roles';
-import { isProjectFolderModerator } from 'modules/project_folders/permissions/roles';
+import {
+  isProjectFolderModerator,
+  moderatesFolder,
+} from 'modules/project_folders/permissions/roles';
 import { onProjectFormStateChange } from 'containers/Admin/projects/edit/general';
 
 // components
@@ -92,7 +95,7 @@ const ProjectFolderSelect = memo<Props & InjectedIntlProps>(
             label: '',
           },
           ...projectFolders
-            .filter((folder) => isProjectFolderModerator(authUser, folder.id))
+            .filter((folder) => moderatesFolder(authUser, folder.id))
             .map((folder) => {
               return {
                 value: folder.id,

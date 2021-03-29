@@ -1,3 +1,4 @@
+import { ILeafletMapConfig } from 'components/UI/LeafletMap/useLeaflet';
 import {
   TSignUpStepConfigurationObject,
   TSignUpSteps,
@@ -27,6 +28,7 @@ import {
   MessageDescriptor,
   Multiloc,
 } from 'typings';
+import { IMapProps } from './../components/Map/index';
 import { IUserData } from 'services/users';
 import { Locale, MessageValue } from 'react-intl';
 import { NavItem } from 'containers/Admin/sideBar';
@@ -167,6 +169,14 @@ export type OutletsPropertyMap = {
         CellConfiguration<IdeaHeaderCellComponentProps>
       >
     ) => void;
+  };
+  'app.components.Map.leafletConfig': IMapProps & {
+    leafletConfig: ILeafletMapConfig;
+    onLeafletConfigChange: (data: ILeafletMapConfig) => void;
+  };
+  'app.components.Map.Legend': {
+    projectId?: string | null;
+    className?: string;
   };
   'app.containers.Admin.settings.registration': {};
   'app.containers.Admin.settings.registrationHelperText': {

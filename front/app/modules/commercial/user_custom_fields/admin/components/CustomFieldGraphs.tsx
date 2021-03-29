@@ -28,7 +28,7 @@ import {
   GraphCardInner,
 } from 'containers/Admin/dashboard';
 
-import { IUserCustomFieldData } from 'modules/user_custom_fields/services/userCustomFields';
+import { IUserCustomFieldData } from '../../services/userCustomFields';
 import { Subscription, combineLatest } from 'rxjs';
 import {
   IUsersByRegistrationField,
@@ -48,7 +48,7 @@ import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import { isNilOrError } from 'utils/helperUtils';
 import moment from 'moment';
 import T from 'components/T';
-import useUserCustomFields from 'modules/user_custom_fields/hooks/useUserCustomFields';
+import useUserCustomFields from '../../hooks/useUserCustomFields';
 
 type ISupportedDataType =
   | IUsersByRegistrationField

@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 
 // components
 import Image from 'components/UI/Image';
-import ProjectFolderShareButton from 'modules/project_folders/citizen/components/ProjectFolderShareButton';
+import ProjectFolderShareButton from '../../../citizen/components/ProjectFolderShareButton';
 
 // hooks
 import useWindowSize from 'hooks/useWindowSize';
@@ -12,7 +12,7 @@ import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 
 // typings
-import { IProjectFolderData } from 'modules/project_folders/services/projectFolders';
+import { IProjectFolderData } from '../../../services/projectFolders';
 
 const Container = styled.div`
   width: 100%;

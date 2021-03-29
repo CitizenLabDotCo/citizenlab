@@ -5,13 +5,13 @@ import { withRouter, WithRouterProps } from 'react-router';
 
 // services
 import { PublicationStatus } from 'services/projects';
-import { updateProjectFolderMembership } from 'modules/project_folders/services/projects';
+import { updateProjectFolderMembership } from '../../../services/projects';
 import { isAdmin } from 'services/permissions/roles';
 
 // resources
 import GetProjectFolder, {
   GetProjectFolderChildProps,
-} from 'modules/project_folders/resources/GetProjectFolder';
+} from '../../../resources/GetProjectFolder';
 import GetAdminPublications, {
   GetAdminPublicationsChildProps,
 } from 'resources/GetAdminPublications';

@@ -8,8 +8,7 @@ const configuration: ModuleConfiguration = {
       {
         path: 'moderation',
         name: 'moderation',
-        container: () =>
-          import('modules/moderation/admin/containers/moderation'),
+        container: () => import('./admin/containers/moderation'),
       },
     ],
   },

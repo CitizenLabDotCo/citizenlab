@@ -3,7 +3,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import Button, { Props as ButtonProps } from 'components/UI/Button';
-import ProjectFolderSharingModal from 'modules/project_folders/citizen/components/ProjectFolderSharingModal';
+import ProjectFolderSharingModal from '../../../citizen/components/ProjectFolderSharingModal';
 
 // i18n
 import messages from './messages';
@@ -13,7 +13,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import styled from 'styled-components';
 
 // typings
-import { IProjectFolderData } from 'modules/project_folders/services/projectFolders';
+import { IProjectFolderData } from '../../../services/projectFolders';
 
 const Container = styled.div``;
 

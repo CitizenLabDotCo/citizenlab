@@ -14,7 +14,7 @@ import ReactResizeDetector from 'react-resize-detector/build/withPolyfill';
 import Button from 'components/UI/Button';
 
 // services
-import useProjectFolderFiles from 'modules/project_folders/hooks/useProjectFolderFiles';
+import useProjectFolderFiles from '../../../hooks/useProjectFolderFiles';
 import useWindowSize from 'hooks/useWindowSize';
 
 // i18n
@@ -29,7 +29,7 @@ import { ScreenReaderOnly } from 'utils/a11y';
 import { media, fontSizes, isRtl, colors } from 'utils/styleUtils';
 
 // typings
-import { IProjectFolderData } from 'modules/project_folders/services/projectFolders';
+import { IProjectFolderData } from '../../../services/projectFolders';
 
 const desktopCollapsedDescriptionMaxHeight = 99999;
 const mobileCollapsedDescriptionMaxHeight = 180;

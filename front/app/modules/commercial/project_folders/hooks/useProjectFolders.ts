@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import {
   IProjectFolderData,
   projectFoldersStream,
-} from 'modules/project_folders/services/projectFolders';
+} from '../services/projectFolders';
 
 interface Props {
   projectFolderIds?: string[];

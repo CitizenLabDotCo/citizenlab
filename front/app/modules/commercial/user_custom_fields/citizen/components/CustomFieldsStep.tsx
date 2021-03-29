@@ -6,11 +6,11 @@ import { isObject } from 'lodash-es';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import { Spinner } from 'cl2-component-library';
-import UserCustomFieldsForm from 'modules/user_custom_fields/citizen/components/UserCustomFieldsForm';
+import UserCustomFieldsForm from '../../citizen/components/UserCustomFieldsForm';
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
-import useUserCustomFieldsSchema from 'modules/user_custom_fields/hooks/useUserCustomFieldsSchema';
+import useUserCustomFieldsSchema from '../../hooks/useUserCustomFieldsSchema';
 
 // services
 import { completeRegistration } from 'services/users';

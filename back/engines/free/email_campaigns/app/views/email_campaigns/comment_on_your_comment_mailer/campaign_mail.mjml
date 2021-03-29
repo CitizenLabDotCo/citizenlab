@@ -1,0 +1,14 @@
+<mj-section padding="25px"text-align="left">
+  <mj-column background-color="#F2F6F8" border-radius="5px" padding="25px">
+    <mj-text font-size="14px">
+      <%= format_message('replied', values: {
+        authorFirstName: "<span style=\"font-weight:bold; color: #000;\">#{event.initiating_user_first_name}</span>"
+      }).html_safe %>
+      <p style="margin: 0; margin-top: 10px;">
+        <%= strip_tags(localize_for_recipient(event.comment_body_multiloc))[0..140] %>
+      </p>
+    </mj-text>
+  </mj-column>
+</mj-section>
+
+<%= render partial: 'application/cta_button', locals: { href: event.comment_url, message: format_message('cta_reply_to', values: {firstName: event.initiating_user_first_name&.capitalize}) } %>

@@ -1,5 +1,5 @@
 import { memo } from 'react';
-import { useProjectFolderModerators } from 'modules/project_folders/hooks';
+import { useProjectFolderModerators } from '../hooks';
 import { IUserData } from 'services/users';
 
 type GetProjectFolderModeratorsChildProps =

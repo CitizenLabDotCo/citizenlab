@@ -5,7 +5,7 @@ import shallowCompare from 'utils/shallowCompare';
 import {
   userCustomFieldStream,
   IUserCustomFieldData,
-} from 'modules/user_custom_fields/services/userCustomFields';
+} from '../services/userCustomFields';
 import { isNilOrError } from 'utils/helperUtils';
 
 interface InputProps {

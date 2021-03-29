@@ -2,11 +2,11 @@ import { useState, useEffect } from 'react';
 import {
   customFieldsSchemaForUsersStream,
   UserCustomFieldsInfos,
-} from 'modules/user_custom_fields/services/userCustomFields';
+} from '../services/userCustomFields';
 import { localeStream } from 'services/locale';
 import { combineLatest } from 'rxjs';
 import { isEmpty, get } from 'lodash-es';
-import { hasCustomFields } from 'modules/user_custom_fields/utils/customFields';
+import { hasCustomFields } from '../utils/customFields';
 
 export type UserCustomFieldsSchema =
   | UserCustomFieldsInfos

@@ -1,39 +1,28 @@
-import React, { memo, useContext } from 'react';
-import { OutletsPropertyMap, OutletId } from 'utils/moduleUtils';
-import { OutletsContext } from 'containers/OutletsProvider';
+import React from 'react';
+import { isEmpty } from 'lodash-es';
+import useOutlet from 'hooks/useOutlet';
+import { OutletsPropertyMap } from 'utils/moduleUtils';
 
 type CustomPropsMap = {
   [P in keyof OutletsPropertyMap]: { id: P } & OutletsPropertyMap[P];
 };
 
-type CustomOutletProps = CustomPropsMap[keyof CustomPropsMap];
-export type OutletRenderProps = (
-  renderProps: JSX.Element[]
-) => JSX.Element | null;
-type Children = OutletRenderProps;
-type InputProps = {
-  children?: Children;
-};
+type Props = CustomPropsMap[keyof CustomPropsMap];
 
-function useOutlet(identifier: OutletId) {
-  const outlets = useContext(OutletsContext);
-  return outlets[identifier] ?? [];
-}
+const Outlet = ({ id, ...props }: Props) => {
+  const components = useOutlet(id);
 
-type Props = InputProps & CustomOutletProps;
-
-const Outlet = memo(({ children, id, ...props }: Props) => {
-  const outletComponents = useOutlet(id);
-
-  const componentsToRender = outletComponents.map((Component, index) => (
-    <Component key={`${id}_${index}`} {...props} />
-  ));
-
-  if (children) {
-    return children(componentsToRender);
+  if (!components || isEmpty(components)) {
+    return null;
   }
 
-  return <>{componentsToRender}</>;
-});
+  return (
+    <>
+      {components.map((Component, index) => (
+        <Component key={`${id}_${index}`} {...props} />
+      ))}
+    </>
+  );
+};
 
 export default Outlet;

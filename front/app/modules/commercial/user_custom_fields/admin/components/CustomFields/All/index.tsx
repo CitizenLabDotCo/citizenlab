@@ -10,7 +10,7 @@ import { isEqual, clone } from 'lodash-es';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
-import customfieldMessages from 'modules/user_custom_fields/admin/containers/CustomFields/messages';
+import customfieldMessages from '../../../../admin/containers/CustomFields/messages';
 import T from 'components/T';
 
 // components
@@ -34,12 +34,12 @@ import {
   reorderCustomFieldForUsers,
   isBuiltInField,
   isHiddenField,
-} from 'modules/user_custom_fields/services/userCustomFields';
+} from '../../../../services/userCustomFields';
 
 // resources
 import GetUserCustomFields, {
   GetUserCustomFieldsChildProps,
-} from 'modules/user_custom_fields/resources/GetUserCustomFields';
+} from '../../../../resources/GetUserCustomFields';
 
 // styling
 import { colors } from 'utils/styleUtils';

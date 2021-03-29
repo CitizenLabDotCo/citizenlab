@@ -15,7 +15,7 @@ import {
 import {
   IUserCustomFieldData,
   IUserCustomFieldInputType,
-} from 'modules/user_custom_fields/services/userCustomFields';
+} from 'modules/commercial/user_custom_fields/services/userCustomFields';
 
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
@@ -23,7 +23,7 @@ import messages from './messages';
 
 // hooks
 import useLocalize from 'hooks/useLocalize';
-import useUserCustomFields from 'modules/user_custom_fields/hooks/useUserCustomFields';
+import useUserCustomFields from 'modules/commercial/user_custom_fields/hooks/useUserCustomFields';
 
 export interface FieldDescriptor {
   ruleType?: TRule['ruleType'];

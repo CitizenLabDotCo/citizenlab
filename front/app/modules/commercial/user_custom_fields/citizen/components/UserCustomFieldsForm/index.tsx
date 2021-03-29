@@ -19,7 +19,7 @@ import Form, { FieldProps } from 'react-jsonschema-form';
 // services
 import GetUserCustomFieldsSchema, {
   GetUserCustomFieldsSchemaChildProps,
-} from 'modules/user_custom_fields/resources/GetUserCustomFieldsSchema';
+} from '../../../resources/GetUserCustomFieldsSchema';
 
 // components
 import { FormLabelValue } from 'components/UI/FormComponents';

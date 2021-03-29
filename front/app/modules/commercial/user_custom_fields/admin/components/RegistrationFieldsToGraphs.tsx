@@ -27,7 +27,7 @@ import AgeChart from 'containers/Admin/dashboard/users/charts/AgeChart';
 
 import GetUserCustomFields, {
   GetUserCustomFieldsChildProps,
-} from 'modules/user_custom_fields/resources/GetUserCustomFields';
+} from '../../resources/GetUserCustomFields';
 
 interface InputProps {
   currentGroupFilter: string | undefined;

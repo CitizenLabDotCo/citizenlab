@@ -2,15 +2,15 @@ import React, { memo } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // services
-import { IUserCustomFieldData } from 'modules/user_custom_fields/services/userCustomFields';
+import { IUserCustomFieldData } from '../../../../services/userCustomFields';
 import {
   IUserCustomFieldOptionData,
   reorderUserCustomFieldOption,
   deleteUserCustomFieldOption,
-} from 'modules/user_custom_fields/services/userCustomFieldOptions';
+} from '../../../../services/userCustomFieldOptions';
 
 // hooks
-import useUserCustomFieldOptions from 'modules/user_custom_fields/hooks/useUserCustomFieldOptions';
+import useUserCustomFieldOptions from '../../../../hooks/useUserCustomFieldOptions';
 import useLocalize from 'hooks/useLocalize';
 
 // components

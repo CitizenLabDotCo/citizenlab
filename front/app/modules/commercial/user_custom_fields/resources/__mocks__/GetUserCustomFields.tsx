@@ -1,4 +1,4 @@
-import { GetUserCustomFieldsChildProps } from 'modules/user_custom_fields/resources/GetUserCustomFields';
+import { GetUserCustomFieldsChildProps } from '../../resources/GetUserCustomFields';
 
 export const mockGetUserCustomFields = [
   {

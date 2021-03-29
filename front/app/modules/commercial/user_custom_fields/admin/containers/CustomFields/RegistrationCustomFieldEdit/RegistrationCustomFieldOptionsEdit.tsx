@@ -11,10 +11,10 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
 // hooks
-import useUserCustomFieldOption from 'modules/user_custom_fields/hooks/useUserCustomFieldOption';
+import useUserCustomFieldOption from '../../../../hooks/useUserCustomFieldOption';
 
 // services
-import { updateUserCustomFieldOption } from 'modules/user_custom_fields/services/userCustomFieldOptions';
+import { updateUserCustomFieldOption } from '../../../../services/userCustomFieldOptions';
 
 // components
 import { Section, SectionTitle } from 'components/admin/Section';

@@ -9,7 +9,7 @@ import {
   updateIdeaCustomField,
   IUpdatedIdeaCustomFieldProperties,
 } from 'services/ideaCustomFields';
-import IdeaCustomField from 'modules/idea_custom_fields/admin/containers/projects/edit/ideaform/IdeaCustomField';
+import IdeaCustomField from '../../../../../admin/containers/projects/edit/ideaform/IdeaCustomField';
 
 // components
 import Button from 'components/UI/Button';

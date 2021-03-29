@@ -7,7 +7,7 @@ import {
   IUserCustomFieldData,
   updateCustomFieldForUsers,
   isBuiltInField,
-} from 'modules/user_custom_fields/services/userCustomFields';
+} from '../../../../services/userCustomFields';
 
 import RegistrationCustomFieldForm, {
   FormValues,
