@@ -18,7 +18,7 @@ type InputProps = {
 
 function useOutlet(identifier: OutletId) {
   const outlets = useContext(OutletsContext);
-  return outlets[identifier];
+  return outlets[identifier] ?? [];
 }
 
 type Props = InputProps & CustomOutletProps;
