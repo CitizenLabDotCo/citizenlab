@@ -1,3 +1,4 @@
+import { IUsersByRegistrationField } from 'modules/commercial/user_custom_fields/services/stats';
 import { BehaviorSubject } from 'rxjs';
 import { IUsersByTime, IIdeasCount } from 'services/stats';
 import { IStreamParams } from 'utils/streams';
