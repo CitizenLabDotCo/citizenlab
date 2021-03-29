@@ -6,12 +6,12 @@ module IdeaCustomFields
         custom_and_default_fields(custom_form, custom_fields_scope: nil)
       end
 
-      private
-
       def find_or_build_field custom_form, code
         custom_form&.custom_fields&.find_by(code: code) ||
           IdeaCustomFieldsService.call(custom_form).find { |bicf| bicf.code == code }
       end
+
+      private
 
       def custom_and_default_fields(custom_form, custom_fields_scope: nil)
         db_cfs = custom_form.custom_fields
