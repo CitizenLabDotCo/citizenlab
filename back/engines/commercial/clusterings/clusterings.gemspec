@@ -17,6 +17,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'apartment', '~> 2.2.1'
   s.add_dependency 'pundit', '~> 2.0'
   s.add_dependency 'rails', '~> 6.0.0'
+  s.add_dependency 'engines/nlp'
 
   s.add_development_dependency 'rspec_api_documentation'
   s.add_development_dependency 'rspec-rails'
