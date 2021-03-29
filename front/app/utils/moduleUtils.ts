@@ -188,6 +188,7 @@ export type OutletsPropertyMap = {
       >
     ) => void;
   };
+  'app.containers.Admin.guide.SetupSection': {};
   'app.components.Map.leafletConfig': IMapProps & {
     leafletConfig: ILeafletMapConfig;
     onLeafletConfigChange: (data: ILeafletMapConfig) => void;

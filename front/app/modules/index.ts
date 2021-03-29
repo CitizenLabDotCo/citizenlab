@@ -31,6 +31,8 @@ import idIdCardLookupConfiguration from './commercial/id_id_card_lookup';
 import IdFranceConnectConfiguration from './commercial/id_franceconnect';
 import IdClaveUnicaConfiguration from './commercial/id_clave_unica';
 
+import widgetsConfiguration from './commercial/widgets';
+
 declare var CL_CONFIG: any;
 
 export default loadModules([
@@ -141,5 +143,9 @@ export default loadModules([
   {
     configuration: verificationConfiguration,
     isEnabled: CL_CONFIG['modules']['commercial/verification'],
+  },
+  {
+    configuration: widgetsConfiguration,
+    isEnabled: CL_CONFIG['modules']['commercial/widgets'],
   },
 ]);

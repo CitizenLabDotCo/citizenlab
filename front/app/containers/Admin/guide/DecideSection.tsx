@@ -31,6 +31,11 @@ const DecideSection = ({ intl: { formatMessage } }: InjectedIntlProps) => {
       extra: { section: 'decide' },
     });
   };
+  const getHandleClickInteralTrack = (article) => () => {
+    trackEventByName(tracks.internalLink.name, {
+      extra: { section: 'decide', article },
+    });
+  };
 
   return (
     <SectionWrapper>
@@ -68,8 +73,7 @@ const DecideSection = ({ intl: { formatMessage } }: InjectedIntlProps) => {
           const adminGuideArticle = (
             <AdminGuideArticle
               key={`decideArticle${i}`}
-              article={article}
-              section="decide"
+              trackLink={getHandleClickInteralTrack(article)}
               linkMessage={linkMessage}
               titleMessage={titleMessage}
               descriptionMessage={descriptionMessage}
