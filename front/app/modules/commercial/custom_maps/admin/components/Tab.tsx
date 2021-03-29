@@ -1,4 +1,3 @@
-import { ProjectTabOptions } from 'containers/Admin/projects/edit';
 import { FC, useEffect } from 'react';
 import { InjectedIntlProps } from 'react-intl';
 import { IPhaseData } from 'services/phases';
@@ -9,7 +8,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import messages from './messages';
 
 type Props = {
-  onData: (data: ProjectTabOptions<InsertConfigurationOptions<ITab>>) => void;
+  onData: (data: InsertConfigurationOptions<ITab>) => void;
 };
 
 const Tab: FC<Props & InjectedIntlProps> = ({
@@ -19,7 +18,6 @@ const Tab: FC<Props & InjectedIntlProps> = ({
   useEffect(() => {
     const tabName = 'map';
     onData({
-      tabOptions: {
         configuration: {
           label: formatMessage(messages.mapTab),
           name: tabName,
@@ -27,7 +25,6 @@ const Tab: FC<Props & InjectedIntlProps> = ({
           feature: 'custom_maps',
         },
         insertBeforeName: 'phases',
-      },
       tabHideConditions: {
         [tabName]: (project: IProjectData, phases: IPhaseData[] | null) => {
           const processType = project.attributes.process_type;
