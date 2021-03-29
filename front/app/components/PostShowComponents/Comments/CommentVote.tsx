@@ -27,7 +27,7 @@ import tracks from './tracks';
 
 // events
 import { openSignUpInModal } from 'components/SignUpIn/events';
-import { openVerificationModal } from 'components/Verification/VerificationModalEvents';
+import { openVerificationModal } from 'components/Verification/verificationModalEvents';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
