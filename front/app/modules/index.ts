@@ -20,6 +20,7 @@ import satismeterConfiguration from './commercial/satismeter';
 import segmentConfiguration from './commercial/segment';
 import matomoConfiguration from './commercial/matomo';
 import customIdeaStatusesConfiguration from './commercial/custom_idea_statuses';
+import verificationConfiguration from './commercial/verification';
 import customTopicsConfiguration from './commercial/custom_topics';
 
 import idBosaFasConfiguration from './commercial/id_bosa_fas';
@@ -131,5 +132,9 @@ export default loadModules([
   {
     configuration: IdClaveUnicaConfiguration,
     isEnabled: CL_CONFIG['modules']['commercial/id_clave_unica'],
+  },
+  {
+    configuration: verificationConfiguration,
+    isEnabled: CL_CONFIG['modules']['commercial/verification'],
   },
 ]);
