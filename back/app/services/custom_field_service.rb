@@ -6,8 +6,8 @@ class CustomFieldService
   end
 
   def ui_and_json_multiloc_schemas(configuration, fields)
-    json_schema_multiloc = ields_to_json_schema_multiloc(configuration, fields)
-    ui_schema_multiloc = ields_to_ui_schema_multiloc(configuration, fields)
+    json_schema_multiloc = fields_to_json_schema_multiloc(configuration, fields)
+    ui_schema_multiloc = fields_to_ui_schema_multiloc(configuration, fields)
 
     { json_schema_multiloc: json_schema_multiloc, ui_schema_multiloc: ui_schema_multiloc }
   end
