@@ -95,13 +95,11 @@ class Streams {
     const promises: Promise<any>[] = [];
     const promisesToAwait: Promise<any>[] = [];
 
-    console.log(modules.streamsToReset);
-
     Object.keys(this.streams).forEach((streamId) => {
       if (
         streamId === authApiEndpoint ||
-        streamId === currentAppConfigurationEndpoint ||
-        modules.streamsToReset.includes(streamId)
+        streamId === currentAppConfigurationEndpoint
+        // modules.streamsToReset.includes(streamId)
       ) {
         promisesToAwait.push(this.streams[streamId].fetch());
       } else if (this.isActiveStream(streamId)) {
