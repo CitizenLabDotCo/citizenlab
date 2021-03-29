@@ -22,10 +22,7 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
 
   def ideas_by_topic_serie
     ideas = StatIdeaPolicy::Scope.new(current_user, Idea.published).resolve
-
-    ideas = apply_project_filter(ideas)
-    ideas = apply_group_filter(ideas)
-    ideas = apply_feedback_needed_filter(ideas)
+    ideas = IdeasFinder.find(params, scope: ideas, current_user: current_user).records
 
     ideas
       .where(published_at: @start_at..@end_at)
@@ -62,10 +59,7 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
 
   def ideas_by_project_serie
     ideas = StatIdeaPolicy::Scope.new(current_user, Idea.published).resolve
-
-    ideas = apply_topic_filter(ideas)
-    ideas = apply_group_filter(ideas)
-    ideas = apply_feedback_needed_filter(ideas)
+    ideas = IdeasFinder.find(params, scope: ideas, current_user: current_user).records
 
     ideas
       .where(published_at: @start_at..@end_at)
@@ -99,11 +93,7 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
 
   def ideas_by_area_serie
     ideas = StatIdeaPolicy::Scope.new(current_user, Idea.published).resolve
-
-    ideas = apply_project_filter(ideas)
-    ideas = apply_group_filter(ideas)
-    ideas = apply_topic_filter(ideas)
-    ideas = apply_feedback_needed_filter(ideas)
+    ideas = IdeasFinder.find(params, scope: ideas, current_user: current_user).records
 
     ideas
       .where(published_at: @start_at..@end_at)
@@ -136,11 +126,7 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
 
   def ideas_by_status_serie
     ideas = StatIdeaPolicy::Scope.new(current_user, Idea.published).resolve
-
-    ideas = apply_project_filter(ideas)
-    ideas = apply_group_filter(ideas)
-    ideas = apply_topic_filter(ideas)
-    ideas = apply_feedback_needed_filter(ideas)
+    ideas = IdeasFinder.find(params, scope: ideas, current_user: current_user).records
 
     ideas
       .where(published_at: @start_at..@end_at)
@@ -170,23 +156,6 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
     send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: "ideas_by_status.xlsx"
   end
 
-  def ideas_by_time_serie
-    ideas = StatIdeaPolicy::Scope.new(current_user, Idea.published).resolve
-
-    ideas = apply_project_filter(ideas)
-    ideas = apply_group_filter(ideas)
-    ideas = apply_topic_filter(ideas)
-    ideas = apply_feedback_needed_filter(ideas)
-
-    @@stats_service.group_by_time(
-      ideas,
-      'published_at',
-      @start_at,
-      @end_at,
-      params[:interval]
-    )
-  end
-
   def ideas_by_time
     render json: {series: {ideas: ideas_by_time_serie}}
   end
@@ -195,23 +164,6 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
     name = 'ideas_by_time'
     xlsx = XlsxService.new.generate_time_stats_xlsx ideas_by_time_serie, name
     send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: name + '.xlsx'
-  end
-
-  def ideas_by_time_cumulative_serie
-    ideas = StatIdeaPolicy::Scope.new(current_user, Idea.published).resolve
-
-    ideas = apply_project_filter(ideas)
-    ideas = apply_group_filter(ideas)
-    ideas = apply_topic_filter(ideas)
-    ideas = apply_feedback_needed_filter(ideas)
-
-    @@stats_service.group_by_time_cumulative(
-      ideas,
-      'published_at',
-      @start_at,
-      @end_at,
-      params[:interval]
-    )
   end
 
   def ideas_by_time_cumulative
@@ -224,40 +176,32 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
     send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: name + '.xlsx'
   end
 
-
   private
 
-  def apply_group_filter ideas
-    if params[:group]
-      group = Group.find(params[:group])
-      ideas.joins(:author).where(author: group.members)
-    else
-      ideas
-    end
+  def ideas_by_time_cumulative_serie
+    ideas = StatIdeaPolicy::Scope.new(current_user, Idea.published).resolve
+    ideas = IdeasFinder.find(params, scope: ideas, current_user: current_user).records
+
+    @@stats_service.group_by_time_cumulative(
+      ideas,
+      'published_at',
+      @start_at,
+      @end_at,
+      params[:interval]
+    )
   end
 
-  def apply_topic_filter ideas
-    if params[:topic]
-      ideas.with_some_topics([params[:topic]])
-    else
-      ideas
-    end
-  end
+  def ideas_by_time_serie
+    ideas = StatIdeaPolicy::Scope.new(current_user, Idea.published).resolve
+    ideas = IdeasFinder.find(params, scope: ideas, current_user: current_user).records
 
-  def apply_project_filter ideas
-    if params[:project]
-      ideas.where(project_id: params[:project])
-    else
-      ideas
-    end
-  end
-
-  def apply_feedback_needed_filter ideas
-    if params[:feedback_needed].present?
-      ideas.feedback_needed
-    else
-      ideas
-    end
+    @@stats_service.group_by_time(
+      ideas,
+      'published_at',
+      @start_at,
+      @end_at,
+      params[:interval]
+    )
   end
 
   def render_no_data

@@ -312,7 +312,8 @@ resource "Users" do
           expect(json_response[:data].map{|u| u[:id]}.reverse.take(2)).to match_array [admin.id,both.id]
         end
 
-        describe "List all users in group" do
+
+        describe "List all users in group", skip: !CitizenLab.ee? do
           example "with correct pagination", document: false do
             page_size = 5
             project = create(:project)
@@ -653,7 +654,7 @@ resource "Users" do
 
       describe do
         let(:cf) { create(:custom_field) }
-        let(:birthyear_cf) { create(:birthyear_custom_field) }
+        let(:birthyear_cf) { create(:custom_field_birthyear) }
         let(:custom_field_values) {{
           cf.key => "new value",
           birthyear_cf.key => 1969,
@@ -715,7 +716,7 @@ resource "Users" do
 
       describe do
         let(:cf) { create(:custom_field) }
-        let(:birthyear_cf) { create(:birthyear_custom_field) }
+        let(:birthyear_cf) { create(:custom_field_birthyear) }
 
         let(:custom_field_values) {{
           cf.key => "new value",
