@@ -8,6 +8,7 @@
  *
  */
 
+
 /*******************************
             Plural
 *******************************/
@@ -18,15 +19,15 @@
   display: inline-flex;
   -webkit-box-orient: horizontal;
   -webkit-box-direction: normal;
-  -ms-flex-direction: row;
-  flex-direction: row;
+      -ms-flex-direction: row;
+          flex-direction: row;
   -webkit-box-align: stretch;
-  -ms-flex-align: stretch;
-  align-items: stretch;
+      -ms-flex-align: stretch;
+          align-items: stretch;
   margin: 1em 0em;
   background: '';
   -webkit-box-shadow: none;
-  box-shadow: none;
+          box-shadow: none;
   line-height: 1.14285714em;
   border-radius: 0.28571429rem;
   border: 1px solid rgba(34, 36, 38, 0.15);
@@ -42,6 +43,7 @@
   margin-bottom: 0em;
 }
 
+
 /*******************************
            Singular
 *******************************/
@@ -52,38 +54,34 @@
   display: -ms-flexbox;
   display: flex;
   -webkit-box-flex: 1;
-  -ms-flex: 1 0 auto;
-  flex: 1 0 auto;
+      -ms-flex: 1 0 auto;
+          flex: 1 0 auto;
   -ms-flex-wrap: wrap;
-  flex-wrap: wrap;
+      flex-wrap: wrap;
   -webkit-box-orient: horizontal;
   -webkit-box-direction: normal;
-  -ms-flex-direction: row;
-  flex-direction: row;
+      -ms-flex-direction: row;
+          flex-direction: row;
   vertical-align: middle;
   -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
   -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  justify-content: center;
+      -ms-flex-pack: center;
+          justify-content: center;
   margin: 0em 0em;
   padding: 1.14285714em 2em;
-  background: #ffffff;
+  background: #FFFFFF;
   color: rgba(0, 0, 0, 0.87);
   -webkit-box-shadow: none;
-  box-shadow: none;
+          box-shadow: none;
   border-radius: 0em;
   border: none;
   border-right: 1px solid rgba(34, 36, 38, 0.15);
-  -webkit-transition: background-color 0.1s ease, opacity 0.1s ease,
-    color 0.1s ease, -webkit-box-shadow 0.1s ease;
-  transition: background-color 0.1s ease, opacity 0.1s ease, color 0.1s ease,
-    -webkit-box-shadow 0.1s ease;
-  transition: background-color 0.1s ease, opacity 0.1s ease, color 0.1s ease,
-    box-shadow 0.1s ease;
-  transition: background-color 0.1s ease, opacity 0.1s ease, color 0.1s ease,
-    box-shadow 0.1s ease, -webkit-box-shadow 0.1s ease;
+  -webkit-transition: background-color 0.1s ease, opacity 0.1s ease, color 0.1s ease, -webkit-box-shadow 0.1s ease;
+  transition: background-color 0.1s ease, opacity 0.1s ease, color 0.1s ease, -webkit-box-shadow 0.1s ease;
+  transition: background-color 0.1s ease, opacity 0.1s ease, color 0.1s ease, box-shadow 0.1s ease;
+  transition: background-color 0.1s ease, opacity 0.1s ease, color 0.1s ease, box-shadow 0.1s ease, -webkit-box-shadow 0.1s ease;
 }
 
 /* Arrow */
@@ -95,22 +93,18 @@
   top: 50%;
   right: 0%;
   border: medium none;
-  background-color: #ffffff;
+  background-color: #FFFFFF;
   width: 1.14285714em;
   height: 1.14285714em;
   border-style: solid;
   border-color: rgba(34, 36, 38, 0.15);
   border-width: 0px 1px 1px 0px;
-  -webkit-transition: background-color 0.1s ease, opacity 0.1s ease,
-    color 0.1s ease, -webkit-box-shadow 0.1s ease;
-  transition: background-color 0.1s ease, opacity 0.1s ease, color 0.1s ease,
-    -webkit-box-shadow 0.1s ease;
-  transition: background-color 0.1s ease, opacity 0.1s ease, color 0.1s ease,
-    box-shadow 0.1s ease;
-  transition: background-color 0.1s ease, opacity 0.1s ease, color 0.1s ease,
-    box-shadow 0.1s ease, -webkit-box-shadow 0.1s ease;
+  -webkit-transition: background-color 0.1s ease, opacity 0.1s ease, color 0.1s ease, -webkit-box-shadow 0.1s ease;
+  transition: background-color 0.1s ease, opacity 0.1s ease, color 0.1s ease, -webkit-box-shadow 0.1s ease;
+  transition: background-color 0.1s ease, opacity 0.1s ease, color 0.1s ease, box-shadow 0.1s ease;
+  transition: background-color 0.1s ease, opacity 0.1s ease, color 0.1s ease, box-shadow 0.1s ease, -webkit-box-shadow 0.1s ease;
   -webkit-transform: translateY(-50%) translateX(50%) rotate(-45deg);
-  transform: translateY(-50%) translateX(50%) rotate(-45deg);
+          transform: translateY(-50%) translateX(50%) rotate(-45deg);
 }
 
 /* First Step */
@@ -133,9 +127,11 @@
   border-radius: 0.28571429rem;
 }
 
+
 /*******************************
             Content
 *******************************/
+
 
 /* Title */
 .ui.steps .step .title {
@@ -170,15 +166,15 @@
 .ui.steps .step > .icon ~ .content {
   display: block;
   -webkit-box-flex: 0;
-  -ms-flex: 0 1 auto;
-  flex: 0 1 auto;
+      -ms-flex: 0 1 auto;
+          flex: 0 1 auto;
   -ms-flex-item-align: middle;
-  align-self: middle;
+      align-self: middle;
 }
 .ui.steps .step > .icon ~ .content {
   -webkit-box-flex: 1 0 auto;
-  -ms-flex-positive: 1 0 auto;
-  flex-grow: 1 0 auto;
+      -ms-flex-positive: 1 0 auto;
+          flex-grow: 1 0 auto;
 }
 
 /* Horizontal Icon */
@@ -192,9 +188,11 @@
   cursor: pointer;
 }
 
+
 /*******************************
             Types
 *******************************/
+
 
 /*--------------
      Ordered
@@ -207,9 +205,9 @@
   display: block;
   position: static;
   text-align: center;
-  content: counters(ordered, '.');
+  content: counters(ordered, ".");
   -ms-flex-item-align: middle;
-  align-self: middle;
+      align-self: middle;
   margin-right: 1rem;
   font-size: 2.5em;
   counter-increment: ordered;
@@ -219,7 +217,7 @@
 .ui.ordered.steps .step > * {
   display: block;
   -ms-flex-item-align: middle;
-  align-self: middle;
+      align-self: middle;
 }
 
 /*--------------
@@ -232,14 +230,14 @@
   display: inline-flex;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
-  -ms-flex-direction: column;
-  flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
   overflow: visible;
 }
 .ui.vertical.steps .step {
   -webkit-box-pack: start;
-  -ms-flex-pack: start;
-  justify-content: flex-start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
   border-radius: 0em;
   padding: 1.14285714em 2em;
   border-right: none;
@@ -283,6 +281,7 @@
     Responsive
 ----------------*/
 
+
 /* Mobile (Default) */
 @media only screen and (max-width: 767px) {
   .ui.steps:not(.unstackable) {
@@ -292,15 +291,15 @@
     overflow: visible;
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
-    -ms-flex-direction: column;
-    flex-direction: column;
+        -ms-flex-direction: column;
+            flex-direction: column;
   }
   .ui.steps:not(.unstackable) .step {
     width: 100% !important;
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
-    -ms-flex-direction: column;
-    flex-direction: column;
+        -ms-flex-direction: column;
+            flex-direction: column;
     border-radius: 0em;
     padding: 1.14285714em 2em;
   }
@@ -311,34 +310,36 @@
   .ui.steps:not(.unstackable) .step:last-child {
     border-radius: 0em 0em 0.28571429rem 0.28571429rem;
   }
-
-  /* Arrow */
+  
+/* Arrow */
   .ui.steps:not(.unstackable) .step:after {
     display: none !important;
   }
-
-  /* Content */
+  
+/* Content */
   .ui.steps:not(.unstackable) .step .content {
     text-align: center;
   }
-
-  /* Icon */
+  
+/* Icon */
   .ui.steps:not(.unstackable) .step > .icon,
   .ui.ordered.steps:not(.unstackable) .step:before {
     margin: 0em 0em 1rem 0em;
   }
 }
 
+
 /*******************************
              States
 *******************************/
+
 
 /* Link Hover */
 .ui.steps .link.step:hover::after,
 .ui.steps .link.step:hover,
 .ui.steps a.step:hover::after,
 .ui.steps a.step:hover {
-  background: #f9fafb;
+  background: #F9FAFB;
   color: rgba(0, 0, 0, 0.8);
 }
 
@@ -347,20 +348,20 @@
 .ui.steps .link.step:active,
 .ui.steps a.step:active::after,
 .ui.steps a.step:active {
-  background: #f3f4f5;
+  background: #F3F4F5;
   color: rgba(0, 0, 0, 0.9);
 }
 
 /* Active */
 .ui.steps .step.active {
   cursor: auto;
-  background: #f3f4f5;
+  background: #F3F4F5;
 }
 .ui.steps .step.active:after {
-  background: #f3f4f5;
+  background: #F3F4F5;
 }
 .ui.steps .step.active .title {
-  color: #4183c4;
+  color: #4183C4;
 }
 .ui.ordered.steps .step.active:before,
 .ui.steps .active.step .icon {
@@ -387,20 +388,20 @@
 .ui.steps a.active.step:hover::after,
 .ui.steps a.active.step:hover {
   cursor: pointer;
-  background: #dcddde;
+  background: #DCDDDE;
   color: rgba(0, 0, 0, 0.87);
 }
 
 /* Completed */
 .ui.steps .step.completed > .icon:before,
 .ui.ordered.steps .step.completed:before {
-  color: #21ba45;
+  color: #21BA45;
 }
 
 /* Disabled */
 .ui.steps .disabled.step {
   cursor: auto;
-  background: #ffffff;
+  background: #FFFFFF;
   pointer-events: none;
 }
 .ui.steps .disabled.step,
@@ -409,60 +410,63 @@
   color: rgba(40, 40, 40, 0.3);
 }
 .ui.steps .disabled.step:after {
-  background: #ffffff;
+  background: #FFFFFF;
 }
+
 
 /*******************************
            Variations
 *******************************/
 
+
 /*--------------
    Stackable
 ---------------*/
 
+
 /* Tablet Or Below */
 @media only screen and (max-width: 991px) {
-  .ui[class*='tablet stackable'].steps {
+  .ui[class*="tablet stackable"].steps {
     display: -webkit-inline-box;
     display: -ms-inline-flexbox;
     display: inline-flex;
     overflow: visible;
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
-    -ms-flex-direction: column;
-    flex-direction: column;
+        -ms-flex-direction: column;
+            flex-direction: column;
   }
-
-  /* Steps */
-  .ui[class*='tablet stackable'].steps .step {
+  
+/* Steps */
+  .ui[class*="tablet stackable"].steps .step {
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
-    -ms-flex-direction: column;
-    flex-direction: column;
+        -ms-flex-direction: column;
+            flex-direction: column;
     border-radius: 0em;
     padding: 1.14285714em 2em;
   }
-  .ui[class*='tablet stackable'].steps .step:first-child {
+  .ui[class*="tablet stackable"].steps .step:first-child {
     padding: 1.14285714em 2em;
     border-radius: 0.28571429rem 0.28571429rem 0em 0em;
   }
-  .ui[class*='tablet stackable'].steps .step:last-child {
+  .ui[class*="tablet stackable"].steps .step:last-child {
     border-radius: 0em 0em 0.28571429rem 0.28571429rem;
   }
-
-  /* Arrow */
-  .ui[class*='tablet stackable'].steps .step:after {
+  
+/* Arrow */
+  .ui[class*="tablet stackable"].steps .step:after {
     display: none !important;
   }
-
-  /* Content */
-  .ui[class*='tablet stackable'].steps .step .content {
+  
+/* Content */
+  .ui[class*="tablet stackable"].steps .step .content {
     text-align: center;
   }
-
-  /* Icon */
-  .ui[class*='tablet stackable'].steps .step > .icon,
-  .ui[class*='tablet stackable'].ordered.steps .step:before {
+  
+/* Icon */
+  .ui[class*="tablet stackable"].steps .step > .icon,
+  .ui[class*="tablet stackable"].ordered.steps .step:before {
     margin: 0em 0em 1rem 0em;
   }
 }
@@ -470,6 +474,7 @@
 /*--------------
       Fluid
 ---------------*/
+
 
 /* Fluid */
 .ui.fluid.steps {
@@ -483,11 +488,12 @@
     Attached
 ---------------*/
 
+
 /* Top */
 .ui.attached.steps {
-  width: calc(100% + 2px) !important;
+  width: calc(100% +  2px ) !important;
   margin: 0em -1px 0;
-  max-width: calc(100% + 2px);
+  max-width: calc(100% +  2px );
   border-radius: 0.28571429rem 0.28571429rem 0em 0em;
 }
 .ui.attached.steps .step:first-child {
@@ -532,7 +538,7 @@
 .ui.seven.steps > .step,
 .ui.eight.steps > .step {
   -ms-flex-wrap: nowrap;
-  flex-wrap: nowrap;
+      flex-wrap: nowrap;
 }
 .ui.one.steps > .step {
   width: 100%;
@@ -556,7 +562,7 @@
   width: 14.285%;
 }
 .ui.eight.steps > .step {
-  width: 12.5%;
+  width: 12.500%;
 }
 
 /*-------------------
@@ -596,6 +602,8 @@
   font-size: 1.71428571rem;
 }
 
+
 /*******************************
          Site Overrides
 *******************************/
+
