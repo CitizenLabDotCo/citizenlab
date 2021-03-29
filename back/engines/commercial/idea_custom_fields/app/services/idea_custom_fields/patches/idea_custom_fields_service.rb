@@ -23,7 +23,7 @@ module IdeaCustomFields
         replacing, additional = db_cfs.partition{|c| bi_codes.include? c.code}
 
         [
-          *default_fields_for(custom_form).map do |bi_cf|
+          *default_fields(custom_form).map do |bi_cf|
             replacing.find{|c| bi_cf.code == c.code} || bi_cf
           end,
           *additional
