@@ -33,7 +33,6 @@ describe "seedfile", slow_test: true do
       expect(Group.count).to be > 0
       expect(CustomField.with_resource_type('User').count).to be > 0
       expect(CustomFieldOption.count).to be > 0
-      expect(CustomField.with_resource_type('IdeaCustomFields::CustomForm').count).to be > 0 if CitizenLab.ee?
       expect(Invite.count).to be > 0
       expect(IdIdCardLookup::IdCard.count).to be 10
       expect(EmailCampaigns::UnsubscriptionToken.count).to be > 0
