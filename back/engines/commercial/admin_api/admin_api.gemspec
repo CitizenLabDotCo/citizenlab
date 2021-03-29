@@ -20,6 +20,7 @@ Gem::Specification.new do |s|
   s.add_dependency "graphql", "~> 1.8.0"
   s.add_dependency "kaminari", "~> 1.2"
   s.add_dependency "custom_style"
+  s.add_dependency "idea_custom_fields"
 
   s.add_development_dependency "rspec_api_documentation"
   s.add_development_dependency "rspec-rails"
