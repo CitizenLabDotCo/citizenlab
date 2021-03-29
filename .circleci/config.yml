@@ -267,6 +267,7 @@ jobs:
       - run: git push origin $CIRCLE_BRANCH
 
   front-release-essential-image:
+    working_directory: ~/
     docker:
       - image: cimg/base:2021.03
     steps:
