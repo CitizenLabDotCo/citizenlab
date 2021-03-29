@@ -58,10 +58,6 @@ class StatUserPolicy < ApplicationPolicy
     user&.active? && (user.admin? || user.project_moderator?)
   end
 
-  def users_by_custom_field?
-    user&.active? && (user.admin? || user.project_moderator?)
-  end
-
   def users_engagement_scores?
     user&.active? && (user.admin? || user.project_moderator?)
   end
@@ -94,10 +90,6 @@ class StatUserPolicy < ApplicationPolicy
   end
 
   def users_by_education_as_xlsx?
-    user&.active? && (user.admin? || user.project_moderator?)
-  end
-
-  def users_by_custom_field_as_xlsx?
     user&.active? && (user.admin? || user.project_moderator?)
   end
 
