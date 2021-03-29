@@ -13,7 +13,7 @@ import {
   IUsersByBirthyear,
   usersByBirthyearStream,
   usersByBirthyearXlsxEndpoint,
-} from 'services/stats';
+} from 'modules/commercial/user_custom_fields/services/stats';
 
 // components
 import BarChartByCategory from 'containers/Admin/dashboard/users/charts/BarChartByCategory';

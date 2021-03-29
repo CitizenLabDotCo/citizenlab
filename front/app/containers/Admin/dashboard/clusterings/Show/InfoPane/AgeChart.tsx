@@ -11,7 +11,11 @@ import {
   ReferenceLine,
   ResponsiveContainer,
 } from 'recharts';
-import { votesByBirthyearStream, IVotesByBirthyear } from 'services/stats';
+import {
+  votesByBirthyearStream,
+  IVotesByBirthyear,
+} from 'modules/commercial/user_custom_fields/services/stats';
+
 import styled, { withTheme } from 'styled-components';
 
 // i18n

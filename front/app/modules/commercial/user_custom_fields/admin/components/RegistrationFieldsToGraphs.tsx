@@ -10,7 +10,7 @@ import {
   usersByRegFieldStream,
   IUsersByRegistrationField,
   usersByRegFieldXlsxEndpoint,
-} from 'services/stats';
+} from 'modules/commercial/user_custom_fields/services/stats';
 
 // intl
 import { injectIntl } from 'utils/cl-intl';

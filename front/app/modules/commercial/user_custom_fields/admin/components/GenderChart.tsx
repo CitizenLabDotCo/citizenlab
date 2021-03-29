@@ -33,7 +33,7 @@ import {
   usersByGenderStream,
   IUsersByGender,
   usersByGenderXlsxEndpoint,
-} from 'services/stats';
+} from 'modules/commercial/user_custom_fields/services/stats';
 
 type State = {
   serie: { name: string; value: number; code: string }[] | null;
