@@ -1,5 +1,4 @@
-require "verification/engine"
-require "smart_group_rules/verified"
+require 'verification/engine'
 
 module Verification
   # Your code goes here...

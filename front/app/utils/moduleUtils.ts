@@ -43,6 +43,7 @@ import {
   IOnboardingCampaignNames,
   IOnboardingCampaigns,
 } from 'services/onboardingCampaigns';
+import { ProjectTabOptions } from 'containers/Admin/projects/edit';
 
 type Localize = (
   multiloc: Multiloc | null | undefined,
@@ -148,6 +149,9 @@ export type OutletsPropertyMap = {
     onData: (data: InsertConfigurationOptions<ITab>) => void;
   };
   'app.containers.Admin.projects.edit': {
+    onData: (data: ProjectTabOptions<InsertConfigurationOptions<ITab>>) => void;
+  };
+  'app.containers.Admin.settings.tabs': {
     onData: (data: InsertConfigurationOptions<ITab>) => void;
   };
   'app.containers.Admin.initiatives.tabs': ITabsOutlet;
@@ -228,14 +232,14 @@ export type Outlets = OutletComponents<OutletsPropertyMap>;
 
 export type OutletId = keyof Outlets;
 
-export interface RouteConfiguration {
+export type RouteConfiguration = {
   path?: string;
   name?: string;
   container: () => Promise<any>;
   type?: string;
   indexRoute?: RouteConfiguration;
   childRoutes?: RouteConfiguration[];
-}
+};
 
 type RecursivePartial<T> = {
   [P in keyof T]?: T[P] extends (infer U)[]
@@ -252,6 +256,7 @@ interface Routes {
   'admin.initiatives': RouteConfiguration[];
   'admin.ideas': RouteConfiguration[];
   'admin.dashboards': RouteConfiguration[];
+  'admin.settings': RouteConfiguration[];
 }
 
 export interface ParsedModuleConfiguration {
@@ -359,6 +364,10 @@ export const loadModules = (modules: Modules): ParsedModuleConfiguration => {
       ),
       'admin.projects': parseModuleRoutes(
         mergedRoutes?.['admin.projects'],
+        RouteTypes.ADMIN
+      ),
+      'admin.settings': parseModuleRoutes(
+        mergedRoutes?.['admin.settings'],
         RouteTypes.ADMIN
       ),
     },
