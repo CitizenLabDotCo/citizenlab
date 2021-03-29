@@ -1,0 +1,12 @@
+{
+  "root": ".",
+  "pages": 3,
+  "packages": {
+    "back": [
+      "back/"
+    ],
+    "front": [
+      "front/"
+    ]
+  }
+}
