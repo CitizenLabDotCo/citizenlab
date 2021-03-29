@@ -8,6 +8,7 @@ import granularPermissionsConfiguration from './commercial/granular_permissions'
 import moderationConfiguration from './commercial/moderation';
 import ideaAssignmentConfiguration from './commercial/idea_assignment';
 import geographicDashboardConfiguration from './commercial/geographic_dashboard';
+import machineTranslationsConfiguration from './commercial/machine_translations';
 
 import similarIdeaConfiguration from './commercial/similar_ideas';
 import clusteringsConfiguration from './commercial/clusterings';
@@ -132,6 +133,10 @@ export default loadModules([
   {
     configuration: IdClaveUnicaConfiguration,
     isEnabled: CL_CONFIG['modules']['commercial/id_clave_unica'],
+  },
+  {
+    configuration: machineTranslationsConfiguration,
+    isEnabled: CL_CONFIG['modules']['commercial/machine_translations'],
   },
   {
     configuration: verificationConfiguration,
