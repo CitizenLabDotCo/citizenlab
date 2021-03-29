@@ -654,7 +654,7 @@ resource "Users" do
 
       describe do
         let(:cf) { create(:custom_field) }
-        let(:birthyear_cf) { create(:birthyear_custom_field) }
+        let(:birthyear_cf) { create(:custom_field_birthyear) }
         let(:custom_field_values) {{
           cf.key => "new value",
           birthyear_cf.key => 1969,
@@ -716,7 +716,7 @@ resource "Users" do
 
       describe do
         let(:cf) { create(:custom_field) }
-        let(:birthyear_cf) { create(:birthyear_custom_field) }
+        let(:birthyear_cf) { create(:custom_field_birthyear) }
 
         let(:custom_field_values) {{
           cf.key => "new value",
