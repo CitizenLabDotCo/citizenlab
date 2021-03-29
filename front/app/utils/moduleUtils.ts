@@ -30,7 +30,7 @@ import {
 } from 'typings';
 import { IMapProps } from './../components/Map/index';
 import { IUserData } from 'services/users';
-import { Locale, MessageValue } from 'react-intl';
+import { MessageValue } from 'react-intl';
 import { NavItem } from 'containers/Admin/sideBar';
 import { IAppConfigurationSettingsCore } from 'services/appConfiguration';
 import { ManagerType } from 'components/admin/PostManager';
