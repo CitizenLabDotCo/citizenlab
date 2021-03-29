@@ -1,5 +1,5 @@
 class MoveLocationAllowedFromParticipationContextToCustomFields < ActiveRecord::Migration[6.0]
-  IdeaCustomFields.CustomForm.class_eval do
+  IdeaCustomFields::CustomForm.class_eval do
     self.table_name = 'custom_forms'
   end
 

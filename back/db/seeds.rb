@@ -906,16 +906,7 @@ if Apartment::Tenant.current == 'localhost'
       elsif process_type == 'continuous'
         Project.where(participation_method: ['ideation', 'budgeting']).all.shuffle.first
       end
-
-      # ICF: extract
-      # if project
-      #   custom_form = project.custom_form || IdeaCustomFields::CustomForm.create!(project: project)
-      #   custom_field = IdeaCustomFieldService.new.find_or_build_field(custom_form, ['title','body','location'].shuffle.first)
-      #   custom_field.description_multiloc = create_for_some_locales{Faker::Lorem.sentence}
-      #   custom_field.save!
-      # end
     end
-
 
     20.times do
       Volunteering::Volunteer.create(
