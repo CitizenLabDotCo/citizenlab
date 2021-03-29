@@ -53,7 +53,6 @@ resource "Clusterings" do
       parameter :minimal_upvotes, "Minimal amount of upvotes", request: false
       parameter :minimal_downvotes, "Minimal amount of downvotes", request: false
     end
-    ValidationErrorHelper.new.error_fields(self, Clusterings::Clustering)
     before do
       @topic = create(:topic)
       @project = create(:project, topics: [@topic])
@@ -90,7 +89,6 @@ resource "Clusterings" do
       parameter :title_multiloc, "The title of the clustering, as a multiloc string"
       parameter :structure, "The whole clustering definition. Should comply to following JSON schema: #{Clusterings::Clustering::STRUCTURE_JSON_SCHEMA}", required: false
     end
-    ValidationErrorHelper.new.error_fields(self, Clusterings::Clustering)
 
     let(:clustering) { create(:clustering) }
     let(:id) { clustering.id }
