@@ -11,23 +11,14 @@ class BaseUploader < CarrierWave::Uploader::Base
   storage :fog if use_fog_engine?
 
   def store_dir
-    tenant = Tenant.current
-    "uploads/#{tenant.id}/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
+    "uploads/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
   end
 
   unless Rails.env.test?
     def asset_host
-      Tenant.current.base_backend_uri
-    rescue ActiveRecord::RecordNotFound # There is no Tenant.current
-      # Maybe the model we're operating on is a Tenant itself?
-      if model.is_a? Tenant
-        model.base_backend_uri
-
-        # Nope, so let's fall back to default carrierwave behavior (s3 bucket
-        # in production)
-      else
-        super
-      end
+      AppConfiguration.singleton.base_backend_uri
     end
   end
 end
+
+BaseUploader.prepend_if_ee('MultiTenancy::Patches::BaseUploader')
