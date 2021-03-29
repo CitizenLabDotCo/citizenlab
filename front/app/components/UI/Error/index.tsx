@@ -240,6 +240,7 @@ export default class Error extends PureComponent<Props, State> {
       animate,
       id,
     } = this.props;
+
     const dedupApiErrors =
       apiErrors && isArray(apiErrors) && !isEmpty(apiErrors)
         ? uniqBy(apiErrors, 'error')
