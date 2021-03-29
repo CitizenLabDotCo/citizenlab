@@ -1,7 +1,7 @@
 require "rails_helper"
 
-describe SideFxClusteringService do
-  let(:service) { SideFxClusteringService.new }
+describe Clusterings::SideFxClusteringService do
+  let(:service) { Clusterings::SideFxClusteringService.new }
   let(:user) { create(:user) }
   let(:clustering) { create(:clustering) }
 
