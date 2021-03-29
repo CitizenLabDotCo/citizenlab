@@ -6,7 +6,7 @@ import { map } from 'lodash-es';
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import localize, { InjectedLocalized } from 'utils/localize';
-import messages from '../../messages';
+import messages from 'containers/Admin/dashboard/messages';
 
 // services
 import {
@@ -16,7 +16,7 @@ import {
 } from 'services/stats';
 
 // components
-import HorizontalBarChart from './HorizontalBarChart';
+import HorizontalBarChart from 'containers/Admin/dashboard/users/charts/HorizontalBarChart';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
