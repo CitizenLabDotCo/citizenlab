@@ -1,5 +1,5 @@
 import React from 'react';
-import useTranslation from 'modules/machine_translations/hooks/useTranslation';
+import useTranslation from 'modules/commercial/machine_translations/hooks/useTranslation';
 import { isNilOrError } from 'utils/helperUtils';
 import { Locale } from 'typings';
 

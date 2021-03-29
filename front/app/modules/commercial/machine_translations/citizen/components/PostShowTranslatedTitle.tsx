@@ -3,7 +3,7 @@ import React from 'react';
 import { Title } from 'components/PostShowComponents/Title';
 import GetMachineTranslation, {
   GetMachineTranslationChildProps,
-} from 'modules/machine_translations/resources/GetMachineTranslation';
+} from 'modules/commercial/machine_translations/resources/GetMachineTranslation';
 import { isNilOrError } from 'utils/helperUtils';
 import { Locale } from 'typings';
 

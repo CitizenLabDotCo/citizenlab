@@ -1,4 +1,4 @@
-import GetMachineTranslation from 'modules/machine_translations/resources/GetMachineTranslation';
+import GetMachineTranslation from 'modules/commercial/machine_translations/resources/GetMachineTranslation';
 import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { CommentText } from 'components/PostShowComponents/Comments/CommentBody';
