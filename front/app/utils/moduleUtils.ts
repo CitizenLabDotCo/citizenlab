@@ -8,6 +8,8 @@ import {
   LoadableLoadingAdmin,
   LoadableLoadingCitizen,
 } from 'components/UI/LoadableLoading';
+import { ISignUpInMetaData } from 'components/SignUpIn';
+
 import { GroupCreationModal } from 'containers/Admin/users';
 import { NormalFormValues } from 'containers/Admin/users/NormalGroupForm';
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
@@ -43,6 +45,10 @@ import { ICommentData } from 'services/comments';
 import { GetAppConfigurationLocalesChildProps } from 'resources/GetAppConfigurationLocales';
 import { GetWindowSizeChildProps } from 'resources/GetWindowSize';
 import { GetIdeaChildProps } from 'resources/GetIdea';
+import {
+  IOnboardingCampaignNames,
+  IOnboardingCampaigns,
+} from 'services/onboardingCampaigns';
 import { ProjectTabOptions } from 'containers/Admin/projects/edit';
 
 type Localize = (
@@ -56,6 +62,18 @@ export type ITabsOutlet = {
     values?: { [key: string]: MessageValue } | undefined
   ) => string;
   onData: (data: InsertConfigurationOptions<ITab>) => void;
+};
+
+export type SignUpStepOutletProps = {
+  onData: (data: {
+    key: TSignUpSteps;
+    configuration: TSignUpStepConfigurationObject;
+  }) => void;
+  step: TSignUpSteps | null;
+  metaData: ISignUpInMetaData;
+  onCompleted: () => void;
+  onSkipped: () => void;
+  onError: () => void;
 };
 
 export type OutletsPropertyMap = {
@@ -117,19 +135,15 @@ export type OutletsPropertyMap = {
     currentGroupFilter?: string;
     currentGroupFilterLabel?: string;
   };
-  'app.components.SignUpIn.SignUp.step': {
-    onData: (data: {
-      key: TSignUpSteps;
-      configuration: TSignUpStepConfigurationObject;
-    }) => void;
-    step: TSignUpSteps | null;
-    onCompleted: () => void;
-  };
+  'app.components.SignUpIn.SignUp.step': SignUpStepOutletProps;
   'app.containers.Admin.dashboard.reports.ProjectReport.graphs': {
     startAt: string;
     endAt: string;
     participationMethods: ParticipationMethod[];
     project: IProjectData;
+  };
+  'app.containers.IdeasShow.MetaInformation': {
+    ideaId: string;
   };
   'app.containers.UserEditPage.ProfileForm.forms': {
     authUser: IUserData;
@@ -246,6 +260,20 @@ export type OutletsPropertyMap = {
     translateButtonClicked?: boolean;
     color?: string;
     align: 'left' | 'center';
+  };
+  'app.containers.UserEditPage.content': {};
+  'app.containers.Navbar.UserMenu.UserNameContainer': {
+    isVerified: boolean;
+  };
+  'app.containers.App.modals': { onMounted: (id: string) => void };
+  'app.containers.LandingPage.onboardingCampaigns': {
+    onboardingCampaigns: IOnboardingCampaigns;
+    contentTimeout: number;
+    contentDelay: number;
+    authUser: IUserData;
+    theme: unknown;
+    onSkip: (name: IOnboardingCampaignNames) => void;
+    onAccept: (name: IOnboardingCampaignNames) => void;
   };
 };
 

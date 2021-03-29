@@ -53,9 +53,6 @@ import LoadableModal from 'components/Loadable/Modal';
 import LoadableUserDeleted from 'components/UserDeletedModalContent/LoadableUserDeleted';
 import ErrorBoundary from 'components/ErrorBoundary';
 import { LiveAnnouncer } from 'react-aria-live';
-const VerificationModal = lazy(() =>
-  import('components/Verification/VerificationModal')
-);
 const SignUpInModal = lazy(() => import('components/SignUpIn/SignUpInModal'));
 const PostPageFullscreenModal = lazy(() => import('./PostPageFullscreenModal'));
 
@@ -92,6 +89,7 @@ import { media, getTheme } from 'utils/styleUtils';
 // typings
 import { SSOParams } from 'services/singleSignOn';
 import { Locale } from 'typings';
+import Outlet from 'components/Outlet';
 
 const Container = styled.div`
   display: flex;
@@ -459,12 +457,14 @@ class App extends PureComponent<Props, State> {
     this.setState({ mobileNavbarRef });
   };
 
-  singUpInModalMounted = () => {
-    this.setState({ signUpInModalMounted: true });
+  handleModalMounted = (id: string) => {
+    if (id === 'verification') {
+      this.setState({ verificationModalMounted: true });
+    }
   };
 
-  verificationModalMounted = () => {
-    this.setState({ verificationModalMounted: true });
+  handleSignUpInModalMounted = () => {
+    this.setState({ signUpInModalMounted: true });
   };
 
   render() {
@@ -536,17 +536,16 @@ class App extends PureComponent<Props, State> {
 
                   <ErrorBoundary>
                     <Suspense fallback={null}>
-                      <SignUpInModal onMounted={this.singUpInModalMounted} />
-                    </Suspense>
-                  </ErrorBoundary>
-
-                  <ErrorBoundary>
-                    <Suspense fallback={null}>
-                      <VerificationModal
-                        onMounted={this.verificationModalMounted}
+                      <SignUpInModal
+                        onMounted={this.handleSignUpInModalMounted}
                       />
                     </Suspense>
                   </ErrorBoundary>
+
+                  <Outlet
+                    id="app.containers.App.modals"
+                    onMounted={this.handleModalMounted}
+                  />
 
                   <ErrorBoundary>
                     <div id="modal-portal" />
