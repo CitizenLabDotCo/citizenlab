@@ -19,10 +19,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.tabReports',
     defaultMessage: 'Reports',
   },
-  tabInsights: {
-    id: 'app.containers.AdminPage.DashboardPage.tabInsights',
-    defaultMessage: 'Insights',
-  },
   helmetTitle: {
     id: 'app.containers.AdminPage.DashboardPage.helmetTitle',
     defaultMessage: 'Admin dashboard page',
