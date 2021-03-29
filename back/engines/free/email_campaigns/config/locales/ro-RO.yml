@@ -1,67 +1,67 @@
 ro:
   email_campaigns:
     campaign_type_description:
-      "manual": Official messages
-      "admin_rights_received": Admin rights received
-      "comment_deleted_by_admin": Deletion of my comment
-      "comment_marked_as_spam": Comment spam report
-      "comment_on_your_comment": A reply on my comment
-      "comment_on_your_idea": A comment on my idea
-      "comment_on_your_initiative": A comment on my proposal
-      "first_idea_published": Publication of my first idea
-      "idea_assigned_to_you": Assignment of an idea to me
-      "idea_marked_as_spam": Idea spam report
-      "idea_published": Publication of my idea
-      "initiative_assigned_to_you": Assignment of a proposal to me
-      "initiative_marked_as_spam": Proposal spam report
-      "initiative_published": Publication of my proposal
-      "invite_received": Invitation
-      "invite_reminder": Invitation reminder
-      "mention_in_official_feedback": Mention in an update
-      "new_comment_for_admin": New comment in a project I moderate
-      "new_comment_on_commented_idea": New comment on an idea I commented on
-      "new_comment_on_commented_initiative": New comment on a proposal I commented on
-      "new_comment_on_voted_idea": New comment on an idea I voted for
-      "new_comment_on_voted_initiative": New comment on a proposal I voted for
-      "new_idea_for_admin": New idea in a project I moderate
-      "new_initiative_for_admin": New proposal
-      "official_feedback_on_commented_idea": Update on an idea I commented on
-      "official_feedback_on_commented_initiative": Update on a proposal I commented on
-      "official_feedback_on_voted_idea": Update on an idea I voted on
-      "official_feedback_on_voted_initiative": Update on a proposal I voted on
-      "official_feedback_on_your_idea": Update on my idea
-      "official_feedback_on_your_initiative": Update on my proposal
-      "password_reset": Password reset
-      "project_moderation_rights_received": Project moderation rights received
+      "manual": Mesajele oficiale
+      "admin_rights_received": Drepturi de administrator primite
+      "comment_deleted_by_admin": Ștergerea comentariului meu
+      "comment_marked_as_spam": Comentează raportul de spam
+      "comment_on_your_comment": Un răspuns la comentariul meu
+      "comment_on_your_idea": Un comentariu la ideea mea
+      "comment_on_your_initiative": Un comentariu la propunerea mea
+      "first_idea_published": Publicarea primei mele idei
+      "idea_assigned_to_you": Atribuirea unei idei mie
+      "idea_marked_as_spam": Raportul spam despre idei
+      "idea_published": Publicarea ideii mele
+      "initiative_assigned_to_you": Atribuirea unei propuneri mie
+      "initiative_marked_as_spam": Propunere raport de spam
+      "initiative_published": Publicarea propunerii mele
+      "invite_received": Invitație
+      "invite_reminder": Memento pentru invitație
+      "mention_in_official_feedback": Menționare într-o actualizare
+      "new_comment_for_admin": Comentariu nou într-un proiect pe care îl moderez
+      "new_comment_on_commented_idea": Comentariu nou la o idee pe care am comentat-o
+      "new_comment_on_commented_initiative": Comentariu nou la o propunere pe care am comentat-o
+      "new_comment_on_voted_idea": Comentariu nou la o idee pe care am votat-o
+      "new_comment_on_voted_initiative": Comentariu nou la o propunere pe care am votat-o
+      "new_idea_for_admin": Idee nouă într-un proiect pe care îl moderez
+      "new_initiative_for_admin": Propunere nouă
+      "official_feedback_on_commented_idea": Actualizare unei idei la care am plasat un comentariu
+      "official_feedback_on_commented_initiative": Actualizare unei propuneri la care am plasat un comentariu
+      "official_feedback_on_voted_idea": Actualizare unei idei votate de mine
+      "official_feedback_on_voted_initiative": Actualizare unei propuneri votate de mine
+      "official_feedback_on_your_idea": Actualizare la idea mea
+      "official_feedback_on_your_initiative": Actualizare la propunerea mea
+      "password_reset": Resetare parolă
+      "project_moderation_rights_received": Drepturile de moderare a proiectului au fost primite
       "project_folder_moderation_rights_received": Folder manager rights received
-      "project_phase_started": New project phase
-      "project_phase_upcoming": Upcoming new project phase
-      "status_change_of_commented_idea": Status change of an idea I commented on
-      "status_change_of_commented_initiative": Status change of a proposal I commented on
-      "status_change_of_voted_idea": Status change of an idea I voted for
-      "status_change_of_voted_initiative": Status change of a proposal I voted for
-      "status_change_of_your_idea": Status change of my idea
-      "status_change_of_your_initiative": Status change of my proposal
-      "threshold_reached_for_admin": Proposal reached the voting threshold
-      "welcome": After registration
-      "admin_digest": Weekly overview for admins
-      "moderator_digest": Weekly overview for project managers
-      "assignee_digest": Weekly overview of assigned ideas
-      "user_digest": Weekly overview
-      "your_proposed_initiatives_digest": Weekly overview of your proposals
+      "project_phase_started": Noua etapă a proiectului
+      "project_phase_upcoming": Viitoarea etapă a proiectului
+      "status_change_of_commented_idea": Schimbarea statusului unei idei pe care am votat-o
+      "status_change_of_commented_initiative": Schimbarea statusului unei propuneri pe care am votat-o
+      "status_change_of_voted_idea": Schimbarea statusului unei idei pe care am votat-o
+      "status_change_of_voted_initiative": Schimbarea statusului unei propuneri pe care am votat-o
+      "status_change_of_your_idea": Schimbarea statusului ideii mele
+      "status_change_of_your_initiative": Schimbarea statusului propunerii mele
+      "threshold_reached_for_admin": Propunerea a atins pragul minim de voturi
+      "welcome": După înregistrare
+      "admin_digest": Rezumate săptămânale pentru admini
+      "moderator_digest": Prezentarea săptămânală pentru managerii de proiect
+      "assignee_digest": Rezumate săptămânale ale ideilor atribuite
+      "user_digest": Rezumate săptămânale
+      "your_proposed_initiatives_digest": Rezumate săptămânale ale propunerilor dumneavoastră
     admin_campaign_type_description:
-      "manual": Official message - all users
-      "admin_rights_received": Admin rights received - admins
-      "comment_deleted_by_admin": Deletion of your comment - all users
-      "comment_marked_as_spam": Comment spam report - admins and project managers
-      "comment_on_your_comment": Reply on your comment - all users
-      "comment_on_your_idea": Comment on your idea - all users
-      "comment_on_your_initiative": Comment on your proposal - all users
-      "first_idea_published": Publication of your first idea - all users
-      "idea_assigned_to_you": Assignment of an idea - admins and project managers
-      "idea_marked_as_spam": Idea spam report - admins and project managers
-      "idea_published": Publication of your idea - all users
-      "initiative_assigned_to_you": Assignment of a proposal - admins
+      "manual": Mesaj oficial - toți utilizatorii
+      "admin_rights_received": Drepturi de administrare primite - administratori
+      "comment_deleted_by_admin": Ștergerea comentariului dvs. - toți utilizatorii
+      "comment_marked_as_spam": Raport de comentariu spam - administratori și manageri de proiect
+      "comment_on_your_comment": Răspundeți la comentariul dvs. - toți utilizatorii
+      "comment_on_your_idea": Comentează ideea ta - toți utilizatorii
+      "comment_on_your_initiative": Comentează propunerea ta - toți utilizatorii
+      "first_idea_published": Publicarea primei tale idei - toți utilizatorii
+      "idea_assigned_to_you": Atribuirea unei idei - administratori și manageri de proiect
+      "idea_marked_as_spam": Raport spam al unei idei - administratori și manageri de proiect
+      "idea_published": Publicarea ideii dvs. - toți utilizatorii
+      "initiative_assigned_to_you": Atribuirea unei propuneri - administratori
       "initiative_marked_as_spam": Proposal spam report - admins
       "initiative_published": Publication of your proposal - all users
       "invite_received": Invitation - all users
@@ -100,315 +100,315 @@ ro:
       "user_digest": Weekly overview - all users
       "your_proposed_initiatives_digest": Weekly overview of your own proposals - all users
     footer:
-      "link_privacy_policy": "Privacy Policy"
-      "link_terms_conditions": "Terms & Conditions"
-      "link_unsubscribe": "Unsubscribe"
-      "powered_by": "Powered by"
-      "statement": "This e-mail was sent to you by CitizenLab on behalf of %{organizationName}, because you are a registered user of %{organizationLink}. You can %{unsubscribeLink} if you do not want to receive these e-mails in the future."
-      "unsubscribe_text": "unsubscribe"
+      "link_privacy_policy": "Politica de confidențialitate"
+      "link_terms_conditions": "Termeni și condiții"
+      "link_unsubscribe": "Dezabonare"
+      "powered_by": "Cu sprijinul"
+      "statement": "Acest e-mail v-a fost trimis de CitizenLab în numele %{organizationName}, deoarece sunteți un utilizator înregistrat al %{organizationLink}. Puteți %{unsubscribeLink} dacă nu doriți să primiți aceste e-mailuri în viitor."
+      "unsubscribe_text": "Dezabonare"
     comment_deleted_by_admin:
-      reason: 'The reason why your comment was deleted:'
-      cta_view: 'View this idea'
-      event_description: '%{organizationName} deleted the comment you wrote on an idea.'
-      main_header: '%{organizationName} deleted your comment'
+      reason: 'Motivul pentru care comentariul dvs. a fost șters:'
+      cta_view: 'Vizualizați această idee'
+      event_description: '%{organizationName} a șters comentariul pe care l-ai scris la o idee.'
+      main_header: '%{organizationName} a șters comentariul'
       other_reason: '%{otherReason}'
-      inappropriate_reason: 'Your comment was considered to be inappropriate'
-      irrelevant_reason: 'Your comment was considered to be irrelevant for that context'
-      no_reason: 'No reason was specified'
+      inappropriate_reason: 'Comentariul dvs. a fost considerat ca fiind inadecvat'
+      irrelevant_reason: 'Comentariul dvs. a fost considerat a fi irelevant pentru contextul respectiv'
+      no_reason: 'Niciun motiv nu a fost specificat'
       subject: 'Your comment has been deleted from the platform of %{organizationName}'
-      preheader: 'Your comment has been deleted'
+      preheader: 'Comentariul dvs. a fost șters'
     admin_digest:
-      subject: 'Your weekly admin report of %{time}'
-      preheader: 'Admin digest of %{organizationName}'
-      title_your_weekly_report: '%{firstName}, your weekly report'
-      text_introduction: 'We have curated for you the list of ideas that have generated most activity over the past week. Find out what''s happening on your platform!'
-      cta_visit_the_platform: 'Visit your platform'
-      new_users: 'New users'
-      new_ideas: 'New ideas'
-      new_comments: 'New comments'
-      title_activity_past_week: 'Activity of the past week'
-      title_no_activity_past_week: 'There was no activity in the past week'
-      title_initiatives_past_week: 'New proposals of the past week'
-      title_successful_initiatives_past_week: 'Proposals that reached the threshold in the past week'
-      yesterday_by_author: 'Yesterday by %{author}'
-      today_by_author: 'Today by %{author}'
-      x_days_ago_by_author: '%{x} days ago by %{author}'
+      subject: 'Raportul dvs. administrativ săptămânal de %{time}'
+      preheader: 'Analiza administratorului pentru %{organizationName}'
+      title_your_weekly_report: '%{firstName}, raportul dvs. săptămânal'
+      text_introduction: 'Am recomandat lista ideilor care au generat cea mai mare activitate în ultima săptămână. Află ce se întâmplă pe platforma ta!'
+      cta_visit_the_platform: 'Accesați-vă platforma'
+      new_users: 'Noi utilizatori'
+      new_ideas: 'Idei noi'
+      new_comments: 'Comentarii noi'
+      title_activity_past_week: 'Activitatea din ultima săptămână'
+      title_no_activity_past_week: 'Nu a existat nicio activitate în ultima săptămână'
+      title_initiatives_past_week: 'Noi propuneri din săptămâna trecută'
+      title_successful_initiatives_past_week: 'Propuneri care au atins pragul săptămâna trecută'
+      yesterday_by_author: 'Ieri de %{author}'
+      today_by_author: 'Astăzi de %{author}'
+      x_days_ago_by_author: 'Cu %{x} zile în urmă de %{author}'
     admin_rights_received:
-      cta_moderate_platform: 'Moderate your platform'
-      message_you_became_administrator: 'You have been granted administrator rights for the participation platform of %{organizationName}.'
-      preheader: 'You were granted administrator rights for the participation platform of %{organizationName}'
-      subject: 'You became an administrator on the platform of %{organizationName}'
-      text_create_participatory_process: 'As an administrator, you can create and configure new participation projects. You can add new phases using the timeline. Each of these phases can have its own behaviour with regards to idea posting, commenting, and voting.'
-      text_moderate_analyse_input: 'Once projects are launched, the first ideas will come in. You will receive weekly reports with all key activities so that you stay on top of things. The ideas overview will help you moderate the input and collaborate on processing it.'
-      text_platform_setup: 'As an administrator you can set up your participation platform. Choose a logo, images and colors, write a personal message on your home page, send out invitations, define what you want to know of your users, ...'
-      title_create_participatory_process: 'Design the participatory process'
-      title_moderate_analyse_input: 'Moderate and analyse the input'
-      title_platform_setup: 'Set your platform up'
-      title_what_can_you_do_administrator: 'What can you do as an administrator?'
-      title_you_became_administrator: 'You became an administrator'
+      cta_moderate_platform: 'Moderați-vă platforma'
+      message_you_became_administrator: 'Vi s-au acordat drepturi de administrator pentru platforma de participare a %{organizationName}.'
+      preheader: 'Vi s-au acordat drepturi de administrator pentru platforma de participare a %{organizationName}'
+      subject: 'Ați devenit administrator pe platforma %{organizationName}'
+      text_create_participatory_process: 'Ca administrator, puteți crea și configura noi proiecte de participare. Puteți adăuga noi faze folosind cronologia. Fiecare dintre aceste faze poate avea propriul său comportament în ceea ce privește postarea, comentarea și votarea ideilor.'
+      text_moderate_analyse_input: 'După lansarea proiectelor, primele idei vor veni. Veți primi rapoarte săptămânale cu toate activitățile cheie, astfel încât să rămâneți la curent. Prezentarea generală a ideilor vă va ajuta să moderați conținutul și să colaborați la procesarea acestuia.'
+      text_platform_setup: 'Ca administrator puteți configura platforma de participare. Alegeți un logo, imagini și culori, scrieți un mesaj personal pe pagina dvs. de origine, trimiteți invitații, definiți ce doriți să știți despre utilizatorii dvs., ...'
+      title_create_participatory_process: 'Proiectarea procesului participativ'
+      title_moderate_analyse_input: 'Moderați și analizați inputul'
+      title_platform_setup: 'Configurează-ți platforma'
+      title_what_can_you_do_administrator: 'Ce poți face ca administrator?'
+      title_you_became_administrator: 'Ai devenit administrator'
     comment_marked_as_spam:
-      by_author: 'by %{authorName}'
-      commented: '%{authorName} commented:'
-      cta_review_comment: 'Review comment'
-      days_ago: '%{numberOfDays} days ago'
-      event_description: 'The following comment posted on <strong>''%{post}''</strong> was reported:'
-      inappropriate_content: 'The comment is inappropriate or offensive.'
-      preheader: 'Act upon this comment reported as spam'
-      reported_this_because: '%{reporterFirstName} reported this because:'
-      subject: '%{organizationName}: %{firstName} %{lastName} reported this comment as spam'
-      title_comment_spam_report: '%{firstName} %{lastName} reported this comment as spam'
-      today: Today
-      wrong_content: 'The comment is not relevant.'
-      yesterday: Yesterday
+      by_author: 'De către %{authorName}'
+      commented: '%{authorName} a comentat:'
+      cta_review_comment: 'Examinează comentariul'
+      days_ago: '%{numberOfDays} zile în urmă'
+      event_description: 'Comentariul postat pe următorul <strong>''%{post}''</strong> a fost raportat:'
+      inappropriate_content: 'Comentariul este nepotrivit sau ofensator.'
+      preheader: 'Ia măsuri in privința comentariului raportat ca spam'
+      reported_this_because: '%{reporterFirstName} a raportat acest lucru, deoarece:'
+      subject: '%{organizationName}: %{firstName} %{lastName} a raportat acest comentariu ca spam'
+      title_comment_spam_report: '%{firstName} %{lastName} a raportat acest comentariu ca spam'
+      today: Azi
+      wrong_content: 'Comentariul nu este relevant.'
+      yesterday: Ieri
     comment_on_your_initiative:
-      commented: '%{authorFirstName} wrote:'
-      cta_reply_to: 'Reply to %{commentAuthor}'
-      event_description: '%{authorNameFull} placed a reaction on your initiative ''%{initiativeTitle}''. Click the button below to continue the conversation with %{authorName}.'
-      main_header: '%{commentAuthor} commented on your initiative'
-      subject: 'You''ve received a comment on %{organizationName}''s platform'
-      preheader: '%{authorName} left a comment on your initiative for %{organizationName}'
+      commented: '%{authorFirstName} a scris:'
+      cta_reply_to: 'Răspuns la %{commentAuthor}'
+      event_description: '%{authorNameFull} a reacționat la inițiativa dvs. „%{initiativeTitle}”. Faceți clic pe butonul de mai jos pentru a continua conversația cu %{authorName}.'
+      main_header: '%{commentAuthor} a comentat inițiativa dvs.'
+      subject: 'Ați primit un comentariu pe platforma %{organizationName}'
+      preheader: '%{authorName} a lăsat un comentariu la inițiativa dvs. pentru %{organizationName}'
     idea_assigned_to_you:
-      by_author: 'by %{authorName}'
-      cta_reply_to: 'Give feedback to %{authorName}'
-      event_description_idea: 'An idea has been assigned to you. Give feedback by writing an official update or by changing its status.'
-      main_header: '%{firstName}, you have a new assignment'
-      subject: 'You have an assignment on the platform of %{organizationName}'
-      preheader_idea: 'The idea of %{authorName} has been assigned to you'
+      by_author: 'De către %{authorName}'
+      cta_reply_to: 'Trimiteți feedback la %{authorName}'
+      event_description_idea: 'Ți-a fost atribuită o idee. Trimiteți feedback prin scrierea unei actualizări oficiale sau schimbarea statusului ei.'
+      main_header: '%{firstName}, aveți o sarcină nouă'
+      subject: 'Aveți o misiune pe platforma %{organizationName}'
+      preheader_idea: 'Ideea de %{authorName} v-a fost atribuită'
     assignee_digest:
       subject: 'Ideas requiring your feedback: %{numberIdeas}'
-      preheader: 'Assignee digest of %{organizationName}'
+      preheader: 'Analiza reprezentantului %{organizationName}'
       title_your_weekly_report: '%{firstName}, citizen input is awaiting your feedback'
-      cta_manage_your_input: 'Manage your input'
-      assigned_ideas: 'Ideas need your feedback'
-      title_assignment_past_week: 'Latest ideas assigned to you'
-      title_no_assignment_past_week: 'No new ideas assigned to you last week'
-      yesterday_by_author: 'Yesterday by %{author}'
-      today_by_author: 'Today by %{author}'
-      x_days_ago_by_author: '%{x} days ago by %{author}'
-      idea_section: Ideas
-      initiative_section: Proposals
-      title_initiatives_past_week: 'New proposals assigned to you'
-      title_successful_initiatives_past_week: 'Proposals assigned to you that reached the threshold'
+      cta_manage_your_input: 'Gestionați datele introduse'
+      assigned_ideas: 'Ideile au nevoie de feedback-ul dvs.'
+      title_assignment_past_week: 'Ultimele idei care v-au fost atribuite'
+      title_no_assignment_past_week: 'Nu vi s-au atribuit idei noi săptămâna trecută'
+      yesterday_by_author: 'Ieri de %{author}'
+      today_by_author: 'Astăzi de %{author}'
+      x_days_ago_by_author: 'Cu %{x} zile în urmă de %{author}'
+      idea_section: Idei
+      initiative_section: Propuneri
+      title_initiatives_past_week: 'Noile propuneri atribuite dvs.'
+      title_successful_initiatives_past_week: 'Propunerile atribuite dvs. care au atins pragul'
     idea_marked_as_spam:
-      by_author: 'by %{authorName}'
-      cta_review_idea: 'Review idea'
-      report_inappropriate_offensive_content: 'I find this content inappropriate or offensive.'
-      report_not_an_idea: 'This content is not an idea and does not belong here.'
-      subject: 'You have a spam report on the platform of %{organizationName}'
-      preheader: 'Act upon this spam report'
-      reported_this_because: '%{reporterFirstName} reported this because:'
-      title_spam_report: '%{firstName} %{lastName} reported spam'
+      by_author: 'De către %{authorName}'
+      cta_review_idea: 'Ideea de recenzie'
+      report_inappropriate_offensive_content: 'Consider acest conținut inadecvat sau jignitor.'
+      report_not_an_idea: 'Acest conținut nu este o idee și nu aparține aici.'
+      subject: 'Aveți un raport spam pe platforma %{organizationName}'
+      preheader: 'Acționați asupra acestui raport de spam'
+      reported_this_because: '%{reporterFirstName} a raportat acest lucru, deoarece:'
+      title_spam_report: '%{firstName} %{lastName} a raportat spam'
     initiative_marked_as_spam:
-      by_author: 'by %{authorName}'
-      cta_review_initiative: 'Review proposal'
-      report_inappropriate_offensive_content: 'I find this content inappropriate or offensive.'
-      report_not_an_initiative: 'This content is not a proposal and does not belong here.'
-      subject: 'You have a spam report on the platform of %{organizationName}'
-      preheader: 'Act upon this spam report'
-      reported_this_because: '%{reporterFirstName} reported this because:'
-      title_spam_report: '%{firstName} %{lastName} reported spam'
+      by_author: 'De către %{authorName}'
+      cta_review_initiative: 'Propunere de revizuire'
+      report_inappropriate_offensive_content: 'Consider acest conținut inadecvat sau jignitor.'
+      report_not_an_initiative: 'Acest conținut nu este o propunere și nu aparține aici.'
+      subject: 'Aveți un raport spam pe platforma %{organizationName}'
+      preheader: 'Acționați asupra acestui raport de spam'
+      reported_this_because: '%{reporterFirstName} a raportat acest lucru, deoarece:'
+      title_spam_report: '%{firstName} %{lastName} a raportat spam'
     initiative_assigned_to_you:
-      by_author: 'by %{authorName}'
-      cta_reply_to: 'Give feedback to %{authorName}'
-      event_description_initiative: 'An proposal has been assigned to you. Give feedback by writing an official update or by changing its status.'
-      main_header: '%{firstName}, you have a new assignment'
-      subject: 'You have an assignment on the platform of %{organizationName}'
-      preheader_initiative: 'The proposal of %{authorName} has been assigned to you'
+      by_author: 'De către %{authorName}'
+      cta_reply_to: 'Trimiteți feedback la %{authorName}'
+      event_description_initiative: 'Ți-a fost atribuită o propunere. Trimiteți feedback prin scrierea unei actualizări oficiale sau schimbarea statusului ei.'
+      main_header: '%{firstName}, aveți o sarcină nouă'
+      subject: 'Aveți o misiune pe platforma %{organizationName}'
+      preheader_initiative: 'Propunerea de %{authorName} v-a fost atribuită'
     invite_reminder:
-      cta_accept_invitation: 'Accept your invitation'
-      invitation_header: 'Your invitation is pending'
-      preheader: '%{organizationName} sent you an invite to join their participation platform some days ago.'
-      subject: 'Pending invitation for the participation platform of %{organizationName}'
+      cta_accept_invitation: 'Acceptați invitația'
+      invitation_header: 'Invitația dvs. este în așteptare'
+      preheader: '%{organizationName} v-a trimis o invitație să vă alăturați platformei de participare cu câteva zile în urmă.'
+      subject: 'Invitatie in asteptare pentru platforma de participare a %{organizationName}'
     invite_received:
-      added_a_message: '%{organizationName} wrote the following message:'
-      cta_accept_invitation: 'Accept your invitation'
-      invitation_header: 'You are invited!'
-      invitation_header_message: '%{organizationName} invited you to their participation platform.'
-      preheader: '%{organizationName} sent you an invite to join their participation platform.'
-      subject: 'You are invited to join the platform of %{organizationName}'
+      added_a_message: '%{organizationName} a scris următorul mesaj:'
+      cta_accept_invitation: 'Acceptați invitația'
+      invitation_header: 'Esti invitat!'
+      invitation_header_message: '%{organizationName} v-a invitat la platforma de participare.'
+      preheader: '%{organizationName} v-a trimis o invitație să vă alăturați platformei lor de participare.'
+      subject: 'Sunteți invitat să vă alăturați platformei %{organizationName}'
     initiative_published:
-      action_add_image: '%{addImageLink} to increase visibility'
-      action_published_initiative: 'Published proposal'
-      action_send_email: 'Send your contacts an %{sendEmailLink}'
-      action_share_fb: 'Let your friends know on %{fbLink}'
-      action_share_link: 'Share it via any channel by copying the %{link}'
-      action_share_twitter: 'Inform your followers on %{twitterLink}'
-      cta_view_initiative: 'Go to your proposal'
+      action_add_image: '%{addImageLink} pentru a crește vizibilitatea'
+      action_published_initiative: 'Propunere publicată'
+      action_send_email: 'Trimiteți contactelor dvs. un %{sendEmailLink}'
+      action_share_fb: 'Anunță-ți prietenii pe %{fbLink}'
+      action_share_link: 'Partajează-l prin orice canal copiind %{link}'
+      action_share_twitter: 'Informează-ți urmăritorii pe %{twitterLink}'
+      cta_view_initiative: 'Du-te la propunerea ta'
       link: link
-      main_header: 'You posted an proposal! Let''s gather support for it.'
-      message_next_steps: '%{userFirstName}, your proposal has successfully been published on the participation platform of %{organizationName}. You will be notified when people interact with your proposal. Find out what next steps you can take below.'
-      message_get_votes: 'Reach the voting threshold:'
-      preheader: 'Thank you for sharing your proposal %{initiativeTitle} for %{organizationName}. The next step is to get support for your proposal by sharing it across your network.'
-      send_email: email
-      subject: 'Your proposal was published on the platform of %{organizationName}'
+      main_header: 'Ai postat o propunere! Să adunăm sprijin pentru aceasta.'
+      message_next_steps: '%{userFirstName}, propunerea dvs. a fost publicată cu succes pe platforma de participare a %{organizationName}. Veți fi anunțat atunci când oamenii interacționează cu propunerea dvs. Aflați ce pași puteți face mai jos.'
+      message_get_votes: 'Atingeți pragul de vot:'
+      preheader: 'Vă mulțumim că ați împărtășit propunerea %{initiativeTitle} pentru %{organizationName}. Următorul pas este să obțineți sprijin pentru propunerea dvs., distribuind-o în rețeaua dvs.'
+      send_email: e-mail
+      subject: 'Propunerea dvs. a fost publicată pe platforma %{organizationName}'
     mention_in_official_feedback:
-      by_author: 'by %{authorName}'
-      commented: '%{organizationName} wrote:'
-      cta_reply_to: 'Reply to %{organizationName}'
-      event_description: '%{organizationName} mentioned you in their feedback on the idea ''%{post}‘. Click the link below to enter the conversation with %{organizationName}'
-      main_header: 'You have been mentioned'
-      subject: '%{organizationName} mentioned you in their feedback'
-      preheader: '%{commentAuthor} mentioned you in feedback'
+      by_author: 'De către %{authorName}'
+      commented: '%{organizationName} a scris:'
+      cta_reply_to: 'Răspundeți la %{organizationName}'
+      event_description: '%{organizationName} v-a menționat în feedback-ul lor cu privire la ideea „%{post}”. Faceți clic pe linkul de mai jos pentru a intra în conversația cu %{organizationName}'
+      main_header: 'Ați fost menționat'
+      subject: '%{organizationName} v-a menționat în feedback-ul lor'
+      preheader: '%{commentAuthor} v-a menționat în feedback'
     new_comment_on_commented_idea:
-      commented: '%{commentAuthor} wrote:'
-      cta_reply_to: 'Reply to %{commentAuthor}'
-      event_description: '%{commentAuthorFull} also wrote a comment on the idea ''%{ideaTitle}'' on the participation platform of %{organizationName}. Click the button below to start the conversation with %{commentAuthor}.'
-      main_header: '%{commentAuthor} wrote a comment on the same idea'
-      subject: 'There''s another comment on the idea you commented on'
-      preheader: '%{commentAuthor} also left a comment on an idea for %{organizationName}'
+      commented: '%{commentAuthor} a scris:'
+      cta_reply_to: 'Răspuns la %{commentAuthor}'
+      event_description: '%{commentAuthorFull} a scris și un comentariu la ideea „%{ideaTitle}” pe platforma de participare a %{organizationName}. Faceți clic pe butonul de mai jos pentru a începe conversația cu %{commentAuthor}.'
+      main_header: '%{commentAuthor} a scris un comentariu la aceeași idee'
+      subject: 'Există un alt comentariu la ideea pe care ai comentat-o'
+      preheader: '%{commentAuthor} a lăsat și un comentariu la o idee pentru %{organizationName}'
     mention_in_comment:
-      by_author: 'by %{authorName}'
-      commented: '%{commentAuthor} wrote:'
-      cta_reply_to: 'Reply to %{commentAuthor}'
-      event_description: '%{commentAuthorFull} has mentioned you in his comment on the idea ''%{post}‘. Click the link below to enter the conversation with %{commentAuthor}'
-      main_header: 'People are talking about you'
-      subject: 'Someone mentioned you on the platform of %{organizationName}'
-      preheader: '%{commentAuthor} mentioned you in a comment'
+      by_author: 'De către %{authorName}'
+      commented: '%{commentAuthor} a scris:'
+      cta_reply_to: 'Răspuns la %{commentAuthor}'
+      event_description: '%{commentAuthorFull} v-a menționat în comentariul său despre ideea „%{post}”. Faceți clic pe linkul de mai jos pentru a intra în conversația cu %{commentAuthor}'
+      main_header: 'Oamenii vorbesc despre tine'
+      subject: 'Cineva v-a menționat pe platforma %{organizationName}'
+      preheader: '%{commentAuthor} v-a menționat într-un comentariu'
     moderator_digest:
       subject: 'Your weekly project manager report of %{time}'
       preheader: 'Project manager digest of %{organizationName}'
-      title_your_weekly_report: '%{firstName}, your weekly report'
-      text_introduction: 'We have curated for you the list of ideas that have generated most activity over the past week. Find out what''s happening within your project!'
-      cta_moderate: 'Moderate your project'
-      new_users: 'New users'
-      new_ideas: 'New ideas'
-      new_comments: 'New comments'
-      title_activity_past_week: 'Activity of the past week'
-      title_no_activity_past_week: 'No activity in the past week'
-      yesterday_by_author: 'Yesterday by %{author}'
-      today_by_author: 'Today by %{author}'
-      x_days_ago_by_author: '%{x} days ago by %{author}'
+      title_your_weekly_report: '%{firstName}, raportul dvs. săptămânal'
+      text_introduction: 'Am recomandat lista de idei care au generat cea mai mare activitate săptămâna trecută. Aflați ce se întâmplă în cadrul proiectului dvs.!'
+      cta_moderate: 'Moderați proiectul'
+      new_users: 'Noi utilizatori'
+      new_ideas: 'Idei noi'
+      new_comments: 'Comentarii noi'
+      title_activity_past_week: 'Activitatea din ultima săptămână'
+      title_no_activity_past_week: 'Nicio activitate în ultima săptămână'
+      yesterday_by_author: 'Ieri de %{author}'
+      today_by_author: 'Astăzi de %{author}'
+      x_days_ago_by_author: 'Cu %{x} zile în urmă de %{author}'
     new_comment_on_commented_initiative:
-      commented: '%{commentAuthor} wrote:'
-      cta_reply_to: 'Reply to %{commentAuthor}'
-      event_description: '%{commentAuthorFull} also wrote a comment on the proposal ''%{initiativeTitle}'' on the participation platform of %{organizationName}. Click the button below to start the conversation with %{commentAuthor}.'
-      main_header: '%{commentAuthor} wrote a comment on the same proposal'
-      subject: 'There''s another comment on the proposal you commented on'
-      preheader: '%{commentAuthor} also left a comment on an proposal for %{organizationName}'
+      commented: '%{commentAuthor} a scris:'
+      cta_reply_to: 'Răspuns la %{commentAuthor}'
+      event_description: '%{commentAuthorFull} a scris și un comentariu la propunerea „%{initiativeTitle}” pe platforma de participare a %{organizationName}. Faceți clic pe butonul de mai jos pentru a începe conversația cu %{commentAuthor}.'
+      main_header: '%{commentAuthor} a scris un comentariu la aceeași propunere'
+      subject: 'Există un alt comentariu la propunerea pe care ai comentat-o'
+      preheader: '%{commentAuthor} a lăsat, de asemenea, un comentariu la o propunere pentru %{organizationName}'
     new_comment_for_admin:
-      by_author: 'by %{authorName}'
-      commented: '%{authorFirstName} commented:'
-      cta_reply_to: 'Check the comment of %{commentAuthor}'
-      days_ago: '%{numberOfDays} days ago'
-      event_description: '%{authorName} wrote a comment on your platform. Don''t hesitate to join the discussion and keep the conversation going!'
-      main_header: '%{firstName}, a new comment has been posted on your platform'
-      subject: 'There''s a new comment on %{organizationName}''s platform'
-      preheader: '%{authorName} left a comment'
-      today: Today
-      yesterday: Yesterday
+      by_author: 'De către %{authorName}'
+      commented: '%{authorFirstName} a comentat:'
+      cta_reply_to: 'Verifică comentariul lăsat de %{commentAuthor}'
+      days_ago: '%{numberOfDays} zile în urmă'
+      event_description: '%{authorName} a scris un comentariu pe platforma ta. Nu ezitați să vă alăturați discuției și să continuați conversația!'
+      main_header: '%{firstName}, un nou comentariu a fost postat pe platforma dvs.'
+      subject: 'Există un nou comentariu pe platforma %{organizationName}'
+      preheader: '%{authorName} a lăsat un comentariu'
+      today: Azi
+      yesterday: Ieri
     comment_on_your_idea:
-      by_author: 'by %{authorName}'
-      commented: '%{authorFirstName} wrote:'
-      cta_reply_to: 'Reply to %{commentAuthor}'
-      event_description: '%{authorNameFull} placed a reaction on your idea ''%{ideaTitle}''. Click the button below to continu the conversation with %{authorName}.'
-      main_header: '%{authorName} commented on your idea'
-      subject: 'You''ve received a comment on %{organizationName}''s platform'
-      preheader: '%{authorName} left a comment on your idea for %{organizationName}'
+      by_author: 'De către %{authorName}'
+      commented: '%{authorFirstName} a scris:'
+      cta_reply_to: 'Răspuns la %{commentAuthor}'
+      event_description: '%{authorNameFull} a reacționat la ideea dvs. „%{ideaTitle}”. Faceți clic pe butonul de mai jos pentru a continua conversația cu %{authorName}.'
+      main_header: '%{authorName} a comentat ideea ta'
+      subject: 'Ați primit un comentariu pe platforma %{organizationName}'
+      preheader: '%{authorName} a lăsat un comentariu la ideea dvs. pentru %{organizationName}'
     new_comment_on_voted_initiative:
-      commented: '%{commentAuthor} wrote:'
-      cta_reply_to: 'View this proposal'
-      event_description: '%{commentAuthor} has commented on the proposal ''%{initiativeTitle}'' on which you''ve voted. Join the discussion on the platform of %{organizationName}!'
-      main_header: '%{firstName}, there''s a new comment on the proposal you''ve voted on'
-      subject: 'There''s a new comment on the proposal you''ve voted on'
-      preheader: '%{commentAuthor} left a comment on the proposal you''ve voted on on the platform of %{organizationName}'
+      commented: '%{commentAuthor} a scris:'
+      cta_reply_to: 'Vizualizați această propunere'
+      event_description: '%{commentAuthor} a comentat propunerea „%{initiativeTitle}” pentru care ați votat. Alăturați-vă discuției de pe platforma %{organizationName}!'
+      main_header: '%{firstName}, există un nou comentariu la propunerea pentru care ai votat'
+      subject: 'Există un nou comentariu la propunerea pentru care ați votat'
+      preheader: '%{commentAuthor} a lăsat un comentariu la propunerea pe care ați votat-o pe platforma %{organizationName}'
     new_comment_on_voted_idea:
-      commented: '%{commentAuthor} commented:'
-      cta_reply_to: 'Reply to %{commentAuthor}'
-      days_ago: '%{numberOfDays} days ago'
-      event_description: '%{commentAuthor} has commented on the idea ''%{ideaTitle}'' on which you''ve voted. Join the discussion on the platform of %{organizationName}!'
-      main_header: '%{firstName}, there''s a new comment on the idea you''ve voted on'
-      subject: 'There''s a new comment on the idea you''ve voted on'
-      preheader: '%{commentAuthor} left a comment on the idea you''ve voted on on the platform of %{organizationName}'
-      today: Today
-      yesterday: Yesterday
+      commented: '%{commentAuthor} a comentat:'
+      cta_reply_to: 'Răspuns la %{commentAuthor}'
+      days_ago: '%{numberOfDays} zile în urmă'
+      event_description: '%{commentAuthor} a comentat ideea „%{ideaTitle}” pe care ați votat-o. Alăturați-vă discuției de pe platforma %{organizationName}!'
+      main_header: '%{firstName}, există un nou comentariu la ideea pentru care ai votat'
+      subject: 'Există un nou comentariu la ideea pentru care ați votat'
+      preheader: '%{commentAuthor} a lăsat un comentariu la ideea pe care ai votat-o ​​pe platforma %{organizationName}'
+      today: Azi
+      yesterday: Ieri
     new_initiative_for_admin:
-      by_author: 'by %{authorName}'
-      commented: '%{authorFirstName} wrote:'
-      cta_reply_to: 'Give feedback to %{authorName}'
-      event_description: '%{authorName} has published a new proposal on your platform. Discover it now, give some feedback or change its status!'
-      main_header: '%{firstName}, a new proposal has been published on your platform'
-      subject: 'Someone published a new proposal on the platform of %{organizationName}'
-      preheader: '%{authorName} published a new proposal on your platform'
+      by_author: 'De către %{authorName}'
+      commented: '%{authorFirstName} a scris:'
+      cta_reply_to: 'Trimiteți feedback la %{authorName}'
+      event_description: '%{authorName} a publicat o nouă propunere pe platforma dvs. Descoperă-l acum, dă un feedback sau schimbă-i starea!'
+      main_header: '%{firstName}, o nouă propunere a fost publicată pe platforma ta'
+      subject: 'Cineva a publicat o nouă propunere pe platforma %{organizationName}'
+      preheader: '%{authorName} a publicat o nouă propunere pe platforma dvs.'
     new_idea_for_admin:
-      by_author: 'by %{authorName}'
-      commented: '%{authorFirstName} commented:'
-      cta_reply_to: 'Give feedback to %{authorName}'
-      days_ago: '%{numberOfDays} days ago'
-      event_description: '%{authorName} has published a new idea on your platform. Discover it now, give some feedback or change its status!'
-      main_header: '%{firstName}, a new idea has been published on your platform'
-      subject: 'Someone published a new idea on the platform of %{organizationName}'
-      preheader: '%{authorName} published a new idea on your platform'
-      today: Today
-      yesterday: Yesterday
+      by_author: 'De către %{authorName}'
+      commented: '%{authorFirstName} a comentat:'
+      cta_reply_to: 'Trimiteți feedback la %{authorName}'
+      days_ago: '%{numberOfDays} zile în urmă'
+      event_description: '%{authorName} a publicat o idee nouă pe platforma ta. Descoper-o acum, dă-ți cu parerea sau schimbă-i statusul!'
+      main_header: '%{firstName}, o idee nouă a fost publicat pe platforma dvs.'
+      subject: 'Cineva a publicat o idee nouă pe platforma de %{organizationName}'
+      preheader: '%{authorName} a publicat o idee nouă pe platforma dvs.'
+      today: Azi
+      yesterday: Ieri
     comment_on_your_comment:
-      cta_reply_to: 'Reply to %{firstName}'
-      event_description: '%{authorNameFull} wrote a reply to your comment on ''%{post}'' on the participation platform. Click the button below to continue the conversation with %{authorName}.'
-      subject: 'You have received a reply on your comment on the platform of %{organizationName}'
-      main_header: '%{authorName} replied to your comment'
-      preheader: '%{authorName} replied to your comment on %{organizationName}''s platform'
-      replied: '%{authorFirstName} replied:'
+      cta_reply_to: 'Răspundeți la %{firstName}'
+      event_description: '%{authorNameFull} a scris un răspuns la comentariul dvs. lăsat la ''%{post}'' pe platforma de participare. Faceți click pe butonul de mai jos pentru a continua conversația cu %{authorName}.'
+      subject: 'Ați primit un răspuns la comentariul dvs. pe platforma %{organizationName}'
+      main_header: '%{authorName} a răspuns comentariului tău'
+      preheader: '%{authorName} a răspuns comentariului tău de pe platforma %{organizationName}'
+      replied: '%{authorFirstName} a răspuns:'
     official_feedback_on_commented_initiative:
-      by_author: 'by %{authorName}'
-      updated: '%{officialName} wrote:'
-      cta_view: 'Go to this proposal'
-      event_description: '%{officialName} gave an update on the proposal ''%{initiativeTitle}''. Click the button below to enter the conversation with %{organizationName}.'
-      main_header: 'There''s an update on an proposal you commented on'
-      subject: 'A proposal you commented on has received an official update on the platform of %{organizationName}'
-      preheader: '%{officialName} left an official update on an proposal you commented on'
+      by_author: 'De către %{authorName}'
+      updated: '%{officialName} a scris:'
+      cta_view: 'Accesați această propunere'
+      event_description: '%{officialName} a oferit o actualizare la propunerea „%{initiativeTitle}”. Faceți clic pe butonul de mai jos pentru a intra în conversația cu %{organizationName}.'
+      main_header: 'Există o actualizare la o propunere pe care ai comentat-o'
+      subject: 'O propunere pe care ai comentat-o ​​a primit o actualizare oficială pe platforma %{organizationName}'
+      preheader: '%{officialName} a lăsat o actualizare oficială la o propunere pe care ai comentat-o'
     official_feedback_on_voted_idea:
-      by_author: 'by %{authorName}'
-      updated: '%{officialName} wrote:'
-      cta_view: 'Go to this idea'
-      event_description: '%{officialName} gave an update on the idea ''%{ideaTitle}''. Click the button below to enter the conversation with %{officialName}.'
-      subject: 'An idea you voted on has received an update on the platform of %{organizationName}'
-      preheader: '%{officialName} left an update on an idea you voted on'
+      by_author: 'De către %{authorName}'
+      updated: '%{officialName} a scris:'
+      cta_view: 'Du-te la această idee'
+      event_description: '%{officialName} a oferit o actualizare la ideea „%{ideaTitle}”. Faceți clic pe butonul de mai jos pentru a intra în conversația cu %{officialName}.'
+      subject: 'O idee pentru care ați votat a primit o actualizare pe platforma %{organizationName}'
+      preheader: '%{officialName} a lăsat o actualizare la o idee la care ați votat'
       main_header: ""
     official_feedback_on_commented_idea:
-      by_author: 'by %{authorName}'
-      updated: '%{officialName} wrote:'
-      cta_view: 'Go to this idea'
-      event_description: '%{officialName} gave an update on the idea ''%{ideaTitle}''. Click the button below to enter the conversation with %{officialName}.'
-      main_header: 'There''s an update on an idea you commented on'
-      subject: 'An idea you commented on has received an official update on the platform of %{organizationName}'
-      preheader: '%{officialName} left an official update on an idea you commented on'
+      by_author: 'De către %{authorName}'
+      updated: '%{officialName} a scris:'
+      cta_view: 'Du-te la această idee'
+      event_description: '%{officialName} a oferit o actualizare la ideea „%{ideaTitle}”. Faceți clic pe butonul de mai jos pentru a intra în conversația cu %{officialName}.'
+      main_header: 'Există o actualizare la o idee pe care ai comentat-o'
+      subject: 'O idee pe care ai comentat-o ​​a primit o actualizare oficială pe platforma %{organizationName}'
+      preheader: '%{officialName} a lăsat o actualizare oficială la o idee pe care ai comentat-o'
     official_feedback_on_your_idea:
-      by_author: 'by %{authorName}'
-      updated: '%{officialName} wrote:'
-      cta_view: 'Go to your idea'
-      event_description: '%{officialName} gave an update on your idea ''%{ideaTitle}''. Click the button below to enter the conversation with %{officialName}.'
-      main_header: 'You received an update from %{organizationName}'
-      subject: 'You received an update from %{organizationName}'
-      preheader: '%{officialName} left an official update on your idea'
+      by_author: 'De către %{authorName}'
+      updated: '%{officialName} a scris:'
+      cta_view: 'Du-te la ideea ta'
+      event_description: '%{officialName} a oferit o actualizare a ideii „%{ideaTitle}”. Faceți clic pe butonul de mai jos pentru a intra în conversația cu %{officialName}.'
+      main_header: 'Ați primit o actualizare de la %{organizationName}'
+      subject: 'Ați primit o actualizare de la %{organizationName}'
+      preheader: '%{officialName} a lăsat o actualizare oficială la ideea dvs.'
     official_feedback_on_voted_initiative:
-      by_author: 'by %{authorName}'
-      updated: '%{officialName} wrote:'
-      cta_view: 'Go to this proposal'
-      event_description: '%{officialName} gave an update on the proposal ''%{initiativeTitle}''. Click the button below to enter the conversation with %{organizationName}.'
-      main_header: 'There''s an update on an proposal you voted on'
-      subject: 'A proposal you voted on has received an official update on the platform of %{organizationName}'
-      preheader: '%{officialName} left an official update on a proposal you voted on'
+      by_author: 'De către %{authorName}'
+      updated: '%{officialName} a scris:'
+      cta_view: 'Accesați această propunere'
+      event_description: '%{officialName} a oferit o actualizare la propunerea „%{initiativeTitle}”. Faceți clic pe butonul de mai jos pentru a intra în conversația cu %{organizationName}.'
+      main_header: 'Există o actualizare la o propunere la care ați votat'
+      subject: 'O propunere pentru care ați votat a primit o actualizare oficială pe platforma %{organizationName}'
+      preheader: '%{officialName} a lăsat o actualizare oficială la o propunere la care ați votat'
     official_feedback_on_your_initiative:
-      updated: '%{officialName} wrote:'
-      cta_view: 'Go to your proposal'
-      event_description: '%{officialName} gave an update on your proposal ''%{initiativeTitle}''. Click the button below to enter the conversation with %{organizationName}.'
-      main_header: 'You received an update from %{officialName}'
-      subject: 'You''ve received an official update on the platform of %{organizationName}'
-      preheader: '%{officialName} left an official update on your proposal'
+      updated: '%{officialName} a scris:'
+      cta_view: 'Du-te la propunerea ta'
+      event_description: '%{officialName} a oferit o actualizare la propunerea dvs. „%{initiativeTitle}”. Faceți clic pe butonul de mai jos pentru a intra în conversația cu %{organizationName}.'
+      main_header: 'Ați primit o actualizare de la %{officialName}'
+      subject: 'Ați primit o actualizare oficială pe platforma %{organizationName}'
+      preheader: '%{officialName} a lăsat o actualizare oficială la propunerea dvs.'
     project_moderation_rights_received:
-      cta_moderate_project: 'Moderate this project'
-      message_you_became_moderator: 'An adminstrator of the participation platform of %{organizationName} just made you project manager of the following project:'
-      no_ideas: 'No ideas yet'
-      preheader: 'An adminstrator of the participation platform of %{organizationName} just made you a project manager of the following project'
-      subject: 'You became a project manager on the platform of %{organizationName}'
-      text_design_participatory_process: 'As a project manager, you can configure how users interact within your project. You can add new phases using the timeline. Each of these phases can have its own behaviour with regards to idea posting, commenting, and voting.'
-      text_moderate_analyse_input: 'Once the project is launched, the first ideas will come in. You will receive weekly reports with all key activities so that you stay on top of things. The ideas overview in your project manager view will help you understand which ideas got the most upvotes and downvotes.'
-      text_share_project_information: 'In order to increase the quality of the ideas you''re getting, it is key to share sufficient information: add a project description, attach images (incl. sketches and plans), and communicate all related events going on. Remember: good information precedes good participation!'
-      title_design_participatory_process: 'Design the participatory process'
-      title_moderate_analyse_input: 'Moderate and analyse the input'
-      title_share_project_information: 'Provide project information'
-      title_what_can_you_do_moderator: 'What can you do as a project manager?'
-      title_you_became_moderator: 'You became a project manager'
-      x_ideas: '%{numberOfIdeas} ideas'
+      cta_moderate_project: 'Modera acest proiect'
+      message_you_became_moderator: 'Un administrator al platformei de participare a %{organizationName} tocmai v-a făcut manager de proiect pentru următorul proiect:'
+      no_ideas: 'Momentan nu există nicio idee'
+      preheader: 'Un administrator al platformei de participare a %{organizationName} tocmai v-a făcut manager de proiect pentru următorul proiect'
+      subject: 'Ai devenit manager de proeict al platformei %{organizationName}'
+      text_design_participatory_process: 'Ca manager de proiect, puteți configura modul în care utilizatorii interacționează în cadrul proiectului. Puteți adăuga noi etape folosind cronologia. Fiecare dintre aceste etape poate avea propria sa natură în ceea ce privește postarea, comentarea și votarea ideilor.'
+      text_moderate_analyse_input: 'Odată ce proiectul este lansat, primele idei vor veni. Veți primi rapoarte săptămânale cu toate activitățile cheie, astfel încât să rămâneți la curent cu ce se întâmplă. Prezentarea generală a ideilor din viziunea managerului de proiect vă va ajuta să înțelegeți ce idei au obținut cele mai multe voturi pozitive și negative.'
+      text_share_project_information: 'Pentru a crește calitatea ideilor pe care le primiți, este esențial să împărtășiți suficiente informații: adăugați o descriere a proiectului, atașați imagini (inclusiv schițe și planuri) și comunicați toate evenimentele conexe. Nu uitați: o informație bună precede o participare bună!'
+      title_design_participatory_process: 'Proiectarea procesului participativ'
+      title_moderate_analyse_input: 'Moderați și analizați inputul'
+      title_share_project_information: 'Furnizați informații despre proiect'
+      title_what_can_you_do_moderator: 'Ce poți să faci ca manager de proiect?'
+      title_you_became_moderator: 'Ai devenit manager de proiect'
+      x_ideas: '%{numberOfIdeas} idei'
     project_folder_moderation_rights_received:
       cta_view_folder_button: 'View this folder'
       message_added_as_folderadmin: 'You''ve been given folder manager rights on %{organizationName}''s participation platform for the following folder:'
@@ -418,89 +418,89 @@ ro:
       text_manage_folder: 'A folder is way to organize several participation projects together. As a folder manager, you can edit the folder and folder description and create new projects (to delete projects, contact your platform administrator). You will also have project management rights over all projects within the folder, allowing you to edit the projects, manage the inputs and email participants.'
       text_moderate_analyse_input: 'Once the projects are launched, the first inputs will start coming in. You''ll receive weekly reports with the key activities so that you can stay on top of what’s happening. The Input Manager in your ''Manage Platform'' panel allows you to see and manage the input, including assigning statuses and responding to posts and comments.'
       text_design_participatory_process: 'You can manage the different participation projects within your folder - configure the participation method, add a project description, attach images, and communicate related events. You can also manage how participants interact with your projects, including setting access rights and configuring the posting, voting and commenting settings.'
-      title_design_participatory_process: 'Design the participatory process'
-      title_moderate_analyse_input: 'Moderate and analyse the input'
+      title_design_participatory_process: 'Proiectarea procesului participativ'
+      title_moderate_analyse_input: 'Moderați și analizați inputul'
       title_manage_folder: 'Manage the folder settings and create new projects.'
       title_what_can_you_do_folderadmin: 'What can you do as a folder manager?'
       title_added_as_folderadmin: 'You''ve been added as a folder manager'
       x_projects: '%{numberOfProjects} projects'
     password_reset:
-      cta_reset_password: 'Reset your password'
-      message_you_reset_your_password: 'You requested a password reset for the participation platform of %{organizationName}. Click the button below to choose a new, safe password. The link expires in 1 hour.'
-      preheader: 'Here is the link you requested to reset your password'
-      subject: '%{organizationName}: Reset your password'
-      title_reset_your_password: 'Choose a new password'
+      cta_reset_password: 'Resetează parola'
+      message_you_reset_your_password: 'Ați solicitat o resetare a parolei pentru platforma de participare a %{organizationName}. Faceți click pe butonul de mai jos pentru a alege o nouă parolă, în condiții de siguranță. Linkul expiră în 1 oră.'
+      preheader: 'Iată linkul pe care l-ați solicitat pentru a vă reseta parola'
+      subject: '%{organizationName}: Resetați-vă parola'
+      title_reset_your_password: 'Alegeți o parolă nouă'
     project_phase_started:
-      cta_view_phase: 'Discover this new phase'
-      event_description: 'This project entered a new phase on the platform of %{organizationName}. Click on the link below to learn more!'
-      main_header: 'A new phase started for project ''%{projectName}'''
-      new_phase: 'This project entered the phase ''%{phaseTitle}'''
-      subject: '%{projectName} entered a new phase'
-      preheader: 'A new phase has been started for %{projectName}'
+      cta_view_phase: 'Descoperă această nouă fază'
+      event_description: 'Acest proiect a intrat într-o nouă fază pe platforma %{organizationName}. Faceți clic pe linkul de mai jos pentru a afla mai multe!'
+      main_header: 'O nouă fază a început pentru proiectul „%{projectName}”'
+      new_phase: 'Acest proiect a intrat în faza ''%{phaseTitle}'''
+      subject: '%{projectName} a intrat într-o nouă fază'
+      preheader: 'O nouă fază a fost începută pentru %{projectName}'
     project_phase_upcoming:
-      cta_view_phase: 'Set this new phase up'
-      event_description: 'The project ''%{projectName}'' will be entering a new phase soon. Make sure everything is set up for this phase: Is there an adequate description? Are selected ideas transferred to this phase? Do you want to inform your citizens on the specifics of this phase through a custom email campaign?'
-      main_header: '%{firstName}, a project will enter a new phase soon'
-      new_phase: 'The project will enter the phase ''%{phaseTitle}'''
-      subject: 'Get everything set up for the new phase of %{projectName}'
-      preheader: 'A new phase will start soon for %{projectName}'
+      cta_view_phase: 'Setați această nouă fază'
+      event_description: 'Proiectul „%{projectName}” va intra într-o nouă fază în curând. Asigurați-vă că totul este configurat pentru această fază: Există o descriere adecvată? Ideile selectate sunt transferate în această fază? Doriți să vă informați cetățenii cu privire la specificul acestei faze printr-o campanie de e-mail personalizată?'
+      main_header: '%{firstName}, un proiect va intra într-o nouă fază în curând'
+      new_phase: 'Proiectul va intra în faza ''%{phaseTitle}'''
+      subject: 'Configurți toate setările pentru noua fază a %{projectName}'
+      preheader: 'În curând va începe o nouă fază pentru %{projectName}'
     status_change_of_commented_idea:
-      status_change: 'The new status of this idea is ''%{ideaStatus}'''
-      cta_view_idea: 'Go to this idea'
-      event_description: '%{organizationName} updated the status of the idea ''%{ideaTitle}'' on their digital participation platform.'
-      main_header: 'An idea you commented on has a new status'
-      subject: 'The status of an idea you commented on has been changed'
-      preheader: '%{organizationName} changed the status of an idea you commented on'
+      status_change: 'Noul statut al acestei idei este „%{ideaStatus}”'
+      cta_view_idea: 'Du-te la această idee'
+      event_description: '%{organizationName} a actualizat starea ideii „%{ideaTitle}” pe platforma lor de participare digitală.'
+      main_header: 'O idee pe care ai comentat-o ​​are un status nou'
+      subject: 'Statusul unei idei pe care ați comentat-o ​​a fost schimbat'
+      preheader: '%{organizationName} a schimbat starea unei idei pe care ai comentat-o'
     status_change_of_your_idea:
-      status_change: 'The new status of your idea is ''%{ideaStatus}'''
-      cta_view_idea: 'Go to your idea'
-      event_description: '%{organizationName} updated the status of your idea ''%{ideaTitle}'' on their digital participation platform.'
-      main_header: 'Your idea has a new status'
-      subject: 'The status of your idea has been changed'
-      preheader: '%{organizationName} changed the status of your idea'
+      status_change: 'Noul statut al ideii dvs. este „%{ideaStatus}”'
+      cta_view_idea: 'Du-te la ideea ta'
+      event_description: '%{organizationName} a actualizat starea ideii dvs. „%{ideaTitle}” pe platforma lor de participare digitală.'
+      main_header: 'Ideea ta are un statut nou'
+      subject: 'Statutul ideii dvs. a fost schimbat'
+      preheader: '%{organizationName} a schimbat status ideii tale'
     status_change_of_voted_idea:
-      status_change: 'The new status of this idea is ''%{ideaStatus}'''
-      cta_view_idea: 'Go to this idea'
-      event_description: '%{organizationName} updated the status of the idea ''%{ideaTitle}'' on their digital participation platform.'
-      main_header: 'An idea you voted on has a new status'
-      subject: 'The status of an idea you voted on has been changed'
-      preheader: '%{organizationName} changed the status of an idea you voted on'
+      status_change: 'Noul statut al acestei idei este „%{ideaStatus}”'
+      cta_view_idea: 'Du-te la această idee'
+      event_description: '%{organizationName} a actualizat starea ideii „%{ideaTitle}” pe platforma lor de participare digitală.'
+      main_header: 'O idee pentru care ați votat are un statut nou'
+      subject: 'Statutul unei idei pentru care ați votat a fost schimbat'
+      preheader: '%{organizationName} a schimbat starea unei idei pentru care ați votat-o'
     status_change_of_voted_initiative:
-      status_change: 'The new status of this proposal is ''%{initiativeStatus}'''
-      cta_view_initiative: 'Go to this proposal'
-      event_description: 'The status of the proposal ''%{initiativeTitle}'' has been updated on the digital participation platform of %{organizationName}.'
-      main_header: 'A proposal you voted on has a new status'
-      subject: 'The status of a proposal you voted on has changed'
-      preheader: 'The status of a proposal you voted on changed'
+      status_change: 'Noul statut al acestei propuneri este „%{initiativeStatus}”'
+      cta_view_initiative: 'Accesați această propunere'
+      event_description: 'Starea propunerii „%{initiativeTitle}” a fost actualizată pe platforma de participare digitală a %{organizationName}.'
+      main_header: 'O propunere pentru care ați votat are un status nou'
+      subject: 'S-a schimbat statusul unei propuneri pentru care ați votat'
+      preheader: 'S-a schimbat statusul unei propuneri pentru care ați votat'
     status_change_of_commented_initiative:
-      status_change: 'The new status of this proposal is ''%{initiativeStatus}'''
-      cta_view_initiative: 'Go to this proposal'
-      event_description: 'The status of the proposal ''%{initiativeTitle}'' has been updated on the digital participation platform of %{organizationName}.'
-      main_header: 'A proposal you commented on has a new status'
-      subject: 'The status of a proposal you commented on has changed'
-      preheader: 'The status of a proposal you commented on has changed'
+      status_change: 'Noul statut al acestei propuneri este „%{initiativeStatus}”'
+      cta_view_initiative: 'Accesați această propunere'
+      event_description: 'Starea propunerii „%{initiativeTitle}” a fost actualizată pe platforma de participare digitală a %{organizationName}.'
+      main_header: 'O propunere pe care ai comentat-o ​​are un statut nou'
+      subject: 'S-a schimbat starea unei propuneri pentru care ați comentat'
+      preheader: 'S-a schimbat starea unei propuneri pentru care ați comentat'
     status_change_of_your_initiative:
-      status_change: 'The new status of your proposal is ''%{initiativeStatus}'''
-      cta_view_initiative: 'Go to your proposal'
-      event_description: 'The status of the proposal ''%{initiativeTitle}'' has been updated on the digital participation platform of %{organizationName}.'
-      main_header: 'Your proposal has a new status'
-      subject: 'The status of your proposal has changed'
-      preheader: 'The status of your proposal has changed'
+      status_change: 'Noul status al propunerii dvs. este „%{initiativeStatus}”'
+      cta_view_initiative: 'Du-te la propunerea ta'
+      event_description: 'Starea propunerii „%{initiativeTitle}” a fost actualizată pe platforma de participare digitală a %{organizationName}.'
+      main_header: 'Propunerea dvs. are un status nou'
+      subject: 'Statusul propunerii dvs. s-a schimbat'
+      preheader: 'Statusul propunerii dvs. s-a schimbat'
     user_digest:
-      subject: "Your activity on the participation platform of %{organizationName}"
-      commented: "%{authorFirstName} commented:"
-      preheader: "Weekly overview of %{organizationName}"
-      title_your_weekly_report: "Discover what happened last week"
+      subject: "Actualizarea săptămânală a platformei de participare a %{organizationName}"
+      commented: "%{authorFirstName} a comentat:"
+      preheader: "Prezentare săptămânală a %{organizationName}"
+      title_your_weekly_report: "Descoperiți ce s-a întâmplat săptămâna trecută"
       intro_text: "Here's a summary of what happened on the participation platform of %{organizationName}."
-      cta_go_to_the_platform: "Go to the platform"
-      title_no_activity_past_week: "No activity in the past week"
+      cta_go_to_the_platform: "Mergeți pe platformă"
+      title_no_activity_past_week: "Nicio activitate în ultima săptămână"
       title_proposals: "Proposals started"
       proposals_started_text: "Proposals are ideas that need to gain traction and support from others (people like you!) in order to move forward. Below is a list of proposals that have been put forward in the last week. Click on any of them to take a look and offer your support and feedback!"
       title_successful_proposals: "Proposals that reached the threshold"
       successful_proposals_text: "These proposals have gotten enough support to move to the next stage! Click on the proposal to learn more about what happens next."
-      today_by_author: "Today by %{author}"
-      yesterday_by_author: "Yesterday by %{author}"
-      x_days_ago_by_author: "%{x} days ago by %{author}"
+      today_by_author: "Astăzi de %{author}"
+      yesterday_by_author: "Ieri de %{author}"
+      x_days_ago_by_author: "Cu %{x} zile în urmă de %{author}"
       trending_ideas: "Trending ideas"
       trending_ideas_text: "Interested in what’s been happening on the platform? Here are the three most trending ideas and what people are saying about them."
       no_notifications: "No notifications"
@@ -509,53 +509,53 @@ ro:
       no_unread_notifications: "You don't have any unread notifications. Visit the platform to contribute your input and generate new notifications!"
       unread_notifications: "You have unread notifications. Visit the platform to discover what's happening!"
     threshold_reached_for_admin:
-      by_author: 'by %{authorName}'
-      cta_process_initiative: 'Take this initiative to the next steps'
-      event_description: 'An initiative reached the voting threshold on your platform. Click the button below to take it to the next steps!'
-      main_header: 'An initiative reached the voting threshold!'
-      subject: 'An initiative reached the voting threshold on your platform'
-      preheader: 'Make sure to take the next steps'
+      by_author: 'De către %{authorName}'
+      cta_process_initiative: 'Duce-ți această propunere la un alt nivel'
+      event_description: 'O inițiativă a atins pragul de vot pe platforma dvs. Faceți clic pe butonul de mai jos pentru a trece la următorii pași!'
+      main_header: 'O inițiativă a atins pragul de votare!'
+      subject: 'O inițiativă a atins pragul de vot pe platforma dvs.'
+      preheader: 'Asigurați-vă că faceți următorii pași'
     first_idea_published:
-      action_add_image: '%{addImageLink} to increase visibility'
-      action_comment: '%{textComment} on existing ideas'
-      action_published_idea: 'Published idea'
-      action_send_email: 'Send your contacts an %{sendEmailLink}'
-      action_share_fb: 'Let your friends know on %{fbLink}'
-      action_share_link: 'Share it via any channel by copying the %{link}'
-      action_share_twitter: 'Inform your followers on %{twitterLink}'
-      add_image: 'Add an image'
-      cta_view_idea: 'Go to your idea'
-      event_description: '%{firstName}, congratulations with your first idea on the participation platform of %{organizationName}. You will be notified when people interact with your idea. Find out what next steps you can take below.'
+      action_add_image: '%{addImageLink} pentru a crește vizibilitatea'
+      action_comment: '%{textComment} idei existente'
+      action_published_idea: 'Idee publicată'
+      action_send_email: 'Trimiteți contactelor dvs. un %{sendEmailLink}'
+      action_share_fb: 'Anunță-ți prietenii pe %{fbLink}'
+      action_share_link: 'Partajează-l prin orice canal copiind %{link}'
+      action_share_twitter: 'Informează-ți urmăritorii pe %{twitterLink}'
+      add_image: 'Adăugați o imagine'
+      cta_view_idea: 'Du-te la ideea ta'
+      event_description: '%{firstName}, felicitări pentru prima ta idee pe platforma de participare a %{organizationName}. Veți fi anunțat când oamenii interacționează cu ideea dvs. Aflați ce pași puteți face mai jos.'
       link: link
-      main_header: '%{firstName}, you posted your first idea!'
-      message_get_votes: 'Reach more people with your idea:'
-      preheader: '%{firstName}, congratulations on posting your first idea on the platform of %{organizationName}. Now gather support for your idea'
-      see_you: 'See you soon at the platform!'
-      send_email: email
-      subject: 'Your first idea on the platform of %{organizationName}'
+      main_header: '%{firstName}, ai postat prima idee!'
+      message_get_votes: 'Atrage mai multe persoane cu ideea dvs.:'
+      preheader: '%{firstName}, felicitări pentru că ați postat prima idee pe platforma %{organizationName}. Acum adună sprijin pentru ideea ta.'
+      see_you: 'Ne vedem curând pe platformă!'
+      send_email: e-mail
+      subject: 'Prima ta idee pe platforma %{organizationName}'
     welcome:
-      cta_join_platform: 'Discover the platform'
-      subject: 'Welcome to the platform of %{organizationName}'
-      main_header: Welcome!
-      message_welcome: 'Congratulations, you successfully signed up on the participation platform of %{organizationName}. You can now discover the platform and make your voice heard. You can also add a profile picture and a short description to tell others who you are.'
-      preheader: 'Here''s what you can do on the platform of %{organizationName}'
+      cta_join_platform: 'Descoperiți platforma'
+      subject: 'Bine ați venit pe platforma %{organizationName}'
+      main_header: Bine ați venit!
+      message_welcome: 'Felicitări, v-ați înscris cu succes pe platforma de participare a %{organizationName}. Acum puteți descoperi platforma și vă puteți face vocea auzită. Puteți adăuga, de asemenea, o imagine de profil și o scurtă descriere pentru a spune celorlalți cine sunteți.'
+      preheader: 'Iată ce puteți face pe platforma %{organizationName}'
     idea_published:
-      action_add_image: '%{addImageLink} to increase visibility'
-      action_published_idea: 'Published idea'
-      action_send_email: 'Send your contacts an %{sendEmailLink}'
-      action_share_fb: 'Let your friends know on %{fbLink}'
-      action_share_link: 'Share it via any channel by copying the %{link}'
-      action_share_twitter: 'Inform your followers on %{twitterLink}'
-      add_image: 'Add an image'
-      cta_view_idea: 'Go to your idea'
-      event_description: '%{firstName}, your idea has successfully been published on the participation platform of %{organizationName}. You will be notified when people interact with your idea. Find out what next steps you can take below.'
+      action_add_image: '%{addImageLink} pentru a crește vizibilitatea'
+      action_published_idea: 'Idee publicată'
+      action_send_email: 'Trimiteți contactelor dvs. un %{sendEmailLink}'
+      action_share_fb: 'Anunță-ți prietenii pe %{fbLink}'
+      action_share_link: 'Partajează-l prin orice canal copiind %{link}'
+      action_share_twitter: 'Informează-ți urmăritorii pe %{twitterLink}'
+      add_image: 'Adăugați o imagine'
+      cta_view_idea: 'Du-te la ideea ta'
+      event_description: '%{firstName}, ideea ta a fost publicată cu succes pe platforma de participare a %{organizationName}. Vei fi notificat atunci când oamenii interacționează cu ideea ta. Aflați ce măsuri viitoare puteți lua de mai jos.'
       link: link
-      main_header: 'You posted an idea! Let''s make sure it gets read.'
-      message_get_votes: 'Reach more people with your idea:'
-      preheader: '%{firstName}, congratulations on posting your idea on the platform of %{organizationName}. Now gather support.'
-      see_you: 'See you soon at the platform!'
-      send_email: email
-      subject: 'Your idea on the platform of %{organizationName}'
+      main_header: 'Ai postat o idee! Hai sa ne asigurăm ca va fi citită!'
+      message_get_votes: 'Atrage mai multe persoane cu ideea dvs.:'
+      preheader: '%{firstName}, felicitări pentru că ai postat ideea ta pe platforma de participare a %{organizationName}. Acum este timpul să aduni sprijin pentru ea.'
+      see_you: 'Ne vedem curând pe platformă!'
+      send_email: e-mail
+      subject: 'Ideea ta de pe platforma %{organizationName}'
       message_next_steps: ""
     your_proposed_initiatives_digest:
       subject: 'Weekly update of your proposals'
@@ -563,8 +563,8 @@ ro:
       title_your_weekly_report: 'How have your proposals been doing?'
       text_introduction: 'Find the key numbers below and go to the platform to take action and gather enough support in time.'
       cta_see_your_initiative: 'Go to your proposals'
-      total_votes: 'Total votes'
-      new_votes: 'New votes'
-      remaining_votes: 'Votes remaining'
-      remaining_days: 'Days remaining'
+      total_votes: 'Total voturi'
+      new_votes: 'Voturi noi'
+      remaining_votes: 'Voturi rămase'
+      remaining_days: 'Zile Ramase'
 
