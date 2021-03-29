@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { Header, Item } from './';
+import { Header, Item } from 'components/IdeasShowComponents/MetaInfoStyles';
 
 // styles
 import styled from 'styled-components';
@@ -16,12 +16,12 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from '../tracks';
 
 // hooks
-import useSimilarIdeas from 'hooks/useSimilarIdeas';
+import useSimilarIdeas from '../hooks/useSimilarIdeas';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
-import messages from './messages';
+import messages from '../messages';
 
 const IdeaList = styled.ul`
   margin: 0;
