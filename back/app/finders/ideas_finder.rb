@@ -36,6 +36,7 @@ class IdeasFinder < ApplicationFinder
     @records.includes(:topics)
     scope(:with_some_topics, topics)
   end
+  alias topic_condition topics_condition
 
   def areas_condition(areas)
     return if areas.blank?
@@ -65,7 +66,7 @@ class IdeasFinder < ApplicationFinder
   end
 
   def filter_trending_condition(filter_trending)
-    filter_trending && filter_records { TrendingIdeaService.new.filter_trending(@records) }
+    filter_trending && TrendingIdeaService.new.filter_trending(@records)
   end
 
   def author_condition(author)
@@ -79,6 +80,11 @@ class IdeasFinder < ApplicationFinder
 
   def bounding_box_condition(bounding_box)
     scope(:with_bounding_box, bounding_box) if bounding_box.present?
+  end
+
+  def group_condition(group_id)
+    group = Group.find(group_id)
+    records.joins(:author).where(author: group.members)
   end
 
   def _search_restricted?

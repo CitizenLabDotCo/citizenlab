@@ -231,6 +231,12 @@ PATH
       rails (~> 6.0.0)
 
 PATH
+  remote: engines/commercial/smart_groups
+  specs:
+    smart_groups (0.1.0)
+      rails (~> 6.0.3, >= 6.0.3.2)
+
+PATH
   remote: engines/commercial/tagging
   specs:
     tagging (0.1.0)
@@ -246,6 +252,7 @@ PATH
       granular_permissions
       pundit (~> 2.0)
       rails (~> 6.0.0)
+      savon (~> 2.12.0)
 
 PATH
   remote: engines/ee/multi_tenancy
@@ -1017,6 +1024,7 @@ DEPENDENCIES
   simple_segment (~> 1.2)
   simplecov
   simplecov-rcov
+  smart_groups!
   spring
   spring-watcher-listen (~> 2.0.0)
   surveys!

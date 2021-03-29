@@ -22,10 +22,8 @@ class InitiativesFinder < ApplicationFinder
   end
 
   def initiative_status_condition(status_id)
-    filter_records do
-      records.left_outer_joins(:initiative_initiative_status)
-             .where(initiative_initiative_statuses: { initiative_status_id: status_id })
-    end
+    records.left_outer_joins(:initiative_initiative_status)
+            .where(initiative_initiative_statuses: { initiative_status_id: status_id })
   end
 
   def assignee_condition(assignee_id)
@@ -37,7 +35,7 @@ class InitiativesFinder < ApplicationFinder
   end
 
   def author_condition(author_id)
-    filter_records { records.includes(:author).where(author_id: author_id) }
+    records.includes(:author).where(author_id: author_id)
   end
 
   def search_condition(search_term)

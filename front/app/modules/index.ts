@@ -18,6 +18,7 @@ import satismeterConfiguration from './commercial/satismeter';
 import segmentConfiguration from './commercial/segment';
 import matomoConfiguration from './commercial/matomo';
 import customIdeaStatusesConfiguration from './commercial/custom_idea_statuses';
+import customTopicsConfiguration from './commercial/custom_topics';
 
 import idBosaFasConfiguration from './commercial/id_bosa_fas';
 import idCowConfiguration from './commercial/id_cow';
@@ -84,6 +85,10 @@ export default loadModules([
   {
     configuration: customIdeaStatusesConfiguration,
     isEnabled: CL_CONFIG['modules']['commercial/custom_idea_statuses'],
+  },
+  {
+    configuration: customTopicsConfiguration,
+    isEnabled: CL_CONFIG['modules']['commercial/custom_topics'],
   },
   {
     configuration: geographicDashboardConfiguration,
