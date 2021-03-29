@@ -27,9 +27,7 @@ module EmailCampaigns
       initiator = idea.author
 
       recipient_ids = if !(initiator&.admin? || initiator&.project_moderator?(idea.project_id))
-        User.admin.or(User.project_moderator(idea.project_id)).ids.select do |recipient_id|
-          recipient_id != idea&.assignee_id
-        end
+        User.admin.or(User.project_moderator(idea.project_id)).ids
       else
         []
       end
@@ -60,3 +58,7 @@ module EmailCampaigns
     end
   end
 end
+
+EmailCampaigns::Campaigns::NewIdeaForAdmin.prepend_if_ee(
+  'IdeaAssignment::Patches::EmailCampaigns::Campaigns::NewIdeaForAdmin'
+)

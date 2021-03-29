@@ -3,7 +3,7 @@ class User < ApplicationRecord
   include Onboarding::UserDecorator
   include Polls::UserDecorator
   include Volunteering::UserDecorator
-  include PgSearch
+  include PgSearch::Model
 
   GENDERS = %w(male female unspecified)
   INVITE_STATUSES = %w(pending accepted)
@@ -29,9 +29,7 @@ class User < ApplicationRecord
 
   has_many :ideas, foreign_key: :author_id, dependent: :nullify
   has_many :initiatives, foreign_key: :author_id, dependent: :nullify
-  has_many :assigned_ideas, class_name: 'Idea', foreign_key: :assignee_id, dependent: :nullify
   has_many :assigned_initiatives, class_name: 'Initiative', foreign_key: :assignee_id, dependent: :nullify
-  has_many :default_assigned_projects, class_name: 'Project', foreign_key: :default_assignee_id, dependent: :nullify
   has_many :comments, foreign_key: :author_id, dependent: :nullify
   has_many :official_feedbacks, dependent: :nullify
   has_many :votes, dependent: :nullify
@@ -371,4 +369,4 @@ end
 
 User.prepend_if_ee('ProjectFolders::Patches::User')
 User.include_if_ee('Verification::Patches::User')
-
+User.include_if_ee('IdeaAssignment::Extensions::User')

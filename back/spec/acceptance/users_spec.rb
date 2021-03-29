@@ -312,7 +312,7 @@ resource "Users" do
           expect(json_response[:data].map{|u| u[:id]}.reverse.take(2)).to match_array [admin.id,both.id]
         end
 
-        describe "List all users in group" do 
+        describe "List all users in group" do
           example "with correct pagination", document: false do
             page_size = 5
             project = create(:project)
@@ -536,17 +536,17 @@ resource "Users" do
           if CitizenLab.ee?
             oldtimers = create(:smart_group, rules: [
               {
-                ruleType: 'custom_field_number', 
+                ruleType: 'custom_field_number',
                 customFieldId: create(:custom_field_number, title_multiloc: {'en' => 'Birthyear?'}, key: 'birthyear', code: 'birthyear').id,
-                predicate: 'is_smaller_than_or_equal', 
+                predicate: 'is_smaller_than_or_equal',
                 value: 1988
               }
             ])
-            
+
             project.permissions.find_by(action: 'posting_idea')
                    .update!(permitted_by: 'groups', groups: [oldtimers])
-          end 
-          
+          end
+
           do_request
           expect(response_status).to eq 200
           json_response = json_parse(response_body)
@@ -578,23 +578,25 @@ resource "Users" do
         end
       end
 
-      describe do
-        before do
-          @user = create(:admin)
-          token = Knock::AuthToken.new(payload: @user.to_token_payload).token
-          header 'Authorization', "Bearer #{token}"
-        end
-        let(:assignee) { create(:admin) }
-        let!(:assigned_idea) { create(:idea, assignee: assignee) }
-        let!(:assigned_initiative) { create(:initiative, assignee: assignee) }
-        let(:id) { assignee.id }
-        let(:roles) { [] }
+      if CitizenLab.ee?
+        describe do
+          before do
+            @user = create(:admin)
+            token = Knock::AuthToken.new(payload: @user.to_token_payload).token
+            header 'Authorization', "Bearer #{token}"
+          end
+          let(:assignee) { create(:admin) }
+          let!(:assigned_idea) { create(:idea, assignee: assignee) }
+          let!(:assigned_initiative) { create(:initiative, assignee: assignee) }
+          let(:id) { assignee.id }
+          let(:roles) { [] }
 
-        example_request "Remove user as assignee when losing admin rights" do
-          expect(response_status).to eq 200
-          expect(assignee.reload.admin?).to be_falsey
-          expect(assigned_idea.reload.assignee_id).not_to eq id
-          expect(assigned_initiative.reload.assignee_id).not_to eq id
+          example_request "Remove user as assignee when losing admin rights" do
+            expect(response_status).to eq 200
+            expect(assignee.reload.admin?).to be_falsey
+            expect(assigned_idea.reload.assignee_id).not_to eq id
+            expect(assigned_initiative.reload.assignee_id).not_to eq id
+          end
         end
       end
 

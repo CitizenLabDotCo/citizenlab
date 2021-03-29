@@ -101,7 +101,6 @@ class ProjectPolicy < ApplicationPolicy
     user&.active? && user.admin?
   end
 
-
   def shared_permitted_attributes
     shared = [
       :slug,
@@ -117,7 +116,6 @@ class ProjectPolicy < ApplicationPolicy
       :survey_service,
       :max_budget,
       :presentation_mode,
-      :default_assignee_id,
       :poll_anonymous,
       :ideas_order,
       :input_term,
@@ -138,8 +136,7 @@ class ProjectPolicy < ApplicationPolicy
   end
 
   def permitted_attributes_for_update
-    attrs = shared_permitted_attributes
-    attrs
+    shared_permitted_attributes
   end
 
   def permitted_attributes_for_reorder
@@ -155,4 +152,4 @@ end
 
 ProjectPolicy.prepend_if_ee('ProjectFolders::Patches::ProjectPolicy')
 ProjectPolicy::Scope.prepend_if_ee('ProjectFolders::Patches::ProjectPolicy::Scope')
-
+ProjectPolicy.prepend_if_ee('IdeaAssignment::Patches::ProjectPolicy')
