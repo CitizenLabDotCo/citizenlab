@@ -1,9 +1,11 @@
 class IdeaCustomFieldsService
   def all_fields(custom_form, options = {})
-    default_fields_for(custom_form)
+    default_fields(custom_form)
   end
 
-  def default_fields_for(custom_form)
+  private
+
+  def default_fields(custom_form)
     ml_s = MultilocService.new
     [
       CustomField.new(
