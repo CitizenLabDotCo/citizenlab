@@ -17,11 +17,12 @@ const RenderOnHideTabCondition = (props: RenderOnShowTabConditionProps) => {
   const { project, phases, children } = props;
   const processType = project.attributes.process_type;
   const participationMethod = project.attributes.participation_method;
-  const hideTabCondition = (
+  const hideTab = (
     processType === 'continuous' &&
     participationMethod !== 'ideation' &&
-    participationMethod !== 'budgeting') ||
-    (processType === 'timeline' &&
+    participationMethod !== 'budgeting'
+    ) || (
+    processType === 'timeline' &&
       !isNilOrError(phases) &&
       phases.filter((phase) => {
         return (
@@ -31,7 +32,7 @@ const RenderOnHideTabCondition = (props: RenderOnShowTabConditionProps) => {
       }).length === 0
     );
 
-  if (hideTabCondition) {
+  if (hideTab) {
     return null;
   };
 
