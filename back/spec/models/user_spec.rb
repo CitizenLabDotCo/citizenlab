@@ -201,7 +201,7 @@ RSpec.describe User, type: :model do
   end
 
   describe "add_role" do
-    it "gives a user moderator rights for a project" do 
+    it "gives a user moderator rights for a project" do
       usr = create(:user, roles: [])
       prj = create(:project)
       expect(usr.project_moderator? prj.id).to eq false
@@ -395,28 +395,13 @@ RSpec.describe User, type: :model do
 
   describe "groups and group_ids" do
     let!(:manual_group) { create(:group) }
-    let!(:rules_group) {
-      create(:smart_group, rules: [
-        {ruleType: 'email', predicate: 'is', value: 'user@test.com'}
-      ])
-    }
+    let!(:group) { create(:group) }
+
+    let(:user) { create(:user, manual_groups: [manual_group, group]) }
 
     it "returns manual groups" do
-      user = create(:user, manual_groups: [manual_group])
-      expect(user.groups).to match_array [manual_group]
-      expect(user.group_ids).to match_array [manual_group.id]
-    end
-
-    it "returns rule groups" do
-      user = create(:user, email: 'user@test.com')
-      expect(user.groups).to match_array [rules_group]
-      expect(user.group_ids).to match_array [rules_group.id]
-    end
-
-    it "returns manual groups and rule groups" do
-      user = create(:user, manual_groups: [manual_group], email: 'user@test.com')
-      expect(user.groups).to match_array [manual_group, rules_group]
-      expect(user.group_ids).to match_array [manual_group.id, rules_group.id]
+      expect(user.groups).to match_array [manual_group, group]
+      expect(user.group_ids).to match_array [manual_group.id, group.id]
     end
   end
 
@@ -425,28 +410,17 @@ RSpec.describe User, type: :model do
       group = create(:group)
       users = create_list(:user, 3, manual_groups: [group])
       create_list(:user, 2)
-      expect(User.in_group(group).pluck(:id)).to match_array users.map(&:id) 
-    end
-
-    it "gets all users in a rules group" do
-      group = create(:smart_group)
-      user1 = create(:user, email: 'jos@test.com')
-      user2 = create(:user, email: 'jules@test.com')
-      user3 = create(:user)
-      user4 = create(:user, manual_groups: [create(:group)])
-
-      expect(User.in_group(group).pluck(:id)).to match_array [user1.id, user2.id]
+      expect(User.in_group(group).pluck(:id)).to match_array users.map(&:id)
     end
   end
 
   describe "in_any_group" do
 
     it "gets the union of all users in the given groups" do
-      group1 = create(:smart_group)
+      group1 = create(:group)
       group2 = create(:group)
       user1 = create(:user, email: 'jos@test.com', manual_groups: [group2])
-      user2 = create(:user, email: 'jules@test.com')
-      user3 = create(:user)
+      user2 = create(:user, email: 'jules@test.com', manual_groups: [group1])
       user4 = create(:user, manual_groups: [group2])
 
       expect(User.in_any_group([group1, group2])).to match_array [user1, user2, user4]

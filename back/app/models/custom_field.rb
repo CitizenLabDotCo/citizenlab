@@ -23,7 +23,6 @@ class CustomField < ApplicationRecord
   before_validation :set_default_enabled
   before_validation :generate_key, on: :create
   before_validation :sanitize_description_multiloc
-  before_destroy :check_group_references, prepend: true
 
   scope :with_resource_type, -> (resource_type) { where(resource_type: resource_type) }
   scope :enabled, -> { where(enabled: true) }
@@ -51,13 +50,6 @@ class CustomField < ApplicationRecord
     end
   end
 
-  def check_group_references
-    if Group.using_custom_field(self).exists?
-      self.errors.add(:base, :dangling_group_references, message: Group.using_custom_field(self).all.map(&:id).join(","))
-      throw :abort
-    end
-  end
-
   def sanitize_description_multiloc
     service = SanitizationService.new
     self.description_multiloc = service.sanitize_multiloc(
@@ -68,3 +60,5 @@ class CustomField < ApplicationRecord
     self.description_multiloc = service.linkify_multiloc(self.description_multiloc)
   end
 end
+
+CustomField.include_if_ee('SmartGroups::Extensions::CustomField')
