@@ -18,7 +18,7 @@ resource "User Custom Fields" do
     end
 
     parameter :input_types, "Array of input types. Only return custom fields for the given types. Allowed values: #{CustomField::INPUT_TYPES.join(", ")}", required: false
-    
+
     example_request "List all custom fields" do
       expect(status).to eq(200)
       json_response = json_parse(response_body)
@@ -166,13 +166,15 @@ resource "User Custom Fields" do
         expect{CustomField.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
       end
 
-      example "[error] Delete a custom field that's still referenced in a rules group" do
-        group = create(:smart_group, rules: [
-          {ruleType: 'custom_field_text', customFieldId: id, predicate: 'is_empty'}
-        ])
-        do_request
-        expect(response_status).to eq 422
-        expect(CustomField.find(id)).to be_present
+      if CitizenLab.ee?
+        example "[error] Delete a custom field that's still referenced in a rules group" do
+          group = create(:smart_group, rules: [
+            {ruleType: 'custom_field_text', customFieldId: id, predicate: 'is_empty'}
+          ])
+          do_request
+          expect(response_status).to eq 422
+          expect(CustomField.find(id)).to be_present
+        end
       end
     end
   end

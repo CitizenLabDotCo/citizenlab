@@ -50,6 +50,13 @@ class GroupPolicy < ApplicationPolicy
     user&.active? && user.admin?
   end
 
+  def permitted_attributes
+    [
+      :membership_type,
+      { title_multiloc: CL2_SUPPORTED_LOCALES }
+    ]
+  end
+
   private
 
   def moderator_can_show?
@@ -65,3 +72,5 @@ class GroupPolicy < ApplicationPolicy
   end
 
 end
+
+GroupPolicy.prepend_if_ee('SmartGroups::Patches::GroupPolicy')

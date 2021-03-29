@@ -1,6 +1,6 @@
 class WebApi::V1::ProjectsTopicsController < ApplicationController
   before_action :set_projects_topic, only: [:show, :reorder, :destroy]
-  
+
   def index
     @projects_topics = policy_scope(ProjectsTopic)
     @projects_topics = @projects_topics.where(project_id: params[:project_id]) if params[:project_id].present?
