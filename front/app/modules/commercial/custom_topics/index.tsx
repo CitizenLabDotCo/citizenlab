@@ -6,7 +6,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import { IProjectData } from 'services/projects';
 import { IPhaseData } from 'services/phases';
 
-
 type RenderOnShowTabConditionProps = {
   project: IProjectData;
   phases: IPhaseData[] |null;
@@ -68,7 +67,7 @@ const configuration: ModuleConfiguration = {
     ],
   },
   outlets: {
-    'app.containers.Admin.projects.edit': (props: RenderOnShowTabConditionProps) => (
+    'app.containers.Admin.projects.edit': (props) => (
       <RenderOnHideTabCondition project={props.project} phases={props.phases}>
         <ProjectEditTab {...props} />
       </RenderOnHideTabCondition>

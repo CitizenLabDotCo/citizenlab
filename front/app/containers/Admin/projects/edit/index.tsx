@@ -39,7 +39,6 @@ import { getInputTerm } from 'services/participationContexts';
 import { IProjectData } from 'services/projects';
 
 import { insertConfiguration } from 'utils/moduleUtils';
-import { IPhaseData } from 'services/phases';
 
 const TopContainer = styled.div`
   width: 100%;
