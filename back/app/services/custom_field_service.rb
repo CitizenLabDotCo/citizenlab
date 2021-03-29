@@ -5,6 +5,13 @@ class CustomFieldService
     @multiloc_service = MultilocService.new
   end
 
+  def ui_and_json_multiloc_schemas(configuration, fields)
+    json_schema_multiloc = ields_to_json_schema_multiloc(configuration, fields)
+    ui_schema_multiloc = ields_to_ui_schema_multiloc(configuration, fields)
+
+    { json_schema_multiloc: json_schema_multiloc, ui_schema_multiloc: ui_schema_multiloc }
+  end
+
   # @param [AppConfiguration] configuration
   # @return [Hash{String => Object}]
   def fields_to_json_schema_multiloc(configuration, fields)
@@ -148,13 +155,13 @@ class CustomFieldService
       type: "number"
     }
   end
-  
+
   # *** multiline_text ***
 
   def multiline_text_to_ui_schema_field(field, locale)
     base = base_ui_schema_field(field, locale)
     if base[:"ui:widget"]
-      base 
+      base
     else
       {"ui:widget": "textarea"}
     end
@@ -166,8 +173,8 @@ class CustomFieldService
       description: handle_description(field, locale),
       type: "string"
     }
-  end 
-  
+  end
+
   # *** select ***
 
   def select_to_ui_schema_field(field, locale)
@@ -187,7 +194,7 @@ class CustomFieldService
       end
     end
   end
-  
+
   # *** multiselect ***
 
   def multiselect_to_ui_schema_field(field, locale)
@@ -211,8 +218,8 @@ class CustomFieldService
         end
       end,
     }
-  end 
-  
+  end
+
   # *** checkbox ***
 
   def checkbox_to_ui_schema_field(field, locale)
@@ -225,8 +232,8 @@ class CustomFieldService
       description: handle_description(field, locale),
       type: "boolean"
     }
-  end 
-  
+  end
+
   # *** date ***
 
   def date_to_ui_schema_field(field, locale)
