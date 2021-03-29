@@ -18,13 +18,13 @@ import {
   InitiativeContext,
   IVerificationError,
   TVerificationSteps,
-} from 'components/Verification/VerificationModalEvents';
+} from 'components/Verification/verificationModalEvents';
 
 import {
   openVerificationModal$,
   closeVerificationModal$,
   closeVerificationModal,
-} from './VerificationModalEvents';
+} from './verificationModalEvents';
 
 // style
 import styled from 'styled-components';

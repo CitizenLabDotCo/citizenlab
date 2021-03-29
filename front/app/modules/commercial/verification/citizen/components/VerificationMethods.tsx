@@ -25,7 +25,7 @@ import { colors, fontSizes, media } from 'utils/styleUtils';
 // typings
 import { IVerificationMethod } from 'services/verificationMethods';
 import Outlet from 'components/Outlet';
-import { ContextShape } from 'components/Verification/VerificationModalEvents';
+import { ContextShape } from 'components/Verification/verificationModalEvents';
 
 const Container = styled.div`
   display: flex;

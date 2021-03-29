@@ -21,7 +21,7 @@ import {
   ContextShape,
   IVerificationError,
   TVerificationSteps,
-} from 'components/Verification/VerificationModalEvents';
+} from 'components/Verification/verificationModalEvents';
 
 const Container = styled.div`
   display: flex;

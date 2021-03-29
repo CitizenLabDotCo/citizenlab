@@ -2,7 +2,7 @@ import eventEmitter from 'utils/eventEmitter';
 import {
   VerificationModalEvents,
   OpenVerificationModalData,
-} from 'components/Verification/VerificationModalEvents';
+} from 'components/Verification/verificationModalEvents';
 
 export function closeVerificationModal() {
   eventEmitter.emit(VerificationModalEvents.close);

@@ -15,7 +15,7 @@ import { Icon } from 'cl2-component-library';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
-import { openVerificationModal } from 'components/Verification/VerificationModalEvents';
+import { openVerificationModal } from 'components/Verification/verificationModalEvents';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
