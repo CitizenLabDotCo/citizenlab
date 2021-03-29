@@ -19,8 +19,6 @@ import {
   IVotesByProject,
 } from 'services/stats';
 
-import { IUsersByBirthyear } from 'modules/commercial/user_custom_fields/services/stats';
-
 import { IGraphFormat, IParticipationByTopic } from 'typings';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -32,15 +30,17 @@ type children = (renderProps: {
   serie: IGraphFormat | IParticipationByTopic | null | undefined;
 }) => JSX.Element | null;
 
-export type ISupportedDataType =
-  | IUsersByBirthyear
-  | IIdeasByTopic
-  | ICommentsByTopic
-  | IVotesByTopic
-  | IIdeasByProject
-  | IIdeasByStatus
-  | IVotesByProject
-  | ICommentsByProject;
+export interface ISupportedDataTypeMap {
+  ideasByTopic: IIdeasByTopic;
+  commentsByTopic: ICommentsByTopic;
+  votesByTopic: IVotesByTopic;
+  ideasByProject: IIdeasByProject;
+  ideasByStatus: IIdeasByStatus;
+  votesByProject: IVotesByProject;
+  commentsByProject: ICommentsByProject;
+}
+
+export type ISupportedDataType = ISupportedDataTypeMap[keyof ISupportedDataTypeMap];
 
 interface QueryProps {
   startAt?: string | undefined | null;

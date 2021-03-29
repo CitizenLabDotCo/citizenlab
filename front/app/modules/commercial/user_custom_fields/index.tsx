@@ -10,6 +10,13 @@ import UserCustomFieldsForm from './citizen/components/UserCustomFieldsForm';
 import useUserCustomFieldsSchema from './hooks/useUserCustomFieldsSchema';
 import RegistrationQuestions from './admin/components/RegistrationQuestions';
 import { userCustomFieldsSchemaApiEndpoint } from './services/userCustomFields';
+import { IUsersByBirthyear } from './services/stats';
+
+declare module 'resources/GetSerieFromStream' {
+  export interface ISupportedDataTypeMap {
+    usersByBirthday: IUsersByBirthyear;
+  }
+}
 
 const RenderOnCustomFields = ({ children }) => {
   const userCustomFieldsSchema = useUserCustomFieldsSchema();
