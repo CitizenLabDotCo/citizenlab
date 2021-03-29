@@ -78,7 +78,7 @@ module AdminApi
     end
 
     def yml_custom_forms shift_timestamps: 0
-      return [] if !@project.custom_form_id
+      return [] if !@project.custom_form
       yml_custom_form = {
         'created_at' => shift_timestamp(@project.custom_form.created_at, shift_timestamps)&.iso8601,
         'updated_at' => shift_timestamp(@project.custom_form.updated_at, shift_timestamps)&.iso8601
@@ -88,7 +88,7 @@ module AdminApi
     end
 
     def yml_custom_fields shift_timestamps: 0
-      return [] if !@project.custom_form_id
+      return [] if !@project.custom_form
       CustomField.where(resource: @project.custom_form).map do |c|
         yml_custom_field = {
           'resource_ref'         => c.resource_id && lookup_ref(c.resource_id, :custom_form),
@@ -109,7 +109,7 @@ module AdminApi
     end
 
     def yml_custom_field_options shift_timestamps: 0
-      return [] if !@project.custom_form_id
+      return [] if !@project.custom_form
       CustomFieldOption.where(custom_field: @project.custom_form.custom_fields).map do |c|
         yml_custom_field_option = {
           'custom_field_ref'     => lookup_ref(c.custom_field_id, :custom_field),
@@ -136,7 +136,7 @@ module AdminApi
         'description_preview_multiloc' => @project.description_preview_multiloc,
         'process_type'                 => @project.process_type,
         'admin_publication_attributes' => { 'publication_status' => new_publication_status || @project.admin_publication.publication_status },
-        'custom_form_ref'              => lookup_ref(@project.custom_form_id, :custom_form),
+        'custom_form_ref'              => lookup_ref(@project.idea_custom_fields_custom_form_id, :custom_form),
         'text_images_attributes'       => @project.text_images.map{ |ti|
           {
             'imageable_field'          => ti.imageable_field,
