@@ -10,11 +10,38 @@ import UserCustomFieldsForm from './citizen/components/UserCustomFieldsForm';
 import useUserCustomFieldsSchema from './hooks/useUserCustomFieldsSchema';
 import RegistrationQuestions from './admin/components/RegistrationQuestions';
 import { userCustomFieldsSchemaApiEndpoint } from './services/userCustomFields';
-import { IUsersByBirthyear } from './services/stats';
+import {
+  IUsersByBirthyear,
+  IUsersByDomicile,
+  IUsersByRegistrationField,
+} from './services/stats';
 
 declare module 'resources/GetSerieFromStream' {
   export interface ISupportedDataTypeMap {
-    usersByBirthday: IUsersByBirthyear;
+    usersByBirthyear: IUsersByBirthyear;
+  }
+}
+
+declare module 'containers/Admin/dashboard/users/charts/BarChartByCategory' {
+  export interface ISupportedDataTypeMap {
+    usersByBirthyear: IUsersByBirthyear;
+    usersByRegistrationField: IUsersByRegistrationField;
+    usersByDomicile: IUsersByDomicile;
+  }
+}
+
+declare module 'containers/Admin/dashboard/users/charts/HorizontalBarChart' {
+  export interface ISupportedDataTypeMap {
+    usersByBirthyear: IUsersByBirthyear;
+    usersByRegistrationField: IUsersByRegistrationField;
+    usersByDomicile: IUsersByDomicile;
+  }
+}
+
+declare module 'containers/Admin/dashboard/users/charts/PieChartbyCategory' {
+  export interface ISupportedDataTypeMap {
+    usersByBirthyear: IUsersByBirthyear;
+    usersByRegistrationField: IUsersByRegistrationField;
   }
 }
 
