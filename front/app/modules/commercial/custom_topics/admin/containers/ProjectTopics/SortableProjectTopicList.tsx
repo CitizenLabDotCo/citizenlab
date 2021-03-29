@@ -14,7 +14,7 @@ import {
   RowContent,
   RowContentInner,
   RowTitle,
-} from '../../components/StyledComponents';
+} from '../../components/RowStyles';
 import Warning from 'components/UI/Warning';
 import Modal, {
   ModalContentContainer,

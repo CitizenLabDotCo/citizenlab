@@ -6,7 +6,11 @@ import styled from 'styled-components';
 // components
 import { Row } from 'components/admin/ResourceList';
 import Button from 'components/UI/Button';
-import { RowContent, RowContentInner, RowTitle } from '../StyledComponents';
+import {
+  RowContent,
+  RowContentInner,
+  RowTitle,
+} from '../../components/RowStyles';
 
 // i18n
 import messages from './messages';
