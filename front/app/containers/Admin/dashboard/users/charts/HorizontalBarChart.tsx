@@ -30,7 +30,8 @@ import {
   IUsersByBirthyear,
   IUsersByRegistrationField,
   IUsersByDomicile,
-} from 'services/stats';
+} from 'modules/commercial/user_custom_fields/services/stats';
+
 import { IGraphFormat } from 'typings';
 import ExportMenu from '../../components/ExportMenu';
 
