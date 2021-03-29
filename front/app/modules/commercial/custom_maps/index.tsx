@@ -9,7 +9,7 @@ import { IPhaseData } from 'services/phases';
 
 type RenderOnShowTabConditionProps = {
   project: IProjectData;
-  phases: IPhaseData[] |null;
+  phases: IPhaseData[] | null;
   children: ReactNode;
 };
 

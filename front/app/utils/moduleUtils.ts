@@ -37,6 +37,7 @@ import { ManagerType } from 'components/admin/PostManager';
 import { IdeaCellComponentProps } from 'components/admin/PostManager/components/PostTable/IdeaRow';
 import { IdeaHeaderCellComponentProps } from 'components/admin/PostManager/components/PostTable/IdeaHeaderRow';
 import { IVerificationMethod } from 'services/verificationMethods';
+import { IPhaseData } from 'services/phases';
 
 type Localize = (
   multiloc: Multiloc | null | undefined,
@@ -144,6 +145,8 @@ export type OutletsPropertyMap = {
   };
   'app.containers.Admin.projects.edit': {
     onData: (data: InsertConfigurationOptions<ITab>) => void;
+    project: IProjectData;
+    phases: IPhaseData[] | null;
   };
   'app.containers.Admin.settings.tabs': {
     onData: (data: InsertConfigurationOptions<ITab>) => void;
