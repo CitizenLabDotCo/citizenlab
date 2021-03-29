@@ -5,11 +5,11 @@ module IdeaCustomFields
     skip_after_action :verify_policy_scoped
 
     def index
-      @custom_fields = CustomFieldPolicy::Scope.new(current_user, CustomField.all).resolve
+      @custom_fields = IdeaCustomFieldPolicy::Scope.new(current_user, CustomField.all).resolve
                                                .where(resource: @custom_form)
                                                .order(:ordering)
 
-      if CustomFieldPolicy.new(current_user, nil).can_view_custom_fields_for_project? @project
+      if IdeaCustomFieldPolicy.new(current_user, nil).can_view_custom_fields_for_project? @project
         @custom_fields = CustomFieldsService.new.all_fields(@custom_form,
                                                                         custom_fields_scope: @custom_fields)
       end
@@ -31,13 +31,13 @@ module IdeaCustomFields
         @project = Project.lock.find(params[:project_id])
         @custom_form = IdeaCustomFields::CustomForm.find_or_initialize_by(project: @project)
 
-        @custom_field = CustomFieldsService.new.find_or_build_field(@custom_form, params[:code])
+        @custom_field = IdeaCustomFieldsService.new.find_or_build_field(@custom_form, params[:code])
         @custom_field.assign_attributes custom_field_params
 
         @custom_form.save! unless @custom_form.persisted?
       end
 
-      authorize @custom_field, policy_class: CustomFieldPolicy
+      authorize @custom_field, policy_class: IdeaCustomFieldPolicy
       already_existed = @custom_field.persisted?
 
       if @custom_field.save
@@ -61,7 +61,7 @@ module IdeaCustomFields
       params
         .require(:custom_field)
         .permit(
-          CustomFieldPolicy.new(current_user, @custom_field).permitted_attributes
+          IdeaCustomFieldPolicy.new(current_user, @custom_field).permitted_attributes
         )
     end
 
@@ -72,7 +72,7 @@ module IdeaCustomFields
 
     def set_custom_field
       @custom_field = CustomField.find(params[:id])
-      authorize @custom_field, policy_class: CustomFieldPolicy
+      authorize @custom_field, policy_class: IdeaCustomFieldPolicy
     end
 
     def secure_controller?

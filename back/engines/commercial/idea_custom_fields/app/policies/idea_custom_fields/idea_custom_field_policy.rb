@@ -22,10 +22,6 @@ module IdeaCustomFields
       end
     end
 
-    def schema?
-      true
-    end
-
     def show?
       can_view_custom_fields_for_project? record&.resource&.project
     end
