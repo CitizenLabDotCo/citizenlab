@@ -19,9 +19,9 @@ import { IVerificationMethod } from 'services/verificationMethods';
 import { isNilOrError } from 'utils/helperUtils';
 import {
   ContextShape,
-  TVerificationSteps,
   IVerificationError,
-} from './VerificationModal';
+  TVerificationSteps,
+} from 'components/Verification/verificationModalEvents';
 
 const Container = styled.div`
   display: flex;
