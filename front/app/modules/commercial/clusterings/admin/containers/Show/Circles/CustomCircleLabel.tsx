@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { isNil, take } from 'lodash-es';
 import styled from 'styled-components';
 import { D3Node } from './';
-import { CustomNode } from 'modules/commercial/clusterings/services/clusterings';
+import { CustomNode } from '../../../../services/clusterings';
 
 const StyledText: any = styled.text`
   font-size: ${(props) => (props as any).size}px;

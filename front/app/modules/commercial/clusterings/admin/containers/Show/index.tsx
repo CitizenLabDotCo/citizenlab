@@ -13,7 +13,7 @@ import { PageTitle } from 'components/admin/Section';
 import T from 'components/T';
 
 // typings
-import { Node } from 'modules/commercial/clusterings/services/clusterings';
+import { Node } from '../../../services/clusterings';
 import {
   globalState,
   IGlobalStateService,
@@ -23,7 +23,7 @@ import {
 // resources
 import GetClustering, {
   GetClusteringChildProps,
-} from 'modules/commercial/clusterings/resources/GetClustering';
+} from '../../../resources/GetClustering';
 
 // styling
 import styled, { ThemeProvider } from 'styled-components';

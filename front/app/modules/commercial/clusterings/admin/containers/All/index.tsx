@@ -4,8 +4,8 @@ import { isNilOrError } from 'utils/helperUtils';
 
 import GetClusterings, {
   GetClusteringsChildProps,
-} from 'modules/commercial/clusterings/resources/GetClusterings';
-import { deleteClustering } from 'modules/commercial/clusterings/services/clusterings';
+} from '../../../resources/GetClusterings';
+import { deleteClustering } from '../../../services/clusterings';
 
 import messages from '../../messages';
 import T from 'components/T';
