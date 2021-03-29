@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import {
   ideaCustomFieldsStream,
   IIdeaCustomFields,
-} from 'services/ideaCustomFields';
+} from '../services/ideaCustomFields';
 
 interface Props {
   projectId: string;
