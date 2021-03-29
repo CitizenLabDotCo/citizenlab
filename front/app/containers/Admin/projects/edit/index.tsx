@@ -79,7 +79,7 @@ interface State {
   tabHideConditions: {
     [tabName: string]: (
       project: IProjectData,
-      phases: IPhaseData[] | null
+      phases: GetPhasesChildProps
     ) => boolean
   };
 }
@@ -351,6 +351,8 @@ export class AdminProjectEdition extends PureComponent<
           <Outlet
             id="app.containers.Admin.projects.edit"
             onData={this.handleData}
+            project={project}
+            phases={phases}
           />
           <TopContainer>
             <GoBackButton onClick={this.goBack} />
