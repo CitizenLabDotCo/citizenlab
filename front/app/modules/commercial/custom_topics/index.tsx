@@ -6,13 +6,13 @@ import { isNilOrError } from 'utils/helperUtils';
 import { IProjectData } from 'services/projects';
 import { IPhaseData } from 'services/phases';
 
-type RenderOnShowTabConditionProps = {
+type RenderOnHideTabConditionProps = {
   project: IProjectData;
   phases: IPhaseData[] |null;
   children: ReactNode;
 };
 
-const RenderOnHideTabCondition = (props: RenderOnShowTabConditionProps) => {
+const RenderOnHideTabCondition = (props: RenderOnHideTabConditionProps) => {
   const { project, phases, children } = props;
   const processType = project.attributes.process_type;
   const participationMethod = project.attributes.participation_method;
