@@ -27,7 +27,7 @@ import useAdminPublications, {
 
 // services
 import { isAdmin } from 'services/permissions/roles';
-import { isProjectFolderModerator } from '../../../permissions/roles';
+import { moderatesFolder } from '../../../permissions/roles';
 
 const FolderIcon = styled(Icon)`
   margin-right: 10px;
@@ -161,7 +161,7 @@ const ProjectFolderRow = memo<Props>(({ publication }) => {
               icon="edit"
               disabled={
                 isBeingDeleted ||
-                !isProjectFolderModerator(authUser, publication.publicationId)
+                !moderatesFolder(authUser, publication.publicationId)
               }
             >
               <FormattedMessage {...messages.manageButtonLabel} />

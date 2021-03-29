@@ -33,7 +33,7 @@ describe ParticipationContextService do
     it 'returns `not_permitted` when not permitted and a permitted group requires verification, while the user is verified' do
       project = create(:continuous_project)
       permission = project.permissions.find_by(action: 'posting_idea')
-      birthyear = create(:birthyear_custom_field)
+      birthyear = create(:custom_field_birthyear)
       verified_members = create(:smart_group, rules: [
         {ruleType: 'verified', predicate: 'is_verified'},
         {value: 2002, ruleType: "custom_field_number", predicate: "is_smaller_than_or_equal", customFieldId: birthyear.id}

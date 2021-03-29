@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'citizen_lab'
+
 require 'factory_bot_rails'
 require 'rack/attack'
 require 'rspec_api_documentation'
@@ -137,25 +139,27 @@ RSpec.configure do |config|
     DatabaseCleaner.strategy = :transaction
     # Truncating doesn't drop schemas, ensure we're clean here, app *may not* exist
     Apartment::Tenant.drop('example_org') rescue nil
+
     # Create the default tenant for our tests
-    # Tenant.create!(name: 'test-tenant', host: 'example_org')
-    FactoryBot::create(:test_tenant)
+    if CitizenLab.ee?
+      FactoryBot.create(:test_tenant)
+    else
+      FactoryBot.create(:test_app_configuration)
+    end
   end
 
   config.before(:each) do
-    # Start transaction for this test
-    DatabaseCleaner.start
-    # Switch into the default tenant
-    Apartment::Tenant.switch! 'example_org'
+    DatabaseCleaner.start # Start transaction for this test
+    Apartment::Tenant.switch!('example_org') if CitizenLab.ee? # Switch into the default tenant
   end
 
   config.after(:each) do
     # Reset tenant back to `public`
-    Apartment::Tenant.reset
+    Apartment::Tenant.reset if CitizenLab.ee?
   rescue ActiveRecord::StatementInvalid
-  else
-    # Rollback transaction
-    DatabaseCleaner.clean
+    # Ignore
+  ensure
+    DatabaseCleaner.clean # Rollback transaction
   end
 
   # By default, skip the slow tests and template tests. Can be overriden on the command line.

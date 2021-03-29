@@ -55,7 +55,7 @@ class IdeaPolicy < ApplicationPolicy
   def update?
     # TODO: remove this after Gents project
     bypassable_reasons = %w[posting_disabled]
-    bypassable_reasons << 'not_permitted' if Tenant.current.host == 'participatie.stad.gent'
+    bypassable_reasons << 'not_permitted' if AppConfiguration.instance.host == 'participatie.stad.gent'
     pcs = ParticipationContextService.new
     pcs_posting_reason = pcs.posting_idea_disabled_reason_for_project(record.project, user)
     record.draft? || user&.active_admin_or_moderator?(record.project_id) ||
