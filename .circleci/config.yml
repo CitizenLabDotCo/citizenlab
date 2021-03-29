@@ -380,6 +380,7 @@ workflows:
   # *************** release ***************
 
   release:
+    when: << pipeline.parameters.trigger >>
     jobs:
       - front-test:
           filters:
@@ -433,12 +434,12 @@ workflows:
       - front-release-essential-image:
           context: docker-hub-access
           requires:
-            - front-test
+            # - front-test
             - front-license-check
-            - front-build
-            - front-lint
-            - back-test
-            - back-license-check
+            # - front-build
+            # - front-lint
+            # - back-test
+            # - back-license-check
           filters:
             branches:
               only:
@@ -447,11 +448,11 @@ workflows:
       - back-release-essential-image:
           context: docker-hub-access
           requires:
-            - front-test
-            - front-license-check
-            - front-build
-            - front-lint
-            - back-test
+            # - front-test
+            # - front-license-check
+            # - front-build
+            # - front-lint
+            # - back-test
             - back-license-check
           filters:
             branches:
