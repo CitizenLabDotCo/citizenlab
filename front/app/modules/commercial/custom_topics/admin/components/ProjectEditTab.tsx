@@ -16,19 +16,20 @@ const ProjectEditTab: FC<Props & InjectedIntlProps> = ({
   onData,
   intl: { formatMessage },
 }) => {
+  const tabName = 'topics';
   useEffect(() => {
     onData({
       tabOptions: {
         configuration: {
           label: formatMessage(messages.topicsTab),
-          name: 'topics',
+          name: tabName,
           url: 'topics',
           feature: 'custom_topics',
         },
         insertBeforeName: 'phases',
       },
       tabHideConditions: {
-        topics: (project: IProjectData, phases: IPhaseData[] | null) => {
+        [tabName]: (project: IProjectData, phases: IPhaseData[] | null) => {
           const processType = project.attributes.process_type;
           const participationMethod = project.attributes.participation_method;
 
