@@ -14,19 +14,24 @@ import useWindowSize from 'hooks/useWindowSize';
 
 // events
 import {
+  ContextShape,
+  InitiativeContext,
+  IVerificationError,
+  TVerificationSteps,
+} from 'components/Verification/verificationModalEvents';
+
+import {
   openVerificationModal$,
   closeVerificationModal$,
   closeVerificationModal,
-} from 'components/Verification/verificationModalEvents';
+} from './verificationModalEvents';
 
 // style
 import styled from 'styled-components';
 import { viewportWidths } from 'utils/styleUtils';
+import ErrorBoundary from 'components/ErrorBoundary';
 
 // typings
-import { IParticipationContextType, IPCAction } from 'typings';
-import { IInitiativeAction } from 'services/initiatives';
-
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -36,44 +41,15 @@ const Container = styled.div`
   padding-right: 20px;
 `;
 
-export type ProjectContext = {
-  id: string;
-  type: IParticipationContextType;
-  action: IPCAction;
-};
-
-export type InitiativeContext = {
-  type: 'initiative';
-  action: IInitiativeAction;
-};
-
-export type IVerificationError = 'taken' | 'not_entitled' | null;
-
-export type ContextShape =
-  | ProjectContext
-  | InitiativeContext
-  | null
-  | undefined;
-
-export function isProjectContext(obj: ContextShape): obj is ProjectContext {
-  return (obj as ProjectContext)?.id !== undefined;
-}
 export function isInitiativeContext(
   obj: ContextShape
 ): obj is InitiativeContext {
   return (obj as InitiativeContext)?.type === 'initiative';
 }
 
-export type TVerificationSteps =
-  | 'method-selection'
-  | 'method-step'
-  | 'success'
-  | 'error'
-  | null;
-
 export interface Props {
   className?: string;
-  onMounted: () => void;
+  onMounted: (id: string) => void;
 }
 
 const VerificationModal = memo<Props>(({ className, onMounted }) => {
@@ -90,7 +66,7 @@ const VerificationModal = memo<Props>(({ className, onMounted }) => {
 
   useEffect(() => {
     if (isMounted() && onMounted) {
-      onMounted();
+      onMounted('verification');
     }
   }, [onMounted]);
 
@@ -130,30 +106,36 @@ const VerificationModal = memo<Props>(({ className, onMounted }) => {
   }, []);
 
   return (
-    <Modal
-      width={820}
-      padding={smallerThanSmallTablet ? '0px 5px 0px 5px' : '0px 20px 0px 20px'}
-      opened={opened}
-      close={onClose}
-      closeOnClickOutside={false}
-    >
-      <Container id="e2e-verification-modal" className={className || ''}>
-        {activeStep && activeStep !== 'success' && activeStep !== 'error' && (
-          <VerificationSteps
-            context={context}
-            inModal={true}
-            showHeader={true}
-            initialActiveStep={activeStep}
-            onCompleted={onCompleted}
-            onError={onError}
-          />
-        )}
+    <ErrorBoundary>
+      <Modal
+        width={820}
+        padding={
+          smallerThanSmallTablet ? '0px 5px 0px 5px' : '0px 20px 0px 20px'
+        }
+        opened={opened}
+        close={onClose}
+        closeOnClickOutside={false}
+      >
+        <Container id="e2e-verification-modal" className={className || ''}>
+          {activeStep && activeStep !== 'success' && activeStep !== 'error' && (
+            <VerificationSteps
+              context={context}
+              inModal={true}
+              showHeader={true}
+              initialActiveStep={activeStep}
+              onCompleted={onCompleted}
+              onError={onError}
+            />
+          )}
 
-        {activeStep === 'success' && <VerificationSuccess onClose={onClose} />}
+          {activeStep === 'success' && (
+            <VerificationSuccess onClose={onClose} />
+          )}
 
-        {activeStep === 'error' && <VerificationError error={error} />}
-      </Container>
-    </Modal>
+          {activeStep === 'error' && <VerificationError error={error} />}
+        </Container>
+      </Modal>
+    </ErrorBoundary>
   );
 });
 

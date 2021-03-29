@@ -31,7 +31,6 @@ import FeatureFlag from 'components/FeatureFlag';
 import IdeaMoreActions from './IdeaMoreActions';
 import { Spinner } from 'cl2-component-library';
 import GoBackButton from './GoBackButton';
-import TranslateButton from 'components/UI/TranslateButton';
 const LazyComments = lazy(() =>
   import('components/PostShowComponents/Comments')
 );
@@ -89,6 +88,7 @@ import {
   columnsGapTablet,
   pageContentMaxWidth,
 } from './styleConstants';
+import Outlet from 'components/Outlet';
 
 const contentFadeInDuration = 250;
 const contentFadeInEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
@@ -189,10 +189,6 @@ const LeftColumn = styled.div`
   ${media.smallerThanMaxTablet`
     padding: 0;
   `}
-`;
-
-const StyledTranslateButton = styled(TranslateButton)`
-  margin-bottom: 20px;
 `;
 
 const IdeaHeader = styled.div`
@@ -565,11 +561,6 @@ export class IdeasShow extends PureComponent<
         locale
       );
 
-      const showTranslateButton =
-        !isNilOrError(idea) &&
-        !isNilOrError(locale) &&
-        !idea.attributes.title_multiloc[locale];
-
       content = (
         <>
           <IdeaMeta ideaId={ideaId} />
@@ -608,14 +599,13 @@ export class IdeasShow extends PureComponent<
                   <Image src={ideaImageLarge} alt="" id="e2e-idea-image" />
                 )}
 
-                <FeatureFlag name="machine_translations">
-                  {showTranslateButton && (
-                    <StyledTranslateButton
-                      translateButtonClicked={translateButtonClicked}
-                      onClick={this.onTranslateIdea}
-                    />
-                  )}
-                </FeatureFlag>
+                <Outlet
+                  id="app.containers.IdeasShow.left"
+                  idea={idea}
+                  locale={locale}
+                  onClick={this.onTranslateIdea}
+                  translateButtonClicked={translateButtonClicked}
+                />
 
                 {proposedBudgetEnabled && proposedBudget && (
                   <>

@@ -5,6 +5,8 @@ import { mockWithRouterProps } from '../../utils/cl-router/__mocks__/withRouter'
 import { IdeasMap } from '.';
 jest.mock('components/Outlet', () => 'Outlet');
 
+jest.mock('components/Outlet', () => 'Outlet');
+
 describe('IdeasMap', () => {
   it('renders correctly', () => {
     const wrapper = shallow(
