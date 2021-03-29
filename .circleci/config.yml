@@ -267,12 +267,13 @@ jobs:
       - run: git push origin $CIRCLE_BRANCH
 
   front-release-essential-image:
-    working_directory: ~/
     docker:
       - image: cimg/base:2021.03
     steps:
       - checkout
-      - setup_remote_docker
+      - setup_remote_docker:
+        # https://support.circleci.com/hc/en-us/articles/360050934711
+          version: 20.10.5
       - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
       - run: |
           docker build -t citizenlabdotco/front-essential -f front/Dockerfile .
