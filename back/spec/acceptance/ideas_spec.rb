@@ -205,8 +205,8 @@ resource "Ideas" do
     end
 
     example "List all ideas that need feedback" do
-      TenantTemplateService.new.resolve_and_apply_template('base')
-      i = create(:idea, idea_status: IdeaStatus.find_by(code: 'proposed'))
+      proposed = create(:idea_status_proposed)
+      i = create(:idea, idea_status: proposed)
 
       do_request feedback_needed: true
       json_response = json_parse(response_body)
