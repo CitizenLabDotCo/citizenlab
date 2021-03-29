@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import VerificationSteps from 'modules/verification/citizen/components/VerificationSteps';
+import VerificationSteps from 'modules/commercial/verification/citizen/components/VerificationSteps';
 import { SignUpStepOutletProps } from 'utils/moduleUtils';
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';

@@ -4,7 +4,7 @@ import React, { useCallback } from 'react';
 import { IDLookupMethod } from 'services/verificationMethods';
 
 // components
-import VerificationMethodButton from 'modules/verification/citizen/components/VerificationMethodButton';
+import VerificationMethodButton from 'modules/commercial/verification/citizen/components/VerificationMethodButton';
 
 // i18n
 import T from 'components/T';
