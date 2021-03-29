@@ -3,10 +3,7 @@ import { isString } from 'lodash-es';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { distinctUntilChanged, switchMap, filter } from 'rxjs/operators';
 import shallowCompare from 'utils/shallowCompare';
-import {
-  IClusteringData,
-  clusteringByIdStream,
-} from 'modules/commercial/clusterings/services/clusterings';
+import { IClusteringData, clusteringByIdStream } from '../services/clusterings';
 import { isNilOrError } from 'utils/helperUtils';
 
 interface InputProps {

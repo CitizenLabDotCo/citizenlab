@@ -7,11 +7,7 @@ import { map, flatten, uniq } from 'lodash-es';
 import { colors, fontSizes } from 'utils/styleUtils';
 
 // typings
-import {
-  Node,
-  ParentNode,
-  ideasUnder,
-} from 'modules/commercial/clusterings/services/clusterings';
+import { Node, ParentNode, ideasUnder } from '../../../../services/clusterings';
 
 // components
 import GenderChart from './GenderChart';

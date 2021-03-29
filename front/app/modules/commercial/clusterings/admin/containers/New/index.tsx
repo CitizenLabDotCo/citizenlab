@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import clHistory from 'utils/cl-router/history';
-import { addClustering } from 'modules/commercial/clusterings/services/clusterings';
+import { addClustering } from '../../../services/clusterings';
 import { Formik, FormikErrors } from 'formik';
 import ClusteringForm, { FormValues } from './ClusteringForm';
 import { CLErrorsJSON } from 'typings';
