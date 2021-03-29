@@ -54,7 +54,7 @@ resource "Topics" do
       end
 
       context do
-        let(:topic) { create(:topic, code: 'mobility', title_multiloc: {'en' => 'Drama'}) }
+        let(:topic) { create(:custom_topic, code: 'mobility', title_multiloc: {'en' => 'Drama'}) }
         let(:id) { topic.id }
 
         example_request "Rename a default topic does not work", example: false do
@@ -91,7 +91,7 @@ resource "Topics" do
 
     delete "web_api/v1/topics/:id" do
 
-      let(:topic) { create(:topic) }
+      let(:topic) { create(:custom_topic) }
       let!(:id) { topic.id }
 
       example "Delete a topic" do

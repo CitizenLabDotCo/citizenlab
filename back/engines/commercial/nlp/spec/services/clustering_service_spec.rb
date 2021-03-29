@@ -81,7 +81,7 @@ describe NLP::ClusteringService do
       i1 = create(:idea, project: p1)
       i2 = create(:idea, project: p1)
       i3 = create(:idea, project: p2)
-      
+
       expect(order_children_rec(service.build_structure(['project'])[:children])).to match(order_children_rec([
         {
           type: "project",
@@ -116,7 +116,7 @@ describe NLP::ClusteringService do
       i1 = create(:idea, topics: [t1], project: project)
       i2 = create(:idea, topics: [t2], project: project)
       i3 = create(:idea, topics: [t2], project: project)
-      
+
       expect(order_children_rec(service.build_structure(['topic'])[:children])).to match(order_children_rec([
         {
           type: "topic",
@@ -150,7 +150,7 @@ describe NLP::ClusteringService do
       i1 = create(:idea, areas: [a1])
       i2 = create(:idea, areas: [a2])
       i3 = create(:idea, areas: [a2])
-      
+
       expect(order_children_rec(service.build_structure(['area'])[:children])).to match(order_children_rec([
         {
           type: "area",
@@ -192,7 +192,7 @@ describe NLP::ClusteringService do
             {'id' => i2.id, 'cluster' => 1},
             {'id' => i3.id, 'cluster' => 0}
         ]}}.to_json)
-      
+
       structure = service.build_structure(['clustering'])[:children]
       expect(order_children_rec(structure)).to match(order_children_rec([
         {
@@ -232,7 +232,7 @@ describe NLP::ClusteringService do
       i4 = create(:idea, project: p2, topics: [t1])
       i5 = create(:idea, project: p2, topics: [t2])
       i6 = create(:idea, project: p2, topics: [t2])
-      
+
       expect(order_children_rec(service.build_structure(['project', 'topic'])[:children])).to match(order_children_rec([
         {
           type: "project",
