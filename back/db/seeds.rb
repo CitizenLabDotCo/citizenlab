@@ -182,6 +182,10 @@ if ['public','example_org'].include? Apartment::Tenant.current
         enabled: true,
         allowed: true
       },
+      clustering: {
+        enabled: true,
+        allowed: true
+      },
       custom_accessibility_statement_link: {
         enabled: false,
         allowed: false
@@ -231,8 +235,8 @@ if ['public','example_org'].include? Apartment::Tenant.current
         allowed: true
       },
       similar_ideas: {
-        enabled: false,
-        allowed: false
+        enabled: true,
+        allowed: true
       },
       manual_tagging: {
         enabled: true,
@@ -455,7 +459,7 @@ user = {
 }
 
 if Apartment::Tenant.current == 'empty_localhost'
-  TenantTemplateService.new.resolve_and_apply_template 'base', external_subfolder: false
+  MultiTenancy::TenantTemplateService.new.resolve_and_apply_template 'base', external_subfolder: false
   MultiTenancy::SideFxTenantService.new.after_apply_template(Tenant.current, nil)
   random_user = AnonymizeUserService.new.anonymized_attributes(Tenant.current.settings.dig('core', 'locales'))
   User.create! AnonymizeUserService.new.anonymized_attributes(Tenant.current.settings.dig('core', 'locales')).merge({**admin, id: "e0d698fc-5969-439f-9fe6-e74fe82b567a"})
@@ -493,7 +497,7 @@ if Apartment::Tenant.current == 'localhost'
     end
   end
 
-  TenantTemplateService.new.resolve_and_apply_template 'base', external_subfolder: false
+  MultiTenancy::TenantTemplateService.new.resolve_and_apply_template 'base', external_subfolder: false
   MultiTenancy::SideFxTenantService.new.after_apply_template(Tenant.current, nil)
   User.create! AnonymizeUserService.new.anonymized_attributes(Tenant.current.settings.dig('core', 'locales')).merge(admin)
   User.create! AnonymizeUserService.new.anonymized_attributes(Tenant.current.settings.dig('core', 'locales')).merge(moderator)
