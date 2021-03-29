@@ -12,7 +12,7 @@ type Props = {
   onData: (data: ProjectTabOptions<InsertConfigurationOptions<ITab>>) => void;
 };
 
-const Tab: FC<Props & InjectedIntlProps> = ({
+const ProjectEditTab: FC<Props & InjectedIntlProps> = ({
   onData,
   intl: { formatMessage },
 }) => {
@@ -20,10 +20,10 @@ const Tab: FC<Props & InjectedIntlProps> = ({
     onData({
       tabOptions: {
         configuration: {
-          label: formatMessage(messages.mapTab),
-          name: 'map',
-          url: `map`,
-          feature: 'custom_maps',
+          label: formatMessage(messages.topicsTab),
+          name: 'topics',
+          url: 'topics',
+          feature: 'custom_topics',
         },
         insertBeforeName: 'phases',
       },
@@ -53,4 +53,4 @@ const Tab: FC<Props & InjectedIntlProps> = ({
   return null;
 };
 
-export default injectIntl(Tab);
+export default injectIntl(ProjectEditTab);
