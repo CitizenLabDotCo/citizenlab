@@ -19,7 +19,7 @@ module Surveys
     end
 
     def initialize(tf_api = nil)
-      @tf_api = tf_api || Typeform::Api.new(Tenant.settings('typeform_surveys', 'user_token'))
+      @tf_api = tf_api || Typeform::Api.new(AppConfiguration.instance.settings('typeform_surveys', 'user_token'))
     end
 
     def get_responses(form_id)

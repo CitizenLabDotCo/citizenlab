@@ -37,11 +37,6 @@ interface Props extends InputProps, DataProps {}
 
 const ActionBar = memo<Props>(
   ({ onTranslateInitiative, translateButtonClicked, initiative, locale }) => {
-    const showTranslateButton =
-      !isNilOrError(initiative) &&
-      !isNilOrError(locale) &&
-      !initiative.attributes.title_multiloc[locale];
-
     return (
       <ActionBarLayout
         leftContent={
@@ -65,7 +60,8 @@ const ActionBar = memo<Props>(
             />
           )
         }
-        showTranslateButton={showTranslateButton}
+        initiative={initiative}
+        locale={locale}
         onTranslate={onTranslateInitiative}
         translateButtonClicked={translateButtonClicked}
       />

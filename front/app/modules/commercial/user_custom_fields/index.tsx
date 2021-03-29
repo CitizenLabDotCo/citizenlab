@@ -79,7 +79,7 @@ const configuration: ModuleConfiguration = {
   },
   outlets: {
     'app.containers.Admin.dashboard.users.graphs': RegistrationFieldsToGraphs,
-    'app.components.SignUpIn.SignUp.step': (props) => (
+    'app.components.SignUpIn.SignUp.step': ({ metaData, ...props }) => (
       <CustomFieldsStep {...props} />
     ),
     'app.containers.Admin.dashboard.reports.ProjectReport.graphs': CustomFieldGraphs,
