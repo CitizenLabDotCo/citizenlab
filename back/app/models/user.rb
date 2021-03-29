@@ -189,8 +189,6 @@ class User < ApplicationRecord
   def to_token_payload
     {
       sub: id,
-      cluster: CL2_CLUSTER,
-      tenant: Tenant.current.id,
       roles: roles
     }
   end
@@ -367,6 +365,7 @@ class User < ApplicationRecord
   end
 end
 
+User.prepend_if_ee('MultiTenancy::Patches::User')
 User.prepend_if_ee('ProjectFolders::Patches::User')
-User.include_if_ee('Verification::Patches::User')
 User.include_if_ee('IdeaAssignment::Extensions::User')
+User.include_if_ee('Verification::Patches::User')
