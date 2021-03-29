@@ -8,8 +8,8 @@ import shallowCompare from 'utils/shallowCompare';
 
 // typings
 import { IStreamParams, IStream } from 'utils/streams';
+
 import {
-  IUsersByBirthyear,
   IIdeasByTopic,
   ICommentsByTopic,
   IVotesByTopic,
@@ -18,6 +18,9 @@ import {
   ICommentsByProject,
   IVotesByProject,
 } from 'services/stats';
+
+import { IUsersByBirthyear } from 'modules/commercial/user_custom_fields/services/stats';
+
 import { IGraphFormat, IParticipationByTopic } from 'typings';
 import { isNilOrError } from 'utils/helperUtils';
 
