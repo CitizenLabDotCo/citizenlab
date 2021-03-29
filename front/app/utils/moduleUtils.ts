@@ -125,6 +125,9 @@ export type OutletsPropertyMap = {
     participationMethods: ParticipationMethod[];
     project: IProjectData;
   };
+  'app.containers.IdeasShow.MetaInformation': {
+    ideaId: string;
+  };
   'app.containers.UserEditPage.ProfileForm.forms': {
     authUser: IUserData;
     onChange: () => void;
