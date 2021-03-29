@@ -33,7 +33,8 @@ import stringify from 'json-stable-stringify';
 import { reportError } from 'utils/loggingUtils';
 import { isUUID } from 'utils/helperUtils';
 
-import modules from 'modules';
+// tslint:disable-next-line:no-module-references
+import { userCustomFieldsSchemaApiEndpoint } from 'modules/commercial/user_custom_fields/services/userCustomFields';
 
 export type pureFn<T> = (arg: T) => T;
 type fetchFn = () => Promise<any>;
@@ -98,8 +99,8 @@ class Streams {
     Object.keys(this.streams).forEach((streamId) => {
       if (
         streamId === authApiEndpoint ||
-        streamId === currentAppConfigurationEndpoint
-        // modules.streamsToReset.includes(streamId)
+        streamId === currentAppConfigurationEndpoint ||
+        streamId === userCustomFieldsSchemaApiEndpoint
       ) {
         promisesToAwait.push(this.streams[streamId].fetch());
       } else if (this.isActiveStream(streamId)) {
