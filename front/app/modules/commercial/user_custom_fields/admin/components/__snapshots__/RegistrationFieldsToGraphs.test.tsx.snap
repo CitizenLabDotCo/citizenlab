@@ -48,8 +48,8 @@ Array [
     graphUnit="users"
     key="2"
     startAt="someTimeAgo"
-    stream={[MockFunction]}
-    xlsxEndpoint="testendpoint/users_by_custom_field_as_xlsx/4145ae1d-da1e-4984-a043-e1269eb37cd4"
+    stream={[Function]}
+    xlsxEndpoint="/web_api/v1/stats/users_by_custom_field_as_xlsx/4145ae1d-da1e-4984-a043-e1269eb37cd4"
   />,
   <WrappedPieChartByCategory
     convertToGraphFormat={[Function]}
@@ -60,8 +60,8 @@ Array [
     graphUnit="users"
     key="3"
     startAt="someTimeAgo"
-    stream={[MockFunction]}
-    xlsxEndpoint="testendpoint/users_by_custom_field_as_xlsx/a0e5a642-a67d-4f73-bb52-35af018a903c"
+    stream={[Function]}
+    xlsxEndpoint="/web_api/v1/stats/users_by_custom_field_as_xlsx/a0e5a642-a67d-4f73-bb52-35af018a903c"
   />,
 ]
 `;

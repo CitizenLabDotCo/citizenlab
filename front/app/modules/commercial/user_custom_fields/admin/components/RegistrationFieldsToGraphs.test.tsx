@@ -10,7 +10,7 @@ import {
   Props,
 } from './RegistrationFieldsToGraphs';
 import { mockGetUserCustomFields } from '../../resources/__mocks__/GetUserCustomFields';
-import { mockUsersByRegFields } from 'services/__mocks__/stats';
+import { mockUsersByRegFields } from 'modules/commercial/user_custom_fields/services/__mocks__/userCustomFieldsStats';
 import { localizeProps } from 'utils/testUtils/localizeProps';
 import { intl } from 'utils/cl-intl';
 
