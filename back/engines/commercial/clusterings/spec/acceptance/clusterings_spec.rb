@@ -53,6 +53,7 @@ resource "Clusterings" do
       parameter :minimal_upvotes, "Minimal amount of upvotes", request: false
       parameter :minimal_downvotes, "Minimal amount of downvotes", request: false
     end
+    ValidationErrorHelper.new.error_fields(self, Clusterings::Clustering)
     before do
       @topic = create(:topic)
       @project = create(:project, topics: [@topic])
@@ -99,7 +100,8 @@ resource "Clusterings" do
       "title" => "Some title we have here!",
       "children" => []
     }}
-
+    ValidationErrorHelper.new.error_fields(self, Clusterings::Clustering)
+    
     example_request "Update a clustering" do
       expect(response_status).to eq 200
       json_response = json_parse(response_body)
