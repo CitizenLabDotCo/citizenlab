@@ -8,55 +8,51 @@
  *
  */
 
-
 /*******************************
              Reset
 *******************************/
-
 
 /* Border-Box */
 *,
 *:before,
 *:after {
   -webkit-box-sizing: inherit;
-          box-sizing: inherit;
+  box-sizing: inherit;
 }
 html {
   -webkit-box-sizing: border-box;
-          box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 /* iPad Input Shadows */
-input[type="text"],
-input[type="email"],
-input[type="search"],
-input[type="password"] {
+input[type='text'],
+input[type='email'],
+input[type='search'],
+input[type='password'] {
   -webkit-appearance: none;
   -moz-appearance: none;
-  
-/* mobile firefox too! */
+
+  /* mobile firefox too! */
 }
 button,
 input,
 optgroup,
 select,
 textarea {
-  font-family: 'larsseit', 'Helvetica Neue', Arial, Helvetica, sans-serif;
-  
-/* 1 */
-  font-size: 100%;
-  
-/* 1 */
-  line-height: 1.15;
-  
-/* 1 */
-  margin: 0;
-  
-/* 2 */
-}
+  font-family: 'Public Sans', 'Helvetica Neue', Arial, Helvetica, sans-serif;
 
+  /* 1 */
+  font-size: 100%;
+
+  /* 1 */
+  line-height: 1.15;
+
+  /* 1 */
+  margin: 0;
+
+  /* 2 */
+}
 
 /*******************************
          Site Overrides
 *******************************/
-

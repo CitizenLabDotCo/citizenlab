@@ -8,7 +8,6 @@
  *
  */
 
-
 /*******************************
             Divider
 *******************************/
@@ -22,9 +21,9 @@
   letter-spacing: 0.05em;
   color: rgba(0, 0, 0, 0.85);
   -webkit-user-select: none;
-     -moz-user-select: none;
-      -ms-user-select: none;
-          user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
@@ -40,7 +39,6 @@
 /*--------------
     Coupling
 ---------------*/
-
 
 /* Allow divider between each column row */
 .ui.grid > .column + .divider,
@@ -92,7 +90,7 @@
   line-height: 0em;
   text-align: center;
   -webkit-transform: translateX(-50%);
-          transform: translateX(-50%);
+  transform: translateX(-50%);
 }
 .ui.vertical.divider:before,
 .ui.vertical.divider:after {
@@ -103,7 +101,7 @@
   border-left: 1px solid rgba(34, 36, 38, 0.15);
   border-right: 1px solid rgba(255, 255, 255, 0.1);
   width: 0%;
-  height: calc(100% -  1rem );
+  height: calc(100% - 1rem);
 }
 .ui.vertical.divider:before {
   top: -100%;
@@ -128,7 +126,7 @@
     top: 0;
     left: 0;
     -webkit-transform: none;
-            transform: none;
+    transform: none;
   }
   .ui.stackable.grid .ui.vertical.divider:before,
   .ui.grid .stackable.row .ui.vertical.divider:before,
@@ -166,11 +164,9 @@
   vertical-align: middle;
 }
 
-
 /*******************************
           Variations
 *******************************/
-
 
 /*--------------
     Hidden
@@ -191,7 +187,7 @@
 .ui.divider.inverted,
 .ui.vertical.inverted.divider,
 .ui.horizontal.inverted.divider {
-  color: #FFFFFF;
+  color: #ffffff;
 }
 .ui.divider.inverted,
 .ui.divider.inverted:after,
@@ -235,8 +231,6 @@
   font-size: 1rem;
 }
 
-
 /*******************************
          Site Overrides
 *******************************/
-

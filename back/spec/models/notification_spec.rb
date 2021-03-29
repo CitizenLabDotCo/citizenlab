@@ -108,11 +108,11 @@ RSpec.describe Notification, type: :model do
       phase = create(:active_phase)
       project = phase.project
       project.visible_to = 'groups'
-      project.groups << create(:smart_group)
+      project.groups << create(:group)
       moderator = create(:moderator, project: project)
-      other_moderator = create(:moderator, email: 'koen@test.com') # member
+      other_moderator = create(:moderator, email: 'koen@test.com', manual_groups: [project.groups.first]) # member
       admin = create(:admin)
-      user = create(:user, email: 'sebi@test.com') # member
+      user = create(:user, email: 'sebi@test.com', manual_groups: [project.groups.first]) # member
       other_user = create(:user, email: 'koen@citizenlab.co') # not member
       activity = create(:activity, item: phase, action: 'started')
 
