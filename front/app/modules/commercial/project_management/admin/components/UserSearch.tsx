@@ -8,11 +8,11 @@ import { isNilOrError, isNonEmptyString } from 'utils/helperUtils';
 import {
   findMembership,
   addMembership,
-} from 'modules/project_management/services/projectModerators';
+} from 'modules/commercial/project_management/services/projectModerators';
 import { IGroupMembershipsFoundUserData } from 'services/groupMemberships';
 
 // hooks
-import useProjectModerators from 'modules/project_management/hooks/useProjectModerators';
+import useProjectModerators from 'modules/commercial/project_management/hooks/useProjectModerators';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
