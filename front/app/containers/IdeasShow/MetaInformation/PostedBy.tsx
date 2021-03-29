@@ -4,7 +4,7 @@ import { isNilOrError } from 'utils/helperUtils';
 // components
 import Avatar from 'components/Avatar';
 import UserName from 'components/UI/UserName';
-import { Header, Item } from './';
+import { Header, Item } from 'components/IdeasShowComponents/MetaInfoStyles';
 
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';

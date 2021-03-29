@@ -9,6 +9,8 @@ import moderationConfiguration from './commercial/moderation';
 import ideaAssignmentConfiguration from './commercial/idea_assignment';
 import geographicDashboardConfiguration from './commercial/geographic_dashboard';
 import adminProjectTemplatesConfiguration from './commercial/admin_project_templates';
+import machineTranslationsConfiguration from './commercial/machine_translations';
+import similarIdeaConfiguration from './commercial/similar_ideas';
 import clusteringsConfiguration from './commercial/clusterings';
 
 import customMapsConfiguration from './commercial/custom_maps';
@@ -19,6 +21,7 @@ import satismeterConfiguration from './commercial/satismeter';
 import segmentConfiguration from './commercial/segment';
 import matomoConfiguration from './commercial/matomo';
 import customIdeaStatusesConfiguration from './commercial/custom_idea_statuses';
+import verificationConfiguration from './commercial/verification';
 import customTopicsConfiguration from './commercial/custom_topics';
 
 import idBosaFasConfiguration from './commercial/id_bosa_fas';
@@ -104,6 +107,10 @@ export default loadModules([
     isEnabled: CL_CONFIG['modules']['commercial/admin_project_templates'],
   },
   {
+    configuration: similarIdeaConfiguration,
+    isEnabled: CL_CONFIG['modules']['commercial/similar_ideas'],
+  },
+  {
     configuration: customMapsConfiguration,
     isEnabled: CL_CONFIG['modules']['commercial/custom_maps'],
   },
@@ -130,5 +137,13 @@ export default loadModules([
   {
     configuration: IdClaveUnicaConfiguration,
     isEnabled: CL_CONFIG['modules']['commercial/id_clave_unica'],
+  },
+  {
+    configuration: machineTranslationsConfiguration,
+    isEnabled: CL_CONFIG['modules']['commercial/machine_translations'],
+  },
+  {
+    configuration: verificationConfiguration,
+    isEnabled: CL_CONFIG['modules']['commercial/verification'],
   },
 ]);

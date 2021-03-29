@@ -1,5 +1,5 @@
 import React from 'react';
-import { Header, Item } from './';
+import { Header, Item } from 'components/IdeasShowComponents/MetaInfoStyles';
 
 // hooks
 import useIdeaStatus from 'hooks/useIdeaStatus';

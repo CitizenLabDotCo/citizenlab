@@ -1,13 +1,13 @@
 import React, { memo } from 'react';
 
-// components
-import TranslateButton from 'components/UI/TranslateButton';
-import FeatureFlag from 'components/FeatureFlag';
-
 // styles
 import styled from 'styled-components';
 import { colors, media } from 'utils/styleUtils';
 import { postPageContentMaxWidth } from './styleConstants';
+import { GetLocaleChildProps } from 'resources/GetLocale';
+import { GetInitiativeChildProps } from 'resources/GetInitiative';
+
+import Outlet from 'components/Outlet';
 
 const Container = styled.div`
   width: 100%;
@@ -52,41 +52,36 @@ const Right = styled.div`
   align-items: center;
 `;
 
-const StyledTranslateButton = styled(TranslateButton)`
-  ${media.smallerThanMinTablet`
-    display: none;
-  `}
-`;
-
 interface Props {
   rightContent: JSX.Element | null;
   leftContent: JSX.Element | null;
-  showTranslateButton: boolean;
   translateButtonClicked: boolean;
   onTranslate: () => void;
+  locale: GetLocaleChildProps;
+  initiative: GetInitiativeChildProps;
 }
 
 export default memo<Props>(
   ({
     rightContent,
     leftContent,
-    showTranslateButton,
     translateButtonClicked,
     onTranslate,
+    initiative,
+    locale,
   }) => {
     return (
       <Container>
         <Inner>
           <Left>{leftContent}</Left>
           <Right>
-            <FeatureFlag name="machine_translations">
-              {showTranslateButton && (
-                <StyledTranslateButton
-                  translateButtonClicked={translateButtonClicked}
-                  onClick={onTranslate}
-                />
-              )}
-            </FeatureFlag>
+            <Outlet
+              id="app.components.PostShowComponents.ActionBar.right"
+              translateButtonClicked={translateButtonClicked}
+              onClick={onTranslate}
+              initiative={initiative}
+              locale={locale}
+            />
             {rightContent}
           </Right>
         </Inner>
