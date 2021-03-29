@@ -1,4 +1,3 @@
-import { ProjectTabOptions } from 'containers/Admin/projects/edit';
 import { FC, useEffect } from 'react';
 import { InjectedIntlProps } from 'react-intl';
 import { InsertConfigurationOptions, ITab } from 'typings';
@@ -6,7 +5,7 @@ import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 type Props = {
-  onData: (data: ProjectTabOptions<InsertConfigurationOptions<ITab>>) => void;
+  onData: (data: InsertConfigurationOptions<ITab>) => void;
 };
 
 const ProjectEditTab: FC<Props & InjectedIntlProps> = ({
