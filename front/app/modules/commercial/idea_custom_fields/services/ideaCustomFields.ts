@@ -1,16 +1,9 @@
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 import { Multiloc } from 'typings';
+import { CustomFieldCodes } from 'services/ideaCustomFieldsSchemas';
 
 export type Visibility = 'admins' | 'public';
-export type CustomFieldCodes =
-  | 'title'
-  | 'body'
-  | 'topic_ids'
-  | 'location'
-  | 'images'
-  | 'attachments'
-  | 'proposed_budget';
 type CustomFieldKeys = CustomFieldCodes;
 
 export interface IIdeaCustomFieldData {
@@ -46,53 +39,6 @@ export interface IUpdatedIdeaCustomFieldProperties {
   visible_to?: Visibility;
 }
 
-export interface JSONSchemaObject {
-  title: string;
-  description: string;
-  type: 'string' | 'array';
-  uniqueItems?: boolean;
-  minItems?: number;
-  items?: {
-    type: 'string' | 'array';
-    format?: 'data-url' | 'string';
-  };
-}
-
-export interface UISchemaObject {
-  'ui:widget'?: string;
-}
-
-export interface IIdeaCustomFieldsSchemas {
-  json_schema_multiloc: {
-    [locale: string]: {
-      type: 'object';
-      additionalProperties: boolean;
-      properties: {
-        title: JSONSchemaObject;
-        body: JSONSchemaObject;
-        topic_ids: JSONSchemaObject;
-        proposed_budget: JSONSchemaObject;
-        location: JSONSchemaObject;
-        images: JSONSchemaObject;
-        attachments: JSONSchemaObject;
-      };
-      required: string[];
-    };
-  };
-  ui_schema_multiloc: {
-    [locale: string]: {
-      title: UISchemaObject;
-      body: UISchemaObject;
-      topic_ids: UISchemaObject;
-      proposed_budget: UISchemaObject;
-      location: UISchemaObject;
-      images: UISchemaObject;
-      attachments: UISchemaObject;
-      'ui:order': string[];
-    };
-  };
-}
-
 export function ideaCustomFieldsStream(
   projectId: string,
   streamParams: IStreamParams | null = null
@@ -108,17 +54,6 @@ export function ideaCustomFieldByCodeStream(
 ) {
   const apiEndpoint = `${API_PATH}/projects/${projectId}/custom_fields/by_code/${customFieldCode}`;
   return streams.get<IIdeaCustomField>({ apiEndpoint, ...streamParams });
-}
-
-export function ideaCustomFieldsSchemasStream(
-  projectId: string,
-  streamParams: IStreamParams | null = null
-) {
-  const apiEndpoint = `${API_PATH}/projects/${projectId}/custom_fields/schema`;
-  return streams.get<IIdeaCustomFieldsSchemas>({
-    apiEndpoint,
-    ...streamParams,
-  });
 }
 
 export function ideaCustomFieldStream(
