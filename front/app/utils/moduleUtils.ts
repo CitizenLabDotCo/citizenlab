@@ -37,7 +37,6 @@ import { ManagerType } from 'components/admin/PostManager';
 import { IdeaCellComponentProps } from 'components/admin/PostManager/components/PostTable/IdeaRow';
 import { IdeaHeaderCellComponentProps } from 'components/admin/PostManager/components/PostTable/IdeaHeaderRow';
 import { IVerificationMethod } from 'services/verificationMethods';
-import { ProjectTabOptions } from 'containers/Admin/projects/edit';
 
 type Localize = (
   multiloc: Multiloc | null | undefined,
@@ -144,7 +143,7 @@ export type OutletsPropertyMap = {
     children: OutletRenderProps;
   };
   'app.containers.Admin.projects.edit': {
-    onData: (data: ProjectTabOptions<InsertConfigurationOptions<ITab>>) => void;
+    onData: (data: InsertConfigurationOptions<ITab>) => void;
   };
   'app.containers.Admin.settings.tabs': {
     onData: (data: InsertConfigurationOptions<ITab>) => void;
