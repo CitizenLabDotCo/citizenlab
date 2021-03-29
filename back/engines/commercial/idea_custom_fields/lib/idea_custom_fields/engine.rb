@@ -12,15 +12,8 @@ module IdeaCustomFields
     isolate_namespace IdeaCustomFields
 
     def self.add_feature_spec
-      return unless defined?(IdeaCustomFields::FeatureSpecification)
-
+      require 'idea_custom_fields/feature_specification'
       AppConfiguration::Settings.add_feature(IdeaCustomFields::FeatureSpecification)
-    end
-
-    if Rails.env.development? || Rails.env.test?
-      config.autoload_paths << "#{config.root}/lib"
-    else
-      config.eager_load_paths << "#{config.root}/lib"
     end
 
     factories_path = File.expand_path('../../spec/factories', __dir__)
