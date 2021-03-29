@@ -8,6 +8,7 @@ import granularPermissionsConfiguration from './commercial/granular_permissions'
 import moderationConfiguration from './commercial/moderation';
 import ideaAssignmentConfiguration from './commercial/idea_assignment';
 import geographicDashboardConfiguration from './commercial/geographic_dashboard';
+import machineTranslationsConfiguration from './commercial/machine_translations';
 
 import customMapsConfiguration from './commercial/custom_maps';
 import googleTagManagerConfiguration from './commercial/google_tag_manager';
@@ -115,5 +116,9 @@ export default loadModules([
   {
     configuration: IdClaveUnicaConfiguration,
     isEnabled: CL_CONFIG['modules']['commercial/id_clave_unica'],
+  },
+  {
+    configuration: machineTranslationsConfiguration,
+    isEnabled: CL_CONFIG['modules']['commercial/machine_translations'],
   },
 ]);
