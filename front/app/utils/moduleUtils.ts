@@ -241,6 +241,8 @@ export interface ParsedModuleConfiguration {
   beforeMountApplication: () => void;
   /** this function triggers after the Root component mounted */
   afterMountApplication: () => void;
+  /** used to reset streams created in a module */
+  streamsToReset: String[];
 }
 
 export type ModuleConfiguration = RecursivePartial<
@@ -250,6 +252,8 @@ export type ModuleConfiguration = RecursivePartial<
   beforeMountApplication?: () => void;
   /** this function triggers after the Root component mounted */
   afterMountApplication?: () => void;
+  /** used to reset streams created in a module */
+  streamsToReset?: String[];
 };
 
 type Modules = {
@@ -348,6 +352,12 @@ export const loadModules = (modules: Modules): ParsedModuleConfiguration => {
     },
     beforeMountApplication: callLifecycleMethods('beforeMountApplication'),
     afterMountApplication: callLifecycleMethods('afterMountApplication'),
+    streamsToReset: enabledModuleConfigurations.reduce(
+      (acc: String[], module: ModuleConfiguration) => {
+        return [...acc, ...(module?.streamsToReset ?? [])];
+      },
+      []
+    ),
   };
 };
 
