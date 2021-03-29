@@ -1,9 +1,9 @@
 class WebApi::V1::IdeaCustomFieldsController < ApplicationController
   before_action :set_custom_form, only: [:schema]
   skip_after_action :verify_policy_scoped
+  skip_after_action :verify_authorized
 
   def schema
-    authorize :custom_field, policy_class: IdeaCustomFieldPolicy
     @idea_form_fields = IdeaCustomFieldsService.new.all_fields(@custom_form)
     render json: CustomFieldService.new.ui_and_json_multiloc_schemas(AppConfiguration.instance, @idea_form_fields)
   end
