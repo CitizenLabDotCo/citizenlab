@@ -6,12 +6,12 @@ import Button from 'components/UI/Button';
 import { List, Row } from 'components/admin/ResourceList';
 import Avatar from 'components/Avatar';
 import { isNilOrError } from 'utils/helperUtils';
-import { deleteProjectModerator } from 'modules/project_management/services/projectModerators';
+import { deleteProjectModerator } from 'modules/commercial/project_management/services/projectModerators';
 import { InjectedIntlProps } from 'react-intl';
 import styled from 'styled-components';
 
 // hooks
-import useProjectModerators from 'modules/project_management/hooks/useProjectModerators';
+import useProjectModerators from '../../hooks/useProjectModerators';
 import useAuthUser from 'hooks/useAuthUser';
 
 const PendingInvitation = styled.span`
