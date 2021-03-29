@@ -182,6 +182,10 @@ if ['public','example_org'].include? Apartment::Tenant.current
         enabled: true,
         allowed: true
       },
+      clustering: {
+        enabled: true,
+        allowed: true
+      },
       custom_accessibility_statement_link: {
         enabled: false,
         allowed: false
@@ -455,7 +459,7 @@ user = {
 }
 
 if Apartment::Tenant.current == 'empty_localhost'
-  TenantTemplateService.new.resolve_and_apply_template 'base', external_subfolder: false
+  MultiTenancy::TenantTemplateService.new.resolve_and_apply_template 'base', external_subfolder: false
   MultiTenancy::SideFxTenantService.new.after_apply_template(Tenant.current, nil)
   random_user = AnonymizeUserService.new.anonymized_attributes(Tenant.current.settings.dig('core', 'locales'))
   User.create! AnonymizeUserService.new.anonymized_attributes(Tenant.current.settings.dig('core', 'locales')).merge({**admin, id: "e0d698fc-5969-439f-9fe6-e74fe82b567a"})
@@ -493,7 +497,7 @@ if Apartment::Tenant.current == 'localhost'
     end
   end
 
-  TenantTemplateService.new.resolve_and_apply_template 'base', external_subfolder: false
+  MultiTenancy::TenantTemplateService.new.resolve_and_apply_template 'base', external_subfolder: false
   MultiTenancy::SideFxTenantService.new.after_apply_template(Tenant.current, nil)
   User.create! AnonymizeUserService.new.anonymized_attributes(Tenant.current.settings.dig('core', 'locales')).merge(admin)
   User.create! AnonymizeUserService.new.anonymized_attributes(Tenant.current.settings.dig('core', 'locales')).merge(moderator)
@@ -659,7 +663,6 @@ if Apartment::Tenant.current == 'localhost'
        end
 
       if rand(5) == 0
-        project.default_assignee = rand_instance User.admin.or(User.project_moderator(project.id))
         project.save!
       end
     end
@@ -693,7 +696,6 @@ if Apartment::Tenant.current == 'localhost'
         location_description: rand(2) == 0 ? nil : Faker::Address.street_address,
         budget: rand(3) == 0 ? nil : (rand(10 ** (rand(3) + 2)) + 50).round(-1),
         proposed_budget: rand(3) == 0 ? nil : (rand(10 ** (rand(3) + 2)) + 50).round(-1),
-        assignee: rand(5) == 0 ? rand_instance(User.admin.or(User.project_moderator(project.id))) : nil
       })
 
       [0,0,1,1,2][rand(5)].times do |i|

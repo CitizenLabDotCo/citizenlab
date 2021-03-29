@@ -16,7 +16,7 @@ const MapComponent = memo<Props>(({ position, projectId }) => {
       projectId={projectId}
       points={points}
       centerCoordinates={centerCoordinates}
-      zoom={15}
+      zoomLevel={15}
     />
   );
 });

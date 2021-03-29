@@ -676,18 +676,6 @@
         }
       },
 
-      "idea_assignment": {
-        "type": "object",
-        "title": "Assign Ideas",
-        "description": "Ideas can be assigned to specific admin and project managers to respond to.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
-        }
-      },
-
       "custom_accessibility_statement_link": {
         "type": "object",
         "title": "Custom A11y Statement Link",
@@ -716,18 +704,6 @@
         "properties": {
           "allowed": { "type": "boolean", "default": true},
           "enabled": { "type": "boolean", "default": true}
-        }
-      },
-
-      "smart_groups": {
-        "type": "object",
-        "title": "Smart Groups",
-        "description":  "Users can automatically be assigned to a group based on certain criteria.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false},
-          "enabled": { "type": "boolean", "default": false}
         }
       },
 
@@ -899,7 +875,7 @@
           "enabled": { "type": "boolean", "default": false}
         }
       },
-      
+
       "private_projects": {
         "type": "object",
         "title": "Private projects",

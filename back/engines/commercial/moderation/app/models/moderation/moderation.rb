@@ -1,6 +1,6 @@
 module Moderation
   class Moderation < ActiveRecord::Base
-    include PgSearch
+    include PgSearch::Model
     self.primary_key = 'id'
 
     has_one :moderation_status, foreign_key: :moderatable_id, foreign_type: :moderatable_type

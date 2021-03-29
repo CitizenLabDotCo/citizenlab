@@ -2477,7 +2477,7 @@
   "app.errors.email_domain_blacklisted": "Vă rugăm să utilizați un alt domeniu de e-mail pentru a vă înregistra.",
   "app.errors.email_invalid": "Vă rugăm să utilizați o adresă de e-mail validă.",
   "app.errors.email_taken": "Există deja un cont cu această adresă de e-mail. În consecință vă puteți conecta.",
-  "app.errors.email_taken_by_invite": "{value} este deja luată de către o invitație aflată în așteptare. Verificați folderul spam iar dacă nu îl găsiți contactați support@citizenlab.co.",
+  "app.errors.email_taken_by_invite": "{value} este deja luată de către o invitație aflată în așteptare. Verificați folderul spam iar dacă nu îl găsiți contactați {supportEmail}.",
   "app.errors.emails_duplicate": "Una sau mai multe valori pentru adresa de e-mail {value} au fost găsite în următoarele rând(uri): {rows}",
   "app.errors.error": "Eroare:",
   "app.errors.file_extension_whitelist_error": "Formatul fișierului pe care ați încercat să îl încărcați nu este acceptat.",
