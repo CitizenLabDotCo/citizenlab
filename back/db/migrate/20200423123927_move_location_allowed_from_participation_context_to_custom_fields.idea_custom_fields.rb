@@ -3,6 +3,13 @@ class MoveLocationAllowedFromParticipationContextToCustomFields < ActiveRecord::
     self.table_name = 'custom_forms'
   end
 
+  Project.class_eval do
+    belongs_to :custom_form,
+                class_name: 'IdeaCustomFields::CustomForm',
+                optional: true,
+                dependent: :destroy
+  end
+
   def change
     ml_s = MultilocService.new
     Project.where(location_allowed: false).where.not(process_type: 'timeline').each do |project|
