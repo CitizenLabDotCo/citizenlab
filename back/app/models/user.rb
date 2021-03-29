@@ -84,8 +84,7 @@ class User < ApplicationRecord
     if record.email && (duplicate_user = User.find_by_cimail(record.email)).present? && duplicate_user.id != id
       if duplicate_user.invite_pending?
         ErrorsService.new.remove record.errors, :email, :taken, value: record.email
-        record.errors.add(:email, :taken_by_invite, value: record.email,
-                                                    inviter_email: duplicate_user.invitee_invite&.inviter&.email)
+        record.errors.add(:email, :taken_by_invite, value: record.email, inviter_email: duplicate_user.invitee_invite&.inviter&.email)
       elsif duplicate_user.email != record.email
         # We're only checking this case, as the other case is covered
         # by the uniqueness constraint which can "cleverly" distinguish
@@ -178,7 +177,7 @@ class User < ApplicationRecord
       end
     end
 
-    not_invited.find_by cimail: email
+    not_invited.find_by_cimail email
   end
 
   def to_token_payload
