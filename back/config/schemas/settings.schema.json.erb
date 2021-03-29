@@ -283,8 +283,7 @@
           }
         }
       },
-
-
+      
       "integration_onze_stad_app": {
         "type": "object",
         "description":  "Allow posting ideas to Onze StadApp as news.",
@@ -303,43 +302,6 @@
             "title": "API Key",
             "type": "string",
             "private": true
-          }
-        }
-      },
-
-      "verification": {
-        "type": "object",
-        "title": "Verification",
-        "description": "Use a pre-defined list to verify user identities during registration.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "required-settings": ["verification_methods"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false},
-          "enabled": { "type": "boolean", "default": false},
-          "verification_methods": {
-            "title": "Verification Methods",
-            "private": true,
-            "type": "array",
-            "default": [],
-            "items": {
-              "anyOf":
-                <%= Verification::VerificationService.new.all_methods.map do |method|
-                    {
-                      type: "object",
-                      title: method.name,
-                      required: ["name", *method.config_parameters],
-                      properties: {
-                        name: {type: "string", enum: [method.name], default: method.name, readOnly: true},
-                        **method.config_parameters.map do |cp|
-                          parameter_schema = method.respond_to?(:config_parameters_schema) && method.config_parameters_schema[cp]
-                          [cp, parameter_schema || {type: "string", private: "true"}]
-                        end.to_h
-                      }
-                    }
-                  end.to_json
-                %>
-            }
           }
         }
       },
@@ -702,18 +664,6 @@
         }
       },
 
-      "idea_assignment": {
-        "type": "object",
-        "title": "Assign Ideas",
-        "description": "Ideas can be assigned to specific admin and project managers to respond to.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
-        }
-      },
-
       "custom_accessibility_statement_link": {
         "type": "object",
         "title": "Custom A11y Statement Link",
@@ -742,18 +692,6 @@
         "properties": {
           "allowed": { "type": "boolean", "default": true},
           "enabled": { "type": "boolean", "default": true}
-        }
-      },
-
-      "smart_groups": {
-        "type": "object",
-        "title": "Smart Groups",
-        "description":  "Users can automatically be assigned to a group based on certain criteria.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false},
-          "enabled": { "type": "boolean", "default": false}
         }
       },
 
@@ -925,7 +863,7 @@
           "enabled": { "type": "boolean", "default": false}
         }
       },
-      
+
       "private_projects": {
         "type": "object",
         "title": "Private projects",

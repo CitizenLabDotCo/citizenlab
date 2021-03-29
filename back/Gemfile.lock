@@ -83,6 +83,7 @@ PATH
       custom_style
       graphql (~> 1.8.0)
       kaminari (~> 1.2)
+      multi_tenancy
       rails (~> 6.0.0)
 
 PATH
@@ -175,6 +176,13 @@ PATH
       verification
 
 PATH
+  remote: engines/commercial/idea_assignment
+  specs:
+    idea_assignment (0.1.0)
+      email_campaigns
+      rails (~> 6.0.3, >= 6.0.3.2)
+
+PATH
   remote: engines/commercial/machine_translations
   specs:
     machine_translations (0.1.0)
@@ -224,6 +232,12 @@ PATH
       rails (~> 6.0.0)
 
 PATH
+  remote: engines/commercial/smart_groups
+  specs:
+    smart_groups (0.1.0)
+      rails (~> 6.0.3, >= 6.0.3.2)
+
+PATH
   remote: engines/commercial/tagging
   specs:
     tagging (0.1.0)
@@ -248,6 +262,7 @@ PATH
       granular_permissions
       pundit (~> 2.0)
       rails (~> 6.0.0)
+      savon (~> 2.12.0)
 
 PATH
   remote: engines/ee/multi_tenancy
@@ -261,7 +276,6 @@ PATH
   specs:
     email_campaigns (0.1.0)
       active_model_serializers (~> 0.10.7)
-      apartment (~> 2.2.1)
       ice_cube
       kaminari (~> 1.2)
       liquid (~> 4.0)
@@ -273,7 +287,6 @@ PATH
   remote: engines/free/frontend
   specs:
     frontend (0.1.0)
-      apartment (~> 2.2.1)
       rails (~> 6.0.0)
 
 PATH
@@ -281,7 +294,6 @@ PATH
   specs:
     onboarding (0.1.0)
       active_model_serializers (~> 0.10.7)
-      apartment (~> 2.2.1)
       kaminari (~> 1.2)
       pundit (~> 2.0)
       rails (~> 6.0.0)
@@ -291,7 +303,6 @@ PATH
   specs:
     polls (0.1.0)
       acts_as_list (~> 0.9.17)
-      apartment (~> 2.2.1)
       kaminari (~> 1.2)
       pundit (~> 2.0)
       rails (~> 6.0.0)
@@ -317,7 +328,6 @@ PATH
   specs:
     surveys (0.1.0)
       active_model_serializers (~> 0.10.7)
-      apartment (~> 2.2.1)
       httparty (~> 0.16.2)
       kaminari (~> 1.2)
       pundit (~> 2.0)
@@ -328,7 +338,6 @@ PATH
   specs:
     volunteering (0.1.0)
       acts_as_list (~> 0.9.17)
-      apartment (~> 2.2.1)
       kaminari (~> 1.2)
       pundit (~> 2.0)
       rails (~> 6.0.0)
@@ -961,6 +970,7 @@ DEPENDENCIES
   id_cow!
   id_franceconnect!
   id_id_card_lookup!
+  idea_assignment!
   intercom (~> 4.1)
   kaminari (~> 1.2)
   knock!
@@ -1024,6 +1034,7 @@ DEPENDENCIES
   simple_segment (~> 1.2)
   simplecov
   simplecov-rcov
+  smart_groups!
   spring
   spring-watcher-listen (~> 2.0.0)
   surveys!

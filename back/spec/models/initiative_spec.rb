@@ -93,20 +93,21 @@ RSpec.describe Initiative, type: :model do
 
   describe "order_status" do
     it "shows proposed initiatives first, where the ones which will soon expire are shown at the top" do
-      TenantTemplateService.new.resolve_and_apply_template 'base', external_subfolder: false
+      proposed = create(:initiative_status_proposed)
+      threshold_reached = create(:initiative_status_threshold_reached)
       i1, i2, i3 = create_list(:initiative, 3)
       i1.update! published_at: (Time.now - 3.minutes)
       create(
         :initiative_status_change, 
-        initiative: i1, initiative_status: InitiativeStatus.find_by(code: 'proposed')
+        initiative: i1, initiative_status: proposed
         )
       create(
         :initiative_status_change, 
-        initiative: i2, initiative_status: InitiativeStatus.find_by(code: 'proposed')
+        initiative: i2, initiative_status: proposed
         )
       create(
         :initiative_status_change, 
-        initiative: i3, initiative_status: InitiativeStatus.find_by(code: 'threshold_reached')
+        initiative: i3, initiative_status: threshold_reached
         )
       expect(Initiative.order_status.ids).to eq [i1.id, i2.id, i3.id]
     end

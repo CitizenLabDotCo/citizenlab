@@ -9,7 +9,6 @@
  *
  */
 
-
 /*******************************
             Video
 *******************************/
@@ -27,7 +26,6 @@
      Content
 ---------------*/
 
-
 /* Placeholder Image */
 .ui.video .placeholder {
   background-color: #333333;
@@ -44,7 +42,7 @@
   height: 100%;
   background: transparent;
   -webkit-transition: background 0.2s ease;
-          transition: background 0.2s ease;
+  transition: background 0.2s ease;
 }
 .ui.video .play.icon:before {
   position: absolute;
@@ -52,13 +50,13 @@
   left: 50%;
   z-index: 11;
   -webkit-transform: translateX(-50%) translateY(-50%);
-      -ms-transform: translateX(-50%) translateY(-50%);
-          transform: translateX(-50%) translateY(-50%);
+  -ms-transform: translateX(-50%) translateY(-50%);
+  transform: translateX(-50%) translateY(-50%);
   color: rgba(255, 255, 255, 0.7);
   font-size: 7rem;
   text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.15);
   -webkit-transition: color 0.2s ease;
-          transition: color 0.2s ease;
+  transition: color 0.2s ease;
 }
 .ui.video .placeholder {
   position: absolute;
@@ -83,11 +81,9 @@
   padding: 0em;
 }
 
-
 /*******************************
             States
 *******************************/
-
 
 /*--------------
     Hover
@@ -112,14 +108,10 @@
   display: inline;
 }
 
-
 /*******************************
         Video Overrides
 *******************************/
 
-
-
 /*******************************
          Site Overrides
 *******************************/
-
