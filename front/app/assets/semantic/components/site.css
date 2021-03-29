@@ -8,6 +8,7 @@
  *
  */
 
+
 /*******************************
              Page
 *******************************/
@@ -24,13 +25,14 @@ body {
   padding: 0px;
   overflow-x: hidden;
   min-width: 320px;
-  background: #ffffff;
+  background: #FFFFFF;
   font-family: 'Public Sans', 'Helvetica Neue', Arial, Helvetica, sans-serif;
   font-size: 14px;
   line-height: 1.4285em;
   color: rgba(0, 0, 0, 0.87);
   font-smoothing: antialiased;
 }
+
 
 /*******************************
              Headers
@@ -43,7 +45,7 @@ h4,
 h5 {
   font-family: 'Public Sans', 'Helvetica Neue', Arial, Helvetica, sans-serif;
   line-height: 1.28571429em;
-  margin: calc(2rem - 0.14285714em) 0em 1rem;
+  margin: calc(2rem -  0.14285714em ) 0em 1rem;
   font-weight: bold;
   padding: 0em;
 }
@@ -78,6 +80,7 @@ h5:last-child {
   margin-bottom: 0em;
 }
 
+
 /*******************************
              Text
 *******************************/
@@ -98,7 +101,7 @@ p:last-child {
 --------------------*/
 
 a {
-  color: #4183c4;
+  color: #4183C4;
   text-decoration: none;
 }
 a:hover {
@@ -106,25 +109,29 @@ a:hover {
   text-decoration: none;
 }
 
+
 /*******************************
          Scrollbars
 *******************************/
+
+
 
 /*******************************
           Highlighting
 *******************************/
 
+
 /* Site */
 ::-webkit-selection {
-  background-color: #cce2ff;
+  background-color: #CCE2FF;
   color: rgba(0, 0, 0, 0.87);
 }
 ::-moz-selection {
-  background-color: #cce2ff;
+  background-color: #CCE2FF;
   color: rgba(0, 0, 0, 0.87);
 }
 ::selection {
-  background-color: #cce2ff;
+  background-color: #CCE2FF;
   color: rgba(0, 0, 0, 0.87);
 }
 
@@ -157,7 +164,7 @@ body ::-webkit-scrollbar-track {
 }
 body ::-webkit-scrollbar-thumb {
   cursor: pointer;
-  border-radius: 3px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
   background: rgba(0, 0, 0, 0.25);
   -webkit-transition: color 0.2s ease;
   transition: color 0.2s ease;
@@ -183,6 +190,8 @@ body .ui.inverted::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.35);
 }
 
+
 /*******************************
          Site Overrides
 *******************************/
+
