@@ -1,8 +1,7 @@
-import useIdeaCustomField from 'hooks/useIdeaCustomField';
-import {
-  IIdeaCustomFieldData,
-  CustomFieldCodes,
-} from '../services/ideaCustomFields';
+import useIdeaCustomField from '../hooks/useIdeaCustomField';
+import { IIdeaCustomFieldData } from '../services/ideaCustomFields';
+
+import { CustomFieldCodes } from 'services/ideaCustomFieldsSchemas';
 
 export type GetIdeaCustomFieldChildProps =
   | IIdeaCustomFieldData
