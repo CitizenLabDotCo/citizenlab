@@ -154,7 +154,7 @@ describe TenantTemplateService do
 
         service.apply_template(template)
 
-        expect(CustomForm.count).to eq 2
+        expect(IdeaCustomFields::CustomForm.count).to eq 2
         expect(CustomField.count).to eq 2
         expect(CustomField.all.map(&:resource)).to match_array IdeaCustomFields::CustomForm.all
     end
