@@ -273,7 +273,7 @@ jobs:
       - checkout
       - setup_remote_docker:
         # https://support.circleci.com/hc/en-us/articles/360050934711
-          version: 20.10.5
+          version: 19.03.13
       - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
       - run: |
           docker build -t citizenlabdotco/front-essential -f front/Dockerfile .
