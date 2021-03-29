@@ -10,8 +10,7 @@ module IdeaCustomFields
                                                .order(:ordering)
 
       if IdeaCustomFieldPolicy.new(current_user, nil).can_view_custom_fields_for_project? @project
-        @custom_fields = CustomFieldsService.new.all_fields(@custom_form,
-                                                                        custom_fields_scope: @custom_fields)
+        @custom_fields = IdeaCustomFieldsService.new.all_fields(@custom_form, custom_fields_scope: @custom_fields)
       end
 
       render json: ::WebApi::V1::CustomFieldSerializer.new(@custom_fields, params: fastjson_params).serialized_json
@@ -29,7 +28,7 @@ module IdeaCustomFields
         # Row-level locking of the project record
         # See https://www.2ndquadrant.com/en/blog/postgresql-anti-patterns-read-modify-write-cycles/
         @project = Project.lock.find(params[:project_id])
-        @custom_form = IdeaCustomFields::CustomForm.find_or_initialize_by(project: @project)
+        @custom_form = CustomForm.find_or_initialize_by(project: @project)
 
         @custom_field = IdeaCustomFieldsService.new.find_or_build_field(@custom_form, params[:code])
         @custom_field.assign_attributes custom_field_params
@@ -67,7 +66,7 @@ module IdeaCustomFields
 
     def set_custom_form
       @project = Project.find(params[:project_id])
-      @custom_form = IdeaCustomFields::CustomForm.find_or_initialize_by(project: @project)
+      @custom_form = CustomForm.find_or_initialize_by(project: @project)
     end
 
     def set_custom_field
