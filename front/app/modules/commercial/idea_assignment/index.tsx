@@ -18,9 +18,9 @@ type RenderOnFeatureFlagProps = {
 };
 
 const RenderOnFeatureFlag = ({ children }: RenderOnFeatureFlagProps) => {
-  // const isEnabled = useFeatureFlag('idea_assignment');
+  const isEnabled = useFeatureFlag('idea_assignment');
 
-  if (true) {
+  if (isEnabled) {
     return <>{children}</>;
   }
 
