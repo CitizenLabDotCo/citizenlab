@@ -1,5 +1,5 @@
 module IdeaCustomFields
-  class CustomFieldPolicy < ApplicationPolicy
+  class IdeaCustomFieldPolicy < ApplicationPolicy
     class Scope
       attr_reader :user, :scope
 
