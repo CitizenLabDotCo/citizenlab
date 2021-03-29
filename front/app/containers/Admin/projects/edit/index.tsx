@@ -76,8 +76,8 @@ export interface ProjectTabOptions<T> {
 export interface InputProps {}
 
 interface DataProps {
-  surveys_enabled: boolean | null;
-  typeform_enabled: boolean | null;
+  surveys_enabled: GetFeatureFlagChildProps;
+  typeform_enabled: GetFeatureFlagChildProps;
   phases: GetPhasesChildProps;
   project: GetProjectChildProps;
   previousPathName: string | null;
