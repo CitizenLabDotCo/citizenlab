@@ -1,5 +1,5 @@
 class Invite < ApplicationRecord
-  include PgSearch
+  include PgSearch::Model
 
   pg_search_scope :search_by_all, {
     :associated_against => { invitee: [:first_name, :last_name, :email] },
