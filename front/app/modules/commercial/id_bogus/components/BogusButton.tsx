@@ -4,7 +4,7 @@ import React, { useCallback } from 'react';
 import { IVerificationMethod } from 'services/verificationMethods';
 
 // components
-import VerificationMethodButton from 'components/Verification/VerificationMethodButton';
+import VerificationMethodButton from 'modules/commercial/verification/citizen/components/VerificationMethodButton';
 
 interface Props {
   method: IVerificationMethod;

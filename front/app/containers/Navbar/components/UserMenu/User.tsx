@@ -2,10 +2,10 @@ import React from 'react';
 import styled, { useTheme } from 'styled-components';
 import Avatar from 'components/Avatar';
 import UserName from 'components/UI/UserName';
-import VerificationBadge from './VerificationBadge';
 
 // style
 import { colors, media, fontSizes } from 'utils/styleUtils';
+import Outlet from 'components/Outlet';
 
 const UserNameContainer = styled.div`
   display: flex;
@@ -44,7 +44,10 @@ const User = ({ userId, isVerified }: Props) => {
           userId={userId}
           hideLastName
         />
-        <VerificationBadge isVerified={isVerified} />
+        <Outlet
+          id="app.containers.Navbar.UserMenu.UserNameContainer"
+          isVerified={isVerified}
+        />
       </UserNameContainer>
 
       <StyledAvatar

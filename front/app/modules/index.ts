@@ -9,6 +9,9 @@ import moderationConfiguration from './commercial/moderation';
 import ideaAssignmentConfiguration from './commercial/idea_assignment';
 import geographicDashboardConfiguration from './commercial/geographic_dashboard';
 
+import similarIdeaConfiguration from './commercial/similar_ideas';
+import clusteringsConfiguration from './commercial/clusterings';
+
 import customMapsConfiguration from './commercial/custom_maps';
 import googleTagManagerConfiguration from './commercial/google_tag_manager';
 import googleAnalyticsConfiguration from './commercial/google_analytics';
@@ -17,8 +20,8 @@ import satismeterConfiguration from './commercial/satismeter';
 import segmentConfiguration from './commercial/segment';
 import matomoConfiguration from './commercial/matomo';
 import customIdeaStatusesConfiguration from './commercial/custom_idea_statuses';
+import verificationConfiguration from './commercial/verification';
 import customTopicsConfiguration from './commercial/custom_topics';
-
 
 import idBosaFasConfiguration from './commercial/id_bosa_fas';
 import idCowConfiguration from './commercial/id_cow';
@@ -91,8 +94,16 @@ export default loadModules([
     isEnabled: CL_CONFIG['modules']['commercial/custom_topics'],
   },
   {
+    configuration: clusteringsConfiguration,
+    isEnabled: CL_CONFIG['modules']['commercial/clusterings'],
+  },
+  {
     configuration: geographicDashboardConfiguration,
     isEnabled: CL_CONFIG['modules']['commercial/geographic_dashboard'],
+  },
+  {
+    configuration: similarIdeaConfiguration,
+    isEnabled: CL_CONFIG['modules']['commercial/similar_ideas'],
   },
   {
     configuration: customMapsConfiguration,
@@ -121,5 +132,9 @@ export default loadModules([
   {
     configuration: IdClaveUnicaConfiguration,
     isEnabled: CL_CONFIG['modules']['commercial/id_clave_unica'],
+  },
+  {
+    configuration: verificationConfiguration,
+    isEnabled: CL_CONFIG['modules']['commercial/verification'],
   },
 ]);
