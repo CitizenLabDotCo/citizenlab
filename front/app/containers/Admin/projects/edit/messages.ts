@@ -30,10 +30,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.eventsTab',
     defaultMessage: 'Events',
   },
-  topicsTab: {
-    id: 'app.containers.AdminPage.ProjectEdit.topicsTab',
-    defaultMessage: 'Topics',
-  },
   newProject: {
     id: 'app.containers.AdminPage.ProjectEdit.newProject',
     defaultMessage: 'New Project',

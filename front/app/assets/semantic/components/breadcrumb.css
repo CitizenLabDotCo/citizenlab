@@ -8,7 +8,6 @@
  *
  */
 
-
 /*******************************
            Breadcrumb
 *******************************/
@@ -26,11 +25,9 @@
   margin-bottom: 0em;
 }
 
-
 /*******************************
           Content
 *******************************/
-
 
 /* Divider */
 .ui.breadcrumb .divider {
@@ -44,7 +41,7 @@
 
 /* Link */
 .ui.breadcrumb a {
-  color: #4183C4;
+  color: #4183c4;
 }
 .ui.breadcrumb a:hover {
   color: #1e70bf;
@@ -72,7 +69,6 @@
   padding: 0.78571429em 1em;
 }
 
-
 /*******************************
             States
 *******************************/
@@ -80,7 +76,6 @@
 .ui.breadcrumb .active.section {
   font-weight: bold;
 }
-
 
 /*******************************
            Variations
@@ -111,8 +106,6 @@
   font-size: 1.71428571rem;
 }
 
-
 /*******************************
          Site Overrides
 *******************************/
-
