@@ -13,7 +13,7 @@ import {
   IUsersByDomicile,
   usersByDomicileStream,
   usersByDomicileXlsxEndpoint,
-} from 'services/stats';
+} from 'modules/commercial/user_custom_fields/services/stats';
 
 // components
 import HorizontalBarChart from 'containers/Admin/dashboard/users/charts/HorizontalBarChart';
