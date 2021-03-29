@@ -67,9 +67,6 @@ RSpec.describe User, type: :model do
   end
 
   describe 'password' do
-    before do
-      CommonPassword.initialize!
-    end
 
     it 'is invalid when set to empty string' do
       u = build(:user, password: '')
@@ -77,6 +74,7 @@ RSpec.describe User, type: :model do
     end
 
     it 'is invalid if its a common password' do
+      CommonPassword.initialize!
       u = build(:user, password: 'batman')
       expect(u).to be_invalid
     end
@@ -85,9 +83,7 @@ RSpec.describe User, type: :model do
       u = build(:user, password: '9x6TUuzSfkzyQrQFhxN9')
       expect(u).to be_valid
     end
-  end
 
-  describe 'password' do
     it 'is valid when longer than minimum length' do
       settings = AppConfiguration.instance.settings
       settings['password_login'] = {
@@ -271,7 +267,10 @@ RSpec.describe User, type: :model do
 
   describe "demographic fields", slow_test: true do
     before do
-      TenantTemplateService.new.resolve_and_apply_template 'base', external_subfolder: false
+      create(:custom_field_birthyear)
+      create(:custom_field_gender, :with_options)
+      create(:custom_field_domicile)
+      create(:custom_field_education, :with_options)
     end
 
     it "(gender) is valid when male, female or unspecified" do

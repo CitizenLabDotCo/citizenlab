@@ -12,9 +12,6 @@ module Frontend
       when Phase
         subroute = 'projects'
         slug = model_instance.project.slug
-      when ProjectFolders::Folder
-        subroute = 'folders'
-        slug = model_instance.slug
       when Idea
         subroute = 'ideas'
         slug = model_instance.slug
@@ -152,4 +149,4 @@ module Frontend
   end
 end
 
-Frontend::UrlService.prepend_if_ee('ProjectFolders::Extensions::Frontend::UrlService')
+Frontend::UrlService.prepend_if_ee('ProjectFolders::Patches::Frontend::UrlService')

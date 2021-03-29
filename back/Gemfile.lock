@@ -84,6 +84,7 @@ PATH
       graphql (~> 1.8.0)
       idea_custom_fields
       kaminari (~> 1.2)
+      multi_tenancy
       rails (~> 6.0.0)
 
 PATH

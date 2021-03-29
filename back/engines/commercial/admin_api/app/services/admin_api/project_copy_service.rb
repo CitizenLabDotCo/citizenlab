@@ -2,7 +2,7 @@ module AdminApi
   class ProjectCopyService
 
     def import template
-      service = TenantTemplateService.new
+      service = MultiTenancy::TenantTemplateService.new
       same_template = service.translate_and_fix_locales template
       project_ids_before = Project.ids
       ActiveRecord::Base.transaction do
