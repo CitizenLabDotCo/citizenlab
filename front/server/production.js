@@ -37,6 +37,7 @@ app.use('/uploads', function (req, res) {
     .pipe(request(`http://${API_HOST}:${API_PORT}/uploads/${req.url}`))
     .pipe(res);
 });
+//TODO: Should I add a test around this somehow ?
 app.use('/widgets', function (req, res) {
   req.pipe(request(`http://${API_HOST}:3200/${req.url}`)).pipe(res);
 });
