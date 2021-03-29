@@ -5,3 +5,7 @@ Clusterings::Engine.routes.draw do
     end
   end
 end
+
+Rails.application.routes.draw do
+  mount Clusterings::Engine => "", as: 'clusterings'
+end
