@@ -17,18 +17,19 @@ const Tab: FC<Props & InjectedIntlProps> = ({
   intl: { formatMessage },
 }) => {
   useEffect(() => {
+    const tabName = 'map';
     onData({
       tabOptions: {
         configuration: {
           label: formatMessage(messages.mapTab),
-          name: 'map',
-          url: `map`,
+          name: tabName,
+          url: 'map',
           feature: 'custom_maps',
         },
         insertBeforeName: 'phases',
       },
       tabHideConditions: {
-        topics: (project: IProjectData, phases: IPhaseData[] | null) => {
+        [tabName]: (project: IProjectData, phases: IPhaseData[] | null) => {
           const processType = project.attributes.process_type;
           const participationMethod = project.attributes.participation_method;
 

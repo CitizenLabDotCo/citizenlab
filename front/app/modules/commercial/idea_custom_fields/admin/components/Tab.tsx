@@ -15,19 +15,20 @@ const Tab: FC<Props & InjectedIntlProps> = ({
   onData,
   intl: { formatMessage },
 }) => {
+  const tabName = 'ideaform';
   useEffect(() => {
     onData({
       tabOptions: {
         configuration: {
           label: formatMessage(messages.inputFormTab),
-          url: `ideaform`,
+          url: 'ideaform',
           feature: 'idea_custom_fields',
-          name: 'ideaform',
+          name: tabName,
         },
         insertAfterName: 'survey-results',
       },
       tabHideConditions: {
-        ideaform: function isIdeaformTabHidden(project, phases) {
+        [tabName]: function isIdeaformTabHidden(project, phases) {
           const processType = project?.attributes.process_type;
           const participationMethod = project.attributes.participation_method;
 

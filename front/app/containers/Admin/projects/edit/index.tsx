@@ -87,7 +87,7 @@ interface State {
   tabs: ITab[];
   goBackUrl: string | null;
   tabHideConditions: {
-    [featureName: string]: (
+    [tabName: string]: (
       project: IProjectData,
       phases: IPhaseData[] | null
     ) => boolean
