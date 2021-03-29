@@ -10,7 +10,7 @@ class SideFxAreaService
   end
 
   def before_update area, user
-    
+
   end
 
   def after_update area, user
@@ -22,7 +22,6 @@ class SideFxAreaService
     if domicile_custom_field
       UserCustomFieldService.new.delete_custom_field_option_values area.id, domicile_custom_field
     end
-    SmartGroupsService.new.filter_by_rule_value(Group.all, area.id).destroy_all
   end
 
   def after_destroy frozen_area, user
@@ -31,3 +30,5 @@ class SideFxAreaService
   end
 
 end
+
+SideFxAreaService.prepend_if_ee('SmartGroups::Patches::SideFxAreaService')

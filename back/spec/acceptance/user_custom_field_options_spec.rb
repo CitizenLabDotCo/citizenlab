@@ -19,7 +19,7 @@ resource "User Custom Field Options" do
     end
 
     let(:custom_field_id) { @custom_field.id }
-    
+
     example_request "List all custom field options for a field" do
       expect(status).to eq(200)
       json_response = json_parse(response_body)
@@ -101,7 +101,7 @@ resource "User Custom Field Options" do
       end
 
       let(:id) { create(:custom_field_option, custom_field: @custom_field).id }
-      let(:ordering) { 1 } 
+      let(:ordering) { 1 }
 
       example_request "Reorder a custom field option" do
         expect(response_status).to eq 200
@@ -121,13 +121,15 @@ resource "User Custom Field Options" do
         expect{CustomFieldOption.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
       end
 
-      example "[error] Delete a custom field option that's still referenced in a rules group" do
-        group = create(:smart_group, rules: [
-          {ruleType: 'custom_field_select', customFieldId: @custom_field.id, predicate: 'has_value', value: id}
-        ])
-        do_request
-        expect(response_status).to eq 422
-        expect(CustomFieldOption.find(id)).to be_present
+      if CitizenLab.ee?
+        example "[error] Delete a custom field option that's still referenced in a rules group" do
+          group = create(:smart_group, rules: [
+            {ruleType: 'custom_field_select', customFieldId: @custom_field.id, predicate: 'has_value', value: id}
+          ])
+          do_request
+          expect(response_status).to eq 422
+          expect(CustomFieldOption.find(id)).to be_present
+        end
       end
 
       example "Deleting a custom field option that's still referenced in a user's setting", document: false do

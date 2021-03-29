@@ -1,6 +1,6 @@
 module Tagging
   class Tag < ApplicationRecord
-    include PgSearch
+    include PgSearch::Model
 
     has_many :taggings, dependent: :destroy
     has_many :ideas, through: :taggings

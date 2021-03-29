@@ -1,30 +1,32 @@
+# frozen_string_literal: true
+
 class User < ApplicationRecord
   include EmailCampaigns::UserDecorator
   include Onboarding::UserDecorator
   include Polls::UserDecorator
   include Volunteering::UserDecorator
-  include PgSearch
+  include PgSearch::Model
 
-  GENDERS = %w(male female unspecified)
-  INVITE_STATUSES = %w(pending accepted)
+  GENDERS = %w[male female unspecified].freeze
+  INVITE_STATUSES = %w[pending accepted].freeze
 
   has_secure_password validations: false
   mount_base64_uploader :avatar, AvatarUploader
 
   pg_search_scope :search_by_all,
-    :against => [:first_name, :last_name, :email],
-    :using => { :tsearch => {:prefix => true} }
+                  against: %i[first_name last_name email],
+                  using: { tsearch: { prefix: true } }
 
   pg_search_scope :by_full_name,
-                  :against => [:first_name, :last_name],
-                  :using => { :tsearch => {:prefix => true} }
+                  against: %i[first_name last_name],
+                  using: { tsearch: { prefix: true } }
 
   pg_search_scope :by_first_name,
-                  :against => [:first_name],
-                  :using => { :tsearch => {:prefix => true} }
+                  against: [:first_name],
+                  using: { tsearch: { prefix: true } }
 
-  scope :by_username, -> (username) {
-    AppConfiguration.instance.feature_activated?("abbreviated_user_names") ? by_first_name(username) : by_full_name(username)
+  scope :by_username, lambda { |username|
+    AppConfiguration.instance.feature_activated?('abbreviated_user_names') ? by_first_name(username) : by_full_name(username)
   }
 
   has_many :ideas, foreign_key: :author_id, dependent: :nullify
@@ -55,20 +57,20 @@ class User < ApplicationRecord
   validates :email, uniqueness: true, allow_nil: true
   validates :slug, uniqueness: true, presence: true, unless: :invite_pending?
   validates :email, format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i }, allow_nil: true
-  validates :locale, inclusion: { in: proc {AppConfiguration.instance.settings('core','locales')} }
-  validates :bio_multiloc, multiloc: {presence: false}
-  validates :gender, inclusion: {in: GENDERS}, allow_nil: true
-  validates :birthyear, numericality: {only_integer: true, greater_than_or_equal_to: 1900, less_than: Time.now.year}, allow_nil: true
-  validates :domicile, inclusion: {in: proc {['outside'] + Area.select(:id).map(&:id)}}, allow_nil: true
+  validates :locale, inclusion: { in: proc { AppConfiguration.instance.settings('core', 'locales') } }
+  validates :bio_multiloc, multiloc: { presence: false }
+  validates :gender, inclusion: { in: GENDERS }, allow_nil: true
+  validates :birthyear, numericality: { only_integer: true, greater_than_or_equal_to: 1900, less_than: Time.zone.now.year }, allow_nil: true
+  validates :domicile, inclusion: { in: proc { ['outside'] + Area.select(:id).map(&:id) } }, allow_nil: true
   # Follows ISCED2011 scale
-  validates :education, numericality: {only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 8}, allow_nil: true
+  validates :education, numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 8 }, allow_nil: true
 
-  validates :invite_status, inclusion: {in: INVITE_STATUSES}, allow_nil: true
+  validates :invite_status, inclusion: { in: INVITE_STATUSES }, allow_nil: true
 
   validates :custom_field_values, json: {
-    schema: lambda { CustomFieldService.new.fields_to_json_schema(CustomField.with_resource_type('User')) },
+    schema: -> { CustomFieldService.new.fields_to_json_schema(CustomField.with_resource_type('User')) },
     message: ->(errors) { errors }
-  }, if: [:custom_field_values_changed?, :active?]
+  }, if: %i[custom_field_values_changed? active?]
 
   validates :password, length: { maximum: 72 }, allow_nil: true
   # Custom validation is required to deal with the
@@ -102,68 +104,58 @@ class User < ApplicationRecord
   before_validation :generate_slug
   before_validation :sanitize_bio_multiloc, if: :bio_multiloc
 
-  scope :order_role, -> (direction=:asc) {
-    joins("LEFT OUTER JOIN (SELECT jsonb_array_elements(roles) as ro, id FROM users) as r ON users.id = r.id")
-    .order(Arel.sql("(roles @> '[{\"type\":\"admin\"}]')::integer #{direction}"))
-    .reverse_order
-    .group('users.id')
+  scope :order_role, lambda { |direction = :asc|
+    joins('LEFT OUTER JOIN (SELECT jsonb_array_elements(roles) as ro, id FROM users) as r ON users.id = r.id')
+      .order(Arel.sql("(roles @> '[{\"type\":\"admin\"}]')::integer #{direction}"))
+      .reverse_order
+      .group('users.id')
   }
 
-  scope :admin, -> {
+  scope :admin, lambda {
     where("roles @> '[{\"type\":\"admin\"}]'")
   }
 
-  scope :not_admin, -> {
+  scope :not_admin, lambda {
     where.not("roles @> '[{\"type\":\"admin\"}]'")
   }
 
-  scope :project_moderator, -> (project_id=nil) {
+  scope :project_moderator, lambda { |project_id = nil|
     if project_id
-      where("roles @> ?", JSON.generate([{type: 'project_moderator', project_id: project_id}]))
+      where('roles @> ?', JSON.generate([{ type: 'project_moderator', project_id: project_id }]))
     else
       where("roles @> '[{\"type\":\"project_moderator\"}]'")
     end
   }
 
-  scope :not_project_moderator, -> {
+  scope :not_project_moderator, lambda {
     where.not("roles @> '[{\"type\":\"project_moderator\"}]'")
   }
 
-  scope :normal_user, -> {
+  scope :normal_user, lambda {
     where("roles = '[]'::jsonb")
   }
 
-  scope :not_normal_user, -> {
+  scope :not_normal_user, lambda {
     where.not("roles = '[]'::jsonb")
   }
 
-  scope :active, -> {
+  scope :active, lambda {
     where("registration_completed_at IS NOT NULL AND invite_status is distinct from 'pending'")
   }
 
-  scope :not_invited, -> {
+  scope :not_invited, lambda {
     where.not(invite_status: 'pending').or(where(invite_status: nil))
   }
 
+  IN_GROUP_PROC = ->(group) { joins(:memberships).where(memberships: { group_id: group.id }) }
+  scope :in_group, IN_GROUP_PROC
 
-  scope :in_group, -> (group) {
-    if group.rules?
-      SmartGroupsService.new.filter(self.all, group.rules)
-    elsif group.manual?
-      joins(:memberships).where(memberships: {group_id: group.id})
-    end
-  }
-
-  scope :in_any_group, -> (groups) {
-    user_ids = groups
-      .flat_map do |group|
-        in_group(group).ids
-      end
-      .uniq
+  scope :in_any_group, lambda { |groups|
+    user_ids = groups.flat_map { |group| in_group(group).ids }.uniq
     where(id: user_ids)
   }
 
-  def self.find_by_cimail email
+  def self.find_by_cimail(email)
     where('lower(email) = lower(?)', email).first
   end
 
@@ -171,11 +163,13 @@ class User < ApplicationRecord
   # Default is by email, but we want to compare
   # case insensitively and forbid login for
   # invitees.
-  def self.from_token_request request
-    email = request.params["auth"]["email"]
+  def self.from_token_request(request)
+    email = request.params['auth']['email']
 
     # Hack to embed phone numbers in email
-    if AppConfiguration.instance.feature_activated?('password_login') && AppConfiguration.instance.settings('password_login','phone')
+    if AppConfiguration.instance.feature_activated?('password_login') && AppConfiguration.instance.settings(
+      'password_login', 'phone'
+    )
       phone_service = PhoneService.new
       if phone_service.phone_or_email(email) == :phone
         pattern = AppConfiguration.instance.settings('password_login', 'phone_email_pattern')
@@ -189,8 +183,6 @@ class User < ApplicationRecord
   def to_token_payload
     {
       sub: id,
-      cluster: CL2_CLUSTER,
-      tenant: Tenant.current.id,
       roles: roles
     }
   end
@@ -216,18 +208,18 @@ class User < ApplicationRecord
   end
 
   def super_admin?
-    admin? && !!(email =~ /citizen\-?lab\.(eu|be|fr|ch|de|nl|co|uk|us|cl|dk|pl)$/i)
+    admin? && !!(email =~ /citizen-?lab\.(eu|be|fr|ch|de|nl|co|uk|us|cl|dk|pl)$/i)
   end
 
-  def project_moderator? project_id=nil
-    !!self.roles.find{|r| r["type"] == "project_moderator" && (project_id.nil? || r["project_id"] == project_id)}
+  def project_moderator?(project_id = nil)
+    !!roles.find { |r| r['type'] == 'project_moderator' && (project_id.nil? || r['project_id'] == project_id) }
   end
 
-  def admin_or_moderator? project_id
+  def admin_or_moderator?(project_id)
     admin? || (project_id && project_moderator?(project_id))
   end
 
-  def active_admin_or_moderator? project_id
+  def active_admin_or_moderator?(project_id)
     active? && admin_or_moderator?(project_id)
   end
 
@@ -244,9 +236,9 @@ class User < ApplicationRecord
   end
 
   def moderatable_project_ids
-    self.roles
-      .select{|role| role['type'] == 'project_moderator'}
-      .map{|role| role['project_id']}.compact
+    roles
+      .select { |role| role['type'] == 'project_moderator' }
+      .map { |role| role['project_id'] }.compact
   end
 
   def moderatable_projects
@@ -262,7 +254,7 @@ class User < ApplicationRecord
     roles.delete({ 'type' => type.to_s }.merge(options.stringify_keys))
   end
 
-  def authenticate unencrypted_password
+  def authenticate(unencrypted_password)
     if !password_digest
       false
     elsif cl1_authenticate(unencrypted_password)
@@ -273,42 +265,42 @@ class User < ApplicationRecord
     end
   end
 
-  def member_of? group_id
-    !self.memberships.select{ |m| m.group_id == group_id }.empty?
+  def member_of?(group_id)
+    !memberships.select { |m| m.group_id == group_id }.empty?
   end
 
   def active?
-    self.registration_completed_at.present? && !self.invite_pending?
+    registration_completed_at.present? && !invite_pending?
   end
 
   def groups
-    manual_groups + SmartGroupsService.new.groups_for_user(self)
+    manual_groups
   end
 
   def group_ids
-    manual_group_ids + SmartGroupsService.new.groups_for_user(self).pluck(:id)
+    manual_group_ids
   end
-
 
   private
 
   def generate_slug
-    return if self.slug.present?
-    if AppConfiguration.instance.feature_activated?("abbreviated_user_names")
+    return if slug.present?
+
+    if AppConfiguration.instance.feature_activated?('abbreviated_user_names')
       self.slug = SecureRandom.uuid
-    elsif self.first_name.present?
-      self.slug = SlugService.new.generate_slug self, self.full_name
+    elsif first_name.present?
+      self.slug = SlugService.new.generate_slug self, full_name
     end
   end
 
   def sanitize_bio_multiloc
     service = SanitizationService.new
     self.bio_multiloc = service.sanitize_multiloc(
-      self.bio_multiloc,
-      %i{title alignment list decoration link video}
+      bio_multiloc,
+      %i[title alignment list decoration link video]
     )
-    self.bio_multiloc = service.remove_multiloc_empty_trailing_tags(self.bio_multiloc)
-    self.bio_multiloc = service.linkify_multiloc(self.bio_multiloc)
+    self.bio_multiloc = service.remove_multiloc_empty_trailing_tags(bio_multiloc)
+    self.bio_multiloc = service.linkify_multiloc(bio_multiloc)
   end
 
   def set_cl1_migrated
@@ -334,8 +326,8 @@ class User < ApplicationRecord
 
   def validate_minimum_password_length
     minimum_length = AppConfiguration.instance.settings('password_login', 'minimum_length')
-    if self.password && password.size < (minimum_length || 0)
-      self.errors.add(
+    if password && password.size < (minimum_length || 0)
+      errors.add(
         :password,
         :too_short,
         message: 'The chosen password is shorter than the minimum required character length',
@@ -345,8 +337,8 @@ class User < ApplicationRecord
   end
 
   def validate_password_not_common
-    if self.password && CommonPassword.check(self.password)
-      self.errors.add(
+    if password && CommonPassword.check(password)
+      errors.add(
         :password,
         :too_common,
         message: 'The chosen password matched with our common password blacklist'
@@ -356,9 +348,7 @@ class User < ApplicationRecord
 
   def remove_initiated_notifications
     initiator_notifications.each do |notification|
-      if !notification.update initiating_user_id: nil
-        notification.destroy!
-      end
+      notification.destroy! unless notification.update initiating_user_id: nil
     end
   end
 
@@ -367,6 +357,8 @@ class User < ApplicationRecord
   end
 end
 
+User.prepend_if_ee('MultiTenancy::Patches::User')
 User.prepend_if_ee('ProjectFolders::Patches::User')
-User.include_if_ee('Verification::Patches::User')
+User.prepend_if_ee('SmartGroups::Patches::User')
 User.include_if_ee('IdeaAssignment::Extensions::User')
+User.include_if_ee('Verification::Patches::User')

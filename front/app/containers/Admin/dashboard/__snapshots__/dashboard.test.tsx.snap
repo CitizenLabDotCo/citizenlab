@@ -32,12 +32,6 @@ exports[`<DashboardsPage /> renders correctly with a project moderator user 1`] 
           "name": "project_reports",
           "url": "/admin/dashboard/reports",
         },
-        Object {
-          "feature": "clustering",
-          "label": "Insights",
-          "name": "clustering",
-          "url": "/admin/dashboard/insights",
-        },
       ]
     }
   >
@@ -90,12 +84,6 @@ exports[`<DashboardsPage /> renders correctly with an admin user 1`] = `
           "label": "Reports",
           "name": "project_reports",
           "url": "/admin/dashboard/reports",
-        },
-        Object {
-          "feature": "clustering",
-          "label": "Insights",
-          "name": "clustering",
-          "url": "/admin/dashboard/insights",
         },
       ]
     }
