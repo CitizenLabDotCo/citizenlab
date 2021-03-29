@@ -487,7 +487,7 @@ hu:
       subject: 'The status of your proposal has changed'
       preheader: 'The status of your proposal has changed'
     user_digest:
-      subject: "Weekly update of %{organizationName}'s participation platform"
+      subject: "Your activity on the participation platform of %{organizationName}"
       commented: "%{authorFirstName} commented:"
       preheader: "Weekly overview of %{organizationName}"
       title_your_weekly_report: "Discover what happened last week"
@@ -520,7 +520,7 @@ hu:
       action_comment: '%{textComment} on existing ideas'
       action_published_idea: 'Published idea'
       action_send_email: 'Send your contacts an %{sendEmailLink}'
-      action_share_fb: 'Let your friends now on %{fbLink}'
+      action_share_fb: 'Let your friends know on %{fbLink}'
       action_share_link: 'Share it via any channel by copying the %{link}'
       action_share_twitter: 'Inform your followers on %{twitterLink}'
       add_image: 'Add an image'
