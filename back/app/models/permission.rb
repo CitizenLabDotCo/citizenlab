@@ -57,14 +57,7 @@ class Permission < ApplicationRecord
   end
 
   def participation_conditions
-    service = SmartGroupsService.new
-    groups.select(&:rules?).map do |group|
-      group.rules.reject do |rule|
-        rule['ruleType'] == 'verified'
-      end.map do |rule|
-        service.parse_json_rule rule
-      end.map(&:description_multiloc)
-    end.reject(&:empty?)
+    []
   end
 
   private
@@ -97,4 +90,5 @@ class Permission < ApplicationRecord
   end
 end
 
+Permission.prepend_if_ee('SmartGroups::Patches::Permission')
 Permission.prepend_if_ee('Verification::Patches::Permission')

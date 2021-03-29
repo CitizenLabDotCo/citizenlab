@@ -312,7 +312,8 @@ resource "Users" do
           expect(json_response[:data].map{|u| u[:id]}.reverse.take(2)).to match_array [admin.id,both.id]
         end
 
-        describe "List all users in group" do
+
+        describe "List all users in group", skip: !CitizenLab.ee? do
           example "with correct pagination", document: false do
             page_size = 5
             project = create(:project)

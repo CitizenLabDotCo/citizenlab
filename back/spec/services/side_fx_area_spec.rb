@@ -27,19 +27,6 @@ describe SideFxAreaService do
       service.before_destroy(area, user)
       expect(lives_in_area.reload.custom_field_values).to eq({})
     end
-
-    it "destroys any smart group that refers to this area" do
-      group1 = create(:smart_group, rules: [{
-        ruleType: 'lives_in',
-        predicate: 'has_value',
-        value: area.id
-      }])
-      group2 = create(:smart_group)
-      group3 = create(:group)
-      service.before_destroy(area, user)
-      expect{group1.reload}.to raise_error(ActiveRecord::RecordNotFound)
-      expect(Group.count).to eq 2
-    end
   end
 
   describe "after_destroy" do
