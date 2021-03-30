@@ -32,7 +32,7 @@ const ModeratorProjectList = memo<Props>(() => {
     } else {
       return (
         <Outlet
-          id="app.containers.AdminPage.projects.all.projectsAndFolders.row"
+          id="app.containers.AdminPage.projects.all.adminPublications.row"
           publication={adminPublication}
         />
       );

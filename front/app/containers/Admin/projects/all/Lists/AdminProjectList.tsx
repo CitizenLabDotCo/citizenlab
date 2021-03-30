@@ -61,10 +61,10 @@ const AdminProjectList = memo<Props>((_props) => {
             {!isProjectFoldersEnabled && (
               <FormattedMessage {...messages.existingProjects} />
             )}
-            <Outlet id="app.containers.AdminPage.projects.all.projectsAndFolders.title" />
+            <Outlet id="app.containers.AdminPage.projects.all.adminPublications.title" />
           </HeaderTitle>
           <Spacer />
-          <Outlet id="app.containers.AdminPage.projects.all.projectsAndFolders.actions" />
+          <Outlet id="app.containers.AdminPage.projects.all.adminPublications.actions" />
         </StyledListHeader>
         <SortableList
           items={rootLevelAdminPublications}
@@ -97,7 +97,7 @@ const AdminProjectList = memo<Props>((_props) => {
                             />
                           )}
                           <Outlet
-                            id="app.containers.AdminPage.projects.all.projectsAndFolders.row"
+                            id="app.containers.AdminPage.projects.all.adminPublications.row"
                             publication={item}
                           />
                         </StyledSortableRow>

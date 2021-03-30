@@ -81,18 +81,18 @@ export type OutletsPropertyMap = {
     publication: IAdminPublicationContent;
     localize: Localize;
   };
-  'app.containers.Navbar.projectsAndFolders.title': {};
-  'app.containers.AdminPage.projects.all.projectsAndFolders.row': {
+  'app.containers.Navbar.adminPublications.title': {};
+  'app.containers.AdminPage.projects.all.adminPublications.row': {
     publication: IAdminPublicationContent;
   };
-  'app.containers.AdminPage.projects.all.projectsAndFolders.title': {};
+  'app.containers.AdminPage.projects.all.adminPublications.title': {};
   'app.components.AdminPage.projects.form.additionalInputs.inputs': {
     projectAttrs: IUpdatedProjectProperties;
     onChange: onProjectFormStateChange;
     authUser: IUserData;
   };
   'app.containers.AdminPage.projects.all.createProjectNotAdmin': {};
-  'app.containers.AdminPage.projects.all.projectsAndFolders.actions': {};
+  'app.containers.AdminPage.projects.all.adminPublications.actions': {};
   'app.components.AdminPublicationCards.card': {
     publication: IAdminPublicationContent;
     size: 'small' | 'medium' | 'large';

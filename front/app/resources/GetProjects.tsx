@@ -45,7 +45,6 @@ interface IQueryParameters {
   topics?: string[];
   publication_statuses: PublicationStatus[];
   filter_can_moderate?: boolean;
-  folder?: string;
   filter_ids?: string[];
 }
 
