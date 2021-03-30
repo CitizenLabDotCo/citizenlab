@@ -12,7 +12,7 @@ jest.mock('utils/cl-intl');
 jest.mock('services/comments');
 jest.mock('services/ideas');
 jest.mock('services/users');
-jest.mock('modules', () => ({ streamsToClose: [] }));
+jest.mock('modules', () => ({ streamsToReset: [] }));
 
 const mockScroll = jest.fn();
 global.scrollTo = mockScroll;

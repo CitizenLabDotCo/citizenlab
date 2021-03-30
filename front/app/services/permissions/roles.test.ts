@@ -6,7 +6,7 @@ import {
 } from './roles';
 import { makeUser } from 'services/__mocks__/users';
 
-jest.mock('modules', () => ({ streamsToClose: [] }));
+jest.mock('modules', () => ({ streamsToReset: [] }));
 
 describe('isAdmin', () => {
   it('returns true when a user is an admin', () => {

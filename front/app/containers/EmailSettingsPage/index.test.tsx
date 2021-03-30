@@ -6,7 +6,7 @@ import { updateConsentByCampaignIDWithToken } from 'services/campaignConsents';
 
 jest.mock('components/ConsentForm', () => 'ConsentForm');
 jest.mock('./InitialUnsubscribeFeedback', () => 'InitialUnsubscribeFeedback');
-jest.mock('modules', () => ({ streamsToClose: [] }));
+jest.mock('modules', () => ({ streamsToReset: [] }));
 
 import { EmailSettingPage } from './';
 

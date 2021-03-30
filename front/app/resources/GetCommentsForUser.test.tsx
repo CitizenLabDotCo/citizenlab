@@ -15,7 +15,7 @@ import {
 // this the way I found to minimize the errors, and to have autocomplethin on the .mock object
 
 jest.mock('services/comments');
-jest.mock('modules', () => ({ streamsToClose: [] }));
+jest.mock('modules', () => ({ streamsToReset: [] }));
 
 describe('<GetCommentsForUser />', () => {
   let child: jest.Mock;

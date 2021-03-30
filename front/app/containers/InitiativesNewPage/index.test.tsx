@@ -14,7 +14,7 @@ jest.mock('components/InitiativeForm/PageLayout', () => 'PageLayout');
 jest.mock('utils/cl-router/history');
 jest.mock('utils/locationTools');
 jest.mock('services/users');
-jest.mock('modules', () => ({ streamsToClose: [] }));
+jest.mock('modules', () => ({ streamsToReset: [] }));
 
 describe('InitiativesNewPage', () => {
   it('redirects unauthenticated users', () => {

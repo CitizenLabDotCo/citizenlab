@@ -10,7 +10,7 @@ import { getIdea } from 'services/__mocks__/ideas';
 
 jest.mock('utils/cl-intl');
 jest.mock('utils/analytics', () => ({ trackEventByName: () => {} }));
-jest.mock('modules', () => ({ streamsToClose: [] }));
+jest.mock('modules', () => ({ streamsToReset: [] }));
 
 import { getNotification } from 'services/__mocks__/notifications';
 

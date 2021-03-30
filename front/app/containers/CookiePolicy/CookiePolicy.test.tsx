@@ -3,7 +3,7 @@ import 'jest-styled-components';
 
 jest.mock('utils/cl-intl');
 jest.mock('services/pages');
-jest.mock('modules', () => ({ streamsToClose: [] }));
+jest.mock('modules', () => ({ streamsToReset: [] }));
 
 import CookiePolicy from './index';
 import { shallowWithIntl } from '../../utils/testUtils/withIntl';

@@ -8,7 +8,7 @@ import { UserHeader } from './UserHeader';
 // mock utilities
 jest.mock('utils/cl-intl');
 jest.mock('services/comments');
-jest.mock('modules', () => ({ streamsToClose: [] }));
+jest.mock('modules', () => ({ streamsToReset: [] }));
 
 import { makeUser } from 'services/__mocks__/users';
 
