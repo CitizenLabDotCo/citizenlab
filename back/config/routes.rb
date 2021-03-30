@@ -90,7 +90,7 @@ Rails.application.routes.draw do
 
         resources :comments, only: [:index], controller: 'user_comments'
       end
-      get 'users/:id', to: 'users#show', constraints: { id: /\b(?!custom_fields)\b\S+/ }
+      get 'users/:id', to: 'users#show', constraints: { id: /\b(?!custom_fields|me)\b\S+/ }
 
       resources :topics, only: [:index, :show]
 
@@ -254,8 +254,6 @@ Rails.application.routes.draw do
       resources :avatars, only: [:index, :show]
     end
   end
-
-
 
   get '/auth/:provider/callback', to: 'omniauth_callback#create'
   post '/auth/:provider/callback', to: 'omniauth_callback#create'
