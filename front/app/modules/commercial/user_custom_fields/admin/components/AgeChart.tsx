@@ -6,17 +6,17 @@ import moment from 'moment';
 // i18n
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
-import messages from '../../messages';
+import messages from 'containers/Admin/dashboard/messages';
 
 // services
 import {
   IUsersByBirthyear,
   usersByBirthyearStream,
   usersByBirthyearXlsxEndpoint,
-} from 'services/stats';
+} from 'modules/commercial/user_custom_fields/services/stats';
 
 // components
-import BarChartByCategory from './BarChartByCategory';
+import BarChartByCategory from 'containers/Admin/dashboard/users/charts/BarChartByCategory';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
