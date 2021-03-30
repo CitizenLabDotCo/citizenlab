@@ -205,6 +205,7 @@ export type OutletsPropertyMap = {
       >
     ) => void;
   };
+  'app.containers.Admin.guide.SetupSection': {};
   'app.components.Map.leafletConfig': IMapProps & {
     leafletConfig: ILeafletMapConfig;
     onLeafletConfigChange: (data: ILeafletMapConfig) => void;
@@ -339,6 +340,8 @@ export interface ParsedModuleConfiguration {
   beforeMountApplication: () => void;
   /** this function triggers after the Root component mounted */
   afterMountApplication: () => void;
+  /** used to reset streams created in a module */
+  streamsToReset: string[];
 }
 
 export type ModuleConfiguration = RecursivePartial<
@@ -348,6 +351,8 @@ export type ModuleConfiguration = RecursivePartial<
   beforeMountApplication?: () => void;
   /** this function triggers after the Root component mounted */
   afterMountApplication?: () => void;
+  /** used to reset streams created in a module */
+  streamsToReset?: string[];
 };
 
 type Modules = {
@@ -450,6 +455,12 @@ export const loadModules = (modules: Modules): ParsedModuleConfiguration => {
     },
     beforeMountApplication: callLifecycleMethods('beforeMountApplication'),
     afterMountApplication: callLifecycleMethods('afterMountApplication'),
+    streamsToReset: enabledModuleConfigurations.reduce(
+      (acc: string[], module: ModuleConfiguration) => {
+        return [...acc, ...(module?.streamsToReset ?? [])];
+      },
+      []
+    ),
   };
 };
 

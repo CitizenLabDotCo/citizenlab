@@ -35,6 +35,11 @@ const EngageSection = ({ intl: { formatMessage } }: InjectedIntlProps) => {
       extra: { section: 'engage' },
     });
   };
+  const getHandleClickInteralTrack = (article) => () => {
+    trackEventByName(tracks.internalLink.name, {
+      extra: { article, section: 'engage' },
+    });
+  };
 
   return (
     <SectionWrapper>
@@ -75,8 +80,7 @@ const EngageSection = ({ intl: { formatMessage } }: InjectedIntlProps) => {
           const adminGuideArticle = (
             <AdminGuideArticle
               key={`engageArticle${i}`}
-              article={article}
-              section="engage"
+              trackLink={getHandleClickInteralTrack(article)}
               linkMessage={linkMessage}
               titleMessage={titleMessage}
               descriptionMessage={descriptionMessage}

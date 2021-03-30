@@ -34,21 +34,16 @@ import GetSerieFromStream from 'resources/GetSerieFromStream';
 
 // types
 import { IStreamParams, IStream } from 'utils/streams';
-import {
-  IUsersByBirthyear,
-  IUsersByRegistrationField,
-  IUsersByDomicile,
-} from 'services/stats';
+
 import { IGraphFormat } from 'typings';
 
 interface DataProps {
   serie: IGraphFormat;
 }
 
-type ISupportedDataType =
-  | IUsersByBirthyear
-  | IUsersByRegistrationField
-  | IUsersByDomicile;
+export interface ISupportedDataTypeMap {}
+
+export type ISupportedDataType = ISupportedDataTypeMap[keyof ISupportedDataTypeMap];
 
 interface InputProps {
   stream: (

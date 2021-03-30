@@ -16,7 +16,7 @@ import FormikSelect from 'components/UI/FormikSelect';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import localize, { InjectedLocalized } from 'utils/localize';
-import messages from '../messages';
+import messages from '../../messages';
 
 // Resources
 import GetTopics from 'resources/GetTopics';

@@ -10,7 +10,11 @@ import {
   ReferenceLine,
   ResponsiveContainer,
 } from 'recharts';
-import { votesByGenderStream, IVotesByGender } from 'services/stats';
+import {
+  votesByGenderStream,
+  IVotesByGender,
+} from 'modules/commercial/user_custom_fields/services/stats';
+
 import styled, { withTheme } from 'styled-components';
 
 // i18n
