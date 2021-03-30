@@ -8,7 +8,6 @@ Gem::Specification.new do |s|
   s.name        = "matomo"
   s.version     = Matomo::VERSION
   s.authors     = ['CitizenLab']
-  s.email       = ['developers@citizenlab.co']
   s.licenses    = ['CitizenLab Commercial License V1']
   s.summary     = "Enables sending front-end events to matomo for analytics"
 

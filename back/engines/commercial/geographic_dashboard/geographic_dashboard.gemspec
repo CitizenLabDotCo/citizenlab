@@ -8,7 +8,6 @@ Gem::Specification.new do |spec|
   spec.name        = 'geographic_dashboard'
   spec.version     = GeographicDashboard::VERSION
   spec.authors     = ['CitizenLab']
-  spec.email       = ['developers@citizenlab.co']
   spec.summary     = 'The Engine responsible for geotagging ideas.'
   spec.licenses    = ['CitizenLab Commercial License V1']
 

@@ -8,8 +8,7 @@ Gem::Specification.new do |s|
   s.name        = 'clusterings'
   s.version     = Clusterings::VERSION
   s.authors     = ['CitizenLab']
-  s.email       = ['developers@citizenlab.co']
-  s.licenses    = ['CitizenLab Commercial License']
+  s.licenses    = ['CitizenLab Commercial License V1']
   s.summary     = 'Adds an extra method to classify inputs with nlp.'
 
   s.files = Dir['{app,config,db,lib}/**/*', 'Rakefile', 'README.md']

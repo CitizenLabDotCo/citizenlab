@@ -7,8 +7,7 @@ require 'verification/version'
 Gem::Specification.new do |s|
   s.name        = 'verification'
   s.version     = Verification::VERSION
-  s.authors     = ['Koen Gremmelprez']
-  s.email       = ['koen@citizenlab.co']
+  s.authors     = ['CitizenLab']
   s.licenses    = ['CitizenLab Commercial License V1']
   s.summary     = 'Bundles the code for all verification methods: Is a citizen who she says she is?'
 

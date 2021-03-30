@@ -7,8 +7,7 @@ require "surveys/version"
 Gem::Specification.new do |s|
   s.name        = "surveys"
   s.version     = Surveys::VERSION
-  s.authors     = ["Koen Gremmelprez"]
-  s.email       = ["koen@citizenlab.co"]
+  s.authors     = ["CitizenLab"]
   s.licenses    = ['AGPLv3']
   s.summary     = "Contains everything to support surveys as a participation method"
 

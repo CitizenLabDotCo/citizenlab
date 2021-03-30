@@ -7,9 +7,8 @@ require "admin_api/version"
 Gem::Specification.new do |s|
   s.name        = "admin_api"
   s.version     = AdminApi::VERSION
-  s.authors     = ["Koen Gremmelprez"]
-  s.licenses    = ['CitizenLab Commercial License']
-  s.email       = ["koen@citizenlab.co"]
+  s.authors     = ["CitizenLab"]
+  s.licenses    = ['CitizenLab Commercial License V1']
   s.summary     = "Rails engine that provides the endpoints for the admin CL2 api"
 
   s.files = Dir["{app,config,db,lib}/**/*", "Rakefile", "README.md"]

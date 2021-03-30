@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.name        = "id_franceconnect"
   s.version     = IdFranceconnect::VERSION
   s.summary     = "Authentication & verification using France's franceconnect id"
-  s.authors     = ["Koen Gremmelprez"]
+  s.authors     = ["CitizenLab"]
   s.licenses    = ['CitizenLab Commercial License V1']
   s.files = Dir["{app,config,db,lib}/**/*", "Rakefile", "README.md"]
 

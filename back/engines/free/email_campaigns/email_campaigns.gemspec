@@ -7,8 +7,7 @@ require "email_campaigns/version"
 Gem::Specification.new do |s|
   s.name        = "email_campaigns"
   s.version     = EmailCampaigns::VERSION
-  s.authors     = ["Koen Gremmelprez"]
-  s.email       = ["koen@citizenlab.co"]
+  s.authors     = ["CitizenLab"]
   s.summary     = "Sends out the campaign emails as scheduled"
   s.licenses    = ['AGPLv3']
 

@@ -7,8 +7,7 @@ require "machine_translations/version"
 Gem::Specification.new do |s|
   s.name        = "machine_translations"
   s.version     = MachineTranslations::VERSION
-  s.authors     = ["Koen Gremmelprez"]
-  s.email       = ["koen@citizenlab.co"]
+  s.authors     = ["CitizenLab"]
   s.licenses    = ['CitizenLab Commercial License V1']
   s.summary     = "Automatically translates content (ideas/comments) through machine translation"
 

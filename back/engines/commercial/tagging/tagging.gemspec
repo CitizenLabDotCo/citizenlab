@@ -9,8 +9,7 @@ require 'tagging/version'
 Gem::Specification.new do |s|
   s.name        = 'tagging'
   s.version     = Tagging::VERSION
-  s.authors     = ['Sara Boisseau']
-  s.email       = ['sara@citizenlab.co']
+  s.authors     = ['CitizenLab']
   s.licenses    = ['CitizenLab Commercial License V1']
   s.summary     = 'Tags content from CitizenLab platform for processing'
 

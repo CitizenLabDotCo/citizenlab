@@ -7,8 +7,7 @@ require "nlp/version"
 Gem::Specification.new do |s|
   s.name        = "nlp"
   s.version     = NLP::VERSION
-  s.authors     = ["Koen Gremmelprez"]
-  s.email       = ["koen@citizenlab.co"]
+  s.authors     = ["CitizenLab"]
   s.licenses    = ['CitizenLab Commercial License V1']
   s.summary     = "Bundle all NLP related functionality neede for backend purposes"
 

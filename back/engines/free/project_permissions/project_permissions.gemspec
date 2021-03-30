@@ -8,7 +8,6 @@ Gem::Specification.new do |spec|
   spec.name        = "project_permissions"
   spec.version     = ProjectPermissions::VERSION
   spec.authors     = ["CitizenLab"]
-  spec.email       = ["developers@citizenlab.co"]
   spec.summary     = "CitizenLab extension: Adds new configurations options for project permissions."
   spec.license     = 'AGPL-v3'
 

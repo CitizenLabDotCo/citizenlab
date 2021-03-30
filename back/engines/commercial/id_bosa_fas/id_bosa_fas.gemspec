@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.name        = "id_bosa_fas"
   s.version     = IdBosaFas::VERSION
   s.summary     = "Authentication and verification using the Belgian eID and itsme system"
-  s.authors     = ["Koen Gremmelprez"]
+  s.authors     = ["CitizenLab"]
   s.licenses    = ['CitizenLab Commercial License V1']
   s.files = Dir["{app,config,db,lib}/**/*", "Rakefile", "README.md"]
 

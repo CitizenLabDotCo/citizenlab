@@ -8,7 +8,6 @@ Gem::Specification.new do |spec|
   spec.name        = 'idea_assignment'
   spec.version     = IdeaAssignment::VERSION
   spec.authors     = ['CitizenLab']
-  spec.email       = ['developers@citizenlab.co']
   spec.summary     = 'A plugin that allows the assignment of users to ideas.'
   spec.description = 'A plugin that allows the assignment of users to ideas.'
   spec.licenses    = ['CitizenLab Commercial License V1']

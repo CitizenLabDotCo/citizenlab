@@ -8,7 +8,6 @@ Gem::Specification.new do |s|
   s.name        = "custom_topics"
   s.version     = CustomTopics::VERSION
   s.authors     = ['CitizenLab']
-  s.email       = ['developers@citizenlab.co']
   s.licenses    = ['CitizenLab Commercial License V1']
   s.summary     = 'CitizenLab extension: Allows customization of topics.'
 
