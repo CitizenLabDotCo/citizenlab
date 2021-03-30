@@ -120,11 +120,6 @@ RSpec.configure do |config|
 
   # from https://github.com/influitive/apartment/wiki/Testing-Your-Application
   config.before(:suite) do
-    require './engines/free/email_campaigns/spec/factories/campaigns.rb'
-    require './engines/free/email_campaigns/spec/factories/campaigns_groups.rb'
-    require './engines/free/email_campaigns/spec/factories/deliveries.rb'
-    require './engines/free/email_campaigns/spec/factories/consents.rb'
-    require './engines/free/email_campaigns/spec/factories/unsubscription_tokens.rb'
     require './engines/free/surveys/spec/factories/responses.rb'
     require './engines/free/polls/spec/factories/questions.rb'
     require './engines/free/polls/spec/factories/options.rb'
