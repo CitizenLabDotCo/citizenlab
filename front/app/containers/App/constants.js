@@ -4,7 +4,7 @@ exports.appLocalesMomentPairs = exports.shortenedAppLocalePairs = exports.appGra
 exports.AUTH_PATH = '/auth';
 exports.API_PATH = '/web_api/v1';
 exports.ADMIN_TEMPLATES_GRAPHQL_PATH = '/admin_templates_api/graphql';
-exports.GOOGLE_MAPS_API_KEY = '***REMOVED***';
+exports.GOOGLE_MAPS_API_KEY = process.env.GOOGLE_MAPS_API_KEY;
 exports.API_HOST =
   process.env.API_HOST ||
   (typeof window === 'undefined' ? 'localhost' : window.location.hostname);
