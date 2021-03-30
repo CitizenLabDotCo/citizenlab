@@ -168,11 +168,11 @@ class WebApi::V1::InitiativesController < ApplicationController
   end
 
   def serialization_options
-    votes = current_user.votes.where(votable_id: @initiatives.pluck(:id), votable_type: 'Initiative')
-                        .index_by { |vote| vote.votable_id }
     default_params = fastjson_params(pcs: ParticipationContextService.new)
 
     if current_user
+      votes = current_user.votes.where(votable_id: @initiatives.pluck(:id), votable_type: 'Initiative')
+      .index_by { |vote| vote.votable_id }
       { params: default_params.merge(vbii: votes), include: %i[author user_vote initiative_images assignee] }
     else
       { params: default_params, include: %i[author initiative_images] }
