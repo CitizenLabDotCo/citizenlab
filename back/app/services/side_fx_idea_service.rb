@@ -16,7 +16,7 @@ class SideFxIdeaService
 
   def before_update(idea, user)
     idea.body_multiloc = TextImageService.new.swap_data_images(idea, :body_multiloc)
-    before_publish idea, user if idea.just_published?
+    before_publish idea, user if idea.will_be_published?
   end
 
   def after_update(idea, user)
