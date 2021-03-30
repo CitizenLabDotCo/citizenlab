@@ -1615,7 +1615,7 @@
   "app.containers.AdminPage.groups.permissions.unknownName": "Onbekend",
   "app.containers.AdminPage.projects.all.existingProjects": "Bestaande projecten",
   "app.containers.AdminPage.projects.all.newProjectFolder": "Maak een projectmap aan",
-  "app.containers.AdminPage.projects.all.projectsAndFolders": "",
+  "app.containers.AdminPage.projects.all.adminPublications": "",
   "app.containers.AdminPage.widgets.copied": "Gekopieerd",
   "app.containers.AdminPage.widgets.copyToClipboard": "Kopieer deze code",
   "app.containers.AdminPage.widgets.exportHtmlCodeButton": "Kopieer de HTML-code",
