@@ -111,6 +111,10 @@ class Idea < ApplicationRecord
     publication_status_previous_change == %w[draft published] || publication_status_previous_change == [nil, 'published']
   end
 
+  def will_be_published?
+    publication_status_change == %w[draft published] || publication_status_change == [nil, 'published']
+  end
+
   private
 
   def sanitize_body_multiloc
