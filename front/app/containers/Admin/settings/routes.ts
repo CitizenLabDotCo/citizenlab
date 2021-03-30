@@ -46,13 +46,6 @@ export default () => ({
         loading: () => null,
       }),
     },
-    {
-      path: 'widgets',
-      component: Loadable({
-        loader: () => import('containers/Admin/settings/widgets'),
-        loading: () => null,
-      }),
-    },
     ...moduleConfiguration.routes['admin.settings'],
   ],
 });

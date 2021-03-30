@@ -13,9 +13,9 @@ import Button from 'components/UI/Button';
 
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
-import messages from '../messages';
+import messages from '../../messages';
 
-import { injectTracks } from 'utils/analytics';
+import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 const Container = styled.div`
@@ -38,19 +38,12 @@ const StyledWidgetPreview = styled(WidgetPreview)`
 
 type Props = {};
 
-interface ITracks {
-  clickAdminExportHTML: () => void;
-}
-
 type State = {
   widgetParams: Partial<FormValues>;
   codeModalOpened: boolean;
 };
 
-class IdeasWidget extends PureComponent<
-  Props & InjectedIntlProps & ITracks,
-  State
-> {
+class IdeasWidget extends PureComponent<Props & InjectedIntlProps, State> {
   constructor(props) {
     super(props);
     this.state = {
@@ -118,7 +111,7 @@ class IdeasWidget extends PureComponent<
 
   handleShowCodeClick = () => {
     this.setState({ codeModalOpened: true });
-    this.props.clickAdminExportHTML();
+    trackEventByName(tracks.clickAdminExportHTML.name);
   };
 
   renderIdeasFormFn = (props) => {
@@ -187,4 +180,4 @@ class IdeasWidget extends PureComponent<
   }
 }
 
-export default injectTracks<Props>(tracks)(injectIntl(IdeasWidget));
+export default injectIntl(IdeasWidget);
