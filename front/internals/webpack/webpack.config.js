@@ -180,7 +180,7 @@ const config = {
 
     !isDev && new webpack.HashedModuleIdsPlugin(),
 
-    buildSourceMap && new SentryCliPlugin({
+     process.env.CI && buildSourceMap && new SentryCliPlugin({
       include: path.join(process.cwd(), 'build'),
       release: process.env.CIRCLE_BUILD_NUM,
     })
