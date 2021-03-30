@@ -136,7 +136,6 @@ module UserCustomFields
             users = users.merge(group.members)
           end
 
-
           ps = ParticipantsService.new
 
           if params[:project]
@@ -144,7 +143,6 @@ module UserCustomFields
             participants = ps.project_participants(project)
             users = users.where(id: participants)
           end
-
 
           serie = users
             .where(registration_completed_at: @start_at..@end_at)
