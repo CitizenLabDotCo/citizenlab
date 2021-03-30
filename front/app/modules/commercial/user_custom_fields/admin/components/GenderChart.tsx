@@ -9,13 +9,14 @@ import shallowCompare from 'utils/shallowCompare';
 // intl
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
-import messages from '../../messages';
+import messages from 'containers/Admin/dashboard/messages';
 
 // styling
 import { withTheme } from 'styled-components';
 
 // components
-import ExportMenu from '../../components/ExportMenu';
+import ExportMenu from 'containers/Admin/dashboard/components/ExportMenu';
+
 import {
   NoDataContainer,
   GraphCardHeader,
@@ -23,7 +24,8 @@ import {
   GraphCard,
   GraphCardInner,
   PieChartStyleFixesDiv,
-} from '../..';
+} from 'containers/Admin/dashboard';
+
 import { PieChart, Pie, Tooltip, Cell, ResponsiveContainer } from 'recharts';
 
 // services
@@ -31,7 +33,7 @@ import {
   usersByGenderStream,
   IUsersByGender,
   usersByGenderXlsxEndpoint,
-} from 'services/stats';
+} from 'modules/commercial/user_custom_fields/services/stats';
 
 type State = {
   serie: { name: string; value: number; code: string }[] | null;
