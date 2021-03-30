@@ -60,21 +60,13 @@ resource "Stats - Votes" do
   end
 
   context "with dependency on custom_fields" do
-    before(:all) do
-      Apartment::Tenant.switch!('example_org')
-
+    before do
       create(:custom_field_birthyear)
       create(:custom_field_gender, :with_options)
       create(:custom_field_domicile)
       create(:custom_field_education, :with_options)
 
       CustomField.find_by(code: 'education').update(enabled: true)
-    end
-
-    after(:all) do
-      Apartment::Tenant.reset
-      Tenant.find_by(host: 'example.org').destroy
-      create(:test_tenant)
     end
 
     get "web_api/v1/stats/votes_by_birthyear" do

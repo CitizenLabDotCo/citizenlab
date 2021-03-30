@@ -3,8 +3,7 @@ require 'rails_helper'
 describe AdminPublicationsFilteringService do
   subject(:result) { described_class.new.filter(base_scope, options) }
 
-  let(:options) { {} }
-  let(:base_scope) { AdminPublication.includes(:parent) }
+  before { AdminPublication.destroy_all }
 
   let!(:tree_mock) { MockAdminPublicationsTree.call }
 

@@ -95,6 +95,14 @@ class Project < ApplicationRecord
     includes(:admin_publication).where.not(admin_publications: { publication_status: 'draft' })
   }
 
+  scope :publicly_visible, lambda {
+    where(visible_to: 'public')
+  }
+
+  scope :user_groups_visible, lambda { |user|
+    where("projects.visible_to = 'groups' AND EXISTS(SELECT 1 FROM groups_projects WHERE project_id = projects.id AND group_id IN (?))", user.group_ids)
+  }
+
   def moderators
     User.project_moderator(id)
   end

@@ -59,12 +59,6 @@ class SettingsPage extends React.PureComponent<
           label: formatMessage(messages.tabPages),
           url: '/admin/settings/pages',
         },
-        {
-          label: formatMessage(messages.tabWidgets),
-          url: '/admin/settings/widgets',
-          name: 'widgets',
-          feature: 'widgets',
-        },
       ],
     };
   }

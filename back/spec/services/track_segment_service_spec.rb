@@ -3,7 +3,8 @@
 require 'rails_helper'
 
 describe TrackSegmentService do
-  let(:service) { described_class.new }
+  let(:segment_client) { instance_double(SimpleSegment::Client) }
+  let(:service) { described_class.new(segment_client) }
 
   describe 'integrations' do
     it 'logs to all destinations by default' do
@@ -56,7 +57,7 @@ describe TrackSegmentService do
     it "calls segment's identify() method with the correct payload" do
       user = create(:user)
 
-      expect(SEGMENT_CLIENT).to receive(:identify).with(
+      expect(segment_client).to receive(:identify).with(
         user_id: user.id,
         traits: hash_including(
           id: user.id,
@@ -90,22 +91,24 @@ describe TrackSegmentService do
       comment = create(:comment)
       activity = create(:activity, item: comment, action: 'created', user: user)
 
-      expect(SEGMENT_CLIENT).to receive(:track).with(hash_including(
-                                                       event: 'Comment created',
-                                                       user_id: user.id,
-                                                       properties: hash_including(
-                                                         source: 'cl2-back',
-                                                         action: 'created',
-                                                         item_id: comment.id,
-                                                         item_type: 'Comment',
-                                                         item_content: hash_including(comment: hash_including(id: comment.id))
-                                                       ),
-                                                       integrations: {
-                                                         All: true,
-                                                         Intercom: false,
-                                                         SatisMeter: false
-                                                       }
-                                                     ))
+      expect(segment_client).to receive(:track).with(
+        hash_including(
+          event: 'Comment created',
+          user_id: user.id,
+          properties: hash_including(
+            source: 'cl2-back',
+            action: 'created',
+            item_id: comment.id,
+            item_type: 'Comment',
+            item_content: hash_including(comment: hash_including(id: comment.id))
+          ),
+          integrations: {
+            All: true,
+            Intercom: false,
+            SatisMeter: false
+          }
+        )
+      )
 
       service.track_activity(activity)
     end
@@ -116,16 +119,18 @@ describe TrackSegmentService do
       activity = create(:activity, item: notification, item_type: notification.type, action: 'created', user: user)
       activity.update!(item_type: notification.class.name)
 
-      expect(SEGMENT_CLIENT).to receive(:track).with(hash_including(
-                                                       event: 'Notification for Comment on your comment created',
-                                                       user_id: user.id,
-                                                       properties: hash_including(
-                                                         source: 'cl2-back',
-                                                         action: 'created',
-                                                         item_id: notification.id,
-                                                         item_type: 'Notifications::CommentOnYourComment'
-                                                       )
-                                                     ))
+      expect(segment_client).to receive(:track).with(
+        hash_including(
+          event: 'Notification for Comment on your comment created',
+          user_id: user.id,
+          properties: hash_including(
+            source: 'cl2-back',
+            action: 'created',
+            item_id: notification.id,
+            item_type: 'Notifications::CommentOnYourComment'
+          )
+        )
+      )
 
       service.track_activity(activity)
     end

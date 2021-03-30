@@ -16,6 +16,7 @@ import { NormalFormValues } from 'containers/Admin/users/NormalGroupForm';
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
 import { IProjectData, IUpdatedProjectProperties } from 'services/projects';
 import { onProjectFormStateChange } from 'containers/Admin/projects/edit/general';
+import { ITabItem } from 'components/UI/Tabs';
 import { OutletRenderProps } from 'components/Outlet';
 import { mergeWith, castArray, clamp } from 'lodash-es';
 
@@ -38,6 +39,7 @@ import { IAppConfigurationSettingsCore } from 'services/appConfiguration';
 import { ManagerType } from 'components/admin/PostManager';
 import { IdeaCellComponentProps } from 'components/admin/PostManager/components/PostTable/IdeaRow';
 import { IdeaHeaderCellComponentProps } from 'components/admin/PostManager/components/PostTable/IdeaHeaderRow';
+import { TTabName } from 'containers/Admin/projects/all/CreateProject';
 import { IVerificationMethod } from 'services/verificationMethods';
 import { IPhaseData } from 'services/phases';
 import { GetInitiativeChildProps } from 'resources/GetInitiative';
@@ -93,6 +95,15 @@ export type OutletsPropertyMap = {
   };
   'app.containers.AdminPage.projects.all.createProjectNotAdmin': {};
   'app.containers.AdminPage.projects.all.projectsAndFolders.actions': {};
+  'app.containers.Admin.projects.all.createProject': {
+    selectedTabValue: TTabName;
+  };
+  'app.containers.Admin.projects.all.createProject.tabs': {
+    onData: (data: InsertConfigurationOptions<ITabItem>) => void;
+  };
+  'app.containers.Admin.projects.all.container': {
+    onRender: (hasRendered: boolean) => void;
+  };
   'app.components.ProjectAndFolderCards.card': {
     publication: IAdminPublicationContent;
     size: 'small' | 'medium' | 'large';
@@ -194,6 +205,7 @@ export type OutletsPropertyMap = {
       >
     ) => void;
   };
+  'app.containers.Admin.guide.SetupSection': {};
   'app.components.Map.leafletConfig': IMapProps & {
     leafletConfig: ILeafletMapConfig;
     onLeafletConfigChange: (data: ILeafletMapConfig) => void;
@@ -281,6 +293,9 @@ export type OutletsPropertyMap = {
     onSkip: (name: IOnboardingCampaignNames) => void;
     onAccept: (name: IOnboardingCampaignNames) => void;
   };
+  'app.containers.App.signUpInModal': {
+    onMounted: (id: string) => void;
+  };
 };
 
 type Outlet<Props> = FunctionComponent<Props> | FunctionComponent<Props>[];
@@ -317,6 +332,7 @@ interface Routes {
   'admin.initiatives': RouteConfiguration[];
   'admin.ideas': RouteConfiguration[];
   'admin.dashboards': RouteConfiguration[];
+  'admin.project_templates': RouteConfiguration[];
   'admin.settings': RouteConfiguration[];
 }
 
@@ -429,6 +445,10 @@ export const loadModules = (modules: Modules): ParsedModuleConfiguration => {
       ),
       'admin.projects': parseModuleRoutes(
         mergedRoutes?.['admin.projects'],
+        RouteTypes.ADMIN
+      ),
+      'admin.project_templates': parseModuleRoutes(
+        mergedRoutes?.['admin.project_templates'],
         RouteTypes.ADMIN
       ),
       'admin.settings': parseModuleRoutes(
