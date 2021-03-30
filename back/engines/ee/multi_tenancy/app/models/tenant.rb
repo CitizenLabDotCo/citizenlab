@@ -190,7 +190,7 @@ class Tenant < ApplicationRecord
 
   def self.switch_each(&blk)
     find_each do |tenant|
-      switch { blk.call(tenant) }
+      tenant.switch { blk.call(tenant) }
     end
   end
 
