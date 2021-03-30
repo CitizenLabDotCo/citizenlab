@@ -3,7 +3,7 @@ module IdeaCustomFields
     module IdeaCustomFieldsService
 
       def all_fields(custom_form, custom_fields_scope: nil)
-        custom_and_default_fields(custom_form, custom_fields_scope: nil)
+        custom_and_default_fields(custom_form, custom_fields_scope: custom_fields_scope)
       end
 
       def find_or_build_field custom_form, code
