@@ -1,4 +1,9 @@
 {
+  "__": [
+    "Inclusion of commercial modules is restricted by the",
+    "conditions laid out in the CitizenLab Commercial License V1.",
+    "Usage is not permitted without a commercial agreement in place."
+  ],
   "modules": {
     "free/email_campaigns": true,
     "free/frontend": true,
