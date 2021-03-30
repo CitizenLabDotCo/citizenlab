@@ -20,7 +20,7 @@ class SideFxIdeaService
   end
 
   def after_update(idea, user)
-    if idea.publication_status_previous_change == %w[draft published]
+    if idea.publication_status_previous_change == %w[draft published] || idea.publication_status_previous_change == [nil, 'published']
       after_publish idea, user
     elsif idea.published?
       LogActivityJob.perform_later(idea, 'changed', user, idea.updated_at.to_i)
