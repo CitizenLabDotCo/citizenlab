@@ -1,25 +1,25 @@
 # frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe AppConfiguration, type: :model do
-
   it 'name is synced with tenant' do
     Tenant.current.update(name: 'Karhide')
-    expect(AppConfiguration.instance.name).to eq('Karhide')
+    expect(described_class.instance.name).to eq('Karhide')
 
-    AppConfiguration.instance.update(name: 'Orgoreyn')
+    described_class.instance.update(name: 'Orgoreyn')
     expect(Tenant.current.name).to eq('Orgoreyn')
   end
 
   it 'host is synced with tenant' do
     Tenant.current.update(host: 'karhide.org')
     Apartment::Tenant.switch!('karhide_org')
-    expect(AppConfiguration.instance.host).to eq('karhide.org')
+    expect(described_class.instance.host).to eq('karhide.org')
 
-    AppConfiguration.instance.update(host: 'orgoreyn.org')
+    described_class.instance.update(host: 'orgoreyn.org')
     expect { Apartment::Tenant.switch!('karhide_org') }.to raise_error(Apartment::TenantNotFound)
     Apartment::Tenant.switch!('orgoreyn_org')
-    expect(AppConfiguration.instance.host).to eq('orgoreyn.org')
+    expect(described_class.instance.host).to eq('orgoreyn.org')
   end
 
   it 'settings are synced with tenant' do
@@ -30,7 +30,7 @@ RSpec.describe AppConfiguration, type: :model do
       color_main: '#FFFFFF'
     }.stringify_keys!
 
-    config = AppConfiguration.instance
+    config = described_class.instance
     settings = config.settings
     settings['core'].merge!(core_settings_update)
     config.settings = settings
@@ -62,7 +62,7 @@ RSpec.describe AppConfiguration::Settings do
         def self.feature_description; 'Oh my... such a good feature.' end
         # rubocop:enable Style/SingleLineMethods, Layout/EmptyLineBetweenDefs
 
-        add_setting 'dummy setting', required: true, schema: {'type' => 'boolean'}
+        add_setting 'dummy setting', required: true, schema: { 'type' => 'boolean' }
       end
     end
 
