@@ -8,7 +8,6 @@ Gem::Specification.new do |spec|
   spec.name        = 'smart_groups'
   spec.version     = SmartGroups::VERSION
   spec.authors     = ['CitizenLab']
-  spec.email       = ['developers@citizenlab.co']
   spec.summary     = 'Smart Groups'
   spec.description = 'Users can automatically be assigned to a group based on certain criteria.'
   spec.licenses    = ['CitizenLab Commercial License V1']

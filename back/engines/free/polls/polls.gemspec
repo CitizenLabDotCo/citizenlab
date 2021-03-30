@@ -7,9 +7,8 @@ require "polls/version"
 Gem::Specification.new do |s|
   s.name        = "polls"
   s.version     = Polls::VERSION
-  s.authors     = ["Koen Gremmelprez"]
+  s.authors     = ["CitizenLab"]
   s.licenses    = ['AGPLv3']
-  s.email       = ["koen@citizenlab.co"]
   s.summary     = "Contains everything to support polling as a participation method"
 
   s.files = Dir["{app,config,db,lib}/**/*", "Rakefile", "README.md"]

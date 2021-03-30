@@ -7,9 +7,8 @@ require "onboarding/version"
 Gem::Specification.new do |s|
   s.name        = "onboarding"
   s.version     = Onboarding::VERSION
-  s.authors     = ["Koen Gremmelprez"]
+  s.authors     = ["CitizenLab"]
   s.licenses    = ['AGPLv3']
-  s.email       = ["koen@citizenlab.co"]
   s.summary     = "Show onboarding messages to citizens and track their state"
 
   s.files = Dir["{app,config,db,lib}/**/*", "Rakefile", "README.md"]

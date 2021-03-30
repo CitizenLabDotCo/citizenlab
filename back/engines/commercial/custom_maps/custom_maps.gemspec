@@ -8,7 +8,6 @@ Gem::Specification.new do |s|
   s.name        = 'custom_maps'
   s.version     = CustomMaps::VERSION
   s.authors     = ['CitizenLab']
-  s.email       = ['developers@citizenlab.co']
   s.licenses    = ['CitizenLab Commercial License V1']
   s.summary     = 'Contains everything to configure maps on the platform'
 

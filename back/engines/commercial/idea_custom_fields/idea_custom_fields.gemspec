@@ -8,7 +8,6 @@ Gem::Specification.new do |spec|
   spec.name        = 'idea_custom_fields'
   spec.version     = IdeaCustomFields::VERSION
   spec.authors     = ['CitizenLab']
-  spec.email       = ['developers@citizenlab.co']
   spec.summary     = 'Custom Idea Fields'
   spec.description = 'Admin and project managers can specify which idea form fields to enable/disable or make mandatory.'
   spec.licenses    = ['CitizenLab Commercial License V1']

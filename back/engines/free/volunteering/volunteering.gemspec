@@ -7,8 +7,7 @@ require "volunteering/version"
 Gem::Specification.new do |s|
   s.name        = "volunteering"
   s.version     = Volunteering::VERSION
-  s.authors     = ["Koen Gremmelprez"]
-  s.email       = ["koen@citizenlab.co"]
+  s.authors     = ["CitizenLab"]
   s.licenses    = ['AGPLv3']
   s.summary     = "Contains everything to support volunteering as a participation method"
 

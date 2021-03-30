@@ -9,7 +9,6 @@ Gem::Specification.new do |s|
   s.version     = Moderation::VERSION
   s.authors     = ['CitizenLab']
   s.licenses    = ['CitizenLab Commercial License V1']
-  s.email       = ['developers@citizenlab.co']
   s.summary     = 'CitizenLab extension: Moderations are pieces of user-generated content that need to be moderated.'
 
   s.files = Dir['{app,config,db,lib}/**/*', 'README.md']

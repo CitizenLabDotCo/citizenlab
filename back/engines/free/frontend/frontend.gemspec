@@ -7,8 +7,7 @@ require "frontend/version"
 Gem::Specification.new do |s|
   s.name        = "frontend"
   s.version     = Frontend::VERSION
-  s.authors     = ["Koen Gremmelprez"]
-  s.email       = ["koen@citizenlab.co"]
+  s.authors     = ["CitizenLab"]
   s.licenses    = ['AGPLv3']
   s.summary     = "Contains all functionoality needed for cl2-front, unrelated to any core business domain"
 
