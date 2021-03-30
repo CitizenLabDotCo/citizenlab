@@ -135,10 +135,11 @@ Rails.application.routes.draw do
         resources :moderators, except: [:update] do
           get :users_search, on: :collection
         end
-        resources :custom_fields, controller: 'idea_custom_fields', only: %i[index show] do
+
+        resources :custom_fields, controller: 'idea_custom_fields', only: %i[] do
           get 'schema', on: :collection
-          patch 'by_code/:code', action: 'upsert_by_code', on: :collection
         end
+
         get 'by_slug/:slug', on: :collection, to: 'projects#by_slug'
       end
       resources :admin_publications, only: %i[index show] do
@@ -249,7 +250,6 @@ Rails.application.routes.draw do
       end
 
       resources :baskets, except: [:index]
-      resources :clusterings
 
       resources :avatars, only: [:index, :show]
     end

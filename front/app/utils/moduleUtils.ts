@@ -1,3 +1,4 @@
+import { FunctionComponent } from 'react';
 import { ILeafletMapConfig } from 'components/UI/LeafletMap/useLeaflet';
 import {
   TSignUpStepConfigurationObject,
@@ -8,14 +9,15 @@ import {
   LoadableLoadingAdmin,
   LoadableLoadingCitizen,
 } from 'components/UI/LoadableLoading';
+import { ISignUpInMetaData } from 'components/SignUpIn';
+
 import { GroupCreationModal } from 'containers/Admin/users';
 import { NormalFormValues } from 'containers/Admin/users/NormalGroupForm';
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
 import { IProjectData, IUpdatedProjectProperties } from 'services/projects';
 import { onProjectFormStateChange } from 'containers/Admin/projects/edit/general';
+import { OutletRenderProps } from 'components/Outlet';
 import { mergeWith, castArray, clamp } from 'lodash-es';
-
-import { FunctionComponent } from 'react';
 
 import Loadable from 'react-loadable';
 import { IGroupDataAttributes, MembershipType } from 'services/groups';
@@ -37,7 +39,17 @@ import { ManagerType } from 'components/admin/PostManager';
 import { IdeaCellComponentProps } from 'components/admin/PostManager/components/PostTable/IdeaRow';
 import { IdeaHeaderCellComponentProps } from 'components/admin/PostManager/components/PostTable/IdeaHeaderRow';
 import { IVerificationMethod } from 'services/verificationMethods';
-import { ProjectTabOptions } from 'containers/Admin/projects/edit';
+import { IPhaseData } from 'services/phases';
+import { GetInitiativeChildProps } from 'resources/GetInitiative';
+import { GetLocaleChildProps } from 'resources/GetLocale';
+import { ICommentData } from 'services/comments';
+import { GetAppConfigurationLocalesChildProps } from 'resources/GetAppConfigurationLocales';
+import { GetWindowSizeChildProps } from 'resources/GetWindowSize';
+import { GetIdeaChildProps } from 'resources/GetIdea';
+import {
+  IOnboardingCampaignNames,
+  IOnboardingCampaigns,
+} from 'services/onboardingCampaigns';
 
 type Localize = (
   multiloc: Multiloc | null | undefined,
@@ -50,6 +62,18 @@ export type ITabsOutlet = {
     values?: { [key: string]: MessageValue } | undefined
   ) => string;
   onData: (data: InsertConfigurationOptions<ITab>) => void;
+};
+
+export type SignUpStepOutletProps = {
+  onData: (data: {
+    key: TSignUpSteps;
+    configuration: TSignUpStepConfigurationObject;
+  }) => void;
+  step: TSignUpSteps | null;
+  metaData: ISignUpInMetaData;
+  onCompleted: () => void;
+  onSkipped: () => void;
+  onError: () => void;
 };
 
 export type OutletsPropertyMap = {
@@ -111,19 +135,15 @@ export type OutletsPropertyMap = {
     currentGroupFilter?: string;
     currentGroupFilterLabel?: string;
   };
-  'app.components.SignUpIn.SignUp.step': {
-    onData: (data: {
-      key: TSignUpSteps;
-      configuration: TSignUpStepConfigurationObject;
-    }) => void;
-    step: TSignUpSteps | null;
-    onCompleted: () => void;
-  };
+  'app.components.SignUpIn.SignUp.step': SignUpStepOutletProps;
   'app.containers.Admin.dashboard.reports.ProjectReport.graphs': {
     startAt: string;
     endAt: string;
     participationMethods: ParticipationMethod[];
     project: IProjectData;
+  };
+  'app.containers.IdeasShow.MetaInformation': {
+    ideaId: string;
   };
   'app.containers.UserEditPage.ProfileForm.forms': {
     authUser: IUserData;
@@ -131,19 +151,25 @@ export type OutletsPropertyMap = {
     onSubmit: (data: { key: string; formData: Object }) => void;
     onData: (data: { key: string; data: Object }) => void;
   };
-  'app.containers.Admin.project.edit.permissions': {
+  'app.containers.Admin.project.edit.permissions.participationRights': {
     project: IProjectData;
+    projectId: string;
+    children: OutletRenderProps;
   };
-  'app.containers.Admin.ideas.tabs': {
-    onData: (data: InsertConfigurationOptions<ITab>) => void;
+  'app.containers.Admin.project.edit.permissions.moderatorRights': {
+    projectId: string;
+    children: OutletRenderProps;
   };
   'app.containers.Admin.projects.edit': {
-    onData: (data: ProjectTabOptions<InsertConfigurationOptions<ITab>>) => void;
+    onData: (data: InsertConfigurationOptions<ITab>) => void;
+    project: IProjectData;
+    phases: IPhaseData[] | null;
   };
   'app.containers.Admin.settings.tabs': {
     onData: (data: InsertConfigurationOptions<ITab>) => void;
   };
   'app.containers.Admin.initiatives.tabs': ITabsOutlet;
+  'app.containers.Admin.ideas.tabs': ITabsOutlet;
   'app.containers.Admin.dashboards.tabs': ITabsOutlet;
   'app.containers.Admin.sideBar.navItems': {
     onData: (data: InsertConfigurationOptions<NavItem>) => void;
@@ -195,6 +221,66 @@ export type OutletsPropertyMap = {
     showHeader?: boolean;
     inModal: boolean;
   };
+  'app.components.PostShowComponents.ActionBar.right': {
+    translateButtonClicked: boolean;
+    onClick: () => void;
+    initiative: GetInitiativeChildProps;
+    locale: GetLocaleChildProps;
+  };
+  'app.components.PostShowComponents.CommentFooter.left': {
+    comment: ICommentData;
+    locale: GetLocaleChildProps;
+    tenantLocales: GetAppConfigurationLocalesChildProps;
+  };
+  'app.containers.InitiativesShow.left': {
+    windowSize: GetWindowSizeChildProps;
+    translateButtonClicked: boolean;
+    onClick: () => void;
+    initiative: GetInitiativeChildProps;
+    locale: GetLocaleChildProps;
+  };
+  'app.containers.IdeasShow.left': {
+    translateButtonClicked: boolean;
+    onClick: () => void;
+    idea: GetIdeaChildProps;
+    locale: GetLocaleChildProps;
+  };
+  'app.components.PostShowComponents.CommentBody.translation': {
+    translateButtonClicked: boolean;
+    commentContent: string;
+    locale: GetLocaleChildProps;
+    commentId: string;
+  };
+  'app.components.PostShowComponents.Body.translation': {
+    postId: string;
+    body: string;
+    locale: GetLocaleChildProps;
+    translateButtonClicked?: boolean;
+    postType: 'idea' | 'initiative';
+  };
+  'app.components.PostShowComponents.Title.translation': {
+    postId: string;
+    postType: 'idea' | 'initiative';
+    title: string;
+    locale?: GetLocaleChildProps;
+    translateButtonClicked?: boolean;
+    color?: string;
+    align: 'left' | 'center';
+  };
+  'app.containers.UserEditPage.content': {};
+  'app.containers.Navbar.UserMenu.UserNameContainer': {
+    isVerified: boolean;
+  };
+  'app.containers.App.modals': { onMounted: (id: string) => void };
+  'app.containers.LandingPage.onboardingCampaigns': {
+    onboardingCampaigns: IOnboardingCampaigns;
+    contentTimeout: number;
+    contentDelay: number;
+    authUser: IUserData;
+    theme: unknown;
+    onSkip: (name: IOnboardingCampaignNames) => void;
+    onAccept: (name: IOnboardingCampaignNames) => void;
+  };
 };
 
 type Outlet<Props> = FunctionComponent<Props> | FunctionComponent<Props>[];
@@ -241,6 +327,8 @@ export interface ParsedModuleConfiguration {
   beforeMountApplication: () => void;
   /** this function triggers after the Root component mounted */
   afterMountApplication: () => void;
+  /** used to reset streams created in a module */
+  streamsToReset: string[];
 }
 
 export type ModuleConfiguration = RecursivePartial<
@@ -250,6 +338,8 @@ export type ModuleConfiguration = RecursivePartial<
   beforeMountApplication?: () => void;
   /** this function triggers after the Root component mounted */
   afterMountApplication?: () => void;
+  /** used to reset streams created in a module */
+  streamsToReset?: string[];
 };
 
 type Modules = {
@@ -348,6 +438,12 @@ export const loadModules = (modules: Modules): ParsedModuleConfiguration => {
     },
     beforeMountApplication: callLifecycleMethods('beforeMountApplication'),
     afterMountApplication: callLifecycleMethods('afterMountApplication'),
+    streamsToReset: enabledModuleConfigurations.reduce(
+      (acc: string[], module: ModuleConfiguration) => {
+        return [...acc, ...(module?.streamsToReset ?? [])];
+      },
+      []
+    ),
   };
 };
 
@@ -356,6 +452,9 @@ export const insertConfiguration = <T extends { name: string }>({
   insertAfterName,
   insertBeforeName,
 }: InsertConfigurationOptions<T>) => (items: T[]): T[] => {
+  const itemAlreadyInserted = items.some(
+    (item) => item.name === configuration.name
+  );
   const foundIndex = items.findIndex(
     (item) => item.name === (insertAfterName || insertBeforeName)
   );
@@ -365,11 +464,15 @@ export const insertConfiguration = <T extends { name: string }>({
     items.length
   );
 
-  return insertIndex >= 0
-    ? [
-        ...items.slice(0, insertIndex),
-        configuration,
-        ...items.slice(insertIndex),
-      ]
-    : [...items, configuration];
+  if (itemAlreadyInserted) {
+    return [...items];
+  } else {
+    return insertIndex >= 0
+      ? [
+          ...items.slice(0, insertIndex),
+          configuration,
+          ...items.slice(insertIndex),
+        ]
+      : [...items, configuration];
+  }
 };

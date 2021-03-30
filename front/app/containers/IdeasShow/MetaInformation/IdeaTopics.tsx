@@ -1,5 +1,5 @@
 import React from 'react';
-import { Header, Item } from './';
+import { Header, Item } from 'components/IdeasShowComponents/MetaInfoStyles';
 import Topics from 'components/PostShowComponents/Topics';
 import useIdea from 'hooks/useIdea';
 import { isNilOrError } from 'utils/helperUtils';

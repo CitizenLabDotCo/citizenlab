@@ -12,6 +12,7 @@ jest.mock('utils/cl-intl');
 jest.mock('services/comments');
 jest.mock('services/ideas');
 jest.mock('services/users');
+jest.mock('components/Outlet', () => 'Outlet');
 
 const mockScroll = jest.fn();
 global.scrollTo = mockScroll;
