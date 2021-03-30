@@ -4,9 +4,12 @@ module Surveys
 
   class TypeformWebhookManager
 
-    def initialize(tf_api = nil)
-      @tf_api = tf_api || Typeform::Api.new(Tenant.settings('typeform_surveys', 'user_token'))
-      @secret = ENV.fetch("SECRET_TOKEN_TYPEFORM") # used to verify that requests are coming from Typeform.
+    # @param [Typeform::Api] tf_api
+    # @param [String] typeform_secret_token Token used to verify that requests
+    #   are coming from Typeform.
+    def initialize(tf_api = nil, typeform_secret_token = nil)
+      @tf_api = tf_api || Typeform::Api.new(AppConfiguration.instance.settings('typeform_surveys', 'user_token'))
+      @secret = typeform_secret_token || ENV.fetch('SECRET_TOKEN_TYPEFORM')
     end
 
     # Gets called every time the participation context changed wrt
@@ -82,10 +85,9 @@ module Surveys
 
     # @param [ParticipationContext] participation_context
     # @param [Tenant] tenant
-    def webhook_url(participation_context, tenant = nil)
-      tenant ||= Tenant.current
-      url_params = {pc_id: participation_context.id, pc_type: participation_context.class.name}
-      "https://#{tenant.host}/hooks/typeform_events?#{url_params.to_query}" # MT_TODO use the base_backend_uri
+    def webhook_url(participation_context)
+      url_params = { pc_id: participation_context.id, pc_type: participation_context.class.name }
+      "#{AppConfiguration.instance.base_backend_uri}/hooks/typeform_events?#{url_params.to_query}"
     end
   end
 end
