@@ -174,5 +174,4 @@ resource "Campaign consents" do
       end
     end
   end
-
 end
