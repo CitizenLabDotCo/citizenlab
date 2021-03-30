@@ -72,11 +72,13 @@ const configuration: ModuleConfiguration = {
         </RenderOnSelectedTabValue>
       </RenderOnFeatureFlag>
     ),
-    'app.containers.Admin.projects.all.createProject.tabs': (props) => (
-      <RenderOnFeatureFlag>
-        <Tab {...props} />
-      </RenderOnFeatureFlag>
-    ),
+    'app.containers.Admin.projects.all.createProject.tabs': (props) => {
+      return (
+        <RenderOnFeatureFlag>
+          <Tab {...props} />
+        </RenderOnFeatureFlag>
+      );
+    },
   },
 };
 
