@@ -46,5 +46,4 @@ class SideFxAppConfigurationService
   end
 end
 
-
-
+SideFxAppConfigurationService.prepend_if_ee(MultiTenancy::Patches::SideFxAppConfigurationService)
