@@ -61,16 +61,6 @@ resource "AdminPublication" do
         end
       end
 
-      if CitizenLab.ee?
-        example "List all admin publications in a folder" do
-          do_request(folder: @folder.id)
-          json_response = json_parse(response_body)
-          expect(json_response[:data].size).to eq 3
-          expect(json_response[:data].map{|d| d.dig(:relationships, :publication, :data, :type)}.count('folder')).to eq 0
-          expect(json_response[:data].map{|d| d.dig(:relationships, :publication, :data, :type)}.count('project')).to eq 3
-        end
-      end
-
       example "List all draft or archived admin publications" do
         do_request(publication_statuses: ['draft','archived'])
         json_response = json_parse(response_body)
@@ -200,7 +190,7 @@ resource "AdminPublication" do
 
       if CitizenLab.ee?
         example "Listed admin publications have correct visible children count", document: false do
-          do_request(folder: nil)
+          do_request
           expect(status).to eq(200)
           json_response = json_parse(response_body)
           expect(json_response[:data].size).to eq 3
@@ -211,7 +201,7 @@ resource "AdminPublication" do
 
         example "Visible children count should take account with applied filters", document: false do
           @projects.first.admin_publication.update! publication_status: 'archived'
-          do_request(folder: nil, publication_statuses: ['published'])
+          do_request(publication_statuses: ['published'])
           expect(status).to eq(200)
           json_response = json_parse(response_body)
           expect(json_response[:data].size).to eq 2

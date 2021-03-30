@@ -2,7 +2,7 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 
-resource "AdminPublication" do
+resource "AdminPublication", document: false do
 
   explanation "Describes the presentation (ordering and publication) of a folder or project"
 
