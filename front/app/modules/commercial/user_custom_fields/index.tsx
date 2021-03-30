@@ -38,7 +38,7 @@ declare module 'containers/Admin/dashboard/users/charts/HorizontalBarChart' {
   }
 }
 
-declare module 'containers/Admin/dashboard/users/charts/PieChartbyCategory' {
+declare module 'containers/Admin/dashboard/users/charts/PieChartByCategory' {
   export interface ISupportedDataTypeMap {
     usersByBirthyear: IUsersByBirthyear;
     usersByRegistrationField: IUsersByRegistrationField;
