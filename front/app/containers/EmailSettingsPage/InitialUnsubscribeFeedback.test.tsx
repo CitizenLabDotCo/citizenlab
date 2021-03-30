@@ -7,7 +7,7 @@ const checkMessageId = (Comp, test) =>
   Comp.find('FormattedMessage').prop('id').includes(test);
 
 jest.mock('utils/cl-intl');
-jest.mock('modules', () => ({ streamsToClose: [] }));
+jest.mock('modules', () => ({ streamsToReset: [] }));
 
 describe('<InitialUnsubscribeFeedback/>', () => {
   describe('success', () => {

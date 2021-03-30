@@ -12,7 +12,7 @@ jest.mock('resources/GetIdeasCount', () => 'GetIdeasCount');
 jest.mock('resources/GetInitiativesCount', () => 'GetInitiativesCount');
 jest.mock('components/UI/CountBadge', () => 'CountBadge');
 jest.mock('utils/cl-intl');
-jest.mock('modules', () => ({ streamsToClose: [] }));
+jest.mock('modules', () => ({ streamsToReset: [] }));
 
 import 'jest-styled-components';
 

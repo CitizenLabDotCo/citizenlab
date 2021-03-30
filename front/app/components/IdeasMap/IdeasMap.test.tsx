@@ -4,7 +4,7 @@ import 'jest-styled-components';
 import { mockWithRouterProps } from '../../utils/cl-router/__mocks__/withRouter';
 import { IdeasMap } from '.';
 jest.mock('components/Outlet', () => 'Outlet');
-jest.mock('modules', () => ({ streamsToClose: [] }));
+jest.mock('modules', () => ({ streamsToReset: [] }));
 
 describe('IdeasMap', () => {
   it('renders correctly', () => {

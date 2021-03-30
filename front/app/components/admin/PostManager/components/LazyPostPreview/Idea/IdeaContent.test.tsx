@@ -55,7 +55,7 @@ jest.mock('utils/styleUtils', () => ({
   },
 }));
 
-jest.mock('modules', () => ({ streamsToClose: [] }));
+jest.mock('modules', () => ({ streamsToReset: [] }));
 
 import { IdeaContent } from './IdeaContent';
 

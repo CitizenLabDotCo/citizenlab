@@ -25,7 +25,7 @@ jest.mock('react-scroll-to-component', () => {
 // what needs to be mocked by jest to render the component
 jest.mock('utils/cl-intl');
 jest.mock('components/Outlet', () => 'outlet');
-jest.mock('modules', () => ({ streamsToClose: [] }));
+jest.mock('modules', () => ({ streamsToReset: [] }));
 
 const getRouterProps = (projectId, tabName?: string) =>
   (({

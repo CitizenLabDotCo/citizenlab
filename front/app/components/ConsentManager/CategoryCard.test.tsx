@@ -11,7 +11,7 @@ import { registerDestination } from './destinations';
 // mock utilities
 jest.mock('services/appConfiguration');
 jest.mock('utils/cl-intl');
-jest.mock('modules', () => ({ streamsToClose: [] }));
+jest.mock('modules', () => ({ streamsToReset: [] }));
 
 describe('<CategoryCard />', () => {
   const category = 'analytics';
