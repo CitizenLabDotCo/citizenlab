@@ -12,3 +12,6 @@ echo "Copied back/engines/ee"
 
 cp .env-back ../citizenlab/.
 echo "Copied .env-back"
+
+cp .env-front ../citizenlab/.
+echo "Copied .env-front"
