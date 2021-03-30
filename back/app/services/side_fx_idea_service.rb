@@ -16,11 +16,11 @@ class SideFxIdeaService
 
   def before_update(idea, user)
     idea.body_multiloc = TextImageService.new.swap_data_images(idea, :body_multiloc)
-    before_publish idea, user if idea.publication_status_change == %w[draft published]
+    before_publish idea, user if idea.just_published?
   end
 
   def after_update(idea, user)
-    if idea.publication_status_previous_change == %w[draft published] || idea.publication_status_previous_change == [nil, 'published']
+    if idea.just_published?
       after_publish idea, user
     elsif idea.published?
       LogActivityJob.perform_later(idea, 'changed', user, idea.updated_at.to_i)
