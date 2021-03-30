@@ -33,6 +33,11 @@ const ManageSection = ({ intl: { formatMessage } }: InjectedIntlProps) => {
       extra: { section: 'manage' },
     });
   };
+  const getHandleClickInteralTrack = (article: TManageArticle) => () => {
+    trackEventByName(tracks.internalLink.name, {
+      extra: { article, section: 'manage' },
+    });
+  };
 
   return (
     <SectionWrapper>
@@ -70,8 +75,7 @@ const ManageSection = ({ intl: { formatMessage } }: InjectedIntlProps) => {
           const adminGuideArticle = (
             <AdminGuideArticle
               key={`manageArticle${i}`}
-              article={article}
-              section="manage"
+              trackLink={getHandleClickInteralTrack(article)}
               linkMessage={linkMessage}
               titleMessage={titleMessage}
               descriptionMessage={descriptionMessage}
