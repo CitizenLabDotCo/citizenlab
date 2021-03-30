@@ -254,7 +254,7 @@ jobs:
           - v1-npm-cache-{{ checksum "citizenlab/front/package.json" }}
           # fallback to using the latest cache if no exact match is found
           - v1-npm-cache-
-      - run: cd /citizenlab/front && npm ci
+      - run: cd citizenlab/front && npm ci
       - save_cache:
           paths:
             - /root/.npm
