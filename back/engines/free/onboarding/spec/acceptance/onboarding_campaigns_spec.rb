@@ -31,16 +31,13 @@ resource "Onboarding campaigns" do
     context "for a user with a complete profile" do
       before do
         @user.update(bio_multiloc: {en: 'I love scrabble'})
-        t = Tenant.current
-        t.settings['core']['custom_onboarding_message'] = {
-          en: "Dance like noone is watching"
-        }
-        t.settings['core']['custom_onboarding_button'] = {
-          en: "Click here"
-        }
-        t.settings['core']['custom_onboarding_link'] = "/ideas"
-        t.save
+        AppConfiguration.instance.tap do |cfg|
+          cfg.settings['core']['custom_onboarding_message'] = { en: "Dance like noone is watching" }
+          cfg.settings['core']['custom_onboarding_button'] = { en: "Click here" }
+          cfg.settings['core']['custom_onboarding_link'] = "/ideas"
+        end.save
       end
+
       example "Get the current onboarding campaign for a user with a complete profile" do
         do_request
         expect(status).to eq(200)
