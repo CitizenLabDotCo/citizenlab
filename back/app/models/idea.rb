@@ -18,9 +18,6 @@ class Idea < ApplicationRecord
 
   belongs_to :assignee, class_name: 'User', optional: true
 
-  has_many :tagging_taggings
-  has_many :tagging_tags, through: :tagging_taggings
-  has_and_belongs_to_many :tagging_pending_tasks, class_name: 'Tagging::PendingTask', join_table: :tagging_pending_tasks_ideas
   has_many :ideas_topics, dependent: :destroy
   has_many :topics, through: :ideas_topics
   has_many :areas_ideas, dependent: :destroy
@@ -110,6 +107,10 @@ class Idea < ApplicationRecord
 
   scope :order_trending, -> { TrendingIdeaService.new.sort_trending(where('TRUE')) }
 
+  def just_published?
+    publication_status_previous_change == %w[draft published] || publication_status_previous_change == [nil, 'published']
+  end
+
   private
 
   def sanitize_body_multiloc
@@ -140,3 +141,4 @@ end
 Idea.include_if_ee 'Moderation::Concerns::Moderatable'
 Idea.include_if_ee 'MachineTranslations::Concerns::Translatable'
 Idea.include_if_ee 'IdeaAssignment::Extensions::Idea'
+Idea.include_if_ee 'Tagging::Extensions::Idea'

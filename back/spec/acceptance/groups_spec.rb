@@ -30,7 +30,11 @@ resource 'Groups' do
         do_request
         expect(status).to eq(200)
         json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 5
+        if CitizenLab.ee?
+          expect(json_response[:data].size).to eq 5
+        else
+          expect(json_response[:data].size).to eq 4
+        end
         expect(json_response[:data][0][:id]).to eq g1.id
       end
 

@@ -52,21 +52,19 @@ export const getZoomLevel = (
   return parseInt(mapConfigZoomLevel || '16', 10);
 };
 
+const DEFAULT_MAPS_TILE_PROVIDER =
+  process.env.DEFAULT_MAPS_TILE_PROVIDER ||
+  'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+
 export const getTileProvider = (
   appConfig: IAppConfiguration | undefined | null | Error,
   mapConfig: IMapConfig
 ): string => {
   if (isUndefinedOrError(mapConfig?.attributes?.tile_provider)) {
-    return (
-      baseGetTileProvider(appConfig) ||
-      'https://api.maptiler.com/maps/77632ac6-e168-429c-8b1b-76599ce796e3/{z}/{x}/{y}@2x.png?key=DIZiuhfkZEQ5EgsaTk6D'
-    );
+    return baseGetTileProvider(appConfig) || DEFAULT_MAPS_TILE_PROVIDER;
   }
 
-  return (
-    mapConfig?.attributes?.tile_provider ||
-    'https://api.maptiler.com/maps/77632ac6-e168-429c-8b1b-76599ce796e3/{z}/{x}/{y}@2x.png?key=DIZiuhfkZEQ5EgsaTk6D'
-  );
+  return mapConfig?.attributes?.tile_provider || DEFAULT_MAPS_TILE_PROVIDER;
 };
 
 export const getLayerType = (mapLayer: IMapLayerAttributes | undefined) => {

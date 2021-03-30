@@ -4,6 +4,7 @@ jest.mock('utils/cl-intl');
 jest.mock('../../resources/GetUserCustomFields');
 jest.mock('services/stats');
 jest.mock('components/Outlet', () => 'Outlet');
+jest.mock('modules', () => ({ streamsToReset: [] }));
 
 import {
   RegistrationFieldsToGraphs,

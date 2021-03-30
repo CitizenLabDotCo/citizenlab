@@ -79,7 +79,7 @@ interface State {
     [tabName: string]: (
       project: IProjectData,
       phases: GetPhasesChildProps
-    ) => boolean
+    ) => boolean;
   };
 }
 
@@ -289,9 +289,7 @@ export class AdminProjectEdition extends PureComponent<
     });
   };
 
-  handleData = (
-    insertTabOptions: InsertConfigurationOptions<ITab>
-  ) => {
+  handleData = (insertTabOptions: InsertConfigurationOptions<ITab>) => {
     this.setState(({ tabs }) => ({
       tabs: insertConfiguration(insertTabOptions)(tabs),
     }));
