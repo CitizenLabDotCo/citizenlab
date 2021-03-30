@@ -37,7 +37,7 @@ const EngageSection = ({ intl: { formatMessage } }: InjectedIntlProps) => {
   };
   const getHandleClickInteralTrack = (article) => () => {
     trackEventByName(tracks.internalLink.name, {
-      extra: { section: 'engage', article },
+      extra: { article, section: 'engage' },
     });
   };
 
