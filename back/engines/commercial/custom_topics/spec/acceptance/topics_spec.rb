@@ -41,7 +41,7 @@ resource "Topics" do
       end
       ValidationErrorHelper.new.error_fields(self, Topic)
 
-      let(:topic) { create(:topic) }
+      let(:topic) { create(:custom_topic) }
       let(:id) { topic.id }
       let(:title_multiloc) { {'en' => "Comedy"} }
       let(:description_multiloc) { {'en' => "Stuff that tends to make you laugh"} }
