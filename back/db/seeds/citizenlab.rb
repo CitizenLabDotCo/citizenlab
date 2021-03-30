@@ -31,6 +31,8 @@ AppConfiguration.create!(
       color_main: Faker::Color.hex_color,
       color_secondary: Faker::Color.hex_color,
       color_text: Faker::Color.hex_color,
+      
+      reply_to_email: 'support@citizenlab.co'
     },
     password_login: {
       enabled: true,
