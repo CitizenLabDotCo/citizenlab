@@ -16,24 +16,14 @@ resource "Stats - Users" do
 
   let!(:now) { Time.now.in_time_zone(@timezone) }
 
-  before(:all) do
-    Apartment::Tenant.switch!('example_org')
-
+  before do
     create(:custom_field_birthyear)
     create(:custom_field_gender, :with_options)
     create(:custom_field_domicile)
     create(:custom_field_education, :with_options)
 
     CustomField.find_by(code: 'education').update(enabled: true)
-  end
 
-  after(:all) do
-    Apartment::Tenant.reset
-    Tenant.find_by(host: 'example.org').destroy
-    create(:test_tenant)
-  end
-
-  before do
     @current_user = create(:admin)
     token = Knock::AuthToken.new(payload: @current_user.to_token_payload).token
     header 'Authorization', "Bearer #{token}"
