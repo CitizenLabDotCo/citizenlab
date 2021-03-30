@@ -3,7 +3,9 @@
 class XlsxService
   include HtmlToPlainText
 
-  @@multiloc_service = MultilocService.new
+  def multiloc_service
+    MultilocService.new
+  end
 
   def escape_formula(text)
     # After https://docs.servicenow.com/bundle/orlando-platform-administration/page/administer/security/reference/escape-excel-formula.html and http://rorsecurity.info/portfolio/excel-injection-via-rails-downloads
@@ -129,11 +131,11 @@ class XlsxService
     generate_xlsx 'Users', columns, users
   end
 
-  def generate_ideas_xlsx(ideas, view_private_attributes: false, with_tags: false)
+  def generate_idea_xlsx_columns(ideas, view_private_attributes: false, with_tags: false)
     columns = [
       { header: 'id',                   f: ->(i) { i.id }, skip_sanitization: true },
-      { header: 'title',                f: ->(i) { @@multiloc_service.t(i.title_multiloc) } },
-      { header: 'body',                 f: ->(i) { convert_to_text(@@multiloc_service.t(i.body_multiloc)) } },
+      { header: 'title',                f: ->(i) { multiloc_service.t(i.title_multiloc) } },
+      { header: 'body',                 f: ->(i) { convert_to_text(multiloc_service.t(i.body_multiloc)) } },
       { header: 'author_name',          f: ->(i) { i.author_name } },
       { header: 'author_email',         f: ->(i) { i.author&.email } },
       { header: 'proposed_budget',      f: ->(i) { i.proposed_budget },                           skip_sanitization: true },
@@ -143,10 +145,10 @@ class XlsxService
       { header: 'downvotes_count',      f: ->(i) { i.downvotes_count },                           skip_sanitization: true },
       { header: 'baskets_count',        f: ->(i) { i.baskets_count },                             skip_sanitization: true },
       { header: 'url',                  f: ->(i) { Frontend::UrlService.new.model_to_url(i) },    skip_sanitization: true },
-      { header: 'project',              f: ->(i) { @@multiloc_service.t(i&.project&.title_multiloc) } },
-      { header: 'topics',               f: ->(i) { i.topics.map { |t| @@multiloc_service.t(t.title_multiloc) }.join(',') } },
-      { header: 'areas',                f: ->(i) { i.areas.map { |a| @@multiloc_service.t(a.title_multiloc) }.join(',') } },
-      { header: 'status',               f: ->(i) { @@multiloc_service.t(i&.idea_status&.title_multiloc) } },
+      { header: 'project',              f: ->(i) { multiloc_service.t(i&.project&.title_multiloc) } },
+      { header: 'topics',               f: ->(i) { i.topics.map { |t| multiloc_service.t(t.title_multiloc) }.join(',') } },
+      { header: 'areas',                f: ->(i) { i.areas.map { |a| multiloc_service.t(a.title_multiloc) }.join(',') } },
+      { header: 'status',               f: ->(i) { multiloc_service.t(i&.idea_status&.title_multiloc) } },
       { header: 'assignee',             f: ->(i) { i.assignee&.full_name } },
       { header: 'assignee_email',       f: ->(i) { i.assignee&.email } },
       { header: 'latitude',             f: ->(i) { i.location_point&.coordinates&.last },         skip_sanitization: true },
@@ -158,32 +160,29 @@ class XlsxService
     ]
 
     columns.reject! { |c| %w[author_email assignee_email].include?(c[:header]) } unless view_private_attributes
+    columns
+  end
 
-    if with_tags
-      Tagging::Tag.joins(:taggings).where({tagging_taggings: {idea_id: ideas.map(&:id)}}).each { |tag|
-        columns.insert(3,{header: @@multiloc_service.t(tag.title_multiloc), f: -> (i) {
-          tagging = Tagging::Tagging.where(tag_id: tag.id, idea_id: i.id)
-          !tagging.empty? ? tagging.first.confidence_score : '0'
-          }})
-      }
-    end
+  def generate_ideas_xlsx(ideas, view_private_attributes: false, with_tags: false)
+    columns = generate_idea_xlsx_columns(ideas, view_private_attributes: view_private_attributes, with_tags: with_tags)
+
     generate_xlsx 'Ideas', columns, ideas
   end
 
   def generate_initiatives_xlsx(initiatives, view_private_attributes: false)
     columns = [
       { header: 'id',                   f: ->(i) { i.id }, skip_sanitization: true },
-      { header: 'title',                f: ->(i) { @@multiloc_service.t(i.title_multiloc) } },
-      { header: 'body',                 f: ->(i) { convert_to_text(@@multiloc_service.t(i.body_multiloc)) } },
+      { header: 'title',                f: ->(i) { multiloc_service.t(i.title_multiloc) } },
+      { header: 'body',                 f: ->(i) { convert_to_text(multiloc_service.t(i.body_multiloc)) } },
       { header: 'author_name',          f: ->(i) { i.author_name } },
       { header: 'author_email',         f: ->(i) { i.author&.email } },
       { header: 'publication_status',   f: ->(i) { i.publication_status },                              skip_sanitization: true },
       { header: 'published_at',         f: ->(i) { i.published_at },                                    skip_sanitization: true },
       { header: 'upvotes_count',        f: ->(i) { i.upvotes_count },                                   skip_sanitization: true },
       { header: 'url',                  f: ->(i) { Frontend::UrlService.new.model_to_url(i) },          skip_sanitization: true },
-      { header: 'topics',               f: ->(i) { i.topics.map { |t| @@multiloc_service.t(t.title_multiloc) }.join(',') } },
-      { header: 'areas',                f: ->(i) { i.areas.map { |a| @@multiloc_service.t(a.title_multiloc) }.join(',') } },
-      { header: 'initiative_status',    f: ->(i) { @@multiloc_service.t(i&.initiative_status&.title_multiloc) } },
+      { header: 'topics',               f: ->(i) { i.topics.map { |t| multiloc_service.t(t.title_multiloc) }.join(',') } },
+      { header: 'areas',                f: ->(i) { i.areas.map { |a| multiloc_service.t(a.title_multiloc) }.join(',') } },
+      { header: 'initiative_status',    f: ->(i) { multiloc_service.t(i&.initiative_status&.title_multiloc) } },
       { header: 'assignee',             f: ->(i) { i.assignee&.full_name } },
       { header: 'assignee_email',       f: ->(i) { i.assignee&.email } },
       { header: 'latitude',             f: ->(i) { i.location_point&.coordinates&.last },               skip_sanitization: true },
@@ -200,14 +199,14 @@ class XlsxService
   def generate_idea_comments_xlsx(comments, view_private_attributes: false)
     columns = [
       { header: 'id',            f: ->(c) { c.id }, skip_sanitization: true },
-      { header: 'input',         f: ->(c) { @@multiloc_service.t(c&.post.title_multiloc) } },
-      { header: 'body',          f: ->(c) { convert_to_text(@@multiloc_service.t(c.body_multiloc)) } },
+      { header: 'input',         f: ->(c) { multiloc_service.t(c&.post.title_multiloc) } },
+      { header: 'body',          f: ->(c) { convert_to_text(multiloc_service.t(c.body_multiloc)) } },
       { header: 'upvotes_count', f: ->(c) { c.upvotes_count }, skip_sanitization: true },
       { header: 'author_name',   f: ->(c) { c.author_name } },
       { header: 'author_email',  f: ->(c) { c.author&.email } },
       { header: 'created_at',    f: ->(c) { c.created_at },    skip_sanitization: true },
       { header: 'parent',        f: ->(c) { c.parent_id },     skip_sanitization: true },
-      { header: 'project',       f: ->(c) { @@multiloc_service.t(c&.idea&.project&.title_multiloc) } }
+      { header: 'project',       f: ->(c) { multiloc_service.t(c&.idea&.project&.title_multiloc) } }
     ]
     columns.reject! { |c| %w[author_email].include?(c[:header]) } unless view_private_attributes
     generate_xlsx 'Comments', columns, comments
@@ -216,8 +215,8 @@ class XlsxService
   def generate_initiative_comments_xlsx(comments, view_private_attributes: false)
     columns = [
       { header: 'id',            f: ->(c) { c.id }, skip_sanitization: true },
-      { header: 'initiative',    f: ->(c) { @@multiloc_service.t(c&.post.title_multiloc) } },
-      { header: 'body',          f: ->(c) { convert_to_text(@@multiloc_service.t(c.body_multiloc)) } },
+      { header: 'initiative',    f: ->(c) { multiloc_service.t(c&.post.title_multiloc) } },
+      { header: 'body',          f: ->(c) { convert_to_text(multiloc_service.t(c.body_multiloc)) } },
       { header: 'upvotes_count', f: ->(c) { c.upvotes_count }, skip_sanitization: true },
       { header: 'author_name',   f: ->(c) { c.author_name } },
       { header: 'author_email',  f: ->(c) { c.author&.email } },
@@ -236,7 +235,7 @@ class XlsxService
       { header: 'first_name',    f: ->(i) { i.invitee.first_name } },
       { header: 'last_name',     f: ->(i) { i.invitee.last_name } },
       { header: 'locale',        f: ->(i) { i.invitee.locale }, skip_sanitization: true },
-      { header: 'groups',        f: ->(i) { i.invitee.manual_groups.map { |g| @@multiloc_service.t(g.title_multiloc) }.join(',') }, skip_sanitization: true },
+      { header: 'groups',        f: ->(i) { i.invitee.manual_groups.map { |g| multiloc_service.t(g.title_multiloc) }.join(',') }, skip_sanitization: true },
       { header: 'admin',         f: ->(i) { i.invitee.admin? }, skip_sanitization: true }
     ]
     columns.reject! { |c| c[:header] == 'email' } unless view_private_attributes
@@ -265,7 +264,7 @@ class XlsxService
       { header: 'slug', f: ->(u) { u.slug }, skip_sanitization: true },
       { header: 'gender', f: ->(u) { u.gender } },
       { header: 'birthyear', f: ->(u) { u.birthyear } },
-      { header: 'domicile', f: ->(u) { @@multiloc_service.t(areas[u.domicile]&.title_multiloc) } },
+      { header: 'domicile', f: ->(u) { multiloc_service.t(areas[u.domicile]&.title_multiloc) } },
       { header: 'education', f: ->(u) { u.education } },
       { header: 'created_at', f: ->(u) { u.created_at }, skip_sanitization: true },
       *custom_field_columns
@@ -278,3 +277,4 @@ class XlsxService
 end
 
 XlsxService.prepend_if_ee('Verification::Patches::XlsxService')
+XlsxService.prepend_if_ee('Tagging::Patches::XlsxService')
