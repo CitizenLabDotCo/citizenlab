@@ -35,7 +35,7 @@ const ManageSection = ({ intl: { formatMessage } }: InjectedIntlProps) => {
   };
   const getHandleClickInteralTrack = (article: TManageArticle) => () => {
     trackEventByName(tracks.internalLink.name, {
-      extra: { section: 'manage', article },
+      extra: { article, section: 'manage' },
     });
   };
 

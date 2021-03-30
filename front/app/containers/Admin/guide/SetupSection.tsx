@@ -35,7 +35,7 @@ const SetupSection = ({ intl: { formatMessage } }: InjectedIntlProps) => {
   };
   const getHandleClickInteralTrack = (article: SetupArticle) => () => {
     trackEventByName(tracks.internalLink.name, {
-      extra: { section: 'setup', article },
+      extra: { article, section: 'setup' },
     });
   };
 

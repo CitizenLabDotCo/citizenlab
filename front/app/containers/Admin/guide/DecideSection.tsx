@@ -33,7 +33,7 @@ const DecideSection = ({ intl: { formatMessage } }: InjectedIntlProps) => {
   };
   const getHandleClickInteralTrack = (article) => () => {
     trackEventByName(tracks.internalLink.name, {
-      extra: { section: 'decide', article },
+      extra: { article, section: 'decide' },
     });
   };
 
