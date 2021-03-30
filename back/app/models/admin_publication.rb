@@ -18,7 +18,7 @@ class AdminPublication < ApplicationRecord
   }
 
   scope :not_draft, lambda {
-    where(publication_status: %w[published archived])
+    where.not(publication_status: 'draft')
   }
 
   def archived?
