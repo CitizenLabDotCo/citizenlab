@@ -507,7 +507,7 @@ resource "Users" do
       example_request "Get the authenticated user" do
         json_response = json_parse(response_body)
         expect(json_response.dig(:data, :id)).to eq(@user.id)
-        expect(json_response.dig(:data, :attributes, :verified)).to eq false
+        expect(json_response.dig(:data, :attributes, :verified)).to eq false if CitizenLab.ee?
       end
     end
 
@@ -664,7 +664,7 @@ resource "Users" do
         let(:email) { 'ray.mond@rocks.com' }
         let(:locale) { 'fr-FR' }
 
-        example "Can't change some attributes of a user verified with FranceConnect", document: false do
+        example "Can't change some attributes of a user verified with FranceConnect", document: false, skip: !CitizenLab.ee? do
           create(:verification, method_name: 'franceconnect', user: @user)
           @user.update(custom_field_values: {cf.key => "original value", birthyear_cf.key => 1950})
           do_request
@@ -717,12 +717,12 @@ resource "Users" do
       describe do
         let(:cf) { create(:custom_field) }
         let(:birthyear_cf) { create(:custom_field_birthyear) }
-
         let(:custom_field_values) {{
           cf.key => "new value",
           birthyear_cf.key => 1969,
         }}
-        example "Can't change some custom_field_values of a user verified with FranceConnect", document: false do
+
+        example "Can't change some custom_field_values of a user verified with FranceConnect", document: false, skip: !CitizenLab.ee? do
           @user.update(
             registration_completed_at: nil,
             custom_field_values: {cf.key => "original value", birthyear_cf.key => 1950}

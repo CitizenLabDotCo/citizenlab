@@ -35,6 +35,8 @@ import IdClaveUnicaConfiguration from './commercial/id_clave_unica';
 
 import widgetsConfiguration from './commercial/widgets';
 
+import taggingConfiguration from './commercial/tagging';
+
 declare var CL_CONFIG: any;
 
 export default loadModules([
@@ -161,5 +163,9 @@ export default loadModules([
   {
     configuration: widgetsConfiguration,
     isEnabled: CL_CONFIG['modules']['commercial/widgets'],
+  },
+  {
+    configuration: taggingConfiguration,
+    isEnabled: CL_CONFIG['modules']['commercial/tagging'],
   },
 ]);

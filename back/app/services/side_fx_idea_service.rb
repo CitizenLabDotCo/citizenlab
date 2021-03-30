@@ -43,10 +43,7 @@ class SideFxIdeaService
     end
   end
 
-  def before_destroy(idea, _user)
-    Tagging::Tagging.find(idea_id: idea.id).destroy_all
-  rescue ActiveRecord::RecordNotFound => _e
-  end
+  def before_destroy(idea, _user); end
 
   def after_destroy(frozen_idea, user)
     serialized_idea = clean_time_attributes(frozen_idea.attributes)
@@ -102,3 +99,4 @@ class SideFxIdeaService
 end
 
 ::SideFxIdeaService.prepend_if_ee('IdeaAssignment::Patches::SideFxIdeaService')
+::SideFxIdeaService.prepend_if_ee('Tagging::Patches::SideFxIdeaService')

@@ -12,9 +12,11 @@ type InputProps = {
 };
 
 type CustomOutletProps = CustomPropsMap[keyof CustomPropsMap];
+
 export type OutletRenderProps = (
   renderProps: JSX.Element[]
 ) => JSX.Element | null;
+
 type Children = OutletRenderProps;
 
 function useOutlet(identifier: OutletId) {

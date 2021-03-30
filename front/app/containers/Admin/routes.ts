@@ -118,14 +118,6 @@ export default () => ({
         delay: 500,
       }),
     },
-    {
-      path: 'processing',
-      component: Loadable({
-        loader: () => import('containers/Admin/processing'),
-        loading: LoadableLoadingAdmin,
-        delay: 500,
-      }),
-    },
     ...moduleConfiguration.routes.admin,
   ],
 });

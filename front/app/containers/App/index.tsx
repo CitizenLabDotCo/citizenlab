@@ -39,8 +39,9 @@ import ForbiddenRoute from 'components/routing/forbiddenRoute';
 import LoadableModal from 'components/Loadable/Modal';
 import LoadableUserDeleted from 'components/UserDeletedModalContent/LoadableUserDeleted';
 import ErrorBoundary from 'components/ErrorBoundary';
+import SignUpInModal from 'components/SignUpIn/SignUpInModal';
+
 import { LiveAnnouncer } from 'react-aria-live';
-const SignUpInModal = lazy(() => import('components/SignUpIn/SignUpInModal'));
 const PostPageFullscreenModal = lazy(() => import('./PostPageFullscreenModal'));
 
 // auth
@@ -522,9 +523,20 @@ class App extends PureComponent<Props, State> {
 
                   <ErrorBoundary>
                     <Suspense fallback={null}>
-                      <SignUpInModal
-                        onMounted={this.handleSignUpInModalMounted}
-                      />
+                      <Outlet
+                        id="app.containers.App.signUpInModal"
+                        onMounted={this.handleModalMounted}
+                      >
+                        {(outletComponents) =>
+                          outletComponents.length > 0 ? (
+                            <>{outletComponents}</>
+                          ) : (
+                            <SignUpInModal
+                              onMounted={this.handleSignUpInModalMounted}
+                            />
+                          )
+                        }
+                      </Outlet>
                     </Suspense>
                   </ErrorBoundary>
 
