@@ -7,10 +7,10 @@ require "user_custom_fields/version"
 Gem::Specification.new do |s|
   s.name        = "user_custom_fields"
   s.version     = UserCustomFields::VERSION
-  s.authors     = ["Koen Gremmelprez"]
-  s.email       = ["koen@citizenlab.co"]
+  s.authors     = ["CitizenLab"]
+  s.email       = ["developers@citizenlab.co"]
   s.licenses    = ['CitizenLab Commercial License']
-  s.summary     = "Allow admins to define custom registration fields."
+  s.summary     = "CitizenLab extension: Allow admins to define custom registration fields."
 
   s.files = Dir["{app,config,db,lib}/**/*", "README.md"]
 
