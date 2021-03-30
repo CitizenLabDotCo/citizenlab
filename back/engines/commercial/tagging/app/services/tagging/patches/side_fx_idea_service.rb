@@ -3,7 +3,7 @@ module Tagging
     module SideFxIdeaService
       def before_destroy(idea, _user)
         super
-        Tagging::Tagging.find(idea_id: idea.id).destroy_all
+        Tagging.find(idea_id: idea.id).destroy_all
       rescue ActiveRecord::RecordNotFound => _e
       end
     end
