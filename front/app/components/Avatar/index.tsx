@@ -109,7 +109,7 @@ const BadgeIcon = styled(Icon)<{ size: number; fill: string }>`
   border: solid 2px #fff;
 `;
 
-interface Props {
+export interface Props {
   userId: string | null;
   size: number;
   isLinkToProfile?: boolean;

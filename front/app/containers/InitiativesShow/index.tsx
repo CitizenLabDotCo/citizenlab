@@ -25,7 +25,6 @@ import Body from 'components/PostShowComponents/Body';
 import Image from 'components/PostShowComponents/Image';
 import Footer from 'components/PostShowComponents/Footer';
 import OfficialFeedback from 'components/PostShowComponents/OfficialFeedback';
-import TranslateButton from 'components/UI/TranslateButton';
 import InitiativeMeta from './InitiativeMeta';
 import PostedBy from './PostedBy';
 import PostedByMobile from './PostedByMobile';
@@ -79,6 +78,8 @@ import {
   rightColumnWidthTablet,
   pageContentMaxWidth,
 } from './styleConstants';
+
+import Outlet from 'components/Outlet';
 
 const contentFadeInDuration = 250;
 const contentFadeInEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
@@ -178,11 +179,6 @@ const StyledTopics = styled(Topics)`
   ${media.smallerThanMaxTablet`
     margin-bottom: 5px;
   `}
-`;
-
-const StyledTranslateButtonMobile = styled(TranslateButton)`
-  width: fit-content;
-  margin-bottom: 20px;
 `;
 
 const InitiativeHeader = styled.div`
@@ -491,10 +487,6 @@ export class InitiativesShow extends PureComponent<
             source: 'share_initiative',
             campaign: 'share_content',
           };
-      const showTranslateButton =
-        !isNilOrError(initiative) &&
-        !isNilOrError(locale) &&
-        !initiative.attributes.title_multiloc[locale];
 
       content = (
         <>
@@ -582,14 +574,14 @@ export class InitiativesShow extends PureComponent<
                   />
                 )}
 
-                {isNotDesktop && showTranslateButton && (
-                  <FeatureFlag name="machine_translations">
-                    <StyledTranslateButtonMobile
-                      translateButtonClicked={translateButtonClicked}
-                      onClick={this.onTranslateInitiative}
-                    />
-                  </FeatureFlag>
-                )}
+                <Outlet
+                  id="app.containers.InitiativesShow.left"
+                  windowSize={windowSize}
+                  translateButtonClicked={translateButtonClicked}
+                  onClick={this.onTranslateInitiative}
+                  initiative={initiative}
+                  locale={locale}
+                />
 
                 {initiativeGeoPosition && initiativeAddress && (
                   <StyledDropdownMap

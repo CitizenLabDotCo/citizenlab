@@ -12,12 +12,6 @@ export default {
   signUpEmailPasswordStepFailed:
     'Sign up - email & password sign-up step failed',
 
-  signUpVerificationStepEntered: 'Sign up - verification step entered',
-  signUpVerificationStepExited: 'Sign up - verification step exited',
-  signUpVerificationStepCompleted: 'Sign up - verification step completed',
-  signUpVerificationStepFailed: 'Sign up - verification step failed',
-  signUpVerificationStepSkipped: 'Sign up - verification step skipped',
-
   signInFlowEntered: 'Sign in flow entered',
   signInFlowExited: 'Sign in flow exited',
   signInFlowCompleted: 'Sign in flow completed',

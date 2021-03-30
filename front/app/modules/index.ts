@@ -5,9 +5,15 @@ import smartGroupsConfiguration from './commercial/smart_groups';
 import userCustomFieldsConfiguration from './commercial/user_custom_fields';
 import ideaCustomFieldsConfiguration from './commercial/idea_custom_fields';
 import granularPermissionsConfiguration from './commercial/granular_permissions';
-import moderationConfiguration from './commercial/moderation';
+import projectVisibilityConfiguration from './commercial/project_visibility';
+import projectManagementConfiguration from './commercial/project_management';
 import ideaAssignmentConfiguration from './commercial/idea_assignment';
+import moderationConfiguration from './commercial/moderation';
 import geographicDashboardConfiguration from './commercial/geographic_dashboard';
+import machineTranslationsConfiguration from './commercial/machine_translations';
+
+import similarIdeaConfiguration from './commercial/similar_ideas';
+import clusteringsConfiguration from './commercial/clusterings';
 
 import customMapsConfiguration from './commercial/custom_maps';
 import googleTagManagerConfiguration from './commercial/google_tag_manager';
@@ -17,8 +23,8 @@ import satismeterConfiguration from './commercial/satismeter';
 import segmentConfiguration from './commercial/segment';
 import matomoConfiguration from './commercial/matomo';
 import customIdeaStatusesConfiguration from './commercial/custom_idea_statuses';
+import verificationConfiguration from './commercial/verification';
 import customTopicsConfiguration from './commercial/custom_topics';
-
 
 import idBosaFasConfiguration from './commercial/id_bosa_fas';
 import idCowConfiguration from './commercial/id_cow';
@@ -75,6 +81,14 @@ export default loadModules([
     isEnabled: CL_CONFIG['modules']['commercial/granular_permissions'],
   },
   {
+    configuration: projectVisibilityConfiguration,
+    isEnabled: CL_CONFIG['modules']['commercial/project_visibility'],
+  },
+  {
+    configuration: projectManagementConfiguration,
+    isEnabled: CL_CONFIG['modules']['commercial/project_management'],
+  },
+  {
     configuration: moderationConfiguration,
     isEnabled: CL_CONFIG['modules']['commercial/moderation'],
   },
@@ -91,8 +105,16 @@ export default loadModules([
     isEnabled: CL_CONFIG['modules']['commercial/custom_topics'],
   },
   {
+    configuration: clusteringsConfiguration,
+    isEnabled: CL_CONFIG['modules']['commercial/clusterings'],
+  },
+  {
     configuration: geographicDashboardConfiguration,
     isEnabled: CL_CONFIG['modules']['commercial/geographic_dashboard'],
+  },
+  {
+    configuration: similarIdeaConfiguration,
+    isEnabled: CL_CONFIG['modules']['commercial/similar_ideas'],
   },
   {
     configuration: customMapsConfiguration,
@@ -121,5 +143,13 @@ export default loadModules([
   {
     configuration: IdClaveUnicaConfiguration,
     isEnabled: CL_CONFIG['modules']['commercial/id_clave_unica'],
+  },
+  {
+    configuration: machineTranslationsConfiguration,
+    isEnabled: CL_CONFIG['modules']['commercial/machine_translations'],
+  },
+  {
+    configuration: verificationConfiguration,
+    isEnabled: CL_CONFIG['modules']['commercial/verification'],
   },
 ]);

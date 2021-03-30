@@ -1,1 +1,16 @@
 back
+front/__mocks__
+front/app/assets/
+front/app/translations/
+front/docs
+front/internals
+front/storybook-static
+front/package.json
+front/package-lock.json
+front/.cache-loader
+front/.out
+front/.github
+front/.vscode
+front/.storybook
+front/custom.d.ts
+front/.circleci

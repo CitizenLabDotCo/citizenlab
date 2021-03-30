@@ -162,7 +162,7 @@ const DashboardTabs = memo<Props & WithRouterProps>(
                 })}
               </TabbedNav>
             ),
-            [tabs]
+            [tabs, location]
           )}
 
         <ChildWrapper>{children}</ChildWrapper>

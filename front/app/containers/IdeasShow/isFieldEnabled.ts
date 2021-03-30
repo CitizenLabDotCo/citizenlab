@@ -1,12 +1,12 @@
 import {
-  IIdeaCustomFieldsSchemas,
+  IIdeaFormSchemas,
   CustomFieldCodes,
-} from 'services/ideaCustomFields';
+} from 'services/ideaCustomFieldsSchemas';
 import { Locale } from 'typings';
 
 export default function isFieldEnabled(
   fieldCode: CustomFieldCodes,
-  ideaCustomFieldsSchemas: IIdeaCustomFieldsSchemas,
+  ideaCustomFieldsSchemas: IIdeaFormSchemas,
   locale: Locale
 ) {
   return (
