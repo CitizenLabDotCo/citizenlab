@@ -32,6 +32,7 @@
     "commercial/tagging": true,
     "commercial/user_custom_fields": true,
     "commercial/verification": true,
-    "commercial/widgets": true
+    "commercial/widgets": true,
+    "commercial/admin_project_templates": true
   }
 }
