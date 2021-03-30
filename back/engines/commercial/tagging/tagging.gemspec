@@ -14,7 +14,7 @@ Gem::Specification.new do |s|
   s.licenses    = ['CitizenLab Commercial License']
   s.summary     = 'Tags content from CitizenLab platform for processing'
 
-  s.files = Dir['{app,config,db,lib}/**/*', 'MIT-LICENSE', 'Rakefile', 'README.md']
+  s.files = Dir['{app,config,db,lib}/**/*', 'Rakefile', 'README.md']
 
   if s.respond_to?(:metadata)
     s.metadata['allowed_push_host'] = "Set to 'http://mygemserver.com'" # todo

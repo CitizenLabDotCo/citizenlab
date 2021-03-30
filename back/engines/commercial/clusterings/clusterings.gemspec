@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
   s.licenses    = ['CitizenLab Commercial License']
   s.summary     = 'Adds an extra method to classify inputs with nlp.'
 
-  s.files = Dir['{app,config,db,lib}/**/*', 'MIT-LICENSE', 'Rakefile', 'README.md']
+  s.files = Dir['{app,config,db,lib}/**/*', 'Rakefile', 'README.md']
 
   s.add_dependency 'apartment', '~> 2.2.1'
   s.add_dependency 'pundit', '~> 2.0'

@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
   s.licenses    = ['CitizenLab Commercial License']
   s.summary     = "Bundle all NLP related functionality neede for backend purposes"
 
-  s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
+  s.files = Dir["{app,config,db,lib}/**/*", "Rakefile", "README.md"]
 
   s.add_dependency "rails", "~> 6.0.0"
   s.add_dependency "httparty", "~> 0.16.2"

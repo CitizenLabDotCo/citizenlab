@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
   s.licenses    = ['CitizenLab Commercial License']
   s.summary     = "Rails engine that provides the endpoints for the public CL2 api"
 
-  s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
+  s.files = Dir["{app,config,db,lib}/**/*", "Rakefile", "README.md"]
 
   s.add_dependency "rails", "~> 6.0.0"
   s.add_dependency "pundit", "~> 2.0"
