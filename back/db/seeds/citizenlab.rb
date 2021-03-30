@@ -479,7 +479,6 @@ end
       }
     ]
   }
-  # TODO add success stories
 ].each do |attrs|
   attrs[:title_multiloc] = MultilocService.new.i18n_to_multiloc(attrs[:title_multiloc], locales: CL2_SUPPORTED_LOCALES)
   attrs[:body_multiloc] = MultilocService.new.i18n_to_multiloc(attrs[:body_multiloc], locales: CL2_SUPPORTED_LOCALES)
@@ -495,6 +494,23 @@ ordered_slug_links.each do |s1|
     )
   end
 end
+
+open_idea_project = Project.create!({
+  title_multiloc: MultilocService.new.i18n_to_multiloc('projects.open_idea_project_title', locales: CL2_SUPPORTED_LOCALES),
+  description_multiloc: MultilocService.new.i18n_to_multiloc('projects.open_idea_project_description', locales: CL2_SUPPORTED_LOCALES),
+  description_preview_multiloc: MultilocService.new.i18n_to_multiloc('projects.open_idea_project_description_preview', locales: CL2_SUPPORTED_LOCALES),
+  internal_role: 'open_idea_box',
+  presentation_mode: 'card',
+  process_type: 'continuous',
+  participation_method: 'ideation',
+  posting_enabled: true,
+  commenting_enabled: true,
+  voting_enabled: true,
+  voting_method: 'unlimited',
+  remote_header_bg_url: 'https://res.cloudinary.com/citizenlabco/image/upload/v1540214247/carrying-casual-cheerful-1162964_dxubq6.jpg'
+})
+open_idea_project.project_images.create!(remote_image_url: 'https://res.cloudinary.com/citizenlabco/image/upload/v1539874546/undraw_brainstorming_49d4_iaimmn.png')
+open_idea_project.set_default_topics!
 
 # Creates unsubscription tokens.
 User.all.each do |user|
