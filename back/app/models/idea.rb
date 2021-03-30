@@ -107,6 +107,10 @@ class Idea < ApplicationRecord
 
   scope :order_trending, -> { TrendingIdeaService.new.sort_trending(where('TRUE')) }
 
+  def just_published?
+    publication_status_previous_change == %w[draft published] || publication_status_previous_change == [nil, 'published']
+  end
+
   private
 
   def sanitize_body_multiloc

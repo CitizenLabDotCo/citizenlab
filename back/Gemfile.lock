@@ -252,6 +252,15 @@ PATH
       rails (~> 6.0.0)
 
 PATH
+  remote: engines/commercial/user_custom_fields
+  specs:
+    user_custom_fields (0.1.0)
+      active_model_serializers (~> 0.10.7)
+      apartment (~> 2.2.1)
+      pundit (~> 2.0)
+      rails (~> 6.0.0)
+
+PATH
   remote: engines/commercial/verification
   specs:
     verification (0.1.0)
@@ -1038,6 +1047,7 @@ DEPENDENCIES
   surveys!
   tagging!
   test-prof (~> 1.0)
+  user_custom_fields!
   verification!
   volunteering!
   webmock (~> 3.12)
