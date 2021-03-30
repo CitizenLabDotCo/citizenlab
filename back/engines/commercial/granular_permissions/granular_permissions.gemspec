@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.authors     = ["CitizenLab"]
   spec.email       = ["developers@citizenlab.co"]
   spec.summary     = "CitizenLab extension: granular permissions for actions in the scope of a participation context."
-  spec.license     = 'CitizenLab Commercial License'
+  spec.license     = 'CitizenLab Commercial License V1'
 
   spec.files = Dir["{app,config,db,lib}/**/*", "README.md"]
 

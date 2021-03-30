@@ -107,7 +107,7 @@
     :versions: []
     :when: 2020-11-17 00:08:53.943260529 Z
 - - :permit
-  - CitizenLab Commercial License
+  - CitizenLab Commercial License V1
   - :who: 
     :why: 
     :versions: []
@@ -167,9 +167,8 @@
     :versions: []
     :when: 2021-02-24 14:15:04.392754008 Z
 - - :approve
-  - custom_maps
-  - :who:
-    :why:
+  - project_permissions
+  - :who: 
+    :why: 
     :versions: []
-    :when: 2021-03-10 12:22:03.464981600 Z
-
+    :when: 2021-03-30 20:05:18.586364420 Z

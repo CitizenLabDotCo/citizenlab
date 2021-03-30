@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.version     = IdFranceconnect::VERSION
   s.summary     = "Authentication & verification using France's franceconnect id"
   s.authors     = ["Koen Gremmelprez"]
-  s.licenses    = ['CitizenLab Commercial License']
+  s.licenses    = ['CitizenLab Commercial License V1']
   s.files = Dir["{app,config,db,lib}/**/*", "Rakefile", "README.md"]
 
   s.add_dependency "rails", "~> 6.0.0"

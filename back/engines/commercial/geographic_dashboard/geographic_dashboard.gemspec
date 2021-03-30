@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.authors     = ['CitizenLab']
   spec.email       = ['developers@citizenlab.co']
   spec.summary     = 'The Engine responsible for geotagging ideas.'
-  spec.licenses    = ['CitizenLab Commercial License']
+  spec.licenses    = ['CitizenLab Commercial License V1']
 
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
