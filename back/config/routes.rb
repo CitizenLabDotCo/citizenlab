@@ -76,19 +76,7 @@ Rails.application.routes.draw do
       # auth
       post 'user_token' => 'user_token#create'
 
-
-      scope :users do
-        resources :custom_fields, controller: 'user_custom_fields' do
-          patch 'reorder', on: :member
-          get 'schema', on: :collection
-          resources :custom_field_options do
-            patch 'reorder', on: :member
-          end
-        end
-      end
-
-      resources :users do
-        resources :comments, only: [:index], controller: 'user_comments'
+      resources :users, only: %i[index create update destroy] do
         get :me, on: :collection
         post :complete_registration, on: :collection
         get :as_xlsx, on: :collection, action: 'index_xlsx'
@@ -99,7 +87,10 @@ Rails.application.routes.draw do
         get 'ideas_count', on: :member
         get 'initiatives_count', on: :member
         get 'comments_count', on: :member
+
+        resources :comments, only: [:index], controller: 'user_comments'
       end
+      get 'users/:id', to: 'users#show', constraints: { id: /\b(?!custom_fields)\b\S+/ }
 
       resources :topics, only: [:index, :show]
 
@@ -185,21 +176,11 @@ Rails.application.routes.draw do
         get 'users_by_time_cumulative', **route_params
         get 'active_users_by_time', **route_params
         get 'active_users_by_time_cumulative', **route_params
-        get 'users_by_gender', **route_params
-        get 'users_by_birthyear', **route_params
-        get 'users_by_domicile', **route_params
-        get 'users_by_education', **route_params
         get 'users_engagement_scores', **route_params
-        get 'users_by_custom_field/:custom_field_id', action: :users_by_custom_field, **route_params
 
         get 'users_by_time_as_xlsx', **route_params
         get 'users_by_time_cumulative_as_xlsx', **route_params
         get 'active_users_by_time_as_xlsx', **route_params
-        get 'users_by_gender_as_xlsx', **route_params
-        get 'users_by_birthyear_as_xlsx', **route_params
-        get 'users_by_domicile_as_xlsx', **route_params
-        get 'users_by_education_as_xlsx', **route_params
-        get 'users_by_custom_field_as_xlsx/:custom_field_id', action: :users_by_custom_field_as_xlsx, **route_params
 
         route_params = {controller: 'stats_ideas'}
         get 'ideas_count', **route_params
