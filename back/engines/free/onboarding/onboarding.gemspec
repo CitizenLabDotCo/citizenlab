@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
   s.email       = ["koen@citizenlab.co"]
   s.summary     = "Show onboarding messages to citizens and track their state"
 
-  s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
+  s.files = Dir["{app,config,db,lib}/**/*", "Rakefile", "README.md"]
 
   s.add_dependency "rails", "~> 6.0.0"
   s.add_dependency "pundit", "~> 2.0"
