@@ -1,7 +1,7 @@
 module Tagging
   module Extensions
     module Idea
-      def self.prepended(base)
+      def self.included(base)
         base.class_eval do
           has_many :tagging_taggings
           has_many :tagging_tags, through: :tagging_taggings
