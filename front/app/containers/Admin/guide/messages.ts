@@ -53,19 +53,6 @@ export default defineMessages({
     defaultMessage:
       'You can ask your users additional information while registering. Use the registration fields to get better insights, or to segment your users into groups, for example by age, area, interests, etc...',
   },
-  setupArticle3Link: {
-    id: 'containers.Admin.onboarding.setupArticle3Link',
-    defaultMessage: '/admin/settings/widgets',
-  },
-  setupArticle3Title: {
-    id: 'containers.Admin.onboarding.setupArticle3Title',
-    defaultMessage: 'Link the platform to third party websites using a widget',
-  },
-  setupArticle3Description: {
-    id: 'containers.Admin.onboarding.setupArticle3Description',
-    defaultMessage:
-      'A personalized widget brings people from other websites to your platform.',
-  },
   // Engage section
   engageSectionTitle: {
     id: 'containers.Admin.onboarding.engageSectionTitle',

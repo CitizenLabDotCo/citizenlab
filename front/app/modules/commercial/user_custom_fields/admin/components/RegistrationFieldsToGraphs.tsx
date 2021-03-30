@@ -10,7 +10,7 @@ import {
   usersByRegFieldStream,
   IUsersByRegistrationField,
   usersByRegFieldXlsxEndpoint,
-} from 'services/stats';
+} from 'modules/commercial/user_custom_fields/services/stats';
 
 // intl
 import { injectIntl } from 'utils/cl-intl';
@@ -21,9 +21,10 @@ import messages from 'containers/Admin/dashboard/messages';
 // components
 import BarChartByCategory from 'containers/Admin/dashboard/users/charts/BarChartByCategory';
 import PieChartByCategory from 'containers/Admin/dashboard/users/charts/PieChartByCategory';
-import AreaChart from 'containers/Admin/dashboard/users/charts/AreaChart';
-import GenderChart from 'containers/Admin/dashboard/users/charts/GenderChart';
-import AgeChart from 'containers/Admin/dashboard/users/charts/AgeChart';
+
+import AreaChart from 'modules/commercial/user_custom_fields/admin/components/AreaChart';
+import GenderChart from 'modules/commercial/user_custom_fields/admin/components/GenderChart';
+import AgeChart from 'modules/commercial/user_custom_fields/admin/components/AgeChart';
 
 import GetUserCustomFields, {
   GetUserCustomFieldsChildProps,
