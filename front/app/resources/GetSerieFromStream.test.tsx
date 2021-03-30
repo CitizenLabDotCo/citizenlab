@@ -4,6 +4,7 @@ import GetSerieFromStream, { ISupportedDataType } from './GetSerieFromStream';
 import { BehaviorSubject } from 'rxjs';
 
 jest.mock('services/areas');
+jest.mock('modules', () => ({ streamsToReset: [] }));
 
 let mockData: ISupportedDataType | null | undefined = null;
 
