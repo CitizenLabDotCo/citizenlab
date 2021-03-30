@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
   spec.email       = ['developers@citizenlab.co']
   spec.summary     = 'Custom Idea Fields'
   spec.description = 'Admin and project managers can specify which idea form fields to enable/disable or make mandatory.'
-  spec.licenses    = ['CitizenLab Commercial License']
+  spec.licenses    = ['CitizenLab Commercial License V1']
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
   # to allow pushing to a single host or delete this section to allow pushing to any host.

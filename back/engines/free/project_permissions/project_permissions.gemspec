@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.authors     = ["CitizenLab"]
   spec.email       = ["developers@citizenlab.co"]
   spec.summary     = "CitizenLab extension: Adds new configurations options for project permissions."
-  spec.license     = 'CitizenLab Commercial License'
+  spec.license     = 'AGPL-v3'
 
   spec.files = Dir["{app,config,db,lib}/**/*", "README.md"]
 

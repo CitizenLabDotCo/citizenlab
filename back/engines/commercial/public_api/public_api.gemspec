@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.version     = PublicApi::VERSION
   s.authors     = ["Koen Gremmelprez"]
   s.email       = ["koen@citizenlab.co"]
-  s.licenses    = ['CitizenLab Commercial License']
+  s.licenses    = ['CitizenLab Commercial License V1']
   s.summary     = "Rails engine that provides the endpoints for the public CL2 api"
 
   s.files = Dir["{app,config,db,lib}/**/*", "Rakefile", "README.md"]

@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.version     = CustomTopics::VERSION
   s.authors     = ['CitizenLab']
   s.email       = ['developers@citizenlab.co']
-  s.licenses    = ['CitizenLab Commercial License']
+  s.licenses    = ['CitizenLab Commercial License V1']
   s.summary     = 'CitizenLab extension: Allows customization of topics.'
 
   s.files = Dir["{app,config,db,lib}/**/*", "README.md"]
