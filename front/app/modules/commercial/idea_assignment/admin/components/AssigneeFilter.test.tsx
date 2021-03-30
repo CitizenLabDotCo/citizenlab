@@ -8,6 +8,7 @@ import { intl } from 'utils/cl-intl';
 jest.mock('resources/GetUsers', () => 'GetUsers');
 jest.mock('resources/GetAuthUser', () => 'GetAuthUser');
 jest.mock('utils/cl-intl');
+jest.mock('modules', () => ({ streamsToClose: [] }));
 
 import { AssigneeFilter } from './AssigneeFilter';
 

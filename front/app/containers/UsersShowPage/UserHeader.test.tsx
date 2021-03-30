@@ -8,6 +8,8 @@ import { UserHeader } from './UserHeader';
 // mock utilities
 jest.mock('utils/cl-intl');
 jest.mock('services/comments');
+jest.mock('modules', () => ({ streamsToClose: [] }));
+
 import { makeUser } from 'services/__mocks__/users';
 
 describe('<UserHeader />', () => {

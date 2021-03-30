@@ -26,6 +26,7 @@ jest.mock(
 );
 jest.mock('./components/LazyPostPreview', () => 'LazyPostPreview');
 jest.mock('components/Outlet', () => 'Outlet');
+jest.mock('modules', () => ({ streamsToClose: [] }));
 
 import { PostManager } from './';
 

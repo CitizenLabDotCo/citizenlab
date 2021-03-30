@@ -35,6 +35,7 @@ import { isUUID } from 'utils/helperUtils';
 
 // tslint:disable-next-line:no-module-references
 import { userCustomFieldsSchemaApiEndpoint } from 'modules/commercial/user_custom_fields/services/userCustomFields';
+import modules from 'modules';
 
 export type pureFn<T> = (arg: T) => T;
 type fetchFn = () => Promise<any>;
@@ -86,6 +87,7 @@ class Streams {
     this.streamIdsByApiEndPointWithoutQuery = {};
     this.streamIdsByDataIdWithoutQuery = {};
     this.streamIdsByDataIdWithQuery = {};
+    console.log(modules.streamsToReset);
   }
 
   async reset(authUser: IUser | null) {

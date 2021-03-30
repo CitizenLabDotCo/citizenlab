@@ -4,6 +4,7 @@ jest.mock('utils/cl-intl');
 jest.mock('services/stats');
 jest.mock('services/appConfiguration');
 jest.mock('components/Outlet', () => 'Outlet');
+jest.mock('modules', () => ({ streamsToClose: [] }));
 
 import { BarChartByCategory } from './BarChartByCategory';
 import { chartTheme } from '../..';

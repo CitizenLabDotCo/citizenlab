@@ -17,6 +17,7 @@ jest.mock('components/admin/Section', () => ({
   SectionDescription: 'SectionDescription',
 }));
 jest.mock('components/FeatureFlag', () => 'FeatureFlag');
+jest.mock('modules', () => ({ streamsToClose: [] }));
 
 describe('<AdminProjectPoll/>', () => {
   describe('boundaries', () => {

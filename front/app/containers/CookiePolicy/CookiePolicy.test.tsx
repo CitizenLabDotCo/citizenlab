@@ -1,7 +1,10 @@
 import React from 'react';
 import 'jest-styled-components';
+
 jest.mock('utils/cl-intl');
 jest.mock('services/pages');
+jest.mock('modules', () => ({ streamsToClose: [] }));
+
 import CookiePolicy from './index';
 import { shallowWithIntl } from '../../utils/testUtils/withIntl';
 

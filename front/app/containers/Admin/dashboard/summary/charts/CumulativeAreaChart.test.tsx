@@ -1,8 +1,11 @@
 import React from 'react';
 import { shallow } from 'enzyme';
+
 jest.mock('utils/cl-intl');
 jest.mock('services/appConfiguration');
 jest.mock('components/Outlet', () => 'Outlet');
+jest.mock('modules', () => ({ streamsToClose: [] }));
+
 import { intl } from 'utils/cl-intl';
 import { CumulativeAreaChart } from './CumulativeAreaChart';
 import {

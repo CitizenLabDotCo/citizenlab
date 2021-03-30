@@ -8,6 +8,7 @@ jest.mock('./OfficialFeedbackForm', () => 'OfficialFeedbackForm');
 jest.mock('./OfficialFeedbackFeed', () => 'OfficialFeedbackFeed');
 jest.mock('hooks/useLocale', () => jest.fn(() => 'en'));
 jest.mock('hooks/useAppConfigurationLocales', () => jest.fn(() => ['en']));
+jest.mock('modules', () => ({ streamsToClose: [] }));
 
 describe('<OfficialFeedback />', () => {
   it('matches the snapshot for none-admins', () => {

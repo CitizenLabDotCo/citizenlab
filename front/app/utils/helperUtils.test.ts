@@ -6,6 +6,8 @@ import {
   isPage,
 } from './helperUtils';
 
+jest.mock('modules', () => ({ streamsToClose: [] }));
+
 test('adds 1 + 2 to equal 3', () => {
   expect(sum(1, 2)).toBe(3);
 });
