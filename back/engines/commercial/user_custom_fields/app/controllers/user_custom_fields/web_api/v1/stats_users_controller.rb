@@ -4,7 +4,7 @@ module UserCustomFields
       class StatsUsersController < ::WebApi::V1::StatsController
 
         @@multiloc_service = MultilocService.new
-        
+
 
         def users_by_custom_field_serie
           users = StatUserPolicy::Scope.new(current_user, User.active).resolve
@@ -14,7 +14,6 @@ module UserCustomFields
             users = users.merge(group.members)
           end
 
-
           ps = ParticipantsService.new
 
           if params[:project]
@@ -22,7 +21,6 @@ module UserCustomFields
             participants = ps.project_participants(project)
             users = users.where(id: participants)
           end
-
 
           case @custom_field.input_type
           when 'select'
@@ -37,8 +35,8 @@ module UserCustomFields
             serie = users
               .joins("LEFT OUTER JOIN (SELECT jsonb_array_elements(custom_field_values->'#{@custom_field.key}') as field_value, id FROM users) as cfv ON users.id = cfv.id")
               .where(registration_completed_at: @start_at..@end_at)
-              .group("cfv.field_value")
-              .order("cfv.field_value")
+              .group('cfv.field_value')
+              .order('cfv.field_value')
               .count
             serie['_blank'] = serie.delete(nil) || 0 unless serie.empty?
             serie
@@ -75,15 +73,15 @@ module UserCustomFields
 
             res = options.map { |option|
               {
-                "option_id" => option.key,
-                "option" => @@multiloc_service.t(option.title_multiloc),
-                "users" => serie[option.key] || 0
+                'option_id' => option.key,
+                'option' => @@multiloc_service.t(option.title_multiloc),
+                'users' => serie[option.key] || 0
               }
             }
             res.push({
-              "option_id" => "_blank",
-              "option" =>"unknown",
-              "users" => serie["_blank"] || 0
+              'option_id' => '_blank',
+              'option' =>'unknown',
+              'users' => serie['_blank'] || 0
               })
             xlsx = XlsxService.new.generate_res_stats_xlsx res, 'users', 'option'
             send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'users_by_custom_field.xlsx'
@@ -92,14 +90,14 @@ module UserCustomFields
             send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'users_by_custom_field.xlsx'
           end
         end
+
+        private
+
+        def do_authorize
+          authorize :'user_custom_fields/stat_user'
+        end
+
       end
-
-      private
-
-      def do_authorize
-        authorize :stat_user
-      end
-
     end
   end
 end
