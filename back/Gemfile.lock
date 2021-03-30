@@ -64,6 +64,209 @@ GIT
       activesupport (>= 3.0.0)
 
 PATH
+  remote: engines/commercial/admin_api
+  specs:
+    admin_api (0.1.0)
+      active_model_serializers (~> 0.10.7)
+      apartment (~> 2.2.1)
+      custom_style
+      graphql (~> 1.8.0)
+      kaminari (~> 1.2)
+      multi_tenancy
+      rails (~> 6.0.0)
+
+PATH
+  remote: engines/commercial/custom_idea_statuses
+  specs:
+    custom_idea_statuses (0.1.0)
+      active_model_serializers (~> 0.10.7)
+      pundit (~> 2.0)
+      rails (~> 6.0.0)
+
+PATH
+  remote: engines/commercial/custom_maps
+  specs:
+    custom_maps (0.1.0)
+      apartment (~> 2.2.1)
+      pundit (~> 2.0)
+      rails (~> 6.0.0)
+
+PATH
+  remote: engines/commercial/custom_style
+  specs:
+    custom_style (0.1.0)
+      rails (~> 6.0.0)
+
+PATH
+  remote: engines/commercial/custom_topics
+  specs:
+    custom_topics (0.1.0)
+      active_model_serializers (~> 0.10.7)
+      pundit (~> 2.0)
+      rails (~> 6.0.0)
+
+PATH
+  remote: engines/commercial/geographic_dashboard
+  specs:
+    geographic_dashboard (0.1.0)
+      rails (~> 6.0.3, >= 6.0.3.2)
+
+PATH
+  remote: engines/commercial/granular_permissions
+  specs:
+    granular_permissions (0.1.0)
+      pundit (~> 2.0)
+      rails (~> 6.0.3, >= 6.0.3.2)
+
+PATH
+  remote: engines/commercial/id_bogus
+  specs:
+    id_bogus (0.1.0)
+      rails (~> 6.0.0)
+      verification
+
+PATH
+  remote: engines/commercial/id_bosa_fas
+  specs:
+    id_bosa_fas (0.1.0)
+      rails (~> 6.0.0)
+      verification
+
+PATH
+  remote: engines/commercial/id_clave_unica
+  specs:
+    id_clave_unica (0.1.0)
+      omniauth_openid_connect (~> 0.3.3)
+      rails (~> 6.0.0)
+      verification
+
+PATH
+  remote: engines/commercial/id_cow
+  specs:
+    id_cow (0.1.0)
+      rails (~> 6.0.0)
+      savon (~> 2.12.0)
+      verification
+
+PATH
+  remote: engines/commercial/id_franceconnect
+  specs:
+    id_franceconnect (0.1.0)
+      rails (~> 6.0.0)
+      verification
+
+PATH
+  remote: engines/commercial/id_id_card_lookup
+  specs:
+    id_id_card_lookup (0.1.0)
+      admin_api
+      rails (~> 6.0.0)
+      savon (~> 2.12.0)
+      verification
+
+PATH
+  remote: engines/commercial/idea_assignment
+  specs:
+    idea_assignment (0.1.0)
+      email_campaigns
+      rails (~> 6.0.3, >= 6.0.3.2)
+
+PATH
+  remote: engines/commercial/idea_custom_fields
+  specs:
+    idea_custom_fields (0.1.0)
+      rails (~> 6.0.3, >= 6.0.3.2)
+
+PATH
+  remote: engines/commercial/machine_translations
+  specs:
+    machine_translations (0.1.0)
+      active_model_serializers (~> 0.10.7)
+      apartment (~> 2.2.1)
+      easy_translate
+      pundit (~> 2.0)
+      rails (~> 6.0.0)
+
+PATH
+  remote: engines/commercial/matomo
+  specs:
+    matomo (0.1.0)
+      rails (~> 6.0.0)
+
+PATH
+  remote: engines/commercial/moderation
+  specs:
+    moderation (0.1.0)
+      active_model_serializers (~> 0.10.7)
+      pundit (~> 2.0)
+      rails (~> 6.0.0)
+
+PATH
+  remote: engines/commercial/nlp
+  specs:
+    nlp (0.1.0)
+      bunny
+      httparty (~> 0.16.2)
+      rails (~> 6.0.0)
+
+PATH
+  remote: engines/commercial/project_folders
+  specs:
+    project_folders (0.1.0)
+      rails (~> 6.0.3, >= 6.0.3.2)
+
+PATH
+  remote: engines/commercial/public_api
+  specs:
+    public_api (0.1.0)
+      active_model_serializers (~> 0.10.7)
+      apartment (~> 2.2.1)
+      kaminari (~> 1.2)
+      knock
+      pundit (~> 2.0)
+      rails (~> 6.0.0)
+
+PATH
+  remote: engines/commercial/smart_groups
+  specs:
+    smart_groups (0.1.0)
+      rails (~> 6.0.3, >= 6.0.3.2)
+
+PATH
+  remote: engines/commercial/tagging
+  specs:
+    tagging (0.1.0)
+      multi_tenancy
+      pundit (~> 2.0)
+      rails (~> 6.0.0)
+
+PATH
+  remote: engines/commercial/user_custom_fields
+  specs:
+    user_custom_fields (0.1.0)
+      active_model_serializers (~> 0.10.7)
+      apartment (~> 2.2.1)
+      pundit (~> 2.0)
+      rails (~> 6.0.0)
+
+PATH
+  remote: engines/commercial/verification
+  specs:
+    verification (0.1.0)
+      apartment (~> 2.2.1)
+      granular_permissions
+      pundit (~> 2.0)
+      rails (~> 6.0.0)
+      savon (~> 2.12.0)
+
+PATH
+  remote: engines/ee/multi_tenancy
+  specs:
+    multi_tenancy (0.1.0)
+      apartment (>= 2.2.1)
+      rails (~> 6.0.0)
+
+PATH
   remote: engines/free/email_campaigns
   specs:
     email_campaigns (0.1.0)
@@ -781,6 +984,8 @@ DEPENDENCIES
   spring-watcher-listen (~> 2.0.0)
   surveys!
   test-prof (~> 1.0)
+  user_custom_fields!
+  verification!
   volunteering!
   webmock (~> 3.12)
 
