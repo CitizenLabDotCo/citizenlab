@@ -14,6 +14,8 @@ jest.mock('components/UI/MoreActionsMenu', () => 'MoreActionsMenu');
 jest.mock('components/UI/QuillEditedContent', () => 'QuillEditedContent');
 jest.mock('components/T');
 jest.mock('utils/cl-intl');
+jest.mock('modules', () => ({ streamsToClose: [] }));
+jest.mock('modules', () => ({ streamsToClose: [] }));
 
 const Intl = require('utils/cl-intl/__mocks__/');
 const { intl } = Intl;

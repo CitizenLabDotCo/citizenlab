@@ -10,8 +10,10 @@ import { GetAuthUserChildProps } from 'resources/GetAuthUser';
 // mock utilities
 jest.mock('utils/cl-intl');
 jest.mock('utils/analytics', () => ({ trackEventByName: () => {} }));
+
 import { getNotification } from 'services/__mocks__/notifications';
 import { makeUser } from 'services/__mocks__/users';
+jest.mock('modules', () => ({ streamsToClose: [] }));
 
 const onLoadMore = jest.fn();
 const mockNotificationsFromResourceComp: GetNotificationsChildProps = {

@@ -9,6 +9,7 @@ import { ConsentManager } from './';
 jest.mock('services/appConfiguration');
 jest.mock('resources/GetAppConfiguration', () => 'GetAppConfiguration');
 jest.mock('./Container', () => 'Container');
+jest.mock('modules', () => ({ streamsToClose: [] }));
 
 // by default, no cookie
 

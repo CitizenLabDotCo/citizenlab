@@ -14,6 +14,7 @@ const __setMockIdeasCount = statsServices.__setMockIdeasCount;
 
 jest.mock('services/stats');
 jest.mock('services/projects');
+jest.mock('modules', () => ({ streamsToClose: [] }));
 
 describe('<GetIdeasCount />', () => {
   let child: jest.Mock;

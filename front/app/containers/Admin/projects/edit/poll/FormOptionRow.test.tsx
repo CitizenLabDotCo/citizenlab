@@ -33,6 +33,7 @@ jest.mock(
 );
 jest.mock('components/UI/Button', () => 'Button');
 jest.mock('utils/cl-intl', () => ({ FormattedMessage: 'FormattedMessage' }));
+jest.mock('modules', () => ({ streamsToClose: [] }));
 
 import { FormOptionRow, Props, State } from './FormOptionRow';
 

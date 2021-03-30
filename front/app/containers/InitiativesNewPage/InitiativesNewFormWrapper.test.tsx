@@ -12,6 +12,7 @@ jest.mock('utils/locationTools');
 jest.mock('utils/loggingUtils');
 
 jest.mock('lodash-es/debounce', () => jest.fn((fn) => fn));
+jest.mock('modules', () => ({ streamsToClose: [] }));
 
 import { addInitiative, updateInitiative } from 'services/initiatives';
 

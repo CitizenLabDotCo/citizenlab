@@ -21,6 +21,7 @@ jest.mock('utils/cl-intl', () => ({
 jest.mock('./PollSingleChoice', () => 'PollSingleChoice');
 jest.mock('./PollMultipleChoice', () => 'PollMultipleChoice');
 jest.mock('components/UI/Button', () => 'Button');
+jest.mock('modules', () => ({ streamsToClose: [] }));
 
 const singleOptionQuestion = mockQuestion(
   'questionSId',
