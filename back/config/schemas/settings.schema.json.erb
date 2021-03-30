@@ -295,7 +295,7 @@
           }
         }
       },
-      
+
       "integration_onze_stad_app": {
         "type": "object",
         "description":  "Allow posting ideas to Onze StadApp as news.",
@@ -332,7 +332,7 @@
             "description": "The OSM compatible tile provider URL pattern (https is required).",
             "type": "string",
             "pattern": "^https:\/\/.+",
-            "default": "https://api.maptiler.com/maps/basic/{z}/{x}/{y}.png?key=DIZiuhfkZEQ5EgsaTk6D"
+            "default": "<%= ENV.fetch('DEFAULT_MAPS_TILE_PROVIDER', 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png')%>"
           },
           "map_center": {
             "title": "Map Center",

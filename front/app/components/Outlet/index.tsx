@@ -6,6 +6,11 @@ type CustomPropsMap = {
   [P in keyof OutletsPropertyMap]: { id: P } & OutletsPropertyMap[P];
 };
 
+type InputProps = {
+  onRender?: (hasRendered: boolean) => void;
+  children?: Children;
+};
+
 type CustomOutletProps = CustomPropsMap[keyof CustomPropsMap];
 
 export type OutletRenderProps = (
@@ -13,9 +18,6 @@ export type OutletRenderProps = (
 ) => JSX.Element | null;
 
 type Children = OutletRenderProps;
-type InputProps = {
-  children?: Children;
-};
 
 function useOutlet(identifier: OutletId) {
   const outlets = useContext(OutletsContext);

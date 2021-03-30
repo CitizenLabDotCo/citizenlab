@@ -5,8 +5,8 @@ import useLocalize from 'hooks/useLocalize';
 import useGraphqlTenantLocales from 'hooks/useGraphqlTenantLocales';
 
 // graphql
-import { gql } from 'apollo-boost';
-import { useQuery } from '@apollo/react-hooks';
+import { gql, useQuery } from '@apollo/client';
+import { client } from '../../utils/apolloUtils';
 
 // components
 import FilterSelector, {
@@ -22,14 +22,14 @@ interface Props {
   onChange: (value: string[]) => void;
 }
 
-const PurposeFilter = memo<Props & InjectedIntlProps>(
+const ParticipationlevelFilter = memo<Props & InjectedIntlProps>(
   ({ intl: { formatMessage }, onChange }) => {
     const localize = useLocalize();
     const graphqlTenantLocales = useGraphqlTenantLocales();
 
-    const PURPOSES_QUERY = gql`
+    const PARTICIPATIONLEVELS_QUERY = gql`
     {
-      purposes {
+      participationLevels {
         nodes {
           id
           titleMultiloc {
@@ -42,12 +42,12 @@ const PurposeFilter = memo<Props & InjectedIntlProps>(
 
     const [selectedValues, setSelectedValues] = useState<string[]>([]);
 
-    const { data } = useQuery(PURPOSES_QUERY);
+    const { data } = useQuery(PARTICIPATIONLEVELS_QUERY, { client });
 
     let options: IFilterSelectorValue[] = [];
 
     if (data) {
-      options = data.purposes.nodes.map((node) => ({
+      options = data.participationLevels.nodes.map((node) => ({
         value: node.id,
         text: localize(node.titleMultiloc),
       }));
@@ -60,8 +60,8 @@ const PurposeFilter = memo<Props & InjectedIntlProps>(
 
     return (
       <FilterSelector
-        title={formatMessage(messages.purposes)}
-        name={formatMessage(messages.purposes)}
+        title={formatMessage(messages.participationLevels)}
+        name={formatMessage(messages.participationLevels)}
         selected={selectedValues}
         values={options}
         onChange={handleOnChange}
@@ -74,4 +74,4 @@ const PurposeFilter = memo<Props & InjectedIntlProps>(
   }
 );
 
-export default injectIntl(PurposeFilter);
+export default injectIntl(ParticipationlevelFilter);

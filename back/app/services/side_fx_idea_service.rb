@@ -16,11 +16,11 @@ class SideFxIdeaService
 
   def before_update(idea, user)
     idea.body_multiloc = TextImageService.new.swap_data_images(idea, :body_multiloc)
-    before_publish idea, user if idea.publication_status_change == %w[draft published]
+    before_publish idea, user if idea.just_published?
   end
 
   def after_update(idea, user)
-    if idea.publication_status_previous_change == %w[draft published]
+    if idea.just_published?
       after_publish idea, user
     elsif idea.published?
       LogActivityJob.perform_later(idea, 'changed', user, idea.updated_at.to_i)
@@ -43,10 +43,7 @@ class SideFxIdeaService
     end
   end
 
-  def before_destroy(idea, _user)
-    Tagging::Tagging.find(idea_id: idea.id).destroy_all
-  rescue ActiveRecord::RecordNotFound => _e
-  end
+  def before_destroy(idea, _user); end
 
   def after_destroy(frozen_idea, user)
     serialized_idea = clean_time_attributes(frozen_idea.attributes)
@@ -102,3 +99,4 @@ class SideFxIdeaService
 end
 
 ::SideFxIdeaService.prepend_if_ee('IdeaAssignment::Patches::SideFxIdeaService')
+::SideFxIdeaService.prepend_if_ee('Tagging::Patches::SideFxIdeaService')

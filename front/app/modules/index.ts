@@ -10,8 +10,8 @@ import projectManagementConfiguration from './commercial/project_management';
 import ideaAssignmentConfiguration from './commercial/idea_assignment';
 import moderationConfiguration from './commercial/moderation';
 import geographicDashboardConfiguration from './commercial/geographic_dashboard';
+import adminProjectTemplatesConfiguration from './commercial/admin_project_templates';
 import machineTranslationsConfiguration from './commercial/machine_translations';
-
 import similarIdeaConfiguration from './commercial/similar_ideas';
 import clusteringsConfiguration from './commercial/clusterings';
 
@@ -115,6 +115,10 @@ export default loadModules([
   {
     configuration: geographicDashboardConfiguration,
     isEnabled: CL_CONFIG['modules']['commercial/geographic_dashboard'],
+  },
+  {
+    configuration: adminProjectTemplatesConfiguration,
+    isEnabled: CL_CONFIG['modules']['commercial/admin_project_templates'],
   },
   {
     configuration: similarIdeaConfiguration,

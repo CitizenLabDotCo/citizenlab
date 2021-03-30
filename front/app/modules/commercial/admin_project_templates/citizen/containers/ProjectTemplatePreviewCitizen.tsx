@@ -1,11 +1,10 @@
 import React, { memo } from 'react';
-import { adopt } from 'react-adopt';
 import { get } from 'lodash-es';
 import { withRouter, WithRouterProps } from 'react-router';
 import clHistory from 'utils/cl-router/history';
 
 // components
-import ProjectTemplatePreview from './ProjectTemplatePreview';
+import ProjectTemplatePreview from '../../components/ProjectTemplatePreview';
 import { Icon } from 'cl2-component-library';
 
 // utils
@@ -13,11 +12,11 @@ import { isNilOrError } from 'utils/helperUtils';
 import { isAdmin } from 'services/permissions/roles';
 
 // resources
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import useAuthUser from 'hooks/useAuthUser';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
+import messages from '../../admin/containers/messages';
 
 // styling
 import styled from 'styled-components';
@@ -104,19 +103,13 @@ const InfoboxText = styled.div`
   }
 `;
 
-export interface InputProps {
-  projectTemplateId: string;
+export interface Props {
   className?: string;
 }
 
-interface DataProps {
-  authUser: GetAuthUserChildProps;
-}
-
-interface Props extends InputProps, DataProps {}
-
-const ProjectTemplatePreviewPageCitizen = memo<Props & WithRouterProps>(
-  ({ params, className, authUser }) => {
+const ProjectTemplatePreviewCitizen = memo<Props & WithRouterProps>(
+  ({ params, className }) => {
+    const authUser = useAuthUser();
     const projectTemplateId: string | undefined = get(
       params,
       'projectTemplateId'
@@ -164,21 +157,4 @@ const ProjectTemplatePreviewPageCitizen = memo<Props & WithRouterProps>(
   }
 );
 
-const ProjectTemplatePreviewPageCitizenWithHoC = withRouter(
-  ProjectTemplatePreviewPageCitizen
-);
-
-const Data = adopt<DataProps, InputProps>({
-  authUser: <GetAuthUser />,
-});
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => (
-      <ProjectTemplatePreviewPageCitizenWithHoC
-        {...inputProps}
-        {...dataProps}
-      />
-    )}
-  </Data>
-);
+export default withRouter(ProjectTemplatePreviewCitizen);

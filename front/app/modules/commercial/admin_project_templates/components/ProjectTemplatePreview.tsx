@@ -6,8 +6,8 @@ import useLocalize from 'hooks/useLocalize';
 import useGraphqlTenantLocales from 'hooks/useGraphqlTenantLocales';
 
 // graphql
-import { gql } from 'apollo-boost';
-import { useQuery } from '@apollo/react-hooks';
+import { gql, useQuery } from '@apollo/client';
+import { client } from '../utils/apolloUtils';
 
 // components
 import Button from 'components/UI/Button';
@@ -21,7 +21,7 @@ import messages from './messages';
 
 // analytics
 import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
+import tracks from '../tracks';
 
 // style
 import styled from 'styled-components';
@@ -372,7 +372,7 @@ const ProjectTemplatePreview = memo<Props>(
     }
   `;
 
-    const { loading, data } = useQuery(TEMPLATE_QUERY);
+    const { loading, data } = useQuery(TEMPLATE_QUERY, { client });
 
     const copyLink = useCallback(() => {
       clipboard.writeText(
