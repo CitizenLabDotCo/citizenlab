@@ -14,20 +14,20 @@ import { ManagerType } from 'components/admin/PostManager';
 
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import messages from './messages';
+import messages from '../../messages';
 import {
   addTagging,
   deleteTagging,
   switchToManual,
   ITagging,
-} from 'services/taggings';
+} from '../../services/taggings';
 import TagSearch from './TagSearch';
 import { isNilOrError } from 'utils/helperUtils';
-import { ITag } from 'services/tags';
+import { ITag } from '../../services/tags';
 import { InjectedIntlProps } from 'react-intl';
 import TagWrapper from './TagWrapper';
 import { trackEventByName } from 'utils/analytics';
-import { getTagValidation } from 'utils/tagUtils';
+import { getTagValidation } from '../../utils/tagUtils';
 
 export const Container = styled.div`
   display: flex;

@@ -259,7 +259,7 @@ export const DashboardsPage = memo(
       },
     ]);
 
-    const moderatorTabs = [
+    const moderatorTabs: ITab[] = [
       {
         label: formatMessage(messages.tabSummary),
         url: '/admin/dashboard',

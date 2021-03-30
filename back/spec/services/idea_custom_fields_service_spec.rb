@@ -12,9 +12,7 @@ describe IdeaCustomFieldsService do
 
     it "takes the order of the built-in fields" do
       custom_form = create(:custom_form)
-      cf1 = create(:custom_field, resource: custom_form, code: 'location')
       output = service.all_fields(custom_form)
-      expect(output).to include cf1
       expect(output.map(&:code)).to eq [
         'title',
         'body',

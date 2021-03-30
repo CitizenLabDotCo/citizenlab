@@ -4,7 +4,7 @@ import React, { memo } from 'react';
 import { Tag } from 'cl2-component-library';
 
 import useLocalize from 'hooks/useLocalize';
-import useTag from 'hooks/useTag';
+import useTag from '../../hooks/useTag';
 
 type TagProps = React.ComponentProps<typeof Tag>;
 
