@@ -4,7 +4,7 @@ class TrackSegmentService
 
   def initialize(segment_client = SEGMENT_CLIENT)
     @tracking_service = TrackingService.new
-    @segment_client = SEGMENT_CLIENT
+    @segment_client = segment_client
   end
 
   def identify_user(user)
