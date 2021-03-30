@@ -1,22 +1,21 @@
 import React, { ReactElement, memo, useState, useCallback } from 'react';
 import useGraphqlTenantLocales from 'hooks/useGraphqlTenantLocales';
 import { isNilOrError } from 'utils/helperUtils';
-import { useQuery } from '@apollo/react-hooks';
-import { gql } from 'apollo-boost';
+import { gql, useQuery } from '@apollo/client';
 import useAppConfiguration from 'hooks/useAppConfiguration';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import { trackEventByName } from 'utils/analytics';
 import { get, isEmpty } from 'lodash-es';
-import tracks from './tracks';
-
-import ProjectTemplateCards from './ProjectTemplateCards';
+import tracks from '../../tracks';
+import ProjectTemplateCards from '../components/ProjectTemplateCards';
+import { client } from '../../utils/apolloUtils';
 
 interface Props {
   className?: string;
   graphqlTenantLocales: string[];
 }
 
-const ProjectTemplatesContainer = memo(
+const CreateProjectFromTemplate = memo(
   ({ graphqlTenantLocales, className }: Props): ReactElement => {
     const tenant = useAppConfiguration();
 
@@ -78,6 +77,7 @@ const ProjectTemplatesContainer = memo(
     }
   `;
     const { loading, data, fetchMore } = useQuery(TEMPLATES_QUERY, {
+      client,
       variables: {
         departments,
         purposes,
@@ -184,17 +184,17 @@ const ProjectTemplatesContainer = memo(
   }
 );
 
-const ProjectTemplatesContainerWithGraphqlLocales = memo((props) => {
+const CreateProjectFromTemplateWithGraphqlLocales = memo((props) => {
   const graphqlTenantLocales = useGraphqlTenantLocales();
 
   if (isNilOrError(graphqlTenantLocales)) return null;
 
   return (
-    <ProjectTemplatesContainer
+    <CreateProjectFromTemplate
       graphqlTenantLocales={graphqlTenantLocales}
       {...props}
     />
   );
 });
 
-export default ProjectTemplatesContainerWithGraphqlLocales;
+export default CreateProjectFromTemplateWithGraphqlLocales;

@@ -5,11 +5,11 @@ import eventEmitter from 'utils/eventEmitter';
 
 // analytics
 import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
+import tracks from '../../tracks';
 
 // components
 import Button from 'components/UI/Button';
-import UseTemplateModal from 'components/ProjectTemplatePreview/UseTemplateModal';
+import UseTemplateModal from './UseTemplateModal';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';

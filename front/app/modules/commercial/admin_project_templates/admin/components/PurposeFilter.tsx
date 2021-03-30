@@ -5,8 +5,8 @@ import useLocalize from 'hooks/useLocalize';
 import useGraphqlTenantLocales from 'hooks/useGraphqlTenantLocales';
 
 // graphql
-import { gql } from 'apollo-boost';
-import { useQuery } from '@apollo/react-hooks';
+import { gql, useQuery } from '@apollo/client';
+import { client } from '../../utils/apolloUtils';
 
 // components
 import FilterSelector, {
@@ -22,14 +22,14 @@ interface Props {
   onChange: (value: string[]) => void;
 }
 
-const DepartmentFilter = memo<Props & InjectedIntlProps>(
+const PurposeFilter = memo<Props & InjectedIntlProps>(
   ({ intl: { formatMessage }, onChange }) => {
     const localize = useLocalize();
     const graphqlTenantLocales = useGraphqlTenantLocales();
 
-    const DEPARTMENTS_QUERY = gql`
+    const PURPOSES_QUERY = gql`
     {
-      departments {
+      purposes {
         nodes {
           id
           titleMultiloc {
@@ -42,12 +42,12 @@ const DepartmentFilter = memo<Props & InjectedIntlProps>(
 
     const [selectedValues, setSelectedValues] = useState<string[]>([]);
 
-    const { data } = useQuery(DEPARTMENTS_QUERY);
+    const { data } = useQuery(PURPOSES_QUERY, { client });
 
     let options: IFilterSelectorValue[] = [];
 
     if (data) {
-      options = data.departments.nodes.map((node) => ({
+      options = data.purposes.nodes.map((node) => ({
         value: node.id,
         text: localize(node.titleMultiloc),
       }));
@@ -60,8 +60,8 @@ const DepartmentFilter = memo<Props & InjectedIntlProps>(
 
     return (
       <FilterSelector
-        title={formatMessage(messages.departments)}
-        name={formatMessage(messages.departments)}
+        title={formatMessage(messages.purposes)}
+        name={formatMessage(messages.purposes)}
         selected={selectedValues}
         values={options}
         onChange={handleOnChange}
@@ -74,4 +74,4 @@ const DepartmentFilter = memo<Props & InjectedIntlProps>(
   }
 );
 
-export default injectIntl(DepartmentFilter);
+export default injectIntl(PurposeFilter);
