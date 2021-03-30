@@ -7,7 +7,7 @@ import { Checkbox, Spinner, Tag } from 'cl2-component-library';
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
-import messages from './messages';
+import messages from '../../messages';
 
 // styling
 import styled from 'styled-components';
@@ -20,7 +20,7 @@ import { Multiloc } from 'typings';
 
 // hooks
 import useLocalize from 'hooks/useLocalize';
-import { ITagging } from 'services/taggings';
+import { ITagging } from '../../services/taggings';
 import TagWrapper from './TagWrapper';
 import { trackEventByName } from 'utils/analytics';
 

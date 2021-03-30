@@ -133,6 +133,8 @@ export interface IAppConfigurationSettings {
   ideas_overview?: AppConfigurationFeature;
   smart_groups?: AppConfigurationFeature;
   manual_emailing?: AppConfigurationFeature;
+  manual_tagging?: AppConfigurationFeature;
+  automatic_tagging?: AppConfigurationFeature;
   automated_emailing_control?: AppConfigurationFeature;
   typeform_surveys?: {
     allowed: boolean;

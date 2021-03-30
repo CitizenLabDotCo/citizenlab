@@ -6,7 +6,7 @@ import { isNonEmptyString } from 'utils/helperUtils';
 // i18n
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
-import messages from './messages';
+import messages from '../../messages';
 
 // Components
 import AsyncSelectCreatable from 'react-select/async-creatable';
@@ -17,8 +17,8 @@ import selectStyles from 'components/UI/MultipleSelect/styles';
 
 // Typings
 import { IOption } from 'typings';
-import { ITag, tagsStream } from 'services/tags';
-import { getTagValidation } from 'utils/tagUtils';
+import { ITag, tagsStream } from '../../services/tags';
+import { getTagValidation } from '../../utils/tagUtils';
 import useLocalize from 'hooks/useLocalize';
 
 const Container = styled.div``;

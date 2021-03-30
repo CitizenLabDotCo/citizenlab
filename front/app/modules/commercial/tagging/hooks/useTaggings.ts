@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { ITagging, taggingStream } from 'services/taggings';
+import { ITagging, taggingStream } from '../services/taggings';
 import { isNilOrError } from 'utils/helperUtils';
 
 export default function useTaggings() {

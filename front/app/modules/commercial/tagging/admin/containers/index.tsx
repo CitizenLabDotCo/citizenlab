@@ -13,7 +13,7 @@ import Modal from 'components/UI/Modal';
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
-import messages from './messages';
+import messages from '../../messages';
 
 // analytics
 import { trackEventByName } from 'utils/analytics';
@@ -34,15 +34,15 @@ import useLocalize from 'hooks/useLocalize';
 import useLocale from 'hooks/useLocale';
 import useAppConfiguration from 'hooks/useAppConfiguration';
 import { CSSTransition } from 'react-transition-group';
-import useTags from 'hooks/useTags';
+import useTags from '../../hooks/useTags';
 import Tippy from '@tippyjs/react';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 import FeatureFlag from 'components/FeatureFlag';
 import IdeasTable from './IdeasTable';
-import useTaggings from 'hooks/useTaggings';
+import useTaggings from '../../hooks/useTaggings';
 import EmptyState from './EmptyState';
-import { cancelGenerate } from 'services/taggings';
-import usePendingTasks from 'hooks/usePendingTasks';
+import { cancelGenerate } from '../../services/taggings';
+import usePendingTasks from '../../hooks/usePendingTasks';
 
 const Container = styled.div`
   height: calc(100vh - ${(props) => props.theme.menuHeight}px);

@@ -17,7 +17,7 @@ import Table from 'components/UI/Table';
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
-import messages from './messages';
+import messages from '../../messages';
 
 // analytics
 import { trackEventByName } from 'utils/analytics';
@@ -29,13 +29,13 @@ import styled from 'styled-components';
 import { adopt } from 'react-adopt';
 import GetIdeas, { GetIdeasChildProps } from 'resources/GetIdeas';
 import { IIdeaData } from 'services/ideas';
-import { ITagging } from 'services/taggings';
+import { ITagging } from '../../services/taggings';
 
 // hooks & res
-import useKeyPress from '../../../hooks/useKeyPress';
+import useKeyPress from 'hooks/useKeyPress';
 import PostPreview from './PostPreview';
 import { CSSTransition } from 'react-transition-group';
-import { ITag } from 'services/tags';
+import { ITag } from '../../services/tags';
 import EmptyState from './EmptyState';
 
 const PostPreviewTransitionWrapper = styled.div`

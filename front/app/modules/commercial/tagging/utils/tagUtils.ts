@@ -1,4 +1,4 @@
-import { isNilOrError } from './helperUtils';
+import { isNilOrError } from 'utils/helperUtils';
 
 export const getTagValidation = (tag: string) => {
   if (tag.length < 2) {

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { ITag, tagStream } from 'services/tags';
+import { ITag, tagStream } from '../services/tags';
 
 export interface IUseTag {
   tag: ITag | null | Error | undefined;
