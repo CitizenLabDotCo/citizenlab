@@ -8,6 +8,7 @@ import { DashboardsPage } from './';
 // mock utilities
 jest.mock('utils/cl-intl');
 jest.mock('components/Outlet', () => 'Outlet');
+jest.mock('modules', () => ({ streamsToReset: [] }));
 
 import { mockAdmin, mockProjectModerator } from 'services/__mocks__/auth';
 const Intl = require('utils/cl-intl/__mocks__/');
