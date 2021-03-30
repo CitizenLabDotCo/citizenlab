@@ -33,8 +33,7 @@ import stringify from 'json-stable-stringify';
 import { reportError } from 'utils/loggingUtils';
 import { isUUID } from 'utils/helperUtils';
 
-// TO FIX : close streams via lifecycle
-// tslint:disable-next-line
+// tslint:disable-next-line:no-module-references
 import { userCustomFieldsSchemaApiEndpoint } from 'modules/commercial/user_custom_fields/services/userCustomFields';
 
 export type pureFn<T> = (arg: T) => T;

@@ -10,7 +10,11 @@ import {
   ReferenceLine,
   ResponsiveContainer,
 } from 'recharts';
-import { votesByDomicileStream, IVotesByDomicile } from 'services/stats';
+import {
+  votesByDomicileStream,
+  IVotesByDomicile,
+} from 'modules/commercial/user_custom_fields/services/stats';
+
 import GetAreas, { GetAreasChildProps } from 'resources/GetAreas';
 import { isNilOrError } from 'utils/helperUtils';
 import localize, { InjectedLocalized } from 'utils/localize';
