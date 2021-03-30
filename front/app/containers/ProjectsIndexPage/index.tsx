@@ -2,7 +2,7 @@ import React from 'react';
 
 // components
 import ContentContainer from 'components/ContentContainer';
-import ProjectAndFolderCards from 'components/ProjectAndFolderCards';
+import AdminPublicationCards from 'components/AdminPublicationCards';
 import CityLogoSection from 'components/CityLogoSection';
 import ProjectsIndexMeta from './ProjectsIndexMeta';
 
@@ -69,7 +69,7 @@ export default React.memo(() => (
         <PageTitle>
           <FormattedMessage {...messages.pageTitle} />
         </PageTitle>
-        <ProjectAndFolderCards
+        <AdminPublicationCards
           showTitle={false}
           layout="threecolumns"
           publicationStatusFilter={['published', 'archived']}

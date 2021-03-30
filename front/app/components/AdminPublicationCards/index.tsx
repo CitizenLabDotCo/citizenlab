@@ -242,7 +242,7 @@ interface State {
   areas: string[];
 }
 
-class ProjectAndFolderCards extends PureComponent<
+class AdminPublicationCards extends PureComponent<
   Props & InjectedIntlProps & WithRouterProps,
   State
 > {
@@ -435,8 +435,7 @@ class ProjectAndFolderCards extends PureComponent<
           {!loadingInitial && hasPublications && list && (
             <ProjectsList id="e2e-projects-list">
               {list.map((item: IAdminPublicationContent, index: number) => {
-                const projectOrFolderId = item.publicationId;
-                const projectOrFolderType = item.publicationType;
+                const { publicationId, publicationType } = item;
                 const size =
                   layout === 'dynamic'
                     ? cardSizes[index]
@@ -446,15 +445,15 @@ class ProjectAndFolderCards extends PureComponent<
 
                 return (
                   <React.Fragment key={index}>
-                    {projectOrFolderType === 'project' && (
+                    {publicationType === 'project' && (
                       <ProjectCard
-                        projectId={projectOrFolderId}
+                        projectId={publicationId}
                         size={size}
                         layout={layout}
                       />
                     )}
                     <Outlet
-                      id="app.components.ProjectAndFolderCards.card"
+                      id="app.components.AdminPublicationCards.card"
                       publication={item}
                       size={size}
                       layout={layout}
@@ -514,8 +513,8 @@ class ProjectAndFolderCards extends PureComponent<
   }
 }
 
-const ProjectAndFolderCardsWithHOCs = withTheme(
-  injectIntl<Props>(withRouter(ProjectAndFolderCards))
+const AdminPublicationCardsWithHOCs = withTheme(
+  injectIntl<Props>(withRouter(AdminPublicationCards))
 );
 
 const Data = adopt<DataProps, InputProps>({
@@ -537,7 +536,7 @@ const Data = adopt<DataProps, InputProps>({
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
     {(dataProps) => (
-      <ProjectAndFolderCardsWithHOCs {...inputProps} {...dataProps} />
+      <AdminPublicationCardsWithHOCs {...inputProps} {...dataProps} />
     )}
   </Data>
 );

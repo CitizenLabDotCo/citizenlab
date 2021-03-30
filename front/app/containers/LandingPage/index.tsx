@@ -12,9 +12,9 @@ import InitiativesCTABox from './InitiativesCTABox';
 import T from 'components/T';
 import Fragment from 'components/Fragment';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
-import LoadingBox from 'components/ProjectAndFolderCards/LoadingBox';
-const ProjectAndFolderCards = React.lazy(() =>
-  import('components/ProjectAndFolderCards')
+import LoadingBox from 'components/AdminPublicationCards/LoadingBox';
+const AdminPublicationCards = React.lazy(() =>
+  import('components/AdminPublicationCards')
 );
 
 // resources
@@ -211,7 +211,7 @@ class LandingPage extends PureComponent<Props, State> {
                 <ProjectSection id="e2e-landing-page-project-section">
                   <SectionContainer>
                     <Suspense fallback={<LoadingBox />}>
-                      <ProjectAndFolderCards
+                      <AdminPublicationCards
                         publicationStatusFilter={['published', 'archived']}
                         showTitle={true}
                         layout="dynamic"

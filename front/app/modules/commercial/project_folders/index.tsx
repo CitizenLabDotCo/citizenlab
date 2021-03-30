@@ -92,7 +92,7 @@ const configuration: ModuleConfiguration = {
         <ProjectFolderRow {...props} />
       </RenderOnPublicationType>
     ),
-    'app.components.ProjectAndFolderCards.card': (props) => (
+    'app.components.AdminPublicationCards.card': (props) => (
       <RenderOnPublicationType publication={props.publication}>
         <ProjectFolderCard {...props} />
       </RenderOnPublicationType>

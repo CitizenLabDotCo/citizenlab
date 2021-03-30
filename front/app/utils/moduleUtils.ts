@@ -93,7 +93,7 @@ export type OutletsPropertyMap = {
   };
   'app.containers.AdminPage.projects.all.createProjectNotAdmin': {};
   'app.containers.AdminPage.projects.all.projectsAndFolders.actions': {};
-  'app.components.ProjectAndFolderCards.card': {
+  'app.components.AdminPublicationCards.card': {
     publication: IAdminPublicationContent;
     size: 'small' | 'medium' | 'large';
     layout: 'dynamic' | 'threecolumns' | 'twocolumns';
