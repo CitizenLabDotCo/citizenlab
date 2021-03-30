@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 
 // services
 import {
+  AppConfigurationSettingsFeatureNames,
   currentAppConfigurationStream,
   IAppConfiguration,
   IAppConfigurationData,
@@ -11,7 +12,7 @@ import {
 import { isNilOrError } from 'utils/helperUtils';
 
 interface Props {
-  name: string;
+  name: AppConfigurationSettingsFeatureNames;
   /** when this flag is set, the feature will show if it's allowed, regardless of whether it's enabled */
   onlyCheckAllowed: boolean;
 }

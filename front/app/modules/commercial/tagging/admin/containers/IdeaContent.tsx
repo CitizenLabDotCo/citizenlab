@@ -22,7 +22,7 @@ import { InjectedIntlProps } from 'react-intl';
 // style
 import styled from 'styled-components';
 import { stylingConsts, fontSizes, colors } from 'utils/styleUtils';
-import { deleteTagging, ITagging } from 'services/taggings';
+import { deleteTagging, ITagging } from '../../services/taggings';
 import { trackEventByName } from 'utils/analytics';
 
 const Content = styled.div`
