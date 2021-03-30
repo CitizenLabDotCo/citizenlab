@@ -1,6 +1,7 @@
 module EmailCampaigns
   class TasksService
     def schedule_email_campaigns
+      time = Time.zone.now
       EmailCampaigns::TriggerOnScheduleJob.perform_later(time.to_i)
     end
 
@@ -14,10 +15,10 @@ module EmailCampaigns
 
     def remove_consents(emails_url)
       emails = open(emails_url).readlines.map(&:strip).map(&:downcase)
-      puts "Found #{emails.size} emails"
+      Rails.logger.info "Found #{emails.size} emails"
 
       users = User.where(email: emails).all
-      puts "Found #{users.size} users in #{tenant.name}"
+      Rails.logger.info "Found #{users.size} users in #{tenant.name}"
 
       users.each do |user|
         consentable_campaign_types = EmailCampaigns::DeliveryService.new.consentable_campaign_types_for(user)
@@ -44,4 +45,4 @@ module EmailCampaigns
   end
 end
 
-EmailCampaigns::SchedulingService.prepend_if_ee('MultiTenancy::Patches::EmailCampaigns::TasksService')
+EmailCampaigns::TasksService.prepend_if_ee('MultiTenancy::Patches::EmailCampaigns::TasksService')
