@@ -77,17 +77,17 @@ const configuration: ModuleConfiguration = {
         </RenderOnPublicationType>
       );
     },
-    'app.containers.AdminPage.projects.all.projectsAndFolders.title': () => (
+    'app.containers.AdminPage.projects.all.adminPublications.title': () => (
       <RenderOnFeatureFlag>
         <ProjectFolderTitle />
       </RenderOnFeatureFlag>
     ),
-    'app.containers.AdminPage.projects.all.projectsAndFolders.actions': () => (
+    'app.containers.AdminPage.projects.all.adminPublications.actions': () => (
       <RenderOnFeatureFlag>
         <NewProjectFolderButton />
       </RenderOnFeatureFlag>
     ),
-    'app.containers.AdminPage.projects.all.projectsAndFolders.row': (props) => (
+    'app.containers.AdminPage.projects.all.adminPublications.row': (props) => (
       <RenderOnPublicationType publication={props.publication}>
         <ProjectFolderRow {...props} />
       </RenderOnPublicationType>
