@@ -87,7 +87,6 @@ class Streams {
     this.streamIdsByApiEndPointWithoutQuery = {};
     this.streamIdsByDataIdWithoutQuery = {};
     this.streamIdsByDataIdWithQuery = {};
-    console.log(modules.streamsToReset);
   }
 
   async reset(authUser: IUser | null) {
@@ -102,7 +101,7 @@ class Streams {
       if (
         streamId === authApiEndpoint ||
         streamId === currentAppConfigurationEndpoint ||
-        streamId === userCustomFieldsSchemaApiEndpoint
+        modules.streamsToReset.includes(streamId)
       ) {
         promisesToAwait.push(this.streams[streamId].fetch());
       } else if (this.isActiveStream(streamId)) {
