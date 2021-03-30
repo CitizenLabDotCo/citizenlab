@@ -188,19 +188,6 @@ class Sidebar extends PureComponent<
             ),
         },
         {
-          name: 'processing',
-          link: '/admin/processing',
-          iconName: 'processing',
-          featureName: 'manual_tagging',
-          message: 'processing',
-          isActive: (pathName) =>
-            pathName.startsWith(
-              `${
-                getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''
-              }/admin/processing`
-            ),
-        },
-        {
           name: 'workshops',
           link: '/admin/workshops',
           iconName: 'workshops',
