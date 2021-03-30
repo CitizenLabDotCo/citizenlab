@@ -1,6 +1,7 @@
 import React, { memo, useContext } from 'react';
 import { OutletsPropertyMap, OutletId } from 'utils/moduleUtils';
 import { OutletsContext } from 'containers/OutletsProvider';
+import { isEmpty } from 'lodash-es';
 
 type CustomPropsMap = {
   [P in keyof OutletsPropertyMap]: { id: P } & OutletsPropertyMap[P];
@@ -25,15 +26,19 @@ type Props = InputProps & CustomOutletProps;
 const Outlet = memo(({ children, id, ...props }: Props) => {
   const outletComponents = useOutlet(id);
 
-  const componentsToRender = outletComponents.map((Component, index) => (
-    <Component key={`${id}_${index}`} {...props} />
-  ));
+  if (outletComponents && !isEmpty(outletComponents)) {
+    const componentsToRender = outletComponents.map((Component, index) => (
+      <Component key={`${id}_${index}`} {...props} />
+    ));
 
-  if (children) {
-    return children(componentsToRender);
+    if (children) {
+      return children(componentsToRender);
+    } else {
+      return <>{componentsToRender}</>;
+    }
   }
 
-  return <>{componentsToRender}</>;
+  return null;
 });
 
 export default Outlet;
