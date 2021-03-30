@@ -10,6 +10,7 @@ Gem::Specification.new do |spec|
   spec.authors     = ["Adrien Dessy"]
   spec.email       = ["adrien@citizenlab.co"]
   spec.summary     = "Additional styling options for CitizenLab participation platform."
+  spec.licenses    = ["CitizenLab Commercial License"]
 
   spec.files = Dir["{app,config,db,lib}/**/*", "Rakefile", "README.md"]
 
