@@ -38,8 +38,8 @@ const ProjectPermissions = memo(
             projectId={projectId}
             project={project}
           >
-            {(outletComponents) => {
-              return (
+            {(outletComponents) =>
+              outletComponents.length > 0 ? (
                 <StyledSection>
                   <StyledSectionTitle>
                     <FormattedMessage
@@ -48,23 +48,23 @@ const ProjectPermissions = memo(
                   </StyledSectionTitle>
                   {outletComponents}
                 </StyledSection>
-              );
-            }}
+              ) : null
+            }
           </Outlet>
           <Outlet
             id="app.containers.Admin.project.edit.permissions.moderatorRights"
             projectId={projectId}
           >
-            {(outletComponents) => {
-              return (
+            {(outletComponents) =>
+              outletComponents.length > 0 ? (
                 <StyledSection>
                   <StyledSectionTitle>
                     <FormattedMessage {...messages.moderationRightsTitle} />
                   </StyledSectionTitle>
                   {outletComponents}
                 </StyledSection>
-              );
-            }}
+              ) : null
+            }
           </Outlet>
         </>
       );
