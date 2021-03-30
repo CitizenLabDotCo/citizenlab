@@ -385,80 +385,71 @@ workflows:
   release:
     when: << pipeline.parameters.trigger >>
     jobs:
-      # - front-test:
-      #     filters:
-      #       branches:
-      #         only:
-      #           - production
-      #           - OS-187-deployment
-      # - front-lint:
-      #     filters:
-      #       branches:
-      #         only:
-      #           - production
-      #           - OS-187-deployment
-      # - front-license-check:
-      #     filters:
-      #       branches:
-      #         only:
-      #           - production
-      #           - OS-187-deployment
-      # - front-build:
-      #     filters:
-      #       branches:
-      #         only:
-      #           - production
-      #           - OS-187-deployment
-      # - back-build-essential-docker-image:
-      #     context: docker-hub-access
-      #     filters:
-      #       branches:
-      #         only:
-      #           - production
-      #           - OS-187-deployment
-      # - back-test:
-      #     context: docker-hub-access
-      #     requires:
-      #       - back-build-essential-docker-image
-      #     filters:
-      #       branches:
-      #         only:
-      #           - production
-      #           - OS-187-deployment
-      # - back-license-check:
-      #     context: docker-hub-access
-      #     requires:
-      #       - back-build-essential-docker-image
-      #     filters:
-      #       branches:
-      #         only:
-      #           - production
-      #           - OS-187-deployment
-      - front-release-essential-image:
-          context: docker-hub-access
-          # requires:
-          #   - front-test
-          #   - front-license-check
-          #   - front-build
-          #   - front-lint
-          #   - back-test
-          #   - back-license-check
+      - front-test:
           filters:
             branches:
               only:
                 - production
-                - OS-187-deployment
-      # - back-release-essential-image:
-      #     context: docker-hub-access
-      #     requires:
-      #       - front-test
-      #       - front-license-check
-      #       - front-build
-      #       - front-lint
-      #       - back-test
-      #       - back-license-check
-      #     filters:
-      #       branches:
-      #         only:
-      #           - production
-      #           - OS-187-deployment
+      - front-lint:
+          filters:
+            branches:
+              only:
+                - production
+      - front-license-check:
+          filters:
+            branches:
+              only:
+                - production
+      - front-build:
+          filters:
+            branches:
+              only:
+                - production
+      - back-build-essential-docker-image:
+          context: docker-hub-access
+          filters:
+            branches:
+              only:
+                - production
+      - back-test:
+          context: docker-hub-access
+          requires:
+            - back-build-essential-docker-image
+          filters:
+            branches:
+              only:
+                - production
+      - back-license-check:
+          context: docker-hub-access
+          requires:
+            - back-build-essential-docker-image
+          filters:
+            branches:
+              only:
+                - production
+      - front-release-essential-image:
+          context: docker-hub-access
+          requires:
+            - front-test
+            - front-license-check
+            - front-build
+            - front-lint
+            - back-test
+            - back-license-check
+          filters:
+            branches:
+              only:
+                - production
+      - back-release-essential-image:
+          context: docker-hub-access
+          requires:
+            - front-test
+            - front-license-check
+            - front-build
+            - front-lint
+            - back-test
+            - back-license-check
+          filters:
+            branches:
+              only:
+                - production
