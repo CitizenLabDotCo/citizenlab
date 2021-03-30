@@ -166,7 +166,7 @@ if ['public','example_org'].include? Apartment::Tenant.current
       maps: {
         enabled: true,
         allowed: true,
-        tile_provider: "https://api.maptiler.com/maps/basic/{z}/{x}/{y}.png?key=DIZiuhfkZEQ5EgsaTk6D",
+        tile_provider: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
         map_center: {
           lat: "50.8503",
           long: "4.3517"
