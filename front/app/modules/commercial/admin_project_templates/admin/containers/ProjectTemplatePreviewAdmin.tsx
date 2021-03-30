@@ -1,12 +1,12 @@
-import React, { memo, useCallback, useState } from 'react';
+import React, { memo, useCallback, useEffect, useState } from 'react';
 import { get } from 'lodash-es';
 import { withRouter, WithRouterProps } from 'react-router';
 import clHistory from 'utils/cl-router/history';
 
 // components
 import Button from 'components/UI/Button';
-import ProjectTemplatePreview from './ProjectTemplatePreview';
-import UseTemplateModal from 'components/ProjectTemplatePreview/UseTemplateModal';
+import ProjectTemplatePreview from '../../components/ProjectTemplatePreview';
+import UseTemplateModal from '../components/UseTemplateModal';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -34,13 +34,14 @@ const AdminHeader = styled.div`
 `;
 
 export interface Props {
-  projectTemplateId: string;
+  projectTemplateId?: string;
   goBack?: () => void;
   className?: string;
+  onRender?: (hasRendered: boolean) => void;
 }
 
-const ProjectTemplatePreviewPageAdmin = memo<Props & WithRouterProps>(
-  ({ params, projectTemplateId, goBack, className }) => {
+const ProjectTemplatePreviewAdmin = memo<Props & WithRouterProps>(
+  ({ params, projectTemplateId, goBack, className, onRender }) => {
     const templateId: string | undefined =
       projectTemplateId || get(params, 'projectTemplateId');
 
@@ -59,6 +60,12 @@ const ProjectTemplatePreviewPageAdmin = memo<Props & WithRouterProps>(
     const onGoBack = useCallback(() => {
       goBack ? goBack() : clHistory.push('/admin/projects');
     }, []);
+
+    useEffect(() => {
+      if (onRender) {
+        onRender(true);
+      }
+    }, [onRender]);
 
     if (templateId) {
       return (
@@ -81,7 +88,7 @@ const ProjectTemplatePreviewPageAdmin = memo<Props & WithRouterProps>(
           <ProjectTemplatePreview projectTemplateId={templateId} />
 
           <UseTemplateModal
-            projectTemplateId={projectTemplateId}
+            projectTemplateId={projectTemplateId as string}
             opened={modalOpened}
             emitSuccessEvent={true}
             showGoBackLink={true}
@@ -95,4 +102,4 @@ const ProjectTemplatePreviewPageAdmin = memo<Props & WithRouterProps>(
   }
 );
 
-export default withRouter(ProjectTemplatePreviewPageAdmin);
+export default withRouter(ProjectTemplatePreviewAdmin);

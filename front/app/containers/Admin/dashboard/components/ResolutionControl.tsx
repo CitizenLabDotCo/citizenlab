@@ -22,15 +22,15 @@ export default class ResolutionControl extends PureComponent<Props> {
     const { value, className } = this.props;
     const resOptions = [
       {
-        value: 'day',
+        name: 'day',
         label: <FormattedMessage {...messages.resolutionday} />,
       },
       {
-        value: 'week',
+        name: 'week',
         label: <FormattedMessage {...messages.resolutionweek} />,
       },
       {
-        value: 'month',
+        name: 'month',
         label: <FormattedMessage {...messages.resolutionmonth} />,
       },
     ];
@@ -40,7 +40,7 @@ export default class ResolutionControl extends PureComponent<Props> {
         <Tabs
           items={resOptions}
           selectedValue={
-            resOptions.find((item) => item.value === value)?.value as string
+            resOptions.find((item) => item.name === value)?.name as string
           }
           onClick={this.handleOnResolutionChange}
         />
