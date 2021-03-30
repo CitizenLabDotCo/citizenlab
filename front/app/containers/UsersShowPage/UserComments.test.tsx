@@ -10,6 +10,7 @@ import { UserComments, reducer } from './UserComments';
 // mock utilities
 jest.mock('utils/cl-intl');
 jest.mock('services/comments');
+jest.mock('modules', () => ({ streamsToReset: [] }));
 jest.mock('components/Outlet', () => 'Outlet');
 
 import { makeComments } from 'services/comments';

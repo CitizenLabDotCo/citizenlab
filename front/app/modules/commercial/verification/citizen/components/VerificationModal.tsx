@@ -49,7 +49,7 @@ export function isInitiativeContext(
 
 export interface Props {
   className?: string;
-  onMounted: (id: string) => void;
+  onMounted: (id?: string) => void;
 }
 
 const VerificationModal = memo<Props>(({ className, onMounted }) => {

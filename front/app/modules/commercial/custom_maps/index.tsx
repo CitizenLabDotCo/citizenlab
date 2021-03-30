@@ -74,14 +74,9 @@ const configuration: ModuleConfiguration = {
     ),
     'app.containers.Admin.projects.edit': (props) => {
       return (
-        <RenderOnFeatureFlag>
-          <RenderOnHideTabCondition
-            project={props.project}
-            phases={props.phases}
-          >
-            <Tab {...props} />,
-          </RenderOnHideTabCondition>
-        </RenderOnFeatureFlag>
+        <RenderOnHideTabCondition project={props.project} phases={props.phases}>
+          <Tab {...props} />,
+        </RenderOnHideTabCondition>
       );
     },
   },
