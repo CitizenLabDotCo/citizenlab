@@ -33,7 +33,7 @@ const Container = styled.div``;
 
 interface Props {
   className?: string;
-  onMounted?: () => void;
+  onMounted?: (id?: string) => void;
 }
 
 const SignUpInModal = memo<Props>(({ className, onMounted }) => {
