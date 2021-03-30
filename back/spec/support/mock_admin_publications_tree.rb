@@ -29,7 +29,7 @@ class MockAdminPublicationsTree
 
   def create_empty_parents
     records = statuses.map do |status|
-      publication = false ? create(:project_folder) : create(:project, :that_can_have_children)
+      publication = CitizenLab.ee? ? create(:project_folder) : create(:project, :that_can_have_children)
       create(:admin_publication, publication_status: status, publication: publication)
     end
     @empty_parents = AdminPublication.where(id: records.map(&:id))
@@ -37,7 +37,7 @@ class MockAdminPublicationsTree
 
   def create_admin_only_parents
     records = statuses.map do |status|
-      publication = false ? create(:project_folder) : create(:project, :that_can_have_children, visible_to: 'groups')
+      publication = CitizenLab.ee? ? create(:project_folder) : create(:project, :that_can_have_children, visible_to: 'groups')
       create(:admin_publication, publication_status: status, publication: publication)
     end
     @admin_only_parents = AdminPublication.where(id: records.map(&:id))
@@ -45,7 +45,7 @@ class MockAdminPublicationsTree
 
   def create_public_parents
     records = statuses.map do |status|
-      publication = false ? create(:project_folder) : create(:project, :that_can_have_children)
+      publication = CitizenLab.ee? ? create(:project_folder) : create(:project, :that_can_have_children)
       create(:admin_publication, publication_status: status, publication: publication)
     end
     @public_parents = AdminPublication.where(id: records.map(&:id))
@@ -81,7 +81,7 @@ class MockAdminPublicationsTree
   end
 
   def create_published_parent_with_draft_children
-    publication = false ? create(:project_folder) : create(:project, :that_can_have_children)
+    publication = CitizenLab.ee? ? create(:project_folder) : create(:project, :that_can_have_children)
     @published_parent_with_draft_children = create(:admin_publication,
                                                    publication_status: 'published',
                                                    publication: publication)
