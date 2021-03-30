@@ -3,13 +3,16 @@ require 'rails_helper'
 describe AdminPublicationsFilteringService do
   subject(:result) { described_class.new.filter(base_scope, options) }
 
-  let(:options) { {} }
-  let(:base_scope) { AdminPublication.includes(:parent) }
+  before do
+    AdminPublication.destroy_all
+  end
 
   let!(:tree_mock) { MockAdminPublicationsTree.call }
 
   shared_examples 'when a normal user searching from the landing page' do
-    let(:base_scope) { Pundit.policy_scope(create(:user), AdminPublication.includes(:parent)) }
+    let(:base_scope) do
+      Pundit.policy_scope(create(:user), AdminPublication.includes(:parent))
+    end
 
     it 'includes truly empty parents' do
       expect(result.ids).to include(*tree_mock.empty_parents.where(publication_status: %w[archived published]).ids)
