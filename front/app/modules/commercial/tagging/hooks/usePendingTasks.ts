@@ -1,7 +1,7 @@
 import { API_PATH } from 'containers/App/constants';
 import { useState, useEffect } from 'react';
 import { of, timer } from 'rxjs';
-import { IPendingTask, pendingTasksStream } from 'services/pendingTasks';
+import { IPendingTask, pendingTasksStream } from '../services/pendingTasks';
 import { isNilOrError } from 'utils/helperUtils';
 import streams from 'utils/streams';
 

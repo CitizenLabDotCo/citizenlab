@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { ITagSuggestion, tagSuggestionsStream } from 'services/tags';
+import { ITagSuggestion, tagSuggestionsStream } from '../services/tags';
 
 export default function useTagSuggestions(
   ideaIdsParam: string[] | null,

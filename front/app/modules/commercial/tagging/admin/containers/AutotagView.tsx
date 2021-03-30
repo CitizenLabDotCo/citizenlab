@@ -9,24 +9,24 @@ import styled from 'styled-components';
 import { stylingConsts, colors, fontSizes } from 'utils/styleUtils';
 
 // i18n
-import messages from './messages';
+import messages from '../../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // hooks
 import useLocale from 'hooks/useLocale';
 import useKeyPress from 'hooks/useKeyPress';
-import useTagSuggestions from 'hooks/useTagSuggestions';
+import useTagSuggestions from '../../hooks/useTagSuggestions';
 import useLocalize from 'hooks/useLocalize';
-import useTags from 'hooks/useTags';
+import useTags from '../../hooks/useTags';
 
 // services and typings
-import { ITag } from 'services/tags';
-import { generateTaggings } from 'services/taggings';
+import { ITag } from '../../services/tags';
+import { generateTaggings } from '../../services/taggings';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import { trackEventByName } from 'utils/analytics';
-import { getTagValidation } from 'utils/tagUtils';
+import { getTagValidation } from '../../utils/tagUtils';
 
 const Container = styled.div`
   display: flex;

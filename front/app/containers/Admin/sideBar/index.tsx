@@ -36,6 +36,7 @@ import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import Outlet from 'components/Outlet';
 import { InsertConfigurationOptions } from 'typings';
 import { insertConfiguration } from 'utils/moduleUtils';
+import { AppConfigurationSettingsFeatureNames } from 'services/appConfiguration';
 
 const Menu = styled.div`
   z-index: 10;
@@ -144,7 +145,7 @@ export type NavItem = {
   link: string;
   iconName: IconNames;
   message: string;
-  featureName?: string;
+  featureName?: AppConfigurationSettingsFeatureNames;
   isActive: (pathname: string) => boolean;
   count?: number;
   onlyCheckAllowed?: boolean;
@@ -185,19 +186,6 @@ class Sidebar extends PureComponent<
               `${
                 getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''
               }/admin/projects`
-            ),
-        },
-        {
-          name: 'processing',
-          link: '/admin/processing',
-          iconName: 'processing',
-          featureName: 'manual_tagging',
-          message: 'processing',
-          isActive: (pathName) =>
-            pathName.startsWith(
-              `${
-                getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''
-              }/admin/processing`
             ),
         },
         {

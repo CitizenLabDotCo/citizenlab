@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { ITag, tagsStream } from 'services/tags';
+import { ITag, tagsStream } from '../services/tags';
 import { isNilOrError } from 'utils/helperUtils';
 
 export interface IUseTag {
