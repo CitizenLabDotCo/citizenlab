@@ -28,7 +28,7 @@ describe XlsxService do
     end
 
     it "contains a row for every user" do
-      expect(worksheet.sheet_data.size).to eq (users.size + 1) 
+      expect(worksheet.sheet_data.size).to eq (users.size + 1)
     end
 
     it "contains extra columns for custom user fields" do
@@ -59,7 +59,7 @@ describe XlsxService do
     end
 
     it "contains a row for every idea" do
-      expect(worksheet.sheet_data.size).to eq (ideas.size + 1) 
+      expect(worksheet.sheet_data.size).to eq (ideas.size + 1)
     end
 
     describe do
@@ -82,7 +82,7 @@ describe XlsxService do
     end
 
     it "contains a row for every initiative" do
-      expect(worksheet.sheet_data.size).to eq (initiatives.size + 1) 
+      expect(worksheet.sheet_data.size).to eq (initiatives.size + 1)
     end
 
     describe do
@@ -152,7 +152,7 @@ describe XlsxService do
     end
 
     it "contains a row for every invite" do
-      expect(worksheet.sheet_data.size).to eq (invites.size + 1) 
+      expect(worksheet.sheet_data.size).to eq (invites.size + 1)
     end
 
     describe do
@@ -201,5 +201,4 @@ describe XlsxService do
        expect(round_trip_hash_array).to eq hash_array
     end
   end
-
 end
