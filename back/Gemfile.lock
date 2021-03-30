@@ -36,17 +36,6 @@ GIT
       activesupport (>= 4.2)
 
 GIT
-  remote: https://github.com/influitive/apartment.git
-  revision: f266f73e58835f94e4ec7c16f28443fe5eada1ac
-  branch: development
-  specs:
-    apartment (2.2.1)
-      activerecord (>= 3.1.2, < 6.1)
-      parallel (>= 0.7.1)
-      public_suffix (>= 2)
-      rack (>= 1.3.6)
-
-GIT
   remote: https://github.com/nsarno/knock
   revision: 9214cd027422df8dc31eb67c60032fbbf8fc100b
   ref: 9214cd027422df8dc31eb67c60032fbbf8fc100b
@@ -73,209 +62,6 @@ GIT
   specs:
     pundit (2.1.0)
       activesupport (>= 3.0.0)
-
-PATH
-  remote: engines/commercial/admin_api
-  specs:
-    admin_api (0.1.0)
-      active_model_serializers (~> 0.10.7)
-      apartment (~> 2.2.1)
-      custom_style
-      graphql (~> 1.8.0)
-      kaminari (~> 1.2)
-      multi_tenancy
-      rails (~> 6.0.0)
-
-PATH
-  remote: engines/commercial/clusterings
-  specs:
-    clusterings (0.1.0)
-      apartment (~> 2.2.1)
-      nlp
-      pundit (~> 2.0)
-      rails (~> 6.0.0)
-
-PATH
-  remote: engines/commercial/custom_idea_statuses
-  specs:
-    custom_idea_statuses (0.1.0)
-      active_model_serializers (~> 0.10.7)
-      pundit (~> 2.0)
-      rails (~> 6.0.0)
-
-PATH
-  remote: engines/commercial/custom_maps
-  specs:
-    custom_maps (0.1.0)
-      apartment (~> 2.2.1)
-      pundit (~> 2.0)
-      rails (~> 6.0.0)
-
-PATH
-  remote: engines/commercial/custom_style
-  specs:
-    custom_style (0.1.0)
-      rails (~> 6.0.0)
-
-PATH
-  remote: engines/commercial/custom_topics
-  specs:
-    custom_topics (0.1.0)
-      active_model_serializers (~> 0.10.7)
-      pundit (~> 2.0)
-      rails (~> 6.0.0)
-
-PATH
-  remote: engines/commercial/geographic_dashboard
-  specs:
-    geographic_dashboard (0.1.0)
-      rails (~> 6.0.3, >= 6.0.3.2)
-
-PATH
-  remote: engines/commercial/granular_permissions
-  specs:
-    granular_permissions (0.1.0)
-      pundit (~> 2.0)
-      rails (~> 6.0.3, >= 6.0.3.2)
-
-PATH
-  remote: engines/commercial/id_bogus
-  specs:
-    id_bogus (0.1.0)
-      rails (~> 6.0.0)
-      verification
-
-PATH
-  remote: engines/commercial/id_bosa_fas
-  specs:
-    id_bosa_fas (0.1.0)
-      rails (~> 6.0.0)
-      verification
-
-PATH
-  remote: engines/commercial/id_clave_unica
-  specs:
-    id_clave_unica (0.1.0)
-      omniauth_openid_connect (~> 0.3.3)
-      rails (~> 6.0.0)
-      verification
-
-PATH
-  remote: engines/commercial/id_cow
-  specs:
-    id_cow (0.1.0)
-      rails (~> 6.0.0)
-      savon (~> 2.12.0)
-      verification
-
-PATH
-  remote: engines/commercial/id_franceconnect
-  specs:
-    id_franceconnect (0.1.0)
-      rails (~> 6.0.0)
-      verification
-
-PATH
-  remote: engines/commercial/id_id_card_lookup
-  specs:
-    id_id_card_lookup (0.1.0)
-      admin_api
-      rails (~> 6.0.0)
-      savon (~> 2.12.0)
-      verification
-
-PATH
-  remote: engines/commercial/idea_assignment
-  specs:
-    idea_assignment (0.1.0)
-      email_campaigns
-      rails (~> 6.0.3, >= 6.0.3.2)
-
-PATH
-  remote: engines/commercial/idea_custom_fields
-  specs:
-    idea_custom_fields (0.1.0)
-      rails (~> 6.0.3, >= 6.0.3.2)
-
-PATH
-  remote: engines/commercial/machine_translations
-  specs:
-    machine_translations (0.1.0)
-      active_model_serializers (~> 0.10.7)
-      apartment (~> 2.2.1)
-      easy_translate
-      pundit (~> 2.0)
-      rails (~> 6.0.0)
-
-PATH
-  remote: engines/commercial/matomo
-  specs:
-    matomo (0.1.0)
-      rails (~> 6.0.0)
-
-PATH
-  remote: engines/commercial/moderation
-  specs:
-    moderation (0.1.0)
-      active_model_serializers (~> 0.10.7)
-      pundit (~> 2.0)
-      rails (~> 6.0.0)
-
-PATH
-  remote: engines/commercial/nlp
-  specs:
-    nlp (0.1.0)
-      bunny
-      httparty (~> 0.16.2)
-      rails (~> 6.0.0)
-
-PATH
-  remote: engines/commercial/project_folders
-  specs:
-    project_folders (0.1.0)
-      rails (~> 6.0.3, >= 6.0.3.2)
-
-PATH
-  remote: engines/commercial/public_api
-  specs:
-    public_api (0.1.0)
-      active_model_serializers (~> 0.10.7)
-      apartment (~> 2.2.1)
-      kaminari (~> 1.2)
-      knock
-      pundit (~> 2.0)
-      rails (~> 6.0.0)
-
-PATH
-  remote: engines/commercial/smart_groups
-  specs:
-    smart_groups (0.1.0)
-      rails (~> 6.0.3, >= 6.0.3.2)
-
-PATH
-  remote: engines/commercial/tagging
-  specs:
-    tagging (0.1.0)
-      multi_tenancy
-      pundit (~> 2.0)
-      rails (~> 6.0.0)
-
-PATH
-  remote: engines/commercial/verification
-  specs:
-    verification (0.1.0)
-      apartment (~> 2.2.1)
-      granular_permissions
-      pundit (~> 2.0)
-      rails (~> 6.0.0)
-      savon (~> 2.12.0)
-
-PATH
-  remote: engines/ee/multi_tenancy
-  specs:
-    multi_tenancy (0.1.0)
-      apartment (>= 2.2.1)
-      rails (~> 6.0.0)
 
 PATH
   remote: engines/free/email_campaigns
@@ -424,9 +210,6 @@ GEM
     addressable (2.7.0)
       public_suffix (>= 2.0.2, < 5.0)
     aes_key_wrap (1.0.1)
-    akami (1.3.1)
-      gyoku (>= 0.4.0)
-      nokogiri
     amq-protocol (2.3.0)
     api-pagination (4.8.2)
     ast (2.4.1)
@@ -503,9 +286,6 @@ GEM
     docile (1.3.1)
     domain_name (0.5.20190701)
       unf (>= 0.0.5, < 1.0.0)
-    easy_translate (0.5.1)
-      thread
-      thread_safe
     erubi (1.10.0)
     excon (0.71.1)
     factory_bot (5.1.2)
@@ -553,11 +333,8 @@ GEM
       multi_json (~> 1.11)
       os (>= 0.9, < 2.0)
       signet (~> 0.12)
-    graphql (1.8.17)
     groupdate (4.1.0)
       activesupport (>= 4.2)
-    gyoku (1.3.1)
-      builder (>= 2.1.2)
     hashdiff (1.0.1)
     hashie (4.1.0)
     htmlentities (4.3.4)
@@ -567,9 +344,6 @@ GEM
       mime-types (~> 3.0)
       multi_xml (>= 0.5.2)
     httpclient (2.8.3)
-    httpi (2.4.5)
-      rack
-      socksify
     i18n (1.8.9)
       concurrent-ruby (~> 1.0)
     image_processing (1.12.1)
@@ -648,7 +422,6 @@ GEM
     nokogiri (1.11.2)
       mini_portile2 (~> 2.5.0)
       racc (~> 1.4)
-    nori (2.6.0)
     oauth2 (1.4.7)
       faraday (>= 0.8, < 2.0)
       jwt (>= 1.0, < 3.0)
@@ -840,14 +613,6 @@ GEM
       rubyzip (>= 1.1.6)
     ruby_dep (1.5.0)
     rubyzip (1.3.0)
-    savon (2.12.1)
-      akami (~> 1.2)
-      builder (>= 2.1.2)
-      gyoku (~> 1.2)
-      httpi (~> 2.3)
-      nokogiri (>= 1.8.1)
-      nori (~> 2.4)
-      wasabi (~> 3.4)
     scenic (1.5.1)
       activerecord (>= 4.0.0)
       railties (>= 4.0.0)
@@ -875,7 +640,6 @@ GEM
       rack (~> 2.2)
       rack-protection (= 2.1.0)
       tilt (~> 2.0)
-    socksify (1.7.1)
     spring (2.0.2)
       activesupport (>= 4.2)
     spring-watcher-listen (2.0.1)
@@ -895,7 +659,6 @@ GEM
       httpclient (>= 2.4)
     test-prof (1.0.2)
     thor (1.0.1)
-    thread (0.2.2)
     thread_safe (0.3.6)
     tilt (2.0.10)
     tomlrb (2.0.1)
@@ -913,10 +676,6 @@ GEM
     validate_url (1.0.8)
       activemodel (>= 3.0.0)
       public_suffix
-    wasabi (3.6.1)
-      addressable
-      httpi (~> 2.0)
-      nokogiri (>= 1.4.2)
     webfinger (1.1.0)
       activesupport
       httpclient (>= 2.4)
@@ -940,8 +699,6 @@ DEPENDENCIES
   activerecord-postgis-adapter (~> 6.0.0)
   activerecord_json_validator (~> 1.3.0)
   acts_as_list
-  admin_api!
-  apartment!
   api-pagination (~> 4.8.2)
   awesome_nested_set (~> 3.4.0)
   aws-sdk-s3 (~> 1)
@@ -953,12 +710,7 @@ DEPENDENCIES
   byebug
   carrierwave (~> 2.2.0)
   carrierwave-base64 (~> 2.8.1)
-  clusterings!
   counter_culture (~> 2.8)
-  custom_idea_statuses!
-  custom_maps!
-  custom_style!
-  custom_topics!
   dalli
   database_cleaner
   email_campaigns!
@@ -967,32 +719,17 @@ DEPENDENCIES
   fast_jsonapi!
   fog-aws
   frontend!
-  geographic_dashboard!
-  granular_permissions!
   groupdate
   ice_cube!
-  id_bogus!
-  id_bosa_fas!
-  id_clave_unica!
-  id_cow!
-  id_franceconnect!
-  id_id_card_lookup!
-  idea_assignment!
-  idea_custom_fields!
   intercom (~> 4.1)
   kaminari (~> 1.2)
   knock!
   license_finder
   liquid (~> 4.0)
   listen (>= 3.0.5, < 3.2)
-  machine_translations!
   mailgun-ruby (~> 1.2.0)
-  matomo!
   mini_magick (~> 4.9)
   mjml-rails (~> 4.4)
-  moderation!
-  multi_tenancy!
-  nlp!
   okcomputer
   omniauth (~> 1.9.1)
   omniauth-azure-activedirectory!
@@ -1006,11 +743,9 @@ DEPENDENCIES
   pg_search (~> 2.3.5)
   polls!
   premailer-rails (~> 1.10.3)
-  project_folders!
   project_permissions!
   pry
   pry-stack_explorer
-  public_api!
   puma
   pundit!
   que!
@@ -1042,13 +777,10 @@ DEPENDENCIES
   simple_segment (~> 1.2)
   simplecov
   simplecov-rcov
-  smart_groups!
   spring
   spring-watcher-listen (~> 2.0.0)
   surveys!
-  tagging!
   test-prof (~> 1.0)
-  verification!
   volunteering!
   webmock (~> 3.12)
 
