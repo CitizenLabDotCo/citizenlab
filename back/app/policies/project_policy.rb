@@ -11,11 +11,11 @@ class ProjectPolicy < ApplicationPolicy
       if user&.admin?
         scope.all
       elsif user&.project_moderator?
-        Project.where(id: user.moderatable_project_ids + filter_for_normal_user(normal_user_result, user))
+        scope.where(id: user.moderatable_project_ids + scope.user_groups_visible(user).or(scope.publicly_visible).ids)
       elsif user
-        filter_for_normal_user normal_user_result, user
+        scope.user_groups_visible(user).not_draft.or(scope.publicly_visible.not_draft)
       else
-        normal_user_result.where visible_to: 'public'
+        scope.publicly_visible.not_draft
       end
     end
 
@@ -27,19 +27,6 @@ class ProjectPolicy < ApplicationPolicy
       else
         scope.none
       end
-    end
-
-    private
-
-    def normal_user_result
-      scope.left_outer_joins(:admin_publication)
-           .where(admin_publications: { publication_status: %w[published archived] })
-    end
-
-    def filter_for_normal_user scope, user
-      scope
-        .where("projects.visible_to = 'public' OR \
-          (projects.visible_to = 'groups' AND EXISTS(SELECT 1 FROM groups_projects WHERE project_id = projects.id AND group_id IN (?)))", user.group_ids)
     end
   end
 
