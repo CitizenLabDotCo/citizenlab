@@ -5,4 +5,9 @@ export default defineMessages({
     id: 'app.containers.Admin.initiatives.permissionTab',
     defaultMessage: 'Participation Rights',
   },
+  projectPermissionsTab: {
+    id:
+      'app.modules.granular_permissions.admin.components.projectPermissionsTab',
+    defaultMessage: 'Access rights',
+  },
 });
