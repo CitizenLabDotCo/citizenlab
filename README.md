@@ -2,7 +2,7 @@
 
 ![alt text](https://github.com/CitizenLabDotCo/citizenlab/blob/master/citizenlab_logo.jpg?raw=true)
 
-CitizenLab is a digital democracy platform that facilitates community participation and co-creation. Participants can post ideas, contribute to discussion, or choose to vote and prioritize community projects. Whether it’s through a poll, a participatory budget, or idea collection, the CitizenLab platform offers multiple ways to make your community participatie
+CitizenLab is a digital democracy platform that facilitates community participation and co-creation. Participants can post ideas, contribute to discussion, or choose to vote and prioritize community projects. Whether it’s through a poll, a participatory budget, or idea collection, the CitizenLab platform offers multiple ways to make your community participate.
 
 ## More information
 
