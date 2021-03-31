@@ -8,10 +8,9 @@ Gem::Specification.new do |spec|
   spec.name        = 'idea_assignment'
   spec.version     = IdeaAssignment::VERSION
   spec.authors     = ['CitizenLab']
-  spec.email       = ['developers@citizenlab.co']
   spec.summary     = 'A plugin that allows the assignment of users to ideas.'
   spec.description = 'A plugin that allows the assignment of users to ideas.'
-  spec.licenses    = ['CitizenLab Commercial License']
+  spec.licenses    = ['CitizenLab Commercial License V1']
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
   # to allow pushing to a single host or delete this section to allow pushing to any host.
@@ -22,7 +21,7 @@ Gem::Specification.new do |spec|
       'public gem pushes.'
   end
 
-  spec.files = Dir['{app,config,db,lib}/**/*', 'MIT-LICENSE', 'Rakefile', 'README.md']
+  spec.files = Dir['{app,config,db,lib}/**/*', 'Rakefile', 'README.md']
 
   spec.add_dependency 'email_campaigns'
   spec.add_dependency 'rails', '~> 6.0.3', '>= 6.0.3.2'
