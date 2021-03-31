@@ -2,6 +2,7 @@
   "modules": {
     "ee/multi_tenancy": true,
     "commercial/admin_api": true,
+    "commercial/admin_project_templates": true,
     "commercial/custom_idea_statuses": true,
     "commercial/custom_maps": true,
     "commercial/custom_style": true,
@@ -25,6 +26,8 @@
     "commercial/moderation": true,
     "commercial/nlp": true,
     "commercial/project_folders": true,
+    "commercial/project_management": true,
+    "commercial/project_visibility": true,
     "commercial/public_api": true,
     "commercial/satismeter": true,
     "commercial/segment": true,
@@ -32,7 +35,6 @@
     "commercial/tagging": true,
     "commercial/user_custom_fields": true,
     "commercial/verification": true,
-    "commercial/widgets": true,
-    "commercial/admin_project_templates": true
+    "commercial/widgets": true
   }
 }
