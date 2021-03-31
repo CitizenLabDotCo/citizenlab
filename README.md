@@ -8,7 +8,7 @@ CitizenLab is a digital democracy platform that facilitates community participat
 
 **[Development Portal](https://developers.citizenlab.co)**
 
-- [Deploying your own platform](https://developers.citizenlab.co/start-deployment)citi
+- [Deploying your own platform](https://developers.citizenlab.co/start-deployment)
 - [Setting up your development environment](https://developers.citizenlab.co/start-dev-environment)
 
 **[Main website](https://www.citizenlab.co)**
