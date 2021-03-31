@@ -25,6 +25,12 @@ FactoryBot.define do
     end
     sequence(:slug) { |n| "renew-west-parc-#{n}" }
 
+    trait :that_can_have_children do
+      after(:create) do |project, _|
+        project.admin_publication.update(children_allowed: true)
+      end
+    end
+
     factory :project_with_topics do
       transient do
         topics_count { 5 }

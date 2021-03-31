@@ -39,7 +39,6 @@ import { getInputTerm } from 'services/participationContexts';
 import { IProjectData } from 'services/projects';
 
 import { insertConfiguration } from 'utils/moduleUtils';
-import { IPhaseData } from 'services/phases';
 
 const TopContainer = styled.div`
   width: 100%;
@@ -63,16 +62,6 @@ interface ITracks {
   clickNewIdea: ({ extra: object }) => void;
 }
 
-export interface ProjectTabOptions<T> {
-  tabOptions: T;
-  tabHideConditions: {
-    [tabName: string]: (
-      project: IProjectData,
-      phases: IPhaseData[] | null
-    ) => boolean;
-  };
-}
-
 export interface InputProps {}
 
 interface DataProps {
@@ -89,8 +78,8 @@ interface State {
   tabHideConditions: {
     [tabName: string]: (
       project: IProjectData,
-      phases: IPhaseData[] | null
-    ) => boolean
+      phases: GetPhasesChildProps
+    ) => boolean;
   };
 }
 
@@ -249,25 +238,6 @@ export class AdminProjectEdition extends PureComponent<
         events: function isEventsTabHidden() {
           return false;
         },
-        permissions: function isPermissionsTabHidden() {
-          const {
-            projectVisibilityEnabled,
-            granularPermissionsEnabled,
-            projectManagementEnabled,
-            ideaAssignmentEnabled,
-          } = props;
-
-          if (
-            !projectVisibilityEnabled &&
-            !granularPermissionsEnabled &&
-            !projectManagementEnabled &&
-            !ideaAssignmentEnabled
-          ) {
-            return true;
-          }
-
-          return false;
-        },
       },
       goBackUrl: null,
     };
@@ -319,15 +289,9 @@ export class AdminProjectEdition extends PureComponent<
     });
   };
 
-  handleData = (
-    insertTabOptions: ProjectTabOptions<InsertConfigurationOptions<ITab>>
-  ) => {
-    this.setState(({ tabs, tabHideConditions }) => ({
-      tabs: insertConfiguration(insertTabOptions.tabOptions)(tabs),
-      tabHideConditions: {
-        ...tabHideConditions,
-        ...insertTabOptions.tabHideConditions,
-      },
+  handleData = (insertTabOptions: InsertConfigurationOptions<ITab>) => {
+    this.setState(({ tabs }) => ({
+      tabs: insertConfiguration(insertTabOptions)(tabs),
     }));
   };
 
@@ -365,6 +329,8 @@ export class AdminProjectEdition extends PureComponent<
           <Outlet
             id="app.containers.Admin.projects.edit"
             onData={this.handleData}
+            project={project}
+            phases={phases}
           />
           <TopContainer>
             <GoBackButton onClick={this.goBack} />

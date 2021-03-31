@@ -32,10 +32,10 @@ import { ITopicData } from 'services/topics';
 import { projectByIdStream, IProject, IProjectData } from 'services/projects';
 import { phasesStream, IPhaseData } from 'services/phases';
 import {
-  ideaCustomFieldsSchemasStream,
-  IIdeaCustomFieldsSchemas,
+  ideaFormSchemaStream,
+  IIdeaFormSchemas,
   CustomFieldCodes,
-} from 'services/ideaCustomFields';
+} from 'services/ideaCustomFieldsSchemas';
 
 // resources
 import GetFeatureFlag, {
@@ -148,7 +148,7 @@ interface State {
   imageFile: UploadFile[];
   ideaFiles: UploadFile[];
   ideaFilesToRemove: UploadFile[];
-  ideaCustomFieldsSchemas: IIdeaCustomFieldsSchemas | null;
+  ideaCustomFieldsSchemas: IIdeaFormSchemas | null;
 }
 
 class IdeaForm extends PureComponent<
@@ -196,9 +196,8 @@ class IdeaForm extends PureComponent<
     const tenant$ = currentAppConfigurationStream().observable;
     const project$: Observable<IProject | null> = projectByIdStream(projectId)
       .observable;
-    const ideaCustomFieldsSchemas$ = ideaCustomFieldsSchemasStream(
-      projectId as string
-    ).observable;
+    const ideaCustomFieldsSchemas$ = ideaFormSchemaStream(projectId as string)
+      .observable;
     const pbContext$: Observable<
       IProjectData | IPhaseData | null
     > = project$.pipe(
@@ -596,7 +595,7 @@ class IdeaForm extends PureComponent<
 
   isFieldRequired = (
     fieldCode: CustomFieldCodes,
-    ideaCustomFieldsSchemas: IIdeaCustomFieldsSchemas,
+    ideaCustomFieldsSchemas: IIdeaFormSchemas,
     locale: Locale
   ) => {
     return ideaCustomFieldsSchemas.json_schema_multiloc[
@@ -606,7 +605,7 @@ class IdeaForm extends PureComponent<
 
   isFieldEnabled = (
     fieldCode: CustomFieldCodes,
-    ideaCustomFieldsSchemas: IIdeaCustomFieldsSchemas,
+    ideaCustomFieldsSchemas: IIdeaFormSchemas,
     locale: Locale
   ) => {
     return (

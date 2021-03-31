@@ -7,12 +7,11 @@ require "email_campaigns/version"
 Gem::Specification.new do |s|
   s.name        = "email_campaigns"
   s.version     = EmailCampaigns::VERSION
-  s.authors     = ["Koen Gremmelprez"]
-  s.email       = ["koen@citizenlab.co"]
+  s.authors     = ["CitizenLab"]
   s.summary     = "Sends out the campaign emails as scheduled"
   s.licenses    = ['AGPLv3']
 
-  s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
+  s.files = Dir["{app,config,db,lib}/**/*", "Rakefile", "README.md"]
 
   s.add_dependency "rails", "~> 6.0.0"
   s.add_dependency "pundit", "~> 2.0"

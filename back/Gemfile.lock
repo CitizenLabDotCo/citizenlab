@@ -87,15 +87,6 @@ PATH
       rails (~> 6.0.0)
 
 PATH
-  remote: engines/commercial/clusterings
-  specs:
-    clusterings (0.1.0)
-      apartment (~> 2.2.1)
-      nlp
-      pundit (~> 2.0)
-      rails (~> 6.0.0)
-
-PATH
   remote: engines/commercial/custom_idea_statuses
   specs:
     custom_idea_statuses (0.1.0)
@@ -192,6 +183,12 @@ PATH
       rails (~> 6.0.3, >= 6.0.3.2)
 
 PATH
+  remote: engines/commercial/idea_custom_fields
+  specs:
+    idea_custom_fields (0.1.0)
+      rails (~> 6.0.3, >= 6.0.3.2)
+
+PATH
   remote: engines/commercial/machine_translations
   specs:
     machine_translations (0.1.0)
@@ -251,6 +248,15 @@ PATH
   specs:
     tagging (0.1.0)
       multi_tenancy
+      pundit (~> 2.0)
+      rails (~> 6.0.0)
+
+PATH
+  remote: engines/commercial/user_custom_fields
+  specs:
+    user_custom_fields (0.1.0)
+      active_model_serializers (~> 0.10.7)
+      apartment (~> 2.2.1)
       pundit (~> 2.0)
       rails (~> 6.0.0)
 
@@ -947,7 +953,6 @@ DEPENDENCIES
   byebug
   carrierwave (~> 2.2.0)
   carrierwave-base64 (~> 2.8.1)
-  clusterings!
   counter_culture (~> 2.8)
   custom_idea_statuses!
   custom_maps!
@@ -972,6 +977,7 @@ DEPENDENCIES
   id_franceconnect!
   id_id_card_lookup!
   idea_assignment!
+  idea_custom_fields!
   intercom (~> 4.1)
   kaminari (~> 1.2)
   knock!
@@ -1041,6 +1047,7 @@ DEPENDENCIES
   surveys!
   tagging!
   test-prof (~> 1.0)
+  user_custom_fields!
   verification!
   volunteering!
   webmock (~> 3.12)

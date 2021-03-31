@@ -10,7 +10,8 @@ import projectManagementConfiguration from './commercial/project_management';
 import ideaAssignmentConfiguration from './commercial/idea_assignment';
 import moderationConfiguration from './commercial/moderation';
 import geographicDashboardConfiguration from './commercial/geographic_dashboard';
-
+import adminProjectTemplatesConfiguration from './commercial/admin_project_templates';
+import machineTranslationsConfiguration from './commercial/machine_translations';
 import similarIdeaConfiguration from './commercial/similar_ideas';
 import clusteringsConfiguration from './commercial/clusterings';
 
@@ -22,6 +23,7 @@ import satismeterConfiguration from './commercial/satismeter';
 import segmentConfiguration from './commercial/segment';
 import matomoConfiguration from './commercial/matomo';
 import customIdeaStatusesConfiguration from './commercial/custom_idea_statuses';
+import verificationConfiguration from './commercial/verification';
 import customTopicsConfiguration from './commercial/custom_topics';
 
 import idBosaFasConfiguration from './commercial/id_bosa_fas';
@@ -30,6 +32,11 @@ import idBogusConfiguration from './commercial/id_bogus';
 import idIdCardLookupConfiguration from './commercial/id_id_card_lookup';
 import IdFranceConnectConfiguration from './commercial/id_franceconnect';
 import IdClaveUnicaConfiguration from './commercial/id_clave_unica';
+
+import widgetsConfiguration from './commercial/widgets';
+
+import taggingConfiguration from './commercial/tagging';
+import customStyleConfiguration from './commercial/custom_style';
 
 declare var CL_CONFIG: any;
 
@@ -111,6 +118,10 @@ export default loadModules([
     isEnabled: CL_CONFIG['modules']['commercial/geographic_dashboard'],
   },
   {
+    configuration: adminProjectTemplatesConfiguration,
+    isEnabled: CL_CONFIG['modules']['commercial/admin_project_templates'],
+  },
+  {
     configuration: similarIdeaConfiguration,
     isEnabled: CL_CONFIG['modules']['commercial/similar_ideas'],
   },
@@ -141,5 +152,25 @@ export default loadModules([
   {
     configuration: IdClaveUnicaConfiguration,
     isEnabled: CL_CONFIG['modules']['commercial/id_clave_unica'],
+  },
+  {
+    configuration: machineTranslationsConfiguration,
+    isEnabled: CL_CONFIG['modules']['commercial/machine_translations'],
+  },
+  {
+    configuration: verificationConfiguration,
+    isEnabled: CL_CONFIG['modules']['commercial/verification'],
+  },
+  {
+    configuration: widgetsConfiguration,
+    isEnabled: CL_CONFIG['modules']['commercial/widgets'],
+  },
+  {
+    configuration: taggingConfiguration,
+    isEnabled: CL_CONFIG['modules']['commercial/tagging'],
+  },
+  {
+    configuration: customStyleConfiguration,
+    isEnabled: CL_CONFIG['modules']['commercial/custom_style'],
   },
 ]);

@@ -9,11 +9,14 @@ import {
   LoadableLoadingAdmin,
   LoadableLoadingCitizen,
 } from 'components/UI/LoadableLoading';
+import { ISignUpInMetaData } from 'components/SignUpIn';
+
 import { GroupCreationModal } from 'containers/Admin/users';
 import { NormalFormValues } from 'containers/Admin/users/NormalGroupForm';
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
 import { IProjectData, IUpdatedProjectProperties } from 'services/projects';
 import { onProjectFormStateChange } from 'containers/Admin/projects/edit/general';
+import { ITabItem } from 'components/UI/Tabs';
 import { OutletRenderProps } from 'components/Outlet';
 import { mergeWith, castArray, clamp } from 'lodash-es';
 
@@ -32,12 +35,26 @@ import { IMapProps } from './../components/Map/index';
 import { IUserData } from 'services/users';
 import { MessageValue } from 'react-intl';
 import { NavItem } from 'containers/Admin/sideBar';
-import { IAppConfigurationSettingsCore } from 'services/appConfiguration';
+import {
+  IAppConfigurationSettingsCore,
+  IAppConfigurationStyle,
+} from 'services/appConfiguration';
 import { ManagerType } from 'components/admin/PostManager';
 import { IdeaCellComponentProps } from 'components/admin/PostManager/components/PostTable/IdeaRow';
 import { IdeaHeaderCellComponentProps } from 'components/admin/PostManager/components/PostTable/IdeaHeaderRow';
+import { TTabName } from 'containers/Admin/projects/all/CreateProject';
 import { IVerificationMethod } from 'services/verificationMethods';
-import { ProjectTabOptions } from 'containers/Admin/projects/edit';
+import { IPhaseData } from 'services/phases';
+import { GetInitiativeChildProps } from 'resources/GetInitiative';
+import { GetLocaleChildProps } from 'resources/GetLocale';
+import { ICommentData } from 'services/comments';
+import { GetAppConfigurationLocalesChildProps } from 'resources/GetAppConfigurationLocales';
+import { GetWindowSizeChildProps } from 'resources/GetWindowSize';
+import { GetIdeaChildProps } from 'resources/GetIdea';
+import {
+  IOnboardingCampaignNames,
+  IOnboardingCampaigns,
+} from 'services/onboardingCampaigns';
 
 type Localize = (
   multiloc: Multiloc | null | undefined,
@@ -50,6 +67,18 @@ export type ITabsOutlet = {
     values?: { [key: string]: MessageValue } | undefined
   ) => string;
   onData: (data: InsertConfigurationOptions<ITab>) => void;
+};
+
+export type SignUpStepOutletProps = {
+  onData: (data: {
+    key: TSignUpSteps;
+    configuration: TSignUpStepConfigurationObject;
+  }) => void;
+  step: TSignUpSteps | null;
+  metaData: ISignUpInMetaData;
+  onCompleted: () => void;
+  onSkipped: () => void;
+  onError: () => void;
 };
 
 export type OutletsPropertyMap = {
@@ -69,6 +98,15 @@ export type OutletsPropertyMap = {
   };
   'app.containers.AdminPage.projects.all.createProjectNotAdmin': {};
   'app.containers.AdminPage.projects.all.projectsAndFolders.actions': {};
+  'app.containers.Admin.projects.all.createProject': {
+    selectedTabValue: TTabName;
+  };
+  'app.containers.Admin.projects.all.createProject.tabs': {
+    onData: (data: InsertConfigurationOptions<ITabItem>) => void;
+  };
+  'app.containers.Admin.projects.all.container': {
+    onRender: (hasRendered: boolean) => void;
+  };
   'app.components.ProjectAndFolderCards.card': {
     publication: IAdminPublicationContent;
     size: 'small' | 'medium' | 'large';
@@ -111,14 +149,7 @@ export type OutletsPropertyMap = {
     currentGroupFilter?: string;
     currentGroupFilterLabel?: string;
   };
-  'app.components.SignUpIn.SignUp.step': {
-    onData: (data: {
-      key: TSignUpSteps;
-      configuration: TSignUpStepConfigurationObject;
-    }) => void;
-    step: TSignUpSteps | null;
-    onCompleted: () => void;
-  };
+  'app.components.SignUpIn.SignUp.step': SignUpStepOutletProps;
   'app.containers.Admin.dashboard.reports.ProjectReport.graphs': {
     startAt: string;
     endAt: string;
@@ -144,7 +175,9 @@ export type OutletsPropertyMap = {
     children: OutletRenderProps;
   };
   'app.containers.Admin.projects.edit': {
-    onData: (data: ProjectTabOptions<InsertConfigurationOptions<ITab>>) => void;
+    onData: (data: InsertConfigurationOptions<ITab>) => void;
+    project: IProjectData;
+    phases: IPhaseData[] | null;
   };
   'app.containers.Admin.settings.tabs': {
     onData: (data: InsertConfigurationOptions<ITab>) => void;
@@ -175,6 +208,7 @@ export type OutletsPropertyMap = {
       >
     ) => void;
   };
+  'app.containers.Admin.guide.SetupSection': {};
   'app.components.Map.leafletConfig': IMapProps & {
     leafletConfig: ILeafletMapConfig;
     onLeafletConfigChange: (data: ILeafletMapConfig) => void;
@@ -201,6 +235,74 @@ export type OutletsPropertyMap = {
     onVerified: () => void;
     showHeader?: boolean;
     inModal: boolean;
+  };
+  'app.components.PostShowComponents.ActionBar.right': {
+    translateButtonClicked: boolean;
+    onClick: () => void;
+    initiative: GetInitiativeChildProps;
+    locale: GetLocaleChildProps;
+  };
+  'app.components.PostShowComponents.CommentFooter.left': {
+    comment: ICommentData;
+    locale: GetLocaleChildProps;
+    tenantLocales: GetAppConfigurationLocalesChildProps;
+  };
+  'app.containers.InitiativesShow.left': {
+    windowSize: GetWindowSizeChildProps;
+    translateButtonClicked: boolean;
+    onClick: () => void;
+    initiative: GetInitiativeChildProps;
+    locale: GetLocaleChildProps;
+  };
+  'app.containers.IdeasShow.left': {
+    translateButtonClicked: boolean;
+    onClick: () => void;
+    idea: GetIdeaChildProps;
+    locale: GetLocaleChildProps;
+  };
+  'app.components.PostShowComponents.CommentBody.translation': {
+    translateButtonClicked: boolean;
+    commentContent: string;
+    locale: GetLocaleChildProps;
+    commentId: string;
+  };
+  'app.components.PostShowComponents.Body.translation': {
+    postId: string;
+    body: string;
+    locale: GetLocaleChildProps;
+    translateButtonClicked?: boolean;
+    postType: 'idea' | 'initiative';
+  };
+  'app.components.PostShowComponents.Title.translation': {
+    postId: string;
+    postType: 'idea' | 'initiative';
+    title: string;
+    locale?: GetLocaleChildProps;
+    translateButtonClicked?: boolean;
+    color?: string;
+    align: 'left' | 'center';
+  };
+  'app.containers.UserEditPage.content': {};
+  'app.containers.Navbar.UserMenu.UserNameContainer': {
+    isVerified: boolean;
+  };
+  'app.containers.App.modals': { onMounted: (id: string) => void };
+  'app.containers.LandingPage.onboardingCampaigns': {
+    onboardingCampaigns: IOnboardingCampaigns;
+    contentTimeout: number;
+    contentDelay: number;
+    authUser: IUserData;
+    theme: unknown;
+    onSkip: (name: IOnboardingCampaignNames) => void;
+    onAccept: (name: IOnboardingCampaignNames) => void;
+  };
+  'app.containers.App.signUpInModal': {
+    onMounted: (id: string) => void;
+  };
+  'app.containers.Admin.settings.customize.fields': {
+    onChange: (key: string) => (value: unknown) => void;
+    latestAppConfigStyleSettings?: IAppConfigurationStyle | null;
+    theme: any;
   };
 };
 
@@ -238,6 +340,7 @@ interface Routes {
   'admin.initiatives': RouteConfiguration[];
   'admin.ideas': RouteConfiguration[];
   'admin.dashboards': RouteConfiguration[];
+  'admin.project_templates': RouteConfiguration[];
   'admin.settings': RouteConfiguration[];
 }
 
@@ -248,6 +351,8 @@ export interface ParsedModuleConfiguration {
   beforeMountApplication: () => void;
   /** this function triggers after the Root component mounted */
   afterMountApplication: () => void;
+  /** used to reset streams created in a module */
+  streamsToReset: string[];
 }
 
 export type ModuleConfiguration = RecursivePartial<
@@ -257,6 +362,8 @@ export type ModuleConfiguration = RecursivePartial<
   beforeMountApplication?: () => void;
   /** this function triggers after the Root component mounted */
   afterMountApplication?: () => void;
+  /** used to reset streams created in a module */
+  streamsToReset?: string[];
 };
 
 type Modules = {
@@ -348,6 +455,10 @@ export const loadModules = (modules: Modules): ParsedModuleConfiguration => {
         mergedRoutes?.['admin.projects'],
         RouteTypes.ADMIN
       ),
+      'admin.project_templates': parseModuleRoutes(
+        mergedRoutes?.['admin.project_templates'],
+        RouteTypes.ADMIN
+      ),
       'admin.settings': parseModuleRoutes(
         mergedRoutes?.['admin.settings'],
         RouteTypes.ADMIN
@@ -355,6 +466,12 @@ export const loadModules = (modules: Modules): ParsedModuleConfiguration => {
     },
     beforeMountApplication: callLifecycleMethods('beforeMountApplication'),
     afterMountApplication: callLifecycleMethods('afterMountApplication'),
+    streamsToReset: enabledModuleConfigurations.reduce(
+      (acc: string[], module: ModuleConfiguration) => {
+        return [...acc, ...(module?.streamsToReset ?? [])];
+      },
+      []
+    ),
   };
 };
 

@@ -20,17 +20,7 @@ export default () => {
       }),
     },
     childRoutes: [
-      {
-        path: 'templates/:projectTemplateId',
-        name: 'admin project template preview page',
-        component: Loadable({
-          loader: () =>
-            import(
-              'components/ProjectTemplatePreview/ProjectTemplatePreviewPageAdmin'
-            ),
-          loading: () => null,
-        }),
-      },
+      ...moduleConfiguration.routes['admin.project_templates'],
       {
         path: ':projectId/edit',
         name: 'admin projects single project',
