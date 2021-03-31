@@ -21,9 +21,10 @@ const RenderOnFeatureFlag = ({ children }: RenderOnFeatureFlagProps) => {
   return null;
 };
 
-const RenderOnTabHideCondition = ({ children }: RenderOnTabHideConditionProps) => {
-  // currently the same as RenderOnFeatureFlag, but wanted to make clear
-  // there's a difference and RenderOnTabHideCondition might diverge from RenderOnFeatureFlag
+const RenderOnTabHideCondition = ({
+  children,
+}: RenderOnTabHideConditionProps) => {
+  // could be the same as, but might diverge from RenderOnFeatureFlag
   const isGranularPermissionsEnabled = useFeatureFlag('granular_permissions');
   if (isGranularPermissionsEnabled) {
     return <>{children}</>;
@@ -53,11 +54,9 @@ const configuration: ModuleConfiguration = {
     ),
     'app.containers.Admin.projects.edit': (props) => {
       return (
-        <RenderOnFeatureFlag>
-          <RenderOnTabHideCondition>
-            <ProjectSettingsTab {...props} />
-          </RenderOnTabHideCondition>
-        </RenderOnFeatureFlag>
+        <RenderOnTabHideCondition>
+          <ProjectSettingsTab {...props} />
+        </RenderOnTabHideCondition>
       );
     },
   },
