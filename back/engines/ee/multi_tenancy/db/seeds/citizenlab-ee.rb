@@ -957,10 +957,4 @@ if Apartment::Tenant.current == 'localhost'
     geojson: JSON.parse(File.read(CustomMaps::Engine.root.join("spec","fixtures","bruxelles_toilettes_publiques.geojson"))),
     default_enabled: false
   )
-
-
-  User.all.each do |user|
-    EmailCampaigns::UnsubscriptionToken.create!(user_id: user.id)
-  end
-
 end
