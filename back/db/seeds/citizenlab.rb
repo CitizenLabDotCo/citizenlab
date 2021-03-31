@@ -154,6 +154,7 @@ User.create!(
     {type: 'admin'},
   ],
   locale: ENV.fetch('CL_SETTINGS_CORE_LOCALES_0', 'en'),
+  registration_completed_at: Time.now
 )
 
 # Creates idea statuses.
