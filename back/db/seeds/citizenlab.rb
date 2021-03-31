@@ -9,51 +9,48 @@ CommonPassword.initialize!
 
 # Configure your app here.
 AppConfiguration.create!(
-  id: '82704e43-2ebe-496e-bed7-1647925ba5ff',
   name: 'local',
-  host: 'localhost',
-  # logo: Rails.root.join("spec/fixtures/logo.png").open, # => NoMethodError: undefined method `tenant' for #<AppConfiguration:0x000055f40803d3b8>
-  # header_bg: Rails.root.join("spec/fixtures/header.jpg").open, # => NoMethodError: undefined method `tenant' for #<AppConfiguration:0x000055f40803d3b8>
-  created_at: Faker::Date.between(from: Time.now - 1.year, to: Time.now),
+  host: ENV.fetch('CL_SETTINGS_HOST'),
   settings: {
     core: {
       allowed: true,
       enabled: true,
-      locales: ['en', 'nl-BE', 'fr-BE'],
+      locales: [ENV.fetch('CL_SETTINGS_CORE_LOCALES_0', 'en')],
       organization_type: 'small_city',
       organization_name: {
         'en' => Faker::Address.city,
-        'nl-BE' => Faker::Address.city,
-        'fr-FR' => Faker::Address.city
       },
-      timezone: 'Brussels',
-      currency: CL2_SUPPORTED_CURRENCIES.shuffle.first,
-      color_main: Faker::Color.hex_color,
-      color_secondary: Faker::Color.hex_color,
-      color_text: Faker::Color.hex_color,
-      
-      reply_to_email: 'support@citizenlab.co'
+      timezone: ENV.fetch('CL_SETTINGS_CORE_TIMEZONE', 'Brussels'),
+      currency: ENV.fetch('CL_SETTINGS_CORE_CURRENCY', 'EUR'),
+      color_main: '#163A7D',
+      color_secondary: '#CF4040',
+      color_text: '#163A7D',
+      reply_to_email: ENV.fetch('DEFAULT_FROM_EMAIL')
     },
     password_login: {
       enabled: true,
       allowed: true
     },
+    facebook_login: {
+      enabled: ENV.fetch('CL_SETTINGS_FACEBOOK_LOGIN_ENABLED', 'false') == 'true',
+      allowed: true,
+      app_id: ENV.fetch('CL_SETTINGS_FACEBOOK_LOGIN_APP_ID', nil),
+      app_secret: ENV.fetch('CL_SETTINGS_FACEBOOK_LOGIN_APP_SECRET', nil)
+    }.compact,
+    google_login: {
+      enabled: ENV.fetch('CL_SETTINGS_GOOGLE_LOGIN_ENABLED', 'false') == 'true',
+      allowed: true,
+      client_id: ENV.fetch('CL_SETTINGS_GOOGLE_LOGIN_CLIENT_ID', nil),
+      client_secret: ENV.fetch('CL_SETTINGS_GOOGLE_LOGIN_CLIENT_SECRET', nil)
+    }.compact,
     maps: {
       enabled: true,
       allowed: true,
       map_center: {
-        lat: '50.8503',
-        long: '4.3517'
+        lat: ENV.fetch('CL_SETTINGS_MAPS_MAP_CENTER_LAT', '50.8503'),
+        long: ENV.fetch('CL_SETTINGS_MAPS_MAP_CENTER_LONG', '4.3517')
       },
-      zoom_level: 12
-    },
-    intercom: {
-      enabled: true,
-      allowed: true
-    },
-    segment: {
-      enabled: true,
-      allowed: true
+      zoom_level: ENV.fetch('CL_SETTINGS_MAPS_ZOOM_LEVEL', '12')&.to_i
     },
     participatory_budgeting: {
       enabled: true,
@@ -78,7 +75,7 @@ AppConfiguration.create!(
     },
     typeform_surveys: {
       enabled: true,
-      allowed: true
+      allowed: true,
     },
     google_forms_surveys: {
       enabled: true,
@@ -97,23 +94,14 @@ AppConfiguration.create!(
       allowed: true
     },
     workshops: {
-      enabled: true,
-      allowed: true
-    },
-    project_reports: {
-      enabled: true,
-      allowed: true
-    },
-    admin_project_templates: {
-      enabled: true,
-      allowed: true
+      enabled: false,
+      allowed: false
     },
     ideas_overview: {
-      enabled: true,
-      allowed: true
+      enabled: false,
+      allowed: false
     },
     disable_downvoting: {
-      # Disabled.
       enabled: false,
       allowed: true
     },
@@ -126,8 +114,8 @@ AppConfiguration.create!(
       allowed: true
     },
     widgets: {
-      enabled: true,
-      allowed: true
+      enabled: false,
+      allowed: false
     },
     manual_emailing: {
       enabled: true,
@@ -142,20 +130,10 @@ AppConfiguration.create!(
       allowed: true
     },
     redirects: {
-      # Disabled.
       enabled: false,
       allowed: true,
-      rules: [
-        # Add your rules here.
-      ]
-    },
-    abbreviated_user_names: {
-      # Disabled.
-      enabled: false,
-      allowed: true
     },
     idea_custom_copy: {
-      # Disabled.
       enabled: false,
       allowed: true
     },
@@ -163,28 +141,20 @@ AppConfiguration.create!(
       enabled: true,
       allowed: true
     },
-    fragments: {
-      # Disabled.
-      enabled: false,
-      allowed: true,
-      enabled_fragments: [
-        # Add your fragments here.
-      ]
-    }
   }
 )
 
 # Creates a default admin account.
-User.create! AnonymizeUserService.new.anonymized_attributes(AppConfiguration.instance.settings.dig('core', 'locales')).merge({
-  id: '9c1bf0cf-5591-4cad-a860-9f6064a33a0f',
-  email: 'admin@citizenlab.co',
-  password: 'I<3CitizenLab',
+User.create!(
+  email: ENV.fetch('INITIAL_ADMIN_EMAIL'),
+  password: ENV.fetch('INITIAL_ADMIN_PASSWORD'),
+  first_name: ENV.fetch('INITIAL_ADMIN_FIRST_NAME'),
+  last_name: ENV.fetch('INITIAL_ADMIN_LAST_NAME'),
   roles: [
     {type: 'admin'},
   ],
-  locale: 'en',
-  custom_field_values: {}
-})
+  locale: ENV.fetch('CL_SETTINGS_CORE_LOCALES_0', 'en'),
+)
 
 # Creates idea statuses.
 [
