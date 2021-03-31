@@ -16,20 +16,7 @@ import { configureScope } from '@sentry/browser';
 import GlobalStyle from 'global-styles';
 
 // constants
-import {
-  appLocalesMomentPairs,
-  ADMIN_TEMPLATES_GRAPHQL_PATH,
-  locales,
-} from 'containers/App/constants';
-
-// graphql
-import {
-  ApolloClient,
-  ApolloLink,
-  InMemoryCache,
-  HttpLink,
-} from 'apollo-boost';
-import { ApolloProvider } from 'react-apollo';
+import { appLocalesMomentPairs, locales } from 'containers/App/constants';
 
 // context
 import { PreviousPathnameContext } from 'context';
@@ -52,8 +39,9 @@ import ForbiddenRoute from 'components/routing/forbiddenRoute';
 import LoadableModal from 'components/Loadable/Modal';
 import LoadableUserDeleted from 'components/UserDeletedModalContent/LoadableUserDeleted';
 import ErrorBoundary from 'components/ErrorBoundary';
+import SignUpInModal from 'components/SignUpIn/SignUpInModal';
+
 import { LiveAnnouncer } from 'react-aria-live';
-const SignUpInModal = lazy(() => import('components/SignUpIn/SignUpInModal'));
 const PostPageFullscreenModal = lazy(() => import('./PostPageFullscreenModal'));
 
 // auth
@@ -80,7 +68,6 @@ import GetFeatureFlag, {
 
 // events
 import eventEmitter from 'utils/eventEmitter';
-import { getJwt } from 'utils/auth/jwt';
 
 // style
 import styled, { ThemeProvider } from 'styled-components';
@@ -536,9 +523,20 @@ class App extends PureComponent<Props, State> {
 
                   <ErrorBoundary>
                     <Suspense fallback={null}>
-                      <SignUpInModal
-                        onMounted={this.handleSignUpInModalMounted}
-                      />
+                      <Outlet
+                        id="app.containers.App.signUpInModal"
+                        onMounted={this.handleModalMounted}
+                      >
+                        {(outletComponents) =>
+                          outletComponents.length > 0 ? (
+                            <>{outletComponents}</>
+                          ) : (
+                            <SignUpInModal
+                              onMounted={this.handleSignUpInModalMounted}
+                            />
+                          )
+                        }
+                      </Outlet>
                     </Suspense>
                   </ErrorBoundary>
 
@@ -595,34 +593,8 @@ const Data = adopt<DataProps, InputProps>({
   redirectsEnabled: <GetFeatureFlag name="redirects" />,
 });
 
-// Apollo
-const cache = new InMemoryCache();
-const httpLink = new HttpLink({ uri: ADMIN_TEMPLATES_GRAPHQL_PATH });
-const authLink = new ApolloLink((operation, forward) => {
-  const jwt = getJwt();
-
-  operation.setContext({
-    headers: {
-      origin: '*',
-      authorization: jwt ? `Bearer ${jwt}` : '',
-      'Access-Control-Allow-Origin': '*',
-    },
-    fetchOptions: {
-      mode: 'cors',
-    },
-  });
-
-  return forward(operation);
-});
-const client = new ApolloClient({
-  cache,
-  link: authLink.concat(httpLink),
-});
-
 const AppWithHoC = withRouter(App);
 
 export default (inputProps: InputProps) => (
-  <ApolloProvider client={client}>
-    <Data>{(dataProps) => <AppWithHoC {...dataProps} {...inputProps} />}</Data>
-  </ApolloProvider>
+  <Data>{(dataProps) => <AppWithHoC {...dataProps} {...inputProps} />}</Data>
 );

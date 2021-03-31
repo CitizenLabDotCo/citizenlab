@@ -166,7 +166,7 @@ if ['public','example_org'].include? Apartment::Tenant.current
       maps: {
         enabled: true,
         allowed: true,
-        tile_provider: "https://api.maptiler.com/maps/basic/{z}/{x}/{y}.png?key=DIZiuhfkZEQ5EgsaTk6D",
+        tile_provider: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
         map_center: {
           lat: "50.8503",
           long: "4.3517"
@@ -913,7 +913,7 @@ if Apartment::Tenant.current == 'localhost'
 
       if project
         custom_form = project.custom_form || CustomForm.create!(project: project)
-        custom_field = IdeaCustomFieldService.new.find_or_build_field(custom_form, ['title','body','location'].shuffle.first)
+        custom_field = IdeaCustomFieldsService.new.find_or_build_field(custom_form, ['title','body','location'].shuffle.first)
         custom_field.description_multiloc = create_for_some_locales{Faker::Lorem.sentence}
         custom_field.save!
       end

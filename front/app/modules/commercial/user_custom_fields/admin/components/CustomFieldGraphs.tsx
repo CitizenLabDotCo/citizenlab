@@ -43,7 +43,8 @@ import {
   IUsersByGender,
   IUsersByDomicile,
   IUsersByBirthyear,
-} from 'services/stats';
+} from 'modules/commercial/user_custom_fields/services/stats';
+
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import { isNilOrError } from 'utils/helperUtils';
 import moment from 'moment';

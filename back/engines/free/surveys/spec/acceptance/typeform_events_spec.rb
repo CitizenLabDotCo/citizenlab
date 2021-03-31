@@ -5,14 +5,22 @@ resource "Typeform Events" do
 
   explanation "Endpoint that receives webhook events from Typeform"
 
-  before do
-    header "Content-Type", "application/json"
-    header "TYPEFORM_SIGNATURE", "sha256=DQeQnJnBiVUlz870XBCNdQA/uppVpfvT6EyNI1xALOs="
+  before(:all) do
+    @cached_secret_token_typeform = ENV['SECRET_TOKEN_TYPEFORM']
+    ENV['SECRET_TOKEN_TYPEFORM'] = 'awesome_secret_token'
   end
 
+  after(:all) do
+    ENV['SECRET_TOKEN_TYPEFORM'] = @cached_secret_token_typeform
+  end
+
+  before do
+    header "Content-Type", "application/json"
+    # The signature is specific to the SECRET_TOKEN_TYPEFORM env var.
+    header "TYPEFORM_SIGNATURE", "sha256=K5ZIliLSfdiNCGL3yp27HhD+qbq6PGl27taGKtofaW8="
+  end
 
   post "/hooks/typeform_events" do
-
     before do
       @pc = create(:continuous_survey_project)
       url_params = {

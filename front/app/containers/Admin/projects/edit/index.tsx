@@ -39,7 +39,6 @@ import { getInputTerm } from 'services/participationContexts';
 import { IProjectData } from 'services/projects';
 
 import { insertConfiguration } from 'utils/moduleUtils';
-import { IPhaseData } from 'services/phases';
 
 const TopContainer = styled.div`
   width: 100%;
@@ -63,34 +62,25 @@ interface ITracks {
   clickNewIdea: ({ extra: object }) => void;
 }
 
-export interface ProjectTabOptions<T> {
-  tabOptions: T;
-  tabHideConditions: {
-    [tabName: string]: (
-      project: IProjectData,
-      phases: IPhaseData[] | null
-    ) => boolean;
-  };
-}
-
 export interface InputProps {}
 
 interface DataProps {
-  surveys_enabled: boolean | null;
-  typeform_enabled: boolean | null;
+  surveys_enabled: GetFeatureFlagChildProps;
+  typeform_enabled: GetFeatureFlagChildProps;
   phases: GetPhasesChildProps;
   project: GetProjectChildProps;
-  projectVisibilityEnabled: GetFeatureFlagChildProps;
-  granularPermissionsEnabled: GetFeatureFlagChildProps;
-  projectManagementEnabled: GetFeatureFlagChildProps;
-  ideaAssignmentEnabled: GetFeatureFlagChildProps;
   previousPathName: string | null;
 }
 
 interface State {
   tabs: ITab[];
   goBackUrl: string | null;
-  tabHideConditions: { [featureName: string]: (project, phases) => boolean };
+  tabHideConditions: {
+    [tabName: string]: (
+      project: IProjectData,
+      phases: GetPhasesChildProps
+    ) => boolean;
+  };
 }
 
 interface Props extends InputProps, DataProps {}
@@ -109,51 +99,45 @@ export class AdminProjectEdition extends PureComponent<
       tabs: [
         {
           label: formatMessage(messages.generalTab),
-          url: `edit`,
+          url: 'edit',
           name: 'general',
         },
         {
           label: formatMessage(messages.descriptionTab),
-          url: `description`,
+          url: 'description',
           name: 'description',
         },
         {
           label: formatMessage(messages.inputManagerTab),
-          url: `ideas`,
+          url: 'ideas',
           name: 'ideas',
         },
         {
           label: formatMessage(messages.pollTab),
-          url: `poll`,
+          url: 'poll',
           feature: 'polls',
           name: 'poll',
         },
         {
           label: formatMessage(messages.surveyResultsTab),
-          url: `survey-results`,
+          url: 'survey-results',
           name: 'survey-results',
         },
         {
           label: formatMessage(messages.phasesTab),
-          url: `timeline`,
+          url: 'timeline',
           name: 'phases',
         },
         {
           label: formatMessage(messages.volunteeringTab),
-          url: `volunteering`,
+          url: 'volunteering',
           feature: 'volunteering',
           name: 'volunteering',
         },
         {
           label: formatMessage(messages.eventsTab),
-          url: `events`,
+          url: 'events',
           name: 'events',
-        },
-        {
-          label: formatMessage(messages.permissionsTab),
-          url: `permissions`,
-          feature: 'private_projects',
-          name: 'permissions',
         },
       ],
       tabHideConditions: {
@@ -254,25 +238,6 @@ export class AdminProjectEdition extends PureComponent<
         events: function isEventsTabHidden() {
           return false;
         },
-        permissions: function isPermissionsTabHidden() {
-          const {
-            projectVisibilityEnabled,
-            granularPermissionsEnabled,
-            projectManagementEnabled,
-            ideaAssignmentEnabled,
-          } = props;
-
-          if (
-            !projectVisibilityEnabled &&
-            !granularPermissionsEnabled &&
-            !projectManagementEnabled &&
-            !ideaAssignmentEnabled
-          ) {
-            return true;
-          }
-
-          return false;
-        },
       },
       goBackUrl: null,
     };
@@ -324,15 +289,9 @@ export class AdminProjectEdition extends PureComponent<
     });
   };
 
-  handleData = (
-    insertTabOptions: ProjectTabOptions<InsertConfigurationOptions<ITab>>
-  ) => {
-    this.setState(({ tabs, tabHideConditions }) => ({
-      tabs: insertConfiguration(insertTabOptions.tabOptions)(tabs),
-      tabHideConditions: {
-        ...tabHideConditions,
-        ...insertTabOptions.tabHideConditions,
-      },
+  handleData = (insertTabOptions: InsertConfigurationOptions<ITab>) => {
+    this.setState(({ tabs }) => ({
+      tabs: insertConfiguration(insertTabOptions)(tabs),
     }));
   };
 
@@ -370,6 +329,8 @@ export class AdminProjectEdition extends PureComponent<
           <Outlet
             id="app.containers.Admin.projects.edit"
             onData={this.handleData}
+            project={project}
+            phases={phases}
           />
           <TopContainer>
             <GoBackButton onClick={this.goBack} />
@@ -421,10 +382,6 @@ const AdminProjectEditionWithHoCs = withRouter(
 const Data = adopt<DataProps, InputProps & WithRouterProps>({
   surveys_enabled: <GetFeatureFlag name="surveys" />,
   typeform_enabled: <GetFeatureFlag name="typeform_surveys" />,
-  projectVisibilityEnabled: <GetFeatureFlag name="project_visibility" />,
-  granularPermissionsEnabled: <GetFeatureFlag name="granular_permissions" />,
-  projectManagementEnabled: <GetFeatureFlag name="project_management" />,
-  ideaAssignmentEnabled: <GetFeatureFlag name="idea_assignment" />,
   phases: ({ params, render }) => (
     <GetPhases projectId={params.projectId}>{render}</GetPhases>
   ),

@@ -113,7 +113,7 @@ export const IconWrapper = styled.div`
 `;
 
 export type TAdminGuideSection = 'setup' | 'engage' | 'manage' | 'decide';
-export type TSetupArticle = 'projects' | 'user_custom_fields' | 'widgets';
+export type TSetupArticle = 'projects' | 'user_custom_fields';
 export type TEngageArticle =
   | 'invitations_colleagues'
   | 'invitations_target_audience'
@@ -131,11 +131,7 @@ export const renderArticle = (
   index: number,
   articleComponent: JSX.Element
 ) => {
-  if (
-    article === 'widgets' ||
-    article === 'user_custom_fields' ||
-    article === 'manual_emailing'
-  ) {
+  if (article === 'user_custom_fields' || article === 'manual_emailing') {
     return (
       <FeatureFlag name={article} key={index}>
         {articleComponent}

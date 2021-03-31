@@ -33,9 +33,11 @@ describe SideFxIdeaService do
     it "logs a 'published' action job when publication_state is published" do
       idea = create(:idea, publication_status: 'published', author: user)
       expect {service.after_create(idea, user)}.
-        to have_enqueued_job(LogActivityJob).with(idea, 'published', user, idea.created_at.to_i).exactly(1).times
-        .and have_enqueued_job(LogActivityJob).with(idea, 'first_published_by_user', user, idea.created_at.to_i).exactly(1).times
-        .and have_enqueued_job(Seo::ScrapeFacebookJob).exactly(1).times
+        to(
+          have_enqueued_job(LogActivityJob).with(idea, 'published', user, idea.created_at.to_i).exactly(1).times
+          .and(have_enqueued_job(LogActivityJob).with(idea, 'first_published_by_user', user, idea.created_at.to_i).exactly(1).times)
+          .and(have_enqueued_job(Seo::ScrapeFacebookJob).exactly(1).times)
+        )
     end
 
     it "doesn't log a 'published' action job when publication_state is draft" do

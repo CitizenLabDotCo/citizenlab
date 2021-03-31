@@ -5,6 +5,8 @@ import {
   removeUrlLocale,
 } from './locale';
 
+jest.mock('modules', () => ({ streamsToReset: [] }));
+
 describe('setPathnameLocale', () => {
   it('sets /', () => {
     expect(setPathnameLocale('/', 'nl-BE')).toEqual('/nl-BE/');
