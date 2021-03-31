@@ -481,8 +481,3 @@ open_idea_project = Project.create!({
 })
 open_idea_project.project_images.create!(remote_image_url: 'https://res.cloudinary.com/citizenlabco/image/upload/v1539874546/undraw_brainstorming_49d4_iaimmn.png')
 open_idea_project.set_default_topics!
-
-# Creates unsubscription tokens.
-User.all.each do |user|
-  EmailCampaigns::UnsubscriptionToken.create!(user_id: user.id)
-end
