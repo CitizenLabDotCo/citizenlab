@@ -292,34 +292,6 @@ class SettingsCustomizeTab extends PureComponent<
     });
   };
 
-  handleHeaderOverlayColorOnChange = (hexColor: string) => {
-    this.setState((state) => {
-      return {
-        attributesDiff: {
-          ...state.attributesDiff,
-          style: {
-            ...get(state.attributesDiff, 'style', {}),
-            signedOutHeaderOverlayColor: hexColor,
-          },
-        },
-      };
-    });
-  };
-
-  handleHeaderOverlayOpacityOnChange = (opacity: number) => {
-    this.setState((state) => {
-      return {
-        attributesDiff: {
-          ...state.attributesDiff,
-          style: {
-            ...get(state.attributesDiff, 'style', {}),
-            signedOutHeaderOverlayOpacity: opacity,
-          },
-        },
-      };
-    });
-  };
-
   validate = (tenant: IAppConfiguration, attributesDiff: IAttributesDiff) => {
     const { formatMessage } = this.props.intl;
     const hasRemoteLogo = has(tenant, 'data.attributes.logo.large');
@@ -567,34 +539,6 @@ class SettingsCustomizeTab extends PureComponent<
                 onAdd={this.handleHeaderBgOnAdd}
                 onRemove={this.handleHeaderBgOnRemove}
                 errorMessage={headerError}
-              />
-            </SectionField>
-            <ColorPickerSectionField>
-              <Label>
-                <FormattedMessage {...messages.imageOverlayColor} />
-              </Label>
-              <ColorPickerInput
-                type="text"
-                value={
-                  latestAppConfigStyleSettings?.signedOutHeaderOverlayColor ||
-                  this.props.theme.colorMain
-                }
-                onChange={this.handleHeaderOverlayColorOnChange}
-              />
-            </ColorPickerSectionField>
-            <SectionField>
-              <Label>
-                <FormattedMessage {...messages.imageOverlayOpacity} />
-              </Label>
-              <RangeInput
-                step={1}
-                min={0}
-                max={100}
-                value={
-                  latestAppConfigStyleSettings?.signedOutHeaderOverlayOpacity ||
-                  90
-                }
-                onChange={this.handleHeaderOverlayOpacityOnChange}
               />
             </SectionField>
             <SectionField>
