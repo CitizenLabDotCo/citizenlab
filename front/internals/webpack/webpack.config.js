@@ -156,7 +156,10 @@ const config = {
     new CleanWebpackPlugin(),
 
     new HtmlWebpackPlugin({
-      template: 'app/index.html'
+      template: 'app/index.html',
+      templateParameters: {
+        GOOGLE_MAPS_API_KEY: process.env.GOOGLE_MAPS_API_KEY
+      }
     }),
 
     // new BundleAnalyzerPlugin(),

@@ -9,7 +9,6 @@ Array [
   "/admin/projects/continuousInformation/edit",
   "/admin/projects/continuousInformation/description",
   "/admin/projects/continuousInformation/events",
-  "/admin/projects/continuousInformation/permissions",
 ]
 `;
 
@@ -18,7 +17,6 @@ Array [
   "/admin/projects/continuousGoogleForm/edit",
   "/admin/projects/continuousGoogleForm/description",
   "/admin/projects/continuousGoogleForm/events",
-  "/admin/projects/continuousGoogleForm/permissions",
 ]
 `;
 
@@ -28,7 +26,6 @@ Array [
   "/admin/projects/continuousTypeform/description",
   "/admin/projects/continuousTypeform/survey-results",
   "/admin/projects/continuousTypeform/events",
-  "/admin/projects/continuousTypeform/permissions",
 ]
 `;
 
@@ -37,7 +34,6 @@ Array [
   "/admin/projects/continuousTypeform/edit",
   "/admin/projects/continuousTypeform/description",
   "/admin/projects/continuousTypeform/events",
-  "/admin/projects/continuousTypeform/permissions",
 ]
 `;
 
@@ -46,7 +42,6 @@ Array [
   "/admin/projects/continuousTypeform/edit",
   "/admin/projects/continuousTypeform/description",
   "/admin/projects/continuousTypeform/events",
-  "/admin/projects/continuousTypeform/permissions",
 ]
 `;
 
@@ -57,7 +52,6 @@ Array [
   "/admin/projects/timelineIdeation/ideas",
   "/admin/projects/timelineIdeation/timeline",
   "/admin/projects/timelineIdeation/events",
-  "/admin/projects/timelineIdeation/permissions",
 ]
 `;
 
@@ -68,7 +62,6 @@ Array [
   "/admin/projects/timelineInformation/ideas",
   "/admin/projects/timelineInformation/timeline",
   "/admin/projects/timelineInformation/events",
-  "/admin/projects/timelineInformation/permissions",
 ]
 `;
 
@@ -80,7 +73,6 @@ Array [
   "/admin/projects/timelineIdeation/survey-results",
   "/admin/projects/timelineIdeation/timeline",
   "/admin/projects/timelineIdeation/events",
-  "/admin/projects/timelineIdeation/permissions",
 ]
 `;
 
@@ -91,6 +83,5 @@ Array [
   "/admin/projects/timelineIdeation/ideas",
   "/admin/projects/timelineIdeation/timeline",
   "/admin/projects/timelineIdeation/events",
-  "/admin/projects/timelineIdeation/permissions",
 ]
 `;

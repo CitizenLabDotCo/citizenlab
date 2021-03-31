@@ -22,7 +22,7 @@ resource "Notifications" do
       parameter :size, "Number of notifications per page"
     end
     parameter :only_unread, "Add this parameter if you only want to receive unread notifications"
-    
+
     example_request "List all notifications" do
       expect(status).to eq(200)
       json_response = json_parse(response_body)
@@ -40,12 +40,12 @@ resource "Notifications" do
     describe do
       before do
         # Make sure that we can find all notification
-        # subclasses, but without enabling eager 
+        # subclasses, but without enabling eager
         # loading for the other tests.
         Cl2Back::Application.eager_load!
       end
       example "List all different types of notification", document: false do
-        Notification.descendants.each do |notification_subclass|
+        NotificationToSerializerMapper.map.keys.each do |notification_subclass|
           if notification_subclass.descendants.empty?
             create(notification_subclass.model_name.element.to_sym)
           end

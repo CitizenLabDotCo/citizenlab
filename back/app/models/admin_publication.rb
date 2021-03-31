@@ -17,6 +17,10 @@ class AdminPublication < ApplicationRecord
     where(publication_status: 'published')
   }
 
+  scope :not_draft, lambda {
+    where.not(publication_status: 'draft')
+  }
+
   def archived?
     publication_status == 'archived'
   end

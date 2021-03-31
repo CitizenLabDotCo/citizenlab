@@ -19,9 +19,10 @@ import tracks from './tracks';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
+import Outlet from 'components/Outlet';
 
-type SetupArticle = 'projects' | 'user_custom_fields' | 'widgets';
-const articles: SetupArticle[] = ['projects', 'user_custom_fields', 'widgets'];
+type SetupArticle = 'projects' | 'user_custom_fields';
+const articles: SetupArticle[] = ['projects', 'user_custom_fields'];
 type SetupMessages = {
   [key in SetupArticle]: ReactIntl.FormattedMessage.MessageDescriptor;
 };
@@ -30,6 +31,11 @@ const SetupSection = ({ intl: { formatMessage } }: InjectedIntlProps) => {
   const handleClickExternalTrack = () => {
     trackEventByName(tracks.externalLink.name, {
       extra: { section: 'setup' },
+    });
+  };
+  const getHandleClickInteralTrack = (article: SetupArticle) => () => {
+    trackEventByName(tracks.internalLink.name, {
+      extra: { article, section: 'setup' },
     });
   };
 
@@ -54,17 +60,14 @@ const SetupSection = ({ intl: { formatMessage } }: InjectedIntlProps) => {
           const linkMessages: SetupMessages = {
             projects: messages.setupArticle1Link,
             user_custom_fields: messages.setupArticle2Link,
-            widgets: messages.setupArticle3Link,
           };
           const titleMessages: SetupMessages = {
             projects: messages.setupArticle1Title,
             user_custom_fields: messages.setupArticle2Title,
-            widgets: messages.setupArticle3Title,
           };
           const descriptionMessages: SetupMessages = {
             projects: messages.setupArticle1Description,
             user_custom_fields: messages.setupArticle2Description,
-            widgets: messages.setupArticle3Description,
           };
           const linkMessage = linkMessages[article];
           const titleMessage = titleMessages[article];
@@ -72,16 +75,16 @@ const SetupSection = ({ intl: { formatMessage } }: InjectedIntlProps) => {
           const adminGuideArticle = (
             <AdminGuideArticle
               key={`setupArticle${i}`}
-              article={article}
-              section="setup"
               linkMessage={linkMessage}
               titleMessage={titleMessage}
+              trackLink={getHandleClickInteralTrack(article)}
               descriptionMessage={descriptionMessage}
             />
           );
 
           return renderArticle(article, i, adminGuideArticle);
         })}
+        <Outlet id="app.containers.Admin.guide.SetupSection" />
       </SectionContent>
     </SectionWrapper>
   );

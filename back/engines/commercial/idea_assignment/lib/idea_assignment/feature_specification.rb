@@ -19,5 +19,3 @@ module IdeaAssignment
     end
   end
 end
-
-AppConfiguration::Settings.add_feature(IdeaAssignment::FeatureSpecification)

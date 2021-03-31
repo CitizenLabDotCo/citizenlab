@@ -8,8 +8,8 @@ import shallowCompare from 'utils/shallowCompare';
 
 // typings
 import { IStreamParams, IStream } from 'utils/streams';
+
 import {
-  IUsersByBirthyear,
   IIdeasByTopic,
   ICommentsByTopic,
   IVotesByTopic,
@@ -18,6 +18,7 @@ import {
   ICommentsByProject,
   IVotesByProject,
 } from 'services/stats';
+
 import { IGraphFormat, IParticipationByTopic } from 'typings';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -29,15 +30,17 @@ type children = (renderProps: {
   serie: IGraphFormat | IParticipationByTopic | null | undefined;
 }) => JSX.Element | null;
 
-export type ISupportedDataType =
-  | IUsersByBirthyear
-  | IIdeasByTopic
-  | ICommentsByTopic
-  | IVotesByTopic
-  | IIdeasByProject
-  | IIdeasByStatus
-  | IVotesByProject
-  | ICommentsByProject;
+export interface ISupportedDataTypeMap {
+  ideasByTopic: IIdeasByTopic;
+  commentsByTopic: ICommentsByTopic;
+  votesByTopic: IVotesByTopic;
+  ideasByProject: IIdeasByProject;
+  ideasByStatus: IIdeasByStatus;
+  votesByProject: IVotesByProject;
+  commentsByProject: ICommentsByProject;
+}
+
+export type ISupportedDataType = ISupportedDataTypeMap[keyof ISupportedDataTypeMap];
 
 interface QueryProps {
   startAt?: string | undefined | null;
