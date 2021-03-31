@@ -6,7 +6,6 @@ import { forOwn, get, size, has, trim, isEmpty, omitBy } from 'lodash-es';
 // components
 import { Label, IconTooltip, ColorPickerInput } from 'cl2-component-library';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
-import RangeInput from 'components/UI/RangeInput';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import {
   Section,
@@ -420,10 +419,6 @@ class SettingsCustomizeTab extends PureComponent<
         contrastRatio,
       } = this.state;
 
-      const latestAppConfigStyleSettings = {
-        ...tenant.data.attributes,
-        ...attributesDiff,
-      }.style;
       const latestAppConfigCoreSettings = {
         ...tenant.data.attributes,
         ...attributesDiff,
