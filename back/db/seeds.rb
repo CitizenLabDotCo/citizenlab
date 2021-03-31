@@ -3,3 +3,10 @@ if CitizenLab.ee?
 else
   load Rails.root.join('db/seeds/citizenlab.rb')
 end
+
+# Creates unsubscription tokens.
+User.all.each do |user|
+  EmailCampaigns::UnsubscriptionToken.create!(user_id: user.id)
+end
+# Creates email campaigns.
+EmailCampaigns::AssureCampaignsService.new.assure_campaigns
