@@ -85,6 +85,10 @@ AppConfiguration.create!(
       enabled: true,
       allowed: true
     },
+    survey_xact_surveys: {
+      enabled: true,
+      allowed: true
+    },
     surveymonkey_surveys: {
       enabled: true,
       allowed: true
@@ -456,8 +460,8 @@ end
   Page.create! attrs
 end
 ordered_slug_links = ['information', 'cookie-policy', 'privacy-policy', 'terms-and-conditions']
-ordered_slug_links.each do |s1| 
-  (ordered_slug_links - [s1]).each_with_index do |s2, ordering| 
+ordered_slug_links.each do |s1|
+  (ordered_slug_links - [s1]).each_with_index do |s2, ordering|
     PageLink.create!(
       linking_page: Page.find_by(slug: s1),
       linked_page: Page.find_by(slug: s2),
