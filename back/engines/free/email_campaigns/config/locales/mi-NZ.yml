@@ -103,7 +103,7 @@ mi:
       "link_privacy_policy": "Privacy Policy"
       "link_terms_conditions": "Terms & Conditions"
       "link_unsubscribe": "Unsubscribe"
-      "powered_by": "Powered by"
+      "powered_by": "He mea whakahiko e"
       "statement": "This e-mail was sent to you by CitizenLab on behalf of %{organizationName}, because you are a registered user of %{organizationLink}. You can %{unsubscribeLink} if you do not want to receive these e-mails in the future."
       "unsubscribe_text": "unsubscribe"
     comment_deleted_by_admin:
@@ -186,7 +186,7 @@ mi:
       today_by_author: 'Today by %{author}'
       x_days_ago_by_author: '%{x} days ago by %{author}'
       idea_section: Ideas
-      initiative_section: Proposals
+      initiative_section: Tono
       title_initiatives_past_week: 'New proposals assigned to you'
       title_successful_initiatives_past_week: 'Proposals assigned to you that reached the threshold'
     idea_marked_as_spam:
