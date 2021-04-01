@@ -104,7 +104,7 @@ nl:
       "link_terms_conditions": "Gebruiksvoorwaarden"
       "link_unsubscribe": "Uitschrijven"
       "powered_by": "Mogelijk gemaakt door"
-      "statement": "This e-mail was sent to you by CitizenLab on behalf of %{organizationName}, because you are a registered user of %{organizationLink}. You can %{unsubscribeLink} if you do not want to receive these e-mails in the future."
+      "statement": "Je kreeg deze e-mail van CitizenLab in naam van %{organizationName} omdat je geregistreerd bent als gebruiker op %{organizationLink}. Je kan je %{unsubscribeLink} als je deze e-mails niet meer wil ontvangen in de toekomst."
       "unsubscribe_text": "Uitschrijven"
     comment_deleted_by_admin:
       reason: 'De reden waarom je reactie is verwijderd:'
@@ -489,7 +489,7 @@ nl:
     user_digest:
       subject: "Wekelijkse update van het participatieplatform van %{organizationName}"
       commented: "%{authorFirstName} schreef:"
-      preheader: "Weekly overview of %{organizationName}"
+      preheader: "Wekelijks overzicht van %{organizationName}"
       title_your_weekly_report: "Ontdek wat er vorige week is gebeurd"
       intro_text: "Hier is een overzicht van wat er is gebeurd op het participatieplatform van %{organizationName}."
       cta_go_to_the_platform: "Ga naar het platform"
