@@ -34,7 +34,7 @@
 - Automatic tagging is functional for all clusters, and enabled for all premium customers
 
 ### Added
-* Matomo is enabled for all platforms, tracking page views and front-end events (no workshops or back-end events yet)
+- Matomo is enabled for all platforms, tracking page views and front-end events (no workshops or back-end events yet)
 
 ## 2021-03-11
 
