@@ -18,6 +18,7 @@
 ### Fixed
 - Admin>Dashboard>Users tab is no longer hidden for admins that manage projects.
 - The password input no longer shows the password when hitting ENTER.
+- Admin > Settings displays the tabs again
 
 ### Changed
 - Empty folders are now shown in the landing page, navbar, projects page and sitemap.
