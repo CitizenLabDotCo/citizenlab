@@ -525,14 +525,14 @@ sr:
       action_share_twitter: 'Obavestite svoje pratioce na %{twitterLink}'
       add_image: 'Dodajte sliku'
       cta_view_idea: 'Go to your idea'
-      event_description: '%{firstName}, congratulations with your first idea on the participation platform of %{organizationName}. You will be notified when people interact with your idea. Find out what next steps you can take below.'
+      event_description: '%{firstName}, čestitamo vam na prvoj objavi u okviru %{organizationName} participativne platforme. Bićete obavešteni kada ljudi stupe u interakciju sa njom. U nastavku saznajte koje sledeće korake možete preduzeti.'
       link: link
       main_header: '%{firstName}, you posted your first idea!'
-      message_get_votes: 'Reach more people with your idea:'
+      message_get_votes: 'Dođite do još više ljudi putem svoje objave:'
       preheader: '%{firstName}, congratulations on posting your first idea on the platform of %{organizationName}. Now gather support for your idea'
       see_you: 'Vidimo se uskoro na platformi!'
       send_email: e-mail
-      subject: 'Your first idea on the platform of %{organizationName}'
+      subject: 'Vaša prva objava na %{organizationName} participativnoj platformi. '
     welcome:
       cta_join_platform: 'Otkrijte platformu'
       subject: 'Dobrodošli na %{organizationName} platformu '
@@ -541,17 +541,17 @@ sr:
       preheader: 'Evo šta možete da uradite na %{organizationName} platformi '
     idea_published:
       action_add_image: '%{addImageLink} da biste povećali vidljivost'
-      action_published_idea: 'Published idea'
+      action_published_idea: 'Postavljena objava'
       action_send_email: 'Pošaljite kontaktima %{sendEmailLink}'
       action_share_fb: 'Obavestite svoje prijatelje na %{fbLink}'
       action_share_link: 'Delite putem bilo kog kanala kopiranjem %{link}'
       action_share_twitter: 'Obavestite svoje pratioce na %{twitterLink}'
       add_image: 'Dodajte sliku'
-      cta_view_idea: 'Go to your idea'
-      event_description: '%{firstName}, your idea has successfully been published on the participation platform of %{organizationName}. You will be notified when people interact with your idea. Find out what next steps you can take below.'
+      cta_view_idea: 'Idite na svoj post'
+      event_description: '%{firstName}, vaša objava je postavljena na %{organizationName} participativnu platformu. Bićete obavešteni kada ljudi stupe u interakciju sa njom. U nastavku saznajte koje sledeće korake možete preduzeti.'
       link: link
       main_header: 'You posted an idea! Let''s make sure it gets read.'
-      message_get_votes: 'Reach more people with your idea:'
+      message_get_votes: 'Dođite do još više ljudi putem svoje objave:'
       preheader: '%{firstName}, congratulations on posting your idea on the platform of %{organizationName}. Now gather support.'
       see_you: 'Vidimo se uskoro na platformi!'
       send_email: e-mail
