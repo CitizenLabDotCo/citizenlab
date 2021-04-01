@@ -12,6 +12,10 @@ CitizenLab adopts a so-called **[open-core model](https://en.wikipedia.org/wiki/
 
 The code repository is organised and configured to get you started on the Free Edition of the CitizenLab software. To use the Commercial Edition or get professional support, consider [becoming a CitizenLab client](https://www.citizenlab.co/plans).
 
+## Demo platform
+
+If you'd like to test out the functionalities before setting up your own instance, feel free to explore the [demo platform](https://opensource.citizenlab.co/), with all open-source functionalities enabled. Admin credentials are shown in the sign-up flow, if you'd like to get access to the back-office.
+
 ## More information
 
 **[Development Portal](https://developers.citizenlab.co)**

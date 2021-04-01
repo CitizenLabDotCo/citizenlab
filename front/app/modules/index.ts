@@ -36,6 +36,7 @@ import IdClaveUnicaConfiguration from './commercial/id_clave_unica';
 import widgetsConfiguration from './commercial/widgets';
 
 import taggingConfiguration from './commercial/tagging';
+import customStyleConfiguration from './commercial/custom_style';
 
 declare var CL_CONFIG: any;
 
@@ -167,5 +168,9 @@ export default loadModules([
   {
     configuration: taggingConfiguration,
     isEnabled: CL_CONFIG['modules']['commercial/tagging'],
+  },
+  {
+    configuration: customStyleConfiguration,
+    isEnabled: CL_CONFIG['modules']['commercial/custom_style'],
   },
 ]);
