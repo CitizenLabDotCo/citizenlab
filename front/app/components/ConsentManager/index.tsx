@@ -116,6 +116,7 @@ export class ConsentManager extends PureComponent<Props, State> {
   };
 
   resetPreferences = () => {
+    console.log(this.getCurrentPreferences(this.state.cookieConsent));
     this.setState((state) => ({
       ...state,
       preferences: this.getCurrentPreferences(state.cookieConsent),
@@ -167,25 +168,30 @@ export class ConsentManager extends PureComponent<Props, State> {
     );
   };
 
-  defaultToFalse = () => {
-    this.setState(
-      (state) => {
-        const newPreferences = {};
-        allCategories().forEach((category) => {
+  toggleDefault = (modalOpened) => {
+    console.log(modalOpened);
+    this.setState((state) => {
+      const newPreferences = {};
+      allCategories().forEach((category) => {
+        // set to false when opening the modal
+        if (!modalOpened) {
           if (state.preferences[category] === undefined) {
             newPreferences[category] = false;
           }
-        });
-        return {
-          ...state,
-          preferences: {
-            ...state.preferences,
-            ...newPreferences,
-          },
-        };
-      },
-      () => this.saveConsent()
-    );
+        }
+        // reset false to undefined when closing the modal
+        else if (state.preferences[category] === false) {
+          newPreferences[category] = undefined;
+        }
+      });
+      return {
+        ...state,
+        preferences: {
+          ...state.preferences,
+          ...newPreferences,
+        },
+      };
+    });
   };
 
   render() {
@@ -209,7 +215,7 @@ export class ConsentManager extends PureComponent<Props, State> {
       return (
         <Container
           accept={this.accept}
-          onOpenModal={this.defaultToFalse}
+          onToggleModal={this.toggleDefault}
           setPreferences={this.setPreferences}
           resetPreferences={this.resetPreferences}
           saveConsent={this.saveConsent}
