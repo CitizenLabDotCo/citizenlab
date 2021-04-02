@@ -75,8 +75,7 @@ class WebApi::V1::ProjectsController < ::ApplicationController
   end
 
   def update
-    params[:project][:area_ids] ||= [] if params[:project].has_key?(:area_ids)
-    params[:project][:default_assignee_id] ||= nil if params[:project].has_key?(:default_assignee_id)
+    params[:project][:area_ids] ||= [] if params[:project].key?(:area_ids)
 
     project_params = permitted_attributes(Project)
 

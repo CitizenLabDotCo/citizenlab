@@ -42,6 +42,7 @@ export type IAppConfigurationSettingsCore = {
   color_text: string | null;
   color_menu_bg?: string | null;
   currency: string;
+  reply_to_email: string;
   custom_onboarding_fallback_message?: Multiloc | null;
   custom_onboarding_message?: Multiloc | null;
   custom_onboarding_button?: Multiloc | null;
@@ -103,6 +104,7 @@ export interface IAppConfigurationSettings {
   manual_project_sorting?: AppConfigurationFeature;
   admin_project_templates?: AppConfigurationFeature;
   pages?: AppConfigurationFeature;
+  project_reports?: AppConfigurationFeature;
   private_projects?: AppConfigurationFeature;
   maps?: AppConfigurationMapSettings;
   participatory_budgeting?: AppConfigurationFeature;
@@ -132,6 +134,8 @@ export interface IAppConfigurationSettings {
   ideas_overview?: AppConfigurationFeature;
   smart_groups?: AppConfigurationFeature;
   manual_emailing?: AppConfigurationFeature;
+  manual_tagging?: AppConfigurationFeature;
+  automatic_tagging?: AppConfigurationFeature;
   automated_emailing_control?: AppConfigurationFeature;
   typeform_surveys?: {
     allowed: boolean;
@@ -151,6 +155,7 @@ export interface IAppConfigurationSettings {
   initiativeflow_social_sharing?: AppConfigurationFeature;
   machine_translations?: AppConfigurationFeature;
   custom_topics?: AppConfigurationFeature;
+  custom_maps?: AppConfigurationFeature;
   similar_ideas?: AppConfigurationFeature;
   polls?: AppConfigurationFeature;
   moderation?: AppConfigurationFeature;

@@ -22,5 +22,8 @@ AdminApi::Engine.routes.draw do
   resources :ideas, only: [:show]
 
   post "/graphql", to: "graphql#execute"
+end
 
+Rails.application.routes.draw do
+  mount AdminApi::Engine => "/admin_api", as: 'admin_api', defaults: {format: :json}
 end

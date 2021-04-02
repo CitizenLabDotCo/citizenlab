@@ -4,21 +4,15 @@ class WebApi::V1::ActionDescriptorsController < ApplicationController
   skip_after_action :verify_authorized, only: [:initiatives]
 
   def initiatives
-    ps = PermissionsService.new
-    posting_disabled_reason = ps.denied?(current_user, 'posting_initiative')
-    commenting_disabled_reason = ps.denied?(current_user, 'commenting_initiative')
-    voting_disabled_reason = ps.denied?(current_user, 'voting_initiative')
-
+    # rubocop:disable Layout/HashAlignment
     descriptors = {
-      posting_initiative: { disabled_reason: posting_disabled_reason },
-      commenting_initiative: { disabled_reason: commenting_disabled_reason },
-      voting_initiative: { disabled_reason: voting_disabled_reason }
+      posting_initiative:          { enabled: true, disabled_reason: nil },
+      commenting_initiative:       { enabled: true, disabled_reason: nil },
+      voting_initiative:           { enabled: true, disabled_reason: nil },
+      comment_voting_initiative:   { enabled: true, disabled_reason: nil },
+      cancelling_initiative_votes: { enabled: true, disabled_reason: nil }
     }
-
-    descriptors.each { |_, desc| desc[:enabled] = !desc[:disabled_reason] }
-    descriptors[:comment_voting_initiative] = descriptors[:commenting_initiative]
-    descriptors[:cancelling_initiative_votes] = descriptors[:voting_initiative]
-
+    # rubocop:enable Layout/HashAlignment
     render(json: descriptors)
   end
 
@@ -26,3 +20,5 @@ class WebApi::V1::ActionDescriptorsController < ApplicationController
     false
   end
 end
+
+WebApi::V1::ActionDescriptorsController.prepend_if_ee('GranularPermissions::Patches::WebApi::V1::ActionDescriptorsController')

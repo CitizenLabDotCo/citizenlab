@@ -16,13 +16,11 @@ class SideFxIdeaService
 
   def before_update(idea, user)
     idea.body_multiloc = TextImageService.new.swap_data_images(idea, :body_multiloc)
-    idea.assignee = nil if idea.project_id_changed? && !ProjectPolicy.new(idea.assignee, idea.project).moderate?
-
-    before_publish idea, user if idea.publication_status_change == %w[draft published]
+    before_publish idea, user if idea.will_be_published?
   end
 
   def after_update(idea, user)
-    if idea.publication_status_previous_change == %w[draft published]
+    if idea.just_published?
       after_publish idea, user
     elsif idea.published?
       LogActivityJob.perform_later(idea, 'changed', user, idea.updated_at.to_i)
@@ -32,12 +30,6 @@ class SideFxIdeaService
     if idea.idea_status_id_previously_changed?
       LogActivityJob.perform_later(idea, 'changed_status', user, idea.updated_at.to_i,
                                    payload: { change: idea.idea_status_id_previous_change })
-    end
-
-    if idea.assignee_id_previously_changed?
-      initiating_user = @automatic_assignment ? nil : user
-      LogActivityJob.perform_later(idea, 'changed_assignee', initiating_user, idea.updated_at.to_i,
-                                   payload: { change: idea.assignee_id_previous_change })
     end
 
     if idea.title_multiloc_previously_changed?
@@ -51,10 +43,7 @@ class SideFxIdeaService
     end
   end
 
-  def before_destroy(idea, _user)
-    Tagging::Tagging.find(idea_id: idea.id).destroy_all
-  rescue ActiveRecord::RecordNotFound => _e
-  end
+  def before_destroy(idea, _user); end
 
   def after_destroy(frozen_idea, user)
     serialized_idea = clean_time_attributes(frozen_idea.attributes)
@@ -67,7 +56,6 @@ class SideFxIdeaService
 
   def before_publish(idea, _user)
     set_phase(idea)
-    set_assignee(idea)
   end
 
   def after_publish(idea, user)
@@ -82,13 +70,6 @@ class SideFxIdeaService
       ph&.can_contain_ideas?
     end
     idea.phases = [phase] if phase
-  end
-
-  def set_assignee(idea)
-    return unless idea.project&.default_assignee && !idea.assignee
-
-    idea.assignee = idea.project.default_assignee
-    @automatic_assignment = true
   end
 
   def add_autovote(idea)
@@ -116,3 +97,6 @@ class SideFxIdeaService
     Seo::ScrapeFacebookJob.perform_later(url)
   end
 end
+
+::SideFxIdeaService.prepend_if_ee('IdeaAssignment::Patches::SideFxIdeaService')
+::SideFxIdeaService.prepend_if_ee('Tagging::Patches::SideFxIdeaService')

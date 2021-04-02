@@ -16,7 +16,7 @@ import useAuthUser from 'hooks/useAuthUser';
 import {
   addFolderModerator,
   deleteFolderModerator,
-} from '../../../services/moderators';
+} from '../../../services/projectFolderModerators';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -30,6 +30,7 @@ import Button from 'components/UI/Button';
 import { List, Row } from 'components/admin/ResourceList';
 import Avatar from 'components/Avatar';
 import selectStyles from 'components/UI/MultipleSelect/styles';
+import { isAdmin } from 'services/permissions/roles';
 
 const Container = styled.div`
   width: 100%;
@@ -120,7 +121,8 @@ const FolderPermissions = ({
             value: user.id,
             label: `${userName(user)} (${user.attributes.email})`,
             email: `${user.attributes.email}`,
-            disabled: isProjectFolderModerator(user),
+            disabled:
+              isProjectFolderModerator(user) && !isAdmin({ data: user }),
           };
         });
     }

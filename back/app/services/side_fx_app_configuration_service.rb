@@ -43,6 +43,7 @@ class SideFxAppConfigurationService
     options = { payload: payload }.compact
 
     LogActivityJob.perform_later(app_config, action, user, update_time, options)
-    LogActivityJob.perform_later(app_config.tenant, action, user, update_time, options) # MT_TODO To be removed once event subscribers have benn adapted.
   end
 end
+
+SideFxAppConfigurationService.prepend_if_ee('MultiTenancy::Patches::SideFxAppConfigurationService')

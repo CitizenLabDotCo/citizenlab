@@ -7,17 +7,15 @@ require "volunteering/version"
 Gem::Specification.new do |s|
   s.name        = "volunteering"
   s.version     = Volunteering::VERSION
-  s.authors     = ["Koen Gremmelprez"]
-  s.email       = ["koen@citizenlab.co"]
+  s.authors     = ["CitizenLab"]
   s.licenses    = ['AGPLv3']
   s.summary     = "Contains everything to support volunteering as a participation method"
 
-  s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
+  s.files = Dir["{app,config,db,lib}/**/*", "Rakefile", "README.md"]
 
   s.add_dependency "rails", "~> 6.0.0"
   s.add_dependency "pundit", "~> 2.0"
   s.add_dependency "kaminari", "~> 1.2"
-  s.add_dependency "apartment", "~> 2.2.1"
   s.add_dependency "acts_as_list", "~> 0.9.17"
 
   s.add_development_dependency "rspec_api_documentation"

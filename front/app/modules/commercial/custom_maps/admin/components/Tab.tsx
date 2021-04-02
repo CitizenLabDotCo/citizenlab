@@ -13,11 +13,12 @@ const Tab: FC<Props & InjectedIntlProps> = ({
   intl: { formatMessage },
 }) => {
   useEffect(() => {
+    const tabName = 'map';
     onData({
       configuration: {
         label: formatMessage(messages.mapTab),
-        name: 'map',
-        url: `map`,
+        name: tabName,
+        url: 'map',
         feature: 'custom_maps',
       },
       insertBeforeName: 'phases',

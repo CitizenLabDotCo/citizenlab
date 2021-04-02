@@ -18,23 +18,29 @@
 ### Fixed
 - Admin>Dashboard>Users tab is no longer hidden for admins that manage projects.
 - The password input no longer shows the password when hitting ENTER.
+- Admin > Settings displays the tabs again
 
 ### Changed
 - Empty folders are now shown in the landing page, navbar, projects page and sitemap.
 - The sitemap no longer shows all projects and folder under each folder.
 - Images added to folder descriptions are now compressed, reducing load times in project and folder pages. 
 
-
 ### Added
 - Allows for sending front-end events to our self-hosted matomo analytics tool
+
+## 2021-03-16
+
+### Changed
+- Automatic tagging is functional for all clusters, and enabled for all premium customers
+
+### Added
+- Matomo is enabled for all platforms, tracking page views and front-end events (no workshops or back-end events yet)
 
 ## 2021-03-11
 
 ### Changed
 - Tenants are now ordered alphabetically in AdminHQ
-
 - Serbian (Latin) is now a language option.
-
 
 ## 2021-03-10
 
@@ -42,7 +48,6 @@
 - CitizenLab admins can now change the link to the accessibility statement via AdminHQ.
 - "Reply-to" field in emails from campaigns can be customized for each platform
 - Customizable minimal required password length for each platform
-
 
 ## 2021-03-09
 

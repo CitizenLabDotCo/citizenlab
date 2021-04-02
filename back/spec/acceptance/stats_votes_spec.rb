@@ -35,7 +35,7 @@ resource "Stats - Votes" do
     token = Knock::AuthToken.new(payload: @current_user.to_token_payload).token
     header 'Authorization', "Bearer #{token}"
     header "Content-Type", "application/json"
-    Tenant.current.update!(created_at: now - 3.month)
+    AppConfiguration.instance.update!(created_at: now - 3.month)
     @timezone = AppConfiguration.instance.settings('core','timezone')
     @idea_status = create(:idea_status)
   end
@@ -60,16 +60,13 @@ resource "Stats - Votes" do
   end
 
   context "with dependency on custom_fields" do
-    before(:all) do
-      Apartment::Tenant.switch!('example_org')
-      TenantTemplateService.new.resolve_and_apply_template('base', external_subfolder: false)
-      CustomField.find_by(code: 'education').update(enabled: true)
-    end
+    before do
+      create(:custom_field_birthyear)
+      create(:custom_field_gender, :with_options)
+      create(:custom_field_domicile)
+      create(:custom_field_education, :with_options)
 
-    after(:all) do
-      Apartment::Tenant.reset
-      Tenant.find_by(host: 'example.org').destroy
-      create(:test_tenant)
+      CustomField.find_by(code: 'education').update(enabled: true)
     end
 
     get "web_api/v1/stats/votes_by_birthyear" do

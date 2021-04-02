@@ -4,11 +4,12 @@ import { withRouter, WithRouterProps } from 'react-router';
 import { isEmpty } from 'lodash-es';
 
 // module specific
-import useIdeaCustomFields from 'hooks/useIdeaCustomFields';
+import useIdeaCustomFields from 'modules/commercial/idea_custom_fields/hooks/useIdeaCustomFields';
 import {
   updateIdeaCustomField,
   IUpdatedIdeaCustomFieldProperties,
-} from 'services/ideaCustomFields';
+} from 'modules/commercial/idea_custom_fields/services/ideaCustomFields';
+
 import IdeaCustomField from '../../../../../admin/containers/projects/edit/ideaform/IdeaCustomField';
 
 // components

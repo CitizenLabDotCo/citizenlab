@@ -6,9 +6,6 @@ import Modal from 'components/UI/Modal';
 import SignUpIn, { ISignUpInMetaData } from 'components/SignUpIn';
 import { TSignUpSteps } from 'components/SignUpIn/SignUp';
 
-// services
-import { completeRegistration } from 'services/users';
-
 // hooks
 import useIsMounted from 'hooks/useIsMounted';
 import useAuthUser from 'hooks/useAuthUser';
@@ -26,10 +23,6 @@ import {
 
 // style
 import styled from 'styled-components';
-
-// TO FIX : handle no close logic in a generic way
-// tslint:disable-next-line
-import useUserCustomFieldsSchema from 'modules/commercial/user_custom_fields/hooks/useUserCustomFieldsSchema';
 
 const Container = styled.div``;
 
@@ -51,23 +44,20 @@ const SignUpInModal = memo<Props>(({ className, onMounted }) => {
   const participationConditions = useParticipationConditions(
     metaData?.verificationContext
   );
-  const customFieldsSchema = useUserCustomFieldsSchema();
 
   const opened = !!metaData;
   const hasParticipationConditions =
     !isNilOrError(participationConditions) &&
     participationConditions.length > 0;
+
   const modalWidth = !!(
     signUpActiveStep === 'verification' && hasParticipationConditions
   )
     ? 820
     : 580;
+
   const modalNoClose = !!(
-    metaData?.error !== true &&
-    (signUpActiveStep === 'verification' ||
-      signUpActiveStep === 'custom-fields') &&
-    !isNilOrError(customFieldsSchema) &&
-    customFieldsSchema?.hasRequiredFields
+    metaData?.error !== true && signUpActiveStep === 'verification'
   );
 
   useEffect(() => {
@@ -97,23 +87,9 @@ const SignUpInModal = memo<Props>(({ className, onMounted }) => {
       subscriptions.forEach((subscription) => subscription.unsubscribe());
   }, [authUser]);
 
-  const onClose = useCallback(() => {
-    // If the user presses the close button (x) in the modal top right corner when the custom-fields step is shown and
-    // when this step -does not- have required fields, then this action is the equivalent of pressing the 'skip this step' button
-    // and therefore should trigger completeRegistration() in order for the user to have a valid account.
-    // If completeRegistration() is not executed, the user will be logged in but will not have a valid account and therefore
-    // will not be able to perform any actions (e.g. voting, posting, commenting, ...)!
-    if (
-      signUpActiveStep === 'custom-fields' &&
-      !isNilOrError(authUser) &&
-      !isNilOrError(customFieldsSchema) &&
-      !customFieldsSchema?.hasRequiredFields
-    ) {
-      completeRegistration({});
-    }
-
+  const onClose = () => {
     setMetaData(undefined);
-  }, [signUpActiveStep, customFieldsSchema, authUser]);
+  };
 
   const onSignUpInCompleted = useCallback(() => {
     const hasAction = isFunction(metaData?.action);
