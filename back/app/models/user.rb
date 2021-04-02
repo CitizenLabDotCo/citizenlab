@@ -10,6 +10,50 @@ class User < ApplicationRecord
   GENDERS = %w[male female unspecified].freeze
   INVITE_STATUSES = %w[pending accepted].freeze
 
+  class << self
+    def roles_json_schema
+      _roles_json_schema.deep_dup.tap do |schema|
+        # Remove the schemas for roles that are not enabled.
+        schema['items']['oneOf'] = schema.dig('items', 'oneOf').select do |role_schema|
+          role_name = role_schema.dig('properties', 'type', 'enum', 0)
+          enabled_roles.include?(role_name)
+        end
+      end
+    end
+
+    # Returns (and memoize) the schema of all declared roles without restrictions.
+    def _roles_json_schema
+      @_roles_json_schema ||= JSON.parse(File.read(Rails.root.join('config/schemas/user_roles.json_schema')))
+    end
+
+    def enabled_roles
+      ['admin']
+    end
+
+    def find_by_cimail(email)
+      where('lower(email) = lower(?)', email).first
+    end
+
+    # This method is used by knock to get the user.
+    # Default is by email, but we want to compare
+    # case insensitively and forbid login for
+    # invitees.
+    def from_token_request(request)
+      email = request.params['auth']['email']
+
+      # Hack to embed phone numbers in email
+      if AppConfiguration.instance.feature_activated?('password_login') && AppConfiguration.instance.settings('password_login', 'phone')
+        phone_service = PhoneService.new
+        if phone_service.phone_or_email(email) == :phone
+          pattern = AppConfiguration.instance.settings('password_login', 'phone_email_pattern')
+          email = pattern.gsub('__PHONE__', phone_service.normalize_phone(email))
+        end
+      end
+
+      not_invited.find_by_cimail: email
+    end
+  end
+
   has_secure_password validations: false
   mount_base64_uploader :avatar, AvatarUploader
 
@@ -350,10 +394,6 @@ class User < ApplicationRecord
     initiator_notifications.each do |notification|
       notification.destroy! unless notification.update initiating_user_id: nil
     end
-  end
-
-  def roles_json_schema
-    ROLES_JSON_SCHEMA
   end
 end
 
