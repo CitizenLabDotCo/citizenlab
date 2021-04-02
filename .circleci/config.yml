@@ -196,7 +196,7 @@ jobs:
       RAILS_ENV: test
       CITIZENLAB_EE: true
     steps:
-      # - wait-for-postgres
+      - wait-for-postgres
       - run: |
           rake db:create
           rake db:schema:load
@@ -207,7 +207,7 @@ jobs:
     resource_class: small
     executor:
       name: cl2-back
-      image-tag: $CIRCLE_SHA1
+      image-tag: << pipeline.parameters.citizenlab_sha >>-$CIRCLE_SHA1
     working_directory: /cl2_back
     environment:
       CITIZENLAB_EE: true
