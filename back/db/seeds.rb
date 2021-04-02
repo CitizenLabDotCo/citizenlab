@@ -5,8 +5,9 @@ else
 end
 
 # Creates unsubscription tokens.
-User.all.each do |user|
+User.find_each do |user|
   EmailCampaigns::UnsubscriptionToken.create!(user_id: user.id)
 end
+
 # Creates email campaigns.
-EmailCampaigns::AssureCampaignsService.new.assure_campaigns
+EmailCampaigns::TasksService.new.assure_campaign_records
