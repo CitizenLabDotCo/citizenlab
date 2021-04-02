@@ -57,7 +57,7 @@ import {
 } from 'services/participationContexts';
 import { IParticipationContextType } from 'typings';
 import { withRouter, WithRouterProps } from 'react-router';
-import { CustomFieldCodes } from 'services/ideaCustomFields';
+import { CustomFieldCodes } from 'services/ideaCustomFieldsSchemas';
 
 const Container = styled.div`
   width: 100%;

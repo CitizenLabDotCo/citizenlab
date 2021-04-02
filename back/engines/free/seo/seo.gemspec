@@ -7,8 +7,7 @@ require 'seo/version'
 Gem::Specification.new do |spec|
   spec.name        = 'seo'
   spec.version     = Seo::VERSION
-  spec.authors     = ['guilherme-andrade']
-  spec.email       = ['guilherme@citizenlab.co']
+  spec.authors     = ['CitizenLab']
   spec.licenses    = ['AGPLv3']
   spec.summary     = 'The engine responsible for delivering the sitemap, scraping facebook and propagating changes to google.'
 
@@ -21,7 +20,7 @@ Gem::Specification.new do |spec|
       'public gem pushes.'
   end
 
-  spec.files = Dir['{app,config,db,lib}/**/*', 'MIT-LICENSE', 'Rakefile', 'README.md']
+  spec.files = Dir['{app,config,db,lib}/**/*', 'Rakefile', 'README.md']
 
   spec.add_dependency 'aws-sdk-route53'
   spec.add_dependency 'google-api-client'

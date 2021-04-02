@@ -18,7 +18,7 @@ RSpec.describe Notification, type: :model do
     end
 
     it 'are valid' do
-      described_class.descendants.each do |notification_subclass|
+      NotificationToSerializerMapper.map.keys.each do |notification_subclass|
         if notification_subclass.descendants.empty?
           expect(build(notification_subclass.model_name.element.to_sym)).to be_valid
         end
@@ -108,11 +108,11 @@ RSpec.describe Notification, type: :model do
       phase = create(:active_phase)
       project = phase.project
       project.visible_to = 'groups'
-      project.groups << create(:smart_group)
+      project.groups << create(:group)
       moderator = create(:moderator, project: project)
-      other_moderator = create(:moderator, email: 'koen@test.com') # member
+      other_moderator = create(:moderator, email: 'koen@test.com', manual_groups: [project.groups.first]) # member
       admin = create(:admin)
-      user = create(:user, email: 'sebi@test.com') # member
+      user = create(:user, email: 'sebi@test.com', manual_groups: [project.groups.first]) # member
       other_user = create(:user, email: 'koen@citizenlab.co') # not member
       activity = create(:activity, item: phase, action: 'started')
 

@@ -1,10 +1,4 @@
 import React, { memo } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-
-// resources
-import GetMachineTranslation, {
-  GetMachineTranslationChildProps,
-} from 'resources/GetMachineTranslation';
 
 // typings
 import { Locale } from 'typings';
@@ -12,12 +6,13 @@ import { Locale } from 'typings';
 // styling
 import styled from 'styled-components';
 import { media, fontSizes } from 'utils/styleUtils';
+import Outlet from 'components/Outlet';
 
 const Container = styled.div<{ align: 'left' | 'center' }>`
   width: ${({ align }) => (align === 'left' ? '100%' : 'auto')};
 `;
 
-const Title = styled.h1<{
+export const Title = styled.h1<{
   color: string | undefined;
   align: 'left' | 'center';
 }>`
@@ -49,17 +44,6 @@ interface Props {
   align?: 'left' | 'center';
 }
 
-const parseTranslation = (
-  translation: GetMachineTranslationChildProps,
-  title
-) => {
-  if (!isNilOrError(translation)) {
-    return translation.attributes.translation;
-  }
-
-  return title;
-};
-
 const PostTitle = memo<Props>(
   ({
     postId,
@@ -73,29 +57,26 @@ const PostTitle = memo<Props>(
   }) => {
     return (
       <Container className={className} align={align}>
-        {locale && translateButtonClicked ? (
-          <GetMachineTranslation
-            attributeName="title_multiloc"
-            localeTo={locale}
-            id={postId}
-            context={postType}
-          >
-            {(translation) => (
-              <Title
-                id={`e2e-${postType}-title`}
-                color={color}
-                align={align}
-                aria-live="polite"
-              >
-                {parseTranslation(translation, title)}
+        <Outlet
+          id="app.components.PostShowComponents.Title.translation"
+          title={title}
+          postId={postId}
+          postType={postType}
+          color={color}
+          align={align}
+          translateButtonClicked={translateButtonClicked}
+          locale={locale}
+        >
+          {(outletComponents) =>
+            outletComponents.length > 0 ? (
+              <>{outletComponents}</>
+            ) : (
+              <Title id={`e2e-${postType}-title`} color={color} align={align}>
+                {title}
               </Title>
-            )}
-          </GetMachineTranslation>
-        ) : (
-          <Title id={`e2e-${postType}-title`} color={color} align={align}>
-            {title}
-          </Title>
-        )}
+            )
+          }
+        </Outlet>
       </Container>
     );
   }

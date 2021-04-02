@@ -14,13 +14,14 @@ const Tab: FC<Props & InjectedIntlProps> = ({
   onData,
   intl: { formatMessage },
 }) => {
+  const tabName = 'ideaform';
   useEffect(() => {
     onData({
       configuration: {
         label: formatMessage(messages.inputFormTab),
-        url: `ideaform`,
+        url: 'ideaform',
         feature: 'idea_custom_fields',
-        name: 'ideaform',
+        name: tabName,
       },
       insertAfterName: 'survey-results',
     });

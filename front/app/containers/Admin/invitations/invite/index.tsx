@@ -506,11 +506,11 @@ class Invitations extends React.PureComponent<
 
     const invitationTabs = [
       {
-        value: 'import',
+        name: 'import',
         label: this.props.intl.formatMessage(messages.importTab),
       },
       {
-        value: 'text',
+        name: 'text',
         label: this.props.intl.formatMessage(messages.textTab),
       },
     ];

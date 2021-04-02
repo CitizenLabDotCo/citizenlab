@@ -63,7 +63,7 @@ class IdeaPolicy < ApplicationPolicy
   def update?
     # TODO: remove this after Gents project
     bypassable_reasons = %w[posting_disabled]
-    bypassable_reasons << 'not_permitted' if Tenant.current.host == 'participatie.stad.gent'
+    bypassable_reasons << 'not_permitted' if AppConfiguration.instance.host == 'participatie.stad.gent'
     pcs = ParticipationContextService.new
     pcs_posting_reason = pcs.posting_idea_disabled_reason_for_project(record.project, user)
     record.draft? || user&.active_admin_or_moderator?(record.project_id) ||
@@ -91,8 +91,8 @@ class IdeaPolicy < ApplicationPolicy
         topic_ids: [],
         area_ids: [] }
     ]
-    if admin? || (record.class != Class && user&.project_moderator?(record.project_id))
-      %i[idea_status_id budget assignee_id] + shared + [phase_ids: []]
+    if admin_or_project_moderator?
+      [:idea_status_id, :budget] + shared + [phase_ids: []]
     else
       shared
     end
@@ -100,9 +100,14 @@ class IdeaPolicy < ApplicationPolicy
 
   private
 
+  def admin_or_project_moderator?
+    user&.admin? || (record.class != Class && user&.project_moderator?(record.project_id))
+  end
+
   def owner?
     record.author_id == user.id
   end
 end
 
+IdeaPolicy.prepend_if_ee('IdeaAssignment::Patches::IdeaPolicy')
 IdeaPolicy::Scope.prepend_if_ee('ProjectPermissions::Patches::IdeaPolicy::Scope')

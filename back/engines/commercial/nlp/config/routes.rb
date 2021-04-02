@@ -6,3 +6,7 @@ NLP::Engine.routes.draw do
     end
   end
 end
+
+Rails.application.routes.draw do
+  mount NLP::Engine => '', as: 'nlp'
+end

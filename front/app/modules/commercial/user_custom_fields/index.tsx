@@ -9,6 +9,42 @@ import CustomFieldsStep from './citizen/components/CustomFieldsStep';
 import UserCustomFieldsForm from './citizen/components/UserCustomFieldsForm';
 import useUserCustomFieldsSchema from './hooks/useUserCustomFieldsSchema';
 import RegistrationQuestions from './admin/components/RegistrationQuestions';
+import { userCustomFieldsSchemaApiEndpoint } from './services/userCustomFields';
+import {
+  IUsersByBirthyear,
+  IUsersByDomicile,
+  IUsersByRegistrationField,
+} from './services/stats';
+import SignUpInModal from './citizen/components/SignUpInModal';
+
+declare module 'resources/GetSerieFromStream' {
+  export interface ISupportedDataTypeMap {
+    usersByBirthyear: IUsersByBirthyear;
+  }
+}
+
+declare module 'containers/Admin/dashboard/users/charts/BarChartByCategory' {
+  export interface ISupportedDataTypeMap {
+    usersByBirthyear: IUsersByBirthyear;
+    usersByRegistrationField: IUsersByRegistrationField;
+    usersByDomicile: IUsersByDomicile;
+  }
+}
+
+declare module 'containers/Admin/dashboard/users/charts/HorizontalBarChart' {
+  export interface ISupportedDataTypeMap {
+    usersByBirthyear: IUsersByBirthyear;
+    usersByRegistrationField: IUsersByRegistrationField;
+    usersByDomicile: IUsersByDomicile;
+  }
+}
+
+declare module 'containers/Admin/dashboard/users/charts/PieChartByCategory' {
+  export interface ISupportedDataTypeMap {
+    usersByBirthyear: IUsersByBirthyear;
+    usersByRegistrationField: IUsersByRegistrationField;
+  }
+}
 
 const RenderOnCustomFields = ({ children }) => {
   const userCustomFieldsSchema = useUserCustomFieldsSchema();
@@ -23,6 +59,7 @@ const RenderOnCustomFields = ({ children }) => {
 };
 
 const configuration: ModuleConfiguration = {
+  streamsToReset: [userCustomFieldsSchemaApiEndpoint],
   routes: {
     admin: [
       {
@@ -79,7 +116,7 @@ const configuration: ModuleConfiguration = {
   },
   outlets: {
     'app.containers.Admin.dashboard.users.graphs': RegistrationFieldsToGraphs,
-    'app.components.SignUpIn.SignUp.step': (props) => (
+    'app.components.SignUpIn.SignUp.step': ({ metaData, ...props }) => (
       <CustomFieldsStep {...props} />
     ),
     'app.containers.Admin.dashboard.reports.ProjectReport.graphs': CustomFieldGraphs,
@@ -90,6 +127,7 @@ const configuration: ModuleConfiguration = {
     ),
     'app.containers.Admin.settings.registration': AllCustomFields,
     'app.containers.Admin.settings.registrationHelperText': RegistrationQuestions,
+    'app.containers.App.signUpInModal': (props) => <SignUpInModal {...props} />,
   },
 };
 

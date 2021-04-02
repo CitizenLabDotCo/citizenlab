@@ -1,21 +1,19 @@
 Rails.application.routes.draw do
 
-  mount AdminApi::Engine => "/admin_api", as: 'admin_api', defaults: {format: :json}
-  mount CustomMaps::Engine => "", as: 'custom_maps'
-  mount CustomTopics::Engine => "", as: 'custom_topics'
-  mount CustomIdeaStatuses::Engine => "", as: 'custom_idea_statuses'
   mount EmailCampaigns::Engine => "", as: 'email_campaigns'
   mount Frontend::Engine => "", as: 'frontend'
-  mount GeographicDashboard::Engine => '', as: 'geographic_dashboard'
-  mount NLP::Engine => "", as: 'nlp'
   mount Onboarding::Engine => "", as: 'onboarding'
   mount Polls::Engine => "", as: 'polls'
-  mount PublicApi::Engine => "/api", as: 'public_api'
   mount Seo::Engine => '', as: 'seo'
   mount Surveys::Engine => "", as: 'surveys'
-  mount Tagging::Engine => "", as: 'tagging'
-  mount Verification::Engine => "", as: 'verification'
   mount Volunteering::Engine => "", as: 'volunteering'
+
+  # It must come before +resource :ideas+, otherwise /web_api/v1/ideas/geotagged
+  # (unfortunate route naming) is captured by /web_api/v1/ideas/<idea-id>.
+  # Already tried +Rails.applications.routes.prepend+. That does not work:
+  # https://github.com/rails/rails/issues/11663
+  mount GeographicDashboard::Engine => '', as: 'geographic_dashboard' if CitizenLab.ee?
+  mount Tagging::Engine => '', as: 'tagging' if CitizenLab.ee?
 
   namespace :web_api, :defaults => {:format => :json} do
     namespace :v1 do
@@ -50,7 +48,6 @@ Rails.application.routes.draw do
         resources :files, defaults: {container_type: 'Idea'}
 
         get :as_xlsx, on: :collection, action: 'index_xlsx'
-        get :as_xlsx_with_tags, on: :collection, action: 'index_with_tags_xlsx'
         get :mini, on: :collection, action: 'index_mini'
         get 'by_slug/:slug', on: :collection, to: 'ideas#by_slug'
         get :as_markers, on: :collection, action: 'index_idea_markers'
@@ -79,19 +76,7 @@ Rails.application.routes.draw do
       # auth
       post 'user_token' => 'user_token#create'
 
-
-      scope :users do
-        resources :custom_fields, controller: 'user_custom_fields' do
-          patch 'reorder', on: :member
-          get 'schema', on: :collection
-          resources :custom_field_options do
-            patch 'reorder', on: :member
-          end
-        end
-      end
-
-      resources :users do
-        resources :comments, only: [:index], controller: 'user_comments'
+      resources :users, only: %i[index create update destroy] do
         get :me, on: :collection
         post :complete_registration, on: :collection
         get :as_xlsx, on: :collection, action: 'index_xlsx'
@@ -102,7 +87,10 @@ Rails.application.routes.draw do
         get 'ideas_count', on: :member
         get 'initiatives_count', on: :member
         get 'comments_count', on: :member
+
+        resources :comments, only: [:index], controller: 'user_comments'
       end
+      get 'users/:id', to: 'users#show', constraints: { id: /\b(?!custom_fields|me)\b\S+/ }
 
       resources :topics, only: [:index, :show]
 
@@ -147,10 +135,11 @@ Rails.application.routes.draw do
         resources :moderators, except: [:update] do
           get :users_search, on: :collection
         end
-        resources :custom_fields, controller: 'idea_custom_fields', only: %i[index show] do
+
+        resources :custom_fields, controller: 'idea_custom_fields', only: %i[] do
           get 'schema', on: :collection
-          patch 'by_code/:code', action: 'upsert_by_code', on: :collection
         end
+
         get 'by_slug/:slug', on: :collection, to: 'projects#by_slug'
       end
       resources :admin_publications, only: %i[index show] do
@@ -187,21 +176,11 @@ Rails.application.routes.draw do
         get 'users_by_time_cumulative', **route_params
         get 'active_users_by_time', **route_params
         get 'active_users_by_time_cumulative', **route_params
-        get 'users_by_gender', **route_params
-        get 'users_by_birthyear', **route_params
-        get 'users_by_domicile', **route_params
-        get 'users_by_education', **route_params
         get 'users_engagement_scores', **route_params
-        get 'users_by_custom_field/:custom_field_id', action: :users_by_custom_field, **route_params
 
         get 'users_by_time_as_xlsx', **route_params
         get 'users_by_time_cumulative_as_xlsx', **route_params
         get 'active_users_by_time_as_xlsx', **route_params
-        get 'users_by_gender_as_xlsx', **route_params
-        get 'users_by_birthyear_as_xlsx', **route_params
-        get 'users_by_domicile_as_xlsx', **route_params
-        get 'users_by_education_as_xlsx', **route_params
-        get 'users_by_custom_field_as_xlsx/:custom_field_id', action: :users_by_custom_field_as_xlsx, **route_params
 
         route_params = {controller: 'stats_ideas'}
         get 'ideas_count', **route_params
@@ -271,7 +250,6 @@ Rails.application.routes.draw do
       end
 
       resources :baskets, except: [:index]
-      resources :clusterings
 
       resources :avatars, only: [:index, :show]
     end

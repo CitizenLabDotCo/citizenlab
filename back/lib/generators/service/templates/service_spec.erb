@@ -1,0 +1,13 @@
+# frozen_string_literal: true
+
+require 'rails_helper'
+
+describe <% if @module_name.present? %><%= @module_name.camelize %>::<% end %><%= class_name %>Finder do
+  subject(:result) { described_class.call }
+
+  describe '#call' do
+    it 'is successful' do
+      expect(result).to be_a_success
+    end
+  end
+end

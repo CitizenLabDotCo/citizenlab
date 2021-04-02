@@ -31,6 +31,7 @@ module Cl2Back
     # Only loads a smaller set of middleware suitable for API only apps.
     # Middleware like session, flash, cookies can be added back manually.
     # Skip views, helpers and assets when generating a new resource.
+
     config.api_only = true
 
     config.generators do |g|
@@ -50,5 +51,28 @@ module Cl2Back
     config.session_store :cookie_store, key: '_interslice_session'
     config.middleware.use ActionDispatch::Cookies # Required for all session management
     config.middleware.use ActionDispatch::Session::CookieStore, config.session_options
+
+    case ENV.fetch('ACTION_MAILER_DELIVERY_METHOD')
+    when 'mailgun'
+      config.action_mailer.delivery_method = :mailgun
+      config.action_mailer.mailgun_settings = {
+        api_key: ENV.fetch("MAILGUN_API_KEY"),
+        domain: ENV.fetch("MAILGUN_DOMAIN"),
+        api_host: ENV.fetch("MAILGUN_API_HOST", "api.mailgun.net"),
+      }
+    when 'smtp'
+      config.action_mailer.delivery_method = :smtp
+      config.action_mailer.smtp_settings = {
+        address: ENV.fetch('SMTP_ADDRESS'),
+        port: ENV.fetch('SMTP_PORT', nil),
+        domain:ENV.fetch('SMTP_DOMAIN', nil),
+        user_name: ENV.fetch('SMTP_USER_NAME', nil),
+        password: ENV.fetch('SMTP_PASSWORD', nil),
+        authentication: ENV.fetch('SMTP_AUTHENTICATION', nil)&.to_sym,
+        enable_starttls_auto: ENV.fetch('SMTP_ENABLE_STARTTLS_AUTO', nil),
+        openssl_verify_mode: ENV.fetch('SMTP_OPENSSL_VERIFY_MODE', nil)
+      }.compact
+    end
+
   end
 end

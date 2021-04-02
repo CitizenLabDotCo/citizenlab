@@ -20,17 +20,7 @@ export default () => {
       }),
     },
     childRoutes: [
-      {
-        path: 'templates/:projectTemplateId',
-        name: 'admin project template preview page',
-        component: Loadable({
-          loader: () =>
-            import(
-              'components/ProjectTemplatePreview/ProjectTemplatePreviewPageAdmin'
-            ),
-          loading: () => null,
-        }),
-      },
+      ...moduleConfiguration.routes['admin.project_templates'],
       {
         path: ':projectId/edit',
         name: 'admin projects single project',
@@ -70,15 +60,6 @@ export default () => {
             name: 'admin projects ideas manager',
             component: Loadable({
               loader: () => import('containers/Admin/projects/edit/ideas'),
-              loading: () => null,
-            }),
-          },
-          {
-            path: '/:locale/admin/projects/:projectId/topics',
-            name: 'admin projects topics',
-            component: Loadable({
-              loader: () =>
-                import('containers/Admin/projects/edit/projectTopics'),
               loading: () => null,
             }),
           },

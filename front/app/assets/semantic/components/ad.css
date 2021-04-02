@@ -9,7 +9,6 @@
  *
  */
 
-
 /*******************************
          Advertisement
 *******************************/
@@ -36,7 +35,6 @@
      Common
 ---------------*/
 
-
 /* Leaderboard */
 .ui.leaderboard.ad {
   width: 728px;
@@ -44,19 +42,19 @@
 }
 
 /* Medium Rectangle */
-.ui[class*="medium rectangle"].ad {
+.ui[class*='medium rectangle'].ad {
   width: 300px;
   height: 250px;
 }
 
 /* Large Rectangle */
-.ui[class*="large rectangle"].ad {
+.ui[class*='large rectangle'].ad {
   width: 336px;
   height: 280px;
 }
 
 /* Half Page */
-.ui[class*="half page"].ad {
+.ui[class*='half page'].ad {
   width: 300px;
   height: 600px;
 }
@@ -65,7 +63,6 @@
      Square
 ---------------*/
 
-
 /* Square */
 .ui.square.ad {
   width: 250px;
@@ -73,7 +70,7 @@
 }
 
 /* Small Square */
-.ui[class*="small square"].ad {
+.ui[class*='small square'].ad {
   width: 200px;
   height: 200px;
 }
@@ -82,15 +79,14 @@
     Rectangle
 ---------------*/
 
-
 /* Small Rectangle */
-.ui[class*="small rectangle"].ad {
+.ui[class*='small rectangle'].ad {
   width: 180px;
   height: 150px;
 }
 
 /* Vertical Rectangle */
-.ui[class*="vertical rectangle"].ad {
+.ui[class*='vertical rectangle'].ad {
   width: 240px;
   height: 400px;
 }
@@ -103,11 +99,11 @@
   width: 120px;
   height: 90px;
 }
-.ui[class*="square button"].ad {
+.ui[class*='square button'].ad {
   width: 125px;
   height: 125px;
 }
-.ui[class*="small button"].ad {
+.ui[class*='small button'].ad {
   width: 120px;
   height: 60px;
 }
@@ -116,7 +112,6 @@
    Skyscrapers
 ---------------*/
 
-
 /* Skyscraper */
 .ui.skyscraper.ad {
   width: 120px;
@@ -124,14 +119,13 @@
 }
 
 /* Wide Skyscraper */
-.ui[class*="wide skyscraper"].ad {
+.ui[class*='wide skyscraper'].ad {
   width: 160px;
 }
 
 /*--------------
      Banners
 ---------------*/
-
 
 /* Banner */
 .ui.banner.ad {
@@ -140,19 +134,19 @@
 }
 
 /* Vertical Banner */
-.ui[class*="vertical banner"].ad {
+.ui[class*='vertical banner'].ad {
   width: 120px;
   height: 240px;
 }
 
 /* Top Banner */
-.ui[class*="top banner"].ad {
+.ui[class*='top banner'].ad {
   width: 930px;
   height: 180px;
 }
 
 /* Half Banner */
-.ui[class*="half banner"].ad {
+.ui[class*='half banner'].ad {
   width: 234px;
   height: 60px;
 }
@@ -161,9 +155,8 @@
     Boards
 ---------------*/
 
-
 /* Leaderboard */
-.ui[class*="large leaderboard"].ad {
+.ui[class*='large leaderboard'].ad {
   width: 970px;
   height: 90px;
 }
@@ -178,7 +171,6 @@
     Panorama
 ---------------*/
 
-
 /* Panorama */
 .ui.panorama.ad {
   width: 980px;
@@ -188,7 +180,6 @@
 /*--------------
      Netboard
 ---------------*/
-
 
 /* Netboard */
 .ui.netboard.ad {
@@ -200,24 +191,21 @@
      Mobile
 ---------------*/
 
-
 /* Large Mobile Banner */
-.ui[class*="large mobile banner"].ad {
+.ui[class*='large mobile banner'].ad {
   width: 320px;
   height: 100px;
 }
 
 /* Mobile Leaderboard */
-.ui[class*="mobile leaderboard"].ad {
+.ui[class*='mobile leaderboard'].ad {
   width: 320px;
   height: 50px;
 }
 
-
 /*******************************
              Types
 *******************************/
-
 
 /* Mobile Sizes */
 .ui.mobile.ad {
@@ -228,7 +216,6 @@
     display: block;
   }
 }
-
 
 /*******************************
            Variations
@@ -249,9 +236,9 @@
   width: 100%;
   text-align: center;
   -webkit-transform: translateX(-50%) translateY(-50%);
-          transform: translateX(-50%) translateY(-50%);
+  transform: translateX(-50%) translateY(-50%);
   content: 'Ad';
-  color: #FFFFFF;
+  color: #ffffff;
   font-size: 1em;
   font-weight: bold;
 }
@@ -262,8 +249,6 @@
   content: attr(data-text);
 }
 
-
 /*******************************
     User Variable Overrides
 *******************************/
-

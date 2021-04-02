@@ -41,7 +41,7 @@ resource "Stats - Ideas" do
     token = Knock::AuthToken.new(payload: @current_user.to_token_payload).token
     header 'Authorization', "Bearer #{token}"
     header "Content-Type", "application/json"
-    Tenant.current.update!(created_at: now - 3.year)
+    AppConfiguration.instance.update!(created_at: now - 3.year)
     @timezone = AppConfiguration.instance.settings('core','timezone')
 
     @project1 = create(:project)
@@ -88,14 +88,16 @@ resource "Stats - Ideas" do
         expect(json_response[:count]).to eq Idea.published.count - 1
       end
 
-      example "Count all ideas that need feedback for a specific assignee" do
-        assignee = create(:admin)
-        create(:idea, idea_status: @proposed, assignee: assignee)
-        do_request assignee: assignee.id
+      if CitizenLab.ee?
+        example "Count all ideas that need feedback for a specific assignee" do
+          assignee = create(:admin)
+          create(:idea, idea_status: @proposed, assignee: assignee)
+          do_request assignee: assignee.id
 
-        expect(response_status).to eq 200
-        json_response = json_parse(response_body)
-        expect(json_response[:count]).to eq 1
+          expect(response_status).to eq 200
+          json_response = json_parse(response_body)
+          expect(json_response[:count]).to eq 1
+        end
       end
     end
   end

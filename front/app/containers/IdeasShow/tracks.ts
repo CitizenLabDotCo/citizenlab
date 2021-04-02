@@ -15,7 +15,4 @@ export default {
     name:
       'Clicked button to go back to original, non-translated idea title/description',
   },
-  clickSimilarIdeaLink: {
-    name: 'Clicked on a Similar Idea',
-  },
 };

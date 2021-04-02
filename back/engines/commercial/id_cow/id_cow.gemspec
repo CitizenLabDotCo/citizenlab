@@ -8,8 +8,8 @@ Gem::Specification.new do |s|
   s.name        = "id_cow"
   s.version     = IdCow::VERSION
   s.summary     = "Verification using a Chilean ID card database"
-  s.authors     = ["Koen Gremmelprez"]
-  s.licenses    = ['CitizenLab Commercial License']
+  s.authors     = ["CitizenLab"]
+  s.licenses    = ['CitizenLab Commercial License V1']
   s.files = Dir["{app,config,db,lib}/**/*", "Rakefile", "README.md"]
 
   s.add_dependency "rails", "~> 6.0.0"

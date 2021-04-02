@@ -8,8 +8,9 @@ Gem::Specification.new do |spec|
   spec.name        = 'geographic_dashboard'
   spec.version     = GeographicDashboard::VERSION
   spec.authors     = ['CitizenLab']
-  spec.email       = ['developers@citizenlab.co']
   spec.summary     = 'The Engine responsible for geotagging ideas.'
+  spec.licenses    = ['CitizenLab Commercial License V1']
+
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
   # to allow pushing to a single host or delete this section to allow pushing to any host.
@@ -20,7 +21,7 @@ Gem::Specification.new do |spec|
       'public gem pushes.'
   end
 
-  spec.files = Dir['{app,config,db,lib}/**/*', 'MIT-LICENSE', 'Rakefile', 'README.md']
+  spec.files = Dir['{app,config,db,lib}/**/*', 'Rakefile', 'README.md']
 
   spec.add_dependency 'rails', '~> 6.0.3', '>= 6.0.3.2'
 end

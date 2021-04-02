@@ -28,7 +28,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // styles
 import styled from 'styled-components';
-import { transparentize, darken } from 'polished';
+import { transparentize } from 'polished';
 import { colors, fontSizes } from 'utils/styleUtils';
 
 const BodyWrapper = styled.div`
@@ -45,7 +45,7 @@ const StyledAvatar = styled(Avatar)`
 const Body = styled.div`
   font-size: ${fontSizes.small}px;
   font-weight: 300;
-  color: ${darken(0.1, colors.label)};
+  color: ${colors.label};
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -60,7 +60,7 @@ const Body = styled.div`
 const StyledUserName = styled(UserName)`
   font-size: ${fontSizes.small}px;
   font-weight: 500;
-  color: ${darken(0.1, colors.label)};
+  color: ${colors.label};
   font-weight: 500;
 `;
 

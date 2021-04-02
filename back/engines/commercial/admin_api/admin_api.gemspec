@@ -7,12 +7,11 @@ require "admin_api/version"
 Gem::Specification.new do |s|
   s.name        = "admin_api"
   s.version     = AdminApi::VERSION
-  s.authors     = ["Koen Gremmelprez"]
-  s.licenses    = ['CitizenLab Commercial License']
-  s.email       = ["koen@citizenlab.co"]
+  s.authors     = ["CitizenLab"]
+  s.licenses    = ['CitizenLab Commercial License V1']
   s.summary     = "Rails engine that provides the endpoints for the admin CL2 api"
 
-  s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
+  s.files = Dir["{app,config,db,lib}/**/*", "Rakefile", "README.md"]
 
   s.add_dependency "rails", "~> 6.0.0"
   s.add_dependency "active_model_serializers", "~> 0.10.7"
@@ -20,6 +19,7 @@ Gem::Specification.new do |s|
   s.add_dependency "graphql", "~> 1.8.0"
   s.add_dependency "kaminari", "~> 1.2"
   s.add_dependency "custom_style"
+  s.add_dependency "multi_tenancy"
   s.add_dependency "project_permissions"
 
   s.add_development_dependency "rspec_api_documentation"

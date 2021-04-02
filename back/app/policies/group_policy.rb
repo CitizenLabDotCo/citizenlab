@@ -44,6 +44,13 @@ class GroupPolicy < ApplicationPolicy
     active? && admin?
   end
 
+  def permitted_attributes
+    [
+      :membership_type,
+      { title_multiloc: CL2_SUPPORTED_LOCALES }
+    ]
+  end
+
   private
 
   def show_to_active?
@@ -51,5 +58,8 @@ class GroupPolicy < ApplicationPolicy
   end
 end
 
+end
+
 GroupPolicy.prepend_if_ee('ProjectPermissions::Patches::GroupPolicy')
 GroupPolicy::Scope.prepend_if_ee('ProjectPermissions::Patches::GroupPolicy::Scope')
+GroupPolicy.prepend_if_ee('SmartGroups::Patches::GroupPolicy')

@@ -8,8 +8,8 @@ Gem::Specification.new do |s|
   s.name        = "id_bogus"
   s.version     = IdBogus::VERSION
   s.summary     = "Fake verification method to ease development"
-  s.authors     = ["Koen Gremmelprez"]
-  s.licenses    = ['CitizenLab Commercial License']
+  s.authors     = ["CitizenLab"]
+  s.licenses    = ['CitizenLab Commercial License V1']
   s.files = Dir["{app,config,db,lib}/**/*", "Rakefile", "README.md"]
 
   s.add_dependency "rails", "~> 6.0.0"

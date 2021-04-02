@@ -47,7 +47,7 @@ describe AdminPublicationPolicy do
     end
   end
 
-  context "on a private admins project" do 
+  context "on a private admins project" do
     let!(:project) { create(:private_admins_project) }
     let!(:admin_publication) { project.admin_publication }
     context "for a visitor" do
@@ -94,20 +94,6 @@ describe AdminPublicationPolicy do
   context "for a visitor on a private groups project" do
     let!(:user) { nil }
     let!(:admin_publication) { create(:private_groups_project).admin_publication }
-
-    it { should_not permit(:reorder) }
-
-    it "should not index the project holder"  do
-      expect(scope.resolve.size).to eq 0
-    end
-  end
-
-  context "for a user on a private groups project where she's no member of a rules group with access" do
-    let!(:user) { create(:user, email: 'not-user@test.com') }
-    let!(:group) { create(:smart_group, rules: [
-      {ruleType: 'email', predicate: 'is', value: 'user@test.com'}
-    ])}
-    let!(:admin_publication) { create(:project, visible_to: 'groups', groups: [group]).admin_publication }
 
     it { should_not permit(:reorder) }
 

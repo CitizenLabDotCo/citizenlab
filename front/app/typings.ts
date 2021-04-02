@@ -18,14 +18,6 @@ declare global {
   }
 }
 
-export interface ITab {
-  label: string;
-  url: string;
-  active?: boolean;
-  feature?: string;
-  name: string;
-}
-
 export interface IRelationship {
   id: string;
   type: string;
@@ -69,15 +61,15 @@ export interface ITab {
   name: string;
   label: string;
   url: string;
-  active?: boolean;
-  feature?: string;
+  active?: boolean | ((pathname: string) => boolean);
+  feature?: AppConfigurationSettingsFeatureNames;
 }
 
 export type CellConfiguration<ComponentProps> = {
   name: string;
   onChange?: (event: unknown) => void;
   onClick?: (event: unknown) => void;
-  featureFlag?: string;
+  featureFlag?: AppConfigurationSettingsFeatureNames;
   cellProps?: TableCellProps;
   Component: FC<ComponentProps>;
 };
@@ -123,6 +115,7 @@ import { IIdeaAction } from 'services/ideas';
 import { FormikActions } from 'formik';
 import { FC } from 'react';
 import { TableCellProps } from 'semantic-ui-react';
+import { AppConfigurationSettingsFeatureNames } from 'services/appConfiguration';
 export type MessageDescriptor = Messages['key'];
 
 export type Locale = keyof typeof appLocalePairs;

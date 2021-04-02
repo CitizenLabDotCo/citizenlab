@@ -54,7 +54,7 @@ Rails.application.configure do
   # Use a different cache store in production.
   config.cache_store = :mem_cache_store,
     ENV.fetch('MEMCACHED_HOST'),
-    { namespace: -> { Apartment::Tenant.current }}
+    { namespace: -> { AppConfiguration.instance.id } }
 
   # Use a real queuing backend for Active Job (and separate queues per environment)
   # config.active_job.queue_adapter     = :resque
@@ -74,12 +74,5 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
-
-  config.action_mailer.delivery_method = :mailgun
-  config.action_mailer.mailgun_settings = {
-    api_key: ENV.fetch("MAILGUN_API_KEY"),
-    domain: ENV.fetch("MAILGUN_DOMAIN"),
-    api_host: ENV.fetch("MAILGUN_API_HOST", "api.mailgun.net"),
-  }
 
 end

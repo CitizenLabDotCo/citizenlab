@@ -142,6 +142,7 @@ const config = {
         CIRCLE_BUILD_NUM: JSON.stringify(process.env.CIRCLE_BUILD_NUM),
         CIRCLE_SHA1: JSON.stringify(process.env.CIRCLE_SHA1),
         CIRCLE_BRANCH: JSON.stringify(process.env.CIRCLE_BRANCH),
+        GOOGLE_MAPS_API_KEY: JSON.stringify(process.env.GOOGLE_MAPS_API_KEY),
       },
       CL_CONFIG: JSON.stringify(clConfig),
     }),
@@ -155,7 +156,10 @@ const config = {
     new CleanWebpackPlugin(),
 
     new HtmlWebpackPlugin({
-      template: 'app/index.html'
+      template: 'app/index.html',
+      templateParameters: {
+        GOOGLE_MAPS_API_KEY: process.env.GOOGLE_MAPS_API_KEY
+      }
     }),
 
     // new BundleAnalyzerPlugin(),
@@ -179,7 +183,7 @@ const config = {
 
     !isDev && new webpack.HashedModuleIdsPlugin(),
 
-    buildSourceMap && new SentryCliPlugin({
+     process.env.CI && buildSourceMap && new SentryCliPlugin({
       include: path.join(process.cwd(), 'build'),
       release: process.env.CIRCLE_BUILD_NUM,
     })

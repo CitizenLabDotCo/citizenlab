@@ -10,8 +10,15 @@ class ProjectPolicy < ApplicationPolicy
     end
 
     def resolve
-      resolve_for_visitors
-        .or resolve_for_admin
+      if user&.admin?
+        scope.all
+      elsif user&.project_moderator?
+        scope.where(id: user.moderatable_project_ids + scope.user_groups_visible(user).or(scope.publicly_visible).ids)
+      elsif user
+        scope.user_groups_visible(user).not_draft.or(scope.publicly_visible.not_draft)
+      else
+        scope.publicly_visible.not_draft
+      end
     end
 
     def moderatable
@@ -92,7 +99,6 @@ class ProjectPolicy < ApplicationPolicy
       :survey_service,
       :max_budget,
       :presentation_mode,
-      :default_assignee_id,
       :poll_anonymous,
       :ideas_order,
       :input_term,
@@ -140,6 +146,8 @@ class ProjectPolicy < ApplicationPolicy
     %w[published archived].include?(record.admin_publication.publication_status)
   end
 end
+
+ProjectPolicy.prepend_if_ee('IdeaAssignment::Patches::ProjectPolicy')
 
 ProjectPolicy.prepend_if_ee('ProjectFolders::Patches::ProjectPolicy')
 ProjectPolicy::Scope.prepend_if_ee('ProjectFolders::Patches::ProjectPolicy::Scope')
