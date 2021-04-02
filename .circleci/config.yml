@@ -200,8 +200,8 @@ jobs:
       - run: |
           rake db:create
           rake db:schema:load
-      - run: SPEC_OPTS="-t template_test -P "engines/*/*/spec/**/*_spec.rb"" bundle exec rspec
       - run: SPEC_OPTS="-t template_test -P "spec/**/*_spec.rb"" bundle exec rspec
+      - run: SPEC_OPTS="-t template_test -P "engines/*/*/spec/**/*_spec.rb"" bundle exec rspec
   
   back-release-tenant-templates:
     resource_class: small
