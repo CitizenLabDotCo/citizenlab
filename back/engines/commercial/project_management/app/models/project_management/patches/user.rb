@@ -4,6 +4,7 @@ module ProjectManagement
   module Patches
     module User
       def self.prepended(base)
+        base.singleton_class.prepend(ClassMethods)
         base.class_eval do
           scope :project_moderator, lambda { |project_id = nil|
             if project_id
@@ -14,6 +15,12 @@ module ProjectManagement
           }
 
           scope :not_project_moderator, lambda { where.not("roles @> '[{\"type\":\"project_moderator\"}]'") }
+        end
+      end
+
+      module ClassMethods
+        def enabled_roles
+          super << 'project_moderator'
         end
       end
 

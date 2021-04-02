@@ -4,6 +4,7 @@ module ProjectFolders
   module Patches
     module User
       def self.prepended(base)
+        base.singleton_class.prepend(ClassMethods)
         base.class_eval do
           scope :project_folder_moderator, lambda { |*project_folder_ids|
             return where("roles @> '[{\"type\":\"project_folder_moderator\"}]'") if project_folder_ids.empty?
@@ -18,6 +19,12 @@ module ProjectFolders
           scope :not_project_folder_moderator, lambda { |*project_folder_ids|
             where.not(project_folder_moderator(*project_folder_ids))
           }
+        end
+      end
+
+      module ClassMethods
+        def enabled_roles
+          super << 'project_folder_moderator'
         end
       end
 
