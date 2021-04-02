@@ -141,8 +141,7 @@ class User < ApplicationRecord
   EMAIL_DOMAIN_BLACKLIST = File.readlines(Rails.root.join('config', 'domain_blacklist.txt')).map(&:strip)
   validate :validate_email_domain_blacklist
 
-  ROLES_JSON_SCHEMA = Rails.root.join('config', 'schemas', 'user_roles.json_schema').to_s
-  validates :roles, json: { schema: -> { roles_json_schema }, message: ->(errors) { errors } }
+  validates :roles, json: { schema: -> { User.roles_json_schema }, message: ->(errors) { errors } }
 
   before_validation :set_cl1_migrated, on: :create
   before_validation :generate_slug
