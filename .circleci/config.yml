@@ -502,7 +502,7 @@ workflows:
       - back-test-tenant-templates:
           context: docker-hub-access
           requires:
-            - back-build-essential-docker-image
+            - back-build-ee-docker-image
             - back-bnl-generate-tenant-templates
       - back-release-tenant-templates:
           # context: docker-hub-access
