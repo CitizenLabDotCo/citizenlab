@@ -148,10 +148,5 @@ class ProjectPolicy < ApplicationPolicy
 end
 
 ProjectPolicy.prepend_if_ee('IdeaAssignment::Patches::ProjectPolicy')
-
 ProjectPolicy.prepend_if_ee('ProjectFolders::Patches::ProjectPolicy')
-ProjectPolicy::Scope.prepend_if_ee('ProjectFolders::Patches::ProjectPolicy::Scope')
-
 ProjectPolicy.prepend_if_ee('ProjectPermissions::Patches::ProjectPolicy')
-ProjectPolicy::Scope.prepend_if_ee('ProjectPermissions::Patches::ProjectPolicy::Scope')
-ProjectPolicy::InverseScope.prepend_if_ee('ProjectPermissions::Patches::ProjectPolicy::InverseScope')

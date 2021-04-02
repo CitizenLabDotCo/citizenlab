@@ -3,6 +3,11 @@
 module ProjectPermissions
   module Patches
     module ProjectPolicy
+      def self.prepended(base)
+        base::Scope.prepend(Scope)
+        base::InverseScope.prepend(InverseScope)
+      end
+
       module Scope
         def resolve
           super
@@ -11,7 +16,7 @@ module ProjectPermissions
         end
 
         private
-        
+
         def resolve_for_visitors
           super.where(visible_to: 'public')
         end
