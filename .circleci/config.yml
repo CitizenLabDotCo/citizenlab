@@ -496,7 +496,7 @@ workflows:
     #           only:
     #             - production
     jobs:
-      - back-build-essential-docker-image:
+      - back-build-ee-docker-image:
           context: docker-hub-access
       - back-bnl-generate-tenant-templates:
           context: docker-hub-access
