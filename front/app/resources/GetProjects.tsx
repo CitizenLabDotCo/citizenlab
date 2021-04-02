@@ -34,7 +34,7 @@ export interface InputProps {
   topics?: string[];
   publicationStatuses: PublicationStatus[];
   filterCanModerate?: boolean;
-  folderId?: string;
+  // folderId?: string;
   filteredProjectIds?: string[];
 }
 
@@ -46,7 +46,7 @@ interface IQueryParameters {
   topics?: string[];
   publication_statuses: PublicationStatus[];
   filter_can_moderate?: boolean;
-  folder?: string;
+  // folder?: string;
   filter_ids?: string[];
 }
 
@@ -96,7 +96,7 @@ export default class GetProjects extends Component<Props, State> {
         topics: props.topics,
         publication_statuses: props.publicationStatuses,
         filter_can_moderate: props.filterCanModerate,
-        folder: props.folderId,
+        // folder: props.folderId,
         filter_ids: props.filteredProjectIds,
       },
       projectsList: undefined,
@@ -219,7 +219,7 @@ export default class GetProjects extends Component<Props, State> {
           topics: props.topics,
           publication_statuses: props.publicationStatuses,
           filter_can_moderate: props.filterCanModerate,
-          folder: props.folderId,
+          // folder: props.folderId,
           filter_ids: props.filteredProjectIds,
         },
         isNil
