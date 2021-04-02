@@ -185,6 +185,34 @@ jobs:
           path: spec/reports
       - final_citizenlab_github_status
 
+  back-test-tenant-templates:
+    resource_class: small
+    executor:
+      name: cl2-back
+      image-tag: $CIRCLE_SHA1
+    working_directory: /cl2_back
+    parallelism: 4
+    environment:
+      RAILS_ENV: test
+      CITIZENLAB_EE: true
+    steps:
+      # - wait-for-postgres
+      - run: |
+          rake db:create
+          rake db:schema:load
+      - run: SPEC_OPTS="-t template_test" bundle exec rspec
+  
+  back-release-tenant-templates:
+    resource_class: small
+    executor:
+      name: cl2-back
+      image-tag: $CIRCLE_SHA1
+    working_directory: /cl2_back
+    environment:
+      CITIZENLAB_EE: true
+    steps:
+      - run: bundle exec rake templates:release
+
   back-trigger-deploy:
     resource_class: small
     docker:
@@ -240,6 +268,13 @@ jobs:
           command: ssh << parameters.ssh_user >>@<< parameters.ssh_host >> -o StrictHostKeyChecking=no "docker pull citizenlabdotco/back-ee:$CIRCLE_BRANCH && docker run --env-file cl2-deployment/<< parameters.env_file >> citizenlabdotco/back-ee:$CIRCLE_BRANCH rake db:migrate cl2back:clean_tenant_settings email_campaigns:assure_campaign_records fix_existing_tenants:update_permissions cl2back:clear_cache_store email_campaigns:remove_deprecated"
       - deploy:
           command: ssh << parameters.ssh_user >>@<< parameters.ssh_host >> -o StrictHostKeyChecking=no "cd cl2-deployment && docker stack deploy --compose-file << parameters.compose_file >> << parameters.stack_name >> --with-registry-auth"
+
+  back-bnl-generate-tenant-templates:
+    resource_class: small
+    # executor:
+    #   name: machine
+    steps:
+      - run: ssh -o StrictHostKeyChecking=no -l ubuntu 52.57.74.84 "docker run --env-file cl2-deployment/.env-production-benelux citizenlabdotco/cl2-back:production rake templates:generate[true]"
 
   # *************** front ***************
   front-test:
@@ -451,3 +486,26 @@ workflows:
           filters:
             branches:
               only: master
+  nightly-templates:
+    when: << pipeline.parameters.back >>
+    # triggers:
+    #   - schedule:
+    #       cron: "0 0 * * *"
+    #       filters:
+    #         branches:
+    #           only:
+    #             - production
+    jobs:
+      - back-build-essential-docker-image:
+          context: docker-hub-access
+      - back-bnl-generate-tenant-templates:
+          context: docker-hub-access
+      - back-test-tenant-templates:
+          context: docker-hub-access
+          requires:
+            - back-build-essential-docker-image
+            - back-bnl-generate-tenant-templates
+      - back-release-tenant-templates:
+          # context: docker-hub-access
+          requires:
+            - back-test-tenant-templates
