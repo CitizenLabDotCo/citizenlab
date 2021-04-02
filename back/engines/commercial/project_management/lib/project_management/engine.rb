@@ -7,9 +7,9 @@ rescue LoadError
 end
 # rubocop:enable Lint/SuppressedException
 
-module ProjectPermissions
+module ProjectManagement
   class Engine < ::Rails::Engine
-    isolate_namespace ProjectPermissions
+    isolate_namespace ProjectManagement
     config.generators.api_only = true
 
     # Sharing the factories to make them accessible from to the main app / other engines.
@@ -17,12 +17,12 @@ module ProjectPermissions
     config.factory_bot.definition_file_paths += [factories_path] if defined?(FactoryBotRails)
 
     def self.register_features
-      require 'project_permissions/feature_specificaiton'
-      AppConfiguration::Settings.add_feature(ProjectPermissions::FeatureSpecification)
+      require 'project_management/feature_specification'
+      AppConfiguration::Settings.add_feature(ProjectManagement::FeatureSpecification)
     end
 
     config.to_prepare do
-      ProjectPermissions::Engine.register_features
+      ProjectManagement::Engine.register_features
     end
   end
 end
