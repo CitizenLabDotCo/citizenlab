@@ -3,7 +3,7 @@
 require 'citizen_lab/mixins/feature_specification'
 
 module ProjectPermissions
-  module FeatureSpecifications
+  module FeatureSpecification
     extend CitizenLab::Mixins::FeatureSpecification
 
     def self.feature_name
