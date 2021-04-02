@@ -466,7 +466,7 @@ en-GB:
       subject: 'The status of an idea you voted on has been changed'
       preheader: '%{organizationName} changed the status of an idea you voted on'
     status_change_of_voted_initiative:
-      status_change: 'The new status of this initiative is ''%{initiativeStatus}'''
+      status_change: 'The new status of this proposal is ''%{initiativeStatus}'''
       cta_view_initiative: 'Go to this initiative'
       event_description: 'The status of the initiative ''%{initiativeTitle}'' has been updated on the digital participation platform of %{organizationName}.'
       main_header: 'An initiative you voted on has a new status'
