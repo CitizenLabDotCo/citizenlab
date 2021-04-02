@@ -51,6 +51,7 @@ describe('<Container />', () => {
         isConsentRequired={false}
         preferences={initialPreferences}
         categorizedDestinations={categorizedDestinations}
+        onOpenModal={() => {}}
       />
     );
 
@@ -70,6 +71,7 @@ describe('<Container />', () => {
         isConsentRequired={true}
         preferences={initialPreferences}
         categorizedDestinations={categorizedDestinations}
+        onOpenModal={() => {}}
       />
     );
 
@@ -93,6 +95,7 @@ describe('<Container />', () => {
           isConsentRequired={true}
           preferences={initialPreferences}
           categorizedDestinations={categorizedDestinations}
+          onOpenModal={() => {}}
         />
       );
       expect(wrapper.find('Banner').exists()).toBeTruthy();
@@ -107,6 +110,7 @@ describe('<Container />', () => {
           isConsentRequired={false}
           preferences={initialPreferences}
           categorizedDestinations={categorizedDestinations}
+          onOpenModal={() => {}}
         />
       );
       expect(wrapper.find('Banner').exists()).toBeFalsy();
@@ -124,6 +128,7 @@ describe('<Container />', () => {
           isConsentRequired={true}
           preferences={initialPreferences}
           categorizedDestinations={categorizedDestinations}
+          onOpenModal={() => {}}
         />
       );
       expect(wrapper.find('LoadableModal').props().opened).toBe(false);
@@ -138,6 +143,7 @@ describe('<Container />', () => {
           isConsentRequired={false}
           preferences={initialPreferences}
           categorizedDestinations={categorizedDestinations}
+          onOpenModal={() => {}}
         />
       );
       expect(wrapper.find('LoadableModal').props().opened).toBe(false);
@@ -152,6 +158,7 @@ describe('<Container />', () => {
           isConsentRequired={true}
           preferences={initialPreferences}
           categorizedDestinations={categorizedDestinations}
+          onOpenModal={() => {}}
         />
       );
       expect(wrapper.find('LoadableModal').props().opened).toBe(false);
@@ -169,6 +176,7 @@ describe('<Container />', () => {
           isConsentRequired={true}
           preferences={initialPreferences}
           categorizedDestinations={categorizedDestinations}
+          onOpenModal={() => {}}
         />
       );
       wrapper.instance().setState({ isDialogOpen: true });
@@ -187,6 +195,7 @@ describe('<Container />', () => {
           isConsentRequired={true}
           preferences={initialPreferences}
           categorizedDestinations={categorizedDestinations}
+          onOpenModal={() => {}}
         />
       );
       expect(wrapper.find('LoadableModal').props().opened).toBe(false);
@@ -228,6 +237,7 @@ describe('<Container />', () => {
             advertising: false,
           }}
           categorizedDestinations={categorizedDestinations}
+          onOpenModal={() => {}}
         />
       );
       expect((wrapper.instance() as any).validate()).toBeTruthy();
@@ -245,6 +255,7 @@ describe('<Container />', () => {
           isConsentRequired={true}
           preferences={initialPreferences}
           categorizedDestinations={categorizedDestinations}
+          onOpenModal={() => {}}
         />
       );
       wrapper.instance().setState({ isDialogOpen: true });
@@ -274,6 +285,7 @@ describe('<Container />', () => {
             advertising: null,
           }}
           categorizedDestinations={categorizedDestinations}
+          onOpenModal={() => {}}
         />
       );
       wrapper.instance().setState({ isDialogOpen: true });
@@ -304,6 +316,7 @@ describe('<Container />', () => {
             advertising: null,
           }}
           categorizedDestinations={categorizedDestinations}
+          onOpenModal={() => {}}
         />
       );
       wrapper.instance().setState({ isDialogOpen: true, isCancelling: true });
@@ -332,6 +345,7 @@ describe('<Container />', () => {
             advertising: null,
           }}
           categorizedDestinations={categorizedDestinations}
+          onOpenModal={() => {}}
         />
       );
       wrapper.instance().setState({ isDialogOpen: true, isCancelling: true });
