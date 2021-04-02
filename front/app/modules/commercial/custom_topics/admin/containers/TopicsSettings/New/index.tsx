@@ -1,5 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import clHistory from 'utils/cl-router/history';
+import { CLErrors, CLErrorsJSON } from 'typings';
+import { isCLErrorJSON } from 'utils/errorUtils';
+import { addTopic } from 'services/topics';
 
 // intl
 import { FormattedMessage } from 'utils/cl-intl';
@@ -8,24 +11,16 @@ import messages from '../messages';
 // Components
 import GoBackButton from 'components/UI/GoBackButton';
 import { Section, SectionTitle } from 'components/admin/Section';
+import TopicForm, { IFormValues } from '../TopicForm';
 
-import { addTopic } from 'services/topics';
+interface Props {}
 
-import { Formik } from 'formik';
-import TopicForm, { FormValues } from '../TopicForm';
+const NewTopicForm = (_props: Props) => {
+  const [apiErrors, setApiErrors] = useState<CLErrors | undefined>(undefined);
 
-import { CLErrorsJSON } from 'typings';
-import { isCLErrorJSON } from 'utils/errorUtils';
-
-type Props = {};
-
-export default class New extends React.Component<Props> {
-  handleSubmit = (
-    values: FormValues,
-    { setErrors, setSubmitting, setStatus }
-  ) => {
+  const handleSubmit = (formValues: IFormValues) => {
     addTopic({
-      ...values,
+      ...formValues,
     })
       .then(() => {
         clHistory.push('/admin/settings/topics');
@@ -33,40 +28,24 @@ export default class New extends React.Component<Props> {
       .catch((errorResponse) => {
         if (isCLErrorJSON(errorResponse)) {
           const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
-          setErrors(apiErrors);
-        } else {
-          setStatus('error');
+          setApiErrors(apiErrors);
         }
-        setSubmitting(false);
       });
   };
 
-  renderFn = (props) => {
-    return <TopicForm {...props} />;
-  };
-
-  goBack = () => {
+  const goBack = () => {
     clHistory.push('/admin/settings/topics');
   };
 
-  initialValues = () => ({
-    title_multiloc: {},
-    description_multiloc: {},
-  });
+  return (
+    <Section>
+      <GoBackButton onClick={goBack} />
+      <SectionTitle>
+        <FormattedMessage {...messages.addTopicButton} />
+      </SectionTitle>
+      <TopicForm handleOnSubmit={handleSubmit} apiErrors={apiErrors} />
+    </Section>
+  );
+};
 
-  render() {
-    return (
-      <Section>
-        <GoBackButton onClick={this.goBack} />
-        <SectionTitle>
-          <FormattedMessage {...messages.addTopicButton} />
-        </SectionTitle>
-        <Formik
-          initialValues={this.initialValues()}
-          render={this.renderFn}
-          onSubmit={this.handleSubmit}
-        />
-      </Section>
-    );
-  }
-}
+export default NewTopicForm;
