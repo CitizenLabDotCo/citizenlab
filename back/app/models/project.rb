@@ -99,7 +99,7 @@ class Project < ApplicationRecord
     where(visible_to: 'public')
   }
 
-  scope :visible_to_groups, lambda do |user = nil|
+  scope :visible_to_groups, lambda { |user = nil|
     group_projects = where("projects.visible_to = 'groups'")
 
     if user
@@ -107,7 +107,7 @@ class Project < ApplicationRecord
     else
       group_projects
     end
-  end
+  }
 
   def moderators
     User.project_moderator(id)
