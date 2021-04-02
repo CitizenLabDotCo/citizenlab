@@ -50,7 +50,7 @@ class User < ApplicationRecord
         end
       end
 
-      not_invited.find_by_cimail: email
+      not_invited.find_by_cimail email
     end
   end
 
@@ -147,47 +147,18 @@ class User < ApplicationRecord
   before_validation :generate_slug
   before_validation :sanitize_bio_multiloc, if: :bio_multiloc
 
+  scope :admin, -> { where("roles @> '[{\"type\":\"admin\"}]'") }
+  scope :not_admin, -> { where.not("roles @> '[{\"type\":\"admin\"}]'") }
+  scope :normal_user, -> { where("roles = '[]'::jsonb") }
+  scope :not_normal_user, -> { where.not("roles = '[]'::jsonb") }
+  scope :not_invited, -> { where.not(invite_status: 'pending').or(where(invite_status: nil)) }
+  scope :active, -> { where("registration_completed_at IS NOT NULL AND invite_status is distinct from 'pending'") }
+
   scope :order_role, lambda { |direction = :asc|
     joins('LEFT OUTER JOIN (SELECT jsonb_array_elements(roles) as ro, id FROM users) as r ON users.id = r.id')
       .order(Arel.sql("(roles @> '[{\"type\":\"admin\"}]')::integer #{direction}"))
       .reverse_order
       .group('users.id')
-  }
-
-  scope :admin, lambda {
-    where("roles @> '[{\"type\":\"admin\"}]'")
-  }
-
-  scope :not_admin, lambda {
-    where.not("roles @> '[{\"type\":\"admin\"}]'")
-  }
-
-  scope :project_moderator, lambda { |project_id = nil|
-    if project_id
-      where('roles @> ?', JSON.generate([{ type: 'project_moderator', project_id: project_id }]))
-    else
-      where("roles @> '[{\"type\":\"project_moderator\"}]'")
-    end
-  }
-
-  scope :not_project_moderator, lambda {
-    where.not("roles @> '[{\"type\":\"project_moderator\"}]'")
-  }
-
-  scope :normal_user, lambda {
-    where("roles = '[]'::jsonb")
-  }
-
-  scope :not_normal_user, lambda {
-    where.not("roles = '[]'::jsonb")
-  }
-
-  scope :active, lambda {
-    where("registration_completed_at IS NOT NULL AND invite_status is distinct from 'pending'")
-  }
-
-  scope :not_invited, lambda {
-    where.not(invite_status: 'pending').or(where(invite_status: nil))
   }
 
   IN_GROUP_PROC = ->(group) { joins(:memberships).where(memberships: { group_id: group.id }) }
@@ -198,30 +169,9 @@ class User < ApplicationRecord
     where(id: user_ids)
   }
 
-  def self.find_by_cimail(email)
-    where('lower(email) = lower(?)', email).first
-  end
-
-  # This method is used by knock to get the user.
-  # Default is by email, but we want to compare
-  # case insensitively and forbid login for
-  # invitees.
-  def self.from_token_request(request)
-    email = request.params['auth']['email']
-
-    # Hack to embed phone numbers in email
-    if AppConfiguration.instance.feature_activated?('password_login') && AppConfiguration.instance.settings(
-      'password_login', 'phone'
-    )
-      phone_service = PhoneService.new
-      if phone_service.phone_or_email(email) == :phone
-        pattern = AppConfiguration.instance.settings('password_login', 'phone_email_pattern')
-        email = pattern.gsub('__PHONE__', phone_service.normalize_phone(email))
-      end
-    end
-
-    not_invited.find_by_cimail email
-  end
+  # Dummy scopes to be overridden
+  scope :project_moderator, ->(_project_id = nil) { User.none }
+  scope :not_project_moderator, -> { User.all }
 
   def to_token_payload
     {
@@ -246,16 +196,34 @@ class User < ApplicationRecord
     [first_name, last_name].compact.join(' ')
   end
 
-  def admin?
-    roles.any? { |r| r['type'] == 'admin' }
+  def highest_role
+    if super_admin?
+      :super_admin
+    elsif admin?
+      :admin
+    elsif project_folder_moderator?
+      :project_folder_moderator?
+    elsif project_moderator?
+      :project_moderator
+    else
+      :user
+    end
   end
 
   def super_admin?
     admin? && !!(email =~ /citizen-?lab\.(eu|be|fr|ch|de|nl|co|uk|us|cl|dk|pl)$/i)
   end
 
-  def project_moderator?(project_id = nil)
-    !!roles.find { |r| r['type'] == 'project_moderator' && (project_id.nil? || r['project_id'] == project_id) }
+  def admin?
+    roles.any? { |r| r['type'] == 'admin' }
+  end
+
+  def project_folder_moderator?(_project_folder_id = nil)
+    false
+  end
+
+  def project_moderator?(_project_id = nil)
+    false
   end
 
   def admin_or_moderator?(project_id)
@@ -266,26 +234,12 @@ class User < ApplicationRecord
     active? && admin_or_moderator?(project_id)
   end
 
-  def highest_role
-    if super_admin?
-      :super_admin
-    elsif admin?
-      :admin
-    elsif project_moderator?
-      :project_moderator
-    else
-      :user
-    end
-  end
-
   def moderatable_project_ids
-    roles
-      .select { |role| role['type'] == 'project_moderator' }
-      .map { |role| role['project_id'] }.compact
+    []
   end
 
   def moderatable_projects
-    Project.where(id: moderatable_project_ids)
+    Project.none
   end
 
   def add_role(type, options = {})
@@ -399,8 +353,11 @@ class User < ApplicationRecord
   end
 end
 
-User.prepend_if_ee('MultiTenancy::Patches::User')
-User.prepend_if_ee('ProjectFolders::Patches::User')
-User.prepend_if_ee('SmartGroups::Patches::User')
 User.include_if_ee('IdeaAssignment::Extensions::User')
 User.include_if_ee('Verification::Patches::User')
+
+User.prepend_if_ee('MultiTenancy::Patches::User')
+User.prepend_if_ee('ProjectFolders::Patches::User')
+User.prepend_if_ee('ProjectManagement::Patches::User')
+User.prepend_if_ee('SmartGroups::Patches::User')
+
