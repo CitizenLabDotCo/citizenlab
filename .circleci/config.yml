@@ -271,8 +271,8 @@ jobs:
 
   back-bnl-generate-tenant-templates:
     resource_class: small
-    # executor:
-    #   name: machine
+    docker:
+      - image: buildo/alpine-ssh
     steps:
       - run: ssh -o StrictHostKeyChecking=no -l ubuntu 52.57.74.84 "docker run --env-file cl2-deployment/.env-production-benelux citizenlabdotco/cl2-back:production rake templates:generate[true]"
 
