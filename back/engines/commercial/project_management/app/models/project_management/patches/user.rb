@@ -14,7 +14,7 @@ module ProjectManagement
             end
           }
 
-          scope :not_project_moderator, lambda { where.not("roles @> '[{\"type\":\"project_moderator\"}]'") }
+          scope :not_project_moderator, -> { where.not(project_moderator) }
         end
       end
 
