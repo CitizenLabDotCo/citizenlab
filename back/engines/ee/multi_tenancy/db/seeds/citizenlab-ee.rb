@@ -958,3 +958,11 @@ if Apartment::Tenant.current == 'localhost'
     default_enabled: false
   )
 end
+
+unless Apartment::Tenant.current == 'public'
+  User.find_each do |user|
+    EmailCampaigns::UnsubscriptionToken.create!(user_id: user.id)
+  end
+
+  EmailCampaigns::AssureCampaignsService.new.assure_campaigns
+end
