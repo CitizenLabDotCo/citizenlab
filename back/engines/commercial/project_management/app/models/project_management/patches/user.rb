@@ -18,12 +18,11 @@ module ProjectManagement
       end
 
       def project_moderator?(project_id = nil)
-        !!roles.find { |r| r['type'] == 'project_moderator' && (project_id.nil? || r['project_id'] == project_id) }
+        project_id ? moderatable_project_ids.include?(project_id) : moderatable_project_ids
       end
 
       def moderatable_project_ids
-        roles.select { |role| role['type'] == 'project_moderator' }
-             .map { |role| role['project_id'] }.compact
+        roles.select { |role| role['type'] == 'project_moderator' }.pluck(:project_id).compact
       end
 
       def moderatable_projects
