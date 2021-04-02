@@ -487,7 +487,6 @@ workflows:
             branches:
               only: master
   nightly-templates:
-    when: << pipeline.parameters.trigger >>
     # triggers:
     #   - schedule:
     #       cron: "0 0 * * *"
