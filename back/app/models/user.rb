@@ -360,34 +360,37 @@ class User < ApplicationRecord
   end
 
   def validate_email_domain_blacklist
-    if email.present?
-      domain = email.split('@')&.last
-      if domain && EMAIL_DOMAIN_BLACKLIST.include?(domain.strip.downcase)
-        errors.add(:email, :domain_blacklisted, value: domain)
-      end
+    return unless email.present?
+
+    domain = email.split('@')&.last
+    if domain && EMAIL_DOMAIN_BLACKLIST.include?(domain.strip.downcase)
+      errors.add(:email, :domain_blacklisted, value: domain)
     end
   end
 
   def validate_minimum_password_length
-    minimum_length = AppConfiguration.instance.settings('password_login', 'minimum_length')
-    if password && password.size < (minimum_length || 0)
-      errors.add(
-        :password,
-        :too_short,
-        message: 'The chosen password is shorter than the minimum required character length',
-        count: minimum_length
-      )
-    end
+    return unless password && password.size < password_min_length
+
+    errors.add(
+      :password,
+      :too_short,
+      message: 'The chosen password is shorter than the minimum required character length',
+      count: password_min_length
+    )
+  end
+
+  def password_min_length
+    AppConfiguration.instance.settings('password_login', 'minimum_length') || 0
   end
 
   def validate_password_not_common
-    if password && CommonPassword.check(password)
-      errors.add(
-        :password,
-        :too_common,
-        message: 'The chosen password matched with our common password blacklist'
-      )
-    end
+    return unless password && CommonPassword.check(password)
+
+    errors.add(
+      :password,
+      :too_common,
+      message: 'The chosen password matched with our common password blacklist'
+    )
   end
 
   def remove_initiated_notifications
