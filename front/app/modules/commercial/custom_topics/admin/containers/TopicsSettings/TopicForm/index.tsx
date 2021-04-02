@@ -10,22 +10,25 @@ import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLoca
 import Error from 'components/UI/Error';
 
 // typings
-import { Multiloc } from 'typings';
+import { CLErrors, Multiloc } from 'typings';
 
-interface IFormValues {
+export interface IFormValues {
   title_multiloc: Multiloc;
   description_multiloc: Multiloc;
 }
 
 export interface Props {
   handleOnSubmit: (formValues: IFormValues) => void;
+  apiErrors?: CLErrors;
 }
 
 const TopicForm = ({
   intl: { formatMessage },
   handleOnSubmit,
 }: Props & InjectedIntlProps) => {
-  const { register, handleSubmit, errors } = useForm<IFormValues>();
+  const { register, handleSubmit, errors: clientSideErrors } = useForm<
+    IFormValues
+  >();
   const onSubmit = (formValues: IFormValues) => {
     handleOnSubmit(formValues);
   };
@@ -40,12 +43,12 @@ const TopicForm = ({
           labelTooltipText={formatMessage(messages.fieldTopicTitleTooltip)}
           register={register}
         />
-        {errors.title_multiloc && (
+        {/* {clientSideErrors.title_multiloc && (
           <Error
             fieldName="title_multiloc"
-            apiErrors={errors.title_multiloc as any}
+            text={clientSideErrors.title_multiloc as any}
           />
-        )}
+        )} */}
         <input type="submit" />
       </form>
     </>

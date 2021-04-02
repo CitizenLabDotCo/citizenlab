@@ -13,7 +13,7 @@ import GoBackButton from 'components/UI/GoBackButton';
 import { Section, SectionTitle } from 'components/admin/Section';
 
 import { Formik } from 'formik';
-import TopicForm, { FormValues } from '../TopicForm';
+import TopicForm, { IFormValues } from '../TopicForm';
 
 import { CLErrorsJSON } from 'typings';
 import { isCLErrorJSON } from 'utils/errorUtils';
@@ -26,7 +26,7 @@ interface Props extends InputProps, DataProps {}
 
 class Edit extends React.PureComponent<Props> {
   handleSubmit = (
-    values: FormValues,
+    values: IFormValues,
     { setErrors, setSubmitting, setStatus }
   ) => {
     const { topic } = this.props;
