@@ -11,25 +11,24 @@ module ProjectPermissions
       module Scope
         def resolve
           super
-            .or resolve_for_normal_user_only
-            .or resolve_for_project_moderator_only
+            .or resolve_for_normal_user
+            .or resolve_for_project_moderator
         end
 
         private
 
-        def resolve_for_visitors
+        def resolve_for_visitor
           super.where(visible_to: 'public')
         end
 
         # Additional projects a logged-in user can see compared to a visitor (= non logged-in user).
-        def resolve_for_normal_user_only
+        def resolve_for_normal_user
           return scope.none unless user
 
-          scope.where("projects.visible_to = 'groups'")
-               .where("EXISTS(SELECT 1 FROM groups_projects WHERE project_id = projects.id AND group_id IN (?))", user.group_ids)
+          scope.visible_to_groups(user).not_draft
         end
 
-        def resolve_for_project_moderator_only
+        def resolve_for_project_moderator
           scope.where(id: user&.moderatable_project_ids)
         end
       end

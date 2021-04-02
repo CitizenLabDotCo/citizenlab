@@ -10,15 +10,8 @@ class ProjectPolicy < ApplicationPolicy
     end
 
     def resolve
-      if user&.admin?
-        scope.all
-      elsif user&.project_moderator?
-        scope.where(id: user.moderatable_project_ids + scope.user_groups_visible(user).or(scope.publicly_visible).ids)
-      elsif user
-        scope.user_groups_visible(user).not_draft.or(scope.publicly_visible.not_draft)
-      else
-        scope.publicly_visible.not_draft
-      end
+      resolve_for_admin
+        .or resolve_for_visitor
     end
 
     def moderatable
@@ -37,8 +30,9 @@ class ProjectPolicy < ApplicationPolicy
       user&.admin? ? scope : scope.none
     end
 
-    def resolve_for_visitors
-      scope.where(admin_publications: { publication_status: %w[published archived] })
+    # Filter the scope for a user that is not logged in.
+    def resolve_for_visitor
+      scope.not_draft
     end
   end
 
