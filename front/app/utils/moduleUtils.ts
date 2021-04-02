@@ -35,7 +35,10 @@ import { IMapProps } from './../components/Map/index';
 import { IUserData } from 'services/users';
 import { MessageValue } from 'react-intl';
 import { NavItem } from 'containers/Admin/sideBar';
-import { IAppConfigurationSettingsCore } from 'services/appConfiguration';
+import {
+  IAppConfigurationSettingsCore,
+  IAppConfigurationStyle,
+} from 'services/appConfiguration';
 import { ManagerType } from 'components/admin/PostManager';
 import { IdeaCellComponentProps } from 'components/admin/PostManager/components/PostTable/IdeaRow';
 import { IdeaHeaderCellComponentProps } from 'components/admin/PostManager/components/PostTable/IdeaHeaderRow';
@@ -295,6 +298,11 @@ export type OutletsPropertyMap = {
   };
   'app.containers.App.signUpInModal': {
     onMounted: (id: string) => void;
+  };
+  'app.containers.Admin.settings.customize.fields': {
+    onChange: (key: string) => (value: unknown) => void;
+    latestAppConfigStyleSettings?: IAppConfigurationStyle | null;
+    theme: any;
   };
 };
 

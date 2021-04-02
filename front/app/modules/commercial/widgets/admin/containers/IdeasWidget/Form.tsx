@@ -3,7 +3,7 @@ import { Form, Field, InjectedFormikProps } from 'formik';
 
 // Components
 import FormikMultipleSelect from 'components/UI/FormikMultipleSelect';
-import { Section, SubSection, SectionField } from 'components/admin/Section';
+import { Section, SectionField } from 'components/admin/Section';
 import { default as ErrorxBox } from 'components/UI/Error';
 import FormikInput from 'components/UI/FormikInput';
 import { Label } from 'cl2-component-library';
@@ -316,7 +316,7 @@ class WidgetForm extends PureComponent<
               </SectionField>
 
               {values.showHeader && (
-                <SubSection>
+                <Section>
                   <SectionField>
                     <Field
                       name="showLogo"
@@ -362,7 +362,7 @@ class WidgetForm extends PureComponent<
                       />
                     )}
                   </SectionField>
-                </SubSection>
+                </Section>
               )}
             </StyledSection>
 
@@ -382,7 +382,7 @@ class WidgetForm extends PureComponent<
               </SectionField>
 
               {values.showFooter && (
-                <SubSection>
+                <Section>
                   <SectionField>
                     <Label>
                       <FormattedMessage {...messages.fieldButtonText} />
@@ -399,7 +399,7 @@ class WidgetForm extends PureComponent<
                       />
                     )}
                   </SectionField>
-                </SubSection>
+                </Section>
               )}
             </StyledSection>
           </>

@@ -75,7 +75,7 @@ const configuration: ModuleConfiguration = {
     'app.containers.Admin.projects.edit': (props) => {
       return (
         <RenderOnHideTabCondition project={props.project} phases={props.phases}>
-          <Tab {...props} />,
+          <Tab {...props} />
         </RenderOnHideTabCondition>
       );
     },
