@@ -10,6 +10,10 @@ class ProjectPolicy < ApplicationPolicy
     end
 
     def resolve
+      # Resolves the scope as a disjunction (OR) of scopes, one scope (= one clause) for each 'role' a user can have.
+      # It entails that scopes does not have to be redundant. In other words, each sub-scope (clause) should aim to
+      # include only the projects to which this role gives access (without repeating projects to which lesser roles
+      # of the user gives access).
       resolve_for_admin
         .or resolve_for_visitor
     end
