@@ -3,6 +3,10 @@
 module ProjectPermissions
   module Patches
     module GroupPolicy
+      def self.prepended(base)
+        base::Scope.prepend(Scope)
+      end
+
       module Scope
         def resolve_for_active
           return super if user.admin?

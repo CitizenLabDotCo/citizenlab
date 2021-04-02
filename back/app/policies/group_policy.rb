@@ -58,8 +58,5 @@ class GroupPolicy < ApplicationPolicy
   end
 end
 
-end
-
 GroupPolicy.prepend_if_ee('ProjectPermissions::Patches::GroupPolicy')
-GroupPolicy::Scope.prepend_if_ee('ProjectPermissions::Patches::GroupPolicy::Scope')
 GroupPolicy.prepend_if_ee('SmartGroups::Patches::GroupPolicy')
