@@ -6,13 +6,15 @@ describe('Project overview page', () => {
     cy.get('#e2e-projects-container');
     cy.get('#e2e-projects-list');
     cy.acceptCookies();
-    cy.get('.e2e-project-card').should('have.length', 6);
+    const initialCards = cy.get('.e2e-admin-publication-card');
+    initialCards.should('have.length', 6);
     cy.get('.e2e-project-cards-show-more-button').click();
     cy.wait(50);
     cy.get('.e2e-project-cards-show-more-button').should(
       'not.have.class',
       'loading'
     );
-    cy.get('.e2e-project-card').should('have.length.at.least', 7);
+    const cardsAfterShowMore = cy.get('.e2e-admin-publication-card');
+    cardsAfterShowMore.should('have.length.at.least', 7);
   });
 });
