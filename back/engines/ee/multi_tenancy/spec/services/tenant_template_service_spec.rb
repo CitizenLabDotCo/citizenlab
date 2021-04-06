@@ -55,9 +55,9 @@ describe MultiTenancy::TenantTemplateService do
           }
          })
         t1 = Time.now ###
-        Apartment::Tenant.switch("#{name}_localhost") do
-          service.resolve_and_apply_template template, external_subfolder: 'test'
-        end
+        # Apartment::Tenant.switch("#{name}_localhost") do
+        #   service.resolve_and_apply_template template, external_subfolder: 'test'
+        # end
         t2 = Time.now ###
         puts "Time spent: #{t2 - t1}" ###
       end

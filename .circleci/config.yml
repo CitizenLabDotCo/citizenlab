@@ -275,7 +275,7 @@ jobs:
     docker:
       - image: buildo/alpine-ssh
     steps:
-      - run: ssh -o StrictHostKeyChecking=no -l ubuntu 52.57.74.84 "docker run --env-file cl2-deployment/.env-production-benelux citizenlabdotco/cl2-back:production rake templates:generate[true]"
+      - run: ssh -o StrictHostKeyChecking=no -l ubuntu 52.57.74.84 "docker run --env-file cl2-deployment/<< parameters.env_file >> citizenlabdotco/back-ee:$CIRCLE_BRANCH rake templates:generate[true]"
 
   # *************** front ***************
   front-test:
@@ -506,6 +506,6 @@ workflows:
             - back-build-ee-docker-image
             - back-bnl-generate-tenant-templates
       - back-release-tenant-templates:
-          # context: docker-hub-access
+          context: docker-hub-access
           requires:
             - back-test-tenant-templates
