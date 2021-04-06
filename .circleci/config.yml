@@ -509,6 +509,7 @@ workflows:
           context: docker-hub-access
       - back-bnl-generate-tenant-templates:
           context: docker-hub-access
+          ssh_host: "52.57.74.84"
       - back-test-tenant-templates:
           context: docker-hub-access
           requires:
@@ -516,6 +517,5 @@ workflows:
             - back-bnl-generate-tenant-templates
       - back-release-tenant-templates:
           context: docker-hub-access
-          ssh_host: "52.57.74.84"
           requires:
             - back-test-tenant-templates
