@@ -40,6 +40,7 @@ import LoadableModal from 'components/Loadable/Modal';
 import LoadableUserDeleted from 'components/UserDeletedModalContent/LoadableUserDeleted';
 import ErrorBoundary from 'components/ErrorBoundary';
 import SignUpInModal from 'components/SignUpIn/SignUpInModal';
+import Outlet from 'components/Outlet';
 
 import { LiveAnnouncer } from 'react-aria-live';
 const PostPageFullscreenModal = lazy(() => import('./PostPageFullscreenModal'));
@@ -76,7 +77,6 @@ import { media, getTheme } from 'utils/styleUtils';
 // typings
 import { SSOParams } from 'services/singleSignOn';
 import { Locale } from 'typings';
-import Outlet from 'components/Outlet';
 
 const Container = styled.div`
   display: flex;
@@ -524,7 +524,7 @@ class App extends PureComponent<Props, State> {
                   <ErrorBoundary>
                     <Outlet
                       id="app.containers.App.signUpInModal"
-                      onMounted={this.handleModalMounted}
+                      onMounted={this.handleSignUpInModalMounted}
                     >
                       {(outletComponents) => {
                         return outletComponents.length > 0 ? (
@@ -533,7 +533,7 @@ class App extends PureComponent<Props, State> {
                           <SignUpInModal
                             onMounted={this.handleSignUpInModalMounted}
                           />
-                        )
+                        );
                       }}
                     </Outlet>
                   </ErrorBoundary>
