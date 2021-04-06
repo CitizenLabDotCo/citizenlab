@@ -290,6 +290,18 @@ namespace :setup_and_support do
     end
   end
 
+  desc 'Reset the tile_provider in app configurations and map configs'
+  task reset_tile_provider: :environment do
+    next unless ENV['DEFAULT_MAPS_TILE_PROVIDER'].present?
+
+    Tenant.switch_each do
+      settings = AppConfiguration.instance.settings
+      settings['maps']['tile_provider'] = ENV['DEFAULT_MAPS_TILE_PROVIDER']
+      AppConfiguration.instance.update(settings: settings)
+      CustomMaps::MapConfig.update(tile_provider: ENV['DEFAULT_MAPS_TILE_PROVIDER'])
+    end
+  end
+
   def add_anonymous_vote votable, mode
     attrs = AnonymizeUserService.new.anonymized_attributes Tenant.current.settings.dig('core','locales')
     attrs.delete 'custom_field_values'
