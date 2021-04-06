@@ -274,8 +274,17 @@ jobs:
     resource_class: small
     docker:
       - image: buildo/alpine-ssh
+    parameters:
+      ssh_host:
+        type: string
+      ssh_user:
+        type: string
+        default: ubuntu
+      env_file:
+        type: string
+        default: .env-production
     steps:
-      - run: ssh -o StrictHostKeyChecking=no -l ubuntu 52.57.74.84 "docker run --env-file cl2-deployment/<< parameters.env_file >> citizenlabdotco/back-ee:$CIRCLE_BRANCH rake templates:generate[true]"
+      - run: ssh << parameters.ssh_user >>@<< parameters.ssh_host >> -o StrictHostKeyChecking=no "docker run --env-file cl2-deployment/<< parameters.env_file >> citizenlabdotco/back-ee:$CIRCLE_BRANCH rake templates:generate[true]"
 
   # *************** front ***************
   front-test:
