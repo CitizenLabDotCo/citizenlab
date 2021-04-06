@@ -497,13 +497,13 @@ workflows:
             branches:
               only: master
   nightly-templates:
-    # triggers:
-    #   - schedule:
-    #       cron: "0 0 * * *"
-    #       filters:
-    #         branches:
-    #           only:
-    #             - production
+    triggers:
+      - schedule:
+          cron: "0 0 * * *"
+          filters:
+            branches:
+              only:
+                - production
     jobs:
       - back-build-ee-docker-image:
           context: docker-hub-access
