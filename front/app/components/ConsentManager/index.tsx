@@ -116,7 +116,6 @@ export class ConsentManager extends PureComponent<Props, State> {
   };
 
   resetPreferences = () => {
-    console.log(this.getCurrentPreferences(this.state.cookieConsent));
     this.setState((state) => ({
       ...state,
       preferences: this.getCurrentPreferences(state.cookieConsent),
@@ -169,7 +168,6 @@ export class ConsentManager extends PureComponent<Props, State> {
   };
 
   toggleDefault = (modalOpened) => {
-    console.log(modalOpened);
     this.setState((state) => {
       const newPreferences = {};
       allCategories().forEach((category) => {
