@@ -19,7 +19,8 @@ declare module 'components/ConsentManager/destinations' {
 
 const destinationConfig: IDestinationConfig = {
   key: 'google_tag_manager',
-  category: 'analytics',
+  category: (tenant) =>
+    tenant.attributes.settings.google_tag_manager?.category || 'analytics',
   feature_flag: 'google_tag_manager',
   name: (tenant) => (
     <FormattedMessage

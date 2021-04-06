@@ -1,6 +1,7 @@
 import { API_PATH } from 'containers/App/constants';
 import streams from 'utils/streams';
 import { ImageSizes, Multiloc, Locale } from 'typings';
+import { TCategory } from 'components/ConsentManager/destinations';
 
 export const currentAppConfigurationEndpoint = `${API_PATH}/app_configuration`;
 
@@ -178,6 +179,7 @@ export interface IAppConfigurationSettings {
   google_tag_manager?: AppConfigurationFeature & {
     destinations: string;
     container_id: string;
+    category: TCategory;
   };
   matomo?: AppConfigurationFeature & {
     tenant_site_id: string;
