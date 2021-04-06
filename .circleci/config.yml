@@ -282,7 +282,7 @@ jobs:
         default: ubuntu
       env_file:
         type: string
-        default: .env-production
+        default: .env-production-benelux
     steps:
       - run: ssh << parameters.ssh_user >>@<< parameters.ssh_host >> -o StrictHostKeyChecking=no "docker run --env-file cl2-deployment/<< parameters.env_file >> citizenlabdotco/back-ee:$CIRCLE_BRANCH rake templates:generate[true]"
 
