@@ -522,22 +522,20 @@ class App extends PureComponent<Props, State> {
                   </ErrorBoundary>
 
                   <ErrorBoundary>
-                    <Suspense fallback={null}>
-                      <Outlet
-                        id="app.containers.App.signUpInModal"
-                        onMounted={this.handleModalMounted}
-                      >
-                        {(outletComponents) =>
-                          outletComponents.length > 0 ? (
-                            <>{outletComponents}</>
-                          ) : (
-                            <SignUpInModal
-                              onMounted={this.handleSignUpInModalMounted}
-                            />
-                          )
-                        }
-                      </Outlet>
-                    </Suspense>
+                    <Outlet
+                      id="app.containers.App.signUpInModal"
+                      onMounted={this.handleModalMounted}
+                    >
+                      {(outletComponents) => {
+                        return outletComponents.length > 0 ? (
+                          <>{outletComponents}</>
+                        ) : (
+                          <SignUpInModal
+                            onMounted={this.handleSignUpInModalMounted}
+                          />
+                        )
+                      }}
+                    </Outlet>
                   </ErrorBoundary>
 
                   <Outlet
