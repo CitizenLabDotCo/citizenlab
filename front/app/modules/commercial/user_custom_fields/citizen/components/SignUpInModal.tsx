@@ -51,7 +51,6 @@ const SignUpInModal = memo<Props>(({ className, onMounted }) => {
   );
   const customFieldsSchema = useUserCustomFieldsSchema();
 
-  const opened = !!metaData;
   const hasParticipationConditions =
     !isNilOrError(participationConditions) &&
     participationConditions.length > 0;
@@ -130,13 +129,13 @@ const SignUpInModal = memo<Props>(({ className, onMounted }) => {
     <Modal
       width={modalWidth}
       padding="0px"
-      opened={opened}
+      opened={!!metaData}
       close={onClose}
       closeOnClickOutside={false}
       noClose={modalNoClose}
     >
       <Container id="e2e-sign-up-in-modal" className={className}>
-        {opened && metaData && (
+        {metaData && (
           <SignUpIn
             metaData={metaData}
             onSignUpInCompleted={onSignUpInCompleted}
