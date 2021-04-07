@@ -276,6 +276,8 @@ class App extends PureComponent<Props, State> {
     const { pathname, search } = this.props.location;
     const isAuthError = endsWith(pathname, 'authentication-error');
     const isInvitation = endsWith(pathname, '/invite');
+    const signUpInModalHasMounted =
+      !prevState.signUpInModalMounted && signUpInModalMounted;
 
     if (
       redirectsEnabled &&
@@ -286,15 +288,14 @@ class App extends PureComponent<Props, State> {
     }
 
     if (
-      (!prevState.signUpInModalMounted &&
-        signUpInModalMounted &&
-        isAuthError) ||
-      (!prevState.signUpInModalMounted &&
-        signUpInModalMounted &&
-        isInvitation) ||
-      (!prevState.signUpInModalMounted &&
-        signUpInModalMounted &&
-        !isNilOrError(authUser)) ||
+      // could you add for each check here shortly why we do the check?
+      // very useful for understanding faster
+      (signUpInModalHasMounted && isAuthError) ||
+      // here
+      (signUpInModalHasMounted && isInvitation) ||
+      // here
+      (signUpInModalHasMounted && !isNilOrError(authUser)) ||
+      // here
       (prevState.authUser === undefined &&
         !isNilOrError(authUser) &&
         signUpInModalMounted)
@@ -302,8 +303,10 @@ class App extends PureComponent<Props, State> {
       const urlSearchParams = (parse(search, {
         ignoreQueryPrefix: true,
       }) as any) as SSOParams;
+      // what kind of token? I don't see a token prop on SSOParams.
+      // Could this also be renamed to something more verbose?
       const token = urlSearchParams?.['token'] as string | undefined;
-      const shouldComplete = !authUser?.data?.attributes
+      const shouldCompleteRegistration = !authUser?.data?.attributes
         ?.registration_completed_at;
 
       // see services/singleSignOn.ts
@@ -317,14 +320,21 @@ class App extends PureComponent<Props, State> {
         sso_verification_type,
       } = urlSearchParams;
 
+      // why do we go back to the home page here?
       if (isAuthError || isInvitation) {
         window.history.replaceState(null, '', '/');
       }
 
-      if (sso_response || shouldComplete || isInvitation) {
+      if (sso_response || shouldCompleteRegistration || isInvitation) {
         const shouldVerify =
+          // confused what kind of string sso_verification is. Shouldn't this be a boolean?
           !authUser?.data?.attributes?.verified && sso_verification;
 
+        // nesting ifs 3 levels deep is confusing. Wondering if we can't limit to 1-2 levels
+        // even if that adds a little repetition
+        // also, I'm wondering why this one needs to be in the above if block?
+        // none of the 3 values is used in here, so it's hard to see to which value
+        // this is tied to. sso_response?
         if (!isAuthError && sso_pathname) {
           clHistory.replace(sso_pathname);
         }
@@ -332,9 +342,9 @@ class App extends PureComponent<Props, State> {
         if (
           !endsWith(sso_pathname, ['sign-up', 'sign-in']) &&
           (isAuthError ||
-            (isInvitation && shouldComplete) ||
+            (isInvitation && shouldCompleteRegistration) ||
             shouldVerify ||
-            shouldComplete)
+            shouldCompleteRegistration)
         ) {
           openSignUpInModal({
             isInvitation,
@@ -359,6 +369,8 @@ class App extends PureComponent<Props, State> {
       }
     }
 
+    // I find these many if blocks confusing.
+    // Did you have a reason to not have them in 1 function instead? would provide more overview
     if (
       !isNilOrError(authUser) &&
       verificationModalMounted &&

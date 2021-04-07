@@ -11,9 +11,11 @@ export type SSOProvider =
   | 'franceconnect';
 
 export interface SSOParams {
+  // why is this not a boolean?
   sso_response: 'true';
   sso_flow: 'signup' | 'signin';
   sso_pathname: string;
+  // why is this not a boolean?
   sso_verification?: string;
   sso_verification_action?: string;
   sso_verification_id?: string;
