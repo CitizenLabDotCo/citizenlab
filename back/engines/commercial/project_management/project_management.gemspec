@@ -6,7 +6,7 @@ require "project_management/version"
 # Describe your gem and declare its dependencies:
 Gem::Specification.new do |spec|
   spec.name        = "project_management"
-  spec.version     = ProjectPermissions::VERSION
+  spec.version     = ProjectManagement::VERSION
   spec.authors     = ["CitizenLab"]
   spec.licenses    = ['CitizenLab Commercial License V1']
   spec.summary     = "CitizenLab extension: Adds the role of project moderator."
