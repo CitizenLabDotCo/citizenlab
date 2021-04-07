@@ -10,12 +10,11 @@ export type SSOProvider =
   | 'azureactivedirectory'
   | 'franceconnect';
 
+// Note: these are url parameters so therefore all typed as strings
 export interface SSOParams {
-  // why is this not a boolean?
   sso_response: 'true';
   sso_flow: 'signup' | 'signin';
   sso_pathname: string;
-  // why is this not a boolean?
   sso_verification?: string;
   sso_verification_action?: string;
   sso_verification_id?: string;

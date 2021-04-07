@@ -287,15 +287,15 @@ class App extends PureComponent<Props, State> {
       this.handleCustomRedirect();
     }
 
+    // here we check all the possible conditions that could potentially trigger the sign-up and/or verification flow to appear
     if (
-      // could you add for each check here shortly why we do the check?
-      // very useful for understanding faster
+      // when the user is redirected to the '/authentication-error' url (e.g. when SSO fails)
       (signUpInModalHasMounted && isAuthError) ||
-      // here
+      // when the user is sent to the '/invite' url (e.g. when the user clicks on an invitation link)
       (signUpInModalHasMounted && isInvitation) ||
-      // here
+      // when -both- the signup modal component has mounted and the authUser stream has initiated
+      // we proceed to the code below to check if any sign-up related url params are present in the url
       (signUpInModalHasMounted && !isNilOrError(authUser)) ||
-      // here
       (prevState.authUser === undefined &&
         !isNilOrError(authUser) &&
         signUpInModalMounted)
@@ -303,13 +303,16 @@ class App extends PureComponent<Props, State> {
       const urlSearchParams = (parse(search, {
         ignoreQueryPrefix: true,
       }) as any) as SSOParams;
-      // what kind of token is this? I don't see a token prop on SSOParams.
-      // Could this also be renamed to be more verbose?
+      // this constant represents the 'token' param that can optionally be included in the url
+      // when a user gets sent to the platform through an invitation link (e.g. '/invite?token=123456)
       const token = urlSearchParams?.['token'] as string | undefined;
+
+      // shouldCompleteRegistration is set to true when the authUser registration_completed_at attribute is not yet set.
+      // when this attribute is undefined the sign-up process has not yet been completed and the user account is not yet valid!
       const shouldCompleteRegistration = !authUser?.data?.attributes
         ?.registration_completed_at;
 
-      // see services/singleSignOn.ts
+      // see services/singleSignOn.ts for the typed interface of all the sso related url params the url can potentially contain
       const {
         sso_response,
         sso_flow,
@@ -320,27 +323,30 @@ class App extends PureComponent<Props, State> {
         sso_verification_type,
       } = urlSearchParams;
 
-      // why do we go back to the home page here?
       if (isAuthError || isInvitation) {
+        // remove all url params from the url as relevant params have already been captured in the code above.
+        // this avoids possbile polution by any remaining url params later on in the process.
         window.history.replaceState(null, '', '/');
       }
 
-      // what is the sso_response value used for?
-      // I'm also wondering what the value of this if block is, given we check these values
-      // in different if blocks
+      // 1. sso_response indicates the user got sent back to the platform from an external sso page (facebook, google, ...)
+      // 2. shouldCompleteRegistration indicates the authUser registration_completed_at attribute is noy yer set and the user still needs to complete their registration
+      // 3. isInvitation indicates the user got sent to the platform through an invitation link
       if (sso_response || shouldCompleteRegistration || isInvitation) {
-        const shouldVerify =
-          // I'm confused about what kind of string sso_verification is. Shouldn't this be a boolean?
-          !authUser?.data?.attributes?.verified && sso_verification;
+        // if the authUser verified attr is set to false but the sso_verification param is present (= set to the string 'true', not a boolean because it's a url param)
+        // the user still needs to complete the verification step
+        const shouldVerify = !authUser?.data?.attributes?.verified && sso_verification;
 
-        // I find nesting ifs 3 levels deep confusing. Wondering if we can't limit to 1-2 levels?
-        // even if that adds a little repetition
-        // also, I'm wondering why this one needs to be in the above if block?
-        // none of the 3 values is used in here, so to which value is this tied? sso_response?
+        // if the sso_pathname is present we redirect the user to it
+        // we do this to sent the user back to the page they came from after
+        // having been redirected to an external SSO service (e.g. '/project/123' -> facebook sign-on -> back to '/project/123')
         if (!isAuthError && sso_pathname) {
           clHistory.replace(sso_pathname);
         }
 
+        // we do not open the modal when the user gets sent to the '/sign-up' or '/sign-in' urls because
+        // on those pages we show the sign-up-in flow directly on the page and not as a modal.
+        // otherwise, when any of the above-defined conditions is set to true, we do trigger the modal
         if (
           !endsWith(sso_pathname, ['sign-up', 'sign-in']) &&
           (isAuthError ||
@@ -371,8 +377,9 @@ class App extends PureComponent<Props, State> {
       }
     }
 
-    // I find these many if blocks confusing.
-    // Do we have a reason to not have them in 1 function instead? would provide more overview
+    // when -both- the authUser is initiated and the evrification modal component mounted
+    // we check if a 'verification_success' or 'verification_error' url param is present.
+    // if so, we open the verication modal with the appropriate step 
     if (
       !isNilOrError(authUser) &&
       verificationModalMounted &&
