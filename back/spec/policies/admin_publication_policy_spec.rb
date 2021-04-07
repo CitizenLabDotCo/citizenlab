@@ -35,16 +35,6 @@ describe AdminPublicationPolicy do
         expect(scope.resolve.size).to eq 1
       end
     end
-
-    context "for a moderator of another project" do
-      let(:user) { create(:moderator, project: create(:project)) }
-
-      it { should_not permit(:reorder) }
-
-      it "should index the project holder"  do
-        expect(scope.resolve.size).to eq 2
-      end
-    end
   end
 
   context "on a private admins project" do
@@ -75,16 +65,6 @@ describe AdminPublicationPolicy do
       let(:user) { create(:admin) }
 
       it { should permit(:reorder) }
-
-      it "should index the project holder"  do
-        expect(scope.resolve.size).to eq 1
-      end
-    end
-
-    context "for a moderator" do
-      let(:user) { create(:moderator, project: project) }
-
-      it { should_not permit(:reorder) }
 
       it "should index the project holder"  do
         expect(scope.resolve.size).to eq 1
