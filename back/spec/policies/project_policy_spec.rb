@@ -59,25 +59,6 @@ describe ProjectPolicy do
         expect(inverse_scope.resolve).to include(user)
       end
     end
-
-    context "for a moderator of another project" do
-      let(:user) { create(:moderator, project: create(:project)) }
-
-      it { should     permit(:show)    }
-      it { should_not permit(:create)  }
-      it { should_not permit(:update)  }
-      it { should_not permit(:reorder) }
-      it { should_not permit(:destroy) }
-
-      it "should index the project"  do
-        expect(scope.resolve.size).to eq 2
-        expect(scope.moderatable.size).to eq 1
-      end
-
-      it "should include the user in the users that have access" do
-        expect(inverse_scope.resolve).to include(user)
-      end
-    end
   end
 
   context "on a private admins project" do
@@ -125,25 +106,6 @@ describe ProjectPolicy do
       it { should permit(:update)  }
       it { should permit(:reorder) }
       it { should permit(:destroy) }
-
-      it "should index the project"  do
-        expect(scope.resolve.size).to eq 1
-        expect(scope.moderatable.size).to eq 1
-      end
-
-      it "should include the user in the users that have access" do
-        expect(inverse_scope.resolve).to include(user)
-      end
-    end
-
-    context "for a moderator" do
-      let(:user) { create(:moderator, project: project) }
-
-      it { should     permit(:show)    }
-      it { should_not permit(:create)  }
-      it { should     permit(:update)  }
-      it { should     permit(:reorder) }
-      it { should_not permit(:destroy) }
 
       it "should index the project"  do
         expect(scope.resolve.size).to eq 1
@@ -277,25 +239,6 @@ describe ProjectPolicy do
       it { should permit(:update)  }
       it { should permit(:reorder) }
       it { should permit(:destroy) }
-
-      it "should index the project"  do
-        expect(scope.resolve.size).to eq 1
-        expect(scope.moderatable.size).to eq 1
-      end
-
-      it "should include the user in the users that have access" do
-        expect(inverse_scope.resolve).to include(user)
-      end
-    end
-
-    context "for a moderator" do
-      let(:user) { create(:moderator, project: project) }
-
-      it { should     permit(:show)    }
-      it { should_not permit(:create)  }
-      it { should     permit(:update)  }
-      it { should     permit(:reorder)  }
-      it { should_not permit(:destroy) }
 
       it "should index the project"  do
         expect(scope.resolve.size).to eq 1
