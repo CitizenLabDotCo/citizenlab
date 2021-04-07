@@ -303,8 +303,8 @@ class App extends PureComponent<Props, State> {
       const urlSearchParams = (parse(search, {
         ignoreQueryPrefix: true,
       }) as any) as SSOParams;
-      // what kind of token? I don't see a token prop on SSOParams.
-      // Could this also be renamed to something more verbose?
+      // what kind of token? There is no token prop on SSOParams.
+      // Could this also be renamed to be more verbose?
       const token = urlSearchParams?.['token'] as string | undefined;
       const shouldCompleteRegistration = !authUser?.data?.attributes
         ?.registration_completed_at;
@@ -330,11 +330,10 @@ class App extends PureComponent<Props, State> {
           // confused what kind of string sso_verification is. Shouldn't this be a boolean?
           !authUser?.data?.attributes?.verified && sso_verification;
 
-        // nesting ifs 3 levels deep is confusing. Wondering if we can't limit to 1-2 levels
+        // I find nesting ifs 3 levels deep confusing. Wondering if we can't limit to 1-2 levels?
         // even if that adds a little repetition
         // also, I'm wondering why this one needs to be in the above if block?
-        // none of the 3 values is used in here, so it's hard to see to which value
-        // this is tied to. sso_response?
+        // none of the 3 values is used in here, so to which value is this tied? sso_response?
         if (!isAuthError && sso_pathname) {
           clHistory.replace(sso_pathname);
         }
@@ -370,7 +369,7 @@ class App extends PureComponent<Props, State> {
     }
 
     // I find these many if blocks confusing.
-    // Did you have a reason to not have them in 1 function instead? would provide more overview
+    // Do we have a reason to not have them in 1 function instead? would provide more overview
     if (
       !isNilOrError(authUser) &&
       verificationModalMounted &&
