@@ -536,24 +536,27 @@ resource 'Projects' do
     delete 'web_api/v1/projects/:id' do
       let(:project) { create(:project) }
       let(:id) { project.id }
-      example 'Delete a project' do
+
+      example_request 'Delete a project' do
+        expect(response_status).to eq 200
+        expect { Project.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+
+      example 'Deleting a project removes associated moderator rights', document: false, skip: !CitizenLab.ee? do
         moderator = create(:moderator, project: project)
         expect(moderator.project_moderator?(id)).to be true
         do_request
-        expect(response_status).to eq 200
-        expect { Project.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
         expect(moderator.reload.project_moderator?(id)).to be false
       end
     end
   end
 
   get 'web_api/v1/projects' do
-    context 'when moderator' do
+    context 'when moderator', skip: !CitizenLab.ee? do
       before do
         @project = create(:project)
         @moderator = create(:moderator, project: @project)
-        token = Knock::AuthToken.new(payload: @moderator.to_token_payload).token
-        header 'Authorization', "Bearer #{token}"
+        header_token_for(@moderator)
 
         @projects = create_list(:project, 10, admin_publication_attributes: { publication_status: 'published' })
       end

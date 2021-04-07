@@ -168,32 +168,28 @@ resource "Comments" do
       end
     end
 
-    describe do
-      before do 
+    context 'when the user moderates the project', skip: !CitizenLab.ee? do
+      before do
         @project = create(:project)
         @user = create(:moderator, project: @project)
-        token = Knock::AuthToken.new(payload: @user.to_token_payload).token
-        header 'Authorization', "Bearer #{token}"
+        header_token_for(@user)
       end
+
       let(:project) { @project.id }
-      
-      example_request 'XLSX export by a project moderator', document: false do
-        expect(status).to eq 200
-      end
+
+      example_request('XLSX export', document: false) { expect(status).to eq 200 }
     end
 
-    describe do
-      before do 
+    context 'when the user moderates another project', skip: !CitizenLab.ee? do
+      before do
         @project = create(:project)
         @user = create(:moderator, project: create(:project))
-        token = Knock::AuthToken.new(payload: @user.to_token_payload).token
-        header 'Authorization', "Bearer #{token}"
+        header_token_for(@user)
       end
+
       let(:project) { @project.id }
-      
-      example_request '[error] XLSX export by a moderator of a different project', document: false do
-        expect(status).to eq 401
-      end
+
+      example_request('[error] XLSX export', document: false) { expect(status).to eq 401 }
     end
 
     describe do
