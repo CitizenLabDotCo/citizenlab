@@ -91,7 +91,6 @@ resource 'OfficialFeedback' do
 
       example_request 'Create an official feedback on an idea' do
         expect(response_status).to eq 201
-        require 'pry' ; binding.pry
         expect(json_response.dig(:data, :relationships, :user, :data, :id)).to eq @user.id
         expect(json_response.dig(:data, :attributes, :body_multiloc).stringify_keys).to match body_multiloc
         expect(json_response.dig(:data, :attributes, :author_multiloc).stringify_keys).to match author_multiloc
