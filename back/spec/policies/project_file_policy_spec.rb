@@ -46,19 +46,6 @@ describe ProjectFilePolicy do
         expect(scope.resolve.size).to eq 1
       end
     end
-
-    context "for a moderator" do
-      let(:user) { create(:moderator, project: project) }
-
-      it { should permit(:show)    }
-      it { should permit(:create)  }
-      it { should permit(:update)  }
-      it { should permit(:destroy) }
-
-      it "should index the file"  do
-        expect(scope.resolve.size).to eq 1
-      end
-    end
 	end
 
 	 context "on a file in a private admins project" do 
