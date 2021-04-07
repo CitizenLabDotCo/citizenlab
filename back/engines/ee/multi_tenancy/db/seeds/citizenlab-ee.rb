@@ -288,10 +288,6 @@ if ['public','example_org'].include? Apartment::Tenant.current
         enabled: true,
         allowed: true
       },
-      project_management: {
-        enabled: true,
-        allowed: true
-      },
       typeform_surveys: {
         enabled: true,
         allowed: true
