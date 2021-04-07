@@ -1,7 +1,7 @@
 # Reloads the CL_SETTING_* environment variables
 # into the current app configuration.
 
-if !CitizenLab.ee? && Rails.env.test?
+if !CitizenLab.ee? && !Rails.env.test?
   config = AppConfiguration.instance
   settings = config.settings
 
