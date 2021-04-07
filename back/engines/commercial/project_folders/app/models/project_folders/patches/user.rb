@@ -29,7 +29,7 @@ module ProjectFolders
       end
 
       def project_folder_moderator?(project_folder_id = nil)
-        project_folder_id ? moderated_project_folder_ids.include?(project_folder_id) : moderated_project_folder_ids
+        project_folder_id ? moderated_project_folder_ids.include?(project_folder_id) : moderated_project_folder_ids.present?
       end
 
       def admin_or_folder_moderator?(project_folder_id = nil)
@@ -45,7 +45,7 @@ module ProjectFolders
       end
 
       def moderated_project_folder_ids
-        roles.select { |role| role['type'] == 'project_folder_moderator' }.pluck(:project_folder_id).compact
+        roles.select { |role| role['type'] == 'project_folder_moderator' }.pluck("project_folder_id").compact
       end
 
       def moderates_parent_folder?(project)

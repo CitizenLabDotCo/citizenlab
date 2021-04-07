@@ -202,7 +202,7 @@ class User < ApplicationRecord
     elsif admin?
       :admin
     elsif project_folder_moderator?
-      :project_folder_moderator?
+      :project_folder_moderator
     elsif project_moderator?
       :project_moderator
     else
