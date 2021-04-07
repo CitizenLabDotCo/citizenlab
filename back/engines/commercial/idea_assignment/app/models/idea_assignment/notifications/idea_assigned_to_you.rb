@@ -1,5 +1,3 @@
-return unless defined? ::Notification
-
 module IdeaAssignment
   module Notifications
     class IdeaAssignedToYou < ::Notification
