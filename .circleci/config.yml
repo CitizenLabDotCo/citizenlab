@@ -1,6 +1,15 @@
 version: 2.1
+
 orbs:
   cypress: cypress-io/cypress@1.27.0
+  slack: circleci/slack@4.3.3
+
+slack-fail-post-step: &slack-fail-post-step
+  post-steps:
+    - slack/notify:
+        event: fail
+        mentions: '@dev-back'
+        template: basic_fail_1
 
 parameters:
 
@@ -524,28 +533,44 @@ workflows:
             branches:
               only: master
   nightly-templates:
-    triggers:
-      - schedule:
-          cron: "0 0 * * *"
-          filters:
-            branches:
-              only:
-                - production
+    # triggers:
+    #   - schedule:
+    #       cron: "0 0 * * *"
+    #       filters:
+    #         branches:
+    #           only:
+    #             - production
     jobs:
       - back-build-ee-docker-image:
-          context: docker-hub-access
+          context: 
+            - docker-hub-access
+            - slack
+          <<: *slack-fail-post-step
       - back-bnl-generate-tenant-templates:
-          context: docker-hub-access
+          context: 
+            - docker-hub-access
+            - slack
+          <<: *slack-fail-post-step
           ssh_host: "52.57.74.84"
       - back-test-tenant-templates:
-          context: docker-hub-access
+          context: 
+            - docker-hub-access
+            - slack
+          <<: *slack-fail-post-step
           requires:
             - back-build-ee-docker-image
             - back-bnl-generate-tenant-templates
       - back-release-tenant-templates:
-          context: docker-hub-access
+          context: 
+            - docker-hub-access
+            - slack
+          <<: *slack-fail-post-step
           requires:
             - back-test-tenant-templates
+          post-steps:
+            - slack/notify:
+                event: pass
+                template: basic_success_1
   check-for-inconsistent-data:
     triggers:
       - schedule:

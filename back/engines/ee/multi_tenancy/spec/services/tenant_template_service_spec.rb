@@ -18,6 +18,7 @@ describe MultiTenancy::TenantTemplateService do
 
     MultiTenancy::TenantTemplateService.new.available_templates(external_subfolder: 'test')[:external].map do |template|
       it "Successfully applies '#{template}' template" do
+        raise 'errrooorrr'
         locales = MultiTenancy::TenantTemplateService.new.required_locales(template, external_subfolder: 'test')
         locales = ['en'] if locales.blank?
         name = template.split('_').join('')
