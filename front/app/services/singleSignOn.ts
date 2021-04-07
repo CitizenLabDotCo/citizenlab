@@ -10,6 +10,7 @@ export type SSOProvider =
   | 'azureactivedirectory'
   | 'franceconnect';
 
+// Note: these are url parameters so therefore all typed as strings
 export interface SSOParams {
   sso_response: 'true';
   sso_flow: 'signup' | 'signin';
