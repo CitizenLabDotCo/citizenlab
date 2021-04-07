@@ -84,7 +84,7 @@ class WebApi::V1::IdeasController < ApplicationController
           counts[attribute][id] = record.count if id
         end
       end
-    counts['total'] = @ideas.count
+    counts['total'] = @result.count
     render json: counts
   end
 
