@@ -303,7 +303,7 @@ class App extends PureComponent<Props, State> {
       const urlSearchParams = (parse(search, {
         ignoreQueryPrefix: true,
       }) as any) as SSOParams;
-      // what kind of token? There is no token prop on SSOParams.
+      // what kind of token is this? I don't see a token prop on SSOParams.
       // Could this also be renamed to be more verbose?
       const token = urlSearchParams?.['token'] as string | undefined;
       const shouldCompleteRegistration = !authUser?.data?.attributes
@@ -325,9 +325,12 @@ class App extends PureComponent<Props, State> {
         window.history.replaceState(null, '', '/');
       }
 
+      // what is the sso_response value used for?
+      // I'm also wondering what the value of this if block is, given we check these values
+      // in different if blocks
       if (sso_response || shouldCompleteRegistration || isInvitation) {
         const shouldVerify =
-          // confused what kind of string sso_verification is. Shouldn't this be a boolean?
+          // I'm confused about what kind of string sso_verification is. Shouldn't this be a boolean?
           !authUser?.data?.attributes?.verified && sso_verification;
 
         // I find nesting ifs 3 levels deep confusing. Wondering if we can't limit to 1-2 levels?
