@@ -1,5 +1,5 @@
 # Reloads the CL_SETTING_* environment variables
-# into the current seed data.
+# into the current app configuration.
 
 if !CitizenLab.ee?
   config = AppConfiguration.instance
