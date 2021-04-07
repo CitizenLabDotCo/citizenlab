@@ -15,4 +15,11 @@ class ApplicationRecord < ActiveRecord::Base
       claz.reflect_on_all_associations.select{|asc| asc.name == name.to_sym && asc.options[:as] == as.to_sym}.present?
     end
   end
+
+  def self.disable_inheritance(&blk)
+    initial_inheritance_column = inheritance_column
+    self.inheritance_column = :_type_disabled
+    blk.call
+    self.inheritance_column = initial_inheritance_column
+  end
 end
