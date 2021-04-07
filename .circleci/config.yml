@@ -201,7 +201,9 @@ jobs:
           rake db:create
           rake db:schema:load
       - run: SPEC_OPTS="-t template_test -P "spec/**/*_spec.rb"" bundle exec rspec
-      - run: SPEC_OPTS="-t template_test -P "engines/*/*/spec/**/*_spec.rb"" bundle exec rspec
+      - run: 
+          command: SPEC_OPTS="-t template_test -P "engines/*/*/spec/**/*_spec.rb"" bundle exec rspec
+          no_output_timeout: 60m
   
   back-release-tenant-templates:
     resource_class: small
@@ -284,7 +286,32 @@ jobs:
         type: string
         default: .env-production-benelux
     steps:
-      - run: ssh << parameters.ssh_user >>@<< parameters.ssh_host >> -o StrictHostKeyChecking=no "docker run --env-file cl2-deployment/<< parameters.env_file >> citizenlabdotco/back-ee:production rake templates:generate[true]"
+      - run: ssh << parameters.ssh_user >>@<< parameters.ssh_host >> -o StrictHostKeyChecking=no "docker run --env-file cl2-deployment/<< parameters.env_file >> citizenlabdotco/back-ee:$CIRCLE_BRANCH rake templates:generate[true]"
+
+  check-for-inconsistent-data:
+    resource_class: small
+    docker:
+      - image: buildo/alpine-ssh
+    parameters:
+      ssh_host:
+        type: string
+      ssh_user:
+        type: string
+        default: ubuntu
+      stack_name:
+        type: string
+        default: cl2-back
+      compose_file:
+        type: string
+        default: docker-compose-production.yml
+      env_file:
+        type: string
+        default: .env-production
+    steps:
+      - run:
+          name: Check for inconsistent data
+          command: ssh << parameters.ssh_user >>@<< parameters.ssh_host >> -o StrictHostKeyChecking=no "docker run --env-file cl2-deployment/<< parameters.env_file >> citizenlabdotco/back-ee:$CIRCLE_BRANCH rake checks:invalid_data"
+          no_output_timeout: 60m
 
   # *************** front ***************
   front-test:
@@ -497,13 +524,13 @@ workflows:
             branches:
               only: master
   nightly-templates:
-    triggers:
-      - schedule:
-          cron: "0 0 * * *"
-          filters:
-            branches:
-              only:
-                - production
+    # triggers:
+    #   - schedule:
+    #       cron: "0 0 * * *"
+    #       filters:
+    #         branches:
+    #           only:
+    #             - production
     jobs:
       - back-build-ee-docker-image:
           context: docker-hub-access
@@ -519,3 +546,41 @@ workflows:
           context: docker-hub-access
           requires:
             - back-test-tenant-templates
+  check-for-inconsistent-data:
+    # triggers:
+    #   - schedule:
+    #       cron: "0 2 * * 1"
+    #       filters:
+    #         branches:
+    #           only:
+    #             - production
+    jobs:
+      # Benelux
+      # - check-for-inconsistent-data:
+      #     ssh_host: "52.57.74.84"
+      #     compose_file: docker-compose-production-benelux.yml
+      #     stack_name: cl2-prd-bnlx-stack
+      #     env_file: ".env-production-benelux"
+      # South America
+      # - check-for-inconsistent-data:
+      #     ssh_host: "52.67.181.38"
+      #     compose_file: docker-compose-production.yml
+      #     env_file: ".env-web"
+      #     stack_name: "cl2"
+      # Canada
+      - check-for-inconsistent-data:
+          ssh_host: "35.183.23.116"
+          compose_file: docker-compose-production-canada.yml
+          env_file: ".env-production-canada"
+      # US West
+      - check-for-inconsistent-data:
+          ssh_host: "52.13.59.174"
+          compose_file: docker-compose-production.yml
+          env_file: ".env-web"
+          stack_name: "cl2"
+      # UK
+      - check-for-inconsistent-data:
+          ssh_host: "35.179.69.215"
+          compose_file: docker-compose-production.yml
+          env_file: ".env-web"
+          stack_name: "cl2"
