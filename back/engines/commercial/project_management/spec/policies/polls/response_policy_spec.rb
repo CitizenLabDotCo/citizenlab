@@ -5,7 +5,7 @@ require 'rails_helper'
 skip_reason = defined?(Polls::Engine) ? nil : "polls engine is not installed"
 
 describe 'Polls::ResponsePolicy', skip: skip_reason do
-  subject { described_class.new(user, response) }
+  subject { Polls::ResponsePolicy.new(user, response) }
 
   let(:scope) { Polls::ResponsePolicy::Scope.new(user, Polls::Response) }
   let(:pc) { create(:continuous_poll_project) }
