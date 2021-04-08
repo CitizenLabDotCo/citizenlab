@@ -28,6 +28,7 @@ import {
   setConsent,
 } from './consent';
 import eventEmitter from 'utils/eventEmitter';
+import { IAppConfigurationData } from 'services/appConfiguration';
 
 // the format in which the user will make its choices,
 export type IPreferences = Partial<Record<TCategory, boolean>>;
@@ -72,14 +73,29 @@ export class ConsentManager extends PureComponent<Props, State> {
     );
   }
 
+  getCategory(
+    tenant: IAppConfigurationData,
+    destinationConfig: IDestinationConfig
+  ) {
+    return typeof destinationConfig.category === 'function'
+      ? destinationConfig.category(tenant)
+      : destinationConfig.category;
+  }
+
   categorizeDestinations(
     destinations: IDestinationConfig[]
   ): CategorizedDestinations {
+    const { tenant } = this.props;
     const output = {};
     allCategories().forEach((category) => (output[category] = []));
 
+    if (isNilOrError(tenant)) {
+      return output as CategorizedDestinations;
+    }
+
     destinations.forEach((destinationConfig) => {
-      output[destinationConfig.category].push(destinationConfig.key);
+      const category = this.getCategory(tenant, destinationConfig);
+      output[category].push(destinationConfig.key);
     });
 
     return output as CategorizedDestinations;
@@ -124,10 +140,13 @@ export class ConsentManager extends PureComponent<Props, State> {
 
   saveConsent = () => {
     const { preferences, cookieConsent } = this.state;
+    const { tenant } = this.props;
+
+    if (isNilOrError(tenant)) return;
 
     const newChoices: ISavedDestinations = {};
     this.getActiveDestinations().forEach((config) => {
-      newChoices[config.key] = preferences[config.category];
+      newChoices[config.key] = preferences[this.getCategory(tenant, config)];
     });
 
     setConsent({
