@@ -169,12 +169,13 @@ RSpec.describe User, type: :model do
 
   describe "delete_role" do
     it "denies a user from his admin rights" do
-      prj = create(:project)
-      adm = create(:moderator, project: prj)
+      admin = create(:admin)
+      admin.delete_role('admin')
 
-      adm.delete_role 'admin'
-      expect(adm.save).to eq true
-      expect(adm.admin?).to eq false
+      aggregate_failures 'testing admin' do
+        expect(admin).to be_valid
+        expect(admin).not_to be_admin
+      end
     end
   end
 
