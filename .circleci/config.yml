@@ -551,18 +551,15 @@ workflows:
       - back-build-ee-docker-image:
           context: 
             - docker-hub-access
-            - slack
           <<: *slack-fail-post-step-templates
       - back-bnl-generate-tenant-templates:
           context: 
             - docker-hub-access
-            - slack
           <<: *slack-fail-post-step-templates
           ssh_host: "52.57.74.84"
       - back-test-tenant-templates:
           context: 
             - docker-hub-access
-            - slack
           <<: *slack-fail-post-step-templates
           requires:
             - back-build-ee-docker-image
@@ -570,7 +567,6 @@ workflows:
       - back-release-tenant-templates:
           context: 
             - docker-hub-access
-            - slack
           <<: *slack-fail-post-step-templates
           requires:
             - back-test-tenant-templates
@@ -608,21 +604,17 @@ workflows:
       #     stack_name: "cl2"
       # Canada
       - check-for-inconsistent-data:
-          context: 
-            - slack
           <<: *slack-fail-post-step-inconsistent-data
           ssh_host: "35.183.23.116"
           compose_file: docker-compose-production-canada.yml
           env_file: ".env-production-canada"
       # US West
       - check-for-inconsistent-data:
+          <<: *slack-fail-post-step-inconsistent-data
           ssh_host: "52.13.59.174"
           compose_file: docker-compose-production.yml
           env_file: ".env-web"
           stack_name: "cl2"
-          context: 
-            - slack
-          <<: *slack-fail-post-step-inconsistent-data
       # UK
       - check-for-inconsistent-data:
           <<: *slack-fail-post-step-inconsistent-data
@@ -630,3 +622,11 @@ workflows:
           compose_file: docker-compose-production.yml
           env_file: ".env-web"
           stack_name: "cl2"
+      - success:
+          requires:
+            - check-for-inconsistent-data
+          post-steps:
+             - slack/notify:
+                event: pass
+                template: basic_success_1
+                mentions: ':tada: SUCCESS: No invalid data was detected!'
