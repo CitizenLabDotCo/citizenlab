@@ -167,6 +167,31 @@ export class ConsentManager extends PureComponent<Props, State> {
     );
   };
 
+  toggleDefault = (modalOpened) => {
+    this.setState((state) => {
+      const newPreferences = {};
+      allCategories().forEach((category) => {
+        // set to false when opening the modal
+        if (!modalOpened) {
+          if (state.preferences[category] === undefined) {
+            newPreferences[category] = false;
+          }
+        }
+        // reset false to undefined when closing the modal
+        else if (state.preferences[category] === false) {
+          newPreferences[category] = undefined;
+        }
+      });
+      return {
+        ...state,
+        preferences: {
+          ...state.preferences,
+          ...newPreferences,
+        },
+      };
+    });
+  };
+
   render() {
     const { tenant, authUser } = this.props;
     const { preferences, cookieConsent } = this.state;
@@ -188,6 +213,7 @@ export class ConsentManager extends PureComponent<Props, State> {
       return (
         <Container
           accept={this.accept}
+          onToggleModal={this.toggleDefault}
           setPreferences={this.setPreferences}
           resetPreferences={this.resetPreferences}
           saveConsent={this.saveConsent}
