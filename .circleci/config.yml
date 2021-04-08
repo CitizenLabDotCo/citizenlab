@@ -622,11 +622,11 @@ workflows:
           compose_file: docker-compose-production.yml
           env_file: ".env-web"
           stack_name: "cl2"
-      - success:
-          requires:
-            - check-for-inconsistent-data
-          post-steps:
-             - slack/notify:
-                event: pass
-                template: basic_success_1
-                mentions: ':tada: SUCCESS: No invalid data was detected!'
+      # - success:
+      #     requires:
+      #       - check-for-inconsistent-data
+      #     post-steps:
+      #        - slack/notify:
+      #           event: pass
+      #           template: basic_success_1
+      #           mentions: ':tada: SUCCESS: No invalid data was detected!'
