@@ -123,11 +123,10 @@ describe('Idea voting permissions', () => {
       const email = randomEmail();
       const password = randomString();
 
-      // Try to vote
-      cy.visit('projects/an-idea-bring-it-to-your-council');
-      cy.get('#e2e-ideas-container');
-      cy.wait(1000);
-      cy.get('.e2e-ideacard-upvote-button').first().click();
+      // Go to an idea of a project that doesn't require verification
+      // and try to vote
+      cy.visit('ideas/very-old-idea');
+      cy.get('.e2e-ideacard-upvote-button').click();
 
       // Sign up flow
       cy.get('#e2e-sign-up-container');
@@ -145,9 +144,9 @@ describe('Idea voting permissions', () => {
       cy.get(
         '#e2e-signup-success-container .e2e-signup-success-close-button'
       ).click();
+      cy.wait(2000);
       cy.get('#e2e-sign-up-in-modal').should('not.exist');
       cy.get('#e2e-user-menu-container');
-      cy.wait(2000);
       cy.get('.e2e-ideacard-upvote-button')
         .first()
         .should('have.class', 'active');
