@@ -245,10 +245,12 @@ class User < ApplicationRecord
   def add_role(type, options = {})
     roles << { 'type' => type.to_s }.merge(options.stringify_keys)
     roles.uniq!
+    self
   end
 
   def delete_role(type, options = {})
     roles.delete({ 'type' => type.to_s }.merge(options.stringify_keys))
+    self
   end
 
   def authenticate(unencrypted_password)
