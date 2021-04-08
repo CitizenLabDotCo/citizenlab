@@ -8,7 +8,7 @@ slack-fail-post-step: &slack-fail-post-step
   post-steps:
     - slack/notify:
         event: fail
-        mentions: '@dev-back'
+        mentions: '@dev-back you\'re all awesome'
         template: basic_fail_1
 
 parameters:
