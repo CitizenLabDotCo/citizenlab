@@ -1,6 +1,5 @@
 import { randomString, randomEmail } from '../support/commands';
 
-// OS-133
 describe('Idea posting permissions', () => {
   const unverifiedFirstName = randomString();
   const unverifiedLastName = randomString();

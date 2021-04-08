@@ -1,6 +1,5 @@
 import { randomString, apiRemoveProject } from '../support/commands';
 
-// OS-133
 describe('Project topics', () => {
   const projectTitle = randomString();
   const projectDescriptionPreview = randomString();

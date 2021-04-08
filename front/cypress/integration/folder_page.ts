@@ -1,6 +1,5 @@
 import { randomString } from '../support/commands';
 
-// OS-133
 describe('Project selection page', () => {
   const projectOneTitle = randomString();
   const projectTwoTitle = randomString();
