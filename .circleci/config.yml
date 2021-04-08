@@ -580,32 +580,32 @@ workflows:
                 template: basic_success_1
                 mentions: ':tada: SUCCESS: New tenant templates were generated!'
   check-for-inconsistent-data:
-    triggers:
-      - schedule:
-          cron: "0 2 * * 1"
-          filters:
-            branches:
-              only:
-                - production
+    # triggers:
+    #   - schedule:
+    #       cron: "0 2 * * 1"
+    #       filters:
+    #         branches:
+    #           only:
+    #             - production
     jobs:
       # Benelux
-      - check-for-inconsistent-data:
-          context: 
-            - slack
-          <<: *slack-fail-post-step-inconsistent-data
-          ssh_host: "52.57.74.84"
-          compose_file: docker-compose-production-benelux.yml
-          stack_name: cl2-prd-bnlx-stack
-          env_file: ".env-production-benelux"
+      # - check-for-inconsistent-data:
+      #     context: 
+      #       - slack
+      #     <<: *slack-fail-post-step-inconsistent-data
+      #     ssh_host: "52.57.74.84"
+      #     compose_file: docker-compose-production-benelux.yml
+      #     stack_name: cl2-prd-bnlx-stack
+      #     env_file: ".env-production-benelux"
       # South America
-      - check-for-inconsistent-data:
-          context: 
-            - slack
-          <<: *slack-fail-post-step-inconsistent-data
-          ssh_host: "52.67.181.38"
-          compose_file: docker-compose-production.yml
-          env_file: ".env-web"
-          stack_name: "cl2"
+      # - check-for-inconsistent-data:
+      #     context: 
+      #       - slack
+      #     <<: *slack-fail-post-step-inconsistent-data
+      #     ssh_host: "52.67.181.38"
+      #     compose_file: docker-compose-production.yml
+      #     env_file: ".env-web"
+      #     stack_name: "cl2"
       # Canada
       - check-for-inconsistent-data:
           context: 
