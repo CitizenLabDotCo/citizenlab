@@ -142,7 +142,7 @@ jobs:
     docker:
       - image: cimg/base:2021.03
     steps:
-      - run: echo "Doing absolutely nothing"
+      - run: [] # echo "Doing absolutely nothing"
 
   # *************** back ***************
 
@@ -612,12 +612,14 @@ workflows:
       # Canada
       - check-for-inconsistent-data:
           <<: *slack-fail-post-step-inconsistent-data
+          name: 'Canada'
           ssh_host: "35.183.23.116"
           compose_file: docker-compose-production-canada.yml
           env_file: ".env-production-canada"
       # US West
       - check-for-inconsistent-data:
           <<: *slack-fail-post-step-inconsistent-data
+          name: 'US West'
           ssh_host: "52.13.59.174"
           compose_file: docker-compose-production.yml
           env_file: ".env-web"
@@ -625,13 +627,16 @@ workflows:
       # UK
       - check-for-inconsistent-data:
           <<: *slack-fail-post-step-inconsistent-data
+          name: 'UK'
           ssh_host: "35.179.69.215"
           compose_file: docker-compose-production.yml
           env_file: ".env-web"
           stack_name: "cl2"
       - empty-job:
           requires:
-            - check-for-inconsistent-data
+            - 'Canada'
+            - 'US West'
+            - 'UK'
           post-steps:
              - slack/notify:
                 event: pass
