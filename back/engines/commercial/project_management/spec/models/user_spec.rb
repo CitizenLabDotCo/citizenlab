@@ -31,7 +31,7 @@ RSpec.describe User, type: :model do
     end
 
     it 'responds true when the user is project_moderator and no project_id is passed' do
-      u = build(:user, roles: [{ type: 'project_moderator' }])
+      u = build(:user, roles: [{ type: 'project_moderator', project_id: 'project_id' }])
       expect(u.project_moderator?).to eq true
     end
   end
