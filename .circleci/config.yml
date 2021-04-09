@@ -141,8 +141,8 @@ jobs:
     resource_class: small
     docker:
       - image: cimg/base:2021.03
-    steps:
-      - run: [] # echo "Doing absolutely nothing"
+    steps: []
+      # - run: echo "Doing absolutely nothing"
 
   # *************** back ***************
 
