@@ -20,13 +20,6 @@ RSpec.describe Notification, type: :model do
       expect(notifications).to be_present
     end
 
-    shared_examples 'make project_phase_started' do |phase, expected_ids|
-      let(:activity) { create(:activity, item: phase, action: 'started') }
-      let(:notifications) { Notifications::ProjectPhaseStarted.make_notifications_on(activity) }
-
-      it { expect(notifications.map(&:recipient_id)).to match_array(expected_ids) }
-    end
-
     context "when the project is visible only to some groups" do
       let(:phase) { create(:active_phase) }
       let!(:project) do
@@ -35,17 +28,21 @@ RSpec.describe Notification, type: :model do
           project.groups << create(:group)
         end
       end
+      let(:notifications) do
+        activity = create(:activity, item: phase, action: 'started')
+        Notifications::ProjectPhaseStarted.make_notifications_on(activity)
+      end
 
       context "and the user moderates the project" do
-        let(:user) { create(:moderator, project: project, manual_groups: [project.groups.first])}
+        before { create(:moderator, project: project, manual_groups: [project.groups.first]) }
 
-        include_examples 'make project_phase_started', phase, []
+        it { expect(notifications.map(&:recipient_id)).to eq [] }
       end
 
       context "and the user moderates another project" do
-        let(:user) { create(:moderator, manual_groups: [project.groups.first])}
+        let!(:user) { create(:moderator, manual_groups: [project.groups.first]) }
 
-        include_examples 'make project_phase_started', phase, [user.id]
+        it { require 'pry' ; binding.pry ; expect(notifications.map(&:recipient_id)).to eq [user.id] }
       end
     end
   end
