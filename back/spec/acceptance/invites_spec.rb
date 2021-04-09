@@ -131,10 +131,12 @@ resource "Invites" do
         let(:locale) { "nl-NL" }
         let(:invite_text) { "Welcome, my friend!" }
 
-        let(:roles) { [
-          { "type" => "admin" },
-          *({ "type" => "project_moderator", "project_id" => project.id } if CitizenLab.ee?)
-        ] }
+        let(:roles) {
+          [
+            { "type" => "admin" },
+            ({ "type" => "project_moderator", "project_id" => project.id } if CitizenLab.ee?)
+          ].compact
+        }
 
         example_request "Bulk invite multiple users" do
           aggregate_failures "testing response" do
@@ -145,7 +147,7 @@ resource "Invites" do
             expect(Invite.all.map { |i| i.invitee.admin? }.uniq).to eq [true]
             expect(Invite.all.map { |i| i.invitee.locale }.uniq).to eq [locale]
 
-            expect(Invite.all.map { |i| i.invitee.project_moderator?(project.id) }.any?).to eq true if CitizenLab.ee?
+            expect(Invite.all.map { |i| i.invitee.project_moderator?(project.id) }.all?).to eq true if CitizenLab.ee?
           end
 
         end
