@@ -139,9 +139,10 @@ commands:
 jobs:
   empty-job:
     resource_class: small
+    steps:
     # docker:
     #   - image: cimg/base:2021.03
-    
+
   # *************** back ***************
 
   back-build-ee-docker-image:
