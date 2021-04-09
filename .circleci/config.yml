@@ -139,12 +139,10 @@ commands:
 jobs:
   empty-job:
     resource_class: small
-    executor:
-      name: node/default
+    docker:
+      - image: cimg/base:2021.03
     steps:
       - run: echo "Doing absolutely nothing"
-    # docker:
-    #   - image: cimg/base:2021.03
 
   # *************** back ***************
 
