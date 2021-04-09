@@ -6,7 +6,7 @@ require "google_tag_manager/version"
 # Describe your gem and declare its dependencies:
 Gem::Specification.new do |s|
   s.name        = "google_tag_manager"
-  s.version     = Matomo::VERSION
+  s.version     = GoogleTagManager::VERSION
   s.authors     = ['CitizenLab']
   s.licenses    = ['AGPLv3']
   s.summary     = "Google Tag Manager Integration"
