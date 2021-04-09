@@ -42,7 +42,7 @@ RSpec.describe Notification, type: :model do
       context "and the user moderates another project" do
         let!(:user) { create(:moderator, manual_groups: [project.groups.first]) }
 
-        it { require 'pry' ; binding.pry ; expect(notifications.map(&:recipient_id)).to eq [user.id] }
+        it { expect(notifications.map(&:recipient_id)).to eq [user.id] }
       end
     end
   end
