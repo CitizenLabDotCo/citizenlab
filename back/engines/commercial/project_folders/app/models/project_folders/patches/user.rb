@@ -17,7 +17,7 @@ module ProjectFolders
           }
 
           scope :not_project_folder_moderator, lambda { |*project_folder_ids|
-            where.not(project_folder_moderator(*project_folder_ids))
+            where.not(id: project_folder_moderator(*project_folder_ids))
           }
         end
       end
