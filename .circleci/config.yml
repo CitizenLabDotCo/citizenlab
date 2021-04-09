@@ -139,6 +139,8 @@ commands:
 jobs:
   empty-job:
     resource_class: small
+    executor:
+      name: node/default
     steps:
     # docker:
     #   - image: cimg/base:2021.03
