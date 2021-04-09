@@ -137,6 +137,11 @@ commands:
               -d '{"state": "success","description": "Success","context": "ci/circleci: EE '"$CIRCLE_JOB"'","target_url": "'"$CIRCLE_BUILD_URL"'"}'
 
 jobs:
+  empty-job:
+    resource_class: small
+    # docker:
+    #   - image: cimg/base:2021.03
+    
   # *************** back ***************
 
   back-build-ee-docker-image:
@@ -326,7 +331,7 @@ jobs:
     steps:
       - run:
           name: Check for inconsistent data
-          command: ssh << parameters.ssh_user >>@<< parameters.ssh_host >> -o StrictHostKeyChecking=no "docker run --env-file cl2-deployment/<< parameters.env_file >> citizenlabdotco/back-ee:$production rake checks:invalid_data"
+          command: ssh << parameters.ssh_user >>@<< parameters.ssh_host >> -o StrictHostKeyChecking=no "docker run --env-file cl2-deployment/<< parameters.env_file >> citizenlabdotco/back-ee:production rake checks:invalid_data"
           no_output_timeout: 60m
 
   # *************** front ***************
@@ -622,11 +627,11 @@ workflows:
           compose_file: docker-compose-production.yml
           env_file: ".env-web"
           stack_name: "cl2"
-      # - success:
-      #     requires:
-      #       - check-for-inconsistent-data
-      #     post-steps:
-      #        - slack/notify:
-      #           event: pass
-      #           template: basic_success_1
-      #           mentions: ':tada: SUCCESS: No invalid data was detected!'
+      - empty-job:
+          requires:
+            - check-for-inconsistent-data
+          post-steps:
+             - slack/notify:
+                event: pass
+                template: basic_success_1
+                mentions: ':tada: SUCCESS: No invalid data was detected!'
