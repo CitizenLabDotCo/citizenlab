@@ -28,6 +28,7 @@ import {
   setConsent,
 } from './consent';
 import eventEmitter from 'utils/eventEmitter';
+import { IAppConfigurationData } from 'services/appConfiguration';
 
 // the format in which the user will make its choices,
 export type IPreferences = Partial<Record<TCategory, boolean>>;
@@ -72,14 +73,29 @@ export class ConsentManager extends PureComponent<Props, State> {
     );
   }
 
+  getCategory(
+    tenant: IAppConfigurationData,
+    destinationConfig: IDestinationConfig
+  ) {
+    return typeof destinationConfig.category === 'function'
+      ? destinationConfig.category(tenant)
+      : destinationConfig.category;
+  }
+
   categorizeDestinations(
     destinations: IDestinationConfig[]
   ): CategorizedDestinations {
+    const { tenant } = this.props;
     const output = {};
     allCategories().forEach((category) => (output[category] = []));
 
+    if (isNilOrError(tenant)) {
+      return output as CategorizedDestinations;
+    }
+
     destinations.forEach((destinationConfig) => {
-      output[destinationConfig.category].push(destinationConfig.key);
+      const category = this.getCategory(tenant, destinationConfig);
+      output[category].push(destinationConfig.key);
     });
 
     return output as CategorizedDestinations;
@@ -124,10 +140,13 @@ export class ConsentManager extends PureComponent<Props, State> {
 
   saveConsent = () => {
     const { preferences, cookieConsent } = this.state;
+    const { tenant } = this.props;
+
+    if (isNilOrError(tenant)) return;
 
     const newChoices: ISavedDestinations = {};
     this.getActiveDestinations().forEach((config) => {
-      newChoices[config.key] = preferences[config.category];
+      newChoices[config.key] = preferences[this.getCategory(tenant, config)];
     });
 
     setConsent({
@@ -167,6 +186,31 @@ export class ConsentManager extends PureComponent<Props, State> {
     );
   };
 
+  toggleDefault = (modalOpened) => {
+    this.setState((state) => {
+      const newPreferences = {};
+      allCategories().forEach((category) => {
+        // set to false when opening the modal
+        if (!modalOpened) {
+          if (state.preferences[category] === undefined) {
+            newPreferences[category] = false;
+          }
+        }
+        // reset false to undefined when closing the modal
+        else if (state.preferences[category] === false) {
+          newPreferences[category] = undefined;
+        }
+      });
+      return {
+        ...state,
+        preferences: {
+          ...state.preferences,
+          ...newPreferences,
+        },
+      };
+    });
+  };
+
   render() {
     const { tenant, authUser } = this.props;
     const { preferences, cookieConsent } = this.state;
@@ -188,6 +232,7 @@ export class ConsentManager extends PureComponent<Props, State> {
       return (
         <Container
           accept={this.accept}
+          onToggleModal={this.toggleDefault}
           setPreferences={this.setPreferences}
           resetPreferences={this.resetPreferences}
           saveConsent={this.saveConsent}

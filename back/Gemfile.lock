@@ -132,6 +132,12 @@ PATH
       rails (~> 6.0.3, >= 6.0.3.2)
 
 PATH
+  remote: engines/commercial/google_tag_manager
+  specs:
+    google_tag_manager (0.1.0)
+      rails (~> 6.0.0)
+
+PATH
   remote: engines/commercial/granular_permissions
   specs:
     granular_permissions (0.1.0)
@@ -983,6 +989,7 @@ DEPENDENCIES
   fog-aws
   frontend!
   geographic_dashboard!
+  google_tag_manager!
   granular_permissions!
   groupdate
   ice_cube!
