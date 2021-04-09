@@ -300,7 +300,8 @@ resource "Users" do
 
           admin = create(:admin, manual_groups: [group])
           moderator = create(:moderator, manual_groups: [group])
-          both = create(:moderator, manual_groups: [group]).add_role('admin').save!
+          both = create(:moderator, manual_groups: [group])
+          both.add_role('admin').save!
 
           group_users = [admin,both,moderator] + create_list(:user, 3, manual_groups: [group])
 
