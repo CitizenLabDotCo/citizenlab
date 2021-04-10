@@ -290,10 +290,10 @@ workflows:
                 - production
 
   private-ci:
-    # when:
-    #   and:
-    #     - not: << pipeline.parameters.trigger >>
-    #     - or: [<< pipeline.parameters.back >>, << pipeline.parameters.front >>]
+    when:
+      and:
+        - not: << pipeline.parameters.trigger >>
+        - or: [<< pipeline.parameters.back >>, << pipeline.parameters.front >>]
     jobs:
       - trigger-private-workflows:
           context: circleci-api-token
