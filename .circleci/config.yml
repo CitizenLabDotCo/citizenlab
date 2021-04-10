@@ -60,7 +60,7 @@ jobs:
   trigger-private-workflows:
     resource_class: small
     docker:
-      - image: byrnedo/alpine-curl
+      - image: cimg/base:stable
     steps:
       - checkout
       - run: |
