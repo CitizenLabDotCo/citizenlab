@@ -62,6 +62,7 @@ jobs:
     docker:
       - image: byrnedo/alpine-curl
     steps:
+      - checkout
       - run: |
           chmod +x .circleci/private-trigger.sh && .circleci/private-trigger.sh << pipeline.parameters.back >> << pipeline.parameters.front >>
 
