@@ -56,24 +56,20 @@ const ReportTab = memo(({ projects }: DataProps) => {
               id={project.id}
               isLastItem={index === participableProjects.length - 1}
             >
-              <Container>
-                <RowContent className="e2e-admin-projects-list-item">
-                  <RowContentInner className="expand primary">
-                    <RowTitle value={project.attributes.title_multiloc} />
-                    <RowButton
-                      className={`
+              <RowContent className="e2e-admin-projects-list-item">
+                <RowTitle value={project.attributes.title_multiloc} />
+                <RowButton
+                  className={`
                         e2e-admin-edit-publication
                       `}
-                      linkTo={`/admin/dashboard/reports/${project.id}`}
-                      buttonStyle="secondary"
-                      icon="eye"
-                      type="button"
-                    >
-                      <FormattedMessage {...messages.seeReportButton} />
-                    </RowButton>
-                  </RowContentInner>
-                </RowContent>
-              </Container>
+                  linkTo={`/admin/dashboard/reports/${project.id}`}
+                  buttonStyle="secondary"
+                  icon="eye"
+                  type="button"
+                >
+                  <FormattedMessage {...messages.seeReportButton} />
+                </RowButton>
+              </RowContent>
             </Row>
           );
         })}
