@@ -12,20 +12,12 @@ import { List, Row } from 'components/admin/ResourceList';
 import {
   RowButton,
   RowContent,
-  RowContentInner,
   RowTitle,
 } from 'containers/Admin/projects/components/StyledComponents';
-import styled from 'styled-components';
 
 interface DataProps {
   projects: GetProjectsChildProps;
 }
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-`;
 
 const ReportTab = memo(({ projects }: DataProps) => {
   const participableProjects =
