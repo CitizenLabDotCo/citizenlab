@@ -13,72 +13,68 @@ import { Select } from 'cl2-component-library';
 import messages from '../messages';
 import GoBackButton from 'components/UI/GoBackButton';
 import { SectionTitle } from 'components/admin/Section';
-import styled, { ThemeProvider } from 'styled-components';
-import { chartTheme } from '../index';
-import ProjectReport from './ProjectReport';
+import { List, Row } from 'components/admin/ResourceList';
+import {
+  RowButton,
+  RowContent,
+  RowContentInner,
+  RowTitle,
+} from 'containers/Admin/projects/components/StyledComponents';
 
-const StyledSelect = styled(Select)`
-  max-width: 300px;
-`;
-
-const StyledGoBack = styled(GoBackButton)`
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  margin-bottom: 20px;
-`;
 interface DataProps {
   projects: GetProjectsChildProps;
 }
 
 const ReportTab = memo(({ projects }: DataProps) => {
-  const localize = useLocalize();
-  const [selectedProject, setSelectedProject] = useState<IProjectData>();
-
-  const projectOptions =
+  const participableProjects =
     !isNilOrError(projects) && !isNilOrError(projects.projectsList)
-      ? projects.projectsList
-          .filter(
-            (project) =>
-              project.attributes.process_type === 'timeline' ||
+      ? projects.projectsList.filter((project) => {
+          const processType = project?.attributes.process_type;
+          const participationMethod = project.attributes.participation_method;
+          return (
+            (processType === 'continuous' &&
               !['information', 'survey', 'volunteering', null].includes(
-                project.attributes.participation_method
-              )
-          )
-          .map((project) => ({
-            value: project.id,
-            label: localize(project.attributes.title_multiloc),
-          }))
-      : null;
+                participationMethod
+              )) ||
+            processType === 'timeline'
+          );
+        })
+      : [];
 
-  const onProjectFilter = (option: IOption) =>
-    setSelectedProject(
-      projects?.projectsList?.find((project) => project.id === option.value)
-    );
-
-  const onResetProject = () => {
-    setSelectedProject(undefined);
-  };
-
-  return !selectedProject ? (
+  return (
     <>
       <SectionTitle>
         <FormattedMessage {...messages.selectAProject} />
       </SectionTitle>
-      {projectOptions && (
-        <StyledSelect
-          id="projectFilter"
-          onChange={onProjectFilter}
-          value={undefined}
-          options={projectOptions}
-        />
-      )}
+      <List>
+        {participableProjects.map((project, index) => {
+          return (
+            <Row
+              key={index}
+              id={project.id}
+              isLastItem={index === participableProjects.length - 1}
+            >
+              <RowContent className="e2e-admin-projects-list-item">
+                <RowContentInner className="expand primary">
+                  <RowTitle value={project.attributes.title_multiloc} />
+                  <RowButton
+                    className={`
+                        e2e-admin-edit-publication
+                      `}
+                    linkTo={`/admin/dashboard/reports/${project.id}`}
+                    buttonStyle="secondary"
+                    icon="eye"
+                    type="button"
+                  >
+                    <FormattedMessage {...messages.seeReportButton} />
+                  </RowButton>
+                </RowContentInner>
+              </RowContent>
+            </Row>
+          );
+        })}
+      </List>
     </>
-  ) : (
-    <ThemeProvider theme={chartTheme}>
-      <StyledGoBack onClick={onResetProject} />
-      <ProjectReport project={selectedProject} />
-    </ThemeProvider>
   );
 });
 
