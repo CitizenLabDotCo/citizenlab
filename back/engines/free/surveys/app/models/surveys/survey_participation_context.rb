@@ -30,7 +30,7 @@ module Surveys::SurveyParticipationContext
         message: "Not a valid Enalyzer embed"
       }
       survey.validates :survey_embed_url, if: [:survey?, :survey_xact?], format: {
-        with: /\Ahttps:\/\/www.survey_xact.dk\/LinkCollector\/key=\?*\z/,
+        with: /\Ahttps:\/\/www\.survey-xact\.dk\/LinkCollector\?key=.*\z/,
         message: "Not a valid Survey Xact embed"
       }
       survey.before_validation :strip_survey_embed_url
