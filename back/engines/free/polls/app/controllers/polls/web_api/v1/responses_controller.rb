@@ -35,6 +35,23 @@ module Polls
 					end
 				end
 
+				def responses_count
+					if @participation_context
+						authorize Project.find_by!(id: @participation_context.project.id), :responses_count?
+					else
+						authorize Response, :responses_count?
+					end
+
+					@counts = policy_scope(Response)
+										.joins(:response_options)
+										.where(participation_context: @participation_context)
+										.group('polls_response_options.option_id')
+										.order('polls_response_options.option_id')
+										.count
+
+					render json: { series: { options: @counts } }
+				end
+
 				private
 
 				def set_participation_context
