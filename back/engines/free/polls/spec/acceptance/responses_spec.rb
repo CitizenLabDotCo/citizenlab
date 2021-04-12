@@ -105,6 +105,7 @@ resource 'Poll Responses' do
         expect(json_response[:series][:options][@q1.options.first.id.to_sym]).to eq 1
       end
     end
+  end
 
   post 'web_api/v1/projects/:participation_context_id/poll_responses' do
     parameter :response_options_attributes, 'Array with response option objects', required: true, scope: :response
