@@ -1,17 +1,12 @@
-import React, { memo, useState } from 'react';
+import React, { memo } from 'react';
 import { adopt } from 'react-adopt';
 import GetProjects, {
   PublicationStatus,
   GetProjectsChildProps,
 } from 'resources/GetProjects';
 import { isNilOrError } from 'utils/helperUtils';
-import useLocalize from 'hooks/useLocalize';
-import { IOption } from 'cl2-component-library/dist/utils/typings';
-import { IProjectData } from 'services/projects';
 import { FormattedMessage } from 'utils/cl-intl';
-import { Select } from 'cl2-component-library';
 import messages from '../messages';
-import GoBackButton from 'components/UI/GoBackButton';
 import { SectionTitle } from 'components/admin/Section';
 import { List, Row } from 'components/admin/ResourceList';
 import {
@@ -20,10 +15,17 @@ import {
   RowContentInner,
   RowTitle,
 } from 'containers/Admin/projects/components/StyledComponents';
+import styled from 'styled-components';
 
 interface DataProps {
   projects: GetProjectsChildProps;
 }
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+`;
 
 const ReportTab = memo(({ projects }: DataProps) => {
   const participableProjects =
@@ -54,22 +56,24 @@ const ReportTab = memo(({ projects }: DataProps) => {
               id={project.id}
               isLastItem={index === participableProjects.length - 1}
             >
-              <RowContent className="e2e-admin-projects-list-item">
-                <RowContentInner className="expand primary">
-                  <RowTitle value={project.attributes.title_multiloc} />
-                  <RowButton
-                    className={`
+              <Container>
+                <RowContent className="e2e-admin-projects-list-item">
+                  <RowContentInner className="expand primary">
+                    <RowTitle value={project.attributes.title_multiloc} />
+                    <RowButton
+                      className={`
                         e2e-admin-edit-publication
                       `}
-                    linkTo={`/admin/dashboard/reports/${project.id}`}
-                    buttonStyle="secondary"
-                    icon="eye"
-                    type="button"
-                  >
-                    <FormattedMessage {...messages.seeReportButton} />
-                  </RowButton>
-                </RowContentInner>
-              </RowContent>
+                      linkTo={`/admin/dashboard/reports/${project.id}`}
+                      buttonStyle="secondary"
+                      icon="eye"
+                      type="button"
+                    >
+                      <FormattedMessage {...messages.seeReportButton} />
+                    </RowButton>
+                  </RowContentInner>
+                </RowContent>
+              </Container>
             </Row>
           );
         })}
