@@ -97,6 +97,7 @@ interface State {
   logoError: string | null;
   headerError: string | null;
   titleError: Multiloc;
+  settings: Partial<IAppConfigurationSettings>;
   subtitleError: Multiloc;
   contrastRatioWarning: {
     color_main: boolean;
@@ -136,6 +137,7 @@ class SettingsCustomizeTab extends PureComponent<
       headerError: null,
       titleError: {},
       subtitleError: {},
+      settings: {},
       contrastRatioWarning: {
         color_main: false,
         color_secondary: false,
@@ -166,6 +168,8 @@ class SettingsCustomizeTab extends PureComponent<
               'data.attributes.header_bg.large',
               null
             );
+            const settings = get(tenant, 'data.attributes.settings', {});
+
             const logo$ = logoUrl
               ? convertUrlToUploadFileObservable(logoUrl, null, null)
               : of(null);
@@ -179,17 +183,20 @@ class SettingsCustomizeTab extends PureComponent<
                 tenant,
                 tenantLogo,
                 tenantHeaderBg,
+                settings,
               }))
             );
           })
         )
-        .subscribe(({ locale, tenant, tenantLogo, tenantHeaderBg }) => {
-          const logo = !isNilOrError(tenantLogo) ? [tenantLogo] : [];
-          const header_bg = !isNilOrError(tenantHeaderBg)
-            ? [tenantHeaderBg]
-            : [];
-          this.setState({ locale, tenant, logo, header_bg });
-        }),
+        .subscribe(
+          ({ locale, tenant, tenantLogo, tenantHeaderBg, settings }) => {
+            const logo = !isNilOrError(tenantLogo) ? [tenantLogo] : [];
+            const header_bg = !isNilOrError(tenantHeaderBg)
+              ? [tenantHeaderBg]
+              : [];
+            this.setState({ locale, tenant, logo, header_bg, settings });
+          }
+        ),
     ];
   }
 
@@ -236,9 +243,10 @@ class SettingsCustomizeTab extends PureComponent<
     });
 
     this.handleCoreMultilocSettingOnChange('header_title')(titleMultiloc);
-    this.setState({
+    this.setState((prevState) => ({
+      ...prevState,
       titleError,
-    });
+    }));
   };
 
   handleSubtitleOnChange = (subtitleMultiloc: Multiloc) => {
@@ -252,9 +260,10 @@ class SettingsCustomizeTab extends PureComponent<
     });
 
     this.handleCoreMultilocSettingOnChange('header_slogan')(subtitleMultiloc);
-    this.setState({
+    this.setState((prevState) => ({
+      ...prevState,
       subtitleError,
-    });
+    }));
   };
 
   handleColorPickerOnChange = (colorName: TenantColors) => (
@@ -390,18 +399,22 @@ class SettingsCustomizeTab extends PureComponent<
   handleCoreMultilocSettingOnChange = (propertyName: string) => (
     multiloc: Multiloc
   ) => {
-    this.setState((state) => ({
-      attributesDiff: {
-        ...state.attributesDiff,
-        settings: {
-          ...get(state.attributesDiff, 'settings', {}),
-          core: {
-            ...get(state.attributesDiff, 'settings.core', {}),
-            [propertyName]: multiloc,
+    this.setState((state) => {
+      return {
+        attributesDiff: {
+          ...state.attributesDiff,
+          settings: {
+            ...state.settings,
+            ...get(state.attributesDiff, 'settings', {}),
+            core: {
+              ...get(state.settings, 'core', {}),
+              ...get(state.attributesDiff, 'settings.core', {}),
+              [propertyName]: multiloc,
+            },
           },
         },
-      },
-    }));
+      };
+    });
   };
 
   /*
