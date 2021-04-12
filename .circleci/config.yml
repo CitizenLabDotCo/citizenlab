@@ -531,6 +531,7 @@ workflows:
           requires:
             - front-deploy-staging
             - front-reset-ci-tenant
+          working_directory: ~/
           cache-key: v1-npm-cache-{{ checksum "citizenlab/front/package.json" }}
           command: npx cypress run --spec 'cypress/integration/*.ts' --config baseUrl=https://e2e.stg.citizenlab.co
           store_artifacts: true
