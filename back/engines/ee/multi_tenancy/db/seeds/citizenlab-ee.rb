@@ -288,10 +288,6 @@ if ['public','example_org'].include? Apartment::Tenant.current
         enabled: true,
         allowed: true
       },
-      project_management: {
-        enabled: true,
-        allowed: true
-      },
       typeform_surveys: {
         enabled: true,
         allowed: true
@@ -957,4 +953,12 @@ if Apartment::Tenant.current == 'localhost'
     geojson: JSON.parse(File.read(CustomMaps::Engine.root.join("spec","fixtures","bruxelles_toilettes_publiques.geojson"))),
     default_enabled: false
   )
+end
+
+unless Apartment::Tenant.current == 'public'
+  User.find_each do |user|
+    EmailCampaigns::UnsubscriptionToken.create!(user_id: user.id)
+  end
+
+  EmailCampaigns::AssureCampaignsService.new.assure_campaigns
 end
