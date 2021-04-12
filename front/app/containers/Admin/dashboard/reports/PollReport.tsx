@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 import { adopt } from 'react-adopt';
-import { InjectedIntlProps, injectIntl } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import GetPollQuestions, {
   GetPollQuestionsChildProps,
 } from 'resources/GetPollQuestions';
@@ -12,6 +12,7 @@ import {
 } from 'containers/Admin/dashboard';
 import QuestionReport from './QuestionReport';
 import { SubSectionTitle } from 'components/admin/Section';
+import { injectIntl } from 'utils/cl-intl';
 
 interface InputProps {
   participationContextId: string;

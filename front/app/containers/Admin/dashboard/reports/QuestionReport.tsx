@@ -3,11 +3,12 @@ import useLocalize from 'hooks/useLocalize';
 import usePollResponses from 'hooks/usePollResponses';
 import React, { memo } from 'react';
 import { adopt } from 'react-adopt';
-import { InjectedIntlProps, injectIntl } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import GetPollOptions, {
   GetPollOptionsChildProps,
 } from 'resources/GetPollOptions';
 import { IPollQuestion } from 'services/pollQuestions';
+import { injectIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 import ResponseGraph from './charts/ResponseGraph';
 
