@@ -46,6 +46,7 @@ const PollReport = memo(
                 className={`dynamicHeight ${
                   pollQuestions.length === 1 && 'fullWidth'
                 }`}
+                key={question.id}
               >
                 <GraphCardInner>
                   <QuestionReport
