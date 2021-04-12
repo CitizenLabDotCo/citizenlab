@@ -289,7 +289,7 @@ jobs:
                   --url https://circleci.com/api/v2/project/github/CitizenLabDotCo/citizenlab-ee/pipeline \
                   --header 'content-type: application/json' \
                   --header 'x-attribution-login: '"$CIRCLE_USERNAME" \
-                  --data '{"branch": "'"$CIRCLE_BRANCH"'","parameters": {"citizenlab_branch": "<< pipeline.parameters.citizenlab_branch >>, "run_deploy": true, "front": true}}'
+                  --data '{"branch": "'"$CIRCLE_BRANCH"'","parameters": {"citizenlab_branch": "<< pipeline.parameters.citizenlab_branch >>", "run_deploy": true, "front": true}}'
       - echo_pipeline_parameters
 
   front-deploy-staging:
