@@ -644,6 +644,12 @@ class AdminProjectEditGeneral extends PureComponent<
       titleError: !isEmpty(titleError) ? titleError : null,
     });
 
+    if (hasErrors) {
+      this.setState({
+        submitState: 'error',
+      });
+    }
+
     return !hasErrors;
   };
 
@@ -728,7 +734,7 @@ class AdminProjectEditGeneral extends PureComponent<
         const apiErrors = get(
           errors,
           'json.errors',
-          formatMessage(messages.saveErrorMessage)
+          formatMessage(messages.submitErrorMessage)
         );
         const submitState = 'error';
         this.setState({ apiErrors, submitState });
@@ -1154,7 +1160,7 @@ class AdminProjectEditGeneral extends PureComponent<
               messages={{
                 buttonSave: messages.saveProject,
                 buttonSuccess: messages.saveSuccess,
-                messageError: messages.saveErrorMessage,
+                messageError: messages.submitErrorMessage,
                 messageSuccess: messages.saveSuccessMessage,
               }}
             />
