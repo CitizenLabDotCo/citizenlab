@@ -188,11 +188,13 @@ jobs:
   back-trigger-deploy:
     resource_class: small
     docker:
-      - image: byrnedo/alpine-curl
+      - image: cimg/base:2021.03
     steps:
       - when:
           condition:
-            equal: [<< pipeline.parameters.citizenlab_branch >>, master]
+            or:
+              - equal: [<< pipeline.parameters.citizenlab_branch >>, master]
+              - equal: [<< pipeline.parameters.citizenlab_branch >>, production]
           steps:
             - run: |
                 curl --request POST \
@@ -273,11 +275,13 @@ jobs:
   front-trigger-deploy:
     resource_class: small
     docker:
-      - image: byrnedo/alpine-curl
+      - image: cimg/base:2021.03
     steps:
       - when:
           condition:
-            equal: [<< pipeline.parameters.citizenlab_branch >>, master]
+            or:
+              - equal: [<< pipeline.parameters.citizenlab_branch >>, master]
+              - equal: [<< pipeline.parameters.citizenlab_branch >>, production]
           steps:
             - run: |
                 curl --request POST \
@@ -315,6 +319,37 @@ jobs:
           command: |
             cd citizenlab/front && aws s3 sync build/ s3://cl2-front-staging/ --acl public-read --exclude "index.html"
             cd citizenlab/front && aws s3 cp build/index.html s3://cl2-front-staging/index.html --acl public-read --cache-control no-cache
+
+  front-deploy-production:
+    docker:
+      - image: citizenlabdotco/cl2-devops-front-buildenv
+    resource_class: medium+
+    working_directory: ~/
+    steps:
+      - clone_citizenlab_and_enable_ee
+      - restore_cache:
+          keys:
+          - v1-npm-cache-{{ checksum "citizenlab/front/package.json" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-npm-cache-
+      - run: cd citizenlab/front && npm ci
+      - save_cache:
+          paths:
+            - /root/.npm
+          key: v1-npm-cache-{{ checksum "citizenlab/front/package.json" }}
+      - run:
+          command: cd citizenlab/front && SEGMENT_API_KEY=$SEGMENT_API_KEY_PRODUCTION SENTRY_DSN=$SENTRY_DSN_PRODUCTION npm run build:staging
+          no_output_timeout: '30m'
+      - run:
+          command: cd citizenlab/front && rm build/*.map
+      - deploy :
+          name: Deploy production version
+          command: |
+            aws s3 sync build/ s3://cl2-front-production-benelux/ --acl public-read --exclude "index.html"
+            aws s3 cp build/index.html s3://cl2-front-production-benelux/index.html --acl public-read --cache-control no-cache
+      - deploy:
+          name: Invalidate the static assets on the CDN
+          command: aws cloudfront create-invalidation --distribution-id E2MY732QC516J3 --paths '/*'
 
   front-reset-ci-tenant:
     docker:
@@ -400,7 +435,60 @@ workflows:
           compose_file: docker-compose-staging.yml
           stack_name: cl2-back-stg
           env_file: ".env-staging"
-
+      - back-deploy-to-swarm:
+          requires:
+            - back-push-deployment-docker-image
+          filters:
+            branches:
+              only:
+                - production
+          ssh_host: "52.57.74.84"
+          compose_file: docker-compose-production-benelux.yml
+          stack_name: cl2-prd-bnlx-stack
+          env_file: ".env-production-benelux"
+      - back-deploy-to-swarm:
+          requires:
+            - back-push-deployment-docker-image
+          filters:
+            branches:
+              only:
+                - production
+          ssh_host: "35.183.23.116"
+          compose_file: docker-compose-production-canada.yml
+          env_file: ".env-production-canada"
+      - back-deploy-to-swarm:
+          requires:
+            - back-push-deployment-docker-image
+          filters:
+            branches:
+              only:
+                - production
+          ssh_host: "52.67.181.38"
+          compose_file: docker-compose-production.yml
+          env_file: ".env-web"
+          stack_name: "cl2"
+      - back-deploy-to-swarm:
+          requires:
+            - back-push-deployment-docker-image
+          filters:
+            branches:
+              only:
+                - production
+          ssh_host: "52.13.59.174"
+          compose_file: docker-compose-production.yml
+          env_file: ".env-web"
+          stack_name: "cl2"
+      - back-deploy-to-swarm:
+          requires:
+            - back-push-deployment-docker-image
+          filters:
+            branches:
+              only:
+                - production
+          ssh_host: "35.179.69.215"
+          compose_file: docker-compose-production.yml
+          env_file: ".env-web"
+          stack_name: "cl2"
   front:
     when:
       and:
@@ -428,6 +516,10 @@ workflows:
             branches:
               only:
                 - master
+      - front-deploy-production:
+          filters:
+            branches:
+              only:
                 - production
       - front-reset-ci-tenant:
           filters:
