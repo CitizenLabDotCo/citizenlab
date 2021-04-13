@@ -200,7 +200,7 @@ ar:
       title_spam_report: 'أبلغ %{firstName}%{lastName} عن إزعاج'
     initiative_marked_as_spam:
       by_author: 'بواسطة %{authorName}'
-      cta_review_initiative: 'Review proposal'
+      cta_review_initiative: 'مراجعة المُقترح'
       report_inappropriate_offensive_content: 'أجد هذا المحتوى مسيئًا أو غير لائق.'
       report_not_an_initiative: 'This content is not a proposal and does not belong here.'
       subject: 'لديك تقرير إزعاج على المنصة الخاصة بـ %{organizationName}'
