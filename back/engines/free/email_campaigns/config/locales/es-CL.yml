@@ -549,7 +549,7 @@ es-CL:
       add_image: 'Añade una imagen'
       cta_view_idea: 'Ir a tu idea'
       event_description: '%{firstName}, su idea ha sido publicada con éxito en la plataforma de participación de %{organizationName}. Se le notificará cuando las personas interactúen con su idea. Descubra los siguientes pasos que puede seguir a continuación.'
-      link: link
+      link: enlace
       main_header: '¡Publicó una idea! Asegurémonos de que se lea.'
       message_get_votes: 'Llega a más gente con tu idea:'
       preheader: '%{firstName}, felicitaciones por publicar tu idea para %{organizationName}. Ahora a conseguir apoyo para tu idea.'
