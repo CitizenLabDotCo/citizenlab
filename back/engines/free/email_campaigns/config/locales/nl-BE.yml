@@ -2,7 +2,7 @@ nl-BE:
   email_campaigns:
     campaign_type_description:
       "manual": Officiële berichten
-      "admin_rights_received": Beheersrechten ontvangen
+      "admin_rights_received": Administratierechten ontvangen
       "comment_deleted_by_admin": Verwijderen van mijn reactie
       "comment_marked_as_spam": Reactie spammelding
       "comment_on_your_comment": Een antwoord op mijn reactie
@@ -51,15 +51,15 @@ nl-BE:
       "your_proposed_initiatives_digest": Weekoverzicht van je voorstellen
     admin_campaign_type_description:
       "manual": Officieel bericht - alle gebruikers
-      "admin_rights_received": Beheersrechten ontvangen - admins
+      "admin_rights_received": Administratierechten ontvangen - admins
       "comment_deleted_by_admin": Verwijderen van je reactie - alle gebruikers
-      "comment_marked_as_spam": Spammelding reactie - admins en projectbeheerders
+      "comment_marked_as_spam": Spammeldinig reactie - admins en projectbeheerders
       "comment_on_your_comment": Antwoord op je reactie - alle gebruikers
       "comment_on_your_idea": Reactie op jouw idee - alle gebruikers
       "comment_on_your_initiative": Reactie op jouw voorstel - alle gebruikers
       "first_idea_published": Posten van je eerste idee - alle gebruikers
       "idea_assigned_to_you": Toewijzing van een idee - admins en projectbeheerders
-      "idea_marked_as_spam": Spammelding idee - admins en projectbeheerders
+      "idea_marked_as_spam": Spammeldinig idee - admins en projectbeheerders
       "idea_published": Posten van je idee - alle gebruikers
       "initiative_assigned_to_you": Toewijzing van een voorstel - admins
       "initiative_marked_as_spam": Voorstel spammelding - admins
@@ -105,7 +105,7 @@ nl-BE:
       "link_unsubscribe": "Uitschrijven"
       "powered_by": "Mogelijk gemaakt door"
       "statement": "Je kreeg deze e-mail van CitizenLab in naam van %{organizationName} omdat je geregistreerd bent als gebruiker op %{organizationLink}. Je kan je %{unsubscribeLink} als je deze e-mails niet meer wil ontvangen in de toekomst."
-      "unsubscribe_text": "Uitschrijven"
+      "unsubscribe_text": "uitschrijven"
     comment_deleted_by_admin:
       reason: 'De reden waarom je reactie is verwijderd:'
       cta_view: 'Bekijk dit idee'
@@ -209,7 +209,7 @@ nl-BE:
       title_spam_report: '%{firstName} %{lastName} heeft spam gemeld'
     initiative_assigned_to_you:
       by_author: 'door %{authorName}'
-      cta_reply_to: 'Geef %{authorName} feedback'
+      cta_reply_to: 'Geef feedback op %{authorName}'
       event_description_initiative: 'Je kreeg een voorstel toegewezen. Geef feedback door het schrijven van een officiële update of door het wijzigen van de status van dit voorstel.'
       main_header: '%{firstName}, je hebt een nieuwe toewijzing'
       subject: 'Je hebt een toewijzing op het platform van %{organizationName}'
@@ -251,7 +251,7 @@ nl-BE:
       preheader: '%{commentAuthor} heeft je genoemd in feedback'
     new_comment_on_commented_idea:
       commented: '%{commentAuthor} schreef:'
-      cta_reply_to: 'Reageer op %{commentAuthor}'
+      cta_reply_to: 'Antwoord op %{commentAuthor}'
       event_description: '%{commentAuthorFull} schreef ook een reactie op het idee ''%{ideaTitle}'' op het participatieplatform van %{organizationName}. Klik op de knop onderaan om de reactie te lezen en het gesprek te starten met %{commentAuthor}.'
       main_header: '%{commentAuthor} schreef een reactie op hetzelfde idee'
       subject: 'Er is een nieuwe reactie op het idee waarop jij ook reageerde'
@@ -259,7 +259,7 @@ nl-BE:
     mention_in_comment:
       by_author: 'door %{authorName}'
       commented: '%{commentAuthor} schreef:'
-      cta_reply_to: 'Reageer op %{commentAuthor}'
+      cta_reply_to: 'Antwoord op %{commentAuthor}'
       event_description: '%{commentAuthorFull} heeft je genoemd in zijn reactie op het idee ''%{post}''. Klik op onderstaande link om in gesprek te gaan met %{commentAuthor}'
       main_header: 'Je werd vermeld in een comment'
       subject: 'Iemand heeft je vernoemd op het platform van %{organizationName}'
@@ -299,7 +299,7 @@ nl-BE:
     comment_on_your_idea:
       by_author: 'door %{authorName}'
       commented: '%{authorFirstName} schreef:'
-      cta_reply_to: 'Reageer op %{commentAuthor}'
+      cta_reply_to: 'Antwoord op %{commentAuthor}'
       event_description: '%{authorNameFull} reageerde op jouw idee ''%{ideaTitle}''. Klik op de onderstaande knop om het gesprek voort te zetten met %{authorName}.'
       main_header: '%{authorName} heeft gereageerd op je idee'
       subject: 'Je hebt een reactie gekregen op het platform van %{organizationName}'
@@ -416,9 +416,9 @@ nl-BE:
       preheader: 'Een beheerder van het platform van %{organizationName} heeft jou zojuist mapbeheerder gemaakt van de volgende map:'
       subject: 'Je bent nu mapbeheerder op het participatieplatform van %{organizationName}'
       text_manage_folder: 'Een map is een manier om verschillende participatieprojecten samen te organiseren. Als mapbeheerder kan je de map en de mapbeschrijving bewerken en nieuwe projecten aanmaken (neem contact op met een platformbeheerder om projecten te verwijderen). Je hebt ook projectbeheerderrechten over alle projecten binnen de map, waardoor je de projecten kan bewerken, de inputs kan beheren en deelnemers kan e-mailen.'
-      text_moderate_analyse_input: 'Zodra de projecten zijn gelanceerd beginnen de eerste inputs binnen te komen. U ontvangt wekelijkse rapporten met de belangrijkste activiteiten, zodat u op de hoogte kunt blijven van wat er gebeurt. De Post Manager in uw adminweergave zal u helpen de input te zien en beheren, inclusief het toekennen van statussen en het reageren op berichten en commentaren.'
-      text_design_participatory_process: 'U kunt de verschillende participatieprojecten in uw map beheren - configureer de participatiemethode, voeg een projectbeschrijving toe, afbeeldingen bijvoegen, en gerelateerde evenementen communiceren. U kunt ook instellen hoe deelnemers met uw projecten omgaan, waaronder het instellen van toegangsrechten en het configureren van de instellingen voor posten, stemmen en commentaar geven.'
-      title_design_participatory_process: 'Geef vorm aan het participatieproces'
+      text_moderate_analyse_input: "Zodra de projecten zijn gelanceerd beginnen de eerste inputs binnen te komen. U ontvangt wekelijkse rapporten met de belangrijkste activiteiten, zodat u op de hoogte kunt blijven van wat er gebeurt. De Post Manager in uw adminweergave zal u helpen de input te zien en beheren, inclusief het toekennen van statussen en het reageren op berichten en commentaren.\n"
+      text_design_participatory_process: "U kunt de verschillende participatieprojecten in uw map beheren - configureer de participatiemethode, voeg een projectbeschrijving toe, afbeeldingen bijvoegen, en gerelateerde evenementen communiceren. U kunt ook instellen hoe deelnemers met uw projecten omgaan, waaronder het instellen van toegangsrechten en het configureren van de instellingen voor posten, stemmen en commentaar geven.\n"
+      title_design_participatory_process: 'Geef het participatieproces vorm'
       title_moderate_analyse_input: 'Beheer en analyseer de input'
       title_manage_folder: 'Beheer de mapinstellingen en maak nieuwe projecten.'
       title_what_can_you_do_folderadmin: 'Wat kan je doen als mapbeheerder?'
@@ -489,13 +489,13 @@ nl-BE:
     user_digest:
       subject: "Wekelijkse update van het participatieplatform van %{organizationName}"
       commented: "%{authorFirstName} schreef:"
-      preheader: "Weekly overview of %{organizationName}"
+      preheader: "Dit gebeurde er vorige week op het platform"
       title_your_weekly_report: "Ontdek wat er vorige week is gebeurd"
       intro_text: "Hier is een overzicht van wat er is gebeurd op het participatieplatform van %{organizationName}."
       cta_go_to_the_platform: "Ga naar het platform"
       title_no_activity_past_week: "Geen activiteit de afgelopen week"
       title_proposals: "Gestarte voorstellen"
-      proposals_started_text: "Voorstellen zijn ideeën die steun moeten vinden van anderen (mensen zoals jij!) om vooruit te komen. Hieronder is een lijst met voorstellen die vorige week naar voren werden gebracht. Klik op de voorstellen om ze in detail te bekijken, feedback te geven en ze te steunen!"
+      proposals_started_text: "Voorstellen zijn ideeën die steun moeten vinden van anderen (mensen zoals jij!) om vooruit te geraken. Hieronder is een lijst met voorstellen die vorige week naar voren werden gebracht. Klik op de voorstellen om hen in detail te bekijken, feedback te geven en hen te steunen!"
       title_successful_proposals: "Ontdek de voorstellen"
       successful_proposals_text: "Deze voorstellen hebben genoeg steun gevonden om naar de volgende stap te gaan! Klik op het voorstel om meer te weten te komen over wat er hierna gebeurt."
       today_by_author: "Vandaag door %{author}"
