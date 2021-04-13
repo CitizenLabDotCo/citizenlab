@@ -35,9 +35,9 @@ es-CL:
     mobility: Movilidad
     mobility_description: Movilidad
     technology: Energía y tecnología
-    technology_description: Tecnología
+    technology_description: Energía y tecnología
     economy: Trabajo, economía y turismo
-    economy_description: Trabajo, economía y comercio
+    economy_description: Trabajo, economía y turismo
     housing: Vivienda
     housing_description: Vivienda
     public_space: Espacios públicos y edificios
@@ -47,16 +47,16 @@ es-CL:
     education: Educación y juventud
     education_description: Educación y juventud
     culture: Cultura, deportes y eventos
-    culture_description: Arte, cultura y eventos
+    culture_description: Cultura, deportes y eventos
     health: Salud y bienestar
-    health_description: Cuidado y bienestar
+    health_description: Salud y bienestar
     inclusion: Inclusión social
-    inclusion_description: Social inclusion
+    inclusion_description: Inclusión social
     community: Desarrollo comunitario
-    community_description: Community development
+    community_description: Desarrollo comunitario
     services: Servicio público
-    services_description: Public services
-    other: Otro
+    services_description: Servicio público
+    other: Otros
     other_description: Otros
   pages:
     terms_and_conditions_title: Términos y Condiciones
@@ -70,7 +70,7 @@ es-CL:
     infopage_body: "Descubre más información relacionada con la plataforma."
     homepage_info_title: ""
     homepage_info_body: ""
-    initiatives_title: Propuestas
+    initiatives_title: Iniciativas
     initiatives_body: >
       <img style="margin-bottom: 30px" data-cl2-text-image-text-reference="43f82d75-2aa1-41ab-8c45-9c8ba9dff49f" height="374.3745928338762" width="819" alt=""> <h2>¿Qué es una propuesta ciudadana?</h2> <p>Como ciudadano de $|orgName|, puedes poner tu propuesta en la agenda a través de esta plataforma. Estas propuestas son preferentemente ideas concretas que están vinculadas a la política local y que surgen de una necesidad, deseo o sueño. Puede ser tu propia propuesta o una propuesta de colaboración. Tal vez te gustaría cambiar o mejorar una situación existente o iniciar un nuevo proyecto.</p> <p>La participación de $|orgName| en la postulación de tu propuesta debe ser necesaria y posible. En un escenario ideal, también está disponible para una reflexión mayor y cooperación, pero eso no es una obligación. "Reducir el límite de velocidad en la autopista a 80 km/h" no es, por lo tanto, una propuesta fuerte, mientras que "Convertir la calle principal en una zona peatonal" sí lo es. ¡Así que traigan sus propuestas! Si $|orgName| necesita más información, recibirá una actualización o reacción.</p> <h2>¿Por qué publicar una propuesta en esta plataforma?</h2> <p>Esta es la plataforma de participación oficial de $|orgName|, que ofrece los siguientes beneficios:</p> <ul> <li>$|orgName| está oficialmente involucrado como dueño de esta plataforma, y monitorea activamente lo que sucede aquí. Cuando publicas una propuesta, la persona encargada recibe automáticamente un mensaje. No es necesario que te pongas en contacto con ellos para asegurarte de que tu propuesta se ha tenido en cuenta. </li> <li>Esta plataforma ha sido desarrollada específicamente para acciones participativas oficiales, como las propuestas de los ciudadanos. Cada elemento, desde la experiencia de usuario hasta el enfoque paso a paso, está construido precisamente con este fin. Al utilizar las redes sociales tradicionales, tu propuesta podría desaparecer por la sobrecarga de estímulos, y un correo electrónico ordinario desaparece rápidamente en una bandeja de entrada llena. </li> <li>Tus conciudadanos también están presentes en esta plataforma. Pueden apoyar y perfeccionar tu propuesta. Cuanto más creativa sea tu propuesta y cuanto más apoyo consigas reunir, ¡más posibilidades tendrá de ser implementada!</li> </ul> <h2>¿Cómo empezar?</h2> <p>Primero, comprueba que tu propuesta cumple los siguientes criterios: </p> <p>$|initiativesEligibilityCriteria|</p> <p>¿Qué puedes esperar cuando tu propuesta llegue a $|initiativesVotingThreshold| votos dentro de $|initiativesDaysLimit| días?</p> <p>$|initiativesThresholdReachedMessage|</p> <h2>¿Qué sucede con las propuestas que no reciben los xxx votos a tiempo?</h2> <p>Eso pasa, pero no te preocupes. Tu propuesta permanecerá en la plataforma. El estado de tu propuesta cambiará automáticamente a "expirado". Como resultado, la votación ya no será posible. Si lo deseas, puedes elegir borrar tu propuesta en cualquier momento.</p>
     initiatives_success_1_title: Transporte fluvial
@@ -115,7 +115,7 @@ es-CL:
         title: Ubicación
         description:
       proposed_budget:
-        title: Presupuesto del proyecto
+        title: Proyecto de presupuesto
         description:
       images:
         title: Imágenes
@@ -127,7 +127,7 @@ es-CL:
     gender:
       male: Hombre
       female: Mujer
-      unspecified: Otro
+      unspecified: No especificado
     domicile:
       outside: En algun otro lugar
     education:
