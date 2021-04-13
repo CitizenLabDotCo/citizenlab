@@ -23,8 +23,8 @@ pl:
     threshold_reached_description: próg poparcia osiągnięty
     answered: z odpowiedzią
     answered_description: z odpowiedzią
-    ineligible: niekwalifikowana
-    ineligible_description: niekwalifikowalna
+    ineligible: niekwalifikowalna
+    ineligible_description: niekwalifikowana
   topics:
     nature: Przyroda i różnorodność biologiczna
     nature_description: Przyroda i różnorodność biologiczna
@@ -57,7 +57,7 @@ pl:
     services: Usługi publiczne
     services_description: Usługi publiczne
     other: Inny
-    other_description: Inne
+    other_description: Inny
   pages:
     terms_and_conditions_title: Regulamin
     terms_and_conditions_body: >
@@ -127,7 +127,7 @@ pl:
     gender:
       male: Mężczyzna
       female: Kobieta
-      unspecified: Inne
+      unspecified: Nieokreślona
     domicile:
       outside: Gdzieś indziej
     education:
