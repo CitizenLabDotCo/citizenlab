@@ -22,7 +22,7 @@ ro:
     threshold_reached: pragul de voturi a fost atins
     threshold_reached_description: pragul de voturi a fost atins
     answered: a primit răspuns
-    answered_description: răspuns
+    answered_description: a primit răspuns
     ineligible: neeligibil
     ineligible_description: neeligibil
   topics:
@@ -49,14 +49,14 @@ ro:
     culture: Cultură, sport și evenimente
     culture_description: Cultură, sport și evenimente
     health: Sănătate și bunăstare
-    health_description: Îngrijire și bunăstare
+    health_description: Sănătate și bunăstare
     inclusion: Incluziune socială
     inclusion_description: Incluziune socială
     community: Dezvoltare comunitară
     community_description: Dezvoltare comunitară
     services: Servicii publice
-    services_description: Serviciul Public
-    other: alții
+    services_description: Servicii publice
+    other: Alte
     other_description: Alte
   pages:
     terms_and_conditions_title: Termeni și condiții
@@ -127,7 +127,7 @@ ro:
     gender:
       male: Masculin
       female: Femeie
-      unspecified: Alte
+      unspecified: Nespecificat
     domicile:
       outside: Altundeva
     education:
