@@ -33,7 +33,7 @@ pt:
       "official_feedback_on_your_initiative": Actualização sobre a minha proposta
       "password_reset": Redefinir a senha
       "project_moderation_rights_received": Direitos de moderação de projetos recebidos
-      "project_folder_moderation_rights_received": Direitos de administrador de pasta recebidos
+      "project_folder_moderation_rights_received": Direitos de moderação da pasta de projetos recebidos
       "project_phase_started": Nova fase do projeto
       "project_phase_upcoming": Próxima nova fase do projeto
       "status_change_of_commented_idea": Alteração  de status de uma idéia que comentei
@@ -83,7 +83,7 @@ pt:
       "official_feedback_on_your_initiative": Update on your proposal - all users
       "password_reset": Password reset - all users
       "project_moderation_rights_received": Project moderation rights received - project managers
-      "project_folder_moderation_rights_received": Direitos de administrador de pasta recebidos
+      "project_folder_moderation_rights_received": Direitos de moderação da pasta de projetos recebidos
       "project_phase_started": New project phase - all users
       "project_phase_upcoming": Upcoming new project phase - admins and project managers
       "status_change_of_commented_idea": Status change of an idea you commented on - all users
@@ -124,7 +124,7 @@ pt:
       text_introduction: 'Nós editamos para você a listagem de idéias que geraram mais atividade na semana passada. Descubra o que está acontecendo na sua plataforma!'
       cta_visit_the_platform: 'Visite a sua plataforma'
       new_users: 'Novos usuários'
-      new_ideas: 'Novas ideias'
+      new_ideas: 'Novas idéias'
       new_comments: 'Novos comentários'
       title_activity_past_week: 'Atividade da semana passada'
       title_no_activity_past_week: 'Não houve actividade na semana passada.'
@@ -132,7 +132,7 @@ pt:
       title_successful_initiatives_past_week: 'Propostas atribuídas a você que estouraram o limite na semana passada'
       yesterday_by_author: 'Ontem por %{author}'
       today_by_author: 'Hoje por %{author}'
-      x_days_ago_by_author: '%{x} dias atrás por %{author}'
+      x_days_ago_by_author: '%{x} días atrás por %{author}'
     admin_rights_received:
       cta_moderate_platform: 'Dirigir a sua plataforma'
       message_you_became_administrator: 'Foram-lhe concedidos direitos de administrador para a plataforma de participação de %{organizationName}.'
@@ -184,7 +184,7 @@ pt:
       title_no_assignment_past_week: 'Nenhuma idéia nova atribuída a você na semana passada'
       yesterday_by_author: 'Ontem por %{author}'
       today_by_author: 'Hoje por %{author}'
-      x_days_ago_by_author: '%{x} dias atrás por %{author}'
+      x_days_ago_by_author: '%{x} días atrás por %{author}'
       idea_section: Idéias
       initiative_section: Propostas
       title_initiatives_past_week: 'Novas propostas atribuídas a você'
@@ -234,7 +234,7 @@ pt:
       action_share_link: 'Compartilhar através de qualquer canal, copiando o %{link}'
       action_share_twitter: 'Informe para os seus seguidores em %{twitterLink}'
       cta_view_initiative: 'Ir para a sua proposta'
-      link: link
+      link: Link
       main_header: 'Você postou uma proposta! Vamos reunir apoio para ela.'
       message_next_steps: '%{userFirstName}, a sua proposta foi publicada com sucesso na plataforma de participação de %{organizationName}. Você será notificado quando as pessoas interagirem com a sua proposta. Descubra os próximos passos que você pode dar embaixo.'
       message_get_votes: 'alcançar o numero disponivel de votos'
@@ -271,13 +271,13 @@ pt:
       text_introduction: 'Nós editamos para você a listagem de idéias que geraram mais atividade na semana passada. Descubra o que está acontecendo com o seu projeto!'
       cta_moderate: 'Dirigir o seu projecto'
       new_users: 'Novos usuários'
-      new_ideas: 'Novas ideias'
+      new_ideas: 'Novas idéias'
       new_comments: 'Novos comentários'
       title_activity_past_week: 'Atividade da semana passada'
       title_no_activity_past_week: 'Nenhuma atividade na última semana'
       yesterday_by_author: 'Ontem por %{author}'
       today_by_author: 'Hoje por %{author}'
-      x_days_ago_by_author: '%{x} dias atrás por %{author}'
+      x_days_ago_by_author: '%{x} días atrás por %{author}'
     new_comment_on_commented_initiative:
       commented: '%{commentAuthor} escreveu:'
       cta_reply_to: 'Responder a %{commentAuthor}'
@@ -413,13 +413,13 @@ pt:
       cta_view_folder_button: 'Visualizar essa pasta'
       message_added_as_folderadmin: 'Você recebeu direitos de administrador na plataforma de participação de %{organizationName} para a seguinte pasta:'
       no_projects: 'Nenhum projeto por enquanto'
-      preheader: 'Um administrador da plataforma de participação de %{organizationName} acabou de tornar você um gerente da seguinte pasta'
+      preheader: 'Um administrador da plataforma de participação de %{organizationName} acabou de tornar você um gerente da seguinte pasta de projetos'
       subject: 'Você se tornou um gerente de pasta de projetos na plataforma de %{organizationName}'
       text_manage_folder: 'Uma pasta é uma maneira de organizar vários projetos de participação em conjunto. Como administrador de pasta, você pode editar a pasta e a descrição da pasta e criar novos projetos (para excluir projetos, entre em contato com o administrador da sua plataforma). Você também terá direitos de gerenciamento de projeto sobre todos os projetos dentro da pasta, o que permite que você edite os projetos, gerencie as entradas e envie e-mails para os participantes.'
       text_moderate_analyse_input: 'Assim que os projetos forem lançados, as primeiras entradas começarão a surgir. Você receberá relatórios semanais com as principais atividades para que possa ficar atualizado sobre o que está acontecendo. O Gerenciador de Posts na sua visualização de administrador ajudará você a ver e gerenciar a entrada, incluindo atribuir status e responder posts e comentários.'
       text_design_participatory_process: 'Você pode gerenciar os projetos de participação dentro da sua pasta — configure o método de participação, adicione uma descrição ao projeto, anexe imagens e comunique eventos relacionados. Você também pode gerenciar como os participantes interagem com os seus projetos, incluindo a definição de direitos de acesso e a configuração de postagens, votações e comentários.'
       title_design_participatory_process: 'Desenhar o processo participativo'
-      title_moderate_analyse_input: 'Moderar e analisar os dados introduzidos'
+      title_moderate_analyse_input: 'Dirigir e analisar os dados introduzidos'
       title_manage_folder: 'Gerencie as configurações de pasta e crie novos projetos.'
       title_what_can_you_do_folderadmin: 'O que você pode fazer como administrador de pasta?'
       title_added_as_folderadmin: 'Você foi adicionado como administrador de pasta'
@@ -487,7 +487,7 @@ pt:
       subject: 'O status da sua proposta mudou'
       preheader: 'O status da sua proposta mudou'
     user_digest:
-      subject: "Actualização semanal de %{organizationName}plataforma de participação da"
+      subject: "Sua atividade na plataforma de participação de %{organizationName}"
       commented: "%{authorFirstName} comentado:"
       preheader: "Visão geral da semana de %{organizationName}"
       title_your_weekly_report: "Descubra o que aconteceu na semana passada"
@@ -520,7 +520,7 @@ pt:
       action_comment: '%{textComment} sobre ideias existentes'
       action_published_idea: 'Idea posteada'
       action_send_email: 'Envie para seus contatos um %{sendEmailLink}'
-      action_share_fb: 'Aceite seus amigos agora em %{fbLink}'
+      action_share_fb: 'Aceitar seus amigos agora em %{fbLink}'
       action_share_link: 'Compartilhar através de qualquer canal, copiando o %{link}'
       action_share_twitter: 'Informe os seus seguidores em %{twitterLink}'
       add_image: 'Adicionar uma imagem'
@@ -534,7 +534,7 @@ pt:
       send_email: e-mail
       subject: 'A sua primeira ideia na plataforma de %{organizationName}'
     welcome:
-      cta_join_platform: 'Descobrir a plataforma'
+      cta_join_platform: 'Explorar a plataforma'
       subject: 'Bem-vindo à plataforma de %{organizationName}'
       main_header: Bem-vindo!
       message_welcome: 'Parabéns, você se cadastrou com sucesso na plataforma de participação de %{organizationName}. Agora você pode descobrir a plataforma e fazer ouvir a sua voz. Você também pode adicionar uma foto do perfil e uma breve descrição para dizer aos outros quem você é.'
