@@ -2,6 +2,7 @@
   "modules": {
     "ee/multi_tenancy": true,
     "commercial/admin_api": true,
+    "commercial/admin_project_templates": true,
     "commercial/custom_idea_statuses": true,
     "commercial/custom_maps": true,
     "commercial/custom_style": true,
@@ -33,7 +34,6 @@
     "commercial/tagging": true,
     "commercial/user_custom_fields": true,
     "commercial/verification": true,
-    "commercial/widgets": true,
-    "commercial/admin_project_templates": true
+    "commercial/widgets": true
   }
 }
