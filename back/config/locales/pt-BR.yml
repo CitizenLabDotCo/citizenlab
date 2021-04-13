@@ -2,18 +2,18 @@ pt:
   symbols:
     outside: em outro lugar
   idea_statuses:
-    proposed: proposto
-    proposed_description: Esta idea foi proposta para a organização
-    viewed: visto
+    proposed: Proposta
+    proposed_description: Esta idea foi proposta por alguem da organização
+    viewed: Revisado
     viewed_description: Esta idea foi vista por alguém da organização
-    under_consideration: em consideração
+    under_consideration: em questão
     under_consideration_description: Esta Ideia foi levada em consideração pela organização
-    accepted: aceita
-    accepted_description: Esta ideia foi aceita e será implementada pela organização
+    accepted: Aceitada
+    accepted_description: Esta ideia foi aceite e será implementada pela organização.
     implemented: Implementada
-    implemented_description: Esta ideia foi implementada pela organização
-    rejected: rejeitada
-    rejected_description: Esta idea foi rejeitada
+    implemented_description: Esta ideia foi implementada pela organização.
+    rejected: Rejeitada
+    rejected_description: Esta Idea foi rejeitada
   initiative_statuses:
     proposed: Proposta
     proposed_description: Proposta
@@ -52,7 +52,7 @@ pt:
     health_description: Saúde e bem-estar
     inclusion: Inclusão social
     inclusion_description: Inclusão social
-    community: Desenvolvimento comunitário
+    community: Desenvolvimento da comunidade
     community_description: Desenvolvimento da comunidade
     services: Serviços públicos
     services_description: Serviços públicos
@@ -121,13 +121,13 @@ pt:
         title: Imagens
         description:
       attachments:
-        title: Imagens e anexos
+        title: Anexos
         description:
   custom_field_options:
     gender:
-      male: Masculino
+      male: Homem
       female: Feminino
-      unspecified: Outros
+      unspecified: Não especificado
     domicile:
       outside: Em outro lugar
     education:
