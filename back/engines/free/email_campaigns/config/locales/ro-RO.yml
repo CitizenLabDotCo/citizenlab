@@ -1,7 +1,7 @@
 ro:
   email_campaigns:
     campaign_type_description:
-      "manual": Mesajele oficiale
+      "manual": Mesaje oficiale
       "admin_rights_received": Drepturi de administrator primite
       "comment_deleted_by_admin": Ștergerea comentariului meu
       "comment_marked_as_spam": Comentează raportul de spam
@@ -53,13 +53,13 @@ ro:
       "manual": Mesaj oficial - toți utilizatorii
       "admin_rights_received": Drepturi de administrare primite - administratori
       "comment_deleted_by_admin": Ștergerea comentariului dvs. - toți utilizatorii
-      "comment_marked_as_spam": Raport de comentariu spam - administratori și manageri de proiect
+      "comment_marked_as_spam": Comentează raportul spam - administratori și manageri de proiect
       "comment_on_your_comment": Răspundeți la comentariul dvs. - toți utilizatorii
       "comment_on_your_idea": Comentează ideea ta - toți utilizatorii
       "comment_on_your_initiative": Comentează propunerea ta - toți utilizatorii
       "first_idea_published": Publicarea primei tale idei - toți utilizatorii
       "idea_assigned_to_you": Atribuirea unei idei - administratori și manageri de proiect
-      "idea_marked_as_spam": Raport spam al unei idei - administratori și manageri de proiect
+      "idea_marked_as_spam": Raport spam de idei - administratori și manageri de proiect
       "idea_published": Publicarea ideii dvs. - toți utilizatorii
       "initiative_assigned_to_you": Atribuirea unei propuneri - administratori
       "initiative_marked_as_spam": Raport spam al propunerii - administratori
@@ -175,9 +175,9 @@ ro:
       subject: 'Aveți o misiune pe platforma %{organizationName}'
       preheader_idea: 'Ideea de %{authorName} v-a fost atribuită'
     assignee_digest:
-      subject: 'Ideas requiring your feedback: %{numberIdeas}'
+      subject: 'Idei care necesită feedback'
       preheader: 'Analiza reprezentantului %{organizationName}'
-      title_your_weekly_report: '%{firstName}, citizen input is awaiting your feedback'
+      title_your_weekly_report: 'Contribuția cetățeanului așteaptă feedback-ul dvs.'
       cta_manage_your_input: 'Gestionați datele introduse'
       assigned_ideas: 'Ideile au nevoie de feedback-ul dvs.'
       title_assignment_past_week: 'Ultimele idei care v-au fost atribuite'
@@ -265,8 +265,8 @@ ro:
       subject: 'Cineva v-a menționat pe platforma %{organizationName}'
       preheader: '%{commentAuthor} v-a menționat într-un comentariu'
     moderator_digest:
-      subject: 'Your weekly project manager report of %{time}'
-      preheader: 'Project manager digest of %{organizationName}'
+      subject: 'Raportul dvs. săptămânal de manager de proiect la'
+      preheader: 'Rezumatul managerului de proiect al'
       title_your_weekly_report: '%{firstName}, raportul dvs. săptămânal'
       text_introduction: 'Am recomandat lista de idei care au generat cea mai mare activitate săptămâna trecută. Aflați ce se întâmplă în cadrul proiectului dvs.!'
       cta_moderate: 'Moderați proiectul'
