@@ -103,7 +103,7 @@ pl:
       "link_privacy_policy": "Polityka prywatności"
       "link_terms_conditions": "Regulamin"
       "link_unsubscribe": "Wypisz mnie z subskrypcji"
-      "powered_by": "Wspierani przez"
+      "powered_by": "Wspierane przez"
       "statement": "Ten e-mail został wysłany do Ciebie przez CitizenLab w imieniu %{organizationName}, ponieważ jesteś zarejestrowanym użytkownikiem %{organizationLink}. Możesz %{unsubscribeLink} jeśli nie chcesz otrzymywać tych e-maili w przyszłości."
       "unsubscribe_text": "zrezygnować z subskrybcji"
     comment_deleted_by_admin:
@@ -182,7 +182,7 @@ pl:
       assigned_ideas: 'Pomysły wymagające Twojej opinii'
       title_assignment_past_week: 'Najnowsze pomysły przydzielone do Ciebie'
       title_no_assignment_past_week: 'Brak nowych pomysłów przypisanych do Ciebie w zeszłym tygodniu'
-      yesterday_by_author: 'Wczoraj wg %{author}'
+      yesterday_by_author: 'Wczoraj przez %{author}'
       today_by_author: 'Dzisiaj wg %{author}'
       x_days_ago_by_author: '%{x} dni temu wg %{author}'
       idea_section: Pomysły
@@ -275,7 +275,7 @@ pl:
       new_comments: 'Nowe komentarze'
       title_activity_past_week: 'Aktywność w ciągu ostatniego tygodnia'
       title_no_activity_past_week: 'Brak aktywności w ciągu ostatniego tygodnia'
-      yesterday_by_author: 'Wczoraj wg %{author}'
+      yesterday_by_author: 'Wczoraj przez %{author}'
       today_by_author: 'Dzisiaj wg %{author}'
       x_days_ago_by_author: '%{x} dni temu wg %{author}'
     new_comment_on_commented_initiative:
@@ -418,7 +418,7 @@ pl:
       text_manage_folder: 'A folder is way to organize several participation projects together. As a folder manager, you can edit the folder and folder description and create new projects (to delete projects, contact your platform administrator). You will also have project management rights over all projects within the folder, allowing you to edit the projects, manage the inputs and email participants.'
       text_moderate_analyse_input: 'Once the projects are launched, the first inputs will start coming in. You''ll receive weekly reports with the key activities so that you can stay on top of what’s happening. The Input Manager in your ''Manage Platform'' panel allows you to see and manage the input, including assigning statuses and responding to posts and comments.'
       text_design_participatory_process: 'You can manage the different participation projects within your folder - configure the participation method, add a project description, attach images, and communicate related events. You can also manage how participants interact with your projects, including setting access rights and configuring the posting, voting and commenting settings.'
-      title_design_participatory_process: 'Projektowanie procesu partycypacyjnego'
+      title_design_participatory_process: 'Zaprojektuj proces partycypacyjny'
       title_moderate_analyse_input: 'Moderuj i analizuj dane'
       title_manage_folder: 'Manage the folder settings and create new projects.'
       title_what_can_you_do_folderadmin: 'What can you do as a folder manager?'
