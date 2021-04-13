@@ -298,7 +298,7 @@ jobs:
   back-bnl-generate-tenant-templates:
     resource_class: small
     docker:
-      - image: byrnedo/alpine-curl #  buildo/alpine-ssh
+      - image: cimg/base:2021.03 #  buildo/alpine-ssh
     parameters:
       ssh_host:
         type: string
