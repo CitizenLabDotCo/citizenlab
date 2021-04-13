@@ -868,7 +868,7 @@
   "app.containers.Admin.emails.fieldReplyToTooltip": "Você pode escolher para onde enviar respostas ao seu e-mail.",
   "app.containers.Admin.emails.fieldSender": "De",
   "app.containers.Admin.emails.fieldSenderTooltip": "Você pode decidir quem os destinatários verão como remetente do e-mail.",
-  "app.containers.Admin.emails.fieldSubject": "Assunto",
+  "app.containers.Admin.emails.fieldSubject": "Caso",
   "app.containers.Admin.emails.fieldSubjectTooltip": "Isso será mostrado na linha de assunto do e-mail e na visão geral da caixa de entrada do usuário. Seja claro e atrativo.",
   "app.containers.Admin.emails.fieldTo": "Para:",
   "app.containers.Admin.emails.fieldToTooltip": "Você pode selecionar os grupos de usuários que receberão seu e-mail.",
