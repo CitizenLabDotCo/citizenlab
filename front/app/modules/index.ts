@@ -88,7 +88,7 @@ export default loadModules([
   },
   {
     configuration: projectVisibilityConfiguration,
-    isEnabled: CL_CONFIG['modules']['commercial/project_visibility'],
+    isEnabled: CL_CONFIG['modules']['free/project_visibility'],
   },
   {
     configuration: projectManagementConfiguration,
