@@ -598,6 +598,8 @@ workflows:
       # - check-for-inconsistent-data:
       #     <<: *slack-fail-post-step-inconsistent-data
       #     name: 'Benelux'
+      #     context:
+      #       - slack
       #     ssh_host: "52.57.74.84"
       #     compose_file: docker-compose-production-benelux.yml
       #     stack_name: cl2-prd-bnlx-stack
@@ -605,6 +607,8 @@ workflows:
       # - check-for-inconsistent-data:
       #     <<: *slack-fail-post-step-inconsistent-data
       #     name: 'South America'
+      #     context:
+      #       - slack
       #     ssh_host: "52.67.181.38"
       #     compose_file: docker-compose-production.yml
       #     env_file: ".env-web"
@@ -612,12 +616,16 @@ workflows:
       - check-for-inconsistent-data:
           <<: *slack-fail-post-step-inconsistent-data
           name: 'Canada'
+          context:
+            - slack
           ssh_host: "35.183.23.116"
           compose_file: docker-compose-production-canada.yml
           env_file: ".env-production-canada"
       - check-for-inconsistent-data:
           <<: *slack-fail-post-step-inconsistent-data
           name: 'US West'
+          context:
+            - slack
           ssh_host: "52.13.59.174"
           compose_file: docker-compose-production.yml
           env_file: ".env-web"
@@ -625,6 +633,8 @@ workflows:
       - check-for-inconsistent-data:
           <<: *slack-fail-post-step-inconsistent-data
           name: 'UK'
+          context:
+            - slack
           ssh_host: "35.179.69.215"
           compose_file: docker-compose-production.yml
           env_file: ".env-web"
