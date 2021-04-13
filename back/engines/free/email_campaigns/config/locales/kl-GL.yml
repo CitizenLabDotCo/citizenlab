@@ -100,7 +100,7 @@ kl:
       "user_digest": Weekly overview - all users
       "your_proposed_initiatives_digest": Weekly overview of your own proposals - all users
     footer:
-      "link_privacy_policy": "Fortrolighedspolitik"
+      "link_privacy_policy": "Kinaasutsimik isertuusinermi politikki"
       "link_terms_conditions": "Piumasaqaatit atugassarititaasullu"
       "link_unsubscribe": "Atuisuujunnaarneq"
       "powered_by": "Ingerlanneqartoq"
@@ -135,7 +135,7 @@ kl:
       x_days_ago_by_author: 'Ullut %{x} matuma siorna %{author}-mit'
     admin_rights_received:
       cta_moderate_platform: 'Platformit tigujuk'
-      message_you_became_administrator: 'You have been granted administrator rights for the participation platform of %{organizationName}.'
+      message_you_became_administrator: 'Peqataasunut platformimut aqutsisutut pisinnaatitaalerputit'
       preheader: '%{organizationName}mut peqataasunut platformimut aqutsisutut pisinnaatitaalerputit'
       subject: '%{organizationName}p platformiani aqutsisunngorputit'
       text_create_participatory_process: 'Aqutsisutut nutaanik peqataasunut suliassanik suleqatigiissitsisinnaanermik pilersitsisinnaavutit. Pisut nalunaarsorneri ikiorsiullugit nutaanik fasenik ilanngussisinnaavutit. Taakku fase tamarmik immikkut pissuseqarsinnaapput isumassarsianik saqqummiinikkut, oqaaseqaateqarnikkut taasinikkullu.'
