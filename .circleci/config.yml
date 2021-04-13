@@ -591,40 +591,33 @@ workflows:
     #           only:
     #             - production
     jobs:
-      # Benelux
       # - check-for-inconsistent-data:
-      #     context: 
-      #       - slack
       #     <<: *slack-fail-post-step-inconsistent-data
+      #     name: 'Benelux'
       #     ssh_host: "52.57.74.84"
       #     compose_file: docker-compose-production-benelux.yml
       #     stack_name: cl2-prd-bnlx-stack
       #     env_file: ".env-production-benelux"
-      # South America
       # - check-for-inconsistent-data:
-      #     context: 
-      #       - slack
       #     <<: *slack-fail-post-step-inconsistent-data
+      #     name: 'South America'
       #     ssh_host: "52.67.181.38"
       #     compose_file: docker-compose-production.yml
       #     env_file: ".env-web"
       #     stack_name: "cl2"
-      # Canada
       - check-for-inconsistent-data:
           <<: *slack-fail-post-step-inconsistent-data
           name: 'Canada'
           ssh_host: "35.183.23.116"
           compose_file: docker-compose-production-canada.yml
           env_file: ".env-production-canada"
-      # US West
-      - check-for-inconsistent-data:
-          <<: *slack-fail-post-step-inconsistent-data
-          name: 'US West'
-          ssh_host: "52.13.59.174"
-          compose_file: docker-compose-production.yml
-          env_file: ".env-web"
-          stack_name: "cl2"
-      # UK
+      # - check-for-inconsistent-data:
+      #     <<: *slack-fail-post-step-inconsistent-data
+      #     name: 'US West'
+      #     ssh_host: "52.13.59.174"
+      #     compose_file: docker-compose-production.yml
+      #     env_file: ".env-web"
+      #     stack_name: "cl2"
       - check-for-inconsistent-data:
           <<: *slack-fail-post-step-inconsistent-data
           name: 'UK'
@@ -634,8 +627,10 @@ workflows:
           stack_name: "cl2"
       - empty-job:
           requires:
+            # - 'Benelux'
+            # - 'South America'
             - 'Canada'
-            - 'US West'
+            # - 'US West'
             - 'UK'
           post-steps:
              - slack/notify:

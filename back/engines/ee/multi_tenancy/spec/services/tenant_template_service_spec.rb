@@ -53,9 +53,9 @@ describe MultiTenancy::TenantTemplateService do
             }
           }
          })
-        # Apartment::Tenant.switch("#{name}_localhost") do
-        #   service.resolve_and_apply_template template, external_subfolder: 'test'
-        # end
+        Apartment::Tenant.switch("#{name}_localhost") do
+          service.resolve_and_apply_template template, external_subfolder: 'test'
+        end
       end
     end
 
