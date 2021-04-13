@@ -15,7 +15,7 @@ slack-fail-post-step-inconsistent-data: &slack-fail-post-step-inconsistent-data
   post-steps:
     - slack/notify:
         event: fail
-        mentions: '@ dev-back :boom: FAILURE: Some data is probably invalid.'
+        mentions: '@ dev-back :boom: FAILURE: Some data is likely invalid.'
         template: basic_fail_1
 
 parameters:
@@ -558,16 +558,19 @@ workflows:
       - back-build-ee-docker-image:
           context: 
             - docker-hub-access
-          <<: *slack-fail-post-step-templates # works
+            - slack
+          <<: *slack-fail-post-step-templates
       - back-bnl-generate-tenant-templates:
           context: 
             - docker-hub-access
-          <<: *slack-fail-post-step-templates # broken
+            - slack
+          <<: *slack-fail-post-step-templates
           ssh_host: "52.57.74.84"
       - back-test-tenant-templates:
           context: 
             - docker-hub-access
-          <<: *slack-fail-post-step-templates # works
+            - slack
+          <<: *slack-fail-post-step-templates
           requires:
             - back-build-ee-docker-image
             - back-bnl-generate-tenant-templates
@@ -575,6 +578,7 @@ workflows:
           name: ':tada: SUCCESS: New tenant templates were generated!' # Mentions are not supported for basic_success_1
           context: 
             - docker-hub-access
+            - slack
           <<: *slack-fail-post-step-templates
           requires:
             - back-test-tenant-templates
@@ -606,7 +610,7 @@ workflows:
       #     env_file: ".env-web"
       #     stack_name: "cl2"
       - check-for-inconsistent-data:
-          <<: *slack-fail-post-step-inconsistent-data # broken
+          <<: *slack-fail-post-step-inconsistent-data
           name: 'Canada'
           ssh_host: "35.183.23.116"
           compose_file: docker-compose-production-canada.yml
@@ -627,6 +631,8 @@ workflows:
           stack_name: "cl2"
       - empty-job:
           name: ':tada: SUCCESS: No invalid data was detected!' # Mentions are not supported for basic_success_1
+          context:
+            - slack
           requires:
             # - 'Benelux'
             # - 'South America'
