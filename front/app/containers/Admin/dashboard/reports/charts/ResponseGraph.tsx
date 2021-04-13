@@ -176,6 +176,6 @@ export const ResponseGraph = memo(
   }
 );
 
-const ResponseGraphWithHoCs = injectIntl<Props>(ResponseGraph);
+const ResponseGraphWithHoCs = injectIntl(ResponseGraph);
 
 export default ResponseGraphWithHoCs;

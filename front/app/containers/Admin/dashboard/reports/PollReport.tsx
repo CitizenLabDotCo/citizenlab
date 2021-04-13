@@ -40,11 +40,10 @@ const PollReport = memo(
           )}
         <GraphsContainer>
           {!isNilOrError(pollQuestions) &&
-            pollQuestions.length &&
             pollQuestions.map((question) => (
               <GraphCard
                 className={`dynamicHeight ${
-                  pollQuestions.length === 1 && 'fullWidth'
+                  pollQuestions.length === 1 ? 'fullWidth' : ''
                 }`}
                 key={question.id}
               >

@@ -349,7 +349,7 @@ const ProjectReport = memo(
   }
 );
 
-const ProjectReportWithHoc = withRouter(injectIntl(ProjectReport));
+const ProjectReportWithHoc = injectIntl(ProjectReport);
 
 const Data = adopt<DataProps, WithRouterProps>({
   phases: ({ params, render }) => (
@@ -371,8 +371,8 @@ const Data = adopt<DataProps, WithRouterProps>({
   ),
 });
 
-export default (inputProps: WithRouterProps) => (
+export default withRouter((inputProps: WithRouterProps) => (
   <Data {...inputProps}>
     {(dataProps) => <ProjectReportWithHoc {...inputProps} {...dataProps} />}
   </Data>
-);
+));
