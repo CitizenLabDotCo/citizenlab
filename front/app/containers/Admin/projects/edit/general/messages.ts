@@ -127,8 +127,7 @@ export default defineMessages({
   },
   submitErrorMessage: {
     id: 'app.containers.AdminPage.ProjectEdit.submitErrorMessage',
-    defaultMessage:
-      "Couldn't save project. Make sure all fields are filled out correctly.",
+    defaultMessage: "Couldn't save project. Make sure no fields have errors.",
   },
   imageSupportArticleLinkTarget: {
     id: 'app.containers.AdminPage.ProjectEdit.imageSupportArticleLinkTarget',
