@@ -33,7 +33,7 @@ da:
       "official_feedback_on_your_initiative": Opdatering på mit borgerforslag
       "password_reset": Nulstilling af adgangskode
       "project_moderation_rights_received": Rettigheder til projektmoderering modtaget
-      "project_folder_moderation_rights_received": Rettigheder for projektfolder er modtaget
+      "project_folder_moderation_rights_received": Projekt-mappens moderationsrettigheder modtaget
       "project_phase_started": Ny projektfase
       "project_phase_upcoming": Kommende ny projektfase
       "status_change_of_commented_idea": Statusændring af en idé jeg har kommenteret på
@@ -83,7 +83,7 @@ da:
       "official_feedback_on_your_initiative": Update on your proposal - all users
       "password_reset": Password reset - all users
       "project_moderation_rights_received": Project moderation rights received - project managers
-      "project_folder_moderation_rights_received": Rettigheder for projektfolder er modtaget
+      "project_folder_moderation_rights_received": Projekt-mappens moderationsrettigheder modtaget
       "project_phase_started": New project phase - all users
       "project_phase_upcoming": Upcoming new project phase - admins and project managers
       "status_change_of_commented_idea": Status change of an idea you commented on - all users
@@ -100,7 +100,7 @@ da:
       "user_digest": Weekly overview - all users
       "your_proposed_initiatives_digest": Weekly overview of your own proposals - all users
     footer:
-      "link_privacy_policy": "Privatlivspolitik"
+      "link_privacy_policy": "Anonymitetspolitik"
       "link_terms_conditions": "Betingelser og vilkår"
       "link_unsubscribe": "Afmeld abonnement"
       "powered_by": "Drevet af"
@@ -135,8 +135,8 @@ da:
       x_days_ago_by_author: '%{x} dage siden af %{author}'
     admin_rights_received:
       cta_moderate_platform: 'Moderér din platform'
-      message_you_became_administrator: 'Du har fået administratorrettigheder til dialogplatformen for %{organizationName}.'
-      preheader: 'Du har fået administratorrettigheder til dialogplatformen for %{organizationName}'
+      message_you_became_administrator: 'Du har fået administratorrettigheder til deltagelsesplatformen for %{organizationName}.'
+      preheader: 'Du har fået administratorrettigheder til deltagelsesplatformen for %{organizationName}'
       subject: 'Du er blevet administrator af %{organizationName}s platform'
       text_create_participatory_process: 'Som administrator kan du oprette og konfigurere nye deltagelsesprojekter. Du kan tilføje nye faser ved hjælp af tidslinjen. Hver af disse faser kan have sin egen adfærd med hensyn til idépostering, kommentering og afstemning.'
       text_moderate_analyse_input: 'Når projekterne er lanceret, kommer de første idéer ind. Du vil modtage ugentlige rapporter med alle kerneaktiviteter, så du hele tiden er på forkant. Idéoversigten hjælper dig med at moderere input og samarbejde om at behandle det.'
@@ -162,7 +162,7 @@ da:
       yesterday: I går
     comment_on_your_initiative:
       commented: '%{authorFirstName} skrev:'
-      cta_reply_to: 'Svar %{commentAuthor}'
+      cta_reply_to: 'Svar til %{commentAuthor}'
       event_description: '%{authorNameFull} angav en reaktion på dit borgerforslag "%{initiativeTitle}". Klik på nedenstående knap, for at fortsætte med %{authorName}.'
       main_header: '%{commentAuthor} kommenterede dit borgerforslag'
       subject: 'Du har modtaget en kommentar på %{organizationName}s platform'
@@ -218,7 +218,7 @@ da:
       cta_accept_invitation: 'Acceptér din invitation'
       invitation_header: 'Din invitation er afventende'
       preheader: '%{organizationName} sendte dig en invitation til at deltage på deres deltagelsesplatform for nogle dage siden.'
-      subject: 'Afventende invitation for dialogplatformen for %{organizationName}'
+      subject: 'Afventende invitation for deltagelsesplatformen for %{organizationName}'
     invite_received:
       added_a_message: '%{organizationName} skrev dette:'
       cta_accept_invitation: 'Acceptér din invitation'
@@ -236,7 +236,7 @@ da:
       cta_view_initiative: 'Gå til dit borgerforslag'
       link: link
       main_header: 'Du udgav et borgerforslag! Lad os finde noget støtte til det.'
-      message_next_steps: '%{userFirstName}, dit borgerforslag blev udgivet på dialogplatformen for %{organizationName}. Du bliver underrettet når personer interagerer med dit borgerforslag. Find ud af dine næste trin nedenfor.'
+      message_next_steps: '%{userFirstName}, dit borgerforslag blev udgivet på deltagelsesplatformen for %{organizationName}. Du bliver underrettet når personer interagerer med dit borgerforslag. Find ud af dine næste trin nedenfor.'
       message_get_votes: 'Nå stemmetærsklen:'
       preheader: 'Tak for at du deler dit borgerforslag, %{initiativeTitle}, for %{organizationName}. Det næste skridt er at få support for dit borgerforslag ved at dele den med hele dit netværk.'
       send_email: e-mail
@@ -281,7 +281,7 @@ da:
     new_comment_on_commented_initiative:
       commented: '%{commentAuthor} skrev:'
       cta_reply_to: 'Svar til %{commentAuthor}'
-      event_description: '%{commentAuthorFull} skrev også en kommentar til borgerforslag "%{initiativeTitle}" på dialogplatformen for %{organizationName}. Klik på nedenstående knap, for at starte en samtale med %{commentAuthor}.'
+      event_description: '%{commentAuthorFull} skrev også en kommentar til borgerforslag "%{initiativeTitle}" på deltagelsesplatformen for %{organizationName}. Klik på nedenstående knap, for at starte en samtale med %{commentAuthor}.'
       main_header: '%{commentAuthor} skrev en kommentar til samme borgerforslag'
       subject: 'Der er en anden kommentar til det borgerforslag, du kommenterede'
       preheader: '%{commentAuthor} har også kommenteret til et borgerforslag til %{organizationName}'
@@ -342,7 +342,7 @@ da:
       yesterday: I går
     comment_on_your_comment:
       cta_reply_to: 'Svar til %{firstName}'
-      event_description: '%{authorNameFull} skrev et svar til din kommentar på "%{post}" på dialogplatformen. Klik på nedenstående knap, for at fortsætte samtalen med %{authorName}.'
+      event_description: '%{authorNameFull} skrev et svar til din kommentar på "%{post}" på deltagelsesplatformen. Klik på nedenstående knap, for at fortsætte samtalen med %{authorName}.'
       subject: 'Du har modtaget et svar på din kommentar på platformen for %{organizationName}'
       main_header: '%{authorName} reagerede på din kommentar'
       preheader: '%{authorName} svarede på din kommentar på %{organizationName}s platform'
@@ -410,19 +410,19 @@ da:
       title_you_became_moderator: 'Du er blevet projektleder'
       x_ideas: '%{numberOfIdeas} ideer'
     project_folder_moderation_rights_received:
-      cta_view_folder_button: 'Se denne folder'
-      message_added_as_folderadmin: 'Du er blevet tilføjet som administrator og har modtaget rettigheder på %{organizationName}''s borgerinddragelsesplatform for følgende folder:'
+      cta_view_folder_button: 'Se på denne mappe'
+      message_added_as_folderadmin: 'Du er blevet tilføjet som administrator og modtaget rettigheder på %{organizationName}s deltagelsesplatform for følgende mappe:'
       no_projects: 'Ingen projekter endnu'
-      preheader: 'En administrator af %{organizationName} borgerinddragelsesplatformen har lige tilføjet dig som project manager af følgende projektmappe'
-      subject: 'Du blev projekt folder ansvarlig på %{organizationName}''s borgerinddragelsesplatform'
-      text_manage_folder: 'En folder er en måde at organisere flere projekter med flere deltagere på samme sted. Som administrator af en projektfolder, kan du redigere folderen, redigere folderbeskrivelsen og oprette nye projekter (hvis du vil slette projekter, skal du kontakte din platformadministrator). Du har også rettighederne til projektadministration over alle projekter i folderen. Dette giver dig mulighed for at redigere projekterne, administrere input og administrere e-post til deltagere.'
-      text_moderate_analyse_input: 'Når projekterne er lanceret, begynder du at modtage de første input. Du modtager ugentlige rapporter med de primære aktiviteter. På den måde kan du blive informeret om, hvad der sker. Post-administratoren i din administratorvisning hjælper dig med at se og administrere input. Deres rolle inkluderer tildeling af status og svar på post og kommentarer.'
-      text_design_participatory_process: 'Du kan administrere de forskellige deltagelsesprojekter i din folder, konfigurere deltagelsesmetoden, tilføje en projektbeskrivelse, tilføje billeder og sende kommunikation om lignende begivenheder. Du kan også administrere, hvordan deltagerne interagerer med dine projekter, dette inkluderer tildeling af adgangsrettigheder samt konfiguration af indstillingerne for posting, afstemning og kommentar.'
-      title_design_participatory_process: 'Design borgerinddragelsesprocessen'
+      preheader: 'En administrator af %{organizationName} deltagelsesplatformen har lige tilføjet dig som leder af følgende projektmappe'
+      subject: 'Du blev projektmappe leder på dette %{organizationName}s platform'
+      text_manage_folder: 'En mappe er en måde at organisere flere projekter med flere deltagere sammen. Som mappe-administrator kan du redigere mappen, redigere mappebeskrivelsen og oprette nye projekter (hvis du vil slette projekter, skal du kontakte din platformadministrator). Også, du har rettighederne til projektadministration over alle projekter i mappen. Dette giver dig mulighed for at redigere projekterne, administrere input og administrere e-post deltagere.'
+      text_moderate_analyse_input: 'Når projekterne er lanceret, begynder du at modtage de første input. Du modtager ugentlige rapporter med de primære aktiviteter. På den måde kan du blive informeret om, hvad der sker. Post-administratoren i din administratorvisning hjælper dig med at se på og administrere input. Deres rolle inkluderer tildeling af status og svar på post og kommentarer.'
+      text_design_participatory_process: 'Du kan administrere de forskellige deltagelsesprojekter i din mappe, konfigurere deltagelsesmetoden, tilføje en projektbeskrivelse, tilføje billeder og sende kommunikation om lignende begivenheder. Også, du kan administrere, hvordan deltagerne interagerer med dine projekter, dette inkluderer tildeling af adgangsrettigheder samt konfiguration af indstillingerne for posting, afstemning og kommentar.'
+      title_design_participatory_process: 'Design deltagelsesprocessen'
       title_moderate_analyse_input: 'Moderér og analyser input'
-      title_manage_folder: 'Administrér folderindstillingerne og opret nye projekter.'
-      title_what_can_you_do_folderadmin: 'Hvilke handlinger kan du udføre som administrator af en projektfolder?'
-      title_added_as_folderadmin: 'Du er blevet tilføjet som en projektfolder-administrator'
+      title_manage_folder: 'Administrer mappeindstillingerne og opret nye projekter.'
+      title_what_can_you_do_folderadmin: 'Hvilke handlinger kan du udføre som en mappe-administrator?'
+      title_added_as_folderadmin: 'Du er blevet tilføjet som en mappe-administrator'
       x_projects: '%{numberOfProjects} projekter'
     password_reset:
       cta_reset_password: 'Nulstil din adgangskode'
@@ -487,7 +487,7 @@ da:
       subject: 'Status for dit borgerforslag er ændret'
       preheader: 'Status for dit borgerforslag er ændret'
     user_digest:
-      subject: "Ugenlig opdatering af dialogplatformen for %{organizationName}"
+      subject: "Ugenlig opdatering af deltagelsesplatformen for %{organizationName}"
       commented: "%{authorFirstName} kommenterede:"
       preheader: "Ugentlig oversigt for %{organizationName}"
       title_your_weekly_report: "Find ud af hvad der skete i sidste uge"
@@ -537,14 +537,14 @@ da:
       cta_join_platform: 'Udforsk platformen'
       subject: 'Velkommen til platformen for %{organizationName}'
       main_header: Velkommen!
-      message_welcome: 'Tillykke, du har tilmeldt dig dialogplatformen for %{organizationName}. Del din viden, ideer og holdninger, og udforsk platformen. Husk, at du også kan tilføje et profilbillede og en kort beskrivelse, hvor du fortæller, hvem du er.'
+      message_welcome: 'Tillykke, du har tilmeldt dig deltagelsesplatformen for %{organizationName}. Del din viden, ideer og holdninger, og udforsk platformen. Husk, at du også kan tilføje et profilbillede og en kort beskrivelse, hvor du fortæller, hvem du er.'
       preheader: 'Her er det du kan gøre på %{organizationName} platformen'
     idea_published:
       action_add_image: '%{addImageLink} for at øge synlighed'
       action_published_idea: 'Publiceret idé'
       action_send_email: 'Send dine kontakter en %{sendEmailLink}'
       action_share_fb: 'Fortæl dine venner på %{fbLink}'
-      action_share_link: 'Del det via enhver kanal ved at kopiere %{link}'
+      action_share_link: 'Del dette via enhver kanal ved at kopiere %{link}'
       action_share_twitter: 'Fortæl dine følgere på %{twitterLink}'
       add_image: 'Tilføj et billede'
       cta_view_idea: 'Gå til din idé'
