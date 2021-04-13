@@ -1,7 +1,7 @@
 "no":
   email_campaigns:
     campaign_type_description:
-      "manual": Offisielle meldinger
+      "manual": Offisielle beskjed
       "admin_rights_received": Administratorrettigheter mottatt
       "comment_deleted_by_admin": Sletting  av min kommentar
       "comment_marked_as_spam": Kommenter spamrapport
@@ -31,7 +31,7 @@
       "official_feedback_on_voted_initiative": Oppdatering på en idé jeg stemte på
       "official_feedback_on_your_idea": Oppdatering på min idé
       "official_feedback_on_your_initiative": Oppdatering på mitt forslag
-      "password_reset": Tilbakestilling av passord
+      "password_reset": Nullstill passord
       "project_moderation_rights_received": Rettigheter til å moderere prosjekter mottatt
       "project_folder_moderation_rights_received": Mappeadministrator-rettigheter mottatt
       "project_phase_started": Ny prosjektfase
@@ -100,12 +100,12 @@
       "user_digest": Weekly overview - all users
       "your_proposed_initiatives_digest": Weekly overview of your own proposals - all users
     footer:
-      "link_privacy_policy": "Retningslinjer for personvern"
+      "link_privacy_policy": "Personvernerklæring"
       "link_terms_conditions": "Vilkår og betingelser"
       "link_unsubscribe": "Meld av"
-      "powered_by": "Drevet av"
+      "powered_by": "Levert av"
       "statement": "CitizenLab har sendt deg denne e-posten på vegne av %{organizationName}, fordi du er en registrert bruker hos %{organizationLink}. Du kan %{unsubscribeLink} hvis du ikke vil motta disse e-postene i fremtiden."
-      "unsubscribe_text": "Avslutt abonnementet  "
+      "unsubscribe_text": "meld av"
     comment_deleted_by_admin:
       reason: 'Grunnen til at din kommentar ble slettet:'
       cta_view: 'Sjekk ut denne ideen'
@@ -128,8 +128,8 @@
       new_comments: 'Nye kommentarer'
       title_activity_past_week: 'Aktivitet den siste uken'
       title_no_activity_past_week: 'Det var ingen aktivitet den siste uken'
-      title_initiatives_past_week: 'Nye forslag den siste uken'
-      title_successful_initiatives_past_week: 'Forslag som nådde terskelen den siste uken'
+      title_initiatives_past_week: 'New initiatives of the past week'
+      title_successful_initiatives_past_week: 'Initiatives that reached the threshold in the past week'
       yesterday_by_author: 'I går av %{author}'
       today_by_author: 'I dag av %{author}'
       x_days_ago_by_author: '%{x} dager siden av %{author}'
@@ -139,7 +139,7 @@
       preheader: 'Du fikk administratorrettigheter til %{organizationName} sin plattform for innbyggerinvolvering'
       subject: 'Du ble administrator på plattformen til %{organizationName}'
       text_create_participatory_process: 'Som administrator kan du opprette nye deltakelsesprosjekter. Du kan legge til nye faser ved hjelp av tidslinjen. For hver av fasene kan du bestemme hvordan  brukerne skal legge til ideer, kommentarer og stemme.  '
-      text_moderate_analyse_input: 'Når prosjekter er lansert kommer de første ideene. Du vil motta ukentlige rapporter med alle viktige aktiviteter slik at du holder deg oppdatert. Ideenes oversikt vil hjelpe deg med å moderere innspillene og samarbeide om å behandle de'
+      text_moderate_analyse_input: 'Når prosjekter er lansert kommer de første ideene. Du vil motta ukentlige rapporter med alle viktige aktiviteter slik at du holder deg oppdatert. Ideenes oversikt vil hjelpe deg med å moderere innspillene og samarbeide om å behandle de.'
       text_platform_setup: 'Som administrator kan du sette opp din plattform. Velg logo, bilder og farger, skriv en personlig melding på siden, send ut invitasjoner, definer hva du vil vite om brukerne dine, ...'
       title_create_participatory_process: 'Utform deltakelsesprosessen'
       title_moderate_analyse_input: 'Moderer og analyser innspillene'
@@ -185,23 +185,23 @@
       yesterday_by_author: 'I går av %{author}'
       today_by_author: 'I dag av %{author}'
       x_days_ago_by_author: '%{x} dager siden av %{author}'
-      idea_section: Ideer
+      idea_section: Idéer
       initiative_section: Initiatives
-      title_initiatives_past_week: 'Nye forslag tildelt deg'
-      title_successful_initiatives_past_week: 'Dine tildelte forslag som har nådd terskelen denne uken'
+      title_initiatives_past_week: 'New initiatives assigned to you'
+      title_successful_initiatives_past_week: 'Initiatives assigned to you that reached the threshold'
     idea_marked_as_spam:
       by_author: 'av %{authorName}'
       cta_review_idea: 'Gjennomgå idé'
-      report_inappropriate_offensive_content: 'Jeg finner dette innholdet upassende eller støtende '
-      report_not_an_idea: 'Innholdet er ikke en idé og skal ikke være her.'
-      subject: 'Du har fått en spam rapport på %{organizationName}''s platform'
+      report_inappropriate_offensive_content: 'Jeg synes dette innholdet er upassende eller støtende.'
+      report_not_an_idea: 'Dette innholdet er ikke en idé og hører ikke hjemme her.'
+      subject: 'Du har fått en spam rapport på %{organizationName}''s plattform'
       preheader: 'Håndter spamrapporten'
       reported_this_because: '%{reporterFirstName} rapporterte dette fordi:'
       title_spam_report: '%{firstName} %{lastName} rapporterte spa'
     initiative_marked_as_spam:
       by_author: 'av %{authorName}'
       cta_review_initiative: 'Gå gjennom forslag'
-      report_inappropriate_offensive_content: 'Jeg finner dette innholdet upassende eller støtende '
+      report_inappropriate_offensive_content: 'Jeg synes dette innholdet er upassende eller støtende.'
       report_not_an_initiative: 'Dette innholdet er ikke en forslag og hører ikke hjemme her.'
       subject: 'Du har fått en spam rapport på %{organizationName}''s platform'
       preheader: 'Håndter spamrapporten'
@@ -210,7 +210,7 @@
     initiative_assigned_to_you:
       by_author: 'av %{authorName}'
       cta_reply_to: 'Gi en tilbakemelding til %{authorName}'
-      event_description_initiative: 'Du har fått et forslag. Gi en tilbakemelding ved å skrive en offisiell oppdatering eller ved å endre status'
+      event_description_initiative: 'An initiative has been assigned to you. Give feedback by writing an official update or by changing its status.'
       main_header: '%{firstName}, du har en ny oppgave'
       subject: 'Du har en ny oppgave på plattformen til %{organizationName}'
       preheader_initiative: 'The initiative of %{authorName} has been assigned to you'
@@ -228,16 +228,16 @@
       subject: 'Du er invitert til å bli med på plattformen til %{organizationName}'
     initiative_published:
       action_add_image: '%{addImageLink} for å øke synligheten'
-      action_published_initiative: 'Publisert forslag'
+      action_published_initiative: 'Published initiative'
       action_send_email: 'Send dine kontakter en %{sendEmailLink}'
       action_share_fb: 'Del med dine venner på %{fbLink}'
       action_share_link: 'Kopier lenken og del i den kanalen du måtte ønske %{link}'
       action_share_twitter: 'Del med dine følgere på %{twitterLink}'
-      cta_view_initiative: 'Gå til forslaget ditt'
+      cta_view_initiative: 'Go to your initiative'
       link: lenke
-      main_header: 'Du publiserte et forslag! La oss samle støtte til det'
+      main_header: 'You posted an initiative! Let''s gather support for it.'
       message_next_steps: '%{userFirstName}, your initiative has successfully been published on the participation platform of %{organizationName}. You will be notified when people interact with your initiative. Find out what next steps you can take below.'
-      message_get_votes: 'Nå terskelen for antall stemmer'
+      message_get_votes: 'Nå terskelen for antall stemmer:'
       preheader: 'Thank you for sharing your initiative %{initiativeTitle} for %{organizationName}. The next step is to get support for your initiative by sharing it across your network.'
       send_email: e-post
       subject: 'Your initiative was published on the platform of %{organizationName}'
@@ -283,7 +283,7 @@
       cta_reply_to: 'Svar %{commentAuthor}'
       event_description: '%{commentAuthorFull} also wrote a comment on the initiative ''%{initiativeTitle}'' on the participation platform of %{organizationName}. Click the button below to start the conversation with %{commentAuthor}.'
       main_header: '%{commentAuthor} wrote a comment on the same initiative'
-      subject: 'Det er en ny kommentar på et av forslagene til '
+      subject: 'There''s another comment on the initiative you commented on'
       preheader: '%{commentAuthor} also left a comment on an initiative for %{organizationName}'
     new_comment_for_admin:
       by_author: 'av %{authorName}'
@@ -306,10 +306,10 @@
       preheader: '%{authorName} la igjen en kommentar på ideen din for %{organizationName}'
     new_comment_on_voted_initiative:
       commented: '%{commentAuthor} skrev:'
-      cta_reply_to: 'Vis dette forslag'
+      cta_reply_to: 'View this initiative'
       event_description: '%{commentAuthor} has commented on the initiative ''%{initiativeTitle}'' on which you''ve voted. Join the discussion on the platform of %{organizationName}!'
       main_header: '%{firstName}, there''s a new comment on the initiative you''ve voted on'
-      subject: 'det er ny kommentar på forslaget du stemte på '
+      subject: 'There''s a new comment on the initiative you''ve voted on'
       preheader: '%{commentAuthor} left a comment on the initiative you''ve voted on on the platform of %{organizationName}'
     new_comment_on_voted_idea:
       commented: '%{commentAuthor} kommenterte:'
@@ -350,9 +350,9 @@
     official_feedback_on_commented_initiative:
       by_author: 'av %{authorName}'
       updated: '%{officialName} skrev:'
-      cta_view: 'Gå til forslaget'
+      cta_view: 'Go to this initiative'
       event_description: '%{officialName} gave an update on the initiative ''%{initiativeTitle}''. Click the button below to enter the conversation with %{organizationName}.'
-      main_header: 'Det er en oppdatering på et av forslagene du har kommentert'
+      main_header: 'There''s an update on an initiative you commented on'
       subject: 'An initiative you commented on has received an official update on the platform of %{organizationName}'
       preheader: '%{officialName} left an official update on an initiative you commented on'
     official_feedback_on_voted_idea:
@@ -382,14 +382,14 @@
     official_feedback_on_voted_initiative:
       by_author: 'av %{authorName}'
       updated: '%{officialName} skrev:'
-      cta_view: 'Gå til forslaget'
+      cta_view: 'Go to this initiative'
       event_description: '%{officialName} gave an update on the initiative ''%{initiativeTitle}''. Click the button below to enter the conversation with %{organizationName}.'
-      main_header: 'Det er en oppdatering på et av forslagene du stemte på'
+      main_header: 'There''s an update on an initiative you voted on'
       subject: 'An initiative you voted on has received an official update on the platform of %{organizationName}'
       preheader: '%{officialName} left an official update on an initiative you voted on'
     official_feedback_on_your_initiative:
       updated: '%{officialName} skrev:'
-      cta_view: 'Gå til forslaget ditt'
+      cta_view: 'Go to your initiative'
       event_description: '%{officialName} gave an update on your initiative ''%{initiativeTitle}''. Click the button below to enter the conversation with %{organizationName}.'
       main_header: 'Du har fått en oppdatering fra %{officialName}'
       subject: 'Du har fått en offisiell oppdatering fra %{organizationName}'
@@ -439,7 +439,7 @@
       preheader: 'En ny fase har startet  for %{projectName}'
     project_phase_upcoming:
       cta_view_phase: 'Sett opp den nye fasen'
-      event_description: '''%{projectName}'' går snart over i en ny fase. Sørg for at alt er klart: Har du en god nok beskrivelse? Er de valgte ideene flyttet til fasen? Vil du informere innbyggerne om utviklingen via e-post? ?'
+      event_description: ' ''%{projectName}'' går snart over i en ny fase. Sørg for at alt er klart: Har du en god nok beskrivelse? Er de valgte ideene flyttet til fasen? Vil du informere innbyggerne om utviklingen via e-post? ?'
       main_header: '%{firstName}, et prosjekt vil snart gå over i en ny fase'
       new_phase: 'Prosjektet vil gå over i en ny fase ''%{phaseTitle}'''
       subject: 'Sett opp alt for den nye fasen %{projectName}'
@@ -467,25 +467,25 @@
       preheader: '%{organizationName} endret statusen til en idé du stemte på'
     status_change_of_voted_initiative:
       status_change: 'The new status of this initiative is ''%{initiativeStatus}'''
-      cta_view_initiative: 'Gå til forslaget'
+      cta_view_initiative: 'Go to this initiative'
       event_description: 'The status of the initiative ''%{initiativeTitle}'' has been updated on the digital participation platform of %{organizationName}.'
-      main_header: 'Et forslag du stemte på har fått ny status'
-      subject: 'Statusen på forslaget du stemte på har endret seg'
-      preheader: 'Statusen på forslaget du stemte på har endret seg'
+      main_header: 'An initiative you voted on has a new status'
+      subject: 'The status of an initiative you voted on has changed'
+      preheader: 'The status of an initiative you voted on changed'
     status_change_of_commented_initiative:
       status_change: 'The new status of this initiative is ''%{initiativeStatus}'''
-      cta_view_initiative: 'Gå til forslaget'
+      cta_view_initiative: 'Go to this initiative'
       event_description: 'The status of the initiative ''%{initiativeTitle}'' has been updated on the digital participation platform of %{organizationName}.'
-      main_header: 'Et forslag du kommenterte har fått ny status'
-      subject: 'Statusen til forslaget du kommenterte  har endret seg'
-      preheader: 'Statusen til forslaget du kommenterte  har endret seg'
+      main_header: 'An initiative you commented on has a new status'
+      subject: 'The status of an initiative you commented on has changed'
+      preheader: 'The status of an initiative you commented on has changed'
     status_change_of_your_initiative:
       status_change: 'The new status of your initiative is ''%{initiativeStatus}'''
-      cta_view_initiative: 'Gå til forslaget ditt'
+      cta_view_initiative: 'Go to your initiative'
       event_description: 'The status of the initiative ''%{initiativeTitle}'' has been updated on the digital participation platform of %{organizationName}.'
-      main_header: 'Ditt forslag har en ny status'
-      subject: 'Statusen på forslaget ditt har endret seg'
-      preheader: 'Statusen på forslaget ditt har endret seg'
+      main_header: 'Your initiative has a new status'
+      subject: 'The status of your initiative has changed'
+      preheader: 'The status of your initiative has changed'
     user_digest:
       subject: "Ukens oppdatering av %{organizationName}'s plattform"
       commented: "%{authorFirstName} kommenterte:"
@@ -520,7 +520,7 @@
       action_comment: '%{textComment} eksisterende ideer'
       action_published_idea: 'Publisert idé'
       action_send_email: 'Send dine kontakter en %{sendEmailLink}'
-      action_share_fb: 'Del med dine venner på %{fbLink}'
+      action_share_fb: 'Del med dine venner %{fbLink}'
       action_share_link: 'Kopier lenken og del i den kanalen du måtte ønske %{link}'
       action_share_twitter: 'Del med dine følgere på %{twitterLink}'
       add_image: 'Legg til et bilde'
@@ -535,7 +535,7 @@
       subject: 'Din første idé på plattformen til %{organizationName}'
     welcome:
       cta_join_platform: 'Oppdag plattformen'
-      subject: 'Velkommen til %{organizationName} sin plattform for innbyggerinvolvering'
+      subject: 'Velkommen til %{organizationName} sin medvirkning plattform'
       main_header: Velkommen!
       message_welcome: 'Gratulerer, du har registrert deg på %{organizationName} sin plattform for  innbyggerinvolvering. Du kan nå utforske plattformen og bli hørt. Legg til et profilbilde og en kort beskrivelse for å fortelle andre hvem du er.'
       preheader: 'Slik kan du bruke plattformen til %{organizationName}'
@@ -543,7 +543,7 @@
       action_add_image: '%{addImageLink} for å øke synligheten'
       action_published_idea: 'Publisert idé'
       action_send_email: 'Send dine kontakter en %{sendEmailLink}'
-      action_share_fb: 'Del med dine venner på %{fbLink}'
+      action_share_fb: 'Del med dine venner %{fbLink}'
       action_share_link: 'Kopier lenken og del i den kanalen du måtte ønske %{link}'
       action_share_twitter: 'Del med dine følgere på %{twitterLink}'
       add_image: 'Legg til et bilde'
