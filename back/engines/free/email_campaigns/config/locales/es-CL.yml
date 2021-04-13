@@ -132,7 +132,7 @@ es-CL:
       title_successful_initiatives_past_week: 'Iniciativas que alcanzaron el número requerido de votos en la última semana'
       yesterday_by_author: 'Ayer por %{author}'
       today_by_author: 'Hoy por %{author}'
-      x_days_ago_by_author: '%{x} hace días por %{author}'
+      x_days_ago_by_author: '%{x} días atrás por %{author}'
     admin_rights_received:
       cta_moderate_platform: 'Modera tu plataforma'
       message_you_became_administrator: 'Se te han concedido derechos de administrador para la plataforma de participación de %{organizationName}.'
@@ -209,7 +209,7 @@ es-CL:
       title_spam_report: '%{firstName} %{lastName} reportó esta idea como spam'
     initiative_assigned_to_you:
       by_author: 'por %{authorName}'
-      cta_reply_to: 'Dale retroalimentación a %{authorName}'
+      cta_reply_to: 'Envía tus comentarios a %{authorName}'
       event_description_initiative: 'Una iniciativa ha sido asignada a ti. Dale retroalimentación, escribiendo una actualización oficial o cambiando el estado de la idea.'
       main_header: '%{firstName}, tienes una nueva asignación'
       subject: 'Tienes una asignación en la plataforma de %{organizationName}'
@@ -251,7 +251,7 @@ es-CL:
       preheader: '%{commentAuthor} te mencionó en sus comentarios'
     new_comment_on_commented_idea:
       commented: '%{commentAuthor} escribió:'
-      cta_reply_to: 'Responder a %{commentAuthor}'
+      cta_reply_to: 'Responder a%{commentAuthor}'
       event_description: '%{commentAuthorFull} también escribió un comentario sobre la idea ''%{ideaTitle}'' en la plataforma de participación de %{organizationName}. Haga clic en el botón de abajo para iniciar la conversación con %{commentAuthor}.'
       main_header: '%{commentAuthor} escribió un comentario sobre la misma idea'
       subject: 'Hay un nuevo comentario sobre la idea que comentaste antes'
@@ -259,7 +259,7 @@ es-CL:
     mention_in_comment:
       by_author: 'por %{authorName}'
       commented: '%{commentAuthor} escribió:'
-      cta_reply_to: 'Responder a %{commentAuthor}'
+      cta_reply_to: 'Responder a%{commentAuthor}'
       event_description: '%{commentAuthorFull} te ha mencionado en su comentario sobre la idea ''%{post}''. Haga clic en el siguiente enlace para entrar en la conversación con %{commentAuthor}'
       main_header: 'La gente habla de ti'
       subject: 'Alguien te mencionó en la plataforma de %{organizationName}'
@@ -277,7 +277,7 @@ es-CL:
       title_no_activity_past_week: 'Sin actividad en la última semana'
       yesterday_by_author: 'Ayer por %{author}'
       today_by_author: 'Hoy por %{author}'
-      x_days_ago_by_author: '%{x} hace días por %{author}'
+      x_days_ago_by_author: '%{x} días atrás por %{author}'
     new_comment_on_commented_initiative:
       commented: '%{commentAuthor} escribió:'
       cta_reply_to: 'Responder a %{commentAuthor}'
@@ -287,7 +287,7 @@ es-CL:
       preheader: '%{commentAuthor} también dejo un comentario sobre la iniciativa para %{organizationName}'
     new_comment_for_admin:
       by_author: 'por %{authorName}'
-      commented: '%{authorFirstName} comentado:'
+      commented: '%{authorFirstName} comentó:'
       cta_reply_to: 'Verifica el comentario de %{commentAuthor}'
       days_ago: '%{numberOfDays} días atrás'
       event_description: '%{authorName} escribió un comentario en tu plataforma. No dudes en unirte a la conversación y mantenerla activa!'
@@ -299,7 +299,7 @@ es-CL:
     comment_on_your_idea:
       by_author: 'por %{authorName}'
       commented: '%{authorFirstName} escribió:'
-      cta_reply_to: 'Responder a %{commentAuthor}'
+      cta_reply_to: 'Responder a%{commentAuthor}'
       event_description: '%{authorNameFull} ha puesto una reacción a tu idea ''%{ideaTitle}''. Haga clic en el botón de abajo para continuar la conversación con %{authorName}.'
       main_header: '%{authorName} comentó tu idea'
       subject: 'Has recibido un comentario en la plataforma de %{organizationName}'
@@ -314,7 +314,7 @@ es-CL:
     new_comment_on_voted_idea:
       commented: '%{commentAuthor} comentó:'
       cta_reply_to: 'Responder a%{commentAuthor}'
-      days_ago: '%{numberOfDays} hace días'
+      days_ago: '%{numberOfDays} días atrás'
       event_description: '%{commentAuthor} ha comentado la idea ''%{ideaTitle}'' sobre la que has votado. Únete al debate en la plataforma de %{organizationName}!'
       main_header: '%{firstName}, hay un nuevo comentario sobre la idea por la que votaste'
       subject: 'Hay un nuevo comentario sobre la idea por la que votaste'
@@ -324,7 +324,7 @@ es-CL:
     new_initiative_for_admin:
       by_author: 'por %{authorName}'
       commented: '%{authorFirstName} escribió:'
-      cta_reply_to: 'Dale retroalimentación a %{authorName}'
+      cta_reply_to: 'Envía tus comentarios a %{authorName}'
       event_description: '%{authorName} ha publicado una nueva iniciativa en tu plataforma. Descúbrelo ahora, haznos llegar tus comentarios o cambia su estado!'
       main_header: '%{firstName}, se ha publicado una nueva iniciativa en tu plataforma'
       subject: 'Alguien publicó una nueva iniciativa en la plataforma de %{organizationName}'
@@ -332,7 +332,7 @@ es-CL:
     new_idea_for_admin:
       by_author: 'por %{authorName}'
       commented: '%{authorFirstName} comentado:'
-      cta_reply_to: 'Dale retroalimentación a %{authorName}'
+      cta_reply_to: 'Envía tus comentarios a %{authorName}'
       days_ago: '%{numberOfDays} hace días'
       event_description: '%{authorName} ha publicado una nueva idea en tu plataforma. Descúbrelo ahora, haznos llegar tus comentarios o cambia su estado!'
       main_header: '%{firstName}, se ha publicado una nueva idea en tu plataforma'
@@ -418,8 +418,8 @@ es-CL:
       text_manage_folder: 'Una carpeta es una forma de organizar y juntar varios proyectos de participación. Como administrador de la carpeta, puede editar la carpeta y la descripción de esta, y crear nuevos proyectos (para eliminar proyectos, comuníquese con el administrador de su plataforma). También tendrá derechos de administración de proyectos sobre todos aquellos que estén dentro de la carpeta, lo que le permitirá editarlos, administrar las entradas y enviar correos electrónicos a los participantes.'
       text_moderate_analyse_input: 'Una vez lanzados los proyectos, empezarán a llegar las primeras entradas. Recibirá informes semanales con las actividades clave para que pueda estar al tanto de lo que ocurre. El gestor de entradas en el panel "Gestionar plataforma" le permite ver y gestionar los aportes, incluida la asignación de estados y el responder a las publicaciones y los comentarios.'
       text_design_participatory_process: 'Puede administrar los diferentes proyectos de participación dentro de la carpeta: configurar el método de participación, agregar una descripción del proyecto, adjuntar imágenes y comunicar eventos relacionados. También puede administrar el modo en que los participantes interactúan con los proyectos, incluida la configuración de derechos de acceso y la configuración de publicaciones, votaciones y comentarios.'
-      title_design_participatory_process: 'Diseñar el proceso participativo'
-      title_moderate_analyse_input: 'Moderar y analizar los datos de entrada'
+      title_design_participatory_process: 'Diseña el proceso participativo'
+      title_moderate_analyse_input: 'Modera y analiza los datos introducidos'
       title_manage_folder: 'Gestiona la configuración de las carpetas y crea nuevos proyectos.'
       title_what_can_you_do_folderadmin: '¿Qué puedes hacer como administrador de carpetas?'
       title_added_as_folderadmin: 'Has sido añadido como administrador de la carpeta'
@@ -558,11 +558,11 @@ es-CL:
       subject: 'Tu idea fue publicada en la plataforma de %{organizationName}'
       message_next_steps: ""
     your_proposed_initiatives_digest:
-      subject: 'Actualización semanal de tu propuesta'
-      preheader: '¿Qué pasó con tu propuesta la semana pasada?'
-      title_your_weekly_report: '¿Cómo ha ido tu propuesta?'
-      text_introduction: 'Encuentre los números clave a continuación y vaya a la página de su propuesta para tomar medidas y obtener suficiente apoyo a tiempo.'
-      cta_see_your_initiative: 'Ir a tu propuesta'
+      subject: 'Actualización semanal de tu iniciativa'
+      preheader: '¿Qué pasó con tu iniciativa la semana pasada?'
+      title_your_weekly_report: '¿Cómo ha ido tu iniciativa?'
+      text_introduction: 'Encuentre los números clave a continuación y vaya a la página de su iniciativa para tomar medidas y obtener suficiente apoyo a tiempo.'
+      cta_see_your_initiative: 'Ir a tu iniciativa'
       total_votes: 'Total de votos'
       new_votes: 'Nuevos votos'
       remaining_votes: 'Votos restantes'
