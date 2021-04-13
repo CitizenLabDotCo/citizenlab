@@ -27,7 +27,6 @@
     "commercial/nlp": true,
     "commercial/project_folders": true,
     "commercial/project_management": true,
-    "commercial/project_visibility": true,
     "commercial/public_api": true,
     "commercial/satismeter": true,
     "commercial/segment": true,
