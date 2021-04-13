@@ -162,3 +162,5 @@ cl_config["modules"].each do |m, enabled|
 end
 
 
+
+gem 'email_confirmation', path: 'email_confirmation'
