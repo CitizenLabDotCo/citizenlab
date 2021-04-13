@@ -16,7 +16,7 @@ fr-BE:
     rejected_description: Cette idée n'a pas été retenue
   initiative_statuses:
     proposed: soumise
-    proposed_description: soumis.e
+    proposed_description: soumise
     expired: expirée
     expired_description: expirée
     threshold_reached: seuil atteint
@@ -56,7 +56,7 @@ fr-BE:
     community_description: Développement communautaire
     services: Services publics
     services_description: Services publics
-    other: Autre
+    other: Autres
     other_description: Autres
   pages:
     terms_and_conditions_title: Conditions Générales d'Utilisation
@@ -115,7 +115,7 @@ fr-BE:
         title: Adresse
         description:
       proposed_budget:
-        title: Budget proposé
+        title: Proposition de budget
         description:
       images:
         title: Images
