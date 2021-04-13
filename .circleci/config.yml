@@ -537,7 +537,7 @@ workflows:
             - run: git clone git@github.com:CitizenLabDotCo/citizenlab --depth 5 --branch master ~/citizenlab
             - run: sh scripts/enable_ee.sh
           working_directory: ~/citizenlab/front
-          cache-key: v1-npm-cache-{{ checksum "package.json" }}
+          cache-key: v1-npm-cache-{{ checksum "~/citizenlab/front/package.json" }}
           command: npx cypress run --spec 'cypress/integration/*.ts' --config baseUrl=https://e2e.stg.citizenlab.co
           store_artifacts: true
           filters:
