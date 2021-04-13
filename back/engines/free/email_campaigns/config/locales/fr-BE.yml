@@ -33,7 +33,7 @@ fr-BE:
       "official_feedback_on_your_initiative": Mise à jour de mon proposition
       "password_reset": Réinitialisation du mot de passe
       "project_moderation_rights_received": Droits de modération de projet reçus
-      "project_folder_moderation_rights_received": Droits du administrateur de dossiers reçus
+      "project_folder_moderation_rights_received": Droits d'administrateur de dossiers reçus
       "project_phase_started": Nouvelle phase de projet
       "project_phase_upcoming": Nouvelle phase de projet à venir
       "status_change_of_commented_idea": Changement de statut d'une idée que j'ai commentée
@@ -83,7 +83,7 @@ fr-BE:
       "official_feedback_on_your_initiative": Mise à jour de votre proposition - tous les utilisateurs
       "password_reset": Réinitialisation du mot de passe (tous les utilisateurs)
       "project_moderation_rights_received": Droits de modération de projet reçus - administrateurs projet
-      "project_folder_moderation_rights_received": Droits du administrateur de dossiers reçus
+      "project_folder_moderation_rights_received": Droits d'administrateur de dossiers reçus
       "project_phase_started": Nouvelle phase de projet - tous les utilisateurs
       "project_phase_upcoming": Nouvelle phase de projet à venir - administrateurs et administrateurs projet
       "status_change_of_commented_idea": Changement de statut d'une idée que vous avez commentée (tous les utilisateurs)
@@ -209,7 +209,7 @@ fr-BE:
       title_spam_report: '%{firstName} %{lastName} a signalé spam'
     initiative_assigned_to_you:
       by_author: 'par %{authorName}'
-      cta_reply_to: 'Faites vos retours à %{authorName}'
+      cta_reply_to: 'Donner un feedback à %{authorName}'
       event_description_initiative: 'Une initiative vous a été attribuée. Envoyer une mise à jour en écrivant un commentaire officiel ou en changeant son statut.'
       main_header: '%{firstName}, vous avez une nouvelle attribution'
       subject: 'Vous avez une attribution sur la plate-forme de %{organizationName}'
@@ -239,7 +239,7 @@ fr-BE:
       message_next_steps: '%{userFirstName}, votre initiative a été publiée avec succès sur la plateforme de participation de %{organizationName}. Vous serez averti lorsque des personnes interagissent avec votre initiative. Découvrez les prochaines étapes à suivre ci-dessous.'
       message_get_votes: 'Atteindre le nombre de voix requis :'
       preheader: 'Merci d''avoir partagé votre initiative "%{initiativeTitle}" pour %{organizationName}. L'' étape suivante est de la partager avec vos connaissances.'
-      send_email: Adresse e-mail
+      send_email: courriel
       subject: 'Votre initiative a été publiée sur la plateforme de %{organizationName}'
     mention_in_official_feedback:
       by_author: 'par %{authorName}'
@@ -554,15 +554,15 @@ fr-BE:
       message_get_votes: 'Atteignez plus de gens avec votre idée :'
       preheader: '%{firstName}, félicitations pour avoir posté votre idée sur la plateforme de %{organizationName}. A présent, obtenez du soutien pour votre idée.'
       see_you: 'A bientôt sur la plateforme !'
-      send_email: Adresse e-mail
+      send_email: courriel
       subject: 'Votre idée sur la plateforme de %{organizationName}'
       message_next_steps: ""
     your_proposed_initiatives_digest:
-      subject: 'Mise à jour hebdomadaire de votre proposition'
-      preheader: 'Qu''est-il arrivé à votre proposition la semaine dernière ?'
-      title_your_weekly_report: 'Comment s''est déroulée votre proposition ?'
-      text_introduction: 'Trouvez les chiffres clés ci-dessous et rendez-vous sur la page de votre proposition pour passer à l''action et obtenir suffisamment de soutien à temps.'
-      cta_see_your_initiative: 'Aller à votre proposition'
+      subject: 'Mise à jour hebdomadaire de votre initiative'
+      preheader: 'Qu''est-il arrivé à votre initiative la semaine dernière ?'
+      title_your_weekly_report: 'Comment s''est déroulée votre initiative ?'
+      text_introduction: 'Trouvez les chiffres clés ci-dessous et rendez-vous sur la page de votre initiative pour passer à l''action et obtenir suffisamment de soutien à temps.'
+      cta_see_your_initiative: 'Aller à votre initiative'
       total_votes: 'Total des votes'
       new_votes: 'Nouveaux votes'
       remaining_votes: 'Votes restants'
