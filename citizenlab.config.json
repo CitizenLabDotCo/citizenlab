@@ -9,6 +9,7 @@
     "free/frontend": true,
     "free/onboarding": true,
     "free/polls": true,
+    "free/project_permissions": true,
     "free/project_visibility": true,
     "free/seo": true,
     "free/surveys": true,
