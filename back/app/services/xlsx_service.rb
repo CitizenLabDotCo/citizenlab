@@ -252,8 +252,8 @@ class XlsxService
   def users_xlsx_columns
     areas = Area.all.index_by(&:id)
 
-    custom_field_columns = CustomField.with_resource_type('User')&.map(&:key).map do |key|
-      { header: key, f: ->(u) { u.custom_field_values[key] } }
+    custom_field_columns = CustomField.with_resource_type('User')&.map do |field|
+      { header: multiloc_service.t(field.title_multiloc), f: ->(u) { u.custom_field_values[field.key] } }
     end
 
     [
