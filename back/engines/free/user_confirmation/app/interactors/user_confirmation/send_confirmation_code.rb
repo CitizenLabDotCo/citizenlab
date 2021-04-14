@@ -4,9 +4,9 @@ module UserConfirmation
 
     def call
       if user.signed_up_with_email?
-        EmailConfirmationsMailer.with(user: user).send_confirmation_code.deliver_later
+        ConfirmationsMailer.with(user: user).send_confirmation_code.deliver_later
       elsif user.signed_up_with_phone?
-        PhoneConfirmationsMessenger.with(user: user).send_confirmation_code.deliver_later
+        ConfirmationsMessenger.with(user: user).send_confirmation_code.deliver_later
       end
     end
   end

@@ -1,0 +1,28 @@
+require 'rails_helper'
+
+RSpec.describe UserConfirmation::ConfirmationsMessenger do
+  describe 'send_confirmation_code' do
+    # let!(:user) { create(:user) }
+    # let(:message) { described_class.with(user: user).send_confirmation_code.deliver_now }
+
+    # it 'renders the subject' do
+    #   expect(message.subject).to start_with('Welcome')
+    # end
+
+    # it 'renders the receiver message' do
+    #   expect(message.to).to eq([user.phone_number])
+    # end
+
+    # it 'renders the sender message' do
+    #   expect(message.from).to all(end_with('@citizenlab.co'))
+    # end
+
+    # it 'assigns organisation name' do
+    #   expect(message.body.encoded).to match(AppConfiguration.instance.settings('core', 'organization_name')['en'])
+    # end
+
+    # it 'shows the code to the user' do
+    #   expect(message.body.encoded).to match(user.confirmation_code)
+    # end
+  end
+end

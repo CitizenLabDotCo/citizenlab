@@ -1,5 +1,5 @@
 module UserConfirmation
-  class PhoneConfirmationsMessenger < ApplicationMessenger
+  class ConfirmationsMailer < ApplicationMailer
     def send_confirmation_code(user)
 
     end
