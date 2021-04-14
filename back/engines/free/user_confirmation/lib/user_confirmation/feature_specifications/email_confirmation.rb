@@ -1,18 +1,18 @@
 module UserConfirmation
   module FeatureSpecifications
-    module EmailVerification
+    module EmailConfirmation
       extend CitizenLab::Mixins::FeatureSpecification
 
       def self.feature_name
-        'email_verification'
+        'email_confirmation'
       end
 
       def self.feature_title
-        'Email Verification'
+        'Email Confirmation'
       end
 
       def self.feature_description
-        'Add email verification functionality to users.'
+        'Add email confirmation functionality to users.'
       end
     end
   end

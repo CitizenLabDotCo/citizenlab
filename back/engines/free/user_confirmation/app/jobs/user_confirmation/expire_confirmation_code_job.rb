@@ -1,5 +1,5 @@
 module UserConfirmation
-  class ExpireVerificationCode < ApplicationJob
+  class ExpireConfirmationCodeJob < ApplicationJob
     def run(user)
       user.confirmation_code = nil
     end

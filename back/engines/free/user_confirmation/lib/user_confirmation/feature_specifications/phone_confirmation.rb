@@ -1,18 +1,18 @@
 module UserConfirmation
   module FeatureSpecifications
-    module PhoneVerification
+    module PhoneConfirmation
       extend CitizenLab::Mixins::FeatureSpecification
 
       def self.feature_name
-        'phone_verification'
+        'phone_confirmation'
       end
 
       def self.feature_title
-        'Phone Verification'
+        'Phone Confirmation'
       end
 
       def self.feature_description
-        'Add phone verification functionality to users.'
+        'Add phone confirmation functionality to users.'
       end
     end
   end
