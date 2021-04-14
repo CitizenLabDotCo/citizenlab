@@ -3,8 +3,9 @@ module UserConfirmation
     delegate :user, :code, to: :context
 
     def call
-      fail! 'code.blank' if code.blank?
-      fail! 'code.invalid' if user.confirmation_code != code
+      fail! error: 'user.blank' if user.blank?
+      fail! error: 'code.blank' if code.blank?
+      fail! error: 'code.invalid' if user.confirmation_code != code
     end
   end
 end

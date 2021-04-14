@@ -7,7 +7,7 @@ module Callable
     def call(*args)
       begin
         @result = Callable::Result.new
-        new(*args).send(_call_alias)
+        new(*args).send(_call_method_name)
       rescue _error_class => e
         result.error = e
       end
@@ -31,6 +31,8 @@ module Callable
     end
 
     def define_call_alias(call_alias)
+      return unless call_alias
+
       @_call_alias = call_alias
       alias_method(@_call_alias, :call)
       singleton_class.send(:alias_method, @_call_alias, :call)
@@ -40,15 +42,15 @@ module Callable
     protected
 
     def _error_class
-      @_error_class || superclass._error_class
+      @_error_class || superclass.try(:_error_class) || DEFAULT_ERROR_CLASS
     end
 
     def _default_error_message
       @_default_error_message || superclass._default_error_message
     end
 
-    def _call_alias
-      @_call_alias || superclass._call_alias
+    def _call_method_name
+      @_call_alias || superclass.try(:_call_alias) || :call
     end
   end
 end

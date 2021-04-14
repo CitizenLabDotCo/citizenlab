@@ -14,4 +14,8 @@ module AcceptanceHelper
   def response_relationships_for(id)
     response_data.find { |record| record[:id] == id }&.fetch(:relationships)
   end
+
+  def response_error
+    response_data[:error]
+  end
 end

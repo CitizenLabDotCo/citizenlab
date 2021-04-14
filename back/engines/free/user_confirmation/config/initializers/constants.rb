@@ -1,0 +1,1 @@
+USER_CONFIRMATION_CODE_PATTERN = /[0-9]{6}/.freeze

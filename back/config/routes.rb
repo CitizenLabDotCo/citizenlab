@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-
+  mount UserConfirmation::Engine => "", as: 'user_confirmation'
   mount EmailCampaigns::Engine => "", as: 'email_campaigns'
   mount Frontend::Engine => "", as: 'frontend'
   mount Onboarding::Engine => "", as: 'onboarding'
