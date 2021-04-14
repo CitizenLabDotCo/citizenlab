@@ -112,6 +112,7 @@
   "app.components.IdeaForm.contributionFormGeneralSectionTitle": "Wat is je onderwerp?",
   "app.components.IdeaForm.descriptionEmptyError": "Gelieve een beschrijving te geven",
   "app.components.IdeaForm.descriptionLengthError": "De beschrijving van het idee moet minstens 30 tekens lang zijn",
+  "app.components.IdeaForm.descriptionProfanityError": "",
   "app.components.IdeaForm.descriptionTitle": "Beschrijving",
   "app.components.IdeaForm.formDetailsSectionTitle": "Details",
   "app.components.IdeaForm.formGeneralSectionTitle": "Wat is je idee?",

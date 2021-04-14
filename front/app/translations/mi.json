@@ -112,6 +112,7 @@
   "app.components.IdeaForm.contributionFormGeneralSectionTitle": "What is your contribution?",
   "app.components.IdeaForm.descriptionEmptyError": "Please provide a description",
   "app.components.IdeaForm.descriptionLengthError": "The idea description must be at least 30 characters long",
+  "app.components.IdeaForm.descriptionProfanityError": "",
   "app.components.IdeaForm.descriptionTitle": "Description",
   "app.components.IdeaForm.formDetailsSectionTitle": "Details",
   "app.components.IdeaForm.formGeneralSectionTitle": "What is your idea?",

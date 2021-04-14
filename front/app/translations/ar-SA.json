@@ -112,6 +112,7 @@
   "app.components.IdeaForm.contributionFormGeneralSectionTitle": "ما هي مساهمتك؟",
   "app.components.IdeaForm.descriptionEmptyError": "يُرجى إضافة وصف",
   "app.components.IdeaForm.descriptionLengthError": "يجب ألّا يقل طول وصف الفكرة عن 30 حرفًا",
+  "app.components.IdeaForm.descriptionProfanityError": "",
   "app.components.IdeaForm.descriptionTitle": "الوصف",
   "app.components.IdeaForm.formDetailsSectionTitle": "التفاصيل",
   "app.components.IdeaForm.formGeneralSectionTitle": "ما هي فكرتك؟",
