@@ -390,6 +390,14 @@ if ['public','example_org'].include? Apartment::Tenant.current
         enabled: true,
         allowed: true
       },
+      project_management: {
+        enabled: true,
+        allowed: true
+      },
+      project_visibility: {
+        enabled: true,
+        allowed: true
+      }
     }
   })
 
