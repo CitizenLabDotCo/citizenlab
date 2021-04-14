@@ -112,6 +112,7 @@
   "app.components.IdeaForm.contributionFormGeneralSectionTitle": "Care este contribuția ta?",
   "app.components.IdeaForm.descriptionEmptyError": "Vă rugăm să furnizați o descriere",
   "app.components.IdeaForm.descriptionLengthError": "Descrierea ideii trebuie să fie de cel puțin 30 de caractere",
+  "app.components.IdeaForm.descriptionProfanityError": "",
   "app.components.IdeaForm.descriptionTitle": "Descriere",
   "app.components.IdeaForm.formDetailsSectionTitle": "Detalii",
   "app.components.IdeaForm.formGeneralSectionTitle": "Care este ideea ta?",

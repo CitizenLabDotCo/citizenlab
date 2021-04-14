@@ -112,6 +112,7 @@
   "app.components.IdeaForm.contributionFormGeneralSectionTitle": "Šta je to čime ćete doprineti?",
   "app.components.IdeaForm.descriptionEmptyError": "Molimo vas da unesete opis",
   "app.components.IdeaForm.descriptionLengthError": "Opis ideje mora sadržati najmanje 30 karaktera",
+  "app.components.IdeaForm.descriptionProfanityError": "",
   "app.components.IdeaForm.descriptionTitle": "Opis",
   "app.components.IdeaForm.formDetailsSectionTitle": "Detalji",
   "app.components.IdeaForm.formGeneralSectionTitle": "Šta je vaša ideja?",

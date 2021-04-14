@@ -112,6 +112,7 @@
   "app.components.IdeaForm.contributionFormGeneralSectionTitle": "Hva er bidraget ditt?",
   "app.components.IdeaForm.descriptionEmptyError": "Legg til en beskrivelse",
   "app.components.IdeaForm.descriptionLengthError": "Beskrivelse av ideen må være minst 30 tegn. ",
+  "app.components.IdeaForm.descriptionProfanityError": "",
   "app.components.IdeaForm.descriptionTitle": "Beskrivelse",
   "app.components.IdeaForm.formDetailsSectionTitle": "Detaljer",
   "app.components.IdeaForm.formGeneralSectionTitle": "Hva er ideen din?",

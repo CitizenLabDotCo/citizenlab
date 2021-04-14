@@ -112,6 +112,7 @@
   "app.components.IdeaForm.contributionFormGeneralSectionTitle": "Jaki jest twój wkład?",
   "app.components.IdeaForm.descriptionEmptyError": "Proszę dodać opis",
   "app.components.IdeaForm.descriptionLengthError": "Opis pomysłu musi składać się z co najmniej 30 znaków",
+  "app.components.IdeaForm.descriptionProfanityError": "",
   "app.components.IdeaForm.descriptionTitle": "Opis",
   "app.components.IdeaForm.formDetailsSectionTitle": "Szczegóły",
   "app.components.IdeaForm.formGeneralSectionTitle": "Jaki jest Twój pomysł?",
