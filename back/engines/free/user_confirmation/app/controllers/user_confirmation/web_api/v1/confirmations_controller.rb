@@ -16,10 +16,6 @@ module UserConfirmation
 
         private
 
-        def secure_controller?
-          false
-        end
-
         def confirmation_params
           params.permit(:code)
         end

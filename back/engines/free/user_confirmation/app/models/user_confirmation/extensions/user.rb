@@ -3,10 +3,12 @@ module UserConfirmation
     module User
       def self.included(base)
         base.class_eval do
-          validates :confirmation_code, format: USER_CONFIRMATION_CODE_PATTERN
+          with_options unless: :accepted_invitation? do
+            validates :confirmation_code, format: USER_CONFIRMATION_CODE_PATTERN, presence: true
 
-          before_validation :reset_confirmation_code, if: :email_valid_and_changed?
-          after_create :send_confirmation_code, if: :saved_change_to_confirmation_code?
+            before_validation :reset_confirmation_code, if: :email_valid_and_changed?
+            after_create :send_confirmation_code, if: :saved_change_to_confirmation_code?
+          end
         end
       end
 

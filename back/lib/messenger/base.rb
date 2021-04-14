@@ -17,8 +17,8 @@ module Messenger
       end
 
       def define_default_message_values(to: nil, from: nil)
-        define_instance_method(:default_to) { to }
-        define_instance_method(:default_from) { from }
+        define_method(:default_to) { to }
+        define_method(:default_from) { from }
       end
     end
 
@@ -35,7 +35,7 @@ module Messenger
 
     def run(action)
       @params[:action] = action
-      result = send(:action)
+      result = send(action)
 
       self.encoded_message = result.is_a?(Messenger::Message) ? result : message
       self
@@ -57,10 +57,7 @@ module Messenger
       kwargs[:to]   ||= default_to
       kwargs[:from] ||= default_from
 
-      raise EmptyBodyError if kwargs[:body].blank?
-      raise NoRecipientError if kwargs[:to].blank?
-
-      ::Messenger::Message.new(kwargs)
+      ::Messenger::Message.new(kwargs.slice(:to, :from, :body))
     end
 
     class Execution

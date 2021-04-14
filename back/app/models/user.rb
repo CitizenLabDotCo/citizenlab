@@ -188,6 +188,10 @@ class User < ApplicationRecord
     PhoneService.new.phone_or_email(email) == :email
   end
 
+  def accepted_invitation?
+    invite_status != 'pending' && invite_status.present?
+  end
+
   def to_token_payload
     {
       sub: id,
