@@ -1,0 +1,3 @@
+class ApplicationMessenger
+
+end

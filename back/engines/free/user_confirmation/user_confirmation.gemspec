@@ -1,15 +1,15 @@
 $:.push File.expand_path('lib', __dir__)
 
 # Maintain your gem's version:
-require 'email_confirmation/version'
+require 'user_confirmation/version'
 
 # Describe your gem and declare its dependencies:
 Gem::Specification.new do |spec|
-  spec.name        = 'email_confirmation'
-  spec.version     = EmailConfirmation::VERSION
+  spec.name        = 'user_confirmation'
+  spec.version     = UserConfirmation::VERSION
   spec.authors     = ['CitizenLab']
   spec.licenses    = ['AGPLv3']
-  spec.summary     = 'Add email confirmation functionality to users.'
+  spec.summary     = 'Add email and phone confirmation functionality to users.'
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
   # to allow pushing to a single host or delete this section to allow pushing to any host.

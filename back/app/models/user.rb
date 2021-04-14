@@ -180,6 +180,14 @@ class User < ApplicationRecord
     not_invited.find_by_cimail email
   end
 
+  def signed_up_with_phone?
+    PhoneService.new.phone_or_email(email) == :phone
+  end
+
+  def signed_up_with_email?
+    PhoneService.new.phone_or_email(email) == :email
+  end
+
   def to_token_payload
     {
       sub: id,
@@ -357,6 +365,7 @@ class User < ApplicationRecord
   end
 end
 
+User.include('UserConfirmation::Extensions::User')
 User.prepend_if_ee('MultiTenancy::Patches::User')
 User.prepend_if_ee('ProjectFolders::Patches::User')
 User.prepend_if_ee('SmartGroups::Patches::User')
