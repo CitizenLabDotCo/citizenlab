@@ -117,4 +117,8 @@ export default defineMessages({
     id: 'app.components.IdeaForm.otherFilesTitle',
     defaultMessage: 'Other files',
   },
+  descriptionProfanityError: {
+    id: 'app.components.IdeaForm.descriptionProfanityError',
+    defaultMessage: 'Your description is profane.',
+  },
 });

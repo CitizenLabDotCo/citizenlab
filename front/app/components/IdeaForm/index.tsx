@@ -135,6 +135,7 @@ interface State {
   titleError: string | null;
   description: string;
   descriptionError: string | null;
+  descriptionProfanityError: string | null;
   selectedTopics: string[];
   topicsError: string | null;
   locationError: string | null;
@@ -170,6 +171,7 @@ class IdeaForm extends PureComponent<
       titleError: null,
       description: '',
       descriptionError: null,
+      descriptionProfanityError: null,
       selectedTopics: [],
       topicsError: null,
       address: '',
@@ -449,6 +451,26 @@ class IdeaForm extends PureComponent<
     return null;
   };
 
+  isProfane = (description: string) => {
+    return false;
+  };
+
+  isDescriptionProfane = (description: string) => {
+    return this.isProfane(description);
+  };
+
+  getDescriptionProfanityError = (description: string | null) => {
+    if (description) {
+      const isProfane = this.isDescriptionProfane(description);
+
+      return isProfane
+        ? this.props.intl.formatMessage(messages.descriptionProfanityError)
+        : null;
+    }
+
+    return null;
+  };
+
   validate = (
     title: string | null,
     description: string | null,
@@ -462,6 +484,9 @@ class IdeaForm extends PureComponent<
     const { pbContext } = this.state;
     const titleError = this.validateTitle(title);
     const descriptionError = this.validateDescription(description);
+    const descriptionProfanityError = this.getDescriptionProfanityError(
+      description
+    );
     const topicsError = this.validateTopics(selectedTopics);
     const locationError = this.validateLocation(address);
     const imageError = this.validateImage(imageFiles);
@@ -494,6 +519,7 @@ class IdeaForm extends PureComponent<
     this.setState({
       titleError,
       descriptionError,
+      descriptionProfanityError,
       budgetError,
       proposedBudgetError,
       topicsError,
@@ -513,7 +539,10 @@ class IdeaForm extends PureComponent<
         () => this.titleInputElement && this.titleInputElement.focus(),
         300
       );
-    } else if (descriptionError && this.descriptionElement) {
+    } else if (
+      (descriptionError || descriptionProfanityError) &&
+      this.descriptionElement
+    ) {
       scrollToComponent(this.descriptionElement, {
         align: 'top',
         offset: -200,
@@ -528,6 +557,7 @@ class IdeaForm extends PureComponent<
     const hasError =
       !titleError &&
       !descriptionError &&
+      !descriptionProfanityError &&
       !budgetError &&
       !proposedBudgetError &&
       !topicsError &&
@@ -635,6 +665,7 @@ class IdeaForm extends PureComponent<
       imageFile,
       titleError,
       descriptionError,
+      descriptionProfanityError,
       budgetError,
       proposedBudgetError,
       ideaFiles,
@@ -752,10 +783,13 @@ class IdeaForm extends PureComponent<
                 value={description}
                 onChange={this.handleDescriptionOnChange}
                 setRef={this.handleDescriptionSetRef}
-                hasError={descriptionError !== null}
+                hasError={!!descriptionError || !!descriptionProfanityError}
                 withCTAButton
               />
               {descriptionError && <Error text={descriptionError} />}
+              {descriptionProfanityError && (
+                <Error text={descriptionProfanityError} />
+              )}
             </FormElement>
           </StyledFormSection>
 
