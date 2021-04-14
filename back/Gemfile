@@ -100,6 +100,9 @@ gem 'rest-client'
 gem 'rgeo-geojson'
 gem 'rubyzip', '~> 1.3.0'
 
+gem 'email_address'
+gem 'telephone_number'
+
 gem 'okcomputer'
 gem 'omniauth', '~> 1.9.1'
 gem 'omniauth-rails_csrf_protection'
@@ -154,7 +157,7 @@ if File.exists?('../citizenlab.config.ee.json')
   # requires activerecord < 6.0.
   gem 'apartment', github: 'influitive/apartment', branch: 'development'
 end
- 
+
 cl_config["modules"].each do |m, enabled|
   if enabled && File.exists?("engines/#{m}")
     gem m.split('/').last, path: "engines/#{m}"

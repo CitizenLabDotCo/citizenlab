@@ -7,6 +7,9 @@ class User < ApplicationRecord
   include Volunteering::UserDecorator
   include PgSearch::Model
 
+  attribute :email, :email_address
+  attribute :mobile_phone
+
   GENDERS = %w[male female unspecified].freeze
   INVITE_STATUSES = %w[pending accepted].freeze
 
@@ -55,6 +58,10 @@ class User < ApplicationRecord
   validates :email, :first_name, :slug, :locale, presence: true, unless: :invite_pending?
 
   validates :email, uniqueness: true, allow_nil: true
+
+  validates :mobile_phone_number, telephone_number: { country: proc { |record| record.mobile_phone_country_code }, types: %i[mobile] }
+  validates_with EmailAddress::ActiveRecordValidator, field: :email
+
   validates :slug, uniqueness: true, presence: true, unless: :invite_pending?
   validates :email, format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i }, allow_nil: true
   validates :locale, inclusion: { in: proc { AppConfiguration.instance.settings('core', 'locales') } }
