@@ -452,7 +452,11 @@ class IdeaForm extends PureComponent<
   };
 
   isProfane = (description: string) => {
-    return false;
+    const profaneWords = ['shit', 'fuck'];
+    const foundProfaneWord = profaneWords.some(
+      (profaneWord) => description.toLowerCase().search(profaneWord) !== -1
+    );
+    return foundProfaneWord;
   };
 
   isDescriptionProfane = (description: string) => {
