@@ -303,7 +303,7 @@ jobs:
       - deploy:
           command: ssh << parameters.ssh_user >>@<< parameters.ssh_host >> -o StrictHostKeyChecking=no "cd cl2-deployment && docker stack deploy --compose-file << parameters.compose_file >> << parameters.stack_name >> --with-registry-auth"
 
-  back-bnl-generate-tenant-templates:
+  back-generate-tenant-templates:
     resource_class: small
     docker:
       - image: cimg/base:2021.03
@@ -317,7 +317,7 @@ jobs:
         type: string
         default: .env-production-benelux
     steps:
-      - run: echo 'Doing nothing' # ssh << parameters.ssh_user >>@<< parameters.ssh_host >> -o StrictHostKeyChecking=no "docker run --env-file cl2-deployment/<< parameters.env_file >> citizenlabdotco/back-ee:production rake templates:generate[true]"
+      - run: ssh << parameters.ssh_user >>@<< parameters.ssh_host >> -o StrictHostKeyChecking=no "docker run --env-file cl2-deployment/<< parameters.env_file >> citizenlabdotco/back-ee:production rake templates:generate[true]"
 
   check-for-inconsistent-data:
     resource_class: small
@@ -329,12 +329,6 @@ jobs:
       ssh_user:
         type: string
         default: ubuntu
-      stack_name:
-        type: string
-        default: cl2-back
-      compose_file:
-        type: string
-        default: docker-compose-production.yml
       env_file:
         type: string
         default: .env-production
@@ -568,12 +562,46 @@ workflows:
             - docker-hub-access
             - slack
           <<: *slack-fail-post-step-templates
-      - back-bnl-generate-tenant-templates:
+      - back-generate-tenant-templates:
+          name: 'Benelux'
           context: 
             - docker-hub-access
             - slack
           <<: *slack-fail-post-step-templates
-          ssh_host: "52.57.74.84"
+          ssh_host: '52.57.74.84'
+          env_file: '.env-production-benelux'
+      - back-generate-tenant-templates:
+          name: 'South America'
+          context: 
+            - docker-hub-access
+            - slack
+          <<: *slack-fail-post-step-templates
+          ssh_host: '52.67.181.38'
+          env_file: '.env-web'
+      - back-generate-tenant-templates:
+          name: 'Canada'
+          context: 
+            - docker-hub-access
+            - slack
+          <<: *slack-fail-post-step-templates
+          ssh_host: '35.183.23.116'
+          env_file: '.env-production-canada'
+      - back-generate-tenant-templates:
+          name: 'US West'
+          context: 
+            - docker-hub-access
+            - slack
+          <<: *slack-fail-post-step-templates
+          ssh_host: '52.13.59.174'
+          env_file: '.env-web'
+      - back-generate-tenant-templates:
+          name: 'UK'
+          context: 
+            - docker-hub-access
+            - slack
+          <<: *slack-fail-post-step-templates
+          ssh_host: '35.179.69.215'
+          env_file: '.env-web'
       - back-test-tenant-templates:
           context: 
             - docker-hub-access
@@ -611,45 +639,36 @@ workflows:
       #     name: 'Benelux'
       #     context:
       #       - slack
-      #     ssh_host: "52.57.74.84"
-      #     compose_file: docker-compose-production-benelux.yml
-      #     stack_name: cl2-prd-bnlx-stack
-      #     env_file: ".env-production-benelux"
+      #     ssh_host: '52.57.74.84'
+      #     env_file: '.env-production-benelux'
       # - check-for-inconsistent-data:
       #     <<: *slack-fail-post-step-inconsistent-data
       #     name: 'South America'
       #     context:
       #       - slack
-      #     ssh_host: "52.67.181.38"
-      #     compose_file: docker-compose-production.yml
-      #     env_file: ".env-web"
-      #     stack_name: "cl2"
+      #     ssh_host: '52.67.181.38'
+      #     env_file: '.env-web'
       - check-for-inconsistent-data:
           <<: *slack-fail-post-step-inconsistent-data
           name: 'Canada'
           context:
             - slack
-          ssh_host: "35.183.23.116"
-          compose_file: docker-compose-production-canada.yml
-          env_file: ".env-production-canada"
+          ssh_host: '35.183.23.116'
+          env_file: '.env-production-canada'
       - check-for-inconsistent-data:
           <<: *slack-fail-post-step-inconsistent-data
           name: 'US West'
           context:
             - slack
-          ssh_host: "52.13.59.174"
-          compose_file: docker-compose-production.yml
-          env_file: ".env-web"
-          stack_name: "cl2"
+          ssh_host: '52.13.59.174'
+          env_file: '.env-web'
       - check-for-inconsistent-data:
           <<: *slack-fail-post-step-inconsistent-data
           name: 'UK'
           context:
             - slack
-          ssh_host: "35.179.69.215"
-          compose_file: docker-compose-production.yml
-          env_file: ".env-web"
-          stack_name: "cl2"
+          ssh_host: '35.179.69.215'
+          env_file: '.env-web'
       - empty-job:
           name: ':tada: SUCCESS: No invalid data was detected!' # Mentions are not supported for basic_success_1
           context:
