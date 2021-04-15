@@ -112,7 +112,7 @@ class User < ApplicationRecord
   before_validation :set_cl1_migrated, on: :create
   before_validation :generate_slug
   before_validation :sanitize_bio_multiloc, if: :bio_multiloc
-  before_validation :format_email, if: :signed_up_with_email?
+  before_validation :downcase_email!
 
   scope :order_role, lambda { |direction = :asc|
     joins('LEFT OUTER JOIN (SELECT jsonb_array_elements(roles) as ro, id FROM users) as r ON users.id = r.id')
@@ -372,6 +372,10 @@ class User < ApplicationRecord
 
   def roles_json_schema
     ROLES_JSON_SCHEMA
+  end
+
+  def downcase_email!
+    email.downcase!
   end
 end
 
