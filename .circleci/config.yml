@@ -58,7 +58,6 @@ executors:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
           POSTGRES_HOST: localhost
-          TEMPLATE_URL_SUFFIX: .test-template.citizenlab.co
       - image: 'postgis/postgis:12-3.1'
         environment:
           POSTGRES_USER: postgres
@@ -228,6 +227,11 @@ jobs:
       - run: 
           command: SPEC_OPTS="-t template_test -P "engines/*/*/spec/**/*_spec.rb"" bundle exec rspec
           no_output_timeout: 60m
+      - run: rake templates:verify['workspace/failed-templates']
+      - persist_to_workspace:
+          root: workspace
+          paths:
+            - failed-templates
   
   back-release-tenant-templates:
     resource_class: small
@@ -238,7 +242,10 @@ jobs:
     environment:
       CITIZENLAB_EE: true
     steps:
-      - run: bundle exec rake templates:release
+      - attach_workspace:
+          at: /tmp/workspace
+      - run: bundle exec rake templates:release['/tmp/workspace/failed-templates']
+      # - next, fail for failed templates or succeed (slack messages)
 
   back-trigger-deploy:
     resource_class: small
@@ -310,7 +317,7 @@ jobs:
         type: string
         default: .env-production-benelux
     steps:
-      - run: ssh << parameters.ssh_user >>@<< parameters.ssh_host >> -o StrictHostKeyChecking=no "docker run --env-file cl2-deployment/<< parameters.env_file >> citizenlabdotco/back-ee:production rake templates:generate[true]"
+      - run: echo 'Doing nothing' # ssh << parameters.ssh_user >>@<< parameters.ssh_host >> -o StrictHostKeyChecking=no "docker run --env-file cl2-deployment/<< parameters.env_file >> citizenlabdotco/back-ee:production rake templates:generate[true]"
 
   check-for-inconsistent-data:
     resource_class: small
