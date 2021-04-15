@@ -5,11 +5,20 @@ module NLP
 
       @api ||= NLP::API.new ENV.fetch('CL2_NLP_HOST')
       @texts = parse_ideas ideas, locale
-      @texts.any? ? @api.tag_suggestions({
+
+      suggestions = @texts.any? ? @api.tag_suggestions({
         locale: locale,
         max_number_of_suggestions: 20,
         texts: @texts
       }.freeze) : []
+
+      Raven.capture_message("Nil suggestion", {
+        :extra => {
+          'texts' => @texts
+        }
+      }) if suggestions.nil?
+
+      suggestions
     end
 
     private
