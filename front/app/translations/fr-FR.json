@@ -752,6 +752,7 @@
   "app.containers.Admin.Moderation.settings": "",
   "app.containers.Admin.Moderation.show": "Afficher",
   "app.containers.Admin.Moderation.status": "Statut",
+  "app.containers.Admin.Moderation.successfulUpdateSettings": "",
   "app.containers.Admin.Moderation.type": "Type",
   "app.containers.Admin.Moderation.unread": "Non vu",
   "app.containers.Admin.Processing.addExistingTag": "Ajouter une étiquette existante",

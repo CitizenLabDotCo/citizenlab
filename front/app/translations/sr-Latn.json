@@ -752,6 +752,7 @@
   "app.containers.Admin.Moderation.settings": "",
   "app.containers.Admin.Moderation.show": "Prikaži",
   "app.containers.Admin.Moderation.status": "Status",
+  "app.containers.Admin.Moderation.successfulUpdateSettings": "",
   "app.containers.Admin.Moderation.type": "Vrsta",
   "app.containers.Admin.Moderation.unread": "Nije pregledano",
   "app.containers.Admin.Processing.addExistingTag": "Dodajte postojeći tag",

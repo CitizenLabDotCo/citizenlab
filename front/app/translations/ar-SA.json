@@ -752,6 +752,7 @@
   "app.containers.Admin.Moderation.settings": "",
   "app.containers.Admin.Moderation.show": "اعرض",
   "app.containers.Admin.Moderation.status": "الحالة",
+  "app.containers.Admin.Moderation.successfulUpdateSettings": "",
   "app.containers.Admin.Moderation.type": "النوع",
   "app.containers.Admin.Moderation.unread": "لم تتم مشاهدته",
   "app.containers.Admin.Processing.addExistingTag": "Add existing tag",

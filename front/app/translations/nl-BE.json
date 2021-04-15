@@ -752,6 +752,7 @@
   "app.containers.Admin.Moderation.settings": "",
   "app.containers.Admin.Moderation.show": "Toon",
   "app.containers.Admin.Moderation.status": "Status",
+  "app.containers.Admin.Moderation.successfulUpdateSettings": "",
   "app.containers.Admin.Moderation.type": "Type",
   "app.containers.Admin.Moderation.unread": "Niet gezien",
   "app.containers.Admin.Processing.addExistingTag": "Bestaande tag toevoegen",
