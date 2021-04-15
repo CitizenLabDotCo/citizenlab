@@ -609,9 +609,12 @@ workflows:
           <<: *slack-fail-post-step-templates
           requires:
             - back-build-ee-docker-image
-            - back-bnl-generate-tenant-templates
+            - 'Benelux'
+            - 'South America'
+            - 'Canada'
+            - 'US West'
+            - 'UK'
       - back-release-tenant-templates:
-          name: ':tada: SUCCESS: New tenant templates were generated!' # Mentions are not supported for basic_success_1
           context: 
             - docker-hub-access
             - slack
