@@ -219,6 +219,7 @@ jobs:
       RAILS_ENV: test
       CITIZENLAB_EE: true
     steps:
+      - run: mkdir -p workspace
       - wait-for-postgres
       - run: |
           rake db:create

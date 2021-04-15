@@ -36,6 +36,7 @@ namespace :templates do
 
   task :verify, [:output_file] => [:environment] do |t, args|
     failed_templates = []
+    service = MultiTenancy::TenantTemplateService.new
     MultiTenancy::TenantTemplateService.new.available_templates(external_subfolder: 'test')[:external].map do |template|
       locales = MultiTenancy::TenantTemplateService.new.required_locales(template, external_subfolder: 'test')
       locales = ['en'] if locales.blank?
@@ -90,14 +91,14 @@ namespace :templates do
 
   task :release, [:exclude_templates_file] => [:environment] do |t, args|
     exclude_templates = []
-    exclude_templates += File.readlines(args[:exclude_templates_file]) if args[:exclude_templates_file]
+    exclude_templates += File.readlines(args[:exclude_templates_file]).map(&:strip) if args[:exclude_templates_file]
 
     s3 = Aws::S3::Resource.new client: Aws::S3::Client.new(region: 'eu-central-1')
     bucket = s3.bucket(ENV.fetch('TEMPLATE_BUCKET', 'cl2-tenant-templates'))
     bucket.objects(prefix: 'test').each do |template|
       template_name = "#{template.key}"
       template_name.slice! 'test/'
-      if template_name.present? && !exclude_templates.include?(template_name)
+      if template_name.present? && !exclude_templates.include?(template_name.split('.').first)
         template.copy_to(bucket: ENV.fetch('TEMPLATE_BUCKET', 'cl2-tenant-templates'), key: "release/#{template_name}")
       end
     end
