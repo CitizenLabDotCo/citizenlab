@@ -26,6 +26,7 @@ import {
   TModerationStatuses,
   TModeratableTypes,
 } from '../../../services/moderations';
+import { updateAppConfiguration } from 'services/appConfiguration';
 
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
@@ -42,6 +43,7 @@ import { colors, fontSizes } from 'utils/styleUtils';
 
 // typings
 import { IOption } from 'typings';
+import useAppConfiguration from 'hooks/useAppConfiguration';
 
 const Container = styled.div`
   display: flex;
@@ -242,6 +244,7 @@ const Moderation = memo<Props & InjectedIntlProps>(
       projectIds: [],
       searchTerm: '',
     });
+    const appConfiguration = useAppConfiguration();
 
     const [moderationItems, setModerationItems] = useState(list);
     const [selectedRows, setSelectedRows] = useState<string[]>([]);
@@ -249,6 +252,15 @@ const Moderation = memo<Props & InjectedIntlProps>(
     const [selectedTypes, setSelectedTypes] = useState<TModeratableTypes[]>([]);
     const [selectedProjectIds, setSelectedProjectIds] = useState<string[]>([]);
     const [settingsModalOpened, setSettingsModalOpened] = useState(false);
+    const [
+      profanityBlockerSettingEnabled,
+      setProfanityBlockerSettingEnabled,
+    ] = useState(
+      !isNilOrError(appConfiguration) &&
+        appConfiguration.data.attributes.settings.profanity_blocker
+        ? appConfiguration.data.attributes.settings.profanity_blocker?.enabled
+        : false
+    );
 
     const handleOnSelectAll = useCallback(
       (_event: React.ChangeEvent) => {
@@ -328,7 +340,23 @@ const Moderation = memo<Props & InjectedIntlProps>(
       [selectedRows, processing]
     );
 
-    const onToggleBlockProfanitySetting = () => {};
+    const onToggleBlockProfanitySetting = () => {
+      setProfanityBlockerSettingEnabled(!profanityBlockerSettingEnabled);
+    };
+
+    useEffect(() => {
+      // try {
+      updateAppConfiguration({
+        settings: {
+          profanity_blocker: {
+            enabled: profanityBlockerSettingEnabled,
+          },
+        },
+      });
+      // } catch (error) {
+      //   setErrors(isCLErrorJSON(error) ? error.json.errors : error);
+      // }
+    }, [profanityBlockerSettingEnabled]);
 
     const openSettingsModal = () => {
       setSettingsModalOpened(true);
@@ -538,7 +566,7 @@ const Moderation = memo<Props & InjectedIntlProps>(
           >
             <ProfanitySettings>
               <StyledToggle
-                checked
+                checked={profanityBlockerSettingEnabled}
                 onChange={onToggleBlockProfanitySetting}
                 label={
                   <>
