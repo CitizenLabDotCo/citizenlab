@@ -58,6 +58,7 @@ executors:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
           POSTGRES_HOST: localhost
+          TEMPLATE_URL_SUFFIX: .test-template.citizenlab.co
       - image: 'postgis/postgis:12-3.1'
         environment:
           POSTGRES_USER: postgres
