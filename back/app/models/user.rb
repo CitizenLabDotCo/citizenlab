@@ -166,7 +166,7 @@ class User < ApplicationRecord
   }
 
   def self.find_by_cimail(email)
-    take('lower(email) = lower(?)', email).take
+    where('lower(email) = lower(?)', email).take
   end
 
   # This method is used by knock to get the user.
