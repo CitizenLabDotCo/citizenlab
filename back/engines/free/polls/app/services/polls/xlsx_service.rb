@@ -1,7 +1,7 @@
 module Polls
 	class XlsxService
 
-		def generate_poll_results_xlsx participation_context, responses
+		def generate_poll_results_xlsx participation_context, responses, current_user
       multiloc_service = MultilocService.new
       is_anonymous = participation_context.poll_anonymous?
       questions = Polls::Question
@@ -11,11 +11,43 @@ module Polls
       columns = if is_anonymous
         []
       else
-        [{
-          header: 'User ID', 
-          f: -> (r) { r.user_id },
-          skip_sanitization: true
-        }]
+				if current_user.admin?
+	        [
+						{
+		          header: 'User ID',
+		          f: -> (r) { r.user_id },
+		          skip_sanitization: true
+		        },
+						{
+		          header: 'First Name',
+		          f: -> (r) { r.user.first_name },
+		        },
+						{
+		          header: 'Last Name',
+		          f: -> (r) { r.user.first_name },
+		        },
+						{
+		          header: 'Email',
+		          f: -> (r) { r.user.email },
+		        }
+					]
+				else
+					[
+						{
+		          header: 'User ID',
+		          f: -> (r) { r.user_id },
+		          skip_sanitization: true
+		        },
+						{
+		          header: 'First Name',
+		          f: -> (r) { r.user.first_name },
+		        },
+						{
+		          header: 'Last Name',
+		          f: -> (r) { r.user.first_name },
+		        },
+					]
+				end
       end
       columns += questions.map do |q|
         {
