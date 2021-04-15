@@ -7,7 +7,7 @@ FactoryBot.define do
 
     sequence(:email) do |n|
       name, domain = Faker::Internet.email.split('@')
-      "#{name}#{n}@stad.gent"
+      "#{name}#{n}@#{domain}"
     end
 
     password { "democracy2.0" }
