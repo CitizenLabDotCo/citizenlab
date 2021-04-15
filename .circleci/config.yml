@@ -225,10 +225,10 @@ jobs:
           rake db:create
           rake db:schema:load
       - run: SPEC_OPTS="-t template_test -P "spec/**/*_spec.rb"" bundle exec rspec
+      - run: SPEC_OPTS="-t template_test -P "engines/*/*/spec/**/*_spec.rb"" bundle exec rspec
       - run: 
-          command: SPEC_OPTS="-t template_test -P "engines/*/*/spec/**/*_spec.rb"" bundle exec rspec
+          command: rake templates:verify['workspace/failed-templates.txt']
           no_output_timeout: 60m
-      - run: rake templates:verify['workspace/failed-templates.txt']
       - persist_to_workspace:
           root: workspace
           paths:

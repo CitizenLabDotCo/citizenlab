@@ -75,6 +75,7 @@ namespace :templates do
        })
 
       Apartment::Tenant.switch(tn.schema_name) do
+        puts "Verifying #{template}"
         begin
           service.resolve_and_apply_template template, external_subfolder: 'test'
         rescue Exception => e 
