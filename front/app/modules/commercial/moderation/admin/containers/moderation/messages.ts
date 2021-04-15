@@ -107,4 +107,8 @@ export default defineMessages({
     defaultMessage:
       'Enabling this setting will block posts containing the most commonly reported offensive words.',
   },
+  successfulUpdateSettings: {
+    id: 'app.containers.Admin.Moderation.successfulUpdateSettings',
+    defaultMessage: 'Settings updated successfully.',
+  },
 });

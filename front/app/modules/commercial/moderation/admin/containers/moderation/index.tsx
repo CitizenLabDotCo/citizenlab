@@ -14,6 +14,7 @@ import {
   Select,
   Toggle,
   Button,
+  Success,
 } from 'cl2-component-library';
 import Tabs from 'components/UI/Tabs';
 import { PageTitle } from 'components/admin/Section';
@@ -259,6 +260,10 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
   const [selectedProjectIds, setSelectedProjectIds] = useState<string[]>([]);
   const [settingsModalOpened, setSettingsModalOpened] = useState(false);
   const [
+    settingsUpdatedSuccessFully,
+    setSettingsUpdatedSuccessFully,
+  ] = useState(false);
+  const [
     profanityBlockerSettingEnabled,
     setProfanityBlockerSettingEnabled,
   ] = useState(
@@ -351,17 +356,23 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
   };
 
   useEffect(() => {
-    // try {
-    updateAppConfiguration({
-      settings: {
-        profanity_blocker: {
-          enabled: profanityBlockerSettingEnabled,
+    const handleSettingsUpdate = async () => {
+      await updateAppConfiguration({
+        settings: {
+          profanity_blocker: {
+            enabled: profanityBlockerSettingEnabled,
+          },
         },
-      },
-    });
-    // } catch (error) {
-    //   setErrors(isCLErrorJSON(error) ? error.json.errors : error);
-    // }
+      });
+      setSettingsUpdatedSuccessFully(true);
+      setTimeout(() => setSettingsUpdatedSuccessFully(false), 2000);
+    };
+
+    try {
+      handleSettingsUpdate();
+    } catch (error) {
+      // setApiErrors(isCLErrorJSON(error) ? error.json.errors : error);
+    }
   }, [profanityBlockerSettingEnabled]);
 
   const openSettingsModal = () => {
@@ -591,6 +602,12 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
                 </>
               }
             />
+            {settingsUpdatedSuccessFully && (
+              <Success
+                showBackground
+                text={intl.formatMessage(messages.successfulUpdateSettings)}
+              />
+            )}
           </ProfanitySettings>
         </Modal>
       </Container>
