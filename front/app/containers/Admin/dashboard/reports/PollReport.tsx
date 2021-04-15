@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 import { adopt } from 'react-adopt';
-import { FormattedMessage, InjectedIntlProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import GetPollQuestions, {
   GetPollQuestionsChildProps,
 } from 'resources/GetPollQuestions';
@@ -13,7 +13,7 @@ import {
 } from 'containers/Admin/dashboard';
 import QuestionReport from './QuestionReport';
 import { SubSectionTitle } from 'components/admin/Section';
-import { injectIntl } from 'utils/cl-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
 interface InputProps {
