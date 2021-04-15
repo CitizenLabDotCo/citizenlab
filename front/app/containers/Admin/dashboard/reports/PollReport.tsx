@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 import { adopt } from 'react-adopt';
-import { InjectedIntlProps } from 'react-intl';
+import { FormattedMessage, InjectedIntlProps } from 'react-intl';
 import GetPollQuestions, {
   GetPollQuestionsChildProps,
 } from 'resources/GetPollQuestions';
@@ -9,10 +9,12 @@ import {
   GraphCard,
   GraphCardInner,
   GraphsContainer,
+  NoDataContainer,
 } from 'containers/Admin/dashboard';
 import QuestionReport from './QuestionReport';
 import { SubSectionTitle } from 'components/admin/Section';
 import { injectIntl } from 'utils/cl-intl';
+import messages from '../messages';
 
 interface InputProps {
   participationContextId: string;
@@ -39,7 +41,7 @@ const PollReport = memo(
             <SubSectionTitle>{participationContextTitle}</SubSectionTitle>
           )}
         <GraphsContainer>
-          {!isNilOrError(pollQuestions) &&
+          {!isNilOrError(pollQuestions) && pollQuestions.length > 0 ? (
             pollQuestions.map((question) => (
               <GraphCard
                 className={`dynamicHeight ${
@@ -55,7 +57,16 @@ const PollReport = memo(
                   />
                 </GraphCardInner>
               </GraphCard>
-            ))}
+            ))
+          ) : (
+            <GraphCard className="dynamicHeight fullWidth">
+              <GraphCardInner>
+                <NoDataContainer>
+                  <FormattedMessage {...messages.noData} />
+                </NoDataContainer>
+              </GraphCardInner>
+            </GraphCard>
+          )}
         </GraphsContainer>
       </div>
     );
