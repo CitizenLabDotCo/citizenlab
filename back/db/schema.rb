@@ -982,6 +982,14 @@ ActiveRecord::Schema.define(version: 2021_04_02_103419) do
     t.jsonb "custom_field_values", default: {}
     t.datetime "registration_completed_at"
     t.boolean "verified", default: false, null: false
+    t.datetime "email_confirmed_at"
+    t.string "email_confirmation_code"
+    t.integer "email_confirmation_retry_count", default: 0, null: false
+    t.datetime "email_confirmation_code_sent_at"
+    t.datetime "phone_confirmed_at"
+    t.string "phone_confirmation_code"
+    t.integer "phone_confirmation_retry_count", default: 0, null: false
+    t.datetime "phone_confirmation_code_sent_at"
     t.index "lower((email)::text)", name: "users_unique_lower_email_idx", unique: true
     t.index ["email"], name: "index_users_on_email"
     t.index ["slug"], name: "index_users_on_slug", unique: true
