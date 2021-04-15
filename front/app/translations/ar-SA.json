@@ -743,6 +743,8 @@
   "app.containers.Admin.Moderation.noViewedItems": "لا توجد عناصر تمت مشاهدتها",
   "app.containers.Admin.Moderation.pageTitle": "النشاط",
   "app.containers.Admin.Moderation.post": "منشور",
+  "app.containers.Admin.Moderation.profanityBlockerSetting": "",
+  "app.containers.Admin.Moderation.profanityBlockerSettingDescription": "",
   "app.containers.Admin.Moderation.project": "المشروع",
   "app.containers.Admin.Moderation.read": "تمت مشاهدته",
   "app.containers.Admin.Moderation.readMore": "اقرأ المزيد",

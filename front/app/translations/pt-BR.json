@@ -743,6 +743,8 @@
   "app.containers.Admin.Moderation.noViewedItems": "Não há itens vistos",
   "app.containers.Admin.Moderation.pageTitle": "Atividade",
   "app.containers.Admin.Moderation.post": "Informação",
+  "app.containers.Admin.Moderation.profanityBlockerSetting": "",
+  "app.containers.Admin.Moderation.profanityBlockerSettingDescription": "",
   "app.containers.Admin.Moderation.project": "Projeto",
   "app.containers.Admin.Moderation.read": "Visto",
   "app.containers.Admin.Moderation.readMore": "Ler mais",

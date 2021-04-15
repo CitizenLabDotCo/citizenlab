@@ -743,6 +743,8 @@
   "app.containers.Admin.Moderation.noViewedItems": "Nie ma żadnych obejrzanych elementów",
   "app.containers.Admin.Moderation.pageTitle": "Aktywności",
   "app.containers.Admin.Moderation.post": "Dane",
+  "app.containers.Admin.Moderation.profanityBlockerSetting": "",
+  "app.containers.Admin.Moderation.profanityBlockerSettingDescription": "",
   "app.containers.Admin.Moderation.project": "Projekt",
   "app.containers.Admin.Moderation.read": "Przejrzane",
   "app.containers.Admin.Moderation.readMore": "Przeczytaj więcej",
