@@ -750,6 +750,7 @@
   "app.containers.Admin.Moderation.readMore": "Ler mais",
   "app.containers.Admin.Moderation.rowsPerPage": "Linhas por página",
   "app.containers.Admin.Moderation.settings": "",
+  "app.containers.Admin.Moderation.settingsSavingError": "",
   "app.containers.Admin.Moderation.show": "Mostrar",
   "app.containers.Admin.Moderation.status": "Status",
   "app.containers.Admin.Moderation.successfulUpdateSettings": "",

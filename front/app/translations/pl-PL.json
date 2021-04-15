@@ -750,6 +750,7 @@
   "app.containers.Admin.Moderation.readMore": "Przeczytaj więcej",
   "app.containers.Admin.Moderation.rowsPerPage": "Wierszy na stronie",
   "app.containers.Admin.Moderation.settings": "",
+  "app.containers.Admin.Moderation.settingsSavingError": "",
   "app.containers.Admin.Moderation.show": "Pokaż",
   "app.containers.Admin.Moderation.status": "Status",
   "app.containers.Admin.Moderation.successfulUpdateSettings": "",

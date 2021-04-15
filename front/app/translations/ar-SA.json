@@ -750,6 +750,7 @@
   "app.containers.Admin.Moderation.readMore": "اقرأ المزيد",
   "app.containers.Admin.Moderation.rowsPerPage": "الصفوف لكل صفحة",
   "app.containers.Admin.Moderation.settings": "",
+  "app.containers.Admin.Moderation.settingsSavingError": "",
   "app.containers.Admin.Moderation.show": "اعرض",
   "app.containers.Admin.Moderation.status": "الحالة",
   "app.containers.Admin.Moderation.successfulUpdateSettings": "",
