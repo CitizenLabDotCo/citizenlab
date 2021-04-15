@@ -7,9 +7,6 @@ class User < ApplicationRecord
   include Volunteering::UserDecorator
   include PgSearch::Model
 
-  attribute :email, :email_address
-  attribute :mobile_phone
-
   GENDERS = %w[male female unspecified].freeze
   INVITE_STATUSES = %w[pending accepted].freeze
 
@@ -58,8 +55,15 @@ class User < ApplicationRecord
   validates :email, :first_name, :slug, :locale, presence: true, unless: :invite_pending?
 
   validates :email, uniqueness: true, allow_nil: true
+  validates_with EmailAddress::ActiveRecordValidator, field: :email, if: -> { Rails.env.production? }
 
-  validates :mobile_phone_number, telephone_number: { country: proc { |record| record.mobile_phone_country_code }, types: %i[mobile] }, allow_nil: true, unless: -> { Rails.env.development? }
+  validates :mobile_phone_number,
+            telephone_number: { country: proc { |record| record.mobile_phone_country_code }, types: %i[mobile] },
+            allow_nil: true,
+            unless: -> { Rails.env.development? }
+  validates :mobile_phone_number, presence: true, if: ->(record) { record.mobile_phone_country_code.present? }
+  validates :mobile_phone_country_code, presence: true, if: ->(record) { record.mobile_phone_number.present? }
+  validates :mobile_phone_number, uniqueness: { scope: %i[mobile_phone_country_code] }, allow_nil: true
 
   validates :slug, uniqueness: true, presence: true, unless: :invite_pending?
   validates :locale, inclusion: { in: proc { AppConfiguration.instance.settings('core', 'locales') } }
@@ -108,6 +112,7 @@ class User < ApplicationRecord
   before_validation :set_cl1_migrated, on: :create
   before_validation :generate_slug
   before_validation :sanitize_bio_multiloc, if: :bio_multiloc
+  before_validation :format_email, if: :signed_up_with_email?
 
   scope :order_role, lambda { |direction = :asc|
     joins('LEFT OUTER JOIN (SELECT jsonb_array_elements(roles) as ro, id FROM users) as r ON users.id = r.id')
@@ -161,7 +166,7 @@ class User < ApplicationRecord
   }
 
   def self.find_by_cimail(email)
-    where('lower(email) = lower(?)', email).first
+    take('lower(email) = lower(?)', email).take
   end
 
   # This method is used by knock to get the user.
@@ -194,6 +199,14 @@ class User < ApplicationRecord
 
   def avatar_blank?
     avatar.file.nil?
+  end
+
+  def mobile_phone
+    TelephoneNumber.parse(mobile_phone_number, mobile_phone_country_code)
+  end
+
+  def full_mobile_phone_number
+    mobile_phone_number.international_number(formatted: true)
   end
 
   def invite_pending?

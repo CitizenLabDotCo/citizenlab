@@ -66,6 +66,14 @@ RSpec.describe User, type: :model do
     end
   end
 
+  describe '#mobile_phone_number' do
+    it 'is invalid if there is a duplicate' do
+      u1 = create(:user, mobile_phone_number: '123123123', mobile_phone_country_code: :pt)
+      u2 = create(:user, mobile_phone_number: '123123123', mobile_phone_country_code: :pt)
+      expect(u2).to be_invalid
+    end
+  end
+
   describe 'password' do
 
     it 'is invalid when set to empty string' do

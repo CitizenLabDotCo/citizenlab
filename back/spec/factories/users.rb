@@ -4,10 +4,20 @@ FactoryBot.define do
   factory :user, aliases: [:author, :recipient, :initiating_user] do
     first_name { Faker::Name.first_name }
     last_name { Faker::Name.last_name }
+    mobile_phone_country_code { 'pt' }
 
     sequence(:email) do |n|
       name, domain = Faker::Internet.email.split('@')
       "#{name}#{n}@#{domain}"
+    end
+    sequence(:mobile_phone_number) do |n|
+      number = n.to_s
+      loop do
+        next unless number.length == 3
+
+        number = "0#{number}"
+      end
+      "454323#{number}"
     end
 
     password { "democracy2.0" }
@@ -27,7 +37,6 @@ FactoryBot.define do
         end
       end
     end
-
 
     factory :moderator do
       transient do
