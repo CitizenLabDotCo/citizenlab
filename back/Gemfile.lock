@@ -527,6 +527,9 @@ GEM
     easy_translate (0.5.1)
       thread
       thread_safe
+    email_address (0.1.20)
+      netaddr (>= 2.0.4, < 3)
+      simpleidn
     erubi (1.10.0)
     excon (0.71.1)
     factory_bot (5.1.2)
@@ -664,6 +667,7 @@ GEM
     mustache (1.1.0)
     mustermann (1.1.1)
       ruby2_keywords (~> 0.0.1)
+    netaddr (2.0.4)
     netrc (0.11.0)
     nio4r (2.5.7)
     nokogiri (1.11.2)
@@ -891,6 +895,8 @@ GEM
     simplecov-html (0.10.2)
     simplecov-rcov (0.2.3)
       simplecov (>= 0.4.1)
+    simpleidn (0.2.1)
+      unf (~> 0.1.4)
     sinatra (2.1.0)
       mustermann (~> 1.0)
       rack (~> 2.2)
@@ -914,6 +920,7 @@ GEM
       activesupport (>= 3)
       attr_required (>= 0.0.5)
       httpclient (>= 2.4)
+    telephone_number (1.4.10)
     test-prof (1.0.2)
     thor (1.0.1)
     thread (0.2.2)
@@ -982,6 +989,7 @@ DEPENDENCIES
   custom_topics!
   dalli
   database_cleaner
+  email_address
   email_campaigns!
   factory_bot_rails
   faker
@@ -1070,6 +1078,7 @@ DEPENDENCIES
   spring-watcher-listen (~> 2.0.0)
   surveys!
   tagging!
+  telephone_number
   test-prof (~> 1.0)
   user_custom_fields!
   verification!

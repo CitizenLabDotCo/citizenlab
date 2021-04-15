@@ -982,8 +982,8 @@ ActiveRecord::Schema.define(version: 2021_04_14_160251) do
     t.jsonb "custom_field_values", default: {}
     t.datetime "registration_completed_at"
     t.boolean "verified", default: false, null: false
-    t.string "phone_number"
-    t.string "phone_country_code"
+    t.string "mobile_phone_number"
+    t.string "mobile_phone_country_code"
     t.index "lower((email)::text)", name: "users_unique_lower_email_idx", unique: true
     t.index ["email"], name: "index_users_on_email"
     t.index ["slug"], name: "index_users_on_slug", unique: true

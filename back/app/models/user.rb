@@ -59,11 +59,9 @@ class User < ApplicationRecord
 
   validates :email, uniqueness: true, allow_nil: true
 
-  validates :mobile_phone_number, telephone_number: { country: proc { |record| record.mobile_phone_country_code }, types: %i[mobile] }
-  validates_with EmailAddress::ActiveRecordValidator, field: :email
+  validates :mobile_phone_number, telephone_number: { country: proc { |record| record.mobile_phone_country_code }, types: %i[mobile] }, allow_nil: true, unless: -> { Rails.env.development? }
 
   validates :slug, uniqueness: true, presence: true, unless: :invite_pending?
-  validates :email, format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i }, allow_nil: true
   validates :locale, inclusion: { in: proc { AppConfiguration.instance.settings('core', 'locales') } }
   validates :bio_multiloc, multiloc: { presence: false }
   validates :gender, inclusion: { in: GENDERS }, allow_nil: true

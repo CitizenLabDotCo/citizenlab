@@ -4,10 +4,12 @@ FactoryBot.define do
   factory :user, aliases: [:author, :recipient, :initiating_user] do
     first_name { Faker::Name.first_name }
     last_name { Faker::Name.last_name }
+
     sequence(:email) do |n|
       name, domain = Faker::Internet.email.split('@')
-      "#{name}#{n}@#{domain}"
+      "#{name}#{n}@stad.gent"
     end
+
     password { "democracy2.0" }
     roles { [] }
     locale { "en" }
