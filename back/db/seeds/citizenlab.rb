@@ -141,6 +141,10 @@ AppConfiguration.create!(
       enabled: true,
       allowed: true
     },
+    project_visibility: {
+      enabled: true,
+      allowed: true
+    }
   }
 )
 

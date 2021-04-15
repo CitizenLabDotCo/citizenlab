@@ -183,7 +183,7 @@ describe Verification::VerificationService do
     context "for a user only verified with franceconnect" do
       it "returns some locked custom field keys" do
         verification = create(:verification, method_name: 'franceconnect')
-        expect(service.locked_custom_fields(verification.user)).to match_array [:gender, :birthyear]
+        expect(service.locked_custom_fields(verification.user)).to match_array [:birthyear]
       end
     end
   end

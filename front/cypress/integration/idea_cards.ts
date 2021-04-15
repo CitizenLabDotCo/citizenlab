@@ -44,15 +44,6 @@ describe('Idea cards without filter sidebar sorting and filtering', () => {
     cy.get('#e2e-ideas-list');
     cy.get('.e2e-idea-card').first().contains(ideaTitle);
 
-    // sort by trending
-    cy.get('#e2e-ideas-sort-dropdown').click();
-    cy.get('.e2e-sort-items').find('.e2e-sort-item-trending').click();
-    cy.wait(1000);
-
-    // find and check first idea card
-    cy.get('#e2e-ideas-list');
-    cy.get('.e2e-idea-card').first().contains(ideaTitle);
-
     // sort by most voted
     cy.get('#e2e-ideas-sort-dropdown').click();
     cy.get('.e2e-sort-items').find('.e2e-sort-item-popular').click();
