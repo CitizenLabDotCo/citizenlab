@@ -246,7 +246,6 @@ jobs:
       - attach_workspace:
           at: /tmp/workspace
       - run: rake templates:release['/tmp/workspace/failed-templates.txt']
-      # - next, fail for failed templates or succeed (slack messages)
 
   back-trigger-deploy:
     resource_class: small
@@ -588,13 +587,16 @@ workflows:
           context: 
             - docker-hub-access
             - slack
-          <<: *slack-fail-post-step-templates
           requires:
             - back-test-tenant-templates
           post-steps:
             - slack/notify:
                 event: pass
                 template: basic_success_1
+            - slack/notify:
+                event: fail
+                mentions: '@ dev-back :boom: FAILURE: Some templates are invalid and could not be released.'
+                template: basic_fail_1
   check-for-inconsistent-data:
     # triggers:
     #   - schedule:
