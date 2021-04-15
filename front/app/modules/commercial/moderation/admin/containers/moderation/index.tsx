@@ -8,8 +8,13 @@ import Modal from 'components/UI/Modal';
 import ModerationRow from './ModerationRow';
 import Pagination from 'components/admin/Pagination/Pagination';
 import Checkbox from 'components/UI/Checkbox';
-import { Icon, IconTooltip, Select, Toggle } from 'cl2-component-library';
-import Button from 'components/UI/Button';
+import {
+  Icon,
+  IconTooltip,
+  Select,
+  Toggle,
+  Button,
+} from 'cl2-component-library';
 import Tabs from 'components/UI/Tabs';
 import { PageTitle } from 'components/admin/Section';
 import SelectType from './SelectType';
@@ -18,6 +23,8 @@ import SearchInput from 'components/UI/SearchInput';
 
 // hooks
 import useModerations from '../../../hooks/useModerations';
+import useAppConfiguration from 'hooks/useAppConfiguration';
+import useLocale from 'hooks/useLocale';
 
 // services
 import {
@@ -43,7 +50,6 @@ import { colors, fontSizes } from 'utils/styleUtils';
 
 // typings
 import { IOption } from 'typings';
-import useAppConfiguration from 'hooks/useAppConfiguration';
 
 const Container = styled.div`
   display: flex;
@@ -245,6 +251,7 @@ const Moderation = memo<Props & InjectedIntlProps>(
       searchTerm: '',
     });
     const appConfiguration = useAppConfiguration();
+    const locale = useLocale();
 
     const [moderationItems, setModerationItems] = useState(list);
     const [selectedRows, setSelectedRows] = useState<string[]>([]);
@@ -414,7 +421,7 @@ const Moderation = memo<Props & InjectedIntlProps>(
       }
     }, [list, processing]);
 
-    if (!isNilOrError(moderationItems)) {
+    if (!isNilOrError(moderationItems) && !isNilOrError(locale)) {
       return (
         <Container className={className}>
           <PageHeader>
@@ -430,7 +437,12 @@ const Moderation = memo<Props & InjectedIntlProps>(
                 placement="right"
               />
             </PageTitleWrapper>
-            <Button onClick={openSettingsModal}>
+            <Button
+              buttonStyle="secondary"
+              onClick={openSettingsModal}
+              locale={locale}
+              icon="settings"
+            >
               <FormattedMessage {...messages.settings} />
             </Button>
           </PageHeader>
@@ -438,6 +450,7 @@ const Moderation = memo<Props & InjectedIntlProps>(
           <Filters>
             {selectedRows.length > 0 && (
               <MarkAsButton
+                locale={locale}
                 icon="label"
                 buttonStyle="cl-blue"
                 processing={processing}
