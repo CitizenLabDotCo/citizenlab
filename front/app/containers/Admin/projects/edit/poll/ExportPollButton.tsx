@@ -13,12 +13,15 @@ import Button from 'components/UI/Button';
 import { exportPollResponses } from 'services/pollResponses';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from './messages';
+import { InjectedIntlProps } from 'react-intl';
+import { snakeCase } from 'lodash-es';
 
 interface Props {
   participationContextType: IParticipationContextType;
   participationContextId: string;
+  participationContextName: string;
   className?: string;
 }
 
@@ -26,11 +29,11 @@ interface State {
   exporting: boolean;
 }
 
-export default class ExportPollButton extends React.PureComponent<
-  Props,
+class ExportPollButton extends React.PureComponent<
+  Props & InjectedIntlProps,
   State
 > {
-  constructor(props: Props) {
+  constructor(props: Props & InjectedIntlProps) {
     super(props);
     this.state = {
       exporting: false,
@@ -42,12 +45,21 @@ export default class ExportPollButton extends React.PureComponent<
   };
 
   handleExportPollResults = async () => {
+    const {
+      intl: { formatMessage, formatDate },
+      participationContextName,
+      participationContextId,
+      participationContextType,
+    } = this.props;
     this.trackExportPoll();
 
     this.setState({ exporting: true });
     await exportPollResponses(
-      this.props.participationContextId,
-      this.props.participationContextType
+      participationContextId,
+      participationContextType,
+      `${formatMessage(messages.pollExportFileName)}_${snakeCase(
+        participationContextName
+      )}_${formatDate(Date.now())}`
     );
     this.setState({ exporting: false });
   };
@@ -68,3 +80,5 @@ export default class ExportPollButton extends React.PureComponent<
     );
   }
 }
+
+export default injectIntl(ExportPollButton);
