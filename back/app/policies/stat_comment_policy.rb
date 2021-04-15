@@ -9,78 +9,87 @@ class StatCommentPolicy < ApplicationPolicy
     end
 
     def resolve
-      if user&.active? && user.admin?
-        scope.all
-      elsif user&.active? && user.project_moderator?
-        projects = ProjectPolicy::Scope.new(user, Project.all).resolve
-        # we're deliberately avoiding to join ideas to the main scope itself,
-        # because it conflicts with other queries modifying the scope (e.g.
-        # filtering on projects)
-        scope.where(post_type: 'Idea', post_id: Idea.where(project: projects))
-      else
-        scope.none
-      end
+      return scope.none unless user&.active?
+
+      resolve_for_active
+    end
+
+    def resolve_for_active
+      user.admin? ? scope.all : scope.none
     end
   end
 
   def ideas_count?
-    user&.active? && (user.admin? || user.project_moderator?)
+    show_stats?
   end
 
   def ideas_by_topic?
-    user&.active? && (user.admin? || user.project_moderator?)
+    show_stats?
   end
 
   def ideas_by_area?
-    user&.active? && (user.admin? || user.project_moderator?)
+    show_stats?
   end
 
   def ideas_by_project?
-    user&.active? && (user.admin? || user.project_moderator?)
+    show_stats?
   end
 
   def ideas_by_time?
-    user&.active? && (user.admin? || user.project_moderator?)
+    show_stats?
   end
 
   def ideas_by_time_cumulative?
-    user&.active? && (user.admin? || user.project_moderator?)
+    show_stats?
   end
 
   def comments_count?
-    user&.active? && (user.admin? || user.project_moderator?)
+    show_stats?
   end
 
   def comments_by_time?
-    user&.active? && (user.admin? || user.project_moderator?)
+    show_stats?
   end
 
   def comments_by_time_cumulative?
-    user&.active? && (user.admin? || user.project_moderator?)
+    show_stats?
   end
 
   def comments_by_topic?
-    user&.active? && (user.admin? || user.project_moderator?)
+    show_stats?
   end
 
   def comments_by_project?
-    user&.active? && (user.admin? || user.project_moderator?)
+    show_stats?
   end
 
   def comments_by_time_as_xlsx?
-    user&.active? && (user.admin? || user.project_moderator?)
+    show_stats?
   end
 
   def comments_by_time_cumulative_as_xlsx?
-    user&.active? && (user.admin? || user.project_moderator?)
+    show_stats?
   end
 
   def comments_by_topic_as_xlsx?
-    user&.active? && (user.admin? || user.project_moderator?)
+    show_stats?
   end
 
   def comments_by_project_as_xlsx?
-    user&.active? && (user.admin? || user.project_moderator?)
+    show_stats?
   end
 
+  private
+
+  def show_stats?
+    return unless active?
+
+    show_stats_to_active?
+  end
+
+  def show_stats_to_active?
+    admin?
+  end
 end
+
+StatCommentPolicy.prepend_if_ee('ProjectManagement::Patches::StatCommentPolicy')
