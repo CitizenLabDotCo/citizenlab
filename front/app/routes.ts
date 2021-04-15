@@ -216,6 +216,15 @@ export default function createRoutes() {
           }),
         },
         {
+          path: 'pages/profanity-guidelines',
+          name: 'profanityGuidelines',
+          component: Loadable({
+            loader: () => import('containers/ProfanityGuidelines'),
+            loading: LoadableLoadingCitizen,
+            delay: 500,
+          }),
+        },
+        {
           path: 'pages/accessibility-statement',
           name: 'accessibilityStatement',
           component: Loadable({
