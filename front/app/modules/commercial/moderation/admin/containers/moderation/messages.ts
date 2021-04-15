@@ -98,4 +98,13 @@ export default defineMessages({
     id: 'app.containers.Admin.Moderation.settings',
     defaultMessage: 'Settings',
   },
+  profanityBlockerSetting: {
+    id: 'app.containers.Admin.Moderation.profanityBlockerSetting',
+    defaultMessage: 'Profanity blocker',
+  },
+  profanityBlockerSettingDescription: {
+    id: 'app.containers.Admin.Moderation.profanityBlockerSettingDescription',
+    defaultMessage:
+      'Enabling this setting will block posts containing the most commonly reported offensive words.',
+  },
 });

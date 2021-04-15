@@ -170,355 +170,397 @@ const StyledSearchInput = styled(SearchInput)`
   width: 320px;
 `;
 
+const ProfanitySettings = styled.div`
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+`;
+
+const StyledToggle = styled(Toggle)`
+  margin-bottom: 20px;
+`;
+
+const LabelTitle = styled.div`
+  font-weight: bold;
+  margin-bottom: 5px;
+`;
+
+const LabelDescription = styled.div``;
+
 interface Props {
   className?: string;
 }
 
-const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
-  const moderationStatuses = [
-    {
-      name: 'unread',
-      label: intl.formatMessage(messages.unread),
-    },
-    {
-      name: 'read',
-      label: intl.formatMessage(messages.read),
-    },
-  ];
+const Moderation = memo<Props & InjectedIntlProps>(
+  ({ className, intl: { formatMessage } }) => {
+    const moderationStatuses = [
+      {
+        name: 'unread',
+        label: formatMessage(messages.unread),
+      },
+      {
+        name: 'read',
+        label: formatMessage(messages.read),
+      },
+    ];
 
-  const pageSizes = [
-    {
-      value: 10,
-      label: '10',
-    },
-    {
-      value: 25,
-      label: '25',
-    },
-    {
-      value: 50,
-      label: '50',
-    },
-    {
-      value: 100,
-      label: '100',
-    },
-  ];
+    const pageSizes = [
+      {
+        value: 10,
+        label: '10',
+      },
+      {
+        value: 25,
+        label: '25',
+      },
+      {
+        value: 50,
+        label: '50',
+      },
+      {
+        value: 100,
+        label: '100',
+      },
+    ];
 
-  const {
-    list,
-    pageSize,
-    moderationStatus,
-    currentPage,
-    lastPage,
-    onModerationStatusChange,
-    onPageNumberChange,
-    onPageSizeChange,
-    onModeratableTypesChange,
-    onProjectIdsChange,
-    onSearchTermChange,
-  } = useModerations({
-    pageSize: pageSizes[1].value,
-    moderationStatus: 'unread',
-    moderatableTypes: [],
-    projectIds: [],
-    searchTerm: '',
-  });
+    const {
+      list,
+      pageSize,
+      moderationStatus,
+      currentPage,
+      lastPage,
+      onModerationStatusChange,
+      onPageNumberChange,
+      onPageSizeChange,
+      onModeratableTypesChange,
+      onProjectIdsChange,
+      onSearchTermChange,
+    } = useModerations({
+      pageSize: pageSizes[1].value,
+      moderationStatus: 'unread',
+      moderatableTypes: [],
+      projectIds: [],
+      searchTerm: '',
+    });
 
-  const [moderationItems, setModerationItems] = useState(list);
-  const [selectedRows, setSelectedRows] = useState<string[]>([]);
-  const [processing, setProcessing] = useState(false);
-  const [selectedTypes, setSelectedTypes] = useState<TModeratableTypes[]>([]);
-  const [selectedProjectIds, setSelectedProjectIds] = useState<string[]>([]);
-  const [settingsModalOpened, setSettingsModalOpened] = useState(false);
+    const [moderationItems, setModerationItems] = useState(list);
+    const [selectedRows, setSelectedRows] = useState<string[]>([]);
+    const [processing, setProcessing] = useState(false);
+    const [selectedTypes, setSelectedTypes] = useState<TModeratableTypes[]>([]);
+    const [selectedProjectIds, setSelectedProjectIds] = useState<string[]>([]);
+    const [settingsModalOpened, setSettingsModalOpened] = useState(false);
 
-  const handleOnSelectAll = useCallback(
-    (_event: React.ChangeEvent) => {
-      if (!isNilOrError(moderationItems) && !processing) {
-        const newSelectedRows =
-          selectedRows.length < moderationItems.length
-            ? moderationItems.map((item) => item.id)
-            : [];
-        setSelectedRows(newSelectedRows);
-      }
-    },
-    [moderationItems, selectedRows, processing]
-  );
+    const handleOnSelectAll = useCallback(
+      (_event: React.ChangeEvent) => {
+        if (!isNilOrError(moderationItems) && !processing) {
+          const newSelectedRows =
+            selectedRows.length < moderationItems.length
+              ? moderationItems.map((item) => item.id)
+              : [];
+          setSelectedRows(newSelectedRows);
+        }
+      },
+      [moderationItems, selectedRows, processing]
+    );
 
-  const handleOnModerationStatusChange = useCallback(
-    (name: TModerationStatuses) => {
-      trackEventByName(
-        name === 'read' ? tracks.viewedTabClicked : tracks.notViewedTabClicked
-      );
-      onModerationStatusChange(name);
-    },
-    [onModerationStatusChange]
-  );
-
-  const handePageNumberChange = useCallback(
-    (pageNumber: number) => {
-      trackEventByName(tracks.pageNumberClicked);
-      onPageNumberChange(pageNumber);
-    },
-    [onPageNumberChange]
-  );
-
-  const handleOnPageSizeChange = useCallback(
-    (option: IOption) => {
-      onPageSizeChange(option.value);
-    },
-    [onPageSizeChange]
-  );
-
-  const handleModeratableTypesChange = useCallback(
-    (newSelectedTypes: TModeratableTypes[]) => {
-      setSelectedTypes(newSelectedTypes);
-      onModeratableTypesChange(newSelectedTypes);
-      trackEventByName(tracks.typeFilterUsed);
-    },
-    [onModeratableTypesChange]
-  );
-
-  const handleProjectIdsChange = useCallback(
-    (newProjectIds: string[]) => {
-      setSelectedProjectIds(newProjectIds);
-      onProjectIdsChange(newProjectIds);
-      trackEventByName(tracks.projectFilterUsed);
-    },
-    [onModeratableTypesChange]
-  );
-
-  const handleSearchTermChange = useCallback(
-    (searchTerm: string) => {
-      onSearchTermChange(searchTerm);
-      trackEventByName(tracks.searchUsed, {
-        searchTerm,
-      });
-    },
-    [onSearchTermChange]
-  );
-
-  const handleRowOnSelect = useCallback(
-    (selectedModerationId: string) => {
-      if (!processing) {
-        const newSelectedRows = includes(selectedRows, selectedModerationId)
-          ? selectedRows.filter((id) => id !== selectedModerationId)
-          : [...selectedRows, selectedModerationId];
-        setSelectedRows(newSelectedRows);
-      }
-    },
-    [selectedRows, processing]
-  );
-
-  const onToggleBlockProfanitySetting = () => {};
-
-  const openSettingsModal = () => {
-    setSettingsModalOpened(true);
-  };
-
-  const closeSettingsModal = () => {
-    setSettingsModalOpened(false);
-  };
-
-  const markAs = useCallback(
-    async (event: React.FormEvent) => {
-      if (
-        selectedRows.length > 0 &&
-        !isNilOrError(moderationItems) &&
-        moderationStatus &&
-        !processing
-      ) {
-        event.preventDefault();
+    const handleOnModerationStatusChange = useCallback(
+      (name: TModerationStatuses) => {
         trackEventByName(
-          moderationStatus === 'read'
-            ? tracks.markedAsNotViewedButtonClicked
-            : tracks.markedAsNotViewedButtonClicked,
-          { selectedItemsCount: selectedRows.length }
+          name === 'read' ? tracks.viewedTabClicked : tracks.notViewedTabClicked
         );
-        setProcessing(true);
-        const moderations = selectedRows.map((moderationId) =>
-          moderationItems.find((item) => item.id === moderationId)
-        ) as IModerationData[];
-        const updatedModerationStatus =
-          moderationStatus === 'read' ? 'unread' : 'read';
-        const promises = moderations.map((moderation) =>
-          updateModerationStatus(
-            moderation.id,
-            moderation.attributes.moderatable_type,
-            updatedModerationStatus
-          )
-        );
-        await Promise.all(promises);
-        setProcessing(false);
+        onModerationStatusChange(name);
+      },
+      [onModerationStatusChange]
+    );
+
+    const handePageNumberChange = useCallback(
+      (pageNumber: number) => {
+        trackEventByName(tracks.pageNumberClicked);
+        onPageNumberChange(pageNumber);
+      },
+      [onPageNumberChange]
+    );
+
+    const handleOnPageSizeChange = useCallback(
+      (option: IOption) => {
+        onPageSizeChange(option.value);
+      },
+      [onPageSizeChange]
+    );
+
+    const handleModeratableTypesChange = useCallback(
+      (newSelectedTypes: TModeratableTypes[]) => {
+        setSelectedTypes(newSelectedTypes);
+        onModeratableTypesChange(newSelectedTypes);
+        trackEventByName(tracks.typeFilterUsed);
+      },
+      [onModeratableTypesChange]
+    );
+
+    const handleProjectIdsChange = useCallback(
+      (newProjectIds: string[]) => {
+        setSelectedProjectIds(newProjectIds);
+        onProjectIdsChange(newProjectIds);
+        trackEventByName(tracks.projectFilterUsed);
+      },
+      [onModeratableTypesChange]
+    );
+
+    const handleSearchTermChange = useCallback(
+      (searchTerm: string) => {
+        onSearchTermChange(searchTerm);
+        trackEventByName(tracks.searchUsed, {
+          searchTerm,
+        });
+      },
+      [onSearchTermChange]
+    );
+
+    const handleRowOnSelect = useCallback(
+      (selectedModerationId: string) => {
+        if (!processing) {
+          const newSelectedRows = includes(selectedRows, selectedModerationId)
+            ? selectedRows.filter((id) => id !== selectedModerationId)
+            : [...selectedRows, selectedModerationId];
+          setSelectedRows(newSelectedRows);
+        }
+      },
+      [selectedRows, processing]
+    );
+
+    const onToggleBlockProfanitySetting = () => {};
+
+    const openSettingsModal = () => {
+      setSettingsModalOpened(true);
+    };
+
+    const closeSettingsModal = () => {
+      setSettingsModalOpened(false);
+    };
+
+    const markAs = useCallback(
+      async (event: React.FormEvent) => {
+        if (
+          selectedRows.length > 0 &&
+          !isNilOrError(moderationItems) &&
+          moderationStatus &&
+          !processing
+        ) {
+          event.preventDefault();
+          trackEventByName(
+            moderationStatus === 'read'
+              ? tracks.markedAsNotViewedButtonClicked
+              : tracks.markedAsNotViewedButtonClicked,
+            { selectedItemsCount: selectedRows.length }
+          );
+          setProcessing(true);
+          const moderations = selectedRows.map((moderationId) =>
+            moderationItems.find((item) => item.id === moderationId)
+          ) as IModerationData[];
+          const updatedModerationStatus =
+            moderationStatus === 'read' ? 'unread' : 'read';
+          const promises = moderations.map((moderation) =>
+            updateModerationStatus(
+              moderation.id,
+              moderation.attributes.moderatable_type,
+              updatedModerationStatus
+            )
+          );
+          await Promise.all(promises);
+          setProcessing(false);
+          setSelectedRows([]);
+        }
+      },
+      [selectedRows, moderationItems, moderationStatus]
+    );
+
+    useEffect(() => {
+      if (!processing) {
         setSelectedRows([]);
       }
-    },
-    [selectedRows, moderationItems, moderationStatus]
-  );
+    }, [currentPage, moderationStatus, pageSize, processing]);
 
-  useEffect(() => {
-    if (!processing) {
-      setSelectedRows([]);
-    }
-  }, [currentPage, moderationStatus, pageSize, processing]);
+    useEffect(() => {
+      if (!processing) {
+        setModerationItems(list);
+      }
+    }, [list, processing]);
 
-  useEffect(() => {
-    if (!processing) {
-      setModerationItems(list);
-    }
-  }, [list, processing]);
-
-  if (!isNilOrError(moderationItems)) {
-    return (
-      <Container className={className}>
-        <PageHeader>
-          <PageTitleWrapper>
-            <StyledPageTitle>
-              <FormattedMessage {...messages.pageTitle} />
-            </StyledPageTitle>
-            <StyledIconTooltip
-              content={<FormattedMessage {...messages.moderationHelpTooltip} />}
-              iconSize="20px"
-              placement="right"
-            />
-          </PageTitleWrapper>
-          <Button onClick={openSettingsModal}>
-            <FormattedMessage {...messages.settings} />
-          </Button>
-        </PageHeader>
-
-        <Filters>
-          {selectedRows.length > 0 && (
-            <MarkAsButton
-              icon="label"
-              buttonStyle="cl-blue"
-              processing={processing}
-              onClick={markAs}
-            >
-              {moderationStatus === 'unread' ? (
-                <FormattedMessage
-                  {...messages.markAsViewed}
-                  values={{ selectedItemsCount: selectedRows.length }}
-                />
-              ) : (
-                <FormattedMessage
-                  {...messages.markAsNotViewed}
-                  values={{ selectedItemsCount: selectedRows.length }}
-                />
-              )}
-            </MarkAsButton>
-          )}
-
-          {selectedRows.length === 0 && (
-            <>
-              <StyledTabs
-                items={moderationStatuses}
-                selectedValue={moderationStatus || 'unread'}
-                onClick={handleOnModerationStatusChange}
+    if (!isNilOrError(moderationItems)) {
+      return (
+        <Container className={className}>
+          <PageHeader>
+            <PageTitleWrapper>
+              <StyledPageTitle>
+                <FormattedMessage {...messages.pageTitle} />
+              </StyledPageTitle>
+              <StyledIconTooltip
+                content={
+                  <FormattedMessage {...messages.moderationHelpTooltip} />
+                }
+                iconSize="20px"
+                placement="right"
               />
-              <SelectType
-                selectedTypes={selectedTypes}
-                onChange={handleModeratableTypesChange}
-              />
-              <SelectProject
-                selectedProjectIds={selectedProjectIds}
-                onChange={handleProjectIdsChange}
-              />
-            </>
-          )}
-          <StyledSearchInput onChange={handleSearchTermChange} />
-        </Filters>
+            </PageTitleWrapper>
+            <Button onClick={openSettingsModal}>
+              <FormattedMessage {...messages.settings} />
+            </Button>
+          </PageHeader>
 
-        <StyledTable>
-          <thead>
-            <tr>
-              <th className="checkbox">
-                <StyledCheckbox
-                  checked={
-                    moderationItems.length > 0 &&
-                    selectedRows.length === moderationItems.length
-                  }
-                  indeterminate={
-                    selectedRows.length > 0 &&
-                    selectedRows.length < moderationItems.length
-                  }
-                  disabled={moderationItems.length === 0}
-                  onChange={handleOnSelectAll}
+          <Filters>
+            {selectedRows.length > 0 && (
+              <MarkAsButton
+                icon="label"
+                buttonStyle="cl-blue"
+                processing={processing}
+                onClick={markAs}
+              >
+                {moderationStatus === 'unread' ? (
+                  <FormattedMessage
+                    {...messages.markAsViewed}
+                    values={{ selectedItemsCount: selectedRows.length }}
+                  />
+                ) : (
+                  <FormattedMessage
+                    {...messages.markAsNotViewed}
+                    values={{ selectedItemsCount: selectedRows.length }}
+                  />
+                )}
+              </MarkAsButton>
+            )}
+
+            {selectedRows.length === 0 && (
+              <>
+                <StyledTabs
+                  items={moderationStatuses}
+                  selectedValue={moderationStatus || 'unread'}
+                  onClick={handleOnModerationStatusChange}
                 />
-              </th>
-              <th className="date">
-                <FormattedMessage {...messages.date} />
-              </th>
-              <th className="type">
-                <FormattedMessage {...messages.type} />
-              </th>
-              <th className="belongsTo">
-                <FormattedMessage {...messages.belongsTo} />
-              </th>
-              <th className="content">
-                <FormattedMessage {...messages.content} />
-              </th>
-              <th className="goto">&nbsp;</th>
-            </tr>
-          </thead>
+                <SelectType
+                  selectedTypes={selectedTypes}
+                  onChange={handleModeratableTypesChange}
+                />
+                <SelectProject
+                  selectedProjectIds={selectedProjectIds}
+                  onChange={handleProjectIdsChange}
+                />
+              </>
+            )}
+            <StyledSearchInput onChange={handleSearchTermChange} />
+          </Filters>
+
+          <StyledTable>
+            <thead>
+              <tr>
+                <th className="checkbox">
+                  <StyledCheckbox
+                    checked={
+                      moderationItems.length > 0 &&
+                      selectedRows.length === moderationItems.length
+                    }
+                    indeterminate={
+                      selectedRows.length > 0 &&
+                      selectedRows.length < moderationItems.length
+                    }
+                    disabled={moderationItems.length === 0}
+                    onChange={handleOnSelectAll}
+                  />
+                </th>
+                <th className="date">
+                  <FormattedMessage {...messages.date} />
+                </th>
+                <th className="type">
+                  <FormattedMessage {...messages.type} />
+                </th>
+                <th className="belongsTo">
+                  <FormattedMessage {...messages.belongsTo} />
+                </th>
+                <th className="content">
+                  <FormattedMessage {...messages.content} />
+                </th>
+                <th className="goto">&nbsp;</th>
+              </tr>
+            </thead>
+            {moderationItems.length > 0 && (
+              <tbody>
+                {moderationItems.map((moderationItem) => (
+                  <ModerationRow
+                    key={moderationItem.id}
+                    moderation={moderationItem}
+                    selected={includes(selectedRows, moderationItem.id)}
+                    onSelect={handleRowOnSelect}
+                  />
+                ))}
+              </tbody>
+            )}
+          </StyledTable>
+
           {moderationItems.length > 0 && (
-            <tbody>
-              {moderationItems.map((moderationItem) => (
-                <ModerationRow
-                  key={moderationItem.id}
-                  moderation={moderationItem}
-                  selected={includes(selectedRows, moderationItem.id)}
-                  onSelect={handleRowOnSelect}
-                />
-              ))}
-            </tbody>
-          )}
-        </StyledTable>
-
-        {moderationItems.length > 0 && (
-          <Footer>
-            <StyledPagination
-              currentPage={currentPage}
-              totalPages={lastPage}
-              loadPage={handePageNumberChange}
-            />
-
-            <Spacer />
-
-            <RowsPerPage>
-              <RowsPerPageLabel>
-                <FormattedMessage {...messages.rowsPerPage} />:
-              </RowsPerPageLabel>
-              <PageSizeSelect
-                options={pageSizes}
-                onChange={handleOnPageSizeChange}
-                value={pageSizes.find((item) => item.value === pageSize)}
+            <Footer>
+              <StyledPagination
+                currentPage={currentPage}
+                totalPages={lastPage}
+                loadPage={handePageNumberChange}
               />
-            </RowsPerPage>
-          </Footer>
-        )}
 
-        {moderationItems.length === 0 && (
-          <Empty>
-            <EmptyIcon name="inbox" />
-            <EmptyMessage>
-              {moderationStatus === 'read' ? (
-                <FormattedMessage {...messages.noViewedItems} />
-              ) : (
-                <FormattedMessage {...messages.noUnviewedItems} />
-              )}
-            </EmptyMessage>
-          </Empty>
-        )}
+              <Spacer />
 
-        <Modal opened={settingsModalOpened} close={closeSettingsModal}>
-          <Toggle checked onChange={onToggleBlockProfanitySetting} />
-        </Modal>
-      </Container>
-    );
+              <RowsPerPage>
+                <RowsPerPageLabel>
+                  <FormattedMessage {...messages.rowsPerPage} />:
+                </RowsPerPageLabel>
+                <PageSizeSelect
+                  options={pageSizes}
+                  onChange={handleOnPageSizeChange}
+                  value={pageSizes.find((item) => item.value === pageSize)}
+                />
+              </RowsPerPage>
+            </Footer>
+          )}
+
+          {moderationItems.length === 0 && (
+            <Empty>
+              <EmptyIcon name="inbox" />
+              <EmptyMessage>
+                {moderationStatus === 'read' ? (
+                  <FormattedMessage {...messages.noViewedItems} />
+                ) : (
+                  <FormattedMessage {...messages.noUnviewedItems} />
+                )}
+              </EmptyMessage>
+            </Empty>
+          )}
+
+          <Modal
+            header={formatMessage(messages.settings)}
+            opened={settingsModalOpened}
+            close={closeSettingsModal}
+          >
+            <ProfanitySettings>
+              <StyledToggle
+                checked
+                onChange={onToggleBlockProfanitySetting}
+                label={
+                  <>
+                    <LabelTitle>
+                      {formatMessage(messages.profanityBlockerSetting)}
+                    </LabelTitle>
+                    <LabelDescription>
+                      {formatMessage(
+                        messages.profanityBlockerSettingDescription
+                      )}
+                    </LabelDescription>
+                  </>
+                }
+              />
+            </ProfanitySettings>
+          </Modal>
+        </Container>
+      );
+    }
+
+    return null;
   }
-
-  return null;
-});
+);
 
 export default injectIntl(Moderation);
