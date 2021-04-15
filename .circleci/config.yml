@@ -626,7 +626,7 @@ workflows:
                 template: basic_success_1
             - slack/notify:
                 event: fail
-                mentions: '@ dev-back :boom: FAILURE: Some templates are invalid and could not be released.'
+                mentions: '@dev-back :boom: FAILURE: Some templates are invalid and could not be released.'
                 template: basic_fail_1
   check-for-inconsistent-data:
     triggers:
