@@ -8,14 +8,14 @@ slack-fail-post-step-templates: &slack-fail-post-step-templates
   post-steps:
     - slack/notify:
         event: fail
-        mentions: '@ dev-back :boom: FAILURE: Tenant templates workflow failed to release new template versions.'
+        mentions: '@dev-back :boom: FAILURE: Tenant templates workflow failed to release new template versions.'
         template: basic_fail_1
 
 slack-fail-post-step-inconsistent-data: &slack-fail-post-step-inconsistent-data
   post-steps:
     - slack/notify:
         event: fail
-        mentions: '@ dev-back :boom: FAILURE: Some data is likely invalid.'
+        mentions: '@dev-back :boom: FAILURE: Some data is likely invalid.'
         template: basic_fail_1
 
 parameters:
@@ -317,7 +317,7 @@ jobs:
         type: string
         default: .env-production-benelux
     steps:
-      - run: ssh << parameters.ssh_user >>@<< parameters.ssh_host >> -o StrictHostKeyChecking=no "docker run --env-file cl2-deployment/<< parameters.env_file >> citizenlabdotco/back-ee:production rake templates:generate[true]"
+      - run: ssh << parameters.ssh_user >>@<< parameters.ssh_host >> -o StrictHostKeyChecking=no "docker run --env-file cl2-deployment/<< parameters.env_file >> citizenlabdotco/back-ee:$CIRCLE_BRANCH rake templates:generate[true]"
 
   check-for-inconsistent-data:
     resource_class: small
@@ -335,7 +335,7 @@ jobs:
     steps:
       - run:
           name: Check for inconsistent data
-          command: ssh << parameters.ssh_user >>@<< parameters.ssh_host >> -o StrictHostKeyChecking=no "docker run --env-file cl2-deployment/<< parameters.env_file >> citizenlabdotco/back-ee:production rake checks:invalid_data"
+          command: ssh << parameters.ssh_user >>@<< parameters.ssh_host >> -o StrictHostKeyChecking=no "docker run --env-file cl2-deployment/<< parameters.env_file >> citizenlabdotco/back-ee:$CIRCLE_BRANCH rake checks:invalid_data"
           no_output_timeout: 60m
 
   # *************** front ***************
@@ -549,13 +549,13 @@ workflows:
             branches:
               only: master
   nightly-templates:
-    # triggers:
-    #   - schedule:
-    #       cron: "0 0 * * *"
-    #       filters:
-    #         branches:
-    #           only:
-    #             - production
+    triggers:
+      - schedule:
+          cron: "0 0 * * *"
+          filters:
+            branches:
+              only:
+                - production
     jobs:
       - back-build-ee-docker-image:
           context: 
@@ -629,28 +629,28 @@ workflows:
                 mentions: '@ dev-back :boom: FAILURE: Some templates are invalid and could not be released.'
                 template: basic_fail_1
   check-for-inconsistent-data:
-    # triggers:
-    #   - schedule:
-    #       cron: "0 2 * * 1"
-    #       filters:
-    #         branches:
-    #           only:
-    #             - production
+    triggers:
+      - schedule:
+          cron: "0 2 * * 1"
+          filters:
+            branches:
+              only:
+                - production
     jobs:
-      # - check-for-inconsistent-data:
-      #     <<: *slack-fail-post-step-inconsistent-data
-      #     name: 'Benelux'
-      #     context:
-      #       - slack
-      #     ssh_host: '52.57.74.84'
-      #     env_file: '.env-production-benelux'
-      # - check-for-inconsistent-data:
-      #     <<: *slack-fail-post-step-inconsistent-data
-      #     name: 'South America'
-      #     context:
-      #       - slack
-      #     ssh_host: '52.67.181.38'
-      #     env_file: '.env-web'
+      - check-for-inconsistent-data:
+          <<: *slack-fail-post-step-inconsistent-data
+          name: 'Benelux'
+          context:
+            - slack
+          ssh_host: '52.57.74.84'
+          env_file: '.env-production-benelux'
+      - check-for-inconsistent-data:
+          <<: *slack-fail-post-step-inconsistent-data
+          name: 'South America'
+          context:
+            - slack
+          ssh_host: '52.67.181.38'
+          env_file: '.env-web'
       - check-for-inconsistent-data:
           <<: *slack-fail-post-step-inconsistent-data
           name: 'Canada'
@@ -677,8 +677,8 @@ workflows:
           context:
             - slack
           requires:
-            # - 'Benelux'
-            # - 'South America'
+            - 'Benelux'
+            - 'South America'
             - 'Canada'
             - 'US West'
             - 'UK'
