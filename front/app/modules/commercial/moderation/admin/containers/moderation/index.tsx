@@ -4,10 +4,11 @@ import { includes } from 'lodash-es';
 
 // components
 import Table from 'components/UI/Table';
+import Modal from 'components/UI/Modal';
 import ModerationRow from './ModerationRow';
 import Pagination from 'components/admin/Pagination/Pagination';
 import Checkbox from 'components/UI/Checkbox';
-import { Icon, IconTooltip, Select } from 'cl2-component-library';
+import { Icon, IconTooltip, Select, Toggle } from 'cl2-component-library';
 import Button from 'components/UI/Button';
 import Tabs from 'components/UI/Tabs';
 import { PageTitle } from 'components/admin/Section';
@@ -229,6 +230,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
   const [processing, setProcessing] = useState(false);
   const [selectedTypes, setSelectedTypes] = useState<TModeratableTypes[]>([]);
   const [selectedProjectIds, setSelectedProjectIds] = useState<string[]>([]);
+  const [settingsModalOpened, setSettingsModalOpened] = useState(false);
 
   const handleOnSelectAll = useCallback(
     (_event: React.ChangeEvent) => {
@@ -308,6 +310,16 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
     [selectedRows, processing]
   );
 
+  const onToggleBlockProfanitySetting = () => {};
+
+  const openSettingsModal = () => {
+    setSettingsModalOpened(true);
+  };
+
+  const closeSettingsModal = () => {
+    setSettingsModalOpened(false);
+  };
+
   const markAs = useCallback(
     async (event: React.FormEvent) => {
       if (
@@ -370,7 +382,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
               placement="right"
             />
           </PageTitleWrapper>
-          <Button>
+          <Button onClick={openSettingsModal}>
             <FormattedMessage {...messages.settings} />
           </Button>
         </PageHeader>
@@ -498,6 +510,10 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
             </EmptyMessage>
           </Empty>
         )}
+
+        <Modal opened={settingsModalOpened} close={closeSettingsModal}>
+          <Toggle checked onChange={onToggleBlockProfanitySetting} />
+        </Modal>
       </Container>
     );
   }
