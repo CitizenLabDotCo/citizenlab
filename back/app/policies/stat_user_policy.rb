@@ -9,56 +9,65 @@ class StatUserPolicy < ApplicationPolicy
     end
 
     def resolve
-      if user&.active? && user.admin?
-        scope.all
-      else user&.active? && user.project_moderator?
-        projects = ProjectPolicy::Scope.new(user, Project.all).moderatable
-        output = ProjectPolicy::InverseScope.new(projects.first, scope).resolve
-        projects.drop(1).each do |project|
-          output = output.or(ProjectPolicy::InverseScope.new(project, scope).resolve)
-        end
-        output
-      end
+      return scope.none unless user&.active?
+
+      resolve_for_active
+    end
+
+    private
+
+    def resolve_for_active
+      user.admin? ? scope.all : scope.none
     end
   end
 
   def users_count?
-    user&.active? && (user.admin? || user.project_moderator?)
+    show_stats?
   end
 
   def users_by_time?
-    user&.active? && (user.admin? || user.project_moderator?)
+    show_stats?
   end
 
   def users_by_time_cumulative?
-    user&.active? && (user.admin? || user.project_moderator?)
+    show_stats?
   end
 
   def active_users_by_time?
-    user&.active? && (user.admin? || user.project_moderator?)
+    show_stats?
   end
   
   def active_users_by_time_cumulative?
-    user&.active? && (user.admin? || user.project_moderator?)
+    show_stats?
   end
 
   def users_engagement_scores?
-    user&.active? && (user.admin? || user.project_moderator?)
-  end
-  def users_count?
-    user&.active? && (user.admin? || user.project_moderator?)
+    show_stats?
   end
 
   def users_by_time_as_xlsx?
-    user&.active? && (user.admin? || user.project_moderator?)
+    show_stats?
   end
 
   def users_by_time_cumulative_as_xlsx?
-    user&.active? && (user.admin? || user.project_moderator?)
+    show_stats?
   end
 
   def active_users_by_time_as_xlsx?
-    user&.active? && (user.admin? || user.project_moderator?)
+    show_stats?
   end
 
+  private
+
+  def show_stats?
+    return unless active?
+
+    show_stats_to_active?
+  end
+
+  def show_stats_to_active?
+    admin?
+  end
 end
+
+StatUserPolicy.prepend_if_ee('ProjectManagement::Patches::StatUserPolicy')
