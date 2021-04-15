@@ -252,7 +252,7 @@ class XlsxService
   def users_xlsx_columns
     areas = Area.all.index_by(&:id)
 
-    custom_field_columns = CustomField.with_resource_type('User')&.map do |field|
+    custom_field_columns = CustomField.with_resource_type('User').order(:ordering)&.map do |field|
       { header: multiloc_service.t(field.title_multiloc), f: ->(u) { u.custom_field_values[field.key] } }
     end
 
@@ -262,10 +262,6 @@ class XlsxService
       { header: 'first_name', f: ->(u) { u.first_name } },
       { header: 'last_name', f: ->(u) { u.last_name } },
       { header: 'slug', f: ->(u) { u.slug }, skip_sanitization: true },
-      { header: 'gender', f: ->(u) { u.gender } },
-      { header: 'birthyear', f: ->(u) { u.birthyear } },
-      { header: 'domicile', f: ->(u) { multiloc_service.t(areas[u.domicile]&.title_multiloc) } },
-      { header: 'education', f: ->(u) { u.education } },
       { header: 'created_at', f: ->(u) { u.created_at }, skip_sanitization: true },
       *custom_field_columns
     ]
