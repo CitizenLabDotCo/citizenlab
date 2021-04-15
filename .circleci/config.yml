@@ -228,11 +228,11 @@ jobs:
       - run: 
           command: SPEC_OPTS="-t template_test -P "engines/*/*/spec/**/*_spec.rb"" bundle exec rspec
           no_output_timeout: 60m
-      - run: rake templates:verify['workspace/failed-templates']
+      - run: rake templates:verify['workspace/failed-templates.txt']
       - persist_to_workspace:
           root: workspace
           paths:
-            - failed-templates
+            - failed-templates.txt
   
   back-release-tenant-templates:
     resource_class: small
@@ -245,7 +245,7 @@ jobs:
     steps:
       - attach_workspace:
           at: /tmp/workspace
-      - run: bundle exec rake templates:release['/tmp/workspace/failed-templates']
+      - run: rake templates:release['/tmp/workspace/failed-templates.txt']
       # - next, fail for failed templates or succeed (slack messages)
 
   back-trigger-deploy:
