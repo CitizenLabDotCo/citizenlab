@@ -747,6 +747,7 @@
   "app.containers.Admin.Moderation.read": "Przejrzane",
   "app.containers.Admin.Moderation.readMore": "Przeczytaj więcej",
   "app.containers.Admin.Moderation.rowsPerPage": "Wierszy na stronie",
+  "app.containers.Admin.Moderation.settings": "",
   "app.containers.Admin.Moderation.show": "Pokaż",
   "app.containers.Admin.Moderation.status": "Status",
   "app.containers.Admin.Moderation.type": "Typ",

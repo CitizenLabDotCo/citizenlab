@@ -747,6 +747,7 @@
   "app.containers.Admin.Moderation.read": "Pregledano",
   "app.containers.Admin.Moderation.readMore": "Pročitajte više",
   "app.containers.Admin.Moderation.rowsPerPage": "Redova po strani",
+  "app.containers.Admin.Moderation.settings": "",
   "app.containers.Admin.Moderation.show": "Prikaži",
   "app.containers.Admin.Moderation.status": "Status",
   "app.containers.Admin.Moderation.type": "Vrsta",
