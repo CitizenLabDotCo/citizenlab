@@ -15,6 +15,7 @@ import {
   Toggle,
   Button,
   Success,
+  Error,
 } from 'cl2-component-library';
 import Tabs from 'components/UI/Tabs';
 import { PageTitle } from 'components/admin/Section';
@@ -263,6 +264,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
     settingsUpdatedSuccessFully,
     setSettingsUpdatedSuccessFully,
   ] = useState(false);
+  const [settingsSavingError, setSettingsSavingError] = useState(false);
   const [
     profanityBlockerSettingEnabled,
     setProfanityBlockerSettingEnabled,
@@ -357,6 +359,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
 
   useEffect(() => {
     const handleSettingsUpdate = async () => {
+      setSettingsSavingError(false);
       await updateAppConfiguration({
         settings: {
           profanity_blocker: {
@@ -371,7 +374,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
     try {
       handleSettingsUpdate();
     } catch (error) {
-      // setApiErrors(isCLErrorJSON(error) ? error.json.errors : error);
+      setSettingsSavingError(true);
     }
   }, [profanityBlockerSettingEnabled]);
 
@@ -607,6 +610,9 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
                 showBackground
                 text={intl.formatMessage(messages.successfulUpdateSettings)}
               />
+            )}
+            {settingsSavingError && (
+              <Error text={intl.formatMessage(messages.settingsSavingError)} />
             )}
           </ProfanitySettings>
         </Modal>

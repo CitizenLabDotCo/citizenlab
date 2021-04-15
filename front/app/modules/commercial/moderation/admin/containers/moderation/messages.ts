@@ -111,4 +111,8 @@ export default defineMessages({
     id: 'app.containers.Admin.Moderation.successfulUpdateSettings',
     defaultMessage: 'Settings updated successfully.',
   },
+  settingsSavingError: {
+    id: 'app.containers.Admin.Moderation.settingsSavingError',
+    defaultMessage: "Couldn't save. Try changing the setting again.",
+  },
 });
