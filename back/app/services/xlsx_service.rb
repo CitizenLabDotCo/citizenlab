@@ -137,31 +137,32 @@ class XlsxService
     columns = [
       { header: 'id',                   f: ->(i) { i.id }, skip_sanitization: true },
       { header: 'title',                f: ->(i) { multiloc_service.t(i.title_multiloc) } },
-      { header: 'body',                 f: ->(i) { convert_to_text_long_lines(multiloc_service.t(i.body_multiloc)) }, width: 10 },
+      { header: 'body',                 f: ->(i) { convert_to_text_long_lines(multiloc_service.t(i.body_multiloc)) },                               width: 10 },
       { header: 'author_name',          f: ->(i) { i.author_name } },
       { header: 'author_email',         f: ->(i) { i.author&.email } },
-      { header: 'proposed_budget',      f: ->(i) { i.proposed_budget },                           skip_sanitization: true },
-      { header: 'publication_status',   f: ->(i) { i.publication_status },                        skip_sanitization: true },
-      { header: 'published_at',         f: ->(i) { i.published_at },                              skip_sanitization: true },
-      { header: 'upvotes_count',        f: ->(i) { i.upvotes_count },                             skip_sanitization: true },
-      { header: 'downvotes_count',      f: ->(i) { i.downvotes_count },                           skip_sanitization: true },
-      { header: 'baskets_count',        f: ->(i) { i.baskets_count },                             skip_sanitization: true },
-      { header: 'url',                  f: ->(i) { Frontend::UrlService.new.model_to_url(i) },    skip_sanitization: true },
+      { header: 'author_id',            f: ->(i) { i.author&.id } },
+      { header: 'proposed_budget',      f: ->(i) { i.proposed_budget },                                                    skip_sanitization: true },
+      { header: 'publication_status',   f: ->(i) { i.publication_status },                                                 skip_sanitization: true },
+      { header: 'published_at',         f: ->(i) { i.published_at },                                                       skip_sanitization: true },
+      { header: 'upvotes_count',        f: ->(i) { i.upvotes_count },                                                      skip_sanitization: true },
+      { header: 'downvotes_count',      f: ->(i) { i.downvotes_count },                                                    skip_sanitization: true },
+      { header: 'baskets_count',        f: ->(i) { i.baskets_count },                                                      skip_sanitization: true },
+      { header: 'url',                  f: ->(i) { Frontend::UrlService.new.model_to_url(i) },                             skip_sanitization: true },
       { header: 'project',              f: ->(i) { multiloc_service.t(i&.project&.title_multiloc) } },
       { header: 'topics',               f: ->(i) { i.topics.map { |t| multiloc_service.t(t.title_multiloc) }.join(',') } },
       { header: 'areas',                f: ->(i) { i.areas.map { |a| multiloc_service.t(a.title_multiloc) }.join(',') } },
       { header: 'status',               f: ->(i) { multiloc_service.t(i&.idea_status&.title_multiloc) } },
       { header: 'assignee',             f: ->(i) { i.assignee&.full_name } },
       { header: 'assignee_email',       f: ->(i) { i.assignee&.email } },
-      { header: 'latitude',             f: ->(i) { i.location_point&.coordinates&.last },         skip_sanitization: true },
-      { header: 'longitude',            f: ->(i) { i.location_point&.coordinates&.first },        skip_sanitization: true },
+      { header: 'latitude',             f: ->(i) { i.location_point&.coordinates&.last },                                  skip_sanitization: true },
+      { header: 'longitude',            f: ->(i) { i.location_point&.coordinates&.first },                                 skip_sanitization: true },
       { header: 'location_description', f: ->(i) { i.location_description } },
-      { header: 'comments_count',       f: ->(i) { i.comments_count },                            skip_sanitization: true },
-      { header: 'attachments_count',    f: ->(i) { i.idea_files.size },                           skip_sanitization: true },
-      { header: 'attachmens',           f: ->(i) { i.idea_files.map { |f| f.file.url }.join("\n") }, skip_sanitization: true }
+      { header: 'comments_count',       f: ->(i) { i.comments_count },                                                     skip_sanitization: true },
+      { header: 'attachments_count',    f: ->(i) { i.idea_files.size },                                                    skip_sanitization: true },
+      { header: 'attachmens',           f: ->(i) { i.idea_files.map { |f| f.file.url }.join("\n") },                       skip_sanitization: true }
     ]
 
-    columns.reject! { |c| %w[author_email assignee_email].include?(c[:header]) } unless view_private_attributes
+    columns.reject! { |c| %w[author_email assignee_email author_id].include?(c[:header]) } unless view_private_attributes
     columns
   end
 
