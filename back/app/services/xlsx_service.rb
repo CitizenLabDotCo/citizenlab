@@ -68,6 +68,8 @@ class XlsxService
     workbook.styles do |s|
       workbook.add_worksheet(name: sheetname) do |sheet|
         header = columns.pluck(:header)
+        column_widths = columns.pluck(:width)
+        sheet.column_widths *column_widths
         sheet.add_row header, style: header_style(s)
         instances.each do |instance|
           row = columns.map do |c|
@@ -135,7 +137,7 @@ class XlsxService
     columns = [
       { header: 'id',                   f: ->(i) { i.id }, skip_sanitization: true },
       { header: 'title',                f: ->(i) { multiloc_service.t(i.title_multiloc) } },
-      { header: 'body',                 f: ->(i) { convert_to_text_long_lines(multiloc_service.t(i.body_multiloc)) } },
+      { header: 'body',                 f: ->(i) { convert_to_text_long_lines(multiloc_service.t(i.body_multiloc)) }, width: 10 },
       { header: 'author_name',          f: ->(i) { i.author_name } },
       { header: 'author_email',         f: ->(i) { i.author&.email } },
       { header: 'proposed_budget',      f: ->(i) { i.proposed_budget },                           skip_sanitization: true },
