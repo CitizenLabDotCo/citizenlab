@@ -177,12 +177,17 @@ class XlsxService
   end
 
   def generate_initiatives_xlsx(initiatives, view_private_attributes: false)
+    custom_field_columns = CustomField.with_resource_type('User').order(:ordering)&.map do |field|
+      { header: multiloc_service.t(field.title_multiloc), f: ->(i) { i.author&.custom_field_values[field.key] } }
+    end
+
     columns = [
       { header: 'id',                   f: ->(i) { i.id }, skip_sanitization: true },
       { header: 'title',                f: ->(i) { multiloc_service.t(i.title_multiloc) } },
-      { header: 'body',                 f: ->(i) { convert_to_text_long_lines(multiloc_service.t(i.body_multiloc)) } },
+      { header: 'body',                 f: ->(i) { convert_to_text_long_lines(multiloc_service.t(i.body_multiloc)) }, width: 10 },
       { header: 'author_name',          f: ->(i) { i.author_name } },
       { header: 'author_email',         f: ->(i) { i.author&.email } },
+      { header: 'author_id',            f: ->(i) { i.author&.id } },
       { header: 'publication_status',   f: ->(i) { i.publication_status },                              skip_sanitization: true },
       { header: 'published_at',         f: ->(i) { i.published_at },                                    skip_sanitization: true },
       { header: 'upvotes_count',        f: ->(i) { i.upvotes_count },                                   skip_sanitization: true },
@@ -197,9 +202,10 @@ class XlsxService
       { header: 'location_description', f: ->(i) { i.location_description } },
       { header: 'comments_count',       f: ->(i) { i.comments_count },                                  skip_sanitization: true },
       { header: 'attachments_count',    f: ->(i) { i.initiative_files.size },                           skip_sanitization: true },
-      { header: 'attachmens',           f: ->(i) { i.initiative_files.map { |f| f.file.url }.join("\n") }, skip_sanitization: true }
+      { header: 'attachmens',           f: ->(i) { i.initiative_files.map { |f| f.file.url }.join("\n") }, skip_sanitization: true, width: 2 }
     ]
-    columns.reject! { |c| %w[author_email assignee_email].include?(c[:header]) } unless view_private_attributes
+    columns.concat custom_field_columns if view_private_attributes
+    columns.reject! { |c| %w[author_email assignee_email author_id].include?(c[:header]) } unless view_private_attributes
     generate_xlsx 'Initiatives', columns, initiatives
   end
 
