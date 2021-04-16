@@ -11,7 +11,14 @@ class IdeaPolicy < ApplicationPolicy
       if user&.admin?
         scope.all
       elsif user
-        scope.where(project: Pundit.policy_scope(user, Project), publication_status: ['published', 'closed'])
+        projects = Pundit.policy_scope(user, AdminPublication).includes(publication: :parent).map do |admin_publication|
+          if admin_publication.publication_type == 'Project'
+            admin_publication.publication
+          else
+            admin_publication.parent.publication
+          end
+        end
+        scope.where(project: projects, publication_status: ['published', 'closed'])
       else
         scope
           .left_outer_joins(project: [:admin_publication])
