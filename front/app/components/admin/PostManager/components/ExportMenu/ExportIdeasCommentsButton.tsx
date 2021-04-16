@@ -4,7 +4,7 @@ import { fontSizes } from 'utils/styleUtils';
 
 // i18n
 import messages from '../../messages';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { isString } from 'lodash-es';
 import { trackEventByName } from 'utils/analytics';
 import { requestBlob } from 'utils/request';
@@ -12,6 +12,7 @@ import { API_PATH } from 'containers/App/constants';
 import tracks from '../../tracks';
 import { exportType } from '../ExportMenu';
 import { saveAs } from 'file-saver';
+import { InjectedIntlProps } from 'react-intl';
 
 interface Props {
   exportQueryParameter: 'all' | string | string[];
@@ -22,11 +23,11 @@ interface State {
   exporting: boolean;
 }
 
-export default class ExportCommentsButton extends React.PureComponent<
-  Props,
+class ExportCommentsButton extends React.PureComponent<
+  Props & InjectedIntlProps,
   State
 > {
-  constructor(props: Props) {
+  constructor(props) {
     super(props);
     this.state = {
       exporting: false,
@@ -34,7 +35,10 @@ export default class ExportCommentsButton extends React.PureComponent<
   }
 
   handleExportComments = async () => {
-    const { exportQueryParameter: queryParameter } = this.props;
+    const {
+      exportQueryParameter: queryParameter,
+      intl: { formatDate, formatMessage },
+    } = this.props;
 
     const queryParametersObject = {};
     if (isString(queryParameter) && queryParameter !== 'all') {
@@ -50,7 +54,12 @@ export default class ExportCommentsButton extends React.PureComponent<
         'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
         queryParametersObject
       );
-      saveAs(blob, 'comments-export.xlsx');
+      saveAs(
+        blob,
+        `${formatMessage(messages.inputCommentsExportFileName)}_${formatDate(
+          Date.now()
+        )}`
+      );
       this.setState({ exporting: false });
     } catch (error) {
       this.setState({ exporting: false });
@@ -84,3 +93,5 @@ export default class ExportCommentsButton extends React.PureComponent<
     );
   }
 }
+
+export default injectIntl(ExportCommentsButton);
