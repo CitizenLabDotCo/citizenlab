@@ -744,7 +744,6 @@
   "app.containers.Admin.Moderation.pageTitle": "Activity",
   "app.containers.Admin.Moderation.post": "Post",
   "app.containers.Admin.Moderation.profanityBlockerSetting": "Profanity blocker",
-  "app.containers.Admin.Moderation.profanityBlockerSettingDescription": "Enabling this setting will block posts containing the most commonly reported offensive words.",
   "app.containers.Admin.Moderation.project": "Project",
   "app.containers.Admin.Moderation.read": "Seen",
   "app.containers.Admin.Moderation.readMore": "Read more",

@@ -187,15 +187,26 @@ const ProfanitySettings = styled.div`
 `;
 
 const StyledToggle = styled(Toggle)`
+  margin-right: 10px;
+`;
+
+const Setting = styled.div`
   margin-bottom: 20px;
 `;
 
 const LabelTitle = styled.div`
   font-weight: bold;
-  margin-bottom: 5px;
+`;
+
+const ToggleLabel = styled.label`
+  display: flex;
 `;
 
 const LabelDescription = styled.div``;
+const LabelContent = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
 
 interface Props {
   className?: string;
@@ -589,11 +600,13 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
           close={closeSettingsModal}
         >
           <ProfanitySettings>
-            <StyledToggle
-              checked={profanityBlockerSettingEnabled}
-              onChange={onToggleBlockProfanitySetting}
-              label={
-                <>
+            <Setting>
+              <ToggleLabel>
+                <StyledToggle
+                  checked={profanityBlockerSettingEnabled}
+                  onChange={onToggleBlockProfanitySetting}
+                />
+                <LabelContent>
                   <LabelTitle>
                     {intl.formatMessage(messages.profanityBlockerSetting)}
                   </LabelTitle>
@@ -602,9 +615,27 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
                       messages.profanityBlockerSettingDescription
                     )}
                   </LabelDescription>
-                </>
-              }
-            />
+                </LabelContent>
+              </ToggleLabel>
+            </Setting>
+            <Setting>
+              <ToggleLabel>
+                <StyledToggle
+                  checked={profanityBlockerSettingEnabled}
+                  onChange={onToggleBlockProfanitySetting}
+                />
+                <LabelContent>
+                  <LabelTitle>
+                    {intl.formatMessage(messages.profanityBlockerSetting)}
+                  </LabelTitle>
+                  <LabelDescription>
+                    {intl.formatMessage(
+                      messages.profanityBlockerSettingDescription
+                    )}
+                  </LabelDescription>
+                </LabelContent>
+              </ToggleLabel>
+            </Setting>
             {settingsUpdatedSuccessFully && (
               <Success
                 showBackground

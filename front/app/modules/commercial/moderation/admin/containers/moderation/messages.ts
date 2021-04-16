@@ -105,7 +105,7 @@ export default defineMessages({
   profanityBlockerSettingDescription: {
     id: 'app.containers.Admin.Moderation.profanityBlockerSettingDescription',
     defaultMessage:
-      'Enabling this setting will block posts containing the most commonly reported offensive words.',
+      'Block posts containing the most commonly reported offensive words.',
   },
   successfulUpdateSettings: {
     id: 'app.containers.Admin.Moderation.successfulUpdateSettings',
