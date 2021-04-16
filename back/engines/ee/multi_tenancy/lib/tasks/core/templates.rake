@@ -41,38 +41,11 @@ namespace :templates do
       locales = MultiTenancy::TenantTemplateService.new.required_locales(template, external_subfolder: 'test')
       locales = ['en'] if locales.blank?
       name = template.split('_').join('')
-      tn = Tenant.create!({
-        name: name,
-        host: "#{name}.localhost",
-        logo: Rails.root.join("spec/fixtures/logo.png").open,
-        header_bg: Rails.root.join("spec/fixtures/header.jpg").open,
-        settings: {
-          core: {
-            allowed: true,
-            enabled: true,
-            locales: locales,
-            organization_type: 'medium_city',
-            organization_name: locales.map { |locale|
-              [locale,Faker::Address.city]
-            }.to_h,
-            timezone: "Brussels",
-            color_main: Faker::Color.hex_color,
-            color_secondary: Faker::Color.hex_color,
-            color_text: Faker::Color.hex_color,
-            currency: 'EUR'
-          },
-          facebook_login: {
-            allowed: true,
-            enabled: true,
-            app_id: '307796929633098',
-            app_secret: '***REMOVED***'
-          },
-          private_projects: {
-            enabled: true,
-            allowed: true
-          }
-        }
-       })
+      tn = Tenant.create!(
+        name: name, 
+        host: "#{name}.localhost", 
+        settings: {core: {allowed: true, enabled: true, locales: locales}}
+        )
 
       Apartment::Tenant.switch(tn.schema_name) do
         puts "Verifying #{template}"
