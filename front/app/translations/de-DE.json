@@ -8,7 +8,7 @@
   "UI.FormComponents.required": "erforderlich",
   "app.ccomponents.InitiativeCards.noInitiativesForFilter": "Keine Vorschläge gefunden",
   "app.components.AdminPage.SettingsPage.bannerHeaderSignedIn": "Header text for registered users",
-  "app.components.AdminPage.SettingsPage.contrastRatioTooLow": "Warning: the color you selected doesn't have a high enough contrast. This may result in text that's hard to read. Choose a darker color to optimize readability.",
+  "app.components.AdminPage.SettingsPage.contrastRatioTooLow": "Warnung: Die von Ihnen gewählte Farbe hat keinen ausreichend hohen Kontrast. Dies kann dazu führen, dass der Text schwer zu lesen ist. Wählen Sie eine dunklere Farbe, um die Lesbarkeit zu optimieren.",
   "app.components.AdminPage.SettingsPage.customSectionLabel": "Inhalt",
   "app.components.AdminPage.SettingsPage.homePageCustomizableSection": "Homepage customizable section",
   "app.components.AdminPage.SettingsPage.homePageCustomizableSectionTooltip": "This empty section at the bottom of the homepage can be customized with your own images, text and links.",
