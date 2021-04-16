@@ -10,6 +10,8 @@ import ProjectCard from 'components/ProjectCard';
 import SelectAreas from './SelectAreas';
 import LoadingBox from './LoadingBox';
 import Button from 'components/UI/Button';
+import Modal, { ModalContentContainer } from 'components/UI/Modal';
+import { Input, InputMultilocWithLocaleSwitcher } from 'cl2-component-library';
 
 // resources
 import GetAppConfiguration, {
@@ -21,6 +23,9 @@ import GetWindowSize, {
 import GetAdminPublications, {
   GetAdminPublicationsChildProps,
 } from 'resources/GetAdminPublications';
+import GetAppConfigurationLocales, {
+  GetAppConfigurationLocalesChildProps,
+} from 'resources/GetAppConfigurationLocales';
 
 // services
 import {
@@ -37,6 +42,7 @@ import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import T from 'components/T';
 import messages from './messages';
+import injectLocalize, { InjectedLocalized } from 'utils/localize';
 
 // tracking
 import { trackEventByName } from 'utils/analytics';
@@ -47,6 +53,7 @@ import styled, { withTheme } from 'styled-components';
 import {
   media,
   fontSizes,
+  colors,
   viewportWidths,
   defaultCardStyle,
   isRtl,
@@ -66,7 +73,6 @@ const Container = styled.div`
 const Header = styled.div`
   width: 100%;
   display: flex;
-  flex-direction: row;
   align-items: center;
   margin-bottom: 30px;
   border-bottom: 1px solid #d1d1d1;
@@ -89,7 +95,7 @@ const Title = styled.h2`
   display: flex;
   align-items: center;
   padding: 0;
-  margin-right: 45px;
+  margin: 0;
   width: 100%;
 
   ${media.smallerThanMinTablet`
@@ -191,11 +197,7 @@ const Footer = styled.div`
 `;
 
 const FiltersArea = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  width: 100%;
-  justify-content: flex-end;
+  margin-left: auto;
 
   ${media.smallerThanMinTablet`
     display: none;
@@ -220,7 +222,25 @@ const FilterArea = styled.div`
   `};
 `;
 
+const TitleContainer = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
 const ShowMoreButton = styled(Button)``;
+const EditTitleButton = styled(Button)``;
+
+const StyledInputWithLocaleSwitcher = styled(InputMultilocWithLocaleSwitcher)`
+  margin-bottom: 30px;
+`;
+
+const ModalButtons = styled.div`
+  display: flex;
+`;
+const SaveButton = styled(Button)`
+  margin-right: 3px;
+`;
+const CancelButton = styled(Button)``;
 
 interface InputProps extends UseAdminPublicationInputProps {
   showTitle: boolean;
@@ -228,6 +248,7 @@ interface InputProps extends UseAdminPublicationInputProps {
 }
 
 interface DataProps {
+  locales: GetAppConfigurationLocalesChildProps;
   tenant: GetAppConfigurationChildProps;
   windowSize: GetWindowSizeChildProps;
   adminPublications: GetAdminPublicationsChildProps;
@@ -240,10 +261,11 @@ interface Props extends InputProps, DataProps {
 interface State {
   cardSizes: ('small' | 'medium' | 'large')[];
   areas: string[];
+  editTitleOpened: boolean;
 }
 
 class ProjectAndFolderCards extends PureComponent<
-  Props & InjectedIntlProps & WithRouterProps,
+  Props & InjectedLocalized & InjectedIntlProps & WithRouterProps,
   State
 > {
   emptyArray: string[] = [];
@@ -253,6 +275,7 @@ class ProjectAndFolderCards extends PureComponent<
     this.state = {
       cardSizes: [],
       areas: [],
+      editTitleOpened: false,
     };
   }
 
@@ -367,15 +390,38 @@ class ProjectAndFolderCards extends PureComponent<
     }
   };
 
+  editTitle = () => {
+    this.setState({
+      editTitleOpened: true,
+    });
+  };
+
+  cancelTitleEdit = () => {
+    this.setState({
+      editTitleOpened: false,
+    });
+  };
+
+  saveTitle = () => {};
+
   render() {
-    const { cardSizes, areas } = this.state;
-    const { tenant, showTitle, layout, theme, adminPublications } = this.props;
+    const { cardSizes, areas, editTitleOpened } = this.state;
+    const {
+      tenant,
+      showTitle,
+      layout,
+      theme,
+      adminPublications,
+      locales,
+      localize,
+      intl: { formatMessage },
+    } = this.props;
     const { loadingInitial, loadingMore, hasMore, list } = adminPublications;
     const hasPublications = list && list.length > 0;
     const objectFitCoverSupported =
       window['CSS'] && CSS.supports('object-fit: cover');
 
-    if (!isNilOrError(tenant)) {
+    if (!isNilOrError(tenant) && !isNilOrError(locales)) {
       const customCurrentlyWorkingOn =
         tenant.attributes.settings.core.currently_working_on_text;
 
@@ -383,14 +429,47 @@ class ProjectAndFolderCards extends PureComponent<
         <Container id="e2e-projects-container">
           <Header>
             {showTitle ? (
-              <Title>
-                {customCurrentlyWorkingOn &&
-                !isEmpty(customCurrentlyWorkingOn) ? (
-                  <T value={customCurrentlyWorkingOn} />
-                ) : (
-                  <FormattedMessage {...messages.currentlyWorkingOn} />
-                )}
-              </Title>
+              <TitleContainer>
+                <Title>
+                  {customCurrentlyWorkingOn &&
+                  !isEmpty(customCurrentlyWorkingOn) ? (
+                    <T value={customCurrentlyWorkingOn} />
+                  ) : (
+                    <FormattedMessage {...messages.currentlyWorkingOn} />
+                  )}
+                </Title>
+                <EditTitleButton
+                  icon="edit"
+                  buttonStyle="text"
+                  onClick={this.editTitle}
+                  fontSize="16px"
+                >
+                  Edit title
+                </EditTitleButton>
+                <Modal
+                  header="Settings"
+                  close={this.cancelTitleEdit}
+                  opened={editTitleOpened}
+                >
+                  <ModalContentContainer>
+                    <StyledInputWithLocaleSwitcher
+                      type="text"
+                      locales={locales}
+                      valueMultiloc={customCurrentlyWorkingOn}
+                      label={'Projects header'}
+                    />
+                    <ModalButtons>
+                      <SaveButton onClick={this.saveTitle}>Save</SaveButton>
+                      <CancelButton
+                        buttonStyle="text"
+                        onClick={this.cancelTitleEdit}
+                      >
+                        Cancel
+                      </CancelButton>
+                    </ModalButtons>
+                  </ModalContentContainer>
+                </Modal>
+              </TitleContainer>
             ) : (
               <ScreenReaderOnly>
                 {customCurrentlyWorkingOn &&
@@ -515,10 +594,11 @@ class ProjectAndFolderCards extends PureComponent<
 }
 
 const ProjectAndFolderCardsWithHOCs = withTheme(
-  injectIntl<Props>(withRouter(ProjectAndFolderCards))
+  injectIntl(injectLocalize(withRouter(ProjectAndFolderCards)))
 );
 
 const Data = adopt<DataProps, InputProps>({
+  locales: <GetAppConfigurationLocales />,
   tenant: <GetAppConfiguration />,
   windowSize: <GetWindowSize />,
   adminPublications: ({ render, ...props }) => (
