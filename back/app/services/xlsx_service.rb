@@ -213,30 +213,34 @@ class XlsxService
     columns = [
       { header: 'id',            f: ->(c) { c.id }, skip_sanitization: true },
       { header: 'input',         f: ->(c) { multiloc_service.t(c&.post.title_multiloc) } },
-      { header: 'body',          f: ->(c) { convert_to_text_long_lines(multiloc_service.t(c.body_multiloc)) } },
+      { header: 'input_id',         f: ->(c) { c&.post.id } },
+      { header: 'comment',          f: ->(c) { convert_to_text_long_lines(multiloc_service.t(c.body_multiloc)) }, width: 10  },
       { header: 'upvotes_count', f: ->(c) { c.upvotes_count }, skip_sanitization: true },
       { header: 'author_name',   f: ->(c) { c.author_name } },
       { header: 'author_email',  f: ->(c) { c.author&.email } },
+      { header: 'author_id',            f: ->(i) { i.author&.id } },
       { header: 'created_at',    f: ->(c) { c.created_at },    skip_sanitization: true },
-      { header: 'parent',        f: ->(c) { c.parent_id },     skip_sanitization: true },
+      { header: 'parent_comment_id',        f: ->(c) { c.parent_id },     skip_sanitization: true },
       { header: 'project',       f: ->(c) { multiloc_service.t(c&.idea&.project&.title_multiloc) } }
     ]
-    columns.reject! { |c| %w[author_email].include?(c[:header]) } unless view_private_attributes
+    columns.reject! { |c| %w[author_email author_id].include?(c[:header]) } unless view_private_attributes
     generate_xlsx 'Comments', columns, comments
   end
 
   def generate_initiative_comments_xlsx(comments, view_private_attributes: false)
     columns = [
       { header: 'id',            f: ->(c) { c.id }, skip_sanitization: true },
-      { header: 'initiative',    f: ->(c) { multiloc_service.t(c&.post.title_multiloc) } },
-      { header: 'body',          f: ->(c) { convert_to_text_long_lines(multiloc_service.t(c.body_multiloc)) } },
+      { header: 'proposal',    f: ->(c) { multiloc_service.t(c&.post.title_multiloc) } },
+      { header: 'proposal_id',         f: ->(c) { c&.post.id } },
+      { header: 'comment',          f: ->(c) { convert_to_text_long_lines(multiloc_service.t(c.body_multiloc)) }, width: 10  },
       { header: 'upvotes_count', f: ->(c) { c.upvotes_count }, skip_sanitization: true },
       { header: 'author_name',   f: ->(c) { c.author_name } },
       { header: 'author_email',  f: ->(c) { c.author&.email } },
+      { header: 'author_id',            f: ->(i) { i.author&.id } },
       { header: 'created_at',    f: ->(c) { c.created_at },    skip_sanitization: true },
-      { header: 'parent',        f: ->(c) { c.parent_id },     skip_sanitization: true }
+      { header: 'parent_comment_id',        f: ->(c) { c.parent_id },     skip_sanitization: true }
     ]
-    columns.reject! { |c| %w[author_email].include?(c[:header]) } unless view_private_attributes
+    columns.reject! { |c| %w[author_email author_id].include?(c[:header]) } unless view_private_attributes
     generate_xlsx 'Comments', columns, comments
   end
 
