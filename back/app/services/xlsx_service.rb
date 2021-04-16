@@ -135,7 +135,7 @@ class XlsxService
     columns = [
       { header: 'id',                   f: ->(i) { i.id }, skip_sanitization: true },
       { header: 'title',                f: ->(i) { multiloc_service.t(i.title_multiloc) } },
-      { header: 'body',                 f: ->(i) { convert_to_text(multiloc_service.t(i.body_multiloc)) } },
+      { header: 'body',                 f: ->(i) { convert_to_text_long_lines(multiloc_service.t(i.body_multiloc)) } },
       { header: 'author_name',          f: ->(i) { i.author_name } },
       { header: 'author_email',         f: ->(i) { i.author&.email } },
       { header: 'proposed_budget',      f: ->(i) { i.proposed_budget },                           skip_sanitization: true },
@@ -173,7 +173,7 @@ class XlsxService
     columns = [
       { header: 'id',                   f: ->(i) { i.id }, skip_sanitization: true },
       { header: 'title',                f: ->(i) { multiloc_service.t(i.title_multiloc) } },
-      { header: 'body',                 f: ->(i) { convert_to_text(multiloc_service.t(i.body_multiloc)) } },
+      { header: 'body',                 f: ->(i) { convert_to_text_long_lines(multiloc_service.t(i.body_multiloc)) } },
       { header: 'author_name',          f: ->(i) { i.author_name } },
       { header: 'author_email',         f: ->(i) { i.author&.email } },
       { header: 'publication_status',   f: ->(i) { i.publication_status },                              skip_sanitization: true },
@@ -200,7 +200,7 @@ class XlsxService
     columns = [
       { header: 'id',            f: ->(c) { c.id }, skip_sanitization: true },
       { header: 'input',         f: ->(c) { multiloc_service.t(c&.post.title_multiloc) } },
-      { header: 'body',          f: ->(c) { convert_to_text(multiloc_service.t(c.body_multiloc)) } },
+      { header: 'body',          f: ->(c) { convert_to_text_long_lines(multiloc_service.t(c.body_multiloc)) } },
       { header: 'upvotes_count', f: ->(c) { c.upvotes_count }, skip_sanitization: true },
       { header: 'author_name',   f: ->(c) { c.author_name } },
       { header: 'author_email',  f: ->(c) { c.author&.email } },
@@ -216,7 +216,7 @@ class XlsxService
     columns = [
       { header: 'id',            f: ->(c) { c.id }, skip_sanitization: true },
       { header: 'initiative',    f: ->(c) { multiloc_service.t(c&.post.title_multiloc) } },
-      { header: 'body',          f: ->(c) { convert_to_text(multiloc_service.t(c.body_multiloc)) } },
+      { header: 'body',          f: ->(c) { convert_to_text_long_lines(multiloc_service.t(c.body_multiloc)) } },
       { header: 'upvotes_count', f: ->(c) { c.upvotes_count }, skip_sanitization: true },
       { header: 'author_name',   f: ->(c) { c.author_name } },
       { header: 'author_email',  f: ->(c) { c.author&.email } },
@@ -269,6 +269,10 @@ class XlsxService
 
   def header_style(s)
     s.add_style bg_color: '99ccff', fg_color: '2626ff', sz: 16, alignment: { horizontal: :center }
+  end
+
+  def convert_to_text_long_lines html
+    convert_to_text(html).gsub(/\n/, '')
   end
 end
 
