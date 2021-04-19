@@ -276,13 +276,10 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
     setSettingsUpdatedSuccessFully,
   ] = useState(false);
   const [settingsSavingError, setSettingsSavingError] = useState(false);
-  const [
-    profanityBlockerSettingEnabled,
-    setProfanityBlockerSettingEnabled,
-  ] = useState(
+  const [profanityBlockerEnabled, setProfanityBlockerEnabled] = useState(
     !isNilOrError(appConfiguration) &&
       appConfiguration.data.attributes.settings.profanity_blocker
-      ? appConfiguration.data.attributes.settings.profanity_blocker?.enabled
+      ? appConfiguration.data.attributes.settings.profanity_blocker.enabled
       : false
   );
 
@@ -365,29 +362,26 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
   );
 
   const onToggleBlockProfanitySetting = () => {
-    setProfanityBlockerSettingEnabled(!profanityBlockerSettingEnabled);
+    setProfanityBlockerEnabled(!profanityBlockerEnabled);
   };
 
   useEffect(() => {
-    const handleSettingsUpdate = async () => {
-      setSettingsSavingError(false);
-      await updateAppConfiguration({
-        settings: {
-          profanity_blocker: {
-            enabled: profanityBlockerSettingEnabled,
-          },
+    setSettingsSavingError(false);
+    updateAppConfiguration({
+      settings: {
+        profanity_blocker: {
+          enabled: profanityBlockerEnabled,
         },
+      },
+    })
+      .then(() => {
+        setSettingsUpdatedSuccessFully(true);
+        setTimeout(() => setSettingsUpdatedSuccessFully(false), 2000);
+      })
+      .catch((_error) => {
+        setSettingsSavingError(true);
       });
-      setSettingsUpdatedSuccessFully(true);
-      setTimeout(() => setSettingsUpdatedSuccessFully(false), 2000);
-    };
-
-    try {
-      handleSettingsUpdate();
-    } catch (error) {
-      setSettingsSavingError(true);
-    }
-  }, [profanityBlockerSettingEnabled]);
+  }, [profanityBlockerEnabled]);
 
   const openSettingsModal = () => {
     setSettingsModalOpened(true);
@@ -603,25 +597,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
             <Setting>
               <ToggleLabel>
                 <StyledToggle
-                  checked={profanityBlockerSettingEnabled}
-                  onChange={onToggleBlockProfanitySetting}
-                />
-                <LabelContent>
-                  <LabelTitle>
-                    {intl.formatMessage(messages.profanityBlockerSetting)}
-                  </LabelTitle>
-                  <LabelDescription>
-                    {intl.formatMessage(
-                      messages.profanityBlockerSettingDescription
-                    )}
-                  </LabelDescription>
-                </LabelContent>
-              </ToggleLabel>
-            </Setting>
-            <Setting>
-              <ToggleLabel>
-                <StyledToggle
-                  checked={profanityBlockerSettingEnabled}
+                  checked={profanityBlockerEnabled}
                   onChange={onToggleBlockProfanitySetting}
                 />
                 <LabelContent>
