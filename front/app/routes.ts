@@ -216,10 +216,10 @@ export default function createRoutes() {
           }),
         },
         {
-          path: 'pages/profanity-guidelines',
-          name: 'profanityGuidelines',
+          path: 'pages/faq',
+          name: 'frequentlyAskedQuestions',
           component: Loadable({
-            loader: () => import('containers/ProfanityGuidelines'),
+            loader: () => import('containers/FrequentlyAskedQuestions'),
             loading: LoadableLoadingCitizen,
             delay: 500,
           }),

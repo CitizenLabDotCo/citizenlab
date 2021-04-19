@@ -44,7 +44,7 @@ const StyledButton = styled.button`
   }
 `;
 
-const ProfanityGuidelines = memo((props: InjectedIntlProps) => {
+const FrequentlyAskedQuestions = memo((props: InjectedIntlProps) => {
   const { formatMessage } = props.intl;
 
   const openConsentManager = () => {
@@ -183,4 +183,4 @@ const ProfanityGuidelines = memo((props: InjectedIntlProps) => {
   );
 });
 
-export default injectIntl(ProfanityGuidelines);
+export default injectIntl(FrequentlyAskedQuestions);
