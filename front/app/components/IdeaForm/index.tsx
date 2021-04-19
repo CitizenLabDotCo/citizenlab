@@ -115,6 +115,7 @@ interface InputProps {
   imageFile: UploadFile[];
   onSubmit: (arg: IIdeaFormOutput) => void;
   remoteIdeaFiles?: UploadFile[] | null;
+  profanityError: boolean;
 }
 
 interface DataProps {
@@ -451,30 +452,6 @@ class IdeaForm extends PureComponent<
     return null;
   };
 
-  isProfane = (description: string) => {
-    const profaneWords = ['shit', 'fuck'];
-    const foundProfaneWord = profaneWords.some(
-      (profaneWord) => description.toLowerCase().search(profaneWord) !== -1
-    );
-    return foundProfaneWord;
-  };
-
-  isDescriptionProfane = (description: string) => {
-    return this.isProfane(description);
-  };
-
-  getDescriptionProfanityError = (description: string | null) => {
-    if (description) {
-      const isProfane = this.isDescriptionProfane(description);
-
-      return isProfane
-        ? this.props.intl.formatMessage(messages.descriptionProfanityError)
-        : null;
-    }
-
-    return null;
-  };
-
   validate = (
     title: string | null,
     description: string | null,
@@ -486,11 +463,9 @@ class IdeaForm extends PureComponent<
     ideaFiles: UploadFile[]
   ) => {
     const { pbContext } = this.state;
+    const { profanityError } = this.props;
     const titleError = this.validateTitle(title);
     const descriptionError = this.validateDescription(description);
-    const descriptionProfanityError = this.getDescriptionProfanityError(
-      description
-    );
     const topicsError = this.validateTopics(selectedTopics);
     const locationError = this.validateLocation(address);
     const imageError = this.validateImage(imageFiles);
@@ -523,7 +498,6 @@ class IdeaForm extends PureComponent<
     this.setState({
       titleError,
       descriptionError,
-      descriptionProfanityError,
       budgetError,
       proposedBudgetError,
       topicsError,
@@ -544,7 +518,7 @@ class IdeaForm extends PureComponent<
         300
       );
     } else if (
-      (descriptionError || descriptionProfanityError) &&
+      (descriptionError || profanityError) &&
       this.descriptionElement
     ) {
       scrollToComponent(this.descriptionElement, {
@@ -561,7 +535,6 @@ class IdeaForm extends PureComponent<
     const hasError =
       !titleError &&
       !descriptionError &&
-      !descriptionProfanityError &&
       !budgetError &&
       !proposedBudgetError &&
       !topicsError &&
@@ -654,7 +627,14 @@ class IdeaForm extends PureComponent<
 
   render() {
     const className = this.props['className'];
-    const { projectId, pbEnabled, topics, project, phases } = this.props;
+    const {
+      projectId,
+      pbEnabled,
+      topics,
+      project,
+      phases,
+      profanityError,
+    } = this.props;
     const { formatMessage } = this.props.intl;
     const {
       locale,
@@ -766,6 +746,9 @@ class IdeaForm extends PureComponent<
                 maxCharCount={80}
                 autocomplete="off"
               />
+              {profanityError && (
+                <Error text={formatMessage(messages.profanityError, {})} />
+              )}
             </FormElement>
 
             <FormElement id="e2e-idea-description-input">
@@ -791,8 +774,8 @@ class IdeaForm extends PureComponent<
                 withCTAButton
               />
               {descriptionError && <Error text={descriptionError} />}
-              {descriptionProfanityError && (
-                <Error text={descriptionProfanityError} />
+              {profanityError && (
+                <Error text={formatMessage(messages.profanityError, {})} />
               )}
             </FormElement>
           </StyledFormSection>

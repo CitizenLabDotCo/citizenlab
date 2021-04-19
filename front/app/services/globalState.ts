@@ -26,6 +26,7 @@ export interface IIdeasPageGlobalState {
   position: string;
   position_coordinates: GeoJSON.Point | null;
   submitError: boolean;
+  profanityError: boolean;
   fileOrImageError: boolean;
   processing: boolean;
   ideaId: string | null;

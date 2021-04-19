@@ -103,6 +103,7 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
       position: '',
       position_coordinates: null,
       submitError: false,
+      profanityError: false,
       fileOrImageError: false,
       processing: false,
       ideaId: null,
@@ -228,6 +229,11 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
         } catch (error) {
           const apiErrors = get(error, 'json.errors');
           if (process.env.NODE_ENV === 'development') console.log(error);
+          if (apiErrors && apiErrors.profanity) {
+            this.globalState.set({
+              profanityError: true,
+            });
+          }
           if (apiErrors && !apiErrors.idea) {
             this.globalState.set({
               submitError: false,

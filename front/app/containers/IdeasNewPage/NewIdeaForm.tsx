@@ -89,6 +89,7 @@ interface GlobalState {
   submitError: boolean;
   processing: boolean;
   fileOrImageError: boolean;
+  profanityError: boolean;
 }
 
 interface State extends GlobalState {}
@@ -110,6 +111,7 @@ class NewIdeaForm extends PureComponent<Props, State> {
       submitError: false,
       processing: false,
       fileOrImageError: false,
+      profanityError: false,
     };
     this.globalState = globalState.init('IdeasNewPage');
     this.subscriptions = [];
@@ -131,6 +133,7 @@ class NewIdeaForm extends PureComponent<Props, State> {
           submitError,
           processing,
           fileOrImageError,
+          profanityError,
         }) => {
           const newState: State = {
             title,
@@ -143,6 +146,7 @@ class NewIdeaForm extends PureComponent<Props, State> {
             submitError,
             processing,
             fileOrImageError,
+            profanityError,
           };
 
           this.setState(newState);
@@ -188,6 +192,7 @@ class NewIdeaForm extends PureComponent<Props, State> {
       proposedBudget,
       position,
       imageFile,
+      profanityError,
     } = this.state;
     const { projectId, project, phases } = this.props;
 
@@ -222,6 +227,7 @@ class NewIdeaForm extends PureComponent<Props, State> {
             proposedBudget={proposedBudget}
             address={position}
             imageFile={imageFile}
+            profanityError={profanityError}
             onSubmit={this.handleIdeaFormOutput}
           />
         </Container>
