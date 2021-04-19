@@ -160,4 +160,8 @@ export default defineMessages({
     defaultMessage:
       'There was an issue publishing your initiative, please try again later.',
   },
+  profanityError: {
+    id: 'app.components.InitiativeForm.profanityError',
+    defaultMessage: '',
+  },
 });

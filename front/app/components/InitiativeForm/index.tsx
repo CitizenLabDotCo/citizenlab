@@ -76,6 +76,7 @@ interface Props extends FormValues, FormProps {
   publishError: boolean;
   apiErrors: any;
   topics: ITopicData[];
+  profanityError: boolean;
 }
 
 interface State {
@@ -350,6 +351,7 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
       intl: { formatMessage },
       apiErrors,
       topics,
+      profanityError,
     } = this.props;
 
     const { touched, errors } = this.state;
@@ -394,6 +396,9 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
                   )
                 )}
               </FormLabel>
+              {profanityError && (
+                <Error text={formatMessage(messages.profanityError)} />
+              )}
             </SectionField>
 
             <SectionField id="e2e-initiative-form-description-section">

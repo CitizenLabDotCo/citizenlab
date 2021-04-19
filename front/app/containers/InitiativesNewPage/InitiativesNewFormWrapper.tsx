@@ -68,6 +68,7 @@ interface State extends FormValues {
   publishError: boolean;
   apiErrors: any;
   location_point_geojson?: Point;
+  profanityError: boolean;
 }
 
 export default class InitiativesNewFormWrapper extends React.PureComponent<
@@ -101,6 +102,7 @@ export default class InitiativesNewFormWrapper extends React.PureComponent<
       apiErrors: null,
       position: props.location_description,
       location_point_geojson: props.location_point_geojson,
+      profanityError: false,
     };
   }
 
@@ -423,6 +425,7 @@ export default class InitiativesNewFormWrapper extends React.PureComponent<
       initiativeId,
       hasBannerChanged,
       hasImageChanged,
+      profanityError,
       ...otherProps
     } = this.state;
     const { locale, topics } = this.props;
@@ -442,6 +445,7 @@ export default class InitiativesNewFormWrapper extends React.PureComponent<
         onAddFile={this.onAddFile}
         onRemoveFile={this.onRemoveFile}
         topics={topics}
+        profanityError={profanityError}
       />
     );
   }

@@ -50,6 +50,7 @@ interface State extends FormValues {
   publishError: boolean;
   apiErrors: any;
   filesToRemove: UploadFile[];
+  profanityError: boolean;
 }
 
 function doNothing() {
@@ -80,6 +81,7 @@ export default class InitiativesEditFormWrapper extends React.PureComponent<
       publishError: false,
       apiErrors: null,
       filesToRemove: [],
+      profanityError: false,
     };
   }
 
@@ -322,7 +324,12 @@ export default class InitiativesEditFormWrapper extends React.PureComponent<
   }
 
   render() {
-    const { initiativeId, hasBannerChanged, ...otherProps } = this.state;
+    const {
+      initiativeId,
+      hasBannerChanged,
+      profanityError,
+      ...otherProps
+    } = this.state;
     const { locale, initiativeImage, topics } = this.props;
 
     if (this.state.image === undefined && initiativeImage) return null;
@@ -342,6 +349,7 @@ export default class InitiativesEditFormWrapper extends React.PureComponent<
         onAddFile={this.onAddFile}
         onRemoveFile={this.onRemoveFile}
         topics={topics}
+        profanityError={profanityError}
       />
     );
   }
