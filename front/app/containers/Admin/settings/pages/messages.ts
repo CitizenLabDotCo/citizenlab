@@ -50,4 +50,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.PagesEdition.cookie-policy',
     defaultMessage: 'Cookie Policy',
   },
+  faq: {
+    id: 'app.containers.AdminPage.PagesEdition.faq',
+    defaultMessage: 'Frequently Asked Questions (FAQ)',
+  },
 });
