@@ -123,6 +123,7 @@ interface State {
   imageFile: UploadFile[];
   imageId: string | null;
   loaded: boolean;
+  profanityError: boolean;
 }
 
 class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
@@ -142,6 +143,7 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
       imageFile: [],
       imageId: null,
       loaded: false,
+      profanityError: false,
     };
     this.subscriptions = [];
   }
@@ -307,7 +309,15 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
       ] as Promise<any>[]);
 
       clHistory.push(`/ideas/${ideaSlug}`);
-    } catch {}
+    } catch (error) {
+      const apiErrors = error.json.errors;
+      if (process.env.NODE_ENV === 'development') console.log(error);
+      if (apiErrors && apiErrors.profanity) {
+        this.setState({
+          profanityError: true,
+        });
+      }
+    }
   };
 
   render() {
@@ -322,6 +332,7 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
         imageFile,
         budget,
         proposedBudget,
+        profanityError,
       } = this.state;
       const title = locale && titleMultiloc ? titleMultiloc[locale] || '' : '';
       const description =
@@ -368,6 +379,7 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
                 remoteIdeaFiles={
                   !isNilOrError(remoteIdeaFiles) ? remoteIdeaFiles : null
                 }
+                profanityError={profanityError}
               />
 
               <ButtonBarContainer>
