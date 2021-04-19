@@ -262,7 +262,9 @@ class XlsxService
   private
 
   def user_private_attributes
-    custom_field_attrs = CustomField.with_resource_type('User')&.map(&:key)
+    custom_field_attrs = CustomField.with_resource_type('User')&.map do |field|
+      multiloc_service.t(field.title_multiloc)
+    end
     custom_field_attrs + %w[email gender birthyear domicile education]
   end
 
