@@ -216,15 +216,6 @@ export default function createRoutes() {
           }),
         },
         {
-          path: 'pages/faq',
-          name: 'frequentlyAskedQuestions',
-          component: Loadable({
-            loader: () => import('containers/FrequentlyAskedQuestions'),
-            loading: LoadableLoadingCitizen,
-            delay: 500,
-          }),
-        },
-        {
           path: 'pages/accessibility-statement',
           name: 'accessibilityStatement',
           component: Loadable({
