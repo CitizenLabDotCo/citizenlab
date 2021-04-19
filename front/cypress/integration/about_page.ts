@@ -30,4 +30,10 @@ describe('About page', () => {
     cy.location('pathname').should('eq', '/en/pages/accessibility-statement');
     cy.get('.e2e-page-accessibility-statement');
   });
+
+  it('has a working link to the faq page', () => {
+    cy.get('.e2e-page-link-to-faq').click();
+    cy.location('pathname').should('eq', '/en/pages/faq');
+    cy.get('.e2e-page-faq');
+  });
 });
