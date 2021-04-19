@@ -25,6 +25,10 @@ export default defineMessages({
     id: 'app.containers.footer.cookie-policy',
     defaultMessage: 'Cookie policy',
   },
+  faq: {
+    id: 'app.containers.footer.faq',
+    defaultMessage: 'FAQ',
+  },
   cookieSettings: {
     id: 'app.containers.footer.cookieSettings',
     defaultMessage: 'Cookie settings',
