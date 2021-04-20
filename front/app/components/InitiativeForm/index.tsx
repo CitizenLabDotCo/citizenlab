@@ -19,11 +19,12 @@ import QuillEditor from 'components/UI/QuillEditor';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import FileUploader from 'components/UI/FileUploader';
 import Error from 'components/UI/Error';
+import Link from 'utils/cl-router/Link';
 
 // intl
 import messages from './messages';
 import { InjectedIntlProps } from 'react-intl';
-import { IMessageInfo, injectIntl } from 'utils/cl-intl';
+import { IMessageInfo, injectIntl, FormattedMessage } from 'utils/cl-intl';
 
 // typings
 import { Multiloc, Locale, UploadFile } from 'typings';
@@ -397,7 +398,20 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
                 )}
               </FormLabel>
               {profanityError && (
-                <Error text={formatMessage(messages.profanityError)} />
+                <Error
+                  text={
+                    <FormattedMessage
+                      {...messages.profanityError}
+                      values={{
+                        guidelinesLink: (
+                          <Link to="/pages/faq" target="_blank">
+                            {formatMessage(messages.guidelinesLinkText)}
+                          </Link>
+                        ),
+                      }}
+                    />
+                  }
+                />
               )}
             </SectionField>
 

@@ -162,6 +162,11 @@ export default defineMessages({
   },
   profanityError: {
     id: 'app.components.InitiativeForm.profanityError',
-    defaultMessage: '',
+    defaultMessage:
+      'You may have used one or more words that are considered profanity by {guidelinesLink}. Please alter your text to remove any profanities that might be present.',
+  },
+  guidelinesLinkText: {
+    id: 'app.components.InitiativeForm.guidelinesLinkText',
+    defaultMessage: 'our guidelines',
   },
 });
