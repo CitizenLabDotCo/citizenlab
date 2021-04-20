@@ -69,6 +69,8 @@ const Title = styled.h1`
 interface InputProps {
   onSubmit: () => void;
   projectId: string;
+  onTitleChange: () => void;
+  onDescriptionChange: () => void;
 }
 
 interface DataProps {
@@ -194,7 +196,13 @@ class NewIdeaForm extends PureComponent<Props, State> {
       imageFile,
       profanityError,
     } = this.state;
-    const { projectId, project, phases } = this.props;
+    const {
+      projectId,
+      project,
+      phases,
+      onTitleChange,
+      onDescriptionChange,
+    } = this.props;
 
     if (!isNilOrError(project)) {
       const inputTerm = getInputTerm(
@@ -229,6 +237,8 @@ class NewIdeaForm extends PureComponent<Props, State> {
             imageFile={imageFile}
             profanityError={profanityError}
             onSubmit={this.handleIdeaFormOutput}
+            onTitleChange={onTitleChange}
+            onDescriptionChange={onDescriptionChange}
           />
         </Container>
       );

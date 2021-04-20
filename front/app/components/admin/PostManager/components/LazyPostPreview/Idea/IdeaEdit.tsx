@@ -283,6 +283,14 @@ class IdeaEdit extends PureComponent<Props, State> {
     }
   };
 
+  onTitleChange = () => {
+    this.setState({ profanityError: false });
+  };
+
+  onDescriptionChange = () => {
+    this.setState({ profanityError: false });
+  };
+
   render() {
     if (this.state && this.state.loaded) {
       const { remoteIdeaFiles, goBack } = this.props;
@@ -338,6 +346,8 @@ class IdeaEdit extends PureComponent<Props, State> {
                   !isNilOrError(remoteIdeaFiles) ? remoteIdeaFiles : null
                 }
                 profanityError={profanityError}
+                onTitleChange={this.onTitleChange}
+                onDescriptionChange={this.onDescriptionChange}
               />
 
               <ButtonWrapper>

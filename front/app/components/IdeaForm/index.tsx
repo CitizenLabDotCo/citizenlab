@@ -117,6 +117,8 @@ interface InputProps {
   onSubmit: (arg: IIdeaFormOutput) => void;
   remoteIdeaFiles?: UploadFile[] | null;
   profanityError: boolean;
+  onTitleChange: () => void;
+  onDescriptionChange: () => void;
 }
 
 interface DataProps {
@@ -290,6 +292,8 @@ class IdeaForm extends PureComponent<
       title,
       titleError: null,
     });
+
+    this.props.onTitleChange();
   };
 
   handleDescriptionOnChange = async (description: string) => {
@@ -299,6 +303,8 @@ class IdeaForm extends PureComponent<
       description,
       descriptionError: isDescriptionEmpty ? descriptionError : null,
     }));
+
+    this.props.onDescriptionChange();
   };
 
   handleTopicsOnChange = (selectedTopics: string[]) => {
