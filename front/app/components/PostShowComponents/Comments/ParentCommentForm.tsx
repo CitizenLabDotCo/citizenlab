@@ -5,6 +5,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import Button from 'components/UI/Button';
+import { Error } from 'cl2-component-library';
 import MentionsTextArea from 'components/UI/MentionsTextArea';
 import Avatar from 'components/Avatar';
 import clickOutside from 'utils/containers/clickOutside';
@@ -125,6 +126,7 @@ interface State {
   focused: boolean;
   processing: boolean;
   errorMessage: string | null;
+  profanityError: boolean;
 }
 
 class ParentCommentForm extends PureComponent<
@@ -140,6 +142,7 @@ class ParentCommentForm extends PureComponent<
       focused: false,
       processing: false,
       errorMessage: null,
+      profanityError: false,
     };
   }
 
@@ -244,8 +247,17 @@ class ParentCommentForm extends PureComponent<
         this.setState({ processing: false });
         this.close();
       } catch (error) {
-        const errorMessage = formatMessage(messages.addCommentError);
-        this.setState({ errorMessage, processing: false });
+        const apiErrors = get(error, 'json.errors');
+        const apiErrorMessage = formatMessage(messages.addCommentError);
+
+        if (process.env.NODE_ENV === 'development') console.log(error);
+        if (apiErrors && apiErrors.profanity) {
+          this.setState({
+            profanityError: true,
+          });
+        }
+        this.setState({ errorMessage: apiErrorMessage, processing: false });
+
         throw error;
       }
     } else if (locale && authUser && (!inputValue || inputValue === '')) {
@@ -269,7 +281,13 @@ class ParentCommentForm extends PureComponent<
       commentingPermissionInitiative,
       windowSize,
     } = this.props;
-    const { inputValue, focused, processing, errorMessage } = this.state;
+    const {
+      inputValue,
+      focused,
+      processing,
+      errorMessage,
+      profanityError,
+    } = this.state;
     const commentingEnabled =
       postType === 'initiative'
         ? commentingPermissionInitiative?.enabled === true
@@ -357,6 +375,9 @@ class ParentCommentForm extends PureComponent<
               </label>
             </Form>
           </FormContainer>
+          {profanityError && (
+            <Error text={formatMessage(messages.profanityError)} />
+          )}
         </Container>
       );
     }

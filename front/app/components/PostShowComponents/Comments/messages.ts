@@ -231,4 +231,8 @@ export default defineMessages({
     id: 'app.containers.Comments.a11y_undoUpvote',
     defaultMessage: 'Undo upvote',
   },
+  profanityError: {
+    id: 'app.containers.Comments.profanityError',
+    defaultMessage: '',
+  },
 });
