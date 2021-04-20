@@ -2,12 +2,13 @@
 import React, { PureComponent } from 'react';
 import { Subscription } from 'rxjs';
 import { filter, tap } from 'rxjs/operators';
-import { trim } from 'lodash-es';
+import { trim, get } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import Button from 'components/UI/Button';
+import { Error } from 'cl2-component-library';
 import MentionsTextArea from 'components/UI/MentionsTextArea';
 import Avatar from 'components/Avatar';
 import clickOutside from 'utils/containers/clickOutside';
@@ -115,6 +116,7 @@ interface State {
   processing: boolean;
   errorMessage: string | null;
   canSubmit: boolean;
+  profanityError: boolean;
 }
 
 class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
@@ -129,6 +131,7 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
       processing: false,
       errorMessage: null,
       canSubmit: false,
+      profanityError: false,
     };
   }
 
@@ -254,11 +257,20 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
           focused: false,
         });
       } catch (error) {
+        const apiErrors = get(error, 'json.errors');
+
         this.setState({
           errorMessage: formatMessage(messages.addCommentError),
           processing: false,
           canSubmit: true,
         });
+
+        if (process.env.NODE_ENV === 'development') console.log(error);
+        if (apiErrors && apiErrors.profanity) {
+          this.setState({
+            profanityError: true,
+          });
+        }
       }
     }
   };
@@ -288,7 +300,7 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
   );
 
   render() {
-    const { focused } = this.state;
+    const { focused, profanityError } = this.state;
     const {
       postId,
       postType,
@@ -296,6 +308,7 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
       authUser,
       windowSize,
       className,
+      intl: { formatMessage },
     } = this.props;
 
     if (!isNilOrError(authUser) && focused) {
@@ -369,6 +382,9 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
               </label>
             </Form>
           </FormContainer>
+          {profanityError && (
+            <Error text={formatMessage(messages.profanityError)} />
+          )}
         </Container>
       );
     }
