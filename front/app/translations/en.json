@@ -125,7 +125,6 @@
   "app.components.IdeaForm.noTopicsError": "Please select a topic",
   "app.components.IdeaForm.optionFormGeneralSectionTitle": "What is your option?",
   "app.components.IdeaForm.otherFilesTitle": "Attachments",
-  "app.components.IdeaForm.profanityError": "Your description is profane.",
   "app.components.IdeaForm.projectFormGeneralSectionTitle": "What is your project?",
   "app.components.IdeaForm.questionFormGeneralSectionTitle": "What is your question?",
   "app.components.IdeaForm.title": "Title",

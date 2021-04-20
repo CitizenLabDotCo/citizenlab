@@ -21,6 +21,7 @@ import {
   FormSectionTitle,
   FormLabel,
 } from 'components/UI/FormComponents';
+import Link from 'utils/cl-router/Link';
 
 // services
 import { localeStream } from 'services/locale';
@@ -52,7 +53,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 import { getInputTermMessage } from 'utils/i18n';
 
@@ -747,7 +748,20 @@ class IdeaForm extends PureComponent<
                 autocomplete="off"
               />
               {profanityError && (
-                <Error text={formatMessage(messages.profanityError, {})} />
+                <Error
+                  text={
+                    <FormattedMessage
+                      {...messages.profanityError}
+                      values={{
+                        guidelinesLink: (
+                          <Link to="/pages/faq" target="_blank">
+                            {formatMessage(messages.guidelinesLinkText)}
+                          </Link>
+                        ),
+                      }}
+                    />
+                  }
+                />
               )}
             </FormElement>
 
