@@ -115,6 +115,7 @@
   "app.components.IdeaForm.descriptionTitle": "Nassuiaat",
   "app.components.IdeaForm.formDetailsSectionTitle": "Immikkuualuttut",
   "app.components.IdeaForm.formGeneralSectionTitle": "Suna isumassarsiaraajuk?",
+  "app.components.IdeaForm.guidelinesLinkText": "",
   "app.components.IdeaForm.imageUploadTitle": "Assit",
   "app.components.IdeaForm.issueFormGeneralSectionTitle": "Suna ajornartorsiutigiviuk?",
   "app.components.IdeaForm.locationPlaceholder": "Inissisimaffia sumiittoq nassaarinarlugu allagit",
