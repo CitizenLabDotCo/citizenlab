@@ -348,23 +348,29 @@ export default class InitiativesNewFormWrapper extends React.PureComponent<
   };
 
   onChangeTitle = (title_multiloc: Multiloc) => {
-    this.setState({ title_multiloc });
+    this.setState({ title_multiloc, profanityError: false });
   };
+
   onChangeBody = (body_multiloc: Multiloc) => {
-    this.setState({ body_multiloc });
+    this.setState({ body_multiloc, profanityError: false });
   };
+
   onChangeTopics = (topic_ids: string[]) => {
     this.setState({ topic_ids });
   };
+
   onChangePosition = (position: string) => {
     this.setState({ position, location_point_geojson: undefined });
   };
+
   onChangeBanner = (newValue: UploadFile | null) => {
     this.setState({ banner: newValue, hasBannerChanged: true });
   };
+
   onChangeImage = (newValue: UploadFile | null) => {
     this.setState({ image: newValue, hasImageChanged: true });
   };
+
   onAddFile = (file: UploadFile) => {
     const { initiativeId } = this.state;
     if (initiativeId) {
@@ -391,6 +397,7 @@ export default class InitiativesNewFormWrapper extends React.PureComponent<
         });
     }
   };
+
   onRemoveFile = (fileToRemove: UploadFile) => {
     const { initiativeId } = this.state;
 

@@ -268,20 +268,25 @@ export default class InitiativesEditFormWrapper extends React.PureComponent<
   };
 
   onChangeTitle = (title_multiloc: Multiloc) => {
-    this.setState({ title_multiloc });
+    this.setState({ title_multiloc, profanityError: false });
   };
+
   onChangeBody = (body_multiloc: Multiloc) => {
-    this.setState({ body_multiloc });
+    this.setState({ body_multiloc, profanityError: false });
   };
+
   onChangeTopics = (topic_ids: string[]) => {
     this.setState({ topic_ids });
   };
+
   onChangePosition = (position: string) => {
     this.setState({ position });
   };
+
   onChangeBanner = (newValue: UploadFile | null) => {
     this.setState({ banner: newValue, hasBannerChanged: true });
   };
+
   onChangeImage = (newValue: UploadFile | null) => {
     if (newValue) {
       this.setState({ image: newValue });
@@ -294,6 +299,7 @@ export default class InitiativesEditFormWrapper extends React.PureComponent<
       });
     }
   };
+
   onAddFile = (file: UploadFile) => {
     this.setState(({ files }) => ({ files: [...files, file] }));
   };
