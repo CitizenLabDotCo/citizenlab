@@ -9,6 +9,7 @@ import { Error } from 'cl2-component-library';
 import MentionsTextArea from 'components/UI/MentionsTextArea';
 import Avatar from 'components/Avatar';
 import clickOutside from 'utils/containers/clickOutside';
+import Link from 'utils/cl-router/Link';
 
 // tracking
 import { trackEventByName } from 'utils/analytics';
@@ -376,7 +377,20 @@ class ParentCommentForm extends PureComponent<
             </Form>
           </FormContainer>
           {profanityError && (
-            <Error text={formatMessage(messages.profanityError)} />
+            <Error
+              text={
+                <FormattedMessage
+                  {...messages.profanityError}
+                  values={{
+                    guidelinesLink: (
+                      <Link to="/pages/faq" target="_blank">
+                        {formatMessage(messages.guidelinesLinkText)}
+                      </Link>
+                    ),
+                  }}
+                />
+              }
+            />
           )}
         </Container>
       );

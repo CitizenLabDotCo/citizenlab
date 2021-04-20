@@ -233,6 +233,11 @@ export default defineMessages({
   },
   profanityError: {
     id: 'app.containers.Comments.profanityError',
-    defaultMessage: '',
+    defaultMessage:
+      'You may have used one or more words that are considered profanity by {guidelinesLink}. Please alter your text to remove any profanities that might be present.',
+  },
+  guidelinesLinkText: {
+    id: 'app.containers.Comments.guidelinesLinkText',
+    defaultMessage: 'our guidelines',
   },
 });
