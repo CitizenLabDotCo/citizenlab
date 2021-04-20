@@ -287,7 +287,6 @@ workflows:
             branches:
               ignore:
                 - crowdin_master
-                - production
 
   private-ci:
     when:
