@@ -99,7 +99,7 @@ describe InitiativesFinder do
 
   context 'when passing a sort param \'-upvotes_count\'' do
     before do
-      params[:sort] = 'upvotes_count'
+      params[:sort] = '-upvotes_count'
     end
 
     it 'is successful' do

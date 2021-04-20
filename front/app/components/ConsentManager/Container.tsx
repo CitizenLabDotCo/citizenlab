@@ -32,6 +32,7 @@ interface Props {
   isConsentRequired: boolean;
   preferences: IPreferences;
   categorizedDestinations: CategorizedDestinations;
+  onToggleModal: (opened: boolean) => void;
 }
 
 interface State {
@@ -63,12 +64,14 @@ export default class Container extends PureComponent<Props, State> {
   }
 
   openDialog = () => {
+    this.props.onToggleModal(false);
     this.setState({
       isDialogOpen: true,
     });
   };
 
   closeDialog = () => {
+    this.props.onToggleModal(true);
     this.setState({
       isDialogOpen: false,
     });

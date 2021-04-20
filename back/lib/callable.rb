@@ -19,7 +19,7 @@ module Callable
     base.class_eval do
       extend Callable::ClassMethods
 
-      delegate :result, to: :class
+      attr_reader :result
     end
   end
 

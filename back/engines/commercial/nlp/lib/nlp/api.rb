@@ -72,7 +72,10 @@ module NLP
         headers: { 'Content-Type' => 'application/json' },
         timeout: LONG_TIMEOUT
       )
-      return JSON.parse(resp.body)['data'] if resp.success?
+      unless resp.success?
+        raise ClErrors::TransactionError.new(error_key: resp['code'])
+      end
+      resp.parsed_response.dig('data')
     end
 
     def tag_suggestions(body)
@@ -82,7 +85,10 @@ module NLP
         headers: { 'Content-Type' => 'application/json' },
         timeout: LONG_TIMEOUT
       )
-      return JSON.parse(resp.body)['data'] if resp.success?
+      unless resp.success?
+        raise ClErrors::TransactionError.new(error_key: resp['code'])
+      end
+      resp.parsed_response.dig('data')
     end
 
     def zeroshot_classification(body)
@@ -92,7 +98,10 @@ module NLP
         headers: { 'Content-Type' => 'application/json' },
         timeout: LONG_TIMEOUT
       )
-      return JSON.parse(resp.body)['data'] if resp.success?
+      unless resp.success?
+        raise ClErrors::TransactionError.new(error_key: resp['code'])
+      end
+      resp.parsed_response.dig('data')
     end
 
     def cancel_task(task_id)
@@ -110,7 +119,10 @@ module NLP
         headers: { 'Content-Type' => 'application/json' },
         timeout: LONG_TIMEOUT
       )
-      return JSON.parse(resp.body)['data'] if resp.success?
+      unless resp.success?
+        raise ClErrors::TransactionError.new(error_key: resp['code'])
+      end
+      resp.parsed_response.dig('data')
     end
   end
 end

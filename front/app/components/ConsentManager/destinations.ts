@@ -14,7 +14,7 @@ export interface IDestinationConfig {
   /** A unique key, used to name the destination in the stored cookie */
   key: IDestination;
   /** Destinations are grouped in categories. Under which category should it be listed? */
-  category: TCategory;
+  category: TCategory | ((tenant: IAppConfigurationData) => TCategory);
   /** The name of the feature flag that should be active for the destination to be functional */
   feature_flag?: keyof IAppConfigurationData['attributes']['settings'];
   /** Can the destination be active for the given user? */

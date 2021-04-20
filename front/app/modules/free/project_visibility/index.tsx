@@ -8,7 +8,22 @@ type RenderOnFeatureFlagProps = {
   children: ReactNode;
 };
 
+type RenderOnTabHideConditionProps = {
+  children: ReactNode;
+};
+
 const RenderOnFeatureFlag = ({ children }: RenderOnFeatureFlagProps) => {
+  const isEnabled = useFeatureFlag('project_visibility');
+  if (isEnabled) {
+    return <>{children}</>;
+  }
+  return null;
+};
+
+const RenderOnTabHideCondition = ({
+  children,
+}: RenderOnTabHideConditionProps) => {
+  // could be the same as, but might diverge from RenderOnFeatureFlag
   const isEnabled = useFeatureFlag('project_visibility');
   if (isEnabled) {
     return <>{children}</>;
@@ -27,9 +42,9 @@ const configuration: ModuleConfiguration = {
     ),
     'app.containers.Admin.projects.edit': (props) => {
       return (
-        <RenderOnFeatureFlag>
+        <RenderOnTabHideCondition>
           <Tab {...props} />
-        </RenderOnFeatureFlag>
+        </RenderOnTabHideCondition>
       );
     },
   },
