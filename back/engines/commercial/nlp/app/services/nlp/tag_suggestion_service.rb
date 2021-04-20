@@ -5,32 +5,19 @@ module NLP
 
       @api ||= NLP::API.new ENV.fetch('CL2_NLP_HOST')
       @texts = parse_ideas ideas, locale
-
-      suggestions = @texts.any? ? @api.tag_suggestions({
+      @texts.any? ? @api.tag_suggestions({
         locale: locale,
         max_number_of_suggestions: 20,
         texts: @texts
       }.freeze) : []
-
-      Raven.capture_message("Nil suggestion", {
-        :extra => {
-          'texts' => @texts
-        }
-      }) if suggestions.nil?
-
-      suggestions
     end
 
     private
 
     def parse_ideas(ideas, locale)
       ideas.map { |idea|
-        {
-          body: ActionView::Base.full_sanitizer.sanitize(idea.body_multiloc[locale]),
-          id: idea.id,
-          title: ActionView::Base.full_sanitizer.sanitize(idea.body_multiloc[locale])
-        }
-      }.reject { |item| item[:body].blank? }
+        ActionView::Base.full_sanitizer.sanitize(idea.body_multiloc[locale])
+      }.reject(&:blank?)
     end
   end
 end
