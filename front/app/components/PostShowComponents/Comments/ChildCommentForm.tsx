@@ -174,6 +174,7 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
     this.setState(({ focused }) => ({
       inputValue,
       errorMessage: null,
+      profanityError: false,
       canSubmit: !!(focused && trim(inputValue) !== ''),
     }));
   };

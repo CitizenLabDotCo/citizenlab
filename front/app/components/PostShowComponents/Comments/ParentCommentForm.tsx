@@ -158,6 +158,7 @@ class ParentCommentForm extends PureComponent<
       inputValue,
       focused: true,
       errorMessage: null,
+      profanityError: false,
     });
   };
 
