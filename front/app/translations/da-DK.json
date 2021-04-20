@@ -115,6 +115,7 @@
   "app.components.IdeaForm.descriptionTitle": "Beskrivelse",
   "app.components.IdeaForm.formDetailsSectionTitle": "Detaljer",
   "app.components.IdeaForm.formGeneralSectionTitle": "Hvad er din idé?",
+  "app.components.IdeaForm.guidelinesLinkText": "",
   "app.components.IdeaForm.imageUploadTitle": "Billede",
   "app.components.IdeaForm.issueFormGeneralSectionTitle": "Hvad er din idé?",
   "app.components.IdeaForm.locationPlaceholder": "Skriv for at finde en beliggenhed",

@@ -115,6 +115,7 @@
   "app.components.IdeaForm.descriptionTitle": "Description",
   "app.components.IdeaForm.formDetailsSectionTitle": "Details",
   "app.components.IdeaForm.formGeneralSectionTitle": "What is your idea?",
+  "app.components.IdeaForm.guidelinesLinkText": "",
   "app.components.IdeaForm.imageUploadTitle": "Image",
   "app.components.IdeaForm.issueFormGeneralSectionTitle": "What is your issue?",
   "app.components.IdeaForm.locationPlaceholder": "Type to find a location",

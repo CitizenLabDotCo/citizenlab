@@ -262,6 +262,14 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
     }
   };
 
+  onTitleChange = () => {
+    this.setState({ profanityError: false });
+  };
+
+  onDescriptionChange = () => {
+    this.setState({ profanityError: false });
+  };
+
   render() {
     const { project } = this.props;
 
@@ -273,6 +281,8 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
             <NewIdeaForm
               onSubmit={this.handleOnIdeaSubmit}
               projectId={project.id}
+              onTitleChange={this.onTitleChange}
+              onDescriptionChange={this.onDescriptionChange}
             />
           </PageContainer>
           <ButtonBarContainer>

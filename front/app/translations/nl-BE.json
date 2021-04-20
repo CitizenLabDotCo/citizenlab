@@ -115,6 +115,7 @@
   "app.components.IdeaForm.descriptionTitle": "Beschrijving",
   "app.components.IdeaForm.formDetailsSectionTitle": "Details",
   "app.components.IdeaForm.formGeneralSectionTitle": "Wat is je idee?",
+  "app.components.IdeaForm.guidelinesLinkText": "",
   "app.components.IdeaForm.imageUploadTitle": "Afbeelding",
   "app.components.IdeaForm.issueFormGeneralSectionTitle": "Wat is je stelling?",
   "app.components.IdeaForm.locationPlaceholder": "Typ om een locatie te vinden",

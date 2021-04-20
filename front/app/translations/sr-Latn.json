@@ -115,6 +115,7 @@
   "app.components.IdeaForm.descriptionTitle": "Opis",
   "app.components.IdeaForm.formDetailsSectionTitle": "Detalji",
   "app.components.IdeaForm.formGeneralSectionTitle": "Šta je vaša ideja?",
+  "app.components.IdeaForm.guidelinesLinkText": "",
   "app.components.IdeaForm.imageUploadTitle": "Slika",
   "app.components.IdeaForm.issueFormGeneralSectionTitle": "Koji problem ste prepoznali?",
   "app.components.IdeaForm.locationPlaceholder": "Započnite unos kako biste pronašli lokaciju",

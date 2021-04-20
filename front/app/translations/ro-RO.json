@@ -115,6 +115,7 @@
   "app.components.IdeaForm.descriptionTitle": "Descriere",
   "app.components.IdeaForm.formDetailsSectionTitle": "Detalii",
   "app.components.IdeaForm.formGeneralSectionTitle": "Care este ideea ta?",
+  "app.components.IdeaForm.guidelinesLinkText": "",
   "app.components.IdeaForm.imageUploadTitle": "Imagine",
   "app.components.IdeaForm.issueFormGeneralSectionTitle": "Care este problema ta?",
   "app.components.IdeaForm.locationPlaceholder": "Tastați pentru a găsi o locație",

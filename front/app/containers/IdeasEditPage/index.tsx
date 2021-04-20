@@ -320,6 +320,14 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
     }
   };
 
+  onTitleChange = () => {
+    this.setState({ profanityError: false });
+  };
+
+  onDescriptionChange = () => {
+    this.setState({ profanityError: false });
+  };
+
   render() {
     if (this.state && this.state.loaded) {
       const { remoteIdeaFiles, project, idea, phases } = this.props;
@@ -380,6 +388,8 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
                   !isNilOrError(remoteIdeaFiles) ? remoteIdeaFiles : null
                 }
                 profanityError={profanityError}
+                onTitleChange={this.onTitleChange}
+                onDescriptionChange={this.onDescriptionChange}
               />
 
               <ButtonBarContainer>

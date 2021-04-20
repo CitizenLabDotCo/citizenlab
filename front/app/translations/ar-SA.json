@@ -115,6 +115,7 @@
   "app.components.IdeaForm.descriptionTitle": "الوصف",
   "app.components.IdeaForm.formDetailsSectionTitle": "التفاصيل",
   "app.components.IdeaForm.formGeneralSectionTitle": "ما هي فكرتك؟",
+  "app.components.IdeaForm.guidelinesLinkText": "",
   "app.components.IdeaForm.imageUploadTitle": "صورة",
   "app.components.IdeaForm.issueFormGeneralSectionTitle": "ما هي مشكلتك؟",
   "app.components.IdeaForm.locationPlaceholder": "اكتب للعثور على موقع",
