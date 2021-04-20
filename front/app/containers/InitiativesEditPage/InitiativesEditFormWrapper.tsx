@@ -221,6 +221,11 @@ export default class InitiativesEditFormWrapper extends React.PureComponent<
             this.setState((state) => ({
               apiErrors: { ...state.apiErrors, ...apiErrors },
             }));
+
+            if (apiErrors.profanity) {
+              this.setState({ profanityError: true });
+            }
+
             setTimeout(() => {
               this.setState((state) => ({
                 apiErrors: { ...state.apiErrors, file: undefined },
