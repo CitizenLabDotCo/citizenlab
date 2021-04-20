@@ -28,7 +28,7 @@ class ExportIdeasButton extends React.PureComponent<
   Props & InjectedIntlProps,
   State
 > {
-  constructor(props: Props) {
+  constructor(props) {
     super(props);
     this.state = {
       exporting: false,

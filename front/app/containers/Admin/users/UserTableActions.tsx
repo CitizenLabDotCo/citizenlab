@@ -27,7 +27,7 @@ import eventEmitter from 'utils/eventEmitter';
 import events, { MembershipAdd } from './events';
 
 // tracking
-import { injectTracks, trackEventByName } from 'utils/analytics';
+import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // Resources
