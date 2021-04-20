@@ -19,24 +19,33 @@ jest.mock('components/admin/Section', () => ({
 jest.mock('components/FeatureFlag', () => 'FeatureFlag');
 jest.mock('modules', () => ({ streamsToReset: [] }));
 
+const localize = (multiloc) => multiloc.en;
+
 describe('<AdminProjectPoll/>', () => {
   describe('boundaries', () => {
     it('is feature flagged under the name poll from the root', () => {
       const mockProject = getProject('projectId', 'continuous', 'poll');
       const wrapper = shallow(
-        <AdminProjectPoll project={mockProject} phases={null} locale={'en'} />
+        <AdminProjectPoll
+          project={mockProject}
+          phases={null}
+          locale={'en'}
+          localize={localize}
+        />
       );
       expect(wrapper.type()).toBe('FeatureFlag');
       expect(wrapper.props().name).toBe('polls');
     });
     it('renders null if phase and project are null or error', () => {
-      const wrapper = shallow(<AdminProjectPoll />);
+      const wrapper = shallow(<AdminProjectPoll localize={localize} />);
       expect(wrapper.type()).toBeNull();
     });
     it('renders null if phases is null and project is continuous', () => {
       const mockProject = getProject('projectId', 'timeline');
 
-      const wrapper = shallow(<AdminProjectPoll project={mockProject} />);
+      const wrapper = shallow(
+        <AdminProjectPoll project={mockProject} localize={localize} />
+      );
 
       expect(wrapper.type()).toBeNull();
     });
@@ -48,7 +57,12 @@ describe('<AdminProjectPoll/>', () => {
         'survey_monkey'
       );
       const wrapper = shallow(
-        <AdminProjectPoll project={mockProject} phases={null} locale={'en'} />
+        <AdminProjectPoll
+          project={mockProject}
+          phases={null}
+          locale={'en'}
+          localize={localize}
+        />
       );
       expect(wrapper.type()).toBeNull();
     });
@@ -64,6 +78,7 @@ describe('<AdminProjectPoll/>', () => {
           project={mockProject}
           phases={mockPhases}
           locale={'en'}
+          localize={localize}
         />
       );
       expect(wrapper.type()).toBeNull();
@@ -73,7 +88,12 @@ describe('<AdminProjectPoll/>', () => {
     it('renders the right content for a continuous project with polling PM', () => {
       const mockProject = getProject('projectId', 'continuous', 'poll');
       const wrapper = shallow(
-        <AdminProjectPoll project={mockProject} phases={null} locale={'en'} />
+        <AdminProjectPoll
+          project={mockProject}
+          phases={null}
+          locale={'en'}
+          localize={localize}
+        />
       );
       expect(wrapper.find('GetPollQuestions').props()).toMatchObject({
         participationContextId: 'projectId',
@@ -98,6 +118,7 @@ describe('<AdminProjectPoll/>', () => {
           project={mockProject}
           phases={mockPhases}
           locale={'en'}
+          localize={localize}
         />
       );
       expect(wrapper.find('GetPollQuestions').props()).toMatchObject({
@@ -121,6 +142,7 @@ describe('<AdminProjectPoll/>', () => {
           project={mockProject}
           phases={mockPhases}
           locale={'en'}
+          localize={localize}
         />
       );
       wrapper.find('GetPollQuestions').every((item) =>
