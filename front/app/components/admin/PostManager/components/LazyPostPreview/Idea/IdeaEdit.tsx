@@ -1,7 +1,7 @@
 // Copied IdeaEditPage and made the minimal modifications for this use.
 
 import React, { PureComponent } from 'react';
-import { isString, isEmpty } from 'lodash-es';
+import { isString, isEmpty, get } from 'lodash-es';
 import { Subscription, combineLatest, of } from 'rxjs';
 import { switchMap, map, first } from 'rxjs/operators';
 import { isNilOrError } from 'utils/helperUtils';
@@ -80,6 +80,7 @@ interface State {
   imageFile: UploadFile[];
   imageId: string | null;
   submitError: boolean;
+  profanityError: boolean;
   loaded: boolean;
   processing: boolean;
 }
@@ -101,6 +102,7 @@ class IdeaEdit extends PureComponent<Props, State> {
       imageFile: [],
       imageId: null,
       submitError: false,
+      profanityError: false,
       loaded: false,
       processing: false,
     };
@@ -269,7 +271,14 @@ class IdeaEdit extends PureComponent<Props, State> {
       ] as Promise<any>[]);
 
       goBack();
-    } catch {
+    } catch (error) {
+      const apiErrors = get(error, 'json.errors');
+      if (process.env.NODE_ENV === 'development') console.log(error);
+      if (apiErrors && apiErrors.profanity) {
+        this.setState({
+          profanityError: true,
+        });
+      }
       this.setState({ processing: false, submitError: true });
     }
   };
@@ -289,6 +298,7 @@ class IdeaEdit extends PureComponent<Props, State> {
         processing,
         budget,
         proposedBudget,
+        profanityError,
       } = this.state;
       const title = locale && titleMultiloc ? titleMultiloc[locale] || '' : '';
       const description =
@@ -327,6 +337,7 @@ class IdeaEdit extends PureComponent<Props, State> {
                 remoteIdeaFiles={
                   !isNilOrError(remoteIdeaFiles) ? remoteIdeaFiles : null
                 }
+                profanityError={profanityError}
               />
 
               <ButtonWrapper>
