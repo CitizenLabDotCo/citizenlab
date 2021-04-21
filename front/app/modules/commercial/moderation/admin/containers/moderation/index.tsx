@@ -221,6 +221,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
 
   type TTabName = ITabNamesMap[keyof ITabNamesMap];
 
+  const flaggedItemsCount = 5;
   const tabs = [
     {
       name: 'unread',
@@ -232,7 +233,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
     },
     {
       name: 'warnings',
-      label: intl.formatMessage(messages.warnings),
+      label: `${intl.formatMessage(messages.warnings)} (${flaggedItemsCount})`,
     },
   ];
 
