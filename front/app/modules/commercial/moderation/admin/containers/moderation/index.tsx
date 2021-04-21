@@ -474,12 +474,12 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
             >
               {moderationStatus === 'unread' ? (
                 <FormattedMessage
-                  {...messages.markAsViewed}
+                  {...messages.markAsSeen}
                   values={{ selectedItemsCount: selectedRows.length }}
                 />
               ) : (
                 <FormattedMessage
-                  {...messages.markAsNotViewed}
+                  {...messages.markAsNotSeen}
                   values={{ selectedItemsCount: selectedRows.length }}
                 />
               )}
