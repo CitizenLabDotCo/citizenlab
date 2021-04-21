@@ -50,7 +50,8 @@ interface State extends FormValues {
   publishError: boolean;
   apiErrors: any;
   filesToRemove: UploadFile[];
-  profanityError: boolean;
+  titleProfanityError: boolean;
+  descriptionProfanityError: boolean;
 }
 
 function doNothing() {
@@ -81,7 +82,8 @@ export default class InitiativesEditFormWrapper extends React.PureComponent<
       publishError: false,
       apiErrors: null,
       filesToRemove: [],
-      profanityError: false,
+      titleProfanityError: false,
+      descriptionProfanityError: false,
     };
   }
 
@@ -222,8 +224,11 @@ export default class InitiativesEditFormWrapper extends React.PureComponent<
               apiErrors: { ...state.apiErrors, ...apiErrors },
             }));
 
-            if (apiErrors.profanity) {
-              this.setState({ profanityError: true });
+            if (apiErrors.titleProfanity) {
+              this.setState({ titleProfanityError: true });
+            }
+            if (apiErrors.descriptionProfanity) {
+              this.setState({ descriptionProfanityError: true });
             }
 
             setTimeout(() => {
@@ -268,11 +273,11 @@ export default class InitiativesEditFormWrapper extends React.PureComponent<
   };
 
   onChangeTitle = (title_multiloc: Multiloc) => {
-    this.setState({ title_multiloc, profanityError: false });
+    this.setState({ title_multiloc, titleProfanityError: false });
   };
 
   onChangeBody = (body_multiloc: Multiloc) => {
-    this.setState({ body_multiloc, profanityError: false });
+    this.setState({ body_multiloc, descriptionProfanityError: false });
   };
 
   onChangeTopics = (topic_ids: string[]) => {
@@ -338,7 +343,8 @@ export default class InitiativesEditFormWrapper extends React.PureComponent<
     const {
       initiativeId,
       hasBannerChanged,
-      profanityError,
+      titleProfanityError,
+      descriptionProfanityError,
       ...otherProps
     } = this.state;
     const { locale, initiativeImage, topics } = this.props;
@@ -360,7 +366,8 @@ export default class InitiativesEditFormWrapper extends React.PureComponent<
         onAddFile={this.onAddFile}
         onRemoveFile={this.onRemoveFile}
         topics={topics}
-        profanityError={profanityError}
+        titleProfanityError={titleProfanityError}
+        descriptionProfanityError={descriptionProfanityError}
       />
     );
   }

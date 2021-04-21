@@ -68,7 +68,8 @@ interface State extends FormValues {
   publishError: boolean;
   apiErrors: any;
   location_point_geojson?: Point;
-  profanityError: boolean;
+  titleProfanityError: boolean;
+  descriptionProfanityError: boolean;
 }
 
 export default class InitiativesNewFormWrapper extends React.PureComponent<
@@ -102,7 +103,8 @@ export default class InitiativesNewFormWrapper extends React.PureComponent<
       apiErrors: null,
       position: props.location_description,
       location_point_geojson: props.location_point_geojson,
-      profanityError: false,
+      titleProfanityError: false,
+      descriptionProfanityError: false,
     };
   }
 
@@ -251,9 +253,13 @@ export default class InitiativesNewFormWrapper extends React.PureComponent<
     } catch (errorResponse) {
       const apiErrors = get(errorResponse, 'json.errors');
 
-      if (apiErrors.profanity) {
-        this.setState({ profanityError: true });
+      if (apiErrors.titleProfanity) {
+        this.setState({ titleProfanityError: true });
       }
+      if (apiErrors.descriptionProfanity) {
+        this.setState({ descriptionProfanityError: true });
+      }
+
       // saving changes while working should have a minimal error feedback,
       // maybe in the saving indicator, since it's error-resistant, ie what wasn't
       // saved this time will be next time user leaves a field, or on publish call.
@@ -348,11 +354,11 @@ export default class InitiativesNewFormWrapper extends React.PureComponent<
   };
 
   onChangeTitle = (title_multiloc: Multiloc) => {
-    this.setState({ title_multiloc, profanityError: false });
+    this.setState({ title_multiloc, titleProfanityError: false });
   };
 
   onChangeBody = (body_multiloc: Multiloc) => {
-    this.setState({ body_multiloc, profanityError: false });
+    this.setState({ body_multiloc, descriptionProfanityError: false });
   };
 
   onChangeTopics = (topic_ids: string[]) => {
@@ -436,7 +442,8 @@ export default class InitiativesNewFormWrapper extends React.PureComponent<
       initiativeId,
       hasBannerChanged,
       hasImageChanged,
-      profanityError,
+      titleProfanityError,
+      descriptionProfanityError,
       ...otherProps
     } = this.state;
     const { locale, topics } = this.props;
@@ -456,7 +463,8 @@ export default class InitiativesNewFormWrapper extends React.PureComponent<
         onAddFile={this.onAddFile}
         onRemoveFile={this.onRemoveFile}
         topics={topics}
-        profanityError={profanityError}
+        titleProfanityError={titleProfanityError}
+        descriptionProfanityError={descriptionProfanityError}
       />
     );
   }

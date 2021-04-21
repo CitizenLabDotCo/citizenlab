@@ -77,7 +77,8 @@ interface Props extends FormValues, FormProps {
   publishError: boolean;
   apiErrors: any;
   topics: ITopicData[];
-  profanityError: boolean;
+  titleProfanityError: boolean;
+  descriptionProfanityError: boolean;
 }
 
 interface State {
@@ -352,7 +353,8 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
       intl: { formatMessage },
       apiErrors,
       topics,
-      profanityError,
+      titleProfanityError,
+      descriptionProfanityError,
     } = this.props;
 
     const { touched, errors } = this.state;
@@ -397,7 +399,7 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
                   )
                 )}
               </FormLabel>
-              {profanityError && (
+              {titleProfanityError && (
                 <Error
                   text={
                     <FormattedMessage
@@ -439,6 +441,22 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
                 apiErrors.body_multiloc && (
                   <Error apiErrors={apiErrors.body_multiloc} />
                 )
+              )}
+              {descriptionProfanityError && (
+                <Error
+                  text={
+                    <FormattedMessage
+                      {...messages.profanityError}
+                      values={{
+                        guidelinesLink: (
+                          <Link to="/pages/faq" target="_blank">
+                            {formatMessage(messages.guidelinesLinkText)}
+                          </Link>
+                        ),
+                      }}
+                    />
+                  }
+                />
               )}
             </SectionField>
           </StyledFormSection>
