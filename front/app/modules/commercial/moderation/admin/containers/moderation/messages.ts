@@ -33,6 +33,10 @@ export default defineMessages({
     id: 'app.containers.Admin.Moderation.content',
     defaultMessage: 'Content',
   },
+  warning: {
+    id: 'app.containers.Admin.Moderation.warning',
+    defaultMessage: 'Warning',
+  },
   date: {
     id: 'app.containers.Admin.Moderation.date',
     defaultMessage: 'Date',
@@ -114,5 +118,9 @@ export default defineMessages({
   settingsSavingError: {
     id: 'app.containers.Admin.Moderation.settingsSavingError',
     defaultMessage: "Couldn't save. Try changing the setting again.",
+  },
+  warningText: {
+    id: 'app.containers.Admin.Moderation.warningText',
+    defaultMessage: 'Possibly inappropriate content',
   },
 });

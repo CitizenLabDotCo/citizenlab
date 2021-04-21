@@ -532,6 +532,9 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
               <th className="belongsTo">
                 <FormattedMessage {...messages.belongsTo} />
               </th>
+              <th className="warning">
+                <FormattedMessage {...messages.warning} />
+              </th>
               <th className="content">
                 <FormattedMessage {...messages.content} />
               </th>

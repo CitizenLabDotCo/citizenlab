@@ -4,6 +4,7 @@ import { omitBy, isNil, isEmpty } from 'lodash-es';
 
 // components
 import ModerationContentCell from './ModerationContentCell';
+import InappropriateContentWarning from './InappropriateContentWarning';
 import Checkbox from 'components/UI/Checkbox';
 import { Icon } from 'cl2-component-library';
 import Tippy from '@tippyjs/react';
@@ -195,6 +196,9 @@ const ModerationRow = memo<Props & InjectedIntlProps>(
             ))}
 
           {isEmpty(moderation.attributes.belongs_to) && <>-</>}
+        </td>
+        <td className="warning">
+          <InappropriateContentWarning />
         </td>
         <td className="content">
           <ModerationContentCell
