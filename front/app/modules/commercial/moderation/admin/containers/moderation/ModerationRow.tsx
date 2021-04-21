@@ -74,6 +74,10 @@ const GoToIcon = styled(Icon)`
   }
 `;
 
+const StyledModerationContentCell = styled(ModerationContentCell)`
+  margin-bottom: 20px;
+`;
+
 interface Props {
   moderation: IModerationData;
   selected: boolean;
@@ -197,14 +201,12 @@ const ModerationRow = memo<Props & InjectedIntlProps>(
 
           {isEmpty(moderation.attributes.belongs_to) && <>-</>}
         </td>
-        <td className="warning">
-          <InappropriateContentWarning />
-        </td>
         <td className="content">
-          <ModerationContentCell
+          <StyledModerationContentCell
             contentTitle={!isEmpty(contentTitle) ? contentTitle : null}
             contentBody={contentBody}
           />
+          <InappropriateContentWarning />
         </td>
         <td>
           <Tippy

@@ -9,7 +9,7 @@ import messages from './messages';
 
 const Container = styled.div`
   display: flex;
-  align-items: flex-start;
+  align-items: center;
 `;
 
 const WarningContent = styled.div`
@@ -20,7 +20,7 @@ const WarningContent = styled.div`
 const WarningIcon = styled(Icon)`
   color: ${colors.clRedError};
   margin-right: 5px;
-  width: 30px;
+  width: 15px;
 `;
 
 interface Props {}
