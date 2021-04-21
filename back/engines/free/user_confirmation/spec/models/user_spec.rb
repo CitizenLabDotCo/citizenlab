@@ -12,7 +12,8 @@ RSpec.describe User, type: :model do
     expect(user.email_confirmation_code).to match USER_CONFIRMATION_CODE_PATTERN
   end
 
-  it { is_expected.to(allow_value('123456').for(:email_confirmation_code)) }
-  it { is_expected.not_to(allow_value('asdasa').for(:email_confirmation_code)) }
-  it { is_expected.not_to(allow_value(nil).for(:email_confirmation_code)) }
+  it 'sets a confirmation code of 4 digits when saving' do
+    user.save
+    expect(user.email_confirmation_code.length).to eq 4
+  end
 end

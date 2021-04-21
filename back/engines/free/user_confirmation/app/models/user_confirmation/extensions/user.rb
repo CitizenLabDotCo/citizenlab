@@ -3,7 +3,7 @@ module UserConfirmation
     module User
       def self.included(base)
         base.class_eval do
-          validates :email_confirmation_code, format: USER_CONFIRMATION_CODE_PATTERN
+          validates :email_confirmation_code, format: { with: USER_CONFIRMATION_CODE_PATTERN }, allow_nil: true
 
           before_validation :reset_email_confirmation_code, on: :create
         end

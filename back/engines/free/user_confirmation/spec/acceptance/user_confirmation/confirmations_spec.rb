@@ -13,7 +13,7 @@ resource 'Confirmations' do
 
     context 'when not logged in' do
       example 'returns a not authorized status passing a valid code' do
-        do_request(code: '123456')
+        do_request(code: '1234')
         expect(status).to eq 401
       end
     end

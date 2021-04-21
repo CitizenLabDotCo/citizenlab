@@ -11,7 +11,7 @@ module UserConfirmation
     end
 
     def subject
-      format_message('subject')
+      t('.subject', organizationName: organization_name)
     end
   end
 end
