@@ -107,6 +107,16 @@ export default defineMessages({
     defaultMessage:
       'Block posts containing the most commonly reported offensive words.',
   },
+  inappropriateContentDetectionSetting: {
+    id: 'app.containers.Admin.Moderation.inappropriateContentDetectionSetting',
+    defaultMessage: 'Detect inappropriate content',
+  },
+  inappropriateContentDetectionSettingDescription: {
+    id:
+      'app.containers.Admin.Moderation.inappropriateContentDetectionSettingDescription',
+    defaultMessage:
+      'Scan published posts for potentially inappropriate content.',
+  },
   successfulUpdateSettings: {
     id: 'app.containers.Admin.Moderation.successfulUpdateSettings',
     defaultMessage: 'Settings updated successfully.',

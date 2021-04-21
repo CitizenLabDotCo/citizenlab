@@ -282,6 +282,16 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
       ? appConfiguration.data.attributes.settings.profanity_blocker.enabled
       : false
   );
+  const [
+    inappropriateContentEnabled,
+    setInappropriateContentEnabled,
+  ] = useState(
+    !isNilOrError(appConfiguration) &&
+      appConfiguration.data.attributes.settings.inappropriate_content_detection
+      ? appConfiguration.data.attributes.settings
+          .inappropriate_content_detection.enabled
+      : false
+  );
 
   const handleOnSelectAll = useCallback(
     (_event: React.ChangeEvent) => {
@@ -363,6 +373,10 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
 
   const onToggleBlockProfanitySetting = () => {
     setProfanityBlockerEnabled(!profanityBlockerEnabled);
+  };
+
+  const onToggleInappropriateContentSetting = () => {
+    setInappropriateContentEnabled(!inappropriateContentEnabled);
   };
 
   useEffect(() => {
@@ -607,6 +621,26 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
                   <LabelDescription>
                     {intl.formatMessage(
                       messages.profanityBlockerSettingDescription
+                    )}
+                  </LabelDescription>
+                </LabelContent>
+              </ToggleLabel>
+            </Setting>
+            <Setting>
+              <ToggleLabel>
+                <StyledToggle
+                  checked={inappropriateContentEnabled}
+                  onChange={onToggleInappropriateContentSetting}
+                />
+                <LabelContent>
+                  <LabelTitle>
+                    {intl.formatMessage(
+                      messages.inappropriateContentDetectionSetting
+                    )}
+                  </LabelTitle>
+                  <LabelDescription>
+                    {intl.formatMessage(
+                      messages.inappropriateContentDetectionSettingDescription
                     )}
                   </LabelDescription>
                 </LabelContent>
