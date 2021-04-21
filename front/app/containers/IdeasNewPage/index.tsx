@@ -103,7 +103,8 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
       position: '',
       position_coordinates: null,
       submitError: false,
-      profanityError: false,
+      titleProfanityError: false,
+      descriptionProfanityError: false,
       fileOrImageError: false,
       processing: false,
       ideaId: null,
@@ -229,9 +230,14 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
         } catch (error) {
           const apiErrors = get(error, 'json.errors');
           if (process.env.NODE_ENV === 'development') console.log(error);
-          if (apiErrors && apiErrors.profanity) {
+          if (apiErrors && apiErrors.titleProfanity) {
             this.globalState.set({
-              profanityError: true,
+              titleProfanityError: true,
+            });
+          }
+          if (apiErrors && apiErrors.descriptionProfanity) {
+            this.globalState.set({
+              descriptionProfanityError: true,
             });
           }
           if (apiErrors && !apiErrors.idea) {
@@ -263,11 +269,11 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
   };
 
   onTitleChange = () => {
-    this.setState({ profanityError: false });
+    this.setState({ titleProfanityError: false });
   };
 
   onDescriptionChange = () => {
-    this.setState({ profanityError: false });
+    this.setState({ descriptionProfanityError: false });
   };
 
   render() {

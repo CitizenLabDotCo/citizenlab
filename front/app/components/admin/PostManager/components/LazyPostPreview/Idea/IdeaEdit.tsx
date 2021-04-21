@@ -80,7 +80,8 @@ interface State {
   imageFile: UploadFile[];
   imageId: string | null;
   submitError: boolean;
-  profanityError: boolean;
+  titleProfanityError: boolean;
+  descriptionProfanityError: boolean;
   loaded: boolean;
   processing: boolean;
 }
@@ -102,7 +103,8 @@ class IdeaEdit extends PureComponent<Props, State> {
       imageFile: [],
       imageId: null,
       submitError: false,
-      profanityError: false,
+      titleProfanityError: false,
+      descriptionProfanityError: false,
       loaded: false,
       processing: false,
     };
@@ -275,20 +277,27 @@ class IdeaEdit extends PureComponent<Props, State> {
       const apiErrors = get(error, 'json.errors');
       if (process.env.NODE_ENV === 'development') console.log(error);
       if (apiErrors && apiErrors.profanity) {
-        this.setState({
-          profanityError: true,
-        });
+        if (apiErrors && apiErrors.titleProfanity) {
+          this.setState({
+            titleProfanityError: true,
+          });
+        }
+        if (apiErrors && apiErrors.descriptionProfanity) {
+          this.setState({
+            descriptionProfanityError: true,
+          });
+        }
       }
       this.setState({ processing: false, submitError: true });
     }
   };
 
   onTitleChange = () => {
-    this.setState({ profanityError: false });
+    this.setState({ titleProfanityError: false });
   };
 
   onDescriptionChange = () => {
-    this.setState({ profanityError: false });
+    this.setState({ descriptionProfanityError: false });
   };
 
   render() {
@@ -306,7 +315,8 @@ class IdeaEdit extends PureComponent<Props, State> {
         processing,
         budget,
         proposedBudget,
-        profanityError,
+        titleProfanityError,
+        descriptionProfanityError,
       } = this.state;
       const title = locale && titleMultiloc ? titleMultiloc[locale] || '' : '';
       const description =
@@ -345,7 +355,8 @@ class IdeaEdit extends PureComponent<Props, State> {
                 remoteIdeaFiles={
                   !isNilOrError(remoteIdeaFiles) ? remoteIdeaFiles : null
                 }
-                profanityError={profanityError}
+                titleProfanityError={titleProfanityError}
+                descriptionProfanityError={descriptionProfanityError}
                 onTitleChange={this.onTitleChange}
                 onDescriptionChange={this.onDescriptionChange}
               />

@@ -116,7 +116,8 @@ interface InputProps {
   imageFile: UploadFile[];
   onSubmit: (arg: IIdeaFormOutput) => void;
   remoteIdeaFiles?: UploadFile[] | null;
-  profanityError: boolean;
+  titleProfanityError: boolean;
+  descriptionProfanityError: boolean;
   onTitleChange: () => void;
   onDescriptionChange: () => void;
 }
@@ -139,7 +140,6 @@ interface State {
   titleError: string | null;
   description: string;
   descriptionError: string | null;
-  descriptionProfanityError: string | null;
   selectedTopics: string[];
   topicsError: string | null;
   locationError: string | null;
@@ -175,7 +175,6 @@ class IdeaForm extends PureComponent<
       titleError: null,
       description: '',
       descriptionError: null,
-      descriptionProfanityError: null,
       selectedTopics: [],
       topicsError: null,
       address: '',
@@ -470,7 +469,7 @@ class IdeaForm extends PureComponent<
     ideaFiles: UploadFile[]
   ) => {
     const { pbContext } = this.state;
-    const { profanityError } = this.props;
+    const { titleProfanityError, descriptionProfanityError } = this.props;
     const titleError = this.validateTitle(title);
     const descriptionError = this.validateDescription(description);
     const topicsError = this.validateTopics(selectedTopics);
@@ -514,7 +513,7 @@ class IdeaForm extends PureComponent<
     });
 
     // scroll to erroneous title/description fields
-    if (titleError && this.titleInputElement) {
+    if ((titleError || titleProfanityError) && this.titleInputElement) {
       scrollToComponent(this.titleInputElement, {
         align: 'top',
         offset: -240,
@@ -525,7 +524,7 @@ class IdeaForm extends PureComponent<
         300
       );
     } else if (
-      (descriptionError || profanityError) &&
+      (descriptionError || descriptionProfanityError) &&
       this.descriptionElement
     ) {
       scrollToComponent(this.descriptionElement, {
@@ -640,7 +639,8 @@ class IdeaForm extends PureComponent<
       topics,
       project,
       phases,
-      profanityError,
+      titleProfanityError,
+      descriptionProfanityError,
     } = this.props;
     const { formatMessage } = this.props.intl;
     const {
@@ -656,7 +656,6 @@ class IdeaForm extends PureComponent<
       imageFile,
       titleError,
       descriptionError,
-      descriptionProfanityError,
       budgetError,
       proposedBudgetError,
       ideaFiles,
@@ -753,7 +752,7 @@ class IdeaForm extends PureComponent<
                 maxCharCount={80}
                 autocomplete="off"
               />
-              {profanityError && (
+              {titleProfanityError && (
                 <Error
                   text={
                     <FormattedMessage
@@ -790,12 +789,25 @@ class IdeaForm extends PureComponent<
                 value={description}
                 onChange={this.handleDescriptionOnChange}
                 setRef={this.handleDescriptionSetRef}
-                hasError={!!descriptionError || !!descriptionProfanityError}
+                hasError={!!descriptionError || descriptionProfanityError}
                 withCTAButton
               />
               {descriptionError && <Error text={descriptionError} />}
-              {profanityError && (
-                <Error text={formatMessage(messages.profanityError, {})} />
+              {descriptionProfanityError && (
+                <Error
+                  text={
+                    <FormattedMessage
+                      {...messages.profanityError}
+                      values={{
+                        guidelinesLink: (
+                          <Link to="/pages/faq" target="_blank">
+                            {formatMessage(messages.guidelinesLinkText)}
+                          </Link>
+                        ),
+                      }}
+                    />
+                  }
+                />
               )}
             </FormElement>
           </StyledFormSection>
