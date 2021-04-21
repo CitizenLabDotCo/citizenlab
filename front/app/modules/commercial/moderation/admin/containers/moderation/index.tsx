@@ -283,6 +283,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
   const [selectedTypes, setSelectedTypes] = useState<TModeratableTypes[]>([]);
   const [selectedProjectIds, setSelectedProjectIds] = useState<string[]>([]);
   const [settingsModalOpened, setSettingsModalOpened] = useState(false);
+  const [selectedTab, setSelectedTab] = useState<TTabName>('unread');
   const [
     settingsUpdatedSuccessFully,
     setSettingsUpdatedSuccessFully,
@@ -310,6 +311,12 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
 
   const handleOnTabChange = useCallback(
     (tabName: TTabName) => {
+      setSelectedTab(tabName);
+
+      if (tabName === 'read' || tabName === 'unread') {
+        onModerationStatusChange(tabName);
+      }
+
       trackEventByName(
         {
           read: tracks.viewedTabClicked,
@@ -317,10 +324,6 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
           warnings: tracks.warningsTabClicked,
         }[tabName]
       );
-
-      if (tabName === 'read' || tabName === 'unread') {
-        onModerationStatusChange(tabName);
-      }
     },
     [onModerationStatusChange]
   );
@@ -509,7 +512,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
             <>
               <StyledTabs
                 items={tabs}
-                selectedValue={moderationStatus || 'unread'}
+                selectedValue={selectedTab}
                 onClick={handleOnTabChange}
               />
               <SelectType
