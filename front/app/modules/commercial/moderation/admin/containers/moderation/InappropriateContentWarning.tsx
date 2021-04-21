@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Icon, colors } from 'cl2-component-library';
+import { Icon, colors, Button, fontSizes } from 'cl2-component-library';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
@@ -23,6 +23,8 @@ const WarningIcon = styled(Icon)`
   width: 15px;
 `;
 
+const IgnoreWarningButton = styled(Button)``;
+
 interface Props {}
 
 const InappropriateContentWarning = ({
@@ -31,7 +33,18 @@ const InappropriateContentWarning = ({
   return (
     <Container>
       <WarningIcon name="error" />
-      <WarningContent>{formatMessage(messages.warningText)}</WarningContent>
+      <WarningContent>{formatMessage(messages.warningText)} </WarningContent>
+      <IgnoreWarningButton
+        locale="en"
+        padding="0"
+        buttonStyle="text"
+        fontSize={`${fontSizes.small}px`}
+        textColor={colors.clBlue}
+        textDecoration="underline"
+        textDecorationHover="underline"
+      >
+        (ignore warning)
+      </IgnoreWarningButton>
     </Container>
   );
 };
