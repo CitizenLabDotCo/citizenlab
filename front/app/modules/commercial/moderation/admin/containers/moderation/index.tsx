@@ -397,6 +397,24 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
       });
   }, [profanityBlockerEnabled]);
 
+  useEffect(() => {
+    setSettingsSavingError(false);
+    updateAppConfiguration({
+      settings: {
+        inappropriate_content_detection: {
+          enabled: inappropriateContentEnabled,
+        },
+      },
+    })
+      .then(() => {
+        setSettingsUpdatedSuccessFully(true);
+        setTimeout(() => setSettingsUpdatedSuccessFully(false), 2000);
+      })
+      .catch((_error) => {
+        setSettingsSavingError(true);
+      });
+  }, [inappropriateContentEnabled]);
+
   const openSettingsModal = () => {
     setSettingsModalOpened(true);
   };
