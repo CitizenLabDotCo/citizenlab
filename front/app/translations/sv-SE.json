@@ -1,6 +1,6 @@
 {
   "EmailSettingsPage.initialUnsubscribeError": "Det uppstod ett problem med att avsluta prenumerationen på denna kampanjen, vänligen försök igen.",
-  "EmailSettingsPage.initialUnsubscribeLoading": "Your request is being processed, please wait...",
+  "EmailSettingsPage.initialUnsubscribeLoading": "Din begäran bearbetas, vänligen vänta...",
   "EmailSettingsPage.initialUnsubscribeSuccess": "You have successfully unsubscribed from {campaignTitle}.",
   "UI.FormComponents.buttonDisabled": "Submit button disabled",
   "UI.FormComponents.buttonEnabled": "Submit button enabled",
