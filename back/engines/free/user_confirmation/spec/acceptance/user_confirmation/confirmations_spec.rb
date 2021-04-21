@@ -12,12 +12,9 @@ resource 'Confirmations' do
     parameter :code, 'The 6-digit confirmation code received by SMS or email.'
 
     context 'when not logged in' do
-      example_request 'passing a valid code' do
-        let(:code) { '123456' }
-
-        it 'returns a not authorized status' do
-          expect(status).to eq 401
-        end
+      example 'returns a not authorized status passing a valid code' do
+        do_request(code: '123456')
+        expect(status).to eq 401
       end
     end
 
@@ -26,37 +23,31 @@ resource 'Confirmations' do
 
       before do
         header_token_for(user)
-        do_request
       end
 
-      example 'passing the right code' do
-        let(:code) { user.confirmation_code }
-
-        it 'returns an ok status' do
-          expect(status).to eq 200
-        end
+      example 'returns an ok status passing the right code' do
+        do_request(code: user.email_confirmation_code)
+        expect(status).to eq 200
       end
 
-      example 'passing no code' do
-        it 'returns an unprocessable entity status' do
-          expect(status).to eq 422
-        end
-
-        it 'returns an code.blank error code' do
-          expect(response_error).to eq 'code.blank'
-        end
+      example 'returns an unprocessable entity status passing no code' do
+        do_request(code: nil)
+        expect(status).to eq 422
       end
 
-      example 'passing an invalid code' do
-        let(:code) { 'badcode' }
+      example 'returns an code.blank error code when no code is passed' do
+        do_request(code: nil)
+        expect(response_errors_for(:code, :blank)).to be_present
+      end
 
-        it 'returns an unprocessable entity status' do
-          expect(status).to eq 422
-        end
+      example 'returns an unprocessable entity status when the code is invalid' do
+        do_request(code: 'badcode')
+        expect(status).to eq 422
+      end
 
-        it 'returns an code.blank error code' do
-          expect(response_error).to eq 'code.invalid'
-        end
+      example 'returns an code.invalid error code when the code is invalid' do
+        do_request(code: 'badcode')
+        expect(response_errors_for(:code, :invalid)).to be_present
       end
     end
   end

@@ -103,6 +103,7 @@ class User < ApplicationRecord
   before_validation :set_cl1_migrated, on: :create
   before_validation :generate_slug
   before_validation :sanitize_bio_multiloc, if: :bio_multiloc
+  before_validation :assign_email_or_phone, on: :create
 
   scope :order_role, lambda { |direction = :asc|
     joins('LEFT OUTER JOIN (SELECT jsonb_array_elements(roles) as ro, id FROM users) as r ON users.id = r.id')
@@ -167,25 +168,24 @@ class User < ApplicationRecord
     email = request.params['auth']['email']
 
     # Hack to embed phone numbers in email
-    if AppConfiguration.instance.feature_activated?('password_login') && AppConfiguration.instance.settings(
-      'password_login', 'phone'
-    )
-      phone_service = PhoneService.new
-      if phone_service.phone_or_email(email) == :phone
-        pattern = AppConfiguration.instance.settings('password_login', 'phone_email_pattern')
-        email = pattern.gsub('__PHONE__', phone_service.normalize_phone(email))
-      end
-    end
+    phone_or_email = PhoneService.new.emailize_email_or_phone(email)
 
-    not_invited.find_by_cimail email
+    not_invited.find_by_cimail(phone_or_email)
   end
 
-  def signed_up_with_phone?
-    PhoneService.new.phone_or_email(email) == :phone
+  def assign_email_or_phone
+    # Hack to embed phone numbers in email
+    phone_or_email = PhoneService.new.emailize_email_or_phone(email)
+
+    self.email = phone_or_email
   end
 
-  def signed_up_with_email?
-    PhoneService.new.phone_or_email(email) == :email
+  def registered_with_phone?
+    PhoneService.new.encoded_phone_or_email?(email) == :phone
+  end
+
+  def registered_with_email?
+    PhoneService.new.encoded_phone_or_email?(email) == :email
   end
 
   def to_token_payload

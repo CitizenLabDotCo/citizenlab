@@ -7,15 +7,16 @@ RSpec.describe UserConfirmation::SendConfirmationCode do
 
   context 'when the user signs up with a phone number' do
     before do
-      context[:user] = create(:user, email: '+398234234234')
+      enable_phone_login
+      context[:user] = create(:user, email: '398234234234')
     end
 
-    it 'is successful' do
-      expect(result).to be_a_success
+    it 'is a failure' do
+      expect(result).to be_a_failure
     end
 
-    it 'enqueues an sms delivery job' do
-      expect { result }.to have_enqueued_job(Messenger::DeliveryJob).with(user: context[:user]).exactly(1).times
+    it 'returns a registration_method error, since phones are not confirmable' do
+      expect(result.errors[:registration_method]).to be_present
     end
   end
 
@@ -28,8 +29,16 @@ RSpec.describe UserConfirmation::SendConfirmationCode do
       expect(result).to be_a_success
     end
 
-    it 'enqueues an email delivery job' do
-      expect { result }.to have_enqueued_job(ActionMailer::DeliveryJob).with(user: context[:user]).exactly(1).times
+    it 'changes the email confirmation code delivery timestamp' do
+      expect { result }.to change(context[:user], :email_confirmation_code_sent_at)
+    end
+
+    it 'enqueues email delivery job' do
+      expect { result }.to enqueue_job(ActionMailer::MailDeliveryJob)
+    end
+
+    it 'enqueues a code expiration job' do
+      expect { result }.to enqueue_job(UserConfirmation::ExpireConfirmationCodeJob)
     end
   end
 end

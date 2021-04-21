@@ -1,14 +1,14 @@
 require 'rails_helper'
 
-RSpec.describe UserConfirmation::CheckConfirmationCode do
+RSpec.describe UserConfirmation::ConfirmUser do
   subject(:result) { described_class.call(context) }
 
   let(:context) { {} }
 
-  context 'when the code is correct' do
+  context 'when the email confirmation code is correct' do
     before do
       context[:user] = create(:user)
-      context[:code] = context[:user].confirmation_code
+      context[:code] = context[:user].email_confirmation_code
     end
 
     it 'is successful' do

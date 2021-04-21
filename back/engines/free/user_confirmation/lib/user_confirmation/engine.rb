@@ -8,5 +8,7 @@ module UserConfirmation
       AppConfiguration::Settings.add_feature(UserConfirmation::FeatureSpecifications::EmailConfirmation)
       AppConfiguration::Settings.add_feature(UserConfirmation::FeatureSpecifications::PhoneConfirmation)
     end
+
+    config.action_mailer.preview_path = "#{root}/spec/mailers/previews"
   end
 end

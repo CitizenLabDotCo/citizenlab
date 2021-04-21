@@ -4,7 +4,7 @@
       font-size: 25px;
       margin-bottom: 40px;
     }
-    a {text-decoration: none;}
+    a {text-decoration: underline; color: inherit}
 
     <%# From https://github.com/mjmlio/mjml/issues/230 %>
     <% if text_direction == "rtl" %>

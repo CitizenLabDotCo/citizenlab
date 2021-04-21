@@ -5,8 +5,8 @@ RSpec.describe UserConfirmation::ExpireConfirmationCodeJob do
 
   it 'changes the confirmation code' do
     expect { described_class.perform_now(user) }
-      .to(change(user, :confirmation_code)
-          .from(user.confirmation_code)
-          .to(user.reload.confirmation_code))
+      .to(change(user, :email_confirmation_code)
+          .from(user.email_confirmation_code)
+          .to(nil))
   end
 end

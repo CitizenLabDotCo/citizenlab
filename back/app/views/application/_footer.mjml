@@ -1,0 +1,13 @@
+<mj-section full-width="full-width" background-color="#F6F6F6" padding="40px 25px">
+  <mj-column>
+    <mj-text color="#84939E">
+      <span style="font-style: italic;
+                    font-weight: bold;
+                    font-size: 12px;
+                    display: inline-block;
+                    margin-bottom: 10px"><%= t('email_campaigns.footer.powered_by') %></span>
+    </mj-text>
+    <mj-image align="left" width="155px" padding-top="0" href="https://www.citizenlab.co/"
+      src="https://res.cloudinary.com/citizenlabco/image/upload/v1593689890/logo-email-x2_wbnwkf.png" alt="CitizenLab logo" />
+  </mj-column>
+</mj-section>

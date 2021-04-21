@@ -12,6 +12,7 @@
     "free/project_permissions": true,
     "free/seo": true,
     "free/surveys": true,
+    "free/user_confirmation": true,
     "free/volunteering": true
   }
 }

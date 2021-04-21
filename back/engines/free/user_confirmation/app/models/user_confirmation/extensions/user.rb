@@ -3,26 +3,22 @@ module UserConfirmation
     module User
       def self.included(base)
         base.class_eval do
-          validates :confirmation_code, format: USER_CONFIRMATION_CODE_PATTERN
+          validates :email_confirmation_code, format: USER_CONFIRMATION_CODE_PATTERN
 
-          before_validation :reset_confirmation_code, if: :email_valid_and_changed?
-          after_create :send_confirmation_code, if: :saved_change_to_confirmation_code?
+          before_validation :reset_email_confirmation_code, on: :create
         end
       end
 
-      private
+      def confirm!
+        return false unless registered_with_email?
 
-      def send_confirmation_code
-        SendConfirmationCode.call(user: self)
+        self.email_confirmed_at = Time.zone.now
+        save
       end
 
-      def reset_confirmation_code
+      def reset_email_confirmation_code
         result = CodeGenerator.call
-        self.confirmation_code = result.code
-      end
-
-      def email_valid_and_changed?
-        valid_attributes?(:email) && email_changed?
+        self.email_confirmation_code = result.code
       end
     end
   end
