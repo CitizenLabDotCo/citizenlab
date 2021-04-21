@@ -735,6 +735,8 @@
   "app.containers.Admin.Moderation.content": "Conteúdo",
   "app.containers.Admin.Moderation.date": "Data",
   "app.containers.Admin.Moderation.goToThisContentType": "Abra este {contentType} em uma nova guia",
+  "app.containers.Admin.Moderation.inappropriateContentDetectionSetting": "",
+  "app.containers.Admin.Moderation.inappropriateContentDetectionSettingDescription": "",
   "app.containers.Admin.Moderation.initiative": "Propostas",
   "app.containers.Admin.Moderation.markAsNotViewed": "Marcar {selectedItemsCount} itens como não vistos",
   "app.containers.Admin.Moderation.markAsViewed": "Marque {selectedItemsCount} itens como vistos",

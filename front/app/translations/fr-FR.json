@@ -735,6 +735,8 @@
   "app.containers.Admin.Moderation.content": "Contenu",
   "app.containers.Admin.Moderation.date": "Date",
   "app.containers.Admin.Moderation.goToThisContentType": "Ouvrez ce {contentType} dans un nouvel onglet",
+  "app.containers.Admin.Moderation.inappropriateContentDetectionSetting": "",
+  "app.containers.Admin.Moderation.inappropriateContentDetectionSettingDescription": "",
   "app.containers.Admin.Moderation.initiative": "Proposition",
   "app.containers.Admin.Moderation.markAsNotViewed": "Marquer {selectedItemsCount} élément(s) comme non vus",
   "app.containers.Admin.Moderation.markAsViewed": "Marquer {selectedItemsCount} élément(s) comme vus",

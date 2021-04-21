@@ -735,6 +735,8 @@
   "app.containers.Admin.Moderation.content": "Contenido",
   "app.containers.Admin.Moderation.date": "Fecha",
   "app.containers.Admin.Moderation.goToThisContentType": "Abrir este {contentType} en una nueva pestaña",
+  "app.containers.Admin.Moderation.inappropriateContentDetectionSetting": "",
+  "app.containers.Admin.Moderation.inappropriateContentDetectionSettingDescription": "",
   "app.containers.Admin.Moderation.initiative": "Propuesta",
   "app.containers.Admin.Moderation.markAsNotViewed": "Marcar  {selectedItemsCount} elementos como no vistos",
   "app.containers.Admin.Moderation.markAsViewed": "Marcar {selectedItemsCount} elementos como vistos",

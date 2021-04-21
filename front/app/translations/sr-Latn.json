@@ -735,6 +735,8 @@
   "app.containers.Admin.Moderation.content": "Sadržaj",
   "app.containers.Admin.Moderation.date": "Datum",
   "app.containers.Admin.Moderation.goToThisContentType": "Otvori ovaj {contentType} u novom tabu",
+  "app.containers.Admin.Moderation.inappropriateContentDetectionSetting": "",
+  "app.containers.Admin.Moderation.inappropriateContentDetectionSettingDescription": "",
   "app.containers.Admin.Moderation.initiative": "Predlog",
   "app.containers.Admin.Moderation.markAsNotViewed": "Obeležite {selectedItemsCount} stavke kao nepregledane ",
   "app.containers.Admin.Moderation.markAsViewed": "Obeležite {selectedItemsCount} stavke kao pregledane ",
