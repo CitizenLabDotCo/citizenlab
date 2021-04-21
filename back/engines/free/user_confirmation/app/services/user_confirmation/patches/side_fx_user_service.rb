@@ -1,9 +1,9 @@
 module UserConfirmation
   module Patches
     module SideFxUserService
-      def after_crease(user)
+      def after_create(user)
         super
-        SendConfirmationCode.call(user: user)
+        SendNewConfirmationCode.call(user: user)
       end
     end
   end

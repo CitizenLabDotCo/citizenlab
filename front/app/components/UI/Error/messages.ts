@@ -43,6 +43,10 @@ export default defineMessages({
     defaultMessage:
       'This password can be easily guessed. Please choose a stronger password.',
   },
+  confirmation_code_invalid: {
+    id: 'app.errors.confirmation_code_invalid',
+    defaultMessage: 'Invalid confirmation code.',
+  },
   after_end_at: {
     id: 'app.errors.after_end_at',
     defaultMessage: 'The start date occurs after the end date',

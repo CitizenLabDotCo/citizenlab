@@ -3,10 +3,8 @@ module UserConfirmation
     isolate_namespace UserConfirmation
 
     config.to_prepare do
-      require 'user_confirmation/feature_specifications/email_confirmation'
-      require 'user_confirmation/feature_specifications/phone_confirmation'
-      AppConfiguration::Settings.add_feature(UserConfirmation::FeatureSpecifications::EmailConfirmation)
-      AppConfiguration::Settings.add_feature(UserConfirmation::FeatureSpecifications::PhoneConfirmation)
+      require 'user_confirmation/feature_specification'
+      AppConfiguration::Settings.add_feature(UserConfirmation::FeatureSpecification)
     end
 
     config.action_mailer.preview_path = "#{root}/spec/mailers/previews"

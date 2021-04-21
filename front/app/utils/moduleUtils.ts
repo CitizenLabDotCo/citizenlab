@@ -104,6 +104,9 @@ export type OutletsPropertyMap = {
   'app.containers.Admin.projects.all.createProject.tabs': {
     onData: (data: InsertConfigurationOptions<ITabItem>) => void;
   };
+  'app.components.SignUpIn.metaData': {
+    metaData: ISignUpInMetaData | undefined;
+  };
   'app.containers.Admin.projects.all.container': {
     onRender: (hasRendered: boolean) => void;
   };
