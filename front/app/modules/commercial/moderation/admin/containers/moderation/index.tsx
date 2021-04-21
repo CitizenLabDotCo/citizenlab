@@ -309,12 +309,18 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
   );
 
   const handleOnTabChange = useCallback(
-    (name: TModerationStatuses) => {
+    (tabName: TTabName) => {
       trackEventByName(
-        // CL2-6449
-        name === 'read' ? tracks.viewedTabClicked : tracks.notViewedTabClicked
+        {
+          read: tracks.viewedTabClicked,
+          unread: tracks.notViewedTabClicked,
+          warnings: tracks.warningsTabClicked,
+        }[tabName]
       );
-      onModerationStatusChange(name);
+
+      if (tabName === 'read' || tabName === 'unread') {
+        onModerationStatusChange(tabName);
+      }
     },
     [onModerationStatusChange]
   );
