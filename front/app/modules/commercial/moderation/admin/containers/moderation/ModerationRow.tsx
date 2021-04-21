@@ -29,8 +29,9 @@ import { rgba } from 'polished';
 import { IModerationData } from '../../../services/moderations';
 import { Multiloc } from 'typings';
 
-const Container = styled.tr<{ bgColor: string }>`
-  background: ${({ bgColor }) => bgColor};
+const Container = styled.tr<{ bgColor: string; flagged: boolean }>`
+  background: ${({ bgColor, flagged }) =>
+    flagged ? colors.clRedErrorBackground : bgColor};
 `;
 
 const StyledCheckbox = styled(Checkbox)`
@@ -152,8 +153,14 @@ const ModerationRow = memo<Props & InjectedIntlProps>(
       []
     );
 
+    const inappropriateContentFlag = true;
+
     return (
-      <Container className={className} bgColor={bgColor}>
+      <Container
+        className={`${className}`}
+        flagged={inappropriateContentFlag}
+        bgColor={bgColor}
+      >
         <td className="checkbox">
           <StyledCheckbox checked={selected} onChange={handleOnChecked} />
         </td>
@@ -206,7 +213,7 @@ const ModerationRow = memo<Props & InjectedIntlProps>(
             contentTitle={!isEmpty(contentTitle) ? contentTitle : null}
             contentBody={contentBody}
           />
-          <InappropriateContentWarning />
+          {inappropriateContentFlag && <InappropriateContentWarning />}
         </td>
         <td>
           <Tippy
