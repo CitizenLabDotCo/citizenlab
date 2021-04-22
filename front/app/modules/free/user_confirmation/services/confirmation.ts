@@ -4,9 +4,13 @@ import streams from 'utils/streams';
 export const confirmationApiEndpoint = `${API_PATH}/user/confirm`;
 export const resendCodeApiEndpoint = `${API_PATH}/user/resend_code`;
 
-export async function confirm({ code }: { code: string | null }) {
+export type IConfirmation = {
+  code?: string | null;
+};
+
+export async function confirm(confirmation: Partial<IConfirmation>) {
   const bodyData = {
-    confirmation: { code },
+    confirmation,
   };
   try {
     await streams.add(confirmationApiEndpoint, bodyData);
@@ -22,9 +26,23 @@ export async function confirm({ code }: { code: string | null }) {
   }
 }
 
-export async function resendCode() {
+export async function resendCode(newEmail?: string | null) {
+  const bodyData = newEmail
+    ? {
+        new_email: newEmail,
+      }
+    : null;
+
   try {
-    await streams.add(resendCodeApiEndpoint, {});
+    await streams.add(resendCodeApiEndpoint, bodyData);
+
+    if (bodyData?.new_email) {
+      streams.fetchAllWith({
+        apiEndpoint: [`${API_PATH}/users/me`],
+        onlyFetchActiveStreams: true,
+      });
+    }
+
     return true;
   } catch (errors) {
     throw errors.json.errors;

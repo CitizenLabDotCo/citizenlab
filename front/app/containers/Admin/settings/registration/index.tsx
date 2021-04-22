@@ -4,11 +4,13 @@ import getSubmitState from 'utils/getSubmitState';
 import { isCLErrorJSON } from 'utils/errorUtils';
 import { CLError, Multiloc } from 'typings';
 import { isNilOrError } from 'utils/helperUtils';
+import { set } from 'lodash-es';
 
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
 
 import {
+  IAppConfigurationSettings,
   IUpdatedAppConfigurationProperties,
   updateAppConfiguration,
 } from 'services/appConfiguration';
@@ -62,8 +64,16 @@ const SettingsRegistrationTab = (_props: Props) => {
     });
   };
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const handleConfigSettingsChange = (propertyPath: string) => (value: any) => {
+    const newAttributesDiff = { ...(attributesDiff || {}) };
+    set(newAttributesDiff || {}, `settings.${propertyPath}`, value);
+    setAttributesDiff(newAttributesDiff);
+  };
+
+  const handleSubmit = async (event?: React.FormEvent<HTMLFormElement>) => {
+    if (event) {
+      event.preventDefault();
+    }
 
     setIsFormSubmitting(true);
     setIsFormSaved(false);
@@ -83,10 +93,14 @@ const SettingsRegistrationTab = (_props: Props) => {
   };
 
   if (!isNilOrError(appConfig)) {
-    const latestAppConfigCoreSettings = {
+    const latestAppConfigSettings = {
       ...appConfig.data.attributes,
       ...attributesDiff,
-    }.settings.core;
+    }.settings as IAppConfigurationSettings;
+
+    console.log(attributesDiff);
+
+    const latestAppConfigCoreSettings = latestAppConfigSettings.core;
 
     return (
       <>
@@ -96,6 +110,13 @@ const SettingsRegistrationTab = (_props: Props) => {
         <SectionDescription>
           <FormattedMessage {...messages.registrationTabDescription} />
         </SectionDescription>
+
+        <Outlet
+          id="app.containers.Admin.settings.registrationBeginning"
+          onChange={handleConfigSettingsChange}
+          latestAppConfigSettings={latestAppConfigSettings}
+        />
+
         <SignUpFieldsSection key={'signup_fields'}>
           <SubSectionTitleWithDescription>
             <FormattedMessage {...messages.signupFormText} />

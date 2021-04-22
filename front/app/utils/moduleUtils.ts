@@ -36,6 +36,7 @@ import { IUserData } from 'services/users';
 import { MessageValue } from 'react-intl';
 import { NavItem } from 'containers/Admin/sideBar';
 import {
+  IAppConfigurationSettings,
   IAppConfigurationSettingsCore,
   IAppConfigurationStyle,
 } from 'services/appConfiguration';
@@ -79,6 +80,23 @@ export type SignUpStepOutletProps = {
   onCompleted: () => void;
   onSkipped: () => void;
   onError: () => void;
+};
+
+export type IAdminSettingsRegistrationFormOutletProps = {
+  onChange: (
+    propertyName: string,
+    submitOnChange?: boolean
+  ) => (value: any) => void;
+  latestAppConfigSettings?:
+    | IAppConfigurationSettings
+    | Partial<IAppConfigurationSettings>;
+};
+
+export type IAdminSettingsRegistrationFormPageOutletProps = {
+  onChange: (propertyName: string) => (multiloc: Multiloc) => void;
+  latestAppConfigCoreSettings?:
+    | IAppConfigurationSettingsCore
+    | Partial<IAppConfigurationSettingsCore>;
 };
 
 export type OutletsPropertyMap = {
@@ -221,12 +239,8 @@ export type OutletsPropertyMap = {
     className?: string;
   };
   'app.containers.Admin.settings.registration': {};
-  'app.containers.Admin.settings.registrationHelperText': {
-    onChange: (propertyName: string) => (multiloc: Multiloc) => void;
-    latestAppConfigCoreSettings?:
-      | IAppConfigurationSettingsCore
-      | Partial<IAppConfigurationSettingsCore>;
-  };
+  'app.containers.Admin.settings.registrationHelperText': IAdminSettingsRegistrationFormPageOutletProps;
+  'app.containers.Admin.settings.registrationBeginning': IAdminSettingsRegistrationFormOutletProps;
   'app.components.VerificationModal.button': {
     method: IVerificationMethod;
     onMethodSelected: () => void;

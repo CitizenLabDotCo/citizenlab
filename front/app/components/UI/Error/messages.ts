@@ -48,6 +48,16 @@ export default defineMessages({
     defaultMessage:
       "Invalid confirmation code. Please check your email for the correct code or try 'Send New Code'",
   },
+  confirmation_code_too_many_retries: {
+    id: 'app.errors.confirmation_code_too_many_retries',
+    defaultMessage:
+      "You've tried too many times. Please resend a code or try changing your email.",
+  },
+  confirmation_code_too_many_resets: {
+    id: 'app.errors.confirmation_code_too_many_resets',
+    defaultMessage:
+      "You've resent the confirmation code too many times. Please contact us to receive an invitation code instead.",
+  },
   after_end_at: {
     id: 'app.errors.after_end_at',
     defaultMessage: 'The start date occurs after the end date',

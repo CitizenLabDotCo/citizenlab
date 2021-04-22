@@ -6,63 +6,110 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 import messages from './messages';
 import Error from 'components/UI/Error';
-import CodeInput from 'react-verification-code-input';
-import styled from 'styled-components';
-import { confirm, resendCode } from '../../services/confirmation';
-
 import {
-  FormContainer,
-  Form,
-  FormField,
-  StyledLabel,
-  LabelTextContainer,
-  Footer,
-} from './styles';
+  confirm,
+  resendCode,
+  IConfirmation,
+} from '../../services/confirmation';
+
 import useAuthUser from 'hooks/useAuthUser';
 import { isNilOrError } from 'utils/helperUtils';
 import { CLErrors, CLError } from 'typings';
-import Button from 'components/UI/Button';
-import { colors, fontSizes } from 'utils/styleUtils';
-import Link from 'utils/cl-router/Link';
+import styled from 'styled-components';
+import { colors, fontSizes, media } from 'utils/styleUtils';
 import { darken } from 'polished';
+
 import { modifyMetaData } from 'components/SignUpIn/events';
 
-const StyledCodeInput = styled<any>(CodeInput)`
-  width: auto !important;
-  margin: 24px 0 12px;
+import { Icon, Input } from 'cl2-component-library';
+import Link from 'utils/cl-router/Link';
+import { Label } from 'cl2-component-library';
+import Button from 'components/UI/Button';
 
-  & > div {
-    display: flex !important;
-    justify-content: space-between;
+export const FormContainer = styled.div<{ inModal: boolean }>`
+  display: flex;
+  flex-direction: column;
+  align-items: ${(props) => (props.inModal ? 'center' : 'stretch')};
+  margin-bottom: 60px;
+`;
+
+export const Title = styled.h1`
+  width: 100%;
+  color: ${({ theme }) => theme.colorText};
+  font-size: ${fontSizes.xxl}px;
+  font-weight: 300;
+  line-height: normal;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  margin: 0;
+  margin-bottom: 35px;
+  padding: 0;
+
+  strong {
+    font-weight: 600;
   }
 
-  input {
-    border-radius: 6px;
-    border: 1px solid ${({ error }) => (error ? colors.clRed : colors.border)};
-    height: 90px !important;
-    width: 80px !important;
-    font-size: 32px;
-    color: ${({ theme }) => theme.colorText};
+  ${media.smallerThanMaxTablet`
+    font-size: ${fontSizes.xl}px;
+    margin-bottom: 20px;
+  `}
+`;
 
-    &:last-child {
-      border-right: 1px solid
-        ${({ error }) => (error ? colors.clRed : colors.border)};
-    }
+export const Subtitle = styled.h2`
+  color: ${({ theme }) => theme.colorText};
+  font-size: ${fontSizes.large}px;
+  font-weight: 600;
+  line-height: normal;
+`;
 
-    &:focus {
-      border: 1px solid ${({ error }) => (error ? colors.clRed : colors.border)};
-      caret-color: ${({ error }) => (error ? colors.clRed : colors.border)};
+export const Form = styled.form<{ inModal: boolean }>`
+  width: 100%;
+  max-width: ${(props) => (props.inModal ? '380px' : 'unset')};
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  margin: 2rem 0;
+`;
 
-      & + input {
-        border-left: 1px solid
-          ${({ error }) => (error ? colors.clRed : colors.border)};
-      }
-    }
+export const FormField = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+`;
+
+export const StyledLabel = styled(Label)`
+  display: block;
+  text-align: center;
+`;
+
+export const LabelTextContainer = styled.div`
+  display: block;
+  color: ${({ theme }) => theme.colorText};
+  margin-bottom: 1.5rem;
+  font-size: ${fontSizes.base};
+
+  &:last-child {
+    margin-bottom: 1rem;
   }
+`;
+
+export const Footer = styled.div`
+  display: flex;
+  justify-content: center;
+  padding-top: 10px;
+`;
+
+export const CancelButton = styled(Button)``;
+
+export const HelpImage = styled.img`
+  width: 100%;
 `;
 
 export const SubmitButton = styled(Button)`
   width: 100%;
+  margin: 0.75rem 0;
 `;
 
 const FooterNotes = styled.div`
@@ -74,7 +121,10 @@ const FooterNote = styled.p`
   color: ${({ theme }) => theme.colorText};
   font-size: ${fontSizes.small}px;
   line-height: normal;
-  margin: 0 0 12px;
+
+  &:not(:last-child) {
+    margin: 0 0 1rem;
+  }
 `;
 
 const FooterNoteLink = styled(Link)`
@@ -89,6 +139,17 @@ const FooterNoteLink = styled(Link)`
   }
 `;
 
+const FooterNoteSuccessMessage = styled.span`
+  color: ${colors.clGreen};
+  padding-left: 6px;
+`;
+
+const FooterNoteSuccessMessageIcon = styled(Icon)`
+  width: 12px;
+  height: 12px;
+  margin-right: 4px;
+`;
+
 type Props = SignUpStepOutletProps & InjectedIntlProps;
 
 function ConfirmationSignupStep({
@@ -98,11 +159,16 @@ function ConfirmationSignupStep({
   ...props
 }: Props): ReactElement | null {
   const user = useAuthUser();
-  const [confirmation, setConfirmation] = useState<{ code: string | null }>({
+  const [confirmation, setConfirmation] = useState<IConfirmation>({
     code: null,
   });
+  const [newEmail, setNewEmail] = useState<string | null | undefined>(
+    undefined
+  );
   const [apiErrors, setApiErrors] = useState<CLErrors>({});
   const [processing, setProcessing] = useState<boolean>(false);
+  const [changingEmail, setChangingEmail] = useState<boolean>(false);
+  const [codeResent, setCodeResent] = useState<boolean>(false);
 
   useEffect(() => {
     props.onData({
@@ -151,64 +217,157 @@ function ConfirmationSignupStep({
   function handleResendCode(e) {
     e.preventDefault();
     setProcessing(true);
-    resendCode();
-    setProcessing(false);
+
+    resendCode()
+      .then(() => {
+        setProcessing(false);
+        setCodeResent(true);
+        setApiErrors({});
+      })
+      .catch((errors) => {
+        setApiErrors(errors);
+        setProcessing(false);
+      });
   }
 
-  function handleGoBack(e) {
+  function handleEmailSubmit() {
+    setProcessing(true);
+
+    resendCode(newEmail)
+      .then(() => {
+        setProcessing(false);
+        setChangingEmail(false);
+        setApiErrors({});
+        setCodeResent(false);
+      })
+      .catch((errors) => {
+        setApiErrors(errors);
+        setProcessing(false);
+      });
+  }
+
+  function handleEmailChange(email) {
+    setNewEmail(email);
+  }
+
+  function handleShowEmailInput(e) {
     e.preventDefault();
+    setChangingEmail(true);
+  }
+
+  function handleBackToCode(e) {
+    e.preventDefault();
+    setChangingEmail(false);
   }
 
   return (
     <FormContainer id="e2e-confirmation-form" inModal={true}>
-      <Form inModal={true} onSubmit={handleSubmitConfirmation}>
-        <FormField>
-          <StyledLabel>
-            <LabelTextContainer>
-              <FormattedMessage
-                {...messages.anExampleCodeHasBeenSent}
-                values={{ userEmail: user.attributes.email }}
-              />
-            </LabelTextContainer>
-          </StyledLabel>
-          <StyledCodeInput
-            fields={4}
-            values={confirmation.code?.split('')}
-            onChange={handleCodeChange}
-            error={apiErrors.code?.length > 0}
-          />
-          {apiErrors.code && (
-            <Error
-              apiErrors={apiErrors.code as CLError[]}
-              fieldName="confirmation_code"
+      {changingEmail ? (
+        <Form inModal={true} onSubmit={handleEmailSubmit}>
+          <FormField>
+            <StyledLabel>
+              <LabelTextContainer>
+                <FormattedMessage
+                  {...messages.pleaseInsertYourNewEmail}
+                  values={{ userEmail: user.attributes.email }}
+                />
+              </LabelTextContainer>
+            </StyledLabel>
+            <Input
+              type="email"
+              value={newEmail}
+              onChange={handleEmailChange}
+              placeholder={formatMessage(messages.emailPlaceholder)}
             />
-          )}
-        </FormField>
+            {apiErrors.email && (
+              <Error
+                apiErrors={apiErrors.email as CLError[]}
+                fieldName="email"
+              />
+            )}
+          </FormField>
 
-        <Footer>
-          <SubmitButton
-            id="e2e-confirmation-button"
-            onClick={handleSubmitConfirmation}
-            processing={processing}
-          >
-            <FormattedMessage {...messages.verifyAndContinue} />
-          </SubmitButton>
-        </Footer>
-        <FooterNotes>
-          <FooterNote>
-            <FormattedMessage {...messages.didntGetAnEmail} />
-            <FooterNoteLink onClick={handleResendCode} to="#">
-              <FormattedMessage {...messages.sendNewCode} />
-            </FooterNoteLink>
-          </FooterNote>
-          {/* <FooterNote>
-            <FormattedMessage {...messages.wrongEmail} />
-            <FooterNoteLink onClick={handleGoBack} to="#">
-              <FormattedMessage {...messages.goBackToThePreviousStep} />
-            </FooterNoteLink>
-          </FooterNote> */}
-        </FooterNotes>
-      </Form>
+          <Footer>
+            <SubmitButton
+              id="e2e-confirmation-button"
+              onClick={handleEmailSubmit}
+              processing={processing}
+            >
+              <FormattedMessage {...messages.sendEmailWithCode} />
+            </SubmitButton>
+          </Footer>
+          <FooterNotes>
+            <FooterNote>
+              <FormattedMessage {...messages.foundYourCode} />
+              <FooterNoteLink onClick={handleBackToCode} to="#">
+                <FormattedMessage {...messages.goBack} />
+              </FooterNoteLink>
+            </FooterNote>
+          </FooterNotes>
+        </Form>
+      ) : (
+        <Form inModal={true} onSubmit={handleSubmitConfirmation}>
+          <FormField>
+            <StyledLabel>
+              <LabelTextContainer>
+                <FormattedMessage
+                  {...messages.weAskEveryoneToConfirmTheirEmail}
+                />
+              </LabelTextContainer>
+              <LabelTextContainer>
+                <FormattedMessage
+                  {...messages.anExampleCodeHasBeenSent}
+                  values={{ userEmail: user.attributes.email }}
+                />
+              </LabelTextContainer>
+            </StyledLabel>
+            <Input
+              type="text"
+              placeholder={formatMessage(messages.insertYour4DigitCodeHere)}
+              value={confirmation.code}
+              onChange={handleCodeChange}
+            />
+            {apiErrors.code && (
+              <Error
+                apiErrors={apiErrors.code as CLError[]}
+                fieldName="confirmation_code"
+              />
+            )}
+          </FormField>
+
+          <Footer>
+            <SubmitButton
+              id="e2e-confirmation-button"
+              onClick={handleSubmitConfirmation}
+              processing={processing}
+            >
+              <FormattedMessage {...messages.verifyAndContinue} />
+            </SubmitButton>
+          </Footer>
+          <FooterNotes>
+            <FooterNote>
+              <FormattedMessage {...messages.didntGetAnEmail} />
+
+              {codeResent ? (
+                <FooterNoteSuccessMessage>
+                  <FooterNoteSuccessMessageIcon name="checkmark-full" />
+                  <FormattedMessage {...messages.confirmationCodeSent} />
+                </FooterNoteSuccessMessage>
+              ) : (
+                <FooterNoteLink onClick={handleResendCode} to="#">
+                  <FormattedMessage {...messages.sendNewCode} />
+                </FooterNoteLink>
+              )}
+            </FooterNote>
+            <FooterNote>
+              <FormattedMessage {...messages.wrongEmail} />
+              <FooterNoteLink onClick={handleShowEmailInput} to="#">
+                <FormattedMessage {...messages.changeYourEmail} />
+              </FooterNoteLink>
+            </FooterNote>
+          </FooterNotes>
+        </Form>
+      )}
     </FormContainer>
   );
 }

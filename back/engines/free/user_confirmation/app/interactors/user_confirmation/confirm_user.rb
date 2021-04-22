@@ -9,12 +9,20 @@ module UserConfirmation
     end
 
     def validate_user
-      fail_with_error! :user, :blank   if user.blank?
+      fail_with_error! :user, :blank if user.blank?
     end
 
     def validate_code
-      fail_with_error! :code, :blank   if code.blank?
-      fail_with_error! :code, :invalid if user.email_confirmation_code != code
+      fail_with_error! :code, :blank if code.blank?
+      return unless user.email_confirmation_code != code
+
+      fail_with_error! :code, :too_many_retries unless user.increment_email_confirmation_retry_count!
+
+      fail_with_error! :code, :invalid
+    end
+
+    def handle_invalid_code
+      fail_with_error! :code, :invalid
     end
 
     def confirm_user

@@ -4,13 +4,16 @@ class ApplicationInteractor
 
   delegate :fail!, to: :context
 
-  def fail_with_error!(resource, error_key, options = {})
-    errors.add(resource, error_key, options)
-    fail! errors: errors
-  end
-
-  def errors
+  def fail_with_error!(resource_or_errors, error_key = :invalid, options = {})
     @errors ||= ActiveModel::Errors.new(self)
+
+    if resource_or_errors.is_a? ActiveModel::Errors
+      @errors.merge!(resource_or_errors)
+      fail! errors: @errors
+    else
+      @errors.add(resource_or_errors, error_key, options)
+      fail! errors: @errors
+    end
   end
 
   def read_attribute_for_validation(attribute)

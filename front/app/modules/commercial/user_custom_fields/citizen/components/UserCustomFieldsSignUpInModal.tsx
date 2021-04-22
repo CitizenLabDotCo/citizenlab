@@ -23,6 +23,7 @@ import {
   closeSignUpInModal$,
   signUpActiveStepChange$,
   changeMetaData$,
+  closeSignUpInModal,
 } from 'components/SignUpIn/events';
 
 // style
@@ -115,7 +116,7 @@ const UserCustomFieldsSignUpInModal = memo<Props>(
         completeRegistration({});
       }
 
-      setMetaData(undefined);
+      closeSignUpInModal();
     }, [signUpActiveStep, customFieldsSchema, authUser]);
 
     const onSignUpInCompleted = useCallback(() => {
@@ -128,7 +129,7 @@ const UserCustomFieldsSignUpInModal = memo<Props>(
         metaData?.action?.();
       }
 
-      setMetaData(undefined);
+      closeSignUpInModal();
     }, [metaData, authUser]);
 
     return (

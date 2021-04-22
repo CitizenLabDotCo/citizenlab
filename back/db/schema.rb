@@ -985,6 +985,7 @@ ActiveRecord::Schema.define(version: 2021_04_13_172107) do
     t.datetime "email_confirmed_at"
     t.string "email_confirmation_code"
     t.integer "email_confirmation_retry_count", default: 0, null: false
+    t.integer "email_confirmation_sent_count", default: 0, null: false
     t.datetime "email_confirmation_code_sent_at"
     t.index "lower((email)::text)", name: "users_unique_lower_email_idx", unique: true
     t.index ["email"], name: "index_users_on_email"
