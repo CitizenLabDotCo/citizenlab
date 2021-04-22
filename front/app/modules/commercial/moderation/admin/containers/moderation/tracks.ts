@@ -3,6 +3,8 @@ export default {
   notViewedTabClicked: "Selected 'Not viewed' tab",
   markedAsViewedButtonClicked: "'Marked as viewed' button clicked",
   markedAsNotViewedButtonClicked: "'Marked as not viewed' button clicked",
+  removeFlagButtonClicked:
+    'Removed inappropriate content warning from one or more items',
   goToLinkClicked: "'Go to' link clicked",
   belongsToLinkClicked: "'Belongs to' link clicked",
   pageNumberClicked: 'Page number clicked',

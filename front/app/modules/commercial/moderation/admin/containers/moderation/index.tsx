@@ -317,9 +317,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
   //     ) {
   //       event.preventDefault();
   //       trackEventByName(
-  //         moderationStatus === 'read'
-  //           ? tracks.markedAsNotViewedButtonClicked
-  //           : tracks.markedAsNotViewedButtonClicked,
+  //         removeFlagButtonClicked
   //         { selectedItemsCount: selectedRows.length }
   //       );
   //       setProcessing(true);
