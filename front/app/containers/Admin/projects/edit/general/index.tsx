@@ -450,6 +450,7 @@ class AdminProjectEditGeneral extends PureComponent<
 
   handleTitleMultilocOnChange = (titleMultiloc: Multiloc) => {
     this.setState(({ projectAttributesDiff }) => ({
+      titleError: null,
       submitState: 'enabled',
       projectAttributesDiff: {
         ...projectAttributesDiff,

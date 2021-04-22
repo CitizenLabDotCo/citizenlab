@@ -35,7 +35,6 @@ module Finder
     def find
       do_find
       result.records = records
-      result.count = records.length
     rescue ActiveRecord::StatementInvalid, PG::InFailedSqlTransaction, PG::UndefinedTable => e
       raise Finder::Error, e
     end
@@ -44,6 +43,7 @@ module Finder
       _abort_if_records_class_invalid
       _filter_records
       _sort_records
+      _count_records
       _paginate_records
     end
 
@@ -63,8 +63,13 @@ module Finder
       end
     end
 
+    def _count_records
+      result.count = records.length
+    end
+
     def _paginate_records
       pagination_params = params[:page] || {}
+
       @records = records.page(pagination_params[:number]).per(pagination_params[:size])
     end
 

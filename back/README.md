@@ -25,7 +25,6 @@ docker-compose run web bundle exec rake db:create
 docker-compose run web bundle exec rake db:reset
 ```
 
-
 ## Executing commands
 
 You can execute commands as if they were running on your local machine, by prepending them with `docker-compose run --user "$(id -u):$(id -g)" --rm web `

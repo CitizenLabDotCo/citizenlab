@@ -12,5 +12,6 @@ back/log/*
 back/tmp/*
 back/public/uploads
 back/secrets/*
-back/!/secrets/*.example
 back/Dockerfile
+!back/secrets/*.example
+!back/secrets/*.sample

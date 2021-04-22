@@ -145,6 +145,10 @@ AppConfiguration.create!(
       enabled: true,
       allowed: true
     },
+    project_visibility: {
+      enabled: true,
+      allowed: true
+    }
   }
 )
 
@@ -484,5 +488,12 @@ open_idea_project = Project.create!({
   voting_method: 'unlimited',
   remote_header_bg_url: 'https://res.cloudinary.com/citizenlabco/image/upload/v1540214247/carrying-casual-cheerful-1162964_dxubq6.jpg'
 })
+
 open_idea_project.project_images.create!(remote_image_url: 'https://res.cloudinary.com/citizenlabco/image/upload/v1539874546/undraw_brainstorming_49d4_iaimmn.png')
 open_idea_project.set_default_topics!
+
+User.find_each do |user|
+  EmailCampaigns::UnsubscriptionToken.create!(user_id: user.id)
+end
+
+EmailCampaigns::AssureCampaignsService.new.assure_campaigns

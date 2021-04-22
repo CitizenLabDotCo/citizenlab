@@ -87,6 +87,15 @@ PATH
       rails (~> 6.0.0)
 
 PATH
+  remote: engines/commercial/clusterings
+  specs:
+    clusterings (0.1.0)
+      apartment (~> 2.2.1)
+      nlp
+      pundit (~> 2.0)
+      rails (~> 6.0.0)
+
+PATH
   remote: engines/commercial/custom_idea_statuses
   specs:
     custom_idea_statuses (0.1.0)
@@ -121,6 +130,12 @@ PATH
   specs:
     geographic_dashboard (0.1.0)
       rails (~> 6.0.3, >= 6.0.3.2)
+
+PATH
+  remote: engines/commercial/google_tag_manager
+  specs:
+    google_tag_manager (0.1.0)
+      rails (~> 6.0.0)
 
 PATH
   remote: engines/commercial/granular_permissions
@@ -224,6 +239,12 @@ PATH
   remote: engines/commercial/project_folders
   specs:
     project_folders (0.1.0)
+      rails (~> 6.0.3, >= 6.0.3.2)
+
+PATH
+  remote: engines/commercial/project_management
+  specs:
+    project_management (0.1.0)
       rails (~> 6.0.3, >= 6.0.3.2)
 
 PATH
@@ -953,6 +974,7 @@ DEPENDENCIES
   byebug
   carrierwave (~> 2.2.0)
   carrierwave-base64 (~> 2.8.1)
+  clusterings!
   counter_culture (~> 2.8)
   custom_idea_statuses!
   custom_maps!
@@ -967,6 +989,7 @@ DEPENDENCIES
   fog-aws
   frontend!
   geographic_dashboard!
+  google_tag_manager!
   granular_permissions!
   groupdate
   ice_cube!
@@ -1006,6 +1029,7 @@ DEPENDENCIES
   polls!
   premailer-rails (~> 1.10.3)
   project_folders!
+  project_management!
   project_permissions!
   pry
   pry-stack_explorer

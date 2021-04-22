@@ -417,28 +417,6 @@
           }
         }
       },
-      "google_tag_manager": {
-        "type": "object",
-        "title": "Google Tag Manager Integration",
-        "description": "Integrates Google Tag Manager with the front-end",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "required-settings": ["container_id"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true},
-          "destinations": {
-            "type": "string",
-            "description": "As more tools can be activated through GTM, here you can specify them using comma separated text, shown in the cookie consent"
-          },
-          "container_id": {
-            "type": "string",
-            "description": "The unique ID of your GTM workspace, format GTM-XXXXXXX",
-            "pattern": "^GTM-[A-Z0-9]{1,7}$",
-            "default": "<%= ENV.fetch('DEFAULT_GTM_CONTAINER_ID', '') %>"
-          }
-        }
-      },
 
       "participatory_budgeting": {
         "type": "object",
