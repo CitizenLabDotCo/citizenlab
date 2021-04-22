@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useState, useEffect } from 'react';
+import React, { memo, useCallback, useState, useEffect, useMemo } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { includes } from 'lodash-es';
 
@@ -72,7 +72,10 @@ const Filters = styled.div`
   margin-bottom: 55px;
 `;
 
-const MarkAsButton = styled(Button)``;
+const MarkAsButton = styled(Button)`
+  margin-right: 20px;
+`;
+const RemoveFlagButton = styled(Button)``;
 
 const StyledTabs = styled(Tabs)`
   margin-right: 20px;
@@ -303,6 +306,42 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
     [selectedRows, processing]
   );
 
+  const removeFlags = () => {};
+  // const removeFlags = useCallback(
+  //   async (event: React.FormEvent) => {
+  //     if (
+  //       selectedRowsWithContentWarning.length > 0 &&
+  //       !isNilOrError(moderationItems) &&
+  //       moderationStatus &&
+  //       !processing
+  //     ) {
+  //       event.preventDefault();
+  //       trackEventByName(
+  //         moderationStatus === 'read'
+  //           ? tracks.markedAsNotViewedButtonClicked
+  //           : tracks.markedAsNotViewedButtonClicked,
+  //         { selectedItemsCount: selectedRows.length }
+  //       );
+  //       setProcessing(true);
+  //       const moderations = selectedRowsWithContentWarning.map((moderationId) =>
+  //         moderationItems.find((item) => item.id === moderationId)
+  //       ) as IModerationData[];
+  //       const updatedFlaggedStatus = 'approved';
+  //       const promises = moderations.map((moderation) =>
+  //         updateModerationFlaggedStatus(
+  //           moderation.id,
+  //           moderation.attributes.moderatable_type,
+  //           updatedModerationStatus
+  //         )
+  //       );
+  //       await Promise.all(promises);
+  //       setProcessing(false);
+  //       setSelectedRows([]);
+  //     }
+  //   },
+  //   [selectedRows, moderationItems, moderationStatus]
+  // );
+
   const markAs = useCallback(
     async (event: React.FormEvent) => {
       if (
@@ -351,6 +390,16 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
     }
   }, [list, processing]);
 
+  // const selectedRowsWithContentWarning = useMemo(() => {
+  //   if (!isNilOrError(list)) {
+  //     return list.filter((listItem) => listItem.attributes.content_warning);
+  //   }
+
+  //   return null;
+  // }, [list]);
+
+  const selectedRowsWithContentWarning = [1, 2, 3];
+
   if (!isNilOrError(moderationItems)) {
     return (
       <Container className={className}>
@@ -368,7 +417,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
         <Filters>
           {selectedRows.length > 0 && (
             <MarkAsButton
-              icon="label"
+              icon="eye"
               buttonStyle="cl-blue"
               processing={processing}
               onClick={markAs}
@@ -379,6 +428,22 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
                 <FormattedMessage {...messages.markAsNotSeen} />
               )}
             </MarkAsButton>
+          )}
+
+          {selectedRowsWithContentWarning.length > 0 && (
+            <RemoveFlagButton
+              // icon="label"
+              buttonStyle="cl-blue"
+              processing={processing}
+              onClick={removeFlags}
+            >
+              <FormattedMessage
+                {...messages.removeWarning}
+                values={{
+                  numberOfItems: selectedRowsWithContentWarning.length,
+                }}
+              />
+            </RemoveFlagButton>
           )}
 
           {selectedRows.length === 0 && (

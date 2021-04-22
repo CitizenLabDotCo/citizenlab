@@ -123,4 +123,9 @@ export default defineMessages({
     id: 'app.containers.Admin.Moderation.warningText',
     defaultMessage: 'Possibly inappropriate content',
   },
+  removeWarning: {
+    id: 'app.containers.Admin.Moderation.removeWarning',
+    defaultMessage:
+      'Remove {numberOfItems, plural, one {# warning} other {# warnings}}',
+  },
 });
