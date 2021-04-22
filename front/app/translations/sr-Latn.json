@@ -1312,6 +1312,7 @@
   "app.containers.AdminPage.ProjectEdit.surveyServiceTooltipLink": "http://support.citizenlab.co/articles/1641202-how-to-embed-a-survey-in-a-project-or-in-a-timeline-phase",
   "app.containers.AdminPage.ProjectEdit.surveyServiceTooltipLinkText": "ovde",
   "app.containers.AdminPage.ProjectEdit.survey_monkey": "Survey Monkey",
+  "app.containers.AdminPage.ProjectEdit.survey_xact": "",
   "app.containers.AdminPage.ProjectEdit.timeline": "Bez vremenskih okvira",
   "app.containers.AdminPage.ProjectEdit.titleGeneral": "Generalna podešavanja projekta",
   "app.containers.AdminPage.ProjectEdit.titleLabel": "Naziv projekta",
