@@ -1,7 +1,9 @@
 # Changelog
 
 ## Next release
-/
+
+### Fixed
+- After the project title error appears, it disappears again after you start correcting the error
 
 ## 2021-03-25
 
