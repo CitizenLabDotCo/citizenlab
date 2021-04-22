@@ -201,6 +201,12 @@ function ConfirmationSignupStep({
               <FormattedMessage {...messages.sendNewCode} />
             </FooterNoteLink>
           </FooterNote>
+          {/* <FooterNote>
+            <FormattedMessage {...messages.wrongEmail} />
+            <FooterNoteLink onClick={handleGoBack} to="#">
+              <FormattedMessage {...messages.goBackToThePreviousStep} />
+            </FooterNoteLink>
+          </FooterNote> */}
         </FooterNotes>
       </Form>
     </FormContainer>
