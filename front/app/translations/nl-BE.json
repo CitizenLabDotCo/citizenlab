@@ -748,6 +748,7 @@
   "app.containers.Admin.Moderation.project": "Project",
   "app.containers.Admin.Moderation.read": "Gezien",
   "app.containers.Admin.Moderation.readMore": "Lees meer",
+  "app.containers.Admin.Moderation.removeWarning": "",
   "app.containers.Admin.Moderation.rowsPerPage": "Rijen per pagina",
   "app.containers.Admin.Moderation.settings": "",
   "app.containers.Admin.Moderation.settingsSavingError": "",

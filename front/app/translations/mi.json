@@ -748,6 +748,7 @@
   "app.containers.Admin.Moderation.project": "Project",
   "app.containers.Admin.Moderation.read": "Seen",
   "app.containers.Admin.Moderation.readMore": "Read more",
+  "app.containers.Admin.Moderation.removeWarning": "",
   "app.containers.Admin.Moderation.rowsPerPage": "Rows per page",
   "app.containers.Admin.Moderation.settings": "",
   "app.containers.Admin.Moderation.settingsSavingError": "",
