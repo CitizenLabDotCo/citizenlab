@@ -23,8 +23,8 @@ fr:
     threshold_reached_description: seuil atteint
     answered: répondue
     answered_description: répondue
-    ineligible: inéligible
-    ineligible_description: inéligible
+    ineligible: non-éligible
+    ineligible_description: non-éligible
   topics:
     nature: Nature et biodiversité
     nature_description: Nature et biodiversité
