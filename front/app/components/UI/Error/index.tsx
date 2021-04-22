@@ -275,7 +275,7 @@ export default class Error extends PureComponent<Props, State> {
                         fieldName,
                         error.error
                       );
-                      console.log(errorMessage);
+
                       if (errorMessage) {
                         // Variables for inside messages.js
                         const payload = error?.payload ?? null;
