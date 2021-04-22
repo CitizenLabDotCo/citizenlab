@@ -21,7 +21,6 @@ import tracks from './tracks';
 
 // style
 import styled from 'styled-components';
-import { darken } from 'polished';
 import {
   media,
   colors,
@@ -262,7 +261,7 @@ const FolderTitle = styled.h3`
 `;
 
 const FolderDescription = styled.div`
-  color: ${darken(0.1, colors.label)};
+  color: ${colors.label};
   font-size: ${fontSizes.base}px;
   line-height: normal;
   font-weight: 300;
@@ -339,7 +338,7 @@ const ProjectFolderCard = memo<Props>(
             aria-hidden
             className="e2e-folder-card-numberofprojects"
           >
-            {numberOfProjectsInFolder}
+            {numberOfProjectsInFolder !== 0 && numberOfProjectsInFolder}
           </MapIconDescription>
           <ScreenReaderOnly>
             <FormattedMessage

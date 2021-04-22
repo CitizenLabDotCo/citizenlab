@@ -74,7 +74,7 @@ module EmailCampaigns
     def mailgun_headers
       {
         'X-Mailgun-Variables' => {
-          'cl_tenant_id' => Tenant.current.id,  # TODO_MT Customize mailgun vars from the engine?
+          'cl_tenant_id' => AppConfiguration.instance.id,
           'cl_campaign_id' => campaign.id,
           'cl_user_id' => recipient.id
         }.to_json
@@ -116,7 +116,7 @@ module EmailCampaigns
     end
 
     def from_email
-      email_address_with_name ENV.fetch('DEFAULT_FROM_EMAIL', 'hello@citizenlab.co'), organization_name
+      email_address_with_name ENV.fetch('DEFAULT_FROM_EMAIL'), organization_name
     end
 
     def to_email
@@ -124,7 +124,7 @@ module EmailCampaigns
     end
 
     def reply_to_email
-      command[:reply_to] || @app_configuration.settings.dig('core', 'reply_to_email').presence || ENV.fetch('DEFAULT_FROM_EMAIL', 'support@citizenlab.co')
+      command[:reply_to] || @app_configuration.settings.dig('core', 'reply_to_email').presence || ENV.fetch('DEFAULT_FROM_EMAIL')
     end
 
     def event

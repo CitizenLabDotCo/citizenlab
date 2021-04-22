@@ -43,7 +43,7 @@ services:
     volumes:
       - "./back:/cl2_back"
     env_file:
-      - "back/.env"
+      - ".env-back"
     tty: true
     stdin_open: true
 

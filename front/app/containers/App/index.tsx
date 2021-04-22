@@ -16,20 +16,7 @@ import { configureScope } from '@sentry/browser';
 import GlobalStyle from 'global-styles';
 
 // constants
-import {
-  appLocalesMomentPairs,
-  ADMIN_TEMPLATES_GRAPHQL_PATH,
-  locales,
-} from 'containers/App/constants';
-
-// graphql
-import {
-  ApolloClient,
-  ApolloLink,
-  InMemoryCache,
-  HttpLink,
-} from 'apollo-boost';
-import { ApolloProvider } from 'react-apollo';
+import { appLocalesMomentPairs, locales } from 'containers/App/constants';
 
 // context
 import { PreviousPathnameContext } from 'context';
@@ -52,11 +39,10 @@ import ForbiddenRoute from 'components/routing/forbiddenRoute';
 import LoadableModal from 'components/Loadable/Modal';
 import LoadableUserDeleted from 'components/UserDeletedModalContent/LoadableUserDeleted';
 import ErrorBoundary from 'components/ErrorBoundary';
+import SignUpInModal from 'components/SignUpIn/SignUpInModal';
+import Outlet from 'components/Outlet';
+
 import { LiveAnnouncer } from 'react-aria-live';
-const VerificationModal = lazy(() =>
-  import('components/Verification/VerificationModal')
-);
-const SignUpInModal = lazy(() => import('components/SignUpIn/SignUpInModal'));
 const PostPageFullscreenModal = lazy(() => import('./PostPageFullscreenModal'));
 
 // auth
@@ -83,7 +69,6 @@ import GetFeatureFlag, {
 
 // events
 import eventEmitter from 'utils/eventEmitter';
-import { getJwt } from 'utils/auth/jwt';
 
 // style
 import styled, { ThemeProvider } from 'styled-components';
@@ -291,6 +276,8 @@ class App extends PureComponent<Props, State> {
     const { pathname, search } = this.props.location;
     const isAuthError = endsWith(pathname, 'authentication-error');
     const isInvitation = endsWith(pathname, '/invite');
+    const signUpInModalHasMounted =
+      !prevState.signUpInModalMounted && signUpInModalMounted;
 
     if (
       redirectsEnabled &&
@@ -300,16 +287,15 @@ class App extends PureComponent<Props, State> {
       this.handleCustomRedirect();
     }
 
+    // here we check all the possible conditions that could potentially trigger the sign-up and/or verification flow to appear
     if (
-      (!prevState.signUpInModalMounted &&
-        signUpInModalMounted &&
-        isAuthError) ||
-      (!prevState.signUpInModalMounted &&
-        signUpInModalMounted &&
-        isInvitation) ||
-      (!prevState.signUpInModalMounted &&
-        signUpInModalMounted &&
-        !isNilOrError(authUser)) ||
+      // when the user is redirected to the '/authentication-error' url (e.g. when SSO fails)
+      (signUpInModalHasMounted && isAuthError) ||
+      // when the user is sent to the '/invite' url (e.g. when the user clicks on an invitation link)
+      (signUpInModalHasMounted && isInvitation) ||
+      // when -both- the signup modal component has mounted and the authUser stream has initiated
+      // we proceed to the code below to check if any sign-up related url params are present in the url
+      (signUpInModalHasMounted && !isNilOrError(authUser)) ||
       (prevState.authUser === undefined &&
         !isNilOrError(authUser) &&
         signUpInModalMounted)
@@ -317,11 +303,16 @@ class App extends PureComponent<Props, State> {
       const urlSearchParams = (parse(search, {
         ignoreQueryPrefix: true,
       }) as any) as SSOParams;
+      // this constant represents the 'token' param that can optionally be included in the url
+      // when a user gets sent to the platform through an invitation link (e.g. '/invite?token=123456)
       const token = urlSearchParams?.['token'] as string | undefined;
-      const shouldComplete = !authUser?.data?.attributes
+
+      // shouldCompleteRegistration is set to true when the authUser registration_completed_at attribute is not yet set.
+      // when this attribute is undefined the sign-up process has not yet been completed and the user account is not yet valid!
+      const shouldCompleteRegistration = !authUser?.data?.attributes
         ?.registration_completed_at;
 
-      // see services/singleSignOn.ts
+      // see services/singleSignOn.ts for the typed interface of all the sso related url params the url can potentially contain
       const {
         sso_response,
         sso_flow,
@@ -333,23 +324,36 @@ class App extends PureComponent<Props, State> {
       } = urlSearchParams;
 
       if (isAuthError || isInvitation) {
+        // remove all url params from the url as relevant params have already been captured in the code above.
+        // this avoids possbile polution by any remaining url params later on in the process.
         window.history.replaceState(null, '', '/');
       }
 
-      if (sso_response || shouldComplete || isInvitation) {
+      // 1. sso_response indicates the user got sent back to the platform from an external sso page (facebook, google, ...)
+      // 2. shouldCompleteRegistration indicates the authUser registration_completed_at attribute is noy yer set and the user still needs to complete their registration
+      // 3. isInvitation indicates the user got sent to the platform through an invitation link
+      if (sso_response || shouldCompleteRegistration || isInvitation) {
+        // if the authUser verified attr is set to false but the sso_verification param is present (= set to the string 'true', not a boolean because it's a url param)
+        // the user still needs to complete the verification step
         const shouldVerify =
           !authUser?.data?.attributes?.verified && sso_verification;
 
+        // if the sso_pathname is present we redirect the user to it
+        // we do this to sent the user back to the page they came from after
+        // having been redirected to an external SSO service (e.g. '/project/123' -> facebook sign-on -> back to '/project/123')
         if (!isAuthError && sso_pathname) {
           clHistory.replace(sso_pathname);
         }
 
+        // we do not open the modal when the user gets sent to the '/sign-up' or '/sign-in' urls because
+        // on those pages we show the sign-up-in flow directly on the page and not as a modal.
+        // otherwise, when any of the above-defined conditions is set to true, we do trigger the modal
         if (
           !endsWith(sso_pathname, ['sign-up', 'sign-in']) &&
           (isAuthError ||
-            (isInvitation && shouldComplete) ||
+            (isInvitation && shouldCompleteRegistration) ||
             shouldVerify ||
-            shouldComplete)
+            shouldCompleteRegistration)
         ) {
           openSignUpInModal({
             isInvitation,
@@ -374,6 +378,9 @@ class App extends PureComponent<Props, State> {
       }
     }
 
+    // when -both- the authUser is initiated and the evrification modal component mounted
+    // we check if a 'verification_success' or 'verification_error' url param is present.
+    // if so, we open the verication modal with the appropriate step
     if (
       !isNilOrError(authUser) &&
       verificationModalMounted &&
@@ -459,12 +466,14 @@ class App extends PureComponent<Props, State> {
     this.setState({ mobileNavbarRef });
   };
 
-  singUpInModalMounted = () => {
-    this.setState({ signUpInModalMounted: true });
+  handleModalMounted = (id: string) => {
+    if (id === 'verification') {
+      this.setState({ verificationModalMounted: true });
+    }
   };
 
-  verificationModalMounted = () => {
-    this.setState({ verificationModalMounted: true });
+  handleSignUpInModalMounted = () => {
+    this.setState({ signUpInModalMounted: true });
   };
 
   render() {
@@ -535,18 +544,26 @@ class App extends PureComponent<Props, State> {
                   </ErrorBoundary>
 
                   <ErrorBoundary>
-                    <Suspense fallback={null}>
-                      <SignUpInModal onMounted={this.singUpInModalMounted} />
-                    </Suspense>
+                    <Outlet
+                      id="app.containers.App.signUpInModal"
+                      onMounted={this.handleSignUpInModalMounted}
+                    >
+                      {(outletComponents) => {
+                        return outletComponents.length > 0 ? (
+                          <>{outletComponents}</>
+                        ) : (
+                          <SignUpInModal
+                            onMounted={this.handleSignUpInModalMounted}
+                          />
+                        );
+                      }}
+                    </Outlet>
                   </ErrorBoundary>
 
-                  <ErrorBoundary>
-                    <Suspense fallback={null}>
-                      <VerificationModal
-                        onMounted={this.verificationModalMounted}
-                      />
-                    </Suspense>
-                  </ErrorBoundary>
+                  <Outlet
+                    id="app.containers.App.modals"
+                    onMounted={this.handleModalMounted}
+                  />
 
                   <ErrorBoundary>
                     <div id="modal-portal" />
@@ -596,34 +613,8 @@ const Data = adopt<DataProps, InputProps>({
   redirectsEnabled: <GetFeatureFlag name="redirects" />,
 });
 
-// Apollo
-const cache = new InMemoryCache();
-const httpLink = new HttpLink({ uri: ADMIN_TEMPLATES_GRAPHQL_PATH });
-const authLink = new ApolloLink((operation, forward) => {
-  const jwt = getJwt();
-
-  operation.setContext({
-    headers: {
-      origin: '*',
-      authorization: jwt ? `Bearer ${jwt}` : '',
-      'Access-Control-Allow-Origin': '*',
-    },
-    fetchOptions: {
-      mode: 'cors',
-    },
-  });
-
-  return forward(operation);
-});
-const client = new ApolloClient({
-  cache,
-  link: authLink.concat(httpLink),
-});
-
 const AppWithHoC = withRouter(App);
 
 export default (inputProps: InputProps) => (
-  <ApolloProvider client={client}>
-    <Data>{(dataProps) => <AppWithHoC {...dataProps} {...inputProps} />}</Data>
-  </ApolloProvider>
+  <Data>{(dataProps) => <AppWithHoC {...dataProps} {...inputProps} />}</Data>
 );

@@ -7,9 +7,8 @@ require "project_folders/version"
 Gem::Specification.new do |spec|
   spec.name        = "project_folders"
   spec.version     = ProjectFolders::VERSION
-  spec.authors     = ["Adrien Dessy"]
-  spec.licenses    = ['CitizenLab Commercial License']
-  spec.email       = ["adrien@citizenlab.co"]
+  spec.authors     = ["CitizenLab"]
+  spec.licenses    = ['CitizenLab Commercial License V1']
   spec.summary     = "Project folders for CitizenLab participation platform"
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'

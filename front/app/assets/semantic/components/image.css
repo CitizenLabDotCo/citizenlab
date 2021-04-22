@@ -8,7 +8,6 @@
  *
  */
 
-
 /*******************************
              Image
 *******************************/
@@ -29,7 +28,6 @@ img.ui.image {
   max-width: 100%;
   height: auto;
 }
-
 
 /*******************************
             States
@@ -54,11 +52,9 @@ img.ui.image {
   opacity: 0.45;
 }
 
-
 /*******************************
           Variations
 *******************************/
-
 
 /*--------------
      Inline
@@ -176,11 +172,11 @@ img.ui.bordered.image {
   margin-left: 0.5em;
   margin-right: 0.5em;
 }
-.ui[class*="left spaced"].image {
+.ui[class*='left spaced'].image {
   margin-left: 0.5em;
   margin-right: 0em;
 }
-.ui[class*="right spaced"].image {
+.ui[class*='right spaced'].image {
   margin-left: 0em;
   margin-right: 0.5em;
 }
@@ -281,7 +277,6 @@ img.ui.bordered.image {
   font-size: 1.71428571rem;
 }
 
-
 /*******************************
               Groups
 *******************************/
@@ -297,8 +292,6 @@ img.ui.bordered.image {
   margin: 0em 0.25rem 0.5rem;
 }
 
-
 /*******************************
          Site Overrides
 *******************************/
-

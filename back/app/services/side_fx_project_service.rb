@@ -8,7 +8,6 @@ class SideFxProjectService
 
   def before_create project, user
     @sfx_pc.before_create project, user if project.participation_context?
-    set_default_assignee project, user
   end
 
   def after_create project, user
@@ -36,7 +35,6 @@ class SideFxProjectService
 
   def before_destroy project, user
     @sfx_pc.before_destroy project, user if project.participation_context?
-    SmartGroupsService.new.filter_by_rule_value(Group.all, project.id).destroy_all
   end
 
   def after_destroy frozen_project, user
@@ -63,13 +61,7 @@ class SideFxProjectService
       moderator.save!
     end
   end
-
-  def set_default_assignee project, current_user
-    project.default_assignee ||= if current_user&.super_admin?
-      User.active.admin.order(:created_at).reject(&:super_admin?).first
-    else
-      current_user
-    end
-  end
-
 end
+
+SideFxProjectService.prepend_if_ee('SmartGroups::Patches::SideFxProjectService')
+SideFxProjectService.prepend_if_ee('IdeaAssignment::Patches::SideFxProjectService')

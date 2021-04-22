@@ -60,15 +60,11 @@ jobs:
   trigger-private-workflows:
     resource_class: small
     docker:
-      - image: byrnedo/alpine-curl
+      - image: cimg/base:stable
     steps:
+      - checkout
       - run: |
-          curl --request POST \
-            -u $CIRCLECI_API_TOKEN: \
-            --url https://circleci.com/api/v2/project/github/CitizenLabDotCo/citizenlab-ee/pipeline \
-            --header 'content-type: application/json' \
-            --header 'x-attribution-login: $CIRCLE_USERNAME' \
-            --data '{"branch":"master","parameters":{"citizenlab_branch": "$CIRCLE_BRANCH"}}'
+          chmod +x .circleci/private-trigger.sh && .circleci/private-trigger.sh << pipeline.parameters.back >> << pipeline.parameters.front >>
 
   # *************** back ***************
   
@@ -105,7 +101,7 @@ jobs:
           rake db:create
           rake db:schema:load
       - run: |
-          TESTFILES=$(circleci tests glob "spec/**/*_spec.rb" "engines/*/*/spec/**/*_spec.rb" | circleci tests split  --split-by=timings)
+          TESTFILES=$(circleci tests glob "spec/**/*_spec.rb" "engines/free/*/spec/**/*_spec.rb" | circleci tests split  --split-by=timings)
           echo $TESTFILES
           bundle exec rspec --format documentation --format RspecJunitFormatter -o spec/reports/rspec.xml -- ${TESTFILES}
       - store_test_results:
@@ -136,6 +132,18 @@ jobs:
       - run: bundle exec rake web_api:docs:generate
       - run: apt-get -y install awscli
       - run: aws s3 sync doc/api s3://developers.citizenlab.co/api-docs/essential/frontweb_api/$CIRCLE_BRANCH --delete --acl public-read
+
+  back-release-essential-image:
+    resource_class: small
+    docker:
+      - image: cimg/base:2021.03
+    steps:
+      - setup_remote_docker
+      - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
+      - run: docker pull citizenlabdotco/back-essential:$CIRCLE_SHA1
+      - run: docker tag citizenlabdotco/back-essential:$CIRCLE_SHA1 citizenlabdotco/back-essential
+      - deploy:
+          command: docker push citizenlabdotco/back-essential
 
   # *************** front ***************
 
@@ -254,6 +262,19 @@ jobs:
       - run: git diff --quiet app/translations && git diff --staged --quiet app/translations || git commit -m "Translations updated by CI (extract-intl)"
       - run: git push origin $CIRCLE_BRANCH
 
+  front-release-essential-image:
+    docker:
+      - image: cimg/base:2021.03
+    steps:
+      - checkout
+      - setup_remote_docker:
+        # https://support.circleci.com/hc/en-us/articles/360050934711
+          version: 19.03.13
+      - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
+      - run: |
+          docker build -t citizenlabdotco/front-essential -f front/Dockerfile .
+      - deploy:
+          command: docker push citizenlabdotco/front-essential
 
 workflows:
   version: 2
@@ -261,9 +282,25 @@ workflows:
   ci:
     when: << pipeline.parameters.trigger >>
     jobs:
-      - trigger-workflows
+      - trigger-workflows:
+          filters:
+            branches:
+              ignore:
+                - crowdin_master
+                - production
+
+  private-ci:
+    when:
+      and:
+        - not: << pipeline.parameters.trigger >>
+        - or: [<< pipeline.parameters.back >>, << pipeline.parameters.front >>]
+    jobs:
       - trigger-private-workflows:
           context: circleci-api-token
+          filters:
+            branches:
+              ignore:
+                - crowdin_master
 
   # *************** back ***************
   back:
@@ -317,7 +354,6 @@ workflows:
                 - crowdin_master
                 - /l10n_.*/
                 - master
-                - production
       - front-license-check:
           filters:
             branches:
@@ -331,7 +367,6 @@ workflows:
                 - crowdin_master
                 - /l10n_.*/
                 - master
-                - production
       - front-extract-intl:
           filters:
             branches:
@@ -339,4 +374,78 @@ workflows:
                 - crowdin_master
                 - /l10n_.*/
                 - master
+                - production
+
+  # *************** release ***************
+
+  release:
+    when: << pipeline.parameters.trigger >>
+    jobs:
+      - front-test:
+          filters:
+            branches:
+              only:
+                - production
+      - front-lint:
+          filters:
+            branches:
+              only:
+                - production
+      - front-license-check:
+          filters:
+            branches:
+              only:
+                - production
+      - front-build:
+          filters:
+            branches:
+              only:
+                - production
+      - back-build-essential-docker-image:
+          context: docker-hub-access
+          filters:
+            branches:
+              only:
+                - production
+      - back-test:
+          context: docker-hub-access
+          requires:
+            - back-build-essential-docker-image
+          filters:
+            branches:
+              only:
+                - production
+      - back-license-check:
+          context: docker-hub-access
+          requires:
+            - back-build-essential-docker-image
+          filters:
+            branches:
+              only:
+                - production
+      - front-release-essential-image:
+          context: docker-hub-access
+          requires:
+            - front-test
+            - front-license-check
+            - front-build
+            - front-lint
+            - back-test
+            - back-license-check
+          filters:
+            branches:
+              only:
+                - production
+      - back-release-essential-image:
+          context: docker-hub-access
+          requires:
+            - front-test
+            - front-license-check
+            - front-build
+            - front-lint
+            - back-test
+            - back-license-check
+          filters:
+            branches:
+              only:
                 - production

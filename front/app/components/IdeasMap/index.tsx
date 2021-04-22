@@ -154,6 +154,7 @@ export class IdeasMap extends PureComponent<Props & WithRouterProps, State> {
         </ScreenReaderOnly>
 
         <Map
+          projectId={projectId}
           points={points}
           onMarkerClick={this.toggleIdea}
           onMapClick={this.onMapClick}
@@ -162,9 +163,6 @@ export class IdeasMap extends PureComponent<Props & WithRouterProps, State> {
             selectedIdeaId ? <IdeaPreview ideaId={selectedIdeaId} /> : null
           }
           onBoxClose={this.deselectIdea}
-          projectId={
-            projectIds && projectIds.length === 1 ? projectIds[0] : null
-          }
         />
 
         {projectId && (

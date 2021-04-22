@@ -1,24 +1,43 @@
-import React from 'react';
-import useOutlet from 'hooks/useOutlet';
-import { OutletsPropertyMap } from 'utils/moduleUtils';
+import React, { memo, useContext } from 'react';
+import { OutletsPropertyMap, OutletId } from 'utils/moduleUtils';
+import { OutletsContext } from 'containers/OutletsProvider';
 
 type CustomPropsMap = {
   [P in keyof OutletsPropertyMap]: { id: P } & OutletsPropertyMap[P];
 };
 
-type Props = CustomPropsMap[keyof CustomPropsMap];
-
-const Outlet = ({ id, ...props }: Props) => {
-  const components = useOutlet(id);
-  if (!components) return null;
-
-  return (
-    <>
-      {components.map((Component, index) => (
-        <Component key={`${id}_${index}`} {...props} />
-      ))}
-    </>
-  );
+type InputProps = {
+  onRender?: (hasRendered: boolean) => void;
+  children?: Children;
 };
+
+type CustomOutletProps = CustomPropsMap[keyof CustomPropsMap];
+
+export type OutletRenderProps = (
+  renderProps: JSX.Element[]
+) => JSX.Element | null;
+
+type Children = OutletRenderProps;
+
+function useOutlet(identifier: OutletId) {
+  const outlets = useContext(OutletsContext);
+  return outlets[identifier] ?? [];
+}
+
+type Props = InputProps & CustomOutletProps;
+
+const Outlet = memo(({ children, id, ...props }: Props) => {
+  const outletComponents = useOutlet(id);
+
+  const componentsToRender = outletComponents.map((Component, index) => (
+    <Component key={`${id}_${index}`} {...props} />
+  ));
+
+  if (children) {
+    return children(componentsToRender);
+  }
+
+  return <>{componentsToRender}</>;
+});
 
 export default Outlet;

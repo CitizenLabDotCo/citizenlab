@@ -4,16 +4,12 @@ import { colors } from 'utils/styleUtils';
 import Link from 'utils/cl-router/Link';
 
 // components
-import { IconWrapper, TAdminGuideArticle, TAdminGuideSection } from '.';
+import { IconWrapper } from '.';
 import { Icon } from 'cl2-component-library';
 
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
-
-// analytics
-import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
 
 const Article = styled(Link)`
   display: flex;
@@ -41,8 +37,7 @@ const Article = styled(Link)`
 `;
 
 interface Props {
-  article: TAdminGuideArticle;
-  section: TAdminGuideSection;
+  trackLink: () => void;
   linkMessage: ReactIntl.FormattedMessage.MessageDescriptor;
   titleMessage: ReactIntl.FormattedMessage.MessageDescriptor;
   descriptionMessage: ReactIntl.FormattedMessage.MessageDescriptor;
@@ -50,19 +45,13 @@ interface Props {
 
 const AdminGuideArticle = ({
   intl: { formatMessage },
-  article,
-  section,
+  trackLink,
   linkMessage,
   titleMessage,
   descriptionMessage,
 }: Props & InjectedIntlProps) => {
-  const handleClickInteralTrack = () => {
-    trackEventByName(tracks.internalLink.name, {
-      extra: { section, article },
-    });
-  };
   return (
-    <Article to={formatMessage(linkMessage)} onClick={handleClickInteralTrack}>
+    <Article to={formatMessage(linkMessage)} onClick={trackLink}>
       <div>
         <FormattedMessage tagName="h3" {...titleMessage} />
         <FormattedMessage tagName="p" {...descriptionMessage} />

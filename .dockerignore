@@ -1,0 +1,17 @@
+front/coverage
+front/build
+front/stats.json
+front/.DS_Store
+front/npm-debug.log
+front/.idea
+front/Dockerfile
+
+
+back/.byebug_history
+back/log/*
+back/tmp/*
+back/public/uploads
+back/secrets/*
+back/Dockerfile
+!back/secrets/*.example
+!back/secrets/*.sample

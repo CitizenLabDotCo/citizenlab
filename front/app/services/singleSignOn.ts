@@ -2,7 +2,7 @@ import { AUTH_PATH } from 'containers/App/constants';
 import { ISignUpInMetaData } from 'components/SignUpIn';
 import { stringify } from 'qs';
 import { omitBy, isNil } from 'lodash-es';
-import { isProjectContext } from 'components/Verification/VerificationModal';
+import { isProjectContext } from 'components/Verification/verificationModalEvents';
 
 export type SSOProvider =
   | 'google'
@@ -10,6 +10,7 @@ export type SSOProvider =
   | 'azureactivedirectory'
   | 'franceconnect';
 
+// Note: these are url parameters so therefore all typed as strings
 export interface SSOParams {
   sso_response: 'true';
   sso_flow: 'signup' | 'signin';

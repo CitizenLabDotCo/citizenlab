@@ -7,9 +7,9 @@ require "custom_style/version"
 Gem::Specification.new do |spec|
   spec.name        = "custom_style"
   spec.version     = CustomStyle::VERSION
-  spec.authors     = ["Adrien Dessy"]
-  spec.email       = ["adrien@citizenlab.co"]
+  spec.authors     = ["CitizenLab"]
   spec.summary     = "Additional styling options for CitizenLab participation platform."
+  spec.licenses    = ["CitizenLab Commercial License V1"]
 
   spec.files = Dir["{app,config,db,lib}/**/*", "Rakefile", "README.md"]
 

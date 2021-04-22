@@ -6,7 +6,7 @@ import { shallow, mount } from 'enzyme';
 export const theme = {
   colors,
   fontSizes,
-  fontFamily: 'larsseit',
+  fontFamily: 'Public Sans',
   colorMain: '#ef0071',
   colorText: '#e68f51',
   colorSecondary: '#f76901',

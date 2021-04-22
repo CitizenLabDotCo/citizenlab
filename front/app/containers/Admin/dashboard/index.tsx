@@ -257,15 +257,9 @@ export const DashboardsPage = memo(
         feature: 'project_reports',
         name: 'project_reports',
       },
-      {
-        label: formatMessage(messages.tabInsights),
-        url: '/admin/dashboard/insights',
-        feature: 'clustering',
-        name: 'clustering',
-      },
     ]);
 
-    const moderatorTabs = [
+    const moderatorTabs: ITab[] = [
       {
         label: formatMessage(messages.tabSummary),
         url: '/admin/dashboard',
@@ -297,7 +291,7 @@ export const DashboardsPage = memo(
     };
 
     const handleData = (data: InsertConfigurationOptions<ITab>) =>
-      setTabs(insertConfiguration(data));
+      setTabs((tabs) => insertConfiguration(data)(tabs));
 
     if (
       !authUser ||

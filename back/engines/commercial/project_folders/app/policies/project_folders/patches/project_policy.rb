@@ -10,7 +10,7 @@ module ProjectFolders
                                          .includes(:admin_publication)
                                          .pluck('admin_publications.id')
 
-            all_ids = user.moderatable_project_ids + filter_for_normal_user(normal_user_result, user)
+            all_ids = user.moderatable_project_ids + scope.user_groups_visible(user).not_draft.or(scope.publicly_visible.not_draft)
 
             scope.includes(:admin_publication)
                  .where(admin_publications: { parent_id: folder_publication_ids })

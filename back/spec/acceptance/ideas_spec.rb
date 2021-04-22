@@ -26,7 +26,7 @@ resource "Ideas" do
     parameter :projects, 'Filter by projects (OR)', required: false
     parameter :phase, 'Filter by project phase', required: false
     parameter :author, 'Filter by author (user id)', required: false
-    parameter :assignee, 'Filter by assignee (user id)', required: false
+    parameter :assignee, 'Filter by assignee (user id)', required: false if CitizenLab.ee?
     parameter :idea_status, 'Filter by status (idea status id)', required: false
     parameter :search, 'Filter by searching in title and body', required: false
     parameter :sort, "Either 'new', '-new', 'trending', '-trending', 'popular', '-popular', 'author_name', '-author_name', 'upvotes_count', '-upvotes_count', 'downvotes_count', '-downvotes_count', 'status', '-status', 'baskets_count', '-baskets_count', 'random'", required: false
@@ -192,19 +192,21 @@ resource "Ideas" do
       expect(json_response[:data][0][:id]).to eq i.id
     end
 
-    example "List all ideas for an assignee" do
-      a = create(:admin)
-      i = create(:idea, assignee: a)
+    if CitizenLab.ee?
+      example "List all ideas for an assignee" do
+        a = create(:admin)
+        i = create(:idea, assignee: a)
 
-      do_request assignee: a.id
-      json_response = json_parse(response_body)
-      expect(json_response[:data].size).to eq 1
-      expect(json_response[:data][0][:id]).to eq i.id
+        do_request assignee: a.id
+        json_response = json_parse(response_body)
+        expect(json_response[:data].size).to eq 1
+        expect(json_response[:data][0][:id]).to eq i.id
+      end
     end
 
     example "List all ideas that need feedback" do
-      TenantTemplateService.new.resolve_and_apply_template('base')
-      i = create(:idea, idea_status: IdeaStatus.find_by(code: 'proposed'))
+      proposed = create(:idea_status_proposed)
+      i = create(:idea, idea_status: proposed)
 
       do_request feedback_needed: true
       json_response = json_parse(response_body)
@@ -231,17 +233,6 @@ resource "Ideas" do
       expect(json_response[:data][0][:id]).to eq i1.id
     end
 
-    example "List all ideas sorted by baskets count", document: false do
-      i1 = create(:idea)
-      baskets = create_list(:basket, 3, ideas: [i1])
-      SideFxBasketService.new.update_basket_counts
-
-      do_request sort: "-baskets_count"
-      json_response = json_parse(response_body)
-      expect(json_response[:data].size).to eq 6
-      expect(json_response[:data][0][:id]).to eq i1.id
-    end
-
     example "List all ideas by random ordering", document: false do
       i1 = create(:idea)
 
@@ -249,7 +240,6 @@ resource "Ideas" do
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 6
     end
-
 
     example "List all ideas includes the user_vote", document: false do
       vote = create(:vote, user: @user)
@@ -298,7 +288,7 @@ resource "Ideas" do
     parameter :projects, 'Filter by projects (OR)', required: false
     parameter :phase, 'Filter by project phase', required: false
     parameter :author, 'Filter by author (user id)', required: false
-    parameter :assignee, 'Filter by assignee (user id)', required: false
+    parameter :assignee, 'Filter by assignee (user id)', required: false if CitizenLab.ee?
     parameter :idea_status, 'Filter by status (idea status id)', required: false
     parameter :search, 'Filter by searching in title and body', required: false
     parameter :publication_status, "Return only ideas with the specified publication status; returns all pusblished ideas by default", required: false
@@ -388,74 +378,82 @@ resource "Ideas" do
     end
   end
 
-  get "web_api/v1/ideas/as_xlsx_with_tags" do
-    parameter :project, 'Filter by project', required: false
-    parameter :ideas, 'Filter by a given list of idea ids', required: false
+  if CitizenLab.ee?
+    get "web_api/v1/ideas/as_xlsx_with_tags" do
+      parameter :project, 'Filter by project', required: false
+      parameter :ideas, 'Filter by a given list of idea ids', required: false
 
-    before do
-      @user = create(:admin)
-      token = Knock::AuthToken.new(payload: @user.to_token_payload).token
-      header 'Authorization', "Bearer #{token}"
-    end
-
-    example_request "XLSX export" do
-      expect(status).to eq 200
-    end
-
-    describe do
       before do
-        @project = create(:project)
-        @tag1 = Tagging::Tag.create(title_multiloc: {'en' => 'label'})
-        @tag2 = Tagging::Tag.create(title_multiloc: {'en' => 'item'})
-        @selected_ideas = @ideas.select(&:published?).shuffle.take 3
-        @selected_ideas.each do |idea|
-          idea.update! project: @project
-        end
-        Tagging::Tagging.create(idea: @selected_ideas[0], tag: @tag1, confidence_score: 1)
-        Tagging::Tagging.create(idea: @selected_ideas[0], tag: @tag2,  confidence_score: 0.45)
-        Tagging::Tagging.create(idea: @selected_ideas[1], tag: @tag1,  confidence_score: 1)
-      end
-      let(:project) { @project.id }
-
-      example_request 'XLSX export by project' do
-        expect(status).to eq 200
-        worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
-        label_col = worksheet.map {|col| col.cells[4].value}
-        _, *labels = label_col
-        expect(labels).to match_array([1,1,0])
-        item_col = worksheet.map {|col| col.cells[3].value}
-        _, *items = item_col
-        expect(items).to match_array([0, 0, 0.45])
-        expect(worksheet.count).to eq (@selected_ideas.size + 1)
-      end
-    end
-
-    describe do
-      before do
-        @selected_ideas = @ideas.select(&:published?).shuffle.take 2
-      end
-      let(:ideas) { @selected_ideas.map(&:id) }
-
-      example_request 'XLSX export by idea ids' do
-        expect(status).to eq 200
-        worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
-        expect(worksheet.count).to eq (@selected_ideas.size + 1)
-      end
-    end
-
-    describe do
-      before do
-        @user = create(:user)
+        @user = create(:admin)
         token = Knock::AuthToken.new(payload: @user.to_token_payload).token
         header 'Authorization', "Bearer #{token}"
       end
 
-      example_request '[error] XLSX export by a normal user', document: false do
-        expect(status).to eq 401
+      example_request "XLSX export" do
+        expect(status).to eq 200
+      end
+
+      describe do
+        before do
+          @project = create(:project)
+
+          @selected_ideas = @ideas.select(&:published?).shuffle.take 3
+          @selected_ideas.each do |idea|
+            idea.update! project: @project
+          end
+          next unless CitizenLab.ee?
+
+          @tag1 = Tagging::Tag.create(title_multiloc: {'en' => 'label'})
+          @tag2 = Tagging::Tag.create(title_multiloc: {'en' => 'item'})
+          Tagging::Tagging.create(idea: @selected_ideas[0], tag: @tag1, confidence_score: 1)
+          Tagging::Tagging.create(idea: @selected_ideas[0], tag: @tag2,  confidence_score: 0.45)
+          Tagging::Tagging.create(idea: @selected_ideas[1], tag: @tag1,  confidence_score: 1)
+        end
+        let(:project) { @project.id }
+
+        example_request 'XLSX export by project' do
+          expect(status).to eq 200
+          worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
+          label_col = worksheet.map {|col| col.cells[4].value}
+          _, *labels = label_col
+
+          expect(labels).to match_array([1,1,0])
+
+          item_col = worksheet.map {|col| col.cells[3].value}
+          _, *items = item_col
+
+          expect(items).to match_array([0, 0, 0.45])
+
+          expect(worksheet.count).to eq (@selected_ideas.size + 1)
+        end
+      end
+
+      describe do
+        before do
+          @selected_ideas = @ideas.select(&:published?).shuffle.take 2
+        end
+        let(:ideas) { @selected_ideas.map(&:id) }
+
+        example_request 'XLSX export by idea ids' do
+          expect(status).to eq 200
+          worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
+          expect(worksheet.count).to eq (@selected_ideas.size + 1)
+        end
+      end
+
+      describe do
+        before do
+          @user = create(:user)
+          token = Knock::AuthToken.new(payload: @user.to_token_payload).token
+          header 'Authorization', "Bearer #{token}"
+        end
+
+        example_request '[error] XLSX export by a normal user', document: false do
+          expect(status).to eq 401
+        end
       end
     end
   end
-
 
   get "web_api/v1/ideas/filter_counts" do
     before do
@@ -486,7 +484,7 @@ resource "Ideas" do
     parameter :projects, 'Filter by projects (OR)', required: false
     parameter :phase, 'Filter by project phase', required: false
     parameter :author, 'Filter by author (user id)', required: false
-    parameter :assignee, 'Filter by assignee (user id)', required: false
+    parameter :assignee, 'Filter by assignee (user id)', required: false if CitizenLab.ee?
     parameter :idea_status, 'Filter by status (idea status id)', required: false
     parameter :search, 'Filter by searching in title and body', required: false
     parameter :publication_status, "Return only ideas with the specified publication status; returns all pusblished ideas by default", required: false
@@ -536,7 +534,7 @@ resource "Ideas" do
     example_request "Get one idea by id" do
       expect(status).to eq 200
       json_response = json_parse(response_body)
-      
+
       expect(json_response.dig(:data, :id)).to eq idea.id
       expect(json_response.dig(:data, :type)).to eq 'idea'
       expect(json_response.dig(:data, :attributes)).to include(
@@ -588,7 +586,7 @@ resource "Ideas" do
       parameter :project_id, "The identifier of the project that hosts the idea", extra: ""
       parameter :phase_ids, "The phases the idea is part of, defaults to the current only, only allowed by admins"
       parameter :author_id, "The user id of the user owning the idea", extra: "Required if not draft"
-      parameter :assignee_id, "The user id of the admin/moderator that takes ownership. Set automatically if not provided. Only allowed for admins/moderators."
+      parameter :assignee_id, "The user id of the admin/moderator that takes ownership. Set automatically if not provided. Only allowed for admins/moderators." if CitizenLab.ee?
       parameter :idea_status_id, "The status of the idea, only allowed for admins", extra: "Defaults to status with code 'proposed'"
       parameter :publication_status, "Publication status", required: true, extra: "One of #{Post::PUBLICATION_STATUSES.join(",")}"
       parameter :title_multiloc, "Multi-locale field with the idea title", required: true, extra: "Maximum 100 characters"
@@ -761,7 +759,7 @@ resource "Ideas" do
       parameter :project_id, "The idea of the project that hosts the idea", extra: ""
       parameter :phase_ids, "The phases the idea is part of, defaults to the current only, only allowed by admins"
       parameter :author_id, "The user id of the user owning the idea", extra: "Required if not draft"
-      parameter :assignee_id, "The user id of the admin/moderator that takes ownership. Only allowed for admins/moderators."
+      parameter :assignee_id, "The user id of the admin/moderator that takes ownership. Only allowed for admins/moderators." if CitizenLab.ee?
       parameter :idea_status_id, "The status of the idea, only allowed for admins"
       parameter :publication_status, "Either #{Post::PUBLICATION_STATUSES.join(', ')}"
       parameter :title_multiloc, "Multi-locale field with the idea title", extra: "Maximum 100 characters"
@@ -833,14 +831,16 @@ resource "Ideas" do
       end
     end
 
-    describe do
-      let(:assignee_id) { create(:admin).id }
+    if CitizenLab.ee?
+      describe do
+        let(:assignee_id) { create(:admin).id }
 
-      example "Changing the assignee as a non-admin does not work", document: false do
-        do_request
-        expect(status).to be 200
-        json_response = json_parse(response_body)
-        expect(json_response.dig(:data,:relationships,:assignee)).to be_nil
+        example "Changing the assignee as a non-admin does not work", document: false do
+          do_request
+          expect(status).to be 200
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data,:relationships,:assignee)).to be_nil
+        end
       end
     end
 
@@ -873,13 +873,15 @@ resource "Ideas" do
         end
       end
 
-      describe do
-        let(:assignee_id) { create(:admin).id }
+      if CitizenLab.ee?
+        describe do
+          let(:assignee_id) { create(:admin).id }
 
-        example_request "Change the assignee (as an admin)" do
-          expect(status).to be 200
-          json_response = json_parse(response_body)
-          expect(json_response.dig(:data,:relationships,:assignee,:data,:id)).to eq assignee_id
+          example_request "Change the assignee (as an admin)" do
+            expect(status).to be 200
+            json_response = json_parse(response_body)
+            expect(json_response.dig(:data,:relationships,:assignee,:data,:id)).to eq assignee_id
+          end
         end
       end
 
@@ -979,13 +981,15 @@ resource "Ideas" do
         end
       end
 
-      describe do
-        let(:assignee_id) { create(:admin).id }
+      if CitizenLab.ee?
+        describe do
+          let(:assignee_id) { create(:admin).id }
 
-        example_request "Change the assignee (as a moderator)" do
-          expect(status).to be 200
-          json_response = json_parse(response_body)
-          expect(json_response.dig(:data,:relationships,:assignee,:data,:id)).to eq assignee_id
+          example_request "Change the assignee (as a moderator)" do
+            expect(status).to be 200
+            json_response = json_parse(response_body)
+            expect(json_response.dig(:data,:relationships,:assignee,:data,:id)).to eq assignee_id
+          end
         end
       end
     end

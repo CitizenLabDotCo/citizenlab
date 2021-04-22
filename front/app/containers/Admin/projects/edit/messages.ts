@@ -30,14 +30,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.eventsTab',
     defaultMessage: 'Events',
   },
-  permissionsTab: {
-    id: 'app.containers.AdminPage.ProjectEdit.permissionsTab',
-    defaultMessage: 'Permissions',
-  },
-  topicsTab: {
-    id: 'app.containers.AdminPage.ProjectEdit.topicsTab',
-    defaultMessage: 'Topics',
-  },
   newProject: {
     id: 'app.containers.AdminPage.ProjectEdit.newProject',
     defaultMessage: 'New Project',
@@ -110,7 +102,8 @@ export default defineMessages({
   },
   createSurveyDescription: {
     id: 'app.containers.AdminPage.ProjectEdit.createSurveyDescription',
-    defaultMessage: 'Embed a Typeform, Google Form or Enalyzer survey.',
+    defaultMessage:
+      'Embed a Typeform, Google Form, Enalyzer or SurveyXact survey.',
   },
   conductParticipatoryBudgetingText: {
     id:
@@ -290,6 +283,10 @@ export default defineMessages({
   enalyzer: {
     id: 'app.containers.AdminPage.ProjectEdit.enalyzer',
     defaultMessage: 'Enalyzer',
+  },
+  survey_xact: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey_xact',
+    defaultMessage: 'SurveyXact',
   },
   survey_monkey: {
     id: 'app.containers.AdminPage.ProjectEdit.survey_monkey',

@@ -11,6 +11,7 @@ import PreferencesDialog from './PreferencesDialog';
 // mock utilities
 jest.mock('utils/cl-intl');
 jest.mock('services/appConfiguration');
+jest.mock('modules', () => ({ streamsToReset: [] }));
 
 describe('<ConsentManager />', () => {
   let onChange: Jest.Mock;

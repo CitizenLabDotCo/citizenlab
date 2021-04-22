@@ -1,0 +1,9 @@
+Description:
+    Stubs a new service in the services folder.
+      The name can be passed in either under_score or CamelCase and with a --module option.
+
+Example:
+    `rails generate service Movies get post --module Media`
+
+    This will create:
+        app/services/media/movies_service.rb

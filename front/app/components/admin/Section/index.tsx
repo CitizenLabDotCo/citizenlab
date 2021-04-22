@@ -6,11 +6,6 @@ export const Section = styled.div`
   margin-bottom: 0;
 `;
 
-export const SubSection = styled.section`
-  margin-left: 1.5em;
-  margin-bottom: 0;
-`;
-
 export const SectionField = styled.div`
   margin-bottom: 35px;
   transition: all 200ms ease-in-out;

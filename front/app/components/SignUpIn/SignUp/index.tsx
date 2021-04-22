@@ -6,7 +6,6 @@ import request from 'utils/request';
 // components
 import AuthProviders, { AuthProvider } from 'components/SignUpIn/AuthProviders';
 import PasswordSignup from 'components/SignUpIn/SignUp/PasswordSignup';
-import VerificationSteps from 'components/Verification/VerificationSteps';
 import Success from 'components/SignUpIn/SignUp/Success';
 import Error from 'components/UI/Error';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
@@ -62,7 +61,6 @@ const SignUpHelperText = styled(QuillEditedContent)`
 export interface TSignUpStepsMap {
   'auth-providers': 'auth-providers';
   'password-signup': 'password-signup';
-  verification: 'verification';
   success: 'success';
 }
 
@@ -144,16 +142,6 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
           tenant?.attributes?.settings?.core?.signup_helper_text,
         isEnabled: () => true,
         isActive: (authUser) => !authUser,
-      },
-      verification: {
-        position: 3,
-        stepName: formatMessage(messages.verifyYourIdentity),
-        onSkipped: () => trackEventByName(tracks.signUpVerificationStepSkipped),
-        onError: () => trackEventByName(tracks.signUpVerificationStepFailed),
-        onCompleted: () =>
-          trackEventByName(tracks.signUpVerificationStepCompleted),
-        isEnabled: (metaData) => !!metaData?.verification,
-        isActive: (authUser) => !authUser?.attributes?.verified,
       },
       success: {
         position: 5,
@@ -403,23 +391,13 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
                 />
               )}
 
-              {activeStep === 'verification' && (
-                <VerificationSteps
-                  context={metaData?.verificationContext || null}
-                  initialActiveStep="method-selection"
-                  inModal={!!metaData.inModal}
-                  showHeader={false}
-                  skippable={true}
-                  onCompleted={handleStepCompleted}
-                  onSkipped={handleStepSkipped}
-                  onError={handleStepError}
-                />
-              )}
-
               <Outlet
                 id="app.components.SignUpIn.SignUp.step"
                 step={activeStep}
+                metaData={metaData}
                 onData={handleOnOutletData}
+                onSkipped={handleStepSkipped}
+                onError={handleStepError}
                 onCompleted={handleStepCompleted}
               />
 

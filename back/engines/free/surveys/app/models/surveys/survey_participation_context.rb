@@ -1,7 +1,7 @@
 module Surveys::SurveyParticipationContext
   extend ActiveSupport::Concern
 
-  SURVEY_SERVICES = %w(typeform survey_monkey google_forms enalyzer)
+  SURVEY_SERVICES = %w(typeform survey_monkey google_forms enalyzer survey_xact)
 
   included do
     has_many :survey_responses, class_name: 'Surveys::Response', as: :participation_context, dependent: :destroy
@@ -28,6 +28,10 @@ module Surveys::SurveyParticipationContext
       survey.validates :survey_embed_url, if: [:survey?, :enalyzer?], format: {
         with: /\Ahttps:\/\/surveys.enalyzer.com\?pid=.*\z/,
         message: "Not a valid Enalyzer embed"
+      }
+      survey.validates :survey_embed_url, if: [:survey?, :survey_xact?], format: {
+        with: /\Ahttps:\/\/www\.survey-xact\.dk\/LinkCollector\?key=.*\z/,
+        message: "Not a valid Survey Xact embed"
       }
       survey.before_validation :strip_survey_embed_url
     end
@@ -58,8 +62,13 @@ module Surveys::SurveyParticipationContext
   def google_forms?
     self.survey_service == 'google_forms'
   end
+
   def enalyzer?
     self.survey_service == 'enalyzer'
+  end
+
+  def survey_xact?
+    self.survey_service == 'survey_xact'
   end
 
   def strip_survey_embed_url

@@ -24,7 +24,6 @@ resource "Campaign consents" do
         create(:comment_on_your_idea_campaign),
         create(:comment_on_your_initiative_campaign),
         create(:idea_marked_as_spam_campaign),
-        create(:idea_assigned_to_you_campaign),
         create(:idea_published_campaign),
         create(:initiative_assigned_to_you_campaign),
         create(:initiative_marked_as_spam_campaign),
@@ -53,6 +52,9 @@ resource "Campaign consents" do
         create(:status_change_of_your_initiative_campaign),
         create(:threshold_reached_for_admin_campaign)
       ]
+
+      @campaigns << create(:idea_assigned_to_you_campaign) if CitizenLab.ee?
+
       @consents = @campaigns.map.with_index do |campaign, i|
         create(:consent, user: @user, campaign_type: campaign.type, consented: i%2 == 0)
       end
@@ -172,5 +174,4 @@ resource "Campaign consents" do
       end
     end
   end
-
 end

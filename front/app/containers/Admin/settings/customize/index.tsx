@@ -6,7 +6,6 @@ import { forOwn, get, size, has, trim, isEmpty, omitBy } from 'lodash-es';
 // components
 import { Label, IconTooltip, ColorPickerInput } from 'cl2-component-library';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
-import RangeInput from 'components/UI/RangeInput';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import {
   Section,
@@ -52,8 +51,9 @@ import { updatePage } from 'services/pages';
 import { CLError, UploadFile, Locale, Multiloc } from 'typings';
 
 import { isCLErrorJSON } from 'utils/errorUtils';
+import Outlet from 'components/Outlet';
 
-const ColorPickerSectionField = styled(SectionField)``;
+export const ColorPickerSectionField = styled(SectionField)``;
 
 const ContrastWarning = styled(Warning)`
   margin-top: 10px;
@@ -292,28 +292,14 @@ class SettingsCustomizeTab extends PureComponent<
     });
   };
 
-  handleHeaderOverlayColorOnChange = (hexColor: string) => {
+  handleAppConfigurationStyleChange = (key: string) => (value: unknown) => {
     this.setState((state) => {
       return {
         attributesDiff: {
           ...state.attributesDiff,
           style: {
             ...get(state.attributesDiff, 'style', {}),
-            signedOutHeaderOverlayColor: hexColor,
-          },
-        },
-      };
-    });
-  };
-
-  handleHeaderOverlayOpacityOnChange = (opacity: number) => {
-    this.setState((state) => {
-      return {
-        attributesDiff: {
-          ...state.attributesDiff,
-          style: {
-            ...get(state.attributesDiff, 'style', {}),
-            signedOutHeaderOverlayOpacity: opacity,
+            [key]: value,
           },
         },
       };
@@ -452,6 +438,7 @@ class SettingsCustomizeTab extends PureComponent<
         ...tenant.data.attributes,
         ...attributesDiff,
       }.style;
+
       const latestAppConfigCoreSettings = {
         ...tenant.data.attributes,
         ...attributesDiff,
@@ -569,34 +556,13 @@ class SettingsCustomizeTab extends PureComponent<
                 errorMessage={headerError}
               />
             </SectionField>
-            <ColorPickerSectionField>
-              <Label>
-                <FormattedMessage {...messages.imageOverlayColor} />
-              </Label>
-              <ColorPickerInput
-                type="text"
-                value={
-                  latestAppConfigStyleSettings?.signedOutHeaderOverlayColor ||
-                  this.props.theme.colorMain
-                }
-                onChange={this.handleHeaderOverlayColorOnChange}
-              />
-            </ColorPickerSectionField>
-            <SectionField>
-              <Label>
-                <FormattedMessage {...messages.imageOverlayOpacity} />
-              </Label>
-              <RangeInput
-                step={1}
-                min={0}
-                max={100}
-                value={
-                  latestAppConfigStyleSettings?.signedOutHeaderOverlayOpacity ||
-                  90
-                }
-                onChange={this.handleHeaderOverlayOpacityOnChange}
-              />
-            </SectionField>
+            <Outlet
+              id="app.containers.Admin.settings.customize.fields"
+              onChange={this.handleAppConfigurationStyleChange}
+              theme={this.props.theme}
+              latestAppConfigStyleSettings={latestAppConfigStyleSettings}
+            />
+
             <SectionField>
               <InputMultilocWithLocaleSwitcher
                 type="text"

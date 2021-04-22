@@ -10,7 +10,6 @@ class CustomFieldOption < ApplicationRecord
   validate :belongs_to_select_field
 
   before_validation :generate_key, on: :create
-  before_destroy :check_group_references, prepend: true
 
 
   private
@@ -32,11 +31,6 @@ class CustomFieldOption < ApplicationRecord
       end
     end
   end
-
-  def check_group_references
-    if Group.using_custom_field_option(self).exists?
-      self.errors.add(:base, :dangling_group_references, message: Group.using_custom_field_option(self).all.map(&:id).join(","))
-      throw :abort
-    end
-  end
 end
+
+CustomFieldOption.include_if_ee('SmartGroups::Extensions::CustomFieldOption')
