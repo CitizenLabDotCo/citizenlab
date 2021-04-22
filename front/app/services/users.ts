@@ -44,6 +44,7 @@ export interface IUserData {
     custom_field_values?: object;
     invite_status: 'pending' | 'accepted' | null;
     verified?: boolean;
+    email_confirmed_at: string | null;
   };
 }
 

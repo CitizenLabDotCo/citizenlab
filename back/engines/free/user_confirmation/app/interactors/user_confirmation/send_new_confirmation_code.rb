@@ -21,7 +21,7 @@ module UserConfirmation
       unless user.registered_with_email?
         fail_with_error! :registration_method, :invalid, message: 'Confirmation is currently working for emails only.'
       end
-      ConfirmationsMailer.with(user: user).send_confirmation_code.deliver_later
+      ConfirmationsMailer.with(user: user).send_confirmation_code.deliver!
     end
 
     def schedule_code_expiration_job

@@ -45,7 +45,8 @@ export default defineMessages({
   },
   confirmation_code_invalid: {
     id: 'app.errors.confirmation_code_invalid',
-    defaultMessage: 'Invalid confirmation code.',
+    defaultMessage:
+      "Invalid confirmation code. Please check your email for the correct code or try 'Send New Code'",
   },
   after_end_at: {
     id: 'app.errors.after_end_at',

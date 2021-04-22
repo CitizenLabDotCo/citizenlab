@@ -1,6 +1,7 @@
 class WebApi::V1::UserSerializer < WebApi::V1::BaseSerializer
-  attributes :first_name, :slug, :locale, :roles, :highest_role, :bio_multiloc, :registration_completed_at, :invite_status, :created_at, :updated_at
-  
+  attributes :first_name, :slug, :locale, :roles, :highest_role, :bio_multiloc, :registration_completed_at, :invite_status, :created_at, :updated_at,
+             :email_confirmed_at
+
   attribute :last_name do |object, params|
     name_service = UserDisplayNameService.new(AppConfiguration.instance, current_user(params))
     name_service.last_name(object)

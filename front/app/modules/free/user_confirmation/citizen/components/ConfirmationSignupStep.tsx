@@ -24,6 +24,8 @@ import { CLErrors, CLError } from 'typings';
 import Button from 'components/UI/Button';
 import { colors, fontSizes } from 'utils/styleUtils';
 import Link from 'utils/cl-router/Link';
+import { darken } from 'polished';
+import { modifyMetaData } from 'components/SignUpIn/events';
 
 const StyledCodeInput = styled<any>(CodeInput)`
   width: auto !important;
@@ -40,6 +42,7 @@ const StyledCodeInput = styled<any>(CodeInput)`
     height: 90px !important;
     width: 80px !important;
     font-size: 32px;
+    color: ${({ theme }) => theme.colorText};
 
     &:last-child {
       border-right: 1px solid
@@ -74,11 +77,24 @@ const FooterNote = styled.p`
   margin: 0 0 12px;
 `;
 
+const FooterNoteLink = styled(Link)`
+  font-size: ${fontSizes.small}px;
+  padding-left: 4px;
+  color: ${({ theme }) => theme.colorText};
+  text-decoration: underline;
+
+  &:hover {
+    color: ${({ theme }) => darken(0.2, theme.colorText)};
+    text-decoration: underline;
+  }
+`;
+
 type Props = SignUpStepOutletProps & InjectedIntlProps;
 
 function ConfirmationSignupStep({
   metaData,
   intl: { formatMessage },
+  onCompleted,
   ...props
 }: Props): ReactElement | null {
   const user = useAuthUser();
@@ -86,6 +102,7 @@ function ConfirmationSignupStep({
     code: null,
   });
   const [apiErrors, setApiErrors] = useState<CLErrors>({});
+  const [processing, setProcessing] = useState<boolean>(false);
 
   useEffect(() => {
     props.onData({
@@ -97,8 +114,8 @@ function ConfirmationSignupStep({
         onError: () => trackEventByName(tracks.signUpConfirmationStepFailed),
         onCompleted: () =>
           trackEventByName(tracks.signUpConfirmationStepCompleted),
-        isEnabled: (metaData) => !!metaData?.confirmation,
-        isActive: (authUser) => !authUser?.attributes?.verified,
+        isEnabled: (metaData) => !!metaData?.requiresConfirmation,
+        isActive: (authUser) => !authUser?.attributes?.email_confirmed_at,
       },
     });
   }, []);
@@ -108,23 +125,34 @@ function ConfirmationSignupStep({
   }
 
   function handleCodeChange(code: string) {
+    setApiErrors({});
     setConfirmation((prevConfirmation) => ({
       ...prevConfirmation,
       code,
     }));
   }
 
-  function handleCodeComplete() {
+  function handleSubmitConfirmation() {
+    setProcessing(true);
+
     confirm(confirmation)
-      .then(() => {})
+      .then(() => {
+        setApiErrors({});
+        modifyMetaData(metaData, { requiresConfirmation: false });
+        setProcessing(false);
+        onCompleted();
+      })
       .catch((errors) => {
         setApiErrors(errors);
+        setProcessing(false);
       });
   }
 
   function handleResendCode(e) {
     e.preventDefault();
+    setProcessing(true);
     resendCode();
+    setProcessing(false);
   }
 
   function handleGoBack(e) {
@@ -133,7 +161,7 @@ function ConfirmationSignupStep({
 
   return (
     <FormContainer id="e2e-confirmation-form" inModal={true}>
-      <Form inModal={true} onSubmit={handleCodeComplete}>
+      <Form inModal={true} onSubmit={handleSubmitConfirmation}>
         <FormField>
           <StyledLabel>
             <LabelTextContainer>
@@ -147,7 +175,6 @@ function ConfirmationSignupStep({
             fields={4}
             values={confirmation.code?.split('')}
             onChange={handleCodeChange}
-            onComplete={handleCodeComplete}
             error={apiErrors.code?.length > 0}
           />
           {apiErrors.code && (
@@ -161,7 +188,8 @@ function ConfirmationSignupStep({
         <Footer>
           <SubmitButton
             id="e2e-confirmation-button"
-            onClick={handleCodeComplete}
+            onClick={handleSubmitConfirmation}
+            processing={processing}
           >
             <FormattedMessage {...messages.verifyAndContinue} />
           </SubmitButton>
@@ -169,15 +197,9 @@ function ConfirmationSignupStep({
         <FooterNotes>
           <FooterNote>
             <FormattedMessage {...messages.didntGetAnEmail} />
-            <Link onClick={handleResendCode} to="#">
+            <FooterNoteLink onClick={handleResendCode} to="#">
               <FormattedMessage {...messages.sendNewCode} />
-            </Link>
-          </FooterNote>
-          <FooterNote>
-            <FormattedMessage {...messages.wrongEmail} />
-            <Link onClick={handleGoBack} to="#">
-              <FormattedMessage {...messages.goBackToThePreviousStep} />
-            </Link>
+            </FooterNoteLink>
           </FooterNote>
         </FooterNotes>
       </Form>

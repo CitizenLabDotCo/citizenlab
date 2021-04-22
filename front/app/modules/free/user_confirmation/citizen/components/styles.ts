@@ -65,6 +65,7 @@ export const StyledLabel = styled(Label)`
 export const LabelTextContainer = styled.div`
   display: flex;
   align-items: center;
+  color: ${({ theme }) => theme.colorText};
 `;
 
 export const Footer = styled.div`

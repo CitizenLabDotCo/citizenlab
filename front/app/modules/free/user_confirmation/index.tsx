@@ -3,6 +3,8 @@ import { ModuleConfiguration } from 'utils/moduleUtils';
 import ConfirmationSignupStep from './citizen/components/ConfirmationSignupStep';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import { modifyMetaData } from 'components/SignUpIn/events';
+import useAuthUser from 'hooks/useAuthUser';
+import { isNilOrError } from 'utils/helperUtils';
 
 type RenderOnFeatureFlagProps = {
   children: ReactNode;
@@ -24,15 +26,20 @@ const configuration: ModuleConfiguration = {
         <ConfirmationSignupStep {...props} />
       </RenderOnFeatureFlag>
     ),
-    'app.components.SignUpIn.metaData': ({ onData, metaData }) => {
+    'app.components.SignUpIn.metaData': ({ metaData }) => {
+      const user = useAuthUser();
       const isUserConfirmationEnabled = useFeatureFlag('user_confirmation');
 
-      if (
+      const confirmationShouldHappen =
         isUserConfirmationEnabled &&
         !metaData?.isInvitation &&
-        !metaData?.confirmation
-      ) {
-        modifyMetaData(metaData, { confirmation: true });
+        !metaData?.requiresConfirmation;
+
+      const confirmationAlreadyHappened =
+        !isNilOrError(user) && user?.attributes?.email_confirmed_at;
+
+      if (confirmationShouldHappen && !confirmationAlreadyHappened) {
+        modifyMetaData(metaData, { requiresConfirmation: true });
       }
 
       return null;
