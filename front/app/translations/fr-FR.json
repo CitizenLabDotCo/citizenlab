@@ -2176,7 +2176,7 @@
   "app.containers.ProjectsShowPage.VolunteeringSection.becomeVolunteerButton": "Je veux aider",
   "app.containers.ProjectsShowPage.VolunteeringSection.notLoggedIn": "Je {signInLink} ou {signUpLink} pour me porter volontaire\n",
   "app.containers.ProjectsShowPage.VolunteeringSection.signInLinkText": "me connecte",
-  "app.containers.ProjectsShowPage.VolunteeringSection.signUpLinkText": "s'inscrire",
+  "app.containers.ProjectsShowPage.VolunteeringSection.signUpLinkText": "m'inscris",
   "app.containers.ProjectsShowPage.VolunteeringSection.withdrawVolunteerButton": "Je retire ma proposition d'aide",
   "app.containers.ProjectsShowPage.VolunteeringSection.xVolunteers": "{x, plural, =0 {pas de volontaires} one {# volontaire} other {# volontaires}}",
   "app.containers.ProjectsShowPage.process.survey.logInLinkText": "connectez-vous à la plateforme",
