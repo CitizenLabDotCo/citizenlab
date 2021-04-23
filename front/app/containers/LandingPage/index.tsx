@@ -1,5 +1,6 @@
 import React, { PureComponent, Suspense } from 'react';
 import { adopt } from 'react-adopt';
+import { EditModeContext } from 'context';
 
 // components
 import ContentContainer from 'components/ContentContainer';
@@ -139,6 +140,25 @@ const StyledInitiativesCTABox = styled(InitiativesCTABox)`
   padding-bottom: 40px;
 `;
 
+const EditModeBanner = styled.div`
+  background: ${colors.adminMenuBackground};
+  color: white;
+  width: 100%;
+  padding: 15px 30px;
+  font-size: ${fontSizes.base}px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const EditModeBannerText = styled.div`
+  margin-right: 10px;
+`;
+
+const GoBackButton = styled(Button)`
+  margin-right: 20px;
+`;
+
 export interface InputProps {
   ideaId: string;
 }
@@ -198,6 +218,24 @@ class LandingPage extends PureComponent<Props, State> {
       return (
         <>
           <Container id="e2e-landing-page">
+            <EditModeContext.Consumer>
+              {({ mode, onStopEditMode }) => {
+                return mode ? (
+                  <EditModeBanner>
+                    <EditModeBannerText>
+                      You are currently in Edit mode.
+                    </EditModeBannerText>
+                    <GoBackButton
+                      buttonStyle="secondary"
+                      onClick={onStopEditMode}
+                    >
+                      Go back
+                    </GoBackButton>
+                  </EditModeBanner>
+                ) : null;
+              }}
+            </EditModeContext.Consumer>
+
             {!isNilOrError(authUser) ? (
               <SignedInHeader />
             ) : (
