@@ -74,12 +74,10 @@ const PageTitleWrapper = styled.div`
 const StyledPageTitle = styled(PageTitle)`
   line-height: ${fontSizes.xxxl}px;
   margin-bottom: 0px;
+  margin-right: 5px;
 `;
 
-const StyledIconTooltip = styled(IconTooltip)`
-  margin-left: 8px;
-  margin-bottom: 3px;
-`;
+const StyledIconTooltip = styled(IconTooltip)``;
 
 const Filters = styled.div`
   min-height: 50px;
@@ -194,8 +192,13 @@ const Setting = styled.div`
   margin-bottom: 20px;
 `;
 
+const LabelTitleContainer = styled.div`
+  display: flex;
+`;
+
 const LabelTitle = styled.div`
   font-weight: bold;
+  margin-right: 5px;
 `;
 
 const ToggleLabel = styled.label`
@@ -471,6 +474,8 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
     }
   }, [list, processing]);
 
+  const languages = 'Nederlands, français, English';
+
   if (!isNilOrError(moderationItems) && !isNilOrError(locale)) {
     return (
       <Container className={className}>
@@ -651,11 +656,23 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
                   onChange={onToggleInappropriateContentSetting}
                 />
                 <LabelContent>
-                  <LabelTitle>
-                    {intl.formatMessage(
-                      messages.inappropriateContentDetectionSetting
-                    )}
-                  </LabelTitle>
+                  <LabelTitleContainer>
+                    <LabelTitle>
+                      {intl.formatMessage(
+                        messages.inappropriateContentDetectionSetting
+                      )}
+                    </LabelTitle>
+                    <StyledIconTooltip
+                      content={
+                        <FormattedMessage
+                          {...messages.availableLanguages}
+                          values={{
+                            languages,
+                          }}
+                        />
+                      }
+                    />
+                  </LabelTitleContainer>
                   <LabelDescription>
                     {intl.formatMessage(
                       messages.inappropriateContentDetectionSettingDescription

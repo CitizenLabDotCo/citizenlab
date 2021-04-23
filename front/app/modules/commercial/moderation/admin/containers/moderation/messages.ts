@@ -125,4 +125,8 @@ export default defineMessages({
     id: 'app.containers.Admin.Moderation.settingsSavingError',
     defaultMessage: "Couldn't save. Try changing the setting again.",
   },
+  availableLanguages: {
+    id: 'app.containers.Admin.Moderation.availableLanguages',
+    defaultMessage: 'This feature is currently available in {languages}.',
+  },
 });
