@@ -25,8 +25,8 @@ RSpec.describe UserConfirmation::ConfirmUser do
       expect(result).to be_a_failure
     end
 
-    it 'returns a code.blank error' do
-      expect(result.error).to eq 'user.blank'
+    it 'returns a code blank error' do
+      expect(result.errors.details).to include(user: [{ error: :blank }])
     end
   end
 
@@ -39,8 +39,8 @@ RSpec.describe UserConfirmation::ConfirmUser do
       expect(result).to be_a_failure
     end
 
-    it 'returns a code.blank error' do
-      expect(result.error).to eq 'code.blank'
+    it 'returns a code blank error' do
+      expect(result.errors.details).to include(code: [{ error: :blank }])
     end
   end
 
@@ -54,8 +54,8 @@ RSpec.describe UserConfirmation::ConfirmUser do
       expect(result).to be_a_failure
     end
 
-    it 'returns a code.invalid error' do
-      expect(result.error).to eq 'code.invalid'
+    it 'returns a code invalid error' do
+      expect(result.errors.details).to include(code: [{ error: :invalid }])
     end
   end
 end

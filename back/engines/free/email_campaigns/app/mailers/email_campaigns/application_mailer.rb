@@ -1,5 +1,5 @@
 module EmailCampaigns
-  class ApplicationMailer < ActionMailer::Base
+  class ApplicationMailer < ApplicationMailer
     layout 'mailer'
 
     before_action do

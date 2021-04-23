@@ -16,7 +16,7 @@ module UserConfirmation
       fail_with_error! :code, :blank if code.blank?
       return unless user.email_confirmation_code != code
 
-      fail_with_error! :code, :too_many_retries unless user.increment_email_confirmation_retry_count!
+      fail_with_error! :code, :too_many_retries unless user.increment_confirmation_retry_count!
 
       fail_with_error! :code, :invalid
     end

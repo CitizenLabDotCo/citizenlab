@@ -7,7 +7,7 @@ RSpec.describe UserConfirmation::CodeGenerator do
     expect(result).to be_a_success
   end
 
-  it 'generates a code in the right format (6 numbers)' do
+  it 'generates a code in the right format (4 digits)' do
     expect(result.code).to match(USER_CONFIRMATION_CODE_PATTERN)
   end
 
