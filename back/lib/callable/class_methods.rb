@@ -6,16 +6,15 @@ module Callable
   module ClassMethods
     def call(*args)
       begin
-        @result = Callable::Result.new
-        new(*args).send(_call_method_name)
+        callable_instance = new(*args)
+        callable_instance.instance_variable_set(:@result, Callable::Result.new)
+        callable_instance.send(_call_alias)
       rescue _error_class => e
-        result.error = e
+        callable_instance.result.error = e
       end
 
-      result
+      callable_instance.result
     end
-
-    attr_reader :result
 
     private
 
