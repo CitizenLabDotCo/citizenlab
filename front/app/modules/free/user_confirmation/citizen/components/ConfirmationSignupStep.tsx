@@ -321,6 +321,7 @@ const ConfirmationSignupStep = ({
               </LabelTextContainer>
             </StyledLabel>
             <Input
+              id="e2e-confirmation-code-input"
               type="text"
               placeholder={formatMessage(messages.insertYour4DigitCodeHere)}
               value={confirmation.code}
