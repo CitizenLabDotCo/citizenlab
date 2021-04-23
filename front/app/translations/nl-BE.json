@@ -735,6 +735,8 @@
   "app.containers.Admin.Moderation.content": "Inhoud",
   "app.containers.Admin.Moderation.date": "Datum",
   "app.containers.Admin.Moderation.goToThisContentType": "Open dit {contentType} in een nieuw tabblad",
+  "app.containers.Admin.Moderation.inappropriateContentDetectionSetting": "",
+  "app.containers.Admin.Moderation.inappropriateContentDetectionSettingDescription": "",
   "app.containers.Admin.Moderation.initiative": "Voorstel",
   "app.containers.Admin.Moderation.markAsNotViewed": "Duid {selectedItemsCount} items aan als niet gezien",
   "app.containers.Admin.Moderation.markAsViewed": "Duid {selectedItemsCount} items aan als gezien",

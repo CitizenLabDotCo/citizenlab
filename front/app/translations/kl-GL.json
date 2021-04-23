@@ -735,6 +735,8 @@
   "app.containers.Admin.Moderation.content": "Content",
   "app.containers.Admin.Moderation.date": "Date",
   "app.containers.Admin.Moderation.goToThisContentType": "Open this {contentType} in a new tab",
+  "app.containers.Admin.Moderation.inappropriateContentDetectionSetting": "",
+  "app.containers.Admin.Moderation.inappropriateContentDetectionSettingDescription": "",
   "app.containers.Admin.Moderation.initiative": "Proposal",
   "app.containers.Admin.Moderation.markAsNotViewed": "Mark  {selectedItemsCount} items as not seen",
   "app.containers.Admin.Moderation.markAsViewed": "Mark {selectedItemsCount} items as seen",

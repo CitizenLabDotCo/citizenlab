@@ -735,6 +735,8 @@
   "app.containers.Admin.Moderation.content": "Treść",
   "app.containers.Admin.Moderation.date": "Data",
   "app.containers.Admin.Moderation.goToThisContentType": "Otwórz {contentType} w nowej zakładce",
+  "app.containers.Admin.Moderation.inappropriateContentDetectionSetting": "",
+  "app.containers.Admin.Moderation.inappropriateContentDetectionSettingDescription": "",
   "app.containers.Admin.Moderation.initiative": "Propozycja",
   "app.containers.Admin.Moderation.markAsNotViewed": "Zaznacz {selectedItemsCount} elementy, jako nie oglądane",
   "app.containers.Admin.Moderation.markAsViewed": "Zaznacz {selectedItemsCount} elementy jako obejrzane",

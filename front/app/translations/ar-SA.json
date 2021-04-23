@@ -735,6 +735,8 @@
   "app.containers.Admin.Moderation.content": "المحتوى",
   "app.containers.Admin.Moderation.date": "التاريخ",
   "app.containers.Admin.Moderation.goToThisContentType": "افتح {contentType} في علامة تبويب جديدة",
+  "app.containers.Admin.Moderation.inappropriateContentDetectionSetting": "",
+  "app.containers.Admin.Moderation.inappropriateContentDetectionSettingDescription": "",
   "app.containers.Admin.Moderation.initiative": "المُقترح",
   "app.containers.Admin.Moderation.markAsNotViewed": "ضع علامة \"لم تتم مشاهدته\" على {selectedItemsCount} من العناصر",
   "app.containers.Admin.Moderation.markAsViewed": "ضع علامة \"تمت مشاهدته\" على {selectedItemsCount} من العناصر",
