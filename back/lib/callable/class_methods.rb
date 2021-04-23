@@ -39,7 +39,7 @@ module Callable
       delegate :_call_alias, to: :class
     end
 
-    protected
+    public
 
     def _error_class
       @_error_class || superclass.try(:_error_class) || DEFAULT_ERROR_CLASS
