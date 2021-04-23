@@ -6,6 +6,7 @@ import { withRouter, WithRouterProps } from 'react-router';
 import { stringify } from 'qs';
 import { updateAppConfiguration } from 'services/appConfiguration';
 import { Multiloc } from 'typings';
+import { EditModeContext } from 'context';
 
 // components
 import ProjectCard from 'components/ProjectCard';
@@ -482,61 +483,71 @@ class ProjectAndFolderCards extends PureComponent<
                     <FormattedMessage {...messages.currentlyWorkingOn} />
                   )}
                 </Title>
-                <EditTitleButton
-                  icon="edit"
-                  buttonStyle="text"
-                  onClick={this.editTitle}
-                  fontSize="16px"
-                >
-                  Edit
-                </EditTitleButton>
-                <Modal
-                  header="Settings"
-                  close={this.cancelTitleEdit}
-                  opened={editTitleOpened}
-                >
-                  <ModalContentContainer>
-                    <StyledInputWithLocaleSwitcher
-                      type="text"
-                      locales={locales}
-                      valueMultiloc={
-                        this.state.newCurrentlyWorkingOnMultiloc ||
-                        customCurrentlyWorkingOn
-                      }
-                      label={'Projects header'}
-                      onChange={this.onChangeCustomCurrentlyWorkingOn}
-                      labelTooltipText={`If this field is empty, a default text '... is currently
-                      working on' will be shown instead.`}
-                    />
 
-                    <ModalButtons>
-                      <SaveButton
-                        disabled={
-                          this.state.newCurrentlyWorkingOnMultiloc === null
-                        }
-                        processing={loading}
-                        onClick={this.saveTitle}
-                      >
-                        Save
-                      </SaveButton>
-                      <CancelButton
-                        buttonStyle="text"
-                        onClick={this.cancelTitleEdit}
-                      >
-                        Cancel
-                      </CancelButton>
-                    </ModalButtons>
-                    {saving === 'success' && (
-                      <Success
-                        showBackground
-                        text="Successfully updated setting."
-                      />
-                    )}
-                    {saving === 'error' && (
-                      <Error>Failed updating setting. Try again.</Error>
-                    )}
-                  </ModalContentContainer>
-                </Modal>
+                <EditModeContext.Consumer>
+                  {({ mode }) => {
+                    return mode ? (
+                      <>
+                        <EditTitleButton
+                          icon="edit"
+                          buttonStyle="text"
+                          onClick={this.editTitle}
+                          fontSize="16px"
+                        >
+                          Edit
+                        </EditTitleButton>
+                        <Modal
+                          header="Settings"
+                          close={this.cancelTitleEdit}
+                          opened={editTitleOpened}
+                        >
+                          <ModalContentContainer>
+                            <StyledInputWithLocaleSwitcher
+                              type="text"
+                              locales={locales}
+                              valueMultiloc={
+                                this.state.newCurrentlyWorkingOnMultiloc ||
+                                customCurrentlyWorkingOn
+                              }
+                              label={'Projects header'}
+                              onChange={this.onChangeCustomCurrentlyWorkingOn}
+                              labelTooltipText={`If this field is empty, a default text '... is currently
+                                          working on' will be shown instead.`}
+                            />
+
+                            <ModalButtons>
+                              <SaveButton
+                                disabled={
+                                  this.state.newCurrentlyWorkingOnMultiloc ===
+                                  null
+                                }
+                                processing={loading}
+                                onClick={this.saveTitle}
+                              >
+                                Save
+                              </SaveButton>
+                              <CancelButton
+                                buttonStyle="text"
+                                onClick={this.cancelTitleEdit}
+                              >
+                                Cancel
+                              </CancelButton>
+                            </ModalButtons>
+                            {saving === 'success' && (
+                              <Success
+                                showBackground
+                                text="Successfully updated setting."
+                              />
+                            )}
+                            {saving === 'error' && (
+                              <Error>Failed updating setting. Try again.</Error>
+                            )}
+                          </ModalContentContainer>
+                        </Modal>
+                      </>
+                    ) : null;
+                  }}
+                </EditModeContext.Consumer>
               </TitleContainer>
             ) : (
               <ScreenReaderOnly>
