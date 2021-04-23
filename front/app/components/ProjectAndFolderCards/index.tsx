@@ -4,6 +4,8 @@ import { isNilOrError } from 'utils/helperUtils';
 import { size, isEqual, isEmpty, isString } from 'lodash-es';
 import { withRouter, WithRouterProps } from 'react-router';
 import { stringify } from 'qs';
+import { updateAppConfiguration } from 'services/appConfiguration';
+import { Multiloc } from 'typings';
 
 // components
 import ProjectCard from 'components/ProjectCard';
@@ -11,7 +13,11 @@ import SelectAreas from './SelectAreas';
 import LoadingBox from './LoadingBox';
 import Button from 'components/UI/Button';
 import Modal, { ModalContentContainer } from 'components/UI/Modal';
-import { Input, InputMultilocWithLocaleSwitcher } from 'cl2-component-library';
+import {
+  Success,
+  Error,
+  InputMultilocWithLocaleSwitcher,
+} from 'cl2-component-library';
 
 // resources
 import GetAppConfiguration, {
@@ -236,6 +242,7 @@ const StyledInputWithLocaleSwitcher = styled(InputMultilocWithLocaleSwitcher)`
 
 const ModalButtons = styled.div`
   display: flex;
+  margin-bottom: 10px;
 `;
 const SaveButton = styled(Button)`
   margin-right: 3px;
@@ -262,6 +269,9 @@ interface State {
   cardSizes: ('small' | 'medium' | 'large')[];
   areas: string[];
   editTitleOpened: boolean;
+  newCurrentlyWorkingOnMultiloc: Multiloc | null;
+  loading: boolean;
+  saving: 'success' | 'error' | null;
 }
 
 class ProjectAndFolderCards extends PureComponent<
@@ -276,6 +286,9 @@ class ProjectAndFolderCards extends PureComponent<
       cardSizes: [],
       areas: [],
       editTitleOpened: false,
+      newCurrentlyWorkingOnMultiloc: null,
+      loading: false,
+      saving: null,
     };
   }
 
@@ -402,10 +415,42 @@ class ProjectAndFolderCards extends PureComponent<
     });
   };
 
-  saveTitle = () => {};
+  onChangeCustomCurrentlyWorkingOn = (
+    newCurrentlyWorkingOnMultiloc: Multiloc
+  ) => {
+    console.log(newCurrentlyWorkingOnMultiloc);
+    this.setState({
+      newCurrentlyWorkingOnMultiloc,
+    });
+  };
+
+  saveTitle = async (event) => {
+    event.preventDefault();
+
+    try {
+      this.setState({ loading: true });
+      await updateAppConfiguration({
+        settings: {
+          core: {
+            currently_working_on_text: this.state.newCurrentlyWorkingOnMultiloc,
+          },
+        },
+      });
+      this.setState({
+        loading: false,
+        saving: 'success',
+        newCurrentlyWorkingOnMultiloc: null,
+      });
+      setTimeout(() => {
+        this.setState({ saving: null });
+      }, 4000);
+    } catch (error) {
+      this.setState({ loading: false, saving: 'error' });
+    }
+  };
 
   render() {
-    const { cardSizes, areas, editTitleOpened } = this.state;
+    const { cardSizes, areas, editTitleOpened, loading, saving } = this.state;
     const {
       tenant,
       showTitle,
@@ -444,7 +489,7 @@ class ProjectAndFolderCards extends PureComponent<
                   onClick={this.editTitle}
                   fontSize="16px"
                 >
-                  Edit title
+                  Edit
                 </EditTitleButton>
                 <Modal
                   header="Settings"
@@ -455,11 +500,26 @@ class ProjectAndFolderCards extends PureComponent<
                     <StyledInputWithLocaleSwitcher
                       type="text"
                       locales={locales}
-                      valueMultiloc={customCurrentlyWorkingOn}
+                      valueMultiloc={
+                        this.state.newCurrentlyWorkingOnMultiloc ||
+                        customCurrentlyWorkingOn
+                      }
                       label={'Projects header'}
+                      onChange={this.onChangeCustomCurrentlyWorkingOn}
+                      labelTooltipText={`If this field is empty, a default text '... is currently
+                      working on' will be shown instead.`}
                     />
+
                     <ModalButtons>
-                      <SaveButton onClick={this.saveTitle}>Save</SaveButton>
+                      <SaveButton
+                        disabled={
+                          this.state.newCurrentlyWorkingOnMultiloc === null
+                        }
+                        processing={loading}
+                        onClick={this.saveTitle}
+                      >
+                        Save
+                      </SaveButton>
                       <CancelButton
                         buttonStyle="text"
                         onClick={this.cancelTitleEdit}
@@ -467,6 +527,15 @@ class ProjectAndFolderCards extends PureComponent<
                         Cancel
                       </CancelButton>
                     </ModalButtons>
+                    {saving === 'success' && (
+                      <Success
+                        showBackground
+                        text="Successfully updated setting."
+                      />
+                    )}
+                    {saving === 'error' && (
+                      <Error>Failed updating setting. Try again.</Error>
+                    )}
                   </ModalContentContainer>
                 </Modal>
               </TitleContainer>
@@ -594,7 +663,7 @@ class ProjectAndFolderCards extends PureComponent<
 }
 
 const ProjectAndFolderCardsWithHOCs = withTheme(
-  injectIntl(injectLocalize(withRouter(ProjectAndFolderCards)))
+  injectIntl(injectLocalize(ProjectAndFolderCards))
 );
 
 const Data = adopt<DataProps, InputProps>({
@@ -614,10 +683,10 @@ const Data = adopt<DataProps, InputProps>({
   ),
 });
 
-export default (inputProps: InputProps) => (
+export default withRouter((inputProps: InputProps & WithRouterProps) => (
   <Data {...inputProps}>
     {(dataProps) => (
       <ProjectAndFolderCardsWithHOCs {...inputProps} {...dataProps} />
     )}
   </Data>
-);
+));
