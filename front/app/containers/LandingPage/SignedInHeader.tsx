@@ -7,6 +7,8 @@ import { isNilOrError } from 'utils/helperUtils';
 import Button from 'components/UI/Button';
 import Avatar from 'components/Avatar';
 import { Icon } from 'cl2-component-library';
+import MoreActionsMenu from 'components/UI/MoreActionsMenu';
+import { EditModeContext } from 'context';
 
 // services
 import {
@@ -278,6 +280,12 @@ export const StyledAvatar = styled(Avatar)`
   z-index: 2;
 `;
 
+const StyledMoreActionsMenu = styled(MoreActionsMenu)`
+  position: absolute;
+  top: 20px;
+  right: 30px;
+`;
+
 export interface InputProps {
   className?: string;
 }
@@ -510,6 +518,22 @@ class SignedInHeader extends PureComponent<Props, State> {
               )}
             </HeaderContentDefault>
           </CSSTransition>
+          <EditModeContext.Consumer>
+            {({ mode, onStartEditMode }) => {
+              return !mode ? (
+                <StyledMoreActionsMenu
+                  color="white"
+                  actions={[
+                    {
+                      label: 'Switch to Edit mode',
+                      handler: onStartEditMode,
+                      name: 'editMode',
+                    },
+                  ]}
+                />
+              ) : null;
+            }}
+          </EditModeContext.Consumer>
         </Header>
       );
     }
