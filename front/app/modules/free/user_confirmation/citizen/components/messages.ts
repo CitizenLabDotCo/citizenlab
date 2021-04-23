@@ -15,7 +15,7 @@ export default defineMessages({
     defaultMessage: 'Please insert code here:',
   },
   close: {
-    id: 'app.components.VerificationModal.close',
+    id: 'app.components.ConfirmationModal.close',
     defaultMessage: 'Close',
   },
   verifyAndContinue: {
