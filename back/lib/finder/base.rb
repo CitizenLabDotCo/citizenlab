@@ -69,6 +69,7 @@ module Finder
 
     def _paginate_records
       pagination_params = params[:page] || {}
+
       @records = records.page(pagination_params[:number]).per(pagination_params[:size])
     end
 

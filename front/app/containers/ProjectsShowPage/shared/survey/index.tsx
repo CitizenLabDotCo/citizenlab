@@ -33,6 +33,7 @@ import { openSignUpInModal } from 'components/SignUpIn/events';
 import styled from 'styled-components';
 import { defaultCardStyle, fontSizes, media } from 'utils/styleUtils';
 import { openVerificationModal } from 'components/Verification/verificationModalEvents';
+import SurveyXact from './SurveyXact';
 
 const Container = styled.div`
   position: relative;
@@ -264,6 +265,10 @@ class Survey extends PureComponent<Props, State> {
 
             {surveyService === 'enalyzer' && (
               <EnalyzerSurvey enalyzerUrl={surveyEmbedUrl} />
+            )}
+
+            {surveyService === 'survey_xact' && (
+              <SurveyXact surveyXactUrl={surveyEmbedUrl} />
             )}
           </Container>
         );
