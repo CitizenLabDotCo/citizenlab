@@ -418,7 +418,6 @@ class ProjectAndFolderCards extends PureComponent<
   onChangeCustomCurrentlyWorkingOn = (
     newCurrentlyWorkingOnMultiloc: Multiloc
   ) => {
-    console.log(newCurrentlyWorkingOnMultiloc);
     this.setState({
       newCurrentlyWorkingOnMultiloc,
     });
