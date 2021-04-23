@@ -40,6 +40,10 @@ module Callable
 
     public
 
+    def _call_alias
+      @_call_alias ||= :call
+    end
+
     def _error_class
       @_error_class || superclass.try(:_error_class) || DEFAULT_ERROR_CLASS
     end
