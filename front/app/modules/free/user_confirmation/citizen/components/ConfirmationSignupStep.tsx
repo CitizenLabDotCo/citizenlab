@@ -1,7 +1,7 @@
 import React, { useEffect, ReactElement, useState } from 'react';
 import { SignUpStepOutletProps } from 'utils/moduleUtils';
-import { injectIntl } from 'utils/cl-intl';
-import { FormattedMessage, InjectedIntlProps } from 'react-intl';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 import messages from './messages';
@@ -21,9 +21,8 @@ import { darken } from 'polished';
 
 import { modifyMetaData } from 'components/SignUpIn/events';
 
-import { Icon, Input } from 'cl2-component-library';
+import { Icon, Input, Label } from 'cl2-component-library';
 import Link from 'utils/cl-router/Link';
-import { Label } from 'cl2-component-library';
 import Button from 'components/UI/Button';
 
 export const FormContainer = styled.div<{ inModal: boolean }>`
@@ -152,12 +151,12 @@ const FooterNoteSuccessMessageIcon = styled(Icon)`
 
 type Props = SignUpStepOutletProps & InjectedIntlProps;
 
-function ConfirmationSignupStep({
+const ConfirmationSignupStep = ({
   metaData,
   intl: { formatMessage },
   onCompleted,
   ...props
-}: Props): ReactElement | null {
+}: Props) => {
   const user = useAuthUser();
   const [confirmation, setConfirmation] = useState<IConfirmation>({
     code: null,
@@ -370,6 +369,6 @@ function ConfirmationSignupStep({
       )}
     </FormContainer>
   );
-}
+};
 
 export default injectIntl(ConfirmationSignupStep);

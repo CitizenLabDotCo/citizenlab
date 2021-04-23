@@ -1,7 +1,7 @@
-import React, { ReactElement } from 'react';
+import React from 'react';
 import { IAdminSettingsRegistrationFormOutletProps } from 'utils/moduleUtils';
 import { fontSizes, Toggle } from 'cl2-component-library';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import { colors } from 'utils/styleUtils';
 import messages from './messages';
 import styled from 'styled-components';
@@ -28,10 +28,10 @@ const StyledToggle = styled(Toggle)`
   }
 `;
 
-export default function ToggleUserConfirmation({
+const ToggleUserConfirmation = ({
   onChange,
   latestAppConfigSettings,
-}: IAdminSettingsRegistrationFormOutletProps): ReactElement {
+}: IAdminSettingsRegistrationFormOutletProps) => {
   const isUserConfirmationEnabled = !!latestAppConfigSettings?.user_confirmation
     ?.enabled;
 
@@ -52,4 +52,6 @@ export default function ToggleUserConfirmation({
       </ToggleHint>
     </ToggleContainer>
   );
-}
+};
+
+export default ToggleUserConfirmation;
