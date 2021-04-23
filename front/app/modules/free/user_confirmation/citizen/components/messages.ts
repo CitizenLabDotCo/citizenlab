@@ -23,7 +23,7 @@ export default defineMessages({
     defaultMessage: 'Verify and Continue',
   },
   cancel: {
-    id: 'app.components.VerificationModal.cancel',
+    id: 'app.components.ConfirmationModal.cancel',
     defaultMessage: 'Cancel',
   },
   wrongEmail: {
