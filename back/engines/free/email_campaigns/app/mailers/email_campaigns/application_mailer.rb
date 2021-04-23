@@ -4,6 +4,8 @@ module EmailCampaigns
 
     before_action do
       @command, @campaign = params.values_at(:command, :campaign)
+
+      @user =  @command[:recipient]
     end
 
     def campaign_mail
