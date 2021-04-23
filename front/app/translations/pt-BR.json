@@ -729,6 +729,7 @@
   "app.containers.Admin.Invitations.uploadCompletedFile": "2. Carregue o seu arquivo completamente",
   "app.containers.Admin.Invitations.visitSupportPage": "{supportPageLink} se você quiser mais informações sobre todas as colunas com suporte no modelo de importação.",
   "app.containers.Admin.Moderation.all": "Tudo",
+  "app.containers.Admin.Moderation.availableLanguages": "",
   "app.containers.Admin.Moderation.belongsTo": "Pertence a",
   "app.containers.Admin.Moderation.collapse": "Fechar",
   "app.containers.Admin.Moderation.comment": "Comentários",

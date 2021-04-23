@@ -729,6 +729,7 @@
   "app.containers.Admin.Invitations.uploadCompletedFile": "2. Subar el modelo completo",
   "app.containers.Admin.Invitations.visitSupportPage": "{supportPageLink} si quieres más información sobre todas las columnas soportadas en el modelo de importación.",
   "app.containers.Admin.Moderation.all": "Todos",
+  "app.containers.Admin.Moderation.availableLanguages": "",
   "app.containers.Admin.Moderation.belongsTo": "Pertenece a",
   "app.containers.Admin.Moderation.collapse": "Colapso",
   "app.containers.Admin.Moderation.comment": "Comentario",

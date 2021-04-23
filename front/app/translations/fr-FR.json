@@ -729,6 +729,7 @@
   "app.containers.Admin.Invitations.uploadCompletedFile": "2. Ajouter votre modėle complété",
   "app.containers.Admin.Invitations.visitSupportPage": "{supportPageLink} si vous voulez plus d'informations sur toutes les colonnes prises en charge dans le modèle d'importation.",
   "app.containers.Admin.Moderation.all": "Tous",
+  "app.containers.Admin.Moderation.availableLanguages": "",
   "app.containers.Admin.Moderation.belongsTo": "Appartient à",
   "app.containers.Admin.Moderation.collapse": "Réduire",
   "app.containers.Admin.Moderation.comment": "Commentaire",

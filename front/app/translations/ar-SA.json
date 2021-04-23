@@ -729,6 +729,7 @@
   "app.containers.Admin.Invitations.uploadCompletedFile": "2. تحميل ملفك المكتمل",
   "app.containers.Admin.Invitations.visitSupportPage": "{supportPageLink} إذا كنت تريد معرفة المزيد من المعلومات حول جميع الأعمدة المدعومة في قالب الاستيراد.",
   "app.containers.Admin.Moderation.all": "الكل",
+  "app.containers.Admin.Moderation.availableLanguages": "",
   "app.containers.Admin.Moderation.belongsTo": "ينتمي إلى",
   "app.containers.Admin.Moderation.collapse": "طي",
   "app.containers.Admin.Moderation.comment": "تعليق",

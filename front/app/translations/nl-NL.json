@@ -729,6 +729,7 @@
   "app.containers.Admin.Invitations.uploadCompletedFile": "2. Upload je ingevulde bestand",
   "app.containers.Admin.Invitations.visitSupportPage": "{supportPageLink} als je meer informatie wilt over alle mogelijke kolommen in het sjabloon.",
   "app.containers.Admin.Moderation.all": "Alle",
+  "app.containers.Admin.Moderation.availableLanguages": "",
   "app.containers.Admin.Moderation.belongsTo": "Behoort tot",
   "app.containers.Admin.Moderation.collapse": "Samenvouwen",
   "app.containers.Admin.Moderation.comment": "Reactie",

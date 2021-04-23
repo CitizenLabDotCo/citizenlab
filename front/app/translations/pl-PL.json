@@ -729,6 +729,7 @@
   "app.containers.Admin.Invitations.uploadCompletedFile": "2. Prześlij uzupełniony plik",
   "app.containers.Admin.Invitations.visitSupportPage": "{supportPageLink} jeśli chcesz uzyskać więcej informacji o wszystkich obsługiwanych kolumnach w szablonie importu.",
   "app.containers.Admin.Moderation.all": "Wszystkie",
+  "app.containers.Admin.Moderation.availableLanguages": "",
   "app.containers.Admin.Moderation.belongsTo": "Należy do",
   "app.containers.Admin.Moderation.collapse": "Ukryj",
   "app.containers.Admin.Moderation.comment": "Komentarz",

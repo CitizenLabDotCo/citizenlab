@@ -729,6 +729,7 @@
   "app.containers.Admin.Invitations.uploadCompletedFile": "2. Upload your completed file",
   "app.containers.Admin.Invitations.visitSupportPage": "{supportPageLink} if you want more info about all supported columns in the import template.",
   "app.containers.Admin.Moderation.all": "All",
+  "app.containers.Admin.Moderation.availableLanguages": "This feature is currently available in {languages}.",
   "app.containers.Admin.Moderation.belongsTo": "Belongs to",
   "app.containers.Admin.Moderation.collapse": "Collapse",
   "app.containers.Admin.Moderation.comment": "Comment",

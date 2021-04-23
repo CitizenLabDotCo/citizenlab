@@ -729,6 +729,7 @@
   "app.containers.Admin.Invitations.uploadCompletedFile": "2. Postavite vaš finalni dokument",
   "app.containers.Admin.Invitations.visitSupportPage": "{supportPageLink} ako želite više informacija o podržanim kolonama u uvezenom šablonu.",
   "app.containers.Admin.Moderation.all": "Sve",
+  "app.containers.Admin.Moderation.availableLanguages": "",
   "app.containers.Admin.Moderation.belongsTo": "Pripada",
   "app.containers.Admin.Moderation.collapse": "Proširi",
   "app.containers.Admin.Moderation.comment": "Komentariši",
