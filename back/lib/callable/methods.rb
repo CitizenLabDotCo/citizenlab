@@ -18,7 +18,7 @@ module Callable
     protected
 
     def raise_error(message)
-      raise _error_class, message || default_error_message
+      raise error_class, message || default_error_message
     end
   end
 end

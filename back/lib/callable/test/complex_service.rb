@@ -10,10 +10,11 @@ module Callable
       def test
         result.log_result = 'it works'
       end
+      class ChildService < ComplexService; end
 
-      class ChildService < ComplexService
+      class FailedService < ComplexService
         def test
-          result.log_result = 'it works'
+          raise_error 'something went wrong'
         end
       end
     end
