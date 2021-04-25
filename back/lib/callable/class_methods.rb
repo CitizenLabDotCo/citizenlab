@@ -6,14 +6,13 @@ module Callable
   module ClassMethods
     def call(*args)
       begin
-        callable_instance = new(*args)
-        callable_instance.instance_variable_set(:@result, Callable::Result.new)
-        callable_instance.send(_call_alias)
+        callable = new(*args)
+        callable._call
       rescue _error_class => e
-        callable_instance.result.error = e
+        callable.result.error = e
       end
 
-      callable_instance.result
+      callable.result
     end
 
     private
@@ -32,17 +31,11 @@ module Callable
     def define_call_alias(call_alias)
       return unless call_alias
 
-      @_call_alias = call_alias
-      alias_method(@_call_alias, :call)
-      singleton_class.send(:alias_method, @_call_alias, :call)
-      delegate :_call_alias, to: :class
+      define_method(:call_alias) { call_alias }
+      singleton_class.alias_method(call_alias, :call)
     end
 
     public
-
-    def _call_alias
-      @_call_alias ||= :call
-    end
 
     def _error_class
       @_error_class || superclass.try(:_error_class) || DEFAULT_ERROR_CLASS
@@ -50,10 +43,6 @@ module Callable
 
     def _default_error_message
       @_default_error_message || superclass._default_error_message
-    end
-
-    def _call_method_name
-      @_call_alias || superclass.try(:_call_alias) || :call
     end
   end
 end
