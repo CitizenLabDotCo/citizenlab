@@ -6,7 +6,7 @@ CitizenLab is a **digital democracy platform** that facilitates community partic
 
 ## Demo platform
 
-If you'd like to test out the functionalities before setting up your own instance, feel free to explore the **[demo platform](https://opensource.demo.citizenlab.co/)**, with all open-source functionalities enabled. Admin credentials are shown in the sign-up flow, if you'd like to get access to the back-office.
+If you'd like to test out the functionalities before setting up your own instance, feel free to take a look at our **[demo video](https://www.loom.com/share/f1a80ddad6244222a9e976488f8ab19c) or explore the **[demo platform](https://opensource.demo.citizenlab.co/)**, with all open-source functionalities enabled. Admin credentials are shown in the sign-up flow, if you'd like to get access to the back-office.
 
 ![GIF of the CitizenLab platform](https://res.cloudinary.com/citizenlabco/image/upload/c_scale,w_739/v1617377717/gif-citizenlab-participation-platform_yqpk66.gif)
 
