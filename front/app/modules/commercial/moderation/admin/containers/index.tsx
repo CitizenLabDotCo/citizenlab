@@ -276,12 +276,6 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
     setSettingsUpdatedSuccessFully,
   ] = useState(false);
   const [settingsSavingError, setSettingsSavingError] = useState(false);
-  const [profanityBlockerEnabled, setProfanityBlockerEnabled] = useState(
-    !isNilOrError(appConfiguration) &&
-      appConfiguration.data.attributes.settings.profanity_blocker
-      ? appConfiguration.data.attributes.settings.profanity_blocker.enabled
-      : false
-  );
 
   const handleOnSelectAll = useCallback(
     (_event: React.ChangeEvent) => {
@@ -362,26 +356,29 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
   );
 
   const onToggleBlockProfanitySetting = () => {
-    setProfanityBlockerEnabled(!profanityBlockerEnabled);
-  };
-
-  useEffect(() => {
-    setSettingsSavingError(false);
-    updateAppConfiguration({
-      settings: {
-        profanity_blocker: {
-          enabled: profanityBlockerEnabled,
+    if (
+      !isNilOrError(appConfiguration) &&
+      appConfiguration.data.attributes.settings.profanity_blocker
+    ) {
+      const oldProfanityBlockerEnabled =
+        appConfiguration.data.attributes.settings.profanity_blocker.enabled;
+      setSettingsSavingError(false);
+      updateAppConfiguration({
+        settings: {
+          profanity_blocker: {
+            enabled: !oldProfanityBlockerEnabled,
+          },
         },
-      },
-    })
-      .then(() => {
-        setSettingsUpdatedSuccessFully(true);
-        setTimeout(() => setSettingsUpdatedSuccessFully(false), 2000);
       })
-      .catch((_error) => {
-        setSettingsSavingError(true);
-      });
-  }, [profanityBlockerEnabled]);
+        .then(() => {
+          setSettingsUpdatedSuccessFully(true);
+          setTimeout(() => setSettingsUpdatedSuccessFully(false), 2000);
+        })
+        .catch((_error) => {
+          setSettingsSavingError(true);
+        });
+    }
+  };
 
   const openSettingsModal = () => {
     setSettingsModalOpened(true);
@@ -439,7 +436,14 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
     }
   }, [list, processing]);
 
-  if (!isNilOrError(moderationItems) && !isNilOrError(locale)) {
+  if (
+    !isNilOrError(moderationItems) &&
+    !isNilOrError(locale) &&
+    !isNilOrError(appConfiguration) &&
+    appConfiguration.data.attributes.settings.profanity_blocker
+  ) {
+    const profanityBlockerEnabled =
+      appConfiguration.data.attributes.settings.profanity_blocker.enabled;
     return (
       <Container className={className}>
         <PageHeader>
