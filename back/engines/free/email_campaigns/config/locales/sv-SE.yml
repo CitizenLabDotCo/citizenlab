@@ -1,4 +1,4 @@
-en-CA:
+sv:
   email_campaigns:
     campaign_type_description:
       "manual": Official messages
@@ -128,8 +128,8 @@ en-CA:
       new_comments: 'New comments'
       title_activity_past_week: 'Activity of the past week'
       title_no_activity_past_week: 'There was no activity in the past week'
-      title_initiatives_past_week: 'New initiatives of the past week'
-      title_successful_initiatives_past_week: 'Initiatives that reached the threshold in the past week'
+      title_initiatives_past_week: 'New proposals of the past week'
+      title_successful_initiatives_past_week: 'Proposals that reached the threshold in the past week'
       yesterday_by_author: 'Yesterday by %{author}'
       today_by_author: 'Today by %{author}'
       x_days_ago_by_author: '%{x} days ago by %{author}'
@@ -186,9 +186,9 @@ en-CA:
       today_by_author: 'Today by %{author}'
       x_days_ago_by_author: '%{x} days ago by %{author}'
       idea_section: Ideas
-      initiative_section: Initiatives
-      title_initiatives_past_week: 'New initiatives assigned to you'
-      title_successful_initiatives_past_week: 'Initiatives assigned to you that reached the threshold'
+      initiative_section: Proposals
+      title_initiatives_past_week: 'New proposals assigned to you'
+      title_successful_initiatives_past_week: 'Proposals assigned to you that reached the threshold'
     idea_marked_as_spam:
       by_author: 'by %{authorName}'
       cta_review_idea: 'Review idea'
@@ -200,7 +200,7 @@ en-CA:
       title_spam_report: '%{firstName} %{lastName} reported spam'
     initiative_marked_as_spam:
       by_author: 'by %{authorName}'
-      cta_review_initiative: 'Review initiative'
+      cta_review_initiative: 'Review proposal'
       report_inappropriate_offensive_content: 'I find this content inappropriate or offensive.'
       report_not_an_initiative: 'This content is not a proposal and does not belong here.'
       subject: 'You have a spam report on the platform of %{organizationName}'
@@ -210,10 +210,10 @@ en-CA:
     initiative_assigned_to_you:
       by_author: 'by %{authorName}'
       cta_reply_to: 'Give feedback to %{authorName}'
-      event_description_initiative: 'An initiative has been assigned to you. Give feedback by writing an official update or by changing its status.'
+      event_description_initiative: 'An proposal has been assigned to you. Give feedback by writing an official update or by changing its status.'
       main_header: '%{firstName}, you have a new assignment'
       subject: 'You have an assignment on the platform of %{organizationName}'
-      preheader_initiative: 'The initiative of %{authorName} has been assigned to you'
+      preheader_initiative: 'The proposal of %{authorName} has been assigned to you'
     invite_reminder:
       cta_accept_invitation: 'Accept your invitation'
       invitation_header: 'Your invitation is pending'
@@ -228,19 +228,19 @@ en-CA:
       subject: 'You are invited to join the platform of %{organizationName}'
     initiative_published:
       action_add_image: '%{addImageLink} to increase visibility'
-      action_published_initiative: 'Published initiative'
+      action_published_initiative: 'Published proposal'
       action_send_email: 'Send your contacts an %{sendEmailLink}'
       action_share_fb: 'Let your friends know on %{fbLink}'
       action_share_link: 'Share it via any channel by copying the %{link}'
       action_share_twitter: 'Inform your followers on %{twitterLink}'
-      cta_view_initiative: 'Go to your initiative'
+      cta_view_initiative: 'Go to your proposal'
       link: link
-      main_header: 'You posted an initiative! Let''s gather support for it.'
-      message_next_steps: '%{userFirstName}, your initiative has successfully been published on the participation platform of %{organizationName}. You will be notified when people interact with your initiative. Find out what next steps you can take below.'
+      main_header: 'You posted an proposal! Let''s gather support for it.'
+      message_next_steps: '%{userFirstName}, your proposal has successfully been published on the participation platform of %{organizationName}. You will be notified when people interact with your proposal. Find out what next steps you can take below.'
       message_get_votes: 'Reach the voting threshold:'
-      preheader: 'Thank you for sharing your initiative %{initiativeTitle} for %{organizationName}. The next step is to get support for your initiative by sharing it across your network.'
+      preheader: 'Thank you for sharing your proposal %{initiativeTitle} for %{organizationName}. The next step is to get support for your proposal by sharing it across your network.'
       send_email: email
-      subject: 'Your initiative was published on the platform of %{organizationName}'
+      subject: 'Your proposal was published on the platform of %{organizationName}'
     mention_in_official_feedback:
       by_author: 'by %{authorName}'
       commented: '%{organizationName} wrote:'
@@ -281,10 +281,10 @@ en-CA:
     new_comment_on_commented_initiative:
       commented: '%{commentAuthor} wrote:'
       cta_reply_to: 'Reply to %{commentAuthor}'
-      event_description: '%{commentAuthorFull} also wrote a comment on the initiative ''%{initiativeTitle}'' on the participation platform of %{organizationName}. Click the button below to start the conversation with %{commentAuthor}.'
-      main_header: '%{commentAuthor} wrote a comment on the same initiative'
-      subject: 'There''s another comment on the initiative you commented on'
-      preheader: '%{commentAuthor} also left a comment on an initiative for %{organizationName}'
+      event_description: '%{commentAuthorFull} also wrote a comment on the proposal ''%{initiativeTitle}'' on the participation platform of %{organizationName}. Click the button below to start the conversation with %{commentAuthor}.'
+      main_header: '%{commentAuthor} wrote a comment on the same proposal'
+      subject: 'There''s another comment on the proposal you commented on'
+      preheader: '%{commentAuthor} also left a comment on an proposal for %{organizationName}'
     new_comment_for_admin:
       by_author: 'by %{authorName}'
       commented: '%{authorFirstName} commented:'
@@ -306,11 +306,11 @@ en-CA:
       preheader: '%{authorName} left a comment on your idea for %{organizationName}'
     new_comment_on_voted_initiative:
       commented: '%{commentAuthor} wrote:'
-      cta_reply_to: 'View this initiative'
-      event_description: '%{commentAuthor} has commented on the initiative ''%{initiativeTitle}'' on which you''ve voted. Join the discussion on the platform of %{organizationName}!'
-      main_header: '%{firstName}, there''s a new comment on the initiative you''ve voted on'
-      subject: 'There''s a new comment on the initiative you''ve voted on'
-      preheader: '%{commentAuthor} left a comment on the initiative you''ve voted on on the platform of %{organizationName}'
+      cta_reply_to: 'View this proposal'
+      event_description: '%{commentAuthor} has commented on the proposal ''%{initiativeTitle}'' on which you''ve voted. Join the discussion on the platform of %{organizationName}!'
+      main_header: '%{firstName}, there''s a new comment on the proposal you''ve voted on'
+      subject: 'There''s a new comment on the proposal you''ve voted on'
+      preheader: '%{commentAuthor} left a comment on the proposal you''ve voted on on the platform of %{organizationName}'
     new_comment_on_voted_idea:
       commented: '%{commentAuthor} commented:'
       cta_reply_to: 'Reply to %{commentAuthor}'
@@ -325,10 +325,10 @@ en-CA:
       by_author: 'by %{authorName}'
       commented: '%{authorFirstName} wrote:'
       cta_reply_to: 'Give feedback to %{authorName}'
-      event_description: '%{authorName} has published a new initiative on your platform. Discover it now, give some feedback or change its status!'
-      main_header: '%{firstName}, a new initiative has been published on your platform'
-      subject: 'Someone published a new initiative on the platform of %{organizationName}'
-      preheader: '%{authorName} published a new initiative on your platform'
+      event_description: '%{authorName} has published a new proposal on your platform. Discover it now, give some feedback or change its status!'
+      main_header: '%{firstName}, a new proposal has been published on your platform'
+      subject: 'Someone published a new proposal on the platform of %{organizationName}'
+      preheader: '%{authorName} published a new proposal on your platform'
     new_idea_for_admin:
       by_author: 'by %{authorName}'
       commented: '%{authorFirstName} commented:'
@@ -350,11 +350,11 @@ en-CA:
     official_feedback_on_commented_initiative:
       by_author: 'by %{authorName}'
       updated: '%{officialName} wrote:'
-      cta_view: 'Go to this initiative'
-      event_description: '%{officialName} gave an update on the initiative ''%{initiativeTitle}''. Click the button below to enter the conversation with %{organizationName}.'
-      main_header: 'There''s an update on an initiative you commented on'
-      subject: 'An initiative you commented on has received an official update on the platform of %{organizationName}'
-      preheader: '%{officialName} left an official update on an initiative you commented on'
+      cta_view: 'Go to this proposal'
+      event_description: '%{officialName} gave an update on the proposal ''%{initiativeTitle}''. Click the button below to enter the conversation with %{organizationName}.'
+      main_header: 'There''s an update on an proposal you commented on'
+      subject: 'A proposal you commented on has received an official update on the platform of %{organizationName}'
+      preheader: '%{officialName} left an official update on an proposal you commented on'
     official_feedback_on_voted_idea:
       by_author: 'by %{authorName}'
       updated: '%{officialName} wrote:'
@@ -382,18 +382,18 @@ en-CA:
     official_feedback_on_voted_initiative:
       by_author: 'by %{authorName}'
       updated: '%{officialName} wrote:'
-      cta_view: 'Go to this initiative'
-      event_description: '%{officialName} gave an update on the initiative ''%{initiativeTitle}''. Click the button below to enter the conversation with %{organizationName}.'
-      main_header: 'There''s an update on an initiative you voted on'
-      subject: 'An initiative you voted on has received an official update on the platform of %{organizationName}'
-      preheader: '%{officialName} left an official update on an initiative you voted on'
+      cta_view: 'Go to this proposal'
+      event_description: '%{officialName} gave an update on the proposal ''%{initiativeTitle}''. Click the button below to enter the conversation with %{organizationName}.'
+      main_header: 'There''s an update on an proposal you voted on'
+      subject: 'A proposal you voted on has received an official update on the platform of %{organizationName}'
+      preheader: '%{officialName} left an official update on a proposal you voted on'
     official_feedback_on_your_initiative:
       updated: '%{officialName} wrote:'
-      cta_view: 'Go to your initiative'
-      event_description: '%{officialName} gave an update on your initiative ''%{initiativeTitle}''. Click the button below to enter the conversation with %{organizationName}.'
+      cta_view: 'Go to your proposal'
+      event_description: '%{officialName} gave an update on your proposal ''%{initiativeTitle}''. Click the button below to enter the conversation with %{organizationName}.'
       main_header: 'You received an update from %{officialName}'
       subject: 'You''ve received an official update on the platform of %{organizationName}'
-      preheader: '%{officialName} left an official update on your initiative'
+      preheader: '%{officialName} left an official update on your proposal'
     project_moderation_rights_received:
       cta_moderate_project: 'Moderate this project'
       message_you_became_moderator: 'An adminstrator of the participation platform of %{organizationName} just made you project manager of the following project:'
@@ -466,26 +466,26 @@ en-CA:
       subject: 'The status of an idea you voted on has been changed'
       preheader: '%{organizationName} changed the status of an idea you voted on'
     status_change_of_voted_initiative:
-      status_change: 'The new status of this initiative is ''%{initiativeStatus}'''
-      cta_view_initiative: 'Go to this initiative'
-      event_description: 'The status of the initiative ''%{initiativeTitle}'' has been updated on the digital participation platform of %{organizationName}.'
-      main_header: 'An initiative you voted on has a new status'
-      subject: 'The status of an initiative you voted on has changed'
-      preheader: 'The status of an initiative you voted on changed'
+      status_change: 'The new status of this proposal is ''%{initiativeStatus}'''
+      cta_view_initiative: 'Go to this proposal'
+      event_description: 'The status of the proposal ''%{initiativeTitle}'' has been updated on the digital participation platform of %{organizationName}.'
+      main_header: 'A proposal you voted on has a new status'
+      subject: 'The status of a proposal you voted on has changed'
+      preheader: 'The status of a proposal you voted on changed'
     status_change_of_commented_initiative:
-      status_change: 'The new status of this initiative is ''%{initiativeStatus}'''
-      cta_view_initiative: 'Go to this initiative'
-      event_description: 'The status of the initiative ''%{initiativeTitle}'' has been updated on the digital participation platform of %{organizationName}.'
-      main_header: 'An initiative you commented on has a new status'
-      subject: 'The status of an initiative you commented on has changed'
-      preheader: 'The status of an initiative you commented on has changed'
+      status_change: 'The new status of this proposal is ''%{initiativeStatus}'''
+      cta_view_initiative: 'Go to this proposal'
+      event_description: 'The status of the proposal ''%{initiativeTitle}'' has been updated on the digital participation platform of %{organizationName}.'
+      main_header: 'A proposal you commented on has a new status'
+      subject: 'The status of a proposal you commented on has changed'
+      preheader: 'The status of a proposal you commented on has changed'
     status_change_of_your_initiative:
-      status_change: 'The new status of your initiative is ''%{initiativeStatus}'''
-      cta_view_initiative: 'Go to your initiative'
-      event_description: 'The status of the initiative ''%{initiativeTitle}'' has been updated on the digital participation platform of %{organizationName}.'
-      main_header: 'Your initiative has a new status'
-      subject: 'The status of your initiative has changed'
-      preheader: 'The status of your initiative has changed'
+      status_change: 'The new status of your proposal is ''%{initiativeStatus}'''
+      cta_view_initiative: 'Go to your proposal'
+      event_description: 'The status of the proposal ''%{initiativeTitle}'' has been updated on the digital participation platform of %{organizationName}.'
+      main_header: 'Your proposal has a new status'
+      subject: 'The status of your proposal has changed'
+      preheader: 'The status of your proposal has changed'
     user_digest:
       subject: "Your activity on the participation platform of %{organizationName}"
       commented: "%{authorFirstName} commented:"
@@ -558,11 +558,11 @@ en-CA:
       subject: 'Your idea on the platform of %{organizationName}'
       message_next_steps: ""
     your_proposed_initiatives_digest:
-      subject: 'Weekly update of your initiative'
-      preheader: 'What happened to your initiative in the past week?'
-      title_your_weekly_report: 'How has your initiative been doing?'
-      text_introduction: 'Find the key numbers below and go to your initiative''s page to take action and gather enough support in time.'
-      cta_see_your_initiative: 'Go to your initiative'
+      subject: 'Weekly update of your proposals'
+      preheader: 'What happened with your proposals in the past week?'
+      title_your_weekly_report: 'How have your proposals been doing?'
+      text_introduction: 'Find the key numbers below and go to the platform to take action and gather enough support in time.'
+      cta_see_your_initiative: 'Go to your proposals'
       total_votes: 'Total votes'
       new_votes: 'New votes'
       remaining_votes: 'Votes remaining'
