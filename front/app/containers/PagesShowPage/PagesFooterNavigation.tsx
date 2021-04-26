@@ -38,6 +38,17 @@ const PagesFooterNavigation = ({ currentPageSlug }: Props) => {
               to={`/pages/${pageSlug}`}
               key={pageSlug}
             >
+              <FormattedMessage
+                {...{
+                  information: messages.informationPageName,
+                  'terms-and-conditions': messages.termsAndConditionsPageName,
+                  'privacy-policy': messages.privacyPolicyPageName,
+                  'cookie-policy': messages.cookiePolicyPageName,
+                  'accessibility-statement':
+                    messages.accessibilityStatementPageName,
+                  faq: messages.faqPageName,
+                }[pageSlug]}
+              />
               <FormattedMessage {...messages[`${pageSlug}PageName`]} />
               <LinkIcon name="chevron-right" />
             </StyledLink>
