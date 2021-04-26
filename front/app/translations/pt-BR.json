@@ -1304,7 +1304,7 @@
   "app.containers.AdminPage.ProjectEdit.shareInformation": "Compartilhar informação",
   "app.containers.AdminPage.ProjectEdit.shareInformationDescription": "Forneça informações aos participantes.",
   "app.containers.AdminPage.ProjectEdit.statusLabel": "Status do projeto",
-  "app.containers.AdminPage.ProjectEdit.submitErrorMessage": "",
+  "app.containers.AdminPage.ProjectEdit.submitErrorMessage": "Não consegui salvar o projecto. Certifica-te que nenhum campo tem erros.",
   "app.containers.AdminPage.ProjectEdit.subtitleGeneral": "Configure e personalize seu projeto.",
   "app.containers.AdminPage.ProjectEdit.surveyEmbedUrl": "URL de incorporação",
   "app.containers.AdminPage.ProjectEdit.surveyService": "Serviço",
