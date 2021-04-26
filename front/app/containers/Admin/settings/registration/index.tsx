@@ -97,9 +97,6 @@ const SettingsRegistrationTab = (_props: Props) => {
       ...appConfig.data.attributes,
       ...attributesDiff,
     }.settings as IAppConfigurationSettings;
-
-    console.log(attributesDiff);
-
     const latestAppConfigCoreSettings = latestAppConfigSettings.core;
 
     return (
