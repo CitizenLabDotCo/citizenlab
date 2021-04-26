@@ -2,14 +2,10 @@ module BlockingProfanity
   extend ActiveSupport::Concern
 
   class ProfanityBlockedError < StandardError
-
-    def initialize(blocked_words)
+    attr_reader :blocked_words
+    def initialize blocked_words
       super
       @blocked_words = blocked_words
-    end
-
-    def blocked_words
-      @blocked_words
     end
   end
 
@@ -27,14 +23,16 @@ module BlockingProfanity
     # TODO return if !enalbed?
     blocked_words = []
     service = ProfanityService.new
-    attrs = SUPPORTED_CLASS_ATTRS[object.class.name] || []
-    attrs.each do |atr|
+    attrs = SUPPORTED_CLASS_ATTRS[object.class.name]
+    attrs&.each do |atr|
+      next if object[atr].blank?
       values = if atr.to_s.ends_with? '_multiloc'
         object[atr]
       else
         { nil => object[atr] }
       end
       values.each do |locale, text|
+        next if text.blank?
         service.search_blocked_words(text)&.each do |result|
           result[:locale] = locale if locale
           result[:attribute] = atr
