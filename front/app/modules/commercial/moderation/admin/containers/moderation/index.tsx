@@ -65,11 +65,15 @@ const StyledIconTooltip = styled(IconTooltip)`
   margin-bottom: 3px;
 `;
 
-const Filters = styled.div`
+const ActionBar = styled.div`
   min-height: 50px;
   display: flex;
   align-items: center;
   margin-bottom: 55px;
+`;
+
+const Buttons = styled.div`
+  display: flex;
 `;
 
 const MarkAsButton = styled(Button)`
@@ -412,39 +416,8 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
           />
         </PageTitleWrapper>
 
-        <Filters>
-          {selectedRows.length > 0 && (
-            <MarkAsButton
-              icon="eye"
-              buttonStyle="cl-blue"
-              processing={processing}
-              onClick={markAs}
-            >
-              {moderationStatus === 'unread' ? (
-                <FormattedMessage {...messages.markAsSeen} />
-              ) : (
-                <FormattedMessage {...messages.markAsNotSeen} />
-              )}
-            </MarkAsButton>
-          )}
-
-          {selectedRowsWithContentWarning.length > 0 && (
-            <RemoveFlagButton
-              // icon="label"
-              buttonStyle="cl-blue"
-              processing={processing}
-              onClick={removeFlags}
-            >
-              <FormattedMessage
-                {...messages.removeWarning}
-                values={{
-                  numberOfItems: selectedRowsWithContentWarning.length,
-                }}
-              />
-            </RemoveFlagButton>
-          )}
-
-          {selectedRows.length === 0 && (
+        <ActionBar>
+          {selectedRows.length === 0 ? (
             <>
               <StyledTabs
                 items={moderationStatuses}
@@ -460,9 +433,46 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
                 onChange={handleProjectIdsChange}
               />
             </>
+          ) : (
+            <Buttons>
+              {selectedRows.length > 0 && (
+                <MarkAsButton
+                  icon={
+                    moderationStatus === 'unread'
+                      ? 'eyeOpened-unfilled'
+                      : 'eyeClosed-unfilled'
+                  }
+                  buttonStyle="cl-blue"
+                  processing={processing}
+                  onClick={markAs}
+                >
+                  {moderationStatus === 'unread' ? (
+                    <FormattedMessage {...messages.markAsSeen} />
+                  ) : (
+                    <FormattedMessage {...messages.markAsNotSeen} />
+                  )}
+                </MarkAsButton>
+              )}
+
+              {selectedRowsWithContentWarning.length > 0 && (
+                <RemoveFlagButton
+                  icon="exclamation-trapezium-strikethrough"
+                  buttonStyle="cl-blue"
+                  processing={processing}
+                  onClick={removeFlags}
+                >
+                  <FormattedMessage
+                    {...messages.removeWarning}
+                    values={{
+                      numberOfItems: selectedRowsWithContentWarning.length,
+                    }}
+                  />
+                </RemoveFlagButton>
+              )}
+            </Buttons>
           )}
           <StyledSearchInput onChange={handleSearchTermChange} />
-        </Filters>
+        </ActionBar>
 
         <StyledTable>
           <thead>

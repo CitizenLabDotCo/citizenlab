@@ -20,7 +20,7 @@ const WarningContent = styled.div`
 const WarningIcon = styled(Icon)`
   color: ${colors.clRedError};
   margin-right: 5px;
-  width: 15px;
+  width: 16px;
 `;
 
 interface Props {}
@@ -30,19 +30,8 @@ const InappropriateContentWarning = ({
 }: Props & InjectedIntlProps) => {
   return (
     <Container>
-      <WarningIcon name="error" />
+      <WarningIcon name="exclamation-trapezium" />
       <WarningContent>{formatMessage(messages.warningText)} </WarningContent>
-      {/* <IgnoreWarningButton
-        locale="en"
-        padding="0"
-        buttonStyle="text"
-        fontSize={`${fontSizes.small}px`}
-        textColor={colors.clBlue}
-        textDecoration="underline"
-        textDecorationHover="underline"
-      >
-        (ignore warning)
-      </IgnoreWarningButton> */}
     </Container>
   );
 };
