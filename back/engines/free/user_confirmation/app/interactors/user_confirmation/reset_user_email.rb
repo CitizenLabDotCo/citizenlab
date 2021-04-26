@@ -1,6 +1,7 @@
 module UserConfirmation
   class ResetUserEmail < ApplicationInteractor
-    delegate :new_email, :user, to: :context
+    delegate :user, to: :context
+    delegate :new_email, to: :context, allow_nil: true
 
     def call
       return unless new_email
