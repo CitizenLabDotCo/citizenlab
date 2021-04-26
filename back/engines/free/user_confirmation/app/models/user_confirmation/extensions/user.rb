@@ -11,6 +11,10 @@ module UserConfirmation
         end
       end
 
+      def confirmed?
+        email_confirmed_at.present?
+      end
+
       def reset_confirmation_code!
         reset_confirmation_code
         increment_confirmation_code_reset_count
