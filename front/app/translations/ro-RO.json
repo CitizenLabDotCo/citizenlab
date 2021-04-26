@@ -1296,7 +1296,6 @@
   "app.containers.AdminPage.ProjectEdit.randomSortingMethod": "Aleatoriu",
   "app.containers.AdminPage.ProjectEdit.regexError": "Slugul poate conține numai litere mici, minuscule (a-z), cifre (0-9) și cratime (-). Primul și ultimul caracter nu pot fi cratime. Cratimele consecutive (--) sunt interzise.",
   "app.containers.AdminPage.ProjectEdit.resultingURL": "Adresa URL a proiectului rezultat",
-  "app.containers.AdminPage.ProjectEdit.saveErrorMessage": "An error occurred while saving your data. Please try again.",
   "app.containers.AdminPage.ProjectEdit.saveProject": "Salvați",
   "app.containers.AdminPage.ProjectEdit.saveSuccess": "Saved!",
   "app.containers.AdminPage.ProjectEdit.saveSuccessMessage": "Your form has been saved!",
