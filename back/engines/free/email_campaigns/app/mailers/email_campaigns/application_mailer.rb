@@ -1,6 +1,6 @@
 module EmailCampaigns
   class ApplicationMailer < ApplicationMailer
-    layout 'mailer'
+    layout 'email_campaigns'
 
     before_action do
       @command, @campaign = params.values_at(:command, :campaign)
@@ -21,6 +21,18 @@ module EmailCampaigns
     helper_method :command, :campaign, :event
 
     private
+
+    def show_unsubscribe_link?
+      true
+    end
+
+    def show_terms_link?
+      true
+    end
+
+    def show_privacy_policy_link?
+      true
+    end
 
     def format_message(key, component: nil, escape_html: true, values: {})
       group = component || @campaign.class.name.demodulize.underscore
