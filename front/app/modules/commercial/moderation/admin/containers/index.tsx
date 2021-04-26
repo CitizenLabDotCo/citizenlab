@@ -24,7 +24,7 @@ import SelectProject from './SelectProject';
 import SearchInput from 'components/UI/SearchInput';
 
 // hooks
-import useModerations from '../../../hooks/useModerations';
+import useModerations from '../../hooks/useModerations';
 import useAppConfiguration from 'hooks/useAppConfiguration';
 import useLocale from 'hooks/useLocale';
 
@@ -34,7 +34,7 @@ import {
   IModerationData,
   TModerationStatuses,
   TModeratableTypes,
-} from '../../../services/moderations';
+} from '../../services/moderations';
 import { updateAppConfiguration } from 'services/appConfiguration';
 
 // i18n
