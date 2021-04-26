@@ -26,7 +26,7 @@ const RenderOnFeatureAllowed = ({ children }: RenderOnFeatureFlagProps) => {
 
   if (
     isNilOrError(appConfiguration) ||
-    !appConfiguration?.data.attributes?.settings.user_confirmation.allowed
+    !appConfiguration?.data.attributes?.settings?.user_confirmation?.allowed
   ) {
     return null;
   }

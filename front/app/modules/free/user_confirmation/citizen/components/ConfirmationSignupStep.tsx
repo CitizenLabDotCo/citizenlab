@@ -1,4 +1,4 @@
-import React, { useEffect, ReactElement, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { SignUpStepOutletProps } from 'utils/moduleUtils';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
