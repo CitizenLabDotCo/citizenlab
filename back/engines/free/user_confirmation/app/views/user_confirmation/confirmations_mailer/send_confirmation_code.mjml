@@ -27,6 +27,7 @@
   </mj-column>
 </mj-section>
 
+<!--
 <mj-section
   background-color="#fff"
   border-radius="5px"
@@ -43,3 +44,4 @@
     </mj-text>
   </mj-column>
 </mj-section>
+-->
