@@ -1,4 +1,3 @@
-
 # Reporting Security Issues
 
 Please report any security issues you discover to security[at]citizenlab[dot]co
