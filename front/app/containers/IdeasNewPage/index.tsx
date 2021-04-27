@@ -230,16 +230,8 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
         } catch (error) {
           const apiErrors = get(error, 'json.errors');
           if (process.env.NODE_ENV === 'development') console.log(error);
-          if (apiErrors && apiErrors.titleProfanity) {
-            this.globalState.set({
-              titleProfanityError: true,
-            });
-          }
-          if (apiErrors && apiErrors.descriptionProfanity) {
-            this.globalState.set({
-              descriptionProfanityError: true,
-            });
-          }
+
+          // where can I see the format of apiErrors?
           if (apiErrors && !apiErrors.idea) {
             this.globalState.set({
               submitError: false,
@@ -263,6 +255,27 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
           });
         }
       } catch (error) {
+        const apiErrors = get(error, 'json.errors');
+        const profanityApiError = apiErrors.base.find(
+          (apiError) => apiError.error === 'includes_banned_words'
+        );
+        const titleProfanityError = profanityApiError.blocked_words.some(
+          (blockedWord) => blockedWord.attribute === 'title_multiloc'
+        );
+        const bodyProfanityError = profanityApiError.blocked_words.some(
+          (blockedWord) => blockedWord.attribute === 'body_multiloc'
+        );
+
+        if (apiErrors && apiErrors.titleProfanity) {
+          this.globalState.set({
+            titleProfanityError: true,
+          });
+        }
+        if (apiErrors && apiErrors.descriptionProfanity) {
+          this.globalState.set({
+            descriptionProfanityError: true,
+          });
+        }
         this.globalState.set({ processing: false, submitError: true });
       }
     }
