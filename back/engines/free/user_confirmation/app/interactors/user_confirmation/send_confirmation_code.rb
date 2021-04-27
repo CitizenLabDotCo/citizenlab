@@ -10,6 +10,7 @@ module UserConfirmation
 
     organize ResetUserEmail,
              ResetUserConfirmationCode,
-             SendConfirmationCodeToUser
+             SendConfirmationCodeToUser,
+             ScheduleCodeExpiration
   end
 end
