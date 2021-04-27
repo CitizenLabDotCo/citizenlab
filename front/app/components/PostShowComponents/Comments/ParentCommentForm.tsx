@@ -342,7 +342,6 @@ class ParentCommentForm extends PureComponent<
       !isNilOrError(windowSize) && windowSize <= viewportWidths.smallTablet;
 
     if (!isNilOrError(authUser) && canComment) {
-      const errorMessage = this.getErrorMessage();
       return (
         <Container className={className || ''}>
           <StyledAvatar
@@ -371,7 +370,7 @@ class ParentCommentForm extends PureComponent<
                   postId={postId}
                   postType={postType}
                   value={inputValue}
-                  error={errorMessage}
+                  error={this.getErrorMessage()}
                   onChange={this.onChange}
                   onFocus={this.onFocus}
                   fontWeight="300"
