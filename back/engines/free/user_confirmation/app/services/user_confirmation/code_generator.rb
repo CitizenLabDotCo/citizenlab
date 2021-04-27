@@ -3,7 +3,7 @@ module UserConfirmation
     include Callable
 
     def call
-      random_code
+      result.code = random_code
     end
 
     def random_code

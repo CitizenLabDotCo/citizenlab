@@ -32,9 +32,8 @@ module UserConfirmation
       end
 
       def reset_confirmation_code
-        result                               = CodeGenerator.call
-        self.email_confirmation_code         = result.code
-        self.email_confirmation_code_sent_at = Time.zone.now
+        result                       = CodeGenerator.call
+        self.email_confirmation_code = result.code
       end
 
       def increment_confirmation_code_reset_count
