@@ -199,6 +199,10 @@ class User < ApplicationRecord
     avatar.file.nil?
   end
 
+  def invited?
+    invite_status.present?
+  end
+
   def invite_pending?
     invite_status == 'pending'
   end

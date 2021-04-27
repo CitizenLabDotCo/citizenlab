@@ -3,7 +3,7 @@ module UserConfirmation
     module SideFxUserService
       def after_create(user, current_user)
         super
-        SendConfirmationCode.call(user: user)
+        SendConfirmationCode.call(user: user) unless user.invited?
       end
     end
   end
