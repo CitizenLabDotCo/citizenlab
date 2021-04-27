@@ -8,7 +8,7 @@ module Polls
         .where(participation_context: participation_context)
         .order(:ordering)
 
-    	columns = compute_user_columns is_anonymous, is_admin
+    	columns = compute_user_columns is_anonymous, current_user.admin?
       columns += questions.map do |q|
         {
           header: multiloc_service.t(q.title_multiloc),
