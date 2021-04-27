@@ -1,7 +1,7 @@
 import React, { memo, useState } from 'react';
 
 // styling
-import { defaultCardStyle, viewportWidths, media } from 'utils/styleUtils';
+import { defaultCardStyle, viewportWidths } from 'utils/styleUtils';
 import styled from 'styled-components';
 
 // components
