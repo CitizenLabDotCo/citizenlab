@@ -59,7 +59,7 @@ export default memo<Props>(({ surveyXactUrl, className }) => {
             ? document
                 .getElementById('survey-xact-frame')
                 ?.clientWidth.toString() || '99%'
-            : (parseInt(width) - 1).toString()
+            : (parseInt(width, 10) - 1).toString()
         );
       }, 1000);
     }),
