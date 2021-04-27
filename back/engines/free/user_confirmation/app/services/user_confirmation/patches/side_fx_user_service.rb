@@ -1,9 +1,9 @@
 module UserConfirmation
   module Patches
-    module SideFxInviteService
-      def before_accept(invite)
+    module SideFxUserService
+      def after_create(user, current_user)
         super
-        invite.invitee.email_confirmed_at ||= invite.accepted_at
+        SendConfirmationCode.call(user: user) unless user.invited?
       end
     end
   end
