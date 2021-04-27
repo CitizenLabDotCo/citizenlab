@@ -1698,7 +1698,6 @@
   "app.containers.Comments.deleteReason_irrelevant": "Dette hører ikke til her",
   "app.containers.Comments.deleteReason_other": "Anden årsag",
   "app.containers.Comments.editComment": "Rediger",
-  "app.containers.Comments.emptyCommentError": "Denne kommentar skal udfyldes",
   "app.containers.Comments.guidelinesLinkText": "",
   "app.containers.Comments.ideaCommentBodyPlaceholder": "Skriv din kommentar her",
   "app.containers.Comments.initiativeCommentBodyPlaceholder": "Skriv din kommentar her",

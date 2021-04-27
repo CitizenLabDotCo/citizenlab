@@ -1698,7 +1698,6 @@
   "app.containers.Comments.deleteReason_irrelevant": "هذا لا ينتمي إلى هنا",
   "app.containers.Comments.deleteReason_other": "سبب آخر",
   "app.containers.Comments.editComment": "تعديل",
-  "app.containers.Comments.emptyCommentError": "لا يمكن أن يكون التعليق فارغًا",
   "app.containers.Comments.guidelinesLinkText": "",
   "app.containers.Comments.ideaCommentBodyPlaceholder": "اكتب تعليقك هنا",
   "app.containers.Comments.initiativeCommentBodyPlaceholder": "اكتب تعليقك هنا",

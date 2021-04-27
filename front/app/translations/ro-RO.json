@@ -1698,7 +1698,6 @@
   "app.containers.Comments.deleteReason_irrelevant": "Acest lucru nu este potrivit aici",
   "app.containers.Comments.deleteReason_other": "Alt motiv",
   "app.containers.Comments.editComment": "Editați",
-  "app.containers.Comments.emptyCommentError": "Comentariul nu poate fi gol",
   "app.containers.Comments.guidelinesLinkText": "",
   "app.containers.Comments.ideaCommentBodyPlaceholder": "Scrie comentariul tău aici",
   "app.containers.Comments.initiativeCommentBodyPlaceholder": "Scrie comentariul tău aici",

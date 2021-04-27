@@ -1698,7 +1698,6 @@
   "app.containers.Comments.deleteReason_irrelevant": "Ovo ne pripada ovde",
   "app.containers.Comments.deleteReason_other": "Drugi razlog",
   "app.containers.Comments.editComment": "Izmenite",
-  "app.containers.Comments.emptyCommentError": "Komentar ne može biti prazan",
   "app.containers.Comments.guidelinesLinkText": "",
   "app.containers.Comments.ideaCommentBodyPlaceholder": "Napišite vaš komentar ovde",
   "app.containers.Comments.initiativeCommentBodyPlaceholder": "Napišite vaš komentar ovde",

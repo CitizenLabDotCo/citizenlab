@@ -1698,7 +1698,6 @@
   "app.containers.Comments.deleteReason_irrelevant": "To jest bez związku",
   "app.containers.Comments.deleteReason_other": "Inny powód",
   "app.containers.Comments.editComment": "Edycja",
-  "app.containers.Comments.emptyCommentError": "Komentarz nie może być pusty",
   "app.containers.Comments.guidelinesLinkText": "",
   "app.containers.Comments.ideaCommentBodyPlaceholder": "Napisz swój komentarz tutaj",
   "app.containers.Comments.initiativeCommentBodyPlaceholder": "Napisz swój komentarz tutaj",

@@ -1698,7 +1698,6 @@
   "app.containers.Comments.deleteReason_irrelevant": "Dit hoort hier niet thuis",
   "app.containers.Comments.deleteReason_other": "Andere reden",
   "app.containers.Comments.editComment": "Bewerk",
-  "app.containers.Comments.emptyCommentError": "De reactie mag niet leeg zijn",
   "app.containers.Comments.guidelinesLinkText": "",
   "app.containers.Comments.ideaCommentBodyPlaceholder": "Schrijf je reactie hier",
   "app.containers.Comments.initiativeCommentBodyPlaceholder": "Schrijf je reactie hier",

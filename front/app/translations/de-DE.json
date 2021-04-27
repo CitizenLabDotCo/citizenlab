@@ -1698,7 +1698,6 @@
   "app.containers.Comments.deleteReason_irrelevant": "Das gehört nicht hierher",
   "app.containers.Comments.deleteReason_other": "Anderer Grund",
   "app.containers.Comments.editComment": "Bearbeiten",
-  "app.containers.Comments.emptyCommentError": "Der Kommentar darf nicht leer sein",
   "app.containers.Comments.guidelinesLinkText": "",
   "app.containers.Comments.ideaCommentBodyPlaceholder": "Schreiben Sie Ihren Kommentar hier",
   "app.containers.Comments.initiativeCommentBodyPlaceholder": "Schreiben Sie Ihren Kommentar hier",
