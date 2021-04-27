@@ -174,10 +174,6 @@ export default defineMessages({
     id: 'app.containers.Comments.loadingMoreComments',
     defaultMessage: 'Loading more comments...',
   },
-  emptyCommentError: {
-    id: 'app.containers.Comments.emptyCommentError',
-    defaultMessage: "The comment can't be empty",
-  },
   loadMoreComments: {
     id: 'app.containers.Comments.loadMoreComments',
     defaultMessage: 'Load more comments',

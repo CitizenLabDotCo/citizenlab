@@ -128,6 +128,7 @@ interface State {
   processing: boolean;
   errorMessage: string | null;
   profanityError: boolean;
+  hasEmptyError: boolean;
 }
 
 class ParentCommentForm extends PureComponent<
@@ -144,6 +145,7 @@ class ParentCommentForm extends PureComponent<
       processing: false,
       errorMessage: null,
       profanityError: false,
+      hasEmptyError: true,
     };
   }
 
@@ -159,6 +161,7 @@ class ParentCommentForm extends PureComponent<
       focused: true,
       errorMessage: null,
       profanityError: false,
+      hasEmptyError: inputValue.trim().length < 1,
     });
   };
 
@@ -268,15 +271,6 @@ class ParentCommentForm extends PureComponent<
 
         throw error;
       }
-    } else if (
-      locale &&
-      authUser &&
-      (!inputValue || inputValue.trim() === '')
-    ) {
-      this.setState({
-        errorMessage: formatMessage(messages.emptyCommentError),
-        processing: false,
-      });
     }
   };
 
@@ -301,6 +295,7 @@ class ParentCommentForm extends PureComponent<
       processing,
       errorMessage,
       profanityError,
+      hasEmptyError,
     } = this.state;
     const commentingEnabled =
       postType === 'initiative'
@@ -315,7 +310,6 @@ class ParentCommentForm extends PureComponent<
       'relationships.project.data.id',
       null
     );
-    const commentButtonDisabled = !inputValue || inputValue === '';
     const isModerator =
       !isNilOrError(authUser) &&
       canModerateProject(projectId, { data: authUser });
@@ -380,7 +374,7 @@ class ParentCommentForm extends PureComponent<
                     className="e2e-submit-parentcomment"
                     processing={processing}
                     onClick={this.onSubmit}
-                    disabled={commentButtonDisabled}
+                    disabled={hasEmptyError}
                     padding={smallerThanSmallTablet ? '6px 12px' : undefined}
                   >
                     <FormattedMessage {...messages.publishComment} />
