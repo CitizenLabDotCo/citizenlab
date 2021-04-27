@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe UserConfirmation::ConfirmationsMailer do
   describe 'send_confirmation_code' do
-    let!(:user) { create(:user) }
+    let!(:user) { create(:user_with_confirmation) }
     let(:message) { described_class.with(user: user).send_confirmation_code.deliver_now }
 
     it 'renders the subject' do

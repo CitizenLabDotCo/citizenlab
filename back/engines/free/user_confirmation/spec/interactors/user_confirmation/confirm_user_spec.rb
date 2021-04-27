@@ -7,7 +7,7 @@ RSpec.describe UserConfirmation::ConfirmUser do
 
   context 'when the email confirmation code is correct' do
     before do
-      context[:user] = create(:user)
+      context[:user] = create(:user_with_confirmation)
       context[:code] = context[:user].email_confirmation_code
     end
 
@@ -32,7 +32,7 @@ RSpec.describe UserConfirmation::ConfirmUser do
 
   context 'when the code is nil' do
     before do
-      context[:user] = create(:user)
+      context[:user] = create(:user_with_confirmation)
     end
 
     it 'is a failure' do
@@ -46,7 +46,7 @@ RSpec.describe UserConfirmation::ConfirmUser do
 
   context 'when the code is incorrect' do
     before do
-      context[:user] = create(:user)
+      context[:user] = create(:user_with_confirmation)
       context[:code] = 'failcode'
     end
 

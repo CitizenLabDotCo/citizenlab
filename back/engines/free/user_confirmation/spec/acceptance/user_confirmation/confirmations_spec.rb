@@ -21,7 +21,7 @@ resource 'Confirmations' do
     end
 
     context 'when logged in' do
-      let(:user) { create(:user) }
+      let(:user) { create(:user_with_confirmation) }
 
       before do
         header_token_for(user)

@@ -7,7 +7,7 @@ RSpec.describe UserConfirmation::ResetUserEmail do
 
   context 'when passing a new email' do
     before do
-      context[:user] = create(:user)
+      context[:user] = create(:user_with_confirmation)
       context[:new_email] = 'new@email.com'
     end
 
@@ -22,7 +22,7 @@ RSpec.describe UserConfirmation::ResetUserEmail do
 
   context 'when not passing a new email' do
     before do
-      context[:user] = create(:user)
+      context[:user] = create(:user_with_confirmation)
     end
 
     it 'is a success' do
@@ -36,7 +36,7 @@ RSpec.describe UserConfirmation::ResetUserEmail do
 
   context 'when passing an invalid new email' do
     before do
-      context[:user] = create(:user)
+      context[:user] = create(:user_with_confirmation)
       context[:new_email] = 'new@email-com'
     end
 

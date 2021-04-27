@@ -7,7 +7,7 @@ RSpec.describe UserConfirmation::ResetUserConfirmationCode do
 
   context 'when the email confirmation code is correct' do
     before do
-      context[:user] = create(:user)
+      context[:user] = create(:user_with_confirmation)
     end
 
     it 'is successful' do
@@ -21,7 +21,7 @@ RSpec.describe UserConfirmation::ResetUserConfirmationCode do
 
   context 'when the confirmation code generation mechanism is broken' do
     before do
-      context[:user] = create(:user)
+      context[:user] = create(:user_with_confirmation)
       allow(UserConfirmation::CodeGenerator).to receive(:call).and_return(OpenStruct.new(code: 'asdasdasd'))
     end
 
@@ -36,7 +36,7 @@ RSpec.describe UserConfirmation::ResetUserConfirmationCode do
 
   context 'when the user has made too many reset requests' do
     before do
-      context[:user] = create(:user)
+      context[:user] = create(:user_with_confirmation)
 
       5.times do
         context[:user].reset_confirmation_code!

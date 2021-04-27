@@ -8,7 +8,7 @@ RSpec.describe UserConfirmation::SendConfirmationCodeToUser do
   context 'when the user signs up with a phone number' do
     before do
       enable_phone_login
-      context[:user] = create(:user, email: '398234234234')
+      context[:user] = create(:user_with_confirmation, email: '398234234234')
     end
 
     it 'is a failure' do
@@ -22,7 +22,7 @@ RSpec.describe UserConfirmation::SendConfirmationCodeToUser do
 
   context 'when the user signs up with an email' do
     before do
-      context[:user] = create(:user, email: 'some_email@email.com')
+      context[:user] = create(:user_with_confirmation, email: 'some_email@email.com')
     end
 
     it 'is successful' do
