@@ -2404,6 +2404,7 @@
   "app.containers.app.navbar.mobilePageInputs": "Alle input",
   "app.containers.app.navbar.mobilePageProjects": "{tenantName, select, DeloitteDK {Verdensmål} other {Projekter}}",
   "app.containers.app.navbar.myProfile": "Min aktivitet",
+  "app.containers.app.navbar.pageFaq": "",
   "app.containers.app.navbar.pageInformation": "Om",
   "app.containers.app.navbar.pageInitiatives": "Borgerforslag",
   "app.containers.app.navbar.pageInputs": "Alle input",

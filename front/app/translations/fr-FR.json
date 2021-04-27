@@ -2404,6 +2404,7 @@
   "app.containers.app.navbar.mobilePageInputs": "Contributions",
   "app.containers.app.navbar.mobilePageProjects": "{tenantName, select, frw {Communes} UrbanLab {Quartiers} other {Projets}}",
   "app.containers.app.navbar.myProfile": "Mon activité",
+  "app.containers.app.navbar.pageFaq": "",
   "app.containers.app.navbar.pageInformation": "{tenantName, select, UrbanLab {UrbanLab} other {À propos}}",
   "app.containers.app.navbar.pageInitiatives": "Propositions",
   "app.containers.app.navbar.pageInputs": "Contributions",
