@@ -8,7 +8,6 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import Button from 'components/UI/Button';
-import Error from 'components/UI/Error';
 import MentionsTextArea from 'components/UI/MentionsTextArea';
 import Avatar from 'components/Avatar';
 import clickOutside from 'utils/containers/clickOutside';
@@ -115,9 +114,9 @@ interface State {
   inputValue: string;
   focused: boolean;
   processing: boolean;
-  errorMessage: string | null;
   canSubmit: boolean;
-  profanityError: boolean;
+  profanityApiError: boolean;
+  hasApiError: boolean;
 }
 
 class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
@@ -130,9 +129,9 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
       inputValue: '',
       focused: false,
       processing: false,
-      errorMessage: null,
       canSubmit: false,
-      profanityError: false,
+      hasApiError: false,
+      profanityApiError: false,
     };
   }
 
@@ -173,8 +172,8 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
   onChange = (inputValue: string) => {
     this.setState(({ focused }) => ({
       inputValue,
-      errorMessage: null,
-      profanityError: false,
+      hasApiError: false,
+      profanityApiError: false,
       canSubmit: !!(focused && trim(inputValue) !== ''),
     }));
   };
@@ -207,7 +206,6 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
       locale,
       authUser,
     } = this.props;
-    const { formatMessage } = this.props.intl;
     const { inputValue, canSubmit } = this.state;
 
     if (!isNilOrError(locale) && !isNilOrError(authUser) && canSubmit) {
@@ -262,7 +260,7 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
         const apiErrors = get(error, 'json.errors');
 
         this.setState({
-          errorMessage: formatMessage(messages.addCommentError),
+          hasApiError: true,
           processing: false,
           canSubmit: true,
         });
@@ -270,7 +268,7 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
         if (process.env.NODE_ENV === 'development') console.log(error);
         if (apiErrors && apiErrors.profanity) {
           this.setState({
-            profanityError: true,
+            profanityApiError: true,
           });
         }
       }
@@ -301,8 +299,39 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
     messages.childCommentBodyPlaceholder
   );
 
+  getErrorMessage = () => {
+    const { hasApiError, profanityApiError } = this.state;
+    const {
+      intl: { formatMessage },
+    } = this.props;
+
+    if (hasApiError) {
+      // Profanity error is the only error we're checking specifically
+      // at the moment to provide a specific error message.
+      // All other api errors are generalized to 1 error message
+      if (profanityApiError) {
+        return (
+          <FormattedMessage
+            {...messages.profanityError}
+            values={{
+              guidelinesLink: (
+                <Link to="/pages/faq" target="_blank">
+                  {formatMessage(messages.guidelinesLinkText)}
+                </Link>
+              ),
+            }}
+          />
+        );
+      }
+
+      return <FormattedMessage {...messages.addCommentError} />;
+    }
+
+    return null;
+  };
+
   render() {
-    const { focused, profanityError } = this.state;
+    const { focused } = this.state;
     const {
       postId,
       postType,
@@ -310,17 +339,10 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
       authUser,
       windowSize,
       className,
-      intl: { formatMessage },
     } = this.props;
 
     if (!isNilOrError(authUser) && focused) {
-      const {
-        inputValue,
-        canSubmit,
-        processing,
-        errorMessage,
-        focused,
-      } = this.state;
+      const { inputValue, canSubmit, processing, focused } = this.state;
       const isModerator =
         !isNilOrError(authUser) &&
         canModerateProject(postId, { data: authUser });
@@ -345,14 +367,14 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
                   <FormattedMessage {...messages.replyToComment} />
                 </HiddenLabel>
                 <MentionsTextArea
-                  postId={postId}
-                  postType={postType}
-                  name="comment"
                   className={`childcommentform-${parentId}`}
+                  name="comment"
                   placeholder={this.placeholder}
                   rows={3}
+                  postId={postId}
+                  postType={postType}
                   value={inputValue}
-                  error={errorMessage}
+                  error={this.getErrorMessage()}
                   onChange={this.onChange}
                   onFocus={this.onFocus}
                   fontWeight="300"
@@ -384,22 +406,6 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
               </label>
             </Form>
           </FormContainer>
-          {profanityError && (
-            <Error
-              text={
-                <FormattedMessage
-                  {...messages.profanityError}
-                  values={{
-                    guidelinesLink: (
-                      <Link to="/pages/faq" target="_blank">
-                        {formatMessage(messages.guidelinesLinkText)}
-                      </Link>
-                    ),
-                  }}
-                />
-              }
-            />
-          )}
         </Container>
       );
     }
