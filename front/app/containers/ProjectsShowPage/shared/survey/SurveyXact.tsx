@@ -31,10 +31,6 @@ const Placeholder = styled.div`
   align-items: center;
   justify-content: center;
   ${defaultCardStyle};
-
-  ${media.smallerThanMaxTablet`
-    height: ${surveyHeightMobile};
-  `}
 `;
 
 type Props = {
@@ -44,12 +40,30 @@ type Props = {
 
 export default memo<Props>(({ surveyXactUrl, className }) => {
   const [isIframeLoaded, setIsIframeLoaded] = useState(false);
+  const [hackyWidthThingy, setHackyWidthThingy] = useState<string>('100%');
   const windowSize = useWindowSize();
   const smallerThanLargeTablet = windowSize
     ? windowSize.windowWidth <= viewportWidths.largeTablet
     : false;
+
   const handleIframeOnLoad = () => {
     setIsIframeLoaded(true);
+    setTimeout(() => {
+      setHackyWidthThingy(
+        document.getElementById('survey-xact-frame')?.clientWidth.toString() ||
+          '100%'
+      );
+      setTimeout(() => {
+        setHackyWidthThingy((width) =>
+          width === '100%'
+            ? document
+                .getElementById('survey-xact-frame')
+                ?.clientWidth.toString() || '99%'
+            : (parseInt(width) - 1).toString()
+        );
+      }, 1000);
+    }),
+      10000;
   };
 
   return (
@@ -61,13 +75,14 @@ export default memo<Props>(({ surveyXactUrl, className }) => {
       )}
       <Iframe
         url={surveyXactUrl}
-        width="100%"
+        width={hackyWidthThingy}
         height={
           smallerThanLargeTablet ? surveyHeightMobile : surveyHeightDesktop
         }
         display={isIframeLoaded ? 'block' : 'none'}
         overflow="hidden"
         onLoad={handleIframeOnLoad}
+        id="survey-xact-frame"
       />
     </Container>
   );
