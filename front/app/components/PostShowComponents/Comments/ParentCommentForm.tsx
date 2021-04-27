@@ -249,16 +249,22 @@ class ParentCommentForm extends PureComponent<
         this.setState({ processing: false });
         this.close();
       } catch (error) {
-        const apiErrors = get(error, 'json.errors');
-        const apiErrorMessage = formatMessage(messages.addCommentError);
-
         if (process.env.NODE_ENV === 'development') console.log(error);
-        if (apiErrors && apiErrors.profanity) {
+        const apiErrors = get(error, 'json.errors');
+        const profanityApiError = apiErrors.base.find(
+          (apiError) => apiError.error === 'includes_banned_words'
+        );
+
+        if (profanityApiError) {
           this.setState({
             profanityError: true,
           });
         }
-        this.setState({ errorMessage: apiErrorMessage, processing: false });
+
+        this.setState({
+          errorMessage: formatMessage(messages.addCommentError),
+          processing: false,
+        });
 
         throw error;
       }
@@ -343,7 +349,7 @@ class ParentCommentForm extends PureComponent<
                   postId={postId}
                   postType={postType}
                   value={inputValue}
-                  error={errorMessage}
+                  error={!profanityError && errorMessage ? errorMessage : null}
                   onChange={this.onChange}
                   onFocus={this.onFocus}
                   fontWeight="300"
