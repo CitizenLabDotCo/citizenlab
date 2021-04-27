@@ -1698,7 +1698,6 @@
   "app.containers.Comments.deleteReason_irrelevant": "This does not belong here",
   "app.containers.Comments.deleteReason_other": "Other reason",
   "app.containers.Comments.editComment": "Edit",
-  "app.containers.Comments.emptyCommentError": "The comment can't be empty",
   "app.containers.Comments.guidelinesLinkText": "",
   "app.containers.Comments.ideaCommentBodyPlaceholder": "Write your comment here",
   "app.containers.Comments.initiativeCommentBodyPlaceholder": "Write your comment here",

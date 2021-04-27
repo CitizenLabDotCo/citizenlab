@@ -1698,7 +1698,6 @@
   "app.containers.Comments.deleteReason_irrelevant": "Una maaniittussaanngilaq",
   "app.containers.Comments.deleteReason_other": "Allamik pissuteqarluni",
   "app.containers.Comments.editComment": "Aaqqissuuguk",
-  "app.containers.Comments.emptyCommentError": "Oqaaseqaat immersorneqassaaq",
   "app.containers.Comments.guidelinesLinkText": "",
   "app.containers.Comments.ideaCommentBodyPlaceholder": "Oqaaseqaatit uani allaguk",
   "app.containers.Comments.initiativeCommentBodyPlaceholder": "Oqaaseqaatit uani allaguk",
