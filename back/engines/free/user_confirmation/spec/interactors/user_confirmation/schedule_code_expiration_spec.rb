@@ -8,8 +8,8 @@ RSpec.describe UserConfirmation::ScheduleCodeExpiration do
   context 'when the email confirmation code is correct' do
     before do
       context[:user] = create(:user_with_confirmation)
-      user.email_confirmation_sent_at = Time.zone.now
-      user.save
+      context[:user].email_confirmation_sent_at = Time.zone.now
+      context[:user].save
     end
 
     it 'is successful' do
