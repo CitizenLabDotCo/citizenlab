@@ -9,21 +9,23 @@ module IdeaAssignment
                    foreign_key: :default_assignee_id,
                    dependent: :nullify
 
-          after_update :clean_assignments, if: :saved_change_to_roles?
-          after_destroy :clear_assignments
+          after_update :clean_idea_assignments, if: :saved_change_to_roles?
+          after_destroy :clear_idea_assignments
         end
       end
 
-      def clean_assignments
+      def clean_idea_assignments
         lost_roles = saved_change_to_roles[0] - saved_change_to_roles[1]
-        _clean_assignments(lost_roles)
+        _clean_idea_assignments(lost_roles)
       end
 
-      def clear_assignments
-        _clean_assignments(roles)
+      def clear_idea_assignments
+        _clean_idea_assignments(roles)
       end
 
-      def _clean_assignments(lost_roles)
+      private
+
+      def _clean_idea_assignments(lost_roles)
         return if (lost_roles.pluck('type') & %w[admin project_moderator]).empty?
 
         moderatable_projects = ::ProjectPolicy::Scope.new(self, ::Project).moderatable

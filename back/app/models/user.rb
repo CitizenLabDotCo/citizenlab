@@ -103,6 +103,7 @@ class User < ApplicationRecord
   before_validation :set_cl1_migrated, on: :create
   before_validation :generate_slug
   before_validation :sanitize_bio_multiloc, if: :bio_multiloc
+  after_update :clean_initiative_assignments, if: :saved_change_to_roles?
 
   scope :order_role, lambda { |direction = :asc|
     joins('LEFT OUTER JOIN (SELECT jsonb_array_elements(roles) as ro, id FROM users) as r ON users.id = r.id')
@@ -354,6 +355,12 @@ class User < ApplicationRecord
 
   def roles_json_schema
     ROLES_JSON_SCHEMA
+  end
+
+  def clean_initiative_assignments
+    return if admin?
+
+    assigned_initiatives.update_all(assignee_id: nil, updated_at: DateTime.now)
   end
 end
 
