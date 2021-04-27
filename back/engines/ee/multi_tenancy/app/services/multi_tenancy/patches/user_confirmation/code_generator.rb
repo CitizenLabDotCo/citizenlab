@@ -3,8 +3,10 @@ module MultiTenancy
     module UserConfirmation
       module CodeGenerator
         def call
-          result.code = '1234' && return if e2e?
           super
+          return unless e2e?
+
+          result.code = '1234'
         end
 
         private
