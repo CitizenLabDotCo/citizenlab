@@ -42,7 +42,7 @@ RSpec.describe User, type: :model do
 
     # rubocop:disable RSpec/MultipleMemoizedHelpers
     context 'when user loses project-moderator rights' do
-      # Basically, we have here a user that moderates two project.
+      # Basically, we have here a user that moderates two projects.
       # Each project has one idea which is assigned to the user.
       let(:idea_p1) { create(:idea) }
       let(:idea_p2) { create(:idea) }
