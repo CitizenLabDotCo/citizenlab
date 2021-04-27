@@ -7,7 +7,8 @@ module UserConfirmation
     end
 
     def schedule_code_expiration_job
-      ExpireConfirmationCodeJob.set(wait_until: user.email_confirmation_code_sent_at + 1.day).perform_later(user, user.email_confirmation_code)
+      expire_at = user.email_confirmation_code_sent_at || Time.zone.now + 1.day
+      ExpireConfirmationCodeJob.set(wait_until: expire_at).perform_later(user, user.email_confirmation_code)
     end
   end
 end
