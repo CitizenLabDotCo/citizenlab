@@ -144,7 +144,7 @@ class XlsxService
       { header: 'body',                 f: ->(i) { convert_to_text_long_lines(multiloc_service.t(i.body_multiloc)) },                               width: 10 },
       { header: 'author_name',          f: ->(i) { i.author_name } },
       { header: 'author_email',         f: ->(i) { i.author&.email } },
-      { header: 'author_id',            f: ->(i) { i.author&.id } },
+      { header: 'author_id',            f: ->(i) { i.author_id } },
       { header: 'proposed_budget',      f: ->(i) { i.proposed_budget },                                                    skip_sanitization: true },
       { header: 'publication_status',   f: ->(i) { i.publication_status },                                                 skip_sanitization: true },
       { header: 'published_at',         f: ->(i) { i.published_at },                                                       skip_sanitization: true },
@@ -187,7 +187,7 @@ class XlsxService
       { header: 'body',                 f: ->(i) { convert_to_text_long_lines(multiloc_service.t(i.body_multiloc)) }, width: 10 },
       { header: 'author_name',          f: ->(i) { i.author_name } },
       { header: 'author_email',         f: ->(i) { i.author&.email } },
-      { header: 'author_id',            f: ->(i) { i.author&.id } },
+      { header: 'author_id',            f: ->(i) { i.author_id } },
       { header: 'publication_status',   f: ->(i) { i.publication_status },                              skip_sanitization: true },
       { header: 'published_at',         f: ->(i) { i.published_at },                                    skip_sanitization: true },
       { header: 'upvotes_count',        f: ->(i) { i.upvotes_count },                                   skip_sanitization: true },
@@ -212,13 +212,13 @@ class XlsxService
   def generate_idea_comments_xlsx(comments, view_private_attributes: false)
     columns = [
       { header: 'id',            f: ->(c) { c.id }, skip_sanitization: true },
-      { header: 'input',         f: ->(c) { multiloc_service.t(c&.post.title_multiloc) } },
-      { header: 'input_id',         f: ->(c) { c&.post.id } },
+      { header: 'input',         f: ->(c) { multiloc_service.t(c.post.title_multiloc) } },
+      { header: 'input_id',         f: ->(c) { c.post.id } },
       { header: 'comment',          f: ->(c) { convert_to_text_long_lines(multiloc_service.t(c.body_multiloc)) }, width: 10  },
       { header: 'upvotes_count', f: ->(c) { c.upvotes_count }, skip_sanitization: true },
       { header: 'author_name',   f: ->(c) { c.author_name } },
       { header: 'author_email',  f: ->(c) { c.author&.email } },
-      { header: 'author_id',            f: ->(i) { i.author&.id } },
+      { header: 'author_id',            f: ->(i) { i.author_id } },
       { header: 'created_at',    f: ->(c) { c.created_at },    skip_sanitization: true },
       { header: 'parent_comment_id',        f: ->(c) { c.parent_id },     skip_sanitization: true },
       { header: 'project',       f: ->(c) { multiloc_service.t(c&.idea&.project&.title_multiloc) } }
@@ -230,13 +230,13 @@ class XlsxService
   def generate_initiative_comments_xlsx(comments, view_private_attributes: false)
     columns = [
       { header: 'id',            f: ->(c) { c.id }, skip_sanitization: true },
-      { header: 'proposal',    f: ->(c) { multiloc_service.t(c&.post.title_multiloc) } },
-      { header: 'proposal_id',         f: ->(c) { c&.post.id } },
+      { header: 'proposal',    f: ->(c) { multiloc_service.t(c.post.title_multiloc) } },
+      { header: 'proposal_id',         f: ->(c) { c.post.id } },
       { header: 'comment',          f: ->(c) { convert_to_text_long_lines(multiloc_service.t(c.body_multiloc)) }, width: 10  },
       { header: 'upvotes_count', f: ->(c) { c.upvotes_count }, skip_sanitization: true },
       { header: 'author_name',   f: ->(c) { c.author_name } },
       { header: 'author_email',  f: ->(c) { c.author&.email } },
-      { header: 'author_id',            f: ->(i) { i.author&.id } },
+      { header: 'author_id',            f: ->(i) { i.author_id } },
       { header: 'created_at',    f: ->(c) { c.created_at },    skip_sanitization: true },
       { header: 'parent_comment_id',        f: ->(c) { c.parent_id },     skip_sanitization: true }
     ]

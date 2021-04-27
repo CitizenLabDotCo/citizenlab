@@ -36,7 +36,7 @@ describe XlsxService do
       custom_fields_headers = custom_fields.map do |custom_field|
         custom_field.title_multiloc["en"]
       end
-      expect(worksheet[0].cells.map(&:value)).to include *custom_fields_headers
+    	expect(worksheet[0].cells.map(&:value)).to include(*custom_fields_headers)
     end
 
     describe do

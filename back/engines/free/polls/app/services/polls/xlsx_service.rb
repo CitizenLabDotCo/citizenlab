@@ -8,47 +8,7 @@ module Polls
         .where(participation_context: participation_context)
         .order(:ordering)
 
-      columns = if is_anonymous
-        []
-      else
-				if current_user.admin?
-	        [
-						{
-		          header: 'User ID',
-		          f: -> (r) { r.user_id },
-		          skip_sanitization: true
-		        },
-						{
-		          header: 'First Name',
-		          f: -> (r) { r.user.first_name },
-		        },
-						{
-		          header: 'Last Name',
-		          f: -> (r) { r.user.first_name },
-		        },
-						{
-		          header: 'Email',
-		          f: -> (r) { r.user.email },
-		        }
-					]
-				else
-					[
-						{
-		          header: 'User ID',
-		          f: -> (r) { r.user_id },
-		          skip_sanitization: true
-		        },
-						{
-		          header: 'First Name',
-		          f: -> (r) { r.user.first_name },
-		        },
-						{
-		          header: 'Last Name',
-		          f: -> (r) { r.user.first_name },
-		        },
-					]
-				end
-      end
+    	columns = compute_user_columns is_anonymous, is_admin
       columns += questions.map do |q|
         {
           header: multiloc_service.t(q.title_multiloc),
@@ -60,6 +20,19 @@ module Polls
 
 
     private
+
+		def compute_user_columns(is_anonymous, is_admin)
+			return [] if is_anonymous
+
+			columns = [
+				{ header: 'User ID',    f: -> (r) { r.user_id }, skip_sanitization: true },
+				{ header: 'First Name', f: -> (r) { r.user.first_name } },
+				{ header: 'Last Name',  f: -> (r) { r.user.first_name } }
+			]
+
+			columns << { header: 'Email', f: -> (r) { r.user.email }} if is_admin
+			columns
+		end
 
     def extract_responses(response_obj, question_id, multiloc_service)
       resp_opts = response_obj.response_options.select{|ro| ro.option.question_id == question_id}
