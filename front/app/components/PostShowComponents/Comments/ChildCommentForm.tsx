@@ -2,7 +2,7 @@
 import React, { PureComponent } from 'react';
 import { Subscription } from 'rxjs';
 import { filter, tap } from 'rxjs/operators';
-import { trim, get } from 'lodash-es';
+import { get } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -117,6 +117,7 @@ interface State {
   canSubmit: boolean;
   profanityApiError: boolean;
   hasApiError: boolean;
+  tag: string | null;
 }
 
 class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
@@ -132,6 +133,7 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
       canSubmit: false,
       hasApiError: false,
       profanityApiError: false,
+      tag: null,
     };
   }
 
@@ -150,8 +152,8 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
         )
         .subscribe(({ eventValue }) => {
           const { authorFirstName, authorLastName, authorSlug } = eventValue;
-          const inputValue = `@[${authorFirstName} ${authorLastName}](${authorSlug}) `;
-          this.setState({ inputValue, focused: true });
+          const tag = `@[${authorFirstName} ${authorLastName}](${authorSlug}) `;
+          this.setState({ tag, inputValue: tag, focused: true });
         }),
     ];
   }
@@ -170,11 +172,16 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
   }
 
   onChange = (inputValue: string) => {
+    const { tag } = this.state;
+    const tagLength = tag ? tag.length : 0;
+    const inputValueWithoutTag = inputValue.slice(tagLength);
+    const hasEmptyError = inputValueWithoutTag.trim() === '';
+
     this.setState(({ focused }) => ({
       inputValue,
       hasApiError: false,
       profanityApiError: false,
-      canSubmit: !!(focused && trim(inputValue) !== ''),
+      canSubmit: focused && !hasEmptyError,
     }));
   };
 
