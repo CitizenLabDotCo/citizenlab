@@ -60,9 +60,7 @@ const configuration: ModuleConfiguration = {
         !metaData.requiresConfirmation;
 
       const confirmationAlreadyHappened =
-        !isNilOrError(user) &&
-        (user?.attributes?.email_confirmed_at ||
-          user?.attributes?.registration_completed_at);
+        !isNilOrError(user) && user?.attributes?.requires_confirmation;
 
       if (confirmationShouldHappen && !confirmationAlreadyHappened) {
         modifyMetaData(metaData, { requiresConfirmation: true });

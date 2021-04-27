@@ -5,7 +5,7 @@ module UserConfirmation
         skip_after_action :verify_authorized
 
         def create
-          result = ResendConfirmationCode.call(user: current_user, new_email: resend_code_params[:new_email])
+          result = SendConfirmationCode.call(user: current_user, new_email: resend_code_params[:new_email])
 
           if result.success?
             head :ok

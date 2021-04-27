@@ -5,7 +5,6 @@ module UserConfirmation
     def call
       validate_code
       validate_confirmation_reset_count
-      fail_with_error! :code, :invalid, message: 'The code is invalid.' unless user.reset_confirmation_code && user.valid_attribute?(user.email_confirmation_code)
     end
 
     def validate_code

@@ -11,8 +11,19 @@ module UserConfirmation
         end
       end
 
+      def requires_confirmation?
+        !(active? || invited? || confirmed? || registered_with_phone?)
+      end
+
       def confirmed?
         email_confirmed_at.present?
+      end
+
+      def confirm!
+        return false unless registered_with_email?
+
+        self.email_confirmed_at = Time.zone.now
+        save
       end
 
       def reset_confirmation_code!
@@ -49,13 +60,6 @@ module UserConfirmation
           email: email,
           email_confirmation_code_reset_count: 0
         )
-      end
-
-      def confirm!
-        return false unless registered_with_email?
-
-        self.email_confirmed_at = Time.zone.now
-        save
       end
     end
   end
