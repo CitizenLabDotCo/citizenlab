@@ -268,9 +268,15 @@ class ParentCommentForm extends PureComponent<
 
         throw error;
       }
-    } else if (locale && authUser && (!inputValue || inputValue === '')) {
-      const errorMessage = formatMessage(messages.emptyCommentError);
-      this.setState({ errorMessage, processing: false });
+    } else if (
+      locale &&
+      authUser &&
+      (!inputValue || inputValue.trim() === '')
+    ) {
+      this.setState({
+        errorMessage: formatMessage(messages.emptyCommentError),
+        processing: false,
+      });
     }
   };
 
@@ -349,7 +355,7 @@ class ParentCommentForm extends PureComponent<
                   postId={postId}
                   postType={postType}
                   value={inputValue}
-                  error={!profanityError && errorMessage ? errorMessage : null}
+                  error={errorMessage}
                   onChange={this.onChange}
                   onFocus={this.onFocus}
                   fontWeight="300"
