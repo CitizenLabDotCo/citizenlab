@@ -5,7 +5,6 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import Button from 'components/UI/Button';
-import Error from 'components/UI/Error';
 import MentionsTextArea from 'components/UI/MentionsTextArea';
 import Avatar from 'components/Avatar';
 import clickOutside from 'utils/containers/clickOutside';
@@ -126,9 +125,9 @@ interface State {
   inputValue: string;
   focused: boolean;
   processing: boolean;
-  errorMessage: string | null;
-  profanityError: boolean;
+  profanityApiError: boolean;
   hasEmptyError: boolean;
+  hasApiError: boolean;
 }
 
 class ParentCommentForm extends PureComponent<
@@ -143,8 +142,8 @@ class ParentCommentForm extends PureComponent<
       inputValue: '',
       focused: false,
       processing: false,
-      errorMessage: null,
-      profanityError: false,
+      hasApiError: false,
+      profanityApiError: false,
       hasEmptyError: true,
     };
   }
@@ -159,8 +158,8 @@ class ParentCommentForm extends PureComponent<
     this.setState({
       inputValue,
       focused: true,
-      errorMessage: null,
-      profanityError: false,
+      hasApiError: false,
+      profanityApiError: false,
       hasEmptyError: inputValue.trim().length < 1,
     });
   };
@@ -187,7 +186,6 @@ class ParentCommentForm extends PureComponent<
 
   onSubmit = async () => {
     const { locale, authUser, postId, postType, post } = this.props;
-    const { formatMessage } = this.props.intl;
     const { inputValue } = this.state;
     const projectId: string | null = get(
       post,
@@ -198,7 +196,6 @@ class ParentCommentForm extends PureComponent<
     this.setState({
       focused: false,
       processing: true,
-      errorMessage: null,
     });
 
     if (locale && authUser && isString(inputValue) && trim(inputValue) !== '') {
@@ -258,16 +255,16 @@ class ParentCommentForm extends PureComponent<
           (apiError) => apiError.error === 'includes_banned_words'
         );
 
-        if (profanityApiError) {
-          this.setState({
-            profanityError: true,
-          });
-        }
-
         this.setState({
-          errorMessage: formatMessage(messages.addCommentError),
+          hasApiError: true,
           processing: false,
         });
+
+        if (profanityApiError) {
+          this.setState({
+            profanityApiError: true,
+          });
+        }
 
         throw error;
       }
@@ -276,6 +273,37 @@ class ParentCommentForm extends PureComponent<
 
   setRef = (element: HTMLTextAreaElement) => {
     this.textareaElement = element;
+  };
+
+  getErrorMessage = () => {
+    const { hasApiError, profanityApiError } = this.state;
+    const {
+      intl: { formatMessage },
+    } = this.props;
+
+    if (hasApiError) {
+      // Profanity error is the only error we're checking specifically
+      // at the moment to provide a specific error message.
+      // All other api errors are generalized to 1 error message
+      if (profanityApiError) {
+        return (
+          <FormattedMessage
+            {...messages.profanityError}
+            values={{
+              guidelinesLink: (
+                <Link to="/pages/faq" target="_blank">
+                  {formatMessage(messages.guidelinesLinkText)}
+                </Link>
+              ),
+            }}
+          />
+        );
+      }
+
+      return <FormattedMessage {...messages.addCommentError} />;
+    }
+
+    return null;
   };
 
   render() {
@@ -289,14 +317,7 @@ class ParentCommentForm extends PureComponent<
       commentingPermissionInitiative,
       windowSize,
     } = this.props;
-    const {
-      inputValue,
-      focused,
-      processing,
-      errorMessage,
-      profanityError,
-      hasEmptyError,
-    } = this.state;
+    const { inputValue, focused, processing, hasEmptyError } = this.state;
     const commentingEnabled =
       postType === 'initiative'
         ? commentingPermissionInitiative?.enabled === true
@@ -321,6 +342,7 @@ class ParentCommentForm extends PureComponent<
       !isNilOrError(windowSize) && windowSize <= viewportWidths.smallTablet;
 
     if (!isNilOrError(authUser) && canComment) {
+      const errorMessage = this.getErrorMessage();
       return (
         <Container className={className || ''}>
           <StyledAvatar
@@ -383,22 +405,6 @@ class ParentCommentForm extends PureComponent<
               </label>
             </Form>
           </FormContainer>
-          {profanityError && (
-            <Error
-              text={
-                <FormattedMessage
-                  {...messages.profanityError}
-                  values={{
-                    guidelinesLink: (
-                      <Link to="/pages/faq" target="_blank">
-                        {formatMessage(messages.guidelinesLinkText)}
-                      </Link>
-                    ),
-                  }}
-                />
-              }
-            />
-          )}
         </Container>
       );
     }
