@@ -1023,7 +1023,7 @@
   "app.containers.AdminPage.DashboardPage.selectedTopic": "current topic filter",
   "app.containers.AdminPage.DashboardPage.subtitleDashboard": "Discover what's happening on your platform.",
   "app.containers.AdminPage.DashboardPage.tabInsights": "Insights (beta)",
-  "app.containers.AdminPage.DashboardPage.tabMap": "Map",
+  "app.containers.AdminPage.DashboardPage.tabMap": "Map (beta)",
   "app.containers.AdminPage.DashboardPage.tabReports": "Projects",
   "app.containers.AdminPage.DashboardPage.tabSummary": "Summary",
   "app.containers.AdminPage.DashboardPage.tabUsers": "Users",
