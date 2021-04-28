@@ -6,7 +6,7 @@ CitizenLab is a **digital democracy platform** that facilitates community partic
 
 ## Demo platform
 
-If you'd like to test out the functionalities before setting up your own instance, feel free to explore the **[demo platform](https://opensource.citizenlab.co/)**, with all open-source functionalities enabled. Admin credentials are shown in the sign-up flow, if you'd like to get access to the back-office.
+If you'd like to test out the functionalities before setting up your own instance, feel free to take a look at our **[demo video](https://www.loom.com/share/f1a80ddad6244222a9e976488f8ab19c)** or explore the **[demo platform](https://opensource.demo.citizenlab.co/)**, with all open-source functionalities enabled. Admin credentials are shown in the sign-up flow, if you'd like to get access to the back-office.
 
 ![GIF of the CitizenLab platform](https://res.cloudinary.com/citizenlabco/image/upload/c_scale,w_739/v1617377717/gif-citizenlab-participation-platform_yqpk66.gif)
 
@@ -35,7 +35,7 @@ For more information about CitizenLab, consult our **[website](https://www.citiz
 
 We welcome contributions through GitHub pull request, discussions or issues. In order to get your Pull Request merged, we require you to sign our [Contributor License Agreement](https://eform.pandadoc.com/?eform=c6bd99bc-538c-4899-b073-a4ffb0b3d0a8).
 
-You can also contribute [translations](https://developers.citizenlab.co/guide-contribute-translations). The platform is currently available in +10 languages. 
+You can also contribute [translations](https://developers.citizenlab.co/guide-contribute-translations). The platform is currently available in +10 languages.
 
 ## License
 

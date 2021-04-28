@@ -33,7 +33,7 @@ pl:
       "official_feedback_on_your_initiative": Aktualizacja mojej propozycji
       "password_reset": Zmiana hasła
       "project_moderation_rights_received": Przyznanie prawa do moderacji projektu
-      "project_folder_moderation_rights_received": Folder manager rights received
+      "project_folder_moderation_rights_received": Przydzielono uprawnienia menedżera folderów
       "project_phase_started": Nowy etap projektu
       "project_phase_upcoming": Nadchodzący nowy etap projektu
       "status_change_of_commented_idea": Zmiana statusu pomysłu, który skomentowałem
@@ -83,7 +83,7 @@ pl:
       "official_feedback_on_your_initiative": Aktualizacja Twojej propozycji - wszyscy użytkownicy
       "password_reset": Zmiana hasła - wszyscy użytkownicy
       "project_moderation_rights_received": Otrzymanie prawa do zarządzania projektem - menadżerowie projektu
-      "project_folder_moderation_rights_received": Folder manager rights received
+      "project_folder_moderation_rights_received": Przydzielono uprawnienia menedżera folderów
       "project_phase_started": Nowy etap projektu - wszyscy użytkownicy
       "project_phase_upcoming": Nowy etap projektu - administratorzy i menadżerowie projektu
       "status_change_of_commented_idea": Zmiana statusu pomysłu, który skomentowałeś - wszyscy użytkownicy
@@ -410,20 +410,20 @@ pl:
       title_you_became_moderator: 'Zostałeś moderatorem'
       x_ideas: 'ilość pomysłów: %{numberOfIdeas}'
     project_folder_moderation_rights_received:
-      cta_view_folder_button: 'View this folder'
-      message_added_as_folderadmin: 'You''ve been given folder manager rights on %{organizationName}''s participation platform for the following folder:'
-      no_projects: 'No projects yet'
-      preheader: 'An administrator of the participation platform of %{organizationName} just made you a manager of the following folder'
-      subject: 'You became a project folder manager on the participation platform of %{organizationName}'
-      text_manage_folder: 'A folder is way to organize several participation projects together. As a folder manager, you can edit the folder and folder description and create new projects (to delete projects, contact your platform administrator). You will also have project management rights over all projects within the folder, allowing you to edit the projects, manage the inputs and email participants.'
-      text_moderate_analyse_input: 'Once the projects are launched, the first inputs will start coming in. You''ll receive weekly reports with the key activities so that you can stay on top of what’s happening. The Input Manager in your ''Manage Platform'' panel allows you to see and manage the input, including assigning statuses and responding to posts and comments.'
-      text_design_participatory_process: 'You can manage the different participation projects within your folder - configure the participation method, add a project description, attach images, and communicate related events. You can also manage how participants interact with your projects, including setting access rights and configuring the posting, voting and commenting settings.'
+      cta_view_folder_button: 'Zobacz ten pomysł'
+      message_added_as_folderadmin: 'Otrzymałeś uprawnienia menedżera folderów na platformie partycypacyjnej %{organizationName}dla następującego folderu:'
+      no_projects: 'Nie ma jeszcze projektów'
+      preheader: 'Administrator platformy partycypacyjnej %{organizationName} właśnie ustanowił Cię moderatorem poniższego folderu'
+      subject: 'Zostałeś managerem folderu projektu na platformie uczestnictwa %{organizationName}'
+      text_manage_folder: 'Folder jest sposobem na zorganizowanie kilku projektów razem. Jako administrator folderu, możesz edytować folder i jego opis oraz tworzyć nowe projekty (aby usunąć projekty, skontaktuj się z administratorem platformy). Będziesz miał również prawa do zarządzania wszystkimi projektami w ramach folderu, co pozwoli Ci na edycję projektów, zarządzanie wkładem i wysyłanie maili do uczestników.'
+      text_moderate_analyse_input: 'Gdy projekty zostaną uruchomione, zaczną napływać pierwsze dane wejściowe. Będziesz otrzymywać cotygodniowe raporty z kluczowymi działaniami, abyś mógł być na bieżąco z tym, co się dzieje. Pomysły w panelu administracyjnym pozwalają na przeglądanie i zarządzanie wkładem, w tym nadawanie statusów i odpowiadanie na posty i komentarze.'
+      text_design_participatory_process: 'Możesz zarządzać różnymi projektami uczestnictwa w ramach swojego folderu - konfigurować metody uczestnictwa, dodawać opis projektu, załączać zdjęcia i informować o powiązanych wydarzeniach. Możesz również zarządzać sposobem, w jaki uczestnicy wchodzą w interakcję z Twoimi projektami, w tym ustawiać prawa dostępu i konfigurować ustawienia wysyłania postów, głosowania i komentowania.'
       title_design_participatory_process: 'Zaprojektuj proces partycypacyjny'
       title_moderate_analyse_input: 'Moderuj i analizuj dane'
-      title_manage_folder: 'Manage the folder settings and create new projects.'
-      title_what_can_you_do_folderadmin: 'What can you do as a folder manager?'
-      title_added_as_folderadmin: 'You''ve been added as a folder manager'
-      x_projects: '%{numberOfProjects} projects'
+      title_manage_folder: 'Zarządzaj ustawieniami folderów i twórz nowe projekty.'
+      title_what_can_you_do_folderadmin: 'Co możesz zrobić jako menedżer folderów?'
+      title_added_as_folderadmin: 'Zostałeś dodany jako menedżer folderów'
+      x_projects: '%{numberOfProjects} projekty'
     password_reset:
       cta_reset_password: 'Zresetuj swoje hasło'
       message_you_reset_your_password: 'Poprosiłeś o zresetowanie hasła do platformy uczestnictwa %{organizationName}. Kliknij przycisk poniżej, aby wybrać nowe, bezpieczne hasło. Link wygasa za 1 godzinę.'
