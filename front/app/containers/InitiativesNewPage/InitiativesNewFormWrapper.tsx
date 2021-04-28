@@ -251,13 +251,30 @@ export default class InitiativesNewFormWrapper extends React.PureComponent<
       }
       this.setState({ saving: false });
     } catch (errorResponse) {
-      const apiErrors = get(errorResponse, 'json.errors');
+      const apiErrors = errorResponse.json.errors;
+      const profanityApiError = apiErrors.base.find(
+        (apiError) => apiError.error === 'includes_banned_words'
+      );
 
-      if (apiErrors.titleProfanity) {
-        this.setState({ titleProfanityError: true });
-      }
-      if (apiErrors.descriptionProfanity) {
-        this.setState({ descriptionProfanityError: true });
+      if (profanityApiError) {
+        const titleProfanityError = profanityApiError.blocked_words.some(
+          (blockedWord) => blockedWord.attribute === 'title_multiloc'
+        );
+        const descriptionProfanityError = profanityApiError.blocked_words.some(
+          (blockedWord) => blockedWord.attribute === 'body_multiloc'
+        );
+
+        if (titleProfanityError) {
+          this.setState({
+            titleProfanityError,
+          });
+        }
+
+        if (descriptionProfanityError) {
+          this.setState({
+            descriptionProfanityError,
+          });
+        }
       }
 
       // saving changes while working should have a minimal error feedback,
