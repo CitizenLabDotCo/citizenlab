@@ -274,17 +274,29 @@ class IdeaEdit extends PureComponent<Props, State> {
 
       goBack();
     } catch (error) {
-      const apiErrors = get(error, 'json.errors');
       if (process.env.NODE_ENV === 'development') console.log(error);
-      if (apiErrors && apiErrors.profanity) {
-        if (apiErrors && apiErrors.titleProfanity) {
+      const apiErrors = error.json.errors;
+      const profanityApiError = apiErrors.base.find(
+        (apiError) => apiError.error === 'includes_banned_words'
+      );
+
+      if (profanityApiError) {
+        const titleProfanityError = profanityApiError.blocked_words.some(
+          (blockedWord) => blockedWord.attribute === 'title_multiloc'
+        );
+        const descriptionProfanityError = profanityApiError.blocked_words.some(
+          (blockedWord) => blockedWord.attribute === 'body_multiloc'
+        );
+
+        if (titleProfanityError) {
           this.setState({
-            titleProfanityError: true,
+            titleProfanityError,
           });
         }
-        if (apiErrors && apiErrors.descriptionProfanity) {
+
+        if (descriptionProfanityError) {
           this.setState({
-            descriptionProfanityError: true,
+            descriptionProfanityError,
           });
         }
       }

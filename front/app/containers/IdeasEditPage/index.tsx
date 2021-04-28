@@ -312,17 +312,31 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
 
       clHistory.push(`/ideas/${ideaSlug}`);
     } catch (error) {
-      const apiErrors = error.json.errors;
       if (process.env.NODE_ENV === 'development') console.log(error);
-      if (apiErrors && apiErrors.titleProfanity) {
-        this.setState({
-          titleProfanityError: true,
-        });
-      }
-      if (apiErrors && apiErrors.descriptionProfanity) {
-        this.setState({
-          descriptionProfanityError: true,
-        });
+      const apiErrors = error.json.errors;
+      const profanityApiError = apiErrors.base.find(
+        (apiError) => apiError.error === 'includes_banned_words'
+      );
+
+      if (profanityApiError) {
+        const titleProfanityError = profanityApiError.blocked_words.some(
+          (blockedWord) => blockedWord.attribute === 'title_multiloc'
+        );
+        const descriptionProfanityError = profanityApiError.blocked_words.some(
+          (blockedWord) => blockedWord.attribute === 'body_multiloc'
+        );
+
+        if (titleProfanityError) {
+          this.setState({
+            titleProfanityError,
+          });
+        }
+
+        if (descriptionProfanityError) {
+          this.setState({
+            descriptionProfanityError,
+          });
+        }
       }
     }
   };

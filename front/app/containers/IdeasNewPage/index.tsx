@@ -255,27 +255,33 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
           });
         }
       } catch (error) {
+        if (process.env.NODE_ENV === 'development') console.log(error);
         const apiErrors = get(error, 'json.errors');
         const profanityApiError = apiErrors.base.find(
           (apiError) => apiError.error === 'includes_banned_words'
         );
-        const titleProfanityError = profanityApiError.blocked_words.some(
-          (blockedWord) => blockedWord.attribute === 'title_multiloc'
-        );
-        const bodyProfanityError = profanityApiError.blocked_words.some(
-          (blockedWord) => blockedWord.attribute === 'body_multiloc'
-        );
 
-        if (apiErrors && apiErrors.titleProfanity) {
-          this.globalState.set({
-            titleProfanityError: true,
-          });
+        if (profanityApiError) {
+          const titleProfanityError = profanityApiError.blocked_words.some(
+            (blockedWord) => blockedWord.attribute === 'title_multiloc'
+          );
+          const descriptionProfanityError = profanityApiError.blocked_words.some(
+            (blockedWord) => blockedWord.attribute === 'body_multiloc'
+          );
+
+          if (titleProfanityError) {
+            this.globalState.set({
+              titleProfanityError,
+            });
+          }
+
+          if (descriptionProfanityError) {
+            this.globalState.set({
+              descriptionProfanityError,
+            });
+          }
         }
-        if (apiErrors && apiErrors.descriptionProfanity) {
-          this.globalState.set({
-            descriptionProfanityError: true,
-          });
-        }
+
         this.globalState.set({ processing: false, submitError: true });
       }
     }
