@@ -20,7 +20,7 @@ module BlockingProfanity
   end
 
   def verify_profanity object
-    # TODO return if !enalbed?
+    return if !AppConfiguration.instance.feature_activated? 'blocking_profanity'
     blocked_words = []
     service = ProfanityService.new
     attrs = SUPPORTED_CLASS_ATTRS[object.class.name]

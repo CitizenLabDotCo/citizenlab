@@ -606,6 +606,18 @@
         }
       },
 
+      "blocking_profanity": {
+        "type": "object",
+        "title": "Blocking profanity",
+        "description": "Blocks posts and comments when occurrences from the blocked word lists are detected.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false}
+        }
+      },
+
       "clustering": {
         "type": "object",
         "title": "Clustering",
