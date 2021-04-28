@@ -14,7 +14,7 @@ class PhoneService
     return :email unless phone_sign_in_activated?
 
     prefix, suffix = phone_to_email_pattern.split('__PHONE__')
-    return :phone if str.start_with?(prefix) && str.end_with?(suffix)
+    return :phone if str.starts_with?(prefix) && str.ends_with?(suffix)
 
     :email
   end
