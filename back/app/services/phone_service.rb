@@ -13,8 +13,8 @@ class PhoneService
   def encoded_phone_or_email?(str)
     return :email unless phone_sign_in_activated?
 
-    substrings = phone_to_email_pattern.split('__PHONE__')
-    return :phone if substrings.all? { |substring| str.include?(substring) }
+    prefix, suffix = phone_to_email_pattern.split('__PHONE__')
+    return :phone if str.start_with?(prefix) && str.end_with?(suffix)
 
     :email
   end
@@ -33,8 +33,7 @@ class PhoneService
   # @return [<string>] <The original string or a phone number coverted to email format>
   #
   def emailize_email_or_phone(str)
-    return str unless phone_sign_in_activated? &&
-                      phone_or_email(str) == :phone
+    return str unless phone_sign_in_activated? && phone_or_email(str) == :phone
 
     phone_to_email_pattern.gsub('__PHONE__', normalize_phone(str))
   end
