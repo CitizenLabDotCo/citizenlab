@@ -1,4 +1,4 @@
-nb-NO:
+"no":
   user_confirmation:
     confirmations_mailer:
       send_confirmation_code:
@@ -10,3 +10,4 @@ nb-NO:
         copy_paste_the_link_below: "Copy and paste the code below into your registration form."
         the_link_is_valid_for: "This link is valid for 24 hours. If the link has expired, you may <a href=\"%{link}\">request a new code</a>."
         did_you_receive_this_email_in_error: "Did you receive this email in error? <a href=\"%{link}\">Let us know</a>."
+
