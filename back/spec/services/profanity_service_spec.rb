@@ -21,6 +21,22 @@ describe ProfanityService do
       expect(service.search_blocked_words(text)).to be_blank
     end
 
+    it "matches multiple occurrences of the same blocked word" do
+      text = 'You stupid stupido.'
+      expect(service.search_blocked_words(text)).to match_array([
+        {
+          word: 'stupid',
+          position: 4,
+          language: 'en'
+        },
+        {
+          word: 'stupid',
+          position: 11,
+          language: 'en'
+        }
+      ])
+    end
+
     it "returns matches for multilple languages" do
       text = 'His recipe for chili con carne is the stupidest.'
       expect(service.search_blocked_words(text)).to match_array([
