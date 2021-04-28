@@ -96,7 +96,7 @@ export default defineMessages({
   },
   settings: {
     id: 'app.containers.Admin.Moderation.settings',
-    defaultMessage: 'Settings',
+    defaultMessage: 'Moderation Settings',
   },
   profanityBlockerSetting: {
     id: 'app.containers.Admin.Moderation.profanityBlockerSetting',
