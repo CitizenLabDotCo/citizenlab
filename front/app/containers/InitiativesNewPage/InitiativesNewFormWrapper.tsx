@@ -251,32 +251,6 @@ export default class InitiativesNewFormWrapper extends React.PureComponent<
       }
       this.setState({ saving: false });
     } catch (errorResponse) {
-      const apiErrors = errorResponse.json.errors;
-      const profanityApiError = apiErrors.base.find(
-        (apiError) => apiError.error === 'includes_banned_words'
-      );
-
-      if (profanityApiError) {
-        const titleProfanityError = profanityApiError.blocked_words.some(
-          (blockedWord) => blockedWord.attribute === 'title_multiloc'
-        );
-        const descriptionProfanityError = profanityApiError.blocked_words.some(
-          (blockedWord) => blockedWord.attribute === 'body_multiloc'
-        );
-
-        if (titleProfanityError) {
-          this.setState({
-            titleProfanityError,
-          });
-        }
-
-        if (descriptionProfanityError) {
-          this.setState({
-            descriptionProfanityError,
-          });
-        }
-      }
-
       // saving changes while working should have a minimal error feedback,
       // maybe in the saving indicator, since it's error-resistant, ie what wasn't
       // saved this time will be next time user leaves a field, or on publish call.
@@ -359,14 +333,39 @@ export default class InitiativesNewFormWrapper extends React.PureComponent<
         search: `?new_initiative_id=${initiative.data.id}`,
       });
     } catch (errorResponse) {
+      this.setState({ publishing: false });
+
       const apiErrors = get(errorResponse, 'json.errors');
+
+      const profanityApiError = apiErrors.base.find(
+        (apiError) => apiError.error === 'includes_banned_words'
+      );
+
+      if (profanityApiError) {
+        const titleProfanityError = profanityApiError.blocked_words.some(
+          (blockedWord) => blockedWord.attribute === 'title_multiloc'
+        );
+        const descriptionProfanityError = profanityApiError.blocked_words.some(
+          (blockedWord) => blockedWord.attribute === 'body_multiloc'
+        );
+
+        if (titleProfanityError) {
+          this.setState({
+            titleProfanityError,
+          });
+        }
+
+        if (descriptionProfanityError) {
+          this.setState({
+            descriptionProfanityError,
+          });
+        }
+      }
+
       this.setState((state) => ({
         apiErrors: { ...state.apiErrors, ...apiErrors },
         publishError: true,
       }));
-      setTimeout(() => {
-        this.setState({ publishError: false });
-      }, 5000);
     }
   };
 

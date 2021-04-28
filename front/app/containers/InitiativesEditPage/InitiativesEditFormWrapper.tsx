@@ -224,31 +224,6 @@ export default class InitiativesEditFormWrapper extends React.PureComponent<
               apiErrors: { ...state.apiErrors, ...apiErrors },
             }));
 
-            const profanityApiError = apiErrors.base.find(
-              (apiError) => apiError.error === 'includes_banned_words'
-            );
-
-            if (profanityApiError) {
-              const titleProfanityError = profanityApiError.blocked_words.some(
-                (blockedWord) => blockedWord.attribute === 'title_multiloc'
-              );
-              const descriptionProfanityError = profanityApiError.blocked_words.some(
-                (blockedWord) => blockedWord.attribute === 'body_multiloc'
-              );
-
-              if (titleProfanityError) {
-                this.setState({
-                  titleProfanityError,
-                });
-              }
-
-              if (descriptionProfanityError) {
-                this.setState({
-                  descriptionProfanityError,
-                });
-              }
-            }
-
             setTimeout(() => {
               this.setState((state) => ({
                 apiErrors: { ...state.apiErrors, file: undefined },
@@ -283,9 +258,31 @@ export default class InitiativesEditFormWrapper extends React.PureComponent<
         apiErrors: { ...state.apiErrors, ...apiErrors },
         publishError: true,
       }));
-      setTimeout(() => {
-        this.setState({ publishError: false });
-      }, 5000);
+
+      const profanityApiError = apiErrors.base.find(
+        (apiError) => apiError.error === 'includes_banned_words'
+      );
+
+      if (profanityApiError) {
+        const titleProfanityError = profanityApiError.blocked_words.some(
+          (blockedWord) => blockedWord.attribute === 'title_multiloc'
+        );
+        const descriptionProfanityError = profanityApiError.blocked_words.some(
+          (blockedWord) => blockedWord.attribute === 'body_multiloc'
+        );
+
+        if (titleProfanityError) {
+          this.setState({
+            titleProfanityError,
+          });
+        }
+
+        if (descriptionProfanityError) {
+          this.setState({
+            descriptionProfanityError,
+          });
+        }
+      }
     }
     this.setState({ publishing: false });
   };
