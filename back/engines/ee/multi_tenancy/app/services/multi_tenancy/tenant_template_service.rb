@@ -1,5 +1,5 @@
 module MultiTenancy
-  class TenantTemplateService
+  class ::MultiTenancy::TenantTemplateService
 
     def available_templates external_subfolder: 'release'
       template_names = {}
