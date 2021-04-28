@@ -1,7 +1,7 @@
 // Copied IdeaEditPage and made the minimal modifications for this use.
 
 import React, { PureComponent } from 'react';
-import { isString, isEmpty, get } from 'lodash-es';
+import { isString, isEmpty } from 'lodash-es';
 import { Subscription, combineLatest, of } from 'rxjs';
 import { switchMap, map, first } from 'rxjs/operators';
 import { isNilOrError } from 'utils/helperUtils';
