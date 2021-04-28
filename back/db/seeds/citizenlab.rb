@@ -85,6 +85,10 @@ AppConfiguration.create!(
       enabled: true,
       allowed: true
     },
+    survey_xact_surveys: {
+      enabled: true,
+      allowed: true
+    },
     surveymonkey_surveys: {
       enabled: true,
       allowed: true
