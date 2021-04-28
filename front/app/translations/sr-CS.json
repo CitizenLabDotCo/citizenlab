@@ -1023,7 +1023,7 @@
   "app.containers.AdminPage.DashboardPage.selectedTopic": "trenutni filter teme",
   "app.containers.AdminPage.DashboardPage.subtitleDashboard": "Saznajte šta se dešava na vašoj platformi",
   "app.containers.AdminPage.DashboardPage.tabInsights": "Uvidi (beta)",
-  "app.containers.AdminPage.DashboardPage.tabMap": "Mapa (beta)",
+  "app.containers.AdminPage.DashboardPage.tabMap": "Mapa",
   "app.containers.AdminPage.DashboardPage.tabReports": "Projekti",
   "app.containers.AdminPage.DashboardPage.tabSummary": "Sažetak",
   "app.containers.AdminPage.DashboardPage.tabUsers": "Korisnici",
