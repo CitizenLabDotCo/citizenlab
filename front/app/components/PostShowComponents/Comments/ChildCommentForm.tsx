@@ -264,7 +264,11 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
           focused: false,
         });
       } catch (error) {
+        if (process.env.NODE_ENV === 'development') console.log(error);
         const apiErrors = get(error, 'json.errors');
+        const profanityApiError = apiErrors.base.find(
+          (apiError) => apiError.error === 'includes_banned_words'
+        );
 
         this.setState({
           hasApiError: true,
@@ -272,8 +276,7 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
           canSubmit: true,
         });
 
-        if (process.env.NODE_ENV === 'development') console.log(error);
-        if (apiErrors && apiErrors.profanity) {
+        if (profanityApiError) {
           this.setState({
             profanityApiError: true,
           });
@@ -312,6 +315,8 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
       intl: { formatMessage },
     } = this.props;
 
+    console.log(hasApiError);
+    console.log(profanityApiError);
     if (hasApiError) {
       // Profanity error is the only error we're checking specifically
       // at the moment to provide a specific error message.
