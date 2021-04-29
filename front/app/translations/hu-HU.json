@@ -2490,6 +2490,7 @@
   "app.errors.avatar_extension_whitelist_error": "The file extension of the avatar image is not allowed. Allowed extensions are: jpg, jpeg, gif and png.",
   "app.errors.cannot_contain_ideas": "The participation method you selected does not support this type of post. Please edit your selection and try again.",
   "app.errors.cant_change_after_first_response": "You can no longer change this, since some users already responded",
+  "app.errors.confirmation_code_expired": "",
   "app.errors.confirmation_code_invalid": "",
   "app.errors.confirmation_code_too_many_resets": "",
   "app.errors.confirmation_code_too_many_retries": "",

@@ -2490,6 +2490,7 @@
   "app.errors.avatar_extension_whitelist_error": "Rozszerzenie pliku obrazu awatara nie jest dozwolone. Dozwolone rozszerzenia to: jpg, jpeg, gif i png.",
   "app.errors.cannot_contain_ideas": "Ta faza zawiera {ideasCount, plural, one {jeden pomysł} few {{ideasCount} pomysły} many {{ideasCount} pomysłów} other {{ideasCount} pomysły}} a metoda uczestnictwa, którą próbujesz zmienić, nie wspiera pomysłów. Proszę usunąć {ideasCount, plural, one {pomysł} few {pomysły} many {pomysłów} other {pomysły}} z etapu i spróbować ponownie.",
   "app.errors.cant_change_after_first_response": "Nie możesz już tego zmienić, ponieważ niektórzy użytkownicy na to zareagowali",
+  "app.errors.confirmation_code_expired": "",
   "app.errors.confirmation_code_invalid": "",
   "app.errors.confirmation_code_too_many_resets": "",
   "app.errors.confirmation_code_too_many_retries": "",

@@ -2490,6 +2490,7 @@
   "app.errors.avatar_extension_whitelist_error": "Extensia de fișier a imaginii avatarului nu este permisă. Extensiile permise sunt: jpg, jpeg, gif și png.",
   "app.errors.cannot_contain_ideas": "Această etapă conține {ideasCount, plural, one {o idee} other {{ideasCount} idei}} și metoda de participare pe care încercați să o schimbați nu acceptă idei. Vă rugăm să eliminați {ideasCount, plural, one {ideea} other {ideile}} din etapă și să încercați din nou.",
   "app.errors.cant_change_after_first_response": "You can no longer change this, since some users already responded",
+  "app.errors.confirmation_code_expired": "",
   "app.errors.confirmation_code_invalid": "",
   "app.errors.confirmation_code_too_many_resets": "",
   "app.errors.confirmation_code_too_many_retries": "",

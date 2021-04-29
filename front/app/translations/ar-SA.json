@@ -2490,6 +2490,7 @@
   "app.errors.avatar_extension_whitelist_error": "امتداد ملف الصورة الرمزية غير مسموح به. الامتدادات المسموح بها هي: jpg و jpeg و gif و png.",
   "app.errors.cannot_contain_ideas": "تحتوي هذه المرحلة على {ideasCount, plural, one {فكرة واحدة} other {{ideasCount} أفكار}} وطريقة المشاركة التي تحاول تغييرها لا تدعم الأفكار. يُرجى إزالة {ideasCount, plural, one {الفكرة} other {الأفكار}} من المرحلة والمحاولة مجددًا.",
   "app.errors.cant_change_after_first_response": "لم يعُد بإمكانك تغيير هذا، لأن بعض المستخدمين قد استجابوا بالفعل",
+  "app.errors.confirmation_code_expired": "",
   "app.errors.confirmation_code_invalid": "",
   "app.errors.confirmation_code_too_many_resets": "",
   "app.errors.confirmation_code_too_many_retries": "",

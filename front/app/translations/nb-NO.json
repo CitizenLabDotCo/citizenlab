@@ -2490,6 +2490,7 @@
   "app.errors.avatar_extension_whitelist_error": "Filutvidelsen til avatarbildet er ikke tillatt. Tillatte utvidelser er: jpg, jpeg, gif og png.",
   "app.errors.cannot_contain_ideas": "Denne fasen inneholder {ideasCount, plural, one {en ide} other {{ideasCount} ideer}} og den involveringsmetode, du prøver at endre den til, understøtter ikke ideer. Fjern {ideasCount, plural, one {ideen} other {ideerne}} fra fasen, og prøv igjen.",
   "app.errors.cant_change_after_first_response": "You can no longer change this, since some users already responded",
+  "app.errors.confirmation_code_expired": "",
   "app.errors.confirmation_code_invalid": "",
   "app.errors.confirmation_code_too_many_resets": "",
   "app.errors.confirmation_code_too_many_retries": "",

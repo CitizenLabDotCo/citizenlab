@@ -2490,6 +2490,7 @@
   "app.errors.avatar_extension_whitelist_error": "Het bestandsformaat van de profielbeelding is niet toegestaan. Toegestane formaten zijn: jpg, jpeg, gif en png.",
   "app.errors.cannot_contain_ideas": "Er {ideasCount, plural, one {is één idee} other {zijn {ideasCount} ideeën}} in deze fase en de participatiemethode die je koos ondersteunt geen ideeën. Gelieve daarom {ideasCount, plural, one {het idee} other {de ideeën}} eerst uit deze fase te verwijderen en opnieuw te proberen.",
   "app.errors.cant_change_after_first_response": "Dit kan niet meer worden gewijzigd omdat er al mensen deelnamen",
+  "app.errors.confirmation_code_expired": "",
   "app.errors.confirmation_code_invalid": "",
   "app.errors.confirmation_code_too_many_resets": "",
   "app.errors.confirmation_code_too_many_retries": "",
