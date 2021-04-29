@@ -4,10 +4,15 @@ RSpec.describe UserConfirmation::ConfirmUser do
   subject(:result) { described_class.call(context) }
 
   let(:context) { {} }
+  let(:user) { create(:user_with_confirmation) }
+
+  before do
+    UserConfirmation::SendConfirmationCode.call(user: user)
+  end
 
   context 'when the email confirmation code is correct' do
     before do
-      context[:user] = create(:user_with_confirmation)
+      context[:user] = user
       context[:code] = context[:user].email_confirmation_code
     end
 
@@ -32,7 +37,7 @@ RSpec.describe UserConfirmation::ConfirmUser do
 
   context 'when the code is nil' do
     before do
-      context[:user] = create(:user_with_confirmation)
+      context[:user] = user
     end
 
     it 'is a failure' do
@@ -46,7 +51,7 @@ RSpec.describe UserConfirmation::ConfirmUser do
 
   context 'when the code is incorrect' do
     before do
-      context[:user] = create(:user_with_confirmation)
+      context[:user] = user
       context[:code] = 'failcode'
     end
 
@@ -61,7 +66,7 @@ RSpec.describe UserConfirmation::ConfirmUser do
 
    context 'when the code has expired' do
     before do
-      user = create(:user_with_confirmation)
+      user = user
       user.update(email_confirmation_code_sent_at: 1.week.ago)
 
       context[:user] = user
@@ -80,7 +85,7 @@ RSpec.describe UserConfirmation::ConfirmUser do
 
   context 'when the code has expired and is invalid' do
     before do
-      user = create(:user_with_confirmation)
+      user = user
       user.update(email_confirmation_code_sent_at: 1.week.ago)
 
       context[:user] = user
