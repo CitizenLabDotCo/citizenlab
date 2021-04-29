@@ -69,8 +69,8 @@ const Title = styled.h1`
 interface InputProps {
   onSubmit: () => void;
   projectId: string;
-  onTitleChange: () => void;
-  onDescriptionChange: () => void;
+  onTitleChange: (title: string) => void;
+  onDescriptionChange: (description: string) => void;
 }
 
 interface DataProps {

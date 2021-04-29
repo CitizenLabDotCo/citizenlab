@@ -118,8 +118,8 @@ interface InputProps {
   remoteIdeaFiles?: UploadFile[] | null;
   titleProfanityError: boolean;
   descriptionProfanityError: boolean;
-  onTitleChange: () => void;
-  onDescriptionChange: () => void;
+  onTitleChange: (title: string) => void;
+  onDescriptionChange: (description: string) => void;
 }
 
 interface DataProps {
@@ -292,7 +292,7 @@ class IdeaForm extends PureComponent<
       titleError: null,
     });
 
-    this.props.onTitleChange();
+    this.props.onTitleChange(title);
   };
 
   handleDescriptionOnChange = async (description: string) => {
@@ -303,7 +303,7 @@ class IdeaForm extends PureComponent<
       descriptionError: isDescriptionEmpty ? descriptionError : null,
     }));
 
-    this.props.onDescriptionChange();
+    this.props.onDescriptionChange(description);
   };
 
   handleTopicsOnChange = (selectedTopics: string[]) => {
@@ -665,6 +665,8 @@ class IdeaForm extends PureComponent<
       imageError,
       attachmentsError,
     } = this.state;
+
+    console.log(title);
 
     const mapsLoaded = window.googleMaps;
 

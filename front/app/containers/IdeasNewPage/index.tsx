@@ -287,14 +287,16 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
     }
   };
 
-  onTitleChange = () => {
+  onTitleChange = (title: string) => {
     this.globalState.set({
+      title,
       titleProfanityError: false,
     });
   };
 
-  onDescriptionChange = () => {
+  onDescriptionChange = (description: string) => {
     this.globalState.set({
+      description,
       descriptionProfanityError: false,
     });
   };
