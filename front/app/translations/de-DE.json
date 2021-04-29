@@ -2490,6 +2490,7 @@
   "app.errors.avatar_extension_whitelist_error": "Die Dateiendung des Avatarbildes ist unzulässig. Zulässige Dateiendungen sind jpg, jpeg, gif und png.",
   "app.errors.cannot_contain_ideas": "Diese Phase enthält {ideasCount, plural, one {eine Idee} other {{ideasCount} Ideen}} und die Teilnahme-Methode, in die Sie sie zu ändern versuchen, unterstützt keine Ideen. Bitte entfernen Sie  {ideasCount, plural, one {die Idee} other {die Ideen}} aus der Phase und versuchen Sie es noch einmal.",
   "app.errors.cant_change_after_first_response": "You can no longer change this, since some users already responded",
+  "app.errors.confirmation_code_expired": "",
   "app.errors.confirmation_code_invalid": "",
   "app.errors.confirmation_code_too_many_resets": "",
   "app.errors.confirmation_code_too_many_retries": "",

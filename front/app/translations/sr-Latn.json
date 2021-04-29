@@ -2490,6 +2490,7 @@
   "app.errors.avatar_extension_whitelist_error": "Ekstenzija slike avatara nije dozvoljena. Dozvoljene ekstenzije su: jpg, jpeg, gif i png.",
   "app.errors.cannot_contain_ideas": "Odabrana participativna metoda ne podržava ovaj tip unosa. Molimo vas da promenite vaš izbor i pokušate ponovo.",
   "app.errors.cant_change_after_first_response": "Ovo ne možete izmeniti jer su određeni korisnici već odgovorili",
+  "app.errors.confirmation_code_expired": "",
   "app.errors.confirmation_code_invalid": "",
   "app.errors.confirmation_code_too_many_resets": "",
   "app.errors.confirmation_code_too_many_retries": "",
