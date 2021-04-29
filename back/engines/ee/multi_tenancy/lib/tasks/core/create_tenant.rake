@@ -146,6 +146,10 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
+        survey_xact_surveys: {
+          enabled: true,
+          allowed: true
+        },
         enalyzer_surveys: {
           enabled: true,
           allowed: true

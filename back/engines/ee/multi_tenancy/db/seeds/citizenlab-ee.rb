@@ -190,6 +190,10 @@ if ['public','example_org'].include? Apartment::Tenant.current
         enabled: false,
         allowed: false
       },
+      project_reports: {
+        enabled: true,
+        allowed: true
+      },
       user_custom_fields: {
         enabled: true,
         allowed: true
@@ -293,6 +297,10 @@ if ['public','example_org'].include? Apartment::Tenant.current
         allowed: true
       },
       google_forms_surveys: {
+        enabled: true,
+        allowed: true
+      },
+      survey_xact_surveys: {
         enabled: true,
         allowed: true
       },
