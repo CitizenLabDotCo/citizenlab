@@ -1003,7 +1003,7 @@
   "app.containers.AdminPage.DashboardPage.selectedTopic": "filtro de tópico atual",
   "app.containers.AdminPage.DashboardPage.subtitleDashboard": "Descubra o que está acontecendo em sua plataforma.",
   "app.containers.AdminPage.DashboardPage.tabInsights": "Análise em profundidade (beta)",
-  "app.containers.AdminPage.DashboardPage.tabMap": "Mapa (beta)",
+  "app.containers.AdminPage.DashboardPage.tabMap": "Mapa",
   "app.containers.AdminPage.DashboardPage.tabReports": "Projetos",
   "app.containers.AdminPage.DashboardPage.tabSummary": "Resumo",
   "app.containers.AdminPage.DashboardPage.tabUsers": "Usuários",
