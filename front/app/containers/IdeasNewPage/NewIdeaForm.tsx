@@ -241,7 +241,7 @@ class NewIdeaForm extends PureComponent<Props, State> {
             address={position}
             imageFile={imageFile}
             hasTitleProfanityError={titleProfanityError}
-            descriptionProfanityError={descriptionProfanityError}
+            hasDescriptionProfanityError={descriptionProfanityError}
             onSubmit={this.handleIdeaFormOutput}
             onTitleChange={onTitleChange}
             onDescriptionChange={onDescriptionChange}

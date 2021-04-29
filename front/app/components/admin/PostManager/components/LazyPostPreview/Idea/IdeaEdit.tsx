@@ -368,7 +368,7 @@ class IdeaEdit extends PureComponent<Props, State> {
                   !isNilOrError(remoteIdeaFiles) ? remoteIdeaFiles : null
                 }
                 hasTitleProfanityError={titleProfanityError}
-                descriptionProfanityError={descriptionProfanityError}
+                hasDescriptionProfanityError={descriptionProfanityError}
                 onTitleChange={this.onTitleChange}
                 onDescriptionChange={this.onDescriptionChange}
               />

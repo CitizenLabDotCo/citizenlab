@@ -416,7 +416,7 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
                   !isNilOrError(remoteIdeaFiles) ? remoteIdeaFiles : null
                 }
                 hasTitleProfanityError={titleProfanityError}
-                descriptionProfanityError={descriptionProfanityError}
+                hasDescriptionProfanityError={descriptionProfanityError}
                 onTitleChange={this.onTitleChange}
                 onDescriptionChange={this.onDescriptionChange}
               />
