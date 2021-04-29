@@ -1,6 +1,15 @@
 # Changelog
-
+ 
 ## Next release
+
+
+### Fixed
+- Customizable Banner Fields no longer get emptied/reset when changing another.
+
+### Added
+- When a client-side validation error happens for the project title in the admin, there will be an error next to the submit button in addition to the error message next to the input field.
+
+## 2021-04-22
 
 ### Fixed
 - After the project title error appears, it disappears again after you start correcting the error
@@ -25,7 +34,7 @@
 ### Changed
 - Empty folders are now shown in the landing page, navbar, projects page and sitemap.
 - The sitemap no longer shows all projects and folder under each folder.
-- Images added to folder descriptions are now compressed, reducing load times in project and folder pages. 
+- Images added to folder descriptions are now compressed, reducing load times in project and folder pages.
 
 ### Added
 - Allows for sending front-end events to our self-hosted matomo analytics tool
