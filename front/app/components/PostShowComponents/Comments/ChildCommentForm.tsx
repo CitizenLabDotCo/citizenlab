@@ -314,8 +314,6 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
       intl: { formatMessage },
     } = this.props;
 
-    console.log(hasApiError);
-    console.log(profanityApiError);
     if (hasApiError) {
       // Profanity error is the only error we're checking specifically
       // at the moment to provide a specific error message.
