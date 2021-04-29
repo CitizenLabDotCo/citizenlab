@@ -231,10 +231,8 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
           const apiErrors = get(error, 'json.errors');
           if (process.env.NODE_ENV === 'development') console.log(error);
 
-          // where can I see the format of apiErrors?
-          if (apiErrors && !apiErrors.idea) {
+          if (apiErrors && apiErrors.image) {
             this.globalState.set({
-              submitError: false,
               fileOrImageError: true,
             });
           }
