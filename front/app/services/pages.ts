@@ -18,6 +18,7 @@ export const LEGAL_PAGES: TLegalPage[] = [
   'privacy-policy',
   'cookie-policy',
   'accessibility-statement',
+  'faq',
 ];
 
 export const LEGAL_PAGES_ALLOWED_TO_EDIT: TLegalPage[] = [
