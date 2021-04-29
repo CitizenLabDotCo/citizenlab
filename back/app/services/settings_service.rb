@@ -73,4 +73,11 @@ class SettingsService
     end
     res
   end
+
+  def activate_feature! feature, config: nil
+    config ||= AppConfiguration.instance
+    feature_settings = config.settings[feature] || {}
+    config.settings[feature] = feature_settings.merge({ 'allowed' => true, 'enabled' => true })
+    config.save!
+  end
 end
