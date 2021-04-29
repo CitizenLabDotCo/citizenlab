@@ -2490,6 +2490,7 @@
   "app.errors.avatar_extension_whitelist_error": "Het bestandsformaat van de profielbeelding is niet toegestaan. Toegestane formaten zijn: jpg, jpeg, gif en png.",
   "app.errors.cannot_contain_ideas": "De door u gekozen participatiemethode ondersteunt dit soort input niet. Bewerk je selectie en probeer het opnieuw.",
   "app.errors.cant_change_after_first_response": "Dit kan niet meer worden gewijzigd omdat er al mensen deelnamen",
+  "app.errors.confirmation_code_expired": "Code expired. Please resend a new code.",
   "app.errors.confirmation_code_invalid": "Invalid confirmation code. Please check your email for the correct code or try 'Send New Code'",
   "app.errors.confirmation_code_too_many_resets": "You've resent the confirmation code too many times. Please contact us to receive an invitation code instead.",
   "app.errors.confirmation_code_too_many_retries": "You've tried too many times. Please resend a code or try changing your email.",
