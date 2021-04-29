@@ -7,9 +7,9 @@ class ProfanityService
         blocked_words = fetch_blocked_words(lang).map{|w| normalize_text w}
         /(#{blocked_words.map{|word| Regexp.escape(word)}.join('|')})/
       end
-      normalize_text(text).enum_for(:scan, regex).map do |word| 
+      normalize_text(text).enum_for(:scan, regex).map do |match| 
         { 
-          word: word.first, # match should only have one element
+          word: match.first, # match should only have one element
           position: Regexp.last_match.begin(0),
           language: lang
         }
