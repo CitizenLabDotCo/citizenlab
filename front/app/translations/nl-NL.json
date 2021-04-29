@@ -1003,7 +1003,7 @@
   "app.containers.AdminPage.DashboardPage.selectedTopic": "huidige themafilter",
   "app.containers.AdminPage.DashboardPage.subtitleDashboard": "Ontdek wat er gebeurt op je platform.",
   "app.containers.AdminPage.DashboardPage.tabInsights": "Inzichten (beta)",
-  "app.containers.AdminPage.DashboardPage.tabMap": "Kaart (beta)",
+  "app.containers.AdminPage.DashboardPage.tabMap": "Kaart",
   "app.containers.AdminPage.DashboardPage.tabReports": "Projecten",
   "app.containers.AdminPage.DashboardPage.tabSummary": "Samenvatting",
   "app.containers.AdminPage.DashboardPage.tabUsers": "Gebruikers",
