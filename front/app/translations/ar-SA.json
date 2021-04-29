@@ -1003,7 +1003,7 @@
   "app.containers.AdminPage.DashboardPage.selectedTopic": "عامل تصفية الموضوع الحالي",
   "app.containers.AdminPage.DashboardPage.subtitleDashboard": "اكتشف ما يحدث على منصتك.",
   "app.containers.AdminPage.DashboardPage.tabInsights": "الرؤى (بيتا)",
-  "app.containers.AdminPage.DashboardPage.tabMap": "خريطة (بيتا)",
+  "app.containers.AdminPage.DashboardPage.tabMap": "خريطة",
   "app.containers.AdminPage.DashboardPage.tabReports": "المشاريع",
   "app.containers.AdminPage.DashboardPage.tabSummary": "ملخص",
   "app.containers.AdminPage.DashboardPage.tabUsers": "المستخدمون",
