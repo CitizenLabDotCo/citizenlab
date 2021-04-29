@@ -1,6 +1,7 @@
 // Copied IdeaEditPage and made the minimal modifications for this use.
 
 import React, { PureComponent } from 'react';
+import { adopt } from 'react-adopt';
 import { isString, isEmpty } from 'lodash-es';
 import { Subscription, combineLatest, of } from 'rxjs';
 import { switchMap, map, first } from 'rxjs/operators';
@@ -47,6 +48,7 @@ import styled from 'styled-components';
 import GetResourceFileObjects, {
   GetResourceFileObjectsChildProps,
 } from 'resources/GetResourceFileObjects';
+import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 
 const ButtonWrapper = styled.div`
   display: flex;
@@ -64,6 +66,7 @@ export interface InputProps {
 
 interface DataProps {
   remoteIdeaFiles: GetResourceFileObjectsChildProps;
+  locale: GetLocaleChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -304,14 +307,25 @@ class IdeaEdit extends PureComponent<Props, State> {
     }
   };
 
-  onTitleChange = () => {
-    this.setState({ titleProfanityError: false });
+  onTitleChange = (title: string) => {
+    const { locale } = this.props;
+
+    if (!isNilOrError(locale)) {
+      const titleMultiloc = { [locale]: title };
+
+      this.setState({ titleMultiloc, titleProfanityError: false });
+    }
   };
 
-  onDescriptionChange = () => {
-    this.setState({ descriptionProfanityError: false });
-  };
+  onDescriptionChange = (description: string) => {
+    const { locale } = this.props;
 
+    if (!isNilOrError(locale)) {
+      const descriptionMultiloc = { [locale]: description };
+
+      this.setState({ descriptionMultiloc, descriptionProfanityError: false });
+    }
+  };
   render() {
     if (this.state && this.state.loaded) {
       const { remoteIdeaFiles, goBack } = this.props;
@@ -393,12 +407,17 @@ class IdeaEdit extends PureComponent<Props, State> {
   }
 }
 
-const WrappedIdeaEdit = (props: InputProps) => (
-  <GetResourceFileObjects resourceId={props.ideaId} resourceType="idea">
-    {(remoteIdeaFiles) => (
-      <IdeaEdit {...props} remoteIdeaFiles={remoteIdeaFiles} />
-    )}
-  </GetResourceFileObjects>
-);
+const Data = adopt<DataProps, InputProps>({
+  locale: <GetLocale />,
+  remoteIdeaFiles: ({ ideaId, render }) => (
+    <GetResourceFileObjects resourceId={ideaId} resourceType="idea">
+      {render}
+    </GetResourceFileObjects>
+  ),
+});
 
-export default WrappedIdeaEdit;
+export default (inputProps: InputProps) => (
+  <Data {...inputProps}>
+    {(dataProps) => <IdeaEdit {...dataProps} {...inputProps} />}
+  </Data>
+);
