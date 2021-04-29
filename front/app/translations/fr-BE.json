@@ -1003,7 +1003,7 @@
   "app.containers.AdminPage.DashboardPage.selectedTopic": "filtre actuel du thème",
   "app.containers.AdminPage.DashboardPage.subtitleDashboard": "Découvrez ce qui se passe sur votre plateforme.",
   "app.containers.AdminPage.DashboardPage.tabInsights": "Tendances (bêta)",
-  "app.containers.AdminPage.DashboardPage.tabMap": "Carte (bêta)",
+  "app.containers.AdminPage.DashboardPage.tabMap": "Carte",
   "app.containers.AdminPage.DashboardPage.tabReports": "Projets",
   "app.containers.AdminPage.DashboardPage.tabSummary": "Résumé",
   "app.containers.AdminPage.DashboardPage.tabUsers": "Utilisateurs",
