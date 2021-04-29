@@ -358,14 +358,14 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
   const onToggleBlockProfanitySetting = () => {
     if (
       !isNilOrError(appConfiguration) &&
-      appConfiguration.data.attributes.settings.profanity_blocker
+      appConfiguration.data.attributes.settings.blocking_profanity
     ) {
       const oldProfanityBlockerEnabled =
-        appConfiguration.data.attributes.settings.profanity_blocker.enabled;
+        appConfiguration.data.attributes.settings.blocking_profanity.enabled;
       setSettingsSavingError(false);
       updateAppConfiguration({
         settings: {
-          profanity_blocker: {
+          blocking_profanity: {
             enabled: !oldProfanityBlockerEnabled,
           },
         },
@@ -440,10 +440,10 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
     !isNilOrError(moderationItems) &&
     !isNilOrError(locale) &&
     !isNilOrError(appConfiguration) &&
-    appConfiguration.data.attributes.settings.profanity_blocker
+    appConfiguration.data.attributes.settings.blocking_profanity
   ) {
     const profanityBlockerEnabled =
-      appConfiguration.data.attributes.settings.profanity_blocker.enabled;
+      appConfiguration.data.attributes.settings.blocking_profanity.enabled;
     return (
       <Container className={className}>
         <PageHeader>
