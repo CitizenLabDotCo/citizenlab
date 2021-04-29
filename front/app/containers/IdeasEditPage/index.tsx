@@ -341,12 +341,18 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
     }
   };
 
-  onTitleChange = () => {
-    this.setState({ titleProfanityError: false });
+  onTitleChange = (title: string) => {
+    const { locale } = this.props;
+    const titleMultiloc = { [locale]: title };
+
+    this.setState({ titleMultiloc, titleProfanityError: false });
   };
 
-  onDescriptionChange = () => {
-    this.setState({ descriptionProfanityError: false });
+  onDescriptionChange = (description: string) => {
+    const { locale } = this.props;
+    const descriptionMultiloc = { [locale]: description };
+
+    this.setState({ descriptionMultiloc, descriptionProfanityError: false });
   };
 
   render() {
