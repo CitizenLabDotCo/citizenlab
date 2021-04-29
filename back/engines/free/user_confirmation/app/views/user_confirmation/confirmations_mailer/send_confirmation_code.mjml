@@ -14,7 +14,7 @@
   </mj-column>
 </mj-section>
 
-<mj-section padding="0 16px 12px" border-radius="5px">
+<mj-section padding="0 16px 72px" border-radius="5px">
   <mj-column padding="24px 25px 12px" background-color="#F6F6F6" border-radius="5px">
     <mj-text>
       <p style="color: rgb(111, 119, 125); text-align: center;">
