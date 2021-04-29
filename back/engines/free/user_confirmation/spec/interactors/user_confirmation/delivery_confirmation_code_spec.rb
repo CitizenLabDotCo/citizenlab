@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe UserConfirmation::SendConfirmationCodeToUser do
+RSpec.describe UserConfirmation::DeliverConfirmationCode do
   subject(:result) { described_class.call(context) }
 
   let(:context) { {} }
