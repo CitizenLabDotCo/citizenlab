@@ -30,7 +30,15 @@ RSpec.describe UserConfirmation::DeliverConfirmationCode do
     end
 
     it 'enqueues email delivery job' do
-      expect { result }.to enqueue_job(ActionMailer::MailDeliveryJob)
+      result
+      last_email = ActionMailer::Base.deliveries.last
+      expect(last_email.to).to eq ['test@test.com']
+    end
+
+    it 'enqueues email with the confirmation' do
+      result
+      last_email = ActionMailer::Base.deliveries.last
+      expect(last_email.body.encoded).to include user.reload.email_confirmation_code
     end
   end
 end
