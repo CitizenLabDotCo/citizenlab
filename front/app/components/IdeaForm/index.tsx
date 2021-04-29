@@ -534,8 +534,6 @@ class IdeaForm extends PureComponent<
       );
     }
 
-    debugger;
-
     const hasError =
       !titleError &&
       !descriptionError &&
