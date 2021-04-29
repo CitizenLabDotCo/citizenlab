@@ -273,7 +273,6 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
         this.setState({
           hasApiError: true,
           processing: false,
-          canSubmit: true,
         });
 
         if (profanityApiError) {
