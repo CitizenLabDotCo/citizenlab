@@ -2490,6 +2490,7 @@
   "app.errors.avatar_extension_whitelist_error": "La extensión del archivo de la imagen del avatar no está permitida. Las extensiones permitidas son: jpg, jpeg, gif y png.",
   "app.errors.cannot_contain_ideas": "Esta fase contiene {ideasCount, plural, one {one idea} other {{ideasCount} ideas}} y el método de participación al que intenta cambiarla no es compatible con las ideas. Elimine {ideasCount, plural, one {the idea} other {the ideas}} de la fase e inténtelo de nuevo.",
   "app.errors.cant_change_after_first_response": "No es posible modificarlo, ya que algunos usuarios ya lo han respondido.",
+  "app.errors.confirmation_code_expired": "Code expired. Please resend a new code.",
   "app.errors.confirmation_code_invalid": "Invalid confirmation code. Please check your email for the correct code or try 'Send New Code'",
   "app.errors.confirmation_code_too_many_resets": "You've resent the confirmation code too many times. Please contact us to receive an invitation code instead.",
   "app.errors.confirmation_code_too_many_retries": "You've tried too many times. Please resend a code or try changing your email.",
