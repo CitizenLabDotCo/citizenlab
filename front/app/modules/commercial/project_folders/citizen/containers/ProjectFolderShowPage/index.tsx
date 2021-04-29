@@ -2,7 +2,7 @@ import React, { memo, useMemo } from 'react';
 import { isError, isUndefined } from 'lodash-es';
 import { withRouter, WithRouterProps } from 'react-router';
 import { isNilOrError } from 'utils/helperUtils';
-import { moderatesFolder } from '../../../permissions/roles';
+import { isAdmin } from 'services/permissions/roles';
 
 // components
 import ProjectFolderShowPageMeta from './ProjectFolderShowPageMeta';
@@ -186,8 +186,8 @@ const ProjectFolderShowPage = memo<{
     isUndefined(projectFolder) ||
     isUndefined(adminPublicationsList);
 
-  const userCanEditFolder =
-    !isNilOrError(authUser) && moderatesFolder(authUser, projectFolder.id);
+  const userCanEditProject =
+    !isNilOrError(authUser) && isAdmin({ data: authUser });
 
   return (
     <>
@@ -212,7 +212,7 @@ const ProjectFolderShowPage = memo<{
           <>
             {!smallerThan1100px ? (
               <StyledContentContainer maxWidth={maxPageWidth}>
-                {userCanEditFolder && (
+                {userCanEditProject && (
                   <ButtonBar>
                     <EditButton
                       icon="edit"
