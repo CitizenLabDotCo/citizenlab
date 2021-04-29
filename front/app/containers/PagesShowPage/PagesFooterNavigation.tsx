@@ -49,7 +49,6 @@ const PagesFooterNavigation = ({ currentPageSlug }: Props) => {
                   faq: messages.faqPageName,
                 }[pageSlug]}
               />
-              <FormattedMessage {...messages[`${pageSlug}PageName`]} />
               <LinkIcon name="chevron-right" />
             </StyledLink>
           )
