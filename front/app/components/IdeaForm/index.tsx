@@ -635,8 +635,8 @@ class IdeaForm extends PureComponent<
       topics,
       project,
       phases,
-      hasTitleProfanityError: titleProfanityError,
-      hasDescriptionProfanityError: descriptionProfanityError,
+      hasTitleProfanityError,
+      hasDescriptionProfanityError,
     } = this.props;
     const { formatMessage } = this.props.intl;
     const {
@@ -748,7 +748,7 @@ class IdeaForm extends PureComponent<
                 maxCharCount={80}
                 autocomplete="off"
               />
-              {titleProfanityError && (
+              {hasTitleProfanityError && (
                 <Error
                   text={
                     <FormattedMessage
@@ -785,11 +785,11 @@ class IdeaForm extends PureComponent<
                 value={description}
                 onChange={this.handleDescriptionOnChange}
                 setRef={this.handleDescriptionSetRef}
-                hasError={!!descriptionError || descriptionProfanityError}
+                hasError={!!descriptionError || hasDescriptionProfanityError}
                 withCTAButton
               />
               {descriptionError && <Error text={descriptionError} />}
-              {descriptionProfanityError && (
+              {hasDescriptionProfanityError && (
                 <Error
                   text={
                     <FormattedMessage
