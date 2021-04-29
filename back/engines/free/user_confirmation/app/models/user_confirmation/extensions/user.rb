@@ -23,23 +23,27 @@ module UserConfirmation
         return false unless registered_with_email?
 
         self.email_confirmed_at = Time.zone.now
-        save
+        save!
+      end
+
+      def email_confirmation_code_expiration_at
+        email_confirmation_code_sent_at + 1.day
       end
 
       def reset_confirmation_code!
         reset_confirmation_code
         increment_confirmation_code_reset_count
-        save
+        save!
       end
 
       def increment_confirmation_retry_count!
         increment_confirmation_retry_count
-        save
+        save!
       end
 
       def increment_confirmation_code_reset_count!
         increment_confirmation_code_reset_count
-        save
+        save!
       end
 
       def reset_confirmation_code

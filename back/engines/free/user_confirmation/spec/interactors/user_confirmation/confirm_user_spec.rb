@@ -18,7 +18,7 @@ RSpec.describe UserConfirmation::ConfirmUser do
 
   context 'when the user is nil' do
     before do
-      context[:code] = '123456'
+      context[:code] = '1234'
     end
 
     it 'is a failure' do
@@ -47,6 +47,43 @@ RSpec.describe UserConfirmation::ConfirmUser do
   context 'when the code is incorrect' do
     before do
       context[:user] = create(:user_with_confirmation)
+      context[:code] = 'failcode'
+    end
+
+    it 'is a failure' do
+      expect(result).to be_a_failure
+    end
+
+    it 'returns a code invalid error' do
+      expect(result.errors.details).to include(code: [{ error: :invalid }])
+    end
+  end
+
+   context 'when the code has expired' do
+    before do
+      user = create(:user_with_confirmation)
+      user.update(email_confirmation_code_sent_at: 1.week.ago)
+
+      context[:user] = user
+      context[:code] = user.email_confirmation_code
+    end
+
+    it 'is a failure' do
+      expect(result).to be_a_failure
+    end
+
+    it 'returns a code invalid error' do
+      expect(result.errors.details).to include(code: [{ error: :expired }])
+    end
+  end
+
+
+   context 'when the code has expired and is invalid' do
+    before do
+      user = create(:user_with_confirmation)
+      user.update(email_confirmation_code_sent_at: 1.week.ago)
+
+      context[:user] = user
       context[:code] = 'failcode'
     end
 
