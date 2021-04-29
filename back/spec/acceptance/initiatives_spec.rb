@@ -410,6 +410,28 @@ resource "Initiatives" do
         expect(response_status).to eq 201
       end
     end
+
+    describe do
+      before { SettingsService.new.activate_feature! 'blocking_profanity' }
+      # Weak attempt to make it less explicit
+      let(:title_multiloc) {{'nl-BE' => 'Fu'+'ck'}}
+
+      example_request "[error] Create an initiative with blocked words" do
+        expect(response_status).to eq 422
+        json_response = json_parse(response_body)
+        blocked_error = json_response.dig(:errors, :base)&.select{|err| err[:error] == 'includes_banned_words'}&.first
+        expect(blocked_error).to be_present
+        expect(blocked_error.dig(:blocked_words)).to include(
+          {
+            word: 'f'+'uck',
+            position: 0,
+            language: 'en',
+            locale: 'nl-BE',
+            attribute: 'title_multiloc'
+          }
+        )
+      end
+    end
   end
 
   patch "web_api/v1/initiatives/:id" do
