@@ -240,7 +240,7 @@ class NewIdeaForm extends PureComponent<Props, State> {
             proposedBudget={proposedBudget}
             address={position}
             imageFile={imageFile}
-            titleProfanityError={titleProfanityError}
+            hasTitleProfanityError={titleProfanityError}
             descriptionProfanityError={descriptionProfanityError}
             onSubmit={this.handleIdeaFormOutput}
             onTitleChange={onTitleChange}

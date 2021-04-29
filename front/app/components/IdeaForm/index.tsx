@@ -116,7 +116,7 @@ interface InputProps {
   imageFile: UploadFile[];
   onSubmit: (arg: IIdeaFormOutput) => void;
   remoteIdeaFiles?: UploadFile[] | null;
-  titleProfanityError: boolean;
+  hasTitleProfanityError: boolean;
   descriptionProfanityError: boolean;
   onTitleChange: (title: string) => void;
   onDescriptionChange: (description: string) => void;
@@ -637,7 +637,7 @@ class IdeaForm extends PureComponent<
       topics,
       project,
       phases,
-      titleProfanityError,
+      hasTitleProfanityError: titleProfanityError,
       descriptionProfanityError,
     } = this.props;
     const { formatMessage } = this.props.intl;
