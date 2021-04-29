@@ -749,6 +749,7 @@
   "app.containers.Admin.Moderation.read": "Seen",
   "app.containers.Admin.Moderation.readMore": "Read more",
   "app.containers.Admin.Moderation.rowsPerPage": "Rows per page",
+  "app.containers.Admin.Moderation.settings": "Moderation Settings",
   "app.containers.Admin.Moderation.settingsSavingError": "Couldn't save. Try changing the setting again.",
   "app.containers.Admin.Moderation.show": "Show",
   "app.containers.Admin.Moderation.status": "Status",
