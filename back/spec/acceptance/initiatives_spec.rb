@@ -414,7 +414,7 @@ resource "Initiatives" do
     describe do
       before { SettingsService.new.activate_feature! 'blocking_profanity' }
       # Weak attempt to make it less explicit
-      let(:title_multiloc) {{'nl-BE' => 'Fu'+'ck'}}
+      let(:location_description) {'fu'+'ckistan'}
 
       example_request "[error] Create an initiative with blocked words" do
         expect(response_status).to eq 422
@@ -426,8 +426,7 @@ resource "Initiatives" do
             word: 'f'+'uck',
             position: 0,
             language: 'en',
-            locale: 'nl-BE',
-            attribute: 'title_multiloc'
+            attribute: 'location_description'
           }
         )
       end
