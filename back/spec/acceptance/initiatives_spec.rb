@@ -414,7 +414,7 @@ resource "Initiatives" do
     describe do
       before { SettingsService.new.activate_feature! 'blocking_profanity' }
       # Weak attempt to make it less explicit
-      let(:location_description) {'fu'+'ckistan'}
+      let(:location_description) {'fu'+'ck'}
 
       example_request "[error] Create an initiative with blocked words" do
         expect(response_status).to eq 422
