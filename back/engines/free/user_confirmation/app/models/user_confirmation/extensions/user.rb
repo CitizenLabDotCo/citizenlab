@@ -7,7 +7,7 @@ module UserConfirmation
           validates :email_confirmation_retry_count, numericality: { less_than_or_equal_to: ENV.fetch('EMAIL_CONFIRMATION_MAX_RETRIES', 5) }
           validates :email_confirmation_code_reset_count, numericality: { less_than_or_equal_to: ENV.fetch('EMAIL_CONFIRMATION_MAX_RETRIES', 5) }
 
-          before_validation :reset_confirmation_code, unless: :email_confirmation_code, on: :create
+          before_validation :reset_confirmation_code, unless: :email_confirmation_code, if: :email_changed?
         end
       end
 

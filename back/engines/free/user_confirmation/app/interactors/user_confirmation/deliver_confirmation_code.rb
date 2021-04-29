@@ -1,5 +1,5 @@
 module UserConfirmation
-  class SendConfirmationCodeToUser < ApplicationInteractor
+  class DeliverConfirmationCode < ApplicationInteractor
     delegate :user, to: :context
 
     def call
@@ -8,6 +8,7 @@ module UserConfirmation
       end
 
       ConfirmationsMailer.with(user: user).send_confirmation_code.deliver_later
+
       user.update(email_confirmation_code_sent_at: Time.zone.now)
     end
   end

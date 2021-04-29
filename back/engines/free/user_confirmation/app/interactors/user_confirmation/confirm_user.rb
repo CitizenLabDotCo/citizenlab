@@ -21,10 +21,6 @@ module UserConfirmation
       fail_with_error! :code, :invalid
     end
 
-    def handle_invalid_code
-      fail_with_error! :code, :invalid
-    end
-
     def confirm_user
       fail_with_error! :user, :confirmation, message: 'Something went wrong.' unless user.confirm!
     end
