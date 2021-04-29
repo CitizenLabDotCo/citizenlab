@@ -469,7 +469,6 @@ class IdeaForm extends PureComponent<
     ideaFiles: UploadFile[]
   ) => {
     const { pbContext } = this.state;
-    const { titleProfanityError, descriptionProfanityError } = this.props;
     const titleError = this.validateTitle(title);
     const descriptionError = this.validateDescription(description);
     const topicsError = this.validateTopics(selectedTopics);
@@ -513,7 +512,7 @@ class IdeaForm extends PureComponent<
     });
 
     // scroll to erroneous title/description fields
-    if ((titleError || titleProfanityError) && this.titleInputElement) {
+    if (titleError && this.titleInputElement) {
       scrollToComponent(this.titleInputElement, {
         align: 'top',
         offset: -240,
@@ -523,10 +522,7 @@ class IdeaForm extends PureComponent<
         () => this.titleInputElement && this.titleInputElement.focus(),
         300
       );
-    } else if (
-      (descriptionError || descriptionProfanityError) &&
-      this.descriptionElement
-    ) {
+    } else if (descriptionError && this.descriptionElement) {
       scrollToComponent(this.descriptionElement, {
         align: 'top',
         offset: -200,
@@ -537,6 +533,8 @@ class IdeaForm extends PureComponent<
         300
       );
     }
+
+    debugger;
 
     const hasError =
       !titleError &&
@@ -578,7 +576,7 @@ class IdeaForm extends PureComponent<
       ideaFiles,
       ideaFilesToRemove,
     } = this.state;
-    const formIsValid = this.validate(
+    const formClientSideIsValid = this.validate(
       title,
       description,
       budget,
@@ -589,7 +587,7 @@ class IdeaForm extends PureComponent<
       ideaFiles
     );
 
-    if (formIsValid) {
+    if (formClientSideIsValid) {
       const output: IIdeaFormOutput = {
         title,
         selectedTopics,
