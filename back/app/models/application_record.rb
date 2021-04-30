@@ -22,4 +22,9 @@ class ApplicationRecord < ActiveRecord::Base
     blk.call
     self.inheritance_column = initial_inheritance_column
   end
+
+  def valid_attribute?(attribute_name)
+    self.valid?
+    self.errors[attribute_name].blank?.tap { |_| self.errors.clear }
+  end
 end

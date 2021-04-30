@@ -6,16 +6,6 @@ class SideFxUserService
     if (CustomField.with_resource_type('User').enabled.count == 0) && (user.invite_status != 'pending')
       user.registration_completed_at ||= Time.now
     end
-
-    # Hack to embed phone numbers in email
-    app_config = AppConfiguration.instance
-    if app_config.feature_activated?('password_login') && app_config.settings('password_login','phone')
-      phone_service = PhoneService.new
-      if phone_service.phone_or_email(user.email) == :phone
-        pattern = app_config.settings('password_login', 'phone_email_pattern')
-        user.email = pattern.gsub('__PHONE__', phone_service.normalize_phone(user.email))
-      end
-    end
   end
 
   def after_create user, current_user
@@ -92,4 +82,5 @@ class SideFxUserService
 
 end
 
+::SideFxUserService.prepend(UserConfirmation::Patches::SideFxUserService)
 ::SideFxUserService.prepend_if_ee('IdeaAssignment::Patches::SideFxUserService')

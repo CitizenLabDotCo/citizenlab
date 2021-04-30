@@ -2,12 +2,12 @@ nl-BE:
   user_confirmation:
     confirmations_mailer:
       send_confirmation_code:
-        subject: "Bevestig uw e-mailadres voor het deelnameplatform van %{organizationName}"
-        header: "Uw bevestigingscode "
-        header_message: "Hallo %{firstName}!"
-        thanks_for_signing_up: "Bedankt voor uw inschrijving op het deelnameplatform van %{organizationName}.\n"
-        please_confirm_your_email_address: "Gelieve uw e-mailadres te bevestigen om uw registratie te voltooien.\n"
-        copy_paste_the_link_below: "Kopieer en plak de onderstaande code in uw registratieformulier.\n"
-        the_link_is_valid_for: "Deze link is 24 uur geldig. Als de link is verlopen, kunt u <a href=\"%{link}\">een nieuwe code aanvragen</a>."
-        did_you_receive_this_email_in_error: "Heeft u deze e-mail per vergissing ontvangen? <a href=\"%{link}\">Laat het ons weten</a>."
+        subject: "Confirm your email address for %{organizationName}'s participation platform"
+        header: "Your Confirmation Code"
+        header_message: "Hi %{firstName}!"
+        thanks_for_signing_up: "Thanks for signing up for %{organizationName}'s participation platform."
+        please_confirm_your_email_address: "Please confirm your email address to complete your registration."
+        copy_paste_the_link_below: "Copy and paste the code below into your registration form."
+        the_link_is_valid_for: "This link is valid for 24 hours. If the link has expired, you may <a href=\"%{link}\">request a new code</a>."
+        did_you_receive_this_email_in_error: "Did you receive this email in error? <a href=\"%{link}\">Let us know</a>."
 
