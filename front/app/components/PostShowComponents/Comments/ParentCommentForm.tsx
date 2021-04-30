@@ -8,6 +8,7 @@ import Button from 'components/UI/Button';
 import MentionsTextArea from 'components/UI/MentionsTextArea';
 import Avatar from 'components/Avatar';
 import clickOutside from 'utils/containers/clickOutside';
+import Link from 'utils/cl-router/Link';
 
 // tracking
 import { trackEventByName } from 'utils/analytics';
@@ -124,7 +125,9 @@ interface State {
   inputValue: string;
   focused: boolean;
   processing: boolean;
-  errorMessage: string | null;
+  profanityApiError: boolean;
+  hasEmptyError: boolean;
+  hasApiError: boolean;
 }
 
 class ParentCommentForm extends PureComponent<
@@ -139,7 +142,9 @@ class ParentCommentForm extends PureComponent<
       inputValue: '',
       focused: false,
       processing: false,
-      errorMessage: null,
+      hasApiError: false,
+      profanityApiError: false,
+      hasEmptyError: true,
     };
   }
 
@@ -153,7 +158,9 @@ class ParentCommentForm extends PureComponent<
     this.setState({
       inputValue,
       focused: true,
-      errorMessage: null,
+      hasApiError: false,
+      profanityApiError: false,
+      hasEmptyError: inputValue.trim().length < 1,
     });
   };
 
@@ -179,7 +186,6 @@ class ParentCommentForm extends PureComponent<
 
   onSubmit = async () => {
     const { locale, authUser, postId, postType, post } = this.props;
-    const { formatMessage } = this.props.intl;
     const { inputValue } = this.state;
     const projectId: string | null = get(
       post,
@@ -190,7 +196,6 @@ class ParentCommentForm extends PureComponent<
     this.setState({
       focused: false,
       processing: true,
-      errorMessage: null,
     });
 
     if (locale && authUser && isString(inputValue) && trim(inputValue) !== '') {
@@ -244,18 +249,61 @@ class ParentCommentForm extends PureComponent<
         this.setState({ processing: false });
         this.close();
       } catch (error) {
-        const errorMessage = formatMessage(messages.addCommentError);
-        this.setState({ errorMessage, processing: false });
+        if (process.env.NODE_ENV === 'development') console.log(error);
+        const apiErrors = get(error, 'json.errors');
+        const profanityApiError = apiErrors.base.find(
+          (apiError) => apiError.error === 'includes_banned_words'
+        );
+
+        this.setState({
+          hasApiError: true,
+          processing: false,
+        });
+
+        if (profanityApiError) {
+          this.setState({
+            profanityApiError: true,
+          });
+        }
+
         throw error;
       }
-    } else if (locale && authUser && (!inputValue || inputValue === '')) {
-      const errorMessage = formatMessage(messages.emptyCommentError);
-      this.setState({ errorMessage, processing: false });
     }
   };
 
   setRef = (element: HTMLTextAreaElement) => {
     this.textareaElement = element;
+  };
+
+  getErrorMessage = () => {
+    const { hasApiError, profanityApiError } = this.state;
+    const {
+      intl: { formatMessage },
+    } = this.props;
+
+    if (hasApiError) {
+      // Profanity error is the only error we're checking specifically
+      // at the moment to provide a specific error message.
+      // All other api errors are generalized to 1 error message
+      if (profanityApiError) {
+        return (
+          <FormattedMessage
+            {...messages.profanityError}
+            values={{
+              guidelinesLink: (
+                <Link to="/pages/faq" target="_blank">
+                  {formatMessage(messages.guidelinesLinkText)}
+                </Link>
+              ),
+            }}
+          />
+        );
+      }
+
+      return <FormattedMessage {...messages.addCommentError} />;
+    }
+
+    return null;
   };
 
   render() {
@@ -269,7 +317,7 @@ class ParentCommentForm extends PureComponent<
       commentingPermissionInitiative,
       windowSize,
     } = this.props;
-    const { inputValue, focused, processing, errorMessage } = this.state;
+    const { inputValue, focused, processing, hasEmptyError } = this.state;
     const commentingEnabled =
       postType === 'initiative'
         ? commentingPermissionInitiative?.enabled === true
@@ -283,7 +331,6 @@ class ParentCommentForm extends PureComponent<
       'relationships.project.data.id',
       null
     );
-    const commentButtonDisabled = !inputValue || inputValue === '';
     const isModerator =
       !isNilOrError(authUser) &&
       canModerateProject(projectId, { data: authUser });
@@ -323,7 +370,7 @@ class ParentCommentForm extends PureComponent<
                   postId={postId}
                   postType={postType}
                   value={inputValue}
-                  error={errorMessage}
+                  error={this.getErrorMessage()}
                   onChange={this.onChange}
                   onFocus={this.onFocus}
                   fontWeight="300"
@@ -348,7 +395,7 @@ class ParentCommentForm extends PureComponent<
                     className="e2e-submit-parentcomment"
                     processing={processing}
                     onClick={this.onSubmit}
-                    disabled={commentButtonDisabled}
+                    disabled={hasEmptyError}
                     padding={smallerThanSmallTablet ? '6px 12px' : undefined}
                   >
                     <FormattedMessage {...messages.publishComment} />
