@@ -10,13 +10,20 @@ module UserConfirmation
 
             before_validation :reset_confirmation_code, unless: :email_confirmation_code, if: :email_changed?
             before_validation :reset_confirmed_at, on: :update, if: :email_changed?
+            before_validation :reset_confirmation_required, on: :create
+
+            private :confirmation_required
           end
         end
       end
 
-      def requires_confirmation?
+      def will_require_confirmation?
+        !(active? || invited? || confirmed? || registered_with_phone? || highest_role != :user)
+      end
+
+      def confirmation_required?
         AppConfiguration.instance.feature_activated?('user_confirmation') &&
-          !(active? || invited? || confirmed? || registered_with_phone?)
+          confirmation_required
       end
 
       def confirmed?
@@ -38,6 +45,10 @@ module UserConfirmation
         reset_confirmation_code
         increment_confirmation_code_reset_count
         save!
+      end
+
+      def reset_confirmation_required
+        self.confirmation_required = will_require_confirmation?
       end
 
       def increment_confirmation_retry_count!

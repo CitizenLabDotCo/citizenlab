@@ -5,7 +5,7 @@ module UserConfirmation
         module UserSerializer
           def self.included(base)
             base.class_eval do
-              base.attribute(:requires_confirmation) { |user| user.requires_confirmation? }
+              base.attribute(:confirmation_required) { |user| user.confirmation_required? }
             end
           end
         end
