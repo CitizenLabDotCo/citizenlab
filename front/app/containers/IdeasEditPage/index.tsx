@@ -123,8 +123,11 @@ interface State {
   imageFile: UploadFile[];
   imageId: string | null;
   loaded: boolean;
+  submitError: boolean;
   titleProfanityError: boolean;
   descriptionProfanityError: boolean;
+  fileOrImageError: boolean;
+  processing: boolean;
 }
 
 class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
@@ -144,8 +147,11 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
       imageFile: [],
       imageId: null,
       loaded: false,
+      submitError: false,
       titleProfanityError: false,
       descriptionProfanityError: false,
+      fileOrImageError: false,
+      processing: false,
     };
     this.subscriptions = [];
   }
@@ -298,6 +304,7 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
       ...addressDiff,
     });
 
+    this.setState({ submitError: false, processing: true });
     try {
       if (oldImageId && oldImageBase64 !== newImageBase64) {
         await deleteIdeaImage(ideaId, oldImageId);
@@ -338,7 +345,17 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
           });
         }
       }
+
+      if (apiErrors && (apiErrors.image || apiErrors.file)) {
+        this.setState({
+          fileOrImageError: true,
+        });
+      }
+
+      this.setState({ submitError: true });
     }
+
+    this.setState({ processing: false });
   };
 
   onTitleChange = (title: string) => {
@@ -369,6 +386,9 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
         proposedBudget,
         titleProfanityError,
         descriptionProfanityError,
+        submitError,
+        fileOrImageError,
+        processing,
       } = this.state;
       const title = locale && titleMultiloc ? titleMultiloc[locale] || '' : '';
       const description =
@@ -425,6 +445,9 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
                 <IdeasEditButtonBar
                   elementId="e2e-idea-edit-save-button"
                   form="idea-form"
+                  submitError={submitError}
+                  processing={processing}
+                  fileOrImageError={fileOrImageError}
                 />
               </ButtonBarContainer>
             </FormContainer>
