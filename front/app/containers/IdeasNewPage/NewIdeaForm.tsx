@@ -69,8 +69,8 @@ const Title = styled.h1`
 interface InputProps {
   onSubmit: () => void;
   projectId: string;
-  onTitleChange: () => void;
-  onDescriptionChange: () => void;
+  onTitleChange: (title: string) => void;
+  onDescriptionChange: (description: string) => void;
 }
 
 interface DataProps {
@@ -91,7 +91,8 @@ interface GlobalState {
   submitError: boolean;
   processing: boolean;
   fileOrImageError: boolean;
-  profanityError: boolean;
+  titleProfanityError: boolean;
+  descriptionProfanityError: boolean;
 }
 
 interface State extends GlobalState {}
@@ -113,7 +114,8 @@ class NewIdeaForm extends PureComponent<Props, State> {
       submitError: false,
       processing: false,
       fileOrImageError: false,
-      profanityError: false,
+      titleProfanityError: false,
+      descriptionProfanityError: false,
     };
     this.globalState = globalState.init('IdeasNewPage');
     this.subscriptions = [];
@@ -135,7 +137,8 @@ class NewIdeaForm extends PureComponent<Props, State> {
           submitError,
           processing,
           fileOrImageError,
-          profanityError,
+          titleProfanityError,
+          descriptionProfanityError,
         }) => {
           const newState: State = {
             title,
@@ -148,7 +151,8 @@ class NewIdeaForm extends PureComponent<Props, State> {
             submitError,
             processing,
             fileOrImageError,
-            profanityError,
+            titleProfanityError,
+            descriptionProfanityError,
           };
 
           this.setState(newState);
@@ -194,7 +198,8 @@ class NewIdeaForm extends PureComponent<Props, State> {
       proposedBudget,
       position,
       imageFile,
-      profanityError,
+      titleProfanityError,
+      descriptionProfanityError,
     } = this.state;
     const {
       projectId,
@@ -235,7 +240,8 @@ class NewIdeaForm extends PureComponent<Props, State> {
             proposedBudget={proposedBudget}
             address={position}
             imageFile={imageFile}
-            profanityError={profanityError}
+            hasTitleProfanityError={titleProfanityError}
+            hasDescriptionProfanityError={descriptionProfanityError}
             onSubmit={this.handleIdeaFormOutput}
             onTitleChange={onTitleChange}
             onDescriptionChange={onDescriptionChange}

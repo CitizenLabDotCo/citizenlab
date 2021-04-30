@@ -737,6 +737,12 @@ class Navbar extends PureComponent<
                     <FormattedMessage {...messages.pageInformation} />
                   </NavigationItemText>
                 </NavigationItem>
+                <NavigationItem to="/pages/faq" activeClassName="active">
+                  <NavigationItemBorder />
+                  <NavigationItemText>
+                    <FormattedMessage {...messages.pageFaq} />
+                  </NavigationItemText>
+                </NavigationItem>
               </NavigationItems>
             </Left>
             <StyledRightFragment name="navbar-right">

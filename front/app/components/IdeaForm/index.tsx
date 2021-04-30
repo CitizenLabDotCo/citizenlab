@@ -116,9 +116,10 @@ interface InputProps {
   imageFile: UploadFile[];
   onSubmit: (arg: IIdeaFormOutput) => void;
   remoteIdeaFiles?: UploadFile[] | null;
-  profanityError: boolean;
-  onTitleChange: () => void;
-  onDescriptionChange: () => void;
+  hasTitleProfanityError: boolean;
+  hasDescriptionProfanityError: boolean;
+  onTitleChange: (title: string) => void;
+  onDescriptionChange: (description: string) => void;
 }
 
 interface DataProps {
@@ -139,7 +140,6 @@ interface State {
   titleError: string | null;
   description: string;
   descriptionError: string | null;
-  descriptionProfanityError: string | null;
   selectedTopics: string[];
   topicsError: string | null;
   locationError: string | null;
@@ -175,7 +175,6 @@ class IdeaForm extends PureComponent<
       titleError: null,
       description: '',
       descriptionError: null,
-      descriptionProfanityError: null,
       selectedTopics: [],
       topicsError: null,
       address: '',
@@ -293,7 +292,7 @@ class IdeaForm extends PureComponent<
       titleError: null,
     });
 
-    this.props.onTitleChange();
+    this.props.onTitleChange(title);
   };
 
   handleDescriptionOnChange = async (description: string) => {
@@ -304,7 +303,7 @@ class IdeaForm extends PureComponent<
       descriptionError: isDescriptionEmpty ? descriptionError : null,
     }));
 
-    this.props.onDescriptionChange();
+    this.props.onDescriptionChange(description);
   };
 
   handleTopicsOnChange = (selectedTopics: string[]) => {
@@ -470,7 +469,6 @@ class IdeaForm extends PureComponent<
     ideaFiles: UploadFile[]
   ) => {
     const { pbContext } = this.state;
-    const { profanityError } = this.props;
     const titleError = this.validateTitle(title);
     const descriptionError = this.validateDescription(description);
     const topicsError = this.validateTopics(selectedTopics);
@@ -524,10 +522,7 @@ class IdeaForm extends PureComponent<
         () => this.titleInputElement && this.titleInputElement.focus(),
         300
       );
-    } else if (
-      (descriptionError || profanityError) &&
-      this.descriptionElement
-    ) {
+    } else if (descriptionError && this.descriptionElement) {
       scrollToComponent(this.descriptionElement, {
         align: 'top',
         offset: -200,
@@ -579,7 +574,7 @@ class IdeaForm extends PureComponent<
       ideaFiles,
       ideaFilesToRemove,
     } = this.state;
-    const formIsValid = this.validate(
+    const formClientSideIsValid = this.validate(
       title,
       description,
       budget,
@@ -590,7 +585,7 @@ class IdeaForm extends PureComponent<
       ideaFiles
     );
 
-    if (formIsValid) {
+    if (formClientSideIsValid) {
       const output: IIdeaFormOutput = {
         title,
         selectedTopics,
@@ -640,7 +635,8 @@ class IdeaForm extends PureComponent<
       topics,
       project,
       phases,
-      profanityError,
+      hasTitleProfanityError,
+      hasDescriptionProfanityError,
     } = this.props;
     const { formatMessage } = this.props.intl;
     const {
@@ -656,7 +652,6 @@ class IdeaForm extends PureComponent<
       imageFile,
       titleError,
       descriptionError,
-      descriptionProfanityError,
       budgetError,
       proposedBudgetError,
       ideaFiles,
@@ -753,7 +748,7 @@ class IdeaForm extends PureComponent<
                 maxCharCount={80}
                 autocomplete="off"
               />
-              {profanityError && (
+              {hasTitleProfanityError && (
                 <Error
                   text={
                     <FormattedMessage
@@ -790,12 +785,25 @@ class IdeaForm extends PureComponent<
                 value={description}
                 onChange={this.handleDescriptionOnChange}
                 setRef={this.handleDescriptionSetRef}
-                hasError={!!descriptionError || !!descriptionProfanityError}
+                hasError={!!descriptionError || hasDescriptionProfanityError}
                 withCTAButton
               />
               {descriptionError && <Error text={descriptionError} />}
-              {profanityError && (
-                <Error text={formatMessage(messages.profanityError, {})} />
+              {hasDescriptionProfanityError && (
+                <Error
+                  text={
+                    <FormattedMessage
+                      {...messages.profanityError}
+                      values={{
+                        guidelinesLink: (
+                          <Link to="/pages/faq" target="_blank">
+                            {formatMessage(messages.guidelinesLinkText)}
+                          </Link>
+                        ),
+                      }}
+                    />
+                  }
+                />
               )}
             </FormElement>
           </StyledFormSection>

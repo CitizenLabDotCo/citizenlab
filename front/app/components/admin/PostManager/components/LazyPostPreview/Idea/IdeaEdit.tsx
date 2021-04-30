@@ -1,7 +1,8 @@
 // Copied IdeaEditPage and made the minimal modifications for this use.
 
 import React, { PureComponent } from 'react';
-import { isString, isEmpty, get } from 'lodash-es';
+import { adopt } from 'react-adopt';
+import { isString, isEmpty } from 'lodash-es';
 import { Subscription, combineLatest, of } from 'rxjs';
 import { switchMap, map, first } from 'rxjs/operators';
 import { isNilOrError } from 'utils/helperUtils';
@@ -47,6 +48,7 @@ import styled from 'styled-components';
 import GetResourceFileObjects, {
   GetResourceFileObjectsChildProps,
 } from 'resources/GetResourceFileObjects';
+import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 
 const ButtonWrapper = styled.div`
   display: flex;
@@ -64,6 +66,7 @@ export interface InputProps {
 
 interface DataProps {
   remoteIdeaFiles: GetResourceFileObjectsChildProps;
+  locale: GetLocaleChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -80,7 +83,8 @@ interface State {
   imageFile: UploadFile[];
   imageId: string | null;
   submitError: boolean;
-  profanityError: boolean;
+  titleProfanityError: boolean;
+  descriptionProfanityError: boolean;
   loaded: boolean;
   processing: boolean;
 }
@@ -102,7 +106,8 @@ class IdeaEdit extends PureComponent<Props, State> {
       imageFile: [],
       imageId: null,
       submitError: false,
-      profanityError: false,
+      titleProfanityError: false,
+      descriptionProfanityError: false,
       loaded: false,
       processing: false,
     };
@@ -272,25 +277,55 @@ class IdeaEdit extends PureComponent<Props, State> {
 
       goBack();
     } catch (error) {
-      const apiErrors = get(error, 'json.errors');
       if (process.env.NODE_ENV === 'development') console.log(error);
-      if (apiErrors && apiErrors.profanity) {
-        this.setState({
-          profanityError: true,
-        });
+      const apiErrors = error.json.errors;
+      const profanityApiError = apiErrors.base.find(
+        (apiError) => apiError.error === 'includes_banned_words'
+      );
+
+      if (profanityApiError) {
+        const titleProfanityError = profanityApiError.blocked_words.some(
+          (blockedWord) => blockedWord.attribute === 'title_multiloc'
+        );
+        const descriptionProfanityError = profanityApiError.blocked_words.some(
+          (blockedWord) => blockedWord.attribute === 'body_multiloc'
+        );
+
+        if (titleProfanityError) {
+          this.setState({
+            titleProfanityError,
+          });
+        }
+
+        if (descriptionProfanityError) {
+          this.setState({
+            descriptionProfanityError,
+          });
+        }
       }
       this.setState({ processing: false, submitError: true });
     }
   };
 
-  onTitleChange = () => {
-    this.setState({ profanityError: false });
+  onTitleChange = (title: string) => {
+    const { locale } = this.props;
+
+    if (!isNilOrError(locale)) {
+      const titleMultiloc = { [locale]: title };
+
+      this.setState({ titleMultiloc, titleProfanityError: false });
+    }
   };
 
-  onDescriptionChange = () => {
-    this.setState({ profanityError: false });
-  };
+  onDescriptionChange = (description: string) => {
+    const { locale } = this.props;
 
+    if (!isNilOrError(locale)) {
+      const descriptionMultiloc = { [locale]: description };
+
+      this.setState({ descriptionMultiloc, descriptionProfanityError: false });
+    }
+  };
   render() {
     if (this.state && this.state.loaded) {
       const { remoteIdeaFiles, goBack } = this.props;
@@ -306,7 +341,8 @@ class IdeaEdit extends PureComponent<Props, State> {
         processing,
         budget,
         proposedBudget,
-        profanityError,
+        titleProfanityError,
+        descriptionProfanityError,
       } = this.state;
       const title = locale && titleMultiloc ? titleMultiloc[locale] || '' : '';
       const description =
@@ -345,7 +381,8 @@ class IdeaEdit extends PureComponent<Props, State> {
                 remoteIdeaFiles={
                   !isNilOrError(remoteIdeaFiles) ? remoteIdeaFiles : null
                 }
-                profanityError={profanityError}
+                hasTitleProfanityError={titleProfanityError}
+                hasDescriptionProfanityError={descriptionProfanityError}
                 onTitleChange={this.onTitleChange}
                 onDescriptionChange={this.onDescriptionChange}
               />
@@ -370,12 +407,17 @@ class IdeaEdit extends PureComponent<Props, State> {
   }
 }
 
-const WrappedIdeaEdit = (props: InputProps) => (
-  <GetResourceFileObjects resourceId={props.ideaId} resourceType="idea">
-    {(remoteIdeaFiles) => (
-      <IdeaEdit {...props} remoteIdeaFiles={remoteIdeaFiles} />
-    )}
-  </GetResourceFileObjects>
-);
+const Data = adopt<DataProps, InputProps>({
+  locale: <GetLocale />,
+  remoteIdeaFiles: ({ ideaId, render }) => (
+    <GetResourceFileObjects resourceId={ideaId} resourceType="idea">
+      {render}
+    </GetResourceFileObjects>
+  ),
+});
 
-export default WrappedIdeaEdit;
+export default (inputProps: InputProps) => (
+  <Data {...inputProps}>
+    {(dataProps) => <IdeaEdit {...dataProps} {...inputProps} />}
+  </Data>
+);
