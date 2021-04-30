@@ -6,7 +6,7 @@ import clHistory from 'utils/cl-router/history';
 // components
 import SignUpInPageMeta from './SignUpInPageMeta';
 import SignUpIn, { ISignUpInMetaData } from 'components/SignUpIn';
-import { TSignUpSteps } from 'components/SignUpIn/SignUp';
+import Outlet from 'components/Outlet';
 
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
@@ -102,25 +102,27 @@ const RightInner = styled.div`
   `}
 `;
 
-export interface InputProps {}
-
 export interface DataProps {
   authUser: GetAuthUserChildProps;
   locale: GetLocaleChildProps;
   previousPathName: string | null;
 }
 
-export interface Props extends InputProps, DataProps {}
+export interface Props extends DataProps, WithRouterProps {}
 
 function SignUpPage({
   authUser,
-  locale,
   location,
   previousPathName,
-}: InputProps & DataProps & WithRouterProps): ReactElement {
-  const [metaData, setMetaData] = useState<ISignUpInMetaData | undefined>(
-    undefined
-  );
+}: Props): ReactElement {
+  const { pathname } = location;
+  const flow = endsWith(pathname, 'sign-in') ? 'signin' : 'signup';
+
+  const [metaData, setMetaData] = useState<ISignUpInMetaData | undefined>({
+    inModal: false,
+    flow,
+    pathname,
+  });
 
   const isLoggedIn =
     !isNilOrError(authUser) && authUser.attributes.registration_completed_at;
@@ -143,14 +145,9 @@ function SignUpPage({
     };
   }, []);
 
-  useEffect(() => {}, []);
-
   const onSignUpInCompleted = () => {
     clHistory.push(this.props.previousPathName || '/');
   };
-
-  const { pathname } = location;
-  const flow = endsWith(pathname, 'sign-in') ? 'signin' : 'signup';
 
   return (
     <>
@@ -168,10 +165,11 @@ function SignUpPage({
           <RightInner>
             {metaData && (
               <SignUpIn
-                metaData={{ ...metaData, inModal: false, flow }}
+                metaData={metaData}
                 onSignUpInCompleted={onSignUpInCompleted}
               />
             )}
+            <Outlet id="app.components.SignUpIn.metaData" metaData={metaData} />
           </RightInner>
         </Right>
       </Container>
@@ -179,28 +177,9 @@ function SignUpPage({
   );
 }
 
-// class SignUpPage extends PureComponent<Props & WithRouterProps, State> {
-//   subscriptions: Subscription[] = [];
-
-//   static getDerivedStateFromProps(
-//     props: Props & WithRouterProps,
-//     _state: State
-//   ) {
-//     const { authUser, previousPathName } = props;
-//     const isLoggedIn =
-//       !isNilOrError(authUser) && authUser.attributes.registration_completed_at;
-
-//     if (isLoggedIn) {
-//       clHistory.replace(previousPathName || '/');
-//     }
-
-//     return null;
-//   }
-// }
-
 const SignUpPageWithHoC = withRouter(SignUpPage);
 
-const Data = adopt<DataProps, InputProps & WithRouterProps>({
+const Data = adopt<DataProps, WithRouterProps>({
   authUser: <GetAuthUser />,
   locale: <GetLocale />,
   previousPathName: ({ render }) => (
@@ -210,7 +189,7 @@ const Data = adopt<DataProps, InputProps & WithRouterProps>({
   ),
 });
 
-export default (inputProps: InputProps & WithRouterProps) => (
+export default (inputProps: WithRouterProps) => (
   <Data {...inputProps}>
     {(dataProps) => <SignUpPageWithHoC {...inputProps} {...dataProps} />}
   </Data>

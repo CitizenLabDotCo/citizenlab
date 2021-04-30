@@ -132,6 +132,10 @@ const UserCustomFieldsSignUpInModal = memo<Props>(
       closeSignUpInModal();
     }, [metaData, authUser]);
 
+    if (!metaData?.inModal) {
+      return null;
+    }
+
     return (
       <Modal
         width={modalWidth}
