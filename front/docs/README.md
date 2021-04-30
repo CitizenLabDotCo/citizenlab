@@ -2,12 +2,12 @@
  
 ## Next release
 
+### Added
+- When a client-side validation error happens for the project title in the admin, there will be an error next to the submit button in addition to the error message next to the input field.
+- Users are now prompted to confirm their account after creating it, by receiving a confirmation code in their email address.
 
 ### Fixed
 - Customizable Banner Fields no longer get emptied/reset when changing another.
-
-### Added
-- When a client-side validation error happens for the project title in the admin, there will be an error next to the submit button in addition to the error message next to the input field.
 
 ## 2021-04-22
 
