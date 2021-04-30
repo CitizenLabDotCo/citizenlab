@@ -123,6 +123,11 @@ interface State {
   imageFile: UploadFile[];
   imageId: string | null;
   loaded: boolean;
+  submitError: boolean;
+  titleProfanityError: boolean;
+  descriptionProfanityError: boolean;
+  fileOrImageError: boolean;
+  processing: boolean;
 }
 
 class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
@@ -142,6 +147,11 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
       imageFile: [],
       imageId: null,
       loaded: false,
+      submitError: false,
+      titleProfanityError: false,
+      descriptionProfanityError: false,
+      fileOrImageError: false,
+      processing: false,
     };
     this.subscriptions = [];
   }
@@ -294,6 +304,7 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
       ...addressDiff,
     });
 
+    this.setState({ submitError: false, processing: true });
     try {
       if (oldImageId && oldImageBase64 !== newImageBase64) {
         await deleteIdeaImage(ideaId, oldImageId);
@@ -307,7 +318,58 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
       ] as Promise<any>[]);
 
       clHistory.push(`/ideas/${ideaSlug}`);
-    } catch {}
+    } catch (error) {
+      if (process.env.NODE_ENV === 'development') console.log(error);
+      const apiErrors = error.json.errors;
+      const profanityApiError = apiErrors.base.find(
+        (apiError) => apiError.error === 'includes_banned_words'
+      );
+
+      if (profanityApiError) {
+        const titleProfanityError = profanityApiError.blocked_words.some(
+          (blockedWord) => blockedWord.attribute === 'title_multiloc'
+        );
+        const descriptionProfanityError = profanityApiError.blocked_words.some(
+          (blockedWord) => blockedWord.attribute === 'body_multiloc'
+        );
+
+        if (titleProfanityError) {
+          this.setState({
+            titleProfanityError,
+          });
+        }
+
+        if (descriptionProfanityError) {
+          this.setState({
+            descriptionProfanityError,
+          });
+        }
+      }
+
+      if (apiErrors && (apiErrors.image || apiErrors.file)) {
+        this.setState({
+          fileOrImageError: true,
+        });
+      }
+
+      this.setState({ submitError: true });
+    }
+
+    this.setState({ processing: false });
+  };
+
+  onTitleChange = (title: string) => {
+    const { locale } = this.props;
+    const titleMultiloc = { [locale]: title };
+
+    this.setState({ titleMultiloc, titleProfanityError: false });
+  };
+
+  onDescriptionChange = (description: string) => {
+    const { locale } = this.props;
+    const descriptionMultiloc = { [locale]: description };
+
+    this.setState({ descriptionMultiloc, descriptionProfanityError: false });
   };
 
   render() {
@@ -322,6 +384,11 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
         imageFile,
         budget,
         proposedBudget,
+        titleProfanityError,
+        descriptionProfanityError,
+        submitError,
+        fileOrImageError,
+        processing,
       } = this.state;
       const title = locale && titleMultiloc ? titleMultiloc[locale] || '' : '';
       const description =
@@ -368,12 +435,19 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
                 remoteIdeaFiles={
                   !isNilOrError(remoteIdeaFiles) ? remoteIdeaFiles : null
                 }
+                hasTitleProfanityError={titleProfanityError}
+                hasDescriptionProfanityError={descriptionProfanityError}
+                onTitleChange={this.onTitleChange}
+                onDescriptionChange={this.onDescriptionChange}
               />
 
               <ButtonBarContainer>
                 <IdeasEditButtonBar
                   elementId="e2e-idea-edit-save-button"
                   form="idea-form"
+                  submitError={submitError}
+                  processing={processing}
+                  fileOrImageError={fileOrImageError}
                 />
               </ButtonBarContainer>
             </FormContainer>
