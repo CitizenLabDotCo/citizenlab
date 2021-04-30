@@ -50,6 +50,8 @@ interface State extends FormValues {
   publishError: boolean;
   apiErrors: any;
   filesToRemove: UploadFile[];
+  titleProfanityError: boolean;
+  descriptionProfanityError: boolean;
 }
 
 function doNothing() {
@@ -80,6 +82,8 @@ export default class InitiativesEditFormWrapper extends React.PureComponent<
       publishError: false,
       apiErrors: null,
       filesToRemove: [],
+      titleProfanityError: false,
+      descriptionProfanityError: false,
     };
   }
 
@@ -215,10 +219,11 @@ export default class InitiativesEditFormWrapper extends React.PureComponent<
         deleteInitiativeFile(initiativeId, file.id as string)
           // we checked for id before adding them in this array
           .catch((errorResponse) => {
-            const apiErrors = get(errorResponse, 'json.errors');
+            const apiErrors = errorResponse.json.errors;
             this.setState((state) => ({
               apiErrors: { ...state.apiErrors, ...apiErrors },
             }));
+
             setTimeout(() => {
               this.setState((state) => ({
                 apiErrors: { ...state.apiErrors, file: undefined },
@@ -253,28 +258,55 @@ export default class InitiativesEditFormWrapper extends React.PureComponent<
         apiErrors: { ...state.apiErrors, ...apiErrors },
         publishError: true,
       }));
-      setTimeout(() => {
-        this.setState({ publishError: false });
-      }, 5000);
+
+      const profanityApiError = apiErrors.base.find(
+        (apiError) => apiError.error === 'includes_banned_words'
+      );
+
+      if (profanityApiError) {
+        const titleProfanityError = profanityApiError.blocked_words.some(
+          (blockedWord) => blockedWord.attribute === 'title_multiloc'
+        );
+        const descriptionProfanityError = profanityApiError.blocked_words.some(
+          (blockedWord) => blockedWord.attribute === 'body_multiloc'
+        );
+
+        if (titleProfanityError) {
+          this.setState({
+            titleProfanityError,
+          });
+        }
+
+        if (descriptionProfanityError) {
+          this.setState({
+            descriptionProfanityError,
+          });
+        }
+      }
     }
     this.setState({ publishing: false });
   };
 
   onChangeTitle = (title_multiloc: Multiloc) => {
-    this.setState({ title_multiloc });
+    this.setState({ title_multiloc, titleProfanityError: false });
   };
+
   onChangeBody = (body_multiloc: Multiloc) => {
-    this.setState({ body_multiloc });
+    this.setState({ body_multiloc, descriptionProfanityError: false });
   };
+
   onChangeTopics = (topic_ids: string[]) => {
     this.setState({ topic_ids });
   };
+
   onChangePosition = (position: string) => {
     this.setState({ position });
   };
+
   onChangeBanner = (newValue: UploadFile | null) => {
     this.setState({ banner: newValue, hasBannerChanged: true });
   };
+
   onChangeImage = (newValue: UploadFile | null) => {
     if (newValue) {
       this.setState({ image: newValue });
@@ -287,6 +319,7 @@ export default class InitiativesEditFormWrapper extends React.PureComponent<
       });
     }
   };
+
   onAddFile = (file: UploadFile) => {
     this.setState(({ files }) => ({ files: [...files, file] }));
   };
@@ -322,7 +355,13 @@ export default class InitiativesEditFormWrapper extends React.PureComponent<
   }
 
   render() {
-    const { initiativeId, hasBannerChanged, ...otherProps } = this.state;
+    const {
+      initiativeId,
+      hasBannerChanged,
+      titleProfanityError,
+      descriptionProfanityError,
+      ...otherProps
+    } = this.state;
     const { locale, initiativeImage, topics } = this.props;
 
     if (this.state.image === undefined && initiativeImage) return null;
@@ -342,6 +381,8 @@ export default class InitiativesEditFormWrapper extends React.PureComponent<
         onAddFile={this.onAddFile}
         onRemoveFile={this.onRemoveFile}
         topics={topics}
+        titleProfanityError={titleProfanityError}
+        descriptionProfanityError={descriptionProfanityError}
       />
     );
   }
