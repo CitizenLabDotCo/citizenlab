@@ -9,6 +9,7 @@ module UserConfirmation
             validates :email_confirmation_code_reset_count, numericality: { less_than_or_equal_to: ENV.fetch('EMAIL_CONFIRMATION_MAX_RETRIES', 5) }
 
             before_validation :reset_confirmation_code, unless: :email_confirmation_code, if: :email_changed?
+            before_validation :reset_confirmed_at, on: :update, if: :email_changed?
           end
         end
       end
@@ -67,6 +68,10 @@ module UserConfirmation
           email: email,
           email_confirmation_code_reset_count: 0
         )
+      end
+
+      def reset_confirmed_at
+        self.email_confirmed_at = nil
       end
     end
   end
