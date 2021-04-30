@@ -155,10 +155,10 @@ export default defineMessages({
     id: 'app.components.InitiativeForm.publishButton',
     defaultMessage: 'Publish your initiative',
   },
-  publishUnknownError: {
-    id: 'app.components.InitiativeForm.publishUnknownError',
+  submitApiError: {
+    id: 'app.components.InitiativeForm.submitApiError',
     defaultMessage:
-      'There was an issue publishing your initiative, please try again later.',
+      'There was an issue submitting the form. Please check for any errors and try again.',
   },
   profanityError: {
     id: 'app.components.InitiativeForm.profanityError',
