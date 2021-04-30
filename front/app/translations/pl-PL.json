@@ -197,7 +197,7 @@
   "app.components.InitiativeForm.locationPlaceholder": "Podaj adres",
   "app.components.InitiativeForm.profanityError": "",
   "app.components.InitiativeForm.publishButton": "Opublikuj swoją propozycję",
-  "app.components.InitiativeForm.publishUnknownError": "Zaistniał problem z opublikowaniem Twojej propozycji, proszę spróbuj ponownie później.",
+  "app.components.InitiativeForm.submitApiError": "",
   "app.components.InitiativeForm.titleEmptyError": "Podaj tytuł",
   "app.components.InitiativeForm.titleLabel": "Tytuł",
   "app.components.InitiativeForm.titleLabelSubtext2": "Wybierz opisowy, zwięzły tytuł (min. 10 znaków)",

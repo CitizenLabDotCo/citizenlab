@@ -197,7 +197,7 @@
   "app.components.InitiativeForm.locationPlaceholder": "Unesite adresu",
   "app.components.InitiativeForm.profanityError": "",
   "app.components.InitiativeForm.publishButton": "Objavite vaš predlog",
-  "app.components.InitiativeForm.publishUnknownError": "Došlo je do problema prilikom objave vašeg predloga. Molimo vas da pokušate ponovo kasnije. ",
+  "app.components.InitiativeForm.submitApiError": "",
   "app.components.InitiativeForm.titleEmptyError": "Molimo vas unesite naziv",
   "app.components.InitiativeForm.titleLabel": "Naziv",
   "app.components.InitiativeForm.titleLabelSubtext2": "Unesite opisan i koncizan naziv (min. 10 karaktera, max. 72 karaktera)",

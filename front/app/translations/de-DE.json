@@ -197,7 +197,7 @@
   "app.components.InitiativeForm.locationPlaceholder": "Adresse eingeben",
   "app.components.InitiativeForm.profanityError": "",
   "app.components.InitiativeForm.publishButton": "Dein Vorschlag veröffentlichen",
-  "app.components.InitiativeForm.publishUnknownError": "Bei der Veröffentlichung deines Vorschlaga gab es ein Problem. Bitte versuche es später erneut.",
+  "app.components.InitiativeForm.submitApiError": "",
   "app.components.InitiativeForm.titleEmptyError": "Bitte gib eine Überschrift ein",
   "app.components.InitiativeForm.titleLabel": "Titel",
   "app.components.InitiativeForm.titleLabelSubtext2": "Wählen Sie einen prägnanten, aussagekräftigen Titel (min. 10 Zeichen, max. 72 Zeichen)",

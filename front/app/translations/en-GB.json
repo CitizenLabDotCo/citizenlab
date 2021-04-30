@@ -197,7 +197,7 @@
   "app.components.InitiativeForm.locationPlaceholder": "Type an address",
   "app.components.InitiativeForm.profanityError": "",
   "app.components.InitiativeForm.publishButton": "{tenantName, select, stirlingcouncil {Publish your petition} other {Publish your proposal}}",
-  "app.components.InitiativeForm.publishUnknownError": "{tenantName, select, stirlingcouncil {There was an issue publishing your petition, please try again later.} other {There was an issue publishing your proposal, please try again later.}}",
+  "app.components.InitiativeForm.submitApiError": "",
   "app.components.InitiativeForm.titleEmptyError": "Please provide a title",
   "app.components.InitiativeForm.titleLabel": "Title",
   "app.components.InitiativeForm.titleLabelSubtext2": "Choose a descriptive, yet concise title (min. 10 characters, max. 72 characters)",

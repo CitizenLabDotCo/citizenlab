@@ -197,7 +197,7 @@
   "app.components.InitiativeForm.locationPlaceholder": "Typ een adres",
   "app.components.InitiativeForm.profanityError": "",
   "app.components.InitiativeForm.publishButton": "Plaats je initiatief",
-  "app.components.InitiativeForm.publishUnknownError": "Er ging iets fout bij het plaatsen van je initiatief, probeer het later nog eens opnieuw.",
+  "app.components.InitiativeForm.submitApiError": "",
   "app.components.InitiativeForm.titleEmptyError": "Graag een titel toevoegen",
   "app.components.InitiativeForm.titleLabel": "Titel",
   "app.components.InitiativeForm.titleLabelSubtext2": "Kies een beschrijvende maar beknopte titel (min. 10 tekens, max. 72)",

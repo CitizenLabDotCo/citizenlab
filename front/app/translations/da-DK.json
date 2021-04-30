@@ -197,7 +197,7 @@
   "app.components.InitiativeForm.locationPlaceholder": "Skriv en adresse",
   "app.components.InitiativeForm.profanityError": "",
   "app.components.InitiativeForm.publishButton": "Udgiv dit borgerforslag",
-  "app.components.InitiativeForm.publishUnknownError": "Der opstod et problem ved udgivelsen af dit borgerforslag, prøv igen senere.",
+  "app.components.InitiativeForm.submitApiError": "",
   "app.components.InitiativeForm.titleEmptyError": "Angiv venligst en titel",
   "app.components.InitiativeForm.titleLabel": "Titel",
   "app.components.InitiativeForm.titleLabelSubtext2": "Vælg en beskrivende, men præcis titel (min. 10 tegn, max. 72 tegn)",

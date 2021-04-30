@@ -197,7 +197,7 @@
   "app.components.InitiativeForm.locationPlaceholder": "Type an address",
   "app.components.InitiativeForm.profanityError": "",
   "app.components.InitiativeForm.publishButton": "Publish your proposal",
-  "app.components.InitiativeForm.publishUnknownError": "There was an issue publishing your proposal, please try again later.",
+  "app.components.InitiativeForm.submitApiError": "",
   "app.components.InitiativeForm.titleEmptyError": "Please provide a title",
   "app.components.InitiativeForm.titleLabel": "Title",
   "app.components.InitiativeForm.titleLabelSubtext2": "Choose a descriptive, yet concise title (min. 10 characters, max. 72 characters)",

@@ -197,7 +197,7 @@
   "app.components.InitiativeForm.locationPlaceholder": "Introduceți o adresă",
   "app.components.InitiativeForm.profanityError": "",
   "app.components.InitiativeForm.publishButton": "Publicați propunerea dvs.",
-  "app.components.InitiativeForm.publishUnknownError": "A apărut o problemă în publicarea propunerii dvs., vă rugăm să încercați din nou mai târziu.",
+  "app.components.InitiativeForm.submitApiError": "",
   "app.components.InitiativeForm.titleEmptyError": "Vă rugăm să furnizați un titlu",
   "app.components.InitiativeForm.titleLabel": "Titlu",
   "app.components.InitiativeForm.titleLabelSubtext2": "Alegeți un titlu descriptiv, dar concis (minimum 10 caractere, maxim 72 de caractere)",

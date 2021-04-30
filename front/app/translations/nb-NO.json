@@ -197,7 +197,7 @@
   "app.components.InitiativeForm.locationPlaceholder": "Skriv en adresse",
   "app.components.InitiativeForm.profanityError": "",
   "app.components.InitiativeForm.publishButton": "Publiser forslaget ditt",
-  "app.components.InitiativeForm.publishUnknownError": "Det oppsto et problem med å publisere forslaget ditt. Vennligst prøv igjen senere.",
+  "app.components.InitiativeForm.submitApiError": "",
   "app.components.InitiativeForm.titleEmptyError": "Legg til en tittel",
   "app.components.InitiativeForm.titleLabel": "Tittel",
   "app.components.InitiativeForm.titleLabelSubtext2": "Velg en beskrivende og presis tittel (minimum 10 karakterer).",

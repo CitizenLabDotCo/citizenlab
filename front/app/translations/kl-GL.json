@@ -197,7 +197,7 @@
   "app.components.InitiativeForm.locationPlaceholder": "Najugaqarfik allaguk",
   "app.components.InitiativeForm.profanityError": "",
   "app.components.InitiativeForm.publishButton": "Innuttaasutut siunnersuutit saqqummersiguk",
-  "app.components.InitiativeForm.publishUnknownError": "Innuttaasutut siunnersuutivit saqqummersinniarnerani ajoqummik takkuttoqarpoq, kingusinnerusukkut misileeqqigit.",
+  "app.components.InitiativeForm.submitApiError": "",
   "app.components.InitiativeForm.titleEmptyError": "Taaguusilaaruk",
   "app.components.InitiativeForm.titleLabel": "Taaguut",
   "app.components.InitiativeForm.titleLabelSubtext2": "Allaaserinnittumik aalajangersimasumilli taaguuseruk (minn. naqinnerit 10, ann. naqinnerit 72)",

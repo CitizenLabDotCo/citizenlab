@@ -197,7 +197,7 @@
   "app.components.InitiativeForm.locationPlaceholder": "اكتب عنوانًا",
   "app.components.InitiativeForm.profanityError": "",
   "app.components.InitiativeForm.publishButton": "انشر مُقترحك",
-  "app.components.InitiativeForm.publishUnknownError": "حدث خطأ أثناء نشر مُقترحك، يُرجى المحاولة مجددًا في وقت لاحق.",
+  "app.components.InitiativeForm.submitApiError": "",
   "app.components.InitiativeForm.titleEmptyError": "يُرجى إضافة عنوان",
   "app.components.InitiativeForm.titleLabel": "العنوان",
   "app.components.InitiativeForm.titleLabelSubtext2": "اختر عنواناً وصفيًا وموجزاً ​​(بحد أدنى 10 أحرف و72 حرفاً كحد أقصى)",
