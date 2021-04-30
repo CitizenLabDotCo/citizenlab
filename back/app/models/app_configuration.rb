@@ -22,6 +22,10 @@ class AppConfiguration < ApplicationRecord
 
   before_validation :validate_missing_feature_dependencies
 
+  after_update do
+    AppConfiguration.instance.reload
+  end
+
   module Settings
     extend CitizenLab::Mixins::SettingsSpecification
 

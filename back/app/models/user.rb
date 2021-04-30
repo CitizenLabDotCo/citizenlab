@@ -103,6 +103,7 @@ class User < ApplicationRecord
   before_validation :set_cl1_migrated, on: :create
   before_validation :generate_slug
   before_validation :sanitize_bio_multiloc, if: :bio_multiloc
+  before_validation :assign_email_or_phone, if: :email_changed?
 
   scope :order_role, lambda { |direction = :asc|
     joins('LEFT OUTER JOIN (SELECT jsonb_array_elements(roles) as ro, id FROM users) as r ON users.id = r.id')
@@ -167,17 +168,24 @@ class User < ApplicationRecord
     email = request.params['auth']['email']
 
     # Hack to embed phone numbers in email
-    if AppConfiguration.instance.feature_activated?('password_login') && AppConfiguration.instance.settings(
-      'password_login', 'phone'
-    )
-      phone_service = PhoneService.new
-      if phone_service.phone_or_email(email) == :phone
-        pattern = AppConfiguration.instance.settings('password_login', 'phone_email_pattern')
-        email = pattern.gsub('__PHONE__', phone_service.normalize_phone(email))
-      end
-    end
+    email_or_embedded_phone = PhoneService.new.emailize_email_or_phone(email)
 
-    not_invited.find_by_cimail email
+    not_invited.find_by_cimail(email_or_embedded_phone)
+  end
+
+  def assign_email_or_phone
+    # Hack to embed phone numbers in email
+    email_or_embedded_phone = PhoneService.new.emailize_email_or_phone(email)
+
+    self.email = email_or_embedded_phone
+  end
+
+  def registered_with_phone?
+    PhoneService.new.encoded_phone_or_email?(email) == :phone
+  end
+
+  def registered_with_email?
+    PhoneService.new.encoded_phone_or_email?(email) == :email
   end
 
   def to_token_payload
@@ -189,6 +197,10 @@ class User < ApplicationRecord
 
   def avatar_blank?
     avatar.file.nil?
+  end
+
+  def invited?
+    invite_status.present?
   end
 
   def invite_pending?
@@ -357,6 +369,7 @@ class User < ApplicationRecord
   end
 end
 
+User.include(UserConfirmation::Extensions::User)
 User.prepend_if_ee('MultiTenancy::Patches::User')
 User.prepend_if_ee('ProjectFolders::Patches::User')
 User.prepend_if_ee('SmartGroups::Patches::User')

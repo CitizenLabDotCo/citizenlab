@@ -18,33 +18,35 @@ export type IRole =
   | IProjectModeratorRole
   | IProjectFolderModeratorRole;
 
+export interface IUserAttributes {
+  first_name: string;
+  // CL1 legacy: last names used to not be required
+  // or when signing up with Google, it can be null too
+  last_name: string | null;
+  slug: string;
+  locale: Locale;
+  avatar?: ImageSizes;
+  roles?: IRole[];
+  highest_role: 'super_admin' | 'admin' | 'project_moderator' | 'user';
+  bio_multiloc: Multiloc;
+  registration_completed_at: string | null;
+  created_at: string;
+  updated_at: string;
+  email?: string;
+  gender?: 'male' | 'female' | 'unspecified';
+  birthyear?: number;
+  domicile?: string;
+  education?: string;
+  unread_notifications?: number;
+  custom_field_values?: object;
+  invite_status: 'pending' | 'accepted' | null;
+  verified?: boolean;
+}
+
 export interface IUserData {
   id: string;
   type: string;
-  attributes: {
-    first_name: string;
-    // CL1 legacy: last names used to not be required
-    // or when signing up with Google, it can be null too
-    last_name: string | null;
-    slug: string;
-    locale: Locale;
-    avatar?: ImageSizes;
-    roles?: IRole[];
-    highest_role: 'super_admin' | 'admin' | 'project_moderator' | 'user';
-    bio_multiloc: Multiloc;
-    registration_completed_at: string | null;
-    created_at: string;
-    updated_at: string;
-    email?: string;
-    gender?: 'male' | 'female' | 'unspecified';
-    birthyear?: number;
-    domicile?: string;
-    education?: string;
-    unread_notifications?: number;
-    custom_field_values?: object;
-    invite_status: 'pending' | 'accepted' | null;
-    verified?: boolean;
-  };
+  attributes: IUserAttributes;
 }
 
 export interface IUserLinks {
