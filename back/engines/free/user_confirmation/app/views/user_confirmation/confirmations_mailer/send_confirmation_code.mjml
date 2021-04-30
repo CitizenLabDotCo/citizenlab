@@ -1,0 +1,47 @@
+<!-- Notifications -->
+<mj-section
+  background-color="#fff"
+  border-radius="5px"
+  text-align="left"
+>
+  <mj-column padding="0 30px 12px" background-color="#fff">
+    <mj-text>
+      <p>
+        <%= t('.thanks_for_signing_up', organizationName: organization_name) %>
+        <%= t('.please_confirm_your_email_address') %>
+      </p>
+    </mj-text>
+  </mj-column>
+</mj-section>
+
+<mj-section padding="0 16px 72px" border-radius="5px">
+  <mj-column padding="24px 25px 12px" background-color="#F6F6F6" border-radius="5px">
+    <mj-text>
+      <p style="color: rgb(111, 119, 125); text-align: center;">
+        <%= t('.copy_paste_the_link_below') %>
+      </p>
+      <h2 style="font-size: 44px; text-align: center;">
+        <%= user.email_confirmation_code %>
+      </h2>
+    </mj-text>
+  </mj-column>
+</mj-section>
+
+<!--
+<mj-section
+  background-color="#fff"
+  border-radius="5px"
+  text-align="left"
+>
+  <mj-column padding="0 30px 25px" background-color="#fff">
+    <mj-text>
+      <p style="font-size: 0.9em; color: rgb(111, 119, 125) ">
+        <%= raw t('.the_link_is_valid_for', link: Frontend::UrlService.new.reset_confirmation_code_url) %>
+      </p>
+      <p style="font-size: 0.9em; color: rgb(111, 119, 125)">
+        <%= raw t('.did_you_receive_this_email_in_error', link: Frontend::UrlService.new.reset_confirmation_code_url) %>
+      </p>
+    </mj-text>
+  </mj-column>
+</mj-section>
+-->

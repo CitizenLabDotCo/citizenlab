@@ -1,0 +1,13 @@
+nl:
+  user_confirmation:
+    confirmations_mailer:
+      send_confirmation_code:
+        subject: "Bevestig uw e-mailadres voor het deelnameplatform van %{organizationName}"
+        header: "Uw bevestigingscode "
+        header_message: "Hallo %{firstName}!"
+        thanks_for_signing_up: "Bedankt voor uw inschrijving op het deelnameplatform van %{organizationName}.\n"
+        please_confirm_your_email_address: "Gelieve uw e-mailadres te bevestigen om uw registratie te voltooien.\n"
+        copy_paste_the_link_below: "Kopieer en plak de onderstaande code in uw registratieformulier.\n"
+        the_link_is_valid_for: "Deze link is 24 uur geldig. Als de link is verlopen, kunt u <a href=\"%{link}\">een nieuwe code aanvragen</a>."
+        did_you_receive_this_email_in_error: "Heeft u deze e-mail per vergissing ontvangen? <a href=\"%{link}\">Laat het ons weten</a>."
+
