@@ -3,16 +3,19 @@ module UserConfirmation
     module User
       def self.included(base)
         base.class_eval do
-          validates :email_confirmation_code, format: { with: USER_CONFIRMATION_CODE_PATTERN }, allow_nil: true
-          validates :email_confirmation_retry_count, numericality: { less_than_or_equal_to: ENV.fetch('EMAIL_CONFIRMATION_MAX_RETRIES', 5) }
-          validates :email_confirmation_code_reset_count, numericality: { less_than_or_equal_to: ENV.fetch('EMAIL_CONFIRMATION_MAX_RETRIES', 5) }
+          with_options if: -> { AppConfiguration.instance.feature_activated?('user_confirmation') } do
+            validates :email_confirmation_code, format: { with: USER_CONFIRMATION_CODE_PATTERN }, allow_nil: true
+            validates :email_confirmation_retry_count, numericality: { less_than_or_equal_to: ENV.fetch('EMAIL_CONFIRMATION_MAX_RETRIES', 5) }
+            validates :email_confirmation_code_reset_count, numericality: { less_than_or_equal_to: ENV.fetch('EMAIL_CONFIRMATION_MAX_RETRIES', 5) }
 
-          before_validation :reset_confirmation_code, unless: :email_confirmation_code, if: :email_changed?
+            before_validation :reset_confirmation_code, unless: :email_confirmation_code, if: :email_changed?
+          end
         end
       end
 
       def requires_confirmation?
-        !(active? || invited? || confirmed? || registered_with_phone?)
+        AppConfiguration.instance.feature_activated?('user_confirmation') &&
+          !(active? || invited? || confirmed? || registered_with_phone?)
       end
 
       def confirmed?

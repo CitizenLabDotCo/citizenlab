@@ -5,6 +5,10 @@ RSpec.describe UserConfirmation::ResetUserEmail do
 
   let(:context) { {} }
 
+  before do
+    AppConfiguration.instance.activate_feature!('user_confirmation')
+  end
+
   context 'when passing a new email' do
     before do
       context[:user] = create(:user_with_confirmation)

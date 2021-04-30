@@ -5,6 +5,10 @@ RSpec.describe UserConfirmation::SendConfirmationCode do
 
   let(:context) { {} }
 
+  before do
+    AppConfiguration.instance.activate_feature!('user_confirmation')
+  end
+
   context 'when the user signs up with a phone number' do
     before do
       enable_phone_login
