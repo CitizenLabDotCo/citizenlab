@@ -439,11 +439,11 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
   if (
     !isNilOrError(moderationItems) &&
     !isNilOrError(locale) &&
-    !isNilOrError(appConfiguration) &&
-    appConfiguration.data.attributes.settings.blocking_profanity
+    !isNilOrError(appConfiguration)
   ) {
-    const profanityBlockerEnabled =
-      appConfiguration.data.attributes.settings.blocking_profanity.enabled;
+    const profanityBlockerSetting =
+      appConfiguration.data.attributes.settings.blocking_profanity;
+
     return (
       <Container className={className}>
         <PageHeader>
@@ -457,14 +457,16 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
               placement="right"
             />
           </PageTitleWrapper>
-          <Button
-            buttonStyle="secondary"
-            onClick={openSettingsModal}
-            locale={locale}
-            icon="settings"
-          >
-            <FormattedMessage {...messages.settings} />
-          </Button>
+          {profanityBlockerSetting && (
+            <Button
+              buttonStyle="secondary"
+              onClick={openSettingsModal}
+              locale={locale}
+              icon="settings"
+            >
+              <FormattedMessage {...messages.settings} />
+            </Button>
+          )}
         </PageHeader>
 
         <Filters>
@@ -598,24 +600,27 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
           close={closeSettingsModal}
         >
           <ProfanitySettings>
-            <Setting>
-              <ToggleLabel>
-                <StyledToggle
-                  checked={profanityBlockerEnabled}
-                  onChange={onToggleBlockProfanitySetting}
-                />
-                <LabelContent>
-                  <LabelTitle>
-                    {intl.formatMessage(messages.profanityBlockerSetting)}
-                  </LabelTitle>
-                  <LabelDescription>
-                    {intl.formatMessage(
-                      messages.profanityBlockerSettingDescription
-                    )}
-                  </LabelDescription>
-                </LabelContent>
-              </ToggleLabel>
-            </Setting>
+            {profanityBlockerSetting && (
+              <Setting>
+                <ToggleLabel>
+                  <StyledToggle
+                    checked={profanityBlockerSetting.enabled}
+                    onChange={onToggleBlockProfanitySetting}
+                  />
+                  <LabelContent>
+                    <LabelTitle>
+                      {intl.formatMessage(messages.profanityBlockerSetting)}
+                    </LabelTitle>
+                    <LabelDescription>
+                      {intl.formatMessage(
+                        messages.profanityBlockerSettingDescription
+                      )}
+                    </LabelDescription>
+                  </LabelContent>
+                </ToggleLabel>
+              </Setting>
+            )}
+
             {settingsUpdatedSuccessFully && (
               <Success
                 showBackground
