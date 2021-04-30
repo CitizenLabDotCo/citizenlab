@@ -29,9 +29,10 @@ export default defineMessages({
     id: 'app.containers.IdeasNewPage.submitNewIdea',
     defaultMessage: 'Submit',
   },
-  submitError: {
-    id: 'app.containers.IdeasNewPage.submitError',
-    defaultMessage: 'Something went wrong. Please try again later.',
+  submitApiError: {
+    id: 'app.containers.IdeasNewPage.submitApiError',
+    defaultMessage:
+      'There was an issue submitting the form. Please check for any errors and try again.',
   },
   or: {
     id: 'app.containers.IdeasNewPage.or',
