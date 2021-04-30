@@ -54,7 +54,7 @@ const IdeasEditButtonBar = memo(
 
     const getSubmitErrorMessage = () => {
       if (submitError) {
-        return <FormattedMessage {...messages.submitError} />;
+        return <FormattedMessage {...messages.submitApiError} />;
       } else if (fileOrImageError) {
         return <FormattedMessage {...messages.fileUploadError} />;
       }
