@@ -63,6 +63,7 @@
     "core-js": "3.9.1",
     "cross-env": "7.0.3",
     "d3-hierarchy": "1.1.9",
+    "dotenv": "^8.2.0",
     "file-saver": "2.0.5",
     "focus-visible": "5.2.0",
     "formik": "1.x",
