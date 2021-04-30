@@ -3,7 +3,7 @@ module UserConfirmation
     module User
       def self.included(base)
         base.class_eval do
-          with_options if: -> { AppConfiguration.instance.feature_actived?('user_confirmation') } do
+          with_options if: -> { AppConfiguration.instance.feature_activated?('user_confirmation') } do
             validates :email_confirmation_code, format: { with: USER_CONFIRMATION_CODE_PATTERN }, allow_nil: true
             validates :email_confirmation_retry_count, numericality: { less_than_or_equal_to: ENV.fetch('EMAIL_CONFIRMATION_MAX_RETRIES', 5) }
             validates :email_confirmation_code_reset_count, numericality: { less_than_or_equal_to: ENV.fetch('EMAIL_CONFIRMATION_MAX_RETRIES', 5) }
