@@ -7,6 +7,10 @@ RSpec.describe User, type: :model do
     user.clear_changes_information
   end
 
+  before do
+    AppConfiguration.instance.activate_feature!('user_confirmation')
+  end
+
   it 'is initialized without a confirmation code' do
     expect(user.email_confirmation_code).to be_nil
   end

@@ -100,6 +100,11 @@ class AppConfiguration < ApplicationRecord
     settings[setting_name]&.values_at('enabled', 'allowed')&.all?
   end
 
+  def activate_feature!(setting_name)
+    settings[setting_name] = { 'enabled' => true, 'allowed' => true }
+    save!
+  end
+
   def has_feature?(f)
     ActiveSupport::Deprecation.warn('AppConfiguration#has_feature? is deprecated. Use AppConfiguration#feature_activated? instead.')
     feature_activated?(f)

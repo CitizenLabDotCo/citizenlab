@@ -5,6 +5,10 @@ RSpec.describe UserConfirmation::ConfirmationsMailer do
     let!(:user) { create(:user_with_confirmation) }
     let(:message) { described_class.with(user: user).send_confirmation_code.deliver_now }
 
+    before do
+      AppConfiguration.instance.activate_feature!('user_confirmation')
+    end
+
     it 'renders the subject' do
       expect(message.subject).to start_with('Confirm your email address')
     end
