@@ -1,14 +1,11 @@
 module UserConfirmation
   class ScheduleCodeExpiration < ApplicationInteractor
     delegate :user, to: :context
+    delegate :email_confirmation_code_expiration_at, to: :user
 
     def call
-      schedule_code_expiration_job
-    end
-
-    def schedule_code_expiration_job
-      expire_at = user.email_confirmation_code_sent_at || Time.zone.now + 1.day
-      ExpireConfirmationCodeJob.set(wait_until: expire_at).perform_later(user, user.email_confirmation_code)
+      ExpireConfirmationCodeJob.set(wait_until: email_confirmation_code_expiration_at)
+                                .perform_later(user, user.email_confirmation_code)
     end
   end
 end

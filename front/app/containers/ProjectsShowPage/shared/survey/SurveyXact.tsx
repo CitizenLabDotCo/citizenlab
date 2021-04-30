@@ -1,16 +1,36 @@
-import React, { PureComponent } from 'react';
+import React, { memo, useState } from 'react';
+
+// styling
+import { defaultCardStyle, viewportWidths } from 'utils/styleUtils';
 import styled from 'styled-components';
+
+// components
+import { Spinner } from 'cl2-component-library';
+import Iframe from 'react-iframe';
+
+// hooks
+import useWindowSize from 'hooks/useWindowSize';
+
+const surveyHeightDesktop = '600px';
+const surveyHeightMobile = '500px';
 
 const Container = styled.div`
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+
+  iframe {
+    border: solid 1px #ccc;
+    border-radius: ${(props: any) => props.theme.borderRadius};
+  }
 `;
 
-const StyledIframe = styled.iframe`
-  display: block;
-  border: none;
-  height: 750px;
-  flex-basis: 740px;
+const Placeholder = styled.div`
+  width: 100%;
+  height: ${surveyHeightDesktop};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  ${defaultCardStyle};
 `;
 
 type Props = {
@@ -18,14 +38,52 @@ type Props = {
   className?: string;
 };
 
-export default class SurveyXact extends PureComponent<Props> {
-  render() {
-    const { surveyXactUrl, className } = this.props;
+export default memo<Props>(({ surveyXactUrl, className }) => {
+  const [isIframeLoaded, setIsIframeLoaded] = useState(false);
+  const [hackyWidthThingy, setHackyWidthThingy] = useState<string>('100%');
+  const windowSize = useWindowSize();
+  const smallerThanLargeTablet = windowSize
+    ? windowSize.windowWidth <= viewportWidths.largeTablet
+    : false;
 
-    return (
-      <Container className={className}>
-        <StyledIframe src={surveyXactUrl} />
-      </Container>
-    );
-  }
-}
+  const handleIframeOnLoad = () => {
+    setIsIframeLoaded(true);
+    setTimeout(() => {
+      setHackyWidthThingy(
+        document.getElementById('survey-xact-frame')?.clientWidth.toString() ||
+          '100%'
+      );
+      setTimeout(() => {
+        setHackyWidthThingy((width) =>
+          width === '100%'
+            ? document
+                .getElementById('survey-xact-frame')
+                ?.clientWidth.toString() || '99%'
+            : (parseInt(width, 10) - 1).toString()
+        );
+      }, 1000);
+    }),
+      10000;
+  };
+
+  return (
+    <Container className={className || ''}>
+      {!isIframeLoaded && (
+        <Placeholder>
+          <Spinner />
+        </Placeholder>
+      )}
+      <Iframe
+        url={surveyXactUrl}
+        width={hackyWidthThingy}
+        height={
+          smallerThanLargeTablet ? surveyHeightMobile : surveyHeightDesktop
+        }
+        display={isIframeLoaded ? 'block' : 'none'}
+        overflow="hidden"
+        onLoad={handleIframeOnLoad}
+        id="survey-xact-frame"
+      />
+    </Container>
+  );
+});

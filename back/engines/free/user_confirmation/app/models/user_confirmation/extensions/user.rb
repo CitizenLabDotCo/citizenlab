@@ -7,7 +7,7 @@ module UserConfirmation
           validates :email_confirmation_retry_count, numericality: { less_than_or_equal_to: ENV.fetch('EMAIL_CONFIRMATION_MAX_RETRIES', 5) }
           validates :email_confirmation_code_reset_count, numericality: { less_than_or_equal_to: ENV.fetch('EMAIL_CONFIRMATION_MAX_RETRIES', 5) }
 
-          before_validation :reset_confirmation_code, unless: :email_confirmation_code, on: :create
+          before_validation :reset_confirmation_code, unless: :email_confirmation_code, if: :email_changed?
         end
       end
 
@@ -23,23 +23,27 @@ module UserConfirmation
         return false unless registered_with_email?
 
         self.email_confirmed_at = Time.zone.now
-        save
+        save!
+      end
+
+      def email_confirmation_code_expiration_at
+        email_confirmation_code_sent_at + 1.day
       end
 
       def reset_confirmation_code!
         reset_confirmation_code
         increment_confirmation_code_reset_count
-        save
+        save!
       end
 
       def increment_confirmation_retry_count!
         increment_confirmation_retry_count
-        save
+        save!
       end
 
       def increment_confirmation_code_reset_count!
         increment_confirmation_code_reset_count
-        save
+        save!
       end
 
       def reset_confirmation_code

@@ -103,7 +103,7 @@ class User < ApplicationRecord
   before_validation :set_cl1_migrated, on: :create
   before_validation :generate_slug
   before_validation :sanitize_bio_multiloc, if: :bio_multiloc
-  before_validation :assign_email_or_phone, on: :create
+  before_validation :assign_email_or_phone, if: :email_changed?
 
   scope :order_role, lambda { |direction = :asc|
     joins('LEFT OUTER JOIN (SELECT jsonb_array_elements(roles) as ro, id FROM users) as r ON users.id = r.id')
@@ -168,16 +168,16 @@ class User < ApplicationRecord
     email = request.params['auth']['email']
 
     # Hack to embed phone numbers in email
-    phone_or_email = PhoneService.new.emailize_email_or_phone(email)
+    email_or_embedded_phone = PhoneService.new.emailize_email_or_phone(email)
 
-    not_invited.find_by_cimail(phone_or_email)
+    not_invited.find_by_cimail(email_or_embedded_phone)
   end
 
   def assign_email_or_phone
     # Hack to embed phone numbers in email
-    phone_or_email = PhoneService.new.emailize_email_or_phone(email)
+    email_or_embedded_phone = PhoneService.new.emailize_email_or_phone(email)
 
-    self.email = phone_or_email
+    self.email = email_or_embedded_phone
   end
 
   def registered_with_phone?

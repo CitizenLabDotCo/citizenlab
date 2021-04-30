@@ -46,7 +46,11 @@ export default defineMessages({
   confirmation_code_invalid: {
     id: 'app.errors.confirmation_code_invalid',
     defaultMessage:
-      "Invalid confirmation code. Please check your email for the correct code or try 'Send New Code'",
+      "Wrong code. Please check your email for the correct code or try 'Send New Code'",
+  },
+  confirmation_code_expired: {
+    id: 'app.errors.confirmation_code_expired',
+    defaultMessage: 'Code expired. Please resend a new code.',
   },
   confirmation_code_too_many_retries: {
     id: 'app.errors.confirmation_code_too_many_retries',

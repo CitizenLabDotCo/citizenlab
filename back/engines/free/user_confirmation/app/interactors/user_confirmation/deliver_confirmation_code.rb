@@ -1,5 +1,5 @@
 module UserConfirmation
-  class SendConfirmationCodeToUser < ApplicationInteractor
+  class DeliverConfirmationCode < ApplicationInteractor
     delegate :user, to: :context
 
     def call
@@ -7,8 +7,9 @@ module UserConfirmation
         fail_with_error! :registration_method, :invalid, message: 'Confirmation is currently working for emails only.'
       end
 
-      ConfirmationsMailer.with(user: user).send_confirmation_code.deliver_later
-      user.update(email_confirmation_code_sent_at: Time.zone.now)
+      ConfirmationsMailer.with(user: user).send_confirmation_code.deliver_now
+
+      user.update!(email_confirmation_code_sent_at: Time.zone.now)
     end
   end
 end

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe UserConfirmation::SendConfirmationCodeToUser do
+RSpec.describe UserConfirmation::DeliverConfirmationCode do
   subject(:result) { described_class.call(context) }
 
   let(:context) { {} }
@@ -30,7 +30,15 @@ RSpec.describe UserConfirmation::SendConfirmationCodeToUser do
     end
 
     it 'enqueues email delivery job' do
-      expect { result }.to enqueue_job(ActionMailer::MailDeliveryJob)
+      result
+      last_email = ActionMailer::Base.deliveries.last
+      expect(last_email.to).to include context[:user].reload.email
+    end
+
+    it 'enqueues email with the confirmation' do
+      result
+      last_email = ActionMailer::Base.deliveries.last
+      expect(last_email.body.encoded).to include context[:user].reload.email_confirmation_code
     end
   end
 end

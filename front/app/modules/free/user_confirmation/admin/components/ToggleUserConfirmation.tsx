@@ -36,7 +36,11 @@ const ToggleUserConfirmation = ({
     ?.enabled;
 
   function handleToggleUserConfirmation() {
-    onChange('user_confirmation.enabled')(!isUserConfirmationEnabled);
+    const newUserConfirmationSetting = {
+      ...latestAppConfigSettings?.user_confirmation,
+      enabled: !isUserConfirmationEnabled,
+    };
+    onChange('user_confirmation')(newUserConfirmationSetting);
   }
 
   return (

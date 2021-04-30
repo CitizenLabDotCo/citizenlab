@@ -11,7 +11,7 @@ module UserConfirmation
     end
 
     def rollback
-      user.update(email: context.old_email)
+      user.update!(email: context.old_email)
     end
   end
 end

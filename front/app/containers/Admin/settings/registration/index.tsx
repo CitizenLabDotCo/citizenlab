@@ -4,7 +4,6 @@ import getSubmitState from 'utils/getSubmitState';
 import { isCLErrorJSON } from 'utils/errorUtils';
 import { CLError, Multiloc } from 'typings';
 import { isNilOrError } from 'utils/helperUtils';
-import { set } from 'lodash-es';
 
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
@@ -64,10 +63,15 @@ const SettingsRegistrationTab = (_props: Props) => {
     });
   };
 
-  const handleConfigSettingsChange = (propertyPath: string) => (value: any) => {
-    const newAttributesDiff = { ...(attributesDiff || {}) };
-    set(newAttributesDiff || {}, `settings.${propertyPath}`, value);
-    setAttributesDiff(newAttributesDiff);
+  const handleConfigSettingsChange = (propertyName: string) => (value: any) => {
+    const newAttributesDiff = { ...(attributesDiff || { settings: {} }) };
+    setAttributesDiff({
+      ...newAttributesDiff,
+      settings: {
+        ...(newAttributesDiff.settings || {}),
+        [propertyName]: value,
+      },
+    });
   };
 
   const handleSubmit = async (event?: React.FormEvent<HTMLFormElement>) => {

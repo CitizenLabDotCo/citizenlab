@@ -89,10 +89,6 @@ module Frontend
       "#{home_url(options)}/reset-password?token=#{token}"
     end
 
-    def reset_confirmation_code_url(options = {})
-      "#{home_url(options)}/reset-confirmation-code"
-    end
-
     def manifest_start_url(options = {})
       configuration = config_from_options(options)
       "#{configuration.base_frontend_uri}/?utm_source=manifest"
@@ -153,4 +149,5 @@ module Frontend
   end
 end
 
+Frontend::UrlService.include(UserConfirmation::Patches::Frontend::UrlService)
 Frontend::UrlService.prepend_if_ee('ProjectFolders::Patches::Frontend::UrlService')

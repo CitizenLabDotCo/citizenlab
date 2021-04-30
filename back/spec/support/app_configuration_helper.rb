@@ -10,6 +10,6 @@ module AppConfigurationHelper
       }
     )
 
-    AppConfiguration.instance.update(settings: settings)
+    AppConfiguration.instance.update!(settings: settings)
   end
 end

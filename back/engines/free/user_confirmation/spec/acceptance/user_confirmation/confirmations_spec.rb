@@ -25,6 +25,7 @@ resource 'Confirmations' do
 
       before do
         header_token_for(user)
+        UserConfirmation::SendConfirmationCode.call(user: user)
       end
 
       example 'returns an ok status passing the right code' do

@@ -15,9 +15,8 @@ export async function confirm(confirmation: Partial<IConfirmation>) {
   try {
     await streams.add(confirmationApiEndpoint, bodyData);
 
-    streams.fetchAllWith({
+    await streams.fetchAllWith({
       apiEndpoint: [`${API_PATH}/users/me`],
-      onlyFetchActiveStreams: true,
     });
 
     return true;
@@ -37,9 +36,8 @@ export async function resendCode(newEmail?: string | null) {
     await streams.add(resendCodeApiEndpoint, bodyData);
 
     if (bodyData?.new_email) {
-      streams.fetchAllWith({
+      await streams.fetchAllWith({
         apiEndpoint: [`${API_PATH}/users/me`],
-        onlyFetchActiveStreams: true,
       });
     }
 

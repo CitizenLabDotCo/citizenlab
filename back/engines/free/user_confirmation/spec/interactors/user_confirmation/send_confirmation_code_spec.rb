@@ -34,11 +34,15 @@ RSpec.describe UserConfirmation::SendConfirmationCode do
     end
 
     it 'enqueues email delivery job' do
-      expect { result }.to enqueue_job(ActionMailer::MailDeliveryJob)
+      result
+      last_email = ActionMailer::Base.deliveries.last
+      expect(last_email.to).to eq [context[:user].email]
     end
 
-    it 'enqueues a code expiration job' do
-      expect { result }.to enqueue_job(UserConfirmation::ExpireConfirmationCodeJob)
+    it 'enqueues email with the confirmation' do
+      result
+      last_email = ActionMailer::Base.deliveries.last
+      expect(last_email.body.encoded).to include context[:user].reload.email_confirmation_code
     end
   end
 end

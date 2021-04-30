@@ -1,6 +1,6 @@
 module UserConfirmation
   class ResetUserConfirmationCode < ApplicationInteractor
-    delegate :user, to: :context
+    delegate :user, :first_code, to: :context
 
     def call
       validate_code
@@ -8,15 +8,17 @@ module UserConfirmation
     end
 
     def validate_code
-      unless user.reset_confirmation_code && user.valid_attribute?(:email_confirmation_code)
-        fail_with_error! :code, :invalid, message: 'The code is invalid.'
-      end
+      context.first_code = user.email_confirmation_code.nil?
+      user.reset_confirmation_code
+      return if user.valid_attribute?(:email_confirmation_code)
+
+      fail_with_error! :code, :invalid, message: 'The code is invalid.'
     end
 
     def validate_confirmation_reset_count
-      unless user.increment_confirmation_code_reset_count!
-        fail_with_error! :code, :too_many_resets, message: 'You\'ve reset too many times.'
-      end
+      user.increment_confirmation_code_reset_count! unless first_code
+    rescue ActiveRecord::RecordInvalid => _
+      fail_with_error! :code, :too_many_resets, message: 'You\'ve reset too many times.'
     end
   end
 end

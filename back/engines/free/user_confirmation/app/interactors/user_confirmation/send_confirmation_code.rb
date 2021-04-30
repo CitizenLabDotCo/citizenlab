@@ -1,5 +1,10 @@
 module UserConfirmation
   class SendConfirmationCode < ApplicationOrganizer
+    organize ResetUserEmail,
+             ResetUserConfirmationCode,
+             DeliverConfirmationCode,
+             ScheduleCodeExpiration
+
     delegate :user, to: :context
 
     before do
@@ -7,10 +12,5 @@ module UserConfirmation
 
       fail_with_error! :registration_method, :invalid, message: 'Confirmation is currently working for emails only.'
     end
-
-    organize ResetUserEmail,
-             ResetUserConfirmationCode,
-             SendConfirmationCodeToUser,
-             ScheduleCodeExpiration
   end
 end
