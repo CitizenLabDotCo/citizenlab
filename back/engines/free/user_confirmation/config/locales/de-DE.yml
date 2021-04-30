@@ -1,12 +1,13 @@
-de-DE:
+de:
   user_confirmation:
     confirmations_mailer:
       send_confirmation_code:
-        subject: "Confirm your email address for %{organizationName}'s participation platform"
-        header: "Your Confirmation Code"
-        header_message: "Hi %{firstName}!"
-        thanks_for_signing_up: "Thanks for signing up for %{organizationName}'s participation platform."
-        please_confirm_your_email_address: "Please confirm your email address to complete your registration."
-        copy_paste_the_link_below: "Copy and paste the code below into your registration form."
-        the_link_is_valid_for: "This link is valid for 24 hours. If the link has expired, you may <a href=\"%{link}\">request a new code</a>."
-        did_you_receive_this_email_in_error: "Did you receive this email in error? <a href=\"%{link}\">Let us know</a>."
+        subject: "Bestätige deine E-Mail-Adresse für die Teilnahmeplattform von %{Organisationsname}"
+        header: "Dein Bestätigungscode"
+        header_message: "Hallo, %{firstName}!"
+        thanks_for_signing_up: "Vielen Dank, dass du dich für die Teilnahmeplattform von %{organizationName} registriert hast."
+        please_confirm_your_email_address: "Bitte bestätige deine E-Mail-Adresse, um deine Registrierung abzuschließen."
+        copy_paste_the_link_below: "Kopiere den untenstehenden Code und füge ihn in dein Registrierungsformular ein."
+        the_link_is_valid_for: "Dieser Link ist 24 Stunden lang gültig. Wenn der Link abgelaufen ist, kannst du <a href=\"%{link}\">einen neuen Code anfordern</a>."
+        did_you_receive_this_email_in_error: "Hast du diese E-Mail irrtümlicherweise erhalten? <a href=\"%{link}\">Lass es uns wissen</a>."
+
