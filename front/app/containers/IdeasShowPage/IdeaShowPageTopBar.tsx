@@ -31,8 +31,8 @@ import { IdeaVotingDisabledReason } from 'services/ideas';
 
 const Container = styled.div`
   height: ${(props) => props.theme.mobileTopBarHeight}px;
-  background-color: ${colors.background};
-  border-bottom: solid 1px ${lighten(0.4, colors.label)};
+  background-color: #fff;
+  border-bottom: solid 1px ${lighten(0.3, colors.label)};
 `;
 
 const TopBarInner = styled.div`
@@ -81,7 +81,7 @@ const GoBackButton = styled.button`
   background: #fff;
   border-radius: 50%;
   transition: all 100ms ease-out;
-  box-shadow: 0px 4px 3px rgba(0, 0, 0, 0.05);
+  border: solid 1px ${lighten(0.2, colors.label)};
 
   &:hover {
     border-color: #000;
@@ -116,6 +116,7 @@ const IdeaShowPageTopBar = memo<Props>(({ ideaId, insideModal, className }) => {
   const project = useProject({
     projectId: get(idea, 'relationships.project.data.id'),
   });
+
   const onGoBack = useCallback(
     (event: MouseEvent<HTMLElement>) => {
       event.preventDefault();
@@ -177,7 +178,7 @@ const IdeaShowPageTopBar = memo<Props>(({ ideaId, insideModal, className }) => {
           </Left>
           <Right>
             <VoteControl
-              style="shadow"
+              style="border"
               size="1"
               ideaId={ideaId}
               disabledVoteClick={onDisabledVoteClick}

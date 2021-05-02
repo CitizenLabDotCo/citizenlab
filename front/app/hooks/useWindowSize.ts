@@ -12,7 +12,7 @@ export default function useWindowSize() {
   });
 
   useEffect(() => {
-    const subscription = fromEvent(window, 'resize')
+    const subscription = fromEvent(window, 'resize', { passive: true })
       .pipe(debounceTime(50), distinctUntilChanged())
       .subscribe((event) => {
         if (event.target) {

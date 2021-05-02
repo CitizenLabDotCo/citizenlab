@@ -1,38 +1,55 @@
-import React, { PureComponent } from 'react';
-import { adopt } from 'react-adopt';
+import React, {
+  memo,
+  useState,
+  useRef,
+  useEffect,
+  useLayoutEffect,
+} from 'react';
 import { popup, LatLng, Map as LeafletMap } from 'leaflet';
 import { withRouter, WithRouterProps } from 'react-router';
 import { isNilOrError } from 'utils/helperUtils';
 
-// Tracking
+// tracking
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
-// Components
+// events
+import { selectedIdeaId$ } from './events';
+
+// components
 import Map, { Point } from 'components/Map';
 import Warning from 'components/UI/Warning';
-import IdeaPreview from './IdeaPreview';
 import IdeaButton from 'components/IdeaButton';
+import IdeasList from './IdeasList';
+import IdeasShow from 'containers/IdeasShow';
 
-// Resources
-import GetIdeaMarkers, {
-  GetIdeaMarkersChildProps,
-} from 'resources/GetIdeaMarkers';
-import GetWindowSize, {
-  GetWindowSizeChildProps,
-} from 'resources/GetWindowSize';
-import GetProject, { GetProjectChildProps } from 'resources/GetProject';
-import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
+// hooks
+import useProject from 'hooks/useProject';
+import usePhase from 'hooks/usePhase';
+import useIdeaMarkers from 'hooks/useIdeaMarkers';
+import useWindowSize from 'hooks/useWindowSize';
 
 // i18n
 import FormattedMessage from 'utils/cl-intl/FormattedMessage';
 import messages from './messages';
 
-// Styling
+// styling
 import styled from 'styled-components';
+import { defaultCardStyle } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
+import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
 
-const Container = styled.div`
+const mapBorderPadding = 80;
+
+const Container = styled.div``;
+
+const InnerContainer = styled.div<{ leftMargin: number | null }>`
+  width: ${({ leftMargin }) =>
+    leftMargin ? `calc(100vw - ${mapBorderPadding * 2}px)` : '100%'};
+  margin-left: ${({ leftMargin }) =>
+    leftMargin ? `-${leftMargin}px` : 'auto'};
+  position: relative;
+
   > .create-idea-wrapper {
     display: none;
   }
@@ -44,161 +61,196 @@ const StyledWarning = styled(Warning)`
   margin-bottom: 10px;
 `;
 
-interface InputProps {
+const MapOverlay = styled.div`
+  width: 500px;
+  position: absolute;
+  display: flex;
+  top: 50px;
+  bottom: 200px;
+  left: 50px;
+  overflow-x: auto;
+  background: #fff;
+  ${defaultCardStyle};
+  z-index: 900;
+`;
+
+const StyledIdeasShow = styled(IdeasShow)``;
+
+interface Props {
   projectIds?: string[] | null;
   phaseId?: string | null;
   className?: string;
 }
 
-interface DataProps {
-  ideaMarkers: GetIdeaMarkersChildProps;
-  windowSize: GetWindowSizeChildProps;
-  project: GetProjectChildProps;
-  phase: GetPhaseChildProps;
-}
+const getInnerContainerLeftMargin = (
+  windowWidth: number,
+  containerWidth: number
+) => {
+  const leftMargin =
+    Math.round((windowWidth - containerWidth) / 2) - mapBorderPadding;
+  return leftMargin > 0 ? leftMargin : null;
+};
 
-interface Props extends InputProps, DataProps {}
+const initialWindowWidth = Math.max(
+  document.documentElement.clientWidth || 0,
+  window.innerWidth || 0
+);
+const initialContainerWidth =
+  document?.getElementById('e2e-ideas-container')?.offsetWidth ||
+  (initialWindowWidth < maxPageWidth ? initialWindowWidth - 40 : maxPageWidth);
+const initialInnerContainerLeftMargin = getInnerContainerLeftMargin(
+  initialWindowWidth,
+  initialContainerWidth
+);
 
-interface State {
-  points: Point[];
-  selectedIdeaId: string | null;
-  selectedLatLng: LatLng | null;
-}
+const IdeasMap = memo<Props & WithRouterProps>(
+  ({ projectIds, phaseId, params, className }) => {
+    const project = useProject({ projectSlug: params.slug });
+    const phase = usePhase(phaseId || null);
+    const ideaMarkers = useIdeaMarkers({ phaseId, projectIds });
+    const { windowWidth } = useWindowSize();
 
-export class IdeasMap extends PureComponent<Props & WithRouterProps, State> {
-  ideaButtonRef: HTMLElement;
+    const containerRef = useRef<HTMLDivElement | null>(null);
+    const ideaButtonRef = useRef<HTMLDivElement | null>(null);
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      points: [],
-      selectedIdeaId: null,
-      selectedLatLng: null,
-    };
-  }
-
-  static getDerivedStateFromProps(
-    props: Props & WithRouterProps,
-    _state: State
-  ) {
-    const { ideaMarkers } = props;
-    const ideaPoints: Point[] = [];
-
-    if (!isNilOrError(ideaMarkers) && ideaMarkers.length > 0) {
-      ideaMarkers.forEach((ideaMarker) => {
-        if (
-          ideaMarker.attributes &&
-          ideaMarker.attributes.location_point_geojson
-        ) {
-          ideaPoints.push({
-            ...ideaMarker.attributes.location_point_geojson,
-            id: ideaMarker.id,
-          });
-        }
-      });
-    }
-
-    return { points: ideaPoints };
-  }
-
-  toggleIdea = (ideaId: string) => {
-    trackEventByName(tracks.clickOnIdeaMapMarker, { extra: { ideaId } });
-
-    this.setState(({ selectedIdeaId }) => {
-      return { selectedIdeaId: ideaId !== selectedIdeaId ? ideaId : null };
-    });
-  };
-
-  deselectIdea = () => {
-    this.setState({ selectedIdeaId: null });
-  };
-
-  onMapClick = (map: LeafletMap, position: LatLng) => {
-    this.setState({ selectedLatLng: position });
-    const { project, phase } = this.props;
-    const ideaPostingEnabled =
-      (!isNilOrError(project) && project.attributes.posting_enabled) ||
-      (!isNilOrError(phase) && phase.attributes.posting_enabled);
-
-    if (ideaPostingEnabled && this.ideaButtonRef) {
-      popup().setLatLng(position).setContent(this.ideaButtonRef).openOn(map);
-    }
-
-    return;
-  };
-
-  setIdeaButtonRef = (element: HTMLDivElement) => {
-    this.ideaButtonRef = element;
-  };
-
-  render() {
-    const { phaseId, projectIds, ideaMarkers, className } = this.props;
-    const {
-      selectedIdeaId,
-      points,
-      selectedLatLng: selectedPosition,
-    } = this.state;
-    const projectId =
-      projectIds && projectIds.length === 1 ? projectIds[0] : null;
-
-    return (
-      <Container className={className}>
-        {ideaMarkers && ideaMarkers.length > 0 && points.length === 0 && (
-          <StyledWarning
-            text={<FormattedMessage {...messages.nothingOnMapWarning} />}
-          />
-        )}
-
-        <ScreenReaderOnly>
-          <FormattedMessage {...messages.a11y_mapTitle} />
-        </ScreenReaderOnly>
-
-        <Map
-          projectId={projectId}
-          points={points}
-          onMarkerClick={this.toggleIdea}
-          onMapClick={this.onMapClick}
-          fitBounds={true}
-          boxContent={
-            selectedIdeaId ? <IdeaPreview ideaId={selectedIdeaId} /> : null
-          }
-          onBoxClose={this.deselectIdea}
-        />
-
-        {projectId && (
-          <IdeaButtonWrapper
-            className="create-idea-wrapper"
-            ref={this.setIdeaButtonRef}
-          >
-            <IdeaButton
-              projectId={projectId}
-              phaseId={phaseId || undefined}
-              participationContextType={phaseId ? 'phase' : 'project'}
-              latLng={selectedPosition}
-              inMap={true}
-            />
-          </IdeaButtonWrapper>
-        )}
-      </Container>
+    const [points, setPoints] = useState<Point[]>([]);
+    const [selectedIdeaId, setSelectedIdeaId] = useState<string | null>(null);
+    const [selectedLatLng, setSelectedLatLng] = useState<LatLng | null>(null);
+    const [containerWidth, setContainerWidth] = useState(initialContainerWidth);
+    const [innerContainerLeftMargin, setInnerContainerLeftMargin] = useState(
+      initialInnerContainerLeftMargin
     );
+
+    useLayoutEffect(() => {
+      const containerWidth = containerRef.current
+        ?.getBoundingClientRect()
+        .toJSON()?.width;
+
+      if (containerWidth) {
+        setContainerWidth(containerWidth);
+      }
+    });
+
+    useEffect(() => {
+      setInnerContainerLeftMargin(
+        getInnerContainerLeftMargin(windowWidth, containerWidth)
+      );
+    }, [windowWidth, containerWidth]);
+
+    useEffect(() => {
+      const ideaPoints: Point[] = [];
+
+      if (!isNilOrError(ideaMarkers) && ideaMarkers.length > 0) {
+        ideaMarkers.forEach((ideaMarker) => {
+          if (
+            ideaMarker.attributes &&
+            ideaMarker.attributes.location_point_geojson
+          ) {
+            ideaPoints.push({
+              ...ideaMarker.attributes.location_point_geojson,
+              id: ideaMarker.id,
+            });
+          }
+        });
+      }
+
+      setPoints(ideaPoints);
+    }, [ideaMarkers]);
+
+    useEffect(() => {
+      const subscription = selectedIdeaId$.subscribe(
+        ({ eventValue: ideaId }) => {
+          setSelectedIdeaId(ideaId);
+        }
+      );
+
+      return () => subscription.unsubscribe();
+    }, []);
+
+    const toggleIdea = (ideaId: string) => {
+      trackEventByName(tracks.clickOnIdeaMapMarker, { extra: { ideaId } });
+      setSelectedIdeaId((selectedIdeaId) =>
+        ideaId !== selectedIdeaId ? ideaId : null
+      );
+    };
+
+    const deselectIdea = () => {
+      setSelectedIdeaId(null);
+    };
+
+    const onMapClick = (map: LeafletMap, position: LatLng) => {
+      setSelectedLatLng(position);
+
+      const ideaPostingEnabled =
+        (!isNilOrError(project) && project.attributes.posting_enabled) ||
+        (!isNilOrError(phase) && phase.attributes.posting_enabled);
+
+      if (ideaPostingEnabled && ideaButtonRef?.current) {
+        popup()
+          .setLatLng(position)
+          .setContent(ideaButtonRef?.current)
+          .openOn(map);
+      }
+
+      return;
+    };
+
+    if (!isNilOrError(project)) {
+      return (
+        <Container ref={containerRef} className={className || ''}>
+          <InnerContainer leftMargin={innerContainerLeftMargin}>
+            {ideaMarkers && ideaMarkers.length > 0 && points.length === 0 && (
+              <StyledWarning
+                text={<FormattedMessage {...messages.nothingOnMapWarning} />}
+              />
+            )}
+
+            <ScreenReaderOnly>
+              <FormattedMessage {...messages.a11y_mapTitle} />
+            </ScreenReaderOnly>
+
+            <Map
+              projectId={project.id}
+              points={points}
+              onMarkerClick={toggleIdea}
+              onMapClick={onMapClick}
+              fitBounds={false}
+              mapHeight="80vh"
+              onBoxClose={deselectIdea}
+            />
+
+            <MapOverlay>
+              {!selectedIdeaId ? (
+                <IdeasList projectIds={projectIds} phaseId={phaseId} />
+              ) : (
+                <StyledIdeasShow
+                  ideaId={selectedIdeaId}
+                  projectId={project.id}
+                  insideModal={false}
+                  compact={true}
+                />
+              )}
+            </MapOverlay>
+
+            <IdeaButtonWrapper
+              className="create-idea-wrapper"
+              ref={ideaButtonRef}
+            >
+              <IdeaButton
+                projectId={project.id}
+                phaseId={phaseId || undefined}
+                participationContextType={phaseId ? 'phase' : 'project'}
+                latLng={selectedLatLng}
+                inMap={true}
+              />
+            </IdeaButtonWrapper>
+          </InnerContainer>
+        </Container>
+      );
+    }
+
+    return null;
   }
-}
+);
 
-const Data = adopt<DataProps, InputProps & WithRouterProps>({
-  project: ({ params, render }) => (
-    <GetProject projectSlug={params.slug}>{render}</GetProject>
-  ),
-  windowSize: <GetWindowSize />,
-  ideaMarkers: ({ projectIds, phaseId, render }) => (
-    <GetIdeaMarkers projectIds={projectIds} phaseId={phaseId}>
-      {render}
-    </GetIdeaMarkers>
-  ),
-  phase: ({ phaseId, render }) => <GetPhase id={phaseId}>{render}</GetPhase>,
-});
-
-export default withRouter((inputProps: InputProps & WithRouterProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <IdeasMap {...inputProps} {...dataProps} />}
-  </Data>
-));
+export default withRouter(IdeasMap);

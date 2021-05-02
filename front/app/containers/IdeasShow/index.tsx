@@ -83,112 +83,62 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 // style
 import styled from 'styled-components';
 import { media, viewportWidths, isRtl } from 'utils/styleUtils';
-import {
-  columnsGapDesktop,
-  columnsGapTablet,
-  pageContentMaxWidth,
-} from './styleConstants';
+import { columnsGapDesktop, pageContentMaxWidth } from './styleConstants';
 import Outlet from 'components/Outlet';
 
 const contentFadeInDuration = 250;
 const contentFadeInEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
 const contentFadeInDelay = 150;
 
-const Loading = styled.div`
-  width: 100vw;
-  height: calc(
-    100vh - ${(props) => props.theme.menuHeight + props.theme.footerHeight}px
-  );
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  ${media.smallerThanMaxTablet`
-    height: calc(100vh - ${({ theme: { mobileTopBarHeight } }) =>
-      mobileTopBarHeight}px);
-  `}
-
-  ${media.smallerThanMinTablet`
-    height: calc(100vh - ${({ theme: { mobileTopBarHeight } }) =>
-      mobileTopBarHeight}px);
-  `}
-`;
-
 const Container = styled.main`
-  display: flex;
-  flex-direction: column;
-  min-height: calc(
-    100vh - ${(props) => props.theme.menuHeight + props.theme.footerHeight}px
-  );
-  background: #fff;
-  opacity: 0;
-
-  ${media.smallerThanMaxTablet`
-    min-height: calc(100vh - ${({
-      theme: { mobileMenuHeight, mobileTopBarHeight },
-    }) => mobileMenuHeight + mobileTopBarHeight}px);
-  `}
-
-  &.content-enter {
-    opacity: 0;
-
-    &.content-enter-active {
-      opacity: 1;
-      transition: opacity ${contentFadeInDuration}ms ${contentFadeInEasing}
-        ${contentFadeInDelay}ms;
-    }
-  }
-
-  &.content-enter-done {
-    opacity: 1;
-  }
-`;
-
-const IdeaContainer = styled.div`
   width: 100%;
   max-width: ${pageContentMaxWidth}px;
-  margin: 0;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
   margin-left: auto;
   margin-right: auto;
-  padding: 0;
-  padding-top: 40px;
-  padding-left: 60px;
-  padding-right: 60px;
-  position: relative;
+  background: #fff;
+  border: solid 1px red;
 
-  ${media.smallerThanMaxTablet`
-    padding-top: 35px;
-  `}
+  &.loading {
+    justify-content: center;
+  }
 
-  ${media.smallerThanMinTablet`
-    padding-top: 25px;
-    padding-left: 15px;
-    padding-right: 15px;
-  `}
+  &.loaded {
+    opacity: 0;
+
+    &.content-enter {
+      opacity: 0;
+
+      &.content-enter-active {
+        opacity: 1;
+        transition: opacity ${contentFadeInDuration}ms ${contentFadeInEasing}
+          ${contentFadeInDelay}ms;
+      }
+    }
+
+    &.content-enter-done {
+      opacity: 1;
+    }
+  }
+`;
+
+const StyledSpinner = styled(Spinner)`
+  border: solid 1px red;
 `;
 
 const Content = styled.div`
-  width: 100%;
   display: flex;
-
-  ${media.smallerThanMaxTablet`
-    display: block;
-  `}
 `;
 
 const LeftColumn = styled.div`
-  flex: 2;
-  margin: 0;
-  padding: 0;
-  padding-right: ${columnsGapDesktop}px;
+  flex: 1 1 100%;
+`;
 
-  ${media.tablet`
-    padding-right: ${columnsGapTablet}px;
-  `}
-
-  ${media.smallerThanMaxTablet`
-    padding: 0;
-  `}
+const StyledRightColumnDesktop = styled(RightColumnDesktop)`
+  margin-left: ${columnsGapDesktop}px;
 `;
 
 const IdeaHeader = styled.div`
@@ -204,22 +154,11 @@ const IdeaHeader = styled.div`
 
   ${media.smallerThanMaxTablet`
     margin-top: 0px;
-    margin-bottom: 25px;
-  `}
-`;
-
-const StyledIdeaMoreActions = styled(IdeaMoreActions)`
-  ${media.smallerThanMaxTablet`
-    display: none;
   `}
 `;
 
 const MobileIdeaMoreActions = styled(IdeaMoreActions)`
-  display: none;
-
-  ${media.smallerThanMaxTablet`
-    display: block;
-  `}
+  margin-left: 30px;
 `;
 
 const TopBar = styled.div`
@@ -233,11 +172,6 @@ const TopBar = styled.div`
 
 const StyledGoBackButton = styled(GoBackButton)`
   margin-bottom: 40px;
-  display: block;
-
-  ${media.smallerThanMaxTablet`
-    display: none;
-  `}
 `;
 
 const BodySectionTitle = styled.h2`
@@ -251,10 +185,6 @@ const BodySectionTitle = styled.h2`
 
 const StyledBody = styled(Body)`
   margin-bottom: 40px;
-
-  ${media.smallerThanMaxTablet`
-  margin-bottom: 25px;
-  `}
 `;
 
 const StyledIdeaProposedBudget = styled(IdeaProposedBudget)`
@@ -268,17 +198,9 @@ const MobileMetaInformation = styled(MetaInformation)`
 const AssignBudgetControlMobile = styled.div`
   margin-top: 40px;
   margin-bottom: 40px;
-
-  ${media.biggerThanMaxTablet`
-    display: none;
-  `}
 `;
 
-const MobileIdeaSharingButton = styled(IdeaSharingButton)`
-  ${media.biggerThanMaxTablet`
-    display: none;
-  `}
-`;
+const MobileIdeaSharingButton = styled(IdeaSharingButton)``;
 
 const StyledOfficialFeedback = styled(OfficialFeedback)`
   margin-top: 80px;
@@ -308,6 +230,7 @@ interface InputProps {
   ideaId: string;
   projectId: string;
   insideModal: boolean;
+  compact?: boolean;
   className?: string;
 }
 
@@ -515,6 +438,7 @@ export class IdeasShow extends PureComponent<
       insideModal,
       project,
       phases,
+      compact,
     } = this.props;
     const {
       loaded,
@@ -549,12 +473,9 @@ export class IdeasShow extends PureComponent<
       const budgetingDescriptor = actionInfos?.budgetingDescriptor || null;
       const showBudgetControl = actionInfos?.showBudgetControl || null;
       const showVoteControl = actionInfos?.showVoteControl || null;
-      const biggerThanLargeTablet = windowSize
-        ? windowSize > viewportWidths.largeTablet
-        : false;
-      const smallerThanLargeTablet = windowSize
-        ? windowSize <= viewportWidths.largeTablet
-        : false;
+      const isCompactView =
+        compact === true ||
+        (windowSize ? windowSize <= viewportWidths.largeTablet : false);
       const proposedBudgetEnabled = isFieldEnabled(
         'proposed_budget',
         ideaCustomFieldsSchemas,
@@ -565,135 +486,129 @@ export class IdeasShow extends PureComponent<
         <>
           <IdeaMeta ideaId={ideaId} />
 
-          <IdeaContainer>
+          {!isCompactView && (
             <TopBar>
               <StyledGoBackButton
                 projectId={projectId}
                 insideModal={insideModal}
               />
-              <StyledIdeaMoreActions
-                idea={idea}
-                hasLeftMargin={true}
-                projectId={projectId}
-              />
+              <IdeaMoreActions idea={idea} projectId={projectId} />
             </TopBar>
+          )}
 
-            <Content id="e2e-idea-show-page-content">
-              <LeftColumn>
-                <IdeaHeader>
-                  <Title
-                    postType="idea"
-                    postId={ideaId}
-                    title={ideaTitle}
-                    locale={locale}
-                    translateButtonClicked={translateButtonClicked}
-                  />
-                  <MobileIdeaMoreActions
-                    idea={idea}
-                    hasLeftMargin={true}
-                    projectId={projectId}
-                  />
-                </IdeaHeader>
-
-                {ideaImageLarge && (
-                  <Image src={ideaImageLarge} alt="" id="e2e-idea-image" />
-                )}
-
-                <Outlet
-                  id="app.containers.IdeasShow.left"
-                  idea={idea}
-                  locale={locale}
-                  onClick={this.onTranslateIdea}
-                  translateButtonClicked={translateButtonClicked}
-                />
-
-                {proposedBudgetEnabled && proposedBudget && (
-                  <>
-                    <BodySectionTitle>
-                      <FormattedMessage {...messages.proposedBudgetTitle} />
-                    </BodySectionTitle>
-                    <StyledIdeaProposedBudget
-                      formattedBudget={getFormattedBudget(
-                        locale,
-                        proposedBudget,
-                        tenant.attributes.settings.core.currency
-                      )}
-                    />
-                    <BodySectionTitle>
-                      <FormattedMessage {...messages.bodyTitle} />
-                    </BodySectionTitle>
-                  </>
-                )}
-
-                <StyledBody
+          <Content id="e2e-idea-show-page-content">
+            <LeftColumn>
+              <IdeaHeader>
+                <Title
                   postType="idea"
                   postId={ideaId}
+                  title={ideaTitle}
                   locale={locale}
-                  body={ideaBody}
                   translateButtonClicked={translateButtonClicked}
                 />
+                {isCompactView && (
+                  <MobileIdeaMoreActions idea={idea} projectId={projectId} />
+                )}
+              </IdeaHeader>
 
-                {smallerThanLargeTablet && (
-                  <MobileMetaInformation
-                    ideaId={ideaId}
-                    projectId={projectId}
-                    statusId={statusId}
-                    authorId={authorId}
+              {ideaImageLarge && (
+                <Image src={ideaImageLarge} alt="" id="e2e-idea-image" />
+              )}
+
+              <Outlet
+                id="app.containers.IdeasShow.left"
+                idea={idea}
+                locale={locale}
+                onClick={this.onTranslateIdea}
+                translateButtonClicked={translateButtonClicked}
+              />
+
+              {proposedBudgetEnabled && proposedBudget && (
+                <>
+                  <BodySectionTitle>
+                    <FormattedMessage {...messages.proposedBudgetTitle} />
+                  </BodySectionTitle>
+                  <StyledIdeaProposedBudget
+                    formattedBudget={getFormattedBudget(
+                      locale,
+                      proposedBudget,
+                      tenant.attributes.settings.core.currency
+                    )}
                   />
+                  <BodySectionTitle>
+                    <FormattedMessage {...messages.bodyTitle} />
+                  </BodySectionTitle>
+                </>
+              )}
+
+              <StyledBody
+                postType="idea"
+                postId={ideaId}
+                locale={locale}
+                body={ideaBody}
+                translateButtonClicked={translateButtonClicked}
+              />
+
+              {isCompactView && (
+                <MobileMetaInformation
+                  ideaId={ideaId}
+                  projectId={projectId}
+                  statusId={statusId}
+                  authorId={authorId}
+                />
+              )}
+
+              {showBudgetControl &&
+                participationContextId &&
+                participationContextType &&
+                budgetingDescriptor &&
+                isCompactView && (
+                  <AssignBudgetControlMobile>
+                    <AssignBudgetWrapper
+                      ideaId={ideaId}
+                      projectId={projectId}
+                      participationContextId={participationContextId}
+                      participationContextType={participationContextType}
+                      budgetingDescriptor={budgetingDescriptor}
+                    />
+                  </AssignBudgetControlMobile>
                 )}
 
-                {showBudgetControl &&
-                  participationContextId &&
-                  participationContextType &&
-                  budgetingDescriptor &&
-                  smallerThanLargeTablet && (
-                    <AssignBudgetControlMobile>
-                      <AssignBudgetWrapper
-                        ideaId={ideaId}
-                        projectId={projectId}
-                        participationContextId={participationContextId}
-                        participationContextType={participationContextType}
-                        budgetingDescriptor={budgetingDescriptor}
-                      />
-                    </AssignBudgetControlMobile>
-                  )}
-
+              {isCompactView && (
                 <MobileIdeaSharingButton
                   ideaId={ideaId}
                   buttonComponent={<MobileSharingButtonComponent />}
                 />
-
-                <StyledOfficialFeedback
-                  postId={ideaId}
-                  postType="idea"
-                  permissionToPost={postOfficialFeedbackPermission}
-                />
-
-                <Comments>
-                  <Suspense fallback={<LoadingComments />}>
-                    <LazyComments postId={ideaId} postType="idea" />
-                  </Suspense>
-                </Comments>
-              </LeftColumn>
-
-              {biggerThanLargeTablet && (
-                <Suspense fallback={<Spinner />}>
-                  <RightColumnDesktop
-                    ideaId={ideaId}
-                    projectId={projectId}
-                    statusId={statusId}
-                    authorId={authorId}
-                    showVoteControl={showVoteControl}
-                    showBudgetControl={showBudgetControl}
-                    participationContextId={participationContextId}
-                    participationContextType={participationContextType}
-                    budgetingDescriptor={budgetingDescriptor}
-                    insideModal={insideModal}
-                  />
-                </Suspense>
               )}
-            </Content>
-          </IdeaContainer>
+
+              <StyledOfficialFeedback
+                postId={ideaId}
+                postType="idea"
+                permissionToPost={postOfficialFeedbackPermission}
+              />
+
+              <Comments>
+                <Suspense fallback={<LoadingComments />}>
+                  <LazyComments postId={ideaId} postType="idea" />
+                </Suspense>
+              </Comments>
+            </LeftColumn>
+
+            {!isCompactView && (
+              <StyledRightColumnDesktop
+                ideaId={ideaId}
+                projectId={projectId}
+                statusId={statusId}
+                authorId={authorId}
+                showVoteControl={showVoteControl}
+                showBudgetControl={showBudgetControl}
+                participationContextId={participationContextId}
+                participationContextType={participationContextType}
+                budgetingDescriptor={budgetingDescriptor}
+                insideModal={insideModal}
+              />
+            )}
+          </Content>
         </>
       );
     }
@@ -708,9 +623,9 @@ export class IdeasShow extends PureComponent<
       return (
         <>
           {!loaded && (
-            <Loading>
-              <Spinner />
-            </Loading>
+            <Container className={`loading ${className || ''}`}>
+              <StyledSpinner />
+            </Container>
           )}
           <CSSTransition
             classNames="content"
@@ -722,7 +637,10 @@ export class IdeasShow extends PureComponent<
             enter={true}
             exit={false}
           >
-            <Container id="e2e-idea-show" className={className}>
+            <Container
+              id="e2e-idea-show"
+              className={`loaded ${className || ''}`}
+            >
               {content}
             </Container>
           </CSSTransition>

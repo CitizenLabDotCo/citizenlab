@@ -21,6 +21,7 @@ export const DEFAULT_TILE_PROVIDER =
 export const DEFAULT_TILE_OPTIONS = {
   tileSize: 512,
   zoomOffset: -1,
+  detectRetina: false,
   minZoom: 1,
   maxZoom: 20,
   crossOrigin: true,

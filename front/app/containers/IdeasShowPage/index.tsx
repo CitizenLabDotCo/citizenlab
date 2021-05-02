@@ -18,7 +18,7 @@ import messages from './messages';
 
 // style
 import styled from 'styled-components';
-import { fontSizes, colors, media } from 'utils/styleUtils';
+import { media, fontSizes, colors } from 'utils/styleUtils';
 
 const IdeaNotFoundWrapper = styled.div`
   height: calc(
@@ -44,11 +44,26 @@ const StyledIdeaShowPageTopBar = styled(IdeaShowPageTopBar)`
   z-index: 1000;
 `;
 
+// note: StyledIdeasShow styles defined here should match that in PostPageFullscreenModal!
 const StyledIdeasShow = styled(IdeasShow)`
-  background: #fff;
+  min-height: calc(
+    100vh - ${(props) => props.theme.menuHeight + props.theme.footerHeight}px
+  );
+  padding-top: 40px;
+  padding-left: 60px;
+  padding-right: 60px;
 
-  ${media.biggerThanMaxTablet`
-    margin-top: 0px;
+  ${media.smallerThanMaxTablet`
+    min-height: calc(100vh - ${({
+      theme: { mobileMenuHeight, mobileTopBarHeight },
+    }) => mobileMenuHeight + mobileTopBarHeight}px);
+    padding-top: 35px;
+  `}
+
+  ${media.smallerThanMinTablet`
+    padding-top: 25px;
+    padding-left: 15px;
+    padding-right: 15px;
   `}
 `;
 

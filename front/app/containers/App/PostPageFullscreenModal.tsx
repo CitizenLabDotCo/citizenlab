@@ -14,6 +14,33 @@ import useIdea from 'hooks/useIdea';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 
+// style
+import styled from 'styled-components';
+import { media } from 'utils/styleUtils';
+
+// note: StyledIdeasShow styles defined here should match that in IdeasShowPage!
+const StyledIdeasShow = styled(IdeasShow)`
+  min-height: calc(
+    100vh - ${(props) => props.theme.menuHeight + props.theme.footerHeight}px
+  );
+  padding-top: 40px;
+  padding-left: 60px;
+  padding-right: 60px;
+
+  ${media.smallerThanMaxTablet`
+    min-height: calc(100vh - ${({
+      theme: { mobileMenuHeight, mobileTopBarHeight },
+    }) => mobileMenuHeight + mobileTopBarHeight}px);
+    padding-top: 35px;
+  `}
+
+  ${media.smallerThanMinTablet`
+    padding-top: 25px;
+    padding-left: 15px;
+    padding-right: 15px;
+  `}
+`;
+
 interface Props {
   type: 'idea' | 'initiative' | null;
   postId: string | null;
@@ -53,7 +80,11 @@ const PostPageFullscreenModal = memo<Props>(
 
           return (
             <>
-              <IdeasShow ideaId={postId} projectId={projectId} insideModal />
+              <StyledIdeasShow
+                ideaId={postId}
+                projectId={projectId}
+                insideModal={true}
+              />
               <PlatformFooter insideModal />
             </>
           );

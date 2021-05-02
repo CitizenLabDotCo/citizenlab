@@ -391,7 +391,7 @@ class WithoutFiltersSidebar extends PureComponent<
       >
         <FiltersArea
           id="e2e-ideas-filters"
-          className={`${showMapView ? 'mapView' : 'listView'}`}
+          className={`ideasContainer ${showMapView ? 'mapView' : 'listView'}`}
         >
           <LeftFilterArea>
             {showViewButtons && smallerThanSmallTablet && (

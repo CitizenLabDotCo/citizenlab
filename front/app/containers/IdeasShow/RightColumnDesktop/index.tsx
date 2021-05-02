@@ -9,11 +9,8 @@ import Buttons from '../CTABox/Buttons';
 
 // styling
 import styled from 'styled-components';
-import { media, colors } from 'utils/styleUtils';
-import {
-  rightColumnWidthDesktop,
-  rightColumnWidthTablet,
-} from '../styleConstants';
+import { colors } from 'utils/styleUtils';
+import { rightColumnWidthDesktop } from '../styleConstants';
 
 const Container = styled.div<{ insideModal: boolean }>`
   flex: 0 0 ${rightColumnWidthDesktop}px;
@@ -21,15 +18,6 @@ const Container = styled.div<{ insideModal: boolean }>`
   position: sticky;
   top: ${(props) => (props.insideModal ? '30px' : '110px')};
   align-self: flex-start;
-
-  ${media.tablet`
-    flex: 0 0 ${rightColumnWidthTablet}px;
-    width: ${rightColumnWidthTablet}px;
-  `}
-
-  ${media.smallerThanMaxTablet`
-    display: none;
-  `}
 `;
 
 const InnerContainer = styled.div`
@@ -67,6 +55,7 @@ interface Props {
   participationContextType: IParticipationContextType | null;
   budgetingDescriptor: any | null;
   insideModal: boolean;
+  className?: string;
 }
 
 const RightColumnDesktop = ({
@@ -80,9 +69,10 @@ const RightColumnDesktop = ({
   participationContextType,
   budgetingDescriptor,
   insideModal,
+  className,
 }: Props) => {
   return (
-    <Container insideModal={insideModal}>
+    <Container insideModal={insideModal} className={className || ''}>
       <InnerContainer>
         {showVoteControl && (
           <StyledVotingCTABox ideaId={ideaId} projectId={projectId} />
