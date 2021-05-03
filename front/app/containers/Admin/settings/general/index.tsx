@@ -107,11 +107,11 @@ class SettingsGeneralTab extends PureComponent<
   }
 
   componentDidMount() {
-    const currentTenant$ = currentAppConfigurationStream().observable;
+    const appConfiguration$ = currentAppConfigurationStream().observable;
 
     this.subscriptions = [
-      currentTenant$.subscribe((currentTenant) => {
-        this.setState({ appConfiguration: currentTenant.data });
+      appConfiguration$.subscribe((appConfiguration) => {
+        this.setState({ appConfiguration: appConfiguration.data });
       }),
     ];
   }
@@ -171,9 +171,9 @@ class SettingsGeneralTab extends PureComponent<
   save = (event: FormEvent<any>) => {
     event.preventDefault();
 
-    const { appConfiguration: tenant, attributesDiff } = this.state;
+    const { appConfiguration, attributesDiff } = this.state;
 
-    if (tenant) {
+    if (appConfiguration) {
       this.setState({
         loading: true,
         saved: false,
@@ -275,37 +275,41 @@ class SettingsGeneralTab extends PureComponent<
       const { errors, saved, attributesDiff, hasUrlError } = this.state;
       const updatedLocales = get(attributesDiff, 'settings.core.locales');
 
-      let tenantAttrs = appConfiguration
+      let appConfigAttrs = appConfiguration
         ? merge({}, appConfiguration.attributes, attributesDiff)
         : merge({}, attributesDiff);
 
       // Prevent merging the arrays of locales
       if (updatedLocales) {
-        tenantAttrs = set(tenantAttrs, 'settings.core.locales', updatedLocales);
+        appConfigAttrs = set(
+          appConfigAttrs,
+          'settings.core.locales',
+          updatedLocales
+        );
       }
 
-      const tenantLocales: string[] | null = get(
-        tenantAttrs,
+      const appConfigLocales: string[] | null = get(
+        appConfigAttrs,
         'settings.core.locales',
         null
       );
       const organizationType: string | null = get(
-        tenantAttrs,
+        appConfigAttrs,
         'settings.core.organization_type',
         null
       );
-      const tenantSite: string | null = get(
-        tenantAttrs,
+      const appConfigSite: string | null = get(
+        appConfigAttrs,
         'settings.core.organization_site',
         null
       );
       const organizationNameMultiloc: Multiloc | null = get(
-        tenantAttrs,
+        appConfigAttrs,
         'settings.core.organization_name',
         null
       );
       const localeOptions = this.localeOptions();
-      const selectedLocaleOptions = this.localesToOptions(tenantLocales);
+      const selectedLocaleOptions = this.localesToOptions(appConfigLocales);
       const profanityBlockerSetting =
         appConfiguration.attributes.settings.blocking_profanity;
 
@@ -363,7 +367,7 @@ class SettingsGeneralTab extends PureComponent<
                 type="text"
                 placeholder="https://..."
                 onChange={this.handleUrlOnChange}
-                value={tenantSite}
+                value={appConfigSite}
                 error={hasUrlError ? formatMessage(messages.urlError) : null}
               />
             </SectionField>
