@@ -42,7 +42,7 @@
   "app.components.Comments.yourComment": "Comentariul tău",
   "app.components.ConfirmationModal.accountConfirmation": "Account Confirmation",
   "app.components.ConfirmationModal.anExampleCodeHasBeenSent": "An email with a confirmation code has been sent to {userEmail}.",
-  "app.components.ConfirmationModal.cancel": "Cancelare",
+  "app.components.ConfirmationModal.cancel": "Anulare",
   "app.components.ConfirmationModal.changeYourEmail": "Change your email.",
   "app.components.ConfirmationModal.close": "Închide",
   "app.components.ConfirmationModal.confirmYourAccount": "Confirm your Email Address",
