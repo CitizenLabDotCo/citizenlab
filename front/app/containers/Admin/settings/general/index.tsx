@@ -266,7 +266,43 @@ class SettingsGeneralTab extends PureComponent<
     }
   };
 
-  onToggleInappropriateContentSetting = () => {};
+  onToggleInappropriateContentDetectionSetting = () => {
+    const { appConfiguration } = this.state;
+
+    if (
+      !isNilOrError(appConfiguration) &&
+      appConfiguration.attributes.settings.inappropriate_content_detection
+    ) {
+      const oldInappropriateContentDetectionEnabled =
+        appConfiguration.attributes.settings.inappropriate_content_detection
+          .enabled;
+      this.setState({
+        settingsSavingError: false,
+      });
+      updateAppConfiguration({
+        settings: {
+          inappropriate_content_detection: {
+            enabled: !oldInappropriateContentDetectionEnabled,
+          },
+        },
+      })
+        .then(() => {
+          this.setState({
+            settingsUpdatedSuccessFully: true,
+          });
+          setTimeout(() => {
+            this.setState({
+              settingsUpdatedSuccessFully: false,
+            });
+          }, 2000);
+        })
+        .catch((_error) => {
+          this.setState({
+            settingsSavingError: true,
+          });
+        });
+    }
+  };
 
   render() {
     const {
@@ -424,7 +460,9 @@ class SettingsGeneralTab extends PureComponent<
                     <ToggleLabel>
                       <StyledToggle
                         checked={inappropriateContentDetectionSetting.enabled}
-                        onChange={this.onToggleInappropriateContentSetting}
+                        onChange={
+                          this.onToggleInappropriateContentDetectionSetting
+                        }
                       />
                       <LabelContent>
                         <LabelTitleContainer>
