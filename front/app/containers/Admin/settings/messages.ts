@@ -222,6 +222,14 @@ export default defineMessages({
     defaultMessage:
       'This is shown on the top of the first page of the sign-up form (name, email, password).',
   },
+  platformConfiguration: {
+    id: 'app.containers.AdminPage.SettingsPage.platformConfiguration',
+    defaultMessage: 'Platform configuration',
+  },
+  contentModeration: {
+    id: 'app.containers.AdminPage.SettingsPage.contentModeration',
+    defaultMessage: 'Content moderation',
+  },
   registrationTabDescription: {
     id: 'app.containers.AdminPage.SettingsPage.registrationTabDescription',
     defaultMessage:
