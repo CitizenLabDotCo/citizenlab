@@ -151,8 +151,6 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
       },
     });
 
-    console.log(metaData.inModal);
-
     const enabledSteps = useMemo<TSignUpSteps[]>(
       () =>
         Object.entries(configuration)
