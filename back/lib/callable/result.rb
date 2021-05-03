@@ -27,7 +27,7 @@ module Callable
       instance_variable_set("@#{attr_name}", args.first)
 
       self.class.class_eval do
-        attr_accessor attr_name
+        attr_reader attr_name
       end
     end
   end
