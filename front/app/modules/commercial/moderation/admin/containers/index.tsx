@@ -4,19 +4,10 @@ import { includes } from 'lodash-es';
 
 // components
 import Table from 'components/UI/Table';
-import Modal from 'components/UI/Modal';
 import ModerationRow from './ModerationRow';
 import Pagination from 'components/admin/Pagination/Pagination';
 import Checkbox from 'components/UI/Checkbox';
-import {
-  Icon,
-  IconTooltip,
-  Select,
-  Toggle,
-  Button,
-  Success,
-  Error,
-} from 'cl2-component-library';
+import { Icon, IconTooltip, Select, Button } from 'cl2-component-library';
 import Tabs from 'components/UI/Tabs';
 import { PageTitle } from 'components/admin/Section';
 import SelectType from './SelectType';
@@ -25,7 +16,6 @@ import SearchInput from 'components/UI/SearchInput';
 
 // hooks
 import useModerations from '../../hooks/useModerations';
-import useAppConfiguration from 'hooks/useAppConfiguration';
 import useLocale from 'hooks/useLocale';
 
 // services
@@ -35,7 +25,6 @@ import {
   TModerationStatuses,
   TModeratableTypes,
 } from '../../services/moderations';
-import { updateAppConfiguration } from 'services/appConfiguration';
 
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
@@ -180,34 +169,6 @@ const StyledSearchInput = styled(SearchInput)`
   width: 320px;
 `;
 
-const ProfanitySettings = styled.div`
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-`;
-
-const StyledToggle = styled(Toggle)`
-  margin-right: 10px;
-`;
-
-const Setting = styled.div`
-  margin-bottom: 20px;
-`;
-
-const LabelTitle = styled.div`
-  font-weight: bold;
-`;
-
-const ToggleLabel = styled.label`
-  display: flex;
-`;
-
-const LabelDescription = styled.div``;
-const LabelContent = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
 interface Props {
   className?: string;
 }
@@ -262,7 +223,6 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
     projectIds: [],
     searchTerm: '',
   });
-  const appConfiguration = useAppConfiguration();
   const locale = useLocale();
 
   const [moderationItems, setModerationItems] = useState(list);
@@ -270,12 +230,6 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
   const [processing, setProcessing] = useState(false);
   const [selectedTypes, setSelectedTypes] = useState<TModeratableTypes[]>([]);
   const [selectedProjectIds, setSelectedProjectIds] = useState<string[]>([]);
-  const [settingsModalOpened, setSettingsModalOpened] = useState(false);
-  const [
-    settingsUpdatedSuccessFully,
-    setSettingsUpdatedSuccessFully,
-  ] = useState(false);
-  const [settingsSavingError, setSettingsSavingError] = useState(false);
 
   const handleOnSelectAll = useCallback(
     (_event: React.ChangeEvent) => {
@@ -355,39 +309,6 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
     [selectedRows, processing]
   );
 
-  const onToggleBlockProfanitySetting = () => {
-    if (
-      !isNilOrError(appConfiguration) &&
-      appConfiguration.data.attributes.settings.blocking_profanity
-    ) {
-      const oldProfanityBlockerEnabled =
-        appConfiguration.data.attributes.settings.blocking_profanity.enabled;
-      setSettingsSavingError(false);
-      updateAppConfiguration({
-        settings: {
-          blocking_profanity: {
-            enabled: !oldProfanityBlockerEnabled,
-          },
-        },
-      })
-        .then(() => {
-          setSettingsUpdatedSuccessFully(true);
-          setTimeout(() => setSettingsUpdatedSuccessFully(false), 2000);
-        })
-        .catch((_error) => {
-          setSettingsSavingError(true);
-        });
-    }
-  };
-
-  const openSettingsModal = () => {
-    setSettingsModalOpened(true);
-  };
-
-  const closeSettingsModal = () => {
-    setSettingsModalOpened(false);
-  };
-
   const markAs = useCallback(
     async (event: React.FormEvent) => {
       if (
@@ -436,14 +357,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
     }
   }, [list, processing]);
 
-  if (
-    !isNilOrError(moderationItems) &&
-    !isNilOrError(locale) &&
-    !isNilOrError(appConfiguration)
-  ) {
-    const profanityBlockerSetting =
-      appConfiguration.data.attributes.settings.blocking_profanity;
-
+  if (!isNilOrError(moderationItems) && !isNilOrError(locale)) {
     return (
       <Container className={className}>
         <PageHeader>
@@ -457,62 +371,6 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
               placement="right"
             />
           </PageTitleWrapper>
-          {profanityBlockerSetting?.allowed && (
-            <>
-              <Button
-                buttonStyle="secondary"
-                onClick={openSettingsModal}
-                locale={locale}
-                icon="settings"
-              >
-                <FormattedMessage {...messages.settings} />
-              </Button>
-              <Modal
-                header={intl.formatMessage(messages.settings)}
-                opened={settingsModalOpened}
-                close={closeSettingsModal}
-              >
-                <ProfanitySettings>
-                  {profanityBlockerSetting && (
-                    <Setting>
-                      <ToggleLabel>
-                        <StyledToggle
-                          checked={profanityBlockerSetting.enabled}
-                          onChange={onToggleBlockProfanitySetting}
-                        />
-                        <LabelContent>
-                          <LabelTitle>
-                            {intl.formatMessage(
-                              messages.profanityBlockerSetting
-                            )}
-                          </LabelTitle>
-                          <LabelDescription>
-                            {intl.formatMessage(
-                              messages.profanityBlockerSettingDescription
-                            )}
-                          </LabelDescription>
-                        </LabelContent>
-                      </ToggleLabel>
-                    </Setting>
-                  )}
-
-                  {settingsUpdatedSuccessFully && (
-                    <Success
-                      showBackground
-                      text={intl.formatMessage(
-                        messages.successfulUpdateSettings
-                      )}
-                    />
-                  )}
-                  {settingsSavingError && (
-                    <Error
-                      text={intl.formatMessage(messages.settingsSavingError)}
-                    />
-                  )}
-                </ProfanitySettings>
-              </Modal>
-            </>
-          )}
         </PageHeader>
 
         <Filters>
