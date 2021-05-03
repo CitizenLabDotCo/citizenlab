@@ -32,6 +32,7 @@ import {
   SectionField,
   SectionDescription,
 } from 'components/admin/Section';
+import Link from 'utils/cl-router/Link';
 
 // services
 import {
@@ -397,7 +398,7 @@ class SettingsGeneralTab extends PureComponent<
               <SubSectionTitle>
                 <FormattedMessage {...messages.contentModeration} />
               </SubSectionTitle>
-              {profanityBlockerSetting && (
+              {profanityBlockerSetting && profanityBlockerSetting.allowed && (
                 <Setting>
                   <ToggleLabel>
                     <StyledToggle
@@ -417,40 +418,47 @@ class SettingsGeneralTab extends PureComponent<
                   </ToggleLabel>
                 </Setting>
               )}
-              {inappropriateContentDetectionSetting && (
-                <Setting>
-                  <ToggleLabel>
-                    <StyledToggle
-                      checked={inappropriateContentDetectionSetting.enabled}
-                      onChange={this.onToggleInappropriateContentSetting}
-                    />
-                    <LabelContent>
-                      <LabelTitleContainer>
-                        <LabelTitle>
+              {inappropriateContentDetectionSetting &&
+                inappropriateContentDetectionSetting.allowed && (
+                  <Setting>
+                    <ToggleLabel>
+                      <StyledToggle
+                        checked={inappropriateContentDetectionSetting.enabled}
+                        onChange={this.onToggleInappropriateContentSetting}
+                      />
+                      <LabelContent>
+                        <LabelTitleContainer>
+                          <LabelTitle>
+                            {formatMessage(
+                              messages.inappropriateContentDetectionSetting
+                            )}
+                          </LabelTitle>
+                          <IconTooltip
+                            content={
+                              <FormattedMessage
+                                {...messages.inappropriateContentDetectionTooltip}
+                                values={{
+                                  linkToActivityPage: (
+                                    <Link to="/admin/activity">
+                                      {formatMessage(
+                                        messages.linkToActivityPageText
+                                      )}
+                                    </Link>
+                                  ),
+                                }}
+                              />
+                            }
+                          />
+                        </LabelTitleContainer>
+                        <LabelDescription>
                           {formatMessage(
-                            messages.inappropriateContentDetectionSetting
+                            messages.inappropriateContentDetectionSettingDescription
                           )}
-                        </LabelTitle>
-                        <IconTooltip
-                          content={
-                            <FormattedMessage
-                              {...messages.availableLanguages}
-                              values={{
-                                languages,
-                              }}
-                            />
-                          }
-                        />
-                      </LabelTitleContainer>
-                      <LabelDescription>
-                        {formatMessage(
-                          messages.inappropriateContentDetectionSettingDescription
-                        )}
-                      </LabelDescription>
-                    </LabelContent>
-                  </ToggleLabel>
-                </Setting>
-              )}
+                        </LabelDescription>
+                      </LabelContent>
+                    </ToggleLabel>
+                  </Setting>
+                )}
               {settingsUpdatedSuccessFully && (
                 <Success
                   showBackground
