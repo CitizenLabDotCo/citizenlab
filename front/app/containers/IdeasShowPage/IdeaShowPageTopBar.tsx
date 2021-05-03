@@ -1,13 +1,11 @@
 import React, { memo, useCallback, MouseEvent } from 'react';
 import clHistory from 'utils/cl-router/history';
-import { get } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // hooks
 import useIdea from 'hooks/useIdea';
 import useProject from 'hooks/useProject';
 import useAuthUser from 'hooks/useAuthUser';
-import useWindowSize from 'hooks/useWindowSize';
 
 // components
 import VoteControl from 'components/VoteControl';
@@ -23,7 +21,7 @@ import messages from './messages';
 
 // styling
 import styled from 'styled-components';
-import { media, colors, fontSizes, viewportWidths } from 'utils/styleUtils';
+import { media, colors, fontSizes } from 'utils/styleUtils';
 import { lighten } from 'polished';
 
 // typings
@@ -106,67 +104,67 @@ const GoBackLabel = styled.div`
 interface Props {
   ideaId: string;
   insideModal?: boolean;
+  goBackAction?: () => void;
   className?: string;
 }
 
-const IdeaShowPageTopBar = memo<Props>(({ ideaId, insideModal, className }) => {
-  const windowSize = useWindowSize();
-  const authUser = useAuthUser();
-  const idea = useIdea({ ideaId });
-  const project = useProject({
-    projectId: get(idea, 'relationships.project.data.id'),
-  });
+const IdeaShowPageTopBar = memo<Props>(
+  ({ ideaId, insideModal, goBackAction, className }) => {
+    const authUser = useAuthUser();
+    const idea = useIdea({ ideaId });
+    const project = useProject({
+      projectId: !isNilOrError(idea)
+        ? idea.relationships.project.data.id
+        : null,
+    });
 
-  const onGoBack = useCallback(
-    (event: MouseEvent<HTMLElement>) => {
-      event.preventDefault();
+    const onGoBack = useCallback(
+      (event: MouseEvent<HTMLElement>) => {
+        event.preventDefault();
 
-      if (insideModal) {
-        eventEmitter.emit('closeIdeaModal');
-      } else if (!isNilOrError(project)) {
-        clHistory.push(`/projects/${project.attributes.slug}`);
-      } else {
-        clHistory.push('/');
-      }
-    },
-    [insideModal, project]
-  );
-
-  const onDisabledVoteClick = useCallback(
-    (disabled_reason: IdeaVotingDisabledReason) => {
-      if (
-        !isNilOrError(authUser) &&
-        !isNilOrError(project) &&
-        disabled_reason === 'not_verified'
-      ) {
-        const pcType =
-          project.attributes.process_type === 'continuous'
-            ? 'project'
-            : 'phase';
-        const pcId =
-          project.relationships?.current_phase?.data?.id || project.id;
-
-        if (pcId && pcType) {
-          openVerificationModal({
-            context: {
-              action: 'voting_idea',
-              id: pcId,
-              type: pcType,
-            },
-          });
+        if (goBackAction) {
+          goBackAction?.();
+        } else if (insideModal) {
+          eventEmitter.emit('closeIdeaModal');
+        } else if (!isNilOrError(project)) {
+          clHistory.push(`/projects/${project.attributes.slug}`);
+        } else {
+          clHistory.push('/');
         }
-      }
-    },
-    [authUser, project]
-  );
+      },
+      [insideModal, project, goBackAction]
+    );
 
-  const smallerThanLargeTablet = windowSize
-    ? windowSize.windowWidth <= viewportWidths.largeTablet
-    : false;
+    const onDisabledVoteClick = useCallback(
+      (disabled_reason: IdeaVotingDisabledReason) => {
+        if (
+          !isNilOrError(authUser) &&
+          !isNilOrError(project) &&
+          disabled_reason === 'not_verified'
+        ) {
+          const pcType =
+            project.attributes.process_type === 'continuous'
+              ? 'project'
+              : 'phase';
+          const pcId =
+            project.relationships?.current_phase?.data?.id || project.id;
 
-  if (smallerThanLargeTablet) {
+          if (pcId && pcType) {
+            openVerificationModal({
+              context: {
+                action: 'voting_idea',
+                id: pcId,
+                type: pcType,
+              },
+            });
+          }
+        }
+      },
+      [authUser, project]
+    );
+
     return (
-      <Container className={className}>
+      <Container className={className || ''}>
         <TopBarInner>
           <Left>
             <GoBackButton onClick={onGoBack}>
@@ -188,8 +186,6 @@ const IdeaShowPageTopBar = memo<Props>(({ ideaId, insideModal, className }) => {
       </Container>
     );
   }
-
-  return null;
-});
+);
 
 export default IdeaShowPageTopBar;

@@ -12,13 +12,16 @@ import IdeaShowPageTopBar from './IdeaShowPageTopBar';
 // resources
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 
+// hooks
+import useWindowSize from 'hooks/useWindowSize';
+
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // style
 import styled from 'styled-components';
-import { media, fontSizes, colors } from 'utils/styleUtils';
+import { media, fontSizes, colors, viewportWidths } from 'utils/styleUtils';
 
 const IdeaNotFoundWrapper = styled.div`
   height: calc(
@@ -78,6 +81,9 @@ interface Props extends InputProps, DataProps {}
 const goBackToListMessage = <FormattedMessage {...messages.goBackToList} />;
 
 const IdeasShowPage = memo<Props>(({ idea }) => {
+  const { windowWidth } = useWindowSize();
+  const smallerThanMaxTablet = windowWidth <= viewportWidths.largeTablet;
+
   if (isError(idea)) {
     return (
       <IdeaNotFoundWrapper>
@@ -92,7 +98,7 @@ const IdeasShowPage = memo<Props>(({ idea }) => {
   if (!isNilOrError(idea)) {
     return (
       <Container>
-        <StyledIdeaShowPageTopBar ideaId={idea.id} />
+        {smallerThanMaxTablet && <StyledIdeaShowPageTopBar ideaId={idea.id} />}
         <StyledIdeasShow
           ideaId={idea.id}
           projectId={idea.relationships.project.data.id}

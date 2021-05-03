@@ -1,44 +1,17 @@
-import React, {
-  memo,
-  useState,
-  useRef,
-  useEffect,
-  useCallback,
-  useLayoutEffect,
-} from 'react';
-import { popup, LatLng, Map as LeafletMap } from 'leaflet';
-import { withRouter, WithRouterProps } from 'react-router';
+import React, { memo } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
-// tracking
-import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
-
 // events
-import { setSelectedIdeaId } from './events';
-
-// components
-import Map, { Point } from 'components/Map';
-import Warning from 'components/UI/Warning';
-import IdeaPreview from './IdeaPreview';
-import IdeaButton from 'components/IdeaButton';
+import { selectIdeaId } from './events';
 
 // hooks
-import useProject from 'hooks/useProject';
-import usePhase from 'hooks/usePhase';
 import useIdea from 'hooks/useIdea';
-import useWindowSize from 'hooks/useWindowSize';
 
-// i18n
-import FormattedMessage from 'utils/cl-intl/FormattedMessage';
-import messages from './messages';
 import T from 'components/T';
 
 // styling
 import styled from 'styled-components';
-import { ScreenReaderOnly } from 'utils/a11y';
-import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
-import { fontSizes, colors, defaultCardStyle } from 'utils/styleUtils';
+import { defaultCardStyle } from 'utils/styleUtils';
 
 const Container = styled.div`
   padding: 20px;
@@ -46,6 +19,11 @@ const Container = styled.div`
   background: #fff;
   ${defaultCardStyle};
   border: solid 1px #ccc;
+  cursor: pointer;
+
+  &:hover {
+    border-color: #000;
+  }
 `;
 
 interface Props {
@@ -58,7 +36,7 @@ const IdeaMapCard = memo<Props>(({ ideaId, className }) => {
 
   const handleOnClick = (event: React.FormEvent) => {
     event?.preventDefault();
-    setSelectedIdeaId(ideaId);
+    selectIdeaId(ideaId);
   };
 
   if (!isNilOrError(idea)) {

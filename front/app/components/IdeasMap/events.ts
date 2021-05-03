@@ -6,7 +6,7 @@ enum events {
 
 // ---------
 
-export function setSelectedIdeaId(ideaId: string) {
+export function selectIdeaId(ideaId: string) {
   eventEmitter.emit<string>(events.selectedIdeaIdChanged, ideaId);
 }
 

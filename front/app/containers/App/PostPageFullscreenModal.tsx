@@ -10,13 +10,14 @@ import PlatformFooter from 'containers/PlatformFooter';
 
 // hooks
 import useIdea from 'hooks/useIdea';
+import useWindowSize from 'hooks/useWindowSize';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 
 // style
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
+import { media, viewportWidths } from 'utils/styleUtils';
 
 // note: StyledIdeasShow styles defined here should match that in IdeasShowPage!
 const StyledIdeasShow = styled(IdeasShow)`
@@ -52,9 +53,8 @@ interface Props {
 
 const PostPageFullscreenModal = memo<Props>(
   ({ postId, slug, type, navbarRef, mobileNavbarRef, close }) => {
-    const onClose = useCallback(() => {
-      close();
-    }, [close]);
+    const { windowWidth } = useWindowSize();
+    const smallerThanMaxTablet = windowWidth <= viewportWidths.largeTablet;
 
     // Far from ideal to always try to load the idea, but
     // has to happen for hooks to work.
@@ -62,7 +62,7 @@ const PostPageFullscreenModal = memo<Props>(
     const idea = useIdea({ ideaId: postId });
 
     const topBar = useMemo(() => {
-      if (postId && type === 'idea') {
+      if (postId && type === 'idea' && smallerThanMaxTablet) {
         return <IdeaShowPageTopBar ideaId={postId} insideModal />;
       }
 
@@ -71,7 +71,7 @@ const PostPageFullscreenModal = memo<Props>(
       }
 
       return null;
-    }, [postId, type]);
+    }, [postId, type, smallerThanMaxTablet]);
 
     const content = useMemo(() => {
       if (postId) {
@@ -102,6 +102,10 @@ const PostPageFullscreenModal = memo<Props>(
 
       return null;
     }, [postId, idea]);
+
+    const onClose = useCallback(() => {
+      close();
+    }, [close]);
 
     return (
       <FullscreenModal

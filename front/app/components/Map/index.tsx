@@ -11,12 +11,12 @@ import useAppConfiguration from 'hooks/useAppConfiguration';
 
 // utils
 import { getCenter, getZoomLevel, getTileProvider } from 'utils/map';
+import { ILeafletMapConfig } from 'components/UI/LeafletMap/useLeaflet';
 
 // styling
 import styled from 'styled-components';
 import { media, defaultOutline, defaultCardStyle } from 'utils/styleUtils';
 import ideaMarkerIcon from './idea-marker.svg';
-import { ILeafletMapConfig } from 'components/UI/LeafletMap/useLeaflet';
 
 export interface Point extends GeoJSON.Point {
   data?: any;

@@ -13,15 +13,11 @@ import { isNilOrError } from 'utils/helperUtils';
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
-// events
-import { selectedIdeaId$ } from './events';
-
 // components
 import Map, { Point } from 'components/Map';
 import Warning from 'components/UI/Warning';
 import IdeaButton from 'components/IdeaButton';
-import IdeasList from './IdeasList';
-import IdeasShow from 'containers/IdeasShow';
+import IdeaMapOverlay from './IdeaMapOverlay';
 
 // hooks
 import useProject from 'hooks/useProject';
@@ -29,13 +25,15 @@ import usePhase from 'hooks/usePhase';
 import useIdeaMarkers from 'hooks/useIdeaMarkers';
 import useWindowSize from 'hooks/useWindowSize';
 
+// events
+import { selectIdeaId, selectedIdeaId$ } from './events';
+
 // i18n
 import FormattedMessage from 'utils/cl-intl/FormattedMessage';
 import messages from './messages';
 
 // styling
 import styled from 'styled-components';
-import { defaultCardStyle } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
 
@@ -61,20 +59,15 @@ const StyledWarning = styled(Warning)`
   margin-bottom: 10px;
 `;
 
-const MapOverlay = styled.div`
+const StyledIdeaMapOverlay = styled(IdeaMapOverlay)`
   width: 500px;
   position: absolute;
   display: flex;
   top: 50px;
   bottom: 200px;
   left: 50px;
-  overflow-x: auto;
-  background: #fff;
-  ${defaultCardStyle};
   z-index: 900;
 `;
-
-const StyledIdeasShow = styled(IdeasShow)``;
 
 interface Props {
   projectIds?: string[] | null;
@@ -114,7 +107,6 @@ const IdeasMap = memo<Props & WithRouterProps>(
     const ideaButtonRef = useRef<HTMLDivElement | null>(null);
 
     const [points, setPoints] = useState<Point[]>([]);
-    const [selectedIdeaId, setSelectedIdeaId] = useState<string | null>(null);
     const [selectedLatLng, setSelectedLatLng] = useState<LatLng | null>(null);
     const [containerWidth, setContainerWidth] = useState(initialContainerWidth);
     const [innerContainerLeftMargin, setInnerContainerLeftMargin] = useState(
@@ -157,25 +149,9 @@ const IdeasMap = memo<Props & WithRouterProps>(
       setPoints(ideaPoints);
     }, [ideaMarkers]);
 
-    useEffect(() => {
-      const subscription = selectedIdeaId$.subscribe(
-        ({ eventValue: ideaId }) => {
-          setSelectedIdeaId(ideaId);
-        }
-      );
-
-      return () => subscription.unsubscribe();
-    }, []);
-
     const toggleIdea = (ideaId: string) => {
       trackEventByName(tracks.clickOnIdeaMapMarker, { extra: { ideaId } });
-      setSelectedIdeaId((selectedIdeaId) =>
-        ideaId !== selectedIdeaId ? ideaId : null
-      );
-    };
-
-    const deselectIdea = () => {
-      setSelectedIdeaId(null);
+      selectIdeaId(ideaId);
     };
 
     const onMapClick = (map: LeafletMap, position: LatLng) => {
@@ -216,21 +192,15 @@ const IdeasMap = memo<Props & WithRouterProps>(
               onMapClick={onMapClick}
               fitBounds={false}
               mapHeight="80vh"
-              onBoxClose={deselectIdea}
             />
 
-            <MapOverlay>
-              {!selectedIdeaId ? (
-                <IdeasList projectIds={projectIds} phaseId={phaseId} />
-              ) : (
-                <StyledIdeasShow
-                  ideaId={selectedIdeaId}
-                  projectId={project.id}
-                  insideModal={false}
-                  compact={true}
-                />
-              )}
-            </MapOverlay>
+            {projectIds && !isNilOrError(project) && (
+              <StyledIdeaMapOverlay
+                projectIds={projectIds}
+                projectId={project?.id}
+                phaseId={phaseId}
+              />
+            )}
 
             <IdeaButtonWrapper
               className="create-idea-wrapper"

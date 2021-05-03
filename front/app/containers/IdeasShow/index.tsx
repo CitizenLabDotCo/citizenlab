@@ -100,9 +100,9 @@ const Container = styled.main`
   margin-left: auto;
   margin-right: auto;
   background: #fff;
-  border: solid 1px red;
 
   &.loading {
+    flex: 1;
     justify-content: center;
   }
 
@@ -123,10 +123,6 @@ const Container = styled.main`
       opacity: 1;
     }
   }
-`;
-
-const StyledSpinner = styled(Spinner)`
-  border: solid 1px red;
 `;
 
 const Content = styled.div`
@@ -624,7 +620,7 @@ export class IdeasShow extends PureComponent<
         <>
           {!loaded && (
             <Container className={`loading ${className || ''}`}>
-              <StyledSpinner />
+              <Spinner />
             </Container>
           )}
           <CSSTransition
@@ -711,13 +707,11 @@ const Data = adopt<DataProps, InputProps>({
       {render}
     </GetPermission>
   ),
-  ideaCustomFieldsSchemas: ({ projectId, render }) => {
-    return (
-      <GetIdeaCustomFieldsSchemas projectId={projectId}>
-        {render}
-      </GetIdeaCustomFieldsSchemas>
-    );
-  },
+  ideaCustomFieldsSchemas: ({ projectId, render }) => (
+    <GetIdeaCustomFieldsSchemas projectId={projectId}>
+      {render}
+    </GetIdeaCustomFieldsSchemas>
+  ),
   comments: ({ ideaId, render }) => (
     <GetComments postId={ideaId} postType="idea">
       {render}

@@ -115,7 +115,7 @@
     "react-transition-group": "4.4.1",
     "recharts": "1.8.5",
     "regenerator-runtime": "0.13.7",
-    "rxjs": "6.6.6",
+    "rxjs": "6.6.7",
     "semantic-ui-react": "2.0.3",
     "smoothscroll-polyfill": "0.4.4",
     "tippy.js": "6.3.0",
