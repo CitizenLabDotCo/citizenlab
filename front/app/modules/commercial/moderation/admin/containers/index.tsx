@@ -457,15 +457,61 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
               placement="right"
             />
           </PageTitleWrapper>
-          {profanityBlockerSetting && (
-            <Button
-              buttonStyle="secondary"
-              onClick={openSettingsModal}
-              locale={locale}
-              icon="settings"
-            >
-              <FormattedMessage {...messages.settings} />
-            </Button>
+          {profanityBlockerSetting?.allowed && (
+            <>
+              <Button
+                buttonStyle="secondary"
+                onClick={openSettingsModal}
+                locale={locale}
+                icon="settings"
+              >
+                <FormattedMessage {...messages.settings} />
+              </Button>
+              <Modal
+                header={intl.formatMessage(messages.settings)}
+                opened={settingsModalOpened}
+                close={closeSettingsModal}
+              >
+                <ProfanitySettings>
+                  {profanityBlockerSetting && (
+                    <Setting>
+                      <ToggleLabel>
+                        <StyledToggle
+                          checked={profanityBlockerSetting.enabled}
+                          onChange={onToggleBlockProfanitySetting}
+                        />
+                        <LabelContent>
+                          <LabelTitle>
+                            {intl.formatMessage(
+                              messages.profanityBlockerSetting
+                            )}
+                          </LabelTitle>
+                          <LabelDescription>
+                            {intl.formatMessage(
+                              messages.profanityBlockerSettingDescription
+                            )}
+                          </LabelDescription>
+                        </LabelContent>
+                      </ToggleLabel>
+                    </Setting>
+                  )}
+
+                  {settingsUpdatedSuccessFully && (
+                    <Success
+                      showBackground
+                      text={intl.formatMessage(
+                        messages.successfulUpdateSettings
+                      )}
+                    />
+                  )}
+                  {settingsSavingError && (
+                    <Error
+                      text={intl.formatMessage(messages.settingsSavingError)}
+                    />
+                  )}
+                </ProfanitySettings>
+              </Modal>
+            </>
           )}
         </PageHeader>
 
@@ -593,45 +639,6 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
             </EmptyMessage>
           </Empty>
         )}
-
-        <Modal
-          header={intl.formatMessage(messages.settings)}
-          opened={settingsModalOpened}
-          close={closeSettingsModal}
-        >
-          <ProfanitySettings>
-            {profanityBlockerSetting && (
-              <Setting>
-                <ToggleLabel>
-                  <StyledToggle
-                    checked={profanityBlockerSetting.enabled}
-                    onChange={onToggleBlockProfanitySetting}
-                  />
-                  <LabelContent>
-                    <LabelTitle>
-                      {intl.formatMessage(messages.profanityBlockerSetting)}
-                    </LabelTitle>
-                    <LabelDescription>
-                      {intl.formatMessage(
-                        messages.profanityBlockerSettingDescription
-                      )}
-                    </LabelDescription>
-                  </LabelContent>
-                </ToggleLabel>
-              </Setting>
-            )}
-
-            {settingsUpdatedSuccessFully && (
-              <Success
-                showBackground
-                text={intl.formatMessage(messages.successfulUpdateSettings)}
-              />
-            )}
-            {settingsSavingError && (
-              <Error text={intl.formatMessage(messages.settingsSavingError)} />
-            )}
-          </ProfanitySettings>
-        </Modal>
       </Container>
     );
   }
