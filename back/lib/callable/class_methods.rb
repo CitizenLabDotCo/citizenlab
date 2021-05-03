@@ -19,8 +19,6 @@ module Callable
       respond_to?(:_error_class) ? _error_class : DEFAULT_ERROR_CLASS
     end
 
-    attr_reader :result
-
     private
 
     def callable_with(with = :call, error_class: DEFAULT_ERROR_CLASS, default_error: DEFAULT_ERROR_MESSAGE)
