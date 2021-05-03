@@ -49,13 +49,6 @@ const Container = styled.div`
   margin-bottom: 80px;
 `;
 
-const PageHeader = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 40px;
-`;
-
 const PageTitleWrapper = styled.div`
   display: flex;
 `;
@@ -360,18 +353,16 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
   if (!isNilOrError(moderationItems) && !isNilOrError(locale)) {
     return (
       <Container className={className}>
-        <PageHeader>
-          <PageTitleWrapper>
-            <StyledPageTitle>
-              <FormattedMessage {...messages.pageTitle} />
-            </StyledPageTitle>
-            <StyledIconTooltip
-              content={<FormattedMessage {...messages.moderationHelpTooltip} />}
-              iconSize="20px"
-              placement="right"
-            />
-          </PageTitleWrapper>
-        </PageHeader>
+        <PageTitleWrapper>
+          <StyledPageTitle>
+            <FormattedMessage {...messages.pageTitle} />
+          </StyledPageTitle>
+          <StyledIconTooltip
+            content={<FormattedMessage {...messages.moderationHelpTooltip} />}
+            iconSize="20px"
+            placement="right"
+          />
+        </PageTitleWrapper>
 
         <Filters>
           {selectedRows.length > 0 && (
