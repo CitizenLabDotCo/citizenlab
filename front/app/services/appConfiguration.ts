@@ -164,7 +164,7 @@ export interface IAppConfigurationSettings {
   project_visibility?: AppConfigurationFeature;
   project_management?: AppConfigurationFeature;
   idea_assignment?: AppConfigurationFeature;
-  profanity_blocker?: AppConfigurationFeature;
+  blocking_profanity?: AppConfigurationFeature;
   inappropriate_content_detection?: AppConfigurationFeature;
   custom_idea_statuses?: AppConfigurationFeature;
   idea_custom_copy?: AppConfigurationFeature;
