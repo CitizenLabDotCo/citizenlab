@@ -253,4 +253,15 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.settingsSavingError',
     defaultMessage: "Couldn't save. Try changing the setting again.",
   },
+  inappropriateContentDetectionSetting: {
+    id:
+      'app.containers.AdminPage.SettingsPage.inappropriateContentDetectionSetting',
+    defaultMessage: 'Detect inappropriate content',
+  },
+  inappropriateContentDetectionSettingDescription: {
+    id:
+      'app.containers.AdminPage.SettingsPage.inappropriateContentDetectionSettingDescription',
+    defaultMessage:
+      'Auto-review input, proposals and comments for potentially inappropriate content.',
+  },
 });

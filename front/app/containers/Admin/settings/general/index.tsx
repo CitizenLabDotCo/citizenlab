@@ -57,6 +57,10 @@ const Setting = styled.div`
   margin-bottom: 20px;
 `;
 
+const LabelTitleContainer = styled.div`
+  display: flex;
+`;
+
 const LabelTitle = styled.div`
   font-weight: bold;
 `;
@@ -261,6 +265,8 @@ class SettingsGeneralTab extends PureComponent<
     }
   };
 
+  onToggleInappropriateContentSetting = () => {};
+
   render() {
     const {
       appConfiguration,
@@ -312,6 +318,8 @@ class SettingsGeneralTab extends PureComponent<
       const selectedLocaleOptions = this.localesToOptions(appConfigLocales);
       const profanityBlockerSetting =
         appConfiguration.attributes.settings.blocking_profanity;
+      const inappropriateContentDetectionSetting =
+        appConfiguration.attributes.settings.inappropriate_content_detection;
 
       return (
         <form onSubmit={this.save}>
@@ -383,30 +391,66 @@ class SettingsGeneralTab extends PureComponent<
               }}
             />
           </StyledSection>
-          {profanityBlockerSetting?.allowed && (
+          {(profanityBlockerSetting?.allowed ||
+            inappropriateContentDetectionSetting?.allowed) && (
             <StyledSection>
               <SubSectionTitle>
                 <FormattedMessage {...messages.contentModeration} />
               </SubSectionTitle>
-              <Setting>
-                <ToggleLabel>
-                  <StyledToggle
-                    checked={profanityBlockerSetting.enabled}
-                    onChange={this.onToggleBlockProfanitySetting}
-                  />
-                  <LabelContent>
-                    <LabelTitle>
-                      {formatMessage(messages.profanityBlockerSetting)}
-                    </LabelTitle>
-                    <LabelDescription>
-                      {formatMessage(
-                        messages.profanityBlockerSettingDescription
-                      )}
-                    </LabelDescription>
-                  </LabelContent>
-                </ToggleLabel>
-              </Setting>
-
+              {profanityBlockerSetting && (
+                <Setting>
+                  <ToggleLabel>
+                    <StyledToggle
+                      checked={profanityBlockerSetting.enabled}
+                      onChange={this.onToggleBlockProfanitySetting}
+                    />
+                    <LabelContent>
+                      <LabelTitle>
+                        {formatMessage(messages.profanityBlockerSetting)}
+                      </LabelTitle>
+                      <LabelDescription>
+                        {formatMessage(
+                          messages.profanityBlockerSettingDescription
+                        )}
+                      </LabelDescription>
+                    </LabelContent>
+                  </ToggleLabel>
+                </Setting>
+              )}
+              {inappropriateContentDetectionSetting && (
+                <Setting>
+                  <ToggleLabel>
+                    <StyledToggle
+                      checked={inappropriateContentDetectionSetting.enabled}
+                      onChange={this.onToggleInappropriateContentSetting}
+                    />
+                    <LabelContent>
+                      <LabelTitleContainer>
+                        <LabelTitle>
+                          {formatMessage(
+                            messages.inappropriateContentDetectionSetting
+                          )}
+                        </LabelTitle>
+                        <IconTooltip
+                          content={
+                            <FormattedMessage
+                              {...messages.availableLanguages}
+                              values={{
+                                languages,
+                              }}
+                            />
+                          }
+                        />
+                      </LabelTitleContainer>
+                      <LabelDescription>
+                        {formatMessage(
+                          messages.inappropriateContentDetectionSettingDescription
+                        )}
+                      </LabelDescription>
+                    </LabelContent>
+                  </ToggleLabel>
+                </Setting>
+              )}
               {settingsUpdatedSuccessFully && (
                 <Success
                   showBackground
