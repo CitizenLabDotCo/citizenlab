@@ -3,16 +3,18 @@ module UserConfirmation
     module User
       def self.included(base)
         base.class_eval do
-          private :confirmation_required
-
           with_options if: -> { AppConfiguration.instance.feature_activated?('user_confirmation') } do
             validates :email_confirmation_code, format: { with: USER_CONFIRMATION_CODE_PATTERN }, allow_nil: true
             validates :email_confirmation_retry_count, numericality: { less_than_or_equal_to: ENV.fetch('EMAIL_CONFIRMATION_MAX_RETRIES', 5) }
             validates :email_confirmation_code_reset_count, numericality: { less_than_or_equal_to: ENV.fetch('EMAIL_CONFIRMATION_MAX_RETRIES', 5) }
 
-            before_validation :reset_confirmation_code, unless: :email_confirmation_code, if: :email_changed?
-            before_validation :reset_confirmed_at, on: :update, if: :email_changed?
-            before_validation :reset_confirmation_required
+            with_options if: :email_changed? do
+              before_validation :reset_confirmation_code
+              before_validation :reset_confirmed_at
+              before_validation :reset_confirmation_required
+            end
+
+            before_validation :confirm, if: ->(user) { user.invite_status_change&.last == 'accepted' }
           end
         end
       end
@@ -24,8 +26,8 @@ module UserConfirmation
       #
       # @return [<Boolean>] <True if the user requires confirmation>
       #
-      def will_require_confirmation?
-        !(active? || invited? || confirmed? || registered_with_phone? || highest_role != :user)
+      def should_require_confirmation?
+        !(registered_with_phone? || highest_role != :user)
       end
 
       #
@@ -34,8 +36,7 @@ module UserConfirmation
       # @return [<Boolean>] <True if the user has not yet confirmed their account after creation or an update to it's details.>
       #
       def confirmation_required?
-        AppConfiguration.instance.feature_activated?('user_confirmation') &&
-          confirmation_required
+        AppConfiguration.instance.feature_activated?('user_confirmation') && confirmation_required
       end
 
       #
@@ -48,13 +49,18 @@ module UserConfirmation
       end
 
       def reset_confirmation_required
-        self.confirmation_required = will_require_confirmation?
+        self.confirmation_required = should_require_confirmation?
+      end
+
+      def confirm
+        self.email_confirmed_at    = Time.zone.now
+        self.confirmation_required = false
       end
 
       def confirm!
         return false unless registered_with_email?
 
-        self.email_confirmed_at = Time.zone.now
+        confirm
         save!
       end
 

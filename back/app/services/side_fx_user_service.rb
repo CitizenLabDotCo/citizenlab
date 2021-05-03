@@ -3,9 +3,7 @@ class SideFxUserService
   include SideFxHelper
 
   def before_create user, current_user
-    if (CustomField.with_resource_type('User').enabled.count == 0) && (user.invite_status != 'pending')
-      user.registration_completed_at ||= Time.now
-    end
+    timestamp_registration(user)
   end
 
   def after_create user, current_user
@@ -61,6 +59,12 @@ class SideFxUserService
   end
 
   private
+
+  def timestamp_registration(user)
+    return unless (CustomField.with_resource_type('User').enabled.count == 0) && (user.invite_status != 'pending')
+
+    user.registration_completed_at ||= Time.now
+  end
 
   def lost_roles  user
     if user.roles_previously_changed?
