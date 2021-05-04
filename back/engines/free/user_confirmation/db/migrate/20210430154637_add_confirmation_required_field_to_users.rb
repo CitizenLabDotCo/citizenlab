@@ -1,16 +1,17 @@
 class AddConfirmationRequiredFieldToUsers < ActiveRecord::Migration[6.0]
   def up
     add_column :users, :confirmation_required, :boolean, default: true, null: false
-
-    active_users = User.active
-    users_that_do_not_require_confirmation = active_users.reject(&:should_require_confirmation?)
-
-    users_that_do_not_require_confirmation.each do |user|
-      user.update(confirmation_required: false)
-    end
+    confirm_active_users
   end
 
   def down
     remove_column :users, :confirmation_required, :boolean, default: true, null: false
+  end
+
+  def confirm_active_users
+    active_users = User.active
+    user_ids = active_users.reject(&:should_require_confirmation?).map(&:id)
+
+    User.where(id: user_ids).update_all(confirmation_required: false)
   end
 end
