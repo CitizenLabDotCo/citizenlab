@@ -97,7 +97,7 @@ module UserConfirmation
         self.email_confirmation_retry_count += 1
       end
 
-      def reset_email(email)
+      def reset_email!(email)
         update!(
           email: email,
           email_confirmation_code_reset_count: 0

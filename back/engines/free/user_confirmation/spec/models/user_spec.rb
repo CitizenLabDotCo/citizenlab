@@ -205,27 +205,27 @@ RSpec.describe User, type: :model do
     end
   end
 
-  describe '#reset_email' do
+  describe '#reset_email!' do
     let(:email) { 'new_email@email.com' }
 
     it 'changes the email' do
-      expect { user.reset_email(email) }.to change(user, :email).from(user.email).to(email)
+      expect { user.reset_email!(email) }.to change(user, :email).from(user.email).to(email)
     end
 
     it 'resets the confirmation code reset count' do
       user.increment_confirmation_code_reset_count!
       user.reload
-      expect { user.reset_email(email) }.to change(user, :email_confirmation_code_reset_count).from(1).to(0)
+      expect { user.reset_email!(email) }.to change(user, :email_confirmation_code_reset_count).from(1).to(0)
     end
 
     it 'saves the change to the email' do
-      expect { user.reset_email(email) }.to change(user, :saved_change_to_email)
+      expect { user.reset_email!(email) }.to change(user, :saved_change_to_email)
     end
 
     it 'should save the change to the code reset count' do
       user.increment_confirmation_code_reset_count!
       user.reload
-      expect { user.reset_email(email) }.to change(user, :saved_change_to_email_confirmation_code_reset_count?)
+      expect { user.reset_email!(email) }.to change(user, :saved_change_to_email_confirmation_code_reset_count?)
     end
   end
 
