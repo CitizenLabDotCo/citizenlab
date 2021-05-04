@@ -48,10 +48,8 @@ module EmailCampaigns
       @event ||= to_deep_struct(command[:event_payload])
     end
 
-    def mailgun_headers
-      super.tap do |headers|
-        headers['X-Mailgun-Variables'].merge!('cl_campaign_id' => campaign.id)
-      end
+    def mailgun_variables
+      super.merge!('cl_campaign_id' => campaign.id)
     end
   end
 end
