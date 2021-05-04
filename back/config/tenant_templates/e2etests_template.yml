@@ -299,6 +299,9 @@ models:
       - imageable_field: body_multiloc
         remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1566228445/934e4e02-0d5e-4767-b9aa-3690a940d023_f6ljbd.jpg
         text_reference: 69b7843a-8fdf-4929-bb59-c76d186311b5
+  - title_multiloc: pages.faq_title
+    body_multiloc: pages.faq_body
+    slug: faq
   page_link:
   - linking_page_ref: *1
     linked_page_ref: *2
