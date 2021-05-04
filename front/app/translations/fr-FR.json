@@ -2490,7 +2490,7 @@
   "app.errors.avatar_extension_whitelist_error": "Le type de fichier utilisé pour l'image de profil n'est pas autorisé. Les extensions autorisées sont : jpg, jpeg, gif et png.",
   "app.errors.cannot_contain_ideas": "Cette phase contient {ideasCount, plural, one {une idée} other {{ideasCount} idées}} et la méthode de participation que vous essayez de changer ne prend pas les idées en compte. Veuillez retirer {ideasCount, plural, one {l'idée} other {les idées}} de la phase et réessayer.",
   "app.errors.cant_change_after_first_response": "Vous ne pouvez plus modifier ceci, car certains utilisateurs ont déjà répondu",
-  "app.errors.confirmation_code_expired": "Code expired. Please resend a new code.",
+  "app.errors.confirmation_code_expired": "Code expired. Please request a new code.",
   "app.errors.confirmation_code_invalid": "Code de confirmation invalide. Veuillez vérifier votre e-mail pour le code correct ou essayez « Envoyer un nouveau code »",
   "app.errors.confirmation_code_too_many_resets": "Vous avez renvoyé le code de confirmation trop de fois. Veuillez nous contacter pour recevoir un code d'invitation à la place.",
   "app.errors.confirmation_code_too_many_retries": "Vous avez essayé trop de fois. Veuillez renvoyer un code ou essayez de modifier votre adresse électronique.",
