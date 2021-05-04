@@ -153,6 +153,7 @@ const ModerationRow = memo<Props & InjectedIntlProps>(
       []
     );
 
+    // const inappropriateContentFlag = moderation.attributes.flagged;
     const inappropriateContentFlag = true;
 
     return (

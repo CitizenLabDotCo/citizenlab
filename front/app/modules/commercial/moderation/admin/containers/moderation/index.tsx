@@ -333,7 +333,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
   //         updateModerationFlaggedStatus(
   //           moderation.id,
   //           moderation.attributes.moderatable_type,
-  //           updatedModerationStatus
+  //           updatedFlaggedStatus
   //         )
   //       );
   //       await Promise.all(promises);
