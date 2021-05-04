@@ -127,6 +127,6 @@ export default defineMessages({
   removeWarning: {
     id: 'app.containers.Admin.Moderation.removeWarning',
     defaultMessage:
-      'Remove {numberOfItems, plural, one {# warning} other {# warnings}}',
+      'Remove {numberOfItems, plural, one {warning} other {# warnings}}',
   },
 });

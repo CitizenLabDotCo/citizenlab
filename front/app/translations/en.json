@@ -748,7 +748,6 @@
   "app.containers.Admin.Moderation.project": "Project",
   "app.containers.Admin.Moderation.read": "Seen",
   "app.containers.Admin.Moderation.readMore": "Read more",
-  "app.containers.Admin.Moderation.removeWarning": "Remove {numberOfItems, plural, one {# warning} other {# warnings}}",
   "app.containers.Admin.Moderation.rowsPerPage": "Rows per page",
   "app.containers.Admin.Moderation.settings": "Settings",
   "app.containers.Admin.Moderation.settingsSavingError": "Couldn't save. Try changing the setting again.",
