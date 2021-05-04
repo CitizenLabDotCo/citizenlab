@@ -21,8 +21,6 @@ interface Props {
   inputId: string;
 }
 
-const StyledSelect = styled(ReactSelect)``;
-
 export const AvatarImage = styled.img`
   flex: 0 0 30px;
   width: 30px;
@@ -100,7 +98,7 @@ const UserSelect = ({
     );
   };
 
-  const UserOptionLabel = ({ option }: { option: OptionTypeBase }) => (
+  const getOptionLabel = (option: OptionTypeBase) => (
     <UserOption>
       <Avatar userId={option.value} />
       {option.attributes.first_name} {option.attributes.last_name} (
@@ -108,8 +106,10 @@ const UserSelect = ({
     </UserOption>
   );
 
+  const getOptionId = (option: OptionTypeBase) => option.id;
+
   return (
-    <StyledSelect
+    <ReactSelect
       id={id}
       inputId={inputId}
       className={className}
@@ -121,8 +121,8 @@ const UserSelect = ({
       value={selectedUser}
       placeholder={placeholder as string}
       options={usersList}
-      getOptionValue={(option) => option.id}
-      getOptionLabel={(option) => <UserOptionLabel option={option} />}
+      getOptionValue={getOptionId}
+      getOptionLabel={getOptionLabel}
       onChange={handleChange}
       isDisabled={disabled}
       menuPlacement="auto"
