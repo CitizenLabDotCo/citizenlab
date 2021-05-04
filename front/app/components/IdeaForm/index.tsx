@@ -765,11 +765,7 @@ class IdeaForm extends PureComponent<
                 projectId
               ) && (
                 <FormElement id="e2e-idea-author-input">
-                  <FormLabel
-                    htmlFor="author"
-                    labelMessage={messages.author}
-                    subtextSupportsHtml={true}
-                  />
+                  <FormLabel htmlFor="author" labelMessage={messages.author} />
                   <UserSelect
                     id="author"
                     inputId="author-select"
