@@ -146,7 +146,7 @@ const SignUpPage = ({
   }, []);
 
   const onSignUpInCompleted = () => {
-    clHistory.push(this.props.previousPathName || '/');
+    clHistory.push(previousPathName || '/');
   };
 
   return (
