@@ -98,7 +98,7 @@ module UserConfirmation
       end
 
       def reset_email(email)
-        update(
+        update!(
           email: email,
           email_confirmation_code_reset_count: 0
         )
@@ -106,6 +106,16 @@ module UserConfirmation
 
       def reset_confirmed_at
         self.email_confirmed_at = nil
+      end
+
+      private
+
+      def confirmation_required
+        self[:confirmation_required]
+      end
+
+      def confirmation_required=(val)
+        write_attribute :confirmation_required, val
       end
     end
   end

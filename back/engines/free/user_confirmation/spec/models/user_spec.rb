@@ -17,18 +17,127 @@ RSpec.describe User, type: :model do
 
   describe '#confirmed?' do
     it 'returns false when the user has not yet been confirmed' do
-      user.save
+      user.save!
       expect(user.confirmed?).to be false
     end
 
     it 'returns true after the user has confirmed the account' do
+      user.save!
       user.confirm!
-      expect(user.confirmed?).to be true
+      expect(user.reload.confirmed?).to be true
     end
 
     it 'returns true if the user accepted an invitation' do
       user.update(invite_status: 'accepted')
       expect(user.confirmed?).to be true
+    end
+  end
+
+  describe '#should_require_confirmation?' do
+    it 'returns false if the user is an admin' do
+      user.add_role('admin')
+      user.save!
+      expect(user.should_require_confirmation?).to be false
+    end
+
+    it 'returns false if the user is a project moderator' do
+      user.add_role('project_moderator', 'project_id' => 'some_id')
+      user.save!
+      expect(user.should_require_confirmation?).to be false
+    end
+
+    it 'returns false if the user is a normal user' do
+      expect(user.should_require_confirmation?).to be true
+    end
+
+    it 'returns false if the user registered with a phone number' do
+      enable_phone_login
+      user.email = '343938837373'
+      user.save!
+      expect(user.reload.should_require_confirmation?).to be false
+    end
+  end
+
+  describe '#confirmation_required?' do
+    it 'returns false if the feature is not active' do
+      AppConfiguration.instance.deactivate_feature!('user_confirmation')
+      expect(user.confirmation_required?).to be false
+    end
+
+    it 'returns false if the user already confirmed their account' do
+      AppConfiguration.instance.activate_feature!('user_confirmation')
+      user.save!
+      user.confirm!
+      expect(user.reload.confirmation_required?).to be false
+    end
+
+    it 'returns true if the user has not yet confirmed their account' do
+      expect(user.confirmation_required?).to be true
+    end
+  end
+
+  describe '#confirmation_required' do
+    it 'raises a private method error' do
+      expect { user.confirmation_required }.to raise_error NoMethodError
+    end
+  end
+
+  describe '#confirmation_required=' do
+    it 'raises a private method error' do
+      expect { user.confirmation_required = false }.to raise_error NoMethodError
+    end
+  end
+
+  describe '#confirmed?' do
+    it 'returns false if the user has not yet confirmed their account' do
+      expect(user.confirmed?).to be false
+    end
+
+    it 'returns true if the user has confirmed their account' do
+      user.confirm!
+      expect(user.confirmation_required?).to be true
+    end
+  end
+
+  describe '#reset_confirmation_required' do
+    it 'resets the confirmation required field' do
+      user.save!
+      user.reset_confirmation_required
+      expect(user.confirmation_required?).to be true
+    end
+
+    it 'does not perform a commit to the db' do
+      user.save!
+      user.reset_confirmation_required
+      expect(user.saved_change_to_confirmation_required?).to be false
+    end
+  end
+
+  describe '#confirm' do
+    it 'sets the email_confirmed_at field' do
+      user.save!
+      user.confirm
+      expect(user.confirmed?).to eq true
+    end
+
+    it 'does not perform a commit to the db' do
+      user.save!
+      user.confirm
+      expect(user.reload.confirmed?).to be false
+    end
+  end
+
+  describe '#reset_confirmed_at' do
+    it 'resets the confirmed_at field' do
+      user.confirm!
+      user.reset_confirmed_at
+      expect(user.confirmed?).to be false
+    end
+
+    it 'does not perform a commit to the db' do
+      user.confirm!
+      user.reset_confirmed_at
+      expect(user.saved_change_to_confirmation_required?).to be false
     end
   end
 
@@ -122,6 +231,7 @@ RSpec.describe User, type: :model do
 
   describe '#confirm!' do
     it 'should set email confirmed at' do
+      user.save!
       expect { user.confirm! }.to change(user, :saved_change_to_email_confirmed_at?)
     end
   end
