@@ -91,10 +91,14 @@ class ApplicationMailer < ActionMailer::Base
 
   def mailgun_headers
     {
-      'X-Mailgun-Variables' => {
-        'cl_tenant_id' => app_configuration.id,
-        'cl_user_id' => recipient.id
-      }.to_json
+      'X-Mailgun-Variables' => mailgun_variables.to_json
+    }
+  end
+
+  def mailgun_variables
+    {
+      'cl_tenant_id' => app_configuration.id,
+      'cl_user_id' => recipient.id
     }
   end
 
