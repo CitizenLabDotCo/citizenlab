@@ -129,6 +129,8 @@
   "app.components.FolderFolderCard.numberOfProjectsInFolder": "{numberOfProjectsInFolder, plural, no {# projects} one {# project} other {# projects}}",
   "app.components.GoBackButton.group.edit.goBack": "Gå tilbake",
   "app.components.IdeaCards.showMore": "Vis mer",
+  "app.components.IdeaForm.author": "",
+  "app.components.IdeaForm.authorPlaceholder": "",
   "app.components.IdeaForm.contributionFormGeneralSectionTitle": "Hva er bidraget ditt?",
   "app.components.IdeaForm.descriptionEmptyError": "Legg til en beskrivelse",
   "app.components.IdeaForm.descriptionLengthError": "Beskrivelse av ideen må være minst 30 tegn. ",

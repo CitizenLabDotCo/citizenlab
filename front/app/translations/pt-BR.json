@@ -129,6 +129,8 @@
   "app.components.FolderFolderCard.numberOfProjectsInFolder": "{numberOfProjectsInFolder, plural, no {# projetos} one {# projeto} other {# projetos}}",
   "app.components.GoBackButton.group.edit.goBack": "Voltar",
   "app.components.IdeaCards.showMore": "Mostrar mais",
+  "app.components.IdeaForm.author": "",
+  "app.components.IdeaForm.authorPlaceholder": "",
   "app.components.IdeaForm.contributionFormGeneralSectionTitle": "Qual é a sua contribuição?",
   "app.components.IdeaForm.descriptionEmptyError": "Por favor, forneça uma descrição",
   "app.components.IdeaForm.descriptionLengthError": "A descrição da ideia deve ter pelo menos 30 caracteres",

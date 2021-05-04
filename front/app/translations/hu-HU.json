@@ -129,6 +129,8 @@
   "app.components.FolderFolderCard.numberOfProjectsInFolder": "{numberOfProjectsInFolder, plural, no {# projects} one {# project} other {# projects}}",
   "app.components.GoBackButton.group.edit.goBack": "Go back",
   "app.components.IdeaCards.showMore": "Show more",
+  "app.components.IdeaForm.author": "",
+  "app.components.IdeaForm.authorPlaceholder": "",
   "app.components.IdeaForm.contributionFormGeneralSectionTitle": "What is your contribution?",
   "app.components.IdeaForm.descriptionEmptyError": "Please provide a description",
   "app.components.IdeaForm.descriptionLengthError": "The idea description must be at least 30 characters long",
