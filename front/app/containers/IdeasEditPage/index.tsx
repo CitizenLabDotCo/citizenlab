@@ -123,6 +123,7 @@ interface State {
   imageFile: UploadFile[];
   imageId: string | null;
   loaded: boolean;
+  authorId: string | null;
 }
 
 class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
@@ -142,6 +143,7 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
       imageFile: [],
       imageId: null,
       loaded: false,
+      authorId: null,
     };
     this.subscriptions = [];
   }
@@ -237,6 +239,7 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
       imageId,
       imageFile,
       address: savedAddress,
+      authorId,
     } = this.state;
     const {
       title,
@@ -247,6 +250,7 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
       proposedBudget,
       ideaFiles,
       ideaFilesToRemove,
+      authorId: newAuthorId,
     } = ideaFormOutput;
     const oldImageId = imageId;
     const oldImage = imageFile && imageFile.length > 0 ? imageFile[0] : null;
@@ -266,7 +270,7 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
     const filesToRemovePromises = ideaFilesToRemove
       .filter((file) => !!(file.remote && file.id))
       .map((file) => deleteIdeaFile(ideaId, file.id as string));
-
+    const finalAuthorId = newAuthorId || authorId;
     const addressDiff = {};
     if (
       isString(ideaFormAddress) &&
@@ -291,6 +295,7 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
         [locale]: description,
       },
       topic_ids: selectedTopics,
+      author_id: finalAuthorId,
       ...addressDiff,
     });
 
@@ -322,6 +327,7 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
         imageFile,
         budget,
         proposedBudget,
+        authorId,
       } = this.state;
       const title = locale && titleMultiloc ? titleMultiloc[locale] || '' : '';
       const description =
@@ -356,6 +362,7 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
               </Title>
 
               <IdeaForm
+                authorId={authorId}
                 projectId={projectId}
                 title={title}
                 description={description}
