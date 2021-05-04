@@ -1535,6 +1535,7 @@
   "app.containers.AdminPage.SideBar.guide": "Gids",
   "app.containers.AdminPage.SideBar.initiatives": "Voorstellen",
   "app.containers.AdminPage.SideBar.inputManager": "Input manager",
+  "app.containers.AdminPage.SideBar.insights": "",
   "app.containers.AdminPage.SideBar.invitations": "Uitnodigingen",
   "app.containers.AdminPage.SideBar.moderation": "Activiteit",
   "app.containers.AdminPage.SideBar.processing": "Verwerking",

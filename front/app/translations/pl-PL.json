@@ -1535,6 +1535,7 @@
   "app.containers.AdminPage.SideBar.guide": "Instrukcja",
   "app.containers.AdminPage.SideBar.initiatives": "Propozycje",
   "app.containers.AdminPage.SideBar.inputManager": "Pomysły",
+  "app.containers.AdminPage.SideBar.insights": "",
   "app.containers.AdminPage.SideBar.invitations": "Zaproszenia",
   "app.containers.AdminPage.SideBar.moderation": "Aktywności",
   "app.containers.AdminPage.SideBar.processing": "Przetwarzanie",
