@@ -22,6 +22,10 @@ class AppConfiguration < ApplicationRecord
 
   before_validation :validate_missing_feature_dependencies
 
+  after_update do
+    AppConfiguration.instance.reload
+  end
+
   module Settings
     extend CitizenLab::Mixins::SettingsSpecification
 
@@ -94,6 +98,11 @@ class AppConfiguration < ApplicationRecord
 
   def feature_activated?(setting_name)
     settings[setting_name]&.values_at('enabled', 'allowed')&.all?
+  end
+
+  def activate_feature!(setting_name)
+    settings[setting_name] = { 'enabled' => true, 'allowed' => true }
+    save!
   end
 
   def has_feature?(f)
