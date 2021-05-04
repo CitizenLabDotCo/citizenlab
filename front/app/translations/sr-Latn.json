@@ -129,6 +129,8 @@
   "app.components.FolderFolderCard.numberOfProjectsInFolder": "{numberOfProjectsInFolder, plural, no {# projects} one {# project} other {# projects}}",
   "app.components.GoBackButton.group.edit.goBack": "Povratak nazad",
   "app.components.IdeaCards.showMore": "Prikaži više",
+  "app.components.IdeaForm.author": "",
+  "app.components.IdeaForm.authorPlaceholder": "",
   "app.components.IdeaForm.contributionFormGeneralSectionTitle": "Šta je to čime ćete doprineti?",
   "app.components.IdeaForm.descriptionEmptyError": "Molimo vas da unesete opis",
   "app.components.IdeaForm.descriptionLengthError": "Opis ideje mora sadržati najmanje 30 karaktera",
