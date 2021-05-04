@@ -34,7 +34,7 @@ models:
       da-DK: Year of birth
       de-DE: Geburtsjahr
       fr-BE: Année de naissance
-      nb-NO: Year of birth
+      nb: Year of birth
       nl-BE: Geboortejaar
       fr-FR: Année de naissance
     description_multiloc: {}
@@ -53,7 +53,7 @@ models:
       da-DK: Education
       de-DE: Bildungsweg
       fr-BE: Education
-      nb-NO: Education
+      nb: Education
       nl-BE: Opleiding
       fr-FR: Education
     description_multiloc: {}
@@ -80,7 +80,7 @@ models:
     created_at: 2018-03-26 14:28:03 UTC
     updated_at: 2019-01-11 10:25:32 UTC
     enabled: false
-    code: 
+    code:
   - &1
     resource_type: User
     key: gender
@@ -90,7 +90,7 @@ models:
       da-DK: Gender
       de-DE: Geschlecht
       fr-BE: Genre
-      nb-NO: Gender
+      nb: Gender
       nl-BE: Geslacht
       fr-FR: Genre
     description_multiloc: {}
@@ -108,7 +108,7 @@ models:
       da-DK: Domicile
       de-DE: Wohnort
       fr-BE: Domicile
-      nb-NO: Domicile
+      nb: Domicile
       nl-BE: Woonplaats
       fr-FR: Domicile
     description_multiloc: {}
@@ -126,7 +126,7 @@ models:
       da-DK: Male
       de-DE: Männlich
       fr-BE: Masculin
-      nb-NO: Male
+      nb: Male
       nl-BE: Man
       fr-FR: Masculin
     ordering: 0
@@ -139,7 +139,7 @@ models:
       da-DK: Female
       de-DE: Weiblich
       fr-BE: Féminin
-      nb-NO: Female
+      nb: Female
       nl-BE: Vrouw
       fr-FR: Féminin
     ordering: 1
@@ -152,7 +152,7 @@ models:
       da-DK: Unspecified
       de-DE: Nicht spezifiziert
       fr-BE: Autre
-      nb-NO: Unspecified
+      nb: Unspecified
       nl-BE: Onbepaald
       fr-FR: Autre
     ordering: 2
@@ -165,7 +165,7 @@ models:
       da-DK: Lower secondary education
       de-DE: Sekundarstufe I
       fr-BE: Education secondaire (1er cycle)
-      nb-NO: Lower secondary education
+      nb: Lower secondary education
       nl-BE: Lager secundair onderwijs
       fr-FR: Education secondaire (1er cycle)
     ordering: 0
@@ -178,7 +178,7 @@ models:
       da-DK: Upper secondary education
       de-DE: Sekundarstufe II
       fr-BE: Education secondaire (2nd cycle)
-      nb-NO: Upper secondary education
+      nb: Upper secondary education
       nl-BE: Hoger secundair onderwijs
       fr-FR: Education secondaire (2nd cycle)
     ordering: 1
@@ -191,7 +191,7 @@ models:
       da-DK: Post-secondary non-tertiary education
       de-DE: Abschluss an Berufsschule, Abendgymnasium oder Kolleg
       fr-BE: Education supérieure
-      nb-NO: Post-secondary non-tertiary education
+      nb: Post-secondary non-tertiary education
       nl-BE: Postsecundair niet-hoger onderwijs
       fr-FR: Education supérieure
     ordering: 2
@@ -204,7 +204,7 @@ models:
       da-DK: Short-cycle tertiary education
       de-DE: Kurze tertiäre Bildungsprogramme (ISCED-Stufe 5)
       fr-BE: Education supérieure (cycle court)
-      nb-NO: Short-cycle tertiary education
+      nb: Short-cycle tertiary education
       nl-BE: Tertiair onderwijs met korte cyclus
       fr-FR: Education supérieure (cycle court)
     ordering: 3
@@ -217,7 +217,7 @@ models:
       da-DK: Bachelor or equivalent
       de-DE: Bachelor oder gleichwertiger Abschluss
       fr-BE: Licence, Bachelier ou équivalent
-      nb-NO: Bachelor or equivalent
+      nb: Bachelor or equivalent
       nl-BE: Bachelor of gelijkwaardig
       fr-FR: Licence, Bachelier ou équivalent
     ordering: 4
@@ -230,7 +230,7 @@ models:
       da-DK: Master or equivalent
       de-DE: Master oder gleichwertiger Abschluss
       fr-BE: Master ou équivalent
-      nb-NO: Master or equivalent
+      nb: Master or equivalent
       nl-BE: Master of gelijkwaardig
       fr-FR: Master ou équivalent
     ordering: 5
@@ -243,7 +243,7 @@ models:
       da-DK: Doctoral or equivalent
       de-DE: Doktortitel oder anderer gleichwertiger Abschluss
       fr-BE: Doctorat ou équivalent
-      nb-NO: Doctoral or equivalent
+      nb: Doctoral or equivalent
       nl-BE: Doctoraat of gelijkwaardig
       fr-FR: Doctorat ou équivalent
     ordering: 6
@@ -392,7 +392,7 @@ models:
     description_multiloc:
       fr-BE: Espace public
       fr-FR: Espace public
-    icon: 
+    icon:
     created_at: 2017-12-11 14:32:03 UTC
     updated_at: 2017-12-11 14:32:03 UTC
   - title_multiloc:
@@ -401,7 +401,7 @@ models:
     description_multiloc:
       fr-BE: Proprété et déchets
       fr-FR: Proprété et déchets
-    icon: 
+    icon:
     created_at: 2017-12-11 14:32:03 UTC
     updated_at: 2017-12-11 14:32:03 UTC
   - title_multiloc:
@@ -410,7 +410,7 @@ models:
     description_multiloc:
       fr-BE: Mobilité
       fr-FR: Mobilité
-    icon: 
+    icon:
     created_at: 2017-12-11 14:32:03 UTC
     updated_at: 2017-12-11 14:32:03 UTC
   - title_multiloc:
@@ -419,7 +419,7 @@ models:
     description_multiloc:
       fr-BE: Technologie
       fr-FR: Technologie
-    icon: 
+    icon:
     created_at: 2017-12-11 14:32:03 UTC
     updated_at: 2017-12-11 14:32:03 UTC
   - title_multiloc:
@@ -428,7 +428,7 @@ models:
     description_multiloc:
       fr-BE: Emploi, economie et commerce
       fr-FR: Emploi, economie et commerce
-    icon: 
+    icon:
     created_at: 2017-12-11 14:32:03 UTC
     updated_at: 2017-12-11 14:32:03 UTC
   - title_multiloc:
@@ -437,7 +437,7 @@ models:
     description_multiloc:
       fr-BE: Nature et biodiversité
       fr-FR: Nature et biodiversité
-    icon: 
+    icon:
     created_at: 2017-12-11 14:32:03 UTC
     updated_at: 2017-12-11 14:32:03 UTC
   - title_multiloc:
@@ -446,7 +446,7 @@ models:
     description_multiloc:
       fr-BE: Développement durable
       fr-FR: Développement durable
-    icon: 
+    icon:
     created_at: 2017-12-11 14:32:03 UTC
     updated_at: 2017-12-11 14:32:03 UTC
   - &117
@@ -456,7 +456,7 @@ models:
     description_multiloc:
       fr-BE: Logement
       fr-FR: Logement
-    icon: 
+    icon:
     created_at: 2017-12-11 14:32:03 UTC
     updated_at: 2017-12-11 14:32:03 UTC
   - title_multiloc:
@@ -465,7 +465,7 @@ models:
     description_multiloc:
       fr-BE: Art, culture et événements
       fr-FR: Art, culture et événements
-    icon: 
+    icon:
     created_at: 2017-12-11 14:32:03 UTC
     updated_at: 2017-12-11 14:32:03 UTC
   - &116
@@ -475,7 +475,7 @@ models:
     description_multiloc:
       fr-BE: Citoyenneté
       fr-FR: Citoyenneté
-    icon: 
+    icon:
     created_at: 2017-12-11 14:32:03 UTC
     updated_at: 2017-12-11 14:32:03 UTC
   - &113
@@ -485,7 +485,7 @@ models:
     description_multiloc:
       fr-BE: Social
       fr-FR: Social
-    icon: 
+    icon:
     created_at: 2017-12-11 14:32:03 UTC
     updated_at: 2017-12-11 14:32:03 UTC
   - &114
@@ -495,7 +495,7 @@ models:
     description_multiloc:
       fr-BE: Santé
       fr-FR: Santé
-    icon: 
+    icon:
     created_at: 2017-12-11 14:32:03 UTC
     updated_at: 2017-12-11 14:32:03 UTC
   - &112
@@ -505,7 +505,7 @@ models:
     description_multiloc:
       fr-BE: Sport
       fr-FR: Sport
-    icon: 
+    icon:
     created_at: 2017-12-11 14:32:03 UTC
     updated_at: 2017-12-11 14:32:03 UTC
   - &115
@@ -515,7 +515,7 @@ models:
     description_multiloc:
       fr-BE: Éducation et jeunesse
       fr-FR: Éducation et jeunesse
-    icon: 
+    icon:
     created_at: 2017-12-11 14:32:03 UTC
     updated_at: 2017-12-11 14:32:03 UTC
   project:
@@ -527,7 +527,7 @@ models:
     voting_enabled: true
     voting_method: limited
     voting_limited_max: 1
-    max_budget: 
+    max_budget:
     title_multiloc:
       en: Landscaping of La Feuille Verte Park
       da-DK: Landskabspleje af La Feuille Verte Park
@@ -536,7 +536,7 @@ models:
       en-GB: Landscaping of La Feuille Verte Park
       fr-BE: Réhabilitation de l'ancien bureau de poste
       fr-FR: Aménagement du parc La Feuille Verte
-      nb-NO: Landskapsarkitektur av La Feuille Verte Park
+      nb: Landskapsarkitektur av La Feuille Verte Park
       nl-BE: Landscaping van La Feuille Verte Park
       nl-NL: Landscaping van La Feuille Verte Park
     description_multiloc:
@@ -600,7 +600,7 @@ models:
         à la cohésion sociale.</p><p>En tant que citoyens, vous avez la possibilité
         de vous exprimer quant à l'avenir de cette place. La commune vous invite ainsi
         à commenter les différents projets et à voter pour votre préféré. </p><p><br></p><p><br></p>"
-      nb-NO: "<p> Kommunen planlegger å utvikle Park Green Leaf for å gjøre det mer
+      nb: "<p> Kommunen planlegger å utvikle Park Green Leaf for å gjøre det mer
         vennlig og forbedre livskvaliteten til borgere som bor rundt seg. Vi tror
         at parken vår ikke bare er en grønn plass, men et livsstil, møter og rekreasjon
         som bidrar til sosial samhørighet. </p><p> Som borgere har du muligheten til
@@ -640,14 +640,14 @@ models:
         préféré ! '
       fr-FR: Quel projet d'aménagement pour le parc La Feuille Verte ? C'est à vous
         de décider ! Votez pour l'un des trois projets suivants.
-      nb-NO: Hva planlegger prosjektet for La Feuille Verte Park? Det er opp til deg!
+      nb: Hva planlegger prosjektet for La Feuille Verte Park? Det er opp til deg!
         Stem på ett av følgende tre prosjekter.
       nl-BE: Welk planningsproject voor La Feuille Verte Park? Het is aan jou! Stem
         op een van de volgende drie projecten.
       nl-NL: Welk planningsproject voor La Feuille Verte Park? Het is aan jou! Stem
         op een van de volgende drie projecten.
     process_type: continuous
-    internal_role: 
+    internal_role:
     publication_status: published
     ordering: 8
   - &13
@@ -658,7 +658,7 @@ models:
     voting_enabled: true
     voting_method: unlimited
     voting_limited_max: 10
-    max_budget: 
+    max_budget:
     title_multiloc:
       fr-BE: Conseil de quartier Italie-Peupliers-Rungis
       fr-FR: Conseil de quartier Italie-Peupliers-Rungis
@@ -675,7 +675,7 @@ models:
         découvrez les prochains événements, les comptes rendus et les actions participatives
         !
     process_type: timeline
-    internal_role: 
+    internal_role:
     publication_status: published
     ordering: 1
   - &5
@@ -686,7 +686,7 @@ models:
     voting_enabled: true
     voting_method: unlimited
     voting_limited_max: 10
-    max_budget: 
+    max_budget:
     title_multiloc:
       en: The Council of Elders
       da-DK: Ældres råd
@@ -695,7 +695,7 @@ models:
       en-GB: The Council of Elders
       fr-BE: Les Conseils des anciens
       fr-FR: Les Conseils des anciens
-      nb-NO: Elders råd
+      nb: Elders råd
       nl-BE: De Raad van Ouderlingen
       nl-NL: De Raad van Ouderlingen
     description_multiloc:
@@ -754,7 +754,7 @@ models:
         et seront à nouveau débattues dans les conseils de quartier ce mois-ci.</p><p><strong>Les
         riverains sont vivement invités à y participer pour donner leur avis.</strong></p><p>&gt;&gt;
         Plus d'infos sur les conseils des anciens </p>"
-      nb-NO: "<h2> Lokale innbyggere er invitert til å lese råd fra de gamle bydelene
+      nb: "<h2> Lokale innbyggere er invitert til å lese råd fra de gamle bydelene
         om de utførte forsøkene, og å diskutere emnet. </h2><p> For å redusere transportstrømmene
         og sikre daglig reise har byen utviklet en ny parkerings- og sirkulasjonsplan,
         testet siden mai. </p><p> Foreslåtte forslag blir testet, og vil bli diskutert
@@ -796,14 +796,14 @@ models:
         et à rendre plus concrète l’action publique.
       fr-FR: La démocratie participative aide à créer plus de liens entre les citoyens
         et à rendre plus concrète l’action publique.
-      nb-NO: Deltakende demokrati bidrar til å skape flere forbindelser mellom borgere
+      nb: Deltakende demokrati bidrar til å skape flere forbindelser mellom borgere
         og for å gjøre offentlige handlinger mer konkrete.
       nl-BE: De participatieve democratie helpt om meer verbanden te leggen tussen
         burgers en om publieke actie concreter te maken.
       nl-NL: De participatieve democratie helpt om meer verbanden te leggen tussen
         burgers en om publieke actie concreter te maken.
     process_type: timeline
-    internal_role: 
+    internal_role:
     publication_status: published
     ordering: 10
   - &15
@@ -814,7 +814,7 @@ models:
     voting_enabled: true
     voting_method: unlimited
     voting_limited_max: 10
-    max_budget: 
+    max_budget:
     title_multiloc:
       fr-BE: Consultation sur l'avenir smart city de Colmar Agglomération
       fr-FR: Consultation sur l'avenir smart city de Colmar Agglomération
@@ -825,18 +825,18 @@ models:
     visible_to: public
     description_preview_multiloc: {}
     process_type: timeline
-    internal_role: 
+    internal_role:
     publication_status: published
     ordering: 0
   - &4
     presentation_mode: card
     participation_method: survey
-    posting_enabled: 
-    commenting_enabled: 
-    voting_enabled: 
-    voting_method: 
-    voting_limited_max: 
-    max_budget: 
+    posting_enabled:
+    commenting_enabled:
+    voting_enabled:
+    voting_method:
+    voting_limited_max:
+    max_budget:
     survey_embed_url: https://citizenlabco.typeform.com/to/xa36y4
     survey_service: typeform
     title_multiloc:
@@ -847,7 +847,7 @@ models:
       en-GB: Survey of Christmas Markets 2018
       fr-BE: 'Le marché du centre ville : Donnez votre avis !'
       fr-FR: Enquête sur les marchés de Noël 2018
-      nb-NO: Undersøkelse av julemarkeder 2018
+      nb: Undersøkelse av julemarkeder 2018
       nl-BE: Overzicht van kerstmarkten 2018
       nl-NL: Overzicht van kerstmarkten 2018
     description_multiloc:
@@ -889,7 +889,7 @@ models:
       fr-FR: <p>Afin d'améliorer la qualité et l'attractivité de notre marché de Noël,
         nous souhaitons connaître votre opinion. Pour nous donner votre avis, cliquez
         sur le bouton "enquête". Celle-ci nous vous prendra quelques minutes.</p>
-      nb-NO: <p> For å forbedre kvaliteten og attraktiviteten til julemarkedet, vil
+      nb: <p> For å forbedre kvaliteten og attraktiviteten til julemarkedet, vil
         vi vite din mening. For å gi oss din mening, klikk på "forespørsel" -knappen.
         Dette vil ta deg noen minutter. </p>
       nl-BE: <p> Om de kwaliteit en aantrekkelijkheid van onze kerstmarkt te verbeteren,
@@ -918,13 +918,13 @@ models:
         de nous dire ce que vous en pensez grâce à cette enquête en ligne.
       fr-FR: Cette année, participez à notre grande enquête pour améliorer les marché
         de Noël de l'édition 2018 !
-      nb-NO: I år, deltar i vår store undersøkelse for å forbedre julemarkedet i 2018-utgaven!
+      nb: I år, deltar i vår store undersøkelse for å forbedre julemarkedet i 2018-utgaven!
       nl-BE: Dit jaar neemt u deel aan onze grote enquête om de kerstmarkt van de
         editie 2018 te verbeteren!
       nl-NL: Dit jaar neemt u deel aan onze grote enquête om de kerstmarkt van de
         editie 2018 te verbeteren!
     process_type: continuous
-    internal_role: 
+    internal_role:
     publication_status: published
     ordering: 3
   - &12
@@ -935,7 +935,7 @@ models:
     voting_enabled: true
     voting_method: unlimited
     voting_limited_max: 10
-    max_budget: 
+    max_budget:
     title_multiloc:
       fr-BE: Le potager partagé
       fr-FR: Boîte à idées
@@ -988,11 +988,11 @@ models:
     description_multiloc: {}
     created_at: 2019-01-16 14:02:18 UTC
     updated_at: 2019-01-25 12:57:20 UTC
-    remote_header_bg_url: 
+    remote_header_bg_url:
     visible_to: public
     description_preview_multiloc: {}
     process_type: timeline
-    internal_role: 
+    internal_role:
     publication_status: published
     ordering: 5
   - &10
@@ -1003,7 +1003,7 @@ models:
     voting_enabled: true
     voting_method: unlimited
     voting_limited_max: 10
-    max_budget: 
+    max_budget:
     title_multiloc:
       fr-BE: Le tiers-lieu du Grand Théâtre
       fr-FR: Le tiers-lieu du Grand Théâtre
@@ -1018,7 +1018,7 @@ models:
       fr-FR: Partagez vos idées pour faire du nouveau tiers-lieu de Verviers un lieu
         de vie incontournable !
     process_type: timeline
-    internal_role: 
+    internal_role:
     publication_status: archived
     ordering: 11
   - &7
@@ -1029,7 +1029,7 @@ models:
     voting_enabled: true
     voting_method: unlimited
     voting_limited_max: 10
-    max_budget: 
+    max_budget:
     title_multiloc:
       en: How to improve mobility in the municipality
       da-DK: Sådan forbedres mobiliteten i kommunen
@@ -1038,7 +1038,7 @@ models:
       en-GB: How to improve mobility in the municipality
       fr-BE: Comment améliorer la mobilité dans la commune
       fr-FR: Comment améliorer la mobilité dans la commune
-      nb-NO: Hvordan forbedre mobiliteten i kommunen
+      nb: Hvordan forbedre mobiliteten i kommunen
       nl-BE: Hoe de mobiliteit in de gemeente te verbeteren
       nl-NL: Hoe de mobiliteit in de gemeente te verbeteren
     description_multiloc:
@@ -1134,7 +1134,7 @@ models:
         34 départements et 130 agglomérations et communes), avec des offres à 1 euro
         la journée, le trajet ou l'aller-retour. Durée du chantier: 10 jours ouvrables
         (sauf intempéries). Des déviations seront prévues.  </p><"
-      nb-NO: "<p> Mobilitetsinformasjon: </p><p> Den åttende utgaven av den europeiske
+      nb: "<p> Mobilitetsinformasjon: </p><p> Den åttende utgaven av den europeiske
         mobilitetsuke er for første gang knyttet til trafiksikkerhet for å fokusere
         på forebygging, intermodalitet, tilgjengelighet, deling av offentlig plass
         og alternative løsninger på bilreiser. Arrangementet er organisert på initiativ
@@ -1208,7 +1208,7 @@ models:
       fr-FR: "Contribuez à création d'une ville durable où la mobilité est réfléchie
         et intermodale. Soyez créatifs afin de trouver des solutions innovantes pour
         s'adapter aux nouveaux modes de déplacements. \n"
-      nb-NO: 'Bidra til å skape en bærekraftig by hvor mobilitet er gjennomtenkt og
+      nb: 'Bidra til å skape en bærekraftig by hvor mobilitet er gjennomtenkt og
         intermodalt. Vær kreativ for å finne innovative løsninger for å tilpasse seg
         nye reisemåter.
 
@@ -1224,7 +1224,7 @@ models:
 
 '
     process_type: timeline
-    internal_role: 
+    internal_role:
     publication_status: published
     ordering: 2
   - &8
@@ -1235,7 +1235,7 @@ models:
     voting_enabled: true
     voting_method: unlimited
     voting_limited_max: 10
-    max_budget: 
+    max_budget:
     title_multiloc:
       en: Our cross-cutting strategic program
       da-DK: Vores tværgående strategiske program
@@ -1244,7 +1244,7 @@ models:
       en-GB: Our cross-cutting strategic program
       fr-BE: Notre programme stratégique transversal
       fr-FR: Notre programme stratégique transversal
-      nb-NO: Vårt tverrgående strategisk program
+      nb: Vårt tverrgående strategisk program
       nl-BE: Ons transversaal strategisch programma
       nl-NL: Ons transversaal strategisch programma
     description_multiloc:
@@ -1297,7 +1297,7 @@ models:
         <li>Une phase d'identification des objectifs stratégiques pour notre commune</li>
         <li>La présentation du document final aux citoyens</li>
         </ol><p>Les citoyens auront également la possibilité d'exprimer. Ils pourront exprimer leurs envies et partager les projets qui leur tiennent à coeur sur une autre partie de cette plateforme. De cette manière, nous pourrons connaître les projets qu'ils désirent voir  se réaliser en priorité. </p>
-      nb-NO: |-
+      nb: |-
         <p> Kommunen må utarbeide et transversalt strategisk program for 31. august 2019. For å utarbeide en ambisiøs og sammenhengende fremtidig plan, er det avgjørende at alle deltar i utviklingen av den. </p><p> Prosessen er delt inn i 4 trinn: </p><ol>
         <li> En fase med identifisering av verdiene til vår kommune </li>
         <li> En fase med identifisering av de strategiske målene i vår kommunale administrasjon </li>
@@ -1346,7 +1346,7 @@ models:
         législature commence avec son lot de nouveaux défis. L''un de nos premiers
         challenge est la rédaction de notre programme stratégique transversal pour
         août 2019 '
-      nb-NO: De kommunale valgene er nå bak oss. En ny lovgiver begynner med nye utfordringer.
+      nb: De kommunale valgene er nå bak oss. En ny lovgiver begynner med nye utfordringer.
         En av våre første utfordringer er skrivingen av vårt transversale strategiske
         program for august 2019
       nl-BE: De gemeenteraadsverkiezingen liggen nu achter ons. Een nieuwe legislatuur
@@ -1356,7 +1356,7 @@ models:
         begint met nieuwe uitdagingen. Een van onze eerste uitdagingen is het schrijven
         van ons transversale strategische programma voor augustus 2019
     process_type: timeline
-    internal_role: 
+    internal_role:
     publication_status: archived
     ordering: 7
   - &6
@@ -1366,8 +1366,8 @@ models:
     commenting_enabled: true
     voting_enabled: false
     voting_method: unlimited
-    voting_limited_max: 
-    max_budget: 
+    voting_limited_max:
+    max_budget:
     title_multiloc:
       en: Cleanness of our streets
       da-DK: Renhed af vores gader
@@ -1376,7 +1376,7 @@ models:
       en-GB: Cleanness of our streets
       fr-BE: Propreté de nos rues
       fr-FR: Propreté de nos rues
-      nb-NO: Renslighet av våre gater
+      nb: Renslighet av våre gater
       nl-BE: De netheid van onze straten
       nl-NL: De netheid van onze straten
     description_multiloc:
@@ -1415,7 +1415,7 @@ models:
         <li>le motif de votre réclamation ;</li>
         <li>le lieu de l’intervention à effectuer.</li>
         </ul><p><br></p><h2>Signalez un problème en ligne</h2>
-      nb-NO: |-
+      nb: |-
         <p> Snart vil et team av teknikere fra byen gå på stedet og fortsette så langt som mulig til nødvendige reparasjoner. Naturligvis er disse kommunale tjenestepersonellene ikke ment å erstatte brannmenn, søppelarbeidere eller til og med kommunepolisen. </p><p> Du trenger ikke å forstyrre dem for en katt som ligger på et tre eller et parkeringsproblem. </p><p> <strong>Defekt belysning? Et vill depot i nærheten av deg? Et skadet tegn? En gren som kan falle? Et hull i fortauet? En skitten fortau? Proxim'Aulnay hjelper deg!</strong> </p><p> <strong>Tollfritt nummer 0 800 093 600 eller fast nummer 01 48 79 66 17</strong> </p><p> Dette gratis nummeret fra en fastlinje fungerer fra <strong>8h til 12h og 13h30 til 17h</strong> . Utenfor disse tidene kan du legge en talemelding med kontaktinformasjonen din. </p><p> På slutten av linjen vil en operatør nøye merke: </p><ul>
         <li> årsaken til kravet ditt </li>
         <li> Stedet for intervensjonen skal utføres. </li>
@@ -1453,7 +1453,7 @@ models:
       fr-FR: Un éclairage défectueux ? Un dépôt sauvage près de chez vous ? Un panneau
         de signalisation abîmé ? Une branche qui risque de tomber ? Un trou dans la
         chaussée ? Un trottoir sale ? Votre plateforme vous vient en aide !
-      nb-NO: Defekt belysning? Et vill depot i nærheten av deg? Et skadet tegn? En
+      nb: Defekt belysning? Et vill depot i nærheten av deg? Et skadet tegn? En
         gren som kan falle? Et hull i fortauet? En skitten fortau? Din plattform hjelper
         deg!
       nl-BE: Defecte verlichting? Een wild depot bij jou in de buurt? Een beschadigd
@@ -1463,7 +1463,7 @@ models:
         teken? Een tak die kan vallen? Een gat in de stoep? Een vuile stoep? Uw platform
         helpt u!
     process_type: continuous
-    internal_role: 
+    internal_role:
     publication_status: draft
     ordering: 12
   - &29
@@ -1474,18 +1474,18 @@ models:
     voting_enabled: false
     voting_method: unlimited
     voting_limited_max: 10
-    max_budget: 
+    max_budget:
     title_multiloc:
       fr-BE: Projet test géolocalisation
       fr-FR: Projet test géolocalisation
     description_multiloc: {}
     created_at: 2018-11-29 14:39:17 UTC
     updated_at: 2019-01-25 12:57:20 UTC
-    remote_header_bg_url: 
+    remote_header_bg_url:
     visible_to: public
     description_preview_multiloc: {}
     process_type: continuous
-    internal_role: 
+    internal_role:
     publication_status: draft
     ordering: 9
   - &9
@@ -1496,7 +1496,7 @@ models:
     voting_enabled: true
     voting_method: unlimited
     voting_limited_max: 10
-    max_budget: 
+    max_budget:
     title_multiloc:
       en: Participatory budget
       da-DK: Deltagende budget
@@ -1505,7 +1505,7 @@ models:
       en-GB: Participatory budget
       fr-BE: Le budget participatif
       fr-FR: Budget participatif
-      nb-NO: Deltakende budsjett
+      nb: Deltakende budsjett
       nl-BE: Deelnemingsbudget
       nl-NL: Deelnemingsbudget
     description_multiloc:
@@ -1604,7 +1604,7 @@ models:
         les choix budgétaires de la commune en proposant des projets d'intérêt général
         et en votant pour ceux qui seront réalisés. 800 000 € issus du budget d'investissement
         sont ainsi délégués aux citoyens.</p>"
-      nb-NO: "<p> <strong>Delta i deltakelsesbudsjettet til byen vår.</strong> </p><p>
+      nb: "<p> <strong>Delta i deltakelsesbudsjettet til byen vår.</strong> </p><p>
         Bystyret har besluttet å fordele 1% av sitt budsjett for prosjekter og tiltak
         som er bestemt kollektivt. </p><p> I år fant den tredje utgaven sted. Det
         gjør at beboere over 16 år kan ta konkrete tiltak på kommunens budsjettvalg
@@ -1657,7 +1657,7 @@ models:
         des initiatives au bénéfice de la collectivité, dans tous les villages de
         l’entité. Ce projet est institué par le Conseil communal du 28 septembre 2018
         pour une mise en œuvre dès janvier 2019.
-      nb-NO: MEAs deltakelsesbudsjett har til formål å gjøre det mulig for borgere
+      nb: MEAs deltakelsesbudsjett har til formål å gjøre det mulig for borgere
         å utvikle tiltak til fordel for samfunnet, i alle byene i enheten. Prosjektet
         ble innført av kommunestyret den 28. september 2018 for gjennomføring fra
         januar 2019.
@@ -1670,75 +1670,75 @@ models:
         dorpen van de entiteit. Dit project is ingesteld door de gemeenteraad van
         28 september 2018 voor implementatie vanaf januari 2019.
     process_type: timeline
-    internal_role: 
+    internal_role:
     publication_status: published
     ordering: 4
   project_file:
   - project_ref: *4
     remote_file_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/86b34603-ee87-4879-a433-bccc0279a146/project_file/file/a0a8f33a-2d3a-480b-88a9-508e1eb2ebec/file.pdf
-    ordering: 
+    ordering:
     created_at: 2019-01-14 13:46:54 UTC
     updated_at: 2019-01-14 13:46:54 UTC
     name: 20190110_rueil_intermediaire.pdf
   project_image:
   - project_ref: *5
     remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/86b34603-ee87-4879-a433-bccc0279a146/project_image/image/bf8a32f0-890b-499f-b338-126e3ab85ea5/50dc389cc4c49668f37981848cfaa8ab_image.png
-    ordering: 
+    ordering:
     created_at: 2018-11-16 14:22:26 UTC
     updated_at: 2018-11-16 14:22:26 UTC
   - project_ref: *6
     remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/86b34603-ee87-4879-a433-bccc0279a146/project_image/image/4223a995-7683-418e-9287-b8a45af03c01/099acbb11f6d75098e916cfe040bf7e4_image.jpeg
-    ordering: 
+    ordering:
     created_at: 2018-11-16 14:22:27 UTC
     updated_at: 2018-11-16 14:22:27 UTC
   - project_ref: *7
     remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/86b34603-ee87-4879-a433-bccc0279a146/project_image/image/5a1e147a-4fb8-49f3-b303-2644817d1402/20bed0566793bb79041481db84d5d73c_image.jpeg
-    ordering: 
+    ordering:
     created_at: 2018-11-16 14:22:30 UTC
     updated_at: 2018-11-16 14:22:30 UTC
   - project_ref: *8
     remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/86b34603-ee87-4879-a433-bccc0279a146/project_image/image/a6f64f9b-4587-4224-ba2b-c42a32d21419/6ec67d58ace4546bee51fd7bdc53f351_image.png
-    ordering: 
+    ordering:
     created_at: 2018-11-16 14:22:45 UTC
     updated_at: 2018-11-16 14:22:45 UTC
   - project_ref: *8
     remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/86b34603-ee87-4879-a433-bccc0279a146/project_image/image/e3e2f275-52d0-4c60-bca4-18edb8edd9ab/896eed4696adf3b7aa4889bbf4ec393b_image.png
-    ordering: 
+    ordering:
     created_at: 2018-11-16 14:22:46 UTC
     updated_at: 2018-11-16 14:22:46 UTC
   - project_ref: *8
     remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/86b34603-ee87-4879-a433-bccc0279a146/project_image/image/20472c7e-4693-44ac-a1a8-f18f127842ed/e2830691b68178a40344ec795f965da2_image.png
-    ordering: 
+    ordering:
     created_at: 2018-11-16 14:22:49 UTC
     updated_at: 2018-11-16 14:22:49 UTC
   - project_ref: *9
     remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/86b34603-ee87-4879-a433-bccc0279a146/project_image/image/1864676c-80a8-4954-bf82-19cfcbb03235/image.jpeg
-    ordering: 
+    ordering:
     created_at: 2018-12-06 08:17:42 UTC
     updated_at: 2018-12-06 08:17:42 UTC
   - project_ref: *10
     remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/86b34603-ee87-4879-a433-bccc0279a146/project_image/image/dc0c8d83-5d64-4909-b6ac-31ce09f008ba/image.jpeg
-    ordering: 
+    ordering:
     created_at: 2018-12-09 15:25:50 UTC
     updated_at: 2018-12-09 15:25:50 UTC
   - project_ref: *4
     remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/86b34603-ee87-4879-a433-bccc0279a146/project_image/image/4f820984-cc0f-46ad-b2c5-16fc8c851441/image.jpeg
-    ordering: 
+    ordering:
     created_at: 2018-12-17 13:12:35 UTC
     updated_at: 2018-12-17 13:12:35 UTC
   - project_ref: *11
     remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/86b34603-ee87-4879-a433-bccc0279a146/project_image/image/fddfaa53-0589-45a4-b753-9b96482bdc22/image.jpeg
-    ordering: 
+    ordering:
     created_at: 2018-12-17 13:26:03 UTC
     updated_at: 2018-12-17 13:26:03 UTC
   - project_ref: *12
     remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/86b34603-ee87-4879-a433-bccc0279a146/project_image/image/f35fe688-4563-4425-b19f-97d355b1ce02/image.jpeg
-    ordering: 
+    ordering:
     created_at: 2018-12-20 16:08:21 UTC
     updated_at: 2018-12-20 16:08:21 UTC
   - project_ref: *13
     remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/86b34603-ee87-4879-a433-bccc0279a146/project_image/image/69e68371-30ab-436c-af97-5112c733ecbd/image.png
-    ordering: 
+    ordering:
     created_at: 2019-01-25 08:32:53 UTC
     updated_at: 2019-01-25 08:32:53 UTC
   projects_topic: []
@@ -1751,7 +1751,7 @@ models:
     voting_enabled: false
     voting_method: unlimited
     voting_limited_max: 10
-    max_budget: 
+    max_budget:
     project_ref: *14
     title_multiloc:
       fr-BE: Récolte d'idée large
@@ -1769,7 +1769,7 @@ models:
     voting_enabled: true
     voting_method: unlimited
     voting_limited_max: 10
-    max_budget: 
+    max_budget:
     project_ref: *15
     title_multiloc:
       fr-BE: 'phase 1 : consultation citoyenne'
@@ -1786,7 +1786,7 @@ models:
     voting_enabled: true
     voting_method: unlimited
     voting_limited_max: 10
-    max_budget: 
+    max_budget:
     project_ref: *14
     title_multiloc:
       fr-BE: Analyse de vos idées par la ville
@@ -1804,7 +1804,7 @@ models:
     voting_enabled: true
     voting_method: unlimited
     voting_limited_max: 10
-    max_budget: 
+    max_budget:
     project_ref: *15
     title_multiloc:
       fr-BE: 'phase 2 : travaux internes'
@@ -1816,12 +1816,12 @@ models:
     updated_at: 2019-01-25 13:04:05 UTC
   - presentation_mode: card
     participation_method: information
-    posting_enabled: 
-    commenting_enabled: 
-    voting_enabled: 
-    voting_method: 
-    voting_limited_max: 
-    max_budget: 
+    posting_enabled:
+    commenting_enabled:
+    voting_enabled:
+    voting_method:
+    voting_limited_max:
+    max_budget:
     project_ref: *5
     title_multiloc:
       en: Conclusions of the physical meetings on the traffic and parking plan
@@ -1831,7 +1831,7 @@ models:
       en-GB: Conclusions of the physical meetings on the traffic and parking plan
       fr-BE: Conclusions des réunions physiques sur le plan de circulation et de stationnement
       fr-FR: Conclusions des réunions physiques sur le plan de circulation et de stationnement
-      nb-NO: Konklusjoner av de fysiske møtene på trafikk- og parkeringsplanen
+      nb: Konklusjoner av de fysiske møtene på trafikk- og parkeringsplanen
       nl-BE: Conclusies van de fysieke vergaderingen over het verkeers- en parkeerplan
       nl-NL: Conclusies van de fysieke vergaderingen over het verkeers- en parkeerplan
     description_multiloc:
@@ -2054,7 +2054,7 @@ models:
         <li>
         <strong>Axes concernés :</strong> Avenue Yvonne, avenue de Rouen et avenue du Héron.</li>
         </ul><p><br></p>
-      nb-NO: |-
+      nb: |-
         <p> <strong>Her er tidsplanen i nabolaget og aksene som er bekymret:</strong> </p><ul>
         <li> <strong>Prévoyants nabolag:</strong> </li>
         <li> <strong>Dato:</strong> fredag ​​5. oktober klokka 18:30 </li>
@@ -2146,8 +2146,8 @@ models:
     commenting_enabled: true
     voting_enabled: true
     voting_method: unlimited
-    voting_limited_max: 
-    max_budget: 
+    voting_limited_max:
+    max_budget:
     project_ref: *5
     title_multiloc:
       en: Add ideas after physical debates / meetings
@@ -2157,7 +2157,7 @@ models:
       en-GB: Add ideas after physical debates / meetings
       fr-BE: Ajouter des idées suite aux débats / réunions physiques
       fr-FR: Ajouter des idées suite aux débats / réunions physiques
-      nb-NO: Legg til ideer etter fysiske debatter / møter
+      nb: Legg til ideer etter fysiske debatter / møter
       nl-BE: Voeg ideeën toe na fysieke debatten / vergaderingen
       nl-NL: Voeg ideeën toe na fysieke debatten / vergaderingen
     description_multiloc: {}
@@ -2173,7 +2173,7 @@ models:
     voting_enabled: true
     voting_method: unlimited
     voting_limited_max: 10
-    max_budget: 
+    max_budget:
     project_ref: *7
     title_multiloc:
       en: votes
@@ -2183,7 +2183,7 @@ models:
       en-GB: votes
       fr-BE: Votes
       fr-FR: Votes
-      nb-NO: stemmer
+      nb: stemmer
       nl-BE: stemmen
       nl-NL: stemmen
     description_multiloc:
@@ -2201,7 +2201,7 @@ models:
         qui leur semblent les plus pertinentes et réalistes</p>\n"
       fr-FR: "<p>Cette phase laisse le temps aux citoyens de plébiciter les idées
         qui leur semblent les plus pertinentes et réalistes</p>\n"
-      nb-NO: "<p> Denne fasen gir borgerne tid til å vurdere ideene som synes mest
+      nb: "<p> Denne fasen gir borgerne tid til å vurdere ideene som synes mest
         relevante og realistiske for dem </p>"
       nl-BE: "<p> Deze fase geeft burgers de tijd om de ideeën te overwegen die het
         meest relevant en realistisch voor hen lijken </p>"
@@ -2219,7 +2219,7 @@ models:
     voting_enabled: true
     voting_method: unlimited
     voting_limited_max: 10
-    max_budget: 
+    max_budget:
     project_ref: *7
     title_multiloc:
       en: Voting results
@@ -2229,7 +2229,7 @@ models:
       en-GB: Voting results
       fr-BE: Résultats de votes
       fr-FR: Résultats de votes
-      nb-NO: Stemmeresultater
+      nb: Stemmeresultater
       nl-BE: Stemresultaten
       nl-NL: Stemresultaten
     description_multiloc:
@@ -2240,7 +2240,7 @@ models:
       en-GB: "<p> The results of the citizen vote are annocated </p>"
       fr-BE: "<p>Les résultats du vote citoyen sont annocés</p>\n"
       fr-FR: "<p>Les résultats du vote citoyen sont annocés</p>\n"
-      nb-NO: "<p> Resultatene av statsstemmen er annokert </p>"
+      nb: "<p> Resultatene av statsstemmen er annokert </p>"
       nl-BE: "<p> De resultaten van de burgerstemming zijn geannoceerd </p>"
       nl-NL: "<p> De resultaten van de burgerstemming zijn geannoceerd </p>"
     start_at: '2019-02-20'
@@ -2255,7 +2255,7 @@ models:
     voting_enabled: true
     voting_method: unlimited
     voting_limited_max: 10
-    max_budget: 
+    max_budget:
     project_ref: *7
     title_multiloc:
       en: Implementation of selected projects
@@ -2265,7 +2265,7 @@ models:
       en-GB: Implementation of selected projects
       fr-BE: Implémentation des projets retenus
       fr-FR: Implémentation des projets retenus
-      nb-NO: Gjennomføring av utvalgte prosjekter
+      nb: Gjennomføring av utvalgte prosjekter
       nl-BE: Implementatie van geselecteerde projecten
       nl-NL: Implementatie van geselecteerde projecten
     description_multiloc:
@@ -2276,7 +2276,7 @@ models:
       en-GB: "<p> Implementation of selected projects </p>"
       fr-BE: "<p>Mise en place des projets retenus </p>\n"
       fr-FR: "<p>Mise en place des projets retenus </p>\n"
-      nb-NO: "<p> Gjennomføring av utvalgte prosjekter </p>"
+      nb: "<p> Gjennomføring av utvalgte prosjekter </p>"
       nl-BE: "<p> Implementatie van geselecteerde projecten </p>"
       nl-NL: "<p> Implementatie van geselecteerde projecten </p>"
     start_at: '2019-05-22'
@@ -2290,8 +2290,8 @@ models:
     commenting_enabled: true
     voting_enabled: true
     voting_method: unlimited
-    voting_limited_max: 
-    max_budget: 
+    voting_limited_max:
+    max_budget:
     project_ref: *7
     title_multiloc:
       en: Harvesting ideas
@@ -2301,7 +2301,7 @@ models:
       en-GB: Harvesting ideas
       fr-BE: Récolte d'idées
       fr-FR: Récolte d'idées
-      nb-NO: Høsting av ideer
+      nb: Høsting av ideer
       nl-BE: Ideeën verzamelen
       nl-NL: Ideeën verzamelen
     description_multiloc:
@@ -2329,7 +2329,7 @@ models:
         citoyens. L’objectif de ce panel citoyen est d’aboutir à des recommandations
         concrètes pour améliorer la mobilité, en favorisant la rencontre et le débat
         entre citoyens.</p>"
-      nb-NO: "<p> Den første fasen er å samle alle prosjektene fra borgerne. Målet
+      nb: "<p> Den første fasen er å samle alle prosjektene fra borgerne. Målet
         med dette borgerpanelet er å komme med konkrete anbefalinger for å forbedre
         mobiliteten ved å fremme møter og debatter mellom borgere. </p>"
       nl-BE: "<p> De eerste fase is om alle projecten van de burgers te verzamelen.
@@ -2352,7 +2352,7 @@ models:
     voting_enabled: true
     voting_method: unlimited
     voting_limited_max: 10
-    max_budget: 
+    max_budget:
     project_ref: *14
     title_multiloc:
       fr-BE: Vote par les citoyens
@@ -2369,8 +2369,8 @@ models:
     commenting_enabled: true
     voting_enabled: true
     voting_method: unlimited
-    voting_limited_max: 
-    max_budget: 
+    voting_limited_max:
+    max_budget:
     project_ref: *8
     title_multiloc:
       en: Identification of strategic issues << EXTERNALLY >>
@@ -2380,7 +2380,7 @@ models:
       en-GB: Identification of strategic issues << EXTERNALLY >>
       fr-BE: Identification des enjeux stratégiques << EN EXTERNE >>
       fr-FR: Identification des enjeux stratégiques << EN EXTERNE >>
-      nb-NO: Identifisering av strategiske problemer << EKSTERNT >>
+      nb: Identifisering av strategiske problemer << EKSTERNT >>
       nl-BE: Identificatie van strategische kwesties << EXTERNAL >>
       nl-NL: Identificatie van strategische kwesties << EXTERNAL >>
     description_multiloc:
@@ -2409,7 +2409,7 @@ models:
         concrets et évaluables. Cette phase requiert une discussion entre élus politiques
         et agents administratifs afin de choisir des objectifs faisables et pertinents.
         </p>"
-      nb-NO: "<p> Denne fasen tar sikte på å omdanne kommunepolitikken til konkrete
+      nb: "<p> Denne fasen tar sikte på å omdanne kommunepolitikken til konkrete
         og evaluerbare mål. Denne fasen krever en diskusjon mellom politikere og administrative
         tjenestemenn for å velge mulige og relevante mål. </p>"
       nl-BE: "<p> Deze fase heeft tot doel gemeentelijk beleid te vertalen in concrete
@@ -2426,12 +2426,12 @@ models:
     updated_at: 2018-11-16 14:22:54 UTC
   - presentation_mode: card
     participation_method: information
-    posting_enabled: 
-    commenting_enabled: 
-    voting_enabled: 
-    voting_method: 
-    voting_limited_max: 
-    max_budget: 
+    posting_enabled:
+    commenting_enabled:
+    voting_enabled:
+    voting_method:
+    voting_limited_max:
+    max_budget:
     project_ref: *8
     title_multiloc:
       en: Our cross-cutting strategic agenda for the next six years
@@ -2441,7 +2441,7 @@ models:
       en-GB: Our cross-cutting strategic agenda for the next six years
       fr-BE: Notre programme stratégique transversal pour les six prochaines années
       fr-FR: Notre programme stratégique transversal pour les six prochaines années
-      nb-NO: Vår tverrgående strategiske agenda for de neste seks årene
+      nb: Vår tverrgående strategiske agenda for de neste seks årene
       nl-BE: Onze transversale strategische agenda voor de komende zes jaar
       nl-NL: Onze transversale strategische agenda voor de komende zes jaar
     description_multiloc:
@@ -2470,7 +2470,7 @@ models:
         de présenter notre programme stratégique transversal à l'ensemble de nos partenaires
         et de nos citoyens. Cette partie est consacrée au partage d'informations portant
         sur notre plan d'avenir.</p><p><br></p><p><br></p><p><br></p><p><br></p>"
-      nb-NO: "<p> Etter disse ni måneders refleksjon og medskrivning er det på tide
+      nb: "<p> Etter disse ni måneders refleksjon og medskrivning er det på tide
         å presentere vårt transversale strategiske program til alle våre partnere
         og våre borgere. Denne delen er dedikert til å dele informasjon om vår fremtidige
         plan. </p><p><br></p><p><br></p><p><br></p><p><br></p>"
@@ -2489,12 +2489,12 @@ models:
   - &26
     presentation_mode: card
     participation_method: survey
-    posting_enabled: 
-    commenting_enabled: 
-    voting_enabled: 
-    voting_method: 
-    voting_limited_max: 
-    max_budget: 
+    posting_enabled:
+    commenting_enabled:
+    voting_enabled:
+    voting_method:
+    voting_limited_max:
+    max_budget:
     survey_embed_url: https://citizenlabco.typeform.com/to/asDHLj
     survey_service: typeform
     project_ref: *8
@@ -2506,7 +2506,7 @@ models:
       en-GB: Identification of our values
       fr-BE: Identification de nos valeurs
       fr-FR: Identification de nos valeurs
-      nb-NO: Identifisering av verdiene våre
+      nb: Identifisering av verdiene våre
       nl-BE: Identificatie van onze waarden
       nl-NL: Identificatie van onze waarden
     description_multiloc:
@@ -2523,7 +2523,7 @@ models:
         notre commune.</p>"
       fr-FR: "<p>Cette phase vise à déterminer quelles sont les valeurs qui animent
         notre commune.</p>"
-      nb-NO: "<p> Denne fasen tar sikte på å bestemme hvilke verdier som driver samfunnet
+      nb: "<p> Denne fasen tar sikte på å bestemme hvilke verdier som driver samfunnet
         vårt. </p>"
       nl-BE: "<p> Deze fase is bedoeld om te bepalen welke waarden onze community
         stimuleren. </p>"
@@ -2541,7 +2541,7 @@ models:
     voting_enabled: true
     voting_method: limited
     voting_limited_max: 5
-    max_budget: 
+    max_budget:
     project_ref: *8
     title_multiloc:
       en: Identification of strategic issues << IN INTERNAL >>
@@ -2551,7 +2551,7 @@ models:
       en-GB: Identification of strategic issues << IN INTERNAL >>
       fr-BE: Identification des enjeux stratégiques << EN INTERNE >>
       fr-FR: Identification des enjeux stratégiques << EN INTERNE >>
-      nb-NO: Identifisering av strategiske problemer << I INTERNAL >>
+      nb: Identifisering av strategiske problemer << I INTERNAL >>
       nl-BE: Identificatie van strategische kwesties << IN INTERNE >>
       nl-NL: Identificatie van strategische kwesties << IN INTERNE >>
     description_multiloc:
@@ -2583,7 +2583,7 @@ models:
         et au fonctionnement de l'administration communale. C'est une véritable réflexion
         sur la manière dont les agents de l'administration réalisent leur travail
         au quotidien.</p>"
-      nb-NO: "<p> Denne fasen tar sikte på å definere strategiske mål knyttet til
+      nb: "<p> Denne fasen tar sikte på å definere strategiske mål knyttet til
         den kommunale administrasjonens organisering og funksjon. Det er en reell
         refleksjon på måten administrasjonens agenter innser deres daglige arbeid
         på. </p>"
@@ -2606,7 +2606,7 @@ models:
     voting_enabled: true
     voting_method: unlimited
     voting_limited_max: 10
-    max_budget: 
+    max_budget:
     project_ref: *10
     title_multiloc:
       fr-BE: Le tiers-lieu du Grand Théâtre
@@ -2716,7 +2716,7 @@ models:
     voting_enabled: false
     voting_method: unlimited
     voting_limited_max: 10
-    max_budget: 
+    max_budget:
     project_ref: *10
     title_multiloc:
       fr-BE: La Ville de Verviers vous écoute
@@ -2733,7 +2733,7 @@ models:
     voting_enabled: true
     voting_method: unlimited
     voting_limited_max: 10
-    max_budget: 
+    max_budget:
     project_ref: *10
     title_multiloc:
       fr-BE: Analyse des contributions
@@ -2750,7 +2750,7 @@ models:
     voting_enabled: true
     voting_method: unlimited
     voting_limited_max: 10
-    max_budget: 
+    max_budget:
     project_ref: *9
     title_multiloc:
       fr-BE: Analyse de la phase de vote
@@ -2785,7 +2785,7 @@ models:
     voting_enabled: true
     voting_method: unlimited
     voting_limited_max: 10
-    max_budget: 
+    max_budget:
     project_ref: *9
     title_multiloc:
       fr-BE: Budgétisation des contributions
@@ -2803,7 +2803,7 @@ models:
     voting_enabled: false
     voting_method: limited
     voting_limited_max: 3
-    max_budget: 
+    max_budget:
     project_ref: *9
     title_multiloc:
       en: One month to select the three winning projects to be funded
@@ -2813,7 +2813,7 @@ models:
       en-GB: One month to select the three winning projects to be funded
       fr-BE: Partagez vos idées !
       fr-FR: Un mois pour sélectionner les trois projets lauréats à financer
-      nb-NO: En måned å velge de tre vinnende prosjektene som skal finansieres
+      nb: En måned å velge de tre vinnende prosjektene som skal finansieres
       nl-BE: Een maand om de drie winnende projecten te selecteren die moeten worden
         gefinancierd
       nl-NL: Een maand om de drie winnende projecten te selecteren die moeten worden
@@ -2855,7 +2855,7 @@ models:
         pour sélectionner les projets qui répondent à l'intérêt général. Les trois
         projets sélectionnés seront financés sur le budget d'investissement de la
         ville. </p><p>Le vote est limité à trois. </p>"
-      nb-NO: "<p> Nå som alle prosjektene er satt på plattformen, må vi velge de som
+      nb: "<p> Nå som alle prosjektene er satt på plattformen, må vi velge de som
         må implementeres. Vi regner med at du velger prosjekter som møter allmenn
         interesse. De tre utvalgte prosjektene vil bli finansiert fra byens investeringsbudsjett.
         </p><p> Stemmen er begrenset til tre. </p>"
@@ -2879,8 +2879,8 @@ models:
     commenting_enabled: true
     voting_enabled: true
     voting_method: unlimited
-    voting_limited_max: 
-    max_budget: 
+    voting_limited_max:
+    max_budget:
     project_ref: *9
     title_multiloc:
       en: Deposit of ideas and projects to finance
@@ -2890,7 +2890,7 @@ models:
       en-GB: Deposit of ideas and projects to finance
       fr-BE: C'est quoi un budget participatif ?
       fr-FR: Dépôt d'idées et de projets à financer
-      nb-NO: Innskudd av ideer og prosjekter for å finansiere
+      nb: Innskudd av ideer og prosjekter for å finansiere
       nl-BE: Storten van ideeën en projecten om te financieren
       nl-NL: Storten van ideeën en projecten om te financieren
     description_multiloc:
@@ -2916,7 +2916,7 @@ models:
         class="ql-align-center"><br></p>'
       fr-FR: "<p>Citoyen,  vous avez plus d'un mois pour déposer vos idées auprès
         de la ville.   </p>\n"
-      nb-NO: "<p> Borger, du har mer enn en måned å sende inn dine ideer til byen.
+      nb: "<p> Borger, du har mer enn en måned å sende inn dine ideer til byen.
         </p>"
       nl-BE: "<p> Burger, je hebt meer dan een maand om je ideeën voor te leggen aan
         de stad. </p>"
@@ -2978,7 +2978,7 @@ models:
     password_digest: "$2a$10$x/Z/SyuVR7sU3hZf6ljdAuH0KPxitnQZELNmZkmFXl/sJU4x.PVyW"
     created_at: 2017-12-19 16:54:11 UTC
     updated_at: 2018-01-17 22:49:04 UTC
-    remote_avatar_url: 
+    remote_avatar_url:
     first_name: Mathieu
     last_name: Levoir
     locale: fr-FR
@@ -5358,7 +5358,7 @@ models:
     last_name: Joxe
     locale: fr-FR
     bio_multiloc:
-      fr-BE: 
+      fr-BE:
     cl1_migrated: false
     custom_field_values:
       gender: male
@@ -5541,7 +5541,7 @@ models:
     last_name: Lucas
     locale: fr-FR
     bio_multiloc:
-      fr-BE: 
+      fr-BE:
     cl1_migrated: false
     custom_field_values:
       gender: male
@@ -6984,12 +6984,12 @@ models:
     password_digest: "$2a$10$s/WjdY4ns0N.UkgOliCeBOrxkakScfmTaahCFosymohiAJc8AEqJ6"
     created_at: 2017-12-11 14:31:45 UTC
     updated_at: 2018-07-18 08:29:29 UTC
-    remote_avatar_url: 
+    remote_avatar_url:
     first_name: Khalida
     last_name: Adrienne
     locale: fr-FR
     bio_multiloc:
-      fr-BE: 
+      fr-BE:
     cl1_migrated: false
     custom_field_values:
       gender: female
@@ -8430,7 +8430,7 @@ models:
     last_name: Diana
     locale: fr-FR
     bio_multiloc:
-      fr-BE: 
+      fr-BE:
     cl1_migrated: false
     custom_field_values:
       gender: female
@@ -10000,7 +10000,7 @@ models:
     last_name: Muhsina
     locale: fr-FR
     bio_multiloc:
-      fr-BE: 
+      fr-BE:
     cl1_migrated: false
     custom_field_values:
       gender: male
@@ -10381,7 +10381,7 @@ models:
     last_name: Octave
     locale: fr-FR
     bio_multiloc:
-      fr-BE: 
+      fr-BE:
     cl1_migrated: false
     custom_field_values:
       gender: male
@@ -11266,7 +11266,7 @@ models:
     last_name: Fabrice
     locale: fr-FR
     bio_multiloc:
-      fr-BE: 
+      fr-BE:
     cl1_migrated: false
     custom_field_values:
       gender: male
@@ -12955,7 +12955,7 @@ models:
     last_name: Champion
     locale: fr-FR
     bio_multiloc:
-      fr-BE: 
+      fr-BE:
     cl1_migrated: false
     custom_field_values:
       gender: male
@@ -15142,7 +15142,7 @@ models:
     last_name: Heintje
     locale: fr-FR
     bio_multiloc:
-      fr-BE: 
+      fr-BE:
     cl1_migrated: false
     custom_field_values:
       gender: male
@@ -15215,7 +15215,7 @@ models:
     last_name: Gerd
     locale: fr-FR
     bio_multiloc:
-      fr-BE: 
+      fr-BE:
     cl1_migrated: false
     custom_field_values:
       gender: female
@@ -15471,7 +15471,7 @@ models:
     last_name: Christiaens
     locale: fr-FR
     bio_multiloc:
-      fr-BE: 
+      fr-BE:
     cl1_migrated: false
     custom_field_values:
       gender: male
@@ -17833,7 +17833,7 @@ models:
     last_name: Loane
     locale: fr-FR
     bio_multiloc:
-      fr-BE: 
+      fr-BE:
     cl1_migrated: false
     custom_field_values:
       gender: male
@@ -18762,7 +18762,7 @@ models:
     last_name: Hieronymus
     locale: fr-FR
     bio_multiloc:
-      fr-BE: 
+      fr-BE:
     cl1_migrated: false
     custom_field_values:
       gender: female
@@ -20603,7 +20603,7 @@ models:
     last_name: Ludo
     locale: fr-FR
     bio_multiloc:
-      fr-BE: 
+      fr-BE:
     cl1_migrated: false
     custom_field_values:
       gender: male
@@ -21333,7 +21333,7 @@ models:
     last_name: De Belgique
     locale: fr-FR
     bio_multiloc:
-      fr-BE: 
+      fr-BE:
     cl1_migrated: false
     custom_field_values:
       gender: male
@@ -23034,7 +23034,7 @@ models:
     last_name: Georgina
     locale: fr-FR
     bio_multiloc:
-      fr-BE: 
+      fr-BE:
     cl1_migrated: false
     custom_field_values:
       gender: male
@@ -24132,7 +24132,7 @@ models:
     last_name: Deleuze
     locale: fr-FR
     bio_multiloc:
-      fr-BE: 
+      fr-BE:
     cl1_migrated: false
     custom_field_values:
       gender: male
@@ -25427,7 +25427,7 @@ models:
     last_name: Gabay
     locale: fr-FR
     bio_multiloc:
-      fr-BE: 
+      fr-BE:
     cl1_migrated: false
     custom_field_values:
       gender: male
@@ -25989,7 +25989,7 @@ models:
     last_name: Robert
     locale: fr-FR
     bio_multiloc:
-      fr-BE: 
+      fr-BE:
     cl1_migrated: false
     custom_field_values:
       gender: male
@@ -26753,7 +26753,7 @@ models:
     last_name: Demarest
     locale: fr-FR
     bio_multiloc:
-      fr-BE: 
+      fr-BE:
     cl1_migrated: false
     custom_field_values:
       gender: male
@@ -29339,7 +29339,7 @@ models:
     password_digest: "$2a$10$Y.4EKnqAl/bp1WYlDKGsX.3p1a6xqBdAxLxNb/0rw3gmG6nQR69N2"
     created_at: 2018-04-30 11:24:45 UTC
     updated_at: 2018-07-18 08:29:28 UTC
-    remote_avatar_url: 
+    remote_avatar_url:
     first_name: Joost
     last_name: Vandenbroele
     locale: fr-FR
@@ -30507,7 +30507,7 @@ models:
     last_name: Bénédicte
     locale: fr-FR
     bio_multiloc:
-      fr-BE: 
+      fr-BE:
     cl1_migrated: false
     custom_field_values:
       gender: female
@@ -31886,7 +31886,7 @@ models:
     last_name: Kaidi
     locale: fr-FR
     bio_multiloc:
-      fr-BE: 
+      fr-BE:
     cl1_migrated: false
     custom_field_values:
       gender: female
@@ -32023,7 +32023,7 @@ models:
     last_name: Esmé
     locale: fr-FR
     bio_multiloc:
-      fr-BE: 
+      fr-BE:
     cl1_migrated: false
     custom_field_values:
       gender: female
@@ -32760,7 +32760,7 @@ models:
     last_name: Levoir
     locale: fr-FR
     bio_multiloc:
-      fr-BE: 
+      fr-BE:
     cl1_migrated: false
     custom_field_values:
       gender: male
@@ -33376,12 +33376,12 @@ models:
     password_digest: "$2a$10$S3MTHklYRBJsS3EgGEwTfuBNAx0oS8OvXTTnT8tHE1s6mp0Hbz99m"
     created_at: 2017-12-11 14:31:51 UTC
     updated_at: 2018-07-18 08:29:28 UTC
-    remote_avatar_url: 
+    remote_avatar_url:
     first_name: Bartholomeus
     last_name: Mailys
     locale: fr-FR
     bio_multiloc:
-      fr-BE: 
+      fr-BE:
     cl1_migrated: false
     custom_field_values:
       gender: male
@@ -34057,7 +34057,7 @@ models:
     last_name: Weil
     locale: fr-FR
     bio_multiloc:
-      fr-BE: 
+      fr-BE:
     cl1_migrated: false
     custom_field_values:
       gender: female
@@ -34101,7 +34101,7 @@ models:
     last_name: Gabay
     locale: fr-FR
     bio_multiloc:
-      fr-BE: 
+      fr-BE:
     cl1_migrated: false
     custom_field_values:
       gender: male
@@ -34776,7 +34776,7 @@ models:
     last_name: Modestine
     locale: fr-FR
     bio_multiloc:
-      fr-BE: 
+      fr-BE:
     cl1_migrated: false
     custom_field_values:
       gender: male
@@ -36178,7 +36178,7 @@ models:
     last_name: Yvette
     locale: fr-FR
     bio_multiloc:
-      fr-BE: 
+      fr-BE:
     cl1_migrated: false
     custom_field_values:
       gender: female
@@ -36401,7 +36401,7 @@ models:
     last_name: Katelijne
     locale: fr-FR
     bio_multiloc:
-      fr-BE: 
+      fr-BE:
     cl1_migrated: false
     custom_field_values:
       gender: male
@@ -37191,7 +37191,7 @@ models:
     last_name: Didier
     locale: fr-FR
     bio_multiloc:
-      fr-BE: 
+      fr-BE:
     cl1_migrated: false
     custom_field_values:
       gender: male
@@ -39731,7 +39731,7 @@ models:
     last_name: Martin
     locale: fr-FR
     bio_multiloc:
-      fr-BE: 
+      fr-BE:
     cl1_migrated: false
     custom_field_values:
       gender: male
@@ -40993,7 +40993,7 @@ models:
     password_digest: "$2a$10$ssBRfj.kbX6nxfGL62mhC.KFEaD119xqXm3zRSKsoTZxFyJqbQ7oW"
     created_at: 2018-03-26 15:57:05 UTC
     updated_at: 2018-03-26 15:57:05 UTC
-    remote_avatar_url: 
+    remote_avatar_url:
     first_name: fdqds
     last_name: fdq
     locale: fr-FR
@@ -44745,7 +44745,7 @@ models:
     last_name: Grinnaert
     locale: fr-FR
     bio_multiloc:
-      fr-BE: 
+      fr-BE:
     cl1_migrated: false
     custom_field_values:
       gender: male
@@ -45259,7 +45259,7 @@ models:
     last_name: Chaput
     locale: fr-FR
     bio_multiloc:
-      fr-BE: 
+      fr-BE:
     cl1_migrated: false
     custom_field_values:
       gender: male
@@ -45702,7 +45702,7 @@ models:
     password_digest: "$2a$10$44u3QRvDI6H1UxUSzBqI7.zKzTmHSI4AMFmCy7xkdGrmspAuL34jm"
     created_at: 2018-02-08 11:36:13 UTC
     updated_at: 2018-02-08 11:36:13 UTC
-    remote_avatar_url: 
+    remote_avatar_url:
     first_name: Wietse
     last_name: Van Ransbeeck
     locale: fr-FR
@@ -48223,12 +48223,12 @@ models:
     password_digest: "$2a$10$BW/H/5TIaxAzVPlBlnJ61uVJk1/GD9ljL6.m.NtVRPIDX.E3eZeNq"
     created_at: 2017-12-11 14:31:28 UTC
     updated_at: 2018-02-06 10:21:36 UTC
-    remote_avatar_url: 
+    remote_avatar_url:
     first_name: Jamie
     last_name: Oliver
     locale: fr-FR
     bio_multiloc:
-      fr-BE: 
+      fr-BE:
     cl1_migrated: false
     custom_field_values:
       gender: male
@@ -48466,7 +48466,7 @@ models:
     last_name: Rémy
     locale: fr-FR
     bio_multiloc:
-      fr-BE: 
+      fr-BE:
     cl1_migrated: false
     custom_field_values:
       gender: female
@@ -48525,7 +48525,7 @@ models:
     last_name: Skywalker
     locale: fr-FR
     bio_multiloc:
-      fr-BE: 
+      fr-BE:
     cl1_migrated: false
     custom_field_values:
       gender: female
@@ -48687,7 +48687,7 @@ models:
     last_name: Maël
     locale: fr-FR
     bio_multiloc:
-      fr-BE: 
+      fr-BE:
     cl1_migrated: false
     custom_field_values:
       gender: female
@@ -48832,7 +48832,7 @@ models:
     last_name: Lafolle
     locale: fr-FR
     bio_multiloc:
-      fr-BE: 
+      fr-BE:
     cl1_migrated: false
     custom_field_values:
       gender: male
@@ -48890,7 +48890,7 @@ models:
     last_name: Zacharie
     locale: fr-FR
     bio_multiloc:
-      fr-BE: 
+      fr-BE:
     cl1_migrated: false
     custom_field_values:
       gender: male
@@ -54232,7 +54232,7 @@ models:
       en-GB: Cycling day
       fr-BE: Fête du vélo
       fr-FR: Fête du vélo
-      nb-NO: Syklingsdag
+      nb: Syklingsdag
       nl-BE: Fietsdag
       nl-NL: Fietsdag
     description_multiloc:
@@ -54257,7 +54257,7 @@ models:
       fr-FR: "<p>Venez fêter avec nous la grand fête annuelle du vélo en ville! Tout
         véhicule est accepté à condition qu'il roule sans émettre la moindre pollution.
         </p>\n"
-      nb-NO: "<p> Kom feire med oss ​​den store årlige sykkelfestivalen i byen! Et
+      nb: "<p> Kom feire med oss ​​den store årlige sykkelfestivalen i byen! Et
         hvilket som helst kjøretøy er akseptert, forutsatt at det ruller uten å gi
         den minste forurensningen. </p>"
       nl-BE: "<p> Kom met ons vieren het grote jaarlijkse fietsfestival in de stad!
@@ -54276,7 +54276,7 @@ models:
       fr-FR: Grand Place
       de-DE: Grand Place
       da-DK: Grand Place
-      nb-NO: Grand Place
+      nb: Grand Place
     start_at: 2017-12-09 00:00:00 UTC
     end_at: 2017-12-10 00:00:00 UTC
     created_at: 2017-12-11 14:32:37 UTC
@@ -54290,7 +54290,7 @@ models:
       en-GB: 'Public Meeting Mobility # 1'
       fr-BE: 'Réunion Publique Mobilité #1'
       fr-FR: 'Réunion Publique Mobilité #1'
-      nb-NO: 'Mobilitet for offentlig møte # 1'
+      nb: 'Mobilitet for offentlig møte # 1'
       nl-BE: 'Public Meeting Mobility # 1'
       nl-NL: 'Public Meeting Mobility # 1'
     description_multiloc:
@@ -54468,7 +54468,7 @@ models:
         Beausoleil. De même, un maillage plus continu et structuré des pistes cyclables
         est en projet.</p><p>Vendredi 15 novembre, à 18 h 00, en mairie, réunion publique.
         L''enjeu : rendre lisible la circulation routière de Saint-Avé.</p>'
-      nb-NO: '<p><img src="https://res.cloudinary.com/citizenlabco/image/upload/v1548847594/image_v8imrf.png"></p><p>
+      nb: '<p><img src="https://res.cloudinary.com/citizenlabco/image/upload/v1548847594/image_v8imrf.png"></p><p>
         For å presentere problemene i PMU (Urban Mobility Plan), vil det bli avholdt
         et offentlig møte fredag ​​15. november klokka 18:00 i rådhuset. </p><p> <strong>"Denne
         planen er viktig for samfunnet når det gjelder reiser i årene som kommer,"</strong>
@@ -54554,7 +54554,7 @@ models:
       fr-FR: Place de la maison communale
       de-DE: Platz des Gemeinschaftshauses
       da-DK: Firkantet i det fælles hus
-      nb-NO: Firkantet i felleshuset
+      nb: Firkantet i felleshuset
     start_at: 2018-11-15 17:00:00 UTC
     end_at: 2018-11-15 20:00:00 UTC
     created_at: 2018-10-23 13:47:16 UTC
@@ -54568,7 +54568,7 @@ models:
       en-GB: Official evening presentation of participatory budget projects
       fr-BE: Soirée officielle de présentation des projets du budget participatif
       fr-FR: Soirée officielle de présentation des projets du budget participatif
-      nb-NO: Offisiell kvelds presentasjon av deltakende budsjettprosjekter
+      nb: Offisiell kvelds presentasjon av deltakende budsjettprosjekter
       nl-BE: Officiële avondpresentatie van participatieve budgetprojecten
       nl-NL: Officiële avondpresentatie van participatieve budgetprojecten
     description_multiloc:
@@ -54600,7 +54600,7 @@ models:
         participé au budget participatif auront l'occasion de présenter leur projets
         auprès des citoyens. Leurs contributions seront ajoutées sur le site pour
         ceux qui ne pourront pas être présents.  </p>\n"
-      nb-NO: "<p> I løpet av kvelden vil de ulike borgere og foreninger som deltar
+      nb: "<p> I løpet av kvelden vil de ulike borgere og foreninger som deltar
         i deltakelsesbudsjettet, få muligheten til å presentere sine prosjekter til
         borgerne. Deres bidrag vil bli lagt til nettstedet for de som ikke vil kunne
         delta. </p>"
@@ -54622,7 +54622,7 @@ models:
       fr-FR: Mairie de la commune
       de-DE: Rathaus
       da-DK: Rådhuset
-      nb-NO: Rådhus
+      nb: Rådhus
     start_at: 2018-07-21 17:00:00 UTC
     end_at: 2018-07-21 18:00:00 UTC
     created_at: 2017-12-13 08:43:55 UTC
@@ -54636,7 +54636,7 @@ models:
       en-GB: Presentation of the process
       fr-BE: Présentation du processus
       fr-FR: Présentation du processus
-      nb-NO: Presentasjon av prosessen
+      nb: Presentasjon av prosessen
       nl-BE: Presentatie van het proces
       nl-NL: Presentatie van het proces
     description_multiloc:
@@ -54654,7 +54654,7 @@ models:
         phases de son élaboration </p>"
       fr-FR: "<p>Présentation du programme stratégique transversale et des différentes
         phases de son élaboration </p>"
-      nb-NO: "<p> Presentasjon av det transversale strategiske programmet og de ulike
+      nb: "<p> Presentasjon av det transversale strategiske programmet og de ulike
         fasene i utarbeidelsen </p>"
       nl-BE: "<p> Presentatie van het transversale strategische programma en de verschillende
         fasen van de uitwerking ervan </p>"
@@ -54670,7 +54670,7 @@ models:
       fr-FR: ''
       de-DE: ''
       da-DK: ''
-      nb-NO: ''
+      nb: ''
     start_at: 2018-11-05 15:00:00 UTC
     end_at: 2018-11-05 16:00:00 UTC
     created_at: 2018-10-23 14:19:04 UTC
@@ -54684,7 +54684,7 @@ models:
       en-GB: Team Lunch
       fr-BE: Team Lunch
       fr-FR: Team Lunch
-      nb-NO: Team lunsj
+      nb: Team lunsj
       nl-BE: Teamlunch
       nl-NL: Teamlunch
     description_multiloc:
@@ -54696,7 +54696,7 @@ models:
       en-GB: "<p> This lunch is an opportunity to discuss our beautiful town </p>"
       fr-BE: "<p>Ce lunch est l'occasion de discuter de notre jolie commune </p>"
       fr-FR: "<p>Ce lunch est l'occasion de discuter de notre jolie commune </p>"
-      nb-NO: "<p> Denne lunsj er en mulighet til å diskutere vår vakre by </p>"
+      nb: "<p> Denne lunsj er en mulighet til å diskutere vår vakre by </p>"
       nl-BE: "<p> Deze lunch is een gelegenheid om onze mooie stad te bespreken </p>"
       nl-NL: "<p> Deze lunch is een gelegenheid om onze mooie stad te bespreken </p>"
     location_multiloc:
@@ -54709,7 +54709,7 @@ models:
       fr-FR: ''
       de-DE: ''
       da-DK: ''
-      nb-NO: ''
+      nb: ''
     start_at: 2018-11-19 11:00:00 UTC
     end_at: 2018-11-19 12:00:00 UTC
     created_at: 2018-10-23 14:21:06 UTC
@@ -54723,7 +54723,7 @@ models:
       en-GB: Our communication strategy
       fr-BE: Notre stratégie de communication
       fr-FR: Notre stratégie de communication
-      nb-NO: Vår kommunikasjonsstrategi
+      nb: Vår kommunikasjonsstrategi
       nl-BE: Onze communicatiestrategie
       nl-NL: Onze communicatiestrategie
     description_multiloc:
@@ -54741,7 +54741,7 @@ models:
         programme stratégique transversal.</p>"
       fr-FR: "<p>L'équipe com' présentera la stratégie de communication propre au
         programme stratégique transversal.</p>"
-      nb-NO: "<p> Teamet presenterer kommunikasjonsstrategien som er spesifikk for
+      nb: "<p> Teamet presenterer kommunikasjonsstrategien som er spesifikk for
         det transversale strategiske programmet. </p>"
       nl-BE: "<p> Het team zal de communicatiestrategie specifiek voor het transversale
         strategische programma presenteren. </p>"
@@ -55273,7 +55273,7 @@ models:
     slug: terms-and-conditions
     created_at: 2018-03-18 20:39:40 UTC
     updated_at: 2018-03-18 20:39:40 UTC
-    project_ref: 
+    project_ref:
     publication_status: published
   - title_multiloc:
       en: cookie-policy
@@ -55283,7 +55283,7 @@ models:
     slug: cookie-policy
     created_at: 2018-03-18 20:39:49 UTC
     updated_at: 2018-03-18 20:39:49 UTC
-    project_ref: 
+    project_ref:
     publication_status: published
   - title_multiloc:
       fr-BE: CitizenLab vous accompagne dans votre démarche de démocratie participative
@@ -55306,7 +55306,7 @@ models:
     slug: information
     created_at: 2018-03-18 20:39:08 UTC
     updated_at: 2018-10-26 09:30:17 UTC
-    project_ref: 
+    project_ref:
     publication_status: published
   page_link: []
   page_file: []
@@ -55381,7 +55381,7 @@ models:
       en-GB: Reinforce the reception of companies by creating coworking spaces
       fr-BE: Renforcer l'accueil des entreprises en créant des espaces de coworking
       fr-FR: Renforcer l'accueil des entreprises en créant des espaces de coworking
-      nb-NO: Forbedre mottak av bedrifter ved å skape coworking mellomrom
+      nb: Forbedre mottak av bedrifter ved å skape coworking mellomrom
       nl-BE: Versterk de ontvangst van bedrijven door co-working spaces te creëren
       nl-NL: Versterk de ontvangst van bedrijven door co-working spaces te creëren
     body_multiloc:
@@ -55406,7 +55406,7 @@ models:
       fr-FR: "<p>Il serait intéressant d'utiliser les lieux inoccupés pour les transformer
         en espaces de coworking. Nous pourrions ainsi utiliser les anciens locaux
         de la poste ou de la gare pour accueillir des start-up. </p>"
-      nb-NO: "<p> Det ville være interessant å bruke de ledige stedene for å gjøre
+      nb: "<p> Det ville være interessant å bruke de ledige stedene for å gjøre
         dem til coworking mellomrom. Vi kunne bruke de gamle lokaler på postkontoret
         eller stasjonen til å være vert for oppstart. </p>"
       nl-BE: "<p> Het zou interessant zijn om de onbezette plaatsen om te zetten in
@@ -55421,10 +55421,10 @@ models:
     author_ref: *54
     created_at: 2018-10-24 09:42:36 UTC
     updated_at: 2019-01-25 10:53:07 UTC
-    location_point_geojson: 
-    location_description: 
+    location_point_geojson:
+    location_description:
     idea_status_ref: *55
-    budget: 
+    budget:
   - &90
     title_multiloc:
       en: Hole in the pavement
@@ -55434,7 +55434,7 @@ models:
       en-GB: Hole in the pavement
       fr-BE: Trou dans la chaussée
       fr-FR: Trou dans la chaussée
-      nb-NO: Hul i fortauet
+      nb: Hul i fortauet
       nl-BE: Gat in de stoep
       nl-NL: Gat in de stoep
     body_multiloc:
@@ -55445,7 +55445,7 @@ models:
       en-GB: "<p> to repair as soon as possible! </p>"
       fr-BE: "<p>à réparer au plus vite !</p>"
       fr-FR: "<p>à réparer au plus vite !</p>"
-      nb-NO: "<p> å reparere så snart som mulig! </p>"
+      nb: "<p> å reparere så snart som mulig! </p>"
       nl-BE: "<p> zo snel mogelijk repareren! </p>"
       nl-NL: "<p> zo snel mogelijk repareren! </p>"
     publication_status: published
@@ -55461,7 +55461,7 @@ models:
       - 48.955882
     location_description: Batiment B, 93600 Aulnay-sous-Bois, France
     idea_status_ref: *56
-    budget: 
+    budget:
   - &105
     title_multiloc:
       en: Creating an interactive calendar
@@ -55471,7 +55471,7 @@ models:
       en-GB: Creating an interactive calendar
       fr-BE: Création d'un calendrier interactif
       fr-FR: Création d'un calendrier interactif
-      nb-NO: Opprette en interaktiv kalender
+      nb: Opprette en interaktiv kalender
       nl-BE: Een interactieve kalender maken
       nl-NL: Een interactieve kalender maken
     body_multiloc:
@@ -55503,7 +55503,7 @@ models:
         l'organisation de réunions, il serait intéressant de recourir à un calendrier
         interactif. Il permettrait de voir les réunions et les activités professionnelles
         déjà planifiées par chacun.</p>"
-      nb-NO: "<p> For å forbedre intern kommunikasjon og legge til rette for organisering
+      nb: "<p> For å forbedre intern kommunikasjon og legge til rette for organisering
         av møter, ville det være interessant å bruke en interaktiv kalender. Det vil
         tillate å se møtene og de faglige aktivitetene som allerede er planlagt av
         hverandre. </p>"
@@ -55521,10 +55521,10 @@ models:
     author_ref: *54
     created_at: 2018-10-23 15:04:54 UTC
     updated_at: 2019-01-25 10:53:07 UTC
-    location_point_geojson: 
-    location_description: 
+    location_point_geojson:
+    location_description:
     idea_status_ref: *55
-    budget: 
+    budget:
   - &104
     title_multiloc:
       en: Develop a natural management of green spaces
@@ -55534,7 +55534,7 @@ models:
       en-GB: Develop a natural management of green spaces
       fr-BE: Développer une gestion naturelle des espaces verts
       fr-FR: Développer une gestion naturelle des espaces verts
-      nb-NO: Utvikle en naturlig forvaltning av grønne områder
+      nb: Utvikle en naturlig forvaltning av grønne områder
       nl-BE: Ontwikkel een natuurlijk beheer van groene ruimten
       nl-NL: Ontwikkel een natuurlijk beheer van groene ruimten
     body_multiloc:
@@ -55569,7 +55569,7 @@ models:
         profit de techniques alternatives. Nous pourrions également réintroduire des
         insectes et de petits animaux vivants à l'état sauvage pour favoriser un éco-système
         sain.</p>"
-      nb-NO: "<p> For å bevare naturen og forbedre de grønne områdene i vår kommune,
+      nb: "<p> For å bevare naturen og forbedre de grønne områdene i vår kommune,
         kan målet vårt være å redusere bruken av plantevernmidler til fordel for alternative
         teknikker. Vi kunne også gjeninnføre insekter og små levende dyr i naturen
         for å fremme et sunt økosystem. </p>"
@@ -55589,10 +55589,10 @@ models:
     author_ref: *54
     created_at: 2018-10-24 09:33:54 UTC
     updated_at: 2019-01-25 10:53:07 UTC
-    location_point_geojson: 
-    location_description: 
+    location_point_geojson:
+    location_description:
     idea_status_ref: *55
-    budget: 
+    budget:
   - &91
     title_multiloc:
       en: Remove bulky items in my street
@@ -55602,7 +55602,7 @@ models:
       en-GB: Remove bulky items in my street
       fr-BE: Retirer des encombrants dans ma rue
       fr-FR: Retirer des encombrants dans ma rue
-      nb-NO: Fjern store deler i gaten min
+      nb: Fjern store deler i gaten min
       nl-BE: Verwijder grote voorwerpen in mijn straat
       nl-NL: Verwijder grote voorwerpen in mijn straat
     body_multiloc:
@@ -55620,7 +55620,7 @@ models:
         les ramasser dans les meilleurs délais ?</p>"
       fr-FR: "<p>Il y a des encombrants dans ma rue depuis deux jours, pourriez-vous
         les ramasser dans les meilleurs délais ?</p>"
-      nb-NO: "<p> Det er store i gaten min i to dager, kan du plukke dem opp så snart
+      nb: "<p> Det er store i gaten min i to dager, kan du plukke dem opp så snart
         som mulig? </p>"
       nl-BE: "<p> Er zijn twee dagen volumineus in mijn straat, kun je ze zo snel
         mogelijk ophalen? </p>"
@@ -55639,7 +55639,7 @@ models:
       - 48.9254913
     location_description: Rue d'Alésia, Aulnay-sous-Bois, France
     idea_status_ref: *56
-    budget: 
+    budget:
   - &92
     title_multiloc:
       en: Remove the trash
@@ -55649,7 +55649,7 @@ models:
       en-GB: Remove the trash
       fr-BE: Retirer les poubelles
       fr-FR: Retirer les poubelles
-      nb-NO: Fjern søppel
+      nb: Fjern søppel
       nl-BE: Verwijder de prullenbak
       nl-NL: Verwijder de prullenbak
     body_multiloc:
@@ -55660,7 +55660,7 @@ models:
       en-GB: "<p> Garbage cans in the central street! </p><p><br></p>"
       fr-BE: "<p>Poubelles dans la rue centrale ! </p><p><br></p>"
       fr-FR: "<p>Poubelles dans la rue centrale ! </p><p><br></p>"
-      nb-NO: "<p> Søppelbokser i den sentrale gaten! </p><p><br></p>"
+      nb: "<p> Søppelbokser i den sentrale gaten! </p><p><br></p>"
       nl-BE: "<p> Vuilnisbakken in de centrale straat! </p><p><br></p>"
       nl-NL: "<p> Vuilnisbakken in de centrale straat! </p><p><br></p>"
     publication_status: published
@@ -55676,7 +55676,7 @@ models:
       - 48.9508081
     location_description: 51 Rue de Bigorre, 93600 Aulnay-sous-Bois, France
     idea_status_ref: *56
-    budget: 
+    budget:
   - &86
     title_multiloc:
       en: Install more street furniture to rest and read in the heart of
@@ -55688,7 +55688,7 @@ models:
         coeur de
       fr-FR: Installer davantage de mobilier urbain pour se reposer et bouquiner au
         coeur de
-      nb-NO: Installer flere gate møbler for å hvile og lese i hjertet av
+      nb: Installer flere gate møbler for å hvile og lese i hjertet av
       nl-BE: Installeer meer straatmeubilair om uit te rusten en te lezen in het hart
         van
       nl-NL: Installeer meer straatmeubilair om uit te rusten en te lezen in het hart
@@ -55715,7 +55715,7 @@ models:
       fr-FR: "<p>Le coeur de ville ne me semble pas assez accueillant pour y passer
         du temps. Lorsqu'il fait beau, il faudrait prévoir un espace ombragé afin
         de pouvoir bouquiner tranquillement! </p>\n"
-      nb-NO: "<p> Hjertet av byen virker ikke innbydende nok til å tilbringe tid der.
+      nb: "<p> Hjertet av byen virker ikke innbydende nok til å tilbringe tid der.
         Når været er fint, bør det være et skyggelagt område for å lese stille! </p>"
       nl-BE: "<p> Het hart van de stad lijkt niet gastvrij genoeg om daar tijd door
         te brengen. Als het mooi weer is, moet er een schaduwrijk gebied zijn om rustig
@@ -55736,7 +55736,7 @@ models:
       - 45.6209912
     location_description: Place du Triforium, L'Isle-d'Abeau, Frankrijk
     idea_status_ref: *56
-    budget: 
+    budget:
   - &87
     title_multiloc:
       en: Rent bicycles with ferry at the front
@@ -55746,7 +55746,7 @@ models:
       en-GB: Rent bicycles with ferry at the front
       fr-BE: Louer des vélos avec bac à l'avant
       fr-FR: Louer des vélos avec bac à l'avant
-      nb-NO: Lei sykler med ferge på forsiden
+      nb: Lei sykler med ferge på forsiden
       nl-BE: Huur fietsen met veerboot aan de voorkant
       nl-NL: Huur fietsen met veerboot aan de voorkant
     body_multiloc:
@@ -55757,7 +55757,7 @@ models:
       en-GB: "<p> We must change the mobility at l'Isle D'abeau ... </p>"
       fr-BE: "<p>Il faut changer la mobilité à l'Isle D'abeau... </p>\n"
       fr-FR: "<p>Il faut changer la mobilité à l'Isle D'abeau... </p>\n"
-      nb-NO: "<p> Vi må endre mobiliteten på l'Isle D'abeau ... </p>"
+      nb: "<p> Vi må endre mobiliteten på l'Isle D'abeau ... </p>"
       nl-BE: "<p> We moeten de mobiliteit op l'Isle D'abeau veranderen ... </p>"
       nl-NL: "<p> We moeten de mobiliteit op l'Isle D'abeau veranderen ... </p>"
     publication_status: published
@@ -55773,7 +55773,7 @@ models:
       - 45.623157
     location_description: L'Isle-d'Abeau, Frankrijk
     idea_status_ref: *56
-    budget: 
+    budget:
   - &107
     title_multiloc:
       en: A municipal administration in ecological transition
@@ -55783,7 +55783,7 @@ models:
       en-GB: A municipal administration in ecological transition
       fr-BE: Une administration communale en transition écologique
       fr-FR: Une administration communale en transition écologique
-      nb-NO: En kommunal administrasjon i økologisk overgang
+      nb: En kommunal administrasjon i økologisk overgang
       nl-BE: Een gemeentebestuur in ecologische transitie
       nl-NL: Een gemeentebestuur in ecologische transitie
     body_multiloc:
@@ -55843,7 +55843,7 @@ models:
         <li>en privilégiant le télétravail </li>
         <li>en encourageant l'utilisation de gourdes </li>
         </ul>
-      nb-NO: |-
+      nb: |-
         <p> Jeg ville være veldig glad hvis vår kommunale administrasjon reduserer sitt miljøavtrykk </p><ul>
         <li> begrenser utskrift av dokumenter </li>
         <li> bruker resirkulert papir </li>
@@ -55873,10 +55873,10 @@ models:
     author_ref: *54
     created_at: 2018-10-24 09:22:01 UTC
     updated_at: 2019-01-25 10:53:07 UTC
-    location_point_geojson: 
-    location_description: 
+    location_point_geojson:
+    location_description:
     idea_status_ref: *55
-    budget: 
+    budget:
   - &106
     title_multiloc:
       en: Organize team building activities with CPAS agents
@@ -55886,7 +55886,7 @@ models:
       en-GB: Organize team building activities with CPAS agents
       fr-BE: Organiser des activités de team building avec les agents du CPAS
       fr-FR: Organiser des activités de team building avec les agents du CPAS
-      nb-NO: Organiser teambygging med CPAS-agenter
+      nb: Organiser teambygging med CPAS-agenter
       nl-BE: Organiseer teambuildingactiviteiten met OCMW-agenten
       nl-NL: Organiseer teambuildingactiviteiten met OCMW-agenten
     body_multiloc:
@@ -55918,7 +55918,7 @@ models:
         il serait intéressant d'organiser des activités de team building. Nous pourrions
         ainsi organiser des activités avec les agents du CPAS ou les policiers de
         la zone communale.</p>"
-      nb-NO: "<p> For å fremme en synergi mellom felles offentlige institusjoner,
+      nb: "<p> For å fremme en synergi mellom felles offentlige institusjoner,
         ville det være interessant å organisere teambyggingsaktiviteter. Vi kunne
         dermed organisere aktiviteter med agenter fra CPAS eller politimenn i fellesområdet.
         </p>"
@@ -55936,10 +55936,10 @@ models:
     author_ref: *54
     created_at: 2018-10-23 15:39:57 UTC
     updated_at: 2019-01-25 10:53:07 UTC
-    location_point_geojson: 
-    location_description: 
+    location_point_geojson:
+    location_description:
     idea_status_ref: *55
-    budget: 
+    budget:
   - &78
     title_multiloc:
       fr-BE: Mobilier végétal
@@ -55973,8 +55973,8 @@ models:
     author_ref: *16
     created_at: 2018-12-09 15:53:39 UTC
     updated_at: 2019-01-25 10:53:06 UTC
-    location_point_geojson: 
-    location_description: 
+    location_point_geojson:
+    location_description:
     idea_status_ref: *55
     budget: 500
   - &109
@@ -55986,7 +55986,7 @@ models:
       en-GB: "<< Project 1 >> A pond in the heart of the Green Leaf Park"
       fr-BE: 'Projet 1 : Un tiers lieu convivial'
       fr-FR: "<< Projet 1 >> Un étang au coeur du parc La Feuille Verte"
-      nb-NO: "<< Prosjekt 1 >> En dam i hjertet av Green Leaf Park"
+      nb: "<< Prosjekt 1 >> En dam i hjertet av Green Leaf Park"
       nl-BE: "<< Project 1 >> Een vijver in het hart van het Green Leaf Park"
       nl-NL: "<< Project 1 >> Een vijver in het hart van het Green Leaf Park"
     body_multiloc:
@@ -56017,7 +56017,7 @@ models:
         auront également pour objectif de renforcer la végétation et de réorganiser
         les chemins de promenade. Des aménagements urbains dédiés à la détente pourront
         être installés à proximité de l'étang.</p>"
-      nb-NO: "<p> Parken kan redesignes rundt en sentral dam. Fisk og små dyr kan
+      nb: "<p> Parken kan redesignes rundt en sentral dam. Fisk og små dyr kan
         legges til denne vannet. Arbeidet vil også sikte på å styrke vegetasjonen
         og omorganisere turstier. Byutviklinger dedikert til avslapning kan installeres
         i nærheten av dammen. </p>"
@@ -56037,10 +56037,10 @@ models:
     author_ref: *54
     created_at: 2018-10-24 13:55:26 UTC
     updated_at: 2019-01-25 10:53:07 UTC
-    location_point_geojson: 
-    location_description: 
+    location_point_geojson:
+    location_description:
     idea_status_ref: *55
-    budget: 
+    budget:
   - &110
     title_multiloc:
       en: "<< Project 2 >> A music kiosk for an animated park"
@@ -56050,7 +56050,7 @@ models:
       en-GB: "<< Project 2 >> A music kiosk for an animated park"
       fr-BE: 'Projet 2 : Un marché couvert'
       fr-FR: "<< Projet 2 >> Un kiosk à musique pour un parc animé"
-      nb-NO: "<< Prosjekt 2 >> En musikkkiosk for en animert park"
+      nb: "<< Prosjekt 2 >> En musikkkiosk for en animert park"
       nl-BE: "<< Project 2 >> Een muziekkiosk voor een geanimeerd park"
       nl-NL: "<< Project 2 >> Een muziekkiosk voor een geanimeerd park"
     body_multiloc:
@@ -56073,7 +56073,7 @@ models:
       fr-FR: "<p>L'idée serait de construire un kiosk en bois au centre du parc. Il
         serait un lieu de détente et de rencontres à l'abri du soleil ou des intempéries.
         Il accueillerait également toutes sortes d'animations.</p>"
-      nb-NO: "<p> Ideen ville være å bygge en trekiosk i sentrum av parken. Det ville
+      nb: "<p> Ideen ville være å bygge en trekiosk i sentrum av parken. Det ville
         være et sted for avslapning og møter vekk fra sol eller dårlig vær. Det vil
         også glede seg over all slags underholdning. </p>"
       nl-BE: "<p> Het idee zou zijn om een ​​houten kiosk te bouwen in het midden
@@ -56090,10 +56090,10 @@ models:
     author_ref: *54
     created_at: 2018-10-24 13:53:44 UTC
     updated_at: 2019-01-25 10:53:07 UTC
-    location_point_geojson: 
-    location_description: 
+    location_point_geojson:
+    location_description:
     idea_status_ref: *55
-    budget: 
+    budget:
   - &79
     title_multiloc:
       en: Create meeting areas
@@ -56103,7 +56103,7 @@ models:
       en-GB: Create meeting areas
       fr-BE: Créer des zones de rencontre
       fr-FR: Créer des zones de rencontre
-      nb-NO: Opprett møterom
+      nb: Opprett møterom
       nl-BE: Maak ontmoetingsgebieden
       nl-NL: Maak ontmoetingsgebieden
     body_multiloc:
@@ -56135,7 +56135,7 @@ models:
         les moments de conviliaité que l'on pourrait créer au centre du village grâce
         à des installations urbaines : pots de fleurs, bancs, tables ou terrains de
         jeux. </p>"
-      nb-NO: "<p> Vår by gir stolthet til de motoriserte kjøretøyene og forlater øyeblikkene
+      nb: "<p> Vår by gir stolthet til de motoriserte kjøretøyene og forlater øyeblikkene
         av samvittighet som man kunne skape i sentrum av landsbyen takket være urbane
         fasiliteter: potter av blomster, benker, bord eller lekeplasser. </p>"
       nl-BE: "<p> Onze stad geeft de gemotoriseerde voertuigen de boventoon en verlaat
@@ -56152,10 +56152,10 @@ models:
     author_ref: *54
     created_at: 2018-03-15 21:53:44 UTC
     updated_at: 2018-11-16 14:22:54 UTC
-    location_point_geojson: 
-    location_description: 
+    location_point_geojson:
+    location_description:
     idea_status_ref: *56
-    budget: 
+    budget:
   - &77
     title_multiloc:
       fr-BE: Les pianos de villages
@@ -56173,8 +56173,8 @@ models:
     author_ref: *16
     created_at: 2018-12-10 17:01:14 UTC
     updated_at: 2019-01-25 10:53:06 UTC
-    location_point_geojson: 
-    location_description: 
+    location_point_geojson:
+    location_description:
     idea_status_ref: *55
     budget: 1000
   - &81
@@ -56186,7 +56186,7 @@ models:
       en-GB: Pedestrians accessible to the PMR
       fr-BE: Des piétonniers accessibles aux PMR
       fr-FR: Des piétonniers accessibles aux PMR
-      nb-NO: Fotgjengere tilgjengelig for PMR
+      nb: Fotgjengere tilgjengelig for PMR
       nl-BE: Voetgangers toegankelijk voor de PMR
       nl-NL: Voetgangers toegankelijk voor de PMR
     body_multiloc:
@@ -56272,7 +56272,7 @@ models:
         <p>Le quai Saint Léonard sera équipé via les travaux liés au tram. </p>
 
         <p>La partie entre le Val Benoit et le quai de Rome et la partie entre le pont Kennedy et la Place des Déportés seront aménagées via un budget spécifique.</p>
-      nb-NO: "<p> Ravel på høyre bredd tilbyr syklisk kontinuitet i sin egen rett
+      nb: "<p> Ravel på høyre bredd tilbyr syklisk kontinuitet i sin egen rett
         langs Meuse og Ourthe. </p><p> På den venstre bredden ligger den nye Meuse
         kai mellom La Belle Liégeoise gangbro og Kennedy-broen, og tilbyr også et
         sirkulasjonsområde dedikert til syklister. Men oppstrøms mot Val-Benoit eller
@@ -56314,10 +56314,10 @@ models:
     author_ref: *57
     created_at: 2017-12-11 14:32:09 UTC
     updated_at: 2018-11-22 15:31:37 UTC
-    location_point_geojson: 
-    location_description: 
+    location_point_geojson:
+    location_description:
     idea_status_ref: *58
-    budget: 
+    budget:
   - &80
     title_multiloc:
       en: Make bicycles available for free
@@ -56327,7 +56327,7 @@ models:
       en-GB: Make bicycles available for free
       fr-BE: Mettre des vélos à disposition en libreservice
       fr-FR: Mettre des vélos à disposition en libreservice
-      nb-NO: Gjør sykler tilgjengelig gratis
+      nb: Gjør sykler tilgjengelig gratis
       nl-BE: Maak fietsen gratis beschikbaar
       nl-NL: Maak fietsen gratis beschikbaar
     body_multiloc:
@@ -56357,7 +56357,7 @@ models:
       fr-FR: |
         <p>Elaborer un vrai plan global de la mobilité concernant à la fois Chênée, rue de Gaillarmont et rue de Bois-de-Breux.
         Plan de mobilité tenant compte notamment du développement prochain du CHU site des Bruyères et du nouveau quartier "le Vergers de Fayenbois" situé rue de Bois-de-Breux</p>
-      nb-NO: <p> Utvikle en reell global mobilitetsplan for både Chênée, Rue de Gaillarmont
+      nb: <p> Utvikle en reell global mobilitetsplan for både Chênée, Rue de Gaillarmont
         og Rue de Bois-de-Breux. Mobilitetsplan med hensyn til den kommende utviklingen
         av CHU-stedet Bruyères og det nye nabolaget "Le Vergers de Fayenbois" ligger
         rue de Bois-de-Breux </p>
@@ -56375,10 +56375,10 @@ models:
     author_ref: *59
     created_at: 2017-12-11 14:32:09 UTC
     updated_at: 2018-11-22 15:31:37 UTC
-    location_point_geojson: 
-    location_description: 
+    location_point_geojson:
+    location_description:
     idea_status_ref: *58
-    budget: 
+    budget:
   - &99
     title_multiloc:
       en: Extend beyond Liège the use of river shuttles
@@ -56388,7 +56388,7 @@ models:
       en-GB: Extend beyond Liège the use of river shuttles
       fr-BE: Prolonger au delà de Liège l'utilisation des navettes fluviales
       fr-FR: Prolonger au delà de Liège l'utilisation des navettes fluviales
-      nb-NO: Utvide utover Liège bruk av elvebusser
+      nb: Utvide utover Liège bruk av elvebusser
       nl-BE: Verleng buiten Luik het gebruik van riviershuttles
       nl-NL: Verleng buiten Luik het gebruik van riviershuttles
     body_multiloc:
@@ -56407,7 +56407,7 @@ models:
         devons avoir le droit de voter pour nos besoins en démocratie directe participative</p>\n"
       fr-FR: "<p>Nous sommes piétons/PMR, cyclistes, usagers du TEC, de la SNCB, nous
         devons avoir le droit de voter pour nos besoins en démocratie directe participative</p>\n"
-      nb-NO: "<p> Vi er fotgjengere / PMR, syklister, brukere av TEC, SNCB, vi må
+      nb: "<p> Vi er fotgjengere / PMR, syklister, brukere av TEC, SNCB, vi må
         ha stemmerett for våre behov i deltakende direkte demokrati </p>"
       nl-BE: "<p> Wij zijn voetgangers / PMR, fietsers, gebruikers van de TEC, NMBS,
         we moeten het recht hebben om op onze behoeften te stemmen in een participerende
@@ -56421,10 +56421,10 @@ models:
     author_ref: *60
     created_at: 2017-12-11 14:32:09 UTC
     updated_at: 2018-11-27 10:31:51 UTC
-    location_point_geojson: 
-    location_description: 
+    location_point_geojson:
+    location_description:
     idea_status_ref: *61
-    budget: 
+    budget:
   - &111
     title_multiloc:
       en: "<< Project 3 >> The Green Leaf, a park where life is good"
@@ -56434,7 +56434,7 @@ models:
       en-GB: "<< Project 3 >> The Green Leaf, a park where life is good"
       fr-BE: 'Projet 3 : Un espace de co-working'
       fr-FR: "<< Projet 3 >> La Feuille Verte, un parc où il fait bon vivre"
-      nb-NO: "<< Prosjekt 3 >> The Green Leaf, en park hvor livet er bra"
+      nb: "<< Prosjekt 3 >> The Green Leaf, en park hvor livet er bra"
       nl-BE: "<< Project 3 >> The Green Leaf, een park waar het leven goed is"
       nl-NL: "<< Project 3 >> The Green Leaf, een park waar het leven goed is"
     body_multiloc:
@@ -56458,7 +56458,7 @@ models:
       fr-FR: "<p>Le projet consiste à installer quelques Food Trucks et des aménagements
         urbains pour manger, boire et se détendre. Nous sommes convaincus que La Feuille
         Verte peut devenir un espace convivial au coeur de notre commune.</p>"
-      nb-NO: "<p> Prosjektet innebærer å installere noen matbiler og urbane fasiliteter
+      nb: "<p> Prosjektet innebærer å installere noen matbiler og urbane fasiliteter
         for å spise, drikke og slappe av. Vi er overbevist om at La Feuille Verte
         kan bli et koselig rom i hjertet av kommunen vår. </p>"
       nl-BE: "<p> Het project omvat het installeren van enkele Food Trucks en stedelijke
@@ -56475,10 +56475,10 @@ models:
     author_ref: *54
     created_at: 2018-10-24 13:51:17 UTC
     updated_at: 2019-01-25 10:53:07 UTC
-    location_point_geojson: 
-    location_description: 
+    location_point_geojson:
+    location_description:
     idea_status_ref: *55
-    budget: 
+    budget:
   - &82
     title_multiloc:
       en: Funicular
@@ -56488,7 +56488,7 @@ models:
       en-GB: Funicular
       fr-BE: Funiculaire
       fr-FR: Funiculaire
-      nb-NO: Fløibanen
+      nb: Fløibanen
       nl-BE: kabel
       nl-NL: kabel
     body_multiloc:
@@ -56512,7 +56512,7 @@ models:
       fr-FR: "<p>Trop souvent des fous du volant tentent de se dépasser dans le tournant
         de Burenville en empietant parfois sur la bande de ceux qui descendent.  Il
         faudrait sécuriser ce tournant accidentogène</p>\n"
-      nb-NO: "<p> For mange galne mennesker prøver å overta seg i Burenville, og noen
+      nb: "<p> For mange galne mennesker prøver å overta seg i Burenville, og noen
         ganger krypterer de på folkemengden som kommer ned. Denne utilsiktede svingen
         skal sikres </p>"
       nl-BE: "<p> Te veel gekke mensen proberen zichzelf in te halen in de bocht van
@@ -56527,10 +56527,10 @@ models:
     author_ref: *62
     created_at: 2017-12-11 14:32:09 UTC
     updated_at: 2018-11-22 15:31:38 UTC
-    location_point_geojson: 
-    location_description: 
+    location_point_geojson:
+    location_description:
     idea_status_ref: *58
-    budget: 
+    budget:
   - &83
     title_multiloc:
       en: Single transport ticket
@@ -56540,7 +56540,7 @@ models:
       en-GB: Single transport ticket
       fr-BE: Ticket de transport unique
       fr-FR: Ticket de transport unique
-      nb-NO: Enkeltbillett
+      nb: Enkeltbillett
       nl-BE: Enkelvoudig vervoerbewijs
       nl-NL: Enkelvoudig vervoerbewijs
     body_multiloc:
@@ -56597,7 +56597,7 @@ models:
         <p>Le boulevard Piercot est continuellement embouteillé. Les automobilistes qui vont vers le centre n'empruntent pas l'avenue Destenay mais passent par le bvd Piercot. Ils sont nombreux encore à prendre la rue Isaye en "raccourci" vers les Chiroux.</p>
 
         <p>Mettre la rue Isaye (très étroite) en sens unique de la place St Jacques vers le bvd Piercot supprimerait déjà tous les automobilistes qui cherchent ce raccourci. Supprimer le passage des bus 2 et 3 sur le bvd Piercot (banlieue vers centre) avec arrêt face au Conservatoire et les faire passer en site propre comme les autres bus venat des Guillemins fludifierait la cirulation.</p>
-      nb-NO: <p> Piercot Boulevard er kontinuerlig flaske. Bilister som går mot sentrum,
+      nb: <p> Piercot Boulevard er kontinuerlig flaske. Bilister som går mot sentrum,
         tar ikke avenyen Destenay, men passerer bvd Piercot. De er fortsatt mange
         å ta gaten Isaye i "snarvei" mot Chiroux. </p><p> Å sette Isaye street (veldig
         smal) i en enkelt retning fra St Jacques square til Piercot bvd ville allerede
@@ -56631,10 +56631,10 @@ models:
     author_ref: *63
     created_at: 2017-12-11 14:32:09 UTC
     updated_at: 2018-11-16 14:22:54 UTC
-    location_point_geojson: 
-    location_description: 
+    location_point_geojson:
+    location_description:
     idea_status_ref: *56
-    budget: 
+    budget:
   - &84
     title_multiloc:
       en: Develop collective bicycle garages in urban areas
@@ -56644,7 +56644,7 @@ models:
       en-GB: Develop collective bicycle garages in urban areas
       fr-BE: Développer des garages à vélos collectifs en zone urbaine
       fr-FR: Développer des garages à vélos collectifs en zone urbaine
-      nb-NO: Utvikle kollektive sykkelhus i byområder
+      nb: Utvikle kollektive sykkelhus i byområder
       nl-BE: Ontwikkel collectieve fietsgarages in stedelijke gebieden
       nl-NL: Ontwikkel collectieve fietsgarages in stedelijke gebieden
     body_multiloc:
@@ -56686,7 +56686,7 @@ models:
         le vélo et le bus. Ainsi, vous n'hésiterez plus à rejoindre votre lieu de
         travail à vélo (avec une parie du chemin effectué en bus). Vous pourrez également
         effectuer le trajet aller à vélo et le trajet retour en bus. Pratique! </p>\n"
-      nb-NO: "<p> Å tillate reise delvis på sykkel og buss. Du ønsker å reise med
+      nb: "<p> Å tillate reise delvis på sykkel og buss. Du ønsker å reise med
         sykkel, men hva bremser deg, det er de lange forskyvningene og kystene for
         bratte å klatre? En enkel løsning: kombinere sykkelen og bussen. Dermed vil
         du ikke lenger nøle med å nå arbeidsplassen din på sykkel (med en innsats
@@ -56716,7 +56716,7 @@ models:
       - 47.481724
     location_description: Audincourt, Frankrijk
     idea_status_ref: *56
-    budget: 
+    budget:
   - &100
     title_multiloc:
       en: Create a carpool area in the center of the city
@@ -56726,7 +56726,7 @@ models:
       en-GB: Create a carpool area in the center of the city
       fr-BE: Créer une aire de covoiturage au centre de la ville
       fr-FR: Créer une aire de covoiturage au centre de la ville
-      nb-NO: Opprett et carpool-område i sentrum av byen
+      nb: Opprett et carpool-område i sentrum av byen
       nl-BE: Maak een carpoolgebied in het centrum van de stad
       nl-NL: Maak een carpoolgebied in het centrum van de stad
     body_multiloc:
@@ -56757,7 +56757,7 @@ models:
         transports en commun. Afin de faciliter et d'encourager cette pratique bénéfique
         pour les habitants d'une ville, il faudrait prévoir des espaces réservés dans
         l'espace public. </p>\n"
-      nb-NO: "<p> Utøvelsen av bildeling eksploderer i lys av kollektiv prisvekst.
+      nb: "<p> Utøvelsen av bildeling eksploderer i lys av kollektiv prisvekst.
         For å lette og oppmuntre denne gunstige praksisen til innbyggerne i en by,
         bør det være reserverte rom i det offentlige rom. </p>"
       nl-BE: "<p> De praktijk van autodelen explodeert in het licht van de inflatie
@@ -56774,10 +56774,10 @@ models:
     author_ref: *64
     created_at: 2017-12-11 14:32:09 UTC
     updated_at: 2019-01-07 10:50:11 UTC
-    location_point_geojson: 
-    location_description: 
+    location_point_geojson:
+    location_description:
     idea_status_ref: *61
-    budget: 
+    budget:
   - &85
     title_multiloc:
       en: Promote the meeting areas
@@ -56787,7 +56787,7 @@ models:
       en-GB: Promote the meeting areas
       fr-BE: Favoriser les zones de rencontres
       fr-FR: Favoriser les zones de rencontres
-      nb-NO: Fremme møterommene
+      nb: Fremme møterommene
       nl-BE: Promoot de ontmoetingsruimtes
       nl-NL: Promoot de ontmoetingsruimtes
     body_multiloc:
@@ -56814,7 +56814,7 @@ models:
         mode de transport. Nous avons négligé les zones de rencontres au centre de
         la commune d'Herbeumont. Avec du mobilier urbain, nous pourrions nous asseoir
         et échanger avec nos voisins.  </p>\n"
-      nb-NO: "<p> For lenge har mobilitet favorisert bilen som den eneste transportmåten.
+      nb: "<p> For lenge har mobilitet favorisert bilen som den eneste transportmåten.
         Vi har forsømt møtestedene i sentrum av byen Herbeumont. Med gatemøbler kunne
         vi sette oss ned og snakke med våre naboer. </p>"
       nl-BE: "<p> Mobiliteit heeft te lang de voorkeur gegeven aan de auto als enige
@@ -56831,10 +56831,10 @@ models:
     author_ref: *54
     created_at: 2017-12-18 16:37:41 UTC
     updated_at: 2018-11-16 14:22:54 UTC
-    location_point_geojson: 
-    location_description: 
+    location_point_geojson:
+    location_description:
     idea_status_ref: *56
-    budget: 
+    budget:
   - &88
     title_multiloc:
       en: Prohibit any transit of vehicles in the hyper-center
@@ -56844,7 +56844,7 @@ models:
       en-GB: Prohibit any transit of vehicles in the hyper-center
       fr-BE: Interdire tout transit de véhicules dans l'hyper-centre
       fr-FR: Interdire tout transit de véhicules dans l'hyper-centre
-      nb-NO: Forby enhver transport av kjøretøy i hyperkenteret
+      nb: Forby enhver transport av kjøretøy i hyperkenteret
       nl-BE: Verbied elke doorvoer van voertuigen in het hypercentrum
       nl-NL: Verbied elke doorvoer van voertuigen in het hypercentrum
     body_multiloc:
@@ -56884,7 +56884,7 @@ models:
         <p>Sur ce document, les titres sont cliquables et vous renvoient directement au projet que vous souhaitez découvrir.</p>
 
         <p>Une recherche par mots-clés est aussi disponible en haut à gauche de la plate-forme.</p>
-      nb-NO: '<p> Finn den komplette listen over prosjekter som sendes inn i kategorien
+      nb: '<p> Finn den komplette listen over prosjekter som sendes inn i kategorien
         "Mobilitet" ved å klikke på denne linken: http://bit.ly/2qFztt0 </p><p> På
         dette dokumentet er titlene klikkbare og henviser deg direkte til prosjektet
         du vil oppdage. </p><p> Et søkeordssøk er også tilgjengelig øverst til venstre
@@ -56905,10 +56905,10 @@ models:
     author_ref: *65
     created_at: 2017-12-11 14:32:09 UTC
     updated_at: 2019-01-11 10:31:07 UTC
-    location_point_geojson: 
-    location_description: 
+    location_point_geojson:
+    location_description:
     idea_status_ref: *55
-    budget: 
+    budget:
   - &89
     title_multiloc:
       en: Secure and complete the pedestrian network
@@ -56918,7 +56918,7 @@ models:
       en-GB: Secure and complete the pedestrian network
       fr-BE: Sécuriser et achever le réseau piéton
       fr-FR: Sécuriser et achever le réseau piéton
-      nb-NO: Sikre og fullfør fotgjengernettverket
+      nb: Sikre og fullfør fotgjengernettverket
       nl-BE: Beveilig en voltooi het voetgangersnetwerk
       nl-NL: Beveilig en voltooi het voetgangersnetwerk
     body_multiloc:
@@ -56976,7 +56976,7 @@ models:
         <p>Encourager la mobilité à vélo est une très bonne chose.  Mais il faut pouvoir déposer son vélo en sécurité pour pouvoir le récupérer --&gt; il faudrait développer des parkings vélos qui soient sécurisés (dispositifs anti-vol) et surveillés (par des personnes engagées par la Ville ou bénévoles).  On pourrait utiliser un système de jetons ou de tickets (comme dans les parkings voiture) permettant de récupérer son vélo en toute confiance.</p>
 
         <p>Autre idée : instaurer un système de "scooter-sécurité " permettant de contrôler (= limiter) le bruit et la vitesse des scooters qui perturbent la vie des habitants.</p>
-      nb-NO: <p> BORGARBEHANDLING Chênée - mandag 8. mai </p><p> Oppmuntre mobilitet
+      nb: <p> BORGARBEHANDLING Chênée - mandag 8. mai </p><p> Oppmuntre mobilitet
         på sykkel er en veldig god ting. Men du må kunne holde sykkelen trygt for
         å gjenopprette den -&gt; du må utvikle sykkelparkering som er sikker (tyverisikring)
         og overvåket (av personer ansatt av byen eller frivillige). Vi kunne bruke
@@ -57010,10 +57010,10 @@ models:
     author_ref: *66
     created_at: 2017-12-11 14:32:09 UTC
     updated_at: 2018-11-22 15:31:38 UTC
-    location_point_geojson: 
-    location_description: 
+    location_point_geojson:
+    location_description:
     idea_status_ref: *58
-    budget: 
+    budget:
   - &94
     title_multiloc:
       en: Develop collective bicycle garages in urban areas
@@ -57023,7 +57023,7 @@ models:
       en-GB: Develop collective bicycle garages in urban areas
       fr-BE: Développer des garages à vélos collectifs en zone urbaine
       fr-FR: Développer des garages à vélos collectifs en zone urbaine
-      nb-NO: Utvikle kollektive sykkelhus i byområder
+      nb: Utvikle kollektive sykkelhus i byområder
       nl-BE: Ontwikkel collectieve fietsgarages in stedelijke gebieden
       nl-NL: Ontwikkel collectieve fietsgarages in stedelijke gebieden
     body_multiloc:
@@ -57065,7 +57065,7 @@ models:
         le vélo et le bus. Ainsi, vous n'hésiterez plus à rejoindre votre lieu de
         travail à vélo (avec une parie du chemin effectué en bus). Vous pourrez également
         effectuer le trajet aller à vélo et le trajet retour en bus. Pratique!</p>\n"
-      nb-NO: "<p> Å tillate reise delvis på sykkel og buss. Du ønsker å reise med
+      nb: "<p> Å tillate reise delvis på sykkel og buss. Du ønsker å reise med
         sykkel, men hva bremser deg, det er de lange forskyvningene og kystene for
         bratte å klatre? En enkel løsning: kombinere sykkelen og bussen. Dermed vil
         du ikke lenger nøle med å nå arbeidsplassen din på sykkel (med en innsats
@@ -57088,10 +57088,10 @@ models:
     author_ref: *67
     created_at: 2017-12-11 14:32:09 UTC
     updated_at: 2018-11-27 10:31:51 UTC
-    location_point_geojson: 
-    location_description: 
+    location_point_geojson:
+    location_description:
     idea_status_ref: *61
-    budget: 
+    budget:
   - &93
     title_multiloc:
       en: Ban 4x4 in the city!
@@ -57101,7 +57101,7 @@ models:
       en-GB: Ban 4x4 in the city!
       fr-BE: Interdire les 4x4 en ville!
       fr-FR: Interdire les 4x4 en ville!
-      nb-NO: Forbud 4x4 i byen!
+      nb: Forbud 4x4 i byen!
       nl-BE: Verbied 4x4 in de stad!
       nl-NL: Verbied 4x4 in de stad!
     body_multiloc:
@@ -57120,7 +57120,7 @@ models:
         \ Les 4x4 de plus de 5m de long, c'est dans les bois, pas en ville!</p>\n"
       fr-FR: "<p>Interdire les 4x4 de plus de 5 metres de long en ville. Stop au excès.
         \ Les 4x4 de plus de 5m de long, c'est dans les bois, pas en ville!</p>\n"
-      nb-NO: "<p> Forbud mot SUVer over 5 meter i byen. Stopp overskytende. 4x4 mer
+      nb: "<p> Forbud mot SUVer over 5 meter i byen. Stopp overskytende. 4x4 mer
         enn 5m lang, det er i skogen, ikke i byen! </p>"
       nl-BE: "<p> Verbied SUV's met meer dan 5 meter lengte in de stad. Stop het teveel.
         4x4 meer dan 5m lang, het is in het bos, niet in de stad! </p>"
@@ -57132,10 +57132,10 @@ models:
     author_ref: *68
     created_at: 2017-12-11 14:32:09 UTC
     updated_at: 2019-01-14 14:13:08 UTC
-    location_point_geojson: 
-    location_description: 
+    location_point_geojson:
+    location_description:
     idea_status_ref: *61
-    budget: 
+    budget:
   - &95
     title_multiloc:
       en: Verbize single drivers of a first class offense
@@ -57145,7 +57145,7 @@ models:
       en-GB: Verbize single drivers of a first class offense
       fr-BE: Verbaliser les conducteurs seuls d'une infraction de première classe
       fr-FR: Verbaliser les conducteurs seuls d'une infraction de première classe
-      nb-NO: Forbedre enkeltdrivere av en første klasse lovbrudd
+      nb: Forbedre enkeltdrivere av en første klasse lovbrudd
       nl-BE: Verbize enkele bestuurders van een eerste klas aanval
       nl-NL: Verbize enkele bestuurders van een eerste klas aanval
     body_multiloc:
@@ -57221,7 +57221,7 @@ models:
         revendiquer notre confort personnel. En ne faisant rien, les générations à
         venir se souviendront de nous comme des criminels égoistes ayant refusé la
         créativité politique pour répondre à l'urgence environnementale. </p>\n"
-      nb-NO: "<p> En bil veier i gjennomsnitt 1200 kg og er mer enn 4 meter, 17 ganger
+      nb: "<p> En bil veier i gjennomsnitt 1200 kg og er mer enn 4 meter, 17 ganger
         tyngre enn en mann og to og en halv ganger dens størrelse. Løsningen på trafikkork,
         støy og byforurensning er så enkelt: forby bilen til folk som kunne klare
         seg uten. For å være pragmatisk, vil jeg at vi skal begynne å forby folk som
@@ -57258,10 +57258,10 @@ models:
     author_ref: *69
     created_at: 2017-12-11 14:32:09 UTC
     updated_at: 2018-11-27 10:31:51 UTC
-    location_point_geojson: 
-    location_description: 
+    location_point_geojson:
+    location_description:
     idea_status_ref: *61
-    budget: 
+    budget:
   - &97
     title_multiloc:
       en: Create a coherent and continuous cycling network
@@ -57271,7 +57271,7 @@ models:
       en-GB: Create a coherent and continuous cycling network
       fr-BE: Créer un réseau cyclable cohérent et continu
       fr-FR: Créer un réseau cyclable cohérent et continu
-      nb-NO: Opprett et sammenhengende og kontinuerlig sykkelnettverk
+      nb: Opprett et sammenhengende og kontinuerlig sykkelnettverk
       nl-BE: Creëer een samenhangend en continu fietsnetwerk
       nl-NL: Creëer een samenhangend en continu fietsnetwerk
     body_multiloc:
@@ -57308,7 +57308,7 @@ models:
         panneaux) pour les places pour personnes handicapées, les accès de garages,...
         Augmenter la sécurité au niveau des carrefours, des passages pour piétons,
         des quais    Vidéosurveillance étendue à titre de prévention</p>\n"
-      nb-NO: "<p> Mer synlig og mer effektiv skilting: tydelig merkede parkeringsplasser
+      nb: "<p> Mer synlig og mer effektiv skilting: tydelig merkede parkeringsplasser
         overalt, og i tillegg et materiell layout (innsatser, paneler) for funksjonshemmede,
         tilgang til garasjer, ... Øk sikkerheten ved kryssene, fotgjengeroverganger,
         plattformer Videoovervåkning utvidet for forebygging </p>"
@@ -57328,10 +57328,10 @@ models:
     author_ref: *70
     created_at: 2017-12-11 14:32:09 UTC
     updated_at: 2018-11-27 10:31:51 UTC
-    location_point_geojson: 
-    location_description: 
+    location_point_geojson:
+    location_description:
     idea_status_ref: *61
-    budget: 
+    budget:
   - &98
     title_multiloc:
       en: Tram, Liégeois Express Network and second phase
@@ -57341,7 +57341,7 @@ models:
       en-GB: Tram, Liégeois Express Network and second phase
       fr-BE: Tram, Réseau Express Liégeois et deuxième phase
       fr-FR: Tram, Réseau Express Liégeois et deuxième phase
-      nb-NO: Trikk, Liégeois Express Network og andre fase
+      nb: Trikk, Liégeois Express Network og andre fase
       nl-BE: Tram, Liégeois Express Network en tweede fase
       nl-NL: Tram, Liégeois Express Network en tweede fase
     body_multiloc:
@@ -57381,7 +57381,7 @@ models:
       fr-FR: |
         <p>Dans les rues à stationnement alternatif par quinzaine, les usagers ne changent pas de côté tous en même temps. De plus, il est fréquent que des usagers oublient de changer leur véhicule. Cela engendre à chaque quinzaine des difficultés de circulation ainsi que des risques d'accident d'autant plus importants lorsque la voirie concernée est fréquentée par des transports en commun.
         Pourquoi ne pas modifier la signalisation afin que l'on se gare toujours du même côté.</p>
-      nb-NO: "<p> På gatene med alternativ parkering fjorten dager, endrer ikke brukerne
+      nb: "<p> På gatene med alternativ parkering fjorten dager, endrer ikke brukerne
         side samtidig. I tillegg er det vanlig at brukerne glemmer å bytte kjøretøy.
         Dette genererer trafikkproblemer hver annen uke, så vel som risikoen for en
         ulykke, desto viktigere når den aktuelle veien blir besøk av offentlig transport.
@@ -57406,10 +57406,10 @@ models:
     author_ref: *71
     created_at: 2017-12-11 14:32:09 UTC
     updated_at: 2018-11-27 10:31:51 UTC
-    location_point_geojson: 
-    location_description: 
+    location_point_geojson:
+    location_description:
     idea_status_ref: *61
-    budget: 
+    budget:
   - &96
     title_multiloc:
       en: Create a soft mobility corridor along the Meuse
@@ -57419,7 +57419,7 @@ models:
       en-GB: Create a soft mobility corridor along the Meuse
       fr-BE: Créer un couloir de mobilité douce le long de la Meuse
       fr-FR: Créer un couloir de mobilité douce le long de la Meuse
-      nb-NO: Opprett en myk mobilitetskorridor langs Meuse
+      nb: Opprett en myk mobilitetskorridor langs Meuse
       nl-BE: Creëer een zachte mobiliteitsgang langs de Maas
       nl-NL: Creëer een zachte mobiliteitsgang langs de Maas
     body_multiloc:
@@ -57444,7 +57444,7 @@ models:
       fr-FR: "<p>construction d'une piste cyclable le long du boulevard de la sauvenière
         \ pou facilité le déplacement de cycliste et ce avec un éventuelle raccordement
         au ravel long la Meuse.</p>\n"
-      nb-NO: "<p> bygging av en sykkelsti langs boulevard de la sauvenière for å lette
+      nb: "<p> bygging av en sykkelsti langs boulevard de la sauvenière for å lette
         bevegelsen av syklister og dette med en mulig forbindelse til ravel langs
         Meuse. </p>"
       nl-BE: "<p> aanleg van een fietspad langs de boulevard de la sauvenière om de
@@ -57459,10 +57459,10 @@ models:
     author_ref: *72
     created_at: 2017-12-11 14:32:09 UTC
     updated_at: 2018-11-27 10:31:51 UTC
-    location_point_geojson: 
-    location_description: 
+    location_point_geojson:
+    location_description:
     idea_status_ref: *61
-    budget: 
+    budget:
   - &101
     title_multiloc:
       en: Permanent river shuttles
@@ -57472,7 +57472,7 @@ models:
       en-GB: Permanent river shuttles
       fr-BE: Navettes fluviales permanentes
       fr-FR: Navettes fluviales permanentes
-      nb-NO: Permanente elvebusser
+      nb: Permanente elvebusser
       nl-BE: Permanente riviershuttles
       nl-NL: Permanente riviershuttles
     body_multiloc:
@@ -57533,7 +57533,7 @@ models:
         <p>Il est étonnant de constater la volonté de mettre en place un système de tram alors que les voies navigables à Liège sont libres, que les quais sont déjà aménagés et que différents endroits actuels seraient déjà propices à des embarcadères.  </p>
 
         <p>Il s'agirait de multiplier les navettes déjà en place et d'allonger les trajets, ajouter des destinations le long des quais de Meuse. Cela désengorgerait les rues de la cité ardente aux heures de pointes et permettrait sans aucun doute un accroissement de l'intérêt touristique pour notre ville (cfr succès du service de navettes déjà en place).</p>
-      nb-NO: "<p> Det ville være godt å utvikle det eksisterende elveflyssystemet.
+      nb: "<p> Det ville være godt å utvikle det eksisterende elveflyssystemet.
         </p><p> Det er overraskende å merke seg viljen til å sette opp et triksystem
         mens vannveiene i Liège er frie, at havene allerede er utviklet og at ulike
         nåværende steder allerede vil være til hjelp for brygger. </p><p> Det ville
@@ -57568,10 +57568,10 @@ models:
     author_ref: *73
     created_at: 2017-12-11 14:32:09 UTC
     updated_at: 2018-11-27 10:31:51 UTC
-    location_point_geojson: 
-    location_description: 
+    location_point_geojson:
+    location_description:
     idea_status_ref: *61
-    budget: 
+    budget:
   - &102
     title_multiloc:
       en: Set up night buses
@@ -57581,7 +57581,7 @@ models:
       en-GB: Set up night buses
       fr-BE: Mettre en place des bus de nuit
       fr-FR: Mettre en place des bus de nuit
-      nb-NO: Sett opp nattbusser
+      nb: Sett opp nattbusser
       nl-BE: Stel nachtbussen in
       nl-NL: Stel nachtbussen in
     body_multiloc:
@@ -57642,7 +57642,7 @@ models:
         à Liège et que dans ce cadre, la réouverture de la gare Liège-Vivegnis est
         prévue)\nLe hic c'est le dénivelé, qui peut facilement être franchi avec un
         téléphérique.</p>\n"
-      nb-NO: "<p> Som kråken flyr, er det mindre enn 300 meter mellom Citadelle Hospital
+      nb: "<p> Som kråken flyr, er det mindre enn 300 meter mellom Citadelle Hospital
         og den nedre jernbanen. Det kan knapt komme nærmere. Tanken er å koble sykehuset
         til jernbanen for å fremme bilfri reise i byen. Enhver fordel for luftkvalitet,
         mindre støy, mindre trafikkorker, etc. (Selv om man vet at Liege Express-nettverket
@@ -57671,10 +57671,10 @@ models:
     author_ref: *74
     created_at: 2017-12-11 14:32:09 UTC
     updated_at: 2018-11-27 10:31:51 UTC
-    location_point_geojson: 
-    location_description: 
+    location_point_geojson:
+    location_description:
     idea_status_ref: *61
-    budget: 
+    budget:
   - &103
     title_multiloc:
       en: Set up shared autonomous vehicles
@@ -57684,7 +57684,7 @@ models:
       en-GB: Set up shared autonomous vehicles
       fr-BE: Mettre en place des véhicules autonomes partagés
       fr-FR: Mettre en place des véhicules autonomes partagés
-      nb-NO: Sett opp delte autonome kjøretøyer
+      nb: Sett opp delte autonome kjøretøyer
       nl-BE: Stel gedeelde autonome voertuigen in
       nl-NL: Stel gedeelde autonome voertuigen in
     body_multiloc:
@@ -57732,7 +57732,7 @@ models:
       fr-FR: |
         <p>L'aménagement routier entrepris par La Ville de Liège avant l'inauguration de la nouvelle gare paralyse le trafic de transit vers les Guillemins, les carrefours à feux mis en place en 2010 n'ont pas solutionné le problème, dès lors, nous réclamons une étude globale pour équilibrer le flux de circulation  notamment que cette zone est desservie par les transports en commun ce qui oblige les navetteurs à descendre du véhicule du TEC et continuer le chemin à pied.
         Ne serait-il pas pertinent de prendre les mesures nécessaires pour réguler la circulation autour de la Gare des Guillemins et l'avenue de l'observatoire?</p>
-      nb-NO: "<p> Veien utviklingen av byen Liège før innvielsen av den nye stasjonen
+      nb: "<p> Veien utviklingen av byen Liège før innvielsen av den nye stasjonen
         lokker transittrafikken til Guillemins, brannkrysset som ble opprettet i 2010,
         har ikke løst problemet, derfor krever vi en global studie for å balansere
         trafikkflyten, spesielt at dette området serveres med offentlig transport
@@ -57761,10 +57761,10 @@ models:
     author_ref: *75
     created_at: 2017-12-11 14:32:09 UTC
     updated_at: 2019-01-23 14:50:46 UTC
-    location_point_geojson: 
-    location_description: 
+    location_point_geojson:
+    location_description:
     idea_status_ref: *61
-    budget: 
+    budget:
   areas_idea: []
   baskets_idea:
   - basket_ref: *76
@@ -57780,22 +57780,22 @@ models:
     updated_at: 2018-11-16 14:22:57 UTC
   - idea_ref: *80
     remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/86b34603-ee87-4879-a433-bccc0279a146/idea_image/image/689abf69-776a-416f-8c5d-d9f0bfa7baf8/bea0d628f808e93fd8f3a7cf60de9ed7_1200px-VilloStationAlmostFull.jpg
-    ordering: 
+    ordering:
     created_at: 2018-11-16 14:22:59 UTC
     updated_at: 2018-11-16 14:22:59 UTC
   - idea_ref: *81
     remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/86b34603-ee87-4879-a433-bccc0279a146/idea_image/image/880d324e-a1a1-4844-be3a-cfd905f05f0b/534e4281474b64884b38afd4122a6945_picto-marquage-handicape-e1445681185643.jpg
-    ordering: 
+    ordering:
     created_at: 2018-11-16 14:23:00 UTC
     updated_at: 2018-11-16 14:23:00 UTC
   - idea_ref: *82
     remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/86b34603-ee87-4879-a433-bccc0279a146/idea_image/image/89187471-2174-4355-92b2-16e14877562e/d206d4b88a2682466d4fbf48d159f5f8_1200px-Montmartre_Funicular_2C_Paris_22_June_2014_002.jpg
-    ordering: 
+    ordering:
     created_at: 2018-11-16 14:23:01 UTC
     updated_at: 2018-11-16 14:23:01 UTC
   - idea_ref: *83
     remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/86b34603-ee87-4879-a433-bccc0279a146/idea_image/image/a111522e-88b3-44d0-b0d4-ab608b369591/24473b2e377f7c15b3bd5608dc5d2cc0_1200px-MP_Train.JPG
-    ordering: 
+    ordering:
     created_at: 2018-11-16 14:23:02 UTC
     updated_at: 2018-11-16 14:23:02 UTC
   - idea_ref: *84
@@ -57820,12 +57820,12 @@ models:
     updated_at: 2018-11-16 14:23:08 UTC
   - idea_ref: *88
     remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/86b34603-ee87-4879-a433-bccc0279a146/idea_image/image/ff376383-42a3-4b1d-91c2-0079c78e322e/9e2a2effdaf9020c4b217ad8120129ea_201310221553-full.jpg
-    ordering: 
+    ordering:
     created_at: 2018-11-16 14:23:09 UTC
     updated_at: 2018-11-16 14:23:09 UTC
   - idea_ref: *89
     remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/86b34603-ee87-4879-a433-bccc0279a146/idea_image/image/083547e0-907e-4646-a40f-7fc762f25d8b/8b6f16fd0733749ba048fe695b222d24_420px-Ville_souterraine_de_Montreal_04.JPG
-    ordering: 
+    ordering:
     created_at: 2018-11-16 14:23:09 UTC
     updated_at: 2018-11-16 14:23:09 UTC
   - idea_ref: *90
@@ -57845,57 +57845,57 @@ models:
     updated_at: 2018-11-16 14:23:12 UTC
   - idea_ref: *93
     remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/86b34603-ee87-4879-a433-bccc0279a146/idea_image/image/febc17f8-b436-49bd-876f-5fe6713432d6/57c24056dd7edfa8bdfa0a3f84321e61_xxx__204x4_C.jpg
-    ordering: 
+    ordering:
     created_at: 2018-11-16 14:23:13 UTC
     updated_at: 2018-11-16 14:23:13 UTC
   - idea_ref: *94
     remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/86b34603-ee87-4879-a433-bccc0279a146/idea_image/image/16f3b1f6-5f86-4d10-aa3f-c299add1394f/d38ccea3308e5c18db3b1289665d1c0e_d10057.jpg
-    ordering: 
+    ordering:
     created_at: 2018-11-16 14:23:14 UTC
     updated_at: 2018-11-16 14:23:14 UTC
   - idea_ref: *95
     remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/86b34603-ee87-4879-a433-bccc0279a146/idea_image/image/bcae7a5c-8d7e-4d38-975c-8e472cca0a32/0e84a2ddb29bd81ad8c78aead18fd058_Bikes-vs-cars-1-900x506.jpg
-    ordering: 
+    ordering:
     created_at: 2018-11-16 14:23:14 UTC
     updated_at: 2018-11-16 14:23:14 UTC
   - idea_ref: *96
     remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/86b34603-ee87-4879-a433-bccc0279a146/idea_image/image/b2901178-cfd4-4386-84cc-b7d71bfc9a81/fb32ed07b22f40af243b6d82c9f9566a_logo.png
-    ordering: 
+    ordering:
     created_at: 2018-11-16 14:23:16 UTC
     updated_at: 2018-11-16 14:23:16 UTC
   - idea_ref: *97
     remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/86b34603-ee87-4879-a433-bccc0279a146/idea_image/image/24e9cf55-ce7f-4ddf-bb00-81c3a8b39457/6f20e5ce75de80bc057d85f2465416c6_2014_piste-cyclable_x2-sens_04.jpg
-    ordering: 
+    ordering:
     created_at: 2018-11-16 14:23:16 UTC
     updated_at: 2018-11-16 14:23:16 UTC
   - idea_ref: *98
     remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/86b34603-ee87-4879-a433-bccc0279a146/idea_image/image/2219a8e1-dbb1-496f-b782-e7b3303fada8/9a84a102ae34a2d0a17076e8a1306688_Autoroutes_A41__26_A43.JPG
-    ordering: 
+    ordering:
     created_at: 2018-11-16 14:23:19 UTC
     updated_at: 2018-11-16 14:23:19 UTC
   - idea_ref: *99
     remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/86b34603-ee87-4879-a433-bccc0279a146/idea_image/image/74984375-d1e4-4525-b96f-cafd74f6a0ac/28b91aa3de7900e5cf97d52bf9897a21_Quai-Navette-fluviale-Millenaire.jpg
-    ordering: 
+    ordering:
     created_at: 2018-11-16 14:23:20 UTC
     updated_at: 2018-11-16 14:23:20 UTC
   - idea_ref: *100
     remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/86b34603-ee87-4879-a433-bccc0279a146/idea_image/image/c7e3f2d5-d71f-4412-b12f-0d72c67f011e/bd27681d04fc6ca6dab45273ce2a1cad_covoiturage2.jpg
-    ordering: 
+    ordering:
     created_at: 2018-11-16 14:23:21 UTC
     updated_at: 2018-11-16 14:23:21 UTC
   - idea_ref: *101
     remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/86b34603-ee87-4879-a433-bccc0279a146/idea_image/image/15b10774-92ce-4fa4-b064-9ee3e82b117d/70f95f0252ac637adf4e008852df59b7_Quai-Navette-fluviale-Millenaire.jpg
-    ordering: 
+    ordering:
     created_at: 2018-11-16 14:23:22 UTC
     updated_at: 2018-11-16 14:23:22 UTC
   - idea_ref: *102
     remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/86b34603-ee87-4879-a433-bccc0279a146/idea_image/image/b1e22e80-91ef-4e7a-85be-0d27147304e0/eb80479f1f6ebb473a5b998e105b63e8_200911060736.jpg
-    ordering: 
+    ordering:
     created_at: 2018-11-16 14:23:23 UTC
     updated_at: 2018-11-16 14:23:23 UTC
   - idea_ref: *103
     remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/86b34603-ee87-4879-a433-bccc0279a146/idea_image/image/0e44f198-1531-4840-a082-eab76340d324/b769906fac42cc359424dc642930cd53_000018574_imageArticlePrincipaleLarge.png
-    ordering: 
+    ordering:
     created_at: 2018-11-16 14:23:24 UTC
     updated_at: 2018-11-16 14:23:24 UTC
   - idea_ref: *104
@@ -58281,7 +58281,7 @@ models:
       en-GB: Saperlipopette, it seems to me to be a good idea.
       fr-BE: 'Saperlipopette, ça me paraît d''être une bonne idée. '
       fr-FR: 'Saperlipopette, ça me paraît d''être une bonne idée. '
-      nb-NO: Saperlipopette, synes det å være en god ide.
+      nb: Saperlipopette, synes det å være en god ide.
       nl-BE: Saperlipopette, het lijkt mij een goed idee.
       nl-NL: Saperlipopette, het lijkt mij een goed idee.
     created_at: 2018-03-15 23:37:06 UTC
@@ -58298,7 +58298,7 @@ models:
       en-GB: This garage must be made of wood.
       fr-BE: 'Il faut que ce garage soit en bois. '
       fr-FR: 'Il faut que ce garage soit en bois. '
-      nb-NO: Denne garasjen må være laget av tre.
+      nb: Denne garasjen må være laget av tre.
       nl-BE: Deze garage moet van hout zijn.
       nl-NL: Deze garage moet van hout zijn.
     created_at: 2017-12-13 10:48:23 UTC
@@ -58330,7 +58330,7 @@ models:
       fr-FR: 'Construction en bois
 
 '
-      nb-NO: 'Trekonstruksjon
+      nb: 'Trekonstruksjon
 
 '
       nl-BE: 'Houten constructie
@@ -58353,7 +58353,7 @@ models:
       en-GB: Plastic construction
       fr-BE: Construction en plastique
       fr-FR: Construction en plastique
-      nb-NO: Plastkonstruksjon
+      nb: Plastkonstruksjon
       nl-BE: Kunststof constructie
       nl-NL: Kunststof constructie
     created_at: 2017-12-21 14:01:17 UTC
@@ -58371,7 +58371,7 @@ models:
       en-GB: Why not wooden bikes?
       fr-BE: 'Pourquoi pas des vélos en bois? '
       fr-FR: 'Pourquoi pas des vélos en bois? '
-      nb-NO: Hvorfor ikke trecykler?
+      nb: Hvorfor ikke trecykler?
       nl-BE: Waarom geen houten fietsen?
       nl-NL: Waarom geen houten fietsen?
     created_at: 2017-12-14 09:21:02 UTC
@@ -58398,7 +58398,7 @@ models:
         </p>
       fr-BE: "<p>Super idée ; je vous soutiens ! </p>\n"
       fr-FR: "<p>Super idée ; je vous soutiens ! </p>\n"
-      nb-NO: |-
+      nb: |-
         <p> Flott idé; Jeg støtter deg!  P&gt;
         </p>
       nl-BE: |-
@@ -58432,7 +58432,7 @@ models:
         </p>
       fr-BE: "<p>Pourquoi pas, c'est une bonne idée ! </p>\n"
       fr-FR: "<p>Pourquoi pas, c'est une bonne idée ! </p>\n"
-      nb-NO: |-
+      nb: |-
         <p> Hvorfor ikke, det er en god ide!  P&gt;
         </p>
       nl-BE: |-
@@ -58469,7 +58469,7 @@ models:
       fr-FR: "<p>Pourquoi s'arrêter en si bon chemin, nous pourrions également penser
         à intégrer tout ceci dans une démarche de smartcity ... Qu'en pensez-vous
         ?</p>\n"
-      nb-NO: |-
+      nb: |-
         <p> Hvorfor stoppe på denne måten, kan vi også tenke på å integrere alt dette i en smartcity-tilnærming ... Hva synes du?  p&gt;
         </p>
       nl-BE: |-
@@ -58506,7 +58506,7 @@ models:
       fr-FR: 'Ok mais bambou
 
 '
-      nb-NO: 'Ok, men bambus
+      nb: 'Ok, men bambus
 
 '
       nl-BE: 'Ok maar bamboe
@@ -58544,7 +58544,7 @@ models:
       fr-FR: 'Oui mais en  bambou
 
 '
-      nb-NO: 'Ja, men bambus
+      nb: 'Ja, men bambus
 
 '
       nl-BE: 'Ja maar bamboe

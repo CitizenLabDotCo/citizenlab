@@ -16,12 +16,8 @@ module NLP
 
     def parse_ideas(ideas, locale)
       ideas.map { |idea|
-        {
-          body: ActionView::Base.full_sanitizer.sanitize(idea.body_multiloc[locale]),
-          id: idea.id,
-          title: ActionView::Base.full_sanitizer.sanitize(idea.body_multiloc[locale])
-        }
-      }.reject { |item| item[:body].blank? }
+        ActionView::Base.full_sanitizer.sanitize(idea.body_multiloc[locale])
+      }.reject(&:blank?)
     end
   end
 end
