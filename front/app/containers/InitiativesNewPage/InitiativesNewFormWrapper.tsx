@@ -350,12 +350,19 @@ export default class InitiativesNewFormWrapper extends React.PureComponent<
         );
 
         if (titleProfanityError) {
+          trackEventByName(tracks.titleProfanityError.name, {
+            location: 'IdeasEditPage (citizen side)',
+          });
+
           this.setState({
             titleProfanityError,
           });
         }
 
         if (descriptionProfanityError) {
+          trackEventByName(tracks.descriptionProfanityError.name, {
+            location: 'IdeasEditPage (citizen side)',
+          });
           this.setState({
             descriptionProfanityError,
           });

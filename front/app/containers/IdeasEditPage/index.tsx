@@ -334,12 +334,18 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
         );
 
         if (titleProfanityError) {
+          trackEventByName(tracks.titleProfanityError.name, {
+            location: 'IdeasEditPage (citizen side)',
+          });
           this.setState({
             titleProfanityError,
           });
         }
 
         if (descriptionProfanityError) {
+          trackEventByName(tracks.descriptionProfanityError.name, {
+            location: 'IdeasEditPage (citizen side)',
+          });
           this.setState({
             descriptionProfanityError,
           });

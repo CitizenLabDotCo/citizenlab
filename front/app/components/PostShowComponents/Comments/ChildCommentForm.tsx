@@ -271,6 +271,10 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
         });
 
         if (profanityApiError) {
+          trackEventByName(tracks.commentProfanityError.name, {
+            location: 'IdeasEditPage (citizen side)',
+          });
+
           this.setState({
             profanityApiError: true,
           });

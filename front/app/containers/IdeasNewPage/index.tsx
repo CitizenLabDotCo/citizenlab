@@ -268,12 +268,18 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
           );
 
           if (titleProfanityError) {
+            trackEventByName(tracks.titleProfanityError.name, {
+              location: 'IdeasEditPage (citizen side)',
+            });
             this.globalState.set({
               titleProfanityError,
             });
           }
 
           if (descriptionProfanityError) {
+            trackEventByName(tracks.descriptionProfanityError.name, {
+              location: 'IdeasEditPage (citizen side)',
+            });
             this.globalState.set({
               descriptionProfanityError,
             });

@@ -296,10 +296,8 @@ class IdeaEdit extends PureComponent<Props, State> {
         );
 
         if (titleProfanityError) {
-          trackEventByName(tracks.titleProfanityError, {
-            tenant: tenantId,
+          trackEventByName(tracks.titleProfanityError.name, {
             location: 'IdeaEdit (Input manager)',
-            idea: ideaId,
           });
           this.setState({
             titleProfanityError,
@@ -307,6 +305,9 @@ class IdeaEdit extends PureComponent<Props, State> {
         }
 
         if (descriptionProfanityError) {
+          trackEventByName(tracks.descriptionProfanityError.name, {
+            location: 'IdeaEdit (Input manager)',
+          });
           this.setState({
             descriptionProfanityError,
           });
