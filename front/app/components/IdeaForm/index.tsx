@@ -21,6 +21,7 @@ import {
   FormSectionTitle,
   FormLabel,
 } from 'components/UI/FormComponents';
+import Link from 'utils/cl-router/Link';
 
 // services
 import { localeStream } from 'services/locale';
@@ -52,7 +53,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 import { getInputTermMessage } from 'utils/i18n';
 
@@ -115,6 +116,10 @@ interface InputProps {
   imageFile: UploadFile[];
   onSubmit: (arg: IIdeaFormOutput) => void;
   remoteIdeaFiles?: UploadFile[] | null;
+  hasTitleProfanityError: boolean;
+  hasDescriptionProfanityError: boolean;
+  onTitleChange: (title: string) => void;
+  onDescriptionChange: (description: string) => void;
 }
 
 interface DataProps {
@@ -286,6 +291,8 @@ class IdeaForm extends PureComponent<
       title,
       titleError: null,
     });
+
+    this.props.onTitleChange(title);
   };
 
   handleDescriptionOnChange = async (description: string) => {
@@ -295,6 +302,8 @@ class IdeaForm extends PureComponent<
       description,
       descriptionError: isDescriptionEmpty ? descriptionError : null,
     }));
+
+    this.props.onDescriptionChange(description);
   };
 
   handleTopicsOnChange = (selectedTopics: string[]) => {
@@ -565,7 +574,7 @@ class IdeaForm extends PureComponent<
       ideaFiles,
       ideaFilesToRemove,
     } = this.state;
-    const formIsValid = this.validate(
+    const formClientSideIsValid = this.validate(
       title,
       description,
       budget,
@@ -576,7 +585,7 @@ class IdeaForm extends PureComponent<
       ideaFiles
     );
 
-    if (formIsValid) {
+    if (formClientSideIsValid) {
       const output: IIdeaFormOutput = {
         title,
         selectedTopics,
@@ -620,7 +629,15 @@ class IdeaForm extends PureComponent<
 
   render() {
     const className = this.props['className'];
-    const { projectId, pbEnabled, topics, project, phases } = this.props;
+    const {
+      projectId,
+      pbEnabled,
+      topics,
+      project,
+      phases,
+      hasTitleProfanityError,
+      hasDescriptionProfanityError,
+    } = this.props;
     const { formatMessage } = this.props.intl;
     const {
       locale,
@@ -731,6 +748,22 @@ class IdeaForm extends PureComponent<
                 maxCharCount={80}
                 autocomplete="off"
               />
+              {hasTitleProfanityError && (
+                <Error
+                  text={
+                    <FormattedMessage
+                      {...messages.profanityError}
+                      values={{
+                        guidelinesLink: (
+                          <Link to="/pages/faq" target="_blank">
+                            {formatMessage(messages.guidelinesLinkText)}
+                          </Link>
+                        ),
+                      }}
+                    />
+                  }
+                />
+              )}
             </FormElement>
 
             <FormElement id="e2e-idea-description-input">
@@ -752,10 +785,26 @@ class IdeaForm extends PureComponent<
                 value={description}
                 onChange={this.handleDescriptionOnChange}
                 setRef={this.handleDescriptionSetRef}
-                hasError={descriptionError !== null}
+                hasError={!!descriptionError || hasDescriptionProfanityError}
                 withCTAButton
               />
               {descriptionError && <Error text={descriptionError} />}
+              {hasDescriptionProfanityError && (
+                <Error
+                  text={
+                    <FormattedMessage
+                      {...messages.profanityError}
+                      values={{
+                        guidelinesLink: (
+                          <Link to="/pages/faq" target="_blank">
+                            {formatMessage(messages.guidelinesLinkText)}
+                          </Link>
+                        ),
+                      }}
+                    />
+                  }
+                />
+              )}
             </FormElement>
           </StyledFormSection>
 

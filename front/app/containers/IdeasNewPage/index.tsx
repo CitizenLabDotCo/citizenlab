@@ -103,6 +103,8 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
       position: '',
       position_coordinates: null,
       submitError: false,
+      titleProfanityError: false,
+      descriptionProfanityError: false,
       fileOrImageError: false,
       processing: false,
       ideaId: null,
@@ -228,9 +230,9 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
         } catch (error) {
           const apiErrors = get(error, 'json.errors');
           if (process.env.NODE_ENV === 'development') console.log(error);
-          if (apiErrors && !apiErrors.idea) {
+
+          if (apiErrors && apiErrors.image) {
             this.globalState.set({
-              submitError: false,
               fileOrImageError: true,
             });
           }
@@ -251,9 +253,50 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
           });
         }
       } catch (error) {
+        if (process.env.NODE_ENV === 'development') console.log(error);
+        const apiErrors = get(error, 'json.errors');
+        const profanityApiError = apiErrors.base.find(
+          (apiError) => apiError.error === 'includes_banned_words'
+        );
+
+        if (profanityApiError) {
+          const titleProfanityError = profanityApiError.blocked_words.some(
+            (blockedWord) => blockedWord.attribute === 'title_multiloc'
+          );
+          const descriptionProfanityError = profanityApiError.blocked_words.some(
+            (blockedWord) => blockedWord.attribute === 'body_multiloc'
+          );
+
+          if (titleProfanityError) {
+            this.globalState.set({
+              titleProfanityError,
+            });
+          }
+
+          if (descriptionProfanityError) {
+            this.globalState.set({
+              descriptionProfanityError,
+            });
+          }
+        }
+
         this.globalState.set({ processing: false, submitError: true });
       }
     }
+  };
+
+  onTitleChange = (title: string) => {
+    this.globalState.set({
+      title,
+      titleProfanityError: false,
+    });
+  };
+
+  onDescriptionChange = (description: string) => {
+    this.globalState.set({
+      description,
+      descriptionProfanityError: false,
+    });
   };
 
   render() {
@@ -267,6 +310,8 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
             <NewIdeaForm
               onSubmit={this.handleOnIdeaSubmit}
               projectId={project.id}
+              onTitleChange={this.onTitleChange}
+              onDescriptionChange={this.onDescriptionChange}
             />
           </PageContainer>
           <ButtonBarContainer>

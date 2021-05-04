@@ -1,0 +1,13 @@
+"no":
+  user_confirmation:
+    confirmations_mailer:
+      send_confirmation_code:
+        subject: "Bekreft e-postadressen din på deltakerplattformen til %{organizationName}"
+        header: "Din bekreftelseskode"
+        header_message: "Hei, %{firstName}!"
+        thanks_for_signing_up: "Takk for at du registrerer deg på deltakerplattformen til %{organizationName}."
+        please_confirm_your_email_address: "Bekreft e-postadressen din for å fullføre registreringen."
+        copy_paste_the_link_below: "Kopier koden nedenfor og lim den inn i ditt registreringsskjema."
+        the_link_is_valid_for: "Denne lenken er gyldig i 24 timer. Hvis lenken er utløpt, kan du <a href=\"%{link}\">be om en ny kode</a>."
+        did_you_receive_this_email_in_error: "Mottok du denne e-posten ved en feil? <a href=\"%{link}\">La oss få vite det</a>."
+

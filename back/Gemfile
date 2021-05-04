@@ -92,6 +92,8 @@ gem 'axlsx', '3.0.0.pre'
 gem 'counter_culture', '~> 2.8'
 gem 'fog-aws'
 gem 'groupdate' # , "~> 3.2.0"
+gem 'interactor'
+gem 'interactor-rails'
 gem 'liquid', '~> 4.0'
 gem 'mini_magick', '~> 4.9'
 gem 'pg_search', '~> 2.3.5'
@@ -154,11 +156,9 @@ if File.exists?('../citizenlab.config.ee.json')
   # requires activerecord < 6.0.
   gem 'apartment', github: 'influitive/apartment', branch: 'development'
 end
- 
+
 cl_config["modules"].each do |m, enabled|
   if enabled && File.exists?("engines/#{m}")
     gem m.split('/').last, path: "engines/#{m}"
   end
 end
-
-
