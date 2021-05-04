@@ -23,7 +23,7 @@ const NavItemComponent: FC<Props> = ({ onData }) => {
               }/admin/insights`
             ),
         },
-        insertAfterName: 'dashboard',
+        insertAfterName: 'projects',
       }),
     []
   );
