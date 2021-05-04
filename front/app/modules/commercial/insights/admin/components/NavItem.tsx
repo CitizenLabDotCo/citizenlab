@@ -12,19 +12,18 @@ const NavItemComponent: FC<Props> = ({ onData }) => {
     () =>
       onData({
         configuration: {
-          name: 'processing',
-          link: '/admin/processing',
+          name: 'insights',
+          link: '/admin/insights',
           iconName: 'processing',
-          featureName: 'manual_tagging',
-          message: 'processing',
+          message: 'insights',
           isActive: (pathName) =>
             pathName.startsWith(
               `${
                 getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''
-              }/admin/processing`
+              }/admin/insights`
             ),
         },
-        insertAfterName: 'dashboard',
+        insertAfterName: 'projects',
       }),
     []
   );
