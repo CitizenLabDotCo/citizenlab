@@ -585,28 +585,27 @@ resource "Users" do
         end
       end
 
-      context 'when the user_confirmation module is active' do
-        pending('Pending until the email editing iteration of account confirmation')
+      # NOTE: To be included in an upcoming iteration
+      # context 'when the user_confirmation module is active' do
+      #   before do
+      #     AppConfiguration.instance.activate_feature!('user_confirmation')
+      #   end
 
-        before do
-          AppConfiguration.instance.activate_feature!('user_confirmation')
-        end
+      #   describe 'Changing the email' do
+      #     let(:email) { 'new-email@email.com' }
 
-        describe 'Changing the email' do
-          let(:email) { 'new-email@email.com' }
+      #     example_request 'Requires confirmation' do
+      #       json_response = json_parse(response_body)
+      #       expect(json_response.dig(:data, :attributes, :confirmation_required)).to be true
+      #     end
 
-          example_request 'Requires confirmation' do
-            json_response = json_parse(response_body)
-            expect(json_response.dig(:data, :attributes, :confirmation_required)).to be true
-          end
-
-          example_request 'Sends a confirmation email' do
-            last_email = ActionMailer::Base.deliveries.last
-            user       = User.find(id)
-            expect(last_email.to).to include user.reload.email
-          end
-        end
-      end
+      #     example_request 'Sends a confirmation email' do
+      #       last_email = ActionMailer::Base.deliveries.last
+      #       user       = User.find(id)
+      #       expect(last_email.to).to include user.reload.email
+      #     end
+      #   end
+      # end
 
       describe do
         before do
