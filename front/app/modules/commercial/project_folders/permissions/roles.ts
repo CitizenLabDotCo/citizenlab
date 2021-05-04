@@ -1,3 +1,4 @@
+import { isNilOrError } from 'utils/helperUtils';
 import { IUserData, IRole } from 'services/users';
 import { isAdmin } from 'services/permissions/roles';
 
@@ -8,7 +9,14 @@ declare module 'services/users' {
   };
 }
 
-export function moderatesFolder(user: IUserData, projectFolderId: string) {
+export function moderatesFolder(
+  user: IUserData | null,
+  projectFolderId: string
+) {
+  if (isNilOrError(user)) {
+    return false;
+  }
+
   return (
     isAdmin({ data: user }) || isProjectFolderModerator(user, projectFolderId)
   );
