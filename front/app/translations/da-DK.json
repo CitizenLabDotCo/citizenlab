@@ -546,6 +546,7 @@
   "app.components.admin.PostManager.inputCommentsExportFileName": "",
   "app.components.admin.PostManager.inputManagerHeader": "Input",
   "app.components.admin.PostManager.inputs": "Indlæg",
+  "app.components.admin.PostManager.inputsExportFileName": "",
   "app.components.admin.PostManager.inputsNeedFeedbackToggle": "Vis kun input, der har brug for feedback",
   "app.components.admin.PostManager.latestFeedbackMode": "Use the most recent official update",
   "app.components.admin.PostManager.losePhaseInfoConfirmation": "Moving '{ideaTitle}' away from its current project will lose the information about its assigned phases. Do you want to proceed?",
