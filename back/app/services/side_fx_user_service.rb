@@ -96,6 +96,4 @@ class SideFxUserService
   end
 end
 
-end
-
 ::SideFxUserService.prepend(UserConfirmation::Patches::SideFxUserService)
