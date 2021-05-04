@@ -84,11 +84,7 @@ const SignUpInModal = memo<Props>(({ className, onMounted }) => {
         setSignUpActiveStep(activeStep);
       }),
       changeMetaData$.subscribe(({ eventValue: metaData }) => {
-        if (metaData.inModal) {
-          setMetaData(metaData);
-        } else {
-          onClose();
-        }
+        setMetaData(metaData);
       }),
     ];
 
@@ -112,10 +108,6 @@ const SignUpInModal = memo<Props>(({ className, onMounted }) => {
 
     setMetaData(undefined);
   }, [metaData, authUser]);
-
-  if (!metaData?.inModal) {
-    return null;
-  }
 
   return (
     <Modal
