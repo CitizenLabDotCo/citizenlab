@@ -233,7 +233,9 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
     },
     {
       name: 'warnings',
-      label: `${intl.formatMessage(messages.warnings)} (${flaggedItemsCount})`,
+      label: intl.formatMessage(messages.warnings, {
+        flaggedItemsCount,
+      }),
     },
   ];
 

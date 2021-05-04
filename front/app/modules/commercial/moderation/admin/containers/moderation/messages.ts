@@ -63,7 +63,7 @@ export default defineMessages({
   },
   warnings: {
     id: 'app.containers.Admin.Moderation.warnings',
-    defaultMessage: 'Warnings',
+    defaultMessage: 'Warnings ({flaggedItemsCount})',
   },
   noViewedItems: {
     id: 'app.containers.Admin.Moderation.noViewedItems',
