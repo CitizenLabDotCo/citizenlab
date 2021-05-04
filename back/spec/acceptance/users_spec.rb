@@ -586,6 +586,8 @@ resource "Users" do
       end
 
       context 'when the user_confirmation module is active' do
+        pending('Pending until the email editing iteration of account confirmation')
+
         before do
           AppConfiguration.instance.activate_feature!('user_confirmation')
         end
