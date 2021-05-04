@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
-  subject(:user) { build(:user) }
+  subject(:user) { build(:user_with_confirmation) }
 
   after(:each) do
     user.clear_changes_information
@@ -17,11 +17,17 @@ RSpec.describe User, type: :model do
 
   describe '#confirmed?' do
     it 'returns false when the user has not yet been confirmed' do
+      user.save
       expect(user.confirmed?).to be false
     end
 
     it 'returns true after the user has confirmed the account' do
       user.confirm!
+      expect(user.confirmed?).to be true
+    end
+
+    it 'returns true if the user accepted an invitation' do
+      user.update(invite_status: 'accepted')
       expect(user.confirmed?).to be true
     end
   end

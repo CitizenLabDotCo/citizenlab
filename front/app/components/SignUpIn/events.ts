@@ -4,7 +4,6 @@ import { TSignUpSteps } from 'components/SignUpIn/SignUp';
 
 enum events {
   openSignUpInModal = 'openSignUpInModal',
-  goToSignUpInPage = 'goToSignUpInPage',
   closeSignUpInModal = 'closeSignUpInModal',
   signUpActiveStepChange = 'signUpActiveStepChange',
   changeMetaData = 'metaDataChange',
@@ -27,25 +26,6 @@ export function openSignUpInModal(metaData?: Partial<ISignUpInMetaData>) {
 
   eventEmitter.emit<ISignUpInMetaData>(
     events.openSignUpInModal,
-    emittedMetaData
-  );
-}
-
-export function goToSignUpInPage(metaData?: Partial<ISignUpInMetaData>) {
-  const emittedMetaData: ISignUpInMetaData = {
-    flow: metaData?.flow || 'signup',
-    pathname: metaData?.pathname || window.location.pathname,
-    verification: metaData?.verification,
-    verificationContext: metaData?.verificationContext,
-    error: !!metaData?.error,
-    isInvitation: !!metaData?.isInvitation,
-    token: metaData?.token,
-    inModal: false,
-    action: metaData?.action || undefined,
-  };
-
-  eventEmitter.emit<ISignUpInMetaData>(
-    events.goToSignUpInPage,
     emittedMetaData
   );
 }
