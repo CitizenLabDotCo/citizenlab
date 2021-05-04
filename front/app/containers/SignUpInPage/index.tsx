@@ -110,18 +110,18 @@ export interface DataProps {
 
 export interface Props extends DataProps, WithRouterProps {}
 
-function SignUpPage({
+const SignUpPage = ({
   authUser,
   location,
   previousPathName,
-}: Props): ReactElement {
+}: Props): ReactElement => {
   const { pathname } = location;
   const flow = endsWith(pathname, 'sign-in') ? 'signin' : 'signup';
 
   const [metaData, setMetaData] = useState<ISignUpInMetaData | undefined>({
-    inModal: false,
     flow,
     pathname,
+    inModal: false,
   });
 
   const isLoggedIn =
@@ -175,7 +175,7 @@ function SignUpPage({
       </Container>
     </>
   );
-}
+};
 
 const SignUpPageWithHoC = withRouter(SignUpPage);
 
