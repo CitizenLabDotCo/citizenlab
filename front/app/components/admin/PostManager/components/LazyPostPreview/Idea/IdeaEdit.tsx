@@ -50,6 +50,10 @@ import GetResourceFileObjects, {
 } from 'resources/GetResourceFileObjects';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 
+// tracks
+import tracks from './tracks';
+import { trackEventByName } from 'utils/analytics';
+
 const ButtonWrapper = styled.div`
   display: flex;
   justify-content: flex-start;
@@ -292,6 +296,11 @@ class IdeaEdit extends PureComponent<Props, State> {
         );
 
         if (titleProfanityError) {
+          trackEventByName(tracks.titleProfanityError, {
+            tenant: tenantId,
+            location: 'IdeaEdit (Input manager)',
+            idea: ideaId,
+          });
           this.setState({
             titleProfanityError,
           });
