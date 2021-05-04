@@ -2,6 +2,17 @@
  
 ## Next release
 
+/
+
+## 2021-05-04
+
+?
+
+## 2021-05-03
+
+- Users are now prompted to confirm their account after creating it, by receiving a confirmation code in their email address.
+
+## 2021-04-29
 
 ### Fixed
 - Customizable Banner Fields no longer get emptied/reset when changing another.
