@@ -58,7 +58,7 @@
   "app.components.ConfirmationModal.sendNewCode": "Neuen Code senden.",
   "app.components.ConfirmationModal.verifyAndContinue": "Überprüfen und fortfahren",
   "app.components.ConfirmationModal.weAskEveryoneToConfirmTheirEmail": "Wir bitten jeden, seine E-Mail-Adresse zu bestätigen, um eine vertrauenswürdige Community zu schaffen.",
-  "app.components.ConfirmationModal.whenTurnedOnUsersWillHaveToConfirm": "Wenn diese Funktion aktiviert ist, müssen neue Benutzer ihre E-Mail-Adresse oder Telefonnummer mit einem 4-stelligen Code bestätigen, den sie per E-Mail oder SMS erhalten, um ihre Registrierung abzuschließen.",
+  "app.components.ConfirmationModal.whenTurnedOnUsersWillHaveToConfirm": "Wenn diese Funktion aktiviert ist, müssen neue Benutzer ihre E-Mail-Adresse mit einem 4-stelligen Code bestätigen, den sie per E-Mail erhalten, um ihre Registrierung abzuschließen.",
   "app.components.ConfirmationModal.wrongEmail": "Falsche E-Mail?",
   "app.components.ConsentManager.Banner.accept": "Akzeptieren",
   "app.components.ConsentManager.Banner.ariaButtonClose": "Richtlinien werden akzeptiert und das Banner wird geschlossen",
