@@ -22,4 +22,12 @@ export default defineMessages({
     id: 'app.containers.Admin.Insights.link',
     defaultMessage: 'Read our support guide',
   },
+  helmetTitle: {
+    id: 'app.containers.Admin.Insights.helmetTitle',
+    defaultMessage: 'Platform Insights',
+  },
+  helmetDescription: {
+    id: 'app.containers.Admin.Insights.helmetDescription',
+    defaultMessage: 'Admin insights page',
+  },
 });

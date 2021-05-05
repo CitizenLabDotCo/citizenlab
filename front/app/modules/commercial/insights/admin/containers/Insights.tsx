@@ -8,18 +8,19 @@ import messages from '../../messages';
 // components
 import PageTitle from 'components/admin/PageTitle';
 
-//styles
+// styles
 import styled from 'styled-components';
 import { fontSizes, colors } from 'utils/styleUtils';
 import { darken } from 'polished';
 
 const StyledDescription = styled.p`
   font-size: ${fontSizes.base}px;
-  width: 60%;
+  width: 50%;
   margin: 0;
 `;
 
 const StyledLink = styled.a`
+  cursor: pointer;
   font-size: ${fontSizes.base}px;
   color: ${colors.clBlue};
   font-weight: 600;

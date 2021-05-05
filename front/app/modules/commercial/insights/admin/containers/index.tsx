@@ -4,6 +4,7 @@ import Link from 'utils/cl-router/Link';
 import { withRouter, WithRouterProps } from 'react-router';
 
 // components
+import HelmetIntl from 'components/HelmetIntl';
 import NavigationTabs, {
   Tab,
   TabsPageLayout,
@@ -29,6 +30,10 @@ const Insights: React.FC<InjectedIntlProps & WithRouterProps> = ({
 }) => {
   return (
     <div>
+      <HelmetIntl
+        title={messages.helmetTitle}
+        description={messages.helmetDescription}
+      />
       <NavigationTabs>
         {tabs.map((tab) => (
           <Tab

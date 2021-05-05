@@ -1,5 +1,5 @@
 import React from 'react';
 
-const Reports = () => <div></div>;
+const Reports = () => <div />;
 
 export default Reports;
