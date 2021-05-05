@@ -1,5 +1,8 @@
 export default {
   titleProfanityError: {
-    name: 'Blocked profane title',
+    name: 'Profane idea title blocked',
+  },
+  descriptionProfanityError: {
+    name: 'Profane idea description blocked',
   },
 };

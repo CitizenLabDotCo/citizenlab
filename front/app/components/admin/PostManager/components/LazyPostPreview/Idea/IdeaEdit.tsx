@@ -208,6 +208,7 @@ class IdeaEdit extends PureComponent<Props, State> {
       imageId,
       imageFile,
       address: savedAddress,
+      projectId,
     } = this.state;
     const {
       title,
@@ -297,7 +298,11 @@ class IdeaEdit extends PureComponent<Props, State> {
 
         if (titleProfanityError) {
           trackEventByName(tracks.titleProfanityError.name, {
-            location: 'IdeaEdit (Input manager)',
+            ideaId,
+            projectId,
+            locale,
+            profaneMessage: title,
+            location: 'IdeaEdit (Input manager in admin)',
           });
           this.setState({
             titleProfanityError,
@@ -306,7 +311,11 @@ class IdeaEdit extends PureComponent<Props, State> {
 
         if (descriptionProfanityError) {
           trackEventByName(tracks.descriptionProfanityError.name, {
-            location: 'IdeaEdit (Input manager)',
+            ideaId,
+            projectId,
+            locale,
+            profaneMessage: description,
+            location: 'IdeaEdit (Input manager in admin)',
           });
           this.setState({
             descriptionProfanityError,
