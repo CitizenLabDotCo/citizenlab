@@ -271,8 +271,13 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
         });
 
         if (profanityApiError) {
-          trackEventByName(tracks.commentProfanityError.name, {
-            location: 'IdeasEditPage (citizen side)',
+          trackEventByName(tracks.childCommentProfanityError.name, {
+            locale,
+            postId,
+            postType,
+            projectId,
+            profaneMessage: commentBodyMultiloc[locale],
+            location: 'InitiativesNewFormWrapper (citizen side)',
           });
 
           this.setState({
