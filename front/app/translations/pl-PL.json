@@ -700,6 +700,8 @@
   "app.containers.Admin.Campaigns.tabAutomated": "Zautomatyzowane",
   "app.containers.Admin.Campaigns.tabCustom": "Własne",
   "app.containers.Admin.Insights.description": "",
+  "app.containers.Admin.Insights.helmetDescription": "",
+  "app.containers.Admin.Insights.helmetTitle": "",
   "app.containers.Admin.Insights.link": "",
   "app.containers.Admin.Insights.tabInsights": "",
   "app.containers.Admin.Insights.tabReports": "",
