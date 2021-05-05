@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { adopt } from 'react-adopt';
 // components
 import InitiativeForm, {
   FormValues,
@@ -36,8 +36,17 @@ import { Point } from 'geojson';
 // tracks
 import tracks from './tracks';
 import { trackEventByName } from 'utils/analytics';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetAppConfiguration';
 
-interface Props {
+interface DataProps {
+  authUser: GetAuthUserChildProps;
+  appConfiguration: GetAppConfigurationChildProps;
+}
+
+interface InputProps {
   locale: Locale;
   initiative: IInitiativeData;
   initiativeImage: IInitiativeImageData | null;
@@ -45,6 +54,8 @@ interface Props {
   onPublished: () => void;
   topics: ITopicData[];
 }
+
+interface Props extends DataProps, InputProps {}
 
 interface State extends FormValues {
   initiativeId: string;
@@ -62,10 +73,7 @@ function doNothing() {
   return;
 }
 
-export default class InitiativesEditFormWrapper extends React.PureComponent<
-  Props,
-  State
-> {
+class InitiativesEditFormWrapper extends React.PureComponent<Props, State> {
   initialValues: SimpleFormValues;
   constructor(props) {
     super(props);
@@ -181,7 +189,7 @@ export default class InitiativesEditFormWrapper extends React.PureComponent<
       filesToRemove,
       files,
     } = this.state;
-    const { onPublished, locale } = this.props;
+    const { onPublished, locale, appConfiguration, authUser } = this.props;
 
     // if we're already saving, do nothing.
     if (publishing) return;
@@ -281,6 +289,10 @@ export default class InitiativesEditFormWrapper extends React.PureComponent<
             profaneMessage: changedValues.title_multiloc?.[locale],
             proposalId: initiativeId,
             location: 'InitiativesEditFormWrapper (citizen side)',
+            userId: !isNilOrError(authUser) ? authUser.id : null,
+            host: !isNilOrError(appConfiguration)
+              ? appConfiguration.attributes.host
+              : null,
           });
 
           this.setState({
@@ -294,6 +306,10 @@ export default class InitiativesEditFormWrapper extends React.PureComponent<
             profaneMessage: changedValues.body_multiloc?.[locale],
             proposalId: initiativeId,
             location: 'InitiativesEditFormWrapper (citizen side)',
+            userId: !isNilOrError(authUser) ? authUser.id : null,
+            host: !isNilOrError(appConfiguration)
+              ? appConfiguration.attributes.host
+              : null,
           });
 
           this.setState({
@@ -405,3 +421,16 @@ export default class InitiativesEditFormWrapper extends React.PureComponent<
     );
   }
 }
+
+const Data = adopt<DataProps, InputProps>({
+  appConfiguration: <GetAppConfiguration />,
+  authUser: <GetAuthUser />,
+});
+
+export default (inputProps: InputProps) => (
+  <Data {...inputProps}>
+    {(dataProps) => (
+      <InitiativesEditFormWrapper {...inputProps} {...dataProps} />
+    )}
+  </Data>
+);
