@@ -171,6 +171,7 @@ class IdeaEdit extends PureComponent<Props, State> {
             descriptionMultiloc: idea.data.attributes.body_multiloc,
             address: idea.data.attributes.location_description,
             budget: idea.data.attributes.budget,
+            authorId: idea.data.relationships.author.data?.id || null,
             proposedBudget: idea.data.attributes.proposed_budget,
             imageFile: ideaImage ? [ideaImage] : [],
             imageId: ideaImage && ideaImage.id ? ideaImage.id : null,
