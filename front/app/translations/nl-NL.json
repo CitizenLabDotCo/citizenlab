@@ -57,7 +57,7 @@
   "app.components.ConfirmationModal.sendEmailWithCode": "Stuur e-mail met code",
   "app.components.ConfirmationModal.sendNewCode": "Verstuur een nieuwe code.",
   "app.components.ConfirmationModal.verifyAndContinue": "Verifiëren en doorgaan",
-  "app.components.ConfirmationModal.weAskEveryoneToConfirmTheirEmail": "We vragen iedereen om hun e-mailadres te bevestigen om een betrouwbare gemeenschap te helpen creëren.",
+  "app.components.ConfirmationModal.weAskEveryoneToConfirmTheirEmail": "We vragen aan iedereen om hun e-mailadres te bevestigen. Zo is het platform een betrouwbare omgeving voor iedereen.",
   "app.components.ConfirmationModal.whenTurnedOnUsersWillHaveToConfirm": "Wanneer dit is ingesteld, moeten nieuwe gebruikers hun e-mailadres bevestigen met een 4-cijferige code die zij via e-mail ontvangen om hun registratie te voltooien.",
   "app.components.ConfirmationModal.wrongEmail": "Verkeerde e-mailadres?",
   "app.components.ConsentManager.Banner.accept": "Aanvaarden",
