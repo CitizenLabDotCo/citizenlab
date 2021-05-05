@@ -33,6 +33,10 @@ import { convertUrlToUploadFile } from 'utils/fileTools';
 import { convertToGeoJson } from 'utils/locationTools';
 import { Point } from 'geojson';
 
+// tracks
+import tracks from './tracks';
+import { trackEventByName } from 'utils/analytics';
+
 interface Props {
   locale: Locale;
   initiative: IInitiativeData;
@@ -177,7 +181,7 @@ export default class InitiativesEditFormWrapper extends React.PureComponent<
       filesToRemove,
       files,
     } = this.state;
-    const { onPublished } = this.props;
+    const { onPublished, locale } = this.props;
 
     // if we're already saving, do nothing.
     if (publishing) return;
@@ -273,7 +277,10 @@ export default class InitiativesEditFormWrapper extends React.PureComponent<
 
         if (titleProfanityError) {
           trackEventByName(tracks.titleProfanityError.name, {
-            location: 'IdeasEditPage (citizen side)',
+            locale,
+            profaneMessage: changedValues.title_multiloc?.[locale],
+            proposalId: initiativeId,
+            location: 'InitiativesEditFormWrapper (citizen side)',
           });
 
           this.setState({
@@ -283,7 +290,10 @@ export default class InitiativesEditFormWrapper extends React.PureComponent<
 
         if (descriptionProfanityError) {
           trackEventByName(tracks.descriptionProfanityError.name, {
-            location: 'IdeasEditPage (citizen side)',
+            locale,
+            profaneMessage: changedValues.body_multiloc?.[locale],
+            proposalId: initiativeId,
+            location: 'InitiativesEditFormWrapper (citizen side)',
           });
 
           this.setState({
