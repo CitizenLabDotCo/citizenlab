@@ -1,3 +1,5 @@
 import React from 'react';
 
-export default () => <div>reports</div>;
+const Reports = () => <div></div>;
+
+export default Reports;

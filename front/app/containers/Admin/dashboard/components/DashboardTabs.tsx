@@ -8,7 +8,10 @@ import { Message, ITab } from 'typings';
 
 // components
 import FeatureFlag from 'components/FeatureFlag';
-import NavigationTabs, { Tab, TabsPageLayout } from 'components/NavigationTabs';
+import NavigationTabs, {
+  Tab,
+  TabsPageLayout,
+} from 'components/admin/NavigationTabs';
 
 // utils
 import { matchPathToUrl } from 'utils/helperUtils';

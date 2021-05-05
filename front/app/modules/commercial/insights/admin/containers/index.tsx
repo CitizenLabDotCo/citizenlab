@@ -4,7 +4,10 @@ import Link from 'utils/cl-router/Link';
 import { withRouter, WithRouterProps } from 'react-router';
 
 // components
-import NavigationTabs, { Tab, TabsPageLayout } from 'components/NavigationTabs';
+import NavigationTabs, {
+  Tab,
+  TabsPageLayout,
+} from 'components/admin/NavigationTabs';
 
 // utils
 import { matchPathToUrl } from 'utils/helperUtils';
@@ -29,6 +32,7 @@ const Insights: React.FC<InjectedIntlProps & WithRouterProps> = ({
       <NavigationTabs>
         {tabs.map((tab) => (
           <Tab
+            key={tab.url}
             active={Boolean(
               location?.pathname &&
                 matchPathToUrl(tab.url).test(location.pathname)
