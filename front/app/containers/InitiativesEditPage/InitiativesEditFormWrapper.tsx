@@ -36,6 +36,8 @@ import { Point } from 'geojson';
 // tracks
 import tracks from './tracks';
 import { trackEventByName } from 'utils/analytics';
+
+// resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
