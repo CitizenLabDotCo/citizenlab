@@ -8,6 +8,15 @@ const configuration: ModuleConfiguration = {
       {
         path: 'insights',
         container: () => import('./admin/containers'),
+        indexRoute: {
+          container: () => import('./admin/containers'),
+        },
+        childRoutes: [
+          {
+            path: 'reports',
+            container: () => import('./admin/containers'),
+          },
+        ],
       },
     ],
   },

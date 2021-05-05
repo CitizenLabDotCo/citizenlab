@@ -11,6 +11,7 @@ export default () => ({
     delay: 500,
   }),
   indexRoute: {
+    name: 'home',
     component: Loadable({
       loader: () => import('./all'),
       loading: () => null,
