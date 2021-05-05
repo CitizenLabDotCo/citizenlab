@@ -35,6 +35,9 @@ import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetWindowSize, {
   GetWindowSizeChildProps,
 } from 'resources/GetWindowSize';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetAppConfiguration';
 
 // events
 import { commentReplyButtonClicked$, commentAdded } from './events';
@@ -106,6 +109,7 @@ interface DataProps {
   locale: GetLocaleChildProps;
   authUser: GetAuthUserChildProps;
   windowSize: GetWindowSizeChildProps;
+  appConfiguration: GetAppConfigurationChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -207,6 +211,7 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
       waitForChildCommentsRefetch,
       locale,
       authUser,
+      appConfiguration,
     } = this.props;
     const { inputValue, canSubmit } = this.state;
 
@@ -278,6 +283,10 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
             projectId,
             profaneMessage: commentBodyMultiloc[locale],
             location: 'InitiativesNewFormWrapper (citizen side)',
+            userId: authUser.id,
+            host: !isNilOrError(appConfiguration)
+              ? appConfiguration.attributes.host
+              : null,
           });
 
           this.setState({
@@ -433,6 +442,7 @@ const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
   authUser: <GetAuthUser />,
   windowSize: <GetWindowSize />,
+  appConfiguration: <GetAppConfiguration />,
 });
 
 export default (inputProps: InputProps) => (
