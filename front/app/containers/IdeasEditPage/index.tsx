@@ -52,6 +52,10 @@ import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 
+// tracks
+import tracks from './tracks';
+import { trackEventByName } from 'utils/analytics';
+
 const Container = styled.div`
   background: ${colors.background};
 `;
@@ -239,6 +243,7 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
 
   handleIdeaFormOutput = async (ideaFormOutput: IIdeaFormOutput) => {
     const { ideaId } = this.props.params;
+    const { project } = this.props;
     const {
       locale,
       titleMultiloc,
@@ -335,8 +340,13 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
 
         if (titleProfanityError) {
           trackEventByName(tracks.titleProfanityError.name, {
+            ideaId,
+            locale,
+            projectId: !isNilOrError(project) ? project.id : null,
+            profaneMessage: title,
             location: 'IdeasEditPage (citizen side)',
           });
+
           this.setState({
             titleProfanityError,
           });
@@ -344,8 +354,13 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
 
         if (descriptionProfanityError) {
           trackEventByName(tracks.descriptionProfanityError.name, {
+            ideaId,
+            locale,
+            projectId: !isNilOrError(project) ? project.id : null,
+            profaneMessage: title,
             location: 'IdeasEditPage (citizen side)',
           });
+
           this.setState({
             descriptionProfanityError,
           });
