@@ -12,6 +12,7 @@
     "commercial/google_analytics": true,
     "commercial/google_tag_manager": true,
     "commercial/granular_permissions": true,
+    "commercial/id_auth0": true,
     "commercial/id_bogus": true,
     "commercial/id_bosa_fas": true,
     "commercial/id_clave_unica": true,
