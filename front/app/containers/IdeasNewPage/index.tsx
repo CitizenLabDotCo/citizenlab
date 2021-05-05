@@ -40,6 +40,9 @@ import styled from 'styled-components';
 // tracks
 import tracks from './tracks';
 import { trackEventByName } from 'utils/analytics';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetAppConfiguration';
 
 const Container = styled.div`
   background: ${colors.background};
@@ -84,6 +87,7 @@ interface InputProps {}
 
 interface DataProps {
   locale: GetLocaleChildProps;
+  appConfiguration: GetAppConfigurationChildProps;
   authUser: GetAuthUserChildProps;
   project: GetProjectChildProps;
   previousPathName: string | null;
@@ -176,7 +180,7 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
   };
 
   handleOnIdeaSubmit = async () => {
-    const { locale, authUser, project } = this.props;
+    const { locale, authUser, project, appConfiguration } = this.props;
     const {
       title,
       description,
@@ -279,6 +283,10 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
               projectId: !isNilOrError(project) ? project.id : null,
               profaneMessage: title,
               location: 'IdeasNewPage (citizen side)',
+              userId: !isNilOrError(authUser) ? authUser.id : null,
+              host: !isNilOrError(appConfiguration)
+                ? appConfiguration.attributes.host
+                : null,
             });
             this.globalState.set({
               titleProfanityError,
@@ -292,6 +300,10 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
               projectId: !isNilOrError(project) ? project.id : null,
               profaneMessage: title,
               location: 'IdeasNewPage (citizen side)',
+              userId: !isNilOrError(authUser) ? authUser.id : null,
+              host: !isNilOrError(appConfiguration)
+                ? appConfiguration.attributes.host
+                : null,
             });
             this.globalState.set({
               descriptionProfanityError,
@@ -349,6 +361,7 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
 
 const Data = adopt<DataProps, InputProps & WithRouterProps>({
   locale: <GetLocale />,
+  appConfiguration: <GetAppConfiguration />,
   authUser: <GetAuthUser />,
   project: ({ params, render }) => (
     <GetProject projectSlug={params.slug}>{render}</GetProject>
