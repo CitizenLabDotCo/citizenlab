@@ -58,7 +58,7 @@
   "app.components.ConfirmationModal.sendNewCode": "Enviar nuevo código.",
   "app.components.ConfirmationModal.verifyAndContinue": "Verificar y continuar",
   "app.components.ConfirmationModal.weAskEveryoneToConfirmTheirEmail": "Pedimos a todas las personas que confirmen su correo electrónico para ayudar a crear una comunidad de confianza.",
-  "app.components.ConfirmationModal.whenTurnedOnUsersWillHaveToConfirm": "Cuando se active, los nuevos usuarios tendrán que confirmar su correo electrónico o su número de teléfono con un código de 4 dígitos que recibirán por correo electrónico o SMS para completar su registro.",
+  "app.components.ConfirmationModal.whenTurnedOnUsersWillHaveToConfirm": "Cuando se active, los nuevos usuarios tendrán que confirmar su correo electrónico con un código de 4 dígitos que recibirán por correo electrónico para completar su registro.",
   "app.components.ConfirmationModal.wrongEmail": "¿Correo electrónico incorrecto?",
   "app.components.ConsentManager.Banner.accept": "Aceptar",
   "app.components.ConsentManager.Banner.ariaButtonClose": "Aceptar política y cerrar banner",
