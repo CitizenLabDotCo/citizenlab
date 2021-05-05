@@ -38,6 +38,10 @@ import {
 } from 'services/initiativeFiles';
 import { reportError } from 'utils/loggingUtils';
 
+// tracks
+import tracks from './tracks';
+import { trackEventByName } from 'utils/analytics';
+
 const StyledInitiativeForm = styled(InitiativeForm)`
   width: 100%;
   min-width: 530px;
@@ -270,6 +274,7 @@ export default class InitiativesNewFormWrapper extends React.PureComponent<
       banner,
       publishing,
     } = this.state;
+    const { locale } = this.props;
 
     // if we're already saving, do nothing.
     if (publishing) return;
@@ -351,7 +356,10 @@ export default class InitiativesNewFormWrapper extends React.PureComponent<
 
         if (titleProfanityError) {
           trackEventByName(tracks.titleProfanityError.name, {
-            location: 'IdeasEditPage (citizen side)',
+            locale,
+            profaneMessage: changedValues.title_multiloc?.[locale],
+            proposalId: initiativeId,
+            location: 'InitiativesNewFormWrapper (citizen side)',
           });
 
           this.setState({
@@ -361,7 +369,10 @@ export default class InitiativesNewFormWrapper extends React.PureComponent<
 
         if (descriptionProfanityError) {
           trackEventByName(tracks.descriptionProfanityError.name, {
-            location: 'IdeasEditPage (citizen side)',
+            locale,
+            profaneMessage: changedValues.body_multiloc?.[locale],
+            proposalId: initiativeId,
+            location: 'InitiativesNewFormWrapper (citizen side)',
           });
           this.setState({
             descriptionProfanityError,
