@@ -8,8 +8,10 @@ import { Message, ITab } from 'typings';
 
 // components
 import FeatureFlag from 'components/FeatureFlag';
+import NavigationTabs, { Tab, TabsPageLayout } from 'components/NavigationTabs';
 
-import NavigationTabs, { Tab, TabPanel } from 'components/NavigationTabs';
+// utils
+import { matchPathToUrl } from 'utils/helperUtils';
 
 interface Props {
   resource: {
@@ -21,10 +23,6 @@ interface Props {
     viewPublicResource: Message;
   };
   tabs?: ITab[];
-}
-
-function getRegularExpression(tabUrl: string) {
-  return new RegExp(`^\/([a-zA-Z]{2,3}(-[a-zA-Z]{2,3})?)(${tabUrl})(\/)?$`);
 }
 
 const DashboardTabs = memo<Props & WithRouterProps>(
@@ -44,9 +42,7 @@ const DashboardTabs = memo<Props & WithRouterProps>(
                           key={tab.url}
                           active={Boolean(
                             location?.pathname &&
-                              getRegularExpression(tab.url).test(
-                                location.pathname
-                              )
+                              matchPathToUrl(tab.url).test(location.pathname)
                           )}
                           className={tab.name}
                         >
@@ -60,9 +56,7 @@ const DashboardTabs = memo<Props & WithRouterProps>(
                         key={tab.url}
                         active={Boolean(
                           location?.pathname &&
-                            getRegularExpression(tab.url).test(
-                              location.pathname
-                            )
+                            matchPathToUrl(tab.url).test(location.pathname)
                         )}
                         className={tab.name}
                       >
@@ -76,7 +70,7 @@ const DashboardTabs = memo<Props & WithRouterProps>(
             [tabs, location]
           )}
 
-        <TabPanel>{children}</TabPanel>
+        <TabsPageLayout>{children}</TabsPageLayout>
       </>
     );
   }

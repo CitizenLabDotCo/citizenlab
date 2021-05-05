@@ -132,13 +132,15 @@ const AdminPage = memo<Props & WithRouterProps>(
     const noPadding =
       adminNoPadding ||
       pathname.includes('admin/dashboard') ||
-      pathname.includes('admin/processing');
+      pathname.includes('admin/processing') ||
+      pathname.includes('admin/insights');
 
     const fullWidth =
       adminFullWidth === true ||
       endsWith(pathname, 'admin/moderation') ||
       pathname.includes('admin/dashboard') ||
-      pathname.includes('admin/processing');
+      pathname.includes('admin/processing') ||
+      pathname.includes('admin/insights');
     const whiteBg =
       endsWith(pathname, 'admin/moderation') ||
       pathname.includes('admin/dashboard') ||

@@ -1,5 +1,3 @@
-import React from 'react';
-
 // style
 import styled, { css } from 'styled-components';
 import { colors, defaultStyles } from 'utils/styleUtils';
@@ -7,9 +5,9 @@ import { tabBorderSize } from './styleConfig';
 
 // components
 import Tab from './Tab';
-import TabPanel from './TabPanel';
+import TabsPageLayout from './TabsPageLayout';
 
-const StyledNavigationTabs = styled.nav`
+const NavigationTabs = styled.nav`
   ${({ theme }) => css`
     position: fixed;
     width: 100%;
@@ -30,10 +28,5 @@ const StyledNavigationTabs = styled.nav`
   `}
 `;
 
-const NavigationTabs: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
-  children,
-  ...rest
-}) => <StyledNavigationTabs {...rest}>{children}</StyledNavigationTabs>;
-
-export { Tab, TabPanel };
+export { Tab, TabsPageLayout };
 export default NavigationTabs;

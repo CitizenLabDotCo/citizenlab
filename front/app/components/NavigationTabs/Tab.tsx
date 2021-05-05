@@ -1,5 +1,3 @@
-import React from 'react';
-
 // style
 import styled, { css } from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
@@ -10,7 +8,7 @@ import {
   activeBorderSize,
 } from './styleConfig';
 
-const StyledTab = styled.div`
+const Tab = styled.div`
   ${({ active }: TabProps) => css`
     list-style: none;
     cursor: pointer;
@@ -48,9 +46,8 @@ const StyledTab = styled.div`
     }`}
 
     ${active &&
-    `
+    `border-color: #7FBBCA;
     // border-color: ${colors.adminTextColor}; TODO : set accent color in component library
-    border-color: #7FBBCA;
 
     > * {
         color: ${colors.adminTextColor};
@@ -59,9 +56,5 @@ const StyledTab = styled.div`
 `;
 
 type TabProps = { active: boolean } & React.HTMLAttributes<HTMLDivElement>;
-
-const Tab: React.FC<TabProps> = ({ children, ...rest }) => (
-  <StyledTab {...rest}>{children}</StyledTab>
-);
 
 export default Tab;

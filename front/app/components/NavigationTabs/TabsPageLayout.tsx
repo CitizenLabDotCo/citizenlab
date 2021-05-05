@@ -1,6 +1,4 @@
-import React from 'react';
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
 import {
   tabLineHeight,
   tabPadding,
@@ -9,7 +7,7 @@ import {
   wrapperPadding,
 } from './styleConfig';
 
-const StyledTabPanel = styled.div`
+const TabsPageLayout = styled.div`
   width: 100%;
   margin-bottom: 60px;
   padding: ${wrapperPadding}px;
@@ -21,7 +19,6 @@ const StyledTabPanel = styled.div`
   activeBorderSize}px;
   max-width: 1400px;
   margin: 0 auto;
-  background: ${colors.adminContentBackground};
 
   @media print {
     border: none;
@@ -30,9 +27,4 @@ const StyledTabPanel = styled.div`
   }
 `;
 
-const TabPanel: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
-  children,
-  ...rest
-}) => <StyledTabPanel {...rest}>{children}</StyledTabPanel>;
-
-export default TabPanel;
+export default TabsPageLayout;
