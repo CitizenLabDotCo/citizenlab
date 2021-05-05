@@ -58,7 +58,7 @@
   "app.components.ConfirmationModal.sendNewCode": "Send ny kode.",
   "app.components.ConfirmationModal.verifyAndContinue": "Bekreft og fortsett",
   "app.components.ConfirmationModal.weAskEveryoneToConfirmTheirEmail": "Vi ber alle bekrefte e-postadressene sine for å hjelpe til med å lage et pålitelig fellesskap. ",
-  "app.components.ConfirmationModal.whenTurnedOnUsersWillHaveToConfirm": "Når den er slått på, må nye brukere bekrefte e-postadressene eller telefonnumrene med en firesifret kode som de mottar via e-post eller SMS for å fullføre registreringen.",
+  "app.components.ConfirmationModal.whenTurnedOnUsersWillHaveToConfirm": "Når den er slått på, må nye brukere bekrefte e-postadressene med en firesifret kode som de mottar via e-post for å fullføre registreringen.",
   "app.components.ConfirmationModal.wrongEmail": "Feil e-post?",
   "app.components.ConsentManager.Banner.accept": "Godta",
   "app.components.ConsentManager.Banner.ariaButtonClose": "Godta policy og lukk banner",
