@@ -26,7 +26,7 @@ import useIdeaMarkers from 'hooks/useIdeaMarkers';
 import useWindowSize from 'hooks/useWindowSize';
 
 // events
-import { selectIdeaId, selectedIdeaId$ } from './events';
+import { selectIdeaId } from './events';
 
 // i18n
 import FormattedMessage from 'utils/cl-intl/FormattedMessage';
@@ -190,7 +190,6 @@ const IdeasMap = memo<Props & WithRouterProps>(
               points={points}
               onMarkerClick={toggleIdea}
               onMapClick={onMapClick}
-              fitBounds={false}
               mapHeight="80vh"
             />
 

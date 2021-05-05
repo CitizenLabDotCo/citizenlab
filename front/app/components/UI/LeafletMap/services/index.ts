@@ -6,12 +6,11 @@ import {
   changeView,
   addOnMoveHandler,
   addOnZoomHandler,
-  refitBounds,
 } from './setup';
 
 import { addLayersControl, removeLayersControl } from './controls';
 import { addLayers, removeLayers, removeLayer } from './layers';
-import { addMarkersToMap, addClusterGroup } from './markers';
+import { addMarkersToMap, addClusterGroup, getMarkerIcon } from './markers';
 
 export default {
   setup,
@@ -21,7 +20,6 @@ export default {
   changeView,
   addOnMoveHandler,
   addOnZoomHandler,
-  refitBounds,
   addLayersControl,
   removeLayersControl,
   addLayers,
@@ -29,4 +27,5 @@ export default {
   removeLayer,
   addMarkersToMap,
   addClusterGroup,
+  getMarkerIcon,
 };

@@ -1,5 +1,4 @@
 import { useEffect, useState, useMemo } from 'react';
-import { isEmpty } from 'lodash-es';
 import usePrevious from 'hooks/usePrevious';
 
 import 'leaflet/dist/leaflet.css';
@@ -21,7 +20,6 @@ import service from './services';
 import {
   Point,
   IMarkerStringOrObjectOrFunctionForLayer,
-  IMarkerStringOrObjectOrFunctionForMap,
   IOverlayStringOrObjectOrFunctionForLayer,
   ITooltipStringOrObjectOrFunctionForLayer,
   IPopupStringOrObjectOrFunctionForLayer,
@@ -37,17 +35,19 @@ L.Icon.Default.mergeOptions({
   shadowUrl: markerShadow,
 });
 
+import defaultMarker from './default-marker.svg';
+// import defaultHoverMarker from './default-marker-hover.svg';
+import defaultActiveMarker from './default-marker-active.svg';
+
 export interface ILeafletMapConfig {
   center?: L.LatLngExpression;
   zoom?: number;
   tileProvider?: string | null;
   tileOptions?: object;
-  fitBounds?: boolean;
   onClick?: IOnMapClickHandler;
   onMarkerClick?: (id: string, data: string) => void;
   geoJsonLayers?: GeoJSONLayer[];
   points?: Point[];
-  marker?: IMarkerStringOrObjectOrFunctionForMap;
   layerMarker?: IMarkerStringOrObjectOrFunctionForLayer;
   layerOverlay?: IOverlayStringOrObjectOrFunctionForLayer;
   layerTooltip?: ITooltipStringOrObjectOrFunctionForLayer;
@@ -62,11 +62,9 @@ export default function useLeaflet(
     tileProvider,
     tileOptions,
     points,
-    fitBounds = true,
     onClick,
     onMarkerClick,
     geoJsonLayers,
-    marker,
     layerMarker,
     layerOverlay,
     layerTooltip,
@@ -76,6 +74,7 @@ export default function useLeaflet(
   // State and memos
   const [map, setMap] = useState<L.Map | null>(null);
   const [markers, setMarkers] = useState<L.Marker<any>[]>([]);
+  const [selectedIdeaId, setSelectedIdeaId] = useState<string | null>(null);
   const [tileLayer, setTileLayer] = useState<L.Layer | null>(null);
   const [layers, setLayers] = useState<L.GeoJSON[]>([]);
 
@@ -87,23 +86,6 @@ export default function useLeaflet(
   const [layersControl, setLayersControl] = useState<L.Control.Layers | null>(
     null
   );
-
-  const allFeatures = useMemo(() => {
-    const markersGroup = L.featureGroup(markers);
-
-    const all = [...layers, markersGroup];
-
-    markerClusterGroup && all.push(markerClusterGroup);
-
-    return all;
-  }, [markers, layers, markerClusterGroup]);
-
-  const allBounds = useMemo(() => {
-    return allFeatures.reduce(
-      (memo, l) => memo.extend(l.getBounds()),
-      L.latLngBounds([])
-    );
-  }, [allFeatures]);
 
   const tileConfig = useMemo(
     () => ({
@@ -118,6 +100,16 @@ export default function useLeaflet(
   const prevTileConfig = usePrevious(tileConfig);
   const prevPoints = usePrevious(points);
   const prevGeoJsonLayers = usePrevious(geoJsonLayers);
+  const prevSelectedIdeaId = usePrevious(selectedIdeaId);
+
+  // Marker icons
+  const markerIcon = service.getMarkerIcon({ url: defaultMarker });
+  // const markerHoverIcon = service.getMarkerIcon({
+  //   url: defaultHoverMarker,
+  // });
+  const markerActiveIcon = service.getMarkerIcon({
+    url: defaultActiveMarker,
+  });
 
   // Effects
   const setup = () => {
@@ -218,13 +210,47 @@ export default function useLeaflet(
       return;
     }
 
-    const options = { fitBounds };
+    if (map && prevPoints !== points) {
+      const newMarkers = service.addMarkersToMap(map, points);
 
-    const newMarkers = service.addMarkersToMap(map, points, marker, options);
+      // newMarkers.forEach((marker) => {
+      //   marker.on('click', () => {
+      //     console.log('marker id', marker.options.id);
+      //     newMarkers.forEach((newMarker) => {
+      //       if (newMarker.options.id === marker.options.id) {
+      //         newMarker.setIcon(markerActiveIcon);
+      //       } else {
+      //         newMarker.setIcon(markerIcon);
+      //       }
+      //     });
+      //   });
+      // });
 
-    setMarkers(newMarkers);
+      // newMarkers.forEach((marker) => {
+      //   marker.on('mouseover', () => {
+      //     if (marker.options['id'] !== selectedIdeaId)
+      //   });
+      // });
+
+      setMarkers(newMarkers);
+    }
   };
-  useEffect(refreshMarkers, [fitBounds, map, points, prevPoints, marker]);
+  useEffect(refreshMarkers, [map, points, prevPoints]);
+
+  useEffect(() => {
+    if (prevSelectedIdeaId === selectedIdeaId) {
+      return;
+    }
+
+    const prevSelectedMarker = markers.find(
+      (marker) => marker.options['id'] === prevSelectedIdeaId
+    );
+    const newSelectedMarker = markers.find(
+      (marker) => marker.options['id'] === selectedIdeaId
+    );
+    prevSelectedMarker?.setIcon(markerIcon);
+    newSelectedMarker?.setIcon(markerActiveIcon);
+  }, [prevSelectedIdeaId, selectedIdeaId, markers]);
 
   const refreshClusterGroups = () => {
     if (!map || prevMarkers === markers) {
@@ -236,7 +262,10 @@ export default function useLeaflet(
     }
 
     const newMarkerClusterGroup = service.addClusterGroup(map, markers, {
-      onClick: onMarkerClick,
+      onClick: (id, _data) => {
+        setSelectedIdeaId(id);
+        return onMarkerClick;
+      },
     });
 
     setMarkerClusterGroup(newMarkerClusterGroup);
@@ -248,16 +277,6 @@ export default function useLeaflet(
     markers,
     onMarkerClick,
   ]);
-
-  const refitBoundsToAllContent = () => {
-    // Remove || true if you'd like to activate auto-fitting to all bounds.
-    if (!map || isEmpty(allBounds) || !fitBounds || true) {
-      return;
-    }
-
-    // service.refitBounds(map, allBounds, { fitBounds });
-  };
-  useEffect(refitBoundsToAllContent, [allBounds, map, fitBounds]);
 
   const wireUpSubscriptions = () => {
     const subscriptions = [

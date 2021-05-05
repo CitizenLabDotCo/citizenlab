@@ -10,7 +10,6 @@ exports[`IdeasMap renders correctly 1`] = `
   </a11y__ScreenReaderOnly>
   <Memo()
     boxContent={null}
-    fitBounds={true}
     onBoxClose={[Function]}
     onMapClick={[Function]}
     onMarkerClick={[Function]}

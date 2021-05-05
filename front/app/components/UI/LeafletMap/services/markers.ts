@@ -11,6 +11,8 @@ import {
   DEFAULT_MARKER_ICON_SIZE,
   DEFAULT_MARKER_ANCHOR_SIZE,
   DEFAULT_MARKER_ICON,
+  // DEFAULT_MARKER_HOVER_ICON,
+  // DEFAULT_MARKER_ACTIVE_ICON,
 } from '../config';
 
 import {
@@ -19,9 +21,7 @@ import {
   MarkerIconProps,
 } from '../typings';
 
-import { refitBounds } from './setup';
-
-export function markerIcon({ url, iconSize, iconAnchor }: MarkerIconProps) {
+export function getMarkerIcon({ url, iconSize, iconAnchor }: MarkerIconProps) {
   const size = iconSize || DEFAULT_MARKER_ICON_SIZE;
   const anchor = iconAnchor || DEFAULT_MARKER_ANCHOR_SIZE;
 
@@ -37,24 +37,26 @@ export function addMarkerToMap(
   latlng: [number, number],
   markerStringOrOptionsOrFunction?: IMarkerStringOrObjectOrFunctionForMap,
   options = {}
-): L.Marker {
-  let markerIconString: L.Icon = DEFAULT_MARKER_ICON;
+) {
+  let markerIcon = getMarkerIcon({ url: DEFAULT_MARKER_ICON });
+  // let markerHoverIcon = getMarkerIcon({ url: DEFAULT_MARKER_HOVER_ICON });
+  // let markerActiveIcon = getMarkerIcon({ url: DEFAULT_MARKER_ACTIVE_ICON });
 
   if (isString(markerStringOrOptionsOrFunction)) {
-    markerIconString = markerIcon({ url: markerStringOrOptionsOrFunction });
+    markerIcon = getMarkerIcon({ url: markerStringOrOptionsOrFunction });
   } else if (isOrReturnsString(markerStringOrOptionsOrFunction, latlng)) {
-    markerIconString = markerIcon({
+    markerIcon = getMarkerIcon({
       url: markerStringOrOptionsOrFunction(latlng),
     });
   } else if (isFunction(markerStringOrOptionsOrFunction)) {
-    markerIconString = markerIcon(markerStringOrOptionsOrFunction(latlng));
+    markerIcon = getMarkerIcon(markerStringOrOptionsOrFunction(latlng));
   } else if (isObject(markerStringOrOptionsOrFunction)) {
-    markerIconString = markerIcon(markerStringOrOptionsOrFunction);
+    markerIcon = getMarkerIcon(markerStringOrOptionsOrFunction);
   }
 
   const marker = L.marker(latlng, {
     ...options,
-    icon: markerIconString,
+    icon: markerIcon,
   });
 
   marker.addTo(map);
@@ -65,8 +67,7 @@ export function addMarkerToMap(
 export function addMarkersToMap(
   map: L.Map,
   points: Point[] = [],
-  markerStringOrOptionsOrFunction?: IMarkerStringOrObjectOrFunctionForMap,
-  options?: any
+  markerStringOrOptionsOrFunction?: IMarkerStringOrObjectOrFunctionForMap
 ) {
   const bounds: [number, number][] = [];
 
@@ -92,14 +93,14 @@ export function addMarkersToMap(
     );
   });
 
-  if (options?.fitBounds && bounds && bounds.length > 0) {
-    refitBounds(map, L.latLngBounds(bounds), options);
-  }
-
   return markers;
 }
 
-export function addClusterGroup(map, markers, { onClick }) {
+export function addClusterGroup(
+  map: L.Map,
+  markers: L.Marker[],
+  { onClick }: { onClick: (id: string, data: any) => void }
+) {
   const newMarkerClusterGroup = L.markerClusterGroup({
     showCoverageOnHover: false,
     spiderfyDistanceMultiplier: 2,

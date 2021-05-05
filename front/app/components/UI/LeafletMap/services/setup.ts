@@ -5,7 +5,6 @@ import {
   DEFAULT_TILE_OPTIONS,
   DEFAULT_CENTER,
   DEFAULT_ZOOM,
-  DEFAULT_BOUND_CONFIG,
 } from '../config';
 
 import { IOnMapClickHandler } from '../typings';
@@ -83,14 +82,4 @@ export function addOnZoomHandler(
     const zoom = map.getZoom();
     onZoomHandler(zoom);
   });
-}
-
-export function refitBounds(
-  map: L.Map,
-  bounds: L.LatLngBounds,
-  options: { fitBounds: boolean } = { fitBounds: true }
-) {
-  if (options.fitBounds) {
-    map.fitBounds(bounds, DEFAULT_BOUND_CONFIG);
-  }
 }

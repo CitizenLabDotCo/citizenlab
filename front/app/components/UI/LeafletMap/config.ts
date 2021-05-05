@@ -1,4 +1,6 @@
 import defaultMarker from './default-marker.svg';
+import defaultHoverMarker from './default-marker-hover.svg';
+import defaultActiveMarker from './default-marker-active.svg';
 
 export const DEFAULT_CENTER = [0, 0];
 
@@ -10,10 +12,9 @@ export const DEFAULT_MARKER_ANCHOR_SIZE = [14, 41];
 
 export const DEFAULT_MARKER_ICON = defaultMarker;
 
-export const DEFAULT_BOUND_CONFIG: L.FitBoundsOptions = {
-  maxZoom: DEFAULT_ZOOM,
-  padding: [50, 50],
-};
+export const DEFAULT_MARKER_HOVER_ICON = defaultHoverMarker;
+
+export const DEFAULT_MARKER_ACTIVE_ICON = defaultActiveMarker;
 
 export const DEFAULT_TILE_PROVIDER =
   'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';

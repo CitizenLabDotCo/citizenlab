@@ -16,7 +16,6 @@ import { ILeafletMapConfig } from 'components/UI/LeafletMap/useLeaflet';
 // styling
 import styled from 'styled-components';
 import { media, defaultOutline, defaultCardStyle } from 'utils/styleUtils';
-import ideaMarkerIcon from './idea-marker.svg';
 
 export interface Point extends GeoJSON.Point {
   data?: any;
@@ -95,7 +94,6 @@ export interface IMapConfigProps {
   mapHeight?: string;
   onMarkerClick?: (id: string, data: any) => void;
   onMapClick?: (map: L.Map, position: L.LatLng) => void;
-  fitBounds?: boolean;
 }
 
 export interface IMapProps {
@@ -117,7 +115,6 @@ const Map = memo<IMapProps & IMapConfigProps>(
     onBoxClose,
     onMapClick,
     onMarkerClick,
-    fitBounds,
     className,
     hideLegend,
   }) => {
@@ -128,7 +125,6 @@ const Map = memo<IMapProps & IMapConfigProps>(
       zoomLevel,
       mapHeight,
       points,
-      fitBounds,
       onMapClick,
       onMarkerClick,
     };
@@ -151,10 +147,8 @@ const Map = memo<IMapProps & IMapConfigProps>(
         zoom,
         center,
         tileProvider,
-        fitBounds,
         onMarkerClick,
         onClick: onMapClick,
-        marker: ideaMarkerIcon,
       }
     );
 

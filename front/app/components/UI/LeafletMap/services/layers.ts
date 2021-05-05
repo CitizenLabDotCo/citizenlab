@@ -7,7 +7,7 @@ import {
 import L from 'leaflet';
 import { isEmpty, cloneDeep, reverse } from 'lodash-es';
 
-import { markerIcon } from './markers';
+import { getMarkerIcon } from './markers';
 
 import {
   GeoJSONLayer,
@@ -91,17 +91,19 @@ export function layerMarker(
   let marker: L.Icon;
 
   if (isString(markerStringOrOptionsOrFunction)) {
-    marker = markerIcon({ url: markerStringOrOptionsOrFunction });
+    marker = getMarkerIcon({ url: markerStringOrOptionsOrFunction });
   } else if (
     isOrReturnsString(markerStringOrOptionsOrFunction, geojsonLayer, latlng)
   ) {
-    marker = markerIcon({
+    marker = getMarkerIcon({
       url: markerStringOrOptionsOrFunction(geojsonLayer, latlng),
     });
   } else if (isFunction(markerStringOrOptionsOrFunction)) {
-    marker = markerIcon(markerStringOrOptionsOrFunction(geojsonLayer, latlng));
+    marker = getMarkerIcon(
+      markerStringOrOptionsOrFunction(geojsonLayer, latlng)
+    );
   } else {
-    marker = markerIcon(markerStringOrOptionsOrFunction);
+    marker = getMarkerIcon(markerStringOrOptionsOrFunction);
   }
 
   return L.marker(latlng, { ...options, icon: marker || DEFAULT_MARKER_ICON });

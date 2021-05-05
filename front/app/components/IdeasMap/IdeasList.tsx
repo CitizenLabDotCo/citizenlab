@@ -1,35 +1,11 @@
-import React, {
-  memo,
-  useState,
-  useRef,
-  useEffect,
-  useCallback,
-  useLayoutEffect,
-} from 'react';
-import { popup, LatLng, Map as LeafletMap } from 'leaflet';
-import { withRouter, WithRouterProps } from 'react-router';
+import React, { memo } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
-// tracking
-import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
-
 // components
-import Map, { Point } from 'components/Map';
-import Warning from 'components/UI/Warning';
 import IdeaMapCard from './IdeaMapCard';
-import IdeaButton from 'components/IdeaButton';
 
 // hooks
-import useProject from 'hooks/useProject';
-import usePhase from 'hooks/usePhase';
 import useIdeaMarkers from 'hooks/useIdeaMarkers';
-import useWindowSize from 'hooks/useWindowSize';
-
-// i18n
-import FormattedMessage from 'utils/cl-intl/FormattedMessage';
-import messages from './messages';
-import T from 'components/T';
 
 // styling
 import styled from 'styled-components';

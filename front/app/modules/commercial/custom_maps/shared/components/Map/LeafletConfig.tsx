@@ -36,7 +36,6 @@ const LeafletConfig = memo<Props & IMapConfigProps>(
     points,
     onMapClick,
     onMarkerClick,
-    fitBounds,
   }) => {
     const localize = useLocalize();
     const appConfig = useAppConfiguration();
@@ -75,7 +74,6 @@ const LeafletConfig = memo<Props & IMapConfigProps>(
         center,
         tileProvider,
         tileOptions,
-        fitBounds,
         onMarkerClick,
         onClick: onMapClick,
         marker: ideaMarkerIcon,
@@ -98,7 +96,6 @@ const LeafletConfig = memo<Props & IMapConfigProps>(
       zoom,
       center,
       tileProvider,
-      fitBounds,
       onMarkerClick,
       onMapClick,
     ]);
