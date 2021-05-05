@@ -58,7 +58,7 @@
   "app.components.ConfirmationModal.sendNewCode": "Wyślij nowy kod.",
   "app.components.ConfirmationModal.verifyAndContinue": "Sprawdź i kontynuuj",
   "app.components.ConfirmationModal.weAskEveryoneToConfirmTheirEmail": "Prosimy każdego o potwierdzenie swojego adresu e-mail, aby pomóc w budowaniu zaufanej społeczności.",
-  "app.components.ConfirmationModal.whenTurnedOnUsersWillHaveToConfirm": "Po włączeniu tej funkcji nowi użytkownicy będą musieli potwierdzić swój adres e-mail lub numer telefonu 4-cyfrowym kodem, który otrzymają pocztą elektroniczną lub SMS-em, aby dokończyć rejestrację.",
+  "app.components.ConfirmationModal.whenTurnedOnUsersWillHaveToConfirm": "Po włączeniu tej funkcji nowi użytkownicy będą musieli potwierdzić swój adres e-mail 4-cyfrowym kodem, który otrzymają pocztą elektroniczną, aby dokończyć rejestrację.",
   "app.components.ConfirmationModal.wrongEmail": "Niewłaściwy e-mail?",
   "app.components.ConsentManager.Banner.accept": "Zaakceptuj",
   "app.components.ConsentManager.Banner.ariaButtonClose": "Zaakceptuj politykę prywatności i zamknij baner",
