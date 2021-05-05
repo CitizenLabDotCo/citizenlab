@@ -67,7 +67,7 @@ import { FormLabelWithIcon } from 'components/UI/FormComponents/WithIcons';
 import { media } from 'utils/styleUtils';
 import { getInputTerm } from 'services/participationContexts';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import { isProjectModerator } from 'services/permissions/roles';
+import { moderatesProject } from 'services/permissions/roles';
 import { IUserData } from 'services/users';
 
 const Form = styled.form`
@@ -758,12 +758,8 @@ class IdeaForm extends PureComponent<
                 autocomplete="off"
               />
             </FormElement>
-
             {ideaAuthorChangeEnabled &&
-              isProjectModerator(
-                { data: authUser as IUserData },
-                projectId
-              ) && (
+              moderatesProject({ data: authUser as IUserData }, projectId) && (
                 <FormElement id="e2e-idea-author-input">
                   <FormLabel htmlFor="author" labelMessage={messages.author} />
                   <UserSelect

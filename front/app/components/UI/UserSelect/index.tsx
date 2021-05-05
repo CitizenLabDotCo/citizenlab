@@ -98,7 +98,7 @@ const UserSelect = ({
     );
   };
 
-  const getOptionLabel = (option: OptionTypeBase) => (
+  const getOptionLabel = (option: OptionTypeBase): any => (
     <UserOption>
       <Avatar userId={option.value} />
       {option.attributes.first_name} {option.attributes.last_name} (
