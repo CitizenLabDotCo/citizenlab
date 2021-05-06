@@ -354,6 +354,20 @@ resource "Ideas" do
 
     describe do
       before do
+        @project = create(:project)
+        @selected_ideas = create_list(:idea, 1000, publication_status: 'published', project: @project)
+      end
+      let(:project) { @project.id }
+
+      example_request 'XLSX export by project' do
+        expect(status).to eq 200
+        worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
+        expect(worksheet.count).to eq (@selected_ideas.length + 1)
+      end
+    end
+
+    describe do
+      before do
         @selected_ideas = @ideas.select(&:published?).shuffle.take 2
       end
       let(:ideas) { @selected_ideas.map(&:id) }
