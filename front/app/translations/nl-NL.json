@@ -129,6 +129,8 @@
   "app.components.FolderFolderCard.numberOfProjectsInFolder": "{numberOfProjectsInFolder, plural, no {# projecten} one {# project} other {# projecten}}",
   "app.components.GoBackButton.group.edit.goBack": "Ga terug",
   "app.components.IdeaCards.showMore": "Toon meer",
+  "app.components.IdeaForm.author": "",
+  "app.components.IdeaForm.authorPlaceholder": "",
   "app.components.IdeaForm.contributionFormGeneralSectionTitle": "Wat is je onderwerp?",
   "app.components.IdeaForm.descriptionEmptyError": "Gelieve een beschrijving te geven",
   "app.components.IdeaForm.descriptionLengthError": "De beschrijving van het idee moet minstens 30 tekens lang zijn",

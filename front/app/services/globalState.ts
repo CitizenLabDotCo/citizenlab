@@ -33,6 +33,7 @@ export interface IIdeasPageGlobalState {
   imageFile: UploadFile[];
   imageId: string | null;
   ideaFiles: UploadFile[];
+  authorId: string | null;
 }
 
 export interface IAdminFullWidth {

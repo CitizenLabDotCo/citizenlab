@@ -129,6 +129,8 @@
   "app.components.FolderFolderCard.numberOfProjectsInFolder": "{numberOfProjectsInFolder, plural, no {Suliassaqanngilaq} one {Suliassaq ataasiuvoq} other {Suliassat #}}",
   "app.components.GoBackButton.group.edit.goBack": "Uterit",
   "app.components.IdeaCards.showMore": "Allanik takusaqarit",
+  "app.components.IdeaForm.author": "",
+  "app.components.IdeaForm.authorPlaceholder": "",
   "app.components.IdeaForm.contributionFormGeneralSectionTitle": "Sumik ilanngussassaqarpit?",
   "app.components.IdeaForm.descriptionEmptyError": "Allaatiginnilaarit ",
   "app.components.IdeaForm.descriptionLengthError": "Isumassarsiamik allaaserinninneq minnerpaamik naqinnernik 30-nik imaqassaaq",
