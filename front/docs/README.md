@@ -5,11 +5,14 @@
 ### Fixed
 - Idea export to excel is no longer limited to 250 ideas.
 
+### Added
+- Email confirmation now happens in survey and signup page sign up forms.
+- For moderators and admin users, it is now possible to change or assign the author of an idea on creation when the `idea_author_change` feature is enabled.
+
 ## 2021-05-01
 
 ### Added
 - New module to plug email confirmation to users.
-
 
 ### Fixed
 - Customizable Banner Fields no longer get emptied/reset when changing another.
