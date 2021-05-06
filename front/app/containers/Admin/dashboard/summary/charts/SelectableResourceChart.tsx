@@ -14,7 +14,7 @@ import { media } from 'utils/styleUtils';
 import GetSerieFromStream from 'resources/GetSerieFromStream';
 
 // components
-import ExportMenu from '../../components/ExportMenu';
+import ExportMenu from 'components/admin/ExportMenu';
 import {
   BarChart,
   Bar,

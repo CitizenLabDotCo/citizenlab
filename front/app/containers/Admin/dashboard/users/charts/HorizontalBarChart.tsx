@@ -28,7 +28,7 @@ import GetSerieFromStream from 'resources/GetSerieFromStream';
 import { IStreamParams, IStream } from 'utils/streams';
 
 import { IGraphFormat } from 'typings';
-import ExportMenu from '../../components/ExportMenu';
+import ExportMenu from 'components/admin/ExportMenu';
 
 interface DataProps {
   serie: IGraphFormat;

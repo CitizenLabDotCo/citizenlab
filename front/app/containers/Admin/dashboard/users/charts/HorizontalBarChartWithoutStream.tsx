@@ -33,7 +33,7 @@ import {
 
 // types
 import { IGraphPoint } from 'typings';
-import ExportMenu from '../../components/ExportMenu';
+import ExportMenu from 'components/admin/ExportMenu';
 
 interface VoteGraphPoint extends IGraphPoint {
   up: number;

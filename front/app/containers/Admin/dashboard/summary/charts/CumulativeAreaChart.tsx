@@ -13,7 +13,7 @@ import { withTheme } from 'styled-components';
 import { rgba } from 'polished';
 
 // components
-import ExportMenu from '../../components/ExportMenu';
+import ExportMenu from 'components/admin/ExportMenu';
 import {
   AreaChart,
   CartesianGrid,

@@ -13,10 +13,11 @@ import { Dropdown } from 'cl2-component-library';
 import { requestBlob } from 'utils/request';
 import { reportError } from 'utils/loggingUtils';
 import { saveAs } from 'file-saver';
-import { IResolution } from '../..';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import messages from '../../messages';
+import messages from './messages';
+
+type IResolution = 'day' | 'week' | 'month';
 
 const DropdownButton = styled(Button)``;
 

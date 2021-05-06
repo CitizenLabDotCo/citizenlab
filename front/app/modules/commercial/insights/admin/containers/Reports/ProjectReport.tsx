@@ -31,11 +31,12 @@ import { IProjectData } from 'services/projects';
 // components
 import { SectionTitle, PageTitle } from 'components/admin/Section';
 import T from 'components/T';
-import LineBarChart from 'containers/Admin/dashboard/summary/charts/LineBarChart';
-import LineBarChartVotesByTime from 'containers/Admin/dashboard/summary/charts/LineBarChartVotesByTime';
+
 import HorizontalBarChartWithoutStream from 'containers/Admin/dashboard/users/charts/HorizontalBarChartWithoutStream';
 import IdeasByStatusChart from 'containers/Admin/dashboard/components/IdeasByStatusChart';
 import ParticipationPerTopic from './charts/ParticipationPerTopic';
+import LineBarChart from './charts/LineBarChart';
+import LineBarChartVotesByTime from './charts/LineBarChartVotesByTime';
 import ResolutionControl from 'containers/Admin/dashboard/components/ResolutionControl';
 import BarChartActiveUsersByTime from 'containers/Admin/dashboard/summary/charts/BarChartActiveUsersByTime';
 

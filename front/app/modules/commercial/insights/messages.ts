@@ -67,31 +67,31 @@ export default defineMessages({
     defaultMessage: 'No phase created for this project',
   },
   ideationAndFeedback: {
-    id: 'app.containers.AdminPage.ReportsTab.ideationAndFeedback',
+    id: 'app.containers.Admin.Insights.ideationAndFeedback',
     defaultMessage: 'ideation and feedback',
   },
   information: {
-    id: 'app.containers.AdminPage.ReportsTab.information',
+    id: 'app.containers.Admin.Insights.information',
     defaultMessage: 'information',
   },
   survey: {
-    id: 'app.containers.AdminPage.ReportsTab.survey',
+    id: 'app.containers.Admin.Insights.survey',
     defaultMessage: 'survey',
   },
   budgeting: {
-    id: 'app.containers.AdminPage.ReportsTab.budgeting',
+    id: 'app.containers.Admin.Insights.budgeting',
     defaultMessage: 'budgeting',
   },
   poll: {
-    id: 'app.containers.AdminPage.ReportsTab.poll',
+    id: 'app.containers.Admin.Insights.poll',
     defaultMessage: 'poll',
   },
   volunteering: {
-    id: 'app.containers.AdminPage.ReportsTab.volunteering',
+    id: 'app.containers.Admin.Insights.volunteering',
     defaultMessage: 'volunteering',
   },
   customFieldTitleExport: {
-    id: 'app.containers.AdminPage.ReportsTab.customFieldTitleExport',
+    id: 'app.containers.Admin.Insights.customFieldTitleExport',
     defaultMessage: '{fieldName}_repartition',
   },
   participationPerTopic: {
@@ -121,5 +121,37 @@ export default defineMessages({
   fiveInputsWithMostVotes: {
     id: 'app.containers.Admin.Insights.fiveInputsWithMostVotes',
     defaultMessage: 'Top 5 inputs by votes',
+  },
+  total: {
+    id: 'app.containers.Admin.Insights.total',
+    defaultMessage: 'Total',
+  },
+  totalForPeriod: {
+    id: 'app.containers.Admin.Insights.totalForPeriod',
+    defaultMessage: 'This {period}',
+  },
+  perPeriod: {
+    id: 'app.containers.Admin.Insights.perPeriod',
+    defaultMessage: 'Per {period}',
+  },
+  numberOfVotesUp: {
+    id: 'app.containers.Admin.Insights.numberOfVotesUp',
+    defaultMessage: 'Upvotes',
+  },
+  numberOfVotesDown: {
+    id: 'app.containers.Admin.Insights.numberOfVotesDown',
+    defaultMessage: 'Downvotes',
+  },
+  day: {
+    id: 'app.containers.Admin.Insights.day',
+    defaultMessage: 'day',
+  },
+  week: {
+    id: 'app.containers.Admin.Insights.week',
+    defaultMessage: 'week',
+  },
+  month: {
+    id: 'app.containers.Admin.Insights.month',
+    defaultMessage: 'month',
   },
 });

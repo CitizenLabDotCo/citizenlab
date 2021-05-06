@@ -275,38 +275,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.titleDashboard',
     defaultMessage: 'Dashboard',
   },
-  downloadAsImage: {
-    id: 'app.containers.AdminPage.DashboardPage.ExportMenu.downloadAsImage',
-    defaultMessage: 'Download as image',
-  },
-  downloadXlsx: {
-    id: 'app.containers.AdminPage.DashboardPage.ExportMenu.downloadXlsx',
-    defaultMessage: 'Download Excel',
-  },
-  fromFilter: {
-    id: 'app.containers.AdminPage.DashboardPage.ExportMenu.FileName.fromFilter',
-    defaultMessage: 'from',
-  },
-  untilFilter: {
-    id:
-      'app.containers.AdminPage.DashboardPage.ExportMenu.FileName.untilFilter',
-    defaultMessage: 'until',
-  },
-  projectFilter: {
-    id:
-      'app.containers.AdminPage.DashboardPage.ExportMenu.FileName.projectFilter',
-    defaultMessage: 'project',
-  },
-  groupFilter: {
-    id:
-      'app.containers.AdminPage.DashboardPage.ExportMenu.FileName.groupFilter',
-    defaultMessage: 'group',
-  },
-  topicFilter: {
-    id:
-      'app.containers.AdminPage.DashboardPage.ExportMenu.FileName.topicFilter',
-    defaultMessage: 'topic',
-  },
   participants: {
     id: 'app.containers.AdminPage.DashboardPage.Report.participants',
     defaultMessage: 'participants',

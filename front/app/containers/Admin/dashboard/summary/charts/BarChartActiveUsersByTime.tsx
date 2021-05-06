@@ -14,7 +14,7 @@ import { IResourceByTime, IUsersByTime } from 'services/stats';
 import { IGraphFormat } from 'typings';
 
 // components
-import ExportMenu from '../../components/ExportMenu';
+import ExportMenu from 'components/admin/ExportMenu';
 import {
   BarChart,
   Bar,

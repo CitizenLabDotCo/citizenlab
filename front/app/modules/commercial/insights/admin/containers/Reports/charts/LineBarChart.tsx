@@ -6,7 +6,7 @@ import { map, isEmpty } from 'lodash-es';
 // intl
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
-import messages from '../../messages';
+import messages from '../../../../messages';
 
 // typings
 import { IStreamParams, IStream } from 'utils/streams';
@@ -43,7 +43,7 @@ import {
   GraphCardFigureContainer,
   GraphCardFigure,
   GraphCardFigureChange,
-} from '../..';
+} from './';
 import { Popup } from 'semantic-ui-react';
 import { Icon } from 'cl2-component-library';
 

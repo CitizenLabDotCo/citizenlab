@@ -10,7 +10,7 @@ import messages from '../../messages';
 import { withTheme } from 'styled-components';
 
 // components
-import ExportMenu from '../../components/ExportMenu';
+import ExportMenu from 'components/admin/ExportMenu';
 import {
   IGraphUnit,
   PieChart,

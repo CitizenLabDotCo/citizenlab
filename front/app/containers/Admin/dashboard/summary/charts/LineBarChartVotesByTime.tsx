@@ -16,7 +16,7 @@ import {
 } from 'services/stats';
 
 // components
-import ExportMenu from '../../components/ExportMenu';
+import ExportMenu from 'components/admin/ExportMenu';
 import {
   Line,
   Label,

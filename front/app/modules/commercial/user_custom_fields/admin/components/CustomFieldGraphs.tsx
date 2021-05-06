@@ -11,7 +11,7 @@ import messages from 'containers/Admin/dashboard/messages';
 import { withTheme } from 'styled-components';
 
 // components
-import ExportMenu from 'containers/Admin/dashboard/components/ExportMenu';
+import ExportMenu from 'components/admin/ExportMenu';
 import {
   BarChart,
   Bar,
