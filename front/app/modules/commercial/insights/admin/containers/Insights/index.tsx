@@ -3,7 +3,7 @@ import React from 'react';
 // i18n
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
-import messages from '../../messages';
+import messages from '../../../messages';
 
 // components
 import PageTitle from 'components/admin/PageTitle';

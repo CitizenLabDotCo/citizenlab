@@ -144,7 +144,8 @@ const AdminPage = memo<Props & WithRouterProps>(
     const whiteBg =
       endsWith(pathname, 'admin/moderation') ||
       pathname.includes('admin/dashboard') ||
-      pathname.includes('admin/processing');
+      pathname.includes('admin/processing') ||
+      pathname.includes('admin/insights/reports');
 
     return (
       <HasPermission

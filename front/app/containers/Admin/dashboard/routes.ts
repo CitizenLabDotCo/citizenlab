@@ -24,13 +24,6 @@ export default () => ({
         loading: () => null,
       }),
     },
-    {
-      path: 'reports',
-      component: Loadable({
-        loader: () => import('./reports'),
-        loading: () => null,
-      }),
-    },
     ...moduleConfiguration.routes['admin.dashboards'],
   ],
 });

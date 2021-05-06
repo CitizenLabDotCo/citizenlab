@@ -7,8 +7,8 @@ import { isNilOrError } from 'utils/helperUtils';
 import moment from 'moment';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import styled from 'styled-components';
-import messages from '../messages';
-import { IResolution, GraphsContainer } from '..';
+import messages from '../../../messages';
+import { IResolution, GraphsContainer } from 'containers/Admin/dashboard';
 import GetIdeas, { GetIdeasChildProps } from 'resources/GetIdeas';
 import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 import {
@@ -29,15 +29,15 @@ import { ParticipationMethod } from 'services/participationContexts';
 import { IProjectData } from 'services/projects';
 
 // components
-import LineBarChart from '../summary/charts/LineBarChart';
-import LineBarChartVotesByTime from '../summary/charts/LineBarChartVotesByTime';
-import HorizontalBarChartWithoutStream from '../users/charts/HorizontalBarChartWithoutStream';
 import { SectionTitle, PageTitle } from 'components/admin/Section';
-import IdeasByStatusChart from '../components/IdeasByStatusChart';
-import ParticipationPerTopic from './charts/ParticipationPerTopic';
-import ResolutionControl from '../components/ResolutionControl';
 import T from 'components/T';
-import BarChartActiveUsersByTime from '../summary/charts/BarChartActiveUsersByTime';
+import LineBarChart from 'containers/Admin/dashboard/summary/charts/LineBarChart';
+import LineBarChartVotesByTime from 'containers/Admin/dashboard/summary/charts/LineBarChartVotesByTime';
+import HorizontalBarChartWithoutStream from 'containers/Admin/dashboard/users/charts/HorizontalBarChartWithoutStream';
+import IdeasByStatusChart from 'containers/Admin/dashboard/components/IdeasByStatusChart';
+import ParticipationPerTopic from './charts/ParticipationPerTopic';
+import ResolutionControl from 'containers/Admin/dashboard/components/ResolutionControl';
+import BarChartActiveUsersByTime from 'containers/Admin/dashboard/summary/charts/BarChartActiveUsersByTime';
 
 import Outlet from 'components/Outlet';
 

@@ -10,11 +10,11 @@ import { IOption } from 'cl2-component-library/dist/utils/typings';
 import { IProjectData } from 'services/projects';
 import { FormattedMessage } from 'utils/cl-intl';
 import { Select } from 'cl2-component-library';
-import messages from '../messages';
+import messages from '../../../messages';
 import GoBackButton from 'components/UI/GoBackButton';
 import { SectionTitle } from 'components/admin/Section';
 import styled, { ThemeProvider } from 'styled-components';
-import { chartTheme } from '../index';
+import { chartTheme } from 'containers/Admin/dashboard';
 import ProjectReport from './ProjectReport';
 
 const StyledSelect = styled(Select)`

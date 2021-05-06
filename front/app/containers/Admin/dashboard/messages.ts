@@ -15,10 +15,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.tabUsers',
     defaultMessage: 'Users',
   },
-  tabReports: {
-    id: 'app.containers.AdminPage.DashboardPage.tabReports',
-    defaultMessage: 'Reports',
-  },
   helmetTitle: {
     id: 'app.containers.AdminPage.DashboardPage.helmetTitle',
     defaultMessage: 'Admin dashboard page',
@@ -319,23 +315,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.Report.totalUsers',
     defaultMessage: 'total users on the platform',
   },
-  // Report
-  selectAProject: {
-    id: 'app.containers.Dashboards.ReportsTab.selectAProject',
-    defaultMessage: 'What project are you interested in ?',
-  },
-  sectionWho: {
-    id: 'app.containers.Dashboards.ReportsTab.sectionWho',
-    defaultMessage: 'Who participated ?',
-  },
-  sectionWhatInput: {
-    id: 'app.containers.Dashboards.ReportsTab.sectionWhatInput',
-    defaultMessage: 'What input did you collect?',
-  },
-  participantsOverTimeTitle: {
-    id: 'app.containers.Dashboards.ReportsTab.participantsOverTimeTitle',
-    defaultMessage: 'Participants',
-  },
   timelineType: {
     id: 'app.containers.AdminPage.DashboardPage.timelineType',
     defaultMessage: 'Timeline',
@@ -355,30 +334,6 @@ export default defineMessages({
   noPhase: {
     id: 'app.containers.AdminPage.DashboardPage.noPhase',
     defaultMessage: 'No phase created for this project',
-  },
-  ideationAndFeedback: {
-    id: 'app.containers.AdminPage.ReportsTab.ideationAndFeedback',
-    defaultMessage: 'ideation and feedback',
-  },
-  information: {
-    id: 'app.containers.AdminPage.ReportsTab.information',
-    defaultMessage: 'information',
-  },
-  survey: {
-    id: 'app.containers.AdminPage.ReportsTab.survey',
-    defaultMessage: 'survey',
-  },
-  budgeting: {
-    id: 'app.containers.AdminPage.ReportsTab.budgeting',
-    defaultMessage: 'budgeting',
-  },
-  poll: {
-    id: 'app.containers.AdminPage.ReportsTab.poll',
-    defaultMessage: 'poll',
-  },
-  volunteering: {
-    id: 'app.containers.AdminPage.ReportsTab.volunteering',
-    defaultMessage: 'volunteering',
   },
   customFieldTitleExport: {
     id: 'app.containers.AdminPage.ReportsTab.customFieldTitleExport',
