@@ -1,6 +1,14 @@
 # Changelog
  
-## Next release
+### 2021-05-06
+
+### Fixed
+- Idea export to excel is no longer limited to 250 ideas.
+
+## 2021-05-01
+
+### Added
+- New module to plug email confirmation to users.
 
 
 ### Fixed
