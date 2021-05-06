@@ -344,7 +344,6 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
           project,
           phases
         );
-        console.log(authorId);
 
         return (
           <Container id="e2e-idea-edit-page">

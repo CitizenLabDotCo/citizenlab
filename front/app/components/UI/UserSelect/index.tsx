@@ -4,6 +4,7 @@ import GetUsers, { GetUsersChildProps } from 'resources/GetUsers';
 import ReactSelect, { OptionTypeBase } from 'react-select';
 import { Icon } from 'cl2-component-library';
 import selectStyles from 'components/UI/MultipleSelect/styles';
+import { Spinner } from 'cl2-component-library';
 
 import styled from 'styled-components';
 
@@ -63,6 +64,14 @@ const UserSelect = ({
     onChange(option.id);
   };
 
+  const handleInputChange = (searchTerm) => {
+    users.onChangeSearchTerm(searchTerm);
+  };
+
+  const handleMenuScrollToBottom = () => {
+    users.onLoadMore();
+  };
+
   const filterByNameAndEmail = (option: OptionTypeBase, searchText: string) => {
     if (
       option.data.attributes.first_name
@@ -108,6 +117,12 @@ const UserSelect = ({
 
   const getOptionId = (option: OptionTypeBase) => option.id;
 
+  const LoadingIndicator = (props): any => (
+    <Spinner ref={props.innerRef} {...props} />
+  );
+
+  const components = { LoadingIndicator };
+
   return (
     <ReactSelect
       id={id}
@@ -124,10 +139,14 @@ const UserSelect = ({
       getOptionValue={getOptionId}
       getOptionLabel={getOptionLabel}
       onChange={handleChange}
+      onInputChange={handleInputChange}
       isDisabled={disabled}
       menuPlacement="auto"
       styles={selectStyles}
       filterOption={filterByNameAndEmail}
+      onMenuScrollToBottom={handleMenuScrollToBottom}
+      isLoading={users.isLoading}
+      components={components}
     />
   );
 };
