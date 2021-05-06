@@ -1,4 +1,4 @@
-import React, { ReactElement, useEffect } from 'react';
+import React, { ReactElement } from 'react';
 import { adopt } from 'react-adopt';
 import GetUsers, { GetUsersChildProps } from 'resources/GetUsers';
 import ReactSelect, { OptionTypeBase } from 'react-select';
@@ -7,11 +7,10 @@ import { Spinner, Icon } from 'cl2-component-library';
 
 import styled from 'styled-components';
 import { IUserData } from 'services/users';
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import useUser from 'hooks/useUser';
 
 interface DataProps {
   users: GetUsersChildProps;
-  authUser: GetAuthUserChildProps;
 }
 
 interface Props {
@@ -52,7 +51,6 @@ const UserOption = styled.div`
 
 const UserSelect = ({
   users,
-  authUser,
   onChange,
   value,
   placeholder,
@@ -61,15 +59,10 @@ const UserSelect = ({
   id,
   inputId,
 }: DataProps & Props): ReactElement => {
+  const selectedUser = useUser({ userId: value });
   const usersList: IUserData[] = Array.isArray(users.usersList)
     ? users.usersList
     : [];
-
-  useEffect(() => {
-    if (value) {
-      users.onChangeIncludeIds(value);
-    }
-  }, [value]);
 
   const handleChange = (option: OptionTypeBase) => {
     onChange(option.id);
@@ -77,7 +70,6 @@ const UserSelect = ({
 
   const handleInputChange = (searchTerm) => {
     users.onChangeSearchTerm(searchTerm);
-    users.onChangeIncludeIds();
   };
 
   const handleMenuScrollToBottom = () => {
@@ -94,10 +86,6 @@ const UserSelect = ({
     option.data.attributes.email
       .toLowerCase()
       .includes(searchText.toLowerCase());
-
-  const selectedUser =
-    usersList.find((user) => user.id === value) ||
-    (authUser?.id === value && authUser);
 
   const Avatar = ({ userId }) => {
     const user = usersList.find((user) => user.id === userId);
@@ -160,7 +148,6 @@ const UserSelect = ({
 
 const Data = adopt<DataProps>({
   users: <GetUsers />,
-  authUser: <GetAuthUser />,
 });
 
 export default (props) => (
