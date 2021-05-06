@@ -2,9 +2,8 @@ import React, { ReactElement } from 'react';
 import { adopt } from 'react-adopt';
 import GetUsers, { GetUsersChildProps } from 'resources/GetUsers';
 import ReactSelect, { OptionTypeBase } from 'react-select';
-import { Icon } from 'cl2-component-library';
 import selectStyles from 'components/UI/MultipleSelect/styles';
-import { Spinner } from 'cl2-component-library';
+import { Spinner, Icon } from 'cl2-component-library';
 
 import styled from 'styled-components';
 
