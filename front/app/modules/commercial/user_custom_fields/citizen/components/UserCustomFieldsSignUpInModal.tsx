@@ -54,6 +54,7 @@ const UserCustomFieldsSignUpInModal = memo<Props>(
       metaData?.verificationContext
     );
     const customFieldsSchema = useUserCustomFieldsSchema();
+    const opened = !!metaData?.inModal;
 
     const hasParticipationConditions =
       !isNilOrError(participationConditions) &&
@@ -136,7 +137,7 @@ const UserCustomFieldsSignUpInModal = memo<Props>(
       <Modal
         width={modalWidth}
         padding="0px"
-        opened={!!metaData}
+        opened={opened}
         close={onClose}
         closeOnClickOutside={false}
         noClose={modalNoClose}

@@ -50,7 +50,7 @@ export function modifyMetaData(
     error: false,
     isInvitation: false,
     token: undefined,
-    inModal: true,
+    inModal: undefined,
     action: undefined,
     ...overridenMetaData,
   };
