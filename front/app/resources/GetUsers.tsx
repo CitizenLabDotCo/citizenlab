@@ -32,6 +32,7 @@ export interface InputProps {
   canModerateProject?: string;
   canModerate?: boolean;
   canAdmin?: boolean;
+  includeIds?: string[];
 }
 
 interface IQueryParameters {
@@ -43,6 +44,7 @@ interface IQueryParameters {
   can_moderate_project?: string;
   can_moderate?: boolean;
   can_admin?: boolean;
+  include_ids?: string[];
 }
 
 type children = (obj: GetUsersChildProps) => JSX.Element | null;
@@ -67,6 +69,7 @@ export type GetUsersChildProps = State & {
   onChangeSearchTerm: (search: string) => void;
   onChangePage: (pageNumber: number) => void;
   onLoadMore: () => void;
+  onChangeIncludeIds: (...ids: string[]) => void;
 };
 
 export default class GetUsers extends React.Component<Props, State> {
@@ -87,6 +90,7 @@ export default class GetUsers extends React.Component<Props, State> {
         can_moderate_project: undefined,
         can_moderate: undefined,
         can_admin: undefined,
+        include_ids: undefined,
       },
       usersList: undefined,
       sortAttribute: getSortAttribute<Sort, SortAttribute>(initialSort),
@@ -161,6 +165,7 @@ export default class GetUsers extends React.Component<Props, State> {
           can_moderate_project: props.canModerateProject,
           can_moderate: props.canModerate,
           can_admin: props.canAdmin,
+          include_ids: props.includeIds,
         },
         isNil
       ),
@@ -214,6 +219,13 @@ export default class GetUsers extends React.Component<Props, State> {
     });
   };
 
+  handleChangeIncludeIds = (...ids: string[]) => {
+    this.queryParameters$.next({
+      ...this.state.queryParameters,
+      include_ids: ids,
+    });
+  };
+
   render() {
     const { children } = this.props;
     return (children as children)({
@@ -221,6 +233,7 @@ export default class GetUsers extends React.Component<Props, State> {
       onChangeSorting: this.handleChangeSorting,
       onChangeSearchTerm: this.handleChangeSearchTerm,
       onChangePage: this.handleChangePage,
+      onChangeIncludeIds: this.handleChangeIncludeIds,
       onLoadMore: this.handleLoadMore,
     });
   }
