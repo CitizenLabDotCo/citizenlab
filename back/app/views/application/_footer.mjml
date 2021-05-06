@@ -1,0 +1,34 @@
+<mj-section full-width="full-width" background-color="#F6F6F6" padding="40px 25px">
+  <mj-column>
+    <mj-text padding-bottom="20px">
+      <% if show_terms_link? %>
+        <a
+          href="<%= terms_conditions_url(app_configuration) %>"
+          style="color: #84939E; text-decoration: none; margin: 0 10px;"
+        >
+          <%= I18n.t('email_campaigns.footer.link_terms_conditions') %>
+        </a>
+        |
+      <% end %>
+
+      <% if show_privacy_policy_link? %>
+        <a
+          href="<%= privacy_policy_url(app_configuration) %>"
+          style="color: #84939E; text-decoration: none; margin-left: 10px;"
+        >
+          <%= I18n.t('email_campaigns.footer.link_privacy_policy') %>
+        </a>
+      <% end %>
+    </mj-text>
+
+    <mj-text color="#84939E">
+      <span style="font-style: italic;
+                    font-weight: bold;
+                    font-size: 12px;
+                    display: inline-block;
+                    margin-bottom: 10px"><%= t('email_campaigns.footer.powered_by') %></span>
+    </mj-text>
+    <mj-image align="left" width="155px" padding-top="0" href="https://www.citizenlab.co/"
+      src="https://res.cloudinary.com/citizenlabco/image/upload/v1593689890/logo-email-x2_wbnwkf.png" alt="CitizenLab logo" />
+  </mj-column>
+</mj-section>

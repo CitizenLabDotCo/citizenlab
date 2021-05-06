@@ -149,4 +149,5 @@ module Frontend
   end
 end
 
+Frontend::UrlService.include(UserConfirmation::Patches::Frontend::UrlService)
 Frontend::UrlService.prepend_if_ee('ProjectFolders::Patches::Frontend::UrlService')
