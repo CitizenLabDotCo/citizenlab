@@ -92,8 +92,6 @@ export interface IMapConfigProps {
   zoomLevel?: number;
   areas?: GeoJSON.Polygon[];
   mapHeight?: string;
-  onMarkerClick?: (id: string, data: any) => void;
-  onMapClick?: (map: L.Map, position: L.LatLng) => void;
 }
 
 export interface IMapProps {
@@ -113,8 +111,6 @@ const Map = memo<IMapProps & IMapConfigProps>(
     points,
     boxContent,
     onBoxClose,
-    onMapClick,
-    onMarkerClick,
     className,
     hideLegend,
   }) => {
@@ -125,8 +121,6 @@ const Map = memo<IMapProps & IMapConfigProps>(
       zoomLevel,
       mapHeight,
       points,
-      onMapClick,
-      onMarkerClick,
     };
 
     const center = useMemo(() => {
@@ -147,8 +141,6 @@ const Map = memo<IMapProps & IMapConfigProps>(
         zoom,
         center,
         tileProvider,
-        onMarkerClick,
-        onClick: onMapClick,
       }
     );
 
@@ -191,6 +183,7 @@ const Map = memo<IMapProps & IMapConfigProps>(
             {...baseMapConfigProps}
           />
         </MapWrapper>
+
         {!hideLegend && (
           <Outlet id="app.components.Map.Legend" projectId={projectId} />
         )}

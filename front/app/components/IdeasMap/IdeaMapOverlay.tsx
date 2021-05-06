@@ -1,7 +1,7 @@
 import React, { memo, useState, useEffect, useRef } from 'react';
 
 // events
-import { selectedIdeaId$ } from './events';
+import { ideaMapSelectedIdea$, setIdeaMapSelectedIdea } from './events';
 
 // components
 import IdeasList from './IdeasList';
@@ -50,11 +50,9 @@ const IdeaMapOverlay = memo<Props>(
     useEffect(() => {
       scrollContainerRef.current?.addEventListener('wheel', scrolling);
 
-      const subscription = selectedIdeaId$.subscribe(
-        ({ eventValue: ideaId }) => {
-          setSelectedIdeaId(ideaId);
-        }
-      );
+      const subscription = ideaMapSelectedIdea$.subscribe((ideaId) => {
+        setSelectedIdeaId(ideaId);
+      });
 
       return () => {
         subscription.unsubscribe();
@@ -72,7 +70,7 @@ const IdeaMapOverlay = memo<Props>(
     };
 
     const goBack = () => {
-      setSelectedIdeaId(null);
+      setIdeaMapSelectedIdea(null);
     };
 
     return (

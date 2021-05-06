@@ -7,6 +7,15 @@ import { media } from 'utils/styleUtils';
 const LeafletMapContainer = styled.div<{ mapHeight: string | undefined }>`
   flex: 1;
   overflow: hidden;
+  position: relative;
+
+  .activeArea {
+    position: absolute;
+    top: 0px;
+    bottom: 0px;
+    right: 0px;
+    left: 500px;
+  }
 
   ${(props) => {
     const { mapHeight } = props;

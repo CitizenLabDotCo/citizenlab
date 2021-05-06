@@ -4,59 +4,98 @@ import {
   publishReplay,
   refCount,
 } from 'rxjs/operators';
+import { isEqual } from 'lodash-es';
 import eventEmitter from 'utils/eventEmitter';
 import { LatLngExpression } from 'leaflet';
 
 enum events {
-  mapCenterChange = 'mapCenterChange',
-  mapZoomChange = 'mapZoomChange',
-  setMapLatLngZoom = 'setMapLatLngZoom',
+  leafletMapCenterChange = 'leafletMapCenterChange',
+  leafletMapZoomChange = 'leafletMapZoomChange',
+  leafletMapLatLngZoomChange = 'leafletMapLatLngZoomChange',
+  leafletMapHoveredMarkerChange = 'leafletMapHoveredMarkerChange',
+  leafletMapSelectedMarkerChange = 'leafletMapSelectedMarkerChange',
+  leafletMapClicked = 'leafletMapClicked',
 }
 
 // ----------------------------------------------------------------------------------------------
 
-export function broadcastMapCenter(center: LatLngExpression | null) {
-  eventEmitter.emit<LatLngExpression | null>(events.mapCenterChange, center);
+export function setLeafletMapCenter(center: LatLngExpression | null) {
+  eventEmitter.emit<LatLngExpression | null>(
+    events.leafletMapCenterChange,
+    center
+  );
 }
 
-export const mapCenter$ = eventEmitter
-  .observeEvent<LatLngExpression | null>(events.mapCenterChange)
+export const leafletMapCenter$ = eventEmitter
+  .observeEvent<LatLngExpression | null>(events.leafletMapCenterChange)
   .pipe(
     map(({ eventValue }) => eventValue),
-    distinctUntilChanged((x, y) => x === y),
+    distinctUntilChanged((x, y) => isEqual(x, y)),
     publishReplay(1),
     refCount()
   );
 
 // ----------------------------------------------------------------------------------------------
 
-export function broadcastMapZoom(zoom: number | null) {
-  eventEmitter.emit<number | null>(events.mapZoomChange, zoom);
+export function setLeafletMapZoom(zoom: number | null) {
+  eventEmitter.emit<number | null>(events.leafletMapZoomChange, zoom);
 }
 
-export const mapZoom$ = eventEmitter
-  .observeEvent<number | null>(events.mapZoomChange)
+export const leafletMapZoom$ = eventEmitter
+  .observeEvent<number | null>(events.leafletMapZoomChange)
   .pipe(
     map(({ eventValue }) => eventValue),
-    distinctUntilChanged((x, y) => x === y),
+    distinctUntilChanged((x, y) => isEqual(x, y)),
     publishReplay(1),
     refCount()
   );
 
 // ----------------------------------------------------------------------------------------------
 
-export interface IMapLatLngZoom {
-  lat: number;
-  lng: number;
-  zoom: number;
+export function setLeafletMapHoveredMarker(markerId: string | null) {
+  eventEmitter.emit<string | null>(
+    events.leafletMapHoveredMarkerChange,
+    markerId
+  );
 }
 
-export function setMapLatLngZoom(mapLatLngZoom: IMapLatLngZoom) {
-  eventEmitter.emit<IMapLatLngZoom>(events.setMapLatLngZoom, mapLatLngZoom);
+export const leafletMapHoveredMarker = eventEmitter
+  .observeEvent<string | null>(events.leafletMapHoveredMarkerChange)
+  .pipe(
+    map(({ eventValue }) => eventValue),
+    distinctUntilChanged((x, y) => isEqual(x, y))
+  );
+
+// ----------------------------------------------------------------------------------------------
+
+export function setLeafletMapSelectedMarker(markerId: string | null) {
+  eventEmitter.emit<string | null>(
+    events.leafletMapSelectedMarkerChange,
+    markerId
+  );
 }
 
-export const setMapLatLngZoom$ = eventEmitter
-  .observeEvent<IMapLatLngZoom>(events.setMapLatLngZoom)
-  .pipe(map(({ eventValue }) => eventValue));
+export const leafletMapSelectedMarker$ = eventEmitter
+  .observeEvent<string | null>(events.leafletMapSelectedMarkerChange)
+  .pipe(
+    map(({ eventValue }) => eventValue),
+    distinctUntilChanged((x, y) => isEqual(x, y))
+  );
+
+// ----------------------------------------------------------------------------------------------
+
+export function setLeafletMapClicked(map: L.Map, latLng: L.LatLng) {
+  eventEmitter.emit<{ map: L.Map; latLng: L.LatLng }>(
+    events.leafletMapClicked,
+    { map, latLng }
+  );
+}
+
+export const leafletMapClicked$ = eventEmitter
+  .observeEvent<{ map: L.Map; latLng: L.LatLng }>(events.leafletMapClicked)
+  .pipe(
+    map(({ eventValue }) => eventValue),
+    distinctUntilChanged((x, y) => isEqual(x.latLng, y.latLng))
+  );
 
 // ----------------------------------------------------------------------------------------------

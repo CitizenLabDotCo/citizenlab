@@ -153,7 +153,5 @@ export function removeLayers(map: L.Map, leafletLayers: L.Layer[]) {
 }
 
 export function removeLayer(map: L.Map, leafletLayer: L.Layer) {
-  if (leafletLayer) {
-    map.removeLayer(leafletLayer);
-  }
+  map.removeLayer(leafletLayer);
 }

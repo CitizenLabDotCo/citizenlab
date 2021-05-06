@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
+import { Subscription } from 'rxjs';
 
 // Data loading
 import GetGeotaggedIdeas, {
@@ -7,6 +8,9 @@ import GetGeotaggedIdeas, {
 } from 'resources/GetGeotaggedIdeas';
 import { IGeotaggedIdeaData } from 'services/ideas';
 import { isNilOrError } from 'utils/helperUtils';
+
+// events
+import { leafletMapSelectedMarker$ } from 'components/UI/LeafletMap/events';
 
 // Components
 import { Spinner } from 'cl2-component-library';
@@ -76,6 +80,8 @@ interface State {
 }
 
 class DashboardMap extends PureComponent<Props & InjectedLocalized, State> {
+  subscriptions: Subscription[];
+
   constructor(props) {
     super(props);
     this.state = {
@@ -83,9 +89,18 @@ class DashboardMap extends PureComponent<Props & InjectedLocalized, State> {
       panelOpened: false,
       loadingMessage: null,
     };
+    this.subscriptions = [];
   }
 
   componentDidMount() {
+    this.subscriptions = [
+      leafletMapSelectedMarker$.subscribe((ideaId) => {
+        if (ideaId) {
+          this.handleIdeaMarkerSelected(ideaId);
+        }
+      }),
+    ];
+
     setTimeout(() => {
       this.setState({
         loadingMessage: (
@@ -107,6 +122,10 @@ class DashboardMap extends PureComponent<Props & InjectedLocalized, State> {
     }, 2000);
   }
 
+  componentWillUnmount() {
+    this.subscriptions?.forEach((subscription) => subscription.unsubscribe());
+  }
+
   getPoints = (ideas: IGeotaggedIdeaData[]) => {
     return ideas
       .filter((idea) => idea.attributes.location_point_geojson)
@@ -117,21 +136,22 @@ class DashboardMap extends PureComponent<Props & InjectedLocalized, State> {
       }));
   };
 
-  handleIdeaClick = (id: string) => {
+  handleIdeaMarkerSelected = (ideaId: string) => {
     const { panelOpened, selectedIdeaId } = this.state;
-    if (id === selectedIdeaId) {
+    if (ideaId === selectedIdeaId) {
       if (panelOpened) {
         this.setState({ selectedIdeaId: null });
       }
       this.setState({ panelOpened: !panelOpened });
     } else {
-      trackEventByName(tracks.clickIdeaOnMap.name, { extra: { id } });
-      this.setState({ selectedIdeaId: id });
+      trackEventByName(tracks.clickIdeaOnMap.name, { extra: { id: ideaId } });
+      this.setState({ selectedIdeaId: ideaId });
       if (!panelOpened) {
         this.setState({ panelOpened: true });
       }
     }
   };
+
   closePanel = () => {
     this.setState({ panelOpened: false });
   };
@@ -157,11 +177,7 @@ class DashboardMap extends PureComponent<Props & InjectedLocalized, State> {
           text={<FormattedMessage {...messages.mapExplanationText} />}
         />
         <MapWrapper>
-          <StyledMap
-            points={this.getPoints(ideas)}
-            onMarkerClick={this.handleIdeaClick}
-            mapHeight="600px"
-          />
+          <StyledMap points={this.getPoints(ideas)} mapHeight="600px" />
           {panelOpened && (
             <Panel>
               {selectedIdeaId && (

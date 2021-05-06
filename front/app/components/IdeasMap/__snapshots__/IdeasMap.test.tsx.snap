@@ -11,8 +11,6 @@ exports[`IdeasMap renders correctly 1`] = `
   <Memo()
     boxContent={null}
     onBoxClose={[Function]}
-    onMapClick={[Function]}
-    onMarkerClick={[Function]}
     points={Array []}
     projectId="379cac45-d26b-505c-9215-b2677a693d37"
   />

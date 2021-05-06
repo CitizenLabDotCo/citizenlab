@@ -5,7 +5,7 @@ import React, {
   useEffect,
   useLayoutEffect,
 } from 'react';
-import { popup, LatLng, Map as LeafletMap } from 'leaflet';
+// import { LatLng } from 'leaflet';
 import { withRouter, WithRouterProps } from 'react-router';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -16,17 +16,21 @@ import tracks from './tracks';
 // components
 import Map, { Point } from 'components/Map';
 import Warning from 'components/UI/Warning';
-import IdeaButton from 'components/IdeaButton';
+// import IdeaButton from 'components/IdeaButton';
 import IdeaMapOverlay from './IdeaMapOverlay';
 
 // hooks
 import useProject from 'hooks/useProject';
-import usePhase from 'hooks/usePhase';
+// import usePhase from 'hooks/usePhase';
 import useIdeaMarkers from 'hooks/useIdeaMarkers';
 import useWindowSize from 'hooks/useWindowSize';
 
 // events
-import { selectIdeaId } from './events';
+import { setIdeaMapSelectedIdea, ideaMapSelectedIdea$ } from './events';
+import {
+  setLeafletMapSelectedMarker,
+  leafletMapSelectedMarker$,
+} from 'components/UI/LeafletMap/events';
 
 // i18n
 import FormattedMessage from 'utils/cl-intl/FormattedMessage';
@@ -53,7 +57,7 @@ const InnerContainer = styled.div<{ leftMargin: number | null }>`
   }
 `;
 
-const IdeaButtonWrapper = styled.div``;
+// const IdeaButtonWrapper = styled.div``;
 
 const StyledWarning = styled(Warning)`
   margin-bottom: 10px;
@@ -99,15 +103,13 @@ const initialInnerContainerLeftMargin = getInnerContainerLeftMargin(
 const IdeasMap = memo<Props & WithRouterProps>(
   ({ projectIds, phaseId, params, className }) => {
     const project = useProject({ projectSlug: params.slug });
-    const phase = usePhase(phaseId || null);
     const ideaMarkers = useIdeaMarkers({ phaseId, projectIds });
     const { windowWidth } = useWindowSize();
 
     const containerRef = useRef<HTMLDivElement | null>(null);
-    const ideaButtonRef = useRef<HTMLDivElement | null>(null);
+    // const ideaButtonRef = useRef<HTMLDivElement | null>(null);
 
     const [points, setPoints] = useState<Point[]>([]);
-    const [selectedLatLng, setSelectedLatLng] = useState<LatLng | null>(null);
     const [containerWidth, setContainerWidth] = useState(initialContainerWidth);
     const [innerContainerLeftMargin, setInnerContainerLeftMargin] = useState(
       initialInnerContainerLeftMargin
@@ -122,6 +124,26 @@ const IdeasMap = memo<Props & WithRouterProps>(
         setContainerWidth(containerWidth);
       }
     });
+
+    useEffect(() => {
+      const subscriptions = [
+        ideaMapSelectedIdea$.subscribe((selectedIdeaId) => {
+          setLeafletMapSelectedMarker(selectedIdeaId);
+        }),
+        leafletMapSelectedMarker$.subscribe((selectedIdeaId) => {
+          if (selectedIdeaId) {
+            trackEventByName(tracks.clickOnIdeaMapMarker, {
+              extra: { selectedIdeaId },
+            });
+          }
+          setIdeaMapSelectedIdea(selectedIdeaId);
+        }),
+      ];
+
+      return () => {
+        subscriptions.forEach((subscription) => subscription.unsubscribe());
+      };
+    }, []);
 
     useEffect(() => {
       setInnerContainerLeftMargin(
@@ -149,27 +171,22 @@ const IdeasMap = memo<Props & WithRouterProps>(
       setPoints(ideaPoints);
     }, [ideaMarkers]);
 
-    const toggleIdea = (ideaId: string) => {
-      trackEventByName(tracks.clickOnIdeaMapMarker, { extra: { ideaId } });
-      selectIdeaId(ideaId);
-    };
+    // const handleOnMapClick = (map: LeafletMap, position: LatLng) => {
+    //   setSelectedLatLng(position);
 
-    const onMapClick = (map: LeafletMap, position: LatLng) => {
-      setSelectedLatLng(position);
+    //   const ideaPostingEnabled =
+    //     (!isNilOrError(project) && project.attributes.posting_enabled) ||
+    //     (!isNilOrError(phase) && phase.attributes.posting_enabled);
 
-      const ideaPostingEnabled =
-        (!isNilOrError(project) && project.attributes.posting_enabled) ||
-        (!isNilOrError(phase) && phase.attributes.posting_enabled);
+    //   if (ideaPostingEnabled && ideaButtonRef?.current) {
+    //     popup()
+    //       .setLatLng(position)
+    //       .setContent(ideaButtonRef?.current)
+    //       .openOn(map);
+    //   }
 
-      if (ideaPostingEnabled && ideaButtonRef?.current) {
-        popup()
-          .setLatLng(position)
-          .setContent(ideaButtonRef?.current)
-          .openOn(map);
-      }
-
-      return;
-    };
+    //   return;
+    // };
 
     if (!isNilOrError(project)) {
       return (
@@ -185,13 +202,7 @@ const IdeasMap = memo<Props & WithRouterProps>(
               <FormattedMessage {...messages.a11y_mapTitle} />
             </ScreenReaderOnly>
 
-            <Map
-              projectId={project.id}
-              points={points}
-              onMarkerClick={toggleIdea}
-              onMapClick={onMapClick}
-              mapHeight="80vh"
-            />
+            <Map projectId={project.id} points={points} mapHeight="80vh" />
 
             {projectIds && !isNilOrError(project) && (
               <StyledIdeaMapOverlay
@@ -201,6 +212,7 @@ const IdeasMap = memo<Props & WithRouterProps>(
               />
             )}
 
+            {/*
             <IdeaButtonWrapper
               className="create-idea-wrapper"
               ref={ideaButtonRef}
@@ -213,6 +225,7 @@ const IdeasMap = memo<Props & WithRouterProps>(
                 inMap={true}
               />
             </IdeaButtonWrapper>
+            */}
           </InnerContainer>
         </Container>
       );

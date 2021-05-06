@@ -1,6 +1,7 @@
 import React, { memo, useEffect, useState } from 'react';
 import { withRouter, WithRouterProps } from 'react-router';
 import { isEqual } from 'lodash-es';
+import { combineLatest } from 'rxjs';
 
 // components
 import Map from 'components/Map';
@@ -20,7 +21,12 @@ import {
 } from '../../../services/mapConfigs';
 
 // events
-import { setMapLatLngZoom, mapCenter$, mapZoom$ } from 'components/Map/events';
+import {
+  leafletMapCenter$,
+  leafletMapZoom$,
+  setLeafletMapCenter,
+  setLeafletMapZoom,
+} from 'components/UI/LeafletMap/events';
 
 // utils
 import { getCenter, getZoomLevel, getTileProvider } from '../../../utils/map';
@@ -102,17 +108,13 @@ const ProjectCustomMapConfigPage = memo<
 
   useEffect(() => {
     const subscriptions = [
-      mapCenter$.subscribe((center) => {
-        if (center) {
-          setCurrentLat(center[0]);
-          setCurrentLng(center[1]);
-        }
-      }),
-      mapZoom$.subscribe((zoom) => {
-        if (zoom !== null) {
+      combineLatest(leafletMapCenter$, leafletMapZoom$).subscribe(
+        ([center, zoom]) => {
+          setCurrentLat(center?.[0]);
+          setCurrentLng(center?.[1]);
           setCurrentZoom(zoom);
         }
-      }),
+      ),
     ];
 
     return () =>
@@ -120,11 +122,8 @@ const ProjectCustomMapConfigPage = memo<
   }, []);
 
   const goToDefaultMapView = () => {
-    setMapLatLngZoom({
-      lat: defaultLat,
-      lng: defaultLng,
-      zoom: defaultZoom,
-    });
+    setLeafletMapCenter([defaultLat, defaultLng]);
+    setLeafletMapZoom(defaultZoom);
   };
 
   const setAsDefaultMapView = async (event: React.FormEvent) => {

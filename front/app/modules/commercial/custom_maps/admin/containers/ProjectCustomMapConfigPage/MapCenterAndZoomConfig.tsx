@@ -19,7 +19,10 @@ import { SubSectionTitle } from 'components/admin/Section';
 import { getCenter, getZoomLevel } from '../../../utils/map';
 
 // events
-import { setMapLatLngZoom } from 'components/Map/events';
+import {
+  setLeafletMapCenter,
+  setLeafletMapZoom,
+} from 'components/UI/LeafletMap/events';
 
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
@@ -199,11 +202,9 @@ const MapCenterAndZoomConfig = memo<Props & InjectedIntlProps>(
             },
             zoom_level: defaultZoom,
           });
-          setMapLatLngZoom({
-            lat: defaultLat,
-            lng: defaultLng,
-            zoom: parseInt(defaultZoom, 10),
-          });
+
+          setLeafletMapCenter([defaultLat, defaultLng]);
+          setLeafletMapZoom(parseInt(defaultZoom, 10));
           formSuccess();
         } catch (error) {
           formError(error);

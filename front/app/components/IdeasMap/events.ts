@@ -1,17 +1,22 @@
+import { distinctUntilChanged, map } from 'rxjs/operators';
+import { isEqual } from 'lodash-es';
 import eventEmitter from 'utils/eventEmitter';
 
 enum events {
-  selectedIdeaIdChanged = 'selectedIdeaIdChanged',
+  ideaMapSelectedIdeaChange = 'ideaMapSelectedIdeaChange',
 }
 
 // ---------
 
-export function selectIdeaId(ideaId: string) {
-  eventEmitter.emit<string>(events.selectedIdeaIdChanged, ideaId);
+export function setIdeaMapSelectedIdea(ideaId: string | null) {
+  eventEmitter.emit<string | null>(events.ideaMapSelectedIdeaChange, ideaId);
 }
 
-export const selectedIdeaId$ = eventEmitter.observeEvent<string>(
-  events.selectedIdeaIdChanged
-);
+export const ideaMapSelectedIdea$ = eventEmitter
+  .observeEvent<string | null>(events.ideaMapSelectedIdeaChange)
+  .pipe(
+    map(({ eventValue }) => eventValue),
+    distinctUntilChanged((x, y) => isEqual(x, y))
+  );
 
 // ---------

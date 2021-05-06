@@ -75,6 +75,7 @@
     "jwt-decode": "2.2.0",
     "leaflet": "1.7.1",
     "leaflet.markercluster": "1.4.1",
+    "leaflet-active-area": "1.1.1",
     "lodash-es": "4.17.21",
     "moment": "2.29.1",
     "moment-timezone": "0.5.33",

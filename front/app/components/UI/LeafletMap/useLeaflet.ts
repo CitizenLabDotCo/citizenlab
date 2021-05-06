@@ -1,5 +1,20 @@
 import { useEffect, useState, useMemo } from 'react';
 import usePrevious from 'hooks/usePrevious';
+import { combineLatest } from 'rxjs';
+import {
+  DEFAULT_MARKER_ICON,
+  // DEFAULT_MARKER_HOVER_ICON,
+  DEFAULT_MARKER_ACTIVE_ICON,
+} from './config';
+
+// events
+import {
+  setLeafletMapSelectedMarker,
+  setLeafletMapClicked,
+  leafletMapSelectedMarker$,
+  leafletMapCenter$,
+  leafletMapZoom$,
+} from './events';
 
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
@@ -9,11 +24,7 @@ import marker from 'leaflet/dist/images/marker-icon.png';
 import marker2x from 'leaflet/dist/images/marker-icon-2x.png';
 import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 
-import {
-  broadcastMapCenter,
-  broadcastMapZoom,
-  setMapLatLngZoom$,
-} from './events';
+import { setLeafletMapCenter, setLeafletMapZoom } from './events';
 
 import service from './services';
 
@@ -23,7 +34,6 @@ import {
   IOverlayStringOrObjectOrFunctionForLayer,
   ITooltipStringOrObjectOrFunctionForLayer,
   IPopupStringOrObjectOrFunctionForLayer,
-  IOnMapClickHandler,
   GeoJSONLayer,
 } from './typings';
 
@@ -35,17 +45,11 @@ L.Icon.Default.mergeOptions({
   shadowUrl: markerShadow,
 });
 
-import defaultMarker from './default-marker.svg';
-// import defaultHoverMarker from './default-marker-hover.svg';
-import defaultActiveMarker from './default-marker-active.svg';
-
 export interface ILeafletMapConfig {
   center?: L.LatLngExpression;
   zoom?: number;
   tileProvider?: string | null;
   tileOptions?: object;
-  onClick?: IOnMapClickHandler;
-  onMarkerClick?: (id: string, data: string) => void;
   geoJsonLayers?: GeoJSONLayer[];
   points?: Point[];
   layerMarker?: IMarkerStringOrObjectOrFunctionForLayer;
@@ -62,8 +66,6 @@ export default function useLeaflet(
     tileProvider,
     tileOptions,
     points,
-    onClick,
-    onMarkerClick,
     geoJsonLayers,
     layerMarker,
     layerOverlay,
@@ -74,9 +76,9 @@ export default function useLeaflet(
   // State and memos
   const [map, setMap] = useState<L.Map | null>(null);
   const [markers, setMarkers] = useState<L.Marker<any>[]>([]);
-  const [selectedIdeaId, setSelectedIdeaId] = useState<string | null>(null);
   const [tileLayer, setTileLayer] = useState<L.Layer | null>(null);
   const [layers, setLayers] = useState<L.GeoJSON[]>([]);
+  const [selectedMarkerId, setSelectedMarkerId] = useState<string | null>(null);
 
   const [
     markerClusterGroup,
@@ -100,47 +102,30 @@ export default function useLeaflet(
   const prevTileConfig = usePrevious(tileConfig);
   const prevPoints = usePrevious(points);
   const prevGeoJsonLayers = usePrevious(geoJsonLayers);
-  const prevSelectedIdeaId = usePrevious(selectedIdeaId);
+  const prevSelectedMarkerId = usePrevious(selectedMarkerId);
 
   // Marker icons
-  const markerIcon = service.getMarkerIcon({ url: defaultMarker });
+  const markerIcon = service.getMarkerIcon({ url: DEFAULT_MARKER_ICON });
   // const markerHoverIcon = service.getMarkerIcon({
-  //   url: defaultHoverMarker,
+  //   url: DEFAULT_MARKER_HOVER_ICON,
   // });
   const markerActiveIcon = service.getMarkerIcon({
-    url: defaultActiveMarker,
+    url: DEFAULT_MARKER_ACTIVE_ICON,
   });
 
   // Effects
   const setup = () => {
-    if (map) {
-      return;
+    if (!map) {
+      const newMap = service.init(mapId, {
+        center,
+        zoom,
+        tileProvider,
+        tileOptions,
+      });
+      setMap(newMap);
     }
-
-    const options = {
-      tileProvider,
-      tileOptions,
-      onClick,
-      zoom,
-      center,
-      onMoveHandler: broadcastMapCenter,
-      onZoomHandler: broadcastMapZoom,
-    };
-
-    const newMap = service.setup(mapId, options);
-    service.addTileLayer(newMap, tileProvider, tileOptions);
-
-    setMap(newMap);
   };
-  useEffect(setup, [
-    map,
-    mapId,
-    tileProvider,
-    tileOptions,
-    onClick,
-    zoom,
-    center,
-  ]);
+  useEffect(setup, [map, mapId, tileProvider, tileOptions, zoom, center]);
 
   const refreshTile = () => {
     if (!map || (tileLayer && tileConfig === prevTileConfig)) {
@@ -206,89 +191,82 @@ export default function useLeaflet(
   ]);
 
   const refreshMarkers = () => {
-    if (!map || prevPoints === points) {
-      return;
-    }
-
     if (map && prevPoints !== points) {
       const newMarkers = service.addMarkersToMap(map, points);
-
-      // newMarkers.forEach((marker) => {
-      //   marker.on('click', () => {
-      //     console.log('marker id', marker.options.id);
-      //     newMarkers.forEach((newMarker) => {
-      //       if (newMarker.options.id === marker.options.id) {
-      //         newMarker.setIcon(markerActiveIcon);
-      //       } else {
-      //         newMarker.setIcon(markerIcon);
-      //       }
-      //     });
-      //   });
-      // });
-
-      // newMarkers.forEach((marker) => {
-      //   marker.on('mouseover', () => {
-      //     if (marker.options['id'] !== selectedIdeaId)
-      //   });
-      // });
-
       setMarkers(newMarkers);
     }
   };
   useEffect(refreshMarkers, [map, points, prevPoints]);
 
-  useEffect(() => {
-    if (prevSelectedIdeaId === selectedIdeaId) {
-      return;
+  const markerSelectionChange = () => {
+    if (prevSelectedMarkerId !== selectedMarkerId) {
+      const prevSelectedMarker = markers.find(
+        (marker) => marker.options['id'] === prevSelectedMarkerId
+      );
+      const newSelectedMarker = markers.find(
+        (marker) => marker.options['id'] === selectedMarkerId
+      );
+      prevSelectedMarker?.setIcon(markerIcon);
+      newSelectedMarker?.setIcon(markerActiveIcon);
     }
-
-    const prevSelectedMarker = markers.find(
-      (marker) => marker.options['id'] === prevSelectedIdeaId
-    );
-    const newSelectedMarker = markers.find(
-      (marker) => marker.options['id'] === selectedIdeaId
-    );
-    prevSelectedMarker?.setIcon(markerIcon);
-    newSelectedMarker?.setIcon(markerActiveIcon);
-  }, [prevSelectedIdeaId, selectedIdeaId, markers]);
+  };
+  useEffect(markerSelectionChange, [
+    prevSelectedMarkerId,
+    selectedMarkerId,
+    markers,
+  ]);
 
   const refreshClusterGroups = () => {
-    if (!map || prevMarkers === markers) {
-      return;
+    if (map && prevMarkers !== markers) {
+      if (markerClusterGroup) {
+        service.removeLayer(map, markerClusterGroup);
+      }
+
+      const newMarkerClusterGroup = service.addClusterGroup(map, markers, {
+        onClick: (id, _data) => {
+          setLeafletMapSelectedMarker(id);
+        },
+      });
+
+      setMarkerClusterGroup(newMarkerClusterGroup);
     }
-
-    if (markerClusterGroup) {
-      service.removeLayer(map, markerClusterGroup);
-    }
-
-    const newMarkerClusterGroup = service.addClusterGroup(map, markers, {
-      onClick: (id, _data) => {
-        setSelectedIdeaId(id);
-        return onMarkerClick;
-      },
-    });
-
-    setMarkerClusterGroup(newMarkerClusterGroup);
   };
   useEffect(refreshClusterGroups, [
     markerClusterGroup,
     map,
     prevMarkers,
     markers,
-    onMarkerClick,
   ]);
 
   const wireUpSubscriptions = () => {
     const subscriptions = [
-      setMapLatLngZoom$.subscribe(({ lat, lng, zoom }) => {
-        if (map) {
-          map.setView([lat, lng], zoom);
-        }
+      leafletMapSelectedMarker$.subscribe((selectedIdeaId) => {
+        setSelectedMarkerId(selectedIdeaId);
       }),
+      combineLatest(leafletMapCenter$, leafletMapZoom$).subscribe(
+        ([center, zoom]) => {
+          service.changeView(map, center, zoom);
+        }
+      ),
     ];
+
+    map?.on('click', (event: L.LeafletMouseEvent) => {
+      setLeafletMapClicked(map, event.latlng);
+    });
+
+    map?.on('moveend', () => {
+      const center = map.getCenter();
+      setLeafletMapCenter(center);
+    });
+
+    map?.on('zoomend', () => {
+      const zoom = map.getZoom();
+      setLeafletMapZoom(zoom);
+    });
 
     return () => {
       subscriptions.forEach((subscription) => subscription.unsubscribe());
+      map?.off('click');
       map?.off('moveend');
       map?.off('zoomend');
     };

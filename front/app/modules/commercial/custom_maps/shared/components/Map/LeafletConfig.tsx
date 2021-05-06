@@ -17,7 +17,6 @@ import { getCenter, getZoomLevel, getTileProvider } from '../../../utils/map';
 import useLocalize from 'hooks/useLocalize';
 
 // styling
-import ideaMarkerIcon from './idea-marker.svg';
 import legendMarkerIcon from './legend-marker.svg';
 import { ILeafletMapConfig } from 'components/UI/LeafletMap/useLeaflet';
 
@@ -34,8 +33,6 @@ const LeafletConfig = memo<Props & IMapConfigProps>(
     centerCoordinates,
     zoomLevel,
     points,
-    onMapClick,
-    onMarkerClick,
   }) => {
     const localize = useLocalize();
     const appConfig = useAppConfiguration();
@@ -74,9 +71,6 @@ const LeafletConfig = memo<Props & IMapConfigProps>(
         center,
         tileProvider,
         tileOptions,
-        onMarkerClick,
-        onClick: onMapClick,
-        marker: ideaMarkerIcon,
         layerMarker: (geojsonLayer: GeoJSONLayer, _latlng: L.LatLng) => {
           return geojsonLayer.marker_svg_url || legendMarkerIcon;
         },
@@ -90,15 +84,7 @@ const LeafletConfig = memo<Props & IMapConfigProps>(
           return localize(geojsonLayer.title_multiloc);
         },
       };
-    }, [
-      geoJsonLayers,
-      points,
-      zoom,
-      center,
-      tileProvider,
-      onMarkerClick,
-      onMapClick,
-    ]);
+    }, [geoJsonLayers, points, zoom, center, tileProvider]);
 
     useEffect(() => {
       onLeafletConfigChange(newLeafletConfig);
