@@ -18,6 +18,8 @@ import { endsWith } from 'utils/helperUtils';
 
 // stlying
 import 'assets/semantic/semantic.min.css';
+import { ThemeProvider } from 'styled-components';
+import { rgba } from 'polished';
 
 const Container = styled.div`
   display: flex;
@@ -83,6 +85,25 @@ const RightColumn = styled.div`
     padding: 2.5rem 2.5rem;
   `}
 `;
+
+const chartTheme = (theme) => {
+  return {
+    ...theme,
+    chartStroke: colors.clIconAccent,
+    chartStrokeGreen: colors.clGreen,
+    chartStrokeRed: colors.clRed,
+    chartFill: colors.clIconAccent,
+    barFill: colors.adminContentBackground,
+    chartLabelColor: colors.adminSecondaryTextColor,
+    barHoverColor: rgba(colors.clIconAccent, 0.25),
+    chartLabelSize: 13,
+    animationBegin: 10,
+    animationDuration: 200,
+    cartesianGridColor: '#f5f5f5',
+    newBarFill: '#073F80',
+    newLineColor: '#7FBBCA',
+  };
+};
 
 type Props = {
   className?: string;
@@ -152,16 +173,18 @@ const AdminPage = memo<Props & WithRouterProps>(
         item={{ type: 'route', path: '/admin/dashboard' }}
         action="access"
       >
-        <Container className={`${className} ${whiteBg ? 'whiteBg' : ''}`}>
-          <Sidebar />
-          <RightColumn
-            className={`${fullWidth && 'fullWidth'} ${
-              noPadding && 'noPadding'
-            }`}
-          >
-            {children}
-          </RightColumn>
-        </Container>
+        <ThemeProvider theme={chartTheme}>
+          <Container className={`${className} ${whiteBg ? 'whiteBg' : ''}`}>
+            <Sidebar />
+            <RightColumn
+              className={`${fullWidth && 'fullWidth'} ${
+                noPadding && 'noPadding'
+              }`}
+            >
+              {children}
+            </RightColumn>
+          </Container>
+        </ThemeProvider>
       </HasPermission>
     );
   }

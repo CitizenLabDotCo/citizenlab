@@ -21,7 +21,6 @@ import { injectIntl } from 'utils/cl-intl';
 // styling
 import styled from 'styled-components';
 import { media, colors, fontSizes } from 'utils/styleUtils';
-import { rgba } from 'polished';
 
 // typings
 import { InsertConfigurationOptions, ITab } from 'typings';
@@ -214,25 +213,6 @@ interface Props {
   authUser: GetAuthUserChildProps;
   children: JSX.Element;
 }
-
-export const chartTheme = (theme) => {
-  return {
-    ...theme,
-    chartStroke: colors.clIconAccent,
-    chartStrokeGreen: colors.clGreen,
-    chartStrokeRed: colors.clRed,
-    chartFill: colors.clIconAccent,
-    barFill: colors.adminContentBackground,
-    chartLabelColor: colors.adminSecondaryTextColor,
-    barHoverColor: rgba(colors.clIconAccent, 0.25),
-    chartLabelSize: 13,
-    animationBegin: 10,
-    animationDuration: 200,
-    cartesianGridColor: '#f5f5f5',
-    newBarFill: '#073F80',
-    newLineColor: '#7FBBCA',
-  };
-};
 
 export const DashboardsPage = memo(
   ({

@@ -13,8 +13,8 @@ import { Select } from 'cl2-component-library';
 import messages from '../../../messages';
 import GoBackButton from 'components/UI/GoBackButton';
 import { SectionTitle } from 'components/admin/Section';
-import styled, { ThemeProvider } from 'styled-components';
-import { chartTheme } from 'containers/Admin/dashboard';
+import styled from 'styled-components';
+
 import ProjectReport from './ProjectReport';
 
 const StyledSelect = styled(Select)`
@@ -75,10 +75,10 @@ const ReportTab = memo(({ projects }: DataProps) => {
       )}
     </>
   ) : (
-    <ThemeProvider theme={chartTheme}>
+    <>
       <StyledGoBack onClick={onResetProject} />
       <ProjectReport project={selectedProject} />
-    </ThemeProvider>
+    </>
   );
 });
 

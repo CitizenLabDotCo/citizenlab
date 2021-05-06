@@ -1,11 +1,9 @@
 // libraries
 import React, { PureComponent } from 'react';
 // import moment from 'moment';
-import { ThemeProvider } from 'styled-components';
 
 // components
 import {
-  chartTheme,
   GraphsContainer,
   GraphCard,
   GraphCardInner,
@@ -35,20 +33,18 @@ export default class AquisitionDashboard extends PureComponent<Props, State> {
   render() {
     return (
       <>
-        <ThemeProvider theme={chartTheme}>
-          <GraphsContainer>
-            <GraphCard className="first halfWidth">
-              <GraphCardInner>
-                <GraphCardTitle>todo</GraphCardTitle>
-              </GraphCardInner>
-            </GraphCard>
-            <GraphCard className="halfWidth">
-              <GraphCardInner>
-                <GraphCardTitle>todo</GraphCardTitle>
-              </GraphCardInner>
-            </GraphCard>
-          </GraphsContainer>
-        </ThemeProvider>
+        <GraphsContainer>
+          <GraphCard className="first halfWidth">
+            <GraphCardInner>
+              <GraphCardTitle>todo</GraphCardTitle>
+            </GraphCardInner>
+          </GraphCard>
+          <GraphCard className="halfWidth">
+            <GraphCardInner>
+              <GraphCardTitle>todo</GraphCardTitle>
+            </GraphCardInner>
+          </GraphCard>
+        </GraphsContainer>
       </>
     );
   }
