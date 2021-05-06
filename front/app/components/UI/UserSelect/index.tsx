@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useEffect } from 'react';
 import { adopt } from 'react-adopt';
 import GetUsers, { GetUsersChildProps } from 'resources/GetUsers';
 import ReactSelect, { OptionTypeBase } from 'react-select';
@@ -6,9 +6,12 @@ import selectStyles from 'components/UI/MultipleSelect/styles';
 import { Spinner, Icon } from 'cl2-component-library';
 
 import styled from 'styled-components';
+import { IUserData } from 'services/users';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 interface DataProps {
   users: GetUsersChildProps;
+  authUser: GetAuthUserChildProps;
 }
 
 interface Props {
@@ -49,6 +52,7 @@ const UserOption = styled.div`
 
 const UserSelect = ({
   users,
+  authUser,
   onChange,
   value,
   placeholder,
@@ -57,7 +61,15 @@ const UserSelect = ({
   id,
   inputId,
 }: DataProps & Props): ReactElement => {
-  const usersList = Array.isArray(users.usersList) ? users.usersList : [];
+  const usersList: IUserData[] = Array.isArray(users.usersList)
+    ? users.usersList
+    : [];
+
+  useEffect(() => {
+    if (value) {
+      users.onChangeIncludeIds(value);
+    }
+  }, [value]);
 
   const handleChange = (option: OptionTypeBase) => {
     onChange(option.id);
@@ -65,31 +77,27 @@ const UserSelect = ({
 
   const handleInputChange = (searchTerm) => {
     users.onChangeSearchTerm(searchTerm);
+    users.onChangeIncludeIds();
   };
 
   const handleMenuScrollToBottom = () => {
     users.onLoadMore();
   };
 
-  const filterByNameAndEmail = (option: OptionTypeBase, searchText: string) => {
-    if (
-      option.data.attributes.first_name
-        .toLowerCase()
-        .includes(searchText.toLowerCase()) ||
-      option.data.attributes.last_name
-        .toLowerCase()
-        .includes(searchText.toLowerCase()) ||
-      option.data.attributes.email
-        .toLowerCase()
-        .includes(searchText.toLowerCase())
-    ) {
-      return true;
-    } else {
-      return false;
-    }
-  };
+  const filterByNameAndEmail = (option: OptionTypeBase, searchText: string) =>
+    option.data.attributes.first_name
+      .toLowerCase()
+      .includes(searchText.toLowerCase()) ||
+    option.data.attributes.last_name
+      .toLowerCase()
+      .includes(searchText.toLowerCase()) ||
+    option.data.attributes.email
+      .toLowerCase()
+      .includes(searchText.toLowerCase());
 
-  const selectedUser = usersList.find((user) => user.id === value);
+  const selectedUser =
+    usersList.find((user) => user.id === value) ||
+    (authUser?.id === value && authUser);
 
   const Avatar = ({ userId }) => {
     const user = usersList.find((user) => user.id === userId);
@@ -152,6 +160,7 @@ const UserSelect = ({
 
 const Data = adopt<DataProps>({
   users: <GetUsers />,
+  authUser: <GetAuthUser />,
 });
 
 export default (props) => (
