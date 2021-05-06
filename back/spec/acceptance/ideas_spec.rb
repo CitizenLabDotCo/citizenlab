@@ -355,7 +355,7 @@ resource "Ideas" do
     describe do
       before do
         @project = create(:project)
-        @selected_ideas = create_list(:idea, 1000, publication_status: 'published', project: @project)
+        @selected_ideas = create_list(:idea, 300, publication_status: 'published', project: @project)
       end
       let(:project) { @project.id }
 
