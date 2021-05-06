@@ -1,6 +1,6 @@
 # Changelog
  
-### 2021-05-06
+## 2021-05-06
 
 ### Fixed
 - Idea export to excel is no longer limited to 250 ideas.
