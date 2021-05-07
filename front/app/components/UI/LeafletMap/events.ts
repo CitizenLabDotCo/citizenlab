@@ -56,7 +56,7 @@ export function setLeafletMapHoveredMarker(markerId: string | null) {
   );
 }
 
-export const leafletMapHoveredMarker = eventEmitter
+export const leafletMapHoveredMarker$ = eventEmitter
   .observeEvent<string | null>(events.leafletMapHoveredMarkerChange)
   .pipe(
     map(({ eventValue }) => eventValue),

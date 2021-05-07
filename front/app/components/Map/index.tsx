@@ -92,6 +92,7 @@ export interface IMapConfigProps {
   zoomLevel?: number;
   areas?: GeoJSON.Polygon[];
   mapHeight?: string;
+  noMarkerClustering?: boolean;
 }
 
 export interface IMapProps {
@@ -109,6 +110,7 @@ const Map = memo<IMapProps & IMapConfigProps>(
     zoomLevel,
     mapHeight,
     points,
+    noMarkerClustering,
     boxContent,
     onBoxClose,
     className,
@@ -138,6 +140,7 @@ const Map = memo<IMapProps & IMapConfigProps>(
     const [leafletMapConfig, setLeafletMapConfig] = useState<ILeafletMapConfig>(
       {
         points,
+        noMarkerClustering,
         zoom,
         center,
         tileProvider,

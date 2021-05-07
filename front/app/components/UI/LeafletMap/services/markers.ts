@@ -1,6 +1,5 @@
 import L from 'leaflet';
 import { compact } from 'lodash-es';
-
 import {
   DEFAULT_MARKER_ICON_SIZE,
   DEFAULT_MARKER_ANCHOR_SIZE,
@@ -8,6 +7,10 @@ import {
   // DEFAULT_MARKER_HOVER_ICON,
   // DEFAULT_MARKER_ACTIVE_ICON,
 } from '../config';
+import {
+  setLeafletMapHoveredMarker,
+  setLeafletMapSelectedMarker,
+} from '../events';
 
 import { Point, MarkerIconProps } from '../typings';
 
@@ -23,9 +26,10 @@ export function getMarkerIcon({ url, iconSize, iconAnchor }: MarkerIconProps) {
 }
 
 export function addMarkerToMap(
-  _map: L.Map,
+  map: L.Map,
   latlng: [number, number],
-  options = {}
+  options = {},
+  noMarkerClustering?: boolean
 ) {
   const markerIcon = getMarkerIcon({ url: DEFAULT_MARKER_ICON });
 
@@ -34,12 +38,32 @@ export function addMarkerToMap(
     icon: markerIcon,
   });
 
-  // marker.addTo(map);
+  marker.on('mouseover', (event: L.LeafletEvent) => {
+    setLeafletMapHoveredMarker(event.target.options['id']);
+  });
+
+  marker.on('mouseout', (_event: L.LeafletEvent) => {
+    setLeafletMapHoveredMarker(null);
+  });
+
+  if (noMarkerClustering) {
+    marker.on('click', (event: L.LeafletEvent) => {
+      setLeafletMapSelectedMarker(event.target.options['id']);
+    });
+
+    // only add the marker direclty to the map when clustering is turned off
+    // otherwise let this be handled by the clustergroup
+    marker.addTo(map);
+  }
 
   return marker;
 }
 
-export function addMarkersToMap(map: L.Map, points: Point[] = []) {
+export function addMarkersToMap(
+  map: L.Map,
+  points: Point[] = [],
+  noMarkerClustering?: boolean
+) {
   const bounds: [number, number][] = [];
 
   const markers = compact(points).map((point) => {
@@ -56,7 +80,7 @@ export function addMarkersToMap(map: L.Map, points: Point[] = []) {
 
     bounds.push(latlng);
 
-    return addMarkerToMap(map, latlng, markerOptions);
+    return addMarkerToMap(map, latlng, markerOptions, noMarkerClustering);
   });
 
   return markers;

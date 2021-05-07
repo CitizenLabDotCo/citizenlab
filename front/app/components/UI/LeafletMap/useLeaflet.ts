@@ -5,7 +5,7 @@ import { combineLatest } from 'rxjs';
 import { isEqual } from 'lodash-es';
 import {
   DEFAULT_MARKER_ICON,
-  // DEFAULT_MARKER_HOVER_ICON,
+  DEFAULT_MARKER_HOVER_ICON,
   DEFAULT_MARKER_ACTIVE_ICON,
 } from './config';
 
@@ -13,6 +13,7 @@ import {
 import {
   setLeafletMapSelectedMarker,
   setLeafletMapClicked,
+  leafletMapHoveredMarker$,
   leafletMapSelectedMarker$,
   leafletMapCenter$,
   leafletMapZoom$,
@@ -54,6 +55,7 @@ export interface ILeafletMapConfig {
   tileOptions?: object;
   geoJsonLayers?: GeoJSONLayer[];
   points?: Point[];
+  noMarkerClustering?: boolean;
   layerMarker?: IMarkerStringOrObjectOrFunctionForLayer;
   layerOverlay?: IOverlayStringOrObjectOrFunctionForLayer;
   layerTooltip?: ITooltipStringOrObjectOrFunctionForLayer;
@@ -68,6 +70,7 @@ export default function useLeaflet(
     tileProvider,
     tileOptions,
     points,
+    noMarkerClustering,
     geoJsonLayers,
     layerMarker,
     layerOverlay,
@@ -81,6 +84,7 @@ export default function useLeaflet(
   const [tileLayer, setTileLayer] = useState<L.Layer | null>(null);
   const [layers, setLayers] = useState<L.GeoJSON[]>([]);
   const [selectedMarkerId, setSelectedMarkerId] = useState<string | null>(null);
+  const [hoveredMarkerId, setHoveredMarkerId] = useState<string | null>(null);
 
   const [
     markerClusterGroup,
@@ -105,12 +109,13 @@ export default function useLeaflet(
   const prevPoints = usePrevious(points);
   const prevGeoJsonLayers = usePrevious(geoJsonLayers);
   const prevSelectedMarkerId = usePrevious(selectedMarkerId);
+  const prevHoveredMarkerId = usePrevious(hoveredMarkerId);
 
   // Marker icons
   const markerIcon = service.getMarkerIcon({ url: DEFAULT_MARKER_ICON });
-  // const markerHoverIcon = service.getMarkerIcon({
-  //   url: DEFAULT_MARKER_HOVER_ICON,
-  // });
+  const markerHoverIcon = service.getMarkerIcon({
+    url: DEFAULT_MARKER_HOVER_ICON,
+  });
   const markerActiveIcon = service.getMarkerIcon({
     url: DEFAULT_MARKER_ACTIVE_ICON,
   });
@@ -199,11 +204,25 @@ export default function useLeaflet(
 
   const refreshMarkers = () => {
     if (map && prevPoints !== points) {
-      const newMarkers = service.addMarkersToMap(map, points);
+      if (markers && markers.length > 0) {
+        service.removeLayers(map, markers);
+      }
+
+      const newMarkers = service.addMarkersToMap(
+        map,
+        points,
+        noMarkerClustering
+      );
       setMarkers(newMarkers);
     }
   };
-  useEffect(refreshMarkers, [map, points, prevPoints]);
+  useEffect(refreshMarkers, [
+    map,
+    points,
+    prevPoints,
+    markers,
+    noMarkerClustering,
+  ]);
 
   const markerSelectionChange = () => {
     if (prevSelectedMarkerId !== selectedMarkerId) {
@@ -223,8 +242,33 @@ export default function useLeaflet(
     markers,
   ]);
 
+  const markerHoverChange = () => {
+    if (hoveredMarkerId !== prevHoveredMarkerId) {
+      markers
+        .find(
+          (marker) =>
+            marker.options['id'] === prevHoveredMarkerId &&
+            marker.options['id'] !== selectedMarkerId
+        )
+        ?.setIcon(markerIcon);
+      markers
+        .find(
+          (marker) =>
+            marker.options['id'] === hoveredMarkerId &&
+            marker.options['id'] !== selectedMarkerId
+        )
+        ?.setIcon(markerHoverIcon);
+    }
+  };
+  useEffect(markerHoverChange, [
+    prevHoveredMarkerId,
+    hoveredMarkerId,
+    selectedMarkerId,
+    markers,
+  ]);
+
   const refreshClusterGroups = () => {
-    if (map && prevMarkers !== markers) {
+    if (!noMarkerClustering && map && prevMarkers !== markers) {
       if (markerClusterGroup) {
         service.removeLayer(map, markerClusterGroup);
       }
@@ -243,10 +287,14 @@ export default function useLeaflet(
     map,
     prevMarkers,
     markers,
+    noMarkerClustering,
   ]);
 
   const wireUpSubscriptions = () => {
     const subscriptions = [
+      leafletMapHoveredMarker$.subscribe((hoveredIdeaId) => {
+        setHoveredMarkerId(hoveredIdeaId);
+      }),
       leafletMapSelectedMarker$.subscribe((selectedIdeaId) => {
         setSelectedMarkerId(selectedIdeaId);
       }),

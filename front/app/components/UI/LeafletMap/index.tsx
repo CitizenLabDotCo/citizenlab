@@ -9,14 +9,6 @@ const LeafletMapContainer = styled.div<{ mapHeight: string | undefined }>`
   overflow: hidden;
   position: relative;
 
-  .activeArea {
-    position: absolute;
-    top: 0px;
-    bottom: 0px;
-    right: 0px;
-    left: 500px;
-  }
-
   ${(props) => {
     const { mapHeight } = props;
 

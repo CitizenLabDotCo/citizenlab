@@ -1,13 +1,9 @@
-import React, { memo, useEffect, useState } from 'react';
+import React, { memo } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // events
 import { setIdeaMapCardSelected } from './events';
-import {
-  setLeafletMapCenter,
-  setLeafletMapZoom,
-  leafletMapZoom$,
-} from 'components/UI/LeafletMap/events';
+import { setLeafletMapCenter } from 'components/UI/LeafletMap/events';
 
 // hooks
 import useIdea from 'hooks/useIdea';

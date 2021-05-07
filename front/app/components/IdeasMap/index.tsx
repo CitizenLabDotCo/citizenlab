@@ -55,6 +55,18 @@ const InnerContainer = styled.div<{ leftMargin: number | null }>`
   > .create-idea-wrapper {
     display: none;
   }
+
+  /* border: solid 2px green; */
+
+  .activeArea {
+    position: absolute;
+    top: 0px;
+    bottom: 0px;
+    right: 0px;
+    left: 500px;
+    /* z-index: 99999; */
+    /* border: solid 2px red; */
+  }
 `;
 
 // const IdeaButtonWrapper = styled.div``;
@@ -202,7 +214,12 @@ const IdeasMap = memo<Props & WithRouterProps>(
               <FormattedMessage {...messages.a11y_mapTitle} />
             </ScreenReaderOnly>
 
-            <Map projectId={project.id} points={points} mapHeight="80vh" />
+            <Map
+              projectId={project.id}
+              points={points}
+              mapHeight="80vh"
+              noMarkerClustering={true}
+            />
 
             {projectIds && !isNilOrError(project) && (
               <StyledIdeaMapOverlay

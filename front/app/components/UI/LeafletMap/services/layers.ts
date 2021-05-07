@@ -146,12 +146,18 @@ export function addLayers(
   return layers.map(({ layer }) => layer);
 }
 
-export function removeLayers(map: L.Map, leafletLayers: L.Layer[]) {
+export function removeLayers(
+  map: L.Map,
+  leafletLayers: L.Layer[] | L.Marker<any>[]
+) {
   leafletLayers.forEach((layer) => {
     removeLayer(map, layer);
   });
 }
 
 export function removeLayer(map: L.Map, leafletLayer: L.Layer) {
+  leafletLayer?.off?.('click');
+  leafletLayer?.off?.('mouseover');
+  leafletLayer?.off?.('mouseout');
   map.removeLayer(leafletLayer);
 }
