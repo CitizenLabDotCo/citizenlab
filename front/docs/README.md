@@ -1,16 +1,22 @@
 # Changelog
- 
+
 ## Next release
 
 /
 
-## 2021-05-04
+## 2021-05-07
 
-?
+### Fixed
+- Spreasheet exports throughout the platform are improved.
+
 
 ## 2021-05-03
 
+### Changed
 - Users are now prompted to confirm their account after creating it, by receiving a confirmation code in their email address.
+
+### Added
+- SurveyXact Integration.
 
 ## 2021-04-29
 
