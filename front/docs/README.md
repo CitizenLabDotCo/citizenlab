@@ -9,6 +9,9 @@
 ### Fixed
 - Spreasheet exports throughout the platform are improved.
 
+### Added
+- City Admins can now assign any user as the author of an idea when creating or updating it.
+
 
 ## 2021-05-03
 
