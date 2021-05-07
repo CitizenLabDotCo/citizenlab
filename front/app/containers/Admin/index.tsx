@@ -9,7 +9,7 @@ import HasPermission from 'components/HasPermission';
 
 // components
 import Sidebar from './sideBar/';
-import styled from 'styled-components';
+import styled, { ThemeProvider } from 'styled-components';
 import { colors, media } from 'utils/styleUtils';
 
 // utils
@@ -18,7 +18,6 @@ import { endsWith } from 'utils/helperUtils';
 
 // stlying
 import 'assets/semantic/semantic.min.css';
-import { ThemeProvider } from 'styled-components';
 import { rgba } from 'polished';
 
 const Container = styled.div`
