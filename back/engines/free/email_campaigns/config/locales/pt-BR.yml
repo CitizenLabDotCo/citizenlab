@@ -68,37 +68,37 @@ pt:
       "invite_reminder": Lembrete de convite - todos os usuários
       "mention_in_comment": Menção em um comentário - todos os usuários
       "mention_in_official_feedback": Menção em uma atualização - todos os usuários
-      "new_comment_for_admin": New comment - admins and project managers
-      "new_comment_on_commented_idea": New comment on an idea you commented on - all users
-      "new_comment_on_commented_initiative": New comment on a proposal you commented on - all users
-      "new_comment_on_voted_idea": New comment on an idea you voted for - all users
-      "new_comment_on_voted_initiative": New comment on a proposal you voted for - all users
-      "new_idea_for_admin": New idea - admins and project managers
-      "new_initiative_for_admin": New proposal - admins
-      "official_feedback_on_commented_idea": Update on an idea you commented on - all users
-      "official_feedback_on_commented_initiative": Update on a proposal you commented on - all users
-      "official_feedback_on_voted_idea": Update on an idea you voted on - all users
-      "official_feedback_on_voted_initiative": Update on a proposal you voted on - all users
-      "official_feedback_on_your_idea": Update on your idea - all users
+      "new_comment_for_admin": Novo comentário - administradores e gestores de projeto
+      "new_comment_on_commented_idea": Novo comentário sobre uma ideia que você comentou - todos os usuários
+      "new_comment_on_commented_initiative": Novo comentário sobre uma proposta que você comentou - todos os usuários
+      "new_comment_on_voted_idea": Novo comentário sobre uma ideia que você votou - todos os usuários
+      "new_comment_on_voted_initiative": Novo comentário sobre uma proposta que você votou - todos os usuários
+      "new_idea_for_admin": Novo comentário - administradores e gestores de projeto
+      "new_initiative_for_admin": Nova proposta - administradores
+      "official_feedback_on_commented_idea": Atualização sobre uma ideia que você comentou - todos os usuários
+      "official_feedback_on_commented_initiative": Atualização sobre uma ideia que você comentou - todos os usuários
+      "official_feedback_on_voted_idea": Atualização sobre uma ideia que você votou - todos os usuários
+      "official_feedback_on_voted_initiative": Atualização sobre uma proposta que você votou - todos os usuários
+      "official_feedback_on_your_idea": Atualização da sua ideia - todos os utilizadores
       "official_feedback_on_your_initiative": Update on your proposal - all users
       "password_reset": Password reset - all users
-      "project_moderation_rights_received": Project moderation rights received - project managers
+      "project_moderation_rights_received": Direitos de moderação de projeto recebidos - gerentes de projeto
       "project_folder_moderation_rights_received": Direitos de moderação da pasta de projetos recebidos
-      "project_phase_started": New project phase - all users
-      "project_phase_upcoming": Upcoming new project phase - admins and project managers
-      "status_change_of_commented_idea": Status change of an idea you commented on - all users
-      "status_change_of_commented_initiative": Status change of a proposal you commented on - all users
-      "status_change_of_voted_idea": Status change of an idea you voted on - all users
-      "status_change_of_voted_initiative": Status change of a proposal you voted on - all users
-      "status_change_of_your_idea": Status change of your idea - all users
-      "status_change_of_your_initiative": Status change of your proposal - all users
-      "threshold_reached_for_admin": Proposal reached the voting threshold - admins
-      "welcome": New user - admins
-      "admin_digest": Weekly overview - admins
-      "moderator_digest": Weekly overview - project managers
+      "project_phase_started": Nova fase do projeto - todos os usuários
+      "project_phase_upcoming": Próxima nova fase do projeto - administradores e gerentes de projeto
+      "status_change_of_commented_idea": Mudança de status de uma ideia que você comentou - todos os usuários
+      "status_change_of_commented_initiative": Mudança de status de uma proposta que você comentou - todos os usuários
+      "status_change_of_voted_idea": Mudança de status de uma ideia que você votou - todos os usuários
+      "status_change_of_voted_initiative": Mudança de status de uma proposta que você votou - todos os usuários
+      "status_change_of_your_idea": Mudança de status da sua ideia - todos os usuários
+      "status_change_of_your_initiative": Mudança de status da sua proposta - todos os usuários
+      "threshold_reached_for_admin": Proposta atingiu o limite de votação - administradores
+      "welcome": Novo usuário - administrador
+      "admin_digest": Resumo semanal - administradores
+      "moderator_digest": Resumo semanal - gestores de projeto
       "assignee_digest": Visão geral semanal das ideias atribuídas - administradores e gestores de projeto
-      "user_digest": Weekly overview - all users
-      "your_proposed_initiatives_digest": Weekly overview of your own proposals - all users
+      "user_digest": Visão geral semanal - todos os usuários
+      "your_proposed_initiatives_digest": Visão geral semanal das suas propostas - todos os usuários
     footer:
       "link_privacy_policy": "Política de Privacidade"
       "link_terms_conditions": "Termos e condições"
@@ -525,11 +525,11 @@ pt:
       action_share_twitter: 'Informe os seus seguidores em %{twitterLink}'
       add_image: 'Adicionar uma imagem'
       cta_view_idea: 'Ir para a sua proposta'
-      event_description: '%{firstName}, parabéns com a sua primeira ideia sobre a plataforma de participação de %{organizationName}. Você será notificado quando as pessoas interagirem com a sua ideia. Descubra abaixo os próximos passos que você pode realizar.'
+      event_description: '%{firstName}, parabéns sobre a sua primeira ideia sobre a plataforma de participação de %{organizationName}. Você será notificado quando as pessoas interagirem com a sua ideia. Descubra abaixo os próximos passos que você pode realizar.'
       link: link
       main_header: '%{firstName}, você postou a sua primeira ideia!'
       message_get_votes: 'Alcance mais pessoas com a sua ideia:'
-      preheader: '%{firstName}, parabéns por colocar a sua primeira ideia na plataforma de %{organizationName}. Agora mobilize apoio para a sua ideia'
+      preheader: '%{firstName}, parabéns por postar a sua primeira ideia na plataforma de %{organizationName}. Agora mobilize apoio para ela'
       see_you: 'Te vejo em breve na plataforma!'
       send_email: e-mail
       subject: 'A sua primeira ideia na plataforma de %{organizationName}'
