@@ -131,13 +131,7 @@ const UserSelect = ({
 
   const getOptionId = (option: OptionTypeBase) => option.id;
 
-  const LoadingIndicator = (props): any => (
-    <Spinner ref={props.innerRef} {...props} />
-  );
-
   const filterOption = () => true;
-
-  const components = { LoadingIndicator };
 
   const options = canLoadMore
     ? [...usersList, { value: 'loadMore' }]
@@ -165,7 +159,6 @@ const UserSelect = ({
       menuPlacement="auto"
       styles={selectStyles}
       onMenuScrollToBottom={handleMenuScrollToBottom}
-      components={components}
       onMenuOpen={handleClear}
     />
   );
