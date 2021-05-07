@@ -58,12 +58,15 @@ type State = {
   sortDirection: SortDirection;
   currentPage: number;
   lastPage: number;
+  loadMoreCount: number;
+  isLoading: boolean;
 };
 
 export type GetUsersChildProps = State & {
   onChangeSorting: (sortAttribute: SortAttribute) => void;
   onChangeSearchTerm: (search: string) => void;
   onChangePage: (pageNumber: number) => void;
+  onLoadMore: () => void;
 };
 
 export default class GetUsers extends React.Component<Props, State> {
@@ -89,6 +92,8 @@ export default class GetUsers extends React.Component<Props, State> {
       sortAttribute: getSortAttribute<Sort, SortAttribute>(initialSort),
       sortDirection: getSortDirection<Sort>(initialSort),
       currentPage: 1,
+      loadMoreCount: 1,
+      isLoading: false,
       lastPage: 1,
     };
   }
@@ -107,7 +112,6 @@ export default class GetUsers extends React.Component<Props, State> {
             const newPageNumber = queryParameters['page[number]'];
             queryParameters['page[number]'] =
               newPageNumber !== oldPageNumber ? newPageNumber : 1;
-
             return usersStream({
               queryParameters,
             }).observable.pipe(map((users) => ({ users, queryParameters })));
@@ -116,6 +120,7 @@ export default class GetUsers extends React.Component<Props, State> {
         .subscribe(({ users, queryParameters }) => {
           this.setState({
             queryParameters,
+            isLoading: false,
             usersList: !isNilOrError(users) ? users.data : users,
             sortAttribute: getSortAttribute<Sort, SortAttribute>(
               queryParameters.sort
@@ -189,10 +194,23 @@ export default class GetUsers extends React.Component<Props, State> {
     });
   };
 
-  handleChangePage = (pageNumber: number) => {
-    this.queryParameters$.next({
+  handleChangePage = async (pageNumber: number) => {
+    return this.queryParameters$.next({
       ...this.state.queryParameters,
       'page[number]': pageNumber,
+    });
+  };
+
+  handleLoadMore = () => {
+    this.setState({
+      loadMoreCount: this.state.loadMoreCount + 1,
+      isLoading: true,
+    });
+    this.queryParameters$.next({
+      ...this.state.queryParameters,
+      'page[size]':
+        this.state.queryParameters['page[size]'] *
+        (this.state.loadMoreCount + 1),
     });
   };
 
@@ -203,6 +221,7 @@ export default class GetUsers extends React.Component<Props, State> {
       onChangeSorting: this.handleChangeSorting,
       onChangeSearchTerm: this.handleChangeSearchTerm,
       onChangePage: this.handleChangePage,
+      onLoadMore: this.handleLoadMore,
     });
   }
 }
