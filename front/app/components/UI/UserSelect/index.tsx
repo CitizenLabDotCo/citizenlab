@@ -72,7 +72,7 @@ const UserSelect = ({
     } else if (action === 'select-option' && option.value !== 'loadMore') {
       onChange(option.id);
     } else if (action === 'select-option' && option.value === 'loadMore') {
-      users.onLoadMore();
+      handleLoadMore();
     }
   };
 
