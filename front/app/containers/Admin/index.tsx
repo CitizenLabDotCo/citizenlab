@@ -85,7 +85,7 @@ const RightColumn = styled.div`
   `}
 `;
 
-const chartTheme = (theme) => {
+export const chartTheme = (theme) => {
   return {
     ...theme,
     chartStroke: colors.clIconAccent,
