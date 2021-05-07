@@ -86,6 +86,7 @@ const UserCustomFieldsSignUpInModal = memo<Props>(
             setMetaData((prevMetaData) =>
               prevMetaData ? prevMetaData : metaData
             );
+          console.log(metaData);
         }),
         closeSignUpInModal$.subscribe(() => {
           setMetaData(undefined);
