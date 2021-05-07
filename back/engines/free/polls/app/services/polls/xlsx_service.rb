@@ -8,13 +8,14 @@ module Polls
         .where(participation_context: participation_context)
         .order(:ordering)
 
-    	columns = compute_user_columns is_anonymous, current_user.admin?
-      columns += questions.map do |q|
+      columns = questions.map do |q|
         {
           header: multiloc_service.t(q.title_multiloc),
           f: -> (r) { extract_responses(r, q.id, multiloc_service) }
         }
       end
+      columns += compute_user_columns is_anonymous, current_user.admin?
+
       ::XlsxService.new.generate_xlsx 'Poll results', columns, responses
     end
 
@@ -27,10 +28,12 @@ module Polls
 			columns = [
 				{ header: 'User ID',    f: -> (r) { r.user_id }, skip_sanitization: true },
 				{ header: 'First Name', f: -> (r) { r.user.first_name } },
-				{ header: 'Last Name',  f: -> (r) { r.user.first_name } }
+				{ header: 'Last Name',  f: -> (r) { r.user.last_name } }
 			]
 
 			columns << { header: 'Email', f: -> (r) { r.user.email }} if is_admin
+      columns.concat ::XlsxService.new.custom_field_columns :user, is_admin
+
 			columns
 		end
 
