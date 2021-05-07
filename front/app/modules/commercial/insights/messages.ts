@@ -154,4 +154,8 @@ export default defineMessages({
     id: 'app.containers.Admin.Insights.month',
     defaultMessage: 'month',
   },
+  inputsByStatusTitle: {
+    id: 'app.containers.Admin.Insights.inputsByStatusTitle',
+    defaultMessage: 'Inputs by status',
+  },
 });

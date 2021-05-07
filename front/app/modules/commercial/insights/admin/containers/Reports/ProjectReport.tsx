@@ -33,13 +33,13 @@ import { IProjectData } from 'services/projects';
 import { SectionTitle, PageTitle } from 'components/admin/Section';
 import T from 'components/T';
 
-import HorizontalBarChartWithoutStream from 'containers/Admin/dashboard/users/charts/HorizontalBarChartWithoutStream';
-import IdeasByStatusChart from 'containers/Admin/dashboard/components/IdeasByStatusChart';
+import HorizontalBarChartWithoutStream from './charts/HorizontalBarChartWithoutStream';
+import IdeasByStatusChart from './charts/IdeasByStatusChart';
 import ParticipationPerTopic from './charts/ParticipationPerTopic';
 import LineBarChart from './charts/LineBarChart';
 import LineBarChartVotesByTime from './charts/LineBarChartVotesByTime';
+import BarChartActiveUsersByTime from './charts/BarChartActiveUsersByTime';
 import ResolutionControl from 'components/admin/ResolutionControl';
-import BarChartActiveUsersByTime from 'containers/Admin/dashboard/summary/charts/BarChartActiveUsersByTime';
 
 import Outlet from 'components/Outlet';
 
