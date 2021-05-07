@@ -194,8 +194,8 @@ export default class GetUsers extends React.Component<Props, State> {
     });
   };
 
-  handleChangePage = (pageNumber: number) => {
-    this.queryParameters$.next({
+  handleChangePage = async (pageNumber: number) => {
+    return this.queryParameters$.next({
       ...this.state.queryParameters,
       'page[number]': pageNumber,
     });

@@ -4,17 +4,18 @@ import GetUsers, { GetUsersChildProps } from 'resources/GetUsers';
 import ReactSelect, { OptionTypeBase } from 'react-select';
 import selectStyles from 'components/UI/MultipleSelect/styles';
 import { Spinner, Icon } from 'cl2-component-library';
-
+import { debounce } from 'lodash-es';
 import styled from 'styled-components';
 import { IUserData } from 'services/users';
 import useUser from 'hooks/useUser';
+import Button from 'components/UI/Button';
 
 interface DataProps {
   users: GetUsersChildProps;
 }
 
 interface Props {
-  onChange: (id: string) => void;
+  onChange: (id?: string) => void;
   value: string;
   placeholder?: string;
   disabled?: boolean;
@@ -59,33 +60,33 @@ const UserSelect = ({
   id,
   inputId,
 }: DataProps & Props): ReactElement => {
+  const canLoadMore = users.lastPage !== users.currentPage;
   const selectedUser = useUser({ userId: value });
   const usersList: IUserData[] = Array.isArray(users.usersList)
     ? users.usersList
     : [];
 
-  const handleChange = (option: OptionTypeBase) => {
-    onChange(option.id);
+  const handleChange = (option: OptionTypeBase, { action }) => {
+    if (action === 'clear') {
+      handleClear();
+    } else if (action === 'select-option' && option.value !== 'loadMore') {
+      onChange(option.id);
+    } else if (action === 'select-option' && option.value === 'loadMore') {
+      users.onLoadMore();
+    }
   };
 
-  const handleInputChange = (searchTerm) => {
+  const handleInputChange = debounce((searchTerm) => {
     users.onChangeSearchTerm(searchTerm);
-  };
+  }, 500);
 
   const handleMenuScrollToBottom = () => {
-    users.onLoadMore();
+    handleLoadMore();
   };
 
-  const filterByNameAndEmail = (option: OptionTypeBase, searchText: string) =>
-    option.data.attributes.first_name
-      .toLowerCase()
-      .includes(searchText.toLowerCase()) ||
-    option.data.attributes.last_name
-      .toLowerCase()
-      .includes(searchText.toLowerCase()) ||
-    option.data.attributes.email
-      .toLowerCase()
-      .includes(searchText.toLowerCase());
+  const handleLoadMore = () => {
+    users.onLoadMore();
+  };
 
   const Avatar = ({ userId }) => {
     const user = usersList.find((user) => user.id === userId);
@@ -102,13 +103,31 @@ const UserSelect = ({
     );
   };
 
-  const getOptionLabel = (option: OptionTypeBase): any => (
-    <UserOption>
-      <Avatar userId={option.value} />
-      {option.attributes.first_name} {option.attributes.last_name} (
-      {option.attributes.email})
-    </UserOption>
-  );
+  const getOptionLabel = (option: OptionTypeBase): any => {
+    if (option.value === 'loadMore' && canLoadMore) {
+      return (
+        <Button
+          onClick={handleLoadMore}
+          processing={users.isLoading}
+          icon="showMore"
+          buttonStyle="text"
+          padding="0px"
+        />
+      );
+    } else if (option.attributes) {
+      return (
+        <UserOption>
+          <Avatar userId={option.value} />
+          {option.attributes.last_name}, {option.attributes.first_name} (
+          {option.attributes.email})
+        </UserOption>
+      );
+    }
+  };
+
+  const handleClear = () => {
+    onChange();
+  };
 
   const getOptionId = (option: OptionTypeBase) => option.id;
 
@@ -116,7 +135,13 @@ const UserSelect = ({
     <Spinner ref={props.innerRef} {...props} />
   );
 
+  const filterOption = () => true;
+
   const components = { LoadingIndicator };
+
+  const options = canLoadMore
+    ? [...usersList, { value: 'loadMore' }]
+    : usersList;
 
   return (
     <ReactSelect
@@ -127,10 +152,11 @@ const UserSelect = ({
       blurInputOnSelect
       backspaceRemovesValue={false}
       menuShouldScrollIntoView={false}
-      isClearable={false}
+      isClearable
+      filterOption={filterOption}
       value={selectedUser}
       placeholder={placeholder as string}
-      options={usersList}
+      options={options}
       getOptionValue={getOptionId}
       getOptionLabel={getOptionLabel}
       onChange={handleChange}
@@ -138,16 +164,15 @@ const UserSelect = ({
       isDisabled={disabled}
       menuPlacement="auto"
       styles={selectStyles}
-      filterOption={filterByNameAndEmail}
       onMenuScrollToBottom={handleMenuScrollToBottom}
-      isLoading={users.isLoading}
       components={components}
+      onMenuOpen={handleClear}
     />
   );
 };
 
 const Data = adopt<DataProps>({
-  users: <GetUsers />,
+  users: <GetUsers pageSize={5} sort="last_name" />,
 });
 
 export default (props) => (

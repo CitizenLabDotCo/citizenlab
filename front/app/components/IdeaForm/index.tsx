@@ -67,7 +67,7 @@ import { FormLabelWithIcon } from 'components/UI/FormComponents/WithIcons';
 import { media } from 'utils/styleUtils';
 import { getInputTerm } from 'services/participationContexts';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import { moderatesProject } from 'services/permissions/roles';
+import { isAdmin } from 'services/permissions/roles';
 import { IUserData } from 'services/users';
 
 const Form = styled.form`
@@ -632,8 +632,8 @@ class IdeaForm extends PureComponent<
     );
   };
 
-  handleAuthorChange = (authorId: string) => {
-    this.setState({ authorId });
+  handleAuthorChange = (authorId?: string) => {
+    this.setState({ authorId: authorId ? authorId : null });
   };
 
   render() {
@@ -759,7 +759,7 @@ class IdeaForm extends PureComponent<
               />
             </FormElement>
             {ideaAuthorChangeEnabled &&
-              moderatesProject({ data: authUser as IUserData }, projectId) && (
+              isAdmin({ data: authUser as IUserData }) && (
                 <FormElement id="e2e-idea-author-input">
                   <FormLabel htmlFor="author" labelMessage={messages.author} />
                   <UserSelect
