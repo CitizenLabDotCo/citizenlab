@@ -24,7 +24,7 @@ import {
   GraphCard,
   GraphCardInner,
   PieChartStyleFixesDiv,
-} from 'containers/Admin/dashboard';
+} from 'components/admin/Chart';
 
 import { PieChart, Pie, Tooltip, Cell, ResponsiveContainer } from 'recharts';
 

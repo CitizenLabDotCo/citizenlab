@@ -26,7 +26,7 @@ import {
   GraphCardTitle,
   GraphCard,
   GraphCardInner,
-} from 'containers/Admin/dashboard';
+} from 'components/admin/Chart';
 
 import { IUserCustomFieldData } from '../../services/userCustomFields';
 import { Subscription, combineLatest } from 'rxjs';

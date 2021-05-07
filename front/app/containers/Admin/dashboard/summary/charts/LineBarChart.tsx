@@ -42,7 +42,7 @@ import {
   GraphCardFigureContainer,
   GraphCardFigure,
   GraphCardFigureChange,
-} from '../..';
+} from 'components/admin/Chart';
 import { Popup } from 'semantic-ui-react';
 import { Icon } from 'cl2-component-library';
 import { IResolution } from 'components/admin/ResolutionControl';

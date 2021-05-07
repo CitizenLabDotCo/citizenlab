@@ -28,7 +28,7 @@ import {
   NoDataContainer,
   GraphCardInner,
   GraphCardHeaderWithFilter,
-} from '../..';
+} from 'components/admin/Chart';
 import { IResolution } from 'components/admin/ResolutionControl';
 import { Select } from 'cl2-component-library';
 import { HiddenLabel } from 'utils/a11y';

@@ -29,7 +29,7 @@ import {
   GraphCardTitle,
   GraphCard,
   GraphCardInner,
-} from './';
+} from 'components/admin/Chart';
 
 // types
 import { IGraphPoint } from 'typings';

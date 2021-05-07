@@ -9,7 +9,7 @@ import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import styled from 'styled-components';
 import messages from '../../../messages';
 import { IResolution } from 'components/admin/ResolutionControl';
-import { GraphsContainer } from 'containers/Admin/dashboard';
+import { GraphsContainer } from 'components/admin/Chart';
 import GetIdeas, { GetIdeasChildProps } from 'resources/GetIdeas';
 import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 import {

@@ -27,7 +27,7 @@ import {
   GraphCardTitle,
   GraphCardHeader,
   NoDataContainer,
-} from 'containers/Admin/dashboard';
+} from 'components/admin/Chart';
 import { isNilOrError } from 'utils/helperUtils';
 
 interface InputProps {

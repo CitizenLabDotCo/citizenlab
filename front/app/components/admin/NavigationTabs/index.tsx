@@ -1,7 +1,7 @@
 // style
 import styled, { css } from 'styled-components';
 import { colors, defaultStyles } from 'utils/styleUtils';
-import { tabBorderSize } from './styleConfig';
+import { tabBorderSize } from './tabsStyleConstants';
 
 // components
 import Tab from './Tab';
