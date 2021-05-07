@@ -363,7 +363,6 @@ class App extends PureComponent<Props, State> {
             shouldVerify ||
             shouldCompleteRegistration)
         ) {
-          console.log(shouldConfirm);
           openSignUpInModal({
             isInvitation,
             token,
