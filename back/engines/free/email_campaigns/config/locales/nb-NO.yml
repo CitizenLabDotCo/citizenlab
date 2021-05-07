@@ -491,7 +491,7 @@
       commented: "%{authorFirstName} kommenterte:"
       preheader: "Ukesoversikt over %{organizationName}"
       title_your_weekly_report: "Oppdag hva som skjedde forrige uke"
-      intro_text: "Here's a summary of what happened on the participation platform of %{organizationName}."
+      intro_text: "Her er et sammendrag av hva som skjedde på deltagelsesplattformen til %{organizationName}."
       cta_go_to_the_platform: "Gå til plattformen"
       title_no_activity_past_week: "Ingen aktivitet den siste uken"
       title_proposals: "Forslag startet"
