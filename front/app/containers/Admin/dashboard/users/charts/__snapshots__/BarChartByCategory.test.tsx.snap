@@ -1,10 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<BarChartByCategory /> renders correctly 1`] = `
-<Component>
-  <Component>
-    <Component>
-      <Component />
+<Chart__GraphCard>
+  <Chart__GraphCardInner>
+    <Chart__GraphCardHeader>
+      <Chart__GraphCardTitle />
       <ExportMenu
         currentGroupFilter={null}
         name=""
@@ -14,7 +14,7 @@ exports[`<BarChartByCategory /> renders correctly 1`] = `
           }
         }
       />
-    </Component>
+    </Chart__GraphCardHeader>
     <ResponsiveContainer
       debounce={0}
       height="100%"
@@ -171,6 +171,6 @@ exports[`<BarChartByCategory /> renders correctly 1`] = `
         />
       </BarChart>
     </ResponsiveContainer>
-  </Component>
-</Component>
+  </Chart__GraphCardInner>
+</Chart__GraphCard>
 `;
