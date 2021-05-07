@@ -4,13 +4,16 @@ import { adopt } from 'react-adopt';
 import moment, { Moment } from 'moment';
 
 // components
-import { GraphsContainer, ControlBar, Column, IResolution } from '../';
+import { GraphsContainer, ControlBar, Column } from '../';
+import ResolutionControl, {
+  IResolution,
+} from 'components/admin/ResolutionControl';
 import BarChartActiveUsersByTime from './charts/BarChartActiveUsersByTime';
 import LineBarChart from './charts/LineBarChart';
 import ChartFilters from '../components/ChartFilters';
 import SelectableResourceByProjectChart from './charts/SelectableResourceByProjectChart';
 import SelectableResourceByTopicChart from './charts/SelectableResourceByTopicChart';
-import ResolutionControl from '../components/ResolutionControl';
+
 import LineBarChartVotesByTime from './charts/LineBarChartVotesByTime';
 import TimeControl from '../components/TimeControl';
 

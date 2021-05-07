@@ -28,8 +28,8 @@ import {
   NoDataContainer,
   GraphCardInner,
   GraphCardHeaderWithFilter,
-  IResolution,
 } from '../..';
+import { IResolution } from 'components/admin/ResolutionControl';
 import { Select } from 'cl2-component-library';
 import { HiddenLabel } from 'utils/a11y';
 

@@ -182,5 +182,3 @@ export const GraphCardFigureChange = styled.span`
 `;
 
 export type IGraphUnit = 'users' | 'ideas' | 'comments' | 'votes';
-
-export type IResolution = 'day' | 'week' | 'month';

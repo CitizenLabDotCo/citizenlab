@@ -86,18 +86,6 @@ export default defineMessages({
     defaultMessage: 'Pick topic filter',
   },
   // Time and Resolution Controls
-  resolutionday: {
-    id: 'app.containers.AdminPage.DashboardPage.resolutionday',
-    defaultMessage: 'in Days',
-  },
-  resolutionweek: {
-    id: 'app.containers.AdminPage.DashboardPage.resolutionweek',
-    defaultMessage: 'in Weeks',
-  },
-  resolutionmonth: {
-    id: 'app.containers.AdminPage.DashboardPage.resolutionmonth',
-    defaultMessage: 'in Months',
-  },
   customDateRange: {
     id: 'app.containers.AdminPage.DashboardPage.customDateRange',
     defaultMessage: 'Custom',

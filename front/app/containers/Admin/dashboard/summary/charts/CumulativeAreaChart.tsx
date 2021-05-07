@@ -25,7 +25,6 @@ import {
 } from 'recharts';
 import {
   IGraphUnit,
-  IResolution,
   GraphCard,
   NoDataContainer,
   GraphCardInner,
@@ -35,6 +34,7 @@ import {
   GraphCardFigure,
   GraphCardFigureChange,
 } from '../..';
+import { IResolution } from 'components/admin/ResolutionControl';
 
 // typings
 import { IStreamParams, IStream } from 'utils/streams';

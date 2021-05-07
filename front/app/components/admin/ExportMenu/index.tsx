@@ -16,8 +16,7 @@ import { saveAs } from 'file-saver';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
-
-type IResolution = 'day' | 'week' | 'month';
+import { IResolution } from 'components/admin/ResolutionControl';
 
 const DropdownButton = styled(Button)``;
 

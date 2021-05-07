@@ -30,8 +30,8 @@ import {
   GraphCardHeader,
   GraphCardTitle,
   NoDataContainer,
-  IResolution,
 } from '../..';
+import { IResolution } from 'components/admin/ResolutionControl';
 import { Popup } from 'semantic-ui-react';
 import { Icon } from 'cl2-component-library';
 

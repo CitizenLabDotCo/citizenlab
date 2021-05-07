@@ -34,7 +34,6 @@ import {
 } from 'recharts';
 import {
   IGraphUnit,
-  IResolution,
   GraphCard,
   NoDataContainer,
   GraphCardInner,
@@ -46,6 +45,7 @@ import {
 } from '../..';
 import { Popup } from 'semantic-ui-react';
 import { Icon } from 'cl2-component-library';
+import { IResolution } from 'components/admin/ResolutionControl';
 
 // styling
 import styled, { withTheme } from 'styled-components';

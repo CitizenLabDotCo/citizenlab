@@ -8,7 +8,8 @@ import moment from 'moment';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import styled from 'styled-components';
 import messages from '../../../messages';
-import { IResolution, GraphsContainer } from 'containers/Admin/dashboard';
+import { IResolution } from 'components/admin/ResolutionControl';
+import { GraphsContainer } from 'containers/Admin/dashboard';
 import GetIdeas, { GetIdeasChildProps } from 'resources/GetIdeas';
 import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 import {
@@ -37,7 +38,7 @@ import IdeasByStatusChart from 'containers/Admin/dashboard/components/IdeasBySta
 import ParticipationPerTopic from './charts/ParticipationPerTopic';
 import LineBarChart from './charts/LineBarChart';
 import LineBarChartVotesByTime from './charts/LineBarChartVotesByTime';
-import ResolutionControl from 'containers/Admin/dashboard/components/ResolutionControl';
+import ResolutionControl from 'components/admin/ResolutionControl';
 import BarChartActiveUsersByTime from 'containers/Admin/dashboard/summary/charts/BarChartActiveUsersByTime';
 
 import Outlet from 'components/Outlet';

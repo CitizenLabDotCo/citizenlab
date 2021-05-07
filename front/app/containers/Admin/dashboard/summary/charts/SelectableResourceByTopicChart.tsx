@@ -21,7 +21,7 @@ import {
   votesByTopicStream,
 } from 'services/stats';
 import { IResource } from '..';
-import { IResolution } from '../../';
+import { IResolution } from 'components/admin/ResolutionControl';
 import { IGraphFormat, IOption } from 'typings';
 
 interface QueryProps {

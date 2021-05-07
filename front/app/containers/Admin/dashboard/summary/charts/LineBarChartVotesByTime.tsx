@@ -30,7 +30,6 @@ import {
   ComposedChart,
 } from 'recharts';
 import {
-  IResolution,
   GraphCard,
   NoDataContainer,
   GraphCardInner,
@@ -40,6 +39,7 @@ import {
   GraphCardFigure,
   GraphCardFigureChange,
 } from '../..';
+import { IResolution } from 'components/admin/ResolutionControl';
 
 // i18n
 import messages from '../../messages';
