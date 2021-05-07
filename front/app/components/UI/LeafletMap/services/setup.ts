@@ -10,28 +10,19 @@ import {
 export function init(
   mapId: string,
   {
-    center,
-    zoom,
     tileProvider,
     tileOptions,
   }: {
-    center?: L.LatLngTuple;
-    zoom?: number;
     tileProvider?: string | null;
     tileOptions?: object;
   }
 ) {
-  const initCenter = center || (DEFAULT_CENTER as L.LatLngTuple);
-  const initZoom = zoom || DEFAULT_ZOOM;
-
-  const map = (L.map(mapId) as any).setActiveArea(
+  const map = ((L.map(mapId) as any).setActiveArea(
     'activeArea',
     true,
     true
-  ) as L.Map;
-
+  ) as L.Map).setView([0, 0], 16);
   addTileLayer(map, tileProvider, tileOptions);
-
   return map;
 }
 
