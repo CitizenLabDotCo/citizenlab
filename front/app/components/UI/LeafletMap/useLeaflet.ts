@@ -232,8 +232,8 @@ export default function useLeaflet(
       const newSelectedMarker = markers.find(
         (marker) => marker.options['id'] === selectedMarkerId
       );
-      prevSelectedMarker?.setIcon(markerIcon);
-      newSelectedMarker?.setIcon(markerActiveIcon);
+      prevSelectedMarker?.setIcon(markerIcon).setZIndexOffset(0);
+      newSelectedMarker?.setIcon(markerActiveIcon).setZIndexOffset(999);
     }
   };
   useEffect(markerSelectionChange, [
@@ -250,14 +250,16 @@ export default function useLeaflet(
             marker.options['id'] === prevHoveredMarkerId &&
             marker.options['id'] !== selectedMarkerId
         )
-        ?.setIcon(markerIcon);
+        ?.setIcon(markerIcon)
+        .setZIndexOffset(0);
       markers
         .find(
           (marker) =>
             marker.options['id'] === hoveredMarkerId &&
             marker.options['id'] !== selectedMarkerId
         )
-        ?.setIcon(markerHoverIcon);
+        ?.setIcon(markerHoverIcon)
+        .setZIndexOffset(999);
     }
   };
   useEffect(markerHoverChange, [

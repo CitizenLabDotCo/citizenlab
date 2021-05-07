@@ -1,9 +1,13 @@
-import React, { memo } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // events
 import { setIdeaMapCardSelected } from './events';
-import { setLeafletMapCenter } from 'components/UI/LeafletMap/events';
+import {
+  setLeafletMapCenter,
+  setLeafletMapHoveredMarker,
+  leafletMapHoveredMarker$,
+} from 'components/UI/LeafletMap/events';
 
 // hooks
 import useIdea from 'hooks/useIdea';
@@ -23,7 +27,7 @@ const Container = styled.div`
   border: solid 1px #ccc;
   cursor: pointer;
 
-  &:hover {
+  &.hovered {
     border-color: #000;
   }
 `;
@@ -36,8 +40,23 @@ interface Props {
 const IdeaMapCard = memo<Props>(({ ideaId, className }) => {
   const idea = useIdea({ ideaId });
 
+  const [hovered, setHovered] = useState(false);
+
+  useEffect(() => {
+    const subscriptions = [
+      leafletMapHoveredMarker$.subscribe((hoverredIdeaId) => {
+        setHovered(hoverredIdeaId === ideaId);
+      }),
+    ];
+
+    return () => {
+      subscriptions.forEach((subscription) => subscription.unsubscribe());
+    };
+  }, []);
+
   const handleOnClick = (event: React.FormEvent) => {
     event?.preventDefault();
+
     setIdeaMapCardSelected(ideaId);
 
     if (!isNilOrError(idea)) {
@@ -47,9 +66,24 @@ const IdeaMapCard = memo<Props>(({ ideaId, className }) => {
     }
   };
 
+  const handleOnMouseEnter = () => {
+    // setHovered(true);
+    setLeafletMapHoveredMarker(ideaId);
+  };
+
+  const handleOnMouseLeave = () => {
+    // setHovered(false);
+    setLeafletMapHoveredMarker(null);
+  };
+
   if (!isNilOrError(idea)) {
     return (
-      <Container className={className || ''} onClick={handleOnClick}>
+      <Container
+        className={`${className || ''} ${hovered ? 'hovered' : ''}`}
+        onClick={handleOnClick}
+        onMouseEnter={handleOnMouseEnter}
+        onMouseLeave={handleOnMouseLeave}
+      >
         <T value={idea.attributes.title_multiloc} />
         <div>Upvotes: {idea.attributes.upvotes_count}</div>
         <div>Location: {idea.attributes.location_description}</div>
