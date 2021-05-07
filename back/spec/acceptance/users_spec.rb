@@ -143,6 +143,30 @@ resource "Users" do
         expect(json_response.dig(:data, :attributes, :registration_completed_at)).to be_present # when no custom fields
       end
 
+      context 'when the user_confirmation module is active' do
+        before do
+          AppConfiguration.instance.activate_feature!('user_confirmation')
+        end
+
+        example_request 'Registration is not completed by default' do
+          expect(response_status).to eq 201
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data, :attributes, :registration_completed_at)).to be_nil # when no custom fields
+        end
+
+        example_request 'Sends a confirmation email' do
+          last_email = ActionMailer::Base.deliveries.last
+          user       = User.order(:created_at).last
+          expect(last_email.body.encoded).to include user.reload.email_confirmation_code
+        end
+
+        example_request 'Requires confirmation' do
+          expect(response_status).to eq 201
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data, :attributes, :confirmation_required)).to be true # when no custom fields
+        end
+      end
+
       describe "Creating an admin user" do
         let(:roles) { [{type: 'admin'}] }
 
@@ -560,6 +584,28 @@ resource "Users" do
           end
         end
       end
+
+      # NOTE: To be included in an upcoming iteration
+      # context 'when the user_confirmation module is active' do
+      #   before do
+      #     AppConfiguration.instance.activate_feature!('user_confirmation')
+      #   end
+
+      #   describe 'Changing the email' do
+      #     let(:email) { 'new-email@email.com' }
+
+      #     example_request 'Requires confirmation' do
+      #       json_response = json_parse(response_body)
+      #       expect(json_response.dig(:data, :attributes, :confirmation_required)).to be true
+      #     end
+
+      #     example_request 'Sends a confirmation email' do
+      #       last_email = ActionMailer::Base.deliveries.last
+      #       user       = User.find(id)
+      #       expect(last_email.to).to include user.reload.email
+      #     end
+      #   end
+      # end
 
       describe do
         before do

@@ -110,6 +110,7 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
       imageFile: [],
       imageId: null,
       ideaFiles: [],
+      authorId: null,
     };
     this.globalState = globalState.init('IdeasNewPage', initialGlobalState);
   }
@@ -190,6 +191,7 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
           position_coordinates,
           imageFile,
           ideaFiles,
+          authorId,
         } = await this.globalState.get();
         const ideaTitle = { [locale]: title as string };
         const ideaDescription = { [locale]: description || '' };
@@ -197,10 +199,11 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
           position_coordinates || (await convertToGeoJson(position));
         const locationDescription =
           isString(position) && !isEmpty(position) ? position : null;
+
         const ideaObject: IIdeaAdd = {
           budget,
           proposed_budget: proposedBudget,
-          author_id: authUser.id,
+          author_id: authorId,
           publication_status: 'published',
           title_multiloc: ideaTitle,
           body_multiloc: ideaDescription,

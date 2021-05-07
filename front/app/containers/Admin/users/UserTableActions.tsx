@@ -27,7 +27,7 @@ import eventEmitter from 'utils/eventEmitter';
 import events, { MembershipAdd } from './events';
 
 // tracking
-import { injectTracks } from 'utils/analytics';
+import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // Resources
@@ -37,7 +37,7 @@ import GetGroups, {
 } from 'resources/GetGroups';
 
 // I18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // Styling
@@ -197,6 +197,7 @@ const DropdownFooterButton = styled(Button)`
 // Typings
 import { CLErrorsJSON } from 'typings';
 import { isCLErrorJSON } from 'utils/errorUtils';
+import { InjectedIntlProps } from 'react-intl';
 
 interface InputProps {
   groupType?: MembershipType;
@@ -220,13 +221,7 @@ interface State {
   processing: boolean;
 }
 
-interface Tracks {
-  trackToggleAllUsers: Function;
-  trackAddUsersToGroups: Function;
-  trackAddedRedundantUserToGroup: Function;
-}
-
-class UserTableActions extends PureComponent<Props & Tracks, State> {
+class UserTableActions extends PureComponent<Props & InjectedIntlProps, State> {
   constructor(props) {
     super(props);
     this.state = {
@@ -237,7 +232,7 @@ class UserTableActions extends PureComponent<Props & Tracks, State> {
   }
 
   toggleAllUsers = () => {
-    this.props.trackToggleAllUsers();
+    trackEventByName(tracks.toggleAllUsers.name);
     this.props.toggleSelectAll();
   };
 
@@ -245,7 +240,12 @@ class UserTableActions extends PureComponent<Props & Tracks, State> {
     event.preventDefault();
 
     try {
-      const { allUsersIds, selectedUsers, groupId } = this.props;
+      const {
+        allUsersIds,
+        selectedUsers,
+        groupId,
+        intl: { formatDate, formatMessage },
+      } = this.props;
       const usersIds = selectedUsers === 'all' ? allUsersIds : selectedUsers;
       const apiPath = `${API_PATH}/users/as_xlsx`;
       const fileType =
@@ -254,7 +254,12 @@ class UserTableActions extends PureComponent<Props & Tracks, State> {
       const users = isArray(usersIds) ? usersIds : null;
       const queryParameters = omitBy({ group, users }, isNil);
       const blob = await requestBlob(apiPath, fileType, queryParameters);
-      saveAs(blob, 'users-export.xlsx');
+      saveAs(
+        blob,
+        `${formatMessage(messages.userExportFileName)}_${formatDate(
+          Date.now()
+        )}.xlsx`
+      );
     } catch (error) {
       throw error;
     }
@@ -300,12 +305,7 @@ class UserTableActions extends PureComponent<Props & Tracks, State> {
     const { selectedGroupIds } = this.state;
 
     if (selectedGroupIds && selectedGroupIds.length > 0) {
-      const {
-        allUsersIds,
-        selectedUsers,
-        trackAddUsersToGroups,
-        trackAddedRedundantUserToGroup,
-      } = this.props;
+      const { allUsersIds, selectedUsers } = this.props;
       const usersIds = selectedUsers === 'all' ? allUsersIds : selectedUsers;
       const promises: Promise<IGroupMembership | CLErrorsJSON>[] = [];
       const timeout = (ms) => new Promise((res) => setTimeout(res, ms));
@@ -328,7 +328,7 @@ class UserTableActions extends PureComponent<Props & Tracks, State> {
         this.setState({ processing: false });
       };
 
-      trackAddUsersToGroups({
+      trackEventByName(tracks.addUsersToGroup.name, {
         extra: {
           usersIds,
           selectedGroupIds,
@@ -351,7 +351,7 @@ class UserTableActions extends PureComponent<Props & Tracks, State> {
         success();
         return true;
       } catch (error) {
-        trackAddedRedundantUserToGroup({
+        trackEventByName(tracks.addedRedundantUserToGroup.name, {
           extra: {
             errorResponse: error,
           },
@@ -504,11 +504,7 @@ class UserTableActions extends PureComponent<Props & Tracks, State> {
   }
 }
 
-const UserTableActionsWithHocs = injectTracks<Props>({
-  trackToggleAllUsers: tracks.toggleAllUsers,
-  trackAddUsersToGroups: tracks.addUsersToGroup,
-  trackAddedRedundantUserToGroup: tracks.addedRedundantUserToGroup,
-})(UserTableActions);
+const UserTableActionsWithHocs = injectIntl(UserTableActions);
 
 export default (inputProps: InputProps) => (
   <GetGroups membershipType="manual">

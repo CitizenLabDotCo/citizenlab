@@ -18,6 +18,7 @@ export function openSignUpInModal(metaData?: Partial<ISignUpInMetaData>) {
     verification: metaData?.verification,
     verificationContext: metaData?.verificationContext,
     error: !!metaData?.error,
+    requiresConfirmation: !!metaData?.requiresConfirmation,
     isInvitation: !!metaData?.isInvitation,
     token: metaData?.token,
     inModal: true,
@@ -50,7 +51,7 @@ export function modifyMetaData(
     error: false,
     isInvitation: false,
     token: undefined,
-    inModal: true,
+    inModal: undefined,
     action: undefined,
     ...overridenMetaData,
   };

@@ -180,7 +180,7 @@ const ConfirmationSignupStep = ({
         onCompleted: () =>
           trackEventByName(tracks.signUpConfirmationStepCompleted),
         isEnabled: (metaData) => !!metaData?.requiresConfirmation,
-        isActive: (authUser) => !!authUser?.attributes?.requires_confirmation,
+        isActive: (authUser) => !!authUser?.attributes?.confirmation_required,
       },
     });
   }, []);

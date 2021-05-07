@@ -1,15 +1,36 @@
 # Changelog
- 
-## 2021-05-06
+
+
+## Next release
+
+/
+
+## 2021-05-07
 
 ### Fixed
+- Spreasheet exports throughout the platform are improved.
 - Idea export to excel is no longer limited to 250 ideas.
+
+### Added
+- City Admins can now assign any user as the author of an idea when creating or updating.
+- Email confirmation now happens in survey and signup page sign up forms.
+
+
+## 2021-05-03
+
+### Changed
+- Users are now prompted to confirm their account after creating it, by receiving a confirmation code in their email address.
+
+### Added
+- SurveyXact Integration.
 
 ## 2021-05-01
 
 ### Added
 - New module to plug email confirmation to users.
 
+
+## 2021-04-29
 
 ### Fixed
 - Customizable Banner Fields no longer get emptied/reset when changing another.
