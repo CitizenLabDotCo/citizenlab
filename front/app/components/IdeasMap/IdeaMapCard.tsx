@@ -2,7 +2,7 @@ import React, { memo, useEffect, useState } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // events
-import { setIdeaMapSelectedIdea } from './events';
+import { setIdeaMapCardSelected } from './events';
 import {
   setLeafletMapCenter,
   setLeafletMapZoom,
@@ -40,29 +40,14 @@ interface Props {
 const IdeaMapCard = memo<Props>(({ ideaId, className }) => {
   const idea = useIdea({ ideaId });
 
-  const [currentZoom, setCurrentZoom] = useState<number | null>(null);
-
-  useEffect(() => {
-    const subscriptions = [
-      leafletMapZoom$.subscribe((zoom) => {
-        setCurrentZoom(zoom);
-      }),
-    ];
-
-    return () =>
-      subscriptions.forEach((subscription) => subscription.unsubscribe());
-  }, []);
-
   const handleOnClick = (event: React.FormEvent) => {
     event?.preventDefault();
-    setIdeaMapSelectedIdea(ideaId);
+    setIdeaMapCardSelected(ideaId);
 
     if (!isNilOrError(idea)) {
-      const lat = idea.attributes.location_point_geojson.coordinates[0];
-      const lng = idea.attributes.location_point_geojson.coordinates[1];
-      const zoom = currentZoom || 16;
+      const lng = idea.attributes.location_point_geojson.coordinates[0];
+      const lat = idea.attributes.location_point_geojson.coordinates[1];
       setLeafletMapCenter([lat, lng]);
-      setLeafletMapZoom(zoom);
     }
   };
 

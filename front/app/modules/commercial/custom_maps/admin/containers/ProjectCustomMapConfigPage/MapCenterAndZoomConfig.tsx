@@ -107,8 +107,8 @@ const MapCenterAndZoomConfig = memo<Props & InjectedIntlProps>(
     const [processing, setProcessing] = useState(false);
     const [errors, setErrors] = useState<{ [key: string]: any }>({});
     const [formValues, setFormValues] = useState<IFormValues>({
-      defaultLat,
-      defaultLng,
+      defaultLat: defaultLat.toString(),
+      defaultLng: defaultLng.toString(),
       defaultZoom,
     });
 
@@ -121,8 +121,8 @@ const MapCenterAndZoomConfig = memo<Props & InjectedIntlProps>(
 
         formChange(
           {
-            defaultLat,
-            defaultLng,
+            defaultLat: defaultLat.toString(),
+            defaultLng: defaultLng.toString(),
             defaultZoom,
           },
           false

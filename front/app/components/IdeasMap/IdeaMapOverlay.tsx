@@ -1,7 +1,7 @@
 import React, { memo, useState, useEffect, useRef } from 'react';
 
 // events
-import { ideaMapSelectedIdea$, setIdeaMapSelectedIdea } from './events';
+import { ideaMapCardSelected$, setIdeaMapCardSelected } from './events';
 
 // components
 import IdeasList from './IdeasList';
@@ -48,29 +48,29 @@ const IdeaMapOverlay = memo<Props>(
     const scrollContainerRef = useRef<HTMLDivElement | null>(null);
 
     useEffect(() => {
-      scrollContainerRef.current?.addEventListener('wheel', scrolling);
+      // scrollContainerRef.current?.addEventListener('wheel', scrolling);
 
-      const subscription = ideaMapSelectedIdea$.subscribe((ideaId) => {
+      const subscription = ideaMapCardSelected$.subscribe((ideaId) => {
         setSelectedIdeaId(ideaId);
       });
 
       return () => {
         subscription.unsubscribe();
-        scrollContainerRef.current?.removeEventListener('wheel', scrolling);
+        // scrollContainerRef.current?.removeEventListener('wheel', scrolling);
       };
     }, []);
 
-    const scrolling = (event: WheelEvent) => {
-      // prevent body from scrolling
-      if (scrollContainerRef.current) {
-        const deltaY = event.deltaMode === 1 ? event.deltaY * 20 : event.deltaY;
-        scrollContainerRef.current.scrollTop += deltaY;
-        event.preventDefault();
-      }
-    };
+    // const scrolling = (event: WheelEvent) => {
+    //   // prevent body from scrolling
+    //   if (scrollContainerRef.current) {
+    //     const deltaY = event.deltaMode === 1 ? event.deltaY * 20 : event.deltaY;
+    //     scrollContainerRef.current.scrollTop += deltaY;
+    //     event.preventDefault();
+    //   }
+    // };
 
     const goBack = () => {
-      setIdeaMapSelectedIdea(null);
+      setIdeaMapCardSelected(null);
     };
 
     return (

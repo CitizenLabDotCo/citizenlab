@@ -12,10 +12,10 @@ export const getCenter = (
     !isNilOrError(appConfig) &&
     appConfig?.data?.attributes?.settings?.maps?.map_center?.long;
 
-  let center: L.LatLngExpression = [0, 0];
+  let center: L.LatLngTuple = [0, 0];
 
   if (centerCoordinates !== undefined) {
-    center = centerCoordinates as L.LatLngExpression;
+    center = centerCoordinates as L.LatLngTuple;
   } else if (
     tenantCenterLat !== undefined &&
     tenantCenterLat !== false &&

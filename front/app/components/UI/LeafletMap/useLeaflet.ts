@@ -1,6 +1,8 @@
 import { useEffect, useState, useMemo } from 'react';
 import usePrevious from 'hooks/usePrevious';
+import { distinctUntilChanged, debounceTime } from 'rxjs/operators';
 import { combineLatest } from 'rxjs';
+import { isEqual } from 'lodash-es';
 import {
   DEFAULT_MARKER_ICON,
   // DEFAULT_MARKER_HOVER_ICON,
@@ -46,7 +48,7 @@ L.Icon.Default.mergeOptions({
 });
 
 export interface ILeafletMapConfig {
-  center?: L.LatLngExpression;
+  center?: L.LatLngTuple;
   zoom?: number;
   tileProvider?: string | null;
   tileOptions?: object;
@@ -151,12 +153,19 @@ export default function useLeaflet(
     prevTileConfig,
   ]);
 
-  const refreshCenterAndZoom = () => {
-    if (map) {
-      service.changeView(map, center, zoom);
+  const refreshCenter = () => {
+    if (center !== undefined) {
+      setLeafletMapCenter(center);
     }
   };
-  useEffect(refreshCenterAndZoom, [map, center, zoom]);
+  useEffect(refreshCenter, [map, center]);
+
+  const refreshZoom = () => {
+    if (zoom !== undefined) {
+      setLeafletMapZoom(zoom);
+    }
+  };
+  useEffect(refreshZoom, [map, zoom]);
 
   const refreshLayers = () => {
     if (!map || prevGeoJsonLayers === geoJsonLayers) {
@@ -243,25 +252,32 @@ export default function useLeaflet(
       leafletMapSelectedMarker$.subscribe((selectedIdeaId) => {
         setSelectedMarkerId(selectedIdeaId);
       }),
-      combineLatest(leafletMapCenter$, leafletMapZoom$).subscribe(
-        ([center, zoom]) => {
-          service.changeView(map, center, zoom);
-        }
-      ),
+      combineLatest(leafletMapCenter$, leafletMapZoom$)
+        .pipe(
+          distinctUntilChanged((x, y) => isEqual(x, y)),
+          debounceTime(50)
+        )
+        .subscribe(([newCenter, newZoom]) => {
+          if (map) {
+            service.changeView(map, newCenter, newZoom);
+          }
+        }),
     ];
 
     map?.on('click', (event: L.LeafletMouseEvent) => {
       setLeafletMapClicked(map, event.latlng);
     });
 
-    map?.on('moveend', () => {
-      const center = map.getCenter();
-      setLeafletMapCenter(center);
+    map?.on('moveend', (event: L.LeafletEvent) => {
+      const newCenter = event.target.getCenter() as L.LatLng;
+      const newCenterLat = newCenter.lat;
+      const newCenterLng = newCenter.lng;
+      setLeafletMapCenter([newCenterLat, newCenterLng]);
     });
 
-    map?.on('zoomend', () => {
-      const zoom = map.getZoom();
-      setLeafletMapZoom(zoom);
+    map?.on('zoomend', (event: L.LeafletEvent) => {
+      const newZoom = event.target.getZoom() as number;
+      setLeafletMapZoom(newZoom);
     });
 
     return () => {

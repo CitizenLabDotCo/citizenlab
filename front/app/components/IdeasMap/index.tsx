@@ -26,7 +26,7 @@ import useIdeaMarkers from 'hooks/useIdeaMarkers';
 import useWindowSize from 'hooks/useWindowSize';
 
 // events
-import { setIdeaMapSelectedIdea, ideaMapSelectedIdea$ } from './events';
+import { setIdeaMapCardSelected, ideaMapCardSelected$ } from './events';
 import {
   setLeafletMapSelectedMarker,
   leafletMapSelectedMarker$,
@@ -127,7 +127,7 @@ const IdeasMap = memo<Props & WithRouterProps>(
 
     useEffect(() => {
       const subscriptions = [
-        ideaMapSelectedIdea$.subscribe((selectedIdeaId) => {
+        ideaMapCardSelected$.subscribe((selectedIdeaId) => {
           setLeafletMapSelectedMarker(selectedIdeaId);
         }),
         leafletMapSelectedMarker$.subscribe((selectedIdeaId) => {
@@ -136,7 +136,7 @@ const IdeasMap = memo<Props & WithRouterProps>(
               extra: { selectedIdeaId },
             });
           }
-          setIdeaMapSelectedIdea(selectedIdeaId);
+          setIdeaMapCardSelected(selectedIdeaId);
         }),
       ];
 

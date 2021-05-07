@@ -6,7 +6,7 @@ import {
 } from 'rxjs/operators';
 import { isEqual } from 'lodash-es';
 import eventEmitter from 'utils/eventEmitter';
-import { LatLngExpression } from 'leaflet';
+import { LatLngTuple } from 'leaflet';
 
 enum events {
   leafletMapCenterChange = 'leafletMapCenterChange',
@@ -19,15 +19,12 @@ enum events {
 
 // ----------------------------------------------------------------------------------------------
 
-export function setLeafletMapCenter(center: LatLngExpression | null) {
-  eventEmitter.emit<LatLngExpression | null>(
-    events.leafletMapCenterChange,
-    center
-  );
+export function setLeafletMapCenter(center: LatLngTuple | null) {
+  eventEmitter.emit<LatLngTuple | null>(events.leafletMapCenterChange, center);
 }
 
 export const leafletMapCenter$ = eventEmitter
-  .observeEvent<LatLngExpression | null>(events.leafletMapCenterChange)
+  .observeEvent<LatLngTuple | null>(events.leafletMapCenterChange)
   .pipe(
     map(({ eventValue }) => eventValue),
     distinctUntilChanged((x, y) => isEqual(x, y)),

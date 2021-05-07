@@ -23,7 +23,7 @@ export function getMarkerIcon({ url, iconSize, iconAnchor }: MarkerIconProps) {
 }
 
 export function addMarkerToMap(
-  map: L.Map,
+  _map: L.Map,
   latlng: [number, number],
   options = {}
 ) {

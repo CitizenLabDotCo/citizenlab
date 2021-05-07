@@ -92,13 +92,13 @@ const ProjectCustomMapConfigPage = memo<
   const mapConfig = useMapConfig({ projectId });
 
   const defaultLatLng = getCenter(undefined, appConfig, mapConfig);
-  const defaultLat = parseFloat(defaultLatLng[0]);
-  const defaultLng = parseFloat(defaultLatLng[1]);
+  const defaultLat = defaultLatLng[0];
+  const defaultLng = defaultLatLng[1];
   const defaultZoom = getZoomLevel(undefined, appConfig, mapConfig);
   const defaultTileProvider = getTileProvider(appConfig, mapConfig);
 
-  const [currentLat, setCurrentLat] = useState<number | null>(null);
-  const [currentLng, setCurrentLng] = useState<number | null>(null);
+  const [currentLat, setCurrentLat] = useState<number | undefined>(undefined);
+  const [currentLng, setCurrentLng] = useState<number | undefined>(undefined);
   const [currentZoom, setCurrentZoom] = useState<number | null>(null);
 
   const disabled = isEqual(
@@ -131,8 +131,8 @@ const ProjectCustomMapConfigPage = memo<
 
     if (
       mapConfig &&
-      currentLat !== null &&
-      currentLng !== null &&
+      currentLat !== undefined &&
+      currentLng !== undefined &&
       currentZoom !== null
     ) {
       updateProjectMapConfig(projectId, mapConfig.id, {

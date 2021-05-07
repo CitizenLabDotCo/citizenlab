@@ -3,17 +3,17 @@ import { isEqual } from 'lodash-es';
 import eventEmitter from 'utils/eventEmitter';
 
 enum events {
-  ideaMapSelectedIdeaChange = 'ideaMapSelectedIdeaChange',
+  ideaMapCardSelectedChange = 'ideaMapCardSelectedChange',
 }
 
 // ---------
 
-export function setIdeaMapSelectedIdea(ideaId: string | null) {
-  eventEmitter.emit<string | null>(events.ideaMapSelectedIdeaChange, ideaId);
+export function setIdeaMapCardSelected(ideaId: string | null) {
+  eventEmitter.emit<string | null>(events.ideaMapCardSelectedChange, ideaId);
 }
 
-export const ideaMapSelectedIdea$ = eventEmitter
-  .observeEvent<string | null>(events.ideaMapSelectedIdeaChange)
+export const ideaMapCardSelected$ = eventEmitter
+  .observeEvent<string | null>(events.ideaMapCardSelectedChange)
   .pipe(
     map(({ eventValue }) => eventValue),
     distinctUntilChanged((x, y) => isEqual(x, y))

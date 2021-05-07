@@ -15,7 +15,7 @@ export const getCenter = (
   mapConfig: IMapConfig
 ) => {
   if (centerCoordinates) {
-    return centerCoordinates as L.LatLngExpression;
+    return centerCoordinates as L.LatLngTuple;
   }
 
   const projectCenterLong =
@@ -29,7 +29,7 @@ export const getCenter = (
     return baseGetCenter(centerCoordinates, appConfig);
   }
 
-  const center: L.LatLngExpression = [projectCenterLat, projectCenterLong];
+  const center: L.LatLngTuple = [projectCenterLat, projectCenterLong];
 
   return center;
 };

@@ -6,7 +6,6 @@ import {
   DEFAULT_CENTER,
   DEFAULT_ZOOM,
 } from '../config';
-import { setLeafletMapCenter, setLeafletMapZoom } from '../events';
 
 export function init(
   mapId: string,
@@ -16,19 +15,23 @@ export function init(
     tileProvider,
     tileOptions,
   }: {
-    center?: L.LatLngExpression;
+    center?: L.LatLngTuple;
     zoom?: number;
     tileProvider?: string | null;
     tileOptions?: object;
   }
 ) {
+  const initCenter = center || (DEFAULT_CENTER as L.LatLngTuple);
+  const initZoom = zoom || DEFAULT_ZOOM;
+
   const map = (L.map(mapId) as any).setActiveArea(
     'activeArea',
     true,
     true
   ) as L.Map;
-  changeView(map, center, zoom);
+
   addTileLayer(map, tileProvider, tileOptions);
+
   return map;
 }
 
@@ -44,13 +47,11 @@ export function addTileLayer(
 }
 
 export function changeView(
-  map?: L.Map | null,
-  center?: L.LatLngExpression | null,
+  map: L.Map,
+  center?: L.LatLngTuple | null,
   zoom?: number | null
 ) {
-  const newCenter = center || (DEFAULT_CENTER as L.LatLngExpression);
+  const newCenter = center || (DEFAULT_CENTER as L.LatLngTuple);
   const newZoom = zoom || DEFAULT_ZOOM;
-  map?.setView(newCenter, newZoom);
-  setLeafletMapCenter(newCenter);
-  setLeafletMapZoom(newZoom);
+  map.setView(newCenter, newZoom);
 }
