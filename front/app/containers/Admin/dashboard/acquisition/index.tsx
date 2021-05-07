@@ -8,7 +8,7 @@ import {
   GraphCard,
   GraphCardInner,
   GraphCardTitle,
-} from '../';
+} from 'components/admin/Chart';
 
 // i18n
 // import { FormattedMessage } from 'utils/cl-intl';

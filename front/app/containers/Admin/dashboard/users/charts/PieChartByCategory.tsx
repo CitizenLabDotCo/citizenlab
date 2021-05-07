@@ -26,7 +26,7 @@ import {
   GraphCard,
   GraphCardInner,
   PieChartStyleFixesDiv,
-} from '../..';
+} from 'components/admin/Chart';
 
 // resources
 import GetSerieFromStream from 'resources/GetSerieFromStream';
