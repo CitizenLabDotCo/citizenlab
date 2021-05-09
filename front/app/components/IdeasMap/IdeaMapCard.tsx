@@ -67,12 +67,10 @@ const IdeaMapCard = memo<Props>(({ ideaId, className }) => {
   };
 
   const handleOnMouseEnter = () => {
-    // setHovered(true);
     setLeafletMapHoveredMarker(ideaId);
   };
 
   const handleOnMouseLeave = () => {
-    // setHovered(false);
     setLeafletMapHoveredMarker(null);
   };
 

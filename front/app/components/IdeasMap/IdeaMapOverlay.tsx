@@ -1,7 +1,11 @@
 import React, { memo, useState, useEffect, useRef } from 'react';
+import { isNilOrError } from 'utils/helperUtils';
 
 // events
 import { ideaMapCardSelected$, setIdeaMapCardSelected } from './events';
+
+// hooks
+import useProject from 'hooks/useProject';
 
 // components
 import IdeasList from './IdeasList';
@@ -44,6 +48,7 @@ interface Props {
 const IdeaMapOverlay = memo<Props>(
   ({ projectIds, projectId, phaseId, className }) => {
     const [selectedIdeaId, setSelectedIdeaId] = useState<string | null>(null);
+    const project = useProject({ projectId });
 
     const scrollContainerRef = useRef<HTMLDivElement | null>(null);
 
@@ -73,28 +78,39 @@ const IdeaMapOverlay = memo<Props>(
       setIdeaMapCardSelected(null);
     };
 
-    return (
-      <Container className={className || ''}>
-        {selectedIdeaId && (
-          <StyledIdeaShowPageTopBar
-            ideaId={selectedIdeaId}
-            goBackAction={goBack}
-          />
-        )}
-        <ScrollContainer ref={scrollContainerRef}>
-          {!selectedIdeaId ? (
-            <IdeasList projectIds={projectIds} phaseId={phaseId} />
-          ) : (
-            <StyledIdeasShow
+    if (!isNilOrError(project)) {
+      return (
+        <Container className={className || ''}>
+          {selectedIdeaId && (
+            <StyledIdeaShowPageTopBar
               ideaId={selectedIdeaId}
-              projectId={projectId}
-              insideModal={false}
-              compact={true}
+              goBackAction={goBack}
             />
           )}
-        </ScrollContainer>
-      </Container>
-    );
+          <ScrollContainer ref={scrollContainerRef}>
+            {!selectedIdeaId ? (
+              <IdeasList
+                type="load-more"
+                projectIds={projectIds}
+                participationMethod={project.attributes.participation_method}
+                participationContextId={projectId}
+                participationContextType="project"
+                defaultSortingMethod={project.attributes.ideas_order || null}
+              />
+            ) : (
+              <StyledIdeasShow
+                ideaId={selectedIdeaId}
+                projectId={projectId}
+                insideModal={false}
+                compact={true}
+              />
+            )}
+          </ScrollContainer>
+        </Container>
+      );
+    }
+
+    return null;
   }
 );
 

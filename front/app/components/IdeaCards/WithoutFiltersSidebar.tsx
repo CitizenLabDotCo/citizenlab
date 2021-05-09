@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, lazy, Suspense } from 'react';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -8,7 +8,8 @@ import tracks from './tracks';
 
 // components
 import IdeaCard from 'components/IdeaCard/Compact';
-import IdeasMap from 'components/IdeasMap';
+// import IdeasMap from 'components/IdeasMap';
+const IdeasMap = lazy(() => import('components/IdeasMap'));
 import { Icon, Spinner } from 'cl2-component-library';
 import TopicFilterDropdown from './TopicFilterDropdown';
 import SelectSort from './SortFilterDropdown';
@@ -503,10 +504,12 @@ class WithoutFiltersSidebar extends PureComponent<
         )}
 
         {showMapView && (
-          <IdeasMap
-            projectIds={queryParameters.projects}
-            phaseId={queryParameters.phase}
-          />
+          <Suspense fallback={false}>
+            <IdeasMap
+              projectIds={queryParameters.projects}
+              phaseId={queryParameters.phase}
+            />
+          </Suspense>
         )}
       </Container>
     );
