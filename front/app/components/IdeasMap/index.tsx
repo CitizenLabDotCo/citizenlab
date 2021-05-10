@@ -80,7 +80,7 @@ const StyledIdeaMapOverlay = styled(IdeaMapOverlay)`
   position: absolute;
   display: flex;
   top: 50px;
-  bottom: 200px;
+  bottom: 600px;
   left: 50px;
   z-index: 900;
 `;

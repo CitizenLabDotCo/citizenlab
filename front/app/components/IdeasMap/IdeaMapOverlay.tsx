@@ -18,29 +18,21 @@ import { defaultCardStyle } from 'utils/styleUtils';
 
 const Container = styled.div`
   width: 100%;
-  display: flex;
-  flex-direction: column;
   background: #fff;
   ${defaultCardStyle};
 `;
 
-const ScrollContainer = styled.div`
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  overflow-x: hidden;
-  overflow-y: auto;
-`;
+// const ScrollContainer = styled.div`
+//   flex: 1;
+//   display: flex;
+//   flex-direction: column;
+// `;
 
 const StyledIdeaShowPageTopBar = styled(IdeaShowPageTopBar)``;
 
-const StyledIdeasShow = styled(IdeasShow)`
-  padding: 30px;
-`;
+const StyledIdeasShow = styled(IdeasShow)``;
 
-const StyledIdeasList = styled(IdeasList)`
-  padding: 30px;
-`;
+const StyledIdeasList = styled(IdeasList)``;
 
 interface Props {
   projectIds: string[];
@@ -54,7 +46,7 @@ const IdeaMapOverlay = memo<Props>(
     const [selectedIdeaId, setSelectedIdeaId] = useState<string | null>(null);
     const project = useProject({ projectId });
 
-    const scrollContainerRef = useRef<HTMLDivElement | null>(null);
+    // const scrollContainerRef = useRef<HTMLDivElement | null>(null);
 
     useEffect(() => {
       // scrollContainerRef.current?.addEventListener('wheel', scrolling);
@@ -91,7 +83,8 @@ const IdeaMapOverlay = memo<Props>(
               goBackAction={goBack}
             />
           )}
-          <ScrollContainer ref={scrollContainerRef}>
+          {/* <ScrollContainer ref={scrollContainerRef}> */}
+          <>
             {!selectedIdeaId ? (
               <StyledIdeasList
                 projectIds={projectIds}
@@ -106,7 +99,8 @@ const IdeaMapOverlay = memo<Props>(
                 compact={true}
               />
             )}
-          </ScrollContainer>
+          </>
+          {/* </ScrollContainer> */}
         </Container>
       );
     }

@@ -10,7 +10,7 @@ import IdeaMapCard from './IdeaMapCard';
 
 // hooks
 import useLocale from 'hooks/useLocale';
-import useWindowSize from 'hooks/useWindowSize';
+// import useWindowSize from 'hooks/useWindowSize';
 import useIdeaMarkers from 'hooks/useIdeaMarkers';
 import useProject from 'hooks/useProject';
 import useIdeaCustomFieldsSchemas from 'hooks/useIdeaCustomFieldsSchemas';
@@ -24,13 +24,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 // style
 import styled from 'styled-components';
-import {
-  media,
-  colors,
-  fontSizes,
-  defaultCardStyle,
-  isRtl,
-} from 'utils/styleUtils';
+import { colors, fontSizes, defaultCardStyle, isRtl } from 'utils/styleUtils';
 
 // typings
 import { Sort } from 'resources/GetIdeas';
@@ -38,6 +32,9 @@ import { CustomFieldCodes } from 'services/ideaCustomFieldsSchemas';
 
 const Container = styled.div`
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
 `;
 
 const Loading = styled.div`
@@ -50,22 +47,18 @@ const Loading = styled.div`
 `;
 
 const FiltersArea = styled.div`
-  width: 100%;
-  min-height: 54px;
+  flex: 0 0 94px;
+  height: 94px;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 15px;
+  padding-left: 15px;
+  padding-right: 15px;
+  border: solid 1px #ccc;
 
   ${isRtl`
     flex-direction: row-reverse;
-  `}
-
-  ${media.smallerThanMinTablet`
-    flex-direction: column;
-    align-items: stretch;
-    margin-bottom: 30px;
   `}
 `;
 
@@ -76,34 +69,16 @@ const FilterArea = styled.div`
 
 const LeftFilterArea = styled(FilterArea)`
   flex: 1 1 auto;
-
-  &.hidden {
-    display: none;
-  }
-
-  ${media.smallerThanMinTablet`
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-  `}
 `;
 
 const RightFilterArea = styled(FilterArea)`
   display: flex;
   align-items: center;
-
-  &.hidden {
-    display: none;
-  }
 `;
 
 const DropdownFilters = styled.div`
   display: flex;
   align-items: center;
-
-  &.hidden {
-    display: none;
-  }
 `;
 
 const StyledSearchInput = styled(SearchInput)`
@@ -114,24 +89,22 @@ const StyledSearchInput = styled(SearchInput)`
     margin-right: 0;
     margin-left: auto;
   `}
-
-  ${media.smallerThanMinTablet`
-    width: 100%;
-    margin-right: 0px;
-    margin-left: 0px;
-    margin-bottom: 20px;
-  `}
 `;
 
-const List = styled.div`
-  margin-left: -12px;
-  margin-right: -12px;
+const IdeaMapCards = styled.div`
+  flex: 1;
   display: flex;
   flex-direction: column;
   align-items: stretch;
+  padding-top: 20px;
+  overflow-x: hidden;
+  overflow-y: auto;
 `;
 
-const StyledIdeaMapCard = styled(IdeaMapCard)``;
+const StyledIdeaMapCard = styled(IdeaMapCard)`
+  margin-left: 15px;
+  margin-right: 15px;
+`;
 
 const EmptyContainer = styled.div`
   width: 100%;
@@ -142,7 +115,6 @@ const EmptyContainer = styled.div`
   margin: 0;
   padding-top: 100px;
   padding-bottom: 100px;
-  ${defaultCardStyle};
 `;
 
 const IdeaIcon = styled(Icon)`
@@ -167,8 +139,6 @@ const EmptyMessageLine = styled.div`
   text-align: center;
 `;
 
-const ListView = styled.div``;
-
 interface Props {
   projectIds: string[];
   projectId: string;
@@ -179,7 +149,7 @@ interface Props {
 const IdeasList = memo<Props>(
   ({ projectIds, projectId, phaseId, className }) => {
     const locale = useLocale();
-    const windowSize = useWindowSize();
+    // const windowSize = useWindowSize();
     const ideaCustomFieldsSchemas = useIdeaCustomFieldsSchemas({ projectId });
     const project = useProject({ projectId });
 
@@ -189,7 +159,7 @@ const IdeasList = memo<Props>(
       project?.attributes.ideas_order || ideaDefaultSortMethodFallback
     );
 
-    const ideas = useIdeaMarkers({ projectIds, phaseId, sort });
+    const ideas = useIdeaMarkers({ projectIds, phaseId, sort, search, topics });
 
     const isFieldEnabled = (fieldCode: CustomFieldCodes) => {
       if (!isNilOrError(ideaCustomFieldsSchemas) && !isNilOrError(locale)) {
@@ -219,7 +189,7 @@ const IdeasList = memo<Props>(
 
     return (
       <Container className={className || ''}>
-        <FiltersArea className={`ideasContainer`}>
+        <FiltersArea>
           <LeftFilterArea>
             <StyledSearchInput onChange={handleSearchOnChange} />
           </LeftFilterArea>
@@ -245,7 +215,7 @@ const IdeasList = memo<Props>(
           </RightFilterArea>
         </FiltersArea>
 
-        <ListView>
+        <IdeaMapCards>
           {ideas === undefined ? (
             <Loading id="ideas-loading">
               <Spinner />
@@ -253,11 +223,11 @@ const IdeasList = memo<Props>(
           ) : (
             <>
               {ideas && ideas.length > 0 ? (
-                <List>
+                <>
                   {ideas.map((idea) => (
                     <StyledIdeaMapCard ideaId={idea.id} />
                   ))}
-                </List>
+                </>
               ) : (
                 <EmptyContainer id="ideas-empty">
                   <IdeaIcon ariaHidden name="idea" />
@@ -270,7 +240,7 @@ const IdeasList = memo<Props>(
               )}
             </>
           )}
-        </ListView>
+        </IdeaMapCards>
       </Container>
     );
   }
