@@ -47,7 +47,8 @@ const SignUpInModal = memo<Props>(({ className, onMounted }) => {
     metaData?.verificationContext
   );
 
-  const opened = !!metaData;
+  const opened = !!metaData?.inModal;
+
   const hasParticipationConditions =
     !isNilOrError(participationConditions) &&
     participationConditions.length > 0;
