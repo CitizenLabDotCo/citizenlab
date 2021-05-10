@@ -22,10 +22,11 @@ module Insights
       end
 
       def update
-        view.update(update_params)
-        render json: serialize(view), status: :ok
-      rescue # rubocop:disable Style/RescueStandardError
-        render json: { errors: view.errors.details }, status: :unprocessable_entity
+        if view.update(update_params)
+          render json: serialize(view), status: :ok
+        else
+          render json: { errors: view.errors.details }, status: :unprocessable_entity
+        end
       end
 
       private

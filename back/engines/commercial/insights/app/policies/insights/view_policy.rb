@@ -11,8 +11,9 @@ module Insights
       end
 
       def resolve
-        is_admin = user&.admin? && user&.active?
-        is_admin ? scope.all : scope.none
+        raise Pundit::NotAuthorizedError unless user&.admin? && user&.active?
+
+        scope.all
       end
     end
 
