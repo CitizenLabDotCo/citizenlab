@@ -26,6 +26,12 @@ exports[`<DashboardsPage /> renders correctly with a project moderator user 1`] 
           "name": "users",
           "url": "/admin/dashboard/users",
         },
+        Object {
+          "feature": "project_reports",
+          "label": "Reports",
+          "name": "project_reports",
+          "url": "/admin/dashboard/reports",
+        },
       ]
     }
   >
@@ -72,6 +78,12 @@ exports[`<DashboardsPage /> renders correctly with an admin user 1`] = `
           "label": "Users",
           "name": "users",
           "url": "/admin/dashboard/users",
+        },
+        Object {
+          "feature": "project_reports",
+          "label": "Reports",
+          "name": "project_reports",
+          "url": "/admin/dashboard/reports",
         },
       ]
     }
