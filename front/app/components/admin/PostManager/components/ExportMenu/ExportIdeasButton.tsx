@@ -4,7 +4,7 @@ import { fontSizes } from 'utils/styleUtils';
 
 // i18n
 import messages from '../../messages';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { exportType } from '../ExportMenu';
 import { isString } from 'util';
 import { requestBlob } from 'utils/request';
@@ -13,6 +13,7 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from '../../tracks';
 import { saveAs } from 'file-saver';
 import { reportError } from 'utils/loggingUtils';
+import { InjectedIntlProps } from 'react-intl';
 
 interface Props {
   exportQueryParameter: 'all' | string | string[];
@@ -23,11 +24,11 @@ interface State {
   exporting: boolean;
 }
 
-export default class ExportIdeasButton extends React.PureComponent<
-  Props,
+class ExportIdeasButton extends React.PureComponent<
+  Props & InjectedIntlProps,
   State
 > {
-  constructor(props: Props) {
+  constructor(props) {
     super(props);
     this.state = {
       exporting: false,
@@ -35,7 +36,10 @@ export default class ExportIdeasButton extends React.PureComponent<
   }
 
   handleExportIdeas = async () => {
-    const { exportQueryParameter } = this.props;
+    const {
+      exportQueryParameter,
+      intl: { formatDate, formatMessage },
+    } = this.props;
 
     const queryParametersObject = {};
     if (isString(exportQueryParameter) && exportQueryParameter !== 'all') {
@@ -51,7 +55,12 @@ export default class ExportIdeasButton extends React.PureComponent<
         'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
         queryParametersObject
       );
-      saveAs(blob, 'inputs-export.xlsx');
+      saveAs(
+        blob,
+        `${formatMessage(messages.inputsExportFileName)}_${formatDate(
+          Date.now()
+        )}`
+      );
       this.setState({ exporting: false });
     } catch (error) {
       reportError(error);
@@ -86,3 +95,5 @@ export default class ExportIdeasButton extends React.PureComponent<
     );
   }
 }
+
+export default injectIntl(ExportIdeasButton);

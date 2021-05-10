@@ -64,5 +64,4 @@ class Rack::Attack
       req.ip
     end
   end
-
 end

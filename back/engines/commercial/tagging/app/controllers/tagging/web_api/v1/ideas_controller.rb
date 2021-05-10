@@ -9,7 +9,8 @@ module Tagging
       @result = IdeasFinder.find(
         params,
         scope: policy_scope(Idea).where(publication_status: 'published'),
-        includes: %i[author topics areas project idea_status idea_files]
+        includes: %i[author topics areas project idea_status idea_files],
+        paginate: false
       )
       @ideas = @result.records
 

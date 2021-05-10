@@ -23,6 +23,7 @@ export const makeUser = (attributes = {}, id?: string) : IUser => {
         created_at: '2018-11-26T15:41:19.782Z',
         updated_at: '2018-11-26T15:41:19.782Z',
         email: 'test@citizenlab.co',
+        confirmation_required: false,
         custom_field_values: {
           birthyear: 1990,
           domicile: 'outside',

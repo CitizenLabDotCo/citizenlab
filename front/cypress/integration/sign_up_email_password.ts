@@ -1,5 +1,23 @@
 import { randomString, randomEmail } from '../support/commands';
 
+function signUp() {
+  const firstName = randomString();
+  const lastName = randomString();
+  const email = randomEmail();
+  const password = randomString();
+
+  cy.goToLandingPage();
+  cy.get('#e2e-navbar-signup-menu-item').click();
+  cy.get('#e2e-sign-up-container');
+  cy.get('#firstName').type(firstName);
+  cy.get('#lastName').type(lastName);
+  cy.get('#email').type(email);
+  cy.get('#password').type(password);
+  cy.get('.e2e-terms-and-conditions .e2e-checkbox').click();
+  cy.get('.e2e-privacy-checkbox .e2e-checkbox').click();
+  cy.get('#e2e-signup-password-submit-button').wait(500).click().wait(500);
+}
+
 describe('Sign up - Email + password step', () => {
   beforeEach(() => {
     cy.goToLandingPage();
@@ -101,25 +119,23 @@ describe('Sign up - Email + password step', () => {
     cy.get('#e2e-privacy-container .e2e-error-message');
   });
 
-  it('signs up with valid credentials and navigates to the landing page', () => {
-    const firstName = randomString();
-    const lastName = randomString();
-    const email = randomEmail();
-    const password = randomString();
+  it('signs up successfully', () => {
+    signUp();
+  });
 
-    cy.goToLandingPage();
-    cy.get('#e2e-navbar-signup-menu-item').click();
-    cy.get('#e2e-sign-up-container');
-    cy.get('#firstName').type(firstName);
-    cy.get('#lastName').type(lastName);
-    cy.get('#email').type(email);
-    cy.get('#password').type(password);
-    cy.get('.e2e-terms-and-conditions .e2e-checkbox').click();
-    cy.get('.e2e-privacy-checkbox .e2e-checkbox').click();
-    cy.get('#e2e-signup-password-submit-button').wait(500).click().wait(500);
-    cy.get('#e2e-signup-success-container', { timeout: 20000 });
-    cy.get('.e2e-signup-success-close-button').click();
+  it('confirms the account successfully', () => {
+    signUp();
+    cy.get('#e2e-confirmation-code-input').type('1234');
+    cy.get('#e2e-confirmation-button').click();
+    cy.get('.e2e-signup-success-close-button').wait(500).click();
     cy.get('#e2e-sign-up-in-modal').should('not.exist');
     cy.get('#e2e-user-menu-container');
+  });
+
+  it('fails to confirm account with an invalid code', () => {
+    signUp();
+    cy.get('#e2e-confirmation-code-input').type('0000');
+    cy.get('#e2e-confirmation-button').click();
+    cy.get('.e2e-error-message');
   });
 });
