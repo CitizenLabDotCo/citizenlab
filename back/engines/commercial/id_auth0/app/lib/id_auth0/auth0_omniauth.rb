@@ -23,14 +23,6 @@ module IdAuth0
       []
     end
 
-    def logout_url(user)
-      url_params = {
-        redirect: Frontend::UrlService.new.home_url
-      }
-
-      "https://#{host}/api/v1/accounts/app/logout?#{url_params.to_query}"
-    end
-
   end
 
 end
