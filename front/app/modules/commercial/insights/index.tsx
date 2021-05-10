@@ -16,6 +16,10 @@ const configuration: ModuleConfiguration = {
             path: 'reports',
             container: () => import('./admin/containers/Reports'),
           },
+          {
+            path: 'reports/:projectId',
+            container: () => import('./admin/containers/Reports/ProjectReport'),
+          },
         ],
       },
     ],
