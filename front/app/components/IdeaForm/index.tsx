@@ -13,6 +13,7 @@ import bowser from 'bowser';
 import { Input, LocationInput } from 'cl2-component-library';
 import QuillEditor from 'components/UI/QuillEditor';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
+import UserSelect from 'components/UI/UserSelect';
 import Error from 'components/UI/Error';
 import HasPermission from 'components/HasPermission';
 import FileUploader from 'components/UI/FileUploader';
@@ -66,6 +67,9 @@ import TopicsPicker from 'components/UI/TopicsPicker';
 import { FormLabelWithIcon } from 'components/UI/FormComponents/WithIcons';
 import { media } from 'utils/styleUtils';
 import { getInputTerm } from 'services/participationContexts';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import { isAdmin } from 'services/permissions/roles';
+import { IUserData } from 'services/users';
 
 const Form = styled.form`
   width: 100%;
@@ -103,6 +107,7 @@ export interface IIdeaFormOutput {
   imageFile: UploadFile[];
   ideaFiles: UploadFile[];
   ideaFilesToRemove: UploadFile[];
+  authorId: string | null;
 }
 
 interface InputProps {
@@ -120,13 +125,16 @@ interface InputProps {
   hasDescriptionProfanityError: boolean;
   onTitleChange: (title: string) => void;
   onDescriptionChange: (description: string) => void;
+  authorId: string | null;
 }
 
 interface DataProps {
   pbEnabled: GetFeatureFlagChildProps;
+  ideaAuthorChangeEnabled: GetFeatureFlagChildProps;
   topics: GetTopicsChildProps;
   project: GetProjectChildProps;
   phases: GetPhasesChildProps;
+  authUser: GetAuthUserChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -154,6 +162,7 @@ interface State {
   ideaFiles: UploadFile[];
   ideaFilesToRemove: UploadFile[];
   ideaCustomFieldsSchemas: IIdeaFormSchemas | null;
+  authorId: string | null;
 }
 
 class IdeaForm extends PureComponent<
@@ -189,6 +198,7 @@ class IdeaForm extends PureComponent<
       locationError: null,
       imageError: null,
       attachmentsError: null,
+      authorId: null,
     };
     this.subscriptions = [];
     this.titleInputElement = null;
@@ -271,6 +281,8 @@ class IdeaForm extends PureComponent<
       proposedBudget,
       imageFile,
       remoteIdeaFiles,
+      authUser,
+      authorId,
     } = this.props;
     const ideaFiles = Array.isArray(remoteIdeaFiles) ? remoteIdeaFiles : [];
 
@@ -281,6 +293,7 @@ class IdeaForm extends PureComponent<
       imageFile,
       ideaFiles,
       address,
+      authorId: authorId || authUser?.id || null,
       title: title || '',
       description: description || '',
     });
@@ -573,6 +586,7 @@ class IdeaForm extends PureComponent<
       imageFile,
       ideaFiles,
       ideaFilesToRemove,
+      authorId,
     } = this.state;
     const formClientSideIsValid = this.validate(
       title,
@@ -596,8 +610,8 @@ class IdeaForm extends PureComponent<
         description,
         ideaFiles,
         ideaFilesToRemove,
+        authorId,
       };
-
       this.props.onSubmit(output);
     }
   };
@@ -627,6 +641,10 @@ class IdeaForm extends PureComponent<
     );
   };
 
+  handleAuthorChange = (authorId?: string) => {
+    this.setState({ authorId: authorId ? authorId : null });
+  };
+
   render() {
     const className = this.props['className'];
     const {
@@ -637,6 +655,8 @@ class IdeaForm extends PureComponent<
       phases,
       hasTitleProfanityError,
       hasDescriptionProfanityError,
+      authUser,
+      ideaAuthorChangeEnabled,
     } = this.props;
     const { formatMessage } = this.props.intl;
     const {
@@ -765,6 +785,19 @@ class IdeaForm extends PureComponent<
                 />
               )}
             </FormElement>
+            {ideaAuthorChangeEnabled &&
+              isAdmin({ data: authUser as IUserData }) && (
+                <FormElement id="e2e-idea-author-input">
+                  <FormLabel htmlFor="author" labelMessage={messages.author} />
+                  <UserSelect
+                    id="author"
+                    inputId="author-select"
+                    value={this.state.authorId}
+                    onChange={this.handleAuthorChange}
+                    placeholder={formatMessage(messages.authorPlaceholder)}
+                  />
+                </FormElement>
+              )}
 
             <FormElement id="e2e-idea-description-input">
               <FormLabel
@@ -1005,6 +1038,7 @@ class IdeaForm extends PureComponent<
 
 const Data = adopt<DataProps, InputProps>({
   pbEnabled: <GetFeatureFlag name="participatory_budgeting" />,
+  ideaAuthorChangeEnabled: <GetFeatureFlag name="idea_author_change" />,
   project: ({ projectId, render }) => (
     <GetProject projectId={projectId}>{render}</GetProject>
   ),
@@ -1013,6 +1047,9 @@ const Data = adopt<DataProps, InputProps>({
   ),
   topics: ({ projectId, render }) => {
     return <GetTopics projectId={projectId}>{render}</GetTopics>;
+  },
+  authUser: ({ render }) => {
+    return <GetAuthUser>{render}</GetAuthUser>;
   },
 });
 

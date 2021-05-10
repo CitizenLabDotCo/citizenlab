@@ -1,7 +1,35 @@
 # Changelog
- 
+
+
 ## Next release
 
+/
+
+## 2021-05-07
+
+### Fixed
+- Spreasheet exports throughout the platform are improved.
+- Idea export to excel is no longer limited to 250 ideas.
+
+### Added
+- City Admins can now assign any user as the author of an idea when creating or updating.
+- Email confirmation now happens in survey and signup page sign up forms.
+
+
+## 2021-05-03
+
+### Changed
+- Users are now prompted to confirm their account after creating it, by receiving a confirmation code in their email address.
+
+### Added
+- SurveyXact Integration.
+
+## 2021-05-01
+
+### Added
+- New module to plug email confirmation to users.
+
+## 2021-03-31
 
 ### Fixed
 - Customizable Banner Fields no longer get emptied/reset when changing another.
@@ -9,10 +37,6 @@
 ### Added
 - When a client-side validation error happens for the project title in the admin, there will be an error next to the submit button in addition to the error message next to the input field.
 
-## 2021-04-22
-
-### Fixed
-- After the project title error appears, it disappears again after you start correcting the error
 
 ## 2021-03-25
 
@@ -23,6 +47,11 @@
 
 ### Fixed
 - Fix for broken sign-up flow when signing-up through social sign-on
+
+## 2021-04-22
+
+### Fixed
+- After the project title error appears, it disappears again after you start correcting the error
 
 ## 2021-03-19
 

@@ -26,7 +26,8 @@ class WebApi::V1::InitiativesController < ApplicationController
       params,
       current_user: current_user,
       scope: policy_scope(Initiative).where(publication_status: 'published'),
-      includes: %i[author initiative_status topics areas]
+      includes: %i[author initiative_status topics areas],
+      paginate: false
     )
     @initiatives = @result.records
 

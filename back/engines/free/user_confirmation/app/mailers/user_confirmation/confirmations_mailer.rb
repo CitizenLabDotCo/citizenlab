@@ -13,5 +13,9 @@ module UserConfirmation
     def subject
       t('.subject', organizationName: organization_name)
     end
+
+    def preheader?
+      false
+    end
   end
 end

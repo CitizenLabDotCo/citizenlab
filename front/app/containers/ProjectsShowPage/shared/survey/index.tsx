@@ -185,6 +185,8 @@ class Survey extends PureComponent<Props, State> {
         phaseContext: phase,
         signedIn: !isNilOrError(authUser),
       });
+      const requiresConfirmation =
+        !isNilOrError(authUser) && !!authUser.attributes.confirmation_required;
       const registrationNotCompleted =
         !isNilOrError(authUser) &&
         !authUser.attributes.registration_completed_at;
@@ -210,6 +212,7 @@ class Survey extends PureComponent<Props, State> {
             <SignUpInWrapper>
               <StyledSignUpIn
                 metaData={{
+                  requiresConfirmation,
                   flow: 'signup',
                   pathname: window.location.pathname,
                   inModal: true,

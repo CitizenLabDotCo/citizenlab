@@ -97,6 +97,7 @@ interface State {
   descriptionProfanityError: boolean;
   loaded: boolean;
   processing: boolean;
+  authorId: string | null;
 }
 
 class IdeaEdit extends PureComponent<Props, State> {
@@ -106,6 +107,7 @@ class IdeaEdit extends PureComponent<Props, State> {
     super(props as any);
     this.state = {
       projectId: null,
+      authorId: null,
       locale: 'en',
       titleMultiloc: null,
       descriptionMultiloc: null,
@@ -186,6 +188,7 @@ class IdeaEdit extends PureComponent<Props, State> {
             descriptionMultiloc: idea.data.attributes.body_multiloc,
             address: idea.data.attributes.location_description,
             budget: idea.data.attributes.budget,
+            authorId: idea.data.relationships.author.data?.id || null,
             proposedBudget: idea.data.attributes.proposed_budget,
             imageFile: ideaImage ? [ideaImage] : [],
             imageId: ideaImage && ideaImage.id ? ideaImage.id : null,
@@ -213,6 +216,7 @@ class IdeaEdit extends PureComponent<Props, State> {
       descriptionMultiloc,
       imageId,
       imageFile,
+      authorId,
       address: savedAddress,
       projectId,
     } = this.state;
@@ -225,6 +229,7 @@ class IdeaEdit extends PureComponent<Props, State> {
       proposedBudget,
       ideaFiles,
       ideaFilesToRemove,
+      authorId: newAuthorId,
     } = ideaFormOutput;
     const oldImageId = imageId;
     const oldImage = imageFile && imageFile.length > 0 ? imageFile[0] : null;
@@ -245,6 +250,7 @@ class IdeaEdit extends PureComponent<Props, State> {
       .filter((file) => !!(file.remote && file.id))
       .map((file) => deleteIdeaFile(ideaId, file.id as string));
 
+    const finalAuthorId = newAuthorId || authorId;
     const addressDiff = {};
     if (
       isString(ideaFormAddress) &&
@@ -269,6 +275,7 @@ class IdeaEdit extends PureComponent<Props, State> {
         [locale]: description,
       },
       topic_ids: selectedTopics,
+      author_id: finalAuthorId,
       ...addressDiff,
     });
 
@@ -376,6 +383,7 @@ class IdeaEdit extends PureComponent<Props, State> {
         proposedBudget,
         titleProfanityError,
         descriptionProfanityError,
+        authorId,
       } = this.state;
       const title = locale && titleMultiloc ? titleMultiloc[locale] || '' : '';
       const description =
@@ -402,6 +410,7 @@ class IdeaEdit extends PureComponent<Props, State> {
 
             <Content className="idea-form">
               <IdeaForm
+                authorId={authorId}
                 projectId={projectId}
                 title={title}
                 description={description}
