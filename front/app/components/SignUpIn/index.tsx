@@ -63,7 +63,6 @@ const SignUpIn = memo<Props>(
     const [selectedFlow, setSelectedFlow] = useState(metaData.flow || 'signup');
 
     const metaDataWithCurrentFlow = { ...metaData, flow: selectedFlow };
-
     const onSignUpCompleted = useCallback(() => {
       onSignUpInCompleted('signup');
     }, [onSignUpInCompleted]);
