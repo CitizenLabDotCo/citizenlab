@@ -94,6 +94,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.PollTab.exportPollResults',
     defaultMessage: 'Export poll results',
   },
+  pollExportFileName: {
+    id: 'app.containers.AdminPage.ProjectEdit.PollTab.pollExportFileName',
+    defaultMessage: 'poll_export',
+  },
   singleOption: {
     id: 'app.containers.AdminPage.ProjectEdit.PollTab.singleOption',
     defaultMessage: 'Single choice',
