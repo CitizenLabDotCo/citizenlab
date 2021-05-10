@@ -27,7 +27,7 @@ module UserConfirmation
       # @return [<Boolean>] <True if the user requires confirmation>
       #
       def should_require_confirmation?
-        !(registered_with_phone? || highest_role != :user)
+        !(registered_with_phone? || highest_role != :user || identities.any? || invited?)
       end
 
       #
