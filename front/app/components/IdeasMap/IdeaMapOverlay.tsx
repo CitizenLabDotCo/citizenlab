@@ -38,6 +38,10 @@ const StyledIdeasShow = styled(IdeasShow)`
   padding: 30px;
 `;
 
+const StyledIdeasList = styled(IdeasList)`
+  padding: 30px;
+`;
+
 interface Props {
   projectIds: string[];
   projectId: string;
@@ -89,7 +93,7 @@ const IdeaMapOverlay = memo<Props>(
           )}
           <ScrollContainer ref={scrollContainerRef}>
             {!selectedIdeaId ? (
-              <IdeasList
+              <StyledIdeasList
                 type="load-more"
                 projectIds={projectIds}
                 participationMethod={project.attributes.participation_method}

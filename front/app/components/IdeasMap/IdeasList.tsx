@@ -7,13 +7,13 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from 'components/IdeaCards/tracks';
 
 // components
-import IdeaCard from 'components/IdeaCard/Compact';
 import { Icon, Spinner } from 'cl2-component-library';
 import TopicFilterDropdown from 'components/IdeaCards/TopicFilterDropdown';
 import SelectSort from 'components/IdeaCards/SortFilterDropdown';
 import ProjectFilterDropdown from 'components/IdeaCards/ProjectFilterDropdown';
 import SearchInput from 'components/UI/SearchInput';
 import Button from 'components/UI/Button';
+import IdeaMapCard from './IdeaMapCard';
 
 // resources
 import GetWindowSize, {
@@ -148,18 +148,11 @@ const IdeasList = styled.div`
   margin-left: -12px;
   margin-right: -12px;
   display: flex;
-  flex-wrap: wrap;
-
-  ${isRtl`
-    flex-direction: row-reverse;
-  `}
+  flex-direction: column;
+  align-items: stretch;
 `;
 
-const StyledIdeaCard = styled(IdeaCard)`
-  flex-grow: 0;
-  width: 100%;
-  margin: 10px;
-`;
+const StyledIdeaMapCard = styled(IdeaMapCard)``;
 
 const EmptyContainer = styled.div`
   width: 100%;
@@ -317,19 +310,10 @@ class WithoutFiltersSidebar extends PureComponent<
     );
 
     return (
-      <Container
-        id="e2e-ideas-container"
-        className={`${className || ''} listView`}
-      >
-        <FiltersArea
-          id="e2e-ideas-filters"
-          className={`ideasContainer listView`}
-        >
+      <Container className={className || ''}>
+        <FiltersArea className={`ideasContainer`}>
           <LeftFilterArea>
-            <StyledSearchInput
-              className="e2e-search-ideas-input"
-              onChange={this.handleSearchOnChange}
-            />
+            <StyledSearchInput onChange={this.handleSearchOnChange} />
           </LeftFilterArea>
 
           <RightFilterArea>
@@ -361,21 +345,22 @@ class WithoutFiltersSidebar extends PureComponent<
           ) : (
             <>
               {hasIdeas && list ? (
-                <IdeasList id="e2e-ideas-list">
+                <IdeasList>
                   {list.map((idea) => (
-                    <StyledIdeaCard
-                      key={idea.id}
-                      ideaId={idea.id}
-                      participationMethod={participationMethod}
-                      participationContextId={participationContextId}
-                      participationContextType={participationContextType}
-                      hideImage={smallerThanBigTablet && biggerThanSmallTablet}
-                      hideImagePlaceholder={smallerThanBigTablet}
-                      hideIdeaStatus={
-                        (biggerThanLargeTablet && smallerThan1100px) ||
-                        smallerThanPhone
-                      }
-                    />
+                    <StyledIdeaMapCard ideaId={idea.id} />
+                    // <StyledIdeaCard
+                    //   key={idea.id}
+                    //   ideaId={idea.id}
+                    //   participationMethod={participationMethod}
+                    //   participationContextId={participationContextId}
+                    //   participationContextType={participationContextType}
+                    //   hideImage={smallerThanBigTablet && biggerThanSmallTablet}
+                    //   hideImagePlaceholder={smallerThanBigTablet}
+                    //   hideIdeaStatus={
+                    //     (biggerThanLargeTablet && smallerThan1100px) ||
+                    //     smallerThanPhone
+                    //   }
+                    // />
                   ))}
                 </IdeasList>
               ) : (
@@ -391,7 +376,6 @@ class WithoutFiltersSidebar extends PureComponent<
               {hasMore && (
                 <Footer>
                   <ShowMoreButton
-                    id="e2e-idea-cards-show-more-button"
                     onClick={this.loadMore}
                     buttonStyle="secondary"
                     text={<FormattedMessage {...messages.showMore} />}
