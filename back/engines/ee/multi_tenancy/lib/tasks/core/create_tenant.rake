@@ -154,10 +154,6 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
-        user_confirmation: {
-          enabled: true,
-          allowed: true
-        },
         initiatives: {
           enabled: true,
           allowed: true,
