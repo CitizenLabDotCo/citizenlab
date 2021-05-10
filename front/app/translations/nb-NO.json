@@ -730,6 +730,7 @@
   "app.containers.Admin.Insights.Reports.projectType": "",
   "app.containers.Admin.Insights.Reports.sectionWhatInput": "",
   "app.containers.Admin.Insights.Reports.sectionWho": "",
+  "app.containers.Admin.Insights.Reports.seeReportButton": "",
   "app.containers.Admin.Insights.Reports.selectAProject": "",
   "app.containers.Admin.Insights.Reports.survey": "",
   "app.containers.Admin.Insights.Reports.timelineType": "",

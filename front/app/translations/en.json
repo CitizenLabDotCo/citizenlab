@@ -730,6 +730,7 @@
   "app.containers.Admin.Insights.Reports.projectType": "Project type : {projectType}",
   "app.containers.Admin.Insights.Reports.sectionWhatInput": "What input did you collect?",
   "app.containers.Admin.Insights.Reports.sectionWho": "Who participated ?",
+  "app.containers.Admin.Insights.Reports.seeReportButton": "Summary",
   "app.containers.Admin.Insights.Reports.selectAProject": "What project are you interested in ?",
   "app.containers.Admin.Insights.Reports.survey": "survey",
   "app.containers.Admin.Insights.Reports.timelineType": "Timeline",
