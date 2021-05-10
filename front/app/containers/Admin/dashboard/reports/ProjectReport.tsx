@@ -12,6 +12,7 @@ import ResolutionControl, {
   IResolution,
 } from 'components/admin/ResolutionControl';
 import { GraphsContainer } from 'components/admin/Chart';
+
 import GetIdeas, { GetIdeasChildProps } from 'resources/GetIdeas';
 import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 import {
@@ -29,7 +30,6 @@ import { colors } from 'utils/styleUtils';
 
 // services
 import { ParticipationMethod } from 'services/participationContexts';
-import { IProjectData } from 'services/projects';
 
 // components
 import { SectionTitle, PageTitle } from 'components/admin/Section';
@@ -41,8 +41,11 @@ import ParticipationPerTopic from './charts/ParticipationPerTopic';
 import LineBarChart from './charts/LineBarChart';
 import LineBarChartVotesByTime from './charts/LineBarChartVotesByTime';
 import BarChartActiveUsersByTime from './charts/BarChartActiveUsersByTime';
+import PollReport from './PollReport';
 
 import Outlet from 'components/Outlet';
+import GetProject, { GetProjectChildProps } from 'resources/GetProject';
+import { withRouter, WithRouterProps } from 'react-router';
 
 const Section = styled.div`
   margin-bottom: 20px;
@@ -77,15 +80,13 @@ const TimelineSection = styled.div`
   }
 `;
 
-interface InputProps {
-  project: IProjectData;
-}
 interface DataProps {
   phases: GetPhasesChildProps;
   mostVotedIdeas: GetIdeasChildProps;
+  project: GetProjectChildProps;
 }
 
-interface Props extends InputProps, DataProps {}
+interface Props extends DataProps {}
 
 const ProjectReport = memo(
   ({
@@ -93,7 +94,9 @@ const ProjectReport = memo(
     phases,
     mostVotedIdeas,
     intl: { formatMessage, formatDate },
-  }: Props & InjectedIntlProps) => {
+  }: Props & InjectedIntlProps & WithRouterProps) => {
+    if (isNilOrError(project)) return null;
+
     const localize = useLocalize();
 
     const isTimelineProject = project.attributes.process_type === 'timeline';
@@ -247,11 +250,14 @@ const ProjectReport = memo(
           </Section>
         )}
 
-        {participationMethods.includes('ideation') && startAt && endAt && (
-          <Section>
-            <SectionTitle>
-              <FormattedMessage {...messages.sectionWhatInput} />
-            </SectionTitle>
+        <Section>
+          {(participationMethods.includes('ideation') && startAt && endAt) ||
+            (participationMethods.includes('poll') && (
+              <SectionTitle>
+                <FormattedMessage {...messages.sectionWhatInput} />
+              </SectionTitle>
+            ))}
+          {participationMethods.includes('ideation') && startAt && endAt && (
             <GraphsContainer>
               <>
                 <LineBarChart
@@ -315,8 +321,33 @@ const ProjectReport = memo(
                 />
               </>
             </GraphsContainer>
-          </Section>
-        )}
+          )}
+          {participationMethods.includes('poll') ? (
+            isTimelineProject ? (
+              !isNilOrError(phases) &&
+              phases.map(
+                (phase) =>
+                  phase.attributes.participation_method === 'poll' && (
+                    <PollReport
+                      participationContextType="phase"
+                      participationContextId={phase.id}
+                      participationContextTitle={localize(
+                        phase.attributes.title_multiloc
+                      )}
+                    />
+                  )
+              )
+            ) : (
+              <PollReport
+                participationContextType="project"
+                participationContextId={project.id}
+                participationContextTitle={localize(
+                  project.attributes.title_multiloc
+                )}
+              />
+            )
+          ) : null}
+        </Section>
       </>
     );
   }
@@ -324,25 +355,28 @@ const ProjectReport = memo(
 
 const ProjectReportWithHoc = injectIntl(ProjectReport);
 
-const Data = adopt<DataProps, InputProps>({
-  phases: ({ project, render }) => (
-    <GetPhases projectId={project.id}>{render}</GetPhases>
+const Data = adopt<DataProps, WithRouterProps>({
+  phases: ({ params, render }) => (
+    <GetPhases projectId={params.projectId}>{render}</GetPhases>
   ),
-  mostVotedIdeas: ({ project, render }) => (
+  mostVotedIdeas: ({ params, render }) => (
     <GetIdeas
       pageNumber={1}
       pageSize={5}
       sort="popular"
       type="paginated"
-      projectIds={[project.id]}
+      projectIds={[params.projectId]}
     >
       {render}
     </GetIdeas>
   ),
+  project: ({ params, render }) => (
+    <GetProject projectId={params.projectId}>{render}</GetProject>
+  ),
 });
 
-export default (inputProps: InputProps) => (
+export default withRouter((inputProps: WithRouterProps) => (
   <Data {...inputProps}>
     {(dataProps) => <ProjectReportWithHoc {...inputProps} {...dataProps} />}
   </Data>
-);
+));

@@ -20,7 +20,6 @@ import { injectIntl } from 'utils/cl-intl';
 
 // typings
 import { InsertConfigurationOptions, ITab } from 'typings';
-
 interface Props {
   authUser: GetAuthUserChildProps;
   children: JSX.Element;

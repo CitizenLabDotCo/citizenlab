@@ -1094,6 +1094,7 @@
   "app.containers.AdminPage.DashboardPage.resolutionmonth": "in Months",
   "app.containers.AdminPage.DashboardPage.resolutionweek": "in Weeks",
   "app.containers.AdminPage.DashboardPage.resourceByDifference": "{selectedResourceName} difference with {selectedName}",
+  "app.containers.AdminPage.DashboardPage.seeReportButton": "",
   "app.containers.AdminPage.DashboardPage.selectedProject": "current project filter",
   "app.containers.AdminPage.DashboardPage.selectedTopic": "current topic filter",
   "app.containers.AdminPage.DashboardPage.subtitleDashboard": "Discover what's happening on your platform.",
