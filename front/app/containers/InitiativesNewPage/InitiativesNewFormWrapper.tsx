@@ -86,7 +86,10 @@ interface State extends FormValues {
   descriptionProfanityError: boolean;
 }
 
-class InitiativesNewFormWrapper extends React.PureComponent<Props, State> {
+export class InitiativesNewFormWrapper extends React.PureComponent<
+  Props,
+  State
+> {
   initialValues: SimpleFormValues;
   constructor(props) {
     super(props);
