@@ -11,7 +11,7 @@ import messages from '../messages';
 import { withTheme } from 'styled-components';
 
 // components
-import ExportMenu from 'components/admin/ExportMenu';
+import ReportExportMenu from 'components/admin/ReportExportMenu';
 import {
   BarChart,
   Bar,
@@ -110,7 +110,7 @@ export class IdeasByStatusChart extends React.PureComponent<
               <FormattedMessage {...messages.inputsByStatusTitle} />
             </GraphCardTitle>
             {!noData && (
-              <ExportMenu
+              <ReportExportMenu
                 name={formatMessage(messages.inputsByStatusTitle)}
                 svgNode={this.currentChart}
                 xlsxEndpoint={ideasByStatusXlsxEndpoint}

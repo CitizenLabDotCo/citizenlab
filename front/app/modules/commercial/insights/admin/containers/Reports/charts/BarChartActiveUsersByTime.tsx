@@ -14,7 +14,7 @@ import { IResourceByTime, IUsersByTime } from 'services/stats';
 import { IGraphFormat } from 'typings';
 
 // components
-import ExportMenu from 'components/admin/ExportMenu';
+import ReportExportMenu from 'components/admin/ReportExportMenu';
 import {
   BarChart,
   Bar,
@@ -245,7 +245,7 @@ class BarChartActiveUsersByTime extends React.PureComponent<
               )}
             </GraphCardTitle>
             {!noData && (
-              <ExportMenu
+              <ReportExportMenu
                 svgNode={this.currentChart}
                 name={graphTitle}
                 {...this.props}
