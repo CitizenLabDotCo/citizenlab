@@ -185,7 +185,7 @@ namespace :cl2_back do
             }
           ]
         },
-        manual_insights: {
+        insights_manual_flow: {
           enabled: true,
           allowed: true
         },
