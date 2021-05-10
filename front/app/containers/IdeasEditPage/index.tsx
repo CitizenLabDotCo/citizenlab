@@ -51,6 +51,14 @@ import GetResourceFileObjects, {
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetAppConfiguration';
+
+// tracks
+import tracks from './tracks';
+import { trackEventByName } from 'utils/analytics';
 
 const Container = styled.div`
   background: ${colors.background};
@@ -106,7 +114,9 @@ interface DataProps {
   remoteIdeaFiles: GetResourceFileObjectsChildProps;
   project: GetProjectChildProps;
   idea: GetIdeaChildProps;
+  appConfiguration: GetAppConfigurationChildProps;
   phases: GetPhasesChildProps;
+  authUser: GetAuthUserChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -242,6 +252,7 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
 
   handleIdeaFormOutput = async (ideaFormOutput: IIdeaFormOutput) => {
     const { ideaId } = this.props.params;
+    const { project, authUser, appConfiguration } = this.props;
     const {
       locale,
       titleMultiloc,
@@ -340,12 +351,32 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
         );
 
         if (titleProfanityError) {
+          trackEventByName(tracks.titleProfanityError.name, {
+            ideaId,
+            locale,
+            projectId: !isNilOrError(project) ? project.id : null,
+            profaneMessage: title,
+            location: 'IdeasEditPage (citizen side)',
+            userId: !isNilOrError(authUser) ? authUser.id : null,
+            host: !isNilOrError(appConfiguration)
+              ? appConfiguration.attributes.host
+              : null,
+          });
+
           this.setState({
             titleProfanityError,
           });
         }
 
         if (descriptionProfanityError) {
+          trackEventByName(tracks.descriptionProfanityError.name, {
+            ideaId,
+            locale,
+            projectId: !isNilOrError(project) ? project.id : null,
+            profaneMessage: title,
+            location: 'IdeasEditPage (citizen side)',
+          });
+
           this.setState({
             descriptionProfanityError,
           });
@@ -469,6 +500,8 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
 }
 
 const Data = adopt<DataProps, InputProps>({
+  authUser: <GetAuthUser />,
+  appConfiguration: <GetAppConfiguration />,
   remoteIdeaFiles: ({ params: { ideaId }, render }) => (
     <GetResourceFileObjects resourceId={ideaId} resourceType="idea">
       {render}

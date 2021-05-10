@@ -49,6 +49,14 @@ import GetResourceFileObjects, {
   GetResourceFileObjectsChildProps,
 } from 'resources/GetResourceFileObjects';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetAppConfiguration';
+
+// tracks
+import tracks from './tracks';
+import { trackEventByName } from 'utils/analytics';
 
 const ButtonWrapper = styled.div`
   display: flex;
@@ -67,6 +75,8 @@ export interface InputProps {
 interface DataProps {
   remoteIdeaFiles: GetResourceFileObjectsChildProps;
   locale: GetLocaleChildProps;
+  authUser: GetAuthUserChildProps;
+  appConfiguration: GetAppConfigurationChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -199,7 +209,7 @@ class IdeaEdit extends PureComponent<Props, State> {
   };
 
   handleIdeaFormOutput = async (ideaFormOutput: IIdeaFormOutput) => {
-    const { ideaId, goBack } = this.props;
+    const { ideaId, goBack, authUser, appConfiguration } = this.props;
     const {
       locale,
       titleMultiloc,
@@ -208,6 +218,7 @@ class IdeaEdit extends PureComponent<Props, State> {
       imageFile,
       authorId,
       address: savedAddress,
+      projectId,
     } = this.state;
     const {
       title,
@@ -299,12 +310,34 @@ class IdeaEdit extends PureComponent<Props, State> {
         );
 
         if (titleProfanityError) {
+          trackEventByName(tracks.titleProfanityError.name, {
+            ideaId,
+            projectId,
+            locale,
+            profaneMessage: title,
+            location: 'IdeaEdit (Input manager in admin)',
+            userId: !isNilOrError(authUser) ? authUser.id : null,
+            host: !isNilOrError(appConfiguration)
+              ? appConfiguration.attributes.host
+              : null,
+          });
           this.setState({
             titleProfanityError,
           });
         }
 
         if (descriptionProfanityError) {
+          trackEventByName(tracks.descriptionProfanityError.name, {
+            ideaId,
+            projectId,
+            locale,
+            profaneMessage: description,
+            location: 'IdeaEdit (Input manager in admin)',
+            userId: !isNilOrError(authUser) ? authUser.id : null,
+            host: !isNilOrError(appConfiguration)
+              ? appConfiguration.attributes.host
+              : null,
+          });
           this.setState({
             descriptionProfanityError,
           });
@@ -417,6 +450,8 @@ class IdeaEdit extends PureComponent<Props, State> {
 }
 
 const Data = adopt<DataProps, InputProps>({
+  authUser: <GetAuthUser />,
+  appConfiguration: <GetAppConfiguration />,
   locale: <GetLocale />,
   remoteIdeaFiles: ({ ideaId, render }) => (
     <GetResourceFileObjects resourceId={ideaId} resourceType="idea">

@@ -41,6 +41,7 @@ import { colors, defaultStyles, viewportWidths } from 'utils/styleUtils';
 import GetInitiativesPermissions, {
   GetInitiativesPermissionsChildProps,
 } from 'resources/GetInitiativesPermissions';
+import { GetAppConfigurationChildProps } from 'resources/GetAppConfiguration';
 
 const Container = styled.div`
   display: flex;
@@ -117,6 +118,7 @@ interface DataProps {
   authUser: GetAuthUserChildProps;
   post: GetPostChildProps;
   windowSize: GetWindowSizeChildProps;
+  appConfiguration: GetAppConfigurationChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -185,7 +187,14 @@ class ParentCommentForm extends PureComponent<
   };
 
   onSubmit = async () => {
-    const { locale, authUser, postId, postType, post } = this.props;
+    const {
+      locale,
+      authUser,
+      postId,
+      postType,
+      post,
+      appConfiguration,
+    } = this.props;
     const { inputValue } = this.state;
     const projectId: string | null = get(
       post,
@@ -261,6 +270,19 @@ class ParentCommentForm extends PureComponent<
         });
 
         if (profanityApiError) {
+          trackEventByName(tracks.parentCommentProfanityError.name, {
+            locale,
+            postId,
+            postType,
+            projectId,
+            profaneMessage: commentBodyMultiloc[locale],
+            location: 'InitiativesNewFormWrapper (citizen side)',
+            userId: authUser.id,
+            host: !isNilOrError(appConfiguration)
+              ? appConfiguration.attributes.host
+              : null,
+          });
+
           this.setState({
             profanityApiError: true,
           });

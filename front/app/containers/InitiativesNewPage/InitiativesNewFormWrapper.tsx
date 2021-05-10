@@ -1,4 +1,5 @@
 import React from 'react';
+import { adopt } from 'react-adopt';
 
 // components
 import InitiativeForm, {
@@ -38,6 +39,16 @@ import {
 } from 'services/initiativeFiles';
 import { reportError } from 'utils/loggingUtils';
 
+// tracks
+import tracks from './tracks';
+import { trackEventByName } from 'utils/analytics';
+
+// resources
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetAppConfiguration';
+
 const StyledInitiativeForm = styled(InitiativeForm)`
   width: 100%;
   min-width: 530px;
@@ -54,7 +65,10 @@ interface InputProps {
   topics: ITopicData[];
 }
 
-interface DataProps {}
+interface DataProps {
+  authUser: GetAuthUserChildProps;
+  appConfiguration: GetAppConfigurationChildProps;
+}
 
 interface Props extends InputProps, DataProps {}
 
@@ -72,7 +86,7 @@ interface State extends FormValues {
   descriptionProfanityError: boolean;
 }
 
-export default class InitiativesNewFormWrapper extends React.PureComponent<
+export class InitiativesNewFormWrapper extends React.PureComponent<
   Props,
   State
 > {
@@ -270,6 +284,7 @@ export default class InitiativesNewFormWrapper extends React.PureComponent<
       banner,
       publishing,
     } = this.state;
+    const { locale, appConfiguration, authUser } = this.props;
 
     // if we're already saving, do nothing.
     if (publishing) return;
@@ -350,12 +365,33 @@ export default class InitiativesNewFormWrapper extends React.PureComponent<
         );
 
         if (titleProfanityError) {
+          trackEventByName(tracks.titleProfanityError.name, {
+            locale,
+            profaneMessage: changedValues.title_multiloc?.[locale],
+            proposalId: initiativeId,
+            location: 'InitiativesNewFormWrapper (citizen side)',
+            userId: !isNilOrError(authUser) ? authUser.id : null,
+            host: !isNilOrError(appConfiguration)
+              ? appConfiguration.attributes.host
+              : null,
+          });
+
           this.setState({
             titleProfanityError,
           });
         }
 
         if (descriptionProfanityError) {
+          trackEventByName(tracks.descriptionProfanityError.name, {
+            locale,
+            profaneMessage: changedValues.body_multiloc?.[locale],
+            proposalId: initiativeId,
+            location: 'InitiativesNewFormWrapper (citizen side)',
+            userId: !isNilOrError(authUser) ? authUser.id : null,
+            host: !isNilOrError(appConfiguration)
+              ? appConfiguration.attributes.host
+              : null,
+          });
           this.setState({
             descriptionProfanityError,
           });
@@ -485,3 +521,16 @@ export default class InitiativesNewFormWrapper extends React.PureComponent<
     );
   }
 }
+
+const Data = adopt<DataProps, InputProps>({
+  appConfiguration: <GetAppConfiguration />,
+  authUser: <GetAuthUser />,
+});
+
+export default (inputProps: InputProps) => (
+  <Data {...inputProps}>
+    {(dataProps) => (
+      <InitiativesNewFormWrapper {...inputProps} {...dataProps} />
+    )}
+  </Data>
+);
