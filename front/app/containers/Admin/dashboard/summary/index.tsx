@@ -2,17 +2,18 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import moment, { Moment } from 'moment';
-import { ThemeProvider } from 'styled-components';
-import { chartTheme } from '../index';
 
 // components
-import { GraphsContainer, ControlBar, Column, IResolution } from '../';
+import { GraphsContainer, ControlBar, Column } from 'components/admin/Chart';
+import ResolutionControl, {
+  IResolution,
+} from 'components/admin/ResolutionControl';
 import BarChartActiveUsersByTime from './charts/BarChartActiveUsersByTime';
 import LineBarChart from './charts/LineBarChart';
 import ChartFilters from '../components/ChartFilters';
 import SelectableResourceByProjectChart from './charts/SelectableResourceByProjectChart';
 import SelectableResourceByTopicChart from './charts/SelectableResourceByTopicChart';
-import ResolutionControl from '../components/ResolutionControl';
+
 import LineBarChartVotesByTime from './charts/LineBarChartVotesByTime';
 import TimeControl from '../components/TimeControl';
 
@@ -325,7 +326,7 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
 
     if (projects && !isNilOrError(projectsList)) {
       return (
-        <ThemeProvider theme={chartTheme}>
+        <>
           <ControlBar>
             <TimeControl
               startAtMoment={startAtMoment}
@@ -432,7 +433,7 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
               />
             </Column>
           </GraphsContainer>
-        </ThemeProvider>
+        </>
       );
     }
     return null;

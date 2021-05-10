@@ -14,7 +14,7 @@ import { media } from 'utils/styleUtils';
 import GetSerieFromStream from 'resources/GetSerieFromStream';
 
 // components
-import ExportMenu from '../../components/ExportMenu';
+import ReportExportMenu from 'components/admin/ReportExportMenu';
 import {
   BarChart,
   Bar,
@@ -28,8 +28,8 @@ import {
   NoDataContainer,
   GraphCardInner,
   GraphCardHeaderWithFilter,
-  IResolution,
-} from '../..';
+} from 'components/admin/Chart';
+import { IResolution } from 'components/admin/ResolutionControl';
 import { Select } from 'cl2-component-library';
 import { HiddenLabel } from 'utils/a11y';
 
@@ -186,7 +186,7 @@ class SelectableResourceChart extends PureComponent<Props & InjectedIntlProps> {
               />
             </SHiddenLabel>
             {serie && (
-              <ExportMenu
+              <ReportExportMenu
                 className=""
                 svgNode={this.currentChart}
                 name={formatMessage(messages[`participationPer${byWhat}`])}

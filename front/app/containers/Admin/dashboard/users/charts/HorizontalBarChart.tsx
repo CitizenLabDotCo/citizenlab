@@ -19,7 +19,7 @@ import {
   GraphCardTitle,
   GraphCard,
   GraphCardInner,
-} from '../..';
+} from 'components/admin/Chart';
 
 // resources
 import GetSerieFromStream from 'resources/GetSerieFromStream';
@@ -28,7 +28,7 @@ import GetSerieFromStream from 'resources/GetSerieFromStream';
 import { IStreamParams, IStream } from 'utils/streams';
 
 import { IGraphFormat } from 'typings';
-import ExportMenu from '../../components/ExportMenu';
+import ReportExportMenu from 'components/admin/ReportExportMenu';
 
 interface DataProps {
   serie: IGraphFormat;
@@ -94,7 +94,7 @@ export class HorizontalBarChart extends React.PureComponent<
           <GraphCardHeader>
             <GraphCardTitle>{graphTitleString}</GraphCardTitle>
             {!noData && (
-              <ExportMenu
+              <ReportExportMenu
                 svgNode={this.currentChart}
                 xlsxEndpoint={xlsxEndpoint}
                 name={graphTitleString}
