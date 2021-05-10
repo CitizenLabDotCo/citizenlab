@@ -199,6 +199,7 @@
             "description": "Specify how phone numbers should be stored in the database (needs to be in email format - e.g., 'phone+__PHONE__@test.com' stores the phone number as 'phone+32478637483@test.com'.",
             "type": "string",
             "format": "email",
+            "default": "phone+__PHONE__@test.com",
             "pattern": "^.*__PHONE__.*@.*$",
             "private": true
           }
@@ -834,6 +835,18 @@
         "type": "object",
         "title": "Idea Custom Copy",
         "description": "Allows the changing of the word `idea` as the default term of input.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false}
+        }
+      },
+
+      "idea_author_change": {
+        "type": "object",
+        "title": "Idea Author Change",
+        "description": "Allows city admins to create ideas and assign users as their authors.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {

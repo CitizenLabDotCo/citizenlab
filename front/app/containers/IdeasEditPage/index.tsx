@@ -128,6 +128,7 @@ interface State {
   descriptionProfanityError: boolean;
   fileOrImageError: boolean;
   processing: boolean;
+  authorId: string | null;
 }
 
 class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
@@ -152,6 +153,7 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
       descriptionProfanityError: false,
       fileOrImageError: false,
       processing: false,
+      authorId: null,
     };
     this.subscriptions = [];
   }
@@ -218,6 +220,7 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
             descriptionMultiloc: idea.data.attributes.body_multiloc,
             address: idea.data.attributes.location_description,
             budget: idea.data.attributes.budget,
+            authorId: idea.data.relationships.author.data?.id || null,
             proposedBudget: idea.data.attributes.proposed_budget,
             imageFile: ideaImage ? [ideaImage] : [],
             imageId: ideaImage && ideaImage.id ? ideaImage.id : null,
@@ -247,6 +250,7 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
       imageId,
       imageFile,
       address: savedAddress,
+      authorId,
     } = this.state;
     const {
       title,
@@ -257,6 +261,7 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
       proposedBudget,
       ideaFiles,
       ideaFilesToRemove,
+      authorId: newAuthorId,
     } = ideaFormOutput;
     const oldImageId = imageId;
     const oldImage = imageFile && imageFile.length > 0 ? imageFile[0] : null;
@@ -276,7 +281,7 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
     const filesToRemovePromises = ideaFilesToRemove
       .filter((file) => !!(file.remote && file.id))
       .map((file) => deleteIdeaFile(ideaId, file.id as string));
-
+    const finalAuthorId = newAuthorId || authorId;
     const addressDiff = {};
     if (
       isString(ideaFormAddress) &&
@@ -301,6 +306,7 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
         [locale]: description,
       },
       topic_ids: selectedTopics,
+      author_id: finalAuthorId,
       ...addressDiff,
     });
 
@@ -389,6 +395,7 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
         submitError,
         fileOrImageError,
         processing,
+        authorId,
       } = this.state;
       const title = locale && titleMultiloc ? titleMultiloc[locale] || '' : '';
       const description =
@@ -423,6 +430,7 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
               </Title>
 
               <IdeaForm
+                authorId={authorId}
                 projectId={projectId}
                 title={title}
                 description={description}

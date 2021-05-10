@@ -93,6 +93,7 @@ interface GlobalState {
   fileOrImageError: boolean;
   titleProfanityError: boolean;
   descriptionProfanityError: boolean;
+  authorId: string | null;
 }
 
 interface State extends GlobalState {}
@@ -105,6 +106,7 @@ class NewIdeaForm extends PureComponent<Props, State> {
     super(props);
     this.state = {
       title: null,
+      authorId: null,
       description: null,
       selectedTopics: [],
       budget: null,
@@ -139,6 +141,7 @@ class NewIdeaForm extends PureComponent<Props, State> {
           fileOrImageError,
           titleProfanityError,
           descriptionProfanityError,
+          authorId,
         }) => {
           const newState: State = {
             title,
@@ -153,6 +156,7 @@ class NewIdeaForm extends PureComponent<Props, State> {
             fileOrImageError,
             titleProfanityError,
             descriptionProfanityError,
+            authorId,
           };
 
           this.setState(newState);
@@ -175,6 +179,7 @@ class NewIdeaForm extends PureComponent<Props, State> {
       address: position,
       imageFile,
       ideaFiles,
+      authorId,
     } = ideaFormOutput;
     this.globalState.set({
       title,
@@ -185,6 +190,7 @@ class NewIdeaForm extends PureComponent<Props, State> {
       position,
       imageFile,
       ideaFiles,
+      authorId,
     });
     this.props.onSubmit();
   };
@@ -200,6 +206,7 @@ class NewIdeaForm extends PureComponent<Props, State> {
       imageFile,
       titleProfanityError,
       descriptionProfanityError,
+      authorId,
     } = this.state;
     const {
       projectId,
@@ -232,6 +239,7 @@ class NewIdeaForm extends PureComponent<Props, State> {
           </Title>
 
           <IdeaForm
+            authorId={authorId}
             projectId={projectId}
             title={title}
             description={description}
