@@ -30,7 +30,9 @@ describe('InitiativesNewPage', () => {
   // });
 
   it('creates an initiative on mounting', (done) => {
-    const Wrapper = shallow(<InitiativesNewFormWrapper locale="en" />);
+    const Wrapper = shallow(
+      <InitiativesNewFormWrapper locale="en" topics={[]} />
+    );
 
     setTimeout(() => {
       // lets the component finish mounting before starting the test
