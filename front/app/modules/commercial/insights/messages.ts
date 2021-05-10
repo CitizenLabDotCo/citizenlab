@@ -30,4 +30,20 @@ export default defineMessages({
     id: 'app.containers.Admin.Insights.helmetDescription',
     defaultMessage: 'Admin insights page',
   },
+  emptyStateTitle: {
+    id: 'app.containers.Admin.Insights.emptyStateTitle',
+    defaultMessage: 'Easily understand what participants are { accentText }',
+  },
+  emptyStateAccentText: {
+    id: 'app.containers.Admin.Insights.accentText',
+    defaultMessage: 'talking about',
+  },
+  emptyStateCreate: {
+    id: 'app.containers.Admin.Insights.create',
+    defaultMessage: 'Create my first insights',
+  },
+  emptyStateDiscover: {
+    id: 'app.containers.Admin.Insights.discover',
+    defaultMessage: 'Discover how it works',
+  },
 });

@@ -3,7 +3,7 @@ import React from 'react';
 // i18n
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
-import messages from '../../messages';
+import messages from '../../../messages';
 
 // components
 import PageTitle from 'components/admin/PageTitle';
@@ -31,7 +31,9 @@ const StyledLink = styled.a`
   }
 `;
 
-const Insights: React.FC<InjectedIntlProps> = ({ intl: { formatMessage } }) => {
+const InsightsList: React.FC<InjectedIntlProps> = ({
+  intl: { formatMessage },
+}) => {
   return (
     <div>
       <PageTitle>{formatMessage(messages.insightsTitle)}</PageTitle>
@@ -43,4 +45,4 @@ const Insights: React.FC<InjectedIntlProps> = ({ intl: { formatMessage } }) => {
   );
 };
 
-export default injectIntl(Insights);
+export default injectIntl(InsightsList);
