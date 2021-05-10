@@ -19,7 +19,7 @@ import {
 } from 'services/stats';
 
 // components
-import ExportMenu from 'components/admin/ExportMenu';
+import ReportExportMenu from 'components/admin/ReportExportMenu';
 import {
   ComposedChart,
   CartesianGrid,
@@ -323,7 +323,7 @@ class LineBarChart extends React.PureComponent<
             </GraphCardTitle>
 
             {!noData && (
-              <ExportMenu
+              <ReportExportMenu
                 svgNode={this.currentChart}
                 name={graphTitle}
                 {...this.props}

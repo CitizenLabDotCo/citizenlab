@@ -37,7 +37,7 @@ type State = {
   dropdownOpened: boolean;
 };
 
-export default class ExportMenu extends PureComponent<Props, State> {
+export default class ReportExportMenu extends PureComponent<Props, State> {
   constructor(props) {
     super(props);
     this.state = {

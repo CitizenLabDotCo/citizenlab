@@ -16,7 +16,7 @@ import {
 } from 'services/stats';
 
 // components
-import ExportMenu from 'components/admin/ExportMenu';
+import ReportExportMenu from 'components/admin/ReportExportMenu';
 import {
   Line,
   Label,
@@ -291,7 +291,7 @@ class LineBarChartVotesByTime extends React.PureComponent<
             </GraphCardTitle>
 
             {serie && (
-              <ExportMenu
+              <ReportExportMenu
                 svgNode={this.currentChart}
                 xlsxEndpoint={votesByTimeXlsxEndpoint}
                 name={formatMessage(messages.votes)}

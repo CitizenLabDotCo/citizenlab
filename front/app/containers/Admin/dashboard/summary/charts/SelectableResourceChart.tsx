@@ -14,7 +14,7 @@ import { media } from 'utils/styleUtils';
 import GetSerieFromStream from 'resources/GetSerieFromStream';
 
 // components
-import ExportMenu from 'components/admin/ExportMenu';
+import ReportExportMenu from 'components/admin/ReportExportMenu';
 import {
   BarChart,
   Bar,
@@ -186,7 +186,7 @@ class SelectableResourceChart extends PureComponent<Props & InjectedIntlProps> {
               />
             </SHiddenLabel>
             {serie && (
-              <ExportMenu
+              <ReportExportMenu
                 className=""
                 svgNode={this.currentChart}
                 name={formatMessage(messages[`participationPer${byWhat}`])}

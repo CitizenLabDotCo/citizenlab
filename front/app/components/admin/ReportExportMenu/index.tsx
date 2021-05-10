@@ -27,7 +27,7 @@ const Container = styled.div`
   cursor: pointer;
 `;
 
-interface ExportMenuProps {
+interface ReportExportMenuProps {
   className?: string;
   name: string;
   svgNode?: React.RefObject<any>;
@@ -43,7 +43,9 @@ interface ExportMenuProps {
   currentTopicFilterLabel?: string | undefined;
 }
 
-const ExportMenu: React.SFC<ExportMenuProps & InjectedIntlProps> = ({
+const ReportExportMenu: React.SFC<
+  ReportExportMenuProps & InjectedIntlProps
+> = ({
   svgNode,
   className,
   xlsxEndpoint,
@@ -186,4 +188,4 @@ const ExportMenu: React.SFC<ExportMenuProps & InjectedIntlProps> = ({
   );
 };
 
-export default injectIntl(ExportMenu);
+export default injectIntl(ReportExportMenu);

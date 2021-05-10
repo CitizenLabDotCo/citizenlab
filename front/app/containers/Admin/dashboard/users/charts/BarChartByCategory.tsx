@@ -11,7 +11,7 @@ import messages from '../../messages';
 import { withTheme } from 'styled-components';
 
 // components
-import ExportMenu from 'components/admin/ExportMenu';
+import ReportExportMenu from 'components/admin/ReportExportMenu';
 import {
   BarChart,
   Bar,
@@ -104,7 +104,7 @@ export class BarChartByCategory extends React.PureComponent<
           <GraphCardHeader>
             <GraphCardTitle>{graphTitleString}</GraphCardTitle>
             {!noData && (
-              <ExportMenu
+              <ReportExportMenu
                 name={graphTitleString}
                 svgNode={this.currentChart}
                 xlsxEndpoint={xlsxEndpoint}

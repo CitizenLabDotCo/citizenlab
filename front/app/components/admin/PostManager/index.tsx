@@ -34,7 +34,7 @@ import ActionBar from './components/ActionBar';
 import FilterSidebar from './components/FilterSidebar';
 import PostTable from './components/PostTable';
 import InfoSidebar from './components/InfoSidebar';
-import ExportMenu from './components/ExportMenu';
+import ReportExportMenu from './components/ReportExportMenu';
 import IdeasCount from './components/IdeasCount';
 import InitiativesCount from './components/InitiativesCount';
 import { Input } from 'semantic-ui-react';
@@ -43,7 +43,7 @@ import LazyPostPreview from './components/LazyPostPreview';
 import LazyStatusChangeModal from './components/StatusChangeModal/LazyStatusChangeModal';
 import Outlet from 'components/Outlet';
 
-const StyledExportMenu = styled(ExportMenu)`
+const StyledReportExportMenu = styled(ReportExportMenu)`
   margin-left: auto;
 `;
 
@@ -334,7 +334,7 @@ export class PostManager extends React.PureComponent<Props, State> {
               assignee={selectedAssignee}
               searchTerm={searchTerm}
             />
-            <StyledExportMenu
+            <StyledReportExportMenu
               type={type}
               selection={selection}
               selectedProject={selectedProject}

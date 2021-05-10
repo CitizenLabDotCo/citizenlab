@@ -10,7 +10,7 @@ import { trackEventByName } from 'utils/analytics';
 import { requestBlob } from 'utils/request';
 import { API_PATH } from 'containers/App/constants';
 import tracks from '../../tracks';
-import { exportType } from '../ExportMenu';
+import { exportType } from '../ReportExportMenu';
 import { saveAs } from 'file-saver';
 
 interface Props {

@@ -11,7 +11,7 @@ import messages from 'containers/Admin/dashboard/messages';
 import { withTheme } from 'styled-components';
 
 // components
-import ExportMenu from 'components/admin/ExportMenu';
+import ReportExportMenu from 'components/admin/ReportExportMenu';
 import {
   BarChart,
   Bar,
@@ -277,7 +277,7 @@ export class CustomFieldsComparison extends React.PureComponent<
               <T value={customField.attributes.title_multiloc} />
             </GraphCardTitle>
             {!noData && (
-              <ExportMenu
+              <ReportExportMenu
                 name={formatMessage(messages.customFieldTitleExport, {
                   fieldName: localize(customField.attributes.title_multiloc),
                 })}

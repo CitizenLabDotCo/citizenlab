@@ -5,7 +5,7 @@ import { fontSizes } from 'utils/styleUtils';
 // i18n
 import messages from '../../messages';
 import { FormattedMessage } from 'utils/cl-intl';
-import { exportType } from '../ExportMenu';
+import { exportType } from '../ReportExportMenu';
 import { isString } from 'util';
 import { requestBlob } from 'utils/request';
 import { API_PATH } from 'containers/App/constants';

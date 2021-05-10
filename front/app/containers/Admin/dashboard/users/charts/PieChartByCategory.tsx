@@ -10,7 +10,7 @@ import messages from '../../messages';
 import { withTheme } from 'styled-components';
 
 // components
-import ExportMenu from 'components/admin/ExportMenu';
+import ReportExportMenu from 'components/admin/ReportExportMenu';
 import {
   IGraphUnit,
   PieChart,
@@ -97,7 +97,7 @@ class PieChartByCategory extends React.PureComponent<
           <GraphCardHeader>
             <GraphCardTitle>{graphTitleString}</GraphCardTitle>
             {serie && (
-              <ExportMenu
+              <ReportExportMenu
                 name={graphTitleString}
                 svgNode={this.currentChart}
                 xlsxEndpoint={xlsxEndpoint}

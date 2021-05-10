@@ -33,7 +33,7 @@ import {
 
 // types
 import { IGraphPoint } from 'typings';
-import ExportMenu from 'components/admin/ExportMenu';
+import ReportExportMenu from 'components/admin/ReportExportMenu';
 
 interface VoteGraphPoint extends IGraphPoint {
   up: number;
@@ -128,7 +128,7 @@ export const HorizontalBarChartWithoutStream: React.SFC<
         <GraphCardHeader>
           <GraphCardTitle>{graphTitleString}</GraphCardTitle>
           {!isNilOrError(serie) && (
-            <ExportMenu svgNode={currentChart} name={graphTitleString} />
+            <ReportExportMenu svgNode={currentChart} name={graphTitleString} />
           )}
         </GraphCardHeader>
         {isNilOrError(serie) ? (

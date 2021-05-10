@@ -5,7 +5,7 @@ exports[`<BarChartByCategory /> renders correctly 1`] = `
   <Chart__GraphCardInner>
     <Chart__GraphCardHeader>
       <Chart__GraphCardTitle />
-      <ExportMenu
+      <ReportExportMenu
         currentGroupFilter={null}
         name=""
         svgNode={

@@ -13,7 +13,7 @@ import { withTheme } from 'styled-components';
 import { rgba } from 'polished';
 
 // components
-import ExportMenu from 'components/admin/ExportMenu';
+import ReportExportMenu from 'components/admin/ReportExportMenu';
 import {
   AreaChart,
   CartesianGrid,
@@ -272,7 +272,7 @@ export class CumulativeAreaChart extends PureComponent<
             </GraphCardTitle>
 
             {serie && (
-              <ExportMenu
+              <ReportExportMenu
                 {...this.props}
                 svgNode={this.currentChart}
                 name={graphTitle}

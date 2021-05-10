@@ -15,7 +15,7 @@ import messages from 'containers/Admin/dashboard/messages';
 import { withTheme } from 'styled-components';
 
 // components
-import ExportMenu from 'components/admin/ExportMenu';
+import ReportExportMenu from 'components/admin/ReportExportMenu';
 
 import {
   NoDataContainer,
@@ -150,7 +150,7 @@ class GenderChart extends PureComponent<Props & InjectedIntlProps, State> {
               <FormattedMessage {...messages.usersByGenderTitle} />
             </GraphCardTitle>
             {serie && (
-              <ExportMenu
+              <ReportExportMenu
                 name={formatMessage(messages.usersByGenderTitle)}
                 svgNode={this.currentChart}
                 xlsxEndpoint={usersByGenderXlsxEndpoint}
