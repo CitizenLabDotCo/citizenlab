@@ -51,7 +51,9 @@ describe('InitiativesNewPage', () => {
       Promise.resolve({ data: { title_multiloc: { en: 'New Title' } } })
     );
 
-    const Wrapper = shallow(<InitiativesNewFormWrapper locale="en" />);
+    const Wrapper = shallow(
+      <InitiativesNewFormWrapper locale="en" topics={[]} />
+    );
 
     setTimeout(() => {
       Wrapper.find('InitiativesNewFormWrapper__StyledInitiativeForm').prop(
@@ -83,7 +85,9 @@ describe('InitiativesNewPage', () => {
       Promise.resolve({ data: { body_multiloc: { en: 'New Body' } } })
     );
 
-    const Wrapper = shallow(<InitiativesNewFormWrapper locale="en" />);
+    const Wrapper = shallow(
+      <InitiativesNewFormWrapper locale="en" topics={[]} />
+    );
 
     setTimeout(() => {
       Wrapper.find('InitiativesNewFormWrapper__StyledInitiativeForm').prop(
@@ -114,7 +118,9 @@ describe('InitiativesNewPage', () => {
       Promise.resolve({ data: { topic_ids: { en: 'New Body' } } })
     );
 
-    const Wrapper = shallow(<InitiativesNewFormWrapper locale="en" />);
+    const Wrapper = shallow(
+      <InitiativesNewFormWrapper locale="en" topics={[]} />
+    );
 
     setTimeout(() => {
       Wrapper.find('InitiativesNewFormWrapper__StyledInitiativeForm').prop(
@@ -146,7 +152,9 @@ describe('InitiativesNewPage', () => {
       Promise.resolve({ data: { topic_ids: { en: 'New Body' } } })
     );
 
-    const Wrapper = shallow(<InitiativesNewFormWrapper locale="en" />);
+    const Wrapper = shallow(
+      <InitiativesNewFormWrapper locale="en" topics={[]} />
+    );
 
     setTimeout(() => {
       Wrapper.find('InitiativesNewFormWrapper__StyledInitiativeForm').prop(
@@ -178,7 +186,9 @@ describe('InitiativesNewPage', () => {
       Promise.resolve({ data: { topic_ids: { en: 'New Body' } } })
     );
 
-    const Wrapper = shallow(<InitiativesNewFormWrapper locale="en" />);
+    const Wrapper = shallow(
+      <InitiativesNewFormWrapper locale="en" topics={[]} />
+    );
 
     setTimeout(() => {
       Wrapper.find('InitiativesNewFormWrapper__StyledInitiativeForm').prop(
