@@ -312,6 +312,8 @@ class App extends PureComponent<Props, State> {
       const shouldCompleteRegistration = !authUser?.data?.attributes
         ?.registration_completed_at;
 
+      const shouldConfirm = !!authUser?.data?.attributes?.confirmation_required;
+
       // see services/singleSignOn.ts for the typed interface of all the sso related url params the url can potentially contain
       const {
         sso_response,
@@ -332,10 +334,16 @@ class App extends PureComponent<Props, State> {
       // 1. sso_response indicates the user got sent back to the platform from an external sso page (facebook, google, ...)
       // 2. shouldCompleteRegistration indicates the authUser registration_completed_at attribute is noy yer set and the user still needs to complete their registration
       // 3. isInvitation indicates the user got sent to the platform through an invitation link
-      if (sso_response || shouldCompleteRegistration || isInvitation) {
+      if (
+        sso_response ||
+        shouldCompleteRegistration ||
+        isInvitation ||
+        shouldConfirm
+      ) {
         // if the authUser verified attr is set to false but the sso_verification param is present (= set to the string 'true', not a boolean because it's a url param)
         // the user still needs to complete the verification step
-        const shouldVerify = !authUser?.data?.attributes?.verified && sso_verification;
+        const shouldVerify =
+          !authUser?.data?.attributes?.verified && sso_verification;
 
         // if the sso_pathname is present we redirect the user to it
         // we do this to sent the user back to the page they came from after
@@ -351,6 +359,7 @@ class App extends PureComponent<Props, State> {
           !endsWith(sso_pathname, ['sign-up', 'sign-in']) &&
           (isAuthError ||
             (isInvitation && shouldCompleteRegistration) ||
+            shouldConfirm ||
             shouldVerify ||
             shouldCompleteRegistration)
         ) {
@@ -360,6 +369,7 @@ class App extends PureComponent<Props, State> {
             flow: isAuthError && sso_flow ? sso_flow : 'signup',
             error: isAuthError,
             verification: !!sso_verification,
+            requiresConfirmation: shouldConfirm,
             verificationContext: !!(
               sso_verification &&
               sso_verification_action &&
@@ -379,7 +389,7 @@ class App extends PureComponent<Props, State> {
 
     // when -both- the authUser is initiated and the evrification modal component mounted
     // we check if a 'verification_success' or 'verification_error' url param is present.
-    // if so, we open the verication modal with the appropriate step 
+    // if so, we open the verication modal with the appropriate step
     if (
       !isNilOrError(authUser) &&
       verificationModalMounted &&

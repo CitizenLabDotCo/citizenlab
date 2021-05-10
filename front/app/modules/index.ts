@@ -1,11 +1,12 @@
 import { loadModules } from 'utils/moduleUtils';
 
+import userConfirmationConfiguration from './free/user_confirmation';
+
 import projectFoldersConfiguration from './commercial/project_folders';
 import smartGroupsConfiguration from './commercial/smart_groups';
 import userCustomFieldsConfiguration from './commercial/user_custom_fields';
 import ideaCustomFieldsConfiguration from './commercial/idea_custom_fields';
 import granularPermissionsConfiguration from './commercial/granular_permissions';
-import projectVisibilityConfiguration from './commercial/project_visibility';
 import projectManagementConfiguration from './commercial/project_management';
 import ideaAssignmentConfiguration from './commercial/idea_assignment';
 import moderationConfiguration from './commercial/moderation';
@@ -14,6 +15,8 @@ import adminProjectTemplatesConfiguration from './commercial/admin_project_templ
 import machineTranslationsConfiguration from './commercial/machine_translations';
 import similarIdeaConfiguration from './commercial/similar_ideas';
 import clusteringsConfiguration from './commercial/clusterings';
+
+import projectVisibilityConfiguration from './free/project_visibility';
 
 import customMapsConfiguration from './commercial/custom_maps';
 import googleTagManagerConfiguration from './commercial/google_tag_manager';
@@ -87,7 +90,7 @@ export default loadModules([
   },
   {
     configuration: projectVisibilityConfiguration,
-    isEnabled: CL_CONFIG['modules']['commercial/project_visibility'],
+    isEnabled: CL_CONFIG['modules']['free/project_visibility'],
   },
   {
     configuration: projectManagementConfiguration,
@@ -172,5 +175,9 @@ export default loadModules([
   {
     configuration: customStyleConfiguration,
     isEnabled: CL_CONFIG['modules']['commercial/custom_style'],
+  },
+  {
+    configuration: userConfirmationConfiguration,
+    isEnabled: CL_CONFIG['modules']['free/user_confirmation'],
   },
 ]);

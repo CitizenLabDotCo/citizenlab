@@ -132,11 +132,10 @@ RSpec.configure do |config|
     require './engines/free/polls/spec/factories/response_options.rb'
     require './engines/free/volunteering/spec/factories/causes.rb'
     require './engines/free/volunteering/spec/factories/volunteers.rb'
-
+    
     # Clean all tables to start
     DatabaseCleaner.clean_with :truncation, {:except => %w[spatial_ref_sys]}
-    # Use transactions for tests
-    DatabaseCleaner.strategy = :transaction
+
     # Truncating doesn't drop schemas, ensure we're clean here, app *may not* exist
     Apartment::Tenant.drop('example_org') rescue nil
 
@@ -149,7 +148,6 @@ RSpec.configure do |config|
   end
 
   config.before(:each) do
-    DatabaseCleaner.start # Start transaction for this test
     Apartment::Tenant.switch!('example_org') if CitizenLab.ee? # Switch into the default tenant
   end
 
@@ -158,8 +156,6 @@ RSpec.configure do |config|
     Apartment::Tenant.reset if CitizenLab.ee?
   rescue ActiveRecord::StatementInvalid
     # Ignore
-  ensure
-    DatabaseCleaner.clean # Rollback transaction
   end
 
   # By default, skip the slow tests and template tests. Can be overriden on the command line.

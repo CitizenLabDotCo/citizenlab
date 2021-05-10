@@ -147,6 +147,7 @@ export interface IAppConfigurationSettings {
   google_forms_surveys?: AppConfigurationFeature;
   surveymonkey_surveys?: AppConfigurationFeature;
   enalyzer_surveys?: AppConfigurationFeature;
+  survey_xact_surveys?: AppConfigurationFeature;
   project_folders?: AppConfigurationFeature;
   clustering?: AppConfigurationFeature;
   geographic_dashboard?: AppConfigurationFeature;
@@ -167,6 +168,7 @@ export interface IAppConfigurationSettings {
   blocking_profanity?: AppConfigurationFeature;
   inappropriate_content_detection?: AppConfigurationFeature;
   custom_idea_statuses?: AppConfigurationFeature;
+  idea_author_change?: AppConfigurationFeature;
   idea_custom_copy?: AppConfigurationFeature;
   intercom?: AppConfigurationFeature;
   satismeter?: AppConfigurationFeature & {
