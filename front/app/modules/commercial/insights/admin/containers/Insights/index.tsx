@@ -11,7 +11,8 @@ const Insights: React.FC<InjectedIntlProps> = () => {
   return (
     <div>
       <EmptyState />
-      {/* <InsightsList /> */}
+      {/* TODO: Add logic on which component to show
+      <InsightsList />  */}
     </div>
   );
 };

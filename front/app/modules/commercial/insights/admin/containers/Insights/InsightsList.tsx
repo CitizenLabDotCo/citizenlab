@@ -40,7 +40,6 @@ const InsightsList: React.FC<InjectedIntlProps> = ({
       <StyledDescription>
         {formatMessage(messages.insightsDescription)}
       </StyledDescription>
-
       <StyledLink>{formatMessage(messages.insightsLink)}</StyledLink>
     </div>
   );

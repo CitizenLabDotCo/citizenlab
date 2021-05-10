@@ -1,4 +1,5 @@
 import React from 'react';
+import { isNilOrError } from 'utils/helperUtils';
 
 // intl
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
@@ -14,7 +15,6 @@ import messages from '../../../messages';
 
 // components
 import { Button } from 'cl2-component-library';
-import { isNilOrError } from 'utils/helperUtils';
 
 const Container = styled.div`
   background-color: ${colors.adminContentBackground};
@@ -52,7 +52,7 @@ const ButtonsContainer = styled.div`
 
 const EmptyState = ({ intl: { formatMessage } }) => {
   const locale = useLocale();
-  console.log(colors);
+
   return (
     <Container>
       <div>
