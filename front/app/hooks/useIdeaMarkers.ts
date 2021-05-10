@@ -1,15 +1,17 @@
 import { useState, useEffect } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { IGeotaggedIdeaData, ideasMarkersStream } from 'services/ideas';
+import { IIdeaMarkerData, ideasMarkersStream } from 'services/ideas';
+import { Sort } from 'resources/GetIdeas';
 
 interface Props {
   phaseId?: string | null;
   projectIds?: string[] | null;
+  sort?: Sort;
 }
 
-export default function useIdeaMarkers({ phaseId, projectIds }: Props) {
+export default function useIdeaMarkers({ phaseId, projectIds, sort }: Props) {
   const [ideaMarkers, setIdeaMarkers] = useState<
-    IGeotaggedIdeaData[] | undefined | null
+    IIdeaMarkerData[] | undefined | null
   >(undefined);
 
   useEffect(() => {
@@ -17,6 +19,9 @@ export default function useIdeaMarkers({ phaseId, projectIds }: Props) {
 
     const subscription = ideasMarkersStream({
       queryParameters: {
+        sort,
+        'page[size]': 2000,
+        location_required: true,
         projects: projectIds,
         phase: phaseId,
       },
@@ -25,7 +30,7 @@ export default function useIdeaMarkers({ phaseId, projectIds }: Props) {
     });
 
     return () => subscription.unsubscribe();
-  }, [phaseId, projectIds]);
+  }, [phaseId, projectIds, sort]);
 
   return ideaMarkers;
 }

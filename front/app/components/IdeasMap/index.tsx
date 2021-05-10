@@ -115,7 +115,7 @@ const initialInnerContainerLeftMargin = getInnerContainerLeftMargin(
 const IdeasMap = memo<Props & WithRouterProps>(
   ({ projectIds, phaseId, params, className }) => {
     const project = useProject({ projectSlug: params.slug });
-    const ideaMarkers = useIdeaMarkers({ phaseId, projectIds });
+    const ideaMarkers = useIdeaMarkers({ phaseId, projectIds, sort: '-new' });
     const { windowWidth } = useWindowSize();
 
     const containerRef = useRef<HTMLDivElement | null>(null);

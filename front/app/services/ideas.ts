@@ -131,6 +131,19 @@ export interface IGeotaggedIdeaData {
   };
 }
 
+export interface IIdeaMarkerData {
+  id: string;
+  type: string;
+  attributes: {
+    title_multiloc: Multiloc;
+    location_point_geojson: GeoJSON.Point;
+    location_description: string;
+    upvote_count: number;
+    downvote_count: number;
+    comments_count: number;
+  };
+}
+
 export interface IIdeaLinks {
   self: string;
   first: string;
@@ -226,7 +239,7 @@ export function ideasFilterCountsStream(
 }
 
 export function ideasMarkersStream(streamParams: IStreamParams | null = null) {
-  return streams.get<{ data: IGeotaggedIdeaData[]; links: IIdeaLinks }>({
+  return streams.get<{ data: IIdeaMarkerData[]; links: IIdeaLinks }>({
     apiEndpoint: `${API_PATH}/ideas/as_markers`,
     ...streamParams,
     cacheStream: false,

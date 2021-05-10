@@ -94,12 +94,9 @@ const IdeaMapOverlay = memo<Props>(
           <ScrollContainer ref={scrollContainerRef}>
             {!selectedIdeaId ? (
               <StyledIdeasList
-                type="load-more"
                 projectIds={projectIds}
-                participationMethod={project.attributes.participation_method}
-                participationContextId={projectId}
-                participationContextType="project"
-                defaultSortingMethod={project.attributes.ideas_order || null}
+                projectId={projectId}
+                phaseId={phaseId}
               />
             ) : (
               <StyledIdeasShow
