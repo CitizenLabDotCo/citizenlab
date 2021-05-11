@@ -160,7 +160,9 @@ export interface IAppConfigurationSettings {
   custom_maps?: AppConfigurationFeature;
   similar_ideas?: AppConfigurationFeature;
   polls?: AppConfigurationFeature;
-  moderation?: AppConfigurationFeature;
+  moderation?: AppConfigurationFeature & {
+    flag_inappropriate_content?: Boolean;
+  };
   disable_downvoting?: AppConfigurationFeature;
   project_visibility?: AppConfigurationFeature;
   project_management?: AppConfigurationFeature;

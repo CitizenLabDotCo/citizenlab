@@ -32,6 +32,7 @@ import {
   SectionField,
   SectionDescription,
 } from 'components/admin/Section';
+import Outlet from 'components/Outlet';
 
 // services
 import {
@@ -261,6 +262,39 @@ class SettingsGeneralTab extends PureComponent<
     }
   };
 
+  handleSettingChange = (settingName: string, settingValue: any) => {
+    const { appConfiguration } = this.state;
+
+    if (isNilOrError(appConfiguration)) {
+      return;
+    }
+
+    this.setState({
+      settingsSavingError: false,
+    });
+
+    updateAppConfiguration({
+      settings: {
+        [settingName]: settingValue,
+      },
+    })
+      .then(() => {
+        this.setState({
+          settingsUpdatedSuccessFully: true,
+        });
+        setTimeout(() => {
+          this.setState({
+            settingsUpdatedSuccessFully: false,
+          });
+        }, 2000);
+      })
+      .catch((_error) => {
+        this.setState({
+          settingsSavingError: true,
+        });
+      });
+  };
+
   render() {
     const {
       appConfiguration,
@@ -383,11 +417,11 @@ class SettingsGeneralTab extends PureComponent<
               }}
             />
           </StyledSection>
-          {profanityBlockerSetting?.allowed && (
-            <StyledSection>
-              <SubSectionTitle>
-                <FormattedMessage {...messages.contentModeration} />
-              </SubSectionTitle>
+          <StyledSection>
+            <SubSectionTitle>
+              <FormattedMessage {...messages.contentModeration} />
+            </SubSectionTitle>
+            {profanityBlockerSetting && profanityBlockerSetting.allowed && (
               <Setting>
                 <ToggleLabel>
                   <StyledToggle
@@ -406,18 +440,21 @@ class SettingsGeneralTab extends PureComponent<
                   </LabelContent>
                 </ToggleLabel>
               </Setting>
-
-              {settingsUpdatedSuccessFully && (
-                <Success
-                  showBackground
-                  text={formatMessage(messages.successfulUpdateSettings)}
-                />
-              )}
-              {settingsSavingError && (
-                <Error text={formatMessage(messages.settingsSavingError)} />
-              )}
-            </StyledSection>
-          )}
+            )}
+            <Outlet
+              id="app.containers.Admin.settings.general.form"
+              onSettingChange={this.handleSettingChange}
+            />
+            {settingsUpdatedSuccessFully && (
+              <Success
+                showBackground
+                text={formatMessage(messages.successfulUpdateSettings)}
+              />
+            )}
+            {settingsSavingError && (
+              <Error text={formatMessage(messages.settingsSavingError)} />
+            )}
+          </StyledSection>
         </form>
       );
     }
