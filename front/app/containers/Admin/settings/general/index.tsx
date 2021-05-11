@@ -32,7 +32,7 @@ import {
   SectionField,
   SectionDescription,
 } from 'components/admin/Section';
-import Link from 'utils/cl-router/Link';
+import Outlet from 'components/Outlet';
 
 // services
 import {
@@ -56,10 +56,6 @@ const StyledToggle = styled(Toggle)`
 
 const Setting = styled.div`
   margin-bottom: 20px;
-`;
-
-const LabelTitleContainer = styled.div`
-  display: flex;
 `;
 
 const LabelTitle = styled.div`
@@ -274,11 +270,11 @@ class SettingsGeneralTab extends PureComponent<
       !isNilOrError(appConfiguration.attributes.settings.moderation) &&
       appConfiguration.attributes.settings.moderation.allowed &&
       !!appConfiguration.attributes.settings.moderation
-        .inappropriate_content_detection
+        .flag_inappropriate_content
     );
   }
 
-  onToggleInappropriateContentDetectionSetting = () => {
+  handleSettingChange = (settingName: string, settingValue: any) => {
     const { appConfiguration } = this.state;
 
     if (isNilOrError(appConfiguration)) {
@@ -288,13 +284,10 @@ class SettingsGeneralTab extends PureComponent<
     this.setState({
       settingsSavingError: false,
     });
+
     updateAppConfiguration({
       settings: {
-        moderation: {
-          ...appConfiguration.attributes.settings.moderation,
-          inappropriate_content_detection: !this
-            .innapropriateContentDetectionEnabled,
-        },
+        [settingName]: settingValue,
       },
     })
       .then(() => {
@@ -460,42 +453,10 @@ class SettingsGeneralTab extends PureComponent<
                 </ToggleLabel>
               </Setting>
             )}
-            <Setting>
-              <ToggleLabel>
-                <StyledToggle
-                  checked={this.innapropriateContentDetectionEnabled}
-                  onChange={this.onToggleInappropriateContentDetectionSetting}
-                />
-                <LabelContent>
-                  <LabelTitleContainer>
-                    <LabelTitle>
-                      {formatMessage(
-                        messages.inappropriateContentDetectionSetting
-                      )}
-                    </LabelTitle>
-                    <IconTooltip
-                      content={
-                        <FormattedMessage
-                          {...messages.inappropriateContentDetectionTooltip}
-                          values={{
-                            linkToActivityPage: (
-                              <Link to="/admin/activity">
-                                {formatMessage(messages.linkToActivityPageText)}
-                              </Link>
-                            ),
-                          }}
-                        />
-                      }
-                    />
-                  </LabelTitleContainer>
-                  <LabelDescription>
-                    {formatMessage(
-                      messages.inappropriateContentDetectionSettingDescription
-                    )}
-                  </LabelDescription>
-                </LabelContent>
-              </ToggleLabel>
-            </Setting>
+            <Outlet
+              id="app.containers.Admin.settings.general.form"
+              onSettingChange={this.handleSettingChange}
+            />
             {settingsUpdatedSuccessFully && (
               <Success
                 showBackground

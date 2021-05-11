@@ -161,7 +161,7 @@ export interface IAppConfigurationSettings {
   similar_ideas?: AppConfigurationFeature;
   polls?: AppConfigurationFeature;
   moderation?: AppConfigurationFeature & {
-    inappropriate_content_detection?: Boolean;
+    flag_inappropriate_content?: Boolean;
   };
   disable_downvoting?: AppConfigurationFeature;
   project_visibility?: AppConfigurationFeature;
