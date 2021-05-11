@@ -786,6 +786,7 @@
   "app.containers.Admin.Moderation.unread": "Not seen",
   "app.containers.Admin.Moderation.warning": "Advarsel",
   "app.containers.Admin.Moderation.warningText": "Advarsel: der er registreret upassende eller stødende indhold",
+  "app.containers.Admin.Moderation.warnings": "Warnings",
   "app.containers.Admin.Processing.addExistingTag": "Add existing tag",
   "app.containers.Admin.Processing.addNewTag": "Add new tag",
   "app.containers.Admin.Processing.addSmartTag": "Add smart tag",
