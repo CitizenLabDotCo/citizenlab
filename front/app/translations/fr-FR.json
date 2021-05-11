@@ -786,6 +786,7 @@
   "app.containers.Admin.Moderation.unread": "Non vu",
   "app.containers.Admin.Moderation.warning": "Warning",
   "app.containers.Admin.Moderation.warningText": "Warning: possible inappropriate or offensive content detected",
+  "app.containers.Admin.Moderation.warnings": "Warnings",
   "app.containers.Admin.Processing.addExistingTag": "Ajouter une étiquette existante",
   "app.containers.Admin.Processing.addNewTag": "Ajouter une nouvelle étiquette",
   "app.containers.Admin.Processing.addSmartTag": "Ajouter une étiquette automatique",
