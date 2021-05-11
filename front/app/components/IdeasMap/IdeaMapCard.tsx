@@ -15,21 +15,85 @@ import useIdea from 'hooks/useIdea';
 // i18n
 import T from 'components/T';
 
+// components
+import { Icon } from 'cl2-component-library';
+
 // styling
 import styled from 'styled-components';
-import { defaultCardStyle } from 'utils/styleUtils';
+import {
+  defaultCardStyle,
+  // defaultCardHoverStyle,
+  defaultStyles,
+  fontSizes,
+  colors,
+} from 'utils/styleUtils';
 
 const Container = styled.div`
   padding: 20px;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
   background: #fff;
   ${defaultCardStyle};
   border: solid 1px #ccc;
   cursor: pointer;
+  
+  /*
+  box-shadow: 0px 0px 0px 2px #fff inset;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  will-change: box-shadow;
+  transition: all 150ms ease-out;
+  */
 
   &.hovered {
-    border-color: #000;
+    border-color: ${colors.label};
+    /* box-shadow: 0px 0px 0px 2px ${colors.label} inset; */
+    /* box-shadow: ${defaultStyles.boxShadowHoverBig}; */
+    /* transform: translate(0px, -3px); */
   }
+`;
+
+const Title = styled.h3`
+  height: 69px;
+  color: ${(props) => props.theme.colorText};
+  font-size: 18px;
+  font-weight: 500;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  line-height: 23px;
+  max-height: 69px;
+  padding: 0;
+  margin: 0;
+  margin-bottom: 20px;
+  overflow: hidden;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+`;
+
+const Footer = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const FooterItem = styled.div`
+  display: flex;
+  align-items: center;
+  margin-right: 20px;
+`;
+
+const FooterIcon = styled(Icon)`
+  width: 16px;
+  height: 16px;
+  fill: ${colors.label};
+  margin-right: 5px;
+`;
+
+const FooterValue = styled.div`
+  color: ${colors.label};
+  font-size: ${fontSizes.base}px;
+  line-height: normal;
+  font-weight: 400;
 `;
 
 interface Props {
@@ -60,9 +124,10 @@ const IdeaMapCard = memo<Props>(({ ideaId, className }) => {
     setIdeaMapCardSelected(ideaId);
 
     if (!isNilOrError(idea)) {
-      const lng = idea.attributes.location_point_geojson.coordinates[0];
-      const lat = idea.attributes.location_point_geojson.coordinates[1];
-      setLeafletMapCenter([lat, lng]);
+      // pan map to idea coordiantes
+      // const lng = idea.attributes.location_point_geojson.coordinates[0];
+      // const lat = idea.attributes.location_point_geojson.coordinates[1];
+      // setLeafletMapCenter([lat, lng]);
     }
   };
 
@@ -82,9 +147,23 @@ const IdeaMapCard = memo<Props>(({ ideaId, className }) => {
         onMouseEnter={handleOnMouseEnter}
         onMouseLeave={handleOnMouseLeave}
       >
-        <T value={idea.attributes.title_multiloc} />
-        <div>Upvotes: {idea.attributes.upvotes_count}</div>
-        <div>Location: {idea.attributes.location_description}</div>
+        <Title>
+          <T value={idea.attributes.title_multiloc} />
+        </Title>
+        <Footer>
+          <FooterItem>
+            <FooterIcon name="upvote" />
+            <FooterValue>{idea.attributes.upvotes_count}</FooterValue>
+          </FooterItem>
+          <FooterItem>
+            <FooterIcon name="downvote" />
+            <FooterValue>{idea.attributes.downvotes_count}</FooterValue>
+          </FooterItem>
+          <FooterItem>
+            <FooterIcon name="comments" />
+            <FooterValue>{idea.attributes.comments_count}</FooterValue>
+          </FooterItem>
+        </Footer>
       </Container>
     );
   }

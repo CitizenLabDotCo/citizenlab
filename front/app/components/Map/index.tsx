@@ -23,15 +23,14 @@ export interface Point extends GeoJSON.Point {
   title?: string;
 }
 
-const Container = styled.div`
-  ${defaultCardStyle};
-  border: solid 1px #ccc;
-`;
+const Container = styled.div``;
 
 const MapWrapper = styled.div`
   flex: 1;
   display: flex;
   position: relative;
+  ${defaultCardStyle};
+  border: solid 1px #ccc;
 `;
 
 const BoxContainer = styled.div`
@@ -93,6 +92,8 @@ export interface IMapConfigProps {
   areas?: GeoJSON.Polygon[];
   mapHeight?: string;
   noMarkerClustering?: boolean;
+  zoomControlPosition?: 'topleft' | 'topright' | 'bottomleft' | 'bottomright';
+  layersControlPosition?: 'topleft' | 'topright' | 'bottomleft' | 'bottomright';
 }
 
 export interface IMapProps {
@@ -111,6 +112,8 @@ const Map = memo<IMapProps & IMapConfigProps>(
     mapHeight,
     points,
     noMarkerClustering,
+    zoomControlPosition,
+    layersControlPosition,
     boxContent,
     onBoxClose,
     className,
@@ -144,6 +147,8 @@ const Map = memo<IMapProps & IMapConfigProps>(
         zoom,
         center,
         tileProvider,
+        zoomControlPosition,
+        layersControlPosition,
       }
     );
 

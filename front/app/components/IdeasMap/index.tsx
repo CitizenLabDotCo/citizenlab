@@ -41,7 +41,7 @@ import styled from 'styled-components';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
 
-const mapBorderPadding = 80;
+const mapBorderPadding = 60;
 
 const Container = styled.div``;
 
@@ -76,12 +76,12 @@ const StyledWarning = styled(Warning)`
 `;
 
 const StyledIdeaMapOverlay = styled(IdeaMapOverlay)`
-  width: 500px;
+  width: 400px;
+  height: calc(80vh - 30px);
   position: absolute;
   display: flex;
-  top: 50px;
-  bottom: 600px;
-  left: 50px;
+  top: 15px;
+  left: 15px;
   z-index: 900;
 `;
 
@@ -219,6 +219,8 @@ const IdeasMap = memo<Props & WithRouterProps>(
               points={points}
               mapHeight="80vh"
               noMarkerClustering={true}
+              zoomControlPosition="topright"
+              layersControlPosition="bottomright"
             />
 
             {projectIds && !isNilOrError(project) && (

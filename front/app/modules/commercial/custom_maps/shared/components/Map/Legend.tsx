@@ -2,7 +2,13 @@ import React, { memo } from 'react';
 import styled from 'styled-components';
 import useLocalize from 'hooks/useLocalize';
 import useMapConfig from 'modules/commercial/custom_maps/hooks/useMapConfig';
-import { media, isRtl, fontSizes, colors } from 'utils/styleUtils';
+import {
+  media,
+  isRtl,
+  fontSizes,
+  colors,
+  defaultCardStyle,
+} from 'utils/styleUtils';
 import { Multiloc } from 'typings';
 import {
   getLayerColor,
@@ -14,6 +20,8 @@ import bowser from 'bowser';
 const Container = styled.div`
   padding: 20px;
   padding-bottom: 5px;
+  margin-top: 20px;
+  ${defaultCardStyle};
 `;
 
 const LegendItems = styled.ul`

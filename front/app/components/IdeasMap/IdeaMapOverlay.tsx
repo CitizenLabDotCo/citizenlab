@@ -1,4 +1,4 @@
-import React, { memo, useState, useEffect, useRef } from 'react';
+import React, { memo, useState, useEffect } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // events
@@ -19,7 +19,23 @@ import { defaultCardStyle } from 'utils/styleUtils';
 const Container = styled.div`
   width: 100%;
   background: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  position: relative;
   ${defaultCardStyle};
+`;
+
+const InnerOverlay = styled.div`
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: -300px;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
 `;
 
 // const ScrollContainer = styled.div`
@@ -30,9 +46,16 @@ const Container = styled.div`
 
 const StyledIdeaShowPageTopBar = styled(IdeaShowPageTopBar)``;
 
-const StyledIdeasShow = styled(IdeasShow)``;
+const StyledIdeasShow = styled(IdeasShow)`
+  flex: 1;
+  overflow-x: hidden;
+  overflow-y: auto;
+`;
 
-const StyledIdeasList = styled(IdeasList)``;
+const StyledIdeasList = styled(IdeasList)`
+  flex: 1;
+  overflow: hidden;
+`;
 
 interface Props {
   projectIds: string[];
@@ -77,30 +100,26 @@ const IdeaMapOverlay = memo<Props>(
     if (!isNilOrError(project)) {
       return (
         <Container className={className || ''}>
+          <StyledIdeasList
+            projectIds={projectIds}
+            projectId={projectId}
+            phaseId={phaseId}
+          />
+
           {selectedIdeaId && (
-            <StyledIdeaShowPageTopBar
-              ideaId={selectedIdeaId}
-              goBackAction={goBack}
-            />
-          )}
-          {/* <ScrollContainer ref={scrollContainerRef}> */}
-          <>
-            {!selectedIdeaId ? (
-              <StyledIdeasList
-                projectIds={projectIds}
-                projectId={projectId}
-                phaseId={phaseId}
+            <InnerOverlay>
+              <StyledIdeaShowPageTopBar
+                ideaId={selectedIdeaId}
+                goBackAction={goBack}
               />
-            ) : (
               <StyledIdeasShow
                 ideaId={selectedIdeaId}
                 projectId={projectId}
                 insideModal={false}
                 compact={true}
               />
-            )}
-          </>
-          {/* </ScrollContainer> */}
+            </InnerOverlay>
+          )}
         </Container>
       );
     }

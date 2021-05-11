@@ -12,17 +12,30 @@ export function init(
   {
     tileProvider,
     tileOptions,
+    zoomControlPosition,
   }: {
     tileProvider?: string | null;
     tileOptions?: object;
+    zoomControlPosition?: 'topleft' | 'topright' | 'bottomleft' | 'bottomright';
   }
 ) {
-  const map = ((L.map(mapId) as any).setActiveArea(
-    'activeArea',
-    true,
-    true
-  ) as L.Map).setView([0, 0], 16);
+  const map = ((L.map(mapId, {
+    zoomControl: zoomControlPosition ? false : true,
+  }) as any).setActiveArea('activeArea', true, true) as L.Map).setView(
+    [0, 0],
+    16
+  );
+
+  if (zoomControlPosition) {
+    L.control
+      .zoom({
+        position: zoomControlPosition,
+      })
+      .addTo(map);
+  }
+
   addTileLayer(map, tileProvider, tileOptions);
+
   return map;
 }
 

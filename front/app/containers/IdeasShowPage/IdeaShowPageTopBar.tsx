@@ -28,6 +28,7 @@ import { lighten } from 'polished';
 import { IdeaVotingDisabledReason } from 'services/ideas';
 
 const Container = styled.div`
+  flex: 0 0 ${(props) => props.theme.mobileTopBarHeight}px;
   height: ${(props) => props.theme.mobileTopBarHeight}px;
   background-color: #fff;
   border-bottom: solid 1px ${lighten(0.3, colors.label)};

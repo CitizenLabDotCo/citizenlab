@@ -53,6 +53,8 @@ export interface ILeafletMapConfig {
   zoom?: number;
   tileProvider?: string | null;
   tileOptions?: object;
+  zoomControlPosition?: 'topleft' | 'topright' | 'bottomleft' | 'bottomright';
+  layersControlPosition?: 'topleft' | 'topright' | 'bottomleft' | 'bottomright';
   geoJsonLayers?: GeoJSONLayer[];
   points?: Point[];
   noMarkerClustering?: boolean;
@@ -69,6 +71,8 @@ export default function useLeaflet(
     zoom,
     tileProvider,
     tileOptions,
+    zoomControlPosition,
+    layersControlPosition,
     points,
     noMarkerClustering,
     geoJsonLayers,
@@ -126,11 +130,20 @@ export default function useLeaflet(
       const newMap = service.init(mapId, {
         tileProvider,
         tileOptions,
+        zoomControlPosition,
       });
       setMap(newMap);
     }
   };
-  useEffect(setup, [map, mapId, tileProvider, tileOptions, zoom, center]);
+  useEffect(setup, [
+    map,
+    mapId,
+    tileProvider,
+    tileOptions,
+    zoomControlPosition,
+    zoom,
+    center,
+  ]);
 
   const refreshTile = () => {
     if (!map || (tileLayer && tileConfig === prevTileConfig)) {
@@ -178,7 +191,10 @@ export default function useLeaflet(
     service.removeLayersControl(map, layersControl);
     service.removeLayers(map, layers);
 
-    const newLayersControl = service.addLayersControl(map);
+    const newLayersControl = service.addLayersControl(
+      map,
+      layersControlPosition
+    );
     const newLayers = service.addLayers(map, geoJsonLayers, {
       layersControl: newLayersControl,
       overlay: layerOverlay,
@@ -199,6 +215,7 @@ export default function useLeaflet(
     layerTooltip,
     layerMarker,
     layersControl,
+    layersControlPosition,
     layers,
   ]);
 

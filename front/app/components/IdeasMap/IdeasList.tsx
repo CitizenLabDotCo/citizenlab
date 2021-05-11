@@ -39,7 +39,7 @@ const Container = styled.div`
 
 const Loading = styled.div`
   width: 100%;
-  height: 300px;
+  flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -153,7 +153,7 @@ const IdeasList = memo<Props>(
     const ideaCustomFieldsSchemas = useIdeaCustomFieldsSchemas({ projectId });
     const project = useProject({ projectId });
 
-    const [search, setSearch] = useState<string>('');
+    const [search, setSearch] = useState<string | null>(null);
     const [topics, setTopics] = useState<string[]>([]);
     const [sort, setSort] = useState<Sort>(
       project?.attributes.ideas_order || ideaDefaultSortMethodFallback
@@ -176,7 +176,7 @@ const IdeasList = memo<Props>(
     const topicsEnabled = isFieldEnabled('topic_ids');
 
     const handleSearchOnChange = (newSearchValue: string) => {
-      setSearch(newSearchValue);
+      setSearch(newSearchValue || null);
     };
 
     const handleSortOnChange = (newSort: Sort) => {
@@ -216,29 +216,25 @@ const IdeasList = memo<Props>(
         </FiltersArea>
 
         <IdeaMapCards>
-          {ideas === undefined ? (
-            <Loading id="ideas-loading">
+          {ideas === undefined && (
+            <Loading>
               <Spinner />
             </Loading>
-          ) : (
-            <>
-              {ideas && ideas.length > 0 ? (
-                <>
-                  {ideas.map((idea) => (
-                    <StyledIdeaMapCard ideaId={idea.id} />
-                  ))}
-                </>
-              ) : (
-                <EmptyContainer id="ideas-empty">
-                  <IdeaIcon ariaHidden name="idea" />
-                  <EmptyMessage>
-                    <EmptyMessageLine>
-                      <FormattedMessage {...messages.noFilteredResults} />
-                    </EmptyMessageLine>
-                  </EmptyMessage>
-                </EmptyContainer>
-              )}
-            </>
+          )}
+
+          {ideas &&
+            ideas.length > 0 &&
+            ideas.map((idea) => <StyledIdeaMapCard ideaId={idea.id} />)}
+
+          {(ideas === null || ideas?.length === 0) && (
+            <EmptyContainer id="ideas-empty">
+              <IdeaIcon ariaHidden name="idea" />
+              <EmptyMessage>
+                <EmptyMessageLine>
+                  <FormattedMessage {...messages.noFilteredResults} />
+                </EmptyMessageLine>
+              </EmptyMessage>
+            </EmptyContainer>
           )}
         </IdeaMapCards>
       </Container>
