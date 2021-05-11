@@ -206,7 +206,7 @@ export const GraphCardFigureChange = styled.span`
   }
 `;
 
-export type IGraphUnit = 'users' | 'ideas' | 'comments' | 'votes';
+export type IGraphUnit = 'users' | 'ideas' | 'comments' | 'votes' | 'responses';
 
 export type IResolution = 'day' | 'week' | 'month';
 

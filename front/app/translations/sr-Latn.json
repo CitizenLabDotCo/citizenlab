@@ -1027,6 +1027,7 @@
   "app.containers.AdminPage.DashboardPage.resolutionmonth": "u Mesecima",
   "app.containers.AdminPage.DashboardPage.resolutionweek": "u Nedeljama",
   "app.containers.AdminPage.DashboardPage.resourceByDifference": "{selectedResourceName} razlika u odnosu na {selectedName}",
+  "app.containers.AdminPage.DashboardPage.seeReportButton": "",
   "app.containers.AdminPage.DashboardPage.selectedProject": "trenutni filter projekta",
   "app.containers.AdminPage.DashboardPage.selectedTopic": "trenutni filter teme",
   "app.containers.AdminPage.DashboardPage.subtitleDashboard": "Saznajte šta se dešava na vašoj platformi",

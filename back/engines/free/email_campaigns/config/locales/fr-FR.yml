@@ -93,7 +93,7 @@ fr:
       "status_change_of_your_idea": Changement de statut de votre idée (tous les utilisateurs)
       "status_change_of_your_initiative": Changement de statut de votre proposition - tous les utilisateurs
       "threshold_reached_for_admin": La proposition a atteint le seuil de vote - admins
-      "welcome": Nouvel utilisateur (administrateurs)
+      "welcome": Courriel de bienvenue aux nouveaux utilisateurs (tous les utilisateurs)
       "admin_digest": Vue d'ensemble hebdomadaire - administrateurs
       "moderator_digest": Aperçu hebdomadaire - administrateurs projet
       "assignee_digest": Aperçu hebdomadaire des idées attribuées - administrateurs et administrateurs projet
