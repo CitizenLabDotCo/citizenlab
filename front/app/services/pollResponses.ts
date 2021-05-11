@@ -26,11 +26,12 @@ export async function addPollResponse(
 
 export async function exportPollResponses(
   participationContextId: string,
-  participationContextType: IParticipationContextType
+  participationContextType: IParticipationContextType,
+  fileName: string
 ) {
   const blob = await requestBlob(
     `${API_PATH}/${participationContextType}s/${participationContextId}/poll_responses/as_xlsx`,
     'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
   );
-  saveAs(blob, 'survey-results-export.xlsx');
+  saveAs(blob, fileName);
 }

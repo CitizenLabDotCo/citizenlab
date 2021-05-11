@@ -26,6 +26,8 @@ export interface IIdeasPageGlobalState {
   position: string;
   position_coordinates: GeoJSON.Point | null;
   submitError: boolean;
+  titleProfanityError: boolean;
+  descriptionProfanityError: boolean;
   fileOrImageError: boolean;
   processing: boolean;
   ideaId: string | null;
@@ -33,6 +35,7 @@ export interface IIdeasPageGlobalState {
   imageFile: UploadFile[];
   imageId: string | null;
   ideaFiles: UploadFile[];
+  authorId: string | null;
 }
 
 export interface IAdminFullWidth {

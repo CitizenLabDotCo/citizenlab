@@ -22,6 +22,10 @@ class AppConfiguration < ApplicationRecord
 
   before_validation :validate_missing_feature_dependencies
 
+  after_update do
+    AppConfiguration.instance.reload
+  end
+
   module Settings
     extend CitizenLab::Mixins::SettingsSpecification
 
@@ -96,6 +100,16 @@ class AppConfiguration < ApplicationRecord
     settings[setting_name]&.values_at('enabled', 'allowed')&.all?
   end
 
+  def activate_feature!(setting_name)
+    settings[setting_name] = { 'enabled' => true, 'allowed' => true }
+    save!
+  end
+
+  def deactivate_feature!(setting_name)
+    settings[setting_name] = { 'enabled' => false, 'allowed' => false }
+    save!
+  end
+
   def has_feature?(f)
     ActiveSupport::Deprecation.warn('AppConfiguration#has_feature? is deprecated. Use AppConfiguration#feature_activated? instead.')
     feature_activated?(f)
@@ -115,12 +129,6 @@ class AppConfiguration < ApplicationRecord
     longitude = settings.dig('maps', 'map_center', 'long')
     latitude = settings.dig('maps', 'map_center', 'lat')
     RGeo::Geographic.spherical_factory(srid: 4326).point(longitude, latitude)
-  end
-
-  def turn_on_abbreviated_user_names!
-    config = settings['abbreviated_user_names'] || {}
-    settings['abbreviated_user_names'] = config.merge({ 'allowed' => true, 'enabled' => true })
-    save!
   end
 
   def configuration

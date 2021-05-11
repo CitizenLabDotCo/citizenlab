@@ -222,9 +222,35 @@ export default defineMessages({
     defaultMessage:
       'This is shown on the top of the first page of the sign-up form (name, email, password).',
   },
+  platformConfiguration: {
+    id: 'app.containers.AdminPage.SettingsPage.platformConfiguration',
+    defaultMessage: 'Platform configuration',
+  },
+  contentModeration: {
+    id: 'app.containers.AdminPage.SettingsPage.contentModeration',
+    defaultMessage: 'Content moderation',
+  },
   registrationTabDescription: {
     id: 'app.containers.AdminPage.SettingsPage.registrationTabDescription',
     defaultMessage:
       'Provide a short description at the top of your registration form. Add and configure the registration fields for your platform.',
+  },
+  profanityBlockerSetting: {
+    id: 'app.containers.AdminPage.SettingsPage.profanityBlockerSetting',
+    defaultMessage: 'Profanity blocker',
+  },
+  profanityBlockerSettingDescription: {
+    id:
+      'app.containers.AdminPage.SettingsPage.profanityBlockerSettingDescription',
+    defaultMessage:
+      'Block input, proposals and comments containing the most commonly reported offensive words',
+  },
+  successfulUpdateSettings: {
+    id: 'app.containers.AdminPage.SettingsPage.successfulUpdateSettings',
+    defaultMessage: 'Settings updated successfully.',
+  },
+  settingsSavingError: {
+    id: 'app.containers.AdminPage.SettingsPage.settingsSavingError',
+    defaultMessage: "Couldn't save. Try changing the setting again.",
   },
 });

@@ -24,6 +24,7 @@ import { SectionTitle, SectionDescription } from 'components/admin/Section';
 // i18n
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
+import injectLocalize, { InjectedLocalized } from 'utils/localize';
 
 const Container = styled.div`
   display: flex;
@@ -58,9 +59,11 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-export class AdminProjectPoll extends React.PureComponent<Props> {
+export class AdminProjectPoll extends React.PureComponent<
+  Props & InjectedLocalized
+> {
   render() {
-    const { project, phases, locale } = this.props;
+    const { project, phases, locale, localize } = this.props;
     if (isNilOrError(project) || isNilOrError(locale)) return null;
 
     if (
@@ -82,6 +85,9 @@ export class AdminProjectPoll extends React.PureComponent<Props> {
               <ExportPollButton
                 participationContextType="project"
                 participationContextId={project.id}
+                participationContextName={localize(
+                  project.attributes.title_multiloc
+                )}
               />
             </HeaderContainer>
             <GetPollQuestions
@@ -129,6 +135,9 @@ export class AdminProjectPoll extends React.PureComponent<Props> {
                   <ExportPollButton
                     participationContextId={phase.id}
                     participationContextType="phase"
+                    participationContextName={localize(
+                      phase.attributes.title_multiloc
+                    )}
                   />
                 </HeaderContainer>
                 <GetPollQuestions
@@ -155,6 +164,8 @@ export class AdminProjectPoll extends React.PureComponent<Props> {
   }
 }
 
+const AdminProjectPollWithHoc = injectLocalize(AdminProjectPoll);
+
 const Data = adopt<DataProps, InputProps & WithRouterProps>({
   phases: ({ params, render }) => (
     <GetPhases projectId={params.projectId}>{render}</GetPhases>
@@ -168,7 +179,9 @@ const Data = adopt<DataProps, InputProps & WithRouterProps>({
 export default withRouter<InputProps>(
   (inputProps: InputProps & WithRouterProps) => (
     <Data {...inputProps}>
-      {(dataProps) => <AdminProjectPoll {...inputProps} {...dataProps} />}
+      {(dataProps) => (
+        <AdminProjectPollWithHoc {...inputProps} {...dataProps} />
+      )}
     </Data>
   )
 );
