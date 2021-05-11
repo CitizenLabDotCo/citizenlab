@@ -13,20 +13,24 @@ export default defineMessages({
     id: 'app.components.PagesShowPage.informationPageName',
     defaultMessage: 'Information Page',
   },
-  'terms-and-conditionsPageName': {
+  termsAndConditionsPageName: {
     id: 'app.components.PagesShowPage.terms-and-conditionsPageName',
     defaultMessage: 'Terms & conditions',
   },
-  'privacy-policyPageName': {
+  privacyPolicyPageName: {
     id: 'app.components.PagesShowPage.privacy-policyPageName',
     defaultMessage: 'Privacy Policy',
   },
-  'accessibility-statementPageName': {
+  accessibilityStatementPageName: {
     id: 'app.components.PagesShowPage.accessibility-statementPageName',
     defaultMessage: 'Accessibility statement',
   },
-  'cookie-policyPageName': {
+  cookiePolicyPageName: {
     id: 'app.components.PagesShowPage.cookie-policyPageName',
     defaultMessage: 'Cookie policy',
+  },
+  faqPageName: {
+    id: 'app.components.PagesShowPage.faqPageName',
+    defaultMessage: 'Frequently Asked Questions (FAQ)',
   },
 });

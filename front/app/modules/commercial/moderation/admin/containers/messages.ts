@@ -94,25 +94,4 @@ export default defineMessages({
     defaultMessage:
       'This page allows you to quickly check all new input that has been added to your platform, including posts and comments. You can mark posts as being ‘viewed’ so that others know which inputs still need to be processed.',
   },
-  settings: {
-    id: 'app.containers.Admin.Moderation.settings',
-    defaultMessage: 'Settings',
-  },
-  profanityBlockerSetting: {
-    id: 'app.containers.Admin.Moderation.profanityBlockerSetting',
-    defaultMessage: 'Profanity blocker',
-  },
-  profanityBlockerSettingDescription: {
-    id: 'app.containers.Admin.Moderation.profanityBlockerSettingDescription',
-    defaultMessage:
-      'Block posts containing the most commonly reported offensive words.',
-  },
-  successfulUpdateSettings: {
-    id: 'app.containers.Admin.Moderation.successfulUpdateSettings',
-    defaultMessage: 'Settings updated successfully.',
-  },
-  settingsSavingError: {
-    id: 'app.containers.Admin.Moderation.settingsSavingError',
-    defaultMessage: "Couldn't save. Try changing the setting again.",
-  },
 });
