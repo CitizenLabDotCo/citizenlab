@@ -334,6 +334,35 @@ resource "Comments" do
           expect(response_status).to eq 201
         end
       end
+
+      describe do
+        before { SettingsService.new.activate_feature! 'blocking_profanity' }
+        # Weak attempt to make it less explicit
+        let(:body_multiloc) {{'en' => 'fu'+'ckin'+'g co'+'cksu'+'cker'}} 
+
+        example_request "[error] Create a comment with blocked words" do
+          expect(response_status).to eq 422
+          json_response = json_parse(response_body)
+          blocked_error = json_response.dig(:errors, :base)&.select{|err| err[:error] == 'includes_banned_words'}&.first
+          expect(blocked_error).to be_present
+          expect(blocked_error.dig(:blocked_words)).to include(
+            {
+              word: 'f'+'uck',
+              position: 0,
+              language: 'en',
+              locale: 'en',
+              attribute: 'body_multiloc'
+            },
+            {
+              word: 'co'+'cksu'+'cker',
+              position: 8,
+              language: 'en',
+              locale: 'en',
+              attribute: 'body_multiloc'
+            }
+          )
+        end
+      end
     end
 
     post "web_api/v1/comments/:id/mark_as_deleted" do

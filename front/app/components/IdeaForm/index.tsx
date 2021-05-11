@@ -13,6 +13,7 @@ import bowser from 'bowser';
 import { Input, LocationInput } from 'cl2-component-library';
 import QuillEditor from 'components/UI/QuillEditor';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
+import UserSelect from 'components/UI/UserSelect';
 import Error from 'components/UI/Error';
 import HasPermission from 'components/HasPermission';
 import FileUploader from 'components/UI/FileUploader';
@@ -21,6 +22,7 @@ import {
   FormSectionTitle,
   FormLabel,
 } from 'components/UI/FormComponents';
+import Link from 'utils/cl-router/Link';
 
 // services
 import { localeStream } from 'services/locale';
@@ -52,7 +54,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 import { getInputTermMessage } from 'utils/i18n';
 
@@ -65,6 +67,9 @@ import TopicsPicker from 'components/UI/TopicsPicker';
 import { FormLabelWithIcon } from 'components/UI/FormComponents/WithIcons';
 import { media } from 'utils/styleUtils';
 import { getInputTerm } from 'services/participationContexts';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import { isAdmin } from 'services/permissions/roles';
+import { IUserData } from 'services/users';
 
 const Form = styled.form`
   width: 100%;
@@ -102,6 +107,7 @@ export interface IIdeaFormOutput {
   imageFile: UploadFile[];
   ideaFiles: UploadFile[];
   ideaFilesToRemove: UploadFile[];
+  authorId: string | null;
 }
 
 interface InputProps {
@@ -115,13 +121,20 @@ interface InputProps {
   imageFile: UploadFile[];
   onSubmit: (arg: IIdeaFormOutput) => void;
   remoteIdeaFiles?: UploadFile[] | null;
+  hasTitleProfanityError: boolean;
+  hasDescriptionProfanityError: boolean;
+  onTitleChange: (title: string) => void;
+  onDescriptionChange: (description: string) => void;
+  authorId: string | null;
 }
 
 interface DataProps {
   pbEnabled: GetFeatureFlagChildProps;
+  ideaAuthorChangeEnabled: GetFeatureFlagChildProps;
   topics: GetTopicsChildProps;
   project: GetProjectChildProps;
   phases: GetPhasesChildProps;
+  authUser: GetAuthUserChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -149,6 +162,7 @@ interface State {
   ideaFiles: UploadFile[];
   ideaFilesToRemove: UploadFile[];
   ideaCustomFieldsSchemas: IIdeaFormSchemas | null;
+  authorId: string | null;
 }
 
 class IdeaForm extends PureComponent<
@@ -184,6 +198,7 @@ class IdeaForm extends PureComponent<
       locationError: null,
       imageError: null,
       attachmentsError: null,
+      authorId: null,
     };
     this.subscriptions = [];
     this.titleInputElement = null;
@@ -266,6 +281,8 @@ class IdeaForm extends PureComponent<
       proposedBudget,
       imageFile,
       remoteIdeaFiles,
+      authUser,
+      authorId,
     } = this.props;
     const ideaFiles = Array.isArray(remoteIdeaFiles) ? remoteIdeaFiles : [];
 
@@ -276,6 +293,7 @@ class IdeaForm extends PureComponent<
       imageFile,
       ideaFiles,
       address,
+      authorId: authorId || authUser?.id || null,
       title: title || '',
       description: description || '',
     });
@@ -286,6 +304,8 @@ class IdeaForm extends PureComponent<
       title,
       titleError: null,
     });
+
+    this.props.onTitleChange(title);
   };
 
   handleDescriptionOnChange = async (description: string) => {
@@ -295,6 +315,8 @@ class IdeaForm extends PureComponent<
       description,
       descriptionError: isDescriptionEmpty ? descriptionError : null,
     }));
+
+    this.props.onDescriptionChange(description);
   };
 
   handleTopicsOnChange = (selectedTopics: string[]) => {
@@ -564,8 +586,9 @@ class IdeaForm extends PureComponent<
       imageFile,
       ideaFiles,
       ideaFilesToRemove,
+      authorId,
     } = this.state;
-    const formIsValid = this.validate(
+    const formClientSideIsValid = this.validate(
       title,
       description,
       budget,
@@ -576,7 +599,7 @@ class IdeaForm extends PureComponent<
       ideaFiles
     );
 
-    if (formIsValid) {
+    if (formClientSideIsValid) {
       const output: IIdeaFormOutput = {
         title,
         selectedTopics,
@@ -587,8 +610,8 @@ class IdeaForm extends PureComponent<
         description,
         ideaFiles,
         ideaFilesToRemove,
+        authorId,
       };
-
       this.props.onSubmit(output);
     }
   };
@@ -618,9 +641,23 @@ class IdeaForm extends PureComponent<
     );
   };
 
+  handleAuthorChange = (authorId?: string) => {
+    this.setState({ authorId: authorId ? authorId : null });
+  };
+
   render() {
     const className = this.props['className'];
-    const { projectId, pbEnabled, topics, project, phases } = this.props;
+    const {
+      projectId,
+      pbEnabled,
+      topics,
+      project,
+      phases,
+      hasTitleProfanityError,
+      hasDescriptionProfanityError,
+      authUser,
+      ideaAuthorChangeEnabled,
+    } = this.props;
     const { formatMessage } = this.props.intl;
     const {
       locale,
@@ -731,7 +768,36 @@ class IdeaForm extends PureComponent<
                 maxCharCount={80}
                 autocomplete="off"
               />
+              {hasTitleProfanityError && (
+                <Error
+                  text={
+                    <FormattedMessage
+                      {...messages.profanityError}
+                      values={{
+                        guidelinesLink: (
+                          <Link to="/pages/faq" target="_blank">
+                            {formatMessage(messages.guidelinesLinkText)}
+                          </Link>
+                        ),
+                      }}
+                    />
+                  }
+                />
+              )}
             </FormElement>
+            {ideaAuthorChangeEnabled &&
+              isAdmin({ data: authUser as IUserData }) && (
+                <FormElement id="e2e-idea-author-input">
+                  <FormLabel htmlFor="author" labelMessage={messages.author} />
+                  <UserSelect
+                    id="author"
+                    inputId="author-select"
+                    value={this.state.authorId}
+                    onChange={this.handleAuthorChange}
+                    placeholder={formatMessage(messages.authorPlaceholder)}
+                  />
+                </FormElement>
+              )}
 
             <FormElement id="e2e-idea-description-input">
               <FormLabel
@@ -752,10 +818,26 @@ class IdeaForm extends PureComponent<
                 value={description}
                 onChange={this.handleDescriptionOnChange}
                 setRef={this.handleDescriptionSetRef}
-                hasError={descriptionError !== null}
+                hasError={!!descriptionError || hasDescriptionProfanityError}
                 withCTAButton
               />
               {descriptionError && <Error text={descriptionError} />}
+              {hasDescriptionProfanityError && (
+                <Error
+                  text={
+                    <FormattedMessage
+                      {...messages.profanityError}
+                      values={{
+                        guidelinesLink: (
+                          <Link to="/pages/faq" target="_blank">
+                            {formatMessage(messages.guidelinesLinkText)}
+                          </Link>
+                        ),
+                      }}
+                    />
+                  }
+                />
+              )}
             </FormElement>
           </StyledFormSection>
 
@@ -956,6 +1038,7 @@ class IdeaForm extends PureComponent<
 
 const Data = adopt<DataProps, InputProps>({
   pbEnabled: <GetFeatureFlag name="participatory_budgeting" />,
+  ideaAuthorChangeEnabled: <GetFeatureFlag name="idea_author_change" />,
   project: ({ projectId, render }) => (
     <GetProject projectId={projectId}>{render}</GetProject>
   ),
@@ -964,6 +1047,9 @@ const Data = adopt<DataProps, InputProps>({
   ),
   topics: ({ projectId, render }) => {
     return <GetTopics projectId={projectId}>{render}</GetTopics>;
+  },
+  authUser: ({ render }) => {
+    return <GetAuthUser>{render}</GetAuthUser>;
   },
 });
 

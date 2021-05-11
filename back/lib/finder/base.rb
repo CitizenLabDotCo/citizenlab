@@ -17,16 +17,18 @@ module Finder
     ## You can now use #find instead of call.
     callable_with :find, error_class: Finder::Error, default_error: 'Something went wrong'
 
-    def initialize(params, scope: nil, includes: [], current_user: nil)
+    def initialize(params, scope: nil, includes: [], current_user: nil, paginate: true)
       @params            = params.respond_to?(:permit!) ? params.permit! : params
       @current_user      = current_user
       @base_scope        = scope || _base_scope
       @records           = @base_scope.includes(includes)
+      @paginate          = paginate
     end
 
     protected
 
-    attr_reader :params, :records, :current_user
+    attr_reader :params, :records, :current_user, :paginate
+    alias paginate? paginate
 
     delegate :table_name, to: :_klass
 
@@ -68,7 +70,10 @@ module Finder
     end
 
     def _paginate_records
+      return unless paginate?
+
       pagination_params = params[:page] || {}
+
       @records = records.page(pagination_params[:number]).per(pagination_params[:size])
     end
 

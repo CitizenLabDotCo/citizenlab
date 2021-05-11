@@ -1,6 +1,7 @@
 // Copied IdeaEditPage and made the minimal modifications for this use.
 
 import React, { PureComponent } from 'react';
+import { adopt } from 'react-adopt';
 import { isString, isEmpty } from 'lodash-es';
 import { Subscription, combineLatest, of } from 'rxjs';
 import { switchMap, map, first } from 'rxjs/operators';
@@ -47,6 +48,15 @@ import styled from 'styled-components';
 import GetResourceFileObjects, {
   GetResourceFileObjectsChildProps,
 } from 'resources/GetResourceFileObjects';
+import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetAppConfiguration';
+
+// tracks
+import tracks from './tracks';
+import { trackEventByName } from 'utils/analytics';
 
 const ButtonWrapper = styled.div`
   display: flex;
@@ -64,6 +74,9 @@ export interface InputProps {
 
 interface DataProps {
   remoteIdeaFiles: GetResourceFileObjectsChildProps;
+  locale: GetLocaleChildProps;
+  authUser: GetAuthUserChildProps;
+  appConfiguration: GetAppConfigurationChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -80,8 +93,11 @@ interface State {
   imageFile: UploadFile[];
   imageId: string | null;
   submitError: boolean;
+  titleProfanityError: boolean;
+  descriptionProfanityError: boolean;
   loaded: boolean;
   processing: boolean;
+  authorId: string | null;
 }
 
 class IdeaEdit extends PureComponent<Props, State> {
@@ -91,6 +107,7 @@ class IdeaEdit extends PureComponent<Props, State> {
     super(props as any);
     this.state = {
       projectId: null,
+      authorId: null,
       locale: 'en',
       titleMultiloc: null,
       descriptionMultiloc: null,
@@ -101,6 +118,8 @@ class IdeaEdit extends PureComponent<Props, State> {
       imageFile: [],
       imageId: null,
       submitError: false,
+      titleProfanityError: false,
+      descriptionProfanityError: false,
       loaded: false,
       processing: false,
     };
@@ -169,6 +188,7 @@ class IdeaEdit extends PureComponent<Props, State> {
             descriptionMultiloc: idea.data.attributes.body_multiloc,
             address: idea.data.attributes.location_description,
             budget: idea.data.attributes.budget,
+            authorId: idea.data.relationships.author.data?.id || null,
             proposedBudget: idea.data.attributes.proposed_budget,
             imageFile: ideaImage ? [ideaImage] : [],
             imageId: ideaImage && ideaImage.id ? ideaImage.id : null,
@@ -189,14 +209,16 @@ class IdeaEdit extends PureComponent<Props, State> {
   };
 
   handleIdeaFormOutput = async (ideaFormOutput: IIdeaFormOutput) => {
-    const { ideaId, goBack } = this.props;
+    const { ideaId, goBack, authUser, appConfiguration } = this.props;
     const {
       locale,
       titleMultiloc,
       descriptionMultiloc,
       imageId,
       imageFile,
+      authorId,
       address: savedAddress,
+      projectId,
     } = this.state;
     const {
       title,
@@ -207,6 +229,7 @@ class IdeaEdit extends PureComponent<Props, State> {
       proposedBudget,
       ideaFiles,
       ideaFilesToRemove,
+      authorId: newAuthorId,
     } = ideaFormOutput;
     const oldImageId = imageId;
     const oldImage = imageFile && imageFile.length > 0 ? imageFile[0] : null;
@@ -227,6 +250,7 @@ class IdeaEdit extends PureComponent<Props, State> {
       .filter((file) => !!(file.remote && file.id))
       .map((file) => deleteIdeaFile(ideaId, file.id as string));
 
+    const finalAuthorId = newAuthorId || authorId;
     const addressDiff = {};
     if (
       isString(ideaFormAddress) &&
@@ -251,6 +275,7 @@ class IdeaEdit extends PureComponent<Props, State> {
         [locale]: description,
       },
       topic_ids: selectedTopics,
+      author_id: finalAuthorId,
       ...addressDiff,
     });
 
@@ -269,11 +294,78 @@ class IdeaEdit extends PureComponent<Props, State> {
       ] as Promise<any>[]);
 
       goBack();
-    } catch {
+    } catch (error) {
+      if (process.env.NODE_ENV === 'development') console.log(error);
+      const apiErrors = error.json.errors;
+      const profanityApiError = apiErrors.base.find(
+        (apiError) => apiError.error === 'includes_banned_words'
+      );
+
+      if (profanityApiError) {
+        const titleProfanityError = profanityApiError.blocked_words.some(
+          (blockedWord) => blockedWord.attribute === 'title_multiloc'
+        );
+        const descriptionProfanityError = profanityApiError.blocked_words.some(
+          (blockedWord) => blockedWord.attribute === 'body_multiloc'
+        );
+
+        if (titleProfanityError) {
+          trackEventByName(tracks.titleProfanityError.name, {
+            ideaId,
+            projectId,
+            locale,
+            profaneMessage: title,
+            location: 'IdeaEdit (Input manager in admin)',
+            userId: !isNilOrError(authUser) ? authUser.id : null,
+            host: !isNilOrError(appConfiguration)
+              ? appConfiguration.attributes.host
+              : null,
+          });
+          this.setState({
+            titleProfanityError,
+          });
+        }
+
+        if (descriptionProfanityError) {
+          trackEventByName(tracks.descriptionProfanityError.name, {
+            ideaId,
+            projectId,
+            locale,
+            profaneMessage: description,
+            location: 'IdeaEdit (Input manager in admin)',
+            userId: !isNilOrError(authUser) ? authUser.id : null,
+            host: !isNilOrError(appConfiguration)
+              ? appConfiguration.attributes.host
+              : null,
+          });
+          this.setState({
+            descriptionProfanityError,
+          });
+        }
+      }
       this.setState({ processing: false, submitError: true });
     }
   };
 
+  onTitleChange = (title: string) => {
+    const { locale } = this.props;
+
+    if (!isNilOrError(locale)) {
+      const titleMultiloc = { [locale]: title };
+
+      this.setState({ titleMultiloc, titleProfanityError: false });
+    }
+  };
+
+  onDescriptionChange = (description: string) => {
+    const { locale } = this.props;
+
+    if (!isNilOrError(locale)) {
+      const descriptionMultiloc = { [locale]: description };
+
+      this.setState({ descriptionMultiloc, descriptionProfanityError: false });
+    }
+  };
   render() {
     if (this.state && this.state.loaded) {
       const { remoteIdeaFiles, goBack } = this.props;
@@ -289,6 +381,9 @@ class IdeaEdit extends PureComponent<Props, State> {
         processing,
         budget,
         proposedBudget,
+        titleProfanityError,
+        descriptionProfanityError,
+        authorId,
       } = this.state;
       const title = locale && titleMultiloc ? titleMultiloc[locale] || '' : '';
       const description =
@@ -315,6 +410,7 @@ class IdeaEdit extends PureComponent<Props, State> {
 
             <Content className="idea-form">
               <IdeaForm
+                authorId={authorId}
                 projectId={projectId}
                 title={title}
                 description={description}
@@ -327,6 +423,10 @@ class IdeaEdit extends PureComponent<Props, State> {
                 remoteIdeaFiles={
                   !isNilOrError(remoteIdeaFiles) ? remoteIdeaFiles : null
                 }
+                hasTitleProfanityError={titleProfanityError}
+                hasDescriptionProfanityError={descriptionProfanityError}
+                onTitleChange={this.onTitleChange}
+                onDescriptionChange={this.onDescriptionChange}
               />
 
               <ButtonWrapper>
@@ -349,12 +449,19 @@ class IdeaEdit extends PureComponent<Props, State> {
   }
 }
 
-const WrappedIdeaEdit = (props: InputProps) => (
-  <GetResourceFileObjects resourceId={props.ideaId} resourceType="idea">
-    {(remoteIdeaFiles) => (
-      <IdeaEdit {...props} remoteIdeaFiles={remoteIdeaFiles} />
-    )}
-  </GetResourceFileObjects>
-);
+const Data = adopt<DataProps, InputProps>({
+  authUser: <GetAuthUser />,
+  appConfiguration: <GetAppConfiguration />,
+  locale: <GetLocale />,
+  remoteIdeaFiles: ({ ideaId, render }) => (
+    <GetResourceFileObjects resourceId={ideaId} resourceType="idea">
+      {render}
+    </GetResourceFileObjects>
+  ),
+});
 
-export default WrappedIdeaEdit;
+export default (inputProps: InputProps) => (
+  <Data {...inputProps}>
+    {(dataProps) => <IdeaEdit {...dataProps} {...inputProps} />}
+  </Data>
+);

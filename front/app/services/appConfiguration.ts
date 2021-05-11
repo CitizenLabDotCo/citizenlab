@@ -147,6 +147,7 @@ export interface IAppConfigurationSettings {
   google_forms_surveys?: AppConfigurationFeature;
   surveymonkey_surveys?: AppConfigurationFeature;
   enalyzer_surveys?: AppConfigurationFeature;
+  survey_xact_surveys?: AppConfigurationFeature;
   project_folders?: AppConfigurationFeature;
   clustering?: AppConfigurationFeature;
   geographic_dashboard?: AppConfigurationFeature;
@@ -159,13 +160,16 @@ export interface IAppConfigurationSettings {
   custom_maps?: AppConfigurationFeature;
   similar_ideas?: AppConfigurationFeature;
   polls?: AppConfigurationFeature;
-  moderation?: AppConfigurationFeature;
+  moderation?: AppConfigurationFeature & {
+    flag_inappropriate_content?: Boolean;
+  };
   disable_downvoting?: AppConfigurationFeature;
   project_visibility?: AppConfigurationFeature;
   project_management?: AppConfigurationFeature;
   idea_assignment?: AppConfigurationFeature;
-  profanity_blocker?: AppConfigurationFeature;
+  blocking_profanity?: AppConfigurationFeature;
   custom_idea_statuses?: AppConfigurationFeature;
+  idea_author_change?: AppConfigurationFeature;
   idea_custom_copy?: AppConfigurationFeature;
   intercom?: AppConfigurationFeature;
   satismeter?: AppConfigurationFeature & {

@@ -1,6 +1,8 @@
 import React, { PureComponent, FormEvent } from 'react';
+import styled from 'styled-components';
 import { get, map, merge, set } from 'lodash-es';
 import { Subscription } from 'rxjs';
+import { isNilOrError } from 'utils/helperUtils';
 
 // typings
 import { CLError, Multiloc, IOption } from 'typings';
@@ -13,15 +15,24 @@ import messages from '../messages';
 
 // components
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
-import { Input, IconTooltip, Label } from 'cl2-component-library';
+import {
+  Input,
+  IconTooltip,
+  Label,
+  Success,
+  Error,
+  Toggle,
+} from 'cl2-component-library';
 import MultipleSelect from 'components/UI/MultipleSelect';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import {
   Section,
   SectionTitle,
+  SubSectionTitle,
   SectionField,
   SectionDescription,
 } from 'components/admin/Section';
+import Outlet from 'components/Outlet';
 
 // services
 import {
@@ -35,17 +46,45 @@ import {
 import getSubmitState from 'utils/getSubmitState';
 import { isCLErrorJSON } from 'utils/errorUtils';
 
+const StyledSection = styled(Section)`
+  margin-bottom: 50px;
+`;
+
+const StyledToggle = styled(Toggle)`
+  margin-right: 15px;
+`;
+
+const Setting = styled.div`
+  margin-bottom: 20px;
+`;
+
+const LabelTitle = styled.div`
+  font-weight: bold;
+`;
+
+const ToggleLabel = styled.label`
+  display: flex;
+`;
+
+const LabelDescription = styled.div``;
+const LabelContent = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
 export interface Props {}
 
 interface State {
   loading: boolean;
   saved: boolean;
   attributesDiff: IUpdatedAppConfigurationProperties;
-  tenant: IAppConfigurationData | null;
+  appConfiguration: IAppConfigurationData | null;
   errors: {
     [fieldName: string]: CLError[];
   };
   hasUrlError: boolean;
+  settingsUpdatedSuccessFully: boolean;
+  settingsSavingError: boolean;
 }
 
 class SettingsGeneralTab extends PureComponent<
@@ -58,20 +97,22 @@ class SettingsGeneralTab extends PureComponent<
     super(props);
     this.state = {
       attributesDiff: {},
-      tenant: null,
+      appConfiguration: null,
       loading: false,
       errors: {},
       hasUrlError: false,
       saved: false,
+      settingsUpdatedSuccessFully: false,
+      settingsSavingError: false,
     };
   }
 
   componentDidMount() {
-    const currentTenant$ = currentAppConfigurationStream().observable;
+    const appConfiguration$ = currentAppConfigurationStream().observable;
 
     this.subscriptions = [
-      currentTenant$.subscribe((currentTenant) => {
-        this.setState({ tenant: currentTenant.data });
+      appConfiguration$.subscribe((appConfiguration) => {
+        this.setState({ appConfiguration: appConfiguration.data });
       }),
     ];
   }
@@ -131,9 +172,9 @@ class SettingsGeneralTab extends PureComponent<
   save = (event: FormEvent<any>) => {
     event.preventDefault();
 
-    const { tenant, attributesDiff } = this.state;
+    const { appConfiguration, attributesDiff } = this.state;
 
-    if (tenant) {
+    if (appConfiguration) {
       this.setState({
         loading: true,
         saved: false,
@@ -184,54 +225,137 @@ class SettingsGeneralTab extends PureComponent<
     'organization_name'
   );
 
-  render() {
-    const { tenant } = this.state;
+  onToggleBlockProfanitySetting = () => {
+    const { appConfiguration } = this.state;
 
-    if (tenant) {
-      const {
-        intl: { formatMessage },
-      } = this.props;
+    if (
+      !isNilOrError(appConfiguration) &&
+      appConfiguration.attributes.settings.blocking_profanity
+    ) {
+      const oldProfanityBlockerEnabled =
+        appConfiguration.attributes.settings.blocking_profanity.enabled;
+      this.setState({
+        settingsSavingError: false,
+      });
+      updateAppConfiguration({
+        settings: {
+          blocking_profanity: {
+            enabled: !oldProfanityBlockerEnabled,
+          },
+        },
+      })
+        .then(() => {
+          this.setState({
+            settingsUpdatedSuccessFully: true,
+          });
+          setTimeout(() => {
+            this.setState({
+              settingsUpdatedSuccessFully: false,
+            });
+          }, 2000);
+        })
+        .catch((_error) => {
+          this.setState({
+            settingsSavingError: true,
+          });
+        });
+    }
+  };
+
+  handleSettingChange = (settingName: string, settingValue: any) => {
+    const { appConfiguration } = this.state;
+
+    if (isNilOrError(appConfiguration)) {
+      return;
+    }
+
+    this.setState({
+      settingsSavingError: false,
+    });
+
+    updateAppConfiguration({
+      settings: {
+        [settingName]: settingValue,
+      },
+    })
+      .then(() => {
+        this.setState({
+          settingsUpdatedSuccessFully: true,
+        });
+        setTimeout(() => {
+          this.setState({
+            settingsUpdatedSuccessFully: false,
+          });
+        }, 2000);
+      })
+      .catch((_error) => {
+        this.setState({
+          settingsSavingError: true,
+        });
+      });
+  };
+
+  render() {
+    const {
+      appConfiguration,
+      settingsSavingError,
+      settingsUpdatedSuccessFully,
+    } = this.state;
+    const {
+      intl: { formatMessage },
+    } = this.props;
+
+    if (appConfiguration) {
       const { errors, saved, attributesDiff, hasUrlError } = this.state;
       const updatedLocales = get(attributesDiff, 'settings.core.locales');
 
-      let tenantAttrs = tenant
-        ? merge({}, tenant.attributes, attributesDiff)
+      let appConfigAttrs = appConfiguration
+        ? merge({}, appConfiguration.attributes, attributesDiff)
         : merge({}, attributesDiff);
 
       // Prevent merging the arrays of locales
       if (updatedLocales) {
-        tenantAttrs = set(tenantAttrs, 'settings.core.locales', updatedLocales);
+        appConfigAttrs = set(
+          appConfigAttrs,
+          'settings.core.locales',
+          updatedLocales
+        );
       }
 
-      const tenantLocales: string[] | null = get(
-        tenantAttrs,
+      const appConfigLocales: string[] | null = get(
+        appConfigAttrs,
         'settings.core.locales',
         null
       );
       const organizationType: string | null = get(
-        tenantAttrs,
+        appConfigAttrs,
         'settings.core.organization_type',
         null
       );
-      const tenantSite: string | null = get(
-        tenantAttrs,
+      const appConfigSite: string | null = get(
+        appConfigAttrs,
         'settings.core.organization_site',
         null
       );
       const organizationNameMultiloc: Multiloc | null = get(
-        tenantAttrs,
+        appConfigAttrs,
         'settings.core.organization_name',
         null
       );
       const localeOptions = this.localeOptions();
-      const selectedLocaleOptions = this.localesToOptions(tenantLocales);
+      const selectedLocaleOptions = this.localesToOptions(appConfigLocales);
+      const profanityBlockerSetting =
+        appConfiguration.attributes.settings.blocking_profanity;
 
       return (
         <form onSubmit={this.save}>
-          <Section>
-            <SectionTitle>
-              <FormattedMessage {...messages.titleBasic} />
-            </SectionTitle>
+          <SectionTitle>
+            <FormattedMessage {...messages.titleBasic} />
+          </SectionTitle>
+          <StyledSection>
+            <SubSectionTitle>
+              <FormattedMessage {...messages.platformConfiguration} />
+            </SubSectionTitle>
             <SectionDescription>
               <FormattedMessage {...messages.subtitleBasic} />
             </SectionDescription>
@@ -277,7 +401,7 @@ class SettingsGeneralTab extends PureComponent<
                 type="text"
                 placeholder="https://..."
                 onChange={this.handleUrlOnChange}
-                value={tenantSite}
+                value={appConfigSite}
                 error={hasUrlError ? formatMessage(messages.urlError) : null}
               />
             </SectionField>
@@ -292,7 +416,45 @@ class SettingsGeneralTab extends PureComponent<
                 messageSuccess: messages.saveSuccessMessage,
               }}
             />
-          </Section>
+          </StyledSection>
+          <StyledSection>
+            <SubSectionTitle>
+              <FormattedMessage {...messages.contentModeration} />
+            </SubSectionTitle>
+            {profanityBlockerSetting && profanityBlockerSetting.allowed && (
+              <Setting>
+                <ToggleLabel>
+                  <StyledToggle
+                    checked={profanityBlockerSetting.enabled}
+                    onChange={this.onToggleBlockProfanitySetting}
+                  />
+                  <LabelContent>
+                    <LabelTitle>
+                      {formatMessage(messages.profanityBlockerSetting)}
+                    </LabelTitle>
+                    <LabelDescription>
+                      {formatMessage(
+                        messages.profanityBlockerSettingDescription
+                      )}
+                    </LabelDescription>
+                  </LabelContent>
+                </ToggleLabel>
+              </Setting>
+            )}
+            <Outlet
+              id="app.containers.Admin.settings.general.form"
+              onSettingChange={this.handleSettingChange}
+            />
+            {settingsUpdatedSuccessFully && (
+              <Success
+                showBackground
+                text={formatMessage(messages.successfulUpdateSettings)}
+              />
+            )}
+            {settingsSavingError && (
+              <Error text={formatMessage(messages.settingsSavingError)} />
+            )}
+          </StyledSection>
         </form>
       );
     }

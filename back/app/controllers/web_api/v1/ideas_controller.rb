@@ -1,4 +1,5 @@
 class WebApi::V1::IdeasController < ApplicationController
+  include BlockingProfanity
 
   before_action :set_idea, only: [:show, :update, :destroy]
   skip_after_action :verify_authorized, only: [:index_xlsx, :index_mini, :index_idea_markers, :filter_counts]
@@ -54,7 +55,8 @@ class WebApi::V1::IdeasController < ApplicationController
       params,
       scope: policy_scope(Idea).where(publication_status: 'published'),
       current_user: current_user,
-      includes: %i[author topics areas project idea_status idea_files]
+      includes: %i[author topics areas project idea_status idea_files],
+      paginate: false
     )
     @ideas = @result.records
 
@@ -111,6 +113,7 @@ class WebApi::V1::IdeasController < ApplicationController
     service.before_create(@idea, current_user)
 
     authorize @idea
+    verify_profanity @idea
     ActiveRecord::Base.transaction do
       if @idea.save
         service.after_create(@idea, current_user)
@@ -136,6 +139,7 @@ class WebApi::V1::IdeasController < ApplicationController
 
     @idea.assign_attributes(permitted_attributes(@idea))
     authorize @idea
+    verify_profanity @idea
 
     service.before_update(@idea, current_user)
     ActiveRecord::Base.transaction do
