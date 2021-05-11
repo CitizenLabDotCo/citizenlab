@@ -1030,6 +1030,7 @@
   "app.containers.AdminPage.DashboardPage.resolutionmonth": "بالأشهر",
   "app.containers.AdminPage.DashboardPage.resolutionweek": "بالأسابيع",
   "app.containers.AdminPage.DashboardPage.resourceByDifference": "اختلاف {selectedResourceName} عن {selectedName}",
+  "app.containers.AdminPage.DashboardPage.seeReportButton": "",
   "app.containers.AdminPage.DashboardPage.selectedProject": "عامل تصفية المشروع الحالي",
   "app.containers.AdminPage.DashboardPage.selectedTopic": "عامل تصفية الموضوع الحالي",
   "app.containers.AdminPage.DashboardPage.subtitleDashboard": "اكتشف ما يحدث على منصتك.",
