@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_13_172107) do
+ActiveRecord::Schema.define(version: 2021_04_30_154637) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -987,6 +987,7 @@ ActiveRecord::Schema.define(version: 2021_04_13_172107) do
     t.integer "email_confirmation_retry_count", default: 0, null: false
     t.integer "email_confirmation_code_reset_count", default: 0, null: false
     t.datetime "email_confirmation_code_sent_at"
+    t.boolean "confirmation_required", default: true, null: false
     t.index "lower((email)::text)", name: "users_unique_lower_email_idx", unique: true
     t.index ["email"], name: "index_users_on_email"
     t.index ["slug"], name: "index_users_on_slug", unique: true

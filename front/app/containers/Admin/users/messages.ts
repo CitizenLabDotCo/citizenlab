@@ -51,6 +51,10 @@ export default defineMessages({
     defaultMessage:
       'You cannot delete your own account via the user admin page',
   },
+  userExportFileName: {
+    id: 'app.containers.Admin.Users.userExportFileName',
+    defaultMessage: 'user_export',
+  },
   youCantUnadminYourself: {
     id: 'app.containers.Admin.Users.youCantUnadminYourself',
     defaultMessage: 'You cannot give up your role as an admin now',

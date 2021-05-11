@@ -117,4 +117,12 @@ export default defineMessages({
     id: 'app.components.IdeaForm.otherFilesTitle',
     defaultMessage: 'Other files',
   },
+  author: {
+    id: 'app.components.IdeaForm.author',
+    defaultMessage: 'Author',
+  },
+  authorPlaceholder: {
+    id: 'app.components.IdeaForm.authorPlaceholder',
+    defaultMessage: 'Start typing to search by user email or name...',
+  },
 });

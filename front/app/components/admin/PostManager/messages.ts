@@ -146,6 +146,14 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.exportSelectedInputs',
     defaultMessage: 'Export selected inputs (.xslx)',
   },
+  inputsExportFileName: {
+    id: 'app.components.admin.PostManager.inputsExportFileName',
+    defaultMessage: 'input',
+  },
+  inputCommentsExportFileName: {
+    id: 'app.components.admin.PostManager.inputCommentsExportFileName',
+    defaultMessage: 'input_comments',
+  },
   exportIdeasComments: {
     id: 'app.components.admin.PostManager.exportIdeasComments',
     defaultMessage: 'Export all comments (.xslx)',
@@ -169,6 +177,14 @@ export default defineMessages({
   exportSelectedInitiatives: {
     id: 'app.components.admin.PostManager.exportSelectedInitiatives',
     defaultMessage: 'Export selected initiatives (.xslx)',
+  },
+  initiativesExportFileName: {
+    id: 'app.components.admin.PostManager.initiativesExportFileName',
+    defaultMessage: 'proposals',
+  },
+  initiativesCommentsExportFileName: {
+    id: 'app.components.admin.PostManager.initiativesCommentsExportFileName',
+    defaultMessage: 'proposal_comments',
   },
   exportInitiativesComments: {
     id: 'app.components.admin.PostManager.exportInitiativesComments',

@@ -6,7 +6,6 @@ import { IParticipationContextType } from 'typings';
 
 // components
 import Button from 'components/UI/Button';
-// import { exportPollResponses } from 'services/pollResponses';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';

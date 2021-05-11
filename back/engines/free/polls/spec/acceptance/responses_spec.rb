@@ -36,12 +36,8 @@ resource 'Poll Responses' do
         headers = worksheet[0].cells.map(&:value).map(&:downcase)
 
         expect(worksheet.count).to eq 3
-        expect(headers).not_to include 'email'
-        expect(worksheet[0][2].value.to_s).to eq @q3.title_multiloc['en']
-        expect(worksheet[1][1].value.to_s).to eq ''
-        expect(worksheet[1][2].value.to_s).to eq ''
-        expect(worksheet[2][1].value.to_s).to eq @q1.options.last.title_multiloc['en']
-        expect(worksheet[2][2].value.to_s).to eq ''
+        expect(worksheet[0].cells.map(&:value)).to include "User ID"
+        expect(worksheet[0].cells.map(&:value)).to include @q1.title_multiloc["en"]
       end
     end
 
