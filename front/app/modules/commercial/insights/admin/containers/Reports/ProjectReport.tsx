@@ -251,75 +251,73 @@ const ProjectReport = memo(
         )}
 
         <Section>
-          {(participationMethods.includes('ideation') && startAt && endAt) ||
-            (participationMethods.includes('poll') && (
-              <SectionTitle>
-                <FormattedMessage {...messages.sectionWhatInput} />
-              </SectionTitle>
-            ))}
+          {((participationMethods.includes('ideation') && startAt && endAt) ||
+            participationMethods.includes('poll')) && (
+            <SectionTitle>
+              <FormattedMessage {...messages.sectionWhatInput} />
+            </SectionTitle>
+          )}
           {participationMethods.includes('ideation') && startAt && endAt && (
             <GraphsContainer>
-              <>
-                <LineBarChart
-                  graphTitle={formatMessage(messages.inputs)}
-                  graphUnit="ideas"
-                  graphUnitMessageKey="ideas"
-                  startAt={startAt}
-                  endAt={endAt}
-                  resolution={resolution}
-                  currentProjectFilter={project.id}
-                  currentProjectFilterLabel={projectTitle}
-                  xlsxEndpoint={ideasByTimeCumulativeXlsxEndpoint}
-                  className="e2e-ideas-chart"
-                  lineStream={ideasByTimeCumulativeStream}
-                  barStream={ideasByTimeStream}
-                />
-                <LineBarChart
-                  graphTitle={formatMessage(messages.commentsByTimeTitle)}
-                  graphUnit="comments"
-                  graphUnitMessageKey="comments"
-                  startAt={startAt}
-                  endAt={endAt}
-                  resolution={resolution}
-                  currentProjectFilter={project.id}
-                  currentProjectFilterLabel={projectTitle}
-                  xlsxEndpoint={commentsByTimeCumulativeXlsxEndpoint}
-                  className="e2e-comments-chart"
-                  lineStream={commentsByTimeCumulativeStream}
-                  barStream={commentsByTimeStream}
-                />
+              <LineBarChart
+                graphTitle={formatMessage(messages.inputs)}
+                graphUnit="ideas"
+                graphUnitMessageKey="ideas"
+                startAt={startAt}
+                endAt={endAt}
+                resolution={resolution}
+                currentProjectFilter={project.id}
+                currentProjectFilterLabel={projectTitle}
+                xlsxEndpoint={ideasByTimeCumulativeXlsxEndpoint}
+                className="e2e-ideas-chart"
+                lineStream={ideasByTimeCumulativeStream}
+                barStream={ideasByTimeStream}
+              />
+              <LineBarChart
+                graphTitle={formatMessage(messages.commentsByTimeTitle)}
+                graphUnit="comments"
+                graphUnitMessageKey="comments"
+                startAt={startAt}
+                endAt={endAt}
+                resolution={resolution}
+                currentProjectFilter={project.id}
+                currentProjectFilterLabel={projectTitle}
+                xlsxEndpoint={commentsByTimeCumulativeXlsxEndpoint}
+                className="e2e-comments-chart"
+                lineStream={commentsByTimeCumulativeStream}
+                barStream={commentsByTimeStream}
+              />
 
-                <LineBarChartVotesByTime
-                  className="e2e-votes-chart"
-                  startAt={startAt}
-                  endAt={endAt}
-                  resolution={resolution}
-                  currentProjectFilter={project.id}
-                  currentProjectFilterLabel={projectTitle}
-                />
+              <LineBarChartVotesByTime
+                className="e2e-votes-chart"
+                startAt={startAt}
+                endAt={endAt}
+                resolution={resolution}
+                currentProjectFilter={project.id}
+                currentProjectFilterLabel={projectTitle}
+              />
 
-                <IdeasByStatusChart
-                  className="dynamicHeight"
-                  startAt={startAt}
-                  endAt={endAt}
-                  currentProjectFilter={project.id}
-                />
+              <IdeasByStatusChart
+                className="dynamicHeight"
+                startAt={startAt}
+                endAt={endAt}
+                currentProjectFilter={project.id}
+              />
 
-                <HorizontalBarChartWithoutStream
-                  serie={mostVotedIdeasSerie}
-                  graphTitleString={formatMessage(
-                    messages.fiveInputsWithMostVotes
-                  )}
-                  graphUnit="votes"
-                  className="dynamicHeight"
-                />
-                <ParticipationPerTopic
-                  startAt={startAt}
-                  endAt={endAt}
-                  projectId={project.id}
-                  className="dynamicHeight"
-                />
-              </>
+              <HorizontalBarChartWithoutStream
+                serie={mostVotedIdeasSerie}
+                graphTitleString={formatMessage(
+                  messages.fiveInputsWithMostVotes
+                )}
+                graphUnit="votes"
+                className="dynamicHeight"
+              />
+              <ParticipationPerTopic
+                startAt={startAt}
+                endAt={endAt}
+                projectId={project.id}
+                className="dynamicHeight"
+              />
             </GraphsContainer>
           )}
           {participationMethods.includes('poll') ? (
