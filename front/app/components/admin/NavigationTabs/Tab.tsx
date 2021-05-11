@@ -6,7 +6,7 @@ import {
   tabPadding,
   tabBorderSize,
   activeBorderSize,
-} from './styleConfig';
+} from './tabsStyleConstants';
 
 const Tab = styled.div`
   ${({ active }: TabProps) => css`

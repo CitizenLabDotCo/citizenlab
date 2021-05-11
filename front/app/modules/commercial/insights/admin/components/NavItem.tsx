@@ -16,7 +16,7 @@ const NavItemComponent: FC<Props> = ({ onData }) => {
           link: '/admin/insights',
           iconName: 'processing',
           message: 'insights',
-          featureName: 'manual_insights',
+          // featureName: 'manual_insights',
           isActive: (pathName) =>
             pathName.startsWith(
               `${
