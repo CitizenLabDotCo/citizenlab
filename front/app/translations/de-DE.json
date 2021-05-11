@@ -1506,10 +1506,13 @@
   "app.containers.AdminPage.SettingsPage.platformConfiguration": "",
   "app.containers.AdminPage.SettingsPage.profanityBlockerSetting": "",
   "app.containers.AdminPage.SettingsPage.profanityBlockerSettingDescription": "",
+<<<<<<< HEAD
   "app.containers.AdminPage.SettingsPage.project_headers_tooltip": "This text is shown on the homepage above the projects.",
+=======
+  "app.containers.AdminPage.SettingsPage.project_headers_tooltip": "",
+>>>>>>> 3ebe359b1fc3568b1598d95c32af5a54e12bc767
   "app.containers.AdminPage.SettingsPage.projectsSettings": "project settings",
   "app.containers.AdminPage.SettingsPage.projects_header": "Projects header",
-  "app.containers.AdminPage.SettingsPage.project_headers_tooltip": "",
   "app.containers.AdminPage.SettingsPage.registrationFields": "Registration fields",
   "app.containers.AdminPage.SettingsPage.registrationTabDescription": "Provide a short description at the top of your registration form. Add and configure the registration fields for your platform.",
   "app.containers.AdminPage.SettingsPage.registrationTitle": "Registration",
