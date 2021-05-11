@@ -22,7 +22,6 @@ import useModerations from '../../hooks/useModerations';
 import {
   updateModerationStatus,
   IModerationData,
-  TModerationStatuses,
   TModeratableTypes,
 } from '../../services/moderations';
 
@@ -176,7 +175,16 @@ interface Props {
 }
 
 const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
-  const moderationStatuses = [
+  interface ITabNamesMap {
+    read: 'read';
+    unread: 'unread';
+    warnings: 'warnings';
+  }
+
+  type TTabName = ITabNamesMap[keyof ITabNamesMap];
+
+  const flaggedItemsCount = 5;
+  const tabs = [
     {
       name: 'unread',
       label: intl.formatMessage(messages.unread),
@@ -184,6 +192,12 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
     {
       name: 'read',
       label: intl.formatMessage(messages.read),
+    },
+    {
+      name: 'warnings',
+      label: intl.formatMessage(messages.warnings, {
+        flaggedItemsCount,
+      }),
     },
   ];
 
@@ -231,6 +245,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
   const [processing, setProcessing] = useState(false);
   const [selectedTypes, setSelectedTypes] = useState<TModeratableTypes[]>([]);
   const [selectedProjectIds, setSelectedProjectIds] = useState<string[]>([]);
+  const [selectedTab, setSelectedTab] = useState<TTabName>('unread');
 
   const handleOnSelectAll = useCallback(
     (_event: React.ChangeEvent) => {
@@ -245,12 +260,21 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
     [moderationItems, selectedRows, processing]
   );
 
-  const handleOnModerationStatusChange = useCallback(
-    (name: TModerationStatuses) => {
+  const handleOnTabChange = useCallback(
+    (tabName: TTabName) => {
+      setSelectedTab(tabName);
+
+      if (tabName === 'read' || tabName === 'unread') {
+        onModerationStatusChange(tabName);
+      }
+
       trackEventByName(
-        name === 'read' ? tracks.viewedTabClicked : tracks.notViewedTabClicked
+        {
+          read: tracks.viewedTabClicked,
+          unread: tracks.notViewedTabClicked,
+          warnings: tracks.warningsTabClicked,
+        }[tabName]
       );
-      onModerationStatusChange(name);
     },
     [onModerationStatusChange]
   );
@@ -420,9 +444,9 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
           {selectedRows.length === 0 ? (
             <>
               <StyledTabs
-                items={moderationStatuses}
-                selectedValue={moderationStatus || 'unread'}
-                onClick={handleOnModerationStatusChange}
+                items={tabs}
+                selectedValue={selectedTab}
+                onClick={handleOnTabChange}
               />
               <SelectType
                 selectedTypes={selectedTypes}
