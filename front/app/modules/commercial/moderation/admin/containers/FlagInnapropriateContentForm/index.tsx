@@ -42,10 +42,10 @@ interface Props {
   onSettingChange: (settingName: string, settingValue: any) => void;
 }
 
-function FlagInnapropriateContentForm({
+const FlagInnapropriateContentForm = ({
   onSettingChange,
   intl: { formatMessage },
-}: Props & InjectedIntlProps): ReactElement | null {
+}: Props & InjectedIntlProps): ReactElement | null => {
   const appConfiguration = useAppConfiguration();
 
   if (isNilOrError(appConfiguration)) {
@@ -99,6 +99,6 @@ function FlagInnapropriateContentForm({
       </ToggleLabel>
     </Setting>
   );
-}
+};
 
 export default injectIntl(FlagInnapropriateContentForm);
