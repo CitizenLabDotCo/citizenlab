@@ -262,18 +262,6 @@ class SettingsGeneralTab extends PureComponent<
     }
   };
 
-  get innapropriateContentDetectionEnabled() {
-    const { appConfiguration } = this.state;
-
-    return (
-      !isNilOrError(appConfiguration) &&
-      !isNilOrError(appConfiguration.attributes.settings.moderation) &&
-      appConfiguration.attributes.settings.moderation.allowed &&
-      !!appConfiguration.attributes.settings.moderation
-        .flag_inappropriate_content
-    );
-  }
-
   handleSettingChange = (settingName: string, settingValue: any) => {
     const { appConfiguration } = this.state;
 
