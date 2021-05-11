@@ -5,7 +5,7 @@ import {
   tabBorderSize,
   activeBorderSize,
   wrapperPadding,
-} from './styleConfig';
+} from './tabsStyleConstants';
 
 const TabsPageLayout = styled.div`
   width: 100%;

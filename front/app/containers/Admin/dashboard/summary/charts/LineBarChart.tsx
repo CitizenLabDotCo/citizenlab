@@ -19,7 +19,7 @@ import {
 } from 'services/stats';
 
 // components
-import ExportMenu from '../../components/ExportMenu';
+import ReportExportMenu from 'components/admin/ReportExportMenu';
 import {
   ComposedChart,
   CartesianGrid,
@@ -34,7 +34,6 @@ import {
 } from 'recharts';
 import {
   IGraphUnit,
-  IResolution,
   GraphCard,
   NoDataContainer,
   GraphCardInner,
@@ -43,9 +42,10 @@ import {
   GraphCardFigureContainer,
   GraphCardFigure,
   GraphCardFigureChange,
-} from '../..';
+} from 'components/admin/Chart';
 import { Popup } from 'semantic-ui-react';
 import { Icon } from 'cl2-component-library';
+import { IResolution } from 'components/admin/ResolutionControl';
 
 // styling
 import styled, { withTheme } from 'styled-components';
@@ -323,7 +323,7 @@ class LineBarChart extends React.PureComponent<
             </GraphCardTitle>
 
             {!noData && (
-              <ExportMenu
+              <ReportExportMenu
                 svgNode={this.currentChart}
                 name={graphTitle}
                 {...this.props}

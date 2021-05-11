@@ -13,10 +13,10 @@ import { Dropdown } from 'cl2-component-library';
 import { requestBlob } from 'utils/request';
 import { reportError } from 'utils/loggingUtils';
 import { saveAs } from 'file-saver';
-import { IResolution } from '../..';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import messages from '../../messages';
+import messages from './messages';
+import { IResolution } from 'components/admin/ResolutionControl';
 
 const DropdownButton = styled(Button)``;
 
@@ -27,7 +27,7 @@ const Container = styled.div`
   cursor: pointer;
 `;
 
-interface ExportMenuProps {
+interface ReportExportMenuProps {
   className?: string;
   name: string;
   svgNode?: React.RefObject<any>;
@@ -43,7 +43,9 @@ interface ExportMenuProps {
   currentTopicFilterLabel?: string | undefined;
 }
 
-const ExportMenu: React.SFC<ExportMenuProps & InjectedIntlProps> = ({
+const ReportExportMenu: React.SFC<
+  ReportExportMenuProps & InjectedIntlProps
+> = ({
   svgNode,
   className,
   xlsxEndpoint,
@@ -186,4 +188,4 @@ const ExportMenu: React.SFC<ExportMenuProps & InjectedIntlProps> = ({
   );
 };
 
-export default injectIntl(ExportMenu);
+export default injectIntl(ReportExportMenu);
