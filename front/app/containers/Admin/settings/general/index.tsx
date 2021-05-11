@@ -266,42 +266,52 @@ class SettingsGeneralTab extends PureComponent<
     }
   };
 
+  get innapropriateContentDetectionEnabled() {
+    const { appConfiguration } = this.state;
+
+    return (
+      !isNilOrError(appConfiguration) &&
+      !isNilOrError(appConfiguration.attributes.settings.moderation) &&
+      appConfiguration.attributes.settings.moderation.allowed &&
+      !!appConfiguration.attributes.settings.moderation
+        .inappropriate_content_detection
+    );
+  }
+
   onToggleInappropriateContentDetectionSetting = () => {
     const { appConfiguration } = this.state;
 
-    if (
-      !isNilOrError(appConfiguration) &&
-      appConfiguration.attributes.settings.inappropriate_content_detection
-    ) {
-      const oldInappropriateContentDetectionEnabled =
-        appConfiguration.attributes.settings.inappropriate_content_detection
-          .enabled;
-      this.setState({
-        settingsSavingError: false,
-      });
-      updateAppConfiguration({
-        settings: {
-          inappropriate_content_detection: {
-            enabled: !oldInappropriateContentDetectionEnabled,
-          },
-        },
-      })
-        .then(() => {
-          this.setState({
-            settingsUpdatedSuccessFully: true,
-          });
-          setTimeout(() => {
-            this.setState({
-              settingsUpdatedSuccessFully: false,
-            });
-          }, 2000);
-        })
-        .catch((_error) => {
-          this.setState({
-            settingsSavingError: true,
-          });
-        });
+    if (isNilOrError(appConfiguration)) {
+      return;
     }
+
+    this.setState({
+      settingsSavingError: false,
+    });
+    updateAppConfiguration({
+      settings: {
+        moderation: {
+          ...appConfiguration.attributes.settings.moderation,
+          inappropriate_content_detection: !this
+            .innapropriateContentDetectionEnabled,
+        },
+      },
+    })
+      .then(() => {
+        this.setState({
+          settingsUpdatedSuccessFully: true,
+        });
+        setTimeout(() => {
+          this.setState({
+            settingsUpdatedSuccessFully: false,
+          });
+        }, 2000);
+      })
+      .catch((_error) => {
+        this.setState({
+          settingsSavingError: true,
+        });
+      });
   };
 
   render() {
@@ -355,8 +365,6 @@ class SettingsGeneralTab extends PureComponent<
       const selectedLocaleOptions = this.localesToOptions(appConfigLocales);
       const profanityBlockerSetting =
         appConfiguration.attributes.settings.blocking_profanity;
-      const inappropriateContentDetectionSetting =
-        appConfiguration.attributes.settings.inappropriate_content_detection;
 
       return (
         <form onSubmit={this.save}>
@@ -428,86 +436,76 @@ class SettingsGeneralTab extends PureComponent<
               }}
             />
           </StyledSection>
-          {(profanityBlockerSetting?.allowed ||
-            inappropriateContentDetectionSetting?.allowed) && (
-            <StyledSection>
-              <SubSectionTitle>
-                <FormattedMessage {...messages.contentModeration} />
-              </SubSectionTitle>
-              {profanityBlockerSetting && profanityBlockerSetting.allowed && (
-                <Setting>
-                  <ToggleLabel>
-                    <StyledToggle
-                      checked={profanityBlockerSetting.enabled}
-                      onChange={this.onToggleBlockProfanitySetting}
-                    />
-                    <LabelContent>
-                      <LabelTitle>
-                        {formatMessage(messages.profanityBlockerSetting)}
-                      </LabelTitle>
-                      <LabelDescription>
-                        {formatMessage(
-                          messages.profanityBlockerSettingDescription
-                        )}
-                      </LabelDescription>
-                    </LabelContent>
-                  </ToggleLabel>
-                </Setting>
-              )}
-              {inappropriateContentDetectionSetting &&
-                inappropriateContentDetectionSetting.allowed && (
-                  <Setting>
-                    <ToggleLabel>
-                      <StyledToggle
-                        checked={inappropriateContentDetectionSetting.enabled}
-                        onChange={
-                          this.onToggleInappropriateContentDetectionSetting
-                        }
-                      />
-                      <LabelContent>
-                        <LabelTitleContainer>
-                          <LabelTitle>
-                            {formatMessage(
-                              messages.inappropriateContentDetectionSetting
-                            )}
-                          </LabelTitle>
-                          <IconTooltip
-                            content={
-                              <FormattedMessage
-                                {...messages.inappropriateContentDetectionTooltip}
-                                values={{
-                                  linkToActivityPage: (
-                                    <Link to="/admin/activity">
-                                      {formatMessage(
-                                        messages.linkToActivityPageText
-                                      )}
-                                    </Link>
-                                  ),
-                                }}
-                              />
-                            }
-                          />
-                        </LabelTitleContainer>
-                        <LabelDescription>
-                          {formatMessage(
-                            messages.inappropriateContentDetectionSettingDescription
-                          )}
-                        </LabelDescription>
-                      </LabelContent>
-                    </ToggleLabel>
-                  </Setting>
-                )}
-              {settingsUpdatedSuccessFully && (
-                <Success
-                  showBackground
-                  text={formatMessage(messages.successfulUpdateSettings)}
+          <StyledSection>
+            <SubSectionTitle>
+              <FormattedMessage {...messages.contentModeration} />
+            </SubSectionTitle>
+            {profanityBlockerSetting && profanityBlockerSetting.allowed && (
+              <Setting>
+                <ToggleLabel>
+                  <StyledToggle
+                    checked={profanityBlockerSetting.enabled}
+                    onChange={this.onToggleBlockProfanitySetting}
+                  />
+                  <LabelContent>
+                    <LabelTitle>
+                      {formatMessage(messages.profanityBlockerSetting)}
+                    </LabelTitle>
+                    <LabelDescription>
+                      {formatMessage(
+                        messages.profanityBlockerSettingDescription
+                      )}
+                    </LabelDescription>
+                  </LabelContent>
+                </ToggleLabel>
+              </Setting>
+            )}
+            <Setting>
+              <ToggleLabel>
+                <StyledToggle
+                  checked={this.innapropriateContentDetectionEnabled}
+                  onChange={this.onToggleInappropriateContentDetectionSetting}
                 />
-              )}
-              {settingsSavingError && (
-                <Error text={formatMessage(messages.settingsSavingError)} />
-              )}
-            </StyledSection>
-          )}
+                <LabelContent>
+                  <LabelTitleContainer>
+                    <LabelTitle>
+                      {formatMessage(
+                        messages.inappropriateContentDetectionSetting
+                      )}
+                    </LabelTitle>
+                    <IconTooltip
+                      content={
+                        <FormattedMessage
+                          {...messages.inappropriateContentDetectionTooltip}
+                          values={{
+                            linkToActivityPage: (
+                              <Link to="/admin/activity">
+                                {formatMessage(messages.linkToActivityPageText)}
+                              </Link>
+                            ),
+                          }}
+                        />
+                      }
+                    />
+                  </LabelTitleContainer>
+                  <LabelDescription>
+                    {formatMessage(
+                      messages.inappropriateContentDetectionSettingDescription
+                    )}
+                  </LabelDescription>
+                </LabelContent>
+              </ToggleLabel>
+            </Setting>
+            {settingsUpdatedSuccessFully && (
+              <Success
+                showBackground
+                text={formatMessage(messages.successfulUpdateSettings)}
+              />
+            )}
+            {settingsSavingError && (
+              <Error text={formatMessage(messages.settingsSavingError)} />
+            )}
+          </StyledSection>
         </form>
       );
     }

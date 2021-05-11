@@ -160,13 +160,14 @@ export interface IAppConfigurationSettings {
   custom_maps?: AppConfigurationFeature;
   similar_ideas?: AppConfigurationFeature;
   polls?: AppConfigurationFeature;
-  moderation?: AppConfigurationFeature;
+  moderation?: AppConfigurationFeature & {
+    inappropriate_content_detection?: Boolean;
+  };
   disable_downvoting?: AppConfigurationFeature;
   project_visibility?: AppConfigurationFeature;
   project_management?: AppConfigurationFeature;
   idea_assignment?: AppConfigurationFeature;
   blocking_profanity?: AppConfigurationFeature;
-  inappropriate_content_detection?: AppConfigurationFeature;
   custom_idea_statuses?: AppConfigurationFeature;
   idea_author_change?: AppConfigurationFeature;
   idea_custom_copy?: AppConfigurationFeature;

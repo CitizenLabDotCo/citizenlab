@@ -1514,18 +1514,11 @@
   "app.containers.AdminPage.SettingsPage.registrationFields": "Registration fields",
   "app.containers.AdminPage.SettingsPage.registrationTabDescription": "Provide a short description at the top of your registration form. Add and configure the registration fields for your platform.",
   "app.containers.AdminPage.SettingsPage.registrationTitle": "Registration",
-<<<<<<< HEAD
-  "app.containers.AdminPage.SettingsPage.save": "Save",
-  "app.containers.AdminPage.SettingsPage.saveErrorMessage": "Something went wrong, please try again later.",
-  "app.containers.AdminPage.SettingsPage.saveSuccess": "Saved!",
-  "app.containers.AdminPage.SettingsPage.saveSuccessMessage": "Your changes have been saved.",
-=======
   "app.containers.AdminPage.SettingsPage.save": "Speichern",
   "app.containers.AdminPage.SettingsPage.saveErrorMessage": "Etwas ging schief, bitte versuchen Sie es später nochmal.",
   "app.containers.AdminPage.SettingsPage.saveSuccess": "Gespeichert!",
   "app.containers.AdminPage.SettingsPage.saveSuccessMessage": "Ihre Änderungen wurden gespeichert.",
   "app.containers.AdminPage.SettingsPage.settingsSavingError": "",
->>>>>>> 185e2891c8d4c153b38b864bdfbc95f083716723
   "app.containers.AdminPage.SettingsPage.signupFormText": "Registration helper text",
   "app.containers.AdminPage.SettingsPage.signupFormTooltip": "Add a short description at the top of the sign-up form.",
   "app.containers.AdminPage.SettingsPage.step1": "Step 1: email and password",
