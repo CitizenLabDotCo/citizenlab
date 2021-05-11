@@ -269,7 +269,9 @@ gem 'blorgh', path: 'engines/blorgh'
 
 9. For feature engines, copy over `lib/blorgh/feature_specification.rb` and `spec/lib/settings_spec.rb` and edit according to your engine's specifications.
 
-10. If needed, create a `bin` folder with in it the desired binaries (e.g. `rake`).
+10. Add your engine to the appropriate citizenlab.config json file and update the licenses.
+
+11. If needed, create a `bin` folder with in it the desired binaries (e.g. `rake`).
 
 
 ## Running the profiler

@@ -98,5 +98,6 @@ class SideFxIdeaService
   end
 end
 
+::SideFxIdeaService.prepend_if_ee('FlagInappropriateContent::Patches::SideFxIdeaService')
 ::SideFxIdeaService.prepend_if_ee('IdeaAssignment::Patches::SideFxIdeaService')
 ::SideFxIdeaService.prepend_if_ee('Tagging::Patches::SideFxIdeaService')
