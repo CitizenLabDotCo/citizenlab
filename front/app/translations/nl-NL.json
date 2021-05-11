@@ -1740,7 +1740,7 @@
   "app.containers.Comments.signInAndVerifyToCommentInitiative": "Je hebt een geverifieerd profiel nodig om te kunnen reageren. Gelieve te {signUpLink} of te {signInLink}.",
   "app.containers.Comments.signInLinkText": "Log in",
   "app.containers.Comments.signInToComment": "{signInLink} om te kunnen reageren.",
-  "app.containers.Comments.signInToCommentInitiative": "Gelieve te {signUpLink} of te {signInLink} om te reageren.",
+  "app.containers.Comments.signInToCommentInitiative": "{signInLink} of {signUpLink} om te reageren.",
   "app.containers.Comments.signUpLinkText": "registreren",
   "app.containers.Comments.verifyIdentityLinkText": "Verifieer je identiteit",
   "app.containers.CookiePolicy.accessibility-statementPageName": "Toegankelijkheidsverklaring",
