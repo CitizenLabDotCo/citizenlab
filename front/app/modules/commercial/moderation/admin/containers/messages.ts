@@ -33,6 +33,10 @@ export default defineMessages({
     id: 'app.containers.Admin.Moderation.content',
     defaultMessage: 'Content',
   },
+  warning: {
+    id: 'app.containers.Admin.Moderation.warning',
+    defaultMessage: 'Warning',
+  },
   date: {
     id: 'app.containers.Admin.Moderation.date',
     defaultMessage: 'Date',
@@ -77,13 +81,13 @@ export default defineMessages({
     id: 'app.containers.Admin.Moderation.collapse',
     defaultMessage: 'see less',
   },
-  markAsViewed: {
-    id: 'app.containers.Admin.Moderation.markAsViewed',
-    defaultMessage: 'Mark {selectedItemsCount} items as viewed',
+  markAsSeen: {
+    id: 'app.containers.Admin.Moderation.markAsSeen',
+    defaultMessage: 'Mark as seen',
   },
-  markAsNotViewed: {
-    id: 'app.containers.Admin.Moderation.markAsNotViewed',
-    defaultMessage: 'Mark {selectedItemsCount} items as not viewed',
+  markAsNotSeen: {
+    id: 'app.containers.Admin.Moderation.markAsNotSeen',
+    defaultMessage: 'Mark as unseen',
   },
   goToThisContentType: {
     id: 'app.containers.Admin.Moderation.goToThisContentType',
@@ -93,5 +97,36 @@ export default defineMessages({
     id: 'app.containers.Admin.Moderation.moderationHelpTooltip',
     defaultMessage:
       'This page allows you to quickly check all new input that has been added to your platform, including posts and comments. You can mark posts as being ‘viewed’ so that others know which inputs still need to be processed.',
+  },
+  settings: {
+    id: 'app.containers.Admin.Moderation.settings',
+    defaultMessage: 'Settings',
+  },
+  profanityBlockerSetting: {
+    id: 'app.containers.Admin.Moderation.profanityBlockerSetting',
+    defaultMessage: 'Profanity blocker',
+  },
+  profanityBlockerSettingDescription: {
+    id: 'app.containers.Admin.Moderation.profanityBlockerSettingDescription',
+    defaultMessage:
+      'Block posts containing the most commonly reported offensive words.',
+  },
+  successfulUpdateSettings: {
+    id: 'app.containers.Admin.Moderation.successfulUpdateSettings',
+    defaultMessage: 'Settings updated successfully.',
+  },
+  settingsSavingError: {
+    id: 'app.containers.Admin.Moderation.settingsSavingError',
+    defaultMessage: "Couldn't save. Try changing the setting again.",
+  },
+  warningText: {
+    id: 'app.containers.Admin.Moderation.warningText',
+    defaultMessage:
+      'Warning: possible inappropriate or offensive content detected',
+  },
+  removeWarning: {
+    id: 'app.containers.Admin.Moderation.removeWarning',
+    defaultMessage:
+      'Remove {numberOfItems, plural, one {warning} other {# warnings}}',
   },
 });
