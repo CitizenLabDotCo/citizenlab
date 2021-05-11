@@ -46,49 +46,22 @@ const Loading = styled.div`
   ${defaultCardStyle};
 `;
 
-const FiltersArea = styled.div`
-  flex: 0 0 94px;
-  height: 94px;
+const Header = styled.div`
   display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  padding-left: 15px;
-  padding-right: 15px;
-  border: solid 1px #ccc;
-
-  ${isRtl`
-    flex-direction: row-reverse;
-  `}
-`;
-
-const FilterArea = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
-const LeftFilterArea = styled(FilterArea)`
-  flex: 1 1 auto;
-`;
-
-const RightFilterArea = styled(FilterArea)`
-  display: flex;
-  align-items: center;
+  flex-direction: column;
+  align-items: stretch;
+  padding: 20px;
+  border-bottom: solid 1px #ccc;
 `;
 
 const DropdownFilters = styled.div`
   display: flex;
   align-items: center;
+  margin-bottom: 20px;
 `;
 
 const StyledSearchInput = styled(SearchInput)`
-  width: 200px;
-  margin-right: 30px;
-
-  ${isRtl`
-    margin-right: 0;
-    margin-left: auto;
-  `}
+  width: 100%;
 `;
 
 const IdeaMapCards = styled.div`
@@ -102,8 +75,8 @@ const IdeaMapCards = styled.div`
 `;
 
 const StyledIdeaMapCard = styled(IdeaMapCard)`
-  margin-left: 15px;
-  margin-right: 15px;
+  margin-left: 20px;
+  margin-right: 20px;
 `;
 
 const EmptyContainer = styled.div`
@@ -189,31 +162,26 @@ const IdeasList = memo<Props>(
 
     return (
       <Container className={className || ''}>
-        <FiltersArea>
-          <LeftFilterArea>
-            <StyledSearchInput onChange={handleSearchOnChange} />
-          </LeftFilterArea>
-
-          <RightFilterArea>
-            <DropdownFilters>
-              <SelectSort
-                onChange={handleSortOnChange}
+        <Header>
+          <DropdownFilters>
+            <SelectSort
+              onChange={handleSortOnChange}
+              alignment="right"
+              defaultSortingMethod={
+                project?.attributes.ideas_order || ideaDefaultSortMethodFallback
+              }
+            />
+            {topicsEnabled && (
+              <TopicFilterDropdown
+                onChange={handleTopicsOnChange}
                 alignment="right"
-                defaultSortingMethod={
-                  project?.attributes.ideas_order ||
-                  ideaDefaultSortMethodFallback
-                }
+                projectId={!isNilOrError(project) ? project.id : null}
               />
-              {topicsEnabled && (
-                <TopicFilterDropdown
-                  onChange={handleTopicsOnChange}
-                  alignment="right"
-                  projectId={!isNilOrError(project) ? project.id : null}
-                />
-              )}
-            </DropdownFilters>
-          </RightFilterArea>
-        </FiltersArea>
+            )}
+          </DropdownFilters>
+
+          <StyledSearchInput onChange={handleSearchOnChange} />
+        </Header>
 
         <IdeaMapCards>
           {ideas === undefined && (

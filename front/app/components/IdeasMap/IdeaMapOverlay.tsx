@@ -31,11 +31,12 @@ const InnerOverlay = styled.div`
   top: 0;
   bottom: 0;
   left: 0;
-  right: -300px;
+  right: -100px;
   background: #fff;
   display: flex;
   flex-direction: column;
   align-items: stretch;
+  ${defaultCardStyle};
 `;
 
 // const ScrollContainer = styled.div`
@@ -50,6 +51,7 @@ const StyledIdeasShow = styled(IdeasShow)`
   flex: 1;
   overflow-x: hidden;
   overflow-y: auto;
+  padding: 30px;
 `;
 
 const StyledIdeasList = styled(IdeasList)`

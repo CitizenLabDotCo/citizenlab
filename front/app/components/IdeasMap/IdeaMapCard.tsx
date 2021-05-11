@@ -20,13 +20,7 @@ import { Icon } from 'cl2-component-library';
 
 // styling
 import styled from 'styled-components';
-import {
-  defaultCardStyle,
-  // defaultCardHoverStyle,
-  defaultStyles,
-  fontSizes,
-  colors,
-} from 'utils/styleUtils';
+import { defaultCardStyle, fontSizes, colors } from 'utils/styleUtils';
 
 const Container = styled.div`
   padding: 20px;
@@ -35,36 +29,25 @@ const Container = styled.div`
   ${defaultCardStyle};
   border: solid 1px #ccc;
   cursor: pointer;
-  
-  /*
-  box-shadow: 0px 0px 0px 2px #fff inset;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-  will-change: box-shadow;
-  transition: all 150ms ease-out;
-  */
 
   &.hovered {
-    border-color: ${colors.label};
-    /* box-shadow: 0px 0px 0px 2px ${colors.label} inset; */
-    /* box-shadow: ${defaultStyles.boxShadowHoverBig}; */
-    /* transform: translate(0px, -3px); */
+    border-color: #000;
   }
 `;
 
 const Title = styled.h3`
-  height: 69px;
+  height: 46px;
   color: ${(props) => props.theme.colorText};
   font-size: 18px;
   font-weight: 500;
   display: -webkit-box;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   line-height: 23px;
-  max-height: 69px;
+  max-height: 46px;
   padding: 0;
   margin: 0;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
   overflow: hidden;
   overflow-wrap: break-word;
   word-wrap: break-word;
