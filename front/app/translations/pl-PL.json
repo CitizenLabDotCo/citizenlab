@@ -786,6 +786,7 @@
   "app.containers.Admin.Moderation.unread": "Nieprzejrzane",
   "app.containers.Admin.Moderation.warning": "Warning",
   "app.containers.Admin.Moderation.warningText": "Warning: possible inappropriate or offensive content detected",
+  "app.containers.Admin.Moderation.warnings": "Warnings",
   "app.containers.Admin.Processing.addExistingTag": "Dodaj istniejący tag",
   "app.containers.Admin.Processing.addNewTag": "Dodaj nowy tag",
   "app.containers.Admin.Processing.addSmartTag": "Dodaj inteligentny tag",
