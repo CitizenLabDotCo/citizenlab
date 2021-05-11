@@ -245,6 +245,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
   const [processing, setProcessing] = useState(false);
   const [selectedTypes, setSelectedTypes] = useState<TModeratableTypes[]>([]);
   const [selectedProjectIds, setSelectedProjectIds] = useState<string[]>([]);
+  const [selectedTab, setSelectedTab] = useState<TTabName>('unread');
 
   const handleOnSelectAll = useCallback(
     (_event: React.ChangeEvent) => {
