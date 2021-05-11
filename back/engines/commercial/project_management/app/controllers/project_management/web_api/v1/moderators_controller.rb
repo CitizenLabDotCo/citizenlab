@@ -11,7 +11,7 @@ module ProjectManagement
 
         class Moderator < OpenStruct
           def self.policy_class
-            ModeratorPolicy
+            ProjectManagement::ModeratorPolicy
           end
         end
 
