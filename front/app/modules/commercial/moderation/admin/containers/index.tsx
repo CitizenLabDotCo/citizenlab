@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useState, useEffect, useMemo } from 'react';
+import React, { memo, useCallback, useState, useEffect } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { includes } from 'lodash-es';
 
@@ -17,7 +17,6 @@ import SearchInput from 'components/UI/SearchInput';
 
 // hooks
 import useModerations from '../../hooks/useModerations';
-import useLocale from 'hooks/useLocale';
 
 // services
 import {
@@ -226,7 +225,6 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
     projectIds: [],
     searchTerm: '',
   });
-  const locale = useLocale();
 
   const [moderationItems, setModerationItems] = useState(list);
   const [selectedRows, setSelectedRows] = useState<string[]>([]);
