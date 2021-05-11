@@ -22,7 +22,6 @@ import useModerations from '../../hooks/useModerations';
 import {
   updateModerationStatus,
   IModerationData,
-  TModerationStatuses,
   TModeratableTypes,
 } from '../../services/moderations';
 
