@@ -1026,7 +1026,7 @@
   "app.containers.AdminPage.DashboardPage.resolutionmonth": "em meses",
   "app.containers.AdminPage.DashboardPage.resolutionweek": "em semanas",
   "app.containers.AdminPage.DashboardPage.resourceByDifference": "Diferença de {\nselectedResourceName} com {selectedName}",
-  "app.containers.AdminPage.DashboardPage.seeReportButton": "Summary",
+  "app.containers.AdminPage.DashboardPage.seeReportButton": "Sumário",
   "app.containers.AdminPage.DashboardPage.selectedProject": "filtro de projeto atual",
   "app.containers.AdminPage.DashboardPage.selectedTopic": "filtro de tópico atual",
   "app.containers.AdminPage.DashboardPage.subtitleDashboard": "Descubra o que está acontecendo em sua plataforma.",
