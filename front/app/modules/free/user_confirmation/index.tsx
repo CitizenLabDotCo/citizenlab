@@ -54,15 +54,14 @@ const configuration: ModuleConfiguration = {
         return null;
       }
 
-      const confirmationShouldHappen =
-        isUserConfirmationEnabled &&
-        !metaData.isInvitation &&
-        !metaData.requiresConfirmation;
-
       const confirmationAlreadyHappened =
-        !isNilOrError(user) && user?.attributes?.requires_confirmation;
+        !isNilOrError(user) && user?.attributes?.confirmation_required;
 
-      if (confirmationShouldHappen && !confirmationAlreadyHappened) {
+      if (
+        !confirmationAlreadyHappened &&
+        isUserConfirmationEnabled &&
+        !metaData.requiresConfirmation
+      ) {
         modifyMetaData(metaData, { requiresConfirmation: true });
       }
 

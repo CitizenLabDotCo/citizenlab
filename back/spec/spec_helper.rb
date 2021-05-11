@@ -132,6 +132,9 @@ RSpec.configure do |config|
     require './engines/free/polls/spec/factories/response_options.rb'
     require './engines/free/volunteering/spec/factories/causes.rb'
     require './engines/free/volunteering/spec/factories/volunteers.rb'
+    
+    # Clean all tables to start
+    DatabaseCleaner.clean_with :truncation, {:except => %w[spatial_ref_sys]}
 
     # Truncating doesn't drop schemas, ensure we're clean here, app *may not* exist
     Apartment::Tenant.drop('example_org') rescue nil
