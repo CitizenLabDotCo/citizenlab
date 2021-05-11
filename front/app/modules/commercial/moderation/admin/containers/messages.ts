@@ -69,10 +69,6 @@ export default defineMessages({
     id: 'app.containers.Admin.Moderation.unread',
     defaultMessage: 'Not viewed',
   },
-  warnings: {
-    id: 'app.containers.Admin.Moderation.warnings',
-    defaultMessage: 'Warnings ({flaggedItemsCount})',
-  },
   noViewedItems: {
     id: 'app.containers.Admin.Moderation.noViewedItems',
     defaultMessage: 'There are no viewed items',
