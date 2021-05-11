@@ -4,6 +4,10 @@ import { requestBlob } from 'utils/request';
 import { saveAs } from 'file-saver';
 import { IParticipationContextType } from 'typings';
 
+export interface IPollResponseAttributes {
+  series: { [key: string]: number };
+}
+
 export async function addPollResponse(
   participationContextId: string,
   participationContextType: IParticipationContextType,
@@ -34,4 +38,13 @@ export async function exportPollResponses(
     'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
   );
   saveAs(blob, fileName);
+}
+export function getPollResponses(
+  participationContextId: string,
+  participationContextType: IParticipationContextType
+) {
+  const response = streams.get<IPollResponseAttributes>({
+    apiEndpoint: `${API_PATH}/${participationContextType}s/${participationContextId}/poll_responses/responses_count`,
+  });
+  return response;
 }
