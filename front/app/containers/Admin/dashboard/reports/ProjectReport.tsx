@@ -246,7 +246,7 @@ const ProjectReport = memo(
           </Section>
         )}
 
-        <Section id="id">
+        <Section>
           {((participationMethods.includes('ideation') && startAt && endAt) ||
             participationMethods.includes('poll')) && (
             <SectionTitle>
