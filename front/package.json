@@ -114,7 +114,7 @@
     "react-select": "4.1.0",
     "react-social": "1.10.0",
     "react-transition-group": "4.4.1",
-    "recharts": "1.8.5",
+    "recharts": "2.0.9",
     "regenerator-runtime": "0.13.7",
     "rxjs": "6.6.6",
     "semantic-ui-react": "2.0.3",
