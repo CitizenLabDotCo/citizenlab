@@ -58,7 +58,10 @@ resource 'Views' do
           data: {
             id: view.id,
             type: 'view',
-            attributes: { name: view.name },
+            attributes: {
+              name: view.name,
+              updated_at: anything
+            },
             relationships: {
               scope: {
                 data: { id: view.scope_id, type: 'project' }
@@ -97,7 +100,7 @@ resource 'Views' do
           data: {
             id: anything,
             type: 'view',
-            attributes: { name: name },
+            attributes: hash_including(name: name),
             relationships: {
               scope: {
                 data: { id: scope_id, type: 'project' }
@@ -139,7 +142,7 @@ resource 'Views' do
           data: {
             id: anything,
             type: 'view',
-            attributes: { name: name },
+            attributes: hash_including(name: name),
             relationships: {
               scope: {
                 data: { id: view.scope_id, type: 'project' }
@@ -157,6 +160,22 @@ resource 'Views' do
       end
 
       include_examples 'unprocessable entity'
+    end
+
+    include_examples 'unauthorized requests'
+  end
+
+  delete 'web_api/v1/insights/views/:id' do
+    let(:view) { views.first }
+    let(:id) { view.id }
+
+    context 'when admin' do
+      before { admin_header_token }
+
+      example_request 'deletes a view' do
+        expect(status).to eq(200)
+        expect { view.reload }.to raise_error(ActiveRecord::RecordNotFound)
+      end
     end
 
     include_examples 'unauthorized requests'

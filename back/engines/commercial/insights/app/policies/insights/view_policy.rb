@@ -28,5 +28,9 @@ module Insights
     def update?
       admin? && active?
     end
+
+    def destroy?
+      admin? && active?
+    end
   end
 end
