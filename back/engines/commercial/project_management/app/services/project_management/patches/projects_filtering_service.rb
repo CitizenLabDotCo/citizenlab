@@ -9,7 +9,7 @@ module ProjectManagement
             next scope unless options.key? :moderator
 
             moderator = options[:moderator] # nil means the user is not logged in
-            ProjectPolicy::Scope.new(moderator, scope).moderatable
+            ::ProjectPolicy::Scope.new(moderator, scope).moderatable
           end
         end
       end

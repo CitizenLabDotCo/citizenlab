@@ -15,7 +15,7 @@ module ProjectManagement
         def resolve_for_project_moderator
           return scope.none unless user.project_moderator?
 
-          projects = ProjectPolicy::Scope.new(user, ::Project.all).resolve
+          projects = ::ProjectPolicy::Scope.new(user, ::Project.all).resolve
           # we're deliberately avoiding to join ideas to the main scope itself,
           # because it conflicts with other queries modifying the scope (e.g.
           # filtering on projects)
