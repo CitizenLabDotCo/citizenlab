@@ -273,6 +273,8 @@ gem 'blorgh', path: 'engines/blorgh'
 
 11. If needed, create a `bin` folder with in it the desired binaries (e.g. `rake`).
 
+12. Add factories in engine.rb if you have factories.
+
 
 ## Running the profiler
 

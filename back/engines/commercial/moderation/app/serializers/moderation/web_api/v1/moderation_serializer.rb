@@ -23,5 +23,9 @@ module Moderation
     attribute :moderation_status do |object|
       object.moderation_status&.status || 'unread'
     end
+
+    # TODO patch
+    has_one :inappropriate_content_flag, serializer: ::WebApi::V1::InappropriateContentFlagSerializer
+    # belongs_to :inappropriate_content_flag, serializer: ::WebApi::V1::InappropriateContentFlagSerializer
   end
 end

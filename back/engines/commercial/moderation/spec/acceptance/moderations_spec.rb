@@ -169,6 +169,18 @@ resource "Moderations" do
         end
       end
 
+      describe do # TODO move to flag engine
+        before do
+          @flag = create(:inappropriate_content_flag, flaggable: @m2)
+        end
+        
+        example_request "Moderations include inappropriate content flag" do
+          expect(status).to eq(200)
+          json_response = json_parse(response_body)
+          expect(json_response[:included].map{|d| d[:id]}).to include(@flag.id)
+        end
+      end
+
       patch "web_api/v1/moderations/:moderatable_type/:moderatable_id" do
         with_options scope: :moderation do
           parameter :moderation_status, "Either #{Moderation::ModerationStatus::MODERATION_STATUSES.join(", ")}", required: true
@@ -203,18 +215,8 @@ resource "Moderations" do
           end
         end
       end  
-    
-    
-    
-    
-    
-    
+       
     end
-
-
-
-    
-  
   end
 end
   

@@ -6,7 +6,7 @@ module Moderation
       @moderations = @moderations.where(id: Idea.published)
         .or(@moderations.where(id: Initiative.published))
         .or(@moderations.where(id: Comment.published))
-        .includes(:moderation_status)
+        .includes(:moderation_status) # , :inappropriate_content_flag) ### TODO patch
         .order(created_at: :desc)
       
       @moderations = @moderations.with_moderation_status(params[:moderation_status]) if params[:moderation_status].present?
@@ -17,7 +17,7 @@ module Moderation
       @moderations = @moderations
         .page(params.dig(:page, :number))
         .per(params.dig(:page, :size))
-      render json: linked_json(@moderations, WebApi::V1::ModerationSerializer, params: fastjson_params)
+      render json: linked_json(@moderations, WebApi::V1::ModerationSerializer, params: fastjson_params, include: [:inappropriate_content_flag]) ### TODO patch
     end
 
     def update
