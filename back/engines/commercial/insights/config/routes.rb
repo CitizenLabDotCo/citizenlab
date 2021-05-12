@@ -2,7 +2,7 @@ Insights::Engine.routes.draw do
   namespace :web_api, defaults: { format: :json } do
     namespace :v1 do
       scope '/insights' do
-        resources :views, only: %i[create index show update]
+        resources :views
       end
     end
   end
