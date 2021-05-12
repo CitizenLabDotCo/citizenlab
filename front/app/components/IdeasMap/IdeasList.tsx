@@ -19,7 +19,7 @@ import useIdeaCustomFieldsSchemas from 'hooks/useIdeaCustomFieldsSchemas';
 import { ideaDefaultSortMethodFallback } from 'services/participationContexts';
 
 // i18n
-import messages from 'components/IdeaCards/messages';
+import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // style
@@ -98,8 +98,8 @@ const IdeaIcon = styled(Icon)`
 `;
 
 const EmptyMessage = styled.div`
-  padding-left: 20px;
-  padding-right: 20px;
+  padding-left: 40px;
+  padding-right: 40px;
   margin-top: 12px;
   margin-bottom: 30px;
 `;
@@ -133,6 +133,8 @@ const IdeasList = memo<Props>(
     );
 
     const ideas = useIdeaMarkers({ projectIds, phaseId, sort, search, topics });
+
+    const isFiltered = (search && search.length > 0) || topics.length > 0;
 
     const isFieldEnabled = (fieldCode: CustomFieldCodes) => {
       if (!isNilOrError(ideaCustomFieldsSchemas) && !isNilOrError(locale)) {
@@ -201,7 +203,11 @@ const IdeasList = memo<Props>(
               <IdeaIcon ariaHidden name="idea" />
               <EmptyMessage>
                 <EmptyMessageLine>
-                  <FormattedMessage {...messages.noFilteredResults} />
+                  <FormattedMessage
+                    {...(isFiltered
+                      ? messages.noFilteredResultsFound
+                      : messages.noResultsFound)}
+                  />
                 </EmptyMessageLine>
               </EmptyMessage>
             </EmptyContainer>
