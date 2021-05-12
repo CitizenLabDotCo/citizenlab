@@ -45,6 +45,7 @@ const Image = styled.img`
 
 const ButtonsContainer = styled.div`
   display: flex;
+  margin-top: 40px;
   > *:first-child {
     margin-right: 12px;
   }
