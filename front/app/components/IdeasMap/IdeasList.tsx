@@ -24,7 +24,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 // style
 import styled from 'styled-components';
-import { colors, fontSizes, defaultCardStyle, isRtl } from 'utils/styleUtils';
+import { colors, fontSizes, defaultCardStyle } from 'utils/styleUtils';
 
 // typings
 import { Sort } from 'resources/GetIdeas';
@@ -166,7 +166,7 @@ const IdeasList = memo<Props>(
           <DropdownFilters>
             <SelectSort
               onChange={handleSortOnChange}
-              alignment="right"
+              alignment="left"
               defaultSortingMethod={
                 project?.attributes.ideas_order || ideaDefaultSortMethodFallback
               }
@@ -174,7 +174,7 @@ const IdeasList = memo<Props>(
             {topicsEnabled && (
               <TopicFilterDropdown
                 onChange={handleTopicsOnChange}
-                alignment="right"
+                alignment="left"
                 projectId={!isNilOrError(project) ? project.id : null}
               />
             )}

@@ -23,14 +23,15 @@ export interface Point extends GeoJSON.Point {
   title?: string;
 }
 
-const Container = styled.div``;
+const Container = styled.div`
+  ${defaultCardStyle};
+  border: solid 1px #ccc;
+`;
 
 const MapWrapper = styled.div`
   flex: 1;
   display: flex;
   position: relative;
-  ${defaultCardStyle};
-  border: solid 1px #ccc;
 `;
 
 const BoxContainer = styled.div`

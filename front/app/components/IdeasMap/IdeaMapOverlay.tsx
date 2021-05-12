@@ -1,5 +1,6 @@
 import React, { memo, useState, useEffect } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
+import CSSTransition from 'react-transition-group/CSSTransition';
 
 // events
 import { ideaMapCardSelected$, setIdeaMapCardSelected } from './events';
@@ -16,6 +17,8 @@ import IdeaShowPageTopBar from 'containers/IdeasShowPage/IdeaShowPageTopBar';
 import styled from 'styled-components';
 import { defaultCardStyle } from 'utils/styleUtils';
 
+const timeout = 200;
+
 const Container = styled.div`
   width: 100%;
   background: #fff;
@@ -31,12 +34,44 @@ const InnerOverlay = styled.div`
   top: 0;
   bottom: 0;
   left: 0;
-  right: -100px;
+  right: -150px;
   background: #fff;
   display: flex;
   flex-direction: column;
   align-items: stretch;
   ${defaultCardStyle};
+
+  transition: all ${timeout}ms cubic-bezier(0.19, 1, 0.22, 1);
+  will-change: opacity;
+
+  &.animation-enter {
+    opacity: 0;
+    right: 0px;
+
+    &.animation-enter-active {
+      opacity: 1;
+      right: -150px;
+    }
+  }
+
+  &.animation-enter-done {
+    opacity: 1;
+    right: -150px;
+  }
+
+  &.animation-exit {
+    opacity: 1;
+    right: -150px;
+
+    &.animation-exit-active {
+      opacity: 0;
+      right: 0px;
+    }
+  }
+
+  &.animation-exit-done {
+    display: none;
+  }
 `;
 
 // const ScrollContainer = styled.div`
@@ -107,21 +142,28 @@ const IdeaMapOverlay = memo<Props>(
             projectId={projectId}
             phaseId={phaseId}
           />
-
-          {selectedIdeaId && (
+          <CSSTransition
+            classNames="animation"
+            in={!!selectedIdeaId}
+            timeout={timeout}
+            mounOnEnter={true}
+            unmountOnExit={true}
+            enter={true}
+            exit={true}
+          >
             <InnerOverlay>
               <StyledIdeaShowPageTopBar
-                ideaId={selectedIdeaId}
+                ideaId={selectedIdeaId as string}
                 goBackAction={goBack}
               />
               <StyledIdeasShow
-                ideaId={selectedIdeaId}
+                ideaId={selectedIdeaId as string}
                 projectId={projectId}
                 insideModal={false}
                 compact={true}
               />
             </InnerOverlay>
-          )}
+          </CSSTransition>
         </Container>
       );
     }

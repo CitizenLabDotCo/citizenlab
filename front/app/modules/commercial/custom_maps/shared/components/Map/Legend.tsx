@@ -20,7 +20,6 @@ import bowser from 'bowser';
 const Container = styled.div`
   padding: 20px;
   padding-bottom: 5px;
-  margin-top: 20px;
   ${defaultCardStyle};
 `;
 

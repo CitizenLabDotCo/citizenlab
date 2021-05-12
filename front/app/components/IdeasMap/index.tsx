@@ -8,6 +8,7 @@ import React, {
 // import { LatLng } from 'leaflet';
 import { withRouter, WithRouterProps } from 'react-router';
 import { isNilOrError } from 'utils/helperUtils';
+import { popup, LatLng, Map as LeafletMap } from 'leaflet';
 
 // tracking
 import { trackEventByName } from 'utils/analytics';
@@ -16,12 +17,12 @@ import tracks from './tracks';
 // components
 import Map, { Point } from 'components/Map';
 import Warning from 'components/UI/Warning';
-// import IdeaButton from 'components/IdeaButton';
+import IdeaButton from 'components/IdeaButton';
 import IdeaMapOverlay from './IdeaMapOverlay';
 
 // hooks
 import useProject from 'hooks/useProject';
-// import usePhase from 'hooks/usePhase';
+import usePhase from 'hooks/usePhase';
 import useIdeaMarkers from 'hooks/useIdeaMarkers';
 import useWindowSize from 'hooks/useWindowSize';
 
@@ -30,6 +31,7 @@ import { setIdeaMapCardSelected, ideaMapCardSelected$ } from './events';
 import {
   setLeafletMapSelectedMarker,
   leafletMapSelectedMarker$,
+  leafletMapClicked$,
 } from 'components/UI/LeafletMap/events';
 
 // i18n
@@ -69,7 +71,7 @@ const InnerContainer = styled.div<{ leftMargin: number | null }>`
   }
 `;
 
-// const IdeaButtonWrapper = styled.div``;
+const IdeaButtonWrapper = styled.div``;
 
 const StyledWarning = styled(Warning)`
   margin-bottom: 10px;
@@ -81,7 +83,7 @@ const StyledIdeaMapOverlay = styled(IdeaMapOverlay)`
   position: absolute;
   display: flex;
   top: 15px;
-  left: 15px;
+  left: 20px;
   z-index: 900;
 `;
 
@@ -115,12 +117,14 @@ const initialInnerContainerLeftMargin = getInnerContainerLeftMargin(
 const IdeasMap = memo<Props & WithRouterProps>(
   ({ projectIds, phaseId, params, className }) => {
     const project = useProject({ projectSlug: params.slug });
+    const phase = usePhase(phaseId || null);
     const ideaMarkers = useIdeaMarkers({ phaseId, projectIds, sort: '-new' });
     const { windowWidth } = useWindowSize();
 
     const containerRef = useRef<HTMLDivElement | null>(null);
-    // const ideaButtonRef = useRef<HTMLDivElement | null>(null);
+    const ideaButtonRef = useRef<HTMLDivElement | null>(null);
 
+    const [selectedLatLng, setSelectedLatLng] = useState<LatLng | null>(null);
     const [points, setPoints] = useState<Point[]>([]);
     const [containerWidth, setContainerWidth] = useState(initialContainerWidth);
     const [innerContainerLeftMargin, setInnerContainerLeftMargin] = useState(
@@ -149,6 +153,11 @@ const IdeasMap = memo<Props & WithRouterProps>(
             });
           }
           setIdeaMapCardSelected(selectedIdeaId);
+        }),
+        leafletMapClicked$.subscribe(({ map, latLng }) => {
+          if (map && latLng) {
+            handleOnMapClick(map, latLng);
+          }
         }),
       ];
 
@@ -183,22 +192,23 @@ const IdeasMap = memo<Props & WithRouterProps>(
       setPoints(ideaPoints);
     }, [ideaMarkers]);
 
-    // const handleOnMapClick = (map: LeafletMap, position: LatLng) => {
-    //   setSelectedLatLng(position);
+    const handleOnMapClick = (map: LeafletMap, latLng: LatLng) => {
+      setSelectedLatLng(latLng);
 
-    //   const ideaPostingEnabled =
-    //     (!isNilOrError(project) && project.attributes.posting_enabled) ||
-    //     (!isNilOrError(phase) && phase.attributes.posting_enabled);
+      const ideaPostingEnabled =
+        (!isNilOrError(project) && project.attributes.posting_enabled) ||
+        (!isNilOrError(phase) && phase.attributes.posting_enabled);
 
-    //   if (ideaPostingEnabled && ideaButtonRef?.current) {
-    //     popup()
-    //       .setLatLng(position)
-    //       .setContent(ideaButtonRef?.current)
-    //       .openOn(map);
-    //   }
+      if (ideaPostingEnabled && ideaButtonRef?.current) {
+        console.log('bleh');
+        popup()
+          .setLatLng(latLng)
+          .setContent(ideaButtonRef?.current)
+          .openOn(map);
+      }
 
-    //   return;
-    // };
+      return;
+    };
 
     if (!isNilOrError(project)) {
       return (
@@ -231,7 +241,6 @@ const IdeasMap = memo<Props & WithRouterProps>(
               />
             )}
 
-            {/*
             <IdeaButtonWrapper
               className="create-idea-wrapper"
               ref={ideaButtonRef}
@@ -244,7 +253,6 @@ const IdeasMap = memo<Props & WithRouterProps>(
                 inMap={true}
               />
             </IdeaButtonWrapper>
-            */}
           </InnerContainer>
         </Container>
       );

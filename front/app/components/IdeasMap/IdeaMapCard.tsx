@@ -4,7 +4,6 @@ import { isNilOrError } from 'utils/helperUtils';
 // events
 import { setIdeaMapCardSelected } from './events';
 import {
-  setLeafletMapCenter,
   setLeafletMapHoveredMarker,
   leafletMapHoveredMarker$,
 } from 'components/UI/LeafletMap/events';
@@ -29,9 +28,12 @@ const Container = styled.div`
   ${defaultCardStyle};
   border: solid 1px #ccc;
   cursor: pointer;
+  transition: all 100ms ease-out;
 
   &.hovered {
     border-color: #000;
+    box-shadow: 0px 0px 0px 1px #000 inset;
+    /* box-shadow: 0px 4px 12px -1px rgba(0, 0, 0, 0.12); */
   }
 `;
 
@@ -62,19 +64,34 @@ const Footer = styled.div`
 const FooterItem = styled.div`
   display: flex;
   align-items: center;
-  margin-right: 20px;
+  margin-right: 22px;
 `;
 
-const FooterIcon = styled(Icon)`
-  width: 16px;
-  height: 16px;
+const DownvoteIcon = styled(Icon)`
+  width: 17px;
+  height: 17px;
   fill: ${colors.label};
-  margin-right: 5px;
+  margin-right: 6px;
+`;
+
+const UpvoteIcon = styled(Icon)`
+  width: 17px;
+  height: 17px;
+  fill: ${colors.label};
+  margin-right: 6px;
+  margin-top: 5px;
+`;
+
+const CommentIcon = styled(Icon)`
+  width: 19px;
+  height: 19px;
+  fill: ${colors.label};
+  margin-right: 6px;
 `;
 
 const FooterValue = styled.div`
   color: ${colors.label};
-  font-size: ${fontSizes.base}px;
+  font-size: ${fontSizes.small + 1}px;
   line-height: normal;
   font-weight: 400;
 `;
@@ -135,15 +152,15 @@ const IdeaMapCard = memo<Props>(({ ideaId, className }) => {
         </Title>
         <Footer>
           <FooterItem>
-            <FooterIcon name="upvote" />
+            <DownvoteIcon name="upvote" />
             <FooterValue>{idea.attributes.upvotes_count}</FooterValue>
           </FooterItem>
           <FooterItem>
-            <FooterIcon name="downvote" />
+            <UpvoteIcon name="downvote" />
             <FooterValue>{idea.attributes.downvotes_count}</FooterValue>
           </FooterItem>
           <FooterItem>
-            <FooterIcon name="comments" />
+            <CommentIcon name="comments" />
             <FooterValue>{idea.attributes.comments_count}</FooterValue>
           </FooterItem>
         </Footer>
