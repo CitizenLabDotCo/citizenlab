@@ -155,6 +155,8 @@
   "app.components.IdeaForm.topicsTitle": "Topics",
   "app.components.IdeasMap.a11y_mapTitle": "Map overview",
   "app.components.IdeasMap.ideaOnMapReadMore": "Read more",
+  "app.components.IdeasMap.noFilteredResultsFound": "",
+  "app.components.IdeasMap.noResultsFound": "",
   "app.components.IdeasMap.nothingOnMapWarning": "Nothing to be seen here! There might be more to see in the list view.",
   "app.components.IdeasMap.or": "or",
   "app.components.IdeasMap.postingHereImpossible": "New submissions are not currently being accepted",
