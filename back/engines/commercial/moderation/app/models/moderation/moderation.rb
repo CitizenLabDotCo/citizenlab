@@ -4,7 +4,7 @@ module Moderation
     self.primary_key = 'id'
 
     has_one :moderation_status, foreign_key: :moderatable_id, foreign_type: :moderatable_type
-    # has_one :inappropriate_content_flag, foreign_key: :flaggable_id, foreign_type: :flaggable_type # TODO patch
+    has_one :inappropriate_content_flag, foreign_key: :flaggable_id, foreign_type: :flaggable_type, class_name: 'FlagInappropriateContent::InappropriateContentFlag' # TODO patch
 
     pg_search_scope :search_by_all, 
         :against => [:content_title_multiloc, :content_body_multiloc],
@@ -50,14 +50,6 @@ module Moderation
           {post_type.underscore.to_sym => {id: post_id, slug: post_slug, title_multiloc: post_title_multiloc}}
         end
       end
-    end
-
-    def inappropriate_content_flag # TODO replace by relationship
-      FlagInappropriateContent::InappropriateContentFlag.where(flaggable_id: id, flaggable_type: moderatable_type).first
-    end
-
-    def inappropriate_content_flag_id # TODO replace by relationship
-      inappropriate_content_flag&.id
     end
     
   end

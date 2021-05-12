@@ -6,7 +6,7 @@ module Moderation
       @moderations = @moderations.where(id: Idea.published)
         .or(@moderations.where(id: Initiative.published))
         .or(@moderations.where(id: Comment.published))
-        .includes(:moderation_status) # , :inappropriate_content_flag) ### TODO patch
+        .includes(:moderation_status, :inappropriate_content_flag) ### TODO patch
         .order(created_at: :desc)
       
       @moderations = @moderations.with_moderation_status(params[:moderation_status]) if params[:moderation_status].present?
