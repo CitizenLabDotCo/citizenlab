@@ -137,7 +137,7 @@ export interface IAppConfigurationSettings {
   manual_emailing?: AppConfigurationFeature;
   manual_tagging?: AppConfigurationFeature;
   automatic_tagging?: AppConfigurationFeature;
-  manual_insights?: AppConfigurationFeature;
+  insights_manual_flow?: AppConfigurationFeature;
   automated_emailing_control?: AppConfigurationFeature;
   typeform_surveys?: {
     allowed: boolean;
