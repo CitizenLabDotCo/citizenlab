@@ -10,6 +10,7 @@ import useLocale from 'hooks/useLocale';
 // components
 import PageTitle from 'components/admin/PageTitle';
 import { Button } from 'cl2-component-library';
+import { Divider } from 'semantic-ui-react';
 
 // styles
 import styled from 'styled-components';
@@ -49,24 +50,25 @@ const InsightsContainerTitle = styled.h2`
 
 const InsightsContainerHeader = styled.div`
   display: flex;
+  margin-bottom: 60px;
   justify-content: space-between;
   > div:first-child {
     width: 50%;
   }
 `;
 
-// insightsListManage: {
-//   id: 'app.containers.Admin.Insights.List.manage',
-//   defaultMessage: 'Manage',
-// },
-// insightsListDelete: {
-//   id: 'app.containers.Admin.Insights.List.delete',
-//   defaultMessage: 'Delete',
-// },
-// insightsListDuplicate: {
-//   id: 'app.containers.Admin.Insights.List.duplicate',
-//   defaultMessage: 'Duplicate',
-// },
+const InsightsListItem = styled.div`
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+  h3 {
+    font-size: ${fontSizes.base}px;
+    font-weight: bold;
+  }
+  .buttons {
+    display: flex;
+  }
+`;
 
 type InsightsList = { data: IInsightsViewData[] } & InjectedIntlProps;
 
@@ -91,16 +93,40 @@ const InsightsList: React.FC<InsightsList> = ({
               </InsightsContainerTitle>
               <p>{formatMessage(messages.insightsListDescription)}</p>
             </div>
-            <Button
-              fullWidth={false}
-              locale={locale}
-              bgColor={colors.adminTextColor}
-            >
+            <Button locale={locale} bgColor={colors.adminTextColor}>
               {formatMessage(messages.insightsListCreate)}
             </Button>
           </InsightsContainerHeader>
           {data.map((view) => (
-            <>{view.attributes.name}</>
+            <>
+              <InsightsListItem>
+                <h3> {view.attributes.name}</h3>
+                <div className="buttons">
+                  <Button
+                    locale={locale}
+                    buttonStyle="white"
+                    icon="copy"
+                    textColor={colors.adminTextColor}
+                    boxShadow="none"
+                  >
+                    {formatMessage(messages.insightsListDuplicate)}
+                  </Button>
+                  <Button
+                    locale={locale}
+                    buttonStyle="white"
+                    icon="delete"
+                    textColor={colors.adminTextColor}
+                    boxShadow="none"
+                  >
+                    {formatMessage(messages.insightsListDelete)}
+                  </Button>
+                  <Button locale={locale} buttonStyle="secondary" icon="edit">
+                    {formatMessage(messages.insightsListManage)}
+                  </Button>
+                </div>
+              </InsightsListItem>
+              <Divider />
+            </>
           ))}
         </InsightsContainer>
       )}
