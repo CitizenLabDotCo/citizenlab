@@ -1,29 +1,30 @@
 import L from 'leaflet';
 import 'leaflet-active-area';
-import {
-  DEFAULT_TILE_PROVIDER,
-  DEFAULT_TILE_OPTIONS,
-  DEFAULT_CENTER,
-  DEFAULT_ZOOM,
-} from '../config';
+import { DEFAULT_CENTER, DEFAULT_ZOOM } from '../config';
 
 export function init(
   mapId: string,
   {
+    center,
+    zoom,
     tileProvider,
     tileOptions,
     zoomControlPosition,
   }: {
+    center?: L.LatLngTuple;
+    zoom?: number;
     tileProvider?: string | null;
     tileOptions?: object;
     zoomControlPosition?: 'topleft' | 'topright' | 'bottomleft' | 'bottomright';
   }
 ) {
+  const initCenter = center || (DEFAULT_CENTER as L.LatLngTuple);
+  const initZoom = zoom || DEFAULT_ZOOM;
   const map = ((L.map(mapId, {
     zoomControl: zoomControlPosition ? false : true,
   }) as any).setActiveArea('activeArea', true, true) as L.Map).setView(
-    [0, 0],
-    16
+    initCenter,
+    initZoom
   );
 
   if (zoomControlPosition) {
@@ -34,32 +35,21 @@ export function init(
       .addTo(map);
   }
 
-  addTileLayer(map, tileProvider, tileOptions);
+  if (tileProvider && tileOptions !== undefined) {
+    addTileLayer(map, tileProvider, tileOptions);
+  }
 
   return map;
 }
 
 export function addTileLayer(
   map: L.Map,
-  tileProvider?: string | null,
-  tileOptions?: object
+  tileProvider: string,
+  tileOptions: object
 ) {
-  console.log({
-    ...DEFAULT_TILE_OPTIONS,
-    ...tileOptions,
-  });
-  return L.tileLayer(tileProvider || DEFAULT_TILE_PROVIDER, {
-    ...DEFAULT_TILE_OPTIONS,
-    ...tileOptions,
-  }).addTo(map);
+  return L.tileLayer(tileProvider, tileOptions).addTo(map);
 }
 
-export function changeView(
-  map: L.Map,
-  center?: L.LatLngTuple | null,
-  zoom?: number | null
-) {
-  const newCenter = center || (DEFAULT_CENTER as L.LatLngTuple);
-  const newZoom = zoom || DEFAULT_ZOOM;
-  map.setView(newCenter, newZoom);
+export function changeView(map: L.Map, center: L.LatLngTuple, zoom: number) {
+  map.setView(center, zoom);
 }

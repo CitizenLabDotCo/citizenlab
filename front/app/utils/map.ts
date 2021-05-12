@@ -2,6 +2,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { IAppConfiguration } from 'services/appConfiguration';
 import {
   DEFAULT_TILE_PROVIDER,
+  DEFAULT_TILE_OPTIONS,
   DEFAULT_CENTER,
   DEFAULT_ZOOM,
 } from 'components/UI/LeafletMap/config';
@@ -50,4 +51,8 @@ export const getTileProvider = (
     !isNilOrError(appConfig) &&
     (appConfig?.data?.attributes?.settings?.maps?.tile_provider as string);
   return tileProvider || DEFAULT_TILE_PROVIDER;
+};
+
+export const getTileOptions = () => {
+  return DEFAULT_TILE_OPTIONS;
 };

@@ -11,7 +11,12 @@ import useMapConfig from '../../../hooks/useMapConfig';
 import { GeoJSONLayer } from 'components/UI/LeafletMap/typings';
 
 // utils
-import { getCenter, getZoomLevel, getTileProvider } from '../../../utils/map';
+import {
+  getCenter,
+  getZoomLevel,
+  getTileProvider,
+  getTileOptions,
+} from '../../../utils/map';
 
 // i18n
 import useLocalize from 'hooks/useLocalize';
@@ -50,6 +55,10 @@ const LeafletConfig = memo<Props & IMapConfigProps>(
       return getTileProvider(appConfig, mapConfig);
     }, [appConfig, mapConfig]);
 
+    const tileOptions = useMemo(() => {
+      return getTileOptions(tileProvider);
+    }, [tileProvider]);
+
     const geoJsonLayers = useMemo(() => {
       if (!mapConfig) {
         return [];
@@ -59,17 +68,6 @@ const LeafletConfig = memo<Props & IMapConfigProps>(
     }, [projectId, mapConfig]);
 
     const newLeafletConfig = useMemo(() => {
-      let tileOptions = {};
-
-      if (tileProvider.includes('maptiler')) {
-        tileOptions = {
-          tileSize: 512,
-          zoomOffset: -1,
-          attribution:
-            '\u003ca href="https://www.maptiler.com/copyright/" target="_blank"\u003e\u0026copy; MapTiler\u003c/a\u003e \u003ca href="https://www.openstreetmap.org/copyright" target="_blank"\u003e\u0026copy; OpenStreetMap contributors\u003c/a\u003e',
-        };
-      }
-
       return {
         geoJsonLayers,
         points,
@@ -90,7 +88,7 @@ const LeafletConfig = memo<Props & IMapConfigProps>(
           return localize(geojsonLayer.title_multiloc);
         },
       };
-    }, [geoJsonLayers, points, zoom, center, tileProvider]);
+    }, [geoJsonLayers, points, zoom, center, tileProvider, tileOptions]);
 
     useEffect(() => {
       onLeafletConfigChange(newLeafletConfig);

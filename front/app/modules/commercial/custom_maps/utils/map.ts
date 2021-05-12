@@ -9,6 +9,7 @@ import {
   getCenter as baseGetCenter,
   getZoomLevel as baseGetZoomLevel,
   getTileProvider as baseGetTileProvider,
+  getTileOptions as baseGetTileOptions,
 } from 'utils/map';
 
 export const getCenter = (
@@ -63,6 +64,24 @@ export const getTileProvider = (
   }
 
   return baseGetTileProvider(appConfig);
+};
+
+export const getTileOptions = (tileProvider?: string | null) => {
+  if (tileProvider?.includes('maptiler')) {
+    return {
+      tileSize: 512,
+      zoomOffset: -1,
+      detectRetina: false,
+      minZoom: 1,
+      maxZoom: 20,
+      crossOrigin: true,
+      subdomains: ['a', 'b', 'c'],
+      attribution:
+        '\u003ca href="https://www.maptiler.com/copyright/" target="_blank"\u003e\u0026copy; MapTiler\u003c/a\u003e \u003ca href="https://www.openstreetmap.org/copyright" target="_blank"\u003e\u0026copy; OpenStreetMap contributors\u003c/a\u003e',
+    };
+  }
+
+  return baseGetTileOptions();
 };
 
 export const getLayerType = (mapLayer: IMapLayerAttributes | undefined) => {

@@ -128,6 +128,8 @@ export default function useLeaflet(
   const setup = () => {
     if (!map) {
       const newMap = service.init(mapId, {
+        center,
+        zoom,
         tileProvider,
         tileOptions,
         zoomControlPosition,
@@ -146,18 +148,22 @@ export default function useLeaflet(
   ]);
 
   const refreshTile = () => {
-    if (!map || (tileLayer && tileConfig === prevTileConfig)) {
-      return;
-    }
+    if (map && (!tileLayer || !isEqual(tileConfig, prevTileConfig))) {
+      if (tileLayer) {
+        service.removeLayer(map, tileLayer);
+      }
 
-    if (tileLayer) {
-      service.removeLayer(map, tileLayer);
-    }
+      if (tileProvider && tileOptions !== undefined) {
+        const newTileLayer = service.addTileLayer(
+          map,
+          tileProvider,
+          tileOptions
+        );
 
-    const newTileLayer = service.addTileLayer(map, tileProvider, tileOptions);
-
-    if (newTileLayer) {
-      setTileLayer(newTileLayer);
+        if (newTileLayer) {
+          setTileLayer(newTileLayer);
+        }
+      }
     }
   };
   useEffect(refreshTile, [
@@ -323,7 +329,7 @@ export default function useLeaflet(
           debounceTime(50)
         )
         .subscribe(([newCenter, newZoom]) => {
-          if (map) {
+          if (map !== null && newCenter !== null && newZoom !== null) {
             service.changeView(map, newCenter, newZoom);
           }
         }),

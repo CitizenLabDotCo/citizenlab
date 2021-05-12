@@ -10,7 +10,12 @@ import Outlet from 'components/Outlet';
 import useAppConfiguration from 'hooks/useAppConfiguration';
 
 // utils
-import { getCenter, getZoomLevel, getTileProvider } from 'utils/map';
+import {
+  getCenter,
+  getZoomLevel,
+  getTileProvider,
+  getTileOptions,
+} from 'utils/map';
 import { ILeafletMapConfig } from 'components/UI/LeafletMap/useLeaflet';
 
 // styling
@@ -144,6 +149,10 @@ const Map = memo<IMapProps & IMapConfigProps>(
       return getTileProvider(appConfig);
     }, [appConfig]);
 
+    const tileOptions = useMemo(() => {
+      return getTileOptions();
+    }, [tileProvider]);
+
     const [leafletMapConfig, setLeafletMapConfig] = useState<ILeafletMapConfig>(
       {
         points,
@@ -151,6 +160,7 @@ const Map = memo<IMapProps & IMapConfigProps>(
         zoom,
         center,
         tileProvider,
+        tileOptions,
         zoomControlPosition,
         layersControlPosition,
       }
