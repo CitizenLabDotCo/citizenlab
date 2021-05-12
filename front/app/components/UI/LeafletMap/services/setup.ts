@@ -44,6 +44,10 @@ export function addTileLayer(
   tileProvider?: string | null,
   tileOptions?: object
 ) {
+  console.log({
+    ...DEFAULT_TILE_OPTIONS,
+    ...tileOptions,
+  });
   return L.tileLayer(tileProvider || DEFAULT_TILE_PROVIDER, {
     ...DEFAULT_TILE_OPTIONS,
     ...tileOptions,

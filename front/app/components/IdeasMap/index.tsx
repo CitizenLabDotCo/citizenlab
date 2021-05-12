@@ -5,10 +5,8 @@ import React, {
   useEffect,
   useLayoutEffect,
 } from 'react';
-// import { LatLng } from 'leaflet';
-import { withRouter, WithRouterProps } from 'react-router';
 import { isNilOrError } from 'utils/helperUtils';
-import { popup, LatLng, Map as LeafletMap } from 'leaflet';
+import { popup, LatLng } from 'leaflet';
 
 // tracking
 import { trackEventByName } from 'utils/analytics';
@@ -44,6 +42,7 @@ import { ScreenReaderOnly } from 'utils/a11y';
 import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
 
 const mapBorderPadding = 60;
+const mapHeight = '80vh';
 
 const Container = styled.div``;
 
@@ -79,7 +78,7 @@ const StyledWarning = styled(Warning)`
 
 const StyledIdeaMapOverlay = styled(IdeaMapOverlay)`
   width: 400px;
-  height: calc(80vh - 30px);
+  height: calc(${mapHeight} - 30px);
   position: absolute;
   display: flex;
   top: 15px;
@@ -114,152 +113,140 @@ const initialInnerContainerLeftMargin = getInnerContainerLeftMargin(
   initialContainerWidth
 );
 
-const IdeasMap = memo<Props & WithRouterProps>(
-  ({ projectIds, phaseId, params, className }) => {
-    const project = useProject({ projectSlug: params.slug });
-    const phase = usePhase(phaseId || null);
-    const ideaMarkers = useIdeaMarkers({ phaseId, projectIds, sort: '-new' });
-    const { windowWidth } = useWindowSize();
+const IdeasMap = memo<Props>(({ projectIds, phaseId, className }) => {
+  const project = useProject({ projectId: projectIds?.[0] });
+  const phase = usePhase(phaseId || null);
+  const ideaMarkers = useIdeaMarkers({ phaseId, projectIds, sort: '-new' });
+  const { windowWidth } = useWindowSize();
 
-    const containerRef = useRef<HTMLDivElement | null>(null);
-    const ideaButtonRef = useRef<HTMLDivElement | null>(null);
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const ideaButtonRef = useRef<HTMLDivElement | null>(null);
 
-    const [selectedLatLng, setSelectedLatLng] = useState<LatLng | null>(null);
-    const [points, setPoints] = useState<Point[]>([]);
-    const [containerWidth, setContainerWidth] = useState(initialContainerWidth);
-    const [innerContainerLeftMargin, setInnerContainerLeftMargin] = useState(
-      initialInnerContainerLeftMargin
-    );
+  const [selectedLatLng, setSelectedLatLng] = useState<LatLng | null>(null);
+  const [points, setPoints] = useState<Point[]>([]);
+  const [containerWidth, setContainerWidth] = useState(initialContainerWidth);
+  const [innerContainerLeftMargin, setInnerContainerLeftMargin] = useState(
+    initialInnerContainerLeftMargin
+  );
 
-    useLayoutEffect(() => {
-      const containerWidth = containerRef.current
-        ?.getBoundingClientRect()
-        .toJSON()?.width;
+  useLayoutEffect(() => {
+    const containerWidth = containerRef.current
+      ?.getBoundingClientRect()
+      .toJSON()?.width;
 
-      if (containerWidth) {
-        setContainerWidth(containerWidth);
-      }
-    });
+    if (containerWidth) {
+      setContainerWidth(containerWidth);
+    }
+  });
 
-    useEffect(() => {
-      const subscriptions = [
-        ideaMapCardSelected$.subscribe((selectedIdeaId) => {
-          setLeafletMapSelectedMarker(selectedIdeaId);
-        }),
-        leafletMapSelectedMarker$.subscribe((selectedIdeaId) => {
-          if (selectedIdeaId) {
-            trackEventByName(tracks.clickOnIdeaMapMarker, {
-              extra: { selectedIdeaId },
-            });
-          }
-          setIdeaMapCardSelected(selectedIdeaId);
-        }),
-        leafletMapClicked$.subscribe(({ map, latLng }) => {
-          if (map && latLng) {
-            handleOnMapClick(map, latLng);
-          }
-        }),
-      ];
+  useEffect(() => {
+    const subscriptions = [
+      ideaMapCardSelected$.subscribe((selectedIdeaId) => {
+        setLeafletMapSelectedMarker(selectedIdeaId);
+      }),
+      leafletMapSelectedMarker$.subscribe((selectedIdeaId) => {
+        if (selectedIdeaId) {
+          trackEventByName(tracks.clickOnIdeaMapMarker, {
+            extra: { selectedIdeaId },
+          });
+        }
+        setIdeaMapCardSelected(selectedIdeaId);
+      }),
+      leafletMapClicked$.subscribe(({ map, latLng }) => {
+        const ideaPostingEnabled =
+          (!isNilOrError(project) && project.attributes.posting_enabled) ||
+          (!isNilOrError(phase) && phase.attributes.posting_enabled);
 
-      return () => {
-        subscriptions.forEach((subscription) => subscription.unsubscribe());
-      };
-    }, []);
+        if (ideaPostingEnabled && map && latLng && ideaButtonRef?.current) {
+          setSelectedLatLng(latLng);
+          popup()
+            .setLatLng(latLng)
+            .setContent(ideaButtonRef.current)
+            .openOn(map);
+        }
+      }),
+    ];
 
-    useEffect(() => {
-      setInnerContainerLeftMargin(
-        getInnerContainerLeftMargin(windowWidth, containerWidth)
-      );
-    }, [windowWidth, containerWidth]);
-
-    useEffect(() => {
-      const ideaPoints: Point[] = [];
-
-      if (!isNilOrError(ideaMarkers) && ideaMarkers.length > 0) {
-        ideaMarkers.forEach((ideaMarker) => {
-          if (
-            ideaMarker.attributes &&
-            ideaMarker.attributes.location_point_geojson
-          ) {
-            ideaPoints.push({
-              ...ideaMarker.attributes.location_point_geojson,
-              id: ideaMarker.id,
-            });
-          }
-        });
-      }
-
-      setPoints(ideaPoints);
-    }, [ideaMarkers]);
-
-    const handleOnMapClick = (map: LeafletMap, latLng: LatLng) => {
-      setSelectedLatLng(latLng);
-
-      const ideaPostingEnabled =
-        (!isNilOrError(project) && project.attributes.posting_enabled) ||
-        (!isNilOrError(phase) && phase.attributes.posting_enabled);
-
-      if (ideaPostingEnabled && ideaButtonRef?.current) {
-        console.log('bleh');
-        popup()
-          .setLatLng(latLng)
-          .setContent(ideaButtonRef?.current)
-          .openOn(map);
-      }
-
-      return;
+    return () => {
+      subscriptions.forEach((subscription) => subscription.unsubscribe());
     };
+  }, [project, phase]);
 
-    if (!isNilOrError(project)) {
-      return (
-        <Container ref={containerRef} className={className || ''}>
-          <InnerContainer leftMargin={innerContainerLeftMargin}>
-            {ideaMarkers && ideaMarkers.length > 0 && points.length === 0 && (
-              <StyledWarning
-                text={<FormattedMessage {...messages.nothingOnMapWarning} />}
-              />
-            )}
+  useEffect(() => {
+    setInnerContainerLeftMargin(
+      getInnerContainerLeftMargin(windowWidth, containerWidth)
+    );
+  }, [windowWidth, containerWidth]);
 
-            <ScreenReaderOnly>
-              <FormattedMessage {...messages.a11y_mapTitle} />
-            </ScreenReaderOnly>
+  useEffect(() => {
+    const ideaPoints: Point[] = [];
 
-            <Map
-              projectId={project.id}
-              points={points}
-              mapHeight="80vh"
-              noMarkerClustering={true}
-              zoomControlPosition="topright"
-              layersControlPosition="bottomright"
-            />
-
-            {projectIds && !isNilOrError(project) && (
-              <StyledIdeaMapOverlay
-                projectIds={projectIds}
-                projectId={project?.id}
-                phaseId={phaseId}
-              />
-            )}
-
-            <IdeaButtonWrapper
-              className="create-idea-wrapper"
-              ref={ideaButtonRef}
-            >
-              <IdeaButton
-                projectId={project.id}
-                phaseId={phaseId || undefined}
-                participationContextType={phaseId ? 'phase' : 'project'}
-                latLng={selectedLatLng}
-                inMap={true}
-              />
-            </IdeaButtonWrapper>
-          </InnerContainer>
-        </Container>
-      );
+    if (!isNilOrError(ideaMarkers) && ideaMarkers.length > 0) {
+      ideaMarkers.forEach((ideaMarker) => {
+        if (
+          ideaMarker.attributes &&
+          ideaMarker.attributes.location_point_geojson
+        ) {
+          ideaPoints.push({
+            ...ideaMarker.attributes.location_point_geojson,
+            id: ideaMarker.id,
+          });
+        }
+      });
     }
 
-    return null;
-  }
-);
+    setPoints(ideaPoints);
+  }, [ideaMarkers]);
 
-export default withRouter(IdeasMap);
+  if (!isNilOrError(project)) {
+    return (
+      <Container ref={containerRef} className={className || ''}>
+        <InnerContainer leftMargin={innerContainerLeftMargin}>
+          {ideaMarkers && ideaMarkers.length > 0 && points.length === 0 && (
+            <StyledWarning
+              text={<FormattedMessage {...messages.nothingOnMapWarning} />}
+            />
+          )}
+
+          <ScreenReaderOnly>
+            <FormattedMessage {...messages.a11y_mapTitle} />
+          </ScreenReaderOnly>
+
+          <Map
+            projectId={project.id}
+            points={points}
+            mapHeight={mapHeight}
+            noMarkerClustering={true}
+            zoomControlPosition="topright"
+            layersControlPosition="bottomright"
+          />
+
+          {projectIds && !isNilOrError(project) && (
+            <StyledIdeaMapOverlay
+              projectIds={projectIds}
+              projectId={project?.id}
+              phaseId={phaseId}
+            />
+          )}
+
+          <IdeaButtonWrapper
+            className="create-idea-wrapper"
+            ref={ideaButtonRef}
+          >
+            <IdeaButton
+              projectId={project.id}
+              phaseId={phaseId || undefined}
+              participationContextType={phaseId ? 'phase' : 'project'}
+              latLng={selectedLatLng}
+              inMap={true}
+            />
+          </IdeaButtonWrapper>
+        </InnerContainer>
+      </Container>
+    );
+  }
+
+  return null;
+});
+
+export default IdeasMap;

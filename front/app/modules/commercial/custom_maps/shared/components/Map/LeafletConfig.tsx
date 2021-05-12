@@ -59,10 +59,16 @@ const LeafletConfig = memo<Props & IMapConfigProps>(
     }, [projectId, mapConfig]);
 
     const newLeafletConfig = useMemo(() => {
-      const tileOptions = {
-        attribution:
-          '\u003ca href="https://www.maptiler.com/copyright/" target="_blank"\u003e\u0026copy; MapTiler\u003c/a\u003e \u003ca href="https://www.openstreetmap.org/copyright" target="_blank"\u003e\u0026copy; OpenStreetMap contributors\u003c/a\u003e',
-      };
+      let tileOptions = {};
+
+      if (tileProvider.includes('maptiler')) {
+        tileOptions = {
+          tileSize: 512,
+          zoomOffset: -1,
+          attribution:
+            '\u003ca href="https://www.maptiler.com/copyright/" target="_blank"\u003e\u0026copy; MapTiler\u003c/a\u003e \u003ca href="https://www.openstreetmap.org/copyright" target="_blank"\u003e\u0026copy; OpenStreetMap contributors\u003c/a\u003e',
+        };
+      }
 
       return {
         geoJsonLayers,

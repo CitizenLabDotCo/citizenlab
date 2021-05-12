@@ -17,6 +17,9 @@ import { ILeafletMapConfig } from 'components/UI/LeafletMap/useLeaflet';
 import styled from 'styled-components';
 import { media, defaultOutline, defaultCardStyle } from 'utils/styleUtils';
 
+// typings
+import { LatLngTuple } from 'leaflet';
+
 export interface Point extends GeoJSON.Point {
   data?: any;
   id: string;
@@ -87,7 +90,7 @@ const CloseIcon = styled(Icon)`
 `;
 
 export interface IMapConfigProps {
-  centerCoordinates?: GeoJSON.Position;
+  centerCoordinates?: LatLngTuple;
   points?: Point[];
   zoomLevel?: number;
   areas?: GeoJSON.Polygon[];

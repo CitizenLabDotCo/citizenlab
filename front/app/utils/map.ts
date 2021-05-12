@@ -1,5 +1,10 @@
 import { isNilOrError } from 'utils/helperUtils';
 import { IAppConfiguration } from 'services/appConfiguration';
+import {
+  DEFAULT_TILE_PROVIDER,
+  DEFAULT_CENTER,
+  DEFAULT_ZOOM,
+} from 'components/UI/LeafletMap/config';
 
 export const getCenter = (
   centerCoordinates: GeoJSON.Position | undefined,
@@ -12,7 +17,7 @@ export const getCenter = (
     !isNilOrError(appConfig) &&
     appConfig?.data?.attributes?.settings?.maps?.map_center?.long;
 
-  let center: L.LatLngTuple = [0, 0];
+  let center: L.LatLngTuple = [DEFAULT_CENTER[0], DEFAULT_CENTER[1]];
 
   if (centerCoordinates !== undefined) {
     center = centerCoordinates as L.LatLngTuple;
@@ -35,7 +40,7 @@ export const getZoomLevel = (
   const tenantZoomLevel =
     !isNilOrError(appConfig) &&
     (appConfig?.data?.attributes?.settings?.maps?.zoom_level as any);
-  return parseInt(zoom || tenantZoomLevel || 16, 10);
+  return parseInt(zoom || tenantZoomLevel || DEFAULT_ZOOM, 10);
 };
 
 export const getTileProvider = (
@@ -44,5 +49,5 @@ export const getTileProvider = (
   const tileProvider =
     !isNilOrError(appConfig) &&
     (appConfig?.data?.attributes?.settings?.maps?.tile_provider as string);
-  return tileProvider || null;
+  return tileProvider || DEFAULT_TILE_PROVIDER;
 };
