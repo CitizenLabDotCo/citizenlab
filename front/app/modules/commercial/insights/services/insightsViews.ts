@@ -28,12 +28,8 @@ export interface IInsightsView {
 }
 
 interface IInsightsViewObject {
-  id: string;
+  scope_id: string;
   name: string;
-}
-
-export interface IInsightsViewPayload {
-  view: IInsightsViewObject;
 }
 
 const insightsViewsEndpoint = 'insights/views';
@@ -55,9 +51,9 @@ export function insightsViewStream(
   });
 }
 
-export function addInsightsView(data: IInsightsViewObject) {
+export function addInsightsView(object: IInsightsViewObject) {
   return streams.add<IInsightsView>(`${API_PATH}/${insightsViewsEndpoint}`, {
-    view: data,
+    view: object,
   });
 }
 
