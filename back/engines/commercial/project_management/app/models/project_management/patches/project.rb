@@ -6,7 +6,7 @@ module ProjectManagement
       # This method makes projects, as permission scopes, 'moderatable'.
       # See Permission#moderator?
       def moderators
-        User.project_moderator(id)
+        ::User.project_moderator(id)
       end
     end
   end
