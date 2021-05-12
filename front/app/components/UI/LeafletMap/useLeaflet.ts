@@ -13,6 +13,8 @@ import {
 import {
   setLeafletMapSelectedMarker,
   setLeafletMapClicked,
+  setLeafletMapCenter,
+  setLeafletMapZoom,
   leafletMapHoveredMarker$,
   leafletMapSelectedMarker$,
   leafletMapCenter$,
@@ -26,8 +28,6 @@ import './simplestyle';
 import marker from 'leaflet/dist/images/marker-icon.png';
 import marker2x from 'leaflet/dist/images/marker-icon-2x.png';
 import markerShadow from 'leaflet/dist/images/marker-shadow.png';
-
-import { setLeafletMapCenter, setLeafletMapZoom } from './events';
 
 import service from './services';
 

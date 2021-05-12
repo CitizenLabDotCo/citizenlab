@@ -107,9 +107,9 @@ const MapCenterAndZoomConfig = memo<Props & InjectedIntlProps>(
     const [processing, setProcessing] = useState(false);
     const [errors, setErrors] = useState<{ [key: string]: any }>({});
     const [formValues, setFormValues] = useState<IFormValues>({
+      defaultZoom,
       defaultLat: defaultLat.toString(),
       defaultLng: defaultLng.toString(),
-      defaultZoom,
     });
 
     useEffect(() => {

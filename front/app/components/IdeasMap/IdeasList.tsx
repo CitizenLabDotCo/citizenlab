@@ -192,7 +192,9 @@ const IdeasList = memo<Props>(
 
           {ideas &&
             ideas.length > 0 &&
-            ideas.map((idea) => <StyledIdeaMapCard ideaId={idea.id} />)}
+            ideas.map((idea) => (
+              <StyledIdeaMapCard ideaId={idea.id} key={idea.id} />
+            ))}
 
           {(ideas === null || ideas?.length === 0) && (
             <EmptyContainer id="ideas-empty">
