@@ -11,7 +11,7 @@ module ProjectManagement
       private
 
       def remove_moderators(project_id)
-        User.project_moderator(project_id).all.each do |moderator|
+        ::User.project_moderator(project_id).all.each do |moderator|
           moderator.delete_role 'project_moderator', project_id: project_id
           moderator.save!
         end
