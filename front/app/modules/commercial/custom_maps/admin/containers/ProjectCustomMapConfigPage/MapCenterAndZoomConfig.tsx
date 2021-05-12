@@ -121,9 +121,9 @@ const MapCenterAndZoomConfig = memo<Props & InjectedIntlProps>(
 
         formChange(
           {
+            defaultZoom,
             defaultLat: defaultLat.toString(),
             defaultLng: defaultLng.toString(),
-            defaultZoom,
           },
           false
         );
