@@ -5,14 +5,16 @@ import { InjectedIntlProps } from 'react-intl';
 
 // components
 import EmptyState from './EmptyState';
-// import InsightsList from './InsightsList';
+import useInsightsViews from '../../../hooks/useInsightsViews';
+import InsightsList from './InsightsList';
 
 const Insights: React.FC<InjectedIntlProps> = () => {
+  const insightsViews = useInsightsViews();
+  console.log(insightsViews);
   return (
     <div>
       <EmptyState />
-      {/* TODO: Add logic on which component to show
-      <InsightsList />  */}
+      <InsightsList />
     </div>
   );
 };
