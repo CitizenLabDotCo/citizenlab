@@ -21,6 +21,9 @@ module Frontend
       when Page
         subroute = 'pages'
         slug = model_instance.slug
+      when User
+        subroute = 'profile'
+        slug = model_instance.slug
       when Comment ### comments do not have a URL yet, we return the post URL for now
         return model_to_url(model_instance.post, options)
       when OfficialFeedback ### official feedbacks do not have a URL yet, we return the post URL for now
@@ -149,4 +152,5 @@ module Frontend
   end
 end
 
+Frontend::UrlService.include(UserConfirmation::Patches::Frontend::UrlService)
 Frontend::UrlService.prepend_if_ee('ProjectFolders::Patches::Frontend::UrlService')

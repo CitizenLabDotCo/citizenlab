@@ -1,4 +1,8 @@
 module ApiHelper
+  def set_api_content_type
+    header 'Content-Type', 'application/json'
+  end
+
   def json_parse(body)
     JSON.parse(body, symbolize_names: true)
   end

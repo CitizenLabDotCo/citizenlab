@@ -1,5 +1,7 @@
 import { loadModules } from 'utils/moduleUtils';
 
+import userConfirmationConfiguration from './free/user_confirmation';
+
 import projectFoldersConfiguration from './commercial/project_folders';
 import smartGroupsConfiguration from './commercial/smart_groups';
 import userCustomFieldsConfiguration from './commercial/user_custom_fields';
@@ -173,5 +175,9 @@ export default loadModules([
   {
     configuration: customStyleConfiguration,
     isEnabled: CL_CONFIG['modules']['commercial/custom_style'],
+  },
+  {
+    configuration: userConfirmationConfiguration,
+    isEnabled: CL_CONFIG['modules']['free/user_confirmation'],
   },
 ]);
