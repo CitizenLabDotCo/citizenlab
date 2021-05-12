@@ -13,8 +13,12 @@ Polls::Engine.routes.draw do
   		end
       post 'projects/:project_id/poll_responses' => 'responses#create'
       get 'projects/:project_id/poll_responses/as_xlsx' => 'responses#index_xlsx'
+      get 'projects/:project_id/poll_responses/responses_count' => 'responses#responses_count'
+
       post 'phases/:phase_id/poll_responses' => 'responses#create'
       get 'phases/:phase_id/poll_responses/as_xlsx' => 'responses#index_xlsx'
+      get 'phases/:phase_id/poll_responses/responses_count' => 'responses#responses_count'
+
     end
   end
 end

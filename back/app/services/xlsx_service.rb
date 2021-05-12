@@ -141,7 +141,8 @@ class XlsxService
     generate_xlsx 'Users', columns, users
   end
 
-  def generate_ideas_xlsx(ideas, view_private_attributes: false, with_tags: false)
+  # extended by engines (ie tagging) to implement ideas with additional attributes
+  def generate_idea_xlsx_columns(ideas, view_private_attributes: false, with_tags: false)
     columns = [
       { header: 'id',                   f: ->(i) { i.id }, skip_sanitization: true },
       { header: 'title',                f: ->(i) { multiloc_service.t(i.title_multiloc) } },
@@ -168,6 +169,12 @@ class XlsxService
     ]
     columns.concat custom_field_columns :author, view_private_attributes
     columns.reject! { |c| %w[author_email assignee_email author_id].include?(c[:header]) } unless view_private_attributes
+    columns
+  end
+
+  def generate_ideas_xlsx(ideas, view_private_attributes: false, with_tags: false)
+    columns = generate_idea_xlsx_columns(ideas, view_private_attributes: view_private_attributes, with_tags: with_tags)
+
     generate_xlsx 'Ideas', columns, ideas
   end
 

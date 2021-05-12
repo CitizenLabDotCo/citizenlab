@@ -4,6 +4,7 @@ import { omitBy, isNil, isEmpty } from 'lodash-es';
 
 // components
 import ModerationContentCell from './ModerationContentCell';
+import InappropriateContentWarning from './InappropriateContentWarning';
 import Checkbox from 'components/UI/Checkbox';
 import { Icon } from 'cl2-component-library';
 import Tippy from '@tippyjs/react';
@@ -28,8 +29,9 @@ import { rgba } from 'polished';
 import { IModerationData } from '../../services/moderations';
 import { Multiloc } from 'typings';
 
-const Container = styled.tr<{ bgColor: string }>`
-  background: ${({ bgColor }) => bgColor};
+const Container = styled.tr<{ bgColor: string; flagged: boolean }>`
+  background: ${({ bgColor, flagged }) =>
+    flagged ? colors.clRedErrorBackground : bgColor};
 `;
 
 const StyledCheckbox = styled(Checkbox)`
@@ -71,6 +73,10 @@ const GoToIcon = styled(Icon)`
   &:hover {
     fill: ${colors.adminTextColor};
   }
+`;
+
+const StyledModerationContentCell = styled(ModerationContentCell)`
+  margin-bottom: 20px;
 `;
 
 interface Props {
@@ -147,8 +153,15 @@ const ModerationRow = memo<Props & InjectedIntlProps>(
       []
     );
 
+    // const inappropriateContentFlag = moderation.attributes.flagged;
+    const inappropriateContentFlag = true;
+
     return (
-      <Container className={className} bgColor={bgColor}>
+      <Container
+        className={`${className}`}
+        flagged={inappropriateContentFlag}
+        bgColor={bgColor}
+      >
         <td className="checkbox">
           <StyledCheckbox checked={selected} onChange={handleOnChecked} />
         </td>
@@ -197,10 +210,11 @@ const ModerationRow = memo<Props & InjectedIntlProps>(
           {isEmpty(moderation.attributes.belongs_to) && <>-</>}
         </td>
         <td className="content">
-          <ModerationContentCell
+          <StyledModerationContentCell
             contentTitle={!isEmpty(contentTitle) ? contentTitle : null}
             contentBody={contentBody}
           />
+          {inappropriateContentFlag && <InappropriateContentWarning />}
         </td>
         <td>
           <Tippy
