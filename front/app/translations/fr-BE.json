@@ -155,6 +155,8 @@
   "app.components.IdeaForm.topicsTitle": "Thèmes",
   "app.components.IdeasMap.a11y_mapTitle": "Aperçu cartographique",
   "app.components.IdeasMap.ideaOnMapReadMore": "Lire suite",
+  "app.components.IdeasMap.noFilteredResultsFound": "",
+  "app.components.IdeasMap.noResultsFound": "",
   "app.components.IdeasMap.nothingOnMapWarning": "Il n'y a rien à voir ici ! Il y a peut-être plus à voir dans la visualisation sous forme de liste.",
   "app.components.IdeasMap.or": "ou",
   "app.components.IdeasMap.postingHereImpossible": "Il n'est actuellement pas possible de poster une idée ici.",

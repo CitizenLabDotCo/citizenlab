@@ -155,6 +155,8 @@
   "app.components.IdeaForm.topicsTitle": "Subiecte",
   "app.components.IdeasMap.a11y_mapTitle": "Prezentare generală a hărții",
   "app.components.IdeasMap.ideaOnMapReadMore": "Citește mai mult",
+  "app.components.IdeasMap.noFilteredResultsFound": "",
+  "app.components.IdeasMap.noResultsFound": "",
   "app.components.IdeasMap.nothingOnMapWarning": "Nu este nimic de văzut aici! S-ar putea să fie mai multe de văzut în vizualizarea listei.",
   "app.components.IdeasMap.or": "sau",
   "app.components.IdeasMap.postingHereImpossible": "Pentru moment nu este posibilă publicarea unei idei aici.",
