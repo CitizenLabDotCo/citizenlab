@@ -96,7 +96,7 @@ exports.appLocalePairs = {
   'pt-BR': 'Português (Brasil)',
   'ar-SA': 'عربى',
   mi: 'Māori',
-  'sr-Latn': 'Srpski (latinica)',
+  'sr-Latn': 'Serbian (Latin)',
 };
 exports.appGraphqlLocalePairs = {
   en: 'en',
@@ -106,7 +106,6 @@ exports.appGraphqlLocalePairs = {
   nb: 'nb',
   da: 'da',
   es: 'es',
-  mi: 'mi',
   enGb: 'en-GB',
   enCa: 'en-CA',
   frBe: 'fr-BE',
@@ -124,7 +123,8 @@ exports.appGraphqlLocalePairs = {
   roRo: 'ro-RO',
   ptBr: 'pt-BR',
   arSa: 'ar',
-  srLatn: 'Srpski (latinica)',
+  mi: 'mi',
+  srLatn: 'sr-Latn',
 };
 exports.shortenedAppLocalePairs = {
   en: 'English',
@@ -146,7 +146,7 @@ exports.shortenedAppLocalePairs = {
   'pt-BR': 'Português',
   'ar-SA': 'عربى',
   mi: 'Māori',
-  'sr-Latn': 'Srpski',
+  'sr-Latn': 'Serbian',
 };
 // see https://www.ge.com/digital/documentation/predix-services/c_custom_locale_support.html
 exports.appLocalesMomentPairs = {
