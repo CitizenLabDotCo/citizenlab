@@ -55,13 +55,13 @@ export function insightsViewStream(
   });
 }
 
-export function addCustomFieldForUsers(data: IInsightsViewObject) {
+export function addInsightsView(data: IInsightsViewObject) {
   return streams.add<IInsightsView>(`${API_PATH}/${insightsViewsEndpoint}`, {
     view: data,
   });
 }
 
-export function updateCustomFieldForUsers(
+export function updateInsightsView(
   insightsViewId: string,
   object: IInsightsViewObject
 ) {
