@@ -33,7 +33,7 @@ module ProjectManagement
       end
 
       def moderatable_projects
-        Project.where(id: moderatable_project_ids)
+        ::Project.where(id: moderatable_project_ids)
       end
     end
   end
