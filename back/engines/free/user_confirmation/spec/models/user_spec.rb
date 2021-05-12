@@ -40,7 +40,7 @@ RSpec.describe User, type: :model do
       expect(user.should_require_confirmation?).to be false
     end
 
-    it 'returns false if the user is a project moderator' do
+    it 'returns false if the user is a project moderator', skip: !defined?(ProjectManagement::Engine) do
       user.add_role('project_moderator', 'project_id' => 'some_id')
       user.save!
       expect(user.should_require_confirmation?).to be false
