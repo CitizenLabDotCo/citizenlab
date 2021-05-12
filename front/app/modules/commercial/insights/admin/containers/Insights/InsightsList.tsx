@@ -67,6 +67,9 @@ const InsightsListItem = styled.div`
   }
   .buttons {
     display: flex;
+    > * {
+      margin-left: 8px;
+    }
   }
 `;
 
