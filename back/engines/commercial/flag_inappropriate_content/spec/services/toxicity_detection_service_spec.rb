@@ -30,6 +30,13 @@ describe FlagInappropriateContent::ToxicityDetectionService do
       expect(comment.reload.inappropriate_content_flag.deleted_at).to be_blank
       expect(comment.reload.inappropriate_content_flag.toxicity_label).to be_present
     end
+
+    it "creates no flag if flagging feature is disabled" do
+      SettingsService.new.deactivate_feature! 'flag_inappropriate_content'
+      idea = create(:idea, title_multiloc: {'en' => 'An idea for my fellow wankers'})
+      service.flag_toxicity! idea, attributes: [:title_multiloc]
+      expect(idea.reload.inappropriate_content_flag).to be_blank
+    end
   end
 
   private

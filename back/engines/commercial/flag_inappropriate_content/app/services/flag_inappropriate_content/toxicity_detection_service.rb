@@ -1,6 +1,6 @@
 module FlagInappropriateContent
   class ToxicityDetectionService
-    def flag_toxicity! obj, attributes: [] # TODO execute in bg job
+    def flag_toxicity! obj, attributes: []
       return if !AppConfiguration.instance.feature_activated? 'flag_inappropriate_content'
 
       texts = extract_texts obj, attributes

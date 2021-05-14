@@ -6,11 +6,12 @@ module FlagInappropriateContent
 
       def after_create idea, user
         super
-        ToxicityDetectionService.new.flag_toxicity! idea, attributes: SUPPORTED_ATTRS
+        ToxicityDetectionJob.perform_later idea, attributes: SUPPORTED_ATTRS
       end
 
       def after_update idea, user
-        ToxicityDetectionService.new.flag_toxicity! idea, attributes: updated_supported_attrs(idea) # before super to reliably detect attribute changes
+        atrs = updated_supported_attrs idea
+        ToxicityDetectionJob.perform_later idea, attributes: atrs if atrs.present? # before super to reliably detect attribute changes
         super
       end
 
