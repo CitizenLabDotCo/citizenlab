@@ -55,21 +55,26 @@ resource 'Ideas' do
     end
 
     let(:id) { @idea.id }
-    let(:title_multiloc) { {'en' => 'Changed title' } }
-    let(:location_description) { 'Watkins Road 8' }
 
-    example 'Toxicity detection job is enqueued when updating an idea\'s title' do
-      SettingsService.new.activate_feature! 'flag_inappropriate_content'
-      expect {
-        do_request
-      }.to have_enqueued_job(ToxicityDetectionJob) # .with(@idea, attributes: [:title_multiloc, :location_description])
+    describe do
+      let(:title_multiloc) { {'en' => 'Changed title' } }
+      let(:location_description) { 'Watkins Road 8' }
+
+      example 'Toxicity detection job is enqueued when updating an idea\'s title and location description' do
+        expect {
+          do_request
+        }.to have_enqueued_job(ToxicityDetectionJob).with(@idea, attributes: [:title_multiloc, :location_description])
+      end
     end
 
-    example 'No toxicity detection job is enqueued when updating idea attributes without text' do
-      SettingsService.new.activate_feature! 'flag_inappropriate_content'
-      expect {
-        do_request(idea: {budget: 11})
-      }.not_to have_enqueued_job(ToxicityDetectionJob)
+    describe do
+      let(:budget) { 11 }
+
+      example 'No toxicity detection job is enqueued when updating idea attributes without text' do
+        expect {
+          do_request
+        }.not_to have_enqueued_job(ToxicityDetectionJob)
+      end
     end
   end
 

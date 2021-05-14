@@ -4,6 +4,7 @@ module FlagInappropriateContent
       return if !AppConfiguration.instance.feature_activated? 'flag_inappropriate_content'
 
       texts = extract_texts obj, attributes
+      return if texts.blank?
       res = request_toxicity_detection texts
       create_or_update_flag_toxicity! obj, res if toxicity_detected? res
     end
