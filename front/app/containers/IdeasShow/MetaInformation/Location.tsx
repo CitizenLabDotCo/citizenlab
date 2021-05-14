@@ -124,7 +124,7 @@ const Location = memo<Props & InjectedIntlProps>(
                 <Map
                   projectId={projectId}
                   points={points}
-                  centerCoordinates={centerLatLng}
+                  centerLatLng={centerLatLng}
                   zoomLevel={15}
                 />
               </MapContainer>

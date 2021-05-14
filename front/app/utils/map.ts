@@ -9,7 +9,7 @@ import {
 import { LatLngTuple } from 'leaflet';
 
 export const getCenter = (
-  centerCoordinates?: LatLngTuple | null,
+  centerLatLng?: LatLngTuple | null,
   appConfig?: IAppConfiguration | null | Error
 ) => {
   const tenantCenterLat =
@@ -19,8 +19,8 @@ export const getCenter = (
     !isNilOrError(appConfig) &&
     appConfig?.data?.attributes?.settings?.maps?.map_center?.long;
 
-  if (!isNilOrError(centerCoordinates)) {
-    return centerCoordinates;
+  if (!isNilOrError(centerLatLng)) {
+    return centerLatLng;
   } else if (
     tenantCenterLat !== undefined &&
     tenantCenterLat !== false &&

@@ -13,7 +13,7 @@ import {
 } from 'utils/map';
 
 export const getCenter = (
-  centerCoordinates: LatLngTuple | null | undefined,
+  centerLatLng: LatLngTuple | null | undefined,
   appConfig: IAppConfiguration | undefined | null | Error,
   mapConfig: IMapConfig
 ) => {
@@ -24,8 +24,8 @@ export const getCenter = (
     ? mapConfig?.attributes.center_geojson?.coordinates[0]
     : null;
 
-  if (centerCoordinates) {
-    return centerCoordinates as LatLngTuple;
+  if (centerLatLng) {
+    return centerLatLng as LatLngTuple;
   } else if (!isNilOrError(mapConfigLng) && !isNilOrError(mapConfigLat)) {
     return [mapConfigLat, mapConfigLng] as LatLngTuple;
   }

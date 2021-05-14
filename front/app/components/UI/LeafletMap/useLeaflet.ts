@@ -87,7 +87,7 @@ export default function useLeaflet(
     layerPopup,
   }: ILeafletMapConfig
 ) {
-  // State and memos
+  // State
   const [map, setMap] = useState<L.Map | null>(null);
   const [markers, setMarkers] = useState<L.Marker[] | null>(null);
   const [tileLayer, setTileLayer] = useState<L.Layer | null>(null);

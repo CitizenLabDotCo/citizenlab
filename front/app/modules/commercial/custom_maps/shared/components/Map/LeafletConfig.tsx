@@ -32,20 +32,14 @@ interface Props {
 }
 
 const LeafletConfig = memo<Props & IMapConfigProps>(
-  ({
-    onLeafletConfigChange,
-    projectId,
-    centerCoordinates,
-    zoomLevel,
-    points,
-  }) => {
+  ({ onLeafletConfigChange, projectId, centerLatLng, zoomLevel, points }) => {
     const localize = useLocalize();
     const appConfig = useAppConfiguration();
     const mapConfig = useMapConfig({ projectId });
 
     const center = useMemo(() => {
-      return getCenter(centerCoordinates, appConfig, mapConfig);
-    }, [centerCoordinates, appConfig, mapConfig]);
+      return getCenter(centerLatLng, appConfig, mapConfig);
+    }, [centerLatLng, appConfig, mapConfig]);
 
     const zoom = useMemo(() => {
       return getZoomLevel(zoomLevel, appConfig, mapConfig);

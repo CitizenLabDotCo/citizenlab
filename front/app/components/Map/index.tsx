@@ -95,7 +95,7 @@ const CloseIcon = styled(Icon)`
 `;
 
 export interface IMapConfigProps {
-  centerCoordinates?: LatLngTuple;
+  centerLatLng?: LatLngTuple;
   points?: Point[];
   zoomLevel?: number;
   areas?: GeoJSON.Polygon[];
@@ -116,7 +116,7 @@ export interface IMapProps {
 const Map = memo<IMapProps & IMapConfigProps>(
   ({
     projectId,
-    centerCoordinates,
+    centerLatLng,
     zoomLevel,
     mapHeight,
     points,
@@ -131,15 +131,15 @@ const Map = memo<IMapProps & IMapConfigProps>(
     const appConfig = useAppConfiguration();
 
     const baseMapConfigProps: IMapConfigProps = {
-      centerCoordinates,
+      centerLatLng,
       zoomLevel,
       mapHeight,
       points,
     };
 
     const center = useMemo(() => {
-      return getCenter(centerCoordinates, appConfig);
-    }, [centerCoordinates, appConfig]);
+      return getCenter(centerLatLng, appConfig);
+    }, [centerLatLng, appConfig]);
 
     const zoom = useMemo(() => {
       return getZoomLevel(zoomLevel, appConfig);
