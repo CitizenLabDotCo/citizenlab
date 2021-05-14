@@ -54,14 +54,14 @@ const configuration: ModuleConfiguration = {
         return null;
       }
 
-      const confirmationAlreadyHappened =
+      const confirmationRequired =
         !isNilOrError(user) &&
         // When we allow users to reconfirm their emails, we should stop checking for registration_completed_at.
-        (user?.attributes?.confirmation_required ||
-          user?.attributes?.registration_completed_at);
+        user?.attributes?.confirmation_required &&
+        !user?.attributes?.registration_completed_at;
 
       if (
-        !confirmationAlreadyHappened &&
+        confirmationRequired &&
         isUserConfirmationEnabled &&
         !metaData.requiresConfirmation
       ) {
