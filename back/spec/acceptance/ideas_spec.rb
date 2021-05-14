@@ -624,14 +624,6 @@ resource "Ideas" do
         expect(project.reload.ideas_count).to eq 1
       end
 
-      # TODO move to enigine
-      example "Toxicity detection job is enqueued when creating an idea" do
-        SettingsService.new.activate_feature! 'flag_inappropriate_content'
-        expect {
-          do_request
-        }.to have_enqueued_job(ToxicityDetectionJob)
-      end
-
       example "Check for the automatic creation of an upvote by the author when an idea is created", document: false do
         do_request
         json_response = json_parse(response_body)
@@ -829,22 +821,6 @@ resource "Ideas" do
         expect(json_response.dig(:data,:relationships,:areas,:data).map{|d| d[:id]}).to match_array area_ids
         expect(json_response.dig(:data,:attributes,:location_point_geojson)).to eq location_point_geojson
         expect(json_response.dig(:data,:attributes,:location_description)).to eq location_description
-      end
-
-      # TODO move to enigine
-      example "Toxicity detection job is enqueued when updating an idea's title" do
-        SettingsService.new.activate_feature! 'flag_inappropriate_content'
-        expect {
-          do_request
-        }.to have_enqueued_job(ToxicityDetectionJob).with(@idea, attributes: [:title_multiloc, :location_description])
-      end
-
-      # TODO move to enigine
-      example "No toxicity detection job is enqueued when updating idea attributes without text" do
-        SettingsService.new.activate_feature! 'flag_inappropriate_content'
-        expect {
-          do_request(idea: {author_id: create(:user).id})
-        }.not_to have_enqueued_job(ToxicityDetectionJob)
       end
 
       example "Check for the automatic creation of an upvote by the author when the publication status of an idea is updated from draft to published", document: false do
