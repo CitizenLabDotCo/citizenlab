@@ -6,7 +6,8 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import { Icon, colors } from 'cl2-component-library';
-import ModalWithMap from './ModalWithMap';
+import Modal from 'components/UI/Modal';
+import Map, { Point } from 'components/Map';
 import { Header, Item } from 'components/IdeasShowComponents/MetaInfoStyles';
 
 // i18n
@@ -14,7 +15,11 @@ import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
-import { isRtl } from 'utils/styleUtils';
+// styling
+import { isRtl, fontSizes, media } from 'utils/styleUtils';
+
+// typings
+import { LatLngTuple } from 'leaflet';
 
 const Container = styled.div`
   display: flex;
@@ -26,10 +31,12 @@ const Container = styled.div`
 `;
 
 const StyledIcon = styled(Icon)`
-  width: 15px;
+  flex: 0 0 16px;
+  width: 16px;
   height: 21px;
   fill: ${colors.label};
   margin-right: 8px;
+
   ${isRtl`
     margin-right: 0;
     margin-left: 8px;
@@ -38,6 +45,8 @@ const StyledIcon = styled(Icon)`
 
 const OpenMapModalButton = styled.button`
   color: ${colors.label};
+  font-size: ${fontSizes.small}px;
+  line-height: 21px;
   text-decoration: underline;
   text-align: left;
   margin: 0;
@@ -49,6 +58,21 @@ const OpenMapModalButton = styled.button`
   &:hover {
     color: ${darken(0.2, colors.label)};
   }
+`;
+
+const Address = styled.div`
+  width: calc(100% - 35px);
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+`;
+
+const MapContainer = styled.div`
+  padding: 30px;
+
+  ${media.smallerThanMinTablet`
+    padding: 20px;
+  `}
 `;
 
 export interface Props {
@@ -72,9 +96,15 @@ const Location = memo<Props & InjectedIntlProps>(
 
     if (!isNilOrError(idea)) {
       const address = idea.attributes.location_description;
-      const geoPosition = idea.attributes.location_point_geojson;
+      const point = idea.attributes.location_point_geojson;
 
-      if (address && geoPosition) {
+      if (address && point) {
+        const points = [point as Point];
+        const centerLatLng = [
+          point.coordinates[1],
+          point.coordinates[0],
+        ] as LatLngTuple;
+
         return (
           <Item>
             <Header>{formatMessage(messages.location)}</Header>
@@ -84,13 +114,21 @@ const Location = memo<Props & InjectedIntlProps>(
                 {address}
               </OpenMapModalButton>
             </Container>
-            <ModalWithMap
-              address={address}
-              position={geoPosition}
-              projectId={projectId}
-              isOpened={isOpened}
-              onCloseModal={closeModal}
-            />
+            <Modal
+              opened={isOpened}
+              close={closeModal}
+              header={<Address>{address}</Address>}
+              width={1150}
+            >
+              <MapContainer>
+                <Map
+                  projectId={projectId}
+                  points={points}
+                  centerCoordinates={centerLatLng}
+                  zoomLevel={15}
+                />
+              </MapContainer>
+            </Modal>
           </Item>
         );
       }

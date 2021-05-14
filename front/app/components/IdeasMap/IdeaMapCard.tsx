@@ -33,7 +33,6 @@ const Container = styled.div`
   &.hovered {
     border-color: #000;
     box-shadow: 0px 0px 0px 1px #000 inset;
-    /* box-shadow: 0px 4px 12px -1px rgba(0, 0, 0, 0.12); */
   }
 `;
 
@@ -49,7 +48,7 @@ const Title = styled.h3`
   max-height: 46px;
   padding: 0;
   margin: 0;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
   overflow: hidden;
   overflow-wrap: break-word;
   word-wrap: break-word;
@@ -64,7 +63,7 @@ const Footer = styled.div`
 const FooterItem = styled.div`
   display: flex;
   align-items: center;
-  margin-right: 22px;
+  margin-right: 25px;
 `;
 
 const DownvoteIcon = styled(Icon)`

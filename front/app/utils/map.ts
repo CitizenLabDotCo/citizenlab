@@ -6,10 +6,11 @@ import {
   DEFAULT_CENTER,
   DEFAULT_ZOOM,
 } from 'components/UI/LeafletMap/config';
+import { LatLngTuple } from 'leaflet';
 
 export const getCenter = (
-  centerCoordinates: GeoJSON.Position | undefined,
-  appConfig: IAppConfiguration | undefined | null | Error
+  centerCoordinates?: LatLngTuple | null,
+  appConfig?: IAppConfiguration | null | Error
 ) => {
   const tenantCenterLat =
     !isNilOrError(appConfig) &&
@@ -18,25 +19,26 @@ export const getCenter = (
     !isNilOrError(appConfig) &&
     appConfig?.data?.attributes?.settings?.maps?.map_center?.long;
 
-  let center: L.LatLngTuple = [DEFAULT_CENTER[0], DEFAULT_CENTER[1]];
-
-  if (centerCoordinates !== undefined) {
-    center = centerCoordinates as L.LatLngTuple;
+  if (!isNilOrError(centerCoordinates)) {
+    return centerCoordinates;
   } else if (
     tenantCenterLat !== undefined &&
     tenantCenterLat !== false &&
     tenantCenterLong !== undefined &&
     tenantCenterLong !== false
   ) {
-    center = [parseFloat(tenantCenterLat), parseFloat(tenantCenterLong)];
+    return [
+      parseFloat(tenantCenterLat),
+      parseFloat(tenantCenterLong),
+    ] as LatLngTuple;
   }
 
-  return center;
+  return DEFAULT_CENTER;
 };
 
 export const getZoomLevel = (
-  zoom: number | undefined,
-  appConfig: IAppConfiguration | undefined | null | Error
+  zoom?: number,
+  appConfig?: IAppConfiguration | null | Error
 ) => {
   const tenantZoomLevel =
     !isNilOrError(appConfig) &&
@@ -45,7 +47,7 @@ export const getZoomLevel = (
 };
 
 export const getTileProvider = (
-  appConfig: IAppConfiguration | undefined | null | Error
+  appConfig?: IAppConfiguration | null | Error
 ) => {
   const tileProvider =
     !isNilOrError(appConfig) &&

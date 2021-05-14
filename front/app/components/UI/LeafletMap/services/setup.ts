@@ -18,7 +18,7 @@ export function init(
     zoomControlPosition?: 'topleft' | 'topright' | 'bottomleft' | 'bottomright';
   }
 ) {
-  const initCenter = center || (DEFAULT_CENTER as L.LatLngTuple);
+  const initCenter = center || DEFAULT_CENTER;
   const initZoom = zoom || DEFAULT_ZOOM;
   const map = ((L.map(mapId, {
     zoomControl: zoomControlPosition ? false : true,

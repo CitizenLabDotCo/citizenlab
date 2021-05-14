@@ -1,10 +1,10 @@
-import React, { memo, useMemo, useState } from 'react';
+import React, { memo, useMemo, useState, lazy, Suspense } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import LeafletMap from 'components/UI/LeafletMap';
 import { Icon } from 'cl2-component-library';
 import Outlet from 'components/Outlet';
+const LeafletMap = lazy(() => import('components/UI/LeafletMap'));
 
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
@@ -191,12 +191,14 @@ const Map = memo<IMapProps & IMapConfigProps>(
             </BoxContainer>
           )}
 
-          <LeafletMap
-            id="mapid"
-            className="e2e-map"
-            mapHeight={mapHeight}
-            {...leafletMapConfig}
-          />
+          <Suspense fallback={false}>
+            <LeafletMap
+              id="mapid"
+              className="e2e-leafletmap"
+              mapHeight={mapHeight}
+              {...leafletMapConfig}
+            />
+          </Suspense>
           <Outlet
             id="app.components.Map.leafletConfig"
             projectId={projectId}

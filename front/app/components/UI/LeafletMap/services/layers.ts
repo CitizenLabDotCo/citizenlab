@@ -111,48 +111,56 @@ export function layerMarker(
 
 export function addLayers(
   map: L.Map,
-  geoJsonLayers: GeoJSONLayer[],
+  geoJsonLayers: GeoJSONLayer[] | null | undefined,
   { layersControl, overlay, popup, tooltip, marker }
 ) {
-  const layers = reverse(cloneDeep(geoJsonLayers))
-    ?.filter((geoJsonLayer) => !isEmpty(geoJsonLayer.geojson))
-    .map((geoJsonLayer) => {
-      const options = {
-        useSimpleStyle: true,
-        useMakiMarkers: true,
-        pointToLayer: (_feature, latlng) => {
-          return layerMarker(geoJsonLayer, latlng, marker);
-        },
-        onEachFeature: (feature, layer) => {
-          addTooltipToLayer(layer, feature, tooltip);
-          addPopupToLayer(layer, feature, popup);
-        },
-      };
+  if (geoJsonLayers && geoJsonLayers.length > 0) {
+    const layers = reverse(cloneDeep(geoJsonLayers))
+      ?.filter((geoJsonLayer) => !isEmpty(geoJsonLayer.geojson))
+      .map((geoJsonLayer) => {
+        const options = {
+          useSimpleStyle: true,
+          useMakiMarkers: true,
+          pointToLayer: (_feature, latlng) => {
+            return layerMarker(geoJsonLayer, latlng, marker);
+          },
+          onEachFeature: (feature, layer) => {
+            addTooltipToLayer(layer, feature, tooltip);
+            addPopupToLayer(layer, feature, popup);
+          },
+        };
 
-      const layer = L.geoJSON(geoJsonLayer.geojson, options as any).addTo(map);
+        const layer = L.geoJSON(geoJsonLayer.geojson, options as any).addTo(
+          map
+        );
 
-      return {
-        layer,
-        geoJsonLayer,
-      };
+        return {
+          layer,
+          geoJsonLayer,
+        };
+      });
+
+    reverse(cloneDeep(layers)).forEach(({ layer, geoJsonLayer }) => {
+      if (!isNilOrError(layersControl) && !isNilOrError(overlay)) {
+        addLayerOverlay(layer, layersControl, geoJsonLayer, overlay);
+      }
     });
 
-  reverse(cloneDeep(layers)).forEach(({ layer, geoJsonLayer }) => {
-    if (!isNilOrError(layersControl) && !isNilOrError(overlay)) {
-      addLayerOverlay(layer, layersControl, geoJsonLayer, overlay);
-    }
-  });
+    return layers.map(({ layer }) => layer);
+  }
 
-  return layers.map(({ layer }) => layer);
+  return [] as L.GeoJSON[];
 }
 
 export function removeLayers(
   map: L.Map,
-  leafletLayers: L.Layer[] | L.Marker<any>[]
+  leafletLayers?: L.Layer[] | L.Marker<any>[] | null
 ) {
-  leafletLayers.forEach((layer) => {
-    removeLayer(map, layer);
-  });
+  if (leafletLayers && leafletLayers.length > 0) {
+    leafletLayers.forEach((layer) => {
+      removeLayer(map, layer);
+    });
+  }
 }
 
 export function removeLayer(map: L.Map, leafletLayer: L.Layer) {

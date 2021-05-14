@@ -78,10 +78,10 @@ const StyledWarning = styled(Warning)`
 
 const StyledIdeaMapOverlay = styled(IdeaMapOverlay)`
   width: 400px;
-  height: calc(${mapHeight} - 30px);
+  height: calc(${mapHeight} - 40px);
   position: absolute;
   display: flex;
-  top: 15px;
+  top: 20px;
   left: 20px;
   z-index: 900;
 `;

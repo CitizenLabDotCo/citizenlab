@@ -24,7 +24,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 // style
 import styled from 'styled-components';
-import { colors, fontSizes, defaultCardStyle } from 'utils/styleUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
 
 // typings
 import { Sort } from 'resources/GetIdeas';
@@ -43,7 +43,6 @@ const Loading = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  ${defaultCardStyle};
 `;
 
 const Header = styled.div`
@@ -81,13 +80,13 @@ const StyledIdeaMapCard = styled(IdeaMapCard)`
 
 const EmptyContainer = styled.div`
   width: 100%;
+  flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin: 0;
-  padding-top: 100px;
-  padding-bottom: 100px;
+  margin-top: 100px;
+  margin-bottom: 100px;
 `;
 
 const IdeaIcon = styled(Icon)`
@@ -98,8 +97,8 @@ const IdeaIcon = styled(Icon)`
 `;
 
 const EmptyMessage = styled.div`
-  padding-left: 40px;
-  padding-right: 40px;
+  padding-left: 50px;
+  padding-right: 50px;
   margin-top: 12px;
   margin-bottom: 30px;
 `;
@@ -199,14 +198,14 @@ const IdeasList = memo<Props>(
             ))}
 
           {(ideas === null || ideas?.length === 0) && (
-            <EmptyContainer id="ideas-empty">
+            <EmptyContainer>
               <IdeaIcon ariaHidden name="idea" />
               <EmptyMessage>
                 <EmptyMessageLine>
                   <FormattedMessage
                     {...(isFiltered
-                      ? messages.noFilteredResultsFound
-                      : messages.noResultsFound)}
+                      ? messages.noFilteredResults
+                      : messages.noResults)}
                   />
                 </EmptyMessageLine>
               </EmptyMessage>

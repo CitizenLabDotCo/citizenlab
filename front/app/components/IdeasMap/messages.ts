@@ -48,12 +48,12 @@ export default defineMessages({
     id: 'app.components.IdeasMap.or',
     defaultMessage: 'or',
   },
-  noResultsFound: {
-    id: 'app.components.IdeasMap.noResultsFound',
-    defaultMessage: 'There appears to be nothing here yet',
+  noResults: {
+    id: 'app.components.IdeasMap.noResults',
+    defaultMessage: 'No results found',
   },
-  noFilteredResultsFound: {
-    id: 'app.components.IdeasMap.noFilteredResultsFound',
+  noFilteredResults: {
+    id: 'app.components.IdeasMap.noFilteredResults',
     defaultMessage: 'The filters you selected did not return any results',
   },
 });

@@ -1,6 +1,11 @@
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState } from 'react';
 import usePrevious from 'hooks/usePrevious';
-import { distinctUntilChanged, debounceTime } from 'rxjs/operators';
+import {
+  distinctUntilChanged,
+  debounceTime,
+  startWith,
+  pairwise,
+} from 'rxjs/operators';
 import { combineLatest } from 'rxjs';
 import { isEqual } from 'lodash-es';
 import {
@@ -87,33 +92,20 @@ export default function useLeaflet(
   const [markers, setMarkers] = useState<L.Marker<any>[]>([]);
   const [tileLayer, setTileLayer] = useState<L.Layer | null>(null);
   const [layers, setLayers] = useState<L.GeoJSON[]>([]);
-  const [selectedMarkerId, setSelectedMarkerId] = useState<string | null>(null);
-  const [hoveredMarkerId, setHoveredMarkerId] = useState<string | null>(null);
-
   const [
     markerClusterGroup,
     setMarkerClusterGroup,
   ] = useState<L.MarkerClusterGroup | null>(null);
-
   const [layersControl, setLayersControl] = useState<L.Control.Layers | null>(
     null
   );
 
-  const tileConfig = useMemo(
-    () => ({
-      tileProvider,
-      ...tileOptions,
-    }),
-    [tileProvider, tileOptions]
-  );
-
   // Prevstate
   const prevMarkers = usePrevious(markers);
-  const prevTileConfig = usePrevious(tileConfig);
-  const prevPoints = usePrevious(points);
-  const prevGeoJsonLayers = usePrevious(geoJsonLayers);
-  const prevSelectedMarkerId = usePrevious(selectedMarkerId);
-  const prevHoveredMarkerId = usePrevious(hoveredMarkerId);
+  const prevMarkerClusterGroup = usePrevious(markerClusterGroup);
+  const prevLayers = usePrevious(layers);
+  const prevLayersControl = usePrevious(layersControl);
+  const prevTileLayer = usePrevious(tileLayer);
 
   // Marker icons
   const markerIcon = service.getMarkerIcon({ url: DEFAULT_MARKER_ICON });
@@ -148,7 +140,11 @@ export default function useLeaflet(
   ]);
 
   const refreshTile = () => {
-    if (map && (!tileLayer || !isEqual(tileConfig, prevTileConfig))) {
+    if (tileLayer !== prevTileLayer) {
+      return;
+    }
+
+    if (map) {
       if (tileLayer) {
         service.removeLayer(map, tileLayer);
       }
@@ -171,8 +167,7 @@ export default function useLeaflet(
     tileProvider,
     tileOptions,
     tileLayer,
-    tileConfig,
-    prevTileConfig,
+    prevTileLayer,
   ]);
 
   const refreshCenter = () => {
@@ -190,47 +185,50 @@ export default function useLeaflet(
   useEffect(refreshZoom, [map, zoom]);
 
   const refreshLayers = () => {
-    if (!map || prevGeoJsonLayers === geoJsonLayers) {
+    if (layersControl !== prevLayersControl && layers !== prevLayers) {
       return;
     }
 
-    service.removeLayersControl(map, layersControl);
-    service.removeLayers(map, layers);
+    if (map) {
+      service.removeLayersControl(map, layersControl);
+      service.removeLayers(map, layers);
 
-    const newLayersControl = service.addLayersControl(
-      map,
-      layersControlPosition
-    );
-    const newLayers = service.addLayers(map, geoJsonLayers, {
-      layersControl: newLayersControl,
-      overlay: layerOverlay,
-      popup: layerPopup,
-      tooltip: layerTooltip,
-      marker: layerMarker,
-    });
-
-    setLayers(newLayers);
-    setLayersControl(newLayersControl);
+      const newLayersControl = service.addLayersControl(
+        map,
+        layersControlPosition
+      );
+      const newLayers = service.addLayers(map, geoJsonLayers, {
+        layersControl: newLayersControl,
+        overlay: layerOverlay,
+        popup: layerPopup,
+        tooltip: layerTooltip,
+        marker: layerMarker,
+      });
+      setLayers(newLayers);
+      setLayersControl(newLayersControl);
+    }
   };
   useEffect(refreshLayers, [
     map,
-    prevGeoJsonLayers,
     geoJsonLayers,
     layerOverlay,
     layerPopup,
     layerTooltip,
     layerMarker,
     layersControl,
+    prevLayersControl,
     layersControlPosition,
     layers,
+    prevLayers,
   ]);
 
   const refreshMarkers = () => {
-    if (map && prevPoints !== points) {
-      if (markers && markers.length > 0) {
-        service.removeLayers(map, markers);
-      }
+    if (markers !== prevMarkers) {
+      return;
+    }
 
+    if (map) {
+      service.removeLayers(map, markers);
       const newMarkers = service.addMarkersToMap(
         map,
         points,
@@ -242,58 +240,17 @@ export default function useLeaflet(
   useEffect(refreshMarkers, [
     map,
     points,
-    prevPoints,
     markers,
+    prevMarkers,
     noMarkerClustering,
   ]);
 
-  const markerSelectionChange = () => {
-    if (prevSelectedMarkerId !== selectedMarkerId) {
-      const prevSelectedMarker = markers.find(
-        (marker) => marker.options['id'] === prevSelectedMarkerId
-      );
-      const newSelectedMarker = markers.find(
-        (marker) => marker.options['id'] === selectedMarkerId
-      );
-      prevSelectedMarker?.setIcon(markerIcon).setZIndexOffset(0);
-      newSelectedMarker?.setIcon(markerActiveIcon).setZIndexOffset(999);
-    }
-  };
-  useEffect(markerSelectionChange, [
-    prevSelectedMarkerId,
-    selectedMarkerId,
-    markers,
-  ]);
-
-  const markerHoverChange = () => {
-    if (hoveredMarkerId !== prevHoveredMarkerId) {
-      markers
-        .find(
-          (marker) =>
-            marker.options['id'] === prevHoveredMarkerId &&
-            marker.options['id'] !== selectedMarkerId
-        )
-        ?.setIcon(markerIcon)
-        .setZIndexOffset(0);
-      markers
-        .find(
-          (marker) =>
-            marker.options['id'] === hoveredMarkerId &&
-            marker.options['id'] !== selectedMarkerId
-        )
-        ?.setIcon(markerHoverIcon)
-        .setZIndexOffset(999);
-    }
-  };
-  useEffect(markerHoverChange, [
-    prevHoveredMarkerId,
-    hoveredMarkerId,
-    selectedMarkerId,
-    markers,
-  ]);
-
   const refreshClusterGroups = () => {
-    if (!noMarkerClustering && map && prevMarkers !== markers) {
+    if (markerClusterGroup !== prevMarkerClusterGroup) {
+      return;
+    }
+
+    if (map && !noMarkerClustering) {
       if (markerClusterGroup) {
         service.removeLayer(map, markerClusterGroup);
       }
@@ -309,20 +266,53 @@ export default function useLeaflet(
   };
   useEffect(refreshClusterGroups, [
     markerClusterGroup,
+    prevMarkerClusterGroup,
     map,
-    prevMarkers,
     markers,
     noMarkerClustering,
   ]);
 
-  const wireUpSubscriptions = () => {
+  const markerEvents = () => {
     const subscriptions = [
-      leafletMapHoveredMarker$.subscribe((hoveredIdeaId) => {
-        setHoveredMarkerId(hoveredIdeaId);
-      }),
-      leafletMapSelectedMarker$.subscribe((selectedIdeaId) => {
-        setSelectedMarkerId(selectedIdeaId);
-      }),
+      combineLatest(
+        leafletMapHoveredMarker$.pipe(startWith(null, null), pairwise()),
+        leafletMapSelectedMarker$.pipe(startWith(null, null), pairwise())
+      ).subscribe(
+        ([
+          [prevHoveredMarkerId, newHoveredMarkerId],
+          [prevSelectedMarkerId, newSelectedMarkerId],
+        ]) => {
+          markers.forEach((marker) => {
+            if (marker.options['id'] === newSelectedMarkerId) {
+              marker.setIcon(markerActiveIcon)?.setZIndexOffset(999);
+            } else if (
+              marker.options['id'] === newHoveredMarkerId &&
+              newHoveredMarkerId !== newSelectedMarkerId
+            ) {
+              marker.setIcon(markerHoverIcon)?.setZIndexOffset(999);
+            } else {
+              markers
+                .find((marker) => marker.options['id'] === prevHoveredMarkerId)
+                ?.setIcon(markerIcon)
+                ?.setZIndexOffset(0);
+              markers
+                .find((marker) => marker.options['id'] === prevSelectedMarkerId)
+                ?.setIcon(markerIcon)
+                ?.setZIndexOffset(0);
+            }
+          });
+        }
+      ),
+    ];
+
+    return () => {
+      subscriptions.forEach((subscription) => subscription.unsubscribe());
+    };
+  };
+  useEffect(markerEvents, [markers]);
+
+  const mapEvents = () => {
+    const subscriptions = [
       combineLatest(leafletMapCenter$, leafletMapZoom$)
         .pipe(
           distinctUntilChanged((x, y) => isEqual(x, y)),
@@ -358,7 +348,7 @@ export default function useLeaflet(
       map?.off('zoomend');
     };
   };
-  useEffect(wireUpSubscriptions, [map]);
+  useEffect(mapEvents, [map]);
 
   return map;
 }

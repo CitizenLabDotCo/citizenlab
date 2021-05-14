@@ -8,8 +8,6 @@ import tracks from './tracks';
 
 // components
 import IdeaCard from 'components/IdeaCard/Compact';
-// import IdeasMap from 'components/IdeasMap';
-const IdeasMap = lazy(() => import('components/IdeasMap'));
 import { Icon, Spinner } from 'cl2-component-library';
 import TopicFilterDropdown from './TopicFilterDropdown';
 import SelectSort from './SortFilterDropdown';
@@ -17,6 +15,7 @@ import ProjectFilterDropdown from './ProjectFilterDropdown';
 import SearchInput from 'components/UI/SearchInput';
 import Button from 'components/UI/Button';
 import ViewButtons from 'components/PostCardsComponents/ViewButtons';
+const IdeasMap = lazy(() => import('components/IdeasMap'));
 
 // resources
 import GetWindowSize, {
