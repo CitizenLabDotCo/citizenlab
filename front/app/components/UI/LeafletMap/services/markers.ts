@@ -88,28 +88,32 @@ export function addMarkersToMap(
 
 export function addClusterGroup(
   map: L.Map,
-  markers: L.Marker[],
+  markers: L.Marker[] | null,
   { onClick }: { onClick: (id: string, data: any) => void }
 ) {
-  const newMarkerClusterGroup = L.markerClusterGroup({
-    showCoverageOnHover: false,
-    spiderfyDistanceMultiplier: 2,
-    iconCreateFunction: (cluster) => {
-      return L.divIcon({
-        html: `<span>${cluster.getChildCount()}</span>`,
-        className: 'marker-cluster-custom',
-        iconSize: L.point(40, 40, true),
-      });
-    },
-  });
-  newMarkerClusterGroup.addLayers(markers);
-  map.addLayer(newMarkerClusterGroup);
-
-  if (onClick) {
-    newMarkerClusterGroup.on('click', (event) => {
-      onClick(event.layer.options.id, event.layer.options.data);
+  if (markers) {
+    const newMarkerClusterGroup = L.markerClusterGroup({
+      showCoverageOnHover: false,
+      spiderfyDistanceMultiplier: 2,
+      iconCreateFunction: (cluster) => {
+        return L.divIcon({
+          html: `<span>${cluster.getChildCount()}</span>`,
+          className: 'marker-cluster-custom',
+          iconSize: L.point(40, 40, true),
+        });
+      },
     });
+    newMarkerClusterGroup.addLayers(markers);
+    map.addLayer(newMarkerClusterGroup);
+
+    if (onClick) {
+      newMarkerClusterGroup.on('click', (event) => {
+        onClick(event.layer.options.id, event.layer.options.data);
+      });
+    }
+
+    return newMarkerClusterGroup;
   }
 
-  return newMarkerClusterGroup;
+  return null;
 }

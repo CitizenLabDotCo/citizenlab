@@ -89,9 +89,9 @@ export default function useLeaflet(
 ) {
   // State and memos
   const [map, setMap] = useState<L.Map | null>(null);
-  const [markers, setMarkers] = useState<L.Marker<any>[]>([]);
+  const [markers, setMarkers] = useState<L.Marker[] | null>(null);
   const [tileLayer, setTileLayer] = useState<L.Layer | null>(null);
-  const [layers, setLayers] = useState<L.GeoJSON[]>([]);
+  const [layers, setLayers] = useState<L.GeoJSON[] | null>(null);
   const [
     markerClusterGroup,
     setMarkerClusterGroup,
@@ -145,21 +145,9 @@ export default function useLeaflet(
     }
 
     if (map) {
-      if (tileLayer) {
-        service.removeLayer(map, tileLayer);
-      }
-
-      if (tileProvider && tileOptions !== undefined) {
-        const newTileLayer = service.addTileLayer(
-          map,
-          tileProvider,
-          tileOptions
-        );
-
-        if (newTileLayer) {
-          setTileLayer(newTileLayer);
-        }
-      }
+      service.removeLayer(map, tileLayer);
+      const newTileLayer = service.addTileLayer(map, tileProvider, tileOptions);
+      setTileLayer(newTileLayer);
     }
   };
   useEffect(refreshTile, [
@@ -229,11 +217,13 @@ export default function useLeaflet(
 
     if (map) {
       service.removeLayers(map, markers);
+
       const newMarkers = service.addMarkersToMap(
         map,
         points,
         noMarkerClustering
       );
+
       setMarkers(newMarkers);
     }
   };
@@ -250,16 +240,18 @@ export default function useLeaflet(
       return;
     }
 
-    if (map && !noMarkerClustering) {
-      if (markerClusterGroup) {
-        service.removeLayer(map, markerClusterGroup);
-      }
+    if (map) {
+      service.removeLayer(map, markerClusterGroup);
 
-      const newMarkerClusterGroup = service.addClusterGroup(map, markers, {
-        onClick: (id, _data) => {
-          setLeafletMapSelectedMarker(id);
-        },
-      });
+      let newMarkerClusterGroup: L.MarkerClusterGroup | null = null;
+
+      if (!noMarkerClustering) {
+        newMarkerClusterGroup = service.addClusterGroup(map, markers, {
+          onClick: (id, _data) => {
+            setLeafletMapSelectedMarker(id);
+          },
+        });
+      }
 
       setMarkerClusterGroup(newMarkerClusterGroup);
     }
@@ -279,26 +271,24 @@ export default function useLeaflet(
         leafletMapSelectedMarker$.pipe(startWith(null, null), pairwise())
       ).subscribe(
         ([
-          [prevHoveredMarkerId, newHoveredMarkerId],
-          [prevSelectedMarkerId, newSelectedMarkerId],
+          [prevHoveredMarker, hoveredMarker],
+          [prevSelectedMarker, selectedMarker],
         ]) => {
-          markers.forEach((marker) => {
-            if (marker.options['id'] === newSelectedMarkerId) {
+          markers?.forEach((marker) => {
+            const markerId = marker.options['id'];
+
+            if (markerId === selectedMarker) {
               marker.setIcon(markerActiveIcon)?.setZIndexOffset(999);
             } else if (
-              marker.options['id'] === newHoveredMarkerId &&
-              newHoveredMarkerId !== newSelectedMarkerId
+              markerId === hoveredMarker &&
+              hoveredMarker !== selectedMarker
             ) {
               marker.setIcon(markerHoverIcon)?.setZIndexOffset(999);
-            } else {
-              markers
-                .find((marker) => marker.options['id'] === prevHoveredMarkerId)
-                ?.setIcon(markerIcon)
-                ?.setZIndexOffset(0);
-              markers
-                .find((marker) => marker.options['id'] === prevSelectedMarkerId)
-                ?.setIcon(markerIcon)
-                ?.setZIndexOffset(0);
+            } else if (
+              markerId === prevHoveredMarker ||
+              markerId === prevSelectedMarker
+            ) {
+              marker.setIcon(markerIcon)?.setZIndexOffset(0);
             }
           });
         }

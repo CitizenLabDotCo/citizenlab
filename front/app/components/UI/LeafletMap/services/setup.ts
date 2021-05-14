@@ -44,10 +44,14 @@ export function init(
 
 export function addTileLayer(
   map: L.Map,
-  tileProvider: string,
-  tileOptions: object
+  tileProvider?: string | null,
+  tileOptions?: object
 ) {
-  return L.tileLayer(tileProvider, tileOptions).addTo(map);
+  if (tileProvider) {
+    return L.tileLayer(tileProvider, tileOptions).addTo(map);
+  }
+
+  return null;
 }
 
 export function changeView(map: L.Map, center: L.LatLngTuple, zoom: number) {
