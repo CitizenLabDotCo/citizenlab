@@ -626,7 +626,8 @@ resource 'Projects' do
 
       let(:filter_can_moderate) { true }
 
-      example_request 'List all projects the current user can moderate', document: false, skip: !CitizenLab.ee? do
+      example 'List all projects the current user can moderate', document: false, skip: !CitizenLab.ee? do
+        do_request
         expect(status).to eq(200)
         expect(json_response[:data].size).to eq 0
       end
