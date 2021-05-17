@@ -10,7 +10,7 @@ export default defineMessages({
     defaultMessage: 'talking about',
   },
   emptyStateCreate: {
-    id: 'app.containers.Admin.Insights.emptyStateAccentText',
+    id: 'app.containers.Admin.Insights.emptyStateCreate',
     defaultMessage: 'Create my first insights',
   },
   emptyStateDiscover: {
