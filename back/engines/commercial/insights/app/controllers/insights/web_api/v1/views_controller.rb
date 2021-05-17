@@ -29,6 +29,11 @@ module Insights
         end
       end
 
+      def destroy
+        status = view.destroy.destroyed? ? :ok : 500
+        head status
+      end
+
       private
 
       def create_params

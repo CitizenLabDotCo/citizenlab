@@ -10,6 +10,7 @@ end
 module Insights
   class Engine < ::Rails::Engine
     isolate_namespace Insights
+    config.generators.api_only = true
 
     # Sharing the factories to make them accessible from to the main app / other engines.
     factories_path = File.expand_path('../../spec/factories', __dir__)
