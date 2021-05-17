@@ -4,7 +4,7 @@ class CommonPassword < ApplicationRecord
 
 
   def self.initialize!
-    CommonPassword.destroy_all
+    CommonPassword.delete_all
     pwds = open(COMMON_PASSWORDS_FILE).readlines.map do |password|
       CommonPassword.new password: password.strip
     end

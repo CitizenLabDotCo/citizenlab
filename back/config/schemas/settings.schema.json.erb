@@ -855,6 +855,18 @@
         }
       },
 
+      "idea_author_change": {
+        "type": "object",
+        "title": "Idea Author Change",
+        "description": "Allows city admins to create ideas and assign users as their authors.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false}
+        }
+      },
+
       "private_projects": {
         "type": "object",
         "title": "Private projects",
