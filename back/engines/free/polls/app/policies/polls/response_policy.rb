@@ -17,13 +17,17 @@ module Polls
       end
     end
 
+    def responses_count?
+      active? && admin?
+    end
+
     def index_xlsx?
-      user&.active? && user.admin?
+      active? && admin?
     end
 
     def create?
       (
-        user&.active? && 
+        active? &&
         (record.user_id == user.id) &&
         ProjectPolicy.new(user, record.participation_context.project).show? &&
         check_responding_allowed(record, user)

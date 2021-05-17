@@ -5,6 +5,11 @@
 
 /
 
+## 2021-05-11
+
+### Added
+- Added polls to the reporting section of the dashboards
+
 ## 2021-05-07
 
 ### Fixed

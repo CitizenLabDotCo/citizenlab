@@ -312,7 +312,9 @@ class App extends PureComponent<Props, State> {
       const shouldCompleteRegistration = !authUser?.data?.attributes
         ?.registration_completed_at;
 
-      const shouldConfirm = !!authUser?.data?.attributes?.confirmation_required;
+      const shouldConfirm =
+        !!authUser?.data?.attributes?.confirmation_required &&
+        !!shouldCompleteRegistration;
 
       // see services/singleSignOn.ts for the typed interface of all the sso related url params the url can potentially contain
       const {
