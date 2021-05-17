@@ -2289,7 +2289,7 @@
   "app.containers.SignUp.skip": "Skip this step",
   "app.containers.SignUp.somethingWentWrongText": "Something went wrong while trying to create your account. Please try again in a few minutes.",
   "app.containers.SignUp.submit": "Sign up",
-  "app.containers.SignUp.tacError": "Accepting our terms and conditions is needed to proceed",
+  "app.containers.SignUp.tacError": "Accept our terms and conditions to proceed",
   "app.containers.SignUp.thePrivacyPolicy": "the privacy policy",
   "app.containers.SignUp.theTermsAndConditions": "the terms and conditions",
   "app.containers.SignUp.tokenAlreadyAcceptedError": "The invitation has already been redeemed",
