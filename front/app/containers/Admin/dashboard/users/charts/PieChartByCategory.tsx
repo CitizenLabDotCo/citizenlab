@@ -11,15 +11,9 @@ import { withTheme } from 'styled-components';
 
 // components
 import ReportExportMenu from 'components/admin/ReportExportMenu';
+import { PieChart, Pie, Tooltip, Cell, ResponsiveContainer } from 'recharts';
 import {
   IGraphUnit,
-  PieChart,
-  Pie,
-  Tooltip,
-  Cell,
-  ResponsiveContainer,
-} from 'recharts';
-import {
   NoDataContainer,
   GraphCardHeader,
   GraphCardTitle,

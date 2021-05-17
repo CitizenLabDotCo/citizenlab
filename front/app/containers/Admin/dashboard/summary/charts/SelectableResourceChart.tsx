@@ -22,6 +22,7 @@ import {
   XAxis,
   YAxis,
   ResponsiveContainer,
+  LabelList,
 } from 'recharts';
 import {
   GraphCard,
@@ -221,7 +222,7 @@ class SelectableResourceChart extends PureComponent<Props & InjectedIntlProps> {
                 height={serie.length > 1 ? serie.length * 50 : 100}
               >
                 <BarChart
-                  data={convertedSerie}
+                  data={convertedSerie ?? undefined}
                   layout="vertical"
                   ref={this.currentChart}
                 >
@@ -229,12 +230,13 @@ class SelectableResourceChart extends PureComponent<Props & InjectedIntlProps> {
                     dataKey="value"
                     name={unitName}
                     fill={newBarFill}
-                    label={{ fill: barFill, fontSize: chartLabelSize }}
                     barSize={20}
                     animationDuration={animationDuration}
                     animationBegin={animationBegin}
                     isAnimationActive={true}
-                  />
+                  >
+                    <LabelList fill={barFill} fontSize={chartLabelSize} />
+                  </Bar>
                   <YAxis
                     dataKey="name"
                     type="category"

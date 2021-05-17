@@ -129,4 +129,8 @@ export default defineMessages({
     id: 'app.containers.Admin.Insights.Reports.inputsByStatusTitle',
     defaultMessage: 'Inputs by status',
   },
+  seeReportButton: {
+    id: 'app.containers.Admin.Insights.Reports.seeReportButton',
+    defaultMessage: 'Summary',
+  },
 });

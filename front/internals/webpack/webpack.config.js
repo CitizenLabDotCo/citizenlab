@@ -13,6 +13,7 @@ const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
 const MomentTimezoneDataPlugin = require('moment-timezone-data-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const SentryCliPlugin = require('@sentry/webpack-plugin');
+var dotenv = require('dotenv').config({path: path.join(process.cwd(), '../.env-front')});
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const argv = require('yargs').argv;
 const appLocalesMomentPairs = require(path.join(process.cwd(), 'app/containers/App/constants')).appLocalesMomentPairs;
@@ -22,6 +23,7 @@ const GRAPHQL_HOST = process.env.GRAPHQL_HOST || 'localhost';
 const GRAPHQL_PORT = process.env.GRAPHQL_PORT || 5001;
 const DEV_WORKSHOPS_HOST = process.env.DEV_WORKSHOPS_HOST || 'localhost';
 const DEV_WORKSHOPS_PORT = process.env.DEV_WORKSHOPS_PORT || 4005;
+
 
 const currentYear = new Date().getFullYear();
 
@@ -165,6 +167,8 @@ const config = {
     // new BundleAnalyzerPlugin(),
 
     // new webpack.ProgressPlugin(),
+
+
 
     // remove all moment locales except 'en' and the ones defined in appLocalesMomentPairs
     !isDev && new MomentLocalesPlugin({
