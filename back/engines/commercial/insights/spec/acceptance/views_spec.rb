@@ -18,6 +18,7 @@ resource 'Views' do
 
     context 'when normal user' do
       before { user_header_token }
+
       example_request('unauthorized', document: false) { expect(status).to eq(401) }
     end
   end
