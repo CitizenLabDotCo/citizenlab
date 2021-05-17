@@ -619,6 +619,7 @@ resource 'Projects' do
   context 'when not logged in' do
     get 'web_api/v1/projects' do
       parameter :filter_can_moderate, 'Filter out the projects the user is allowed to moderate. False by default', required: false
+
       before do
         @projects = create_list(:project, 10, admin_publication_attributes: { publication_status: 'published' })
       end
