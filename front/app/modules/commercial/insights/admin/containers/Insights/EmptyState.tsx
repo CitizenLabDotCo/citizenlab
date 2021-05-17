@@ -11,7 +11,7 @@ import { colors, fontSizes, media } from 'utils/styleUtils';
 
 // assets
 import insights from '../../assets/insights.png';
-import messages from '../../../messages';
+import messages from './messages';
 
 // components
 import { Button } from 'cl2-component-library';
@@ -69,7 +69,7 @@ const EmptyState = ({ intl: { formatMessage } }) => {
             }}
           />
         </Title>
-        <Description>{formatMessage(messages.insightsDescription)}</Description>
+        <Description>{formatMessage(messages.description)}</Description>
         {!isNilOrError(locale) && (
           <ButtonsContainer>
             <Button locale={locale} bgColor={colors.adminTextColor}>
