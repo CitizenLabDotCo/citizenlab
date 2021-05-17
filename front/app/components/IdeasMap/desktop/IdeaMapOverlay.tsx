@@ -3,7 +3,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import CSSTransition from 'react-transition-group/CSSTransition';
 
 // events
-import { ideaMapCardSelected$, setIdeaMapCardSelected } from './events';
+import { ideaMapCardSelected$, setIdeaMapCardSelected } from '../events';
 
 // hooks
 import useProject from 'hooks/useProject';

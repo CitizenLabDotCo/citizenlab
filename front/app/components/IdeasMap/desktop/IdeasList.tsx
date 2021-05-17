@@ -19,7 +19,7 @@ import useIdeaCustomFieldsSchemas from 'hooks/useIdeaCustomFieldsSchemas';
 import { ideaDefaultSortMethodFallback } from 'services/participationContexts';
 
 // i18n
-import messages from './messages';
+import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // style

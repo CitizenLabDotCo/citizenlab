@@ -2,7 +2,7 @@ import React, { memo, useEffect, useState } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // events
-import { setIdeaMapCardSelected } from './events';
+import { setIdeaMapCardSelected } from '../events';
 import {
   setLeafletMapHoveredMarker,
   leafletMapHoveredMarker$,

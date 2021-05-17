@@ -275,7 +275,7 @@ export default function useLeaflet(
           [prevSelectedMarker, selectedMarker],
         ]) => {
           markers?.forEach((marker) => {
-            const markerId = marker.options['id'];
+            const markerId = marker.options['id'] as string;
 
             if (markerId === selectedMarker) {
               marker.setIcon(markerActiveIcon)?.setZIndexOffset(999);

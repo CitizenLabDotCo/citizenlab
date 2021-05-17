@@ -16,7 +16,7 @@ import tracks from './tracks';
 import Map, { Point } from 'components/Map';
 import Warning from 'components/UI/Warning';
 import IdeaButton from 'components/IdeaButton';
-import IdeaMapOverlay from './IdeaMapOverlay';
+import DesktopIdeaMapOverlay from './desktop/IdeaMapOverlay';
 
 // hooks
 import useProject from 'hooks/useProject';
@@ -40,6 +40,7 @@ import messages from './messages';
 import styled from 'styled-components';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
+import { media, viewportWidths } from 'utils/styleUtils';
 
 const mapBorderPadding = 60;
 const mapHeight = '80vh';
@@ -68,6 +69,12 @@ const InnerContainer = styled.div<{ leftMargin: number | null }>`
     /* z-index: 99999; */
     /* border: solid 2px red; */
   }
+
+  ${media.smallerThanMaxTablet`
+    .activeArea {
+      left: 0px;
+    }
+  `}
 `;
 
 const IdeaButtonWrapper = styled.div``;
@@ -76,7 +83,7 @@ const StyledWarning = styled(Warning)`
   margin-bottom: 10px;
 `;
 
-const StyledIdeaMapOverlay = styled(IdeaMapOverlay)`
+const StyledDesktopIdeaMapOverlay = styled(DesktopIdeaMapOverlay)`
   width: 400px;
   height: calc(${mapHeight} - 40px);
   position: absolute;
@@ -118,6 +125,7 @@ const IdeasMap = memo<Props>(({ projectIds, phaseId, className }) => {
   const phase = usePhase(phaseId || null);
   const ideaMarkers = useIdeaMarkers({ phaseId, projectIds, sort: '-new' });
   const { windowWidth } = useWindowSize();
+  const smallerThanMaxTablet = windowWidth <= viewportWidths.largeTablet;
 
   const containerRef = useRef<HTMLDivElement | null>(null);
   const ideaButtonRef = useRef<HTMLDivElement | null>(null);
@@ -221,8 +229,8 @@ const IdeasMap = memo<Props>(({ projectIds, phaseId, className }) => {
             layersControlPosition="bottomright"
           />
 
-          {projectIds && !isNilOrError(project) && (
-            <StyledIdeaMapOverlay
+          {!smallerThanMaxTablet && projectIds && !isNilOrError(project) && (
+            <StyledDesktopIdeaMapOverlay
               projectIds={projectIds}
               projectId={project?.id}
               phaseId={phaseId}

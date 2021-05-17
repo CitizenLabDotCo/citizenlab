@@ -24,7 +24,7 @@ import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 // i18n
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
+import messages from '../messages';
 
 // style
 import styled from 'styled-components';
