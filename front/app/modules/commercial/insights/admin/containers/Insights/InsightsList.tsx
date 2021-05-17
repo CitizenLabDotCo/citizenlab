@@ -18,9 +18,10 @@ import { fontSizes, colors } from 'utils/styleUtils';
 import { darken } from 'polished';
 
 // services
-import { deleteInsightsView } from '../../../services/insightsViews';
-
-import { IInsightsViewData } from '../../../services/insightsViews';
+import {
+  IInsightsViewData,
+  deleteInsightsView,
+} from '../../../services/insightsViews';
 
 const StyledDescription = styled.p`
   font-size: ${fontSizes.base}px;
