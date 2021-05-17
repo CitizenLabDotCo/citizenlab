@@ -1739,7 +1739,7 @@
   "app.containers.Comments.showMoreActions": "Toon meer acties",
   "app.containers.Comments.signInAndVerifyToCommentInitiative": "Je hebt een geverifieerd profiel nodig om te kunnen reageren. Gelieve te {signUpLink} of te {signInLink}.",
   "app.containers.Comments.signInLinkText": "Log in",
-  "app.containers.Comments.signInToComment": "{signInLink} om te kunnen reageren.",
+  "app.containers.Comments.signInToComment": "Niet iedereen kan reageren. {signUpLink} of {signInLink} om te zien of je aan de voorwaarden voldoet.",
   "app.containers.Comments.signInToCommentInitiative": "{signInLink} of {signUpLink} om te reageren.",
   "app.containers.Comments.signUpLinkText": "registreren",
   "app.containers.Comments.verifyIdentityLinkText": "Verifieer je identiteit",
