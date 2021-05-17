@@ -75,7 +75,7 @@ type IComposedGraphFormat = {
 }[];
 
 interface State {
-  serie: IComposedGraphFormat | null;
+  serie: IComposedGraphFormat | undefined;
 }
 
 type IStreams =
@@ -114,7 +114,7 @@ class LineBarChart extends React.PureComponent<
   constructor(props: Props) {
     super(props as any);
     this.state = {
-      serie: null,
+      serie: undefined,
     };
 
     this.currentChart = React.createRef();
@@ -168,7 +168,7 @@ class LineBarChart extends React.PureComponent<
         code: key,
       }));
     } else {
-      return null;
+      return undefined;
     }
 
     return convertedSerie;
@@ -399,7 +399,7 @@ class LineBarChart extends React.PureComponent<
                   type="monotone"
                   yAxisId="total"
                   dataKey="total"
-                  dot={serie && serie?.length < 31}
+                  activeDot={Boolean(serie && serie?.length < 31)}
                   stroke={newLineColor}
                   fill={newLineColor}
                   strokeWidth={1}

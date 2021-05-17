@@ -7,6 +7,7 @@ export interface IInsightsViewData {
   type: string;
   attributes: {
     name: string;
+    updated_at: string;
   };
   relationships?: {
     scope: {
@@ -65,7 +66,7 @@ export function updateInsightsView(insightsViewId: string, name: string) {
   );
 }
 
-export function deleteInsightsViews(insightsViewId: string) {
+export function deleteInsightsView(insightsViewId: string) {
   return streams.delete(
     `${API_PATH}/${insightsViewsEndpoint}/${insightsViewId}`,
     insightsViewId

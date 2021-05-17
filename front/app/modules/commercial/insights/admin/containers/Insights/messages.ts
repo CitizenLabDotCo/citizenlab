@@ -55,6 +55,10 @@ export default defineMessages({
     id: 'app.containers.Admin.Insights.listDuplicate',
     defaultMessage: 'Duplicate',
   },
+  listDeleteConfirmation: {
+    id: 'app.containers.Admin.Insights.listDeleteConfirmation',
+    defaultMessage: 'Are you sure?',
+  },
   createModalTitle: {
     id: 'app.containers.Admin.Reporting.Insights.createModalTitle',
     defaultMessage: 'Start analyzing your inputs',

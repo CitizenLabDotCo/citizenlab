@@ -351,7 +351,6 @@ class LineBarChartVotesByTime extends React.PureComponent<
                 <Bar
                   dataKey="up"
                   name={formatMessage(messages.numberOfVotesUp)}
-                  dot={false}
                   fill={rgba(newBarFill, 1)}
                   animationDuration={animationDuration}
                   animationBegin={animationBegin}
@@ -362,7 +361,6 @@ class LineBarChartVotesByTime extends React.PureComponent<
                 <Bar
                   dataKey="down"
                   name={formatMessage(messages.numberOfVotesDown)}
-                  dot={false}
                   fill={rgba(newBarFill, 0.7)}
                   stackId="1"
                   animationDuration={animationDuration}

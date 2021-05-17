@@ -337,7 +337,7 @@ class LineBarChart extends React.PureComponent<
           ) : (
             <StyledResponsiveContainer>
               <ComposedChart
-                data={serie}
+                data={serie ?? undefined}
                 reverseStackOrder={true}
                 ref={this.currentChart}
               >
@@ -399,7 +399,7 @@ class LineBarChart extends React.PureComponent<
                   type="monotone"
                   yAxisId="total"
                   dataKey="total"
-                  dot={serie && serie?.length < 31}
+                  activeDot={Boolean(serie && serie?.length < 31)}
                   stroke={newLineColor}
                   fill={newLineColor}
                   strokeWidth={1}

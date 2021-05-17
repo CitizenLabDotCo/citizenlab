@@ -19,6 +19,7 @@ import {
   XAxis,
   YAxis,
   ResponsiveContainer,
+  LabelList,
 } from 'recharts';
 import {
   NoDataContainer,
@@ -310,29 +311,31 @@ export class CustomFieldsComparison extends React.PureComponent<
                   dataKey="total"
                   name={formatMessage(messages.totalUsers)}
                   fill={newBarFill}
-                  label={{
-                    fill: barFill,
-                    fontSize: chartLabelSize,
-                    position: 'insideLeft',
-                  }}
                   barSize={10}
                   animationDuration={animationDuration}
                   animationBegin={animationBegin}
-                />
+                >
+                  <LabelList
+                    position="insideLeft"
+                    fontSize={chartLabelSize}
+                    fill={barFill}
+                  />
+                </Bar>
                 <Tooltip />
                 <Bar
                   dataKey="participants"
                   name={formatMessage(messages.participants)}
                   fill={chartLabelColor}
-                  label={{
-                    fill: barFill,
-                    fontSize: chartLabelSize,
-                    position: 'insideLeft',
-                  }}
                   barSize={10}
                   animationDuration={animationDuration}
                   animationBegin={animationBegin}
-                />
+                >
+                  <LabelList
+                    position="insideLeft"
+                    fontSize={chartLabelSize}
+                    fill={barFill}
+                  />
+                </Bar>
                 <YAxis
                   dataKey="name"
                   type="category"

@@ -80,6 +80,29 @@ resource 'Poll Responses' do
     end
   end
 
+  get "web_api/v1/projects/:participation_context_id/poll_responses/responses_count" do
+    context "non-anonymous poll" do
+      before do
+        @participation_context = create(:continuous_poll_project)
+        @q1 = create(:poll_question, :with_options, participation_context: @participation_context)
+        @q2 = create(:poll_question, :with_options, participation_context: @participation_context)
+        @r1 = create(:poll_response, participation_context: @participation_context)
+        @r1.update!(response_options: [@q1,@q2].map{|q| create(:poll_response_option, response: @r1, option: q.options.first)})
+        @r2 = create(:poll_response, participation_context: @participation_context)
+        @r2.update!(response_options: [@q1,@q2].map{|q| create(:poll_response_option, response: @r2, option: q.options.last)})
+      end
+
+      let(:participation_context_id) { @participation_context.id }
+
+      example_request "response counts" do
+        expect(status).to eq 200
+        json_response = json_parse(response_body)
+
+        expect(json_response[:series][:options][@q1.options.first.id.to_sym]).to eq 1
+      end
+    end
+  end
+
   post 'web_api/v1/projects/:participation_context_id/poll_responses' do
     parameter :response_options_attributes, 'Array with response option objects', required: true, scope: :response
     parameter :option_id, 'The id of the option the user selected', required: true, scope: %i[response response_options_attributes]

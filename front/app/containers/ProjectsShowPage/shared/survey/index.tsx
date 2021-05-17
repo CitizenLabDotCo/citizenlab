@@ -185,11 +185,13 @@ class Survey extends PureComponent<Props, State> {
         phaseContext: phase,
         signedIn: !isNilOrError(authUser),
       });
-      const requiresConfirmation =
-        !isNilOrError(authUser) && !!authUser.attributes.confirmation_required;
       const registrationNotCompleted =
         !isNilOrError(authUser) &&
         !authUser.attributes.registration_completed_at;
+      const requiresConfirmation =
+        !isNilOrError(authUser) &&
+        !!authUser.attributes.confirmation_required &&
+        !!registrationNotCompleted;
       const shouldVerify = !!(
         disabledReason === 'maybeNotVerified' ||
         disabledReason === 'notVerified'

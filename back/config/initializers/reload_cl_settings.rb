@@ -35,4 +35,6 @@ begin
   end
 rescue ActiveRecord::NoDatabaseError
   # rescue case where initializer is executed within db:create rake task
+rescue ActiveRecord::RecordNotFound
+  # rescue case where app_configuration doesn't exist yet in db:seed rake task
 end

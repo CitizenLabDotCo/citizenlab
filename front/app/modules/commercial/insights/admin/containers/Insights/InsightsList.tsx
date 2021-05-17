@@ -17,7 +17,11 @@ import styled from 'styled-components';
 import { fontSizes, colors } from 'utils/styleUtils';
 import { darken } from 'polished';
 
-import { IInsightsViewData } from '../../../services/insightsViews';
+// services
+import {
+  IInsightsViewData,
+  deleteInsightsView,
+} from '../../../services/insightsViews';
 
 const StyledDescription = styled.p`
   font-size: ${fontSizes.base}px;
@@ -61,9 +65,14 @@ const InsightsListItem = styled.div`
   margin-top: 20px;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   h3 {
     font-size: ${fontSizes.base}px;
     font-weight: bold;
+    margin-bottom: 4px;
+  }
+  p {
+    font-size: ${fontSizes.xs}px;
   }
   .buttons {
     display: flex;
@@ -79,11 +88,20 @@ type InsightsList = {
 };
 
 const InsightsList: React.FC<InsightsList & InjectedIntlProps> = ({
-  intl: { formatMessage },
+  intl: { formatMessage, formatDate },
   data,
   openCreateModal,
 }) => {
   const locale = useLocale();
+
+  const handleDeleteClick = (viewId: string) => () => {
+    const deleteMessage = formatMessage(messages.listDeleteConfirmation);
+
+    if (window.confirm(deleteMessage)) {
+      deleteInsightsView(viewId);
+    }
+  };
+
   return (
     <div>
       <PageTitle>{formatMessage(messages.title)}</PageTitle>
@@ -109,9 +127,12 @@ const InsightsList: React.FC<InsightsList & InjectedIntlProps> = ({
             </Button>
           </InsightsContainerHeader>
           {data.map((view) => (
-            <>
+            <div key={view.id}>
               <InsightsListItem>
-                <h3> {view.attributes.name}</h3>
+                <div>
+                  <h3> {view.attributes.name}</h3>
+                  <p>{formatDate(view.attributes.updated_at)}</p>
+                </div>
                 <div className="buttons">
                   <Button
                     locale={locale}
@@ -128,6 +149,7 @@ const InsightsList: React.FC<InsightsList & InjectedIntlProps> = ({
                     icon="delete"
                     textColor={colors.adminTextColor}
                     boxShadow="none"
+                    onClick={handleDeleteClick(view.id)}
                   >
                     {formatMessage(messages.listDelete)}
                   </Button>
@@ -137,7 +159,7 @@ const InsightsList: React.FC<InsightsList & InjectedIntlProps> = ({
                 </div>
               </InsightsListItem>
               <Divider />
-            </>
+            </div>
           ))}
         </InsightsContainer>
       )}
