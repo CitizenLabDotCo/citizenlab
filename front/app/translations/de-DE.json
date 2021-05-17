@@ -754,6 +754,7 @@
   "app.containers.Admin.Insights.link": "",
   "app.containers.Admin.Insights.listCreate": "",
   "app.containers.Admin.Insights.listDelete": "",
+  "app.containers.Admin.Insights.listDeleteConfirmation": "",
   "app.containers.Admin.Insights.listDescription": "",
   "app.containers.Admin.Insights.listDuplicate": "",
   "app.containers.Admin.Insights.listManage": "",
