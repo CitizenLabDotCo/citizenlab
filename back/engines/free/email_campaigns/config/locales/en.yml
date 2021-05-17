@@ -93,7 +93,7 @@ en:
       "status_change_of_your_idea": Status change of your idea - all users
       "status_change_of_your_initiative": Status change of your proposal - all users
       "threshold_reached_for_admin": Proposal reached the voting threshold - admins
-      "welcome": New user - admins
+      "welcome": Welcome email to new users - all users
       "admin_digest": Weekly overview - admins
       "moderator_digest": Weekly overview - project managers
       "assignee_digest": Weekly overview of assigned ideas - admins and project managers
@@ -121,7 +121,7 @@ en:
       subject: 'Your weekly admin report of %{time}'
       preheader: 'Admin digest of %{organizationName}'
       title_your_weekly_report: '%{firstName}, your weekly report'
-      text_introduction: 'We have curated for you the list of ideas that have generated most activity over the past week. Find out what''s happening on your platform!'
+      text_introduction: 'We''ve curated for you the input that has generated the most activity over the past week. Find out what''s happening on your platform!'
       cta_visit_the_platform: 'Visit your platform'
       new_users: 'New users'
       new_ideas: 'New ideas'
@@ -268,7 +268,7 @@ en:
       subject: 'Your weekly project manager report of %{time}'
       preheader: 'Project manager digest of %{organizationName}'
       title_your_weekly_report: '%{firstName}, your weekly report'
-      text_introduction: 'We have curated for you the list of ideas that have generated most activity over the past week. Find out what''s happening within your project!'
+      text_introduction: 'We''ve curated for you the input that has generated the most activity over the past week. Find out what''s happening with your project!'
       cta_moderate: 'Moderate your project'
       new_users: 'New users'
       new_ideas: 'New ideas'
