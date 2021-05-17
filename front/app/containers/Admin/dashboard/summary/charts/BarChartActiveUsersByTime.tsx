@@ -258,7 +258,7 @@ class BarChartActiveUsersByTime extends React.PureComponent<
             </NoDataContainer>
           ) : (
             <StyledResponsiveContainer>
-              <BarChart data={serie} ref={this.currentChart}>
+              <BarChart data={serie ?? undefined} ref={this.currentChart}>
                 <Bar
                   dataKey="value"
                   name={graphTitle}
