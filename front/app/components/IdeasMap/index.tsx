@@ -7,6 +7,7 @@ import React, {
 } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { popup, LatLng } from 'leaflet';
+import CSSTransition from 'react-transition-group/CSSTransition';
 
 // tracking
 import { trackEventByName } from 'utils/analytics';
@@ -17,6 +18,7 @@ import Map, { Point } from 'components/Map';
 import Warning from 'components/UI/Warning';
 import IdeaButton from 'components/IdeaButton';
 import DesktopIdeaMapOverlay from './desktop/IdeaMapOverlay';
+import IdeaMapCard from './desktop/IdeaMapCard';
 
 // hooks
 import useProject from 'hooks/useProject';
@@ -28,6 +30,7 @@ import useWindowSize from 'hooks/useWindowSize';
 import { setIdeaMapCardSelected, ideaMapCardSelected$ } from './events';
 import {
   setLeafletMapSelectedMarker,
+  setLeafletMapHoveredMarker,
   leafletMapSelectedMarker$,
   leafletMapClicked$,
 } from 'components/UI/LeafletMap/events';
@@ -93,6 +96,23 @@ const StyledDesktopIdeaMapOverlay = styled(DesktopIdeaMapOverlay)`
   z-index: 900;
 `;
 
+const MobileIdeaMapCard = styled.div`
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  right: 10px;
+  z-index: 1000;
+  transition: all 300ms cubic-bezier(0.19, 1, 0.22, 1);
+
+  &.animation-enter {
+    bottom: 0px;
+
+    &.animation-enter-active {
+      bottom: 10px;
+    }
+  }
+`;
+
 interface Props {
   projectIds?: string[] | null;
   phaseId?: string | null;
@@ -131,6 +151,7 @@ const IdeasMap = memo<Props>(({ projectIds, phaseId, className }) => {
   const ideaButtonRef = useRef<HTMLDivElement | null>(null);
 
   const [selectedLatLng, setSelectedLatLng] = useState<LatLng | null>(null);
+  const [selectedIdeaId, setSelectedIdeaId] = useState<string | null>(null);
   const [points, setPoints] = useState<Point[]>([]);
   const [containerWidth, setContainerWidth] = useState(initialContainerWidth);
   const [innerContainerLeftMargin, setInnerContainerLeftMargin] = useState(
@@ -149,16 +170,18 @@ const IdeasMap = memo<Props>(({ projectIds, phaseId, className }) => {
 
   useEffect(() => {
     const subscriptions = [
-      ideaMapCardSelected$.subscribe((selectedIdeaId) => {
-        setLeafletMapSelectedMarker(selectedIdeaId);
+      ideaMapCardSelected$.subscribe((ideaId) => {
+        setLeafletMapSelectedMarker(ideaId);
+        setSelectedIdeaId(ideaId);
       }),
-      leafletMapSelectedMarker$.subscribe((selectedIdeaId) => {
-        if (selectedIdeaId) {
+      leafletMapSelectedMarker$.subscribe((ideaId) => {
+        if (ideaId) {
           trackEventByName(tracks.clickOnIdeaMapMarker, {
-            extra: { selectedIdeaId },
+            extra: { selectedIdeaId: ideaId },
           });
         }
-        setIdeaMapCardSelected(selectedIdeaId);
+        setIdeaMapCardSelected(ideaId);
+        setSelectedIdeaId(ideaId);
       }),
       leafletMapClicked$.subscribe(({ map, latLng }) => {
         const ideaPostingEnabled =
@@ -206,6 +229,12 @@ const IdeasMap = memo<Props>(({ projectIds, phaseId, className }) => {
     setPoints(ideaPoints);
   }, [ideaMarkers]);
 
+  const handleIdeaMapCardOnClose = () => {
+    setIdeaMapCardSelected(null);
+    setLeafletMapSelectedMarker(null);
+    setLeafletMapHoveredMarker(null);
+  };
+
   if (!isNilOrError(project)) {
     return (
       <Container ref={containerRef} className={className || ''}>
@@ -236,6 +265,23 @@ const IdeasMap = memo<Props>(({ projectIds, phaseId, className }) => {
               phaseId={phaseId}
             />
           )}
+
+          <CSSTransition
+            classNames="animation"
+            in={!!(smallerThanMaxTablet && selectedIdeaId)}
+            timeout={300}
+            mounOnEnter={true}
+            unmountOnExit={true}
+            enter={true}
+            exit={true}
+          >
+            <MobileIdeaMapCard className="animation">
+              <IdeaMapCard
+                ideaId={selectedIdeaId as string}
+                onClose={handleIdeaMapCardOnClose}
+              />
+            </MobileIdeaMapCard>
+          </CSSTransition>
 
           <IdeaButtonWrapper
             className="create-idea-wrapper"

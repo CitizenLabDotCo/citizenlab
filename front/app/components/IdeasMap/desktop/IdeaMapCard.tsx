@@ -1,7 +1,12 @@
 import React, { memo, useEffect, useState } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
+import { IOpenPostPageModalEvent } from 'containers/App';
+
+//components
+import Button from 'components/UI/Button';
 
 // events
+import eventEmitter from 'utils/eventEmitter';
 import { setIdeaMapCardSelected } from '../events';
 import {
   setLeafletMapHoveredMarker,
@@ -10,6 +15,7 @@ import {
 
 // hooks
 import useIdea from 'hooks/useIdea';
+import useWindowSize from 'hooks/useWindowSize';
 
 // i18n
 import T from 'components/T';
@@ -19,7 +25,13 @@ import { Icon } from 'cl2-component-library';
 
 // styling
 import styled from 'styled-components';
-import { defaultCardStyle, fontSizes, colors } from 'utils/styleUtils';
+import {
+  defaultCardStyle,
+  fontSizes,
+  colors,
+  viewportWidths,
+  media,
+} from 'utils/styleUtils';
 
 const Container = styled.div`
   padding: 20px;
@@ -28,13 +40,29 @@ const Container = styled.div`
   ${defaultCardStyle};
   border: solid 1px #ccc;
   cursor: pointer;
+  position: relative;
   transition: all 100ms ease-out;
 
-  &.hovered {
-    border-color: #000;
-    box-shadow: 0px 0px 0px 1px #000 inset;
-  }
+  ${media.smallerThanMaxTablet`
+    padding-top: 25px;
+  `}
+
+  ${media.biggerThanMaxTablet`
+    &.hovered {
+      border-color: #000;
+      box-shadow: 0px 0px 0px 1px #000 inset;
+    }
+  `}
 `;
+
+const CloseButtonWrapper = styled.div`
+  display: flex;
+  position: absolute;
+  top: 8px;
+  right: 8px;
+`;
+
+const CloseButton = styled(Button)``;
 
 const Title = styled.h3`
   height: 46px;
@@ -97,11 +125,14 @@ const FooterValue = styled.div`
 
 interface Props {
   ideaId: string;
+  onClose?: () => void;
   className?: string;
 }
 
-const IdeaMapCard = memo<Props>(({ ideaId, className }) => {
+const IdeaMapCard = memo<Props>(({ ideaId, onClose, className }) => {
   const idea = useIdea({ ideaId });
+  const { windowWidth } = useWindowSize();
+  const smallerThanMaxTablet = windowWidth <= viewportWidths.largeTablet;
 
   const [hovered, setHovered] = useState(false);
 
@@ -122,12 +153,20 @@ const IdeaMapCard = memo<Props>(({ ideaId, className }) => {
 
     setIdeaMapCardSelected(ideaId);
 
-    if (!isNilOrError(idea)) {
-      // pan map to idea coordiantes
-      // const lng = idea.attributes.location_point_geojson.coordinates[0];
-      // const lat = idea.attributes.location_point_geojson.coordinates[1];
-      // setLeafletMapCenter([lat, lng]);
+    if (smallerThanMaxTablet && !isNilOrError(idea)) {
+      eventEmitter.emit<IOpenPostPageModalEvent>('cardClick', {
+        id: ideaId,
+        slug: idea.attributes.slug,
+        type: 'idea',
+      });
     }
+
+    // pan map to idea coordinates
+    // if (!isNilOrError(idea)) {
+    //   const lng = idea.attributes.location_point_geojson.coordinates[0];
+    //   const lat = idea.attributes.location_point_geojson.coordinates[1];
+    //   setLeafletMapCenter([lat, lng]);
+    // }
   };
 
   const handleOnMouseEnter = () => {
@@ -138,6 +177,11 @@ const IdeaMapCard = memo<Props>(({ ideaId, className }) => {
     setLeafletMapHoveredMarker(null);
   };
 
+  const handleCloseButtonClick = (event: React.FormEvent) => {
+    event?.preventDefault();
+    onClose?.();
+  };
+
   if (!isNilOrError(idea)) {
     return (
       <Container
@@ -146,6 +190,20 @@ const IdeaMapCard = memo<Props>(({ ideaId, className }) => {
         onMouseEnter={handleOnMouseEnter}
         onMouseLeave={handleOnMouseLeave}
       >
+        {smallerThanMaxTablet && (
+          <CloseButtonWrapper>
+            <CloseButton
+              width="22px"
+              height="22px"
+              padding="0px"
+              buttonStyle="secondary"
+              icon="close"
+              iconSize="10px"
+              borderRadius="3px"
+              onClick={handleCloseButtonClick}
+            />
+          </CloseButtonWrapper>
+        )}
         <Title>
           <T value={idea.attributes.title_multiloc} />
         </Title>
