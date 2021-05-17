@@ -606,7 +606,7 @@ resource 'Projects' do
         expect(json_response[:data].size).to eq 1
       end
 
-      example 'Normal users cannot moderate any projects', document: false do
+      example 'Normal users cannot moderate any projects', document: false, skip: !CitizenLab.ee? do
         %w[published published draft published archived published archived]
           .map { |ps| create(:project, admin_publication_attributes: { publication_status: ps }) }
         do_request(filter_can_moderate: true, publication_statuses: AdminPublication::PUBLICATION_STATUSES)
@@ -625,7 +625,7 @@ resource 'Projects' do
 
       let(:filter_can_moderate) { true }
 
-      example_request 'List all projects the current user can moderate', document: false do
+      example_request 'List all projects the current user can moderate', document: false, skip: !CitizenLab.ee? do
         expect(status).to eq(200)
         expect(json_response[:data].size).to eq 0
       end
