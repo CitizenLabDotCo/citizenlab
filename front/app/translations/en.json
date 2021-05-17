@@ -754,6 +754,7 @@
   "app.containers.Admin.Insights.link": "Read our support guide",
   "app.containers.Admin.Insights.listCreate": "Create insights",
   "app.containers.Admin.Insights.listDelete": "Delete",
+  "app.containers.Admin.Insights.listDeleteConfirmation": "Are you sure?",
   "app.containers.Admin.Insights.listDescription": "An insight is a textual or visual summary of the input. It is a  starting point to formulate conclusions and a building block for reports. Actions taken here don’t impact the rest of the platform and are not be visible to participants.",
   "app.containers.Admin.Insights.listDuplicate": "Duplicate",
   "app.containers.Admin.Insights.listManage": "Manage",
