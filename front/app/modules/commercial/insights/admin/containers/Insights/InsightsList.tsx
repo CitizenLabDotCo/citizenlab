@@ -4,7 +4,7 @@ import { isNilOrError } from 'utils/helperUtils';
 // intl
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
-import messages from '../../../messages';
+import messages from './messages';
 import useLocale from 'hooks/useLocale';
 
 // components
@@ -82,22 +82,22 @@ const InsightsList: React.FC<InsightsList> = ({
   const locale = useLocale();
   return (
     <div>
-      <PageTitle>{formatMessage(messages.insightsTitle)}</PageTitle>
+      <PageTitle>{formatMessage(messages.title)}</PageTitle>
       <StyledDescription>
-        {formatMessage(messages.insightsDescription)}
+        {formatMessage(messages.description)}
       </StyledDescription>
-      <StyledLink>{formatMessage(messages.insightsLink)}</StyledLink>
+      <StyledLink>{formatMessage(messages.link)}</StyledLink>
       {!isNilOrError(locale) && (
         <InsightsContainer>
           <InsightsContainerHeader>
             <div>
               <InsightsContainerTitle>
-                {formatMessage(messages.insightsListTitle)}
+                {formatMessage(messages.listTitle)}
               </InsightsContainerTitle>
-              <p>{formatMessage(messages.insightsListDescription)}</p>
+              <p>{formatMessage(messages.listDescription)}</p>
             </div>
             <Button locale={locale} bgColor={colors.adminTextColor}>
-              {formatMessage(messages.insightsListCreate)}
+              {formatMessage(messages.listCreate)}
             </Button>
           </InsightsContainerHeader>
           {data.map((view) => (
@@ -112,7 +112,7 @@ const InsightsList: React.FC<InsightsList> = ({
                     textColor={colors.adminTextColor}
                     boxShadow="none"
                   >
-                    {formatMessage(messages.insightsListDuplicate)}
+                    {formatMessage(messages.listDuplicate)}
                   </Button>
                   <Button
                     locale={locale}
@@ -121,10 +121,10 @@ const InsightsList: React.FC<InsightsList> = ({
                     textColor={colors.adminTextColor}
                     boxShadow="none"
                   >
-                    {formatMessage(messages.insightsListDelete)}
+                    {formatMessage(messages.listDelete)}
                   </Button>
                   <Button locale={locale} buttonStyle="secondary" icon="edit">
-                    {formatMessage(messages.insightsListManage)}
+                    {formatMessage(messages.listManage)}
                   </Button>
                 </div>
               </InsightsListItem>

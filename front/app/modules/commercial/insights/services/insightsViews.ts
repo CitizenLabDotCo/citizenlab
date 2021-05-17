@@ -57,14 +57,11 @@ export function addInsightsView(object: IInsightsViewObject) {
   });
 }
 
-export function updateInsightsView(
-  insightsViewId: string,
-  object: IInsightsViewObject
-) {
+export function updateInsightsView(insightsViewId: string, name: string) {
   return streams.update<IInsightsView>(
     `${API_PATH}/${insightsViewsEndpoint}/${insightsViewId}`,
     insightsViewId,
-    { view: object }
+    { view: { name } }
   );
 }
 
