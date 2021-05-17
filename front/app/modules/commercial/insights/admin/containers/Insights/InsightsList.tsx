@@ -90,7 +90,7 @@ const InsightsList: React.FC<InsightsList> = ({
 }) => {
   const locale = useLocale();
 
-  const handleDeleteClick = (viewId: string) => {
+  const handleDeleteClick = (viewId: string) => () => {
     const deleteMessage = formatMessage(messages.listDeleteConfirmation);
 
     if (window.confirm(deleteMessage)) {
@@ -141,7 +141,7 @@ const InsightsList: React.FC<InsightsList> = ({
                     icon="delete"
                     textColor={colors.adminTextColor}
                     boxShadow="none"
-                    onClick={() => handleDeleteClick(view.id)}
+                    onClick={handleDeleteClick(view.id)}
                   >
                     {formatMessage(messages.listDelete)}
                   </Button>
