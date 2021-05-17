@@ -1027,6 +1027,7 @@
   "app.containers.AdminPage.DashboardPage.resolutionmonth": "w miesiącach",
   "app.containers.AdminPage.DashboardPage.resolutionweek": "w tygodniach",
   "app.containers.AdminPage.DashboardPage.resourceByDifference": "{selectedResourceName} różni się od {selectedName}",
+  "app.containers.AdminPage.DashboardPage.seeReportButton": "Podsumowanie",
   "app.containers.AdminPage.DashboardPage.selectedProject": "aktualny filtr projektu",
   "app.containers.AdminPage.DashboardPage.selectedTopic": "aktualny filtr tematu",
   "app.containers.AdminPage.DashboardPage.subtitleDashboard": "Dowiedz się, co dzieje się na Twojej platformie.",

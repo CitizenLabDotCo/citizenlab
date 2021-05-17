@@ -1027,6 +1027,7 @@
   "app.containers.AdminPage.DashboardPage.resolutionmonth": "per maand",
   "app.containers.AdminPage.DashboardPage.resolutionweek": "per week",
   "app.containers.AdminPage.DashboardPage.resourceByDifference": "{selectedResourceName} verschil met {selectedName}",
+  "app.containers.AdminPage.DashboardPage.seeReportButton": "Samenvatting",
   "app.containers.AdminPage.DashboardPage.selectedProject": "huidige projectfilter",
   "app.containers.AdminPage.DashboardPage.selectedTopic": "huidige themafilter",
   "app.containers.AdminPage.DashboardPage.subtitleDashboard": "Ontdek wat er gebeurt op je platform.",
