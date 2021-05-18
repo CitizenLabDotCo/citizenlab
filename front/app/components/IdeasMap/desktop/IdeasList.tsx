@@ -1,4 +1,4 @@
-import React, { memo, useState } from 'react';
+import React, { memo, useState, useEffect } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
@@ -6,7 +6,7 @@ import { Icon, Spinner } from 'cl2-component-library';
 import TopicFilterDropdown from 'components/IdeaCards/TopicFilterDropdown';
 import SelectSort from 'components/IdeaCards/SortFilterDropdown';
 import SearchInput from 'components/UI/SearchInput';
-import IdeaMapCard from './IdeaMapCard';
+import IdeaMapCard from '../IdeaMapCard';
 
 // hooks
 import useLocale from 'hooks/useLocale';
@@ -14,6 +14,16 @@ import useLocale from 'hooks/useLocale';
 import useIdeaMarkers from 'hooks/useIdeaMarkers';
 import useProject from 'hooks/useProject';
 import useIdeaCustomFieldsSchemas from 'hooks/useIdeaCustomFieldsSchemas';
+
+// events
+import {
+  setIdeasSearch,
+  setIdeasSort,
+  setIdeasTopics,
+  ideasSort$,
+  ideasSearch$,
+  ideasTopics$,
+} from '../events';
 
 // services
 import { ideaDefaultSortMethodFallback } from 'services/participationContexts';
@@ -125,13 +135,19 @@ const IdeasList = memo<Props>(
     const ideaCustomFieldsSchemas = useIdeaCustomFieldsSchemas({ projectId });
     const project = useProject({ projectId });
 
+    // ideaMarkers
     const [search, setSearch] = useState<string | null>(null);
     const [topics, setTopics] = useState<string[]>([]);
     const [sort, setSort] = useState<Sort>(
       project?.attributes.ideas_order || ideaDefaultSortMethodFallback
     );
-
-    const ideas = useIdeaMarkers({ projectIds, phaseId, sort, search, topics });
+    const ideaMarkers = useIdeaMarkers({
+      projectIds,
+      phaseId,
+      sort,
+      search,
+      topics,
+    });
 
     const isFiltered = (search && search.length > 0) || topics.length > 0;
 
@@ -149,16 +165,34 @@ const IdeasList = memo<Props>(
 
     const topicsEnabled = isFieldEnabled('topic_ids');
 
+    useEffect(() => {
+      const subscriptions = [
+        ideasSearch$.subscribe((search) => {
+          setSearch(search);
+        }),
+        ideasSort$.subscribe((sort) => {
+          setSort(sort);
+        }),
+        ideasTopics$.subscribe((topics) => {
+          setTopics(topics);
+        }),
+      ];
+
+      return () => {
+        subscriptions.forEach((subscription) => subscription.unsubscribe());
+      };
+    }, []);
+
     const handleSearchOnChange = (newSearchValue: string) => {
-      setSearch(newSearchValue || null);
+      setIdeasSearch(newSearchValue || null);
     };
 
     const handleSortOnChange = (newSort: Sort) => {
-      setSort(newSort);
+      setIdeasSort(newSort);
     };
 
     const handleTopicsOnChange = (newTopics: string[]) => {
-      setTopics(newTopics);
+      setIdeasTopics(newTopics);
     };
 
     return (
@@ -185,19 +219,19 @@ const IdeasList = memo<Props>(
         </Header>
 
         <IdeaMapCards>
-          {ideas === undefined && (
+          {ideaMarkers === undefined && (
             <Loading>
               <Spinner />
             </Loading>
           )}
 
-          {ideas &&
-            ideas.length > 0 &&
-            ideas.map((idea) => (
+          {ideaMarkers &&
+            ideaMarkers.length > 0 &&
+            ideaMarkers.map((idea) => (
               <StyledIdeaMapCard ideaId={idea.id} key={idea.id} />
             ))}
 
-          {(ideas === null || ideas?.length === 0) && (
+          {(ideaMarkers === null || ideaMarkers?.length === 0) && (
             <EmptyContainer>
               <IdeaIcon ariaHidden name="idea" />
               <EmptyMessage>

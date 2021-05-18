@@ -7,7 +7,7 @@ import Button from 'components/UI/Button';
 
 // events
 import eventEmitter from 'utils/eventEmitter';
-import { setIdeaMapCardSelected } from '../events';
+import { setIdeaMapCardSelected } from './events';
 import {
   setLeafletMapHoveredMarker,
   leafletMapHoveredMarker$,

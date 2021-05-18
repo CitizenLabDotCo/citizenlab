@@ -9,16 +9,12 @@ import { isNilOrError } from 'utils/helperUtils';
 import { popup, LatLng } from 'leaflet';
 import CSSTransition from 'react-transition-group/CSSTransition';
 
-// tracking
-import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
-
 // components
 import Map, { Point } from 'components/Map';
 import Warning from 'components/UI/Warning';
 import IdeaButton from 'components/IdeaButton';
 import DesktopIdeaMapOverlay from './desktop/IdeaMapOverlay';
-import IdeaMapCard from './desktop/IdeaMapCard';
+import IdeaMapCard from './IdeaMapCard';
 
 // hooks
 import useProject from 'hooks/useProject';
@@ -26,8 +22,20 @@ import usePhase from 'hooks/usePhase';
 import useIdeaMarkers from 'hooks/useIdeaMarkers';
 import useWindowSize from 'hooks/useWindowSize';
 
+// services
+import { ideaDefaultSortMethodFallback } from 'services/participationContexts';
+
 // events
-import { setIdeaMapCardSelected, ideaMapCardSelected$ } from './events';
+import {
+  setIdeaMapCardSelected,
+  setIdeasSearch,
+  setIdeasSort,
+  setIdeasTopics,
+  ideaMapCardSelected$,
+  ideasSort$,
+  ideasSearch$,
+  ideasTopics$,
+} from './events';
 import {
   setLeafletMapSelectedMarker,
   setLeafletMapHoveredMarker,
@@ -44,6 +52,9 @@ import styled from 'styled-components';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
 import { media, viewportWidths } from 'utils/styleUtils';
+
+// typings
+import { Sort } from 'resources/GetIdeas';
 
 const mapBorderPadding = 60;
 const mapHeight = '80vh';
@@ -143,13 +154,14 @@ const initialInnerContainerLeftMargin = getInnerContainerLeftMargin(
 const IdeasMap = memo<Props>(({ projectIds, phaseId, className }) => {
   const project = useProject({ projectId: projectIds?.[0] });
   const phase = usePhase(phaseId || null);
-  const ideaMarkers = useIdeaMarkers({ phaseId, projectIds, sort: '-new' });
   const { windowWidth } = useWindowSize();
   const smallerThanMaxTablet = windowWidth <= viewportWidths.largeTablet;
 
+  // refs
   const containerRef = useRef<HTMLDivElement | null>(null);
   const ideaButtonRef = useRef<HTMLDivElement | null>(null);
 
+  // state
   const [selectedLatLng, setSelectedLatLng] = useState<LatLng | null>(null);
   const [selectedIdeaId, setSelectedIdeaId] = useState<string | null>(null);
   const [points, setPoints] = useState<Point[]>([]);
@@ -157,6 +169,22 @@ const IdeasMap = memo<Props>(({ projectIds, phaseId, className }) => {
   const [innerContainerLeftMargin, setInnerContainerLeftMargin] = useState(
     initialInnerContainerLeftMargin
   );
+
+  // ideaMarkers
+  const defaultIdeasSearch: string | null = null;
+  const defaultIdeasSort: Sort =
+    project?.attributes.ideas_order || ideaDefaultSortMethodFallback;
+  const defaultIdeasTopics: string[] = [];
+  const [search, setSearch] = useState<string | null>(defaultIdeasSearch);
+  const [topics, setTopics] = useState<string[]>(defaultIdeasTopics);
+  const [sort, setSort] = useState<Sort>(defaultIdeasSort);
+  const ideaMarkers = useIdeaMarkers({
+    projectIds,
+    phaseId,
+    sort,
+    search,
+    topics,
+  });
 
   useLayoutEffect(() => {
     const containerWidth = containerRef.current
@@ -175,11 +203,6 @@ const IdeasMap = memo<Props>(({ projectIds, phaseId, className }) => {
         setSelectedIdeaId(ideaId);
       }),
       leafletMapSelectedMarker$.subscribe((ideaId) => {
-        if (ideaId) {
-          trackEventByName(tracks.clickOnIdeaMapMarker, {
-            extra: { selectedIdeaId: ideaId },
-          });
-        }
         setIdeaMapCardSelected(ideaId);
         setSelectedIdeaId(ideaId);
       }),
@@ -196,7 +219,20 @@ const IdeasMap = memo<Props>(({ projectIds, phaseId, className }) => {
             .openOn(map);
         }
       }),
+      ideasSearch$.subscribe((search) => {
+        setSearch(search);
+      }),
+      ideasSort$.subscribe((sort) => {
+        setSort(sort);
+      }),
+      ideasTopics$.subscribe((topics) => {
+        setTopics(topics);
+      }),
     ];
+
+    setIdeasSearch(defaultIdeasSearch);
+    setIdeasSort(defaultIdeasSort);
+    setIdeasTopics(defaultIdeasTopics);
 
     return () => {
       subscriptions.forEach((subscription) => subscription.unsubscribe());
