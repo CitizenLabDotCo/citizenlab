@@ -147,6 +147,7 @@ export interface IAppConfigurationSettings {
   google_forms_surveys?: AppConfigurationFeature;
   surveymonkey_surveys?: AppConfigurationFeature;
   enalyzer_surveys?: AppConfigurationFeature;
+  qualtrics_surveys?: AppConfigurationFeature;
   survey_xact_surveys?: AppConfigurationFeature;
   project_folders?: AppConfigurationFeature;
   clustering?: AppConfigurationFeature;

@@ -166,6 +166,7 @@ interface DataProps {
   google_forms_enabled: GetFeatureFlagChildProps;
   enalyzer_enabled: GetFeatureFlagChildProps;
   survey_xact_enabled: GetFeatureFlagChildProps;
+  survey_qualtrics_enabled: GetFeatureFlagChildProps;
   survey_monkey_enabled: GetFeatureFlagChildProps;
   isCustomInputTermEnabled: GetFeatureFlagChildProps;
 }
@@ -535,6 +536,7 @@ class ParticipationContext extends PureComponent<
       typeform_enabled,
       enalyzer_enabled,
       survey_xact_enabled,
+      survey_qualtrics_enabled,
       survey_monkey_enabled,
       google_forms_enabled,
       intl: { formatMessage },
@@ -646,7 +648,8 @@ class ParticipationContext extends PureComponent<
                   survey_monkey_enabled ||
                   typeform_enabled ||
                   enalyzer_enabled ||
-                  survey_xact_enabled) && (
+                  survey_xact_enabled ||
+                  survey_qualtrics_enabled) && (
                   <StyledRadio
                     onChange={this.handleParticipationMethodOnChange}
                     currentValue={participation_method}
@@ -1059,6 +1062,7 @@ class ParticipationContext extends PureComponent<
                     'google_forms',
                     'enalyzer',
                     'survey_xact',
+                    'qualtrics',
                   ].map((provider) => {
                     if (this.props[`${provider}_enabled`]) {
                       return (
@@ -1105,6 +1109,7 @@ const Data = adopt<DataProps, {}>({
   survey_monkey_enabled: <GetFeatureFlag name="surveymonkey_surveys" />,
   enalyzer_enabled: <GetFeatureFlag name="enalyzer_surveys" />,
   survey_xact_enabled: <GetFeatureFlag name="survey_xact_surveys" />,
+  survey_qualtrics_enabled: <GetFeatureFlag name="qualtrics_surveys" />,
   isCustomInputTermEnabled: <GetFeatureFlag name="idea_custom_copy" />,
   tenant: <GetAppConfiguration />,
 });
