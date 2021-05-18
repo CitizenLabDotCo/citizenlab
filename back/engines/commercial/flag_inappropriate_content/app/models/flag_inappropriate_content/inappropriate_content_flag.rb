@@ -4,6 +4,10 @@ module FlagInappropriateContent
 
     validates :flaggable, presence: true
 
+    
+    def deleted?
+      !!deleted_at
+    end
 
     def reason_code
       return 'inappropriate' if toxicity_label
