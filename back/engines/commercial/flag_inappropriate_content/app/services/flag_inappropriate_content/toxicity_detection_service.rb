@@ -10,8 +10,17 @@ module FlagInappropriateContent
     end
 
     def extract_toxicity_label res
-      # TODO
-      'inflammatory'
+      max_predictions = res.select do |re|
+        re['is_inappropriate']
+      end.map do |re|
+        max_label = re['predictions'].keys.max do |l1, l2|
+          re['predictions'][l1] <=> re['predictions'][l2]
+        end
+        [max_label, re['predictions'][max_label]]
+      end.to_h
+      max_predictions.keys.max do |l1, l2|
+        max_predictions[l1] <=> max_predictions[l2]
+      end
     end
 
     private
