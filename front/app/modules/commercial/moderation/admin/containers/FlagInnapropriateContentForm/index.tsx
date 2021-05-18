@@ -54,7 +54,10 @@ const FlagInnapropriateContentForm = ({
 
   const moderationSettings =
     appConfiguration.data.attributes.settings.moderation;
-  const flagInnaproperiateContentEnabled = !!moderationSettings?.flag_inappropriate_content;
+  const flagInnaproperiateContentEnabled =
+    moderationSettings && moderationSettings.flag_inappropriate_content
+      ? moderationSettings.flag_inappropriate_content
+      : false;
 
   function handleToggle() {
     onSettingChange('moderation', {
