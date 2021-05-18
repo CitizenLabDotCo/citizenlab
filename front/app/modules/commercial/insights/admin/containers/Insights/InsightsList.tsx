@@ -82,11 +82,15 @@ const InsightsListItem = styled.div`
   }
 `;
 
-type InsightsList = { data: IInsightsViewData[] } & InjectedIntlProps;
+type InsightsList = {
+  data: IInsightsViewData[];
+  openCreateModal: () => void;
+};
 
-const InsightsList: React.FC<InsightsList> = ({
+const InsightsList: React.FC<InsightsList & InjectedIntlProps> = ({
   intl: { formatMessage, formatDate },
   data,
+  openCreateModal,
 }) => {
   const locale = useLocale();
 
@@ -114,7 +118,11 @@ const InsightsList: React.FC<InsightsList> = ({
               </InsightsContainerTitle>
               <p>{formatMessage(messages.listDescription)}</p>
             </div>
-            <Button locale={locale} bgColor={colors.adminTextColor}>
+            <Button
+              locale={locale}
+              bgColor={colors.adminTextColor}
+              onClick={openCreateModal}
+            >
               {formatMessage(messages.listCreate)}
             </Button>
           </InsightsContainerHeader>

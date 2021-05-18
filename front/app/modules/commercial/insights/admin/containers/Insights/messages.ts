@@ -59,4 +59,38 @@ export default defineMessages({
     id: 'app.containers.Admin.Insights.listDeleteConfirmation',
     defaultMessage: 'Are you sure?',
   },
+  createModalTitle: {
+    id: 'app.containers.Admin.Reporting.Insights.createModalTitle',
+    defaultMessage: 'Start analyzing your inputs',
+  },
+  createModalDescription: {
+    id: 'app.containers.Admin.Reporting.Insights.createModalDescription',
+    defaultMessage:
+      'You’re about to have your first insights on what participants are talking about. These insights will be saved so you can continue working on them later.',
+  },
+  createModalNameLabel: {
+    id: 'app.containers.Admin.Reporting.Insights.createModalNameLabel',
+    defaultMessage: 'Name',
+  },
+  createModalNameLabelToolip: {
+    id: 'app.containers.Admin.Reporting.Insights.createModalNameLabelToolip',
+    defaultMessage: 'Name ?',
+  },
+  createModalProjectScopeLabel: {
+    id: 'app.containers.Admin.Reporting.Insights.createModalProjectScopeLabel',
+    defaultMessage: 'Project',
+  },
+  createModalProjectScopeLabelToolip: {
+    id:
+      'app.containers.Admin.Reporting.Insights.createModalProjectScopeLabelToolip',
+    defaultMessage: 'Project ?',
+  },
+  createModalSaveView: {
+    id: 'app.containers.Admin.Reporting.Insights.createModalSaveView',
+    defaultMessage: 'Create my insights',
+  },
+  createModalCancel: {
+    id: 'app.containers.Admin.Reporting.Insights.createModalCancel',
+    defaultMessage: 'Cancel',
+  },
 });

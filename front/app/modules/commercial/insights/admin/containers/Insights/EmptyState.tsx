@@ -15,6 +15,7 @@ import messages from './messages';
 
 // components
 import { Button } from 'cl2-component-library';
+import { InjectedIntlProps } from 'react-intl';
 
 const Container = styled.div`
   background-color: ${colors.adminContentBackground};
@@ -51,7 +52,14 @@ const ButtonsContainer = styled.div`
   }
 `;
 
-const EmptyState = ({ intl: { formatMessage } }) => {
+interface Props {
+  openCreateModal: () => void;
+}
+
+const EmptyState = ({
+  intl: { formatMessage },
+  openCreateModal,
+}: Props & InjectedIntlProps) => {
   const locale = useLocale();
 
   return (
@@ -72,7 +80,11 @@ const EmptyState = ({ intl: { formatMessage } }) => {
         <Description>{formatMessage(messages.description)}</Description>
         {!isNilOrError(locale) && (
           <ButtonsContainer>
-            <Button locale={locale} bgColor={colors.adminTextColor}>
+            <Button
+              locale={locale}
+              bgColor={colors.adminTextColor}
+              onClick={openCreateModal}
+            >
               {formatMessage(messages.emptyStateCreate)}
             </Button>
             <Button

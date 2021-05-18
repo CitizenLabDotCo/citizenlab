@@ -174,7 +174,8 @@ type TFieldName =
   | 'first_name'
   | 'last_name'
   | 'confirmation_code'
-  | 'email';
+  | 'email'
+  | 'view_name';
 
 export default class Error extends PureComponent<Props, State> {
   static defaultProps: DefaultProps = {
