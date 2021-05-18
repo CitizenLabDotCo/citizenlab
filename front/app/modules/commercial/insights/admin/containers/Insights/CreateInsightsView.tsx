@@ -99,7 +99,6 @@ const CreateInsightsView = ({
       }
     }
   }
-  console.log(errors);
 
   if (isNilOrError(locale)) return null;
 
