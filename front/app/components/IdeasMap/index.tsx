@@ -32,7 +32,6 @@ import {
   setIdeasSort,
   setIdeasTopics,
   ideaMapCardSelected$,
-  ideasSort$,
   ideasSearch$,
   ideasTopics$,
 } from './events';
@@ -177,11 +176,9 @@ const IdeasMap = memo<Props>(({ projectIds, phaseId, className }) => {
   const defaultIdeasTopics: string[] = [];
   const [search, setSearch] = useState<string | null>(defaultIdeasSearch);
   const [topics, setTopics] = useState<string[]>(defaultIdeasTopics);
-  const [sort, setSort] = useState<Sort>(defaultIdeasSort);
   const ideaMarkers = useIdeaMarkers({
     projectIds,
     phaseId,
-    sort,
     search,
     topics,
   });
@@ -221,9 +218,6 @@ const IdeasMap = memo<Props>(({ projectIds, phaseId, className }) => {
       }),
       ideasSearch$.subscribe((search) => {
         setSearch(search);
-      }),
-      ideasSort$.subscribe((sort) => {
-        setSort(sort);
       }),
       ideasTopics$.subscribe((topics) => {
         setTopics(topics);
