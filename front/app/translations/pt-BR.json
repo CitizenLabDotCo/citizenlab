@@ -1322,6 +1322,7 @@
   "app.containers.AdminPage.ProjectEdit.projectUrl": "URL do projeto",
   "app.containers.AdminPage.ProjectEdit.publishedStatus": "Publicados",
   "app.containers.AdminPage.ProjectEdit.purposes": "Objetivos",
+  "app.containers.AdminPage.ProjectEdit.qualtrics": "",
   "app.containers.AdminPage.ProjectEdit.randomSortingMethod": "Aleatório",
   "app.containers.AdminPage.ProjectEdit.regexError": "O slug (última parte da URL da página do seu projeto) só pode conter letras minúsculas regulares (a-z), números (0-9) e hifens (-). O primeiro e o último caracteres não podem ser hifens. Hífens consecutivos (-) são proibidos",
   "app.containers.AdminPage.ProjectEdit.resultingURL": "URL do projeto resultante",
