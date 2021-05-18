@@ -18,6 +18,11 @@
 ### Added
 - Added polls to the reporting section of the dashboards
 
+## 2021-05-10
+
+
+
+
 ## 2021-05-07
 
 ### Fixed
@@ -27,6 +32,13 @@
 ### Added
 - City Admins can now assign any user as the author of an idea when creating or updating.
 - Email confirmation now happens in survey and signup page sign up forms.
+
+## 2021-05-06
+
+
+
+## 2021-05-04
+
 
 
 ## 2021-05-03
