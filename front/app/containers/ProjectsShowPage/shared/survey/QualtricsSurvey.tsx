@@ -11,6 +11,7 @@ const StyledIframe = styled.iframe`
   border: none;
   height: 600px;
   flex-basis: 640px;
+  border: 1px solid #ccc;
 `;
 
 type Props = {
