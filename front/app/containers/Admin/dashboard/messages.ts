@@ -11,6 +11,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.tabSummary',
     defaultMessage: 'Summary',
   },
+  seeReportButton: {
+    id: 'app.containers.AdminPage.DashboardPage.seeReportButton',
+    defaultMessage: 'Summary',
+  },
   tabUsers: {
     id: 'app.containers.AdminPage.DashboardPage.tabUsers',
     defaultMessage: 'Users',
