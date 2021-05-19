@@ -31,13 +31,13 @@ describe 'Insights::Category' do
     end
   end
 
-  # describe 'associations' do
-  #   context 'when associated project-scope is deleted' do
-  #     subject(:view) { create(:view) }
-  #
-  #     before { view.scope.destroy! }
-  #
-  #     it { expect { view.reload }.to raise_error(ActiveRecord::RecordNotFound) }
-  #   end
-  # end
+  describe 'associations' do
+    context 'when its view is deleted' do
+      subject(:category) { create(:category) }
+
+      before { category.view.destroy! }
+
+      it { expect { category.reload }.to raise_error(ActiveRecord::RecordNotFound) }
+    end
+  end
 end
