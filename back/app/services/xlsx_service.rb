@@ -256,18 +256,31 @@ class XlsxService
     generate_xlsx 'Invites', columns, invites
   end
 
-  def custom_field_columns thing_to_user, view_private_attributes
+  # @param [Symbol] record_to_user
+  # @param [Boolean] view_private_attributes
+  def custom_field_columns(record_to_user, view_private_attributes)
     return [] unless view_private_attributes
 
     areas = Area.all.index_by(&:id)
+    user_custom_fields = CustomField.with_resource_type('User').enabled.order(:ordering)
 
-    custom_field_columns = CustomField.with_resource_type('User').enabled.order(:ordering)&.map do |field|
-      { header: multiloc_service.t(field.title_multiloc), f: ->(u) {
-          return u.send(thing_to_user).custom_field_values[field.key] unless field.key == 'domicile'
-          return multiloc_service.t(areas[u.send(thing_to_user).domicile]&.title_multiloc) if u.send(thing_to_user).custom_field_values[field.key]
-          return
-        }
-      }
+    user_custom_fields&.map do |field|
+
+      column_name = multiloc_service.t(field.title_multiloc)
+      value_getter = # lambda that gets a record and returns the field value
+        if field.key == 'domicile'  # 'domicile' is a special case
+          lambda do |record|
+            user = record.send(record_to_user)
+            multiloc_service.t(areas[user.domicile]&.title_multiloc) if user && user.custom_field_values['domicile']
+          end
+        else # all other custom fields
+          lambda do |record|
+            user = record.send(record_to_user)
+            user && user.custom_field_values[field.key]
+          end
+        end
+
+      { header: column_name, f: value_getter }
     end
   end
 
