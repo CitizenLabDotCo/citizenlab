@@ -122,7 +122,7 @@ const TopBar = ({
             locale={locale}
             buttonStyle="secondary-outlined"
             linkTo={`/${project.attributes.slug}`}
-            fontSize={fontSizes.small + 'px'}
+            fontSize={`${fontSizes.small}px`}
             padding={'6px 8px'}
           >
             <ProjectButtonContent>
