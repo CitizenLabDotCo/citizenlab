@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { darken } from 'polished';
 import useIdea from 'hooks/useIdea';
 import { isNilOrError } from 'utils/helperUtils';
+import { isArray, isEmpty } from 'lodash-es';
 
 // components
 import { Icon, colors } from 'cl2-component-library';
@@ -86,6 +87,26 @@ const Location = memo<Props & InjectedIntlProps>(
     const [isOpened, setIsOpened] = useState(false);
     const idea = useIdea({ ideaId });
 
+    const address =
+      !isNilOrError(idea) && !isEmpty(idea.attributes?.location_description)
+        ? idea.attributes.location_description
+        : null;
+
+    const point =
+      !isNilOrError(idea) && !isEmpty(idea.attributes?.location_point_geojson)
+        ? idea.attributes.location_point_geojson
+        : null;
+
+    const points = useMemo(() => {
+      return point ? ([point] as Point[]) : undefined;
+    }, [point]);
+
+    const centerLatLng = useMemo(() => {
+      return point
+        ? ([point.coordinates[1], point.coordinates[0]] as LatLngTuple)
+        : undefined;
+    }, [point]);
+
     const closeModal = () => {
       setIsOpened(false);
     };
@@ -94,56 +115,33 @@ const Location = memo<Props & InjectedIntlProps>(
       setIsOpened(true);
     };
 
-    const points = useMemo(() => {
-      if (!isNilOrError(idea)) {
-        const point = idea.attributes.location_point_geojson;
-        return [point as Point];
-      }
-
-      return undefined;
-    }, [idea]);
-
-    const centerLatLng = useMemo(() => {
-      if (!isNilOrError(idea)) {
-        const point = idea.attributes.location_point_geojson;
-        return [point.coordinates[1], point.coordinates[0]] as LatLngTuple;
-      }
-
-      return undefined;
-    }, [idea]);
-
-    if (!isNilOrError(idea)) {
-      const address = idea.attributes.location_description;
-      const point = idea.attributes.location_point_geojson;
-
-      if (address && point) {
-        return (
-          <Item>
-            <Header>{formatMessage(messages.location)}</Header>
-            <Container>
-              <StyledIcon name="position" ariaHidden />
-              <OpenMapModalButton id="e2e-map-popup" onClick={openModal}>
-                {address}
-              </OpenMapModalButton>
-            </Container>
-            <Modal
-              opened={isOpened}
-              close={closeModal}
-              header={<Address>{address}</Address>}
-              width={1150}
-            >
-              <MapContainer>
-                <Map
-                  projectId={projectId}
-                  points={points}
-                  centerLatLng={centerLatLng}
-                  zoomLevel={15}
-                />
-              </MapContainer>
-            </Modal>
-          </Item>
-        );
-      }
+    if (address && point) {
+      return (
+        <Item>
+          <Header>{formatMessage(messages.location)}</Header>
+          <Container>
+            <StyledIcon name="position" ariaHidden />
+            <OpenMapModalButton id="e2e-map-popup" onClick={openModal}>
+              {address}
+            </OpenMapModalButton>
+          </Container>
+          <Modal
+            opened={isOpened}
+            close={closeModal}
+            header={<Address>{address}</Address>}
+            width={1150}
+          >
+            <MapContainer>
+              <Map
+                projectId={projectId}
+                points={points}
+                centerLatLng={centerLatLng}
+                zoomLevel={15}
+              />
+            </MapContainer>
+          </Modal>
+        </Item>
+      );
     }
 
     return null;

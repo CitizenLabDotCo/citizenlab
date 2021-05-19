@@ -108,6 +108,83 @@ export default function useLeaflet(
     url: DEFAULT_MARKER_ACTIVE_ICON,
   });
 
+  // Subscriptions
+  const markerEvents = () => {
+    const subscriptions = [
+      combineLatest(
+        leafletMapHoveredMarker$.pipe(startWith(null, null), pairwise()),
+        leafletMapSelectedMarker$.pipe(startWith(null, null), pairwise())
+      ).subscribe(
+        ([
+          [prevHoveredMarker, hoveredMarker],
+          [prevSelectedMarker, selectedMarker],
+        ]) => {
+          markers?.forEach((marker) => {
+            const markerId = marker.options['id'] as string;
+
+            if (markerId === selectedMarker) {
+              marker.setIcon(markerActiveIcon)?.setZIndexOffset(999);
+            } else if (
+              markerId === hoveredMarker &&
+              hoveredMarker !== selectedMarker
+            ) {
+              marker.setIcon(markerHoverIcon)?.setZIndexOffset(999);
+            } else if (
+              markerId === prevHoveredMarker ||
+              markerId === prevSelectedMarker
+            ) {
+              marker.setIcon(markerIcon)?.setZIndexOffset(0);
+            }
+          });
+        }
+      ),
+    ];
+
+    return () => {
+      subscriptions.forEach((subscription) => subscription.unsubscribe());
+    };
+  };
+  useEffect(markerEvents, [markers]);
+
+  const mapEvents = () => {
+    const subscriptions = [
+      combineLatest(leafletMapCenter$, leafletMapZoom$)
+        .pipe(
+          distinctUntilChanged((x, y) => isEqual(x, y)),
+          debounceTime(50)
+        )
+        .subscribe(([newCenter, newZoom]) => {
+          if (map !== null && newCenter !== null && newZoom !== null) {
+            service.changeView(map, newCenter, newZoom);
+          }
+        }),
+    ];
+
+    map?.on('click', (event: L.LeafletMouseEvent) => {
+      setLeafletMapClicked(map, event.latlng);
+    });
+
+    map?.on('moveend', (event: L.LeafletEvent) => {
+      const newCenter = event.target.getCenter() as L.LatLng;
+      const newCenterLat = newCenter.lat;
+      const newCenterLng = newCenter.lng;
+      setLeafletMapCenter([newCenterLat, newCenterLng]);
+    });
+
+    map?.on('zoomend', (event: L.LeafletEvent) => {
+      const newZoom = event.target.getZoom() as number;
+      setLeafletMapZoom(newZoom);
+    });
+
+    return () => {
+      subscriptions.forEach((subscription) => subscription.unsubscribe());
+      map?.off('click');
+      map?.off('moveend');
+      map?.off('zoomend');
+    };
+  };
+  useEffect(mapEvents, [map]);
+
   // Effects
   const setup = () => {
     if (!map) {
@@ -207,82 +284,6 @@ export default function useLeaflet(
     });
   };
   useEffect(refreshClusterGroups, [map, markers, noMarkerClustering]);
-
-  const markerEvents = () => {
-    const subscriptions = [
-      combineLatest(
-        leafletMapHoveredMarker$.pipe(startWith(null, null), pairwise()),
-        leafletMapSelectedMarker$.pipe(startWith(null, null), pairwise())
-      ).subscribe(
-        ([
-          [prevHoveredMarker, hoveredMarker],
-          [prevSelectedMarker, selectedMarker],
-        ]) => {
-          markers?.forEach((marker) => {
-            const markerId = marker.options['id'] as string;
-
-            if (markerId === selectedMarker) {
-              marker.setIcon(markerActiveIcon)?.setZIndexOffset(999);
-            } else if (
-              markerId === hoveredMarker &&
-              hoveredMarker !== selectedMarker
-            ) {
-              marker.setIcon(markerHoverIcon)?.setZIndexOffset(999);
-            } else if (
-              markerId === prevHoveredMarker ||
-              markerId === prevSelectedMarker
-            ) {
-              marker.setIcon(markerIcon)?.setZIndexOffset(0);
-            }
-          });
-        }
-      ),
-    ];
-
-    return () => {
-      subscriptions.forEach((subscription) => subscription.unsubscribe());
-    };
-  };
-  useEffect(markerEvents, [markers]);
-
-  const mapEvents = () => {
-    const subscriptions = [
-      combineLatest(leafletMapCenter$, leafletMapZoom$)
-        .pipe(
-          distinctUntilChanged((x, y) => isEqual(x, y)),
-          debounceTime(50)
-        )
-        .subscribe(([newCenter, newZoom]) => {
-          if (map !== null && newCenter !== null && newZoom !== null) {
-            service.changeView(map, newCenter, newZoom);
-          }
-        }),
-    ];
-
-    map?.on('click', (event: L.LeafletMouseEvent) => {
-      setLeafletMapClicked(map, event.latlng);
-    });
-
-    map?.on('moveend', (event: L.LeafletEvent) => {
-      const newCenter = event.target.getCenter() as L.LatLng;
-      const newCenterLat = newCenter.lat;
-      const newCenterLng = newCenter.lng;
-      setLeafletMapCenter([newCenterLat, newCenterLng]);
-    });
-
-    map?.on('zoomend', (event: L.LeafletEvent) => {
-      const newZoom = event.target.getZoom() as number;
-      setLeafletMapZoom(newZoom);
-    });
-
-    return () => {
-      subscriptions.forEach((subscription) => subscription.unsubscribe());
-      map?.off('click');
-      map?.off('moveend');
-      map?.off('zoomend');
-    };
-  };
-  useEffect(mapEvents, [map]);
 
   return map;
 }
