@@ -34,20 +34,26 @@ const Insights: React.FC<InjectedIntlProps & WithRouterProps> = ({
         title={messages.helmetTitle}
         description={messages.helmetDescription}
       />
-      <NavigationTabs>
-        {tabs.map((tab) => (
-          <Tab
-            key={tab.url}
-            active={Boolean(
-              location?.pathname &&
-                matchPathToUrl(tab.url).test(location.pathname)
-            )}
-          >
-            <Link to={tab.url}>{formatMessage(tab.label)}</Link>
-          </Tab>
-        ))}
-      </NavigationTabs>
-      <TabsPageLayout>{children}</TabsPageLayout>
+      {tabs.some((tab) => matchPathToUrl(tab.url).test(location.pathname)) ? (
+        <>
+          <NavigationTabs>
+            {tabs.map((tab) => (
+              <Tab
+                key={tab.url}
+                active={Boolean(
+                  location?.pathname &&
+                    matchPathToUrl(tab.url).test(location.pathname)
+                )}
+              >
+                <Link to={tab.url}>{formatMessage(tab.label)}</Link>
+              </Tab>
+            ))}
+          </NavigationTabs>
+          <TabsPageLayout>{children}</TabsPageLayout>
+        </>
+      ) : (
+        children
+      )}
     </div>
   );
 };
