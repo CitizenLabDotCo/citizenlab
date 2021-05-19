@@ -56,7 +56,7 @@ module FlagInappropriateContent
       flag.deleted_at = nil # re-introduce flag if it was marked as deleted
       flag.save!
       LogActivityJob.perform_later(flag, 'created', nil, flag.created_at.to_i) if !reuse_flag
-      LogActivityJob.perform_later(obj, 'flagged_for_inappropriate_content', nil, Time.now.to_i)
+      LogActivityJob.perform_later(obj, 'flagged_for_inappropriate_content', nil, flag.created_at.to_i)
     end
 
     # TO DELETE
