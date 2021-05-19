@@ -43,17 +43,21 @@ export function init(
 }
 
 export function addTileLayer(
-  map: L.Map,
+  map: L.Map | null | undefined,
   tileProvider?: string | null,
   tileOptions?: object
 ) {
-  if (tileProvider) {
+  if (map && tileProvider) {
     return L.tileLayer(tileProvider, tileOptions).addTo(map);
   }
 
   return null;
 }
 
-export function changeView(map: L.Map, center: L.LatLngTuple, zoom: number) {
-  map.setView(center, zoom);
+export function changeView(
+  map: L.Map | null | undefined,
+  center: L.LatLngTuple,
+  zoom: number
+) {
+  map?.setView(center, zoom);
 }

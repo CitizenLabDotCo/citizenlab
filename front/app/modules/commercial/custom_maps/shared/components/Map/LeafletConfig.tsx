@@ -1,14 +1,8 @@
-import { memo, useMemo, useEffect } from 'react';
-
-// components
-import { IMapConfigProps } from 'components/Map';
+import { memo, useMemo, useEffect, useCallback } from 'react';
 
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
 import useMapConfig from '../../../hooks/useMapConfig';
-
-// typings
-import { GeoJSONLayer } from 'components/UI/LeafletMap/typings';
 
 // utils
 import {
@@ -25,13 +19,19 @@ import useLocalize from 'hooks/useLocalize';
 import legendMarkerIcon from './legend-marker.svg';
 import { ILeafletMapConfig } from 'components/UI/LeafletMap/useLeaflet';
 
+// typings
+import { LatLngTuple } from 'leaflet';
+import { GeoJSONLayer, Point } from 'components/UI/LeafletMap/typings';
+
 interface Props {
-  leafletConfig: ILeafletMapConfig;
   onLeafletConfigChange: (newLeafletConfig: ILeafletMapConfig) => void;
   projectId?: string | null;
+  centerLatLng?: LatLngTuple;
+  zoomLevel?: number;
+  points?: Point[];
 }
 
-const LeafletConfig = memo<Props & IMapConfigProps>(
+const LeafletConfig = memo<Props>(
   ({ onLeafletConfigChange, projectId, centerLatLng, zoomLevel, points }) => {
     const localize = useLocalize();
     const appConfig = useAppConfiguration();
@@ -59,34 +59,61 @@ const LeafletConfig = memo<Props & IMapConfigProps>(
       }
 
       return mapConfig.attributes.layers as GeoJSONLayer[];
-    }, [projectId, mapConfig]);
+    }, [mapConfig]);
 
-    const newLeafletConfig = useMemo(() => {
-      return {
+    const layerMarker = useCallback(
+      (geojsonLayer: GeoJSONLayer, _latlng: L.LatLng) => {
+        return geojsonLayer.marker_svg_url || legendMarkerIcon;
+      },
+      [geoJsonLayers]
+    );
+
+    const layerTooltip = useCallback(
+      (_layer: L.GeoJSON, feature: GeoJSON.Feature) => {
+        return localize(feature?.properties?.tooltipContent);
+      },
+      [geoJsonLayers]
+    );
+
+    const layerPopup = useCallback(
+      (_layer: L.GeoJSON, feature: GeoJSON.Feature) => {
+        return localize(feature?.properties?.popupContent);
+      },
+      [geoJsonLayers]
+    );
+
+    const layerOverlay = useCallback(
+      (geojsonLayer: GeoJSONLayer) => {
+        return localize(geojsonLayer.title_multiloc);
+      },
+      [geoJsonLayers]
+    );
+
+    useEffect(() => {
+      onLeafletConfigChange({
         geoJsonLayers,
         points,
         zoom,
         center,
         tileProvider,
         tileOptions,
-        layerMarker: (geojsonLayer: GeoJSONLayer, _latlng: L.LatLng) => {
-          return geojsonLayer.marker_svg_url || legendMarkerIcon;
-        },
-        layerTooltip: (_layer: L.GeoJSON, feature: GeoJSON.Feature) => {
-          return localize(feature?.properties?.tooltipContent);
-        },
-        layerPopup: (_layer: L.GeoJSON, feature: GeoJSON.Feature) => {
-          return localize(feature?.properties?.popupContent);
-        },
-        layerOverlay: (geojsonLayer: GeoJSONLayer) => {
-          return localize(geojsonLayer.title_multiloc);
-        },
-      };
-    }, [geoJsonLayers, points, zoom, center, tileProvider, tileOptions]);
-
-    useEffect(() => {
-      onLeafletConfigChange(newLeafletConfig);
-    }, [newLeafletConfig]);
+        layerMarker,
+        layerTooltip,
+        layerPopup,
+        layerOverlay,
+      });
+    }, [
+      geoJsonLayers,
+      points,
+      zoom,
+      center,
+      tileProvider,
+      tileOptions,
+      layerMarker,
+      layerTooltip,
+      layerPopup,
+      layerOverlay,
+    ]);
 
     return null;
   }

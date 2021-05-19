@@ -1,4 +1,11 @@
-import React, { memo, useMemo, useState, lazy, Suspense } from 'react';
+import React, {
+  memo,
+  useMemo,
+  useState,
+  lazy,
+  Suspense,
+  useCallback,
+} from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
@@ -131,12 +138,10 @@ const Map = memo<IMapProps & IMapConfigProps>(
   }) => {
     const appConfig = useAppConfiguration();
 
-    const baseMapConfigProps: IMapConfigProps = {
-      centerLatLng,
-      zoomLevel,
-      mapHeight,
-      points,
-    };
+    const [
+      additionalLeafletConfig,
+      setAdditionalLeafletConfig,
+    ] = useState<ILeafletMapConfig | null>(null);
 
     const center = useMemo(() => {
       return getCenter(centerLatLng, appConfig);
@@ -154,8 +159,8 @@ const Map = memo<IMapProps & IMapConfigProps>(
       return getTileOptions();
     }, [tileProvider]);
 
-    const [leafletMapConfig, setLeafletMapConfig] = useState<ILeafletMapConfig>(
-      {
+    const leafletConfig = useMemo(() => {
+      return {
         points,
         noMarkerClustering,
         zoom,
@@ -163,16 +168,26 @@ const Map = memo<IMapProps & IMapConfigProps>(
         tileProvider,
         tileOptions,
         zoomControlPosition,
-        layersControlPosition,
-      }
-    );
+        ...additionalLeafletConfig,
+      };
+    }, [
+      points,
+      noMarkerClustering,
+      zoom,
+      center,
+      tileProvider,
+      tileOptions,
+      zoomControlPosition,
+      layersControlPosition,
+      additionalLeafletConfig,
+    ]);
 
-    const handleLeafletConfigChange = (newConfig: ILeafletMapConfig) => {
-      setLeafletMapConfig((prevLeafletMapConfig) => ({
-        ...prevLeafletMapConfig,
-        ...newConfig,
-      }));
-    };
+    const handleLeafletConfigChange = useCallback(
+      (leafletConfig: ILeafletMapConfig) => {
+        setAdditionalLeafletConfig(leafletConfig);
+      },
+      []
+    );
 
     const handleBoxOnClose = (event: React.FormEvent) => {
       event.preventDefault();
@@ -197,15 +212,16 @@ const Map = memo<IMapProps & IMapConfigProps>(
               id="mapid"
               className="e2e-leafletmap"
               mapHeight={mapHeight}
-              {...leafletMapConfig}
+              {...leafletConfig}
             />
           </Suspense>
           <Outlet
             id="app.components.Map.leafletConfig"
             projectId={projectId}
-            leafletConfig={leafletMapConfig}
             onLeafletConfigChange={handleLeafletConfigChange}
-            {...baseMapConfigProps}
+            centerLatLng={center}
+            zoomLevel={zoom}
+            points={points}
           />
         </MapWrapper>
 

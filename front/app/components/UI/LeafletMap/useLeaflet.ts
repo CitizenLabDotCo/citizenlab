@@ -95,7 +95,7 @@ export default function useLeaflet(
     _markerClusterGroup,
     setMarkerClusterGroup,
   ] = useState<L.MarkerClusterGroup | null>(null);
-  const [_layersControl, setLayersControl] = useState<L.Control.Layers | null>(
+  const [layersControl, setLayersControl] = useState<L.Control.Layers | null>(
     null
   );
 
@@ -132,13 +132,10 @@ export default function useLeaflet(
   ]);
 
   const refreshTile = () => {
-    if (map) {
-      const newTileLayer = service.addTileLayer(map, tileProvider, tileOptions);
-      setTileLayer((prevTileLayer) => {
-        service.removeLayer(map, prevTileLayer);
-        return newTileLayer;
-      });
-    }
+    setTileLayer((prevTileLayer) => {
+      service.removeLayer(map, prevTileLayer);
+      return service.addTileLayer(map, tileProvider, tileOptions);
+    });
   };
   useEffect(refreshTile, [map, tileProvider, tileOptions]);
 
@@ -157,70 +154,57 @@ export default function useLeaflet(
   useEffect(refreshZoom, [map, zoom]);
 
   const refreshLayers = () => {
-    if (map) {
-      const newLayersControl = service.addLayersControl(
-        map,
-        layersControlPosition
-      );
-      const newLayers = service.addLayers(map, geoJsonLayers, {
-        layersControl: newLayersControl,
+    setLayers((prevLayers) => {
+      service.removeLayers(map, prevLayers);
+      return service.addLayers(map, geoJsonLayers, {
+        layersControl: layersControl,
         overlay: layerOverlay,
         popup: layerPopup,
         tooltip: layerTooltip,
         marker: layerMarker,
       });
-      setLayers((prevLayers) => {
-        service.removeLayers(map, prevLayers);
-        return newLayers;
-      });
-      setLayersControl((prevLayersControl) => {
-        service.removeLayersControl(map, prevLayersControl);
-        return newLayersControl;
-      });
-    }
+    });
   };
   useEffect(refreshLayers, [
     map,
     geoJsonLayers,
+    layersControl,
     layerOverlay,
     layerPopup,
     layerTooltip,
     layerMarker,
-    layersControlPosition,
   ]);
 
+  const refreshLayersControl = () => {
+    setLayersControl((prevLayersControl) => {
+      service.removeLayersControl(map, prevLayersControl);
+      return service.addLayersControl(map, layersControlPosition);
+    });
+  };
+  useEffect(refreshLayersControl, [map, layersControlPosition]);
+
   const refreshMarkers = () => {
-    if (map) {
-      const newMarkers = service.addMarkersToMap(
-        map,
-        points,
-        noMarkerClustering
-      );
-      setMarkers((prevMarkers) => {
-        service.removeLayers(map, prevMarkers);
-        return newMarkers;
-      });
-    }
+    setMarkers((prevMarkers) => {
+      service.removeLayers(map, prevMarkers);
+      return service.addMarkersToMap(map, points, noMarkerClustering);
+    });
   };
   useEffect(refreshMarkers, [map, points, noMarkerClustering]);
 
   const refreshClusterGroups = () => {
-    if (map) {
-      let newMarkerClusterGroup: L.MarkerClusterGroup | null = null;
+    setMarkerClusterGroup((prevMarkerClusterGroup) => {
+      service.removeLayer(map, prevMarkerClusterGroup);
 
       if (!noMarkerClustering) {
-        newMarkerClusterGroup = service.addClusterGroup(map, markers, {
+        return service.addClusterGroup(map, markers, {
           onClick: (id, _data) => {
             setLeafletMapSelectedMarker(id);
           },
         });
       }
 
-      setMarkerClusterGroup((prevMarkerClusterGroup) => {
-        service.removeLayer(map, prevMarkerClusterGroup);
-        return newMarkerClusterGroup;
-      });
-    }
+      return null;
+    });
   };
   useEffect(refreshClusterGroups, [map, markers, noMarkerClustering]);
 

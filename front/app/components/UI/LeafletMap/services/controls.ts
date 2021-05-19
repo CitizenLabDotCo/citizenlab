@@ -1,19 +1,23 @@
 import L from 'leaflet';
 
 export function addLayersControl(
-  map: L.Map,
+  map: L.Map | null | undefined,
   position?: 'topleft' | 'topright' | 'bottomleft' | 'bottomright'
 ) {
-  return L.control
-    .layers(undefined, undefined, { position: position || 'topright' })
-    .addTo(map);
+  if (map) {
+    return L.control
+      .layers(undefined, undefined, { position: position || 'topright' })
+      .addTo(map);
+  }
+
+  return null;
 }
 
 export function removeLayersControl(
-  map: L.Map,
+  map: L.Map | null | undefined,
   layersControl?: L.Control.Layers | null
 ) {
-  if (layersControl) {
+  if (map && layersControl) {
     map.removeControl(layersControl);
   }
 }

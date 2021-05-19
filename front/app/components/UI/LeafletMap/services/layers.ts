@@ -110,11 +110,11 @@ export function layerMarker(
 }
 
 export function addLayers(
-  map: L.Map,
+  map: L.Map | null | undefined,
   geoJsonLayers: GeoJSONLayer[] | null | undefined,
   { layersControl, overlay, popup, tooltip, marker }
 ) {
-  if (geoJsonLayers && geoJsonLayers.length > 0) {
+  if (map && geoJsonLayers && geoJsonLayers.length > 0) {
     const layers = reverse(cloneDeep(geoJsonLayers))
       ?.filter((geoJsonLayer) => !isEmpty(geoJsonLayer.geojson))
       .map((geoJsonLayer) => {
@@ -153,7 +153,7 @@ export function addLayers(
 }
 
 export function removeLayers(
-  map: L.Map,
+  map: L.Map | null | undefined,
   leafletLayers?: L.Layer[] | L.Marker<any>[] | null
 ) {
   if (leafletLayers && leafletLayers.length > 0) {
@@ -163,8 +163,11 @@ export function removeLayers(
   }
 }
 
-export function removeLayer(map: L.Map, leafletLayer?: L.Layer | null) {
-  if (leafletLayer) {
+export function removeLayer(
+  map: L.Map | null | undefined,
+  leafletLayer: L.Layer | null | undefined
+) {
+  if (map && leafletLayer) {
     leafletLayer?.off?.('click');
     leafletLayer?.off?.('mouseover');
     leafletLayer?.off?.('mouseout');

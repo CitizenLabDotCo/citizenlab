@@ -26,7 +26,7 @@ export function getMarkerIcon({ url, iconSize, iconAnchor }: MarkerIconProps) {
 }
 
 export function addMarkerToMap(
-  map: L.Map,
+  map: L.Map | null | undefined,
   latlng: [number, number],
   options = {},
   noMarkerClustering?: boolean
@@ -46,7 +46,7 @@ export function addMarkerToMap(
     setLeafletMapHoveredMarker(null);
   });
 
-  if (noMarkerClustering) {
+  if (map && noMarkerClustering) {
     marker.on('click', (event: L.LeafletEvent) => {
       setLeafletMapSelectedMarker(event.target.options['id']);
     });
@@ -60,7 +60,7 @@ export function addMarkerToMap(
 }
 
 export function addMarkersToMap(
-  map: L.Map,
+  map: L.Map | null | undefined,
   points: Point[] = [],
   noMarkerClustering?: boolean
 ) {
@@ -87,11 +87,11 @@ export function addMarkersToMap(
 }
 
 export function addClusterGroup(
-  map: L.Map,
+  map: L.Map | null | undefined,
   markers: L.Marker[] | null,
   { onClick }: { onClick: (id: string, data: any) => void }
 ) {
-  if (markers) {
+  if (map && markers) {
     const newMarkerClusterGroup = L.markerClusterGroup({
       showCoverageOnHover: false,
       spiderfyDistanceMultiplier: 2,
