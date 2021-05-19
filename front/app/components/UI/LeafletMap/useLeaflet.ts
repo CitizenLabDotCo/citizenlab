@@ -157,7 +157,7 @@ export default function useLeaflet(
     setLayers((prevLayers) => {
       service.removeLayers(map, prevLayers);
       return service.addLayers(map, geoJsonLayers, {
-        layersControl: layersControl,
+        layersControl,
         overlay: layerOverlay,
         popup: layerPopup,
         tooltip: layerTooltip,
