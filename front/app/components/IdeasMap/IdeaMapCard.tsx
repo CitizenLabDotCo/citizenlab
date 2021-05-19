@@ -2,8 +2,9 @@ import React, { memo, useEffect, useState } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { IOpenPostPageModalEvent } from 'containers/App';
 
-//components
+// components
 import Button from 'components/UI/Button';
+import { Icon } from 'cl2-component-library';
 
 // events
 import eventEmitter from 'utils/eventEmitter';
@@ -19,9 +20,6 @@ import useWindowSize from 'hooks/useWindowSize';
 
 // i18n
 import T from 'components/T';
-
-// components
-import { Icon } from 'cl2-component-library';
 
 // styling
 import styled from 'styled-components';
@@ -42,10 +40,6 @@ const Container = styled.div`
   cursor: pointer;
   position: relative;
   transition: all 100ms ease-out;
-
-  ${media.smallerThanMaxTablet`
-    padding-top: 25px;
-  `}
 
   ${media.biggerThanMaxTablet`
     &.hovered {
@@ -68,7 +62,7 @@ const Title = styled.h3`
   height: 46px;
   color: ${(props) => props.theme.colorText};
   font-size: 18px;
-  font-weight: 500;
+  font-weight: 600;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -81,6 +75,10 @@ const Title = styled.h3`
   overflow-wrap: break-word;
   word-wrap: break-word;
   word-break: break-word;
+
+  ${media.smallerThanMaxTablet`
+    width: calc(100% - 22px);
+  `}
 `;
 
 const Footer = styled.div`
@@ -161,7 +159,6 @@ const IdeaMapCard = memo<Props>(({ ideaId, onClose, className }) => {
       });
     }
 
-    // pan map to idea coordinates
     // if (!isNilOrError(idea)) {
     //   const lng = idea.attributes.location_point_geojson.coordinates[0];
     //   const lat = idea.attributes.location_point_geojson.coordinates[1];

@@ -40,9 +40,7 @@ const InnerOverlay = styled.div`
   flex-direction: column;
   align-items: stretch;
   ${defaultCardStyle};
-
   transition: all ${timeout}ms cubic-bezier(0.19, 1, 0.22, 1);
-  will-change: opacity;
 
   &.animation-enter {
     opacity: 0;

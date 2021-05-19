@@ -101,8 +101,8 @@ const StyledDesktopIdeaMapOverlay = styled(DesktopIdeaMapOverlay)`
   height: calc(${mapHeight} - 40px);
   position: absolute;
   display: flex;
-  top: 20px;
-  left: 20px;
+  top: 15px;
+  left: 15px;
   z-index: 900;
 `;
 
