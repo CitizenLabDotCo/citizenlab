@@ -1,6 +1,6 @@
 export const AUTH_PATH = '/auth';
 export const API_PATH = '/web_api/v1';
-export const GOOGLE_MAPS_API_KEY = process.env.GOOGLE_MAPS_API_KEY;
+export const GOOGLE_MAPS_API_KEY = process.env.GOOGLE_MAPS_API_KEY || '';
 export const API_HOST =
   process.env.API_HOST ||
   (typeof window === 'undefined' ? 'localhost' : window.location.hostname);
