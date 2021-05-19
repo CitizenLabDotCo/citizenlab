@@ -32,7 +32,7 @@ import {
   Multiloc,
 } from 'typings';
 import { LatLngTuple } from 'leaflet';
-import { GeoJSONLayer, Point } from 'components/UI/LeafletMap/typings';
+import { Point } from 'components/UI/LeafletMap/typings';
 import { IUserData } from 'services/users';
 import { MessageValue } from 'react-intl';
 import { NavItem } from 'containers/Admin/sideBar';
