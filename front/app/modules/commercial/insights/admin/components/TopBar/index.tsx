@@ -8,6 +8,8 @@ import { lighten } from 'polished';
 
 // components
 import { Dropdown, DropdownListItem, Button } from 'cl2-component-library';
+import Modal from 'components/UI/Modal';
+import RenameInsightsView from './RenameInsightsView';
 
 // intl
 import { InjectedIntlProps } from 'react-intl';
@@ -30,7 +32,7 @@ const Container = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 20px 40px;
-  background-color: ${lighten('0.2', colors.adminBackground)};
+  background-color: ${lighten('0.1', colors.adminBackground)};
   h1 {
     margin: 0;
     fontsize: ${fontSizes.xl};
@@ -52,7 +54,9 @@ const TopBar = ({
   params,
   intl: { formatMessage },
 }: WithRouterProps & InjectedIntlProps) => {
+  const [renameModalOpened, setRenameModalOpened] = useState(false);
   const [isDropdownOpened, setDropdownOpened] = useState(false);
+
   const locale = useLocale();
   const viewId = params.viewId;
   const view = useInsightsView(viewId);
@@ -69,8 +73,11 @@ const TopBar = ({
     setDropdownOpened(false);
   };
 
+  const closeRenameModal = () => setRenameModalOpened(false);
+  const openRenameModal = () => setRenameModalOpened(true);
+
   const handleDeleteClick = async () => {
-    const deleteMessage = formatMessage(messages.listDeleteConfirmation);
+    const deleteMessage = formatMessage(messages.deleteConfirmation);
 
     if (window.confirm(deleteMessage)) {
       await deleteInsightsView(viewId);
@@ -102,19 +109,25 @@ const TopBar = ({
           className="dropdown"
           content={
             <>
-              <DropdownListItem key={1}>
+              <DropdownListItem onClick={openRenameModal}>
                 {formatMessage(messages.editName)}
               </DropdownListItem>
               <DropdownListItem onClick={handleDeleteClick}>
                 {formatMessage(messages.delete)}
               </DropdownListItem>
-              <DropdownListItem key={3}>
+              <DropdownListItem>
                 {formatMessage(messages.duplicate)}
               </DropdownListItem>
             </>
           }
         />
       </DropdownWrapper>
+      <Modal opened={renameModalOpened} close={closeRenameModal}>
+        <RenameInsightsView
+          closeRenameModal={closeRenameModal}
+          insightsViewId={viewId}
+        />
+      </Modal>
     </Container>
   );
 };

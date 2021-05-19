@@ -17,8 +17,29 @@ export default defineMessages({
     id: 'app.containers.Admin.Insights.components.TopBar.duplicate',
     defaultMessage: 'Duplicate',
   },
-  listDeleteConfirmation: {
-    id: 'app.containers.Admin.Insights.listDeleteConfirmation',
+  deleteConfirmation: {
+    id: 'app.containers.Admin.Insights.components.TopBar.deleteConfirmation',
     defaultMessage: 'Are you sure?',
+  },
+  renameModalTitle: {
+    id: 'app.containers.Admin.Insights.components.TopBar.renameModalTitle',
+    defaultMessage: 'Rename insights',
+  },
+  renameModalDescription: {
+    id:
+      'app.containers.Admin.Insights.components.TopBar.renameModalDescription',
+    defaultMessage: 'Choose a new name for your insights.',
+  },
+  renameModalNameLabel: {
+    id: 'app.containers.Admin.Insights.components.TopBar.renameModalNameLabel',
+    defaultMessage: 'New name',
+  },
+  renameModalSaveView: {
+    id: 'app.containers.Admin.Insights.components.TopBar.renameModalSaveView',
+    defaultMessage: 'Rename',
+  },
+  renameModalCancel: {
+    id: 'app.containers.Admin.Insights.components.TopBar.renameModalCancel',
+    defaultMessage: 'Cancel',
   },
 });
