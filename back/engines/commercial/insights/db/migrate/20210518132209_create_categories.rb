@@ -10,7 +10,9 @@ class CreateCategories < ActiveRecord::Migration[6.0]
       t.timestamps
 
       t.index %i[view_id name], unique: true
-      t.index %i[view_id position], unique: true
+      # Ideally, it should be here to ensure data consistency, but it breaks the gem.
+      # See https://github.com/brendon/acts_as_list/issues/378
+      # t.index %i[view_id position], unique: true
     end
   end
 end
