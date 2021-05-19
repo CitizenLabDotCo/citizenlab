@@ -21,6 +21,8 @@ const Container = styled.div`
   background-color: ${colors.adminContentBackground};
   padding: 135px 100px;
   display: flex;
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
+  border-radius: 3px;
 `;
 
 const Title = styled.h1`
@@ -87,11 +89,7 @@ const EmptyState = ({
             >
               {formatMessage(messages.emptyStateCreate)}
             </Button>
-            <Button
-              locale={locale}
-              bgColor={colors.lightGreyishBlue}
-              textColor={colors.adminTextColor}
-            >
+            <Button locale={locale} buttonStyle="secondary">
               {formatMessage(messages.emptyStateDiscover)}
             </Button>
           </ButtonsContainer>
