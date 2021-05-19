@@ -1,18 +1,29 @@
 import React, { useState } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-
 import { withRouter, WithRouterProps } from 'react-router';
-import { injectIntl } from 'utils/cl-intl';
 
-import useInsightsView from '../../../hooks/useInsightsView';
-import useLocale from 'hooks/useLocale';
+// styles
 import { colors, fontSizes } from 'utils/styleUtils';
 import styled from 'styled-components';
 import { lighten } from 'polished';
 
+// components
 import { Dropdown, DropdownListItem, Button } from 'cl2-component-library';
+
+// intl
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
+
+// utils
+import clHistory from 'utils/cl-router/history';
+import { injectIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+
+// services
+import { deleteInsightsView } from '../../../services/insightsViews';
+
+// hooks
+import useInsightsView from '../../../hooks/useInsightsView';
+import useLocale from 'hooks/useLocale';
 
 const Container = styled.div`
   display: flex;
@@ -58,6 +69,15 @@ const TopBar = ({
     setDropdownOpened(false);
   };
 
+  const handleDeleteClick = async () => {
+    const deleteMessage = formatMessage(messages.listDeleteConfirmation);
+
+    if (window.confirm(deleteMessage)) {
+      await deleteInsightsView(viewId);
+      clHistory.push('/admin/insights');
+    }
+  };
+
   return (
     <Container>
       <h1>{view.attributes.name}</h1>
@@ -85,7 +105,7 @@ const TopBar = ({
               <DropdownListItem key={1}>
                 {formatMessage(messages.editName)}
               </DropdownListItem>
-              <DropdownListItem key={2}>
+              <DropdownListItem onClick={handleDeleteClick}>
                 {formatMessage(messages.delete)}
               </DropdownListItem>
               <DropdownListItem key={3}>
@@ -99,4 +119,4 @@ const TopBar = ({
   );
 };
 
-export default injectIntl(withRouter(TopBar));
+export default injectIntl<{}>(withRouter(TopBar));

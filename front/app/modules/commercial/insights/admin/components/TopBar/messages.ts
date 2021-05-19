@@ -17,4 +17,8 @@ export default defineMessages({
     id: 'app.containers.Admin.Insights.components.TopBar.duplicate',
     defaultMessage: 'Duplicate',
   },
+  listDeleteConfirmation: {
+    id: 'app.containers.Admin.Insights.listDeleteConfirmation',
+    defaultMessage: 'Are you sure?',
+  },
 });
