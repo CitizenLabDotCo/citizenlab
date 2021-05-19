@@ -71,7 +71,7 @@ const InnerContainer = styled.div<{ leftMargin: number | null }>`
     display: none;
   }
 
-  /* border: solid 2px green; */
+  /* border: solid 2px red; */
 
   .activeArea {
     position: absolute;
