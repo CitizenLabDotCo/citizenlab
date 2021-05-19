@@ -230,6 +230,13 @@ namespace :cl2_back do
             {
               name: 'franceconnect'
             },
+            {
+              name: 'auth0',
+              client_id: 'fake_client_id',
+              client_secret: 'fake_client_secret',
+              domain: 'fake_domain',
+              method_name_multiloc: {en: 'Verify with Auth0'}
+            },
           ]
         },
         project_folders: {
