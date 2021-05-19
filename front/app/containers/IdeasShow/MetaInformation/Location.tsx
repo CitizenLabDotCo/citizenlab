@@ -1,4 +1,4 @@
-import React, { memo, useState } from 'react';
+import React, { memo, useState, useMemo } from 'react';
 import styled from 'styled-components';
 import { darken } from 'polished';
 import useIdea from 'hooks/useIdea';
@@ -94,17 +94,29 @@ const Location = memo<Props & InjectedIntlProps>(
       setIsOpened(true);
     };
 
+    const points = useMemo(() => {
+      if (!isNilOrError(idea)) {
+        const point = idea.attributes.location_point_geojson;
+        return [point as Point];
+      }
+
+      return undefined;
+    }, [idea]);
+
+    const centerLatLng = useMemo(() => {
+      if (!isNilOrError(idea)) {
+        const point = idea.attributes.location_point_geojson;
+        return [point.coordinates[1], point.coordinates[0]] as LatLngTuple;
+      }
+
+      return undefined;
+    }, [idea]);
+
     if (!isNilOrError(idea)) {
       const address = idea.attributes.location_description;
       const point = idea.attributes.location_point_geojson;
 
       if (address && point) {
-        const points = [point as Point];
-        const centerLatLng = [
-          point.coordinates[1],
-          point.coordinates[0],
-        ] as LatLngTuple;
-
         return (
           <Item>
             <Header>{formatMessage(messages.location)}</Header>

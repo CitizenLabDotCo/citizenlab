@@ -67,6 +67,11 @@ const InnerContainer = styled.div<{ leftMargin: number | null }>`
     leftMargin ? `-${leftMargin}px` : 'auto'};
   position: relative;
 
+  @media screen and (min-width: 2000px) {
+    width: 1800px;
+    margin-left: -${(1800 - maxPageWidth) / 2}px;
+  }
+
   > .create-idea-wrapper {
     display: none;
   }
@@ -91,7 +96,9 @@ const InnerContainer = styled.div<{ leftMargin: number | null }>`
 `;
 
 const StyledMap = styled(Map)`
-  /* box-shadow: 0px 0px 25px 0px rgba(0, 0, 0, 0.15); */
+  border: none;
+  background: transparent;
+  box-shadow: 0px 0px 25px 0px rgba(0, 0, 0, 0.15);
 `;
 
 const IdeaButtonWrapper = styled.div``;

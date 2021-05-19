@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import usePrevious from 'hooks/usePrevious';
 import {
   distinctUntilChanged,
   debounceTime,
@@ -90,22 +89,15 @@ export default function useLeaflet(
   // State
   const [map, setMap] = useState<L.Map | null>(null);
   const [markers, setMarkers] = useState<L.Marker[] | null>(null);
-  const [tileLayer, setTileLayer] = useState<L.Layer | null>(null);
-  const [layers, setLayers] = useState<L.GeoJSON[] | null>(null);
+  const [_tileLayer, setTileLayer] = useState<L.Layer | null>(null);
+  const [_layers, setLayers] = useState<L.GeoJSON[] | null>(null);
   const [
-    markerClusterGroup,
+    _markerClusterGroup,
     setMarkerClusterGroup,
   ] = useState<L.MarkerClusterGroup | null>(null);
-  const [layersControl, setLayersControl] = useState<L.Control.Layers | null>(
+  const [_layersControl, setLayersControl] = useState<L.Control.Layers | null>(
     null
   );
-
-  // Prevstate
-  const prevMarkers = usePrevious(markers);
-  const prevMarkerClusterGroup = usePrevious(markerClusterGroup);
-  const prevLayers = usePrevious(layers);
-  const prevLayersControl = usePrevious(layersControl);
-  const prevTileLayer = usePrevious(tileLayer);
 
   // Marker icons
   const markerIcon = service.getMarkerIcon({ url: DEFAULT_MARKER_ICON });
@@ -140,23 +132,15 @@ export default function useLeaflet(
   ]);
 
   const refreshTile = () => {
-    if (tileLayer !== prevTileLayer) {
-      return;
-    }
-
     if (map) {
-      service.removeLayer(map, tileLayer);
       const newTileLayer = service.addTileLayer(map, tileProvider, tileOptions);
-      setTileLayer(newTileLayer);
+      setTileLayer((prevTileLayer) => {
+        service.removeLayer(map, prevTileLayer);
+        return newTileLayer;
+      });
     }
   };
-  useEffect(refreshTile, [
-    map,
-    tileProvider,
-    tileOptions,
-    tileLayer,
-    prevTileLayer,
-  ]);
+  useEffect(refreshTile, [map, tileProvider, tileOptions]);
 
   const refreshCenter = () => {
     if (center !== undefined) {
@@ -173,14 +157,7 @@ export default function useLeaflet(
   useEffect(refreshZoom, [map, zoom]);
 
   const refreshLayers = () => {
-    if (layersControl !== prevLayersControl && layers !== prevLayers) {
-      return;
-    }
-
     if (map) {
-      service.removeLayersControl(map, layersControl);
-      service.removeLayers(map, layers);
-
       const newLayersControl = service.addLayersControl(
         map,
         layersControlPosition
@@ -192,8 +169,14 @@ export default function useLeaflet(
         tooltip: layerTooltip,
         marker: layerMarker,
       });
-      setLayers(newLayers);
-      setLayersControl(newLayersControl);
+      setLayers((prevLayers) => {
+        service.removeLayers(map, prevLayers);
+        return newLayers;
+      });
+      setLayersControl((prevLayersControl) => {
+        service.removeLayersControl(map, prevLayersControl);
+        return newLayersControl;
+      });
     }
   };
   useEffect(refreshLayers, [
@@ -203,46 +186,26 @@ export default function useLeaflet(
     layerPopup,
     layerTooltip,
     layerMarker,
-    layersControl,
-    prevLayersControl,
     layersControlPosition,
-    layers,
-    prevLayers,
   ]);
 
   const refreshMarkers = () => {
-    if (markers !== prevMarkers) {
-      return;
-    }
-
     if (map) {
-      service.removeLayers(map, markers);
-
       const newMarkers = service.addMarkersToMap(
         map,
         points,
         noMarkerClustering
       );
-
-      setMarkers(newMarkers);
+      setMarkers((prevMarkers) => {
+        service.removeLayers(map, prevMarkers);
+        return newMarkers;
+      });
     }
   };
-  useEffect(refreshMarkers, [
-    map,
-    points,
-    markers,
-    prevMarkers,
-    noMarkerClustering,
-  ]);
+  useEffect(refreshMarkers, [map, points, noMarkerClustering]);
 
   const refreshClusterGroups = () => {
-    if (markerClusterGroup !== prevMarkerClusterGroup) {
-      return;
-    }
-
     if (map) {
-      service.removeLayer(map, markerClusterGroup);
-
       let newMarkerClusterGroup: L.MarkerClusterGroup | null = null;
 
       if (!noMarkerClustering) {
@@ -253,16 +216,13 @@ export default function useLeaflet(
         });
       }
 
-      setMarkerClusterGroup(newMarkerClusterGroup);
+      setMarkerClusterGroup((prevMarkerClusterGroup) => {
+        service.removeLayer(map, prevMarkerClusterGroup);
+        return newMarkerClusterGroup;
+      });
     }
   };
-  useEffect(refreshClusterGroups, [
-    markerClusterGroup,
-    prevMarkerClusterGroup,
-    map,
-    markers,
-    noMarkerClustering,
-  ]);
+  useEffect(refreshClusterGroups, [map, markers, noMarkerClustering]);
 
   const markerEvents = () => {
     const subscriptions = [

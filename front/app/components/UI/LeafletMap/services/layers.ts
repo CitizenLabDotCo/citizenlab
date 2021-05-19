@@ -163,7 +163,7 @@ export function removeLayers(
   }
 }
 
-export function removeLayer(map: L.Map, leafletLayer?: L.Layer) {
+export function removeLayer(map: L.Map, leafletLayer?: L.Layer | null) {
   if (leafletLayer) {
     leafletLayer?.off?.('click');
     leafletLayer?.off?.('mouseover');
