@@ -5,6 +5,18 @@
 
 /
 
+## 2021-05-19
+
+### Fixed
+
+### Added
+- Support for Auth0 as a verification method
+
+## 2021-05-18
+
+### Fixed
+- Active users no longer need confirmation
+
 ## 2021-05-14
 
 
