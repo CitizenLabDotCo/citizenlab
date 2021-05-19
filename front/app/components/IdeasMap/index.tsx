@@ -55,7 +55,7 @@ import { media, viewportWidths } from 'utils/styleUtils';
 // typings
 import { Sort } from 'resources/GetIdeas';
 
-const mapBorderPadding = 60;
+const mapBorderPadding = 70;
 const mapHeight = '80vh';
 
 const Container = styled.div``;
@@ -90,6 +90,10 @@ const InnerContainer = styled.div<{ leftMargin: number | null }>`
   `}
 `;
 
+const StyledMap = styled(Map)`
+  /* box-shadow: 0px 0px 25px 0px rgba(0, 0, 0, 0.15); */
+`;
+
 const IdeaButtonWrapper = styled.div``;
 
 const StyledWarning = styled(Warning)`
@@ -98,11 +102,11 @@ const StyledWarning = styled(Warning)`
 
 const StyledDesktopIdeaMapOverlay = styled(DesktopIdeaMapOverlay)`
   width: 400px;
-  height: calc(${mapHeight} - 40px);
+  height: calc(${mapHeight} - 45px);
   position: absolute;
   display: flex;
-  top: 15px;
-  left: 15px;
+  top: 20px;
+  left: 20px;
   z-index: 900;
 `;
 
@@ -279,7 +283,7 @@ const IdeasMap = memo<Props>(({ projectIds, phaseId, className }) => {
             <FormattedMessage {...messages.a11y_mapTitle} />
           </ScreenReaderOnly>
 
-          <Map
+          <StyledMap
             projectId={project.id}
             points={points}
             mapHeight={mapHeight}

@@ -33,6 +33,7 @@ export interface Point extends GeoJSON.Point {
 
 const Container = styled.div`
   ${defaultCardStyle};
+  background: transparent;
   border: solid 1px #ccc;
 `;
 
