@@ -1,49 +1,49 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<CumulativeAreaChart /> renders correctly with data 1`] = `
-<dashboard__GraphCard>
-  <dashboard__GraphCardInner>
-    <dashboard__GraphCardHeader>
-      <dashboard__GraphCardTitle>
+<Chart__GraphCard>
+  <Chart__GraphCardInner>
+    <Chart__GraphCardHeader>
+      <Chart__GraphCardTitle>
         commentsByTimeTitle
-        <dashboard__GraphCardFigureContainer>
-          <dashboard__GraphCardFigure />
-          <dashboard__GraphCardFigureChange
+        <Chart__GraphCardFigureContainer>
+          <Chart__GraphCardFigure />
+          <Chart__GraphCardFigureChange
             className=""
           />
-        </dashboard__GraphCardFigureContainer>
-      </dashboard__GraphCardTitle>
-    </dashboard__GraphCardHeader>
-    <dashboard__NoDataContainer>
+        </Chart__GraphCardFigureContainer>
+      </Chart__GraphCardTitle>
+    </Chart__GraphCardHeader>
+    <Chart__NoDataContainer>
       <FormattedMessage
         defaultMessage="No data available with the current filters."
         id="app.containers.AdminPage.DashboardPage.noData"
       />
-    </dashboard__NoDataContainer>
-  </dashboard__GraphCardInner>
-</dashboard__GraphCard>
+    </Chart__NoDataContainer>
+  </Chart__GraphCardInner>
+</Chart__GraphCard>
 `;
 
 exports[`<CumulativeAreaChart /> renders correctly without data 1`] = `
-<dashboard__GraphCard>
-  <dashboard__GraphCardInner>
-    <dashboard__GraphCardHeader>
-      <dashboard__GraphCardTitle>
+<Chart__GraphCard>
+  <Chart__GraphCardInner>
+    <Chart__GraphCardHeader>
+      <Chart__GraphCardTitle>
         commentsByTimeTitle
-        <dashboard__GraphCardFigureContainer>
-          <dashboard__GraphCardFigure />
-          <dashboard__GraphCardFigureChange
+        <Chart__GraphCardFigureContainer>
+          <Chart__GraphCardFigure />
+          <Chart__GraphCardFigureChange
             className=""
           />
-        </dashboard__GraphCardFigureContainer>
-      </dashboard__GraphCardTitle>
-    </dashboard__GraphCardHeader>
-    <dashboard__NoDataContainer>
+        </Chart__GraphCardFigureContainer>
+      </Chart__GraphCardTitle>
+    </Chart__GraphCardHeader>
+    <Chart__NoDataContainer>
       <FormattedMessage
         defaultMessage="No data available with the current filters."
         id="app.containers.AdminPage.DashboardPage.noData"
       />
-    </dashboard__NoDataContainer>
-  </dashboard__GraphCardInner>
-</dashboard__GraphCard>
+    </Chart__NoDataContainer>
+  </Chart__GraphCardInner>
+</Chart__GraphCard>
 `;

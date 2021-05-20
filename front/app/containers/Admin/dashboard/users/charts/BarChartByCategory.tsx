@@ -11,7 +11,7 @@ import messages from '../../messages';
 import { withTheme } from 'styled-components';
 
 // components
-import ExportMenu from '../../components/ExportMenu';
+import ReportExportMenu from 'components/admin/ReportExportMenu';
 import {
   BarChart,
   Bar,
@@ -19,6 +19,7 @@ import {
   XAxis,
   YAxis,
   ResponsiveContainer,
+  LabelList,
 } from 'recharts';
 import {
   IGraphUnit,
@@ -27,7 +28,7 @@ import {
   GraphCardTitle,
   GraphCard,
   GraphCardInner,
-} from '../..';
+} from 'components/admin/Chart';
 
 // resources
 import GetSerieFromStream from 'resources/GetSerieFromStream';
@@ -104,7 +105,7 @@ export class BarChartByCategory extends React.PureComponent<
           <GraphCardHeader>
             <GraphCardTitle>{graphTitleString}</GraphCardTitle>
             {!noData && (
-              <ExportMenu
+              <ReportExportMenu
                 name={graphTitleString}
                 svgNode={this.currentChart}
                 xlsxEndpoint={xlsxEndpoint}
@@ -129,11 +130,12 @@ export class BarChartByCategory extends React.PureComponent<
                   dataKey="value"
                   name={unitName}
                   fill={newBarFill}
-                  label={{ fill: barFill, fontSize: chartLabelSize }}
                   animationDuration={animationDuration}
                   animationBegin={animationBegin}
                   isAnimationActive={true}
-                />
+                >
+                  <LabelList fill={barFill} fontSize={chartLabelSize} />
+                </Bar>
                 <XAxis
                   dataKey="name"
                   stroke={chartLabelColor}

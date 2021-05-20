@@ -14,7 +14,7 @@ import { IResourceByTime, IUsersByTime } from 'services/stats';
 import { IGraphFormat } from 'typings';
 
 // components
-import ExportMenu from '../../components/ExportMenu';
+import ReportExportMenu from 'components/admin/ReportExportMenu';
 import {
   BarChart,
   Bar,
@@ -30,8 +30,8 @@ import {
   GraphCardHeader,
   GraphCardTitle,
   NoDataContainer,
-  IResolution,
-} from '../..';
+} from 'components/admin/Chart';
+import { IResolution } from 'components/admin/ResolutionControl';
 import { Popup } from 'semantic-ui-react';
 import { Icon } from 'cl2-component-library';
 
@@ -245,7 +245,7 @@ class BarChartActiveUsersByTime extends React.PureComponent<
               )}
             </GraphCardTitle>
             {!noData && (
-              <ExportMenu
+              <ReportExportMenu
                 svgNode={this.currentChart}
                 name={graphTitle}
                 {...this.props}
@@ -258,7 +258,7 @@ class BarChartActiveUsersByTime extends React.PureComponent<
             </NoDataContainer>
           ) : (
             <StyledResponsiveContainer>
-              <BarChart data={serie} ref={this.currentChart}>
+              <BarChart data={serie ?? undefined} ref={this.currentChart}>
                 <Bar
                   dataKey="value"
                   name={graphTitle}

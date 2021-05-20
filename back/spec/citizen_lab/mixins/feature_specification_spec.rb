@@ -3,14 +3,6 @@
 require 'rails_helper'
 
 RSpec.describe CitizenLab::Mixins::FeatureSpecification do
-
-  let(:allowed_enabled_props) do
-    {
-      'allowed' => { 'type' => 'boolean', 'default' => true },
-      'enabled' => { 'type' => 'boolean', 'default' => true }
-    }
-  end
-
   describe 'Simple feature specification' do
     let(:feature_spec) do
       Module.new do
@@ -28,6 +20,12 @@ RSpec.describe CitizenLab::Mixins::FeatureSpecification do
 
     describe '.json_schema' do
       let(:json_schema) { feature_spec.json_schema }
+      let(:allowed_enabled_props) do
+        {
+          'allowed' => { 'type' => 'boolean', 'default' => true },
+          'enabled' => { 'type' => 'boolean', 'default' => true }
+        }
+      end
 
       it { expect(json_schema['title']).to eq(feature_spec.feature_title) }
       it { expect(json_schema).not_to have_key('required-settings') }
@@ -49,11 +47,6 @@ RSpec.describe CitizenLab::Mixins::FeatureSpecification do
   end
 
   describe 'Complex feature specification' do
-
-    # Settings schemas
-    let(:live_edit_schema) { { 'type' => 'boolean' } }
-    let(:max_nb_authors_schema) { { 'type' => 'number', 'default' => 0 } }
-
     let(:feature_spec) do
       # Store schemas in local vars, bc helpers are undefined inside the +Module.new+ block
       live_edit_schema_ = live_edit_schema
@@ -77,13 +70,31 @@ RSpec.describe CitizenLab::Mixins::FeatureSpecification do
           DESC
         end
 
+        def self.allowed_by_default
+          false
+        end
+
+        def self.enabled_by_default
+          false
+        end
+
         add_setting 'live_edit', required: true, schema: live_edit_schema_
         add_setting 'max_nb_authors', schema: max_nb_authors_schema_
       end
     end
 
+    # Settings schemas
+    let(:live_edit_schema) { { 'type' => 'boolean' } }
+    let(:max_nb_authors_schema) { { 'type' => 'number', 'default' => 0 } }
+
     describe '.json_schema' do
       let(:json_schema) { feature_spec.json_schema }
+      let(:allowed_enabled_props) do
+        {
+          'allowed' => { 'type' => 'boolean', 'default' => false },
+          'enabled' => { 'type' => 'boolean', 'default' => false }
+        }
+      end
 
       it { expect(json_schema['title']).to eq(feature_spec.feature_title) }
       it { expect(json_schema['required-settings']).to eq(['live_edit']) }
