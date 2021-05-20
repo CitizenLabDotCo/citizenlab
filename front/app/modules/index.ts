@@ -29,6 +29,7 @@ import customIdeaStatusesConfiguration from './commercial/custom_idea_statuses';
 import verificationConfiguration from './commercial/verification';
 import customTopicsConfiguration from './commercial/custom_topics';
 
+import idAuth0Configuration from './commercial/id_auth0';
 import idBosaFasConfiguration from './commercial/id_bosa_fas';
 import idCowConfiguration from './commercial/id_cow';
 import idBogusConfiguration from './commercial/id_bogus';
@@ -132,6 +133,10 @@ export default loadModules([
   {
     configuration: customMapsConfiguration,
     isEnabled: CL_CONFIG['modules']['commercial/custom_maps'],
+  },
+  {
+    configuration: idAuth0Configuration,
+    isEnabled: CL_CONFIG['modules']['commercial/id_auth0'],
   },
   {
     configuration: idBosaFasConfiguration,

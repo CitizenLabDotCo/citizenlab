@@ -37,7 +37,7 @@ export default defineMessages({
   listDescription: {
     id: 'app.containers.Admin.Insights.listDescription',
     defaultMessage:
-      'An insight is a textual or visual summary of the input. It is a  starting point to formulate conclusions and a building block for reports. Actions taken here don’t impact the rest of the platform and are not be visible to participants.',
+      'An insight is a textual or visual summary of the input. It is a starting point to formulate conclusions and a building block for reports. Actions taken here don’t impact the rest of the platform and are not visible to participants.',
   },
   listCreate: {
     id: 'app.containers.Admin.Insights.listCreate',
@@ -72,18 +72,9 @@ export default defineMessages({
     id: 'app.containers.Admin.Reporting.Insights.createModalNameLabel',
     defaultMessage: 'Name',
   },
-  createModalNameLabelToolip: {
-    id: 'app.containers.Admin.Reporting.Insights.createModalNameLabelToolip',
-    defaultMessage: 'Name ?',
-  },
   createModalProjectScopeLabel: {
     id: 'app.containers.Admin.Reporting.Insights.createModalProjectScopeLabel',
     defaultMessage: 'Project',
-  },
-  createModalProjectScopeLabelToolip: {
-    id:
-      'app.containers.Admin.Reporting.Insights.createModalProjectScopeLabelToolip',
-    defaultMessage: 'Project ?',
   },
   createModalSaveView: {
     id: 'app.containers.Admin.Reporting.Insights.createModalSaveView',

@@ -117,9 +117,6 @@ const CreateInsightsView = ({
             value={name}
             onChange={onChangeName}
             label={<FormattedMessage {...messages.createModalNameLabel} />}
-            labelTooltipText={
-              <FormattedMessage {...messages.createModalNameLabelToolip} />
-            }
           />
           {errors && <Error apiErrors={errors['name']} fieldName="view_name" />}
         </SectionField>
@@ -130,11 +127,6 @@ const CreateInsightsView = ({
             value={projectScope}
             label={
               <FormattedMessage {...messages.createModalProjectScopeLabel} />
-            }
-            labelTooltipText={
-              <FormattedMessage
-                {...messages.createModalProjectScopeLabelToolip}
-              />
             }
           />
         </SectionField>
