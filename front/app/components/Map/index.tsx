@@ -219,8 +219,8 @@ const Map = memo<IMapProps & IMapConfigProps>(
             id="app.components.Map.leafletConfig"
             projectId={projectId}
             onLeafletConfigChange={handleLeafletConfigChange}
-            centerLatLng={center}
-            zoomLevel={zoom}
+            centerLatLng={centerLatLng}
+            zoomLevel={zoomLevel}
             points={points}
           />
         </MapWrapper>
