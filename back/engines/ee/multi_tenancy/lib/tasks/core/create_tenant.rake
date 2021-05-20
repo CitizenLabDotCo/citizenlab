@@ -185,6 +185,10 @@ namespace :cl2_back do
             }
           ]
         },
+        insights_manual_flow: {
+          enabled: false,
+          allowed: false
+        },
         polls: {
           enabled: true,
           allowed: true

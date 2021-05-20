@@ -22,6 +22,7 @@
     "commercial/idea_assignment": true,
     "commercial/idea_custom_fields": true,
     "commercial/intercom": true,
+    "commercial/insights": true,
     "commercial/machine_translations": true,
     "commercial/matomo": true,
     "commercial/moderation": true,
