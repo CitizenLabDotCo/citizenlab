@@ -16,7 +16,7 @@ import {
 } from 'services/stats';
 
 // components
-import ExportMenu from '../../components/ExportMenu';
+import ReportExportMenu from 'components/admin/ReportExportMenu';
 import {
   Line,
   Label,
@@ -30,7 +30,6 @@ import {
   ComposedChart,
 } from 'recharts';
 import {
-  IResolution,
   GraphCard,
   NoDataContainer,
   GraphCardInner,
@@ -39,7 +38,8 @@ import {
   GraphCardFigureContainer,
   GraphCardFigure,
   GraphCardFigureChange,
-} from '../..';
+} from 'components/admin/Chart';
+import { IResolution } from 'components/admin/ResolutionControl';
 
 // i18n
 import messages from '../../messages';
@@ -291,7 +291,7 @@ class LineBarChartVotesByTime extends React.PureComponent<
             </GraphCardTitle>
 
             {serie && (
-              <ExportMenu
+              <ReportExportMenu
                 svgNode={this.currentChart}
                 xlsxEndpoint={votesByTimeXlsxEndpoint}
                 name={formatMessage(messages.votes)}
@@ -351,7 +351,6 @@ class LineBarChartVotesByTime extends React.PureComponent<
                 <Bar
                   dataKey="up"
                   name={formatMessage(messages.numberOfVotesUp)}
-                  dot={false}
                   fill={rgba(newBarFill, 1)}
                   animationDuration={animationDuration}
                   animationBegin={animationBegin}
@@ -362,7 +361,6 @@ class LineBarChartVotesByTime extends React.PureComponent<
                 <Bar
                   dataKey="down"
                   name={formatMessage(messages.numberOfVotesDown)}
-                  dot={false}
                   fill={rgba(newBarFill, 0.7)}
                   stackId="1"
                   animationDuration={animationDuration}

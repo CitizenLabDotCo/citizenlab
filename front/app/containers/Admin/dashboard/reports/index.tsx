@@ -6,7 +6,7 @@ import GetProjects, {
 } from 'resources/GetProjects';
 import { isNilOrError } from 'utils/helperUtils';
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
+import messages from './messages';
 import { SectionTitle } from 'components/admin/Section';
 import { List, Row } from 'components/admin/ResourceList';
 import {

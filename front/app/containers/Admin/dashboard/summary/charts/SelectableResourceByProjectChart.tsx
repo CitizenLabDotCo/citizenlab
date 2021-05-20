@@ -22,7 +22,7 @@ import {
 } from 'services/stats';
 import { IOption, IGraphFormat } from 'typings';
 import { IResource } from '..';
-import { IResolution } from '../../';
+import { IResolution } from 'components/admin/ResolutionControl';
 
 interface QueryProps {
   startAt: string | null | undefined;
