@@ -52,8 +52,16 @@ describe XlsxService do
   end
 
   describe "generate_ideas_xlsx" do
-    let(:ideas) { create_list(:idea, 5) }
-    let(:xlsx) { service.generate_ideas_xlsx(ideas) }
+
+    before { create_list(:custom_field, 2) }
+
+    let(:ideas) do
+      create_list(:idea, 5).tap do |ideas|
+        ideas.first.author.destroy! # should be able to handle ideas without author
+        ideas.first.reload
+      end
+    end
+    let(:xlsx) { service.generate_ideas_xlsx(ideas, view_private_attributes: true) }
     let(:workbook) { RubyXL::Parser.parse_buffer(xlsx) }
     let(:worksheet) { workbook.worksheets[0] }
 

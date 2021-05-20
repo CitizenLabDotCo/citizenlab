@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_30_154637) do
+ActiveRecord::Schema.define(version: 2021_05_12_094502) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -281,6 +281,16 @@ ActiveRecord::Schema.define(version: 2021_04_30_154637) do
     t.index ["project_id"], name: "index_events_on_project_id"
   end
 
+  create_table "flag_inappropriate_content_inappropriate_content_flags", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "flaggable_id", null: false
+    t.string "flaggable_type", null: false
+    t.datetime "deleted_at"
+    t.string "toxicity_label"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["flaggable_id", "flaggable_type"], name: "inappropriate_content_flags_flaggable"
+  end
+
   create_table "groups", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.jsonb "title_multiloc", default: {}
     t.string "slug"
@@ -476,6 +486,14 @@ ActiveRecord::Schema.define(version: 2021_04_30_154637) do
     t.index ["initiative_id", "topic_id"], name: "index_initiatives_topics_on_initiative_id_and_topic_id", unique: true
     t.index ["initiative_id"], name: "index_initiatives_topics_on_initiative_id"
     t.index ["topic_id"], name: "index_initiatives_topics_on_topic_id"
+  end
+
+  create_table "insights_views", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name", null: false
+    t.uuid "scope_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["name"], name: "index_insights_views_on_name"
   end
 
   create_table "invites", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1078,6 +1096,7 @@ ActiveRecord::Schema.define(version: 2021_04_30_154637) do
   add_foreign_key "initiatives", "users", column: "author_id"
   add_foreign_key "initiatives_topics", "initiatives"
   add_foreign_key "initiatives_topics", "topics"
+  add_foreign_key "insights_views", "projects", column: "scope_id"
   add_foreign_key "invites", "users", column: "invitee_id"
   add_foreign_key "invites", "users", column: "inviter_id"
   add_foreign_key "maps_layers", "maps_map_configs", column: "map_config_id"

@@ -165,7 +165,7 @@ class Sidebar extends PureComponent<
     this.state = {
       navItems: [
         {
-          name: 'insights',
+          name: 'dashboard',
           link: '/admin/dashboard',
           iconName: 'stats',
           message: 'dashboard',
