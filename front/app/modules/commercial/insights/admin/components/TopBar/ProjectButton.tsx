@@ -46,7 +46,7 @@ const ProjectButton = ({ projectId }: ProjectButtonProps) => {
       buttonStyle="secondary-outlined"
       linkTo={`/projects/${project.attributes.slug}`}
       fontSize={`${fontSizes.small}px`}
-      padding="6px 8px"
+      padding="4px 6px"
     >
       <ProjectButtonContent>
         <T value={project.attributes.title_multiloc} />

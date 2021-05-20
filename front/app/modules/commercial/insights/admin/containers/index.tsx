@@ -24,7 +24,7 @@ const tabs = [
 ];
 
 const Insights: React.FC<InjectedIntlProps & WithRouterProps> = ({
-  location,
+  location: { pathname },
   intl: { formatMessage },
   children,
 }) => {
@@ -34,16 +34,17 @@ const Insights: React.FC<InjectedIntlProps & WithRouterProps> = ({
         title={messages.helmetTitle}
         description={messages.helmetDescription}
       />
-      {tabs.some((tab) => matchPathToUrl(tab.url).test(location.pathname)) ? (
+      {tabs.some(
+        (tab) =>
+          matchPathToUrl(tab.url).test(pathname) ||
+          pathname.includes('/reports/')
+      ) ? (
         <>
           <NavigationTabs>
             {tabs.map((tab) => (
               <Tab
                 key={tab.url}
-                active={Boolean(
-                  location?.pathname &&
-                    matchPathToUrl(tab.url).test(location.pathname)
-                )}
+                active={matchPathToUrl(tab.url).test(pathname)}
               >
                 <Link to={tab.url}>{formatMessage(tab.label)}</Link>
               </Tab>

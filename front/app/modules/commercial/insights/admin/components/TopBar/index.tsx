@@ -32,8 +32,8 @@ const Container = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px 40px;
-  background-color: ${lighten('0.1', colors.adminBackground)};
+  padding: 12px 40px;
+  background-color: ${lighten('0.05', colors.adminBackground)};
 `;
 
 const TitleContainer = styled.div`

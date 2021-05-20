@@ -2,6 +2,7 @@
 import styled, { css } from 'styled-components';
 import { colors, defaultStyles } from 'utils/styleUtils';
 import { tabBorderSize } from './tabsStyleConstants';
+import { lighten } from 'polished';
 
 // components
 import Tab from './Tab';
@@ -11,8 +12,7 @@ const NavigationTabs = styled.nav`
   ${({ theme }) => css`
     position: fixed;
     width: 100%;
-    // TODO : set bg color in component library
-    background: #fbfbfb;
+    background-color: ${lighten('0.05', colors.adminBackground)};
     z-index: 1000;
     box-shadow: ${defaultStyles.boxShadow};
     border-radius: ${theme.borderRadius} ${theme.borderRadius} 0 0;
