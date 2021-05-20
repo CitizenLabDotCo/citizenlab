@@ -13,7 +13,7 @@ import { withTheme } from 'styled-components';
 import { rgba } from 'polished';
 
 // components
-import ExportMenu from '../../components/ExportMenu';
+import ReportExportMenu from 'components/admin/ReportExportMenu';
 import {
   AreaChart,
   CartesianGrid,
@@ -25,7 +25,6 @@ import {
 } from 'recharts';
 import {
   IGraphUnit,
-  IResolution,
   GraphCard,
   NoDataContainer,
   GraphCardInner,
@@ -34,7 +33,8 @@ import {
   GraphCardFigureContainer,
   GraphCardFigure,
   GraphCardFigureChange,
-} from '../..';
+} from 'components/admin/Chart';
+import { IResolution } from 'components/admin/ResolutionControl';
 
 // typings
 import { IStreamParams, IStream } from 'utils/streams';
@@ -272,7 +272,7 @@ export class CumulativeAreaChart extends PureComponent<
             </GraphCardTitle>
 
             {serie && (
-              <ExportMenu
+              <ReportExportMenu
                 {...this.props}
                 svgNode={this.currentChart}
                 name={graphTitle}

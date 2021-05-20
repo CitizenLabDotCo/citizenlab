@@ -188,4 +188,20 @@ describe Verification::VerificationService do
     end
   end
 
+  describe "add_method" do
+    it "adds methods that are exposed through #all_methods" do
+      mthd = OpenStruct.new(id: '9fb591e7-f577-40a7-8596-03e406d7eebe')
+      service.class.add_method(mthd)
+      expect(service.class.all_methods).to include(mthd)
+    end
+
+    it "replaces duplicate methods with the same .id" do
+      mthd1 = OpenStruct.new(id: '9fb591e7-f577-40a7-8596-03e406d7eebe')
+      mthd2 = OpenStruct.new(id: '9fb591e7-f577-40a7-8596-03e406d7eebe')
+      service.class.add_method(mthd1)
+      service.class.add_method(mthd2)
+      expect(service.all_methods.select{|m| m.id == '9fb591e7-f577-40a7-8596-03e406d7eebe'}).to contain_exactly(mthd2)
+    end
+  end
+
 end

@@ -7,7 +7,7 @@ jest.mock('components/Outlet', () => 'Outlet');
 jest.mock('modules', () => ({ streamsToReset: [] }));
 
 import { BarChartByCategory } from './BarChartByCategory';
-import { chartTheme } from '../..';
+import { chartTheme } from '../../../';
 
 const Intl = require('utils/cl-intl/__mocks__/');
 const { intl } = Intl;
