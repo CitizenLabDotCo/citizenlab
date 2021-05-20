@@ -15,7 +15,7 @@ class ProfanityService
         words.include? blocked_word
       end.map
         { 
-          word: blocked_word
+          word: blocked_word,
           language: lang
         }
       end
