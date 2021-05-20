@@ -7,15 +7,10 @@ import styled from 'styled-components';
 import { lighten } from 'polished';
 
 // components
-import {
-  Dropdown,
-  DropdownListItem,
-  Button,
-  Icon,
-} from 'cl2-component-library';
+import { Dropdown, DropdownListItem, Button } from 'cl2-component-library';
 import Modal from 'components/UI/Modal';
 import RenameInsightsView from './RenameInsightsView';
-import T from 'components/T';
+import ProjectButton from './ProjectButton';
 
 // intl
 import { InjectedIntlProps } from 'react-intl';
@@ -30,7 +25,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import { deleteInsightsView } from '../../../services/insightsViews';
 
 // hooks
-import useProject from 'hooks/useProject';
 import useInsightsView from '../../../hooks/useInsightsView';
 import useLocale from 'hooks/useLocale';
 
@@ -64,16 +58,6 @@ const DropdownWrapper = styled.div`
   }
 `;
 
-const ProjectButtonContent = styled.span`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  .linkIcon {
-    width: 20px;
-    margin-left: 8px;
-  }
-`;
-
 const TopBar = ({
   params,
   intl: { formatMessage },
@@ -85,14 +69,10 @@ const TopBar = ({
   const viewId = params.viewId;
   const view = useInsightsView(viewId);
 
-  const project = useProject({
-    projectId: !isNilOrError(view) ? view.relationships?.scope.data.id : null,
-  });
-
   if (isNilOrError(view) || isNilOrError(locale)) {
     return null;
   }
-
+  const projectId = view.relationships?.scope.data.id;
   const toggleDropdown = () => {
     setDropdownOpened(!isDropdownOpened);
   };
@@ -117,20 +97,7 @@ const TopBar = ({
     <Container>
       <TitleContainer>
         <h1>{view.attributes.name}</h1>
-        {!isNilOrError(project) && (
-          <Button
-            locale={locale}
-            buttonStyle="secondary-outlined"
-            linkTo={`/${project.attributes.slug}`}
-            fontSize={`${fontSizes.small}px`}
-            padding={'6px 8px'}
-          >
-            <ProjectButtonContent>
-              <T value={project.attributes.title_multiloc} />
-              <Icon name="link" className="linkIcon" />
-            </ProjectButtonContent>
-          </Button>
-        )}
+        {projectId && <ProjectButton projectId={projectId} />}
       </TitleContainer>
       <DropdownWrapper>
         {formatMessage(messages.options)}
