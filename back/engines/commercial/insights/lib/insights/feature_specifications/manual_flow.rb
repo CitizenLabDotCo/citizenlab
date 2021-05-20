@@ -19,7 +19,7 @@ module Insights
         '[WARNING: experimental - do not enable this feature on production platforms] Manual reporting flow: from inputs to insights'
       end
 
-      def self.allowed_be_default
+      def self.allowed_by_default
         false
       end
 
