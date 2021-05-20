@@ -18,6 +18,14 @@ module Insights
       def self.feature_description
         '[WARNING: experimental - do not enable this feature on production platforms] Manual reporting flow: from inputs to insights'
       end
+
+      def self.allowed_be_default
+        false
+      end
+
+      def self.enabled_by_default
+        false
+      end
     end
   end
 end
