@@ -1121,7 +1121,7 @@
   "app.containers.AdminPage.DashboardPage.subtitleDashboard": "Ontdek wat er gebeurt op je platform.",
   "app.containers.AdminPage.DashboardPage.tabInsights": "Inzichten (beta)",
   "app.containers.AdminPage.DashboardPage.tabMap": "Kaart",
-  "app.containers.AdminPage.DashboardPage.tabReports": "",
+  "app.containers.AdminPage.DashboardPage.tabReports": "Projecten",
   "app.containers.AdminPage.DashboardPage.tabSummary": "Samenvatting",
   "app.containers.AdminPage.DashboardPage.tabUsers": "Gebruikers",
   "app.containers.AdminPage.DashboardPage.thenLoadingMessage": "Fun Fact: de volgende keer dat je deze pagina bezoekt, zal het veel sneller gaan!",
