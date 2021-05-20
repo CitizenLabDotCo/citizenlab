@@ -1,3 +1,13 @@
+const path = require('path');
+const clConfig = require(path.join(process.cwd(), '../citizenlab.config.json'));
+try {
+  const clConfigEe = require(path.join(
+    process.cwd(),
+    '../citizenlab.config.ee.json'
+  ));
+  clConfig['modules'] = { ...clConfig['modules'], ...clConfigEe['modules'] };
+} catch (e) {}
+
 module.exports = {
   verbose: true,
   clearMocks: true,
@@ -20,7 +30,13 @@ module.exports = {
   reporters: ['default', 'jest-junit'],
   coverageReporters: ['json', 'lcov', 'text-summary', 'clover'],
   moduleNameMapper: {
-    '\\.(css|svg|png)$': 'identity-obj-proxy',
+    '\\.(css|svg|png|jpg)$': 'identity-obj-proxy',
+    '^react-scroll-to-component$': 'identity-obj-proxy',
   },
   testURL: 'https://demo.stg.citizenlab.co/en/',
+  globals: {
+    __DEV__: true,
+    CL_CONFIG: clConfig,
+    streams: [],
+  },
 };

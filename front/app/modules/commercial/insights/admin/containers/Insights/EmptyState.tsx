@@ -10,7 +10,7 @@ import styled from 'styled-components';
 import { colors, fontSizes, media } from 'utils/styleUtils';
 
 // assets
-import insights from '../../assets/insights.png';
+// import insights from '../../assets/insights.png';
 import messages from './messages';
 
 // components
@@ -58,14 +58,14 @@ interface Props {
   openCreateModal: () => void;
 }
 
-const EmptyState = ({
-  intl: { formatMessage },
-  openCreateModal,
-}: Props & InjectedIntlProps) => {
+const EmptyState = ({ openCreateModal, intl }: Props & InjectedIntlProps) => {
   const locale = useLocale();
+  console.log({ intl });
+  console.log({ locale });
 
   return (
-    <Container>
+    <Container data-testid="insightsEmptyState">
+      empty
       <div>
         <Title>
           <FormattedMessage
@@ -73,13 +73,13 @@ const EmptyState = ({
             values={{
               accentText: (
                 <span className="accent">
-                  {formatMessage(messages.emptyStateAccentText)}
+                  {intl.formatMessage(messages.emptyStateAccentText)}
                 </span>
               ),
             }}
           />
         </Title>
-        <Description>{formatMessage(messages.description)}</Description>
+        <Description>{intl.formatMessage(messages.description)}</Description>
         {!isNilOrError(locale) && (
           <ButtonsContainer>
             <Button
@@ -87,15 +87,15 @@ const EmptyState = ({
               bgColor={colors.adminTextColor}
               onClick={openCreateModal}
             >
-              {formatMessage(messages.emptyStateCreate)}
+              {intl.formatMessage(messages.emptyStateCreate)}
             </Button>
             <Button locale={locale} buttonStyle="secondary">
-              {formatMessage(messages.emptyStateDiscover)}
+              {intl.formatMessage(messages.emptyStateDiscover)}
             </Button>
           </ButtonsContainer>
         )}
       </div>
-      <Image src={insights} />
+      {/* <Image src={insights} /> */}
     </Container>
   );
 };
