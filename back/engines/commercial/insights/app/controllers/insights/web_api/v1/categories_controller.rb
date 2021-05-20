@@ -37,7 +37,7 @@ module Insights
 
       def categories
         @categories ||= policy_scope(
-          Insights::Category.where(view_id: params.require(:view_id))
+          View.includes(:categories).find(params.require(:view_id)).categories               
         )
       end
 

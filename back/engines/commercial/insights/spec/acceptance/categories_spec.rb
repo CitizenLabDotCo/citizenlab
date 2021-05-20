@@ -44,6 +44,11 @@ resource 'Categories' do
         expect(status).to eq(200)
         expect(json_response[:data].pluck(:id)).to match_array(categories.pluck(:id))
       end
+
+      example 'returns 404 if the view does not exist', document: false do
+        do_request(view_id: 'bad-uuid')
+        expect(status).to eq(404)
+      end
     end
 
     include_examples 'unauthorized requests'
