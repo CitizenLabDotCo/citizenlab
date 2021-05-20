@@ -295,8 +295,8 @@ const IdeasMap = memo<Props>(({ projectIds, phaseId, className }) => {
             points={points}
             mapHeight={mapHeight}
             noMarkerClustering={true}
-            zoomControlPosition="topright"
-            layersControlPosition="bottomright"
+            zoomControlPosition={smallerThanMaxTablet ? 'topleft' : 'topright'}
+            layersControlPosition="topright"
           />
 
           {!smallerThanMaxTablet && projectIds && !isNilOrError(project) && (

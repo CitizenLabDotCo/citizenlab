@@ -95,7 +95,7 @@ export default function useLeaflet(
     _markerClusterGroup,
     setMarkerClusterGroup,
   ] = useState<L.MarkerClusterGroup | null>(null);
-  const [layersControl, setLayersControl] = useState<L.Control.Layers | null>(
+  const [_layersControl, setLayersControl] = useState<L.Control.Layers | null>(
     null
   );
 
@@ -193,20 +193,11 @@ export default function useLeaflet(
         zoom,
         tileProvider,
         tileOptions,
-        zoomControlPosition,
       });
       setMap(newMap);
     }
   };
-  useEffect(setup, [
-    map,
-    mapId,
-    tileProvider,
-    tileOptions,
-    zoomControlPosition,
-    zoom,
-    center,
-  ]);
+  useEffect(setup, [map, mapId, tileProvider, tileOptions, zoom, center]);
 
   const refreshTile = () => {
     setTileLayer((prevTileLayer) => {
@@ -230,7 +221,21 @@ export default function useLeaflet(
   };
   useEffect(refreshZoom, [map, zoom]);
 
+  const refreshZoomControlPosition = () => {
+    if (map && zoomControlPosition) {
+      map.zoomControl.setPosition(zoomControlPosition);
+    }
+  };
+  useEffect(refreshZoomControlPosition, [map, zoomControlPosition]);
+
   const refreshLayers = () => {
+    const layersControl = service.addLayersControl(map, layersControlPosition);
+
+    setLayersControl((prevLayersControl) => {
+      service.removeLayersControl(map, prevLayersControl);
+      return layersControl;
+    });
+
     setLayers((prevLayers) => {
       service.removeLayers(map, prevLayers);
       return service.addLayers(map, geoJsonLayers, {
@@ -245,20 +250,12 @@ export default function useLeaflet(
   useEffect(refreshLayers, [
     map,
     geoJsonLayers,
-    layersControl,
     layerOverlay,
     layerPopup,
     layerTooltip,
     layerMarker,
+    layersControlPosition,
   ]);
-
-  const refreshLayersControl = () => {
-    setLayersControl((prevLayersControl) => {
-      service.removeLayersControl(map, prevLayersControl);
-      return service.addLayersControl(map, layersControlPosition);
-    });
-  };
-  useEffect(refreshLayersControl, [map, layersControlPosition]);
 
   const refreshMarkers = () => {
     setMarkers((prevMarkers) => {

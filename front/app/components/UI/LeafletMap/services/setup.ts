@@ -9,31 +9,21 @@ export function init(
     zoom,
     tileProvider,
     tileOptions,
-    zoomControlPosition,
   }: {
     center?: L.LatLngTuple;
     zoom?: number;
     tileProvider?: string | null;
     tileOptions?: object;
-    zoomControlPosition?: 'topleft' | 'topright' | 'bottomleft' | 'bottomright';
   }
 ) {
   const initCenter = center || DEFAULT_CENTER;
   const initZoom = zoom || DEFAULT_ZOOM;
   const map = ((L.map(mapId, {
-    zoomControl: zoomControlPosition ? false : true,
+    zoomControl: true,
   }) as any).setActiveArea('activeArea', true, true) as L.Map).setView(
     initCenter,
     initZoom
   );
-
-  if (zoomControlPosition) {
-    L.control
-      .zoom({
-        position: zoomControlPosition,
-      })
-      .addTo(map);
-  }
 
   if (tileProvider && tileOptions !== undefined) {
     addTileLayer(map, tileProvider, tileOptions);

@@ -168,6 +168,7 @@ const Map = memo<IMapProps & IMapConfigProps>(
         tileProvider,
         tileOptions,
         zoomControlPosition,
+        layersControlPosition,
         ...additionalLeafletConfig,
       };
     }, [
