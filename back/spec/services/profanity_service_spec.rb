@@ -11,7 +11,7 @@ describe ProfanityService do
       text = 'Ik vind hem een beetje een zeveraar.'
       expect(service.search_blocked_words(text)).to match_array([{
         word: 'zeveraar',
-        position: 27,
+        # position: 27,
         language: 'nl'
       }])
     end
@@ -21,33 +21,49 @@ describe ProfanityService do
       expect(service.search_blocked_words(text)).to be_blank
     end
 
-    it "matches multiple occurrences of the same blocked word" do
-      text = 'You stupid stupido.'
-      expect(service.search_blocked_words(text)).to match_array([
-        {
-          word: 'stupid',
-          position: 4,
-          language: 'en'
-        },
-        {
-          word: 'stupid',
-          position: 11,
-          language: 'en'
-        }
-      ])
-    end
+    # Keeping this when we would go back to regex solution
+    # it "matches multiple occurrences of the same blocked word" do
+    #   text = 'You stupid stupido.'
+    #   expect(service.search_blocked_words(text)).to match_array([
+    #     {
+    #       word: 'stupid',
+    #       position: 4,
+    #       language: 'en'
+    #     },
+    #     {
+    #       word: 'stupid',
+    #       position: 11,
+    #       language: 'en'
+    #     }
+    #   ])
+    # end
+
+    # Keeping this when we would go back to regex solution
+    # it "returns matches for multilple languages" do
+    #   text = 'His recipe for chili con carne is the stupidest.'
+    #   expect(service.search_blocked_words(text)).to match_array([
+    #     {
+    #       word: 'con',
+    #       position: 21,
+    #       language: 'fr'
+    #     },
+    #     {
+    #       word: 'stupid',
+    #       position: 38,
+    #       language: 'en'
+    #     },
+    #   ])
+    # end
 
     it "returns matches for multilple languages" do
-      text = 'His recipe for chili con carne is the stupidest.'
+      text = 'His recipe for chili con carne is so stupid.'
       expect(service.search_blocked_words(text)).to match_array([
         {
           word: 'con',
-          position: 21,
           language: 'fr'
         },
         {
           word: 'stupid',
-          position: 38,
           language: 'en'
         },
       ])
@@ -57,7 +73,7 @@ describe ProfanityService do
       text = 'Il est un peu déBiLE.'
       expect(service.search_blocked_words(text)).to match_array([{
         word: 'débile',
-        position: 14,
+        # position: 14,
         language: 'fr'
       }])
     end
