@@ -1,11 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<BarChartByCategory /> renders correctly 1`] = `
-<dashboard__GraphCard>
-  <dashboard__GraphCardInner>
-    <dashboard__GraphCardHeader>
-      <dashboard__GraphCardTitle />
-      <ExportMenu
+<Chart__GraphCard>
+  <Chart__GraphCardInner>
+    <Chart__GraphCardHeader>
+      <Chart__GraphCardTitle />
+      <ReportExportMenu
         currentGroupFilter={null}
         name=""
         svgNode={
@@ -14,7 +14,7 @@ exports[`<BarChartByCategory /> renders correctly 1`] = `
           }
         }
       />
-    </dashboard__GraphCardHeader>
+    </Chart__GraphCardHeader>
     <ResponsiveContainer
       debounce={0}
       height="100%"
@@ -45,6 +45,7 @@ exports[`<BarChartByCategory /> renders correctly 1`] = `
         }
         reverseStackOrder={false}
         stackOffset="none"
+        syncMethod="index"
       >
         <Bar
           animationBegin={0}
@@ -54,21 +55,17 @@ exports[`<BarChartByCategory /> renders correctly 1`] = `
           dataKey="value"
           hide={false}
           isAnimationActive={true}
-          label={
-            Object {
-              "fill": undefined,
-              "fontSize": undefined,
-            }
-          }
           layout="vertical"
           legendType="rect"
           minPointSize={0}
           name="Users"
-          onAnimationEnd={[Function]}
-          onAnimationStart={[Function]}
           xAxisId={0}
           yAxisId={0}
-        />
+        >
+          <LabelList
+            valueAccessor={[Function]}
+          />
+        </Bar>
         <XAxis
           allowDataOverflow={false}
           allowDecimals={true}
@@ -158,6 +155,7 @@ exports[`<BarChartByCategory /> renders correctly 1`] = `
           labelStyle={Object {}}
           offset={10}
           separator=" : "
+          trigger="hover"
           useTranslate3d={false}
           viewBox={
             Object {
@@ -171,6 +169,6 @@ exports[`<BarChartByCategory /> renders correctly 1`] = `
         />
       </BarChart>
     </ResponsiveContainer>
-  </dashboard__GraphCardInner>
-</dashboard__GraphCard>
+  </Chart__GraphCardInner>
+</Chart__GraphCard>
 `;
