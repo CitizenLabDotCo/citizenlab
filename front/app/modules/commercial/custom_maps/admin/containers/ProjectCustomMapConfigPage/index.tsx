@@ -122,7 +122,6 @@ const ProjectCustomMapConfigPage = memo<
   }, []);
 
   const goToDefaultMapView = () => {
-    console.log('goToDefaultMapView', [defaultLat, defaultLng]);
     setLeafletMapCenter([defaultLat, defaultLng]);
     setLeafletMapZoom(defaultZoom);
   };
