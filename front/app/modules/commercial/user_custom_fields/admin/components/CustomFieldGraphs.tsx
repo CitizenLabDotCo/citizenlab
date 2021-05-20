@@ -11,7 +11,7 @@ import messages from 'containers/Admin/dashboard/messages';
 import { withTheme } from 'styled-components';
 
 // components
-import ExportMenu from 'containers/Admin/dashboard/components/ExportMenu';
+import ReportExportMenu from 'components/admin/ReportExportMenu';
 import {
   BarChart,
   Bar,
@@ -19,6 +19,7 @@ import {
   XAxis,
   YAxis,
   ResponsiveContainer,
+  LabelList,
 } from 'recharts';
 import {
   NoDataContainer,
@@ -26,7 +27,7 @@ import {
   GraphCardTitle,
   GraphCard,
   GraphCardInner,
-} from 'containers/Admin/dashboard';
+} from 'components/admin/Chart';
 
 import { IUserCustomFieldData } from '../../services/userCustomFields';
 import { Subscription, combineLatest } from 'rxjs';
@@ -277,7 +278,7 @@ export class CustomFieldsComparison extends React.PureComponent<
               <T value={customField.attributes.title_multiloc} />
             </GraphCardTitle>
             {!noData && (
-              <ExportMenu
+              <ReportExportMenu
                 name={formatMessage(messages.customFieldTitleExport, {
                   fieldName: localize(customField.attributes.title_multiloc),
                 })}
@@ -310,29 +311,31 @@ export class CustomFieldsComparison extends React.PureComponent<
                   dataKey="total"
                   name={formatMessage(messages.totalUsers)}
                   fill={newBarFill}
-                  label={{
-                    fill: barFill,
-                    fontSize: chartLabelSize,
-                    position: 'insideLeft',
-                  }}
                   barSize={10}
                   animationDuration={animationDuration}
                   animationBegin={animationBegin}
-                />
+                >
+                  <LabelList
+                    position="insideLeft"
+                    fontSize={chartLabelSize}
+                    fill={barFill}
+                  />
+                </Bar>
                 <Tooltip />
                 <Bar
                   dataKey="participants"
                   name={formatMessage(messages.participants)}
                   fill={chartLabelColor}
-                  label={{
-                    fill: barFill,
-                    fontSize: chartLabelSize,
-                    position: 'insideLeft',
-                  }}
                   barSize={10}
                   animationDuration={animationDuration}
                   animationBegin={animationBegin}
-                />
+                >
+                  <LabelList
+                    position="insideLeft"
+                    fontSize={chartLabelSize}
+                    fill={barFill}
+                  />
+                </Bar>
                 <YAxis
                   dataKey="name"
                   type="category"
