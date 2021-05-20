@@ -15,11 +15,11 @@ export default function logo({}: Props): ReactElement {
       <g
         id="Page-1"
         stroke="none"
-        stroke-width="1"
+        strokeWidth="1"
         fill="none"
-        fill-rule="evenodd"
+        fillRule="evenodd"
       >
-        <g id="bouton-fc-standard" fill-rule="nonzero">
+        <g id="bouton-fc-standard" fillRule="nonzero">
           <path
             d="M2.23461677,0 C0.82763584,0 -1.70530257e-13,1.25 -1.70530257e-13,2.66666667 L-1.70530257e-13,57.5 C-1.70530257e-13,58.9166667 0.82763584,60 2.23461677,60 L227.68262,60 C229.089601,60 230,58.9166667 230,57.5 L230,2.66666667 C230,1.25 229.089601,0 227.68262,0 L38.3195394,0 L2.23461677,0 Z"
             id="Fond"
