@@ -1121,7 +1121,7 @@
   "app.containers.AdminPage.DashboardPage.subtitleDashboard": "Dowiedz się, co dzieje się na Twojej platformie.",
   "app.containers.AdminPage.DashboardPage.tabInsights": "Wgląd (beta)",
   "app.containers.AdminPage.DashboardPage.tabMap": "Mapa",
-  "app.containers.AdminPage.DashboardPage.tabReports": "Projekty",
+  "app.containers.AdminPage.DashboardPage.tabReports": "",
   "app.containers.AdminPage.DashboardPage.tabSummary": "Podsumowanie",
   "app.containers.AdminPage.DashboardPage.tabUsers": "Użytkownicy",
   "app.containers.AdminPage.DashboardPage.thenLoadingMessage": "Zabawny fakt: następnym razem, gdy tu wrócisz, będzie prawdopodobnie znacznie szybciej!",

@@ -1121,7 +1121,7 @@
   "app.containers.AdminPage.DashboardPage.subtitleDashboard": "اكتشف ما يحدث على منصتك.",
   "app.containers.AdminPage.DashboardPage.tabInsights": "الرؤى (بيتا)",
   "app.containers.AdminPage.DashboardPage.tabMap": "خريطة",
-  "app.containers.AdminPage.DashboardPage.tabReports": "المشاريع",
+  "app.containers.AdminPage.DashboardPage.tabReports": "",
   "app.containers.AdminPage.DashboardPage.tabSummary": "ملخص",
   "app.containers.AdminPage.DashboardPage.tabUsers": "المستخدمون",
   "app.containers.AdminPage.DashboardPage.thenLoadingMessage": "حقيقة ممتعة: من المحتمل أن تكون أسرع في المرة القادمة التي تأتي فيها إلى هنا!",

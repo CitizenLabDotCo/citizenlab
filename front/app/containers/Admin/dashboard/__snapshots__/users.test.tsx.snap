@@ -23,15 +23,13 @@ Array [
 `;
 
 exports[`<UsersDashboard /> renders correctly 1`] = `
-<ThemeProvider
-  theme={[Function]}
->
-  <dashboard__ControlBar>
+<Fragment>
+  <Chart__ControlBar>
     <TimeControl
       endAtMoment={"2010-01-01T04:06:07.000Z"}
       onChange={[Function]}
     />
-  </dashboard__ControlBar>
+  </Chart__ControlBar>
   <ChartFilters
     groupFilterOptions={
       Array [
@@ -51,7 +49,7 @@ exports[`<UsersDashboard /> renders correctly 1`] = `
     projectFilterOptions={null}
     topicFilterOptions={null}
   />
-  <dashboard__GraphsContainer>
+  <Chart__GraphsContainer>
     <Outlet
       endAt="2010-01-01T04:06:07.000Z"
       id="app.containers.Admin.dashboard.users.graphs"
@@ -61,6 +59,6 @@ exports[`<UsersDashboard /> renders correctly 1`] = `
       endAt="2010-01-01T04:06:07.000Z"
       infoMessage="The ranking is based on the number of inputs (5 points per input), comments (3 points per comment) and votes (1 point per vote) submitted by each participant."
     />
-  </dashboard__GraphsContainer>
-</ThemeProvider>
+  </Chart__GraphsContainer>
+</Fragment>
 `;
