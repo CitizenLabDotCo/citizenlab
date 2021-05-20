@@ -16,7 +16,7 @@ module CitizenLab
           'required' => %w[allowed enabled],
           'required-settings' => required_settings.presence,
           'properties' => {
-            'allowed' => { 'type' => 'boolean', 'default' => allowed_be_default },
+            'allowed' => { 'type' => 'boolean', 'default' => allowed_by_default },
             'enabled' => { 'type' => 'boolean', 'default' => enabled_by_default }
           }.merge(settings_props)
         }.compact
@@ -39,7 +39,7 @@ module CitizenLab
       end
 
       # @return [Boolean]
-      def allowed_be_default
+      def allowed_by_default
         true
       end
 

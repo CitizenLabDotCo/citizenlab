@@ -70,7 +70,7 @@ RSpec.describe CitizenLab::Mixins::FeatureSpecification do
           DESC
         end
 
-        def self.allowed_be_default
+        def self.allowed_by_default
           false
         end
 
