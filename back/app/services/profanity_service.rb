@@ -13,7 +13,7 @@ class ProfanityService
       words = without_special_chars(normalize_text(text)).split ' '
       blocked_words.select do |blocked_word|
         words.include? blocked_word
-      end.map
+      end.map do |blocked_word|
         { 
           word: blocked_word,
           language: lang
