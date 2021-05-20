@@ -1503,7 +1503,6 @@
   "app.containers.AdminPage.ProjectTimeline.startDatePlaceholder": "Start date",
   "app.containers.AdminPage.ProjectTimeline.subtitleTimeline": "Set up or edit the timeline phases of this project.",
   "app.containers.AdminPage.ProjectTimeline.titleLabel": "Phase name",
-  "app.containers.AdminPage.ReportsTab.budgeting": "bugetare",
   "app.containers.AdminPage.ProjectTimeline.titleTimeline": "Fazele proiectului",
   "app.containers.AdminPage.ReportsTab.customFieldTitleExport": "{fieldName}_repartiție",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.addAFieldButton": "Add field",
