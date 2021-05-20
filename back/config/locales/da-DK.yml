@@ -129,7 +129,7 @@ da:
     gender:
       male: Mand
       female: Kvinde
-      unspecified: Uspecificeret
+      unspecified: Andet
     domicile:
       outside: Et andet sted
     education:
