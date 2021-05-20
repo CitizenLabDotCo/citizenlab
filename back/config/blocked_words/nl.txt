@@ -1,7 +1,6 @@
 aapmens
 aarstulp
 achterlader
-adder
 addergebroed
 afrotten
 apenkont
@@ -40,7 +39,6 @@ cijferneuker
 coronalijer
 covidioot
 cretin
-del
 deuggleuf
 dirkdoos
 dreuzel
@@ -50,16 +48,13 @@ dwaas
 ectoplasma
 eendenkont
 eikel
-etter
 etterbuil
-ezel
 fielt
 flapdrol
 fleer
 flessentrekker
 flikker
 galgenbrok
-gangster
 gannef
 geitenbreier
 geitenneuker
@@ -76,7 +71,6 @@ harpij
 heaumeau
 heihaas
 heikneuter
-heks
 hersenlijer
 hockeytrut
 hockeytut
@@ -84,7 +78,6 @@ hoerenjager
 hoerenjong
 hoerenkind
 hoerenzoon
-homo
 hondenlul
 hondenneuker
 hufter
@@ -116,7 +109,6 @@ klafte
 klapkut
 klaplul
 klapperaap
-klere
 kloefkapper
 klojo
 klooi
@@ -131,7 +123,6 @@ koeskoesvreter
 kontkruiper
 kontneuker
 kreng
-kriel
 krielkip
 krijslijster
 kruimelbuik
@@ -180,7 +171,6 @@ netenvreter
 neukpaal
 nitwit
 noppeshoer
-oen
 olijfneuker
 onderkruipsel
 optyfen
@@ -292,7 +282,6 @@ zeiksnor
 zeikstraal
 zenuwenlijer
 zenuwlijer
-zeur
 zeurkous
 zeurzak
 zwijnjak
