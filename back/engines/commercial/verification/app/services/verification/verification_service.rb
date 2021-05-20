@@ -7,6 +7,7 @@ module Verification
       attr_reader :all_methods
 
       def add_method verification_method
+        @all_methods.reject!{|m| m.id == verification_method.id}
         @all_methods << verification_method
       end
     end

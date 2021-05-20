@@ -13,7 +13,7 @@ import {
   __setMockUsersByTimeCumulativeStream,
   mockUsersByTimeCumulative,
 } from 'services/__mocks__/stats';
-import { chartTheme } from '../..';
+import { chartTheme } from '../../../';
 
 const serie = [
   {
