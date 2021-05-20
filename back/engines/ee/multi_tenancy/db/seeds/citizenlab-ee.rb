@@ -351,6 +351,10 @@ if ['public','example_org'].include? Apartment::Tenant.current
         enabled: true,
         allowed: true
       },
+      insights_manual_flow: {
+        enabled: false,
+        allowed: false
+      },
       verification: {
         enabled: true,
         allowed: true,
@@ -387,6 +391,13 @@ if ['public','example_org'].include? Apartment::Tenant.current
           },
           {
             name: 'franceconnect'
+          },
+          {
+            name: 'auth0',
+            client_id: 'fake_client_id',
+            client_secret: 'fake_client_secret',
+            domain: 'fake_domain',
+            method_name_multiloc: {en: 'Verify with Auth0'}
           },
         ],
       },
