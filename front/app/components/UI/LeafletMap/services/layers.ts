@@ -106,7 +106,10 @@ export function layerMarker(
     marker = getMarkerIcon(markerStringOrOptionsOrFunction);
   }
 
-  return L.marker(latlng, { ...options, icon: marker || DEFAULT_MARKER_ICON });
+  return L.marker(latlng, {
+    ...options,
+    icon: marker || DEFAULT_MARKER_ICON,
+  });
 }
 
 export function addLayers(

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { darken } from 'polished';
 import useIdea from 'hooks/useIdea';
 import { isNilOrError } from 'utils/helperUtils';
-import { isArray, isEmpty } from 'lodash-es';
+import { isEmpty } from 'lodash-es';
 
 // components
 import { Icon, colors } from 'cl2-component-library';

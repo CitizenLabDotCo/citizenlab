@@ -39,6 +39,7 @@ const InnerOverlay = styled.div`
   display: flex;
   flex-direction: column;
   align-items: stretch;
+  overflow: hidden;
   ${defaultCardStyle};
   transition: all ${timeout}ms cubic-bezier(0.19, 1, 0.22, 1);
 
