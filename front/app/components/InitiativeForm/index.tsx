@@ -19,11 +19,12 @@ import QuillEditor from 'components/UI/QuillEditor';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import FileUploader from 'components/UI/FileUploader';
 import Error from 'components/UI/Error';
+import Link from 'utils/cl-router/Link';
 
 // intl
 import messages from './messages';
 import { InjectedIntlProps } from 'react-intl';
-import { IMessageInfo, injectIntl } from 'utils/cl-intl';
+import { IMessageInfo, injectIntl, FormattedMessage } from 'utils/cl-intl';
 
 // typings
 import { Multiloc, Locale, UploadFile } from 'typings';
@@ -76,6 +77,8 @@ interface Props extends FormValues, FormProps {
   publishError: boolean;
   apiErrors: any;
   topics: ITopicData[];
+  titleProfanityError: boolean;
+  descriptionProfanityError: boolean;
 }
 
 interface State {
@@ -350,6 +353,8 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
       intl: { formatMessage },
       apiErrors,
       topics,
+      titleProfanityError,
+      descriptionProfanityError,
     } = this.props;
 
     const { touched, errors } = this.state;
@@ -394,6 +399,22 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
                   )
                 )}
               </FormLabel>
+              {titleProfanityError && (
+                <Error
+                  text={
+                    <FormattedMessage
+                      {...messages.profanityError}
+                      values={{
+                        guidelinesLink: (
+                          <Link to="/pages/faq" target="_blank">
+                            {formatMessage(messages.guidelinesLinkText)}
+                          </Link>
+                        ),
+                      }}
+                    />
+                  }
+                />
+              )}
             </SectionField>
 
             <SectionField id="e2e-initiative-form-description-section">
@@ -420,6 +441,22 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
                 apiErrors.body_multiloc && (
                   <Error apiErrors={apiErrors.body_multiloc} />
                 )
+              )}
+              {descriptionProfanityError && (
+                <Error
+                  text={
+                    <FormattedMessage
+                      {...messages.profanityError}
+                      values={{
+                        guidelinesLink: (
+                          <Link to="/pages/faq" target="_blank">
+                            {formatMessage(messages.guidelinesLinkText)}
+                          </Link>
+                        ),
+                      }}
+                    />
+                  }
+                />
               )}
             </SectionField>
           </StyledFormSection>
@@ -527,7 +564,7 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
             className="e2e-initiative-publish-button"
             message={messages.publishButton}
             error={publishError}
-            errorMessage={messages.publishUnknownError}
+            errorMessage={messages.submitApiError}
             processing={publishing}
             onSubmit={this.handleOnPublish}
           />

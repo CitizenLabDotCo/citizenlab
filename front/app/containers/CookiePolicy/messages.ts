@@ -111,20 +111,4 @@ export default defineMessages({
     id: 'app.containers.CookiePolicy.cookiesListButtonText',
     defaultMessage: 'manage your preferences',
   },
-  informationPageName: {
-    id: 'app.containers.CookiePolicy.informationPageName',
-    defaultMessage: 'Information Page',
-  },
-  'terms-and-conditionsPageName': {
-    id: 'app.containers.CookiePolicy.terms-and-conditionsPageName',
-    defaultMessage: 'Terms & conditions',
-  },
-  'privacy-policyPageName': {
-    id: 'app.containers.CookiePolicy.privacy-policyPageName',
-    defaultMessage: 'Privacy Policy',
-  },
-  'accessibility-statementPageName': {
-    id: 'app.containers.CookiePolicy.accessibility-statementPageName',
-    defaultMessage: 'Accessibility statement',
-  },
 });

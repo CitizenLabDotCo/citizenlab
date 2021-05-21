@@ -7,8 +7,7 @@ import Table from 'components/UI/Table';
 import ModerationRow from './ModerationRow';
 import Pagination from 'components/admin/Pagination/Pagination';
 import Checkbox from 'components/UI/Checkbox';
-import { Icon, IconTooltip, Select } from 'cl2-component-library';
-import Button from 'components/UI/Button';
+import { Icon, IconTooltip, Select, Button } from 'cl2-component-library';
 import Tabs from 'components/UI/Tabs';
 import { PageTitle } from 'components/admin/Section';
 import SelectType from './SelectType';
@@ -16,7 +15,8 @@ import SelectProject from './SelectProject';
 import SearchInput from 'components/UI/SearchInput';
 
 // hooks
-import useModerations from '../../../hooks/useModerations';
+import useModerations from '../../hooks/useModerations';
+import useLocale from 'hooks/useLocale';
 
 // services
 import {
@@ -24,7 +24,7 @@ import {
   IModerationData,
   TModerationStatuses,
   TModeratableTypes,
-} from '../../../services/moderations';
+} from '../../services/moderations';
 
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
@@ -51,8 +51,6 @@ const Container = styled.div`
 
 const PageTitleWrapper = styled.div`
   display: flex;
-  align-items: flex-end;
-  margin-bottom: 40px;
 `;
 
 const StyledPageTitle = styled(PageTitle)`
@@ -218,6 +216,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
     projectIds: [],
     searchTerm: '',
   });
+  const locale = useLocale();
 
   const [moderationItems, setModerationItems] = useState(list);
   const [selectedRows, setSelectedRows] = useState<string[]>([]);
@@ -351,7 +350,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
     }
   }, [list, processing]);
 
-  if (!isNilOrError(moderationItems)) {
+  if (!isNilOrError(moderationItems) && !isNilOrError(locale)) {
     return (
       <Container className={className}>
         <PageTitleWrapper>
@@ -368,6 +367,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
         <Filters>
           {selectedRows.length > 0 && (
             <MarkAsButton
+              locale={locale}
               icon="label"
               buttonStyle="cl-blue"
               processing={processing}

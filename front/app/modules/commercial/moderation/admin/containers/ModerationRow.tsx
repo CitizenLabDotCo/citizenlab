@@ -25,7 +25,7 @@ import { colors } from 'utils/styleUtils';
 import { rgba } from 'polished';
 
 // typings
-import { IModerationData } from '../../../services/moderations';
+import { IModerationData } from '../../services/moderations';
 import { Multiloc } from 'typings';
 
 const Container = styled.tr<{ bgColor: string }>`
