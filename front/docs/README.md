@@ -1,6 +1,5 @@
 # Changelog
 
-
 ## Next release
 
 /
