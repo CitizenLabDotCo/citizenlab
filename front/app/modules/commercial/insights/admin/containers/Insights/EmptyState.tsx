@@ -10,7 +10,7 @@ import styled from 'styled-components';
 import { colors, fontSizes, media } from 'utils/styleUtils';
 
 // assets
-// import insights from '../../assets/insights.png';
+import insights from 'modules/commercial/insights/assets/insights.png';
 import messages from './messages';
 
 // components
@@ -60,12 +60,9 @@ interface Props {
 
 const EmptyState = ({ openCreateModal, intl }: Props & InjectedIntlProps) => {
   const locale = useLocale();
-  console.log({ intl });
-  console.log({ locale });
 
   return (
     <Container data-testid="insightsEmptyState">
-      empty
       <div>
         <Title>
           <FormattedMessage
@@ -95,7 +92,7 @@ const EmptyState = ({ openCreateModal, intl }: Props & InjectedIntlProps) => {
           </ButtonsContainer>
         )}
       </div>
-      {/* <Image src={insights} /> */}
+      <Image src={insights} />
     </Container>
   );
 };

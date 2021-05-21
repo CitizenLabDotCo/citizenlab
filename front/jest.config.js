@@ -16,7 +16,10 @@ module.exports = {
   transform: {
     '^.+\\.(js|jsx|ts|tsx)$': 'babel-jest',
   },
-  setupFilesAfterEnv: ['<rootDir>/internals/jest/setup.js'],
+  setupFilesAfterEnv: [
+    '<rootDir>/internals/jest/setup.js',
+    '@testing-library/jest-dom/extend-expect',
+  ],
   testMatch: ['**/?(*.)+(spec|test).(js|jsx|ts|tsx)'],
   moduleDirectories: ['node_modules', 'app'],
   collectCoverageFrom: [
@@ -30,13 +33,12 @@ module.exports = {
   reporters: ['default', 'jest-junit'],
   coverageReporters: ['json', 'lcov', 'text-summary', 'clover'],
   moduleNameMapper: {
-    '\\.(css|svg|png|jpg)$': 'identity-obj-proxy',
+    '\\.(css)$': 'identity-obj-proxy',
+    '\\.(jpg|jpeg|png|gif|svg)$': '<rootDir>/app/utils/testUtils/fileMock.js',
     '^react-scroll-to-component$': 'identity-obj-proxy',
   },
   testURL: 'https://demo.stg.citizenlab.co/en/',
   globals: {
-    __DEV__: true,
     CL_CONFIG: clConfig,
-    streams: [],
   },
 };
