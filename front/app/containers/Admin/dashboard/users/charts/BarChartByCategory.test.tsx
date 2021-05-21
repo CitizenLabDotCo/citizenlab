@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React from 'react';
 import { shallow } from 'enzyme';
 jest.mock('utils/cl-intl');
@@ -7,12 +8,13 @@ jest.mock('components/Outlet', () => 'Outlet');
 jest.mock('modules', () => ({ streamsToReset: [] }));
 
 import { BarChartByCategory } from './BarChartByCategory';
+import { chartTheme } from '../../../';
 
 const Intl = require('utils/cl-intl/__mocks__/');
 const { intl } = Intl;
 
 const convertToGraphFormat = jest.fn();
-
+// @ts-nocheck
 const stream = jest.fn();
 const serie = [
   {
@@ -41,8 +43,7 @@ describe('<BarChartByCategory />', () => {
         graphUnit="users"
         customId={'test'}
         intl={intl}
-        currentGroupFilterLabel={undefined}
-        xlsxEndpoint=""
+        theme={chartTheme}
       />
     );
     expect(wrapper).toMatchSnapshot();

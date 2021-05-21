@@ -103,7 +103,7 @@ const CreateInsightsView = ({
   if (isNilOrError(locale)) return null;
 
   return (
-    <Container data-testid="insightsList">
+    <Container>
       <Title>
         <FormattedMessage {...messages.createModalTitle} />
       </Title>

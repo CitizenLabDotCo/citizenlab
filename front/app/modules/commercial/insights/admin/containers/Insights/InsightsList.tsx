@@ -105,7 +105,7 @@ const InsightsList: React.FC<InsightsList & InjectedIntlProps> = ({
   };
 
   return (
-    <div>
+    <div data-testid="insightsList">
       <PageTitle>{formatMessage(messages.title)}</PageTitle>
       <StyledDescription>
         {formatMessage(messages.description)}
