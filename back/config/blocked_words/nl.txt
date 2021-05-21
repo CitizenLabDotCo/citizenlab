@@ -39,6 +39,7 @@ coronalijer
 del
 deuggleuf
 dirkdoos
+dom wijf
 dreuzel
 droplul
 druiloor
@@ -93,6 +94,7 @@ kankerhond
 kankerlijder
 kankerlijer
 kankernicht
+kankerwijf
 kapsoneslijer
 karhengst
 karonje
@@ -120,12 +122,15 @@ kontkruiper
 kontneuker
 kreng
 krielkip
+krijg de kolere
+krijg de klere
 krijslijster
 kruimelbuik
 kruiper
 kut
 kutstreek
 kuttenkop
+kuttekop
 kutvent
 kutwijf
 kwakzalver
@@ -161,10 +166,11 @@ neetoor
 netenvreter
 neukpaal
 noppeshoer
-oen
 olijfneuker
 onderkruipsel
 optyfen
+opzouten
+opzoute
 ossenkop
 ossenlul
 ouwehoedendoos
@@ -194,10 +200,12 @@ puistenkop
 pukkelbek
 pummel
 randdebiel
+reet
 reetkever
 reetveger
 roetmop
 rotmof
+rot op
 rotzak
 rugridder
 ruigpoot
@@ -240,6 +248,7 @@ spleetoog
 steenezel
 stinkbok
 stoephoer
+stom wijf
 strontzak
 teef
 teringlijder
@@ -257,6 +266,8 @@ vuilak
 vullis
 zaagselkop
 zalfpot
+zeiken
+gezeik
 zenuwenlijer
 zenuwlijer
 zwijnjak
@@ -284,6 +295,7 @@ fcuking
 feck
 fecker
 fuck
+fuuck
 fucka
 fucked
 fucker
@@ -296,3 +308,6 @@ fuckings
 fuckingshitmotherfucker
 fuckme
 fucks
+shit
+shiit
+5hit
