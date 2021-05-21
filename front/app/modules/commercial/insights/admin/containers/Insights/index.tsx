@@ -24,14 +24,11 @@ const Insights = () => {
 
   return (
     <div>
-      {
-        insightsViews.length === 0 ? (
-          <EmptyState openCreateModal={openCreateModal} />
-        ) : (
-          'full'
-        )
-        //   <InsightsList openCreateModal={openCreateModal} data={insightsViews} />
-      }
+      {insightsViews.length === 0 ? (
+        <EmptyState openCreateModal={openCreateModal} />
+      ) : (
+        <InsightsList openCreateModal={openCreateModal} data={insightsViews} />
+      )}
       <Modal opened={createModalOpened} close={closeCreateModal}>
         <CreateInsightsView closeCreateModal={closeCreateModal} />
       </Modal>

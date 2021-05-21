@@ -10,7 +10,7 @@ import styled from 'styled-components';
 import { colors, fontSizes, media } from 'utils/styleUtils';
 
 // assets
-import insights from 'modules/commercial/insights/assets/insights.png';
+import insights from '../../assets/insights.png';
 import messages from './messages';
 
 // components
@@ -62,7 +62,7 @@ const EmptyState = ({ openCreateModal, intl }: Props & InjectedIntlProps) => {
   const locale = useLocale();
 
   return (
-    <Container data-testid="insightsEmptyState">
+    <Container data-testid="insightsListEmptyState">
       <div>
         <Title>
           <FormattedMessage

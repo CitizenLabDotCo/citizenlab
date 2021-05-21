@@ -30,16 +30,21 @@ jest.mock('modules/commercial/insights/hooks/useInsightsViews', () => {
 
 jest.mock('hooks/useLocale', () => jest.fn(() => 'en'));
 
-describe('Insights', () => {
-  it('shows list when data is available', () => {
-    render(<Insights />);
-
-    expect(screen.getByText('full')).toBeInTheDocument();
+describe('Insights List', () => {
+  describe('List', () => {
+    it('renders list when data is available', () => {
+      render(<Insights />);
+      expect(screen.getByTestId('insightsList')).toBeInTheDocument();
+    });
   });
-  it('shows empty state when no data is present', () => {
-    mockData = [];
-    render(<Insights />);
 
-    expect(screen.getByTestId('insightsEmptyState')).toBeInTheDocument();
+  describe('Empty State', () => {
+    it('renders empty state when no data is available', () => {
+      mockData = [];
+      render(<Insights />);
+
+      expect(screen.getByTestId('insightsListEmptyState')).toBeInTheDocument();
+      expect(screen.getAllByRole('button')).toHaveLength(2);
+    });
   });
 });

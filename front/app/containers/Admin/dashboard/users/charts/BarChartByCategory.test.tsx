@@ -7,12 +7,12 @@ jest.mock('components/Outlet', () => 'Outlet');
 jest.mock('modules', () => ({ streamsToReset: [] }));
 
 import { BarChartByCategory } from './BarChartByCategory';
-import { chartTheme } from '../../../';
 
 const Intl = require('utils/cl-intl/__mocks__/');
 const { intl } = Intl;
 
 const convertToGraphFormat = jest.fn();
+
 const stream = jest.fn();
 const serie = [
   {
@@ -34,14 +34,15 @@ describe('<BarChartByCategory />', () => {
         serie={serie}
         startAt="04-12-2018"
         endAt="05-12-2018"
-        currentGroupFilter={null}
+        currentGroupFilter={undefined}
         convertToGraphFormat={convertToGraphFormat}
         graphTitleString={''}
         stream={stream}
         graphUnit="users"
         customId={'test'}
         intl={intl}
-        theme={chartTheme}
+        currentGroupFilterLabel={undefined}
+        xlsxEndpoint=""
       />
     );
     expect(wrapper).toMatchSnapshot();
