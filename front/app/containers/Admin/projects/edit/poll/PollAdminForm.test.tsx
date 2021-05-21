@@ -42,8 +42,6 @@ const reorderPollQuestionSpy = jest.spyOn(
   'reorderPollQuestion'
 );
 
-let mockQuestions: IPollQuestion[];
-
 describe('<PollAdminForm/>', () => {
   describe('boundaries', () => {
     it('renders correctly with when pollQuestion is null', () => {
