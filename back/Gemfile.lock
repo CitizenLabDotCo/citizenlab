@@ -212,6 +212,12 @@ PATH
       rails (~> 6.0.3, >= 6.0.3.2)
 
 PATH
+  remote: engines/commercial/insights
+  specs:
+    insights (0.1.0)
+      rails (~> 6.0.0)
+
+PATH
   remote: engines/commercial/machine_translations
   specs:
     machine_translations (0.1.0)
@@ -1023,6 +1029,7 @@ DEPENDENCIES
   id_id_card_lookup!
   idea_assignment!
   idea_custom_fields!
+  insights!
   interactor
   interactor-rails
   intercom (~> 4.1)

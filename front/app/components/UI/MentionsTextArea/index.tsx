@@ -62,7 +62,7 @@ export interface InputProps {
   rows: number;
   postId?: string;
   postType?: 'idea' | 'initiative';
-  error?: string | null;
+  error?: JSX.Element | string | null;
   onChange?: (arg: string, locale: Locale | undefined) => void;
   onFocus?: () => void;
   onBlur?: () => void;

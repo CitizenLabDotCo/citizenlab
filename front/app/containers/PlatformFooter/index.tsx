@@ -603,6 +603,7 @@ class PlatformFooter extends PureComponent<Props, State> {
                               'cookie-policy': messages.cookiePolicy,
                               'accessibility-statement':
                                 messages.accessibilityStatement,
+                              faq: messages.faq,
                             }[slug]}
                           />
                         </StyledLink>

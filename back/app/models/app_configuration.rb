@@ -131,12 +131,6 @@ class AppConfiguration < ApplicationRecord
     RGeo::Geographic.spherical_factory(srid: 4326).point(longitude, latitude)
   end
 
-  def turn_on_abbreviated_user_names!
-    config = settings['abbreviated_user_names'] || {}
-    settings['abbreviated_user_names'] = config.merge({ 'allowed' => true, 'enabled' => true })
-    save!
-  end
-
   def configuration
     Rails.logger.warn('Calling +configuration+ on an AppConfiguration', caller: caller)
     self

@@ -62,6 +62,10 @@ export default defineMessages({
     id: 'app.containers.app.navbar.pageInformation',
     defaultMessage: 'Information',
   },
+  pageFaq: {
+    id: 'app.containers.app.navbar.pageFaq',
+    defaultMessage: 'FAQ',
+  },
   mobilePageHome: {
     id: 'app.containers.app.navbar.mobilePageHome',
     defaultMessage: 'Home',
