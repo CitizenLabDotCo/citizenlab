@@ -668,7 +668,7 @@
   "app.container.IdeaForm.budgetIsTooBig": "The provided budget is too big",
   "app.container.IdeaForm.budgetIsZeroError": "Please provide a budget larger than 0",
   "app.container.IdeaForm.budgetLabel": "Budget (in {currency}, max. {maxBudget})",
-  "app.container.IdeaForm.fileAttachmentsTitle": "Attachments",
+  "app.container.IdeaForm.fileAttachmentsTitle": "Other files",
   "app.container.IdeaForm.noBudgetError": "Please provide a budget",
   "app.container.IdeaForm.noproposedBudgetError": "Please provide a budget estimation",
   "app.container.IdeaForm.proposedBudgetLabel": "Proposed budget in {currency}",
