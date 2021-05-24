@@ -2329,7 +2329,7 @@
   "app.containers.SignUp.continueWithFacebook": "Fortsæt med Facebook",
   "app.containers.SignUp.continueWithGoogle": "Fortsæt med Google",
   "app.containers.SignUp.createYourAccount": "Opret din konto",
-  "app.containers.SignUp.emailConsent": "Jeg accepterer, at jeg ved brug af enten Facebook eller Google i forbindelse med oprettelse af min konto, er underlagt den pågældende leverandørs vilkår og privatlivspolitik.",
+  "app.containers.SignUp.emailConsent": "{tenantName, select, holbaek {Vores Mål} other {Dette er et initiativ fra {orgName}}}",
   "app.containers.SignUp.emailLabel": "E-mail",
   "app.containers.SignUp.emailOrPhoneLabel": "Email eller telefon",
   "app.containers.SignUp.emailPlaceholder": "Enter your email address",
