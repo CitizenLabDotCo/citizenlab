@@ -154,9 +154,7 @@ export default function useLeaflet(
           debounceTime(50)
         )
         .subscribe(([newCenter, newZoom]) => {
-          if (map !== null && newCenter !== null && newZoom !== null) {
-            service.changeView(map, newCenter, newZoom);
-          }
+          service.changeView(map, newCenter, newZoom);
         }),
     ];
 
@@ -229,7 +227,10 @@ export default function useLeaflet(
   useEffect(refreshZoomControlPosition, [map, zoomControlPosition]);
 
   const refreshLayers = () => {
-    const layersControl = service.addLayersControl(map, layersControlPosition);
+    const layersControl =
+      geoJsonLayers && geoJsonLayers?.length > 0
+        ? service.addLayersControl(map, layersControlPosition)
+        : null;
 
     setLayersControl((prevLayersControl) => {
       service.removeLayersControl(map, prevLayersControl);

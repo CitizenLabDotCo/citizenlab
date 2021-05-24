@@ -95,11 +95,12 @@ export function addClusterGroup(
     const newMarkerClusterGroup = L.markerClusterGroup({
       showCoverageOnHover: false,
       spiderfyDistanceMultiplier: 2,
+      zoomToBoundsOnClick: true,
       iconCreateFunction: (cluster) => {
         return L.divIcon({
           html: `<span>${cluster.getChildCount()}</span>`,
           className: 'marker-cluster-custom',
-          iconSize: L.point(40, 40, true),
+          iconSize: L.point(38, 38, true),
         });
       },
     });

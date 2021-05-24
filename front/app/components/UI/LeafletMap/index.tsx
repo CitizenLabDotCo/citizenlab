@@ -1,8 +1,7 @@
 import React, { memo } from 'react';
 import styled, { css } from 'styled-components';
-import { darken } from 'polished';
 import useLeaflet, { ILeafletMapConfig } from './useLeaflet';
-import { media } from 'utils/styleUtils';
+import { media, fontSizes } from 'utils/styleUtils';
 
 const LeafletMapContainer = styled.div<{ mapHeight: string | undefined }>`
   flex: 1;
@@ -29,17 +28,30 @@ const LeafletMapContainer = styled.div<{ mapHeight: string | undefined }>`
   }}
 
   .marker-cluster-custom {
-    background: #004949;
-    border: 3px solid white;
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
     border-radius: 50%;
-    color: white;
-    height: 40px;
-    line-height: 37px;
-    text-align: center;
-    width: 40px;
+    border: 2px solid #000;
+
+    & > span {
+      color: #000;
+      font-weight: 600;
+      font-size: ${fontSizes.medium}px;
+      line-height: normal;
+      text-align: center;
+    }
 
     &:hover {
-      background: ${darken(0.2, '#004949')};
+      background: #000;
+      border-color: #000;
+
+      & > span {
+        color: #fff;
+      }
     }
   }
 `;

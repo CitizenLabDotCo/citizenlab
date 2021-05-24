@@ -1,5 +1,6 @@
 import L from 'leaflet';
 import 'leaflet-active-area';
+import { isNil } from 'lodash-es';
 import { DEFAULT_CENTER, DEFAULT_ZOOM } from '../config';
 
 export function init(
@@ -46,8 +47,10 @@ export function addTileLayer(
 
 export function changeView(
   map: L.Map | null | undefined,
-  center: L.LatLngTuple,
-  zoom: number
+  center: L.LatLngTuple | null | undefined,
+  zoom: number | null | undefined
 ) {
-  map?.setView(center, zoom);
+  if (!isNil(map) && !isNil(center) && !isNil(zoom)) {
+    map.setView(center, zoom);
+  }
 }
