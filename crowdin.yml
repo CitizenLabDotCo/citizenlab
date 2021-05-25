@@ -5,7 +5,6 @@ files:
       locale:
         en: en
         nb: nb-NO
-    update_option: update_without_changes
   - source: /back/config/locales/en.yml
     translation: /back/config/locales/%locale%.yml
     update_option: update_without_changes
