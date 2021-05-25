@@ -95,7 +95,6 @@ export function addClusterGroup(
     const newMarkerClusterGroup = L.markerClusterGroup({
       showCoverageOnHover: false,
       spiderfyDistanceMultiplier: 2,
-      zoomToBoundsOnClick: true,
       iconCreateFunction: (cluster) => {
         return L.divIcon({
           html: `<span>${cluster.getChildCount()}</span>`,

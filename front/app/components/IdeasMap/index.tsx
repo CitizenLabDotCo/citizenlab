@@ -96,9 +96,9 @@ const InnerContainer = styled.div<{ leftMargin: number | null }>`
 `;
 
 const StyledMap = styled(Map)`
-  border: none;
+  /* border: none;
   background: transparent;
-  box-shadow: 0px 0px 25px 0px rgba(0, 0, 0, 0.15);
+  box-shadow: 0px 0px 25px 0px rgba(0, 0, 0, 0.15); */
 `;
 
 const IdeaButtonWrapper = styled.div``;

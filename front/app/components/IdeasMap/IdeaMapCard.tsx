@@ -10,6 +10,7 @@ import { Icon } from 'cl2-component-library';
 import eventEmitter from 'utils/eventEmitter';
 import { setIdeaMapCardSelected } from './events';
 import {
+  setLeafletMapCenter,
   setLeafletMapHoveredMarker,
   leafletMapHoveredMarker$,
 } from 'components/UI/LeafletMap/events';
@@ -31,7 +32,7 @@ import {
   media,
 } from 'utils/styleUtils';
 
-const Container = styled.div`
+const Container = styled.button`
   padding: 20px;
   margin-bottom: 15px;
   background: #fff;
@@ -40,12 +41,18 @@ const Container = styled.div`
   cursor: pointer;
   position: relative;
   transition: all 100ms ease-out;
+  text-align: left;
 
   ${media.biggerThanMaxTablet`
+    &:hover,
     &.hovered {
       border-color: #000;
       box-shadow: 0px 0px 0px 1px #000 inset;
     }
+  `}
+
+  ${media.smallerThanMaxTablet`
+    width: 100%;
   `}
 `;
 
@@ -159,11 +166,11 @@ const IdeaMapCard = memo<Props>(({ ideaId, onClose, className }) => {
       });
     }
 
-    // if (!isNilOrError(idea)) {
-    //   const lng = idea.attributes.location_point_geojson.coordinates[0];
-    //   const lat = idea.attributes.location_point_geojson.coordinates[1];
-    //   setLeafletMapCenter([lat, lng]);
-    // }
+    if (!smallerThanMaxTablet && !isNilOrError(idea)) {
+      const lng = idea.attributes.location_point_geojson.coordinates[0];
+      const lat = idea.attributes.location_point_geojson.coordinates[1];
+      setLeafletMapCenter([lat, lng]);
+    }
   };
 
   const handleOnMouseEnter = () => {
@@ -186,6 +193,7 @@ const IdeaMapCard = memo<Props>(({ ideaId, onClose, className }) => {
         onClick={handleOnClick}
         onMouseEnter={handleOnMouseEnter}
         onMouseLeave={handleOnMouseLeave}
+        tabIndex={0}
       >
         {smallerThanMaxTablet && (
           <CloseButtonWrapper>
