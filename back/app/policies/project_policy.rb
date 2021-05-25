@@ -29,7 +29,7 @@ class ProjectPolicy < ApplicationPolicy
 
     # Filter the scope for a user that is not logged in.
     def resolve_for_visitor
-      scope.not_draft.where(visible_to: 'public')
+      scope.not_draft.publicly_visible
     end
 
     def resolve_for_normal_user
