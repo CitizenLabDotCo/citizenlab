@@ -1,9 +1,9 @@
 # Changelog
 
+## 2021-05-21
 
-## Next release
-
-/
+### Added
+- Profanity blocker: when posting comments, input, proposals that contain profane words, posting will not be possible and a warning will be shown.
 
 ## 2021-05-11
 
