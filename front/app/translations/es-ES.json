@@ -1816,7 +1816,7 @@
   "app.containers.Comments.loadMoreComments": "Cargar más comentarios",
   "app.containers.Comments.loadingComments": "Cargar más comentarios...",
   "app.containers.Comments.loadingMoreComments": "Cargar más comentarios...",
-  "app.containers.Comments.profanityError": "Es posible que hayas utilizado una o más palabras consideradas groserías por {guidelinesLink}. Por favor, modifique su texto para eliminar cualquier insulto que pueda estar presente.",
+  "app.containers.Comments.profanityError": "Es posible que haya utilizado una o más palabras consideradas groserías por {guidelinesLink}. Por favor, modifique su texto para eliminar cualquier insulto que pueda estar presente.",
   "app.containers.Comments.publishComment": "Publica tu comentario",
   "app.containers.Comments.reportAsSpamModalTitle": "¿Por qué quieres reportar esto como spam?",
   "app.containers.Comments.saveComment": "Guardar",
