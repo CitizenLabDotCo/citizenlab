@@ -450,7 +450,6 @@ class AdminProjectEditGeneral extends PureComponent<
 
   handleTitleMultilocOnChange = (titleMultiloc: Multiloc) => {
     this.setState(({ projectAttributesDiff }) => ({
-      titleError: null,
       submitState: 'enabled',
       projectAttributesDiff: {
         ...projectAttributesDiff,
@@ -645,12 +644,6 @@ class AdminProjectEditGeneral extends PureComponent<
       titleError: !isEmpty(titleError) ? titleError : null,
     });
 
-    if (hasErrors) {
-      this.setState({
-        submitState: 'error',
-      });
-    }
-
     return !hasErrors;
   };
 
@@ -735,7 +728,7 @@ class AdminProjectEditGeneral extends PureComponent<
         const apiErrors = get(
           errors,
           'json.errors',
-          formatMessage(messages.submitErrorMessage)
+          formatMessage(messages.saveErrorMessage)
         );
         const submitState = 'error';
         this.setState({ apiErrors, submitState });
@@ -1161,7 +1154,7 @@ class AdminProjectEditGeneral extends PureComponent<
               messages={{
                 buttonSave: messages.saveProject,
                 buttonSuccess: messages.saveSuccess,
-                messageError: messages.submitErrorMessage,
+                messageError: messages.saveErrorMessage,
                 messageSuccess: messages.saveSuccessMessage,
               }}
             />
