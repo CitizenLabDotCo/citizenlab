@@ -25,11 +25,11 @@ class IdeaPolicy < ApplicationPolicy
   end
 
   def index_xlsx?
-    admin?
+    admin? && active?
   end
 
   def index_mini?
-    admin?
+    admin? && active?
   end
 
   def create?
