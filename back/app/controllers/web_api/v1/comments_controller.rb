@@ -1,4 +1,6 @@
 class WebApi::V1::CommentsController < ApplicationController
+  include BlockingProfanity
+
   before_action :set_post_type_id_and_policy, only: [:index, :index_xlsx, :create]
   before_action :set_comment, only: [:children, :show, :update, :mark_as_deleted, :destroy]
   skip_after_action :verify_authorized, only: [:index_xlsx]
@@ -139,6 +141,7 @@ class WebApi::V1::CommentsController < ApplicationController
     @comment.post_id = @post_id
     @comment.author ||= current_user
     authorize @comment, policy_class: @policy_class
+    verify_profanity @comment
     SideFxCommentService.new.before_create @comment, current_user
     if @comment.save
       SideFxCommentService.new.after_create @comment, current_user
@@ -157,6 +160,7 @@ class WebApi::V1::CommentsController < ApplicationController
     # We cannot pass policy class to permitted_attributes
     # @comment.attributes = pundit_params_for(@comment).permit(@policy_class.new(current_user, @comment).permitted_attributes_for_update)
     authorize @comment, policy_class: @policy_class
+    verify_profanity @comment
     SideFxCommentService.new.before_update @comment, current_user
     if @comment.save
       SideFxCommentService.new.after_update @comment, current_user
