@@ -713,6 +713,8 @@
   "app.containers.Admin.Campaigns.noAccess": "نعتذر، ولكن يبدو أنه ليس بإمكانك الوصول إلى قسم الرسائل الإلكترونية",
   "app.containers.Admin.Campaigns.tabAutomated": "تلقائية",
   "app.containers.Admin.Campaigns.tabCustom": "مخصصة",
+  "app.containers.Admin.Insights.Edit.categoryInfoBox": "",
+  "app.containers.Admin.Insights.Edit.categoryInfoBoxBold": "",
   "app.containers.Admin.Insights.Reports.budgeting": "الميزانية التشاركية",
   "app.containers.Admin.Insights.Reports.comments": "Comments",
   "app.containers.Admin.Insights.Reports.commentsByTimeTitle": "Comments",

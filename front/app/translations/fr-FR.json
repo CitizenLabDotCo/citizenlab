@@ -713,6 +713,8 @@
   "app.containers.Admin.Campaigns.noAccess": "Nous sommes désolés, mais il semble que vous n’ayez pas accès à la section e-mails",
   "app.containers.Admin.Campaigns.tabAutomated": "Automatisés",
   "app.containers.Admin.Campaigns.tabCustom": "Personnalisés",
+  "app.containers.Admin.Insights.Edit.categoryInfoBox": "",
+  "app.containers.Admin.Insights.Edit.categoryInfoBoxBold": "",
   "app.containers.Admin.Insights.Reports.budgeting": "budget participatif",
   "app.containers.Admin.Insights.Reports.comments": "Comments",
   "app.containers.Admin.Insights.Reports.commentsByTimeTitle": "Comments",

@@ -713,6 +713,8 @@
   "app.containers.Admin.Campaigns.noAccess": "",
   "app.containers.Admin.Campaigns.tabAutomated": "",
   "app.containers.Admin.Campaigns.tabCustom": "",
+  "app.containers.Admin.Insights.Edit.categoryInfoBox": "",
+  "app.containers.Admin.Insights.Edit.categoryInfoBoxBold": "",
   "app.containers.Admin.Insights.Reports.budgeting": "",
   "app.containers.Admin.Insights.Reports.comments": "",
   "app.containers.Admin.Insights.Reports.commentsByTimeTitle": "",
