@@ -2370,7 +2370,7 @@
   "app.containers.SignUp.tokenAlreadyAcceptedError": "The invitation has already been redeemed",
   "app.containers.SignUp.tokenLabel": "Invitation code",
   "app.containers.SignUp.tokenNotFoundError": "The invitation code could not be found",
-  "app.containers.SignUp.tokenPlaceholder": "Enter your invitation code",
+  "app.containers.SignUp.tokenPlaceholder": "  ",
   "app.containers.SignUp.unknownError": "{tenantName, select, LiberalDemocrats {It appears you tried to sign up before without completing the process. Click Log In instead, using the credentials chosen during the previous attempt.} other {Something went wrong. Please try again later.}}",
   "app.containers.SignUp.verifyYourIdentity": "Verify your identity",
   "app.containers.SignUp.whatIsFranceConnect": "What is France Connect?",

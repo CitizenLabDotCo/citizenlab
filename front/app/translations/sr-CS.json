@@ -2396,7 +2396,7 @@
   "app.containers.UsersEditPage.becomeVerifiedSubtitle": "To participate in projects requiring verification.",
   "app.containers.UsersEditPage.becomeVerifiedTitle": "Verifikujte vaš identitet.",
   "app.containers.UsersEditPage.bio": "O vama",
-  "app.containers.UsersEditPage.bio_placeholder": "Write a short description of yourself",
+  "app.containers.UsersEditPage.bio_placeholder": " ",
   "app.containers.UsersEditPage.blockedVerified": "Ne možete menjati polje koje sadrži verifikovane informacije.",
   "app.containers.UsersEditPage.buttonSuccessLabel": "Uspeh",
   "app.containers.UsersEditPage.cancel": "Prekid",
