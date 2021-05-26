@@ -1,7 +1,5 @@
 import { loadModules } from 'utils/moduleUtils';
 
-import userConfirmationConfiguration from './free/user_confirmation';
-
 import projectFoldersConfiguration from './commercial/project_folders';
 import smartGroupsConfiguration from './commercial/smart_groups';
 import userCustomFieldsConfiguration from './commercial/user_custom_fields';
@@ -16,7 +14,7 @@ import machineTranslationsConfiguration from './commercial/machine_translations'
 import similarIdeaConfiguration from './commercial/similar_ideas';
 import clusteringsConfiguration from './commercial/clusterings';
 
-import projectVisibilityConfiguration from './free/project_visibility';
+// import projectVisibilityConfiguration from './free/project_visibility';
 
 import customMapsConfiguration from './commercial/custom_maps';
 import googleTagManagerConfiguration from './commercial/google_tag_manager';
@@ -29,6 +27,7 @@ import customIdeaStatusesConfiguration from './commercial/custom_idea_statuses';
 import verificationConfiguration from './commercial/verification';
 import customTopicsConfiguration from './commercial/custom_topics';
 
+import idAuth0Configuration from './commercial/id_auth0';
 import idBosaFasConfiguration from './commercial/id_bosa_fas';
 import idCowConfiguration from './commercial/id_cow';
 import idBogusConfiguration from './commercial/id_bogus';
@@ -39,7 +38,10 @@ import IdClaveUnicaConfiguration from './commercial/id_clave_unica';
 import widgetsConfiguration from './commercial/widgets';
 
 import taggingConfiguration from './commercial/tagging';
+import insightsConfiguration from './commercial/insights';
 import customStyleConfiguration from './commercial/custom_style';
+
+import userConfirmationConfiguration from './free/user_confirmation';
 
 declare var CL_CONFIG: any;
 
@@ -88,10 +90,10 @@ export default loadModules([
     configuration: granularPermissionsConfiguration,
     isEnabled: CL_CONFIG['modules']['commercial/granular_permissions'],
   },
-  {
-    configuration: projectVisibilityConfiguration,
-    isEnabled: CL_CONFIG['modules']['free/project_visibility'],
-  },
+  // {
+  //   configuration: projectVisibilityConfiguration,
+  //   isEnabled: CL_CONFIG['modules']['free/project_visibility'],
+  // },
   {
     configuration: projectManagementConfiguration,
     isEnabled: CL_CONFIG['modules']['commercial/project_management'],
@@ -133,6 +135,10 @@ export default loadModules([
     isEnabled: CL_CONFIG['modules']['commercial/custom_maps'],
   },
   {
+    configuration: idAuth0Configuration,
+    isEnabled: CL_CONFIG['modules']['commercial/id_auth0'],
+  },
+  {
     configuration: idBosaFasConfiguration,
     isEnabled: CL_CONFIG['modules']['commercial/id_bosa_fas'],
   },
@@ -171,6 +177,10 @@ export default loadModules([
   {
     configuration: taggingConfiguration,
     isEnabled: CL_CONFIG['modules']['commercial/tagging'],
+  },
+  {
+    configuration: insightsConfiguration,
+    isEnabled: CL_CONFIG['modules']['commercial/insights'],
   },
   {
     configuration: customStyleConfiguration,

@@ -125,9 +125,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.saveSuccessMessage',
     defaultMessage: 'Your form has been saved!',
   },
-  submitErrorMessage: {
-    id: 'app.containers.AdminPage.ProjectEdit.submitErrorMessage',
-    defaultMessage: "Couldn't save project. Make sure no fields have errors.",
+  saveErrorMessage: {
+    id: 'app.containers.AdminPage.ProjectEdit.saveErrorMessage',
+    defaultMessage:
+      'An error occurred while saving your data. Please try again.',
   },
   imageSupportArticleLinkTarget: {
     id: 'app.containers.AdminPage.ProjectEdit.imageSupportArticleLinkTarget',

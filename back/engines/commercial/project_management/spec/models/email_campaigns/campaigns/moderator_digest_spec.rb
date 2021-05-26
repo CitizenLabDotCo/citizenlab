@@ -43,7 +43,8 @@ RSpec.describe 'EmailCampaigns::Campaigns::ModeratorDigest', type: :model, skip:
     end
 
     it 'generates a command with abbreviated names' do
-      AppConfiguration.instance.turn_on_abbreviated_user_names!
+      SettingsService.new.activate_feature! 'abbreviated_user_names'
+      
       expect(moderator.admin?).to be false
       command = campaign.generate_commands(recipient: moderator).first
 

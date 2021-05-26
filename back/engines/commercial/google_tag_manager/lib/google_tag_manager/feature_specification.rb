@@ -31,7 +31,6 @@ module GoogleTagManager # Engine namespace
     add_setting 'category', schema: {
       "type": "string",
       "description": "In which category should GTM appear in the consent manager ?",
-      "type": "string",
       "enum": ["advertising", "analytics", "functional"],
       "default": "analytics"
     }

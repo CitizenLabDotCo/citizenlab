@@ -49,6 +49,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SideBar.processing',
     defaultMessage: 'Processing',
   },
+  insights: {
+    id: 'app.containers.AdminPage.SideBar.insights',
+    defaultMessage: 'Reporting',
+  },
   guide: {
     id: 'app.containers.AdminPage.SideBar.guide',
     defaultMessage: 'Guide',

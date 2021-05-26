@@ -1,9 +1,9 @@
 # Changelog
 
+## 2021-05-21
 
-## Next release
-
-/
+### Added
+- Profanity blocker: when posting comments, input, proposals that contain profane words, posting will not be possible and a warning will be shown.
 
 ## 2021-05-11
 
@@ -34,8 +34,7 @@
 ### Added
 - New module to plug email confirmation to users.
 
-
-## 2021-04-29
+## 2021-03-31
 
 ### Fixed
 - Customizable Banner Fields no longer get emptied/reset when changing another.
@@ -43,10 +42,6 @@
 ### Added
 - When a client-side validation error happens for the project title in the admin, there will be an error next to the submit button in addition to the error message next to the input field.
 
-## 2021-04-22
-
-### Fixed
-- After the project title error appears, it disappears again after you start correcting the error
 
 ## 2021-03-25
 
@@ -57,6 +52,11 @@
 
 ### Fixed
 - Fix for broken sign-up flow when signing-up through social sign-on
+
+## 2021-04-22
+
+### Fixed
+- After the project title error appears, it disappears again after you start correcting the error
 
 ## 2021-03-19
 

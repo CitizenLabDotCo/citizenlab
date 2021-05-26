@@ -155,9 +155,18 @@ export default defineMessages({
     id: 'app.components.InitiativeForm.publishButton',
     defaultMessage: 'Publish your initiative',
   },
-  publishUnknownError: {
-    id: 'app.components.InitiativeForm.publishUnknownError',
+  submitApiError: {
+    id: 'app.components.InitiativeForm.submitApiError',
     defaultMessage:
-      'There was an issue publishing your initiative, please try again later.',
+      'There was an issue submitting the form. Please check for any errors and try again.',
+  },
+  profanityError: {
+    id: 'app.components.InitiativeForm.profanityError',
+    defaultMessage:
+      'You may have used one or more words that are considered profanity by {guidelinesLink}. Please alter your text to remove any profanities that might be present.',
+  },
+  guidelinesLinkText: {
+    id: 'app.components.InitiativeForm.guidelinesLinkText',
+    defaultMessage: 'our guidelines',
   },
 });

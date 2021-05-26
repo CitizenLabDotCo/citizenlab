@@ -717,6 +717,21 @@ resource "Ideas" do
       end
     end
 
+    describe do
+      before { SettingsService.new.activate_feature! 'blocking_profanity' }
+      # Weak attempt to make it less explicit
+      let(:title_multiloc) {{'nl-BE' => 'Fu'+'ck'}}
+      let(:body_multiloc) {{'fr-FR' => 'co'+'cksu'+'cker'}}
+
+      example_request "[error] Create an idea with blocked words" do
+        expect(response_status).to eq 422
+        json_response = json_parse(response_body)
+        blocked_error = json_response.dig(:errors, :base)&.select{|err| err[:error] == 'includes_banned_words'}&.first
+        expect(blocked_error).to be_present
+        expect(blocked_error.dig(:blocked_words).map{|bw| bw[:attribute]}.uniq).to include('title_multiloc', 'body_multiloc')
+      end
+    end
+
     context "when admin" do
       before do
         @user = create(:admin)

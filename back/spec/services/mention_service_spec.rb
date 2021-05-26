@@ -127,7 +127,7 @@ describe MentionService do
   context "with shallow anonymization enabled" do  # aka abbreviated user names
 
     before do
-      AppConfiguration.instance.turn_on_abbreviated_user_names!
+      SettingsService.new.activate_feature! 'abbreviated_user_names'
       @jane = create(:user, first_name: "Jane", last_name: "Doe")
     end
 
