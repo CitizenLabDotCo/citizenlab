@@ -8,9 +8,9 @@ import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import useLocale from 'hooks/useLocale';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
-import { colors, fontSizes } from 'utils/styleUtils';
+import { colors, fontSizes, stylingConsts, media } from 'utils/styleUtils';
 
-import TopBar from '../../components/TopBar';
+import TopBar, { topBarHeight } from '../../components/TopBar';
 import Error from 'components/UI/Error';
 import { CLErrors } from 'typings';
 import useInsightsCategories from '../../../hooks/useInsightsCategories';
@@ -19,9 +19,33 @@ import { withRouter, WithRouterProps } from 'react-router';
 import { addInsightsCategory } from '../../../services/insightsCategories';
 import { darken } from 'polished';
 
+const Container = styled.div`
+  height: calc(100vh - ${stylingConsts.menuHeight + topBarHeight}px);
+  display: flex;
+  position: fixed;
+  right: 0;
+  top: ${stylingConsts.menuHeight + topBarHeight}px;
+  left: 210px;
+  bottom: 0;
+  ${media.smallerThan1280px`
+    left: 80px;
+  `}
+`;
+
+const Inputs = styled.div`
+  flex: 1;
+  background: #fff;
+  overflow-x: auto;
+  overflow-y: auto;
+`;
+
 const Categories = styled.aside`
   padding: 24px;
   max-width: 300px;
+  flex: 0 0 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
 `;
 
 const DetectButton = styled(Button)`
@@ -59,6 +83,9 @@ const CategoryButton = styled(Button)`
     display: flex;
     justify-content: space-between;
   }
+  .buttonText {
+    white-space: normal !important;
+  }
 `;
 
 const CategoryInfoBox = styled.div`
@@ -67,6 +94,10 @@ const CategoryInfoBox = styled.div`
   font-color: ${colors.adminTextColor};
   border-radius: 3px;
   padding: 8px 20px;
+`;
+
+const CategoriesList = styled.div`
+  overflow-y: auto;
 `;
 
 const EditInsightsView = ({
@@ -108,8 +139,8 @@ const EditInsightsView = ({
   return (
     <>
       <TopBar />
-      <Categories>
-        <>
+      <Container>
+        <Categories>
           <DetectButton
             buttonStyle="white"
             locale={locale}
@@ -124,63 +155,69 @@ const EditInsightsView = ({
           >
             {formatMessage(messages.resetCategories)}
           </ResetButton>
-        </>
 
-        <Divider />
-        <CategoriesLabel>{formatMessage(messages.categories)}</CategoriesLabel>
-        <FormContainer>
-          <Input
-            type="text"
-            value={name}
-            onChange={onChangeName}
-            placeholder={formatMessage(messages.addCategory)}
-          />
-          <Button
-            locale={locale}
-            fontSize={`${fontSizes.xxxl}px`}
-            className="addButton"
-            padding="8px 10px"
-            onClick={handleCategorySubmit}
-            disabled={!name || loading}
-          >
-            +
-          </Button>
-        </FormContainer>
-        {errors && (
-          <Error apiErrors={errors['name']} fieldName="category_name" />
-        )}
-
-        {categories.length === 0 ? (
-          <CategoryInfoBox>
-            <p>
-              <FormattedMessage
-                {...messages.categoryInfoBox}
-                values={{
-                  bold: <b>{formatMessage(messages.categoryInfoBoxBold)}</b>,
-                }}
-              />
-            </p>
-          </CategoryInfoBox>
-        ) : (
-          categories.map((category) => (
-            <CategoryButton
-              key={category.id}
+          <Divider />
+          <CategoriesLabel>
+            {formatMessage(messages.categories)}
+          </CategoriesLabel>
+          <FormContainer>
+            <Input
+              type="text"
+              value={name}
+              onChange={onChangeName}
+              placeholder={formatMessage(messages.addCategory)}
+            />
+            <Button
               locale={locale}
-              bgColor={
-                category.id === selectedCategory
-                  ? darken(0.05, colors.lightGreyishBlue)
-                  : 'transparent'
-              }
-              textColor={colors.label}
-              textHoverColor={colors.adminTextColor}
-              bgHoverColor={darken(0.05, colors.lightGreyishBlue)}
-              onClick={selectCategory(category.id)}
+              fontSize={`${fontSizes.xxxl}px`}
+              className="addButton"
+              padding="8px 10px"
+              onClick={handleCategorySubmit}
+              disabled={!name || loading}
             >
-              <div>{category.attributes.name}</div>
-            </CategoryButton>
-          ))
-        )}
-      </Categories>
+              +
+            </Button>
+          </FormContainer>
+          {errors && (
+            <Error apiErrors={errors['name']} fieldName="category_name" />
+          )}
+          <CategoriesList>
+            {categories.length === 0 ? (
+              <CategoryInfoBox>
+                <p>
+                  <FormattedMessage
+                    {...messages.categoryInfoBox}
+                    values={{
+                      bold: (
+                        <b>{formatMessage(messages.categoryInfoBoxBold)}</b>
+                      ),
+                    }}
+                  />
+                </p>
+              </CategoryInfoBox>
+            ) : (
+              categories.map((category) => (
+                <CategoryButton
+                  key={category.id}
+                  locale={locale}
+                  bgColor={
+                    category.id === selectedCategory
+                      ? darken(0.05, colors.lightGreyishBlue)
+                      : 'transparent'
+                  }
+                  textColor={colors.label}
+                  textHoverColor={colors.adminTextColor}
+                  bgHoverColor={darken(0.05, colors.lightGreyishBlue)}
+                  onClick={selectCategory(category.id)}
+                >
+                  {category.attributes.name}
+                </CategoryButton>
+              ))
+            )}
+          </CategoriesList>
+        </Categories>
+        <Inputs />
+      </Container>
     </>
   );
 };

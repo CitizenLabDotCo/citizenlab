@@ -27,8 +27,11 @@ import { deleteInsightsView } from '../../../services/insightsViews';
 import useInsightsView from '../../../hooks/useInsightsView';
 import useLocale from 'hooks/useLocale';
 
+export const topBarHeight = 60;
+
 const Container = styled.div`
   display: flex;
+  height: ${topBarHeight}px;
   justify-content: space-between;
   align-items: center;
   padding: 12px 40px;
