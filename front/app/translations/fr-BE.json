@@ -2354,7 +2354,7 @@
   "app.containers.SignUp.noValidEmailError": "Cela ne ressemble pas à un courriel valide",
   "app.containers.SignUp.or": "Ou",
   "app.containers.SignUp.passwordLabel": "Mot de passe",
-  "app.containers.SignUp.passwordPlaceholder": "Entrez un mot de passe",
+  "app.containers.SignUp.passwordPlaceholder": "Enter a password",
   "app.containers.SignUp.privacyError": "Veuillez accepter la politique de confidentialité",
   "app.containers.SignUp.signUp2": "S'inscrire",
   "app.containers.SignUp.signUpButtonAltText": "Inscrivez-vous avec {loginMechanismName}",
