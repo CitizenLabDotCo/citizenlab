@@ -7,8 +7,7 @@ import Table from 'components/UI/Table';
 import ModerationRow from './ModerationRow';
 import Pagination from 'components/admin/Pagination/Pagination';
 import Checkbox from 'components/UI/Checkbox';
-import { Icon, IconTooltip, Select } from 'cl2-component-library';
-import Button from 'components/UI/Button';
+import { Icon, IconTooltip, Select, Button } from 'cl2-component-library';
 import Tabs from 'components/UI/Tabs';
 import { PageTitle } from 'components/admin/Section';
 import SelectType from './SelectType';
@@ -17,11 +16,13 @@ import SearchInput from 'components/UI/SearchInput';
 
 // hooks
 import useModerations from '../../hooks/useModerations';
+import useLocale from 'hooks/useLocale';
 
 // services
 import {
   updateModerationStatus,
   IModerationData,
+  TModerationStatuses,
   TModeratableTypes,
 } from '../../services/moderations';
 
@@ -50,8 +51,6 @@ const Container = styled.div`
 
 const PageTitleWrapper = styled.div`
   display: flex;
-  align-items: flex-end;
-  margin-bottom: 40px;
 `;
 
 const StyledPageTitle = styled(PageTitle)`
@@ -64,21 +63,14 @@ const StyledIconTooltip = styled(IconTooltip)`
   margin-bottom: 3px;
 `;
 
-const ActionBar = styled.div`
+const Filters = styled.div`
   min-height: 50px;
   display: flex;
   align-items: center;
   margin-bottom: 55px;
 `;
 
-const Buttons = styled.div`
-  display: flex;
-`;
-
-const MarkAsButton = styled(Button)`
-  margin-right: 20px;
-`;
-const RemoveFlagButton = styled(Button)``;
+const MarkAsButton = styled(Button)``;
 
 const StyledTabs = styled(Tabs)`
   margin-right: 20px;
@@ -175,16 +167,7 @@ interface Props {
 }
 
 const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
-  interface ITabNamesMap {
-    read: 'read';
-    unread: 'unread';
-    warnings: 'warnings';
-  }
-
-  type TTabName = ITabNamesMap[keyof ITabNamesMap];
-
-  const flaggedItemsCount = 5;
-  const tabs = [
+  const moderationStatuses = [
     {
       name: 'unread',
       label: intl.formatMessage(messages.unread),
@@ -192,12 +175,6 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
     {
       name: 'read',
       label: intl.formatMessage(messages.read),
-    },
-    {
-      name: 'warnings',
-      label: intl.formatMessage(messages.warnings, {
-        flaggedItemsCount,
-      }),
     },
   ];
 
@@ -239,13 +216,13 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
     projectIds: [],
     searchTerm: '',
   });
+  const locale = useLocale();
 
   const [moderationItems, setModerationItems] = useState(list);
   const [selectedRows, setSelectedRows] = useState<string[]>([]);
   const [processing, setProcessing] = useState(false);
   const [selectedTypes, setSelectedTypes] = useState<TModeratableTypes[]>([]);
   const [selectedProjectIds, setSelectedProjectIds] = useState<string[]>([]);
-  const [selectedTab, setSelectedTab] = useState<TTabName>('unread');
 
   const handleOnSelectAll = useCallback(
     (_event: React.ChangeEvent) => {
@@ -260,21 +237,12 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
     [moderationItems, selectedRows, processing]
   );
 
-  const handleOnTabChange = useCallback(
-    (tabName: TTabName) => {
-      setSelectedTab(tabName);
-
-      if (tabName === 'read' || tabName === 'unread') {
-        onModerationStatusChange(tabName);
-      }
-
+  const handleOnModerationStatusChange = useCallback(
+    (name: TModerationStatuses) => {
       trackEventByName(
-        {
-          read: tracks.viewedTabClicked,
-          unread: tracks.notViewedTabClicked,
-          warnings: tracks.warningsTabClicked,
-        }[tabName]
+        name === 'read' ? tracks.viewedTabClicked : tracks.notViewedTabClicked
       );
+      onModerationStatusChange(name);
     },
     [onModerationStatusChange]
   );
@@ -334,40 +302,6 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
     [selectedRows, processing]
   );
 
-  const removeFlags = () => {};
-  // const removeFlags = useCallback(
-  //   async (event: React.FormEvent) => {
-  //     if (
-  //       selectedRowsWithContentWarning.length > 0 &&
-  //       !isNilOrError(moderationItems) &&
-  //       moderationStatus &&
-  //       !processing
-  //     ) {
-  //       event.preventDefault();
-  //       trackEventByName(
-  //         removeFlagButtonClicked
-  //         { selectedItemsCount: selectedRows.length }
-  //       );
-  //       setProcessing(true);
-  //       const moderations = selectedRowsWithContentWarning.map((moderationId) =>
-  //         moderationItems.find((item) => item.id === moderationId)
-  //       ) as IModerationData[];
-  //       const updatedFlaggedStatus = 'approved';
-  //       const promises = moderations.map((moderation) =>
-  //         updateModerationFlaggedStatus(
-  //           moderation.id,
-  //           moderation.attributes.moderatable_type,
-  //           updatedFlaggedStatus
-  //         )
-  //       );
-  //       await Promise.all(promises);
-  //       setProcessing(false);
-  //       setSelectedRows([]);
-  //     }
-  //   },
-  //   [selectedRows, moderationItems, moderationStatus]
-  // );
-
   const markAs = useCallback(
     async (event: React.FormEvent) => {
       if (
@@ -416,17 +350,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
     }
   }, [list, processing]);
 
-  // const selectedRowsWithContentWarning = useMemo(() => {
-  //   if (!isNilOrError(list)) {
-  //     return list.filter((listItem) => listItem.attributes.content_warning);
-  //   }
-
-  //   return null;
-  // }, [list]);
-
-  const selectedRowsWithContentWarning = [1, 2, 3];
-
-  if (!isNilOrError(moderationItems)) {
+  if (!isNilOrError(moderationItems) && !isNilOrError(locale)) {
     return (
       <Container className={className}>
         <PageTitleWrapper>
@@ -440,13 +364,35 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
           />
         </PageTitleWrapper>
 
-        <ActionBar>
-          {selectedRows.length === 0 ? (
+        <Filters>
+          {selectedRows.length > 0 && (
+            <MarkAsButton
+              locale={locale}
+              icon="label"
+              buttonStyle="cl-blue"
+              processing={processing}
+              onClick={markAs}
+            >
+              {moderationStatus === 'unread' ? (
+                <FormattedMessage
+                  {...messages.markAsViewed}
+                  values={{ selectedItemsCount: selectedRows.length }}
+                />
+              ) : (
+                <FormattedMessage
+                  {...messages.markAsNotViewed}
+                  values={{ selectedItemsCount: selectedRows.length }}
+                />
+              )}
+            </MarkAsButton>
+          )}
+
+          {selectedRows.length === 0 && (
             <>
               <StyledTabs
-                items={tabs}
-                selectedValue={selectedTab}
-                onClick={handleOnTabChange}
+                items={moderationStatuses}
+                selectedValue={moderationStatus || 'unread'}
+                onClick={handleOnModerationStatusChange}
               />
               <SelectType
                 selectedTypes={selectedTypes}
@@ -457,46 +403,9 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
                 onChange={handleProjectIdsChange}
               />
             </>
-          ) : (
-            <Buttons>
-              {selectedRows.length > 0 && (
-                <MarkAsButton
-                  icon={
-                    moderationStatus === 'unread'
-                      ? 'eyeOpened-unfilled'
-                      : 'eyeClosed-unfilled'
-                  }
-                  buttonStyle="cl-blue"
-                  processing={processing}
-                  onClick={markAs}
-                >
-                  {moderationStatus === 'unread' ? (
-                    <FormattedMessage {...messages.markAsSeen} />
-                  ) : (
-                    <FormattedMessage {...messages.markAsNotSeen} />
-                  )}
-                </MarkAsButton>
-              )}
-
-              {selectedRowsWithContentWarning.length > 0 && (
-                <RemoveFlagButton
-                  icon="exclamation-trapezium-strikethrough"
-                  buttonStyle="cl-blue"
-                  processing={processing}
-                  onClick={removeFlags}
-                >
-                  <FormattedMessage
-                    {...messages.removeWarning}
-                    values={{
-                      numberOfItems: selectedRowsWithContentWarning.length,
-                    }}
-                  />
-                </RemoveFlagButton>
-              )}
-            </Buttons>
           )}
           <StyledSearchInput onChange={handleSearchTermChange} />
-        </ActionBar>
+        </Filters>
 
         <StyledTable>
           <thead>
