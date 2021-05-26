@@ -24,10 +24,6 @@ export interface IInsightsViews {
   data: IInsightsViewData[];
 }
 
-export interface IInsightsView {
-  data: IInsightsViewData;
-}
-
 interface IInsightsViewObject {
   scope_id: string;
   name: string;

@@ -231,4 +231,8 @@ export default defineMessages({
     id: 'app.errors.view_name_taken',
     defaultMessage: 'A view with this name already exists',
   },
+  category_name_taken: {
+    id: 'app.errors.category_name_taken',
+    defaultMessage: 'A category with this name already exists',
+  },
 });

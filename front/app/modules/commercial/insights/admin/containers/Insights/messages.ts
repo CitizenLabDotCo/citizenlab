@@ -84,4 +84,20 @@ export default defineMessages({
     id: 'app.containers.Admin.Reporting.Insights.createModalCancel',
     defaultMessage: 'Cancel',
   },
+  categories: {
+    id: 'app.containers.Admin.Reporting.Insights.Edit.categories',
+    defaultMessage: 'Categories',
+  },
+  detectCategories: {
+    id: 'app.containers.Admin.Reporting.Insights.Edit.detectCategories',
+    defaultMessage: 'Detect new categories',
+  },
+  resetCategories: {
+    id: 'app.containers.Admin.Reporting.Insights.Edit.resetCategories',
+    defaultMessage: 'Reset categories',
+  },
+  addCategory: {
+    id: 'app.containers.Admin.Reporting.Insights.Edit.addCategory',
+    defaultMessage: 'Add category',
+  },
 });
