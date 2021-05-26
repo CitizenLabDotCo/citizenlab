@@ -129,7 +129,7 @@ pt:
     gender:
       male: Homem
       female: Feminino
-      unspecified: Não especificado
+      unspecified: Outros
     domicile:
       outside: Em outro lugar
     education:
