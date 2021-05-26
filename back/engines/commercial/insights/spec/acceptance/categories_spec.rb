@@ -67,7 +67,7 @@ resource 'Categories' do
           data: {
             id: category.id,
             type: 'category',
-            attributes: { name: category.name, },
+            attributes: { name: category.name },
             relationships: {
               view: { data: { id: view_id, type: 'view' } }
             }
@@ -173,6 +173,28 @@ resource 'Categories' do
       example_request 'deletes a category' do
         expect(status).to eq(200)
         expect { category.reload }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+    end
+
+    include_examples 'unauthorized requests'
+  end
+
+  delete 'web_api/v1/insights/views/:view_id/categories' do
+    let(:view) { create(:view) }
+    let(:view_id) { view.id }
+    let!(:categories) { create_list(:category, 3, view: view) }
+
+    context 'when admin' do
+      before { admin_header_token }
+
+      example_request 'deletes all categories of a view' do
+        expect(status).to eq(200)
+        expect(view.categories).to be_empty
+      end
+
+      example 'returns 404 if the view does not exist', document: false do
+        do_request(view_id: 'bad-uuid')
+        expect(status).to eq(404)
       end
     end
 

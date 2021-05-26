@@ -5,7 +5,9 @@ Insights::Engine.routes.draw do
     namespace :v1 do
       scope '/insights' do
         resources :views do
-          resources :categories
+          resources :categories do
+            delete :index, on: :collection, action: :destroy_all
+          end
         end
       end
     end

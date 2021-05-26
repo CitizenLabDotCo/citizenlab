@@ -17,6 +17,11 @@ module Insights
 
     delegate :show?, :create?, :update?, :destroy?, to: :view_policy
 
+    def destroy_all?
+      # If you can destroy the whole view, you can destroy all categories.
+      view_policy.destroy?
+    end
+
     private
 
     def view_policy

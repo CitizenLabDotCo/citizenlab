@@ -33,11 +33,18 @@ module Insights
         head status
       end
 
+      def destroy_all
+        authorize(Insights::Category)
+        categories.destroy_all
+        status = categories.count.zero? ? :ok : 500
+        head status
+      end
+
       private
 
       def categories
         @categories ||= policy_scope(
-          View.includes(:categories).find(params.require(:view_id)).categories               
+          View.includes(:categories).find(params.require(:view_id)).categories
         )
       end
 
