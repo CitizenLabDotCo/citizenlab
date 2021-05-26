@@ -619,6 +619,18 @@
         }
       },
 
+      "blocking_profanity": {
+        "type": "object",
+        "title": "Block Profanity",
+        "description": "Prevent input with profanity in it from being posted (can be turned on/off from the platform)",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": false}
+        }
+      },
+
       "clustering": {
         "type": "object",
         "title": "Clustering",

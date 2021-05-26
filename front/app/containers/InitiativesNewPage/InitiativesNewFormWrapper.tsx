@@ -1,4 +1,5 @@
 import React from 'react';
+import { adopt } from 'react-adopt';
 
 // components
 import InitiativeForm, {
@@ -38,6 +39,16 @@ import {
 } from 'services/initiativeFiles';
 import { reportError } from 'utils/loggingUtils';
 
+// tracks
+import tracks from './tracks';
+import { trackEventByName } from 'utils/analytics';
+
+// resources
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetAppConfiguration';
+
 const StyledInitiativeForm = styled(InitiativeForm)`
   width: 100%;
   min-width: 530px;
@@ -54,7 +65,10 @@ interface InputProps {
   topics: ITopicData[];
 }
 
-interface DataProps {}
+interface DataProps {
+  authUser: GetAuthUserChildProps;
+  appConfiguration: GetAppConfigurationChildProps;
+}
 
 interface Props extends InputProps, DataProps {}
 
@@ -68,9 +82,11 @@ interface State extends FormValues {
   publishError: boolean;
   apiErrors: any;
   location_point_geojson?: Point;
+  titleProfanityError: boolean;
+  descriptionProfanityError: boolean;
 }
 
-export default class InitiativesNewFormWrapper extends React.PureComponent<
+export class InitiativesNewFormWrapper extends React.PureComponent<
   Props,
   State
 > {
@@ -101,6 +117,8 @@ export default class InitiativesNewFormWrapper extends React.PureComponent<
       apiErrors: null,
       position: props.location_description,
       location_point_geojson: props.location_point_geojson,
+      titleProfanityError: false,
+      descriptionProfanityError: false,
     };
   }
 
@@ -247,7 +265,6 @@ export default class InitiativesNewFormWrapper extends React.PureComponent<
       }
       this.setState({ saving: false });
     } catch (errorResponse) {
-      // const apiErrors = get(errorResponse, 'json.errors');
       // saving changes while working should have a minimal error feedback,
       // maybe in the saving indicator, since it's error-resistant, ie what wasn't
       // saved this time will be next time user leaves a field, or on publish call.
@@ -267,6 +284,7 @@ export default class InitiativesNewFormWrapper extends React.PureComponent<
       banner,
       publishing,
     } = this.state;
+    const { locale, appConfiguration, authUser } = this.props;
 
     // if we're already saving, do nothing.
     if (publishing) return;
@@ -330,35 +348,87 @@ export default class InitiativesNewFormWrapper extends React.PureComponent<
         search: `?new_initiative_id=${initiative.data.id}`,
       });
     } catch (errorResponse) {
+      this.setState({ publishing: false });
+
       const apiErrors = get(errorResponse, 'json.errors');
+
+      const profanityApiError = apiErrors.base.find(
+        (apiError) => apiError.error === 'includes_banned_words'
+      );
+
+      if (profanityApiError) {
+        const titleProfanityError = profanityApiError.blocked_words.some(
+          (blockedWord) => blockedWord.attribute === 'title_multiloc'
+        );
+        const descriptionProfanityError = profanityApiError.blocked_words.some(
+          (blockedWord) => blockedWord.attribute === 'body_multiloc'
+        );
+
+        if (titleProfanityError) {
+          trackEventByName(tracks.titleProfanityError.name, {
+            locale,
+            profaneMessage: changedValues.title_multiloc?.[locale],
+            proposalId: initiativeId,
+            location: 'InitiativesNewFormWrapper (citizen side)',
+            userId: !isNilOrError(authUser) ? authUser.id : null,
+            host: !isNilOrError(appConfiguration)
+              ? appConfiguration.attributes.host
+              : null,
+          });
+
+          this.setState({
+            titleProfanityError,
+          });
+        }
+
+        if (descriptionProfanityError) {
+          trackEventByName(tracks.descriptionProfanityError.name, {
+            locale,
+            profaneMessage: changedValues.body_multiloc?.[locale],
+            proposalId: initiativeId,
+            location: 'InitiativesNewFormWrapper (citizen side)',
+            userId: !isNilOrError(authUser) ? authUser.id : null,
+            host: !isNilOrError(appConfiguration)
+              ? appConfiguration.attributes.host
+              : null,
+          });
+          this.setState({
+            descriptionProfanityError,
+          });
+        }
+      }
+
       this.setState((state) => ({
         apiErrors: { ...state.apiErrors, ...apiErrors },
         publishError: true,
       }));
-      setTimeout(() => {
-        this.setState({ publishError: false });
-      }, 5000);
     }
   };
 
   onChangeTitle = (title_multiloc: Multiloc) => {
-    this.setState({ title_multiloc });
+    this.setState({ title_multiloc, titleProfanityError: false });
   };
+
   onChangeBody = (body_multiloc: Multiloc) => {
-    this.setState({ body_multiloc });
+    this.setState({ body_multiloc, descriptionProfanityError: false });
   };
+
   onChangeTopics = (topic_ids: string[]) => {
     this.setState({ topic_ids });
   };
+
   onChangePosition = (position: string) => {
     this.setState({ position, location_point_geojson: undefined });
   };
+
   onChangeBanner = (newValue: UploadFile | null) => {
     this.setState({ banner: newValue, hasBannerChanged: true });
   };
+
   onChangeImage = (newValue: UploadFile | null) => {
     this.setState({ image: newValue, hasImageChanged: true });
   };
+
   onAddFile = (file: UploadFile) => {
     const { initiativeId } = this.state;
     if (initiativeId) {
@@ -385,6 +455,7 @@ export default class InitiativesNewFormWrapper extends React.PureComponent<
         });
     }
   };
+
   onRemoveFile = (fileToRemove: UploadFile) => {
     const { initiativeId } = this.state;
 
@@ -423,6 +494,8 @@ export default class InitiativesNewFormWrapper extends React.PureComponent<
       initiativeId,
       hasBannerChanged,
       hasImageChanged,
+      titleProfanityError,
+      descriptionProfanityError,
       ...otherProps
     } = this.state;
     const { locale, topics } = this.props;
@@ -442,7 +515,22 @@ export default class InitiativesNewFormWrapper extends React.PureComponent<
         onAddFile={this.onAddFile}
         onRemoveFile={this.onRemoveFile}
         topics={topics}
+        titleProfanityError={titleProfanityError}
+        descriptionProfanityError={descriptionProfanityError}
       />
     );
   }
 }
+
+const Data = adopt<DataProps, InputProps>({
+  appConfiguration: <GetAppConfiguration />,
+  authUser: <GetAuthUser />,
+});
+
+export default (inputProps: InputProps) => (
+  <Data {...inputProps}>
+    {(dataProps) => (
+      <InitiativesNewFormWrapper {...inputProps} {...dataProps} />
+    )}
+  </Data>
+);

@@ -116,20 +116,4 @@ export default defineMessages({
     id: 'app.containers.AccessibilityStatement.responsiveness',
     defaultMessage: 'We aim to respond to feedback within 1-2 business days.',
   },
-  informationPageName: {
-    id: 'app.containers.AccessibilityStatement.informationPageName',
-    defaultMessage: 'Information Page',
-  },
-  'terms-and-conditionsPageName': {
-    id: 'app.containers.AccessibilityStatement.terms-and-conditionsPageName',
-    defaultMessage: 'Terms & conditions',
-  },
-  'privacy-policyPageName': {
-    id: 'app.containers.AccessibilityStatement.privacy-policyPageName',
-    defaultMessage: 'Privacy Policy',
-  },
-  'accessibility-statementPageName': {
-    id: 'app.containers.AccessibilityStatement.accessibility-statementPageName',
-    defaultMessage: 'Accessibility statement',
-  },
 });
