@@ -9,7 +9,7 @@ class WebApi::V1::NotificationsController < ApplicationController
   def index
     @notifications = policy_scope(Notification)
       .order(created_at: :desc)
-      .includes(:recipient, :initiating_user, :post, :post_status, :comment, :project, :phase, :official_feedback, :spam_report, :invite)
+      .includes(:recipient, :initiating_user, :post, :post_status, :comment, :project, :phase, :official_feedback, :spam_report, :invite) # TODO add flag and flaggable
 
     if params[:only_unread]
       @notifications = @notifications.where(read_at: nil)
@@ -22,7 +22,7 @@ class WebApi::V1::NotificationsController < ApplicationController
       @notifications,
       WebApi::V1::Notifications::NotificationSerializer,
       params: fastjson_params,
-      serializers: NotificationToSerializerMapper.map
+      serializers: NotificationToSerializerMapper.new.map
       )
   end
 
@@ -36,7 +36,7 @@ class WebApi::V1::NotificationsController < ApplicationController
       render json: WebApi::V1::Notifications::NotificationSerializer.new(
         Notification.find(ids),
         params: fastjson_params,
-        serializers: NotificationToSerializerMapper.map,
+        serializers: NotificationToSerializerMapper.new.map,
         ).serialized_json
     else
       head 500
@@ -47,7 +47,7 @@ class WebApi::V1::NotificationsController < ApplicationController
     render json: WebApi::V1::Notifications::NotificationSerializer.new(
       @notification,
       params: fastjson_params,
-      serializers: NotificationToSerializerMapper.map,
+      serializers: NotificationToSerializerMapper.new.map,
       ).serialized_json
   end
 
@@ -56,7 +56,7 @@ class WebApi::V1::NotificationsController < ApplicationController
       render json: WebApi::V1::Notifications::NotificationSerializer.new(
         @notification,
         params: fastjson_params,
-        serializers: NotificationToSerializerMapper.map,
+        serializers: NotificationToSerializerMapper.new.map,
         ).serialized_json, status: :ok
     else
       head 500

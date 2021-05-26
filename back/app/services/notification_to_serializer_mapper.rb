@@ -36,3 +36,6 @@ class NotificationToSerializerMapper
     MAPPING
   end
 end
+
+::NotificationToSerializerMapper.prepend_if_ee('IdeaAssignment::Patches::NotificationToSerializerMapper')
+::NotificationToSerializerMapper.prepend_if_ee('FlagInappropriateContent::Patches::NotificationToSerializerMapper')

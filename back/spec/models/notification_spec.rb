@@ -18,7 +18,7 @@ RSpec.describe Notification, type: :model do
     end
 
     it 'are valid' do
-      NotificationToSerializerMapper.map.keys.each do |notification_subclass|
+      NotificationToSerializerMapper.new.map.keys.each do |notification_subclass|
         if notification_subclass.descendants.empty?
           expect(build(notification_subclass.model_name.element.to_sym)).to be_valid
         end
