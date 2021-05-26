@@ -93,7 +93,7 @@ hu:
       "status_change_of_your_idea": Status change of your idea - all users
       "status_change_of_your_initiative": Status change of your proposal - all users
       "threshold_reached_for_admin": Proposal reached the voting threshold - admins
-      "welcome": New user - admins
+      "welcome": Welcome email to new users - all users
       "admin_digest": Weekly overview - admins
       "moderator_digest": Weekly overview - project managers
       "assignee_digest": Weekly overview of assigned ideas - admins and project managers
