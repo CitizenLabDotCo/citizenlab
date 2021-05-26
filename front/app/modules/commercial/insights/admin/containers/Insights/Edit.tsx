@@ -4,7 +4,7 @@ import { Button, Input } from 'cl2-component-library';
 import { isNilOrError } from 'utils/helperUtils';
 import { Divider } from 'semantic-ui-react';
 
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import useLocale from 'hooks/useLocale';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
@@ -17,11 +17,13 @@ import useInsightsCategories from '../../../hooks/useInsightsCategories';
 import { withRouter, WithRouterProps } from 'react-router';
 
 import { addInsightsCategory } from '../../../services/insightsCategories';
+import { darken } from 'polished';
 
 const Categories = styled.aside`
   padding: 24px;
   max-width: 300px;
 `;
+
 const DetectButton = styled(Button)`
   margin-bottom: 8px;
 `;
@@ -38,16 +40,33 @@ const CategoriesLabel = styled.p`
   padding: 16px;
 `;
 
-const InputContainer = styled.div`
+const FormContainer = styled.form`
   display: flex;
   align-items: center;
+  margin-bottom: 28px;
   input {
     padding: 10px;
     font-size: ${fontSizes.small}px;
   }
-  .categoryButton {
+  .addButton {
     margin-left: 4px;
   }
+`;
+
+const CategoryButton = styled(Button)`
+  display: block;
+  .button {
+    display: flex;
+    justify-content: space-between;
+  }
+`;
+
+const CategoryInfoBox = styled.div`
+  background-color: ${colors.clBlueLightest};
+  font-size: ${fontSizes.base};
+  font-color: ${colors.adminTextColor};
+  border-radius: 3px;
+  padding: 8px 20px;
 `;
 
 const EditInsightsView = ({
@@ -59,6 +78,7 @@ const EditInsightsView = ({
   const [errors, setErrors] = useState<CLErrors | undefined>();
   const categories = useInsightsCategories(viewId);
   const [name, setName] = useState<string | null>();
+  const [selectedCategory, setSelectedCategory] = useState('');
 
   const onChangeName = (value: string) => {
     setName(value);
@@ -69,7 +89,7 @@ const EditInsightsView = ({
     return null;
   }
 
-  const handleSubmit = async () => {
+  const handleCategorySubmit = async () => {
     if (name) {
       setLoading(true);
       try {
@@ -81,6 +101,9 @@ const EditInsightsView = ({
       setName('');
     }
   };
+
+  const selectCategory = (categoryId: string) => () =>
+    setSelectedCategory(categoryId);
 
   return (
     <>
@@ -105,7 +128,7 @@ const EditInsightsView = ({
 
         <Divider />
         <CategoriesLabel>{formatMessage(messages.categories)}</CategoriesLabel>
-        <InputContainer>
+        <FormContainer>
           <Input
             type="text"
             value={name}
@@ -115,20 +138,48 @@ const EditInsightsView = ({
           <Button
             locale={locale}
             fontSize={`${fontSizes.xxxl}px`}
-            className="categoryButton"
+            className="addButton"
             padding="8px 10px"
-            onClick={handleSubmit}
+            onClick={handleCategorySubmit}
             disabled={!name || loading}
           >
             +
           </Button>
-        </InputContainer>
+        </FormContainer>
         {errors && (
           <Error apiErrors={errors['name']} fieldName="category_name" />
         )}
-        {categories.map((category) => (
-          <div id={category.id}>{category.attributes.name}</div>
-        ))}
+
+        {categories.length === 0 ? (
+          <CategoryInfoBox>
+            <p>
+              <FormattedMessage
+                {...messages.categoryInfoBox}
+                values={{
+                  bold: <b>{formatMessage(messages.categoryInfoBoxBold)}</b>,
+                }}
+              ></FormattedMessage>
+            </p>
+          </CategoryInfoBox>
+        ) : (
+          categories.map((category) => (
+            <CategoryButton
+              id={category.id}
+              locale={locale}
+              bgColor={
+                category.id === selectedCategory
+                  ? darken(0.05, colors.lightGreyishBlue)
+                  : 'transparent'
+              }
+              textColor={colors.label}
+              textHoverColor={colors.adminTextColor}
+              bgHoverColor={darken(0.05, colors.lightGreyishBlue)}
+              onClick={selectCategory(category.id)}
+            >
+              <div>{category.attributes.name}</div>
+            </CategoryButton>
+          ))
+        )}
       </Categories>
     </>
   );
