@@ -2,7 +2,6 @@
 import styled, { css } from 'styled-components';
 import { colors, defaultStyles } from 'utils/styleUtils';
 import { tabBorderSize } from './tabsStyleConstants';
-import { lighten } from 'polished';
 
 // components
 import Tab from './Tab';

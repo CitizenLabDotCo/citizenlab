@@ -4,7 +4,6 @@ import { withRouter, WithRouterProps } from 'react-router';
 // styles
 import { colors, fontSizes } from 'utils/styleUtils';
 import styled from 'styled-components';
-import { lighten } from 'polished';
 
 // components
 import { Dropdown, DropdownListItem, Button } from 'cl2-component-library';
