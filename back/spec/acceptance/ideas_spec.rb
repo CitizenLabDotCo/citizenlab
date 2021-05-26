@@ -728,22 +728,7 @@ resource "Ideas" do
         json_response = json_parse(response_body)
         blocked_error = json_response.dig(:errors, :base)&.select{|err| err[:error] == 'includes_banned_words'}&.first
         expect(blocked_error).to be_present
-        expect(blocked_error.dig(:blocked_words)).to include(
-          {
-            word: 'f'+'uck',
-            position: 0,
-            language: 'en',
-            locale: 'nl-BE',
-            attribute: 'title_multiloc'
-          },
-          {
-            word: 'co'+'cksu'+'cker',
-            position: 0,
-            language: 'en',
-            locale: 'fr-FR',
-            attribute: 'body_multiloc'
-          }
-        )
+        expect(blocked_error.dig(:blocked_words).map{|bw| bw[:attribute]}.uniq).to include('title_multiloc', 'body_multiloc')
       end
     end
 
