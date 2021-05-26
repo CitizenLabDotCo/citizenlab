@@ -33,7 +33,8 @@ const Container = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 12px 40px;
-  background-color: ${lighten('0.05', colors.adminBackground)};
+  // TODO : set bg color in component library
+  background: #fbfbfb;
 `;
 
 const TitleContainer = styled.div`
@@ -43,7 +44,7 @@ const TitleContainer = styled.div`
   h1 {
     margin: 0;
     margin-right: 30px;
-    fontsize: ${fontSizes.xl};
+    font-size: ${fontSizes.xl}px;
   }
 `;
 

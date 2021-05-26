@@ -4,11 +4,7 @@ import TopBar from '../../components/TopBar';
 import { withRouter } from 'react-router';
 
 const DetailsInsightsView = () => {
-  return (
-    <>
-      <TopBar />
-    </>
-  );
+  return <TopBar />;
 };
 
 export default withRouter(DetailsInsightsView);

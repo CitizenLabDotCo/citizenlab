@@ -12,7 +12,8 @@ const NavigationTabs = styled.nav`
   ${({ theme }) => css`
     position: fixed;
     width: 100%;
-    background-color: ${lighten('0.05', colors.adminBackground)};
+    // TODO : set bg color in component library
+    background: #fbfbfb;
     z-index: 1000;
     box-shadow: ${defaultStyles.boxShadow};
     border-radius: ${theme.borderRadius} ${theme.borderRadius} 0 0;
