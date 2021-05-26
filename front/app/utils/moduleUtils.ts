@@ -321,9 +321,6 @@ export type OutletsPropertyMap = {
     latestAppConfigStyleSettings?: IAppConfigurationStyle | null;
     theme: any;
   };
-  'app.containers.Admin.settings.general.form': {
-    onSettingChange: (settingName: string, settingValue: any) => void;
-  };
 };
 
 type Outlet<Props> = FunctionComponent<Props> | FunctionComponent<Props>[];
