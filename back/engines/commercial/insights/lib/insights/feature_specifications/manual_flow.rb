@@ -12,11 +12,19 @@ module Insights
       end
 
       def self.feature_title
-        'Manual reporting flow: from inputs to insights'
+        'Manual insights flow'
       end
 
       def self.feature_description
-        'Manual reporting flow: from inputs to insights'
+        '[WARNING: experimental - do not enable this feature on production platforms] Manual reporting flow: from inputs to insights'
+      end
+
+      def self.allowed_by_default
+        false
+      end
+
+      def self.enabled_by_default
+        false
       end
     end
   end

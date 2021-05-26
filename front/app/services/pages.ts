@@ -9,6 +9,7 @@ export type TLegalPage =
   | 'terms-and-conditions'
   | 'privacy-policy'
   | 'cookie-policy'
+  | 'faq'
   | 'accessibility-statement';
 
 export const LEGAL_PAGES: TLegalPage[] = [
@@ -17,12 +18,14 @@ export const LEGAL_PAGES: TLegalPage[] = [
   'privacy-policy',
   'cookie-policy',
   'accessibility-statement',
+  'faq',
 ];
 
 export const LEGAL_PAGES_ALLOWED_TO_EDIT: TLegalPage[] = [
   'information',
   'terms-and-conditions',
   'privacy-policy',
+  'faq',
 ];
 
 export interface IPageData {
@@ -38,6 +41,7 @@ export interface IPageData {
       | 'terms-and-conditions'
       | 'accessibility-statement'
       | 'homepage-info'
+      | 'faq'
       | 'initiatives'
       | 'initiatives-success-1'
       | 'initiatives-success-2'

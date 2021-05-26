@@ -4,12 +4,6 @@ import styled from 'styled-components';
 const SurveyContainer = styled.div`
   display: flex;
   justify-content: center;
-  .smcx-widget {
-    max-width: none;
-  }
-  .smcx-embed > .smcx-iframe-container {
-    max-width: none;
-  }
 `;
 
 type Props = {
