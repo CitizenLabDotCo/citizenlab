@@ -158,13 +158,13 @@ const EditInsightsView = ({
                 values={{
                   bold: <b>{formatMessage(messages.categoryInfoBoxBold)}</b>,
                 }}
-              ></FormattedMessage>
+              />
             </p>
           </CategoryInfoBox>
         ) : (
           categories.map((category) => (
             <CategoryButton
-              id={category.id}
+              key={category.id}
               locale={locale}
               bgColor={
                 category.id === selectedCategory

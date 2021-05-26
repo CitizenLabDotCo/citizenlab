@@ -53,7 +53,7 @@ export function addInsightsCategory(insightsViewId: string, name: string) {
   return streams.add<IInsightsCategories>(
     `${API_PATH}/${getInsightsCategoriesEndpoint(insightsViewId)}`,
     {
-      category: { name: name },
+      category: { name },
     }
   );
 }
