@@ -2632,6 +2632,7 @@
   "app.errors.unknown_locale": "Språket {value} funnet I råd {row} er ikke et konfigurert språk",
   "app.errors.unparseable_excel": "Den valgte Excel-filen kunne ikke behandles.",
   "app.errors.view_name_taken": "A view with this name already exists",
+  "app.modules.commercial.flag_inappropriate_content.admin.components.warningText": "",
   "app.modules.granular_permissions.admin.components.projectPermissionsTab": "Access rights",
   "app.modules.id_cow.cancel": "Avbryt",
   "app.modules.id_cow.emptyFieldError": "Dette kan ikke være tomt",

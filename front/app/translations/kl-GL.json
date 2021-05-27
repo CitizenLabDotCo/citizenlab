@@ -2632,6 +2632,7 @@
   "app.errors.unknown_locale": "Oqaatsit {value} titarnerni quleriiaani nassaarineqartut {row} atortussanngortinneqarsimanngillat",
   "app.errors.unparseable_excel": "Excel-fil toqqagaq suliarineqarsinnaanngilaq",
   "app.errors.view_name_taken": "A view with this name already exists",
+  "app.modules.commercial.flag_inappropriate_content.admin.components.warningText": "",
   "app.modules.granular_permissions.admin.components.projectPermissionsTab": "Access rights",
   "app.modules.id_cow.cancel": "Atorunnaarsiguk",
   "app.modules.id_cow.emptyFieldError": "Imaqanngissinnaanngilaq",

@@ -2632,6 +2632,7 @@
   "app.errors.unknown_locale": "El idioma {value} en la fila {row} no es un idioma configurado",
   "app.errors.unparseable_excel": "El archivo de Excel seleccionado podría no ser procesado.",
   "app.errors.view_name_taken": "Ya existe una vista con este nombre",
+  "app.modules.commercial.flag_inappropriate_content.admin.components.warningText": "",
   "app.modules.granular_permissions.admin.components.projectPermissionsTab": "Derechos de acceso",
   "app.modules.id_cow.cancel": "Cancelar",
   "app.modules.id_cow.emptyFieldError": "Esto no puede estar vacío",
