@@ -58,6 +58,9 @@ const InsightsContainerHeader = styled.div`
   display: flex;
   margin-bottom: 60px;
   justify-content: space-between;
+  p {
+    color: ${colors.label};
+  }
   > div:first-child {
     width: 50%;
   }
@@ -75,6 +78,7 @@ const InsightsListItem = styled.div`
   }
   p {
     font-size: ${fontSizes.xs}px;
+    color: ${colors.label};
   }
   .buttons {
     display: flex;

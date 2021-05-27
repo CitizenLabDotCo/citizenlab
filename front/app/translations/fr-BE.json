@@ -713,11 +713,8 @@
   "app.containers.Admin.Campaigns.noAccess": "Nous sommes désolés, mais il semble que vous n’ayez pas accès à la section e-mails",
   "app.containers.Admin.Campaigns.tabAutomated": "Automatisés",
   "app.containers.Admin.Campaigns.tabCustom": "Personnalisés",
-<<<<<<< HEAD
   "app.containers.Admin.Insights.Edit.categoryInfoBox": "",
   "app.containers.Admin.Insights.Edit.categoryInfoBoxBold": "",
-=======
->>>>>>> master
   "app.containers.Admin.Insights.Reports.budgeting": "budget participatif",
   "app.containers.Admin.Insights.Reports.comments": "Commentaires",
   "app.containers.Admin.Insights.Reports.commentsByTimeTitle": "Commentaires",
@@ -881,15 +878,11 @@
   "app.containers.Admin.Processing.tags": "tags",
   "app.containers.Admin.Processing.title": "titre",
   "app.containers.Admin.Processing.upAndDownArrow": "Les flèches haut et bas vous permettent de naviguer parmi les contributions de la liste",
-<<<<<<< HEAD
   "app.containers.Admin.Reporting.Insights.Edit.addCategory": "",
   "app.containers.Admin.Reporting.Insights.Edit.categories": "",
   "app.containers.Admin.Reporting.Insights.Edit.detectCategories": "",
   "app.containers.Admin.Reporting.Insights.Edit.resetCategories": "",
   "app.containers.Admin.Reporting.Insights.createModalCancel": "Cancel",
-=======
-  "app.containers.Admin.Reporting.Insights.createModalCancel": "Annuler",
->>>>>>> master
   "app.containers.Admin.Reporting.Insights.createModalDescription": "You’re about to have your first insights on what participants are talking about. These insights will be saved so you can continue working on them later.",
   "app.containers.Admin.Reporting.Insights.createModalNameLabel": "Nom",
   "app.containers.Admin.Reporting.Insights.createModalProjectScopeLabel": "Projet",

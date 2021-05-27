@@ -713,11 +713,8 @@
   "app.containers.Admin.Campaigns.noAccess": "Het spijt ons, maar het lijkt alsof je geen toegang tot de e-mails sectie hebt",
   "app.containers.Admin.Campaigns.tabAutomated": "Automatisch",
   "app.containers.Admin.Campaigns.tabCustom": "Eigen",
-<<<<<<< HEAD
   "app.containers.Admin.Insights.Edit.categoryInfoBox": "",
   "app.containers.Admin.Insights.Edit.categoryInfoBoxBold": "",
-=======
->>>>>>> master
   "app.containers.Admin.Insights.Reports.budgeting": "burgerbegroting",
   "app.containers.Admin.Insights.Reports.comments": "Reacties",
   "app.containers.Admin.Insights.Reports.commentsByTimeTitle": "Reacties",

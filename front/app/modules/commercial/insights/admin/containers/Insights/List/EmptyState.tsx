@@ -35,6 +35,7 @@ const Title = styled.h1`
 const Description = styled.p`
   padding-top: 10px;
   font-size: ${fontSizes.base}px;
+  color: ${colors.label};
 `;
 
 const Image = styled.img`
