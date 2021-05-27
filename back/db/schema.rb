@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_26_161709) do
+ActiveRecord::Schema.define(version: 2021_05_27_090412) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -489,16 +489,14 @@ ActiveRecord::Schema.define(version: 2021_05_26_161709) do
   end
 
   create_table "insights_category_assignments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "view_id", null: false
     t.uuid "category_id", null: false
     t.string "input_type", null: false
     t.uuid "input_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["category_id", "input_id", "input_type"], name: "index_single_category_assignment", unique: true
+    t.index ["category_id"], name: "index_insights_category_assignments_on_category_id"
     t.index ["input_type", "input_id"], name: "index_insights_category_assignments_on_input_type_and_input_id"
-    t.index ["view_id", "category_id", "input_id", "input_type"], name: "index_single_category_assignment", unique: true
-    t.index ["view_id", "category_id"], name: "index_insights_category_assignments_on_view_id_and_category_id", unique: true
-    t.index ["view_id"], name: "index_insights_category_assignments_on_view_id", unique: true
   end
 
   create_table "insights_views", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1111,7 +1109,6 @@ ActiveRecord::Schema.define(version: 2021_05_26_161709) do
   add_foreign_key "initiatives_topics", "topics"
   add_foreign_key "insights_categories", "insights_views", column: "view_id"
   add_foreign_key "insights_category_assignments", "insights_categories", column: "category_id"
-  add_foreign_key "insights_category_assignments", "insights_views", column: "view_id"
   add_foreign_key "insights_views", "projects", column: "scope_id"
   add_foreign_key "invites", "users", column: "invitee_id"
   add_foreign_key "invites", "users", column: "inviter_id"

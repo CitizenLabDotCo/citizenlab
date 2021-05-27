@@ -2,7 +2,6 @@
 
 FactoryBot.define do
   factory :category_assignment, class: 'Insights::CategoryAssignment' do
-    view factory: :view
     category factory: :category
     input factory: :idea
   end
