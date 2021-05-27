@@ -4,8 +4,8 @@ import { omitBy, isNil, isEmpty } from 'lodash-es';
 
 // components
 import ModerationContentCell from './ModerationContentCell';
-import InappropriateContentWarning from './InappropriateContentWarning';
 import Checkbox from 'components/UI/Checkbox';
+import Outlet from 'components/Outlet';
 import { Icon } from 'cl2-component-library';
 import Tippy from '@tippyjs/react';
 import Link from 'utils/cl-router/Link';
@@ -214,7 +214,10 @@ const ModerationRow = memo<Props & InjectedIntlProps>(
             contentTitle={!isEmpty(contentTitle) ? contentTitle : null}
             contentBody={contentBody}
           />
-          {inappropriateContentFlag && <InappropriateContentWarning />}
+          <Outlet
+            id="app.module.moderation.admin.containers.ModerationRow.content"
+            inappropriateContentFlag={inappropriateContentFlag}
+          />
         </td>
         <td>
           <Tippy
