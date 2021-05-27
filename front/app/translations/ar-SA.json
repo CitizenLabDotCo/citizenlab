@@ -2632,6 +2632,7 @@
   "app.errors.unknown_locale": "اللغة {value} التي تم العثور عليها في الصف {row} هي لغة لم تتم تهيئتها",
   "app.errors.unparseable_excel": "تعذرت معالجة ملف إكسل المحدد.",
   "app.errors.view_name_taken": "A view with this name already exists",
+  "app.modules.commercial.flag_inappropriate_content.admin.components.warningText": "",
   "app.modules.granular_permissions.admin.components.projectPermissionsTab": "حقوق الوصول",
   "app.modules.id_cow.cancel": "إلغاء",
   "app.modules.id_cow.emptyFieldError": "لا يمكن أن يكون هذا الحقل فارغًا.",

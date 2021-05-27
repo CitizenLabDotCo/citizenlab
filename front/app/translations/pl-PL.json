@@ -2632,6 +2632,7 @@
   "app.errors.unknown_locale": "Język {value} znajdujący się w wierszu {row} nie jest skonfigurowany",
   "app.errors.unparseable_excel": "Wybrany plik Excela nie mógł zostać przetworzony.",
   "app.errors.view_name_taken": "Widok o tej nazwie już istnieje",
+  "app.modules.commercial.flag_inappropriate_content.admin.components.warningText": "",
   "app.modules.granular_permissions.admin.components.projectPermissionsTab": "Uprawnienia",
   "app.modules.id_cow.cancel": "Anuluj",
   "app.modules.id_cow.emptyFieldError": "To pole nie może być puste.",

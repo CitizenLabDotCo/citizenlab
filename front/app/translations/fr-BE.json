@@ -2632,6 +2632,7 @@
   "app.errors.unknown_locale": "La langue {value} trouvée ligne {row} ne fait pas partie des langues paramétrées",
   "app.errors.unparseable_excel": "Le fichier Excel sélectionné n'a pas pu être traité.",
   "app.errors.view_name_taken": "A view with this name already exists",
+  "app.modules.commercial.flag_inappropriate_content.admin.components.warningText": "",
   "app.modules.granular_permissions.admin.components.projectPermissionsTab": "Droits d'accès",
   "app.modules.id_cow.cancel": "Annuler",
   "app.modules.id_cow.emptyFieldError": "Ce champ ne peut pas être vide.",

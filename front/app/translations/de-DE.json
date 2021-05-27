@@ -2632,6 +2632,7 @@
   "app.errors.unknown_locale": "Die Sprache {value} in der Zeile {row} ist derzeit nicht konfiguriert.",
   "app.errors.unparseable_excel": "Die ausgewählte Datei konnte nicht verarbeitet werden.",
   "app.errors.view_name_taken": "A view with this name already exists",
+  "app.modules.commercial.flag_inappropriate_content.admin.components.warningText": "",
   "app.modules.granular_permissions.admin.components.projectPermissionsTab": "Access rights",
   "app.modules.id_cow.cancel": "Abbrechen",
   "app.modules.id_cow.emptyFieldError": "Dies kann nicht leer sein",
