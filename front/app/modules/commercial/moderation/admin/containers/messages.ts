@@ -123,14 +123,4 @@ export default defineMessages({
     id: 'app.containers.Admin.Moderation.settingsSavingError',
     defaultMessage: "Couldn't save. Try changing the setting again.",
   },
-  warningText: {
-    id: 'app.containers.Admin.Moderation.warningText',
-    defaultMessage:
-      'Warning: possible inappropriate or offensive content detected',
-  },
-  removeWarning: {
-    id: 'app.containers.Admin.Moderation.removeWarning',
-    defaultMessage:
-      'Remove {numberOfItems, plural, one {warning} other {# warnings}}',
-  },
 });
