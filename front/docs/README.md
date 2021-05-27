@@ -1,5 +1,10 @@
 # Changelog
 
+## 2021-05-27
+
+### Fixed
+- Project access rights management are now visible again.
+
 ## 2021-05-21
 
 ### Added
