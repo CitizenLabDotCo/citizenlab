@@ -17,7 +17,7 @@ module FlagInappropriateContent
         self.recipient_ids.map do |recipient_id|
           self.new(
             recipient_id: recipient_id,
-            initiating_user: activity.user,
+            initiating_user_id: activity.user_id,
             inappropriate_content_flag: flag
           )
         end
