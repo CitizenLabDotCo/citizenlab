@@ -324,6 +324,9 @@ export type OutletsPropertyMap = {
   'app.containers.Admin.settings.general.form': {
     onSettingChange: (settingName: string, settingValue: any) => void;
   };
+  'app.module.moderation.admin.containers.ModerationRow.content': {
+    inappropriateContentFlag: boolean;
+  };
 };
 
 type Outlet<Props> = FunctionComponent<Props> | FunctionComponent<Props>[];
