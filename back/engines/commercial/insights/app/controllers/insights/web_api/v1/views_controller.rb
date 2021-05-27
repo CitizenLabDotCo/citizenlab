@@ -49,7 +49,7 @@ module Insights
         options = {
           include: [:scope],
           params: fastjson_params,
-          fields: { project: [:title_multiloc] }
+          fields: { project: [:title_multiloc, :slug] }
         }
 
         Insights::WebApi::V1::ViewSerializer.new(views, options).serialized_json
