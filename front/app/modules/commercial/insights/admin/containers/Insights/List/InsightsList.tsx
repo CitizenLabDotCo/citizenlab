@@ -4,7 +4,7 @@ import { isNilOrError } from 'utils/helperUtils';
 // intl
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
-import messages from './messages';
+import messages from '../messages';
 import useLocale from 'hooks/useLocale';
 
 // components
@@ -21,7 +21,7 @@ import { darken } from 'polished';
 import {
   IInsightsViewData,
   deleteInsightsView,
-} from '../../../services/insightsViews';
+} from '../../../../services/insightsViews';
 
 const StyledDescription = styled.p`
   font-size: ${fontSizes.base}px;
@@ -155,7 +155,12 @@ const InsightsList: React.FC<InsightsList & InjectedIntlProps> = ({
                   >
                     {formatMessage(messages.listDelete)}
                   </Button>
-                  <Button locale={locale} buttonStyle="secondary" icon="edit">
+                  <Button
+                    locale={locale}
+                    buttonStyle="secondary"
+                    icon="edit"
+                    linkTo={`/admin/insights/${view.id}`}
+                  >
                     {formatMessage(messages.listManage)}
                   </Button>
                 </div>
