@@ -14,6 +14,7 @@ import { PageTitle } from 'components/admin/Section';
 import SelectType from './SelectType';
 import SelectProject from './SelectProject';
 import SearchInput from 'components/UI/SearchInput';
+import Outlet from 'components/Outlet';
 
 // hooks
 import useModerations from '../../hooks/useModerations';
@@ -478,21 +479,14 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
                 </MarkAsButton>
               )}
 
-              {selectedRowsWithContentWarning.length > 0 && (
-                <RemoveFlagButton
-                  icon="exclamation-trapezium-strikethrough"
-                  buttonStyle="cl-blue"
-                  processing={processing}
-                  onClick={removeFlags}
-                >
-                  <FormattedMessage
-                    {...messages.removeWarning}
-                    values={{
-                      numberOfItems: selectedRowsWithContentWarning.length,
-                    }}
-                  />
-                </RemoveFlagButton>
-              )}
+              <Outlet
+                id="app.module.moderation.admin.containers.actionbar.buttons"
+                selectedRowsWithContentWarningLength={
+                  selectedRowsWithContentWarning.length
+                }
+                processing={processing}
+                onClick={removeFlags}
+              />
             </Buttons>
           )}
           <StyledSearchInput onChange={handleSearchTermChange} />

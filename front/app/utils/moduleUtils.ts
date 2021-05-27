@@ -327,6 +327,11 @@ export type OutletsPropertyMap = {
   'app.module.moderation.admin.containers.ModerationRow.content': {
     inappropriateContentFlag: boolean;
   };
+  'app.module.moderation.admin.containers.actionbar.buttons': {
+    selectedRowsWithContentWarningLength: number;
+    processing: boolean;
+    onClick: () => void;
+  };
 };
 
 type Outlet<Props> = FunctionComponent<Props> | FunctionComponent<Props>[];

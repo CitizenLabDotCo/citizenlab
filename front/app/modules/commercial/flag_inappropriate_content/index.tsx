@@ -1,6 +1,7 @@
 import { ModuleConfiguration } from 'utils/moduleUtils';
 import React, { ReactNode } from 'react';
 import Setting from './admin/containers/Setting';
+import RemoveFlagButton from './admin/components/RemoveFlagButton';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 type RenderOnFeatureFlagProps = {
@@ -22,6 +23,9 @@ const configuration: ModuleConfiguration = {
         <Setting {...props} />
       </RenderOnFeatureFlag>
     ),
+    'app.module.moderation.admin.containers.actionbar.buttons': (props) => {
+      return <RemoveFlagButton {...props} />;
+    },
   },
 };
 

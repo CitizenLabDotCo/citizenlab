@@ -7,4 +7,10 @@ export default defineMessages({
     defaultMessage:
       'Warning: possible inappropriate or offensive content detected',
   },
+  removeWarning: {
+    id:
+      'app.modules.commercial.flag_inappropriate_content.admin.components.removeWarning',
+    defaultMessage:
+      'Remove {numberOfItems, plural, one {warning} other {# warnings}}',
+  },
 });
