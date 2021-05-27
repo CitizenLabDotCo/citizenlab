@@ -52,3 +52,5 @@ class Notification < ApplicationRecord
     self.class::EVENT_NAME
   end
 end
+
+Notification.include_if_ee 'FlagInappropriateContent::Extensions::Notification'

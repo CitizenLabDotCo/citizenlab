@@ -9,7 +9,7 @@ class WebApi::V1::NotificationsController < ApplicationController
   def index
     @notifications = policy_scope(Notification)
       .order(created_at: :desc)
-      .includes(:recipient, :initiating_user, :post, :post_status, :comment, :project, :phase, :official_feedback, :spam_report, :invite) # TODO add flag and flaggable
+      .includes(*include_load_resources) # TODO add flag and flaggable
 
     if params[:only_unread]
       @notifications = @notifications.where(read_at: nil)
@@ -70,7 +70,13 @@ class WebApi::V1::NotificationsController < ApplicationController
     authorize @notification
   end
 
+  def include_load_resources
+    [:recipient, :initiating_user, :post, :post_status, :comment, :project, :phase, :official_feedback, :spam_report, :invite]
+  end
+
   def secure_controller?
     false
   end
 end
+
+WebApi::V1::NotificationsController.prepend_if_ee('FlagInappropriateContent::Patches::WebApi::V1::NotificationsController')
