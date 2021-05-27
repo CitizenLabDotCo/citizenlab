@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import styled from 'styled-components';
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
+import messages from '../messages';
 import { colors, fontSizes } from 'utils/styleUtils';
 import { Button, Input, Select } from 'cl2-component-library';
 import { SectionField } from 'components/admin/Section';

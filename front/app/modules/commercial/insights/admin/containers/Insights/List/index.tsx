@@ -8,7 +8,7 @@ import { InjectedIntlProps } from 'react-intl';
 
 // components
 import EmptyState from './EmptyState';
-import useInsightsViews from '../../../hooks/useInsightsViews';
+import useInsightsViews from '../../../../hooks/useInsightsViews';
 import InsightsList from './InsightsList';
 import Modal from 'components/UI/Modal';
 import CreateInsightsView from './CreateInsightsView';
