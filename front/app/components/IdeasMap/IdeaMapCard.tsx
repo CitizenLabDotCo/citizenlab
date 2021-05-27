@@ -26,6 +26,7 @@ import T from 'components/T';
 import styled from 'styled-components';
 import {
   defaultCardStyle,
+  defaultCardHoverStyle,
   fontSizes,
   colors,
   viewportWidths,
@@ -33,21 +34,23 @@ import {
 } from 'utils/styleUtils';
 
 const Container = styled.button`
+  text-align: left;
   padding: 20px;
+  margin: 0;
   margin-bottom: 15px;
-  background: #fff;
-  ${defaultCardStyle};
-  border: solid 1px #ccc;
   cursor: pointer;
   position: relative;
-  transition: all 100ms ease-out;
-  text-align: left;
+  ${defaultCardStyle}
+  ${defaultCardHoverStyle}
+  border: solid 1px #ccc;
+  transform: translateY(0);
 
   ${media.biggerThanMaxTablet`
     &:hover,
-    &.hovered {
+    &.hover {
       border-color: #000;
       box-shadow: 0px 0px 0px 1px #000 inset;
+      transform: translateY(0);
     }
   `}
 
@@ -115,10 +118,11 @@ const UpvoteIcon = styled(Icon)`
 `;
 
 const CommentIcon = styled(Icon)`
-  width: 19px;
-  height: 19px;
+  width: 20px;
+  height: 20px;
   fill: ${colors.label};
   margin-right: 6px;
+  margin-left: 2px;
 `;
 
 const FooterValue = styled.div`
@@ -189,7 +193,7 @@ const IdeaMapCard = memo<Props>(({ ideaId, onClose, className }) => {
   if (!isNilOrError(idea)) {
     return (
       <Container
-        className={`${className || ''} ${hovered ? 'hovered' : ''}`}
+        className={`${className || ''} ${hovered ? 'hover' : ''}`}
         onClick={handleOnClick}
         onMouseEnter={handleOnMouseEnter}
         onMouseLeave={handleOnMouseLeave}
