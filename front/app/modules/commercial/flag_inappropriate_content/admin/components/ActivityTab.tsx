@@ -1,14 +1,21 @@
 import { FC, useEffect } from 'react';
-import { InsertConfigurationOptions, ITab } from 'typings';
+import { InsertConfigurationOptions } from 'typings';
 import { withRouter, WithRouterProps } from 'react-router';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
+import { ITabItem } from 'components/UI/Tabs';
+
+declare module 'modules/commercial/flag_inappropriate_content' {
+  export interface ITabNamesMap {
+    warnings: 'warnings';
+  }
+}
 
 interface Props {
-  onData: (data: InsertConfigurationOptions<ITab>) => void;
+  onData: (data: InsertConfigurationOptions<ITabItem>) => void;
 }
 
 const ActivityTab: FC<Props & WithRouterProps & InjectedIntlProps> = ({
@@ -19,10 +26,9 @@ const ActivityTab: FC<Props & WithRouterProps & InjectedIntlProps> = ({
     () =>
       onData({
         configuration: {
-          label: formatMessage(messages.tabInsights),
-          name: 'insights',
+          name: 'warnings',
+          label: formatMessage(messages.warnings),
         },
-        insertAfterName: 'users',
       }),
     []
   );

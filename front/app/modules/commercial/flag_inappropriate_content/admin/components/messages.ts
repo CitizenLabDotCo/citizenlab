@@ -13,4 +13,9 @@ export default defineMessages({
     defaultMessage:
       'Remove {numberOfItems, plural, one {warning} other {# warnings}}',
   },
+  warnings: {
+    id:
+      'app.modules.commercial.flag_inappropriate_content.admin.components.warnings',
+    defaultMessage: 'Warnings',
+  },
 });

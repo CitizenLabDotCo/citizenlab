@@ -175,17 +175,14 @@ interface Props {
   className?: string;
 }
 
+interface ITabNamesMap {
+  read: 'read';
+  unread: 'unread';
+}
+
+type TTabName = ITabNamesMap[keyof ITabNamesMap];
+
 const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
-  interface ITabNamesMap {
-    read: 'read';
-    unread: 'unread';
-    warnings: 'warnings';
-  }
-
-  type TTabName = ITabNamesMap[keyof ITabNamesMap];
-
-  const flaggedItemsCount = 5;
-
   const pageSizes = [
     {
       value: 10,
@@ -239,12 +236,6 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
     {
       name: 'read',
       label: intl.formatMessage(messages.read),
-    },
-    {
-      name: 'warnings',
-      label: intl.formatMessage(messages.warnings, {
-        flaggedItemsCount,
-      }),
     },
   ]);
 
