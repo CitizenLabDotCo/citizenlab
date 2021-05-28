@@ -841,7 +841,6 @@
   "app.containers.Admin.Moderation.successfulUpdateSettings": "",
   "app.containers.Admin.Moderation.type": "Type",
   "app.containers.Admin.Moderation.unread": "Niet gezien",
-  "app.containers.Admin.Moderation.warning": "",
   "app.containers.Admin.Processing.addExistingTag": "Bestaande tag toevoegen",
   "app.containers.Admin.Processing.addNewTag": "Nieuwe tag toevoegen",
   "app.containers.Admin.Processing.addSmartTag": "Slimme tag toevoegen",
