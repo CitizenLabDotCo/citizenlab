@@ -1,6 +1,5 @@
 import { FC, useEffect } from 'react';
 import { InsertConfigurationOptions } from 'typings';
-import { withRouter, WithRouterProps } from 'react-router';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
@@ -18,10 +17,10 @@ interface Props {
   onData: (data: InsertConfigurationOptions<ITabItem>) => void;
 }
 
-const ActivityTab: FC<Props & WithRouterProps & InjectedIntlProps> = ({
+const ActivityTab = ({
   onData,
   intl: { formatMessage },
-}) => {
+}: Props & InjectedIntlProps) => {
   useEffect(
     () =>
       onData({
@@ -35,4 +34,4 @@ const ActivityTab: FC<Props & WithRouterProps & InjectedIntlProps> = ({
   return null;
 };
 
-export default withRouter(injectIntl(ActivityTab));
+export default injectIntl(ActivityTab);
