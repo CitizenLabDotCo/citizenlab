@@ -2,6 +2,7 @@ import { ModuleConfiguration } from 'utils/moduleUtils';
 import React, { ReactNode } from 'react';
 import Setting from './admin/containers/Setting';
 import RemoveFlagButton from './admin/components/RemoveFlagButton';
+import ActivityTab from './admin/components/ActivityTab';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 type RenderOnFeatureFlagProps = {
@@ -23,8 +24,13 @@ const configuration: ModuleConfiguration = {
         <Setting {...props} />
       </RenderOnFeatureFlag>
     ),
-    'app.module.moderation.admin.containers.actionbar.buttons': (props) => {
+    'app.modules.commercial.moderation.admin.containers.actionbar.buttons': (
+      props
+    ) => {
       return <RemoveFlagButton {...props} />;
+    },
+    'app.modules.commercial.moderation.admin.containers.tabs': (props) => {
+      return <ActivityTab {...props} />;
     },
   },
 };
