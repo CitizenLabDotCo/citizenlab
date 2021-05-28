@@ -1,6 +1,5 @@
 import React, { memo } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { sortBy } from 'lodash-es';
 
 // hooks
 import useProject from 'hooks/useProject';
@@ -40,8 +39,6 @@ const EventsContainer = memo<Props>(({ projectId, className }) => {
   const events = useEvents(projectId);
 
   if (!isNilOrError(project) && !isNilOrError(events) && events.length > 0) {
-    const sortedEvents = sortBy(events, [(event) => event.attributes.start_at]);
-
     return (
       <Container id="project-events" className={className || ''}>
         <ContentContainer maxWidth={maxPageWidth}>
@@ -49,7 +46,7 @@ const EventsContainer = memo<Props>(({ projectId, className }) => {
             <ProjectPageSectionTitle>
               <FormattedMessage {...messages.events} />
             </ProjectPageSectionTitle>
-            {sortedEvents.map((event) => (
+            {events.map((event) => (
               <StyledEventCard key={event.id} event={event} />
             ))}
           </SectionContainer>
