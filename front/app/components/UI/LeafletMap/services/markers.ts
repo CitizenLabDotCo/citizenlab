@@ -46,13 +46,13 @@ export function addMarkerToMap(
     setLeafletMapHoveredMarker(null);
   });
 
+  // only add marker directly to the map when clustering is turned off
+  // otherwise let this be handled by addMarkerClusterGroup()
   if (map && noMarkerClustering) {
-    marker.on('click', (event: L.LeafletEvent) => {
+    marker.on('click', (event) => {
       setLeafletMapSelectedMarker(event.target.options['id']);
     });
 
-    // only add the marker direclty to the map when clustering is turned off
-    // otherwise let this be handled by the clustergroup
     marker.addTo(map);
   }
 
@@ -86,13 +86,13 @@ export function addMarkersToMap(
   return markers;
 }
 
-export function addClusterGroup(
+export function addMarkerClusterGroup(
   map: L.Map | null | undefined,
   markers: L.Marker[] | null,
   { onClick }: { onClick: (id: string, data: any) => void }
 ) {
   if (map && markers) {
-    const newMarkerClusterGroup = L.markerClusterGroup({
+    const markerClusterGroup = L.markerClusterGroup({
       showCoverageOnHover: false,
       spiderfyDistanceMultiplier: 2,
       iconCreateFunction: (cluster) => {
@@ -103,16 +103,16 @@ export function addClusterGroup(
         });
       },
     });
-    newMarkerClusterGroup.addLayers(markers);
-    map.addLayer(newMarkerClusterGroup);
+    markerClusterGroup.addLayers(markers);
+    map.addLayer(markerClusterGroup);
 
     if (onClick) {
-      newMarkerClusterGroup.on('click', (event) => {
+      markerClusterGroup.on('click', (event) => {
         onClick(event.layer.options.id, event.layer.options.data);
       });
     }
 
-    return newMarkerClusterGroup;
+    return markerClusterGroup;
   }
 
   return null;

@@ -2,7 +2,11 @@ import { init, addTileLayer, changeView } from './setup';
 
 import { addLayersControl, removeLayersControl } from './controls';
 import { addLayers, removeLayers, removeLayer } from './layers';
-import { addMarkersToMap, addClusterGroup, getMarkerIcon } from './markers';
+import {
+  addMarkersToMap,
+  addMarkerClusterGroup,
+  getMarkerIcon,
+} from './markers';
 
 export default {
   init,
@@ -14,6 +18,6 @@ export default {
   removeLayers,
   removeLayer,
   addMarkersToMap,
-  addClusterGroup,
+  addMarkerClusterGroup,
   getMarkerIcon,
 };

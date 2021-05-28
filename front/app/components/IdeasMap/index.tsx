@@ -55,14 +55,15 @@ import { media, viewportWidths } from 'utils/styleUtils';
 // typings
 import { Sort } from 'resources/GetIdeas';
 
-const mapBorderPadding = 70;
-const mapHeight = '80vh';
+const mapMarginDesktop = 70;
+const mapHeightDesktop = '80vh';
+const mapHeightMobile = '75vh';
 
 const Container = styled.div``;
 
 const InnerContainer = styled.div<{ leftMargin: number | null }>`
   width: ${({ leftMargin }) =>
-    leftMargin ? `calc(100vw - ${mapBorderPadding * 2}px)` : '100%'};
+    leftMargin ? `calc(100vw - ${mapMarginDesktop * 2}px)` : '100%'};
   margin-left: ${({ leftMargin }) =>
     leftMargin ? `-${leftMargin}px` : 'auto'};
   position: relative;
@@ -76,16 +77,12 @@ const InnerContainer = styled.div<{ leftMargin: number | null }>`
     display: none;
   }
 
-  /* border: solid 2px red; */
-
   .activeArea {
     position: absolute;
     top: 0px;
     bottom: 0px;
     right: 0px;
     left: 500px;
-    /* z-index: 99999; */
-    /* border: solid 2px red; */
   }
 
   ${media.smallerThanMaxTablet`
@@ -95,11 +92,11 @@ const InnerContainer = styled.div<{ leftMargin: number | null }>`
   `}
 `;
 
-const StyledMap = styled(Map)`
-  /* border: none;
-  background: transparent;
-  box-shadow: 0px 0px 25px 0px rgba(0, 0, 0, 0.15); */
-`;
+// const StyledMap = styled(Map)`
+//   border: none;
+//   background: transparent;
+//   box-shadow: 0px 0px 25px 0px rgba(0, 0, 0, 0.15);
+// `;
 
 const IdeaButtonWrapper = styled.div``;
 
@@ -109,7 +106,7 @@ const StyledWarning = styled(Warning)`
 
 const StyledDesktopIdeaMapOverlay = styled(DesktopIdeaMapOverlay)`
   width: 400px;
-  height: calc(${mapHeight} - 45px);
+  height: calc(${mapHeightDesktop} - 45px);
   position: absolute;
   display: flex;
   top: 20px;
@@ -119,17 +116,17 @@ const StyledDesktopIdeaMapOverlay = styled(DesktopIdeaMapOverlay)`
 
 const MobileIdeaMapCard = styled.div`
   position: absolute;
-  bottom: 10px;
+  top: calc(${mapHeightMobile} - 130px - 20px);
   left: 10px;
   right: 10px;
   z-index: 1000;
   transition: all 300ms cubic-bezier(0.19, 1, 0.22, 1);
 
   &.animation-enter {
-    bottom: 0px;
+    top: calc(${mapHeightMobile} - 130px);
 
     &.animation-enter-active {
-      bottom: 10px;
+      top: calc(${mapHeightMobile} - 130px - 20px);
     }
   }
 `;
@@ -145,7 +142,7 @@ const getInnerContainerLeftMargin = (
   containerWidth: number
 ) => {
   const leftMargin =
-    Math.round((windowWidth - containerWidth) / 2) - mapBorderPadding;
+    Math.round((windowWidth - containerWidth) / 2) - mapMarginDesktop;
   return leftMargin > 0 ? leftMargin : null;
 };
 
@@ -235,6 +232,7 @@ const IdeasMap = memo<Props>(({ projectIds, phaseId, className }) => {
       }),
     ];
 
+    // defaults
     setIdeasSearch(defaultIdeasSearch);
     setIdeasSort(defaultIdeasSort);
     setIdeasTopics(defaultIdeasTopics);
@@ -290,10 +288,12 @@ const IdeasMap = memo<Props>(({ projectIds, phaseId, className }) => {
             <FormattedMessage {...messages.a11y_mapTitle} />
           </ScreenReaderOnly>
 
-          <StyledMap
+          <Map
             projectId={project.id}
             points={points}
-            mapHeight={mapHeight}
+            mapHeight={
+              smallerThanMaxTablet ? mapHeightMobile : mapHeightDesktop
+            }
             noMarkerClustering={false}
             zoomControlPosition={smallerThanMaxTablet ? 'topleft' : 'topright'}
             layersControlPosition="topright"

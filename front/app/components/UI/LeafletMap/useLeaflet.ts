@@ -271,7 +271,7 @@ export default function useLeaflet(
       service.removeLayer(map, prevMarkerClusterGroup);
 
       if (!noMarkerClustering) {
-        return service.addClusterGroup(map, markers, {
+        return service.addMarkerClusterGroup(map, markers, {
           onClick: (id, _data) => {
             setLeafletMapSelectedMarker(id);
           },
