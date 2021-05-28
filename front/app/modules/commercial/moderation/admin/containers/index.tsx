@@ -322,39 +322,32 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
     [selectedRows, processing]
   );
 
-  const removeFlags = () => {};
-  // const removeFlags = useCallback(
-  //   async (event: React.FormEvent) => {
-  //     if (
-  //       selectedRowsWithContentWarning.length > 0 &&
-  //       !isNilOrError(moderationItems) &&
-  //       !processing
-  //     ) {
-  //       event.preventDefault();
-  //       trackEventByName(
-  //         removeFlagButtonClicked
-  //         { selectedItemsCount: selectedRows.length }
-  //       );
-  //       setProcessing(true);
-  //       const moderations = selectedRowsWithContentWarning.map((moderationId) =>
-  //         moderationItems.find((item) => item.id === moderationId)
-  //       ) as IModerationData[];
-  //       const updatedFlaggedStatus = 'approved';
-  //       const promises = moderations.map((moderation) =>
-  //         updateModerationFlaggedStatus(
-  //           moderation.id,
-  //           moderation.attributes.moderatable_type,
-  //           updatedFlaggedStatus
-  //         )
-  //       );
-  //       await Promise.all(promises);
-  //       setProcessing(false);
-  //
-  [];
-  //     }
-  //   },
-  //   [selectedRows, moderationItems]
-  // );
+  const removeFlags = useCallback(
+    async (event: React.FormEvent) => {
+      if (
+        selectedRowsWithContentWarning.length > 0 &&
+        !isNilOrError(moderationItems) &&
+        !processing
+      ) {
+        event.preventDefault();
+
+        const moderations = selectedRowsWithContentWarning.map((moderationId) =>
+          moderationItems.find((item) => item.id === moderationId)
+        ) as IModerationData[];
+        const promises = moderations.map((moderation) =>
+          removeInappropriateContentFlag(
+            moderation.relationship.inappropriate_content_flag.data.id
+          )
+        );
+
+        setProcessing(true);
+        await Promise.all(promises);
+        setProcessing(false);
+        setSelectedRows([]);
+      }
+    },
+    [selectedRows, moderationItems]
+  );
 
   const markAs = useCallback(
     async (event: React.FormEvent) => {
