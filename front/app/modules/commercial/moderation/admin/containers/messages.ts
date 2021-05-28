@@ -33,10 +33,6 @@ export default defineMessages({
     id: 'app.containers.Admin.Moderation.content',
     defaultMessage: 'Content',
   },
-  warning: {
-    id: 'app.containers.Admin.Moderation.warning',
-    defaultMessage: 'Warning',
-  },
   date: {
     id: 'app.containers.Admin.Moderation.date',
     defaultMessage: 'Date',
