@@ -175,7 +175,7 @@ interface Props {
   className?: string;
 }
 
-interface ITabNamesMap {
+export interface ITabNamesMap {
   read: 'read';
   unread: 'unread';
 }

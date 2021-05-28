@@ -8,7 +8,7 @@ import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 import { ITabItem } from 'components/UI/Tabs';
 
-declare module 'modules/commercial/flag_inappropriate_content' {
+declare module 'modules/commercial/moderation/admin/containers/index' {
   export interface ITabNamesMap {
     warnings: 'warnings';
   }
