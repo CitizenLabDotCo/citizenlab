@@ -20,13 +20,15 @@ const RemoveFlagButton = ({
 }: Props) => {
   const locale = useLocale();
 
+  const handleOnClick = () => {};
+
   if (!isNilOrError(locale) && selectedRowsWithContentWarningLength > 0) {
     return (
       <Button
         icon="exclamation-trapezium-strikethrough"
         buttonStyle="cl-blue"
         processing={processing}
-        onClick={onClick}
+        onClick={handleOnClick}
         locale={locale}
       >
         <FormattedMessage

@@ -328,7 +328,6 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
   //     if (
   //       selectedRowsWithContentWarning.length > 0 &&
   //       !isNilOrError(moderationItems) &&
-  //       moderationStatus &&
   //       !processing
   //     ) {
   //       event.preventDefault();
@@ -350,10 +349,11 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
   //       );
   //       await Promise.all(promises);
   //       setProcessing(false);
-  //       setSelectedRows([]);
+  //
+  [];
   //     }
   //   },
-  //   [selectedRows, moderationItems, moderationStatus]
+  //   [selectedRows, moderationItems]
   // );
 
   const markAs = useCallback(
