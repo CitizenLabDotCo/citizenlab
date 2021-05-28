@@ -260,13 +260,9 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
         onModerationStatusChange(tabName);
       }
 
-      trackEventByName(
-        {
-          read: tracks.viewedTabClicked,
-          unread: tracks.notViewedTabClicked,
-          warnings: tracks.warningsTabClicked,
-        }[tabName]
-      );
+      trackEventByName(tracks.tabClicked, {
+        tabName,
+      });
     },
     [onModerationStatusChange]
   );

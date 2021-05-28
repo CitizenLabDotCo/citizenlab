@@ -1,9 +1,7 @@
 export default {
-  viewedTabClicked: "Selected 'Seen' tab",
+  tabClicked: 'Tab clicked',
   markedAsViewedButtonClicked: "'Marked as seen' button clicked",
-  notViewedTabClicked: "Selected 'Not seen' tab",
   markedAsNotViewedButtonClicked: "'Marked as not seen' button clicked",
-  warningsTabClicked: "Selected 'Warnings' tab",
   goToLinkClicked: "'Go to' link clicked",
   belongsToLinkClicked: "'Belongs to' link clicked",
   pageNumberClicked: 'Page number clicked',
