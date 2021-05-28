@@ -13,7 +13,7 @@ interface Props {
   selectedRowsWithContentWarningLength: number;
 }
 
-const Component = ({
+const RemoveFlagButton = ({
   processing,
   onClick,
   selectedRowsWithContentWarningLength,
@@ -42,4 +42,4 @@ const Component = ({
   return null;
 };
 
-export default Component;
+export default RemoveFlagButton;
