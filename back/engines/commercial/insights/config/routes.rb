@@ -8,6 +8,14 @@ Insights::Engine.routes.draw do
           resources :categories do
             delete :index, on: :collection, action: :destroy_all
           end
+
+          resources :inputs, only: %i[index show] do
+            member do
+              patch 'categories', action: :add_categories
+              post 'categories', action: :replace_categories
+              delete 'categories', action: :delete_categories
+            end
+          end
         end
       end
     end
