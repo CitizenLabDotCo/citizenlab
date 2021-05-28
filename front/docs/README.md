@@ -1,5 +1,15 @@
 # Changelog
 
+## 2021-05-28
+
+### Fixed
+- Project Events are now ordered chronologically from soonest to latest. 
+
+## 2021-05-27
+
+### Fixed
+- Project access rights management are now visible again.
+
 ## 2021-05-21
 
 ### Added
