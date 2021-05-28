@@ -199,6 +199,7 @@
             "description": "Specify how phone numbers should be stored in the database (needs to be in email format - e.g., 'phone+__PHONE__@test.com' stores the phone number as 'phone+32478637483@test.com'.",
             "type": "string",
             "format": "email",
+            "default": "phone+__PHONE__@test.com",
             "pattern": "^.*__PHONE__.*@.*$",
             "private": true
           }
@@ -558,6 +559,18 @@
         }
       },
 
+      "survey_xact_surveys": {
+        "type": "object",
+        "title": "Survey Xact Forms Surveys",
+        "description":  "Allow Survey Xact surveys to be embedded.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false}
+        }
+      },
+
       "surveymonkey_surveys": {
         "type": "object",
         "title": "Surveymonkey Surveys",
@@ -602,6 +615,18 @@
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false}
+        }
+      },
+
+      "blocking_profanity": {
+        "type": "object",
+        "title": "Block Profanity",
+        "description": "Prevent input with profanity in it from being posted (can be turned on/off from the platform)",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
           "enabled": { "type": "boolean", "default": false}
         }
       },
@@ -842,6 +867,18 @@
         }
       },
 
+      "idea_author_change": {
+        "type": "object",
+        "title": "Idea Author Change",
+        "description": "Allows city admins to create ideas and assign users as their authors.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false}
+        }
+      },
+
       "private_projects": {
         "type": "object",
         "title": "Private projects",
@@ -880,6 +917,7 @@
     "typeform_surveys": ["surveys"],
     "google_forms_surveys": ["surveys"],
     "enalyzer_surveys": ["surveys"],
+    "survey_xact_surveys": ["surveys"],
     "surveymonkey_surveys": ["surveys"],
     "automatic_tagging": ["manual_tagging"]
   },

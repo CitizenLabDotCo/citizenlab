@@ -11,7 +11,8 @@ class IdeaPolicy < ApplicationPolicy
       if user&.admin?
         scope.all
       elsif user
-        scope.where(project: Pundit.policy_scope(user, Project), publication_status: ['published', 'closed'])
+        projects = Pundit.policy_scope(user, Project)
+        scope.where(project: projects, publication_status: ['published', 'closed'])
       else
         scope
           .left_outer_joins(project: [:admin_publication])
@@ -53,9 +54,7 @@ class IdeaPolicy < ApplicationPolicy
   end
 
   def update?
-    # TODO: remove this after Gents project
     bypassable_reasons = %w[posting_disabled]
-    bypassable_reasons << 'not_permitted' if AppConfiguration.instance.host == 'participatie.stad.gent'
     pcs = ParticipationContextService.new
     pcs_posting_reason = pcs.posting_idea_disabled_reason_for_project(record.project, user)
     record.draft? || user&.active_admin_or_moderator?(record.project_id) ||

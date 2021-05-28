@@ -90,18 +90,6 @@ export default defineMessages({
     defaultMessage: 'Pick topic filter',
   },
   // Time and Resolution Controls
-  resolutionday: {
-    id: 'app.containers.AdminPage.DashboardPage.resolutionday',
-    defaultMessage: 'in Days',
-  },
-  resolutionweek: {
-    id: 'app.containers.AdminPage.DashboardPage.resolutionweek',
-    defaultMessage: 'in Weeks',
-  },
-  resolutionmonth: {
-    id: 'app.containers.AdminPage.DashboardPage.resolutionmonth',
-    defaultMessage: 'in Months',
-  },
   customDateRange: {
     id: 'app.containers.AdminPage.DashboardPage.customDateRange',
     defaultMessage: 'Custom',
@@ -279,38 +267,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.titleDashboard',
     defaultMessage: 'Dashboard',
   },
-  downloadAsImage: {
-    id: 'app.containers.AdminPage.DashboardPage.ExportMenu.downloadAsImage',
-    defaultMessage: 'Download as image',
-  },
-  downloadXlsx: {
-    id: 'app.containers.AdminPage.DashboardPage.ExportMenu.downloadXlsx',
-    defaultMessage: 'Download Excel',
-  },
-  fromFilter: {
-    id: 'app.containers.AdminPage.DashboardPage.ExportMenu.FileName.fromFilter',
-    defaultMessage: 'from',
-  },
-  untilFilter: {
-    id:
-      'app.containers.AdminPage.DashboardPage.ExportMenu.FileName.untilFilter',
-    defaultMessage: 'until',
-  },
-  projectFilter: {
-    id:
-      'app.containers.AdminPage.DashboardPage.ExportMenu.FileName.projectFilter',
-    defaultMessage: 'project',
-  },
-  groupFilter: {
-    id:
-      'app.containers.AdminPage.DashboardPage.ExportMenu.FileName.groupFilter',
-    defaultMessage: 'group',
-  },
-  topicFilter: {
-    id:
-      'app.containers.AdminPage.DashboardPage.ExportMenu.FileName.topicFilter',
-    defaultMessage: 'topic',
-  },
   participants: {
     id: 'app.containers.AdminPage.DashboardPage.Report.participants',
     defaultMessage: 'participants',
@@ -318,23 +274,6 @@ export default defineMessages({
   totalUsers: {
     id: 'app.containers.AdminPage.DashboardPage.Report.totalUsers',
     defaultMessage: 'total users on the platform',
-  },
-  // Report
-  selectAProject: {
-    id: 'app.containers.Dashboards.ReportsTab.selectAProject',
-    defaultMessage: 'What project are you interested in ?',
-  },
-  sectionWho: {
-    id: 'app.containers.Dashboards.ReportsTab.sectionWho',
-    defaultMessage: 'Who participated ?',
-  },
-  sectionWhatInput: {
-    id: 'app.containers.Dashboards.ReportsTab.sectionWhatInput',
-    defaultMessage: 'What input did you collect?',
-  },
-  participantsOverTimeTitle: {
-    id: 'app.containers.Dashboards.ReportsTab.participantsOverTimeTitle',
-    defaultMessage: 'Participants',
   },
   timelineType: {
     id: 'app.containers.AdminPage.DashboardPage.timelineType',
@@ -355,30 +294,6 @@ export default defineMessages({
   noPhase: {
     id: 'app.containers.AdminPage.DashboardPage.noPhase',
     defaultMessage: 'No phase created for this project',
-  },
-  ideationAndFeedback: {
-    id: 'app.containers.AdminPage.ReportsTab.ideationAndFeedback',
-    defaultMessage: 'ideation and feedback',
-  },
-  information: {
-    id: 'app.containers.AdminPage.ReportsTab.information',
-    defaultMessage: 'information',
-  },
-  survey: {
-    id: 'app.containers.AdminPage.ReportsTab.survey',
-    defaultMessage: 'survey',
-  },
-  budgeting: {
-    id: 'app.containers.AdminPage.ReportsTab.budgeting',
-    defaultMessage: 'budgeting',
-  },
-  poll: {
-    id: 'app.containers.AdminPage.ReportsTab.poll',
-    defaultMessage: 'poll',
-  },
-  volunteering: {
-    id: 'app.containers.AdminPage.ReportsTab.volunteering',
-    defaultMessage: 'volunteering',
   },
   customFieldTitleExport: {
     id: 'app.containers.AdminPage.ReportsTab.customFieldTitleExport',

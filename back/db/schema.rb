@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_02_103419) do
+ActiveRecord::Schema.define(version: 2021_05_06_151054) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -476,6 +476,14 @@ ActiveRecord::Schema.define(version: 2021_04_02_103419) do
     t.index ["initiative_id", "topic_id"], name: "index_initiatives_topics_on_initiative_id_and_topic_id", unique: true
     t.index ["initiative_id"], name: "index_initiatives_topics_on_initiative_id"
     t.index ["topic_id"], name: "index_initiatives_topics_on_topic_id"
+  end
+
+  create_table "insights_views", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name", null: false
+    t.uuid "scope_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["name"], name: "index_insights_views_on_name"
   end
 
   create_table "invites", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -982,6 +990,12 @@ ActiveRecord::Schema.define(version: 2021_04_02_103419) do
     t.jsonb "custom_field_values", default: {}
     t.datetime "registration_completed_at"
     t.boolean "verified", default: false, null: false
+    t.datetime "email_confirmed_at"
+    t.string "email_confirmation_code"
+    t.integer "email_confirmation_retry_count", default: 0, null: false
+    t.integer "email_confirmation_code_reset_count", default: 0, null: false
+    t.datetime "email_confirmation_code_sent_at"
+    t.boolean "confirmation_required", default: true, null: false
     t.index "lower((email)::text)", name: "users_unique_lower_email_idx", unique: true
     t.index ["email"], name: "index_users_on_email"
     t.index ["slug"], name: "index_users_on_slug", unique: true
@@ -1072,6 +1086,7 @@ ActiveRecord::Schema.define(version: 2021_04_02_103419) do
   add_foreign_key "initiatives", "users", column: "author_id"
   add_foreign_key "initiatives_topics", "initiatives"
   add_foreign_key "initiatives_topics", "topics"
+  add_foreign_key "insights_views", "projects", column: "scope_id"
   add_foreign_key "invites", "users", column: "invitee_id"
   add_foreign_key "invites", "users", column: "inviter_id"
   add_foreign_key "maps_layers", "maps_map_configs", column: "map_config_id"

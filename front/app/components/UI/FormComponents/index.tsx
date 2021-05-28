@@ -49,6 +49,10 @@ const FormSectionDescriptionStyled = styled.p`
   line-height: normal;
 `;
 
+const StyledButton = styled(Button)`
+  margin-right: 10px;
+`;
+
 interface FormSectionTitleProps extends IMessageInfo {
   subtitleMessage?: Messages['key'];
 }
@@ -274,7 +278,7 @@ export const FormSubmitFooter = withTheme(
       <SubmitFooterContainer className={className}>
         <StyledContentContainer mode="page">
           <SubmitFooterInner>
-            <Button
+            <StyledButton
               fontWeight="500"
               padding="13px 22px"
               bgColor={theme.colorMain}
@@ -287,7 +291,12 @@ export const FormSubmitFooter = withTheme(
               {...otherProps}
             >
               <FormattedMessage {...message} values={values} />
-            </Button>
+            </StyledButton>
+            {error && (
+              <ErrorContainer className="e2e-error-form">
+                <FormattedMessage {...errorMessage} />
+              </ErrorContainer>
+            )}
             <ScreenReaderOnly aria-live="polite">
               {disabled ? (
                 <FormattedMessage {...messages.buttonDisabled} />
@@ -295,11 +304,6 @@ export const FormSubmitFooter = withTheme(
                 <FormattedMessage {...messages.buttonEnabled} />
               )}
             </ScreenReaderOnly>
-            {error && (
-              <ErrorContainer className="e2e-error-form">
-                <FormattedMessage {...errorMessage} />
-              </ErrorContainer>
-            )}
           </SubmitFooterInner>
         </StyledContentContainer>
       </SubmitFooterContainer>

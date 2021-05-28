@@ -173,7 +173,9 @@ type TFieldName =
   | 'homepage-info'
   | 'first_name'
   | 'last_name'
-  | 'email';
+  | 'confirmation_code'
+  | 'email'
+  | 'view_name';
 
 export default class Error extends PureComponent<Props, State> {
   static defaultProps: DefaultProps = {
@@ -202,21 +204,7 @@ export default class Error extends PureComponent<Props, State> {
 
   findMessage = (fieldName: TFieldName | undefined, error: string) => {
     if (fieldName && messages[`${fieldName}_${error}`]) {
-      const fieldErrorMessages = {
-        title_multiloc_blank: messages.title_multiloc_blank,
-        token_invalid: messages.token_invalid,
-        email_taken: messages.email_taken,
-        email_taken_by_invite: messages.email_taken_by_invite,
-        email_invalid: messages.email_invalid,
-        email_domain_blacklisted: messages.email_domain_blacklisted,
-        email_blank: messages.email_blank,
-        first_name_blank: messages.first_name_blank,
-        last_name_blank: messages.last_name_blank,
-        password_blank: messages.password_blank,
-        password_too_short: messages.password_too_short,
-      };
-
-      return fieldErrorMessages[`${fieldName}_${error}`] as Message;
+      return messages[`${fieldName}_${error}`] as Message;
     }
 
     if (messages[error]) {

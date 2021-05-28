@@ -68,6 +68,8 @@ class XlsxService
     workbook.styles do |s|
       workbook.add_worksheet(name: sheetname) do |sheet|
         header = columns.pluck(:header)
+        column_widths = columns.pluck(:width)
+        sheet.column_widths *column_widths
         sheet.add_row header, style: header_style(s)
         instances.each do |instance|
           row = columns.map do |c|
@@ -121,45 +123,52 @@ class XlsxService
   end
 
   def generate_users_xlsx(users, view_private_attributes: false)
-    columns = users_xlsx_columns
+    columns = [
+      { header: 'id', f: ->(u) { u.id }, skip_sanitization: true },
+      { header: 'email', f: ->(u) { u.email } },
+      { header: 'first_name', f: ->(u) { u.first_name } },
+      { header: 'last_name', f: ->(u) { u.last_name } },
+      { header: 'profile_page', f: ->(u) { Frontend::UrlService.new.model_to_url(u) }, skip_sanitization: true },
+      { header: 'created_at', f: ->(u) { u.created_at }, skip_sanitization: true },
+      *custom_field_columns(:itself, true)
+    ]
 
     unless view_private_attributes
-      private_attrs = user_private_attributes
+      private_attrs = private_attributes
       columns.reject! { |c| private_attrs.include?(c[:header]) }
     end
 
     generate_xlsx 'Users', columns, users
   end
 
+  # extended by engines (ie tagging) to implement ideas with additional attributes
   def generate_idea_xlsx_columns(ideas, view_private_attributes: false, with_tags: false)
     columns = [
       { header: 'id',                   f: ->(i) { i.id }, skip_sanitization: true },
       { header: 'title',                f: ->(i) { multiloc_service.t(i.title_multiloc) } },
-      { header: 'body',                 f: ->(i) { convert_to_text(multiloc_service.t(i.body_multiloc)) } },
+      { header: 'description',          f: ->(i) { convert_to_text_long_lines(multiloc_service.t(i.body_multiloc)) },                               width: 10 },
       { header: 'author_name',          f: ->(i) { i.author_name } },
       { header: 'author_email',         f: ->(i) { i.author&.email } },
-      { header: 'proposed_budget',      f: ->(i) { i.proposed_budget },                           skip_sanitization: true },
-      { header: 'publication_status',   f: ->(i) { i.publication_status },                        skip_sanitization: true },
-      { header: 'published_at',         f: ->(i) { i.published_at },                              skip_sanitization: true },
-      { header: 'upvotes_count',        f: ->(i) { i.upvotes_count },                             skip_sanitization: true },
-      { header: 'downvotes_count',      f: ->(i) { i.downvotes_count },                           skip_sanitization: true },
-      { header: 'baskets_count',        f: ->(i) { i.baskets_count },                             skip_sanitization: true },
-      { header: 'url',                  f: ->(i) { Frontend::UrlService.new.model_to_url(i) },    skip_sanitization: true },
+      { header: 'author_id',            f: ->(i) { i.author_id } },
+      { header: 'proposed_budget',      f: ->(i) { i.proposed_budget },                                                    skip_sanitization: true },
+      { header: 'published_at',         f: ->(i) { i.published_at },                                                       skip_sanitization: true },
+      { header: 'comments',             f: ->(i) { i.comments_count },                                                     skip_sanitization: true },
+      { header: 'upvotes',              f: ->(i) { i.upvotes_count },                                                      skip_sanitization: true },
+      { header: 'downvotes',            f: ->(i) { i.downvotes_count },                                                    skip_sanitization: true },
+      { header: 'baskets',              f: ->(i) { i.baskets_count },                                                      skip_sanitization: true },
+      { header: 'url',                  f: ->(i) { Frontend::UrlService.new.model_to_url(i) },                             skip_sanitization: true },
       { header: 'project',              f: ->(i) { multiloc_service.t(i&.project&.title_multiloc) } },
       { header: 'topics',               f: ->(i) { i.topics.map { |t| multiloc_service.t(t.title_multiloc) }.join(',') } },
-      { header: 'areas',                f: ->(i) { i.areas.map { |a| multiloc_service.t(a.title_multiloc) }.join(',') } },
       { header: 'status',               f: ->(i) { multiloc_service.t(i&.idea_status&.title_multiloc) } },
       { header: 'assignee',             f: ->(i) { i.assignee&.full_name } },
       { header: 'assignee_email',       f: ->(i) { i.assignee&.email } },
-      { header: 'latitude',             f: ->(i) { i.location_point&.coordinates&.last },         skip_sanitization: true },
-      { header: 'longitude',            f: ->(i) { i.location_point&.coordinates&.first },        skip_sanitization: true },
+      { header: 'latitude',             f: ->(i) { i.location_point&.coordinates&.last },                                  skip_sanitization: true },
+      { header: 'longitude',            f: ->(i) { i.location_point&.coordinates&.first },                                 skip_sanitization: true },
       { header: 'location_description', f: ->(i) { i.location_description } },
-      { header: 'comments_count',       f: ->(i) { i.comments_count },                            skip_sanitization: true },
-      { header: 'attachments_count',    f: ->(i) { i.idea_files.size },                           skip_sanitization: true },
-      { header: 'attachmens',           f: ->(i) { i.idea_files.map { |f| f.file.url }.join("\n") }, skip_sanitization: true }
+      { header: 'attachments',          f: ->(i) { i.idea_files.map { |f| f.file.url }.join("\n") },                       skip_sanitization: true, width: 2 }
     ]
-
-    columns.reject! { |c| %w[author_email assignee_email].include?(c[:header]) } unless view_private_attributes
+    columns.concat custom_field_columns :author, view_private_attributes
+    columns.reject! { |c| %w[author_email assignee_email author_id].include?(c[:header]) } unless view_private_attributes
     columns
   end
 
@@ -173,57 +182,62 @@ class XlsxService
     columns = [
       { header: 'id',                   f: ->(i) { i.id }, skip_sanitization: true },
       { header: 'title',                f: ->(i) { multiloc_service.t(i.title_multiloc) } },
-      { header: 'body',                 f: ->(i) { convert_to_text(multiloc_service.t(i.body_multiloc)) } },
+      { header: 'description',          f: ->(i) { convert_to_text_long_lines(multiloc_service.t(i.body_multiloc)) }, width: 10 },
       { header: 'author_name',          f: ->(i) { i.author_name } },
       { header: 'author_email',         f: ->(i) { i.author&.email } },
-      { header: 'publication_status',   f: ->(i) { i.publication_status },                              skip_sanitization: true },
+      { header: 'author_id',            f: ->(i) { i.author_id } },
       { header: 'published_at',         f: ->(i) { i.published_at },                                    skip_sanitization: true },
-      { header: 'upvotes_count',        f: ->(i) { i.upvotes_count },                                   skip_sanitization: true },
+      { header: 'comments',             f: ->(i) { i.comments_count },                                  skip_sanitization: true },
+      { header: 'upvotes',              f: ->(i) { i.upvotes_count },                                   skip_sanitization: true },
       { header: 'url',                  f: ->(i) { Frontend::UrlService.new.model_to_url(i) },          skip_sanitization: true },
       { header: 'topics',               f: ->(i) { i.topics.map { |t| multiloc_service.t(t.title_multiloc) }.join(',') } },
-      { header: 'areas',                f: ->(i) { i.areas.map { |a| multiloc_service.t(a.title_multiloc) }.join(',') } },
       { header: 'initiative_status',    f: ->(i) { multiloc_service.t(i&.initiative_status&.title_multiloc) } },
       { header: 'assignee',             f: ->(i) { i.assignee&.full_name } },
       { header: 'assignee_email',       f: ->(i) { i.assignee&.email } },
       { header: 'latitude',             f: ->(i) { i.location_point&.coordinates&.last },               skip_sanitization: true },
       { header: 'longitude',            f: ->(i) { i.location_point&.coordinates&.first },              skip_sanitization: true },
       { header: 'location_description', f: ->(i) { i.location_description } },
-      { header: 'comments_count',       f: ->(i) { i.comments_count },                                  skip_sanitization: true },
-      { header: 'attachments_count',    f: ->(i) { i.initiative_files.size },                           skip_sanitization: true },
-      { header: 'attachmens',           f: ->(i) { i.initiative_files.map { |f| f.file.url }.join("\n") }, skip_sanitization: true }
+      { header: 'attachmens',           f: ->(i) { i.initiative_files.map { |f| f.file.url }.join("\n") }, skip_sanitization: true, width: 2 }
     ]
-    columns.reject! { |c| %w[author_email assignee_email].include?(c[:header]) } unless view_private_attributes
+    columns.concat custom_field_columns :author, view_private_attributes
+    columns.reject! { |c| %w[author_email assignee_email author_id].include?(c[:header]) } unless view_private_attributes
     generate_xlsx 'Initiatives', columns, initiatives
   end
 
   def generate_idea_comments_xlsx(comments, view_private_attributes: false)
     columns = [
-      { header: 'id',            f: ->(c) { c.id }, skip_sanitization: true },
-      { header: 'input',         f: ->(c) { multiloc_service.t(c&.post.title_multiloc) } },
-      { header: 'body',          f: ->(c) { convert_to_text(multiloc_service.t(c.body_multiloc)) } },
-      { header: 'upvotes_count', f: ->(c) { c.upvotes_count }, skip_sanitization: true },
-      { header: 'author_name',   f: ->(c) { c.author_name } },
-      { header: 'author_email',  f: ->(c) { c.author&.email } },
-      { header: 'created_at',    f: ->(c) { c.created_at },    skip_sanitization: true },
-      { header: 'parent',        f: ->(c) { c.parent_id },     skip_sanitization: true },
-      { header: 'project',       f: ->(c) { multiloc_service.t(c&.idea&.project&.title_multiloc) } }
+      { header: 'id',                 f: ->(c) { c.id }, skip_sanitization: true },
+      { header: 'input',              f: ->(c) { multiloc_service.t(c.post.title_multiloc) } },
+      { header: 'input_id',           f: ->(c) { c.post.id } },
+      { header: 'comment',            f: ->(c) { convert_to_text_long_lines(multiloc_service.t(c.body_multiloc)) }, width: 10  },
+      { header: 'upvotes_count',      f: ->(c) { c.upvotes_count }, skip_sanitization: true },
+      { header: 'author_name',        f: ->(c) { c.author_name } },
+      { header: 'author_email',       f: ->(c) { c.author&.email } },
+      { header: 'author_id',          f: ->(i) { i.author_id } },
+      { header: 'created_at',         f: ->(c) { c.created_at },    skip_sanitization: true },
+      { header: 'parent_comment_id',  f: ->(c) { c.parent_id },     skip_sanitization: true },
+      { header: 'project',            f: ->(c) { multiloc_service.t(c&.idea&.project&.title_multiloc) } }
     ]
-    columns.reject! { |c| %w[author_email].include?(c[:header]) } unless view_private_attributes
+    columns.concat custom_field_columns :author, view_private_attributes
+    columns.reject! { |c| %w[author_email author_id].include?(c[:header]) } unless view_private_attributes
     generate_xlsx 'Comments', columns, comments
   end
 
   def generate_initiative_comments_xlsx(comments, view_private_attributes: false)
     columns = [
       { header: 'id',            f: ->(c) { c.id }, skip_sanitization: true },
-      { header: 'initiative',    f: ->(c) { multiloc_service.t(c&.post.title_multiloc) } },
-      { header: 'body',          f: ->(c) { convert_to_text(multiloc_service.t(c.body_multiloc)) } },
+      { header: 'proposal',    f: ->(c) { multiloc_service.t(c.post.title_multiloc) } },
+      { header: 'proposal_id',         f: ->(c) { c.post.id } },
+      { header: 'comment',          f: ->(c) { convert_to_text_long_lines(multiloc_service.t(c.body_multiloc)) }, width: 10  },
       { header: 'upvotes_count', f: ->(c) { c.upvotes_count }, skip_sanitization: true },
       { header: 'author_name',   f: ->(c) { c.author_name } },
       { header: 'author_email',  f: ->(c) { c.author&.email } },
+      { header: 'author_id',            f: ->(i) { i.author_id } },
       { header: 'created_at',    f: ->(c) { c.created_at },    skip_sanitization: true },
-      { header: 'parent',        f: ->(c) { c.parent_id },     skip_sanitization: true }
+      { header: 'parent_comment_id',        f: ->(c) { c.parent_id },     skip_sanitization: true }
     ]
-    columns.reject! { |c| %w[author_email].include?(c[:header]) } unless view_private_attributes
+    columns.concat custom_field_columns :author, view_private_attributes
+    columns.reject! { |c| %w[author_email author_id].include?(c[:header]) } unless view_private_attributes
     generate_xlsx 'Comments', columns, comments
   end
 
@@ -242,37 +256,49 @@ class XlsxService
     generate_xlsx 'Invites', columns, invites
   end
 
-  private
+  # @param [Symbol] record_to_user
+  # @param [Boolean] view_private_attributes
+  def custom_field_columns(record_to_user, view_private_attributes)
+    return [] unless view_private_attributes
 
-  def user_private_attributes
-    custom_field_attrs = CustomField.with_resource_type('User')&.map(&:key)
-    custom_field_attrs + %w[email gender birthyear domicile education]
+    areas = Area.all.index_by(&:id)
+    user_custom_fields = CustomField.with_resource_type('User').enabled.order(:ordering)
+
+    user_custom_fields&.map do |field|
+
+      column_name = multiloc_service.t(field.title_multiloc)
+      value_getter = # lambda that gets a record and returns the field value
+        if field.key == 'domicile'  # 'domicile' is a special case
+          lambda do |record|
+            user = record.send(record_to_user)
+            multiloc_service.t(areas[user.domicile]&.title_multiloc) if user && user.custom_field_values['domicile']
+          end
+        else # all other custom fields
+          lambda do |record|
+            user = record.send(record_to_user)
+            user && user.custom_field_values[field.key]
+          end
+        end
+
+      { header: column_name, f: value_getter }
+    end
   end
 
-  def users_xlsx_columns
-    areas = Area.all.index_by(&:id)
+  private
 
-    custom_field_columns = CustomField.with_resource_type('User')&.map(&:key).map do |key|
-      { header: key, f: ->(u) { u.custom_field_values[key] } }
+  def private_attributes
+    custom_field_attrs = CustomField.with_resource_type('User')&.map do |field|
+      multiloc_service.t(field.title_multiloc)
     end
-
-    [
-      { header: 'id', f: ->(u) { u.id }, skip_sanitization: true },
-      { header: 'email', f: ->(u) { u.email } },
-      { header: 'first_name', f: ->(u) { u.first_name } },
-      { header: 'last_name', f: ->(u) { u.last_name } },
-      { header: 'slug', f: ->(u) { u.slug }, skip_sanitization: true },
-      { header: 'gender', f: ->(u) { u.gender } },
-      { header: 'birthyear', f: ->(u) { u.birthyear } },
-      { header: 'domicile', f: ->(u) { multiloc_service.t(areas[u.domicile]&.title_multiloc) } },
-      { header: 'education', f: ->(u) { u.education } },
-      { header: 'created_at', f: ->(u) { u.created_at }, skip_sanitization: true },
-      *custom_field_columns
-    ]
+    custom_field_attrs + %w[email gender birthyear domicile education Email author_email author_id assignee_email]
   end
 
   def header_style(s)
     s.add_style bg_color: '99ccff', fg_color: '2626ff', sz: 16, alignment: { horizontal: :center }
+  end
+
+  def convert_to_text_long_lines html
+    convert_to_text(html).gsub(/\n/, '')
   end
 end
 

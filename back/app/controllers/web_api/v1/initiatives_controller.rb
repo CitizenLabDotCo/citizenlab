@@ -1,4 +1,6 @@
 class WebApi::V1::InitiativesController < ApplicationController
+  include BlockingProfanity
+
   before_action :set_initiative, only: %i[show update destroy allowed_transitions]
   skip_after_action :verify_authorized, only: %i[index_xlsx index_initiative_markers filter_counts]
 
@@ -24,7 +26,8 @@ class WebApi::V1::InitiativesController < ApplicationController
       params,
       current_user: current_user,
       scope: policy_scope(Initiative).where(publication_status: 'published'),
-      includes: %i[author initiative_status topics areas]
+      includes: %i[author initiative_status topics areas],
+      paginate: false
     )
     @initiatives = @result.records
 
@@ -87,6 +90,7 @@ class WebApi::V1::InitiativesController < ApplicationController
     service.before_create(@initiative, current_user)
 
     authorize @initiative
+    verify_profanity @initiative
     ActiveRecord::Base.transaction do
       if @initiative.save
         service.after_create(@initiative, current_user)
@@ -111,6 +115,7 @@ class WebApi::V1::InitiativesController < ApplicationController
       @initiative.remove_header_bg!
     end
     authorize @initiative
+    verify_profanity @initiative
 
     service.before_update(@initiative, current_user)
 

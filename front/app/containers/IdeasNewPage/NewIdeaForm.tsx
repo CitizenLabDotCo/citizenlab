@@ -69,6 +69,8 @@ const Title = styled.h1`
 interface InputProps {
   onSubmit: () => void;
   projectId: string;
+  onTitleChange: (title: string) => void;
+  onDescriptionChange: (description: string) => void;
 }
 
 interface DataProps {
@@ -89,6 +91,9 @@ interface GlobalState {
   submitError: boolean;
   processing: boolean;
   fileOrImageError: boolean;
+  titleProfanityError: boolean;
+  descriptionProfanityError: boolean;
+  authorId: string | null;
 }
 
 interface State extends GlobalState {}
@@ -101,6 +106,7 @@ class NewIdeaForm extends PureComponent<Props, State> {
     super(props);
     this.state = {
       title: null,
+      authorId: null,
       description: null,
       selectedTopics: [],
       budget: null,
@@ -110,6 +116,8 @@ class NewIdeaForm extends PureComponent<Props, State> {
       submitError: false,
       processing: false,
       fileOrImageError: false,
+      titleProfanityError: false,
+      descriptionProfanityError: false,
     };
     this.globalState = globalState.init('IdeasNewPage');
     this.subscriptions = [];
@@ -131,6 +139,9 @@ class NewIdeaForm extends PureComponent<Props, State> {
           submitError,
           processing,
           fileOrImageError,
+          titleProfanityError,
+          descriptionProfanityError,
+          authorId,
         }) => {
           const newState: State = {
             title,
@@ -143,6 +154,9 @@ class NewIdeaForm extends PureComponent<Props, State> {
             submitError,
             processing,
             fileOrImageError,
+            titleProfanityError,
+            descriptionProfanityError,
+            authorId,
           };
 
           this.setState(newState);
@@ -165,6 +179,7 @@ class NewIdeaForm extends PureComponent<Props, State> {
       address: position,
       imageFile,
       ideaFiles,
+      authorId,
     } = ideaFormOutput;
     this.globalState.set({
       title,
@@ -175,6 +190,7 @@ class NewIdeaForm extends PureComponent<Props, State> {
       position,
       imageFile,
       ideaFiles,
+      authorId,
     });
     this.props.onSubmit();
   };
@@ -188,8 +204,17 @@ class NewIdeaForm extends PureComponent<Props, State> {
       proposedBudget,
       position,
       imageFile,
+      titleProfanityError,
+      descriptionProfanityError,
+      authorId,
     } = this.state;
-    const { projectId, project, phases } = this.props;
+    const {
+      projectId,
+      project,
+      phases,
+      onTitleChange,
+      onDescriptionChange,
+    } = this.props;
 
     if (!isNilOrError(project)) {
       const inputTerm = getInputTerm(
@@ -214,6 +239,7 @@ class NewIdeaForm extends PureComponent<Props, State> {
           </Title>
 
           <IdeaForm
+            authorId={authorId}
             projectId={projectId}
             title={title}
             description={description}
@@ -222,7 +248,11 @@ class NewIdeaForm extends PureComponent<Props, State> {
             proposedBudget={proposedBudget}
             address={position}
             imageFile={imageFile}
+            hasTitleProfanityError={titleProfanityError}
+            hasDescriptionProfanityError={descriptionProfanityError}
             onSubmit={this.handleIdeaFormOutput}
+            onTitleChange={onTitleChange}
+            onDescriptionChange={onDescriptionChange}
           />
         </Container>
       );

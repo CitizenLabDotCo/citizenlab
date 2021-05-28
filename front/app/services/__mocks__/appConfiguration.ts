@@ -1,7 +1,7 @@
 import { IAppConfiguration, IAppConfigurationData } from 'services/appConfiguration';
 import { BehaviorSubject } from 'rxjs';
 
-const getAppConfiguration = (): IAppConfiguration => ({
+export const getAppConfiguration = (): IAppConfiguration => ({
   data: getAppConfigurationData()
 });
 

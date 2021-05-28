@@ -1,4 +1,4 @@
-nb:
+"no":
   email_campaigns:
     campaign_type_description:
       "manual": Offisielle beskjed
@@ -33,7 +33,7 @@ nb:
       "official_feedback_on_your_initiative": Oppdatering på mitt forslag
       "password_reset": Nullstill passord
       "project_moderation_rights_received": Rettigheter til å moderere prosjekter mottatt
-      "project_folder_moderation_rights_received": Folder manager rights received
+      "project_folder_moderation_rights_received": Mappeadministrator-rettigheter mottatt
       "project_phase_started": Ny prosjektfase
       "project_phase_upcoming": Kommende ny prosjektfase
       "status_change_of_commented_idea": Statusendring på en idé jeg kommenterte
@@ -83,7 +83,7 @@ nb:
       "official_feedback_on_your_initiative": Update on your proposal - all users
       "password_reset": Password reset - all users
       "project_moderation_rights_received": Project moderation rights received - project managers
-      "project_folder_moderation_rights_received": Folder manager rights received
+      "project_folder_moderation_rights_received": Mappeadministrator-rettigheter mottatt
       "project_phase_started": New project phase - all users
       "project_phase_upcoming": Upcoming new project phase - admins and project managers
       "status_change_of_commented_idea": Status change of an idea you commented on - all users
@@ -93,7 +93,7 @@ nb:
       "status_change_of_your_idea": Status change of your idea - all users
       "status_change_of_your_initiative": Status change of your proposal - all users
       "threshold_reached_for_admin": Proposal reached the voting threshold - admins
-      "welcome": New user - admins
+      "welcome": Welcome email to new users - all users
       "admin_digest": Weekly overview - admins
       "moderator_digest": Weekly overview - project managers
       "assignee_digest": Weekly overview of assigned ideas - admins and project managers
@@ -122,7 +122,7 @@ nb:
       preheader: 'Admin-sammendrag for %{organizationName}'
       title_your_weekly_report: '%{firstName}, din ukentlige rapport'
       text_introduction: 'Vi har satt sammen en liste over ideene som har skapt mest aktivitet den siste uken. Finn ut hva som skjer på plattformen din!'
-      cta_visit_the_platform: 'Besøk plattformen'
+      cta_visit_the_platform: 'Besøk plattformen '
       new_users: 'Nye brukere'
       new_ideas: 'Nye ideer'
       new_comments: 'Nye kommentarer'
@@ -410,20 +410,20 @@ nb:
       title_you_became_moderator: 'Du har blitt moderator'
       x_ideas: '%{numberOfIdeas} ideer'
     project_folder_moderation_rights_received:
-      cta_view_folder_button: 'View this folder'
-      message_added_as_folderadmin: 'You''ve been given folder manager rights on %{organizationName}''s participation platform for the following folder:'
-      no_projects: 'No projects yet'
-      preheader: 'An administrator of the participation platform of %{organizationName} just made you a manager of the following folder'
-      subject: 'You became a project folder manager on the participation platform of %{organizationName}'
-      text_manage_folder: 'A folder is way to organize several participation projects together. As a folder manager, you can edit the folder and folder description and create new projects (to delete projects, contact your platform administrator). You will also have project management rights over all projects within the folder, allowing you to edit the projects, manage the inputs and email participants.'
-      text_moderate_analyse_input: 'Once the projects are launched, the first inputs will start coming in. You''ll receive weekly reports with the key activities so that you can stay on top of what’s happening. The Input Manager in your ''Manage Platform'' panel allows you to see and manage the input, including assigning statuses and responding to posts and comments.'
-      text_design_participatory_process: 'You can manage the different participation projects within your folder - configure the participation method, add a project description, attach images, and communicate related events. You can also manage how participants interact with your projects, including setting access rights and configuring the posting, voting and commenting settings.'
+      cta_view_folder_button: 'Vis denne mappen'
+      message_added_as_folderadmin: 'Du er tildelt mappeadministrator-rettigheter for følgende mappe på %{organizationName}s deltagelsesplattform:'
+      no_projects: 'Ingen prosjekter enda'
+      preheader: 'En administrator for deltagelsesplattformen til %{organizationName} utnevnte deg nettopp til administrator for følgende mappe'
+      subject: 'Du ble en prosjektmappe-administrator på deltagelsesplattformen til %{organizationName}'
+      text_manage_folder: 'En mappe er en måte å organisere flere deltagelsesprosjekter sammen på. Som mappeadministrator kan du redigere mappen og mappebeskrivelsen og opprette nye prosjekter (for å slette prosjekter, kontakt plattformadministratoren din). Du får også prosjektledelsesrettigheter for alle prosjekter i mappen slik at du kan redigere prosjektene, administrere innspillene og sende e-post til deltagerne.'
+      text_moderate_analyse_input: 'Når prosjektene er lanserte, begynner de første innspillene å komme inn. Du får ukentlige rapporter over nøkkelaktivitetene slik at du kan være på høyden med hva som skjer. Innspillsadministratoren i ''Administrer plattform''-panelet ditt lar deg se og administrere innspillene, inkludert å tilordne statuser og besvare innlegg og kommentarer.'
+      text_design_participatory_process: 'Du kan administrere de forskjellige deltagelsesprosjektene i mappen din – konfigurere deltagelsesmetoden, legge til en prosjektbeskrivelse, legge til bilder og opplyse om tilknyttede arrangementer. Du kan også administrere hvordan deltagere samhandler med prosjektene dine, inkludert å sette tilgangsrettigheter og konfigurasjon av innleggs-, voterings- og kommenteringsinnstillingene.'
       title_design_participatory_process: 'Utform deltakelsesprosessen'
       title_moderate_analyse_input: 'Moderer og analyser innspillene'
-      title_manage_folder: 'Manage the folder settings and create new projects.'
-      title_what_can_you_do_folderadmin: 'What can you do as a folder manager?'
-      title_added_as_folderadmin: 'You''ve been added as a folder manager'
-      x_projects: '%{numberOfProjects} projects'
+      title_manage_folder: 'Administrer mappeinnstillingene og opprett nye prosjekter.'
+      title_what_can_you_do_folderadmin: 'Hva kan du gjøre som mappeadministrator?'
+      title_added_as_folderadmin: 'Du er lagt til som mappeadministrator'
+      x_projects: '%{numberOfProjects} prosjekter'
     password_reset:
       cta_reset_password: 'Tilbakestill passordet ditt'
       message_you_reset_your_password: 'Du ba om å tilbakestille passord for plattformen til%{organizationName}. Klikk på knappen nedenfor for å velge et nytt, sikkert passord. Koblingen utløper om en time.'
@@ -491,23 +491,23 @@ nb:
       commented: "%{authorFirstName} kommenterte:"
       preheader: "Ukesoversikt over %{organizationName}"
       title_your_weekly_report: "Oppdag hva som skjedde forrige uke"
-      intro_text: "Here's a summary of what happened on the participation platform of %{organizationName}."
+      intro_text: "Her er et sammendrag av hva som skjedde på deltagelsesplattformen til %{organizationName}."
       cta_go_to_the_platform: "Gå til plattformen"
       title_no_activity_past_week: "Ingen aktivitet den siste uken"
-      title_proposals: "Proposals started"
-      proposals_started_text: "Proposals are ideas that need to gain traction and support from others (people like you!) in order to move forward. Below is a list of proposals that have been put forward in the last week. Click on any of them to take a look and offer your support and feedback!"
+      title_proposals: "Forslag startet"
+      proposals_started_text: "Forslag er ideer som trenger å blomstre og få støtte fra andre (personer som deg) for å komme videre. Nedenfor er en liste over forslag som er fremmet den siste uken. Klikk på en av dem for å ta en titt og tilby din støtte og tilbakemelding!"
       title_successful_proposals: "Oppdag forslag"
-      successful_proposals_text: "These proposals have gotten enough support to move to the next stage! Click on the proposal to learn more about what happens next."
+      successful_proposals_text: "Disse forslagene har fått nok støtte til å flytte til neste nivå! Klikk på forslaget for å lære mer om hva som skjer videre."
       today_by_author: "I dag av %{author}"
       yesterday_by_author: "I går av %{author}"
       x_days_ago_by_author: "%{x} dager siden av %{author}"
       trending_ideas: "Trending ideer"
-      trending_ideas_text: "Interested in what’s been happening on the platform? Here are the three most trending ideas and what people are saying about them."
+      trending_ideas_text: "Interessert i hva som har skjedd på plattformen? Her er de tre mest trendskapende ideene og hva folk sier om dem."
       no_notifications: "No notifications"
       one_notification: "1 notification"
       multiple_notifications: "%{notifCount} varsler"
-      no_unread_notifications: "You don't have any unread notifications. Visit the platform to contribute your input and generate new notifications!"
-      unread_notifications: "You have unread notifications. Visit the platform to discover what's happening!"
+      no_unread_notifications: "Du har ingen uleste varsler. Besøk plattformen for å bidra med innspillene dine og fremkall nye varsler!"
+      unread_notifications: "Du har uleste varsler. Besøk plattformen for å se hva som skjer!"
     threshold_reached_for_admin:
       by_author: 'av %{authorName}'
       cta_process_initiative: 'Ta dette forslaget til neste steg'

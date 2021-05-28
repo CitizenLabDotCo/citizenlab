@@ -33,6 +33,7 @@ import { openSignUpInModal } from 'components/SignUpIn/events';
 import styled from 'styled-components';
 import { defaultCardStyle, fontSizes, media } from 'utils/styleUtils';
 import { openVerificationModal } from 'components/Verification/verificationModalEvents';
+import SurveyXact from './SurveyXact';
 
 const Container = styled.div`
   position: relative;
@@ -187,6 +188,10 @@ class Survey extends PureComponent<Props, State> {
       const registrationNotCompleted =
         !isNilOrError(authUser) &&
         !authUser.attributes.registration_completed_at;
+      const requiresConfirmation =
+        !isNilOrError(authUser) &&
+        !!authUser.attributes.confirmation_required &&
+        !!registrationNotCompleted;
       const shouldVerify = !!(
         disabledReason === 'maybeNotVerified' ||
         disabledReason === 'notVerified'
@@ -209,6 +214,7 @@ class Survey extends PureComponent<Props, State> {
             <SignUpInWrapper>
               <StyledSignUpIn
                 metaData={{
+                  requiresConfirmation,
                   flow: 'signup',
                   pathname: window.location.pathname,
                   inModal: true,
@@ -264,6 +270,10 @@ class Survey extends PureComponent<Props, State> {
 
             {surveyService === 'enalyzer' && (
               <EnalyzerSurvey enalyzerUrl={surveyEmbedUrl} />
+            )}
+
+            {surveyService === 'survey_xact' && (
+              <SurveyXact surveyXactUrl={surveyEmbedUrl} />
             )}
           </Container>
         );

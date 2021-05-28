@@ -33,7 +33,10 @@ describe XlsxService do
 
     it "contains extra columns for custom user fields" do
       custom_fields = create_list(:custom_field, 3)
-      expect(worksheet[0].cells.map(&:value)).to include *custom_fields.map(&:key)
+      custom_fields_headers = custom_fields.map do |custom_field|
+        custom_field.title_multiloc["en"]
+      end
+    	expect(worksheet[0].cells.map(&:value)).to include(*custom_fields_headers)
     end
 
     describe do
@@ -43,14 +46,22 @@ describe XlsxService do
         custom_field = create(:custom_field)
         expect(worksheet[0].cells.map(&:value)).not_to include 'email'
         expect(worksheet[0].cells.map(&:value)).not_to include 'birthyear'
-        expect(worksheet[0].cells.map(&:value)).not_to include custom_field.key
+        expect(worksheet[0].cells.map(&:value)).not_to include custom_field.title_multiloc["en"]
       end
     end
   end
 
   describe "generate_ideas_xlsx" do
-    let(:ideas) { create_list(:idea, 5) }
-    let(:xlsx) { service.generate_ideas_xlsx(ideas) }
+
+    before { create_list(:custom_field, 2) }
+
+    let(:ideas) do
+      create_list(:idea, 5).tap do |ideas|
+        ideas.first.author.destroy! # should be able to handle ideas without author
+        ideas.first.reload
+      end
+    end
+    let(:xlsx) { service.generate_ideas_xlsx(ideas, view_private_attributes: true) }
     let(:workbook) { RubyXL::Parser.parse_buffer(xlsx) }
     let(:worksheet) { workbook.worksheets[0] }
 
@@ -129,7 +140,7 @@ describe XlsxService do
     it "exports a valid excel file and contains a row for every comment" do
       expect{ workbook }.to_not raise_error
       expect(worksheet.sheet_data.size).to eq (comments.size + 1)
-      expect(worksheet[comments.size].cells.map(&:value)[worksheet[0].cells.map(&:value).index('parent')]).to eq comments.last.parent_id
+      expect(worksheet[comments.size].cells.map(&:value)[worksheet[0].cells.map(&:value).index('parent_comment_id')]).to eq comments.last.parent_id
     end
 
     describe do

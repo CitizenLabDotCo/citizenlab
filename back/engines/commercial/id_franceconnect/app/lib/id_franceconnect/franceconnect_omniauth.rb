@@ -87,6 +87,5 @@ module IdFranceconnect
     def redirect_uri(configuration)
       "#{configuration.base_backend_uri}/auth/franceconnect/callback"
     end
-
   end
 end

@@ -22,12 +22,15 @@ import {
   openSignUpInModal$,
   closeSignUpInModal$,
   signUpActiveStepChange$,
+  changeMetaData$,
+  closeSignUpInModal,
 } from 'components/SignUpIn/events';
 
 // style
 import styled from 'styled-components';
 
 import useUserCustomFieldsSchema from 'modules/commercial/user_custom_fields/hooks/useUserCustomFieldsSchema';
+import Outlet from 'components/Outlet';
 
 const Container = styled.div``;
 
@@ -51,6 +54,7 @@ const UserCustomFieldsSignUpInModal = memo<Props>(
       metaData?.verificationContext
     );
     const customFieldsSchema = useUserCustomFieldsSchema();
+    const opened = !!metaData?.inModal;
 
     const hasParticipationConditions =
       !isNilOrError(participationConditions) &&
@@ -89,6 +93,9 @@ const UserCustomFieldsSignUpInModal = memo<Props>(
         signUpActiveStepChange$.subscribe(({ eventValue: activeStep }) => {
           setSignUpActiveStep(activeStep);
         }),
+        changeMetaData$.subscribe(({ eventValue: metaData }) => {
+          setMetaData(metaData);
+        }),
       ];
 
       return () =>
@@ -110,7 +117,7 @@ const UserCustomFieldsSignUpInModal = memo<Props>(
         completeRegistration({});
       }
 
-      setMetaData(undefined);
+      closeSignUpInModal();
     }, [signUpActiveStep, customFieldsSchema, authUser]);
 
     const onSignUpInCompleted = useCallback(() => {
@@ -123,14 +130,14 @@ const UserCustomFieldsSignUpInModal = memo<Props>(
         metaData?.action?.();
       }
 
-      setMetaData(undefined);
+      closeSignUpInModal();
     }, [metaData, authUser]);
 
     return (
       <Modal
         width={modalWidth}
         padding="0px"
-        opened={!!metaData}
+        opened={opened}
         close={onClose}
         closeOnClickOutside={false}
         noClose={modalNoClose}
@@ -142,6 +149,7 @@ const UserCustomFieldsSignUpInModal = memo<Props>(
               onSignUpInCompleted={onSignUpInCompleted}
             />
           )}
+          <Outlet id="app.components.SignUpIn.metaData" metaData={metaData} />
         </Container>
       </Modal>
     );

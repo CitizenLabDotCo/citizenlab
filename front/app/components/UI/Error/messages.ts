@@ -43,6 +43,25 @@ export default defineMessages({
     defaultMessage:
       'This password can be easily guessed. Please choose a stronger password.',
   },
+  confirmation_code_invalid: {
+    id: 'app.errors.confirmation_code_invalid',
+    defaultMessage:
+      "Wrong code. Please check your email for the correct code or try 'Send New Code'",
+  },
+  confirmation_code_expired: {
+    id: 'app.errors.confirmation_code_expired',
+    defaultMessage: 'Code expired. Please resend a new code.',
+  },
+  confirmation_code_too_many_retries: {
+    id: 'app.errors.confirmation_code_too_many_retries',
+    defaultMessage:
+      "You've tried too many times. Please resend a code or try changing your email.",
+  },
+  confirmation_code_too_many_resets: {
+    id: 'app.errors.confirmation_code_too_many_resets',
+    defaultMessage:
+      "You've resent the confirmation code too many times. Please contact us to receive an invitation code instead.",
+  },
   after_end_at: {
     id: 'app.errors.after_end_at',
     defaultMessage: 'The start date occurs after the end date',
@@ -207,5 +226,9 @@ export default defineMessages({
   password_too_short: {
     id: 'app.errors.password_too_short',
     defaultMessage: 'The password must be at least 8 characters long',
+  },
+  view_name_taken: {
+    id: 'app.errors.view_name_taken',
+    defaultMessage: 'A view with this name already exists',
   },
 });

@@ -60,19 +60,6 @@ services:
     ports:
       - "1080:1080"
 
-  front:
-    build:
-      context: .
-      dockerfile: front/Dockerfile
-    ports:
-      - "3000:3000"
-    env_file:
-      - ".env-front"
-    volumes:
-      - "./front:/front"
-      - /front/node_modules
-    command: npm start
-
   # Include this and uncomment :mem_cache_store in
   # `config/environments/development.rb` if you want to enable caching in
   # development

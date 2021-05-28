@@ -117,4 +117,21 @@ export default defineMessages({
     id: 'app.components.IdeaForm.otherFilesTitle',
     defaultMessage: 'Other files',
   },
+  profanityError: {
+    id: 'app.components.IdeaForm.profanityError',
+    defaultMessage:
+      'You may have used one or more words that are considered profanity by {guidelinesLink}. Please alter your text to remove any profanities that might be present.',
+  },
+  guidelinesLinkText: {
+    id: 'app.components.IdeaForm.guidelinesLinkText',
+    defaultMessage: 'our guidelines',
+  },
+  author: {
+    id: 'app.components.IdeaForm.author',
+    defaultMessage: 'Author',
+  },
+  authorPlaceholder: {
+    id: 'app.components.IdeaForm.authorPlaceholder',
+    defaultMessage: 'Start typing to search by user email or name...',
+  },
 });

@@ -37,6 +37,13 @@ import { convertToGeoJson, reverseGeocode } from 'utils/locationTools';
 import { media, colors } from 'utils/styleUtils';
 import styled from 'styled-components';
 
+// tracks
+import tracks from './tracks';
+import { trackEventByName } from 'utils/analytics';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetAppConfiguration';
+
 const Container = styled.div`
   background: ${colors.background};
   min-height: calc(
@@ -80,6 +87,7 @@ interface InputProps {}
 
 interface DataProps {
   locale: GetLocaleChildProps;
+  appConfiguration: GetAppConfigurationChildProps;
   authUser: GetAuthUserChildProps;
   project: GetProjectChildProps;
   previousPathName: string | null;
@@ -103,6 +111,8 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
       position: '',
       position_coordinates: null,
       submitError: false,
+      titleProfanityError: false,
+      descriptionProfanityError: false,
       fileOrImageError: false,
       processing: false,
       ideaId: null,
@@ -110,6 +120,7 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
       imageFile: [],
       imageId: null,
       ideaFiles: [],
+      authorId: null,
     };
     this.globalState = globalState.init('IdeasNewPage', initialGlobalState);
   }
@@ -170,7 +181,19 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
   };
 
   handleOnIdeaSubmit = async () => {
-    const { locale, authUser, project } = this.props;
+    const { locale, authUser, project, appConfiguration } = this.props;
+    const {
+      title,
+      description,
+      selectedTopics,
+      budget,
+      proposedBudget,
+      position,
+      position_coordinates,
+      imageFile,
+      ideaFiles,
+      authorId,
+    } = await this.globalState.get();
 
     if (
       !isNilOrError(locale) &&
@@ -180,27 +203,17 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
       this.globalState.set({ submitError: false, processing: true });
 
       try {
-        const {
-          title,
-          description,
-          selectedTopics,
-          budget,
-          proposedBudget,
-          position,
-          position_coordinates,
-          imageFile,
-          ideaFiles,
-        } = await this.globalState.get();
         const ideaTitle = { [locale]: title as string };
         const ideaDescription = { [locale]: description || '' };
         const locationGeoJSON =
           position_coordinates || (await convertToGeoJson(position));
         const locationDescription =
           isString(position) && !isEmpty(position) ? position : null;
+
         const ideaObject: IIdeaAdd = {
           budget,
           proposed_budget: proposedBudget,
-          author_id: authUser.id,
+          author_id: authorId,
           publication_status: 'published',
           title_multiloc: ideaTitle,
           body_multiloc: ideaDescription,
@@ -211,14 +224,15 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
         };
 
         const idea = await addIdea(ideaObject);
+        const ideaId = idea.data.id;
 
         try {
           const imageToAddPromise =
             imageFile && imageFile[0]
-              ? addIdeaImage(idea.data.id, imageFile[0].base64, 0)
+              ? addIdeaImage(ideaId, imageFile[0].base64, 0)
               : Promise.resolve(null);
           const filesToAddPromises = ideaFiles.map((file) =>
-            addIdeaFile(idea.data.id, file.base64, file.name)
+            addIdeaFile(ideaId, file.base64, file.name)
           );
 
           await Promise.all([
@@ -228,9 +242,9 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
         } catch (error) {
           const apiErrors = get(error, 'json.errors');
           if (process.env.NODE_ENV === 'development') console.log(error);
-          if (apiErrors && !apiErrors.idea) {
+
+          if (apiErrors && apiErrors.image) {
             this.globalState.set({
-              submitError: false,
               fileOrImageError: true,
             });
           }
@@ -241,19 +255,82 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
           setTimeout(() => {
             clHistory.push({
               pathname: `/ideas/${idea.data.attributes.slug}`,
-              search: `?new_idea_id=${idea.data.id}`,
+              search: `?new_idea_id=${ideaId}`,
             });
           }, 4000);
         } else {
           clHistory.push({
             pathname: `/ideas/${idea.data.attributes.slug}`,
-            search: `?new_idea_id=${idea.data.id}`,
+            search: `?new_idea_id=${ideaId}`,
           });
         }
       } catch (error) {
+        if (process.env.NODE_ENV === 'development') console.log(error);
+        const apiErrors = get(error, 'json.errors');
+        const profanityApiError = apiErrors.base.find(
+          (apiError) => apiError.error === 'includes_banned_words'
+        );
+
+        if (profanityApiError) {
+          const titleProfanityError = profanityApiError.blocked_words.some(
+            (blockedWord) => blockedWord.attribute === 'title_multiloc'
+          );
+          const descriptionProfanityError = profanityApiError.blocked_words.some(
+            (blockedWord) => blockedWord.attribute === 'body_multiloc'
+          );
+
+          if (titleProfanityError) {
+            trackEventByName(tracks.titleProfanityError.name, {
+              locale,
+              ideaId: null,
+              projectId: !isNilOrError(project) ? project.id : null,
+              profaneMessage: title,
+              location: 'IdeasNewPage (citizen side)',
+              userId: !isNilOrError(authUser) ? authUser.id : null,
+              host: !isNilOrError(appConfiguration)
+                ? appConfiguration.attributes.host
+                : null,
+            });
+            this.globalState.set({
+              titleProfanityError,
+            });
+          }
+
+          if (descriptionProfanityError) {
+            trackEventByName(tracks.descriptionProfanityError.name, {
+              locale,
+              ideaId: null,
+              projectId: !isNilOrError(project) ? project.id : null,
+              profaneMessage: title,
+              location: 'IdeasNewPage (citizen side)',
+              userId: !isNilOrError(authUser) ? authUser.id : null,
+              host: !isNilOrError(appConfiguration)
+                ? appConfiguration.attributes.host
+                : null,
+            });
+            this.globalState.set({
+              descriptionProfanityError,
+            });
+          }
+        }
+
         this.globalState.set({ processing: false, submitError: true });
       }
     }
+  };
+
+  onTitleChange = (title: string) => {
+    this.globalState.set({
+      title,
+      titleProfanityError: false,
+    });
+  };
+
+  onDescriptionChange = (description: string) => {
+    this.globalState.set({
+      description,
+      descriptionProfanityError: false,
+    });
   };
 
   render() {
@@ -267,6 +344,8 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
             <NewIdeaForm
               onSubmit={this.handleOnIdeaSubmit}
               projectId={project.id}
+              onTitleChange={this.onTitleChange}
+              onDescriptionChange={this.onDescriptionChange}
             />
           </PageContainer>
           <ButtonBarContainer>
@@ -285,6 +364,7 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
 
 const Data = adopt<DataProps, InputProps & WithRouterProps>({
   locale: <GetLocale />,
+  appConfiguration: <GetAppConfiguration />,
   authUser: <GetAuthUser />,
   project: ({ params, render }) => (
     <GetProject projectSlug={params.slug}>{render}</GetProject>

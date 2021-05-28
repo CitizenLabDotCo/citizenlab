@@ -27,6 +27,7 @@ import customIdeaStatusesConfiguration from './commercial/custom_idea_statuses';
 import verificationConfiguration from './commercial/verification';
 import customTopicsConfiguration from './commercial/custom_topics';
 
+import idAuth0Configuration from './commercial/id_auth0';
 import idBosaFasConfiguration from './commercial/id_bosa_fas';
 import idCowConfiguration from './commercial/id_cow';
 import idBogusConfiguration from './commercial/id_bogus';
@@ -37,7 +38,10 @@ import IdClaveUnicaConfiguration from './commercial/id_clave_unica';
 import widgetsConfiguration from './commercial/widgets';
 
 import taggingConfiguration from './commercial/tagging';
+import insightsConfiguration from './commercial/insights';
 import customStyleConfiguration from './commercial/custom_style';
+
+import userConfirmationConfiguration from './free/user_confirmation';
 
 declare var CL_CONFIG: any;
 
@@ -131,6 +135,10 @@ export default loadModules([
     isEnabled: CL_CONFIG['modules']['commercial/custom_maps'],
   },
   {
+    configuration: idAuth0Configuration,
+    isEnabled: CL_CONFIG['modules']['commercial/id_auth0'],
+  },
+  {
     configuration: idBosaFasConfiguration,
     isEnabled: CL_CONFIG['modules']['commercial/id_bosa_fas'],
   },
@@ -171,7 +179,15 @@ export default loadModules([
     isEnabled: CL_CONFIG['modules']['commercial/tagging'],
   },
   {
+    configuration: insightsConfiguration,
+    isEnabled: CL_CONFIG['modules']['commercial/insights'],
+  },
+  {
     configuration: customStyleConfiguration,
     isEnabled: CL_CONFIG['modules']['commercial/custom_style'],
+  },
+  {
+    configuration: userConfirmationConfiguration,
+    isEnabled: CL_CONFIG['modules']['free/user_confirmation'],
   },
 ]);
