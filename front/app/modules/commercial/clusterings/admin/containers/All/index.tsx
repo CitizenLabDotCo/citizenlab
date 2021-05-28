@@ -14,7 +14,7 @@ import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { Section, SectionTitle } from 'components/admin/Section';
 import { List, Row, TextCell } from 'components/admin/ResourceList';
 import Button from 'components/UI/Button';
-import { ButtonWrapper } from 'components/admin/PageWrapper';
+import PageWrapper, { ButtonWrapper } from 'components/admin/PageWrapper';
 
 interface InputProps {}
 
@@ -46,38 +46,40 @@ class AreaList extends PureComponent<Props & InjectedIntlProps> {
         <SectionTitle>
           <FormattedMessage {...messages.titleClusterings} />
         </SectionTitle>
-        <List>
-          {clusterings.map((area, index) => (
-            <Row key={area.id} isLastItem={index === clusterings.length - 1}>
-              <TextCell className="expand">
-                <T value={area.attributes.title_multiloc} />
-              </TextCell>
-              <Button
-                onClick={this.handleDeleteClick(area.id)}
-                buttonStyle="text"
-                icon="delete"
-              >
-                <FormattedMessage {...messages.deleteButtonLabel} />
-              </Button>
-              <Button
-                linkTo={`/admin/dashboard/insights/${area.id}`}
-                buttonStyle="secondary"
-                icon="eye"
-              >
-                <FormattedMessage {...messages.viewButtonLabel} />
-              </Button>
-            </Row>
-          ))}
-        </List>
-        <ButtonWrapper>
-          <Button
-            buttonStyle="cl-blue"
-            icon="plus-circle"
-            linkTo="/admin/dashboard/insights/new"
-          >
-            <FormattedMessage {...messages.addClusteringButton} />
-          </Button>
-        </ButtonWrapper>
+        <PageWrapper>
+          <List>
+            {clusterings.map((area, index) => (
+              <Row key={area.id} isLastItem={index === clusterings.length - 1}>
+                <TextCell className="expand">
+                  <T value={area.attributes.title_multiloc} />
+                </TextCell>
+                <Button
+                  onClick={this.handleDeleteClick(area.id)}
+                  buttonStyle="text"
+                  icon="delete"
+                >
+                  <FormattedMessage {...messages.deleteButtonLabel} />
+                </Button>
+                <Button
+                  linkTo={`/admin/dashboard/insights/${area.id}`}
+                  buttonStyle="secondary"
+                  icon="eye"
+                >
+                  <FormattedMessage {...messages.viewButtonLabel} />
+                </Button>
+              </Row>
+            ))}
+          </List>
+          <ButtonWrapper>
+            <Button
+              buttonStyle="cl-blue"
+              icon="plus-circle"
+              linkTo="/admin/dashboard/insights/new"
+            >
+              <FormattedMessage {...messages.addClusteringButton} />
+            </Button>
+          </ButtonWrapper>
+        </PageWrapper>
       </Section>
     );
   }
