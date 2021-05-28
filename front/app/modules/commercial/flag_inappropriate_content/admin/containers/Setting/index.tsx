@@ -47,58 +47,62 @@ const FlagInnapropriateContentSetting = ({
   intl: { formatMessage },
 }: Props & InjectedIntlProps): ReactElement | null => {
   const appConfiguration = useAppConfiguration();
+  const flagInnaproperiateContentSetting =
+    !isNilOrError(appConfiguration) &&
+    appConfiguration.data.attributes.settings.flag_inappropriate_content
+      ? appConfiguration.data.attributes.settings.flag_inappropriate_content
+      : undefined;
 
-  if (isNilOrError(appConfiguration)) {
-    return null;
+  if (flagInnaproperiateContentSetting) {
+    const flagInnaproperiateContentEnabled =
+      flagInnaproperiateContentSetting.enabled;
+
+    function handleToggle() {
+      onSettingChange('flag_inappropriate_content', {
+        ...flagInnaproperiateContentSetting,
+        flag_inappropriate_content: !flagInnaproperiateContentEnabled,
+      });
+    }
+
+    return (
+      <Setting>
+        <ToggleLabel>
+          <StyledToggle
+            checked={flagInnaproperiateContentEnabled}
+            onChange={handleToggle}
+          />
+          <LabelContent>
+            <LabelTitleContainer>
+              <LabelTitle>
+                {formatMessage(messages.inappropriateContentDetectionSetting)}
+              </LabelTitle>
+              <StyledIconTooltip
+                content={
+                  <FormattedMessage
+                    {...messages.inappropriateContentDetectionTooltip}
+                    values={{
+                      linkToActivityPage: (
+                        <Link to="/admin/activity">
+                          {formatMessage(messages.linkToActivityPageText)}
+                        </Link>
+                      ),
+                    }}
+                  />
+                }
+              />
+            </LabelTitleContainer>
+            <LabelDescription>
+              {formatMessage(
+                messages.inappropriateContentDetectionSettingDescription
+              )}
+            </LabelDescription>
+          </LabelContent>
+        </ToggleLabel>
+      </Setting>
+    );
   }
 
-  const moderationSettings =
-    appConfiguration.data.attributes.settings.moderation;
-  const flagInnaproperiateContentEnabled = !!moderationSettings?.flag_inappropriate_content;
-
-  function handleToggle() {
-    onSettingChange('moderation', {
-      ...moderationSettings,
-      flag_inappropriate_content: !flagInnaproperiateContentEnabled,
-    });
-  }
-
-  return (
-    <Setting>
-      <ToggleLabel>
-        <StyledToggle
-          checked={flagInnaproperiateContentEnabled}
-          onChange={handleToggle}
-        />
-        <LabelContent>
-          <LabelTitleContainer>
-            <LabelTitle>
-              {formatMessage(messages.inappropriateContentDetectionSetting)}
-            </LabelTitle>
-            <StyledIconTooltip
-              content={
-                <FormattedMessage
-                  {...messages.inappropriateContentDetectionTooltip}
-                  values={{
-                    linkToActivityPage: (
-                      <Link to="/admin/activity">
-                        {formatMessage(messages.linkToActivityPageText)}
-                      </Link>
-                    ),
-                  }}
-                />
-              }
-            />
-          </LabelTitleContainer>
-          <LabelDescription>
-            {formatMessage(
-              messages.inappropriateContentDetectionSettingDescription
-            )}
-          </LabelDescription>
-        </LabelContent>
-      </ToggleLabel>
-    </Setting>
-  );
+  return null;
 };
 
 export default injectIntl(FlagInnapropriateContentSetting);

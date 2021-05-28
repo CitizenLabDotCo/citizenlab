@@ -215,7 +215,7 @@ const ModerationRow = memo<Props & InjectedIntlProps>(
             contentBody={contentBody}
           />
           <Outlet
-            id="app.module.moderation.admin.containers.ModerationRow.content"
+            id="app.modules.commercial.moderation.admin.containers.ModerationRow.content"
             inappropriateContentFlag={inappropriateContentFlag}
           />
         </td>
