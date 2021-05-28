@@ -4,8 +4,6 @@ import {
   DEFAULT_MARKER_ICON_SIZE,
   DEFAULT_MARKER_ANCHOR_SIZE,
   DEFAULT_MARKER_ICON,
-  // DEFAULT_MARKER_HOVER_ICON,
-  // DEFAULT_MARKER_ACTIVE_ICON,
 } from '../config';
 import {
   setLeafletMapHoveredMarker,
@@ -49,7 +47,9 @@ export function addMarkerToMap(
   // only add marker directly to the map when clustering is turned off
   // otherwise let this be handled by addMarkerClusterGroup()
   if (map && noMarkerClustering) {
-    marker.on('click', (event) => {
+    marker.on('click', (event: L.LeafletMouseEvent) => {
+      event.originalEvent.preventDefault();
+      event.originalEvent.stopPropagation();
       setLeafletMapSelectedMarker(event.target.options['id']);
     });
 
@@ -106,11 +106,11 @@ export function addMarkerClusterGroup(
     markerClusterGroup.addLayers(markers);
     map.addLayer(markerClusterGroup);
 
-    if (onClick) {
-      markerClusterGroup.on('click', (event) => {
-        onClick(event.layer.options.id, event.layer.options.data);
-      });
-    }
+    markerClusterGroup.on('click', (event: L.LeafletMouseEvent) => {
+      event.originalEvent.preventDefault();
+      event.originalEvent.stopPropagation();
+      onClick?.(event.layer.options.id, event.layer.options.data);
+    });
 
     return markerClusterGroup;
   }

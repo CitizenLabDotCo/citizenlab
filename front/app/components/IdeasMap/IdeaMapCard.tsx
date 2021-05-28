@@ -197,17 +197,16 @@ const IdeaMapCard = memo<Props>(({ ideaId, onClose, className }) => {
         onClick={handleOnClick}
         onMouseEnter={handleOnMouseEnter}
         onMouseLeave={handleOnMouseLeave}
-        tabIndex={0}
       >
         {smallerThanMaxTablet && (
           <CloseButtonWrapper>
             <CloseButton
-              width="22px"
-              height="22px"
+              width="24px"
+              height="24px"
               padding="0px"
               buttonStyle="secondary"
               icon="close"
-              iconSize="10px"
+              iconSize="11px"
               borderRadius="3px"
               onClick={handleCloseButtonClick}
             />

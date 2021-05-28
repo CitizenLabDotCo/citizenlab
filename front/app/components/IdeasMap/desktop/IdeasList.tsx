@@ -10,7 +10,6 @@ import IdeaMapCard from '../IdeaMapCard';
 
 // hooks
 import useLocale from 'hooks/useLocale';
-// import useWindowSize from 'hooks/useWindowSize';
 import useIdeaMarkers from 'hooks/useIdeaMarkers';
 import useProject from 'hooks/useProject';
 import useIdeaCustomFieldsSchemas from 'hooks/useIdeaCustomFieldsSchemas';
@@ -131,7 +130,6 @@ interface Props {
 const IdeasList = memo<Props>(
   ({ projectIds, projectId, phaseId, className }) => {
     const locale = useLocale();
-    // const windowSize = useWindowSize();
     const ideaCustomFieldsSchemas = useIdeaCustomFieldsSchemas({ projectId });
     const project = useProject({ projectId });
 

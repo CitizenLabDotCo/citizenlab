@@ -159,6 +159,8 @@ export default function useLeaflet(
     ];
 
     map?.on('click', (event: L.LeafletMouseEvent) => {
+      event.originalEvent.preventDefault();
+      event.originalEvent.stopPropagation();
       setLeafletMapClicked(map, event.latlng);
     });
 

@@ -114,13 +114,14 @@ const StyledDesktopIdeaMapOverlay = styled(DesktopIdeaMapOverlay)`
   z-index: 900;
 `;
 
-const MobileIdeaMapCard = styled.div`
+const MobileIdeaMapCard = styled.div<{ isClickable: boolean }>`
   position: absolute;
   top: calc(${mapHeightMobile} - 130px - 20px);
   left: 10px;
   right: 10px;
   z-index: 1000;
   transition: all 300ms cubic-bezier(0.19, 1, 0.22, 1);
+  pointer-events: ${(props) => (props.isClickable ? 'auto' : 'none')};
 
   &.animation-enter {
     top: calc(${mapHeightMobile} - 130px);
@@ -176,6 +177,7 @@ const IdeasMap = memo<Props>(({ projectIds, phaseId, className }) => {
   const [innerContainerLeftMargin, setInnerContainerLeftMargin] = useState(
     initialInnerContainerLeftMargin
   );
+  const [isMobileCardClickable, setIsMobileCardClickable] = useState(false);
 
   // ideaMarkers
   const defaultIdeasSearch: string | null = null;
@@ -209,7 +211,15 @@ const IdeasMap = memo<Props>(({ projectIds, phaseId, className }) => {
       }),
       leafletMapSelectedMarker$.subscribe((ideaId) => {
         setIdeaMapCardSelected(ideaId);
-        setSelectedIdeaId(ideaId);
+        setSelectedIdeaId((_prevIdeaIdideaId) => {
+          // temporarily disable pointer events on the mobile ideacard popup to avoid
+          // the marker click event from propagating to the card
+          setIsMobileCardClickable(false);
+          setTimeout(() => {
+            setIsMobileCardClickable(true);
+          }, 200);
+          return ideaId;
+        });
       }),
       leafletMapClicked$.subscribe(({ map, latLng }) => {
         const ideaPostingEnabled =
@@ -246,7 +256,7 @@ const IdeasMap = memo<Props>(({ projectIds, phaseId, className }) => {
     setInnerContainerLeftMargin(
       getInnerContainerLeftMargin(windowWidth, containerWidth)
     );
-  }, [windowWidth, containerWidth]);
+  }, [windowWidth, containerWidth, smallerThanMaxTablet]);
 
   useEffect(() => {
     const ideaPoints: Point[] = [];
@@ -316,7 +326,10 @@ const IdeasMap = memo<Props>(({ projectIds, phaseId, className }) => {
             enter={true}
             exit={true}
           >
-            <MobileIdeaMapCard className="animation">
+            <MobileIdeaMapCard
+              className="animation"
+              isClickable={isMobileCardClickable}
+            >
               <IdeaMapCard
                 ideaId={selectedIdeaId as string}
                 onClose={handleIdeaMapCardOnClose}
