@@ -841,7 +841,6 @@
   "app.containers.Admin.Moderation.successfulUpdateSettings": "Settings updated successfully.",
   "app.containers.Admin.Moderation.type": "Type",
   "app.containers.Admin.Moderation.unread": "Not seen",
-  "app.containers.Admin.Moderation.warning": "Warning",
   "app.containers.Admin.Processing.addExistingTag": "Add existing tag",
   "app.containers.Admin.Processing.addNewTag": "Add new tag",
   "app.containers.Admin.Processing.addSmartTag": "Add smart tag",

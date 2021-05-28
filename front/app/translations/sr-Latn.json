@@ -841,7 +841,6 @@
   "app.containers.Admin.Moderation.successfulUpdateSettings": "",
   "app.containers.Admin.Moderation.type": "Vrsta",
   "app.containers.Admin.Moderation.unread": "Nije pregledano",
-  "app.containers.Admin.Moderation.warning": "",
   "app.containers.Admin.Processing.addExistingTag": "Dodajte postojeći tag",
   "app.containers.Admin.Processing.addNewTag": "Dodajte novi tag",
   "app.containers.Admin.Processing.addSmartTag": "Dodajte smart tag",

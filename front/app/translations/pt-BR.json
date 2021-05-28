@@ -841,7 +841,6 @@
   "app.containers.Admin.Moderation.successfulUpdateSettings": "",
   "app.containers.Admin.Moderation.type": "Tipo",
   "app.containers.Admin.Moderation.unread": "Não visto",
-  "app.containers.Admin.Moderation.warning": "",
   "app.containers.Admin.Processing.addExistingTag": "Adicionar uma etiqueta existente",
   "app.containers.Admin.Processing.addNewTag": "Adicionar uma nova etiqueta",
   "app.containers.Admin.Processing.addSmartTag": "Adicionar uma etiqueta inteligente",

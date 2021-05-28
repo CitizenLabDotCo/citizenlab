@@ -841,7 +841,6 @@
   "app.containers.Admin.Moderation.successfulUpdateSettings": "",
   "app.containers.Admin.Moderation.type": "Typ",
   "app.containers.Admin.Moderation.unread": "Nieprzejrzane",
-  "app.containers.Admin.Moderation.warning": "",
   "app.containers.Admin.Processing.addExistingTag": "Dodaj istniejący tag",
   "app.containers.Admin.Processing.addNewTag": "Dodaj nowy tag",
   "app.containers.Admin.Processing.addSmartTag": "Dodaj inteligentny tag",

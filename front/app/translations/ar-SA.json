@@ -841,7 +841,6 @@
   "app.containers.Admin.Moderation.successfulUpdateSettings": "",
   "app.containers.Admin.Moderation.type": "النوع",
   "app.containers.Admin.Moderation.unread": "لم تتم مشاهدته",
-  "app.containers.Admin.Moderation.warning": "",
   "app.containers.Admin.Processing.addExistingTag": "Add existing tag",
   "app.containers.Admin.Processing.addNewTag": "Add new tag",
   "app.containers.Admin.Processing.addSmartTag": "Add smart tag",
