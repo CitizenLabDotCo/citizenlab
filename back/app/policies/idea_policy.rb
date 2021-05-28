@@ -54,7 +54,6 @@ class IdeaPolicy < ApplicationPolicy
   end
 
   def update?
-    # TODO: remove this after Gents project
     bypassable_reasons = %w[posting_disabled]
     pcs = ParticipationContextService.new
     pcs_posting_reason = pcs.posting_idea_disabled_reason_for_project(record.project, user)
