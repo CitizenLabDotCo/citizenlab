@@ -26,6 +26,7 @@ const Footer = styled.footer`
 
 const BudgetControl = styled.div`
   display: flex;
+  align-items: center;
 `;
 
 const IdeaBudget = styled.span`
@@ -36,7 +37,7 @@ const IdeaBudget = styled.span`
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-right: 14px;
+  margin-right: 16px;
 `;
 
 const CommentsCount = styled.span`

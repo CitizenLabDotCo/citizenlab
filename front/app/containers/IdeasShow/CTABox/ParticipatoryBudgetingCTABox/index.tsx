@@ -27,7 +27,7 @@ const ControlWrapperHorizontalRule = styled.hr`
   width: 100%;
   border: none;
   height: 1px;
-  background-color: ${colors.separation};
+  background-color: #ccc;
   margin: 20px 0;
 `;
 

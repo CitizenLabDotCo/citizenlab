@@ -9,6 +9,18 @@ export default defineMessages({
     id: 'app.components.AssignBudgetControl.undo',
     defaultMessage: 'Undo',
   },
+  remove: {
+    id: 'app.components.AssignBudgetControl.remove',
+    defaultMessage: 'Remove',
+  },
+  add: {
+    id: 'app.components.AssignBudgetControl.add',
+    defaultMessage: 'Add',
+  },
+  removeFromMyExpenses: {
+    id: 'app.components.AssignBudgetControl.removeFromMyExpenses',
+    defaultMessage: 'Remove from my expenses',
+  },
   assigned: {
     id: 'app.components.AssignBudgetControl.assigned',
     defaultMessage: 'Assigned',

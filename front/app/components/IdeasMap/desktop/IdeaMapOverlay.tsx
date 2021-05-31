@@ -87,9 +87,11 @@ const StyledIdeasShow = styled(IdeasShow)`
   overflow-y: auto;
   padding: 30px;
 
-  & .pbExpenses {
-    background: ${colors.background};
+  & .pbAssignBudgetContainer {
+    padding: 20px;
+    ${defaultCardStyle};
     box-shadow: none;
+    background: ${colors.background};
   }
 `;
 

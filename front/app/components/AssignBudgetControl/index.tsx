@@ -12,7 +12,6 @@ import { IParticipationContextType } from 'typings';
 // components
 import Button from 'components/UI/Button';
 import Tippy from '@tippyjs/react';
-import { Icon } from 'cl2-component-library';
 import AssignBudgetDisabled from 'components/AssignBudgetControl/AssignBudgetDisabled';
 
 // services
@@ -46,10 +45,9 @@ import messages from './messages';
 
 // styles
 import styled from 'styled-components';
-import { fontSizes, colors, media } from 'utils/styleUtils';
+import { fontSizes, colors, media, defaultCardStyle } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import PBExpenses from 'containers/ProjectsShowPage/shared/pb/PBExpenses';
-import { darken } from 'polished';
 
 const IdeaCardContainer = styled.div`
   display: flex;
@@ -63,23 +61,24 @@ const IdeaPageContainer = styled.div`
 `;
 
 const BudgetBox = styled.div`
-  background-color: white;
   width: 100%;
-  height: 95px;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: stretch;
   justify-content: center;
   margin-bottom: 5px;
+  padding: 20px;
   position: relative;
-  border: solid 1px ${colors.separation};
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  ${defaultCardStyle}
 `;
 
 const Budget = styled.div`
   color: ${colors.adminTextColor};
   font-size: ${fontSizes.large}px;
-  font-weight: 500;
+  font-weight: 600;
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 30px;
 `;
 
 const ButtonWrapper = styled.div``;
@@ -92,55 +91,9 @@ const TooltipContent = styled.div`
 
 const IdeaCardButton = styled(Button)``;
 
-const AssignedContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 15px;
-`;
-
-const AssignedIcon = styled(Icon)`
-  height: 39px;
-  color: ${colors.adminTextColor};
-  margin-right: 15px;
-  margin-bottom: 10px;
-`;
-
-const AssignedText = styled.div`
-  color: ${colors.clGreenSuccess};
-  font-size: ${fontSizes.base}px;
-  font-weight: 400;
-  hyphens: auto;
-`;
-
-const ActionsWrapper = styled.div`
-  margin-top: 5px;
-  display: flex;
-  color: ${colors.label};
-`;
-
-const Separator = styled.div`
-  font-size: ${fontSizes.xs}px;
-  margin-left: 10px;
-  margin-right: 10px;
-`;
-
-const ActionButton = styled.button`
-  font-size: ${fontSizes.base}px;
-  font-weight: 500;
-  text-decoration: underline;
-  padding: 0;
-  margin: 0;
-  cursor: pointer;
-
-  &:hover,
-  &:focus {
-    color: ${darken(0.5, colors.label)};
-  }
-`;
-
 const StyledPBExpenses = styled(PBExpenses)`
   padding: 20px;
-  margin-top: 20px;
+  margin-top: 15px;
 
   ${media.smallerThanMaxTablet`
     background: ${colors.background};
@@ -367,16 +320,14 @@ class AssignBudgetControl extends PureComponent<
         ? basket.relationships.ideas.data.map((idea) => idea.id)
         : [];
       const isInBasket = includes(basketIdeaIds, ideaId);
-      const disabled = this.isDisabled();
       const fullClassName = `e2e-assign-budget ${className}`;
+      const budgetingEnabled =
+        idea.attributes.action_descriptor.budgeting?.enabled;
+      const budgetingDisabledReason =
+        idea.attributes.action_descriptor.budgeting?.disabled_reason;
+      const budgetingDescriptor = idea.attributes.action_descriptor.budgeting;
 
       if (view === 'ideaCard') {
-        const budgetingEnabled =
-          idea.attributes.action_descriptor.budgeting?.enabled;
-        const budgetingDisabledReason =
-          idea.attributes.action_descriptor.budgeting?.disabled_reason;
-        const budgetingDescriptor = idea.attributes.action_descriptor.budgeting;
-
         const tippyContent =
           !!authUser && !budgetingEnabled && !!budgetingDisabledReason ? (
             <TooltipContent
@@ -406,84 +357,68 @@ class AssignBudgetControl extends PureComponent<
                   onClick={this.assignBudget}
                   disabled={!!authUser && !budgetingEnabled}
                   processing={processing}
-                  bgColor={
-                    isInBasket
-                      ? colors.adminSecondaryTextColor
-                      : colors.adminTextColor
-                  }
+                  bgColor={isInBasket ? colors.clRedError : colors.clGreen}
                   iconSize="18px"
-                  icon={!isInBasket ? 'basket-plus' : 'remove'}
+                  icon={!isInBasket ? 'basket-plus' : 'basket-minus'}
                   className={`e2e-assign-budget-button ${
                     isInBasket ? 'in-basket' : 'not-in-basket'
                   }`}
                   ariaLabel={
                     !isInBasket
                       ? formatMessage(messages.assign)
-                      : formatMessage(messages.undo)
+                      : formatMessage(messages.removeFromMyExpenses)
                   }
-                />
+                >
+                  <FormattedMessage
+                    {...(!isInBasket ? messages.add : messages.remove)}
+                  />
+                </IdeaCardButton>
               </ButtonWrapper>
             </Tippy>
           </IdeaCardContainer>
         );
       } else if (view === 'ideaPage') {
         return (
-          <IdeaPageContainer className={fullClassName} aria-live="polite">
-            {isInBasket && !processing ? (
-              <>
-                <AssignedContainer>
-                  <AssignedIcon ariaHidden name="basket-checkmark" />
-                  <AssignedText>
-                    <FormattedMessage {...messages.assigned} />
-                  </AssignedText>
-                </AssignedContainer>
-                <ActionsWrapper>
-                  <ActionButton onClick={this.assignBudget}>
-                    <FormattedMessage {...messages.undo} />
-                  </ActionButton>
-                  <Separator aria-hidden>•</Separator>
-                  <ActionButton onClick={this.goBack}>
-                    <FormattedMessage {...messages.backToOverview} />
-                  </ActionButton>
-                </ActionsWrapper>
-              </>
-            ) : (
-              <>
-                <Budget>
-                  <ScreenReaderOnly>
-                    <FormattedMessage {...messages.a11y_price} />
-                  </ScreenReaderOnly>
-                  <BudgetBox>
-                    <FormattedNumber
-                      value={idea.attributes.budget}
-                      style="currency"
-                      currency={tenant.attributes.settings.core.currency}
-                      minimumFractionDigits={0}
-                      maximumFractionDigits={0}
-                    />
-                  </BudgetBox>
-                </Budget>
-                <Button
-                  onClick={this.assignBudget}
-                  processing={processing}
-                  bgColor={
-                    disabled
-                      ? colors.disabledPrimaryButtonBg
-                      : isInBasket
-                      ? colors.adminSecondaryTextColor
-                      : colors.adminTextColor
-                  }
-                  bgHoverColor={
-                    disabled ? colors.disabledPrimaryButtonBg : undefined
-                  }
-                  icon="basket-plus"
-                  fullWidth={true}
-                  iconAriaHidden
-                >
-                  <FormattedMessage {...messages.assign} />
-                </Button>
-              </>
-            )}
+          <IdeaPageContainer
+            className={`pbAssignBudgetContainer ${fullClassName}`}
+            aria-live="polite"
+          >
+            <BudgetBox>
+              <Budget>
+                <ScreenReaderOnly>
+                  <FormattedMessage {...messages.a11y_price} />
+                </ScreenReaderOnly>
+                <FormattedNumber
+                  value={idea.attributes.budget}
+                  style="currency"
+                  currency={tenant.attributes.settings.core.currency}
+                  minimumFractionDigits={0}
+                  maximumFractionDigits={0}
+                />
+              </Budget>
+              <Button
+                onClick={this.assignBudget}
+                disabled={!!authUser && !budgetingEnabled}
+                processing={processing}
+                bgColor={isInBasket ? colors.clRedError : colors.clGreen}
+                iconSize="18px"
+                icon={!isInBasket ? 'basket-plus' : 'basket-minus'}
+                className={`e2e-assign-budget-button ${
+                  isInBasket ? 'in-basket' : 'not-in-basket'
+                }`}
+                ariaLabel={
+                  !isInBasket
+                    ? formatMessage(messages.assign)
+                    : formatMessage(messages.removeFromMyExpenses)
+                }
+              >
+                <FormattedMessage
+                  {...(!isInBasket
+                    ? messages.assign
+                    : messages.removeFromMyExpenses)}
+                />
+              </Button>
+            </BudgetBox>
             <StyledPBExpenses
               participationContextId={participationContextId}
               participationContextType={participationContextType}

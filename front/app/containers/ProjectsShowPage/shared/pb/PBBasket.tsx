@@ -27,18 +27,19 @@ import { darken } from 'polished';
 
 // components
 import { Icon } from 'cl2-component-library';
+import Button from 'components/UI/Button';
 import T from 'components/T';
 
 // tracking
-import { injectTracks } from 'utils/analytics';
 import tracks from './tracks';
+import { trackEventByName } from 'utils/analytics';
 
 // utils
 import { pastPresentOrFuture } from 'utils/dateUtils';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import { FormattedNumber } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { FormattedNumber, InjectedIntlProps } from 'react-intl';
 import messages from 'containers/ProjectsShowPage/messages';
 
 // typings
@@ -115,7 +116,7 @@ const IdeaBudget = styled.div`
   text-align: left;
 `;
 
-const RemoveIconButton = styled.button`
+const RemoveIconButton = styled(Button)`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -147,16 +148,11 @@ interface DataProps {
   ideaList: GetIdeaListChildProps;
 }
 
-interface Tracks {
-  ideaRemovedFromBasket: () => void;
-  ideaAddedToBasket: () => void;
-}
-
 interface Props extends InputProps, DataProps {}
 
 interface State {}
 
-class PBBasket extends PureComponent<Props & Tracks, State> {
+class PBBasket extends PureComponent<Props & InjectedIntlProps, State> {
   ideaRemovedFromBasket = (ideaIdToRemove: string) => async (
     event: FormEvent<any>
   ) => {
@@ -188,7 +184,7 @@ class PBBasket extends PureComponent<Props & Tracks, State> {
         submitted_at: null,
       });
 
-      this.props.ideaRemovedFromBasket();
+      trackEventByName(tracks.ideaRemovedFromBasket.name);
     }
   };
 
@@ -246,13 +242,17 @@ class PBBasket extends PureComponent<Props & Tracks, State> {
                 </DropdownListItemContent>
                 {!budgetingDisabled && (
                   <RemoveIconButton
+                    icon="basket-minus"
+                    buttonStyle="text"
+                    iconSize="20px"
+                    iconColor={colors.label}
+                    iconHoverColor={colors.clRed}
+                    padding="0"
                     onClick={this.ideaRemovedFromBasket(idea.id)}
-                  >
-                    <RemoveIcon ariaHidden name="remove" />
-                    <ScreenReaderOnly>
-                      <FormattedMessage {...messages.removeItem} />
-                    </ScreenReaderOnly>
-                  </RemoveIconButton>
+                    ariaLabel={this.props.intl.formatMessage(
+                      messages.removeItem
+                    )}
+                  />
                 )}
               </DropdownListItem>
             ))}
@@ -359,10 +359,7 @@ const Data = adopt<DataProps, InputProps>({
   ),
 });
 
-const PBBasketWithHoCs = injectTracks<Props>({
-  ideaRemovedFromBasket: tracks.ideaRemovedFromBasket,
-  ideaAddedToBasket: tracks.ideaAddedToBasket,
-})(PBBasket);
+const PBBasketWithHoCs = injectIntl<Props>(PBBasket);
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
