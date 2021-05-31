@@ -59,13 +59,13 @@ interface Props {
 }
 
 const EmptyState = ({
-  intl: { formatMessage },
   openCreateModal,
+  intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
   const locale = useLocale();
 
   return (
-    <Container>
+    <Container data-testid="insightsListEmptyState">
       <div>
         <Title>
           <FormattedMessage
