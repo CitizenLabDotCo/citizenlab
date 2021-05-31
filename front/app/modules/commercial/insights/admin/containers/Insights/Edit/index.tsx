@@ -1,23 +1,35 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
-import { Button, Input } from 'cl2-component-library';
-import { isNilOrError } from 'utils/helperUtils';
-import { Divider } from 'semantic-ui-react';
-
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import useLocale from 'hooks/useLocale';
-import { InjectedIntlProps } from 'react-intl';
-import messages from '../messages';
-import { colors, fontSizes, stylingConsts, media } from 'utils/styleUtils';
-
-import TopBar, { topBarHeight } from '../../../components/TopBar';
-import Error from 'components/UI/Error';
-import { CLErrors } from 'typings';
-import useInsightsCategories from '../../../../hooks/useInsightsCategories';
 import { withRouter, WithRouterProps } from 'react-router';
 
-import { addInsightsCategory } from '../../../../services/insightsCategories';
+// styles
+import styled from 'styled-components';
 import { darken } from 'polished';
+
+// components
+import { Button, Input } from 'cl2-component-library';
+import { Divider } from 'semantic-ui-react';
+import TopBar, { topBarHeight } from '../../../components/TopBar';
+import Error from 'components/UI/Error';
+
+// utils
+import { isNilOrError } from 'utils/helperUtils';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { colors, fontSizes, stylingConsts, media } from 'utils/styleUtils';
+
+// hooks
+import useLocale from 'hooks/useLocale';
+import useInsightsCategories from '../../../../hooks/useInsightsCategories';
+
+// intl
+import { InjectedIntlProps } from 'react-intl';
+import messages from '../messages';
+
+//types
+
+import { CLErrors } from 'typings';
+
+// services
+import { addInsightsCategory } from '../../../../services/insightsCategories';
 
 const Container = styled.div`
   height: calc(100vh - ${stylingConsts.menuHeight + topBarHeight}px);
@@ -116,9 +128,6 @@ const EditInsightsView = ({
     setErrors(undefined);
   };
 
-  console.log(locale);
-  console.log(categories);
-
   if (isNilOrError(locale) || isNilOrError(categories)) {
     return null;
   }
@@ -187,7 +196,7 @@ const EditInsightsView = ({
           )}
           <CategoriesList>
             {categories.length === 0 ? (
-              <CategoryInfoBox>
+              <CategoryInfoBox data-testid="insightsNoCategories">
                 <p>
                   <FormattedMessage
                     {...messages.categoryInfoBox}
@@ -201,21 +210,23 @@ const EditInsightsView = ({
               </CategoryInfoBox>
             ) : (
               categories.map((category) => (
-                <CategoryButton
-                  key={category.id}
-                  locale={locale}
-                  bgColor={
-                    category.id === selectedCategory
-                      ? darken(0.05, colors.lightGreyishBlue)
-                      : 'transparent'
-                  }
-                  textColor={colors.label}
-                  textHoverColor={colors.adminTextColor}
-                  bgHoverColor={darken(0.05, colors.lightGreyishBlue)}
-                  onClick={selectCategory(category.id)}
-                >
-                  {category.attributes.name}
-                </CategoryButton>
+                <div data-testid="insightsCategory">
+                  <CategoryButton
+                    key={category.id}
+                    locale={locale}
+                    bgColor={
+                      category.id === selectedCategory
+                        ? darken(0.05, colors.lightGreyishBlue)
+                        : 'transparent'
+                    }
+                    textColor={colors.label}
+                    textHoverColor={colors.adminTextColor}
+                    bgHoverColor={darken(0.05, colors.lightGreyishBlue)}
+                    onClick={selectCategory(category.id)}
+                  >
+                    {category.attributes.name}
+                  </CategoryButton>
+                </div>
               ))
             )}
           </CategoriesList>
@@ -226,4 +237,4 @@ const EditInsightsView = ({
   );
 };
 
-export default injectIntl(withRouter(EditInsightsView));
+export default withRouter(injectIntl(EditInsightsView));

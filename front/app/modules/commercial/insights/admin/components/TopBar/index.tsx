@@ -97,7 +97,7 @@ const TopBar = ({
   };
 
   return (
-    <Container>
+    <Container data-testid="insightsTopBar">
       <TitleContainer>
         <h1>{view.attributes.name}</h1>
         {projectId && <ProjectButton projectId={projectId} />}

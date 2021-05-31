@@ -95,7 +95,7 @@ const RenameInsightsView = ({
   if (isNilOrError(locale)) return null;
 
   return (
-    <Container>
+    <Container data-testid="insights">
       <Title>{formatMessage(messages.renameModalTitle)}</Title>
       <Description>
         {formatMessage(messages.renameModalDescription)}
