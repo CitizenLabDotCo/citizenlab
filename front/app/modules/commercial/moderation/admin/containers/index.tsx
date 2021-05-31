@@ -26,6 +26,7 @@ import {
   IModerationData,
   TModeratableTypes,
 } from '../../services/moderations';
+import { removeInappropriateContentFlag } from 'modules/commercial/flag_inappropriate_content/services/inappropriateContentFlags';
 
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
