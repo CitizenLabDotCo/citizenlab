@@ -545,16 +545,6 @@ export class IdeasShow extends PureComponent<
                 translateButtonClicked={translateButtonClicked}
               />
 
-              {isCompactView && (
-                <MobileMetaInformation
-                  ideaId={ideaId}
-                  projectId={projectId}
-                  statusId={statusId}
-                  authorId={authorId}
-                  compact={isCompactView}
-                />
-              )}
-
               {showBudgetControl &&
                 participationContextId &&
                 participationContextType &&
@@ -570,6 +560,16 @@ export class IdeasShow extends PureComponent<
                     />
                   </AssignBudgetControlMobile>
                 )}
+
+              {isCompactView && (
+                <MobileMetaInformation
+                  ideaId={ideaId}
+                  projectId={projectId}
+                  statusId={statusId}
+                  authorId={authorId}
+                  compact={isCompactView}
+                />
+              )}
 
               {isCompactView && (
                 <MobileIdeaSharingButton

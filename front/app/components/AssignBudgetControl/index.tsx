@@ -45,7 +45,7 @@ import messages from './messages';
 
 // styles
 import styled from 'styled-components';
-import { fontSizes, colors, media, defaultCardStyle } from 'utils/styleUtils';
+import { fontSizes, colors, media } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import PBExpenses from 'containers/ProjectsShowPage/shared/pb/PBExpenses';
 
@@ -64,21 +64,14 @@ const BudgetBox = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: stretch;
-  justify-content: center;
-  margin-bottom: 5px;
-  padding: 20px;
-  position: relative;
-  ${defaultCardStyle}
+  margin-bottom: 20px;
 `;
 
 const Budget = styled.div`
   color: ${colors.adminTextColor};
-  font-size: ${fontSizes.large}px;
+  font-size: ${fontSizes.medium}px;
   font-weight: 600;
-  text-align: center;
-  margin-top: 10px;
-  margin-bottom: 30px;
+  margin-bottom: 15px;
 `;
 
 const ButtonWrapper = styled.div``;
