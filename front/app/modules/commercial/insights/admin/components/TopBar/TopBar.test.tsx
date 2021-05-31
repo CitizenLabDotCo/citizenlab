@@ -5,7 +5,7 @@ import * as service from 'modules/commercial/insights/services/insightsViews';
 import TopBar from './';
 import RenameInsightsView from './RenameInsightsView';
 
-let mockViewData = {
+const mockViewData = {
   id: '1',
   type: 'view',
   attributes: {
@@ -19,7 +19,7 @@ let mockViewData = {
   },
 };
 
-let mockProjectData = {
+const mockProjectData = {
   id: '2',
   type: 'project',
   attributes: {
