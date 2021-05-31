@@ -10,8 +10,8 @@ import styled from 'styled-components';
 import { colors, fontSizes, media } from 'utils/styleUtils';
 
 // assets
-import insights from '../../assets/insights.png';
-import messages from './messages';
+import insights from '../../../assets/insights.png';
+import messages from '../messages';
 
 // components
 import { Button } from 'cl2-component-library';

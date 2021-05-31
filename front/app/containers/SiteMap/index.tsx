@@ -288,6 +288,11 @@ const SiteMap = ({ projects, tenant, authUser }: Props) => {
                     />
                   </Link>
                 </li>
+                <li>
+                  <Link to="/pages/faq">
+                    <FormattedMessage {...messages.faqLink} />
+                  </Link>
+                </li>
               </ul>
 
               <H2 ref={userSpaceSection} tabIndex={-1}>
