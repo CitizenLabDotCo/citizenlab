@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useState, useEffect } from 'react';
+import React, { memo, useCallback, useState, useEffect, useMemo } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { includes } from 'lodash-es';
 import { insertConfiguration } from 'utils/moduleUtils';
@@ -325,23 +325,28 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
 
   const removeFlags = useCallback(
     async (event: React.FormEvent) => {
+      event.preventDefault();
+
       if (
-        selectedRowsWithContentWarning.length > 0 &&
+        selectedRows.length > 0 &&
         !isNilOrError(moderationItems) &&
         !processing
       ) {
-        event.preventDefault();
-
-        const moderations = selectedRowsWithContentWarning.map((moderationId) =>
-          moderationItems.find((item) => item.id === moderationId)
+        const selectedModerationItemsWithContentWarning = selectedRows.map(
+          (moderationId) =>
+            moderationItems.find((item) => item.id === moderationId)
         ) as IModerationData[];
-        const promises = moderations.map((moderation) => {
-          if (moderation.relationships.inappropriate_content_flag) {
-            removeInappropriateContentFlag(
-              moderation.relationships.inappropriate_content_flag.data.id
-            );
+
+        const promises = selectedModerationItemsWithContentWarning.map(
+          (selectModeration) => {
+            if (selectModeration.relationships.inappropriate_content_flag) {
+              removeInappropriateContentFlag(
+                selectModeration.relationships.inappropriate_content_flag.data
+                  .id
+              );
+            }
           }
-        });
+        );
 
         setProcessing(true);
         await Promise.all(promises);
@@ -403,15 +408,16 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
     }
   }, [list, processing]);
 
-  // const selectedRowsWithContentWarning = useMemo(() => {
-  //   if (!isNilOrError(list)) {
-  //     return list.filter((listItem) => listItem.attributes.content_warning);
-  //   }
+  const selectedRowsWithContentWarning = useMemo(() => {
+    if (!isNilOrError(moderationItems)) {
+      return moderationItems.filter(
+        (moderationItem) =>
+          moderationItem.relationships.inappropriate_content_flag
+      );
+    }
 
-  //   return null;
-  // }, [list]);
-
-  const selectedRowsWithContentWarning = [1, 2, 3];
+    return null;
+  }, [moderationItems]);
 
   if (!isNilOrError(moderationItems)) {
     return (
@@ -472,7 +478,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
               <Outlet
                 id="app.modules.commercial.moderation.admin.containers.actionbar.buttons"
                 selectedRowsWithContentWarningLength={
-                  selectedRowsWithContentWarning.length
+                  selectedRowsWithContentWarning?.length || 0
                 }
                 processing={processing}
                 onClick={removeFlags}
