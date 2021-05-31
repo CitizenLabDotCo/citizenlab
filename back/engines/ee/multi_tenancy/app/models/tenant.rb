@@ -147,12 +147,6 @@ class Tenant < ApplicationRecord
     configuration.location
   end
 
-  def turn_on_abbreviated_user_names!
-    config = settings['abbreviated_user_names'] || {}
-    settings['abbreviated_user_names'] = config.merge({ 'allowed' => true, 'enabled' => true })
-    save!
-  end
-
   # Returns the app configuration of the tenant.
   #   config = tenant.configuration
   # If the optional code block is specified, it will be run in the context of
