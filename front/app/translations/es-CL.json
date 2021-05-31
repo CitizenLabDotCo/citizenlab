@@ -2087,6 +2087,7 @@
   "app.containers.NotificationMenu.commentDeletedByAdminFor": "Tu comentario en '{postTitle}' ha sido eliminado por un administrador porque\n      {reasonCode, select, irrelevant {es irrelevante} inappropriate {su contenido es inapropiado} other {{otherReason}}}",
   "app.containers.NotificationMenu.deletedUser": "Autor desconocido",
   "app.containers.NotificationMenu.error": "No se pueden cargar las notificaciones",
+  "app.containers.NotificationMenu.inappropriateContentAutoDetected": "",
   "app.containers.NotificationMenu.loadMore": "Carga más...",
   "app.containers.NotificationMenu.loading": "Cargando las notificaciones...",
   "app.containers.NotificationMenu.mentionInComment": "{name} te mencionó en un comentario",

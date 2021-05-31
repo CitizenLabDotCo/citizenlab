@@ -2087,6 +2087,7 @@
   "app.containers.NotificationMenu.commentDeletedByAdminFor": "Comentariul tău la postarea „{postTitle}“ a fost șters de către un admin, deoarece: {reasonCode, select, irrelevant {nu este relevant} inappropriate {conținutul său este inadecvat} other {{otherReason}}}",
   "app.containers.NotificationMenu.deletedUser": "Autor necunoscut",
   "app.containers.NotificationMenu.error": "Notificările nu s-au putut încărca",
+  "app.containers.NotificationMenu.inappropriateContentAutoDetected": "",
   "app.containers.NotificationMenu.loadMore": "Încarcă mai mult...",
   "app.containers.NotificationMenu.loading": "Se încarcă notificările...",
   "app.containers.NotificationMenu.mentionInComment": "{name} v-a menționat într-un comentariu",

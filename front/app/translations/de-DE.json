@@ -2087,6 +2087,7 @@
   "app.containers.NotificationMenu.commentDeletedByAdminFor": "Dein Kommentar zu '{postTitle}' wurde von einem Administrator gelöscht, weil {reasonCode, select, irrelevant {er sachfremd war} inappropriate {sein Inhalt unangemessen war} other {{otherReason}}}",
   "app.containers.NotificationMenu.deletedUser": "Unbekannter Autor",
   "app.containers.NotificationMenu.error": "Benachrichtigungen konnten nicht geladen werden",
+  "app.containers.NotificationMenu.inappropriateContentAutoDetected": "",
   "app.containers.NotificationMenu.loadMore": "{orgName, select, München {Mehr Mängelmeldungen anzeigen} other {Mehr Ideen anzeigen...}}",
   "app.containers.NotificationMenu.loading": "Benachrichtigungen werden geladen...",
   "app.containers.NotificationMenu.mentionInComment": "{name} hat dich in einem Kommentar erwähnt",

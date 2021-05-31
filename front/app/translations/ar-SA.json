@@ -2087,6 +2087,7 @@
   "app.containers.NotificationMenu.commentDeletedByAdminFor": "تم حذف تعليقك على '{postTitle}' من قبل المسؤول لأنه: {reasonCode, select, irrelevant {غير ذي صلة} inappropriate {ذو محتوى غير مناسب} other {{otherReason}}}",
   "app.containers.NotificationMenu.deletedUser": "مؤلف غير معروف",
   "app.containers.NotificationMenu.error": "تعذّر تحميل الإشعارات",
+  "app.containers.NotificationMenu.inappropriateContentAutoDetected": "",
   "app.containers.NotificationMenu.loadMore": "تحميل المزيد...",
   "app.containers.NotificationMenu.loading": "تحميل الإشعارات...",
   "app.containers.NotificationMenu.mentionInComment": "ذكرك {name} في تعليق",

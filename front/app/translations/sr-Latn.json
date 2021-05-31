@@ -2087,6 +2087,7 @@
   "app.containers.NotificationMenu.commentDeletedByAdminFor": "Vaš komentar na '{postTitle}' je obrisan od strane administratora zbog: {reasonCode, select, irrelevant {it is irrelevant} inappropriate {its content is inappropriate} other {{otherReason}}}",
   "app.containers.NotificationMenu.deletedUser": "Nepoznat autor",
   "app.containers.NotificationMenu.error": "Neuspešno učitavanje notifikacija",
+  "app.containers.NotificationMenu.inappropriateContentAutoDetected": "",
   "app.containers.NotificationMenu.loadMore": "Učitaj više...",
   "app.containers.NotificationMenu.loading": "Učitavanje notifikacija...",
   "app.containers.NotificationMenu.mentionInComment": "{name} vas je pomenuo u komentaru",
