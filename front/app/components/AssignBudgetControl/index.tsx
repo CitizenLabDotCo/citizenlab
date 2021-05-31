@@ -365,8 +365,8 @@ class AssignBudgetControl extends PureComponent<
                   }`}
                   ariaLabel={
                     !isInBasket
-                      ? formatMessage(messages.assign)
-                      : formatMessage(messages.removeFromMyExpenses)
+                      ? formatMessage(messages.add)
+                      : formatMessage(messages.remove)
                   }
                 >
                   <FormattedMessage
@@ -408,14 +408,12 @@ class AssignBudgetControl extends PureComponent<
                 }`}
                 ariaLabel={
                   !isInBasket
-                    ? formatMessage(messages.assign)
-                    : formatMessage(messages.removeFromMyExpenses)
+                    ? formatMessage(messages.add)
+                    : formatMessage(messages.remove)
                 }
               >
                 <FormattedMessage
-                  {...(!isInBasket
-                    ? messages.assign
-                    : messages.removeFromMyExpenses)}
+                  {...(!isInBasket ? messages.add : messages.remove)}
                 />
               </Button>
             </BudgetBox>

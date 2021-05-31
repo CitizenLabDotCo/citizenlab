@@ -20,13 +20,10 @@ import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
 import GetIdeaList, { GetIdeaListChildProps } from 'resources/GetIdeaList';
 
 // styles
-import { ScreenReaderOnly } from 'utils/a11y';
 import { colors, fontSizes } from 'utils/styleUtils';
 import styled from 'styled-components';
-import { darken } from 'polished';
 
 // components
-import { Icon } from 'cl2-component-library';
 import Button from 'components/UI/Button';
 import T from 'components/T';
 
@@ -121,16 +118,6 @@ const RemoveIconButton = styled(Button)`
   align-items: center;
   justify-content: center;
   margin-left: 15px;
-`;
-
-const RemoveIcon = styled(Icon)`
-  height: 20px;
-  fill: ${colors.clIconSecondary};
-  cursor: pointer;
-
-  &:hover {
-    fill: ${darken(0.2, colors.clIconSecondary)};
-  }
 `;
 
 interface InputProps {
