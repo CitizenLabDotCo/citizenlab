@@ -7,16 +7,16 @@ import { Divider } from 'semantic-ui-react';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import useLocale from 'hooks/useLocale';
 import { InjectedIntlProps } from 'react-intl';
-import messages from './messages';
+import messages from '../messages';
 import { colors, fontSizes, stylingConsts, media } from 'utils/styleUtils';
 
-import TopBar, { topBarHeight } from '../../components/TopBar';
+import TopBar, { topBarHeight } from '../../../components/TopBar';
 import Error from 'components/UI/Error';
 import { CLErrors } from 'typings';
-import useInsightsCategories from '../../../hooks/useInsightsCategories';
+import useInsightsCategories from '../../../../hooks/useInsightsCategories';
 import { withRouter, WithRouterProps } from 'react-router';
 
-import { addInsightsCategory } from '../../../services/insightsCategories';
+import { addInsightsCategory } from '../../../../services/insightsCategories';
 import { darken } from 'polished';
 
 const Container = styled.div`
@@ -116,6 +116,9 @@ const EditInsightsView = ({
     setErrors(undefined);
   };
 
+  console.log(locale);
+  console.log(categories);
+
   if (isNilOrError(locale) || isNilOrError(categories)) {
     return null;
   }
@@ -137,7 +140,7 @@ const EditInsightsView = ({
     setSelectedCategory(categoryId);
 
   return (
-    <>
+    <div data-testid="insightsEdit">
       <TopBar />
       <Container>
         <Categories>
@@ -170,6 +173,7 @@ const EditInsightsView = ({
             <Button
               locale={locale}
               fontSize={`${fontSizes.xxxl}px`}
+              bgColor={colors.adminTextColor}
               className="addButton"
               padding="8px 10px"
               onClick={handleCategorySubmit}
@@ -218,8 +222,8 @@ const EditInsightsView = ({
         </Categories>
         <Inputs />
       </Container>
-    </>
+    </div>
   );
 };
 
-export default withRouter(injectIntl(EditInsightsView));
+export default injectIntl(withRouter(EditInsightsView));

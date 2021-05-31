@@ -109,7 +109,7 @@ const InsightsList: React.FC<InsightsList & InjectedIntlProps> = ({
   };
 
   return (
-    <div>
+    <div data-testid="insightsList">
       <PageTitle>{formatMessage(messages.title)}</PageTitle>
       <StyledDescription>
         {formatMessage(messages.description)}
@@ -133,7 +133,7 @@ const InsightsList: React.FC<InsightsList & InjectedIntlProps> = ({
             </Button>
           </InsightsContainerHeader>
           {data.map((view) => (
-            <div key={view.id}>
+            <div key={view.id} data-testid="insightsListItem">
               <InsightsListItem>
                 <div>
                   <h3> {view.attributes.name}</h3>
