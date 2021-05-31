@@ -58,7 +58,10 @@ interface Props {
   openCreateModal: () => void;
 }
 
-const EmptyState = ({ openCreateModal, intl }: Props & InjectedIntlProps) => {
+const EmptyState = ({
+  openCreateModal,
+  intl: { formatMessage },
+}: Props & InjectedIntlProps) => {
   const locale = useLocale();
 
   return (
@@ -70,13 +73,13 @@ const EmptyState = ({ openCreateModal, intl }: Props & InjectedIntlProps) => {
             values={{
               accentText: (
                 <span className="accent">
-                  {intl.formatMessage(messages.emptyStateAccentText)}
+                  {formatMessage(messages.emptyStateAccentText)}
                 </span>
               ),
             }}
           />
         </Title>
-        <Description>{intl.formatMessage(messages.description)}</Description>
+        <Description>{formatMessage(messages.description)}</Description>
         {!isNilOrError(locale) && (
           <ButtonsContainer>
             <Button
@@ -84,10 +87,10 @@ const EmptyState = ({ openCreateModal, intl }: Props & InjectedIntlProps) => {
               bgColor={colors.adminTextColor}
               onClick={openCreateModal}
             >
-              {intl.formatMessage(messages.emptyStateCreate)}
+              {formatMessage(messages.emptyStateCreate)}
             </Button>
             <Button locale={locale} buttonStyle="secondary">
-              {intl.formatMessage(messages.emptyStateDiscover)}
+              {formatMessage(messages.emptyStateDiscover)}
             </Button>
           </ButtonsContainer>
         )}

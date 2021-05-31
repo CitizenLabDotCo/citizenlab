@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen, fireEvent } from 'utils/testUtils/rtl';
 import * as service from 'modules/commercial/insights//services/insightsViews';
 
-import Insights from './';
+import InsightsList from './';
 
 jest.mock('modules/commercial/insights//services/insightsViews', () => ({
   deleteInsightsView: jest.fn(),
@@ -40,17 +40,17 @@ jest.mock('hooks/useLocale', () => jest.fn(() => 'en'));
 describe('Insights List', () => {
   describe('List', () => {
     it('renders list when data is available', () => {
-      render(<Insights />);
+      render(<InsightsList />);
       expect(screen.getByTestId('insightsList')).toBeInTheDocument();
     });
     it('renders correct number of list items', () => {
-      render(<Insights />);
+      render(<InsightsList />);
       expect(screen.getAllByTestId('insightsListItem')).toHaveLength(2);
     });
     it('opens create modal on button click', () => {
       render(
         <div id="modal-portal">
-          <Insights />
+          <InsightsList />
         </div>
       );
       fireEvent.click(screen.getByText('Create insights'));
@@ -58,7 +58,7 @@ describe('Insights List', () => {
     });
     it('deletes item on button click', () => {
       const spy = jest.spyOn(service, 'deleteInsightsView');
-      render(<Insights />);
+      render(<InsightsList />);
       fireEvent.click(screen.getAllByText('Delete')[0]);
       expect(spy).toHaveBeenCalledWith(mockData[0].id);
     });
@@ -67,14 +67,14 @@ describe('Insights List', () => {
   describe('Empty State', () => {
     it('renders empty state when no data is available', () => {
       mockData = [];
-      render(<Insights />);
+      render(<InsightsList />);
       expect(screen.getByTestId('insightsListEmptyState')).toBeInTheDocument();
       expect(screen.getAllByRole('button')).toHaveLength(2);
     });
     it('opens create modal on button click', () => {
       render(
         <div id="modal-portal">
-          <Insights />
+          <InsightsList />
         </div>
       );
       fireEvent.click(screen.getByText('Create my first insights'));
