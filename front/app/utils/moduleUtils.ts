@@ -330,7 +330,7 @@ export type OutletsPropertyMap = {
   'app.modules.commercial.moderation.admin.containers.actionbar.buttons': {
     selectedRowsWithContentWarningLength: number;
     processing: boolean;
-    onClick: () => void;
+    onClick: (event: React.FormEvent) => void;
   };
   'app.modules.commercial.moderation.admin.containers.tabs': {
     onData: (data: InsertConfigurationOptions<ITabItem>) => void;
