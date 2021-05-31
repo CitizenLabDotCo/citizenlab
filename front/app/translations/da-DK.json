@@ -271,7 +271,7 @@
   "app.components.PasswordInput.minimumPasswordLengthErrorMessage": "Dit password skal være mindst {minimumPasswordLength} karakterer langt.",
   "app.components.PasswordInput.passwordStrengthTooltip1": "Hvis du vil have et mere sikkert password:",
   "app.components.PasswordInput.passwordStrengthTooltip2": "Brug en kombination af ikke-sammenhængende små bogstaver, store bogstaver, cifre, specialtegn og tegnsætning",
-  "app.components.PasswordInput.passwordStrengthTooltip3": "Undgå almindelige eller ord er er nemme at gætte",
+  "app.components.PasswordInput.passwordStrengthTooltip3": "Undgå almindelige ord eller ord, der er nemme at gætte",
   "app.components.PasswordInput.passwordStrengthTooltip4": "Øg længden",
   "app.components.PasswordInput.showPassword": "Vis password",
   "app.components.PasswordInput.strength1Password": "Ringe",
