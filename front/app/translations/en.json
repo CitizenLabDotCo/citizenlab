@@ -2066,7 +2066,7 @@
   "app.containers.InitiativesShow.VoteControl.proposedStatusExplanationMobile": "This proposal still needs {votingThreshold} votes before {proposedStatusExplanationMobileBold}",
   "app.containers.InitiativesShow.VoteControl.proposedStatusExplanationMobileBold": "{orgName} can consider it",
   "app.containers.InitiativesShow.VoteControl.readAnswer": "Read answer",
-  "app.containers.InitiativesShow.VoteControl.thresholdReachedStatusExplanation": "{thresholdReachedStatusExplanationBold}. {orgName} got notified and will provide an answer. Voting remains open.",
+  "app.containers.InitiativesShow.VoteControl.thresholdReachedStatusExplanation": "{thresholdReachedStatusExplanationBold}. {orgName} has been notified. Voting remains open.",
   "app.containers.InitiativesShow.VoteControl.thresholdReachedStatusExplanationBold": "The threshold has been reached",
   "app.containers.InitiativesShow.VoteControl.unvoteLink": "Cancel my vote",
   "app.containers.InitiativesShow.VoteControl.vote": "Vote",
