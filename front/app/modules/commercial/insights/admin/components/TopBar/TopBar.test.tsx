@@ -1,8 +1,9 @@
 import React from 'react';
-import { render, screen, fireEvent } from 'utils/testUtils/rtl';
+import { render, screen, fireEvent, act } from 'utils/testUtils/rtl';
 import * as service from 'modules/commercial/insights/services/insightsViews';
 
 import TopBar from './';
+import RenameInsightsView from './RenameInsightsView';
 
 let mockViewData = {
   id: '1',
@@ -61,8 +62,6 @@ jest.mock('react-router', () => {
   };
 });
 
-jest.mock('utils/cl-router/history');
-
 window.confirm = jest.fn(() => true);
 
 describe('Insights Top Bar', () => {
@@ -88,5 +87,28 @@ describe('Insights Top Bar', () => {
     fireEvent.click(screen.getByRole('button'));
     fireEvent.click(screen.getByText('Delete'));
     expect(spy).toHaveBeenCalledWith(mockViewData.id);
+  });
+  it('renames view with correct viewId and name', () => {
+    const viewName = 'New name';
+
+    const spy = jest.spyOn(service, 'updateInsightsView');
+    const closeModal = () => jest.fn();
+    render(
+      <RenameInsightsView
+        insightsViewId={viewId}
+        closeRenameModal={closeModal}
+      />
+    );
+    fireEvent.input(screen.getByRole('textbox'), {
+      target: {
+        value: viewName,
+      },
+    });
+
+    act(() => {
+      fireEvent.click(screen.getByText('Rename'));
+    });
+
+    expect(spy).toHaveBeenCalledWith(viewId, viewName);
   });
 });

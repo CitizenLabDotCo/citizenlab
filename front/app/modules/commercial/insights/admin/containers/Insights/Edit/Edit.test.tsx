@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, fireEvent } from 'utils/testUtils/rtl';
+import { render, screen, fireEvent, act } from 'utils/testUtils/rtl';
 import * as service from 'modules/commercial/insights/services/insightsCategories';
 
 import InsightsEdit from './';
@@ -60,16 +60,20 @@ describe('Insights Edit', () => {
       render(<InsightsEdit />);
       expect(screen.getByTestId('insightsNoCategories')).toBeInTheDocument();
     });
-    it('adds category with correct view id and name ', () => {
-      render(<InsightsEdit />);
+    it('adds category with correct view id and name ', async () => {
       const categoryName = 'New category';
       const spy = jest.spyOn(service, 'addInsightsCategory');
+      render(<InsightsEdit />);
+
       fireEvent.input(screen.getByPlaceholderText('Add category'), {
         target: {
           value: categoryName,
         },
       });
-      fireEvent.click(screen.getByText('+'));
+
+      await act(async () => {
+        fireEvent.click(screen.getByText('+'));
+      });
 
       expect(spy).toHaveBeenCalledWith(viewId, categoryName);
     });

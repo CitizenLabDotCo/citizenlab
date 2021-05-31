@@ -24,8 +24,7 @@ import useInsightsCategories from '../../../../hooks/useInsightsCategories';
 import { InjectedIntlProps } from 'react-intl';
 import messages from '../messages';
 
-//types
-
+// types
 import { CLErrors } from 'typings';
 
 // services
@@ -210,9 +209,8 @@ const EditInsightsView = ({
               </CategoryInfoBox>
             ) : (
               categories.map((category) => (
-                <div data-testid="insightsCategory">
+                <div data-testid="insightsCategory" key={category.id}>
                   <CategoryButton
-                    key={category.id}
                     locale={locale}
                     bgColor={
                       category.id === selectedCategory
