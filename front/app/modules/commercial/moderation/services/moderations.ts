@@ -1,6 +1,6 @@
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
-import { Multiloc, ILinks } from 'typings';
+import { Multiloc, ILinks, IRelationship } from 'typings';
 
 export type TModerationStatuses = 'read' | 'unread';
 export type TModeratableTypes = 'Idea' | 'Initiative' | 'Comment';
@@ -26,6 +26,11 @@ export interface IModerationData {
         slug: string;
         title_multiloc: Multiloc;
       };
+    };
+  };
+  relationships: {
+    inappropriate_content_flag?: {
+      data: IRelationship;
     };
   };
 }

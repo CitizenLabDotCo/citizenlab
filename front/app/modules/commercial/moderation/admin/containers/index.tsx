@@ -335,11 +335,13 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
         const moderations = selectedRowsWithContentWarning.map((moderationId) =>
           moderationItems.find((item) => item.id === moderationId)
         ) as IModerationData[];
-        const promises = moderations.map((moderation) =>
-          removeInappropriateContentFlag(
-            moderation.relationship.inappropriate_content_flag.data.id
-          )
-        );
+        const promises = moderations.map((moderation) => {
+          if (moderation.relationships.inappropriate_content_flag) {
+            removeInappropriateContentFlag(
+              moderation.relationships.inappropriate_content_flag.data.id
+            );
+          }
+        });
 
         setProcessing(true);
         await Promise.all(promises);
