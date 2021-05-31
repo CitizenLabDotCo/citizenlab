@@ -12,6 +12,17 @@ export interface IInappropriateContentFlag {
   data: IInappropriateContentFlagData;
 }
 
+export function getFlagType(flag: IInappropriateContentFlagData) {
+  // A flag could be both user and NLP flagged
+  // If flag has toxicity_label, we know it's NLP flagged
+  // If toxicity_label is null, yet we have a flag, we know it's user reported
+  if (flag.toxicity_label) {
+    return 'nlp_flagged';
+  } else {
+    return 'user_flagged';
+  }
+}
+
 const apiEndpoint = `${API_PATH}/inappropriate_content_flag`;
 
 export function inappropriateContentFlagByIdStream(flagId: string) {

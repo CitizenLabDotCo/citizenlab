@@ -1,6 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Icon, colors } from 'cl2-component-library';
+import { isNilOrError } from 'utils/helperUtils';
+
+// services
+import { getFlagType } from '../../services/inappropriateContentFlags';
+
+// hooks
+import useInappropriateContentFlag from '../../hooks/useInappropriateContentFlag';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
@@ -23,17 +30,37 @@ const WarningIcon = styled(Icon)`
   width: 16px;
 `;
 
-interface Props {}
+interface Props {
+  inappropriateContentFlagId: string;
+}
 
 const InappropriateContentWarning = ({
+  inappropriateContentFlagId,
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
-  return (
-    <Container>
-      <WarningIcon name="exclamation-trapezium" />
-      <WarningContent>{formatMessage(messages.warningText)} </WarningContent>
-    </Container>
+  const inappropriateContentFlag = useInappropriateContentFlag(
+    inappropriateContentFlagId
   );
+
+  if (!isNilOrError(inappropriateContentFlag)) {
+    const flagType = getFlagType(inappropriateContentFlag);
+
+    return (
+      <Container>
+        <WarningIcon name="exclamation-trapezium" />
+        <WarningContent>
+          {
+            {
+              nlp_flagged: formatMessage(messages.nlpFlaggedWarningText),
+              user_flagged: formatMessage(messages.userFlaggedWarningText),
+            }[flagType]
+          }
+        </WarningContent>
+      </Container>
+    );
+  }
+
+  return null;
 };
 
 export default injectIntl(InappropriateContentWarning);

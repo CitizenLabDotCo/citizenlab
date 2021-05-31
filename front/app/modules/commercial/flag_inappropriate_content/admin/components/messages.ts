@@ -1,11 +1,15 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  warningText: {
+  nlpFlaggedWarningText: {
     id:
-      'app.modules.commercial.flag_inappropriate_content.admin.components.warningText',
-    defaultMessage:
-      'Warning: possible inappropriate or offensive content detected',
+      'app.modules.commercial.flag_inappropriate_content.admin.components.nlpFlaggedWarningText',
+    defaultMessage: 'Inappropriate content auto-detected',
+  },
+  userFlaggedWarningText: {
+    id:
+      'app.modules.commercial.flag_inappropriate_content.admin.components.userFlaggedWarningText',
+    defaultMessage: 'Reported',
   },
   removeWarning: {
     id:

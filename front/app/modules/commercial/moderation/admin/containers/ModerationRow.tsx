@@ -153,15 +153,12 @@ const ModerationRow = memo<Props & InjectedIntlProps>(
       []
     );
 
-    // const inappropriateContentFlag = moderation.attributes.flagged;
-    const inappropriateContentFlag = true;
+    const inappropriateContentFlagId =
+      moderation.relationships.inappropriate_content_flag?.data.id;
+    const flagged = !!inappropriateContentFlagId;
 
     return (
-      <Container
-        className={`${className}`}
-        flagged={inappropriateContentFlag}
-        bgColor={bgColor}
-      >
+      <Container className={`${className}`} flagged={flagged} bgColor={bgColor}>
         <td className="checkbox">
           <StyledCheckbox checked={selected} onChange={handleOnChecked} />
         </td>
@@ -216,7 +213,7 @@ const ModerationRow = memo<Props & InjectedIntlProps>(
           />
           <Outlet
             id="app.modules.commercial.moderation.admin.containers.ModerationRow.content"
-            inappropriateContentFlag={inappropriateContentFlag}
+            inappropriateContentFlagId={inappropriateContentFlagId}
           />
         </td>
         <td>
