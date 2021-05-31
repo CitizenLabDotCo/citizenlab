@@ -382,6 +382,14 @@ export interface IThresholdReachedForAdminNotificationData
   };
 }
 
+export interface INlpFlaggedPostNotificationData extends IBaseNotificationData {
+  attributes: {
+    type: 'inappropriate_content_flagged';
+    read_at: string | null;
+    created_at: string;
+  };
+}
+
 export type TNotificationData =
   | IAdminRightsReceivedNotificationData
   | ICommentDeletedByAdminNotificationData
@@ -411,7 +419,8 @@ export type TNotificationData =
   | IStatusChangeOnCommentedInitiativeNotificationData
   | IStatusChangeOnVotedIdeaNotificationData
   | IStatusChangeOnVotedInitiativeNotificationData
-  | IThresholdReachedForAdminNotificationData;
+  | IThresholdReachedForAdminNotificationData
+  | INlpFlaggedPostNotificationData;
 
 export interface INotificationLinks {
   self: string;

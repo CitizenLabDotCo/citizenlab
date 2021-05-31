@@ -28,6 +28,7 @@ import StatusChangeOnCommentedInitiativeNotification from '../StatusChangeOnComm
 import StatusChangeOnVotedIdeaNotification from '../StatusChangeOnVotedIdeaNotification';
 import StatusChangeOnVotedInitiativeNotification from '../StatusChangeOnVotedInitiativeNotification';
 import ThresholdReachedForAdminNotification from '../ThresholdReachedForAdminNotification';
+import NlpFlaggedPostNotification from '../NlpFlaggedPostNotification';
 
 import {
   TNotificationData,
@@ -60,6 +61,7 @@ import {
   IStatusChangeOnVotedIdeaNotificationData,
   IStatusChangeOnVotedInitiativeNotificationData,
   IThresholdReachedForAdminNotificationData,
+  INlpFlaggedPostNotificationData,
 } from 'services/notifications';
 import styled from 'styled-components';
 
@@ -286,6 +288,12 @@ export default class Notification extends PureComponent<Props> {
             notification={
               notification as IThresholdReachedForAdminNotificationData
             }
+          />
+        );
+      case 'inappropriate_content_flagged':
+        return (
+          <NlpFlaggedPostNotification
+            notification={notification as INlpFlaggedPostNotificationData}
           />
         );
       default:
