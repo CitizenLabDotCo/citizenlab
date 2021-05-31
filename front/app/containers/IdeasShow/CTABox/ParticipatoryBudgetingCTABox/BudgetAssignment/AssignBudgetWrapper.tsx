@@ -9,12 +9,18 @@ import AssignBudgetDisabled from 'components/AssignBudgetControl/AssignBudgetDis
 // services
 import { IIdeaData } from 'services/ideas';
 
+// styles
+import styled from 'styled-components';
+
+const Container = styled.div``;
+
 interface Props {
   ideaId: string;
   projectId: string;
   participationContextId: string;
   participationContextType: IParticipationContextType;
   budgetingDescriptor: IIdeaData['attributes']['action_descriptor']['budgeting'];
+  className?: string;
 }
 
 const AssignBudgetWrapper = memo(
@@ -24,6 +30,7 @@ const AssignBudgetWrapper = memo(
     participationContextType,
     budgetingDescriptor,
     projectId,
+    className,
   }: Props) => {
     const [error, setError] = useState<'budgetingDisabled' | null>(null);
 
@@ -32,7 +39,7 @@ const AssignBudgetWrapper = memo(
     };
 
     return (
-      <div aria-live="polite">
+      <Container className={className || ''} aria-live="polite">
         {!error && (
           <AssignBudgetControl
             view="ideaPage"
@@ -52,7 +59,7 @@ const AssignBudgetWrapper = memo(
             />
           </PopContainer>
         )}
-      </div>
+      </Container>
     );
   }
 );

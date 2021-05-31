@@ -35,6 +35,7 @@ const StyledProjectPageSectionTitle = styled(ProjectPageSectionTitle)`
 `;
 
 const StyledPBExpenses = styled(PBExpenses)`
+  padding: 20px;
   margin-bottom: 50px;
 `;
 

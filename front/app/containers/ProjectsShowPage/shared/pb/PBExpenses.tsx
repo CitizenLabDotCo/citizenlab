@@ -44,8 +44,6 @@ import { ScreenReaderOnly } from 'utils/a11y';
 import { LiveMessage } from 'react-aria-live';
 
 const Container = styled.div`
-  background: #fff;
-  padding: 20px;
   ${defaultCardStyle};
 `;
 
@@ -127,16 +125,17 @@ const BudgetAmount = styled.span`
 
 const ProgressBar = styled.div<{ viewMode: 'row' | 'column' }>`
   width: 100%;
-  height: 30px;
+  height: 34px;
   border-radius: ${(props: any) => props.theme.borderRadius};
   margin-top: 30px;
   margin-bottom: 30px;
+  border: solid 1px #e0e0e0;
   background: repeating-linear-gradient(
     -45deg,
-    #eff1f2,
-    #eff1f2 10px,
-    #e6e9ec 10px,
-    #e6e9ec 20px
+    #f8f8f8,
+    #f8f8f8 10px,
+    #e8e8e8 10px,
+    #e8e8e8 20px
   );
 
   ${({ viewMode }) =>
@@ -218,7 +217,11 @@ const Buttons = styled.div<{ viewMode: 'row' | 'column' }>`
 
 const ManageBudgetButton = styled(Button)``;
 
-const ManageBudgetButtonWithDropdown = styled(ButtonWithDropdown)``;
+const ManageBudgetButtonWithDropdown = styled(ButtonWithDropdown)`
+  z-index: 900;
+`;
+
+const StyledPBBasket = styled(PBBasket)``;
 
 const SubmitExpensesButton = styled(Button)<{ viewMode: 'row' | 'column' }>`
   margin-left: 10px;
@@ -350,7 +353,9 @@ class PBExpenses extends PureComponent<
       }
 
       return (
-        <Container className={`e2e-pb-expenses-box ${className || ''}`}>
+        <Container
+          className={`pbExpenses e2e-pb-expenses-box ${className || ''}`}
+        >
           <InnerContainer>
             <Header>
               <Title className={validationStatus}>
@@ -458,14 +463,14 @@ class PBExpenses extends PureComponent<
                       iconAriaHidden
                       buttonStyle="primary-inverse"
                       borderColor={colors.separation}
-                      bgColor="transparent"
+                      bgColor="#fff"
                       borderThickness="2px"
                     >
                       <FormattedMessage {...messages.manageBudget} />
                     </ManageBudgetButton>
                   }
                   dropdownContent={
-                    <PBBasket
+                    <StyledPBBasket
                       participationContextType={participationContextType}
                       participationContextId={participationContextId}
                     />

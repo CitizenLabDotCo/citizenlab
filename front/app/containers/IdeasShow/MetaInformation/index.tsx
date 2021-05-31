@@ -21,25 +21,22 @@ const Container = styled.div`
   flex-direction: column;
 `;
 
-const StyledPostedBy = styled(PostedBy)`
-  margin-top: -4px;
-  margin-bottom: -6px;
-`;
-
 interface Props {
-  className?: string;
   ideaId: string;
   authorId: string | null;
   projectId: string;
   statusId: string;
+  compact?: boolean;
+  className?: string;
 }
 
 const MetaInformation = ({
-  className,
   ideaId,
   projectId,
   statusId,
   authorId,
+  compact,
+  className,
 }: Props) => {
   const locale = useLocale();
   const ideaCustomFieldsSchemas = useIdeaCustomFieldsSchemas({ projectId });
@@ -62,12 +59,20 @@ const MetaInformation = ({
 
     return (
       <Container className={className}>
-        <StyledPostedBy authorId={authorId} ideaId={ideaId} />
-        <Status statusId={statusId} />
-        {topicsEnabled && <IdeaTopics ideaId={ideaId} />}
-        {locationEnabled && <Location projectId={projectId} ideaId={ideaId} />}
-        {attachmentsEnabled && <Attachments ideaId={ideaId} />}
-        <Outlet id="app.containers.IdeasShow.MetaInformation" ideaId={ideaId} />
+        <PostedBy authorId={authorId} ideaId={ideaId} compact={compact} />
+        <Status statusId={statusId} compact={compact} />
+        {topicsEnabled && <IdeaTopics ideaId={ideaId} compact={compact} />}
+        {locationEnabled && (
+          <Location projectId={projectId} ideaId={ideaId} compact={compact} />
+        )}
+        {attachmentsEnabled && (
+          <Attachments ideaId={ideaId} compact={compact} />
+        )}
+        <Outlet
+          id="app.containers.IdeasShow.MetaInformation"
+          ideaId={ideaId}
+          compact={compact}
+        />
       </Container>
     );
   }

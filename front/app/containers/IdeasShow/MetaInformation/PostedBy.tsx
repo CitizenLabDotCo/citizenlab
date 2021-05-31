@@ -18,11 +18,13 @@ import useIdea from 'hooks/useIdea';
 import styled from 'styled-components';
 import { colors, fontSizes, isRtl } from 'utils/styleUtils';
 
-const Container = styled.div`
+const UserWrapper = styled.div`
   display: flex;
   align-items: center;
   color: ${colors.label};
   font-size: ${fontSizes.small}px;
+  margin-top: -4px;
+  margin-bottom: -6px;
 
   ${isRtl`
     flex-direction: row-reverse;
@@ -40,13 +42,14 @@ const StyledAvatar = styled(Avatar)`
 `;
 
 export interface Props {
-  className?: string;
   authorId: string | null;
   ideaId: string;
+  compact?: boolean;
+  className?: string;
 }
 
 const PostedBy = memo<Props & InjectedIntlProps>(
-  ({ className, authorId, ideaId, intl: { formatMessage } }) => {
+  ({ authorId, ideaId, compact, className, intl: { formatMessage } }) => {
     const idea = useIdea({ ideaId });
 
     if (!isNilOrError(idea)) {
@@ -70,9 +73,9 @@ const PostedBy = memo<Props & InjectedIntlProps>(
       );
 
       return (
-        <Item isFirstItem>
+        <Item className={className || ''} compact={compact} isFirstItem={true}>
           <Header>{formatMessage(messages.postedBy)}</Header>
-          <Container className={`e2e-idea-author ${className || ''}`}>
+          <UserWrapper className="e2e-idea-author">
             <StyledAvatar
               userId={authorId}
               size={30}
@@ -82,7 +85,7 @@ const PostedBy = memo<Props & InjectedIntlProps>(
               {...messages.byUserOnDate}
               values={{ userName, date }}
             />
-          </Container>
+          </UserWrapper>
         </Item>
       );
     }

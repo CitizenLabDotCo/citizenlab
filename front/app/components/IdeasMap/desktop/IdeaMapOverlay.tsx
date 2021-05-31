@@ -15,7 +15,7 @@ import IdeaShowPageTopBar from 'containers/IdeasShowPage/IdeaShowPageTopBar';
 
 // styling
 import styled from 'styled-components';
-import { defaultCardStyle } from 'utils/styleUtils';
+import { defaultCardStyle, colors } from 'utils/styleUtils';
 
 const timeout = 200;
 
@@ -86,6 +86,11 @@ const StyledIdeasShow = styled(IdeasShow)`
   overflow-x: hidden;
   overflow-y: auto;
   padding: 30px;
+
+  & .pbExpenses {
+    background: ${colors.background};
+    box-shadow: none;
+  }
 `;
 
 const StyledIdeasList = styled(IdeasList)`

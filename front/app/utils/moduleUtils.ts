@@ -180,6 +180,7 @@ export type OutletsPropertyMap = {
   };
   'app.containers.IdeasShow.MetaInformation': {
     ideaId: string;
+    compact?: boolean;
   };
   'app.containers.UserEditPage.ProfileForm.forms': {
     authUser: IUserData;

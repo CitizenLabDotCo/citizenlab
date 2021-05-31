@@ -46,7 +46,7 @@ import messages from './messages';
 
 // styles
 import styled from 'styled-components';
-import { fontSizes, colors } from 'utils/styleUtils';
+import { fontSizes, colors, media } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import PBExpenses from 'containers/ProjectsShowPage/shared/pb/PBExpenses';
 import { darken } from 'polished';
@@ -98,14 +98,6 @@ const AssignedContainer = styled.div`
   margin-bottom: 15px;
 `;
 
-const ControlWrapperHorizontalRule = styled.hr`
-  width: 100%;
-  border: none;
-  height: 1px;
-  background-color: ${colors.separation};
-  margin: 20px 0;
-`;
-
 const AssignedIcon = styled(Icon)`
   height: 39px;
   color: ${colors.adminTextColor};
@@ -146,6 +138,15 @@ const ActionButton = styled.button`
   }
 `;
 
+const StyledPBExpenses = styled(PBExpenses)`
+  padding: 20px;
+  margin-top: 20px;
+
+  ${media.smallerThanMaxTablet`
+    background: ${colors.background};
+  `};
+`;
+
 interface InputProps {
   view: 'ideaCard' | 'ideaPage';
   ideaId: string;
@@ -153,8 +154,8 @@ interface InputProps {
   participationContextType: IParticipationContextType;
   openIdea?: (event: FormEvent<any>) => void;
   disabledAssignBudgetClick?: () => void;
-  className?: string;
   projectId: string;
+  className?: string;
 }
 
 interface DataProps {
@@ -483,8 +484,7 @@ class AssignBudgetControl extends PureComponent<
                 </Button>
               </>
             )}
-            <ControlWrapperHorizontalRule aria-hidden />
-            <PBExpenses
+            <StyledPBExpenses
               participationContextId={participationContextId}
               participationContextType={participationContextType}
               viewMode="column"

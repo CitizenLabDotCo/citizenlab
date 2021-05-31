@@ -34,7 +34,6 @@ const Container = styled.div`
 const StyledIcon = styled(Icon)`
   flex: 0 0 16px;
   width: 16px;
-  height: 21px;
   fill: ${colors.label};
   margin-right: 8px;
 
@@ -47,7 +46,7 @@ const StyledIcon = styled(Icon)`
 const OpenMapModalButton = styled.button`
   color: ${colors.label};
   font-size: ${fontSizes.small}px;
-  line-height: 21px;
+  line-height: 22px;
   text-decoration: underline;
   text-align: left;
   margin: 0;
@@ -77,13 +76,14 @@ const MapContainer = styled.div`
 `;
 
 export interface Props {
-  className?: string;
   projectId: string;
   ideaId: string;
+  compact?: boolean;
+  className?: string;
 }
 
 const Location = memo<Props & InjectedIntlProps>(
-  ({ intl: { formatMessage }, projectId, ideaId }) => {
+  ({ intl: { formatMessage }, projectId, ideaId, compact, className }) => {
     const [isOpened, setIsOpened] = useState(false);
     const idea = useIdea({ ideaId });
 
@@ -117,7 +117,7 @@ const Location = memo<Props & InjectedIntlProps>(
 
     if (address && point) {
       return (
-        <Item>
+        <Item className={className || ''} compact={compact}>
           <Header>{formatMessage(messages.location)}</Header>
           <Container>
             <StyledIcon name="position" ariaHidden />

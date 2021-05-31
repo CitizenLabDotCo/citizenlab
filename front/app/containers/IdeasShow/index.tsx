@@ -551,6 +551,7 @@ export class IdeasShow extends PureComponent<
                   projectId={projectId}
                   statusId={statusId}
                   authorId={authorId}
+                  compact={isCompactView}
                 />
               )}
 

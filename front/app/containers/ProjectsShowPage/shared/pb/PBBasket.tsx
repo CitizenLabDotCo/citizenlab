@@ -220,7 +220,7 @@ class PBBasket extends PureComponent<Props & Tracks, State> {
       }
 
       return (
-        <Container className={className} aria-live="polite">
+        <Container className={className || ''} aria-live="polite">
           {ideas &&
             ideas.length > 0 &&
             ideas.map((idea, index) => (
