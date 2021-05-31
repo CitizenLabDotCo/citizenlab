@@ -9,7 +9,7 @@ import messages from './messages';
 
 interface Props {
   processing: boolean;
-  onClick: () => void;
+  onClick: (event: React.FormEvent) => void;
   selectedRowsWithContentWarningLength: number;
 }
 
