@@ -72,7 +72,7 @@ module Insights
 
       def serialize(inputs)
         options = {
-          include: %i[categories source],
+          include: %i[categories suggested_categories source],
           fields: { idea: [:title_multiloc] },
           params: fastjson_params
         }

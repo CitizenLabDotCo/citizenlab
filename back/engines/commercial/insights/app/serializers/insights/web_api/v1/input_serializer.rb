@@ -15,11 +15,11 @@ module Insights
         end
 
         # TODO: optimize DB requests
-        has_many :suggested_categories do |idea, _params|
+        has_many :suggested_categories, record_type: :category, serializer: CategorySerializer do |idea, _params|
           ::Insights::CategoryAssignment.where(input: idea, approved: false)
                                         .map(&:category)
         end
-        
+
         # TODO
         # private
         #
