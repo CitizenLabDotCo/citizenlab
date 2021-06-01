@@ -19,7 +19,7 @@ const NlpFlaggedPostNotification = memo<Props>((props) => {
 
   return (
     <NotificationWrapper
-      linkTo={``}
+      linkTo={notification.attributes.flaggable_url}
       timing={notification.attributes.created_at}
       icon=""
       isRead={!!notification.attributes.read_at}
