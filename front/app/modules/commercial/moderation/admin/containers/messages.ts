@@ -33,14 +33,6 @@ export default defineMessages({
     id: 'app.containers.Admin.Moderation.content',
     defaultMessage: 'Content',
   },
-  warning: {
-    id: 'app.containers.Admin.Moderation.warning',
-    defaultMessage: 'Warning',
-  },
-  warnings: {
-    id: 'app.containers.Admin.Moderation.warnings',
-    defaultMessage: 'Warnings',
-  },
   date: {
     id: 'app.containers.Admin.Moderation.date',
     defaultMessage: 'Date',
@@ -122,15 +114,5 @@ export default defineMessages({
   settingsSavingError: {
     id: 'app.containers.Admin.Moderation.settingsSavingError',
     defaultMessage: "Couldn't save. Try changing the setting again.",
-  },
-  warningText: {
-    id: 'app.containers.Admin.Moderation.warningText',
-    defaultMessage:
-      'Warning: possible inappropriate or offensive content detected',
-  },
-  removeWarning: {
-    id: 'app.containers.Admin.Moderation.removeWarning',
-    defaultMessage:
-      'Remove {numberOfItems, plural, one {warning} other {# warnings}}',
   },
 });
