@@ -7,6 +7,8 @@ import styled from 'styled-components';
 import { IconTooltip, Toggle } from 'cl2-component-library';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
+import { trackEventByName } from 'utils/__mocks__/analytics';
+import tracks from '../../../tracks';
 
 const StyledToggle = styled(Toggle)`
   margin-right: 15px;
@@ -61,6 +63,10 @@ const FlagInnapropriateContentSetting = ({
       onSettingChange('flag_inappropriate_content', {
         ...flagInnaproperiateContentSetting,
         flag_inappropriate_content: !flagInnaproperiateContentEnabled,
+      });
+
+      trackEventByName(tracks.settingToggled, {
+        settingChangedTo: !flagInnaproperiateContentEnabled,
       });
     }
 
