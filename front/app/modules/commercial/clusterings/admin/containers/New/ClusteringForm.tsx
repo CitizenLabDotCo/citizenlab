@@ -12,6 +12,7 @@ import FormikInput from 'components/UI/FormikInput';
 import { Label } from 'cl2-component-library';
 import LevelsInput from './LevelsInput';
 import GoBackButton from 'components/UI/GoBackButton';
+import PageWrapper from 'components/admin/PageWrapper';
 
 // I18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
@@ -68,143 +69,151 @@ class ClusteringForm extends PureComponent<
     const { isSubmitting, errors, isValid, touched, status } = this.props;
 
     return (
-      <Form>
-        <Section>
-          <GoBackButton onClick={this.goBack} />
-          <SectionTitle>
-            <FormattedMessage {...messages.titleClusterInformation} />
-          </SectionTitle>
-          <SectionField>
-            <Field
-              name="title_multiloc"
-              component={FormikInputMultilocWithLocaleSwitcher}
-              label={<FormattedMessage {...messages.fieldTitle} />}
-            />
-            {touched.title_multiloc && (
-              <Error
-                fieldName="title_multiloc"
-                apiErrors={errors.title_multiloc as any}
-              />
-            )}
-          </SectionField>
-
-          <SectionField>
-            <Label>
-              <FormattedMessage {...messages.fieldAttributes} />
-            </Label>
-            <Field name="levels" component={LevelsInput} />
-          </SectionField>
-
-          <SectionField>
-            <Field
-              name="drop_empty"
-              component={FormikToggle}
-              label={
-                <FormattedMessage {...messages.fieldExcludeEmptyCluster} />
-              }
-            />
-          </SectionField>
-        </Section>
-
-        <Section>
-          <SectionTitle>
-            <FormattedMessage {...messages.titleInputFilters} />
-          </SectionTitle>
-
-          <SectionField>
-            <Label>
-              <FormattedMessage {...messages.fieldProjects} />
-            </Label>
-            <GetProjects publicationStatuses={['published', 'archived']}>
-              {(projects) =>
-                projects && isNilOrError(projects) ? null : (
-                  <Field
-                    name="projects"
-                    component={FormikMultipleSelect}
-                    options={this.resourcesToOptionList(projects.projectsList)}
+      <>
+        <GoBackButton onClick={this.goBack} />
+        <SectionTitle>
+          <FormattedMessage {...messages.titleClusterInformation} />
+        </SectionTitle>
+        <PageWrapper>
+          <Form>
+            <Section>
+              <SectionField>
+                <Field
+                  name="title_multiloc"
+                  component={FormikInputMultilocWithLocaleSwitcher}
+                  label={<FormattedMessage {...messages.fieldTitle} />}
+                />
+                {touched.title_multiloc && (
+                  <Error
+                    fieldName="title_multiloc"
+                    apiErrors={errors.title_multiloc as any}
                   />
-                )
-              }
-            </GetProjects>
-          </SectionField>
+                )}
+              </SectionField>
 
-          <SectionField>
-            <Label>
-              <FormattedMessage {...messages.fieldTopics} />
-            </Label>
-            <GetTopics>
-              {(topics) =>
-                topics && isNilOrError(topics) ? null : (
-                  <Field
-                    name="topics"
-                    component={FormikMultipleSelect}
-                    options={this.resourcesToOptionList(topics)}
-                  />
-                )
-              }
-            </GetTopics>
-          </SectionField>
+              <SectionField>
+                <Label>
+                  <FormattedMessage {...messages.fieldAttributes} />
+                </Label>
+                <Field name="levels" component={LevelsInput} />
+              </SectionField>
 
-          <SectionField>
-            <Label>
-              <FormattedMessage {...messages.fieldStatuses} />
-            </Label>
-            <GetIdeaStatuses>
-              {(ideaStatuses) =>
-                ideaStatuses && isNilOrError(ideaStatuses) ? null : (
-                  <Field
-                    name="ideaStatuses"
-                    component={FormikMultipleSelect}
-                    options={this.resourcesToOptionList(ideaStatuses)}
-                  />
-                )
-              }
-            </GetIdeaStatuses>
-          </SectionField>
+              <SectionField>
+                <Field
+                  name="drop_empty"
+                  component={FormikToggle}
+                  label={
+                    <FormattedMessage {...messages.fieldExcludeEmptyCluster} />
+                  }
+                />
+              </SectionField>
+            </Section>
 
-          <SectionField>
-            <Label>
-              <FormattedMessage {...messages.fieldSearch} />
-            </Label>
-            <Field name="search" component={FormikInput} type="text" />
-          </SectionField>
+            <Section>
+              <SectionTitle>
+                <FormattedMessage {...messages.titleInputFilters} />
+              </SectionTitle>
 
-          <SectionField>
-            <Label>
-              <FormattedMessage {...messages.fieldMinimalTotalVotes} />
-            </Label>
-            <Field
-              name="minimal_total_votes"
-              component={FormikInput}
-              type="number"
+              <SectionField>
+                <Label>
+                  <FormattedMessage {...messages.fieldProjects} />
+                </Label>
+                <GetProjects publicationStatuses={['published', 'archived']}>
+                  {(projects) =>
+                    projects && isNilOrError(projects) ? null : (
+                      <Field
+                        name="projects"
+                        component={FormikMultipleSelect}
+                        options={this.resourcesToOptionList(
+                          projects.projectsList
+                        )}
+                      />
+                    )
+                  }
+                </GetProjects>
+              </SectionField>
+
+              <SectionField>
+                <Label>
+                  <FormattedMessage {...messages.fieldTopics} />
+                </Label>
+                <GetTopics>
+                  {(topics) =>
+                    topics && isNilOrError(topics) ? null : (
+                      <Field
+                        name="topics"
+                        component={FormikMultipleSelect}
+                        options={this.resourcesToOptionList(topics)}
+                      />
+                    )
+                  }
+                </GetTopics>
+              </SectionField>
+
+              <SectionField>
+                <Label>
+                  <FormattedMessage {...messages.fieldStatuses} />
+                </Label>
+                <GetIdeaStatuses>
+                  {(ideaStatuses) =>
+                    ideaStatuses && isNilOrError(ideaStatuses) ? null : (
+                      <Field
+                        name="ideaStatuses"
+                        component={FormikMultipleSelect}
+                        options={this.resourcesToOptionList(ideaStatuses)}
+                      />
+                    )
+                  }
+                </GetIdeaStatuses>
+              </SectionField>
+
+              <SectionField>
+                <Label>
+                  <FormattedMessage {...messages.fieldSearch} />
+                </Label>
+                <Field name="search" component={FormikInput} type="text" />
+              </SectionField>
+
+              <SectionField>
+                <Label>
+                  <FormattedMessage {...messages.fieldMinimalTotalVotes} />
+                </Label>
+                <Field
+                  name="minimal_total_votes"
+                  component={FormikInput}
+                  type="number"
+                />
+              </SectionField>
+
+              <SectionField>
+                <Label>
+                  <FormattedMessage {...messages.fieldMinimalUpvotes} />
+                </Label>
+                <Field
+                  name="minimal_upvotes"
+                  component={FormikInput}
+                  type="number"
+                />
+              </SectionField>
+
+              <SectionField>
+                <Label>
+                  <FormattedMessage {...messages.fieldMinimalDownvotes} />
+                </Label>
+                <Field
+                  name="minimal_downvotes"
+                  component={FormikInput}
+                  type="number"
+                />
+              </SectionField>
+            </Section>
+
+            <FormikSubmitWrapper
+              {...{ isValid, isSubmitting, status, touched }}
             />
-          </SectionField>
-
-          <SectionField>
-            <Label>
-              <FormattedMessage {...messages.fieldMinimalUpvotes} />
-            </Label>
-            <Field
-              name="minimal_upvotes"
-              component={FormikInput}
-              type="number"
-            />
-          </SectionField>
-
-          <SectionField>
-            <Label>
-              <FormattedMessage {...messages.fieldMinimalDownvotes} />
-            </Label>
-            <Field
-              name="minimal_downvotes"
-              component={FormikInput}
-              type="number"
-            />
-          </SectionField>
-        </Section>
-
-        <FormikSubmitWrapper {...{ isValid, isSubmitting, status, touched }} />
-      </Form>
+          </Form>
+        </PageWrapper>
+      </>
     );
   }
 }

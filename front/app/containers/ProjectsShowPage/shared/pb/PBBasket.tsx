@@ -231,9 +231,8 @@ class PBBasket extends PureComponent<Props & InjectedIntlProps, State> {
                   <RemoveIconButton
                     icon="basket-minus"
                     buttonStyle="text"
-                    iconSize="20px"
+                    iconSize="21px"
                     iconColor={colors.label}
-                    iconHoverColor={colors.clRed}
                     padding="0"
                     onClick={this.ideaRemovedFromBasket(idea.id)}
                     ariaLabel={this.props.intl.formatMessage(

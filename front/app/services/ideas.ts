@@ -135,12 +135,14 @@ export interface IIdeaMarkerData {
   id: string;
   type: string;
   attributes: {
+    slug: string;
     title_multiloc: Multiloc;
     location_point_geojson: GeoJSON.Point;
     location_description: string;
-    upvote_count: number;
-    downvote_count: number;
+    upvotes_count: number;
+    downvotes_count: number;
     comments_count: number;
+    budget: number | null;
   };
 }
 
@@ -150,6 +152,10 @@ export interface IIdeaLinks {
   prev: string;
   next: string;
   last: string;
+}
+
+export interface IIdeaMarker {
+  data: IIdeaMarkerData;
 }
 
 export interface IIdea {

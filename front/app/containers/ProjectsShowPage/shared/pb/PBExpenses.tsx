@@ -218,10 +218,9 @@ const Buttons = styled.div<{ viewMode: 'row' | 'column' }>`
 const ManageBudgetButton = styled(Button)``;
 
 const ManageBudgetButtonWithDropdown = styled(ButtonWithDropdown)`
+  min-width: 250px;
   z-index: 900;
 `;
-
-const StyledPBBasket = styled(PBBasket)``;
 
 const SubmitExpensesButton = styled(Button)<{ viewMode: 'row' | 'column' }>`
   margin-left: 10px;
@@ -353,7 +352,9 @@ class PBExpenses extends PureComponent<
       }
 
       return (
-        <Container className={`e2e-pb-expenses-box ${className || ''}`}>
+        <Container
+          className={`pbExpensesBox e2e-pb-expenses-box ${className || ''}`}
+        >
           <InnerContainer>
             <Header>
               <Title className={validationStatus}>
@@ -468,7 +469,7 @@ class PBExpenses extends PureComponent<
                     </ManageBudgetButton>
                   }
                   dropdownContent={
-                    <StyledPBBasket
+                    <PBBasket
                       participationContextType={participationContextType}
                       participationContextId={participationContextId}
                     />

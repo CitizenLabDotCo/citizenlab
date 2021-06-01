@@ -1,6 +1,6 @@
 import React, { memo, useEffect, useState } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 import { IOpenPostPageModalEvent } from 'containers/App';
+import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import Button from 'components/UI/Button';
@@ -16,11 +16,12 @@ import {
 } from 'components/UI/LeafletMap/events';
 
 // hooks
-import useIdea from 'hooks/useIdea';
 import useWindowSize from 'hooks/useWindowSize';
+import useAppConfiguration from 'hooks/useAppConfiguration';
 
 // i18n
 import T from 'components/T';
+import { FormattedNumber } from 'react-intl';
 
 // styling
 import styled from 'styled-components';
@@ -32,6 +33,9 @@ import {
   viewportWidths,
   media,
 } from 'utils/styleUtils';
+
+// typings
+import { IIdeaMarkerData } from 'services/ideas';
 
 const Container = styled.button`
   text-align: left;
@@ -102,6 +106,22 @@ const FooterItem = styled.div`
   margin-right: 25px;
 `;
 
+const MoneybagIcon = styled(Icon)`
+  width: 17px;
+  height: 17px;
+  fill: ${colors.label};
+  margin-right: 6px;
+`;
+
+// const IdeaBudget = styled.span`
+//   color: ${colors.label};
+//   font-size: ${fontSizes.base}px;
+//   font-weight: 600;
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+// `;
+
 const DownvoteIcon = styled(Icon)`
   width: 17px;
   height: 17px;
@@ -133,13 +153,13 @@ const FooterValue = styled.div`
 `;
 
 interface Props {
-  ideaId: string;
+  ideaMarker: IIdeaMarkerData;
   onClose?: () => void;
   className?: string;
 }
 
-const IdeaMapCard = memo<Props>(({ ideaId, onClose, className }) => {
-  const idea = useIdea({ ideaId });
+const IdeaMapCard = memo<Props>(({ ideaMarker, onClose, className }) => {
+  const tenant = useAppConfiguration();
   const { windowWidth } = useWindowSize();
   const smallerThanMaxTablet = windowWidth <= viewportWidths.largeTablet;
 
@@ -148,7 +168,7 @@ const IdeaMapCard = memo<Props>(({ ideaId, onClose, className }) => {
   useEffect(() => {
     const subscriptions = [
       leafletMapHoveredMarker$.subscribe((hoverredIdeaId) => {
-        setHovered(hoverredIdeaId === ideaId);
+        setHovered(hoverredIdeaId === ideaMarker.id);
       }),
     ];
 
@@ -160,25 +180,25 @@ const IdeaMapCard = memo<Props>(({ ideaId, onClose, className }) => {
   const handleOnClick = (event: React.FormEvent) => {
     event?.preventDefault();
 
-    setIdeaMapCardSelected(ideaId);
+    setIdeaMapCardSelected(ideaMarker.id);
 
-    if (smallerThanMaxTablet && !isNilOrError(idea)) {
+    if (smallerThanMaxTablet) {
       eventEmitter.emit<IOpenPostPageModalEvent>('cardClick', {
-        id: ideaId,
-        slug: idea.attributes.slug,
+        id: ideaMarker.id,
+        slug: ideaMarker.attributes.slug,
         type: 'idea',
       });
     }
 
-    if (!smallerThanMaxTablet && !isNilOrError(idea)) {
-      const lng = idea.attributes.location_point_geojson.coordinates[0];
-      const lat = idea.attributes.location_point_geojson.coordinates[1];
+    if (!smallerThanMaxTablet && !isNilOrError(ideaMarker)) {
+      const lng = ideaMarker.attributes.location_point_geojson.coordinates[0];
+      const lat = ideaMarker.attributes.location_point_geojson.coordinates[1];
       setLeafletMapCenter([lat, lng]);
     }
   };
 
   const handleOnMouseEnter = () => {
-    setLeafletMapHoveredMarker(ideaId);
+    setLeafletMapHoveredMarker(ideaMarker.id);
   };
 
   const handleOnMouseLeave = () => {
@@ -190,7 +210,11 @@ const IdeaMapCard = memo<Props>(({ ideaId, onClose, className }) => {
     onClose?.();
   };
 
-  if (!isNilOrError(idea)) {
+  const tenantCurrency =
+    !isNilOrError(tenant) && tenant.data.attributes.settings.core.currency;
+  const ideaBudget = ideaMarker.attributes?.budget;
+
+  if (!isNilOrError(ideaMarker)) {
     return (
       <Container
         className={`${className || ''} ${hovered ? 'hover' : ''}`}
@@ -213,20 +237,40 @@ const IdeaMapCard = memo<Props>(({ ideaId, onClose, className }) => {
           </CloseButtonWrapper>
         )}
         <Title>
-          <T value={idea.attributes.title_multiloc} />
+          <T value={ideaMarker.attributes.title_multiloc} />
         </Title>
         <Footer>
-          <FooterItem>
-            <DownvoteIcon name="upvote" />
-            <FooterValue>{idea.attributes.upvotes_count}</FooterValue>
-          </FooterItem>
-          <FooterItem>
-            <UpvoteIcon name="downvote" />
-            <FooterValue>{idea.attributes.downvotes_count}</FooterValue>
-          </FooterItem>
+          {tenantCurrency && ideaBudget && (
+            <FooterItem>
+              <MoneybagIcon name="moneybag" />
+              <FooterValue>
+                <FormattedNumber
+                  value={ideaBudget}
+                  style="currency"
+                  currency={tenantCurrency}
+                  minimumFractionDigits={0}
+                  maximumFractionDigits={0}
+                />
+              </FooterValue>
+            </FooterItem>
+          )}
+          {!ideaBudget && (
+            <>
+              <FooterItem>
+                <DownvoteIcon name="upvote" />
+                <FooterValue>{ideaMarker.attributes.upvotes_count}</FooterValue>
+              </FooterItem>
+              <FooterItem>
+                <UpvoteIcon name="downvote" />
+                <FooterValue>
+                  {ideaMarker.attributes.downvotes_count}
+                </FooterValue>
+              </FooterItem>
+            </>
+          )}
           <FooterItem>
             <CommentIcon name="comments" />
-            <FooterValue>{idea.attributes.comments_count}</FooterValue>
+            <FooterValue>{ideaMarker.attributes.comments_count}</FooterValue>
           </FooterItem>
         </Footer>
       </Container>

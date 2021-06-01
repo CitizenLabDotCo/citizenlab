@@ -225,8 +225,8 @@ const IdeasList = memo<Props>(
 
           {ideaMarkers &&
             ideaMarkers.length > 0 &&
-            ideaMarkers.map((idea) => (
-              <StyledIdeaMapCard ideaId={idea.id} key={idea.id} />
+            ideaMarkers.map((ideaMarker) => (
+              <StyledIdeaMapCard ideaMarker={ideaMarker} key={ideaMarker.id} />
             ))}
 
           {(ideaMarkers === null || ideaMarkers?.length === 0) && (

@@ -6,7 +6,6 @@ exports[`<BarChartByCategory /> renders correctly 1`] = `
     <Chart__GraphCardHeader>
       <Chart__GraphCardTitle />
       <ReportExportMenu
-        currentGroupFilter={null}
         name=""
         svgNode={
           Object {

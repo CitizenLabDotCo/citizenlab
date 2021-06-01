@@ -9,7 +9,7 @@ const configuration: ModuleConfiguration = {
         path: 'insights',
         container: () => import('./admin/containers'),
         indexRoute: {
-          container: () => import('./admin/containers/Insights'),
+          container: () => import('./admin/containers/Insights/List'),
         },
         childRoutes: [
           {
@@ -19,6 +19,14 @@ const configuration: ModuleConfiguration = {
           {
             path: 'reports/:projectId',
             container: () => import('./admin/containers/Reports/ProjectReport'),
+          },
+          {
+            path: ':viewId',
+            container: () => import('./admin/containers/Insights/Details'),
+          },
+          {
+            path: ':viewId/edit',
+            container: () => import('./admin/containers/Insights/Edit'),
           },
         ],
       },

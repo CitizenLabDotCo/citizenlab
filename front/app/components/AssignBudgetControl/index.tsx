@@ -64,14 +64,15 @@ const BudgetBox = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  margin-bottom: 20px;
+  align-items: flex-start;
+  margin-bottom: 23px;
 `;
 
 const Budget = styled.div`
   color: ${colors.adminTextColor};
   font-size: ${fontSizes.medium}px;
   font-weight: 600;
-  margin-bottom: 15px;
+  margin-bottom: 12px;
 `;
 
 const ButtonWrapper = styled.div``;
@@ -350,7 +351,7 @@ class AssignBudgetControl extends PureComponent<
                   onClick={this.assignBudget}
                   disabled={!!authUser && !budgetingEnabled}
                   processing={processing}
-                  bgColor={isInBasket ? colors.clRedError : colors.clGreen}
+                  bgColor={isInBasket ? colors.label : colors.clGreen}
                   iconSize="18px"
                   icon={!isInBasket ? 'basket-plus' : 'basket-minus'}
                   className={`e2e-assign-budget-button ${
@@ -393,7 +394,7 @@ class AssignBudgetControl extends PureComponent<
                 onClick={this.assignBudget}
                 disabled={!!authUser && !budgetingEnabled}
                 processing={processing}
-                bgColor={isInBasket ? colors.clRedError : colors.clGreen}
+                bgColor={isInBasket ? colors.label : colors.clGreen}
                 iconSize="18px"
                 icon={!isInBasket ? 'basket-plus' : 'basket-minus'}
                 className={`e2e-assign-budget-button ${

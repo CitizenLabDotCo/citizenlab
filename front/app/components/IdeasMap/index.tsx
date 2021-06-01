@@ -4,6 +4,7 @@ import React, {
   useRef,
   useEffect,
   useLayoutEffect,
+  useMemo,
 } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { popup, LatLng } from 'leaflet';
@@ -54,6 +55,7 @@ import { media, viewportWidths } from 'utils/styleUtils';
 
 // typings
 import { Sort } from 'resources/GetIdeas';
+import { IIdeaMarkerData } from 'services/ideas';
 
 const mapMarginDesktop = 70;
 const mapHeightDesktop = '85vh';
@@ -171,13 +173,15 @@ const IdeasMap = memo<Props>(({ projectIds, phaseId, className }) => {
 
   // state
   const [selectedLatLng, setSelectedLatLng] = useState<LatLng | null>(null);
-  const [selectedIdeaId, setSelectedIdeaId] = useState<string | null>(null);
+  const [selectedIdeaMarkerId, setSelectedIdeaMarkerId] = useState<
+    string | null
+  >(null);
   const [points, setPoints] = useState<Point[]>([]);
   const [containerWidth, setContainerWidth] = useState(initialContainerWidth);
   const [innerContainerLeftMargin, setInnerContainerLeftMargin] = useState(
     initialInnerContainerLeftMargin
   );
-  const [isMobileCardClickable, setIsMobileCardClickable] = useState(false);
+  const [isCardClickable, setIsCardClickable] = useState(false);
 
   // ideaMarkers
   const defaultIdeasSearch: string | null = null;
@@ -207,16 +211,16 @@ const IdeasMap = memo<Props>(({ projectIds, phaseId, className }) => {
     const subscriptions = [
       ideaMapCardSelected$.subscribe((ideaId) => {
         setLeafletMapSelectedMarker(ideaId);
-        setSelectedIdeaId(ideaId);
+        setSelectedIdeaMarkerId(ideaId);
       }),
       leafletMapSelectedMarker$.subscribe((ideaId) => {
         setIdeaMapCardSelected(ideaId);
-        setSelectedIdeaId((_prevIdeaIdideaId) => {
+        setSelectedIdeaMarkerId((_prevIdeaIdideaId) => {
           // temporarily disable pointer events on the mobile ideacard popup to avoid
           // the marker click event from propagating to the card
-          setIsMobileCardClickable(false);
+          setIsCardClickable(false);
           setTimeout(() => {
-            setIsMobileCardClickable(true);
+            setIsCardClickable(true);
           }, 200);
           return ideaId;
         });
@@ -284,6 +288,10 @@ const IdeasMap = memo<Props>(({ projectIds, phaseId, className }) => {
     setLeafletMapHoveredMarker(null);
   };
 
+  const selectedIdeaMarker = useMemo(() => {
+    return ideaMarkers?.find(({ id }) => id === selectedIdeaMarkerId);
+  }, [ideaMarkers]);
+
   if (!isNilOrError(project)) {
     return (
       <Container ref={containerRef} className={className || ''}>
@@ -319,7 +327,7 @@ const IdeasMap = memo<Props>(({ projectIds, phaseId, className }) => {
 
           <CSSTransition
             classNames="animation"
-            in={!!(smallerThanMaxTablet && selectedIdeaId)}
+            in={!!(smallerThanMaxTablet && selectedIdeaMarker)}
             timeout={300}
             mounOnEnter={true}
             unmountOnExit={true}
@@ -328,10 +336,10 @@ const IdeasMap = memo<Props>(({ projectIds, phaseId, className }) => {
           >
             <MobileIdeaMapCard
               className="animation"
-              isClickable={isMobileCardClickable}
+              isClickable={isCardClickable}
             >
               <IdeaMapCard
-                ideaId={selectedIdeaId as string}
+                ideaMarker={selectedIdeaMarker as IIdeaMarkerData}
                 onClose={handleIdeaMapCardOnClose}
               />
             </MobileIdeaMapCard>

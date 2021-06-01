@@ -87,9 +87,7 @@ const StyledIdeasShow = styled(IdeasShow)`
   overflow-y: auto;
   padding: 30px;
 
-  & .pbAssignBudgetContainer {
-    padding: 20px;
-    ${defaultCardStyle};
+  & .pbExpensesBox {
     box-shadow: none;
     background: ${colors.background};
   }
