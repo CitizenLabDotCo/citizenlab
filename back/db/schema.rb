@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_27_090412) do
+ActiveRecord::Schema.define(version: 2021_06_01_061247) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -492,8 +492,10 @@ ActiveRecord::Schema.define(version: 2021_05_27_090412) do
     t.uuid "category_id", null: false
     t.string "input_type", null: false
     t.uuid "input_id", null: false
+    t.boolean "approved", default: true, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["approved"], name: "index_insights_category_assignments_on_approved"
     t.index ["category_id", "input_id", "input_type"], name: "index_single_category_assignment", unique: true
     t.index ["category_id"], name: "index_insights_category_assignments_on_category_id"
     t.index ["input_type", "input_id"], name: "index_insights_category_assignments_on_input_type_and_input_id"
