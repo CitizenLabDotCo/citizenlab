@@ -112,29 +112,16 @@ const IdeaMapOverlay = memo<Props>(
     const [selectedIdeaId, setSelectedIdeaId] = useState<string | null>(null);
     const project = useProject({ projectId });
 
-    // const scrollContainerRef = useRef<HTMLDivElement | null>(null);
-
     useEffect(() => {
-      // scrollContainerRef.current?.addEventListener('wheel', scrolling);
-
       const subscription = ideaMapCardSelected$.subscribe((ideaId) => {
         setSelectedIdeaId(ideaId);
       });
 
       return () => {
+        setIdeaMapCardSelected(null);
         subscription.unsubscribe();
-        // scrollContainerRef.current?.removeEventListener('wheel', scrolling);
       };
-    }, []);
-
-    // const scrolling = (event: WheelEvent) => {
-    //   // prevent body from scrolling
-    //   if (scrollContainerRef.current) {
-    //     const deltaY = event.deltaMode === 1 ? event.deltaY * 20 : event.deltaY;
-    //     scrollContainerRef.current.scrollTop += deltaY;
-    //     event.preventDefault();
-    //   }
-    // };
+    }, [projectIds, projectId]);
 
     const goBack = () => {
       setIdeaMapCardSelected(null);

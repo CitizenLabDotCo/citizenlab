@@ -56,7 +56,7 @@ import { media, viewportWidths } from 'utils/styleUtils';
 import { Sort } from 'resources/GetIdeas';
 
 const mapMarginDesktop = 70;
-const mapHeightDesktop = '80vh';
+const mapHeightDesktop = '85vh';
 const mapHeightMobile = '75vh';
 
 const Container = styled.div``;
