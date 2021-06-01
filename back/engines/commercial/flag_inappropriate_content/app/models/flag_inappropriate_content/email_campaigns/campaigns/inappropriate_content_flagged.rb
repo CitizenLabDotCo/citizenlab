@@ -52,10 +52,10 @@ module FlagInappropriateContent
         case d[:flaggable_type]
         when Idea.name 
           payload[:flaggable_title_multiloc] = flaggable.title_multiloc
-          payload[:flaggable_description_multiloc] = flaggable.description_multiloc
+          payload[:flaggable_body_multiloc] = flaggable.body_multiloc
         when Initiative.name 
           payload[:flaggable_title_multiloc] = flaggable.title_multiloc
-          payload[:flaggable_description_multiloc] = flaggable.description_multiloc
+          payload[:flaggable_body_multiloc] = flaggable.body_multiloc
         when Comment.name 
           payload[:flaggable_body_multiloc] = flaggable.body_multiloc
         end

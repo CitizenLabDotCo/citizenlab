@@ -49,7 +49,6 @@ en:
       "assignee_digest": Weekly overview of assigned ideas
       "user_digest": Weekly overview
       "your_proposed_initiatives_digest": Weekly overview of your proposals
-      "inappropriate_content_flagged": Inappropriate content flagged
     admin_campaign_type_description:
       "manual": Official message - all users
       "admin_rights_received": Admin rights received - admins
@@ -100,7 +99,6 @@ en:
       "assignee_digest": Weekly overview of assigned ideas - admins and project managers
       "user_digest": Weekly overview - all users
       "your_proposed_initiatives_digest": Weekly overview of your own proposals - all users
-      "inappropriate_content_flagged": Inappropriate content flagged - admins
     footer:
       "link_privacy_policy": "Privacy Policy"
       "link_terms_conditions": "Terms & Conditions"
