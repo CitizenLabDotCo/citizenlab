@@ -1,11 +1,20 @@
 import { API_PATH } from 'containers/App/constants';
 import streams from 'utils/streams';
+import { IRelationship } from 'typings';
+
+type TReasonCode = 'inappropriate' | 'wrong' | 'other';
 
 interface IInappropriateContentFlagData {
-  flaggable_type: string;
-  flaggable_id: string;
-  deleted_at: string;
-  toxicity_label: string | null;
+  attributes: {
+    reason_code: TReasonCode | null;
+    deleted_at: string | null;
+    toxicity_label: string | null;
+  };
+  relationships: {
+    flaggable: {
+      data: IRelationship;
+    };
+  };
 }
 
 export interface IInappropriateContentFlag {
