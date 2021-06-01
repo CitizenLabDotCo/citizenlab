@@ -65,7 +65,7 @@ module Insights
 
       def category
         @category ||= authorize(
-          Category.find_by(id: params.require(:id), view_id: params.require(:view_id))
+          Category.find_by!(id: params.require(:id), view_id: params.require(:view_id))
         )
       end
     end
