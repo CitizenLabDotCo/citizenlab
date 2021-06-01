@@ -148,6 +148,7 @@ const IdeasList = memo<Props>(
     });
 
     const isFiltered = (search && search.length > 0) || topics.length > 0;
+
     const isPBProject =
       !isNilOrError(project) &&
       project.attributes.participation_method === 'budgeting';
