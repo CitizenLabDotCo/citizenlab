@@ -107,20 +107,11 @@ const FooterItem = styled.div`
 `;
 
 const MoneybagIcon = styled(Icon)`
-  width: 17px;
-  height: 17px;
+  width: 18px;
+  height: 18px;
   fill: ${colors.label};
   margin-right: 6px;
 `;
-
-// const IdeaBudget = styled.span`
-//   color: ${colors.label};
-//   font-size: ${fontSizes.base}px;
-//   font-weight: 600;
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-// `;
 
 const DownvoteIcon = styled(Icon)`
   width: 17px;
@@ -154,130 +145,135 @@ const FooterValue = styled.div`
 
 interface Props {
   ideaMarker: IIdeaMarkerData;
+  isPBProject: boolean;
   onClose?: () => void;
   className?: string;
 }
 
-const IdeaMapCard = memo<Props>(({ ideaMarker, onClose, className }) => {
-  const tenant = useAppConfiguration();
-  const { windowWidth } = useWindowSize();
-  const smallerThanMaxTablet = windowWidth <= viewportWidths.largeTablet;
+const IdeaMapCard = memo<Props>(
+  ({ ideaMarker, isPBProject, onClose, className }) => {
+    const tenant = useAppConfiguration();
+    const { windowWidth } = useWindowSize();
+    const smallerThanMaxTablet = windowWidth <= viewportWidths.largeTablet;
 
-  const [hovered, setHovered] = useState(false);
+    const [hovered, setHovered] = useState(false);
 
-  useEffect(() => {
-    const subscriptions = [
-      leafletMapHoveredMarker$.subscribe((hoverredIdeaId) => {
-        setHovered(hoverredIdeaId === ideaMarker.id);
-      }),
-    ];
+    useEffect(() => {
+      const subscriptions = [
+        leafletMapHoveredMarker$.subscribe((hoverredIdeaId) => {
+          setHovered(hoverredIdeaId === ideaMarker.id);
+        }),
+      ];
 
-    return () => {
-      subscriptions.forEach((subscription) => subscription.unsubscribe());
+      return () => {
+        subscriptions.forEach((subscription) => subscription.unsubscribe());
+      };
+    }, []);
+
+    const handleOnClick = (event: React.FormEvent) => {
+      event?.preventDefault();
+
+      setIdeaMapCardSelected(ideaMarker.id);
+
+      if (smallerThanMaxTablet) {
+        eventEmitter.emit<IOpenPostPageModalEvent>('cardClick', {
+          id: ideaMarker.id,
+          slug: ideaMarker.attributes.slug,
+          type: 'idea',
+        });
+      }
+
+      if (!smallerThanMaxTablet && !isNilOrError(ideaMarker)) {
+        const lng = ideaMarker.attributes.location_point_geojson.coordinates[0];
+        const lat = ideaMarker.attributes.location_point_geojson.coordinates[1];
+        setLeafletMapCenter([lat, lng]);
+      }
     };
-  }, []);
 
-  const handleOnClick = (event: React.FormEvent) => {
-    event?.preventDefault();
+    const handleOnMouseEnter = () => {
+      setLeafletMapHoveredMarker(ideaMarker.id);
+    };
 
-    setIdeaMapCardSelected(ideaMarker.id);
+    const handleOnMouseLeave = () => {
+      setLeafletMapHoveredMarker(null);
+    };
 
-    if (smallerThanMaxTablet) {
-      eventEmitter.emit<IOpenPostPageModalEvent>('cardClick', {
-        id: ideaMarker.id,
-        slug: ideaMarker.attributes.slug,
-        type: 'idea',
-      });
-    }
+    const handleCloseButtonClick = (event: React.FormEvent) => {
+      event?.preventDefault();
+      onClose?.();
+    };
 
-    if (!smallerThanMaxTablet && !isNilOrError(ideaMarker)) {
-      const lng = ideaMarker.attributes.location_point_geojson.coordinates[0];
-      const lat = ideaMarker.attributes.location_point_geojson.coordinates[1];
-      setLeafletMapCenter([lat, lng]);
-    }
-  };
+    const tenantCurrency =
+      !isNilOrError(tenant) && tenant.data.attributes.settings.core.currency;
+    const ideaBudget = ideaMarker.attributes?.budget;
 
-  const handleOnMouseEnter = () => {
-    setLeafletMapHoveredMarker(ideaMarker.id);
-  };
-
-  const handleOnMouseLeave = () => {
-    setLeafletMapHoveredMarker(null);
-  };
-
-  const handleCloseButtonClick = (event: React.FormEvent) => {
-    event?.preventDefault();
-    onClose?.();
-  };
-
-  const tenantCurrency =
-    !isNilOrError(tenant) && tenant.data.attributes.settings.core.currency;
-  const ideaBudget = ideaMarker.attributes?.budget;
-
-  if (!isNilOrError(ideaMarker)) {
-    return (
-      <Container
-        className={`${className || ''} ${hovered ? 'hover' : ''}`}
-        onClick={handleOnClick}
-        onMouseEnter={handleOnMouseEnter}
-        onMouseLeave={handleOnMouseLeave}
-      >
-        {smallerThanMaxTablet && (
-          <CloseButtonWrapper>
-            <CloseButton
-              width="24px"
-              height="24px"
-              padding="0px"
-              buttonStyle="secondary"
-              icon="close"
-              iconSize="11px"
-              borderRadius="3px"
-              onClick={handleCloseButtonClick}
-            />
-          </CloseButtonWrapper>
-        )}
-        <Title>
-          <T value={ideaMarker.attributes.title_multiloc} />
-        </Title>
-        <Footer>
-          {tenantCurrency && ideaBudget && (
-            <FooterItem>
-              <MoneybagIcon name="moneybag" />
-              <FooterValue>
-                <FormattedNumber
-                  value={ideaBudget}
-                  style="currency"
-                  currency={tenantCurrency}
-                  minimumFractionDigits={0}
-                  maximumFractionDigits={0}
-                />
-              </FooterValue>
-            </FooterItem>
+    if (!isNilOrError(ideaMarker)) {
+      return (
+        <Container
+          className={`${className || ''} ${hovered ? 'hover' : ''}`}
+          onClick={handleOnClick}
+          onMouseEnter={handleOnMouseEnter}
+          onMouseLeave={handleOnMouseLeave}
+        >
+          {smallerThanMaxTablet && (
+            <CloseButtonWrapper>
+              <CloseButton
+                width="24px"
+                height="24px"
+                padding="0px"
+                buttonStyle="secondary"
+                icon="close"
+                iconSize="11px"
+                borderRadius="3px"
+                onClick={handleCloseButtonClick}
+              />
+            </CloseButtonWrapper>
           )}
-          {!ideaBudget && (
-            <>
+          <Title>
+            <T value={ideaMarker.attributes.title_multiloc} />
+          </Title>
+          <Footer>
+            {isPBProject && tenantCurrency && ideaBudget && (
               <FooterItem>
-                <DownvoteIcon name="upvote" />
-                <FooterValue>{ideaMarker.attributes.upvotes_count}</FooterValue>
-              </FooterItem>
-              <FooterItem>
-                <UpvoteIcon name="downvote" />
+                <MoneybagIcon name="moneybag" />
                 <FooterValue>
-                  {ideaMarker.attributes.downvotes_count}
+                  <FormattedNumber
+                    value={ideaBudget}
+                    style="currency"
+                    currency={tenantCurrency}
+                    minimumFractionDigits={0}
+                    maximumFractionDigits={0}
+                  />
                 </FooterValue>
               </FooterItem>
-            </>
-          )}
-          <FooterItem>
-            <CommentIcon name="comments" />
-            <FooterValue>{ideaMarker.attributes.comments_count}</FooterValue>
-          </FooterItem>
-        </Footer>
-      </Container>
-    );
-  }
+            )}
+            {!isPBProject && (
+              <>
+                <FooterItem>
+                  <DownvoteIcon name="upvote" />
+                  <FooterValue>
+                    {ideaMarker.attributes.upvotes_count}
+                  </FooterValue>
+                </FooterItem>
+                <FooterItem>
+                  <UpvoteIcon name="downvote" />
+                  <FooterValue>
+                    {ideaMarker.attributes.downvotes_count}
+                  </FooterValue>
+                </FooterItem>
+              </>
+            )}
+            <FooterItem>
+              <CommentIcon name="comments" />
+              <FooterValue>{ideaMarker.attributes.comments_count}</FooterValue>
+            </FooterItem>
+          </Footer>
+        </Container>
+      );
+    }
 
-  return null;
-});
+    return null;
+  }
+);
 
 export default IdeaMapCard;

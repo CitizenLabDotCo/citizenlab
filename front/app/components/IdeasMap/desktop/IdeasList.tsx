@@ -148,6 +148,9 @@ const IdeasList = memo<Props>(
     });
 
     const isFiltered = (search && search.length > 0) || topics.length > 0;
+    const isPBProject =
+      !isNilOrError(project) &&
+      project.attributes.participation_method === 'budgeting';
 
     const isFieldEnabled = (fieldCode: CustomFieldCodes) => {
       if (!isNilOrError(ideaCustomFieldsSchemas) && !isNilOrError(locale)) {
@@ -226,7 +229,11 @@ const IdeasList = memo<Props>(
           {ideaMarkers &&
             ideaMarkers.length > 0 &&
             ideaMarkers.map((ideaMarker) => (
-              <StyledIdeaMapCard ideaMarker={ideaMarker} key={ideaMarker.id} />
+              <StyledIdeaMapCard
+                ideaMarker={ideaMarker}
+                key={ideaMarker.id}
+                isPBProject={!!isPBProject}
+              />
             ))}
 
           {(ideaMarkers === null || ideaMarkers?.length === 0) && (

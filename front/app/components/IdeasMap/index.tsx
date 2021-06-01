@@ -167,6 +167,10 @@ const IdeasMap = memo<Props>(({ projectIds, phaseId, className }) => {
   const { windowWidth } = useWindowSize();
   const smallerThanMaxTablet = windowWidth <= viewportWidths.largeTablet;
 
+  const isPBProject =
+    !isNilOrError(project) &&
+    project.attributes.participation_method === 'budgeting';
+
   // refs
   const containerRef = useRef<HTMLDivElement | null>(null);
   const ideaButtonRef = useRef<HTMLDivElement | null>(null);
@@ -340,6 +344,7 @@ const IdeasMap = memo<Props>(({ projectIds, phaseId, className }) => {
             >
               <IdeaMapCard
                 ideaMarker={selectedIdeaMarker as IIdeaMarkerData}
+                isPBProject={!!isPBProject}
                 onClose={handleIdeaMapCardOnClose}
               />
             </MobileIdeaMapCard>
