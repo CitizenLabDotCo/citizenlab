@@ -291,14 +291,20 @@ namespace :setup_and_support do
   end
 
   desc 'Reset the tile_provider in app configurations and map configs'
-  task reset_tile_provider: :environment do
-    next unless ENV['DEFAULT_MAPS_TILE_PROVIDER'].present?
+  task :reset_tile_provider, [:tile_provider_to_replace] => [:environment] do
+    Rails.logger.warning('Missing default tile provider') && next unless ENV['DEFAULT_MAPS_TILE_PROVIDER'].present?
+    Rails.logger.warning('Missing tile provider to replace') && next unless tile_provider_to_replace.present?
 
     Tenant.switch_each do
       settings = AppConfiguration.instance.settings
-      settings['maps']['tile_provider'] = ENV['DEFAULT_MAPS_TILE_PROVIDER']
-      AppConfiguration.instance.update(settings: settings)
-      CustomMaps::MapConfig.update(tile_provider: ENV['DEFAULT_MAPS_TILE_PROVIDER'])
+
+      if settings.dig('maps', 'tile_provider') == tile_provider_to_replace
+        settings['maps']['tile_provider'] = ENV['DEFAULT_MAPS_TILE_PROVIDER']
+        AppConfiguration.instance.update(settings: settings)
+      end
+
+      CustomMaps::MapConfig.where(tile_provider: tile_provider_to_replace)
+                           .update(tile_provider: ENV['DEFAULT_MAPS_TILE_PROVIDER'])
     end
   end
 
