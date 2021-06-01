@@ -4,6 +4,15 @@ import { isNilOrError } from 'utils/helperUtils';
 import { IInsightsInputData } from 'modules/commercial/insights/services/insightsInputs';
 import { Checkbox } from 'cl2-component-library';
 import T from 'components/T';
+import Tag from 'modules/commercial/insights/admin/components/Tag';
+import styled from 'styled-components';
+
+const TagList = styled.div`
+  > * {
+    margin-right: 8px;
+    margin-bottom: 8px;
+  }
+`;
 
 type InputsTableRow = {
   input: IInsightsInputData;
@@ -16,7 +25,7 @@ const InputsTableRow = ({ input }: InputsTableRow) => {
     return null;
   }
   return (
-    <tr>
+    <tr tabIndex={0}>
       <td>
         <Checkbox checked={false} onChange={() => {}} />
       </td>
@@ -24,9 +33,18 @@ const InputsTableRow = ({ input }: InputsTableRow) => {
         <T value={idea.attributes.title_multiloc} />
       </td>
       <td>
-        {input.relationships?.categories.data.map(
-          (category) => category.attributes.name
-        )}
+        <TagList>
+          {input.relationships?.categories.data.map((category) => (
+            <Tag
+              id={category.id}
+              label={category.id}
+              key={category.id}
+              status="approved"
+              onApprove={() => {}}
+              onDelete={() => {}}
+            />
+          ))}
+        </TagList>
       </td>
     </tr>
   );

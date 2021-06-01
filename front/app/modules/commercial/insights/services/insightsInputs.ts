@@ -20,7 +20,7 @@ export interface IInsightsInputData {
   id: string;
   type: string;
   relationships?: {
-    categories: { data: IInsightsCategoryData[] };
+    categories: { data: IRelationship[] };
     source: {
       data: IRelationship;
     };
