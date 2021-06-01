@@ -21,7 +21,7 @@ const NlpFlaggedPostNotification = memo<Props>((props) => {
     <NotificationWrapper
       linkTo={notification.attributes.flaggable_url}
       timing={notification.attributes.created_at}
-      icon=""
+      icon="flag"
       isRead={!!notification.attributes.read_at}
     >
       <FormattedMessage {...messages.inappropriateContentAutoDetected} />
