@@ -3,10 +3,10 @@ module IdeaAssignment
     module EmailCampaigns
       module DeliveryService
 
-        def campaign_types
+        def campaign_classes
           super + [
            IdeaAssignment::EmailCampaigns::Campaigns::IdeaAssignedToYou
-          ].map(&:name)
+          ]
         end
       end
     end
