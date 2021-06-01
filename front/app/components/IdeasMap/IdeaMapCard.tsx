@@ -203,11 +203,10 @@ const IdeaMapCard = memo<Props>(
       onClose?.();
     };
 
-    const tenantCurrency =
-      !isNilOrError(tenant) && tenant.data.attributes.settings.core.currency;
-    const ideaBudget = ideaMarker.attributes?.budget;
+    if (!isNilOrError(tenant) && !isNilOrError(ideaMarker)) {
+      const tenantCurrency = tenant.data.attributes.settings.core.currency;
+      const ideaBudget = ideaMarker.attributes?.budget;
 
-    if (!isNilOrError(ideaMarker)) {
       return (
         <Container
           className={`${className || ''} ${hovered ? 'hover' : ''}`}

@@ -59,7 +59,7 @@ import { IIdeaMarkerData } from 'services/ideas';
 
 const mapMarginDesktop = 70;
 const mapHeightDesktop = '85vh';
-const mapHeightMobile = '75vh';
+const mapHeightMobile = '78vh';
 
 const Container = styled.div``;
 
@@ -294,7 +294,9 @@ const IdeasMap = memo<Props>(({ projectIds, phaseId, className }) => {
 
   const selectedIdeaMarker = useMemo(() => {
     return ideaMarkers?.find(({ id }) => id === selectedIdeaMarkerId);
-  }, [ideaMarkers]);
+  }, [ideaMarkers, selectedIdeaMarkerId]);
+
+  console.log(selectedIdeaMarker);
 
   if (!isNilOrError(project)) {
     return (
