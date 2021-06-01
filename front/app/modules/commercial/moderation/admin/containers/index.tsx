@@ -354,7 +354,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
         setSelectedRows([]);
       }
     },
-    [selectedRows, moderationItems]
+    [selectedRows, moderationItems, processing]
   );
 
   const markAs = useCallback(
@@ -408,7 +408,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
     }
   }, [list, processing]);
 
-  const selectedRowsWithContentWarning = useMemo(() => {
+  const selectedModerationItemsWithContentWarning = useMemo(() => {
     if (!isNilOrError(moderationItems)) {
       return moderationItems.filter(
         (moderationItem) =>
@@ -478,7 +478,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
               <Outlet
                 id="app.modules.commercial.moderation.admin.containers.actionbar.buttons"
                 selectedRowsWithContentWarningLength={
-                  selectedRowsWithContentWarning?.length || 0
+                  selectedModerationItemsWithContentWarning?.length || 0
                 }
                 processing={processing}
                 onClick={removeFlags}
@@ -528,6 +528,10 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
                   moderation={moderationItem}
                   selected={includes(selectedRows, moderationItem.id)}
                   onSelect={handleRowOnSelect}
+                  inappropriateContentFlagId={
+                    moderationItem.relationships.inappropriate_content_flag
+                      ?.data.id
+                  }
                 />
               ))}
             </tbody>

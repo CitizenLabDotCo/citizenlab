@@ -29,6 +29,10 @@ import { rgba } from 'polished';
 import { IModerationData } from '../../services/moderations';
 import { Multiloc } from 'typings';
 
+// hooks
+import useInappropriateContentFlag from 'modules/commercial/flag_inappropriate_content/hooks/useInappropriateContentFlag';
+import { isNilOrError } from 'utils/helperUtils';
+
 const Container = styled.tr<{ bgColor: string; flagged: boolean }>`
   background: ${({ bgColor, flagged }) =>
     flagged ? colors.clRedErrorBackground : bgColor};
@@ -84,10 +88,26 @@ interface Props {
   selected: boolean;
   onSelect: (moderationId: string) => void;
   className?: string;
+  inappropriateContentFlagId?: string;
 }
 
 const ModerationRow = memo<Props & InjectedIntlProps>(
-  ({ moderation, selected, onSelect, className, intl }) => {
+  ({
+    moderation,
+    selected,
+    onSelect,
+    className,
+    intl,
+    inappropriateContentFlagId,
+  }) => {
+    const inappropriateContentFlag = inappropriateContentFlagId
+      ? useInappropriateContentFlag(inappropriateContentFlagId)
+      : null;
+    const hasActiveInappropriateContentFlag = !isNilOrError(
+      inappropriateContentFlag
+    )
+      ? inappropriateContentFlag.attributes.reason_code !== null
+      : false;
     const contentTitle = omitBy(
       moderation.attributes.content_title_multiloc,
       (value) => isNil(value) || isEmpty(value)
@@ -153,13 +173,10 @@ const ModerationRow = memo<Props & InjectedIntlProps>(
       []
     );
 
-    // const inappropriateContentFlag = moderation.attributes.flagged;
-    const inappropriateContentFlag = true;
-
     return (
       <Container
         className={`${className}`}
-        flagged={inappropriateContentFlag}
+        flagged={hasActiveInappropriateContentFlag}
         bgColor={bgColor}
       >
         <td className="checkbox">
@@ -216,7 +233,7 @@ const ModerationRow = memo<Props & InjectedIntlProps>(
           />
           <Outlet
             id="app.modules.commercial.moderation.admin.containers.ModerationRow.content"
-            inappropriateContentFlag={inappropriateContentFlag}
+            inappropriateContentFlag={hasActiveInappropriateContentFlag}
           />
         </td>
         <td>
