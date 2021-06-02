@@ -10,7 +10,8 @@ module Insights
       end
 
       def destroy
-        assignment = Insights::CategoryAssignment.find_by!(input: input, category_id: params.require(:id))
+        assignment = assignment_service.approved_assignments(input, view)
+                                       .find_by!(category_id: params.require(:id))
         status = assignment.destroy.destroyed? ? :ok : 500
         head status
       end
@@ -28,7 +29,7 @@ module Insights
       end
 
       def delete_categories
-        assignments = assignment_service.clear_approved_assignments(input, view)
+        assignments = assignment_service.approved_assignments(input, view).destroy_all
         status = assignments.map(&:destroyed?).all? ? :ok : :internal_server_error
         render status: status
       end

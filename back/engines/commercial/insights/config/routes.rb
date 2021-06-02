@@ -20,9 +20,9 @@ Insights::Engine.routes.draw do
                 delete :index, action: :delete_categories
               end
             end
-            
+
             resources :suggested_categories, only: %i[index destroy], controller: 'category_suggestions' do
-              delete :index, action: :delete_suggestions
+              delete :index, on: :collection, action: :delete_suggestions
             end
           end
         end
