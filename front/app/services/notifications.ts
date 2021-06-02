@@ -6,7 +6,7 @@ import { Multiloc } from 'typings';
 
 const apiEndpoint = `${API_PATH}/notifications`;
 
-interface IBaseNotificationData {
+export interface IBaseNotificationData {
   id: string;
   type: string;
 }

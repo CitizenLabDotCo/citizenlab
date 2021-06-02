@@ -9,6 +9,7 @@ import ProjectFolderSelect from './admin/components/ProjectFolderSelect';
 
 import ProjectFolderCard from './citizen/components/ProjectFolderCard';
 import ProjectFolderSiteMap from './citizen/components/ProjectFolderSiteMap';
+import ProjectFolderModerationRightsReceivedNotification from './citizen/components/ProjectFolderModerationRightsReceivedNotification';
 import CreateProject from 'containers/Admin/projects/all/CreateProject';
 
 import ProjectsListItem from 'containers/Navbar/components/ProjectsListItem';
@@ -120,6 +121,11 @@ const configuration: ModuleConfiguration = {
         <RenderOnProjectFolderModerator>
           <CreateProject />
         </RenderOnProjectFolderModerator>
+      </RenderOnFeatureFlag>
+    ),
+    'app.components.NotificationMenu.Notification': (props) => (
+      <RenderOnFeatureFlag>
+        <ProjectFolderModerationRightsReceivedNotification {...props} />
       </RenderOnFeatureFlag>
     ),
   },

@@ -56,6 +56,7 @@ import {
   IOnboardingCampaignNames,
   IOnboardingCampaigns,
 } from 'services/onboardingCampaigns';
+import { TNotificationData } from 'services/notifications';
 
 type Localize = (
   multiloc: Multiloc | null | undefined,
@@ -320,6 +321,9 @@ export type OutletsPropertyMap = {
     onChange: (key: string) => (value: unknown) => void;
     latestAppConfigStyleSettings?: IAppConfigurationStyle | null;
     theme: any;
+  };
+  'app.components.NotificationMenu.Notification': {
+    notification: TNotificationData;
   };
 };
 
