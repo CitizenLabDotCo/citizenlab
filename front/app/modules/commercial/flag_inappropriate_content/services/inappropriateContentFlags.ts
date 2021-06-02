@@ -6,10 +6,12 @@ type TReasonCode = 'inappropriate' | 'wrong' | 'other';
 
 export interface IInappropriateContentFlagData {
   attributes: {
-    // We want to keep the flag alive to potentially readd it.
+    // We want to keep the flag alive to potentially re-add it.
     // Therefore, to mark a "removed" flag in the front-end,
     // we check if the reason_code is set to null,
     // which is what happens when removeInappropriateContentFlag below is called
+    // Note: if an item is flagged only by NLP and not by a user,
+    // the reason_code will be 'inappropriate'
     reason_code: TReasonCode | null;
     deleted_at: string | null;
     toxicity_label: string | null;
