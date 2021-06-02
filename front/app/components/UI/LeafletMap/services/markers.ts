@@ -33,6 +33,7 @@ export function addMarkerToMap(
 
   const marker = L.marker(latlng, {
     ...options,
+    keyboard: true,
     icon: markerIcon,
   });
 
@@ -47,6 +48,15 @@ export function addMarkerToMap(
   // only add marker directly to the map when clustering is turned off
   // otherwise let this be handled by addMarkerClusterGroup()
   if (map && noMarkerClustering) {
+    marker.on('keypress', (event: L.LeafletKeyboardEvent) => {
+      if (
+        event.originalEvent?.code === 'Enter' ||
+        event.originalEvent?.code === 'Space'
+      ) {
+        setLeafletMapSelectedMarker(event.target.options['id']);
+      }
+    });
+
     marker.on('click', (event: L.LeafletMouseEvent) => {
       event.originalEvent.preventDefault();
       event.originalEvent.stopPropagation();
@@ -105,6 +115,15 @@ export function addMarkerClusterGroup(
     });
     markerClusterGroup.addLayers(markers);
     map.addLayer(markerClusterGroup);
+
+    markerClusterGroup.on('keypress', (event: L.LeafletKeyboardEvent) => {
+      if (
+        event.originalEvent?.code === 'Enter' ||
+        event.originalEvent?.code === 'Space'
+      ) {
+        onClick?.(event.layer.options.id, event.layer.options.data);
+      }
+    });
 
     markerClusterGroup.on('click', (event: L.LeafletMouseEvent) => {
       event.originalEvent.preventDefault();

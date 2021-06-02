@@ -87,6 +87,12 @@ const InnerContainer = styled.div<{ leftMargin: number | null }>`
     left: 500px;
   }
 
+  & .pbAssignBudgetControlContainer {
+    padding: 25px;
+    background: #f6f6f6;
+    border: solid 1px #e0e0e0;
+  }
+
   ${media.smallerThanMaxTablet`
     .activeArea {
       left: 0px;

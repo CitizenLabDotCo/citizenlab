@@ -171,7 +171,7 @@ class PBBasket extends PureComponent<Props & InjectedIntlProps, State> {
         submitted_at: null,
       });
 
-      trackEventByName(tracks.ideaRemovedFromBasket.name);
+      trackEventByName(tracks.ideaRemovedFromBasket);
     }
   };
 

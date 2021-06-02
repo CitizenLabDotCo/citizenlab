@@ -15,7 +15,7 @@ import IdeaShowPageTopBar from 'containers/IdeasShowPage/IdeaShowPageTopBar';
 
 // styling
 import styled from 'styled-components';
-import { defaultCardStyle, colors } from 'utils/styleUtils';
+import { defaultCardStyle } from 'utils/styleUtils';
 
 const timeout = 200;
 
@@ -73,12 +73,6 @@ const InnerOverlay = styled.div`
   }
 `;
 
-// const ScrollContainer = styled.div`
-//   flex: 1;
-//   display: flex;
-//   flex-direction: column;
-// `;
-
 const StyledIdeaShowPageTopBar = styled(IdeaShowPageTopBar)``;
 
 const StyledIdeasShow = styled(IdeasShow)`
@@ -86,11 +80,6 @@ const StyledIdeasShow = styled(IdeasShow)`
   overflow-x: hidden;
   overflow-y: auto;
   padding: 30px;
-
-  & .pbExpensesBox {
-    box-shadow: none;
-    background: ${colors.background};
-  }
 `;
 
 const StyledIdeasList = styled(IdeasList)`

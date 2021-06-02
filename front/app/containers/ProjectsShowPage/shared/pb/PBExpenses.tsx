@@ -26,7 +26,7 @@ import PBBasket from './PBBasket';
 import ButtonWithDropdown from 'components/UI/ButtonWithDropdown';
 
 // tracking
-import { injectTracks } from 'utils/analytics';
+import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // i18n
@@ -141,7 +141,7 @@ const ProgressBar = styled.div<{ viewMode: 'row' | 'column' }>`
   ${({ viewMode }) =>
     viewMode === 'column' &&
     `
-    margin-top: 20px;
+    margin-top: 15px;
     margin-bottom: 20px;
   `}
 `;
@@ -149,7 +149,7 @@ const ProgressBar = styled.div<{ viewMode: 'row' | 'column' }>`
 const ProgressBarOverlay: any = styled.div`
   width: ${(props: any) => props.progress}%;
   height: 100%;
-  background: ${colors.adminTextColor};
+  background: ${colors.label};
   border-radius: ${(props: any) => props.theme.borderRadius};
   display: flex;
   align-items: center;
@@ -248,22 +248,13 @@ interface DataProps {
   phase: GetPhaseChildProps;
 }
 
-interface Tracks {
-  ideaRemovedFromBasket: () => void;
-  ideaAddedToBasket: () => void;
-  basketSubmitted: () => void;
-}
-
 interface Props extends InputProps, DataProps {}
 
 interface State {
   processing: boolean;
 }
 
-class PBExpenses extends PureComponent<
-  Props & InjectedIntlProps & Tracks,
-  State
-> {
+class PBExpenses extends PureComponent<Props & InjectedIntlProps, State> {
   constructor(props) {
     super(props);
     this.state = {
@@ -278,7 +269,7 @@ class PBExpenses extends PureComponent<
       const now = moment().format();
       this.setState({ processing: true });
       await updateBasket(basket.id, { submitted_at: now });
-      this.props.basketSubmitted();
+      trackEventByName(tracks.basketSubmitted);
       this.setState({ processing: false });
     }
   };
@@ -352,9 +343,7 @@ class PBExpenses extends PureComponent<
       }
 
       return (
-        <Container
-          className={`pbExpensesBox e2e-pb-expenses-box ${className || ''}`}
-        >
+        <Container className={`e2e-pb-expenses-box ${className || ''}`}>
           <InnerContainer>
             <Header>
               <Title className={validationStatus}>
@@ -474,7 +463,7 @@ class PBExpenses extends PureComponent<
                       participationContextId={participationContextId}
                     />
                   }
-                  trackName={tracks.expensesDropdownOpened.name}
+                  trackName={tracks.expensesDropdownOpened}
                 />
 
                 <SubmitExpensesButton
@@ -540,13 +529,11 @@ const Data = adopt<DataProps, InputProps>({
   },
 });
 
-const PBExpensesWithHoCs = injectIntl(
-  injectTracks<Props>({
-    ideaRemovedFromBasket: tracks.ideaRemovedFromBasket,
-    ideaAddedToBasket: tracks.ideaAddedToBasket,
-    basketSubmitted: tracks.basketSubmitted,
-  })(PBExpenses)
-);
+const PBExpensesWithHoCs = injectIntl(PBExpenses);
+
+// ideaRemovedFromBasket: tracks.ideaRemovedFromBasket,
+// ideaAddedToBasket: tracks.ideaAddedToBasket,
+// basketSubmitted: tracks.basketSubmitted,
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>

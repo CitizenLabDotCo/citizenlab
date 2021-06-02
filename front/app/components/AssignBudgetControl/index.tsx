@@ -29,7 +29,7 @@ import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
 
 // tracking
-import { injectTracks } from 'utils/analytics';
+import { trackEventByName } from 'utils/analytics';
 import tracks from 'containers/ProjectsShowPage/shared/pb/tracks';
 
 // utils
@@ -44,8 +44,8 @@ import { FormattedNumber, InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
 // styles
-import styled from 'styled-components';
-import { fontSizes, colors, media } from 'utils/styleUtils';
+import styled, { withTheme } from 'styled-components';
+import { fontSizes, colors, defaultCardStyle, media } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import PBExpenses from 'containers/ProjectsShowPage/shared/pb/PBExpenses';
 
@@ -58,6 +58,13 @@ const IdeaPageContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: stretch;
+  padding: 20px;
+  ${defaultCardStyle};
+
+  ${media.smallerThanMaxTablet`
+    background: #f6f6f6;
+    border: solid 1px #e0e0e0;
+  `}
 `;
 
 const BudgetBox = styled.div`
@@ -65,14 +72,26 @@ const BudgetBox = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  margin-bottom: 23px;
+  justify-content: center;
+  margin-bottom: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-bottom: 20px;
+  ${defaultCardStyle};
+
+  padding: 0px;
+  box-shadow: none;
+  border-radius: 0;
+  margin-bottom: 0;
+  background: transparent;
 `;
 
 const Budget = styled.div`
-  color: ${colors.adminTextColor};
+  color: ${(props: any) => props.theme.colorText};
   font-size: ${fontSizes.medium}px;
   font-weight: 600;
-  margin-bottom: 12px;
+  text-align: center;
+  margin-bottom: 10px;
 `;
 
 const ButtonWrapper = styled.div``;
@@ -85,13 +104,19 @@ const TooltipContent = styled.div`
 
 const IdeaCardButton = styled(Button)``;
 
-const StyledPBExpenses = styled(PBExpenses)`
-  padding: 20px;
-  margin-top: 15px;
+const Separator = styled.div`
+  width: 100%;
+  height: 1px;
+  margin-top: 25px;
+  margin-bottom: 25px;
+  background: #e0e0e0;
+`;
 
-  ${media.smallerThanMaxTablet`
-    background: ${colors.background};
-  `};
+const StyledPBExpenses = styled(PBExpenses)`
+  padding: 0px;
+  box-shadow: none;
+  border-radius: 0;
+  background: transparent;
 `;
 
 interface InputProps {
@@ -115,22 +140,16 @@ interface DataProps {
   phase: GetPhaseChildProps;
 }
 
-interface Tracks {
-  basketCreated: () => void;
-  ideaRemovedFromBasket: () => void;
-  ideaAddedToBasket: () => void;
-  basketSubmitted: () => void;
-  disabledAssignClick: () => void;
+interface Props extends DataProps, InputProps {
+  theme: any;
 }
-
-interface Props extends DataProps, InputProps {}
 
 interface State {
   processing: boolean;
 }
 
 class AssignBudgetControl extends PureComponent<
-  Props & Tracks & InjectedIntlProps,
+  Props & InjectedIntlProps,
   State
 > {
   constructor(props) {
@@ -246,7 +265,7 @@ class AssignBudgetControl extends PureComponent<
               submitted_at: null,
             });
             done();
-            this.props.ideaAddedToBasket();
+            trackEventByName(tracks.ideaAddedToBasket);
           } catch (error) {
             done();
             streams.fetchAllWith({ dataId: [basket.id] });
@@ -262,7 +281,7 @@ class AssignBudgetControl extends PureComponent<
               idea_ids: [idea.id],
             });
             done();
-            this.props.basketCreated();
+            trackEventByName(tracks.basketCreated);
           } catch (error) {
             done();
           }
@@ -351,7 +370,7 @@ class AssignBudgetControl extends PureComponent<
                   onClick={this.assignBudget}
                   disabled={!!authUser && !budgetingEnabled}
                   processing={processing}
-                  bgColor={isInBasket ? colors.label : colors.clGreen}
+                  bgColor={isInBasket ? colors.clRedError : colors.clGreen}
                   iconSize="18px"
                   icon={!isInBasket ? 'basket-plus' : 'basket-minus'}
                   className={`e2e-assign-budget-button ${
@@ -374,7 +393,7 @@ class AssignBudgetControl extends PureComponent<
       } else if (view === 'ideaPage') {
         return (
           <IdeaPageContainer
-            className={`pbAssignBudgetContainer ${fullClassName}`}
+            className={`pbAssignBudgetControlContainer ${fullClassName}`}
             aria-live="polite"
           >
             <BudgetBox>
@@ -394,7 +413,7 @@ class AssignBudgetControl extends PureComponent<
                 onClick={this.assignBudget}
                 disabled={!!authUser && !budgetingEnabled}
                 processing={processing}
-                bgColor={isInBasket ? colors.label : colors.clGreen}
+                bgColor={isInBasket ? colors.clRedError : colors.clGreen}
                 iconSize="18px"
                 icon={!isInBasket ? 'basket-plus' : 'basket-minus'}
                 className={`e2e-assign-budget-button ${
@@ -411,6 +430,7 @@ class AssignBudgetControl extends PureComponent<
                 />
               </Button>
             </BudgetBox>
+            <Separator />
             <StyledPBExpenses
               participationContextId={participationContextId}
               participationContextType={participationContextType}
@@ -459,15 +479,13 @@ const Data = adopt<DataProps, InputProps>({
   },
 });
 
-const AssignBudgetControlWithHoCs = injectIntl(
-  injectTracks<Props>({
-    basketCreated: tracks.basketCreated,
-    ideaRemovedFromBasket: tracks.ideaRemovedFromBasket,
-    ideaAddedToBasket: tracks.ideaAddedToBasket,
-    basketSubmitted: tracks.basketSubmitted,
-    disabledAssignClick: tracks.disabledAssignClick,
-  })(AssignBudgetControl)
-);
+const AssignBudgetControlWithHoCs = withTheme(injectIntl(AssignBudgetControl));
+
+// basketCreated: tracks.basketCreated,
+// ideaRemovedFromBasket: tracks.ideaRemovedFromBasket,
+// ideaAddedToBasket: tracks.ideaAddedToBasket,
+// basketSubmitted: tracks.basketSubmitted,
+// disabledAssignClick: tracks.disabledAssignClick,
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>

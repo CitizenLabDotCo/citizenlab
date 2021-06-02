@@ -21,16 +21,6 @@ const Container = styled.div`
   padding: 25px 30px;
 `;
 
-const StyledBudgetAssignment = styled(BudgetAssignment)``;
-
-const ControlWrapperHorizontalRule = styled.hr`
-  width: 100%;
-  border: none;
-  height: 1px;
-  background-color: #ccc;
-  margin: 20px 0;
-`;
-
 interface Props {
   className?: string;
   participationContextId: string;
@@ -52,8 +42,7 @@ const ParticipatoryBudgetingCTABox = (props: Props & InjectedIntlProps) => {
       <ScreenReaderOnly>
         <h2>{formatMessage(messages.a11y_ParticipatoryBudgeting)}</h2>
       </ScreenReaderOnly>
-      <StyledBudgetAssignment {...props} />
-      <ControlWrapperHorizontalRule aria-hidden />
+      <BudgetAssignment {...props} />
       <Buttons ideaId={ideaId} />
     </Container>
   );
