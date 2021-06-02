@@ -10,10 +10,15 @@ Insights::Engine.routes.draw do
           end
 
           resources :inputs, only: %i[index show] do
-            member do
-              patch 'categories', action: :add_categories
-              post 'categories', action: :replace_categories
-              delete 'categories', action: :delete_categories
+            resources :categories, only: %i[index destroy], controller: 'category_assignments' do
+              collection do
+                # Adds PATCH & DELETE endpoints at the collection level without
+                # an extra path component. It matches:
+                # - PATCH  .../inputs/:input_id/categories
+                # - DELETE .../inputs/:input_id/categories
+                patch :index, action: :add_categories
+                delete :index, action: :delete_categories
+              end
             end
           end
         end
