@@ -40,8 +40,7 @@ const InputsTableRow = ({ input }: InputsTableRow) => {
               label={category.id}
               key={category.id}
               status="approved"
-              onApprove={() => {}}
-              onDelete={() => {}}
+              onIconClick={() => console.log('clicked')}
             />
           ))}
         </TagList>
