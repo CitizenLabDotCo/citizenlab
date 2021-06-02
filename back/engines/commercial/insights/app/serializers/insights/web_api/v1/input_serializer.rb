@@ -4,7 +4,7 @@ module Insights
   module WebApi
     module V1
       class InputSerializer < ::WebApi::V1::BaseSerializer
-        belongs_to :source, record_type: 'idea', serializer: ::WebApi::V1::IdeaSerializer do |idea, _params|
+        belongs_to :source, record_type: :idea, serializer: ::WebApi::V1::IdeaSerializer do |idea, _params|
           idea
         end
 
@@ -19,13 +19,6 @@ module Insights
           ::Insights::CategoryAssignment.where(input: idea, approved: false)
                                         .map(&:category)
         end
-
-        # TODO
-        # private
-        #
-        # def category_assignment
-        #   raise NotImplementedError
-        # end
       end
     end
   end
