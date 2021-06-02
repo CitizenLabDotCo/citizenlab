@@ -62,8 +62,8 @@ const IdeaPageContainer = styled.div`
   ${defaultCardStyle};
 
   ${media.smallerThanMaxTablet`
-    background: #f6f6f6;
-    border: solid 1px #e0e0e0;
+    border: solid 1px #ccc;
+    box-shadow: none;
   `}
 `;
 
