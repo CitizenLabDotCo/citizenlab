@@ -1,15 +1,25 @@
 import React from 'react';
 import { withRouter, WithRouterProps } from 'react-router';
+
+// utils
 import { isNilOrError } from 'utils/helperUtils';
+
+// hooks
 import useInsightsInputs from 'modules/commercial/insights/hooks/useInsightsInputs';
-import InputsTableRow from './InputsTableRow';
+
+// components
 import { Table, Checkbox } from 'cl2-component-library';
+import InputsTableRow from './InputsTableRow';
+import EmptyState from './EmptyState';
+
+// styles
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
+
+// intl
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from '../../messages';
-import EmptyState from './EmptyState';
 
 const StyledTable = styled(Table)`
   background-color: #fff;

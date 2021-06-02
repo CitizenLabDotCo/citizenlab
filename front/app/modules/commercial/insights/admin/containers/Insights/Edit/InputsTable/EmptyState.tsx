@@ -1,11 +1,16 @@
 import React from 'react';
-import styled from 'styled-components';
 
+// styles
+import styled from 'styled-components';
+import { fontSizes, colors } from 'utils/styleUtils';
+
+// intl
 import messages from '../../messages';
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
+
+// components
 import { Icon } from 'cl2-component-library';
-import { fontSizes, colors } from 'utils/styleUtils';
 
 const StyledEmptyState = styled.div`
   display: flex;

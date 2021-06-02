@@ -98,8 +98,7 @@ export default defineMessages({
     defaultMessage: 'Are you sure?',
   },
   inputsTableEmpty: {
-    id:
-      'app.containers.Admin.Insights.Edit.inputsTableDeleteCategoryConfirmation',
+    id: 'app.containers.Admin.Insights.Edit.inputsEmptyState',
     defaultMessage: 'You have no inputs for this view yet',
   },
 });
