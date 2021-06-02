@@ -67,7 +67,7 @@ const FlagInnapropriateContentSetting = ({
         flag_inappropriate_content: !flagInnaproperiateContentEnabled,
       });
 
-      trackEventByName(tracks.settingToggled, {
+      trackEventByName(tracks.settingToggled.name, {
         settingChangedTo: !flagInnaproperiateContentEnabled,
       });
     }
