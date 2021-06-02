@@ -1,6 +1,7 @@
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 import { IRelationship } from 'typings';
+import { uuidRegExp } from 'utils/helperUtils';
 
 // This will be imported from the categories service once we merge everything
 export interface IInsightsCategoryData {
@@ -80,9 +81,25 @@ export function insightsInputStream(
 //   );
 // }
 
-// export function deleteInsightsInput(InsightsInputId: string) {
-//   return streams.delete(
-//     `${API_PATH}/${InsightsInputsEndpoint}/${InsightsInputId}`,
-//     InsightsInputId
-//   );
-// }
+export async function deleteInsightsInputCategory(
+  insightsViewId: string,
+  insightsInputId: string,
+  insightsCategoryId: string
+) {
+  const response = await streams.delete(
+    `${API_PATH}/${getInsightsInputsEndpoint(
+      insightsViewId
+    )}/${insightsInputId}/categories/${insightsCategoryId}`,
+    insightsCategoryId
+  );
+
+  const inputsEndpointRegexp = new RegExp(
+    `\/insights\/views\/${uuidRegExp}\/inputs$`
+  );
+  streams.fetchAllWith({
+    regexApiEndpoint: [inputsEndpointRegexp],
+    onlyFetchActiveStreams: true,
+  });
+
+  return response;
+}
