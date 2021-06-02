@@ -22,6 +22,10 @@ module EmailCampaigns
 
     private
 
+    def header_logo_only?
+      false
+    end
+
     def show_unsubscribe_link?
       true
     end
