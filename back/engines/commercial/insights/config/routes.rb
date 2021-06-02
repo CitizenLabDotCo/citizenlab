@@ -12,11 +12,11 @@ Insights::Engine.routes.draw do
           resources :inputs, only: %i[index show] do
             resources :categories, only: %i[index destroy], controller: 'category_assignments' do
               collection do
-                # Adds PATCH & DELETE endpoints at the collection level without
+                # Adds POST & DELETE endpoints at the collection level without
                 # an extra path component. It matches:
-                # - PATCH  .../inputs/:input_id/categories
+                # - POST  .../inputs/:input_id/categories
                 # - DELETE .../inputs/:input_id/categories
-                patch :index, action: :add_categories
+                post :index, action: :add_categories
                 delete :index, action: :delete_categories
               end
             end

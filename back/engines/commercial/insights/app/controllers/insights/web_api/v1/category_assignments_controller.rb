@@ -15,7 +15,7 @@ module Insights
         head status
       end
 
-      # [PATCH] Adds new category assignments (idempotent).
+      # [POST] Adds new category assignments (idempotent).
       def add_categories
         assignments = assignment_service.add_assignments(input, categories)
         errors = assignments.map(&:errors).select(&:any?)
