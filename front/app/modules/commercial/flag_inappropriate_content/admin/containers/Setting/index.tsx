@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import { IconTooltip, Toggle } from 'cl2-component-library';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
-import { trackEventByName } from 'utils/__mocks__/analytics';
+import { trackEventByName } from 'utils/analytics';
 import tracks from '../../../tracks';
 
 const StyledToggle = styled(Toggle)`
