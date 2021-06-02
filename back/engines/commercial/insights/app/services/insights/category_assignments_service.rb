@@ -16,13 +16,19 @@ module Insights
 
     def add_assignments(input, categories)
       categories.map do |category|
-        CategoryAssignment.find_or_create_by(input: input, category: category)
+        CategoryAssignment.find_or_initialize_by(input: input, category: category).tap do |a|
+          a.approved = true
+          a.save
+        end
       end
     end
 
     def add_assignments!(input, categories)
       categories.map do |category|
-        CategoryAssignment.find_or_create_by!(input: input, category: category)
+        CategoryAssignment.find_or_initialize_by(input: input, category: category).tap do |a|
+          a.approved = true
+          a.save!
+        end
       end
     end
   end
