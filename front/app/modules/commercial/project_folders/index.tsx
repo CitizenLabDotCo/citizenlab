@@ -18,6 +18,7 @@ import { isProjectFolderModerator } from './permissions/roles';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useAuthUser from 'hooks/useAuthUser';
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
+import { IProjectFolderModerationRightsReceivedNotificationData } from 'services/notifications';
 
 type RenderOnPublicationTypeProps = {
   publication: IAdminPublicationContent;
@@ -123,9 +124,13 @@ const configuration: ModuleConfiguration = {
         </RenderOnProjectFolderModerator>
       </RenderOnFeatureFlag>
     ),
-    'app.components.NotificationMenu.Notification': (props) => (
+    'app.components.NotificationMenu.Notification': ({ notification }) => (
       <RenderOnFeatureFlag>
-        <ProjectFolderModerationRightsReceivedNotification {...props} />
+        <ProjectFolderModerationRightsReceivedNotification
+          notification={
+            notification as IProjectFolderModerationRightsReceivedNotificationData
+          }
+        />
       </RenderOnFeatureFlag>
     ),
   },

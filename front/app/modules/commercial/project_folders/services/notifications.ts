@@ -11,4 +11,6 @@ declare module 'services/notifications' {
       project_folder_title_multiloc: Multiloc;
     };
   }
+
+  export type TNotificationData = IProjectFolderModerationRightsReceivedNotificationData;
 }
