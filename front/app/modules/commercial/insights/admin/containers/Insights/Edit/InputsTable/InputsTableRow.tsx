@@ -58,10 +58,13 @@ const InputsTableRow = ({
     }
   };
 
+  // TODO: Implement checkbox logic
+  const handleCheckboxChange = () => {};
+
   return (
     <tr tabIndex={0} data-testid="insightsInputsTableRow">
       <td>
-        <Checkbox checked={false} onChange={() => {}} />
+        <Checkbox checked={false} onChange={handleCheckboxChange} />
       </td>
       <td>
         <T value={idea.attributes.title_multiloc} />

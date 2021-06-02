@@ -55,6 +55,10 @@ const InputsTable = ({
   if (isNilOrError(inputs)) {
     return null;
   }
+
+  // TODO: Implement checkbox logic
+  const handleCheckboxChange = () => {};
+
   return (
     <div data-testid="insightsInputsTable">
       {inputs.length === 0 ? (
@@ -69,7 +73,7 @@ const InputsTable = ({
           <thead>
             <tr>
               <th>
-                <Checkbox checked={false} onChange={() => {}} />
+                <Checkbox checked={false} onChange={handleCheckboxChange} />
               </th>
               <th>{formatMessage(messages.inputsTableInputs)}</th>
               <th>{formatMessage(messages.inputsTableCategories)}</th>
