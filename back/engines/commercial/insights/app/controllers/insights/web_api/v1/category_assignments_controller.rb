@@ -28,7 +28,7 @@ module Insights
       end
 
       def delete_categories
-        assignments = assignment_service.clear_all_assignments(input, view)
+        assignments = assignment_service.clear_approved_assignments(input, view)
         status = assignments.map(&:destroyed?).all? ? :ok : :internal_server_error
         render status: status
       end
