@@ -15,10 +15,9 @@ import { IParticipationContextType } from 'typings';
 
 const Container = styled.div`
   border-radius: 2px;
-  padding-bottom: 30px;
   border-bottom: 1px solid ${colors.separation};
   background-color: ${colors.background};
-  padding: 25px 30px;
+  padding: 20px;
 `;
 
 interface Props {

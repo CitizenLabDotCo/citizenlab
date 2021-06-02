@@ -88,7 +88,7 @@ const InnerContainer = styled.div<{ leftMargin: number | null }>`
   }
 
   & .pbAssignBudgetControlContainer {
-    padding: 25px;
+    padding: 20px;
     background: #f6f6f6;
     border: solid 1px #e0e0e0;
   }

@@ -34,7 +34,7 @@ const InnerOverlay = styled.div`
   top: 0;
   bottom: 0;
   left: 0;
-  right: -150px;
+  right: -120px;
   background: #fff;
   display: flex;
   flex-direction: column;
@@ -49,18 +49,18 @@ const InnerOverlay = styled.div`
 
     &.animation-enter-active {
       opacity: 1;
-      right: -150px;
+      right: -120px;
     }
   }
 
   &.animation-enter-done {
     opacity: 1;
-    right: -150px;
+    right: -120px;
   }
 
   &.animation-exit {
     opacity: 1;
-    right: -150px;
+    right: -120px;
 
     &.animation-exit-active {
       opacity: 0;

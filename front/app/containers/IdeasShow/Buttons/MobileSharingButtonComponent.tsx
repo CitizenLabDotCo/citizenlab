@@ -1,8 +1,5 @@
 import React from 'react';
 import Button from 'components/UI/Button';
-import { useTheme } from 'styled-components';
-import { colors } from 'utils/styleUtils';
-import { darken } from 'polished';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
@@ -19,22 +16,12 @@ const MobileSharingButtonComponent = ({
   ariaExpanded,
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
-  const theme: any = useTheme();
-
   return (
     <Button
-      bgColor="white"
-      textColor={theme.colorText}
+      buttonStyle="secondary-outlined"
       icon="share-arrow"
-      iconColor={colors.clIconSecondary}
-      iconHoverColor={colors.clIconSecondary}
-      iconAriaHidden
-      bgHoverColor="white"
-      textHoverColor={darken(0.1, theme.colorText)}
-      fontWeight="bold"
-      borderColor="#E0E0E0"
-      borderThickness="2px"
       onClick={onClick}
+      iconAriaHidden={true}
       ariaExpanded={ariaExpanded}
     >
       {formatMessage(messages.share)}

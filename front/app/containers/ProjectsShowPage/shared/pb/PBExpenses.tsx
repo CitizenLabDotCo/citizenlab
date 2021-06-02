@@ -125,7 +125,7 @@ const BudgetAmount = styled.span`
 
 const ProgressBar = styled.div<{ viewMode: 'row' | 'column' }>`
   width: 100%;
-  height: 34px;
+  height: 30px;
   border-radius: ${(props: any) => props.theme.borderRadius};
   margin-top: 30px;
   margin-bottom: 30px;

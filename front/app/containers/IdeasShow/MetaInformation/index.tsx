@@ -19,6 +19,14 @@ const Container = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
+
+  &.compact {
+    padding: 20px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border: solid 1px #ccc;
+    border-radius: ${(props: any) => props.theme.borderRadius};
+  }
 `;
 
 interface Props {
@@ -58,7 +66,7 @@ const MetaInformation = ({
     );
 
     return (
-      <Container className={className}>
+      <Container className={`${className || ''} ${compact ? 'compact' : ''}`}>
         <PostedBy authorId={authorId} ideaId={ideaId} compact={compact} />
         <Status statusId={statusId} compact={compact} />
         {topicsEnabled && <IdeaTopics ideaId={ideaId} compact={compact} />}

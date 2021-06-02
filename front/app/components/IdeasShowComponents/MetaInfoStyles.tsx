@@ -1,18 +1,17 @@
 import styled from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
 
-export const Item = styled.div<{ isFirstItem?: boolean; compact?: boolean }>`
-  border-top: ${({ isFirstItem }) =>
-    isFirstItem ? `1px solid #e0e0e0` : 'none'};
-  border-bottom: 1px solid #e0e0e0;
+export const Item = styled.div<{ compact?: boolean }>`
   padding-top: 18px;
   padding-bottom: 21px;
+  border-bottom: 1px solid #e0e0e0;
 
   ${({ compact }) =>
     compact &&
     `
     padding-top: 13px;
     padding-bottom: 17px;
+    border-bottom: none;
   `};
 `;
 

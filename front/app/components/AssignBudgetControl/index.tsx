@@ -73,17 +73,7 @@ const BudgetBox = styled.div`
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
-  margin-bottom: 20px;
-  padding-left: 20px;
-  padding-right: 20px;
-  padding-bottom: 20px;
-  ${defaultCardStyle};
-
-  padding: 0px;
-  box-shadow: none;
-  border-radius: 0;
-  margin-bottom: 0;
-  background: transparent;
+  margin-bottom: 40px;
 `;
 
 const Budget = styled.div`
@@ -103,14 +93,6 @@ const TooltipContent = styled.div`
 `;
 
 const IdeaCardButton = styled(Button)``;
-
-const Separator = styled.div`
-  width: 100%;
-  height: 1px;
-  margin-top: 25px;
-  margin-bottom: 25px;
-  background: #e0e0e0;
-`;
 
 const StyledPBExpenses = styled(PBExpenses)`
   padding: 0px;
@@ -430,7 +412,6 @@ class AssignBudgetControl extends PureComponent<
                 />
               </Button>
             </BudgetBox>
-            <Separator />
             <StyledPBExpenses
               participationContextId={participationContextId}
               participationContextType={participationContextType}
@@ -480,12 +461,6 @@ const Data = adopt<DataProps, InputProps>({
 });
 
 const AssignBudgetControlWithHoCs = withTheme(injectIntl(AssignBudgetControl));
-
-// basketCreated: tracks.basketCreated,
-// ideaRemovedFromBasket: tracks.ideaRemovedFromBasket,
-// ideaAddedToBasket: tracks.ideaAddedToBasket,
-// basketSubmitted: tracks.basketSubmitted,
-// disabledAssignClick: tracks.disabledAssignClick,
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
