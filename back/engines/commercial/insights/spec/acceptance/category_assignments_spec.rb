@@ -3,12 +3,16 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-resource 'Inputs' do
-  explanation 'Citizen inputs (only ideas for now) in the context of an Insights view.'
-
+resource 'Category suggestions for view inputs' do
   before { header 'Content-Type', 'application/json' }
 
+  let(:view) { create(:view) }
+  let(:view_id) { view.id }
+  let(:idea) { create(:idea, project: view.scope) }
+  let(:input_id) { idea.id }
+
   let(:json_response) { json_parse(response_body) }
+  let(:assignment_service) { Insights::CategoryAssignmentsService.new }
 
   shared_examples 'unauthorized requests' do
     context 'when visitor' do
@@ -22,17 +26,7 @@ resource 'Inputs' do
     end
   end
 
-  shared_examples 'unprocessable entity' do
-    context 'when name is empty' do
-      let(:name) { '' }
-
-      example_request 'returns unprocessable-entity error', document: false do
-        expect(status).to eq(422)
-      end
-    end
-  end
-
-  post 'web_api/v1/insights/views/:view_id/inputs/:id/categories' do
+  post 'web_api/v1/insights/views/:view_id/inputs/:input_id/categories' do
     parameter :data, type: :array, items: {
       type: :object,
       required: %i[id type],
@@ -41,12 +35,6 @@ resource 'Inputs' do
         type: { const: 'category' }
       }
     }
-
-    let(:view) { create(:view) }
-    let(:view_id) { view.id }
-
-    let(:idea) { create(:idea, project: view.scope) }
-    let(:id) { idea.id }
 
     context 'when admin' do
       before { admin_header_token }
@@ -59,12 +47,12 @@ resource 'Inputs' do
       example_request 'assigns categories to an input' do
         expect(status).to eq(200)
         expect(json_response).to eq({ data: data })
-        expect(Insights::CategoryAssignment.where(input: idea).pluck(:category_id))
+        expect(assignment_service.approved_assignments(idea, view).pluck(:category_id))
           .to eq(categories.pluck(:id))
       end
 
       example 'ignores already assigned categories', document: false do
-        Insights::CategoryAssignmentsService.new.add_assignments!(idea, [categories.first])
+        assignment_service.add_assignments!(idea, [categories.first])
         do_request
         aggregate_failures 'check response' do
           expect(status).to eq(200)
@@ -77,7 +65,6 @@ resource 'Inputs' do
           assignment_service.add_suggestions(idea, categories)
         end
 
-        let(:assignment_service) { Insights::CategoryAssignmentsService.new }
         let(:approved_category_ids) do
           assignment_service.approved_assignments(idea, view).pluck(:category_id)
         end
@@ -85,6 +72,7 @@ resource 'Inputs' do
         example 'approves category assignments', document: false do
           do_request
           aggregate_failures 'check suggestions are converted into assignments' do
+            expect(status).to eq(200)
             expect(approved_category_ids).to match(categories.pluck(:id))
             expect(assignment_service.suggested_assignments(idea, view).count).to eq(0)
           end
@@ -93,7 +81,7 @@ resource 'Inputs' do
 
       context 'when the input is out of view scope' do
         let(:idea) { create(:idea) }
-        let(:id) { idea.id }
+        let(:input_id) { idea.id }
 
         # rubocop:disable RSpec/MultipleExpectations
         example 'returns 404', document: false do
@@ -111,6 +99,48 @@ resource 'Inputs' do
           do_request
           expect(status).to eq(404)
         end
+      end
+    end
+
+    include_examples 'unauthorized requests'
+  end
+
+  delete 'web_api/v1/insights/views/:view_id/inputs/:input_id/categories' do
+    context 'when admin' do
+      before { admin_header_token }
+
+      let(:categories) { create_list(:category, 2, view: view) }
+
+      example 'deletes all category assignments' do
+        assignment_service.add_assignments!(idea, categories)
+        expect { do_request }
+          .to change { assignment_service.approved_assignments(idea, view).count }.from(2).to(0)
+        expect(status).to eq(200)
+      end
+
+      example 'does not delete suggestions', document: false do
+        assignment_service.add_suggestions(idea, categories)
+        expect { do_request }.not_to(change { assignment_service.approved_assignments(idea, view).count })
+        expect(status).to eq(200)
+      end
+    end
+
+    include_examples 'unauthorized requests'
+  end
+
+  delete 'web_api/v1/insights/views/:view_id/inputs/:input_id/categories/:category_id' do
+
+    context 'when admin' do
+      before { admin_header_token }
+
+      let(:category) { create(:category, view: view) }
+      let(:category_id) { category.id }
+
+      example 'delete a category assignment' do
+        assignment_service.add_assignments!(idea, [category])
+        do_request
+        expect(status).to eq(200)
+        expect(assignment_service.approved_assignments(idea, view)).to eq([])
       end
     end
 
