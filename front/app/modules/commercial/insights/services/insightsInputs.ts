@@ -36,11 +36,6 @@ export interface IInsightsInputs {
   data: IInsightsInputData[];
 }
 
-// interface IInsightsInputObject {
-//   scope_id: string;
-//   name: string;
-// }
-
 const getInsightsInputsEndpoint = (viewId: string) =>
   `insights/views/${viewId}/inputs`;
 
@@ -66,20 +61,6 @@ export function insightsInputStream(
     ...streamParams,
   });
 }
-
-// export function addInsightsInput(object: IInsightsInputObject) {
-//   return streams.add<IInsightsInput>(`${API_PATH}/${InsightsInputsEndpoint}`, {
-//     view: object,
-//   });
-// }
-
-// export function updateInsightsInput(InsightsInputId: string, name: string) {
-//   return streams.update<IInsightsInput>(
-//     `${API_PATH}/${InsightsInputsEndpoint}/${InsightsInputId}`,
-//     InsightsInputId,
-//     { view: { name } }
-//   );
-// }
 
 export async function deleteInsightsInputCategory(
   insightsViewId: string,
