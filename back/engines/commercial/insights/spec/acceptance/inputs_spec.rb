@@ -22,20 +22,10 @@ resource 'Inputs' do
     end
   end
 
-  shared_examples 'unprocessable entity' do
-    context 'when name is empty' do
-      let(:name) { '' }
-
-      example_request 'returns unprocessable-entity error', document: false do
-        expect(status).to eq(422)
-      end
-    end
-  end
-
   get 'web_api/v1/insights/views/:view_id/inputs' do
     let(:view) { create(:view) }
     let(:view_id) { view.id }
-    let!(:ideas) { create_list(:idea, 3, project: view.scope) }
+    let!(:ideas) { create_list(:idea, 2, project: view.scope) }
 
     context 'when admin' do
       before { admin_header_token }
@@ -115,42 +105,14 @@ resource 'Inputs' do
           expect(json_response[:included]).to include(hash_including(type: 'category', id: category.id))
         end
       end
+
+      example 'returns 404 if the input does not exist', document: false do
+        do_request(id: 'bad-uuid')
+        expect(status).to eq(404)
+      end
     end
     # rubocop:enable RSpec/ExampleLength
 
     include_examples 'unauthorized requests'
-  end
-
-  post 'web_api/v1/insights/views/:view_id/inputs/:id/categories' do
-    parameter :data, type: :array, items: {
-      type: :object,
-      required: [:id, :type],
-      properties: {
-        id: { type: :string },
-        type: { const: 'category' }
-      }
-    }
-
-    let(:view) { create(:view) }
-    let(:view_id) { view.id }
-
-    let(:idea) { create(:idea, project: view.scope) }
-    let(:id) { idea.id }
-
-    context 'when admin' do
-      before { admin_header_token }
-
-      let(:categories) { create_list(:category, 2, view: view)}
-      let(:data) do
-        categories.map {|c| {id: c.id, type: 'category'} }
-      end
-
-      example_request 'replace categories of an input' do
-        expect(status).to eq(200)
-        expect(json_response).to eq({ data: data })
-        expect(Insights::CategoryAssignment.where(input: idea).pluck(:category_id))
-          .to eq(categories.pluck(:id))
-      end
-    end
   end
 end
