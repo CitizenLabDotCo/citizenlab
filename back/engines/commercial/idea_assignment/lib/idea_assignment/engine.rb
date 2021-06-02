@@ -15,10 +15,6 @@ module IdeaAssignment
     config.factory_bot.definition_file_paths += [factories_path] if defined?(FactoryBotRails)
 
     config.to_prepare do
-      ::EmailCampaigns::DeliveryService.add_campaign_types(
-        ::IdeaAssignment::EmailCampaigns::Campaigns::IdeaAssignedToYou
-      )
-
       require 'idea_assignment/feature_specification'
       AppConfiguration::Settings.add_feature(IdeaAssignment::FeatureSpecification)
     end

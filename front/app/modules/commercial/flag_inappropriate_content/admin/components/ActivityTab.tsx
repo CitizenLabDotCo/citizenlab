@@ -1,4 +1,4 @@
-import { FC, useEffect } from 'react';
+import { useEffect } from 'react';
 import { InsertConfigurationOptions } from 'typings';
 
 // i18n
