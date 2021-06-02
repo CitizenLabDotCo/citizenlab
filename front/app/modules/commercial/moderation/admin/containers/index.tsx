@@ -323,39 +323,33 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
     [selectedRows, processing]
   );
 
-  const removeFlags = useCallback(
-    async (event: React.FormEvent) => {
-      event.preventDefault();
+  const removeFlags = useCallback(async () => {
+    if (
+      selectedRows.length > 0 &&
+      !isNilOrError(moderationItems) &&
+      !processing
+    ) {
+      const selectedModerationItemsWithContentWarning = selectedRows.map(
+        (moderationId) =>
+          moderationItems.find((item) => item.id === moderationId)
+      ) as IModerationData[];
 
-      if (
-        selectedRows.length > 0 &&
-        !isNilOrError(moderationItems) &&
-        !processing
-      ) {
-        const selectedModerationItemsWithContentWarning = selectedRows.map(
-          (moderationId) =>
-            moderationItems.find((item) => item.id === moderationId)
-        ) as IModerationData[];
-
-        const promises = selectedModerationItemsWithContentWarning.map(
-          (selectModeration) => {
-            if (selectModeration.relationships.inappropriate_content_flag) {
-              removeInappropriateContentFlag(
-                selectModeration.relationships.inappropriate_content_flag.data
-                  .id
-              );
-            }
+      const promises = selectedModerationItemsWithContentWarning.map(
+        (selectModeration) => {
+          if (selectModeration.relationships.inappropriate_content_flag) {
+            removeInappropriateContentFlag(
+              selectModeration.relationships.inappropriate_content_flag.data.id
+            );
           }
-        );
+        }
+      );
 
-        setProcessing(true);
-        await Promise.all(promises);
-        setProcessing(false);
-        setSelectedRows([]);
-      }
-    },
-    [selectedRows, moderationItems]
-  );
+      setProcessing(true);
+      await Promise.all(promises);
+      setProcessing(false);
+      setSelectedRows([]);
+    }
+  }, [selectedRows, moderationItems, processing]);
 
   const markAs = useCallback(
     async (event: React.FormEvent) => {
@@ -408,7 +402,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
     }
   }, [list, processing]);
 
-  const selectedRowsWithContentWarning = useMemo(() => {
+  const selectedModerationItemsWithContentWarning = useMemo(() => {
     if (!isNilOrError(moderationItems)) {
       return moderationItems.filter(
         (moderationItem) =>
@@ -477,8 +471,8 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
 
               <Outlet
                 id="app.modules.commercial.moderation.admin.containers.actionbar.buttons"
-                selectedRowsWithContentWarningLength={
-                  selectedRowsWithContentWarning?.length || 0
+                selectedModerationItemsWithContentWarningLength={
+                  selectedModerationItemsWithContentWarning?.length || 0
                 }
                 processing={processing}
                 onClick={removeFlags}
@@ -528,6 +522,10 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
                   moderation={moderationItem}
                   selected={includes(selectedRows, moderationItem.id)}
                   onSelect={handleRowOnSelect}
+                  inappropriateContentFlagId={
+                    moderationItem.relationships.inappropriate_content_flag
+                      ?.data.id
+                  }
                 />
               ))}
             </tbody>

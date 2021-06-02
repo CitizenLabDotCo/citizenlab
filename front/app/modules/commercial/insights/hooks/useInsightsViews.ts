@@ -4,7 +4,7 @@ import {
   IInsightsViewData,
 } from '../services/insightsViews';
 
-export default function useInsightsViews() {
+const useInsightsViews = () => {
   const [insightsViews, setInsightsViews] = useState<
     IInsightsViewData[] | undefined | null | Error
   >(undefined);
@@ -20,4 +20,6 @@ export default function useInsightsViews() {
   });
 
   return insightsViews;
-}
+};
+
+export default useInsightsViews;

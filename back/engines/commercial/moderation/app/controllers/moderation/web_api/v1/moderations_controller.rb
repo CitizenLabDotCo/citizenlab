@@ -6,7 +6,7 @@ module Moderation
       @moderations = @moderations.where(id: Idea.published)
         .or(@moderations.where(id: Initiative.published))
         .or(@moderations.where(id: Comment.published))
-        .includes(:moderation_status, *include_resources)
+        .includes(*include_load_resources)
         .order(created_at: :desc)
       
       @moderations = @moderations.with_moderation_status(params[:moderation_status]) if params[:moderation_status].present?
@@ -17,7 +17,7 @@ module Moderation
       @moderations = @moderations
         .page(params.dig(:page, :number))
         .per(params.dig(:page, :size))
-      render json: linked_json(@moderations, WebApi::V1::ModerationSerializer, params: fastjson_params, include: include_resources)
+      render json: linked_json(@moderations, WebApi::V1::ModerationSerializer, params: fastjson_params, include: include_serialize_resources)
     end
 
     def update
@@ -53,7 +53,13 @@ module Moderation
       )
     end
 
-    def include_resources
+    private
+
+    def include_load_resources
+      [:moderation_status]
+    end
+
+    def include_serialize_resources
       []
     end
   end

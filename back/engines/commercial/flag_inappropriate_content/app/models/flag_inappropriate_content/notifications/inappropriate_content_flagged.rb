@@ -5,7 +5,6 @@ module FlagInappropriateContent
       ACTIVITY_TRIGGERS = {'FlagInappropriateContent::InappropriateContentFlag' => {'created' => true}}
       EVENT_NAME = 'Inappropriate content flagged'
 
-      belongs_to :inappropriate_content_flag, class_name: 'FlagInappropriateContent::InappropriateContentFlag'
       validates :inappropriate_content_flag, presence: true
 
       
@@ -18,7 +17,7 @@ module FlagInappropriateContent
         self.recipient_ids.map do |recipient_id|
           self.new(
             recipient_id: recipient_id,
-            initiating_user: activity.user,
+            initiating_user_id: activity.user_id,
             inappropriate_content_flag: flag
           )
         end

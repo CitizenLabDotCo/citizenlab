@@ -119,7 +119,7 @@ exports[`<NotificationMenu /> renders correctly when there is no notifs 1`] = `
             <NotificationMenu__EmptyStateImage
               alt=""
               role="presentation"
-              src={null}
+              src="test-file-stub"
             />
           </NotificationMenu__EmptyStateImageWrapper>
           <NotificationMenu__EmptyStateText>
