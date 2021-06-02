@@ -6,22 +6,19 @@ module Insights
       skip_after_action :verify_policy_scoped, only: :index # The view is authorized instead.
 
       def index
+        require 'pry' ; binding.pry
         render json: serialize_suggestions(input), status: :ok
       end
 
       def destroy
-        suggestion = Insights::CategoryAssignment.find_by!(
-          input: input,
-          category_id: params.require(:id),
-          approved: false
-        )
-
+        suggestion = assignment_service.suggested_assignments(input, view)
+                                       .find_by!(category_id: params.require(:id))
         status = suggestion.destroy.destroyed? ? :ok : 500
         head status
       end
 
       def delete_suggestions
-        suggestions = assignment_service.clear_suggestions(input, view)
+        suggestions = assignment_service.suggested_assignments(input, view).destroy_all
         status = suggestions.map(&:destroyed?).all? ? :ok : :internal_server_error
         render status: status
       end

@@ -6,12 +6,12 @@ module Insights
       CategoryAssignment.where(category: view.categories, input: input)
     end
 
-    def clear_approved_assignments(input, view)
-      assignments(input, view).where(approved: true).destroy_all
+    def approved_assignments(input, view)
+      assignments(input, view).where(approved: true)
     end
 
-    def clear_suggestions(input, view)
-      assignments(input, view).where(approved: false).destroy_all
+    def suggested_assignments(input, view)
+      assignments(input, view).where(approved: false)
     end
 
     def add_assignments(input, categories)
