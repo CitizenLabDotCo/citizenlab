@@ -1,6 +1,6 @@
 module EmailCampaigns
   class DeliveryService
-    CAMPAIGN_TYPES = [
+    CAMPAIGN_CLASSES = [
       Campaigns::AdminDigest,
       Campaigns::AdminRightsReceived,
       Campaigns::AssigneeDigest,
@@ -47,15 +47,15 @@ module EmailCampaigns
       Campaigns::UserDigest,
       Campaigns::Welcome,
       Campaigns::YourProposedInitiativesDigest
-    ].map(&:name).freeze
+    ].freeze
 
 
     def campaign_types
-      CAMPAIGN_TYPES
+      campaign_classes.map(&:name)
     end
 
     def campaign_classes
-      campaign_types.map(&:constantize)
+      CAMPAIGN_CLASSES
     end
 
     def consentable_campaign_types_for(user)

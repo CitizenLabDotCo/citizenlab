@@ -2,10 +2,10 @@ module FlagInappropriateContent
   module Patches
     module EmailCampaigns
       module DeliveryService
-        def campaign_types
+        def campaign_classes
           super + [
            FlagInappropriateContent::EmailCampaigns::Campaigns::InappropriateContentFlagged
-          ].map(&:name)
+          ]
         end
       end
     end

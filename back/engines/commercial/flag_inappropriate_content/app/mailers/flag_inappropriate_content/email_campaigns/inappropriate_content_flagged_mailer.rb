@@ -1,6 +1,6 @@
 module FlagInappropriateContent
   module EmailCampaigns
-    class InappropriateContentFlaggedMailer < ApplicationMailer
+    class InappropriateContentFlaggedMailer < ::EmailCampaigns::ApplicationMailer
       protected
 
       def subject
