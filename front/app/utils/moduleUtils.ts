@@ -324,6 +324,17 @@ export type OutletsPropertyMap = {
   'app.containers.Admin.settings.general.form': {
     onSettingChange: (settingName: string, settingValue: any) => void;
   };
+  'app.modules.commercial.moderation.admin.containers.ModerationRow.content': {
+    inappropriateContentFlag: boolean;
+  };
+  'app.modules.commercial.moderation.admin.containers.actionbar.buttons': {
+    selectedRowsWithContentWarningLength: number;
+    processing: boolean;
+    onClick: () => void;
+  };
+  'app.modules.commercial.moderation.admin.containers.tabs': {
+    onData: (data: InsertConfigurationOptions<ITabItem>) => void;
+  };
 };
 
 type Outlet<Props> = FunctionComponent<Props> | FunctionComponent<Props>[];
