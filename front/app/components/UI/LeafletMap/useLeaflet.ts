@@ -66,6 +66,7 @@ export interface ILeafletMapConfig {
   layerOverlay?: IOverlayStringOrObjectOrFunctionForLayer;
   layerTooltip?: ITooltipStringOrObjectOrFunctionForLayer;
   layerPopup?: IPopupStringOrObjectOrFunctionForLayer;
+  onInit?: (map: L.Map) => void;
 }
 
 export default function useLeaflet(
@@ -84,6 +85,7 @@ export default function useLeaflet(
     layerOverlay,
     layerTooltip,
     layerPopup,
+    onInit,
   }: ILeafletMapConfig
 ) {
   // State
@@ -158,23 +160,23 @@ export default function useLeaflet(
         }),
     ];
 
-    map?.on('click', (event: L.LeafletMouseEvent) => {
-      event.originalEvent.preventDefault();
-      event.originalEvent.stopPropagation();
-      setLeafletMapClicked(map, event.latlng);
-    });
+    if (map) {
+      map.on('click', (event: L.LeafletMouseEvent) => {
+        setLeafletMapClicked(event.latlng);
+      });
 
-    map?.on('moveend', (event: L.LeafletEvent) => {
-      const newCenter = event.target.getCenter() as L.LatLng;
-      const newCenterLat = newCenter.lat;
-      const newCenterLng = newCenter.lng;
-      setLeafletMapCenter([newCenterLat, newCenterLng]);
-    });
+      map.on('moveend', (event: L.LeafletEvent) => {
+        const newCenter = event.target.getCenter() as L.LatLng;
+        const newCenterLat = newCenter.lat;
+        const newCenterLng = newCenter.lng;
+        setLeafletMapCenter([newCenterLat, newCenterLng]);
+      });
 
-    map?.on('zoomend', (event: L.LeafletEvent) => {
-      const newZoom = event.target.getZoom() as number;
-      setLeafletMapZoom(newZoom);
-    });
+      map.on('zoomend', (event: L.LeafletEvent) => {
+        const newZoom = event.target.getZoom() as number;
+        setLeafletMapZoom(newZoom);
+      });
+    }
 
     return () => {
       subscriptions.forEach((subscription) => subscription.unsubscribe());
@@ -195,9 +197,18 @@ export default function useLeaflet(
         tileOptions,
       });
       setMap(newMap);
+      onInit?.(newMap);
     }
   };
-  useEffect(setup, [map, mapId, tileProvider, tileOptions, zoom, center]);
+  useEffect(setup, [
+    map,
+    mapId,
+    tileProvider,
+    tileOptions,
+    zoom,
+    center,
+    onInit,
+  ]);
 
   const refreshTile = () => {
     setTileLayer((prevTileLayer) => {

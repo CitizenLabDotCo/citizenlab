@@ -22,7 +22,7 @@ export const DEFAULT_TILE_PROVIDER =
 
 export const DEFAULT_TILE_OPTIONS = {
   minZoom: 1,
-  maxZoom: 20,
+  maxZoom: 19,
   crossOrigin: true,
   subdomains: ['a', 'b', 'c'],
   attribution:

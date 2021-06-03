@@ -82,7 +82,7 @@ const Title = styled.h2`
   }
 `;
 
-const TitleIcon = styled(Icon)<{ viewMode: 'row' | 'column' }>`
+const TitleIcon = styled(Icon)<{ viewMode?: 'row' | 'column' }>`
   flex: 0 0 18px;
   height: 18px;
   margin-right: 10px;
@@ -218,7 +218,7 @@ const Buttons = styled.div<{ viewMode: 'row' | 'column' }>`
 const ManageBudgetButton = styled(Button)``;
 
 const ManageBudgetButtonWithDropdown = styled(ButtonWithDropdown)`
-  min-width: 250px;
+  min-width: 200px;
   z-index: 900;
 `;
 
@@ -348,7 +348,10 @@ class PBExpenses extends PureComponent<Props & InjectedIntlProps, State> {
             <Header>
               <Title className={validationStatus}>
                 {validationStatus === 'notValidated' && (
-                  <FormattedMessage {...messages.myExpenses} />
+                  <>
+                    <TitleIcon name="basket" ariaHidden />
+                    <FormattedMessage {...messages.myExpenses} />
+                  </>
                 )}
                 {validationStatus === 'validationError' && (
                   <>
@@ -447,7 +450,7 @@ class PBExpenses extends PureComponent<Props & InjectedIntlProps, State> {
                 <ManageBudgetButtonWithDropdown
                   buttonComponent={
                     <ManageBudgetButton
-                      icon="basket"
+                      // icon="settings"
                       iconAriaHidden
                       buttonStyle="primary-inverse"
                       borderColor={colors.separation}
@@ -468,7 +471,7 @@ class PBExpenses extends PureComponent<Props & InjectedIntlProps, State> {
 
                 <SubmitExpensesButton
                   onClick={this.handleSubmitExpensesOnClick}
-                  icon="submit"
+                  // icon="submit"
                   bgColor={colors.adminTextColor}
                   disabled={
                     validationStatus === 'validationSuccess' ||

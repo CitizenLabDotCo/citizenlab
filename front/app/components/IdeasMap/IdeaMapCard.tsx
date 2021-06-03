@@ -66,8 +66,8 @@ const Container = styled.button`
 const CloseButtonWrapper = styled.div`
   display: flex;
   position: absolute;
-  top: 8px;
-  right: 8px;
+  top: 10px;
+  right: 10px;
 `;
 
 const CloseButton = styled(Button)``;
@@ -217,13 +217,12 @@ const IdeaMapCard = memo<Props>(
           {smallerThanMaxTablet && (
             <CloseButtonWrapper>
               <CloseButton
-                width="24px"
-                height="24px"
+                width="26px"
+                height="26px"
                 padding="0px"
                 buttonStyle="secondary"
                 icon="close"
-                iconSize="11px"
-                borderRadius="3px"
+                iconSize="12px"
                 onClick={handleCloseButtonClick}
               />
             </CloseButtonWrapper>

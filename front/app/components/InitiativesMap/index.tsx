@@ -65,6 +65,7 @@ interface State {
   points: Point[];
   lat?: number | null;
   lng?: number | null;
+  map?: LeafletMap | null;
 }
 
 export class InitiativesMap extends PureComponent<
@@ -90,8 +91,8 @@ export class InitiativesMap extends PureComponent<
           this.handleInitiativeMarkerSelected(InitiativeId);
         }
       }),
-      leafletMapClicked$.subscribe(({ map, latLng }) => {
-        this.handleMapClicked(map, latLng);
+      leafletMapClicked$.subscribe((latLng) => {
+        this.handleMapClicked(latLng);
       }),
     ];
 
@@ -142,6 +143,10 @@ export class InitiativesMap extends PureComponent<
     this.setState({ selectedInitiativeId: null });
   };
 
+  handleMapOnInit = (map: LeafletMap) => {
+    this.setState({ map });
+  };
+
   handleInitiativeMarkerSelected = (InitiativeId: string) => {
     trackEventByName(tracks.clickOnInitiativeMapMarker, {
       extra: { InitiativeId },
@@ -155,12 +160,13 @@ export class InitiativesMap extends PureComponent<
     });
   };
 
-  handleMapClicked = (map: LeafletMap, position: LatLng) => {
+  handleMapClicked = (position: LatLng) => {
     const { lat, lng } = position;
+    const { map } = this.state;
 
     this.setState({ lat, lng });
 
-    if (this.addInitiativeButtonElement) {
+    if (this.addInitiativeButtonElement && position && map) {
       popup()
         .setLatLng(position)
         .setContent(this.addInitiativeButtonElement)
@@ -187,6 +193,7 @@ export class InitiativesMap extends PureComponent<
           )}
 
         <Map
+          onInit={this.handleMapOnInit}
           points={points}
           boxContent={
             selectedInitiativeId ? (

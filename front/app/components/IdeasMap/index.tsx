@@ -8,7 +8,7 @@ import React, {
 } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { popup, LatLng } from 'leaflet';
-import CSSTransition from 'react-transition-group/CSSTransition';
+// import CSSTransition from 'react-transition-group/CSSTransition';
 
 // components
 import Map, { Point } from 'components/Map';
@@ -54,6 +54,7 @@ import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
 import { media, viewportWidths } from 'utils/styleUtils';
 
 // typings
+import { Map as LeafletMap } from 'leaflet';
 import { Sort } from 'resources/GetIdeas';
 import { IIdeaMarkerData } from 'services/ideas';
 
@@ -121,22 +122,14 @@ const StyledDesktopIdeaMapOverlay = styled(DesktopIdeaMapOverlay)`
   z-index: 900;
 `;
 
-const MobileIdeaMapCard = styled.div<{ isClickable: boolean }>`
+const StyledIdeaMapCard = styled(IdeaMapCard)<{ isClickable: boolean }>`
+  width: calc(100% - 20px);
   position: absolute;
   top: calc(${mapHeightMobile} - 130px - 20px);
   left: 10px;
   right: 10px;
   z-index: 1000;
-  transition: all 300ms cubic-bezier(0.19, 1, 0.22, 1);
   pointer-events: ${(props) => (props.isClickable ? 'auto' : 'none')};
-
-  &.animation-enter {
-    top: calc(${mapHeightMobile} - 130px);
-
-    &.animation-enter-active {
-      top: calc(${mapHeightMobile} - 130px - 20px);
-    }
-  }
 `;
 
 interface Props {
@@ -178,9 +171,11 @@ const IdeasMap = memo<Props>(({ projectIds, phaseId, className }) => {
 
   // refs
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const ideaButtonRef = useRef<HTMLDivElement | null>(null);
+  const ideaButtonWrapperRef = useRef<HTMLDivElement | null>(null);
+  const ideaButtonRef = useRef<HTMLButtonElement | null>(null);
 
   // state
+  const [map, setMap] = useState<LeafletMap | null>(null);
   const [selectedLatLng, setSelectedLatLng] = useState<LatLng | null>(null);
   const [selectedIdeaMarkerId, setSelectedIdeaMarkerId] = useState<
     string | null
@@ -234,18 +229,8 @@ const IdeasMap = memo<Props>(({ projectIds, phaseId, className }) => {
           return ideaId;
         });
       }),
-      leafletMapClicked$.subscribe(({ map, latLng }) => {
-        const ideaPostingEnabled =
-          (!isNilOrError(project) && project.attributes.posting_enabled) ||
-          (!isNilOrError(phase) && phase.attributes.posting_enabled);
-
-        if (ideaPostingEnabled && map && latLng && ideaButtonRef?.current) {
-          setSelectedLatLng(latLng);
-          popup()
-            .setLatLng(latLng)
-            .setContent(ideaButtonRef.current)
-            .openOn(map);
-        }
+      leafletMapClicked$.subscribe((latLng) => {
+        setSelectedLatLng(latLng);
       }),
       ideasSearch$.subscribe((search) => {
         setSearch(search);
@@ -264,6 +249,20 @@ const IdeasMap = memo<Props>(({ projectIds, phaseId, className }) => {
       subscriptions.forEach((subscription) => subscription.unsubscribe());
     };
   }, [project, phase]);
+
+  useEffect(() => {
+    if (
+      map &&
+      selectedLatLng &&
+      ideaButtonWrapperRef?.current &&
+      ideaButtonRef?.current
+    ) {
+      popup()
+        .setLatLng(selectedLatLng)
+        .setContent(ideaButtonWrapperRef.current)
+        .openOn(map);
+    }
+  }, [map, selectedLatLng]);
 
   useEffect(() => {
     setInnerContainerLeftMargin(
@@ -291,6 +290,10 @@ const IdeasMap = memo<Props>(({ projectIds, phaseId, className }) => {
     setPoints(ideaPoints);
   }, [ideaMarkers]);
 
+  const handleMapOnInit = (map: LeafletMap) => {
+    setMap(map);
+  };
+
   const handleIdeaMapCardOnClose = () => {
     setIdeaMapCardSelected(null);
     setLeafletMapSelectedMarker(null);
@@ -301,7 +304,9 @@ const IdeasMap = memo<Props>(({ projectIds, phaseId, className }) => {
     return ideaMarkers?.find(({ id }) => id === selectedIdeaMarkerId);
   }, [ideaMarkers, selectedIdeaMarkerId]);
 
-  console.log(selectedIdeaMarker);
+  const setIdeaButtonRef = (element: HTMLButtonElement) => {
+    ideaButtonRef.current = element;
+  };
 
   if (!isNilOrError(project)) {
     return (
@@ -317,7 +322,17 @@ const IdeasMap = memo<Props>(({ projectIds, phaseId, className }) => {
             <FormattedMessage {...messages.a11y_mapTitle} />
           </ScreenReaderOnly>
 
+          {smallerThanMaxTablet && selectedIdeaMarker && (
+            <StyledIdeaMapCard
+              ideaMarker={selectedIdeaMarker as IIdeaMarkerData}
+              isPBProject={!!isPBProject}
+              onClose={handleIdeaMapCardOnClose}
+              isClickable={isCardClickable}
+            />
+          )}
+
           <Map
+            onInit={handleMapOnInit}
             projectId={project.id}
             points={points}
             mapHeight={
@@ -336,15 +351,7 @@ const IdeasMap = memo<Props>(({ projectIds, phaseId, className }) => {
             />
           )}
 
-          <CSSTransition
-            classNames="animation"
-            in={!!(smallerThanMaxTablet && selectedIdeaMarker)}
-            timeout={300}
-            mounOnEnter={true}
-            unmountOnExit={true}
-            enter={true}
-            exit={true}
-          >
+          {/* {smallerThanMaxTablet && selectedIdeaMarker && (
             <MobileIdeaMapCard
               className="animation"
               isClickable={isCardClickable}
@@ -355,11 +362,11 @@ const IdeasMap = memo<Props>(({ projectIds, phaseId, className }) => {
                 onClose={handleIdeaMapCardOnClose}
               />
             </MobileIdeaMapCard>
-          </CSSTransition>
+          )} */}
 
           <IdeaButtonWrapper
             className="create-idea-wrapper"
-            ref={ideaButtonRef}
+            ref={ideaButtonWrapperRef}
           >
             <IdeaButton
               projectId={project.id}
@@ -367,6 +374,7 @@ const IdeasMap = memo<Props>(({ projectIds, phaseId, className }) => {
               participationContextType={phaseId ? 'phase' : 'project'}
               latLng={selectedLatLng}
               inMap={true}
+              setSubmitButtonRef={setIdeaButtonRef}
             />
           </IdeaButtonWrapper>
         </InnerContainer>

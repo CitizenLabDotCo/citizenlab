@@ -9,8 +9,8 @@ export const Item = styled.div<{ compact?: boolean }>`
   ${({ compact }) =>
     compact &&
     `
-    padding-top: 13px;
-    padding-bottom: 17px;
+    padding-top: 11px;
+    padding-bottom: 15px;
     border-bottom: none;
   `};
 `;

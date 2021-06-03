@@ -73,7 +73,7 @@ export const getTileOptions = (tileProvider?: string | null) => {
       zoomOffset: -1,
       detectRetina: false,
       minZoom: 1,
-      maxZoom: 20,
+      maxZoom: 19,
       crossOrigin: true,
       subdomains: ['a', 'b', 'c'],
       attribution:

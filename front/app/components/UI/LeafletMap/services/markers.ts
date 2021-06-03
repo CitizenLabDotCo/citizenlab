@@ -58,8 +58,6 @@ export function addMarkerToMap(
     });
 
     marker.on('click', (event: L.LeafletMouseEvent) => {
-      event.originalEvent.preventDefault();
-      event.originalEvent.stopPropagation();
       setLeafletMapSelectedMarker(event.target.options['id']);
     });
 
@@ -126,8 +124,6 @@ export function addMarkerClusterGroup(
     });
 
     markerClusterGroup.on('click', (event: L.LeafletMouseEvent) => {
-      event.originalEvent.preventDefault();
-      event.originalEvent.stopPropagation();
       onClick?.(event.layer.options.id, event.layer.options.data);
     });
 

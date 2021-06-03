@@ -30,7 +30,7 @@ import styled from 'styled-components';
 import { media, defaultOutline, defaultCardStyle } from 'utils/styleUtils';
 
 // typings
-import { LatLngTuple } from 'leaflet';
+import { LatLngTuple, Map as ILeafletMap } from 'leaflet';
 
 export interface Point extends GeoJSON.Point {
   data?: any;
@@ -114,6 +114,7 @@ export interface IMapConfigProps {
 }
 
 export interface IMapProps {
+  onInit?: (map: ILeafletMap) => void;
   onBoxClose?: (event: React.FormEvent) => void;
   className?: string;
   projectId?: string | null;
@@ -132,6 +133,7 @@ const Map = memo<IMapProps & IMapConfigProps>(
     zoomControlPosition,
     layersControlPosition,
     boxContent,
+    onInit,
     onBoxClose,
     className,
     hideLegend,
@@ -195,6 +197,10 @@ const Map = memo<IMapProps & IMapConfigProps>(
       onBoxClose?.(event);
     };
 
+    const handleOnInit = (map: L.Map) => {
+      onInit?.(map);
+    };
+
     return (
       <Container className={className || ''}>
         <MapWrapper>
@@ -213,6 +219,7 @@ const Map = memo<IMapProps & IMapConfigProps>(
               id="mapid"
               className="e2e-leafletmap"
               mapHeight={mapHeight}
+              onInit={handleOnInit}
               {...leafletConfig}
             />
           </Suspense>
