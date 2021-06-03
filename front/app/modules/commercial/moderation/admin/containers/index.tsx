@@ -338,21 +338,28 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
         selectedRowModerationIds.includes(modItem.id)
       );
 
-      const promises = selectedModerationItems.map((moderationWithWarning) => {
-        const flagId =
-          moderationWithWarning.relationships.inappropriate_content_flag?.data
-            .id;
+      const promises = selectedModerationItems
+        .filter((moderationWithWarning) => {
+          const flagId =
+            moderationWithWarning.relationships.inappropriate_content_flag?.data
+              .id;
+          const hasFlagId = !!flagId;
+          return hasFlagId;
+        })
+        .map((moderationWithWarning) => {
+          // We can be sure here that the flagId is a string because we filtered out
+          // the moderations without one
+          const flagId = moderationWithWarning.relationships
+            .inappropriate_content_flag?.data.id as string;
 
-        // Moderation items having a content flag relationship doesn't mean
-        // the flag is currently on (see the inappropriateContentFlags.ts service for more info).
-        // I think, however, in this case having the relationship is a decent proxy
-        // and the code is simpler than somehow fetching the flags of all selected items,
-        // then checking whether their flag is really turned on
-        // by checking the reason_code and toxicity_label, and only then removing the flag.
-        if (flagId) {
+          // Moderation items having a content flag relationship doesn't mean
+          // the flag is currently on (see the inappropriateContentFlags.ts service for more info).
+          // I think, however, in this case having the relationship is a decent proxy
+          // and the code is simpler than somehow fetching the flags of all selected items,
+          // then checking whether their flag is really turned on
+          // by checking the reason_code and toxicity_label, and only then removing the flag.
           return removeInappropriateContentFlag(flagId);
-        }
-      });
+        });
 
       setProcessing(true);
       await Promise.all(promises);
