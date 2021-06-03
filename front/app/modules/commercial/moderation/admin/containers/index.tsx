@@ -334,21 +334,25 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
       !isNilOrError(moderationItems) &&
       !processing
     ) {
-      const selectedModerationItemsWithContentWarning = moderationItems.filter(
-        (modItem) => selectedRowModerationIds.includes(modItem.id)
+      const selectedModerationItems = moderationItems.filter((modItem) =>
+        selectedRowModerationIds.includes(modItem.id)
       );
 
-      const promises = selectedModerationItemsWithContentWarning.map(
-        (moderationWithWarning) => {
-          const flagId =
-            moderationWithWarning.relationships.inappropriate_content_flag?.data
-              .id;
+      const promises = selectedModerationItems.map((moderationWithWarning) => {
+        const flagId =
+          moderationWithWarning.relationships.inappropriate_content_flag?.data
+            .id;
 
-          if (flagId) {
-            removeInappropriateContentFlag(flagId);
-          }
+        // Moderation items having a content flag relationship doesn't mean
+        // the flag is currently on (see the service file for more info).
+        // I think, however, in this case having the relationship is a decent proxy
+        // and the code is simpler than somehow fetching the flags of all selected items,
+        // then checking whether their flag is really turned on
+        // by checking the reason_code and toxicity_label, and only then removing the flag.
+        if (flagId) {
+          return removeInappropriateContentFlag(flagId);
         }
-      );
+      });
 
       setProcessing(true);
       await Promise.all(promises);
