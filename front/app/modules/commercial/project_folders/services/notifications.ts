@@ -12,5 +12,7 @@ declare module 'services/notifications' {
     };
   }
 
-  export type TNotificationData = IProjectFolderModerationRightsReceivedNotificationData;
+  export interface INotificationDataMap {
+    IProjectFolderModerationRightsReceivedNotificationData: IProjectFolderModerationRightsReceivedNotificationData;
+  }
 }
