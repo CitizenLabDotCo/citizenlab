@@ -114,6 +114,10 @@ const StyledDesktopIdeaMapOverlay = styled(DesktopIdeaMapOverlay)`
   top: 20px;
   left: 20px;
   z-index: 900;
+
+  ${media.smallerThanMaxTablet`
+    display: none;
+  `}
 `;
 
 const StyledIdeaMapCard = styled(IdeaMapCard)<{ isClickable: boolean }>`
@@ -263,7 +267,8 @@ const IdeasMap = memo<Props>(({ projectIds, phaseId, className }) => {
       ideaButtonWrapperRef?.current &&
       ideaButtonRef?.current
     ) {
-      popup()
+      console.log('zolg');
+      popup({ closeButton: true })
         .setLatLng(selectedLatLng)
         .setContent(ideaButtonWrapperRef.current)
         .openOn(map);
@@ -328,18 +333,20 @@ const IdeasMap = memo<Props>(({ projectIds, phaseId, className }) => {
             <FormattedMessage {...messages.a11y_mapTitle} />
           </ScreenReaderOnly>
 
-          <CSSTransition
-            classNames="animation"
-            in={!!(smallerThanMaxTablet && selectedIdeaMarker)}
-            timeout={300}
-          >
-            <StyledIdeaMapCard
-              ideaMarker={selectedIdeaMarker as IIdeaMarkerData}
-              isPBProject={!!isPBProject}
-              onClose={handleIdeaMapCardOnClose}
-              isClickable={isCardClickable}
-            />
-          </CSSTransition>
+          {smallerThanMaxTablet && (
+            <CSSTransition
+              classNames="animation"
+              in={!!selectedIdeaMarker}
+              timeout={300}
+            >
+              <StyledIdeaMapCard
+                ideaMarker={selectedIdeaMarker as IIdeaMarkerData}
+                isPBProject={!!isPBProject}
+                onClose={handleIdeaMapCardOnClose}
+                isClickable={isCardClickable}
+              />
+            </CSSTransition>
+          )}
 
           <Map
             onInit={handleMapOnInit}
@@ -353,7 +360,7 @@ const IdeasMap = memo<Props>(({ projectIds, phaseId, className }) => {
             layersControlPosition="topright"
           />
 
-          {!smallerThanMaxTablet && projectIds && !isNilOrError(project) && (
+          {projectIds && !isNilOrError(project) && (
             <StyledDesktopIdeaMapOverlay
               projectIds={projectIds}
               projectId={project?.id}

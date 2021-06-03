@@ -36,7 +36,7 @@ import {
 // typings
 import { IIdeaMarkerData } from 'services/ideas';
 
-const Container = styled.button`
+const Container = styled.div`
   text-align: left;
   padding: 20px;
   margin: 0;
@@ -79,10 +79,10 @@ const Title = styled.h3`
   word-wrap: break-word;
   word-break: break-word;
 
-  ${media.smallerThanMaxTablet`
+  /* ${media.smallerThanMaxTablet`
     width: calc(100% - 22px);
     margin-bottom: 25px;
-  `}
+  `} */
 `;
 
 const Footer = styled.div`
@@ -151,14 +151,16 @@ const IdeaMapCard = memo<Props>(
     useEffect(() => {
       const subscriptions = [
         leafletMapHoveredMarker$.subscribe((hoverredIdeaId) => {
-          setHovered(hoverredIdeaId === ideaMarker.id);
+          if (!smallerThanMaxTablet) {
+            setHovered(hoverredIdeaId === ideaMarker.id);
+          }
         }),
       ];
 
       return () => {
         subscriptions.forEach((subscription) => subscription.unsubscribe());
       };
-    }, []);
+    }, [smallerThanMaxTablet]);
 
     const handleOnClick = (event: React.FormEvent) => {
       event?.preventDefault();
@@ -177,6 +179,14 @@ const IdeaMapCard = memo<Props>(
         const lng = ideaMarker.attributes.location_point_geojson.coordinates[0];
         const lat = ideaMarker.attributes.location_point_geojson.coordinates[1];
         setLeafletMapCenter([lat, lng]);
+      }
+    };
+
+    const handleOnKeyPress = (event: React.FormEvent) => {
+      event?.preventDefault();
+
+      if (event?.['key'] === 'Enter') {
+        handleOnClick(event);
       }
     };
 
@@ -201,8 +211,11 @@ const IdeaMapCard = memo<Props>(
         <Container
           className={`${className || ''} ${hovered ? 'hover' : ''}`}
           onClick={handleOnClick}
+          onKeyPress={handleOnKeyPress}
           onMouseEnter={handleOnMouseEnter}
           onMouseLeave={handleOnMouseLeave}
+          role="button"
+          tabIndex={0}
         >
           {smallerThanMaxTablet && (
             <CloseButtonWrapper>
