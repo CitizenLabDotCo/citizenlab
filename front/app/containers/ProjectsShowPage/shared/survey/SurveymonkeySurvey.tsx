@@ -6,6 +6,7 @@ const SurveyContainer = styled.div`
   justify-content: center;
   .smcx-widget {
     max-width: none;
+    z-index: 1;
   }
   .smcx-embed > .smcx-iframe-container {
     max-width: none;
