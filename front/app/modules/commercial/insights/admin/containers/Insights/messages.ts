@@ -99,6 +99,6 @@ export default defineMessages({
   },
   inputsTableEmpty: {
     id: 'app.containers.Admin.Insights.Edit.inputsEmptyState',
-    defaultMessage: 'You have no inputs for this view yet',
+    defaultMessage: "This project doesn't seem to contain any input.",
   },
 });

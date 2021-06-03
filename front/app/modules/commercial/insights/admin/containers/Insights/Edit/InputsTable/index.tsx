@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { withRouter, WithRouterProps } from 'react-router';
 
 // utils
@@ -6,11 +6,14 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // hooks
 import useInsightsInputs from 'modules/commercial/insights/hooks/useInsightsInputs';
+import { IInsightsInputData } from 'modules/commercial/insights/services/insightsInputs';
 
 // components
 import { Table, Checkbox } from 'cl2-component-library';
 import InputsTableRow from './InputsTableRow';
 import EmptyState from './EmptyState';
+import SideModal from 'components/UI/SideModal';
+import InputDetails from './InputDetails';
 
 // styles
 import styled from 'styled-components';
@@ -51,6 +54,14 @@ const InputsTable = ({
   params: { viewId },
   intl: { formatMessage },
 }: WithRouterProps & InjectedIntlProps) => {
+  const [isSideModalOpen, setIsSideModalOpen] = useState(false);
+  const [selectedInput, setSelectedInput] = useState<
+    IInsightsInputData | undefined
+  >();
+
+  const closeSideModal = () => setIsSideModalOpen(false);
+  const openSideModal = () => setIsSideModalOpen(true);
+
   const inputs = useInsightsInputs(viewId);
   if (isNilOrError(inputs)) {
     return null;
@@ -59,6 +70,10 @@ const InputsTable = ({
   // TODO: Implement checkbox logic
   const handleCheckboxChange = () => {};
 
+  const selectInput = (input: IInsightsInputData) => () => {
+    setSelectedInput(input);
+    openSideModal();
+  };
   return (
     <div data-testid="insightsInputsTable">
       {inputs.length === 0 ? (
@@ -81,10 +96,19 @@ const InputsTable = ({
           </thead>
           <tbody>
             {inputs.map((input) => (
-              <InputsTableRow input={input} key={input.id} />
+              <InputsTableRow
+                input={input}
+                key={input.id}
+                onSelect={selectInput(input)}
+              />
             ))}
           </tbody>
         </StyledTable>
+      )}
+      {selectedInput && (
+        <SideModal opened={isSideModalOpen} close={closeSideModal}>
+          <InputDetails inputs={inputs} selectedInput={selectedInput} />
+        </SideModal>
       )}
     </div>
   );

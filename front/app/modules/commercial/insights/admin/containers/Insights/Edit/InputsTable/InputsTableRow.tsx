@@ -29,20 +29,21 @@ import messages from '../../messages';
 const TagList = styled.div`
   > * {
     margin-right: 8px;
-    margin-bottom: 8px;
   }
 `;
 
-type InputsTableRow = {
+type InputsTableRowProps = {
   input: IInsightsInputData;
+  onSelect: () => void;
 } & WithRouterProps &
   InjectedIntlProps;
 
 const InputsTableRow = ({
   input,
+  onSelect,
   params: { viewId },
   intl: { formatMessage },
-}: InputsTableRow) => {
+}: InputsTableRowProps) => {
   const idea = useIdea({ ideaId: input.relationships?.source.data.id });
 
   if (isNilOrError(idea)) {
@@ -61,8 +62,21 @@ const InputsTableRow = ({
   // TODO: Implement checkbox logic
   const handleCheckboxChange = () => {};
 
+  const handleEnterPress = (
+    event: React.KeyboardEvent<HTMLTableRowElement>
+  ) => {
+    if (event.key === 'Enter') {
+      onSelect();
+    }
+  };
+
   return (
-    <tr tabIndex={0} data-testid="insightsInputsTableRow">
+    <tr
+      data-testid="insightsInputsTableRow"
+      onClick={onSelect}
+      tabIndex={0}
+      onKeyPress={handleEnterPress}
+    >
       <td>
         <Checkbox checked={false} onChange={handleCheckboxChange} />
       </td>
