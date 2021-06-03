@@ -29,13 +29,13 @@ module Insights
     end
 
     def per_page
-      return MAX_PER_PAGE unless params[:per_page]
+      return MAX_PER_PAGE unless (size = params.dig(:page, :size))
 
-      [params.dig(:page, :size), MAX_PER_PAGE].min
+      [size.to_i, MAX_PER_PAGE].min
     end
 
     def page
-      params.dig(:page, :number) || 1
+      params.dig(:page, :number).to_i || 1
     end
   end
 end

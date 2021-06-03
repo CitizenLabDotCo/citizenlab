@@ -18,7 +18,7 @@ module Insights
       private
 
       def index_params
-        params.permit(
+        @index_params ||= params.permit(
           :search,
           page: %i[number size]
         )
