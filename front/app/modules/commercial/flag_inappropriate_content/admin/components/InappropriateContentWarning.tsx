@@ -59,8 +59,7 @@ const InappropriateContentWarning = ({
                 user_flagged: formatMessage(messages.userFlaggedWarningText, {
                   reason: {
                     inappropriate: formatMessage(messages.inappropriate),
-                    wrong: formatMessage(messages.wrong),
-                    other: formatMessage(messages.other),
+                    wrong_content: formatMessage(messages.wrong),
                   }[reasonCode],
                 }),
               }[flagType]

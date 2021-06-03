@@ -32,9 +32,4 @@ export default defineMessages({
       'app.modules.commercial.flag_inappropriate_content.admin.components.wrong',
     defaultMessage: 'irrelevant',
   },
-  other: {
-    id:
-      'app.modules.commercial.flag_inappropriate_content.admin.components.other',
-    defaultMessage: 'unspecified reason',
-  },
 });
