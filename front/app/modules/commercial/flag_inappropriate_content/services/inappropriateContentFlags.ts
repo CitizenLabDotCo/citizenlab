@@ -1,6 +1,7 @@
 import { API_PATH } from 'containers/App/constants';
 import streams from 'utils/streams';
 import { IRelationship } from 'typings';
+import { useCallback } from 'react';
 
 // To keep in sync with spam report reason codes
 // Flags can't have the reason_code 'other' however
@@ -30,14 +31,22 @@ export interface IInappropriateContentFlag {
 }
 
 export function getFlagType(flag: IInappropriateContentFlagData) {
-  // A flag could be both user and NLP flagged
-  // If flag has toxicity_label, we know it's NLP flagged
-  // If toxicity_label is null, yet we have a flag, we know it's user reported
-  if (flag.attributes.toxicity_label) {
-    return 'nlp_flagged';
-  } else {
-    return 'user_flagged';
+  // A flag could be both user and NLP flagged at the same time
+  // Reporting NLP flagging has precedence.
+
+  // If the reason_code is null, the flag has been removed
+  if (flag.attributes.reason_code !== null) {
+    // If flag has toxicity_label, we know for sure it's NLP flagged
+    if (flag.attributes.toxicity_label) {
+      return 'nlp_flagged';
+    } else {
+      // If toxicity_label is null, yet we have a flag with a reason_code that is not null,
+      // we know it's user reported
+      return 'user_flagged';
+    }
   }
+
+  return null;
 }
 
 const apiEndpoint = `${API_PATH}/inappropriate_content_flag`;
