@@ -13,7 +13,7 @@ import { Table, Checkbox } from 'cl2-component-library';
 import InputsTableRow from './InputsTableRow';
 import EmptyState from './EmptyState';
 import SideModal from 'components/UI/SideModal';
-import InputDetails from './InputDetails';
+import InputDetails from '../InputDetails';
 
 // styles
 import styled from 'styled-components';
@@ -107,7 +107,7 @@ const InputsTable = ({
       )}
       {selectedInput && (
         <SideModal opened={isSideModalOpen} close={closeSideModal}>
-          <InputDetails inputs={inputs} selectedInput={selectedInput} />
+          <InputDetails initiallySelectedInput={selectedInput} />
         </SideModal>
       )}
     </div>
