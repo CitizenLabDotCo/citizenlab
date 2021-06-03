@@ -21,6 +21,7 @@ import { IAdminPublicationContent } from 'hooks/useAdminPublications';
 import {
   TNotificationData,
   IProjectFolderModerationRightsReceivedNotificationData,
+  TNotificationType,
 } from 'services/notifications';
 
 type RenderOnPublicationTypeProps = {
@@ -47,7 +48,7 @@ type RenderOnFeatureFlagProps = {
 type RenderOnNotificationTypeProps = {
   children: ReactNode;
   notification: TNotificationData;
-  notificationType: string;
+  notificationType: TNotificationType;
 };
 
 const RenderOnFeatureFlag = ({ children }: RenderOnFeatureFlagProps) => {

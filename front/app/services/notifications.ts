@@ -415,6 +415,7 @@ export interface INotificationDataMap {
 }
 
 export type TNotificationData = INotificationDataMap[keyof INotificationDataMap];
+export type TNotificationType = TNotificationData['attributes']['type'];
 
 export interface INotificationLinks {
   self: string;
