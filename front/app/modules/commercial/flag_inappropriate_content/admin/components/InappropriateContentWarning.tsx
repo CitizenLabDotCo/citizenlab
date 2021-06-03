@@ -60,7 +60,7 @@ const InappropriateContentWarning = ({
                   reason: {
                     inappropriate: formatMessage(messages.inappropriate),
                     wrong: formatMessage(messages.wrong),
-                    other: formatMessage(messages.other, {}),
+                    other: formatMessage(messages.other),
                   }[reasonCode],
                 }),
               }[flagType]

@@ -35,6 +35,6 @@ export default defineMessages({
   other: {
     id:
       'app.modules.commercial.flag_inappropriate_content.admin.components.other',
-    defaultMessage: 'nonspecified category',
+    defaultMessage: 'unspecified reason',
   },
 });
