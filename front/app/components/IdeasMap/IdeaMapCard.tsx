@@ -27,7 +27,6 @@ import { FormattedNumber } from 'react-intl';
 import styled from 'styled-components';
 import {
   defaultCardStyle,
-  defaultCardHoverStyle,
   fontSizes,
   colors,
   viewportWidths,
@@ -45,22 +44,12 @@ const Container = styled.button`
   cursor: pointer;
   position: relative;
   ${defaultCardStyle}
-  ${defaultCardHoverStyle}
   border: solid 1px #ccc;
-  transform: translateY(0);
 
-  ${media.biggerThanMaxTablet`
-    &:hover,
-    &.hover {
-      border-color: #000;
-      box-shadow: 0px 0px 0px 1px #000 inset;
-      transform: translateY(0);
-    }
-  `}
-
-  ${media.smallerThanMaxTablet`
-    width: 100%;
-  `}
+  &:hover,
+  &.hover {
+    border-color: #000;
+  }
 `;
 
 const CloseButtonWrapper = styled.div`
@@ -74,6 +63,7 @@ const CloseButton = styled(Button)``;
 
 const Title = styled.h3`
   height: 46px;
+  max-height: 46px;
   color: ${(props) => props.theme.colorText};
   font-size: 18px;
   font-weight: 600;
@@ -81,7 +71,6 @@ const Title = styled.h3`
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   line-height: 23px;
-  max-height: 46px;
   padding: 0;
   margin: 0;
   margin-bottom: 20px;
@@ -92,6 +81,7 @@ const Title = styled.h3`
 
   ${media.smallerThanMaxTablet`
     width: calc(100% - 22px);
+    margin-bottom: 25px;
   `}
 `;
 

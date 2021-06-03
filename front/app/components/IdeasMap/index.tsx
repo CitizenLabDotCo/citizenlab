@@ -8,7 +8,7 @@ import React, {
 } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { popup, LatLng } from 'leaflet';
-// import CSSTransition from 'react-transition-group/CSSTransition';
+import { CSSTransition } from 'react-transition-group';
 
 // components
 import Map, { Point } from 'components/Map';
@@ -100,12 +100,6 @@ const InnerContainer = styled.div<{ leftMargin: number | null }>`
   `}
 `;
 
-// const StyledMap = styled(Map)`
-//   border: none;
-//   background: transparent;
-//   box-shadow: 0px 0px 25px 0px rgba(0, 0, 0, 0.15);
-// `;
-
 const IdeaButtonWrapper = styled.div``;
 
 const StyledWarning = styled(Warning)`
@@ -123,13 +117,25 @@ const StyledDesktopIdeaMapOverlay = styled(DesktopIdeaMapOverlay)`
 `;
 
 const StyledIdeaMapCard = styled(IdeaMapCard)<{ isClickable: boolean }>`
-  width: calc(100% - 20px);
+  width: calc(100% - 24px);
   position: absolute;
-  top: calc(${mapHeightMobile} - 130px - 20px);
-  left: 10px;
-  right: 10px;
-  z-index: 1000;
+  top: calc(${mapHeightMobile} - 130px - 24px);
+  left: 12px;
+  right: 12px;
+  z-index: 1001;
   pointer-events: ${(props) => (props.isClickable ? 'auto' : 'none')};
+  transition: opacity 300ms cubic-bezier(0.19, 1, 0.22, 1),
+    top 300ms cubic-bezier(0.19, 1, 0.22, 1);
+
+  &.animation-enter {
+    opacity: 0;
+    top: calc(${mapHeightMobile} - 130px);
+
+    &.animation-enter-active {
+      opacity: 1;
+      top: calc(${mapHeightMobile} - 130px - 24px);
+    }
+  }
 `;
 
 interface Props {
@@ -312,7 +318,7 @@ const IdeasMap = memo<Props>(({ projectIds, phaseId, className }) => {
     return (
       <Container ref={containerRef} className={className || ''}>
         <InnerContainer leftMargin={innerContainerLeftMargin}>
-          {ideaMarkers && ideaMarkers.length > 0 && points.length === 0 && (
+          {smallerThanMaxTablet && ideaMarkers && ideaMarkers.length === 0 && (
             <StyledWarning
               text={<FormattedMessage {...messages.nothingOnMapWarning} />}
             />
@@ -322,14 +328,18 @@ const IdeasMap = memo<Props>(({ projectIds, phaseId, className }) => {
             <FormattedMessage {...messages.a11y_mapTitle} />
           </ScreenReaderOnly>
 
-          {smallerThanMaxTablet && selectedIdeaMarker && (
+          <CSSTransition
+            classNames="animation"
+            in={!!(smallerThanMaxTablet && selectedIdeaMarker)}
+            timeout={300}
+          >
             <StyledIdeaMapCard
               ideaMarker={selectedIdeaMarker as IIdeaMarkerData}
               isPBProject={!!isPBProject}
               onClose={handleIdeaMapCardOnClose}
               isClickable={isCardClickable}
             />
-          )}
+          </CSSTransition>
 
           <Map
             onInit={handleMapOnInit}
@@ -350,19 +360,6 @@ const IdeasMap = memo<Props>(({ projectIds, phaseId, className }) => {
               phaseId={phaseId}
             />
           )}
-
-          {/* {smallerThanMaxTablet && selectedIdeaMarker && (
-            <MobileIdeaMapCard
-              className="animation"
-              isClickable={isCardClickable}
-            >
-              <IdeaMapCard
-                ideaMarker={selectedIdeaMarker as IIdeaMarkerData}
-                isPBProject={!!isPBProject}
-                onClose={handleIdeaMapCardOnClose}
-              />
-            </MobileIdeaMapCard>
-          )} */}
 
           <IdeaButtonWrapper
             className="create-idea-wrapper"
