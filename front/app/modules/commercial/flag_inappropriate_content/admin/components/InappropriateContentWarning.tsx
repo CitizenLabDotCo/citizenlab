@@ -44,20 +44,27 @@ const InappropriateContentWarning = ({
 
   if (!isNilOrError(inappropriateContentFlag)) {
     const flagType = getFlagType(inappropriateContentFlag);
+    const reasonCode = inappropriateContentFlag.attributes.reason_code;
 
-    return (
-      <Container>
-        <WarningIcon name="exclamation-trapezium" />
-        <WarningContent>
-          {
+    // if reasonCode is null, it means the flag has been removed
+    // and we shouldn't display anything
+    if (reasonCode) {
+      return (
+        <Container>
+          <WarningIcon name="exclamation-trapezium" />
+          <WarningContent>
             {
-              nlp_flagged: formatMessage(messages.nlpFlaggedWarningText),
-              user_flagged: formatMessage(messages.userFlaggedWarningText),
-            }[flagType]
-          }
-        </WarningContent>
-      </Container>
-    );
+              {
+                nlp_flagged: formatMessage(messages.nlpFlaggedWarningText),
+                user_flagged: formatMessage(messages.userFlaggedWarningText),
+              }[flagType]
+            }
+          </WarningContent>
+        </Container>
+      );
+    }
+
+    return null;
   }
 
   return null;
