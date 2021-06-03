@@ -32,7 +32,6 @@ const viewId = '1';
 
 jest.mock('modules/commercial/insights/services/insightsViews', () => ({
   deleteInsightsView: jest.fn(),
-  updateInsightsView: jest.fn(),
 }));
 
 jest.mock('utils/cl-intl');
@@ -87,28 +86,5 @@ describe('Insights Top Bar', () => {
     fireEvent.click(screen.getByRole('button'));
     fireEvent.click(screen.getByText('Delete'));
     expect(spy).toHaveBeenCalledWith(mockViewData.id);
-  });
-  it('renames view with correct viewId and name', () => {
-    const viewName = 'New name';
-
-    const spy = jest.spyOn(service, 'updateInsightsView');
-    const closeModal = () => jest.fn();
-    render(
-      <RenameInsightsView
-        insightsViewId={viewId}
-        closeRenameModal={closeModal}
-      />
-    );
-    fireEvent.input(screen.getByRole('textbox'), {
-      target: {
-        value: viewName,
-      },
-    });
-
-    act(() => {
-      fireEvent.click(screen.getByText('Rename'));
-    });
-
-    expect(spy).toHaveBeenCalledWith(viewId, viewName);
   });
 });
