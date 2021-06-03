@@ -9,7 +9,7 @@ export default defineMessages({
   userFlaggedWarningText: {
     id:
       'app.modules.commercial.flag_inappropriate_content.admin.components.userFlaggedWarningText',
-    defaultMessage: 'Reported',
+    defaultMessage: 'Reported: {reason}',
   },
   removeWarning: {
     id:
@@ -21,5 +21,20 @@ export default defineMessages({
     id:
       'app.modules.commercial.flag_inappropriate_content.admin.components.warnings',
     defaultMessage: 'Warnings',
+  },
+  inappropriate: {
+    id:
+      'app.modules.commercial.flag_inappropriate_content.admin.components.inappropriate',
+    defaultMessage: 'inappropriate or offensive',
+  },
+  wrong: {
+    id:
+      'app.modules.commercial.flag_inappropriate_content.admin.components.wrong',
+    defaultMessage: 'irrelevant',
+  },
+  other: {
+    id:
+      'app.modules.commercial.flag_inappropriate_content.admin.components.other',
+    defaultMessage: 'nonspecified category',
   },
 });
