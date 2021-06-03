@@ -18,9 +18,11 @@ import messages from '../../messages';
 // components
 import Tag from 'modules/commercial/insights/admin/components/Tag';
 import Idea from './Idea';
+import { Button } from 'cl2-component-library';
 
 // hooks
 import useInsightsInputs from 'modules/commercial/insights/hooks/useInsightsInputs';
+import useKeyPress from 'hooks/useKeyPress';
 
 // styles
 import styled from 'styled-components';
@@ -33,12 +35,28 @@ type InputDetailsProps = {
 
 const Container = styled.div`
   padding: 48px;
+  position: relative;
+  height: 100%;
 `;
 
 const TagList = styled.div`
   > * {
     margin-right: 8px;
     margin-bottom: 8px;
+  }
+`;
+
+const StyledNavigation = styled.div`
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+`;
+
+const StyledChevronButton = styled(Button)`
+  max-width: 8px;
+  margin: 2px;
+  button {
+    padding: 8px 12px !important;
   }
 `;
 
@@ -49,6 +67,9 @@ const InputDetails = ({
 }: InputDetailsProps) => {
   const [selectedInput, setSelectedInput] = useState(initiallySelectedInput);
 
+  const upArrow = useKeyPress('ArrowUp');
+  const downArrow = useKeyPress('ArrowDown');
+
   const inputs = useInsightsInputs(viewId);
 
   useEffect(() => {
@@ -58,11 +79,38 @@ const InputDetails = ({
       );
       selectedInput && setSelectedInput(selectedInput);
     }
-  }, [isNilOrError, inputs, initiallySelectedInput]);
+  }, [inputs, initiallySelectedInput]);
+
+  // Keyboard navigation
+  useEffect(() => {
+    if (!isNilOrError(inputs)) {
+      const currentInputIndex = inputs.indexOf(selectedInput);
+      if (upArrow && currentInputIndex > 0) {
+        setSelectedInput(inputs[currentInputIndex - 1]);
+      }
+      if (downArrow && currentInputIndex < inputs.length - 1) {
+        setSelectedInput(inputs[currentInputIndex + 1]);
+      }
+    }
+  }, [upArrow, downArrow, inputs]);
 
   if (isNilOrError(inputs)) {
     return null;
   }
+
+  const currentInputIndex = inputs.indexOf(selectedInput);
+
+  const moveUp = () => {
+    if (currentInputIndex > 0) {
+      setSelectedInput(inputs[currentInputIndex - 1]);
+    }
+  };
+
+  const moveDown = () => {
+    if (currentInputIndex < inputs.length - 1) {
+      setSelectedInput(inputs[currentInputIndex + 1]);
+    }
+  };
 
   const ideaId = selectedInput.relationships?.source.data.id;
 
@@ -89,6 +137,24 @@ const InputDetails = ({
         ))}
       </TagList>
       {ideaId && <Idea ideaId={ideaId} />}
+      <StyledNavigation>
+        <StyledChevronButton
+          iconSize="8px"
+          locale="en"
+          icon="chevron-up"
+          buttonStyle="secondary-outlined"
+          onClick={moveUp}
+          disabled={currentInputIndex === 0}
+        />
+        <StyledChevronButton
+          iconSize="8px"
+          locale="en"
+          icon="chevron-down"
+          buttonStyle="secondary-outlined"
+          onClick={moveDown}
+          disabled={currentInputIndex === inputs.length - 1}
+        />
+      </StyledNavigation>
     </Container>
   );
 };
