@@ -135,6 +135,7 @@ const TopBar = ({
         <RenameInsightsView
           closeRenameModal={closeRenameModal}
           insightsViewId={viewId}
+          originalViewName={view.attributes.name}
         />
       </Modal>
     </Container>

@@ -18,7 +18,9 @@ import messages from '../../messages';
 // components
 import Tag from 'modules/commercial/insights/admin/components/Tag';
 import Idea from './Idea';
-import { Button } from 'cl2-component-library';
+import { Button, Label } from 'cl2-component-library';
+import Creatable from 'react-select/creatable';
+import selectStyles from 'components/UI/MultipleSelect/styles';
 
 // hooks
 import useInsightsInputs from 'modules/commercial/insights/hooks/useInsightsInputs';
@@ -35,11 +37,13 @@ type InputDetailsProps = {
 
 const Container = styled.div`
   padding: 48px;
+  padding-right: 100px;
   position: relative;
   height: 100%;
 `;
 
 const TagList = styled.div`
+  margin-top: 50px;
   > * {
     margin-right: 8px;
     margin-bottom: 8px;
@@ -125,6 +129,8 @@ const InputDetails = ({
 
   return (
     <Container>
+      <Label>Add a category</Label>
+      <Creatable styles={selectStyles} placeholder="Type a category name..." />
       <TagList>
         {selectedInput.relationships?.categories.data.map((category) => (
           <Tag

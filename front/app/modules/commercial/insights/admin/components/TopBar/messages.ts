@@ -23,20 +23,15 @@ export default defineMessages({
   },
   renameModalTitle: {
     id: 'app.containers.Admin.Insights.components.TopBar.renameModalTitle',
-    defaultMessage: 'Rename insights',
-  },
-  renameModalDescription: {
-    id:
-      'app.containers.Admin.Insights.components.TopBar.renameModalDescription',
-    defaultMessage: 'Choose a new name for your insights.',
+    defaultMessage: 'Edit the name of this view',
   },
   renameModalNameLabel: {
     id: 'app.containers.Admin.Insights.components.TopBar.renameModalNameLabel',
-    defaultMessage: 'New name',
+    defaultMessage: 'Name',
   },
   renameModalSaveView: {
     id: 'app.containers.Admin.Insights.components.TopBar.renameModalSaveView',
-    defaultMessage: 'Rename',
+    defaultMessage: 'Save',
   },
   renameModalCancel: {
     id: 'app.containers.Admin.Insights.components.TopBar.renameModalCancel',
