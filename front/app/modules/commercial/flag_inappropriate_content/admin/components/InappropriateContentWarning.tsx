@@ -48,7 +48,7 @@ const InappropriateContentWarning = ({
 
     // if reasonCode is null, it means the flag has been removed
     // and we shouldn't display anything
-    if (reasonCode) {
+    if (reasonCode && flagType) {
       return (
         <Container>
           <WarningIcon name="exclamation-trapezium" />
