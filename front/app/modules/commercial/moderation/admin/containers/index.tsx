@@ -329,10 +329,9 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
       !isNilOrError(moderationItems) &&
       !processing
     ) {
-      const selectedModerationItemsWithContentWarning = selectedRows.map(
-        (moderationId) =>
-          moderationItems.find((item) => item.id === moderationId)
-      ) as IModerationData[];
+      const selectedModerationItemsWithContentWarning = moderationItems.filter(
+        (modItem) => selectedRows.includes(modItem.id)
+      );
 
       const promises = selectedModerationItemsWithContentWarning.map(
         (selectModeration) => {
