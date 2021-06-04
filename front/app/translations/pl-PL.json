@@ -1423,6 +1423,7 @@
   "app.containers.AdminPage.ProjectEdit.projectUrl": "URL projektu",
   "app.containers.AdminPage.ProjectEdit.publishedStatus": "Opublikowany",
   "app.containers.AdminPage.ProjectEdit.purposes": "Sprawy",
+  "app.containers.AdminPage.ProjectEdit.qualtrics": "Qualtrics",
   "app.containers.AdminPage.ProjectEdit.randomSortingMethod": "Losowe",
   "app.containers.AdminPage.ProjectEdit.regexError": "Url może zawierać tylko zwykłe, małe litery (a-z), cyfry (0-9) i myślniki (-). Pierwszy i ostatni znak nie mogą być myślnikami. Kolejne myślniki (--) są niedozwolone.",
   "app.containers.AdminPage.ProjectEdit.resultingURL": "Wynikający z tego URL projektu",
