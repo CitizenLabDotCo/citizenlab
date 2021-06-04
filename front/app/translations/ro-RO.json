@@ -1423,6 +1423,7 @@
   "app.containers.AdminPage.ProjectEdit.projectUrl": "Adresa URL a proiectului",
   "app.containers.AdminPage.ProjectEdit.publishedStatus": "Published",
   "app.containers.AdminPage.ProjectEdit.purposes": "Purposes",
+  "app.containers.AdminPage.ProjectEdit.qualtrics": "Qualtrics",
   "app.containers.AdminPage.ProjectEdit.randomSortingMethod": "Aleatoriu",
   "app.containers.AdminPage.ProjectEdit.regexError": "Slugul poate conține numai litere mici, minuscule (a-z), cifre (0-9) și cratime (-). Primul și ultimul caracter nu pot fi cratime. Cratimele consecutive (--) sunt interzise.",
   "app.containers.AdminPage.ProjectEdit.resultingURL": "Adresa URL a proiectului rezultat",
