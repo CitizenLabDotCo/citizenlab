@@ -8,7 +8,7 @@ module Insights
           has_many(
             :insights_category_assignments,
             class_name: 'Insights::CategoryAssignment',
-            foreign_key: 'input',
+            as: :input,  # polymorphic *association*
             dependent: :destroy
           )
         end
