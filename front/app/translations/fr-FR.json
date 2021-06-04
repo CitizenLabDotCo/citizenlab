@@ -1337,7 +1337,7 @@
   "app.containers.AdminPage.ProjectEdit.createAProjectFromATemplate": "Créer un projet à partir d'un modèle",
   "app.containers.AdminPage.ProjectEdit.createPoll": "Créer un sondage",
   "app.containers.AdminPage.ProjectEdit.createPollDescription": "Créez un questionnaire à choix multiples.",
-  "app.containers.AdminPage.ProjectEdit.createSurveyDescription": "Intégrez une enquête Typeform, Google Form ou Enalyzer.",
+  "app.containers.AdminPage.ProjectEdit.createSurveyDescription": "Intégrez une enquête Typeform, Google Form, SurveyXact, Qualtrics ou Enalyzer.",
   "app.containers.AdminPage.ProjectEdit.createSurveyText": "Créer une enquête avancée",
   "app.containers.AdminPage.ProjectEdit.defaultPostSortingTooltip": "Vous pouvez définir l'ordre par défaut d'affichage des publications sur la page principale du projet.",
   "app.containers.AdminPage.ProjectEdit.defaultSorting": "Trier",
