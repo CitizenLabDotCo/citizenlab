@@ -1423,6 +1423,7 @@
   "app.containers.AdminPage.ProjectEdit.projectUrl": "URL del proyecto",
   "app.containers.AdminPage.ProjectEdit.publishedStatus": "Publicado",
   "app.containers.AdminPage.ProjectEdit.purposes": "Propósitos",
+  "app.containers.AdminPage.ProjectEdit.qualtrics": "Qualtrics",
   "app.containers.AdminPage.ProjectEdit.randomSortingMethod": "Aleatorio",
   "app.containers.AdminPage.ProjectEdit.regexError": "El slug sólo puede contener letras regulares, minúsculas (a-z), números (0-9) y guiones (-). El primer y el último carácter no pueden ser guiones, y los guiones consecutivos (-) no pueden ser utilizados.",
   "app.containers.AdminPage.ProjectEdit.resultingURL": "URL del proyecto resultante",
