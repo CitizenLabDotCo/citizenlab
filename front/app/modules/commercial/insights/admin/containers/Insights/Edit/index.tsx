@@ -49,6 +49,7 @@ const Inputs = styled.div`
   background: #fff;
   overflow-x: auto;
   overflow-y: auto;
+  padding: 40px;
 `;
 
 const Categories = styled.aside`

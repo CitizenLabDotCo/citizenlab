@@ -50,7 +50,7 @@ export function insightsCategoryStream(
 }
 
 export function addInsightsCategory(insightsViewId: string, name: string) {
-  return streams.add<IInsightsCategories>(
+  return streams.add<IInsightsCategory>(
     `${API_PATH}/${getInsightsCategoriesEndpoint(insightsViewId)}`,
     {
       category: { name },

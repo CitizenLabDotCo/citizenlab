@@ -84,3 +84,26 @@ export async function deleteInsightsInputCategory(
 
   return response;
 }
+
+export async function addInsightsInputCategory(
+  insightsViewId: string,
+  insightsInputId: string,
+  insightsCategoryId: string
+) {
+  const response = await streams.add(
+    `${API_PATH}/${getInsightsInputsEndpoint(
+      insightsViewId
+    )}/${insightsInputId}/categories`,
+    { data: [{ id: insightsCategoryId, type: 'category' }] }
+  );
+
+  const inputsEndpointRegexp = new RegExp(
+    `\/insights\/views\/${uuidRegExp}\/inputs$`
+  );
+  streams.fetchAllWith({
+    regexApiEndpoint: [inputsEndpointRegexp],
+    onlyFetchActiveStreams: true,
+  });
+
+  return response;
+}

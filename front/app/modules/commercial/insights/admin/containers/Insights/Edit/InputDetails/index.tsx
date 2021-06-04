@@ -5,7 +5,11 @@ import { withRouter, WithRouterProps } from 'react-router';
 import { isNilOrError } from 'utils/helperUtils';
 
 // services
-import { IInsightsInputData } from 'modules/commercial/insights/services/insightsInputs';
+import {
+  IInsightsInputData,
+  addInsightsInputCategory,
+} from 'modules/commercial/insights/services/insightsInputs';
+import { addInsightsCategory } from 'modules/commercial/insights/services/insightsCategories';
 
 // components
 import Category from 'modules/commercial/insights/admin/components/Category';
@@ -16,6 +20,7 @@ import selectStyles from 'components/UI/MultipleSelect/styles';
 
 // hooks
 import useInsightsInputs from 'modules/commercial/insights/hooks/useInsightsInputs';
+import useInsightsCategories from 'modules/commercial/insights/hooks/useInsightsCategories';
 import useKeyPress from 'hooks/useKeyPress';
 
 // styles
@@ -65,6 +70,7 @@ const InputDetails = ({
   const downArrow = useKeyPress('ArrowDown');
 
   const inputs = useInsightsInputs(viewId);
+  const categories = useInsightsCategories(viewId);
 
   useEffect(() => {
     if (!isNilOrError(inputs)) {
@@ -88,7 +94,7 @@ const InputDetails = ({
     }
   }, [upArrow, downArrow, inputs]);
 
-  if (isNilOrError(inputs)) {
+  if (isNilOrError(inputs) || isNilOrError(categories)) {
     return null;
   }
 
@@ -108,10 +114,31 @@ const InputDetails = ({
 
   const ideaId = selectedInput.relationships?.source.data.id;
 
+  const options = categories.map((category) => ({
+    label: category.attributes.name,
+    value: category.id,
+  }));
+
+  const handleCreate = async (value: string) => {
+    const result = await addInsightsCategory(viewId, value);
+    console.log(result);
+    addInsightsInputCategory(viewId, selectedInput.id, result.data.id);
+  };
+
+  const handleChange = (option: { label: string; value: string }) => {
+    addInsightsInputCategory(viewId, selectedInput.id, option.value);
+  };
+
   return (
     <Container>
       <Label>Add a category</Label>
-      <Creatable styles={selectStyles} placeholder="Type a category name..." />
+      <Creatable
+        styles={selectStyles}
+        placeholder="Type a category name..."
+        options={options}
+        onCreateOption={handleCreate}
+        onChange={handleChange}
+      />
       <CategoryList>
         {selectedInput.relationships?.categories.data.map((category) => (
           <Category

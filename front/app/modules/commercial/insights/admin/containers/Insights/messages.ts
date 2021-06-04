@@ -92,11 +92,6 @@ export default defineMessages({
     id: 'app.containers.Admin.Insights.Edit.inputsTableCategories',
     defaultMessage: 'Categories',
   },
-  inputsTableDeleteCategoryConfirmation: {
-    id:
-      'app.containers.Admin.Insights.Edit.inputsTableDeleteCategoryConfirmation',
-    defaultMessage: 'Are you sure?',
-  },
   inputsTableEmpty: {
     id: 'app.containers.Admin.Insights.Edit.inputsEmptyState',
     defaultMessage: "This project doesn't seem to contain any input.",

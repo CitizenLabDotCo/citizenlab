@@ -25,7 +25,6 @@ import { InjectedIntlProps } from 'react-intl';
 import messages from '../../messages';
 
 const StyledTable = styled(Table)`
-  background-color: #fff;
   thead {
     tr {
       th {

@@ -4,7 +4,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import useCategory from 'modules/commercial/insights/hooks/useInsightsCategory';
 import Tag from 'modules/commercial/insights/admin/components/Tag';
 import { deleteInsightsInputCategory } from 'modules/commercial/insights/services/insightsInputs';
-import messages from 'modules/commercial/insights/admin/containers/Insights/messages';
+import messages from './messages';
 
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
@@ -29,9 +29,7 @@ const Category = ({
     return null;
   }
   const handleRemoveCategory = () => {
-    const deleteMessage = formatMessage(
-      messages.inputsTableDeleteCategoryConfirmation
-    );
+    const deleteMessage = formatMessage(messages.deleteCategoryConfirmation);
     if (window.confirm(deleteMessage)) {
       deleteInsightsInputCategory(viewId, inputId, id);
     }
