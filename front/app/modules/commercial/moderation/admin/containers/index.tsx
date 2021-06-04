@@ -1,6 +1,7 @@
 import React, { memo, useCallback, useState, useEffect } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { includes } from 'lodash-es';
+import { insertConfiguration } from 'utils/moduleUtils';
 
 // components
 import Table from 'components/UI/Table';
@@ -9,11 +10,12 @@ import Pagination from 'components/admin/Pagination/Pagination';
 import Checkbox from 'components/UI/Checkbox';
 import { Icon, IconTooltip, Select } from 'cl2-component-library';
 import Button from 'components/UI/Button';
-import Tabs from 'components/UI/Tabs';
+import Tabs, { ITabItem } from 'components/UI/Tabs';
 import { PageTitle } from 'components/admin/Section';
 import SelectType from './SelectType';
 import SelectProject from './SelectProject';
 import SearchInput from 'components/UI/SearchInput';
+import Outlet from 'components/Outlet';
 
 // hooks
 import useModerations from '../../hooks/useModerations';
@@ -39,7 +41,7 @@ import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 
 // typings
-import { IOption } from 'typings';
+import { IOption, InsertConfigurationOptions } from 'typings';
 
 const Container = styled.div`
   display: flex;
@@ -78,7 +80,6 @@ const Buttons = styled.div`
 const MarkAsButton = styled(Button)`
   margin-right: 20px;
 `;
-const RemoveFlagButton = styled(Button)``;
 
 const StyledTabs = styled(Tabs)`
   margin-right: 20px;
@@ -174,33 +175,14 @@ interface Props {
   className?: string;
 }
 
+export interface ITabNamesMap {
+  read: 'read';
+  unread: 'unread';
+}
+
+type TTabName = ITabNamesMap[keyof ITabNamesMap];
+
 const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
-  interface ITabNamesMap {
-    read: 'read';
-    unread: 'unread';
-    warnings: 'warnings';
-  }
-
-  type TTabName = ITabNamesMap[keyof ITabNamesMap];
-
-  const flaggedItemsCount = 5;
-  const tabs = [
-    {
-      name: 'unread',
-      label: intl.formatMessage(messages.unread),
-    },
-    {
-      name: 'read',
-      label: intl.formatMessage(messages.read),
-    },
-    {
-      name: 'warnings',
-      label: intl.formatMessage(messages.warnings, {
-        flaggedItemsCount,
-      }),
-    },
-  ];
-
   const pageSizes = [
     {
       value: 10,
@@ -246,6 +228,16 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
   const [selectedTypes, setSelectedTypes] = useState<TModeratableTypes[]>([]);
   const [selectedProjectIds, setSelectedProjectIds] = useState<string[]>([]);
   const [selectedTab, setSelectedTab] = useState<TTabName>('unread');
+  const [tabs, setTabs] = useState<ITabItem[]>([
+    {
+      name: 'unread',
+      label: intl.formatMessage(messages.unread),
+    },
+    {
+      name: 'read',
+      label: intl.formatMessage(messages.read),
+    },
+  ]);
 
   const handleOnSelectAll = useCallback(
     (_event: React.ChangeEvent) => {
@@ -268,13 +260,9 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
         onModerationStatusChange(tabName);
       }
 
-      trackEventByName(
-        {
-          read: tracks.viewedTabClicked,
-          unread: tracks.notViewedTabClicked,
-          warnings: tracks.warningsTabClicked,
-        }[tabName]
-      );
+      trackEventByName(tracks.tabClicked, {
+        tabName,
+      });
     },
     [onModerationStatusChange]
   );
@@ -404,6 +392,9 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
     [selectedRows, moderationItems, moderationStatus]
   );
 
+  const handleData = (data: InsertConfigurationOptions<ITabItem>) =>
+    setTabs((tabs) => insertConfiguration(data)(tabs));
+
   useEffect(() => {
     if (!processing) {
       setSelectedRows([]);
@@ -443,6 +434,10 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
         <ActionBar>
           {selectedRows.length === 0 ? (
             <>
+              <Outlet
+                id="app.modules.commercial.moderation.admin.containers.tabs"
+                onData={handleData}
+              />
               <StyledTabs
                 items={tabs}
                 selectedValue={selectedTab}
@@ -478,21 +473,14 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
                 </MarkAsButton>
               )}
 
-              {selectedRowsWithContentWarning.length > 0 && (
-                <RemoveFlagButton
-                  icon="exclamation-trapezium-strikethrough"
-                  buttonStyle="cl-blue"
-                  processing={processing}
-                  onClick={removeFlags}
-                >
-                  <FormattedMessage
-                    {...messages.removeWarning}
-                    values={{
-                      numberOfItems: selectedRowsWithContentWarning.length,
-                    }}
-                  />
-                </RemoveFlagButton>
-              )}
+              <Outlet
+                id="app.modules.commercial.moderation.admin.containers.actionbar.buttons"
+                selectedRowsWithContentWarningLength={
+                  selectedRowsWithContentWarning.length
+                }
+                processing={processing}
+                onClick={removeFlags}
+              />
             </Buttons>
           )}
           <StyledSearchInput onChange={handleSearchTermChange} />
