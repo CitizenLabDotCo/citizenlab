@@ -11,3 +11,4 @@ ar:
       main_header: '%{firstName}، لديك مهمة جديدة'
       subject: 'لديك مهمة على المنصة الخاصة بـ %{organizationName}'
       preheader_idea: 'تم تعيين فكرة %{authorName} إليك'
+      

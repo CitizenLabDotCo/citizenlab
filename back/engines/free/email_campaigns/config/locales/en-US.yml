@@ -9,7 +9,6 @@ en:
       "comment_on_your_idea": A comment on my idea
       "comment_on_your_initiative": A comment on my initiative
       "first_idea_published": Publication of my first idea
-      "idea_assigned_to_you": Assignment of an idea to me
       "idea_marked_as_spam": Idea spam report
       "idea_published": Publication of my idea
       "initiative_assigned_to_you": Assignment of an initiative to me
@@ -59,7 +58,6 @@ en:
       "comment_on_your_idea": Comment on your idea - all users
       "comment_on_your_initiative": Comment on your initiative - all users
       "first_idea_published": Publication of your first idea - all users
-      "idea_assigned_to_you": Assignment of an idea - admins and project moderators
       "idea_marked_as_spam": Idea spam report - admins and project moderators
       "idea_published": Publication of your idea - all users
       "initiative_assigned_to_you": Assignment of an initiative - admins

@@ -16,10 +16,6 @@ module FlagInappropriateContent
       def header_message
         false
       end
-
-      # def preheader
-      #   format_message('preheader')
-      # end
     end
   end
 end

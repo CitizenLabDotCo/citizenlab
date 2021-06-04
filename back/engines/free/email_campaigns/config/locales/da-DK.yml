@@ -9,7 +9,6 @@ da:
       "comment_on_your_idea": En kommentar på min idé
       "comment_on_your_initiative": En kommentar på mit borgerforslag
       "first_idea_published": Publicering af min første idé
-      "idea_assigned_to_you": Tildeling af en idé til mig
       "idea_marked_as_spam": Rapportering af idé-spam
       "idea_published": Publicering af min idé
       "initiative_assigned_to_you": Tildeling af et borgerforslag til mig
@@ -58,7 +57,6 @@ da:
       "comment_on_your_idea": Comment on your idea - all users
       "comment_on_your_initiative": Comment on your proposal - all users
       "first_idea_published": Publication of your first idea - all users
-      "idea_assigned_to_you": Assignment of an idea - admins and project managers
       "idea_marked_as_spam": Idea spam report - admins and project managers
       "idea_published": Publication of your idea - all users
       "initiative_assigned_to_you": Assignment of a proposal - admins
@@ -167,13 +165,6 @@ da:
       main_header: '%{commentAuthor} kommenterede dit borgerforslag'
       subject: 'Du har modtaget en kommentar på %{organizationName}s platform'
       preheader: '%{authorName} efterlod en kommentar til dit borgerforslag for %{organizationName}'
-    idea_assigned_to_you:
-      by_author: 'af %{authorName}'
-      cta_reply_to: 'Giv feedback til %{authorName}'
-      event_description_idea: 'Du er blevet tildelt en idé. Giv feedback ved at skrive en officiel opdatering eller ved at ændre idéens status.'
-      main_header: '%{firstName}, du har en ny tildeling'
-      subject: 'Du har en tildeling på platformen for %{organizationName}'
-      preheader_idea: 'Du er blevet tildelt %{authorName}s idé'
     assignee_digest:
       subject: 'Ideer der kræver din tilbagemelding: %{numberIdeas}'
       preheader: 'Repræsentantsammenfatning for %{organizationName}'

@@ -9,7 +9,6 @@ es:
       "comment_on_your_idea": Un comentario sobre mi idea.
       "comment_on_your_initiative": Un comentario sobre mi propuesta
       "first_idea_published": Publicación de mi primera idea
-      "idea_assigned_to_you": Asignación de una idea para mí
       "idea_marked_as_spam": Informar de spam de ideas
       "idea_published": Publicación de mi idea
       "initiative_assigned_to_you": Asignación de una propuesta para mí
@@ -58,7 +57,6 @@ es:
       "comment_on_your_idea": 'Comentar en tu idea: todos los usuarios'
       "comment_on_your_initiative": 'Comentar en tu propuesta: todos los usuarios'
       "first_idea_published": 'Publicación de tu primera idea: todos los usuarios'
-      "idea_assigned_to_you": Asignación de una idea - administradores y administradores de proyecto
       "idea_marked_as_spam": Informar de spam de ideas - administradores y administradores de proyecto
       "idea_published": 'Publicación de tu idea: todos los usuarios'
       "initiative_assigned_to_you": 'Asignación de una propuesta: administradores'
@@ -167,13 +165,6 @@ es:
       main_header: '%{commentAuthor} comentó tu propuesta'
       subject: 'Has recibido un comentario en la plataforma de %{organizationName}'
       preheader: '%{authorName} dejó un comentario sobre tu propuesta para %{organizationName}'
-    idea_assigned_to_you:
-      by_author: 'por %{authorName}'
-      cta_reply_to: 'Dale retroalimentación a %{authorName}'
-      event_description_idea: 'Una idea ha sido asignada a ti. Dale retroalimentación, escribiendo una actualización oficial o cambiando el estado de la idea.'
-      main_header: '%{firstName}, tienes una nueva asignación'
-      subject: 'Tienes una asignación en la plataforma de %{organizationName}'
-      preheader_idea: 'La idea de %{authorName} ha sido asignada a ti'
     assignee_digest:
       subject: 'Ideas que requieren tu opinión: %{numberIdeas}'
       preheader: 'Resumen del asignatario %{organizationName}'

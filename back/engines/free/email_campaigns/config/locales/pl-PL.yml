@@ -9,7 +9,6 @@ pl:
       "comment_on_your_idea": Komentarz do mojego pomysłu
       "comment_on_your_initiative": Komentarz do mojej propozycji
       "first_idea_published": Publikacja mojego pierwszego pomysłu
-      "idea_assigned_to_you": Przydzielenie mi pomysłu
       "idea_marked_as_spam": Raport dot. pomysłów oznaczonych jako spam
       "idea_published": Publikacja mojego pomysłu
       "initiative_assigned_to_you": Przydzielenie mi propozycji
@@ -58,7 +57,6 @@ pl:
       "comment_on_your_idea": Komentowanie Twojego pomysłu - wszyscy użytkownicy
       "comment_on_your_initiative": Komentowanie Twojej propozycji - wszyscy użytkownicy
       "first_idea_published": Publikacja Twojego pierwszego pomysłu - wszyscy użytkownicy
-      "idea_assigned_to_you": Przydzielenie pomysłu - administratorzy i menadżerowie projektu
       "idea_marked_as_spam": Zgłaszania pomysłu jako spamu - administratorzy i menadżerowie projektu
       "idea_published": Publikacja Twojego pomysłu - wszyscy użytkownicy
       "initiative_assigned_to_you": Przydzielenie propozycji - administratorzy
@@ -167,13 +165,6 @@ pl:
       main_header: '%{commentAuthor} skomentował Twoją inicjatywę'
       subject: 'Otrzymałeś komentarz na platformie %{organizationName}'
       preheader: '%{authorName} skomentował Twoją inicjatywę na platformie %{organizationName}'
-    idea_assigned_to_you:
-      by_author: 'wg %{authorName}'
-      cta_reply_to: 'Przekaż informację zwrotną do %{authorName}'
-      event_description_idea: 'Przydzielono ci pomysł. Przekaż informację zwrotną, pisząc oficjalną aktualizację lub zmieniając jej status.'
-      main_header: '%{firstName}, masz nowe zadanie'
-      subject: 'Zostałeś przypisany na platformie %{organizationName}'
-      preheader_idea: 'Został do ciebie przypisany pomysł %{authorName}'
     assignee_digest:
       subject: 'Pomysły wymagające Twojej opinii: %{numberIdeas}'
       preheader: 'Skrót dla pełnomocnika %{organizationName}'
