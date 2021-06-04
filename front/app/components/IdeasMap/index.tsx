@@ -7,7 +7,7 @@ import React, {
   useMemo,
 } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { popup, LatLng } from 'leaflet';
+import { popup, LatLng, Map as LeafletMap } from 'leaflet';
 import { CSSTransition } from 'react-transition-group';
 
 // components
@@ -54,7 +54,6 @@ import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
 import { media, viewportWidths, colors, fontSizes } from 'utils/styleUtils';
 
 // typings
-import { Map as LeafletMap } from 'leaflet';
 import { Sort } from 'resources/GetIdeas';
 import { IIdeaMarkerData } from 'services/ideas';
 
