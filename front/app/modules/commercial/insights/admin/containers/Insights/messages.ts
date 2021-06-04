@@ -120,4 +120,16 @@ export default defineMessages({
     id: 'app.containers.Admin.Insights.Edit.categoryInfoBox',
     defaultMessage: '{bold} to organize and analyze input',
   },
+  addCategoryLabel: {
+    id: 'app.containers.Admin.Insights.Edit.Details.addCategoryLabel',
+    defaultMessage: 'Add a category',
+  },
+  addCategoryPlaceholder: {
+    id: 'app.containers.Admin.Insights.Edit.Details.addCategoryPlaceholder',
+    defaultMessage: 'Type a category name...',
+  },
+  createCategoryPrompt: {
+    id: 'app.containers.Admin.Insights.Edit.Details.createCategoryPrompt',
+    defaultMessage: 'Create',
+  },
 });
