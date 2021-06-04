@@ -94,7 +94,13 @@ jest.mock('react-router', () => {
   return {
     withRouter: (Component) => {
       return (props) => {
-        return <Component {...props} params={{ viewId }} />;
+        return (
+          <Component
+            {...props}
+            params={{ viewId }}
+            location={{ pathname: '' }}
+          />
+        );
       };
     },
   };

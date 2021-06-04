@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { withRouter, WithRouterProps } from 'react-router';
+import { parse } from 'qs';
+import clHistory from 'utils/cl-router/history';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 
 // services
-import {
-  IInsightsInputData,
-  addInsightsInputCategory,
-} from 'modules/commercial/insights/services/insightsInputs';
+import { addInsightsInputCategory } from 'modules/commercial/insights/services/insightsInputs';
 import { addInsightsCategory } from 'modules/commercial/insights/services/insightsCategories';
 
 // components
@@ -33,10 +32,7 @@ import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from '../../messages';
 
-type InputDetailsProps = {
-  initiallySelectedInput: IInsightsInputData;
-} & WithRouterProps &
-  InjectedIntlProps;
+type InputDetailsProps = {} & WithRouterProps & InjectedIntlProps;
 
 const Container = styled.div`
   padding: 48px;
@@ -91,13 +87,18 @@ type OptionProps = {
 };
 
 const InputDetails = ({
-  initiallySelectedInput,
   params: { viewId },
   intl: { formatMessage },
+  location: { pathname, search },
 }: InputDetailsProps) => {
   const locale = useLocale();
-  const [selectedInput, setSelectedInput] = useState(initiallySelectedInput);
+
+  const { input } = parse(search, {
+    ignoreQueryPrefix: true,
+  });
+
   const [selectedOption, setSelectedOption] = useState<null | OptionProps>();
+  const [isSelectFocused, setIsSelectFocused] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const upArrow = useKeyPress('ArrowUp');
@@ -106,27 +107,24 @@ const InputDetails = ({
   const inputs = useInsightsInputs(viewId);
   const categories = useInsightsCategories(viewId);
 
-  useEffect(() => {
-    if (!isNilOrError(inputs)) {
-      const selectedInput = inputs.find(
-        (input) => input.id === initiallySelectedInput.id
-      );
-      selectedInput && setSelectedInput(selectedInput);
-    }
-  }, [inputs, initiallySelectedInput]);
-
   // Keyboard navigation
   useEffect(() => {
-    if (!isNilOrError(inputs)) {
+    if (!isNilOrError(inputs) && !isSelectFocused && selectedInput) {
       const currentInputIndex = inputs.indexOf(selectedInput);
       if (upArrow && currentInputIndex > 0) {
-        setSelectedInput(inputs[currentInputIndex - 1]);
+        clHistory.replace({
+          pathname,
+          search: `?input=${inputs[currentInputIndex - 1].id}`,
+        });
       }
       if (downArrow && currentInputIndex < inputs.length - 1) {
-        setSelectedInput(inputs[currentInputIndex + 1]);
+        clHistory.replace({
+          pathname,
+          search: `?input=${inputs[currentInputIndex + 1].id}`,
+        });
       }
     }
-  }, [upArrow, downArrow, inputs]);
+  }, [upArrow, downArrow, inputs, isSelectFocused]);
 
   if (
     isNilOrError(inputs) ||
@@ -136,17 +134,31 @@ const InputDetails = ({
     return null;
   }
 
+  const selectedInput = inputs.find(
+    (currentInput) => currentInput.id === input
+  );
+
+  if (!selectedInput) {
+    return null;
+  }
+
   const currentInputIndex = inputs.indexOf(selectedInput);
 
   const moveUp = () => {
     if (currentInputIndex > 0) {
-      setSelectedInput(inputs[currentInputIndex - 1]);
+      clHistory.replace({
+        pathname,
+        search: `?input=${inputs[currentInputIndex - 1].id}`,
+      });
     }
   };
 
   const moveDown = () => {
     if (currentInputIndex < inputs.length - 1) {
-      setSelectedInput(inputs[currentInputIndex + 1]);
+      clHistory.replace({
+        pathname,
+        search: `?input=${inputs[currentInputIndex + 1].id}`,
+      });
     }
   };
 
@@ -205,6 +217,11 @@ const InputDetails = ({
     return `${formatMessage(messages.createCategoryPrompt)} "${value}"`;
   };
 
+  // Keep track of select focus to prevent keyboard navigation from switching ideas
+  // while the select is open
+  const onSelectFocus = () => setIsSelectFocused(true);
+  const onSelectBlur = () => setIsSelectFocused(false);
+
   return (
     <Container>
       <FormContainer>
@@ -219,6 +236,8 @@ const InputDetails = ({
             value={selectedOption}
             blurInputOnSelect
             formatCreateLabel={formatCreateLabel}
+            onFocus={onSelectFocus}
+            onBlur={onSelectBlur}
           />
         </div>
         <Button

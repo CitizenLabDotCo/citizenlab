@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { withRouter, WithRouterProps } from 'react-router';
+import clHistory from 'utils/cl-router/history';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -51,12 +52,10 @@ const StyledTable = styled(Table)`
 
 const InputsTable = ({
   params: { viewId },
+  location: { pathname },
   intl: { formatMessage },
 }: WithRouterProps & InjectedIntlProps) => {
   const [isSideModalOpen, setIsSideModalOpen] = useState(false);
-  const [selectedInput, setSelectedInput] = useState<
-    IInsightsInputData | undefined
-  >();
 
   const closeSideModal = () => setIsSideModalOpen(false);
   const openSideModal = () => setIsSideModalOpen(true);
@@ -70,9 +69,10 @@ const InputsTable = ({
   const handleCheckboxChange = () => {};
 
   const selectInput = (input: IInsightsInputData) => () => {
-    setSelectedInput(input);
+    clHistory.replace({ pathname, search: `?input=${input.id}` });
     openSideModal();
   };
+
   return (
     <div data-testid="insightsInputsTable">
       {inputs.length === 0 ? (
@@ -104,11 +104,9 @@ const InputsTable = ({
           </tbody>
         </StyledTable>
       )}
-      {selectedInput && (
-        <SideModal opened={isSideModalOpen} close={closeSideModal}>
-          <InputDetails initiallySelectedInput={selectedInput} />
-        </SideModal>
-      )}
+      <SideModal opened={isSideModalOpen} close={closeSideModal}>
+        <InputDetails />
+      </SideModal>
     </div>
   );
 };
