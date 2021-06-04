@@ -18,9 +18,13 @@ import { Icon, IconNames } from 'cl2-component-library';
 import bowser from 'bowser';
 
 const Container = styled.div`
-  padding: 20px;
-  padding-bottom: 5px;
+  padding: 25px;
+  padding-bottom: 8px;
   ${defaultCardStyle};
+
+  ${media.smallerThanMaxTablet`
+    padding: 20px;
+  `}
 `;
 
 const LegendItems = styled.ul`

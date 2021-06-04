@@ -12,10 +12,10 @@ import { CSSTransition } from 'react-transition-group';
 
 // components
 import Map, { Point } from 'components/Map';
-import Warning from 'components/UI/Warning';
 import IdeaButton from 'components/IdeaButton';
 import DesktopIdeaMapOverlay from './desktop/IdeaMapOverlay';
 import IdeaMapCard from './IdeaMapCard';
+import { Icon } from 'cl2-component-library';
 
 // hooks
 import useProject from 'hooks/useProject';
@@ -51,7 +51,7 @@ import messages from './messages';
 import styled from 'styled-components';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
-import { media, viewportWidths } from 'utils/styleUtils';
+import { media, viewportWidths, colors, fontSizes } from 'utils/styleUtils';
 
 // typings
 import { Map as LeafletMap } from 'leaflet';
@@ -59,7 +59,7 @@ import { Sort } from 'resources/GetIdeas';
 import { IIdeaMarkerData } from 'services/ideas';
 
 const mapMarginDesktop = 70;
-const mapHeightDesktop = '85vh';
+const mapHeightDesktop = '83vh';
 const mapHeightMobile = '78vh';
 
 const Container = styled.div``;
@@ -93,6 +93,17 @@ const InnerContainer = styled.div<{ leftMargin: number | null }>`
     box-shadow: none;
   }
 
+  ${media.biggerThanMaxTablet`
+    & .leaflet-control-zoom {
+      margin-top: 78px !important;
+      margin-right: 14px !important;
+    }
+
+    & .leaflet-control-layers {
+      margin-right: 15px !important;
+    }
+  `}
+
   ${media.smallerThanMaxTablet`
     .activeArea {
       left: 0px;
@@ -100,19 +111,53 @@ const InnerContainer = styled.div<{ leftMargin: number | null }>`
   `}
 `;
 
-const IdeaButtonWrapper = styled.div``;
+const InfoOverlay = styled.div`
+  position: absolute;
+  top: 25px;
+  right: 15px;
+  z-index: 900;
 
-const StyledWarning = styled(Warning)`
-  margin-bottom: 10px;
+  ${media.smallerThanMaxTablet`
+    width: calc(100% - 40px);
+    top: calc(${mapHeightMobile} - 72px);
+    right: 20px;
+  `}
 `;
 
+const InfoOverlayInner = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 14px 17px;
+  border-radius: 3px;
+  background: #e1f0f4;
+  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.1);
+  position: relative;
+`;
+
+const InfoOverlayIcon = styled(Icon)`
+  fill: ${colors.clBlueDarker};
+  flex: 0 0 18px;
+  width: 18px;
+  height: 18px;
+  margin-right: 8px;
+`;
+
+const InfoOverlayText = styled.text`
+  color: ${colors.clBlueDarker};
+  font-size: ${fontSizes.base}px;
+  font-weight: 500;
+  line-height: normal;
+`;
+
+const IdeaButtonWrapper = styled.div``;
+
 const StyledDesktopIdeaMapOverlay = styled(DesktopIdeaMapOverlay)`
-  width: 400px;
-  height: calc(${mapHeightDesktop} - 45px);
+  width: 390px;
+  height: calc(${mapHeightDesktop} - 50px);
   position: absolute;
   display: flex;
-  top: 20px;
-  left: 20px;
+  top: 25px;
+  left: 25px;
   z-index: 900;
 
   ${media.smallerThanMaxTablet`
@@ -267,7 +312,6 @@ const IdeasMap = memo<Props>(({ projectIds, phaseId, className }) => {
       ideaButtonWrapperRef?.current &&
       ideaButtonRef?.current
     ) {
-      console.log('zolg');
       popup({ closeButton: true })
         .setLatLng(selectedLatLng)
         .setContent(ideaButtonWrapperRef.current)
@@ -323,10 +367,19 @@ const IdeasMap = memo<Props>(({ projectIds, phaseId, className }) => {
     return (
       <Container ref={containerRef} className={className || ''}>
         <InnerContainer leftMargin={innerContainerLeftMargin}>
-          {smallerThanMaxTablet && ideaMarkers && ideaMarkers.length === 0 && (
-            <StyledWarning
-              text={<FormattedMessage {...messages.nothingOnMapWarning} />}
-            />
+          {ideaButtonRef?.current && (
+            <InfoOverlay>
+              <InfoOverlayInner>
+                <InfoOverlayIcon name="info" />
+                <InfoOverlayText>
+                  <FormattedMessage
+                    {...(smallerThanMaxTablet
+                      ? messages.tapOnMapToAdd
+                      : messages.clickOnMapToAdd)}
+                  />
+                </InfoOverlayText>
+              </InfoOverlayInner>
+            </InfoOverlay>
           )}
 
           <ScreenReaderOnly>
@@ -357,7 +410,9 @@ const IdeasMap = memo<Props>(({ projectIds, phaseId, className }) => {
             }
             noMarkerClustering={false}
             zoomControlPosition={smallerThanMaxTablet ? 'topleft' : 'topright'}
-            layersControlPosition="topright"
+            layersControlPosition={
+              smallerThanMaxTablet ? 'topright' : 'bottomright'
+            }
           />
 
           {projectIds && !isNilOrError(project) && (

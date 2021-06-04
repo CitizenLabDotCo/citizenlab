@@ -226,6 +226,7 @@ interface InputProps {
   ideaId: string;
   projectId: string;
   insideModal: boolean;
+  setRef?: (element: HTMLDivElement) => void;
   compact?: boolean;
   className?: string;
 }
@@ -417,6 +418,10 @@ export class IdeasShow extends PureComponent<
         translateButtonClicked: !prevState.translateButtonClicked,
       };
     });
+  };
+
+  handleContainerRef = (element: HTMLDivElement) => {
+    this.props.setRef?.(element);
   };
 
   render() {
@@ -637,6 +642,7 @@ export class IdeasShow extends PureComponent<
             <Container
               id="e2e-idea-show"
               className={`loaded ${className || ''}`}
+              ref={this.handleContainerRef}
             >
               {content}
             </Container>

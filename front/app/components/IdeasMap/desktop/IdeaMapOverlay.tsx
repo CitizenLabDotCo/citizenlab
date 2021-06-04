@@ -27,6 +27,7 @@ const Container = styled.div`
   align-items: stretch;
   position: relative;
   ${defaultCardStyle};
+  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.15);
 `;
 
 const InnerOverlay = styled.div`
@@ -41,6 +42,7 @@ const InnerOverlay = styled.div`
   align-items: stretch;
   overflow: hidden;
   ${defaultCardStyle};
+  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.15);
   transition: all ${timeout}ms cubic-bezier(0.19, 1, 0.22, 1);
 
   &.animation-enter {
@@ -96,8 +98,13 @@ interface Props {
 
 const IdeaMapOverlay = memo<Props>(
   ({ projectIds, projectId, phaseId, className }) => {
-    const [selectedIdeaId, setSelectedIdeaId] = useState<string | null>(null);
     const project = useProject({ projectId });
+
+    const [selectedIdeaId, setSelectedIdeaId] = useState<string | null>(null);
+    const [
+      scrollContainerElement,
+      setScrollContainerElement,
+    ] = useState<HTMLDivElement | null>(null);
 
     useEffect(() => {
       const subscription = ideaMapCardSelected$.subscribe((ideaId) => {
@@ -110,8 +117,18 @@ const IdeaMapOverlay = memo<Props>(
       };
     }, [projectIds, projectId]);
 
+    useEffect(() => {
+      if (scrollContainerElement && selectedIdeaId) {
+        scrollContainerElement.scrollTop = 0;
+      }
+    }, [scrollContainerElement, selectedIdeaId]);
+
     const goBack = () => {
       setIdeaMapCardSelected(null);
+    };
+
+    const handleIdeasShowSetRef = (element: HTMLDivElement) => {
+      setScrollContainerElement(element);
     };
 
     if (!isNilOrError(project)) {
@@ -141,6 +158,7 @@ const IdeaMapOverlay = memo<Props>(
                 projectId={projectId}
                 insideModal={false}
                 compact={true}
+                setRef={handleIdeasShowSetRef}
               />
             </InnerOverlay>
           </CSSTransition>
