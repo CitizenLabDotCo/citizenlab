@@ -1,9 +1,8 @@
 import React from 'react';
-import { render, screen, fireEvent, act } from 'utils/testUtils/rtl';
+import { render, screen, fireEvent } from 'utils/testUtils/rtl';
 import * as service from 'modules/commercial/insights/services/insightsViews';
 
 import TopBar from './';
-import RenameInsightsView from './RenameInsightsView';
 
 const mockViewData = {
   id: '1',

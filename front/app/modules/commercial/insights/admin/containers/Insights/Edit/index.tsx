@@ -6,8 +6,8 @@ import styled from 'styled-components';
 import { darken } from 'polished';
 
 // components
-import { Button, Input } from 'cl2-component-library';
-import { Divider } from 'semantic-ui-react';
+import { Button, Input, Spinner } from 'cl2-component-library';
+import Divider from 'components/admin/Divider';
 import TopBar, { topBarHeight } from '../../../components/TopBar';
 import Error from 'components/UI/Error';
 
@@ -18,7 +18,7 @@ import { colors, fontSizes, stylingConsts, media } from 'utils/styleUtils';
 
 // hooks
 import useLocale from 'hooks/useLocale';
-import useInsightsCategories from '../../../../hooks/useInsightsCategories';
+import useInsightsCategories from 'modules/commercial/insights/hooks/useInsightsCategories';
 
 // intl
 import { InjectedIntlProps } from 'react-intl';
@@ -28,7 +28,7 @@ import messages from '../messages';
 import { CLErrors } from 'typings';
 
 // services
-import { addInsightsCategory } from '../../../../services/insightsCategories';
+import { addInsightsCategory } from 'modules/commercial/insights/services/insightsCategories';
 
 const Container = styled.div`
   height: calc(100vh - ${stylingConsts.menuHeight + topBarHeight}px);
@@ -111,6 +111,11 @@ const CategoriesList = styled.div`
   overflow-y: auto;
 `;
 
+const StyledPlus = styled.div`
+  width: 22px;
+  text-align: center;
+`;
+
 const EditInsightsView = ({
   intl: { formatMessage },
   params: { viewId },
@@ -183,11 +188,11 @@ const EditInsightsView = ({
               fontSize={`${fontSizes.xxxl}px`}
               bgColor={colors.adminTextColor}
               className="addButton"
-              padding="8px 10px"
+              padding="8px"
               onClick={handleCategorySubmit}
               disabled={!name || loading}
             >
-              +
+              {loading ? <Spinner size="22px" /> : <StyledPlus>+</StyledPlus>}
             </Button>
           </FormContainer>
           {errors && (

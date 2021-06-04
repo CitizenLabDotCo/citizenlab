@@ -68,7 +68,7 @@ export function updateInsightsCategory(
       insightsViewId
     )}/${insightsCategoryId}`,
     insightsCategoryId,
-    { Categories: { name } }
+    { category: { name } }
   );
 }
 
