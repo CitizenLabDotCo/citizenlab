@@ -1423,6 +1423,7 @@
   "app.containers.AdminPage.ProjectEdit.projectUrl": "URL du projet",
   "app.containers.AdminPage.ProjectEdit.publishedStatus": "Publié",
   "app.containers.AdminPage.ProjectEdit.purposes": "Buts et objectifs",
+  "app.containers.AdminPage.ProjectEdit.qualtrics": "",
   "app.containers.AdminPage.ProjectEdit.randomSortingMethod": "Aléatoire",
   "app.containers.AdminPage.ProjectEdit.regexError": "Le slug ne peut contenir que des lettres minuscules (a-z), des chiffres (0-9) et des traits d'union (-). Le premier et le dernier caractère ne peuvent pas être des traits d'union. Les traits d'union consécutifs (--) ne sont pas autorisés.",
   "app.containers.AdminPage.ProjectEdit.resultingURL": "Nouvelle URL",
