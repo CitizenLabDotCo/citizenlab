@@ -40,7 +40,6 @@ module FlagInappropriateContent
     end
 
     def request_toxicity_detection texts
-      return fake_request_toxicity_detection texts # TO DELETE
       @api ||= NLP::API.new ENV.fetch('CL2_NLP_HOST')
       @api.toxicity_detection texts
     end
@@ -58,28 +57,5 @@ module FlagInappropriateContent
       LogActivityJob.perform_later(flag, 'created', nil, flag.created_at.to_i) if !reuse_flag
       LogActivityJob.perform_later(obj, 'flagged_for_inappropriate_content', nil, flag.created_at.to_i)
     end
-
-    # TO DELETE
-    def fake_request_toxicity_detection texts
-      texts.map do |text|
-        res = {
-          'text' => text,
-          'detected_language' => 'es'
-        }
-        if text.downcase.include? 'wanker'
-          res['detected_language'] = 'en'
-          res['is_inappropriate'] = true
-          res['predictions'] = {
-            'threat' => 0.23068441,
-            'identity_attack' => 0.27322835,
-            'inflammatory' => 0.359929,
-            'insult' => 0.70558244,
-            'sexually_explicit' => 0.21283324
-          }
-        end
-        res
-      end
-    end
-
   end
 end
