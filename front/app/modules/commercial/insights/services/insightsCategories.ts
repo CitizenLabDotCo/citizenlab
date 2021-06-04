@@ -41,7 +41,7 @@ export function insightsCategoryStream(
   insightsCategoryId: string,
   streamParams: IStreamParams | null = null
 ) {
-  return streams.get<IInsightsCategories>({
+  return streams.get<IInsightsCategory>({
     apiEndpoint: `${API_PATH}/${getInsightsCategoriesEndpoint(
       insightsViewId
     )}/${insightsCategoryId}`,

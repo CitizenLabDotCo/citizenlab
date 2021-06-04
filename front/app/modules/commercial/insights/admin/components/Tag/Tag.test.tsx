@@ -4,7 +4,6 @@ import { render, screen, fireEvent } from 'utils/testUtils/rtl';
 import Tag, { TagProps } from './';
 
 const defaultTagProps = {
-  id: '1',
   label: 'Label',
   onIconClick: () => {},
   status: 'approved',
@@ -32,6 +31,6 @@ describe('Tag', () => {
     const onIconClick = jest.fn();
     render(<Tag {...defaultTagProps} onIconClick={onIconClick} />);
     fireEvent.click(screen.getByTestId('insightsTagIconContainer'));
-    expect(onIconClick).toHaveBeenCalledWith(defaultTagProps.id);
+    expect(onIconClick).toHaveBeenCalled();
   });
 });

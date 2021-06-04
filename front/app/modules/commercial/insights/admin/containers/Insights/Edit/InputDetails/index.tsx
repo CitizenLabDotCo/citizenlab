@@ -5,18 +5,10 @@ import { withRouter, WithRouterProps } from 'react-router';
 import { isNilOrError } from 'utils/helperUtils';
 
 // services
-import {
-  IInsightsInputData,
-  deleteInsightsInputCategory,
-} from 'modules/commercial/insights/services/insightsInputs';
-
-// intl
-import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
-import messages from '../../messages';
+import { IInsightsInputData } from 'modules/commercial/insights/services/insightsInputs';
 
 // components
-import Tag from 'modules/commercial/insights/admin/components/Tag';
+import Category from 'modules/commercial/insights/admin/components/Category';
 import Idea from './Idea';
 import { Button, Label } from 'cl2-component-library';
 import Creatable from 'react-select/creatable';
@@ -32,8 +24,7 @@ import styled from 'styled-components';
 
 type InputDetailsProps = {
   initiallySelectedInput: IInsightsInputData;
-} & WithRouterProps &
-  InjectedIntlProps;
+} & WithRouterProps;
 
 const Container = styled.div`
   padding: 48px;
@@ -42,7 +33,7 @@ const Container = styled.div`
   height: 100%;
 `;
 
-const TagList = styled.div`
+const CategoryList = styled.div`
   margin-top: 50px;
   > * {
     margin-right: 8px;
@@ -66,7 +57,6 @@ const StyledChevronButton = styled(Button)`
 
 const InputDetails = ({
   initiallySelectedInput,
-  intl: { formatMessage },
   params: { viewId },
 }: InputDetailsProps) => {
   const [selectedInput, setSelectedInput] = useState(initiallySelectedInput);
@@ -118,30 +108,19 @@ const InputDetails = ({
 
   const ideaId = selectedInput.relationships?.source.data.id;
 
-  const handleRemoveCategory = (categoryId: string) => () => {
-    const deleteMessage = formatMessage(
-      messages.inputsTableDeleteCategoryConfirmation
-    );
-    if (window.confirm(deleteMessage)) {
-      deleteInsightsInputCategory(viewId, selectedInput.id, categoryId);
-    }
-  };
-
   return (
     <Container>
       <Label>Add a category</Label>
       <Creatable styles={selectStyles} placeholder="Type a category name..." />
-      <TagList>
+      <CategoryList>
         {selectedInput.relationships?.categories.data.map((category) => (
-          <Tag
+          <Category
             id={category.id}
-            label={category.id}
             key={category.id}
-            status="approved"
-            onIconClick={handleRemoveCategory(category.id)}
+            inputId={selectedInput.id}
           />
         ))}
-      </TagList>
+      </CategoryList>
       {ideaId && <Idea ideaId={ideaId} />}
       <StyledNavigation>
         <StyledChevronButton
@@ -165,4 +144,4 @@ const InputDetails = ({
   );
 };
 
-export default withRouter(injectIntl(InputDetails));
+export default withRouter(InputDetails);
