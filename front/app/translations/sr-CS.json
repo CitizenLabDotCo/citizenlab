@@ -1423,6 +1423,7 @@
   "app.containers.AdminPage.ProjectEdit.projectUrl": "URL projekta",
   "app.containers.AdminPage.ProjectEdit.publishedStatus": "Objavljeno",
   "app.containers.AdminPage.ProjectEdit.purposes": "Svrha",
+  "app.containers.AdminPage.ProjectEdit.qualtrics": "Qualtrics",
   "app.containers.AdminPage.ProjectEdit.randomSortingMethod": "Nasumično",
   "app.containers.AdminPage.ProjectEdit.regexError": "Slug može samo sadržati standardna, mala slova (a-z), brojeve (0-9) i crtice (-). Prvi i poslednji karakter ne mogu biti crtica. Povezane crtice (--) su zabranjene. ",
   "app.containers.AdminPage.ProjectEdit.resultingURL": "Dobijeni URL projekta",
