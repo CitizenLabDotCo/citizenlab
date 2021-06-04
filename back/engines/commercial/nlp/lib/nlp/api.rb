@@ -78,6 +78,7 @@ module NLP
       resp.parsed_response.dig('data')
     end
 
+    # TODO move
     def toxicity_detection texts
       body = {
         texts: texts
