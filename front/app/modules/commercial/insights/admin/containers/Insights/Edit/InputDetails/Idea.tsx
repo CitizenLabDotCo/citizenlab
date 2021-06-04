@@ -37,10 +37,10 @@ const Idea = ({ ideaId }: IdeaProps) => {
 
   return (
     <>
-      <IdeaTitle>
+      <IdeaTitle data-testid="insightsDetailsIdeaTitle">
         <T value={idea.attributes.title_multiloc} supportHtml />
       </IdeaTitle>
-      <IdeaBody>
+      <IdeaBody data-testid="insightsDetailsIdeaBody">
         <T value={idea.attributes.body_multiloc} supportHtml />
       </IdeaBody>
     </>

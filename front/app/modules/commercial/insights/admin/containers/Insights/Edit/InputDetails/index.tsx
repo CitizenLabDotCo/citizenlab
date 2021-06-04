@@ -32,7 +32,7 @@ import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from '../../messages';
 
-type InputDetailsProps = {} & WithRouterProps & InjectedIntlProps;
+type InputDetailsProps = WithRouterProps & InjectedIntlProps;
 
 const Container = styled.div`
   padding: 48px;
@@ -223,11 +223,14 @@ const InputDetails = ({
   const onSelectBlur = () => setIsSelectFocused(false);
 
   return (
-    <Container>
+    <Container data-testid="insightsInputDetails">
       <FormContainer>
         <div className="categoryInput">
-          <Label>{formatMessage(messages.addCategoryLabel)}</Label>
+          <Label htmlFor="categorySelect">
+            {formatMessage(messages.addCategoryLabel)}
+          </Label>
           <Creatable
+            inputId="categorySelect"
             styles={selectStyles}
             placeholder={formatMessage(messages.addCategoryPlaceholder)}
             options={options}
