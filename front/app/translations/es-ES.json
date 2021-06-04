@@ -1337,7 +1337,7 @@
   "app.containers.AdminPage.ProjectEdit.createAProjectFromATemplate": "Crear un proyecto a partir de una plantilla",
   "app.containers.AdminPage.ProjectEdit.createPoll": "Crear una encuesta",
   "app.containers.AdminPage.ProjectEdit.createPollDescription": "Prepara un cuestionario de opción múltiple.",
-  "app.containers.AdminPage.ProjectEdit.createSurveyDescription": "Incrustar un formulario de Typeform, de Google o una encuesta de Enalyzer.",
+  "app.containers.AdminPage.ProjectEdit.createSurveyDescription": "Incrustar un formulario de Typeform, de Google, de SurveyXact, de Qualtrics o una encuesta de Enalyzer.",
   "app.containers.AdminPage.ProjectEdit.createSurveyText": "Crear una encuesta avanzada",
   "app.containers.AdminPage.ProjectEdit.defaultPostSortingTooltip": "Puedes escoger por defecto el orden en el cual se desplegarán en la página del proyecto principal.",
   "app.containers.AdminPage.ProjectEdit.defaultSorting": "Ordenar",
