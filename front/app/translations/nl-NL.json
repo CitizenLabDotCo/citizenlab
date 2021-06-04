@@ -1337,7 +1337,7 @@
   "app.containers.AdminPage.ProjectEdit.createAProjectFromATemplate": "Maak een project aan met een sjabloon",
   "app.containers.AdminPage.ProjectEdit.createPoll": "Een poll aanmaken",
   "app.containers.AdminPage.ProjectEdit.createPollDescription": "Stel een meerkeuze-vragenlijst op.",
-  "app.containers.AdminPage.ProjectEdit.createSurveyDescription": "Integreer een Typeform-, Google Forms- of Enalyzer-enquête.",
+  "app.containers.AdminPage.ProjectEdit.createSurveyDescription": "Integreer een Typeform-, Google Forms-, SurveyXact-, Qualtrics- of Enalyzer-enquête.",
   "app.containers.AdminPage.ProjectEdit.createSurveyText": "Een geavanceerde enquête aanmaken",
   "app.containers.AdminPage.ProjectEdit.defaultPostSortingTooltip": "Je kunt de standaardvolgorde instellen voor berichten die op de hoofdpagina van het project dienen te worden weergegeven.",
   "app.containers.AdminPage.ProjectEdit.defaultSorting": "Sorteren",
