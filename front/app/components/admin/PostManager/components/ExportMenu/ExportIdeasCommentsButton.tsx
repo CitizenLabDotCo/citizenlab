@@ -58,7 +58,7 @@ class ExportCommentsButton extends React.PureComponent<
         blob,
         `${formatMessage(messages.inputCommentsExportFileName)}_${formatDate(
           Date.now()
-        )}`
+        )}.xlsx`
       );
       this.setState({ exporting: false });
     } catch (error) {
