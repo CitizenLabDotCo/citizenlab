@@ -52,7 +52,7 @@ module Insights
         @input ||= view.scope.ideas.find(params.require(:input_id))
       end
 
-      # @return [Array<Insights::CategoryAssignment>]
+      # @return [Array<Insights::Category>]
       def categories
         @categories ||= view.categories.find(
           params.fetch(:data, []).select { |h| h[:type] == 'category' }.pluck(:id)
