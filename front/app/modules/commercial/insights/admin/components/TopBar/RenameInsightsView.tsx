@@ -11,7 +11,6 @@ import { injectIntl } from 'utils/cl-intl';
 
 // components
 import { Button, Input } from 'cl2-component-library';
-import { SectionField } from 'components/admin/Section';
 import Error from 'components/UI/Error';
 
 // services
@@ -45,12 +44,13 @@ const Description = styled.p`
 `;
 
 const Form = styled.form`
-  margin-top: 50px;
+  margin-top: 40px;
 `;
 
 const ButtonContainer = styled.div`
   display: flex;
   justify-content: center;
+  margin-top: 40px;
 
   > :not(:first-child) {
     margin-left: 5px;
@@ -95,21 +95,20 @@ const RenameInsightsView = ({
   if (isNilOrError(locale)) return null;
 
   return (
-    <Container>
+    <Container data-testid="insights">
       <Title>{formatMessage(messages.renameModalTitle)}</Title>
       <Description>
         {formatMessage(messages.renameModalDescription)}
       </Description>
       <Form>
-        <SectionField>
-          <Input
-            type="text"
-            value={name}
-            onChange={onChangeName}
-            label={formatMessage(messages.renameModalNameLabel)}
-          />
-          {errors && <Error apiErrors={errors['name']} fieldName="view_name" />}
-        </SectionField>
+        <Input
+          type="text"
+          value={name}
+          onChange={onChangeName}
+          label={formatMessage(messages.renameModalNameLabel)}
+        />
+        {errors && <Error apiErrors={errors['name']} fieldName="view_name" />}
+
         <ButtonContainer>
           <Button
             processing={loading}
