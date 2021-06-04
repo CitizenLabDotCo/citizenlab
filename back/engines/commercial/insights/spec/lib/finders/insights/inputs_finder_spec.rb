@@ -44,6 +44,39 @@ describe Insights::InputsFinder do
       finder = described_class.new(view, params)
       expect(finder.execute).to match([idea])
     end
+
+    context "when using the category filter" do
+      let(:category) { create(:category, view: view) }
+
+      before do
+        assignment_service = Insights::CategoryAssignmentsService.new
+        inputs.take(2).each do |input|
+          assignment_service.add_assignments!(input, [category])
+        end
+      end
+
+      it 'can selects only inputs without category' do
+        finder = described_class.new(view, { category: '' })
+        expect(finder.execute).to match(inputs.drop(2))
+      end
+
+      it 'can selects inputs with a given category' do
+        finder = described_class.new(view, { category: category.id })
+        expect(finder.execute).to match(inputs.take(2))
+      end
+
+      it 'succeeds with categories without assignments' do
+        category = create(:category, view: view)
+        finder = described_class.new(view, { category: category.id })
+        expect(finder.execute.count).to eq(0)
+      end
+
+      it 'raises an exception if the category belongs to another view' do
+        category = create(:category)
+        finder = described_class.new(view, { category: category.id })
+        expect { finder.execute }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+    end
   end
 
   describe '#per_page' do
