@@ -64,7 +64,10 @@ const mapHeightMobile = '78vh';
 
 const Container = styled.div``;
 
-const InnerContainer = styled.div<{ leftMargin: number | null }>`
+const InnerContainer = styled.div<{
+  leftMargin: number | null;
+  isPostingEnabled: boolean;
+}>`
   width: ${({ leftMargin }) =>
     leftMargin ? `calc(100vw - ${mapMarginDesktop * 2}px)` : '100%'};
   margin-left: ${({ leftMargin }) =>
@@ -95,7 +98,8 @@ const InnerContainer = styled.div<{ leftMargin: number | null }>`
 
   ${media.biggerThanMaxTablet`
     & .leaflet-control-zoom {
-      margin-top: 78px !important;
+      margin-top: ${(props) =>
+        props.isPostingEnabled ? '78px' : '25px'} !important;
       margin-right: 14px !important;
     }
 
@@ -256,6 +260,8 @@ const IdeasMap = memo<Props>(({ projectIds, phaseId, className }) => {
     topics,
   });
 
+  const isIdeaPostingEnabled = !!ideaButtonRef?.current;
+
   useLayoutEffect(() => {
     const containerWidth = containerRef.current
       ?.getBoundingClientRect()
@@ -309,8 +315,8 @@ const IdeasMap = memo<Props>(({ projectIds, phaseId, className }) => {
     if (
       map &&
       selectedLatLng &&
-      ideaButtonWrapperRef?.current &&
-      ideaButtonRef?.current
+      isIdeaPostingEnabled &&
+      ideaButtonWrapperRef?.current
     ) {
       popup({ closeButton: true })
         .setLatLng(selectedLatLng)
@@ -366,8 +372,11 @@ const IdeasMap = memo<Props>(({ projectIds, phaseId, className }) => {
   if (!isNilOrError(project)) {
     return (
       <Container ref={containerRef} className={className || ''}>
-        <InnerContainer leftMargin={innerContainerLeftMargin}>
-          {ideaButtonRef?.current && (
+        <InnerContainer
+          leftMargin={innerContainerLeftMargin}
+          isPostingEnabled={isIdeaPostingEnabled}
+        >
+          {isIdeaPostingEnabled && (
             <InfoOverlay>
               <InfoOverlayInner>
                 <InfoOverlayIcon name="info" />
