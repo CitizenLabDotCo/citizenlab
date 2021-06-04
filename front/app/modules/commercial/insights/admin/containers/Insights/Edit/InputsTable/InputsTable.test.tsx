@@ -78,7 +78,7 @@ jest.mock('hooks/useIdea', () => {
   return jest.fn(() => mockIdeaData);
 });
 
-jest.mock('modules/commercial/insights/hooks/useCategory', () => {
+jest.mock('modules/commercial/insights/hooks/useInsightsCategory', () => {
   return jest.fn(() => mockCategoryData);
 });
 
