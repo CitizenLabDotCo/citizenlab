@@ -286,7 +286,7 @@ const IdeasMap = memo<Props>(({ projectIds, phaseId, className }) => {
         setIdeaMapCardSelected(ideaId);
         setSelectedIdeaMarkerId((_prevIdeaIdideaId) => {
           // temporarily disable pointer events on the mobile ideacard popup to avoid
-          // the marker click event from propagating to the card
+          // the marker click event from propagating to the card that migth pop up on top of it
           setIsCardClickable(false);
           setTimeout(() => {
             setIsCardClickable(true);
@@ -314,9 +314,6 @@ const IdeasMap = memo<Props>(({ projectIds, phaseId, className }) => {
       subscriptions.forEach((subscription) => subscription.unsubscribe());
     };
   }, [project, phase]);
-
-  console.log('phaseId', phaseId);
-  console.log('phase', phase);
 
   useEffect(() => {
     if (
