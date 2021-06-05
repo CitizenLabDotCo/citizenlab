@@ -58,30 +58,34 @@ const IdeaPageContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  padding: 20px;
-  ${defaultCardStyle};
 
   ${media.smallerThanMaxTablet`
-    border: solid 1px #ccc;
-    box-shadow: none;
+    padding: 20px;
+    background: ${colors.backgroundLightGrey};
   `}
 `;
 
-const BudgetBox = styled.div`
+const BudgetWithButtonWrapper = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: stretch;
   justify-content: center;
-  margin-bottom: 40px;
+  margin-bottom: 25px;
 `;
 
 const Budget = styled.div`
+  width: 100%;
+  height: 90px;
   color: ${(props: any) => props.theme.colorText};
   font-size: ${fontSizes.medium}px;
   font-weight: 600;
   text-align: center;
-  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 3px;
+  ${defaultCardStyle};
 `;
 
 const ButtonWrapper = styled.div``;
@@ -95,10 +99,7 @@ const TooltipContent = styled.div`
 const IdeaCardButton = styled(Button)``;
 
 const StyledPBExpenses = styled(PBExpenses)`
-  padding: 0px;
-  box-shadow: none;
-  border-radius: 0;
-  background: transparent;
+  padding: 20px;
 `;
 
 interface InputProps {
@@ -360,8 +361,8 @@ class AssignBudgetControl extends PureComponent<
                   }`}
                   ariaLabel={
                     !isInBasket
-                      ? formatMessage(messages.add)
-                      : formatMessage(messages.remove)
+                      ? formatMessage(messages.addToMyExpenses)
+                      : formatMessage(messages.removeFromMyExpenses)
                   }
                 >
                   <FormattedMessage
@@ -378,7 +379,7 @@ class AssignBudgetControl extends PureComponent<
             className={`pbAssignBudgetControlContainer ${fullClassName}`}
             aria-live="polite"
           >
-            <BudgetBox>
+            <BudgetWithButtonWrapper>
               <Budget>
                 <ScreenReaderOnly>
                   <FormattedMessage {...messages.a11y_price} />
@@ -403,15 +404,17 @@ class AssignBudgetControl extends PureComponent<
                 }`}
                 ariaLabel={
                   !isInBasket
-                    ? formatMessage(messages.add)
-                    : formatMessage(messages.remove)
+                    ? formatMessage(messages.addToMyExpenses)
+                    : formatMessage(messages.removeFromMyExpenses)
                 }
               >
                 <FormattedMessage
-                  {...(!isInBasket ? messages.add : messages.remove)}
+                  {...(!isInBasket
+                    ? messages.addToMyExpenses
+                    : messages.removeFromMyExpenses)}
                 />
               </Button>
-            </BudgetBox>
+            </BudgetWithButtonWrapper>
             <StyledPBExpenses
               participationContextId={participationContextId}
               participationContextType={participationContextType}

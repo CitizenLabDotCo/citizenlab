@@ -18,7 +18,8 @@ const MobileSharingButtonComponent = ({
 }: Props & InjectedIntlProps) => {
   return (
     <Button
-      buttonStyle="secondary-outlined"
+      buttonStyle="white"
+      borderColor="#ccc"
       icon="share-arrow"
       onClick={onClick}
       iconAriaHidden={true}

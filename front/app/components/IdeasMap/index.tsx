@@ -91,8 +91,8 @@ const InnerContainer = styled.div<{
   }
 
   & .pbAssignBudgetControlContainer {
-    border: solid 1px #ccc;
-    box-shadow: none;
+    padding: 20px;
+    background: ${colors.backgroundLightGrey};
   }
 
   ${media.biggerThanMaxTablet`
@@ -224,8 +224,13 @@ const IdeasMap = memo<Props>(({ projectIds, phaseId, className }) => {
   const smallerThanMaxTablet = windowWidth <= viewportWidths.largeTablet;
 
   const isPBProject =
+    phase === null &&
     !isNilOrError(project) &&
     project.attributes.participation_method === 'budgeting';
+  const isPBPhase =
+    !isNilOrError(phase) &&
+    phase.attributes.participation_method === 'budgeting';
+  const isPBIdea = !!(isPBProject || isPBPhase);
 
   // refs
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -309,6 +314,9 @@ const IdeasMap = memo<Props>(({ projectIds, phaseId, className }) => {
       subscriptions.forEach((subscription) => subscription.unsubscribe());
     };
   }, [project, phase]);
+
+  console.log('phaseId', phaseId);
+  console.log('phase', phase);
 
   useEffect(() => {
     if (
@@ -402,7 +410,7 @@ const IdeasMap = memo<Props>(({ projectIds, phaseId, className }) => {
             >
               <StyledIdeaMapCard
                 ideaMarker={selectedIdeaMarker as IIdeaMarkerData}
-                isPBProject={!!isPBProject}
+                isPBIdea={isPBIdea}
                 onClose={handleIdeaMapCardOnClose}
                 isClickable={isCardClickable}
               />

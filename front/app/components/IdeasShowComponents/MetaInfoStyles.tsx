@@ -3,15 +3,18 @@ import { fontSizes } from 'utils/styleUtils';
 
 export const Item = styled.div<{ compact?: boolean }>`
   padding-top: 18px;
-  padding-bottom: 21px;
-  border-bottom: 1px solid #e0e0e0;
+  padding-bottom: 20px;
+  border-top: solid 1px #ccc;
+
+  &.first {
+    border-top: none;
+  }
 
   ${({ compact }) =>
     compact &&
     `
-    padding-top: 11px;
-    padding-bottom: 15px;
-    border-bottom: none;
+      padding-top: 12px;
+      padding-bottom: 17px;
   `};
 `;
 

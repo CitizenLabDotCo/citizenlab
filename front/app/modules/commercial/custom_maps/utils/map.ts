@@ -77,7 +77,7 @@ export const getTileOptions = (tileProvider?: string | null) => {
       crossOrigin: true,
       subdomains: ['a', 'b', 'c'],
       attribution:
-        '\u003ca href="https://www.maptiler.com/copyright/" target="_blank"\u003e\u0026copy; MapTiler\u003c/a\u003e \u003ca href="https://www.openstreetmap.org/copyright" target="_blank"\u003e\u0026copy; OpenStreetMap contributors\u003c/a\u003e',
+        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
     };
   }
 

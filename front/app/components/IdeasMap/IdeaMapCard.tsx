@@ -135,13 +135,13 @@ const FooterValue = styled.div`
 
 interface Props {
   ideaMarker: IIdeaMarkerData;
-  isPBProject: boolean;
+  isPBIdea: boolean;
   onClose?: () => void;
   className?: string;
 }
 
 const IdeaMapCard = memo<Props>(
-  ({ ideaMarker, isPBProject, onClose, className }) => {
+  ({ ideaMarker, isPBIdea, onClose, className }) => {
     const tenant = useAppConfiguration();
     const { windowWidth } = useWindowSize();
     const smallerThanMaxTablet = windowWidth <= viewportWidths.largeTablet;
@@ -234,7 +234,7 @@ const IdeaMapCard = memo<Props>(
             <T value={ideaMarker.attributes.title_multiloc} />
           </Title>
           <Footer>
-            {isPBProject && tenantCurrency && ideaBudget && (
+            {isPBIdea && tenantCurrency && ideaBudget && (
               <FooterItem>
                 <MoneybagIcon name="moneybag" />
                 <FooterValue>
@@ -248,7 +248,7 @@ const IdeaMapCard = memo<Props>(
                 </FooterValue>
               </FooterItem>
             )}
-            {!isPBProject && (
+            {!isPBIdea && (
               <>
                 <FooterItem>
                   <DownvoteIcon name="upvote" />

@@ -450,12 +450,11 @@ class PBExpenses extends PureComponent<Props & InjectedIntlProps, State> {
                 <ManageBudgetButtonWithDropdown
                   buttonComponent={
                     <ManageBudgetButton
-                      // icon="settings"
                       iconAriaHidden
-                      buttonStyle="primary-inverse"
-                      borderColor={colors.separation}
-                      bgColor="#fff"
-                      borderThickness="2px"
+                      buttonStyle="white"
+                      borderColor="#ccc"
+                      boxShadow="none"
+                      boxShadowHover="none"
                     >
                       <FormattedMessage {...messages.manageBudget} />
                     </ManageBudgetButton>
@@ -471,7 +470,6 @@ class PBExpenses extends PureComponent<Props & InjectedIntlProps, State> {
 
                 <SubmitExpensesButton
                   onClick={this.handleSubmitExpensesOnClick}
-                  // icon="submit"
                   bgColor={colors.adminTextColor}
                   disabled={
                     validationStatus === 'validationSuccess' ||
@@ -533,10 +531,6 @@ const Data = adopt<DataProps, InputProps>({
 });
 
 const PBExpensesWithHoCs = injectIntl(PBExpenses);
-
-// ideaRemovedFromBasket: tracks.ideaRemovedFromBasket,
-// ideaAddedToBasket: tracks.ideaAddedToBasket,
-// basketSubmitted: tracks.basketSubmitted,
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>

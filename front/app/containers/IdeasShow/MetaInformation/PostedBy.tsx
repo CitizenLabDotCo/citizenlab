@@ -73,7 +73,7 @@ const PostedBy = memo<Props & InjectedIntlProps>(
       );
 
       return (
-        <Item className={className || ''} compact={compact}>
+        <Item className={`first ${className || ''}`} compact={compact}>
           <Header>{formatMessage(messages.postedBy)}</Header>
           <UserWrapper className="e2e-idea-author">
             <StyledAvatar

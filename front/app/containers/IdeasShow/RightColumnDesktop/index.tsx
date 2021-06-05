@@ -3,14 +3,14 @@ import { IParticipationContextType } from 'typings';
 
 // components
 import MetaInformation from '../MetaInformation';
-import VotingCTABox from '../CTABox/VotingCTABox';
-import ParticipatoryBudgetingCTABox from '../CTABox/ParticipatoryBudgetingCTABox';
-import Buttons from '../CTABox/Buttons';
+import Voting from 'containers/IdeasShow/CTABox/VotingCTABox/Voting';
+import Buttons from 'containers/IdeasShow/CTABox/Buttons';
+import AssignBudgetWrapper from 'containers/IdeasShow/CTABox/ParticipatoryBudgetingCTABox/BudgetAssignment/AssignBudgetWrapper';
 
 // styling
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
 import { rightColumnWidthDesktop } from '../styleConstants';
+import { colors } from 'utils/styleUtils';
 
 const Container = styled.div<{ insideModal: boolean }>`
   flex: 0 0 ${rightColumnWidthDesktop}px;
@@ -25,19 +25,21 @@ const InnerContainer = styled.div`
   flex-direction: column;
 `;
 
-const StyledVotingCTABox = styled(VotingCTABox)`
-  margin-bottom: 23px;
+const Box = styled.div`
+  padding: 20px;
+  border-radius: ${(props) => props.theme.borderRadius};
+  background: ${colors.backgroundLightGrey};
+  margin-bottom: 30px;
 `;
 
-const StyledPBCTABox = styled(ParticipatoryBudgetingCTABox)`
-  margin-bottom: 23px;
-`;
+const StyledVoting = styled(Voting)``;
 
-const ButtonsFallback = styled.div`
-  background-color: ${colors.background};
-  border-radius: 2px;
-  padding: 25px 15px;
-  margin-bottom: 23px;
+const StyledAssignBudgetWrapper = styled(AssignBudgetWrapper)``;
+
+const StyledButtons = styled(Buttons)`
+  border-top: solid 1px #ccc;
+  padding-top: 23px;
+  margin-top: 23px;
 `;
 
 const StyledMetaInformation = styled(MetaInformation)`
@@ -74,26 +76,27 @@ const RightColumnDesktop = ({
   return (
     <Container insideModal={insideModal} className={className || ''}>
       <InnerContainer>
-        {showVoteControl && (
-          <StyledVotingCTABox ideaId={ideaId} projectId={projectId} />
-        )}
-        {showBudgetControl &&
-          participationContextId &&
-          participationContextType &&
-          budgetingDescriptor && (
-            <StyledPBCTABox
-              ideaId={ideaId}
-              projectId={projectId}
-              participationContextId={participationContextId}
-              participationContextType={participationContextType}
-              budgetingDescriptor={budgetingDescriptor}
-            />
+        <Box>
+          {showVoteControl && (
+            <StyledVoting ideaId={ideaId} projectId={projectId} />
           )}
-        {!showVoteControl && !showBudgetControl && (
-          <ButtonsFallback>
-            <Buttons ideaId={ideaId} />
-          </ButtonsFallback>
-        )}
+
+          {showBudgetControl &&
+            participationContextId &&
+            participationContextType &&
+            budgetingDescriptor && (
+              <StyledAssignBudgetWrapper
+                ideaId={ideaId}
+                projectId={projectId}
+                participationContextId={participationContextId}
+                participationContextType={participationContextType}
+                budgetingDescriptor={budgetingDescriptor}
+              />
+            )}
+
+          <StyledButtons ideaId={ideaId} />
+        </Box>
+
         <StyledMetaInformation
           ideaId={ideaId}
           projectId={projectId}
