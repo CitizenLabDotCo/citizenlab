@@ -5,7 +5,6 @@ require 'httparty'
 module NLP
   class API
     include HTTParty
-    debug_output $stdout
 
     LONG_TIMEOUT = 2 * 60 # 2 minutes
 
@@ -78,23 +77,6 @@ module NLP
       resp.parsed_response.dig('data')
     end
 
-    # TODO move
-    def toxicity_detection texts
-      body = {
-        texts: texts
-      }
-      resp = post(
-        '/v2/toxic_classification',
-        body: body.to_json,
-        headers: { 'Content-Type' => 'application/json' },
-        timeout: LONG_TIMEOUT
-      )
-      unless resp.success?
-        raise ClErrors::TransactionError.new(error_key: resp['code'])
-      end
-      resp.parsed_response.dig('data')
-    end
-
     def tag_suggestions(body)
       resp = post(
         '/v2/tag_suggestions',
@@ -143,3 +125,5 @@ module NLP
     end
   end
 end
+
+# NLP::API.include_if_ee 'FlagInappropriateContent::Extensions::NLP::API'

@@ -4,7 +4,7 @@ module FlagInappropriateContent
 
       def map
         super.merge(
-          FlagInappropriateContent::Notifications::InappropriateContentFlagged => ::WebApi::V1::InappropriateContentFlaggedSerializer
+          FlagInappropriateContent::Notifications::InappropriateContentFlagged => FlagInappropriateContent::WebApi::V1::InappropriateContentFlaggedSerializer
         )
       end
     end
