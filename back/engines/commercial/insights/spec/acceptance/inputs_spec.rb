@@ -23,9 +23,15 @@ resource 'Inputs' do
   end
 
   get 'web_api/v1/insights/views/:view_id/inputs' do
+    with_options scope: :page, required: false do
+      parameter :number, 'Page number (starts at 1)'
+      parameter :size, "Number of inputs per page (max. #{Insights::InputsFinder::MAX_PER_PAGE})"
+    end
+    parameter :search, 'Filter by searching in title and body', required: false
+
     let(:view) { create(:view) }
     let(:view_id) { view.id }
-    let!(:ideas) { create_list(:idea, 2, project: view.scope) }
+    let!(:ideas) { create_list(:idea, 3, project: view.scope) }
 
     context 'when admin' do
       before { admin_header_token }
@@ -34,6 +40,19 @@ resource 'Inputs' do
         expect(status).to eq(200)
         expect(json_response[:data].pluck(:id)).to match_array(ideas.pluck(:id))
         expect(json_response[:included].pluck(:id)).to include(*ideas.pluck(:id))
+      end
+
+      example 'supports pagination', document: false do
+        do_request(page: { size: 2, number: 2 })
+        expect(status).to eq(200)
+        expect(json_response[:data].length).to eq(1) # bc there are 3 inputs in total
+      end
+
+      example 'supports text search', document: false do
+        idea = create(:idea, title_multiloc: { en: 'Love & Peace' }, project: view.scope)
+        do_request(search: "peace")
+        expect(status).to eq(200)
+        expect(json_response.dig(:data).pluck(:id)).to eq([idea.id])
       end
 
       example 'returns 404 if the view does not exist', document: false do
