@@ -62,9 +62,7 @@ module Insights
     # @return [Array<Insights::CategoryAssignment>]
     def add_assignments_batch(inputs, categories)
       CategoryAssignment.transaction do
-        inputs.map do |input|
-          add_assignments!(input, categories)
-        end
+        inputs.map { |input| add_assignments!(input, categories) }
       end.flatten
     end
   end
