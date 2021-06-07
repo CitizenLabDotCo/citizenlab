@@ -2664,7 +2664,7 @@
   "app.modules.id_id_card_lookup.takenFormError": "Ocupado.",
   "app.modules.id_id_card_lookup.verifyYourIdentity": "Verifique o seu usuário",
   "app.modules.idea_assignment.admin.components.permissionsTab": "Direitos de acesso",
-  "app.modules.project_folder.citizen.components.Notification.youveReceivedFolderAdminRights": "You received admin rights over the \"{folderName}\" folder.",
+  "app.modules.project_folder.citizen.components.Notification.youveReceivedFolderAdminRights": "Você recebeu direitos de administrador sobre a pasta \"{folderName}\".",
   "app.modules.project_folder.citizen.components.ProjectFolderShareButton.share": "Compartilhar",
   "app.modules.project_folder.citizen.components.ProjectFolderSharingModal.twitterMessage": "{projectFolderName}",
   "app.modules.project_folder.citizen.components.ProjectFolderSharingModal.whatsAppMessage": "{projectFolderName} | da plataforma de participação de {orgName}",
