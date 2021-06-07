@@ -24,8 +24,9 @@ module Insights
     # or +''+.
     # @raise [ActiveRecord::RecordNotFound]
     def filter_category(inputs)
-      return inputs unless (category_id = params[:category])
+      return inputs unless params.key?(:category)
 
+      category_id = params[:category]
       category_id = category_id == '' ? nil : category_id
 
       # raise error if the category does not exist
