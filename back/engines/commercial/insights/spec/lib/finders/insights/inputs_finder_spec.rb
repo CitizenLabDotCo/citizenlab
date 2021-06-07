@@ -15,7 +15,7 @@ describe Insights::InputsFinder do
       end
     end
 
-    context 'when view scope has not input' do
+    context 'when view scope has no input' do
       it 'returns 0 input' do
         finder = described_class.new(create(:view))
         expect(finder.execute.count).to eq(0)
