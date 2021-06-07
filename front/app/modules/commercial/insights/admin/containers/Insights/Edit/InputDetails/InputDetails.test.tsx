@@ -7,8 +7,8 @@ import InputDetails from './';
 
 const viewId = '1';
 
-const mockInputData = [
-  {
+const defaultProps = {
+  selectedInput: {
     id: '4e9ac1f1-6928-45e9-9ac9-313e86ad636f',
     type: 'input',
     relationships: {
@@ -35,25 +35,11 @@ const mockInputData = [
       },
     },
   },
-  {
-    id: '54438f73-12f4-4b16-84f3-a55bd118de7e',
-    type: 'input',
-    relationships: {
-      source: {
-        data: {
-          id: '54438f73-12f4-4b16-84f3-a55bd118de7e',
-          type: 'idea',
-        },
-      },
-      categories: {
-        data: [],
-      },
-      suggested_categories: {
-        data: [],
-      },
-    },
-  },
-];
+  upDisabled: false,
+  downDisabled: false,
+  moveUp: jest.fn(),
+  moveDown: jest.fn(),
+};
 
 const mockIdeaData = {
   id: '2',
@@ -131,10 +117,6 @@ jest.mock('modules/commercial/insights/hooks/useInsightsCategories', () => {
   return jest.fn(() => mockCategoriesData);
 });
 
-jest.mock('modules/commercial/insights/hooks/useInsightsInputs', () => {
-  return jest.fn(() => mockInputData);
-});
-
 jest.mock('modules/commercial/insights/hooks/useInsightsCategory', () => {
   return jest.fn(() => mockCategoryData);
 });
@@ -147,13 +129,7 @@ jest.mock('react-router', () => {
   return {
     withRouter: (Component) => {
       return (props) => {
-        return (
-          <Component
-            {...props}
-            params={{ viewId }}
-            location={{ pathname: '', search: `?input=${mockInputData[0].id}` }}
-          />
-        );
+        return <Component {...props} params={{ viewId }} />;
       };
     },
   };
@@ -165,21 +141,21 @@ window.confirm = jest.fn(() => true);
 
 describe('Insights Input Details', () => {
   it('renders', () => {
-    render(<InputDetails />);
+    render(<InputDetails {...defaultProps} />);
     expect(screen.getByTestId('insightsInputDetails')).toBeInTheDocument();
   });
   it('renders idea title and body correctly', () => {
-    render(<InputDetails />);
+    render(<InputDetails {...defaultProps} />);
     expect(screen.getByTestId('insightsDetailsIdeaTitle')).toBeInTheDocument();
     expect(screen.getByTestId('insightsDetailsIdeaBody')).toBeInTheDocument();
   });
   it('renders correct number of categories', () => {
-    render(<InputDetails />);
+    render(<InputDetails {...defaultProps} />);
     expect(screen.getAllByTestId('insightsTag')).toHaveLength(2);
   });
   it('adds existing category to category list correctly', async () => {
     const spy = jest.spyOn(insightsService, 'addInsightsInputCategory');
-    render(<InputDetails />);
+    render(<InputDetails {...defaultProps} />);
     selectEvent.openMenu(screen.getByLabelText('Add a category'));
 
     expect(
@@ -193,7 +169,7 @@ describe('Insights Input Details', () => {
 
     expect(spy).toHaveBeenCalledWith(
       viewId,
-      mockInputData[0].id,
+      defaultProps.selectedInput.id,
       mockCategoriesData[0].id
     );
   });
@@ -204,7 +180,7 @@ describe('Insights Input Details', () => {
     );
     const spyAddCategory = jest.spyOn(categoryService, 'addInsightsCategory');
 
-    render(<InputDetails />);
+    render(<InputDetails {...defaultProps} />);
     const newCategoryLabel = 'Create "New category"';
     fireEvent.change(screen.getByLabelText('Add a category'), {
       target: {
@@ -220,7 +196,7 @@ describe('Insights Input Details', () => {
     expect(spyAddCategory).toHaveBeenCalledWith(viewId, 'New category');
     expect(spyAddInputCategory).toHaveBeenCalledWith(
       viewId,
-      mockInputData[0].id,
+      defaultProps.selectedInput.id,
       mockCategoryDataResponse.data.id
     );
   });
