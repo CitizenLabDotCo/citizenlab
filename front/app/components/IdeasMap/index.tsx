@@ -230,7 +230,7 @@ const IdeasMap = memo<Props>(({ projectIds, phaseId, className }) => {
   const isPBPhase =
     !isNilOrError(phase) &&
     phase.attributes.participation_method === 'budgeting';
-  const isPBIdea = !!(isPBProject || isPBPhase);
+  const isPBIdea = isNilOrError(phase) ? isPBProject : isPBPhase;
 
   // refs
   const containerRef = useRef<HTMLDivElement | null>(null);

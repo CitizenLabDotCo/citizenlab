@@ -32,14 +32,16 @@ const Box = styled.div`
   margin-bottom: 30px;
 `;
 
-const StyledVoting = styled(Voting)``;
+const StyledVoting = styled(Voting)`
+  padding-bottom: 23px;
+  margin-bottom: 23px;
+  border-bottom: solid 1px #ccc;
+`;
 
-const StyledAssignBudgetWrapper = styled(AssignBudgetWrapper)``;
-
-const StyledButtons = styled(Buttons)`
-  border-top: solid 1px #ccc;
-  padding-top: 23px;
-  margin-top: 23px;
+const StyledAssignBudgetWrapper = styled(AssignBudgetWrapper)`
+  padding-bottom: 23px;
+  margin-bottom: 23px;
+  border-bottom: solid 1px #ccc;
 `;
 
 const StyledMetaInformation = styled(MetaInformation)`
@@ -94,7 +96,7 @@ const RightColumnDesktop = ({
               />
             )}
 
-          <StyledButtons ideaId={ideaId} />
+          <Buttons ideaId={ideaId} />
         </Box>
 
         <StyledMetaInformation
