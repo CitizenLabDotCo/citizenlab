@@ -19,13 +19,31 @@ resource 'Batch category assignments for view inputs' do
 
   shared_examples 'unauthorized requests' do
     context 'when visitor' do
-      example_request('unauthorized', document: false) { expect(status).to eq(401) }
+      example'unauthorized', document: false do
+        do_request
+        expect(status).to eq(401)
+      end
     end
 
     context 'when normal user' do
       before { user_header_token }
 
-      example_request('unauthorized', document: false) { expect(status).to eq(401) }
+      example'unauthorized', document: false do
+        do_request
+        expect(status).to eq(401)
+      end
+    end
+  end
+
+  shared_examples 'not-found requests' do
+    example "returns 404 if a category doesn't exist", document: false do
+      do_request(inputs: [], categories: ['bad-uuid'])
+      expect(status).to eq(404)
+    end
+
+    example "returns 404 if an input doesn't exist", document: false do
+      do_request(inputs: ['bad-uuid'], categories: [])
+      expect(status).to eq(404)
     end
   end
 
@@ -56,6 +74,8 @@ resource 'Batch category assignments for view inputs' do
           expect(assignments.pluck(:category_id)).to match(categories)
         end
       end
+
+      include_examples 'not-found requests'
     end
 
     include_examples 'unauthorized requests'
@@ -89,6 +109,8 @@ resource 'Batch category assignments for view inputs' do
         assignments = assignment_service.assignments(input_instances.last, view)
         expect(assignments.map(&:category)).to match(category_instances)
       end
+
+      include_examples 'not-found requests'
     end
 
     include_examples 'unauthorized requests'
