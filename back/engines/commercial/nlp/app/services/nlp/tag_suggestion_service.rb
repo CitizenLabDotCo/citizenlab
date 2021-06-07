@@ -3,7 +3,7 @@ module NLP
 
     def suggest(ideas, locale)
 
-      @api ||= NLP::API.new ENV.fetch('CL2_NLP_HOST')
+      @api ||= NLP::Api.new ENV.fetch('CL2_NLP_HOST')
       @texts = parse_ideas ideas, locale
       @texts.any? ? @api.tag_suggestions({
         locale: locale,

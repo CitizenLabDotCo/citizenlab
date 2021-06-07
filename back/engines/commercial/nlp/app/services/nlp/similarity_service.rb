@@ -9,7 +9,7 @@ module NLP
           locale = tenant_locales.first
         end
       end
-      @api ||= NLP::API.new ENV.fetch("CL2_NLP_HOST")
+      @api ||= NLP::Api.new ENV.fetch("CL2_NLP_HOST")
       options = {}
       options[:idea_ids] = idea_ids if idea_ids
       options[:min_score] = min_score if min_score
