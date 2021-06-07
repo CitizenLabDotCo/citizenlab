@@ -1,9 +1,21 @@
 # Changelog
 
+## Next Release
+
+## 2021-06-07
+
+### Added
+- Qualtrics surveys integration.
+
+### Fixed
+- Visibility Labels in the admin projects list are now visible.
+- Tagged ideas export is fixed.
+- Updating an idea in one locale does not overwrite other locales anymore
+
 ## 2021-05-28
 
 ### Fixed
-- Project Events are now ordered chronologically from soonest to latest. 
+- Project Events are now ordered chronologically from soonest to latest.
 
 ## 2021-05-27
 
