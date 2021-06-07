@@ -9,17 +9,12 @@ resource 'Batch category assignments for view inputs' do
   let(:view) { create(:view) }
   let(:view_id) { view.id }
 
-  let(:input_instances) { create_list(:idea, 3, project: view.scope) }
-  let(:inputs) { input_instances.pluck(:id) }
-  let(:category_instances) { create_list(:category, 3, view: view) }
-  let(:categories) { category_instances.pluck(:id) }
-
   let(:assignment_service) { Insights::CategoryAssignmentsService.new }
   let(:json_response) { json_parse(response_body) }
 
   shared_examples 'unauthorized requests' do
     context 'when visitor' do
-      example'unauthorized', document: false do
+      example 'unauthorized', document: false do
         do_request
         expect(status).to eq(401)
       end
@@ -28,7 +23,7 @@ resource 'Batch category assignments for view inputs' do
     context 'when normal user' do
       before { user_header_token }
 
-      example'unauthorized', document: false do
+      example 'unauthorized', document: false do
         do_request
         expect(status).to eq(401)
       end
@@ -53,6 +48,11 @@ resource 'Batch category assignments for view inputs' do
 
     context 'when admin' do
       before { admin_header_token }
+
+      let(:input_instances) { create_list(:idea, 2, project: view.scope) }
+      let(:inputs) { input_instances.pluck(:id) }
+      let(:category_instances) { create_list(:category, 2, view: view) }
+      let(:categories) { category_instances.pluck(:id) }
 
       example_request 'assigns a set of categories to multiple inputs' do
         expect(status).to eq(204)
@@ -92,6 +92,10 @@ resource 'Batch category assignments for view inputs' do
     context 'when admin' do
       before { admin_header_token }
 
+      let(:input_instances) { create_list(:idea, 3, project: view.scope) }
+      let(:category_instances) { create_list(:category, 3, view: view) }
+
+      # Removing only the two first categories for the two first ideas
       let(:inputs) { input_instances[0..1].pluck(:id) }
       let(:categories) { category_instances[0..1].pluck(:id) }
 
