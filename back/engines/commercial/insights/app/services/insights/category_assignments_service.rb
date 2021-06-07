@@ -44,5 +44,28 @@ module Insights
         end
       end
     end
+
+    # Batch removal for category assignment.
+    #
+    # @param [Enumerable<Ideas>] inputs
+    # @param [Enumerable<Insights::Category>] categories
+    # @return [Array<Insights::CategoryAssignment>]
+    def delete_assignments_batch(inputs, categories)
+      assignments = CategoryAssignment.where(input: inputs, category: categories)
+      _frozen_assignments = assignments.destroy_all
+    end
+
+    # Batch category assignment.
+    #
+    # @param [Enumerable<Ideas>] inputs
+    # @param [Enumerable<Insights::Category>] categories
+    # @return [Array<Insights::CategoryAssignment>]
+    def add_assignments_batch(inputs, categories)
+      CategoryAssignment.transaction do
+        inputs.map do |input|
+          add_assignments!(input, categories)
+        end
+      end.flatten
+    end
   end
 end
