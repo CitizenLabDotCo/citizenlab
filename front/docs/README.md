@@ -2,6 +2,9 @@
 
 ## Next Release
 
+### Changed
+- Project Events are now ordered chronologically from latest to soonest.
+
 ## 2021-06-07
 
 ### Added
