@@ -59,7 +59,7 @@ class ExportPollButton extends React.PureComponent<
       participationContextType,
       `${formatMessage(messages.pollExportFileName)}_${snakeCase(
         participationContextName
-      )}_${formatDate(Date.now())}`
+      )}_${formatDate(Date.now())}.xlsx`
     );
     this.setState({ exporting: false });
   };

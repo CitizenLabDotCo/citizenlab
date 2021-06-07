@@ -59,7 +59,7 @@ class ExportInitiativesButton extends React.PureComponent<
         blob,
         `${formatMessage(messages.initiativesExportFileName)}_${formatDate(
           Date.now()
-        )}`
+        )}.xlsx`
       );
       this.setState({ exporting: false });
     } catch (error) {

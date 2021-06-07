@@ -216,10 +216,14 @@ const Processing = memo<Props & InjectedIntlProps>(
       trackEventByName('Filter View', { action: 'Clicked Export Button' });
       try {
         setExporting(true);
+        const selectionParam =
+          selectedRows.length > 100
+            ? { project: selectedProjectIds[0] }
+            : { ideas: selectedRows };
         const blob = await requestBlob(
           `${API_PATH}/ideas/as_xlsx_with_tags`,
           'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-          { ideas: selectedRows }
+          selectionParam
         );
         saveAs(blob, 'inputs-export.xlsx');
 
