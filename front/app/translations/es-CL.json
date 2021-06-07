@@ -160,7 +160,7 @@
   "app.components.IdeasMap.clickOnMapToAdd": "Click on the map to add your input",
   "app.components.IdeasMap.ideaOnMapReadMore": "Leer más",
   "app.components.IdeasMap.noFilteredResults": "Los filtros que seleccionaste no arrojaron ningún resultado",
-  "app.components.IdeasMap.noResults": "No results found",
+  "app.components.IdeasMap.noResults": "No se han encontrado resultados",
   "app.components.IdeasMap.nothingOnMapWarning": "¡No hay nada que ver aquí! Puede que haya más que ver en la vista de lista.",
   "app.components.IdeasMap.or": "o",
   "app.components.IdeasMap.postingHereImpossible": "Actualmente no es posible publicar ideas aquí.",
