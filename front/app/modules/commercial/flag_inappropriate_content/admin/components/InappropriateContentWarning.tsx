@@ -4,7 +4,7 @@ import { Icon, colors } from 'cl2-component-library';
 import { isNilOrError } from 'utils/helperUtils';
 
 // services
-import { getFlagType } from '../../services/inappropriateContentFlags';
+import { getFlagType } from '../../utils';
 
 // hooks
 import useInappropriateContentFlag from '../../hooks/useInappropriateContentFlag';
