@@ -160,7 +160,7 @@
   "app.components.IdeasMap.clickOnMapToAdd": "Click on the map to add your input",
   "app.components.IdeasMap.ideaOnMapReadMore": "Læs mere",
   "app.components.IdeasMap.noFilteredResults": "De valgte filtre returnerede ingen resultater",
-  "app.components.IdeasMap.noResults": "No results found",
+  "app.components.IdeasMap.noResults": "Der er ikke fundet nogle resultater",
   "app.components.IdeasMap.nothingOnMapWarning": "Intet at vise her her! Der kan være mere at se i listevisningen.",
   "app.components.IdeasMap.or": "eller",
   "app.components.IdeasMap.postingHereImpossible": "{tenantName, select, DeloitteDK {Det er i øjeblikket ikke muligt at opslå et indlæg her.} other {Det er i øjeblikket ikke muligt at opslå en idé her.}}",
