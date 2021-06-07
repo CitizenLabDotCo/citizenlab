@@ -82,8 +82,8 @@ const InputDetails = ({
   selectedInput,
   moveUp,
   moveDown,
-  upDisabled,
-  downDisabled,
+  isMoveUpDisabled,
+  isMoveDownDisabled,
 }: InputDetailsProps) => {
   const locale = useLocale();
 
@@ -206,8 +206,8 @@ const InputDetails = ({
       <Navigation
         moveDown={moveDown}
         moveUp={moveUp}
-        upDisabled={upDisabled || isSelectFocused}
-        downDisabled={downDisabled || isSelectFocused}
+        isMoveUpDisabled={isMoveUpDisabled || isSelectFocused}
+        isMoveDownDisabled={isMoveDownDisabled || isSelectFocused}
       />
     </>
   );

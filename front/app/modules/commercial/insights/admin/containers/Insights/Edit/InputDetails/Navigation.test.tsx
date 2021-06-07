@@ -6,8 +6,8 @@ import Navigation from './Navigation';
 const defaultProps = {
   moveUp: jest.fn(),
   moveDown: jest.fn(),
-  upDisabled: false,
-  downDisabled: false,
+  isMoveUpDisabled: false,
+  isMoveDownDisabled: false,
 };
 
 describe('Insights Input Details Navigation', () => {
@@ -61,7 +61,9 @@ describe('Insights Input Details Navigation', () => {
   });
   it('does not move up when upDisabled', () => {
     const moveUp = jest.fn();
-    render(<Navigation {...defaultProps} moveUp={moveUp} upDisabled={true} />);
+    render(
+      <Navigation {...defaultProps} moveUp={moveUp} isMoveUpDisabled={true} />
+    );
     const upButton = screen
       .getByTestId('insightsInputDetailNavigation')
       .querySelector('#insightsInputDetailNavigationUp');
@@ -76,10 +78,14 @@ describe('Insights Input Details Navigation', () => {
 
     expect(moveUp).toHaveBeenCalledTimes(0);
   });
-  it('does not move down when upDisabled', () => {
+  it('does not move down when isMoveUpDisabled', () => {
     const moveDown = jest.fn();
     render(
-      <Navigation {...defaultProps} moveDown={moveDown} downDisabled={true} />
+      <Navigation
+        {...defaultProps}
+        moveDown={moveDown}
+        isMoveDownDisabled={true}
+      />
     );
     const downButton = screen
       .getByTestId('insightsInputDetailNavigation')

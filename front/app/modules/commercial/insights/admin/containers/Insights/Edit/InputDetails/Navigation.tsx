@@ -23,27 +23,27 @@ const StyledChevronButton = styled(Button)`
 export type NavigationProps = {
   moveUp: () => void;
   moveDown: () => void;
-  upDisabled: boolean;
-  downDisabled: boolean;
+  isMoveUpDisabled: boolean;
+  isMoveDownDisabled: boolean;
 };
 
 const Navigation = ({
   moveUp,
   moveDown,
-  upDisabled,
-  downDisabled,
+  isMoveUpDisabled,
+  isMoveDownDisabled,
 }: NavigationProps) => {
   const upArrow = useKeyPress('ArrowUp');
   const downArrow = useKeyPress('ArrowDown');
 
   useEffect(() => {
-    if (upArrow && !upDisabled) {
+    if (upArrow && !isMoveUpDisabled) {
       moveUp();
     }
-    if (downArrow && !downDisabled) {
+    if (downArrow && !isMoveDownDisabled) {
       moveDown();
     }
-  }, [upArrow, downArrow]);
+  }, [upArrow, downArrow, moveUp, moveDown]);
 
   return (
     <StyledNavigation data-testid="insightsInputDetailNavigation">
@@ -53,7 +53,7 @@ const Navigation = ({
         icon="chevron-up"
         buttonStyle="secondary-outlined"
         onClick={moveUp}
-        disabled={upDisabled}
+        disabled={isMoveUpDisabled}
         id="insightsInputDetailNavigationUp"
       />
       <StyledChevronButton
@@ -62,7 +62,7 @@ const Navigation = ({
         icon="chevron-down"
         buttonStyle="secondary-outlined"
         onClick={moveDown}
-        disabled={downDisabled}
+        disabled={isMoveDownDisabled}
         id="insightsInputDetailNavigationDown"
       />
     </StyledNavigation>

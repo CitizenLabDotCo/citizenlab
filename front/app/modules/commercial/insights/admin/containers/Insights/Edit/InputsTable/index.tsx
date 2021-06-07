@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { withRouter, WithRouterProps } from 'react-router';
 
 // utils
@@ -51,7 +51,6 @@ const StyledTable = styled(Table)`
 
 const InputsTable = ({
   params: { viewId },
-
   intl: { formatMessage },
 }: WithRouterProps & InjectedIntlProps) => {
   const [isSideModalOpen, setIsSideModalOpen] = useState(false);
@@ -64,6 +63,23 @@ const InputsTable = ({
 
   const inputs = useInsightsInputs(viewId);
 
+  // Use callback to keep references for moveUp and moveDown stable
+  const moveUp = useCallback(() => {
+    setSelectedInputIndex((prevSelectedIndex) => {
+      if (!isNilOrError(prevSelectedIndex)) {
+        return prevSelectedIndex - 1;
+      } else return prevSelectedIndex;
+    });
+  }, []);
+
+  const moveDown = useCallback(() => {
+    setSelectedInputIndex((prevSelectedIndex) => {
+      if (!isNilOrError(prevSelectedIndex)) {
+        return prevSelectedIndex + 1;
+      } else return prevSelectedIndex;
+    });
+  }, []);
+
   if (isNilOrError(inputs)) {
     return null;
   }
@@ -74,18 +90,6 @@ const InputsTable = ({
   const selectInput = (input: IInsightsInputData) => () => {
     setSelectedInputIndex(inputs.indexOf(input));
     openSideModal();
-  };
-
-  const moveUp = () => {
-    if (!isNilOrError(selectedInputIndex)) {
-      setSelectedInputIndex(selectedInputIndex - 1);
-    }
-  };
-
-  const moveDown = () => {
-    if (!isNilOrError(selectedInputIndex)) {
-      setSelectedInputIndex(selectedInputIndex + 1);
-    }
   };
 
   return (
@@ -126,8 +130,8 @@ const InputsTable = ({
               selectedInput={inputs[selectedInputIndex]}
               moveUp={moveUp}
               moveDown={moveDown}
-              upDisabled={selectedInputIndex === 0}
-              downDisabled={selectedInputIndex === inputs.length - 1}
+              isMoveUpDisabled={selectedInputIndex === 0}
+              isMoveDownDisabled={selectedInputIndex === inputs.length - 1}
             />
           </>
         )}

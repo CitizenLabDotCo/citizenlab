@@ -35,8 +35,8 @@ const defaultProps = {
       },
     },
   },
-  upDisabled: false,
-  downDisabled: false,
+  isMoveUpDisabled: false,
+  isMoveDownDisabled: false,
   moveUp: jest.fn(),
   moveDown: jest.fn(),
 };
