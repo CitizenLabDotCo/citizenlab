@@ -1,14 +1,14 @@
 module FlagInappropriateContent
   class ToxicityDetectionService
-    def flag_toxicity! obj, attributes: []
+    def flag_toxicity! flaggable, attributes: []
       return if !AppConfiguration.instance.feature_activated? 'flag_inappropriate_content'
       flag_service = InappropriateContentFlagService.new
 
-      texts = extract_texts obj, attributes
+      texts = extract_texts flaggable, attributes
       return if texts.blank?
       res = request_toxicity_detection texts
       if toxicity_detected? res
-        flag_service.introduce_flag! obj, toxicity_label: (extract_toxicity_label(res) || 'without_label')
+        flag_service.introduce_flag! flaggable, toxicity_label: (extract_toxicity_label(res) || 'without_label')
       elsif (flag = flaggable.inappropriate_content_flag)
         flag.update! toxicity_label: nil
         flag_service.maybe_delete! flag
@@ -31,14 +31,14 @@ module FlagInappropriateContent
 
     private
 
-    def extract_texts obj, attributes
+    def extract_texts flaggable, attributes
       texts = []
       attributes.each do |atr|
-        next if obj[atr].blank?
+        next if flaggable[atr].blank?
         values = if atr.to_s.ends_with? '_multiloc'
-          texts += obj[atr].values
+          texts += flaggable[atr].values
         else
-          texts += [obj[atr]]
+          texts += [flaggable[atr]]
         end
       end
       texts.compact! # until nil values in multilocs is fixed
