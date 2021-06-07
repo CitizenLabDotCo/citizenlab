@@ -10,7 +10,8 @@ export type SurveyServices =
   | 'typeform'
   | 'survey_monkey'
   | 'google_forms'
-  | 'enalyzer';
+  | 'enalyzer'
+  | 'qualtrics';
 
 export type ParticipationMethod =
   | 'ideation'
