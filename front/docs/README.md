@@ -1,5 +1,10 @@
 # Changelog
 
+## Next Release
+
+### Fixed
+- Visibility Labels in the admin projects list are now visible.
+
 ## 2021-05-28
 
 ### Fixed
