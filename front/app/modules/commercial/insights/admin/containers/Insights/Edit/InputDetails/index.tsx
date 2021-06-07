@@ -152,8 +152,7 @@ const InputDetails = ({
     return `${formatMessage(messages.createCategoryPrompt)} "${value}"`;
   };
 
-  // Keep track of select focus to prevent keyboard navigation from switching ideas
-  // while the select is open
+  // Keep track of select focus to prevent keyboard navigation from switching inputs while the select is open
   const onSelectFocus = () => setIsSelectFocused(true);
   const onSelectBlur = () => setIsSelectFocused(false);
 

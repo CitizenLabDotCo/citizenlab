@@ -57,7 +57,7 @@ const InputsTableRow = ({ input, onSelect }: InputsTableRowProps) => {
         <Checkbox checked={false} onChange={handleCheckboxChange} />
       </td>
       <td>
-        <T value={idea.attributes.title_multiloc} />
+        <T value={idea.attributes.title_multiloc} maxLength={30} />
       </td>
       <td>
         <CategoryList>

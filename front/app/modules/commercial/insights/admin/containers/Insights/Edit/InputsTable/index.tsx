@@ -100,8 +100,8 @@ const InputsTable = ({
         <StyledTable>
           <colgroup>
             <col span={1} style={{ width: '5%' }} />
-            <col span={1} style={{ width: '35%' }} />
-            <col span={1} style={{ width: '60%' }} />
+            <col span={1} style={{ width: '30%' }} />
+            <col span={1} style={{ width: '65%' }} />
           </colgroup>
           <thead>
             <tr>
