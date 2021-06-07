@@ -36,14 +36,18 @@ const Navigation = ({
   const upArrow = useKeyPress('ArrowUp');
   const downArrow = useKeyPress('ArrowDown');
 
+  // Keyboard navigations
   useEffect(() => {
     if (upArrow && !isMoveUpDisabled) {
       moveUp();
     }
+  }, [upArrow, moveUp, isMoveUpDisabled]);
+
+  useEffect(() => {
     if (downArrow && !isMoveDownDisabled) {
       moveDown();
     }
-  }, [upArrow, downArrow, moveUp, moveDown]);
+  }, [downArrow, moveDown, isMoveDownDisabled]);
 
   return (
     <StyledNavigation data-testid="insightsInputDetailNavigation">
