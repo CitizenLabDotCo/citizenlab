@@ -160,7 +160,7 @@
   "app.components.IdeasMap.clickOnMapToAdd": "Click on the map to add your input",
   "app.components.IdeasMap.ideaOnMapReadMore": "Les mer",
   "app.components.IdeasMap.noFilteredResults": "The filters you selected did not return any results",
-  "app.components.IdeasMap.noResults": "No results found",
+  "app.components.IdeasMap.noResults": "Ingen resultater funnet",
   "app.components.IdeasMap.nothingOnMapWarning": "Ikke noe å se her! Det kan være mer å se på listevisning.",
   "app.components.IdeasMap.or": "eller",
   "app.components.IdeasMap.postingHereImpossible": "Det er for øyeblikket ikke mulig å poste en idé her",
