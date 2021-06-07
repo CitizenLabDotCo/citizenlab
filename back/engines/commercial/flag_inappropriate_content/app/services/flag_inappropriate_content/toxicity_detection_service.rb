@@ -2,11 +2,17 @@ module FlagInappropriateContent
   class ToxicityDetectionService
     def flag_toxicity! obj, attributes: []
       return if !AppConfiguration.instance.feature_activated? 'flag_inappropriate_content'
+      flag_service = InappropriateContentFlagService.new
 
       texts = extract_texts obj, attributes
       return if texts.blank?
       res = request_toxicity_detection texts
-      create_or_update_flag_toxicity! obj, res if toxicity_detected? res
+      if toxicity_detected? res
+        flag_service.introduce_flag! obj, toxicity_label: (extract_toxicity_label(res) || 'without_label')
+      elsif (flag = flaggable.inappropriate_content_flag)
+        flag.update! toxicity_label: nil
+        flag_service.maybe_delete! flag
+      end
     end
 
     def extract_toxicity_label res
@@ -46,16 +52,6 @@ module FlagInappropriateContent
 
     def toxicity_detected? res
       res.any?{|h| h['is_inappropriate']}
-    end
-
-    def create_or_update_flag_toxicity! obj, res
-      reuse_flag = obj.inappropriate_content_flag
-      flag = reuse_flag || InappropriateContentFlag.new(flaggable: obj)
-      flag.toxicity_label = extract_toxicity_label res
-      flag.deleted_at = nil # re-introduce flag if it was marked as deleted
-      flag.save!
-      LogActivityJob.perform_later(flag, 'created', nil, flag.created_at.to_i) if !reuse_flag
-      LogActivityJob.perform_later(obj, 'flagged_for_inappropriate_content', nil, flag.created_at.to_i)
     end
   end
 end
