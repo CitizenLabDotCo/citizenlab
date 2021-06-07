@@ -13,6 +13,7 @@ resource 'Comments' do
 
   post 'web_api/v1/ideas/:idea_id/comments' do
     before do
+      SettingsService.new.activate_feature! 'moderation'
       SettingsService.new.activate_feature! 'flag_inappropriate_content'
       @idea =  create(:idea)
     end
@@ -34,6 +35,7 @@ resource 'Comments' do
 
   patch 'web_api/v1/comments/:id' do
     before do
+      SettingsService.new.activate_feature! 'moderation'
       SettingsService.new.activate_feature! 'flag_inappropriate_content'
       @initiative =  create(:initiative)
       @comment = create(:comment, author: @user, post: @initiative)

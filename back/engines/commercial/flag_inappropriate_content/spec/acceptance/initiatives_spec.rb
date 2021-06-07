@@ -26,6 +26,7 @@ resource 'Initiatives' do
     let(:body_multiloc) { initiative.body_multiloc }
 
     example 'Toxicity detection job is enqueued when creating an initiative' do
+      SettingsService.new.activate_feature! 'moderation'
       SettingsService.new.activate_feature! 'flag_inappropriate_content'
       expect {
         do_request
@@ -35,6 +36,7 @@ resource 'Initiatives' do
 
   patch 'web_api/v1/initiatives/:id' do
     before do
+      SettingsService.new.activate_feature! 'moderation'
       SettingsService.new.activate_feature! 'flag_inappropriate_content'
       @initiative = create(:initiative, author: @user)
     end

@@ -14,6 +14,7 @@ resource 'Ideas' do
   post 'web_api/v1/ideas' do
     before do
       IdeaStatus.create_defaults
+      SettingsService.new.activate_feature! 'moderation'
       SettingsService.new.activate_feature! 'flag_inappropriate_content'
       @project = create(:continuous_project)
     end
@@ -43,6 +44,7 @@ resource 'Ideas' do
 
   patch 'web_api/v1/ideas/:id' do
     before do
+      SettingsService.new.activate_feature! 'moderation'
       SettingsService.new.activate_feature! 'flag_inappropriate_content'
       @idea =  create(:idea, author: @user)
     end

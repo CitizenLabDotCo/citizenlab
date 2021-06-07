@@ -5,6 +5,7 @@ describe FlagInappropriateContent::ToxicityDetectionService do
 
   describe 'flag_toxicity!' do
     before do
+      SettingsService.new.activate_feature! 'moderation'
       SettingsService.new.activate_feature! 'flag_inappropriate_content'
       stub_request_toxicity_detection! service
     end
