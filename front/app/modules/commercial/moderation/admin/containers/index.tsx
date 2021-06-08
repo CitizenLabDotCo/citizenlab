@@ -235,9 +235,10 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
   const [selectedTypes, setSelectedTypes] = useState<TModeratableTypes[]>([]);
   const [selectedProjectIds, setSelectedProjectIds] = useState<string[]>([]);
   const [selectedTab, setSelectedTab] = useState<TTabName>('unread');
-  const [itemsWithContentFlag, setItemsWithContentFlag] = useState<
-    IInappropriateContentFlag[]
-  >([]);
+  const [
+    activeInappropriateContentFlags,
+    setActiveInappropriateContentFlags,
+  ] = useState<IInappropriateContentFlag[]>([]);
   const [tabs, setTabs] = useState<ITabItem[]>([
     {
       name: 'unread',
@@ -336,44 +337,18 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
   );
 
   const removeFlags = useCallback(async () => {
-    if (
-      selectedRowModerationIds.length > 0 &&
-      !isNilOrError(moderationItems) &&
-      !processing
-    ) {
-      const selectedModerationItems = moderationItems.filter((modItem) =>
-        selectedRowModerationIds.includes(modItem.id)
-      );
-
-      const promises = selectedModerationItems
-        .filter((moderationWithWarning) => {
-          const flagId =
-            moderationWithWarning.relationships.inappropriate_content_flag?.data
-              .id;
-          const hasFlagId = !!flagId;
-          return hasFlagId;
-        })
-        .map((moderationWithWarning) => {
-          // We can be sure here that the flagId is a string because we filtered out
-          // the moderations without one
-          const flagId = moderationWithWarning.relationships
-            .inappropriate_content_flag?.data.id as string;
-
-          // Moderation items having a content flag relationship doesn't mean
-          // the flag is currently on (see the inappropriateContentFlags.ts service for more info).
-          // I think, however, in this case having the relationship is a decent proxy
-          // and the code is simpler than somehow fetching the flags of all selected items,
-          // then checking whether their flag is really turned on
-          // by checking the reason_code and toxicity_label, and only then removing the flag.
-          return removeInappropriateContentFlag(flagId);
-        });
+    if (activeInappropriateContentFlags.length > 0 && !processing) {
+      const promises = activeInappropriateContentFlags.map((flag) => {
+        const flagId = flag.data.id;
+        return removeInappropriateContentFlag(flagId);
+      });
 
       setProcessing(true);
       await Promise.all(promises);
       setProcessing(false);
       setSelectedRowModerationIds([]);
     }
-  }, [selectedRowModerationIds, moderationItems, processing]);
+  }, [activeInappropriateContentFlags, processing]);
 
   const markAs = useCallback(
     async (event: React.FormEvent) => {
@@ -445,7 +420,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
           (flag) => flag.data.attributes.reason_code !== null
         );
 
-        setItemsWithContentFlag(enabledFlags);
+        setActiveInappropriateContentFlags(enabledFlags);
       }
     })();
   }, [moderationItems, selectedRowModerationIds]);
@@ -509,7 +484,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
               <Outlet
                 id="app.modules.commercial.moderation.admin.containers.actionbar.buttons"
                 selectedModerationItemsWithContentWarningLength={
-                  itemsWithContentFlag.length
+                  activeInappropriateContentFlags.length
                 }
                 processing={processing}
                 onClick={removeFlags}
