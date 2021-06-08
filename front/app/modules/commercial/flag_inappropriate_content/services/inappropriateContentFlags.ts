@@ -5,6 +5,7 @@ import { IRelationship } from 'typings';
 type TReasonCode = 'inappropriate' | 'wrong' | 'other';
 
 export interface IInappropriateContentFlagData {
+  id: string;
   attributes: {
     // We want to keep the flag alive to potentially re-add it.
     // Therefore, to mark a "removed" flag in the front-end,
