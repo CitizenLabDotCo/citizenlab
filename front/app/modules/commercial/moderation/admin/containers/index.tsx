@@ -29,6 +29,7 @@ import {
 import {
   removeInappropriateContentFlag,
   inappropriateContentFlagByIdStream,
+  IInappropriateContentFlag,
 } from 'modules/commercial/flag_inappropriate_content/services/inappropriateContentFlags';
 
 // i18n
@@ -234,6 +235,9 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
   const [selectedTypes, setSelectedTypes] = useState<TModeratableTypes[]>([]);
   const [selectedProjectIds, setSelectedProjectIds] = useState<string[]>([]);
   const [selectedTab, setSelectedTab] = useState<TTabName>('unread');
+  const [itemsWithContentFlag, setItemsWithContentFlag] = useState<
+    IInappropriateContentFlag[]
+  >([]);
   const [tabs, setTabs] = useState<ITabItem[]>([
     {
       name: 'unread',
@@ -422,22 +426,29 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
     }
   }, [list, processing]);
 
-  const selectedModerationItemsWithContentWarning = async () => {
-    if (!isNilOrError(moderationItems)) {
-      const promises = moderationItems
-        .filter(
-          (moderationItem) =>
-            moderationItem.relationships.inappropriate_content_flag?.data.id
-        )
-        .map((moderationItemWithFlag) =>
-          inappropriateContentFlagByIdStream(moderationItemWithFlag.id)
+  useEffect(() => {
+    (async () => {
+      if (!isNilOrError(moderationItems)) {
+        const promises = moderationItems
+          .filter(
+            (moderationItem) =>
+              selectedRowModerationIds.includes(moderationItem.id) &&
+              moderationItem.relationships.inappropriate_content_flag?.data.id
+          )
+          .map((moderationItemWithFlag) =>
+            inappropriateContentFlagByIdStream(
+              moderationItemWithFlag.id
+            ).fetch()
+          ) as Promise<IInappropriateContentFlag>[];
+        const flags = await Promise.all(promises);
+        const enabledFlags = flags.filter(
+          (flag) => flag.data.attributes.reason_code !== null
         );
 
-      const flags = await Promise.all(promises);
-    }
-
-    return null;
-  };
+        setItemsWithContentFlag(enabledFlags);
+      }
+    })();
+  }, [moderationItems, selectedRowModerationIds]);
 
   if (!isNilOrError(moderationItems)) {
     return (
@@ -498,7 +509,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
               <Outlet
                 id="app.modules.commercial.moderation.admin.containers.actionbar.buttons"
                 selectedModerationItemsWithContentWarningLength={
-                  selectedModerationItemsWithContentWarning?.length || 0
+                  itemsWithContentFlag.length
                 }
                 processing={processing}
                 onClick={removeFlags}
