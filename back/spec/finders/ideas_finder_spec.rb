@@ -87,7 +87,7 @@ describe IdeasFinder do
     describe '#sort_scopes (-trending)' do
       let(:sort) { '-trending' }
       let(:expected_record_ids) do
-        TrendingIdeaService.new.sort_trending(Idea.includes(:idea_trending_info).all).reverse.map(&:id)
+        TrendingIdeaService.new.sort_trending(Idea.includes(:idea_trending_info).all).map(&:id).reverse
       end
 
       it 'is successful' do
@@ -290,7 +290,7 @@ describe IdeasFinder do
     end
 
     it 'returns the correct records' do
-      expect(result_record_ids).to eq expected_record_ids
+      expect(result_record_ids).to match_array expected_record_ids
     end
   end
 
@@ -307,7 +307,7 @@ describe IdeasFinder do
     end
 
     it 'returns the correct records' do
-      expect(result_record_ids).to eq expected_record_ids
+      expect(result_record_ids).to match_array expected_record_ids
     end
   end
 
@@ -326,7 +326,7 @@ describe IdeasFinder do
     end
 
     it 'returns the correct records' do
-      expect(result_record_ids).to eq expected_record_ids
+      expect(result_record_ids).to match_array expected_record_ids
     end
   end
 
@@ -345,7 +345,7 @@ describe IdeasFinder do
     end
 
     it 'returns the correct records' do
-      expect(result_record_ids).to eq expected_record_ids
+      expect(result_record_ids).to match_array expected_record_ids
     end
   end
 
@@ -362,7 +362,7 @@ describe IdeasFinder do
     end
 
     it 'returns the correct records' do
-      expect(result_record_ids).to eq expected_record_ids
+      expect(result_record_ids).to match_array expected_record_ids
     end
   end
 
@@ -379,7 +379,7 @@ describe IdeasFinder do
     end
 
     it 'returns the correct records' do
-      expect(result_record_ids).to eq expected_record_ids
+      expect(result_record_ids).to match_array expected_record_ids
     end
   end
 
@@ -400,7 +400,7 @@ describe IdeasFinder do
     end
 
     it 'returns the correct records' do
-      expect(result_record_ids).to eq expected_record_ids
+      expect(result_record_ids).to match_array expected_record_ids
     end
   end
 
@@ -416,7 +416,7 @@ describe IdeasFinder do
     end
 
     it 'returns the correct records' do
-      expect(result_record_ids).to eq expected_record_ids
+      expect(result_record_ids).to match_array expected_record_ids
     end
   end
 
@@ -433,7 +433,7 @@ describe IdeasFinder do
     end
 
     it 'returns the correct records' do
-      expect(result_record_ids).to eq expected_record_ids
+      expect(result_record_ids).to match_array expected_record_ids
     end
   end
 
@@ -450,7 +450,7 @@ describe IdeasFinder do
     end
 
     it 'returns the correct records' do
-      expect(result_record_ids).to eq expected_record_ids
+      expect(result_record_ids).to match_array expected_record_ids
     end
   end
 
@@ -466,7 +466,7 @@ describe IdeasFinder do
     end
 
     it 'returns the correct records' do
-      expect(result_record_ids).to eq expected_record_ids
+      expect(result_record_ids).to match_array expected_record_ids
     end
   end
 
@@ -483,7 +483,7 @@ describe IdeasFinder do
     end
 
     it 'returns the correct records' do
-      expect(result_record_ids).to eq expected_record_ids
+      expect(result_record_ids).to match_array expected_record_ids
     end
   end
 
@@ -500,7 +500,7 @@ describe IdeasFinder do
     end
 
     it 'returns the correct records' do
-      expect(result_record_ids).to eq expected_record_ids
+      expect(result_record_ids).to match_array expected_record_ids
     end
   end
 end
