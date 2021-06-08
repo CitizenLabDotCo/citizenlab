@@ -190,6 +190,14 @@ if ['public','example_org'].include? Apartment::Tenant.current
         enabled: false,
         allowed: false
       },
+      project_reports: {
+        enabled: true,
+        allowed: true
+      },
+      blocking_profanity: {
+        enabled: true,
+        allowed: true
+      },
       user_custom_fields: {
         enabled: true,
         allowed: true
@@ -296,11 +304,19 @@ if ['public','example_org'].include? Apartment::Tenant.current
         enabled: true,
         allowed: true
       },
+      survey_xact_surveys: {
+        enabled: true,
+        allowed: true
+      },
       surveymonkey_surveys: {
         enabled: true,
         allowed: true
       },
       enalyzer_surveys: {
+        enabled: true,
+        allowed: true
+      },
+      qualtrics_surveys: {
         enabled: true,
         allowed: true
       },
@@ -339,6 +355,10 @@ if ['public','example_org'].include? Apartment::Tenant.current
         enabled: true,
         allowed: true
       },
+      insights_manual_flow: {
+        enabled: false,
+        allowed: false
+      },
       verification: {
         enabled: true,
         allowed: true,
@@ -376,6 +396,13 @@ if ['public','example_org'].include? Apartment::Tenant.current
           {
             name: 'franceconnect'
           },
+          {
+            name: 'auth0',
+            client_id: 'fake_client_id',
+            client_secret: 'fake_client_secret',
+            domain: 'fake_domain',
+            method_name_multiloc: {en: 'Verify with Auth0'}
+          },
         ],
       },
       volunteering: {
@@ -390,6 +417,14 @@ if ['public','example_org'].include? Apartment::Tenant.current
         enabled: true,
         allowed: true
       },
+      project_management: {
+        enabled: true,
+        allowed: true
+      },
+      project_visibility: {
+        enabled: true,
+        allowed: true
+      }
     }
   })
 

@@ -163,6 +163,7 @@ jobs:
           docker login -u $DOCKER_USER -p $DOCKER_PASS
           docker push citizenlabdotco/back-ee:<< pipeline.parameters.citizenlab_sha >>-$CIRCLE_SHA1
       - final_citizenlab_github_status
+  
   back-test:
     resource_class: small
     executor:
@@ -214,7 +215,6 @@ jobs:
       name: cl2-back
       image-tag: << pipeline.parameters.citizenlab_sha >>-$CIRCLE_SHA1
     working_directory: /cl2_back
-    parallelism: 4
     environment:
       RAILS_ENV: test
       CITIZENLAB_EE: true
@@ -233,7 +233,7 @@ jobs:
           root: workspace
           paths:
             - failed-templates.txt
-  
+
   back-release-tenant-templates:
     resource_class: small
     executor:
@@ -247,14 +247,38 @@ jobs:
           at: /tmp/workspace
       - run: rake templates:release['/tmp/workspace/failed-templates.txt']
 
+  back-web-api-docs:
+    resource_class: small
+    executor:
+      name: cl2-back
+      image-tag: << pipeline.parameters.citizenlab_sha >>-$CIRCLE_SHA1
+    working_directory: /cl2_back
+    environment:
+      RAILS_ENV: test
+      CITIZENLAB_EE: true
+    steps:
+      - wait-for-postgres
+      - run: |
+          rake db:create
+          rake db:schema:load
+      - run: bundle exec rake web_api:docs:generate
+      - run: bundle exec rake public_api:docs:generate
+      - run: bundle exec rake admin_api:docs:generate
+      - run: apt-get -y install awscli
+      - run: aws s3 sync doc/api s3://developers.citizenlab.co/api-docs/ee/frontweb_api/<< pipeline.parameters.citizenlab_branch >> --delete --acl public-read
+      - run: aws s3 sync doc/public_api s3://developers.citizenlab.co/api-docs/ee/public_api/<< pipeline.parameters.citizenlab_branch >> --delete --acl public-read
+      - run: aws s3 sync doc/admin_api s3://developers.citizenlab.co/api-docs/ee/admin_api/<< pipeline.parameters.citizenlab_branch >> --delete --acl public-read
+
   back-trigger-deploy:
     resource_class: small
     docker:
-      - image: byrnedo/alpine-curl
+      - image: cimg/base:2021.03
     steps:
       - when:
           condition:
-            equal: [<< pipeline.parameters.citizenlab_branch >>, master]
+            or:
+              - equal: [<< pipeline.parameters.citizenlab_branch >>, master]
+              - equal: [<< pipeline.parameters.citizenlab_branch >>, production]
           steps:
             - run: |
                 curl --request POST \
@@ -370,11 +394,13 @@ jobs:
   front-trigger-deploy:
     resource_class: small
     docker:
-      - image: byrnedo/alpine-curl
+      - image: cimg/base:2021.03
     steps:
       - when:
           condition:
-            equal: [<< pipeline.parameters.citizenlab_branch >>, master]
+            or:
+              - equal: [<< pipeline.parameters.citizenlab_branch >>, master]
+              - equal: [<< pipeline.parameters.citizenlab_branch >>, production]
           steps:
             - run: |
                 curl --request POST \
@@ -382,7 +408,7 @@ jobs:
                   --url https://circleci.com/api/v2/project/github/CitizenLabDotCo/citizenlab-ee/pipeline \
                   --header 'content-type: application/json' \
                   --header 'x-attribution-login: '"$CIRCLE_USERNAME" \
-                  --data '{"branch": "'"$CIRCLE_BRANCH"'","parameters": {"citizenlab_branch": "<< pipeline.parameters.citizenlab_branch >>, "run_deploy": true, "front": true}}'
+                  --data '{"branch": "'"$CIRCLE_BRANCH"'","parameters": {"citizenlab_branch": "<< pipeline.parameters.citizenlab_branch >>", "run_deploy": true, "front": true}}'
       - echo_pipeline_parameters
 
   front-deploy-staging:
@@ -410,8 +436,40 @@ jobs:
       - deploy:
           name: Deploy to S3 if tests pass and branch is Master
           command: |
-            cd citizenlab/front && aws s3 sync build/ s3://cl2-front-staging/ --acl public-read --exclude "index.html"
-            cd citizenlab/front && aws s3 cp build/index.html s3://cl2-front-staging/index.html --acl public-read --cache-control no-cache
+            cd ~/citizenlab/front
+            aws s3 sync build/ s3://cl2-front-staging/ --acl public-read --exclude "index.html"
+            aws s3 cp build/index.html s3://cl2-front-staging/index.html --acl public-read --cache-control no-cache
+
+  front-deploy-production:
+    docker:
+      - image: citizenlabdotco/cl2-devops-front-buildenv
+    resource_class: medium+
+    working_directory: ~/
+    steps:
+      - clone_citizenlab_and_enable_ee
+      - restore_cache:
+          keys:
+          - v1-npm-cache-{{ checksum "citizenlab/front/package.json" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-npm-cache-
+      - run: cd citizenlab/front && npm ci
+      - save_cache:
+          paths:
+            - /root/.npm
+          key: v1-npm-cache-{{ checksum "citizenlab/front/package.json" }}
+      - run:
+          command: cd citizenlab/front && SEGMENT_API_KEY=$SEGMENT_API_KEY_PRODUCTION SENTRY_DSN=$SENTRY_DSN_PRODUCTION npm run build:staging
+          no_output_timeout: '30m'
+      - run:
+          command: cd citizenlab/front && rm build/*.map
+      - deploy :
+          name: Deploy production version
+          command: |
+            aws s3 sync build/ s3://cl2-front-production-benelux/ --acl public-read --exclude "index.html"
+            aws s3 cp build/index.html s3://cl2-front-production-benelux/index.html --acl public-read --cache-control no-cache
+      - deploy:
+          name: Invalidate the static assets on the CDN
+          command: aws cloudfront create-invalidation --distribution-id E2MY732QC516J3 --paths '/*'
 
   front-reset-ci-tenant:
     docker:
@@ -453,6 +511,10 @@ workflows:
           context: docker-hub-access
           requires:
             - back-build-ee-docker-image
+      - back-web-api-docs:
+          context: docker-hub-access
+          requires:
+            - back-test
       - back-slow-tests:
           context: docker-hub-access
           requires:
@@ -497,7 +559,60 @@ workflows:
           compose_file: docker-compose-staging.yml
           stack_name: cl2-back-stg
           env_file: ".env-staging"
-
+      - back-deploy-to-swarm:
+          requires:
+            - back-push-deployment-docker-image
+          filters:
+            branches:
+              only:
+                - production
+          ssh_host: "52.57.74.84"
+          compose_file: docker-compose-production-benelux.yml
+          stack_name: cl2-prd-bnlx-stack
+          env_file: ".env-production-benelux"
+      - back-deploy-to-swarm:
+          requires:
+            - back-push-deployment-docker-image
+          filters:
+            branches:
+              only:
+                - production
+          ssh_host: "35.183.23.116"
+          compose_file: docker-compose-production-canada.yml
+          env_file: ".env-production-canada"
+      - back-deploy-to-swarm:
+          requires:
+            - back-push-deployment-docker-image
+          filters:
+            branches:
+              only:
+                - production
+          ssh_host: "52.67.181.38"
+          compose_file: docker-compose-production.yml
+          env_file: ".env-web"
+          stack_name: "cl2"
+      - back-deploy-to-swarm:
+          requires:
+            - back-push-deployment-docker-image
+          filters:
+            branches:
+              only:
+                - production
+          ssh_host: "52.13.59.174"
+          compose_file: docker-compose-production.yml
+          env_file: ".env-web"
+          stack_name: "cl2"
+      - back-deploy-to-swarm:
+          requires:
+            - back-push-deployment-docker-image
+          filters:
+            branches:
+              only:
+                - production
+          ssh_host: "35.179.69.215"
+          compose_file: docker-compose-production.yml
+          env_file: ".env-web"
+          stack_name: "cl2"
   front:
     when:
       and:
@@ -525,6 +640,10 @@ workflows:
             branches:
               only:
                 - master
+      - front-deploy-production:
+          filters:
+            branches:
+              only:
                 - production
       - front-reset-ci-tenant:
           filters:
@@ -535,7 +654,13 @@ workflows:
           requires:
             - front-deploy-staging
             - front-reset-ci-tenant
-          cache-key: v1-npm-cache-{{ checksum "citizenlab/front/package.json" }}
+          post-checkout:
+            - add_ssh_keys:
+                fingerprints: ["94:9a:7c:8d:50:73:cc:28:06:47:d7:98:91:0b:00:ff"]
+            - run: git clone git@github.com:CitizenLabDotCo/citizenlab --depth 5 --branch master ~/citizenlab
+            - run: sh scripts/enable_ee.sh
+          working_directory: ~/citizenlab/front
+          cache-key: v1-npm-cache-{{ checksum "~/citizenlab/front/package.json" }}
           command: npx cypress run --spec 'cypress/integration/*.ts' --config baseUrl=https://e2e.stg.citizenlab.co
           store_artifacts: true
           filters:

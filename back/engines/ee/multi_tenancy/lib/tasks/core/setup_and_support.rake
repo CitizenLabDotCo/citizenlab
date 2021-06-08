@@ -109,7 +109,7 @@ namespace :setup_and_support do
     'email_campaigns/campaigns' => campaigns
     }}
     Apartment::Tenant.switch(args[:to_host].gsub '.', '_') do
-      TenantTemplateService.new.apply_template template
+      ::MultiTenancy::TenantTemplateService.new.apply_template template
     end
   end
 
@@ -258,6 +258,26 @@ namespace :setup_and_support do
         group.add_member u
       end
       group.save!
+    end
+  end
+
+  desc "Add areas"
+  task :add_areas, [:host,:url] => [:environment] do |t, args|
+    data = CSV.parse(open(args[:url]).read, { headers: true, col_sep: ',', converters: [] })
+    Apartment::Tenant.switch(args[:host].gsub '.', '_') do
+      data.each do |d|
+        Area.create!(title_multiloc: d.to_h)
+      end
+    end
+  end
+
+  desc "Delete users and votes"
+  task :delete_users_votes, [:host,:url] => [:environment] do |t, args|
+    emails = open(args[:url]).readlines.map(&:strip)
+    Apartment::Tenant.switch(args[:host].gsub '.', '_') do
+      users = User.where email: emails
+      votes = Vote.where(user: users).destroy_all
+      users.destroy_all
     end
   end
 

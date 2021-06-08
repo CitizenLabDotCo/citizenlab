@@ -70,6 +70,10 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
+        blocking_profanity: {
+          enabled: true,
+          allowed: true
+        },
         widgets: {
           enabled: true,
           allowed: true
@@ -146,7 +150,15 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
+        survey_xact_surveys: {
+          enabled: true,
+          allowed: true
+        },
         enalyzer_surveys: {
+          enabled: true,
+          allowed: true
+        },
+        qualtrics_surveys: {
           enabled: true,
           allowed: true
         },
@@ -180,6 +192,10 @@ namespace :cl2_back do
               "image_url": "http://upthehillandthroughthewoods.files.wordpress.com/2012/12/1____image.jpg",
             }
           ]
+        },
+        insights_manual_flow: {
+          enabled: false,
+          allowed: false
         },
         polls: {
           enabled: true,
@@ -226,6 +242,13 @@ namespace :cl2_back do
             {
               name: 'franceconnect'
             },
+            {
+              name: 'auth0',
+              client_id: 'fake_client_id',
+              client_secret: 'fake_client_secret',
+              domain: 'fake_domain',
+              method_name_multiloc: {en: 'Verify with Auth0'}
+            },
           ]
         },
         project_folders: {
@@ -244,14 +267,14 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
-        # project_management: {
-        #   enabled: true,
-        #   allowed: true
-        # },
-        # project_visibility: {
-        #   enabled: true,
-        #   allowed: true
-        # },
+        project_management: {
+          enabled: true,
+          allowed: true
+        },
+        project_visibility: {
+          enabled: true,
+          allowed: true
+        }
       }
     })
 
