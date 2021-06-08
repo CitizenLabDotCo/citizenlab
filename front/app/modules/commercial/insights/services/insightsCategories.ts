@@ -23,7 +23,7 @@ export interface IInsightsCategories {
   data: IInsightsCategoryData[];
 }
 
-const getInsightsCategoriesEndpoint = (viewId) =>
+const getInsightsCategoriesEndpoint = (viewId: string) =>
   `insights/views/${viewId}/categories/`;
 
 export function insightsCategoriesStream(

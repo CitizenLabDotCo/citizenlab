@@ -22,7 +22,7 @@ const useInsightsViews = (
     });
 
     return () => subscription.unsubscribe();
-  });
+  }, [viewId]);
 
   return insightsViews;
 };
