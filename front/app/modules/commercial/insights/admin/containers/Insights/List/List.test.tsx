@@ -1,10 +1,10 @@
 import React from 'react';
 import { render, screen, fireEvent } from 'utils/testUtils/rtl';
-import * as service from 'modules/commercial/insights//services/insightsViews';
+import * as service from 'modules/commercial/insights/services/insightsViews';
 
 import InsightsList from './';
 
-jest.mock('modules/commercial/insights//services/insightsViews', () => ({
+jest.mock('modules/commercial/insights/services/insightsViews', () => ({
   deleteInsightsView: jest.fn(),
 }));
 

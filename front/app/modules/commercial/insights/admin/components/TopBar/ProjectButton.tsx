@@ -41,18 +41,20 @@ const ProjectButton = ({ projectId }: ProjectButtonProps) => {
   }
 
   return (
-    <Button
-      locale={locale}
-      buttonStyle="secondary-outlined"
-      linkTo={`/projects/${project.attributes.slug}`}
-      fontSize={`${fontSizes.small}px`}
-      padding="4px 6px"
-    >
-      <ProjectButtonContent>
-        <T value={project.attributes.title_multiloc} />
-        <Icon name="link" className="linkIcon" />
-      </ProjectButtonContent>
-    </Button>
+    <div data-testid="insightsProjectButton">
+      <Button
+        locale={locale}
+        buttonStyle="secondary-outlined"
+        linkTo={`/projects/${project.attributes.slug}`}
+        fontSize={`${fontSizes.small}px`}
+        padding="4px 6px"
+      >
+        <ProjectButtonContent>
+          <T value={project.attributes.title_multiloc} />
+          <Icon name="link" className="linkIcon" />
+        </ProjectButtonContent>
+      </Button>
+    </div>
   );
 };
 

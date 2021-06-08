@@ -3,16 +3,27 @@
 module Insights
   module WebApi::V1
     class InputsController < ::ApplicationController
+      skip_after_action :verify_policy_scoped, only: :index # The view is authorized instead.
 
       def show
         render json: serialize(input), status: :ok
       end
 
       def index
+        # index is not policy scoped, instead the view is authorized.
+        inputs = Insights::InputsFinder.new(view, index_params).execute
         render json: serialize(inputs)
       end
 
       private
+
+      def index_params
+        @index_params ||= params.permit(
+          :search,
+          :category,
+          page: %i[number size]
+        )
+      end
 
       def assignment_service
         @assignment_service ||= Insights::CategoryAssignmentsService.new
@@ -26,12 +37,10 @@ module Insights
         )
       end
 
-      def inputs
-        @inputs ||= policy_scope(view.scope.ideas)
-      end
-
       def input
-        @input ||= inputs.find(params.require(:id))
+        @input ||= authorize(
+          view.scope.ideas.find(params.require(:id))
+        )
       end
 
       def serialize(inputs)

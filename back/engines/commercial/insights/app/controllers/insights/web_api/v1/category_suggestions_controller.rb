@@ -6,7 +6,6 @@ module Insights
       skip_after_action :verify_policy_scoped, only: :index # The view is authorized instead.
 
       def index
-        require 'pry' ; binding.pry
         render json: serialize_suggestions(input), status: :ok
       end
 

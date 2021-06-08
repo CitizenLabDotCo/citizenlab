@@ -16,13 +16,13 @@ describe('Tag', () => {
     expect(screen.getByTestId('insightsTag')).toBeInTheDocument();
     expect(screen.getByText(defaultTagProps.label)).toBeInTheDocument();
   });
-  it('should correct icon when approved', () => {
+  it('should render correct icon when approved', () => {
     const { container } = render(<Tag {...defaultTagProps} />);
     expect(
       container.querySelector('.insightsTagCloseIcon')
     ).toBeInTheDocument();
   });
-  it('should correct icon when suggested', () => {
+  it('should render correct icon when suggested', () => {
     const { container } = render(
       <Tag {...defaultTagProps} status="suggested" />
     );
