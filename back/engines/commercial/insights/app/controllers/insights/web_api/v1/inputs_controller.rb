@@ -12,7 +12,7 @@ module Insights
       def index
         # index is not policy scoped, instead the view is authorized.
         inputs = Insights::InputsFinder.new(view, index_params).execute
-        render json: serialize(inputs)
+        render json: linked_json(inputs, InputSerializer, params: fastjson_params, include: [:source])
       end
 
       private
