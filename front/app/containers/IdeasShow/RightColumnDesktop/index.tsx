@@ -5,7 +5,7 @@ import { IParticipationContextType } from 'typings';
 import MetaInformation from '../MetaInformation';
 import Voting from 'containers/IdeasShow/CTABox/VotingCTABox/Voting';
 import Buttons from 'containers/IdeasShow/CTABox/Buttons';
-import AssignBudgetWrapper from 'containers/IdeasShow/CTABox/ParticipatoryBudgetingCTABox/BudgetAssignment/AssignBudgetWrapper';
+import AssignBudgetControl from 'components/AssignBudgetControl';
 
 // styling
 import styled from 'styled-components';
@@ -38,7 +38,7 @@ const StyledVoting = styled(Voting)`
   border-bottom: solid 1px #ccc;
 `;
 
-const StyledAssignBudgetWrapper = styled(AssignBudgetWrapper)`
+const StyledAssignBudgetControl = styled(AssignBudgetControl)`
   padding-bottom: 23px;
   margin-bottom: 23px;
   border-bottom: solid 1px #ccc;
@@ -57,7 +57,6 @@ interface Props {
   showBudgetControl: boolean | null;
   participationContextId: string | null;
   participationContextType: IParticipationContextType | null;
-  budgetingDescriptor: any | null;
   insideModal: boolean;
   className?: string;
 }
@@ -71,7 +70,6 @@ const RightColumnDesktop = ({
   showBudgetControl,
   participationContextId,
   participationContextType,
-  budgetingDescriptor,
   insideModal,
   className,
 }: Props) => {
@@ -85,14 +83,13 @@ const RightColumnDesktop = ({
 
           {showBudgetControl &&
             participationContextId &&
-            participationContextType &&
-            budgetingDescriptor && (
-              <StyledAssignBudgetWrapper
+            participationContextType && (
+              <StyledAssignBudgetControl
+                view="ideaPage"
                 ideaId={ideaId}
                 projectId={projectId}
                 participationContextId={participationContextId}
                 participationContextType={participationContextType}
-                budgetingDescriptor={budgetingDescriptor}
               />
             )}
 

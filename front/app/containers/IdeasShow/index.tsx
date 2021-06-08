@@ -25,7 +25,7 @@ import Body from 'components/PostShowComponents/Body';
 import Image from 'components/PostShowComponents/Image';
 import OfficialFeedback from 'components/PostShowComponents/OfficialFeedback';
 import Modal from 'components/UI/Modal';
-import AssignBudgetWrapper from './CTABox/ParticipatoryBudgetingCTABox/BudgetAssignment/AssignBudgetWrapper';
+import AssignBudgetControl from 'components/AssignBudgetControl';
 import SharingModalContent from 'components/PostShowComponents/SharingModalContent';
 import FeatureFlag from 'components/FeatureFlag';
 import IdeaMoreActions from './IdeaMoreActions';
@@ -236,7 +236,6 @@ interface Props extends DataProps, InputProps {}
 interface IActionInfos {
   participationContextType: IParticipationContextType | null;
   participationContextId: string | null;
-  budgetingDescriptor: any | null;
   showBudgetControl: boolean | null;
   showVoteControl: boolean | null;
 }
@@ -354,8 +353,6 @@ export class IdeasShow extends PureComponent<
           shouldSignIn ||
           verifiedButNotPermitted)
       );
-      const budgetingDescriptor =
-        idea?.attributes?.action_descriptor?.budgeting || null;
       let participationContextType: IParticipationContextType | null = null;
       let participationContextId: string | null = null;
 
@@ -376,7 +373,6 @@ export class IdeasShow extends PureComponent<
         actionInfos: {
           participationContextType,
           participationContextId,
-          budgetingDescriptor,
           showBudgetControl,
           showVoteControl,
         },
@@ -471,7 +467,6 @@ export class IdeasShow extends PureComponent<
         actionInfos?.participationContextType || null;
       const participationContextId =
         actionInfos?.participationContextId || null;
-      const budgetingDescriptor = actionInfos?.budgetingDescriptor || null;
       const showBudgetControl = actionInfos?.showBudgetControl || null;
       const showVoteControl = actionInfos?.showVoteControl || null;
       const isCompactView =
@@ -553,15 +548,14 @@ export class IdeasShow extends PureComponent<
               {showBudgetControl &&
                 participationContextId &&
                 participationContextType &&
-                budgetingDescriptor &&
                 isCompactView && (
                   <AssignBudgetControlMobile>
-                    <AssignBudgetWrapper
+                    <AssignBudgetControl
+                      view="ideaPage"
                       ideaId={ideaId}
                       projectId={projectId}
                       participationContextId={participationContextId}
                       participationContextType={participationContextType}
-                      budgetingDescriptor={budgetingDescriptor}
                     />
                   </AssignBudgetControlMobile>
                 )}
@@ -606,7 +600,6 @@ export class IdeasShow extends PureComponent<
                 showBudgetControl={showBudgetControl}
                 participationContextId={participationContextId}
                 participationContextType={participationContextType}
-                budgetingDescriptor={budgetingDescriptor}
                 insideModal={insideModal}
               />
             )}

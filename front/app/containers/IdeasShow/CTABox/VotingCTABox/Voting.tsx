@@ -71,7 +71,7 @@ class VoteWrapper extends PureComponent<Props, State> {
     if (!ideaId || !votingDescriptor) return null;
 
     return (
-      <Container className={className}>
+      <Container className={className || ''}>
         {!error && (
           <VoteControl
             style="shadow"

@@ -11,8 +11,6 @@ import { IParticipationContextType } from 'typings';
 
 // components
 import Button from 'components/UI/Button';
-import Tippy from '@tippyjs/react';
-import AssignBudgetDisabled from 'components/AssignBudgetControl/AssignBudgetDisabled';
 
 // services
 import { addBasket, updateBasket } from 'services/baskets';
@@ -35,8 +33,6 @@ import tracks from 'containers/ProjectsShowPage/shared/pb/tracks';
 // utils
 import streams from 'utils/streams';
 import { pastPresentOrFuture } from 'utils/dateUtils';
-import clHistory from 'utils/cl-router/history';
-import { openSignUpInModal } from 'components/SignUpIn/events';
 
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
@@ -71,7 +67,6 @@ const BudgetWithButtonWrapper = styled.div`
   flex-direction: column;
   align-items: stretch;
   justify-content: center;
-  margin-bottom: 25px;
 `;
 
 const Budget = styled.div`
@@ -88,28 +83,17 @@ const Budget = styled.div`
   ${defaultCardStyle};
 `;
 
-const ButtonWrapper = styled.div``;
-
-const TooltipContent = styled.div`
-  display: flex;
-  align-items: center;
-  padding: 15px;
-`;
-
-const IdeaCardButton = styled(Button)``;
-
 const StyledPBExpenses = styled(PBExpenses)`
+  margin-top: 25px;
   padding: 20px;
 `;
 
 interface InputProps {
   view: 'ideaCard' | 'ideaPage';
+  projectId: string;
   ideaId: string;
   participationContextId: string;
   participationContextType: IParticipationContextType;
-  openIdea?: (event: FormEvent<any>) => void;
-  disabledAssignBudgetClick?: () => void;
-  projectId: string;
   className?: string;
 }
 
@@ -184,37 +168,15 @@ class AssignBudgetControl extends PureComponent<
         basket,
         participationContextId,
         participationContextType,
-        disabledAssignBudgetClick,
       } = this.props;
       const budgetingEnabled =
         idea.attributes.action_descriptor.budgeting?.enabled;
-      const budgetingDisabledReason =
-        idea.attributes.action_descriptor.budgeting?.disabled_reason;
       const basketIdeaIds = !isNilOrError(basket)
         ? basket.relationships.ideas.data.map((idea) => idea.id)
         : [];
       const isInBasket = includes(basketIdeaIds, ideaId);
 
-      if (
-        isNilOrError(authUser) &&
-        (budgetingDisabledReason === 'not_signed_in' ||
-          budgetingDisabledReason === 'not_verified')
-      ) {
-        openSignUpInModal({
-          verification: budgetingDisabledReason === 'not_verified',
-          verificationContext:
-            budgetingDisabledReason === 'not_verified'
-              ? {
-                  action: 'budgeting',
-                  id: participationContextId,
-                  type: participationContextType,
-                }
-              : undefined,
-          action: () => this.assignBudget(),
-        });
-      } else if (!budgetingEnabled && disabledAssignBudgetClick) {
-        disabledAssignBudgetClick();
-      } else if (!isNilOrError(authUser) && budgetingEnabled) {
+      if (!isNilOrError(authUser) && budgetingEnabled) {
         this.setState({ processing: true });
 
         if (!isNilOrError(basket)) {
@@ -273,21 +235,6 @@ class AssignBudgetControl extends PureComponent<
     }
   };
 
-  onCardClick = (event: FormEvent<any>) => {
-    this.props.openIdea && this.props.openIdea(event);
-  };
-
-  goBack = () => {
-    const { project, participationContextType } = this.props;
-    if (!isNilOrError(project)) {
-      clHistory.push(
-        `/projects/${project.attributes.slug}/${
-          participationContextType === 'project' ? 'ideas' : 'process'
-        }`
-      );
-    }
-  };
-
   render() {
     const { processing } = this.state;
     const {
@@ -312,71 +259,60 @@ class AssignBudgetControl extends PureComponent<
       !isUndefined(basket) &&
       idea.attributes.budget
     ) {
+      const containerClassNames = `e2e-assign-budget ${className}`;
       const basketIdeaIds = !isNilOrError(basket)
         ? basket.relationships.ideas.data.map((idea) => idea.id)
         : [];
       const isInBasket = includes(basketIdeaIds, ideaId);
-      const fullClassName = `e2e-assign-budget ${className}`;
-      const budgetingEnabled =
+      const isBudgetingEnabled =
         idea.attributes.action_descriptor.budgeting?.enabled;
-      const budgetingDisabledReason =
-        idea.attributes.action_descriptor.budgeting?.disabled_reason;
-      const budgetingDescriptor = idea.attributes.action_descriptor.budgeting;
+      const ariaLabel = !isInBasket
+        ? formatMessage(messages.addToMyExpenses)
+        : formatMessage(messages.removeFromMyExpenses);
+      const buttonClassName = `e2e-assign-budget-button ${
+        isInBasket ? 'in-basket' : 'not-in-basket'
+      }`;
+      const isSignedIn = !!authUser;
+      const hasBudgetingDisabledReason = !!idea.attributes.action_descriptor
+        .budgeting?.disabled_reason;
+      const isButtonDisabled =
+        isSignedIn && !isBudgetingEnabled && !hasBudgetingDisabledReason;
+      const buttonMessage = !isInBasket
+        ? view === 'ideaCard'
+          ? messages.add
+          : messages.addToMyExpenses
+        : view === 'ideaCard'
+        ? messages.remove
+        : messages.removeFromMyExpenses;
+
+      const addRemoveButton =
+        isSignedIn && isBudgetingEnabled ? (
+          <Button
+            onClick={this.assignBudget}
+            disabled={isButtonDisabled}
+            processing={processing}
+            bgColor={isInBasket ? colors.clRedError : colors.clGreen}
+            iconSize="18px"
+            icon={!isInBasket ? 'basket-plus' : 'basket-minus'}
+            className={buttonClassName}
+            ariaLabel={ariaLabel}
+          >
+            <FormattedMessage {...buttonMessage} />)
+          </Button>
+        ) : null;
 
       if (view === 'ideaCard') {
-        const tippyContent =
-          !!authUser && !budgetingEnabled && !!budgetingDisabledReason ? (
-            <TooltipContent
-              id="tooltip-content"
-              className="e2e-disabled-tooltip"
-            >
-              <AssignBudgetDisabled
-                budgetingDescriptor={budgetingDescriptor}
-                participationContextId={participationContextId}
-                participationContextType={participationContextType}
-              />
-            </TooltipContent>
-          ) : null;
-
         return (
-          <IdeaCardContainer className={fullClassName} aria-live="polite">
-            <Tippy
-              disabled={!tippyContent}
-              interactive={true}
-              placement="bottom"
-              content={tippyContent || <></>}
-              theme="light"
-              hideOnClick={false}
-            >
-              <ButtonWrapper tabIndex={!budgetingEnabled ? 0 : -1}>
-                <IdeaCardButton
-                  onClick={this.assignBudget}
-                  disabled={!!authUser && !budgetingEnabled}
-                  processing={processing}
-                  bgColor={isInBasket ? colors.clRedError : colors.clGreen}
-                  iconSize="18px"
-                  icon={!isInBasket ? 'basket-plus' : 'basket-minus'}
-                  className={`e2e-assign-budget-button ${
-                    isInBasket ? 'in-basket' : 'not-in-basket'
-                  }`}
-                  ariaLabel={
-                    !isInBasket
-                      ? formatMessage(messages.addToMyExpenses)
-                      : formatMessage(messages.removeFromMyExpenses)
-                  }
-                >
-                  <FormattedMessage
-                    {...(!isInBasket ? messages.add : messages.remove)}
-                  />
-                </IdeaCardButton>
-              </ButtonWrapper>
-            </Tippy>
+          <IdeaCardContainer className={containerClassNames} aria-live="polite">
+            {addRemoveButton}
           </IdeaCardContainer>
         );
-      } else if (view === 'ideaPage') {
+      }
+
+      if (view === 'ideaPage') {
         return (
           <IdeaPageContainer
-            className={`pbAssignBudgetControlContainer ${fullClassName}`}
+            className={`pbAssignBudgetControlContainer ${containerClassNames}`}
             aria-live="polite"
           >
             <BudgetWithButtonWrapper>
@@ -392,34 +328,15 @@ class AssignBudgetControl extends PureComponent<
                   maximumFractionDigits={0}
                 />
               </Budget>
-              <Button
-                onClick={this.assignBudget}
-                disabled={!!authUser && !budgetingEnabled}
-                processing={processing}
-                bgColor={isInBasket ? colors.clRedError : colors.clGreen}
-                iconSize="18px"
-                icon={!isInBasket ? 'basket-plus' : 'basket-minus'}
-                className={`e2e-assign-budget-button ${
-                  isInBasket ? 'in-basket' : 'not-in-basket'
-                }`}
-                ariaLabel={
-                  !isInBasket
-                    ? formatMessage(messages.addToMyExpenses)
-                    : formatMessage(messages.removeFromMyExpenses)
-                }
-              >
-                <FormattedMessage
-                  {...(!isInBasket
-                    ? messages.addToMyExpenses
-                    : messages.removeFromMyExpenses)}
-                />
-              </Button>
+              {addRemoveButton}
             </BudgetWithButtonWrapper>
-            <StyledPBExpenses
-              participationContextId={participationContextId}
-              participationContextType={participationContextType}
-              viewMode="column"
-            />
+            {isSignedIn && isBudgetingEnabled && (
+              <StyledPBExpenses
+                participationContextId={participationContextId}
+                participationContextType={participationContextType}
+                viewMode="column"
+              />
+            )}
           </IdeaPageContainer>
         );
       }
