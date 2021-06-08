@@ -4,17 +4,22 @@ import {
   IInsightsInputData,
 } from '../services/insightsInputs';
 
-const useInsightsViews = (viewId: string) => {
+type QueryParameters = { category: string };
+
+const useInsightsViews = (
+  viewId: string,
+  queryParameters?: QueryParameters
+) => {
   const [insightsViews, setInsightsViews] = useState<
     IInsightsInputData[] | undefined | null | Error
   >(undefined);
 
   useEffect(() => {
-    const subscription = insightsInputsStream(viewId).observable.subscribe(
-      (insightsViews) => {
-        setInsightsViews(insightsViews.data);
-      }
-    );
+    const subscription = insightsInputsStream(viewId, {
+      queryParameters,
+    }).observable.subscribe((insightsViews) => {
+      setInsightsViews(insightsViews.data);
+    });
 
     return () => subscription.unsubscribe();
   });

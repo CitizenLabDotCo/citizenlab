@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { withRouter, WithRouterProps } from 'react-router';
+import { stringify } from 'qs';
 
 // styles
 import styled from 'styled-components';
@@ -16,6 +17,7 @@ import InputsTable from './InputsTable';
 import { isNilOrError } from 'utils/helperUtils';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { colors, fontSizes, stylingConsts, media } from 'utils/styleUtils';
+import clHistory from 'utils/cl-router/history';
 
 // hooks
 import useLocale from 'hooks/useLocale';
@@ -66,7 +68,7 @@ const DetectButton = styled(Button)`
 `;
 
 const ResetButton = styled(Button)`
-  margin-bottom: 28px;
+  margin-bottom: 20px;
 `;
 
 const CategoriesLabel = styled.p`
@@ -118,16 +120,21 @@ const StyledPlus = styled.div`
   text-align: center;
 `;
 
+const ButtonsContainer = styled.div`
+  margin-top: 20px;
+  margin-bottom: 20px;
+`;
+
 const EditInsightsView = ({
   intl: { formatMessage },
   params: { viewId },
+  location: { query, pathname },
 }: InjectedIntlProps & WithRouterProps) => {
   const locale = useLocale();
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<CLErrors | undefined>();
   const categories = useInsightsCategories(viewId);
   const [name, setName] = useState<string | null>();
-  const [selectedCategory, setSelectedCategory] = useState('');
 
   const onChangeName = (value: string) => {
     setName(value);
@@ -151,8 +158,15 @@ const EditInsightsView = ({
     }
   };
 
-  const selectCategory = (categoryId: string) => () =>
-    setSelectedCategory(categoryId);
+  const selectCategory = (categoryId: string) => () => {
+    clHistory.replace({
+      pathname,
+      search: stringify(
+        { ...query, category: categoryId },
+        { addQueryPrefix: true }
+      ),
+    });
+  };
 
   return (
     <div data-testid="insightsEdit">
@@ -173,8 +187,23 @@ const EditInsightsView = ({
           >
             {formatMessage(messages.resetCategories)}
           </ResetButton>
-
           <Divider />
+          <ButtonsContainer>
+            <CategoryButton
+              locale={locale}
+              bgColor={
+                !query.category
+                  ? darken(0.05, colors.lightGreyishBlue)
+                  : 'transparent'
+              }
+              textColor={colors.label}
+              textHoverColor={colors.adminTextColor}
+              bgHoverColor={darken(0.05, colors.lightGreyishBlue)}
+              onClick={selectCategory('')}
+            >
+              {formatMessage(messages.allInput)}
+            </CategoryButton>
+          </ButtonsContainer>
           <CategoriesLabel>
             {formatMessage(messages.categories)}
           </CategoriesLabel>
@@ -220,7 +249,7 @@ const EditInsightsView = ({
                   <CategoryButton
                     locale={locale}
                     bgColor={
-                      category.id === selectedCategory
+                      category.id === query.category
                         ? darken(0.05, colors.lightGreyishBlue)
                         : 'transparent'
                     }

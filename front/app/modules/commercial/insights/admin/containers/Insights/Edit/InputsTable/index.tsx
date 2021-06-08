@@ -51,6 +51,7 @@ const StyledTable = styled(Table)`
 
 const InputsTable = ({
   params: { viewId },
+  location: { query },
   intl: { formatMessage },
 }: WithRouterProps & InjectedIntlProps) => {
   const [isSideModalOpen, setIsSideModalOpen] = useState(false);
@@ -61,7 +62,7 @@ const InputsTable = ({
   const closeSideModal = () => setIsSideModalOpen(false);
   const openSideModal = () => setIsSideModalOpen(true);
 
-  const inputs = useInsightsInputs(viewId);
+  const inputs = useInsightsInputs(viewId, { category: query.category });
 
   // Use callback to keep references for moveUp and moveDown stable
   const moveUp = useCallback(() => {

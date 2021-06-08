@@ -33,6 +33,7 @@ export function insightsCategoriesStream(
   return streams.get<IInsightsCategories>({
     apiEndpoint: `${API_PATH}/${getInsightsCategoriesEndpoint(insightsViewId)}`,
     ...streamParams,
+    cacheStream: false,
   });
 }
 
