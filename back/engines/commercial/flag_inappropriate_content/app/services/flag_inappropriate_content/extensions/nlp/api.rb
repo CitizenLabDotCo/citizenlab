@@ -1,7 +1,7 @@
 module FlagInappropriateContent
   module Extensions
     module NLP
-      module Api # API
+      module Api
         def toxicity_detection texts
           body = {
             texts: texts

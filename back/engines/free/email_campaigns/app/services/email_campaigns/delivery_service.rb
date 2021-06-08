@@ -1,53 +1,53 @@
 module EmailCampaigns
   class DeliveryService
-    CAMPAIGN_CLASSES = [
-      Campaigns::AdminDigest,
-      Campaigns::AdminRightsReceived,
-      Campaigns::AssigneeDigest,
-      Campaigns::CommentDeletedByAdmin,
-      Campaigns::CommentMarkedAsSpam,
-      Campaigns::CommentOnYourComment,
-      Campaigns::CommentOnYourIdea,
-      Campaigns::CommentOnYourInitiative,
-      Campaigns::FirstIdeaPublished,
-      Campaigns::IdeaMarkedAsSpam,
-      Campaigns::IdeaPublished,
-      Campaigns::InitiativeAssignedToYou,
-      Campaigns::InitiativeMarkedAsSpam,
-      Campaigns::InitiativePublished,
-      Campaigns::InviteReceived,
-      Campaigns::InviteReminder,
-      Campaigns::Manual,
-      Campaigns::MentionInOfficialFeedback,
-      Campaigns::ModeratorDigest,
-      Campaigns::NewCommentForAdmin,
-      Campaigns::NewCommentOnCommentedIdea,
-      Campaigns::NewCommentOnCommentedInitiative,
-      Campaigns::NewCommentOnVotedIdea,
-      Campaigns::NewCommentOnVotedInitiative,
-      Campaigns::NewIdeaForAdmin,
-      Campaigns::NewInitiativeForAdmin,
-      Campaigns::OfficialFeedbackOnCommentedIdea,
-      Campaigns::OfficialFeedbackOnCommentedInitiative,
-      Campaigns::OfficialFeedbackOnVotedIdea,
-      Campaigns::OfficialFeedbackOnVotedInitiative,
-      Campaigns::OfficialFeedbackOnYourIdea,
-      Campaigns::OfficialFeedbackOnYourInitiative,
-      Campaigns::PasswordReset,
-      Campaigns::ProjectModerationRightsReceived,
-      Campaigns::ProjectPhaseStarted,
-      Campaigns::ProjectPhaseUpcoming,
-      Campaigns::StatusChangeOfCommentedIdea,
-      Campaigns::StatusChangeOfCommentedInitiative,
-      Campaigns::StatusChangeOfVotedIdea,
-      Campaigns::StatusChangeOfVotedInitiative,
-      Campaigns::StatusChangeOfYourIdea,
-      Campaigns::StatusChangeOfYourInitiative,
-      Campaigns::ThresholdReachedForAdmin,
-      Campaigns::UserDigest,
-      Campaigns::Welcome,
-      Campaigns::YourProposedInitiativesDigest
-    ].freeze
+    # CAMPAIGN_CLASSES = [
+    #   Campaigns::AdminDigest,
+    #   Campaigns::AdminRightsReceived,
+    #   Campaigns::AssigneeDigest,
+    #   Campaigns::CommentDeletedByAdmin,
+    #   Campaigns::CommentMarkedAsSpam,
+    #   Campaigns::CommentOnYourComment,
+    #   Campaigns::CommentOnYourIdea,
+    #   Campaigns::CommentOnYourInitiative,
+    #   Campaigns::FirstIdeaPublished,
+    #   Campaigns::IdeaMarkedAsSpam,
+    #   Campaigns::IdeaPublished,
+    #   Campaigns::InitiativeAssignedToYou,
+    #   Campaigns::InitiativeMarkedAsSpam,
+    #   Campaigns::InitiativePublished,
+    #   Campaigns::InviteReceived,
+    #   Campaigns::InviteReminder,
+    #   Campaigns::Manual,
+    #   Campaigns::MentionInOfficialFeedback,
+    #   Campaigns::ModeratorDigest,
+    #   Campaigns::NewCommentForAdmin,
+    #   Campaigns::NewCommentOnCommentedIdea,
+    #   Campaigns::NewCommentOnCommentedInitiative,
+    #   Campaigns::NewCommentOnVotedIdea,
+    #   Campaigns::NewCommentOnVotedInitiative,
+    #   Campaigns::NewIdeaForAdmin,
+    #   Campaigns::NewInitiativeForAdmin,
+    #   Campaigns::OfficialFeedbackOnCommentedIdea,
+    #   Campaigns::OfficialFeedbackOnCommentedInitiative,
+    #   Campaigns::OfficialFeedbackOnVotedIdea,
+    #   Campaigns::OfficialFeedbackOnVotedInitiative,
+    #   Campaigns::OfficialFeedbackOnYourIdea,
+    #   Campaigns::OfficialFeedbackOnYourInitiative,
+    #   Campaigns::PasswordReset,
+    #   Campaigns::ProjectModerationRightsReceived,
+    #   Campaigns::ProjectPhaseStarted,
+    #   Campaigns::ProjectPhaseUpcoming,
+    #   Campaigns::StatusChangeOfCommentedIdea,
+    #   Campaigns::StatusChangeOfCommentedInitiative,
+    #   Campaigns::StatusChangeOfVotedIdea,
+    #   Campaigns::StatusChangeOfVotedInitiative,
+    #   Campaigns::StatusChangeOfYourIdea,
+    #   Campaigns::StatusChangeOfYourInitiative,
+    #   Campaigns::ThresholdReachedForAdmin,
+    #   Campaigns::UserDigest,
+    #   Campaigns::Welcome,
+    #   Campaigns::YourProposedInitiativesDigest
+    # ].freeze
 
 
     def campaign_types
@@ -55,7 +55,7 @@ module EmailCampaigns
     end
 
     def campaign_classes
-      CAMPAIGN_CLASSES
+      Campaign.descendants
     end
 
     def consentable_campaign_types_for(user)
@@ -164,5 +164,5 @@ module EmailCampaigns
   end
 end
 
-EmailCampaigns::DeliveryService.prepend_if_ee('IdeaAssignment::Patches::EmailCampaigns::DeliveryService')
-EmailCampaigns::DeliveryService.prepend_if_ee('FlagInappropriateContent::Patches::EmailCampaigns::DeliveryService')
+# EmailCampaigns::DeliveryService.prepend_if_ee('IdeaAssignment::Patches::EmailCampaigns::DeliveryService')
+# EmailCampaigns::DeliveryService.prepend_if_ee('FlagInappropriateContent::Patches::EmailCampaigns::DeliveryService')
