@@ -12,7 +12,6 @@ import {
 } from 'containers/ProjectsShowPage/styles';
 
 // hooks
-import useAuthUser from 'hooks/useAuthUser';
 import useProject from 'hooks/useProject';
 import useWindowSize from 'hooks/useWindowSize';
 
@@ -46,7 +45,6 @@ interface Props {
 }
 
 const IdeasContainer = memo<Props>(({ projectId, className }) => {
-  const authUser = useAuthUser();
   const project = useProject({ projectId });
   const windowSize = useWindowSize();
 
@@ -62,7 +60,6 @@ const IdeasContainer = memo<Props>(({ projectId, className }) => {
     const smallerThanBigTablet = windowSize?.windowWidth
       ? windowSize?.windowWidth <= viewportWidths.smallTablet
       : false;
-    const isSignedIn = !isNilOrError(authUser);
     const isPBProject = project.attributes.participation_method === 'budgeting';
     const projectId = project.id;
     const projectIds = [projectId];
@@ -74,7 +71,7 @@ const IdeasContainer = memo<Props>(({ projectId, className }) => {
       >
         <StyledContentContainer id="project-ideas" maxWidth={maxPageWidth}>
           <SectionContainer>
-            {isPBProject && isSignedIn && (
+            {isPBProject && (
               <StyledPBExpenses
                 participationContextId={projectId}
                 participationContextType="project"

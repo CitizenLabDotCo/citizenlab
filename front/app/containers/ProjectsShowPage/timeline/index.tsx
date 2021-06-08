@@ -33,7 +33,6 @@ import {
 import { selectedPhase$, selectPhase } from './events';
 
 // hooks
-import useAuthUser from 'hooks/useAuthUser';
 import useProject from 'hooks/useProject';
 import usePhases from 'hooks/usePhases';
 import useWindowSize from 'hooks/useWindowSize';
@@ -93,7 +92,6 @@ interface Props {
 
 const ProjectTimelineContainer = memo<Props & WithRouterProps>(
   ({ projectId, location, className }) => {
-    const authUser = useAuthUser();
     const project = useProject({ projectId });
     const phases = usePhases(projectId);
     const windowSize = useWindowSize();
@@ -165,7 +163,6 @@ const ProjectTimelineContainer = memo<Props & WithRouterProps>(
       selectedPhase !== undefined
     ) {
       const selectedPhaseId = selectedPhase ? selectedPhase.id : null;
-      const isSignedIn = !isNilOrError(authUser);
       const isPBPhase =
         selectedPhase?.attributes?.participation_method === 'budgeting';
       const participationMethod = !isNilOrError(selectedPhase)
@@ -174,7 +171,6 @@ const ProjectTimelineContainer = memo<Props & WithRouterProps>(
       const smallerThanSmallTablet = windowSize
         ? windowSize.windowWidth <= viewportWidths.smallTablet
         : false;
-      const currentPhase = getCurrentPhase(phases);
 
       return (
         <Container className={`${className || ''} e2e-project-process-page`}>
@@ -201,15 +197,13 @@ const ProjectTimelineContainer = memo<Props & WithRouterProps>(
                     'information'
                   }
                 />
-                {isPBPhase &&
-                  selectedPhase?.id === currentPhase?.id &&
-                  isSignedIn && (
-                    <StyledPBExpenses
-                      participationContextId={selectedPhaseId}
-                      participationContextType="phase"
-                      viewMode={smallerThanSmallTablet ? 'column' : 'row'}
-                    />
-                  )}
+                {isPBPhase && (
+                  <StyledPBExpenses
+                    participationContextId={selectedPhaseId}
+                    participationContextType="phase"
+                    viewMode={smallerThanSmallTablet ? 'column' : 'row'}
+                  />
+                )}
                 <PhaseSurvey projectId={project.id} phaseId={selectedPhaseId} />
               </ContentContainer>
             </div>

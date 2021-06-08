@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
-import { get, round } from 'lodash-es';
+import { round } from 'lodash-es';
 import moment from 'moment';
 
 // services
@@ -515,15 +515,13 @@ const Data = adopt<DataProps, InputProps>({
     let basketId: string | null = null;
 
     if (participationContextType === 'project') {
-      basketId =
-        !isNilOrError(project) && project.relationships.user_basket
-          ? get(project.relationships.user_basket.data, 'id', null)
-          : null;
+      basketId = !isNilOrError(project)
+        ? project.relationships.user_basket?.data?.id || null
+        : null;
     } else {
-      basketId =
-        !isNilOrError(phase) && phase.relationships.user_basket
-          ? get(phase.relationships.user_basket.data, 'id', null)
-          : null;
+      basketId = !isNilOrError(phase)
+        ? phase.relationships.user_basket?.data?.id || null
+        : null;
     }
 
     return <GetBasket id={basketId}>{render}</GetBasket>;
