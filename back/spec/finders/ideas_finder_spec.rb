@@ -26,7 +26,7 @@ describe IdeasFinder do
       end
 
       it 'returns the sorted records' do
-        expect(result_record_ids).to match_array expected_record_ids
+        expect(result_record_ids).to eq expected_record_ids
       end
     end
 
@@ -39,7 +39,7 @@ describe IdeasFinder do
       end
 
       it 'returns the sorted records' do
-        expect(result_record_ids).to match_array expected_record_ids
+        expect(result_record_ids).to eq expected_record_ids
       end
     end
 
@@ -52,7 +52,7 @@ describe IdeasFinder do
       end
 
       it 'returns the sorted records' do
-        expect(result_record_ids).to match_array expected_record_ids
+        expect(result_record_ids).to eq expected_record_ids
       end
     end
 
@@ -65,7 +65,7 @@ describe IdeasFinder do
       end
 
       it 'returns the sorted records' do
-        expect(result_record_ids).to match_array expected_record_ids
+        expect(result_record_ids).to eq expected_record_ids
       end
     end
 
@@ -80,7 +80,7 @@ describe IdeasFinder do
       end
 
       it 'returns the sorted records' do
-        expect(result_record_ids).to match_array expected_record_ids
+        expect(result_record_ids).to eq expected_record_ids
       end
     end
 
@@ -95,7 +95,7 @@ describe IdeasFinder do
       end
 
       it 'returns the sorted records' do
-        expect(result_record_ids).to match_array expected_record_ids
+        expect(result_record_ids).to eq expected_record_ids
       end
     end
 
@@ -113,7 +113,7 @@ describe IdeasFinder do
         end
 
         it 'returns the sorted records' do
-          expect(result_record_ids).to match_array expected_record_ids
+          expect(result_record_ids).to eq expected_record_ids
         end
       end
 
@@ -138,7 +138,7 @@ describe IdeasFinder do
         end
 
         it 'returns the sorted records' do
-          expect(result_record_ids).to match_array expected_record_ids
+          expect(result_record_ids).to eq expected_record_ids
         end
       end
 
@@ -158,7 +158,7 @@ describe IdeasFinder do
       end
 
       it 'returns the sorted records' do
-        expect(result_record_ids).to match_array expected_record_ids
+        expect(result_record_ids).to eq expected_record_ids
       end
     end
 
@@ -171,7 +171,7 @@ describe IdeasFinder do
       end
 
       it 'returns the sorted records' do
-        expect(result_record_ids).to match_array expected_record_ids
+        expect(result_record_ids).to eq expected_record_ids
       end
     end
 
@@ -184,7 +184,7 @@ describe IdeasFinder do
       end
 
       it 'returns the sorted records' do
-        expect(result_record_ids).to match_array expected_record_ids
+        expect(result_record_ids).to eq expected_record_ids
       end
     end
 
@@ -197,7 +197,7 @@ describe IdeasFinder do
       end
 
       it 'returns the sorted records' do
-        expect(result_record_ids).to match_array expected_record_ids
+        expect(result_record_ids).to eq expected_record_ids
       end
     end
 
@@ -210,7 +210,7 @@ describe IdeasFinder do
       end
 
       it 'returns the sorted records' do
-        expect(result_record_ids).to match_array expected_record_ids
+        expect(result_record_ids).to eq expected_record_ids
       end
     end
 
@@ -223,7 +223,7 @@ describe IdeasFinder do
       end
 
       it 'returns the sorted records' do
-        expect(result_record_ids).to match_array expected_record_ids
+        expect(result_record_ids).to eq expected_record_ids
       end
     end
 
@@ -236,7 +236,7 @@ describe IdeasFinder do
       end
 
       it 'returns the sorted records' do
-        expect(result_record_ids).to match_array expected_record_ids
+        expect(result_record_ids).to eq expected_record_ids
       end
     end
 
@@ -249,7 +249,7 @@ describe IdeasFinder do
       end
 
       it 'returns the sorted records' do
-        expect(result_record_ids).to match_array expected_record_ids
+        expect(result_record_ids).to eq expected_record_ids
       end
     end
 
@@ -262,7 +262,7 @@ describe IdeasFinder do
       end
 
       it 'returns the sorted records' do
-        expect(result_record_ids).to match_array expected_record_ids
+        expect(result_record_ids).to eq expected_record_ids
       end
     end
   end
@@ -290,7 +290,7 @@ describe IdeasFinder do
     end
 
     it 'returns the correct records' do
-      expect(result_record_ids).to match_array expected_record_ids
+      expect(result_record_ids).to eq expected_record_ids
     end
   end
 
@@ -307,7 +307,7 @@ describe IdeasFinder do
     end
 
     it 'returns the correct records' do
-      expect(result_record_ids).to match_array expected_record_ids
+      expect(result_record_ids).to eq expected_record_ids
     end
   end
 
@@ -326,7 +326,7 @@ describe IdeasFinder do
     end
 
     it 'returns the correct records' do
-      expect(result_record_ids).to match_array expected_record_ids
+      expect(result_record_ids).to eq expected_record_ids
     end
   end
 
@@ -345,7 +345,7 @@ describe IdeasFinder do
     end
 
     it 'returns the correct records' do
-      expect(result_record_ids).to match_array expected_record_ids
+      expect(result_record_ids).to eq expected_record_ids
     end
   end
 
@@ -362,7 +362,7 @@ describe IdeasFinder do
     end
 
     it 'returns the correct records' do
-      expect(result_record_ids).to match_array expected_record_ids
+      expect(result_record_ids).to eq expected_record_ids
     end
   end
 
@@ -379,7 +379,7 @@ describe IdeasFinder do
     end
 
     it 'returns the correct records' do
-      expect(result_record_ids).to match_array expected_record_ids
+      expect(result_record_ids).to eq expected_record_ids
     end
   end
 
@@ -400,7 +400,7 @@ describe IdeasFinder do
     end
 
     it 'returns the correct records' do
-      expect(result_record_ids).to match_array expected_record_ids
+      expect(result_record_ids).to eq expected_record_ids
     end
   end
 
@@ -416,7 +416,7 @@ describe IdeasFinder do
     end
 
     it 'returns the correct records' do
-      expect(result_record_ids).to match_array expected_record_ids
+      expect(result_record_ids).to eq expected_record_ids
     end
   end
 
@@ -433,7 +433,7 @@ describe IdeasFinder do
     end
 
     it 'returns the correct records' do
-      expect(result_record_ids).to match_array expected_record_ids
+      expect(result_record_ids).to eq expected_record_ids
     end
   end
 
@@ -450,7 +450,7 @@ describe IdeasFinder do
     end
 
     it 'returns the correct records' do
-      expect(result_record_ids).to match_array expected_record_ids
+      expect(result_record_ids).to eq expected_record_ids
     end
   end
 
@@ -466,7 +466,7 @@ describe IdeasFinder do
     end
 
     it 'returns the correct records' do
-      expect(result_record_ids).to match_array expected_record_ids
+      expect(result_record_ids).to eq expected_record_ids
     end
   end
 
@@ -483,7 +483,7 @@ describe IdeasFinder do
     end
 
     it 'returns the correct records' do
-      expect(result_record_ids).to match_array expected_record_ids
+      expect(result_record_ids).to eq expected_record_ids
     end
   end
 
@@ -500,7 +500,7 @@ describe IdeasFinder do
     end
 
     it 'returns the correct records' do
-      expect(result_record_ids).to match_array expected_record_ids
+      expect(result_record_ids).to eq expected_record_ids
     end
   end
 end

@@ -181,7 +181,7 @@ describe InitiativesFinder do
     end
 
     it 'filters by topics' do
-      expect(record_ids).to match_array Initiative.with_some_topics(topic_ids)
+      expect(record_ids).to eq Initiative.with_some_topics(topic_ids)
     end
   end
 
@@ -197,7 +197,7 @@ describe InitiativesFinder do
     end
 
     it 'filters by areas' do
-      expect(record_ids).to match_array Initiative.with_some_areas(area_ids)
+      expect(record_ids).to eq Initiative.with_some_areas(area_ids)
     end
   end
 
@@ -217,7 +217,7 @@ describe InitiativesFinder do
                      .left_outer_joins(:initiative_initiative_status)
                      .where(initiative_initiative_statuses: { initiative_status_id: initiative_status_id })
                      .pluck(:id)
-      expect(record_ids).to match_array filtered_ids
+      expect(record_ids).to eq filtered_ids
     end
   end
 
@@ -233,7 +233,7 @@ describe InitiativesFinder do
     end
 
     it 'filters by assignee' do
-      expect(record_ids).to match_array Initiative.where(assignee_id: assignee_id).pluck(:id)
+      expect(record_ids).to eq Initiative.where(assignee_id: assignee_id).pluck(:id)
     end
   end
 
@@ -253,7 +253,7 @@ describe InitiativesFinder do
       end
 
       it 'filters by feedback needed' do
-        expect(record_ids).to match_array Initiative.feedback_needed.pluck(:id)
+        expect(record_ids).to eq Initiative.feedback_needed.pluck(:id)
       end
     end
 
@@ -269,7 +269,7 @@ describe InitiativesFinder do
       end
 
       it 'filters by feedback not needed' do
-        expect(record_ids).to match_array Initiative.no_feedback_needed.pluck(:id)
+        expect(record_ids).to eq Initiative.no_feedback_needed.pluck(:id)
       end
     end
   end
@@ -287,7 +287,7 @@ describe InitiativesFinder do
     end
 
     it 'filters by author' do
-      expect(record_ids).to match_array Initiative.where(author_id: author.id).pluck(:id)
+      expect(record_ids).to eq Initiative.where(author_id: author.id).pluck(:id)
     end
   end
 
@@ -310,7 +310,7 @@ describe InitiativesFinder do
     end
 
     it 'filters by publication_status' do
-      expect(record_ids).to match_array Initiative.where(publication_status: publication_status).pluck(:id)
+      expect(record_ids).to eq Initiative.where(publication_status: publication_status).pluck(:id)
     end
   end
 
@@ -326,7 +326,7 @@ describe InitiativesFinder do
     end
 
     it 'filters by bounding_box' do
-      expect(record_ids).to match_array Initiative.with_bounding_box(bounding_box).pluck(:id)
+      expect(record_ids).to eq Initiative.with_bounding_box(bounding_box).pluck(:id)
     end
   end
 
@@ -342,7 +342,7 @@ describe InitiativesFinder do
     end
 
     it 'filters by initiatives' do
-      expect(record_ids).to match_array Initiative.where(id: ids).pluck(:id)
+      expect(record_ids).to eq Initiative.where(id: ids).pluck(:id)
     end
   end
 end
