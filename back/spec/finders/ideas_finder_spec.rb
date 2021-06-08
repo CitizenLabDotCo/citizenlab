@@ -45,7 +45,7 @@ describe IdeasFinder do
 
     describe '#sort_scopes (status)' do
       let(:sort) { 'status' }
-      let(:expected_record_ids) { Idea.order_status(:desc).pluck(:id) }
+      let(:expected_record_ids) { Idea.order_status(:asc).pluck(:id) }
 
       it 'is successful' do
         expect(result).to be_a_success
@@ -58,7 +58,7 @@ describe IdeasFinder do
 
     describe '#sort_scopes (-status)' do
       let(:sort) { '-status' }
-      let(:expected_record_ids) { Idea.order_status(:asc).pluck(:id) }
+      let(:expected_record_ids) { Idea.order_status(:desc).pluck(:id) }
 
       it 'is successful' do
         expect(result).to be_a_success
