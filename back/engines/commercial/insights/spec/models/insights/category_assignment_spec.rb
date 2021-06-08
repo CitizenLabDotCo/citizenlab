@@ -8,11 +8,6 @@ describe Insights::CategoryAssignment do
 
     specify { expect(assignment).to be_valid }
 
-    it 'is not valid without a view' do
-      assignment.view = nil
-      expect(assignment).not_to be_valid
-    end
-
     it 'is not valid without a category' do
       assignment.category = nil
       expect(assignment).not_to be_valid
@@ -40,21 +35,21 @@ describe Insights::CategoryAssignment do
     subject(:assignment) { create(:category_assignment) }
 
     context 'when its view is deleted' do
-      before { assignment.view.destroy! }
+      before { assignment.category.view.destroy! }
 
-      it { expect { category.reload }.to raise_error(ActiveRecord::RecordNotFound) }
+      it { expect { assignment.reload }.to raise_error(ActiveRecord::RecordNotFound) }
     end
 
     context 'when its category is deleted' do
       before { assignment.category.destroy! }
 
-      it { expect { category.reload }.to raise_error(ActiveRecord::RecordNotFound) }
+      it { expect { assignment.reload }.to raise_error(ActiveRecord::RecordNotFound) }
     end
 
     context 'when its input is deleted' do
       before { assignment.input.destroy! }
 
-      it { expect { category.reload }.to raise_error(ActiveRecord::RecordNotFound) }
+      it { expect { assignment.reload }.to raise_error(ActiveRecord::RecordNotFound) }
     end
   end
 
