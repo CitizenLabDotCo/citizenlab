@@ -233,7 +233,7 @@ describe InitiativesFinder do
     end
 
     it 'filters by assignee' do
-      expect(record_ids).to match_array Initiative.where(assignee_id: assignee_id).pluck(:id)
+      expect(record_ids).to eq Initiative.where(assignee_id: assignee_id).pluck(:id)
     end
   end
 
