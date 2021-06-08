@@ -35,11 +35,15 @@ const TagList = styled.div`
 
 type InputsTableRow = {
   input: IInsightsInputData;
+  selected: boolean;
+  onSelect: (string) => void;
 } & WithRouterProps &
   InjectedIntlProps;
 
 const InputsTableRow = ({
   input,
+  selected,
+  onSelect,
   params: { viewId },
   intl: { formatMessage },
 }: InputsTableRow) => {
@@ -59,12 +63,14 @@ const InputsTableRow = ({
   };
 
   // TODO: Implement checkbox logic
-  const handleCheckboxChange = () => {};
+  const handleCheckboxChange = () => {
+    onSelect(input.id);
+  };
 
   return (
     <tr tabIndex={0} data-testid="insightsInputsTableRow">
       <td>
-        <Checkbox checked={false} onChange={handleCheckboxChange} />
+        <Checkbox checked={selected} onChange={handleCheckboxChange} />
       </td>
       <td>
         <T value={idea.attributes.title_multiloc} />
