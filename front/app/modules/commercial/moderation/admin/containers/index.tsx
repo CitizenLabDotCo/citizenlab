@@ -26,7 +26,10 @@ import {
   IModerationData,
   TModeratableTypes,
 } from '../../services/moderations';
-import { removeInappropriateContentFlag } from 'modules/commercial/flag_inappropriate_content/services/inappropriateContentFlags';
+import {
+  removeInappropriateContentFlag,
+  inappropriateContentFlagByIdStream,
+} from 'modules/commercial/flag_inappropriate_content/services/inappropriateContentFlags';
 
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
@@ -419,20 +422,22 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
     }
   }, [list, processing]);
 
-  const selectedModerationItemsWithContentWarning = useMemo(() => {
+  const selectedModerationItemsWithContentWarning = async () => {
     if (!isNilOrError(moderationItems)) {
       const promises = moderationItems
         .filter(
           (moderationItem) =>
             moderationItem.relationships.inappropriate_content_flag?.data.id
         )
-        .map((id) => inappropriateContentFlagByIdStream(id));
+        .map((moderationItemWithFlag) =>
+          inappropriateContentFlagByIdStream(moderationItemWithFlag.id)
+        );
 
       const flags = await Promise.all(promises);
     }
 
     return null;
-  }, [moderationItems]);
+  };
 
   if (!isNilOrError(moderationItems)) {
     return (
