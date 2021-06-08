@@ -404,23 +404,26 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
   useEffect(() => {
     (async () => {
       if (!isNilOrError(moderationItems)) {
-        const promises = moderationItems
-          .filter(
-            (moderationItem) =>
-              selectedRowModerationIds.includes(moderationItem.id) &&
-              moderationItem.relationships.inappropriate_content_flag?.data.id
-          )
-          .map((moderationItemWithFlag) =>
+        const selectedModerationItems = moderationItems.filter(
+          (moderationItem) =>
+            selectedRowModerationIds.includes(moderationItem.id)
+        );
+        const selectedModerationItemsWithFlag = selectedModerationItems.filter(
+          (moderationItem) =>
+            moderationItem.relationships.inappropriate_content_flag?.data.id
+        );
+        const promises = selectedModerationItemsWithFlag.map(
+          (moderationItemWithFlag) =>
             inappropriateContentFlagByIdStream(
               moderationItemWithFlag.id
             ).fetch()
-          ) as Promise<IInappropriateContentFlag>[];
+        ) as Promise<IInappropriateContentFlag>[];
         const flags = await Promise.all(promises);
-        const enabledFlags = flags.filter(
+        const activeFlags = flags.filter(
           (flag) => flag.data.attributes.reason_code !== null
         );
 
-        setActiveInappropriateContentFlags(enabledFlags);
+        setActiveInappropriateContentFlags(activeFlags);
       }
     })();
   }, [moderationItems, selectedRowModerationIds]);
