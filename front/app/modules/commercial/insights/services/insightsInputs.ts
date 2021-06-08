@@ -3,20 +3,6 @@ import streams, { IStreamParams } from 'utils/streams';
 import { IRelationship } from 'typings';
 import { uuidRegExp } from 'utils/helperUtils';
 
-// This will be imported from the categories service once we merge everything
-export interface IInsightsCategoryData {
-  id: string;
-  type: string;
-  attributes: {
-    name: string;
-  };
-  relationships?: {
-    view: {
-      data: IRelationship;
-    };
-  };
-}
-
 export interface IInsightsInputData {
   id: string;
   type: string;
