@@ -17,7 +17,7 @@
   "app.components.AssignBudgetControl.addToMyExpenses": "Añade a mis gastos",
   "app.components.AssignBudgetControl.backToOverview": "Volver a la vista general",
   "app.components.AssignBudgetControl.remove": "Eliminar",
-  "app.components.AssignBudgetControl.removeFromMyExpenses": "Remove from my expenses",
+  "app.components.AssignBudgetControl.removeFromMyExpenses": "Eliminar de mis gastos",
   "app.components.AssignBudgetControl.verifyAccountLinkText": "Verifica tu cuenta",
   "app.components.Author.a11y_postedBy": "Publicado por:",
   "app.components.AvatarBubbles.numberOfUsers": "{numberOfUsers} usuarios",
