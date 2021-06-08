@@ -45,7 +45,7 @@ describe Insights::InputsFinder do
       expect(finder.execute).to match([idea])
     end
 
-    context "when using the category filter" do
+    context 'when using the category filter' do
       let(:category) { create(:category, view: view) }
 
       before do
@@ -55,12 +55,12 @@ describe Insights::InputsFinder do
         end
       end
 
-      it 'can selects only inputs without category' do
+      it 'can select only inputs without category' do
         finder = described_class.new(view, { category: '' })
         expect(finder.execute).to match(inputs.drop(2))
       end
 
-      it 'can selects inputs with a given category' do
+      it 'can select inputs with a given category' do
         finder = described_class.new(view, { category: category.id })
         expect(finder.execute).to match(inputs.take(2))
       end
