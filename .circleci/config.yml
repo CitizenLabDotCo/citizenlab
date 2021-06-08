@@ -674,13 +674,13 @@ workflows:
             branches:
               only: master
   nightly-templates:
-    triggers:
-      - schedule:
-          cron: "0 0 * * *"
-          filters:
-            branches:
-              only:
-                - production
+    # triggers:
+    #   - schedule:
+    #       cron: "0 0 * * *"
+    #       filters:
+    #         branches:
+    #           only:
+    #             - production
     jobs:
       - back-build-ee-docker-image:
           context: 
@@ -754,13 +754,13 @@ workflows:
                 mentions: '@dev-back :boom: FAILURE: Some templates are invalid and could not be released.'
                 template: basic_fail_1
   check-for-inconsistent-data:
-    triggers:
-      - schedule:
-          cron: "0 2 * * 1"
-          filters:
-            branches:
-              only:
-                - production
+    # triggers:
+    #   - schedule:
+    #       cron: "0 2 * * 1"
+    #       filters:
+    #         branches:
+    #           only:
+    #             - production
     jobs:
       - check-for-inconsistent-data:
           <<: *slack-fail-post-step-inconsistent-data
