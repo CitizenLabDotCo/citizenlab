@@ -421,10 +421,14 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
 
   const selectedModerationItemsWithContentWarning = useMemo(() => {
     if (!isNilOrError(moderationItems)) {
-      return moderationItems.filter(
-        (moderationItem) =>
-          moderationItem.relationships.inappropriate_content_flag
-      );
+      const promises = moderationItems
+        .filter(
+          (moderationItem) =>
+            moderationItem.relationships.inappropriate_content_flag?.data.id
+        )
+        .map((id) => inappropriateContentFlagByIdStream(id));
+
+      const flags = await Promise.all(promises);
     }
 
     return null;
