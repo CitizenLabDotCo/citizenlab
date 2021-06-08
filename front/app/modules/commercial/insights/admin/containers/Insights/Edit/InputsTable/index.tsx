@@ -72,7 +72,7 @@ const InputsTable = ({
 
   const handlePaginationClick = (newPageNumber) => {
     clHistory.push({
-      pathname: `${location.pathname}`,
+      pathname: location.pathname,
       search: `?${stringify({ ...location.query, pageNumber: newPageNumber })}`,
     });
   };

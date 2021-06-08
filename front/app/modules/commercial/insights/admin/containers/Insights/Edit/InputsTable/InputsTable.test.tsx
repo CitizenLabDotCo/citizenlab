@@ -1,6 +1,8 @@
 import React from 'react';
 import { render, screen, fireEvent, within } from 'utils/testUtils/rtl';
 import * as service from 'modules/commercial/insights/services/insightsInputs';
+import * as hook from 'modules/commercial/insights/hooks/useInsightsInputs';
+import clHistory from 'utils/cl-router/history';
 
 jest.mock('modules/commercial/insights/services/insightsInputs', () => ({
   deleteInsightsInputCategory: jest.fn(),
@@ -82,16 +84,22 @@ jest.mock('hooks/useLocale', () => jest.fn(() => 'en'));
 
 jest.mock('utils/cl-intl');
 
+let mockLocation = { pathname: 'editViewPagePath' } as any;
 jest.mock('react-router', () => {
   return {
     withRouter: (Component) => {
       return (props) => {
-        return <Component {...props} params={{ viewId }} />;
+        return (
+          <Component {...props} params={{ viewId }} location={mockLocation} />
+        );
       };
     },
-    location: {},
   };
 });
+
+jest.mock('utils/cl-router/history', () => ({
+  push: jest.fn(() => {}),
+}));
 
 window.confirm = jest.fn(() => true);
 
@@ -127,8 +135,37 @@ describe('Insights Input Table', () => {
       mockInputData.list[0].relationships.categories.data[0].id
     );
   });
+  it("doesn't show pagination when there's only one page", () => {
+    mockInputData = { ...mockInputData, currentPage: 1, lastPage: 1 };
+    render(<InputsTable />);
+    expect(screen.queryByTestId('pagination')).toBeNull();
+  });
+  it('shows pagination when there are multiple pages', () => {
+    mockInputData = { ...mockInputData, currentPage: 1, lastPage: 2 };
+    render(<InputsTable />);
+    expect(screen.getByTestId('pagination')).toBeInTheDocument();
+  });
+  it('clicks on pagination navigate to the right page', () => {
+    mockLocation = { pathname: 'editViewPagePath' };
+    mockInputData = { ...mockInputData, currentPage: 1, lastPage: 2 };
+    const spy = jest.spyOn(clHistory, 'push');
+    render(<InputsTable />);
+    fireEvent.click(within(screen.getByTestId('pagination')).getByText('2'));
+    expect(spy).toHaveBeenCalledWith({
+      pathname: 'editViewPagePath',
+      search: '?pageNumber=2',
+    });
+  });
+  it('loads the page passed in url params', () => {
+    mockLocation = { pathname: 'editViewPagePath', query: { pageNumber: 2 } };
+    const spy = jest.spyOn(hook, 'default');
+    render(<InputsTable />);
+    expect(spy).toHaveBeenCalledWith('1', {
+      pageNumber: 2,
+    });
+  });
   it('renders table empty state when there are no inputs', () => {
-    mockInputData = { list: [] };
+    mockInputData = { currentPage: 1, lastPage: 1, list: [] };
     render(<InputsTable />);
     expect(
       screen.getByTestId('insightsInputsTableEmptyState')
