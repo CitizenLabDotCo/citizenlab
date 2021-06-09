@@ -9,6 +9,12 @@ import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 
 const Container = styled.div``;
 
+const VoteControlWrapper = styled.div`
+  &.error {
+    display: none;
+  }
+`;
+
 interface InputProps {
   className?: string;
   ideaId?: string;
@@ -23,6 +29,7 @@ interface Props extends InputProps, DataProps {}
 
 interface State {
   error: 'votingDisabled' | null;
+  isContainerVisible: boolean;
 }
 
 class VoteWrapper extends PureComponent<Props, State> {
@@ -30,29 +37,16 @@ class VoteWrapper extends PureComponent<Props, State> {
     super(props);
     this.state = {
       error: null,
+      isContainerVisible: false,
     };
   }
 
   componentDidUpdate(prevProps: Props) {
-    const { idea } = this.props;
-    const prevIdea = prevProps.idea;
+    const { ideaId } = this.props;
+    const prevIdeaId = prevProps.ideaId;
 
-    if (!isNilOrError(idea) && !isNilOrError(prevIdea)) {
-      const votingEnabled =
-        idea.attributes.action_descriptor.voting_idea.enabled;
-      const prevVotingEnabled =
-        prevIdea.attributes.action_descriptor.voting_idea.enabled;
-      const votingDisabledReason =
-        idea.attributes.action_descriptor.voting_idea.disabled_reason;
-      const prevVotingDisabledReason =
-        prevIdea.attributes.action_descriptor.voting_idea.disabled_reason;
-
-      if (
-        votingEnabled !== prevVotingEnabled ||
-        votingDisabledReason !== prevVotingDisabledReason
-      ) {
-        this.setState({ error: null });
-      }
+    if (ideaId !== prevIdeaId) {
+      this.setState({ isContainerVisible: false, error: null });
     }
   }
 
@@ -60,9 +54,15 @@ class VoteWrapper extends PureComponent<Props, State> {
     this.setState({ error: 'votingDisabled' });
   };
 
+  setVoteControlRef = () => {
+    // we check the ref returned by VoteControl to determine if the VoteControl component actually mounted
+    // If it didn't mount (because showVoteContrle === false), we also shouldn't mount the Container in this component
+    this.setState({ isContainerVisible: true });
+  };
+
   render() {
     const { className, ideaId, projectId, idea } = this.props;
-    const { error } = this.state;
+    const { isContainerVisible, error } = this.state;
 
     const votingDescriptor = isNilOrError(idea)
       ? null
@@ -70,16 +70,23 @@ class VoteWrapper extends PureComponent<Props, State> {
 
     if (!ideaId || !votingDescriptor) return null;
 
-    return (
+    const voteControlComponent = (
+      <VoteControl
+        style="shadow"
+        ideaId={ideaId}
+        disabledVoteClick={this.disabledVoteClick}
+        setRef={this.setVoteControlRef}
+        size="3"
+      />
+    );
+
+    return !isContainerVisible ? (
+      voteControlComponent
+    ) : (
       <Container className={className || ''}>
-        {!error && (
-          <VoteControl
-            style="shadow"
-            ideaId={ideaId}
-            disabledVoteClick={this.disabledVoteClick}
-            size="3"
-          />
-        )}
+        <VoteControlWrapper className={error ? 'error' : ''}>
+          {voteControlComponent}
+        </VoteControlWrapper>
         {error === 'votingDisabled' && (
           <PopContainer icon="lock-outlined">
             <VotingDisabled

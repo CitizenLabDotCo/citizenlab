@@ -1,5 +1,5 @@
 import React, { PureComponent, lazy, Suspense } from 'react';
-import { isUndefined, isString } from 'lodash-es';
+import { isUndefined, isString, includes } from 'lodash-es';
 import { isNilOrError, getFormattedBudget } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
 
@@ -307,6 +307,22 @@ export class IdeasShow extends PureComponent<
     this.props.setRef?.(element);
   };
 
+  getLatestRelevantPhaseId = () => {
+    const { idea, phases } = this.props;
+
+    if (!isNilOrError(idea) && !isNilOrError(phases)) {
+      const ideaPhaseIds = idea?.relationships?.phases?.data?.map(
+        (item) => item.id
+      );
+      const ideaPhases = phases.filter((phase) =>
+        includes(ideaPhaseIds, phase.id)
+      );
+      return getLatestRelevantPhase(ideaPhases)?.id;
+    }
+
+    return undefined;
+  };
+
   render() {
     const {
       locale,
@@ -333,6 +349,7 @@ export class IdeasShow extends PureComponent<
     let content: JSX.Element | null = null;
 
     if (
+      !isNilOrError(project) &&
       !isNilOrError(idea) &&
       !isNilOrError(locale) &&
       !isNilOrError(tenant) &&
@@ -357,17 +374,6 @@ export class IdeasShow extends PureComponent<
         ideaCustomFieldsSchemas,
         locale
       );
-      const isContinuousProject =
-        !isNilOrError(project) &&
-        project.attributes.process_type === 'continuous';
-      const participationContextType = isContinuousProject
-        ? 'project'
-        : 'phase';
-      const participationContextId = isContinuousProject
-        ? projectId
-        : !isNilOrError(phases)
-        ? getLatestRelevantPhase(phases)?.id
-        : null;
 
       content = (
         <>
@@ -436,17 +442,13 @@ export class IdeasShow extends PureComponent<
                 translateButtonClicked={translateButtonClicked}
               />
 
-              {participationContextId &&
-                participationContextType &&
-                isCompactView && (
-                  <StyledAssignBudgetControl
-                    view="ideaPage"
-                    ideaId={ideaId}
-                    projectId={projectId}
-                    participationContextId={participationContextId}
-                    participationContextType={participationContextType}
-                  />
-                )}
+              {isCompactView && (
+                <StyledAssignBudgetControl
+                  view="ideaPage"
+                  ideaId={ideaId}
+                  projectId={projectId}
+                />
+              )}
 
               {isCompactView && (
                 <MobileMetaInformation
@@ -478,20 +480,15 @@ export class IdeasShow extends PureComponent<
               </Comments>
             </LeftColumn>
 
-            {!isCompactView &&
-              projectId &&
-              participationContextId &&
-              participationContextType && (
-                <StyledRightColumnDesktop
-                  ideaId={ideaId}
-                  projectId={projectId}
-                  statusId={statusId}
-                  authorId={authorId}
-                  participationContextId={participationContextId}
-                  participationContextType={participationContextType}
-                  insideModal={insideModal}
-                />
-              )}
+            {!isCompactView && projectId && (
+              <StyledRightColumnDesktop
+                ideaId={ideaId}
+                projectId={projectId}
+                statusId={statusId}
+                authorId={authorId}
+                insideModal={insideModal}
+              />
+            )}
           </Content>
         </>
       );

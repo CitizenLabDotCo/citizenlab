@@ -1,5 +1,4 @@
 import React from 'react';
-import { IParticipationContextType } from 'typings';
 
 // components
 import MetaInformation from '../MetaInformation';
@@ -53,8 +52,6 @@ interface Props {
   projectId: string;
   statusId: string;
   authorId: string | null;
-  participationContextId: string | null;
-  participationContextType: IParticipationContextType | null;
   insideModal: boolean;
   className?: string;
 }
@@ -64,8 +61,6 @@ const RightColumnDesktop = ({
   projectId,
   statusId,
   authorId,
-  participationContextId,
-  participationContextType,
   insideModal,
   className,
 }: Props) => {
@@ -74,15 +69,11 @@ const RightColumnDesktop = ({
       <InnerContainer>
         <Box>
           <StyledVoting ideaId={ideaId} projectId={projectId} />
-          {participationContextId && participationContextType && (
-            <StyledAssignBudgetControl
-              view="ideaPage"
-              ideaId={ideaId}
-              projectId={projectId}
-              participationContextId={participationContextId}
-              participationContextType={participationContextType}
-            />
-          )}
+          <StyledAssignBudgetControl
+            view="ideaPage"
+            ideaId={ideaId}
+            projectId={projectId}
+          />
           <Buttons ideaId={ideaId} />
         </Box>
         <StyledMetaInformation

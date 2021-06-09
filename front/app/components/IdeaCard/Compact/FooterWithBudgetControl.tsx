@@ -94,8 +94,6 @@ const FooterWithBudgetControl = memo<Props>(
               view="ideaCard"
               projectId={projectId}
               ideaId={idea.id}
-              participationContextId={participationContextId}
-              participationContextType={participationContextType}
             />
           </BudgetControl>
         )}

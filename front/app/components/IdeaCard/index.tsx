@@ -335,8 +335,6 @@ class IdeaCard extends PureComponent<
                         view="ideaCard"
                         projectId={projectId}
                         ideaId={idea.id}
-                        participationContextId={participationContextId}
-                        participationContextType={participationContextType}
                       />
                     )}
 

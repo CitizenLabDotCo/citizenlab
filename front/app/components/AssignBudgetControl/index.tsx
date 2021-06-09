@@ -1,32 +1,39 @@
-import React, { PureComponent, FormEvent } from 'react';
-import { adopt } from 'react-adopt';
+import React, { FormEvent, memo, useState } from 'react';
 import { includes, isUndefined } from 'lodash-es';
 import {
   isNilOrError,
+  isUndefinedOrError,
   capitalizeParticipationContextType,
 } from 'utils/helperUtils';
-
-// typings
-import { IParticipationContextType } from 'typings';
 
 // components
 import Button from 'components/UI/Button';
 
 // services
-import { getCurrentPhase } from 'services/phases';
+import { IProjectData } from 'services/projects';
+import {
+  getCurrentPhase,
+  getLatestRelevantPhase,
+  IPhaseData,
+} from 'services/phases';
 import { addBasket, updateBasket } from 'services/baskets';
 
 // resources
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetAppConfiguration, {
-  GetAppConfigurationChildProps,
-} from 'resources/GetAppConfiguration';
-import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
-import GetBasket, { GetBasketChildProps } from 'resources/GetBasket';
-import GetProject, { GetProjectChildProps } from 'resources/GetProject';
-import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
-import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
+import { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import { GetAppConfigurationChildProps } from 'resources/GetAppConfiguration';
+import { GetLocaleChildProps } from 'resources/GetLocale';
+import { GetIdeaChildProps } from 'resources/GetIdea';
+import { GetProjectChildProps } from 'resources/GetProject';
+import { GetPhasesChildProps } from 'resources/GetPhases';
+
+// hooks
+import useAuthUser from 'hooks/useAuthUser';
+import useAppConfiguration from 'hooks/useAppConfiguration';
+import useLocale from 'hooks/useLocale';
+import useIdea from 'hooks/useIdea';
+import useBasket from 'hooks/useBasket';
+import useProject from 'hooks/useProject';
+import usePhases from 'hooks/usePhases';
 
 // tracking
 import { trackEventByName } from 'utils/analytics';
@@ -46,6 +53,9 @@ import styled from 'styled-components';
 import { fontSizes, colors, defaultCardStyle, media } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import PBExpenses from 'containers/ProjectsShowPage/shared/pb/PBExpenses';
+
+// typings
+import { IParticipationContextType } from 'typings';
 
 const IdeaCardContainer = styled.div`
   display: flex;
@@ -90,162 +100,137 @@ const StyledPBExpenses = styled(PBExpenses)`
   padding: 20px;
 `;
 
-interface InputProps {
+interface OuterProps {
   view: 'ideaCard' | 'ideaPage';
   projectId: string;
   ideaId: string;
-  participationContextId: string;
-  participationContextType: IParticipationContextType;
   className?: string;
 }
 
-interface DataProps {
+interface InnerProps extends OuterProps {
   authUser: GetAuthUserChildProps;
   tenant: GetAppConfigurationChildProps;
   locale: GetLocaleChildProps;
   idea: GetIdeaChildProps;
-  basket: GetBasketChildProps;
   project: GetProjectChildProps;
   phases: GetPhasesChildProps;
-  phase: GetPhaseChildProps;
+  participationContext: IProjectData | IPhaseData;
+  participationContextId: string;
+  participationContextType: IParticipationContextType;
 }
 
-interface Props extends DataProps, InputProps {}
+const AssignBudgetControl = memo<InnerProps & InjectedIntlProps>(
+  ({
+    view,
+    ideaId,
+    authUser,
+    tenant,
+    locale,
+    idea,
+    phases,
+    participationContext,
+    participationContextId,
+    participationContextType,
+    intl,
+    className,
+  }) => {
+    const basket = useBasket(
+      participationContext?.relationships?.user_basket?.data?.id
+    );
 
-interface State {
-  processing: boolean;
-}
+    const [processing, setProcessing] = useState(false);
 
-class AssignBudgetControl extends PureComponent<
-  Props & InjectedIntlProps,
-  State
-> {
-  constructor(props) {
-    super(props);
-    this.state = {
-      processing: false,
-    };
-  }
+    const assignBudget = async (event?: FormEvent<any>) => {
+      event?.preventDefault();
+      event?.stopPropagation();
 
-  assignBudget = async (event?: FormEvent<any>) => {
-    event?.preventDefault();
-    event?.stopPropagation();
+      const timeout = (ms: number) =>
+        new Promise((resolve) => setTimeout(resolve, ms));
+      const done = async () => {
+        await timeout(200);
+        setProcessing(false);
+      };
 
-    const timeout = (ms: number) =>
-      new Promise((resolve) => setTimeout(resolve, ms));
-    const done = async () => {
-      await timeout(200);
-      this.setState({ processing: false });
-    };
+      if (!isNilOrError(idea)) {
+        const budgetingEnabled =
+          idea.attributes.action_descriptor.budgeting?.enabled;
+        const basketIdeaIds = !isNilOrError(basket)
+          ? basket.relationships.ideas.data.map((idea) => idea.id)
+          : [];
+        const isInBasket = includes(basketIdeaIds, ideaId);
+        const budgetingDisabledReason =
+          idea.attributes.action_descriptor.budgeting?.disabled_reason;
 
-    const { idea } = this.props;
+        if (
+          isNilOrError(authUser) ||
+          budgetingDisabledReason === 'not_verified'
+        ) {
+          openSignUpInModal({
+            verification: budgetingDisabledReason === 'not_verified',
+            verificationContext:
+              budgetingDisabledReason === 'not_verified'
+                ? {
+                    action: 'budgeting',
+                    id: participationContextId,
+                    type: participationContextType,
+                  }
+                : undefined,
+            action: () => assignBudget(),
+          });
+        } else if (!isNilOrError(authUser) && budgetingEnabled) {
+          setProcessing(true);
 
-    if (!isNilOrError(idea)) {
-      const {
-        ideaId,
-        authUser,
-        basket,
-        participationContextId,
-        participationContextType,
-      } = this.props;
-      const budgetingEnabled =
-        idea.attributes.action_descriptor.budgeting?.enabled;
-      const basketIdeaIds = !isNilOrError(basket)
-        ? basket.relationships.ideas.data.map((idea) => idea.id)
-        : [];
-      const isInBasket = includes(basketIdeaIds, ideaId);
-      const budgetingDisabledReason =
-        idea.attributes.action_descriptor.budgeting?.disabled_reason;
+          if (!isNilOrError(basket)) {
+            let newIdeas: string[] = [];
 
-      if (
-        isNilOrError(authUser) ||
-        budgetingDisabledReason === 'not_verified'
-      ) {
-        openSignUpInModal({
-          verification: budgetingDisabledReason === 'not_verified',
-          verificationContext:
-            budgetingDisabledReason === 'not_verified'
-              ? {
-                  action: 'budgeting',
-                  id: participationContextId,
-                  type: participationContextType,
-                }
-              : undefined,
-          action: () => this.assignBudget(),
-        });
-      } else if (!isNilOrError(authUser) && budgetingEnabled) {
-        this.setState({ processing: true });
+            if (isInBasket) {
+              newIdeas = basket.relationships.ideas.data
+                .filter((basketIdea) => basketIdea.id !== idea.id)
+                .map((basketIdea) => basketIdea.id);
+            } else {
+              newIdeas = [
+                ...basket.relationships.ideas.data.map(
+                  (basketIdea) => basketIdea.id
+                ),
+                idea.id,
+              ];
+            }
 
-        if (!isNilOrError(basket)) {
-          let newIdeas: string[] = [];
-
-          if (isInBasket) {
-            newIdeas = basket.relationships.ideas.data
-              .filter((basketIdea) => basketIdea.id !== idea.id)
-              .map((basketIdea) => basketIdea.id);
+            try {
+              await updateBasket(basket.id, {
+                user_id: authUser.id,
+                participation_context_id: participationContextId,
+                participation_context_type: capitalizeParticipationContextType(
+                  participationContextType
+                ),
+                idea_ids: newIdeas,
+                submitted_at: null,
+              });
+              done();
+              trackEventByName(tracks.ideaAddedToBasket);
+            } catch (error) {
+              done();
+              streams.fetchAllWith({ dataId: [basket.id] });
+            }
           } else {
-            newIdeas = [
-              ...basket.relationships.ideas.data.map(
-                (basketIdea) => basketIdea.id
-              ),
-              idea.id,
-            ];
-          }
-
-          try {
-            await updateBasket(basket.id, {
-              user_id: authUser.id,
-              participation_context_id: participationContextId,
-              participation_context_type: capitalizeParticipationContextType(
-                participationContextType
-              ),
-              idea_ids: newIdeas,
-              submitted_at: null,
-            });
-            done();
-            trackEventByName(tracks.ideaAddedToBasket);
-          } catch (error) {
-            done();
-            streams.fetchAllWith({ dataId: [basket.id] });
-          }
-        } else {
-          try {
-            await addBasket({
-              user_id: authUser.id,
-              participation_context_id: participationContextId,
-              participation_context_type: capitalizeParticipationContextType(
-                participationContextType
-              ),
-              idea_ids: [idea.id],
-            });
-            done();
-            trackEventByName(tracks.basketCreated);
-          } catch (error) {
-            done();
+            try {
+              await addBasket({
+                user_id: authUser.id,
+                participation_context_id: participationContextId,
+                participation_context_type: capitalizeParticipationContextType(
+                  participationContextType
+                ),
+                idea_ids: [idea.id],
+              });
+              done();
+              trackEventByName(tracks.basketCreated);
+            } catch (error) {
+              done();
+            }
           }
         }
       }
-    }
-  };
-
-  render() {
-    const { processing } = this.state;
-    const {
-      view,
-      ideaId,
-      authUser,
-      locale,
-      tenant,
-      idea,
-      basket,
-      className,
-      participationContextId,
-      participationContextType,
-      project,
-      phases,
-      phase,
-      intl: { formatMessage },
-    } = this.props;
+    };
 
     if (
       !isUndefined(authUser) &&
@@ -267,26 +252,21 @@ class AssignBudgetControl extends PureComponent<
       const isPermitted = budgetingDisabledReason !== 'not_permitted';
       const hasBudgetingDisabledReason = !!idea.attributes.action_descriptor
         .budgeting?.disabled_reason;
-      const isPBProject =
-        !isNilOrError(project) &&
-        project.attributes.process_type === 'continuous' &&
-        project.attributes.participation_method === 'budgeting';
-      const isPBPhase =
-        !isNilOrError(project) &&
-        !isNilOrError(phase) &&
-        project.attributes.process_type === 'timeline' &&
-        phase.attributes.participation_method === 'budgeting';
-      const currentPhase = getCurrentPhase(phases);
-      const isCurrentPhase = currentPhase?.id === phase?.id;
-      const isPBProjectOrPBPhase = isPBProject || isPBPhase;
-      const isPBProjectOrPBCurrentPhase =
-        isPBProject || (isPBPhase && isCurrentPhase);
+      const isPBContext =
+        participationContext?.attributes?.participation_method === 'budgeting';
+      const isCurrentPhase =
+        getCurrentPhase(phases)?.id === participationContext?.id;
+      const isCurrent =
+        (participationContextType === 'project' &&
+          (participationContext as IProjectData).attributes
+            .publication_status !== 'archived') ||
+        isCurrentPhase;
 
-      if (isPBProjectOrPBPhase) {
+      if (isPBContext) {
         const addRemoveButton =
-          isPBProjectOrPBCurrentPhase && isPermitted ? (
+          isCurrent && isPermitted ? (
             <Button
-              onClick={this.assignBudget}
+              onClick={assignBudget}
               disabled={
                 isSignedIn && !isBudgetingEnabled && !hasBudgetingDisabledReason
               }
@@ -297,7 +277,7 @@ class AssignBudgetControl extends PureComponent<
               className={`e2e-assign-budget-button ${
                 isInBasket ? 'in-basket' : 'not-in-basket'
               }`}
-              ariaLabel={formatMessage(
+              ariaLabel={intl.formatMessage(
                 !isInBasket
                   ? messages.addToMyExpenses
                   : messages.removeFromMyExpenses
@@ -349,7 +329,7 @@ class AssignBudgetControl extends PureComponent<
                 </Budget>
                 {addRemoveButton}
               </BudgetWithButtonWrapper>
-              {isPBProjectOrPBPhase && isPermitted && (
+              {isPermitted && (
                 <StyledPBExpenses
                   participationContextId={participationContextId}
                   participationContextType={participationContextType}
@@ -364,53 +344,66 @@ class AssignBudgetControl extends PureComponent<
 
     return null;
   }
-}
+);
 
-const Data = adopt<DataProps, InputProps>({
-  authUser: <GetAuthUser />,
-  tenant: <GetAppConfiguration />,
-  locale: <GetLocale />,
-  idea: ({ ideaId, render }) => <GetIdea ideaId={ideaId}>{render}</GetIdea>,
-  project: ({ projectId, render }) => (
-    <GetProject projectId={projectId}>{render}</GetProject>
-  ),
-  phases: ({ project, render }) => {
-    return (
-      <GetPhases projectId={!isNilOrError(project) ? project.id : null}>
-        {render}
-      </GetPhases>
-    );
-  },
-  phase: ({ participationContextType, participationContextId, render }) => (
-    <GetPhase
-      id={participationContextType === 'phase' ? participationContextId : null}
-    >
-      {render}
-    </GetPhase>
-  ),
-  basket: ({ project, phase, participationContextType, render }) => {
-    let basketId: string | null = null;
+const AssignBudgetControlWrapper = memo<OuterProps & InjectedIntlProps>(
+  ({ view, projectId, ideaId, className, intl }) => {
+    const authUser = useAuthUser();
+    const tenant = useAppConfiguration();
+    const locale = useLocale();
+    const idea = useIdea({ ideaId });
+    const project = useProject({ projectId });
+    const phases = usePhases(projectId);
 
-    if (participationContextType === 'project') {
-      basketId = !isNilOrError(project)
-        ? project.relationships?.user_basket?.data?.id || null
-        : null;
-    } else {
-      basketId = !isNilOrError(phase)
-        ? phase.relationships?.user_basket?.data?.id || null
-        : null;
+    const isContinuousProject =
+      project?.attributes.process_type === 'continuous';
+    const ideaPhaseIds = !isNilOrError(idea)
+      ? idea?.relationships?.phases?.data?.map((item) => item.id)
+      : null;
+    const ideaPhases = !isNilOrError(phases)
+      ? phases?.filter((phase) => includes(ideaPhaseIds, phase.id))
+      : null;
+    const latestRelevantIdeaPhase = ideaPhases
+      ? getLatestRelevantPhase(ideaPhases)
+      : null;
+    const participationContext = isContinuousProject
+      ? project
+      : latestRelevantIdeaPhase;
+    const participationContextType = isContinuousProject ? 'project' : 'phase';
+    const participationContextId = participationContext?.id || null;
+
+    if (
+      !isUndefinedOrError(authUser) &&
+      !isNilOrError(tenant) &&
+      !isNilOrError(locale) &&
+      !isNilOrError(idea) &&
+      !isNilOrError(project) &&
+      !isUndefinedOrError(phases) &&
+      participationContext &&
+      participationContextId
+    ) {
+      return (
+        <AssignBudgetControl
+          view={view}
+          projectId={projectId}
+          ideaId={ideaId}
+          authUser={authUser}
+          tenant={tenant.data}
+          locale={locale}
+          idea={idea}
+          project={project}
+          phases={phases}
+          participationContext={participationContext}
+          participationContextType={participationContextType}
+          participationContextId={participationContextId}
+          intl={intl}
+          className={className}
+        />
+      );
     }
 
-    return <GetBasket id={basketId}>{render}</GetBasket>;
-  },
-});
-
-const AssignBudgetControlWithHoCs = injectIntl(AssignBudgetControl);
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => (
-      <AssignBudgetControlWithHoCs {...inputProps} {...dataProps} />
-    )}
-  </Data>
+    return null;
+  }
 );
+
+export default injectIntl<OuterProps>(AssignBudgetControlWrapper);
