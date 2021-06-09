@@ -149,4 +149,16 @@ export default defineMessages({
     id: 'app.containers.Admin.Insights.Edit.Details.createCategoryPrompt',
     defaultMessage: 'Create',
   },
+  editCategoryName: {
+    id: 'app.containers.Admin.Insights.Edit.Details.editCategoryName',
+    defaultMessage: 'Edit category name',
+  },
+  deleteCategory: {
+    id: 'app.containers.Admin.Insights.Edit.Details.deleteCategory',
+    defaultMessage: 'Delete category',
+  },
+  deleteCategoryConfirmation: {
+    id: 'app.containers.Admin.Insights.Edit.Details.deleteCategoryConfirmation',
+    defaultMessage: 'Are you sure you want to delete this category?',
+  },
 });

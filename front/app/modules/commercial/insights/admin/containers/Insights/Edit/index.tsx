@@ -38,7 +38,10 @@ import messages from '../messages';
 import { CLErrors } from 'typings';
 
 // services
-import { addInsightsCategory } from 'modules/commercial/insights/services/insightsCategories';
+import {
+  addInsightsCategory,
+  deleteInsightsCategory,
+} from 'modules/commercial/insights/services/insightsCategories';
 
 const Container = styled.div`
   height: calc(100vh - ${stylingConsts.menuHeight + topBarHeight}px);
@@ -186,8 +189,21 @@ const EditInsightsView = ({
     }
   };
 
+  const handleDeleteCategory = async () => {
+    {
+      const deleteMessage = formatMessage(messages.deleteCategoryConfirmation);
+      if (window.confirm(deleteMessage)) {
+        await deleteInsightsCategory(viewId, query.category);
+      }
+      clHistory.replace({
+        pathname,
+        search: stringify({ ...query, category: '' }, { addQueryPrefix: true }),
+      });
+      setCategoryMenuOpened(false);
+    }
+  };
+
   const selectCategory = (categoryId: string) => () => {
-    console.log('called');
     clHistory.replace({
       pathname,
       search: stringify(
@@ -312,6 +328,7 @@ const EditInsightsView = ({
                   boxShadowHover="none"
                   bgColor="transparent"
                   bgHoverColor="transparent"
+                  padding="0px 20px"
                   onClick={toggleCategoryMenu}
                 />
               </>
@@ -330,8 +347,12 @@ const EditInsightsView = ({
             className="dropdown"
             content={
               <>
-                <DropdownListItem>Rename category</DropdownListItem>
-                <DropdownListItem>Delete category</DropdownListItem>
+                <DropdownListItem>
+                  {formatMessage(messages.editCategoryName)}
+                </DropdownListItem>
+                <DropdownListItem onClick={handleDeleteCategory}>
+                  {formatMessage(messages.deleteCategory)}
+                </DropdownListItem>
               </>
             }
           />

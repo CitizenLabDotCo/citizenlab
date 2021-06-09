@@ -74,7 +74,7 @@ export function updateInsightsCategory(
   );
 }
 
-export function deleteInsightsCategories(
+export function deleteInsightsCategory(
   insightsViewId: string,
   insightsCategoryId: string
 ) {

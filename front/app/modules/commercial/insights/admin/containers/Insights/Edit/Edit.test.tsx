@@ -26,6 +26,7 @@ jest.mock('utils/cl-intl');
 
 jest.mock('modules/commercial/insights/services/insightsCategories', () => ({
   addInsightsCategory: jest.fn(),
+  deleteInsightsCategory: jest.fn(),
 }));
 
 jest.mock('modules/commercial/insights/hooks/useInsightsCategories', () => {
@@ -53,6 +54,8 @@ jest.mock('react-router', () => {
     },
   };
 });
+
+window.confirm = jest.fn(() => true);
 
 describe('Insights Edit', () => {
   it('renders Edit screen', () => {
@@ -85,6 +88,21 @@ describe('Insights Edit', () => {
     ).toBeInTheDocument();
   });
 
+  it('deletes category correctly', async () => {
+    mockLocationData = { pathname: '', query: { category: mockData[0].id } };
+    render(<InsightsEdit />);
+    fireEvent.click(
+      within(screen.getByTestId('insightsInputsHeader')).getByRole('button')
+    );
+    await act(async () => {
+      fireEvent.click(screen.getByText('Delete category'));
+    });
+    expect(service.deleteInsightsCategory).toHaveBeenCalledWith(
+      viewId,
+      mockData[0].id
+    );
+  });
+
   it('selects all input correctly', () => {
     const spy = jest.spyOn(clHistory, 'replace');
     render(<InsightsEdit />);
@@ -102,7 +120,7 @@ describe('Insights Edit', () => {
   });
   it('adds category with correct view id and name ', async () => {
     const categoryName = 'New category';
-    const spy = jest.spyOn(service, 'addInsightsCategory');
+
     render(<InsightsEdit />);
 
     fireEvent.input(screen.getByPlaceholderText('Add category'), {
@@ -115,12 +133,11 @@ describe('Insights Edit', () => {
       fireEvent.click(screen.getByText('+'));
     });
 
-    expect(spy).toHaveBeenCalledWith(viewId, categoryName);
+    expect(service.addInsightsCategory).toHaveBeenCalledWith(
+      viewId,
+      categoryName
+    );
   });
 });
 
-// shows all input when no category is selected
-// selects category correctly and shows its name
-// selects all input correctly
 // rename category modal
-// deletes category and returns to all categories
