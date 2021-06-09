@@ -16,9 +16,11 @@ import {
   DropdownListItem,
 } from 'cl2-component-library';
 import Divider from 'components/admin/Divider';
+import Modal from 'components/UI/Modal';
 import TopBar, { topBarHeight } from '../../../components/TopBar';
 import Error from 'components/UI/Error';
 import InputsTable from './InputsTable';
+import RenameCategory from './RenameCategory';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -161,8 +163,13 @@ const EditInsightsView = ({
     setName(value);
     setErrors(undefined);
   };
-
+  const [renameCategoryModalOpened, setRenameCategoryModalOpened] = useState(
+    false
+  );
   const [isCategoryMenuOpened, setCategoryMenuOpened] = useState(false);
+
+  const closeCategoryRenameModal = () => setRenameCategoryModalOpened(false);
+  const openCategoryRenameModal = () => setRenameCategoryModalOpened(true);
 
   const toggleCategoryMenu = () => {
     setCategoryMenuOpened(!isCategoryMenuOpened);
@@ -193,7 +200,11 @@ const EditInsightsView = ({
     {
       const deleteMessage = formatMessage(messages.deleteCategoryConfirmation);
       if (window.confirm(deleteMessage)) {
-        await deleteInsightsCategory(viewId, query.category);
+        try {
+          await deleteInsightsCategory(viewId, query.category);
+        } catch {
+          // Do nothing
+        }
       }
       clHistory.replace({
         pathname,
@@ -347,7 +358,7 @@ const EditInsightsView = ({
             className="dropdown"
             content={
               <>
-                <DropdownListItem>
+                <DropdownListItem onClick={openCategoryRenameModal}>
                   {formatMessage(messages.editCategoryName)}
                 </DropdownListItem>
                 <DropdownListItem onClick={handleDeleteCategory}>
@@ -359,6 +370,17 @@ const EditInsightsView = ({
           <Divider />
           <InputsTable />
         </Inputs>
+        <Modal
+          opened={renameCategoryModalOpened}
+          close={closeCategoryRenameModal}
+        >
+          {selectedCategory && (
+            <RenameCategory
+              closeRenameModal={closeCategoryRenameModal}
+              originalCategoryName={selectedCategory.attributes.name}
+            />
+          )}
+        </Modal>
       </Container>
     </div>
   );
