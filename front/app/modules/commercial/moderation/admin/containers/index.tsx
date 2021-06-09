@@ -408,11 +408,11 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
           (moderationItem) =>
             selectedRowModerationIds.includes(moderationItem.id)
         );
-        const selectedModerationItemsWithFlag = selectedModerationItems.filter(
+        const selectedModerationItemsWithFlagRelationship = selectedModerationItems.filter(
           (moderationItem) =>
             moderationItem.relationships.inappropriate_content_flag?.data.id
         );
-        const promises = selectedModerationItemsWithFlag.map(
+        const promises = selectedModerationItemsWithFlagRelationship.map(
           (moderationItemWithFlag) =>
             inappropriateContentFlagByIdStream(
               moderationItemWithFlag.id
@@ -486,9 +486,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
 
               <Outlet
                 id="app.modules.commercial.moderation.admin.containers.actionbar.buttons"
-                selectedModerationItemsWithContentWarningLength={
-                  activeInappropriateContentFlags.length
-                }
+                activeFlagsCount={activeInappropriateContentFlags.length}
                 processing={processing}
                 onClick={removeFlags}
               />
