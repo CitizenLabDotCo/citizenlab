@@ -98,6 +98,11 @@ class IdeasFinder < ApplicationFinder
   def _search_restricted?
     UserDisplayNameService.new(AppConfiguration.instance, current_user).restricted?
   end
+
+  def location_required_condition(location_required)
+    return unless location_required
+    @records.where.not(location_point: nil, location_description: nil)
+  end
 end
 
 IdeasFinder.include_if_ee('IdeaAssignment::Extensions::IdeasFinder')
