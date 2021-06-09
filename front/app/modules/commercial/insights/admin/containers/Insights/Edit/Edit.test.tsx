@@ -1,6 +1,7 @@
 import React from 'react';
-import { render, screen, fireEvent, act } from 'utils/testUtils/rtl';
+import { render, screen, fireEvent, act, within } from 'utils/testUtils/rtl';
 import * as service from 'modules/commercial/insights/services/insightsCategories';
+import clHistory from 'utils/cl-router/history';
 
 import InsightsEdit from './';
 
@@ -35,6 +36,8 @@ jest.mock('hooks/useLocale', () => jest.fn(() => 'en'));
 
 const viewId = '1';
 
+let mockLocationData = { pathname: '', query: {} };
+
 jest.mock('react-router', () => {
   return {
     withRouter: (Component) => {
@@ -43,7 +46,7 @@ jest.mock('react-router', () => {
           <Component
             {...props}
             params={{ viewId }}
-            location={{ pathname: '', query: {} }}
+            location={mockLocationData}
           />
         );
       };
@@ -61,27 +64,63 @@ describe('Insights Edit', () => {
       render(<InsightsEdit />);
       expect(screen.getAllByTestId('insightsCategory')).toHaveLength(2);
     });
-    it('renders Infobox when no categories are available', () => {
-      mockData = [];
+    it('selects category correctly', () => {
+      const spy = jest.spyOn(clHistory, 'replace');
       render(<InsightsEdit />);
-      expect(screen.getByTestId('insightsNoCategories')).toBeInTheDocument();
-    });
-    it('adds category with correct view id and name ', async () => {
-      const categoryName = 'New category';
-      const spy = jest.spyOn(service, 'addInsightsCategory');
-      render(<InsightsEdit />);
-
-      fireEvent.input(screen.getByPlaceholderText('Add category'), {
-        target: {
-          value: categoryName,
-        },
+      fireEvent.click(screen.getByText(mockData[0].attributes.name));
+      expect(spy).toHaveBeenCalledWith({
+        pathname: '',
+        search: `?category=${mockData[0].id}`,
       });
-
-      await act(async () => {
-        fireEvent.click(screen.getByText('+'));
-      });
-
-      expect(spy).toHaveBeenCalledWith(viewId, categoryName);
     });
   });
+
+  it('shows selected category correctly', () => {
+    mockLocationData = { pathname: '', query: { category: mockData[0].id } };
+    render(<InsightsEdit />);
+    expect(
+      within(screen.getByTestId('insightsInputsHeader')).getByText(
+        mockData[0].attributes.name
+      )
+    ).toBeInTheDocument();
+  });
+
+  it('selects all input correctly', () => {
+    const spy = jest.spyOn(clHistory, 'replace');
+    render(<InsightsEdit />);
+    fireEvent.click(screen.getAllByText('All input')[0]);
+    expect(spy).toHaveBeenCalledWith({
+      pathname: '',
+      search: `?category=`,
+    });
+  });
+
+  it('renders Infobox when no categories are available', () => {
+    mockData = [];
+    render(<InsightsEdit />);
+    expect(screen.getByTestId('insightsNoCategories')).toBeInTheDocument();
+  });
+  it('adds category with correct view id and name ', async () => {
+    const categoryName = 'New category';
+    const spy = jest.spyOn(service, 'addInsightsCategory');
+    render(<InsightsEdit />);
+
+    fireEvent.input(screen.getByPlaceholderText('Add category'), {
+      target: {
+        value: categoryName,
+      },
+    });
+
+    await act(async () => {
+      fireEvent.click(screen.getByText('+'));
+    });
+
+    expect(spy).toHaveBeenCalledWith(viewId, categoryName);
+  });
 });
+
+// shows all input when no category is selected
+// selects category correctly and shows its name
+// selects all input correctly
+// rename category modal
+// deletes category and returns to all categories

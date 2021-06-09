@@ -168,6 +168,7 @@ const EditInsightsView = ({
   };
 
   const selectCategory = (categoryId: string) => () => {
+    console.log('called');
     clHistory.replace({
       pathname,
       search: stringify(
@@ -279,7 +280,7 @@ const EditInsightsView = ({
           </CategoriesList>
         </Categories>
         <Inputs>
-          <StyledHeader>
+          <StyledHeader data-testid="insightsInputsHeader">
             {selectedCategory ? (
               selectedCategory.attributes.name
             ) : (
