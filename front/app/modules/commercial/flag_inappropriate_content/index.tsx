@@ -6,7 +6,7 @@ import RemoveFlagButton from './admin/components/RemoveFlagButton';
 import ActivityTab from './admin/components/ActivityTab';
 import InappropriateContentWarning from './admin/components/InappropriateContentWarning';
 import useFeatureFlag from 'hooks/useFeatureFlag';
-import NLPFlaggedPostNotification from './citizen/components/NLPFlaggedPostNotification';
+import NLPFlagNotification from './citizen/components/NLPFlagNotification';
 import { INlpFlaggedPostNotificationData } from 'services/notifications';
 
 type RenderOnFeatureFlagProps = {
@@ -55,7 +55,7 @@ const configuration: ModuleConfiguration = {
           notification={notification}
           notificationType="inappropriate_content_flagged"
         >
-          <NLPFlaggedPostNotification
+          <NLPFlagNotification
             notification={notification as INlpFlaggedPostNotificationData}
           />
         </RenderOnNotificationType>
