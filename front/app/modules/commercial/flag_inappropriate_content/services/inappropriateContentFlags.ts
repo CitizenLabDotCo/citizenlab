@@ -6,6 +6,7 @@ type TReasonCode = 'inappropriate' | 'wrong' | 'other';
 
 export interface IInappropriateContentFlagData {
   id: string;
+  type: string;
   attributes: {
     // We want to keep the flag alive to potentially re-add it.
     // Therefore, to mark a "removed" flag in the front-end,
@@ -28,10 +29,10 @@ export interface IInappropriateContentFlag {
   data: IInappropriateContentFlagData;
 }
 
-const apiEndpoint = `${API_PATH}/inappropriate_content_flag`;
+const apiEndpoint = `${API_PATH}/inappropriate_content_flags`;
 
 export function removeInappropriateContentFlag(flagId: string) {
-  return streams.delete(`${apiEndpoint}/${flagId}#mark_as_deleted`, flagId);
+  return streams.delete(`${apiEndpoint}/${flagId}/mark_as_deleted`, flagId);
 }
 
 export function inappropriateContentFlagByIdStream(flagId: string) {
