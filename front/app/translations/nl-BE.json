@@ -16,7 +16,7 @@
   "app.components.AssignBudgetControl.assign": "Voeg toe aan mijn uitgaven",
   "app.components.AssignBudgetControl.assigned": "Toegevoegd aan mijn uitgaven",
   "app.components.AssignBudgetControl.backToOverview": "Terug naar het overzicht",
-  "app.components.AssignBudgetControl.undo": "Ongedaan maken",
+  "app.components.AssignBudgetControl.undo": "Annuleren",
   "app.components.AssignBudgetControl.verifyAccountLinkText": "verifieer je identiteit",
   "app.components.Author.a11y_postedBy": "Geplaatst door:",
   "app.components.AvatarBubbles.numberOfUsers": "{numberOfUsers} gebruikers",
