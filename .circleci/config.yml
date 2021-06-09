@@ -137,12 +137,14 @@ commands:
               -d '{"state": "success","description": "Success","context": "ci/circleci: EE '"$CIRCLE_JOB"'","target_url": "'"$CIRCLE_BUILD_URL"'"}'
 
 jobs:
-  empty-job:
+  slack-invalid-data-success:
     resource_class: small
     docker:
       - image: cimg/base:2021.03
     steps:
-      - run: echo "Doing absolutely nothing"
+      - slack/notify:
+          event: pass
+          template: basic_success_1
 
   # *************** back ***************
 
@@ -359,7 +361,7 @@ jobs:
     steps:
       - run:
           name: Check for inconsistent data
-          command: ssh << parameters.ssh_user >>@<< parameters.ssh_host >> -o StrictHostKeyChecking=no "docker run --env-file cl2-deployment/<< parameters.env_file >> citizenlabdotco/back-ee:$CIRCLE_BRANCH rake checks:invalid_data"
+          command: ssh << parameters.ssh_user >>@<< parameters.ssh_host >> -o StrictHostKeyChecking=no "docker run --env-file cl2-deployment/<< parameters.env_file >> citizenlabdotco/back-ee:production rake checks:invalid_data"
           no_output_timeout: 60m
 
   # *************** front ***************
@@ -674,13 +676,13 @@ workflows:
             branches:
               only: master
   nightly-templates:
-    # triggers:
-    #   - schedule:
-    #       cron: "0 0 * * *"
-    #       filters:
-    #         branches:
-    #           only:
-    #             - production
+    triggers:
+      - schedule:
+          cron: "0 0 * * *"
+          filters:
+            branches:
+              only:
+                - production
     jobs:
       - back-build-ee-docker-image:
           context: 
@@ -797,7 +799,7 @@ workflows:
             - slack-dev-notifications-inconsistent-data
           ssh_host: '35.179.69.215'
           env_file: '.env-web'
-      - empty-job:
+      - slack-invalid-data-success:
           name: ':tada: SUCCESS: No invalid data was detected!' # Mentions are not supported for basic_success_1
           context:
             - slack-dev-notifications-inconsistent-data
@@ -807,7 +809,4 @@ workflows:
             - 'Canada'
             - 'US West'
             - 'UK'
-          post-steps:
-             - slack/notify:
-                event: pass
-                template: basic_success_1
+             
