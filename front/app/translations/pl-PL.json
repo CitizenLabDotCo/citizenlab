@@ -1986,7 +1986,6 @@
   "app.containers.IdeasShow.MetaInformation.postedBy": "Zgłoszony przez",
   "app.containers.IdeasShow.MetaInformation.similarInputs": "Podobne inicjatywy",
   "app.containers.IdeasShow.MetaInformation.topics": "Tematy",
-  "app.containers.IdeasShow.a11y_voting": "Głosowanie",
   "app.containers.IdeasShow.bodyTitle": "Opis",
   "app.containers.IdeasShow.commentCTA": "Skomentuj",
   "app.containers.IdeasShow.contributionEmailSharingBody": "Poprzyj ten wkład '{postTitle}' w {postUrl}!",
