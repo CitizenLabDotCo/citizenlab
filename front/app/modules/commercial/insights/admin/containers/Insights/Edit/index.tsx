@@ -7,7 +7,14 @@ import styled from 'styled-components';
 import { darken } from 'polished';
 
 // components
-import { Button, Input, Spinner, IconTooltip } from 'cl2-component-library';
+import {
+  Button,
+  Input,
+  Spinner,
+  IconTooltip,
+  Dropdown,
+  DropdownListItem,
+} from 'cl2-component-library';
 import Divider from 'components/admin/Divider';
 import TopBar, { topBarHeight } from '../../../components/TopBar';
 import Error from 'components/UI/Error';
@@ -127,6 +134,7 @@ const ButtonsContainer = styled.div`
 
 const StyledHeader = styled.h2`
   display: flex;
+  align-items: center;
   color: ${colors.adminTextColor};
   font-size: ${fontSizes.large}px;
   button {
@@ -140,14 +148,25 @@ const EditInsightsView = ({
   location: { query, pathname },
 }: InjectedIntlProps & WithRouterProps) => {
   const locale = useLocale();
+
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<CLErrors | undefined>();
+
   const categories = useInsightsCategories(viewId);
   const [name, setName] = useState<string | null>();
-
   const onChangeName = (value: string) => {
     setName(value);
     setErrors(undefined);
+  };
+
+  const [isCategoryMenuOpened, setCategoryMenuOpened] = useState(false);
+
+  const toggleCategoryMenu = () => {
+    setCategoryMenuOpened(!isCategoryMenuOpened);
+  };
+
+  const closeCategoryMenu = () => {
+    setCategoryMenuOpened(false);
   };
 
   if (isNilOrError(locale) || isNilOrError(categories)) {
@@ -282,7 +301,20 @@ const EditInsightsView = ({
         <Inputs>
           <StyledHeader data-testid="insightsInputsHeader">
             {selectedCategory ? (
-              selectedCategory.attributes.name
+              <>
+                {selectedCategory.attributes.name}
+                <Button
+                  icon="more-options"
+                  locale={locale}
+                  iconColor={colors.label}
+                  iconHoverColor={colors.label}
+                  boxShadow="none"
+                  boxShadowHover="none"
+                  bgColor="transparent"
+                  bgHoverColor="transparent"
+                  onClick={toggleCategoryMenu}
+                />
+              </>
             ) : (
               <>
                 {formatMessage(messages.allInput)}
@@ -292,6 +324,17 @@ const EditInsightsView = ({
               </>
             )}
           </StyledHeader>
+          <Dropdown
+            opened={isCategoryMenuOpened}
+            onClickOutside={closeCategoryMenu}
+            className="dropdown"
+            content={
+              <>
+                <DropdownListItem>Rename category</DropdownListItem>
+                <DropdownListItem>Delete category</DropdownListItem>
+              </>
+            }
+          />
           <Divider />
           <InputsTable />
         </Inputs>
