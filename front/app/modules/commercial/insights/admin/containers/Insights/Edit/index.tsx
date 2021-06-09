@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import { darken } from 'polished';
 
 // components
-import { Button, Input, Spinner } from 'cl2-component-library';
+import { Button, Input, Spinner, IconTooltip } from 'cl2-component-library';
 import Divider from 'components/admin/Divider';
 import TopBar, { topBarHeight } from '../../../components/TopBar';
 import Error from 'components/UI/Error';
@@ -125,6 +125,15 @@ const ButtonsContainer = styled.div`
   margin-bottom: 20px;
 `;
 
+const StyledHeader = styled.h2`
+  display: flex;
+  color: ${colors.adminTextColor};
+  font-size: ${fontSizes.large}px;
+  button {
+    margin-left: 20px;
+  }
+`;
+
 const EditInsightsView = ({
   intl: { formatMessage },
   params: { viewId },
@@ -167,6 +176,10 @@ const EditInsightsView = ({
       ),
     });
   };
+
+  const selectedCategory = categories?.find(
+    (category) => category.id === query.category
+  );
 
   return (
     <div data-testid="insightsEdit">
@@ -266,6 +279,19 @@ const EditInsightsView = ({
           </CategoriesList>
         </Categories>
         <Inputs>
+          <StyledHeader>
+            {selectedCategory ? (
+              selectedCategory.attributes.name
+            ) : (
+              <>
+                {formatMessage(messages.allInput)}
+                <IconTooltip
+                  content={formatMessage(messages.allInputTooltip)}
+                />
+              </>
+            )}
+          </StyledHeader>
+          <Divider />
           <InputsTable />
         </Inputs>
       </Container>

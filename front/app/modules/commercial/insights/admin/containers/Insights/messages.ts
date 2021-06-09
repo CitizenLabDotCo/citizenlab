@@ -57,7 +57,7 @@ export default defineMessages({
   },
   listDeleteConfirmation: {
     id: 'app.containers.Admin.Insights.listDeleteConfirmation',
-    defaultMessage: 'Are you sure?',
+    defaultMessage: 'Are you sure you want to delete this view?',
   },
   createModalTitle: {
     id: 'app.containers.Admin.Reporting.Insights.createModalTitle',
@@ -131,6 +131,11 @@ export default defineMessages({
   allInput: {
     id: 'app.containers.Admin.Insights.Edit.allInput',
     defaultMessage: 'All input',
+  },
+  allInputTooltip: {
+    id: 'app.containers.Admin.Insights.Edit.allInputTooltip',
+    defaultMessage:
+      'This lists all previously processed input regardless of assigned categories. Recently added input is NOT shown here.',
   },
   addCategoryLabel: {
     id: 'app.containers.Admin.Insights.Edit.Details.addCategoryLabel',
