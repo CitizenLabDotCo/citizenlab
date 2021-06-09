@@ -717,6 +717,7 @@
   "app.containers.Admin.Insights.Edit.Details.addCategoryPlaceholder": "",
   "app.containers.Admin.Insights.Edit.Details.createCategoryPrompt": "",
   "app.containers.Admin.Insights.Edit.allInput": "",
+  "app.containers.Admin.Insights.Edit.allInputTooltip": "",
   "app.containers.Admin.Insights.Edit.categoryInfoBox": "",
   "app.containers.Admin.Insights.Edit.categoryInfoBoxBold": "",
   "app.containers.Admin.Insights.Edit.inputsEmptyState": "",
