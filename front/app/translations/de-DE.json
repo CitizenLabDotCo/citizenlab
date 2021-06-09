@@ -16,7 +16,7 @@
   "app.components.AssignBudgetControl.assign": "Zu meinen Ausgaben hinzufügen",
   "app.components.AssignBudgetControl.assigned": "Zu meinen Ausgaben hinzugefügt",
   "app.components.AssignBudgetControl.backToOverview": "Zurück zur Übersicht",
-  "app.components.AssignBudgetControl.undo": "Abbrechen",
+  "app.components.AssignBudgetControl.undo": "Rückgängig",
   "app.components.AssignBudgetControl.verifyAccountLinkText": "Verifizieren Sie Ihr Konto",
   "app.components.Author.a11y_postedBy": "Gepostet von:",
   "app.components.AvatarBubbles.numberOfUsers": "{numberOfUsers} Benutzer",
