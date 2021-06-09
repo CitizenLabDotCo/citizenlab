@@ -1,4 +1,4 @@
-import React, { FormEvent, memo, useState } from 'react';
+import React, { FormEvent, memo, useState, useCallback } from 'react';
 import { includes, isUndefined } from 'lodash-es';
 import {
   isNilOrError,
@@ -140,10 +140,13 @@ const AssignBudgetControl = memo<InnerProps & InjectedIntlProps>(
 
     const [processing, setProcessing] = useState(false);
 
-    const assignBudget = async (event?: FormEvent<any>) => {
+    const handleAddRemoveButtonClick = (event?: FormEvent) => {
       event?.preventDefault();
       event?.stopPropagation();
+      assignBudget();
+    };
 
+    const assignBudget = async () => {
       const timeout = (ms: number) =>
         new Promise((resolve) => setTimeout(resolve, ms));
       const done = async () => {
@@ -152,7 +155,7 @@ const AssignBudgetControl = memo<InnerProps & InjectedIntlProps>(
       };
 
       if (!isNilOrError(idea)) {
-        const budgetingEnabled =
+        const isBudgetingEnabled =
           idea.attributes.action_descriptor.budgeting?.enabled;
         const basketIdeaIds = !isNilOrError(basket)
           ? basket.relationships.ideas.data.map((idea) => idea.id)
@@ -175,9 +178,8 @@ const AssignBudgetControl = memo<InnerProps & InjectedIntlProps>(
                     type: participationContextType,
                   }
                 : undefined,
-            action: () => assignBudget(),
           });
-        } else if (!isNilOrError(authUser) && budgetingEnabled) {
+        } else if (!isNilOrError(authUser) && isBudgetingEnabled) {
           setProcessing(true);
 
           if (!isNilOrError(basket)) {
@@ -266,7 +268,7 @@ const AssignBudgetControl = memo<InnerProps & InjectedIntlProps>(
         const addRemoveButton =
           isCurrent && isPermitted ? (
             <Button
-              onClick={assignBudget}
+              onClick={handleAddRemoveButtonClick}
               disabled={
                 isSignedIn && !isBudgetingEnabled && !hasBudgetingDisabledReason
               }
