@@ -1986,7 +1986,6 @@
   "app.containers.IdeasShow.MetaInformation.postedBy": "Postat de",
   "app.containers.IdeasShow.MetaInformation.similarInputs": "Postări similare",
   "app.containers.IdeasShow.MetaInformation.topics": "Subiecte",
-  "app.containers.IdeasShow.a11y_voting": "Votare",
   "app.containers.IdeasShow.bodyTitle": "Descriere",
   "app.containers.IdeasShow.commentCTA": "Adaugă un comentariu",
   "app.containers.IdeasShow.contributionEmailSharingBody": "Susține această contribuție '{postTitle}' la {postUrl}!",
