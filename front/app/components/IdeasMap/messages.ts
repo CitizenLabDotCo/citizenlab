@@ -48,4 +48,20 @@ export default defineMessages({
     id: 'app.components.IdeasMap.or',
     defaultMessage: 'or',
   },
+  noResults: {
+    id: 'app.components.IdeasMap.noResults',
+    defaultMessage: 'No results found',
+  },
+  noFilteredResults: {
+    id: 'app.components.IdeasMap.noFilteredResults',
+    defaultMessage: 'The filters you selected did not return any results',
+  },
+  clickOnMapToAdd: {
+    id: 'app.components.IdeasMap.clickOnMapToAdd',
+    defaultMessage: 'Click on the map to add your input',
+  },
+  tapOnMapToAdd: {
+    id: 'app.components.IdeasMap.tapOnMapToAdd',
+    defaultMessage: 'Tap on the map to add your input',
+  },
 });

@@ -89,6 +89,10 @@ AppConfiguration.create!(
       enabled: true,
       allowed: true
     },
+    qualtrics_surveys: {
+      enabled: true,
+      allowed: true
+    },
     surveymonkey_surveys: {
       enabled: true,
       allowed: true

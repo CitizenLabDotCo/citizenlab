@@ -1,13 +1,11 @@
 import React, { PureComponent, lazy, Suspense } from 'react';
-import { sortBy, last, isUndefined, isString } from 'lodash-es';
+import { isUndefined, isString, includes } from 'lodash-es';
 import { isNilOrError, getFormattedBudget } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
 
 // services
 import { getInputTerm } from 'services/participationContexts';
-
-// typings
-import { IParticipationContextType } from 'typings';
+import { getLatestRelevantPhase } from 'services/phases';
 
 // analytics
 import { trackEvent } from 'utils/analytics';
@@ -25,7 +23,7 @@ import Body from 'components/PostShowComponents/Body';
 import Image from 'components/PostShowComponents/Image';
 import OfficialFeedback from 'components/PostShowComponents/OfficialFeedback';
 import Modal from 'components/UI/Modal';
-import AssignBudgetWrapper from './CTABox/ParticipatoryBudgetingCTABox/BudgetAssignment/AssignBudgetWrapper';
+import AssignBudgetControl from 'components/AssignBudgetControl';
 import SharingModalContent from 'components/PostShowComponents/SharingModalContent';
 import FeatureFlag from 'components/FeatureFlag';
 import IdeaMoreActions from './IdeaMoreActions';
@@ -40,7 +38,6 @@ import MobileSharingButtonComponent from './Buttons/MobileSharingButtonComponent
 import RightColumnDesktop from './RightColumnDesktop';
 
 // utils
-import { pastPresentOrFuture } from 'utils/dateUtils';
 import isFieldEnabled from './isFieldEnabled';
 
 // resources
@@ -83,112 +80,58 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 // style
 import styled from 'styled-components';
 import { media, viewportWidths, isRtl } from 'utils/styleUtils';
-import {
-  columnsGapDesktop,
-  columnsGapTablet,
-  pageContentMaxWidth,
-} from './styleConstants';
+import { columnsGapDesktop, pageContentMaxWidth } from './styleConstants';
 import Outlet from 'components/Outlet';
 
 const contentFadeInDuration = 250;
 const contentFadeInEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
 const contentFadeInDelay = 150;
 
-const Loading = styled.div`
-  width: 100vw;
-  height: calc(
-    100vh - ${(props) => props.theme.menuHeight + props.theme.footerHeight}px
-  );
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  ${media.smallerThanMaxTablet`
-    height: calc(100vh - ${({ theme: { mobileTopBarHeight } }) =>
-      mobileTopBarHeight}px);
-  `}
-
-  ${media.smallerThanMinTablet`
-    height: calc(100vh - ${({ theme: { mobileTopBarHeight } }) =>
-      mobileTopBarHeight}px);
-  `}
-`;
-
 const Container = styled.main`
-  display: flex;
-  flex-direction: column;
-  min-height: calc(
-    100vh - ${(props) => props.theme.menuHeight + props.theme.footerHeight}px
-  );
-  background: #fff;
-  opacity: 0;
-
-  ${media.smallerThanMaxTablet`
-    min-height: calc(100vh - ${({
-      theme: { mobileMenuHeight, mobileTopBarHeight },
-    }) => mobileMenuHeight + mobileTopBarHeight}px);
-  `}
-
-  &.content-enter {
-    opacity: 0;
-
-    &.content-enter-active {
-      opacity: 1;
-      transition: opacity ${contentFadeInDuration}ms ${contentFadeInEasing}
-        ${contentFadeInDelay}ms;
-    }
-  }
-
-  &.content-enter-done {
-    opacity: 1;
-  }
-`;
-
-const IdeaContainer = styled.div`
   width: 100%;
   max-width: ${pageContentMaxWidth}px;
-  margin: 0;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
   margin-left: auto;
   margin-right: auto;
-  padding: 0;
-  padding-top: 40px;
-  padding-left: 60px;
-  padding-right: 60px;
-  position: relative;
+  background: #fff;
 
-  ${media.smallerThanMaxTablet`
-    padding-top: 35px;
-  `}
+  &.loading {
+    flex: 1;
+    justify-content: center;
+  }
 
-  ${media.smallerThanMinTablet`
-    padding-top: 25px;
-    padding-left: 15px;
-    padding-right: 15px;
-  `}
+  &.loaded {
+    opacity: 0;
+
+    &.content-enter {
+      opacity: 0;
+
+      &.content-enter-active {
+        opacity: 1;
+        transition: opacity ${contentFadeInDuration}ms ${contentFadeInEasing}
+          ${contentFadeInDelay}ms;
+      }
+    }
+
+    &.content-enter-done {
+      opacity: 1;
+    }
+  }
 `;
 
 const Content = styled.div`
-  width: 100%;
   display: flex;
-
-  ${media.smallerThanMaxTablet`
-    display: block;
-  `}
 `;
 
 const LeftColumn = styled.div`
-  flex: 2;
-  margin: 0;
-  padding: 0;
-  padding-right: ${columnsGapDesktop}px;
+  flex: 1 1 100%;
+`;
 
-  ${media.tablet`
-    padding-right: ${columnsGapTablet}px;
-  `}
-
-  ${media.smallerThanMaxTablet`
-    padding: 0;
-  `}
+const StyledRightColumnDesktop = styled(RightColumnDesktop)`
+  margin-left: ${columnsGapDesktop}px;
 `;
 
 const IdeaHeader = styled.div`
@@ -204,22 +147,11 @@ const IdeaHeader = styled.div`
 
   ${media.smallerThanMaxTablet`
     margin-top: 0px;
-    margin-bottom: 25px;
-  `}
-`;
-
-const StyledIdeaMoreActions = styled(IdeaMoreActions)`
-  ${media.smallerThanMaxTablet`
-    display: none;
   `}
 `;
 
 const MobileIdeaMoreActions = styled(IdeaMoreActions)`
-  display: none;
-
-  ${media.smallerThanMaxTablet`
-    display: block;
-  `}
+  margin-left: 30px;
 `;
 
 const TopBar = styled.div`
@@ -233,11 +165,6 @@ const TopBar = styled.div`
 
 const StyledGoBackButton = styled(GoBackButton)`
   margin-bottom: 40px;
-  display: block;
-
-  ${media.smallerThanMaxTablet`
-    display: none;
-  `}
 `;
 
 const BodySectionTitle = styled.h2`
@@ -251,10 +178,6 @@ const BodySectionTitle = styled.h2`
 
 const StyledBody = styled(Body)`
   margin-bottom: 40px;
-
-  ${media.smallerThanMaxTablet`
-  margin-bottom: 25px;
-  `}
 `;
 
 const StyledIdeaProposedBudget = styled(IdeaProposedBudget)`
@@ -265,20 +188,12 @@ const MobileMetaInformation = styled(MetaInformation)`
   margin-bottom: 30px;
 `;
 
-const AssignBudgetControlMobile = styled.div`
-  margin-top: 40px;
-  margin-bottom: 40px;
-
-  ${media.biggerThanMaxTablet`
-    display: none;
-  `}
+const StyledAssignBudgetControl = styled(AssignBudgetControl)`
+  margin-top: 30px;
+  margin-bottom: 30px;
 `;
 
-const MobileIdeaSharingButton = styled(IdeaSharingButton)`
-  ${media.biggerThanMaxTablet`
-    display: none;
-  `}
-`;
+const MobileIdeaSharingButton = styled(IdeaSharingButton)``;
 
 const StyledOfficialFeedback = styled(OfficialFeedback)`
   margin-top: 80px;
@@ -308,25 +223,18 @@ interface InputProps {
   ideaId: string;
   projectId: string;
   insideModal: boolean;
+  setRef?: (element: HTMLDivElement) => void;
+  compact?: boolean;
   className?: string;
 }
 
 interface Props extends DataProps, InputProps {}
-
-interface IActionInfos {
-  participationContextType: IParticipationContextType | null;
-  participationContextId: string | null;
-  budgetingDescriptor: any | null;
-  showBudgetControl: boolean | null;
-  showVoteControl: boolean | null;
-}
 
 interface State {
   loaded: boolean;
   spamModalVisible: boolean;
   ideaIdForSocialSharing: string | null;
   translateButtonClicked: boolean;
-  actionInfos: IActionInfos | null;
 }
 
 export class IdeasShow extends PureComponent<
@@ -340,7 +248,6 @@ export class IdeasShow extends PureComponent<
       spamModalVisible: false,
       ideaIdForSocialSharing: null,
       translateButtonClicked: false,
-      actionInfos: null,
     };
   }
 
@@ -360,110 +267,6 @@ export class IdeasShow extends PureComponent<
 
   componentDidUpdate() {
     this.setLoaded();
-  }
-
-  static getDerivedStateFromProps(nextProps: Props, prevState: State) {
-    const { actionInfos } = prevState;
-    const { idea, project, phases, authUser } = nextProps;
-    let stateToUpdate: Partial<State> | null = null;
-
-    if (
-      !actionInfos &&
-      !isNilOrError(idea) &&
-      !isNilOrError(project) &&
-      !isUndefined(phases)
-    ) {
-      const upvotesCount = idea.attributes.upvotes_count;
-      const downvotesCount = idea.attributes.downvotes_count;
-      const votingEnabled =
-        idea.attributes.action_descriptor.voting_idea.enabled;
-      const votingDisabledReason =
-        idea.attributes.action_descriptor.voting_idea.disabled_reason;
-      const cancellingEnabled =
-        idea.attributes.action_descriptor.voting_idea.cancelling_enabled;
-      const votingFutureEnabled =
-        idea.attributes.action_descriptor.voting_idea.future_enabled;
-      const pbProject =
-        project.attributes.process_type === 'continuous' &&
-        project.attributes.participation_method === 'budgeting'
-          ? project
-          : null;
-      const pbPhase =
-        !pbProject && !isNilOrError(phases)
-          ? phases.find(
-              (phase) => phase.attributes.participation_method === 'budgeting'
-            )
-          : null;
-      const pbPhaseIsActive =
-        pbPhase &&
-        pastPresentOrFuture([
-          pbPhase.attributes.start_at,
-          pbPhase.attributes.end_at,
-        ]) === 'present';
-      const lastPhase = !isNilOrError(phases)
-        ? last(sortBy(phases, [(phase) => phase.attributes.end_at]))
-        : null;
-      const lastPhaseHasPassed = lastPhase
-        ? pastPresentOrFuture([
-            lastPhase.attributes.start_at,
-            lastPhase.attributes.end_at,
-          ]) === 'past'
-        : false;
-      const pbPhaseIsLast = pbPhase && lastPhase && lastPhase.id === pbPhase.id;
-      const showBudgetControl = !!(
-        pbProject ||
-        (pbPhase && (pbPhaseIsActive || (lastPhaseHasPassed && pbPhaseIsLast)))
-      );
-      const isSignedIn = !isNilOrError(authUser);
-      const shouldVerify =
-        !votingEnabled && votingDisabledReason === 'not_verified' && isSignedIn;
-      const verifiedButNotPermitted =
-        !shouldVerify && votingDisabledReason === 'not_permitted';
-      const shouldSignIn =
-        !votingEnabled &&
-        (votingDisabledReason === 'not_signed_in' ||
-          (votingDisabledReason === 'not_verified' && !isSignedIn));
-      const showVoteControl = !!(
-        !showBudgetControl &&
-        (votingEnabled ||
-          cancellingEnabled ||
-          votingFutureEnabled ||
-          upvotesCount > 0 ||
-          downvotesCount > 0 ||
-          shouldVerify ||
-          shouldSignIn ||
-          verifiedButNotPermitted)
-      );
-      const budgetingDescriptor =
-        idea?.attributes?.action_descriptor?.budgeting || null;
-      let participationContextType: IParticipationContextType | null = null;
-      let participationContextId: string | null = null;
-
-      if (pbProject) {
-        participationContextType = 'project';
-      } else if (pbPhase) {
-        participationContextType = 'phase';
-      }
-
-      if (!isNilOrError(pbProject)) {
-        participationContextId = pbProject.id;
-      } else if (!isNilOrError(pbPhase)) {
-        participationContextId = pbPhase.id;
-      }
-
-      stateToUpdate = {
-        ...(stateToUpdate || {}),
-        actionInfos: {
-          participationContextType,
-          participationContextId,
-          budgetingDescriptor,
-          showBudgetControl,
-          showVoteControl,
-        },
-      };
-    }
-
-    return stateToUpdate;
   }
 
   setLoaded = () => {
@@ -500,6 +303,26 @@ export class IdeasShow extends PureComponent<
     });
   };
 
+  handleContainerRef = (element: HTMLDivElement) => {
+    this.props.setRef?.(element);
+  };
+
+  getLatestRelevantPhaseId = () => {
+    const { idea, phases } = this.props;
+
+    if (!isNilOrError(idea) && !isNilOrError(phases)) {
+      const ideaPhaseIds = idea?.relationships?.phases?.data?.map(
+        (item) => item.id
+      );
+      const ideaPhases = phases.filter((phase) =>
+        includes(ideaPhaseIds, phase.id)
+      );
+      return getLatestRelevantPhase(ideaPhases)?.id;
+    }
+
+    return undefined;
+  };
+
   render() {
     const {
       locale,
@@ -515,17 +338,18 @@ export class IdeasShow extends PureComponent<
       insideModal,
       project,
       phases,
+      compact,
     } = this.props;
     const {
       loaded,
       ideaIdForSocialSharing,
       translateButtonClicked,
-      actionInfos,
     } = this.state;
     const { formatMessage } = this.props.intl;
     let content: JSX.Element | null = null;
 
     if (
+      !isNilOrError(project) &&
       !isNilOrError(idea) &&
       !isNilOrError(locale) &&
       !isNilOrError(tenant) &&
@@ -542,19 +366,9 @@ export class IdeasShow extends PureComponent<
       const ideaId = idea.id;
       const proposedBudget = idea.attributes?.proposed_budget;
       const ideaBody = localize(idea?.attributes?.body_multiloc);
-      const participationContextType =
-        actionInfos?.participationContextType || null;
-      const participationContextId =
-        actionInfos?.participationContextId || null;
-      const budgetingDescriptor = actionInfos?.budgetingDescriptor || null;
-      const showBudgetControl = actionInfos?.showBudgetControl || null;
-      const showVoteControl = actionInfos?.showVoteControl || null;
-      const biggerThanLargeTablet = windowSize
-        ? windowSize > viewportWidths.largeTablet
-        : false;
-      const smallerThanLargeTablet = windowSize
-        ? windowSize <= viewportWidths.largeTablet
-        : false;
+      const isCompactView =
+        compact === true ||
+        (windowSize ? windowSize <= viewportWidths.largeTablet : false);
       const proposedBudgetEnabled = isFieldEnabled(
         'proposed_budget',
         ideaCustomFieldsSchemas,
@@ -565,135 +379,117 @@ export class IdeasShow extends PureComponent<
         <>
           <IdeaMeta ideaId={ideaId} />
 
-          <IdeaContainer>
+          {!isCompactView && (
             <TopBar>
               <StyledGoBackButton
                 projectId={projectId}
                 insideModal={insideModal}
               />
-              <StyledIdeaMoreActions
-                idea={idea}
-                hasLeftMargin={true}
-                projectId={projectId}
-              />
+              <IdeaMoreActions idea={idea} projectId={projectId} />
             </TopBar>
+          )}
 
-            <Content id="e2e-idea-show-page-content">
-              <LeftColumn>
-                <IdeaHeader>
-                  <Title
-                    postType="idea"
-                    postId={ideaId}
-                    title={ideaTitle}
-                    locale={locale}
-                    translateButtonClicked={translateButtonClicked}
-                  />
-                  <MobileIdeaMoreActions
-                    idea={idea}
-                    hasLeftMargin={true}
-                    projectId={projectId}
-                  />
-                </IdeaHeader>
-
-                {ideaImageLarge && (
-                  <Image src={ideaImageLarge} alt="" id="e2e-idea-image" />
-                )}
-
-                <Outlet
-                  id="app.containers.IdeasShow.left"
-                  idea={idea}
-                  locale={locale}
-                  onClick={this.onTranslateIdea}
-                  translateButtonClicked={translateButtonClicked}
-                />
-
-                {proposedBudgetEnabled && proposedBudget && (
-                  <>
-                    <BodySectionTitle>
-                      <FormattedMessage {...messages.proposedBudgetTitle} />
-                    </BodySectionTitle>
-                    <StyledIdeaProposedBudget
-                      formattedBudget={getFormattedBudget(
-                        locale,
-                        proposedBudget,
-                        tenant.attributes.settings.core.currency
-                      )}
-                    />
-                    <BodySectionTitle>
-                      <FormattedMessage {...messages.bodyTitle} />
-                    </BodySectionTitle>
-                  </>
-                )}
-
-                <StyledBody
+          <Content id="e2e-idea-show-page-content">
+            <LeftColumn>
+              <IdeaHeader>
+                <Title
                   postType="idea"
                   postId={ideaId}
+                  title={ideaTitle}
                   locale={locale}
-                  body={ideaBody}
                   translateButtonClicked={translateButtonClicked}
                 />
-
-                {smallerThanLargeTablet && (
-                  <MobileMetaInformation
-                    ideaId={ideaId}
-                    projectId={projectId}
-                    statusId={statusId}
-                    authorId={authorId}
-                  />
+                {isCompactView && (
+                  <MobileIdeaMoreActions idea={idea} projectId={projectId} />
                 )}
+              </IdeaHeader>
 
-                {showBudgetControl &&
-                  participationContextId &&
-                  participationContextType &&
-                  budgetingDescriptor &&
-                  smallerThanLargeTablet && (
-                    <AssignBudgetControlMobile>
-                      <AssignBudgetWrapper
-                        ideaId={ideaId}
-                        projectId={projectId}
-                        participationContextId={participationContextId}
-                        participationContextType={participationContextType}
-                        budgetingDescriptor={budgetingDescriptor}
-                      />
-                    </AssignBudgetControlMobile>
-                  )}
+              {ideaImageLarge && (
+                <Image src={ideaImageLarge} alt="" id="e2e-idea-image" />
+              )}
 
+              <Outlet
+                id="app.containers.IdeasShow.left"
+                idea={idea}
+                locale={locale}
+                onClick={this.onTranslateIdea}
+                translateButtonClicked={translateButtonClicked}
+              />
+
+              {proposedBudgetEnabled && proposedBudget && (
+                <>
+                  <BodySectionTitle>
+                    <FormattedMessage {...messages.proposedBudgetTitle} />
+                  </BodySectionTitle>
+                  <StyledIdeaProposedBudget
+                    formattedBudget={getFormattedBudget(
+                      locale,
+                      proposedBudget,
+                      tenant.attributes.settings.core.currency
+                    )}
+                  />
+                  <BodySectionTitle>
+                    <FormattedMessage {...messages.bodyTitle} />
+                  </BodySectionTitle>
+                </>
+              )}
+
+              <StyledBody
+                postType="idea"
+                postId={ideaId}
+                locale={locale}
+                body={ideaBody}
+                translateButtonClicked={translateButtonClicked}
+              />
+
+              {isCompactView && (
+                <StyledAssignBudgetControl
+                  view="ideaPage"
+                  ideaId={ideaId}
+                  projectId={projectId}
+                />
+              )}
+
+              {isCompactView && (
+                <MobileMetaInformation
+                  ideaId={ideaId}
+                  projectId={projectId}
+                  statusId={statusId}
+                  authorId={authorId}
+                  compact={isCompactView}
+                />
+              )}
+
+              {isCompactView && (
                 <MobileIdeaSharingButton
                   ideaId={ideaId}
                   buttonComponent={<MobileSharingButtonComponent />}
                 />
-
-                <StyledOfficialFeedback
-                  postId={ideaId}
-                  postType="idea"
-                  permissionToPost={postOfficialFeedbackPermission}
-                />
-
-                <Comments>
-                  <Suspense fallback={<LoadingComments />}>
-                    <LazyComments postId={ideaId} postType="idea" />
-                  </Suspense>
-                </Comments>
-              </LeftColumn>
-
-              {biggerThanLargeTablet && (
-                <Suspense fallback={<Spinner />}>
-                  <RightColumnDesktop
-                    ideaId={ideaId}
-                    projectId={projectId}
-                    statusId={statusId}
-                    authorId={authorId}
-                    showVoteControl={showVoteControl}
-                    showBudgetControl={showBudgetControl}
-                    participationContextId={participationContextId}
-                    participationContextType={participationContextType}
-                    budgetingDescriptor={budgetingDescriptor}
-                    insideModal={insideModal}
-                  />
-                </Suspense>
               )}
-            </Content>
-          </IdeaContainer>
+
+              <StyledOfficialFeedback
+                postId={ideaId}
+                postType="idea"
+                permissionToPost={postOfficialFeedbackPermission}
+              />
+
+              <Comments>
+                <Suspense fallback={<LoadingComments />}>
+                  <LazyComments postId={ideaId} postType="idea" />
+                </Suspense>
+              </Comments>
+            </LeftColumn>
+
+            {!isCompactView && projectId && (
+              <StyledRightColumnDesktop
+                ideaId={ideaId}
+                projectId={projectId}
+                statusId={statusId}
+                authorId={authorId}
+                insideModal={insideModal}
+              />
+            )}
+          </Content>
         </>
       );
     }
@@ -708,9 +504,9 @@ export class IdeasShow extends PureComponent<
       return (
         <>
           {!loaded && (
-            <Loading>
+            <Container className={`loading ${className || ''}`}>
               <Spinner />
-            </Loading>
+            </Container>
           )}
           <CSSTransition
             classNames="content"
@@ -722,7 +518,11 @@ export class IdeasShow extends PureComponent<
             enter={true}
             exit={false}
           >
-            <Container id="e2e-idea-show" className={className}>
+            <Container
+              id="e2e-idea-show"
+              className={`loaded ${className || ''}`}
+              ref={this.handleContainerRef}
+            >
               {content}
             </Container>
           </CSSTransition>
@@ -793,13 +593,11 @@ const Data = adopt<DataProps, InputProps>({
       {render}
     </GetPermission>
   ),
-  ideaCustomFieldsSchemas: ({ projectId, render }) => {
-    return (
-      <GetIdeaCustomFieldsSchemas projectId={projectId}>
-        {render}
-      </GetIdeaCustomFieldsSchemas>
-    );
-  },
+  ideaCustomFieldsSchemas: ({ projectId, render }) => (
+    <GetIdeaCustomFieldsSchemas projectId={projectId}>
+      {render}
+    </GetIdeaCustomFieldsSchemas>
+  ),
   comments: ({ ideaId, render }) => (
     <GetComments postId={ideaId} postType="idea">
       {render}

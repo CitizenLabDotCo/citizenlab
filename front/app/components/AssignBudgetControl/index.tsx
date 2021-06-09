@@ -1,42 +1,46 @@
-import React, { PureComponent, FormEvent } from 'react';
-import { adopt } from 'react-adopt';
-import { includes, isUndefined, get } from 'lodash-es';
+import React, { FormEvent, memo, useState } from 'react';
+import { includes, isUndefined } from 'lodash-es';
 import {
   isNilOrError,
+  isUndefinedOrError,
   capitalizeParticipationContextType,
 } from 'utils/helperUtils';
 
-// typings
-import { IParticipationContextType } from 'typings';
-
 // components
 import Button from 'components/UI/Button';
-import Tippy from '@tippyjs/react';
-import { Icon } from 'cl2-component-library';
-import AssignBudgetDisabled from 'components/AssignBudgetControl/AssignBudgetDisabled';
 
 // services
+import { IProjectData } from 'services/projects';
+import {
+  getCurrentPhase,
+  getLatestRelevantPhase,
+  IPhaseData,
+} from 'services/phases';
 import { addBasket, updateBasket } from 'services/baskets';
 
 // resources
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetAppConfiguration, {
-  GetAppConfigurationChildProps,
-} from 'resources/GetAppConfiguration';
-import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
-import GetBasket, { GetBasketChildProps } from 'resources/GetBasket';
-import GetProject, { GetProjectChildProps } from 'resources/GetProject';
-import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
+import { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import { GetAppConfigurationChildProps } from 'resources/GetAppConfiguration';
+import { GetLocaleChildProps } from 'resources/GetLocale';
+import { GetIdeaChildProps } from 'resources/GetIdea';
+import { GetProjectChildProps } from 'resources/GetProject';
+import { GetPhasesChildProps } from 'resources/GetPhases';
+
+// hooks
+import useAuthUser from 'hooks/useAuthUser';
+import useAppConfiguration from 'hooks/useAppConfiguration';
+import useLocale from 'hooks/useLocale';
+import useIdea from 'hooks/useIdea';
+import useBasket from 'hooks/useBasket';
+import useProject from 'hooks/useProject';
+import usePhases from 'hooks/usePhases';
 
 // tracking
-import { injectTracks } from 'utils/analytics';
+import { trackEventByName } from 'utils/analytics';
 import tracks from 'containers/ProjectsShowPage/shared/pb/tracks';
 
 // utils
 import streams from 'utils/streams';
-import { pastPresentOrFuture } from 'utils/dateUtils';
-import clHistory from 'utils/cl-router/history';
 import { openSignUpInModal } from 'components/SignUpIn/events';
 
 // i18n
@@ -46,10 +50,12 @@ import messages from './messages';
 
 // styles
 import styled from 'styled-components';
-import { fontSizes, colors } from 'utils/styleUtils';
+import { fontSizes, colors, defaultCardStyle, media } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import PBExpenses from 'containers/ProjectsShowPage/shared/pb/PBExpenses';
-import { darken } from 'polished';
+
+// typings
+import { IParticipationContextType } from 'typings';
 
 const IdeaCardContainer = styled.div`
   display: flex;
@@ -60,299 +66,172 @@ const IdeaPageContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: stretch;
+
+  ${media.smallerThanMaxTablet`
+    padding: 20px;
+    background: ${colors.backgroundLightGrey};
+  `}
 `;
 
-const BudgetBox = styled.div`
-  background-color: white;
+const BudgetWithButtonWrapper = styled.div`
   width: 100%;
-  height: 95px;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: stretch;
   justify-content: center;
-  margin-bottom: 5px;
-  position: relative;
-  border: solid 1px ${colors.separation};
-  border-radius: ${(props: any) => props.theme.borderRadius};
 `;
 
 const Budget = styled.div`
-  color: ${colors.adminTextColor};
-  font-size: ${fontSizes.large}px;
-  font-weight: 500;
-`;
-
-const ButtonWrapper = styled.div``;
-
-const TooltipContent = styled.div`
+  width: 100%;
+  height: 90px;
+  color: ${(props: any) => props.theme.colorText};
+  font-size: ${fontSizes.medium}px;
+  font-weight: 600;
+  text-align: center;
   display: flex;
   align-items: center;
-  padding: 15px;
+  justify-content: center;
+  margin-bottom: 3px;
+  ${defaultCardStyle};
 `;
 
-const IdeaCardButton = styled(Button)``;
-
-const AssignedContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 15px;
+const StyledPBExpenses = styled(PBExpenses)`
+  margin-top: 25px;
+  padding: 20px;
 `;
 
-const ControlWrapperHorizontalRule = styled.hr`
-  width: 100%;
-  border: none;
-  height: 1px;
-  background-color: ${colors.separation};
-  margin: 20px 0;
-`;
-
-const AssignedIcon = styled(Icon)`
-  height: 39px;
-  color: ${colors.adminTextColor};
-  margin-right: 15px;
-  margin-bottom: 10px;
-`;
-
-const AssignedText = styled.div`
-  color: ${colors.clGreenSuccess};
-  font-size: ${fontSizes.base}px;
-  font-weight: 400;
-  hyphens: auto;
-`;
-
-const ActionsWrapper = styled.div`
-  margin-top: 5px;
-  display: flex;
-  color: ${colors.label};
-`;
-
-const Separator = styled.div`
-  font-size: ${fontSizes.xs}px;
-  margin-left: 10px;
-  margin-right: 10px;
-`;
-
-const ActionButton = styled.button`
-  font-size: ${fontSizes.base}px;
-  font-weight: 500;
-  text-decoration: underline;
-  padding: 0;
-  margin: 0;
-  cursor: pointer;
-
-  &:hover,
-  &:focus {
-    color: ${darken(0.5, colors.label)};
-  }
-`;
-
-interface InputProps {
+interface OuterProps {
   view: 'ideaCard' | 'ideaPage';
-  ideaId: string;
-  participationContextId: string;
-  participationContextType: IParticipationContextType;
-  openIdea?: (event: FormEvent<any>) => void;
-  disabledAssignBudgetClick?: () => void;
-  className?: string;
   projectId: string;
+  ideaId: string;
+  className?: string;
 }
 
-interface DataProps {
+interface InnerProps extends OuterProps {
   authUser: GetAuthUserChildProps;
   tenant: GetAppConfigurationChildProps;
   locale: GetLocaleChildProps;
   idea: GetIdeaChildProps;
-  basket: GetBasketChildProps;
   project: GetProjectChildProps;
-  phase: GetPhaseChildProps;
+  phases: GetPhasesChildProps;
+  participationContext: IProjectData | IPhaseData;
+  participationContextId: string;
+  participationContextType: IParticipationContextType;
 }
 
-interface Tracks {
-  basketCreated: () => void;
-  ideaRemovedFromBasket: () => void;
-  ideaAddedToBasket: () => void;
-  basketSubmitted: () => void;
-  disabledAssignClick: () => void;
-}
+const AssignBudgetControl = memo<InnerProps & InjectedIntlProps>(
+  ({
+    view,
+    ideaId,
+    authUser,
+    tenant,
+    locale,
+    idea,
+    phases,
+    participationContext,
+    participationContextId,
+    participationContextType,
+    intl,
+    className,
+  }) => {
+    const basket = useBasket(
+      participationContext?.relationships?.user_basket?.data?.id
+    );
 
-interface Props extends DataProps, InputProps {}
+    const [processing, setProcessing] = useState(false);
 
-interface State {
-  processing: boolean;
-}
-
-class AssignBudgetControl extends PureComponent<
-  Props & Tracks & InjectedIntlProps,
-  State
-> {
-  constructor(props) {
-    super(props);
-    this.state = {
-      processing: false,
-    };
-  }
-
-  isDisabled = () => {
-    const { participationContextType, project, phase } = this.props;
-
-    if (
-      participationContextType === 'phase' &&
-      !isNilOrError(phase) &&
-      pastPresentOrFuture([
-        phase.attributes.start_at,
-        phase.attributes.end_at,
-      ]) === 'present'
-    ) {
-      return false;
-    } else if (
-      participationContextType === 'project' &&
-      !isNilOrError(project) &&
-      project.attributes.publication_status !== 'archived'
-    ) {
-      return false;
-    }
-
-    return true;
-  };
-
-  assignBudget = async (event?: FormEvent<any>) => {
-    event?.preventDefault();
-    event?.stopPropagation();
-
-    const timeout = (ms: number) =>
-      new Promise((resolve) => setTimeout(resolve, ms));
-    const done = async () => {
-      await timeout(200);
-      this.setState({ processing: false });
+    const handleAddRemoveButtonClick = (event?: FormEvent) => {
+      event?.preventDefault();
+      assignBudget();
     };
 
-    if (!isNilOrError(this.props.idea)) {
-      const {
-        ideaId,
-        idea,
-        authUser,
-        basket,
-        participationContextId,
-        participationContextType,
-        disabledAssignBudgetClick,
-      } = this.props;
-      const budgetingEnabled =
-        idea.attributes.action_descriptor.budgeting?.enabled;
-      const budgetingDisabledReason =
-        idea.attributes.action_descriptor.budgeting?.disabled_reason;
-      const basketIdeaIds = !isNilOrError(basket)
-        ? basket.relationships.ideas.data.map((idea) => idea.id)
-        : [];
-      const isInBasket = includes(basketIdeaIds, ideaId);
+    const assignBudget = async () => {
+      const timeout = (ms: number) =>
+        new Promise((resolve) => setTimeout(resolve, ms));
+      const done = async () => {
+        await timeout(200);
+        setProcessing(false);
+      };
 
-      if (
-        isNilOrError(authUser) &&
-        (budgetingDisabledReason === 'not_signed_in' ||
-          budgetingDisabledReason === 'not_verified')
-      ) {
-        openSignUpInModal({
-          verification: budgetingDisabledReason === 'not_verified',
-          verificationContext:
-            budgetingDisabledReason === 'not_verified'
-              ? {
-                  action: 'budgeting',
-                  id: participationContextId,
-                  type: participationContextType,
-                }
-              : undefined,
-          action: () => this.assignBudget(),
-        });
-      } else if (!budgetingEnabled && disabledAssignBudgetClick) {
-        disabledAssignBudgetClick();
-      } else if (!isNilOrError(authUser) && budgetingEnabled) {
-        this.setState({ processing: true });
+      if (!isNilOrError(idea)) {
+        const isBudgetingEnabled =
+          idea.attributes.action_descriptor.budgeting?.enabled;
+        const basketIdeaIds = !isNilOrError(basket)
+          ? basket.relationships.ideas.data.map((idea) => idea.id)
+          : [];
+        const isInBasket = includes(basketIdeaIds, ideaId);
+        const budgetingDisabledReason =
+          idea.attributes.action_descriptor.budgeting?.disabled_reason;
 
-        if (!isNilOrError(basket)) {
-          let newIdeas: string[] = [];
+        if (
+          isNilOrError(authUser) ||
+          budgetingDisabledReason === 'not_verified'
+        ) {
+          openSignUpInModal({
+            verification: budgetingDisabledReason === 'not_verified',
+            verificationContext:
+              budgetingDisabledReason === 'not_verified'
+                ? {
+                    action: 'budgeting',
+                    id: participationContextId,
+                    type: participationContextType,
+                  }
+                : undefined,
+          });
+        } else if (!isNilOrError(authUser) && isBudgetingEnabled) {
+          setProcessing(true);
 
-          if (isInBasket) {
-            newIdeas = basket.relationships.ideas.data
-              .filter((basketIdea) => {
-                return basketIdea.id !== idea.id;
-              })
-              .map((basketIdea) => {
-                return basketIdea.id;
+          if (!isNilOrError(basket)) {
+            let newIdeas: string[] = [];
+
+            if (isInBasket) {
+              newIdeas = basket.relationships.ideas.data
+                .filter((basketIdea) => basketIdea.id !== idea.id)
+                .map((basketIdea) => basketIdea.id);
+            } else {
+              newIdeas = [
+                ...basket.relationships.ideas.data.map(
+                  (basketIdea) => basketIdea.id
+                ),
+                idea.id,
+              ];
+            }
+
+            try {
+              await updateBasket(basket.id, {
+                user_id: authUser.id,
+                participation_context_id: participationContextId,
+                participation_context_type: capitalizeParticipationContextType(
+                  participationContextType
+                ),
+                idea_ids: newIdeas,
+                submitted_at: null,
               });
+              done();
+              trackEventByName(tracks.ideaAddedToBasket);
+            } catch (error) {
+              done();
+              streams.fetchAllWith({ dataId: [basket.id] });
+            }
           } else {
-            newIdeas = [
-              ...basket.relationships.ideas.data.map(
-                (basketIdea) => basketIdea.id
-              ),
-              idea.id,
-            ];
-          }
-
-          try {
-            await updateBasket(basket.id, {
-              user_id: authUser.id,
-              participation_context_id: participationContextId,
-              participation_context_type: capitalizeParticipationContextType(
-                participationContextType
-              ),
-              idea_ids: newIdeas,
-              submitted_at: null,
-            });
-            done();
-            this.props.ideaAddedToBasket();
-          } catch (error) {
-            done();
-            streams.fetchAllWith({ dataId: [basket.id] });
-          }
-        } else {
-          try {
-            await addBasket({
-              user_id: authUser.id,
-              participation_context_id: participationContextId,
-              participation_context_type: capitalizeParticipationContextType(
-                participationContextType
-              ),
-              idea_ids: [idea.id],
-            });
-            done();
-            this.props.basketCreated();
-          } catch (error) {
-            done();
+            try {
+              await addBasket({
+                user_id: authUser.id,
+                participation_context_id: participationContextId,
+                participation_context_type: capitalizeParticipationContextType(
+                  participationContextType
+                ),
+                idea_ids: [idea.id],
+              });
+              done();
+              trackEventByName(tracks.basketCreated);
+            } catch (error) {
+              done();
+            }
           }
         }
       }
-    }
-  };
-
-  onCardClick = (event: FormEvent<any>) => {
-    this.props.openIdea && this.props.openIdea(event);
-  };
-
-  goBack = () => {
-    const { project, participationContextType } = this.props;
-    if (!isNilOrError(project)) {
-      clHistory.push(
-        `/projects/${project.attributes.slug}/${
-          participationContextType === 'project' ? 'ideas' : 'process'
-        }`
-      );
-    }
-  };
-
-  render() {
-    const { processing } = this.state;
-    const {
-      view,
-      ideaId,
-      authUser,
-      locale,
-      tenant,
-      idea,
-      basket,
-      className,
-      participationContextId,
-      participationContextType,
-      intl: { formatMessage },
-    } = this.props;
+    };
 
     if (
       !isUndefined(authUser) &&
@@ -366,186 +245,172 @@ class AssignBudgetControl extends PureComponent<
         ? basket.relationships.ideas.data.map((idea) => idea.id)
         : [];
       const isInBasket = includes(basketIdeaIds, ideaId);
-      const disabled = this.isDisabled();
-      const fullClassName = `e2e-assign-budget ${className}`;
+      const isBudgetingEnabled =
+        idea.attributes.action_descriptor.budgeting?.enabled;
+      const isSignedIn = !!authUser;
+      const budgetingDisabledReason =
+        idea.attributes.action_descriptor.budgeting?.disabled_reason;
+      const isPermitted = budgetingDisabledReason !== 'not_permitted';
+      const hasBudgetingDisabledReason = !!idea.attributes.action_descriptor
+        .budgeting?.disabled_reason;
+      const isPBContext =
+        participationContext?.attributes?.participation_method === 'budgeting';
+      const isCurrentPhase =
+        getCurrentPhase(phases)?.id === participationContext?.id;
+      const isCurrent =
+        (participationContextType === 'project' &&
+          (participationContext as IProjectData).attributes
+            .publication_status !== 'archived') ||
+        isCurrentPhase;
 
-      if (view === 'ideaCard') {
-        const budgetingEnabled =
-          idea.attributes.action_descriptor.budgeting?.enabled;
-        const budgetingDisabledReason =
-          idea.attributes.action_descriptor.budgeting?.disabled_reason;
-        const budgetingDescriptor = idea.attributes.action_descriptor.budgeting;
-
-        const tippyContent =
-          !!authUser && !budgetingEnabled && !!budgetingDisabledReason ? (
-            <TooltipContent
-              id="tooltip-content"
-              className="e2e-disabled-tooltip"
+      if (isPBContext) {
+        const addRemoveButton =
+          isCurrent && isPermitted ? (
+            <Button
+              onClick={handleAddRemoveButtonClick}
+              disabled={
+                isSignedIn && !isBudgetingEnabled && !hasBudgetingDisabledReason
+              }
+              processing={processing}
+              bgColor={isInBasket ? colors.clRedError : colors.clGreen}
+              iconSize="18px"
+              icon={!isInBasket ? 'basket-plus' : 'basket-minus'}
+              className={`e2e-assign-budget-button ${
+                isInBasket ? 'in-basket' : 'not-in-basket'
+              }`}
+              ariaLabel={intl.formatMessage(
+                !isInBasket
+                  ? messages.addToMyExpenses
+                  : messages.removeFromMyExpenses
+              )}
             >
-              <AssignBudgetDisabled
-                budgetingDescriptor={budgetingDescriptor}
-                participationContextId={participationContextId}
-                participationContextType={participationContextType}
+              <FormattedMessage
+                {...(!isInBasket
+                  ? view === 'ideaCard'
+                    ? messages.add
+                    : messages.addToMyExpenses
+                  : view === 'ideaCard'
+                  ? messages.remove
+                  : messages.removeFromMyExpenses)}
               />
-            </TooltipContent>
+            </Button>
           ) : null;
 
-        return (
-          <IdeaCardContainer className={fullClassName} aria-live="polite">
-            <Tippy
-              disabled={!tippyContent}
-              interactive={true}
-              placement="bottom"
-              content={tippyContent || <></>}
-              theme="light"
-              hideOnClick={false}
+        if (view === 'ideaCard') {
+          return (
+            <IdeaCardContainer
+              className={`e2e-assign-budget ${className || ''}`}
+              aria-live="polite"
             >
-              <ButtonWrapper tabIndex={!budgetingEnabled ? 0 : -1}>
-                <IdeaCardButton
-                  onClick={this.assignBudget}
-                  disabled={!!authUser && !budgetingEnabled}
-                  processing={processing}
-                  bgColor={
-                    isInBasket
-                      ? colors.adminSecondaryTextColor
-                      : colors.adminTextColor
-                  }
-                  iconSize="18px"
-                  icon={!isInBasket ? 'basket-plus' : 'remove'}
-                  className={`e2e-assign-budget-button ${
-                    isInBasket ? 'in-basket' : 'not-in-basket'
-                  }`}
-                  ariaLabel={
-                    !isInBasket
-                      ? formatMessage(messages.assign)
-                      : formatMessage(messages.undo)
-                  }
-                />
-              </ButtonWrapper>
-            </Tippy>
-          </IdeaCardContainer>
-        );
-      } else if (view === 'ideaPage') {
-        return (
-          <IdeaPageContainer className={fullClassName} aria-live="polite">
-            {isInBasket && !processing ? (
-              <>
-                <AssignedContainer>
-                  <AssignedIcon ariaHidden name="basket-checkmark" />
-                  <AssignedText>
-                    <FormattedMessage {...messages.assigned} />
-                  </AssignedText>
-                </AssignedContainer>
-                <ActionsWrapper>
-                  <ActionButton onClick={this.assignBudget}>
-                    <FormattedMessage {...messages.undo} />
-                  </ActionButton>
-                  <Separator aria-hidden>•</Separator>
-                  <ActionButton onClick={this.goBack}>
-                    <FormattedMessage {...messages.backToOverview} />
-                  </ActionButton>
-                </ActionsWrapper>
-              </>
-            ) : (
-              <>
+              {addRemoveButton}
+            </IdeaCardContainer>
+          );
+        }
+
+        if (view === 'ideaPage') {
+          return (
+            <IdeaPageContainer
+              className={`pbAssignBudgetControlContainer e2e-assign-budget ${
+                className || ''
+              }`}
+              aria-live="polite"
+            >
+              <BudgetWithButtonWrapper>
                 <Budget>
                   <ScreenReaderOnly>
                     <FormattedMessage {...messages.a11y_price} />
                   </ScreenReaderOnly>
-                  <BudgetBox>
-                    <FormattedNumber
-                      value={idea.attributes.budget}
-                      style="currency"
-                      currency={tenant.attributes.settings.core.currency}
-                      minimumFractionDigits={0}
-                      maximumFractionDigits={0}
-                    />
-                  </BudgetBox>
+                  <FormattedNumber
+                    value={idea.attributes.budget}
+                    style="currency"
+                    currency={tenant.attributes.settings.core.currency}
+                    minimumFractionDigits={0}
+                    maximumFractionDigits={0}
+                  />
                 </Budget>
-                <Button
-                  onClick={this.assignBudget}
-                  processing={processing}
-                  bgColor={
-                    disabled
-                      ? colors.disabledPrimaryButtonBg
-                      : isInBasket
-                      ? colors.adminSecondaryTextColor
-                      : colors.adminTextColor
-                  }
-                  bgHoverColor={
-                    disabled ? colors.disabledPrimaryButtonBg : undefined
-                  }
-                  icon="basket-plus"
-                  fullWidth={true}
-                  iconAriaHidden
-                >
-                  <FormattedMessage {...messages.assign} />
-                </Button>
-              </>
-            )}
-            <ControlWrapperHorizontalRule aria-hidden />
-            <PBExpenses
-              participationContextId={participationContextId}
-              participationContextType={participationContextType}
-              viewMode="column"
-            />
-          </IdeaPageContainer>
-        );
+                {addRemoveButton}
+              </BudgetWithButtonWrapper>
+              {isPermitted && (
+                <StyledPBExpenses
+                  participationContextId={participationContextId}
+                  participationContextType={participationContextType}
+                  viewMode="column"
+                />
+              )}
+            </IdeaPageContainer>
+          );
+        }
       }
     }
 
     return null;
   }
-}
+);
 
-const Data = adopt<DataProps, InputProps>({
-  authUser: <GetAuthUser />,
-  tenant: <GetAppConfiguration />,
-  locale: <GetLocale />,
-  idea: ({ ideaId, render }) => <GetIdea ideaId={ideaId}>{render}</GetIdea>,
-  project: ({ projectId, render }) => (
-    <GetProject projectId={projectId}>{render}</GetProject>
-  ),
-  phase: ({ participationContextType, participationContextId, render }) => (
-    <GetPhase
-      id={participationContextType === 'phase' ? participationContextId : null}
-    >
-      {render}
-    </GetPhase>
-  ),
-  basket: ({ project, phase, participationContextType, render }) => {
-    let basketId: string | null = null;
+// Contains the logic to determine the participationContext (= the project or most relevant phase the idea belongs to at the moment it's being loaded)
+// It's important to get the proper participationContext both here and in VoteControl to be able to determine which control (if any) should be shown, as
+// the same idea can be present in multiple phases (e.g. a voting and a PB phase) and can therefore have a different control based on the participationContext that's been determined.
+// Similar logic can be found in the VoteControl component. The important thing here is to figure out if the idea belongs to multiple phases, and if that's the case determine
+// the most relevant current phase via the 'getLatestRelevantPhase()' function.
+// This logic used to be all over the place, but now it should be present only in this component and VoteControl. Try to keep it that way :).
+const AssignBudgetControlWrapper = memo<OuterProps & InjectedIntlProps>(
+  ({ view, projectId, ideaId, className, intl }) => {
+    const authUser = useAuthUser();
+    const tenant = useAppConfiguration();
+    const locale = useLocale();
+    const idea = useIdea({ ideaId });
+    const project = useProject({ projectId });
+    const phases = usePhases(projectId);
 
-    if (participationContextType === 'project') {
-      basketId =
-        !isNilOrError(project) && project.relationships.user_basket
-          ? get(project.relationships.user_basket.data, 'id', null)
-          : null;
-    } else {
-      basketId =
-        !isNilOrError(phase) && phase.relationships.user_basket
-          ? get(phase.relationships.user_basket.data, 'id', null)
-          : null;
+    const isContinuousProject =
+      project?.attributes.process_type === 'continuous';
+    const ideaPhaseIds = !isNilOrError(idea)
+      ? idea?.relationships?.phases?.data?.map((item) => item.id)
+      : null;
+    const ideaPhases = !isNilOrError(phases)
+      ? phases?.filter((phase) => includes(ideaPhaseIds, phase.id))
+      : null;
+    const latestRelevantIdeaPhase = ideaPhases
+      ? getLatestRelevantPhase(ideaPhases)
+      : null;
+    const participationContext = isContinuousProject
+      ? project
+      : latestRelevantIdeaPhase;
+    const participationContextType = isContinuousProject ? 'project' : 'phase';
+    const participationContextId = participationContext?.id || null;
+
+    if (
+      !isUndefinedOrError(authUser) &&
+      !isNilOrError(tenant) &&
+      !isNilOrError(locale) &&
+      !isNilOrError(idea) &&
+      !isNilOrError(project) &&
+      !isUndefinedOrError(phases) &&
+      participationContext &&
+      participationContextId
+    ) {
+      return (
+        <AssignBudgetControl
+          view={view}
+          projectId={projectId}
+          ideaId={ideaId}
+          authUser={authUser}
+          tenant={tenant.data}
+          locale={locale}
+          idea={idea}
+          project={project}
+          phases={phases}
+          participationContext={participationContext}
+          participationContextType={participationContextType}
+          participationContextId={participationContextId}
+          intl={intl}
+          className={className}
+        />
+      );
     }
 
-    return <GetBasket id={basketId}>{render}</GetBasket>;
-  },
-});
-
-const AssignBudgetControlWithHoCs = injectIntl(
-  injectTracks<Props>({
-    basketCreated: tracks.basketCreated,
-    ideaRemovedFromBasket: tracks.ideaRemovedFromBasket,
-    ideaAddedToBasket: tracks.ideaAddedToBasket,
-    basketSubmitted: tracks.basketSubmitted,
-    disabledAssignClick: tracks.disabledAssignClick,
-  })(AssignBudgetControl)
+    return null;
+  }
 );
 
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => (
-      <AssignBudgetControlWithHoCs {...inputProps} {...dataProps} />
-    )}
-  </Data>
-);
+export default injectIntl<OuterProps>(AssignBudgetControlWrapper);

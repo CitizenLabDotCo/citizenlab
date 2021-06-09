@@ -81,6 +81,7 @@ const StyledPhaseDescription = styled(PhaseDescription)<{
 `;
 
 const StyledPBExpenses = styled(PBExpenses)`
+  padding: 20px;
   margin-bottom: 50px;
 `;
 

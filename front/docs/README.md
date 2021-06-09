@@ -1,9 +1,35 @@
 # Changelog
 
+## Next Release
+
+## 2021-06-09
+
+### Added
+- New citizen-facing map view
+
+## 2021-06-07
+
+### Fixed
+- Ordering by ideas by trending is now working.
+- Ordering by ideas votes in the input manager is now working.
+
+## 2021-06-07
+
+### Added
+- Qualtrics surveys integration.
+
+### Changed
+- Project Events are now ordered chronologically from latest to soonest.
+
+### Fixed
+- Visibility Labels in the admin projects list are now visible.
+- Tagged ideas export is fixed.
+- Updating an idea in one locale does not overwrite other locales anymore
+
 ## 2021-05-28
 
 ### Fixed
-- Project Events are now ordered chronologically from soonest to latest. 
+- Project Events are now ordered chronologically from soonest to latest.
 
 ## 2021-05-27
 

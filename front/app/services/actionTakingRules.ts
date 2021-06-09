@@ -10,6 +10,7 @@ import { GetPhaseChildProps } from 'resources/GetPhase';
 import { isNilOrError } from 'utils/helperUtils';
 import { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import { IPhaseData } from './phases';
+import { isAdmin, isProjectModerator } from 'services/permissions/roles';
 
 interface ActionPermissionHide {
   show: false;
@@ -129,6 +130,18 @@ export const getIdeaPostingRules = ({
       future_enabled,
       enabled,
     } = project.attributes.action_descriptor.posting_idea;
+
+    if (
+      !isNilOrError(authUser) &&
+      (isAdmin({ data: authUser }) || isProjectModerator({ data: authUser }))
+    ) {
+      return {
+        show: true,
+        enabled: true,
+        disabledReason: null,
+        action: null,
+      };
+    }
 
     // timeline
     if (!isNilOrError(phase)) {

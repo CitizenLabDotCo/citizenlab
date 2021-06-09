@@ -16,14 +16,16 @@ import { isNilOrError } from 'utils/helperUtils';
 
 interface Props {
   statusId: string;
+  compact?: boolean;
+  className?: string;
 }
 
-const Status = ({ statusId }: Props) => {
+const Status = ({ statusId, compact, className }: Props) => {
   const ideaStatus = useIdeaStatus({ statusId });
 
   if (!isNilOrError(ideaStatus)) {
     return (
-      <Item>
+      <Item className={className || ''} compact={compact}>
         <Header>
           <FormattedMessage {...messages.currentStatus} />
         </Header>
