@@ -1986,7 +1986,6 @@
   "app.containers.IdeasShow.MetaInformation.postedBy": "Gepostet von",
   "app.containers.IdeasShow.MetaInformation.similarInputs": "Ähnliche Einträge\n",
   "app.containers.IdeasShow.MetaInformation.topics": "Themen",
-  "app.containers.IdeasShow.a11y_voting": "Abstimmen",
   "app.containers.IdeasShow.bodyTitle": "Beschreibung",
   "app.containers.IdeasShow.commentCTA": "Kommentieren",
   "app.containers.IdeasShow.contributionEmailSharingBody": "Unterstützen Sie den Beitrag „{postTitle}“ unter {postUrl}!",
