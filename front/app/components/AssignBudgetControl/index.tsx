@@ -142,7 +142,6 @@ const AssignBudgetControl = memo<InnerProps & InjectedIntlProps>(
 
     const handleAddRemoveButtonClick = (event?: FormEvent) => {
       event?.preventDefault();
-      event?.stopPropagation();
       assignBudget();
     };
 
@@ -348,6 +347,12 @@ const AssignBudgetControl = memo<InnerProps & InjectedIntlProps>(
   }
 );
 
+// Contains the logic to determine the participationContext (= the project or most relevant phase the idea belongs to at the moment it's being loaded)
+// It's important to get the proper participationContext both here and in VoteControl to be able to determine which control (if any) should be shown, as
+// the same idea can be present in multiple phases (e.g. a voting and a PB phase) and can therefore have a different control based on the participationContext that's been determined.
+// Similar logic can be found in the VoteControl component. The important thing here is to figure out if the idea belongs to multiple phases, and if that's the case determine
+// the most relevant current phase via the 'getLatestRelevantPhase()' function.
+// This logic used to be all over the place, but now it should be present only in this component and VoteControl. Try to keep it that way :).
 const AssignBudgetControlWrapper = memo<OuterProps & InjectedIntlProps>(
   ({ view, projectId, ideaId, className, intl }) => {
     const authUser = useAuthUser();
