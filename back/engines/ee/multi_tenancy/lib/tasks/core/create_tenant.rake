@@ -158,6 +158,10 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
+        qualtrics_surveys: {
+          enabled: true,
+          allowed: true
+        },
         initiatives: {
           enabled: true,
           allowed: true,
