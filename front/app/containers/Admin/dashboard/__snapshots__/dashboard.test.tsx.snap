@@ -49,6 +49,7 @@ exports[`<DashboardsPage /> renders correctly with a project moderator user 1`] 
         }
       }
     />
+    Required child
   </withRouter(Component)>
 </Fragment>
 `;
@@ -102,6 +103,7 @@ exports[`<DashboardsPage /> renders correctly with an admin user 1`] = `
         }
       }
     />
+    Required child
   </withRouter(Component)>
 </Fragment>
 `;

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React from 'react';
 import { shallow } from 'enzyme';
 
@@ -40,8 +41,6 @@ const reorderPollQuestionSpy = jest.spyOn(
   pollQuestionsService,
   'reorderPollQuestion'
 );
-
-let mockQuestions: IPollQuestion[];
 
 describe('<PollAdminForm/>', () => {
   describe('boundaries', () => {

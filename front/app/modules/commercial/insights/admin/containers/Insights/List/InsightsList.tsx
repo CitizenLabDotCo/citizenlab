@@ -4,13 +4,13 @@ import { isNilOrError } from 'utils/helperUtils';
 // intl
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
-import messages from './messages';
+import messages from '../messages';
 import useLocale from 'hooks/useLocale';
 
 // components
 import PageTitle from 'components/admin/PageTitle';
 import { Button } from 'cl2-component-library';
-import { Divider } from 'semantic-ui-react';
+import Divider from 'components/admin/Divider';
 
 // styles
 import styled from 'styled-components';
@@ -21,7 +21,7 @@ import { darken } from 'polished';
 import {
   IInsightsViewData,
   deleteInsightsView,
-} from '../../../services/insightsViews';
+} from 'modules/commercial/insights/services/insightsViews';
 
 const StyledDescription = styled.p`
   font-size: ${fontSizes.base}px;
@@ -58,6 +58,9 @@ const InsightsContainerHeader = styled.div`
   display: flex;
   margin-bottom: 60px;
   justify-content: space-between;
+  p {
+    color: ${colors.label};
+  }
   > div:first-child {
     width: 50%;
   }
@@ -75,6 +78,7 @@ const InsightsListItem = styled.div`
   }
   p {
     font-size: ${fontSizes.xs}px;
+    color: ${colors.label};
   }
   .buttons {
     display: flex;
@@ -105,7 +109,7 @@ const InsightsList: React.FC<InsightsList & InjectedIntlProps> = ({
   };
 
   return (
-    <div>
+    <div data-testid="insightsList">
       <PageTitle>{formatMessage(messages.title)}</PageTitle>
       <StyledDescription>
         {formatMessage(messages.description)}
@@ -129,7 +133,7 @@ const InsightsList: React.FC<InsightsList & InjectedIntlProps> = ({
             </Button>
           </InsightsContainerHeader>
           {data.map((view) => (
-            <div key={view.id}>
+            <div key={view.id} data-testid="insightsListItem">
               <InsightsListItem>
                 <div>
                   <h3> {view.attributes.name}</h3>
@@ -155,7 +159,12 @@ const InsightsList: React.FC<InsightsList & InjectedIntlProps> = ({
                   >
                     {formatMessage(messages.listDelete)}
                   </Button>
-                  <Button locale={locale} buttonStyle="secondary" icon="edit">
+                  <Button
+                    locale={locale}
+                    buttonStyle="secondary"
+                    icon="edit"
+                    linkTo={`/admin/insights/${view.id}`}
+                  >
                     {formatMessage(messages.listManage)}
                   </Button>
                 </div>

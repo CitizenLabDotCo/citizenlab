@@ -84,4 +84,45 @@ export default defineMessages({
     id: 'app.containers.Admin.Reporting.Insights.createModalCancel',
     defaultMessage: 'Cancel',
   },
+  inputsTableInputs: {
+    id: 'app.containers.Admin.Insights.Edit.inputsTableInputs',
+    defaultMessage: 'Inputs',
+  },
+  inputsTableCategories: {
+    id: 'app.containers.Admin.Insights.Edit.inputsTableCategories',
+    defaultMessage: 'Categories',
+  },
+  inputsTableDeleteCategoryConfirmation: {
+    id:
+      'app.containers.Admin.Insights.Edit.inputsTableDeleteCategoryConfirmation',
+    defaultMessage: 'Are you sure?',
+  },
+  inputsTableEmpty: {
+    id: 'app.containers.Admin.Insights.Edit.inputsEmptyState',
+    defaultMessage: 'You have no inputs for this view yet',
+  },
+  categories: {
+    id: 'app.containers.Admin.Reporting.Insights.Edit.categories',
+    defaultMessage: 'Categories',
+  },
+  detectCategories: {
+    id: 'app.containers.Admin.Reporting.Insights.Edit.detectCategories',
+    defaultMessage: 'Detect new categories',
+  },
+  resetCategories: {
+    id: 'app.containers.Admin.Reporting.Insights.Edit.resetCategories',
+    defaultMessage: 'Reset categories',
+  },
+  addCategory: {
+    id: 'app.containers.Admin.Reporting.Insights.Edit.addCategory',
+    defaultMessage: 'Add category',
+  },
+  categoryInfoBoxBold: {
+    id: 'app.containers.Admin.Insights.Edit.categoryInfoBoxBold',
+    defaultMessage: 'Add your first category',
+  },
+  categoryInfoBox: {
+    id: 'app.containers.Admin.Insights.Edit.categoryInfoBox',
+    defaultMessage: '{bold} to organize and analyze input',
+  },
 });

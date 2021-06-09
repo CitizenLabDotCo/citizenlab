@@ -3,17 +3,14 @@ import React, { useState } from 'react';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 
-// i18n
-import { InjectedIntlProps } from 'react-intl';
-
 // components
 import EmptyState from './EmptyState';
-import useInsightsViews from '../../../hooks/useInsightsViews';
+import useInsightsViews from 'modules/commercial/insights/hooks/useInsightsViews';
 import InsightsList from './InsightsList';
 import Modal from 'components/UI/Modal';
 import CreateInsightsView from './CreateInsightsView';
 
-const Insights: React.FC<InjectedIntlProps> = () => {
+const Insights = () => {
   const [createModalOpened, setCreateModalOpened] = useState(false);
 
   const closeCreateModal = () => setCreateModalOpened(false);

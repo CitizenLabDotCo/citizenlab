@@ -14,6 +14,7 @@ import {
   RowContent,
   RowTitle,
 } from 'containers/Admin/projects/components/StyledComponents';
+import PageWrapper from 'components/admin/PageWrapper';
 
 interface DataProps {
   projects: GetProjectsChildProps;
@@ -40,32 +41,34 @@ const ReportTab = memo(({ projects }: DataProps) => {
       <SectionTitle>
         <FormattedMessage {...messages.selectAProject} />
       </SectionTitle>
-      <List>
-        {participableProjects.map((project, index) => {
-          return (
-            <Row
-              key={index}
-              id={project.id}
-              isLastItem={index === participableProjects.length - 1}
-            >
-              <RowContent className="e2e-admin-projects-list-item">
-                <RowTitle value={project.attributes.title_multiloc} />
-                <RowButton
-                  className={`
+      <PageWrapper>
+        <List>
+          {participableProjects.map((project, index) => {
+            return (
+              <Row
+                key={index}
+                id={project.id}
+                isLastItem={index === participableProjects.length - 1}
+              >
+                <RowContent className="e2e-admin-projects-list-item">
+                  <RowTitle value={project.attributes.title_multiloc} />
+                  <RowButton
+                    className={`
                         e2e-admin-edit-publication
                       `}
-                  linkTo={`/admin/insights/reports/${project.id}`}
-                  buttonStyle="secondary"
-                  icon="eye"
-                  type="button"
-                >
-                  <FormattedMessage {...messages.seeReportButton} />
-                </RowButton>
-              </RowContent>
-            </Row>
-          );
-        })}
-      </List>
+                    linkTo={`/admin/insights/reports/${project.id}`}
+                    buttonStyle="secondary"
+                    icon="eye"
+                    type="button"
+                  >
+                    <FormattedMessage {...messages.seeReportButton} />
+                  </RowButton>
+                </RowContent>
+              </Row>
+            );
+          })}
+        </List>
+      </PageWrapper>
     </>
   );
 });
