@@ -14,7 +14,7 @@ interface Props {
   notification: INlpFlaggedPostNotificationData;
 }
 
-const NlpFlaggedPostNotification = memo<Props>((props) => {
+const NLPFlaggedPostNotification = memo<Props>((props) => {
   const { notification } = props;
 
   return (
@@ -29,4 +29,4 @@ const NlpFlaggedPostNotification = memo<Props>((props) => {
   );
 });
 
-export default NlpFlaggedPostNotification;
+export default NLPFlaggedPostNotification;
