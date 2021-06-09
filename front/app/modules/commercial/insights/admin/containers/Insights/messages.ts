@@ -96,6 +96,14 @@ export default defineMessages({
     id: 'app.containers.Admin.Insights.Edit.inputsEmptyState',
     defaultMessage: "This project doesn't seem to contain any input.",
   },
+  inputsTableCategoryTitle: {
+    id: 'app.containers.Admin.Insights.Edit.inputsTableCategoryTitle',
+    defaultMessage: 'You have no input assigned to this category yet',
+  },
+  inputsTableCategoryDescription: {
+    id: 'app.containers.Admin.Insights.Edit.inputsTableCategoryDescription',
+    defaultMessage: 'Start moving input here to grow your category.',
+  },
   categories: {
     id: 'app.containers.Admin.Reporting.Insights.Edit.categories',
     defaultMessage: 'Categories',

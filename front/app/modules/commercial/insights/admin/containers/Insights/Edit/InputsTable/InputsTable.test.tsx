@@ -74,6 +74,8 @@ const mockCategoryData = {
   },
 };
 
+let mockLocationData = { pathname: '', query: {} };
+
 jest.mock('hooks/useIdea', () => {
   return jest.fn(() => mockIdeaData);
 });
@@ -98,7 +100,7 @@ jest.mock('react-router', () => {
           <Component
             {...props}
             params={{ viewId }}
-            location={{ pathname: '', query: {} }}
+            location={mockLocationData}
           />
         );
       };
@@ -145,6 +147,21 @@ describe('Insights Input Table', () => {
     render(<InputsTable />);
     expect(
       screen.getByTestId('insightsInputsTableEmptyState')
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText("This project doesn't seem to contain any input.")
+    ).toBeInTheDocument();
+  });
+  it('renders correct table empty state when are no categories for input', () => {
+    mockLocationData = { pathname: '', query: { category: 'category' } };
+    mockInputData = [];
+
+    render(<InputsTable />);
+    expect(
+      screen.getByTestId('insightsInputsTableEmptyState')
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText('You have no input assigned to this category yet')
     ).toBeInTheDocument();
   });
 });

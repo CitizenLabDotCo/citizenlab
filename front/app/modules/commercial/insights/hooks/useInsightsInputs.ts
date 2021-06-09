@@ -14,6 +14,8 @@ const useInsightsViews = (
     IInsightsInputData[] | undefined | null | Error
   >(undefined);
 
+  const category = queryParameters?.category;
+
   useEffect(() => {
     const subscription = insightsInputsStream(viewId, {
       queryParameters,
@@ -22,7 +24,7 @@ const useInsightsViews = (
     });
 
     return () => subscription.unsubscribe();
-  }, [viewId]);
+  }, [viewId, category]);
 
   return insightsViews;
 };
