@@ -717,6 +717,7 @@
   "app.containers.Admin.Insights.Edit.Details.addCategoryPlaceholder": "Type a category name...",
   "app.containers.Admin.Insights.Edit.Details.createCategoryPrompt": "Create",
   "app.containers.Admin.Insights.Edit.allInput": "All input",
+  "app.containers.Admin.Insights.Edit.allInputTooltip": "This lists all previously processed input regardless of assigned categories. Recently added input is NOT shown here.",
   "app.containers.Admin.Insights.Edit.categoryInfoBox": "{bold} to organize and analyze input",
   "app.containers.Admin.Insights.Edit.categoryInfoBoxBold": "Add your first category",
   "app.containers.Admin.Insights.Edit.inputsEmptyState": "You have no inputs for this view yet",
