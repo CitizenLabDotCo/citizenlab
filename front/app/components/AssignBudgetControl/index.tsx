@@ -1,6 +1,6 @@
 import React, { PureComponent, FormEvent } from 'react';
 import { adopt } from 'react-adopt';
-import { includes, isUndefined, isNil } from 'lodash-es';
+import { includes, isUndefined } from 'lodash-es';
 import {
   isNilOrError,
   capitalizeParticipationContextType,
@@ -34,7 +34,6 @@ import tracks from 'containers/ProjectsShowPage/shared/pb/tracks';
 
 // utils
 import streams from 'utils/streams';
-import { pastPresentOrFuture } from 'utils/dateUtils';
 import { openSignUpInModal } from 'components/SignUpIn/events';
 
 // i18n
@@ -43,7 +42,7 @@ import { FormattedNumber, InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
 // styles
-import styled, { withTheme } from 'styled-components';
+import styled from 'styled-components';
 import { fontSizes, colors, defaultCardStyle, media } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import PBExpenses from 'containers/ProjectsShowPage/shared/pb/PBExpenses';
@@ -111,9 +110,7 @@ interface DataProps {
   phase: GetPhaseChildProps;
 }
 
-interface Props extends DataProps, InputProps {
-  theme: any;
-}
+interface Props extends DataProps, InputProps {}
 
 interface State {
   processing: boolean;
@@ -129,29 +126,6 @@ class AssignBudgetControl extends PureComponent<
       processing: false,
     };
   }
-
-  isDisabled = () => {
-    const { participationContextType, project, phase } = this.props;
-
-    if (
-      participationContextType === 'phase' &&
-      !isNilOrError(phase) &&
-      pastPresentOrFuture([
-        phase.attributes.start_at,
-        phase.attributes.end_at,
-      ]) === 'present'
-    ) {
-      return false;
-    } else if (
-      participationContextType === 'project' &&
-      !isNilOrError(project) &&
-      project.attributes.publication_status !== 'archived'
-    ) {
-      return false;
-    }
-
-    return true;
-  };
 
   assignBudget = async (event?: FormEvent<any>) => {
     event?.preventDefault();
@@ -207,12 +181,8 @@ class AssignBudgetControl extends PureComponent<
 
           if (isInBasket) {
             newIdeas = basket.relationships.ideas.data
-              .filter((basketIdea) => {
-                return basketIdea.id !== idea.id;
-              })
-              .map((basketIdea) => {
-                return basketIdea.id;
-              });
+              .filter((basketIdea) => basketIdea.id !== idea.id)
+              .map((basketIdea) => basketIdea.id);
           } else {
             newIdeas = [
               ...basket.relationships.ideas.data.map(
@@ -294,98 +264,101 @@ class AssignBudgetControl extends PureComponent<
       const isSignedIn = !!authUser;
       const budgetingDisabledReason =
         idea.attributes.action_descriptor.budgeting?.disabled_reason;
-      const isNotPermitted = budgetingDisabledReason === 'not_permitted';
+      const isPermitted = budgetingDisabledReason !== 'not_permitted';
       const hasBudgetingDisabledReason = !!idea.attributes.action_descriptor
         .budgeting?.disabled_reason;
-      const isPBPhase =
-        !isNilOrError(phase) &&
-        phase.attributes.participation_method === 'budgeting';
       const isPBProject =
         !isNilOrError(project) &&
-        isNil(phase) &&
+        project.attributes.process_type === 'continuous' &&
         project.attributes.participation_method === 'budgeting';
+      const isPBPhase =
+        !isNilOrError(project) &&
+        !isNilOrError(phase) &&
+        project.attributes.process_type === 'timeline' &&
+        phase.attributes.participation_method === 'budgeting';
       const currentPhase = getCurrentPhase(phases);
       const isCurrentPhase = currentPhase?.id === phase?.id;
       const isPBProjectOrPBPhase = isPBProject || isPBPhase;
       const isPBProjectOrPBCurrentPhase =
         isPBProject || (isPBPhase && isCurrentPhase);
 
-      const addRemoveButton =
-        isPBProjectOrPBCurrentPhase && !isNotPermitted ? (
-          <Button
-            onClick={this.assignBudget}
-            disabled={
-              isSignedIn && !isBudgetingEnabled && !hasBudgetingDisabledReason
-            }
-            processing={processing}
-            bgColor={isInBasket ? colors.clRedError : colors.clGreen}
-            iconSize="18px"
-            icon={!isInBasket ? 'basket-plus' : 'basket-minus'}
-            className={`e2e-assign-budget-button ${
-              isInBasket ? 'in-basket' : 'not-in-basket'
-            }`}
-            ariaLabel={
-              !isInBasket
-                ? formatMessage(messages.addToMyExpenses)
-                : formatMessage(messages.removeFromMyExpenses)
-            }
-          >
-            <FormattedMessage
-              {...(!isInBasket
-                ? view === 'ideaCard'
-                  ? messages.add
-                  : messages.addToMyExpenses
-                : view === 'ideaCard'
-                ? messages.remove
-                : messages.removeFromMyExpenses)}
-            />
-            )
-          </Button>
-        ) : null;
-
-      if (view === 'ideaCard') {
-        return (
-          <IdeaCardContainer
-            className={`e2e-assign-budget ${className || ''}`}
-            aria-live="polite"
-          >
-            {addRemoveButton}
-          </IdeaCardContainer>
-        );
-      }
-
-      if (view === 'ideaPage') {
-        return (
-          <IdeaPageContainer
-            className={`pbAssignBudgetControlContainer e2e-assign-budget ${
-              className || ''
-            }`}
-            aria-live="polite"
-          >
-            <BudgetWithButtonWrapper>
-              <Budget>
-                <ScreenReaderOnly>
-                  <FormattedMessage {...messages.a11y_price} />
-                </ScreenReaderOnly>
-                <FormattedNumber
-                  value={idea.attributes.budget}
-                  style="currency"
-                  currency={tenant.attributes.settings.core.currency}
-                  minimumFractionDigits={0}
-                  maximumFractionDigits={0}
-                />
-              </Budget>
-              {addRemoveButton}
-            </BudgetWithButtonWrapper>
-            {isPBProjectOrPBPhase && (
-              <StyledPBExpenses
-                participationContextId={participationContextId}
-                participationContextType={participationContextType}
-                viewMode="column"
+      if (isPBProjectOrPBPhase) {
+        const addRemoveButton =
+          isPBProjectOrPBCurrentPhase && isPermitted ? (
+            <Button
+              onClick={this.assignBudget}
+              disabled={
+                isSignedIn && !isBudgetingEnabled && !hasBudgetingDisabledReason
+              }
+              processing={processing}
+              bgColor={isInBasket ? colors.clRedError : colors.clGreen}
+              iconSize="18px"
+              icon={!isInBasket ? 'basket-plus' : 'basket-minus'}
+              className={`e2e-assign-budget-button ${
+                isInBasket ? 'in-basket' : 'not-in-basket'
+              }`}
+              ariaLabel={formatMessage(
+                !isInBasket
+                  ? messages.addToMyExpenses
+                  : messages.removeFromMyExpenses
+              )}
+            >
+              <FormattedMessage
+                {...(!isInBasket
+                  ? view === 'ideaCard'
+                    ? messages.add
+                    : messages.addToMyExpenses
+                  : view === 'ideaCard'
+                  ? messages.remove
+                  : messages.removeFromMyExpenses)}
               />
-            )}
-          </IdeaPageContainer>
-        );
+            </Button>
+          ) : null;
+
+        if (view === 'ideaCard') {
+          return (
+            <IdeaCardContainer
+              className={`e2e-assign-budget ${className || ''}`}
+              aria-live="polite"
+            >
+              {addRemoveButton}
+            </IdeaCardContainer>
+          );
+        }
+
+        if (view === 'ideaPage') {
+          return (
+            <IdeaPageContainer
+              className={`pbAssignBudgetControlContainer e2e-assign-budget ${
+                className || ''
+              }`}
+              aria-live="polite"
+            >
+              <BudgetWithButtonWrapper>
+                <Budget>
+                  <ScreenReaderOnly>
+                    <FormattedMessage {...messages.a11y_price} />
+                  </ScreenReaderOnly>
+                  <FormattedNumber
+                    value={idea.attributes.budget}
+                    style="currency"
+                    currency={tenant.attributes.settings.core.currency}
+                    minimumFractionDigits={0}
+                    maximumFractionDigits={0}
+                  />
+                </Budget>
+                {addRemoveButton}
+              </BudgetWithButtonWrapper>
+              {isPBProjectOrPBPhase && isPermitted && (
+                <StyledPBExpenses
+                  participationContextId={participationContextId}
+                  participationContextType={participationContextType}
+                  viewMode="column"
+                />
+              )}
+            </IdeaPageContainer>
+          );
+        }
       }
     }
 
@@ -432,7 +405,7 @@ const Data = adopt<DataProps, InputProps>({
   },
 });
 
-const AssignBudgetControlWithHoCs = withTheme(injectIntl(AssignBudgetControl));
+const AssignBudgetControlWithHoCs = injectIntl(AssignBudgetControl);
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>

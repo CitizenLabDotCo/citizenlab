@@ -53,8 +53,6 @@ interface Props {
   projectId: string;
   statusId: string;
   authorId: string | null;
-  showVoteControl: boolean | null;
-  showBudgetControl: boolean | null;
   participationContextId: string | null;
   participationContextType: IParticipationContextType | null;
   insideModal: boolean;
@@ -66,8 +64,6 @@ const RightColumnDesktop = ({
   projectId,
   statusId,
   authorId,
-  showVoteControl,
-  showBudgetControl,
   participationContextId,
   participationContextType,
   insideModal,
@@ -77,25 +73,18 @@ const RightColumnDesktop = ({
     <Container insideModal={insideModal} className={className || ''}>
       <InnerContainer>
         <Box>
-          {showVoteControl && (
-            <StyledVoting ideaId={ideaId} projectId={projectId} />
+          <StyledVoting ideaId={ideaId} projectId={projectId} />
+          {participationContextId && participationContextType && (
+            <StyledAssignBudgetControl
+              view="ideaPage"
+              ideaId={ideaId}
+              projectId={projectId}
+              participationContextId={participationContextId}
+              participationContextType={participationContextType}
+            />
           )}
-
-          {showBudgetControl &&
-            participationContextId &&
-            participationContextType && (
-              <StyledAssignBudgetControl
-                view="ideaPage"
-                ideaId={ideaId}
-                projectId={projectId}
-                participationContextId={participationContextId}
-                participationContextType={participationContextType}
-              />
-            )}
-
           <Buttons ideaId={ideaId} />
         </Box>
-
         <StyledMetaInformation
           ideaId={ideaId}
           projectId={projectId}
