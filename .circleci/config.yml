@@ -764,20 +764,20 @@ workflows:
     #           only:
     #             - production
     jobs:
-      - check-for-inconsistent-data:
-          <<: *slack-fail-post-step-inconsistent-data
-          name: 'Benelux'
-          context:
-            - slack-dev-notifications-inconsistent-data
-          ssh_host: '52.57.74.84'
-          env_file: '.env-production-benelux'
-      - check-for-inconsistent-data:
-          <<: *slack-fail-post-step-inconsistent-data
-          name: 'South America'
-          context:
-            - slack-dev-notifications-inconsistent-data
-          ssh_host: '52.67.181.38'
-          env_file: '.env-web'
+      # - check-for-inconsistent-data:
+      #     <<: *slack-fail-post-step-inconsistent-data
+      #     name: 'Benelux'
+      #     context:
+      #       - slack-dev-notifications-inconsistent-data
+      #     ssh_host: '52.57.74.84'
+      #     env_file: '.env-production-benelux'
+      # - check-for-inconsistent-data:
+      #     <<: *slack-fail-post-step-inconsistent-data
+      #     name: 'South America'
+      #     context:
+      #       - slack-dev-notifications-inconsistent-data
+      #     ssh_host: '52.67.181.38'
+      #     env_file: '.env-web'
       - check-for-inconsistent-data:
           <<: *slack-fail-post-step-inconsistent-data
           name: 'Canada'
@@ -785,28 +785,28 @@ workflows:
             - slack-dev-notifications-inconsistent-data
           ssh_host: '35.183.23.116'
           env_file: '.env-production-canada'
-      - check-for-inconsistent-data:
-          <<: *slack-fail-post-step-inconsistent-data
-          name: 'US West'
-          context:
-            - slack-dev-notifications-inconsistent-data
-          ssh_host: '52.13.59.174'
-          env_file: '.env-web'
-      - check-for-inconsistent-data:
-          <<: *slack-fail-post-step-inconsistent-data
-          name: 'UK'
-          context:
-            - slack-dev-notifications-inconsistent-data
-          ssh_host: '35.179.69.215'
-          env_file: '.env-web'
+      # - check-for-inconsistent-data:
+      #     <<: *slack-fail-post-step-inconsistent-data
+      #     name: 'US West'
+      #     context:
+      #       - slack-dev-notifications-inconsistent-data
+      #     ssh_host: '52.13.59.174'
+      #     env_file: '.env-web'
+      # - check-for-inconsistent-data:
+      #     <<: *slack-fail-post-step-inconsistent-data
+      #     name: 'UK'
+      #     context:
+      #       - slack-dev-notifications-inconsistent-data
+      #     ssh_host: '35.179.69.215'
+      #     env_file: '.env-web'
       - slack-invalid-data-success:
           name: ':tada: SUCCESS: No invalid data was detected!' # Mentions are not supported for basic_success_1
           context:
             - slack-dev-notifications-inconsistent-data
           requires:
-            - 'Benelux'
-            - 'South America'
+            # - 'Benelux'
+            # - 'South America'
             - 'Canada'
-            - 'US West'
-            - 'UK'
+            # - 'US West'
+            # - 'UK'
              
