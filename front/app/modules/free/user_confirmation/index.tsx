@@ -7,21 +7,13 @@ import { modifyMetaData } from 'components/SignUpIn/events';
 import useAuthUser from 'hooks/useAuthUser';
 import { isNilOrError } from 'utils/helperUtils';
 import useAppConfiguration from 'hooks/useAppConfiguration';
+import { RenderOnFeatureFlag } from 'modules/utilComponents';
 
-type RenderOnFeatureFlagProps = {
+type RenderOnFeatureAllowedProps = {
   children: ReactNode;
 };
 
-const RenderOnFeatureFlag = ({ children }: RenderOnFeatureFlagProps) => {
-  const isUserConfirmationEnabled = useFeatureFlag('user_confirmation');
-
-  if (isUserConfirmationEnabled) {
-    return <>{children}</>;
-  }
-  return null;
-};
-
-const RenderOnFeatureAllowed = ({ children }: RenderOnFeatureFlagProps) => {
+const RenderOnFeatureAllowed = ({ children }: RenderOnFeatureAllowedProps) => {
   const appConfiguration = useAppConfiguration();
 
   if (
@@ -37,7 +29,7 @@ const RenderOnFeatureAllowed = ({ children }: RenderOnFeatureFlagProps) => {
 const configuration: ModuleConfiguration = {
   outlets: {
     'app.components.SignUpIn.SignUp.step': (props) => (
-      <RenderOnFeatureFlag>
+      <RenderOnFeatureFlag featureFlagName="user_confirmation">
         <ConfirmationSignupStep {...props} />
       </RenderOnFeatureFlag>
     ),

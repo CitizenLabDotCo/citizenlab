@@ -14,9 +14,10 @@ import CreateProject from 'containers/Admin/projects/all/CreateProject';
 import ProjectsListItem from 'containers/Navbar/components/ProjectsListItem';
 
 import { isProjectFolderModerator } from './permissions/roles';
-import useFeatureFlag from 'hooks/useFeatureFlag';
 import useAuthUser from 'hooks/useAuthUser';
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
+
+import { RenderOnFeatureFlag } from 'modules/utilComponents';
 
 type RenderOnPublicationTypeProps = {
   publication: IAdminPublicationContent;
@@ -33,18 +34,6 @@ const RenderOnPublicationType = ({
 }: RenderOnPublicationTypeProps) => {
   if (publication.publicationType !== 'folder') return null;
   return <>{children}</>;
-};
-
-type RenderOnFeatureFlagProps = {
-  children: ReactNode;
-};
-
-const RenderOnFeatureFlag = ({ children }: RenderOnFeatureFlagProps) => {
-  const isProjectFoldersEnabled = useFeatureFlag('project_folders');
-  if (isProjectFoldersEnabled) {
-    return <>{children}</>;
-  }
-  return null;
 };
 
 const RenderOnProjectFolderModerator = ({
@@ -78,12 +67,12 @@ const configuration: ModuleConfiguration = {
       );
     },
     'app.containers.AdminPage.projects.all.projectsAndFolders.title': () => (
-      <RenderOnFeatureFlag>
+      <RenderOnFeatureFlag featureFlagName="project_folders">
         <ProjectFolderTitle />
       </RenderOnFeatureFlag>
     ),
     'app.containers.AdminPage.projects.all.projectsAndFolders.actions': () => (
-      <RenderOnFeatureFlag>
+      <RenderOnFeatureFlag featureFlagName="project_folders">
         <NewProjectFolderButton />
       </RenderOnFeatureFlag>
     ),
@@ -107,7 +96,7 @@ const configuration: ModuleConfiguration = {
       projectAttrs,
       authUser,
     }) => (
-      <RenderOnFeatureFlag>
+      <RenderOnFeatureFlag featureFlagName="project_folders">
         <ProjectFolderSelect
           onChange={onChange}
           projectAttrs={projectAttrs}
@@ -116,7 +105,7 @@ const configuration: ModuleConfiguration = {
       </RenderOnFeatureFlag>
     ),
     'app.containers.AdminPage.projects.all.createProjectNotAdmin': () => (
-      <RenderOnFeatureFlag>
+      <RenderOnFeatureFlag featureFlagName="project_folders">
         <RenderOnProjectFolderModerator>
           <CreateProject />
         </RenderOnProjectFolderModerator>

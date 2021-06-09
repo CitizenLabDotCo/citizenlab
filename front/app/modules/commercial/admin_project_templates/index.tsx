@@ -2,30 +2,19 @@ import React, { ReactNode } from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 import CreateProjectFromTemplate from './admin/containers/CreateProjectFromTemplate';
 import Tab from './admin/components/Tab';
-import useFeatureFlag from 'hooks/useFeatureFlag';
 import { TTabName } from 'containers/Admin/projects/all/CreateProject';
 import ProjectTemplatePreviewAdminWithEventWrapper from './admin/containers/ProjectTemplatePreviewAdminWithEventWrapper';
+import { RenderOnFeatureFlag } from 'modules/utilComponents';
+
 declare module 'containers/Admin/projects/all/CreateProject' {
   export interface ITabNamesMap {
     template: 'template';
   }
 }
 
-type RenderOnFeatureFlagProps = {
-  children: ReactNode;
-};
-
 type RenderOnSelectedTabValueProps = {
   selectedTabValue: TTabName;
   children: ReactNode;
-};
-
-const RenderOnFeatureFlag = ({ children }: RenderOnFeatureFlagProps) => {
-  const isEnabled = useFeatureFlag('admin_project_templates');
-  if (isEnabled) {
-    return <>{children}</>;
-  }
-  return null;
 };
 
 const RenderOnSelectedTabValue = ({
@@ -58,7 +47,7 @@ const configuration: ModuleConfiguration = {
   outlets: {
     'app.containers.Admin.projects.all.container': (props) => {
       return (
-        <RenderOnFeatureFlag>
+        <RenderOnFeatureFlag featureFlagName="admin_project_templates">
           <ProjectTemplatePreviewAdminWithEventWrapper
             onRender={props.onRender}
           />
@@ -66,7 +55,7 @@ const configuration: ModuleConfiguration = {
       );
     },
     'app.containers.Admin.projects.all.createProject': (props) => (
-      <RenderOnFeatureFlag>
+      <RenderOnFeatureFlag featureFlagName="admin_project_templates">
         <RenderOnSelectedTabValue selectedTabValue={props.selectedTabValue}>
           <CreateProjectFromTemplate />
         </RenderOnSelectedTabValue>
@@ -74,7 +63,7 @@ const configuration: ModuleConfiguration = {
     ),
     'app.containers.Admin.projects.all.createProject.tabs': (props) => {
       return (
-        <RenderOnFeatureFlag>
+        <RenderOnFeatureFlag featureFlagName="admin_project_templates">
           <Tab {...props} />
         </RenderOnFeatureFlag>
       );

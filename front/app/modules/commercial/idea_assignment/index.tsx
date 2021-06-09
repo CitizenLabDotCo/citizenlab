@@ -9,26 +9,14 @@ import IdeaRowCell from './admin/components/IdeaRowCell';
 import Tab from './admin/components/Tab';
 import InputAssignment from './admin/containers/';
 
+import { RenderOnFeatureFlag } from 'modules/utilComponents';
+
 const StyledAssigneeFilter = styled(AssigneeFilter)`
   margin-right: 20px;
 `;
 
-type RenderOnFeatureFlagProps = {
-  children: ReactNode;
-};
-
 type RenderOnTabHideConditionProps = {
   children: ReactNode;
-};
-
-const RenderOnFeatureFlag = ({ children }: RenderOnFeatureFlagProps) => {
-  const isEnabled = useFeatureFlag('idea_assignment');
-
-  if (isEnabled) {
-    return <>{children}</>;
-  }
-
-  return null;
 };
 
 const RenderOnTabHideCondition = ({
@@ -52,7 +40,7 @@ const configuration: ModuleConfiguration = {
     'app.containers.Admin.project.edit.permissions.moderatorRights': (
       props
     ) => (
-      <RenderOnFeatureFlag>
+      <RenderOnFeatureFlag featureFlagName="idea_assignment">
         <InputAssignment {...props} />
       </RenderOnFeatureFlag>
     ),

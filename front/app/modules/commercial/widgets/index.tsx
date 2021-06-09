@@ -3,18 +3,7 @@ import React, { ReactNode } from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 import GuideArticle from './admin/components/GuideArticle';
 import Tab from './admin/components/Tab';
-
-type RenderOnFeatureFlagProps = {
-  children: ReactNode;
-};
-
-const RenderOnFeatureFlag = ({ children }: RenderOnFeatureFlagProps) => {
-  const isGranularPermissionsEnabled = useFeatureFlag('widgets');
-  if (isGranularPermissionsEnabled) {
-    return <>{children}</>;
-  }
-  return null;
-};
+import { RenderOnFeatureFlag } from 'modules/utilComponents';
 
 const configuration: ModuleConfiguration = {
   routes: {
@@ -28,7 +17,7 @@ const configuration: ModuleConfiguration = {
   },
   outlets: {
     'app.containers.Admin.guide.SetupSection': () => (
-      <RenderOnFeatureFlag>
+      <RenderOnFeatureFlag featureFlagName="widgets">
         <GuideArticle />
       </RenderOnFeatureFlag>
     ),

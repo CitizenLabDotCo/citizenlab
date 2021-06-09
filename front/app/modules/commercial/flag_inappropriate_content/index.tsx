@@ -1,30 +1,20 @@
+import React from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
-import { RenderOnNotificationType } from 'modules/utilComponents';
-import React, { ReactNode } from 'react';
+import {
+  RenderOnNotificationType,
+  RenderOnFeatureFlag,
+} from 'modules/utilComponents';
 import Setting from './admin/containers/Setting';
 import RemoveFlagButton from './admin/components/RemoveFlagButton';
 import ActivityTab from './admin/components/ActivityTab';
 import InappropriateContentWarning from './admin/components/InappropriateContentWarning';
-import useFeatureFlag from 'hooks/useFeatureFlag';
 import NLPFlaggedPostNotification from './citizen/components/NLPFlaggedPostNotification';
 import { INlpFlaggedPostNotificationData } from 'services/notifications';
-
-type RenderOnFeatureFlagProps = {
-  children: ReactNode;
-};
-
-const RenderOnFeatureFlag = ({ children }: RenderOnFeatureFlagProps) => {
-  const isEnabled = useFeatureFlag('flag_inappropriate_content');
-  if (isEnabled) {
-    return <>{children}</>;
-  }
-  return null;
-};
 
 const configuration: ModuleConfiguration = {
   outlets: {
     'app.containers.Admin.settings.general.form': (props) => (
-      <RenderOnFeatureFlag>
+      <RenderOnFeatureFlag featureFlagName="flag_inappropriate_content">
         <Setting {...props} />
       </RenderOnFeatureFlag>
     ),
@@ -50,7 +40,7 @@ const configuration: ModuleConfiguration = {
       return <ActivityTab {...props} />;
     },
     'app.components.NotificationMenu.Notification': ({ notification }) => (
-      <RenderOnFeatureFlag>
+      <RenderOnFeatureFlag featureFlagName="flag_inappropriate_content">
         <RenderOnNotificationType
           notification={notification}
           notificationType="inappropriate_content_flagged"

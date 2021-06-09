@@ -4,21 +4,10 @@ import { ModuleConfiguration } from 'utils/moduleUtils';
 import InitiativeSettingsTab from './admin/components/InitiativeSettingsTab';
 import ProjectSettingsTab from './admin/components/ProjectSettingsTab';
 import Granular from './admin/containers/Granular';
-
-type RenderOnFeatureFlagProps = {
-  children: ReactNode;
-};
+import { RenderOnFeatureFlag } from 'modules/utilComponents';
 
 type RenderOnTabHideConditionProps = {
   children: ReactNode;
-};
-
-const RenderOnFeatureFlag = ({ children }: RenderOnFeatureFlagProps) => {
-  const isGranularPermissionsEnabled = useFeatureFlag('granular_permissions');
-  if (isGranularPermissionsEnabled) {
-    return <>{children}</>;
-  }
-  return null;
 };
 
 const RenderOnTabHideCondition = ({
@@ -45,7 +34,7 @@ const configuration: ModuleConfiguration = {
     'app.containers.Admin.project.edit.permissions.participationRights': (
       props
     ) => (
-      <RenderOnFeatureFlag>
+      <RenderOnFeatureFlag featureFlagName="granular_permissions">
         <Granular {...props} />
       </RenderOnFeatureFlag>
     ),

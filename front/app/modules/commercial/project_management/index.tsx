@@ -3,21 +3,10 @@ import React, { ReactNode } from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 import ProjectManagement from './admin/containers/ProjectManagement';
 import Tab from './admin/components/Tab';
-
-type RenderOnFeatureFlagProps = {
-  children: ReactNode;
-};
+import { RenderOnFeatureFlag } from 'modules/utilComponents';
 
 type RenderOnTabHideConditionProps = {
   children: ReactNode;
-};
-
-const RenderOnFeatureFlag = ({ children }: RenderOnFeatureFlagProps) => {
-  const isEnabled = useFeatureFlag('project_management');
-  if (isEnabled) {
-    return <>{children}</>;
-  }
-  return null;
 };
 
 const RenderOnTabHideCondition = ({
@@ -36,7 +25,7 @@ const configuration: ModuleConfiguration = {
     'app.containers.Admin.project.edit.permissions.moderatorRights': (
       props
     ) => (
-      <RenderOnFeatureFlag>
+      <RenderOnFeatureFlag featureFlagName="project_management">
         <ProjectManagement {...props} />
       </RenderOnFeatureFlag>
     ),
