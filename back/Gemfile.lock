@@ -725,6 +725,8 @@ GEM
       omniauth (~> 1.9)
       openid_connect (~> 1.1)
     optimist (3.0.1)
+    order_as_specified (1.7)
+      activerecord (>= 5.0.0)
     os (1.1.1)
     parallel (1.19.0)
     parser (2.7.2.0)
@@ -1055,6 +1057,7 @@ DEPENDENCIES
   omniauth_openid_connect (~> 0.3.3)
   onboarding!
   openid_connect!
+  order_as_specified
   pg
   pg_search (~> 2.3.5)
   polls!

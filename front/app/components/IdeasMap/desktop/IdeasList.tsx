@@ -157,7 +157,7 @@ const IdeasList = memo<Props>(
     const isPBPhase =
       !isNilOrError(phase) &&
       phase.attributes.participation_method === 'budgeting';
-    const isPBIdea = !!(isPBProject || isPBPhase);
+    const isPBIdea = isNilOrError(phase) ? isPBProject : isPBPhase;
 
     const isFieldEnabled = (fieldCode: CustomFieldCodes) => {
       if (!isNilOrError(ideaCustomFieldsSchemas) && !isNilOrError(locale)) {

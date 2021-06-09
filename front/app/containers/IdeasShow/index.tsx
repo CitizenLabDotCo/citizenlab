@@ -1,13 +1,11 @@
 import React, { PureComponent, lazy, Suspense } from 'react';
-import { sortBy, last, isUndefined, isString } from 'lodash-es';
+import { isUndefined, isString, includes } from 'lodash-es';
 import { isNilOrError, getFormattedBudget } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
 
 // services
 import { getInputTerm } from 'services/participationContexts';
-
-// typings
-import { IParticipationContextType } from 'typings';
+import { getLatestRelevantPhase } from 'services/phases';
 
 // analytics
 import { trackEvent } from 'utils/analytics';
@@ -25,7 +23,7 @@ import Body from 'components/PostShowComponents/Body';
 import Image from 'components/PostShowComponents/Image';
 import OfficialFeedback from 'components/PostShowComponents/OfficialFeedback';
 import Modal from 'components/UI/Modal';
-import AssignBudgetWrapper from './CTABox/ParticipatoryBudgetingCTABox/BudgetAssignment/AssignBudgetWrapper';
+import AssignBudgetControl from 'components/AssignBudgetControl';
 import SharingModalContent from 'components/PostShowComponents/SharingModalContent';
 import FeatureFlag from 'components/FeatureFlag';
 import IdeaMoreActions from './IdeaMoreActions';
@@ -40,7 +38,6 @@ import MobileSharingButtonComponent from './Buttons/MobileSharingButtonComponent
 import RightColumnDesktop from './RightColumnDesktop';
 
 // utils
-import { pastPresentOrFuture } from 'utils/dateUtils';
 import isFieldEnabled from './isFieldEnabled';
 
 // resources
@@ -191,7 +188,7 @@ const MobileMetaInformation = styled(MetaInformation)`
   margin-bottom: 30px;
 `;
 
-const AssignBudgetControlMobile = styled.div`
+const StyledAssignBudgetControl = styled(AssignBudgetControl)`
   margin-top: 30px;
   margin-bottom: 30px;
 `;
@@ -233,20 +230,11 @@ interface InputProps {
 
 interface Props extends DataProps, InputProps {}
 
-interface IActionInfos {
-  participationContextType: IParticipationContextType | null;
-  participationContextId: string | null;
-  budgetingDescriptor: any | null;
-  showBudgetControl: boolean | null;
-  showVoteControl: boolean | null;
-}
-
 interface State {
   loaded: boolean;
   spamModalVisible: boolean;
   ideaIdForSocialSharing: string | null;
   translateButtonClicked: boolean;
-  actionInfos: IActionInfos | null;
 }
 
 export class IdeasShow extends PureComponent<
@@ -260,7 +248,6 @@ export class IdeasShow extends PureComponent<
       spamModalVisible: false,
       ideaIdForSocialSharing: null,
       translateButtonClicked: false,
-      actionInfos: null,
     };
   }
 
@@ -280,110 +267,6 @@ export class IdeasShow extends PureComponent<
 
   componentDidUpdate() {
     this.setLoaded();
-  }
-
-  static getDerivedStateFromProps(nextProps: Props, prevState: State) {
-    const { actionInfos } = prevState;
-    const { idea, project, phases, authUser } = nextProps;
-    let stateToUpdate: Partial<State> | null = null;
-
-    if (
-      !actionInfos &&
-      !isNilOrError(idea) &&
-      !isNilOrError(project) &&
-      !isUndefined(phases)
-    ) {
-      const upvotesCount = idea.attributes.upvotes_count;
-      const downvotesCount = idea.attributes.downvotes_count;
-      const votingEnabled =
-        idea.attributes.action_descriptor.voting_idea.enabled;
-      const votingDisabledReason =
-        idea.attributes.action_descriptor.voting_idea.disabled_reason;
-      const cancellingEnabled =
-        idea.attributes.action_descriptor.voting_idea.cancelling_enabled;
-      const votingFutureEnabled =
-        idea.attributes.action_descriptor.voting_idea.future_enabled;
-      const pbProject =
-        project.attributes.process_type === 'continuous' &&
-        project.attributes.participation_method === 'budgeting'
-          ? project
-          : null;
-      const pbPhase =
-        !pbProject && !isNilOrError(phases)
-          ? phases.find(
-              (phase) => phase.attributes.participation_method === 'budgeting'
-            )
-          : null;
-      const pbPhaseIsActive =
-        pbPhase &&
-        pastPresentOrFuture([
-          pbPhase.attributes.start_at,
-          pbPhase.attributes.end_at,
-        ]) === 'present';
-      const lastPhase = !isNilOrError(phases)
-        ? last(sortBy(phases, [(phase) => phase.attributes.end_at]))
-        : null;
-      const lastPhaseHasPassed = lastPhase
-        ? pastPresentOrFuture([
-            lastPhase.attributes.start_at,
-            lastPhase.attributes.end_at,
-          ]) === 'past'
-        : false;
-      const pbPhaseIsLast = pbPhase && lastPhase && lastPhase.id === pbPhase.id;
-      const showBudgetControl = !!(
-        pbProject ||
-        (pbPhase && (pbPhaseIsActive || (lastPhaseHasPassed && pbPhaseIsLast)))
-      );
-      const isSignedIn = !isNilOrError(authUser);
-      const shouldVerify =
-        !votingEnabled && votingDisabledReason === 'not_verified' && isSignedIn;
-      const verifiedButNotPermitted =
-        !shouldVerify && votingDisabledReason === 'not_permitted';
-      const shouldSignIn =
-        !votingEnabled &&
-        (votingDisabledReason === 'not_signed_in' ||
-          (votingDisabledReason === 'not_verified' && !isSignedIn));
-      const showVoteControl = !!(
-        !showBudgetControl &&
-        (votingEnabled ||
-          cancellingEnabled ||
-          votingFutureEnabled ||
-          upvotesCount > 0 ||
-          downvotesCount > 0 ||
-          shouldVerify ||
-          shouldSignIn ||
-          verifiedButNotPermitted)
-      );
-      const budgetingDescriptor =
-        idea?.attributes?.action_descriptor?.budgeting || null;
-      let participationContextType: IParticipationContextType | null = null;
-      let participationContextId: string | null = null;
-
-      if (pbProject) {
-        participationContextType = 'project';
-      } else if (pbPhase) {
-        participationContextType = 'phase';
-      }
-
-      if (!isNilOrError(pbProject)) {
-        participationContextId = pbProject.id;
-      } else if (!isNilOrError(pbPhase)) {
-        participationContextId = pbPhase.id;
-      }
-
-      stateToUpdate = {
-        ...(stateToUpdate || {}),
-        actionInfos: {
-          participationContextType,
-          participationContextId,
-          budgetingDescriptor,
-          showBudgetControl,
-          showVoteControl,
-        },
-      };
-    }
-
-    return stateToUpdate;
   }
 
   setLoaded = () => {
@@ -424,6 +307,22 @@ export class IdeasShow extends PureComponent<
     this.props.setRef?.(element);
   };
 
+  getLatestRelevantPhaseId = () => {
+    const { idea, phases } = this.props;
+
+    if (!isNilOrError(idea) && !isNilOrError(phases)) {
+      const ideaPhaseIds = idea?.relationships?.phases?.data?.map(
+        (item) => item.id
+      );
+      const ideaPhases = phases.filter((phase) =>
+        includes(ideaPhaseIds, phase.id)
+      );
+      return getLatestRelevantPhase(ideaPhases)?.id;
+    }
+
+    return undefined;
+  };
+
   render() {
     const {
       locale,
@@ -445,12 +344,12 @@ export class IdeasShow extends PureComponent<
       loaded,
       ideaIdForSocialSharing,
       translateButtonClicked,
-      actionInfos,
     } = this.state;
     const { formatMessage } = this.props.intl;
     let content: JSX.Element | null = null;
 
     if (
+      !isNilOrError(project) &&
       !isNilOrError(idea) &&
       !isNilOrError(locale) &&
       !isNilOrError(tenant) &&
@@ -467,13 +366,6 @@ export class IdeasShow extends PureComponent<
       const ideaId = idea.id;
       const proposedBudget = idea.attributes?.proposed_budget;
       const ideaBody = localize(idea?.attributes?.body_multiloc);
-      const participationContextType =
-        actionInfos?.participationContextType || null;
-      const participationContextId =
-        actionInfos?.participationContextId || null;
-      const budgetingDescriptor = actionInfos?.budgetingDescriptor || null;
-      const showBudgetControl = actionInfos?.showBudgetControl || null;
-      const showVoteControl = actionInfos?.showVoteControl || null;
       const isCompactView =
         compact === true ||
         (windowSize ? windowSize <= viewportWidths.largeTablet : false);
@@ -550,21 +442,13 @@ export class IdeasShow extends PureComponent<
                 translateButtonClicked={translateButtonClicked}
               />
 
-              {showBudgetControl &&
-                participationContextId &&
-                participationContextType &&
-                budgetingDescriptor &&
-                isCompactView && (
-                  <AssignBudgetControlMobile>
-                    <AssignBudgetWrapper
-                      ideaId={ideaId}
-                      projectId={projectId}
-                      participationContextId={participationContextId}
-                      participationContextType={participationContextType}
-                      budgetingDescriptor={budgetingDescriptor}
-                    />
-                  </AssignBudgetControlMobile>
-                )}
+              {isCompactView && (
+                <StyledAssignBudgetControl
+                  view="ideaPage"
+                  ideaId={ideaId}
+                  projectId={projectId}
+                />
+              )}
 
               {isCompactView && (
                 <MobileMetaInformation
@@ -596,17 +480,12 @@ export class IdeasShow extends PureComponent<
               </Comments>
             </LeftColumn>
 
-            {!isCompactView && (
+            {!isCompactView && projectId && (
               <StyledRightColumnDesktop
                 ideaId={ideaId}
                 projectId={projectId}
                 statusId={statusId}
                 authorId={authorId}
-                showVoteControl={showVoteControl}
-                showBudgetControl={showBudgetControl}
-                participationContextId={participationContextId}
-                participationContextType={participationContextType}
-                budgetingDescriptor={budgetingDescriptor}
                 insideModal={insideModal}
               />
             )}

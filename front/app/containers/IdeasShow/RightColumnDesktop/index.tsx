@@ -1,11 +1,10 @@
 import React from 'react';
-import { IParticipationContextType } from 'typings';
 
 // components
 import MetaInformation from '../MetaInformation';
 import Voting from 'containers/IdeasShow/CTABox/VotingCTABox/Voting';
 import Buttons from 'containers/IdeasShow/CTABox/Buttons';
-import AssignBudgetWrapper from 'containers/IdeasShow/CTABox/ParticipatoryBudgetingCTABox/BudgetAssignment/AssignBudgetWrapper';
+import AssignBudgetControl from 'components/AssignBudgetControl';
 
 // styling
 import styled from 'styled-components';
@@ -32,14 +31,16 @@ const Box = styled.div`
   margin-bottom: 30px;
 `;
 
-const StyledVoting = styled(Voting)``;
+const StyledVoting = styled(Voting)`
+  padding-bottom: 23px;
+  margin-bottom: 23px;
+  border-bottom: solid 1px #ccc;
+`;
 
-const StyledAssignBudgetWrapper = styled(AssignBudgetWrapper)``;
-
-const StyledButtons = styled(Buttons)`
-  border-top: solid 1px #ccc;
-  padding-top: 23px;
-  margin-top: 23px;
+const StyledAssignBudgetControl = styled(AssignBudgetControl)`
+  padding-bottom: 23px;
+  margin-bottom: 23px;
+  border-bottom: solid 1px #ccc;
 `;
 
 const StyledMetaInformation = styled(MetaInformation)`
@@ -51,11 +52,6 @@ interface Props {
   projectId: string;
   statusId: string;
   authorId: string | null;
-  showVoteControl: boolean | null;
-  showBudgetControl: boolean | null;
-  participationContextId: string | null;
-  participationContextType: IParticipationContextType | null;
-  budgetingDescriptor: any | null;
   insideModal: boolean;
   className?: string;
 }
@@ -65,11 +61,6 @@ const RightColumnDesktop = ({
   projectId,
   statusId,
   authorId,
-  showVoteControl,
-  showBudgetControl,
-  participationContextId,
-  participationContextType,
-  budgetingDescriptor,
   insideModal,
   className,
 }: Props) => {
@@ -77,26 +68,14 @@ const RightColumnDesktop = ({
     <Container insideModal={insideModal} className={className || ''}>
       <InnerContainer>
         <Box>
-          {showVoteControl && (
-            <StyledVoting ideaId={ideaId} projectId={projectId} />
-          )}
-
-          {showBudgetControl &&
-            participationContextId &&
-            participationContextType &&
-            budgetingDescriptor && (
-              <StyledAssignBudgetWrapper
-                ideaId={ideaId}
-                projectId={projectId}
-                participationContextId={participationContextId}
-                participationContextType={participationContextType}
-                budgetingDescriptor={budgetingDescriptor}
-              />
-            )}
-
-          <StyledButtons ideaId={ideaId} />
+          <StyledVoting ideaId={ideaId} projectId={projectId} />
+          <StyledAssignBudgetControl
+            view="ideaPage"
+            ideaId={ideaId}
+            projectId={projectId}
+          />
+          <Buttons ideaId={ideaId} />
         </Box>
-
         <StyledMetaInformation
           ideaId={ideaId}
           projectId={projectId}

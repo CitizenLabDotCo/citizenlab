@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import styled from 'styled-components';
+import { colors } from 'utils/styleUtils';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -138,14 +139,14 @@ export default ({
                     <FormattedMessage {...messages.onlyAdminsCanView} />
                   )
                 }
-                backgroundColor="clBlue"
+                backgroundColor={colors.clBlueDark}
                 icon="lock"
               />
             )}
           {publication.attributes?.publication_visible_to === 'admins' && (
             <StyledStatusLabel
               text={<FormattedMessage {...messages.onlyAdminsCanView} />}
-              backgroundColor="clBlue"
+              backgroundColor={colors.clBlueDark}
               icon="lock"
             />
           )}

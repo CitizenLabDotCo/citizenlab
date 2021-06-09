@@ -48,68 +48,64 @@ const IdeasContainer = memo<Props>(({ projectId, className }) => {
   const project = useProject({ projectId });
   const windowSize = useWindowSize();
 
-  if (!isNilOrError(project)) {
-    const projectType = project?.attributes.process_type;
-    const participationMethod = project?.attributes.participation_method;
-    const showIdeas = !!(
-      projectType === 'continuous' &&
-      (participationMethod === 'budgeting' ||
-        participationMethod === 'ideation')
-    );
+  const projectType = project?.attributes.process_type;
+  const participationMethod = project?.attributes.participation_method;
+  const showIdeas = !!(
+    projectType === 'continuous' &&
+    (participationMethod === 'budgeting' || participationMethod === 'ideation')
+  );
+
+  if (!isNilOrError(project) && showIdeas) {
     const inputTerm = project.attributes.input_term;
+    const smallerThanBigTablet = windowSize?.windowWidth
+      ? windowSize?.windowWidth <= viewportWidths.smallTablet
+      : false;
+    const isPBProject = project.attributes.participation_method === 'budgeting';
+    const projectId = project.id;
+    const projectIds = [projectId];
 
-    if (showIdeas) {
-      const smallerThanBigTablet = windowSize?.windowWidth
-        ? windowSize?.windowWidth <= viewportWidths.smallTablet
-        : false;
-      const isPBProject =
-        project.attributes.participation_method === 'budgeting';
-      const projectId = project.id;
-      const projectIds = [projectId];
-
-      return (
-        <Container
-          id="e2e-continuos-project-idea-cards"
-          className={className || ''}
-        >
-          <StyledContentContainer id="project-ideas" maxWidth={maxPageWidth}>
-            <SectionContainer>
-              {isPBProject && (
-                <StyledPBExpenses
-                  participationContextId={projectId}
-                  participationContextType="project"
-                  viewMode={smallerThanBigTablet ? 'column' : 'row'}
-                />
-              )}
-              <StyledProjectPageSectionTitle>
-                <FormattedMessage
-                  {...getInputTermMessage(inputTerm, {
-                    idea: messages.ideas,
-                    option: messages.options,
-                    project: messages.projects,
-                    question: messages.questions,
-                    issue: messages.issues,
-                    contribution: messages.contributions,
-                  })}
-                />
-              </StyledProjectPageSectionTitle>
-
-              <IdeaCards
-                type="load-more"
-                projectIds={projectIds}
-                participationMethod={project.attributes.participation_method}
+    return (
+      <Container
+        id="e2e-continuos-project-idea-cards"
+        className={className || ''}
+      >
+        <StyledContentContainer id="project-ideas" maxWidth={maxPageWidth}>
+          <SectionContainer>
+            {isPBProject && (
+              <StyledPBExpenses
                 participationContextId={projectId}
                 participationContextType="project"
-                showViewToggle={true}
-                defaultSortingMethod={project.attributes.ideas_order || null}
-                defaultView={project.attributes.presentation_mode || null}
-                invisibleTitleMessage={messages.a11y_titleInputs}
+                viewMode={smallerThanBigTablet ? 'column' : 'row'}
               />
-            </SectionContainer>
-          </StyledContentContainer>
-        </Container>
-      );
-    }
+            )}
+            <StyledProjectPageSectionTitle>
+              <FormattedMessage
+                {...getInputTermMessage(inputTerm, {
+                  idea: messages.ideas,
+                  option: messages.options,
+                  project: messages.projects,
+                  question: messages.questions,
+                  issue: messages.issues,
+                  contribution: messages.contributions,
+                })}
+              />
+            </StyledProjectPageSectionTitle>
+
+            <IdeaCards
+              type="load-more"
+              projectIds={projectIds}
+              participationMethod={project.attributes.participation_method}
+              participationContextId={projectId}
+              participationContextType="project"
+              showViewToggle={true}
+              defaultSortingMethod={project.attributes.ideas_order || null}
+              defaultView={project.attributes.presentation_mode || null}
+              invisibleTitleMessage={messages.a11y_titleInputs}
+            />
+          </SectionContainer>
+        </StyledContentContainer>
+      </Container>
+    );
   }
 
   return null;
