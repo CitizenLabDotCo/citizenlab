@@ -1,11 +1,11 @@
 import React, { memo } from 'react';
 
 // i18n
-import messages from '../../messages';
+import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // components
-import NotificationWrapper from '../NotificationWrapper';
+import NotificationWrapper from 'containers/NavBar/components/NotificationMenu/components/NotificationWrapper';
 
 // services
 import { INlpFlaggedPostNotificationData } from 'services/notifications';

@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import Outlet from 'components/Outlet';
 import AdminRightsReceivedNotification from '../AdminRightsReceivedNotification';
 import CommentDeletedByAdminNotification from '../CommentDeletedByAdminNotification';
 import CommentMarkedAsSpamNotification from '../CommentMarkedAsSpamNotification';
@@ -28,7 +29,6 @@ import StatusChangeOnCommentedInitiativeNotification from '../StatusChangeOnComm
 import StatusChangeOnVotedIdeaNotification from '../StatusChangeOnVotedIdeaNotification';
 import StatusChangeOnVotedInitiativeNotification from '../StatusChangeOnVotedInitiativeNotification';
 import ThresholdReachedForAdminNotification from '../ThresholdReachedForAdminNotification';
-import NlpFlaggedPostNotification from '../NlpFlaggedPostNotification';
 
 import {
   TNotificationData,
@@ -61,7 +61,6 @@ import {
   IStatusChangeOnVotedIdeaNotificationData,
   IStatusChangeOnVotedInitiativeNotificationData,
   IThresholdReachedForAdminNotificationData,
-  INlpFlaggedPostNotificationData,
 } from 'services/notifications';
 import styled from 'styled-components';
 
@@ -290,14 +289,13 @@ export default class Notification extends PureComponent<Props> {
             }
           />
         );
-      case 'inappropriate_content_flagged':
+      default:
         return (
-          <NlpFlaggedPostNotification
-            notification={notification as INlpFlaggedPostNotificationData}
+          <Outlet
+            id="app.components.NotificationMenu.Notification"
+            notification={notification as TNotificationData}
           />
         );
-      default:
-        return null;
     }
   }
 }
