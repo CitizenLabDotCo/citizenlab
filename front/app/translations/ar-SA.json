@@ -2633,6 +2633,7 @@
   "app.modules.commercial.flag_inappropriate_content.admin.components.removeWarning": "",
   "app.modules.commercial.flag_inappropriate_content.admin.components.userFlaggedWarningText": "",
   "app.modules.commercial.flag_inappropriate_content.admin.components.warnings": "",
+  "app.modules.commercial.flag_inappropriate_content.citizen.components.inappropriateContentAutoDetected": "",
   "app.modules.granular_permissions.admin.components.projectPermissionsTab": "حقوق الوصول",
   "app.modules.id_cow.cancel": "إلغاء",
   "app.modules.id_cow.emptyFieldError": "لا يمكن أن يكون هذا الحقل فارغًا.",
