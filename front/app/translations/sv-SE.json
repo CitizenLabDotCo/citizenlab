@@ -16,7 +16,7 @@
   "app.components.AssignBudgetControl.assign": "Lägg till mina utgifter",
   "app.components.AssignBudgetControl.assigned": "Lades till mina utgifter",
   "app.components.AssignBudgetControl.backToOverview": "Tillbaka till översikten",
-  "app.components.AssignBudgetControl.undo": "Ångra",
+  "app.components.AssignBudgetControl.undo": "Undo",
   "app.components.AssignBudgetControl.verifyAccountLinkText": "verifiera ditt konto",
   "app.components.Author.a11y_postedBy": "Inlagd av:",
   "app.components.AvatarBubbles.numberOfUsers": "{numberOfUsers} deltagare",
