@@ -1,19 +1,15 @@
 import React from 'react';
-import { IParticipationContextType } from 'typings';
 
 // components
 import MetaInformation from '../MetaInformation';
-import VotingCTABox from '../CTABox/VotingCTABox';
-import ParticipatoryBudgetingCTABox from '../CTABox/ParticipatoryBudgetingCTABox';
-import Buttons from '../CTABox/Buttons';
+import Voting from 'containers/IdeasShow/CTABox/VotingCTABox/Voting';
+import Buttons from 'containers/IdeasShow/CTABox/Buttons';
+import AssignBudgetControl from 'components/AssignBudgetControl';
 
 // styling
 import styled from 'styled-components';
-import { media, colors } from 'utils/styleUtils';
-import {
-  rightColumnWidthDesktop,
-  rightColumnWidthTablet,
-} from '../styleConstants';
+import { rightColumnWidthDesktop } from '../styleConstants';
+import { colors } from 'utils/styleUtils';
 
 const Container = styled.div<{ insideModal: boolean }>`
   flex: 0 0 ${rightColumnWidthDesktop}px;
@@ -21,15 +17,6 @@ const Container = styled.div<{ insideModal: boolean }>`
   position: sticky;
   top: ${(props) => (props.insideModal ? '30px' : '110px')};
   align-self: flex-start;
-
-  ${media.tablet`
-    flex: 0 0 ${rightColumnWidthTablet}px;
-    width: ${rightColumnWidthTablet}px;
-  `}
-
-  ${media.smallerThanMaxTablet`
-    display: none;
-  `}
 `;
 
 const InnerContainer = styled.div`
@@ -37,19 +24,23 @@ const InnerContainer = styled.div`
   flex-direction: column;
 `;
 
-const StyledVotingCTABox = styled(VotingCTABox)`
-  margin-bottom: 23px;
+const Box = styled.div`
+  padding: 20px;
+  border-radius: ${(props) => props.theme.borderRadius};
+  background: ${colors.backgroundLightGrey};
+  margin-bottom: 30px;
 `;
 
-const StyledPBCTABox = styled(ParticipatoryBudgetingCTABox)`
+const StyledVoting = styled(Voting)`
+  padding-bottom: 23px;
   margin-bottom: 23px;
+  border-bottom: solid 1px #ccc;
 `;
 
-const ButtonsFallback = styled.div`
-  background-color: ${colors.background};
-  border-radius: 2px;
-  padding: 25px 15px;
+const StyledAssignBudgetControl = styled(AssignBudgetControl)`
+  padding-bottom: 23px;
   margin-bottom: 23px;
+  border-bottom: solid 1px #ccc;
 `;
 
 const StyledMetaInformation = styled(MetaInformation)`
@@ -61,12 +52,8 @@ interface Props {
   projectId: string;
   statusId: string;
   authorId: string | null;
-  showVoteControl: boolean | null;
-  showBudgetControl: boolean | null;
-  participationContextId: string | null;
-  participationContextType: IParticipationContextType | null;
-  budgetingDescriptor: any | null;
   insideModal: boolean;
+  className?: string;
 }
 
 const RightColumnDesktop = ({
@@ -74,36 +61,21 @@ const RightColumnDesktop = ({
   projectId,
   statusId,
   authorId,
-  showVoteControl,
-  showBudgetControl,
-  participationContextId,
-  participationContextType,
-  budgetingDescriptor,
   insideModal,
+  className,
 }: Props) => {
   return (
-    <Container insideModal={insideModal}>
+    <Container insideModal={insideModal} className={className || ''}>
       <InnerContainer>
-        {showVoteControl && (
-          <StyledVotingCTABox ideaId={ideaId} projectId={projectId} />
-        )}
-        {showBudgetControl &&
-          participationContextId &&
-          participationContextType &&
-          budgetingDescriptor && (
-            <StyledPBCTABox
-              ideaId={ideaId}
-              projectId={projectId}
-              participationContextId={participationContextId}
-              participationContextType={participationContextType}
-              budgetingDescriptor={budgetingDescriptor}
-            />
-          )}
-        {!showVoteControl && !showBudgetControl && (
-          <ButtonsFallback>
-            <Buttons ideaId={ideaId} />
-          </ButtonsFallback>
-        )}
+        <Box>
+          <StyledVoting ideaId={ideaId} projectId={projectId} />
+          <StyledAssignBudgetControl
+            view="ideaPage"
+            ideaId={ideaId}
+            projectId={projectId}
+          />
+          <Buttons ideaId={ideaId} />
+        </Box>
         <StyledMetaInformation
           ideaId={ideaId}
           projectId={projectId}

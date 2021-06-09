@@ -2,6 +2,11 @@
 
 ## Next Release
 
+## 2021-06-09
+
+### Added
+- New citizen-facing map view
+
 ## 2021-06-07
 
 ### Fixed

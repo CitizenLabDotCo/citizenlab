@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, lazy, Suspense } from 'react';
 import { adopt } from 'react-adopt';
 import { get, isNumber } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
@@ -9,7 +9,6 @@ import tracks from './tracks';
 
 // components
 import IdeaCard from 'components/IdeaCard/Compact';
-import IdeasMap from 'components/IdeasMap';
 import { Icon, Spinner } from 'cl2-component-library';
 import SortFilterDropdown from './SortFilterDropdown';
 import StatusFilterBox from './StatusFilterBox';
@@ -20,6 +19,7 @@ import BottomBar from 'components/FiltersModal/BottomBar';
 import FullscreenModal from 'components/UI/FullscreenModal';
 import Button from 'components/UI/Button';
 import ViewButtons from 'components/PostCardsComponents/ViewButtons';
+const IdeasMap = lazy(() => import('components/IdeasMap'));
 
 // resources
 import GetIdeas, {
@@ -767,10 +767,12 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
                 )}
 
                 {showMapView && hasIdeas && (
-                  <IdeasMap
-                    projectIds={queryParameters.projects}
-                    phaseId={queryParameters.phase}
-                  />
+                  <Suspense fallback={false}>
+                    <IdeasMap
+                      projectIds={queryParameters.projects}
+                      phaseId={queryParameters.phase}
+                    />
+                  </Suspense>
                 )}
               </ContentLeft>
 
