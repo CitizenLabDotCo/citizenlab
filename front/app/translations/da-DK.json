@@ -1986,7 +1986,6 @@
   "app.containers.IdeasShow.MetaInformation.postedBy": "Sendt af",
   "app.containers.IdeasShow.MetaInformation.similarInputs": "Lignende input",
   "app.containers.IdeasShow.MetaInformation.topics": "Emner",
-  "app.containers.IdeasShow.a11y_voting": "Afstemning",
   "app.containers.IdeasShow.bodyTitle": "Beskrivelse",
   "app.containers.IdeasShow.commentCTA": "Tilføj kommentar",
   "app.containers.IdeasShow.contributionEmailSharingBody": "Støt dette forslag '{postTitle}' på {postUrl}!",
