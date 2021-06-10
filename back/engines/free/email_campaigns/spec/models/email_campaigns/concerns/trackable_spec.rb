@@ -8,6 +8,9 @@ RSpec.describe EmailCampaigns::Trackable, type: :model do
   before do
     @campaign = TrackableCampaign.create
   end
+  after(:all) do # Deleting campaign class as this breaks other tests
+    Object.send(:remove_const, :TrackableCampaign)
+  end
   
   describe "sent?" do
     it "returns true when there are deliveries" do

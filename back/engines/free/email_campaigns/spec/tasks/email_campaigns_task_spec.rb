@@ -25,6 +25,7 @@ describe "rake email_campaigns" do
     let(:task_name) { "email_campaigns:assure_campaign_records" }
 
     it "creates the missing campaign records" do
+      byebug
       expect{task.execute}
         .to change{EmailCampaigns::Campaign.count}
         .by(EmailCampaigns::DeliveryService.new.campaign_types.size - 1)

@@ -8,6 +8,9 @@ RSpec.describe EmailCampaigns::Disableable, type: :model do
   before do
     @campaign = DisableableCampaign.create
   end
+  after(:all) do # Deleting campaign class as this breaks other tests
+    Object.send(:remove_const, :DisableableCampaign)
+  end
   
   describe "run_before_send_hooks" do
     it "returns true when the campaign is enabled" do

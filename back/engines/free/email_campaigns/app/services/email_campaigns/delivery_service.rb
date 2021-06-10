@@ -6,7 +6,9 @@ module EmailCampaigns
     end
 
     def campaign_classes
-      Campaign.descendants
+      Campaign.descendants.select do |klaz|
+        Object.const_defined? klaz.name
+      end
     end
 
     def consentable_campaign_types_for(user)

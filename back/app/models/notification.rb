@@ -23,8 +23,10 @@ class Notification < ApplicationRecord
     #     Dir[File.join(dir, '*.rb')].each { |file| require file }
     #   end
     # end
-    self.descendants.select do |notification_class|
-      notification_class::ACTIVITY_TRIGGERS.dig(activity.item_type, activity.action)
+    descendants.select do |klaz|
+      Object.const_defined? klaz.name
+    end.select do |klaz|
+      klaz::ACTIVITY_TRIGGERS.dig(activity.item_type, activity.action)
     end
   end
 
