@@ -8,10 +8,10 @@ import { FormattedMessage } from 'utils/cl-intl';
 import NotificationWrapper from 'containers/NavBar/components/NotificationMenu/components/NotificationWrapper';
 
 // services
-import { INlpFlaggedPostNotificationData } from 'services/notifications';
+import { INLPFlagNotificationData } from 'services/notifications';
 
 interface Props {
-  notification: INlpFlaggedPostNotificationData;
+  notification: INLPFlagNotificationData;
 }
 
 const NLPFlagNotification = memo<Props>((props) => {

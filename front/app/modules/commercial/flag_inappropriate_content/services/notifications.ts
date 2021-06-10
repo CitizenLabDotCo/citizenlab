@@ -1,6 +1,7 @@
+// import { IBaseNotificationData } from "services/notifications";
+
 declare module 'services/notifications' {
-  export interface INlpFlaggedPostNotificationData
-    extends IBaseNotificationData {
+  export interface INLPFlagNotificationData extends IBaseNotificationData {
     attributes: {
       type: 'inappropriate_content_flagged';
       read_at: string | null;
@@ -10,6 +11,6 @@ declare module 'services/notifications' {
   }
 
   export interface INotificationDataMap {
-    INlpFlaggedPostNotificationData: INlpFlaggedPostNotificationData;
+    INlpFlaggedPostNotificationData: INLPFlagNotificationData;
   }
 }

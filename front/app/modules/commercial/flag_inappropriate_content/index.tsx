@@ -7,7 +7,7 @@ import ActivityTab from './admin/components/ActivityTab';
 import InappropriateContentWarning from './admin/components/InappropriateContentWarning';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import NLPFlagNotification from './citizen/components/NLPFlagNotification';
-import { INlpFlaggedPostNotificationData } from 'services/notifications';
+import { INLPFlagNotificationData } from 'services/notifications';
 
 type RenderOnFeatureFlagProps = {
   children: ReactNode;
@@ -56,7 +56,7 @@ const configuration: ModuleConfiguration = {
           notificationType="inappropriate_content_flagged"
         >
           <NLPFlagNotification
-            notification={notification as INlpFlaggedPostNotificationData}
+            notification={notification as INLPFlagNotificationData}
           />
         </RenderOnNotificationType>
       </RenderOnFeatureFlag>
