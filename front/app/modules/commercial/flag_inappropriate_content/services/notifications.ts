@@ -1,5 +1,3 @@
-// import { IBaseNotificationData } from "services/notifications";
-
 declare module 'services/notifications' {
   export interface INLPFlagNotificationData extends IBaseNotificationData {
     attributes: {
