@@ -17,7 +17,7 @@ module FlagInappropriateContent
         def mark_as_flagged
           @flag.deleted_at = nil
           if @flag.save
-            SideFxInappropriateContentFlagService.new.after_mark_as_deleted(@flag, current_user)
+            SideFxInappropriateContentFlagService.new.after_mark_as_flagged(@flag, current_user)
             head :ok
           else
             render json: { errors: @flag.errors.details }, status: :unprocessable_entity

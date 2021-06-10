@@ -12,7 +12,7 @@ const StyledToggle = styled(Toggle)`
   margin-right: 15px;
 `;
 
-const Setting = styled.div`
+const Container = styled.div`
   margin-bottom: 20px;
 `;
 
@@ -40,9 +40,11 @@ const StyledIconTooltip = styled(IconTooltip)`
 
 interface Props {
   onSettingChange: (settingName: string, settingValue: any) => void;
+  className?: string;
 }
 
 const FlagInnapropriateContentSetting = ({
+  className,
   onSettingChange,
   intl: { formatMessage },
 }: Props & InjectedIntlProps): ReactElement | null => {
@@ -65,7 +67,7 @@ const FlagInnapropriateContentSetting = ({
     }
 
     return (
-      <Setting>
+      <Container className={className || ''}>
         <ToggleLabel>
           <StyledToggle
             checked={flagInnaproperiateContentEnabled}
@@ -98,7 +100,7 @@ const FlagInnapropriateContentSetting = ({
             </LabelDescription>
           </LabelContent>
         </ToggleLabel>
-      </Setting>
+      </Container>
     );
   }
 

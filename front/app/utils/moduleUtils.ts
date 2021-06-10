@@ -332,9 +332,9 @@ export type OutletsPropertyMap = {
     inappropriateContentFlagId: string | undefined;
   };
   'app.modules.commercial.moderation.admin.containers.actionbar.buttons': {
-    selectedRowsWithContentWarningLength: number;
+    selectedModerationItemsWithContentWarningLength: number;
     processing: boolean;
-    onClick: (event: React.FormEvent) => void;
+    onClick: () => void;
   };
   'app.modules.commercial.moderation.admin.containers.tabs': {
     onData: (data: InsertConfigurationOptions<ITabItem>) => void;

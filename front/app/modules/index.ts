@@ -15,7 +15,7 @@ import machineTranslationsConfiguration from './commercial/machine_translations'
 import similarIdeaConfiguration from './commercial/similar_ideas';
 import clusteringsConfiguration from './commercial/clusterings';
 
-// import projectVisibilityConfiguration from './free/project_visibility';
+import projectVisibilityConfiguration from './free/project_visibility';
 
 import customMapsConfiguration from './commercial/custom_maps';
 import googleTagManagerConfiguration from './commercial/google_tag_manager';
@@ -91,10 +91,10 @@ export default loadModules([
     configuration: granularPermissionsConfiguration,
     isEnabled: CL_CONFIG['modules']['commercial/granular_permissions'],
   },
-  // {
-  //   configuration: projectVisibilityConfiguration,
-  //   isEnabled: CL_CONFIG['modules']['free/project_visibility'],
-  // },
+  {
+    configuration: projectVisibilityConfiguration,
+    isEnabled: CL_CONFIG['modules']['free/project_visibility'],
+  },
   {
     configuration: projectManagementConfiguration,
     isEnabled: CL_CONFIG['modules']['commercial/project_management'],

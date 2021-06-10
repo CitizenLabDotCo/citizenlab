@@ -1,0 +1,30 @@
+<mj-section padding="25px"
+            text-align="left">
+  <mj-column
+    padding="20px 25px"
+    border="1px solid #eaeaea">
+    <mj-text>
+      <h2 style="font-size: 18px; margin-top: 10px; margin-bottom: 10px;">
+        <!-- <%= localize_for_recipient(event.post_title_multiloc) %> -->
+        <%= 'Dingske commented or posted or something:' %>
+      </h2>
+      <p style="font-size: 14px; margin-top: 10px; color: #84939E;">
+        <!-- <%= format_message('by_author', values: { authorName: event.post_author_name }) %> -->
+        <%= 'Chakamaka ham ham boumeloum shlabama' %>
+      </p>
+    </mj-text>
+  </mj-column>
+</mj-section>
+
+<mj-section padding="20px 25px" border-radius="5px" text-align="left">
+  <mj-column padding="0 20px">
+    <mj-text font-size="14px" color="#84939E">
+      <!-- <%= format_message('this_post_was_flagged') %> -->
+      <%= 'This post was flagged by our content detector as potentially containing inappropriate content. We’re letting you know so that you may review the post in accordance with your own moderation guidelines' %>
+    </mj-text>
+  </mj-column>
+</mj-section>
+
+
+<!-- <%= render partial: 'application/cta_button', locals: { href: event.flaggable_url, message: format_message('cta_review_post') } %> -->
+<%= render partial: 'application/cta_button', locals: { href: event.flaggable_url, message: 'Review post' } %>

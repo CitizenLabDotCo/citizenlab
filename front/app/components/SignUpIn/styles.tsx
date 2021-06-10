@@ -1,3 +1,4 @@
+import React from 'react';
 import styled, { css } from 'styled-components';
 import {
   HeaderContainer,
@@ -64,7 +65,9 @@ export const Option = styled.div`
   }
 `;
 
-export const StyledHeaderContainer = styled(HeaderContainer)<{
+export const StyledHeaderContainer = styled((props) => (
+  <HeaderContainer {...props} />
+))<{
   inModal: boolean;
 }>`
   ${(props) =>
@@ -82,7 +85,9 @@ export const StyledHeaderContainer = styled(HeaderContainer)<{
     `}
 `;
 
-export const StyledHeaderTitle = styled(HeaderTitle)<{ inModal: boolean }>`
+export const StyledHeaderTitle = styled((props) => <HeaderTitle {...props} />)<{
+  inModal: boolean;
+}>`
   ${(props) =>
     !props.inModal &&
     css`
@@ -90,7 +95,9 @@ export const StyledHeaderTitle = styled(HeaderTitle)<{ inModal: boolean }>`
     `}
 `;
 
-export const StyledModalContentContainer = styled(ModalContentContainer)<{
+export const StyledModalContentContainer = styled((props) => (
+  <ModalContentContainer {...props} />
+))<{
   inModal: boolean;
   windowHeight: string;
   headerHeight: string;

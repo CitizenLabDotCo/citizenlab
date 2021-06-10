@@ -488,6 +488,16 @@ ActiveRecord::Schema.define(version: 2021_05_21_101107) do
     t.index ["topic_id"], name: "index_initiatives_topics_on_topic_id"
   end
 
+  create_table "insights_categories", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name", null: false
+    t.uuid "view_id", null: false
+    t.integer "position"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["view_id", "name"], name: "index_insights_categories_on_view_id_and_name", unique: true
+    t.index ["view_id"], name: "index_insights_categories_on_view_id"
+  end
+
   create_table "insights_views", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name", null: false
     t.uuid "scope_id", null: false
@@ -1098,6 +1108,7 @@ ActiveRecord::Schema.define(version: 2021_05_21_101107) do
   add_foreign_key "initiatives", "users", column: "author_id"
   add_foreign_key "initiatives_topics", "initiatives"
   add_foreign_key "initiatives_topics", "topics"
+  add_foreign_key "insights_categories", "insights_views", column: "view_id"
   add_foreign_key "insights_views", "projects", column: "scope_id"
   add_foreign_key "invites", "users", column: "invitee_id"
   add_foreign_key "invites", "users", column: "inviter_id"

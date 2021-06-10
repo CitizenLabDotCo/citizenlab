@@ -45,7 +45,7 @@ resource "Notifications" do
         Cl2Back::Application.eager_load!
       end
       example "List all different types of notification", document: false do
-        NotificationToSerializerMapper.map.keys.each do |notification_subclass|
+        NotificationToSerializerMapper.new.map.keys.each do |notification_subclass|
           if notification_subclass.descendants.empty?
             create(notification_subclass.model_name.element.to_sym)
           end
