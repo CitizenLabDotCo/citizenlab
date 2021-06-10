@@ -2087,7 +2087,6 @@
   "app.containers.NotificationMenu.commentDeletedByAdminFor": "Je reactie op '{postTitle}' werd verwijderd door een beheerder omdat\n      {reasonCode, select, irrelevant {ze irrelevant is} inappropriate {ze ongepast is} other {{otherReason}}}",
   "app.containers.NotificationMenu.deletedUser": "Onbekende auteur",
   "app.containers.NotificationMenu.error": "Kan meldingen niet laden",
-  "app.containers.NotificationMenu.inappropriateContentAutoDetected": "",
   "app.containers.NotificationMenu.loadMore": "Laad meer...",
   "app.containers.NotificationMenu.loading": "Meldingen laden...",
   "app.containers.NotificationMenu.mentionInComment": "{name} heeft u vermeld in een reactie",

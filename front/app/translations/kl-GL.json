@@ -2087,7 +2087,6 @@
   "app.containers.NotificationMenu.commentDeletedByAdminFor": "Din kommentar til '{postTitle}' er blevet slettet af en administrator, fordi: {reasonCode, select, irrelevant {det er irrelevant} inappropriate {dets indhold er upassende}other {{otherReason}}}\n",
   "app.containers.NotificationMenu.deletedUser": "Allattoq ilisimaneqanngilaq",
   "app.containers.NotificationMenu.error": "Nalunaarutit atuarneqarsinnaanngillat",
-  "app.containers.NotificationMenu.inappropriateContentAutoDetected": "",
   "app.containers.NotificationMenu.loadMore": "Arlallit immiutikkit…",
   "app.containers.NotificationMenu.loading": "Nalunaarutit amerlanerit atuakkit …",
   "app.containers.NotificationMenu.mentionInComment": "{name} oqaaseqaammini taasimavaatit",

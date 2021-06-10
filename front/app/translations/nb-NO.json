@@ -2087,7 +2087,6 @@
   "app.containers.NotificationMenu.commentDeletedByAdminFor": "Kommentaren din til '{postTitle}' har blitt slettet av en administrator fordi: {reasonCode, select, irrelevant {det er irrelevant} upassende { innholdet er upassende} other {{otherReason}}}",
   "app.containers.NotificationMenu.deletedUser": "Ukjent forfatter",
   "app.containers.NotificationMenu.error": "Kunne ikke laste inn varsler",
-  "app.containers.NotificationMenu.inappropriateContentAutoDetected": "",
   "app.containers.NotificationMenu.loadMore": "Last inn mer...",
   "app.containers.NotificationMenu.loading": "Laster inn varsler...",
   "app.containers.NotificationMenu.mentionInComment": "{name} nevnte deg i en kommentar",
