@@ -18,6 +18,11 @@ import { isProjectFolderModerator } from './permissions/roles';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useAuthUser from 'hooks/useAuthUser';
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
+import {
+  TNotificationData,
+  IProjectFolderModerationRightsReceivedNotificationData,
+  TNotificationType,
+} from 'services/notifications';
 
 type RenderOnPublicationTypeProps = {
   publication: IAdminPublicationContent;
@@ -40,6 +45,12 @@ type RenderOnFeatureFlagProps = {
   children: ReactNode;
 };
 
+type RenderOnNotificationTypeProps = {
+  children: ReactNode;
+  notification: TNotificationData;
+  notificationType: TNotificationType;
+};
+
 const RenderOnFeatureFlag = ({ children }: RenderOnFeatureFlagProps) => {
   const isProjectFoldersEnabled = useFeatureFlag('project_folders');
   if (isProjectFoldersEnabled) {
@@ -54,6 +65,18 @@ const RenderOnProjectFolderModerator = ({
   const authUser = useAuthUser();
 
   if (!isNilOrError(authUser) && isProjectFolderModerator(authUser)) {
+    return <>{children}</>;
+  }
+
+  return null;
+};
+
+const RenderOnNotificationType = ({
+  children,
+  notification,
+  notificationType,
+}: RenderOnNotificationTypeProps) => {
+  if (notification.attributes.type === notificationType) {
     return <>{children}</>;
   }
 
@@ -123,9 +146,18 @@ const configuration: ModuleConfiguration = {
         </RenderOnProjectFolderModerator>
       </RenderOnFeatureFlag>
     ),
-    'app.components.NotificationMenu.Notification': (props) => (
+    'app.components.NotificationMenu.Notification': ({ notification }) => (
       <RenderOnFeatureFlag>
-        <ProjectFolderModerationRightsReceivedNotification {...props} />
+        <RenderOnNotificationType
+          notification={notification}
+          notificationType="project_folder_moderation_rights_received"
+        >
+          <ProjectFolderModerationRightsReceivedNotification
+            notification={
+              notification as IProjectFolderModerationRightsReceivedNotificationData
+            }
+          />
+        </RenderOnNotificationType>
       </RenderOnFeatureFlag>
     ),
   },
