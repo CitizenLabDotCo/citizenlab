@@ -53,7 +53,9 @@ resource "Campaign consents" do
         create(:threshold_reached_for_admin_campaign)
       ]
 
+      # TODO dynamically create campaigns for all types
       @campaigns << create(:idea_assigned_to_you_campaign) if CitizenLab.ee?
+      @campaigns << create(:inappropriate_content_flagged_campaign) if CitizenLab.ee?
 
       @consents = @campaigns.map.with_index do |campaign, i|
         create(:consent, user: @user, campaign_type: campaign.type, consented: i%2 == 0)

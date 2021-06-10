@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React from 'react';
 import { shallow } from 'enzyme';
 jest.mock('utils/cl-intl');
@@ -13,6 +14,7 @@ const Intl = require('utils/cl-intl/__mocks__/');
 const { intl } = Intl;
 
 const convertToGraphFormat = jest.fn();
+// @ts-nocheck
 const stream = jest.fn();
 const serie = [
   {
@@ -34,7 +36,7 @@ describe('<BarChartByCategory />', () => {
         serie={serie}
         startAt="04-12-2018"
         endAt="05-12-2018"
-        currentGroupFilter={null}
+        currentGroupFilter={undefined}
         convertToGraphFormat={convertToGraphFormat}
         graphTitleString={''}
         stream={stream}

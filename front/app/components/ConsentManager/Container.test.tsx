@@ -1,3 +1,4 @@
+// @ts-nocheck
 // libraries
 import React from 'react';
 import { shallow } from 'enzyme';
@@ -34,6 +35,8 @@ const categorizedDestinations = {
   advertising: [],
 };
 
+const emptyFunction = () => {};
+
 describe('<Container />', () => {
   beforeEach(() => {
     setPreferences = jest.fn();
@@ -51,7 +54,7 @@ describe('<Container />', () => {
         isConsentRequired={false}
         preferences={initialPreferences}
         categorizedDestinations={categorizedDestinations}
-        onToggleModal={() => {}}
+        onToggleModal={emptyFunction}
       />
     );
 
@@ -71,7 +74,7 @@ describe('<Container />', () => {
         isConsentRequired={true}
         preferences={initialPreferences}
         categorizedDestinations={categorizedDestinations}
-        onToggleModal={() => {}}
+        onToggleModal={emptyFunction}
       />
     );
 
@@ -95,7 +98,7 @@ describe('<Container />', () => {
           isConsentRequired={true}
           preferences={initialPreferences}
           categorizedDestinations={categorizedDestinations}
-          onToggleModal={() => {}}
+          onToggleModal={emptyFunction}
         />
       );
       expect(wrapper.find('Banner').exists()).toBeTruthy();
@@ -110,7 +113,7 @@ describe('<Container />', () => {
           isConsentRequired={false}
           preferences={initialPreferences}
           categorizedDestinations={categorizedDestinations}
-          onToggleModal={() => {}}
+          onToggleModal={emptyFunction}
         />
       );
       expect(wrapper.find('Banner').exists()).toBeFalsy();
@@ -128,7 +131,7 @@ describe('<Container />', () => {
           isConsentRequired={true}
           preferences={initialPreferences}
           categorizedDestinations={categorizedDestinations}
-          onToggleModal={() => {}}
+          onToggleModal={emptyFunction}
         />
       );
       expect(wrapper.find('LoadableModal').props().opened).toBe(false);
@@ -143,7 +146,7 @@ describe('<Container />', () => {
           isConsentRequired={false}
           preferences={initialPreferences}
           categorizedDestinations={categorizedDestinations}
-          onToggleModal={() => {}}
+          onToggleModal={emptyFunction}
         />
       );
       expect(wrapper.find('LoadableModal').props().opened).toBe(false);
@@ -158,7 +161,7 @@ describe('<Container />', () => {
           isConsentRequired={true}
           preferences={initialPreferences}
           categorizedDestinations={categorizedDestinations}
-          onToggleModal={() => {}}
+          onToggleModal={emptyFunction}
         />
       );
       expect(wrapper.find('LoadableModal').props().opened).toBe(false);
@@ -176,7 +179,7 @@ describe('<Container />', () => {
           isConsentRequired={true}
           preferences={initialPreferences}
           categorizedDestinations={categorizedDestinations}
-          onToggleModal={() => {}}
+          onToggleModal={emptyFunction}
         />
       );
       wrapper.instance().setState({ isDialogOpen: true });
@@ -195,7 +198,7 @@ describe('<Container />', () => {
           isConsentRequired={true}
           preferences={initialPreferences}
           categorizedDestinations={categorizedDestinations}
-          onToggleModal={() => {}}
+          onToggleModal={emptyFunction}
         />
       );
       expect(wrapper.find('LoadableModal').props().opened).toBe(false);
@@ -237,7 +240,7 @@ describe('<Container />', () => {
             advertising: false,
           }}
           categorizedDestinations={categorizedDestinations}
-          onToggleModal={() => {}}
+          onToggleModal={emptyFunction}
         />
       );
       expect((wrapper.instance() as any).validate()).toBeTruthy();
@@ -255,7 +258,7 @@ describe('<Container />', () => {
           isConsentRequired={true}
           preferences={initialPreferences}
           categorizedDestinations={categorizedDestinations}
-          onToggleModal={() => {}}
+          onToggleModal={emptyFunction}
         />
       );
       wrapper.instance().setState({ isDialogOpen: true });
@@ -285,7 +288,7 @@ describe('<Container />', () => {
             advertising: null,
           }}
           categorizedDestinations={categorizedDestinations}
-          onToggleModal={() => {}}
+          onToggleModal={emptyFunction}
         />
       );
       wrapper.instance().setState({ isDialogOpen: true });
@@ -316,7 +319,7 @@ describe('<Container />', () => {
             advertising: null,
           }}
           categorizedDestinations={categorizedDestinations}
-          onToggleModal={() => {}}
+          onToggleModal={emptyFunction}
         />
       );
       wrapper.instance().setState({ isDialogOpen: true, isCancelling: true });
@@ -345,7 +348,7 @@ describe('<Container />', () => {
             advertising: null,
           }}
           categorizedDestinations={categorizedDestinations}
-          onToggleModal={() => {}}
+          onToggleModal={emptyFunction}
         />
       );
       wrapper.instance().setState({ isDialogOpen: true, isCancelling: true });
