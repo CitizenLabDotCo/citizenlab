@@ -57,6 +57,12 @@ module Insights
 
     # Batch category assignment.
     #
+    # Batch assignment is idempotent. It will not complain if some of the
+    # assignments already exist.
+    #
+    # Batch assignment is transactional. Either it succeeds at assigning all
+    # categories to all inputs, or the DB is rolled back to its previous state.
+    #
     # @param [Enumerable<Ideas>] inputs
     # @param [Enumerable<Insights::Category>] categories
     # @return [Array<Insights::CategoryAssignment>]
