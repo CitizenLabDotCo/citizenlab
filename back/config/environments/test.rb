@@ -19,9 +19,9 @@ Rails.application.configure do
   }
 
   # Disable caching.
-  Rails.application.configure do
-    config.cache_store = :null_store
-  end
+  # Rails.application.configure do
+  #   config.cache_store = :null_store
+  # end
 
   # Show full error reports and disable caching.
   config.consider_all_requests_local       = true

@@ -8,12 +8,12 @@ RSpec.describe AppConfiguration::Settings do
   end
 
   it 'requires the moderation feature' do
-    tenant = build(:tenant)
-    tenant.settings['moderation'] = {'allowed' => true, 'enabled' => false}
-    tenant.settings['flag_inappropriate_content'] = {'allowed' => true, 'enabled' => true}
-    expect(tenant).to be_invalid
+    config = AppConfiguration.instance
+    config.settings['moderation'] = {'allowed' => true, 'enabled' => false}
+    config.settings['flag_inappropriate_content'] = {'allowed' => true, 'enabled' => true}
+    expect(config).to be_invalid
 
-    tenant.settings['moderation'] = {'allowed' => true, 'enabled' => true}
-    expect(tenant).to be_valid
+    config.settings['moderation'] = {'allowed' => true, 'enabled' => true}
+    expect(config).to be_valid
   end
 end
