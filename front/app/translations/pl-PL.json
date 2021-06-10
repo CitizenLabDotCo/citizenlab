@@ -2087,7 +2087,6 @@
   "app.containers.NotificationMenu.commentDeletedByAdminFor": "Twój komentarz do \"{postTitle}\" został usunięty przez administratora ponieważ: {reasonCode, select, irrelevant {jest nie na temat} inappropriate {jest nieodpowiednia} other {{otherReason}}}",
   "app.containers.NotificationMenu.deletedUser": "Niewiadomy autor",
   "app.containers.NotificationMenu.error": "Nie można załadować powiadomień",
-  "app.containers.NotificationMenu.inappropriateContentAutoDetected": "",
   "app.containers.NotificationMenu.loadMore": "Załaduj więcej...",
   "app.containers.NotificationMenu.loading": "Ładowanie powiadomień...",
   "app.containers.NotificationMenu.mentionInComment": "{name} wspomniał o tobie w komentarzu",

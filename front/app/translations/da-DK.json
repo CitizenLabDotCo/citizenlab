@@ -2087,7 +2087,6 @@
   "app.containers.NotificationMenu.commentDeletedByAdminFor": "Din kommentar til '{postTitle}' er blevet slettet af en administrator, fordi: {reasonCode, select, irrelevant {det er irrelevant} inappropriate {dets indhold er upassende} other {{otherReason}}}",
   "app.containers.NotificationMenu.deletedUser": "Ukendt forfatter",
   "app.containers.NotificationMenu.error": "Kunne ikke indlæse notifikationer",
-  "app.containers.NotificationMenu.inappropriateContentAutoDetected": "",
   "app.containers.NotificationMenu.loadMore": "Indlæs flere...",
   "app.containers.NotificationMenu.loading": "Indlæser notifikationer...",
   "app.containers.NotificationMenu.mentionInComment": "{name} nævnte dig i en kommentar",
