@@ -233,7 +233,7 @@ const ModerationRow = memo<Props & InjectedIntlProps>(
           />
           <Outlet
             id="app.modules.commercial.moderation.admin.containers.ModerationRow.content"
-            inappropriateContentFlag={hasActiveInappropriateContentFlag}
+            inappropriateContentFlagId={inappropriateContentFlagId}
           />
         </td>
         <td>
