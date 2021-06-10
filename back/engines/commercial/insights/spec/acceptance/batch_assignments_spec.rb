@@ -40,6 +40,12 @@ resource 'Batch category assignments for view inputs' do
       do_request(inputs: ['bad-uuid'], categories: [])
       expect(status).to eq(404)
     end
+
+    # Sanity check
+    example 'does not return 404 with empty inputs & categories', document: false do
+      do_request(inputs: [], categories: [])
+      expect(status).to eq(204)
+    end
   end
 
   post 'web_api/v1/insights/views/:view_id/batch/assign_categories' do
