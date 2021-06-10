@@ -91,12 +91,12 @@ resource 'Batch category assignments for view inputs' do
     parameter :inputs, 'An array of input identifiers', required: true
     parameter :categories, 'An array of category identifiers', required: true
 
-    before do
-      assignment_service.add_assignments_batch(input_instances, category_instances)
-    end
-
     context 'when admin' do
       before { admin_header_token }
+
+      before do
+        assignment_service.add_assignments_batch(input_instances, category_instances)
+      end
 
       let(:input_instances) { create_list(:idea, 3, project: view.scope) }
       let(:category_instances) { create_list(:category, 3, view: view) }
