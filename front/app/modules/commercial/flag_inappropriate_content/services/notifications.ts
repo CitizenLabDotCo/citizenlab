@@ -9,6 +9,6 @@ declare module 'services/notifications' {
   }
 
   export interface INotificationDataMap {
-    INlpFlaggedPostNotificationData: INLPFlagNotificationData;
+    INLPFlagNotificationData: INLPFlagNotificationData;
   }
 }
