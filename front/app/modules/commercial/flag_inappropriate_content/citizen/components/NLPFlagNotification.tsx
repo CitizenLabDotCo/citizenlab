@@ -5,16 +5,16 @@ import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // components
-import NotificationWrapper from 'containers/NavBar/components/NotificationMenu/components/NotificationWrapper';
+import NotificationWrapper from 'containers/Navbar/components/NotificationMenu/components/NotificationWrapper';
 
 // services
-import { INlpFlaggedPostNotificationData } from 'services/notifications';
+import { INLPFlagNotificationData } from 'services/notifications';
 
 interface Props {
-  notification: INlpFlaggedPostNotificationData;
+  notification: INLPFlagNotificationData;
 }
 
-const NLPFlaggedPostNotification = memo<Props>((props) => {
+const NLPFlagNotification = memo<Props>((props) => {
   const { notification } = props;
 
   return (
@@ -29,4 +29,4 @@ const NLPFlaggedPostNotification = memo<Props>((props) => {
   );
 });
 
-export default NLPFlaggedPostNotification;
+export default NLPFlagNotification;

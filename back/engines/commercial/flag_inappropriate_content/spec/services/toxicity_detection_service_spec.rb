@@ -40,7 +40,7 @@ describe FlagInappropriateContent::ToxicityDetectionService do
   end
 
   describe 'extract_toxicity_label' do
-    it 'creates no flag if no toxicity was detected' do
+    it 'returns the strongest predicted label' do
       res = [
         {
           'text' => 'once upon a time',

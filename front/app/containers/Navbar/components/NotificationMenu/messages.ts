@@ -294,9 +294,4 @@ export default defineMessages({
     id: 'app.containers.NotificationMenu.xAssignedPostToYou',
     defaultMessage: '{name} assigned {postTitle} to you',
   },
-  inappropriateContentAutoDetected: {
-    id: 'app.containers.NotificationMenu.inappropriateContentAutoDetected',
-    defaultMessage:
-      'Inappropriate content was auto-detected in a post or comment',
-  },
 });

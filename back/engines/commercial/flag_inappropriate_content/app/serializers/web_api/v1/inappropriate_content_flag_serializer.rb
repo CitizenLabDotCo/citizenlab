@@ -1,10 +1,10 @@
 class WebApi::V1::InappropriateContentFlagSerializer < ::WebApi::V1::BaseSerializer
   attributes :toxicity_label, :deleted_at
-  attribute :reason_code do |object|
-    if object.deleted_at
+  attribute :reason_code do |flag|
+    if flag.deleted?
       nil
     else
-      object.reason_code
+      flag.reason_code
     end
   end
 

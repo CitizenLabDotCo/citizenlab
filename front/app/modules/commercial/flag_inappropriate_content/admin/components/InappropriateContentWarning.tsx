@@ -4,7 +4,7 @@ import { Icon, colors } from 'cl2-component-library';
 import { isNilOrError } from 'utils/helperUtils';
 
 // services
-import { getFlagType } from '../../services/inappropriateContentFlags';
+import { getFlagType } from '../../utils';
 
 // hooks
 import useInappropriateContentFlag from '../../hooks/useInappropriateContentFlag';
@@ -44,20 +44,32 @@ const InappropriateContentWarning = ({
 
   if (!isNilOrError(inappropriateContentFlag)) {
     const flagType = getFlagType(inappropriateContentFlag);
+    const reasonCode = inappropriateContentFlag.attributes.reason_code;
 
-    return (
-      <Container>
-        <WarningIcon name="exclamation-trapezium" />
-        <WarningContent>
-          {
+    // if reasonCode is null, it means the flag has been removed
+    // and we shouldn't display anything
+    if (reasonCode && flagType) {
+      return (
+        <Container>
+          <WarningIcon name="exclamation-trapezium" />
+          <WarningContent>
             {
-              nlp_flagged: formatMessage(messages.nlpFlaggedWarningText),
-              user_flagged: formatMessage(messages.userFlaggedWarningText),
-            }[flagType]
-          }
-        </WarningContent>
-      </Container>
-    );
+              {
+                nlp_flagged: formatMessage(messages.nlpFlaggedWarningText),
+                user_flagged: formatMessage(messages.userFlaggedWarningText, {
+                  reason: {
+                    inappropriate: formatMessage(messages.inappropriate),
+                    wrong_content: formatMessage(messages.wrong),
+                  }[reasonCode],
+                }),
+              }[flagType]
+            }
+          </WarningContent>
+        </Container>
+      );
+    }
+
+    return null;
   }
 
   return null;

@@ -8,8 +8,8 @@ import Setting from './admin/containers/Setting';
 import RemoveFlagButton from './admin/components/RemoveFlagButton';
 import ActivityTab from './admin/components/ActivityTab';
 import InappropriateContentWarning from './admin/components/InappropriateContentWarning';
-import NLPFlaggedPostNotification from './citizen/components/NLPFlaggedPostNotification';
-import { INlpFlaggedPostNotificationData } from 'services/notifications';
+import NLPFlagNotification from './citizen/components/NLPFlagNotification';
+import { INLPFlagNotificationData } from 'services/notifications';
 
 const configuration: ModuleConfiguration = {
   outlets: {
@@ -45,8 +45,8 @@ const configuration: ModuleConfiguration = {
           notification={notification}
           notificationType="inappropriate_content_flagged"
         >
-          <NLPFlaggedPostNotification
-            notification={notification as INlpFlaggedPostNotificationData}
+          <NLPFlagNotification
+            notification={notification as INLPFlagNotificationData}
           />
         </RenderOnNotificationType>
       </RenderOnFeatureFlag>
