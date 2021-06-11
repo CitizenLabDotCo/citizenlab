@@ -6,13 +6,13 @@ module Insights
       skip_after_action :verify_policy_scoped, only: :index # The view is authorized instead.
 
       def show
-        render json: serialize(input), status: :ok
+        render json: InputSerializer.new(input, serialize_options), status: :ok
       end
 
       def index
         # index is not policy scoped, instead the view is authorized.
         inputs = Insights::InputsFinder.new(view, index_params).execute
-        render json: linked_json(inputs, InputSerializer, params: fastjson_params, include: [:source])
+        render json: linked_json(inputs, InputSerializer, serialize_options)
       end
 
       private
@@ -43,14 +43,12 @@ module Insights
         )
       end
 
-      def serialize(inputs)
-        options = {
+      def serialize_options()
+        {
           include: %i[categories suggested_categories source],
           fields: { idea: [:title_multiloc] },
           params: fastjson_params
         }
-
-        InputSerializer.new(inputs, options)
       end
     end
   end

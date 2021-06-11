@@ -24,9 +24,8 @@ const useInsightsInputs = (viewId: string, options?: Partial<Options>) => {
     IInsightsInputData[] | undefined | null | Error
   >(undefined);
 
-  const [currentPage, setCurrentPage] = useState<number | null>(
-    options?.pageNumber || null
-  );
+  const pageNumber = options?.pageNumber;
+
   const [lastPage, setLastPage] = useState<number | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -39,15 +38,13 @@ const useInsightsInputs = (viewId: string, options?: Partial<Options>) => {
       },
     }).observable.subscribe((insightsInputs) => {
       setInsightsInputs(insightsInputs.data);
-      setCurrentPage(getPageNumberFromUrl(insightsInputs.links?.self));
       setLastPage(getPageNumberFromUrl(insightsInputs.links?.last));
       setLoading(false);
     });
 
     return () => subscription.unsubscribe();
-  }, [options]);
+  }, [pageNumber]);
   return {
-    currentPage,
     lastPage,
     loading,
     list: insightsInputs,

@@ -59,16 +59,9 @@ const InputsTable = ({
   params: { viewId },
   intl: { formatMessage },
 }: WithRouterProps & InjectedIntlProps) => {
-  const options = {
-    ...(location?.query?.pageNumber
-      ? { pageNumber: parseInt(location?.query?.pageNumber, 10) }
-      : {}),
-  };
+  const pageNumber = parseInt(location?.query?.pageNumber, 10);
 
-  const { list: inputs, currentPage, lastPage } = useInsightsInputs(
-    viewId,
-    options
-  );
+  const { list: inputs, lastPage } = useInsightsInputs(viewId, { pageNumber });
 
   const handlePaginationClick = (newPageNumber) => {
     clHistory.push({
@@ -112,7 +105,7 @@ const InputsTable = ({
             </tbody>
           </StyledTable>
           <StyledPagination
-            currentPage={currentPage || 1}
+            currentPage={pageNumber || 1}
             totalPages={lastPage || 1}
             loadPage={handlePaginationClick}
           />

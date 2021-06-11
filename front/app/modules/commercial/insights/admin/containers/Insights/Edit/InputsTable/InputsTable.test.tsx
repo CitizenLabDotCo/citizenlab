@@ -9,6 +9,7 @@ jest.mock('modules/commercial/insights/services/insightsInputs', () => ({
 }));
 
 import InputsTable from './';
+import { WithRouterProps } from 'react-router';
 
 const viewId = '1';
 
@@ -84,7 +85,15 @@ jest.mock('hooks/useLocale', () => jest.fn(() => 'en'));
 
 jest.mock('utils/cl-intl');
 
-let mockLocation = { pathname: 'editViewPagePath' } as any;
+let mockLocation: WithRouterProps['location'] = {
+  pathname: 'editViewPagePath',
+  query: {},
+  search: '',
+  hash: '',
+  state: undefined,
+  action: 'POP',
+  key: '',
+};
 jest.mock('react-router', () => {
   return {
     withRouter: (Component) => {
@@ -97,9 +106,7 @@ jest.mock('react-router', () => {
   };
 });
 
-jest.mock('utils/cl-router/history', () => ({
-  push: jest.fn(() => {}),
-}));
+jest.mock('utils/cl-router/history');
 
 window.confirm = jest.fn(() => true);
 
@@ -146,7 +153,7 @@ describe('Insights Input Table', () => {
     expect(screen.getByTestId('pagination')).toBeInTheDocument();
   });
   it('clicks on pagination navigate to the right page', () => {
-    mockLocation = { pathname: 'editViewPagePath' };
+    mockLocation = { ...mockLocation, pathname: 'editViewPagePath' };
     mockInputData = { ...mockInputData, currentPage: 1, lastPage: 2 };
     const spy = jest.spyOn(clHistory, 'push');
     render(<InputsTable />);
@@ -157,7 +164,11 @@ describe('Insights Input Table', () => {
     });
   });
   it('loads the page passed in url params', () => {
-    mockLocation = { pathname: 'editViewPagePath', query: { pageNumber: 2 } };
+    mockLocation = {
+      ...mockLocation,
+      pathname: 'editViewPagePath',
+      query: { pageNumber: 2 },
+    };
     const spy = jest.spyOn(hook, 'default');
     render(<InputsTable />);
     expect(spy).toHaveBeenCalledWith('1', {
