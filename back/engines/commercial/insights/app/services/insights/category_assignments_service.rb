@@ -28,10 +28,12 @@ module Insights
     #
     # @param [Enumerable<Ideas>] inputs
     # @param [Enumerable<Insights::Category>] categories
-    # @return [Array<Insights::CategoryAssignment>]
+    # @return [Integer] number of assignments deleted
     def delete_assignments_batch(inputs, categories)
       assignments = CategoryAssignment.where(input: inputs, category: categories)
-      _frozen_assignments = assignments.destroy_all
+      nb_affected = assignments.delete_all
+      touch_views_of(categories)
+      nb_affected
     end
 
     # Assigns (approved) category in batch.
