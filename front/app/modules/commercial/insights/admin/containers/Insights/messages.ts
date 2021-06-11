@@ -84,6 +84,23 @@ export default defineMessages({
     id: 'app.containers.Admin.Reporting.Insights.createModalCancel',
     defaultMessage: 'Cancel',
   },
+  inputsTableInputs: {
+    id: 'app.containers.Admin.Insights.Edit.inputsTableInputs',
+    defaultMessage: 'Inputs',
+  },
+  inputsTableCategories: {
+    id: 'app.containers.Admin.Insights.Edit.inputsTableCategories',
+    defaultMessage: 'Categories',
+  },
+  inputsTableDeleteCategoryConfirmation: {
+    id:
+      'app.containers.Admin.Insights.Edit.inputsTableDeleteCategoryConfirmation',
+    defaultMessage: 'Are you sure?',
+  },
+  inputsTableEmpty: {
+    id: 'app.containers.Admin.Insights.Edit.inputsEmptyState',
+    defaultMessage: 'You have no inputs for this view yet',
+  },
   categories: {
     id: 'app.containers.Admin.Reporting.Insights.Edit.categories',
     defaultMessage: 'Categories',

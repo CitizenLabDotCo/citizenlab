@@ -3,6 +3,7 @@ import { adopt } from 'react-adopt';
 import { popup, LatLng, Map as LeafletMap } from 'leaflet';
 import { withRouter, WithRouterProps } from 'react-router';
 import { isNilOrError } from 'utils/helperUtils';
+import { Subscription } from 'rxjs';
 
 // Utils
 import { trackEventByName } from 'utils/analytics';
@@ -12,6 +13,12 @@ import tracks from './tracks';
 import Map, { Point } from 'components/Map';
 import Warning from 'components/UI/Warning';
 import InitiativePreview from './InitiativePreview';
+
+// Events
+import {
+  leafletMapSelectedMarker$,
+  leafletMapClicked$,
+} from 'components/UI/LeafletMap/events';
 
 // Resources
 import GetInitiativeMarkers, {
@@ -58,6 +65,7 @@ interface State {
   points: Point[];
   lat?: number | null;
   lng?: number | null;
+  map?: LeafletMap | null;
 }
 
 export class InitiativesMap extends PureComponent<
@@ -65,6 +73,7 @@ export class InitiativesMap extends PureComponent<
   State
 > {
   private addInitiativeButtonElement: HTMLElement;
+  private subscriptions: Subscription[];
 
   constructor(props) {
     super(props);
@@ -72,9 +81,21 @@ export class InitiativesMap extends PureComponent<
       selectedInitiativeId: null,
       points: [],
     };
+    this.subscriptions = [];
   }
 
   componentDidMount() {
+    this.subscriptions = [
+      leafletMapSelectedMarker$.subscribe((InitiativeId) => {
+        if (InitiativeId) {
+          this.handleInitiativeMarkerSelected(InitiativeId);
+        }
+      }),
+      leafletMapClicked$.subscribe((latLng) => {
+        this.handleMapClicked(latLng);
+      }),
+    ];
+
     const points = this.getPoints(this.props.initiativeMarkers);
     this.setState({ points });
   }
@@ -84,6 +105,10 @@ export class InitiativesMap extends PureComponent<
       const points = this.getPoints(this.props.initiativeMarkers);
       this.setState({ points });
     }
+  }
+
+  componentWillUnmount() {
+    this.subscriptions?.forEach((subscription) => subscription.unsubscribe());
   }
 
   bindInitiativeCreationButton = (element: HTMLDivElement) => {
@@ -114,7 +139,15 @@ export class InitiativesMap extends PureComponent<
     return InitiativePoints;
   };
 
-  toggleInitiative = (InitiativeId: string) => {
+  deselectInitiative = () => {
+    this.setState({ selectedInitiativeId: null });
+  };
+
+  handleMapOnInit = (map: LeafletMap) => {
+    this.setState({ map });
+  };
+
+  handleInitiativeMarkerSelected = (InitiativeId: string) => {
     trackEventByName(tracks.clickOnInitiativeMapMarker, {
       extra: { InitiativeId },
     });
@@ -127,15 +160,13 @@ export class InitiativesMap extends PureComponent<
     });
   };
 
-  deselectInitiative = () => {
-    this.setState({ selectedInitiativeId: null });
-  };
-
-  onMapClick = (map: LeafletMap, position: LatLng) => {
+  handleMapClicked = (position: LatLng) => {
     const { lat, lng } = position;
+    const { map } = this.state;
+
     this.setState({ lat, lng });
 
-    if (this.addInitiativeButtonElement) {
+    if (this.addInitiativeButtonElement && position && map) {
       popup()
         .setLatLng(position)
         .setContent(this.addInitiativeButtonElement)
@@ -162,15 +193,14 @@ export class InitiativesMap extends PureComponent<
           )}
 
         <Map
+          onInit={this.handleMapOnInit}
           points={points}
-          onMarkerClick={this.toggleInitiative}
           boxContent={
             selectedInitiativeId ? (
               <InitiativePreview initiativeId={selectedInitiativeId} />
             ) : null
           }
           onBoxClose={this.deselectInitiative}
-          onMapClick={this.onMapClick}
         />
 
         <div

@@ -118,7 +118,7 @@ const InitiativeShowPageTopBar = memo<Props>(
     }, []);
 
     return (
-      <Container className={className}>
+      <Container className={className || ''}>
         <TopBarInner>
           <Left>
             <GoBackButton onClick={onGoBack}>

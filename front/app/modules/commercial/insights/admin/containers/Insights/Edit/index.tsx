@@ -10,6 +10,7 @@ import { Button, Input, Spinner } from 'cl2-component-library';
 import Divider from 'components/admin/Divider';
 import TopBar, { topBarHeight } from '../../../components/TopBar';
 import Error from 'components/UI/Error';
+import InputsTable from './InputsTable';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -48,6 +49,7 @@ const Inputs = styled.div`
   background: #fff;
   overflow-x: auto;
   overflow-y: auto;
+  padding: 40px;
 `;
 
 const Categories = styled.aside`
@@ -234,7 +236,9 @@ const EditInsightsView = ({
             )}
           </CategoriesList>
         </Categories>
-        <Inputs />
+        <Inputs>
+          <InputsTable />
+        </Inputs>
       </Container>
     </div>
   );
