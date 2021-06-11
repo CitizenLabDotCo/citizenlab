@@ -2679,6 +2679,7 @@
   "app.modules.id_id_card_lookup.takenFormError": "Već je urađeno.",
   "app.modules.id_id_card_lookup.verifyYourIdentity": "Verifikujte vaš identitet.",
   "app.modules.idea_assignment.admin.components.permissionsTab": "Prava pristupa",
+  "app.modules.project_folder.citizen.components.Notification.youveReceivedFolderAdminRights": "",
   "app.modules.project_folder.citizen.components.ProjectFolderShareButton.share": "Podeli",
   "app.modules.project_folder.citizen.components.ProjectFolderSharingModal.twitterMessage": "{projectFolderName}",
   "app.modules.project_folder.citizen.components.ProjectFolderSharingModal.whatsAppMessage": "{projectFolderName} | sa platforme za učešće {orgName}",

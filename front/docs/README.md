@@ -2,6 +2,11 @@
 
 ## Next Release
 
+## 2021-06-11
+
+### Fixed
+- Facebook button no longer shows when not configured.
+
 ## 2021-06-10
 
 ### Fixed
