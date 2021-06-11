@@ -912,8 +912,6 @@
   "app.containers.Admin.Processing.tags": "tags",
   "app.containers.Admin.Processing.title": "title",
   "app.containers.Admin.Processing.upAndDownArrow": "Up and down arrows allow you to highlight the previous or next input in the list",
-<<<<<<< HEAD
-=======
   "app.containers.Admin.Reporting.Insights.Edit.addCategory": "Add category",
   "app.containers.Admin.Reporting.Insights.Edit.categories": "Kategorier",
   "app.containers.Admin.Reporting.Insights.Edit.detectCategories": "Detect new categories",
@@ -924,7 +922,6 @@
   "app.containers.Admin.Reporting.Insights.createModalProjectScopeLabel": "Projekt",
   "app.containers.Admin.Reporting.Insights.createModalSaveView": "Lav min indsigt",
   "app.containers.Admin.Reporting.Insights.createModalTitle": "Begynd at analysere dine input",
->>>>>>> master
   "app.containers.Admin.Reports.budgeting": "participatory budget",
   "app.containers.Admin.Reports.comments": "Kommentarer",
   "app.containers.Admin.Reports.commentsByTimeTitle": "Kommentarer",
