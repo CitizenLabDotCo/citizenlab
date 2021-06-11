@@ -14,35 +14,14 @@ module Insights
       assignments(input, view).where(approved: false)
     end
 
-    def add_assignments(input, categories)
-      categories.map do |category|
-        # We use '.tap' instead of passing the block directly so that it's
-        # executed whether it's found or not.
-        CategoryAssignment.find_or_initialize_by(input: input, category: category).tap do |a|
-          a.approved = true
-          a.save
-        end
-      end
-    end
-
     def add_suggestions(input, categories)
-      categories.map do |category|
-        CategoryAssignment.find_or_create_by(input: input, category: category) do |a|
-          # The block is only run when the assignment is not found.
-          # In other words, we don't create a suggestion if the category is
-          # already assigned to the input (approved or not).
-          a.approved = false
-        end
-      end
+      ids = add_suggestions_batch([input], categories)
+      CategoryAssignment.find(ids)
     end
 
     def add_assignments!(input, categories)
-      categories.map do |category|
-        CategoryAssignment.find_or_initialize_by(input: input, category: category).tap do |a|
-          a.approved = true
-          a.save!
-        end
-      end
+      ids = add_assignments_batch([input], categories)
+      CategoryAssignment.find(ids)
     end
 
     # Batch removal for category assignment.
@@ -55,7 +34,7 @@ module Insights
       _frozen_assignments = assignments.destroy_all
     end
 
-    # Batch category assignment.
+    # Assigns (approved) category in batch.
     #
     # Batch assignment is idempotent. It will not complain if some of the
     # assignments already exist.
@@ -65,11 +44,78 @@ module Insights
     #
     # @param [Enumerable<Ideas>] inputs
     # @param [Enumerable<Insights::Category>] categories
-    # @return [Array<Insights::CategoryAssignment>]
+    # @return [Array<String>] assignment identifiers
     def add_assignments_batch(inputs, categories)
-      CategoryAssignment.transaction do
-        inputs.map { |input| add_assignments!(input, categories) }
-      end.flatten
+      validate_inputs!(inputs)
+
+      assignments_attrs = inputs.to_a.product(categories)
+                                .map { |input, category| new_assignment_attrs(input, category) }
+
+      return [] if assignments_attrs.blank?
+
+      result = Insights::CategoryAssignment.upsert_all(
+        assignments_attrs, unique_by: %i[category_id input_id input_type]
+      )
+      touch_views_of(categories)
+      result.pluck(:id)
+    end
+
+    # Adds suggestions in batch. This operation is idempotent.
+    #
+    # If the assignment already exists and is approved, the suggestion will be
+    # silently ignored.
+    #
+    # This operation is transactional. Either it succeeds, or the DB is rolled
+    # back to its previous state.
+    #
+    # @param [Enumerable<Ideas>] inputs
+    # @param [Enumerable<Insights::Category>] categories
+    # @return [Array<String>] assignment identifiers
+    def add_suggestions_batch(inputs, categories)
+      validate_inputs!(inputs)
+      assignments_attrs = inputs.to_a.product(categories) # yields all pairs of input x category
+                                .map { |input, category| new_assignment_attrs(input, category, approved: false) }
+
+      return [] if assignments_attrs.blank?
+
+      result = Insights::CategoryAssignment.insert_all(assignments_attrs)
+      touch_views_of(categories)
+      result.pluck(:id)
+    end
+
+    private
+
+    def validate_inputs!(inputs)
+      input_types = CategoryAssignment::INPUT_TYPES
+
+      inputs.each do |input|
+        next if input_types.include?(input.class.name)
+
+        raise ArgumentError, "Invalid input. Allowed types: #{input_types}; got: '#{input.class}'."
+      end
+    end
+
+    # Compute the hash of attributes for a new assignment.
+    #
+    # @param [Idea] input
+    # @param [Insights::Category] category
+    # @param [Boolean] approved
+    # @return [Hash<Symbol, Object>]
+    def new_assignment_attrs(input, category, approved: true)
+      {
+        category_id: category.id,
+        input_id: input.id,
+        input_type: input.class.name,
+        approved: approved,
+        created_at: Time.zone.now,
+        updated_at: Time.zone.now
+      }
+    end
+
+    # Updating 'updated_at' of corresponding views.
+    def touch_views_of(categories)
+      view_ids = categories.pluck(:view_id)
+      Insights::View.find(view_ids).each(&:touch)
     end
   end
 end
