@@ -1,6 +1,6 @@
 import React from 'react';
 import ButtonWithDropdown from 'components/UI/ButtonWithDropdown';
-import DropdownContent from './SharingDropdownContent';
+import SharingDropdownContent from './SharingDropdownContent';
 import { UtmParams } from '../utils';
 
 interface Props {
@@ -29,7 +29,7 @@ const SharingDropdownButton = ({
       className={className}
       buttonComponent={buttonComponent}
       dropdownContent={
-        <DropdownContent
+        <SharingDropdownContent
           url={url}
           twitterMessage={twitterMessage}
           whatsAppMessage={whatsAppMessage}
