@@ -197,6 +197,7 @@ const InputDetails = ({
               id={category.id}
               key={category.id}
               inputId={selectedInput.id}
+              requiresDeleteConfirmation={false}
             />
           ))}
         </CategoryList>

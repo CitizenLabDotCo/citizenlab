@@ -164,4 +164,8 @@ describe('Insights Input Table', () => {
       screen.getByText('You have no input assigned to this category yet')
     ).toBeInTheDocument();
   });
+
+  // renders additional column when category is selected
+  // sorts +
+  // sorts -
 });

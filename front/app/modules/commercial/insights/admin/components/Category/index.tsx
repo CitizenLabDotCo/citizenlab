@@ -14,6 +14,7 @@ import { withRouter, WithRouterProps } from 'react-router';
 export type CategoryProps = {
   id: string;
   inputId: string;
+  requiresDeleteConfirmation?: boolean;
 } & WithRouterProps &
   InjectedIntlProps;
 
@@ -22,6 +23,7 @@ const Category = ({
   inputId,
   params: { viewId },
   intl: { formatMessage },
+  requiresDeleteConfirmation = true,
 }: CategoryProps) => {
   const category = useCategory(viewId, id);
 
@@ -30,9 +32,9 @@ const Category = ({
   }
   const handleRemoveCategory = () => {
     const deleteMessage = formatMessage(messages.deleteCategoryConfirmation);
-    if (window.confirm(deleteMessage)) {
+    if (requiresDeleteConfirmation && window.confirm(deleteMessage)) {
       deleteInsightsInputCategory(viewId, inputId, id);
-    }
+    } else deleteInsightsInputCategory(viewId, inputId, id);
   };
 
   return (
