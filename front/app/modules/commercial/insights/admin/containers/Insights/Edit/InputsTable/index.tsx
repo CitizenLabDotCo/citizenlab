@@ -141,4 +141,4 @@ const InputsTable = ({
   );
 };
 
-export default injectIntl<{}>(withRouter(InputsTable));
+export default withRouter(injectIntl(InputsTable));

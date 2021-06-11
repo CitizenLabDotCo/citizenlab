@@ -206,7 +206,7 @@ const EditInsightsView = ({
           // Do nothing
         }
       }
-      clHistory.replace({
+      clHistory.push({
         pathname,
         search: stringify({ ...query, category: '' }, { addQueryPrefix: true }),
       });
@@ -215,7 +215,7 @@ const EditInsightsView = ({
   };
 
   const selectCategory = (categoryId: string) => () => {
-    clHistory.replace({
+    clHistory.push({
       pathname,
       search: stringify(
         { ...query, category: categoryId },
