@@ -19,8 +19,9 @@ module Insights
 
       def index_params
         @index_params ||= params.permit(
-          :search,
           :category,
+          :search,
+          :sort,
           page: %i[number size]
         )
       end
