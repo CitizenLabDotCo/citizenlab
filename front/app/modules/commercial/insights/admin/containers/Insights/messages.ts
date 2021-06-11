@@ -125,4 +125,16 @@ export default defineMessages({
     id: 'app.containers.Admin.Insights.Edit.categoryInfoBox',
     defaultMessage: '{bold} to organize and analyze input',
   },
+  bulkAssignCategory: {
+    id: 'app.containers.Admin.Insights.Edit.bulkAssignCategory',
+    defaultMessage: 'Assign categories to selection',
+  },
+  assignCategoriesButton: {
+    id: 'app.containers.Admin.Insights.Edit.assignCategoriesButton',
+    defaultMessage: 'Assign',
+  },
+  bulkUnassign: {
+    id: 'app.containers.Admin.Insights.Edit.bulkUnassign',
+    defaultMessage: 'Unassign',
+  },
 });

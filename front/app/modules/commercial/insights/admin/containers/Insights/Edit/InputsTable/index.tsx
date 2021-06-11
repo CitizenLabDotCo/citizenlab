@@ -8,7 +8,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import useInsightsInputs from 'modules/commercial/insights/hooks/useInsightsInputs';
 
 // components
-import { Table, Checkbox } from 'cl2-component-library';
+import { Table } from 'cl2-component-library';
 import InputsTableRow from './InputsTableRow';
 import EmptyState from './EmptyState';
 import CheckboxWithPartialCheck from 'components/UI/CheckboxWithPartialCheck';
@@ -21,6 +21,7 @@ import { colors, fontSizes } from 'utils/styleUtils';
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from '../../messages';
+import Actions from './Actions';
 
 const StyledTable = styled(Table)`
   background-color: #fff;
@@ -53,7 +54,7 @@ const InputsTable = ({
   intl: { formatMessage },
 }: WithRouterProps & InjectedIntlProps) => {
   const inputs = useInsightsInputs(viewId);
-  const [selectedRows, setSelectedRows] = useState(new Set());
+  const [selectedRows, setSelectedRows] = useState<Set<string>>(new Set());
 
   if (isNilOrError(inputs)) {
     return null;
@@ -64,7 +65,7 @@ const InputsTable = ({
       const newSelection = new Set(inputs.map((input) => input.id));
       setSelectedRows(newSelection);
     } else {
-      const newSelection = new Set();
+      const newSelection = new Set<string>();
       setSelectedRows(newSelection);
     }
   };
@@ -86,41 +87,44 @@ const InputsTable = ({
       {inputs.length === 0 ? (
         <EmptyState />
       ) : (
-        <StyledTable>
-          <colgroup>
-            <col span={1} style={{ width: '5%' }} />
-            <col span={1} style={{ width: '35%' }} />
-            <col span={1} style={{ width: '60%' }} />
-          </colgroup>
-          <thead>
-            <tr>
-              <th>
-                <CheckboxWithPartialCheck
-                  onChange={handleCheckboxChange}
-                  checked={
-                    selectedRows.size === inputs.length
-                      ? true
-                      : selectedRows.size === 0
-                      ? false
-                      : 'mixed'
-                  }
+        <>
+          <Actions selectedInputs={selectedRows} />
+          <StyledTable>
+            <colgroup>
+              <col span={1} style={{ width: '5%' }} />
+              <col span={1} style={{ width: '35%' }} />
+              <col span={1} style={{ width: '60%' }} />
+            </colgroup>
+            <thead>
+              <tr>
+                <th>
+                  <CheckboxWithPartialCheck
+                    onChange={handleCheckboxChange}
+                    checked={
+                      selectedRows.size === inputs.length
+                        ? true
+                        : selectedRows.size === 0
+                        ? false
+                        : 'mixed'
+                    }
+                  />
+                </th>
+                <th>{formatMessage(messages.inputsTableInputs)}</th>
+                <th>{formatMessage(messages.inputsTableCategories)}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {inputs.map((input) => (
+                <InputsTableRow
+                  input={input}
+                  key={input.id}
+                  selected={selectedRows.has(input.id)}
+                  onSelect={toggleInputSelected}
                 />
-              </th>
-              <th>{formatMessage(messages.inputsTableInputs)}</th>
-              <th>{formatMessage(messages.inputsTableCategories)}</th>
-            </tr>
-          </thead>
-          <tbody>
-            {inputs.map((input) => (
-              <InputsTableRow
-                input={input}
-                key={input.id}
-                selected={selectedRows.has(input.id)}
-                onSelect={toggleInputSelected}
-              />
-            ))}
-          </tbody>
-        </StyledTable>
+              ))}
+            </tbody>
+          </StyledTable>
+        </>
       )}
     </div>
   );
