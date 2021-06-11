@@ -7,6 +7,8 @@ module Insights
     belongs_to :category
     belongs_to :input, polymorphic: true
 
+    delegate :view, to: :category
+
     # When modifying validators & callbacks here, make sure to update the batch
     # insert/update in Insights::CategoryAssignmentsService accordingly, as
     # they bypass the callbacks (including the validation).
