@@ -1,5 +1,6 @@
 class Idea < ApplicationRecord
   include Post
+  extend OrderAsSpecified
 
   belongs_to :project, touch: true
   belongs_to :idea_status, optional: true

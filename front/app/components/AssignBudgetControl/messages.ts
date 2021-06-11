@@ -1,17 +1,21 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  assign: {
-    id: 'app.components.AssignBudgetControl.assign',
-    defaultMessage: 'Assign',
+  remove: {
+    id: 'app.components.AssignBudgetControl.remove',
+    defaultMessage: 'Remove',
   },
-  undo: {
-    id: 'app.components.AssignBudgetControl.undo',
-    defaultMessage: 'Undo',
+  removeFromMyExpenses: {
+    id: 'app.components.AssignBudgetControl.removeFromMyExpenses',
+    defaultMessage: 'Remove from my expenses',
   },
-  assigned: {
-    id: 'app.components.AssignBudgetControl.assigned',
-    defaultMessage: 'Assigned',
+  add: {
+    id: 'app.components.AssignBudgetControl.add',
+    defaultMessage: 'Add',
+  },
+  addToMyExpenses: {
+    id: 'app.components.AssignBudgetControl.addToMyExpenses',
+    defaultMessage: 'Add to my expenses',
   },
   budgetingNotPossible: {
     id: 'app.components.VoteControl.budgetingNotPossible',

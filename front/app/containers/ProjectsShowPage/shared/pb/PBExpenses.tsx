@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
-import { get, round } from 'lodash-es';
+import { round } from 'lodash-es';
 import moment from 'moment';
 
 // services
@@ -26,7 +26,7 @@ import PBBasket from './PBBasket';
 import ButtonWithDropdown from 'components/UI/ButtonWithDropdown';
 
 // tracking
-import { injectTracks } from 'utils/analytics';
+import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // i18n
@@ -44,8 +44,6 @@ import { ScreenReaderOnly } from 'utils/a11y';
 import { LiveMessage } from 'react-aria-live';
 
 const Container = styled.div`
-  background: #fff;
-  padding: 20px;
   ${defaultCardStyle};
 `;
 
@@ -84,7 +82,7 @@ const Title = styled.h2`
   }
 `;
 
-const TitleIcon = styled(Icon)<{ viewMode: 'row' | 'column' }>`
+const TitleIcon = styled(Icon)<{ viewMode?: 'row' | 'column' }>`
   flex: 0 0 18px;
   height: 18px;
   margin-right: 10px;
@@ -131,18 +129,19 @@ const ProgressBar = styled.div<{ viewMode: 'row' | 'column' }>`
   border-radius: ${(props: any) => props.theme.borderRadius};
   margin-top: 30px;
   margin-bottom: 30px;
+  border: solid 1px #e0e0e0;
   background: repeating-linear-gradient(
     -45deg,
-    #eff1f2,
-    #eff1f2 10px,
-    #e6e9ec 10px,
-    #e6e9ec 20px
+    #f8f8f8,
+    #f8f8f8 10px,
+    #e8e8e8 10px,
+    #e8e8e8 20px
   );
 
   ${({ viewMode }) =>
     viewMode === 'column' &&
     `
-    margin-top: 20px;
+    margin-top: 15px;
     margin-bottom: 20px;
   `}
 `;
@@ -150,7 +149,7 @@ const ProgressBar = styled.div<{ viewMode: 'row' | 'column' }>`
 const ProgressBarOverlay: any = styled.div`
   width: ${(props: any) => props.progress}%;
   height: 100%;
-  background: ${colors.adminTextColor};
+  background: ${colors.label};
   border-radius: ${(props: any) => props.theme.borderRadius};
   display: flex;
   align-items: center;
@@ -218,7 +217,10 @@ const Buttons = styled.div<{ viewMode: 'row' | 'column' }>`
 
 const ManageBudgetButton = styled(Button)``;
 
-const ManageBudgetButtonWithDropdown = styled(ButtonWithDropdown)``;
+const ManageBudgetButtonWithDropdown = styled(ButtonWithDropdown)`
+  min-width: 200px;
+  z-index: 900;
+`;
 
 const SubmitExpensesButton = styled(Button)<{ viewMode: 'row' | 'column' }>`
   margin-left: 10px;
@@ -246,22 +248,13 @@ interface DataProps {
   phase: GetPhaseChildProps;
 }
 
-interface Tracks {
-  ideaRemovedFromBasket: () => void;
-  ideaAddedToBasket: () => void;
-  basketSubmitted: () => void;
-}
-
 interface Props extends InputProps, DataProps {}
 
 interface State {
   processing: boolean;
 }
 
-class PBExpenses extends PureComponent<
-  Props & InjectedIntlProps & Tracks,
-  State
-> {
+class PBExpenses extends PureComponent<Props & InjectedIntlProps, State> {
   constructor(props) {
     super(props);
     this.state = {
@@ -276,7 +269,7 @@ class PBExpenses extends PureComponent<
       const now = moment().format();
       this.setState({ processing: true });
       await updateBasket(basket.id, { submitted_at: now });
-      this.props.basketSubmitted();
+      trackEventByName(tracks.basketSubmitted);
       this.setState({ processing: false });
     }
   };
@@ -355,7 +348,10 @@ class PBExpenses extends PureComponent<
             <Header>
               <Title className={validationStatus}>
                 {validationStatus === 'notValidated' && (
-                  <FormattedMessage {...messages.myExpenses} />
+                  <>
+                    <TitleIcon name="basket" ariaHidden />
+                    <FormattedMessage {...messages.myExpenses} />
+                  </>
                 )}
                 {validationStatus === 'validationError' && (
                   <>
@@ -454,12 +450,11 @@ class PBExpenses extends PureComponent<
                 <ManageBudgetButtonWithDropdown
                   buttonComponent={
                     <ManageBudgetButton
-                      icon="basket"
                       iconAriaHidden
-                      buttonStyle="primary-inverse"
-                      borderColor={colors.separation}
-                      bgColor="transparent"
-                      borderThickness="2px"
+                      buttonStyle="white"
+                      borderColor="#ccc"
+                      boxShadow="none"
+                      boxShadowHover="none"
                     >
                       <FormattedMessage {...messages.manageBudget} />
                     </ManageBudgetButton>
@@ -470,12 +465,11 @@ class PBExpenses extends PureComponent<
                       participationContextId={participationContextId}
                     />
                   }
-                  trackName={tracks.expensesDropdownOpened.name}
+                  trackName={tracks.expensesDropdownOpened}
                 />
 
                 <SubmitExpensesButton
                   onClick={this.handleSubmitExpensesOnClick}
-                  icon="submit"
                   bgColor={colors.adminTextColor}
                   disabled={
                     validationStatus === 'validationSuccess' ||
@@ -521,28 +515,20 @@ const Data = adopt<DataProps, InputProps>({
     let basketId: string | null = null;
 
     if (participationContextType === 'project') {
-      basketId =
-        !isNilOrError(project) && project.relationships.user_basket
-          ? get(project.relationships.user_basket.data, 'id', null)
-          : null;
+      basketId = !isNilOrError(project)
+        ? project.relationships.user_basket?.data?.id || null
+        : null;
     } else {
-      basketId =
-        !isNilOrError(phase) && phase.relationships.user_basket
-          ? get(phase.relationships.user_basket.data, 'id', null)
-          : null;
+      basketId = !isNilOrError(phase)
+        ? phase.relationships.user_basket?.data?.id || null
+        : null;
     }
 
     return <GetBasket id={basketId}>{render}</GetBasket>;
   },
 });
 
-const PBExpensesWithHoCs = injectIntl(
-  injectTracks<Props>({
-    ideaRemovedFromBasket: tracks.ideaRemovedFromBasket,
-    ideaAddedToBasket: tracks.ideaAddedToBasket,
-    basketSubmitted: tracks.basketSubmitted,
-  })(PBExpenses)
-);
+const PBExpensesWithHoCs = injectIntl(PBExpenses);
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>

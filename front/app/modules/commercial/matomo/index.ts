@@ -115,7 +115,7 @@ const configuration: ModuleConfiguration = {
         g.async = true;
         g.src = `${MATOMO_HOST}/matomo.js`;
         g.id = 'internal_matomo_analytics';
-        s.parentNode?.insertBefore(g, s);
+        s?.parentNode?.insertBefore(g, s);
       })();
 
       if (!isNilOrError(appConfiguration)) {
