@@ -224,7 +224,6 @@ const IdeaButton = memo<Props & InjectedIntlProps>(
 
       const pcType = participationContextType;
       const pcId = pcType === 'phase' ? phaseId : projectId;
-
       const shouldVerify = action === 'sign_in_up_and_verify';
 
       if (isNilOrError(authUser) && !isNilOrError(project)) {

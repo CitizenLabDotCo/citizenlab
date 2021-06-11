@@ -10,7 +10,6 @@ import BottomBounceUp from 'components/UI/Card/BottomBounceUp';
 import VotingDisabled from 'components/VoteControl/VotingDisabled';
 import VoteControl from 'components/VoteControl';
 import AssignBudgetControl from 'components/AssignBudgetControl';
-import AssignBudgetDisabled from 'components/AssignBudgetControl/AssignBudgetDisabled';
 import Author from 'components/Author';
 
 // resources
@@ -243,8 +242,6 @@ class IdeaCard extends PureComponent<
       const votingDescriptor = idea?.attributes?.action_descriptor?.voting_idea;
       const commentingDescriptor =
         idea?.attributes?.action_descriptor?.commenting_idea;
-      const budgetingDescriptor =
-        idea?.attributes?.action_descriptor?.budgeting;
       const projectId = project.id;
       const ideaTitle = localize(idea.attributes.title_multiloc);
       const processType = project.attributes.process_type;
@@ -336,14 +333,8 @@ class IdeaCard extends PureComponent<
                     participationContextType && (
                       <AssignBudgetControl
                         view="ideaCard"
-                        ideaId={idea.id}
-                        participationContextId={participationContextId}
-                        participationContextType={participationContextType}
-                        openIdea={this.onCardClick}
-                        disabledAssignBudgetClick={
-                          this.disabledAssignBudgetClick
-                        }
                         projectId={projectId}
+                        ideaId={idea.id}
                       />
                     )}
 
@@ -381,22 +372,6 @@ class IdeaCard extends PureComponent<
                       <VotingDisabled
                         votingDescriptor={votingDescriptor}
                         projectId={projectId}
-                      />
-                    </DisabledWrapper>
-                  </BottomBounceUp>
-                )}
-
-              {showAssignBudgetDisabled === 'assignBudgetDisabled' &&
-                budgetingDescriptor &&
-                projectId &&
-                participationContextId &&
-                participationContextType && (
-                  <BottomBounceUp icon="lock-outlined">
-                    <DisabledWrapper>
-                      <AssignBudgetDisabled
-                        budgetingDescriptor={budgetingDescriptor}
-                        participationContextId={participationContextId}
-                        participationContextType={participationContextType}
                       />
                     </DisabledWrapper>
                   </BottomBounceUp>
