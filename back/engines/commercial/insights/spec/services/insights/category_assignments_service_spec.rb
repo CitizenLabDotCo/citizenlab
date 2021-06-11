@@ -25,7 +25,7 @@ describe Insights::CategoryAssignmentsService do
 
     it 'works even if some assignments already exist' do
       input = create(:idea)
-      categories = create_list(:category, 3) 
+      categories = create_list(:category, 3)
       service.add_assignments(input, categories[0..1])
 
       aggregate_failures 'check assignments' do
@@ -47,7 +47,7 @@ describe Insights::CategoryAssignmentsService do
 
     it 'assigns categories to the input' do
       input = create(:idea)
-      categories = create_list(:category, 2) 
+      categories = create_list(:category, 2)
       assignments = service.add_suggestions(input, categories)
 
       aggregate_failures 'check assignments' do
@@ -60,7 +60,7 @@ describe Insights::CategoryAssignmentsService do
     # rubocop:disable RSpec/ExampleLength
     it "doesn't override (approved) category assignments" do
       input = create(:idea)
-      categories = create_list(:category, 2) 
+      categories = create_list(:category, 2)
       approved_assignment = service.add_assignments(input, [categories.first]).first
 
       aggregate_failures 'check assignments' do
@@ -74,5 +74,93 @@ describe Insights::CategoryAssignmentsService do
       end
     end
     # rubocop:enable RSpec/ExampleLength
+  end
+
+  describe '#add_assignments_batch' do
+    let(:inputs) { create_list(:idea, 2) }
+    let(:categories) { create_list(:category, 3) }
+
+    it 'creates assignments' do
+      assignment_ids = service.add_assignments_batch(inputs, categories)
+      assignments = Insights::CategoryAssignment.find(assignment_ids)
+
+      aggregate_failures 'checking assignments' do
+        expect(assignment_ids.length).to eq(6)
+        expect(assignments.map(&:approved?).all?).to be(true)
+        expect(assignments.pluck(:input_id).uniq).to match(inputs.pluck(:id))
+        expect(assignments.pluck(:category_id).uniq).to match(categories.pluck(:id))
+      end
+    end
+
+    it 'raises an error for inputs with bad type' do
+      expect { service.add_assignments_batch([create(:comment)], categories) }
+        .to raise_error(ArgumentError)
+    end
+
+    it 'overrides (timestamps) of existing assignments' do
+      old_assignment = Insights::CategoryAssignment.create(input: inputs.first, category: categories.first)
+
+      new_assignment_ids = nil
+      expect { new_assignment_ids = service.add_assignments_batch(inputs, categories) }.to(
+        change { old_assignment .reload.created_at }.and(change { old_assignment .reload.updated_at })
+      )
+      expect(new_assignment_ids.length).to eq(6)
+    end
+
+    it 'converts suggestions into (approved) assignments' do
+      suggestion = Insights::CategoryAssignment.create(
+        input: inputs.first,
+        category: categories.first,
+        approved: false
+      )
+
+      assignment_ids = nil
+      expect { assignment_ids = service.add_assignments_batch(inputs, categories) }
+        .to(change { suggestion.reload.approved }.from(false).to(true))
+      expect(assignment_ids.length).to eq(6)
+    end
+  end
+
+  describe '#add_suggestions_batch' do
+    let(:inputs) { create_list(:idea, 2) }
+    let(:categories) { create_list(:category, 3) }
+
+    it 'creates suggestions' do
+      assignment_ids = service.add_suggestions_batch(inputs, categories)
+      assignments = Insights::CategoryAssignment.find(assignment_ids)
+
+      aggregate_failures 'checking assignments' do
+        expect(assignment_ids.length).to eq(6)
+        expect(assignments.map(&:approved?).all?).to be(false)
+        expect(assignments.pluck(:input_id).uniq).to match(inputs.pluck(:id))
+        expect(assignments.pluck(:category_id).uniq).to match(categories.pluck(:id))
+      end
+    end
+
+    it 'raises an error for inputs with bad type' do
+      expect { service.add_suggestions_batch([create(:comment)], categories) }
+        .to raise_error(ArgumentError)
+    end
+
+    it "doesn't touch existing suggestion" do
+      suggestion = Insights::CategoryAssignment.create(
+        input: inputs.first,
+        category: categories.first,
+        approved: false
+      )
+
+      assignment_ids = nil
+      expect { assignment_ids = service.add_suggestions_batch(inputs, categories) }
+        .not_to(change { suggestion.reload.updated_at })
+      expect(assignment_ids.length).to eq(5)
+    end
+
+    it "doesn't convert approved categories to suggestions" do
+      assignment = Insights::CategoryAssignment.create(input: inputs.first, category: categories.first)
+
+      assignment_ids = service.add_suggestions_batch(inputs, categories)
+      expect(assignment_ids.length).to eq(5)
+      expect(assignment.reload.approved).to eq(true)
+    end
   end
 end
