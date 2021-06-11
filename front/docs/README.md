@@ -2,6 +2,16 @@
 
 ## Next Release
 
+## 2021-06-11
+
+### Fixed
+- Facebook button no longer shows when not configured.
+
+## 2021-06-10
+
+### Fixed
+- Creating invites on a platform with many heavy custom registration fields is no longer unworkably slow
+
 ## 2021-06-09
 
 ### Added
