@@ -92,6 +92,10 @@ export default defineMessages({
     id: 'app.containers.Admin.Insights.Edit.inputsTableCategories',
     defaultMessage: 'Categories',
   },
+  inputsTableAlsoIn: {
+    id: 'app.containers.Admin.Insights.Edit.inputsTableAlsoIn',
+    defaultMessage: 'Also in',
+  },
   inputsTableEmpty: {
     id: 'app.containers.Admin.Insights.Edit.inputsEmptyState',
     defaultMessage: "This project doesn't seem to contain any input.",

@@ -36,6 +36,7 @@ const StyledTable = styled(Table)`
   tbody {
     tr {
       cursor: pointer;
+      height: 56px;
 
       td {
         padding: 12px;
@@ -102,7 +103,8 @@ const InputsTable = ({
           <colgroup>
             <col span={1} style={{ width: '5%' }} />
             <col span={1} style={{ width: '30%' }} />
-            <col span={1} style={{ width: '65%' }} />
+            {query.category && <col span={1} style={{ width: '20%' }} />}
+            <col span={1} style={{ width: query.category ? '45%' : '65%' }} />
           </colgroup>
           <thead>
             <tr>
@@ -111,6 +113,9 @@ const InputsTable = ({
               </th>
               <th>{formatMessage(messages.inputsTableInputs)}</th>
               <th>{formatMessage(messages.inputsTableCategories)}</th>
+              {query.category && (
+                <th>{formatMessage(messages.inputsTableAlsoIn)}</th>
+              )}
             </tr>
           </thead>
           <tbody>
