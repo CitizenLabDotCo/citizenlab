@@ -4,7 +4,7 @@ import {
   IInsightsInputData,
 } from '../services/insightsInputs';
 
-type QueryParameters = { category: string };
+type QueryParameters = { category?: string; sort?: 'approval' | '-approval' };
 
 const useInsightsViews = (
   viewId: string,
@@ -15,6 +15,7 @@ const useInsightsViews = (
   >(undefined);
 
   const category = queryParameters?.category;
+  const sort = queryParameters?.sort;
 
   useEffect(() => {
     const subscription = insightsInputsStream(viewId, {
@@ -24,7 +25,7 @@ const useInsightsViews = (
     });
 
     return () => subscription.unsubscribe();
-  }, [viewId, category]);
+  }, [viewId, category, sort]);
 
   return insightsViews;
 };

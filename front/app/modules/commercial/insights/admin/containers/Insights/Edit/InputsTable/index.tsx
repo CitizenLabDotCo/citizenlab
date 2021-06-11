@@ -1,5 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { withRouter, WithRouterProps } from 'react-router';
+import { stringify } from 'qs';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -9,7 +10,7 @@ import useInsightsInputs from 'modules/commercial/insights/hooks/useInsightsInpu
 import { IInsightsInputData } from 'modules/commercial/insights/services/insightsInputs';
 
 // components
-import { Table, Checkbox } from 'cl2-component-library';
+import { Table, Checkbox, Icon } from 'cl2-component-library';
 import InputsTableRow from './InputsTableRow';
 import EmptyState from './EmptyState';
 import SideModal from 'components/UI/SideModal';
@@ -23,6 +24,7 @@ import { colors, fontSizes } from 'utils/styleUtils';
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from '../../messages';
+import clHistory from 'utils/cl-router/history';
 
 const StyledTable = styled(Table)`
   thead {
@@ -50,9 +52,19 @@ const StyledTable = styled(Table)`
   }
 `;
 
+const StyledSort = styled.div`
+  display: flex;
+  align-items: center !important;
+  cursor: pointer;
+  svg {
+    width: 10px;
+    margin-left: 4px;
+  }
+`;
+
 const InputsTable = ({
   params: { viewId },
-  location: { query },
+  location: { query, pathname },
   intl: { formatMessage },
 }: WithRouterProps & InjectedIntlProps) => {
   const [isSideModalOpen, setIsSideModalOpen] = useState(false);
@@ -63,7 +75,10 @@ const InputsTable = ({
   const closeSideModal = () => setIsSideModalOpen(false);
   const openSideModal = () => setIsSideModalOpen(true);
 
-  const inputs = useInsightsInputs(viewId, { category: query.category });
+  const inputs = useInsightsInputs(viewId, {
+    category: query.category,
+    sort: query.sort,
+  });
 
   // Use callback to keep references for moveUp and moveDown stable
   const moveUp = useCallback(() => {
@@ -94,6 +109,19 @@ const InputsTable = ({
     openSideModal();
   };
 
+  const onSort = () => {
+    clHistory.push({
+      pathname,
+      search: stringify(
+        {
+          ...query,
+          sort: query.sort === '-approval' ? 'approval' : '-approval',
+        },
+        { addQueryPrefix: true }
+      ),
+    });
+  };
+
   return (
     <div data-testid="insightsInputsTable">
       {inputs.length === 0 ? (
@@ -112,7 +140,22 @@ const InputsTable = ({
                 <Checkbox checked={false} onChange={handleCheckboxChange} />
               </th>
               <th>{formatMessage(messages.inputsTableInputs)}</th>
-              <th>{formatMessage(messages.inputsTableCategories)}</th>
+              <th>
+                {query.category ? (
+                  <StyledSort tabIndex={0} role="button" onClick={onSort}>
+                    {formatMessage(messages.inputsTableCategories)}
+                    <Icon
+                      name={
+                        query.sort === '-approval'
+                          ? 'chevron-up'
+                          : 'chevron-down'
+                      }
+                    />
+                  </StyledSort>
+                ) : (
+                  formatMessage(messages.inputsTableCategories)
+                )}
+              </th>
               {query.category && (
                 <th>{formatMessage(messages.inputsTableAlsoIn)}</th>
               )}
