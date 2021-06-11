@@ -9,6 +9,7 @@ import ProjectFolderSelect from './admin/components/ProjectFolderSelect';
 
 import ProjectFolderCard from './citizen/components/ProjectFolderCard';
 import ProjectFolderSiteMap from './citizen/components/ProjectFolderSiteMap';
+import ProjectFolderModerationRightsReceivedNotification from './citizen/components/ProjectFolderModerationRightsReceivedNotification';
 import CreateProject from 'containers/Admin/projects/all/CreateProject';
 
 import ProjectsListItem from 'containers/Navbar/components/ProjectsListItem';
@@ -17,6 +18,11 @@ import { isProjectFolderModerator } from './permissions/roles';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useAuthUser from 'hooks/useAuthUser';
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
+import {
+  TNotificationData,
+  IProjectFolderModerationRightsReceivedNotificationData,
+  TNotificationType,
+} from 'services/notifications';
 
 type RenderOnPublicationTypeProps = {
   publication: IAdminPublicationContent;
@@ -39,6 +45,12 @@ type RenderOnFeatureFlagProps = {
   children: ReactNode;
 };
 
+type RenderOnNotificationTypeProps = {
+  children: ReactNode;
+  notification: TNotificationData;
+  notificationType: TNotificationType;
+};
+
 const RenderOnFeatureFlag = ({ children }: RenderOnFeatureFlagProps) => {
   const isProjectFoldersEnabled = useFeatureFlag('project_folders');
   if (isProjectFoldersEnabled) {
@@ -53,6 +65,18 @@ const RenderOnProjectFolderModerator = ({
   const authUser = useAuthUser();
 
   if (!isNilOrError(authUser) && isProjectFolderModerator(authUser)) {
+    return <>{children}</>;
+  }
+
+  return null;
+};
+
+const RenderOnNotificationType = ({
+  children,
+  notification,
+  notificationType,
+}: RenderOnNotificationTypeProps) => {
+  if (notification.attributes.type === notificationType) {
     return <>{children}</>;
   }
 
@@ -120,6 +144,20 @@ const configuration: ModuleConfiguration = {
         <RenderOnProjectFolderModerator>
           <CreateProject />
         </RenderOnProjectFolderModerator>
+      </RenderOnFeatureFlag>
+    ),
+    'app.components.NotificationMenu.Notification': ({ notification }) => (
+      <RenderOnFeatureFlag>
+        <RenderOnNotificationType
+          notification={notification}
+          notificationType="project_folder_moderation_rights_received"
+        >
+          <ProjectFolderModerationRightsReceivedNotification
+            notification={
+              notification as IProjectFolderModerationRightsReceivedNotificationData
+            }
+          />
+        </RenderOnNotificationType>
       </RenderOnFeatureFlag>
     ),
   },
