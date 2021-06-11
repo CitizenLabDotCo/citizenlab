@@ -18,7 +18,7 @@ module Insights
 
       # [POST] Adds new category assignments (idempotent).
       def add_categories
-        assignment_service.add_assignments!(input, categories)
+        assignment_service.add_assignments(input, categories)
         render json: serialize_categories(input), status: :ok
       end
 

@@ -52,7 +52,7 @@ resource 'Category suggestions for view inputs' do
       end
 
       example 'ignores already assigned categories', document: false do
-        assignment_service.add_assignments!(idea, [categories.first])
+        assignment_service.add_assignments(idea, [categories.first])
         do_request
         aggregate_failures 'check response' do
           expect(status).to eq(200)
@@ -112,7 +112,7 @@ resource 'Category suggestions for view inputs' do
       let(:categories) { create_list(:category, 2, view: view) }
 
       example 'deletes all category assignments' do
-        assignment_service.add_assignments!(idea, categories)
+        assignment_service.add_assignments(idea, categories)
         expect { do_request }
           .to change { assignment_service.approved_assignments(idea, view).count }.from(2).to(0)
         expect(status).to eq(200)
@@ -137,7 +137,7 @@ resource 'Category suggestions for view inputs' do
       let(:category_id) { category.id }
 
       example 'delete a category assignment' do
-        assignment_service.add_assignments!(idea, [category])
+        assignment_service.add_assignments(idea, [category])
         do_request
         expect(status).to eq(200)
         expect(assignment_service.approved_assignments(idea, view)).to eq([])

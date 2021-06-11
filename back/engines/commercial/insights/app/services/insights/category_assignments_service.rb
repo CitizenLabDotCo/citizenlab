@@ -19,7 +19,7 @@ module Insights
       CategoryAssignment.find(ids)
     end
 
-    def add_assignments!(input, categories)
+    def add_assignments(input, categories)
       ids = add_assignments_batch([input], categories)
       CategoryAssignment.find(ids)
     end
