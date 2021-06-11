@@ -19,30 +19,29 @@ interface Props {
   resourceType: ResourceType;
 }
 
-function getResourceStream(resourceType: ResourceType) {
-  switch (resourceType) {
-    case 'project':
-      return projectFilesStream;
-    case 'phase':
-      return phaseFilesStream;
-    case 'event':
-      return eventFilesStream;
-    case 'page':
-      return pageFilesStream;
-    case 'idea':
-      return ideaFilesStream;
-    case 'initiative':
-      return initiativeFilesStream;
-  }
-}
-
 export default function useResourceFiles({ resourceId, resourceType }: Props) {
   const [files, setFiles] = useState<
     IResourceFileData[] | undefined | null | Error
   >(undefined);
-  const stream = getResourceStream(resourceType);
 
   useEffect(() => {
+    const getResourceStream = (resourceType: ResourceType) => {
+      switch (resourceType) {
+        case 'project':
+          return projectFilesStream;
+        case 'phase':
+          return phaseFilesStream;
+        case 'event':
+          return eventFilesStream;
+        case 'page':
+          return pageFilesStream;
+        case 'idea':
+          return ideaFilesStream;
+        case 'initiative':
+          return initiativeFilesStream;
+      }
+    };
+    const stream = getResourceStream(resourceType);
     let observable: Observable<IResourceFiles | null> = of(null);
 
     if (resourceId) {

@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { media, colors, fontSizes } from 'utils/styleUtils';
+import { media, colors, fontSizes, defaultCardStyle } from 'utils/styleUtils';
 
 export const ControlBar = styled.div`
   display: flex;
@@ -58,9 +58,7 @@ export const GraphCardInner = styled.div`
   padding-left: 20px;
   padding-right: 20px;
   padding-bottom: 35px;
-  border: solid 1px #ccc;
-  border-radius: ${(props: any) => props.theme.borderRadius};
-  background: ${colors.adminContentBackground};
+  ${defaultCardStyle}
   p {
     font-size: ${fontSizes.base}px;
     flex-grow: 1;
