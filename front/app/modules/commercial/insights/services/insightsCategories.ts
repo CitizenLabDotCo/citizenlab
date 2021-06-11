@@ -23,7 +23,7 @@ export interface IInsightsCategories {
   data: IInsightsCategoryData[];
 }
 
-const getInsightsCategoriesEndpoint = (viewId) =>
+const getInsightsCategoriesEndpoint = (viewId: string) =>
   `insights/views/${viewId}/categories/`;
 
 export function insightsCategoriesStream(
@@ -33,6 +33,7 @@ export function insightsCategoriesStream(
   return streams.get<IInsightsCategories>({
     apiEndpoint: `${API_PATH}/${getInsightsCategoriesEndpoint(insightsViewId)}`,
     ...streamParams,
+    cacheStream: false,
   });
 }
 
@@ -41,16 +42,17 @@ export function insightsCategoryStream(
   insightsCategoryId: string,
   streamParams: IStreamParams | null = null
 ) {
-  return streams.get<IInsightsCategories>({
+  return streams.get<IInsightsCategory>({
     apiEndpoint: `${API_PATH}/${getInsightsCategoriesEndpoint(
       insightsViewId
     )}/${insightsCategoryId}`,
     ...streamParams,
+    cacheStream: false,
   });
 }
 
 export function addInsightsCategory(insightsViewId: string, name: string) {
-  return streams.add<IInsightsCategories>(
+  return streams.add<IInsightsCategory>(
     `${API_PATH}/${getInsightsCategoriesEndpoint(insightsViewId)}`,
     {
       category: { name },

@@ -92,14 +92,9 @@ export default defineMessages({
     id: 'app.containers.Admin.Insights.Edit.inputsTableCategories',
     defaultMessage: 'Categories',
   },
-  inputsTableDeleteCategoryConfirmation: {
-    id:
-      'app.containers.Admin.Insights.Edit.inputsTableDeleteCategoryConfirmation',
-    defaultMessage: 'Are you sure?',
-  },
   inputsTableEmpty: {
     id: 'app.containers.Admin.Insights.Edit.inputsEmptyState',
-    defaultMessage: 'You have no inputs for this view yet',
+    defaultMessage: "This project doesn't seem to contain any input.",
   },
   categories: {
     id: 'app.containers.Admin.Reporting.Insights.Edit.categories',
@@ -124,5 +119,17 @@ export default defineMessages({
   categoryInfoBox: {
     id: 'app.containers.Admin.Insights.Edit.categoryInfoBox',
     defaultMessage: '{bold} to organize and analyze input',
+  },
+  addCategoryLabel: {
+    id: 'app.containers.Admin.Insights.Edit.Details.addCategoryLabel',
+    defaultMessage: 'Add a category',
+  },
+  addCategoryPlaceholder: {
+    id: 'app.containers.Admin.Insights.Edit.Details.addCategoryPlaceholder',
+    defaultMessage: 'Type a category name...',
+  },
+  createCategoryPrompt: {
+    id: 'app.containers.Admin.Insights.Edit.Details.createCategoryPrompt',
+    defaultMessage: 'Create',
   },
 });
