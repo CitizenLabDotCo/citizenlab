@@ -33,16 +33,18 @@ interface Props extends GetIdeasInputProps {
   allowProjectsFilter?: boolean;
   showFiltersSidebar?: boolean;
   className?: string;
-  invisibleTitleMessage: MessageDescriptor;
+  invisibleTitleMessage?: MessageDescriptor;
 }
 
 const IdeaCards = memo<Props>(
   ({ className, invisibleTitleMessage, ...props }) => {
     return (
       <Container className={className || ''}>
-        <ScreenReaderOnly>
-          <FormattedMessage tagName="h2" {...invisibleTitleMessage} />
-        </ScreenReaderOnly>
+        {invisibleTitleMessage && (
+          <ScreenReaderOnly>
+            <FormattedMessage tagName="h2" {...invisibleTitleMessage} />
+          </ScreenReaderOnly>
+        )}
         <Suspense fallback={null}>
           {props.showFiltersSidebar ? (
             <WithFiltersSidebar {...props} />

@@ -1,5 +1,6 @@
 import React, { memo } from 'react';
 import Map from 'components/Map';
+import { LatLngTuple } from 'leaflet';
 
 export interface Props {
   position: GeoJSON.Point;
@@ -9,12 +10,12 @@ export interface Props {
 const MapComponent = memo<Props>(({ position, projectId }) => {
   const points: any = [{ ...position }];
   const center = position.coordinates;
-  const centerCoordinates = [center[1], center[0]];
+  const centerLatLng = [center[1], center[0]] as LatLngTuple;
 
   return (
     <Map
       points={points}
-      centerCoordinates={centerCoordinates}
+      centerLatLng={centerLatLng}
       projectId={projectId}
       mapHeight="400px"
     />

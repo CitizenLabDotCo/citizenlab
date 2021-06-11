@@ -256,20 +256,18 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
       activeStepRef.current = activeStep;
     }, [activeStep]);
 
-    // this useEffect is needed to deal with the scenario in which
+    // this is needed to deal with the scenario in which
     // a user gets sent to an external page (e.g. for sso or verification),
     // and afterwards back to the platform to complete their registration.
     // if the activeStep has not been set yet, but the authUser is either null or an object
     // we request the next step in the registration process and set it if there's a step remaining
-    useEffect(() => {
-      if (activeStep === null && !isUndefinedOrError(authUserRef.current)) {
-        const nextStep = getNextStep();
+    if (activeStep === null && !isUndefinedOrError(authUserRef.current)) {
+      const nextStep = getNextStep();
 
-        if (nextStep) {
-          setActiveStep(nextStep);
-        }
+      if (nextStep) {
+        setActiveStep(nextStep);
       }
-    });
+    }
 
     useEffect(() => {
       trackEventByName(tracks.signUpFlowEntered);
@@ -301,6 +299,7 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
     const helpText = activeStepConfiguration?.helperText?.(
       !isNilOrError(tenant) ? tenant.data : undefined
     );
+
     const stepName = activeStepConfiguration?.stepName ?? '';
 
     const [activeStepNumber, totalStepsCount] = useMemo(() => {
