@@ -7,7 +7,7 @@ import {
 import L from 'leaflet';
 import { isEmpty, cloneDeep, reverse } from 'lodash-es';
 
-import { markerIcon } from './markers';
+import { getMarkerIcon } from './markers';
 
 import {
   GeoJSONLayer,
@@ -91,67 +91,89 @@ export function layerMarker(
   let marker: L.Icon;
 
   if (isString(markerStringOrOptionsOrFunction)) {
-    marker = markerIcon({ url: markerStringOrOptionsOrFunction });
+    marker = getMarkerIcon({ url: markerStringOrOptionsOrFunction });
   } else if (
     isOrReturnsString(markerStringOrOptionsOrFunction, geojsonLayer, latlng)
   ) {
-    marker = markerIcon({
+    marker = getMarkerIcon({
       url: markerStringOrOptionsOrFunction(geojsonLayer, latlng),
     });
   } else if (isFunction(markerStringOrOptionsOrFunction)) {
-    marker = markerIcon(markerStringOrOptionsOrFunction(geojsonLayer, latlng));
+    marker = getMarkerIcon(
+      markerStringOrOptionsOrFunction(geojsonLayer, latlng)
+    );
   } else {
-    marker = markerIcon(markerStringOrOptionsOrFunction);
+    marker = getMarkerIcon(markerStringOrOptionsOrFunction);
   }
 
-  return L.marker(latlng, { ...options, icon: marker || DEFAULT_MARKER_ICON });
+  return L.marker(latlng, {
+    ...options,
+    icon: marker || DEFAULT_MARKER_ICON,
+  });
 }
 
 export function addLayers(
-  map: L.Map,
-  geoJsonLayers: GeoJSONLayer[],
+  map: L.Map | null | undefined,
+  geoJsonLayers: GeoJSONLayer[] | null | undefined,
   { layersControl, overlay, popup, tooltip, marker }
 ) {
-  const layers = reverse(cloneDeep(geoJsonLayers))
-    ?.filter((geoJsonLayer) => !isEmpty(geoJsonLayer.geojson))
-    .map((geoJsonLayer) => {
-      const options = {
-        useSimpleStyle: true,
-        useMakiMarkers: true,
-        pointToLayer: (_feature, latlng) => {
-          return layerMarker(geoJsonLayer, latlng, marker);
-        },
-        onEachFeature: (feature, layer) => {
-          addTooltipToLayer(layer, feature, tooltip);
-          addPopupToLayer(layer, feature, popup);
-        },
-      };
+  if (map && geoJsonLayers && geoJsonLayers.length > 0) {
+    const layers = reverse(cloneDeep(geoJsonLayers))
+      ?.filter((geoJsonLayer) => !isEmpty(geoJsonLayer.geojson))
+      .map((geoJsonLayer) => {
+        const options = {
+          useSimpleStyle: true,
+          useMakiMarkers: true,
+          pointToLayer: (_feature, latlng) => {
+            return layerMarker(geoJsonLayer, latlng, marker);
+          },
+          onEachFeature: (feature, layer) => {
+            addTooltipToLayer(layer, feature, tooltip);
+            addPopupToLayer(layer, feature, popup);
+          },
+        };
 
-      const layer = L.geoJSON(geoJsonLayer.geojson, options as any).addTo(map);
+        const layer = L.geoJSON(geoJsonLayer.geojson, options as any).addTo(
+          map
+        );
 
-      return {
-        layer,
-        geoJsonLayer,
-      };
+        return {
+          layer,
+          geoJsonLayer,
+        };
+      });
+
+    reverse(cloneDeep(layers)).forEach(({ layer, geoJsonLayer }) => {
+      if (!isNilOrError(layersControl) && !isNilOrError(overlay)) {
+        addLayerOverlay(layer, layersControl, geoJsonLayer, overlay);
+      }
     });
 
-  reverse(cloneDeep(layers)).forEach(({ layer, geoJsonLayer }) => {
-    if (!isNilOrError(layersControl) && !isNilOrError(overlay)) {
-      addLayerOverlay(layer, layersControl, geoJsonLayer, overlay);
-    }
-  });
+    return layers.map(({ layer }) => layer);
+  }
 
-  return layers.map(({ layer }) => layer);
+  return [] as L.GeoJSON[];
 }
 
-export function removeLayers(map: L.Map, leafletLayers: L.Layer[]) {
-  leafletLayers.forEach((layer) => {
-    removeLayer(map, layer);
-  });
+export function removeLayers(
+  map: L.Map | null | undefined,
+  leafletLayers?: L.Layer[] | L.Marker<any>[] | null
+) {
+  if (leafletLayers && leafletLayers.length > 0) {
+    leafletLayers.forEach((layer) => {
+      removeLayer(map, layer);
+    });
+  }
 }
 
-export function removeLayer(map: L.Map, leafletLayer: L.Layer) {
-  if (leafletLayer) {
+export function removeLayer(
+  map: L.Map | null | undefined,
+  leafletLayer: L.Layer | null | undefined
+) {
+  if (map && leafletLayer) {
+    leafletLayer?.off?.('click');
+    leafletLayer?.off?.('mouseover');
+    leafletLayer?.off?.('mouseout');
     map.removeLayer(leafletLayer);
   }
 }

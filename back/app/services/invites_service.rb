@@ -59,7 +59,6 @@ class InvitesService
 
   def initialize
     @errors = []
-    @custom_field_schema = CustomFieldService.new.fields_to_json_schema(CustomField.with_resource_type('User'))
   end
 
   def generate_token
@@ -121,16 +120,20 @@ class InvitesService
 
   private
 
+  def custom_field_schema
+    @custom_field_schema ||= CustomFieldService.new.fields_to_json_schema(CustomField.with_resource_type('User'))
+  end
+
   # Returns type information of custom fields.
   #
   # @return [Hash<String, String>] Mapping from field key to field type
   def custom_field_types
-    @custom_field_schema[:properties].transform_values do |field_schema| field_schema[:type] end
+    custom_field_schema[:properties].transform_values do |field_schema| field_schema[:type] end
   end
 
   # @return [Array<String>]
   def custom_field_keys
-    @custom_field_schema[:properties].keys
+    custom_field_schema[:properties].keys
   end
 
   def postprocess_xlsx_hash_array hash_array

@@ -44,5 +44,32 @@ module Insights
         end
       end
     end
+
+    # Batch removal for category assignment.
+    #
+    # @param [Enumerable<Ideas>] inputs
+    # @param [Enumerable<Insights::Category>] categories
+    # @return [Array<Insights::CategoryAssignment>]
+    def delete_assignments_batch(inputs, categories)
+      assignments = CategoryAssignment.where(input: inputs, category: categories)
+      _frozen_assignments = assignments.destroy_all
+    end
+
+    # Batch category assignment.
+    #
+    # Batch assignment is idempotent. It will not complain if some of the
+    # assignments already exist.
+    #
+    # Batch assignment is transactional. Either it succeeds at assigning all
+    # categories to all inputs, or the DB is rolled back to its previous state.
+    #
+    # @param [Enumerable<Ideas>] inputs
+    # @param [Enumerable<Insights::Category>] categories
+    # @return [Array<Insights::CategoryAssignment>]
+    def add_assignments_batch(inputs, categories)
+      CategoryAssignment.transaction do
+        inputs.map { |input| add_assignments!(input, categories) }
+      end.flatten
+    end
   end
 end

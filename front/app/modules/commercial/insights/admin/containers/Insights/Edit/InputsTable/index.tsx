@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { withRouter, WithRouterProps } from 'react-router';
 
 // utils
@@ -6,12 +6,15 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // hooks
 import useInsightsInputs from 'modules/commercial/insights/hooks/useInsightsInputs';
+import { IInsightsInputData } from 'modules/commercial/insights/services/insightsInputs';
 
 // components
 import { Table } from 'cl2-component-library';
 import InputsTableRow from './InputsTableRow';
 import EmptyState from './EmptyState';
 import CheckboxWithPartialCheck from 'components/UI/CheckboxWithPartialCheck';
+import SideModal from 'components/UI/SideModal';
+import InputDetails from '../InputDetails';
 
 // styles
 import styled from 'styled-components';
@@ -24,7 +27,6 @@ import messages from '../../messages';
 import Actions from './Actions';
 
 const StyledTable = styled(Table)`
-  background-color: #fff;
   thead {
     tr {
       th {
@@ -51,14 +53,45 @@ const StyledTable = styled(Table)`
 
 const InputsTable = ({
   params: { viewId },
+  location: { query },
   intl: { formatMessage },
 }: WithRouterProps & InjectedIntlProps) => {
-  const inputs = useInsightsInputs(viewId);
   const [selectedRows, setSelectedRows] = useState<Set<string>>(new Set());
+  const [isSideModalOpen, setIsSideModalOpen] = useState(false);
+  const [previewedInputIndex, setPreviewedInputIndex] = useState<number | null>(
+    null
+  );
+
+  const closeSideModal = () => setIsSideModalOpen(false);
+  const openSideModal = () => setIsSideModalOpen(true);
+
+  const inputs = useInsightsInputs(viewId, { category: query.category });
+
+  // Use callback to keep references for moveUp and moveDown stable
+  const moveUp = useCallback(() => {
+    setPreviewedInputIndex((prevSelectedIndex) => {
+      if (!isNilOrError(prevSelectedIndex)) {
+        return prevSelectedIndex - 1;
+      } else return prevSelectedIndex;
+    });
+  }, []);
+
+  const moveDown = useCallback(() => {
+    setPreviewedInputIndex((prevSelectedIndex) => {
+      if (!isNilOrError(prevSelectedIndex)) {
+        return prevSelectedIndex + 1;
+      } else return prevSelectedIndex;
+    });
+  }, []);
 
   if (isNilOrError(inputs)) {
     return null;
   }
+
+  const previewInput = (input: IInsightsInputData) => () => {
+    setPreviewedInputIndex(inputs.indexOf(input));
+    openSideModal();
+  };
 
   const handleCheckboxChange = () => {
     if (selectedRows.size === 0) {
@@ -70,14 +103,14 @@ const InputsTable = ({
     }
   };
 
-  const toggleInputSelected = (id: string) => {
-    if (selectedRows.has(id)) {
+  const toggleInputSelected = (input: IInsightsInputData) => () => {
+    if (selectedRows.has(input.id)) {
       const newSelection = new Set(selectedRows);
-      newSelection.delete(id);
+      newSelection.delete(input.id);
       setSelectedRows(newSelection);
     } else {
       const newSelection = new Set(selectedRows);
-      newSelection.add(id);
+      newSelection.add(input.id);
       setSelectedRows(newSelection);
     }
   };
@@ -92,8 +125,8 @@ const InputsTable = ({
           <StyledTable>
             <colgroup>
               <col span={1} style={{ width: '5%' }} />
-              <col span={1} style={{ width: '35%' }} />
-              <col span={1} style={{ width: '60%' }} />
+              <col span={1} style={{ width: '30%' }} />
+              <col span={1} style={{ width: '65%' }} />
             </colgroup>
             <thead>
               <tr>
@@ -119,15 +152,29 @@ const InputsTable = ({
                   input={input}
                   key={input.id}
                   selected={selectedRows.has(input.id)}
-                  onSelect={toggleInputSelected}
+                  changeSelected={toggleInputSelected(input)}
+                  onPreview={previewInput(input)}
                 />
               ))}
             </tbody>
           </StyledTable>
         </>
       )}
+      <SideModal opened={isSideModalOpen} close={closeSideModal}>
+        {!isNilOrError(previewedInputIndex) && (
+          <>
+            <InputDetails
+              selectedInput={inputs[previewedInputIndex]}
+              moveUp={moveUp}
+              moveDown={moveDown}
+              isMoveUpDisabled={previewedInputIndex === 0}
+              isMoveDownDisabled={previewedInputIndex === inputs.length - 1}
+            />
+          </>
+        )}
+      </SideModal>
     </div>
   );
 };
 
-export default injectIntl<{}>(withRouter(InputsTable));
+export default withRouter(injectIntl(InputsTable));

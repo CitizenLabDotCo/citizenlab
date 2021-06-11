@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { isString, get, isEmpty, last, sortBy } from 'lodash-es';
+import { isString, get, isEmpty, includes } from 'lodash-es';
 import {
   BehaviorSubject,
   Subscription,
@@ -29,11 +29,15 @@ import {
 } from 'services/ideas';
 import { IUser } from 'services/users';
 import { voteStream, addVote, deleteVote } from 'services/ideaVotes';
-import { projectByIdStream, IProject } from 'services/projects';
-import { phaseStream, IPhase, getCurrentPhase } from 'services/phases';
+import { projectByIdStream, IProject, IProjectData } from 'services/projects';
+import {
+  phaseStream,
+  IPhase,
+  IPhaseData,
+  getLatestRelevantPhase,
+} from 'services/phases';
 
 // utils
-import { pastPresentOrFuture } from 'utils/dateUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { openSignUpInModal } from 'components/SignUpIn/events';
 import { openVerificationModal } from 'components/Verification/verificationModalEvents';
@@ -42,6 +46,9 @@ import { openVerificationModal } from 'components/Verification/verificationModal
 import styled, { css, keyframes } from 'styled-components';
 import { colors, fontSizes, defaultStyles, isRtl } from 'utils/styleUtils';
 import { lighten } from 'polished';
+
+// typings
+import { IParticipationContextType } from 'typings';
 
 interface IVoteComponent {
   active: boolean;
@@ -386,6 +393,7 @@ interface Props {
   size: '1' | '2' | '3';
   unauthenticatedVoteClick?: (voteMode: 'up' | 'down') => void;
   disabledVoteClick?: (disabled_reason?: IdeaVotingDisabledReason) => void;
+  setRef?: (element: HTMLDivElement) => void;
   ariaHidden?: boolean;
   className?: string;
   style: 'border' | 'shadow' | 'compact';
@@ -401,8 +409,9 @@ interface State {
   myVoteId: string | null | undefined;
   myVoteMode: 'up' | 'down' | null | undefined;
   idea: IIdea | null;
-  project: IProject | null;
-  phases: IPhase[] | null | undefined;
+  participationContext: IProjectData | IPhaseData | null;
+  participationContextId: string | null;
+  participationContextType: IParticipationContextType | null;
   loaded: boolean;
 }
 
@@ -432,8 +441,9 @@ class VoteControl extends PureComponent<
       myVoteId: undefined,
       myVoteMode: undefined,
       idea: null,
-      project: null,
-      phases: undefined,
+      participationContext: null,
+      participationContextId: null,
+      participationContextType: null,
       loaded: false,
     };
     this.voting$ = new BehaviorSubject(null);
@@ -557,49 +567,29 @@ class VoteControl extends PureComponent<
             idea.data.attributes.action_descriptor.voting_idea.disabled_reason;
           const votingFutureEnabled =
             idea.data.attributes.action_descriptor.voting_idea.future_enabled;
-          const projectProcessType = get(
-            project,
-            'data.attributes.process_type'
+          const isContinuousProject =
+            project?.data.attributes.process_type === 'continuous';
+          const ideaPhaseIds = idea?.data?.relationships?.phases?.data?.map(
+            (item) => item.id
           );
-          const projectParticipationMethod = get(
-            project,
-            'data.attributes.participation_method'
-          );
-          const pbProject =
-            project &&
-            projectProcessType === 'continuous' &&
-            projectParticipationMethod === 'budgeting'
-              ? project
-              : null;
-          const pbPhase =
-            !pbProject && phases
-              ? phases.find(
-                  (phase) =>
-                    phase.data.attributes.participation_method === 'budgeting'
-                )
-              : null;
-          const pbPhaseIsActive =
-            pbPhase &&
-            pastPresentOrFuture([
-              pbPhase.data.attributes.start_at,
-              pbPhase.data.attributes.end_at,
-            ]) === 'present';
-          const lastPhase = !isNilOrError(phases)
-            ? last(sortBy(phases, [(phase) => phase.data.attributes.end_at]))
+          const ideaPhases = phases
+            ?.filter((phase) => includes(ideaPhaseIds, phase.data.id))
+            .map((phase) => phase.data);
+          const latestRelevantIdeaPhase = ideaPhases
+            ? getLatestRelevantPhase(ideaPhases)
             : null;
-          const lastPhaseHasPassed = lastPhase
-            ? pastPresentOrFuture([
-                lastPhase.data.attributes.start_at,
-                lastPhase.data.attributes.end_at,
-              ]) === 'past'
-            : false;
-          const pbPhaseIsLast =
-            pbPhase && lastPhase && lastPhase.data.id === pbPhase.data.id;
-          const showBudgetControl = !!(
-            pbProject ||
-            (pbPhase &&
-              (pbPhaseIsActive || (lastPhaseHasPassed && pbPhaseIsLast)))
-          );
+          const participationContextType = isContinuousProject
+            ? 'project'
+            : 'phase';
+          const participationContextId = isContinuousProject
+            ? project?.data.id || null
+            : latestRelevantIdeaPhase?.id || null;
+          const participationContext = isContinuousProject
+            ? project?.data || null
+            : latestRelevantIdeaPhase;
+          const isPBContext =
+            participationContext?.attributes.participation_method ===
+            'budgeting';
           const shouldSignIn =
             !votingEnabled &&
             (votingDisabledReason === 'not_signed_in' ||
@@ -611,7 +601,7 @@ class VoteControl extends PureComponent<
           const verifiedButNotPermitted =
             !shouldVerify && votingDisabledReason === 'not_permitted';
           const showVoteControl = !!(
-            !showBudgetControl &&
+            !isPBContext &&
             (votingEnabled ||
               shouldSignIn ||
               cancellingEnabled ||
@@ -624,8 +614,9 @@ class VoteControl extends PureComponent<
 
           this.setState({
             idea,
-            project,
-            phases,
+            participationContext,
+            participationContextId,
+            participationContextType,
             showVoteControl,
             upvotesCount,
             downvotesCount,
@@ -682,8 +673,9 @@ class VoteControl extends PureComponent<
       myVoteMode,
       voting,
       idea,
-      project,
-      phases,
+      participationContext,
+      participationContextId,
+      participationContextType,
     } = this.state;
     const { ideaId, disabledVoteClick } = this.props;
     const votingEnabled =
@@ -705,10 +697,6 @@ class VoteControl extends PureComponent<
         try {
           this.voting$.next(voteMode);
 
-          const currentPhase = getCurrentPhase(
-            phases ? phases.map((phase) => phase.data) : null
-          );
-          const participationContext = project ? project.data : currentPhase;
           const refetchIdeas =
             participationContext?.attributes?.voting_method === 'limited';
 
@@ -787,23 +775,17 @@ class VoteControl extends PureComponent<
           votingDisabledReason === 'not_signed_in' ||
           votingDisabledReason === 'not_permitted')
       ) {
-        const currentPhase = getCurrentPhase(
-          phases ? phases.map((phase) => phase.data) : null
-        );
-        const pcType = phases ? 'phase' : 'project';
-        const pcId = phases ? currentPhase?.id : project?.data?.id;
-
         openSignUpInModal({
           verification: votingDisabledReason === 'not_verified',
           verificationContext: !!(
             votingDisabledReason === 'not_verified' &&
-            pcId &&
-            pcType
+            participationContextId &&
+            participationContextType
           )
             ? {
                 action: 'voting_idea',
-                id: pcId,
-                type: pcType,
+                id: participationContextId,
+                type: participationContextType,
               }
             : undefined,
           action: () => this.vote(voteMode),
@@ -814,6 +796,10 @@ class VoteControl extends PureComponent<
     }
 
     return;
+  };
+
+  setContainerRef = (element: HTMLDivElement) => {
+    this.props?.setRef?.(element);
   };
 
   setUpvoteRef = (element: HTMLButtonElement) => {
@@ -902,6 +888,7 @@ class VoteControl extends PureComponent<
             .filter((item) => item)
             .join(' ')}
           aria-hidden={ariaHidden}
+          ref={this.setContainerRef}
         >
           <Upvote
             active={myVoteMode === 'up'}

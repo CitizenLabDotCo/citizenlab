@@ -1,14 +1,10 @@
 import React from 'react';
-import { withRouter, WithRouterProps } from 'react-router';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 
 // services
-import {
-  IInsightsInputData,
-  deleteInsightsInputCategory,
-} from 'modules/commercial/insights/services/insightsInputs';
+import { IInsightsInputData } from 'modules/commercial/insights/services/insightsInputs';
 
 // hooks
 import useIdea from 'hooks/useIdea';
@@ -19,77 +15,62 @@ import styled from 'styled-components';
 // components
 import { Checkbox } from 'cl2-component-library';
 import T from 'components/T';
-import Tag from 'modules/commercial/insights/admin/components/Tag';
+import Category from 'modules/commercial/insights/admin/components/Category';
 
-// intl
-import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
-import messages from '../../messages';
-
-const TagList = styled.div`
+const CategoryList = styled.div`
   > * {
     margin-right: 8px;
-    margin-bottom: 8px;
   }
 `;
 
-type InputsTableRow = {
+type InputsTableRowProps = {
   input: IInsightsInputData;
   selected: boolean;
-  onSelect: (string) => void;
-} & WithRouterProps &
-  InjectedIntlProps;
+  changeSelected: () => void;
+  onPreview: () => void;
+};
 
 const InputsTableRow = ({
   input,
   selected,
-  onSelect,
-  params: { viewId },
-  intl: { formatMessage },
-}: InputsTableRow) => {
+  changeSelected,
+  onPreview,
+}: InputsTableRowProps) => {
   const idea = useIdea({ ideaId: input.relationships?.source.data.id });
 
   if (isNilOrError(idea)) {
     return null;
   }
 
-  const handleRemoveCategory = (categoryId: string) => () => {
-    const deleteMessage = formatMessage(
-      messages.inputsTableDeleteCategoryConfirmation
-    );
-    if (window.confirm(deleteMessage)) {
-      deleteInsightsInputCategory(viewId, input.id, categoryId);
+  const handleEnterPress = (
+    event: React.KeyboardEvent<HTMLTableRowElement>
+  ) => {
+    if (event.key === 'Enter') {
+      onPreview();
     }
   };
 
-  // TODO: Implement checkbox logic
-  const handleCheckboxChange = () => {
-    onSelect(input.id);
-  };
-
   return (
-    <tr tabIndex={0} data-testid="insightsInputsTableRow">
+    <tr
+      data-testid="insightsInputsTableRow"
+      tabIndex={0}
+      onKeyPress={handleEnterPress}
+    >
       <td>
-        <Checkbox checked={selected} onChange={handleCheckboxChange} />
+        <Checkbox checked={selected} onChange={changeSelected} />
       </td>
-      <td>
-        <T value={idea.attributes.title_multiloc} />
+      <td onClick={onPreview}>
+        <T value={idea.attributes.title_multiloc} maxLength={30} />
       </td>
-      <td>
-        <TagList>
+      <td onClick={onPreview}>
+        <CategoryList>
           {input.relationships?.categories.data.map((category) => (
-            <Tag
-              id={category.id}
-              label={category.id}
-              key={category.id}
-              status="approved"
-              onIconClick={handleRemoveCategory(category.id)}
-            />
+            <Category id={category.id} inputId={input.id} key={category.id} />
           ))}
-        </TagList>
+        </CategoryList>
       </td>
     </tr>
   );
 };
 
-export default injectIntl(withRouter(InputsTableRow));
+export default InputsTableRow;
