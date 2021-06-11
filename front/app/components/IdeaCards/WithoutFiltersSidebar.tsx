@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, lazy, Suspense } from 'react';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -8,7 +8,6 @@ import tracks from './tracks';
 
 // components
 import IdeaCard from 'components/IdeaCard/Compact';
-import IdeasMap from 'components/IdeasMap';
 import { Icon, Spinner } from 'cl2-component-library';
 import TopicFilterDropdown from './TopicFilterDropdown';
 import SelectSort from './SortFilterDropdown';
@@ -16,6 +15,7 @@ import ProjectFilterDropdown from './ProjectFilterDropdown';
 import SearchInput from 'components/UI/SearchInput';
 import Button from 'components/UI/Button';
 import ViewButtons from 'components/PostCardsComponents/ViewButtons';
+const IdeasMap = lazy(() => import('components/IdeasMap'));
 
 // resources
 import GetWindowSize, {
@@ -391,7 +391,7 @@ class WithoutFiltersSidebar extends PureComponent<
       >
         <FiltersArea
           id="e2e-ideas-filters"
-          className={`${showMapView ? 'mapView' : 'listView'}`}
+          className={`ideasContainer ${showMapView ? 'mapView' : 'listView'}`}
         >
           <LeftFilterArea>
             {showViewButtons && smallerThanSmallTablet && (
@@ -503,10 +503,12 @@ class WithoutFiltersSidebar extends PureComponent<
         )}
 
         {showMapView && (
-          <IdeasMap
-            projectIds={queryParameters.projects}
-            phaseId={queryParameters.phase}
-          />
+          <Suspense fallback={false}>
+            <IdeasMap
+              projectIds={queryParameters.projects}
+              phaseId={queryParameters.phase}
+            />
+          </Suspense>
         )}
       </Container>
     );
