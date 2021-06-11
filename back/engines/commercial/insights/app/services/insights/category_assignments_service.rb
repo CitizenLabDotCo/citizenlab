@@ -55,11 +55,9 @@ module Insights
 
       return [] if assignments_attrs.blank?
 
-      result = Insights::CategoryAssignment.upsert_all(
-        assignments_attrs, unique_by: %i[category_id input_id input_type]
-      )
+      result = CategoryAssignment.upsert_all(assignments_attrs, unique_by: %i[category_id input_id input_type])
       touch_views_of(categories)
-      result.pluck(:id)
+      result.pluck('id')
     end
 
     # Adds suggestions in batch. This operation is idempotent.
@@ -80,9 +78,9 @@ module Insights
 
       return [] if assignments_attrs.blank?
 
-      result = Insights::CategoryAssignment.insert_all(assignments_attrs)
+      result = CategoryAssignment.insert_all(assignments_attrs)
       touch_views_of(categories)
-      result.pluck(:id)
+      result.pluck('id')
     end
 
     private
