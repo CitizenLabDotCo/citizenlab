@@ -1,5 +1,12 @@
 import React from 'react';
-import { render, screen, fireEvent, act, within } from 'utils/testUtils/rtl';
+import {
+  render,
+  screen,
+  fireEvent,
+  act,
+  within,
+  waitFor,
+} from 'utils/testUtils/rtl';
 import * as service from 'modules/commercial/insights/services/insightsCategories';
 import clHistory from 'utils/cl-router/history';
 
@@ -62,6 +69,22 @@ describe('Insights Edit', () => {
   it('renders Edit screen', () => {
     render(<InsightsEdit />);
     expect(screen.getByTestId('insightsEdit')).toBeInTheDocument();
+  });
+  it('adds search query to url', () => {
+    const spy = jest.spyOn(clHistory, 'push');
+    render(<InsightsEdit />);
+    fireEvent.change(screen.getByPlaceholderText('Search'), {
+      target: {
+        value: 'search',
+      },
+    });
+
+    waitFor(() => {
+      expect(spy).toHaveBeenCalledWith({
+        pathname: '',
+        search: `?search=search`,
+      });
+    });
   });
   describe('Categories', () => {
     it('renders correct number of categories', () => {

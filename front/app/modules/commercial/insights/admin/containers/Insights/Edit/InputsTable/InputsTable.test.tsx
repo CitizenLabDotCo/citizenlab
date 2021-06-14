@@ -1,6 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent, within } from 'utils/testUtils/rtl';
 import * as service from 'modules/commercial/insights/services/insightsInputs';
+import useInsightsInputs from 'modules/commercial/insights/hooks/useInsightsInputs';
 
 jest.mock('modules/commercial/insights/services/insightsInputs', () => ({
   deleteInsightsInputCategory: jest.fn(),
@@ -164,6 +165,22 @@ describe('Insights Input Table', () => {
       screen.getByText('You have no input assigned to this category yet')
     ).toBeInTheDocument();
   });
-});
+  it('filters table by category', () => {
+    mockLocationData = { pathname: '', query: { category: 'category' } };
 
-// test search query
+    render(<InputsTable />);
+    expect(useInsightsInputs).toHaveBeenCalledWith(viewId, {
+      category: 'category',
+      search: undefined,
+    });
+  });
+  it('filters table by search query', () => {
+    mockLocationData = { pathname: '', query: { search: 'search' } };
+
+    render(<InputsTable />);
+    expect(useInsightsInputs).toHaveBeenCalledWith(viewId, {
+      category: undefined,
+      search: 'search',
+    });
+  });
+});
