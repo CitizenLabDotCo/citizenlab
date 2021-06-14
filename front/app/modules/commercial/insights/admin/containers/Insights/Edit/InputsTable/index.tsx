@@ -38,7 +38,7 @@ const Inputs = styled.div`
 
 const TitleRow = styled.div`
   display: flex;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
   min-height: 43px;
 `;
 

@@ -98,26 +98,23 @@ import {
 interface Props {
   className?: string;
   selectedInputs: Set<string>;
-  // categoryFilter?: string; ?
 }
 
 const Actions = ({
   className,
   selectedInputs,
   params: { viewId },
-  location: { query, pathname },
+  location: { query },
   intl: { formatMessage },
 }: Props & InjectedIntlProps & WithRouterProps) => {
   const categories = useInsightsCategories(viewId);
 
   const [dropdownOpened, setDropdownOpened] = useState(false);
-  // TODO dropdown
-  const toggleDropdown = (event: React.FormEvent) => {
+  const toggleDropdown = () => {
     setDropdownOpened(!dropdownOpened);
   };
 
   const [categorySelection, setCategorySelection] = useState(new Set<string>());
-  // TODO category selection
   const toggleCategory = (categoryId: string) => () => {
     if (categorySelection.has(categoryId)) {
       const newSelection = new Set(categorySelection);
@@ -131,7 +128,6 @@ const Actions = ({
   };
 
   const [processing, setProcessing] = useState(false);
-
   // assigns selectedCategories to selectedInputs
   const assign = async () => {
     if (selectedInputs.size > 0 && categorySelection.size > 0) {
@@ -253,4 +249,4 @@ const Actions = ({
   );
 };
 
-export default withRouter(injectIntl(Actions));
+export default withRouter<Props>(injectIntl<Props & WithRouterProps>(Actions));
