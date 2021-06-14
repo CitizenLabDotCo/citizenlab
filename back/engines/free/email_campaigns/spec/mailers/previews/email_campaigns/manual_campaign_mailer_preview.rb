@@ -9,7 +9,8 @@ module EmailCampaigns
           'en' => '
             <ul>
               <li>
-                <h1>{{ first_name }}</h1>
+                <h1>{{ first_name }} {{ last_name }}</h1>
+                <p> Here\'s your test email</p>
               </li>
             </ul>
           '
@@ -26,6 +27,7 @@ module EmailCampaigns
             <ul>
               <li>
                 <h1>{{ first_name }}</h1>
+                <p> Here\'s your test email</p>
               </li>
             </ul>
           '
