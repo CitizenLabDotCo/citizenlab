@@ -99,7 +99,7 @@ jest.mock('hooks/useLocale', () => jest.fn(() => 'en'));
 
 jest.mock('utils/cl-intl');
 
-let mockLocation: WithRouterProps['location'] = {
+const mockLocation: WithRouterProps['location'] = {
   pathname: 'editViewPagePath',
   query: {},
   search: '',
@@ -171,7 +171,7 @@ describe('Insights Input Table', () => {
     expect(screen.getByTestId('pagination')).toBeInTheDocument();
   });
   it('clicks on pagination navigate to the right page', () => {
-    mockLocation = { ...mockLocation, pathname: 'editViewPagePath' };
+    mockLocationData = { ...mockLocationData, pathname: 'editViewPagePath' };
     mockInputData = { ...mockInputData, currentPage: 1, lastPage: 2 };
     const spy = jest.spyOn(clHistory, 'push');
     render(<InputsTable />);
@@ -182,14 +182,14 @@ describe('Insights Input Table', () => {
     });
   });
   it('loads the page passed in url params', () => {
-    mockLocation = {
-      ...mockLocation,
+    mockLocationData = {
+      ...mockLocationData,
       pathname: 'editViewPagePath',
       query: { pageNumber: 2 },
     };
     const spy = jest.spyOn(hook, 'default');
     render(<InputsTable />);
-    expect(spy).toHaveBeenCalledWith('1', {
+    expect(spy).toHaveBeenCalledWith(viewId, {
       pageNumber: 2,
     });
   });

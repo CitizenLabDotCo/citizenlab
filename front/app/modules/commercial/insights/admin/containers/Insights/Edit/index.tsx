@@ -209,7 +209,7 @@ const EditInsightsView = ({
       clHistory.push({
         pathname,
         search: stringify(
-          { ...query, pageNumber: 1, category: '' },
+          { ...query, pageNumber: 1, category: undefined },
           { addQueryPrefix: true }
         ),
       });
