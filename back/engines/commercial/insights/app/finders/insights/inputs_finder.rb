@@ -15,6 +15,7 @@ module Insights
     def execute
       inputs = view.scope.ideas
       inputs = filter_category(inputs)
+      inputs = sort_by_approval(inputs)
       inputs = search(inputs)
       paginate(inputs)
     end
@@ -34,6 +35,14 @@ module Insights
 
       inputs.left_outer_joins(:insights_category_assignments)
             .where(insights_category_assignments: { category_id: category_id })
+    end
+
+    def sort_by_approval(inputs)
+      return inputs if params[:category].blank?
+      return inputs unless %w[approval -approval].include?(params[:sort])
+
+      order = params[:sort].start_with?('-') ? :asc : :desc
+      inputs.order('insights_category_assignments.approved': order)
     end
 
     def search(inputs)
