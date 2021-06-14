@@ -1,6 +1,6 @@
 import React from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
-import { RenderOnNotificationType } from 'modules/utilComponents';
+import RenderOnNotificationType from 'modules/utilComponents/RenderOnNotificationType';
 import FeatureFlag from 'components/FeatureFlag';
 import Setting from './admin/containers/Setting';
 import RemoveFlagButton from './admin/components/RemoveFlagButton';

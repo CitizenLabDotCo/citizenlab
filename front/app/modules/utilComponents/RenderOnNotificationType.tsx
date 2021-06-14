@@ -7,7 +7,7 @@ export type RenderOnNotificationTypeProps = {
   notificationType: TNotificationType;
 };
 
-export const RenderOnNotificationType = ({
+const RenderOnNotificationType = ({
   children,
   notification,
   notificationType,
@@ -18,3 +18,5 @@ export const RenderOnNotificationType = ({
 
   return null;
 };
+
+export default RenderOnNotificationType;
