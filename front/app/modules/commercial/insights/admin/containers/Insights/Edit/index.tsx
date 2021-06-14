@@ -216,7 +216,10 @@ const EditInsightsView = ({
       }
       clHistory.push({
         pathname,
-        search: stringify({ ...query, category: '' }, { addQueryPrefix: true }),
+        search: stringify(
+          { ...query, pageNumber: 1, category: undefined },
+          { addQueryPrefix: true }
+        ),
       });
       setCategoryMenuOpened(false);
     }
@@ -226,7 +229,7 @@ const EditInsightsView = ({
     clHistory.push({
       pathname,
       search: stringify(
-        { ...query, category: categoryId },
+        { ...query, pageNumber: 1, category: categoryId },
         { addQueryPrefix: true }
       ),
     });

@@ -2,6 +2,7 @@ import React from 'react';
 import { render, screen, fireEvent, within } from 'utils/testUtils/rtl';
 import * as service from 'modules/commercial/insights/services/insightsInputs';
 import useInsightsInputs from 'modules/commercial/insights/hooks/useInsightsInputs';
+import clHistory from 'utils/cl-router/history';
 
 jest.mock('modules/commercial/insights/services/insightsInputs', () => ({
   deleteInsightsInputCategory: jest.fn(),
@@ -11,53 +12,57 @@ import InputsTable from './';
 
 const viewId = '1';
 
-let mockInputData = [
-  {
-    id: '4e9ac1f1-6928-45e9-9ac9-313e86ad636f',
-    type: 'input',
-    relationships: {
-      source: {
-        data: {
-          id: '4e9ac1f1-6928-45e9-9ac9-313e86ad636f',
-          type: 'idea',
+let mockInputData = {
+  currentPage: 1,
+  lastPage: 2,
+  list: [
+    {
+      id: '4e9ac1f1-6928-45e9-9ac9-313e86ad636f',
+      type: 'input',
+      relationships: {
+        source: {
+          data: {
+            id: '4e9ac1f1-6928-45e9-9ac9-313e86ad636f',
+            type: 'idea',
+          },
+        },
+        categories: {
+          data: [
+            {
+              id: '94a649b5-23fe-4d47-9165-9beceef2dcad',
+              type: 'category',
+            },
+            {
+              id: '94a649b5-23fe-4d47-9165-9becedfg45sd',
+              type: 'category',
+            },
+          ],
+        },
+        suggested_categories: {
+          data: [],
         },
       },
-      categories: {
-        data: [
-          {
-            id: '94a649b5-23fe-4d47-9165-9beceef2dcad',
-            type: 'category',
-          },
-          {
-            id: '94a649b5-23fe-4d47-9165-9becedfg45sd',
-            type: 'category',
-          },
-        ],
-      },
-      suggested_categories: {
-        data: [],
-      },
     },
-  },
-  {
-    id: '54438f73-12f4-4b16-84f3-a55bd118de7e',
-    type: 'input',
-    relationships: {
-      source: {
-        data: {
-          id: '54438f73-12f4-4b16-84f3-a55bd118de7e',
-          type: 'idea',
+    {
+      id: '54438f73-12f4-4b16-84f3-a55bd118de7e',
+      type: 'input',
+      relationships: {
+        source: {
+          data: {
+            id: '54438f73-12f4-4b16-84f3-a55bd118de7e',
+            type: 'idea',
+          },
+        },
+        categories: {
+          data: [],
+        },
+        suggested_categories: {
+          data: [],
         },
       },
-      categories: {
-        data: [],
-      },
-      suggested_categories: {
-        data: [],
-      },
     },
-  },
-];
+  ],
+};
 
 const mockIdeaData = {
   id: '2',
@@ -109,6 +114,8 @@ jest.mock('react-router', () => {
   };
 });
 
+jest.mock('utils/cl-router/history');
+
 window.confirm = jest.fn(() => true);
 
 describe('Insights Input Table', () => {
@@ -139,12 +146,44 @@ describe('Insights Input Table', () => {
 
     expect(spy).toHaveBeenCalledWith(
       viewId,
-      mockInputData[0].id,
-      mockInputData[0].relationships.categories.data[0].id
+      mockInputData.list[0].id,
+      mockInputData.list[0].relationships.categories.data[0].id
     );
   });
+  it("doesn't show pagination when there's only one page", () => {
+    mockInputData = { ...mockInputData, currentPage: 1, lastPage: 1 };
+    render(<InputsTable />);
+    expect(screen.queryByTestId('pagination')).toBeNull();
+  });
+  it('shows pagination when there are multiple pages', () => {
+    mockInputData = { ...mockInputData, currentPage: 1, lastPage: 2 };
+    render(<InputsTable />);
+    expect(screen.getByTestId('pagination')).toBeInTheDocument();
+  });
+  it('clicks on pagination navigate to the right page', () => {
+    mockLocationData = { ...mockLocationData, pathname: 'editViewPagePath' };
+    mockInputData = { ...mockInputData, currentPage: 1, lastPage: 2 };
+    const spy = jest.spyOn(clHistory, 'push');
+    render(<InputsTable />);
+    fireEvent.click(within(screen.getByTestId('pagination')).getByText('2'));
+    expect(spy).toHaveBeenCalledWith({
+      pathname: 'editViewPagePath',
+      search: '?pageNumber=2',
+    });
+  });
+  it('loads the page passed in url params', () => {
+    mockLocationData = {
+      ...mockLocationData,
+      pathname: 'editViewPagePath',
+      query: { pageNumber: 2 },
+    };
+    render(<InputsTable />);
+    expect(useInsightsInputs).toHaveBeenCalledWith(viewId, {
+      pageNumber: 2,
+    });
+  });
   it('renders table empty state when there are no inputs', () => {
-    mockInputData = [];
+    mockInputData = { currentPage: 1, lastPage: 1, list: [] };
     render(<InputsTable />);
     expect(
       screen.getByTestId('insightsInputsTableEmptyState')
@@ -153,9 +192,9 @@ describe('Insights Input Table', () => {
       screen.getByText("This project doesn't seem to contain any input.")
     ).toBeInTheDocument();
   });
-  it('renders correct table empty state when are no categories for input', () => {
+  it('renders correct table empty state when are no input for category', () => {
     mockLocationData = { pathname: '', query: { category: 'category' } };
-    mockInputData = [];
+    mockInputData = { currentPage: 1, lastPage: 1, list: [] };
 
     render(<InputsTable />);
     expect(
@@ -172,6 +211,7 @@ describe('Insights Input Table', () => {
     expect(useInsightsInputs).toHaveBeenCalledWith(viewId, {
       category: 'category',
       search: undefined,
+      pageNumber: NaN,
     });
   });
   it('filters table by search query', () => {
@@ -179,8 +219,9 @@ describe('Insights Input Table', () => {
 
     render(<InputsTable />);
     expect(useInsightsInputs).toHaveBeenCalledWith(viewId, {
-      category: undefined,
       search: 'search',
+      category: undefined,
+      pageNumber: NaN,
     });
   });
 });

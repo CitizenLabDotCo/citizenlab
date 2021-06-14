@@ -3,6 +3,7 @@ import { withRouter, WithRouterProps } from 'react-router';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
+import clHistory from 'utils/cl-router/history';
 
 // hooks
 import useInsightsInputs from 'modules/commercial/insights/hooks/useInsightsInputs';
@@ -14,6 +15,7 @@ import InputsTableRow from './InputsTableRow';
 import EmptyState from './EmptyState';
 import SideModal from 'components/UI/SideModal';
 import InputDetails from '../InputDetails';
+import Pagination from 'components/admin/Pagination/Pagination';
 
 // styles
 import styled from 'styled-components';
@@ -23,6 +25,7 @@ import { colors, fontSizes } from 'utils/styleUtils';
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from '../../messages';
+import { stringify } from 'qs';
 
 const StyledTable = styled(Table)`
   thead {
@@ -49,9 +52,13 @@ const StyledTable = styled(Table)`
   }
 `;
 
+const StyledPagination = styled(Pagination)`
+  margin-top: 12px;
+`;
+
 const InputsTable = ({
   params: { viewId },
-  location: { query },
+  location: { pathname, query },
   intl: { formatMessage },
 }: WithRouterProps & InjectedIntlProps) => {
   const [isSideModalOpen, setIsSideModalOpen] = useState(false);
@@ -62,10 +69,20 @@ const InputsTable = ({
   const closeSideModal = () => setIsSideModalOpen(false);
   const openSideModal = () => setIsSideModalOpen(true);
 
-  const inputs = useInsightsInputs(viewId, {
+  const pageNumber = parseInt(query?.pageNumber, 10);
+
+  const { list: inputs, lastPage } = useInsightsInputs(viewId, {
+    pageNumber,
     category: query.category,
     search: query.search,
   });
+
+  const handlePaginationClick = (newPageNumber: number) => {
+    clHistory.push({
+      pathname,
+      search: `?${stringify({ ...query, pageNumber: newPageNumber })}`,
+    });
+  };
 
   // Use callback to keep references for moveUp and moveDown stable
   const moveUp = useCallback(() => {
@@ -101,31 +118,38 @@ const InputsTable = ({
       {inputs.length === 0 ? (
         <EmptyState />
       ) : (
-        <StyledTable>
-          <colgroup>
-            <col span={1} style={{ width: '5%' }} />
-            <col span={1} style={{ width: '30%' }} />
-            <col span={1} style={{ width: '65%' }} />
-          </colgroup>
-          <thead>
-            <tr>
-              <th>
-                <Checkbox checked={false} onChange={handleCheckboxChange} />
-              </th>
-              <th>{formatMessage(messages.inputsTableInputs)}</th>
-              <th>{formatMessage(messages.inputsTableCategories)}</th>
-            </tr>
-          </thead>
-          <tbody>
-            {inputs.map((input) => (
-              <InputsTableRow
-                input={input}
-                key={input.id}
-                onSelect={selectInput(input)}
-              />
-            ))}
-          </tbody>
-        </StyledTable>
+        <>
+          <StyledTable>
+            <colgroup>
+              <col span={1} style={{ width: '5%' }} />
+              <col span={1} style={{ width: '30%' }} />
+              <col span={1} style={{ width: '65%' }} />
+            </colgroup>
+            <thead>
+              <tr>
+                <th>
+                  <Checkbox checked={false} onChange={handleCheckboxChange} />
+                </th>
+                <th>{formatMessage(messages.inputsTableInputs)}</th>
+                <th>{formatMessage(messages.inputsTableCategories)}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {inputs.map((input) => (
+                <InputsTableRow
+                  input={input}
+                  key={input.id}
+                  onSelect={selectInput(input)}
+                />
+              ))}
+            </tbody>
+          </StyledTable>
+          <StyledPagination
+            currentPage={pageNumber || 1}
+            totalPages={lastPage || 1}
+            loadPage={handlePaginationClick}
+          />
+        </>
       )}
       <SideModal opened={isSideModalOpen} close={closeSideModal}>
         {!isNilOrError(selectedInputIndex) && (
