@@ -38,11 +38,13 @@ describe('Rename Insights View', () => {
     render(
       <div id="modal-portal">
         <RenameInsightsView
+          originalViewName="Name"
           insightsViewId={viewId}
           closeRenameModal={closeModal}
         />
       </div>
     );
+    expect(screen.getByRole('textbox')).toHaveAttribute('value', 'Name');
     fireEvent.input(screen.getByRole('textbox'), {
       target: {
         value: viewName,
@@ -50,7 +52,7 @@ describe('Rename Insights View', () => {
     });
 
     act(() => {
-      fireEvent.click(screen.getByText('Rename'));
+      fireEvent.click(screen.getByText('Save'));
     });
 
     expect(spy).toHaveBeenCalledWith(viewId, viewName);

@@ -66,8 +66,20 @@ const mockIdeaData = {
   },
 };
 
+const mockCategoryData = {
+  id: '3612e489-a631-4e7d-8bdb-63be407ea123',
+  type: 'category',
+  attributes: {
+    name: 'Category 1',
+  },
+};
+
 jest.mock('hooks/useIdea', () => {
   return jest.fn(() => mockIdeaData);
+});
+
+jest.mock('modules/commercial/insights/hooks/useInsightsCategory', () => {
+  return jest.fn(() => mockCategoryData);
 });
 
 jest.mock('modules/commercial/insights/hooks/useInsightsInputs', () => {
@@ -82,7 +94,13 @@ jest.mock('react-router', () => {
   return {
     withRouter: (Component) => {
       return (props) => {
-        return <Component {...props} params={{ viewId }} />;
+        return (
+          <Component
+            {...props}
+            params={{ viewId }}
+            location={{ pathname: '' }}
+          />
+        );
       };
     },
   };

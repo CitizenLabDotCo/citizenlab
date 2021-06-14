@@ -8,9 +8,8 @@ import { Icon } from 'cl2-component-library';
 type Status = 'approved' | 'suggested';
 
 export type TagProps = {
-  id: string;
   label: string;
-  onIconClick: (id: string) => void;
+  onIconClick: () => void;
   status: 'approved' | 'suggested';
 };
 
@@ -62,9 +61,11 @@ const TagContent = styled.div`
   align-items: center;
 `;
 
-const Tag = ({ label, onIconClick, id, status }: TagProps) => {
-  const handleIconClick = () => {
-    onIconClick(id);
+const Tag = ({ label, onIconClick, status }: TagProps) => {
+  const handleIconClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    onIconClick();
   };
 
   return (

@@ -23,25 +23,28 @@ const Facebook = ({
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
   const tenant = useAppConfiguration();
+
   const handleClick = () => {
     onClick();
   };
 
   if (!isNilOrError(tenant)) {
-    const appId = tenant.data.attributes.settings.facebook_login?.app_id;
+    const facebookConfig = tenant.data.attributes.settings?.facebook_login;
 
-    return (
-      <FacebookButton
-        appId={appId}
-        url={url}
-        className={className}
-        onClick={handleClick}
-        sharer={true}
-        aria-label={formatMessage(messages.shareOnFacebook)}
-      >
-        {children}
-      </FacebookButton>
-    );
+    if (facebookConfig?.allowed && facebookConfig?.app_id) {
+      return (
+        <FacebookButton
+          appId={facebookConfig.app_id}
+          url={url}
+          className={className}
+          onClick={handleClick}
+          sharer={true}
+          aria-label={formatMessage(messages.shareOnFacebook)}
+        >
+          {children}
+        </FacebookButton>
+      );
+    }
   }
 
   return null;

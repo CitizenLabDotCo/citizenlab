@@ -1,6 +1,6 @@
 import React from 'react';
 import Button from 'components/UI/Button';
-import { IconNames, colors } from 'cl2-component-library';
+import { IconNames } from 'cl2-component-library';
 
 interface Props {
   className?: string;
@@ -21,9 +21,7 @@ const IdeaCTAButton = ({
     <Button
       className={className}
       icon={iconName}
-      iconColor={colors.clIconSecondary}
-      iconHoverColor={colors.clIconSecondary}
-      iconAriaHidden
+      iconAriaHidden={true}
       buttonStyle="white"
       fontWeight="500"
       onClick={onClick}
