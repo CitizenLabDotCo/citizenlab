@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, fireEvent, act, userEvent } from 'utils/testUtils/rtl';
+import { render, screen, fireEvent, userEvent } from 'utils/testUtils/rtl';
 import * as service from 'modules/commercial/insights/services/insightsViews';
 
 jest.mock('modules/commercial/insights/services/insightsViews', () => ({
