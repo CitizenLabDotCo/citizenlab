@@ -9,11 +9,6 @@ import Button from 'components/UI/Button';
 // Hooks
 import useInsightsCategories from 'modules/commercial/insights/hooks/useInsightsCategories';
 
-// Utils
-
-// Events
-// import eventEmitter from 'utils/eventEmitter';
-
 // I18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from '../../messages';
@@ -93,10 +88,9 @@ const DropdownFooterButton = styled(Button)`
 `;
 
 // Typings
-import { CLErrorsJSON } from 'typings';
-import { isCLErrorJSON } from 'utils/errorUtils';
 import { InjectedIntlProps } from 'react-intl';
 import { withRouter, WithRouterProps } from 'react-router';
+import { batchAssignCategories } from 'modules/commercial/insights/services/batchAssignment';
 
 interface Props {
   className?: string;
@@ -112,16 +106,13 @@ const Actions = ({
 }: Props & InjectedIntlProps & WithRouterProps) => {
   const categories = useInsightsCategories(viewId);
 
-  // TODO exports
-  const exportInputs = () => {};
-
   const [dropdownOpened, setDropdownOpened] = useState(false);
   // TODO dropdown
   const toggleDropdown = (event: React.FormEvent) => {
     setDropdownOpened(!dropdownOpened);
   };
 
-  const [categorySelection, setCategorySelection] = useState(new Set());
+  const [categorySelection, setCategorySelection] = useState(new Set<string>());
   // TODO category selection
   const toggleCategory = (categoryId: string) => () => {
     if (categorySelection.has(categoryId)) {
@@ -136,9 +127,24 @@ const Actions = ({
   };
 
   const [processing, setProcessing] = useState(false);
-  // TODO bulk add categories
+
   // assigns selectedCategories to selectedInputs
-  const assign = async () => {};
+  const assign = async () => {
+    if (selectedInputs.size > 0 && categorySelection.size > 0) {
+      try {
+        setProcessing(true);
+        await batchAssignCategories(
+          viewId,
+          [...selectedInputs],
+          [...categorySelection]
+        );
+      } catch {
+        // do nothing
+      }
+      setProcessing(false);
+      setDropdownOpened(false);
+    }
+  };
 
   // TODO
   // unassigns categoryFilter from selectedInputs, with confirmation
