@@ -18,7 +18,7 @@ const useInsightsViews = (viewId: string, inputId: string) => {
     });
 
     return () => subscription.unsubscribe();
-  });
+  }, [viewId, inputId]);
 
   return insightsViews;
 };

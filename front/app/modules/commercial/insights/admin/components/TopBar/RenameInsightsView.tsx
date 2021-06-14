@@ -37,12 +37,6 @@ const Title = styled.h1`
   font-size: ${fontSizes.xxl}px;
 `;
 
-const Description = styled.p`
-  text-align: center;
-  padding-top: 10px;
-  font-size: ${fontSizes.base}px;
-`;
-
 const Form = styled.form`
   margin-top: 40px;
 `;
@@ -60,18 +54,20 @@ const ButtonContainer = styled.div`
 interface RenameInsightsViewProps {
   closeRenameModal: () => void;
   insightsViewId: string;
+  originalViewName: string;
 }
 
 const RenameInsightsView = ({
   closeRenameModal,
   insightsViewId,
+  originalViewName,
   intl: { formatMessage },
 }: RenameInsightsViewProps & InjectedIntlProps) => {
   const locale = useLocale();
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<CLErrors | undefined>();
 
-  const [name, setName] = useState<string | null>();
+  const [name, setName] = useState<string>(originalViewName);
   const onChangeName = (value: string) => {
     setName(value);
     setErrors(undefined);
@@ -97,9 +93,6 @@ const RenameInsightsView = ({
   return (
     <Container data-testid="insights">
       <Title>{formatMessage(messages.renameModalTitle)}</Title>
-      <Description>
-        {formatMessage(messages.renameModalDescription)}
-      </Description>
       <Form>
         <Input
           type="text"

@@ -1,6 +1,7 @@
 import React from 'react';
-import { render, screen, fireEvent, act } from 'utils/testUtils/rtl';
+import { render, screen, fireEvent, act, within } from 'utils/testUtils/rtl';
 import * as service from 'modules/commercial/insights/services/insightsCategories';
+import clHistory from 'utils/cl-router/history';
 
 import InsightsEdit from './';
 
@@ -26,6 +27,7 @@ jest.mock('utils/cl-intl');
 jest.mock('modules/commercial/insights/services/insightsCategories', () => ({
   addInsightsCategory: jest.fn(),
   deleteInsightsCategories: jest.fn(),
+  deleteInsightsCategory: jest.fn(),
 }));
 
 jest.mock('modules/commercial/insights/hooks/useInsightsCategories', () => {
@@ -36,15 +38,25 @@ jest.mock('hooks/useLocale', () => jest.fn(() => 'en'));
 
 const viewId = '1';
 
+let mockLocationData = { pathname: '', query: {} };
+
 jest.mock('react-router', () => {
   return {
     withRouter: (Component) => {
       return (props) => {
-        return <Component {...props} params={{ viewId }} />;
+        return (
+          <Component
+            {...props}
+            params={{ viewId }}
+            location={mockLocationData}
+          />
+        );
       };
     },
   };
 });
+
+window.confirm = jest.fn(() => true);
 
 describe('Insights Edit', () => {
   it('renders Edit screen', () => {
@@ -56,6 +68,50 @@ describe('Insights Edit', () => {
       render(<InsightsEdit />);
       expect(screen.getAllByTestId('insightsCategory')).toHaveLength(2);
     });
+    it('selects category correctly', () => {
+      const spy = jest.spyOn(clHistory, 'push');
+      render(<InsightsEdit />);
+      fireEvent.click(screen.getByText(mockData[0].attributes.name));
+      expect(spy).toHaveBeenCalledWith({
+        pathname: '',
+        search: `?category=${mockData[0].id}`,
+      });
+    });
+    it('shows selected category correctly', () => {
+      mockLocationData = { pathname: '', query: { category: mockData[0].id } };
+      render(<InsightsEdit />);
+      expect(
+        within(screen.getByTestId('insightsInputsHeader')).getByText(
+          mockData[0].attributes.name
+        )
+      ).toBeInTheDocument();
+    });
+
+    it('deletes category correctly', async () => {
+      mockLocationData = { pathname: '', query: { category: mockData[0].id } };
+      render(<InsightsEdit />);
+      fireEvent.click(
+        within(screen.getByTestId('insightsInputsHeader')).getByRole('button')
+      );
+      await act(async () => {
+        fireEvent.click(screen.getByText('Delete category'));
+      });
+      expect(service.deleteInsightsCategory).toHaveBeenCalledWith(
+        viewId,
+        mockData[0].id
+      );
+    });
+
+    it('selects all input correctly', () => {
+      const spy = jest.spyOn(clHistory, 'push');
+      render(<InsightsEdit />);
+      fireEvent.click(screen.getAllByText('All input')[0]);
+      expect(spy).toHaveBeenCalledWith({
+        pathname: '',
+        search: `?category=`,
+      });
+    });
+
     it('renders Infobox when no categories are available', () => {
       mockData = [];
       render(<InsightsEdit />);
@@ -63,7 +119,7 @@ describe('Insights Edit', () => {
     });
     it('adds category with correct view id and name', async () => {
       const categoryName = 'New category';
-      const spy = jest.spyOn(service, 'addInsightsCategory');
+
       render(<InsightsEdit />);
 
       fireEvent.input(screen.getByPlaceholderText('Add category'), {
@@ -76,7 +132,10 @@ describe('Insights Edit', () => {
         fireEvent.click(screen.getByText('+'));
       });
 
-      expect(spy).toHaveBeenCalledWith(viewId, categoryName);
+      expect(service.addInsightsCategory).toHaveBeenCalledWith(
+        viewId,
+        categoryName
+      );
     });
     it('resets categories', async () => {
       const spy = jest.spyOn(service, 'deleteInsightsCategories');

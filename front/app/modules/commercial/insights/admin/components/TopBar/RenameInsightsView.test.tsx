@@ -36,13 +36,13 @@ describe('Rename Insights View', () => {
     const spy = jest.spyOn(service, 'updateInsightsView');
     const closeModal = () => jest.fn();
     render(
-      <div id="modal-portal">
-        <RenameInsightsView
-          insightsViewId={viewId}
-          closeRenameModal={closeModal}
-        />
-      </div>
+      <RenameInsightsView
+        originalViewName="Name"
+        insightsViewId={viewId}
+        closeRenameModal={closeModal}
+      />
     );
+    expect(screen.getByRole('textbox')).toHaveAttribute('value', 'Name');
     fireEvent.input(screen.getByRole('textbox'), {
       target: {
         value: viewName,
@@ -50,7 +50,7 @@ describe('Rename Insights View', () => {
     });
 
     act(() => {
-      fireEvent.click(screen.getByText('Rename'));
+      fireEvent.click(screen.getByText('Save'));
     });
 
     expect(spy).toHaveBeenCalledWith(viewId, viewName);

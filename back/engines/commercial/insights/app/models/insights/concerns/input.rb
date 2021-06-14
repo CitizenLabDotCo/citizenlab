@@ -13,6 +13,10 @@ module Insights
           )
         end
       end
+
+      def assignments(view)
+        insights_category_assignments.where(view: view)
+      end
     end
   end
 end

@@ -17,7 +17,7 @@ const useInsightsCategories = (viewId: string) => {
     );
 
     return () => subscription.unsubscribe();
-  });
+  }, [viewId]);
 
   return insightsCategories;
 };

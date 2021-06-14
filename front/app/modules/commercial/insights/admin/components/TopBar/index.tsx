@@ -138,10 +138,11 @@ const TopBar = ({
         <RenameInsightsView
           closeRenameModal={closeRenameModal}
           insightsViewId={viewId}
+          originalViewName={view.attributes.name}
         />
       </Modal>
     </Container>
   );
 };
 
-export default injectIntl<{}>(withRouter(TopBar));
+export default withRouter(injectIntl(TopBar));

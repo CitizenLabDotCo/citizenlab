@@ -1,21 +1,32 @@
 import React, { useState } from 'react';
 import { withRouter, WithRouterProps } from 'react-router';
+import { stringify } from 'qs';
 
 // styles
 import styled from 'styled-components';
 import { darken } from 'polished';
 
 // components
-import { Button, Input, Spinner } from 'cl2-component-library';
+import {
+  Button,
+  Input,
+  Spinner,
+  IconTooltip,
+  Dropdown,
+  DropdownListItem,
+} from 'cl2-component-library';
 import Divider from 'components/admin/Divider';
+import Modal from 'components/UI/Modal';
 import TopBar, { topBarHeight } from '../../../components/TopBar';
 import Error from 'components/UI/Error';
 import InputsTable from './InputsTable';
+import RenameCategory from './RenameCategory';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { colors, fontSizes, stylingConsts, media } from 'utils/styleUtils';
+import clHistory from 'utils/cl-router/history';
 
 // hooks
 import useLocale from 'hooks/useLocale';
@@ -32,6 +43,7 @@ import { CLErrors } from 'typings';
 import {
   addInsightsCategory,
   deleteInsightsCategories,
+  deleteInsightsCategory,
 } from 'modules/commercial/insights/services/insightsCategories';
 
 const Container = styled.div`
@@ -69,7 +81,7 @@ const DetectButton = styled(Button)`
 `;
 
 const ResetButton = styled(Button)`
-  margin-bottom: 28px;
+  margin-bottom: 20px;
 `;
 
 const CategoriesLabel = styled.p`
@@ -121,21 +133,51 @@ const StyledPlus = styled.div`
   text-align: center;
 `;
 
+const ButtonsContainer = styled.div`
+  margin-top: 20px;
+  margin-bottom: 20px;
+`;
+
+const StyledHeader = styled.h2`
+  display: flex;
+  align-items: center;
+  color: ${colors.adminTextColor};
+  font-size: ${fontSizes.large}px;
+  button {
+    margin-left: 20px;
+  }
+`;
+
 const EditInsightsView = ({
   intl: { formatMessage },
   params: { viewId },
+  location: { query, pathname },
 }: InjectedIntlProps & WithRouterProps) => {
   const locale = useLocale();
   const [loadingAdd, setLoadingAdd] = useState(false);
   const [loadingReset, setLoadingReset] = useState(false);
   const [errors, setErrors] = useState<CLErrors | undefined>();
+
   const categories = useInsightsCategories(viewId);
   const [name, setName] = useState<string | null>();
-  const [selectedCategory, setSelectedCategory] = useState('');
-
   const onChangeName = (value: string) => {
     setName(value);
     setErrors(undefined);
+  };
+  const [renameCategoryModalOpened, setRenameCategoryModalOpened] = useState(
+    false
+  );
+  const [isCategoryMenuOpened, setCategoryMenuOpened] = useState(false);
+
+  const closeCategoryRenameModal = () => setRenameCategoryModalOpened(false);
+  const openCategoryRenameModal = () => setRenameCategoryModalOpened(true);
+
+  const toggleCategoryMenu = () => {
+    setCategoryMenuOpened(!isCategoryMenuOpened);
+  };
+
+  const closeCategoryMenu = () => {
+    setCategoryMenuOpened(false);
   };
 
   if (isNilOrError(locale) || isNilOrError(categories)) {
@@ -155,15 +197,48 @@ const EditInsightsView = ({
     }
   };
 
-  const selectCategory = (categoryId: string) => () =>
-    setSelectedCategory(categoryId);
+  const handleDeleteCategory = async () => {
+    {
+      const deleteMessage = formatMessage(messages.deleteCategoryConfirmation);
+      if (window.confirm(deleteMessage)) {
+        try {
+          await deleteInsightsCategory(viewId, query.category);
+        } catch {
+          // Do nothing
+        }
+      }
+      clHistory.push({
+        pathname,
+        search: stringify({ ...query, category: '' }, { addQueryPrefix: true }),
+      });
+      setCategoryMenuOpened(false);
+    }
+  };
+
+  const selectCategory = (categoryId: string) => () => {
+    clHistory.push({
+      pathname,
+      search: stringify(
+        { ...query, category: categoryId },
+        { addQueryPrefix: true }
+      ),
+    });
+  };
+
+  const selectedCategory = categories?.find(
+    (category) => category.id === query.category
+  );
 
   const handleResetCategories = async () => {
+    const deleteMessage = formatMessage(messages.resetCategoriesConfimation);
+
     setLoadingReset(true);
-    try {
-      await deleteInsightsCategories(viewId);
-    } catch {
-      // Do nothing
+    if (window.confirm(deleteMessage)) {
+      try {
+        await deleteInsightsCategories(viewId);
+      } catch {
+        // Do nothing
+      }
     }
     setLoadingReset(false);
   };
@@ -192,8 +267,23 @@ const EditInsightsView = ({
               formatMessage(messages.resetCategories)
             )}
           </ResetButton>
-
           <Divider />
+          <ButtonsContainer>
+            <CategoryButton
+              locale={locale}
+              bgColor={
+                !query.category
+                  ? darken(0.05, colors.lightGreyishBlue)
+                  : 'transparent'
+              }
+              textColor={colors.label}
+              textHoverColor={colors.adminTextColor}
+              bgHoverColor={darken(0.05, colors.lightGreyishBlue)}
+              onClick={selectCategory('')}
+            >
+              {formatMessage(messages.allInput)}
+            </CategoryButton>
+          </ButtonsContainer>
           <CategoriesLabel>
             {formatMessage(messages.categories)}
           </CategoriesLabel>
@@ -243,7 +333,7 @@ const EditInsightsView = ({
                   <CategoryButton
                     locale={locale}
                     bgColor={
-                      category.id === selectedCategory
+                      category.id === query.category
                         ? darken(0.05, colors.lightGreyishBlue)
                         : 'transparent'
                     }
@@ -260,8 +350,61 @@ const EditInsightsView = ({
           </CategoriesList>
         </Categories>
         <Inputs>
+          <StyledHeader data-testid="insightsInputsHeader">
+            {selectedCategory ? (
+              <>
+                {selectedCategory.attributes.name}
+                <Button
+                  icon="more-options"
+                  locale={locale}
+                  iconColor={colors.label}
+                  iconHoverColor={colors.label}
+                  boxShadow="none"
+                  boxShadowHover="none"
+                  bgColor="transparent"
+                  bgHoverColor="transparent"
+                  padding="0px 20px"
+                  onClick={toggleCategoryMenu}
+                />
+              </>
+            ) : (
+              <>
+                {formatMessage(messages.allInput)}
+                <IconTooltip
+                  content={formatMessage(messages.allInputTooltip)}
+                />
+              </>
+            )}
+          </StyledHeader>
+          <Dropdown
+            opened={isCategoryMenuOpened}
+            onClickOutside={closeCategoryMenu}
+            className="dropdown"
+            content={
+              <>
+                <DropdownListItem onClick={openCategoryRenameModal}>
+                  {formatMessage(messages.editCategoryName)}
+                </DropdownListItem>
+                <DropdownListItem onClick={handleDeleteCategory}>
+                  {formatMessage(messages.deleteCategory)}
+                </DropdownListItem>
+              </>
+            }
+          />
+          <Divider />
           <InputsTable />
         </Inputs>
+        <Modal
+          opened={renameCategoryModalOpened}
+          close={closeCategoryRenameModal}
+        >
+          {selectedCategory && (
+            <RenameCategory
+              closeRenameModal={closeCategoryRenameModal}
+              originalCategoryName={selectedCategory.attributes.name}
+            />
+          )}
+        </Modal>
       </Container>
     </div>
   );
