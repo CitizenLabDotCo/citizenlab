@@ -25,6 +25,13 @@ Insights::Engine.routes.draw do
               delete :index, on: :collection, action: :delete_suggestions
             end
           end
+
+          nested do
+            scope '/batch' do
+              post :assign_categories, controller: 'batch_assignments'
+              post :remove_categories, controller: 'batch_assignments'
+            end
+          end
         end
       end
     end

@@ -30,6 +30,11 @@ module ProjectFolders
         )
       end
 
+      ::NotificationToSerializerMapper.add_to_map(
+        ::ProjectFolders::Notifications::ProjectFolderModerationRightsReceived =>
+          ::ProjectFolders::WebApi::V1::Notifications::ProjectFolderModerationRightsReceivedSerializer
+      )
+
       # Adding project folders to the sitemap.
       if defined? ::Seo::ApplicationController
         ::Seo::ApplicationController.outlet 'seo.sitemap' do |locals|

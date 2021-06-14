@@ -28,7 +28,10 @@ const doubleBounce = keyframes`
 `;
 
 const Container = styled.div`
-  position: relative;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
   animation: ${css`
     ${doubleBounce} 500ms linear
   `};

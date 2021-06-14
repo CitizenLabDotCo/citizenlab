@@ -68,7 +68,7 @@ describe('Insights Edit', () => {
       expect(screen.getAllByTestId('insightsCategory')).toHaveLength(2);
     });
     it('selects category correctly', () => {
-      const spy = jest.spyOn(clHistory, 'replace');
+      const spy = jest.spyOn(clHistory, 'push');
       render(<InsightsEdit />);
       fireEvent.click(screen.getByText(mockData[0].attributes.name));
       expect(spy).toHaveBeenCalledWith({
@@ -102,7 +102,7 @@ describe('Insights Edit', () => {
     });
 
     it('selects all input correctly', () => {
-      const spy = jest.spyOn(clHistory, 'replace');
+      const spy = jest.spyOn(clHistory, 'push');
       render(<InsightsEdit />);
       fireEvent.click(screen.getAllByText('All input')[0]);
       expect(spy).toHaveBeenCalledWith({

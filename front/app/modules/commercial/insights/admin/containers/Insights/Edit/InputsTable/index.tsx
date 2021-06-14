@@ -174,19 +174,17 @@ const InputsTable = ({
       )}
       <SideModal opened={isSideModalOpen} close={closeSideModal}>
         {!isNilOrError(selectedInputIndex) && (
-          <>
-            <InputDetails
-              selectedInput={inputs[selectedInputIndex]}
-              moveUp={moveUp}
-              moveDown={moveDown}
-              isMoveUpDisabled={selectedInputIndex === 0}
-              isMoveDownDisabled={selectedInputIndex === inputs.length - 1}
-            />
-          </>
+          <InputDetails
+            selectedInput={inputs[selectedInputIndex]}
+            moveUp={moveUp}
+            moveDown={moveDown}
+            isMoveUpDisabled={selectedInputIndex === 0}
+            isMoveDownDisabled={selectedInputIndex === inputs.length - 1}
+          />
         )}
       </SideModal>
     </div>
   );
 };
 
-export default injectIntl<{}>(withRouter(InputsTable));
+export default withRouter(injectIntl(InputsTable));
