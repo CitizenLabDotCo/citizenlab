@@ -18,7 +18,7 @@ export async function batchAssignCategories(
   categories: string[]
 ) {
   const res = await streams.add(
-    `${API_PATH}/${getInsightsBatchEndpoint(insightsViewId)}/assign_categories`,
+    `${API_PATH}/${getInsightsBatchEndpoint(insightsViewId)}assign_categories`,
     {
       inputs,
       categories,
@@ -27,18 +27,23 @@ export async function batchAssignCategories(
   streams.fetchAllWith({
     partialApiEndpoint: [`insights/views/${insightsViewId}/inputs`],
   });
+  return res;
 }
 
-export function batchUnassignCategories(
+export async function batchUnassignCategories(
   insightsViewId: string,
   inputs: string[],
   categories: string[]
 ) {
-  return streams.add(
-    `${API_PATH}/${getInsightsBatchEndpoint(insightsViewId)}/remove_categories`,
+  const res = await streams.add(
+    `${API_PATH}/${getInsightsBatchEndpoint(insightsViewId)}remove_categories`,
     {
       inputs,
       categories,
     }
   );
+  streams.fetchAllWith({
+    partialApiEndpoint: [`insights/views/${insightsViewId}/inputs`],
+  });
+  return res;
 }

@@ -90,7 +90,10 @@ const DropdownFooterButton = styled(Button)`
 // Typings
 import { InjectedIntlProps } from 'react-intl';
 import { withRouter, WithRouterProps } from 'react-router';
-import { batchAssignCategories } from 'modules/commercial/insights/services/batchAssignment';
+import {
+  batchAssignCategories,
+  batchUnassignCategories,
+} from 'modules/commercial/insights/services/batchAssignment';
 
 interface Props {
   className?: string;
@@ -102,6 +105,7 @@ const Actions = ({
   className,
   selectedInputs,
   params: { viewId },
+  location: { query, pathname },
   intl: { formatMessage },
 }: Props & InjectedIntlProps & WithRouterProps) => {
   const categories = useInsightsCategories(viewId);
@@ -146,13 +150,37 @@ const Actions = ({
     }
   };
 
-  // TODO
-  // unassigns categoryFilter from selectedInputs, with confirmation
-  const unassign = () => {};
-
   if (isNilOrError(categories)) {
     return null;
   }
+
+  const selectedCategory = categories?.find(
+    (category) => category.id === query.category
+  );
+
+  // unassigns categoryFilter from selectedInputs, with confirmation
+  const unassign = async () => {
+    if (selectedInputs.size > 0 && selectedCategory) {
+      const deleteMessage = formatMessage(messages.deleteFromCategories, {
+        categoryName: selectedCategory.attributes.name,
+        selectedCount: selectedInputs.size,
+      });
+      if (window.confirm(deleteMessage)) {
+        try {
+          setProcessing(true);
+          await batchUnassignCategories(
+            viewId,
+            [...selectedInputs],
+            [selectedCategory.id]
+          );
+        } catch {
+          // do nothing
+        }
+        setProcessing(false);
+        setDropdownOpened(false);
+      }
+    }
+  };
 
   return (
     <ActionButtons className={className}>
@@ -205,7 +233,7 @@ const Actions = ({
               />
             </ActionButtonWrapper>
           )}
-          {true && (
+          {selectedCategory && (
             <Button
               onClick={unassign}
               className="hasLeftMargin"
