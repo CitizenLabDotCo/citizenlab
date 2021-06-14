@@ -1,27 +1,18 @@
 import L from 'leaflet';
 import { compact } from 'lodash-es';
 import {
-  isFunction,
-  isString,
-  isOrReturnsString,
-  isObject,
-} from 'utils/helperUtils';
-
-import {
   DEFAULT_MARKER_ICON_SIZE,
   DEFAULT_MARKER_ANCHOR_SIZE,
   DEFAULT_MARKER_ICON,
 } from '../config';
-
 import {
-  Point,
-  IMarkerStringOrObjectOrFunctionForMap,
-  MarkerIconProps,
-} from '../typings';
+  setLeafletMapHoveredMarker,
+  setLeafletMapSelectedMarker,
+} from '../events';
 
-import { refitBounds } from './setup';
+import { Point, MarkerIconProps } from '../typings';
 
-export function markerIcon({ url, iconSize, iconAnchor }: MarkerIconProps) {
+export function getMarkerIcon({ url, iconSize, iconAnchor }: MarkerIconProps) {
   const size = iconSize || DEFAULT_MARKER_ICON_SIZE;
   const anchor = iconAnchor || DEFAULT_MARKER_ANCHOR_SIZE;
 
@@ -33,40 +24,53 @@ export function markerIcon({ url, iconSize, iconAnchor }: MarkerIconProps) {
 }
 
 export function addMarkerToMap(
-  map: L.Map,
+  map: L.Map | null | undefined,
   latlng: [number, number],
-  markerStringOrOptionsOrFunction?: IMarkerStringOrObjectOrFunctionForMap,
-  options = {}
-): L.Marker {
-  let markerIconString: L.Icon = DEFAULT_MARKER_ICON;
-
-  if (isString(markerStringOrOptionsOrFunction)) {
-    markerIconString = markerIcon({ url: markerStringOrOptionsOrFunction });
-  } else if (isOrReturnsString(markerStringOrOptionsOrFunction, latlng)) {
-    markerIconString = markerIcon({
-      url: markerStringOrOptionsOrFunction(latlng),
-    });
-  } else if (isFunction(markerStringOrOptionsOrFunction)) {
-    markerIconString = markerIcon(markerStringOrOptionsOrFunction(latlng));
-  } else if (isObject(markerStringOrOptionsOrFunction)) {
-    markerIconString = markerIcon(markerStringOrOptionsOrFunction);
-  }
+  options = {},
+  noMarkerClustering?: boolean
+) {
+  const markerIcon = getMarkerIcon({ url: DEFAULT_MARKER_ICON });
 
   const marker = L.marker(latlng, {
     ...options,
-    icon: markerIconString,
+    keyboard: true,
+    icon: markerIcon,
   });
 
-  marker.addTo(map);
+  marker.on('mouseover', (event: L.LeafletEvent) => {
+    setLeafletMapHoveredMarker(event.target.options['id']);
+  });
+
+  marker.on('mouseout', (_event: L.LeafletEvent) => {
+    setLeafletMapHoveredMarker(null);
+  });
+
+  // only add marker directly to the map when clustering is turned off
+  // otherwise let this be handled by addMarkerClusterGroup()
+  if (map && noMarkerClustering) {
+    marker.on('keypress', (event: L.LeafletKeyboardEvent) => {
+      if (
+        event.originalEvent?.code === 'Enter' ||
+        event.originalEvent?.code === 'Space'
+      ) {
+        setLeafletMapSelectedMarker(event.target.options['id']);
+      }
+    });
+
+    marker.on('click', (event: L.LeafletMouseEvent) => {
+      setLeafletMapSelectedMarker(event.target.options['id']);
+    });
+
+    marker.addTo(map);
+  }
 
   return marker;
 }
 
 export function addMarkersToMap(
-  map: L.Map,
+  map: L.Map | null | undefined,
   points: Point[] = [],
-  markerStringOrOptionsOrFunction?: IMarkerStringOrObjectOrFunctionForMap,
-  options?: any
+  noMarkerClustering?: boolean
 ) {
   const bounds: [number, number][] = [];
 
@@ -84,41 +88,47 @@ export function addMarkersToMap(
 
     bounds.push(latlng);
 
-    return addMarkerToMap(
-      map,
-      latlng,
-      markerStringOrOptionsOrFunction,
-      markerOptions
-    );
+    return addMarkerToMap(map, latlng, markerOptions, noMarkerClustering);
   });
-
-  if (options?.fitBounds && bounds && bounds.length > 0) {
-    refitBounds(map, L.latLngBounds(bounds), options);
-  }
 
   return markers;
 }
 
-export function addClusterGroup(map, markers, { onClick }) {
-  const newMarkerClusterGroup = L.markerClusterGroup({
-    showCoverageOnHover: false,
-    spiderfyDistanceMultiplier: 2,
-    iconCreateFunction: (cluster) => {
-      return L.divIcon({
-        html: `<span>${cluster.getChildCount()}</span>`,
-        className: 'marker-cluster-custom',
-        iconSize: L.point(40, 40, true),
-      });
-    },
-  });
-  newMarkerClusterGroup.addLayers(markers);
-  map.addLayer(newMarkerClusterGroup);
-
-  if (onClick) {
-    newMarkerClusterGroup.on('click', (event) => {
-      onClick(event.layer.options.id, event.layer.options.data);
+export function addMarkerClusterGroup(
+  map: L.Map | null | undefined,
+  markers: L.Marker[] | null,
+  { onClick }: { onClick: (id: string, data: any) => void }
+) {
+  if (map && markers) {
+    const markerClusterGroup = L.markerClusterGroup({
+      showCoverageOnHover: false,
+      spiderfyDistanceMultiplier: 2,
+      iconCreateFunction: (cluster) => {
+        return L.divIcon({
+          html: `<span>${cluster.getChildCount()}</span>`,
+          className: 'marker-cluster-custom',
+          iconSize: L.point(38, 38, true),
+        });
+      },
     });
+    markerClusterGroup.addLayers(markers);
+    map.addLayer(markerClusterGroup);
+
+    markerClusterGroup.on('keypress', (event: L.LeafletKeyboardEvent) => {
+      if (
+        event.originalEvent?.code === 'Enter' ||
+        event.originalEvent?.code === 'Space'
+      ) {
+        onClick?.(event.layer.options.id, event.layer.options.data);
+      }
+    });
+
+    markerClusterGroup.on('click', (event: L.LeafletMouseEvent) => {
+      onClick?.(event.layer.options.id, event.layer.options.data);
+    });
+
+    return markerClusterGroup;
   }
 
-  return newMarkerClusterGroup;
+  return null;
 }

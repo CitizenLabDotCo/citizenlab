@@ -65,7 +65,7 @@ const configuration: ModuleConfiguration = {
             s.async = true;
             s.src = `https://widget.intercom.io/widget/'${INTERCOM_APP_ID}`;
             const x = d.getElementsByTagName('script')[0];
-            x.parentNode?.insertBefore(s, x);
+            x?.parentNode?.insertBefore(s, x);
           };
           if (document.readyState === 'complete') {
             l();

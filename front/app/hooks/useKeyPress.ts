@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 
 // Hook
-const useKeyPress = (targetKey) => {
+const useKeyPress = (targetKey: string) => {
   // State for keeping track of whether key is pressed
   const [keyPressed, setKeyPressed] = useState(false);
 

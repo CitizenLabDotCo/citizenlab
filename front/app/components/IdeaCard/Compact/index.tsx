@@ -162,7 +162,6 @@ const CompactIdeaCard = memo<Props & InjectedLocalized>(
         return (
           <FooterWithBudgetControl
             idea={idea}
-            openIdea={onCardClick}
             participationContextId={participationContextId}
             participationContextType={participationContextType}
           />

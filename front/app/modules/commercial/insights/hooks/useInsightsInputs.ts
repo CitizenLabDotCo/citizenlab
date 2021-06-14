@@ -7,10 +7,11 @@ import {
 
 const defaultPageSize = 20;
 
-interface Options {
+type QueryParameters = {
+  category: string;
   pageSize: number;
   pageNumber: number;
-}
+};
 
 export interface IUseInpightsInputsOutput {
   list: IInsightsInputData[] | undefined | null;
@@ -19,12 +20,16 @@ export interface IUseInpightsInputsOutput {
   currentPage: number;
 }
 
-const useInsightsInputs = (viewId: string, options?: Partial<Options>) => {
+const useInsightsInputs = (
+  viewId: string,
+  queryParameters?: Partial<QueryParameters>
+) => {
   const [insightsInputs, setInsightsInputs] = useState<
     IInsightsInputData[] | undefined | null | Error
   >(undefined);
 
-  const pageNumber = options?.pageNumber;
+  const pageNumber = queryParameters?.pageNumber;
+  const category = queryParameters?.category;
 
   const [lastPage, setLastPage] = useState<number | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
@@ -33,8 +38,9 @@ const useInsightsInputs = (viewId: string, options?: Partial<Options>) => {
     setLoading(true);
     const subscription = insightsInputsStream(viewId, {
       queryParameters: {
-        'page[number]': options?.pageNumber || 1,
-        'page[size]': options?.pageSize || defaultPageSize,
+        category,
+        'page[number]': queryParameters?.pageNumber || 1,
+        'page[size]': queryParameters?.pageSize || defaultPageSize,
       },
     }).observable.subscribe((insightsInputs) => {
       setInsightsInputs(insightsInputs.data);
@@ -43,7 +49,7 @@ const useInsightsInputs = (viewId: string, options?: Partial<Options>) => {
     });
 
     return () => subscription.unsubscribe();
-  }, [pageNumber]);
+  }, [viewId, pageNumber, category]);
   return {
     lastPage,
     loading,

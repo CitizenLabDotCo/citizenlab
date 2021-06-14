@@ -1,4 +1,6 @@
 import React, { PureComponent } from 'react';
+import Outlet from 'components/Outlet';
+
 import AdminRightsReceivedNotification from '../AdminRightsReceivedNotification';
 import CommentDeletedByAdminNotification from '../CommentDeletedByAdminNotification';
 import CommentMarkedAsSpamNotification from '../CommentMarkedAsSpamNotification';
@@ -289,7 +291,12 @@ export default class Notification extends PureComponent<Props> {
           />
         );
       default:
-        return null;
+        return (
+          <Outlet
+            id="app.components.NotificationMenu.Notification"
+            notification={notification as TNotificationData}
+          />
+        );
     }
   }
 }

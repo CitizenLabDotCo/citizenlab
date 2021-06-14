@@ -26,7 +26,7 @@ const FileDownloadLink = styled.a`
   }
 
   ${media.smallerThanMinTablet`
-    margin-right: auto;
+    margin-right: 0;
   `}
 `;
 

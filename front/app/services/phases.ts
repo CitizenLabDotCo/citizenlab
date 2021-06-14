@@ -204,7 +204,7 @@ export function getLastPastPhase(
   return null;
 }
 
-function getLatestRelevantPhase(phases: IPhaseData[]) {
+export function getLatestRelevantPhase(phases: IPhaseData[]) {
   const currentPhase = getCurrentPhase(phases);
   const firstPhase = getFirstPhase(phases);
   const lastPhase = getLastPhase(phases);

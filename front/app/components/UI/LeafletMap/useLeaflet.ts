@@ -1,6 +1,29 @@
-import { useEffect, useState, useMemo } from 'react';
-import { isEmpty } from 'lodash-es';
-import usePrevious from 'hooks/usePrevious';
+import { useEffect, useState } from 'react';
+import {
+  distinctUntilChanged,
+  debounceTime,
+  startWith,
+  pairwise,
+} from 'rxjs/operators';
+import { combineLatest } from 'rxjs';
+import { isEqual } from 'lodash-es';
+import {
+  DEFAULT_MARKER_ICON,
+  DEFAULT_MARKER_HOVER_ICON,
+  DEFAULT_MARKER_ACTIVE_ICON,
+} from './config';
+
+// events
+import {
+  setLeafletMapSelectedMarker,
+  setLeafletMapClicked,
+  setLeafletMapCenter,
+  setLeafletMapZoom,
+  leafletMapHoveredMarker$,
+  leafletMapSelectedMarker$,
+  leafletMapCenter$,
+  leafletMapZoom$,
+} from './events';
 
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
@@ -10,22 +33,14 @@ import marker from 'leaflet/dist/images/marker-icon.png';
 import marker2x from 'leaflet/dist/images/marker-icon-2x.png';
 import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 
-import {
-  broadcastMapCenter,
-  broadcastMapZoom,
-  setMapLatLngZoom$,
-} from './events';
-
 import service from './services';
 
 import {
   Point,
   IMarkerStringOrObjectOrFunctionForLayer,
-  IMarkerStringOrObjectOrFunctionForMap,
   IOverlayStringOrObjectOrFunctionForLayer,
   ITooltipStringOrObjectOrFunctionForLayer,
   IPopupStringOrObjectOrFunctionForLayer,
-  IOnMapClickHandler,
   GeoJSONLayer,
 } from './typings';
 
@@ -38,20 +53,20 @@ L.Icon.Default.mergeOptions({
 });
 
 export interface ILeafletMapConfig {
-  center?: L.LatLngExpression;
+  center?: L.LatLngTuple;
   zoom?: number;
   tileProvider?: string | null;
   tileOptions?: object;
-  fitBounds?: boolean;
-  onClick?: IOnMapClickHandler;
-  onMarkerClick?: (id: string, data: string) => void;
+  zoomControlPosition?: 'topleft' | 'topright' | 'bottomleft' | 'bottomright';
+  layersControlPosition?: 'topleft' | 'topright' | 'bottomleft' | 'bottomright';
   geoJsonLayers?: GeoJSONLayer[];
   points?: Point[];
-  marker?: IMarkerStringOrObjectOrFunctionForMap;
+  noMarkerClustering?: boolean;
   layerMarker?: IMarkerStringOrObjectOrFunctionForLayer;
   layerOverlay?: IOverlayStringOrObjectOrFunctionForLayer;
   layerTooltip?: ITooltipStringOrObjectOrFunctionForLayer;
   layerPopup?: IPopupStringOrObjectOrFunctionForLayer;
+  onInit?: (map: L.Map) => void;
 }
 
 export default function useLeaflet(
@@ -61,220 +76,225 @@ export default function useLeaflet(
     zoom,
     tileProvider,
     tileOptions,
+    zoomControlPosition,
+    layersControlPosition,
     points,
-    fitBounds = true,
-    onClick,
-    onMarkerClick,
+    noMarkerClustering,
     geoJsonLayers,
-    marker,
     layerMarker,
     layerOverlay,
     layerTooltip,
     layerPopup,
+    onInit,
   }: ILeafletMapConfig
 ) {
-  // State and memos
+  // State
   const [map, setMap] = useState<L.Map | null>(null);
-  const [markers, setMarkers] = useState<L.Marker<any>[]>([]);
-  const [tileLayer, setTileLayer] = useState<L.Layer | null>(null);
-  const [layers, setLayers] = useState<L.GeoJSON[]>([]);
-
+  const [markers, setMarkers] = useState<L.Marker[] | null>(null);
+  const [_tileLayer, setTileLayer] = useState<L.Layer | null>(null);
+  const [_layers, setLayers] = useState<L.GeoJSON[] | null>(null);
   const [
-    markerClusterGroup,
+    _markerClusterGroup,
     setMarkerClusterGroup,
   ] = useState<L.MarkerClusterGroup | null>(null);
-
-  const [layersControl, setLayersControl] = useState<L.Control.Layers | null>(
+  const [_layersControl, setLayersControl] = useState<L.Control.Layers | null>(
     null
   );
 
-  const allFeatures = useMemo(() => {
-    const markersGroup = L.featureGroup(markers);
+  // Marker icons
+  const markerIcon = service.getMarkerIcon({ url: DEFAULT_MARKER_ICON });
+  const markerHoverIcon = service.getMarkerIcon({
+    url: DEFAULT_MARKER_HOVER_ICON,
+  });
+  const markerActiveIcon = service.getMarkerIcon({
+    url: DEFAULT_MARKER_ACTIVE_ICON,
+  });
 
-    const all = [...layers, markersGroup];
+  // Subscriptions
+  const markerEvents = () => {
+    const subscriptions = [
+      combineLatest(
+        leafletMapHoveredMarker$.pipe(startWith(null, null), pairwise()),
+        leafletMapSelectedMarker$.pipe(startWith(null, null), pairwise())
+      ).subscribe(
+        ([
+          [prevHoveredMarker, hoveredMarker],
+          [prevSelectedMarker, selectedMarker],
+        ]) => {
+          markers?.forEach((marker) => {
+            const markerId = marker.options['id'] as string;
 
-    markerClusterGroup && all.push(markerClusterGroup);
+            if (markerId === selectedMarker) {
+              marker.setIcon(markerActiveIcon)?.setZIndexOffset(999);
+            } else if (
+              markerId === hoveredMarker &&
+              hoveredMarker !== selectedMarker
+            ) {
+              marker.setIcon(markerHoverIcon)?.setZIndexOffset(999);
+            } else if (
+              markerId === prevHoveredMarker ||
+              markerId === prevSelectedMarker
+            ) {
+              marker.setIcon(markerIcon)?.setZIndexOffset(0);
+            }
+          });
+        }
+      ),
+    ];
 
-    return all;
-  }, [markers, layers, markerClusterGroup]);
+    return () => {
+      subscriptions.forEach((subscription) => subscription.unsubscribe());
+    };
+  };
+  useEffect(markerEvents, [markers]);
 
-  const allBounds = useMemo(() => {
-    return allFeatures.reduce(
-      (memo, l) => memo.extend(l.getBounds()),
-      L.latLngBounds([])
-    );
-  }, [allFeatures]);
+  const mapEvents = () => {
+    const subscriptions = [
+      combineLatest(leafletMapCenter$, leafletMapZoom$)
+        .pipe(
+          distinctUntilChanged((x, y) => isEqual(x, y)),
+          debounceTime(50)
+        )
+        .subscribe(([newCenter, newZoom]) => {
+          service.changeView(map, newCenter, newZoom);
+        }),
+    ];
 
-  const tileConfig = useMemo(
-    () => ({
-      tileProvider,
-      ...tileOptions,
-    }),
-    [tileProvider, tileOptions]
-  );
+    if (map) {
+      map.on('click', (event: L.LeafletMouseEvent) => {
+        setLeafletMapClicked(event.latlng);
+      });
 
-  // Prevstate
-  const prevMarkers = usePrevious(markers);
-  const prevTileConfig = usePrevious(tileConfig);
-  const prevPoints = usePrevious(points);
-  const prevGeoJsonLayers = usePrevious(geoJsonLayers);
+      map.on('moveend', (event: L.LeafletEvent) => {
+        const newCenter = event.target.getCenter() as L.LatLng;
+        const newCenterLat = newCenter.lat;
+        const newCenterLng = newCenter.lng;
+        setLeafletMapCenter([newCenterLat, newCenterLng]);
+      });
+
+      map.on('zoomend', (event: L.LeafletEvent) => {
+        const newZoom = event.target.getZoom() as number;
+        setLeafletMapZoom(newZoom);
+      });
+    }
+
+    return () => {
+      subscriptions.forEach((subscription) => subscription.unsubscribe());
+      map?.off('click');
+      map?.off('moveend');
+      map?.off('zoomend');
+    };
+  };
+  useEffect(mapEvents, [map]);
 
   // Effects
   const setup = () => {
-    if (map) {
-      return;
+    if (!map) {
+      const newMap = service.init(mapId, {
+        center,
+        zoom,
+        tileProvider,
+        tileOptions,
+      });
+      setMap(newMap);
+      onInit?.(newMap);
     }
-
-    const options = {
-      tileProvider,
-      tileOptions,
-      onClick,
-      zoom,
-      center,
-      onMoveHandler: broadcastMapCenter,
-      onZoomHandler: broadcastMapZoom,
-    };
-
-    const newMap = service.setup(mapId, options);
-    service.addTileLayer(newMap, tileProvider, tileOptions);
-
-    setMap(newMap);
   };
   useEffect(setup, [
     map,
     mapId,
     tileProvider,
     tileOptions,
-    onClick,
     zoom,
     center,
+    onInit,
   ]);
 
   const refreshTile = () => {
-    if (!map || (tileLayer && tileConfig === prevTileConfig)) {
-      return;
-    }
+    setTileLayer((prevTileLayer) => {
+      service.removeLayer(map, prevTileLayer);
+      return service.addTileLayer(map, tileProvider, tileOptions);
+    });
+  };
+  useEffect(refreshTile, [map, tileProvider, tileOptions]);
 
-    if (tileLayer) {
-      service.removeLayer(map, tileLayer);
-    }
-
-    const newTileLayer = service.addTileLayer(map, tileProvider, tileOptions);
-
-    if (newTileLayer) {
-      setTileLayer(newTileLayer);
+  const refreshCenter = () => {
+    if (center !== undefined) {
+      setLeafletMapCenter(center);
     }
   };
-  useEffect(refreshTile, [
-    map,
-    tileProvider,
-    tileOptions,
-    tileLayer,
-    tileConfig,
-    prevTileConfig,
-  ]);
+  useEffect(refreshCenter, [map, center]);
 
-  const refreshCenterAndZoom = () => {
-    if (map) {
-      service.changeView(map, center, zoom);
+  const refreshZoom = () => {
+    if (zoom !== undefined) {
+      setLeafletMapZoom(zoom);
     }
   };
-  useEffect(refreshCenterAndZoom, [map, center, zoom]);
+  useEffect(refreshZoom, [map, zoom]);
+
+  const refreshZoomControlPosition = () => {
+    if (map && zoomControlPosition) {
+      map.zoomControl.setPosition(zoomControlPosition);
+    }
+  };
+  useEffect(refreshZoomControlPosition, [map, zoomControlPosition]);
 
   const refreshLayers = () => {
-    if (!map || prevGeoJsonLayers === geoJsonLayers) {
-      return;
-    }
+    const layersControl =
+      geoJsonLayers && geoJsonLayers?.length > 0
+        ? service.addLayersControl(map, layersControlPosition)
+        : null;
 
-    service.removeLayersControl(map, layersControl);
-    service.removeLayers(map, layers);
-
-    const newLayersControl = service.addLayersControl(map);
-    const newLayers = service.addLayers(map, geoJsonLayers, {
-      layersControl: newLayersControl,
-      overlay: layerOverlay,
-      popup: layerPopup,
-      tooltip: layerTooltip,
-      marker: layerMarker,
+    setLayersControl((prevLayersControl) => {
+      service.removeLayersControl(map, prevLayersControl);
+      return layersControl;
     });
 
-    setLayers(newLayers);
-    setLayersControl(newLayersControl);
+    setLayers((prevLayers) => {
+      service.removeLayers(map, prevLayers);
+      return service.addLayers(map, geoJsonLayers, {
+        layersControl,
+        overlay: layerOverlay,
+        popup: layerPopup,
+        tooltip: layerTooltip,
+        marker: layerMarker,
+      });
+    });
   };
   useEffect(refreshLayers, [
     map,
-    prevGeoJsonLayers,
     geoJsonLayers,
     layerOverlay,
     layerPopup,
     layerTooltip,
     layerMarker,
-    layersControl,
-    layers,
+    layersControlPosition,
   ]);
 
   const refreshMarkers = () => {
-    if (!map || prevPoints === points) {
-      return;
-    }
-
-    const options = { fitBounds };
-
-    const newMarkers = service.addMarkersToMap(map, points, marker, options);
-
-    setMarkers(newMarkers);
+    setMarkers((prevMarkers) => {
+      service.removeLayers(map, prevMarkers);
+      return service.addMarkersToMap(map, points, noMarkerClustering);
+    });
   };
-  useEffect(refreshMarkers, [fitBounds, map, points, prevPoints, marker]);
+  useEffect(refreshMarkers, [map, points, noMarkerClustering]);
 
   const refreshClusterGroups = () => {
-    if (!map || prevMarkers === markers) {
-      return;
-    }
+    setMarkerClusterGroup((prevMarkerClusterGroup) => {
+      service.removeLayer(map, prevMarkerClusterGroup);
 
-    if (markerClusterGroup) {
-      service.removeLayer(map, markerClusterGroup);
-    }
+      if (!noMarkerClustering) {
+        return service.addMarkerClusterGroup(map, markers, {
+          onClick: (id, _data) => {
+            setLeafletMapSelectedMarker(id);
+          },
+        });
+      }
 
-    const newMarkerClusterGroup = service.addClusterGroup(map, markers, {
-      onClick: onMarkerClick,
+      return null;
     });
-
-    setMarkerClusterGroup(newMarkerClusterGroup);
   };
-  useEffect(refreshClusterGroups, [
-    markerClusterGroup,
-    map,
-    prevMarkers,
-    markers,
-    onMarkerClick,
-  ]);
-
-  const refitBoundsToAllContent = () => {
-    // Remove || true if you'd like to activate auto-fitting to all bounds.
-    if (!map || isEmpty(allBounds) || !fitBounds || true) {
-      return;
-    }
-
-    // service.refitBounds(map, allBounds, { fitBounds });
-  };
-  useEffect(refitBoundsToAllContent, [allBounds, map, fitBounds]);
-
-  const wireUpSubscriptions = () => {
-    const subscriptions = [
-      setMapLatLngZoom$.subscribe(({ lat, lng, zoom }) => {
-        if (map) {
-          map.setView([lat, lng], zoom);
-        }
-      }),
-    ];
-
-    return () => {
-      subscriptions.forEach((subscription) => subscription.unsubscribe());
-      map?.off('moveend');
-      map?.off('zoomend');
-    };
-  };
-  useEffect(wireUpSubscriptions, [map]);
+  useEffect(refreshClusterGroups, [map, markers, noMarkerClustering]);
 
   return map;
 }

@@ -73,10 +73,17 @@ const SignUpInModal = memo<Props>(({ className, onMounted }) => {
     const subscriptions = [
       openSignUpInModal$.subscribe(({ eventValue: metaData }) => {
         // don't overwrite metaData if already present!
-        !authUser &&
+        const isSignedIn = !isNilOrError(authUser);
+        const isSignedInNeedsVerification =
+          !isNilOrError(authUser) &&
+          !authUser.attributes.verified &&
+          metaData.verification;
+
+        if (!isSignedIn || isSignedInNeedsVerification) {
           setMetaData((prevMetaData) =>
             prevMetaData ? prevMetaData : metaData
           );
+        }
       }),
       closeSignUpInModal$.subscribe(() => {
         setMetaData(undefined);
