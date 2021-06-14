@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { withRouter, WithRouterProps } from 'react-router';
 
 // utils
@@ -85,7 +85,14 @@ const InputsTable = ({
   const closeSideModal = () => setIsSideModalOpen(false);
   const openSideModal = () => setIsSideModalOpen(true);
 
-  const inputs = useInsightsInputs(viewId, { category: query.category });
+  const selectedCategory = query.category;
+
+  // Reset selection on page change
+  useEffect(() => {
+    setSelectedRows(new Set());
+  }, [selectedCategory]);
+
+  const inputs = useInsightsInputs(viewId, { category: selectedCategory });
 
   // Use callback to keep references for moveUp and moveDown stable
   const moveUp = useCallback(() => {
