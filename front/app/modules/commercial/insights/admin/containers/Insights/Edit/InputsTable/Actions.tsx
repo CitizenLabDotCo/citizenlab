@@ -99,11 +99,13 @@ import { InjectedIntlProps } from 'react-intl';
 import { withRouter, WithRouterProps } from 'react-router';
 
 interface Props {
+  className?: string;
   selectedInputs: Set<string>;
   // categoryFilter?: string; ?
 }
 
 const Actions = ({
+  className,
   selectedInputs,
   params: { viewId },
   intl: { formatMessage },
@@ -147,7 +149,7 @@ const Actions = ({
   }
 
   return (
-    <ActionButtons>
+    <ActionButtons className={className}>
       {selectedInputs.size > 0 && (
         <>
           {categories.length > 0 && (

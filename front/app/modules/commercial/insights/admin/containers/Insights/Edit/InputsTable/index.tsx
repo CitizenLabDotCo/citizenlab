@@ -15,6 +15,8 @@ import EmptyState from './EmptyState';
 import CheckboxWithPartialCheck from 'components/UI/CheckboxWithPartialCheck';
 import SideModal from 'components/UI/SideModal';
 import InputDetails from '../InputDetails';
+import Divider from 'components/admin/Divider';
+import Actions from './Actions';
 
 // styles
 import styled from 'styled-components';
@@ -24,7 +26,25 @@ import { colors, fontSizes } from 'utils/styleUtils';
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from '../../messages';
-import Actions from './Actions';
+import TableTitle from './TableTitle';
+
+const Inputs = styled.div`
+  flex: 1;
+  background: #fff;
+  overflow-x: auto;
+  overflow-y: auto;
+  padding: 40px;
+`;
+
+const TitleRow = styled.div`
+  display: flex;
+  margin-bottom: 20px;
+  min-height: 43px;
+`;
+
+const StyledActions = styled(Actions)`
+  margin-left: 60px;
+`;
 
 const StyledTable = styled(Table)`
   thead {
@@ -116,12 +136,17 @@ const InputsTable = ({
   };
 
   return (
-    <div data-testid="insightsInputsTable">
+    <Inputs data-testid="insightsInputsTable">
       {inputs.length === 0 ? (
         <EmptyState />
       ) : (
         <>
-          <Actions selectedInputs={selectedRows} />
+          <TitleRow>
+            <TableTitle />
+            <StyledActions selectedInputs={selectedRows} />
+          </TitleRow>
+          <Divider />
+
           <StyledTable>
             <colgroup>
               <col span={1} style={{ width: '5%' }} />
@@ -162,18 +187,16 @@ const InputsTable = ({
       )}
       <SideModal opened={isSideModalOpen} close={closeSideModal}>
         {!isNilOrError(previewedInputIndex) && (
-          <>
-            <InputDetails
-              selectedInput={inputs[previewedInputIndex]}
-              moveUp={moveUp}
-              moveDown={moveDown}
-              isMoveUpDisabled={previewedInputIndex === 0}
-              isMoveDownDisabled={previewedInputIndex === inputs.length - 1}
-            />
-          </>
+          <InputDetails
+            selectedInput={inputs[previewedInputIndex]}
+            moveUp={moveUp}
+            moveDown={moveDown}
+            isMoveUpDisabled={previewedInputIndex === 0}
+            isMoveDownDisabled={previewedInputIndex === inputs.length - 1}
+          />
         )}
       </SideModal>
-    </div>
+    </Inputs>
   );
 };
 
