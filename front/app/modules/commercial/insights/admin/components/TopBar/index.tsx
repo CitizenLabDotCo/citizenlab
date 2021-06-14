@@ -145,4 +145,4 @@ const TopBar = ({
   );
 };
 
-export default injectIntl<{}>(withRouter(TopBar));
+export default withRouter(injectIntl(TopBar));
