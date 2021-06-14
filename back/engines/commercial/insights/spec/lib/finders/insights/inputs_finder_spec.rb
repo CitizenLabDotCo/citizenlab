@@ -4,11 +4,17 @@ require 'rails_helper'
 
 describe Insights::InputsFinder do
   describe '#execute' do
+
+    def assignment_service
+      Insights::CategoryAssignmentsService.new
+    end
+
     let(:view) { create(:view) }
-    let!(:inputs) { create_list(:idea, 5, project: view.scope) }
 
     context 'without params' do
       let(:finder) { described_class.new(view) }
+      let!(:inputs) { create_list(:idea, 2, project: view.scope) }
+
 
       it 'returns all inputs' do
         expect(finder.execute).to match(inputs)
@@ -23,6 +29,8 @@ describe Insights::InputsFinder do
     end
 
     context 'when page size is smaller than the nb of inputs' do
+      let!(:inputs) { create_list(:idea, 5, project: view.scope) }
+
       it 'trims inputs on the first page' do
         page_size = 3
         params = { page: { size: page_size, number: 1 } }
@@ -38,18 +46,12 @@ describe Insights::InputsFinder do
       end
     end
 
-    it 'supports text search' do
-      idea = create(:idea, title_multiloc: { en: 'Peace in the world ☮' }, project: view.scope)
-      params = { search: 'peace' }
-      finder = described_class.new(view, params)
-      expect(finder.execute).to match([idea])
-    end
-
     context 'when using the category filter' do
       let(:category) { create(:category, view: view) }
+      let!(:inputs) { create_list(:idea, 3, project: view.scope) }
+
 
       before do
-        assignment_service = Insights::CategoryAssignmentsService.new
         inputs.take(2).each do |input|
           assignment_service.add_assignments!(input, [category])
         end
@@ -76,6 +78,67 @@ describe Insights::InputsFinder do
         finder = described_class.new(view, { category: category.id })
         expect { finder.execute }.to raise_error(ActiveRecord::RecordNotFound)
       end
+    end
+
+    context 'when sorting by approval status' do
+      let(:category) { create(:category, view: view) }
+      let!(:inputs) { create_list(:idea, 3, project: view.scope) }
+
+
+      before do
+        inputs = view.scope.ideas
+        assignment_service.add_suggestions(inputs.first, [category])
+        assignment_service.add_assignments!(inputs.second, [category])
+      end
+
+      it 'returns inputs with approved categories first' do
+        finder = described_class.new(view, { category: category.id, sort: 'approval' })
+        inputs = finder.execute
+
+        aggregate_failures('checking results') do
+          expect(inputs.count).to eq(2)
+          expect(inputs.first.insights_category_assignments.first).to be_approved
+        end
+      end
+
+      it 'does not change order if not filtered by category' do
+        finder = described_class.new(view, { sort: 'approval' })
+        inputs = finder.execute
+
+        aggregate_failures('checking results') do
+          expect(inputs.count).to eq(3)
+          expect(inputs.first.insights_category_assignments.first).not_to be_approved
+        end
+      end
+    end
+
+    context 'when sorting by approval status (desc)' do
+      let(:category) { create(:category, view: view) }
+      let!(:inputs) { create_list(:idea, 3, project: view.scope) }
+
+      before do
+        inputs = view.scope.ideas
+        assignment_service.add_assignments!(inputs.first, [category])
+        assignment_service.add_suggestions(inputs.second, [category])
+      end
+
+      it 'returns inputs with approved categories first' do
+        finder = described_class.new(view, { category: category.id, sort: '-approval' })
+        inputs = finder.execute
+
+        aggregate_failures('checking results') do
+          expect(inputs.count).to eq(2)
+          expect(inputs.first.insights_category_assignments.first).not_to be_approved
+        end
+      end
+    end
+
+    it 'supports text search' do
+      idea = create(:idea, title_multiloc: { en: 'Peace in the world ☮' }, project: view.scope)
+      _just_another_idea = create(:idea, project: view.scope) # to have a least two inputs
+
+      finder = described_class.new(view, { search: 'peace' })
+      expect(finder.execute).to match([idea])
     end
   end
 
