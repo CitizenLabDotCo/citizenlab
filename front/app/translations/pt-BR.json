@@ -725,7 +725,6 @@
   "app.containers.Admin.Insights.Edit.categoryInfoBoxBold": "Add your first category",
   "app.containers.Admin.Insights.Edit.inputsEmptyState": "You have no inputs for this view yet",
   "app.containers.Admin.Insights.Edit.inputsTableCategories": "Categories",
-  "app.containers.Admin.Insights.Edit.inputsTableDeleteCategoryConfirmation": "Are you sure?",
   "app.containers.Admin.Insights.Edit.inputsTableInputs": "Inputs",
   "app.containers.Admin.Insights.Reports.budgeting": "orçamento participativo",
   "app.containers.Admin.Insights.Reports.comments": "Comments",
