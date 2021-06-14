@@ -155,7 +155,7 @@ const EditInsightsView = ({
     clHistory.push({
       pathname,
       search: stringify(
-        { ...query, category: categoryId },
+        { ...query, pageNumber: 1, category: categoryId },
         { addQueryPrefix: true }
       ),
     });

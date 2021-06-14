@@ -1,8 +1,10 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { withRouter, WithRouterProps } from 'react-router';
+import { stringify } from 'qs';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
+import clHistory from 'utils/cl-router/history';
 
 // hooks
 import useInsightsInputs from 'modules/commercial/insights/hooks/useInsightsInputs';
@@ -17,6 +19,7 @@ import SideModal from 'components/UI/SideModal';
 import InputDetails from '../InputDetails';
 import Divider from 'components/admin/Divider';
 import Actions from './Actions';
+import Pagination from 'components/admin/Pagination/Pagination';
 
 // styles
 import styled from 'styled-components';
@@ -71,7 +74,12 @@ const StyledTable = styled(Table)`
   }
 `;
 
+const StyledPagination = styled(Pagination)`
+  margin-top: 12px;
+`;
+
 const InputsTable = ({
+  location,
   params: { viewId },
   location: { query },
   intl: { formatMessage },
@@ -85,14 +93,26 @@ const InputsTable = ({
   const closeSideModal = () => setIsSideModalOpen(false);
   const openSideModal = () => setIsSideModalOpen(true);
 
+  const pageNumber = parseInt(location?.query?.pageNumber, 10);
+
   const selectedCategory = query.category;
 
   // Reset selection on page change
   useEffect(() => {
     setSelectedRows(new Set());
-  }, [selectedCategory]);
+  }, [selectedCategory, pageNumber]);
 
-  const inputs = useInsightsInputs(viewId, { category: selectedCategory });
+  const { list: inputs, lastPage } = useInsightsInputs(viewId, {
+    pageNumber,
+    category: selectedCategory,
+  });
+
+  const handlePaginationClick = (newPageNumber) => {
+    clHistory.push({
+      pathname: location.pathname,
+      search: `?${stringify({ ...location.query, pageNumber: newPageNumber })}`,
+    });
+  };
 
   // Use callback to keep references for moveUp and moveDown stable
   const moveUp = useCallback(() => {
@@ -190,6 +210,11 @@ const InputsTable = ({
               ))}
             </tbody>
           </StyledTable>
+          <StyledPagination
+            currentPage={pageNumber || 1}
+            totalPages={lastPage || 1}
+            loadPage={handlePaginationClick}
+          />
         </>
       )}
       <SideModal opened={isSideModalOpen} close={closeSideModal}>

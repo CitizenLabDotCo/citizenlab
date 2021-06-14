@@ -64,7 +64,10 @@ const TableTitle = ({
       }
       clHistory.push({
         pathname,
-        search: stringify({ ...query, category: '' }, { addQueryPrefix: true }),
+        search: stringify(
+          { ...query, category: undefined },
+          { addQueryPrefix: true }
+        ),
       });
       setCategoryMenuOpened(false);
     }

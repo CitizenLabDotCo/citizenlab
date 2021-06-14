@@ -73,7 +73,7 @@ describe('Insights Edit', () => {
       fireEvent.click(screen.getByText(mockData[0].attributes.name));
       expect(spy).toHaveBeenCalledWith({
         pathname: '',
-        search: `?category=${mockData[0].id}`,
+        search: `?pageNumber=1&category=${mockData[0].id}`,
       });
     });
 
@@ -83,7 +83,7 @@ describe('Insights Edit', () => {
       fireEvent.click(screen.getAllByText('All input')[0]);
       expect(spy).toHaveBeenCalledWith({
         pathname: '',
-        search: `?category=`,
+        search: `?category=&pageNumber=1`,
       });
     });
 
