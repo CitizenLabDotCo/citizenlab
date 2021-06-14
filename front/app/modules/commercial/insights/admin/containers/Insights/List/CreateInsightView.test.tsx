@@ -74,7 +74,6 @@ describe('Create Insights View', () => {
     userEvent.selectOptions(screen.getByLabelText('Project'), project2Id);
 
     fireEvent.click(screen.getByText('Create my insights'));
-    console.log(screen.debug());
 
     expect(spy).toHaveBeenCalledWith({ name: viewName, scope_id: project2Id });
   });
