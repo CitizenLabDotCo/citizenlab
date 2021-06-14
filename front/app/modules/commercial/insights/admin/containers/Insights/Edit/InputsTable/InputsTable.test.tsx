@@ -99,15 +99,6 @@ jest.mock('hooks/useLocale', () => jest.fn(() => 'en'));
 
 jest.mock('utils/cl-intl');
 
-const mockLocation: WithRouterProps['location'] = {
-  pathname: 'editViewPagePath',
-  query: {},
-  search: '',
-  hash: '',
-  state: undefined,
-  action: 'POP',
-  key: '',
-};
 jest.mock('react-router', () => {
   return {
     withRouter: (Component) => {
