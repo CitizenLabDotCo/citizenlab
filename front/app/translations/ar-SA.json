@@ -2679,7 +2679,6 @@
   "app.modules.id_id_card_lookup.takenFormError": "مأخوذ بالفعل.",
   "app.modules.id_id_card_lookup.verifyYourIdentity": "تحقق من هويتك",
   "app.modules.idea_assignment.admin.components.permissionsTab": "حقوق الوصول",
-  "app.modules.project_folder.citizen.components.Notification.youveReceivedFolderAdminRights": "You received admin rights over the \"{folderName}\" folder.",
   "app.modules.project_folder.citizen.components.ProjectFolderShareButton.share": "مشاركة",
   "app.modules.project_folder.citizen.components.ProjectFolderSharingModal.twitterMessage": "{projectFolderName}",
   "app.modules.project_folder.citizen.components.ProjectFolderSharingModal.whatsAppMessage": "{اسم المشروع} | من منصة المشاركة لـ {اسم المنظمة}",

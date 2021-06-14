@@ -2679,7 +2679,6 @@
   "app.modules.id_id_card_lookup.takenFormError": "Deja luat.",
   "app.modules.id_id_card_lookup.verifyYourIdentity": "Verificați-vă identitatea",
   "app.modules.idea_assignment.admin.components.permissionsTab": "Access rights",
-  "app.modules.project_folder.citizen.components.Notification.youveReceivedFolderAdminRights": "You received admin rights over the \"{folderName}\" folder.",
   "app.modules.project_folder.citizen.components.ProjectFolderShareButton.share": "Distribuie",
   "app.modules.project_folder.citizen.components.ProjectFolderSharingModal.twitterMessage": "{projectFolderName}",
   "app.modules.project_folder.citizen.components.ProjectFolderSharingModal.whatsAppMessage": "{projectFolderName} |de pe platforma de participare a {orgName}",

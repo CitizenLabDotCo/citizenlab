@@ -2679,7 +2679,6 @@
   "app.modules.id_id_card_lookup.takenFormError": "Reeds gebruikt.",
   "app.modules.id_id_card_lookup.verifyYourIdentity": "Verifieer je identiteit",
   "app.modules.idea_assignment.admin.components.permissionsTab": "Toegangsrechten",
-  "app.modules.project_folder.citizen.components.Notification.youveReceivedFolderAdminRights": "Je hebt admin rechten gekregen over de \"{folderName}\" map.",
   "app.modules.project_folder.citizen.components.ProjectFolderShareButton.share": "Deel",
   "app.modules.project_folder.citizen.components.ProjectFolderSharingModal.twitterMessage": "{projectFolderName}",
   "app.modules.project_folder.citizen.components.ProjectFolderSharingModal.whatsAppMessage": "{projectFolderName} | van het participatieplatform van {orgName}",

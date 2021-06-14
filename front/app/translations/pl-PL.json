@@ -2679,7 +2679,6 @@
   "app.modules.id_id_card_lookup.takenFormError": "Już zajęte.",
   "app.modules.id_id_card_lookup.verifyYourIdentity": "Zweryfikuj swoją tożsamość",
   "app.modules.idea_assignment.admin.components.permissionsTab": "Uprawnienia",
-  "app.modules.project_folder.citizen.components.Notification.youveReceivedFolderAdminRights": "Otrzymałeś prawa administratora do folderu \"{folderName}\".",
   "app.modules.project_folder.citizen.components.ProjectFolderShareButton.share": "Podziel się",
   "app.modules.project_folder.citizen.components.ProjectFolderSharingModal.twitterMessage": "{projectFolderName}",
   "app.modules.project_folder.citizen.components.ProjectFolderSharingModal.whatsAppMessage": "{projectFolderName} | z platformy partycypacyjnej {orgName}",
