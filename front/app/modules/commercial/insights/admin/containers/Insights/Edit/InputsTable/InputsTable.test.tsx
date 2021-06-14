@@ -9,7 +9,6 @@ jest.mock('modules/commercial/insights/services/insightsInputs', () => ({
 }));
 
 import InputsTable from './';
-import { WithRouterProps } from 'react-router';
 
 const viewId = '1';
 
