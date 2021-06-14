@@ -182,11 +182,15 @@ const Actions = ({
     }
   };
 
+  const otherCategories = categories.filter(
+    (category) => category.id !== selectedCategory?.id
+  );
+
   return (
     <ActionButtons className={className}>
       {selectedInputs.size > 0 && (
         <>
-          {categories.length > 0 && (
+          {otherCategories.length > 0 && (
             <ActionButtonWrapper>
               <Button onClick={toggleDropdown} buttonStyle="admin-dark-text">
                 <StyledIcon name="moveFolder" />
@@ -199,7 +203,7 @@ const Actions = ({
                 onClickOutside={toggleDropdown}
                 content={
                   <DropdownList>
-                    {categories.map((category) => (
+                    {otherCategories.map((category) => (
                       <DropdownListItem
                         key={category.id}
                         onClick={toggleCategory(category.id)}
