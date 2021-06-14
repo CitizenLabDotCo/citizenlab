@@ -1,10 +1,13 @@
 import { ModuleConfiguration } from 'utils/moduleUtils';
+import { RenderOnNotificationType } from 'modules/utilComponents';
 import React, { ReactNode } from 'react';
 import Setting from './admin/containers/Setting';
 import RemoveFlagButton from './admin/components/RemoveFlagButton';
 import ActivityTab from './admin/components/ActivityTab';
 import InappropriateContentWarning from './admin/components/InappropriateContentWarning';
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import NLPFlagNotification from './citizen/components/NLPFlagNotification';
+import { INLPFlagNotificationData } from 'services/notifications';
 
 type RenderOnFeatureFlagProps = {
   children: ReactNode;
@@ -46,6 +49,18 @@ const configuration: ModuleConfiguration = {
     'app.modules.commercial.moderation.admin.containers.tabs': (props) => {
       return <ActivityTab {...props} />;
     },
+    'app.components.NotificationMenu.Notification': ({ notification }) => (
+      <RenderOnFeatureFlag>
+        <RenderOnNotificationType
+          notification={notification}
+          notificationType="inappropriate_content_flagged"
+        >
+          <NLPFlagNotification
+            notification={notification as INLPFlagNotificationData}
+          />
+        </RenderOnNotificationType>
+      </RenderOnFeatureFlag>
+    ),
   },
 };
 

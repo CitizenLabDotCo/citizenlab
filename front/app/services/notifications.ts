@@ -6,7 +6,7 @@ import { Multiloc } from 'typings';
 
 const apiEndpoint = `${API_PATH}/notifications`;
 
-interface IBaseNotificationData {
+export interface IBaseNotificationData {
   id: string;
   type: string;
 }
@@ -382,46 +382,40 @@ export interface IThresholdReachedForAdminNotificationData
   };
 }
 
-export interface INlpFlaggedPostNotificationData extends IBaseNotificationData {
-  attributes: {
-    type: 'inappropriate_content_flagged';
-    read_at: string | null;
-    created_at: string;
-    flaggable_url: string;
-  };
+export interface INotificationDataMap {
+  IAdminRightsReceivedNotificationData: IAdminRightsReceivedNotificationData;
+  ICommentDeletedByAdminNotificationData: ICommentDeletedByAdminNotificationData;
+  ICommentMarkedAsSpamNotificationData: ICommentMarkedAsSpamNotificationData;
+  ICommentOnYourCommentNotificationData: ICommentOnYourCommentNotificationData;
+  ICommentOnYourIdeaNotificationData: ICommentOnYourIdeaNotificationData;
+  ICommentOnYourInitiativeNotificationData: ICommentOnYourInitiativeNotificationData;
+  IIdeaAssignedToYouNotificationData: IIdeaAssignedToYouNotificationData;
+  IIdeaMarkedAsSpamNotificationData: IIdeaMarkedAsSpamNotificationData;
+  IInitiativeAssignedToYouNotificationData: IInitiativeAssignedToYouNotificationData;
+  IInitiativeMarkedAsSpamNotificationData: IInitiativeMarkedAsSpamNotificationData;
+  IInviteAcceptedNotificationData: IInviteAcceptedNotificationData;
+  IMentionInCommentNotificationData: IMentionInCommentNotificationData;
+  IMentionInOfficialFeedbackNotificationData: IMentionInOfficialFeedbackNotificationData;
+  IOfficialFeedbackOnCommentedIdeaNotificationData: IOfficialFeedbackOnCommentedIdeaNotificationData;
+  IOfficialFeedbackOnCommentedInitiativeNotificationData: IOfficialFeedbackOnCommentedInitiativeNotificationData;
+  IOfficialFeedbackOnVotedIdeaNotificationData: IOfficialFeedbackOnVotedIdeaNotificationData;
+  IOfficialFeedbackOnVotedInitiativeNotificationData: IOfficialFeedbackOnVotedInitiativeNotificationData;
+  IOfficialFeedbackOnYourIdeaNotificationData: IOfficialFeedbackOnYourIdeaNotificationData;
+  IOfficialFeedbackOnYourInitiativeNotificationData: IOfficialFeedbackOnYourInitiativeNotificationData;
+  IProjectModerationRightsReceivedNotificationData: IProjectModerationRightsReceivedNotificationData;
+  IProjectPhaseStartedNotificationData: IProjectPhaseStartedNotificationData;
+  IProjectPhaseUpcomingNotificationData: IProjectPhaseUpcomingNotificationData;
+  IStatusChangeOfYourIdeaNotificationData: IStatusChangeOfYourIdeaNotificationData;
+  IStatusChangeOfYourInitiativeNotificationData: IStatusChangeOfYourInitiativeNotificationData;
+  IStatusChangeOnCommentedIdeaNotificationData: IStatusChangeOnCommentedIdeaNotificationData;
+  IStatusChangeOnCommentedInitiativeNotificationData: IStatusChangeOnCommentedInitiativeNotificationData;
+  IStatusChangeOnVotedIdeaNotificationData: IStatusChangeOnVotedIdeaNotificationData;
+  IStatusChangeOnVotedInitiativeNotificationData: IStatusChangeOnVotedInitiativeNotificationData;
+  IThresholdReachedForAdminNotificationData: IThresholdReachedForAdminNotificationData;
 }
 
-export type TNotificationData =
-  | IAdminRightsReceivedNotificationData
-  | ICommentDeletedByAdminNotificationData
-  | ICommentMarkedAsSpamNotificationData
-  | ICommentOnYourCommentNotificationData
-  | ICommentOnYourIdeaNotificationData
-  | ICommentOnYourInitiativeNotificationData
-  | IIdeaAssignedToYouNotificationData
-  | IIdeaMarkedAsSpamNotificationData
-  | IInitiativeAssignedToYouNotificationData
-  | IInitiativeMarkedAsSpamNotificationData
-  | IInviteAcceptedNotificationData
-  | IMentionInCommentNotificationData
-  | IMentionInOfficialFeedbackNotificationData
-  | IOfficialFeedbackOnCommentedIdeaNotificationData
-  | IOfficialFeedbackOnCommentedInitiativeNotificationData
-  | IOfficialFeedbackOnVotedIdeaNotificationData
-  | IOfficialFeedbackOnVotedInitiativeNotificationData
-  | IOfficialFeedbackOnYourIdeaNotificationData
-  | IOfficialFeedbackOnYourInitiativeNotificationData
-  | IProjectModerationRightsReceivedNotificationData
-  | IProjectPhaseStartedNotificationData
-  | IProjectPhaseUpcomingNotificationData
-  | IStatusChangeOfYourIdeaNotificationData
-  | IStatusChangeOfYourInitiativeNotificationData
-  | IStatusChangeOnCommentedIdeaNotificationData
-  | IStatusChangeOnCommentedInitiativeNotificationData
-  | IStatusChangeOnVotedIdeaNotificationData
-  | IStatusChangeOnVotedInitiativeNotificationData
-  | IThresholdReachedForAdminNotificationData
-  | INlpFlaggedPostNotificationData;
+export type TNotificationData = INotificationDataMap[keyof INotificationDataMap];
+export type TNotificationType = TNotificationData['attributes']['type'];
 
 export interface INotificationLinks {
   self: string;

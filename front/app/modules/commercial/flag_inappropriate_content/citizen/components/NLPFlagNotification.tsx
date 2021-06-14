@@ -1,20 +1,20 @@
 import React, { memo } from 'react';
 
 // i18n
-import messages from '../../messages';
+import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // components
-import NotificationWrapper from '../NotificationWrapper';
+import NotificationWrapper from 'containers/Navbar/components/NotificationMenu/components/NotificationWrapper';
 
 // services
-import { INlpFlaggedPostNotificationData } from 'services/notifications';
+import { INLPFlagNotificationData } from 'services/notifications';
 
 interface Props {
-  notification: INlpFlaggedPostNotificationData;
+  notification: INLPFlagNotificationData;
 }
 
-const NlpFlaggedPostNotification = memo<Props>((props) => {
+const NLPFlagNotification = memo<Props>((props) => {
   const { notification } = props;
 
   return (
@@ -29,4 +29,4 @@ const NlpFlaggedPostNotification = memo<Props>((props) => {
   );
 });
 
-export default NlpFlaggedPostNotification;
+export default NLPFlagNotification;
