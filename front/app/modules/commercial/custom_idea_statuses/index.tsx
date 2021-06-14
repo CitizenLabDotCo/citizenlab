@@ -1,7 +1,7 @@
 import React from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 import Tab from './admin/components/Tab';
-import { RenderOnFeatureFlag } from 'modules/utilComponents';
+import FeatureFlag from 'components/FeatureFlag';
 
 const configuration: ModuleConfiguration = {
   routes: {
@@ -23,9 +23,9 @@ const configuration: ModuleConfiguration = {
   outlets: {
     'app.containers.Admin.ideas.tabs': (props) => {
       return (
-        <RenderOnFeatureFlag featureFlagName="custom_idea_statuses">
+        <FeatureFlag name="custom_idea_statuses">
           <Tab {...props} />
-        </RenderOnFeatureFlag>
+        </FeatureFlag>
       );
     },
   },

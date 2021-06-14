@@ -17,7 +17,7 @@ import { isProjectFolderModerator } from './permissions/roles';
 import useAuthUser from 'hooks/useAuthUser';
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
 
-import { RenderOnFeatureFlag } from 'modules/utilComponents';
+import FeatureFlag from 'components/FeatureFlag';
 
 type RenderOnPublicationTypeProps = {
   publication: IAdminPublicationContent;
@@ -67,14 +67,14 @@ const configuration: ModuleConfiguration = {
       );
     },
     'app.containers.AdminPage.projects.all.projectsAndFolders.title': () => (
-      <RenderOnFeatureFlag featureFlagName="project_folders">
+      <FeatureFlag name="project_folders">
         <ProjectFolderTitle />
-      </RenderOnFeatureFlag>
+      </FeatureFlag>
     ),
     'app.containers.AdminPage.projects.all.projectsAndFolders.actions': () => (
-      <RenderOnFeatureFlag featureFlagName="project_folders">
+      <FeatureFlag name="project_folders">
         <NewProjectFolderButton />
-      </RenderOnFeatureFlag>
+      </FeatureFlag>
     ),
     'app.containers.AdminPage.projects.all.projectsAndFolders.row': (props) => (
       <RenderOnPublicationType publication={props.publication}>
@@ -96,20 +96,20 @@ const configuration: ModuleConfiguration = {
       projectAttrs,
       authUser,
     }) => (
-      <RenderOnFeatureFlag featureFlagName="project_folders">
+      <FeatureFlag name="project_folders">
         <ProjectFolderSelect
           onChange={onChange}
           projectAttrs={projectAttrs}
           authUser={authUser}
         />
-      </RenderOnFeatureFlag>
+      </FeatureFlag>
     ),
     'app.containers.AdminPage.projects.all.createProjectNotAdmin': () => (
-      <RenderOnFeatureFlag featureFlagName="project_folders">
+      <FeatureFlag name="project_folders">
         <RenderOnProjectFolderModerator>
           <CreateProject />
         </RenderOnProjectFolderModerator>
-      </RenderOnFeatureFlag>
+      </FeatureFlag>
     ),
   },
   routes: {

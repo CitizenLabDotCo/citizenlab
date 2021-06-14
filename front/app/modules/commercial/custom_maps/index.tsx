@@ -6,7 +6,7 @@ import Legend from './shared/components/Map/Legend';
 import { isNilOrError } from 'utils/helperUtils';
 import { IProjectData } from 'services/projects';
 import { IPhaseData } from 'services/phases';
-import { RenderOnFeatureFlag } from 'modules/utilComponents';
+import FeatureFlag from 'components/FeatureFlag';
 
 type RenderOnHideTabConditionProps = {
   project: IProjectData;
@@ -51,14 +51,14 @@ const configuration: ModuleConfiguration = {
   },
   outlets: {
     'app.components.Map.leafletConfig': (props) => (
-      <RenderOnFeatureFlag featureFlagName="custom_maps">
+      <FeatureFlag name="custom_maps">
         <LeafletConfig {...props} />
-      </RenderOnFeatureFlag>
+      </FeatureFlag>
     ),
     'app.components.Map.Legend': (props) => (
-      <RenderOnFeatureFlag featureFlagName="custom_maps">
+      <FeatureFlag name="custom_maps">
         <Legend {...props} />
-      </RenderOnFeatureFlag>
+      </FeatureFlag>
     ),
     'app.containers.Admin.projects.edit': (props) => {
       return (

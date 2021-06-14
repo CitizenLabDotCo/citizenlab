@@ -4,7 +4,7 @@ import CreateProjectFromTemplate from './admin/containers/CreateProjectFromTempl
 import Tab from './admin/components/Tab';
 import { TTabName } from 'containers/Admin/projects/all/CreateProject';
 import ProjectTemplatePreviewAdminWithEventWrapper from './admin/containers/ProjectTemplatePreviewAdminWithEventWrapper';
-import { RenderOnFeatureFlag } from 'modules/utilComponents';
+import FeatureFlag from 'components/FeatureFlag';
 
 declare module 'containers/Admin/projects/all/CreateProject' {
   export interface ITabNamesMap {
@@ -47,25 +47,25 @@ const configuration: ModuleConfiguration = {
   outlets: {
     'app.containers.Admin.projects.all.container': (props) => {
       return (
-        <RenderOnFeatureFlag featureFlagName="admin_project_templates">
+        <FeatureFlag name="admin_project_templates">
           <ProjectTemplatePreviewAdminWithEventWrapper
             onRender={props.onRender}
           />
-        </RenderOnFeatureFlag>
+        </FeatureFlag>
       );
     },
     'app.containers.Admin.projects.all.createProject': (props) => (
-      <RenderOnFeatureFlag featureFlagName="admin_project_templates">
+      <FeatureFlag name="admin_project_templates">
         <RenderOnSelectedTabValue selectedTabValue={props.selectedTabValue}>
           <CreateProjectFromTemplate />
         </RenderOnSelectedTabValue>
-      </RenderOnFeatureFlag>
+      </FeatureFlag>
     ),
     'app.containers.Admin.projects.all.createProject.tabs': (props) => {
       return (
-        <RenderOnFeatureFlag featureFlagName="admin_project_templates">
+        <FeatureFlag name="admin_project_templates">
           <Tab {...props} />
-        </RenderOnFeatureFlag>
+        </FeatureFlag>
       );
     },
   },
