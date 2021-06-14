@@ -37,7 +37,7 @@ jest.mock('hooks/useLocale', () => jest.fn(() => 'en'));
 
 const viewId = '1';
 
-let mockLocationData = { pathname: '', query: {} };
+const mockLocationData = { pathname: '', query: {} };
 
 jest.mock('react-router', () => {
   return {
@@ -75,30 +75,6 @@ describe('Insights Edit', () => {
         pathname: '',
         search: `?category=${mockData[0].id}`,
       });
-    });
-    it('shows selected category correctly', () => {
-      mockLocationData = { pathname: '', query: { category: mockData[0].id } };
-      render(<InsightsEdit />);
-      expect(
-        within(screen.getByTestId('insightsInputsHeader')).getByText(
-          mockData[0].attributes.name
-        )
-      ).toBeInTheDocument();
-    });
-
-    it('deletes category correctly', async () => {
-      mockLocationData = { pathname: '', query: { category: mockData[0].id } };
-      render(<InsightsEdit />);
-      fireEvent.click(
-        within(screen.getByTestId('insightsInputsHeader')).getByRole('button')
-      );
-      await act(async () => {
-        fireEvent.click(screen.getByText('Delete category'));
-      });
-      expect(service.deleteInsightsCategory).toHaveBeenCalledWith(
-        viewId,
-        mockData[0].id
-      );
     });
 
     it('selects all input correctly', () => {
