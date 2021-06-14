@@ -63,18 +63,26 @@ const TagContent = styled.div`
 
 const Tag = ({ label, onIconClick, status }: TagProps) => {
   const handleIconClick = (e: React.MouseEvent) => {
-    e.preventDefault();
     e.stopPropagation();
+    e.preventDefault();
     onIconClick();
   };
 
+  const handleEnterPress = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      e.stopPropagation();
+      e.preventDefault();
+      onIconClick();
+    }
+  };
   return (
     <StyledTag status={status} data-testid="insightsTag">
       <TagContent>
         {label}
         <IconContainer
           onClick={handleIconClick}
-          role="button"
+          onKeyPress={handleEnterPress}
+          as="button"
           data-testid="insightsTagIconContainer"
         >
           {status === 'approved' && (

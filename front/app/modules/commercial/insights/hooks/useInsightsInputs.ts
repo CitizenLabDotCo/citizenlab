@@ -15,7 +15,7 @@ const useInsightsViews = (
   >(undefined);
 
   const category = queryParameters?.category;
-  const sort = queryParameters?.sort;
+  const sort = queryParameters?.sort || 'approval';
 
   useEffect(() => {
     const subscription = insightsInputsStream(viewId, {

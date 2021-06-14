@@ -56,6 +56,7 @@ const StyledSort = styled.div`
   display: flex;
   align-items: center !important;
   cursor: pointer;
+  font-weight: bold;
   svg {
     width: 10px;
     margin-left: 4px;
@@ -142,7 +143,11 @@ const InputsTable = ({
               <th>{formatMessage(messages.inputsTableInputs)}</th>
               <th>
                 {query.category ? (
-                  <StyledSort tabIndex={0} role="button" onClick={onSort}>
+                  <StyledSort
+                    onClick={onSort}
+                    as="button"
+                    data-testid="insightsSortButton"
+                  >
                     {formatMessage(messages.inputsTableCategories)}
                     <Icon
                       name={

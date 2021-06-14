@@ -1,6 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent, within } from 'utils/testUtils/rtl';
 import * as service from 'modules/commercial/insights/services/insightsInputs';
+import clHistory from 'utils/cl-router/history';
 
 jest.mock('modules/commercial/insights/services/insightsInputs', () => ({
   deleteInsightsInputCategory: jest.fn(),
@@ -67,7 +68,7 @@ const mockIdeaData = {
 };
 
 const mockCategoryData = {
-  id: '3612e489-a631-4e7d-8bdb-63be407ea123',
+  id: '94a649b5-23fe-4d47-9165-9beceef2dcad',
   type: 'category',
   attributes: {
     name: 'Category 1',
@@ -142,8 +143,65 @@ describe('Insights Input Table', () => {
       mockInputData[0].relationships.categories.data[0].id
     );
   });
+
+  it('renders additional table column when category is selected', () => {
+    mockLocationData = { pathname: '', query: { category: 'Category 1' } };
+
+    render(<InputsTable />);
+    expect(screen.getAllByRole('columnheader')).toHaveLength(4);
+    expect(screen.getByText('Also in')).toBeInTheDocument();
+  });
+  it('does not render additional table column when category is not selected', () => {
+    mockLocationData = { pathname: '', query: { category: '' } };
+
+    render(<InputsTable />);
+
+    expect(screen.getAllByRole('columnheader')).toHaveLength(3);
+    expect(screen.queryByText('Also in')).not.toBeInTheDocument();
+  });
+  it('sorts categories for -approval when category is selected', () => {
+    const spy = jest.spyOn(clHistory, 'push');
+    mockLocationData = {
+      pathname: '',
+      query: { category: mockInputData[0].relationships.categories.data[0].id },
+    };
+
+    render(<InputsTable />);
+    fireEvent.click(screen.getByTestId('insightsSortButton'));
+    expect(spy).toHaveBeenCalledWith({
+      pathname: '',
+      search: '?category=94a649b5-23fe-4d47-9165-9beceef2dcad&sort=-approval',
+    });
+  });
+  it('sorts categories for approval when category is selected and inputs sorted by -approval', () => {
+    const spy = jest.spyOn(clHistory, 'push');
+    mockLocationData = {
+      pathname: '',
+      query: {
+        category: mockInputData[0].relationships.categories.data[0].id,
+        sort: '-approval',
+      },
+    };
+
+    render(<InputsTable />);
+    fireEvent.click(screen.getByTestId('insightsSortButton'));
+    expect(spy).toHaveBeenCalledWith({
+      pathname: '',
+      search: '?category=94a649b5-23fe-4d47-9165-9beceef2dcad&sort=approval',
+    });
+  });
+  it('sort categories button does not render when category is not selected', () => {
+    mockLocationData = {
+      pathname: '',
+      query: { category: '' },
+    };
+
+    render(<InputsTable />);
+    expect(screen.queryByTestId('insightsSortButton')).not.toBeInTheDocument();
+  });
   it('renders table empty state when there are no inputs', () => {
     mockInputData = [];
+    mockLocationData = { pathname: '', query: { category: '' } };
     render(<InputsTable />);
     expect(
       screen.getByTestId('insightsInputsTableEmptyState')
@@ -164,8 +222,4 @@ describe('Insights Input Table', () => {
       screen.getByText('You have no input assigned to this category yet')
     ).toBeInTheDocument();
   });
-
-  // renders additional column when category is selected
-  // sorts +
-  // sorts -
 });
