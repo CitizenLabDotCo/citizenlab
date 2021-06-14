@@ -52,6 +52,7 @@ jest.mock('react-router', () => {
         );
       };
     },
+    Link: () => 'Link',
   };
 });
 

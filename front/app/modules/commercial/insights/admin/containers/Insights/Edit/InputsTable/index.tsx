@@ -62,7 +62,10 @@ const InputsTable = ({
   const closeSideModal = () => setIsSideModalOpen(false);
   const openSideModal = () => setIsSideModalOpen(true);
 
-  const inputs = useInsightsInputs(viewId, { category: query.category });
+  const inputs = useInsightsInputs(viewId, {
+    category: query.category,
+    search: query.search,
+  });
 
   // Use callback to keep references for moveUp and moveDown stable
   const moveUp = useCallback(() => {

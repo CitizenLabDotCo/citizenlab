@@ -165,3 +165,5 @@ describe('Insights Input Table', () => {
     ).toBeInTheDocument();
   });
 });
+
+// test search query

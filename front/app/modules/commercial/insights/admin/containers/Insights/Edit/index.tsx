@@ -17,6 +17,7 @@ import {
 } from 'cl2-component-library';
 import Divider from 'components/admin/Divider';
 import Modal from 'components/UI/Modal';
+import SearchInput from 'components/UI/SearchInput';
 import TopBar, { topBarHeight } from '../../../components/TopBar';
 import Error from 'components/UI/Error';
 import InputsTable from './InputsTable';
@@ -147,6 +148,13 @@ const StyledHeader = styled.h2`
   }
 `;
 
+const SearchContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-content: center;
+  margin-bottom: 40px;
+`;
+
 const EditInsightsView = ({
   intl: { formatMessage },
   params: { viewId },
@@ -227,6 +235,13 @@ const EditInsightsView = ({
   const selectedCategory = categories?.find(
     (category) => category.id === query.category
   );
+
+  const onSearch = (search: string) => {
+    clHistory.push({
+      pathname,
+      search: stringify({ ...query, search }, { addQueryPrefix: true }),
+    });
+  };
 
   return (
     <div data-testid="insightsEdit">
@@ -326,6 +341,17 @@ const EditInsightsView = ({
           </CategoriesList>
         </Categories>
         <Inputs>
+          <SearchContainer>
+            <SearchInput onChange={onSearch} />
+            <Button
+              locale={locale}
+              buttonStyle="admin-dark"
+              bgColor={colors.clBlue}
+              linkTo={`/admin/insights/${viewId}`}
+            >
+              {formatMessage(messages.inputsDone)}
+            </Button>
+          </SearchContainer>
           <StyledHeader data-testid="insightsInputsHeader">
             {selectedCategory ? (
               <>

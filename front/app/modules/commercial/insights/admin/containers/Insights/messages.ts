@@ -84,6 +84,10 @@ export default defineMessages({
     id: 'app.containers.Admin.Insights.createModalCancel',
     defaultMessage: 'Cancel',
   },
+  inputsDone: {
+    id: 'app.containers.Admin.Insights.Edit.inputsDone',
+    defaultMessage: 'Done',
+  },
   inputsTableInputs: {
     id: 'app.containers.Admin.Insights.Edit.inputsTableInputs',
     defaultMessage: 'Inputs',
