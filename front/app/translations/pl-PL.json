@@ -731,6 +731,7 @@
   "app.containers.Admin.Insights.Edit.deleteCategoryConfirmation": "",
   "app.containers.Admin.Insights.Edit.detectCategories": "",
   "app.containers.Admin.Insights.Edit.editCategoryName": "",
+  "app.containers.Admin.Insights.Edit.inputsDone": "",
   "app.containers.Admin.Insights.Edit.inputsEmptyState": "Nie masz jeszcze żadnych danych wejściowych dla tego widoku",
   "app.containers.Admin.Insights.Edit.inputsTableCategories": "Kategorie",
   "app.containers.Admin.Insights.Edit.inputsTableCategoryDescription": "",
