@@ -48,11 +48,7 @@ describe('Insights List', () => {
       expect(screen.getAllByTestId('insightsListItem')).toHaveLength(2);
     });
     it('opens create modal on button click', () => {
-      render(
-        <div id="modal-portal">
-          <InsightsList />
-        </div>
-      );
+      render(<InsightsList />);
       fireEvent.click(screen.getByText('Create insights'));
       expect(screen.getByTestId('insightsCreateModal')).toBeInTheDocument();
     });
@@ -72,11 +68,7 @@ describe('Insights List', () => {
       expect(screen.getAllByRole('button')).toHaveLength(2);
     });
     it('opens create modal on button click', () => {
-      render(
-        <div id="modal-portal">
-          <InsightsList />
-        </div>
-      );
+      render(<InsightsList />);
       fireEvent.click(screen.getByText('Create my first insights'));
       expect(screen.getByTestId('insightsCreateModal')).toBeInTheDocument();
     });

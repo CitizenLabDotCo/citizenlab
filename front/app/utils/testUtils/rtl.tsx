@@ -11,7 +11,7 @@ const AllTheProviders = ({ children }) => {
     <ThemeProvider theme={getTheme(null)}>
       <GlobalStyle />
       <IntlProvider locale="en" messages={messages}>
-        {children}
+        <div id="modal-portal">{children}</div>
       </IntlProvider>
     </ThemeProvider>
   );

@@ -12,7 +12,7 @@ module Insights
       end
 
       def create
-        category = authorize(Insights::Category.new(create_params))
+        category = authorize(::Insights::Category.new(create_params))
         if category.save
           render json: serialize(category), status: :created
         else
@@ -34,7 +34,7 @@ module Insights
       end
 
       def destroy_all
-        authorize(Insights::Category)
+        authorize(::Insights::Category)
         categories.destroy_all
         status = categories.count.zero? ? :ok : 500
         head status
