@@ -1,4 +1,4 @@
-<% unless header_logo_only? %>
+<% unless preheader.empty? %>
   <mj-section>
     <mj-column>
       <mj-text>
@@ -12,7 +12,7 @@
 
 <%= render partial: 'application/logo_medium_top' %>
 
-<% unless header_logo_only? %>
+<% unless header_title.empty? %>
   <mj-section padding="30px 25px">
     <mj-column>
       <mj-text>

@@ -1,6 +1,6 @@
 module EmailCampaigns
   class ApplicationMailer < ApplicationMailer
-    layout 'email_campaigns'
+    layout 'campaign_mailer'
 
     before_action do
       @command, @campaign = params.values_at(:command, :campaign)

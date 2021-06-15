@@ -2,6 +2,8 @@ module EmailCampaigns
   class ManualCampaignMailer < ApplicationMailer
     helper_method :body, :body_text
 
+    layout 'campaign_mailer_minimal'
+
     def body
       multiloc_service = MultilocService.new
       frontend_service = Frontend::UrlService.new
