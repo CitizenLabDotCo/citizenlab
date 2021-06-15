@@ -77,6 +77,12 @@ const InputsTable = ({
     category: query.category,
   });
 
+  // As an example
+  // const unCategorized = useInsightsInputs(viewId, {
+  //   pageNumber,
+  //   category: '',
+  // });
+
   const handlePaginationClick = (newPageNumber) => {
     clHistory.push({
       pathname: location.pathname,

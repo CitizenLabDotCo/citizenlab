@@ -42,6 +42,7 @@ const useInsightsInputs = (
         'page[number]': queryParameters?.pageNumber || 1,
         'page[size]': queryParameters?.pageSize || defaultPageSize,
       },
+      skipSanitizationFor: ['category'],
     }).observable.subscribe((insightsInputs) => {
       setInsightsInputs(insightsInputs.data);
       setLastPage(getPageNumberFromUrl(insightsInputs.links?.last));
