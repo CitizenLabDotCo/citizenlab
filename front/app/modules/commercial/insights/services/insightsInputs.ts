@@ -53,6 +53,7 @@ export function insightsInputStream(
     apiEndpoint: `${API_PATH}/${getInsightsInputsEndpoint(
       insightsViewId
     )}/${insightsInputId}`,
+    skipSanitizationFor: ['category'],
     ...streamParams,
   });
 }
