@@ -160,7 +160,7 @@
   "app.components.IdeasMap.clickOnMapToAdd": "Click on the map to add your input",
   "app.components.IdeasMap.ideaOnMapReadMore": "Citește mai mult",
   "app.components.IdeasMap.noFilteredResults": "The filters you selected did not return any results",
-  "app.components.IdeasMap.noResults": "No results found",
+  "app.components.IdeasMap.noResults": "Nici un rezultat gasit",
   "app.components.IdeasMap.nothingOnMapWarning": "Nu este nimic de văzut aici! S-ar putea să fie mai multe de văzut în vizualizarea listei.",
   "app.components.IdeasMap.or": "sau",
   "app.components.IdeasMap.postingHereImpossible": "Pentru moment nu este posibilă publicarea unei idei aici.",
