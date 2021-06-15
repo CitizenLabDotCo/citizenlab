@@ -18,8 +18,17 @@ export interface IInsightsInput {
   data: IInsightsInputData;
 }
 
+export interface IInsightsInputLinks {
+  self: string;
+  first: string;
+  prev: string;
+  next: string;
+  last: string;
+}
+
 export interface IInsightsInputs {
   data: IInsightsInputData[];
+  links?: IInsightsInputLinks;
 }
 
 const getInsightsInputsEndpoint = (viewId: string) =>
