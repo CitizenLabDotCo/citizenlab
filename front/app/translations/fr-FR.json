@@ -741,6 +741,7 @@
   "app.containers.Admin.Insights.Edit.renameCategoryModalSave": "Save",
   "app.containers.Admin.Insights.Edit.renameCategoryModalTitle": "Edit the name of this category",
   "app.containers.Admin.Insights.Edit.resetCategories": "Reset categories",
+  "app.containers.Admin.Insights.Edit.resetCategoriesConfimation": "Are you sure you want to reset all categories?",
   "app.containers.Admin.Insights.Reports.budgeting": "budget participatif",
   "app.containers.Admin.Insights.Reports.comments": "Commentaires",
   "app.containers.Admin.Insights.Reports.commentsByTimeTitle": "Commentaires",
