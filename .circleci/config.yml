@@ -298,14 +298,6 @@ workflows:
                 - crowdin_master
                 - production
 
-      - changelog-changed:
-          filters:
-            branches:
-              ignore:
-                - crowdin_master
-                - master
-                - production
-
   private-ci:
     when:
       and:
@@ -318,6 +310,17 @@ workflows:
             branches:
               ignore:
                 - crowdin_master
+
+  global-checks:
+    when: << pipeline.parameters.trigger >>
+    jobs:
+      - changelog-changed:
+          filters:
+            branches:
+              ignore:
+                - crowdin_master
+                - master
+                - production
 
   # *************** back ***************
   back:
