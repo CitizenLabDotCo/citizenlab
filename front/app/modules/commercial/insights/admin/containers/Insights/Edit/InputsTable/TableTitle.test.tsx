@@ -1,7 +1,6 @@
 import React from 'react';
 import { render, screen, fireEvent, act, within } from 'utils/testUtils/rtl';
 import * as service from 'modules/commercial/insights/services/insightsCategories';
-import clHistory from 'utils/cl-router/history';
 
 import TableTitle from './TableTitle';
 

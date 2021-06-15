@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { deleteInsightsCategory } from 'modules/commercial/insights/services/insightsCategories';
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
-import { InjectedIntlProps, injectIntl } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import { withRouter, WithRouterProps } from 'react-router';
 import clHistory from 'utils/cl-router/history';
 import { stringify } from 'qs';
@@ -13,6 +13,7 @@ import Modal from 'components/UI/Modal';
 import { Dropdown, DropdownListItem, IconTooltip } from 'cl2-component-library';
 import Button from 'components/UI/Button';
 import RenameCategory from '../RenameCategory';
+import { injectIntl } from 'utils/cl-intl';
 
 const StyledHeader = styled.h2`
   display: flex;

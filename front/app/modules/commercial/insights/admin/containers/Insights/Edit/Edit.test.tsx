@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, fireEvent, act, within } from 'utils/testUtils/rtl';
+import { render, screen, fireEvent, act } from 'utils/testUtils/rtl';
 import * as service from 'modules/commercial/insights/services/insightsCategories';
 import clHistory from 'utils/cl-router/history';
 
@@ -83,7 +83,7 @@ describe('Insights Edit', () => {
       fireEvent.click(screen.getAllByText('All input')[0]);
       expect(spy).toHaveBeenCalledWith({
         pathname: '',
-        search: `?category=&pageNumber=1`,
+        search: `?pageNumber=1&category=`,
       });
     });
 

@@ -192,6 +192,7 @@ const InputsTable = ({
                         ? false
                         : 'mixed'
                     }
+                    data-testid="headerCheckBox"
                   />
                 </th>
                 <th>{formatMessage(messages.inputsTableInputs)}</th>

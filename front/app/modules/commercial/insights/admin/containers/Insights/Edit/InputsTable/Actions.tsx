@@ -9,6 +9,12 @@ import Button from 'components/UI/Button';
 // Hooks
 import useInsightsCategories from 'modules/commercial/insights/hooks/useInsightsCategories';
 
+// Services
+import {
+  batchAssignCategories,
+  batchUnassignCategories,
+} from 'modules/commercial/insights/services/batchAssignment';
+
 // I18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from '../../messages';
@@ -90,10 +96,6 @@ const DropdownFooterButton = styled(Button)`
 // Typings
 import { InjectedIntlProps } from 'react-intl';
 import { withRouter, WithRouterProps } from 'react-router';
-import {
-  batchAssignCategories,
-  batchUnassignCategories,
-} from 'modules/commercial/insights/services/batchAssignment';
 
 interface Props {
   className?: string;
@@ -183,7 +185,7 @@ const Actions = ({
   );
 
   return (
-    <ActionButtons className={className}>
+    <ActionButtons className={className} data-testid="insightsTableActions">
       {selectedInputs.size > 0 && (
         <>
           {otherCategories.length > 0 && (
