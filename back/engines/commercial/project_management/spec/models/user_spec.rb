@@ -58,6 +58,31 @@ RSpec.describe User, type: :model do
       expect(mod.save).to eq true
       expect(mod.project_moderator? prj.id).to eq false
     end
+
+    it "demotes the user from default_assignee of the moderated project" do
+      prj = create(:project)
+      mod = create(:moderator, project: prj)
+      prj.default_assignee = mod
+      prj.save
+
+      mod.delete_role 'project_moderator', project_id: prj.id
+      expect(mod.save).to eq true
+      byebug
+      expect(prj.default_assignee_id).not_to eq mod.id
+    end
+
+    it "demotes the user from assignee of the moderated project's ideas" do
+      prj = create(:project)
+      mod = create(:moderator, project: prj)
+      prj.default_assignee = mod
+      prj.save
+
+      project_ideas = create_list(:idea, 3, project: project, assignee: mod)
+
+      mod.delete_role 'project_moderator', project_id: prj.id
+      expect(mod.save).to eq true
+      expect(ideas.puck(:default_assignee_id)).not_to include mod.id
+    end
   end
 
   describe "highest_role" do
