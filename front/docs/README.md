@@ -1,6 +1,8 @@
 # Changelog
 
 ## Next Release
+
+### Fixed
 - Project moderators can no longer see draft projects they don't moderate in the project listing.
 
 ## 2021-06-11
