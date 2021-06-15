@@ -1,19 +1,16 @@
 import React from 'react';
 import { render, screen, fireEvent, act } from 'utils/testUtils/rtl';
-import * as service from 'modules/commercial/insights/services/insightsViews';
+import * as service from 'modules/commercial/insights/services/insightsCategories';
 
-import RenameInsightsView from './RenameInsightsView';
+import RenameCategory from './RenameCategory';
 
 const viewId = '1';
-
-jest.mock('modules/commercial/insights/services/insightsViews', () => ({
-  updateInsightsView: jest.fn(),
-}));
+const categoryId = '1';
 
 jest.mock('utils/cl-intl');
 
 jest.mock('modules/commercial/insights/services/insightsCategories', () => ({
-  addInsightsCategory: jest.fn(),
+  updateInsightsCategory: jest.fn(),
 }));
 
 jest.mock('hooks/useLocale', () => jest.fn(() => 'en'));
@@ -22,30 +19,35 @@ jest.mock('react-router', () => {
   return {
     withRouter: (Component) => {
       return (props) => {
-        return <Component {...props} params={{ viewId }} />;
+        return (
+          <Component
+            {...props}
+            params={{ viewId }}
+            location={{ query: { category: '1' } }}
+          />
+        );
       };
     },
     Link: 'Link',
   };
 });
 
-describe('Rename Insights View', () => {
+describe('Rename Category', () => {
   it('renames view with correct viewId and name', () => {
-    const viewName = 'New name';
+    const categoryName = 'New name';
 
-    const spy = jest.spyOn(service, 'updateInsightsView');
+    const spy = jest.spyOn(service, 'updateInsightsCategory');
     const closeModal = () => jest.fn();
     render(
-      <RenameInsightsView
-        originalViewName="Name"
-        insightsViewId={viewId}
+      <RenameCategory
+        originalCategoryName="Name"
         closeRenameModal={closeModal}
       />
     );
     expect(screen.getByRole('textbox')).toHaveAttribute('value', 'Name');
     fireEvent.input(screen.getByRole('textbox'), {
       target: {
-        value: viewName,
+        value: categoryName,
       },
     });
 
@@ -53,6 +55,6 @@ describe('Rename Insights View', () => {
       fireEvent.click(screen.getByText('Save'));
     });
 
-    expect(spy).toHaveBeenCalledWith(viewId, viewName);
+    expect(spy).toHaveBeenCalledWith(viewId, categoryId, categoryName);
   });
 });

@@ -1,4 +1,5 @@
 import React from 'react';
+import { withRouter, WithRouterProps } from 'react-router';
 
 // styles
 import styled from 'styled-components';
@@ -17,24 +18,41 @@ const StyledEmptyState = styled.div`
   flex-grow: 1;
   flex-direction: column;
   align-items: center;
-  font-size: ${fontSizes.base}px;
-  color: ${colors.label};
-  font-weight: bold;
-  line-height: 25px;
   padding-top: 80px;
+  text-align: center;
   svg {
     margin-bottom: 20px;
     height: 35px;
   }
+  h1 {
+    font-weight: bold;
+    line-height: 25px;
+    font-size: ${fontSizes.base}px;
+    color: ${colors.label};
+  }
+  p {
+    font-weight: normal;
+    font-size: ${fontSizes.small}px;
+  }
 `;
 
-const EmptyState = ({ intl: { formatMessage } }: InjectedIntlProps) => {
+const EmptyState = ({
+  intl: { formatMessage },
+  location: { query },
+}: InjectedIntlProps & WithRouterProps) => {
   return (
     <StyledEmptyState data-testid="insightsInputsTableEmptyState">
       <Icon name="blankPage" />
-      {formatMessage(messages.inputsTableEmpty)}
+      {query.category ? (
+        <>
+          <h1>{formatMessage(messages.inputsTableCategoryTitle)}</h1>
+          <p>{formatMessage(messages.inputsTableCategoryDescription)}</p>
+        </>
+      ) : (
+        formatMessage(messages.inputsTableEmpty)
+      )}
     </StyledEmptyState>
   );
 };
 
-export default injectIntl(EmptyState);
+export default withRouter(injectIntl(EmptyState));
