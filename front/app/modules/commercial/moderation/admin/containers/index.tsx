@@ -9,7 +9,7 @@ import Table from 'components/UI/Table';
 import ModerationRow from './ModerationRow';
 import Pagination from 'components/admin/Pagination/Pagination';
 import Checkbox from 'components/UI/Checkbox';
-import { Icon, IconTooltip, Select } from 'cl2-component-library';
+import { Icon, IconTooltip, Select, Error } from 'cl2-component-library';
 import Button from 'components/UI/Button';
 import Tabs, { ITabItem } from 'components/UI/Tabs';
 import { PageTitle } from 'components/admin/Section';
@@ -236,6 +236,9 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
   const [selectedTypes, setSelectedTypes] = useState<TModeratableTypes[]>([]);
   const [selectedProjectIds, setSelectedProjectIds] = useState<string[]>([]);
   const [selectedTab, setSelectedTab] = useState<TTabName>('unread');
+  const [actionBarErrorMessage, setActionBarErrorMessage] = useState<
+    string | null
+  >(null);
   const [
     activeInappropriateContentFlags,
     setActiveInappropriateContentFlags,
@@ -330,13 +333,15 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
   const handleRowOnSelect = useCallback(
     (newSelectedModeration: IModerationData) => {
       if (!processing) {
-        setSelectedModerations(
-          isModerationSelected(newSelectedModeration)
-            ? selectedModerations.filter(
-                (moderation) => moderation.id !== newSelectedModeration.id
-              )
-            : [...selectedModerations, newSelectedModeration]
-        );
+        setSelectedModerations((prevSelectedModerations) => {
+          if (isModerationSelected(newSelectedModeration)) {
+            return prevSelectedModerations.filter(
+              (moderation) => moderation.id !== newSelectedModeration.id
+            );
+          }
+
+          return [...prevSelectedModerations, newSelectedModeration];
+        });
       }
     },
     [processing]
@@ -349,10 +354,18 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
         return removeInappropriateContentFlag(flagId);
       });
 
-      setProcessing(true);
-      await Promise.all(promises);
-      setProcessing(false);
-      setSelectedModerations([]);
+      try {
+        setActionBarErrorMessage(null);
+        setProcessing(true);
+
+        await Promise.all(promises);
+
+        setProcessing(false);
+        setSelectedModerations([]);
+      } catch {
+        setActionBarErrorMessage(intl.formatMessage(messages.removeFlagsError));
+        setProcessing(false);
+      }
     }
   }, [activeInappropriateContentFlags, processing]);
 
@@ -365,13 +378,6 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
         !processing
       ) {
         event.preventDefault();
-        trackEventByName(
-          moderationStatus === 'read'
-            ? tracks.markedAsNotViewedButtonClicked
-            : tracks.markedAsNotViewedButtonClicked,
-          { selectedItemsCount: selectedModerations.length }
-        );
-        setProcessing(true);
         const updatedModerationStatus =
           moderationStatus === 'read' ? 'unread' : 'read';
         const promises = selectedModerations.map((moderation) =>
@@ -381,9 +387,26 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
             updatedModerationStatus
           )
         );
-        await Promise.all(promises);
-        setProcessing(false);
-        setSelectedModerations([]);
+
+        try {
+          setActionBarErrorMessage(null);
+          setProcessing(true);
+
+          await Promise.all(promises);
+
+          setProcessing(false);
+          setSelectedModerations([]);
+
+          trackEventByName(
+            moderationStatus === 'read'
+              ? tracks.markedAsNotViewedButtonClicked
+              : tracks.markedAsNotViewedButtonClicked,
+            { selectedItemsCount: selectedModerations.length }
+          );
+        } catch {
+          setActionBarErrorMessage(intl.formatMessage(messages.markFlagsError));
+          setProcessing(false);
+        }
       }
     },
     [selectedModerations, moderationItems, moderationStatus]
@@ -489,6 +512,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
             </Buttons>
           )}
           <StyledSearchInput onChange={handleSearchTermChange} />
+          <Error text={actionBarErrorMessage} />
         </ActionBar>
 
         <StyledTable>
