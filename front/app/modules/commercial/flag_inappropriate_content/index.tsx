@@ -3,6 +3,7 @@ import React, { ReactNode } from 'react';
 import Setting from './admin/containers/Setting';
 import RemoveFlagButton from './admin/components/RemoveFlagButton';
 import ActivityTab from './admin/components/ActivityTab';
+import InappropriateContentWarning from './admin/components/InappropriateContentWarning';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 type RenderOnFeatureFlagProps = {
@@ -28,6 +29,19 @@ const configuration: ModuleConfiguration = {
       props
     ) => {
       return <RemoveFlagButton {...props} />;
+    },
+    'app.modules.commercial.moderation.admin.containers.ModerationRow.content': ({
+      inappropriateContentFlagId,
+    }) => {
+      if (inappropriateContentFlagId) {
+        return (
+          <InappropriateContentWarning
+            inappropriateContentFlagId={inappropriateContentFlagId}
+          />
+        );
+      }
+
+      return null;
     },
     'app.modules.commercial.moderation.admin.containers.tabs': (props) => {
       return <ActivityTab {...props} />;
