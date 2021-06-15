@@ -1,5 +1,4 @@
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import React, { ReactNode } from 'react';
+import React from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 import GuideArticle from './admin/components/GuideArticle';
 import Tab from './admin/components/Tab';
