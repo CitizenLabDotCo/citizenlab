@@ -42,6 +42,7 @@ import { CLErrors } from 'typings';
 // services
 import {
   addInsightsCategory,
+  deleteInsightsCategories,
   deleteInsightsCategory,
 } from 'modules/commercial/insights/services/insightsCategories';
 
@@ -153,8 +154,8 @@ const EditInsightsView = ({
   location: { query, pathname },
 }: InjectedIntlProps & WithRouterProps) => {
   const locale = useLocale();
-
-  const [loading, setLoading] = useState(false);
+  const [loadingAdd, setLoadingAdd] = useState(false);
+  const [loadingReset, setLoadingReset] = useState(false);
   const [errors, setErrors] = useState<CLErrors | undefined>();
 
   const categories = useInsightsCategories(viewId);
@@ -185,13 +186,13 @@ const EditInsightsView = ({
 
   const handleCategorySubmit = async () => {
     if (name) {
-      setLoading(true);
+      setLoadingAdd(true);
       try {
         await addInsightsCategory(viewId, name);
       } catch (errors) {
         setErrors(errors.json.errors);
       }
-      setLoading(false);
+      setLoadingAdd(false);
       setName('');
     }
   };
@@ -231,6 +232,20 @@ const EditInsightsView = ({
     (category) => category.id === query.category
   );
 
+  const handleResetCategories = async () => {
+    const deleteMessage = formatMessage(messages.resetCategoriesConfimation);
+
+    setLoadingReset(true);
+    if (window.confirm(deleteMessage)) {
+      try {
+        await deleteInsightsCategories(viewId);
+      } catch {
+        // Do nothing
+      }
+    }
+    setLoadingReset(false);
+  };
+
   return (
     <div data-testid="insightsEdit">
       <TopBar />
@@ -247,8 +262,13 @@ const EditInsightsView = ({
             buttonStyle="white"
             locale={locale}
             textColor={colors.adminTextColor}
+            onClick={handleResetCategories}
           >
-            {formatMessage(messages.resetCategories)}
+            {loadingReset ? (
+              <Spinner size="22px" />
+            ) : (
+              formatMessage(messages.resetCategories)
+            )}
           </ResetButton>
           <Divider />
           <ButtonsContainer>
@@ -284,9 +304,13 @@ const EditInsightsView = ({
               className="addButton"
               padding="8px"
               onClick={handleCategorySubmit}
-              disabled={!name || loading}
+              disabled={!name || loadingAdd}
             >
-              {loading ? <Spinner size="22px" /> : <StyledPlus>+</StyledPlus>}
+              {loadingAdd ? (
+                <Spinner size="22px" />
+              ) : (
+                <StyledPlus>+</StyledPlus>
+              )}
             </Button>
           </FormContainer>
           {errors && (
