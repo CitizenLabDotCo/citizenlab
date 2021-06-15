@@ -95,13 +95,11 @@ RSpec.describe Notification, type: :model do
       expect(notifications).to be_present
     end
 
-    it 'makes a project moderation rights received notification on moderator (user) project_moderation_rights_given' do
-      project = create(:project)
-      moderator = create(:moderator, project: project)
-      activity = create(:activity, item: moderator, action: 'project_moderation_rights_given', payload: { project_id: project.id })
-
-      notifications = Notifications::ProjectModerationRightsReceived.make_notifications_on activity
-      expect(notifications).to be_present
+    it 'makes project_phase_started notifications for members of the project group' do
+      phase = create(:active_phase)
+      project = phase.project
+      project.visible_to = 'groups'
+      project.groups << create(:group)
     end
 
     it 'makes project_phase_started notifications on phase started' do
@@ -109,15 +107,18 @@ RSpec.describe Notification, type: :model do
       project = phase.project
       project.visible_to = 'groups'
       project.groups << create(:group)
-      moderator = create(:moderator, project: project)
-      other_moderator = create(:moderator, email: 'koen@test.com', manual_groups: [project.groups.first]) # member
-      admin = create(:admin)
-      user = create(:user, email: 'sebi@test.com', manual_groups: [project.groups.first]) # member
-      other_user = create(:user, email: 'koen@citizenlab.co') # not member
+
+      # members
+      user = create(:user, email: 'user1@example.com', manual_groups: [project.groups.first])
+      _admin = create(:admin, email: 'admin@example.com', manual_groups: [project.groups.first])
+      # non-members
+      _other_user = create(:admin)
+      _other_admin = create(:user, email: 'user2@example.com')
+
       activity = create(:activity, item: phase, action: 'started')
 
-      notifications = Notifications::ProjectPhaseStarted.make_notifications_on activity
-      expect(notifications.map(&:recipient_id)).to match_array [other_moderator.id, user.id]
+      notifications = Notifications::ProjectPhaseStarted.make_notifications_on(activity)
+      expect(notifications.map(&:recipient_id)).to match_array [user.id]
     end
   end
 

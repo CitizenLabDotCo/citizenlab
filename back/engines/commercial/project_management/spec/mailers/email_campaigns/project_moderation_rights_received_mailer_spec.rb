@@ -1,6 +1,10 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-RSpec.describe EmailCampaigns::ProjectModerationRightsReceivedMailer, type: :mailer do
+skip_reason = defined?(EmailCampaigns::Engine) ? nil : 'email_campaigns engine is not installed'
+
+RSpec.describe EmailCampaigns::ProjectModerationRightsReceivedMailer, type: :mailer, skip: skip_reason do
   describe 'campaign_mail' do
     let(:project) { create(:project) }
     let!(:recipient) { create(:moderator, locale: 'en', project: project) }
@@ -22,7 +26,6 @@ RSpec.describe EmailCampaigns::ProjectModerationRightsReceivedMailer, type: :mai
     before do
       EmailCampaigns::UnsubscriptionToken.create!(user_id: recipient.id)
     end
-
 
     it 'renders the subject' do
       expect(mail.subject).to start_with('You became a project manager on the platform of')

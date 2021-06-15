@@ -63,19 +63,6 @@ describe IdeaFilePolicy do
         expect(scope.resolve.size).to eq 1
       end
     end
-
-    context 'for a moderator' do
-      let(:user) { create(:moderator, project: project) }
-
-      it { is_expected.to permit(:show)    }
-      it { is_expected.to permit(:create)  }
-      it { is_expected.to permit(:update)  }
-      it { is_expected.to permit(:destroy) }
-
-      it 'indexes the file' do
-        expect(scope.resolve.size).to eq 1
-      end
-    end
   end
 
   context 'on a file of an idea in a private admins project' do
