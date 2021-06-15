@@ -741,6 +741,7 @@
   "app.containers.Admin.Insights.Edit.renameCategoryModalSave": "",
   "app.containers.Admin.Insights.Edit.renameCategoryModalTitle": "",
   "app.containers.Admin.Insights.Edit.resetCategories": "",
+  "app.containers.Admin.Insights.Edit.resetCategoriesConfimation": "",
   "app.containers.Admin.Insights.Reports.budgeting": "presupuesto participativo",
   "app.containers.Admin.Insights.Reports.comments": "Comentarios",
   "app.containers.Admin.Insights.Reports.commentsByTimeTitle": "Comentarios",

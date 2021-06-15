@@ -536,24 +536,27 @@ resource 'Projects' do
     delete 'web_api/v1/projects/:id' do
       let(:project) { create(:project) }
       let(:id) { project.id }
-      example 'Delete a project' do
+
+      example_request 'Delete a project' do
+        expect(response_status).to eq 200
+        expect { Project.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+
+      example 'Deleting a project removes associated moderator rights', document: false, skip: !CitizenLab.ee? do
         moderator = create(:moderator, project: project)
         expect(moderator.project_moderator?(id)).to be true
         do_request
-        expect(response_status).to eq 200
-        expect { Project.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
         expect(moderator.reload.project_moderator?(id)).to be false
       end
     end
   end
 
   get 'web_api/v1/projects' do
-    context 'when moderator' do
+    context 'when moderator', skip: !CitizenLab.ee? do
       before do
         @project = create(:project)
         @moderator = create(:moderator, project: @project)
-        token = Knock::AuthToken.new(payload: @moderator.to_token_payload).token
-        header 'Authorization', "Bearer #{token}"
+        header_token_for(@moderator)
 
         @projects = create_list(:project, 10, admin_publication_attributes: { publication_status: 'published' })
       end
@@ -603,7 +606,7 @@ resource 'Projects' do
         expect(json_response[:data].size).to eq 1
       end
 
-      example 'Normal users cannot moderate any projects', document: false do
+      example 'Normal users cannot moderate any projects', document: false, skip: !CitizenLab.ee? do
         %w[published published draft published archived published archived]
           .map { |ps| create(:project, admin_publication_attributes: { publication_status: ps }) }
         do_request(filter_can_moderate: true, publication_statuses: AdminPublication::PUBLICATION_STATUSES)
@@ -616,13 +619,15 @@ resource 'Projects' do
   context 'when not logged in' do
     get 'web_api/v1/projects' do
       parameter :filter_can_moderate, 'Filter out the projects the user is allowed to moderate. False by default', required: false
+
       before do
         @projects = create_list(:project, 10, admin_publication_attributes: { publication_status: 'published' })
       end
 
       let(:filter_can_moderate) { true }
 
-      example_request 'List all projects the current user can moderate', document: false do
+      example 'List all projects the current user can moderate', document: false, skip: !CitizenLab.ee? do
+        do_request
         expect(status).to eq(200)
         expect(json_response[:data].size).to eq 0
       end

@@ -116,6 +116,10 @@ export default defineMessages({
     id: 'app.containers.Admin.Insights.Edit.resetCategories',
     defaultMessage: 'Reset categories',
   },
+  resetCategoriesConfimation: {
+    id: 'app.containers.Admin.Insights.Edit.resetCategoriesConfimation',
+    defaultMessage: 'Are you sure you want to reset all categories?',
+  },
   addCategory: {
     id: 'app.containers.Admin.Insights.Edit.addCategory',
     defaultMessage: 'Add category',

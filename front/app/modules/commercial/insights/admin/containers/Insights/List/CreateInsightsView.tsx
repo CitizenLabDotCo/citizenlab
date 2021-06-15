@@ -56,7 +56,7 @@ interface InputProps {
   closeCreateModal: () => void;
 }
 
-const CreateInsightsView = ({
+export const CreateInsightsView = ({
   projects,
   closeCreateModal,
 }: DataProps & InputProps) => {
@@ -114,6 +114,7 @@ const CreateInsightsView = ({
         <SectionField>
           <Input
             type="text"
+            id="view_name"
             value={name}
             onChange={onChangeName}
             label={<FormattedMessage {...messages.createModalNameLabel} />}
@@ -122,6 +123,7 @@ const CreateInsightsView = ({
         </SectionField>
         <SectionField>
           <Select
+            id="view_project_scope"
             options={getProjectOptions()}
             onChange={onChangeProjectScope}
             value={projectScope}

@@ -1,4 +1,3 @@
-
 class ProjectsFilteringService
   include Filterer
 
@@ -19,11 +18,6 @@ class ProjectsFilteringService
     keep_ids = options[:filter_ids]
     keep_ids ? scope.where(id: keep_ids) : scope
   end
-
-  add_filter("by_moderator") do |scope, options|
-    next scope unless options.has_key? :moderator
-    moderator = options[:moderator] # nil means the user is not logged in
-    ProjectPolicy::Scope.new(moderator, scope).moderatable
-  end
-
 end
+
+ProjectsFilteringService.include_if_ee('ProjectManagement::Patches::ProjectsFilteringService')
