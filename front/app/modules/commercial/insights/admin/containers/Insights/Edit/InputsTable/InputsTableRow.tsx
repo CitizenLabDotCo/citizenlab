@@ -55,14 +55,19 @@ const InputsTableRow = ({
       data-testid="insightsInputsTableRow"
       tabIndex={0}
       onKeyPress={handleEnterPress}
+      onClick={onPreview}
     >
       <td>
-        <Checkbox checked={selected} onChange={changeSelected} />
+        <Checkbox
+          checked={selected}
+          onChange={changeSelected}
+          stopLabelPropagation
+        />
       </td>
-      <td onClick={onPreview}>
+      <td>
         <T value={idea.attributes.title_multiloc} maxLength={30} />
       </td>
-      <td onClick={onPreview}>
+      <td>
         <CategoryList>
           {input.relationships?.categories.data.map((category) => (
             <Category id={category.id} inputId={input.id} key={category.id} />

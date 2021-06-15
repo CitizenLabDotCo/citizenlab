@@ -41,12 +41,15 @@ const Inputs = styled.div`
 
 const TitleRow = styled.div`
   display: flex;
-  margin-bottom: 15px;
   min-height: 43px;
 `;
 
 const StyledActions = styled(Actions)`
   margin-left: 60px;
+`;
+
+const StyledDivider = styled(Divider)`
+  margin-top: 6px;
 `;
 
 const StyledTable = styled(Table)`
@@ -84,36 +87,31 @@ const InputsTable = ({
   location: { query },
   intl: { formatMessage },
 }: WithRouterProps & InjectedIntlProps) => {
+  // State
   const [selectedRows, setSelectedRows] = useState<Set<string>>(new Set());
   const [isSideModalOpen, setIsSideModalOpen] = useState(false);
   const [previewedInputIndex, setPreviewedInputIndex] = useState<number | null>(
     null
   );
 
-  const closeSideModal = () => setIsSideModalOpen(false);
-  const openSideModal = () => setIsSideModalOpen(true);
-
+  // Data fetching -------------------------------------------------------------
   const pageNumber = parseInt(location?.query?.pageNumber, 10);
-
   const selectedCategory = query.category;
-
-  // Reset selection on page change
-  useEffect(() => {
-    setSelectedRows(new Set());
-  }, [selectedCategory, pageNumber]);
 
   const { list: inputs, lastPage } = useInsightsInputs(viewId, {
     pageNumber,
     category: selectedCategory,
   });
 
-  const handlePaginationClick = (newPageNumber) => {
-    clHistory.push({
-      pathname: location.pathname,
-      search: `?${stringify({ ...location.query, pageNumber: newPageNumber })}`,
-    });
-  };
+  // Callbacks and Effects -----------------------------------------------------
 
+  // Table Selection
+  // Reset selection on page change
+  useEffect(() => {
+    setSelectedRows(new Set());
+  }, [selectedCategory, pageNumber]);
+
+  // Side Modal Preview
   // Use callback to keep references for moveUp and moveDown stable
   const moveUp = useCallback(() => {
     setPreviewedInputIndex((prevSelectedIndex) => {
@@ -131,15 +129,20 @@ const InputsTable = ({
     });
   }, []);
 
+  // From this point we need data ----------------------------------------------
   if (isNilOrError(inputs)) {
     return null;
   }
 
-  const previewInput = (input: IInsightsInputData) => () => {
-    setPreviewedInputIndex(inputs.indexOf(input));
-    openSideModal();
+  // Pagination ----------------------------------------------------------------
+  const handlePaginationClick = (newPageNumber) => {
+    clHistory.push({
+      pathname: location.pathname,
+      search: `?${stringify({ ...location.query, pageNumber: newPageNumber })}`,
+    });
   };
 
+  // Selection and Actions -----------------------------------------------------
   const handleCheckboxChange = () => {
     if (selectedRows.size === 0) {
       const newSelection = new Set(inputs.map((input) => input.id));
@@ -151,29 +154,36 @@ const InputsTable = ({
   };
 
   const toggleInputSelected = (input: IInsightsInputData) => () => {
+    const newSelection = new Set(selectedRows);
     if (selectedRows.has(input.id)) {
-      const newSelection = new Set(selectedRows);
       newSelection.delete(input.id);
       setSelectedRows(newSelection);
     } else {
-      const newSelection = new Set(selectedRows);
       newSelection.add(input.id);
       setSelectedRows(newSelection);
     }
   };
 
+  // Side Modal Preview --------------------------------------------------------
+  const closeSideModal = () => setIsSideModalOpen(false);
+  const openSideModal = () => setIsSideModalOpen(true);
+
+  const previewInput = (input: IInsightsInputData) => () => {
+    setPreviewedInputIndex(inputs.indexOf(input));
+    openSideModal();
+  };
+
   return (
     <Inputs data-testid="insightsInputsTable">
+      <TitleRow>
+        <TableTitle />
+        <StyledActions selectedInputs={selectedRows} />
+      </TitleRow>
+      <StyledDivider />
       {inputs.length === 0 ? (
         <EmptyState />
       ) : (
         <>
-          <TitleRow>
-            <TableTitle />
-            <StyledActions selectedInputs={selectedRows} />
-          </TitleRow>
-          <Divider />
-
           <StyledTable>
             <colgroup>
               <col span={1} style={{ width: '5%' }} />

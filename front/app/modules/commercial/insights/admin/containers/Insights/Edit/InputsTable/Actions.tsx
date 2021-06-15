@@ -58,7 +58,7 @@ const DropdownList = styled.div`
   align-items: stretch;
 `;
 
-const DropdownListItem = styled.button`
+const DropdownListItem = styled.label`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -204,7 +204,6 @@ const Actions = ({
                     {otherCategories.map((category) => (
                       <DropdownListItem
                         key={category.id}
-                        onClick={toggleCategory(category.id)}
                         className="e2e-dropdown-item"
                       >
                         <DropdownListItemText>
