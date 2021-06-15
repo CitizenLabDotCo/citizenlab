@@ -14,9 +14,9 @@ describe ProjectPolicy do
     context 'for a moderator of another project' do
       let(:user) { create(:moderator, project: create(:project)) }
 
-      it { is_expected.to     permit(:show)    }
-      it { is_expected.not_to permit(:create)  }
-      it { is_expected.not_to permit(:update)  }
+      it { is_expected.to permit(:show) }
+      it { is_expected.not_to permit(:create) }
+      it { is_expected.not_to permit(:update) }
       it { is_expected.not_to permit(:reorder) }
       it { is_expected.not_to permit(:destroy) }
 
@@ -37,10 +37,10 @@ describe ProjectPolicy do
     context 'for a moderator' do
       let(:user) { create(:moderator, project: project) }
 
-      it { is_expected.to     permit(:show)    }
-      it { is_expected.not_to permit(:create)  }
-      it { is_expected.to     permit(:update)  }
-      it { is_expected.to     permit(:reorder) }
+      it { is_expected.to permit(:show) }
+      it { is_expected.not_to permit(:create) }
+      it { is_expected.to permit(:update) }
+      it { is_expected.to permit(:reorder) }
       it { is_expected.not_to permit(:destroy) }
 
       it 'indexes the project' do
@@ -60,10 +60,10 @@ describe ProjectPolicy do
     context 'for a moderator' do
       let(:user) { create(:moderator, project: project) }
 
-      it { is_expected.to     permit(:show)    }
-      it { is_expected.not_to permit(:create)  }
-      it { is_expected.to     permit(:update)  }
-      it { is_expected.to     permit(:reorder) }
+      it { is_expected.to permit(:show) }
+      it { is_expected.not_to permit(:create) }
+      it { is_expected.to permit(:update) }
+      it { is_expected.to permit(:reorder) }
       it { is_expected.not_to permit(:destroy) }
 
       it 'indexes the project' do
@@ -74,6 +74,20 @@ describe ProjectPolicy do
       it 'includes the user in the users that have access' do
         expect(inverse_scope.resolve).to include(user)
       end
+    end
+
+    context 'for a moderator of another project' do
+      let(:user) { create(:moderator) }
+
+      it { is_expected.not_to permit(:show) }
+      it { is_expected.not_to permit(:create) }
+      it { is_expected.not_to permit(:update) }
+      it { is_expected.not_to permit(:reorder) }
+      it { is_expected.not_to permit(:destroy) }
+
+      it { expect(scope.resolve).not_to include(project) }
+      it { expect(scope.moderatable).not_to include(project) }
+      it { expect(inverse_scope.resolve).not_to include(user) }
     end
   end
 end
