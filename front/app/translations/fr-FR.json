@@ -16,7 +16,7 @@
   "app.components.AssignBudgetControl.add": "Ajouter",
   "app.components.AssignBudgetControl.addToMyExpenses": "Ajouter à mes dépenses",
   "app.components.AssignBudgetControl.backToOverview": "Retour à l'aperçu",
-  "app.components.AssignBudgetControl.remove": "Remove",
+  "app.components.AssignBudgetControl.remove": "Supprimer",
   "app.components.AssignBudgetControl.removeFromMyExpenses": "Supprimer de mes dépenses",
   "app.components.AssignBudgetControl.verifyAccountLinkText": "vérifiez votre compte",
   "app.components.Author.a11y_postedBy": "Posté par:",
