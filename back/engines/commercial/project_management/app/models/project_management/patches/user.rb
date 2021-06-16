@@ -53,10 +53,8 @@ module ProjectManagement
         # When a user loses project management rights over a project, and is the default assignee, or assignee of some ideas,
         # change it to the oldest admin.
         def reset_project_and_idea_assignments
-          projects = lost_assigned_moderatable_projects
-          ideas = lost_assigned_moderated_ideas
-          projects.update(default_assignee: self.class.oldest_admin)
-          ideas.update(assignee: self.class.oldest_admin)
+          lost_assigned_moderatable_projects.update(default_assignee: self.class.oldest_admin)
+          lost_assigned_moderated_ideas.update(assignee: self.class.oldest_admin)
         end
 
         def lost_rights_over_assigned_projects_or_ideas?
