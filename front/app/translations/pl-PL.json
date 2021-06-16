@@ -741,7 +741,7 @@
   "app.containers.Admin.Insights.Edit.renameCategoryModalSave": "Zapisz",
   "app.containers.Admin.Insights.Edit.renameCategoryModalTitle": "Edytuj nazwę tej kategorii",
   "app.containers.Admin.Insights.Edit.resetCategories": "Wyzeruj kategorie",
-  "app.containers.Admin.Insights.Edit.resetCategoriesConfimation": "Are you sure you want to reset all categories?",
+  "app.containers.Admin.Insights.Edit.resetCategoriesConfimation": "Czy na pewno chcesz zresetować wszystkie kategorie?",
   "app.containers.Admin.Insights.Reports.budgeting": "budżetowanie",
   "app.containers.Admin.Insights.Reports.comments": "Komentarze",
   "app.containers.Admin.Insights.Reports.commentsByTimeTitle": "Komentarze",
