@@ -14,7 +14,7 @@
   "app.components.AdminPage.SettingsPage.homePageCustomizableSectionTooltip": "Esta secção vazia na parte inferior da página inicial pode ser personalizada com as suas próprias imagens, texto e links.",
   "app.components.AssignBudgetControl.a11y_price": "Preço:",
   "app.components.AssignBudgetControl.add": "Adicionar",
-  "app.components.AssignBudgetControl.addToMyExpenses": "Add to my expenses",
+  "app.components.AssignBudgetControl.addToMyExpenses": "Acrescentar às minhas despesas",
   "app.components.AssignBudgetControl.backToOverview": "Voltar à visão geral",
   "app.components.AssignBudgetControl.remove": "Remover",
   "app.components.AssignBudgetControl.removeFromMyExpenses": "Retirar das minhas despesas",
