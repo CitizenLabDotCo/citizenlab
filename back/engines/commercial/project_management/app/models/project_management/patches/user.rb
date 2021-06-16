@@ -68,7 +68,7 @@ module ProjectManagement
         end
 
         def lost_assigned_moderated_ideas
-          Idea.includes(:project).where(project: ::Project.where(id: moderatable_project_ids_was - moderatable_project_ids), assignee: self)
+          Idea.includes(:project).where(project_id: (moderatable_project_ids_was - moderatable_project_ids), assignee: self)
         end
       end
     end
