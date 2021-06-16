@@ -65,7 +65,6 @@ export async function deleteInsightsInputCategory(
   );
   streams.fetchAllWith({
     regexApiEndpoint: [inputsEndpointRegexp],
-    onlyFetchActiveStreams: true,
   });
 
   return response;
@@ -88,7 +87,6 @@ export async function addInsightsInputCategory(
   );
   streams.fetchAllWith({
     regexApiEndpoint: [inputsEndpointRegexp],
-    onlyFetchActiveStreams: true,
   });
 
   return response;

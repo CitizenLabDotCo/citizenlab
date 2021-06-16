@@ -177,17 +177,18 @@ const InputsTable = ({
           </tbody>
         </StyledTable>
       )}
-      <SideModal opened={isSideModalOpen} close={closeSideModal}>
-        {!isNilOrError(selectedInputIndex) && (
-          <InputDetails
-            selectedInput={inputs[selectedInputIndex]}
-            moveUp={moveUp}
-            moveDown={moveDown}
-            isMoveUpDisabled={selectedInputIndex === 0}
-            isMoveDownDisabled={selectedInputIndex === inputs.length - 1}
-          />
+      {!isNilOrError(selectedInputIndex) &&
+        !isNilOrError(inputs[selectedInputIndex]) && (
+          <SideModal opened={isSideModalOpen} close={closeSideModal}>
+            <InputDetails
+              selectedInput={inputs[selectedInputIndex]}
+              moveUp={moveUp}
+              moveDown={moveDown}
+              isMoveUpDisabled={selectedInputIndex === 0}
+              isMoveDownDisabled={selectedInputIndex === inputs.length - 1}
+            />
+          </SideModal>
         )}
-      </SideModal>
     </div>
   );
 };
