@@ -41,6 +41,10 @@ module ProjectManagement
         ::Project.where(id: moderatable_project_ids_was)
       end
 
+      def project_moderator?(project_id = nil)
+        project_id ? moderatable_project_ids.include?(project_id) : moderatable_project_ids.present?
+      end
+
       module IdeaAssignment
         def self.included(base)
           base.before_save :reset_project_and_idea_assignments, if: :lost_rights_over_assigned_projects_or_ideas?
@@ -49,8 +53,10 @@ module ProjectManagement
         # When a user loses project management rights over a project, and is the default assignee, or assignee of some ideas,
         # change it to the oldest admin.
         def reset_project_and_idea_assignments
-          lost_assigned_moderatable_projects.update!(default_assignee: self.class.oldest_admin)
-          lost_assigned_moderated_ideas.update!(default_assignee: self.class.oldest_admin)
+          projects = lost_assigned_moderatable_projects
+          ideas = lost_assigned_moderated_ideas
+          projects.update(default_assignee: self.class.oldest_admin)
+          ideas.update(assignee: self.class.oldest_admin)
         end
 
         def lost_rights_over_assigned_projects_or_ideas?
@@ -65,10 +71,6 @@ module ProjectManagement
 
         def lost_assigned_moderated_ideas
           Idea.includes(:project).where(project: ::Project.where(id: moderatable_project_ids_was - moderatable_project_ids), assignee: self)
-        end
-
-        def project_moderator?(project_id = nil)
-          project_id ? moderatable_project_ids.include?(project_id) : moderatable_project_ids.present?
         end
       end
     end

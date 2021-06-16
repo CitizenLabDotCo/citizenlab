@@ -67,8 +67,7 @@ RSpec.describe User, type: :model do
 
       mod.delete_role 'project_moderator', project_id: prj.id
       expect(mod.save).to eq true
-      byebug
-      expect(prj.default_assignee_id).not_to eq mod.id
+      expect(prj.reload.default_assignee_id).not_to eq mod.id
     end
 
     it "demotes the user from assignee of the moderated project's ideas" do
@@ -77,11 +76,12 @@ RSpec.describe User, type: :model do
       prj.default_assignee = mod
       prj.save
 
-      project_ideas = create_list(:idea, 3, project: project, assignee: mod)
+      ideas = create_list(:idea, 3, project: prj, assignee: mod)
 
       mod.delete_role 'project_moderator', project_id: prj.id
       expect(mod.save).to eq true
-      expect(ideas.puck(:default_assignee_id)).not_to include mod.id
+      ideas = Idea.where(id: ideas.pluck(:id)) # this is necessary to reload the objects
+      expect(ideas.pluck(:assignee_id)).not_to include mod.id
     end
   end
 
