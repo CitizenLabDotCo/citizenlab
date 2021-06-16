@@ -246,14 +246,47 @@ VideoFormat.tagName = 'iframe';
 Quill.register(VideoFormat, true);
 // END allow image & video resizing styles
 
+// BEGIN function to detect whether urls are external
+// inspired by https://github.com/quilljs/quill/blob/develop/formats/link.js#L33
+const ALLOWED_PROTOCOLS = new Set(['http', 'https', 'mailto', 'tel']);
+
+function isExternal(url: string) {
+  const protocol = url.slice(0, url.indexOf(':'));
+  return ALLOWED_PROTOCOLS.has(protocol);
+}
+// END function to detect whether urls are internal
+
+// BEGIN custom link implementation
+const Link = Quill.import('formats/link');
+
+class CustomLink extends Link {
+  static create(url) {
+    const node = super.create(url);
+
+    if (!isExternal(url)) {
+      node.removeAttribute('target');
+    }
+
+    return node;
+  }
+}
+
+Quill.register('formats/link', CustomLink);
+// END custom link implementation
+
 // BEGIN custom button implementation
 const Inline = Quill.import('blots/inline');
 
 class CustomButton extends Inline {
-  static create(value) {
+  static create(url) {
     const node = super.create();
-    node.setAttribute('href', value);
+    node.setAttribute('href', url);
     node.setAttribute('rel', 'noorefferer');
+
+    if (isExternal(url)) {
+      node.setAttribute('target', '_blank');
+    }
+
     return node;
   }
 
@@ -512,7 +545,7 @@ const QuillEditor = memo<Props & InjectedIntlProps>(
       if (selection && selection.length > 0) {
         trackBasic('custom-link');
         const value = prompt(formatMessage(messages.customLinkPrompt));
-        editor.format('button', value);
+        editor.format('button', value); // LUUC: value = the URL given to the button-url thing
         setIsButtonsMenuVisible(false);
       }
     }, [editor]);
@@ -527,7 +560,7 @@ const QuillEditor = memo<Props & InjectedIntlProps>(
       if (selection == null || selection.length === 0) return;
       const preview = editor.getText(selection as any);
       const tooltip = (editor as any).theme.tooltip;
-      tooltip.edit('link', preview);
+      tooltip.edit('link', preview); // LUUC: preview = the text of the URL
       setIsButtonsMenuVisible(false);
     }, [editor]);
 
