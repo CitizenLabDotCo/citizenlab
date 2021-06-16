@@ -60,7 +60,8 @@ const SignUpInModal = memo<Props>(({ className, onMounted }) => {
     : 580;
 
   const modalNoClose = !!(
-    metaData?.error !== true && signUpActiveStep === 'verification'
+    (metaData?.error !== true && signUpActiveStep === 'verification') ||
+    metaData?.modalNoClose
   );
 
   useEffect(() => {

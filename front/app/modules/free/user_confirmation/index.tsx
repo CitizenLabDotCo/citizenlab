@@ -65,7 +65,10 @@ const configuration: ModuleConfiguration = {
         isUserConfirmationEnabled &&
         !metaData.requiresConfirmation
       ) {
-        modifyMetaData(metaData, { requiresConfirmation: true });
+        modifyMetaData(metaData, {
+          requiresConfirmation: true,
+          modalNoClose: true,
+        });
       }
 
       return null;

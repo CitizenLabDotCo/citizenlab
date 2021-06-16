@@ -65,11 +65,12 @@ const UserCustomFieldsSignUpInModal = memo<Props>(
       ? 820
       : 580;
     const modalNoClose = !!(
-      metaData?.error !== true &&
-      (signUpActiveStep === 'verification' ||
-        signUpActiveStep === 'custom-fields') &&
-      !isNilOrError(customFieldsSchema) &&
-      customFieldsSchema?.hasRequiredFields
+      (metaData?.error !== true &&
+        (signUpActiveStep === 'verification' ||
+          (signUpActiveStep === 'custom-fields' &&
+            !isNilOrError(customFieldsSchema) &&
+            customFieldsSchema?.hasRequiredFields))) ||
+      metaData?.modalNoClose
     );
 
     useEffect(() => {
