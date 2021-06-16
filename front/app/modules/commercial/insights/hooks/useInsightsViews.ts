@@ -17,7 +17,7 @@ const useInsightsViews = () => {
     );
 
     return () => subscription.unsubscribe();
-  });
+  }, []);
 
   return insightsViews;
 };

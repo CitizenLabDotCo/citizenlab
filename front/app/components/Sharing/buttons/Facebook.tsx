@@ -31,11 +31,7 @@ const Facebook = ({
   if (!isNilOrError(tenant)) {
     const facebookConfig = tenant.data.attributes.settings?.facebook_login;
 
-    if (
-      facebookConfig?.allowed &&
-      facebookConfig?.enabled &&
-      facebookConfig?.app_id
-    ) {
+    if (facebookConfig?.allowed && facebookConfig?.app_id) {
       return (
         <FacebookButton
           appId={facebookConfig.app_id}

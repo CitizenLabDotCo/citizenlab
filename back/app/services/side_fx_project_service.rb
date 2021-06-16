@@ -38,7 +38,6 @@ class SideFxProjectService
   end
 
   def after_destroy frozen_project, user
-    remove_moderators frozen_project.id
     serialized_project = clean_time_attributes(frozen_project.attributes)
     LogActivityJob.perform_later(
       encode_frozen_resource(frozen_project), 'deleted',
@@ -54,14 +53,8 @@ class SideFxProjectService
   def after_publish project, user
     LogActivityJob.set(wait: 20.seconds).perform_later(project, 'published', user, Time.now.to_i)
   end
-
-  def remove_moderators project_id
-    User.project_moderator(project_id).all.each do |moderator|
-      moderator.delete_role 'project_moderator', project_id: project_id
-      moderator.save!
-    end
-  end
 end
 
 SideFxProjectService.prepend_if_ee('SmartGroups::Patches::SideFxProjectService')
 SideFxProjectService.prepend_if_ee('IdeaAssignment::Patches::SideFxProjectService')
+SideFxProjectService.prepend_if_ee('ProjectManagement::Patches::SideFxProjectService')

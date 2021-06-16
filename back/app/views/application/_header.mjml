@@ -1,5 +1,5 @@
 
-<% if preheader %>
+<% unless header_logo_only? %>
   <mj-section>
     <mj-column>
       <mj-text>
@@ -13,13 +13,15 @@
 
 <%= render partial: 'application/logo_medium_top' %>
 
-<mj-section padding="30px 25px 0">
-  <mj-column>
-    <mj-text>
-      <h1><%= header_title %></h1>
-      <% if header_message %>
-        <p><%= header_message %></p>
-      <% end %>
-    </mj-text>
-  </mj-column>
-</mj-section>
+<% unless header_logo_only? %>
+  <mj-section padding="30px 25px 0">
+    <mj-column>
+      <mj-text>
+        <h1><%= header_title %></h1>
+        <% if header_message %>
+          <p><%= header_message %></p>
+        <% end %>
+      </mj-text>
+    </mj-column>
+  </mj-section>
+<% end %>
