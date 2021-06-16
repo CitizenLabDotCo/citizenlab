@@ -18,7 +18,8 @@ class ApplicationMailer < ActionMailer::Base
                 :loc, :localize_for_recipient, :recipient_first_name
 
   helper_method :unsubscribe_url, :terms_conditions_url, :privacy_policy_url, :home_url, :logo_url,
-                :show_unsubscribe_link?, :show_terms_link?, :show_privacy_policy_link?, :format_message
+                :show_unsubscribe_link?, :show_terms_link?, :show_privacy_policy_link?, :format_message,
+                :header_logo_only?
 
   NotImplementedError = Class.new(StandardError)
 
@@ -78,6 +79,10 @@ class ApplicationMailer < ActionMailer::Base
 
   def show_header?
     true
+  end
+
+  def header_logo_only?
+    false
   end
 
   def default_config

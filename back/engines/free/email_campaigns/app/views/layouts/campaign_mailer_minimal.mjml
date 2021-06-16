@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<mjml>
+  <%= render partial: 'email_campaigns/application/head' %>
+
+  <mj-body background-color="#FFFFFF">
+    <%= render partial: 'email_campaigns/application/header_minimal' if show_header? %>
+    <%= yield %>
+    <%= render partial: 'email_campaigns/application/footer' %>
+  </mj-body>
+</mjml>
