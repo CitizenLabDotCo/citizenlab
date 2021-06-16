@@ -214,9 +214,7 @@ describe('Insights Input Table', () => {
       screen.getByTestId('insightsInputsTableEmptyState')
     ).toBeInTheDocument();
     expect(
-      screen.getByText('You have no uncategorized inputs')
+      screen.getByText('There is no input without a category')
     ).toBeInTheDocument();
   });
 });
-
-// Add tests that it displays the correct table titles

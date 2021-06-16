@@ -148,6 +148,13 @@ const StyledHeader = styled.h2`
   }
 `;
 
+export const getSelectedCategoryFilter = (categoryQuery: string) =>
+  categoryQuery
+    ? 'category'
+    : categoryQuery === ''
+    ? 'notCategorized'
+    : 'allInput';
+
 const EditInsightsView = ({
   intl: { formatMessage },
   params: { viewId },
@@ -228,9 +235,11 @@ const EditInsightsView = ({
     });
   };
 
-  const selectedCategory = categories?.find(
+  const selectedCategory = categories.find(
     (category) => category.id === query.category
   );
+
+  const selectedCategoryFilter = getSelectedCategoryFilter(query.category);
 
   const handleResetCategories = async () => {
     const deleteMessage = formatMessage(messages.resetCategoriesConfimation);
@@ -275,7 +284,7 @@ const EditInsightsView = ({
             <CategoryButton
               locale={locale}
               bgColor={
-                typeof query.category === 'undefined'
+                selectedCategoryFilter === 'allInput'
                   ? darken(0.05, colors.lightGreyishBlue)
                   : 'transparent'
               }
@@ -289,7 +298,7 @@ const EditInsightsView = ({
             <CategoryButton
               locale={locale}
               bgColor={
-                query.category === ''
+                selectedCategoryFilter === 'notCategorized'
                   ? darken(0.05, colors.lightGreyishBlue)
                   : 'transparent'
               }
@@ -368,9 +377,9 @@ const EditInsightsView = ({
         </Categories>
         <Inputs>
           <StyledHeader data-testid="insightsInputsHeader">
-            {selectedCategory && (
+            {selectedCategoryFilter === 'category' && (
               <>
-                {selectedCategory.attributes.name}
+                {selectedCategory?.attributes.name}
                 <Button
                   icon="more-options"
                   locale={locale}
@@ -385,7 +394,7 @@ const EditInsightsView = ({
                 />
               </>
             )}
-            {query.category === '' && (
+            {selectedCategoryFilter === 'notCategorized' && (
               <>
                 {formatMessage(messages.notCategorized)}
                 <IconTooltip
@@ -393,7 +402,7 @@ const EditInsightsView = ({
                 />
               </>
             )}
-            {typeof query.category === 'undefined' && (
+            {selectedCategoryFilter === 'allInput' && (
               <>
                 {formatMessage(messages.allInput)}
                 <IconTooltip

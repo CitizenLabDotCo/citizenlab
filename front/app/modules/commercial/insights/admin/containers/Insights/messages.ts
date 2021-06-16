@@ -106,7 +106,7 @@ export default defineMessages({
   },
   inputsTableNotCategorized: {
     id: 'app.containers.Admin.Insights.Edit.inputsTableNotCategorized',
-    defaultMessage: 'You have no uncategorized inputs',
+    defaultMessage: 'There is no input without a category',
   },
   categories: {
     id: 'app.containers.Admin.Insights.Edit.categories',
