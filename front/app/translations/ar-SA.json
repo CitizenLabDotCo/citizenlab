@@ -159,7 +159,7 @@
   "app.components.IdeasMap.a11y_mapTitle": "عرض عام للخريطة",
   "app.components.IdeasMap.clickOnMapToAdd": "Click on the map to add your input",
   "app.components.IdeasMap.ideaOnMapReadMore": "تحميل المزيد",
-  "app.components.IdeasMap.noFilteredResults": "The filters you selected did not return any results",
+  "app.components.IdeasMap.noFilteredResults": "لم تحصد المُرشحات التي اخترتها أي نتائج",
   "app.components.IdeasMap.noResults": "لا يوجد نتائج",
   "app.components.IdeasMap.nothingOnMapWarning": "لا يوجد شيء لتراه هنا! قد يوجد المزيد لتراه في القائمة المُسردة. ",
   "app.components.IdeasMap.or": "أو",
