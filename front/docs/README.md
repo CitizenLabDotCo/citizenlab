@@ -5,6 +5,7 @@
 ### Fixed
 - Project moderators can no longer see draft projects they don't moderate in the project listing.
 - The content and subject of the emails used to share an input (idea/issue/option/contribution/...) do now include the correct input title and URL.
+- Manual campaigns now have the layout content in all available languages.
 
 ## 2021-06-11
 
