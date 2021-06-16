@@ -288,11 +288,11 @@ en:
     new_comment_for_admin:
       by_author: 'by %{authorName}'
       commented: '%{authorFirstName} commented:'
-      cta_reply_to: 'View %{commentAuthor}''s comment'
+      cta_reply_to: 'Check the comment of %{commentAuthor}'
       days_ago: '%{numberOfDays} days ago'
-      event_description: '%{authorName} added a new comment on your platform.'
+      event_description: '%{authorName} wrote a comment on your platform. Don''t hesitate to join the discussion and keep the conversation going!'
       main_header: '%{firstName}, a new comment has been posted on your platform'
-      subject: 'A new comment has been posted on %{organizationName}''s platform'
+      subject: 'There''s a new comment on %{organizationName}''s platform'
       preheader: '%{authorName} left a comment'
       today: Today
       yesterday: Yesterday
