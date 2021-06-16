@@ -254,7 +254,7 @@ function isExternal(url: string) {
   const protocol = url.slice(0, url.indexOf(':'));
   return ALLOWED_PROTOCOLS.has(protocol);
 }
-// END function to detect whether urls are internal
+// END function to detect whether urls are externel
 
 // BEGIN custom link implementation
 const Link = Quill.import('formats/link');
