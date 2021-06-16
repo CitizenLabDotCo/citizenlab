@@ -8,6 +8,8 @@ import useAuthUser from 'hooks/useAuthUser';
 import { isNilOrError } from 'utils/helperUtils';
 import useAppConfiguration from 'hooks/useAppConfiguration';
 
+export const CONFIRMATION_STEP_NAME = 'confirmation';
+
 type RenderOnFeatureFlagProps = {
   children: ReactNode;
 };
@@ -59,7 +61,6 @@ const configuration: ModuleConfiguration = {
         // When we allow users to reconfirm their emails, we should stop checking for registration_completed_at.
         user?.attributes?.confirmation_required &&
         !user?.attributes?.registration_completed_at;
-
       if (
         confirmationRequired &&
         isUserConfirmationEnabled &&
@@ -67,7 +68,7 @@ const configuration: ModuleConfiguration = {
       ) {
         modifyMetaData(metaData, {
           requiresConfirmation: true,
-          modalNoClose: true,
+          modalNoCloseSteps: [CONFIRMATION_STEP_NAME],
         });
       }
 

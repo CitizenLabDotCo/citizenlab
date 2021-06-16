@@ -61,7 +61,8 @@ const SignUpInModal = memo<Props>(({ className, onMounted }) => {
 
   const modalNoClose = !!(
     (metaData?.error !== true && signUpActiveStep === 'verification') ||
-    metaData?.modalNoClose
+    (signUpActiveStep &&
+      metaData?.modalNoCloseSteps?.includes(signUpActiveStep))
   );
 
   useEffect(() => {
