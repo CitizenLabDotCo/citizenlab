@@ -545,7 +545,7 @@ const QuillEditor = memo<Props & InjectedIntlProps>(
       if (selection && selection.length > 0) {
         trackBasic('custom-link');
         const value = prompt(formatMessage(messages.customLinkPrompt));
-        editor.format('button', value); // LUUC: value = the URL given to the button-url thing
+        editor.format('button', value);
         setIsButtonsMenuVisible(false);
       }
     }, [editor]);
@@ -560,7 +560,7 @@ const QuillEditor = memo<Props & InjectedIntlProps>(
       if (selection == null || selection.length === 0) return;
       const preview = editor.getText(selection as any);
       const tooltip = (editor as any).theme.tooltip;
-      tooltip.edit('link', preview); // LUUC: preview = the text of the URL
+      tooltip.edit('link', preview);
       setIsButtonsMenuVisible(false);
     }, [editor]);
 
