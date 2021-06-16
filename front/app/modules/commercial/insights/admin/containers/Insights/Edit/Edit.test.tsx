@@ -108,6 +108,16 @@ describe('Insights Edit', () => {
       fireEvent.click(screen.getAllByText('All input')[0]);
       expect(spy).toHaveBeenCalledWith({
         pathname: '',
+        search: `?pageNumber=1`,
+      });
+    });
+
+    it('selects uncategorized input correctly', () => {
+      const spy = jest.spyOn(clHistory, 'push');
+      render(<InsightsEdit />);
+      fireEvent.click(screen.getAllByText('Not categorized')[0]);
+      expect(spy).toHaveBeenCalledWith({
+        pathname: '',
         search: `?category=&pageNumber=1`,
       });
     });

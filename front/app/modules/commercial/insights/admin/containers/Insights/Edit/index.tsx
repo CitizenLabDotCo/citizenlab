@@ -218,7 +218,7 @@ const EditInsightsView = ({
     }
   };
 
-  const selectCategory = (categoryId: string) => () => {
+  const selectCategory = (categoryId?: string) => () => {
     clHistory.push({
       pathname,
       search: stringify(
@@ -275,7 +275,21 @@ const EditInsightsView = ({
             <CategoryButton
               locale={locale}
               bgColor={
-                !query.category
+                typeof query.category === 'undefined'
+                  ? darken(0.05, colors.lightGreyishBlue)
+                  : 'transparent'
+              }
+              textColor={colors.label}
+              textHoverColor={colors.adminTextColor}
+              bgHoverColor={darken(0.05, colors.lightGreyishBlue)}
+              onClick={selectCategory()}
+            >
+              {formatMessage(messages.allInput)}
+            </CategoryButton>
+            <CategoryButton
+              locale={locale}
+              bgColor={
+                query.category === ''
                   ? darken(0.05, colors.lightGreyishBlue)
                   : 'transparent'
               }
@@ -284,7 +298,7 @@ const EditInsightsView = ({
               bgHoverColor={darken(0.05, colors.lightGreyishBlue)}
               onClick={selectCategory('')}
             >
-              {formatMessage(messages.allInput)}
+              {formatMessage(messages.notCategorized)}
             </CategoryButton>
           </ButtonsContainer>
           <CategoriesLabel>
@@ -354,7 +368,7 @@ const EditInsightsView = ({
         </Categories>
         <Inputs>
           <StyledHeader data-testid="insightsInputsHeader">
-            {selectedCategory ? (
+            {selectedCategory && (
               <>
                 {selectedCategory.attributes.name}
                 <Button
@@ -370,7 +384,16 @@ const EditInsightsView = ({
                   onClick={toggleCategoryMenu}
                 />
               </>
-            ) : (
+            )}
+            {query.category === '' && (
+              <>
+                {formatMessage(messages.notCategorized)}
+                <IconTooltip
+                  content={formatMessage(messages.notCategorizedTooltip)}
+                />
+              </>
+            )}
+            {typeof query.category === 'undefined' && (
               <>
                 {formatMessage(messages.allInput)}
                 <IconTooltip

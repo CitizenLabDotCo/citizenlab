@@ -41,6 +41,8 @@ export function insightsInputsStream(
   return streams.get<IInsightsInputs>({
     apiEndpoint: `${API_PATH}/${getInsightsInputsEndpoint(insightsViewId)}`,
     ...streamParams,
+    cacheStream: false,
+    skipSanitizationFor: ['category'],
   });
 }
 

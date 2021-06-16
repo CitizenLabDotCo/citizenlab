@@ -104,6 +104,10 @@ export default defineMessages({
     id: 'app.containers.Admin.Insights.Edit.inputsTableCategoryDescription',
     defaultMessage: 'Start moving input here to grow your category.',
   },
+  inputsTableNotCategorized: {
+    id: 'app.containers.Admin.Insights.Edit.inputsTableNotCategorized',
+    defaultMessage: 'You have no uncategorized inputs',
+  },
   categories: {
     id: 'app.containers.Admin.Insights.Edit.categories',
     defaultMessage: 'Categories',
@@ -140,6 +144,15 @@ export default defineMessages({
     id: 'app.containers.Admin.Insights.Edit.allInputTooltip',
     defaultMessage:
       'This lists all previously processed input regardless of assigned categories. Recently added input is NOT shown here.',
+  },
+  notCategorized: {
+    id: 'app.containers.Admin.Insights.Edit.notCategorized',
+    defaultMessage: 'Not categorized',
+  },
+  notCategorizedTooltip: {
+    id: 'app.containers.Admin.Insights.Edit.notCategorizedTooltip',
+    defaultMessage:
+      "This lists all previously processes input that hasn't been assigned a category. Recently added input is NOT shown here.",
   },
   editCategoryName: {
     id: 'app.containers.Admin.Insights.Edit.editCategoryName',

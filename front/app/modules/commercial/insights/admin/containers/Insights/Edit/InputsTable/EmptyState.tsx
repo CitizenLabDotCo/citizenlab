@@ -43,13 +43,16 @@ const EmptyState = ({
   return (
     <StyledEmptyState data-testid="insightsInputsTableEmptyState">
       <Icon name="blankPage" />
-      {query.category ? (
+      {typeof query.category === 'undefined' &&
+        formatMessage(messages.inputsTableEmpty)}
+      {query.category === '' && (
+        <p>{formatMessage(messages.inputsTableNotCategorized)}</p>
+      )}
+      {query.category && (
         <>
           <h1>{formatMessage(messages.inputsTableCategoryTitle)}</h1>
           <p>{formatMessage(messages.inputsTableCategoryDescription)}</p>
         </>
-      ) : (
-        formatMessage(messages.inputsTableEmpty)
       )}
     </StyledEmptyState>
   );

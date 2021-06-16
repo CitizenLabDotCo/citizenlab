@@ -193,7 +193,7 @@ describe('Insights Input Table', () => {
       screen.getByText("This project doesn't seem to contain any input.")
     ).toBeInTheDocument();
   });
-  it('renders correct table empty state when are no input for category', () => {
+  it('renders correct table empty state when there is no input for category', () => {
     mockLocationData = { pathname: '', query: { category: 'category' } };
     mockInputData = { currentPage: 1, lastPage: 1, list: [] };
 
@@ -205,4 +205,18 @@ describe('Insights Input Table', () => {
       screen.getByText('You have no input assigned to this category yet')
     ).toBeInTheDocument();
   });
+  it('renders correct table empty state when there is no uncategorized input', () => {
+    mockLocationData = { pathname: '', query: { category: '' } };
+    mockInputData = { currentPage: 1, lastPage: 1, list: [] };
+
+    render(<InputsTable />);
+    expect(
+      screen.getByTestId('insightsInputsTableEmptyState')
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText('You have no uncategorized inputs')
+    ).toBeInTheDocument();
+  });
 });
+
+// Add tests that it displays the correct table titles
