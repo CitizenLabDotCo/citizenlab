@@ -14,7 +14,7 @@
   "app.components.AdminPage.SettingsPage.homePageCustomizableSectionTooltip": "Dit veld onder aan de startpagina kun je vrij invullen met tekst, afbeelding, links en knoppen.",
   "app.components.AssignBudgetControl.a11y_price": "Prijs:",
   "app.components.AssignBudgetControl.add": "Add",
-  "app.components.AssignBudgetControl.addToMyExpenses": "Voeg toe aan mijn uitgaven",
+  "app.components.AssignBudgetControl.addToMyExpenses": "Add to my expenses",
   "app.components.AssignBudgetControl.backToOverview": "Terug naar het overzicht",
   "app.components.AssignBudgetControl.remove": "Remove",
   "app.components.AssignBudgetControl.removeFromMyExpenses": "Van mijn uitgaven afhalen",
