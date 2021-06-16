@@ -94,7 +94,8 @@ class SideFxIdeaService
 
   def scrape_facebook(idea)
     url = Frontend::UrlService.new.model_to_url(idea)
-    Seo::ScrapeFacebookJob.perform_later(url)
+    url_with_utm = "#{url}?utm_source=share_idea&utm_campaign=share_content&utm_medium=facebook"
+    Seo::ScrapeFacebookJob.perform_later(url_with_utm)
   end
 end
 

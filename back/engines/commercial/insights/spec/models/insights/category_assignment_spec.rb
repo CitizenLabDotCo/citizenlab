@@ -18,6 +18,11 @@ describe Insights::CategoryAssignment do
       expect(assignment).not_to be_valid
     end
 
+    it 'is not valid if the input is not an Idea' do
+      assignment.input = create(:comment)
+      expect(assignment).not_to be_valid
+    end
+
     it 'cannot have duplicates' do
       assignment.clone.tap do |duplicate|
         # 'approved' attribute should not be taken into account to identify duplicates

@@ -57,6 +57,7 @@ import {
   IOnboardingCampaignNames,
   IOnboardingCampaigns,
 } from 'services/onboardingCampaigns';
+import { TNotificationData } from 'services/notifications';
 
 type Localize = (
   multiloc: Multiloc | null | undefined,
@@ -339,6 +340,9 @@ export type OutletsPropertyMap = {
   };
   'app.modules.commercial.moderation.admin.containers.tabs': {
     onData: (data: InsertConfigurationOptions<ITabItem>) => void;
+  };
+  'app.components.NotificationMenu.Notification': {
+    notification: TNotificationData;
   };
 };
 

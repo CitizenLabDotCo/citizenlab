@@ -163,7 +163,7 @@ class Pagination extends PureComponent<Props> {
 
     if (totalPages > 1) {
       return (
-        <Container className={className}>
+        <Container className={className} data-testid="pagination">
           <ContainerInner>
             <Back
               onMouseDown={this.removeFocus}

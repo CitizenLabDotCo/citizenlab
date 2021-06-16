@@ -1,58 +1,58 @@
 it:
   symbols:
-    outside: somewhere else
+    outside: da qualche altra parte
   idea_statuses:
-    proposed: proposed
-    proposed_description: This idea has been proposed to the city
-    viewed: viewed
-    viewed_description: This idea has been seen by someone from the city
-    under_consideration: under consideration
-    under_consideration_description: This idea has been taken into consideration by the city
-    accepted: accepted
-    accepted_description: This idea has been accepted and will be implemented by the city
-    implemented: implemented
-    implemented_description: This idea has been implemented by the city
-    rejected: rejected
-    rejected_description: This idea has been rejected
+    proposed: proposto
+    proposed_description: Questa idea è stata proposta alla città
+    viewed: visto
+    viewed_description: Questa idea è stata vista da qualcuno della città
+    under_consideration: in considerazione
+    under_consideration_description: Questa idea è stata presa in considerazione dalla città
+    accepted: accettato
+    accepted_description: Questa idea è stata accettata e sarà attuata dalla città
+    implemented: implementato
+    implemented_description: Questa idea è stata proposta alla città
+    rejected: rifiutato
+    rejected_description: Questa idea è stata respinta
   initiative_statuses:
-    proposed: proposed
-    proposed_description: proposed
-    expired: expired
-    expired_description: expired
-    threshold_reached: threshold reached
-    threshold_reached_description: threshold reached
-    answered: answered
-    answered_description: answered
-    ineligible: ineligible
-    ineligible_description: ineligible
+    proposed: proposto
+    proposed_description: proposto
+    expired: scaduto
+    expired_description: scaduto
+    threshold_reached: soglia raggiunta
+    threshold_reached_description: soglia raggiunta
+    answered: ha risposto
+    answered_description: ha risposto
+    ineligible: ineleggibile
+    ineligible_description: ineleggibile
   topics:
-    nature: Nature and biodiversity
-    nature_description: Nature and biodiversity
-    waste: Cleanliness and waste
-    waste_description: Cleanliness and waste
-    sustainability: Sustainable development
-    sustainability_description: Sustainable development
-    mobility: Mobility
-    mobility_description: Mobility
-    technology: Energy and technology
-    technology_description: Energy and technology
-    economy: Work, economy and tourism
-    economy_description: Work, economy and tourism
+    nature: Natura e biodiversità
+    nature_description: Natura e biodiversità
+    waste: Pulizia e rifiuti
+    waste_description: Pulizia e rifiuti
+    sustainability: Sviluppo sostenibile
+    sustainability_description: Sviluppo sostenibile
+    mobility: Mobilità
+    mobility_description: Mobilità
+    technology: Energia e tecnologia
+    technology_description: Energia e tecnologia
+    economy: Lavoro, economia e turismo
+    economy_description: Lavoro, economia e turismo
     housing: Housing
     housing_description: Housing
-    public_space: Public spaces and buildings
-    public_space_description: Public spaces and buildings
-    safety: Safety
-    safety_description: Safety
-    education: Education and youth
-    education_description: Education and youth
-    culture: Culture, sports and events
-    culture_description: Culture, sports and events
-    health: Health and welfare
-    health_description: Health and welfare
-    inclusion: Social inclusion
-    inclusion_description: Social inclusion
-    community: Community development
+    public_space: Spazi pubblici ed edifici
+    public_space_description: Spazi pubblici ed edifici
+    safety: Sicurezza
+    safety_description: Sicurezza
+    education: Educazione e gioventù
+    education_description: Educazione e gioventù
+    culture: Cultura, sport ed eventi
+    culture_description: Cultura, sport ed eventi
+    health: Salute e benessere
+    health_description: Salute e benessere
+    inclusion: Inclusione sociale
+    inclusion_description: Inclusione sociale
+    community: Sviluppo comunitario
     community_description: Community development
     services: Public services
     services_description: Public services
