@@ -14,7 +14,7 @@
   "app.components.AdminPage.SettingsPage.homePageCustomizableSectionTooltip": "This empty section at the bottom of the homepage can be customized with your own images, text and links.",
   "app.components.AssignBudgetControl.a11y_price": "Aki",
   "app.components.AssignBudgetControl.add": "Add",
-  "app.components.AssignBudgetControl.addToMyExpenses": "Aningaasartuutinnut ilanngutikkit ",
+  "app.components.AssignBudgetControl.addToMyExpenses": "Add to my expenses",
   "app.components.AssignBudgetControl.backToOverview": "Takussutissaq uterfigalugu",
   "app.components.AssignBudgetControl.remove": "Remove",
   "app.components.AssignBudgetControl.removeFromMyExpenses": "Remove from my expenses",
