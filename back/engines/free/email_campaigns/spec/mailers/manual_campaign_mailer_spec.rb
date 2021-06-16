@@ -4,7 +4,7 @@ RSpec.describe EmailCampaigns::ManualCampaignMailer, type: :mailer do
   describe 'campaign_mail' do
     let!(:recipient) { create(:user, locale: 'en') }
     let!(:campaign) do
-      EmailCampaigns::Campaigns::ManualCampaign.create!(
+      EmailCampaigns::Campaigns::Manual.create!(
         subject_multiloc: { 'en' => 'Title' },
         body_multiloc: {
           'en' => '
