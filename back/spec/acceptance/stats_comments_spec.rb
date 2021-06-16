@@ -53,7 +53,7 @@ resource "Stats - Comments" do
       expect(json_response[:count]).to eq Comment.published.count
     end
 
-    context "as a moderator" do
+    context "as a moderator", skip: !CitizenLab.ee? do
       before do
         token = Knock::AuthToken.new(payload: create(:moderator).to_token_payload).token
         header 'Authorization', "Bearer #{token}"
@@ -61,6 +61,7 @@ resource "Stats - Comments" do
         create(:comment, post: initiative)
         create(:comment, post: create(:idea, project: create(:private_admins_project)))
       end
+
       example_request "Count all comments (as a moderator)", document: false do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
@@ -161,7 +162,7 @@ resource "Stats - Comments" do
         end
       end
 
-      context "as a moderator" do
+      context "as a moderator", skip: !CitizenLab.ee? do
         before do
           token = Knock::AuthToken.new(payload: create(:moderator).to_token_payload).token
           header 'Authorization', "Bearer #{token}"
@@ -251,7 +252,7 @@ resource "Stats - Comments" do
         end
       end
 
-      context "as a moderator" do
+      context "as a moderator", skip: !CitizenLab.ee? do
         before do
           token = Knock::AuthToken.new(payload: create(:moderator).to_token_payload).token
           header 'Authorization', "Bearer #{token}"

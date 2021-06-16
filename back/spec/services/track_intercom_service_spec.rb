@@ -36,7 +36,6 @@ describe TrackIntercomService do
         custom_attributes: hash_including(
           isAdmin: true,
           isSuperAdmin: false,
-          isProjectModerator: false,
           highestRole: 'admin',
           firstName: user.first_name,
           lastName: user.last_name,
@@ -63,7 +62,6 @@ describe TrackIntercomService do
       expect(contact).to receive(:custom_attributes=).with(hash_including(
         isAdmin: true,
         isSuperAdmin: false,
-        isProjectModerator: false,
         highestRole: 'admin',
         firstName: user.first_name,
         lastName: user.last_name,

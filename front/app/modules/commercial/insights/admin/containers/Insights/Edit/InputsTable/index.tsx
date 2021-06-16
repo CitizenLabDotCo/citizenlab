@@ -4,6 +4,7 @@ import { stringify } from 'qs';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
+import clHistory from 'utils/cl-router/history';
 
 // hooks
 import useInsightsInputs from 'modules/commercial/insights/hooks/useInsightsInputs';
@@ -15,6 +16,7 @@ import InputsTableRow from './InputsTableRow';
 import EmptyState from './EmptyState';
 import SideModal from 'components/UI/SideModal';
 import InputDetails from '../InputDetails';
+import Pagination from 'components/admin/Pagination/Pagination';
 
 // styles
 import styled from 'styled-components';
@@ -24,7 +26,6 @@ import { colors, fontSizes } from 'utils/styleUtils';
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from '../../messages';
-import clHistory from 'utils/cl-router/history';
 
 const StyledTable = styled(Table)`
   thead {
@@ -63,6 +64,10 @@ const StyledSort = styled.div`
   }
 `;
 
+const StyledPagination = styled(Pagination)`
+  margin-top: 12px;
+`;
+
 const InputsTable = ({
   params: { viewId },
   location: { query, pathname },
@@ -76,10 +81,23 @@ const InputsTable = ({
   const closeSideModal = () => setIsSideModalOpen(false);
   const openSideModal = () => setIsSideModalOpen(true);
 
-  const inputs = useInsightsInputs(viewId, {
+  const pageNumber = parseInt(query?.pageNumber, 10);
+
+  const { list: inputs, lastPage } = useInsightsInputs(viewId, {
+    pageNumber,
     category: query.category,
-    sort: query.sort,
   });
+
+  if (isNilOrError(inputs)) {
+    return null;
+  }
+
+  const handlePaginationClick = (newPageNumber: number) => {
+    clHistory.push({
+      pathname,
+      search: `?${stringify({ ...query, pageNumber: newPageNumber })}`,
+    });
+  };
 
   // Use callback to keep references for moveUp and moveDown stable
   const moveUp = useCallback(() => {
@@ -97,10 +115,6 @@ const InputsTable = ({
       } else return prevSelectedIndex;
     });
   }, []);
-
-  if (isNilOrError(inputs)) {
-    return null;
-  }
 
   // TODO: Implement checkbox logic
   const handleCheckboxChange = () => {};
@@ -128,54 +142,61 @@ const InputsTable = ({
       {inputs.length === 0 ? (
         <EmptyState />
       ) : (
-        <StyledTable>
-          <colgroup>
-            <col span={1} style={{ width: '5%' }} />
-            <col span={1} style={{ width: '30%' }} />
-            {query.category && <col span={1} style={{ width: '20%' }} />}
-            <col span={1} style={{ width: query.category ? '45%' : '65%' }} />
-          </colgroup>
-          <thead>
-            <tr>
-              <th>
-                <Checkbox checked={false} onChange={handleCheckboxChange} />
-              </th>
-              <th>{formatMessage(messages.inputsTableInputs)}</th>
-              <th>
-                {query.category ? (
-                  <StyledSort
-                    onClick={onSort}
-                    as="button"
-                    data-testid="insightsSortButton"
-                  >
-                    {formatMessage(messages.inputsTableCategories)}
-                    <Icon
-                      name={
-                        query.sort === '-approval'
-                          ? 'chevron-up'
-                          : 'chevron-down'
-                      }
-                    />
-                  </StyledSort>
-                ) : (
-                  formatMessage(messages.inputsTableCategories)
+        <>
+          <StyledTable>
+            <colgroup>
+              <col span={1} style={{ width: '5%' }} />
+              <col span={1} style={{ width: '30%' }} />
+              {query.category && <col span={1} style={{ width: '20%' }} />}
+              <col span={1} style={{ width: query.category ? '45%' : '65%' }} />
+            </colgroup>
+            <thead>
+              <tr>
+                <th>
+                  <Checkbox checked={false} onChange={handleCheckboxChange} />
+                </th>
+                <th>{formatMessage(messages.inputsTableInputs)}</th>
+                <th>
+                  {query.category ? (
+                    <StyledSort
+                      onClick={onSort}
+                      as="button"
+                      data-testid="insightsSortButton"
+                    >
+                      {formatMessage(messages.inputsTableCategories)}
+                      <Icon
+                        name={
+                          query.sort === '-approval'
+                            ? 'chevron-up'
+                            : 'chevron-down'
+                        }
+                      />
+                    </StyledSort>
+                  ) : (
+                    formatMessage(messages.inputsTableCategories)
+                  )}
+                </th>
+                {query.category && (
+                  <th>{formatMessage(messages.inputsTableAlsoIn)}</th>
                 )}
-              </th>
-              {query.category && (
-                <th>{formatMessage(messages.inputsTableAlsoIn)}</th>
-              )}
-            </tr>
-          </thead>
-          <tbody>
-            {inputs.map((input) => (
-              <InputsTableRow
-                input={input}
-                key={input.id}
-                onSelect={selectInput(input)}
-              />
-            ))}
-          </tbody>
-        </StyledTable>
+              </tr>
+            </thead>
+            <tbody>
+              {inputs.map((input) => (
+                <InputsTableRow
+                  input={input}
+                  key={input.id}
+                  onSelect={selectInput(input)}
+                />
+              ))}
+            </tbody>
+          </StyledTable>
+          <StyledPagination
+            currentPage={pageNumber || 1}
+            totalPages={lastPage || 1}
+            loadPage={handlePaginationClick}
+          />
+        </>
       )}
       {!isNilOrError(selectedInputIndex) &&
         !isNilOrError(inputs[selectedInputIndex]) && (

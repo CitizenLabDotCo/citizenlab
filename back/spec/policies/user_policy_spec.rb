@@ -57,55 +57,18 @@ describe UserPolicy do
     end
   end
 
-  context "for a moderator" do
-    let(:project) { create(:project) }
-    let(:current_user) { create(:moderator, project: project) }
-
-    context "on theirself" do
-      let(:subject_user) { current_user }
-
-      it { should     permit(:show)    }
-      it { should     permit(:create)  }
-      it { should     permit(:update)  }
-      it { should     permit(:destroy) }
-      it { should_not permit(:index) }
-      it { should_not permit(:index_xlsx) }
-
-      it "should index the user through the scope" do
-        subject_user.save
-        expect(scope.resolve.size).to eq 1
-      end
-    end
-
-    context "on someone else" do
-      let(:subject_user) { create(:user) }
-
-      it { should     permit(:show)    }
-      it { should     permit(:create)  }
-      it { should_not permit(:update)  }
-      it { should_not permit(:destroy) }
-      it { should_not permit(:index) }
-      it { should_not permit(:index_xlsx) }
-
-      it "should index the users through the scope" do
-        subject_user.save
-        expect(scope.resolve.size).to eq 2
-      end
-    end
-  end
-
   context "for an admin" do
     let(:current_user) { create(:admin) }
 
     context "on theirself" do
       let(:subject_user) { current_user }
 
-      it { should     permit(:show)    }
-      it { should     permit(:create)  }
-      it { should     permit(:update)  }
-      it { should     permit(:destroy) }
-      it { should     permit(:index) }
-      it { should     permit(:index_xlsx) }
+      it { should permit(:show)    }
+      it { should permit(:create)  }
+      it { should permit(:update)  }
+      it { should permit(:destroy) }
+      it { should permit(:index) }
+      it { should permit(:index_xlsx) }
 
       it "should index the user through the scope" do
         subject_user.save
@@ -116,12 +79,12 @@ describe UserPolicy do
     context "on someone else" do
       let(:subject_user) { create(:user) }
 
-      it { should     permit(:show)    }
-      it { should     permit(:create)  }
-      it { should     permit(:update)  }
-      it { should     permit(:destroy) }
-      it { should     permit(:index) }
-      it { should     permit(:index_xlsx) }
+      it { should permit(:show)    }
+      it { should permit(:create)  }
+      it { should permit(:update)  }
+      it { should permit(:destroy) }
+      it { should permit(:index) }
+      it { should permit(:index_xlsx) }
 
       it "should index the users through the scope" do
         subject_user.save

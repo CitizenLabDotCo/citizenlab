@@ -742,6 +742,7 @@
   "app.containers.Admin.Insights.Edit.renameCategoryModalSave": "",
   "app.containers.Admin.Insights.Edit.renameCategoryModalTitle": "",
   "app.containers.Admin.Insights.Edit.resetCategories": "",
+  "app.containers.Admin.Insights.Edit.resetCategoriesConfimation": "",
   "app.containers.Admin.Insights.Reports.budgeting": "الميزانية التشاركية",
   "app.containers.Admin.Insights.Reports.comments": "Comments",
   "app.containers.Admin.Insights.Reports.commentsByTimeTitle": "Comments",
