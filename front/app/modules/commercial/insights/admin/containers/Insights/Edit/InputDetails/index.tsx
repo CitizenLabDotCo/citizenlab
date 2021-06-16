@@ -93,15 +93,9 @@ const InputDetails = ({
 
   const categories = useInsightsCategories(viewId);
 
-  if (
-    isNilOrError(categories) ||
-    isNilOrError(locale) ||
-    isNilOrError(selectedInput)
-  ) {
+  if (isNilOrError(categories) || isNilOrError(locale)) {
     return null;
   }
-
-  console.log(selectedInput);
 
   const ideaId = selectedInput.relationships?.source.data.id;
 
