@@ -59,7 +59,7 @@ class ExportIdeasButton extends React.PureComponent<
         blob,
         `${formatMessage(messages.inputsExportFileName)}_${formatDate(
           Date.now()
-        )}`
+        )}.xlsx`
       );
       this.setState({ exporting: false });
     } catch (error) {

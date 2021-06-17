@@ -20,7 +20,7 @@ const Container = styled.nav`
   padding-right: 10px;
   padding-bottom: 3px;
   background: #fff;
-  border-top: solid 1px ${lighten(0.4, colors.label)};
+  border-top: solid 1px ${lighten(0.3, colors.label)};
   display: flex;
   align-items: stretch;
   justify-content: space-evenly;
@@ -45,8 +45,8 @@ const Container = styled.nav`
 
 const NavigationIcon = styled(Icon)`
   fill: ${colors.label};
-  height: 24px;
-  width: 24px;
+  height: 22px;
+  width: 22px;
 
   .cl-icon-primary,
   .cl-icon-accent,
@@ -57,8 +57,8 @@ const NavigationIcon = styled(Icon)`
 
 const NavigationIconWrapper = styled.div`
   display: flex;
-  height: 24px;
-  width: 24px;
+  height: 22px;
+  width: 22px;
   align-items: center;
   justify-content: center;
 
@@ -71,17 +71,13 @@ const NavigationIconWrapper = styled.div`
 const NavigationLabel = styled.div`
   width: 100%;
   color: ${colors.label};
-  font-size: ${fontSizes.base}px;
-  font-weight: 400;
-  margin-left: 6px;
+  font-size: ${fontSizes.small}px;
+  font-weight: 500;
+  margin-left: 5px;
 
   ${isRtl`
-  margin-left: 0;
-  margin-right: 6px;
-`}
-
-  ${media.smallPhone`
-    font-size: ${fontSizes.base - 1}px;
+    margin-left: 0;
+    margin-right: 6px;
   `}
 `;
 
@@ -108,7 +104,6 @@ const NavigationItem = styled(Link)`
 
     ${NavigationLabel} {
       color: ${(props) => props.theme.colorMain};
-      font-weight: 400;
     }
   }
 `;

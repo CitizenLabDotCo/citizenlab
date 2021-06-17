@@ -13,5 +13,9 @@ module FlagInappropriateContent
     def self.feature_description
       'Automatically detect inappropriate content posted to the platform using Natural Language Processing.'
     end
+
+    def self.dependencies
+      ['moderation']
+    end
   end
 end

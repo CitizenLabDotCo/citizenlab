@@ -1,10 +1,10 @@
 import React from 'react';
 import { render, screen, fireEvent } from 'utils/testUtils/rtl';
-import * as service from 'modules/commercial/insights//services/insightsViews';
+import * as service from 'modules/commercial/insights/services/insightsViews';
 
 import InsightsList from './';
 
-jest.mock('modules/commercial/insights//services/insightsViews', () => ({
+jest.mock('modules/commercial/insights/services/insightsViews', () => ({
   deleteInsightsView: jest.fn(),
 }));
 
@@ -48,11 +48,7 @@ describe('Insights List', () => {
       expect(screen.getAllByTestId('insightsListItem')).toHaveLength(2);
     });
     it('opens create modal on button click', () => {
-      render(
-        <div id="modal-portal">
-          <InsightsList />
-        </div>
-      );
+      render(<InsightsList />);
       fireEvent.click(screen.getByText('Create insights'));
       expect(screen.getByTestId('insightsCreateModal')).toBeInTheDocument();
     });
@@ -72,11 +68,7 @@ describe('Insights List', () => {
       expect(screen.getAllByRole('button')).toHaveLength(2);
     });
     it('opens create modal on button click', () => {
-      render(
-        <div id="modal-portal">
-          <InsightsList />
-        </div>
-      );
+      render(<InsightsList />);
       fireEvent.click(screen.getByText('Create my first insights'));
       expect(screen.getByTestId('insightsCreateModal')).toBeInTheDocument();
     });

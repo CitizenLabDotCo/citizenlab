@@ -119,6 +119,7 @@ gem 'omniauth_openid_connect', '~> 0.3.3'
 gem 'acts_as_list'
 gem 'bunny', '>= 2.7.2'
 gem 'faker'
+gem 'order_as_specified'
 gem 'openid_connect', github: 'CitizenLabDotCo/openid_connect'
 gem 'scenic'
 

@@ -16,15 +16,17 @@ class Notification < ApplicationRecord
   scope :unread, -> {where(read_at: nil)}
 
   def self.classes_for activity
-    Dir[File.join(__dir__, 'notifications', '*.rb')].each { |file| require file }
-    CitizenLab.enabled_modules.each do |m|
-      dir = File.join(__dir__, "engines/#{m}/app/models/#{m}/notifications")
-      if File.directory? dir
-        Dir[File.join(dir, '*.rb')].each { |file| require file }
-      end
-    end
-    self.descendants.select do |notification_class|
-      notification_class::ACTIVITY_TRIGGERS.dig(activity.item_type, activity.action)
+    # Dir[File.join(__dir__, 'notifications', '*.rb')].each { |file| require file }
+    # CitizenLab.enabled_modules.each do |m|
+    #   dir = File.join(__dir__, "engines/#{m}/app/models/#{m}/notifications")
+    #   if File.directory? dir
+    #     Dir[File.join(dir, '*.rb')].each { |file| require file }
+    #   end
+    # end
+    descendants.select do |klaz|
+      Object.const_defined? klaz.name
+    end.select do |klaz|
+      klaz::ACTIVITY_TRIGGERS.dig(activity.item_type, activity.action)
     end
   end
 

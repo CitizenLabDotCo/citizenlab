@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import Outlet from 'components/Outlet';
+
 import AdminRightsReceivedNotification from '../AdminRightsReceivedNotification';
 import CommentDeletedByAdminNotification from '../CommentDeletedByAdminNotification';
 import CommentMarkedAsSpamNotification from '../CommentMarkedAsSpamNotification';

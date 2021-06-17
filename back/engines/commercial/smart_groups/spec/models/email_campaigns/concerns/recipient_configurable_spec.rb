@@ -8,6 +8,9 @@ RSpec.describe EmailCampaigns::RecipientConfigurable, type: :model do
   before do
     @campaign = RecipientConfigurableCampaign.create
   end
+  after(:all) do # Deleting campaign class as this breaks other tests
+    Object.send(:remove_const, :RecipientConfigurableCampaign)
+  end
 
   describe 'apply_recipient_filters' do
     it 'uniquely returns all members of all associated groups' do

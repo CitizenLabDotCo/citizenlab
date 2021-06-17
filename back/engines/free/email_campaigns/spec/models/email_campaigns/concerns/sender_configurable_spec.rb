@@ -8,6 +8,9 @@ RSpec.describe EmailCampaigns::SenderConfigurable, type: :model do
   before do
     @campaign = SenderConfigurableCampaign.create
   end
+  after(:all) do # Deleting campaign class as this breaks other tests
+    Object.send(:remove_const, :SenderConfigurableCampaign)
+  end
   
   describe "validations" do
     it "is invalid when the campaign is sent from the autor and has no author" do

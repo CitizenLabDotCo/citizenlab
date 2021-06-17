@@ -1,5 +1,9 @@
 import { IInappropriateContentFlagData } from './services/inappropriateContentFlags';
 
+export function isFlagActive(flag: IInappropriateContentFlagData) {
+  return flag.attributes.reason_code !== null;
+}
+
 export function getFlagType(flag: IInappropriateContentFlagData) {
   // A flag could be both user and NLP flagged at the same time
   // Reporting NLP flagging has precedence.

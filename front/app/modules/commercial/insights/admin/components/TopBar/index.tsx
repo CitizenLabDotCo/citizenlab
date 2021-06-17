@@ -27,8 +27,11 @@ import { deleteInsightsView } from '../../../services/insightsViews';
 import useInsightsView from '../../../hooks/useInsightsView';
 import useLocale from 'hooks/useLocale';
 
+export const topBarHeight = 60;
+
 const Container = styled.div`
   display: flex;
+  height: ${topBarHeight}px;
   justify-content: space-between;
   align-items: center;
   padding: 12px 40px;
@@ -94,7 +97,7 @@ const TopBar = ({
   };
 
   return (
-    <Container>
+    <Container data-testid="insightsTopBar">
       <TitleContainer>
         <h1>{view.attributes.name}</h1>
         {projectId && <ProjectButton projectId={projectId} />}
@@ -135,10 +138,11 @@ const TopBar = ({
         <RenameInsightsView
           closeRenameModal={closeRenameModal}
           insightsViewId={viewId}
+          originalViewName={view.attributes.name}
         />
       </Modal>
     </Container>
   );
 };
 
-export default injectIntl<{}>(withRouter(TopBar));
+export default withRouter(injectIntl(TopBar));

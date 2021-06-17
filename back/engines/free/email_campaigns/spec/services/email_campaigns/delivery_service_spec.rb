@@ -110,55 +110,54 @@ describe EmailCampaigns::DeliveryService do
     end
   end
 
-  # describe 'consentable_campaign_types_for' do
-  #   class NonConsentableCampaign < EmailCampaigns::Campaign; end
+  describe 'consentable_campaign_types_for' do
+    let(:user) { create(:user) }
 
-  #   class ConsentableCampaign < EmailCampaigns::Campaign
-  #     include EmailCampaigns::Consentable
+    before do
+      class NonConsentableCampaign < EmailCampaigns::Campaign; end
 
-  #     def self.consentable_roles
-  #       []
-  #     end
-  #   end
-  #   class ConsentableDisableableCampaignA < EmailCampaigns::Campaign
-  #     include EmailCampaigns::Consentable
-  #     include EmailCampaigns::Disableable
+      class ConsentableCampaign < EmailCampaigns::Campaign
+        include EmailCampaigns::Consentable
 
-  #     def self.consentable_roles
-  #       []
-  #     end
-  #   end
-  #   class ConsentableDisableableCampaignB < EmailCampaigns::Campaign
-  #     include EmailCampaigns::Consentable
-  #     include EmailCampaigns::Disableable
+        def self.consentable_roles
+          []
+        end
+      end
+      class ConsentableDisableableCampaignA < EmailCampaigns::Campaign
+        include EmailCampaigns::Consentable
+        include EmailCampaigns::Disableable
 
-  #     def self.consentable_roles
-  #       []
-  #     end
-  #   end
+        def self.consentable_roles
+          []
+        end
+      end
+      class ConsentableDisableableCampaignB < EmailCampaigns::Campaign
+        include EmailCampaigns::Consentable
+        include EmailCampaigns::Disableable
 
-  #   let(:user) { create(:user) }
+        def self.consentable_roles
+          []
+        end
+      end
 
-  #   before do
-  #     service.class.add_campaign_types(
-  #       NonConsentableCampaign,
-  #       ConsentableCampaign,
-  #       ConsentableDisableableCampaignA,
-  #       ConsentableDisableableCampaignB
-  #     )
+      NonConsentableCampaign.create!
+      ConsentableCampaign.create!
+      ConsentableDisableableCampaignA.create!(enabled: false)
+      ConsentableDisableableCampaignB.create!(enabled: true)
+    end
+    after(:all) do # Deleting campaign classes as this breaks other tests
+      Object.send(:remove_const, :NonConsentableCampaign)
+      Object.send(:remove_const, :ConsentableCampaign)
+      Object.send(:remove_const, :ConsentableDisableableCampaignA)
+      Object.send(:remove_const, :ConsentableDisableableCampaignB)
+    end
 
-  #     NonConsentableCampaign.create!
-  #     ConsentableCampaign.create!
-  #     ConsentableDisableableCampaignA.create!(enabled: false)
-  #     ConsentableDisableableCampaignB.create!(enabled: true)
-  #   end
+    it 'returns all campaign types that return true to #consentable_for?, for the given user and have an enabled campaign' do
+      expect(service.consentable_campaign_types_for(user)).to include(*%w[ConsentableCampaign ConsentableDisableableCampaignB])
+    end
 
-  #   it 'returns all campaign types that return true to #consentable_for?, for the given user and have an enabled campaign' do
-  #     expect(service.consentable_campaign_types_for(user)).to include(*%w[ConsentableCampaign ConsentableDisableableCampaignB])
-  #   end
-
-  #   it 'does not return all campaign types that return false to #consentable_for?, for the given user and have an enabled campaign' do
-  #     expect(service.consentable_campaign_types_for(user)).not_to include(*%w[ConsentableDisableableCampaignA])
-  #   end
-  # end
+    it 'does not return all campaign types that return false to #consentable_for?, for the given user and have an enabled campaign' do
+      expect(service.consentable_campaign_types_for(user)).not_to include(*%w[ConsentableDisableableCampaignA])
+    end
+  end
 end

@@ -31,7 +31,8 @@ import {
   MessageDescriptor,
   Multiloc,
 } from 'typings';
-import { IMapProps } from './../components/Map/index';
+import { LatLngTuple } from 'leaflet';
+import { Point } from 'components/UI/LeafletMap/typings';
 import { IUserData } from 'services/users';
 import { MessageValue } from 'react-intl';
 import { NavItem } from 'containers/Admin/sideBar';
@@ -180,6 +181,7 @@ export type OutletsPropertyMap = {
   };
   'app.containers.IdeasShow.MetaInformation': {
     ideaId: string;
+    compact?: boolean;
   };
   'app.containers.UserEditPage.ProfileForm.forms': {
     authUser: IUserData;
@@ -231,9 +233,12 @@ export type OutletsPropertyMap = {
     ) => void;
   };
   'app.containers.Admin.guide.SetupSection': {};
-  'app.components.Map.leafletConfig': IMapProps & {
-    leafletConfig: ILeafletMapConfig;
-    onLeafletConfigChange: (data: ILeafletMapConfig) => void;
+  'app.components.Map.leafletConfig': {
+    onLeafletConfigChange: (newLeafletConfig: ILeafletMapConfig) => void;
+    projectId?: string | null;
+    centerLatLng?: LatLngTuple;
+    zoomLevel?: number;
+    points?: Point[];
   };
   'app.components.Map.Legend': {
     projectId?: string | null;
@@ -332,12 +337,15 @@ export type OutletsPropertyMap = {
     inappropriateContentFlagId: string | undefined;
   };
   'app.modules.commercial.moderation.admin.containers.actionbar.buttons': {
-    selectedModerationItemsWithContentWarningLength: number;
+    activeFlagsCount: number;
     processing: boolean;
     onClick: () => void;
   };
   'app.modules.commercial.moderation.admin.containers.tabs': {
     onData: (data: InsertConfigurationOptions<ITabItem>) => void;
+  };
+  'app.components.NotificationMenu.Notification': {
+    notification: TNotificationData;
   };
 };
 

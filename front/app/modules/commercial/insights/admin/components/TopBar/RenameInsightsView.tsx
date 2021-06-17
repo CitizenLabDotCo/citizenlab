@@ -11,7 +11,6 @@ import { injectIntl } from 'utils/cl-intl';
 
 // components
 import { Button, Input } from 'cl2-component-library';
-import { SectionField } from 'components/admin/Section';
 import Error from 'components/UI/Error';
 
 // services
@@ -38,19 +37,14 @@ const Title = styled.h1`
   font-size: ${fontSizes.xxl}px;
 `;
 
-const Description = styled.p`
-  text-align: center;
-  padding-top: 10px;
-  font-size: ${fontSizes.base}px;
-`;
-
 const Form = styled.form`
-  margin-top: 50px;
+  margin-top: 40px;
 `;
 
 const ButtonContainer = styled.div`
   display: flex;
   justify-content: center;
+  margin-top: 40px;
 
   > :not(:first-child) {
     margin-left: 5px;
@@ -60,18 +54,20 @@ const ButtonContainer = styled.div`
 interface RenameInsightsViewProps {
   closeRenameModal: () => void;
   insightsViewId: string;
+  originalViewName: string;
 }
 
 const RenameInsightsView = ({
   closeRenameModal,
   insightsViewId,
+  originalViewName,
   intl: { formatMessage },
 }: RenameInsightsViewProps & InjectedIntlProps) => {
   const locale = useLocale();
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<CLErrors | undefined>();
 
-  const [name, setName] = useState<string | null>();
+  const [name, setName] = useState<string>(originalViewName);
   const onChangeName = (value: string) => {
     setName(value);
     setErrors(undefined);
@@ -95,21 +91,17 @@ const RenameInsightsView = ({
   if (isNilOrError(locale)) return null;
 
   return (
-    <Container>
+    <Container data-testid="insights">
       <Title>{formatMessage(messages.renameModalTitle)}</Title>
-      <Description>
-        {formatMessage(messages.renameModalDescription)}
-      </Description>
       <Form>
-        <SectionField>
-          <Input
-            type="text"
-            value={name}
-            onChange={onChangeName}
-            label={formatMessage(messages.renameModalNameLabel)}
-          />
-          {errors && <Error apiErrors={errors['name']} fieldName="view_name" />}
-        </SectionField>
+        <Input
+          type="text"
+          value={name}
+          onChange={onChangeName}
+          label={formatMessage(messages.renameModalNameLabel)}
+        />
+        {errors && <Error apiErrors={errors['name']} fieldName="view_name" />}
+
         <ButtonContainer>
           <Button
             processing={loading}

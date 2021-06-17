@@ -86,7 +86,7 @@ const StyledModerationContentCell = styled(ModerationContentCell)`
 interface Props {
   moderation: IModerationData;
   selected: boolean;
-  onSelect: (moderationId: string) => void;
+  onSelect: (selectedModeration: IModerationData) => void;
   className?: string;
   inappropriateContentFlagId?: string;
 }
@@ -144,7 +144,7 @@ const ModerationRow = memo<Props & InjectedIntlProps>(
 
     const handleOnChecked = useCallback(
       (_event: React.ChangeEvent) => {
-        onSelect(moderation.id);
+        onSelect(moderation);
       },
       [onSelect]
     );

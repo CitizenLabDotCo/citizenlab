@@ -52,7 +52,7 @@ module Finder
     private
 
     def _sort_records
-      @_sort_method = params.delete(:sort) || _default_sort
+      @_sort_method = params[:sort] || _default_sort
       return unless _sort_method
 
       if _sort_scopes&.key? _sort_method
@@ -73,6 +73,12 @@ module Finder
                  end
     end
 
+    def _sort_with_attribute
+      attribute = _sort_method_suffix.include?('.') ? _sort_method_suffix : "#{table_name}.#{_sort_method_suffix}"
+
+      @records = order(attribute => _sort_order)
+    end
+
     def _sort_from_hash(hash)
       sort_scope, sort_order = hash.first
 
@@ -81,12 +87,6 @@ module Finder
       else
         @records.order(hash)
       end
-    end
-
-    def _sort_with_attribute
-      attribute = _sort_method_suffix.include?('.') ? _sort_method_suffix : "#{table_name}.#{_sort_method_suffix}"
-
-      order(attribute => _sort_order)
     end
 
     def _sort_method_suffix

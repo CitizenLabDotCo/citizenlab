@@ -63,9 +63,8 @@ const ViewButtons = memo<Props>(({ className, selectedView, onClick }) => {
         onClick={handleOnClick('card')}
         padding="7px 12px"
         textColor={colors.text}
-        textDecorationHover={!isListViewSelected ? 'underline' : undefined}
         bgColor={!isListViewSelected ? 'transparent' : undefined}
-        bgHoverColor={!isListViewSelected ? 'transparent' : undefined}
+        bgHoverColor={!isListViewSelected ? 'rgba(0,0,0,0.12)' : undefined}
         boxShadowHover={!isListViewSelected ? 'none' : undefined}
         fullWidth={true}
       >
@@ -79,9 +78,8 @@ const ViewButtons = memo<Props>(({ className, selectedView, onClick }) => {
         onClick={handleOnClick('map')}
         padding="7px 12px"
         textColor={colors.text}
-        textDecorationHover={!isMapViewSelected ? 'underline' : undefined}
         bgColor={!isMapViewSelected ? 'transparent' : undefined}
-        bgHoverColor={!isMapViewSelected ? 'transparent' : undefined}
+        bgHoverColor={!isMapViewSelected ? 'rgba(0,0,0,0.12)' : undefined}
         boxShadowHover={!isMapViewSelected ? 'none' : undefined}
         fullWidth={true}
       >

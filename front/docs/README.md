@@ -1,9 +1,55 @@
 # Changelog
 
+## Next Release
+
+/
+
+## 2021-06-16
+
+### Fixed
+- Project moderators can no longer see draft projects they don't moderate in the project listing.
+- The content and subject of the emails used to share an input (idea/issue/option/contribution/...) do now include the correct input title and URL.
+- Sharing new ideas on Facebook goes faster
+- Manual campaigns now have the layout content in all available languages.
+
+## 2021-06-11
+
+### Fixed
+- Facebook button no longer shows when not configured.
+
+## 2021-06-10
+
+### Fixed
+- Creating invites on a platform with many heavy custom registration fields is no longer unworkably slow
+
+## 2021-06-09
+
+### Added
+- New citizen-facing map view
+
+## 2021-06-07
+
+### Fixed
+- Ordering by ideas by trending is now working.
+- Ordering by ideas votes in the input manager is now working.
+
+## 2021-06-07
+
+### Added
+- Qualtrics surveys integration.
+
+### Changed
+- Project Events are now ordered chronologically from latest to soonest.
+
+### Fixed
+- Visibility Labels in the admin projects list are now visible.
+- Tagged ideas export is fixed.
+- Updating an idea in one locale does not overwrite other locales anymore
+
 ## 2021-05-28
 
 ### Fixed
-- Project Events are now ordered chronologically from soonest to latest. 
+- Project Events are now ordered chronologically from soonest to latest.
 
 ## 2021-05-27
 

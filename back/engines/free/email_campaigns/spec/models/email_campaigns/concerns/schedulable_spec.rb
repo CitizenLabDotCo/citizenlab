@@ -16,6 +16,9 @@ RSpec.describe EmailCampaigns::Schedulable, type: :model do
     end
     @campaign = SchedulableCampaign.create(ic_schedule: @schedule)
   end
+  after(:all) do # Deleting campaign class as this breaks other tests
+    Object.send(:remove_const, :SchedulableCampaign)
+  end
   
   describe "run_before_send_hooks" do
     it "allows sending when and only when the passed time is within half an hour of the scheduled target" do

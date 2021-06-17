@@ -9,7 +9,6 @@ ar:
       "comment_on_your_idea": تعليق على فكرتي
       "comment_on_your_initiative": تعليق على مُقترحي
       "first_idea_published": نشر فكرتي الأولى
-      "idea_assigned_to_you": تعيين فكرة إلي
       "idea_marked_as_spam": الإبلاغ عن الفكرة كـ مزعجة
       "idea_published": نشر فكرتي
       "initiative_assigned_to_you": تعيين مُقترح إلي
@@ -58,7 +57,6 @@ ar:
       "comment_on_your_idea": التعليق على فكرتك - جميع المستخدمين
       "comment_on_your_initiative": التعليق على مُقترحك - جميع المستخدمين
       "first_idea_published": نشر فكرتك الأولى - جميع المستخدمين
-      "idea_assigned_to_you": تعيين الفكرة - المسؤولين ومديري المشاريع
       "idea_marked_as_spam": الإبلاغ عن الفكرة كـ مزعجة - المسؤولين ومديري المشاريع
       "idea_published": نشر فكرتك - جميع المستخدمين
       "initiative_assigned_to_you": تعيين المُقترح - المسؤولين
@@ -167,13 +165,6 @@ ar:
       main_header: 'علّق %{commentAuthor} على مبادرتك'
       subject: 'لقد استلمت تعليقًا على المنصة الخاصة بـ %{organizationName}'
       preheader: 'ترك %{authorName} تعليقًا على مبادرتك لـ %{organizationName}'
-    idea_assigned_to_you:
-      by_author: 'بواسطة %{authorName}'
-      cta_reply_to: 'قدّم ملاحظاتك لـ %{authorName}'
-      event_description_idea: 'تم تعيين فكرة إليك. قدّم ملاحظاتك من خلال كتابة تحديث رسمي أو بتغيير حالتها.'
-      main_header: '%{firstName}، لديك مهمة جديدة'
-      subject: 'لديك مهمة على المنصة الخاصة بـ %{organizationName}'
-      preheader_idea: 'تم تعيين فكرة %{authorName} إليك'
     assignee_digest:
       subject: 'أفكار بانتظار ملاحظاتك: %{numberIdeas}'
       preheader: 'ملخص التعيين لـ %{organizationName}'

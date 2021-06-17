@@ -15,6 +15,10 @@ RSpec.describe EmailCampaigns::LifecycleStageRestrictable, type: :model do
   before do
     @app_configuration = AppConfiguration.instance
   end
+  after(:all) do # Deleting campaign classes as this breaks other tests
+    Object.send(:remove_const, :LifecycleStageActiveAndDemoCampaign)
+    Object.send(:remove_const, :LifecycleStageNotChurnedCampaign)
+  end
 
   context "on a campaign limited to demo and active platforms" do
     before do

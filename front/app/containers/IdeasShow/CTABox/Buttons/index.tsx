@@ -6,6 +6,8 @@ import SharingButtonComponent from '../../Buttons/SharingButtonComponent';
 import { isNilOrError } from 'utils/helperUtils';
 import useIdea from 'hooks/useIdea';
 
+const Container = styled.div``;
+
 const StyledGoToCommentsButton = styled(GoToCommentsButton)`
   margin-bottom: 10px;
 `;
@@ -13,9 +15,10 @@ const StyledGoToCommentsButton = styled(GoToCommentsButton)`
 interface Props {
   ideaId: string;
   border?: string;
+  className?: string;
 }
 
-const IdeaCTAButtons = ({ ideaId }: Props) => {
+const IdeaCTAButtons = ({ ideaId, className }: Props) => {
   const idea = useIdea({ ideaId });
 
   if (!isNilOrError(idea)) {
@@ -23,13 +26,13 @@ const IdeaCTAButtons = ({ ideaId }: Props) => {
       idea.attributes.action_descriptor.commenting_idea.enabled;
 
     return (
-      <>
+      <Container className={className || ''}>
         {commentingEnabled && <StyledGoToCommentsButton />}
         <IdeaSharingButton
           ideaId={ideaId}
           buttonComponent={<SharingButtonComponent />}
         />
-      </>
+      </Container>
     );
   }
 

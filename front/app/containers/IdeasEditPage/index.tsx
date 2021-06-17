@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
-import { isString, isEmpty } from 'lodash-es';
 import { Subscription, combineLatest, of } from 'rxjs';
 import { switchMap, map, first } from 'rxjs/operators';
 import { isNilOrError } from 'utils/helperUtils';
@@ -16,7 +15,7 @@ import IdeasEditMeta from './IdeasEditMeta';
 // services
 import { localeStream } from 'services/locale';
 import { currentAppConfigurationStream } from 'services/appConfiguration';
-import { ideaByIdStream, updateIdea } from 'services/ideas';
+import { ideaByIdStream, IIdeaData, updateIdea } from 'services/ideas';
 import {
   ideaImageStream,
   addIdeaImage,
@@ -260,19 +259,16 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
       ideaSlug,
       imageId,
       imageFile,
-      address: savedAddress,
-      authorId,
     } = this.state;
     const {
       title,
       description,
       selectedTopics,
-      address: ideaFormAddress,
       budget,
       proposedBudget,
       ideaFiles,
       ideaFilesToRemove,
-      authorId: newAuthorId,
+      address,
     } = ideaFormOutput;
     const oldImageId = imageId;
     const oldImage = imageFile && imageFile.length > 0 ? imageFile[0] : null;
@@ -292,17 +288,15 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
     const filesToRemovePromises = ideaFilesToRemove
       .filter((file) => !!(file.remote && file.id))
       .map((file) => deleteIdeaFile(ideaId, file.id as string));
-    const finalAuthorId = newAuthorId || authorId;
-    const addressDiff = {};
-    if (
-      isString(ideaFormAddress) &&
-      !isEmpty(ideaFormAddress) &&
-      ideaFormAddress !== savedAddress
-    ) {
-      addressDiff['location_point_geojson'] = await convertToGeoJson(
-        ideaFormAddress
-      );
-      addressDiff['location_description'] = ideaFormAddress;
+    const finalAuthorId = ideaFormOutput?.authorId || this.state.authorId;
+    const addressDiff: Partial<IIdeaData['attributes']> = {
+      location_point_geojson: null,
+      location_description: null,
+    };
+
+    if (address && address.length > 0) {
+      addressDiff.location_point_geojson = await convertToGeoJson(address);
+      addressDiff.location_description = address;
     }
 
     const updateIdeaPromise = updateIdea(ideaId, {
@@ -322,6 +316,7 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
     });
 
     this.setState({ submitError: false, processing: true });
+
     try {
       if (oldImageId && oldImageBase64 !== newImageBase64) {
         await deleteIdeaImage(ideaId, oldImageId);
@@ -336,7 +331,6 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
 
       clHistory.push(`/ideas/${ideaSlug}`);
     } catch (error) {
-      if (process.env.NODE_ENV === 'development') console.log(error);
       const apiErrors = error.json.errors;
       const profanityApiError = apiErrors.base.find(
         (apiError) => apiError.error === 'includes_banned_words'
@@ -397,14 +391,17 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
 
   onTitleChange = (title: string) => {
     const { locale } = this.props;
-    const titleMultiloc = { [locale]: title };
+    const titleMultiloc = { ...this.state.titleMultiloc, [locale]: title };
 
     this.setState({ titleMultiloc, titleProfanityError: false });
   };
 
   onDescriptionChange = (description: string) => {
     const { locale } = this.props;
-    const descriptionMultiloc = { [locale]: description };
+    const descriptionMultiloc = {
+      ...this.state.descriptionMultiloc,
+      [locale]: description,
+    };
 
     this.setState({ descriptionMultiloc, descriptionProfanityError: false });
   };
@@ -428,6 +425,7 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
         processing,
         authorId,
       } = this.state;
+
       const title = locale && titleMultiloc ? titleMultiloc[locale] || '' : '';
       const description =
         locale && descriptionMultiloc

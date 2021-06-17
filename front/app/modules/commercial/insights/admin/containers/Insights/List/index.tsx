@@ -5,7 +5,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import EmptyState from './EmptyState';
-import useInsightsViews from '../../../../hooks/useInsightsViews';
+import useInsightsViews from 'modules/commercial/insights/hooks/useInsightsViews';
 import InsightsList from './InsightsList';
 import Modal from 'components/UI/Modal';
 import CreateInsightsView from './CreateInsightsView';

@@ -27,7 +27,7 @@ resource "SimilarIdeas" do
       let(:idea_id) { @idea.id }
 
       example "List all similar ideas" do
-        allow_any_instance_of(NLP::API).to receive(:similarity).and_return(@ideas.map{|i| 
+        allow_any_instance_of(NLP::Api).to receive(:similarity).and_return(@ideas.map{|i| 
           {'id' => i.id, 'score' => 0.27}
         })
         do_request

@@ -979,7 +979,7 @@ resource "Ideas" do
       end
     end
 
-    context "when moderator" do
+    context "when moderator", skip: !CitizenLab.ee? do
       before do
         @moderator = create(:moderator, project: @project)
         token = Knock::AuthToken.new(payload: @moderator.to_token_payload).token
@@ -996,15 +996,13 @@ resource "Ideas" do
         end
       end
 
-      if CitizenLab.ee?
-        describe do
-          let(:assignee_id) { create(:admin).id }
+      describe do
+        let(:assignee_id) { create(:admin).id }
 
-          example_request "Change the assignee (as a moderator)" do
-            expect(status).to be 200
-            json_response = json_parse(response_body)
-            expect(json_response.dig(:data,:relationships,:assignee,:data,:id)).to eq assignee_id
-          end
+        example_request "Change the assignee (as a moderator)" do
+          expect(status).to be 200
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data, :relationships, :assignee, :data, :id)).to eq assignee_id
         end
       end
     end

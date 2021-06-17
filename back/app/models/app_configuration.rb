@@ -35,6 +35,7 @@ class AppConfiguration < ApplicationRecord
 
       extension_features_specs.each_with_object(schema_properties) do |spec, properties|
         properties[spec.feature_name] = spec.json_schema
+        settings_schema['dependencies'][spec.feature_name] = spec.dependencies if spec.dependencies.present?
       end
 
       settings_schema

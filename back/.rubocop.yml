@@ -64,3 +64,8 @@ Rspec/MultipleMemoizedHelpers:
 Rspec/EmptyExampleGroup:
   Exclude:
   - '**/spec/acceptance/**/*'
+RSpec/MultipleExpectations:
+  Exclude:
+    - '**/spec/acceptance/**/*'
+RSpec/ExampleLength:
+  Max: 10

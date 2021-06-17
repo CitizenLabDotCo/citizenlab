@@ -1,4 +1,4 @@
-import React, { memo, FormEvent } from 'react';
+import React, { memo } from 'react';
 
 // components
 import { FormattedNumber } from 'react-intl';
@@ -26,6 +26,7 @@ const Footer = styled.footer`
 
 const BudgetControl = styled.div`
   display: flex;
+  align-items: center;
 `;
 
 const IdeaBudget = styled.span`
@@ -36,7 +37,7 @@ const IdeaBudget = styled.span`
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-right: 14px;
+  margin-right: 16px;
 `;
 
 const CommentsCount = styled.span`
@@ -58,11 +59,10 @@ interface Props {
   idea: IIdeaData;
   participationContextId?: string | null;
   participationContextType?: IParticipationContextType | null;
-  openIdea: (e: FormEvent) => void;
 }
 
 const FooterWithBudgetControl = memo<Props>(
-  ({ idea, participationContextId, participationContextType, openIdea }) => {
+  ({ idea, participationContextId, participationContextType }) => {
     const tenant = useAppConfiguration();
 
     if (isNilOrError(tenant)) {
@@ -73,11 +73,6 @@ const FooterWithBudgetControl = memo<Props>(
     const projectId = idea?.relationships?.project.data?.id;
     const ideaBudget = idea?.attributes?.budget;
 
-    const onLabelClick = (event: FormEvent) => {
-      event.preventDefault();
-      event.stopPropagation();
-    };
-
     return (
       <Footer>
         <CommentsCount className="e2e-ideacard-comment-count">
@@ -86,7 +81,7 @@ const FooterWithBudgetControl = memo<Props>(
         </CommentsCount>
         {participationContextId && participationContextType && ideaBudget && (
           <BudgetControl>
-            <IdeaBudget onClick={onLabelClick}>
+            <IdeaBudget>
               <FormattedNumber
                 value={ideaBudget}
                 style="currency"
@@ -97,11 +92,8 @@ const FooterWithBudgetControl = memo<Props>(
             </IdeaBudget>
             <AssignBudgetControl
               view="ideaCard"
-              ideaId={idea.id}
-              participationContextId={participationContextId}
-              participationContextType={participationContextType}
-              openIdea={openIdea}
               projectId={projectId}
+              ideaId={idea.id}
             />
           </BudgetControl>
         )}
