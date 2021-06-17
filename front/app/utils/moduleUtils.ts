@@ -328,7 +328,7 @@ export type OutletsPropertyMap = {
     inappropriateContentFlagId: string | undefined;
   };
   'app.modules.commercial.moderation.admin.containers.actionbar.buttons': {
-    selectedModerationItemsWithContentWarningLength: number;
+    activeFlagsCount: number;
     processing: boolean;
     onClick: () => void;
   };

@@ -1,14 +1,15 @@
-import React, { memo, useCallback, useState, useEffect, useMemo } from 'react';
+import React, { memo, useCallback, useState, useEffect } from 'react';
+
 import { isNilOrError } from 'utils/helperUtils';
-import { includes } from 'lodash-es';
 import { insertConfiguration } from 'utils/moduleUtils';
+import { isFlagActive } from 'modules/commercial/flag_inappropriate_content/utils';
 
 // components
 import Table from 'components/UI/Table';
 import ModerationRow from './ModerationRow';
 import Pagination from 'components/admin/Pagination/Pagination';
 import Checkbox from 'components/UI/Checkbox';
-import { Icon, IconTooltip, Select } from 'cl2-component-library';
+import { Icon, IconTooltip, Select, Error } from 'cl2-component-library';
 import Button from 'components/UI/Button';
 import Tabs, { ITabItem } from 'components/UI/Tabs';
 import { PageTitle } from 'components/admin/Section';
@@ -26,7 +27,11 @@ import {
   IModerationData,
   TModeratableTypes,
 } from '../../services/moderations';
-import { removeInappropriateContentFlag } from 'modules/commercial/flag_inappropriate_content/services/inappropriateContentFlags';
+import {
+  removeInappropriateContentFlag,
+  inappropriateContentFlagByIdStream,
+  IInappropriateContentFlag,
+} from 'modules/commercial/flag_inappropriate_content/services/inappropriateContentFlags';
 
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
@@ -224,13 +229,20 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
   });
 
   const [moderationItems, setModerationItems] = useState(list);
-  const [selectedRowModerationIds, setSelectedRowModerationIds] = useState<
-    string[]
+  const [selectedModerations, setSelectedModerations] = useState<
+    IModerationData[]
   >([]);
   const [processing, setProcessing] = useState(false);
   const [selectedTypes, setSelectedTypes] = useState<TModeratableTypes[]>([]);
   const [selectedProjectIds, setSelectedProjectIds] = useState<string[]>([]);
   const [selectedTab, setSelectedTab] = useState<TTabName>('unread');
+  const [actionBarErrorMessage, setActionBarErrorMessage] = useState<
+    string | null
+  >(null);
+  const [
+    activeInappropriateContentFlags,
+    setActiveInappropriateContentFlags,
+  ] = useState<IInappropriateContentFlag[]>([]);
   const [tabs, setTabs] = useState<ITabItem[]>([
     {
       name: 'unread',
@@ -245,14 +257,14 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
   const handleOnSelectAll = useCallback(
     (_event: React.ChangeEvent) => {
       if (!isNilOrError(moderationItems) && !processing) {
-        const newSelectedRows =
-          selectedRowModerationIds.length < moderationItems.length
-            ? moderationItems.map((item) => item.id)
-            : [];
-        setSelectedRowModerationIds(newSelectedRows);
+        setSelectedModerations(
+          selectedModerations.length < moderationItems.length
+            ? moderationItems
+            : []
+        );
       }
     },
-    [moderationItems, selectedRowModerationIds, processing]
+    [moderationItems, selectedModerations, processing]
   );
 
   const handleOnTabChange = useCallback(
@@ -313,95 +325,91 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
     [onSearchTermChange]
   );
 
+  const isModerationSelected = (selectedModeration: IModerationData) =>
+    selectedModerations
+      .map((moderation) => moderation.id)
+      .includes(selectedModeration.id);
+
   const handleRowOnSelect = useCallback(
-    (selectedModerationId: string) => {
+    (newSelectedModeration: IModerationData) => {
       if (!processing) {
-        const newSelectedRows = includes(
-          selectedRowModerationIds,
-          selectedModerationId
-        )
-          ? selectedRowModerationIds.filter((id) => id !== selectedModerationId)
-          : [...selectedRowModerationIds, selectedModerationId];
-        setSelectedRowModerationIds(newSelectedRows);
+        setSelectedModerations((prevSelectedModerations) => {
+          if (isModerationSelected(newSelectedModeration)) {
+            return prevSelectedModerations.filter(
+              (moderation) => moderation.id !== newSelectedModeration.id
+            );
+          }
+
+          return [...prevSelectedModerations, newSelectedModeration];
+        });
       }
     },
-    [selectedRowModerationIds, processing]
+    [processing]
   );
 
   const removeFlags = useCallback(async () => {
-    if (
-      selectedRowModerationIds.length > 0 &&
-      !isNilOrError(moderationItems) &&
-      !processing
-    ) {
-      const selectedModerationItems = moderationItems.filter((modItem) =>
-        selectedRowModerationIds.includes(modItem.id)
-      );
+    if (activeInappropriateContentFlags.length > 0 && !processing) {
+      const promises = activeInappropriateContentFlags.map((flag) => {
+        const flagId = flag.data.id;
+        return removeInappropriateContentFlag(flagId);
+      });
 
-      const promises = selectedModerationItems
-        .filter((moderationWithWarning) => {
-          const flagId =
-            moderationWithWarning.relationships.inappropriate_content_flag?.data
-              .id;
-          const hasFlagId = !!flagId;
-          return hasFlagId;
-        })
-        .map((moderationWithWarning) => {
-          // We can be sure here that the flagId is a string because we filtered out
-          // the moderations without one
-          const flagId = moderationWithWarning.relationships
-            .inappropriate_content_flag?.data.id as string;
+      try {
+        setActionBarErrorMessage(null);
+        setProcessing(true);
 
-          // Moderation items having a content flag relationship doesn't mean
-          // the flag is currently on (see the inappropriateContentFlags.ts service for more info).
-          // I think, however, in this case having the relationship is a decent proxy
-          // and the code is simpler than somehow fetching the flags of all selected items,
-          // then checking whether their flag is really turned on
-          // by checking the reason_code and toxicity_label, and only then removing the flag.
-          return removeInappropriateContentFlag(flagId);
-        });
+        await Promise.all(promises);
 
-      setProcessing(true);
-      await Promise.all(promises);
-      setProcessing(false);
-      setSelectedRowModerationIds([]);
+        setProcessing(false);
+        setSelectedModerations([]);
+      } catch {
+        setActionBarErrorMessage(intl.formatMessage(messages.removeFlagsError));
+        setProcessing(false);
+      }
     }
-  }, [selectedRowModerationIds, moderationItems, processing]);
+  }, [activeInappropriateContentFlags, processing]);
 
   const markAs = useCallback(
     async (event: React.FormEvent) => {
       if (
-        selectedRowModerationIds.length > 0 &&
+        selectedModerations.length > 0 &&
         !isNilOrError(moderationItems) &&
         moderationStatus &&
         !processing
       ) {
         event.preventDefault();
-        trackEventByName(
-          moderationStatus === 'read'
-            ? tracks.markedAsNotViewedButtonClicked
-            : tracks.markedAsNotViewedButtonClicked,
-          { selectedItemsCount: selectedRowModerationIds.length }
-        );
-        setProcessing(true);
-        const moderations = selectedRowModerationIds.map((moderationId) =>
-          moderationItems.find((item) => item.id === moderationId)
-        ) as IModerationData[];
         const updatedModerationStatus =
           moderationStatus === 'read' ? 'unread' : 'read';
-        const promises = moderations.map((moderation) =>
+        const promises = selectedModerations.map((moderation) =>
           updateModerationStatus(
             moderation.id,
             moderation.attributes.moderatable_type,
             updatedModerationStatus
           )
         );
-        await Promise.all(promises);
-        setProcessing(false);
-        setSelectedRowModerationIds([]);
+
+        try {
+          setActionBarErrorMessage(null);
+          setProcessing(true);
+
+          await Promise.all(promises);
+
+          setProcessing(false);
+          setSelectedModerations([]);
+
+          trackEventByName(
+            moderationStatus === 'read'
+              ? tracks.markedAsNotViewedButtonClicked
+              : tracks.markedAsNotViewedButtonClicked,
+            { selectedItemsCount: selectedModerations.length }
+          );
+        } catch {
+          setActionBarErrorMessage(intl.formatMessage(messages.markFlagsError));
+          setProcessing(false);
+        }
       }
     },
-    [selectedRowModerationIds, moderationItems, moderationStatus]
+    [selectedModerations, moderationItems, moderationStatus]
   );
 
   const handleData = (data: InsertConfigurationOptions<ITabItem>) =>
@@ -409,7 +417,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
 
   useEffect(() => {
     if (!processing) {
-      setSelectedRowModerationIds([]);
+      setSelectedModerations([]);
     }
   }, [currentPage, moderationStatus, pageSize, processing]);
 
@@ -419,16 +427,25 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
     }
   }, [list, processing]);
 
-  const selectedModerationItemsWithContentWarning = useMemo(() => {
-    if (!isNilOrError(moderationItems)) {
-      return moderationItems.filter(
-        (moderationItem) =>
-          moderationItem.relationships.inappropriate_content_flag
-      );
-    }
-
-    return null;
-  }, [moderationItems]);
+  useEffect(() => {
+    (async () => {
+      if (selectedModerations.length > 0) {
+        const selectedModerationsWithFlagRelationship = selectedModerations.filter(
+          (moderation) =>
+            moderation.relationships.inappropriate_content_flag?.data.id
+        );
+        const promises = selectedModerationsWithFlagRelationship.map(
+          (moderationItemWithFlag) =>
+            inappropriateContentFlagByIdStream(
+              moderationItemWithFlag.id
+            ).fetch()
+        ) as Promise<IInappropriateContentFlag>[];
+        const flags = await Promise.all(promises);
+        const activeFlags = flags.filter((flag) => isFlagActive(flag.data));
+        setActiveInappropriateContentFlags(activeFlags);
+      }
+    })();
+  }, [selectedModerations]);
 
   if (!isNilOrError(moderationItems)) {
     return (
@@ -445,7 +462,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
         </PageTitleWrapper>
 
         <ActionBar>
-          {selectedRowModerationIds.length === 0 ? (
+          {selectedModerations.length === 0 ? (
             <>
               <Outlet
                 id="app.modules.commercial.moderation.admin.containers.tabs"
@@ -467,7 +484,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
             </>
           ) : (
             <Buttons>
-              {selectedRowModerationIds.length > 0 && (
+              {selectedModerations.length > 0 && (
                 <MarkAsButton
                   icon={
                     moderationStatus === 'unread'
@@ -488,15 +505,14 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
 
               <Outlet
                 id="app.modules.commercial.moderation.admin.containers.actionbar.buttons"
-                selectedModerationItemsWithContentWarningLength={
-                  selectedModerationItemsWithContentWarning?.length || 0
-                }
+                activeFlagsCount={activeInappropriateContentFlags.length}
                 processing={processing}
                 onClick={removeFlags}
               />
             </Buttons>
           )}
           <StyledSearchInput onChange={handleSearchTermChange} />
+          <Error text={actionBarErrorMessage} />
         </ActionBar>
 
         <StyledTable>
@@ -506,11 +522,11 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
                 <StyledCheckbox
                   checked={
                     moderationItems.length > 0 &&
-                    selectedRowModerationIds.length === moderationItems.length
+                    selectedModerations.length === moderationItems.length
                   }
                   indeterminate={
-                    selectedRowModerationIds.length > 0 &&
-                    selectedRowModerationIds.length < moderationItems.length
+                    selectedModerations.length > 0 &&
+                    selectedModerations.length < moderationItems.length
                   }
                   disabled={moderationItems.length === 0}
                   onChange={handleOnSelectAll}
@@ -537,10 +553,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
                 <ModerationRow
                   key={moderationItem.id}
                   moderation={moderationItem}
-                  selected={includes(
-                    selectedRowModerationIds,
-                    moderationItem.id
-                  )}
+                  selected={isModerationSelected(moderationItem)}
                   onSelect={handleRowOnSelect}
                   inappropriateContentFlagId={
                     moderationItem.relationships.inappropriate_content_flag
