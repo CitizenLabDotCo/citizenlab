@@ -121,6 +121,11 @@
 ### Added
 - New module to plug email confirmation to users.
 
+## 2021-04-22
+
+### Fixed
+- After the project title error appears, it disappears again after you start correcting the error
+
 ## 2021-03-31
 
 ### Fixed
@@ -139,11 +144,6 @@
 
 ### Fixed
 - Fix for broken sign-up flow when signing-up through social sign-on
-
-## 2021-04-22
-
-### Fixed
-- After the project title error appears, it disappears again after you start correcting the error
 
 ## 2021-03-19
 
