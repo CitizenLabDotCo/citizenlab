@@ -327,9 +327,6 @@ export type OutletsPropertyMap = {
     latestAppConfigStyleSettings?: IAppConfigurationStyle | null;
     theme: any;
   };
-  'app.components.NotificationMenu.Notification': {
-    notification: TNotificationData;
-  };
   'app.containers.Admin.settings.general.form': {
     onSettingChange: (settingName: string, settingValue: any) => void;
   };

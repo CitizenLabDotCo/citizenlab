@@ -17,12 +17,8 @@ import ProjectsListItem from 'containers/Navbar/components/ProjectsListItem';
 import { isProjectFolderModerator } from './permissions/roles';
 import useAuthUser from 'hooks/useAuthUser';
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
-import {
-  TNotificationData,
-  IProjectFolderModerationRightsReceivedNotificationData,
-  TNotificationType,
-} from 'services/notifications';
-
+import { IProjectFolderModerationRightsReceivedNotificationData } from 'services/notifications';
+import { RenderOnNotificationTypeProps } from 'modules/utilComponents/RenderOnNotificationType';
 import FeatureFlag from 'components/FeatureFlag';
 
 type RenderOnPublicationTypeProps = {
