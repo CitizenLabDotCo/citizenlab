@@ -11,6 +11,17 @@ resource 'Inappropriate content flags' do
     header 'Authorization', "Bearer #{token}"
   end
 
+  get 'web_api/v1/inappropriate_content_flags/:id' do
+      let(:flag) { create(:inappropriate_content_flag) }
+      let(:id) { flag.id }
+
+      example_request 'Get one flag by id' do
+        expect(status).to eq 200
+        json_response = json_parse(response_body)
+        expect(json_response.dig(:data, :id)).to eq id
+      end
+    end
+
   patch 'web_api/v1/inappropriate_content_flags/:id/mark_as_deleted' do
     let(:flag) { create(:inappropriate_content_flag, deleted_at: nil) }
     let(:id) { flag.id }

@@ -4,6 +4,10 @@ module FlagInappropriateContent
       class InappropriateContentFlagsController < ApplicationController
         before_action :set_flag
 
+        def show
+          render json: FlagInappropriateContent::WebApi::V1::InappropriateContentFlagSerializer.new(@flag, params: fastjson_params).serialized_json
+        end
+
         def mark_as_deleted
           @flag.deleted_at = Time.now
           if @flag.save
