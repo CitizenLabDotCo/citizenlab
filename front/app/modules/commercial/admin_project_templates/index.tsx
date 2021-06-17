@@ -2,30 +2,19 @@ import React, { ReactNode } from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 import CreateProjectFromTemplate from './admin/containers/CreateProjectFromTemplate';
 import Tab from './admin/components/Tab';
-import useFeatureFlag from 'hooks/useFeatureFlag';
 import { TTabName } from 'containers/Admin/projects/all/CreateProject';
 import ProjectTemplatePreviewAdminWithEventWrapper from './admin/containers/ProjectTemplatePreviewAdminWithEventWrapper';
+import FeatureFlag from 'components/FeatureFlag';
+
 declare module 'containers/Admin/projects/all/CreateProject' {
   export interface ITabNamesMap {
     template: 'template';
   }
 }
 
-type RenderOnFeatureFlagProps = {
-  children: ReactNode;
-};
-
 type RenderOnSelectedTabValueProps = {
   selectedTabValue: TTabName;
   children: ReactNode;
-};
-
-const RenderOnFeatureFlag = ({ children }: RenderOnFeatureFlagProps) => {
-  const isEnabled = useFeatureFlag('admin_project_templates');
-  if (isEnabled) {
-    return <>{children}</>;
-  }
-  return null;
 };
 
 const RenderOnSelectedTabValue = ({
@@ -58,25 +47,25 @@ const configuration: ModuleConfiguration = {
   outlets: {
     'app.containers.Admin.projects.all.container': (props) => {
       return (
-        <RenderOnFeatureFlag>
+        <FeatureFlag name="admin_project_templates">
           <ProjectTemplatePreviewAdminWithEventWrapper
             onRender={props.onRender}
           />
-        </RenderOnFeatureFlag>
+        </FeatureFlag>
       );
     },
     'app.containers.Admin.projects.all.createProject': (props) => (
-      <RenderOnFeatureFlag>
+      <FeatureFlag name="admin_project_templates">
         <RenderOnSelectedTabValue selectedTabValue={props.selectedTabValue}>
           <CreateProjectFromTemplate />
         </RenderOnSelectedTabValue>
-      </RenderOnFeatureFlag>
+      </FeatureFlag>
     ),
     'app.containers.Admin.projects.all.createProject.tabs': (props) => {
       return (
-        <RenderOnFeatureFlag>
+        <FeatureFlag name="admin_project_templates">
           <Tab {...props} />
-        </RenderOnFeatureFlag>
+        </FeatureFlag>
       );
     },
   },
