@@ -8,9 +8,6 @@ RSpec.describe EmailCampaigns::Consentable, type: :model do
   before do
     @campaign = ConsentableCampaign.create
   end
-  after(:all) do # Deleting campaign class as this breaks other tests
-    Object.send(:remove_const, :ConsentableCampaign)
-  end
   
   describe "apply_recipient_filters" do
     it "includes a user when the she consented with the campaign" do
