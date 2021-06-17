@@ -13,25 +13,12 @@ RSpec.describe EmailCampaigns::Campaigns::NewCommentForAdmin, type: :model do
     it "filters out normal users (on idea)" do
       idea = create(:idea)
       comment = create(:comment, post: idea)
-      user = create(:user)
-      moderator = create(:moderator, project: idea.project)
-      other_moderator = create(:moderator)
+
+      _user = create(:user)
       admin = create(:admin)
 
-      expect(campaign.apply_recipient_filters(activity: create(:activity, item: comment, action: 'created')).ids).to match_array([admin.id, moderator.id])
-    end
-  end
-
-  describe "apply_recipient_filters" do
-    let(:campaign) { build(:new_comment_for_admin_campaign) }
-
-    it "filters out everyone if the author is moderator (on idea)" do
-      idea = create(:idea)
-      moderator = create(:moderator, project: idea.project)
-      comment = create(:comment, post: idea, author: moderator)
-      admin = create(:admin)
-
-      expect(campaign.apply_recipient_filters(activity: create(:activity, item: comment, action: 'created')).count).to eq 0
+      comment_created = create(:activity, item: comment, action: 'created')
+      expect(campaign.apply_recipient_filters(activity: comment_created)).to match_array([admin])
     end
   end
 

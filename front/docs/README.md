@@ -1,9 +1,66 @@
 # Changelog
 
-
-## Next release
+## Next Release
 
 /
+
+
+## 2021-06-16
+
+### Fixed
+- Project moderators can no longer see draft projects they don't moderate in the project listing.
+- The content and subject of the emails used to share an input (idea/issue/option/contribution/...) do now include the correct input title and URL.
+- Sharing new ideas on Facebook goes faster
+- Manual campaigns now have the layout content in all available languages.
+
+## 2021-06-11
+
+### Fixed
+- Facebook button no longer shows when not configured.
+
+## 2021-06-10
+
+### Fixed
+- Creating invites on a platform with many heavy custom registration fields is no longer unworkably slow
+
+## 2021-06-09
+
+### Added
+- New citizen-facing map view
+
+## 2021-06-08
+
+### Fixed
+- Ordering by ideas by trending is now working.
+- Ordering by ideas votes in the input manager is now working.
+
+## 2021-06-07
+
+### Added
+- Qualtrics surveys integration.
+
+### Changed
+- Project Events are now ordered chronologically from latest to soonest.
+
+### Fixed
+- Visibility Labels in the admin projects list are now visible.
+- Tagged ideas export is fixed.
+- Updating an idea in one locale does not overwrite other locales anymore
+
+## 2021-05-28
+
+### Fixed
+- Project Events are now ordered chronologically from soonest to latest.
+
+## 2021-05-27
+
+### Fixed
+- Project access rights management are now visible again.
+
+## 2021-05-21
+
+### Added
+- Profanity blocker: when posting comments, input, proposals that contain profane words, posting will not be possible and a warning will be shown.
 
 ## 2021-05-20
 
@@ -71,8 +128,7 @@
 ### Added
 - New module to plug email confirmation to users.
 
-
-## 2021-04-29
+## 2021-03-31
 
 ### Fixed
 - Customizable Banner Fields no longer get emptied/reset when changing another.
@@ -80,10 +136,6 @@
 ### Added
 - When a client-side validation error happens for the project title in the admin, there will be an error next to the submit button in addition to the error message next to the input field.
 
-## 2021-04-22
-
-### Fixed
-- After the project title error appears, it disappears again after you start correcting the error
 
 ## 2021-03-25
 
@@ -94,6 +146,11 @@
 
 ### Fixed
 - Fix for broken sign-up flow when signing-up through social sign-on
+
+## 2021-04-22
+
+### Fixed
+- After the project title error appears, it disappears again after you start correcting the error
 
 ## 2021-03-19
 

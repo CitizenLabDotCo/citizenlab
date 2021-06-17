@@ -3,14 +3,13 @@ import React, { PureComponent } from 'react';
 import moment, { Moment } from 'moment';
 import { adopt } from 'react-adopt';
 import localize, { InjectedLocalized } from 'utils/localize';
-import { ThemeProvider } from 'styled-components';
 
 // resources
 import GetGroups, { GetGroupsChildProps } from 'resources/GetGroups';
 
 // components
 import ChartFilters from '../components/ChartFilters';
-import { GraphsContainer, ControlBar, chartTheme } from '../';
+import { GraphsContainer, ControlBar } from 'components/admin/Chart';
 import TimeControl from '../components/TimeControl';
 import MostActiveUsersList from './charts/MostActiveUsersList';
 import Outlet from 'components/Outlet';
@@ -112,7 +111,7 @@ export class UsersDashboard extends PureComponent<
     );
 
     return (
-      <ThemeProvider theme={chartTheme}>
+      <>
         <ControlBar>
           <TimeControl
             startAtMoment={startAtMoment}
@@ -149,7 +148,7 @@ export class UsersDashboard extends PureComponent<
             className="dynamicHeight"
           />
         </GraphsContainer>
-      </ThemeProvider>
+      </>
     );
   }
 }

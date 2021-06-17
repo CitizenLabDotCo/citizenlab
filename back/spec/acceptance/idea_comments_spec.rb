@@ -168,32 +168,28 @@ resource "Comments" do
       end
     end
 
-    describe do
-      before do 
+    context 'when the user moderates the project', skip: !CitizenLab.ee? do
+      before do
         @project = create(:project)
         @user = create(:moderator, project: @project)
-        token = Knock::AuthToken.new(payload: @user.to_token_payload).token
-        header 'Authorization', "Bearer #{token}"
+        header_token_for(@user)
       end
+
       let(:project) { @project.id }
-      
-      example_request 'XLSX export by a project moderator', document: false do
-        expect(status).to eq 200
-      end
+
+      example_request('XLSX export', document: false) { expect(status).to eq 200 }
     end
 
-    describe do
-      before do 
+    context 'when the user moderates another project', skip: !CitizenLab.ee? do
+      before do
         @project = create(:project)
         @user = create(:moderator, project: create(:project))
-        token = Knock::AuthToken.new(payload: @user.to_token_payload).token
-        header 'Authorization', "Bearer #{token}"
+        header_token_for(@user)
       end
+
       let(:project) { @project.id }
-      
-      example_request '[error] XLSX export by a moderator of a different project', document: false do
-        expect(status).to eq 401
-      end
+
+      example_request('[error] XLSX export', document: false) { expect(status).to eq 401 }
     end
 
     describe do
@@ -332,6 +328,20 @@ resource "Comments" do
         example "Commenting should be enabled by default in a budgeting project", document: false do
           do_request
           expect(response_status).to eq 201
+        end
+      end
+
+      describe do
+        before { SettingsService.new.activate_feature! 'blocking_profanity' }
+        # Weak attempt to make it less explicit
+        let(:body_multiloc) {{'en' => 'fu'+'ckin'+'g co'+'cksu'+'cker'}} 
+
+        example_request "[error] Create a comment with blocked words" do
+          expect(response_status).to eq 422
+          json_response = json_parse(response_body)
+          blocked_error = json_response.dig(:errors, :base)&.select{|err| err[:error] == 'includes_banned_words'}&.first
+          expect(blocked_error).to be_present
+          expect(blocked_error.dig(:blocked_words).map{|bw| bw[:attribute]}.uniq).to eq(['body_multiloc'])
         end
       end
     end

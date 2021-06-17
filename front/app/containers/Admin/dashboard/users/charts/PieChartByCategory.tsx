@@ -10,23 +10,17 @@ import messages from '../../messages';
 import { withTheme } from 'styled-components';
 
 // components
-import ExportMenu from '../../components/ExportMenu';
+import ReportExportMenu from 'components/admin/ReportExportMenu';
+import { PieChart, Pie, Tooltip, Cell, ResponsiveContainer } from 'recharts';
 import {
   IGraphUnit,
-  PieChart,
-  Pie,
-  Tooltip,
-  Cell,
-  ResponsiveContainer,
-} from 'recharts';
-import {
   NoDataContainer,
   GraphCardHeader,
   GraphCardTitle,
   GraphCard,
   GraphCardInner,
   PieChartStyleFixesDiv,
-} from '../..';
+} from 'components/admin/Chart';
 
 // resources
 import GetSerieFromStream from 'resources/GetSerieFromStream';
@@ -97,7 +91,7 @@ class PieChartByCategory extends React.PureComponent<
           <GraphCardHeader>
             <GraphCardTitle>{graphTitleString}</GraphCardTitle>
             {serie && (
-              <ExportMenu
+              <ReportExportMenu
                 name={graphTitleString}
                 svgNode={this.currentChart}
                 xlsxEndpoint={xlsxEndpoint}

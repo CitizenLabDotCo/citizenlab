@@ -11,7 +11,14 @@ import messages from '../../messages';
 import { withTheme } from 'styled-components';
 
 // components
-import { Bar, BarChart, XAxis, YAxis, ResponsiveContainer } from 'recharts';
+import {
+  Bar,
+  BarChart,
+  XAxis,
+  YAxis,
+  ResponsiveContainer,
+  LabelList,
+} from 'recharts';
 import {
   IGraphUnit,
   NoDataContainer,
@@ -19,7 +26,7 @@ import {
   GraphCardTitle,
   GraphCard,
   GraphCardInner,
-} from '../..';
+} from 'components/admin/Chart';
 
 // resources
 import GetSerieFromStream from 'resources/GetSerieFromStream';
@@ -28,7 +35,7 @@ import GetSerieFromStream from 'resources/GetSerieFromStream';
 import { IStreamParams, IStream } from 'utils/streams';
 
 import { IGraphFormat } from 'typings';
-import ExportMenu from '../../components/ExportMenu';
+import ReportExportMenu from 'components/admin/ReportExportMenu';
 
 interface DataProps {
   serie: IGraphFormat;
@@ -94,7 +101,7 @@ export class HorizontalBarChart extends React.PureComponent<
           <GraphCardHeader>
             <GraphCardTitle>{graphTitleString}</GraphCardTitle>
             {!noData && (
-              <ExportMenu
+              <ReportExportMenu
                 svgNode={this.currentChart}
                 xlsxEndpoint={xlsxEndpoint}
                 name={graphTitleString}
@@ -114,15 +121,16 @@ export class HorizontalBarChart extends React.PureComponent<
                   dataKey="value"
                   name={unitName}
                   fill={newBarFill}
-                  label={{
-                    fill: barFill,
-                    fontSize: chartLabelSize,
-                    position: 'insideLeft',
-                  }}
                   barSize={graphUnit === 'ideas' ? 5 : 20}
                   animationDuration={animationDuration}
                   animationBegin={animationBegin}
-                />
+                >
+                  <LabelList
+                    fill={barFill}
+                    fontSize={chartLabelSize}
+                    position="insideLeft"
+                  />
+                </Bar>
                 <YAxis
                   dataKey="name"
                   type="category"

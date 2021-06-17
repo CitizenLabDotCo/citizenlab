@@ -1,12 +1,14 @@
-import React, { memo, useState } from 'react';
+import React, { memo, useState, useMemo } from 'react';
 import styled from 'styled-components';
 import { darken } from 'polished';
 import useIdea from 'hooks/useIdea';
 import { isNilOrError } from 'utils/helperUtils';
+import { isEmpty } from 'lodash-es';
 
 // components
 import { Icon, colors } from 'cl2-component-library';
-import ModalWithMap from './ModalWithMap';
+import Modal from 'components/UI/Modal';
+import Map, { Point } from 'components/Map';
 import { Header, Item } from 'components/IdeasShowComponents/MetaInfoStyles';
 
 // i18n
@@ -14,7 +16,11 @@ import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
-import { isRtl } from 'utils/styleUtils';
+// styling
+import { isRtl, fontSizes, media } from 'utils/styleUtils';
+
+// typings
+import { LatLngTuple } from 'leaflet';
 
 const Container = styled.div`
   display: flex;
@@ -26,10 +32,11 @@ const Container = styled.div`
 `;
 
 const StyledIcon = styled(Icon)`
-  width: 15px;
-  height: 21px;
+  flex: 0 0 16px;
+  width: 16px;
   fill: ${colors.label};
   margin-right: 8px;
+
   ${isRtl`
     margin-right: 0;
     margin-left: 8px;
@@ -38,6 +45,8 @@ const StyledIcon = styled(Icon)`
 
 const OpenMapModalButton = styled.button`
   color: ${colors.label};
+  font-size: ${fontSizes.small}px;
+  line-height: 22px;
   text-decoration: underline;
   text-align: left;
   margin: 0;
@@ -51,16 +60,52 @@ const OpenMapModalButton = styled.button`
   }
 `;
 
+const Address = styled.div`
+  width: calc(100% - 35px);
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+`;
+
+const MapContainer = styled.div`
+  padding: 30px;
+
+  ${media.smallerThanMinTablet`
+    padding: 20px;
+  `}
+`;
+
 export interface Props {
-  className?: string;
   projectId: string;
   ideaId: string;
+  compact?: boolean;
+  className?: string;
 }
 
 const Location = memo<Props & InjectedIntlProps>(
-  ({ intl: { formatMessage }, projectId, ideaId }) => {
+  ({ intl: { formatMessage }, projectId, ideaId, compact, className }) => {
     const [isOpened, setIsOpened] = useState(false);
     const idea = useIdea({ ideaId });
+
+    const address =
+      !isNilOrError(idea) && !isEmpty(idea.attributes?.location_description)
+        ? idea.attributes.location_description
+        : null;
+
+    const point =
+      !isNilOrError(idea) && !isEmpty(idea.attributes?.location_point_geojson)
+        ? idea.attributes.location_point_geojson
+        : null;
+
+    const points = useMemo(() => {
+      return point ? ([point] as Point[]) : undefined;
+    }, [point]);
+
+    const centerLatLng = useMemo(() => {
+      return point
+        ? ([point.coordinates[1], point.coordinates[0]] as LatLngTuple)
+        : undefined;
+    }, [point]);
 
     const closeModal = () => {
       setIsOpened(false);
@@ -70,30 +115,33 @@ const Location = memo<Props & InjectedIntlProps>(
       setIsOpened(true);
     };
 
-    if (!isNilOrError(idea)) {
-      const address = idea.attributes.location_description;
-      const geoPosition = idea.attributes.location_point_geojson;
-
-      if (address && geoPosition) {
-        return (
-          <Item>
-            <Header>{formatMessage(messages.location)}</Header>
-            <Container>
-              <StyledIcon name="position" ariaHidden />
-              <OpenMapModalButton id="e2e-map-popup" onClick={openModal}>
-                {address}
-              </OpenMapModalButton>
-            </Container>
-            <ModalWithMap
-              address={address}
-              position={geoPosition}
-              projectId={projectId}
-              isOpened={isOpened}
-              onCloseModal={closeModal}
-            />
-          </Item>
-        );
-      }
+    if (address && point) {
+      return (
+        <Item className={className || ''} compact={compact}>
+          <Header>{formatMessage(messages.location)}</Header>
+          <Container>
+            <StyledIcon name="position" ariaHidden />
+            <OpenMapModalButton id="e2e-map-popup" onClick={openModal}>
+              {address}
+            </OpenMapModalButton>
+          </Container>
+          <Modal
+            opened={isOpened}
+            close={closeModal}
+            header={<Address>{address}</Address>}
+            width={1150}
+          >
+            <MapContainer>
+              <Map
+                projectId={projectId}
+                points={points}
+                centerLatLng={centerLatLng}
+                zoomLevel={15}
+              />
+            </MapContainer>
+          </Modal>
+        </Item>
+      );
     }
 
     return null;

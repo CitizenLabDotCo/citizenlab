@@ -583,6 +583,18 @@
         }
       },
 
+      "qualtrics_surveys": {
+        "type": "object",
+        "title": "Qualtrics Surveys",
+        "description":  "Allow Qualtrics surveys to be embedded.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false}
+        }
+      },
+
       "volunteering": {
         "type": "object",
         "title": "Volunteering",
@@ -615,6 +627,18 @@
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false}
+        }
+      },
+
+      "blocking_profanity": {
+        "type": "object",
+        "title": "Block Profanity",
+        "description": "Prevent input with profanity in it from being posted (can be turned on/off from the platform)",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
           "enabled": { "type": "boolean", "default": false}
         }
       },
@@ -907,6 +931,7 @@
     "enalyzer_surveys": ["surveys"],
     "survey_xact_surveys": ["surveys"],
     "surveymonkey_surveys": ["surveys"],
+    "qualtrics_surveys": ["surveys"],
     "automatic_tagging": ["manual_tagging"]
   },
   "definitions": {

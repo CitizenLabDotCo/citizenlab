@@ -26,24 +26,16 @@ import { ProcessType } from 'services/projects';
 
 // styling
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
 
 const Container = styled.div``;
 
 const MoreActionsMenuWrapper = styled.div`
   display: flex;
   align-items: center;
-
-  &.hasLeftMargin {
-    ${media.biggerThanMaxTablet`
-      margin-left: 35px;
-    `}
-  }
 `;
 
 interface Props {
   idea: IIdeaData;
-  hasLeftMargin: boolean;
   className?: string;
   projectId: string;
 }
@@ -51,7 +43,6 @@ interface Props {
 const IdeaMoreActions = memo(
   ({
     idea,
-    hasLeftMargin,
     className,
     projectId,
     intl: { formatMessage },
@@ -96,9 +87,7 @@ const IdeaMoreActions = memo(
 
       return (
         <Container className={className}>
-          <MoreActionsMenuWrapper
-            className={hasLeftMargin ? 'hasLeftMargin' : ''}
-          >
+          <MoreActionsMenuWrapper>
             <HasPermission item={idea} action="edit" context={idea}>
               <MoreActionsMenu
                 ariaLabel={<FormattedMessage {...messages.moreOptions} />}

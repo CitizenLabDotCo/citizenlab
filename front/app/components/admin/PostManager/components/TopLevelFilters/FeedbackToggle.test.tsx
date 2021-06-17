@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React from 'react';
 import { shallow } from 'enzyme';
 
@@ -91,8 +92,8 @@ describe('<FeedbackToggle />', () => {
   it('reacts to search change', () => {
     const onChangeSearchTerm = jest.fn();
     const ideasCount = {
-      count: 6,
       onChangeSearchTerm,
+      count: 6,
     };
 
     const wrapper = shallow(

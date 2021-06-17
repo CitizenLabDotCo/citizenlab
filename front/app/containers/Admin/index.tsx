@@ -9,7 +9,7 @@ import HasPermission from 'components/HasPermission';
 
 // components
 import Sidebar from './sideBar/';
-import styled from 'styled-components';
+import styled, { ThemeProvider } from 'styled-components';
 import { colors, media } from 'utils/styleUtils';
 
 // utils
@@ -18,6 +18,7 @@ import { endsWith } from 'utils/helperUtils';
 
 // stlying
 import 'assets/semantic/semantic.min.css';
+import { rgba } from 'polished';
 
 const Container = styled.div`
   display: flex;
@@ -84,6 +85,25 @@ const RightColumn = styled.div`
   `}
 `;
 
+export const chartTheme = (theme) => {
+  return {
+    ...theme,
+    chartStroke: colors.clIconAccent,
+    chartStrokeGreen: colors.clGreen,
+    chartStrokeRed: colors.clRed,
+    chartFill: colors.clIconAccent,
+    barFill: colors.adminContentBackground,
+    chartLabelColor: colors.adminSecondaryTextColor,
+    barHoverColor: rgba(colors.clIconAccent, 0.25),
+    chartLabelSize: 13,
+    animationBegin: 10,
+    animationDuration: 200,
+    cartesianGridColor: '#f5f5f5',
+    newBarFill: '#073F80',
+    newLineColor: '#7FBBCA',
+  };
+};
+
 type Props = {
   className?: string;
   children: React.ReactNode;
@@ -132,16 +152,18 @@ const AdminPage = memo<Props & WithRouterProps>(
     const noPadding =
       adminNoPadding ||
       pathname.includes('admin/dashboard') ||
-      pathname.includes('admin/processing');
+      pathname.includes('admin/processing') ||
+      pathname.includes('admin/insights');
 
     const fullWidth =
       adminFullWidth === true ||
       endsWith(pathname, 'admin/moderation') ||
       pathname.includes('admin/dashboard') ||
-      pathname.includes('admin/processing');
+      pathname.includes('admin/processing') ||
+      pathname.includes('admin/insights');
+
     const whiteBg =
       endsWith(pathname, 'admin/moderation') ||
-      pathname.includes('admin/dashboard') ||
       pathname.includes('admin/processing');
 
     return (
@@ -149,16 +171,18 @@ const AdminPage = memo<Props & WithRouterProps>(
         item={{ type: 'route', path: '/admin/dashboard' }}
         action="access"
       >
-        <Container className={`${className} ${whiteBg ? 'whiteBg' : ''}`}>
-          <Sidebar />
-          <RightColumn
-            className={`${fullWidth && 'fullWidth'} ${
-              noPadding && 'noPadding'
-            }`}
-          >
-            {children}
-          </RightColumn>
-        </Container>
+        <ThemeProvider theme={chartTheme}>
+          <Container className={`${className} ${whiteBg ? 'whiteBg' : ''}`}>
+            <Sidebar />
+            <RightColumn
+              className={`${fullWidth && 'fullWidth'} ${
+                noPadding && 'noPadding'
+              }`}
+            >
+              {children}
+            </RightColumn>
+          </Container>
+        </ThemeProvider>
       </HasPermission>
     );
   }

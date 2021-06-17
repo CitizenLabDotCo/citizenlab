@@ -98,7 +98,7 @@ const Component = ({
             contribution: messages.contributionEmailSharingSubject,
           }),
           {
-            postTitle,
+            ideaTitle: postTitle,
           }
         )}
         emailBody={formatMessage(
@@ -111,8 +111,8 @@ const Component = ({
             contribution: messages.contributionEmailSharingBody,
           }),
           {
-            postUrl,
-            postTitle,
+            ideaUrl: postUrl,
+            ideaTitle: postTitle,
           }
         )}
         utmParams={utmParams}

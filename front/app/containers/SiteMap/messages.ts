@@ -38,6 +38,10 @@ export default defineMessages({
     id: 'containers.SiteMap.accessibilityStatementLink',
     defaultMessage: 'Accessibility statement',
   },
+  faqLink: {
+    id: 'containers.SiteMap.faqLink',
+    defaultMessage: 'Frequently Asked Questions (FAQ)',
+  },
   projectsSection: {
     id: 'containers.SiteMap.projectsSection',
     defaultMessage: 'Projects of {orgName}',
