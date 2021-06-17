@@ -65,7 +65,7 @@
 ## 2021-05-20
 
 ### Fixed
-- Exports of ideas without author
+- Excel exports of ideas without author
 
 ## 2021-05-19
 
