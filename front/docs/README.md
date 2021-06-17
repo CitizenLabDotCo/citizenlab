@@ -125,6 +125,11 @@
 ### Added
 - New module to plug email confirmation to users.
 
+## 2021-04-29
+
+### Fixed
+- Editing the banner header in Admin > Settings > General, the other header fields are not cleared anymore
+
 ## 2021-04-22
 
 ### Fixed
