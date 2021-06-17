@@ -130,7 +130,7 @@ const configuration: ModuleConfiguration = {
       </FeatureFlag>
     ),
     'app.components.NotificationMenu.Notification': ({ notification }) => (
-      <RenderOnFeatureFlag>
+      <FeatureFlag name="project_folders">
         <RenderOnNotificationType
           notification={notification}
           notificationType="project_folder_moderation_rights_received"
@@ -141,7 +141,7 @@ const configuration: ModuleConfiguration = {
             }
           />
         </RenderOnNotificationType>
-      </RenderOnFeatureFlag>
+      </FeatureFlag>
     ),
   },
   routes: {
