@@ -27,7 +27,7 @@
 ### Added
 - New citizen-facing map view
 
-## 2021-06-07
+## 2021-06-08
 
 ### Fixed
 - Ordering by ideas by trending is now working.
