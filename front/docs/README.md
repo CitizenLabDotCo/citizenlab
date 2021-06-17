@@ -2,7 +2,9 @@
 
 ## Next Release
 
-/
+### Added
+
+- Added 'go back' button from project to project folder (if appropriate).
 
 ## 2021-06-16
 
