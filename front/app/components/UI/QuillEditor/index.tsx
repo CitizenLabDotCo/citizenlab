@@ -254,7 +254,7 @@ function isExternal(url: string) {
   const protocol = url.slice(0, url.indexOf(':'));
   return ALLOWED_PROTOCOLS.has(protocol);
 }
-// END function to detect whether urls are externel
+// END function to detect whether urls are external
 
 // BEGIN custom link implementation
 const Link = Quill.import('formats/link');
@@ -263,6 +263,8 @@ class CustomLink extends Link {
   static create(url) {
     const node = super.create(url);
 
+    // The default behavior of the Link is to add a target="_blank" attribute
+    // So for internal urls we have to remove this
     if (!isExternal(url)) {
       node.removeAttribute('target');
     }
