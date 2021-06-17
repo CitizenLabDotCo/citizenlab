@@ -21,7 +21,7 @@ class WebApi::V1::NotificationsController < ApplicationController
       @notifications,
       WebApi::V1::Notifications::NotificationSerializer,
       params: fastjson_params,
-      serializers: NotificationToSerializerMapper.new.map
+      serializers: NotificationService.new.serializers
       )
   end
 
@@ -35,7 +35,7 @@ class WebApi::V1::NotificationsController < ApplicationController
       render json: WebApi::V1::Notifications::NotificationSerializer.new(
         Notification.find(ids),
         params: fastjson_params,
-        serializers: NotificationToSerializerMapper.new.map,
+        serializers: NotificationService.new.serializers,
         ).serialized_json
     else
       head 500
@@ -46,7 +46,7 @@ class WebApi::V1::NotificationsController < ApplicationController
     render json: WebApi::V1::Notifications::NotificationSerializer.new(
       @notification,
       params: fastjson_params,
-      serializers: NotificationToSerializerMapper.new.map,
+      serializers: NotificationService.new.serializers,
       ).serialized_json
   end
 
@@ -55,7 +55,7 @@ class WebApi::V1::NotificationsController < ApplicationController
       render json: WebApi::V1::Notifications::NotificationSerializer.new(
         @notification,
         params: fastjson_params,
-        serializers: NotificationToSerializerMapper.new.map,
+        serializers: NotificationService.new.serializers,
         ).serialized_json, status: :ok
     else
       head 500
