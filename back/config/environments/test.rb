@@ -18,11 +18,6 @@ Rails.application.configure do
     'Cache-Control' => "public, max-age=#{1.hour.to_i}"
   }
 
-  # Disable caching.
-  # Rails.application.configure do
-  #   config.cache_store = :null_store
-  # end
-
   # Show full error reports and disable caching.
   config.consider_all_requests_local       = true
   config.action_controller.perform_caching = false

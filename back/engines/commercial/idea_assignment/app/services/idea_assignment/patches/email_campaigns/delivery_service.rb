@@ -5,7 +5,7 @@ module IdeaAssignment
 
         def campaign_classes
           super + [
-           IdeaAssignment::EmailCampaigns::Campaigns::IdeaAssignedToYou
+            IdeaAssignment::EmailCampaigns::Campaigns::IdeaAssignedToYou
           ]
         end
       end

@@ -1,10 +1,10 @@
-module FlagInappropriateContent
+module ProjectFolders
   module Patches
     module EmailCampaigns
       module DeliveryService
         def campaign_classes
           super + [
-            FlagInappropriateContent::EmailCampaigns::Campaigns::InappropriateContentFlagged
+            ProjectFolders::EmailCampaigns::Campaigns::ProjectFolderModerationRightsReceived
           ]
         end
       end

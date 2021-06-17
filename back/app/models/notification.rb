@@ -15,6 +15,7 @@ class Notification < ApplicationRecord
 
   scope :unread, -> {where(read_at: nil)}
 
+  # TODO move to service
   def self.classes_for activity
     # Dir[File.join(__dir__, 'notifications', '*.rb')].each { |file| require file }
     # CitizenLab.enabled_modules.each do |m|
