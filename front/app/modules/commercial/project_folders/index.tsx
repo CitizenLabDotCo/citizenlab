@@ -14,9 +14,10 @@ import CreateProject from 'containers/Admin/projects/all/CreateProject';
 import ProjectsListItem from 'containers/Navbar/components/ProjectsListItem';
 
 import { isProjectFolderModerator } from './permissions/roles';
-import useFeatureFlag from 'hooks/useFeatureFlag';
 import useAuthUser from 'hooks/useAuthUser';
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
+
+import FeatureFlag from 'components/FeatureFlag';
 
 type RenderOnPublicationTypeProps = {
   publication: IAdminPublicationContent;
@@ -33,18 +34,6 @@ const RenderOnPublicationType = ({
 }: RenderOnPublicationTypeProps) => {
   if (publication.publicationType !== 'folder') return null;
   return <>{children}</>;
-};
-
-type RenderOnFeatureFlagProps = {
-  children: ReactNode;
-};
-
-const RenderOnFeatureFlag = ({ children }: RenderOnFeatureFlagProps) => {
-  const isProjectFoldersEnabled = useFeatureFlag('project_folders');
-  if (isProjectFoldersEnabled) {
-    return <>{children}</>;
-  }
-  return null;
 };
 
 const RenderOnProjectFolderModerator = ({
@@ -78,14 +67,14 @@ const configuration: ModuleConfiguration = {
       );
     },
     'app.containers.AdminPage.projects.all.projectsAndFolders.title': () => (
-      <RenderOnFeatureFlag>
+      <FeatureFlag name="project_folders">
         <ProjectFolderTitle />
-      </RenderOnFeatureFlag>
+      </FeatureFlag>
     ),
     'app.containers.AdminPage.projects.all.projectsAndFolders.actions': () => (
-      <RenderOnFeatureFlag>
+      <FeatureFlag name="project_folders">
         <NewProjectFolderButton />
-      </RenderOnFeatureFlag>
+      </FeatureFlag>
     ),
     'app.containers.AdminPage.projects.all.projectsAndFolders.row': (props) => (
       <RenderOnPublicationType publication={props.publication}>
@@ -107,20 +96,20 @@ const configuration: ModuleConfiguration = {
       projectAttrs,
       authUser,
     }) => (
-      <RenderOnFeatureFlag>
+      <FeatureFlag name="project_folders">
         <ProjectFolderSelect
           onChange={onChange}
           projectAttrs={projectAttrs}
           authUser={authUser}
         />
-      </RenderOnFeatureFlag>
+      </FeatureFlag>
     ),
     'app.containers.AdminPage.projects.all.createProjectNotAdmin': () => (
-      <RenderOnFeatureFlag>
+      <FeatureFlag name="project_folders">
         <RenderOnProjectFolderModerator>
           <CreateProject />
         </RenderOnProjectFolderModerator>
-      </RenderOnFeatureFlag>
+      </FeatureFlag>
     ),
   },
   routes: {
