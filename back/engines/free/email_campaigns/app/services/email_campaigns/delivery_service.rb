@@ -48,7 +48,7 @@ module EmailCampaigns
       Campaigns::UserDigest,
       Campaigns::Welcome,
       Campaigns::YourProposedInitiativesDigest
-    ]
+    ].freeze
 
 
     def campaign_types
@@ -60,7 +60,7 @@ module EmailCampaigns
     end
 
     def consentable_campaign_types_for(user)
-      consentable_types = Consentable.consentable_campaign_types(campaign_classes, user)
+      consentable_types = Consentable.consentable_campaign_types(campaign_classes, user, self)
       disabled_types = Disableable.enabled_campaign_types(Campaign.where(type: campaign_types))
       consentable_types - disabled_types
     end

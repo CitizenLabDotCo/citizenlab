@@ -144,12 +144,13 @@ describe EmailCampaigns::DeliveryService do
       ConsentableCampaign.create!
       ConsentableDisableableCampaignA.create!(enabled: false)
       ConsentableDisableableCampaignB.create!(enabled: true)
-    end
-    after(:all) do # Deleting campaign classes as this breaks other tests
-      Object.send(:remove_const, :NonConsentableCampaign)
-      Object.send(:remove_const, :ConsentableCampaign)
-      Object.send(:remove_const, :ConsentableDisableableCampaignA)
-      Object.send(:remove_const, :ConsentableDisableableCampaignB)
+
+      allow(service).to receive(:campaign_classes).and_return([
+        NonConsentableCampaign,
+        ConsentableCampaign,
+        ConsentableDisableableCampaignA,
+        ConsentableDisableableCampaignB
+      ])
     end
 
     it 'returns all campaign types that return true to #consentable_for?, for the given user and have an enabled campaign' do
