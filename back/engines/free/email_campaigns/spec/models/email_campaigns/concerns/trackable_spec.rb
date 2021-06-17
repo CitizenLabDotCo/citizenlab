@@ -1,15 +1,13 @@
 require 'rails_helper'
 
-class TrackableCampaign < EmailCampaigns::Campaign
-  include EmailCampaigns::Trackable
-end
 
 RSpec.describe EmailCampaigns::Trackable, type: :model do
   before do
-    @campaign = TrackableCampaign.create
-  end
-  after(:all) do # Deleting campaign class as this breaks other tests
-    Object.send(:remove_const, :TrackableCampaign)
+    class TrackableCampaign < EmailCampaigns::Campaign
+      include EmailCampaigns::Trackable
+    end
+
+    @campaign = TrackableCampaign.create!
   end
   
   describe "sent?" do

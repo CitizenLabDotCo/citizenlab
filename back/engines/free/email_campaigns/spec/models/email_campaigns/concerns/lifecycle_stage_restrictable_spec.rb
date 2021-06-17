@@ -1,28 +1,25 @@
 require 'rails_helper'
 
-class LifecycleStageActiveAndDemoCampaign < EmailCampaigns::Campaign
-  include EmailCampaigns::LifecycleStageRestrictable
-  allow_lifecycle_stages only: ['demo','active']
-end
-
-class LifecycleStageNotChurnedCampaign < EmailCampaigns::Campaign
-  include EmailCampaigns::LifecycleStageRestrictable
-  allow_lifecycle_stages except: ['demo']
-end
 
 RSpec.describe EmailCampaigns::LifecycleStageRestrictable, type: :model do
 
   before do
+    class LifecycleStageActiveAndDemoCampaign < EmailCampaigns::Campaign
+      include EmailCampaigns::LifecycleStageRestrictable
+      allow_lifecycle_stages only: ['demo','active']
+    end
+
+    class LifecycleStageNotChurnedCampaign < EmailCampaigns::Campaign
+      include EmailCampaigns::LifecycleStageRestrictable
+      allow_lifecycle_stages except: ['demo']
+    end
+
     @app_configuration = AppConfiguration.instance
-  end
-  after(:all) do # Deleting campaign classes as this breaks other tests
-    Object.send(:remove_const, :LifecycleStageActiveAndDemoCampaign)
-    Object.send(:remove_const, :LifecycleStageNotChurnedCampaign)
   end
 
   context "on a campaign limited to demo and active platforms" do
     before do
-      @campaign = LifecycleStageActiveAndDemoCampaign.create
+      @campaign = LifecycleStageActiveAndDemoCampaign.create!
     end
 
     describe "run_before_send_hooks" do
@@ -42,7 +39,7 @@ RSpec.describe EmailCampaigns::LifecycleStageRestrictable, type: :model do
 
   context "on a campaign limited to non-demo platforms" do
     before do
-      @campaign = LifecycleStageNotChurnedCampaign.create
+      @campaign = LifecycleStageNotChurnedCampaign.create!
     end
 
     describe "run_before_send_hooks" do
