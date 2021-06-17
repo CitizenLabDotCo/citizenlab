@@ -121,6 +121,10 @@
 ### Added
 - New module to plug email confirmation to users.
 
+## 2021-04-29
+
+
+
 ## 2021-04-22
 
 ### Fixed
