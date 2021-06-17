@@ -3,6 +3,10 @@
 ## Next Release
 
 ### Fixed
+
+- Buttons and links in project description now open internal links in the same tab, and external links in a new tab.
+
+### Fixed
 - Project moderators can no longer see draft projects they don't moderate in the project listing.
 - The content and subject of the emails used to share an input (idea/issue/option/contribution/...) do now include the correct input title and URL.
 
