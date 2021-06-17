@@ -78,7 +78,8 @@
 
 ## 2021-05-14
 
-
+### Fixed
+- Fixed an issue causing already registered users to be prompted with the post-registration welcome screen.
 
 ## 2021-05-11
 
@@ -87,14 +88,14 @@
 
 ## 2021-05-10
 
-
+### Changed
+- Invited or verified users no longer require confirmation.
 
 
 ## 2021-05-07
 
 ### Fixed
 - Spreasheet exports throughout the platform are improved.
-- Idea export to excel is no longer limited to 250 ideas.
 
 ### Added
 - City Admins can now assign any user as the author of an idea when creating or updating.
@@ -102,10 +103,13 @@
 
 ## 2021-05-06
 
-
+### Fixed
+- Idea export to excel is no longer limited to 250 ideas.
 
 ## 2021-05-04
 
+### Fixed
+- Fixed issues causing email campaigns not to be sent.
 
 
 ## 2021-05-03
