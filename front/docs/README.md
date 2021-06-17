@@ -91,7 +91,6 @@
 ### Changed
 - Invited or verified users no longer require confirmation.
 
-
 ## 2021-05-07
 
 ### Fixed
@@ -110,7 +109,6 @@
 
 ### Fixed
 - Fixed issues causing email campaigns not to be sent.
-
 
 ## 2021-05-03
 
@@ -142,7 +140,6 @@
 
 ### Added
 - When a client-side validation error happens for the project title in the admin, there will be an error next to the submit button in addition to the error message next to the input field.
-
 
 ## 2021-03-25
 
