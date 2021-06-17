@@ -10,17 +10,13 @@ import messages from './messages';
 interface Props {
   processing: boolean;
   onClick: () => void;
-  selectedRowsWithContentWarningLength: number;
+  activeFlagsCount: number;
 }
 
-const RemoveFlagButton = ({
-  processing,
-  onClick,
-  selectedRowsWithContentWarningLength,
-}: Props) => {
+const RemoveFlagButton = ({ processing, onClick, activeFlagsCount }: Props) => {
   const locale = useLocale();
 
-  if (!isNilOrError(locale) && selectedRowsWithContentWarningLength > 0) {
+  if (!isNilOrError(locale) && activeFlagsCount > 0) {
     return (
       <Button
         icon="exclamation-trapezium-strikethrough"
@@ -32,7 +28,7 @@ const RemoveFlagButton = ({
         <FormattedMessage
           {...messages.removeWarning}
           values={{
-            numberOfItems: selectedRowsWithContentWarningLength,
+            numberOfItems: activeFlagsCount,
           }}
         />
       </Button>

@@ -331,10 +331,10 @@ export type OutletsPropertyMap = {
     onSettingChange: (settingName: string, settingValue: any) => void;
   };
   'app.modules.commercial.moderation.admin.containers.ModerationRow.content': {
-    inappropriateContentFlag: boolean;
+    inappropriateContentFlagId: string | undefined;
   };
   'app.modules.commercial.moderation.admin.containers.actionbar.buttons': {
-    selectedRowsWithContentWarningLength: number;
+    activeFlagsCount: number;
     processing: boolean;
     onClick: () => void;
   };

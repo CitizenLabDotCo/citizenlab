@@ -115,4 +115,12 @@ export default defineMessages({
     id: 'app.containers.Admin.Moderation.settingsSavingError',
     defaultMessage: "Couldn't save. Try changing the setting again.",
   },
+  removeFlagsError: {
+    id: 'app.containers.Admin.Moderation.removeFlagsError',
+    defaultMessage: "Couldn't remove warning(s). Try again.",
+  },
+  markFlagsError: {
+    id: 'app.containers.Admin.Moderation.markFlagsError',
+    defaultMessage: "Couldn't mark item(s). Try again.",
+  },
 });
