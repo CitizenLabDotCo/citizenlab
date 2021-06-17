@@ -69,8 +69,6 @@
 
 ## 2021-05-19
 
-### Fixed
-
 ### Added
 - Support for Auth0 as a verification method
 
