@@ -2,6 +2,10 @@
 
 ## Next Release
 
+### Fixed
+
+- Privacy policy now opens in new tab.
+
 ## 2021-06-11
 
 ### Fixed
