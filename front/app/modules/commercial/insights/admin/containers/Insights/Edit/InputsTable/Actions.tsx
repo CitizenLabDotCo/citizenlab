@@ -140,6 +140,7 @@ const Actions = ({
           [...selectedInputs],
           [...categorySelection]
         );
+        setCategorySelection(new Set());
       } catch {
         // do nothing
       }
