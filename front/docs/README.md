@@ -2,7 +2,8 @@
 
 ## Next Release
 
-/
+### Fixed
+- Landing page custom section now uses theme colors.
 
 ## 2021-06-16
 
