@@ -1,6 +1,9 @@
 # Changelog
 
 ## 2021-06-18
+
+### Fixed
+
 - Privacy policy now opens in new tab.
 - Landing page custom section now uses theme colors.
 
