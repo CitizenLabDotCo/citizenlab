@@ -325,16 +325,21 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
     [onSearchTermChange]
   );
 
-  const isModerationSelected = (selectedModeration: IModerationData) =>
+  const isModerationSelected = (
+    selectedModeration: IModerationData,
+    selectedModerations: IModerationData[]
+  ) =>
     selectedModerations
       .map((moderation) => moderation.id)
       .includes(selectedModeration.id);
 
-  const handleRowOnSelect = useCallback(
+  const handleRowOnSelectChange = useCallback(
     (newSelectedModeration: IModerationData) => {
       if (!processing) {
         setSelectedModerations((prevSelectedModerations) => {
-          if (isModerationSelected(newSelectedModeration)) {
+          if (
+            isModerationSelected(newSelectedModeration, prevSelectedModerations)
+          ) {
             return prevSelectedModerations.filter(
               (moderation) => moderation.id !== newSelectedModeration.id
             );
@@ -558,8 +563,11 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
                 <ModerationRow
                   key={moderationItem.id}
                   moderation={moderationItem}
-                  selected={isModerationSelected(moderationItem)}
-                  onSelect={handleRowOnSelect}
+                  selected={isModerationSelected(
+                    moderationItem,
+                    selectedModerations
+                  )}
+                  onSelect={handleRowOnSelectChange}
                   inappropriateContentFlagId={
                     moderationItem.relationships.inappropriate_content_flag
                       ?.data.id

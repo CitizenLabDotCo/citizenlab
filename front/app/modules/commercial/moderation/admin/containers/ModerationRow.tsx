@@ -146,7 +146,7 @@ const ModerationRow = memo<Props & InjectedIntlProps>(
       (_event: React.ChangeEvent) => {
         onSelect(moderation);
       },
-      [onSelect]
+      [onSelect, moderation]
     );
 
     const handleGoToLinkOnClick = useCallback(
