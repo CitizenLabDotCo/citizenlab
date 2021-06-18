@@ -17,7 +17,8 @@ resource 'Moderations' do
         token = Knock::AuthToken.new(payload: @moderator.to_token_payload).token
         header 'Authorization', "Bearer #{token}" 
 
-        @comment = create(:comment, post: create(:idea, project: @project))
+        @idea = create(:idea, project: @project)
+        @comment = create(:comment, post: @idea)
         @flag = create(:inappropriate_content_flag, flaggable: @comment, toxicity_label: 'insult')
       end
       
@@ -26,6 +27,8 @@ resource 'Moderations' do
         json_response = json_parse(response_body)
         expect(json_response[:included].map{|d| d[:id]}).to include(@flag.id)
         expect(json_response[:included].map{|d| d.dig(:attributes, :toxicity_label)}).to include('insult')
+        idea_data = json_response[:data].find{|d| d[:id] == @idea.id}
+        expect(idea_data[:relationships].keys).not_to include(:inappropriate_content_flag)
       end
     end
   end
