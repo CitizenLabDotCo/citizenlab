@@ -41,6 +41,8 @@ const Container = styled.div`
 const TopBar = styled.div`
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
 
   ${isRtl`
     flex-direction: row-reverse;
