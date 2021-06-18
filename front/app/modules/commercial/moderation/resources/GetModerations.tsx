@@ -5,7 +5,7 @@ import shallowCompare from 'utils/shallowCompare';
 import {
   moderationsStream,
   IModerationData,
-  TModerationStatuses,
+  TModerationStatus,
 } from '../services/moderations';
 import { isNilOrError } from 'utils/helperUtils';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
@@ -13,7 +13,7 @@ import { getPageNumberFromUrl } from 'utils/paginationUtils';
 interface InputProps {
   pageNumber?: number;
   pageSize?: number;
-  moderationStatus?: TModerationStatuses;
+  moderationStatus?: TModerationStatus;
 }
 
 type children = (renderProps: GetModerationsChildProps) => JSX.Element | null;

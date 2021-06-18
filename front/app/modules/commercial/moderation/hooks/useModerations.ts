@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import {
   moderationsStream,
   IModerationData,
-  TModerationStatuses,
+  TModerationStatus,
   TModeratableTypes,
 } from '../services/moderations';
 import { isNilOrError } from 'utils/helperUtils';
@@ -11,7 +11,7 @@ import { getPageNumberFromUrl } from 'utils/paginationUtils';
 interface InputProps {
   pageNumber?: number;
   pageSize?: number;
-  moderationStatus?: TModerationStatuses;
+  moderationStatus?: TModerationStatus;
   moderatableTypes: TModeratableTypes[];
   projectIds: string[];
   searchTerm: string;
@@ -20,9 +20,10 @@ interface InputProps {
 export default function useModerations(props: InputProps) {
   const [pageNumber, setPageNumber] = useState(props.pageNumber);
   const [pageSize, setPageSize] = useState(props.pageSize);
-  const [moderationStatus, setModerationStatus] = useState(
-    props.moderationStatus
-  );
+  const [
+    moderationStatus,
+    setModerationStatus,
+  ] = useState<TModerationStatus | null>(props.moderationStatus || null);
   const [list, setList] = useState<
     IModerationData[] | undefined | null | Error
   >(undefined);
@@ -44,7 +45,7 @@ export default function useModerations(props: InputProps) {
   }, []);
 
   const onModerationStatusChange = useCallback(
-    (newModerationStatus: TModerationStatuses) => {
+    (newModerationStatus: TModerationStatus | null) => {
       setModerationStatus(newModerationStatus);
     },
     []
