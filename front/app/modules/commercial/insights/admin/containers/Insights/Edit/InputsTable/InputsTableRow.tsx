@@ -28,40 +28,45 @@ const CategoryList = styled.div`
 
 type InputsTableRowProps = {
   input: IInsightsInputData;
-  onSelect: () => void;
-} & WithRouterProps;
+  selected: boolean;
+  changeSelected: () => void;
+  onPreview: () => void;
+};
 
 const InputsTableRow = ({
   input,
-  onSelect,
+  selected,
+  changeSelected,
+  onPreview,
   location: { query },
-}: InputsTableRowProps) => {
+}: InputsTableRowProps & WithRouterProps) => {
   const idea = useIdea({ ideaId: input.relationships?.source.data.id });
 
   if (isNilOrError(idea)) {
     return null;
   }
 
-  // TODO: Implement checkbox logic
-  const handleCheckboxChange = () => {};
-
   const handleEnterPress = (
     event: React.KeyboardEvent<HTMLTableRowElement>
   ) => {
     if (event.key === 'Enter') {
-      onSelect();
+      onPreview();
     }
   };
 
   return (
     <tr
       data-testid="insightsInputsTableRow"
-      onClick={onSelect}
       tabIndex={0}
       onKeyPress={handleEnterPress}
+      onClick={onPreview}
     >
       <td>
-        <Checkbox checked={false} onChange={handleCheckboxChange} />
+        <Checkbox
+          checked={selected}
+          onChange={changeSelected}
+          stopLabelPropagation
+        />
       </td>
       <td>
         <T value={idea.attributes.title_multiloc} maxLength={30} />

@@ -185,4 +185,21 @@ export default defineMessages({
     id: 'app.containers.Admin.Insights.Edit.Details.createCategoryPrompt',
     defaultMessage: 'Create',
   },
+  bulkAssignCategory: {
+    id: 'app.containers.Admin.Insights.Edit.bulkAssignCategory',
+    defaultMessage: 'Add categories to selected inputs',
+  },
+  assignCategoriesButton: {
+    id: 'app.containers.Admin.Insights.Edit.assignCategoriesButton',
+    defaultMessage: 'Add',
+  },
+  bulkUnassign: {
+    id: 'app.containers.Admin.Insights.Edit.bulkUnassign',
+    defaultMessage: 'Remove',
+  },
+  deleteFromCategories: {
+    id: 'app.containers.Admin.Insights.Edit.deleteFromCategories',
+    defaultMessage:
+      'Are you sure you can to remove {selectedCount} inputs from {categoryName}?',
+  },
 });
