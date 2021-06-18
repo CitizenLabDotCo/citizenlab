@@ -1,7 +1,6 @@
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 import { IRelationship } from 'typings';
-import { uuidRegExp } from 'utils/helperUtils';
 
 export interface IInsightsInputData {
   id: string;
@@ -70,11 +69,10 @@ export async function deleteInsightsInputCategory(
     insightsCategoryId
   );
 
-  const inputsEndpointRegexp = new RegExp(
-    `\/insights\/views\/${uuidRegExp}\/inputs$`
-  );
   streams.fetchAllWith({
-    regexApiEndpoint: [inputsEndpointRegexp],
+    partialApiEndpoint: [
+      `${API_PATH}/${getInsightsInputsEndpoint(insightsViewId)}`,
+    ],
   });
 
   return response;
@@ -92,11 +90,10 @@ export async function addInsightsInputCategory(
     { data: [{ id: insightsCategoryId, type: 'category' }] }
   );
 
-  const inputsEndpointRegexp = new RegExp(
-    `\/insights\/views\/${uuidRegExp}\/inputs$`
-  );
   streams.fetchAllWith({
-    regexApiEndpoint: [inputsEndpointRegexp],
+    partialApiEndpoint: [
+      `${API_PATH}/${getInsightsInputsEndpoint(insightsViewId)}`,
+    ],
   });
 
   return response;
