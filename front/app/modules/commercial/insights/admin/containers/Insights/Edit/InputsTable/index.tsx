@@ -11,7 +11,7 @@ import useInsightsInputs from 'modules/commercial/insights/hooks/useInsightsInpu
 import { IInsightsInputData } from 'modules/commercial/insights/services/insightsInputs';
 
 // components
-import { Table, Checkbox, Icon } from 'cl2-component-library';
+import { Table, Icon } from 'cl2-component-library';
 import InputsTableRow from './InputsTableRow';
 import EmptyState from './EmptyState';
 import CheckboxWithPartialCheck from 'components/UI/CheckboxWithPartialCheck';
