@@ -45,6 +45,7 @@ export interface IStreamParams {
   bodyData?: IObject | null;
   queryParameters?: IObject | null;
   cacheStream?: boolean;
+  skipSanitizationFor?: string[];
 }
 export interface IInputStreamParams extends IStreamParams {
   apiEndpoint: string;
@@ -207,15 +208,19 @@ class Streams {
     delete this.streams[streamId];
   }
 
-  sanitizeQueryParameters = (queryParameters: IObject | null) => {
+  sanitizeQueryParameters = (
+    queryParameters: IObject | null,
+    skipSanitizationFor?: string[]
+  ) => {
     const sanitizedQueryParameters = cloneDeep(queryParameters);
 
     forOwn(queryParameters, (value, key) => {
       if (
-        isUndefined(value) ||
-        (isString(value) && isEmpty(value)) ||
-        (isArray(value) && isEmpty(value)) ||
-        (isObject(value) && isEmpty(value))
+        !skipSanitizationFor?.includes(key) &&
+        (isUndefined(value) ||
+          (isString(value) && isEmpty(value)) ||
+          (isArray(value) && isEmpty(value)) ||
+          (isObject(value) && isEmpty(value)))
       ) {
         delete (sanitizedQueryParameters as IObject)[key];
       }
@@ -316,7 +321,8 @@ class Streams {
     };
     const apiEndpoint = this.removeTrailingSlash(params.apiEndpoint);
     const queryParameters = this.sanitizeQueryParameters(
-      params.queryParameters
+      params.queryParameters,
+      inputParams.skipSanitizationFor
     );
     const isQueryStream =
       isObject(queryParameters) && !isEmpty(queryParameters);
