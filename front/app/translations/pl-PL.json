@@ -732,6 +732,7 @@
   "app.containers.Admin.Insights.Edit.detectCategories": "Wykry nowe kategorie",
   "app.containers.Admin.Insights.Edit.editCategoryName": "Edytuj nazwę kategorii",
   "app.containers.Admin.Insights.Edit.inputsEmptyState": "Nie masz jeszcze żadnych danych wejściowych dla tego widoku",
+  "app.containers.Admin.Insights.Edit.inputsTableAlsoIn": "",
   "app.containers.Admin.Insights.Edit.inputsTableCategories": "Kategorie",
   "app.containers.Admin.Insights.Edit.inputsTableCategoryDescription": "Zacznij wprowadzać dane, aby rozwijać swoją kategorię.",
   "app.containers.Admin.Insights.Edit.inputsTableCategoryTitle": "Nie masz jeszcze żadnych danych wejściowych przypisanych do tej kategorii",
