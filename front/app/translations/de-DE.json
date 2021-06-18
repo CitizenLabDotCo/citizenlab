@@ -732,6 +732,7 @@
   "app.containers.Admin.Insights.Edit.detectCategories": "Neue Kategorien erkennen",
   "app.containers.Admin.Insights.Edit.editCategoryName": "Kategoriename bearbeiten",
   "app.containers.Admin.Insights.Edit.inputsEmptyState": "Es gibt noch keine Beiträge in dieser Ansicht",
+  "app.containers.Admin.Insights.Edit.inputsTableAlsoIn": "Also in",
   "app.containers.Admin.Insights.Edit.inputsTableCategories": "Kategorien",
   "app.containers.Admin.Insights.Edit.inputsTableCategoryDescription": "Beginnen Sie hier mit der Eingabe, um Ihre Kategorie zu erweitern.",
   "app.containers.Admin.Insights.Edit.inputsTableCategoryTitle": "Es gibt noch keine zugewiesenen Einträge für diese Kategorie",
