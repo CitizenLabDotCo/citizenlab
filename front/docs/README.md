@@ -6,6 +6,7 @@
 
 - Privacy policy now opens in new tab.
 - Landing page custom section now uses theme colors.
+- Buttons and links in project description now open internal links in the same tab, and external links in a new tab.
 
 ## 2021-06-16
 
