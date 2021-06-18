@@ -79,7 +79,8 @@ export default defineMessages({
   },
   markAsSeen: {
     id: 'app.containers.Admin.Moderation.markAsSeen',
-    defaultMessage: 'Mark as seen',
+    defaultMessage:
+      'Mark {selectedItemsCount, plural, one {# item} other {# items}} as seen',
   },
   markAsNotSeen: {
     id: 'app.containers.Admin.Moderation.markAsNotSeen',

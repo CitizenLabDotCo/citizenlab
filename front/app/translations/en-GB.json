@@ -867,7 +867,6 @@
   "app.containers.Admin.Moderation.goToThisContentType": "Open this {contentType} in a new tab",
   "app.containers.Admin.Moderation.initiative": "{tenantName, select, stirlingcouncil {Petition} other {Proposal}}",
   "app.containers.Admin.Moderation.markAsNotSeen": "Mark  {selectedItemsCount} items as not seen",
-  "app.containers.Admin.Moderation.markAsSeen": "Mark {selectedItemsCount} items as seen",
   "app.containers.Admin.Moderation.markFlagsError": "",
   "app.containers.Admin.Moderation.moderationHelpTooltip": "This page allows you to quickly check all new posts that have been added to your platform. You can mark posts as being ‘viewed’ so that others know which posts still need to be processed.",
   "app.containers.Admin.Moderation.noUnviewedItems": "There are no unseen items",
