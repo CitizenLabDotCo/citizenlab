@@ -3,8 +3,15 @@
 ## Next Release
 
 ### Fixed
+- Landing page custom section now uses theme colors.
+
+## 2021-06-16
+
+### Fixed
 - Project moderators can no longer see draft projects they don't moderate in the project listing.
 - The content and subject of the emails used to share an input (idea/issue/option/contribution/...) do now include the correct input title and URL.
+- Sharing new ideas on Facebook goes faster
+- Manual campaigns now have the layout content in all available languages.
 
 ## 2021-06-11
 
@@ -21,7 +28,7 @@
 ### Added
 - New citizen-facing map view
 
-## 2021-06-07
+## 2021-06-08
 
 ### Fixed
 - Ordering by ideas by trending is now working.
@@ -55,21 +62,54 @@
 ### Added
 - Profanity blocker: when posting comments, input, proposals that contain profane words, posting will not be possible and a warning will be shown.
 
+## 2021-05-20
+
+### Fixed
+- Excel exports of ideas without author
+
+## 2021-05-19
+
+### Added
+- Support for Auth0 as a verification method
+
+## 2021-05-18
+
+### Fixed
+- Active users no longer need confirmation
+
+## 2021-05-14
+
+### Fixed
+- Fixed an issue causing already registered users to be prompted with the post-registration welcome screen.
+
 ## 2021-05-11
 
 ### Added
 - Added polls to the reporting section of the dashboards
 
+## 2021-05-10
+
+### Changed
+- Invited or verified users no longer require confirmation.
+
 ## 2021-05-07
 
 ### Fixed
 - Spreasheet exports throughout the platform are improved.
-- Idea export to excel is no longer limited to 250 ideas.
 
 ### Added
 - City Admins can now assign any user as the author of an idea when creating or updating.
 - Email confirmation now happens in survey and signup page sign up forms.
 
+## 2021-05-06
+
+### Fixed
+- Idea export to excel is no longer limited to 250 ideas.
+
+## 2021-05-04
+
+### Fixed
+- Fixed issues causing email campaigns not to be sent.
 
 ## 2021-05-03
 
@@ -84,6 +124,16 @@
 ### Added
 - New module to plug email confirmation to users.
 
+## 2021-04-29
+
+### Fixed
+- Editing the banner header in Admin > Settings > General, doesn't cause the other header fields to be cleared anymore
+
+## 2021-04-22
+
+### Fixed
+- After the project title error appears, it disappears again after you start correcting the error
+
 ## 2021-03-31
 
 ### Fixed
@@ -91,7 +141,6 @@
 
 ### Added
 - When a client-side validation error happens for the project title in the admin, there will be an error next to the submit button in addition to the error message next to the input field.
-
 
 ## 2021-03-25
 
@@ -102,11 +151,6 @@
 
 ### Fixed
 - Fix for broken sign-up flow when signing-up through social sign-on
-
-## 2021-04-22
-
-### Fixed
-- After the project title error appears, it disappears again after you start correcting the error
 
 ## 2021-03-19
 
