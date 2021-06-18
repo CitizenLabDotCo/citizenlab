@@ -18,20 +18,21 @@ const IconContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 5px;
-  margin: -5px;
+  // Increases the clickable surface area
+  padding: 4px 8px 4px 0px;
+  margin: -4px -8px -4px 0px;
 `;
 
 const PlusIcon = styled(Icon)`
+  margin-left: 8px;
   height: 14px;
   fill: ${colors.clGreen};
-  margin-left: 5px;
 `;
 
 const CloseIcon = styled(Icon)`
+  margin-left: 8px;
   height: 10px;
   fill: #fff;
-  margin-left: 5px;
 `;
 
 const StyledTag = styled.div<{ status: Status }>`
@@ -59,6 +60,7 @@ const StyledTag = styled.div<{ status: Status }>`
 const TagContent = styled.div`
   display: flex;
   align-items: center;
+  white-space: nowrap;
 `;
 
 const Tag = ({ label, onIconClick, status }: TagProps) => {

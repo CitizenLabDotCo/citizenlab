@@ -19,7 +19,7 @@ import T from 'components/T';
 import Category from 'modules/commercial/insights/admin/components/Category';
 
 const CategoryList = styled.div`
-  > * {
+  > *:not(:only-of-type) {
     margin-right: 8px;
     margin-top: 4px;
     margin-bottom: 4px;

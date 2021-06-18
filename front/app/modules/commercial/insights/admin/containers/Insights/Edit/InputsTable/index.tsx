@@ -31,7 +31,7 @@ const StyledTable = styled(Table)`
   thead {
     tr {
       th {
-        padding: 12px;
+        padding: 12px 4px;
         font-weight: bold;
       }
     }
@@ -42,9 +42,12 @@ const StyledTable = styled(Table)`
       height: 56px;
 
       td {
-        padding: 12px;
+        padding: 12px 4px;
         color: ${colors.label};
         font-size: ${fontSizes.small}px;
+        > * {
+          margin: 0;
+        }
       }
     }
     tr:hover {
@@ -88,10 +91,6 @@ const InputsTable = ({
     category: query.category,
   });
 
-  if (isNilOrError(inputs)) {
-    return null;
-  }
-
   const handlePaginationClick = (newPageNumber: number) => {
     clHistory.push({
       pathname,
@@ -115,6 +114,10 @@ const InputsTable = ({
       } else return prevSelectedIndex;
     });
   }, []);
+
+  if (isNilOrError(inputs)) {
+    return null;
+  }
 
   // TODO: Implement checkbox logic
   const handleCheckboxChange = () => {};
@@ -145,10 +148,10 @@ const InputsTable = ({
         <>
           <StyledTable>
             <colgroup>
-              <col span={1} style={{ width: '5%' }} />
+              <col span={1} style={{ width: '2.5%' }} />
               <col span={1} style={{ width: '30%' }} />
-              {query.category && <col span={1} style={{ width: '20%' }} />}
-              <col span={1} style={{ width: query.category ? '45%' : '65%' }} />
+              {query.category && <col span={1} style={{ width: '2.5%' }} />}
+              <col span={1} style={{ width: '65%' }} />
             </colgroup>
             <thead>
               <tr>
