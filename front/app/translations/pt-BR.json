@@ -872,6 +872,7 @@
   "app.containers.Admin.Moderation.moderationHelpTooltip": "Esta página permite que você verifique rapidamente todas as novas entradas que foram adicionadas à sua plataforma, incluindo publicações e comentários. Você pode marcar as publicações como \"visualizadas\" para que outras pessoas saibam quais entradas ainda precisam ser processadas.",
   "app.containers.Admin.Moderation.noUnviewedItems": "Não há itens não vistos",
   "app.containers.Admin.Moderation.noViewedItems": "Não há itens vistos",
+  "app.containers.Admin.Moderation.noWarningItems": "",
   "app.containers.Admin.Moderation.pageTitle": "Atividade",
   "app.containers.Admin.Moderation.post": "Informação",
   "app.containers.Admin.Moderation.profanityBlockerSetting": "",

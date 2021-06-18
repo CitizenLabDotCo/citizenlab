@@ -872,6 +872,7 @@
   "app.containers.Admin.Moderation.moderationHelpTooltip": "This page allows you to quickly check all new input that has been added to your platform. You can mark input as being ‘viewed’ so that others know which input still need to be processed.",
   "app.containers.Admin.Moderation.noUnviewedItems": "There are no unseen items",
   "app.containers.Admin.Moderation.noViewedItems": "There are no seen items",
+  "app.containers.Admin.Moderation.noWarningItems": "There are no items with content warning",
   "app.containers.Admin.Moderation.pageTitle": "Activity",
   "app.containers.Admin.Moderation.post": "Post",
   "app.containers.Admin.Moderation.profanityBlockerSetting": "Profanity blocker",

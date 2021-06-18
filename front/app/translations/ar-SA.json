@@ -872,6 +872,7 @@
   "app.containers.Admin.Moderation.moderationHelpTooltip": "تسمح لك هذه الصفحة بتفقُّد جميع المُدخلات الجديدة التي تم إضافتها إلى منصتك، بما في ذلك المنشورات والتعليقات. يُمكنك وضع علامة على المنشورات بأنه تم \"عرضها\" حتى يعرف الآخرون أي من المُدخلات لا تزال تحتاج إلى المُعالجة. ",
   "app.containers.Admin.Moderation.noUnviewedItems": "لا توجد عناصر لم تتم مشاهدتها",
   "app.containers.Admin.Moderation.noViewedItems": "لا توجد عناصر تمت مشاهدتها",
+  "app.containers.Admin.Moderation.noWarningItems": "",
   "app.containers.Admin.Moderation.pageTitle": "النشاط",
   "app.containers.Admin.Moderation.post": "منشور",
   "app.containers.Admin.Moderation.profanityBlockerSetting": "",
