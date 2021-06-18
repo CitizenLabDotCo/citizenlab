@@ -16,10 +16,6 @@ const GoBackButton = memo(({ projectFolderId, className }: Props) => {
   const locale = useLocale();
   const localize = useLocalize();
 
-  console.log(projectFolder);
-  console.log(locale);
-  console.log(localize);
-
   const onGoBack = useCallback(
     (event: FormEvent<HTMLButtonElement>) => {
       event.preventDefault();
@@ -35,7 +31,6 @@ const GoBackButton = memo(({ projectFolderId, className }: Props) => {
     return (
       <Button
         className={className}
-        id="e2e-idea-other-link"
         locale={locale}
         icon="circle-arrow-left"
         onClick={onGoBack}

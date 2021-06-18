@@ -3,59 +3,45 @@ import { render, screen, fireEvent } from 'utils/testUtils/rtl';
 
 import GoBackButton from './';
 
-jest.mock('../../../hooks/useProjectFolder', () => {
-  return {
-    id: 'a8735d6f-cdd4-4242-8531-b089b5e3954a',
-    type: 'folder',
-    attributes: {
-      title_multiloc: {
-        en: 'TestFolder',
-        'fr-BE': 'Le folder du test',
-        'nl-BE': 'TestMap',
-      },
-      description_preview_multiloc: {
-        en: 'Bla',
-        'fr-BE': 'Bla',
-        'nl-BE': 'Bla',
-      },
-      slug: 'testfolder',
-      created_at: '2021-06-17T07:34:54.208Z',
-      updated_at: '2021-06-17T07:34:54.244Z',
-      description_multiloc: {
-        en: '<p>Bla</p>',
-        'fr-BE': '<p>Bla</p>',
-        'nl-BE': '<p>Bla</p>',
-      },
-      header_bg: {
-        large: null,
-        medium: null,
-        small: null,
-      },
-      visible_projects_count: 1,
+const projectFolderData = {
+  id: 'a8735d6f-cdd4-4242-8531-b089b5e3954a',
+  type: 'folder',
+  attributes: {
+    title_multiloc: {
+      en: 'TestFolder',
+      'fr-BE': 'Le folder du test',
+      'nl-BE': 'TestMap',
     },
-    relationships: {
-      admin_publication: {
-        data: {
-          id: '5c864c64-ee73-479e-876d-514db3196e81',
-          type: 'admin_publication',
-        },
-      },
-      images: {
-        data: [],
-      },
-    },
-  };
-});
+    slug: 'testfolder',
+  },
+};
 
-jest.mock('hooks/useLocale', () => 'en');
+let historyState: string;
+const history = {
+  push(location: string) {
+    historyState = location;
+  },
+};
 
-jest.mock('hooks/useLocalize'); // this is just a function with a `multiloc` object and a possible `maxChar` arg
-// function localize(multiloc, maxChar)
+jest.mock('utils/cl-router/history', () => history);
+jest.mock('../../../hooks/useProjectFolder', () =>
+  jest.fn(() => projectFolderData)
+);
+jest.mock('hooks/useLocale', () => jest.fn(() => 'en'));
+jest.mock('hooks/useLocalize', () => jest.fn(() => (multiloc) => multiloc.en));
 
 describe('GoBackButton', () => {
   it('should render', () => {
-    render(<GoBackButton />);
-    expect(screen.getByTestId('insightsTag')).toBeInTheDocument();
-    expect(screen.getByText(defaultTagProps.label)).toBeInTheDocument();
+    render(<GoBackButton projectFolderId={projectFolderData.id} />);
+    expect(screen.getByRole('button')).toBeInTheDocument();
+    expect(screen.getByText('TestFolder')).toBeInTheDocument();
+  });
+  it('pushes parent folder path to history when clicked', () => {
+    render(<GoBackButton projectFolderId={projectFolderData.id} />);
+
+    const button = screen.getByRole('button');
+    fireEvent.click(button);
+
+    expect(historyState).toBe('/folders/testfolder');
   });
 });
