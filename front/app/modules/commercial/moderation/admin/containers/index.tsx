@@ -275,6 +275,10 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
         onModerationStatusChange(tabName);
       }
 
+      if (tabName === 'warnings') {
+        onModerationStatusChange(null);
+      }
+
       trackEventByName(tracks.tabClicked, {
         tabName,
       });
@@ -453,6 +457,19 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
   }, [selectedModerations]);
 
   if (!isNilOrError(moderationItems)) {
+    const filteredModerationItems =
+      selectedTab === 'warnings'
+        ? moderationItems
+            .filter(
+              (moderation) =>
+                moderation.relationships.inappropriate_content_flag
+            )
+            .filter((moderationWithFlag) =>
+              activeInappropriateContentFlags
+                .map((flag) => flag.data.id)
+                .includes(moderationWithFlag.id)
+            )
+        : moderationItems;
     return (
       <Container className={className}>
         <PageTitleWrapper>
@@ -557,9 +574,9 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
               <th className="goto">&nbsp;</th>
             </tr>
           </thead>
-          {moderationItems.length > 0 && (
+          {filteredModerationItems.length > 0 && (
             <tbody>
-              {moderationItems.map((moderationItem) => (
+              {filteredModerationItems.map((moderationItem) => (
                 <ModerationRow
                   key={moderationItem.id}
                   moderation={moderationItem}
@@ -578,7 +595,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
           )}
         </StyledTable>
 
-        {moderationItems.length > 0 && (
+        {filteredModerationItems.length > 0 && (
           <Footer>
             <StyledPagination
               currentPage={currentPage}
@@ -601,15 +618,17 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
           </Footer>
         )}
 
-        {moderationItems.length === 0 && (
+        {filteredModerationItems.length === 0 && (
           <Empty>
             <EmptyIcon name="inbox" />
             <EmptyMessage>
-              {moderationStatus === 'read' ? (
-                <FormattedMessage {...messages.noViewedItems} />
-              ) : (
-                <FormattedMessage {...messages.noUnviewedItems} />
-              )}
+              {
+                {
+                  read: <FormattedMessage {...messages.noViewedItems} />,
+                  unread: <FormattedMessage {...messages.noUnviewedItems} />,
+                  warnings: <FormattedMessage {...messages.noWarningItems} />,
+                }[selectedTab]
+              }
             </EmptyMessage>
           </Empty>
         )}
