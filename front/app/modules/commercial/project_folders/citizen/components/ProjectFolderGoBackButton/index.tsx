@@ -1,7 +1,7 @@
 import React, { memo, useCallback, FormEvent } from 'react';
 import clHistory from 'utils/cl-router/history';
 import { Button } from 'cl2-component-library';
-import useProjectFolder from 'modules/commercial/project_folders/hooks/useProjectFolder';
+import useProjectFolder from '../../../hooks/useProjectFolder';
 import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
 import { isNilOrError } from 'utils/helperUtils';

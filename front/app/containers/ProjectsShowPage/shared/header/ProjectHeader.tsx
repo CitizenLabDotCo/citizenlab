@@ -8,7 +8,7 @@ import ProjectInfo from './ProjectInfo';
 import ProjectArchivedIndicator from 'components/ProjectArchivedIndicator';
 import { Button } from 'cl2-component-library';
 import Image from 'components/UI/Image';
-import GoBackButton from './GoBackButton';
+import Outlet from 'components/Outlet';
 
 // hooks
 import useLocale from 'hooks/useLocale';
@@ -103,7 +103,10 @@ const ProjectHeader = memo<Props & InjectedIntlProps>(
           <ContentContainer maxWidth={maxPageWidth}>
             <TopBar>
               {projectFolderId && (
-                <GoBackButton projectFolderId={projectFolderId} />
+                <Outlet
+                  id="app.containers.ProjectsShowPage.shared.header.ProjectHeader.GoBackButton"
+                  projectFolderId={projectFolderId}
+                />
               )}
 
               {userCanEditProject && (
