@@ -96,10 +96,6 @@ const FormContainer = styled.form`
   display: flex;
   align-items: center;
   margin-bottom: 28px;
-  input {
-    padding: 10px;
-    font-size: ${fontSizes.small}px;
-  }
   .addButton {
     margin-left: 4px;
   }
@@ -296,6 +292,7 @@ const EditInsightsView = ({
               value={name}
               onChange={onChangeName}
               placeholder={formatMessage(messages.addCategory)}
+              size="small"
             />
             <Button
               locale={locale}
