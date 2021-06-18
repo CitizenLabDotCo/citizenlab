@@ -103,10 +103,6 @@ class Project < ApplicationRecord
     where("projects.visible_to = 'groups' AND EXISTS(SELECT 1 FROM groups_projects WHERE project_id = projects.id AND group_id IN (?))", user.group_ids)
   }
 
-  def moderators
-    User.project_moderator(id)
-  end
-
   def continuous?
     self.process_type == 'continuous'
   end
@@ -198,3 +194,4 @@ Project.include_if_ee('CustomMaps::Extensions::Project')
 Project.include_if_ee('IdeaAssignment::Extensions::Project')
 Project.include_if_ee('Insights::Patches::Project')
 Project.prepend_if_ee('ProjectFolders::Patches::Project')
+Project.include_if_ee('ProjectManagement::Patches::Project')

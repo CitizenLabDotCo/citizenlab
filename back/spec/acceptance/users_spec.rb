@@ -319,21 +319,24 @@ resource "Users" do
           expect(json_response[:data].map{|u| u[:id]}).to match_array group_users.map(&:id)
         end
 
-        example "List all users in group, ordered by role" do
+        example "List all users in group, ordered by role", skip: !CitizenLab.ee? do
           group = create(:group)
+
           admin = create(:admin, manual_groups: [group])
           moderator = create(:moderator, manual_groups: [group])
           both = create(:moderator, manual_groups: [group])
-          both.add_role 'admin'
-          both.save!
+          both.add_role('admin').save!
+
           group_users = [admin,both,moderator] + create_list(:user, 3, manual_groups: [group])
 
           do_request(group: group.id, sort: '-role')
           json_response = json_parse(response_body)
 
-          expect(json_response[:data].size).to eq 6
-          expect(json_response[:data].map{|u| u[:id]}).to match_array group_users.map(&:id)
-          expect(json_response[:data].map{|u| u[:id]}.reverse.take(2)).to match_array [admin.id,both.id]
+          aggregate_failures "testing json response" do
+            expect(json_response[:data].size).to eq 6
+            expect(json_response[:data].map { |u| u[:id] }).to match_array group_users.map(&:id)
+            expect(json_response[:data].map { |u| u[:id] }.reverse.take(2)).to match_array [admin.id, both.id]
+          end
         end
 
 
@@ -355,25 +358,26 @@ resource "Users" do
           end
         end
 
-        example "List all users who can moderate a project" do
+        example "List all users who can moderate a project", skip: !CitizenLab.ee? do
           p = create(:project)
           a = create(:admin)
           m1 = create(:moderator, project: p)
-          m2 = create(:moderator)
-          u = create(:user)
-          i = create(:idea, project: p) # a participant, just in case
+
+          create(:moderator)
+          create(:user)
+          create(:idea, project: p) # a participant, just in case
 
           do_request(can_moderate_project: p.id)
           json_response = json_parse(response_body)
-          expect(json_response[:data].map{|u| u[:id]}).to match_array [a.id,m1.id,@user.id]
+          expect(json_response[:data].map { |u| u[:id] }).to match_array [a.id, m1.id, @user.id]
         end
 
-        example "List all users who can moderate" do
+        example "List all users who can moderate", skip: !CitizenLab.ee? do
           p = create(:project)
           a = create(:admin)
           m1 = create(:moderator, project: p)
           m2 = create(:moderator)
-          u = create(:user)
+          create(:user)
 
           do_request(can_moderate: true)
           json_response = json_parse(response_body)
@@ -383,9 +387,12 @@ resource "Users" do
         example "List all admins" do
           p = create(:project)
           a = create(:admin)
-          m1 = create(:moderator, project: p)
-          m2 = create(:moderator)
-          u = create(:user)
+          create(:user)
+
+          if CitizenLab.ee?
+            create(:moderator, project: p)
+            create(:moderator)
+          end
 
           do_request(can_admin: true)
           json_response = json_parse(response_body)

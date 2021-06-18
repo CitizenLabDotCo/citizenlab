@@ -6,7 +6,7 @@ class TrackIntercomService
   end
 
   # Here's how to add new attributes to the contact model
-  # @intercom.data_attributes.create({ name: "isProjectModerator", model: "contact", data_type: "boolean" })
+  # @intercom.data_attributes.create({ name: "isAdmin", model: "contact", data_type: "boolean" })
 
   # @param [User] user
   def identify_user(user)
@@ -24,7 +24,7 @@ class TrackIntercomService
   def track_user?(user)
     return false if user.super_admin?
 
-    user.admin? || user.project_moderator?
+    user.admin?
   end
 
   def identify_tenant(tenant)
@@ -71,7 +71,6 @@ class TrackIntercomService
       locale: user.locale,
       isAdmin: user.admin?,
       isSuperAdmin: user.super_admin?,
-      isProjectModerator: user.project_moderator?,
       highestRole: user.highest_role.to_s
     }
   end
@@ -131,3 +130,5 @@ class TrackIntercomService
     @intercom.companies.save(company)
   end
 end
+
+TrackIntercomService.prepend_if_ee('ProjectManagement::Patches::TrackIntercomService')

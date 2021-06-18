@@ -42,6 +42,7 @@ import { CLErrors } from 'typings';
 // services
 import {
   addInsightsCategory,
+  deleteInsightsCategories,
   deleteInsightsCategory,
 } from 'modules/commercial/insights/services/insightsCategories';
 
@@ -95,10 +96,6 @@ const FormContainer = styled.form`
   display: flex;
   align-items: center;
   margin-bottom: 28px;
-  input {
-    padding: 10px;
-    font-size: ${fontSizes.small}px;
-  }
   .addButton {
     margin-left: 4px;
   }
@@ -153,8 +150,8 @@ const EditInsightsView = ({
   location: { query, pathname },
 }: InjectedIntlProps & WithRouterProps) => {
   const locale = useLocale();
-
-  const [loading, setLoading] = useState(false);
+  const [loadingAdd, setLoadingAdd] = useState(false);
+  const [loadingReset, setLoadingReset] = useState(false);
   const [errors, setErrors] = useState<CLErrors | undefined>();
 
   const categories = useInsightsCategories(viewId);
@@ -185,13 +182,13 @@ const EditInsightsView = ({
 
   const handleCategorySubmit = async () => {
     if (name) {
-      setLoading(true);
+      setLoadingAdd(true);
       try {
         await addInsightsCategory(viewId, name);
       } catch (errors) {
         setErrors(errors.json.errors);
       }
-      setLoading(false);
+      setLoadingAdd(false);
       setName('');
     }
   };
@@ -208,7 +205,10 @@ const EditInsightsView = ({
       }
       clHistory.push({
         pathname,
-        search: stringify({ ...query, category: '' }, { addQueryPrefix: true }),
+        search: stringify(
+          { ...query, pageNumber: 1, category: undefined },
+          { addQueryPrefix: true }
+        ),
       });
       setCategoryMenuOpened(false);
     }
@@ -218,7 +218,7 @@ const EditInsightsView = ({
     clHistory.push({
       pathname,
       search: stringify(
-        { ...query, category: categoryId },
+        { ...query, pageNumber: 1, category: categoryId },
         { addQueryPrefix: true }
       ),
     });
@@ -227,6 +227,20 @@ const EditInsightsView = ({
   const selectedCategory = categories?.find(
     (category) => category.id === query.category
   );
+
+  const handleResetCategories = async () => {
+    const deleteMessage = formatMessage(messages.resetCategoriesConfimation);
+
+    setLoadingReset(true);
+    if (window.confirm(deleteMessage)) {
+      try {
+        await deleteInsightsCategories(viewId);
+      } catch {
+        // Do nothing
+      }
+    }
+    setLoadingReset(false);
+  };
 
   return (
     <div data-testid="insightsEdit">
@@ -244,8 +258,13 @@ const EditInsightsView = ({
             buttonStyle="white"
             locale={locale}
             textColor={colors.adminTextColor}
+            onClick={handleResetCategories}
           >
-            {formatMessage(messages.resetCategories)}
+            {loadingReset ? (
+              <Spinner size="22px" />
+            ) : (
+              formatMessage(messages.resetCategories)
+            )}
           </ResetButton>
           <Divider />
           <ButtonsContainer>
@@ -273,6 +292,7 @@ const EditInsightsView = ({
               value={name}
               onChange={onChangeName}
               placeholder={formatMessage(messages.addCategory)}
+              size="small"
             />
             <Button
               locale={locale}
@@ -281,9 +301,13 @@ const EditInsightsView = ({
               className="addButton"
               padding="8px"
               onClick={handleCategorySubmit}
-              disabled={!name || loading}
+              disabled={!name || loadingAdd}
             >
-              {loading ? <Spinner size="22px" /> : <StyledPlus>+</StyledPlus>}
+              {loadingAdd ? (
+                <Spinner size="22px" />
+              ) : (
+                <StyledPlus>+</StyledPlus>
+              )}
             </Button>
           </FormContainer>
           {errors && (
