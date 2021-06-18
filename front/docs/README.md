@@ -10,6 +10,7 @@
 - Sharing new ideas on Facebook goes faster
 - Manual campaigns now have the layout content in all available languages.
 - Privacy policy now opens in new tab.
+- Landing page custom section now uses theme colors.
 
 ## 2021-06-11
 

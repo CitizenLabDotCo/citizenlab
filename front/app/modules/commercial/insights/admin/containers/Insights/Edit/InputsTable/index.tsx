@@ -1,5 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { withRouter, WithRouterProps } from 'react-router';
+import { stringify } from 'qs';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -10,7 +11,7 @@ import useInsightsInputs from 'modules/commercial/insights/hooks/useInsightsInpu
 import { IInsightsInputData } from 'modules/commercial/insights/services/insightsInputs';
 
 // components
-import { Table, Checkbox } from 'cl2-component-library';
+import { Table, Checkbox, Icon } from 'cl2-component-library';
 import InputsTableRow from './InputsTableRow';
 import EmptyState from './EmptyState';
 import SideModal from 'components/UI/SideModal';
@@ -25,13 +26,12 @@ import { colors, fontSizes } from 'utils/styleUtils';
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from '../../messages';
-import { stringify } from 'qs';
 
 const StyledTable = styled(Table)`
   thead {
     tr {
       th {
-        padding: 12px;
+        padding: 12px 4px;
         font-weight: bold;
       }
     }
@@ -39,11 +39,15 @@ const StyledTable = styled(Table)`
   tbody {
     tr {
       cursor: pointer;
+      height: 56px;
 
       td {
-        padding: 12px;
+        padding: 12px 4px;
         color: ${colors.label};
         font-size: ${fontSizes.small}px;
+        > * {
+          margin: 0;
+        }
       }
     }
     tr:hover {
@@ -52,14 +56,24 @@ const StyledTable = styled(Table)`
   }
 `;
 
+const StyledSort = styled.div`
+  display: flex;
+  align-items: center !important;
+  cursor: pointer;
+  font-weight: bold;
+  svg {
+    width: 10px;
+    margin-left: 4px;
+  }
+`;
+
 const StyledPagination = styled(Pagination)`
   margin-top: 12px;
 `;
 
 const InputsTable = ({
-  location,
   params: { viewId },
-  location: { query },
+  location: { query, pathname },
   intl: { formatMessage },
 }: WithRouterProps & InjectedIntlProps) => {
   const [isSideModalOpen, setIsSideModalOpen] = useState(false);
@@ -70,17 +84,17 @@ const InputsTable = ({
   const closeSideModal = () => setIsSideModalOpen(false);
   const openSideModal = () => setIsSideModalOpen(true);
 
-  const pageNumber = parseInt(location?.query?.pageNumber, 10);
+  const pageNumber = parseInt(query?.pageNumber, 10);
 
   const { list: inputs, lastPage } = useInsightsInputs(viewId, {
     pageNumber,
     category: query.category,
   });
 
-  const handlePaginationClick = (newPageNumber) => {
+  const handlePaginationClick = (newPageNumber: number) => {
     clHistory.push({
-      pathname: location.pathname,
-      search: `?${stringify({ ...location.query, pageNumber: newPageNumber })}`,
+      pathname,
+      search: `?${stringify({ ...query, pageNumber: newPageNumber })}`,
     });
   };
 
@@ -113,6 +127,19 @@ const InputsTable = ({
     openSideModal();
   };
 
+  const onSort = () => {
+    clHistory.push({
+      pathname,
+      search: stringify(
+        {
+          ...query,
+          sort: query.sort === '-approval' ? 'approval' : '-approval',
+        },
+        { addQueryPrefix: true }
+      ),
+    });
+  };
+
   return (
     <div data-testid="insightsInputsTable">
       {inputs.length === 0 ? (
@@ -121,8 +148,9 @@ const InputsTable = ({
         <>
           <StyledTable>
             <colgroup>
-              <col span={1} style={{ width: '5%' }} />
+              <col span={1} style={{ width: '2.5%' }} />
               <col span={1} style={{ width: '30%' }} />
+              {query.category && <col span={1} style={{ width: '2.5%' }} />}
               <col span={1} style={{ width: '65%' }} />
             </colgroup>
             <thead>
@@ -131,7 +159,29 @@ const InputsTable = ({
                   <Checkbox checked={false} onChange={handleCheckboxChange} />
                 </th>
                 <th>{formatMessage(messages.inputsTableInputs)}</th>
-                <th>{formatMessage(messages.inputsTableCategories)}</th>
+                <th>
+                  {query.category ? (
+                    <StyledSort
+                      onClick={onSort}
+                      as="button"
+                      data-testid="insightsSortButton"
+                    >
+                      {formatMessage(messages.inputsTableCategories)}
+                      <Icon
+                        name={
+                          query.sort === '-approval'
+                            ? 'chevron-up'
+                            : 'chevron-down'
+                        }
+                      />
+                    </StyledSort>
+                  ) : (
+                    formatMessage(messages.inputsTableCategories)
+                  )}
+                </th>
+                {query.category && (
+                  <th>{formatMessage(messages.inputsTableAlsoIn)}</th>
+                )}
               </tr>
             </thead>
             <tbody>
@@ -151,9 +201,9 @@ const InputsTable = ({
           />
         </>
       )}
-      <SideModal opened={isSideModalOpen} close={closeSideModal}>
-        {!isNilOrError(selectedInputIndex) && (
-          <>
+      {!isNilOrError(selectedInputIndex) &&
+        !isNilOrError(inputs[selectedInputIndex]) && (
+          <SideModal opened={isSideModalOpen} close={closeSideModal}>
             <InputDetails
               selectedInput={inputs[selectedInputIndex]}
               moveUp={moveUp}
@@ -161,9 +211,8 @@ const InputsTable = ({
               isMoveUpDisabled={selectedInputIndex === 0}
               isMoveDownDisabled={selectedInputIndex === inputs.length - 1}
             />
-          </>
+          </SideModal>
         )}
-      </SideModal>
     </div>
   );
 };

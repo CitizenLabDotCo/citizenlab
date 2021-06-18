@@ -53,7 +53,7 @@ describe Insights::InputsFinder do
 
       before do
         inputs.take(2).each do |input|
-          assignment_service.add_assignments!(input, [category])
+          assignment_service.add_assignments(input, [category])
         end
       end
 
