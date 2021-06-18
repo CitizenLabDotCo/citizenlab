@@ -70,7 +70,7 @@ resource 'Batch category assignments for view inputs' do
       end
 
       example 'does not fail when categories were already assigned (idempotent)', document: false do
-        assignment_service.add_assignments!(input_instances.first, category_instances)
+        assignment_service.add_assignments(input_instances.first, category_instances)
 
         do_request
 
