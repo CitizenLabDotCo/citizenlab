@@ -732,6 +732,7 @@
   "app.containers.Admin.Insights.Edit.detectCategories": "Detect new categories",
   "app.containers.Admin.Insights.Edit.editCategoryName": "Edit category name",
   "app.containers.Admin.Insights.Edit.inputsEmptyState": "You have no inputs for this view yet",
+  "app.containers.Admin.Insights.Edit.inputsTableAlsoIn": "",
   "app.containers.Admin.Insights.Edit.inputsTableCategories": "Categories",
   "app.containers.Admin.Insights.Edit.inputsTableCategoryDescription": "Start moving input here to grow your category.",
   "app.containers.Admin.Insights.Edit.inputsTableCategoryTitle": "You have no input assigned to this category yet",

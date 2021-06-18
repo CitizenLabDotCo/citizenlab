@@ -1,10 +1,18 @@
-# Changelog
+# Changelog 
 
-## Next Release
+## Next release
 
 ### Added
 
 - Added 'go back' button from project to project folder (if appropriate).
+
+## 2021-06-18
+
+### Fixed
+
+- Privacy policy now opens in new tab.
+- Landing page custom section now uses theme colors.
+- Buttons and links in project description now open internal links in the same tab, and external links in a new tab.
 
 ## 2021-06-16
 

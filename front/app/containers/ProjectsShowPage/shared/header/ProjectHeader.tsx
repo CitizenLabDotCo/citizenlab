@@ -103,26 +103,28 @@ const ProjectHeader = memo<Props & InjectedIntlProps>(
       return (
         <Container className={className || ''}>
           <ContentContainer maxWidth={maxPageWidth}>
-            <TopBar>
-              {projectFolderId && (
-                <Outlet
-                  id="app.containers.ProjectsShowPage.shared.header.ProjectHeader.GoBackButton"
-                  projectFolderId={projectFolderId}
-                />
-              )}
+            {(projectFolderId || userCanEditProject) && (
+              <TopBar>
+                {projectFolderId && (
+                  <Outlet
+                    id="app.containers.ProjectsShowPage.shared.header.ProjectHeader.GoBackButton"
+                    projectFolderId={projectFolderId}
+                  />
+                )}
 
-              {userCanEditProject && (
-                <EditButton
-                  icon="edit"
-                  locale={locale}
-                  linkTo={`/admin/projects/${project.id}/edit`}
-                  buttonStyle="secondary"
-                  padding="5px 8px"
-                >
-                  {formatMessage(messages.editProject)}
-                </EditButton>
-              )}
-            </TopBar>
+                {userCanEditProject && (
+                  <EditButton
+                    icon="edit"
+                    locale={locale}
+                    linkTo={`/admin/projects/${project.id}/edit`}
+                    buttonStyle="secondary"
+                    padding="5px 8px"
+                  >
+                    {formatMessage(messages.editProject)}
+                  </EditButton>
+                )}
+              </TopBar>
+            )}
             {projectHeaderImageLargeUrl && (
               <HeaderImage
                 id="e2e-project-header-image"

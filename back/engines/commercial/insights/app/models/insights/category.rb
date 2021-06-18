@@ -2,7 +2,7 @@
 
 module Insights
   class Category < ::ApplicationRecord
-    belongs_to :view
+    belongs_to :view, touch: true
     has_many :assignments, class_name: 'Insights::CategoryAssignment', dependent: :destroy
 
     acts_as_list scope: :view
