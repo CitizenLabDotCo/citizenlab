@@ -90,7 +90,7 @@ const FlagInnapropriateContentSetting = ({
                     {...messages.inappropriateContentDetectionTooltip}
                     values={{
                       linkToActivityPage: (
-                        <Link to="/admin/activity">
+                        <Link to="/admin/moderation">
                           {formatMessage(messages.linkToActivityPageText)}
                         </Link>
                       ),
