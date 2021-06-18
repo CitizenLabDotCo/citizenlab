@@ -11,7 +11,7 @@ import useInsightsInputs from 'modules/commercial/insights/hooks/useInsightsInpu
 import { IInsightsInputData } from 'modules/commercial/insights/services/insightsInputs';
 
 // components
-import { Table } from 'cl2-component-library';
+import { Table, Checkbox, Icon } from 'cl2-component-library';
 import InputsTableRow from './InputsTableRow';
 import EmptyState from './EmptyState';
 import CheckboxWithPartialCheck from 'components/UI/CheckboxWithPartialCheck';
@@ -56,7 +56,7 @@ const StyledTable = styled(Table)`
   thead {
     tr {
       th {
-        padding: 12px;
+        padding: 12px 4px;
         font-weight: bold;
       }
     }
@@ -64,11 +64,15 @@ const StyledTable = styled(Table)`
   tbody {
     tr {
       cursor: pointer;
+      height: 56px;
 
       td {
-        padding: 12px;
+        padding: 12px 4px;
         color: ${colors.label};
         font-size: ${fontSizes.small}px;
+        > * {
+          margin: 0;
+        }
       }
     }
     tr:hover {
@@ -77,14 +81,24 @@ const StyledTable = styled(Table)`
   }
 `;
 
+const StyledSort = styled.div`
+  display: flex;
+  align-items: center !important;
+  cursor: pointer;
+  font-weight: bold;
+  svg {
+    width: 10px;
+    margin-left: 4px;
+  }
+`;
+
 const StyledPagination = styled(Pagination)`
   margin-top: 12px;
 `;
 
 const InputsTable = ({
-  location,
   params: { viewId },
-  location: { query },
+  location: { query, pathname },
   intl: { formatMessage },
 }: WithRouterProps & InjectedIntlProps) => {
   // State
@@ -95,7 +109,7 @@ const InputsTable = ({
   );
 
   // Data fetching -------------------------------------------------------------
-  const pageNumber = parseInt(location?.query?.pageNumber, 10);
+  const pageNumber = parseInt(query?.pageNumber, 10);
   const selectedCategory = query.category;
 
   const { list: inputs, lastPage } = useInsightsInputs(viewId, {
@@ -137,8 +151,11 @@ const InputsTable = ({
   // Pagination ----------------------------------------------------------------
   const handlePaginationClick = (newPageNumber) => {
     clHistory.push({
-      pathname: location.pathname,
-      search: `?${stringify({ ...location.query, pageNumber: newPageNumber })}`,
+      pathname,
+      search: stringify(
+        { ...query, pageNumber: newPageNumber },
+        { addQueryPrefix: true }
+      ),
     });
   };
 
@@ -173,6 +190,19 @@ const InputsTable = ({
     openSideModal();
   };
 
+  const onSort = () => {
+    clHistory.push({
+      pathname,
+      search: stringify(
+        {
+          ...query,
+          sort: query.sort === '-approval' ? 'approval' : '-approval',
+        },
+        { addQueryPrefix: true }
+      ),
+    });
+  };
+
   return (
     <Inputs data-testid="insightsInputsTable">
       <TitleRow>
@@ -186,8 +216,9 @@ const InputsTable = ({
         <>
           <StyledTable>
             <colgroup>
-              <col span={1} style={{ width: '5%' }} />
+              <col span={1} style={{ width: '2.5%' }} />
               <col span={1} style={{ width: '30%' }} />
+              {query.category && <col span={1} style={{ width: '2.5%' }} />}
               <col span={1} style={{ width: '65%' }} />
             </colgroup>
             <thead>
@@ -206,7 +237,29 @@ const InputsTable = ({
                   />
                 </th>
                 <th>{formatMessage(messages.inputsTableInputs)}</th>
-                <th>{formatMessage(messages.inputsTableCategories)}</th>
+                <th>
+                  {query.category ? (
+                    <StyledSort
+                      onClick={onSort}
+                      as="button"
+                      data-testid="insightsSortButton"
+                    >
+                      {formatMessage(messages.inputsTableCategories)}
+                      <Icon
+                        name={
+                          query.sort === '-approval'
+                            ? 'chevron-up'
+                            : 'chevron-down'
+                        }
+                      />
+                    </StyledSort>
+                  ) : (
+                    formatMessage(messages.inputsTableCategories)
+                  )}
+                </th>
+                {query.category && (
+                  <th>{formatMessage(messages.inputsTableAlsoIn)}</th>
+                )}
               </tr>
             </thead>
             <tbody>
@@ -228,17 +281,18 @@ const InputsTable = ({
           />
         </>
       )}
-      <SideModal opened={isSideModalOpen} close={closeSideModal}>
-        {!isNilOrError(previewedInputIndex) && (
-          <InputDetails
-            selectedInput={inputs[previewedInputIndex]}
-            moveUp={moveUp}
-            moveDown={moveDown}
-            isMoveUpDisabled={previewedInputIndex === 0}
-            isMoveDownDisabled={previewedInputIndex === inputs.length - 1}
-          />
+      {!isNilOrError(previewedInputIndex) &&
+        !isNilOrError(inputs[previewedInputIndex]) && (
+          <SideModal opened={isSideModalOpen} close={closeSideModal}>
+            <InputDetails
+              selectedInput={inputs[previewedInputIndex]}
+              moveUp={moveUp}
+              moveDown={moveDown}
+              isMoveUpDisabled={previewedInputIndex === 0}
+              isMoveDownDisabled={previewedInputIndex === inputs.length - 1}
+            />
+          </SideModal>
         )}
-      </SideModal>
     </Inputs>
   );
 };

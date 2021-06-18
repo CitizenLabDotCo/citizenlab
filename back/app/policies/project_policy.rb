@@ -4,29 +4,38 @@ class ProjectPolicy < ApplicationPolicy
 
     def initialize(user, scope)
       @user  = user
-      @scope = scope
+      @scope = scope.includes(:admin_publication)
     end
 
     def resolve
-      if user&.admin?
-        scope.all
-      elsif user&.project_moderator?
-        scope.where(id: user.moderatable_project_ids + scope.user_groups_visible(user).or(scope.publicly_visible).ids)
-      elsif user
-        scope.user_groups_visible(user).not_draft.or(scope.publicly_visible.not_draft)
-      else
-        scope.publicly_visible.not_draft
-      end
+      # Resolves the scope as a disjunction (OR) of scopes, one scope (= one clause) for each 'role' a user can have.
+      # It entails that scopes does not have to be redundant. In other words, each sub-scope (clause) should aim to
+      # include only the projects to which this role gives access (without repeating projects to which lesser roles
+      # of the user gives access).
+      resolve_for_admin
+        .or resolve_for_visitor
+        .or resolve_for_normal_user
     end
 
     def moderatable
-      if user&.admin?
-        scope.all
-      elsif user
-        scope.where(id: user.moderatable_project_ids)
-      else
-        scope.none
-      end
+      user&.admin? ? scope.all : scope.none
+    end
+
+    private
+
+    def resolve_for_admin
+      user&.admin? ? scope : scope.none
+    end
+
+    # Filter the scope for a user that is not logged in.
+    def resolve_for_visitor
+      scope.not_draft.publicly_visible
+    end
+
+    def resolve_for_normal_user
+      return scope.none unless user
+
+      scope.user_groups_visible(user).not_draft
     end
   end
 
@@ -44,20 +53,19 @@ class ProjectPolicy < ApplicationPolicy
       if record.visible_to == 'public' && record.admin_publication.publication_status != 'draft'
         scope.all
       elsif record.visible_to == 'groups' && record.admin_publication.publication_status != 'draft'
-        scope.in_any_group(record.groups).or(scope.admin).or(scope.project_moderator(record.id))
+        scope.in_any_group(record.groups).or(scope.admin)
       else
-        scope.admin.or(scope.project_moderator(record.id))
+        scope.admin
       end
     end
   end
-
 
   def index_xlsx?
     moderate?
   end
 
   def create?
-    user&.active? && user.admin?
+    active? && admin?
   end
 
   def show?
@@ -85,7 +93,7 @@ class ProjectPolicy < ApplicationPolicy
   end
 
   def destroy?
-    user&.active? && user.admin?
+    active? && admin?
   end
 
   def shared_permitted_attributes
@@ -106,12 +114,15 @@ class ProjectPolicy < ApplicationPolicy
       :poll_anonymous,
       :ideas_order,
       :input_term,
-      admin_publication_attributes: [:publication_status],
-      title_multiloc: CL2_SUPPORTED_LOCALES,
-      description_multiloc: CL2_SUPPORTED_LOCALES,
-      description_preview_multiloc: CL2_SUPPORTED_LOCALES,
-      area_ids: []
+      {
+        admin_publication_attributes: [:publication_status],
+        title_multiloc: CL2_SUPPORTED_LOCALES,
+        description_multiloc: CL2_SUPPORTED_LOCALES,
+        description_preview_multiloc: CL2_SUPPORTED_LOCALES,
+        area_ids: []
+      }
     ]
+
     shared += [:downvoting_enabled] if AppConfiguration.instance.feature_activated? 'disable_downvoting'
     shared
   end
@@ -119,7 +130,6 @@ class ProjectPolicy < ApplicationPolicy
   def permitted_attributes_for_create
     attrs = shared_permitted_attributes
     attrs.unshift(:process_type)
-    attrs
   end
 
   def permitted_attributes_for_update
@@ -133,11 +143,21 @@ class ProjectPolicy < ApplicationPolicy
   # Helper method that is not part of the pundit conventions but is used
   # publicly
   def moderate?
-    user&.active? && (user.admin? || (record.id && user.project_moderator?(record.id)))
+    return unless active?
+
+    moderate_for_active?
+  end
+
+  private
+
+  def moderate_for_active?
+    admin?
   end
 end
+
+ProjectPolicy.prepend(Polls::Patches::ProjectPolicy)
 
 ProjectPolicy.prepend_if_ee('ProjectFolders::Patches::ProjectPolicy')
 ProjectPolicy::Scope.prepend_if_ee('ProjectFolders::Patches::ProjectPolicy::Scope')
 ProjectPolicy.prepend_if_ee('IdeaAssignment::Patches::ProjectPolicy')
-ProjectPolicy.prepend('Polls::Patches::ProjectPolicy'.constantize)
+ProjectPolicy.prepend_if_ee('ProjectManagement::Patches::ProjectPolicy')

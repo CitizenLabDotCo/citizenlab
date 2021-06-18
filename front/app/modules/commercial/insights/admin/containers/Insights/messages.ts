@@ -92,6 +92,10 @@ export default defineMessages({
     id: 'app.containers.Admin.Insights.Edit.inputsTableCategories',
     defaultMessage: 'Categories',
   },
+  inputsTableAlsoIn: {
+    id: 'app.containers.Admin.Insights.Edit.inputsTableAlsoIn',
+    defaultMessage: 'Also in',
+  },
   inputsTableEmpty: {
     id: 'app.containers.Admin.Insights.Edit.inputsEmptyState',
     defaultMessage: "This project doesn't seem to contain any input.",
@@ -115,6 +119,10 @@ export default defineMessages({
   resetCategories: {
     id: 'app.containers.Admin.Insights.Edit.resetCategories',
     defaultMessage: 'Reset categories',
+  },
+  resetCategoriesConfimation: {
+    id: 'app.containers.Admin.Insights.Edit.resetCategoriesConfimation',
+    defaultMessage: 'Are you sure you want to reset all categories?',
   },
   addCategory: {
     id: 'app.containers.Admin.Insights.Edit.addCategory',

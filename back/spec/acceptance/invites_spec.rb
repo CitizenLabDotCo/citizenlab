@@ -111,7 +111,7 @@ resource "Invites" do
     post "web_api/v1/invites/bulk_create" do
       with_options scope: :invites do
         parameter :emails, "Array of e-mail addresses of invitees. E-mails can be null for anonymous invites", required: true
-        parameter :locale, "Locale for all invitiees, defaults to first tenant locale", required: false
+        parameter :locale, "Locale for all invitees, defaults to first tenant locale", required: false
         parameter :roles, "Roles for all invitees, defaults to normal user", required: false
         parameter :group_ids, "Array of group ids that the invitees will be member of, defaults to none", required: false
         parameter :invite_text, "Optional text that will be included in the outgoing e-mail to the invitee. Supports limited HTML", required: false
@@ -125,21 +125,31 @@ resource "Invites" do
       end
 
       describe do
-        let(:emails) { 5.times.map{Faker::Internet.email}.concat([nil]) }
+        let(:emails) { 5.times.map { Faker::Internet.email }.concat([nil]) }
         let(:group_ids) { [create(:group).id] }
         let(:project) { create(:project) }
-        let(:roles) { [{"type" => "project_moderator", "project_id" => project.id}, {"type" => "admin"}] }
         let(:locale) { "nl-NL" }
         let(:invite_text) { "Welcome, my friend!" }
 
+        let(:roles) {
+          [
+            { "type" => "admin" },
+            ({ "type" => "project_moderator", "project_id" => project.id } if CitizenLab.ee?)
+          ].compact
+        }
+
         example_request "Bulk invite multiple users" do
-          expect(response_status).to eq 200
-          expect(Invite.count).to eq 6
-          expect(Invite.all.map{|i| i.invitee.email}).to match_array emails
-          expect(Invite.all.map{|i| i.invitee.groups.map(&:id)}.uniq).to match_array [group_ids]
-          expect(Invite.all.map{|i| i.invitee.admin?}.uniq).to eq [true]
-          expect(Invite.all.map{|i| i.invitee.project_moderator?(project.id)}.uniq).to eq [true]
-          expect(Invite.all.map{|i| i.invitee.locale}.uniq).to eq [locale]
+          aggregate_failures "testing response" do
+            expect(response_status).to eq 200
+            expect(Invite.count).to eq 6
+            expect(Invite.all.map { |i| i.invitee.email }).to match_array emails
+            expect(Invite.all.map { |i| i.invitee.groups.map(&:id) }.uniq).to match_array [group_ids]
+            expect(Invite.all.map { |i| i.invitee.admin? }.uniq).to eq [true]
+            expect(Invite.all.map { |i| i.invitee.locale }.uniq).to eq [locale]
+
+            expect(Invite.all.map { |i| i.invitee.project_moderator?(project.id) }.all?).to eq true if CitizenLab.ee?
+          end
+
         end
       end
 

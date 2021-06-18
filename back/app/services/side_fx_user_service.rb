@@ -55,18 +55,7 @@ class SideFxUserService
   end
 
   def role_created_side_fx(role, user, current_user)
-    case role['type']
-    when 'project_moderator' then new_project_moderator(role, user, current_user)
-    when 'admin' then new_admin(user, current_user)
-    end
-  end
-
-  def new_project_moderator(role, user, current_user)
-    LogActivityJob.set(wait: 5.seconds).perform_later(
-      user, 'project_moderation_rights_given',
-      current_user, Time.now.to_i,
-      payload: { project_id: role['project_id'] }
-    )
+    new_admin(user, current_user) if role['type'] == 'admin'
   end
 
   def new_admin(user, current_user)
@@ -75,15 +64,12 @@ class SideFxUserService
       .perform_later(user, 'admin_rights_given', current_user, user.updated_at.to_i)
   end
 
-  def role_destroyed_side_fx(role, user, current_user)
-    case role['type']
-    when 'project_moderator' then project_moderator_destroyed(role, user, current_user)
-    end
-  end
-
-  def project_moderator_destroyed(_role, user, current_user)
-    LogActivityJob.perform_later(user, 'project_moderation_rights_removed', current_user, Time.now.to_i)
-  end
+  # Dummy method to allow some extensibility.
+  #
+  # @param [Hash] _role
+  # @param [User] _user
+  # @param [User] _current_user
+  def role_destroyed_side_fx(_role, _user, _current_user); end
 
   def lost_roles(user)
     return [] unless user.roles_previously_changed?
@@ -101,3 +87,5 @@ class SideFxUserService
 end
 
 ::SideFxUserService.prepend(UserConfirmation::Patches::SideFxUserService)
+
+SideFxUserService.prepend_if_ee('ProjectManagement::Patches::SideFxUserService')

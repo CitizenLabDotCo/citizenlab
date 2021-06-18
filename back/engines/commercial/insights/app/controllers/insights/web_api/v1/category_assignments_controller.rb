@@ -18,14 +18,8 @@ module Insights
 
       # [POST] Adds new category assignments (idempotent).
       def add_categories
-        assignments = assignment_service.add_assignments(input, categories)
-        errors = assignments.map(&:errors).select(&:any?)
-        if errors.present?
-          # TODO: Improvement: report all errors, not only the first one.
-          render json: { errors: errors.first.details }, status: :unprocessable_entity
-        else
-          render json: serialize_categories(input), status: :ok
-        end
+        assignment_service.add_assignments(input, categories)
+        render json: serialize_categories(input), status: :ok
       end
 
       def delete_categories

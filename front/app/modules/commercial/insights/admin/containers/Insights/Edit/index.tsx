@@ -31,7 +31,10 @@ import messages from '../messages';
 import { CLErrors } from 'typings';
 
 // services
-import { addInsightsCategory } from 'modules/commercial/insights/services/insightsCategories';
+import {
+  addInsightsCategory,
+  deleteInsightsCategories,
+} from 'modules/commercial/insights/services/insightsCategories';
 
 const Container = styled.div`
   height: calc(100vh - ${stylingConsts.menuHeight + topBarHeight}px);
@@ -75,10 +78,6 @@ const FormContainer = styled.form`
   display: flex;
   align-items: center;
   margin-bottom: 28px;
-  input {
-    padding: 10px;
-    font-size: ${fontSizes.small}px;
-  }
   .addButton {
     margin-left: 4px;
   }
@@ -98,7 +97,7 @@ const CategoryButton = styled(Button)`
 const CategoryInfoBox = styled.div`
   background-color: ${colors.clBlueLightest};
   font-size: ${fontSizes.base};
-  font-color: ${colors.adminTextColor};
+  color: ${colors.adminTextColor};
   border-radius: 3px;
   padding: 8px 20px;
 `;
@@ -123,11 +122,12 @@ const EditInsightsView = ({
   location: { query, pathname },
 }: InjectedIntlProps & WithRouterProps) => {
   const locale = useLocale();
-  const [loading, setLoading] = useState(false);
-  const [name, setName] = useState<string | null>();
+  const [loadingAdd, setLoadingAdd] = useState(false);
+  const [loadingReset, setLoadingReset] = useState(false);
+  const [errors, setErrors] = useState<CLErrors | undefined>();
 
   const categories = useInsightsCategories(viewId);
-  const [errors, setErrors] = useState<CLErrors | undefined>();
+  const [name, setName] = useState<string | null>();
 
   if (isNilOrError(locale) || isNilOrError(categories)) {
     return null;
@@ -140,13 +140,13 @@ const EditInsightsView = ({
 
   const handleCategorySubmit = async () => {
     if (name) {
-      setLoading(true);
+      setLoadingAdd(true);
       try {
         await addInsightsCategory(viewId, name);
       } catch (errors) {
         setErrors(errors.json.errors);
       }
-      setLoading(false);
+      setLoadingAdd(false);
       setName('');
     }
   };
@@ -159,6 +159,20 @@ const EditInsightsView = ({
         { addQueryPrefix: true }
       ),
     });
+  };
+
+  const handleResetCategories = async () => {
+    const deleteMessage = formatMessage(messages.resetCategoriesConfimation);
+
+    setLoadingReset(true);
+    if (window.confirm(deleteMessage)) {
+      try {
+        await deleteInsightsCategories(viewId);
+      } catch {
+        // Do nothing
+      }
+    }
+    setLoadingReset(false);
   };
 
   return (
@@ -177,8 +191,13 @@ const EditInsightsView = ({
             buttonStyle="white"
             locale={locale}
             textColor={colors.adminTextColor}
+            onClick={handleResetCategories}
           >
-            {formatMessage(messages.resetCategories)}
+            {loadingReset ? (
+              <Spinner size="22px" />
+            ) : (
+              formatMessage(messages.resetCategories)
+            )}
           </ResetButton>
           <Divider />
           <ButtonsContainer>
@@ -206,6 +225,7 @@ const EditInsightsView = ({
               value={name}
               onChange={onChangeName}
               placeholder={formatMessage(messages.addCategory)}
+              size="small"
             />
             <Button
               locale={locale}
@@ -214,9 +234,13 @@ const EditInsightsView = ({
               className="addButton"
               padding="8px"
               onClick={handleCategorySubmit}
-              disabled={!name || loading}
+              disabled={!name || loadingAdd}
             >
-              {loading ? <Spinner size="22px" /> : <StyledPlus>+</StyledPlus>}
+              {loadingAdd ? (
+                <Spinner size="22px" />
+              ) : (
+                <StyledPlus>+</StyledPlus>
+              )}
             </Button>
           </FormContainer>
           {errors && (

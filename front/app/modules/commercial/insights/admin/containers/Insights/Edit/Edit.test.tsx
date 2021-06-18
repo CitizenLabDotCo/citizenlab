@@ -26,6 +26,7 @@ jest.mock('utils/cl-intl');
 
 jest.mock('modules/commercial/insights/services/insightsCategories', () => ({
   addInsightsCategory: jest.fn(),
+  deleteInsightsCategories: jest.fn(),
   deleteInsightsCategory: jest.fn(),
 }));
 
@@ -92,7 +93,7 @@ describe('Insights Edit', () => {
       render(<InsightsEdit />);
       expect(screen.getByTestId('insightsNoCategories')).toBeInTheDocument();
     });
-    it('adds category with correct view id and name ', async () => {
+    it('adds category with correct view id and name', async () => {
       const categoryName = 'New category';
 
       render(<InsightsEdit />);
@@ -111,6 +112,16 @@ describe('Insights Edit', () => {
         viewId,
         categoryName
       );
+    });
+    it('resets categories', async () => {
+      const spy = jest.spyOn(service, 'deleteInsightsCategories');
+      render(<InsightsEdit />);
+
+      await act(async () => {
+        fireEvent.click(screen.getByText('Reset categories'));
+      });
+
+      expect(spy).toHaveBeenCalledWith(viewId);
     });
   });
 });
