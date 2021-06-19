@@ -201,8 +201,8 @@ it:
     initiative_marked_as_spam:
       by_author: 'da %{authorName}'
       cta_review_initiative: 'Proposta di revisione'
-      report_inappropriate_offensive_content: 'I find this content inappropriate or offensive.'
-      report_not_an_initiative: 'This content is not a proposal and does not belong here.'
+      report_inappropriate_offensive_content: 'Trovo questo contenuto inappropriato o offensivo.'
+      report_not_an_initiative: 'Questo contenuto non è una proposta e non appartiene a questo posto.'
       subject: 'You have a spam report on the platform of %{organizationName}'
       preheader: 'Act upon this spam report'
       reported_this_because: '%{reporterFirstName} reported this because:'
