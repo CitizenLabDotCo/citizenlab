@@ -22,33 +22,33 @@ it:
       "new_comment_on_commented_idea": Nuovo commento su un'idea che ho commentato
       "new_comment_on_commented_initiative": Nuovo commento su una proposta che ho commentato
       "new_comment_on_voted_idea": Nuovo commento su un'idea che ho votato
-      "new_comment_on_voted_initiative": New comment on a proposal I voted for
-      "new_idea_for_admin": New idea in a project I moderate
-      "new_initiative_for_admin": New proposal
-      "official_feedback_on_commented_idea": Update on an idea I commented on
-      "official_feedback_on_commented_initiative": Update on a proposal I commented on
-      "official_feedback_on_voted_idea": Update on an idea I voted on
-      "official_feedback_on_voted_initiative": Update on a proposal I voted on
-      "official_feedback_on_your_idea": Update on my idea
-      "official_feedback_on_your_initiative": Update on my proposal
-      "password_reset": Password reset
-      "project_moderation_rights_received": Project moderation rights received
-      "project_folder_moderation_rights_received": Folder manager rights received
-      "project_phase_started": New project phase
-      "project_phase_upcoming": Upcoming new project phase
-      "status_change_of_commented_idea": Status change of an idea I commented on
-      "status_change_of_commented_initiative": Status change of a proposal I commented on
-      "status_change_of_voted_idea": Status change of an idea I voted for
-      "status_change_of_voted_initiative": Status change of a proposal I voted for
-      "status_change_of_your_idea": Status change of my idea
-      "status_change_of_your_initiative": Status change of my proposal
-      "threshold_reached_for_admin": Proposal reached the voting threshold
-      "welcome": After registration
-      "admin_digest": Weekly overview for admins
-      "moderator_digest": Weekly overview for project managers
-      "assignee_digest": Weekly overview of assigned ideas
-      "user_digest": Weekly overview
-      "your_proposed_initiatives_digest": Weekly overview of your proposals
+      "new_comment_on_voted_initiative": Nuovo commento su una proposta che ho votato
+      "new_idea_for_admin": Nuova idea in un progetto che modero
+      "new_initiative_for_admin": Nuova proposta
+      "official_feedback_on_commented_idea": Aggiornamento su un'idea che ho commentato
+      "official_feedback_on_commented_initiative": Aggiornamento su una proposta che ho commentato
+      "official_feedback_on_voted_idea": Aggiornamento su un'idea che ho votato
+      "official_feedback_on_voted_initiative": Aggiornamento su una proposta che ho votato
+      "official_feedback_on_your_idea": Aggiornamento sulla mia idea
+      "official_feedback_on_your_initiative": Aggiornamento sulla mia proposta
+      "password_reset": Ripristino della password
+      "project_moderation_rights_received": Diritti di moderazione del progetto ricevuti
+      "project_folder_moderation_rights_received": Diritti di gestione delle cartelle ricevuti
+      "project_phase_started": Nuova fase del progetto
+      "project_phase_upcoming": Prossima nuova fase del progetto
+      "status_change_of_commented_idea": Cambio di stato di un'idea che ho commentato
+      "status_change_of_commented_initiative": Cambio di stato di una proposta che ho commentato
+      "status_change_of_voted_idea": Cambio di stato di un'idea che ho votato
+      "status_change_of_voted_initiative": Cambio di stato di una proposta che ho votato
+      "status_change_of_your_idea": Cambio di stato della mia idea
+      "status_change_of_your_initiative": Cambio di stato della mia proposta
+      "threshold_reached_for_admin": La proposta ha raggiunto la soglia di voto
+      "welcome": Dopo la registrazione
+      "admin_digest": Panoramica settimanale per gli amministratori
+      "moderator_digest": Panoramica settimanale per i project manager
+      "assignee_digest": Panoramica settimanale delle idee assegnate
+      "user_digest": Panoramica settimanale
+      "your_proposed_initiatives_digest": Panoramica settimanale delle tue proposte
     admin_campaign_type_description:
       "manual": Official message - all users
       "admin_rights_received": Admin rights received - admins
@@ -83,7 +83,7 @@ it:
       "official_feedback_on_your_initiative": Update on your proposal - all users
       "password_reset": Password reset - all users
       "project_moderation_rights_received": Project moderation rights received - project managers
-      "project_folder_moderation_rights_received": Folder manager rights received
+      "project_folder_moderation_rights_received": Diritti di gestione delle cartelle ricevuti
       "project_phase_started": New project phase - all users
       "project_phase_upcoming": Upcoming new project phase - admins and project managers
       "status_change_of_commented_idea": Status change of an idea you commented on - all users
@@ -100,7 +100,7 @@ it:
       "user_digest": Weekly overview - all users
       "your_proposed_initiatives_digest": Weekly overview of your own proposals - all users
     footer:
-      "link_privacy_policy": "Privacy Policy"
+      "link_privacy_policy": "Politica sulla privacy"
       "link_terms_conditions": "Terms & Conditions"
       "link_unsubscribe": "Unsubscribe"
       "powered_by": "Powered by"
@@ -155,18 +155,18 @@ it:
       inappropriate_content: 'The comment is inappropriate or offensive.'
       preheader: 'Act upon this comment reported as spam'
       reported_this_because: '%{reporterFirstName} reported this because:'
-      subject: '%{organizationName}: %{firstName} %{lastName} reported this comment as spam'
-      title_comment_spam_report: '%{firstName} %{lastName} reported this comment as spam'
-      today: Today
-      wrong_content: 'The comment is not relevant.'
-      yesterday: Yesterday
+      subject: '%{organizationName}: %{firstName} %{lastName} ha segnalato questo commento come spam'
+      title_comment_spam_report: '%{firstName} %{lastName} ha segnalato questo commento come spam'
+      today: Oggi
+      wrong_content: 'Il commento non è pertinente.'
+      yesterday: Ieri
     comment_on_your_initiative:
-      commented: '%{authorFirstName} wrote:'
-      cta_reply_to: 'Reply to %{commentAuthor}'
-      event_description: '%{authorNameFull} placed a reaction on your initiative ''%{initiativeTitle}''. Click the button below to continue the conversation with %{authorName}.'
-      main_header: '%{commentAuthor} commented on your initiative'
-      subject: 'You''ve received a comment on %{organizationName}''s platform'
-      preheader: '%{authorName} left a comment on your initiative for %{organizationName}'
+      commented: '%{authorFirstName} ha scritto:'
+      cta_reply_to: 'Rispondi a %{commentAuthor}'
+      event_description: '%{authorNameFull} ha inserito una reazione alla tua iniziativa ''%{initiativeTitle}''. Clicca il pulsante qui sotto per continuare la conversazione con %{authorName}.'
+      main_header: '%{commentAuthor} ha commentato la tua iniziativa'
+      subject: 'Hai ricevuto un commento sulla piattaforma di %{organizationName}'
+      preheader: '%{authorName} ha lasciato un commento sulla tua iniziativa per %{organizationName}'
     idea_assigned_to_you:
       by_author: 'by %{authorName}'
       cta_reply_to: 'Give feedback to %{authorName}'
