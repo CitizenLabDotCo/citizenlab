@@ -316,17 +316,17 @@ it:
       cta_reply_to: 'Rispondi a %{commentAuthor}'
       days_ago: '%{numberOfDays} giorni fa'
       event_description: '%{commentAuthor} ha commentato l''idea ''%{ideaTitle}'' che hai votato. Partecipa alla discussione sulla piattaforma di %{organizationName}!'
-      main_header: '%{firstName}, there''s a new comment on the idea you''ve voted on'
-      subject: 'There''s a new comment on the idea you''ve voted on'
-      preheader: '%{commentAuthor} left a comment on the idea you''ve voted on on the platform of %{organizationName}'
-      today: Today
-      yesterday: Yesterday
+      main_header: '%{firstName}, c''è un nuovo commento sull''idea che hai votato'
+      subject: 'C''è un nuovo commento sull''idea che hai votato'
+      preheader: '%{commentAuthor} ha lasciato un commento sull''idea che hai votato sulla piattaforma di %{organizationName}'
+      today: Oggi
+      yesterday: Ieri
     new_initiative_for_admin:
-      by_author: 'by %{authorName}'
-      commented: '%{authorFirstName} wrote:'
-      cta_reply_to: 'Give feedback to %{authorName}'
-      event_description: '%{authorName} has published a new proposal on your platform. Discover it now, give some feedback or change its status!'
-      main_header: '%{firstName}, a new proposal has been published on your platform'
+      by_author: 'da %{authorName}'
+      commented: '%{authorFirstName} ha scritto:'
+      cta_reply_to: 'Dai un feedback a %{authorName}'
+      event_description: '%{authorName} ha pubblicato una nuova proposta sulla tua piattaforma. Scoprila ora, dai un feedback o cambia il suo stato!'
+      main_header: '%{firstName}, una nuova proposta è stata pubblicata sulla tua piattaforma'
       subject: 'Someone published a new proposal on the platform of %{organizationName}'
       preheader: '%{authorName} published a new proposal on your platform'
     new_idea_for_admin:
@@ -413,23 +413,23 @@ it:
       cta_view_folder_button: 'Visualizza questa cartella'
       message_added_as_folderadmin: 'Ti sono stati dati i diritti di gestione delle cartelle sulla piattaforma di partecipazione di %{organizationName} per la seguente cartella:'
       no_projects: 'Nessun progetto ancora'
-      preheader: 'An administrator of the participation platform of %{organizationName} just made you a manager of the following folder'
-      subject: 'You became a project folder manager on the participation platform of %{organizationName}'
-      text_manage_folder: 'A folder is way to organize several participation projects together. As a folder manager, you can edit the folder and folder description and create new projects (to delete projects, contact your platform administrator). You will also have project management rights over all projects within the folder, allowing you to edit the projects, manage the inputs and email participants.'
-      text_moderate_analyse_input: 'Once the projects are launched, the first inputs will start coming in. You''ll receive weekly reports with the key activities so that you can stay on top of what’s happening. The Input Manager in your ''Manage Platform'' panel allows you to see and manage the input, including assigning statuses and responding to posts and comments.'
-      text_design_participatory_process: 'You can manage the different participation projects within your folder - configure the participation method, add a project description, attach images, and communicate related events. You can also manage how participants interact with your projects, including setting access rights and configuring the posting, voting and commenting settings.'
-      title_design_participatory_process: 'Design the participatory process'
-      title_moderate_analyse_input: 'Moderate and analyse the input'
-      title_manage_folder: 'Manage the folder settings and create new projects.'
-      title_what_can_you_do_folderadmin: 'What can you do as a folder manager?'
-      title_added_as_folderadmin: 'You''ve been added as a folder manager'
-      x_projects: '%{numberOfProjects} projects'
+      preheader: 'Un amministratore della piattaforma di partecipazione di %{organizationName} ti ha appena nominato manager della seguente cartella'
+      subject: 'Sei diventato un gestore di cartelle di progetto sulla piattaforma di partecipazione di %{organizationName}'
+      text_manage_folder: 'Una cartella è un modo per organizzare diversi progetti di partecipazione insieme. Come manager di una cartella, puoi modificare la cartella e la descrizione della cartella e creare nuovi progetti (per eliminare i progetti, contatta l''amministratore della piattaforma). Avrai anche i diritti di gestione del progetto su tutti i progetti all''interno della cartella, permettendoti di modificare i progetti, gestire gli input e inviare e-mail ai partecipanti.'
+      text_moderate_analyse_input: 'Una volta che i progetti sono lanciati, i primi input inizieranno ad arrivare. Riceverai rapporti settimanali con le attività principali in modo da poter rimanere in cima a ciò che sta accadendo. L''Input Manager nel tuo pannello "Manage Platform" ti permette di vedere e gestire gli input, inclusa l''assegnazione di status e la risposta a post e commenti.'
+      text_design_participatory_process: 'Puoi gestire i diversi progetti di partecipazione all''interno della tua cartella - configurare il metodo di partecipazione, aggiungere una descrizione del progetto, allegare immagini e comunicare gli eventi correlati. Puoi anche gestire il modo in cui i partecipanti interagiscono con i tuoi progetti, compresa l''impostazione dei diritti di accesso e la configurazione delle impostazioni di pubblicazione, votazione e commento.'
+      title_design_participatory_process: 'Progettare il processo partecipativo'
+      title_moderate_analyse_input: 'Moderare e analizzare l''input'
+      title_manage_folder: 'Gestisci le impostazioni della cartella e crea nuovi progetti.'
+      title_what_can_you_do_folderadmin: 'Cosa puoi fare come gestore di cartelle?'
+      title_added_as_folderadmin: 'Sei stato aggiunto come gestore di cartelle'
+      x_projects: '%{numberOfProjects} progetti'
     password_reset:
-      cta_reset_password: 'Reset your password'
-      message_you_reset_your_password: 'You requested a password reset for the participation platform of %{organizationName}. Click the button below to choose a new, safe password. The link expires in 1 hour.'
-      preheader: 'Here is the link you requested to reset your password'
-      subject: '%{organizationName}: Reset your password'
-      title_reset_your_password: 'Choose a new password'
+      cta_reset_password: 'Ripristina la tua password'
+      message_you_reset_your_password: 'Hai richiesto un reset della password per la piattaforma di partecipazione di %{organizationName}. Clicca il pulsante qui sotto per scegliere una nuova password sicura. Il link scade tra 1 ora.'
+      preheader: 'Ecco il link che hai richiesto per resettare la tua password'
+      subject: '%{organizationName}: Resetta la tua password'
+      title_reset_your_password: 'Scegliere una nuova password'
     project_phase_started:
       cta_view_phase: 'Discover this new phase'
       event_description: 'This project entered a new phase on the platform of %{organizationName}. Click on the link below to learn more!'
@@ -489,60 +489,60 @@ it:
     user_digest:
       subject: "Your activity on the participation platform of %{organizationName}"
       commented: "%{authorFirstName} commented:"
-      preheader: "Weekly overview of %{organizationName}"
-      title_your_weekly_report: "Discover what happened last week"
-      intro_text: "Here's a summary of what happened on the participation platform of %{organizationName}."
-      cta_go_to_the_platform: "Go to the platform"
-      title_no_activity_past_week: "No activity in the past week"
-      title_proposals: "Proposals started"
-      proposals_started_text: "Proposals are ideas that need to gain traction and support from others (people like you!) in order to move forward. Below is a list of proposals that have been put forward in the last week. Click on any of them to take a look and offer your support and feedback!"
-      title_successful_proposals: "Proposals that reached the threshold"
-      successful_proposals_text: "These proposals have gotten enough support to move to the next stage! Click on the proposal to learn more about what happens next."
-      today_by_author: "Today by %{author}"
-      yesterday_by_author: "Yesterday by %{author}"
-      x_days_ago_by_author: "%{x} days ago by %{author}"
-      trending_ideas: "Trending ideas"
-      trending_ideas_text: "Interested in what’s been happening on the platform? Here are the three most trending ideas and what people are saying about them."
-      no_notifications: "No notifications"
-      one_notification: "1 notification"
-      multiple_notifications: "%{notifCount} notifications"
-      no_unread_notifications: "You don't have any unread notifications. Visit the platform to contribute your input and generate new notifications!"
-      unread_notifications: "You have unread notifications. Visit the platform to discover what's happening!"
+      preheader: "Panoramica settimanale di %{organizationName}"
+      title_your_weekly_report: "Scopri cosa è successo la settimana scorsa"
+      intro_text: "Ecco un riassunto di quello che è successo sulla piattaforma di partecipazione di %{organizationName}."
+      cta_go_to_the_platform: "Vai alla piattaforma"
+      title_no_activity_past_week: "Nessuna attività nell'ultima settimana"
+      title_proposals: "Proposte iniziate"
+      proposals_started_text: "Le proposte sono idee che hanno bisogno di guadagnare trazione e supporto da altri (persone come te!) per andare avanti. Qui sotto c'è una lista di proposte che sono state presentate nell'ultima settimana. Clicca su una di esse per dare un'occhiata e offrire il tuo sostegno e feedback!"
+      title_successful_proposals: "Proposte che hanno raggiunto la soglia"
+      successful_proposals_text: "Queste proposte hanno ottenuto abbastanza sostegno per passare alla fase successiva! Clicca sulla proposta per saperne di più su cosa succede dopo."
+      today_by_author: "Oggi da %{author}"
+      yesterday_by_author: "Ieri da %{author}"
+      x_days_ago_by_author: "%{x} giorni fa da %{author}"
+      trending_ideas: "Idee di tendenza"
+      trending_ideas_text: "Ti interessa sapere cosa sta succedendo sulla piattaforma? Ecco le tre idee più in voga e quello che la gente dice di loro."
+      no_notifications: "Nessuna notifica"
+      one_notification: "1 notifica"
+      multiple_notifications: "%{notifCount} notifiche"
+      no_unread_notifications: "Non hai notifiche non lette. Visita la piattaforma per contribuire con il tuo contributo e generare nuove notifiche!"
+      unread_notifications: "Hai delle notifiche non lette. Visita la piattaforma per scoprire cosa sta succedendo!"
     threshold_reached_for_admin:
-      by_author: 'by %{authorName}'
-      cta_process_initiative: 'Take this initiative to the next steps'
-      event_description: 'An initiative reached the voting threshold on your platform. Click the button below to take it to the next steps!'
-      main_header: 'An initiative reached the voting threshold!'
-      subject: 'An initiative reached the voting threshold on your platform'
-      preheader: 'Make sure to take the next steps'
+      by_author: 'da %{authorName}'
+      cta_process_initiative: 'Portare questa iniziativa alle fasi successive'
+      event_description: 'Un''iniziativa ha raggiunto la soglia di voto sulla tua piattaforma. Clicca il pulsante qui sotto per portarla ai passi successivi!'
+      main_header: 'Un''iniziativa ha raggiunto la soglia di voto!'
+      subject: 'Un''iniziativa ha raggiunto la soglia di voto sulla tua piattaforma'
+      preheader: 'Assicurati di fare i prossimi passi'
     first_idea_published:
-      action_add_image: '%{addImageLink} to increase visibility'
-      action_comment: '%{textComment} on existing ideas'
-      action_published_idea: 'Published idea'
-      action_send_email: 'Send your contacts an %{sendEmailLink}'
-      action_share_fb: 'Let your friends know on %{fbLink}'
-      action_share_link: 'Share it via any channel by copying the %{link}'
-      action_share_twitter: 'Inform your followers on %{twitterLink}'
-      add_image: 'Add an image'
-      cta_view_idea: 'Go to your idea'
-      event_description: '%{firstName}, congratulations with your first idea on the participation platform of %{organizationName}. You will be notified when people interact with your idea. Find out what next steps you can take below.'
+      action_add_image: '%{addImageLink} per aumentare la visibilità'
+      action_comment: '%{textComment} su idee esistenti'
+      action_published_idea: 'Idea pubblicata'
+      action_send_email: 'Invia ai tuoi contatti un %{sendEmailLink}'
+      action_share_fb: 'Fallo sapere ai tuoi amici su %{fbLink}'
+      action_share_link: 'Condividilo tramite qualsiasi canale copiando il %{link}'
+      action_share_twitter: 'Informa i tuoi seguaci su %{twitterLink}'
+      add_image: 'Aggiungere un''immagine'
+      cta_view_idea: 'Vai alla tua idea'
+      event_description: '%{firstName}, complimenti per la tua prima idea sulla piattaforma di partecipazione di %{organizationName}. Sarai avvisato quando le persone interagiranno con la tua idea. Scopri quali sono i prossimi passi che puoi fare qui sotto.'
       link: link
-      main_header: '%{firstName}, you posted your first idea!'
-      message_get_votes: 'Reach more people with your idea:'
-      preheader: '%{firstName}, congratulations on posting your first idea on the platform of %{organizationName}. Now gather support for your idea'
-      see_you: 'See you soon at the platform!'
-      send_email: email
-      subject: 'Your first idea on the platform of %{organizationName}'
+      main_header: '%{firstName}, hai postato la tua prima idea!'
+      message_get_votes: 'Raggiungi più persone con la tua idea:'
+      preheader: '%{firstName}, congratulazioni per aver pubblicato la tua prima idea sulla piattaforma di %{organizationName}. Ora raccogli il supporto per la tua idea'
+      see_you: 'Ci vediamo presto alla piattaforma!'
+      send_email: e-mail
+      subject: 'La tua prima idea sulla piattaforma di %{organizationName}'
     welcome:
-      cta_join_platform: 'Discover the platform'
-      subject: 'Welcome to the platform of %{organizationName}'
-      main_header: Welcome!
-      message_welcome: 'Congratulations, you successfully signed up on the participation platform of %{organizationName}. You can now discover the platform and make your voice heard. You can also add a profile picture and a short description to tell others who you are.'
-      preheader: 'Here''s what you can do on the platform of %{organizationName}'
+      cta_join_platform: 'Scoprire la piattaforma'
+      subject: 'Benvenuti sulla piattaforma di %{organizationName}'
+      main_header: Benvenuti!
+      message_welcome: 'Congratulazioni, ti sei iscritto con successo alla piattaforma di partecipazione di %{organizationName}. Ora puoi scoprire la piattaforma e far sentire la tua voce. Puoi anche aggiungere una foto del profilo e una breve descrizione per dire agli altri chi sei.'
+      preheader: 'Ecco cosa potete fare sulla piattaforma di %{organizationName}'
     idea_published:
-      action_add_image: '%{addImageLink} to increase visibility'
-      action_published_idea: 'Published idea'
-      action_send_email: 'Send your contacts an %{sendEmailLink}'
+      action_add_image: '%{addImageLink} per aumentare la visibilità'
+      action_published_idea: 'Idea pubblicata'
+      action_send_email: 'Invia ai tuoi contatti un %{sendEmailLink}'
       action_share_fb: 'Let your friends know on %{fbLink}'
       action_share_link: 'Share it via any channel by copying the %{link}'
       action_share_twitter: 'Inform your followers on %{twitterLink}'
