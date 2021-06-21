@@ -7,20 +7,11 @@ import styled from 'styled-components';
 import { darken } from 'polished';
 
 // components
-import {
-  Button,
-  Input,
-  Spinner,
-  IconTooltip,
-  Dropdown,
-  DropdownListItem,
-} from 'cl2-component-library';
+import { Button, Input, Spinner } from 'cl2-component-library';
 import Divider from 'components/admin/Divider';
-import Modal from 'components/UI/Modal';
 import TopBar, { topBarHeight } from '../../../components/TopBar';
 import Error from 'components/UI/Error';
 import InputsTable from './InputsTable';
-import RenameCategory from './RenameCategory';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -43,7 +34,6 @@ import { CLErrors } from 'typings';
 import {
   addInsightsCategory,
   deleteInsightsCategories,
-  deleteInsightsCategory,
 } from 'modules/commercial/insights/services/insightsCategories';
 
 const Container = styled.div`
@@ -57,14 +47,6 @@ const Container = styled.div`
   ${media.smallerThan1280px`
     left: 80px;
   `}
-`;
-
-const Inputs = styled.div`
-  flex: 1;
-  background: #fff;
-  overflow-x: auto;
-  overflow-y: auto;
-  padding: 40px;
 `;
 
 const Categories = styled.aside`
@@ -96,10 +78,6 @@ const FormContainer = styled.form`
   display: flex;
   align-items: center;
   margin-bottom: 28px;
-  input {
-    padding: 10px;
-    font-size: ${fontSizes.small}px;
-  }
   .addButton {
     margin-left: 4px;
   }
@@ -119,7 +97,7 @@ const CategoryButton = styled(Button)`
 const CategoryInfoBox = styled.div`
   background-color: ${colors.clBlueLightest};
   font-size: ${fontSizes.base};
-  font-color: ${colors.adminTextColor};
+  color: ${colors.adminTextColor};
   border-radius: 3px;
   padding: 8px 20px;
 `;
@@ -136,16 +114,6 @@ const StyledPlus = styled.div`
 const ButtonsContainer = styled.div`
   margin-top: 20px;
   margin-bottom: 20px;
-`;
-
-const StyledHeader = styled.h2`
-  display: flex;
-  align-items: center;
-  color: ${colors.adminTextColor};
-  font-size: ${fontSizes.large}px;
-  button {
-    margin-left: 20px;
-  }
 `;
 
 export const getSelectedCategoryFilter = (categoryQuery: string) =>
@@ -167,29 +135,15 @@ const EditInsightsView = ({
 
   const categories = useInsightsCategories(viewId);
   const [name, setName] = useState<string | null>();
-  const onChangeName = (value: string) => {
-    setName(value);
-    setErrors(undefined);
-  };
-  const [renameCategoryModalOpened, setRenameCategoryModalOpened] = useState(
-    false
-  );
-  const [isCategoryMenuOpened, setCategoryMenuOpened] = useState(false);
-
-  const closeCategoryRenameModal = () => setRenameCategoryModalOpened(false);
-  const openCategoryRenameModal = () => setRenameCategoryModalOpened(true);
-
-  const toggleCategoryMenu = () => {
-    setCategoryMenuOpened(!isCategoryMenuOpened);
-  };
-
-  const closeCategoryMenu = () => {
-    setCategoryMenuOpened(false);
-  };
 
   if (isNilOrError(locale) || isNilOrError(categories)) {
     return null;
   }
+
+  const onChangeName = (value: string) => {
+    setName(value);
+    setErrors(undefined);
+  };
 
   const handleCategorySubmit = async () => {
     if (name) {
@@ -204,27 +158,6 @@ const EditInsightsView = ({
     }
   };
 
-  const handleDeleteCategory = async () => {
-    {
-      const deleteMessage = formatMessage(messages.deleteCategoryConfirmation);
-      if (window.confirm(deleteMessage)) {
-        try {
-          await deleteInsightsCategory(viewId, query.category);
-        } catch {
-          // Do nothing
-        }
-      }
-      clHistory.push({
-        pathname,
-        search: stringify(
-          { ...query, pageNumber: 1, category: undefined },
-          { addQueryPrefix: true }
-        ),
-      });
-      setCategoryMenuOpened(false);
-    }
-  };
-
   const selectCategory = (categoryId?: string) => () => {
     clHistory.push({
       pathname,
@@ -234,10 +167,6 @@ const EditInsightsView = ({
       ),
     });
   };
-
-  const selectedCategory = categories.find(
-    (category) => category.id === query.category
-  );
 
   const selectedCategoryFilter = getSelectedCategoryFilter(query.category);
 
@@ -319,6 +248,7 @@ const EditInsightsView = ({
               value={name}
               onChange={onChangeName}
               placeholder={formatMessage(messages.addCategory)}
+              size="small"
             />
             <Button
               locale={locale}
@@ -375,71 +305,7 @@ const EditInsightsView = ({
             )}
           </CategoriesList>
         </Categories>
-        <Inputs>
-          <StyledHeader data-testid="insightsInputsHeader">
-            {selectedCategoryFilter === 'category' && (
-              <>
-                {selectedCategory?.attributes.name}
-                <Button
-                  icon="more-options"
-                  locale={locale}
-                  iconColor={colors.label}
-                  iconHoverColor={colors.label}
-                  boxShadow="none"
-                  boxShadowHover="none"
-                  bgColor="transparent"
-                  bgHoverColor="transparent"
-                  padding="0px 20px"
-                  onClick={toggleCategoryMenu}
-                />
-              </>
-            )}
-            {selectedCategoryFilter === 'notCategorized' && (
-              <>
-                {formatMessage(messages.notCategorized)}
-                <IconTooltip
-                  content={formatMessage(messages.notCategorizedTooltip)}
-                />
-              </>
-            )}
-            {selectedCategoryFilter === 'allInput' && (
-              <>
-                {formatMessage(messages.allInput)}
-                <IconTooltip
-                  content={formatMessage(messages.allInputTooltip)}
-                />
-              </>
-            )}
-          </StyledHeader>
-          <Dropdown
-            opened={isCategoryMenuOpened}
-            onClickOutside={closeCategoryMenu}
-            className="dropdown"
-            content={
-              <>
-                <DropdownListItem onClick={openCategoryRenameModal}>
-                  {formatMessage(messages.editCategoryName)}
-                </DropdownListItem>
-                <DropdownListItem onClick={handleDeleteCategory}>
-                  {formatMessage(messages.deleteCategory)}
-                </DropdownListItem>
-              </>
-            }
-          />
-          <Divider />
-          <InputsTable />
-        </Inputs>
-        <Modal
-          opened={renameCategoryModalOpened}
-          close={closeCategoryRenameModal}
-        >
-          {selectedCategory && (
-            <RenameCategory
-              closeRenameModal={closeCategoryRenameModal}
-              originalCategoryName={selectedCategory.attributes.name}
-            />
-          )}
-        </Modal>
+        <InputsTable />
       </Container>
     </div>
   );
