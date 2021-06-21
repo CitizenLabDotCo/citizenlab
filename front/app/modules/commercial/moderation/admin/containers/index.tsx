@@ -228,7 +228,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
     searchTerm: '',
   });
 
-  const [moderationItems, setModerationItems] = useState(list);
+  const [moderations, setModerations] = useState(list);
   const [selectedModerations, setSelectedModerations] = useState<
     IModerationData[]
   >([]);
@@ -256,15 +256,13 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
 
   const handleOnSelectAll = useCallback(
     (_event: React.ChangeEvent) => {
-      if (!isNilOrError(moderationItems) && !processing) {
+      if (!isNilOrError(moderations) && !processing) {
         setSelectedModerations(
-          selectedModerations.length < moderationItems.length
-            ? moderationItems
-            : []
+          selectedModerations.length < moderations.length ? moderations : []
         );
       }
     },
-    [moderationItems, selectedModerations, processing]
+    [moderations, selectedModerations, processing]
   );
 
   const handleOnTabChange = useCallback(
@@ -382,7 +380,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
     async (event: React.FormEvent) => {
       if (
         selectedModerations.length > 0 &&
-        !isNilOrError(moderationItems) &&
+        !isNilOrError(moderations) &&
         moderationStatus &&
         !processing
       ) {
@@ -418,7 +416,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
         }
       }
     },
-    [selectedModerations, moderationItems, moderationStatus]
+    [selectedModerations, moderations, moderationStatus]
   );
 
   const handleData = (data: InsertConfigurationOptions<ITabItem>) =>
@@ -432,7 +430,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
 
   useEffect(() => {
     if (!processing) {
-      setModerationItems(list);
+      setModerations(list);
     }
   }, [list, processing]);
 
@@ -548,14 +546,14 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
               <th className="checkbox">
                 <StyledCheckbox
                   checked={
-                    moderationItems.length > 0 &&
-                    selectedModerations.length === moderationItems.length
+                    moderations.length > 0 &&
+                    selectedModerations.length === moderations.length
                   }
                   indeterminate={
                     selectedModerations.length > 0 &&
-                    selectedModerations.length < moderationItems.length
+                    selectedModerations.length < moderations.length
                   }
-                  disabled={moderationItems.length === 0}
+                  disabled={moderations.length === 0}
                   onChange={handleOnSelectAll}
                 />
               </th>
