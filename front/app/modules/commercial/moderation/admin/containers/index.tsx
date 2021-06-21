@@ -454,10 +454,10 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
     })();
   }, [selectedModerations]);
 
-  if (!isNilOrError(moderationItems)) {
+  if (!isNilOrError(moderations)) {
     const filteredModerationItems =
       selectedTab === 'warnings'
-        ? moderationItems
+        ? moderations
             .filter(
               (moderation) =>
                 moderation.relationships.inappropriate_content_flag
@@ -467,7 +467,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
                 .map((flag) => flag.data.id)
                 .includes(moderationWithFlag.id)
             )
-        : moderationItems;
+        : moderations;
     return (
       <Container className={className}>
         <PageTitleWrapper>
