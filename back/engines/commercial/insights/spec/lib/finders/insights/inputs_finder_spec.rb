@@ -88,7 +88,7 @@ describe Insights::InputsFinder do
       before do
         inputs = view.scope.ideas
         assignment_service.add_suggestions(inputs.first, [category])
-        assignment_service.add_assignments!(inputs.second, [category])
+        assignment_service.add_assignments(inputs.second, [category])
       end
 
       it 'returns inputs with approved categories first' do
@@ -118,7 +118,7 @@ describe Insights::InputsFinder do
 
       before do
         inputs = view.scope.ideas
-        assignment_service.add_assignments!(inputs.first, [category])
+        assignment_service.add_assignments(inputs.first, [category])
         assignment_service.add_suggestions(inputs.second, [category])
       end
 
