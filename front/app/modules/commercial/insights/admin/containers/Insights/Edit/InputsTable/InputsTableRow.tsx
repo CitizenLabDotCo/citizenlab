@@ -82,7 +82,7 @@ const InputsTableRow = ({
             ))}
         </CategoryList>
       </td>
-      {query.category && (
+      {query.category ? (
         <td>
           <CategoryList>
             {input.relationships?.categories.data
@@ -96,7 +96,7 @@ const InputsTableRow = ({
               ))}
           </CategoryList>
         </td>
-      )}
+      ) : null}
     </tr>
   );
 };
