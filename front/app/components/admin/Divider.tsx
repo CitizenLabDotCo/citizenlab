@@ -11,6 +11,8 @@ const StyledHr = styled.hr`
   padding: 0;
 `;
 
-const Divider = () => <StyledHr />;
+const Divider = ({ className }: { className?: string }) => (
+  <StyledHr className={className} />
+);
 
 export default Divider;

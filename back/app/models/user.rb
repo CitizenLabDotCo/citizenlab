@@ -169,6 +169,10 @@ class User < ApplicationRecord
   scope :project_moderator, ->(_project_id = nil) { User.none }
   scope :not_project_moderator, -> { User.all }
 
+  def self.oldest_admin
+    active.admin.order(:created_at).reject(&:super_admin?).first
+  end
+
   def assign_email_or_phone
     # Hack to embed phone numbers in email
     email_or_embedded_phone = PhoneService.new.emailize_email_or_phone(email)
