@@ -743,6 +743,7 @@
   "app.containers.Admin.Insights.Edit.inputsTableInputs": "Wkład",
   "app.containers.Admin.Insights.Edit.inputsTableNotCategorized": "",
   "app.containers.Admin.Insights.Edit.notCategorized": "",
+  "app.containers.Admin.Insights.Edit.notCategorizedTooltip": "",
   "app.containers.Admin.Insights.Edit.renameCategoryModalCancel": "Anuluj",
   "app.containers.Admin.Insights.Edit.renameCategoryModalNameLabel": "Nazwa",
   "app.containers.Admin.Insights.Edit.renameCategoryModalSave": "Zapisz",
