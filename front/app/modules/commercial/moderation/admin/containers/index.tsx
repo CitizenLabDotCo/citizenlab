@@ -455,19 +455,21 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
   }, [selectedModerations]);
 
   if (!isNilOrError(moderations)) {
+    const modItemsWithFlagRel = moderations.filter(
+      (moderation) => moderation.relationships.inappropriate_content_flag
+    );
+    const modItemsWithActiveFlag = modItemsWithFlagRel.filter(
+      (moderationWithFlag) =>
+        activeInappropriateContentFlags
+          .map((flag) => flag.data.id)
+          .includes(moderationWithFlag.id)
+    );
     const filteredModerationItems =
-      selectedTab === 'warnings'
-        ? moderations
-            .filter(
-              (moderation) =>
-                moderation.relationships.inappropriate_content_flag
-            )
-            .filter((moderationWithFlag) =>
-              activeInappropriateContentFlags
-                .map((flag) => flag.data.id)
-                .includes(moderationWithFlag.id)
-            )
-        : moderations;
+      selectedTab === 'warnings' ? modItemsWithActiveFlag : moderations;
+    // console.log(moderationItems);
+    console.log(modItemsWithFlagRel);
+    console.log(modItemsWithActiveFlag);
+
     return (
       <Container className={className}>
         <PageTitleWrapper>
