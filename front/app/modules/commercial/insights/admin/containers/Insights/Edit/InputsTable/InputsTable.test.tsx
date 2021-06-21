@@ -460,7 +460,7 @@ describe('Insights Input Table', () => {
   describe('Empty States', () => {
     it('renders table empty state when there are no inputs', () => {
       mockInputData = { currentPage: 1, lastPage: 1, list: [] };
-      mockLocationData = { pathname: '', query: { category: '' } };
+      mockLocationData = { pathname: '', query: {} };
       render(<InputsTable />);
       expect(
         screen.getByTestId('insightsInputsTableEmptyState')
@@ -484,5 +484,17 @@ describe('Insights Input Table', () => {
         screen.getByText('You have no input assigned to this category yet')
       ).toBeInTheDocument();
     });
+  });
+  it('renders correct table empty state when there is no uncategorized input', () => {
+    mockLocationData = { pathname: '', query: { category: '' } };
+    mockInputData = { currentPage: 1, lastPage: 1, list: [] };
+
+    render(<InputsTable />);
+    expect(
+      screen.getByTestId('insightsInputsTableEmptyState')
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText('There is no input without a category')
+    ).toBeInTheDocument();
   });
 });

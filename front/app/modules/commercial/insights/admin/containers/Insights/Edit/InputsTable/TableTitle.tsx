@@ -1,19 +1,33 @@
-import messages from '../../messages';
-import useInsightsCategories from 'modules/commercial/insights/hooks/useInsightsCategories';
 import React, { useState } from 'react';
+import { withRouter, WithRouterProps } from 'react-router';
+
+// intl
+import messages from '../../messages';
+import { InjectedIntlProps } from 'react-intl';
+
+// hooks
+import useInsightsCategories from 'modules/commercial/insights/hooks/useInsightsCategories';
+
+// services
 import { deleteInsightsCategory } from 'modules/commercial/insights/services/insightsCategories';
+
+// styles
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
-import { InjectedIntlProps } from 'react-intl';
-import { withRouter, WithRouterProps } from 'react-router';
+
+// utils
 import clHistory from 'utils/cl-router/history';
 import { stringify } from 'qs';
 import { isNilOrError } from 'utils/helperUtils';
+import { injectIntl } from 'utils/cl-intl';
+
+// components
 import Modal from 'components/UI/Modal';
 import { Dropdown, DropdownListItem, IconTooltip } from 'cl2-component-library';
 import Button from 'components/UI/Button';
 import RenameCategory from '../RenameCategory';
-import { injectIntl } from 'utils/cl-intl';
+
+import { getSelectedCategoryFilter } from '../';
 
 const StyledHeader = styled.h2`
   display: flex;
@@ -73,16 +87,19 @@ const TableTitle = ({
       setCategoryMenuOpened(false);
     }
   };
+
   const selectedCategory = categories?.find(
     (category) => category.id === query.category
   );
 
+  const selectedCategoryFilter = getSelectedCategoryFilter(query.category);
+
   return (
     <>
       <StyledHeader data-testid="insightsInputsHeader">
-        {selectedCategory ? (
+        {selectedCategoryFilter === 'category' && (
           <>
-            {selectedCategory.attributes.name}
+            {selectedCategory?.attributes.name}
             <Button
               icon="more-options"
               iconColor={colors.label}
@@ -95,7 +112,16 @@ const TableTitle = ({
               onClick={toggleCategoryMenu}
             />
           </>
-        ) : (
+        )}
+        {selectedCategoryFilter === 'notCategorized' && (
+          <>
+            {formatMessage(messages.notCategorized)}
+            <IconTooltip
+              content={formatMessage(messages.notCategorizedTooltip)}
+            />
+          </>
+        )}
+        {selectedCategoryFilter === 'allInput' && (
           <>
             {formatMessage(messages.allInput)}
             <IconTooltip content={formatMessage(messages.allInputTooltip)} />

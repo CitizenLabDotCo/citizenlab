@@ -125,6 +125,12 @@ const InputsTable = ({
     setSelectedRows(new Set());
   }, [selectedCategory, pageNumber]);
 
+  useEffect(() => {
+    if (!isNilOrError(inputs) && inputs.length === 0) {
+      setIsSideModalOpen(false);
+    }
+  }, [inputs]);
+
   // Side Modal Preview
   // Use callback to keep references for moveUp and moveDown stable
   const moveUp = useCallback(() => {
@@ -218,7 +224,9 @@ const InputsTable = ({
             <colgroup>
               <col span={1} style={{ width: '2.5%' }} />
               <col span={1} style={{ width: '30%' }} />
-              {query.category && <col span={1} style={{ width: '2.5%' }} />}
+              {query.category ? (
+                <col span={1} style={{ width: '2.5%' }} />
+              ) : null}
               <col span={1} style={{ width: '65%' }} />
             </colgroup>
             <thead>
@@ -257,9 +265,9 @@ const InputsTable = ({
                     formatMessage(messages.inputsTableCategories)
                   )}
                 </th>
-                {query.category && (
+                {query.category ? (
                   <th>{formatMessage(messages.inputsTableAlsoIn)}</th>
-                )}
+                ) : null}
               </tr>
             </thead>
             <tbody>
@@ -281,9 +289,10 @@ const InputsTable = ({
           />
         </>
       )}
-      {!isNilOrError(previewedInputIndex) &&
-        !isNilOrError(inputs[previewedInputIndex]) && (
-          <SideModal opened={isSideModalOpen} close={closeSideModal}>
+
+      <SideModal opened={isSideModalOpen} close={closeSideModal}>
+        {!isNilOrError(previewedInputIndex) &&
+          !isNilOrError(inputs[previewedInputIndex]) && (
             <InputDetails
               selectedInput={inputs[previewedInputIndex]}
               moveUp={moveUp}
@@ -291,8 +300,8 @@ const InputsTable = ({
               isMoveUpDisabled={previewedInputIndex === 0}
               isMoveDownDisabled={previewedInputIndex === inputs.length - 1}
             />
-          </SideModal>
-        )}
+          )}
+      </SideModal>
     </Inputs>
   );
 };
