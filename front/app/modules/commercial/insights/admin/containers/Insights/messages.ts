@@ -152,7 +152,7 @@ export default defineMessages({
   notCategorizedTooltip: {
     id: 'app.containers.Admin.Insights.Edit.notCategorizedTooltip',
     defaultMessage:
-      "This lists all previously processes input that hasn't been assigned a category. Recently added input is NOT shown here.",
+      "This lists all previously processed input that hasn't been assigned a category. Recently added input is NOT shown here.",
   },
   editCategoryName: {
     id: 'app.containers.Admin.Insights.Edit.editCategoryName',
