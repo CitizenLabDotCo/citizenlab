@@ -122,6 +122,10 @@ const ProjectTimelineContainer = memo<Props & WithRouterProps>(
 
         // if, coming from the siteMap, a phase url parameter was passed in, we pick that phase as the default phase,
         // then remove the param so that when the user navigates to other phases there is no mismatch
+        console.log('timeline/index.tsx: ');
+        console.log(`phase param: ${location?.query?.phase}`);
+        console.log(`currentPhase: ${currentPhase ? true : false}`);
+
         if (isString(location?.query?.phase)) {
           const phase = phases.find(
             (phase) => phase.id === location.query.phase

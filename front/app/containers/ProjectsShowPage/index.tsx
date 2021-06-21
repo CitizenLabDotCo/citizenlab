@@ -157,6 +157,9 @@ const ProjectsShowPageWrapper = memo<WithRouterProps>(
       .split('/')
       .filter((segment) => segment !== '');
 
+    console.log('from ProjectShowPage/index.tsx:');
+    console.log(`urlSegments: ${urlSegments.join('/')}`);
+
     if (urlSegments.length > 3 && urlSegments[1] === 'projects') {
       // redirect old childRoutes (e.g. /info, /process, ...) to the project index location
       clHistory.replace(`/${urlSegments.slice(1, 3).join('/')}`);
