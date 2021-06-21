@@ -1,7 +1,8 @@
 import React from 'react';
 import { render, screen, fireEvent } from 'utils/testUtils/rtl';
+import clHistory from 'utils/cl-router/history';
 
-import GoBackButton from './';
+import ProjectFolderGoBackButton from '.';
 
 const projectFolderData = {
   id: 'a8735d6f-cdd4-4242-8531-b089b5e3954a',
@@ -16,32 +17,29 @@ const projectFolderData = {
   },
 };
 
-let historyState: string;
-const history = {
-  push(location: string) {
-    historyState = location;
-  },
-};
-
-jest.mock('utils/cl-router/history', () => history);
+jest.mock('utils/cl-router/history');
 jest.mock('../../../hooks/useProjectFolder', () =>
   jest.fn(() => projectFolderData)
 );
-jest.mock('hooks/useLocale', () => jest.fn(() => 'en'));
-jest.mock('hooks/useLocalize', () => jest.fn(() => (multiloc) => multiloc.en));
+jest.mock('hooks/useLocale');
+jest.mock('hooks/useLocalize');
 
-describe('GoBackButton', () => {
+describe('ProjectFolderGoBackButton', () => {
   it('should render', () => {
-    render(<GoBackButton projectFolderId={projectFolderData.id} />);
+    render(
+      <ProjectFolderGoBackButton projectFolderId={projectFolderData.id} />
+    );
     expect(screen.getByRole('button')).toBeInTheDocument();
     expect(screen.getByText('TestFolder')).toBeInTheDocument();
   });
   it('pushes parent folder path to history when clicked', () => {
-    render(<GoBackButton projectFolderId={projectFolderData.id} />);
+    render(
+      <ProjectFolderGoBackButton projectFolderId={projectFolderData.id} />
+    );
 
     const button = screen.getByRole('button');
     fireEvent.click(button);
 
-    expect(historyState).toBe('/folders/testfolder');
+    expect(clHistory.push).toHaveBeenCalledWith('/folders/testfolder');
   });
 });
