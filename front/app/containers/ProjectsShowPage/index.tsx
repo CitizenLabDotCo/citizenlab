@@ -33,6 +33,9 @@ import { media, colors } from 'utils/styleUtils';
 // typings
 import { IProjectData } from 'services/projects';
 
+// other
+import { isIntegerOverZero, phaseExists } from './phaseParam';
+
 const Container = styled.main<{ background: string }>`
   flex: 1 0 auto;
   height: 100%;
@@ -149,18 +152,39 @@ const ProjectsShowPage = memo<Props>(({ project }) => {
 });
 
 const ProjectsShowPageWrapper = memo<WithRouterProps>(
-  ({ location: { pathname }, params: { slug } }) => {
+  ({ location: { pathname }, params: { slug, phase } }) => {
     const project = useProject({ projectSlug: slug });
+    const phases = usePhases(project?.id);
 
     const urlSegments = pathname
       .replace(/^\/|\/$/g, '')
       .split('/')
       .filter((segment) => segment !== '');
 
-    console.log('from ProjectShowPage/index.tsx:');
-    console.log(`urlSegments: ${urlSegments.join('/')}`);
-
-    if (urlSegments.length > 3 && urlSegments[1] === 'projects') {
+    if (
+      urlSegments.length === 4 &&
+      isIntegerOverZero(phase) &&
+      isNilOrError(phases)
+    ) {
+      // A phase param was passed, but phases hasn't loaded yet
+      return <ProjectsShowPage project={project} />;
+    } else if (
+      urlSegments.length === 4 &&
+      isIntegerOverZero(phase) &&
+      !isNilOrError(phases) &&
+      !phaseExists(phase, phases)
+    ) {
+      // A phase param was passed, but the phase doesn't exist
+      clHistory.replace(`/${urlSegments.slice(1, 3).join('/')}`);
+    } else if (
+      urlSegments.length === 4 &&
+      isIntegerOverZero(phase) &&
+      !isNilOrError(phases) &&
+      phaseExists(phase, phases)
+    ) {
+      // A phase param was passed, and the phase exists
+      return <ProjectsShowPage project={project} />;
+    } else if (urlSegments.length > 3 && urlSegments[1] === 'projects') {
       // redirect old childRoutes (e.g. /info, /process, ...) to the project index location
       clHistory.replace(`/${urlSegments.slice(1, 3).join('/')}`);
     } else if (slug) {

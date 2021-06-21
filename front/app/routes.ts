@@ -196,6 +196,15 @@ export default function createRoutes() {
           },
           childRoutes: [
             {
+              path: ':phase',
+              name: 'Project page: specific phase',
+              component: Loadable({
+                loader: () => import('containers/ProjectsShowPage'),
+                loading: LoadableLoadingCitizen,
+                delay: 500,
+              }),
+            },
+            {
               path: '*',
               name: 'Project page',
               component: Loadable({

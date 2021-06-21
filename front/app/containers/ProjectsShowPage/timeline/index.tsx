@@ -45,6 +45,9 @@ import { FormattedMessage } from 'utils/cl-intl';
 import styled from 'styled-components';
 import { colors, viewportWidths, isRtl } from 'utils/styleUtils';
 
+// other
+import { isValidPhase } from '../phaseParam';
+
 const Container = styled.div``;
 
 const StyledSectionContainer = styled(SectionContainer)`
@@ -91,7 +94,7 @@ interface Props {
 }
 
 const ProjectTimelineContainer = memo<Props & WithRouterProps>(
-  ({ projectId, location, className }) => {
+  ({ projectId, className, params: { phase: phaseParam } }) => {
     const project = useProject({ projectId });
     const phases = usePhases(projectId);
     const windowSize = useWindowSize();
@@ -110,31 +113,17 @@ const ProjectTimelineContainer = memo<Props & WithRouterProps>(
     }, []);
 
     useEffect(() => {
-      if (
-        !isNilOrError(location) &&
-        !isNilOrError(phases) &&
-        phases.length > 0
-      ) {
+      if (!isNilOrError(phases) && phases.length > 0) {
         const currentPhase = getCurrentPhase(phases);
         const firstPhase = getFirstPhase(phases);
         const lastPhase = getLastPhase(phases);
         const lastPastPhase = getLastPastPhase(phases);
 
-        // if, coming from the siteMap, a phase url parameter was passed in, we pick that phase as the default phase,
-        // then remove the param so that when the user navigates to other phases there is no mismatch
-        console.log('timeline/index.tsx: ');
-        console.log(`phase param: ${location?.query?.phase}`);
-        console.log(`currentPhase: ${currentPhase ? true : false}`);
-
-        if (isString(location?.query?.phase)) {
-          const phase = phases.find(
-            (phase) => phase.id === location.query.phase
-          );
-
-          if (phase) {
-            window.history.replaceState(null, '', location.pathname);
-            selectPhase(phase);
-          }
+        // if a phase parameter was provided, and it is valid, we set that as phase.
+        // otherwise, use the most logical one
+        if (isValidPhase(phaseParam, phases)) {
+          const phaseIndex = Number(phaseParam) - 1;
+          selectPhase(phases[phaseIndex]);
         } else if (currentPhase) {
           selectPhase(currentPhase);
         } else if (
