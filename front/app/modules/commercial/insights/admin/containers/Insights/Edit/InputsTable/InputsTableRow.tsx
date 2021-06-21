@@ -82,7 +82,7 @@ const InputsTableRow = ({
             ))}
         </CategoryList>
       </td>
-      {query.category && (
+      {!isNilOrError(query.category) && (
         <td>
           <CategoryList>
             {input.relationships?.categories.data
