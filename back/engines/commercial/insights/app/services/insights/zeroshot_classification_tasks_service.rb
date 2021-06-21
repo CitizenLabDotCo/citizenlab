@@ -5,8 +5,11 @@ module Insights
     def create_task(task_id, inputs, categories)
       ZeroshotClassificationTasks.transaction do
         task = ZeroshotClassificationTasks.create(task_id: task_id, categories: categories)
-        inputs_tasks_attrs = inputs.map { |i| {input: i} }
+
+        inputs_tasks_attrs = inputs.map { |i| { input: i } }
         task.inputs_tasks.create(inputs_tasks_attrs)
+
+        task
       end
     end
 
