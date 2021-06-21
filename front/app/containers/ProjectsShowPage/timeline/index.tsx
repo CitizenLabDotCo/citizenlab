@@ -1,6 +1,5 @@
 import React, { memo, useEffect, useState } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { isString } from 'lodash-es';
 import { withRouter, WithRouterProps } from 'react-router';
 import { pastPresentOrFuture } from 'utils/dateUtils';
 
@@ -47,6 +46,7 @@ import { colors, viewportWidths, isRtl } from 'utils/styleUtils';
 
 // other
 import { isValidPhase } from '../phaseParam';
+import setPhaseURL from './setPhaseURL';
 
 const Container = styled.div``;
 
@@ -95,6 +95,7 @@ interface Props {
 
 const ProjectTimelineContainer = memo<Props & WithRouterProps>(
   ({ projectId, className, params: { phase: phaseParam } }) => {
+    console.log(projectId);
     const project = useProject({ projectId });
     const phases = usePhases(projectId);
     const windowSize = useWindowSize();
@@ -104,6 +105,7 @@ const ProjectTimelineContainer = memo<Props & WithRouterProps>(
     useEffect(() => {
       const subscription = selectedPhase$.subscribe((selectedPhase) => {
         setSelectedPhase(selectedPhase);
+        setPhaseURL(selectedPhase, phases, project);
       });
 
       return () => {
@@ -120,9 +122,10 @@ const ProjectTimelineContainer = memo<Props & WithRouterProps>(
         const lastPastPhase = getLastPastPhase(phases);
 
         // if a phase parameter was provided, and it is valid, we set that as phase.
-        // otherwise, use the most logical one
+        // otherwise, use the most logical phase
         if (isValidPhase(phaseParam, phases)) {
-          const phaseIndex = Number(phaseParam) - 1;
+          const phaseNumber = Number(phaseParam);
+          const phaseIndex = phaseNumber - 1;
           selectPhase(phases[phaseIndex]);
         } else if (currentPhase) {
           selectPhase(currentPhase);
@@ -147,7 +150,7 @@ const ProjectTimelineContainer = memo<Props & WithRouterProps>(
           selectPhase(lastPhase || null);
         }
       }
-    }, [location, phases]);
+    }, [phases]);
 
     if (
       !isNilOrError(project) &&

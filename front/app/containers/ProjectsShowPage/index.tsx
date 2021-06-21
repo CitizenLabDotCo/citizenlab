@@ -161,29 +161,21 @@ const ProjectsShowPageWrapper = memo<WithRouterProps>(
       .split('/')
       .filter((segment) => segment !== '');
 
-    if (
-      urlSegments.length === 4 &&
-      isIntegerOverZero(phase) &&
-      isNilOrError(phases)
-    ) {
-      // A phase param was passed, but phases hasn't loaded yet
-      return <ProjectsShowPage project={project} />;
-    } else if (
-      urlSegments.length === 4 &&
-      isIntegerOverZero(phase) &&
-      !isNilOrError(phases) &&
-      !phaseExists(phase, phases)
-    ) {
-      // A phase param was passed, but the phase doesn't exist
-      clHistory.replace(`/${urlSegments.slice(1, 3).join('/')}`);
-    } else if (
-      urlSegments.length === 4 &&
-      isIntegerOverZero(phase) &&
-      !isNilOrError(phases) &&
-      phaseExists(phase, phases)
-    ) {
-      // A phase param was passed, and the phase exists
-      return <ProjectsShowPage project={project} />;
+    if (urlSegments.length === 4 && isIntegerOverZero(phase)) {
+      // If a phase param was passed, and it has the right format...
+      if (isNilOrError(phases)) {
+        // If phases haven't loaded yet:
+        return <ProjectsShowPage project={project} />;
+      } else {
+        // If phases have loaded:
+        if (phaseExists(phase, phases)) {
+          // If the phase exists, i.e. is equal to or lower than the number of phases in the project:
+          return <ProjectsShowPage project={project} />;
+        } else {
+          // If phase doesn't exist, redirect to project index
+          clHistory.replace(`/${urlSegments.slice(1, 3).join('/')}`);
+        }
+      }
     } else if (urlSegments.length > 3 && urlSegments[1] === 'projects') {
       // redirect old childRoutes (e.g. /info, /process, ...) to the project index location
       clHistory.replace(`/${urlSegments.slice(1, 3).join('/')}`);
