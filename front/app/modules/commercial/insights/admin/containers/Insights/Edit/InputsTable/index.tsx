@@ -224,9 +224,9 @@ const InputsTable = ({
             <colgroup>
               <col span={1} style={{ width: '2.5%' }} />
               <col span={1} style={{ width: '30%' }} />
-              {!isNilOrError(query.category) && (
+              {query.category ? (
                 <col span={1} style={{ width: '2.5%' }} />
-              )}
+              ) : null}
               <col span={1} style={{ width: '65%' }} />
             </colgroup>
             <thead>
@@ -265,9 +265,9 @@ const InputsTable = ({
                     formatMessage(messages.inputsTableCategories)
                   )}
                 </th>
-                {!isNilOrError(query.category) && (
+                {query.category ? (
                   <th>{formatMessage(messages.inputsTableAlsoIn)}</th>
-                )}
+                ) : null}
               </tr>
             </thead>
             <tbody>
