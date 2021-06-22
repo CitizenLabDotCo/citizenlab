@@ -161,20 +161,23 @@ const ProjectsShowPageWrapper = memo<WithRouterProps>(
       .split('/')
       .filter((segment) => segment !== '');
 
-    if (urlSegments.length === 4 && isIntegerOverZero(phase)) {
-      // If a phase param was passed, and it has the right format...
-      if (isNilOrError(phases)) {
-        // If phases haven't loaded yet:
+    const processType = project?.attributes.process_type;
+
+    // If processType is not available yet: don't redirect
+    if (!processType) return <ProjectsShowPage project={project} />;
+
+    if (
+      processType === 'timeline' &&
+      urlSegments.length === 4 &&
+      isIntegerOverZero(phase)
+    ) {
+      // If project has a timeline, a phase param was passed, and it has the right format...
+      if (!isNilOrError(phases) && phaseExists(phase, phases)) {
+        // If the phase exists, i.e. is equal to or lower than the number of phases in the project:
         return <ProjectsShowPage project={project} />;
       } else {
-        // If phases have loaded:
-        if (phaseExists(phase, phases)) {
-          // If the phase exists, i.e. is equal to or lower than the number of phases in the project:
-          return <ProjectsShowPage project={project} />;
-        } else {
-          // If phase doesn't exist, redirect to project index
-          clHistory.replace(`/${urlSegments.slice(1, 3).join('/')}`);
-        }
+        // If phase doesn't exist, redirect to project index
+        clHistory.replace(`/${urlSegments.slice(1, 3).join('/')}`);
       }
     } else if (urlSegments.length > 3 && urlSegments[1] === 'projects') {
       // redirect old childRoutes (e.g. /info, /process, ...) to the project index location
