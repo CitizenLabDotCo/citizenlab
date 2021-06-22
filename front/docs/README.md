@@ -1,10 +1,13 @@
 # Changelog 
 
+## Next release
+/
+
 ## 2021-06-22
 
 ### Changed
 
-- Project managers that are assigned to a project and/or it's input now lose those assignments when losing project management rights over that project.
+- Project managers that are assigned to a project and/or its input now lose those assignments when losing project management rights over that project.
 
 ### Fixed
 
