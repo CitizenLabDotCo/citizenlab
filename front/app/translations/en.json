@@ -866,7 +866,6 @@
   "app.containers.Admin.Moderation.date": "Date",
   "app.containers.Admin.Moderation.goToThisContentType": "Open this {contentType} in a new tab",
   "app.containers.Admin.Moderation.initiative": "Proposal",
-  "app.containers.Admin.Moderation.markAsNotSeen": "Mark {selectedItemsCount, plural, one {# item} other {# items}} as unseen",
   "app.containers.Admin.Moderation.markAsSeen": "Mark {selectedItemsCount, plural, one {# item} other {# items}} as seen",
   "app.containers.Admin.Moderation.markFlagsError": "Couldn't mark item(s). Try again.",
   "app.containers.Admin.Moderation.moderationHelpTooltip": "This page allows you to quickly check all new input that has been added to your platform. You can mark input as being ‘viewed’ so that others know which input still need to be processed.",

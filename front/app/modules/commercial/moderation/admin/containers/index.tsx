@@ -508,29 +508,29 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
             </>
           ) : (
             <Buttons>
-              {selectedModerations.length > 0 && (
-                <MarkAsButton
-                  icon={
-                    moderationStatus === 'unread'
-                      ? 'eyeOpened-unfilled'
-                      : 'eyeClosed-unfilled'
-                  }
-                  buttonStyle="cl-blue"
-                  processing={processing}
-                  onClick={markAs}
-                >
-                  {moderationStatus === 'unread' ? (
-                    <FormattedMessage
-                      {...messages.markAsSeen}
-                      values={{
+              {selectedModerations.length > 0 &&
+                (selectedTab === 'read' || selectedTab === 'unread') && (
+                  <MarkAsButton
+                    icon={
+                      moderationStatus === 'unread'
+                        ? 'eyeOpened-unfilled'
+                        : 'eyeClosed-unfilled'
+                    }
+                    buttonStyle="cl-blue"
+                    processing={processing}
+                    onClick={markAs}
+                  >
+                    {intl.formatMessage(
+                      {
+                        unread: messages.markSeen,
+                        read: messages.markNotSeen,
+                      }[selectedTab],
+                      {
                         selectedItemsCount: selectedModerations.length,
-                      }}
-                    />
-                  ) : (
-                    <FormattedMessage {...messages.markAsNotSeen} />
-                  )}
-                </MarkAsButton>
-              )}
+                      }
+                    )}
+                  </MarkAsButton>
+                )}
 
               <Outlet
                 id="app.modules.commercial.moderation.admin.containers.actionbar.buttons"

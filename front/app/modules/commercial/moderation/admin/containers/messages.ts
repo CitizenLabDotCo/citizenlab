@@ -81,14 +81,15 @@ export default defineMessages({
     id: 'app.containers.Admin.Moderation.collapse',
     defaultMessage: 'see less',
   },
-  markAsSeen: {
-    id: 'app.containers.Admin.Moderation.markAsSeen',
+  markSeen: {
+    id: 'app.containers.Admin.Moderation.markSeen',
     defaultMessage:
       'Mark {selectedItemsCount, plural, one {# item} other {# items}} as seen',
   },
-  markAsNotSeen: {
-    id: 'app.containers.Admin.Moderation.markAsNotSeen',
-    defaultMessage: 'Mark as unseen',
+  markNotSeen: {
+    id: 'app.containers.Admin.Moderation.markNotSeen',
+    defaultMessage:
+      'Mark {selectedItemsCount, plural, one {# item} other {# items}} as not seen',
   },
   goToThisContentType: {
     id: 'app.containers.Admin.Moderation.goToThisContentType',
