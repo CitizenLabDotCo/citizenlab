@@ -57,6 +57,9 @@ import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
 
+// utils
+import { getAddressOrFallbackDMS } from 'utils/map';
+
 // i18n
 import { InjectedIntlProps } from 'react-intl';
 import { FormattedMessage } from 'utils/cl-intl';
@@ -465,7 +468,10 @@ export class InitiativesShow extends PureComponent<
         initiativeImages?.[0]?.attributes?.versions?.large;
       const initiativeGeoPosition =
         initiative?.attributes?.location_point_geojson;
-      const initiativeAddress = initiative?.attributes?.location_description;
+      const initiativeAddress = getAddressOrFallbackDMS(
+        initiative?.attributes?.location_description,
+        initiative?.attributes?.location_point_geojson
+      );
       const topicIds =
         initiative?.relationships?.topics?.data?.map((item) => item.id) || [];
       const initiativeUrl = location.href;

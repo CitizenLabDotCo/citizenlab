@@ -35,10 +35,10 @@ import messages from '../messages';
 // utils
 import eventEmitter from 'utils/eventEmitter';
 import { convertUrlToUploadFileObservable } from 'utils/fileTools';
-import { convertToGeoJson } from 'utils/locationTools';
+import { geocode } from 'utils/locationTools';
 
 // typings
-import { UploadFile, Multiloc, Locale } from 'typings';
+import { UploadFile, Multiloc, Locale, ILocationInfo } from 'typings';
 
 // style
 import { colors } from 'utils/styleUtils';
@@ -251,16 +251,15 @@ class IdeaEdit extends PureComponent<Props, State> {
       .map((file) => deleteIdeaFile(ideaId, file.id as string));
 
     const finalAuthorId = newAuthorId || authorId;
-    const addressDiff = {};
-    if (
-      isString(ideaFormAddress) &&
-      !isEmpty(ideaFormAddress) &&
-      ideaFormAddress !== savedAddress
-    ) {
-      addressDiff['location_point_geojson'] = await convertToGeoJson(
-        ideaFormAddress
-      );
-      addressDiff['location_description'] = ideaFormAddress;
+    const addressDiff: ILocationInfo = {} as any;
+
+    if (ideaFormAddress !== savedAddress) {
+      const locationPoint = await geocode(ideaFormAddress);
+      addressDiff.location_description = ideaFormAddress;
+
+      if (locationPoint) {
+        addressDiff.location_point_geojson = locationPoint;
+      }
     }
 
     const updateIdeaPromise = updateIdea(ideaId, {
