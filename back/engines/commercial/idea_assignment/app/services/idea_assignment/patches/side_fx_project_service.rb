@@ -10,7 +10,7 @@ module IdeaAssignment
 
       def set_default_assignee(project, current_user)
         project.default_assignee ||= if current_user&.super_admin?
-                                       User.active.admin.order(:created_at).reject(&:super_admin?).first
+                                        ::User.oldest_admin
                                      else
                                        current_user
                                      end
