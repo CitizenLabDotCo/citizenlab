@@ -35,6 +35,7 @@ import { selectedPhase$, selectPhase } from './events';
 import useProject from 'hooks/useProject';
 import usePhases from 'hooks/usePhases';
 import useWindowSize from 'hooks/useWindowSize';
+import useLocale from 'hooks/useLocale';
 
 // i18n
 import messages from 'containers/ProjectsShowPage/messages';
@@ -95,9 +96,9 @@ interface Props {
 
 const ProjectTimelineContainer = memo<Props & WithRouterProps>(
   ({ projectId, className, params: { phase: phaseParam } }) => {
-    console.log(projectId);
     const project = useProject({ projectId });
     const phases = usePhases(projectId);
+    const locale = useLocale();
     const windowSize = useWindowSize();
 
     const [selectedPhase, setSelectedPhase] = useState<IPhaseData | null>(null);
@@ -105,7 +106,6 @@ const ProjectTimelineContainer = memo<Props & WithRouterProps>(
     useEffect(() => {
       const subscription = selectedPhase$.subscribe((selectedPhase) => {
         setSelectedPhase(selectedPhase);
-        setPhaseURL(selectedPhase, phases, project);
       });
 
       return () => {
@@ -113,6 +113,10 @@ const ProjectTimelineContainer = memo<Props & WithRouterProps>(
         selectPhase(null);
       };
     }, []);
+
+    useEffect(() => {
+      setPhaseURL(selectedPhase, phases, project, locale);
+    }, [selectedPhase]);
 
     useEffect(() => {
       if (!isNilOrError(phases) && phases.length > 0) {
