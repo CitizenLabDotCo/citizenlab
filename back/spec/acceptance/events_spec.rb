@@ -9,21 +9,35 @@ resource "Events" do
   before do
     header "Content-Type", "application/json"
     @project = create(:project)
+    @project2 = create(:project)
     @events = create_list(:event, 2, project: @project)
+    @other_events = create_list(:event, 2, project: @project2)
   end
 
-  get "web_api/v1/projects/:project_id/events" do
+  get "web_api/v1/events" do
+    parameter :project_id, "The id of the project to filter events by", required: true
+
     with_options scope: :page do
       parameter :number, "Page number"
       parameter :size, "Number of events per page"
     end
-    
-    let(:project_id) { @project.id }
 
-    example_request "List all events of a project" do
-      expect(status).to eq(200)
-      json_response = json_parse(response_body)
-      expect(json_response[:data].size).to eq 2
+    context 'passing a project id' do
+      let(:project_id) { @project.id }
+
+      example_request "List all events of a project" do
+        expect(status).to eq(200)
+        json_response = json_parse(response_body)
+        expect(json_response[:data].size).to eq 2
+      end
+    end
+
+    context 'not passing a project id' do
+      example_request "List all events" do
+        expect(status).to eq(200)
+        json_response = json_parse(response_body)
+        expect(json_response[:data].size).to eq 4
+      end
     end
   end
 

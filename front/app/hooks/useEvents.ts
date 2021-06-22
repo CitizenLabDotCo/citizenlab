@@ -3,7 +3,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { Observable, of } from 'rxjs';
 import { IEventData, IEvents, eventsStream } from 'services/events';
 
-export default function useProject(projectId: string | null | undefined) {
+export default function useProject(projectId?: string | null) {
   const [events, setEvents] = useState<IEventData[] | undefined | null | Error>(
     undefined
   );
@@ -14,7 +14,10 @@ export default function useProject(projectId: string | null | undefined) {
     let observable: Observable<IEvents | null> = of(null);
 
     if (projectId) {
-      observable = eventsStream(projectId).observable;
+      observable = eventsStream({ queryParameters: { project_id: projectId } })
+        .observable;
+    } else {
+      observable = eventsStream().observable;
     }
 
     const subscription = observable.subscribe((response) => {

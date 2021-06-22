@@ -43,12 +43,9 @@ export interface IUpdatedEventProperties {
   end_at?: string;
 }
 
-export function eventsStream(
-  projectId: string,
-  streamParams: IStreamParams | null = null
-) {
+export function eventsStream(streamParams: IStreamParams | null = null) {
   return streams.get<IEvents>({
-    apiEndpoint: `${API_PATH}/projects/${projectId}/events`,
+    apiEndpoint: `${API_PATH}/events`,
     ...streamParams,
   });
 }
