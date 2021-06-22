@@ -108,6 +108,10 @@ export default defineMessages({
     id: 'app.containers.Admin.Insights.Edit.inputsTableCategoryDescription',
     defaultMessage: 'Start moving input here to grow your category.',
   },
+  inputsTableNotCategorized: {
+    id: 'app.containers.Admin.Insights.Edit.inputsTableNotCategorized',
+    defaultMessage: 'There is no input without a category',
+  },
   categories: {
     id: 'app.containers.Admin.Insights.Edit.categories',
     defaultMessage: 'Categories',
@@ -144,6 +148,15 @@ export default defineMessages({
     id: 'app.containers.Admin.Insights.Edit.allInputTooltip',
     defaultMessage:
       'This lists all previously processed input regardless of assigned categories. Recently added input is NOT shown here.',
+  },
+  notCategorized: {
+    id: 'app.containers.Admin.Insights.Edit.notCategorized',
+    defaultMessage: 'Not categorized',
+  },
+  notCategorizedTooltip: {
+    id: 'app.containers.Admin.Insights.Edit.notCategorizedTooltip',
+    defaultMessage:
+      "This lists all previously processed input that hasn't been assigned a category. Recently added input is NOT shown here.",
   },
   editCategoryName: {
     id: 'app.containers.Admin.Insights.Edit.editCategoryName',
@@ -184,5 +197,22 @@ export default defineMessages({
   createCategoryPrompt: {
     id: 'app.containers.Admin.Insights.Edit.Details.createCategoryPrompt',
     defaultMessage: 'Create',
+  },
+  bulkAssignCategory: {
+    id: 'app.containers.Admin.Insights.Edit.bulkAssignCategory',
+    defaultMessage: 'Add categories to selected inputs',
+  },
+  assignCategoriesButton: {
+    id: 'app.containers.Admin.Insights.Edit.assignCategoriesButton',
+    defaultMessage: 'Add',
+  },
+  bulkUnassign: {
+    id: 'app.containers.Admin.Insights.Edit.bulkUnassign',
+    defaultMessage: 'Remove',
+  },
+  deleteFromCategories: {
+    id: 'app.containers.Admin.Insights.Edit.deleteFromCategories',
+    defaultMessage:
+      'Are you sure you can to remove {selectedCount} inputs from {categoryName}?',
   },
 });
