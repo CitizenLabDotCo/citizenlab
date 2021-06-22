@@ -1,7 +1,6 @@
 import React, { memo, useEffect, useState } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
-import { pastPresentOrFuture } from 'utils/dateUtils';
 
 // components
 import Timeline from './Timeline';
@@ -20,13 +19,7 @@ import {
 } from 'containers/ProjectsShowPage/styles';
 
 // services
-import {
-  IPhaseData,
-  getCurrentPhase,
-  getFirstPhase,
-  getLastPhase,
-  getLastPastPhase,
-} from 'services/phases';
+import { IPhaseData, getLatestRelevantPhase } from 'services/phases';
 
 // events
 import { selectedPhase$, selectPhase } from './events';
@@ -120,10 +113,7 @@ const ProjectTimelineContainer = memo<Props & WithRouterProps>(
 
     useEffect(() => {
       if (!isNilOrError(phases) && phases.length > 0) {
-        const currentPhase = getCurrentPhase(phases);
-        const firstPhase = getFirstPhase(phases);
-        const lastPhase = getLastPhase(phases);
-        const lastPastPhase = getLastPastPhase(phases);
+        const latestRelevantPhase = getLatestRelevantPhase(phases);
 
         // if a phase parameter was provided, and it is valid, we set that as phase.
         // otherwise, use the most logical phase
@@ -131,27 +121,10 @@ const ProjectTimelineContainer = memo<Props & WithRouterProps>(
           const phaseNumber = Number(phaseParam);
           const phaseIndex = phaseNumber - 1;
           selectPhase(phases[phaseIndex]);
-        } else if (currentPhase) {
-          selectPhase(currentPhase);
-        } else if (
-          firstPhase &&
-          pastPresentOrFuture([
-            firstPhase.attributes.start_at,
-            firstPhase.attributes.end_at,
-          ]) === 'future'
-        ) {
-          selectPhase(firstPhase);
-        } else if (
-          lastPastPhase &&
-          lastPhase &&
-          pastPresentOrFuture([
-            lastPhase.attributes.start_at,
-            lastPhase.attributes.end_at,
-          ]) === 'future'
-        ) {
-          selectPhase(lastPastPhase);
+        } else if (latestRelevantPhase) {
+          selectPhase(latestRelevantPhase);
         } else {
-          selectPhase(lastPhase || null);
+          selectPhase(null);
         }
       }
     }, [phases]);

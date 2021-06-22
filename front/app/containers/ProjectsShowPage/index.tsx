@@ -34,7 +34,7 @@ import { media, colors } from 'utils/styleUtils';
 import { IProjectData } from 'services/projects';
 
 // other
-import { isIntegerOverZero, phaseExists } from './phaseParam';
+import { isValidPhase } from './phaseParam';
 
 const Container = styled.main<{ background: string }>`
   flex: 1 0 auto;
@@ -152,7 +152,7 @@ const ProjectsShowPage = memo<Props>(({ project }) => {
 });
 
 const ProjectsShowPageWrapper = memo<WithRouterProps>(
-  ({ location: { pathname }, params: { slug, phase } }) => {
+  ({ location: { pathname }, params: { slug, phase: phaseParam } }) => {
     const project = useProject({ projectSlug: slug });
     const phases = usePhases(project?.id);
 
@@ -163,22 +163,20 @@ const ProjectsShowPageWrapper = memo<WithRouterProps>(
 
     const processType = project?.attributes.process_type;
 
-    // If processType is not available yet: don't redirect
-    if (!processType) return <ProjectsShowPage project={project} />;
+    // If processType is not available yet: don't render yet
+    if (!processType) return null;
+
+    // If processType is 'timeline' but the phases aren't loaded yet: don't render yet
+    if (processType === 'timeline' && isNilOrError(phases)) return null;
 
     if (
       processType === 'timeline' &&
       urlSegments.length === 4 &&
-      isIntegerOverZero(phase)
+      !isNilOrError(phases) &&
+      isValidPhase(phaseParam, phases)
     ) {
-      // If project has a timeline, a phase param was passed, and it has the right format...
-      if (!isNilOrError(phases) && phaseExists(phase, phases)) {
-        // If the phase exists, i.e. is equal to or lower than the number of phases in the project:
-        return <ProjectsShowPage project={project} />;
-      } else {
-        // If phase doesn't exist, redirect to project index
-        clHistory.replace(`/${urlSegments.slice(1, 3).join('/')}`);
-      }
+      // If this is a timeline project and a valid phase param was passed: continue
+      return <ProjectsShowPage project={project} />;
     } else if (urlSegments.length > 3 && urlSegments[1] === 'projects') {
       // redirect old childRoutes (e.g. /info, /process, ...) to the project index location
       clHistory.replace(`/${urlSegments.slice(1, 3).join('/')}`);
