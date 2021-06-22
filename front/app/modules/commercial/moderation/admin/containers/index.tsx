@@ -443,18 +443,21 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
         );
         const promises = moderationsWithFlagRelationship.map(
           (moderationItemWithFlag) => {
-            const stream = inappropriateContentFlagByIdStream(
-              moderationItemWithFlag.id
-            );
+            // We know from previous filter operations the id is a string
+            const flagId = moderationItemWithFlag.relationships
+              .inappropriate_content_flag?.data.id as string;
 
-            console.log(stream);
+            const stream = inappropriateContentFlagByIdStream(flagId);
 
             return stream.fetch();
           }
         ) as Promise<IInappropriateContentFlag>[];
-        const flags = await Promise.all(promises);
-        const activeFlags = flags.filter((flag) => isFlagActive(flag.data));
-        setActiveInappropriateContentFlags(activeFlags);
+
+        try {
+          const flags = await Promise.all(promises);
+          const activeFlags = flags.filter((flag) => isFlagActive(flag.data));
+          setActiveInappropriateContentFlags(activeFlags);
+        } catch {}
       }
     })();
   }, [moderations]);
