@@ -205,23 +205,29 @@ describe('Insights Input Table', () => {
     ).toBeInTheDocument();
   });
   it('filters table by category', () => {
-    mockLocationData = { pathname: '', query: { category: 'category' } };
+    mockLocationData = {
+      pathname: '',
+      query: { category: 'category', pageNumber: 1 },
+    };
 
     render(<InputsTable />);
     expect(useInsightsInputs).toHaveBeenCalledWith(viewId, {
       category: 'category',
       search: undefined,
-      pageNumber: NaN,
+      pageNumber: 1,
     });
   });
   it('filters table by search query', () => {
-    mockLocationData = { pathname: '', query: { search: 'search' } };
+    mockLocationData = {
+      pathname: '',
+      query: { search: 'search', pageNumber: 1 },
+    };
 
     render(<InputsTable />);
     expect(useInsightsInputs).toHaveBeenCalledWith(viewId, {
       search: 'search',
       category: undefined,
-      pageNumber: NaN,
+      pageNumber: 1,
     });
   });
 });

@@ -240,7 +240,7 @@ const EditInsightsView = ({
   );
 
   const onSearch = (search: string) => {
-    clHistory.push({
+    clHistory.replace({
       pathname,
       search: stringify({ ...query, search }, { addQueryPrefix: true }),
     });
