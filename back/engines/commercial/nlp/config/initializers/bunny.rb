@@ -1,32 +1,20 @@
-require "bunny"
+# frozen_string_literal: true
+
+require 'citizen_lab/bunny'
 require 'json'
 
+return unless (rabbitmq_uri = ENV['RABBITMQ_URI'])
 
-if (ENV.fetch("RABBITMQ_URI", false))
-  begin
-    retries ||= 0
-    connection = Bunny.new(ENV.fetch("RABBITMQ_URI"), automatically_recover: true, continuation_timeout: 20000)
-    connection.start
+BUNNY_CON ||= CitizenLab::Bunny.connect(rabbitmq_uri)
 
-    channel = connection.create_channel
-    exchange = channel.topic('cl2nlp', :durable => true)
-    queue = channel.queue('cl2_back.zeroshot_results', :durable => true)
+channel = BUNNY_CON.create_channel
+exchange = channel.topic('cl2nlp', durable: true)
+queue = channel.queue('cl2_back.zeroshot_results', durable: true)
+               .bind(exchange, routing_key: 'zeroshot.inference')
 
-    queue.bind(exchange, routing_key: 'zeroshot.inference')
+puts '[*] Waiting for automatic taggings'
 
-    puts '[*] Waiting for automatic taggings'
-
-    queue.subscribe do |_delivery_info, _properties, payload|
-      puts "Received #{payload}"
-      Tagging::AutomaticTaggingService.new.save_tags_from_prediction(JSON.parse(payload))
-    end
-
-    rescue Bunny::TCPConnectionFailedForAllHosts => e
-      sleep 5
-      if (retries += 1) < 10
-        retry
-      else
-        raise e
-      end
-    end
+queue.subscribe do |_delivery_info, _properties, payload|
+  puts "Received #{payload}"
+  Tagging::AutomaticTaggingService.new.save_tags_from_prediction(JSON.parse(payload))
 end
