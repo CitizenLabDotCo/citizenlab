@@ -23,7 +23,7 @@ describe Insights::WebApi::V1::InputSerializer do
 
   before do
     assignment_service = Insights::CategoryAssignmentsService.new
-    assignment_service.add_assignments!(input, [category])
+    assignment_service.add_assignments(input, [category])
     assignment_service.add_suggestions(input, [suggested_category])
   end
 

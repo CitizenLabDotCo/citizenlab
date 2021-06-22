@@ -207,10 +207,6 @@ export default class SideModal extends PureComponent<Props, State> {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
-  manuallyCloseModal = () => {
-    this.props.close();
-  };
-
   clickOutsideModal = () => {
     this.props.close();
   };
@@ -246,26 +242,25 @@ export default class SideModal extends PureComponent<Props, State> {
             role="dialog"
             aria-label={label}
           >
-            <FocusOn>
-              <ModalContainer
-                onClickOutside={this.manuallyCloseModal}
-                closeOnClickOutsideEnabled={!this.state.innerModalOpened}
-              >
+            <ModalContainer
+              onClickOutside={this.clickOutsideModal}
+              closeOnClickOutsideEnabled={!this.state.innerModalOpened}
+            >
+              <FocusOn>
                 <ModalContent id="e2e-side-modal-content">
                   {children}
                 </ModalContent>
-              </ModalContainer>
-
-              <CloseButton
-                className="e2e-modal-close-button"
-                onClick={this.clickCloseButton}
-              >
-                <HiddenSpan>
-                  <FormattedMessage {...messages.closeButtonAria} />
-                </HiddenSpan>
-                <CloseIcon name="close" />
-              </CloseButton>
-            </FocusOn>
+                <CloseButton
+                  className="e2e-modal-close-button"
+                  onClick={this.clickCloseButton}
+                >
+                  <HiddenSpan>
+                    <FormattedMessage {...messages.closeButtonAria} />
+                  </HiddenSpan>
+                  <CloseIcon name="close" />
+                </CloseButton>
+              </FocusOn>
+            </ModalContainer>
           </Overlay>
         </CSSTransition>,
         modalPortalElement

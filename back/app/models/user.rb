@@ -10,6 +10,44 @@ class User < ApplicationRecord
   GENDERS = %w[male female unspecified].freeze
   INVITE_STATUSES = %w[pending accepted].freeze
 
+  class << self
+    def roles_json_schema
+      _roles_json_schema.deep_dup.tap do |schema|
+        # Remove the schemas for roles that are not enabled.
+        schema['items']['oneOf'] = schema.dig('items', 'oneOf').select do |role_schema|
+          role_name = role_schema.dig('properties', 'type', 'enum', 0)
+          enabled_roles.include?(role_name)
+        end
+      end
+    end
+
+    # Returns (and memoize) the schema of all declared roles without restrictions.
+    def _roles_json_schema
+      @_roles_json_schema ||= JSON.parse(File.read(Rails.root.join('config/schemas/user_roles.json_schema')))
+    end
+
+    def enabled_roles
+      ['admin']
+    end
+
+    def find_by_cimail(email)
+      where('lower(email) = lower(?)', email).first
+    end
+
+    # This method is used by knock to get the user.
+    # Default is by email, but we want to compare
+    # case insensitively and forbid login for
+    # invitees.
+    def from_token_request(request)
+      email = request.params['auth']['email']
+
+      # Hack to embed phone numbers in email
+      email_or_embedded_phone = PhoneService.new.emailize_email_or_phone(email)
+
+      not_invited.find_by_cimail(email_or_embedded_phone)
+    end
+  end
+
   has_secure_password validations: false
   mount_base64_uploader :avatar, AvatarUploader
 
@@ -97,8 +135,7 @@ class User < ApplicationRecord
   EMAIL_DOMAIN_BLACKLIST = File.readlines(Rails.root.join('config', 'domain_blacklist.txt')).map(&:strip)
   validate :validate_email_domain_blacklist
 
-  ROLES_JSON_SCHEMA = Rails.root.join('config', 'schemas', 'user_roles.json_schema').to_s
-  validates :roles, json: { schema: -> { roles_json_schema }, message: ->(errors) { errors } }
+  validates :roles, json: { schema: -> { User.roles_json_schema }, message: ->(errors) { errors } }
 
   before_validation :set_cl1_migrated, on: :create
   before_validation :generate_slug
@@ -106,47 +143,18 @@ class User < ApplicationRecord
   before_validation :assign_email_or_phone, if: :email_changed?
   after_update :clean_initiative_assignments, if: :saved_change_to_roles?
 
+  scope :admin, -> { where("roles @> '[{\"type\":\"admin\"}]'") }
+  scope :not_admin, -> { where.not("roles @> '[{\"type\":\"admin\"}]'") }
+  scope :normal_user, -> { where("roles = '[]'::jsonb") }
+  scope :not_normal_user, -> { where.not("roles = '[]'::jsonb") }
+  scope :not_invited, -> { where.not(invite_status: 'pending').or(where(invite_status: nil)) }
+  scope :active, -> { where("registration_completed_at IS NOT NULL AND invite_status is distinct from 'pending'") }
+
   scope :order_role, lambda { |direction = :asc|
     joins('LEFT OUTER JOIN (SELECT jsonb_array_elements(roles) as ro, id FROM users) as r ON users.id = r.id')
       .order(Arel.sql("(roles @> '[{\"type\":\"admin\"}]')::integer #{direction}"))
       .reverse_order
       .group('users.id')
-  }
-
-  scope :admin, lambda {
-    where("roles @> '[{\"type\":\"admin\"}]'")
-  }
-
-  scope :not_admin, lambda {
-    where.not("roles @> '[{\"type\":\"admin\"}]'")
-  }
-
-  scope :project_moderator, lambda { |project_id = nil|
-    if project_id
-      where('roles @> ?', JSON.generate([{ type: 'project_moderator', project_id: project_id }]))
-    else
-      where("roles @> '[{\"type\":\"project_moderator\"}]'")
-    end
-  }
-
-  scope :not_project_moderator, lambda {
-    where.not("roles @> '[{\"type\":\"project_moderator\"}]'")
-  }
-
-  scope :normal_user, lambda {
-    where("roles = '[]'::jsonb")
-  }
-
-  scope :not_normal_user, lambda {
-    where.not("roles = '[]'::jsonb")
-  }
-
-  scope :active, lambda {
-    where("registration_completed_at IS NOT NULL AND invite_status is distinct from 'pending'")
-  }
-
-  scope :not_invited, lambda {
-    where.not(invite_status: 'pending').or(where(invite_status: nil))
   }
 
   IN_GROUP_PROC = ->(group) { joins(:memberships).where(memberships: { group_id: group.id }) }
@@ -157,21 +165,12 @@ class User < ApplicationRecord
     where(id: user_ids)
   }
 
-  def self.find_by_cimail(email)
-    where('lower(email) = lower(?)', email).first
-  end
+  # Dummy scopes to be overridden
+  scope :project_moderator, ->(_project_id = nil) { User.none }
+  scope :not_project_moderator, -> { User.all }
 
-  # This method is used by knock to get the user.
-  # Default is by email, but we want to compare
-  # case insensitively and forbid login for
-  # invitees.
-  def self.from_token_request(request)
-    email = request.params['auth']['email']
-
-    # Hack to embed phone numbers in email
-    email_or_embedded_phone = PhoneService.new.emailize_email_or_phone(email)
-
-    not_invited.find_by_cimail(email_or_embedded_phone)
+  def self.oldest_admin
+    active.admin.order(:created_at).reject(&:super_admin?).first
   end
 
   def assign_email_or_phone
@@ -216,16 +215,34 @@ class User < ApplicationRecord
     [first_name, last_name].compact.join(' ')
   end
 
-  def admin?
-    roles.any? { |r| r['type'] == 'admin' }
+  def highest_role
+    if super_admin?
+      :super_admin
+    elsif admin?
+      :admin
+    elsif project_folder_moderator?
+      :project_folder_moderator
+    elsif project_moderator?
+      :project_moderator
+    else
+      :user
+    end
   end
 
   def super_admin?
     admin? && !!(email =~ /citizen-?lab\.(eu|be|fr|ch|de|nl|co|uk|us|cl|dk|pl)$/i)
   end
 
-  def project_moderator?(project_id = nil)
-    !!roles.find { |r| r['type'] == 'project_moderator' && (project_id.nil? || r['project_id'] == project_id) }
+  def admin?
+    roles.any? { |r| r['type'] == 'admin' }
+  end
+
+  def project_folder_moderator?(_project_folder_id = nil)
+    false
+  end
+
+  def project_moderator?(_project_id = nil)
+    false
   end
 
   def admin_or_moderator?(project_id)
@@ -236,35 +253,23 @@ class User < ApplicationRecord
     active? && admin_or_moderator?(project_id)
   end
 
-  def highest_role
-    if super_admin?
-      :super_admin
-    elsif admin?
-      :admin
-    elsif project_moderator?
-      :project_moderator
-    else
-      :user
-    end
-  end
-
   def moderatable_project_ids
-    roles
-      .select { |role| role['type'] == 'project_moderator' }
-      .map { |role| role['project_id'] }.compact
+    []
   end
 
   def moderatable_projects
-    Project.where(id: moderatable_project_ids)
+    Project.none
   end
 
   def add_role(type, options = {})
     roles << { 'type' => type.to_s }.merge(options.stringify_keys)
     roles.uniq!
+    self
   end
 
   def delete_role(type, options = {})
     roles.delete({ 'type' => type.to_s }.merge(options.stringify_keys))
+    self
   end
 
   def authenticate(unencrypted_password)
@@ -329,44 +334,43 @@ class User < ApplicationRecord
   end
 
   def validate_email_domain_blacklist
-    if email.present?
-      domain = email.split('@')&.last
-      if domain && EMAIL_DOMAIN_BLACKLIST.include?(domain.strip.downcase)
-        errors.add(:email, :domain_blacklisted, value: domain)
-      end
+    return unless email.present?
+
+    domain = email.split('@')&.last
+    if domain && EMAIL_DOMAIN_BLACKLIST.include?(domain.strip.downcase)
+      errors.add(:email, :domain_blacklisted, value: domain)
     end
   end
 
   def validate_minimum_password_length
-    minimum_length = AppConfiguration.instance.settings('password_login', 'minimum_length')
-    if password && password.size < (minimum_length || 0)
-      errors.add(
-        :password,
-        :too_short,
-        message: 'The chosen password is shorter than the minimum required character length',
-        count: minimum_length
-      )
-    end
+    return unless password && password.size < password_min_length
+
+    errors.add(
+      :password,
+      :too_short,
+      message: 'The chosen password is shorter than the minimum required character length',
+      count: password_min_length
+    )
+  end
+
+  def password_min_length
+    AppConfiguration.instance.settings('password_login', 'minimum_length') || 0
   end
 
   def validate_password_not_common
-    if password && CommonPassword.check(password)
-      errors.add(
-        :password,
-        :too_common,
-        message: 'The chosen password matched with our common password blacklist'
-      )
-    end
+    return unless password && CommonPassword.check(password)
+
+    errors.add(
+      :password,
+      :too_common,
+      message: 'The chosen password matched with our common password blacklist'
+    )
   end
 
   def remove_initiated_notifications
     initiator_notifications.each do |notification|
       notification.destroy! unless notification.update initiating_user_id: nil
     end
-  end
-
-  def roles_json_schema
-    ROLES_JSON_SCHEMA
   end
 
   def clean_initiative_assignments
@@ -376,9 +380,12 @@ class User < ApplicationRecord
   end
 end
 
+User.include_if_ee('IdeaAssignment::Extensions::User')
+User.include_if_ee('Verification::Patches::User')
+
 User.include(UserConfirmation::Extensions::User)
 User.prepend_if_ee('MultiTenancy::Patches::User')
 User.prepend_if_ee('ProjectFolders::Patches::User')
+User.prepend_if_ee('ProjectManagement::Patches::User')
 User.prepend_if_ee('SmartGroups::Patches::User')
-User.include_if_ee('IdeaAssignment::Extensions::User')
-User.include_if_ee('Verification::Patches::User')
+

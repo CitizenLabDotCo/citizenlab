@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-  render,
-  screen,
-  fireEvent,
-  act,
-  within,
-  waitFor,
-} from 'utils/testUtils/rtl';
+import { render, screen, fireEvent, act, waitFor } from 'utils/testUtils/rtl';
 import * as service from 'modules/commercial/insights/services/insightsCategories';
 import clHistory from 'utils/cl-router/history';
 
@@ -33,6 +26,7 @@ jest.mock('utils/cl-intl');
 
 jest.mock('modules/commercial/insights/services/insightsCategories', () => ({
   addInsightsCategory: jest.fn(),
+  deleteInsightsCategories: jest.fn(),
   deleteInsightsCategory: jest.fn(),
 }));
 
@@ -44,7 +38,7 @@ jest.mock('hooks/useLocale', () => jest.fn(() => 'en'));
 
 const viewId = '1';
 
-let mockLocationData = { pathname: '', query: {} };
+const mockLocationData = { pathname: '', query: {} };
 
 jest.mock('react-router', () => {
   return {
@@ -100,30 +94,6 @@ describe('Insights Edit', () => {
         search: `?pageNumber=1&category=${mockData[0].id}`,
       });
     });
-    it('shows selected category correctly', () => {
-      mockLocationData = { pathname: '', query: { category: mockData[0].id } };
-      render(<InsightsEdit />);
-      expect(
-        within(screen.getByTestId('insightsInputsHeader')).getByText(
-          mockData[0].attributes.name
-        )
-      ).toBeInTheDocument();
-    });
-
-    it('deletes category correctly', async () => {
-      mockLocationData = { pathname: '', query: { category: mockData[0].id } };
-      render(<InsightsEdit />);
-      fireEvent.click(
-        within(screen.getByTestId('insightsInputsHeader')).getByRole('button')
-      );
-      await act(async () => {
-        fireEvent.click(screen.getByText('Delete category'));
-      });
-      expect(service.deleteInsightsCategory).toHaveBeenCalledWith(
-        viewId,
-        mockData[0].id
-      );
-    });
 
     it('selects all input correctly', () => {
       const spy = jest.spyOn(clHistory, 'push');
@@ -131,7 +101,17 @@ describe('Insights Edit', () => {
       fireEvent.click(screen.getAllByText('All input')[0]);
       expect(spy).toHaveBeenCalledWith({
         pathname: '',
-        search: `?category=&pageNumber=1`,
+        search: `?pageNumber=1`,
+      });
+    });
+
+    it('selects uncategorized input correctly', () => {
+      const spy = jest.spyOn(clHistory, 'push');
+      render(<InsightsEdit />);
+      fireEvent.click(screen.getAllByText('Not categorized')[0]);
+      expect(spy).toHaveBeenCalledWith({
+        pathname: '',
+        search: `?pageNumber=1&category=`,
       });
     });
 
@@ -140,7 +120,7 @@ describe('Insights Edit', () => {
       render(<InsightsEdit />);
       expect(screen.getByTestId('insightsNoCategories')).toBeInTheDocument();
     });
-    it('adds category with correct view id and name ', async () => {
+    it('adds category with correct view id and name', async () => {
       const categoryName = 'New category';
 
       render(<InsightsEdit />);
@@ -159,6 +139,16 @@ describe('Insights Edit', () => {
         viewId,
         categoryName
       );
+    });
+    it('resets categories', async () => {
+      const spy = jest.spyOn(service, 'deleteInsightsCategories');
+      render(<InsightsEdit />);
+
+      await act(async () => {
+        fireEvent.click(screen.getByText('Reset categories'));
+      });
+
+      expect(spy).toHaveBeenCalledWith(viewId);
     });
   });
 });

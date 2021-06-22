@@ -95,40 +95,6 @@ const ActionButtons = styled.div`
   margin-left: 30px;
 `;
 
-const ActionButton = styled.button`
-  min-height: 42px;
-  display: flex;
-  align-items: center;
-  margin: 0px;
-  padding-top: 5px;
-  padding-bottom: 5px;
-  padding-left: 10px;
-  padding-right: 10px;
-  position: relative;
-  border-radius: ${(props: any) => props.theme.borderRadius};
-  cursor: pointer;
-
-  span {
-    white-space: normal;
-    text-align: left;
-    overflow-wrap: break-word;
-    word-wrap: break-word;
-    word-break: break-word;
-    hyphens: auto;
-  }
-
-  &.hasLeftMargin {
-    margin-left: 30px;
-  }
-
-  &:hover,
-  &:focus {
-    background: ${rgba(colors.adminTextColor, 0.1)};
-    color: ${colors.adminTextColor};
-    outline: none;
-  }
-`;
-
 const StyledIcon = styled(Icon)`
   flex: 0 0 22px;
   height: 22px;
@@ -428,13 +394,14 @@ class UserTableActions extends PureComponent<Props & InjectedIntlProps, State> {
         <ActionButtons>
           {selectedUsers !== 'none' && !isNilOrError(groupsList) && (
             <ActionButtonWrapper>
-              <ActionButton
+              <Button
                 className="e2e-move-users"
                 onClick={this.toggleDropdown}
+                buttonStyle="admin-dark-text"
               >
                 <StyledIcon name="moveFolder" />
                 <FormattedMessage {...messages.moveUsersTableAction} />
-              </ActionButton>
+              </Button>
 
               <Dropdown
                 width="300px"
@@ -482,22 +449,24 @@ class UserTableActions extends PureComponent<Props & InjectedIntlProps, State> {
           )}
 
           {groupType === 'manual' && selectedUsers !== 'none' && (
-            <ActionButton
+            <Button
               onClick={this.handleGroupsDeleteClick}
               className="hasLeftMargin"
+              buttonStyle="admin-dark-text"
             >
               <StyledIcon name="trash" />
               <FormattedMessage {...messages.membershipDelete} />
-            </ActionButton>
+            </Button>
           )}
 
-          <ActionButton
+          <Button
             onClick={this.exportUsers}
             className={`export e2e-${exportType} hasLeftMargin`}
+            buttonStyle="admin-dark-text"
           >
             <StyledIcon name="userExport" />
             <FormattedMessage {...messages[exportType]} />
-          </ActionButton>
+          </Button>
         </ActionButtons>
       </TableOptions>
     );
