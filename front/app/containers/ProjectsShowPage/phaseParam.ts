@@ -1,13 +1,13 @@
 import { IPhaseData } from 'services/phases';
 
 // https://stackoverflow.com/a/10834843
-export function isIntegerOverZero(str: string | undefined) {
+function isIntegerOverZero(str: string | undefined) {
   if (str === undefined) return false;
   const n = Math.floor(Number(str));
   return n !== Infinity && String(n) === str && n > 0;
 }
 
-export function phaseExists(phaseParam: string, phases: IPhaseData[]) {
+function phaseExists(phaseParam: string, phases: IPhaseData[]) {
   return +phaseParam <= phases.length;
 }
 
