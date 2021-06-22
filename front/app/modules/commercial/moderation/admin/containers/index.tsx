@@ -436,23 +436,28 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
 
   useEffect(() => {
     (async () => {
-      if (selectedModerations.length > 0) {
-        const selectedModerationsWithFlagRelationship = selectedModerations.filter(
+      if (!isNilOrError(moderations) && moderations.length > 0) {
+        const moderationsWithFlagRelationship = moderations.filter(
           (moderation) =>
             moderation.relationships.inappropriate_content_flag?.data.id
         );
-        const promises = selectedModerationsWithFlagRelationship.map(
-          (moderationItemWithFlag) =>
-            inappropriateContentFlagByIdStream(
+        const promises = moderationsWithFlagRelationship.map(
+          (moderationItemWithFlag) => {
+            const stream = inappropriateContentFlagByIdStream(
               moderationItemWithFlag.id
-            ).fetch()
+            );
+
+            console.log(stream);
+
+            return stream.fetch();
+          }
         ) as Promise<IInappropriateContentFlag>[];
         const flags = await Promise.all(promises);
         const activeFlags = flags.filter((flag) => isFlagActive(flag.data));
         setActiveInappropriateContentFlags(activeFlags);
       }
     })();
-  }, [selectedModerations]);
+  }, [moderations]);
 
   if (!isNilOrError(moderations)) {
     const modItemsWithFlagRel = moderations.filter(
@@ -466,9 +471,6 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
     );
     const filteredModerationItems =
       selectedTab === 'warnings' ? modItemsWithActiveFlag : moderations;
-    // console.log(moderationItems);
-    console.log(modItemsWithFlagRel);
-    console.log(modItemsWithActiveFlag);
 
     return (
       <Container className={className}>
