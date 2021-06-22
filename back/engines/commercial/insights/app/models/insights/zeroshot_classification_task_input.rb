@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
 module Insights
-  class ZeroshotClassificationTasksInputs < ::ApplicationRecord
+  class ZeroshotClassificationTaskInput < ::ApplicationRecord
+    self.table_name = 'insights_zeroshot_classification_tasks_inputs'
+
     belongs_to :input, polymorphic: true
     belongs_to :task, class_name: 'Insights::ZeroshotClassificationTask'
 

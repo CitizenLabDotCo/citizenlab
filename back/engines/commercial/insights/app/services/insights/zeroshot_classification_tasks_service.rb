@@ -6,8 +6,8 @@ module Insights
       ZeroshotClassificationTask.transaction do
         task = ZeroshotClassificationTask.create(task_id: task_id, categories: categories)
 
-        inputs_tasks_attrs = inputs.map { |i| { input: i } }
-        task.inputs_tasks.create(inputs_tasks_attrs)
+        tasks_inputs_attrs = inputs.map { |i| { input: i } }
+        task.tasks_inputs.create(tasks_inputs_attrs)
 
         task
       end

@@ -10,11 +10,11 @@ FactoryBot.define do
       inputs_count { 1 }
     end
 
-    inputs_tasks do
+    tasks_inputs do
       if inputs
-        inputs.map { |i| association(:zsc_tasks_inputs, task: instance, input: i) }
+        inputs.map { |i| association(:zsc_task_input, task: instance, input: i) }
       else
-        Array.new(inputs_count) { association(:zsc_tasks_inputs, task: instance) }
+        Array.new(inputs_count) { association(:zsc_task_input, task: instance) }
       end
     end
 
@@ -23,7 +23,7 @@ FactoryBot.define do
     end
   end
 
-  factory :zsc_tasks_inputs, class: 'Insights::ZeroshotClassificationTasksInputs' do
+  factory :zsc_task_input, class: 'Insights::ZeroshotClassificationTaskInput' do
     input factory: :idea
     task factory: :zsc_task
   end

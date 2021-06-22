@@ -15,7 +15,7 @@ module Insights
           has_many(
             :insights_zsc_tasks_inputs,
             as: :input,
-            class_name: 'Insights::ZeroshotClassificationTasksInputs',
+            class_name: 'Insights::ZeroshotClassificationTaskInput',
             dependent: :destroy
           )
         end

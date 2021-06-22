@@ -21,7 +21,7 @@ describe Insights::ZeroshotClassificationTask do
     it "supports the 'inputs' option" do
       inputs = build_list(:idea, 2)
       task = build(:zsc_task, inputs: inputs)
-      expect(task.inputs_tasks.map(&:input)).to match(inputs)
+      expect(task.tasks_inputs.map(&:input)).to match(inputs)
     end
   end
 end
