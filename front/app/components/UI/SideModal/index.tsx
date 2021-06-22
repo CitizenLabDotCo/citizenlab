@@ -242,11 +242,11 @@ export default class SideModal extends PureComponent<Props, State> {
             role="dialog"
             aria-label={label}
           >
-            <ModalContainer
-              onClickOutside={this.clickOutsideModal}
-              closeOnClickOutsideEnabled={!this.state.innerModalOpened}
-            >
-              <FocusOn>
+            <FocusOn>
+              <ModalContainer
+                onClickOutside={this.clickOutsideModal}
+                closeOnClickOutsideEnabled={!this.state.innerModalOpened}
+              >
                 <ModalContent id="e2e-side-modal-content">
                   {children}
                 </ModalContent>
@@ -259,8 +259,8 @@ export default class SideModal extends PureComponent<Props, State> {
                   </HiddenSpan>
                   <CloseIcon name="close" />
                 </CloseButton>
-              </FocusOn>
-            </ModalContainer>
+              </ModalContainer>
+            </FocusOn>
           </Overlay>
         </CSSTransition>,
         modalPortalElement
