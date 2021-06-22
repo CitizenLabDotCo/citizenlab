@@ -1,5 +1,12 @@
 import React from 'react';
-import { render, screen, fireEvent, within, act } from 'utils/testUtils/rtl';
+import {
+  render,
+  screen,
+  fireEvent,
+  within,
+  act,
+  waitFor,
+} from 'utils/testUtils/rtl';
 import * as service from 'modules/commercial/insights/services/insightsInputs';
 import useInsightsInputs from 'modules/commercial/insights/hooks/useInsightsInputs';
 import * as batchService from 'modules/commercial/insights/services/batchAssignment';
@@ -137,6 +144,7 @@ jest.mock('react-router', () => {
         );
       };
     },
+    Link: () => 'Link',
   };
 });
 
@@ -396,7 +404,6 @@ describe('Insights Input Table', () => {
         search: '?pageNumber=2',
       });
     });
-
     it('loads the page passed in url params', () => {
       mockLocationData = {
         ...mockLocationData,
@@ -522,6 +529,24 @@ describe('Insights Input Table', () => {
       search: 'search',
       category: undefined,
       pageNumber: 1,
+    });
+  });
+  describe('Search', () => {
+    it('adds search query to url', () => {
+      const spy = jest.spyOn(clHistory, 'replace');
+      render(<InputsTable />);
+      fireEvent.change(screen.getByPlaceholderText('Search'), {
+        target: {
+          value: 'search',
+        },
+      });
+
+      waitFor(() => {
+        expect(spy).toHaveBeenCalledWith({
+          pathname: '',
+          search: `?search=search`,
+        });
+      });
     });
   });
 });
