@@ -743,7 +743,7 @@
   "app.containers.Admin.Insights.Edit.inputsTableCategoryTitle": "Non hai ancora nessun input assegnato a questa categoria",
   "app.containers.Admin.Insights.Edit.inputsTableInputs": "Ingressi",
   "app.containers.Admin.Insights.Edit.inputsTableNoResults": "Nessun risultato trovato",
-  "app.containers.Admin.Insights.Edit.inputsTableNoResultsDescription": "Please try a different filter or search term.",
+  "app.containers.Admin.Insights.Edit.inputsTableNoResultsDescription": "Si prega di provare un altro filtro o un termine di ricerca diverso.",
   "app.containers.Admin.Insights.Edit.inputsTableNotCategorized": "Non c'è ingresso senza una categoria",
   "app.containers.Admin.Insights.Edit.notCategorized": "Non categorizzato",
   "app.containers.Admin.Insights.Edit.notCategorizedTooltip": "Questo elenca tutti gli input elaborati in precedenza che non sono stati assegnati a una categoria. Gli input aggiunti di recente NON sono mostrati qui.",
