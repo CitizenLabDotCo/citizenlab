@@ -483,12 +483,12 @@ it:
       status_change: 'Il nuovo stato della tua proposta è ''%{initiativeStatus}'''
       cta_view_initiative: 'Vai alla tua proposta'
       event_description: 'Lo stato della proposta ''%{initiativeTitle}'' è stato aggiornato sulla piattaforma di partecipazione digitale di %{organizationName}.'
-      main_header: 'Your proposal has a new status'
-      subject: 'The status of your proposal has changed'
-      preheader: 'The status of your proposal has changed'
+      main_header: 'La tua proposta ha un nuovo stato'
+      subject: 'Lo stato della tua proposta è cambiato'
+      preheader: 'Lo stato della tua proposta è cambiato'
     user_digest:
-      subject: "Your activity on the participation platform of %{organizationName}"
-      commented: "%{authorFirstName} commented:"
+      subject: "La tua attività sulla piattaforma di partecipazione di %{organizationName}"
+      commented: "%{authorFirstName} ha commentato:"
       preheader: "Panoramica settimanale di %{organizationName}"
       title_your_weekly_report: "Scopri cosa è successo la settimana scorsa"
       intro_text: "Ecco un riassunto di quello che è successo sulla piattaforma di partecipazione di %{organizationName}."
@@ -543,28 +543,28 @@ it:
       action_add_image: '%{addImageLink} per aumentare la visibilità'
       action_published_idea: 'Idea pubblicata'
       action_send_email: 'Invia ai tuoi contatti un %{sendEmailLink}'
-      action_share_fb: 'Let your friends know on %{fbLink}'
-      action_share_link: 'Share it via any channel by copying the %{link}'
-      action_share_twitter: 'Inform your followers on %{twitterLink}'
-      add_image: 'Add an image'
-      cta_view_idea: 'Go to your idea'
-      event_description: '%{firstName}, your idea has successfully been published on the participation platform of %{organizationName}. You will be notified when people interact with your idea. Find out what next steps you can take below.'
+      action_share_fb: 'Fallo sapere ai tuoi amici su %{fbLink}'
+      action_share_link: 'Condividilo tramite qualsiasi canale copiando il %{link}'
+      action_share_twitter: 'Informa i tuoi seguaci su %{twitterLink}'
+      add_image: 'Aggiungere un''immagine'
+      cta_view_idea: 'Vai alla tua idea'
+      event_description: '%{firstName}, la tua idea è stata pubblicata con successo sulla piattaforma di partecipazione di %{organizationName}. Sarai avvisato quando le persone interagiranno con la tua idea. Scopri quali sono i prossimi passi che puoi fare qui sotto.'
       link: link
-      main_header: 'You posted an idea! Let''s make sure it gets read.'
-      message_get_votes: 'Reach more people with your idea:'
-      preheader: '%{firstName}, congratulations on posting your idea on the platform of %{organizationName}. Now gather support.'
-      see_you: 'See you soon at the platform!'
-      send_email: email
-      subject: 'Your idea on the platform of %{organizationName}'
+      main_header: 'Hai pubblicato un''idea! Assicuriamoci che venga letta.'
+      message_get_votes: 'Raggiungi più persone con la tua idea:'
+      preheader: '%{firstName}, complimenti per aver pubblicato la tua idea sulla piattaforma di %{organizationName}. Ora raccogliete il sostegno.'
+      see_you: 'Ci vediamo presto alla piattaforma!'
+      send_email: e-mail
+      subject: 'La tua idea sulla piattaforma di %{organizationName}'
       message_next_steps: ""
     your_proposed_initiatives_digest:
-      subject: 'Weekly update of your proposals'
-      preheader: 'What happened with your proposals in the past week?'
-      title_your_weekly_report: 'How have your proposals been doing?'
-      text_introduction: 'Find the key numbers below and go to the platform to take action and gather enough support in time.'
-      cta_see_your_initiative: 'Go to your proposals'
-      total_votes: 'Total votes'
-      new_votes: 'New votes'
-      remaining_votes: 'Votes remaining'
-      remaining_days: 'Days remaining'
+      subject: 'Aggiornamento settimanale delle sue proposte'
+      preheader: 'Cosa è successo con le tue proposte nell''ultima settimana?'
+      title_your_weekly_report: 'Come sono andate le tue proposte?'
+      text_introduction: 'Trova i numeri chiave qui sotto e vai alla piattaforma per agire e raccogliere abbastanza sostegno in tempo.'
+      cta_see_your_initiative: 'Vai alle tue proposte'
+      total_votes: 'Voti totali'
+      new_votes: 'Nuovi voti'
+      remaining_votes: 'Voti rimanenti'
+      remaining_days: 'Giorni rimanenti'
 
