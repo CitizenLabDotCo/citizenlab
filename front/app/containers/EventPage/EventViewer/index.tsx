@@ -2,6 +2,7 @@ import React, { memo } from 'react';
 
 // components
 import TopBar from './TopBar';
+import NoEventsPicture from './NoEventsPicture.svg';
 
 // styling
 import styled from 'styled-components';
@@ -15,20 +16,18 @@ const PlaceHolder = styled.div`
 
 interface Props {
   title: string;
+  events: number[];
 }
 
-const EventViewer = memo<Props>(({ title }) => {
-  const dummyEvents = Array(10)
-    .fill(0)
-    .map((_, i) => i + 1);
-
+const EventViewer = memo<Props>(({ title, events }) => {
   return (
     <>
       <TopBar title={title} />
 
-      {dummyEvents.map((e) => (
-        <PlaceHolder>{e}</PlaceHolder>
-      ))}
+      {events.length > 0 &&
+        events.map((e) => <PlaceHolder key={e}>{e}</PlaceHolder>)}
+
+      {events.length === 0 && <NoEventsPicture />}
     </>
   );
 });

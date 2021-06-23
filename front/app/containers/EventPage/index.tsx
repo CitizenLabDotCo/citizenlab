@@ -20,6 +20,11 @@ const MarginAdder = styled.div`
 `;
 
 const EventPage = () => {
+  const upcomingEvents = [];
+  const pastEvents = Array(10)
+    .fill(0)
+    .map((_, i) => i + 1);
+
   return (
     <>
       <Helmet>
@@ -28,10 +33,10 @@ const EventPage = () => {
 
       <SectionContainer>
         <StyledContentContainer>
-          <EventViewer title="Upcoming events" />
+          <EventViewer title="Upcoming events" events={upcomingEvents} />
 
           <MarginAdder>
-            <EventViewer title="Past events" />
+            <EventViewer title="Past events" events={pastEvents} />
           </MarginAdder>
         </StyledContentContainer>
       </SectionContainer>
