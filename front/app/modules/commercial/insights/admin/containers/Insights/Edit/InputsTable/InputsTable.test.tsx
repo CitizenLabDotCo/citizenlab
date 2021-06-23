@@ -1,5 +1,12 @@
 import React from 'react';
-import { render, screen, fireEvent, within, act } from 'utils/testUtils/rtl';
+import {
+  render,
+  screen,
+  fireEvent,
+  within,
+  act,
+  waitFor,
+} from 'utils/testUtils/rtl';
 import * as service from 'modules/commercial/insights/services/insightsInputs';
 import useInsightsInputs from 'modules/commercial/insights/hooks/useInsightsInputs';
 import * as batchService from 'modules/commercial/insights/services/batchAssignment';
@@ -137,6 +144,7 @@ jest.mock('react-router', () => {
         );
       };
     },
+    Link: () => 'Link',
   };
 });
 
@@ -496,5 +504,63 @@ describe('Insights Input Table', () => {
     expect(
       screen.getByText('There is no input without a category')
     ).toBeInTheDocument();
+  });
+
+  it('renders correct table empty state when there is no search results', () => {
+    mockLocationData = {
+      pathname: '',
+      query: { category: '', search: 'search' },
+    };
+    mockInputData = { currentPage: 1, lastPage: 1, list: [] };
+
+    render(<InputsTable />);
+    expect(
+      screen.getByTestId('insightsInputsTableEmptyState')
+    ).toBeInTheDocument();
+    expect(screen.getByText('No results found')).toBeInTheDocument();
+  });
+  it('filters table by category', () => {
+    mockLocationData = {
+      pathname: '',
+      query: { category: 'category', pageNumber: 1 },
+    };
+
+    render(<InputsTable />);
+    expect(useInsightsInputs).toHaveBeenCalledWith(viewId, {
+      category: 'category',
+      search: undefined,
+      pageNumber: 1,
+    });
+  });
+  it('filters table by search query', () => {
+    mockLocationData = {
+      pathname: '',
+      query: { search: 'search', pageNumber: 1 },
+    };
+
+    render(<InputsTable />);
+    expect(useInsightsInputs).toHaveBeenCalledWith(viewId, {
+      search: 'search',
+      category: undefined,
+      pageNumber: 1,
+    });
+  });
+  describe('Search', () => {
+    it('adds search query to url', () => {
+      const spy = jest.spyOn(clHistory, 'replace');
+      render(<InputsTable />);
+      fireEvent.change(screen.getByPlaceholderText('Search'), {
+        target: {
+          value: 'search',
+        },
+      });
+
+      waitFor(() => {
+        expect(spy).toHaveBeenCalledWith({
+          pathname: '',
+          search: `?search=search`,
+        });
+      });
+    });
   });
 });

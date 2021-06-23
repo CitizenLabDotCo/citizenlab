@@ -39,4 +39,8 @@ describe('Tag', () => {
     fireEvent.click(screen.getByTestId('insightsTagIconContainer'));
     expect(onIconClick).toHaveBeenCalled();
   });
+  it('should render count', () => {
+    render(<Tag {...defaultTagProps} count={22} />);
+    expect(screen.getByText('22')).toBeInTheDocument();
+  });
 });

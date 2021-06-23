@@ -11,6 +11,8 @@ export type TagProps = {
   label: string;
   onIconClick?: () => void;
   variant: Variant;
+  count?: number;
+  className?: string;
 };
 
 const IconContainer = styled.div`
@@ -33,6 +35,10 @@ const CloseIcon = styled(Icon)`
   margin-left: 8px;
   height: 10px;
   fill: #fff;
+`;
+
+const Count = styled.div`
+  margin-left: 8px;
 `;
 
 const StyledTag = styled.div<{ variant: Variant }>`
@@ -63,7 +69,7 @@ const TagContent = styled.div`
   white-space: nowrap;
 `;
 
-const Tag = ({ label, onIconClick, variant }: TagProps) => {
+const Tag = ({ label, onIconClick, variant, count, className }: TagProps) => {
   const handleIconClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     e.preventDefault();
@@ -78,9 +84,14 @@ const Tag = ({ label, onIconClick, variant }: TagProps) => {
     }
   };
   return (
-    <StyledTag variant={variant} data-testid="insightsTag">
+    <StyledTag
+      variant={variant}
+      data-testid="insightsTag"
+      className={className}
+    >
       <TagContent>
         {label}
+        {count && <Count>{count}</Count>}
         {onIconClick && (
           <IconContainer
             onClick={handleIconClick}

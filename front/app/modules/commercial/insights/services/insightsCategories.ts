@@ -8,6 +8,7 @@ export interface IInsightsCategoryData {
   type: string;
   attributes: {
     name: string;
+    inputs_count: number;
   };
   relationships?: {
     view: {
