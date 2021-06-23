@@ -1,13 +1,25 @@
 import React from 'react';
+
+// components
+import ContentContainer from 'components/ContentContainer';
+import { Helmet } from 'react-helmet';
+
+// styling
 import styled from 'styled-components';
 
-const Container = styled.div``;
+const StyledContentContainer = styled(ContentContainer)`
+  margin-top: 60px;
+`;
 
 const eventPage = () => {
   return (
-    <Container>
-      <h1>Hello!</h1>
-    </Container>
+    <>
+      <Helmet>
+        <title>Events</title>
+      </Helmet>
+
+      <StyledContentContainer>Bla</StyledContentContainer>
+    </>
   );
 };
 
