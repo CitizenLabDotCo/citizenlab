@@ -102,6 +102,7 @@ type Props = DefaultProps &
     className?: string;
     notFocusable?: boolean;
     disabled?: boolean;
+    'data-testid'?: string;
   };
 
 export default class CheckboxWithPartialCheck extends PureComponent<Props> {
@@ -161,7 +162,14 @@ export default class CheckboxWithPartialCheck extends PureComponent<Props> {
   };
 
   render() {
-    const { label, size, checked, className, notFocusable } = this.props;
+    const {
+      label,
+      size,
+      checked,
+      className,
+      notFocusable,
+      'data-testid': testid,
+    } = this.props;
 
     return (
       <Container
@@ -175,6 +183,7 @@ export default class CheckboxWithPartialCheck extends PureComponent<Props> {
         role="checkbox"
         aria-checked={checked}
         tabIndex={notFocusable ? -1 : 0}
+        data-testid={testid}
       >
         <CustomInputWrapper size={size as string} checked={checked}>
           {checked === 'mixed' ? (
