@@ -18,6 +18,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { colors, fontSizes, stylingConsts, media } from 'utils/styleUtils';
 import clHistory from 'utils/cl-router/history';
+import { truncate } from 'utils/textUtils';
 
 // hooks
 import useLocale from 'hooks/useLocale';
@@ -90,7 +91,9 @@ const CategoryButton = styled(Button)`
     justify-content: space-between;
   }
   .buttonText {
-    white-space: normal !important;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
   }
 `;
 
@@ -298,7 +301,8 @@ const EditInsightsView = ({
                     bgHoverColor={darken(0.05, colors.lightGreyishBlue)}
                     onClick={selectCategory(category.id)}
                   >
-                    {category.attributes.name}
+                    <span>{truncate(category.attributes.name, 20)}</span>
+                    <span> {category.attributes.inputs_count}</span>
                   </CategoryButton>
                 </div>
               ))
