@@ -467,10 +467,13 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
       (moderation) => moderation.relationships.inappropriate_content_flag
     );
     const modItemsWithActiveFlag = modItemsWithFlagRel.filter(
-      (moderationWithFlag) =>
-        activeInappropriateContentFlags
-          .map((flag) => flag.data.id)
-          .includes(moderationWithFlag.id)
+      (moderationWithFlag) => {
+        const flagId = moderationWithFlag.relationships
+          .inappropriate_content_flag?.data.id as string;
+        return activeInappropriateContentFlags
+          .map((activeFlag) => activeFlag.data.id)
+          .includes(flagId);
+      }
     );
     const filteredModerationItems =
       selectedTab === 'warnings' ? modItemsWithActiveFlag : moderations;
