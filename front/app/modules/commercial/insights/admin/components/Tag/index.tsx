@@ -2,6 +2,7 @@ import React from 'react';
 import styled, { css } from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 import { Icon } from 'cl2-component-library';
+import { darken } from 'polished';
 
 // TODO: Add Tag to component library once we remove tagging
 
@@ -13,6 +14,7 @@ export type TagProps = {
   variant: Variant;
   count?: number;
   className?: string;
+  onClick?: () => void;
 };
 
 const IconContainer = styled.div`
@@ -41,25 +43,42 @@ const Count = styled.div`
   margin-left: 8px;
 `;
 
-const StyledTag = styled.div<{ variant: Variant }>`
-  ${({ variant, theme }) => css`
+const StyledTag = styled.button<{ variant: Variant }>`
+  ${({ variant, onClick, theme }) => css`
     border-radius: ${theme.borderRadius};
     cursor: default;
     font-size: ${fontSizes.small}px;
     font-weight: normal;
     display: inline-block;
     padding: 4px 12px;
-    ${variant === 'primary' &&
-    css`
-      background-color: ${colors.clGreen};
-      color: #fff;
-    `}
-    ${variant === 'secondary' &&
-    css`
-      background-color: #fff;
-      color: ${colors.label};
-      border: 1px solid ${colors.border};
-    `}
+    ${
+      variant === 'primary' &&
+      css`
+        background-color: ${colors.clGreen};
+        border: 1px solid ${colors.clGreen};
+        color: #fff;
+      `
+    }
+    ${
+      variant === 'secondary' &&
+      css`
+        background-color: #fff;
+        color: ${colors.label};
+        border: 1px solid ${colors.border};
+      `
+    }
+    ${
+      onClick &&
+      css`
+        cursor: pointer;
+        &:hover {
+          background-color: ${darken(
+            0.1,
+            variant === 'primary' ? colors.clGreen : '#fff'
+          )};
+        }
+      `
+    }
   `}
 `;
 
@@ -69,7 +88,14 @@ const TagContent = styled.div`
   white-space: nowrap;
 `;
 
-const Tag = ({ label, onIconClick, variant, count, className }: TagProps) => {
+const Tag = ({
+  label,
+  onIconClick,
+  variant,
+  count,
+  className,
+  onClick,
+}: TagProps) => {
   const handleIconClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     e.preventDefault();
@@ -88,6 +114,7 @@ const Tag = ({ label, onIconClick, variant, count, className }: TagProps) => {
       variant={variant}
       data-testid="insightsTag"
       className={className}
+      onClick={onClick}
     >
       <TagContent>
         {label}

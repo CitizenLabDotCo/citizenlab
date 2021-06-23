@@ -1,15 +1,27 @@
 import React from 'react';
 import { withRouter, WithRouterProps } from 'react-router';
+
+// utils
 import { isNilOrError } from 'utils/helperUtils';
+import clHistory from 'utils/cl-router/history';
+import { stringify } from 'qs';
+
+// hooks
 import useInsightsCategories from 'modules/commercial/insights/hooks/useInsightsCategories';
+import { IconTooltip } from 'cl2-component-library';
+import Button from 'components/UI/Button';
+
+// components
 import Tag from 'modules/commercial/insights/admin/components/Tag';
+
+// styles
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
+
+// intl
 import messages from '../messages';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
-import { IconTooltip } from 'cl2-component-library';
-import Button from 'components/UI/Button';
 
 type CategoryProps = WithRouterProps & InjectedIntlProps;
 
@@ -59,14 +71,23 @@ const EmptyStateContainer = styled.div`
 `;
 
 const Categories = ({
-  location: { pathname },
+  location: { pathname, query },
   params: { viewId },
   intl: { formatMessage },
 }: CategoryProps) => {
   const categories = useInsightsCategories(viewId);
+
   if (isNilOrError(categories)) {
     return null;
   }
+
+  const handleCategoryClick = (id: string) => () => {
+    const category = query.category === id ? undefined : id;
+    clHistory.push({
+      pathname,
+      search: stringify({ ...query, category }, { addQueryPrefix: true }),
+    });
+  };
 
   return (
     <Container data-testid="insightsDetailsCategories">
@@ -81,9 +102,12 @@ const Categories = ({
               <Tag
                 key={category.id}
                 label={category.attributes.name}
-                variant="secondary"
+                variant={
+                  query.category === category.id ? 'primary' : 'secondary'
+                }
                 count={category.attributes.inputs_count}
                 className="categoryTag"
+                onClick={handleCategoryClick(category.id)}
               />
             ))}
           </div>

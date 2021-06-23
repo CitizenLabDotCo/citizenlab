@@ -61,6 +61,16 @@ describe('Insights Details Categories', () => {
     expect(screen.getAllByTestId('insightsTag')).toHaveLength(2);
   });
 
+  it('selects category correctly', () => {
+    const spy = jest.spyOn(clHistory, 'push');
+    render(<Categories />);
+    fireEvent.click(screen.getByText(mockData[0].attributes.name));
+    expect(spy).toHaveBeenCalledWith({
+      pathname: '',
+      search: `?category=${mockData[0].id}`,
+    });
+  });
+
   it('renders Empty state when there are no categories', () => {
     mockData = [];
     render(<Categories />);
@@ -68,17 +78,6 @@ describe('Insights Details Categories', () => {
       screen.getByTestId('insightsDetailsCategoriesEmpty')
     ).toBeInTheDocument();
   });
-
-  // it('selects category correctly', () => {
-  //   const spy = jest.spyOn(clHistory, 'push');
-  //   render(<Categories />);
-  //   fireEvent.click(screen.getByText(mockData[0].attributes.name));
-  //   expect(spy).toHaveBeenCalledWith({
-  //     pathname: '',
-  //     search: `?pageNumber=1&category=${mockData[0].id}`,
-  //   });
-  // });
 });
 
-// Select category
 // Show more/less

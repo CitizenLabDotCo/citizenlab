@@ -43,4 +43,10 @@ describe('Tag', () => {
     render(<Tag {...defaultTagProps} count={22} />);
     expect(screen.getByText('22')).toBeInTheDocument();
   });
+  it('calls onClick when clicked', () => {
+    const handleClick = jest.fn();
+    render(<Tag {...defaultTagProps} onClick={handleClick} />);
+    fireEvent.click(screen.getByTestId('insightsTag'));
+    expect(handleClick).toHaveBeenCalled();
+  });
 });
