@@ -735,24 +735,15 @@
   "app.containers.Admin.Insights.Edit.deleteFromCategories": "Are you sure you can to remove {selectedCount} inputs from {categoryName}?",
   "app.containers.Admin.Insights.Edit.detectCategories": "Detect new categories",
   "app.containers.Admin.Insights.Edit.editCategoryName": "Edit category name",
-<<<<<<< HEAD
   "app.containers.Admin.Insights.Edit.inputsDone": "Done",
-=======
-  "app.containers.Admin.Insights.Edit.inputsDone": "",
->>>>>>> 5b2dc9c127b814ebe95099afd17cdd16cabaf7d0
   "app.containers.Admin.Insights.Edit.inputsEmptyState": "You have no inputs for this view yet",
   "app.containers.Admin.Insights.Edit.inputsTableAlsoIn": "Also in",
   "app.containers.Admin.Insights.Edit.inputsTableCategories": "Categories",
   "app.containers.Admin.Insights.Edit.inputsTableCategoryDescription": "Start moving input here to grow your category.",
   "app.containers.Admin.Insights.Edit.inputsTableCategoryTitle": "You have no input assigned to this category yet",
   "app.containers.Admin.Insights.Edit.inputsTableInputs": "Inputs",
-<<<<<<< HEAD
   "app.containers.Admin.Insights.Edit.inputsTableNoResults": "No results found",
   "app.containers.Admin.Insights.Edit.inputsTableNoResultsDescription": "Please try a different filter or search term.",
-=======
-  "app.containers.Admin.Insights.Edit.inputsTableNoResults": "",
-  "app.containers.Admin.Insights.Edit.inputsTableNoResultsDescription": "",
->>>>>>> 5b2dc9c127b814ebe95099afd17cdd16cabaf7d0
   "app.containers.Admin.Insights.Edit.inputsTableNotCategorized": "There is no input without a category",
   "app.containers.Admin.Insights.Edit.notCategorized": "Not categorized",
   "app.containers.Admin.Insights.Edit.notCategorizedTooltip": "This lists all previously processes input that hasn't been assigned a category. Recently added input is NOT shown here.",
