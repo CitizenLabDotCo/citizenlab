@@ -182,8 +182,6 @@ class NewIdeaForm extends PureComponent<Props, State> {
       authorId,
     } = ideaFormOutput;
 
-    console.log('NewIdeaForm handleIdeaFormOutput position', position);
-
     this.globalState.set({
       title,
       description,

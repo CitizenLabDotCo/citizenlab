@@ -11,6 +11,8 @@ import { isNilOrError } from 'utils/helperUtils';
 import { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import { IPhaseData } from './phases';
 import { isAdmin, isProjectModerator } from 'services/permissions/roles';
+import { TAuthUser } from 'hooks/useAuthUser';
+import { TPhase } from 'hooks/usePhase';
 
 interface ActionPermissionHide {
   show: false;
@@ -119,8 +121,8 @@ export const getIdeaPostingRules = ({
   authUser,
 }: {
   project: GetProjectChildProps;
-  phase: GetPhaseChildProps;
-  authUser: GetAuthUserChildProps;
+  phase: GetPhaseChildProps | TPhase;
+  authUser: GetAuthUserChildProps | TAuthUser;
 }): ActionPermission<IIdeaPostingDisabledReason> => {
   const signedIn = !isNilOrError(authUser);
 
