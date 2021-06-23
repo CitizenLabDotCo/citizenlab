@@ -84,6 +84,10 @@ export default defineMessages({
     id: 'app.containers.Admin.Insights.createModalCancel',
     defaultMessage: 'Cancel',
   },
+  inputsDone: {
+    id: 'app.containers.Admin.Insights.Edit.inputsDone',
+    defaultMessage: 'Done',
+  },
   inputsTableInputs: {
     id: 'app.containers.Admin.Insights.Edit.inputsTableInputs',
     defaultMessage: 'Inputs',
@@ -99,6 +103,14 @@ export default defineMessages({
   inputsTableEmpty: {
     id: 'app.containers.Admin.Insights.Edit.inputsEmptyState',
     defaultMessage: "This project doesn't seem to contain any input.",
+  },
+  inputsTableNoResults: {
+    id: 'app.containers.Admin.Insights.Edit.inputsTableNoResults',
+    defaultMessage: 'No results found',
+  },
+  inputsTableNoResultsDescription: {
+    id: 'app.containers.Admin.Insights.Edit.inputsTableNoResultsDescription',
+    defaultMessage: 'Please try a different filter or search term.',
   },
   inputsTableCategoryTitle: {
     id: 'app.containers.Admin.Insights.Edit.inputsTableCategoryTitle',

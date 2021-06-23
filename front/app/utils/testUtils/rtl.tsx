@@ -6,15 +6,20 @@ import { getTheme } from 'utils/styleUtils';
 import GlobalStyle from 'global-styles';
 import { IntlProvider } from 'react-intl';
 import messages from 'i18n/en';
+import { LiveAnnouncer } from 'react-aria-live';
 
 const AllTheProviders = ({ children }) => {
   return (
-    <ThemeProvider theme={getTheme(null)}>
-      <GlobalStyle />
-      <IntlProvider locale="en" messages={messages}>
-        <div id="modal-portal">{children}</div>
-      </IntlProvider>
-    </ThemeProvider>
+    <div id="modal-portal">
+      <LiveAnnouncer>
+        <ThemeProvider theme={getTheme(null)}>
+          <GlobalStyle />
+          <IntlProvider locale="en" messages={messages}>
+            {children}
+          </IntlProvider>
+        </ThemeProvider>
+      </LiveAnnouncer>
+    </div>
   );
 };
 
