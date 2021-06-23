@@ -505,6 +505,20 @@ describe('Insights Input Table', () => {
       screen.getByText('There is no input without a category')
     ).toBeInTheDocument();
   });
+
+  it('renders correct table empty state when there is no search results', () => {
+    mockLocationData = {
+      pathname: '',
+      query: { category: '', search: 'search' },
+    };
+    mockInputData = { currentPage: 1, lastPage: 1, list: [] };
+
+    render(<InputsTable />);
+    expect(
+      screen.getByTestId('insightsInputsTableEmptyState')
+    ).toBeInTheDocument();
+    expect(screen.getByText('No results found')).toBeInTheDocument();
+  });
   it('filters table by category', () => {
     mockLocationData = {
       pathname: '',

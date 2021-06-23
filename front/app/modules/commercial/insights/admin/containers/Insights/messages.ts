@@ -104,6 +104,14 @@ export default defineMessages({
     id: 'app.containers.Admin.Insights.Edit.inputsEmptyState',
     defaultMessage: "This project doesn't seem to contain any input.",
   },
+  inputsTableNoResults: {
+    id: 'app.containers.Admin.Insights.Edit.inputsTableNoResults',
+    defaultMessage: 'No results found',
+  },
+  inputsTableNoResultsDescription: {
+    id: 'app.containers.Admin.Insights.Edit.inputsTableNoResultsDescription',
+    defaultMessage: 'Please try a different filter or search term.',
+  },
   inputsTableCategoryTitle: {
     id: 'app.containers.Admin.Insights.Edit.inputsTableCategoryTitle',
     defaultMessage: 'You have no input assigned to this category yet',
