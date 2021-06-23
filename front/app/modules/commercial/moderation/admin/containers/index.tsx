@@ -475,6 +475,13 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
           .includes(flagId);
       }
     );
+    const selectedActiveFlags = selectedModerations.filter((moderation) =>
+      activeInappropriateContentFlags
+        .map((flag) => flag.data.id)
+        .includes(
+          moderation.relationships.inappropriate_content_flag?.data.id as string
+        )
+    );
     const filteredModerationItems =
       selectedTab === 'warnings' ? modItemsWithActiveFlag : moderations;
 
@@ -540,7 +547,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
 
               <Outlet
                 id="app.modules.commercial.moderation.admin.containers.actionbar.buttons"
-                activeFlagsCount={activeInappropriateContentFlags.length}
+                activeFlagsCount={selectedActiveFlags.length}
                 processing={processing}
                 onClick={removeFlags}
               />
