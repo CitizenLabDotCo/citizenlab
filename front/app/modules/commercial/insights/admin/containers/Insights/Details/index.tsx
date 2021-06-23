@@ -3,8 +3,6 @@ import React from 'react';
 import TopBar from '../../../components/TopBar';
 import Categories from './Categories';
 
-import { withRouter } from 'react-router';
-
 const DetailsInsightsView = () => {
   return (
     <>
@@ -14,4 +12,4 @@ const DetailsInsightsView = () => {
   );
 };
 
-export default withRouter(DetailsInsightsView);
+export default DetailsInsightsView;

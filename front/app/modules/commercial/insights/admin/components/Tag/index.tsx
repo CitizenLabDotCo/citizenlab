@@ -91,7 +91,7 @@ const Tag = ({ label, onIconClick, variant, count, className }: TagProps) => {
     >
       <TagContent>
         {label}
-        {count && <Count>{count}</Count>}
+        {count !== undefined && <Count>{count}</Count>}
         {onIconClick && (
           <IconContainer
             onClick={handleIconClick}

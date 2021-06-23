@@ -16,8 +16,7 @@ type CategoryProps = WithRouterProps & InjectedIntlProps;
 const Container = styled.div`
   background-color: #fff;
   padding: 28px;
-  display: flex;
-  justify-content: space-between;
+
   h1 {
     color: ${colors.adminTextColor};
     font-size: ${fontSizes.large}px;
@@ -27,8 +26,35 @@ const Container = styled.div`
       margin-left: 10px;
     }
   }
+`;
+
+const CategoriesContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   .categoryTag {
     margin-right: 8px;
+  }
+`;
+
+const EmptyStateContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 24px;
+  background-color: ${colors.clBlueLightest};
+  color: ${colors.adminTextColor};
+  border-radius: 3px;
+
+  .content {
+    width: 80%;
+  }
+
+  .title {
+    margin: 0;
+    padding: 0;
+    font-size: ${fontSizes.base}px;
+    font-weight: bold;
   }
 `;
 
@@ -43,60 +69,49 @@ const Categories = ({
   }
 
   return (
-    <Container>
-      <div>
-        <h1>
-          {formatMessage(messages.categoriesTitle)}
-          <IconTooltip
-            content={formatMessage(messages.categoriesTitleTooltip)}
-          />
-        </h1>
+    <Container data-testid="insightsDetailsCategories">
+      <h1>
+        {formatMessage(messages.categoriesTitle)}
+        <IconTooltip content={formatMessage(messages.categoriesTitleTooltip)} />
+      </h1>
+      {categories.length > 0 ? (
+        <CategoriesContainer>
+          <div>
+            {categories.map((category) => (
+              <Tag
+                key={category.id}
+                label={category.attributes.name}
+                variant="secondary"
+                count={category.attributes.inputs_count}
+                className="categoryTag"
+              />
+            ))}
+          </div>
+          <Button buttonStyle="admin-dark" linkTo={`${pathname}/edit`}>
+            {formatMessage(messages.editCategories)}
+          </Button>
+        </CategoriesContainer>
+      ) : (
+        <EmptyStateContainer data-testid="insightsDetailsCategoriesEmpty">
+          <div className="content">
+            <p className="title">
+              {formatMessage(messages.categoriesEmptyTitle)}
+            </p>
+            <p> {formatMessage(messages.categoriesEmptyDescription)}</p>
+          </div>
 
-        {categories.map((category) => (
-          <Tag
-            key={category.id}
-            label={category.attributes.name}
-            variant="secondary"
-            count={category.attributes.inputs_count}
-            className="categoryTag"
-          />
-        ))}
-      </div>
-      <Button buttonStyle="admin-dark" linkTo={`${pathname}/edit`}>
-        {formatMessage(messages.editCategories)}
-      </Button>
+          <Button buttonStyle="admin-dark" linkTo={`${pathname}/edit`}>
+            {formatMessage(messages.categoriesEmptyButton)}
+          </Button>
+        </EmptyStateContainer>
+      )}
     </Container>
   );
 };
 
 export default withRouter(injectIntl(Categories));
 
-// editCategories: {
-//   id: 'app.containers.Admin.Insights.Details.editCategories',
-//   defaultMessage: 'Edit categories',
-// },
-// categoriesTitle: {
-//   id: 'app.containers.Admin.Insights.Details.categoriesTitle',
-//   defaultMessage: 'Categories',
-// },
-// categoriesTitleTooltip: {
-//   id: 'app.containers.Admin.Insights.Details.categoriesTitleTooltip',
-//   defaultMessage:
-//     'Categories help structure your input. You can edit your categories at any time or use them as filter on the visualisation below.',
-// },
 // categoriesSeeAll: {
 //   id: 'app.containers.Admin.Insights.Details.categoriesSeeAll',
 //   defaultMessage: 'See all',
-// },
-// categoriesEmptyTitle: {
-//   id: 'app.containers.Admin.Insights.Details.categoriesEmptyTitle',
-//   defaultMessage: "Organize the input you've received",
-// },
-// categoriesEmptyDescription: {
-//   id: 'app.containers.Admin.Insights.Details.categoriesEmptyDescription',
-//   defaultMessage: 'Define the categories you want to group your input into.',
-// },
-// categoriesEmptyButton: {
-//   id: 'app.containers.Admin.Insights.Details.categoriesEmptyButton',
-//   defaultMessage: 'Create categories',
 // },
