@@ -2,6 +2,7 @@ import React from 'react';
 
 // components
 import ContentContainer from 'components/ContentContainer';
+import SectionContainer from 'components/SectionContainer';
 import { Helmet } from 'react-helmet';
 import EventViewer from './EventViewer';
 
@@ -14,6 +15,10 @@ const StyledContentContainer = styled(ContentContainer)`
   margin-right: auto;
 `;
 
+const MarginAdder = styled.div`
+  margin-top: 60px;
+`;
+
 const EventPage = () => {
   return (
     <>
@@ -21,10 +26,15 @@ const EventPage = () => {
         <title>Events</title>
       </Helmet>
 
-      <StyledContentContainer>
-        <EventViewer title="Upcoming events" />
-        <EventViewer title="Past events" />
-      </StyledContentContainer>
+      <SectionContainer>
+        <StyledContentContainer>
+          <EventViewer title="Upcoming events" />
+
+          <MarginAdder>
+            <EventViewer title="Past events" />
+          </MarginAdder>
+        </StyledContentContainer>
+      </SectionContainer>
     </>
   );
 };

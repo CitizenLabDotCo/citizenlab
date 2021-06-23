@@ -3,16 +3,6 @@ import { fontSizes, media, isRtl } from 'utils/styleUtils';
 
 export const maxPageWidth = 1166;
 
-export const SectionContainer = styled.div`
-  padding-top: 60px;
-  padding-bottom: 80px;
-
-  ${media.smallerThanMinTablet`
-    padding-top: 45px;
-    padding-bottom: 45px;
-  `}
-`;
-
 export const ProjectPageSectionTitle = styled.h2`
   color: ${(props: any) => props.theme.colorText};
   font-size: ${fontSizes.xxl}px;

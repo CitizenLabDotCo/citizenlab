@@ -6,10 +6,10 @@ import ContentContainer from 'components/ContentContainer';
 import IdeaCards from 'components/IdeaCards';
 import PBExpenses from '../shared/pb/PBExpenses';
 import {
-  SectionContainer,
   ProjectPageSectionTitle,
   maxPageWidth,
 } from 'containers/ProjectsShowPage/styles';
+import SectionContainer from 'components/SectionContainer';
 
 // hooks
 import useProject from 'hooks/useProject';
