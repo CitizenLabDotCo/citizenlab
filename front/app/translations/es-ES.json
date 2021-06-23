@@ -742,6 +742,8 @@
   "app.containers.Admin.Insights.Edit.inputsTableCategoryDescription": "Mueva las entradas aquí para aumentar su categoría.",
   "app.containers.Admin.Insights.Edit.inputsTableCategoryTitle": "No tienes ninguna entrada asignada a esta categoría",
   "app.containers.Admin.Insights.Edit.inputsTableInputs": "Aportes",
+  "app.containers.Admin.Insights.Edit.inputsTableNoResults": "",
+  "app.containers.Admin.Insights.Edit.inputsTableNoResultsDescription": "",
   "app.containers.Admin.Insights.Edit.inputsTableNotCategorized": "No hay aportes sin categoría",
   "app.containers.Admin.Insights.Edit.notCategorized": "No clasificado",
   "app.containers.Admin.Insights.Edit.notCategorizedTooltip": "Aquí se muestran todos las aportes procesados anteriormente a las que no se les han asignado categorías. Las aportes añadidos recientemente NO se muestran aquí.",
