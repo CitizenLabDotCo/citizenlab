@@ -1,8 +1,25 @@
-# Changelog
+# Changelog 
 
-## Next Release
-
+## Next release
 /
+
+## 2021-06-22
+
+### Changed
+
+- Project managers that are assigned to a project and/or its input now lose those assignments when losing project management rights over that project.
+
+### Fixed
+
+- Input manager side modal scroll.
+
+## 2021-06-18
+
+### Fixed
+
+- Privacy policy now opens in new tab.
+- Landing page custom section now uses theme colors.
+- Buttons and links in project description now open internal links in the same tab, and external links in a new tab.
 
 ## 2021-06-16
 
