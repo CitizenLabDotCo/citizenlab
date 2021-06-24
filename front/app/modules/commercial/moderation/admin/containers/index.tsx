@@ -455,7 +455,6 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
             // We know from previous filter operations the id is a string
             const flagId = moderationItemWithFlag.relationships
               .inappropriate_content_flag?.data.id as string;
-
             const stream = inappropriateContentFlagByIdStream(flagId);
 
             return stream.fetch();
@@ -491,8 +490,8 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
           moderation.relationships.inappropriate_content_flag?.data.id as string
         )
     );
-    const filteredModerationItems =
-      selectedTab === 'warnings' ? modItemsWithActiveFlag : moderations;
+    const moderationsForSelectedTab =
+      selectedTab === 'warnings' ? moderationsWithActiveFlag : moderations;
 
     return (
       <Container className={className}>
@@ -556,7 +555,9 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
 
               <Outlet
                 id="app.modules.commercial.moderation.admin.containers.actionbar.buttons"
-                selectedActiveFlagCount={selectedModerationsWithActiveFlag.length}
+                selectedActiveFlagsCount={
+                  selectedModerationsWithActiveFlag.length
+                }
                 processing={processing}
                 onClick={removeFlags}
               />
@@ -572,14 +573,16 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
               <th className="checkbox">
                 <StyledCheckbox
                   checked={
-                    moderations.length > 0 &&
-                    selectedModerations.length === moderations.length
+                    moderationsForSelectedTab.length > 0 &&
+                    selectedModerations.length ===
+                      moderationsForSelectedTab.length
                   }
                   indeterminate={
                     selectedModerations.length > 0 &&
-                    selectedModerations.length < moderations.length
+                    selectedModerations.length <
+                      moderationsForSelectedTab.length
                   }
-                  disabled={moderations.length === 0}
+                  disabled={moderationsForSelectedTab.length === 0}
                   onChange={handleOnSelectAll}
                 />
               </th>
@@ -598,9 +601,9 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
               <th className="goto">&nbsp;</th>
             </tr>
           </thead>
-          {filteredModerationItems.length > 0 && (
+          {moderationsForSelectedTab.length > 0 && (
             <tbody>
-              {filteredModerationItems.map((moderationItem) => (
+              {moderationsForSelectedTab.map((moderationItem) => (
                 <ModerationRow
                   key={moderationItem.id}
                   moderation={moderationItem}
@@ -619,7 +622,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
           )}
         </StyledTable>
 
-        {filteredModerationItems.length > 0 && (
+        {moderationsForSelectedTab.length > 0 && (
           <Footer>
             <StyledPagination
               currentPage={currentPage}
@@ -642,7 +645,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
           </Footer>
         )}
 
-        {filteredModerationItems.length === 0 && (
+        {moderationsForSelectedTab.length === 0 && (
           <Empty>
             <EmptyIcon name="inbox" />
             <EmptyMessage>
