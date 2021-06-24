@@ -4,6 +4,7 @@ import {
   debounceTime,
   startWith,
   pairwise,
+  tap,
 } from 'rxjs/operators';
 import { combineLatest } from 'rxjs';
 import { isEqual } from 'lodash-es';
@@ -94,7 +95,7 @@ export default function useLeaflet(
   const [_tileLayer, setTileLayer] = useState<L.Layer | null>(null);
   const [_layers, setLayers] = useState<L.GeoJSON[] | null>(null);
   const [
-    _markerClusterGroup,
+    markerClusterGroup,
     setMarkerClusterGroup,
   ] = useState<L.MarkerClusterGroup | null>(null);
   const [_layersControl, setLayersControl] = useState<L.Control.Layers | null>(
@@ -115,25 +116,46 @@ export default function useLeaflet(
     const subscriptions = [
       combineLatest(
         leafletMapHoveredMarker$.pipe(startWith(null, null), pairwise()),
-        leafletMapSelectedMarker$.pipe(startWith(null, null), pairwise())
+        leafletMapSelectedMarker$.pipe(
+          tap((selectedMarkerId) => {
+            const selectedMarker = markers?.find(
+              (marker) => marker.options['id'] === selectedMarkerId
+            );
+
+            if (selectedMarker) {
+              const isMarkerHiddenBehindCluster = !map?.hasLayer(
+                selectedMarker
+              );
+
+              if (isMarkerHiddenBehindCluster) {
+                markerClusterGroup?.zoomToShowLayer(selectedMarker);
+              } else {
+                const { lat, lng } = selectedMarker.getLatLng();
+                setLeafletMapCenter([lat, lng]);
+              }
+            }
+          }),
+          startWith(null, null),
+          pairwise()
+        )
       ).subscribe(
         ([
-          [prevHoveredMarker, hoveredMarker],
-          [prevSelectedMarker, selectedMarker],
+          [prevHoveredMarkerId, hoveredMarkerId],
+          [prevSelectedMarkerId, selectedMarkerId],
         ]) => {
           markers?.forEach((marker) => {
             const markerId = marker.options['id'] as string;
 
-            if (markerId === selectedMarker) {
+            if (markerId === selectedMarkerId) {
               marker.setIcon(markerActiveIcon)?.setZIndexOffset(999);
             } else if (
-              markerId === hoveredMarker &&
-              hoveredMarker !== selectedMarker
+              markerId === hoveredMarkerId &&
+              hoveredMarkerId !== selectedMarkerId
             ) {
               marker.setIcon(markerHoverIcon)?.setZIndexOffset(999);
             } else if (
-              markerId === prevHoveredMarker ||
-              markerId === prevSelectedMarker
+              markerId === prevHoveredMarkerId ||
+              markerId === prevSelectedMarkerId
             ) {
               marker.setIcon(markerIcon)?.setZIndexOffset(0);
             }
@@ -146,7 +168,7 @@ export default function useLeaflet(
       subscriptions.forEach((subscription) => subscription.unsubscribe());
     };
   };
-  useEffect(markerEvents, [markers]);
+  useEffect(markerEvents, [markers, map, markerClusterGroup]);
 
   const mapEvents = () => {
     const subscriptions = [
