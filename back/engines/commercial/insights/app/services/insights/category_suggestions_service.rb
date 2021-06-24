@@ -2,9 +2,7 @@
 
 module Insights
   class CategorySuggestionsService
-
-    attr_reader :nlp_client
-
+    
     class << self
 
       # @param [NLP::ZeroshotClassificationMessage] zsc_message
@@ -31,10 +29,12 @@ module Insights
           categories = Category.where(id: predictions.map(&:label_id))
           assignment_service.add_suggestions(input, categories)
         rescue ActiveRecord::RecordNotFound
-          # Ignore
+          # Ignore: don't save anything if the input cannot be found.
         end
       end
     end
+
+    attr_reader :nlp_client
 
     def initialize(nlp_client = nil)
       @nlp_client = nlp_client || NLP::API.new
@@ -48,7 +48,7 @@ module Insights
         candidate_labels: candidate_labels(categories),
         documents: documents,
         tenant_id: AppConfiguration.instance.id,
-        locale: locale
+        locale: nil # TODO: the nlp service requires it but do not use it.
       )
     end
 
@@ -59,13 +59,7 @@ module Insights
       inputs.map { |i| { text: input_to_text(i), doc_id: i.id } }
             .select { |document| document['text'] }
     end
-
-    # @param [Enumerable<Insights::Category>] categories
-    # @return [Array]
-    def candidate_labels(categories)
-      categories.map { |c| { text: c.name, label_id: c.id } }
-    end
-
+    
     # @param [Idea] input
     # @return [String,NilClass]
     def input_to_text(input)
@@ -74,6 +68,12 @@ module Insights
       # Might not be true in seed data or similar settings.
       text = input.body_multiloc.compact.values.first
       ActionView::Base.full_sanitizer.sanitize(text).presence
+    end
+
+    # @param [Enumerable<Insights::Category>] categories
+    # @return [Array]
+    def candidate_labels(categories)
+      categories.map { |c| { text: c.name, label_id: c.id } }
     end
   end
 end
