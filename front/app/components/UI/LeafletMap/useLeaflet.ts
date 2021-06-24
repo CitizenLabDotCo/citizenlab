@@ -4,6 +4,7 @@ import {
   debounceTime,
   startWith,
   pairwise,
+  tap,
 } from 'rxjs/operators';
 import { combineLatest } from 'rxjs';
 import { isEqual } from 'lodash-es';
@@ -115,7 +116,22 @@ export default function useLeaflet(
     const subscriptions = [
       combineLatest(
         leafletMapHoveredMarker$.pipe(startWith(null, null), pairwise()),
-        leafletMapSelectedMarker$.pipe(startWith(null, null), pairwise())
+        leafletMapSelectedMarker$.pipe(
+          startWith(null, null),
+          pairwise(),
+          tap(([_prevSelectedMarker, selectedMarker]) => {
+            markers?.forEach((marker) => {
+              const markerId = marker.options['id'] as string;
+
+              if (markerId === selectedMarker) {
+                const { lat, lng } = marker.getLatLng();
+                const isMarkerHiddenBehindCluster = !map?.hasLayer(marker);
+                isMarkerHiddenBehindCluster && setLeafletMapZoom(16);
+                setLeafletMapCenter([lat, lng]);
+              }
+            });
+          })
+        )
       ).subscribe(
         ([
           [prevHoveredMarker, hoveredMarker],
@@ -146,7 +162,7 @@ export default function useLeaflet(
       subscriptions.forEach((subscription) => subscription.unsubscribe());
     };
   };
-  useEffect(markerEvents, [markers]);
+  useEffect(markerEvents, [markers, map]);
 
   const mapEvents = () => {
     const subscriptions = [
