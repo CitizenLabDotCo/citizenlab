@@ -33,8 +33,16 @@ export interface IInappropriateContentFlag {
 
 const apiEndpoint = `${API_PATH}/inappropriate_content_flags`;
 
-export function removeInappropriateContentFlag(flagId: string) {
-  return streams.update(`${apiEndpoint}/${flagId}/mark_as_deleted`, flagId, {});
+export async function removeInappropriateContentFlag(flagId: string) {
+  const response = streams.update(
+    `${apiEndpoint}/${flagId}/mark_as_deleted`,
+    flagId,
+    {}
+  );
+
+  await streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/moderations`] });
+
+  return response;
 }
 
 export function inappropriateContentFlagByIdStream(flagId: string) {

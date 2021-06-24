@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useState, useEffect } from 'react';
+import React, { memo, useCallback, useState, useEffect, useMemo } from 'react';
 
 import { isNilOrError } from 'utils/helperUtils';
 import { insertConfiguration } from 'utils/moduleUtils';
@@ -229,9 +229,23 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
   });
 
   const [moderations, setModerations] = useState(list);
+  const [moderationsWithActiveFlag, setModerationsWithActiveFlag] = useState<
+    IModerationData[]
+  >([]);
+  const [moderationsForSelectedTab, setModerationsForSelectedTab] = useState(
+    moderations
+  );
+  const [
+    activeInappropriateContentFlags,
+    setActiveInappropriateContentFlags,
+  ] = useState<IInappropriateContentFlag[]>([]);
   const [selectedModerations, setSelectedModerations] = useState<
     IModerationData[]
   >([]);
+  const [
+    selectedModerationsWithActiveFlag,
+    setSelectedModerationsWithActiveFlag,
+  ] = useState<IModerationData[]>([]);
   const [processing, setProcessing] = useState(false);
   const [selectedTypes, setSelectedTypes] = useState<TModeratableTypes[]>([]);
   const [selectedProjectIds, setSelectedProjectIds] = useState<string[]>([]);
@@ -239,10 +253,6 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
   const [actionBarErrorMessage, setActionBarErrorMessage] = useState<
     string | null
   >(null);
-  const [
-    activeInappropriateContentFlags,
-    setActiveInappropriateContentFlags,
-  ] = useState<IInappropriateContentFlag[]>([]);
   const [tabs, setTabs] = useState<ITabItem[]>([
     {
       name: 'unread',
@@ -254,15 +264,74 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
     },
   ]);
 
+  useEffect(() => {
+    if (!isNilOrError(moderations)) {
+      const modItemsWithFlagRel = moderations.filter(
+        (moderation) => moderation.relationships.inappropriate_content_flag
+      );
+      const modItemsWithActiveFlag = modItemsWithFlagRel.filter(
+        (moderationWithFlag) => {
+          const flagId = moderationWithFlag.relationships
+            .inappropriate_content_flag?.data.id as string;
+          return activeInappropriateContentFlags
+            .map((activeFlag) => activeFlag.data.id)
+            .includes(flagId);
+        }
+      );
+
+      setModerationsWithActiveFlag(modItemsWithActiveFlag);
+    }
+  }, [moderations, activeInappropriateContentFlags]);
+
+  // const moderationsWithActiveFlag = useMemo(() => {
+  //   if (!isNilOrError(moderations)) {
+  //     const modItemsWithFlagRel = moderations.filter(
+  //       (moderation) => moderation.relationships.inappropriate_content_flag
+  //     );
+  //     const modItemsWithActiveFlag = modItemsWithFlagRel.filter(
+  //       (moderationWithFlag) => {
+  //         const flagId = moderationWithFlag.relationships
+  //           .inappropriate_content_flag?.data.id as string;
+  //         return activeInappropriateContentFlags
+  //           .map((activeFlag) => activeFlag.data.id)
+  //           .includes(flagId);
+  //       }
+  //     );
+
+  //     return modItemsWithActiveFlag;
+  //   }
+
+  //   return null;
+  // }, [moderations, activeInappropriateContentFlags]);
+
   const handleOnSelectAll = useCallback(
     (_event: React.ChangeEvent) => {
-      if (!isNilOrError(moderations) && !processing) {
-        setSelectedModerations(
-          selectedModerations.length < moderations.length ? moderations : []
-        );
+      if (!processing) {
+        if (selectedTab === 'warnings') {
+          if (!isNilOrError(moderationsWithActiveFlag)) {
+            setSelectedModerationsWithActiveFlag(
+              selectedModerationsWithActiveFlag.length <
+                moderationsWithActiveFlag.length
+                ? moderationsWithActiveFlag
+                : []
+            );
+          }
+        } else {
+          if (!isNilOrError(moderations)) {
+            setSelectedModerations(
+              selectedModerations.length < moderations.length ? moderations : []
+            );
+          }
+        }
       }
     },
-    [moderations, selectedModerations, processing]
+    [
+      selectedTab,
+      moderations,
+      moderationsWithActiveFlag,
+      selectedModerations,
+      processing,
+    ]
   );
 
   const handleOnTabChange = useCallback(
@@ -338,25 +407,50 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
   const handleRowOnSelectChange = useCallback(
     (newSelectedModeration: IModerationData) => {
       if (!processing) {
-        setSelectedModerations((prevSelectedModerations) => {
-          if (
-            isModerationSelected(newSelectedModeration, prevSelectedModerations)
-          ) {
-            return prevSelectedModerations.filter(
-              (moderation) => moderation.id !== newSelectedModeration.id
-            );
-          }
+        if (selectedTab === 'warnings') {
+          setSelectedModerationsWithActiveFlag(
+            (prevSelectedModerationsWithActiveFlag) => {
+              if (
+                isModerationSelected(
+                  newSelectedModeration,
+                  prevSelectedModerationsWithActiveFlag
+                )
+              ) {
+                return prevSelectedModerationsWithActiveFlag.filter(
+                  (moderation) => newSelectedModeration.id !== moderation.id
+                );
+              }
 
-          return [...prevSelectedModerations, newSelectedModeration];
-        });
+              return [
+                ...prevSelectedModerationsWithActiveFlag,
+                newSelectedModeration,
+              ];
+            }
+          );
+        } else {
+          setSelectedModerations((prevSelectedModerations) => {
+            if (
+              isModerationSelected(
+                newSelectedModeration,
+                prevSelectedModerations
+              )
+            ) {
+              return prevSelectedModerations.filter(
+                (moderation) => moderation.id !== newSelectedModeration.id
+              );
+            }
+
+            return [...prevSelectedModerations, newSelectedModeration];
+          });
+        }
       }
     },
-    [processing]
+    [processing, selectedTab]
   );
 
   const removeFlags = useCallback(async () => {
     if (activeInappropriateContentFlags.length > 0 && !processing) {
-      const selectedActiveInappropriateContentFlags = selectedModerations.map(
+      const selectedActiveInappropriateContentFlags = selectedModerationsWithActiveFlag.map(
         (mod) => mod.relationships.inappropriate_content_flag?.data.id
       );
       const selectedActiveFlags = activeInappropriateContentFlags.filter(
@@ -377,22 +471,21 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
         await Promise.all(promises);
 
         setProcessing(false);
-        setSelectedModerations([]);
+        setSelectedModerationsWithActiveFlag([]);
       } catch {
         setActionBarErrorMessage(intl.formatMessage(messages.removeFlagsError));
         setProcessing(false);
       }
     }
-  }, [activeInappropriateContentFlags, processing]);
+  }, [
+    activeInappropriateContentFlags,
+    selectedModerationsWithActiveFlag,
+    processing,
+  ]);
 
   const markAs = useCallback(
     async (event: React.FormEvent) => {
-      if (
-        selectedModerations.length > 0 &&
-        !isNilOrError(moderations) &&
-        moderationStatus &&
-        !processing
-      ) {
+      if (selectedModerations.length > 0 && moderationStatus && !processing) {
         event.preventDefault();
         const updatedModerationStatus =
           moderationStatus === 'read' ? 'unread' : 'read';
@@ -425,7 +518,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
         }
       }
     },
-    [selectedModerations, moderations, moderationStatus]
+    [selectedModerations, moderationStatus]
   );
 
   const handleData = (data: InsertConfigurationOptions<ITabItem>) =>
@@ -442,6 +535,27 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
       setModerations(list);
     }
   }, [list, processing]);
+
+  useEffect(() => {
+    if (!processing && !isNilOrError(moderations)) {
+      const moderationsWithFlagRelationship = moderations.filter(
+        (moderation) => moderation.relationships.inappropriate_content_flag
+      );
+      const moderationsWithActiveFlag = moderationsWithFlagRelationship.filter(
+        (moderationWithFlag) => {
+          const flagId = moderationWithFlag.relationships
+            .inappropriate_content_flag?.data.id as string;
+          return activeInappropriateContentFlags
+            .map((activeFlag) => activeFlag.data.id)
+            .includes(flagId);
+        }
+      );
+
+      setModerationsForSelectedTab(
+        selectedTab === 'warnings' ? moderationsWithActiveFlag : moderations
+      );
+    }
+  }, [selectedTab, moderations, moderationsWithActiveFlag]);
 
   useEffect(() => {
     (async () => {
@@ -470,29 +584,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
     })();
   }, [moderations]);
 
-  if (!isNilOrError(moderations)) {
-    const modItemsWithFlagRel = moderations.filter(
-      (moderation) => moderation.relationships.inappropriate_content_flag
-    );
-    const modItemsWithActiveFlag = modItemsWithFlagRel.filter(
-      (moderationWithFlag) => {
-        const flagId = moderationWithFlag.relationships
-          .inappropriate_content_flag?.data.id as string;
-        return activeInappropriateContentFlags
-          .map((activeFlag) => activeFlag.data.id)
-          .includes(flagId);
-      }
-    );
-    const selectedActiveFlags = selectedModerations.filter((moderation) =>
-      activeInappropriateContentFlags
-        .map((flag) => flag.data.id)
-        .includes(
-          moderation.relationships.inappropriate_content_flag?.data.id as string
-        )
-    );
-    const moderationsForSelectedTab =
-      selectedTab === 'warnings' ? moderationsWithActiveFlag : moderations;
-
+  if (!isNilOrError(moderationsForSelectedTab)) {
     return (
       <Container className={className}>
         <PageTitleWrapper>
@@ -507,7 +599,10 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
         </PageTitleWrapper>
 
         <ActionBar>
-          {selectedModerations.length === 0 ? (
+          {(selectedTab === 'warnings'
+            ? selectedModerationsWithActiveFlag
+            : selectedModerations
+          ).length === 0 ? (
             <>
               <Outlet
                 id="app.modules.commercial.moderation.admin.containers.tabs"
@@ -574,13 +669,20 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
                 <StyledCheckbox
                   checked={
                     moderationsForSelectedTab.length > 0 &&
-                    selectedModerations.length ===
-                      moderationsForSelectedTab.length
+                    (selectedTab === 'warnings'
+                      ? selectedModerationsWithActiveFlag
+                      : selectedModerations
+                    ).length === moderationsForSelectedTab.length
                   }
                   indeterminate={
-                    selectedModerations.length > 0 &&
-                    selectedModerations.length <
-                      moderationsForSelectedTab.length
+                    (selectedTab === 'warnings'
+                      ? selectedModerationsWithActiveFlag
+                      : selectedModerations
+                    ).length > 0 &&
+                    (selectedTab === 'warnings'
+                      ? selectedModerationsWithActiveFlag
+                      : selectedModerations
+                    ).length < moderationsForSelectedTab.length
                   }
                   disabled={moderationsForSelectedTab.length === 0}
                   onChange={handleOnSelectAll}
@@ -609,7 +711,9 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
                   moderation={moderationItem}
                   selected={isModerationSelected(
                     moderationItem,
-                    selectedModerations
+                    selectedTab === 'warnings'
+                      ? selectedModerationsWithActiveFlag
+                      : selectedModerations
                   )}
                   onSelect={handleRowOnSelectChange}
                   inappropriateContentFlagId={
