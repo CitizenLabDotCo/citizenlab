@@ -117,9 +117,7 @@ export default function useLeaflet(
       combineLatest(
         leafletMapHoveredMarker$.pipe(startWith(null, null), pairwise()),
         leafletMapSelectedMarker$.pipe(
-          startWith(null, null),
-          pairwise(),
-          tap(([_prevSelectedMarker, selectedMarker]) => {
+          tap((selectedMarker) => {
             markers?.forEach((marker) => {
               const markerId = marker.options['id'] as string;
 
@@ -134,7 +132,9 @@ export default function useLeaflet(
                 }
               }
             });
-          })
+          }),
+          startWith(null, null),
+          pairwise()
         )
       ).subscribe(
         ([
