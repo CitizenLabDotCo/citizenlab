@@ -47,7 +47,10 @@ export default class GetEvents extends React.Component<Props, State> {
           distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
           tap(() => resetOnChange && this.setState({ events: undefined })),
           switchMap(({ projectId }) =>
-            projectId ? eventsStream(projectId).observable : of(null)
+            projectId
+              ? eventsStream({ queryParameters: { project_id: projectId } })
+                  .observable
+              : of(null)
           )
         )
         .subscribe((events) =>
