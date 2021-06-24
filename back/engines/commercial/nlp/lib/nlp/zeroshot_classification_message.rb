@@ -3,7 +3,7 @@
 require 'json'
 
 module NLP
-  module ZeroshotClassificationMessage
+  class ZeroshotClassificationMessage
     attr_reader :payload
 
     def initialize(payload)
