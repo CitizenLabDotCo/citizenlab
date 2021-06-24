@@ -174,12 +174,6 @@ const IdeaMapCard = memo<Props>(
           type: 'idea',
         });
       }
-
-      if (!smallerThanMaxTablet && !isNilOrError(ideaMarker)) {
-        const lng = ideaMarker.attributes.location_point_geojson.coordinates[0];
-        const lat = ideaMarker.attributes.location_point_geojson.coordinates[1];
-        setLeafletMapCenter([lat, lng]);
-      }
     };
 
     const handleOnKeyPress = (event: React.FormEvent) => {

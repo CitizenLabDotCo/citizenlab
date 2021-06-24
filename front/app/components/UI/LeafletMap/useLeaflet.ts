@@ -95,7 +95,7 @@ export default function useLeaflet(
   const [_tileLayer, setTileLayer] = useState<L.Layer | null>(null);
   const [_layers, setLayers] = useState<L.GeoJSON[] | null>(null);
   const [
-    _markerClusterGroup,
+    markerClusterGroup,
     setMarkerClusterGroup,
   ] = useState<L.MarkerClusterGroup | null>(null);
   const [_layersControl, setLayersControl] = useState<L.Control.Layers | null>(
@@ -124,10 +124,14 @@ export default function useLeaflet(
               const markerId = marker.options['id'] as string;
 
               if (markerId === selectedMarker) {
-                const { lat, lng } = marker.getLatLng();
                 const isMarkerHiddenBehindCluster = !map?.hasLayer(marker);
-                isMarkerHiddenBehindCluster && setLeafletMapZoom(16);
-                setLeafletMapCenter([lat, lng]);
+
+                if (isMarkerHiddenBehindCluster) {
+                  markerClusterGroup?.zoomToShowLayer(marker);
+                } else {
+                  const { lat, lng } = marker.getLatLng();
+                  setLeafletMapCenter([lat, lng]);
+                }
               }
             });
           })
@@ -162,7 +166,7 @@ export default function useLeaflet(
       subscriptions.forEach((subscription) => subscription.unsubscribe());
     };
   };
-  useEffect(markerEvents, [markers, map]);
+  useEffect(markerEvents, [markers, map, markerClusterGroup]);
 
   const mapEvents = () => {
     const subscriptions = [
