@@ -117,43 +117,45 @@ export default function useLeaflet(
       combineLatest(
         leafletMapHoveredMarker$.pipe(startWith(null, null), pairwise()),
         leafletMapSelectedMarker$.pipe(
-          tap((selectedMarker) => {
-            markers?.forEach((marker) => {
-              const markerId = marker.options['id'] as string;
+          tap((selectedMarkerId) => {
+            const selectedMarker = markers?.find(
+              (marker) => marker.options['id'] === selectedMarkerId
+            );
 
-              if (markerId === selectedMarker) {
-                const isMarkerHiddenBehindCluster = !map?.hasLayer(marker);
+            if (selectedMarker) {
+              const isMarkerHiddenBehindCluster = !map?.hasLayer(
+                selectedMarker
+              );
 
-                if (isMarkerHiddenBehindCluster) {
-                  markerClusterGroup?.zoomToShowLayer(marker);
-                } else {
-                  const { lat, lng } = marker.getLatLng();
-                  setLeafletMapCenter([lat, lng]);
-                }
+              if (isMarkerHiddenBehindCluster) {
+                markerClusterGroup?.zoomToShowLayer(selectedMarker);
+              } else {
+                const { lat, lng } = selectedMarker.getLatLng();
+                setLeafletMapCenter([lat, lng]);
               }
-            });
+            }
           }),
           startWith(null, null),
           pairwise()
         )
       ).subscribe(
         ([
-          [prevHoveredMarker, hoveredMarker],
-          [prevSelectedMarker, selectedMarker],
+          [prevHoveredMarkerId, hoveredMarkerId],
+          [prevSelectedMarkerId, selectedMarkerId],
         ]) => {
           markers?.forEach((marker) => {
             const markerId = marker.options['id'] as string;
 
-            if (markerId === selectedMarker) {
+            if (markerId === selectedMarkerId) {
               marker.setIcon(markerActiveIcon)?.setZIndexOffset(999);
             } else if (
-              markerId === hoveredMarker &&
-              hoveredMarker !== selectedMarker
+              markerId === hoveredMarkerId &&
+              hoveredMarkerId !== selectedMarkerId
             ) {
               marker.setIcon(markerHoverIcon)?.setZIndexOffset(999);
             } else if (
-              markerId === prevHoveredMarker ||
-              markerId === prevSelectedMarker
+              markerId === prevHoveredMarkerId ||
+              markerId === prevSelectedMarkerId
             ) {
               marker.setIcon(markerIcon)?.setZIndexOffset(0);
             }
