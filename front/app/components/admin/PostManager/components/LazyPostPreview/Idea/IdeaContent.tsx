@@ -41,6 +41,9 @@ import GetPermission, {
   GetPermissionChildProps,
 } from 'resources/GetPermission';
 
+// utils
+import { getAddressOrFallbackDMS } from 'utils/map';
+
 // i18n
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
@@ -227,7 +230,10 @@ export class IdeaContent extends PureComponent<
           ? get(ideaImages[0], 'attributes.versions.large', null)
           : null;
       const ideaGeoPosition = idea.attributes.location_point_geojson || null;
-      const ideaAddress = idea.attributes.location_description || null;
+      const ideaAddress = getAddressOrFallbackDMS(
+        idea.attributes.location_description,
+        idea.attributes.location_point_geojson
+      );
       // AuthorId can be null if user has been deleted
       const authorId = idea.relationships.author.data?.id || null;
       const proposedBudget = idea.attributes.proposed_budget;

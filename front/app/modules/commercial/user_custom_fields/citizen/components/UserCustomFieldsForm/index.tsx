@@ -127,9 +127,7 @@ class UserCustomFieldsForm extends PureComponent<
   componentDidMount() {
     this.subscriptions = [
       eventEmitter.observeEvent('customFieldsSubmitEvent').subscribe(() => {
-        if (this.submitbuttonElement) {
-          this.submitbuttonElement?.click?.();
-        }
+        this.submitbuttonElement?.click?.();
       }),
     ];
 
