@@ -34,7 +34,7 @@ export interface IInappropriateContentFlag {
 const apiEndpoint = `${API_PATH}/inappropriate_content_flags`;
 
 export function removeInappropriateContentFlag(flagId: string) {
-  return streams.delete(`${apiEndpoint}/${flagId}/mark_as_deleted`, flagId);
+  return streams.update(`${apiEndpoint}/${flagId}/mark_as_deleted`, flagId, {});
 }
 
 export function inappropriateContentFlagByIdStream(flagId: string) {

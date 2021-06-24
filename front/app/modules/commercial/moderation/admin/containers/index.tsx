@@ -356,7 +356,16 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
 
   const removeFlags = useCallback(async () => {
     if (activeInappropriateContentFlags.length > 0 && !processing) {
-      const promises = activeInappropriateContentFlags.map((flag) => {
+      const selectedActiveInappropriateContentFlags = selectedModerations.map(
+        (mod) => mod.relationships.inappropriate_content_flag?.data.id
+      );
+      const selectedActiveFlags = activeInappropriateContentFlags.filter(
+        (flag) => {
+          return selectedActiveInappropriateContentFlags.includes(flag.data.id);
+        }
+      );
+
+      const promises = selectedActiveFlags.map((flag) => {
         const flagId = flag.data.id;
         return removeInappropriateContentFlag(flagId);
       });
