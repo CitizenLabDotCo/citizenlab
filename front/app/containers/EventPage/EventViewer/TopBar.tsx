@@ -13,7 +13,7 @@ import filterIcon from './FilterIcon.svg';
 const Container = styled.div`
   display: flex;
   justify-content: space-between;
-  padding-bottom: 20px;
+  padding-bottom: 14px;
   border-bottom: solid 1px #ccc;
 `;
 

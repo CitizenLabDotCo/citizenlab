@@ -17,7 +17,7 @@ import { sliceEventsToPage, getNumberOfPages } from './eventViewerUtils';
 const PlaceHolder = styled.div`
   width: 100%;
   height: 237px;
-  margin-top: 33px;
+  margin-top: 39px;
   padding: 30px;
   font-size: 25px;
   border: 1px dotted;
@@ -26,7 +26,7 @@ const PlaceHolder = styled.div`
 const NoEventsContainer = styled.figure`
   position: relative;
   width: 100%;
-  margin: 78px 0px;
+  margin: 78px 0px 216px;
 `;
 
 const NoEventsIllustration = styled.img`
@@ -45,7 +45,7 @@ const NoEventsText = styled.figcaption`
 
 const StyledPagination = styled(Pagination)`
   justify-content: center;
-  margin: 67px auto 0px;
+  margin: 36px auto 0px;
 `;
 
 interface Props {

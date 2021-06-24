@@ -19,7 +19,7 @@ const StyledContentContainer = styled(ContentContainer)`
 `;
 
 const EventViewerWithTopMargin = styled(EventViewer)`
-  margin-top: 78px;
+  margin-top: 135px;
 `;
 
 const EventPage = () => {
