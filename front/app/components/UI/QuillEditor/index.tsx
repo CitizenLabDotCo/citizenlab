@@ -424,7 +424,7 @@ const QuillEditor = memo<Props & InjectedIntlProps>(
         (!prevEditor && editor && value) ||
         (prevEditor && editor && value !== contentRef.current)
       ) {
-        const delta = editor.clipboard.convert(value);
+        const delta = editor.clipboard.convert(value as any);
         editor.setContents(delta);
         contentRef.current = editor.root.innerHTML;
       }
