@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_18_06_161354) do
+ActiveRecord::Schema.define(version: 2021_06_24_163536) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -500,6 +500,17 @@ ActiveRecord::Schema.define(version: 2021_18_06_161354) do
     t.index ["category_id", "input_id", "input_type"], name: "index_single_category_assignment", unique: true
     t.index ["category_id"], name: "index_insights_category_assignments_on_category_id"
     t.index ["input_type", "input_id"], name: "index_insights_category_assignments_on_input_type_and_input_id"
+  end
+
+  create_table "insights_processed_flags", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "input_type", null: false
+    t.uuid "input_id", null: false
+    t.uuid "view_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["input_id", "input_type", "view_id"], name: "index_single_processed_flags", unique: true
+    t.index ["input_type", "input_id"], name: "index_processed_flags_on_input"
+    t.index ["view_id"], name: "index_insights_processed_flags_on_view_id"
   end
 
   create_table "insights_views", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

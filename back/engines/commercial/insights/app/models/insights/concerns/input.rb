@@ -18,6 +18,13 @@ module Insights
             class_name: 'Insights::ZeroshotClassificationTaskInput',
             dependent: :destroy
           )
+
+          has_many(
+            :insights_processed_flags,
+            as: :input,
+            class_name: 'Insights::ProcessedFlag',
+            dependent: :destroy
+          )
         end
       end
 
