@@ -10,7 +10,6 @@ import { Icon } from 'cl2-component-library';
 import eventEmitter from 'utils/eventEmitter';
 import { setIdeaMapCardSelected } from './events';
 import {
-  setLeafletMapCenter,
   setLeafletMapHoveredMarker,
   leafletMapHoveredMarker$,
 } from 'components/UI/LeafletMap/events';
