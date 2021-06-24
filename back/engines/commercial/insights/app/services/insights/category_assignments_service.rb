@@ -33,6 +33,7 @@ module Insights
       assignments = CategoryAssignment.where(input: inputs, category: categories)
       nb_affected = assignments.delete_all
       touch_views_of(categories)
+      update_counts_of(categories)
       nb_affected
     end
 
@@ -57,6 +58,7 @@ module Insights
 
       result = CategoryAssignment.upsert_all(assignments_attrs, unique_by: %i[category_id input_id input_type])
       touch_views_of(categories)
+      update_counts_of(categories)
       result.pluck('id')
     end
 
@@ -80,6 +82,7 @@ module Insights
 
       result = CategoryAssignment.insert_all(assignments_attrs)
       touch_views_of(categories)
+      update_counts_of(categories)
       result.pluck('id')
     end
 
@@ -116,6 +119,11 @@ module Insights
     def touch_views_of(categories)
       view_ids = categories.pluck(:view_id)
       Insights::View.find(view_ids).each(&:touch)
+    end
+
+    # Updating 'inputs_count' of categories.
+    def update_counts_of(categories)
+      categories.each { |cat| cat.update({ inputs_count: CategoryAssignment.where(category_id: cat.id).size })}
     end
   end
 end
