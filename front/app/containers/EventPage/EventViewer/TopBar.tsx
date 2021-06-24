@@ -41,7 +41,7 @@ const FilterIcon = styled.img`
 `;
 
 interface Props {
-  title: string;
+  title: JSX.Element;
 }
 
 const TopBar = memo<Props>(({ title }) => {

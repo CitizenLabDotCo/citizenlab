@@ -1,10 +1,13 @@
 import React from 'react';
 
+import messages from './messages';
+
 // components
 import ContentContainer from 'components/ContentContainer';
 import SectionContainer from 'components/SectionContainer';
 import { Helmet } from 'react-helmet';
 import EventViewer from './EventViewer';
+import { FormattedMessage } from 'utils/cl-intl';
 
 // styling
 import styled from 'styled-components';
@@ -34,8 +37,19 @@ const EventPage = () => {
 
       <SectionContainer>
         <StyledContentContainer>
-          <EventViewer title="Upcoming events" events={upcomingEvents} />
-          <EventViewerWithTopMargin title="Past events" events={pastEvents} />
+          <EventViewer
+            title={<FormattedMessage {...messages.upcomingEvents} />}
+            fallbackMessage={
+              <FormattedMessage {...messages.noUpcomingEvents} />
+            }
+            events={upcomingEvents}
+          />
+
+          <EventViewerWithTopMargin
+            title={<FormattedMessage {...messages.pastEvents} />}
+            fallbackMessage={<FormattedMessage {...messages.noPastEvents} />}
+            events={pastEvents}
+          />
         </StyledContentContainer>
       </SectionContainer>
     </>

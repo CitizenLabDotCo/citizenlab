@@ -49,7 +49,8 @@ const StyledPagination = styled(Pagination)`
 `;
 
 interface Props {
-  title: string;
+  title: JSX.Element;
+  fallbackMessage: JSX.Element;
   events: number[];
   className?: string;
 }
@@ -58,7 +59,7 @@ const EVENTS_PER_PAGE = 10;
 
 // const EventViewer = memo<Props>(({ title, events, className }) => {
 const EventViewer = memo<Props>((props) => {
-  const { title, events, className } = props;
+  const { title, events, className, fallbackMessage } = props;
 
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [visibleEvents, setVisibleEvents] = useState<number[]>([]);
@@ -78,7 +79,7 @@ const EventViewer = memo<Props>((props) => {
         <NoEventsContainer>
           <NoEventsIllustration src={noEventsIllustration} />
 
-          <NoEventsText>There are no upcoming events</NoEventsText>
+          <NoEventsText>{fallbackMessage}</NoEventsText>
         </NoEventsContainer>
       )}
 
