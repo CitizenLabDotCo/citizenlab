@@ -80,6 +80,33 @@ describe Insights::InputsFinder do
       end
     end
 
+    context 'when using the processed filter' do
+      let!(:inputs) { create_list(:idea, 3, project: view.scope) }
+
+      before do
+        inputs.take(2).each do |input|
+          create(:processed_flag, input: input, view: view)
+        end
+
+      end
+
+      it 'can select only unprocessed inputs' do
+        finder = described_class.new(view, { processed: 'false' })
+        expect(finder.execute).to match(inputs.drop(2))
+      end
+
+      it 'can select only processed inputs' do
+        finder = described_class.new(view, { processed: 'true' })
+        expect(finder.execute).to match(inputs.take(2))
+      end
+
+      it 'can select only processed inputs for this view' do
+        create(:processed_flag, input: inputs[2])
+        finder = described_class.new(view, { processed: 'true' })
+        expect(finder.execute).to match(inputs.take(2))
+      end
+    end
+
     context 'when sorting by approval status' do
       let(:category) { create(:category, view: view) }
       let!(:inputs) { create_list(:idea, 3, project: view.scope) }
