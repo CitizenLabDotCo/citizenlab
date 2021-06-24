@@ -3,8 +3,8 @@
 ## Next release
 
 ### Fixed
-- Map: Show ideas that only have coordinates but no address
-- Map: Don't show 'click on the map to add your input' message when the currently selected phase does not allow idea posting
+- Map: Fix for ideas that only have coordinates but no address not being shown on the map
+- Map: Fix for 'click on the map to add your input' message wrongfully being shown when idea posting is not allowed
 - Sign-up flow: Fix for bug that could cause the browser to freeze when the user tried to complete the custom fields step
 
 ### Changed
