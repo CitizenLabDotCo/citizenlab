@@ -1,15 +1,15 @@
 class UserRoleService
 
-  def moderators_for object
-    case object.class
-    when Idea
-      moderators_for idea.project
-    when Initiative
-      User.admin
-    when Comment
-      moderators_for comment.post
-    when Project
-      User.admin_or_moderator?(project_id)
+  def moderators_for object, scope=User
+    case object.class.name
+    when 'Idea'
+      moderators_for object.project, scope
+    when 'Initiative'
+      scope.admin
+    when 'Comment'
+      moderators_for object.post, scope
+    when 'Project'
+      moderators_for_project object, scope
     end
   end
 

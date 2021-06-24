@@ -5,10 +5,10 @@ module ProjectFolders
         super.or(scope.project_folder_moderator(project.folder_id))
       end
 
-      def moderators_for object
-        case object.class
-        when ProjectFolders::Folder
-          User.project_folder_moderator(object.id)
+      def moderators_for object, scope=::User
+        case object.class.name
+        when 'ProjectFolders::Folder'
+          scope.project_folder_moderator(object.id, scope)
         else
           super
         end
