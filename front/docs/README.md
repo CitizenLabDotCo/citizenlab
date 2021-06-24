@@ -8,6 +8,8 @@
 - Sign-up flow: Fix for bug that could cause the browser to freeze when the user tried to complete the custom fields step
 
 ### Changed
+- Map: When an idea is selected that is hidden behind a cluster the map now zooms in to show that marker
+- Map: Idea marker gets centered on map when clicked
 - Map: Larger idea box on bigger desktop screens (width > 1440 pixels)
 - Idea location: Display idea location in degrees (°) minutes (') seconds ('') when the idea only has coordinates but no address
 - Sign-up flow: Show loading spinner when the user clicks on 'skip this step' in the sign-up custom fields step
