@@ -27,11 +27,11 @@ FactoryBot.define do
     end
 
 
-    factory :moderator do
+    factory :project_moderator do
       transient do
-        project { create(:project) }
+        projects { [create(:project)] }
       end
-      roles { [{type: 'project_moderator', project_id: project.id}] }
+      roles { projects.map(&:id).uniq.map{|id| {type: 'project_moderator', project_id: id}} }
     end
 
     factory :user_with_demographics do

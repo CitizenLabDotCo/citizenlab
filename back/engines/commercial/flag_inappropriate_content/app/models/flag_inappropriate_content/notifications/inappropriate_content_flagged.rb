@@ -8,13 +8,13 @@ module FlagInappropriateContent
       validates :inappropriate_content_flag, presence: true
 
       
-      def self.recipient_ids
-        User.admin.ids
+      def self.recipient_ids flaggable
+        UserRoleService.new.moderators_for(flaggable).ids
       end
 
       def self.make_notifications_on activity
         flag = activity.item
-        self.recipient_ids.map do |recipient_id|
+        self.recipient_ids(flag.flaggable).map do |recipient_id|
           self.new(
             recipient_id: recipient_id,
             initiating_user_id: activity.user_id,
