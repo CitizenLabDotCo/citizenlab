@@ -556,7 +556,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
 
               <Outlet
                 id="app.modules.commercial.moderation.admin.containers.actionbar.buttons"
-                activeFlagsCount={selectedActiveFlags.length}
+                selectedActiveFlagCount={selectedModerationsWithActiveFlag.length}
                 processing={processing}
                 onClick={removeFlags}
               />
