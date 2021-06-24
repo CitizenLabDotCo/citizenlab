@@ -15,15 +15,16 @@ const StyledContentContainer = styled(ContentContainer)`
   margin-right: auto;
 `;
 
-const MarginAdder = styled.div`
-  margin-top: 60px;
+const EventViewerWithTopMargin = styled(EventViewer)`
+  margin-top: 78px;
 `;
 
 const EventPage = () => {
-  const upcomingEvents = [];
-  const pastEvents = Array(10)
+  const upcomingEvents = Array(15)
     .fill(0)
     .map((_, i) => i + 1);
+
+  const pastEvents = [];
 
   return (
     <>
@@ -34,10 +35,7 @@ const EventPage = () => {
       <SectionContainer>
         <StyledContentContainer>
           <EventViewer title="Upcoming events" events={upcomingEvents} />
-
-          <MarginAdder>
-            <EventViewer title="Past events" events={pastEvents} />
-          </MarginAdder>
+          <EventViewerWithTopMargin title="Past events" events={pastEvents} />
         </StyledContentContainer>
       </SectionContainer>
     </>

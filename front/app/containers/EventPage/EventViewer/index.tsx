@@ -1,7 +1,8 @@
-import React, { memo } from 'react';
+import React, { memo, useState, useEffect } from 'react';
 
 // components
 import TopBar from './TopBar';
+import Pagination from 'components/Pagination';
 
 // svg
 import noEventsIllustration from './NoEventsPicture.svg';
@@ -10,17 +11,22 @@ import noEventsIllustration from './NoEventsPicture.svg';
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 
+// other
+import { sliceEventsToPage, getNumberOfPages } from './eventViewerUtils';
+
 const PlaceHolder = styled.div`
-  background-color: green;
   width: 100%;
   height: 237px;
   margin-top: 33px;
+  padding: 30px;
+  font-size: 25px;
+  border: 1px dotted;
 `;
 
 const NoEventsContainer = styled.figure`
   position: relative;
   width: 100%;
-  margin: 78px 0px 125px 0px;
+  margin: 78px 0px;
 `;
 
 const NoEventsIllustration = styled.img`
@@ -31,24 +37,42 @@ const NoEventsIllustration = styled.img`
 `;
 
 const NoEventsText = styled.figcaption`
-  margin: 37px auto 0px auto;
+  margin: 37px auto 0px;
   text-align: center;
   color: ${colors.label};
   font-size: ${fontSizes.xl}px;
 `;
 
+const StyledPagination = styled(Pagination)`
+  justify-content: center;
+  margin: 67px auto 0px;
+`;
+
 interface Props {
   title: string;
   events: number[];
+  className?: string;
 }
 
-const EventViewer = memo<Props>(({ title, events }) => {
+const EVENTS_PER_PAGE = 10;
+
+// const EventViewer = memo<Props>(({ title, events, className }) => {
+const EventViewer = memo<Props>((props) => {
+  const { title, events, className } = props;
+
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [visibleEvents, setVisibleEvents] = useState<number[]>([]);
+
+  useEffect(() => {
+    setVisibleEvents(sliceEventsToPage(events, currentPage, EVENTS_PER_PAGE));
+  }, [events, currentPage]);
+
   return (
-    <>
+    <div className={className}>
       <TopBar title={title} />
 
-      {events.length > 0 &&
-        events.map((e) => <PlaceHolder key={e}>{e}</PlaceHolder>)}
+      {visibleEvents.length > 0 &&
+        visibleEvents.map((e) => <PlaceHolder key={e}>{e}</PlaceHolder>)}
 
       {events.length === 0 && (
         <NoEventsContainer>
@@ -57,7 +81,16 @@ const EventViewer = memo<Props>(({ title, events }) => {
           <NoEventsText>There are no upcoming events</NoEventsText>
         </NoEventsContainer>
       )}
-    </>
+
+      {events.length > 10 && (
+        <StyledPagination
+          currentPage={currentPage}
+          totalPages={getNumberOfPages(events.length, EVENTS_PER_PAGE)}
+          loadPage={setCurrentPage}
+          useColorsTheme
+        />
+      )}
+    </div>
   );
 });
 

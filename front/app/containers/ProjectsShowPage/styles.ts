@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { fontSizes, media, isRtl } from 'utils/styleUtils';
+import { fontSizes, isRtl } from 'utils/styleUtils';
 
 export const maxPageWidth = 1166;
 

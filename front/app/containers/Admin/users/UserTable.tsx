@@ -6,7 +6,7 @@ import { includes, get, isArray } from 'lodash-es';
 // Components
 import Table from 'components/UI/Table';
 import SortableTableHeaderCell from 'components/UI/Table/SortableTableHeaderCell';
-import Pagination from 'components/admin/Pagination/Pagination';
+import Pagination from 'components/Pagination';
 import UserTableRow from './UserTableRow';
 
 // Services
