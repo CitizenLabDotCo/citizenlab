@@ -1,7 +1,16 @@
 # Changelog 
 
 ## Next release
-/
+
+### Fixed
+- Map: Show ideas that only have coordinates but no address
+- Map: Don't show 'click on the map to add your input' message when the currently selected phase does not allow idea posting
+- Sign-up flow: Fix for bug that could cause the browser to freeze when the user tried to complete the custom fields step
+
+### Changed
+- Map: Larger idea box on bigger desktop screens (width > 1440 pixels)
+- Idea location: Display idea location in degrees (°) minutes (') seconds ('') when the idea only has coordinates but no address
+- Sign-up flow: Show loading spinner when the user clicks on 'skip this step' in the sign-up custom fields step
 
 ## 2021-06-22
 
