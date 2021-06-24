@@ -3,7 +3,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { Observable, of } from 'rxjs';
 import { IEventData, IEvents, eventsStream } from 'services/events';
 
-export default function useProject(projectId?: string | null) {
+export default function useEvents(projectId?: string | null) {
   const [events, setEvents] = useState<IEventData[] | undefined | null | Error>(
     undefined
   );
