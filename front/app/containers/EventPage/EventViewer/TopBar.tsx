@@ -7,6 +7,9 @@ import ProjectFilterDropdown from 'components/ProjectFilterDropdown';
 import styled from 'styled-components';
 import { media, fontSizes } from 'utils/styleUtils';
 
+// svg
+import filterIcon from './FilterIcon.svg';
+
 const Container = styled.div`
   display: flex;
   justify-content: space-between;
@@ -33,6 +36,10 @@ const ProjectFilterDropdownPositioner = styled.div`
   margin-top: auto;
 `;
 
+const FilterIcon = styled.img`
+  transform: translate(0, -1.5px);
+`;
+
 interface Props {
   title: string;
 }
@@ -43,6 +50,7 @@ const TopBar = memo<Props>(({ title }) => {
       <Title>{title}</Title>
 
       <ProjectFilterDropdownPositioner>
+        <FilterIcon src={filterIcon} />
         <ProjectFilterDropdown title="Projects" onChange={console.log} />
       </ProjectFilterDropdownPositioner>
     </Container>
