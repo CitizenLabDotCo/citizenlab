@@ -42,18 +42,21 @@ module Insights
       @nlp_client = nlp_client || NLP::API.new
     end
 
+    # @return[Array<Insights::ZeroshotClassificationTask>]
     def classify(inputs, categories)
       documents = documents(inputs)
       return [] unless documents.any?
 
-      nlp_client.zeroshot_classification(
+      response = nlp_client.zeroshot_classification(
         candidate_labels: candidate_labels(categories),
         documents: documents,
         tenant_id: AppConfiguration.instance.id,
         locale: nil # TODO: the nlp service requires it but do not use it.
       )
-    end
 
+      tasks_infos = response['batches'] # It should look like [{'task_id':..., 'doc_ids':..., 'tags_ids':...}, ...]
+      create_tasks(tasks_infos)
+    end
 
     # @return [Array<Hash>]
     def documents(inputs)
@@ -75,6 +78,20 @@ module Insights
     # @return [Array]
     def candidate_labels(categories)
       categories.map { |c| { text: c.name, label_id: c.id } }
+    end
+
+    # @param [Array<Hash>] tasks_infos
+    # @return [Array<Insights::ZeroshotClassificationTask>]
+    def create_tasks(tasks_infos)
+      task_service = ZeroshotClassificationTasksService.new
+      tasks_infos.map do |task_infos|
+        # TODO: optimize the nb of DB queries
+        task_service.create_task(
+          task_infos['task_id'],
+          Idea.where(id: task_infos['doc_ids']),
+          Category.where(id: task_infos['tags_ids'])
+        )
+      end
     end
   end
 end
