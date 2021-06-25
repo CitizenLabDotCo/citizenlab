@@ -31,6 +31,10 @@ module Insights
       def assignments(view)
         insights_category_assignments.where(view: view)
       end
+
+      def processed(view)
+        insights_processed_flags.where(view: view).length == 1
+      end
     end
   end
 end

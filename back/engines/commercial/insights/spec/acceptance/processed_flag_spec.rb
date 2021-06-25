@@ -51,7 +51,14 @@ resource 'Processed flag for view inputs' do
       example_request 'flags the input as processed' do
         expect(status).to eq(201)
 
-        expect(input.insights_processed_flags.where(view_id: view_id).length).to eq(1)
+        expect(input.processed(view)).to eq(true)
+      end
+
+      example 'errors if the input was already processed' do
+        create(:processed_flag, input: input, view: view)
+
+        do_request
+        expect(status).to eq(422)
       end
 
       include_examples 'not-found requests'

@@ -19,8 +19,8 @@ module Insights
       CategoryAssignment.find(ids)
     end
 
-    def add_assignments(input, categories)
-      ids = add_assignments_batch([input], categories)
+    def add_assignments(input, categories, set_processed = true)
+      ids = add_assignments_batch([input], categories, set_processed)
       CategoryAssignment.find(ids)
     end
 
@@ -48,7 +48,7 @@ module Insights
     # @param [Enumerable<Ideas>] inputs
     # @param [Enumerable<Insights::Category>] categories
     # @return [Array<String>] assignment identifiers
-    def add_assignments_batch(inputs, categories)
+    def add_assignments_batch(inputs, categories, set_processed = true)
       validate_inputs!(inputs)
 
       assignments_attrs = inputs.to_a.product(categories)
@@ -59,7 +59,7 @@ module Insights
       result = CategoryAssignment.upsert_all(assignments_attrs, unique_by: %i[category_id input_id input_type])
       touch_views_of(categories)
       update_counts_of(categories)
-      set_processed(inputs, categories)
+      set_processed(inputs, categories) if set_processed
       result.pluck('id')
     end
 

@@ -5,7 +5,7 @@ require 'rails_helper'
 describe Insights::CategoryAssignmentsService do
   subject(:service) { described_class.new }
 
-  describe '#add_assignments!' do
+  describe '#add_assignments' do
     it 'raises an error for invalid input types' do
       input = create(:comment) # a comment is not valid input type
       expect { service.add_assignments(input, []) }.to raise_error(ArgumentError)
@@ -138,7 +138,7 @@ describe Insights::CategoryAssignmentsService do
 
       aggregate_failures 'checking inputs processed flags' do
         inputs.each { |input|
-          expect(input.insights_processed_flags.where(view_id: view_id).length).to eq(1)
+          expect(input.processed(view)).to eq(true)
         }
       end
     end
@@ -192,7 +192,7 @@ describe Insights::CategoryAssignmentsService do
 
       aggregate_failures 'checking inputs processed flags' do
         inputs.each { |input|
-          expect(input.insights_processed_flags.where(view_id: view_id).length).to eq(0)
+          expect(input.processed(view)).to eq(false)
         }
       end
     end
