@@ -57,46 +57,45 @@ interface Props {
 
 const EVENTS_PER_PAGE = 10;
 
-// const EventViewer = memo<Props>(({ title, events, className }) => {
-const EventViewer = memo<Props>((props) => {
-  const { title, events, className, fallbackMessage } = props;
+const EventViewer = memo<Props>(
+  ({ title, events, className, fallbackMessage }) => {
+    const [currentPage, setCurrentPage] = useState<number>(1);
+    const [visibleEvents, setVisibleEvents] = useState<number[]>([]);
 
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const [visibleEvents, setVisibleEvents] = useState<number[]>([]);
+    useEffect(() => {
+      setVisibleEvents(sliceEventsToPage(events, currentPage, EVENTS_PER_PAGE));
+    }, [events, currentPage]);
 
-  useEffect(() => {
-    setVisibleEvents(sliceEventsToPage(events, currentPage, EVENTS_PER_PAGE));
-  }, [events, currentPage]);
+    return (
+      <div className={className}>
+        <TopBar title={title} />
 
-  return (
-    <div className={className}>
-      <TopBar title={title} />
+        {visibleEvents.length > 0 &&
+          visibleEvents.map((e, i) => (
+            <PlaceHolder key={e} first={i === 0}>
+              {e}
+            </PlaceHolder>
+          ))}
 
-      {visibleEvents.length > 0 &&
-        visibleEvents.map((e, i) => (
-          <PlaceHolder key={e} first={i === 0}>
-            {e}
-          </PlaceHolder>
-        ))}
+        {events.length === 0 && (
+          <NoEventsContainer>
+            <NoEventsIllustration src={noEventsIllustration} />
 
-      {events.length === 0 && (
-        <NoEventsContainer>
-          <NoEventsIllustration src={noEventsIllustration} />
+            <NoEventsText>{fallbackMessage}</NoEventsText>
+          </NoEventsContainer>
+        )}
 
-          <NoEventsText>{fallbackMessage}</NoEventsText>
-        </NoEventsContainer>
-      )}
-
-      {events.length > 10 && (
-        <StyledPagination
-          currentPage={currentPage}
-          totalPages={getNumberOfPages(events.length, EVENTS_PER_PAGE)}
-          loadPage={setCurrentPage}
-          useColorsTheme
-        />
-      )}
-    </div>
-  );
-});
+        {events.length > 10 && (
+          <StyledPagination
+            currentPage={currentPage}
+            totalPages={getNumberOfPages(events.length, EVENTS_PER_PAGE)}
+            loadPage={setCurrentPage}
+            useColorsTheme
+          />
+        )}
+      </div>
+    );
+  }
+);
 
 export default EventViewer;
