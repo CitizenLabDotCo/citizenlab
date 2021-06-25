@@ -15,7 +15,9 @@ resource "Events" do
   end
 
   get "web_api/v1/events" do
-    parameter :project_ids, "The ids of the project to filter events by", required: true, type: :array
+    parameter :project_ids, "The ids of the project to filter events by", type: :array
+    parameter :start_at_lt, "Filter by maximum start at", type: :string
+    parameter :start_at_gteq, "Filter by minimum start at", type: :string
 
     with_options scope: :page do
       parameter :number, "Page number"
