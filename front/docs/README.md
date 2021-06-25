@@ -6,6 +6,7 @@
 - Map: Fix for ideas that only have coordinates but no address not being shown on the map
 - Map: Fix for 'click on the map to add your input' message wrongfully being shown when idea posting is not allowed
 - Sign-up flow: Fix for bug that could cause the browser to freeze when the user tried to complete the custom fields step
+- Project description: Fix for numbered and unnumbered lists being cut off
 
 ### Changed
 - Map: When an idea is selected that is hidden behind a cluster the map now zooms in to show that marker
