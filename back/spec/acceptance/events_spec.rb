@@ -15,7 +15,7 @@ resource "Events" do
   end
 
   get "web_api/v1/events" do
-    parameter :project_id, "The id of the project to filter events by", required: true
+    parameter :project_ids, "The ids of the project to filter events by", required: true, type: :array
 
     with_options scope: :page do
       parameter :number, "Page number"
