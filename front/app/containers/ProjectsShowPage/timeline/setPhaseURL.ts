@@ -1,24 +1,15 @@
 import { IPhaseData } from 'services/phases';
 import { IProjectData } from 'services/projects';
 import { Locale } from 'typings';
-import { isNilOrError } from 'utils/helperUtils';
 
 export default function setPhaseUrl(
-  phase: IPhaseData | null,
-  phases: Error | IPhaseData[] | null | undefined,
-  project: IProjectData | null | undefined,
-  locale: Error | Locale | null | undefined
+  selectedPhaseId: string,
+  phases: IPhaseData[],
+  project: IProjectData,
+  locale: Locale
 ) {
-  if (
-    phase === null ||
-    isNilOrError(phases) ||
-    !project ||
-    isNilOrError(locale)
-  ) {
-    return;
-  }
-
-  const phaseNumber = phases.findIndex((p) => p.id === phase.id) + 1;
+  const phaseNumber =
+    phases.findIndex((phase) => selectedPhaseId === phase.id) + 1;
   const projectSlug = project.attributes.slug;
 
   const url = `/${locale}/projects/${projectSlug}/${phaseNumber}`;

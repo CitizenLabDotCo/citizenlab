@@ -152,7 +152,7 @@ const ProjectsShowPage = memo<Props>(({ project }) => {
 });
 
 const ProjectsShowPageWrapper = memo<WithRouterProps>(
-  ({ location: { pathname }, params: { slug, phase: phaseParam } }) => {
+  ({ location: { pathname }, params: { slug, phaseNumber } }) => {
     const project = useProject({ projectSlug: slug });
     const phases = usePhases(project?.id);
 
@@ -173,7 +173,7 @@ const ProjectsShowPageWrapper = memo<WithRouterProps>(
       processType === 'timeline' &&
       urlSegments.length === 4 &&
       !isNilOrError(phases) &&
-      isValidPhase(phaseParam, phases)
+      isValidPhase(phaseNumber, phases)
     ) {
       // If this is a timeline project and a valid phase param was passed: continue
       return <ProjectsShowPage project={project} />;

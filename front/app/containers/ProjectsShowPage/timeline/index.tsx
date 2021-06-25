@@ -88,7 +88,7 @@ interface Props {
 }
 
 const ProjectTimelineContainer = memo<Props & WithRouterProps>(
-  ({ projectId, className, params: { phase: phaseParam } }) => {
+  ({ projectId, className, params: { phaseNumber } }) => {
     const project = useProject({ projectId });
     const phases = usePhases(projectId);
     const locale = useLocale();
@@ -108,7 +108,14 @@ const ProjectTimelineContainer = memo<Props & WithRouterProps>(
     }, []);
 
     useEffect(() => {
-      setPhaseURL(selectedPhase, phases, project, locale);
+      if (
+        selectedPhase !== null &&
+        !isNilOrError(phases) &&
+        project &&
+        !isNilOrError(locale)
+      ) {
+        setPhaseURL(selectedPhase.id, phases, project, locale);
+      }
     }, [selectedPhase]);
 
     useEffect(() => {
@@ -117,9 +124,8 @@ const ProjectTimelineContainer = memo<Props & WithRouterProps>(
 
         // if a phase parameter was provided, and it is valid, we set that as phase.
         // otherwise, use the most logical phase
-        if (isValidPhase(phaseParam, phases)) {
-          const phaseNumber = Number(phaseParam);
-          const phaseIndex = phaseNumber - 1;
+        if (isValidPhase(phaseNumber, phases)) {
+          const phaseIndex = Number(phaseNumber) - 1;
           selectPhase(phases[phaseIndex]);
         } else if (latestRelevantPhase) {
           selectPhase(latestRelevantPhase);

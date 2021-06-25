@@ -196,7 +196,7 @@ export default function createRoutes() {
           },
           childRoutes: [
             {
-              path: ':phase',
+              path: ':phaseNumber',
               name: 'Project page: specific phase',
               component: Loadable({
                 loader: () => import('containers/ProjectsShowPage'),
