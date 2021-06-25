@@ -35,7 +35,11 @@ const configuration: ModuleConfiguration = {
       return null;
     },
     'app.modules.commercial.moderation.admin.containers.tabs': (props) => {
-      return <ActivityTab {...props} />;
+      return (
+        <FeatureFlag name="flag_inappropriate_content">
+          <ActivityTab {...props} />
+        </FeatureFlag>
+      );
     },
     'app.components.NotificationMenu.Notification': ({ notification }) => (
       <FeatureFlag name="flag_inappropriate_content">
