@@ -15,9 +15,6 @@ module Insights
       end
 
       private
-      def flagging_service
-        @flagging_service ||= Insights::ProcessedFlagService.new
-      end
 
       # @return [Insights::View]
       def view

@@ -127,9 +127,9 @@ module Insights
       categories.each { |cat| cat.update({ inputs_count: CategoryAssignment.where(category_id: cat.id).size })}
     end
 
-    # Sets a processed_flag for all the inputs for the views of these categories (hopefully one one).
+    # Sets a processed_flag for all the inputs in the view corresponding to the categories
     def set_processed(inputs, categories)
-      processed_flag_attributes = inputs.to_a.product(categories) # yields all pairs of input x view_ids
+      processed_flag_attributes = inputs.to_a.product(categories) # yields all pairs of input x category
                                   .map { |input, category|
                                     {
                                       view_id: category.view.id,
