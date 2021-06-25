@@ -2,35 +2,37 @@
 
 module Insights
   class CategorySuggestionsService
-    
     class << self
-
       # @param [NLP::ZeroshotClassificationMessage] zsc_message
+      # @return [Array<Insights::CategoryAssignment>]
       def save_suggestion(zsc_message)
         return unless zsc_message.success?
 
         Tenant.find(zsc_message.tenant_id).switch do
-          zsc_task = ZeroshotClassificationTask.find_by(id: zsc_message.task_id)
-          return unless zsc_task
+          zsc_task = ZeroshotClassificationTask.find_by(task_id: zsc_message.task_id)
+          return [] unless zsc_task
 
-          save_predictions(zsc_message.predictions)
           zsc_task.destroy!
+          save_predictions(zsc_message.predictions)
         end
       end
 
       private
 
       # @param[Array<NLP::ZeroshotClassificationMessage::Prediction>] predictions
+      # @return [Array<Insights::CategoryAssignment>]
       def save_predictions(predictions)
         assignment_service = CategoryAssignmentsService.new
 
-        predictions.group_by(&:document_id).each do |document_id, predictions|
+        new_assignments = predictions.group_by(&:document_id).flat_map do |document_id, predictions|
           input = ::Idea.find(document_id)
           categories = Category.where(id: predictions.map(&:label_id))
           assignment_service.add_suggestions(input, categories)
         rescue ActiveRecord::RecordNotFound
           # Ignore: don't save anything if the input cannot be found.
         end
+
+        new_assignments.to_a # to return an empty array instead of nil
       end
     end
 
