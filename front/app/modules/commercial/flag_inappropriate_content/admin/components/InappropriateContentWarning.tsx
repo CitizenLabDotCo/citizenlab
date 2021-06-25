@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Icon, colors } from 'cl2-component-library';
+import { IconTooltip, colors } from 'cl2-component-library';
 import { isNilOrError } from 'utils/helperUtils';
 
 // services
@@ -10,7 +10,7 @@ import { getFlagType } from '../../utils';
 import useInappropriateContentFlag from '../../hooks/useInappropriateContentFlag';
 
 // i18n
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
@@ -22,12 +22,7 @@ const Container = styled.div`
 const WarningContent = styled.div`
   color: ${colors.clRedError};
   font-weight: bold;
-`;
-
-const WarningIcon = styled(Icon)`
-  color: ${colors.clRedError};
   margin-right: 5px;
-  width: 16px;
 `;
 
 interface Props {
@@ -51,7 +46,6 @@ const InappropriateContentWarning = ({
     if (reasonCode && flagType) {
       return (
         <Container>
-          <WarningIcon name="exclamation-trapezium" />
           <WarningContent>
             {
               {
@@ -65,6 +59,10 @@ const InappropriateContentWarning = ({
               }[flagType]
             }
           </WarningContent>
+          <IconTooltip
+            content={<FormattedMessage {...messages.warningTooltip} />}
+            iconColor={colors.clRedError}
+          />
         </Container>
       );
     }

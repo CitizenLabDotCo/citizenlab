@@ -32,4 +32,10 @@ export default defineMessages({
       'app.modules.commercial.flag_inappropriate_content.admin.components.wrong',
     defaultMessage: 'irrelevant',
   },
+  warningTooltip: {
+    id:
+      'app.modules.commercial.flag_inappropriate_content.admin.components.warningTooltip',
+    defaultMessage:
+      'Not inappropriate? Remove this designation in the Warnings tab.',
+  },
 });
