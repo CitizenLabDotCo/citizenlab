@@ -14,10 +14,10 @@ import { colors, fontSizes } from 'utils/styleUtils';
 // other
 import { sliceEventsToPage, getNumberOfPages } from './eventViewerUtils';
 
-const PlaceHolder = styled.div`
+const PlaceHolder = styled.div<{ first: boolean }>`
   width: 100%;
   height: 237px;
-  margin-top: 39px;
+  margin-top: ${({ first }) => (first ? '29px' : '39px')};
   padding: 30px;
   font-size: 25px;
   border: 1px dotted;
@@ -73,7 +73,11 @@ const EventViewer = memo<Props>((props) => {
       <TopBar title={title} />
 
       {visibleEvents.length > 0 &&
-        visibleEvents.map((e) => <PlaceHolder key={e}>{e}</PlaceHolder>)}
+        visibleEvents.map((e, i) => (
+          <PlaceHolder key={e} first={i === 0}>
+            {e}
+          </PlaceHolder>
+        ))}
 
       {events.length === 0 && (
         <NoEventsContainer>
