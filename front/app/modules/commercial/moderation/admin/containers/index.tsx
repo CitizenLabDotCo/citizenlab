@@ -186,7 +186,7 @@ export interface ITabNamesMap {
   unread: 'unread';
 }
 
-type TTabName = ITabNamesMap[keyof ITabNamesMap];
+export type TActivityTabName = ITabNamesMap[keyof ITabNamesMap];
 
 const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
   const pageSizes = [
@@ -249,7 +249,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
   const [processing, setProcessing] = useState(false);
   const [selectedTypes, setSelectedTypes] = useState<TModeratableTypes[]>([]);
   const [selectedProjectIds, setSelectedProjectIds] = useState<string[]>([]);
-  const [selectedTab, setSelectedTab] = useState<TTabName>('unread');
+  const [selectedTab, setSelectedTab] = useState<TActivityTabName>('unread');
   const [actionBarErrorMessage, setActionBarErrorMessage] = useState<
     string | null
   >(null);
@@ -335,7 +335,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
   );
 
   const handleOnTabChange = useCallback(
-    (tabName: TTabName) => {
+    (tabName: TActivityTabName) => {
       setSelectedTab(tabName);
 
       if (tabName === 'read' || tabName === 'unread') {
