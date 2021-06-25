@@ -12,7 +12,7 @@ module FlagInappropriateContent
       recipient_filter :filter_notification_recipient
 
       def self.consentable_roles
-        %w[admin]
+        ['admin', 'project_moderator', 'project_folder_moderator']
       end
       
       def self.category
@@ -32,7 +32,7 @@ module FlagInappropriateContent
       end
 
       def generate_commands recipient:, activity:, time: nil
-        data = Rails.cache.fetch("campaigns/inappropriate_content_flagged/#{activity.item_id}", expires_in: 5.minutes) do
+        data = Rails.cache.fetch("campaigns/inappropriate_content_flagged/#{activity.item.inappropriate_content_flag_id}", expires_in: 5.minutes) do
           flag = activity.item.inappropriate_content_flag
           flaggable = flag.flaggable
           d = {
@@ -45,11 +45,11 @@ module FlagInappropriateContent
         name_service = UserDisplayNameService.new AppConfiguration.instance, recipient
         notification = activity.item
         payload = {
-          flaggable_type: d[:flaggable_type],
-          flaggalbe_author_name: UserDisplayNameService.new(AppConfiguration.instance, recipient).display_name!(d[:flaggable_author]),
+          flaggable_type: data[:flaggable_type],
+          flaggalbe_author_name: UserDisplayNameService.new(AppConfiguration.instance, recipient).display_name!(data[:flaggable_author]),
           flaggable_url: Frontend::UrlService.new.model_to_url(flaggable, locale: recipient.locale)
         }
-        case d[:flaggable_type]
+        case data[:flaggable_type]
         when Idea.name 
           payload[:flaggable_title_multiloc] = flaggable.title_multiloc
           payload[:flaggable_body_multiloc] = flaggable.body_multiloc
