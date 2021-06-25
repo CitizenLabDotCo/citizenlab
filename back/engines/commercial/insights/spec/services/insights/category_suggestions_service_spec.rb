@@ -47,7 +47,6 @@ describe Insights::CategorySuggestionsService do
     end
 
     context 'when the task is known' do
-
       before do
         # create the task in the test-tenant context
         tenant.switch { task }
@@ -66,7 +65,7 @@ describe Insights::CategorySuggestionsService do
 
         tenant.switch do
           expect(assignments.pluck(:input_id, :category_id))
-            .to match(message.predictions.map {|p| [p.document_id, p.label_id]})
+            .to match(message.predictions.map { |p| [p.document_id, p.label_id] })
         end
       end
 
@@ -101,11 +100,28 @@ describe Insights::CategorySuggestionsService do
 
   describe '#classify' do
     subject(:service) { described_class.new(nlp_client) }
-    let(:nlp_client) { instance_double(NLP::API) }
-    
-    
 
+    let(:nlp_client) { instance_double(NLP::API, 'nlp_client') }
+    let(:inputs) { create_list(:idea, 2) }
+    let(:categories) { create_list(:category, 2) }
+    let(:response) do
+      {
+        batches: [
+          { task_id: 'task_id', doc_ids: inputs.pluck(:id), tags_ids: categories.pluck(:id) }
+        ]
+      }.deep_stringify_keys
+    end
 
+    it 'sends a request to the nlp service' do
+      allow(nlp_client).to receive(:zeroshot_classification).and_return(response)
+      tasks = service.classify(inputs, categories)
+
+      aggregate_failures "checking created task" do
+        expect(tasks.length).to eq(1)
+        expect(tasks.first.categories).to match(categories)
+        expect(tasks.first.inputs).to match(inputs)
+      end
+    end
   end
 
   describe '#input_to_text' do

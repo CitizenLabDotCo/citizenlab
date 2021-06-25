@@ -61,7 +61,7 @@ module Insights
     # @return [Array<Hash>]
     def documents(inputs)
       inputs.map { |i| { text: input_to_text(i), doc_id: i.id } }
-            .select { |document| document['text'] }
+            .select { |document| document[:text] }
     end
 
     # @param [Idea] input
