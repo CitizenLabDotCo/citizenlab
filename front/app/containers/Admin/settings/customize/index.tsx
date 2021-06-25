@@ -18,6 +18,14 @@ import SubmitWrapper from 'components/admin/SubmitWrapper';
 import Warning from 'components/UI/Warning';
 import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 import ErrorMessage from 'components/UI/Error';
+import {
+  Setting,
+  StyledToggle,
+  ToggleLabel,
+  LabelContent,
+  LabelTitle,
+  LabelDescription,
+} from '../general';
 
 // resources
 import GetPage, { GetPageChildProps } from 'resources/GetPage';
@@ -194,6 +202,7 @@ class SettingsCustomizeTab extends PureComponent<
             const header_bg = !isNilOrError(tenantHeaderBg)
               ? [tenantHeaderBg]
               : [];
+            console.log(settings);
             this.setState({ locale, tenant, logo, header_bg, settings });
           }
         ),
@@ -666,6 +675,28 @@ class SettingsCustomizeTab extends PureComponent<
                 fieldName="homepage-info"
                 apiErrors={errors['homepage-info']}
               />
+            </WideSectionField>
+          </Section>
+
+          <Section>
+            <SectionTitle>
+              <FormattedMessage {...messages.eventsSection} />
+            </SectionTitle>
+
+            <WideSectionField>
+              <Setting>
+                <ToggleLabel>
+                  <StyledToggle checked={true} onChange={console.log} />
+                  <LabelContent>
+                    <LabelTitle>
+                      {formatMessage(messages.eventPageSetting)}
+                    </LabelTitle>
+                    <LabelDescription>
+                      {formatMessage(messages.eventPageSettingDescription)}
+                    </LabelDescription>
+                  </LabelContent>
+                </ToggleLabel>
+              </Setting>
             </WideSectionField>
           </Section>
 

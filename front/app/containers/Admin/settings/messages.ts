@@ -178,6 +178,19 @@ export default defineMessages({
     id: 'app.components.AdminPage.SettingsPage.homePageCustomizableSection',
     defaultMessage: 'Homepage customizable section',
   },
+  eventsSection: {
+    id: 'app.components.AdminPage.SettingsPage.eventsSection',
+    defaultMessage: 'Events',
+  },
+  eventPageSetting: {
+    id: 'app.components.AdminPage.SettingsPage.eventPageSetting',
+    defaultMessage: 'Events overview page',
+  },
+  eventPageSettingDescription: {
+    id: 'app.components.AdminPage.SettingsPage.eventPageSettingDescription',
+    defaultMessage:
+      "When enabled, an events overview page will be added to the platform that's accessible via an added 'Events' menu item in the main menu.",
+  },
   customSectionLabel: {
     id: 'app.components.AdminPage.SettingsPage.customSectionLabel',
     defaultMessage: 'Content',
