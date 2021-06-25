@@ -4,7 +4,7 @@ import RenderOnNotificationType from 'modules/utilComponents/RenderOnNotificatio
 import FeatureFlag from 'components/FeatureFlag';
 import Setting from './admin/containers/Setting';
 import RemoveFlagButton from './admin/components/RemoveFlagButton';
-import ActivityTab from './admin/components/ActivityTab';
+import ActivityWarningsTab from './admin/components/ActivityWarningsTab';
 import InappropriateContentWarning from './admin/components/InappropriateContentWarning';
 import NLPFlagNotification from './citizen/components/NLPFlagNotification';
 import { INLPFlagNotificationData } from 'services/notifications';
@@ -37,7 +37,7 @@ const configuration: ModuleConfiguration = {
     'app.modules.commercial.moderation.admin.containers.tabs': (props) => {
       return (
         <FeatureFlag name="flag_inappropriate_content">
-          <ActivityTab {...props} />
+          <ActivityWarningsTab {...props} />
         </FeatureFlag>
       );
     },
