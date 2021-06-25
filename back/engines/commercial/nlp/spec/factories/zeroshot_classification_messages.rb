@@ -1,0 +1,37 @@
+# frozen_string_literal: true
+
+require 'nlp/zeroshot_classification_message'
+
+FactoryBot.define do
+  factory :zsc_message, class: 'NLP::ZeroshotClassificationMessage' do
+    sequence :task_id
+
+    transient {
+      predictions_nb { 1 }
+    }
+
+    tenant_id { AppConfiguration.instance.id }
+    is_success { true }
+    predictions { Array.new(predictions_nb) { build(:zsc_prediction) } }
+
+    initialize_with do
+      attrs = attributes.except(:task_id)
+      new(task_id, **attrs)
+    end
+  end
+
+  factory :zsc_prediction, class: 'NLP::ZeroshotClassificationMessage::Prediction' do
+    transient {
+      input { nil }
+      category { nil }
+    }
+
+    document_id { (input || create(:idea)).id }
+    label_id { (category || create(:category)).id }
+    confidence { 0.8 }
+
+    initialize_with do
+      new(document_id, label_id, confidence)
+    end
+  end
+end
