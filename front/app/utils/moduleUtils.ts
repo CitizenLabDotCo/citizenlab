@@ -341,6 +341,7 @@ export type OutletsPropertyMap = {
   };
   'app.modules.commercial.moderation.admin.containers.tabs': {
     onData: (data: InsertConfigurationOptions<ITabItem>) => void;
+    activeFlagsCount: number;
   };
   'app.components.NotificationMenu.Notification': {
     notification: TNotificationData;
@@ -520,6 +521,9 @@ export const insertConfiguration = <T extends { name: string }>({
   configuration,
   insertAfterName,
   insertBeforeName,
+  // if the inserted element contains data that's updated,
+  // we can force the element to be reinserted
+  reinsertAfterPropOrStateChange,
 }: InsertConfigurationOptions<T>) => (items: T[]): T[] => {
   const itemAlreadyInserted = items.some(
     (item) => item.name === configuration.name
@@ -533,15 +537,30 @@ export const insertConfiguration = <T extends { name: string }>({
     items.length
   );
 
-  if (itemAlreadyInserted) {
-    return [...items];
-  } else {
+  console.log(configuration.name);
+  console.log(insertIndex);
+  console.log([...items.slice(0, items.length - 2), configuration]);
+  if (reinsertAfterPropOrStateChange) {
     return insertIndex >= 0
       ? [
-          ...items.slice(0, insertIndex),
+          ...items.slice(0, insertBeforeName ? insertIndex - 1 : insertIndex),
           configuration,
-          ...items.slice(insertIndex),
+          // here we're jumping over (not including)
+          // the already existing item which would be a duplicate
+          ...items.slice(insertIndex + 1),
         ]
-      : [...items, configuration];
+      : [...items.slice(0, items.length - 2), configuration];
+  } else {
+    if (itemAlreadyInserted) {
+      return [...items];
+    } else {
+      return insertIndex >= 0
+        ? [
+            ...items.slice(0, insertIndex),
+            configuration,
+            ...items.slice(insertIndex),
+          ]
+        : [...items, configuration];
+    }
   }
 };

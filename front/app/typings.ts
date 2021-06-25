@@ -78,6 +78,7 @@ export interface InsertConfigurationOptions<T extends { name: string }> {
   configuration: T;
   insertAfterName?: string;
   insertBeforeName?: string;
+  reinsertAfterPropOrStateChange?: boolean;
 }
 
 export interface ILinks {

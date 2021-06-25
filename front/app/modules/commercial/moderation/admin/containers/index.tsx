@@ -229,9 +229,9 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
   });
 
   const [moderations, setModerations] = useState(list);
-  const [moderationsWithActiveFlag, setModerationsWithActiveFlag] = useState<
-    IModerationData[]
-  >([]);
+  // const [moderationsWithActiveFlag, setModerationsWithActiveFlag] = useState<
+  //   IModerationData[]
+  // >([]);
   const [moderationsForSelectedTab, setModerationsForSelectedTab] = useState(
     moderations
   );
@@ -264,26 +264,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
     },
   ]);
 
-  useEffect(() => {
-    if (!isNilOrError(moderations)) {
-      const modItemsWithFlagRel = moderations.filter(
-        (moderation) => moderation.relationships.inappropriate_content_flag
-      );
-      const modItemsWithActiveFlag = modItemsWithFlagRel.filter(
-        (moderationWithFlag) => {
-          const flagId = moderationWithFlag.relationships
-            .inappropriate_content_flag?.data.id as string;
-          return activeInappropriateContentFlags
-            .map((activeFlag) => activeFlag.data.id)
-            .includes(flagId);
-        }
-      );
-
-      setModerationsWithActiveFlag(modItemsWithActiveFlag);
-    }
-  }, [moderations, activeInappropriateContentFlags]);
-
-  // const moderationsWithActiveFlag = useMemo(() => {
+  // useEffect(() => {
   //   if (!isNilOrError(moderations)) {
   //     const modItemsWithFlagRel = moderations.filter(
   //       (moderation) => moderation.relationships.inappropriate_content_flag
@@ -298,11 +279,30 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
   //       }
   //     );
 
-  //     return modItemsWithActiveFlag;
+  //     setModerationsWithActiveFlag(modItemsWithActiveFlag);
   //   }
-
-  //   return null;
   // }, [moderations, activeInappropriateContentFlags]);
+
+  const moderationsWithActiveFlag = useMemo(() => {
+    if (!isNilOrError(moderations)) {
+      const modItemsWithFlagRel = moderations.filter(
+        (moderation) => moderation.relationships.inappropriate_content_flag
+      );
+      const modItemsWithActiveFlag = modItemsWithFlagRel.filter(
+        (moderationWithFlag) => {
+          const flagId = moderationWithFlag.relationships
+            .inappropriate_content_flag?.data.id as string;
+          return activeInappropriateContentFlags
+            .map((activeFlag) => activeFlag.data.id)
+            .includes(flagId);
+        }
+      );
+
+      return modItemsWithActiveFlag;
+    }
+
+    return null;
+  }, [moderations, activeInappropriateContentFlags]);
 
   const handleOnSelectAll = useCallback(
     (_event: React.ChangeEvent) => {
@@ -538,18 +538,18 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
 
   useEffect(() => {
     if (!processing && !isNilOrError(moderations)) {
-      const moderationsWithFlagRelationship = moderations.filter(
-        (moderation) => moderation.relationships.inappropriate_content_flag
-      );
-      const moderationsWithActiveFlag = moderationsWithFlagRelationship.filter(
-        (moderationWithFlag) => {
-          const flagId = moderationWithFlag.relationships
-            .inappropriate_content_flag?.data.id as string;
-          return activeInappropriateContentFlags
-            .map((activeFlag) => activeFlag.data.id)
-            .includes(flagId);
-        }
-      );
+      // const moderationsWithFlagRelationship = moderations.filter(
+      //   (moderation) => moderation.relationships.inappropriate_content_flag
+      // );
+      // const moderationsWithActiveFlag = moderationsWithFlagRelationship.filter(
+      //   (moderationWithFlag) => {
+      //     const flagId = moderationWithFlag.relationships
+      //       .inappropriate_content_flag?.data.id as string;
+      //     return activeInappropriateContentFlags
+      //       .map((activeFlag) => activeFlag.data.id)
+      //       .includes(flagId);
+      //   }
+      // );
 
       setModerationsForSelectedTab(
         selectedTab === 'warnings' ? moderationsWithActiveFlag : moderations
@@ -607,6 +607,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
               <Outlet
                 id="app.modules.commercial.moderation.admin.containers.tabs"
                 onData={handleData}
+                activeFlagsCount={moderationsWithActiveFlag?.length || 0}
               />
               <StyledTabs
                 items={tabs}
