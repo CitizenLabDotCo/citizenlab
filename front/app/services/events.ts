@@ -43,7 +43,17 @@ export interface IUpdatedEventProperties {
   end_at?: string;
 }
 
-export function eventsStream(streamParams: IStreamParams | null = null) {
+export type IProjectsStreamParams = IStreamParams & {
+  queryParameters: {
+    project_ids?: string[];
+    start_at_lt?: string | Date;
+    start_at_gteq?: string | Date;
+  };
+};
+
+export function eventsStream(
+  streamParams: IProjectsStreamParams | null = null
+) {
   return streams.get<IEvents>({
     apiEndpoint: `${API_PATH}/events`,
     ...streamParams,
