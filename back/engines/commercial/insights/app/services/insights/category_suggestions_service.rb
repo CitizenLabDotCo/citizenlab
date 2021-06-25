@@ -52,14 +52,13 @@ module Insights
       )
     end
 
-    private
 
     # @return [Array<Hash>]
     def documents(inputs)
       inputs.map { |i| { text: input_to_text(i), doc_id: i.id } }
             .select { |document| document['text'] }
     end
-    
+
     # @param [Idea] input
     # @return [String,NilClass]
     def input_to_text(input)
