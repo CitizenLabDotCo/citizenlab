@@ -28,6 +28,7 @@ const ActivityWarningsTab = ({
           name: 'warnings',
           label: formatMessage(messages.warnings),
         },
+        insertAfterName: 'read',
       }),
     []
   );

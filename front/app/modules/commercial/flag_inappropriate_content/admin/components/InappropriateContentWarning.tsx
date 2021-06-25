@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { IconTooltip, colors } from 'cl2-component-library';
+import { IconTooltip, colors, Icon } from 'cl2-component-library';
 import { isNilOrError } from 'utils/helperUtils';
 
 // services
@@ -25,12 +25,20 @@ const WarningContent = styled.div`
   margin-right: 5px;
 `;
 
+const WarningIcon = styled(Icon)`
+  margin-right: 5px;
+  color: ${colors.clRedError};
+  width: 16px;
+`;
+
 interface Props {
   inappropriateContentFlagId: string;
+  isWarningsTabSelected: boolean;
 }
 
 const InappropriateContentWarning = ({
   inappropriateContentFlagId,
+  isWarningsTabSelected,
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
   const inappropriateContentFlag = useInappropriateContentFlag(
@@ -46,6 +54,9 @@ const InappropriateContentWarning = ({
     if (reasonCode && flagType) {
       return (
         <Container>
+          {isWarningsTabSelected && (
+            <WarningIcon name="exclamation-trapezium" />
+          )}
           <WarningContent>
             {
               {
@@ -59,10 +70,12 @@ const InappropriateContentWarning = ({
               }[flagType]
             }
           </WarningContent>
-          <IconTooltip
-            content={<FormattedMessage {...messages.warningTooltip} />}
-            iconColor={colors.clRedError}
-          />
+          {!isWarningsTabSelected && (
+            <IconTooltip
+              content={<FormattedMessage {...messages.warningTooltip} />}
+              iconColor={colors.clRedError}
+            />
+          )}
         </Container>
       );
     }

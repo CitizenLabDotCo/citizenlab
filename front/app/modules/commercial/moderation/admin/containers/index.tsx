@@ -720,6 +720,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
                     moderationItem.relationships.inappropriate_content_flag
                       ?.data.id
                   }
+                  selectedTab={selectedTab}
                 />
               ))}
             </tbody>

@@ -331,6 +331,7 @@ export type OutletsPropertyMap = {
     onSettingChange: (settingName: string, settingValue: any) => void;
   };
   'app.modules.commercial.moderation.admin.containers.ModerationRow.content': {
+    isWarningsTabSelected: boolean;
     inappropriateContentFlagId: string | undefined;
   };
   'app.modules.commercial.moderation.admin.containers.actionbar.buttons': {

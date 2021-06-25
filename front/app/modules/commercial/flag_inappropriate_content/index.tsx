@@ -22,12 +22,14 @@ const configuration: ModuleConfiguration = {
       return <RemoveFlagButton {...props} />;
     },
     'app.modules.commercial.moderation.admin.containers.ModerationRow.content': ({
+      isWarningsTabSelected,
       inappropriateContentFlagId,
     }) => {
       if (inappropriateContentFlagId) {
         return (
           <InappropriateContentWarning
             inappropriateContentFlagId={inappropriateContentFlagId}
+            isWarningsTabSelected={isWarningsTabSelected}
           />
         );
       }
