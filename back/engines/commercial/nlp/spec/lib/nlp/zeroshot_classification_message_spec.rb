@@ -24,13 +24,15 @@ describe NLP::ZeroshotClassificationMessage do
       'predicted_labels' => [{ 'confidence' => 0.9, 'id' => 'uuid-1'}, { 'confidence' => 0.4, 'id' => 'uuid-2' }]
     }]
   end
+  
+  describe '.from_json' do
+    let(:zsc_message) { described_class.from_json(payload) }
 
-  let(:zsc_message) { described_class.new(payload) }
-
-  it { expect(zsc_message).to be_success }
-  it { expect(zsc_message.task_id).to eq('task-id') }
-  it { expect(zsc_message.tenant_id).to eq('tenant-id') }
-  it { expect(zsc_message.predictions.length).to eq(2)}
+    it { expect(zsc_message).to be_success }
+    it { expect(zsc_message.task_id).to eq('task-id') }
+    it { expect(zsc_message.tenant_id).to eq('tenant-id') }
+    it { expect(zsc_message.predictions.length).to eq(2)}
+  end
 
   describe NLP::ZeroshotClassificationMessage::Prediction do
     describe '.from_json' do

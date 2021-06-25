@@ -4,31 +4,35 @@ require 'json'
 
 module NLP
   class ZeroshotClassificationMessage
-    attr_reader :payload
+    attr_reader :task_id, :tenant_id, :predictions, :json_message # is only initialized if the instance is created with +.from_json+
 
-    def initialize(payload)
-      @payload = payload.is_a?(String) ? JSON.parse(payload) : payload
-      @payload.freeze
-    end
-
-    # @return[String]
-    def task_id
-      payload['task_id']
-    end
-
-    # @return[String]
-    def tenant_id
-      payload.dig('result', 'data', 'tenant_id')
+    # @param [String] task_id
+    # @param [String, nil] tenant_id
+    # @param [Boolean] is_success
+    # @param [Array<Prediction>] predictions
+    def initialize(task_id, tenant_id: nil, is_success: true, predictions: [])
+      @task_id = task_id
+      @tenant_id = tenant_id
+      @is_success = is_success
+      @predictions = predictions
     end
 
     def success?
-      payload['status'] == 'SUCCESS'
+      @is_success
     end
 
-    # @return[Array<Prediction>]
-    def predictions
-      final_predictions = payload.dig('result', 'data', 'final_predictions')
-      final_predictions.flat_map { |final_prediction| Prediction.from_json(final_prediction) }
+    def self.from_json(json_message)
+      @json_message = json_message.is_a?(String) ? JSON.parse(json_message) : json_message
+
+      predictions = @json_message.dig('result', 'data', 'final_predictions')
+                                 .flat_map { |json_prediction| Prediction.from_json(json_prediction) }
+
+      new(
+        @json_message.fetch('task_id'), # raises an exception if the key is missing
+        tenant_id: @json_message.dig('result', 'data', 'tenant_id'),
+        is_success: @json_message['status'] == 'SUCCESS',
+        predictions: predictions
+      )
     end
 
     class Prediction
