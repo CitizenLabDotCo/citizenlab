@@ -27,12 +27,12 @@ FactoryBot.define do
     end
 
 
-    factory :project_moderator do
+    factory :project_moderator do # TODO move to project management?
       transient do
         projects { [create(:project)] }
         project_ids { nil }
       end
-      roles { (projects&.map(&:id) || project_ids).uniq.map{|id| {type: 'project_moderator', project_id: id}} }
+      roles { (project_ids || projects&.map(&:id)).uniq.map{|id| {type: 'project_moderator', project_id: id}} }
     end
 
     factory :user_with_demographics do
