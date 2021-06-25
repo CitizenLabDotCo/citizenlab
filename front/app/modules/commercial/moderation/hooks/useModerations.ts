@@ -69,7 +69,7 @@ export default function useModerations(props: InputProps) {
   useEffect(() => {
     setPageNumber(props.pageNumber);
     setPageSize(props.pageSize);
-    setModerationStatus(props.moderationStatus);
+    setModerationStatus(props.moderationStatus || null);
   }, [props.pageNumber, props.pageSize, props.moderationStatus]);
 
   useEffect(() => {
