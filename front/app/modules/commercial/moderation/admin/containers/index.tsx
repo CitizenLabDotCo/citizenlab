@@ -315,6 +315,8 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
                 ? moderationsWithActiveFlag
                 : []
             );
+
+            debugger;
           }
         } else {
           if (!isNilOrError(moderations)) {
@@ -330,6 +332,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
       moderations,
       moderationsWithActiveFlag,
       selectedModerations,
+      selectedModerationsWithActiveFlag,
       processing,
     ]
   );
