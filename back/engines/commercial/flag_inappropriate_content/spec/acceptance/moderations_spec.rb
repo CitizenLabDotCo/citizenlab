@@ -13,7 +13,7 @@ resource 'Moderations' do
     context 'when moderator' do
       before do
         @project = create(:project)
-        @moderator = create(:moderator, project: @project)
+        @moderator = create(:project_moderator, project: @project)
         token = Knock::AuthToken.new(payload: @moderator.to_token_payload).token
         header 'Authorization', "Bearer #{token}" 
 

@@ -323,8 +323,8 @@ resource "Users" do
           group = create(:group)
 
           admin = create(:admin, manual_groups: [group])
-          moderator = create(:moderator, manual_groups: [group])
-          both = create(:moderator, manual_groups: [group])
+          moderator = create(:project_moderator, manual_groups: [group])
+          both = create(:project_moderator, manual_groups: [group])
           both.add_role('admin').save!
 
           group_users = [admin,both,moderator] + create_list(:user, 3, manual_groups: [group])
@@ -361,9 +361,9 @@ resource "Users" do
         example "List all users who can moderate a project", skip: !CitizenLab.ee? do
           p = create(:project)
           a = create(:admin)
-          m1 = create(:moderator, project: p)
+          m1 = create(:project_moderator, project: p)
 
-          create(:moderator)
+          create(:project_moderator)
           create(:user)
           create(:idea, project: p) # a participant, just in case
 
@@ -375,8 +375,8 @@ resource "Users" do
         example "List all users who can moderate", skip: !CitizenLab.ee? do
           p = create(:project)
           a = create(:admin)
-          m1 = create(:moderator, project: p)
-          m2 = create(:moderator)
+          m1 = create(:project_moderator, project: p)
+          m2 = create(:project_moderator)
           create(:user)
 
           do_request(can_moderate: true)
@@ -390,8 +390,8 @@ resource "Users" do
           create(:user)
 
           if CitizenLab.ee?
-            create(:moderator, project: p)
-            create(:moderator)
+            create(:project_moderator, project: p)
+            create(:project_moderator)
           end
 
           do_request(can_admin: true)

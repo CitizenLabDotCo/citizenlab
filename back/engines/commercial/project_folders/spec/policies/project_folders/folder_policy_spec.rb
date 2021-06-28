@@ -124,7 +124,7 @@ describe ProjectFolders::FolderPolicy do
 
     context 'when project moderator of a project contained in the folder' do
       let(:project) { create(:project) }
-      let(:user) { create(:moderator, project: project) }
+      let(:user) { create(:project_moderator, project: project) }
 
       before do
         project.admin_publication.update(parent_id: published_folder.admin_publication.id)
@@ -150,7 +150,7 @@ describe ProjectFolders::FolderPolicy do
 
     context 'when project moderator of a project contained in another folder' do
       let(:project) { create(:project) }
-      let(:user) { create(:moderator, project: project) }
+      let(:user) { create(:project_moderator, project: project) }
 
       before do
         project.admin_publication.update(parent_id: draft_folder.admin_publication.id)

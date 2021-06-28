@@ -26,15 +26,6 @@ FactoryBot.define do
       end
     end
 
-
-    factory :project_moderator do # TODO move to project management?
-      transient do
-        projects { [create(:project)] }
-        project_ids { nil }
-      end
-      roles { (project_ids || projects&.map(&:id)).uniq.map{|id| {type: 'project_moderator', project_id: id}} }
-    end
-
     factory :user_with_demographics do
       gender { ['male','female','unspecified',nil][rand(4)] }
       birthyear { rand(1)==0 ? (Time.now.year - 12 - rand(100)) : nil }
