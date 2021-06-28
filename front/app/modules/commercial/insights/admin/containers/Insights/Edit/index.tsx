@@ -307,7 +307,7 @@ const EditInsightsView = ({
                     onClick={selectCategory(category.id)}
                   >
                     <div>{category.attributes.name}</div>
-                    <div> {category.attributes.inputs_count}</div>
+                    <div>{category.attributes.inputs_count}</div>
                   </CategoryButton>
                 </div>
               ))

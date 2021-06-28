@@ -79,5 +79,3 @@ describe('Insights Details Categories', () => {
     ).toBeInTheDocument();
   });
 });
-
-// Show more/less
