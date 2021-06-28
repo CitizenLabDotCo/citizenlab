@@ -68,11 +68,18 @@ const StyledIconTooltip = styled(IconTooltip)`
 `;
 
 const ActionBar = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 55px;
+`;
+
+const ActionBarTop = styled.div`
   min-height: 50px;
   display: flex;
   align-items: center;
-  margin-bottom: 55px;
 `;
+
+const ActionBarBottom = styled.div``;
 
 const Buttons = styled.div`
   display: flex;
@@ -446,62 +453,66 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
         </PageTitleWrapper>
 
         <ActionBar>
-          {selectedModerations.length === 0 ? (
-            <>
-              <Outlet
-                id="app.modules.commercial.moderation.admin.containers.tabs"
-                onData={handleData}
-              />
-              <StyledTabs
-                items={tabs}
-                selectedValue={selectedTab}
-                onClick={handleOnTabChange}
-              />
-              <SelectType
-                selectedTypes={selectedTypes}
-                onChange={handleModeratableTypesChange}
-              />
-              <SelectProject
-                selectedProjectIds={selectedProjectIds}
-                onChange={handleProjectIdsChange}
-              />
-            </>
-          ) : (
-            <Buttons>
-              {selectedModerations.length > 0 &&
-                (selectedTab === 'read' || selectedTab === 'unread') && (
-                  <MarkAsButton
-                    icon={
-                      moderationStatus === 'unread'
-                        ? 'eyeOpened-unfilled'
-                        : 'eyeClosed-unfilled'
-                    }
-                    buttonStyle="cl-blue"
-                    processing={processing}
-                    onClick={markAs}
-                  >
-                    {intl.formatMessage(
-                      {
-                        unread: messages.markSeen,
-                        read: messages.markNotSeen,
-                      }[selectedTab],
-                      {
-                        selectedItemsCount: selectedModerations.length,
+          <ActionBarTop>
+            {selectedModerations.length === 0 ? (
+              <>
+                <Outlet
+                  id="app.modules.commercial.moderation.admin.containers.tabs"
+                  onData={handleData}
+                />
+                <StyledTabs
+                  items={tabs}
+                  selectedValue={selectedTab}
+                  onClick={handleOnTabChange}
+                />
+                <SelectType
+                  selectedTypes={selectedTypes}
+                  onChange={handleModeratableTypesChange}
+                />
+                <SelectProject
+                  selectedProjectIds={selectedProjectIds}
+                  onChange={handleProjectIdsChange}
+                />
+              </>
+            ) : (
+              <Buttons>
+                {selectedModerations.length > 0 &&
+                  (selectedTab === 'read' || selectedTab === 'unread') && (
+                    <MarkAsButton
+                      icon={
+                        moderationStatus === 'unread'
+                          ? 'eyeOpened-unfilled'
+                          : 'eyeClosed-unfilled'
                       }
-                    )}
-                  </MarkAsButton>
-                )}
+                      buttonStyle="cl-blue"
+                      processing={processing}
+                      onClick={markAs}
+                    >
+                      {intl.formatMessage(
+                        {
+                          unread: messages.markSeen,
+                          read: messages.markNotSeen,
+                        }[selectedTab],
+                        {
+                          selectedItemsCount: selectedModerations.length,
+                        }
+                      )}
+                    </MarkAsButton>
+                  )}
 
-              <Outlet
-                id="app.modules.commercial.moderation.admin.containers.actionbar.buttons"
-                selectedActiveFlagsCount={selectedModerations.length}
-                processing={processing}
-                onClick={removeFlags}
-              />
-            </Buttons>
-          )}
-          <StyledSearchInput onChange={handleSearchTermChange} />
-          <Error text={actionBarErrorMessage} />
+                <Outlet
+                  id="app.modules.commercial.moderation.admin.containers.actionbar.buttons"
+                  selectedActiveFlagsCount={selectedModerations.length}
+                  processing={processing}
+                  onClick={removeFlags}
+                />
+              </Buttons>
+            )}
+            <StyledSearchInput onChange={handleSearchTermChange} />
+          </ActionBarTop>
+          <ActionBarBottom>
+            <Error text={actionBarErrorMessage} />
+          </ActionBarBottom>
         </ActionBar>
 
         <StyledTable>
