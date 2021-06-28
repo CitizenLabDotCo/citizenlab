@@ -869,7 +869,7 @@
   "app.containers.Admin.Moderation.markFlagsError": "",
   "app.containers.Admin.Moderation.markNotSeen": "",
   "app.containers.Admin.Moderation.markSeen": "",
-  "app.containers.Admin.Moderation.moderationHelpTooltip": "Ta strona pozwala na szybkie sprawdzenie wszystkich nowych inicjatyw, które zostały dodane do Twojej platformy, w tym postów i komentarzy. Możesz oznaczyć posty jako \"przejrzane\", aby udzielić informacji zwrotnej.",
+  "app.containers.Admin.Moderation.moderationsTooltip": "",
   "app.containers.Admin.Moderation.noUnviewedItems": "Nie ma żadnych nieobejrzanych elementów",
   "app.containers.Admin.Moderation.noViewedItems": "Nie ma żadnych obejrzanych elementów",
   "app.containers.Admin.Moderation.noWarningItems": "",

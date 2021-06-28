@@ -869,7 +869,7 @@
   "app.containers.Admin.Moderation.markFlagsError": "",
   "app.containers.Admin.Moderation.markNotSeen": "",
   "app.containers.Admin.Moderation.markSeen": "",
-  "app.containers.Admin.Moderation.moderationHelpTooltip": "Ova stranica vam omogućuje da brzo proverite sve nove unose na platformi, uključujući objave i komentare. Unose možete obeležiti kao \"pregledane\", kako bi drugi mogli da prate koji od njih još uvek čekaju na obradu. ",
+  "app.containers.Admin.Moderation.moderationsTooltip": "",
   "app.containers.Admin.Moderation.noUnviewedItems": "Trenutno nema nepregledanih stavki",
   "app.containers.Admin.Moderation.noViewedItems": "Trenutno nema pregledanih stavki",
   "app.containers.Admin.Moderation.noWarningItems": "",
