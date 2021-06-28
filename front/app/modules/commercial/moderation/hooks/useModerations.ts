@@ -11,7 +11,7 @@ import { getPageNumberFromUrl } from 'utils/paginationUtils';
 interface InputProps {
   pageNumber?: number;
   pageSize?: number;
-  moderationStatus?: TModerationStatus;
+  moderationStatus: TModerationStatus | null;
   moderatableTypes: TModeratableTypes[];
   projectIds: string[];
   searchTerm: string;
@@ -19,8 +19,8 @@ interface InputProps {
 }
 
 export default function useModerations(props: InputProps) {
-  const [pageNumber, setPageNumber] = useState(props.pageNumber);
-  const [pageSize, setPageSize] = useState(props.pageSize);
+  const [pageNumber, setPageNumber] = useState(props.pageNumber || 1);
+  const [pageSize, setPageSize] = useState(props.pageSize || 12);
   const [
     moderationStatus,
     setModerationStatus,
@@ -35,7 +35,7 @@ export default function useModerations(props: InputProps) {
   );
   const [projectIds, setProjectIds] = useState(props.projectIds);
   const [searchTerm, setSearchTerm] = useState(props.searchTerm);
-  const [isFlagged, setIsFlagged] = useState(props.isFlagged);
+  const [isFlagged, setIsFlagged] = useState(props.isFlagged || false);
 
   const onPageNumberChange = useCallback((newPageNumber: number) => {
     setPageNumber(newPageNumber);
@@ -73,15 +73,25 @@ export default function useModerations(props: InputProps) {
   }, []);
 
   useEffect(() => {
-    setPageNumber(props.pageNumber);
-    setPageSize(props.pageSize);
-    setModerationStatus(props.moderationStatus || null);
-  }, [props.pageNumber, props.pageSize, props.moderationStatus]);
+    if (props.pageNumber) {
+      setPageNumber(props.pageNumber);
+    }
+  }, [props.pageNumber]);
+
+  useEffect(() => {
+    if (props.pageSize) {
+      setPageSize(props.pageSize);
+    }
+  }, [props.pageSize]);
+
+  useEffect(() => {
+    setModerationStatus(props.moderationStatus);
+  }, [props.moderationStatus]);
 
   useEffect(() => {
     const subscription = moderationsStream({
       queryParameters: {
-        'page[number]': pageNumber || 1,
+        'page[number]': pageNumber,
         'page[size]': pageSize,
         moderation_status: moderationStatus,
         moderatable_types: moderatableTypes,
