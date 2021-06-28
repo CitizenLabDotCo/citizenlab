@@ -31,7 +31,7 @@ jest.mock('hooks/useLocale', () => jest.fn(() => 'en'));
 
 const viewId = '1';
 
-const mockLocationData = { pathname: 'details', query: {} };
+const mockLocationData = { pathname: '', query: {} };
 
 jest.mock('react-router', () => {
   return {

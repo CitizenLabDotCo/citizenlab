@@ -134,8 +134,3 @@ const Categories = ({
 };
 
 export default withRouter(injectIntl(Categories));
-
-// categoriesSeeAll: {
-//   id: 'app.containers.Admin.Insights.Details.categoriesSeeAll',
-//   defaultMessage: 'See all',
-// },
