@@ -24,8 +24,8 @@ resource "Events" do
       parameter :size, "Number of events per page"
     end
 
-    context 'passing a project id' do
-      let(:project_id) { @project.id }
+    context 'passing project ids' do
+      let(:project_ids) { [@project.id] }
 
       example_request "List all events of a project" do
         expect(status).to eq(200)
