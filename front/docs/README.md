@@ -16,6 +16,9 @@
 - Sign-up flow: Show loading spinner when the user clicks on 'skip this step' in the sign-up custom fields step
 - Image upload: The default max allowed file size for an image is now 10 Mb instead of 5 Mb
 
+### Added
+- 'Go back' button from project to project folder (if appropriate).
+
 ## 2021-06-22
 
 ### Changed
