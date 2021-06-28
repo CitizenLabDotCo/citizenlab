@@ -15,6 +15,7 @@ module Insights
       def create
         view = authorize(Insights::View.new(create_params))
         if view.save
+          # TODO copy topic assignments
           render json: serialize(view), status: :created
         else
           render json: { errors: view.errors.details }, status: :unprocessable_entity
