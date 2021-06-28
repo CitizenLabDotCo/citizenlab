@@ -1,40 +1,33 @@
 import React, { memo, FormEvent } from 'react';
 import clHistory from 'utils/cl-router/history';
 import { Button } from 'cl2-component-library';
-import useProject from 'hooks/useProject';
+import useProjectFolder from '../../../hooks/useProjectFolder';
 import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
 import { isNilOrError } from 'utils/helperUtils';
-import eventEmitter from 'utils/eventEmitter';
 
 interface Props {
-  projectId: string;
+  projectFolderId: string;
   className?: string;
-  insideModal: boolean;
 }
 
-const GoBackButton = memo(({ projectId, className, insideModal }: Props) => {
-  const project = useProject({ projectId });
+const GoBackButton = memo(({ projectFolderId, className }: Props) => {
+  const projectFolder = useProjectFolder({ projectFolderId });
   const locale = useLocale();
   const localize = useLocalize();
 
   const onGoBack = (event: FormEvent<HTMLButtonElement>) => {
     event.preventDefault();
 
-    if (insideModal) {
-      eventEmitter.emit('closeIdeaModal');
-    } else if (!isNilOrError(project)) {
-      clHistory.push(`/projects/${project.attributes.slug}`);
-    } else {
-      clHistory.push('/');
+    if (!isNilOrError(projectFolder)) {
+      clHistory.push(`/folders/${projectFolder.attributes.slug}`);
     }
   };
 
-  if (!isNilOrError(project) && !isNilOrError(locale)) {
+  if (!isNilOrError(projectFolder) && !isNilOrError(locale)) {
     return (
       <Button
         className={className}
-        id="e2e-idea-other-link"
         locale={locale}
         icon="circle-arrow-left"
         onClick={onGoBack}
@@ -43,7 +36,7 @@ const GoBackButton = memo(({ projectId, className, insideModal }: Props) => {
         padding="0"
         textDecorationHover="underline"
       >
-        {localize(project.attributes.title_multiloc)}
+        {localize(projectFolder.attributes.title_multiloc)}
       </Button>
     );
   }

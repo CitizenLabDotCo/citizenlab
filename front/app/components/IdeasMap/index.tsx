@@ -18,6 +18,7 @@ import IdeaMapCard from './IdeaMapCard';
 import { Icon } from 'cl2-component-library';
 
 // hooks
+import useAuthUser from 'hooks/useAuthUser';
 import useProject from 'hooks/useProject';
 import usePhase from 'hooks/usePhase';
 import useIdeaMarkers from 'hooks/useIdeaMarkers';
@@ -25,6 +26,7 @@ import useWindowSize from 'hooks/useWindowSize';
 
 // services
 import { ideaDefaultSortMethodFallback } from 'services/participationContexts';
+import { getIdeaPostingRules } from 'services/actionTakingRules';
 
 // events
 import {
@@ -218,6 +220,7 @@ const initialInnerContainerLeftMargin = getInnerContainerLeftMargin(
 );
 
 const IdeasMap = memo<Props>(({ projectIds, phaseId, className }) => {
+  const authUser = useAuthUser();
   const project = useProject({ projectId: projectIds?.[0] });
   const phase = usePhase(phaseId || null);
   const { windowWidth } = useWindowSize();
@@ -235,7 +238,6 @@ const IdeasMap = memo<Props>(({ projectIds, phaseId, className }) => {
   // refs
   const containerRef = useRef<HTMLDivElement | null>(null);
   const ideaButtonWrapperRef = useRef<HTMLDivElement | null>(null);
-  const ideaButtonRef = useRef<HTMLButtonElement | null>(null);
 
   // state
   const [map, setMap] = useState<LeafletMap | null>(null);
@@ -264,7 +266,14 @@ const IdeasMap = memo<Props>(({ projectIds, phaseId, className }) => {
     topics,
   });
 
-  const isIdeaPostingEnabled = !!ideaButtonRef?.current;
+  const ideaPostingRules = getIdeaPostingRules({
+    project,
+    phase,
+    authUser,
+  });
+
+  const isIdeaPostingEnabled =
+    ideaPostingRules.show && ideaPostingRules.enabled === true;
 
   useLayoutEffect(() => {
     const containerWidth = containerRef.current
@@ -369,10 +378,6 @@ const IdeasMap = memo<Props>(({ projectIds, phaseId, className }) => {
     return ideaMarkers?.find(({ id }) => id === selectedIdeaMarkerId);
   }, [ideaMarkers, selectedIdeaMarkerId]);
 
-  const setIdeaButtonRef = (element: HTMLButtonElement) => {
-    ideaButtonRef.current = element;
-  };
-
   if (!isNilOrError(project)) {
     return (
       <Container ref={containerRef} className={className || ''}>
@@ -446,7 +451,6 @@ const IdeasMap = memo<Props>(({ projectIds, phaseId, className }) => {
               participationContextType={phaseId ? 'phase' : 'project'}
               latLng={selectedLatLng}
               inMap={true}
-              setSubmitButtonRef={setIdeaButtonRef}
             />
           </IdeaButtonWrapper>
         </InnerContainer>

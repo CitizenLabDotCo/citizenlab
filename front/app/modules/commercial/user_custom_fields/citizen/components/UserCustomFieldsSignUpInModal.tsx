@@ -121,7 +121,7 @@ const UserCustomFieldsSignUpInModal = memo<Props>(
         !isNilOrError(customFieldsSchema) &&
         !customFieldsSchema?.hasRequiredFields
       ) {
-        completeRegistration({});
+        completeRegistration();
       }
 
       closeSignUpInModal();

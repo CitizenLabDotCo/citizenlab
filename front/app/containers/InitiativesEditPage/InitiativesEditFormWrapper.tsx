@@ -30,7 +30,7 @@ import { isEqual, pick, get, omitBy } from 'lodash-es';
 import { convertUrlToUploadFile } from 'utils/fileTools';
 
 // geoJson
-import { convertToGeoJson } from 'utils/locationTools';
+import { geocode } from 'utils/locationTools';
 import { Point } from 'geojson';
 
 // tracks
@@ -141,7 +141,7 @@ class InitiativesEditFormWrapper extends React.PureComponent<Props, State> {
         break;
 
       default:
-        location_point_geojson = await convertToGeoJson(position);
+        location_point_geojson = await geocode(position);
         location_description = position;
         break;
     }

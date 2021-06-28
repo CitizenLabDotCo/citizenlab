@@ -330,6 +330,10 @@ export type OutletsPropertyMap = {
   'app.components.NotificationMenu.Notification': {
     notification: TNotificationData;
   };
+  'app.containers.ProjectsShowPage.shared.header.ProjectHeader.GoBackButton': {
+    projectFolderId: string;
+    className?: string;
+  };
 };
 
 type Outlet<Props> = FunctionComponent<Props> | FunctionComponent<Props>[];
