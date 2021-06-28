@@ -15,6 +15,7 @@ interface InputProps {
   moderatableTypes: TModeratableTypes[];
   projectIds: string[];
   searchTerm: string;
+  isFlagged?: boolean;
 }
 
 export default function useModerations(props: InputProps) {
@@ -34,6 +35,7 @@ export default function useModerations(props: InputProps) {
   );
   const [projectIds, setProjectIds] = useState(props.projectIds);
   const [searchTerm, setSearchTerm] = useState(props.searchTerm);
+  const [isFlagged, setIsFlagged] = useState(props.isFlagged);
 
   const onPageNumberChange = useCallback((newPageNumber: number) => {
     setPageNumber(newPageNumber);
@@ -66,6 +68,10 @@ export default function useModerations(props: InputProps) {
     setSearchTerm(searchTerm);
   }, []);
 
+  const onIsFlaggedChange = useCallback((isFlagged: boolean) => {
+    setIsFlagged(isFlagged);
+  }, []);
+
   useEffect(() => {
     setPageNumber(props.pageNumber);
     setPageSize(props.pageSize);
@@ -81,6 +87,7 @@ export default function useModerations(props: InputProps) {
         moderatable_types: moderatableTypes,
         project_ids: projectIds,
         search: searchTerm,
+        is_flagged: isFlagged,
       },
     }).observable.subscribe((response) => {
       const list = !isNilOrError(response) ? response.data : response;
@@ -113,5 +120,6 @@ export default function useModerations(props: InputProps) {
     onModeratableTypesChange,
     onProjectIdsChange,
     onSearchTermChange,
+    onIsFlaggedChange,
   };
 }
