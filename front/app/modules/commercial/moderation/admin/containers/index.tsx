@@ -504,7 +504,8 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
                   id="app.modules.commercial.moderation.admin.containers.actionbar.buttons"
                   selectedActiveFlagsCount={selectedModerations.length}
                   processing={processing}
-                  onClick={removeFlags}
+                  onRemoveFlags={removeFlags}
+                  isWarningsTabSelected={selectedTab === 'warnings'}
                 />
               </Buttons>
             )}

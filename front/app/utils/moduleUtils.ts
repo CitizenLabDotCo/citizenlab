@@ -337,7 +337,8 @@ export type OutletsPropertyMap = {
   'app.modules.commercial.moderation.admin.containers.actionbar.buttons': {
     selectedActiveFlagsCount: number;
     processing: boolean;
-    onClick: () => void;
+    onRemoveFlags: () => void;
+    isWarningsTabSelected: boolean;
   };
   'app.modules.commercial.moderation.admin.containers.tabs': {
     onData: (data: InsertConfigurationOptions<ITabItem>) => void;

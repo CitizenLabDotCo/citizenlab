@@ -16,10 +16,15 @@ const configuration: ModuleConfiguration = {
         <Setting {...props} />
       </FeatureFlag>
     ),
-    'app.modules.commercial.moderation.admin.containers.actionbar.buttons': (
-      props
-    ) => {
-      return <RemoveFlagButton {...props} />;
+    'app.modules.commercial.moderation.admin.containers.actionbar.buttons': ({
+      isWarningsTabSelected,
+      ...otherProps
+    }) => {
+      if (isWarningsTabSelected) {
+        return <RemoveFlagButton {...otherProps} />;
+      }
+
+      return null;
     },
     'app.modules.commercial.moderation.admin.containers.ModerationRow.content': ({
       isWarningsTabSelected,
