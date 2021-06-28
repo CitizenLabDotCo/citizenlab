@@ -210,7 +210,7 @@ export default function createRoutes() {
           path: 'events',
           name: 'Events page',
           component: Loadable({
-            loader: () => import('containers/EventPage'),
+            loader: () => import('containers/EventsPage'),
             loading: LoadableLoadingCitizen,
             delay: 500,
           }),

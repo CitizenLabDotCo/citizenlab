@@ -1,13 +1,16 @@
 import React from 'react';
 
+// i18n
+import { injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
 // components
 import ContentContainer from 'components/ContentContainer';
 import SectionContainer from 'components/SectionContainer';
 import { Helmet } from 'react-helmet';
-import EventViewer from './EventViewer';
-import { FormattedMessage } from 'utils/cl-intl';
+import UpcomingEventsViewer from './UpcomingEventsViewer';
+import PastEventsViewer from './PastEventsViewer';
 
 // styling
 import styled from 'styled-components';
@@ -18,11 +21,7 @@ const StyledContentContainer = styled(ContentContainer)`
   margin-right: auto;
 `;
 
-const EventViewerWithTopMargin = styled(EventViewer)`
-  margin-top: 135px;
-`;
-
-const EventPage = () => {
+export default injectIntl<InjectedIntlProps>(({ intl }) => {
   const upcomingEvents = Array(15)
     .fill(0)
     .map((_, i) => i + 1);
@@ -32,28 +31,15 @@ const EventPage = () => {
   return (
     <>
       <Helmet>
-        <title>Events</title>
+        <title>{intl.formatMessage(messages.eventPageTitle)}</title>
       </Helmet>
 
       <SectionContainer>
         <StyledContentContainer>
-          <EventViewer
-            title={<FormattedMessage {...messages.upcomingEvents} />}
-            fallbackMessage={
-              <FormattedMessage {...messages.noUpcomingEvents} />
-            }
-            events={upcomingEvents}
-          />
-
-          <EventViewerWithTopMargin
-            title={<FormattedMessage {...messages.pastEvents} />}
-            fallbackMessage={<FormattedMessage {...messages.noPastEvents} />}
-            events={pastEvents}
-          />
+          <UpcomingEventsViewer upcomingEvents={upcomingEvents} />
+          <PastEventsViewer pastEvents={pastEvents} />
         </StyledContentContainer>
       </SectionContainer>
     </>
   );
-};
-
-export default EventPage;
+});

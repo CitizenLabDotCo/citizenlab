@@ -28,7 +28,7 @@ const Title = styled.h1`
   padding-top: 0px;
 
   ${media.smallerThanMaxTablet`
-    font-size: ${fontSizes.xxxl};
+    font-size: ${fontSizes.xxxl}px;
   `}
 `;
 
@@ -41,7 +41,7 @@ const FilterIcon = styled.img`
 `;
 
 interface Props {
-  title: JSX.Element;
+  title: string;
 }
 
 const TopBar = memo<Props>(({ title }) => {

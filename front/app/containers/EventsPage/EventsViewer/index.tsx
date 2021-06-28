@@ -12,14 +12,14 @@ import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 
 // other
-import { sliceEventsToPage, getNumberOfPages } from './eventViewerUtils';
+import { sliceEventsToPage, getNumberOfPages } from './eventsViewerUtils';
 
 const PlaceHolder = styled.div<{ first: boolean }>`
   width: 100%;
   height: 237px;
   margin-top: ${({ first }) => (first ? '29px' : '39px')};
   padding: 30px;
-  font-size: 25px;
+  font-size: ${fontSizes.xxl}px;
   border: 1px dotted;
 `;
 
@@ -49,15 +49,15 @@ const StyledPagination = styled(Pagination)`
 `;
 
 interface Props {
-  title: JSX.Element;
-  fallbackMessage: JSX.Element;
+  title: string;
+  fallbackMessage: string;
   events: number[];
   className?: string;
 }
 
 const EVENTS_PER_PAGE = 10;
 
-const EventViewer = memo<Props>(
+const EventsViewer = memo<Props>(
   ({ title, events, className, fallbackMessage }) => {
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [visibleEvents, setVisibleEvents] = useState<number[]>([]);
@@ -98,4 +98,4 @@ const EventViewer = memo<Props>(
   }
 );
 
-export default EventViewer;
+export default EventsViewer;
