@@ -152,6 +152,10 @@ AppConfiguration.create!(
     project_visibility: {
       enabled: true,
       allowed: true
+    },
+    event_page: {
+      enabled: true,
+      allowed: true
     }
   }
 )
