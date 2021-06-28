@@ -143,9 +143,9 @@ const configuration: ModuleConfiguration = {
     'app.containers.ProjectsShowPage.shared.header.ProjectHeader.GoBackButton': (
       props
     ) => (
-      <RenderOnFeatureFlag>
+      <FeatureFlag name="project_folders">
         <ProjectFolderGoBackButton {...props} />
-      </RenderOnFeatureFlag>
+      </FeatureFlag>
     ),
   },
   routes: {
