@@ -263,7 +263,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
         }
       }
     },
-    [selectedTab, moderations, selectedModerations, processing]
+    [moderations, selectedModerations, processing]
   );
 
   const handleOnTabChange = useCallback(
