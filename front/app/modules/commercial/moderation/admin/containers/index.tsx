@@ -2,7 +2,6 @@ import React, { memo, useCallback, useState, useEffect } from 'react';
 
 import { isNilOrError } from 'utils/helperUtils';
 import { insertConfiguration } from 'utils/moduleUtils';
-import { isFlagActive } from 'modules/commercial/flag_inappropriate_content/utils';
 
 // components
 import Table from 'components/UI/Table';
@@ -27,11 +26,7 @@ import {
   IModerationData,
   TModeratableTypes,
 } from '../../services/moderations';
-import {
-  removeInappropriateContentFlag,
-  inappropriateContentFlagByIdStream,
-  IInappropriateContentFlag,
-} from 'modules/commercial/flag_inappropriate_content/services/inappropriateContentFlags';
+import { removeInappropriateContentFlag } from 'modules/commercial/flag_inappropriate_content/services/inappropriateContentFlags';
 
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
@@ -230,10 +225,6 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
   });
 
   const [moderations, setModerations] = useState(list);
-  const [
-    activeInappropriateContentFlags,
-    setActiveInappropriateContentFlags,
-  ] = useState<IInappropriateContentFlag[]>([]);
   const [selectedModerations, setSelectedModerations] = useState<
     IModerationData[]
   >([]);
@@ -359,20 +350,18 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
   );
 
   const removeFlags = useCallback(async () => {
-    if (activeInappropriateContentFlags.length > 0 && !processing) {
-      const selectedActiveInappropriateContentFlags = selectedModerationsWithActiveFlag.map(
-        (mod) => mod.relationships.inappropriate_content_flag?.data.id
-      );
-      const selectedActiveFlags = activeInappropriateContentFlags.filter(
-        (flag) => {
-          return selectedActiveInappropriateContentFlags.includes(flag.data.id);
-        }
+    if (!processing) {
+      const selectedActiveInappropriateContentFlagIds = selectedModerations.map(
+        // we can be sure the flag is here. With the is_flagged param in the request
+        // only moderations with active flags will be returned
+        (mod) => mod.relationships.inappropriate_content_flag?.data.id as string
       );
 
-      const promises = selectedActiveFlags.map((flag) => {
-        const flagId = flag.data.id;
-        return removeInappropriateContentFlag(flagId);
-      });
+      const promises = selectedActiveInappropriateContentFlagIds.map(
+        (flagId) => {
+          return removeInappropriateContentFlag(flagId);
+        }
+      );
 
       try {
         setActionBarErrorMessage(null);
@@ -381,17 +370,13 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
         await Promise.all(promises);
 
         setProcessing(false);
-        setSelectedModerationsWithActiveFlag([]);
+        setSelectedModerations([]);
       } catch {
         setActionBarErrorMessage(intl.formatMessage(messages.removeFlagsError));
         setProcessing(false);
       }
     }
-  }, [
-    activeInappropriateContentFlags,
-    selectedModerationsWithActiveFlag,
-    processing,
-  ]);
+  }, [processing, selectedModerations]);
 
   const markAs = useCallback(
     async (event: React.FormEvent) => {
