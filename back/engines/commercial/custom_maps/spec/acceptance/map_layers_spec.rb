@@ -302,7 +302,7 @@ resource 'Map Layers' do
 
   context 'when logged in as a project manager' do
     before do
-      user_header_token(create(:user, roles: [{ 'type' => 'project_moderator', 'project_id' => create(:project).id }]))
+      user_header_token(create(:user, roles: [{ 'type' => 'project_moderator', 'project_id' => project.id }]))
     end
 
     include_examples 'successful GET map layers'
