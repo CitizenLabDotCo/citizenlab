@@ -72,7 +72,9 @@ const Data = adopt<DataProps, InputProps>({
     <GetProject projectId={adminPublication.publicationId}>{render}</GetProject>
   ),
   events: ({ adminPublication, render }) => (
-    <GetEvents projectId={adminPublication.publicationId}>{render}</GetEvents>
+    <GetEvents projectIds={[adminPublication.publicationId]}>
+      {render}
+    </GetEvents>
   ),
 });
 
