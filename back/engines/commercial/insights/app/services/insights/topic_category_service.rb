@@ -2,8 +2,12 @@
 
 module Insights
   class TopicCategoryService
+    # Creates categories and assignments copying ideas_topics
+    #
+    # @param <View> view
+    # @param <User> user
+    # @return [strign] The ids of the created assignments
     def copy_assignments(view, current_user)
-      # debugger
       locale = current_user.locale
       assignments = []
       topics(view).each { |topic|
