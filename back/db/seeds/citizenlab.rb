@@ -153,7 +153,7 @@ AppConfiguration.create!(
       enabled: true,
       allowed: true
     },
-    event_page: {
+    events_page: {
       enabled: true,
       allowed: true
     }

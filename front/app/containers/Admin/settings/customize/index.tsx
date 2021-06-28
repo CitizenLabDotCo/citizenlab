@@ -202,7 +202,6 @@ class SettingsCustomizeTab extends PureComponent<
             const header_bg = !isNilOrError(tenantHeaderBg)
               ? [tenantHeaderBg]
               : [];
-            console.log(settings);
             this.setState({ locale, tenant, logo, header_bg, settings });
           }
         ),
@@ -436,6 +435,29 @@ class SettingsCustomizeTab extends PureComponent<
   handleLogoOnRemove = this.handleUploadOnRemove('logo');
   handleHeaderBgOnRemove = this.handleUploadOnRemove('header_bg');
 
+  handleToggleEventsPage = () => {
+    const { tenant } = this.state;
+    if (!tenant?.data.attributes.settings.events_page) return;
+
+    const previousValue = tenant.data.attributes.settings.events_page.enabled;
+    this.setState((state) => {
+      return {
+        attributesDiff: {
+          ...state.attributesDiff,
+          settings: {
+            ...state.settings,
+            ...get(state.attributesDiff, 'settings', {}),
+            events_page: {
+              ...get(state.settings, 'events_page', {}),
+              ...get(state.attributesDiff, 'settings.events_page', {}),
+              enabled: !previousValue,
+            },
+          },
+        },
+      };
+    });
+  };
+
   render() {
     const { locale, tenant } = this.state;
     const { formatMessage } = this.props.intl;
@@ -465,6 +487,8 @@ class SettingsCustomizeTab extends PureComponent<
         ...tenant.data.attributes,
         ...attributesDiff,
       }.settings.core;
+
+      console.log(this.state.attributesDiff);
 
       return (
         <form onSubmit={this.save}>
@@ -678,27 +702,39 @@ class SettingsCustomizeTab extends PureComponent<
             </WideSectionField>
           </Section>
 
-          <Section>
-            <SectionTitle>
-              <FormattedMessage {...messages.eventsSection} />
-            </SectionTitle>
+          {tenant.data.attributes.settings?.events_page &&
+            tenant.data.attributes.settings.events_page.allowed && (
+              <Section>
+                <SectionTitle>
+                  <FormattedMessage {...messages.eventsSection} />
+                </SectionTitle>
 
-            <WideSectionField>
-              <Setting>
-                <ToggleLabel>
-                  <StyledToggle checked={true} onChange={console.log} />
-                  <LabelContent>
-                    <LabelTitle>
-                      {formatMessage(messages.eventPageSetting)}
-                    </LabelTitle>
-                    <LabelDescription>
-                      {formatMessage(messages.eventPageSettingDescription)}
-                    </LabelDescription>
-                  </LabelContent>
-                </ToggleLabel>
-              </Setting>
-            </WideSectionField>
-          </Section>
+                <WideSectionField>
+                  <Setting>
+                    <ToggleLabel>
+                      <StyledToggle
+                        checked={
+                          get(attributesDiff, 'settings.events_page.enabled') ??
+                          get(
+                            tenant,
+                            'data.attributes.settings.events_page.enabled'
+                          )
+                        }
+                        onChange={this.handleToggleEventsPage}
+                      />
+                      <LabelContent>
+                        <LabelTitle>
+                          {formatMessage(messages.eventPageSetting)}
+                        </LabelTitle>
+                        <LabelDescription>
+                          {formatMessage(messages.eventPageSettingDescription)}
+                        </LabelDescription>
+                      </LabelContent>
+                    </ToggleLabel>
+                  </Setting>
+                </WideSectionField>
+              </Section>
+            )}
 
           <SubmitWrapper
             loading={this.state.loading}

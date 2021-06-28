@@ -198,7 +198,7 @@ export interface IAppConfigurationSettings {
       target: string;
     }[];
   };
-  eventPage?: {
+  events_page?: {
     enabled: boolean;
     allowed: boolean;
     alternative_name?: string;

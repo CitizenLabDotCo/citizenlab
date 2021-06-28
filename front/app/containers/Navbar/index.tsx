@@ -728,7 +728,7 @@ class Navbar extends PureComponent<
                   </NavigationItem>
                 </FeatureFlag>
 
-                <FeatureFlag name="eventPage">
+                <FeatureFlag name="events_page">
                   <NavigationItem
                     to="/events"
                     activeClassName="active"

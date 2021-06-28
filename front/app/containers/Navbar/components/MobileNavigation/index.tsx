@@ -183,7 +183,7 @@ class MobileNavigation extends PureComponent<Props & WithRouterProps, State> {
           </NavigationItem>
         </FeatureFlag>
 
-        <FeatureFlag name="eventPage">
+        <FeatureFlag name="events_page">
           <NavigationItem
             to="/events"
             className={secondUrlSegment === 'events' ? 'active' : ''}
