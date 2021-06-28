@@ -1,9 +1,16 @@
 import { useState, useEffect } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { Observable, of } from 'rxjs';
-import { IEventData, IEvents, eventsStream } from 'services/events';
+import {
+  IEventData,
+  eventsStream,
+  IProjectsStreamParams,
+} from 'services/events';
 
-export default function useEvents(projectId?: string | null) {
+export default function useEvents(
+  projectIds?: string[],
+  futureOnly?: string | Date,
+  pastOnly?: string | Date
+) {
   const [events, setEvents] = useState<IEventData[] | undefined | null | Error>(
     undefined
   );
@@ -11,22 +18,27 @@ export default function useEvents(projectId?: string | null) {
   useEffect(() => {
     setEvents(undefined);
 
-    let observable: Observable<IEvents | null> = of(null);
+    const streamParams: IProjectsStreamParams = {
+      queryParameters: { project_ids: projectIds },
+    };
 
-    if (projectId) {
-      observable = eventsStream({ queryParameters: { project_id: projectId } })
-        .observable;
-    } else {
-      observable = eventsStream().observable;
+    if (futureOnly) {
+      streamParams.queryParameters.start_at_gteq = new Date();
     }
 
-    const subscription = observable.subscribe((response) => {
-      const events = !isNilOrError(response) ? response.data : response;
-      setEvents(events);
-    });
+    if (pastOnly) {
+      streamParams.queryParameters.start_at_lt = new Date();
+    }
+
+    const subscription = eventsStream(streamParams).observable.subscribe(
+      (response) => {
+        const events = !isNilOrError(response) ? response.data : response;
+        setEvents(events);
+      }
+    );
 
     return () => subscription.unsubscribe();
-  }, [projectId]);
+  }, [projectIds, futureOnly, pastOnly]);
 
   return events;
 }
