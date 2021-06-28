@@ -248,7 +248,7 @@ describe('InitiativesNewPage', () => {
             .prop('position')
         ).toEqual('Location description');
         done();
-      }, 1);
-    }, 1);
+      }, 10);
+    }, 10);
   });
 });

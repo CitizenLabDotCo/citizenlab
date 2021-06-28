@@ -11,6 +11,7 @@ import ProjectFolderCard from './citizen/components/ProjectFolderCard';
 import ProjectFolderSiteMap from './citizen/components/ProjectFolderSiteMap';
 import ProjectFolderModerationRightsReceivedNotification from './citizen/components/ProjectFolderModerationRightsReceivedNotification';
 import CreateProject from 'containers/Admin/projects/all/CreateProject';
+import ProjectFolderGoBackButton from './citizen/components/ProjectFolderGoBackButton';
 
 import ProjectsListItem from 'containers/Navbar/components/ProjectsListItem';
 
@@ -138,6 +139,13 @@ const configuration: ModuleConfiguration = {
           />
         </RenderOnNotificationType>
       </FeatureFlag>
+    ),
+    'app.containers.ProjectsShowPage.shared.header.ProjectHeader.GoBackButton': (
+      props
+    ) => (
+      <RenderOnFeatureFlag>
+        <ProjectFolderGoBackButton {...props} />
+      </RenderOnFeatureFlag>
     ),
   },
   routes: {

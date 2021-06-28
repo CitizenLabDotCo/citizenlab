@@ -1100,8 +1100,6 @@ class AdminProjectEditGeneral extends PureComponent<
                 images={projectHeaderImage}
                 imagePreviewRatio={240 / 952}
                 acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
-                maxImageFileSize={5000000}
-                maxNumberOfImages={1}
                 maxImagePreviewWidth="500px"
                 onAdd={this.handleHeaderOnAdd}
                 onRemove={this.handleHeaderOnRemove}
@@ -1124,8 +1122,6 @@ class AdminProjectEditGeneral extends PureComponent<
                 imagePreviewRatio={960 / 1440}
                 maxImagePreviewWidth="240px"
                 acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
-                maxImageFileSize={5000000}
-                maxNumberOfImages={1}
                 onAdd={this.handleProjectImagesOnAdd}
                 onRemove={this.handleProjectImageOnRemove}
               />
