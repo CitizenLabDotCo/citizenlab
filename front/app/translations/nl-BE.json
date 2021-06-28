@@ -2580,6 +2580,7 @@
   "app.containers.app.navbar.search": "Zoek",
   "app.containers.app.navbar.signOut": "Afmelden",
   "app.containers.app.navbar.signUp": "Registreren",
+  "app.containers.eventpage.eventPageTitle": "",
   "app.containers.eventpage.noPastEvents": "",
   "app.containers.eventpage.noUpcomingEvents": "",
   "app.containers.eventpage.pastEvents": "",

@@ -2580,6 +2580,7 @@
   "app.containers.app.navbar.search": "Căutare",
   "app.containers.app.navbar.signOut": "Deconectează-te",
   "app.containers.app.navbar.signUp": "Înscrie-te",
+  "app.containers.eventpage.eventPageTitle": "",
   "app.containers.eventpage.noPastEvents": "",
   "app.containers.eventpage.noUpcomingEvents": "",
   "app.containers.eventpage.pastEvents": "",

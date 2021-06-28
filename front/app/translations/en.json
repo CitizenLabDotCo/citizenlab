@@ -2580,6 +2580,7 @@
   "app.containers.app.navbar.search": "Search",
   "app.containers.app.navbar.signOut": "Sign out",
   "app.containers.app.navbar.signUp": "Sign up",
+  "app.containers.eventpage.eventPageTitle": "Events",
   "app.containers.eventpage.noPastEvents": "There are no past events",
   "app.containers.eventpage.noUpcomingEvents": "There are no upcoming events",
   "app.containers.eventpage.pastEvents": "Past events",

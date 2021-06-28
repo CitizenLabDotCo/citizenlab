@@ -2580,6 +2580,7 @@
   "app.containers.app.navbar.search": "Søk",
   "app.containers.app.navbar.signOut": "Logg ut",
   "app.containers.app.navbar.signUp": "Opprett en konto",
+  "app.containers.eventpage.eventPageTitle": "",
   "app.containers.eventpage.noPastEvents": "",
   "app.containers.eventpage.noUpcomingEvents": "",
   "app.containers.eventpage.pastEvents": "",

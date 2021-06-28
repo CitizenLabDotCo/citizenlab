@@ -2580,6 +2580,7 @@
   "app.containers.app.navbar.search": "Rechercher",
   "app.containers.app.navbar.signOut": "Se déconnecter",
   "app.containers.app.navbar.signUp": "S'inscrire",
+  "app.containers.eventpage.eventPageTitle": "",
   "app.containers.eventpage.noPastEvents": "",
   "app.containers.eventpage.noUpcomingEvents": "",
   "app.containers.eventpage.pastEvents": "",

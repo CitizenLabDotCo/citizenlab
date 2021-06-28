@@ -2580,6 +2580,7 @@
   "app.containers.app.navbar.search": "بحث",
   "app.containers.app.navbar.signOut": "تسجيل الخروج",
   "app.containers.app.navbar.signUp": "التسجيل",
+  "app.containers.eventpage.eventPageTitle": "",
   "app.containers.eventpage.noPastEvents": "",
   "app.containers.eventpage.noUpcomingEvents": "",
   "app.containers.eventpage.pastEvents": "",

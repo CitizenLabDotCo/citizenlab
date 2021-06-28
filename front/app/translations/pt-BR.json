@@ -2580,6 +2580,7 @@
   "app.containers.app.navbar.search": "Salvar",
   "app.containers.app.navbar.signOut": "Salvar",
   "app.containers.app.navbar.signUp": "faça o login",
+  "app.containers.eventpage.eventPageTitle": "",
   "app.containers.eventpage.noPastEvents": "",
   "app.containers.eventpage.noUpcomingEvents": "",
   "app.containers.eventpage.pastEvents": "",
