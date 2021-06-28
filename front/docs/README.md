@@ -1,8 +1,41 @@
-# Changelog
+# Changelog 
 
-## Next Release
+## Next release
 
-/
+### Fixed
+- Map: Fix for ideas that only have coordinates but no address not being shown on the map
+- Map: Fix for 'click on the map to add your input' message wrongfully being shown when idea posting is not allowed
+- Sign-up flow: Fix for bug that could cause the browser to freeze when the user tried to complete the custom fields step
+- Project description: Fix for numbered and unnumbered lists being cut off
+
+### Changed
+- Map: When an idea is selected that is hidden behind a cluster the map now zooms in to show that marker
+- Map: Idea marker gets centered on map when clicked
+- Map: Larger idea box on bigger desktop screens (width > 1440 pixels)
+- Idea location: Display idea location in degrees (°) minutes (') seconds ('') when the idea only has coordinates but no address
+- Sign-up flow: Show loading spinner when the user clicks on 'skip this step' in the sign-up custom fields step
+- Image upload: The default max allowed file size for an image is now 10 Mb instead of 5 Mb
+
+### Added
+- 'Go back' button from project to project folder (if appropriate).
+
+## 2021-06-22
+
+### Changed
+
+- Project managers that are assigned to a project and/or its input now lose those assignments when losing project management rights over that project.
+
+### Fixed
+
+- Input manager side modal scroll.
+
+## 2021-06-18
+
+### Fixed
+
+- Privacy policy now opens in new tab.
+- Landing page custom section now uses theme colors.
+- Buttons and links in project description now open internal links in the same tab, and external links in a new tab.
 
 ## 2021-06-16
 
@@ -27,7 +60,7 @@
 ### Added
 - New citizen-facing map view
 
-## 2021-06-07
+## 2021-06-08
 
 ### Fixed
 - Ordering by ideas by trending is now working.
@@ -61,21 +94,54 @@
 ### Added
 - Profanity blocker: when posting comments, input, proposals that contain profane words, posting will not be possible and a warning will be shown.
 
+## 2021-05-20
+
+### Fixed
+- Excel exports of ideas without author
+
+## 2021-05-19
+
+### Added
+- Support for Auth0 as a verification method
+
+## 2021-05-18
+
+### Fixed
+- Active users no longer need confirmation
+
+## 2021-05-14
+
+### Fixed
+- Fixed an issue causing already registered users to be prompted with the post-registration welcome screen.
+
 ## 2021-05-11
 
 ### Added
 - Added polls to the reporting section of the dashboards
 
+## 2021-05-10
+
+### Changed
+- Invited or verified users no longer require confirmation.
+
 ## 2021-05-07
 
 ### Fixed
 - Spreasheet exports throughout the platform are improved.
-- Idea export to excel is no longer limited to 250 ideas.
 
 ### Added
 - City Admins can now assign any user as the author of an idea when creating or updating.
 - Email confirmation now happens in survey and signup page sign up forms.
 
+## 2021-05-06
+
+### Fixed
+- Idea export to excel is no longer limited to 250 ideas.
+
+## 2021-05-04
+
+### Fixed
+- Fixed issues causing email campaigns not to be sent.
 
 ## 2021-05-03
 
@@ -90,6 +156,16 @@
 ### Added
 - New module to plug email confirmation to users.
 
+## 2021-04-29
+
+### Fixed
+- Editing the banner header in Admin > Settings > General, doesn't cause the other header fields to be cleared anymore
+
+## 2021-04-22
+
+### Fixed
+- After the project title error appears, it disappears again after you start correcting the error
+
 ## 2021-03-31
 
 ### Fixed
@@ -97,7 +173,6 @@
 
 ### Added
 - When a client-side validation error happens for the project title in the admin, there will be an error next to the submit button in addition to the error message next to the input field.
-
 
 ## 2021-03-25
 
@@ -108,11 +183,6 @@
 
 ### Fixed
 - Fix for broken sign-up flow when signing-up through social sign-on
-
-## 2021-04-22
-
-### Fixed
-- After the project title error appears, it disappears again after you start correcting the error
 
 ## 2021-03-19
 

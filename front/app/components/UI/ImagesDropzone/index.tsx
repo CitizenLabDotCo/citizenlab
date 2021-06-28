@@ -196,14 +196,14 @@ const RemoveButton = styled.button`
   }
 `;
 
-interface Props {
+interface InputProps {
   id?: string;
   images: UploadFile[] | null;
   acceptedFileTypes?: string | null | undefined;
   imagePreviewRatio: number;
   maxImagePreviewWidth?: string;
   maxImageFileSize?: number;
-  maxNumberOfImages: number;
+  maxNumberOfImages?: number;
   label?: string | JSX.Element | null | undefined;
   errorMessage?: string | null | undefined;
   objectFit?: 'cover' | 'contain' | undefined;
@@ -214,6 +214,11 @@ interface Props {
   className?: string;
 }
 
+interface Props extends InputProps {
+  maxNumberOfImages: number;
+  maxImageFileSize: number;
+}
+
 interface State {
   urlObjects: {
     [key: string]: string;
@@ -222,6 +227,11 @@ interface State {
 }
 
 class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
+  static defaultProps = {
+    maxNumberOfImages: 1,
+    maxImageFileSize: 10000000,
+  };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -371,7 +381,7 @@ class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
   };
 
   getMaxImageSizeInMb = () => {
-    return (this.props.maxImageFileSize || 5000000) / 1000000;
+    return this.props.maxImageFileSize / 1000000;
   };
 
   render() {
@@ -495,4 +505,4 @@ class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
   }
 }
 
-export default injectIntl<Props>(ImagesDropzone);
+export default injectIntl<InputProps>(ImagesDropzone as any);

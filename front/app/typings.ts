@@ -29,7 +29,7 @@ export interface IHttpMethod {
 
 export type ILocationInfo =
   | {
-      location_description: string;
+      location_description: string | undefined;
       location_point_geojson: {
         type: 'Point';
         coordinates: number[];

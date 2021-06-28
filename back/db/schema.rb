@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_01_061247) do
+ActiveRecord::Schema.define(version: 2021_18_06_161354) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -494,6 +494,7 @@ ActiveRecord::Schema.define(version: 2021_06_01_061247) do
     t.integer "position"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "inputs_count", default: 0, null: false
     t.index ["view_id", "name"], name: "index_insights_categories_on_view_id_and_name", unique: true
     t.index ["view_id"], name: "index_insights_categories_on_view_id"
   end
@@ -517,6 +518,30 @@ ActiveRecord::Schema.define(version: 2021_06_01_061247) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["name"], name: "index_insights_views_on_name"
+  end
+
+  create_table "insights_zeroshot_classification_tasks", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "task_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["task_id"], name: "index_insights_zeroshot_classification_tasks_on_task_id", unique: true
+  end
+
+  create_table "insights_zeroshot_classification_tasks_categories", id: false, force: :cascade do |t|
+    t.uuid "category_id", null: false
+    t.uuid "task_id", null: false
+    t.index ["category_id", "task_id"], name: "index_insights_zsc_tasks_categories_on_category_id_and_task_id", unique: true
+    t.index ["category_id"], name: "index_insights_zsc_tasks_categories_on_category_id"
+    t.index ["task_id"], name: "index_insights_zsc_tasks_categories_on_task_id"
+  end
+
+  create_table "insights_zeroshot_classification_tasks_inputs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "task_id", null: false
+    t.string "input_type", null: false
+    t.uuid "input_id", null: false
+    t.index ["input_id", "input_type", "task_id"], name: "index_insights_zsc_tasks_inputs_on_input_and_task_id", unique: true
+    t.index ["input_type", "input_id"], name: "index_insights_zsc_tasks_inputs_on_input"
+    t.index ["task_id"], name: "index_insights_zeroshot_classification_tasks_inputs_on_task_id"
   end
 
   create_table "invites", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1124,6 +1149,9 @@ ActiveRecord::Schema.define(version: 2021_06_01_061247) do
   add_foreign_key "insights_categories", "insights_views", column: "view_id"
   add_foreign_key "insights_category_assignments", "insights_categories", column: "category_id"
   add_foreign_key "insights_views", "projects", column: "scope_id"
+  add_foreign_key "insights_zeroshot_classification_tasks_categories", "insights_categories", column: "category_id"
+  add_foreign_key "insights_zeroshot_classification_tasks_categories", "insights_zeroshot_classification_tasks", column: "task_id"
+  add_foreign_key "insights_zeroshot_classification_tasks_inputs", "insights_zeroshot_classification_tasks", column: "task_id"
   add_foreign_key "invites", "users", column: "invitee_id"
   add_foreign_key "invites", "users", column: "inviter_id"
   add_foreign_key "maps_layers", "maps_map_configs", column: "map_config_id"
