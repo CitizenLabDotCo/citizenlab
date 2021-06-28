@@ -9,10 +9,10 @@ describe ProjectFilePolicy do
 
   context 'on a file in a public project' do
     let(:project) { create(:continuous_project) }
-    let!(:file) { create(:project_file, project: project) }
+    let!(:file) { create(:project_file, projects: [project]) }
 
     context 'for a moderator' do
-      let(:user) { create(:project_moderator, project: project) }
+      let(:user) { create(:project_moderator, projects: [project]) }
 
       it { is_expected.to permit(:show)    }
       it { is_expected.to permit(:create)  }

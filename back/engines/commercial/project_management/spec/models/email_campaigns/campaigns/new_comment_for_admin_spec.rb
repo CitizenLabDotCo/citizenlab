@@ -10,7 +10,7 @@ RSpec.describe EmailCampaigns::Campaigns::NewCommentForAdmin, type: :model do
       idea = create(:idea)
       comment = create(:comment, post: idea)
 
-      moderator = create(:project_moderator, project: idea.project)
+      moderator = create(:project_moderator, projects: [idea.project])
       _other_moderator = create(:project_moderator)
 
       comment_created = create(:activity, item: comment, action: 'created')
@@ -23,7 +23,7 @@ RSpec.describe EmailCampaigns::Campaigns::NewCommentForAdmin, type: :model do
 
     it 'filters out everyone if the author is moderator (on idea)' do
       idea = create(:idea)
-      moderator = create(:project_moderator, project: idea.project)
+      moderator = create(:project_moderator, projects: [idea.project])
       comment = create(:comment, post: idea, author: moderator)
       _admin = create(:admin)
 

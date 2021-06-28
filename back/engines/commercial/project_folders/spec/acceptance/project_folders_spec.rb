@@ -156,7 +156,7 @@ resource 'ProjectFolder' do
 
   context 'when project folder moderator' do
     let(:moderated_folder) { create(:project_folder) }
-    let!(:user) { create(:project_folder_moderator, project_folder: moderated_folder) }
+    let!(:user) { create(:project_folder_moderator, project_folders: [moderated_folder]) }
 
     before do
       header_token_for(user)

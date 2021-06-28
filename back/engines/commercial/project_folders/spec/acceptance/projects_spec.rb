@@ -11,7 +11,7 @@ resource 'Projects' do
 
   context 'as a project folder moderator' do
     let!(:project_folder) { create(:project_folder) }
-    let!(:user) { create(:project_folder_moderator, project_folder: project_folder) }
+    let!(:user) { create(:project_folder_moderator, project_folders: [project_folder]) }
     let!(:projects_within_folder) do
       projects = publication_statuses.map do |status|
         create(

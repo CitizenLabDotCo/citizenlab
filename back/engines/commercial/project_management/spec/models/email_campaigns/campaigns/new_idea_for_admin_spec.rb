@@ -10,7 +10,7 @@ RSpec.describe 'EmailCampaigns::Campaigns::NewIdeaForAdmin', type: :model, skip:
   describe 'apply_recipient_filters' do
     it 'keeps moderators' do
       idea = create(:idea)
-      moderator = create(:project_moderator, project: idea.project)
+      moderator = create(:project_moderator, projects: [idea.project])
       _other_moderator = create(:project_moderator)
 
       idea_published = create(:activity, item: idea, action: 'published')
@@ -21,7 +21,7 @@ RSpec.describe 'EmailCampaigns::Campaigns::NewIdeaForAdmin', type: :model, skip:
   describe 'apply_recipient_filters' do
     it 'filters out everyone if the author is moderator' do
       project = create(:project)
-      moderator = create(:project_moderator, project: project)
+      moderator = create(:project_moderator, projects: [project])
       idea = create(:idea, project: project, author: moderator)
       _admin = create(:admin)
 

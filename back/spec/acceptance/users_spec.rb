@@ -361,7 +361,7 @@ resource "Users" do
         example "List all users who can moderate a project", skip: !CitizenLab.ee? do
           p = create(:project)
           a = create(:admin)
-          m1 = create(:project_moderator, project: p)
+          m1 = create(:project_moderator, projects: [p])
 
           create(:project_moderator)
           create(:user)
@@ -375,7 +375,7 @@ resource "Users" do
         example "List all users who can moderate", skip: !CitizenLab.ee? do
           p = create(:project)
           a = create(:admin)
-          m1 = create(:project_moderator, project: p)
+          m1 = create(:project_moderator, projects: [p])
           m2 = create(:project_moderator)
           create(:user)
 
@@ -390,7 +390,7 @@ resource "Users" do
           create(:user)
 
           if CitizenLab.ee?
-            create(:project_moderator, project: p)
+            create(:project_moderator, projects: [p])
             create(:project_moderator)
           end
 

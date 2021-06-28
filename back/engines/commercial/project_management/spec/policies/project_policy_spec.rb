@@ -12,7 +12,7 @@ describe ProjectPolicy do
     let!(:project) { create(:project) }
 
     context 'for a moderator of another project' do
-      let(:user) { create(:project_moderator, project: create(:project)) }
+      let(:user) { create(:project_moderator, projects: [create(:project)]) }
 
       it { is_expected.to permit(:show) }
       it { is_expected.not_to permit(:create) }
@@ -35,7 +35,7 @@ describe ProjectPolicy do
     let!(:project) { create(:private_admins_project) }
 
     context 'for a moderator' do
-      let(:user) { create(:project_moderator, project: project) }
+      let(:user) { create(:project_moderator, projects: [project]) }
 
       it { is_expected.to permit(:show) }
       it { is_expected.not_to permit(:create) }
@@ -58,7 +58,7 @@ describe ProjectPolicy do
     let!(:project) { create(:project, admin_publication_attributes: { publication_status: 'draft' }) }
 
     context 'for a moderator' do
-      let(:user) { create(:project_moderator, project: project) }
+      let(:user) { create(:project_moderator, projects: [project]) }
 
       it { is_expected.to permit(:show) }
       it { is_expected.not_to permit(:create) }

@@ -14,7 +14,7 @@ RSpec.describe 'EmailCampaigns::Campaigns::ModeratorDigest', type: :model, skip:
   describe '#generate_command' do
     let(:campaign) { create(:moderator_digest_campaign) }
     let!(:project) { create(:project) }
-    let!(:moderator) { create(:project_moderator, project: project) }
+    let!(:moderator) { create(:project_moderator, projects: [project]) }
     let!(:old_ideas) { create_list(:idea, 2, project: project, published_at: Time.zone.now - 20.days) }
     let!(:new_ideas) { create_list(:idea, 3, project: project, published_at: Time.zone.now - 1.day) }
     let!(:vote) { create(:vote, mode: 'up', votable: new_ideas.first) }

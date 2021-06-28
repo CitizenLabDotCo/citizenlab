@@ -9,10 +9,10 @@ describe ProjectImagePolicy do
 
   context 'on an image in a public project' do
     let(:project) { create(:continuous_project) }
-    let!(:image) { create(:project_image, project: project) }
+    let!(:image) { create(:project_image, projects: [project]) }
 
     context 'for a moderator' do
-      let(:user) { create(:project_moderator, project: project) }
+      let(:user) { create(:project_moderator, projects: [project]) }
 
       it { is_expected.to permit(:show)    }
       it { is_expected.to permit(:create)  }

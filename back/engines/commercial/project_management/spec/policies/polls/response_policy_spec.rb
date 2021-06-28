@@ -12,7 +12,7 @@ describe 'Polls::ResponsePolicy', skip: skip_reason do
   let!(:response) { build(:poll_response, participation_context: pc) }
 
   context "for a moderator of the response's project that doesn't own the response" do
-    let(:user) { create(:project_moderator, project: pc) }
+    let(:user) { create(:project_moderator, projects: [pc]) }
 
     it { is_expected.not_to permit(:create) }
 

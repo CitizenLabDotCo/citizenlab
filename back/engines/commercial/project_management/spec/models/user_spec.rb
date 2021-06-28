@@ -52,7 +52,7 @@ RSpec.describe User, type: :model do
   describe "delete_role" do
     it "denies a user from his moderator rights" do
       prj = create(:project)
-      mod = create(:project_moderator, project: prj)
+      mod = create(:project_moderator, projects: [prj])
 
       mod.delete_role 'project_moderator', project_id: prj.id
       expect(mod.save).to eq true
@@ -72,7 +72,7 @@ RSpec.describe User, type: :model do
 
     it "demotes the user from assignee of the moderated project's ideas" do
       prj = create(:project)
-      mod = create(:moderator, project: prj)
+      mod = create(:project_moderator, projects: [prj])
       prj.default_assignee = mod
       prj.save
 
