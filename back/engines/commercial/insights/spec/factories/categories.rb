@@ -5,6 +5,6 @@ FactoryBot.define do
     view factory: :view
 
     sequence(:name) { |n| "category_#{n}" }
-    sequence(:position) # Note that it makes the assumption that new categories are added at the bottom.
+    sequence(:position) # It adds new categories at the bottom.
   end
 end

@@ -515,7 +515,6 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
                 id="initiative-banner-dropzone"
                 images={banner ? [banner] : null}
                 imagePreviewRatio={360 / 1440}
-                maxNumberOfImages={1}
                 acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
                 onAdd={this.addBanner}
                 onRemove={this.removeBanner}
@@ -535,7 +534,6 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
                 id="initiative-image-dropzone"
                 images={image ? [image] : null}
                 imagePreviewRatio={135 / 298}
-                maxNumberOfImages={1}
                 acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
                 onAdd={this.addImage}
                 onRemove={this.removeImage}

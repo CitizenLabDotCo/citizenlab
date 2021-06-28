@@ -84,6 +84,10 @@ export default defineMessages({
     id: 'app.containers.Admin.Insights.createModalCancel',
     defaultMessage: 'Cancel',
   },
+  inputsDone: {
+    id: 'app.containers.Admin.Insights.Edit.inputsDone',
+    defaultMessage: 'Done',
+  },
   inputsTableInputs: {
     id: 'app.containers.Admin.Insights.Edit.inputsTableInputs',
     defaultMessage: 'Inputs',
@@ -100,6 +104,14 @@ export default defineMessages({
     id: 'app.containers.Admin.Insights.Edit.inputsEmptyState',
     defaultMessage: "This project doesn't seem to contain any input.",
   },
+  inputsTableNoResults: {
+    id: 'app.containers.Admin.Insights.Edit.inputsTableNoResults',
+    defaultMessage: 'No results found',
+  },
+  inputsTableNoResultsDescription: {
+    id: 'app.containers.Admin.Insights.Edit.inputsTableNoResultsDescription',
+    defaultMessage: 'Please try a different filter or search term.',
+  },
   inputsTableCategoryTitle: {
     id: 'app.containers.Admin.Insights.Edit.inputsTableCategoryTitle',
     defaultMessage: 'You have no input assigned to this category yet',
@@ -107,6 +119,10 @@ export default defineMessages({
   inputsTableCategoryDescription: {
     id: 'app.containers.Admin.Insights.Edit.inputsTableCategoryDescription',
     defaultMessage: 'Start moving input here to grow your category.',
+  },
+  inputsTableNotCategorized: {
+    id: 'app.containers.Admin.Insights.Edit.inputsTableNotCategorized',
+    defaultMessage: 'There is no input without a category',
   },
   categories: {
     id: 'app.containers.Admin.Insights.Edit.categories',
@@ -144,6 +160,15 @@ export default defineMessages({
     id: 'app.containers.Admin.Insights.Edit.allInputTooltip',
     defaultMessage:
       'This lists all previously processed input regardless of assigned categories. Recently added input is NOT shown here.',
+  },
+  notCategorized: {
+    id: 'app.containers.Admin.Insights.Edit.notCategorized',
+    defaultMessage: 'Not categorized',
+  },
+  notCategorizedTooltip: {
+    id: 'app.containers.Admin.Insights.Edit.notCategorizedTooltip',
+    defaultMessage:
+      "This lists all previously processed input that hasn't been assigned a category. Recently added input is NOT shown here.",
   },
   editCategoryName: {
     id: 'app.containers.Admin.Insights.Edit.editCategoryName',
@@ -184,5 +209,22 @@ export default defineMessages({
   createCategoryPrompt: {
     id: 'app.containers.Admin.Insights.Edit.Details.createCategoryPrompt',
     defaultMessage: 'Create',
+  },
+  bulkAssignCategory: {
+    id: 'app.containers.Admin.Insights.Edit.bulkAssignCategory',
+    defaultMessage: 'Add categories to selected inputs',
+  },
+  assignCategoriesButton: {
+    id: 'app.containers.Admin.Insights.Edit.assignCategoriesButton',
+    defaultMessage: 'Add',
+  },
+  bulkUnassign: {
+    id: 'app.containers.Admin.Insights.Edit.bulkUnassign',
+    defaultMessage: 'Remove',
+  },
+  deleteFromCategories: {
+    id: 'app.containers.Admin.Insights.Edit.deleteFromCategories',
+    defaultMessage:
+      'Are you sure you can to remove {selectedCount} inputs from {categoryName}?',
   },
 });
