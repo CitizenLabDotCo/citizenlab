@@ -724,10 +724,10 @@ class SettingsCustomizeTab extends PureComponent<
                       />
                       <LabelContent>
                         <LabelTitle>
-                          {formatMessage(messages.eventPageSetting)}
+                          {formatMessage(messages.eventsPageSetting)}
                         </LabelTitle>
                         <LabelDescription>
-                          {formatMessage(messages.eventPageSettingDescription)}
+                          {formatMessage(messages.eventsPageSettingDescription)}
                         </LabelDescription>
                       </LabelContent>
                     </ToggleLabel>
