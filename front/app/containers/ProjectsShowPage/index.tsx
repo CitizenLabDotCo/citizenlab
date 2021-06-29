@@ -82,7 +82,7 @@ const ProjectsShowPage = memo<Props>(({ project }) => {
   const locale = useLocale();
   const tenant = useAppConfiguration();
   const phases = usePhases(projectId);
-  const events = useEvents(projectId);
+  const events = useEvents(projectId ? [projectId] : undefined);
   const user = useAuthUser();
 
   const loading = useMemo(() => {

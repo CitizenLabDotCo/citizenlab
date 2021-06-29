@@ -2,8 +2,7 @@ class WebApi::V1::EventsController < ApplicationController
   before_action :set_event, only: [:show, :update, :destroy]
 
   def index
-    @events = policy_scope(Event).where(project_id: params[:project_id]).order(start_at: :desc)
-                                 .page(params.dig(:page, :number)).per(params.dig(:page, :size))
+    @events = EventsFinder.find(params, scope: policy_scope(Event), current_user: current_user).records
     render json: linked_json(@events, WebApi::V1::EventSerializer, params: fastjson_params)
   end
 
