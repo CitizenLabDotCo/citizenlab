@@ -1,6 +1,6 @@
 # Changelog 
 
-## Next release
+## Release 2021-06-29
 
 ### Fixed
 - Map: Fix for ideas that only have coordinates but no address not being shown on the map
