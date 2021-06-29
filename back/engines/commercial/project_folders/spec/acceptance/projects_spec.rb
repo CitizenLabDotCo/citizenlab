@@ -231,7 +231,7 @@ resource 'Projects' do
 
         context 'when a valid folder_id is passed' do
           let!(:new_folder) { create(:project_folder) }
-          let!(:new_folder_moderators) { create_list(:project_folder_moderator, 3, project_folder: new_folder) }
+          let!(:new_folder_moderators) { create_list(:project_folder_moderator, 3, project_folders: [new_folder]) }
           let(:project_moderators) { User.project_moderator(project.id) }
 
           let(:folder_id) { new_folder.id }
@@ -257,7 +257,7 @@ resource 'Projects' do
 
         context 'when an invalid folder_id is passed' do
           let!(:new_folder) { create(:project_folder) }
-          let!(:new_folder_moderators) { create_list(:project_folder_moderator, 3, project_folder: new_folder) }
+          let!(:new_folder_moderators) { create_list(:project_folder_moderator, 3, project_folders: [new_folder]) }
           let(:project_moderators) { User.project_moderator(project.id) }
 
           let(:folder_id) { 'foo' }
