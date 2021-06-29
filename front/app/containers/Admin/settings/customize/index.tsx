@@ -488,8 +488,6 @@ class SettingsCustomizeTab extends PureComponent<
         ...attributesDiff,
       }.settings.core;
 
-      console.log(this.state.attributesDiff);
-
       return (
         <form onSubmit={this.save}>
           <Section key={'branding'}>
