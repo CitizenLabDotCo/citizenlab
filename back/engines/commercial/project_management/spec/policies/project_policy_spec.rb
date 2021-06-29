@@ -22,7 +22,6 @@ describe ProjectPolicy do
 
       it 'indexes the project' do
         expect(scope.resolve.size).to eq 2
-        expect(scope.moderatable.size).to eq 1
       end
 
       it 'includes the user in the users that have access' do
@@ -45,7 +44,6 @@ describe ProjectPolicy do
 
       it 'indexes the project' do
         expect(scope.resolve.size).to eq 1
-        expect(scope.moderatable.size).to eq 1
       end
 
       it 'includes the user in the users that have access' do
@@ -68,7 +66,6 @@ describe ProjectPolicy do
 
       it 'indexes the project' do
         expect(scope.resolve.size).to eq 1
-        expect(scope.moderatable.size).to eq 1
       end
 
       it 'includes the user in the users that have access' do
@@ -86,7 +83,6 @@ describe ProjectPolicy do
       it { is_expected.not_to permit(:destroy) }
 
       it { expect(scope.resolve).not_to include(project) }
-      it { expect(scope.moderatable).not_to include(project) }
       it { expect(inverse_scope.resolve).not_to include(user) }
     end
   end

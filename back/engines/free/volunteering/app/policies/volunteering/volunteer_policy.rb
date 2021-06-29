@@ -9,7 +9,7 @@ module Volunteering
       end
 
       def resolve
-        moderatable_projects = ProjectPolicy::Scope.new(user, Project).moderatable
+        moderatable_projects = UserRoleService.new.moderatable_projects user
         moderatable_phases = Phase.where(project: moderatable_projects)
         joined_scope = scope.joins(:cause)
         joined_scope
