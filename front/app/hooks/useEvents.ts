@@ -8,8 +8,8 @@ import {
 
 export default function useEvents(
   projectIds?: string[],
-  futureOnly?: string | Date,
-  pastOnly?: string | Date
+  futureOnly?: boolean,
+  pastOnly?: boolean
 ) {
   const [events, setEvents] = useState<IEventData[] | undefined | null | Error>(
     undefined
