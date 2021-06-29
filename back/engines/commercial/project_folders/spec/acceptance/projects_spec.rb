@@ -108,7 +108,7 @@ resource 'Projects' do
         let(:area_ids) { create_list(:area, 2).map(&:id) }
         let(:visible_to) { 'admins' }
         let(:publication_status) { 'draft' }
-        let!(:other_folder_moderators) { create_list(:project_folder_moderator, 3, project_folder: project_folder) }
+        let!(:other_folder_moderators) { create_list(:project_folder_moderator, 3, project_folders: [project_folder]) }
         let(:last_project) { Project.order(created_at: :desc).take }
 
         context 'when passing a folder_id of a folder the user moderates' do
@@ -213,7 +213,7 @@ resource 'Projects' do
 
       describe do
         let!(:project) { create(:project) }
-        let!(:old_folder_moderators) { create_list(:project_folder_moderator, 3, project_folder: project_folder) }
+        let!(:old_folder_moderators) { create_list(:project_folder_moderator, 3, project_folders: [project_folder]) }
 
         let(:id) { project.id }
         let(:title_multiloc) { project.title_multiloc }

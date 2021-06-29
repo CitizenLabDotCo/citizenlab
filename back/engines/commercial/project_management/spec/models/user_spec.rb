@@ -61,7 +61,7 @@ RSpec.describe User, type: :model do
 
     it "demotes the user from default_assignee of the moderated project" do
       prj = create(:project)
-      mod = create(:moderator, project: prj)
+      mod = create(:project_moderator, projects: [prj])
       prj.default_assignee = mod
       prj.save
 

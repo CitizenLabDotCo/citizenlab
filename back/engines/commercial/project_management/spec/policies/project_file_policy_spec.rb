@@ -9,7 +9,7 @@ describe ProjectFilePolicy do
 
   context 'on a file in a public project' do
     let(:project) { create(:continuous_project) }
-    let!(:file) { create(:project_file, projects: [project]) }
+    let!(:file) { create(:project_file, project: project) }
 
     context 'for a moderator' do
       let(:user) { create(:project_moderator, projects: [project]) }

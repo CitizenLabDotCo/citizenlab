@@ -62,8 +62,6 @@ resource "Moderations" do
           {'project' => {'id' => @project.id, 'slug' => @project.slug, 'title_multiloc' => @project.title_multiloc}},
         ]
       end
-
-
     end
 
     context "when admin" do

@@ -8,12 +8,12 @@ describe TrackSegmentService do
 
   describe 'integrations' do
     it 'includes intercom for a project moderator' do
-      user = build_stubbed(:moderator)
+      user = build_stubbed(:project_moderator)
       expect(service.integrations(user)[:Intercom]).to be true
     end
 
     it 'includes SatisMeter for a project moderator' do
-      user = build_stubbed(:moderator)
+      user = build_stubbed(:project_moderator)
       expect(service.integrations(user)[:SatisMeter]).to be true
     end
   end

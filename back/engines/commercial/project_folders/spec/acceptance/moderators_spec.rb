@@ -100,10 +100,10 @@ resource 'Moderators' do
       let(:project_folder) { create(:project_folder) }
       let(:project_folder_id) { project_folder.id }
       let(:user_id) { create(:user).id }
-      let(:other_moderators) { create_list(:project_folder_moderator, 2, project_folder: project_folder) }
+      let(:other_moderators) { create_list(:project_folder_moderator, 2, project_folders: [project_folder]) }
       let(:project_folder_id) { project_folder.id }
       let(:user_id) { other_moderators.first.id }
-      let!(:same_project_folder_moderators) { create_list(:project_folder_moderator, 2, project_folder: project_folder) }
+      let!(:same_project_folder_moderators) { create_list(:project_folder_moderator, 2, project_folders: [project_folder]) }
 
       example_request 'List all moderators of a project_folder', document: false do
         expect(status).to eq(200)
@@ -118,7 +118,7 @@ resource 'Moderators' do
       let(:project_folder) { create(:project_folder) }
       let(:project_folder_id) { project_folder.id }
       let(:user_id) { create(:user).id }
-      let(:other_moderators) { create_list(:project_folder_moderator, 2, project_folder: project_folder) }
+      let(:other_moderators) { create_list(:project_folder_moderator, 2, project_folders: [project_folder]) }
       let(:project_folder_id) { project_folder.id }
       let(:user_id) { other_moderators.first.id }
 
@@ -136,7 +136,7 @@ resource 'Moderators' do
 
       ValidationErrorHelper.new.error_fields(self, User)
 
-      let(:moderator) { create(:project_folder_moderator, project_folder: project_folder) }
+      let(:moderator) { create(:project_folder_moderator, project_folders: [project_folder]) }
       let(:project_folder) { create(:project_folder) }
       let(:project_folder_id) { project_folder.id }
       let(:user) { create(:user) }
