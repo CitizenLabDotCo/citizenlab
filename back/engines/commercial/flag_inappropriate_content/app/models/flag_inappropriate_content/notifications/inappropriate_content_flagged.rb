@@ -9,7 +9,7 @@ module FlagInappropriateContent
 
       
       def self.recipient_ids flaggable
-        UserRoleService.new.moderators_for(flaggable).ids
+        ::UserRoleService.new.moderators_for(flaggable).ids
       end
 
       def self.make_notifications_on activity

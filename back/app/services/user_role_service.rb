@@ -13,8 +13,6 @@ class UserRoleService
   end
 
   def can_moderate_project? project, user
-    # TODO move logic from policy to here
-    # ProjectPolicy.new(user, project).moderate?
     user.admin?
   end
 

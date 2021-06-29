@@ -12,7 +12,7 @@ module Moderation
         if user&.active? && user.admin?
           scope.all
         elsif user&.active?
-          scope.where(project_id: UserRoleService.new.moderatable_projects(user))
+          scope.where(project_id: ::UserRoleService.new.moderatable_projects(user))
         else
           scope.none
         end
@@ -20,7 +20,7 @@ module Moderation
     end
 
     def update?
-      user&.active? && UserRoleService.new.can_moderate?(record.source_record, user)
+      user&.active? && ::UserRoleService.new.can_moderate?(record.source_record, user)
     end
   end
 end

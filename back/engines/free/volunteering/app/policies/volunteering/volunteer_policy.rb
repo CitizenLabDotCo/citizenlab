@@ -10,7 +10,7 @@ module Volunteering
 
       def resolve
         return scope.none if !user
-        moderatable_projects = UserRoleService.new.moderatable_projects user
+        moderatable_projects = ::UserRoleService.new.moderatable_projects user
         moderatable_phases = Phase.where(project: moderatable_projects)
         joined_scope = scope.joins(:cause)
         joined_scope
@@ -20,6 +20,7 @@ module Volunteering
     end
 
     def index_xlsx?
+      # TODO also allow folder moderators
       user&.active? && (user.admin? || user.project_moderator?)
     end
 
