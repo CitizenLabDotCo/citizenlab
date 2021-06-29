@@ -520,8 +520,6 @@ export const loadModules = (modules: Modules): ParsedModuleConfiguration => {
   };
 };
 
-export function insertIntoObject() {}
-
 export const insertConfiguration = <T extends { name: string }>({
   configuration,
   insertAfterName,
