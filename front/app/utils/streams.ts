@@ -77,6 +77,12 @@ class Streams {
   public streamIdsByDataIdWithoutQuery: { [key: string]: string[] };
   public streamIdsByDataIdWithQuery: { [key: string]: string[] };
 
+  // this.streams = collection of all streams that are initiated by endpoint requests to the back-end
+  // this.resourcesByDataId = key-value object with keys being the unique data id's (e.g. idea.data.id) and values the data associated with those id's
+  // this.streamIdsByApiEndPointWithQuery = key-value object that indexes all streams with query params by their api endpoint. key = api endpoint, value = the stream associated with this endpoint (included in this.streams)
+  // this.streamIdsByApiEndPointWithoutQuery = same as streamIdsByApiEndPointWithQuery, but instead indexes streams that do not include query parameters
+  // this.streamIdsByDataIdWithQuery = key-value object that indexes all streams with query params by their dataId(s). key = api endpoint, value = the stream associated with this endpoint (included in this.streams)
+  // this.streamIdsByDataIdWithoutQuery = same as streamIdsByDataIdWithQuery, but instead indexes streams that do not include query parameters
   constructor() {
     this.streams = {};
     this.resourcesByDataId = {};
@@ -92,17 +98,29 @@ class Streams {
     const promises: Promise<any>[] = [];
     const promisesToAwait: Promise<any>[] = [];
 
+    // rootStreams are the streams that should always be refetched when a reset occurs, and for which their refetch
+    // should be awaited before any others streams are refetched.
+    // Currently the only 2 rootstreams are those for the authUser and appConfiguration endpoints
     const rootStreamIds = [authApiEndpoint, currentAppConfigurationEndpoint];
 
     rootStreamIds.forEach((rootStreamId) => {
       promisesToAwait.push(this.streams[rootStreamId].fetch());
     });
 
+    // Here we loop through all streams that are currently in the browser memory.
+    // Every stream in the browser memory will be either refetched or removed when reset() is executed,
+    // with the exception of the rootstreams (authUser and appConfiguration) and the custom fields stream ('/users/custom_fields/schema'), which we ignore here.
     Object.keys(this.streams).forEach((streamId) => {
+      // If it's a rootstream or the custom fields stream ('/users/custom_fields/schema') we ignore it.
+      // The rootstreams are already included in promisesToAwait and therefore so already queued for refetch, so would be redundant to add them to the list of refetched streams here as well.
+      // We also ignore the custom fields stream in order to fix a bug that could potentially freeze the browser when the custom fields stream would be refetched.
       if (
         !includes(rootStreamIds, streamId) &&
         !streamId.endsWith('/users/custom_fields/schema')
       ) {
+        // If the stream is currently active (= being subscribed to by one or more components that are mounted when reset() gets called)
+        // we inlcude the stream in the list of streams to refetch.
+        // Otherwise we include the stream in the list of streams that will be removed, with the exception of the custom fields stream
         if (
           this.isActiveStream(streamId) ||
           modules?.streamsToReset?.includes(streamId)
@@ -118,13 +136,21 @@ class Streams {
     });
 
     try {
+      // first we await the refetch promises for the rootstreams
       await Promise.all(promisesToAwait);
+      // afterwards we refetch the active streams as determined by the loop above -without- awaiting there promises as that would take up too much time and is not needed
       Promise.all(promises);
     } finally {
+      // finally we return a true value. We use 'finally' here to not block the reset from completing when there are refetches that fail
       return true;
     }
   }
 
+  // Here we recursively freeze each property in the object provied as the argument so that the return object is immutable (=read-only).
+  // This is a safety mechanism we apply to all objects being put in the streams to make sure that any given stream can be simultaneously
+  // subscribed to in different components with the guarantee that each component will receive the exact same data for that stream.
+  // If the stream data would not be immutable, you could in theory overwrite it in one place and (unknowingly) affect the data in other places that subscribe to that stream as well.
+  // By making the stream data immutable, you avoid this scenario.
   deepFreeze<T>(object: T): T {
     let frozenObject = object;
 
@@ -154,12 +180,18 @@ class Streams {
     return frozenObject;
   }
 
+  // Checks if a stream is subscribed to by one ore more currently mounted components.
+  // To dermine this, we use the internal rxjs refCount property, which keeps track
+  // of the subscribe count for any given stream.
   isActiveStream(streamId: string) {
     const refCount = cloneDeep(
       this.streams[streamId].observable.source['_refCount']
     );
     const isCacheStream = cloneDeep(this.streams[streamId].cacheStream);
 
+    // If a stream is cached we keep at least 1 subscription to it open at all times, and therefore it will always have a refCount of at least 1.
+    // Hence we have to check for a count larger than 1 to determine if the stream is actively being used.
+    // None-cached streams on the other hand are not subscribed to by default and have a refCount of 0 when not actively used.
     if ((isCacheStream && refCount > 1) || (!isCacheStream && refCount > 0)) {
       return true;
     }
@@ -167,6 +199,10 @@ class Streams {
     return false;
   }
 
+  // Completetly removes a stream from all indexes and from browser memory
+  // We call this function in 2 places:
+  // - Whenever a reset occurs (streams.reset()) -> here we destroy the streams so it can be re-initiated after a user has logged in or out
+  // - When a fetch inside of streams.get() returns an error -> here we destroy the stream so it can be re-initiated
   deleteStream(streamId: string, apiEndpoint: string) {
     if (includes(this.streamIdsByApiEndPointWithQuery[apiEndpoint], streamId)) {
       this.streamIdsByApiEndPointWithQuery[
@@ -215,6 +251,9 @@ class Streams {
     delete this.streams[streamId];
   }
 
+  // Here we sanitize endpoints with query parameters
+  // to normalize them (e.g. make sure any null, undefined or '' params do not get taken into account when determining if a stream for the given parans already exists).
+  // The 'skipSanitizationFor' parameter can be used to provide a list of query parameter names that should not be sanitized
   sanitizeQueryParameters = (
     queryParameters: IObject | null,
     skipSanitizationFor?: string[]
@@ -239,18 +278,28 @@ class Streams {
       : null;
   };
 
+  // Determines wether the stream is associated with an endpoint that return a single object (e.g. an idea endpoint)
+  // or an endpoint that returns a collection of objects (e.g. the ideas endpoint)
   isSingleItemStream(lastUrlSegment: string, isQueryStream: boolean) {
     if (!isQueryStream) {
+      // When the endpoint url ends with a UUID we're dealing with a single-item endpoint
       return isUUID(lastUrlSegment);
     }
 
     return false;
   }
 
+  // Remove trailing slash to normalize the api endpoint names.
+  // This is needed to avoid the creation of redundant streams for the same endpint (e.g. when providing the endpoint both with and without trailing slash)
   removeTrailingSlash(apiEndpoint: string) {
     return apiEndpoint.replace(/\/$/, '');
   }
 
+  // The streamId is the unique identifier for a stream, and is composed by the following data:
+  // - The api endpoint
+  // - An optional cache parameter set to false when the stream is not cached (not included when cacheStream is true)
+  // - Normalized and stringified query parameters (if any are present)
+  // Together these parameters will return a streamId in the form of a string.
   getStreamId(
     apiEndpoint: string,
     isQueryStream: boolean,
@@ -270,6 +319,19 @@ class Streams {
     return streamId;
   }
 
+  // addStreamIdByDataIdIndex will index a given streamId by the dataId(s) it includes.
+  // This may sound a bit complicated, but it's actually rather simple:
+  // Any given stream will have 1) a streamId and 2) one or more dataIds inside of it
+  // The streamId is a unique identifier (see getStreamId()) for any given stream
+  // The dataId or dataIds are the identifiers of the object(s) inside of a stream
+  // E.g. You have a stream for the '/ideas' endpoint (without query params to make it a bit simpler).
+  // This stream has a streamId of value '/ideas', and includes 2 idea objects. Each of these object has a data.id attribute (which is the unique identifier as returned by the back-end).
+  // For the sake of the example: the first object has an id of '123' and the second object a dataId of '456'.
+  // So we know that the stream with streamId '/ideas' has 2 objects in it. We also know the stream does not contain any query parameters.
+  // With this knowledge we can now index this stream by its dataIds, e.g: this.streamIdsByDataIdWithoutQuery['123'] = ['/ideas'] and this.streamIdsByDataIdWithoutQuery['465'] = ['/ideas'].
+  // Now that we have this indexes we can later determine which streams to update when either the data with id '123' or '456' changes.
+  // E.g. when we know an update to dataId '123' occurs we can loop through all streams that contain this id, refetch their endpoints and push the new, updated data for '123' in the streams.
+  // Alternatively we can also manually push the updated objects into all streams that contain this dataId (only applies to streams without query params, as to not mess up any sorting, pagination, etc... that might take place in streams with query params).
   addStreamIdByDataIdIndex(
     streamId: string,
     isQueryStream: boolean,
@@ -298,6 +360,8 @@ class Streams {
     }
   }
 
+  // same concept as addStreamIdByDataIdIndex, but instead of indexing by dataId we index here by apiEndpoint
+  // Why index by both dataId and apiEndpoint?
   addStreamIdByApiEndpointIndex(
     apiEndpoint: string,
     streamId: string,
@@ -358,7 +422,6 @@ class Streams {
         isQueryStream
       );
       const observer: IObserver<T | null> = null as any;
-      // const apiEndPointWithoutCacheParam = apiEndpoint.replace('?cached=false', '');
 
       const fetch = () => {
         return request<any>(
