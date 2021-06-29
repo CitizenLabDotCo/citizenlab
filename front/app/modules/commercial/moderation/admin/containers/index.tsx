@@ -274,6 +274,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
         onModerationStatusChange(tabName);
       }
 
+      // OS: how to?
       if (tabName === 'warnings') {
         onIsFlaggedChange(true);
         onModerationStatusChange(null);
@@ -356,6 +357,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
     [processing]
   );
 
+  // OS: how to?
   const removeFlags = useCallback(async () => {
     if (!processing) {
       const selectedActiveInappropriateContentFlagIds = selectedModerations.map(
