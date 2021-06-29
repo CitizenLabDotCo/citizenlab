@@ -5,6 +5,7 @@ module CustomMaps
         before_action :set_layer, except: %i[create]
 
         def create
+          authorize @project, :update?
           @map_config = @project.map_config
           @layer = @map_config.layers.build(layer_params)
 
@@ -16,6 +17,7 @@ module CustomMaps
         end
 
         def update
+          authorize @project, :update?
           if @layer.update(layer_params)
             render json: serialized_layer, status: :ok
           else
@@ -24,6 +26,7 @@ module CustomMaps
         end
 
         def destroy
+          authorize @project, :update?
           if @layer.destroy
             head :no_content
           else
@@ -36,6 +39,7 @@ module CustomMaps
         end
 
         def reorder
+          authorize @project, :update?
           if @layer.insert_at(params.dig(:layer, :ordering))
             render json: serialized_layer, status: :ok
           else

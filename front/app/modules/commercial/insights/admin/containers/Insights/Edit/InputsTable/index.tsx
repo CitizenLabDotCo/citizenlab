@@ -12,6 +12,7 @@ import { IInsightsInputData } from 'modules/commercial/insights/services/insight
 
 // components
 import { Table, Icon } from 'cl2-component-library';
+import Button from 'components/UI/Button';
 import InputsTableRow from './InputsTableRow';
 import EmptyState from './EmptyState';
 import CheckboxWithPartialCheck from 'components/UI/CheckboxWithPartialCheck';
@@ -20,6 +21,7 @@ import InputDetails from '../InputDetails';
 import Divider from 'components/admin/Divider';
 import Actions from './Actions';
 import Pagination from 'components/admin/Pagination/Pagination';
+import SearchInput from 'components/UI/SearchInput';
 
 // styles
 import styled from 'styled-components';
@@ -96,9 +98,16 @@ const StyledPagination = styled(Pagination)`
   margin-top: 12px;
 `;
 
+const SearchContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-content: center;
+  margin-bottom: 40px;
+`;
+
 const InputsTable = ({
   params: { viewId },
-  location: { query, pathname },
+  location: { pathname, query },
   intl: { formatMessage },
 }: WithRouterProps & InjectedIntlProps) => {
   // State
@@ -111,9 +120,11 @@ const InputsTable = ({
   // Data fetching -------------------------------------------------------------
   const pageNumber = parseInt(query?.pageNumber, 10);
   const selectedCategory = query.category;
+  const search = query.search;
 
   const { list: inputs, lastPage } = useInsightsInputs(viewId, {
     pageNumber,
+    search,
     category: selectedCategory,
   });
 
@@ -209,8 +220,25 @@ const InputsTable = ({
     });
   };
 
+  const onSearch = (search: string) => {
+    clHistory.replace({
+      pathname,
+      search: stringify({ ...query, search }, { addQueryPrefix: true }),
+    });
+  };
+
   return (
     <Inputs data-testid="insightsInputsTable">
+      <SearchContainer>
+        <SearchInput onChange={onSearch} />
+        <Button
+          buttonStyle="admin-dark"
+          bgColor={colors.clBlue}
+          linkTo={`/admin/insights/${viewId}`}
+        >
+          {formatMessage(messages.inputsDone)}
+        </Button>
+      </SearchContainer>
       <TitleRow>
         <TableTitle />
         <StyledActions selectedInputs={selectedRows} />
