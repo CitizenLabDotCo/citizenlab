@@ -41,7 +41,6 @@ export default defineMessages({
   noWarningItems: {
     id:
       'app.modules.commercial.flag_inappropriate_content.admin.components.noWarningItems',
-    defaultMessage:
-      'Not inappropriate? Remove this designation in the Warnings tab.',
+    defaultMessage: 'There are no items with content warning',
   },
 });
