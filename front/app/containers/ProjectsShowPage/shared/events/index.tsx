@@ -6,7 +6,7 @@ import useProject from 'hooks/useProject';
 import useEvents from 'hooks/useEvents';
 
 // components
-import EventCard from './EventCard';
+import EventCard from 'components/EventCard';
 import ContentContainer from 'components/ContentContainer';
 import {
   SectionContainer,
