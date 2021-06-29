@@ -2,13 +2,11 @@ import React, { memo } from 'react';
 
 // components
 import ProjectFilterDropdown from 'components/ProjectFilterDropdown';
+import { Icon } from 'cl2-component-library';
 
 // styling
-import styled from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 import { media, fontSizes } from 'utils/styleUtils';
-
-// svg
-import filterIcon from './FilterIcon.svg';
 
 const Container = styled.div`
   display: flex;
@@ -36,8 +34,11 @@ const ProjectFilterDropdownPositioner = styled.div`
   margin-top: auto;
 `;
 
-const FilterIcon = styled.img`
+const FilterIcon = styled(Icon)`
   transform: translate(0, -1.5px);
+  width: 12px;
+  height: 12px;
+  fill: ${({ theme }) => theme.colorText};
 `;
 
 interface Props {
@@ -45,13 +46,19 @@ interface Props {
 }
 
 const TopBar = memo<Props>(({ title }) => {
+  const theme: any = useTheme();
+
   return (
     <Container>
       <Title>{title}</Title>
 
       <ProjectFilterDropdownPositioner>
-        <FilterIcon src={filterIcon} />
-        <ProjectFilterDropdown title="Projects" onChange={console.log} />
+        <FilterIcon name="filter-funnel" />
+        <ProjectFilterDropdown
+          title="Projects"
+          onChange={console.log}
+          textColor={theme.colorText}
+        />
       </ProjectFilterDropdownPositioner>
     </Container>
   );

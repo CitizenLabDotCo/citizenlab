@@ -10,11 +10,11 @@ import { isPage } from 'utils/helperUtils';
 import styled from 'styled-components';
 import { fontSizes, colors, isRtl } from 'utils/styleUtils';
 
-const Text = styled.span`
+const Text = styled.span<{ textColor?: string }>`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  color: ${colors.text};
+  color: ${({ textColor }) => textColor ?? colors.text};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
   line-height: 26px;
@@ -24,10 +24,10 @@ const Text = styled.span`
   }
 `;
 
-const DropdownIcon = styled(Icon)`
+const DropdownIcon = styled(Icon)<{ textColor?: string }>`
   width: 10px;
   height: 7px;
-  fill: ${colors.text};
+  fill: ${({ textColor }) => textColor ?? colors.text};
   margin-left: 4px;
   margin-top: 4px;
   transition: all 100ms ease-out;
@@ -83,6 +83,7 @@ interface Props {
   onClick: (arg: React.MouseEvent<HTMLButtonElement>) => void;
   baseID: string;
   className?: string;
+  textColor?: string;
 }
 
 interface State {}
@@ -97,7 +98,7 @@ export default class Title extends PureComponent<Props, State> {
   };
 
   render() {
-    const { title, opened, baseID, className } = this.props;
+    const { title, opened, baseID, className, textColor } = this.props;
     const adminPage = isPage('admin', location.pathname);
 
     return (
@@ -111,11 +112,14 @@ export default class Title extends PureComponent<Props, State> {
         } ${className} ${adminPage ? 'adminpage' : ''}`}
         aria-live="polite"
       >
-        <Text className="FilterSelectorTitleText">{title}</Text>
+        <Text className="FilterSelectorTitleText" textColor={textColor}>
+          {title}
+        </Text>
         <DropdownIcon
           className="FilterSelectorTitleIcon"
           name="dropdown"
           ariaHidden
+          textColor={textColor}
         />
       </Container>
     );

@@ -76,6 +76,7 @@ interface DefaultProps {
   right?: string;
   mobileRight?: string;
   last?: boolean;
+  textColor?: string;
 }
 
 interface Props extends DefaultProps {
@@ -86,6 +87,7 @@ interface Props extends DefaultProps {
   onChange?: (value: any) => void;
   multipleSelectionAllowed: boolean;
   selected: string[];
+  className?: string;
 }
 
 interface State {
@@ -177,7 +179,7 @@ export default class FilterSelector extends PureComponent<Props, State> {
   };
 
   render() {
-    const className = this.props['className'];
+    const { className, textColor } = this.props;
     const { opened } = this.state;
     const {
       id,
@@ -217,6 +219,7 @@ export default class FilterSelector extends PureComponent<Props, State> {
           opened={opened}
           onClick={this.toggleExpanded}
           baseID={this.baseID}
+          textColor={textColor}
         />
         <ValuesList
           title={currentTitle}

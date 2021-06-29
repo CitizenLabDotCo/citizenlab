@@ -17,6 +17,8 @@ type DataProps = {
 type InputProps = {
   title: string | JSX.Element;
   onChange: (value: any) => void;
+  className?: string;
+  textColor?: string;
 };
 
 type Props = InputProps & DataProps;
@@ -43,7 +45,7 @@ class ProjectFilterDropdown extends PureComponent<
 
   render() {
     const { selectedValues } = this.state;
-    const { projects, localize, title } = this.props;
+    const { projects, localize, title, className, textColor } = this.props;
     const projectsList = projects.projectsList;
 
     if (projectsList && projectsList.length > 0) {
@@ -58,6 +60,7 @@ class ProjectFilterDropdown extends PureComponent<
         return (
           <FilterSelector
             id="e2e-project-filter-selector"
+            className={className}
             title={title}
             name="projects"
             selected={selectedValues}
@@ -66,6 +69,7 @@ class ProjectFilterDropdown extends PureComponent<
             multipleSelectionAllowed={true}
             right="-10px"
             mobileLeft="-5px"
+            textColor={textColor}
           />
         );
       }
