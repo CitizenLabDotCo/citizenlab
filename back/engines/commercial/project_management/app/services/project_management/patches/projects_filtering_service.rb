@@ -10,7 +10,7 @@ module ProjectManagement
 
             moderator = options[:moderator] # nil means the user is not logged in
             if moderator
-              UserRoleService.new.moderatable_projects moderator, scope
+              ::UserRoleService.new.moderatable_projects moderator, scope
             else
               scope.none 
             end
