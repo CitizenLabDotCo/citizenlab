@@ -31,7 +31,7 @@ export default injectIntl<InjectedIntlProps>(({ intl }) => {
   return (
     <>
       <Helmet>
-        <title>{intl.formatMessage(messages.eventPageTitle)}</title>
+        <title>{intl.formatMessage(messages.eventsPageTitle)}</title>
       </Helmet>
 
       <SectionContainer>
