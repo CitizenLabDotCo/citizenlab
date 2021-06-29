@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 import RenderOnNotificationType from 'modules/utilComponents/RenderOnNotificationType';
 import FeatureFlag from 'components/FeatureFlag';
@@ -6,8 +6,22 @@ import Setting from './admin/containers/Setting';
 import RemoveFlagButton from './admin/components/RemoveFlagButton';
 import ActivityWarningsTab from './admin/components/ActivityWarningsTab';
 import InappropriateContentWarning from './admin/components/InappropriateContentWarning';
+import EmptyMessageModerationsWithFlag from './admin/components/EmptyMessageModerationsWithFlag';
 import NLPFlagNotification from './citizen/components/NLPFlagNotification';
 import { INLPFlagNotificationData } from 'services/notifications';
+
+type RenderOnSelectedTabValueProps = {
+  isWarningsTabSelected: boolean;
+  children: ReactNode;
+};
+
+const RenderOnSelectedTabValue = ({
+  isWarningsTabSelected,
+  children,
+}: RenderOnSelectedTabValueProps) => {
+  if (!isWarningsTabSelected) return null;
+  return <>{children}</>;
+};
 
 const configuration: ModuleConfiguration = {
   outlets: {
@@ -20,11 +34,20 @@ const configuration: ModuleConfiguration = {
       isWarningsTabSelected,
       ...otherProps
     }) => {
-      if (isWarningsTabSelected) {
-        return <RemoveFlagButton {...otherProps} />;
-      }
-
-      return null;
+      return (
+        <RenderOnSelectedTabValue isWarningsTabSelected={isWarningsTabSelected}>
+          <RemoveFlagButton {...otherProps} />
+        </RenderOnSelectedTabValue>
+      );
+    },
+    'app.modules.commercial.moderation.admin.components.EmptyMessageModerationWithFlag': ({
+      isWarningsTabSelected,
+    }) => {
+      return (
+        <RenderOnSelectedTabValue isWarningsTabSelected={isWarningsTabSelected}>
+          <EmptyMessageModerationsWithFlag />
+        </RenderOnSelectedTabValue>
+      );
     },
     'app.modules.commercial.moderation.admin.containers.ModerationRow.content': ({
       isWarningsTabSelected,

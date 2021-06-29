@@ -601,9 +601,12 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
                 {
                   read: <FormattedMessage {...messages.noViewedItems} />,
                   unread: <FormattedMessage {...messages.noUnviewedItems} />,
-                  warnings: <FormattedMessage {...messages.noWarningItems} />,
                 }[selectedTab]
               }
+              <Outlet
+                id="app.modules.commercial.moderation.admin.components.EmptyMessageModerationWithFlag"
+                isWarningsTabSelected={selectedTab === 'warnings'}
+              />
             </EmptyMessage>
           </Empty>
         )}

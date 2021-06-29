@@ -334,6 +334,9 @@ export type OutletsPropertyMap = {
     isWarningsTabSelected: boolean;
     inappropriateContentFlagId: string | undefined;
   };
+  'app.modules.commercial.moderation.admin.components.EmptyMessageModerationWithFlag': {
+    isWarningsTabSelected: boolean;
+  };
   'app.modules.commercial.moderation.admin.containers.actionbar.buttons': {
     selectedActiveFlagsCount: number;
     processing: boolean;
@@ -516,6 +519,8 @@ export const loadModules = (modules: Modules): ParsedModuleConfiguration => {
     ),
   };
 };
+
+export function insertIntoObject() {}
 
 export const insertConfiguration = <T extends { name: string }>({
   configuration,

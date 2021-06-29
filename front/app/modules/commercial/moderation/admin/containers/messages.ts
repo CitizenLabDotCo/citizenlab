@@ -69,10 +69,6 @@ export default defineMessages({
     id: 'app.containers.Admin.Moderation.noUnviewedItems',
     defaultMessage: 'There are no unviewed items',
   },
-  noWarningItems: {
-    id: 'app.containers.Admin.Moderation.noWarningItems',
-    defaultMessage: 'There are no items with content warning',
-  },
   readMore: {
     id: 'app.containers.Admin.Moderation.readMore',
     defaultMessage: '...see more',
