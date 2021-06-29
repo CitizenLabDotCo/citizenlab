@@ -1,5 +1,4 @@
-import React, { PureComponent } from 'react';
-import { adopt } from 'react-adopt';
+import React, { memo } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
@@ -9,8 +8,8 @@ import UserName from 'components/UI/UserName';
 // services
 import { canModerateProject } from 'services/permissions/rules/projectPermissions';
 
-// resources
-import GetUser, { GetUserChildProps } from 'resources/GetUser';
+// hooks
+import useUser from 'hooks/useUser';
 
 // i18n
 import { FormattedRelative } from 'react-intl';
@@ -97,7 +96,7 @@ const TimeAgo = styled.div`
   }
 `;
 
-export interface InputProps {
+export interface Props {
   authorId: string | null;
   createdAt?: string | undefined;
   size: number;
@@ -114,37 +113,24 @@ export interface InputProps {
   color?: string;
 }
 
-interface DataProps {
-  author: GetUserChildProps;
-}
-
-interface Props extends InputProps, DataProps {}
-
-interface State {}
-
-class Author extends PureComponent<Props, State> {
-  static defaultProps = {
-    showAvatar: true,
-  };
-
-  render() {
-    const {
-      authorId,
-      createdAt,
-      size,
-      isLinkToProfile,
-      projectId,
-      showAvatar,
-      showModeration,
-      className,
-      author,
-      avatarBadgeBgColor,
-      fontWeight,
-      fontSize,
-      horizontalLayout,
-      color,
-      underline,
-    } = this.props;
+const Author = memo(
+  ({
+    authorId,
+    createdAt,
+    size,
+    isLinkToProfile,
+    projectId,
+    showAvatar = true,
+    showModeration,
+    className,
+    avatarBadgeBgColor,
+    fontWeight,
+    fontSize,
+    horizontalLayout,
+    color,
+    underline,
+  }: Props) => {
+    const author = useUser({ userId: authorId });
     const authorCanModerate =
       !isNilOrError(author) &&
       showModeration &&
@@ -194,14 +180,6 @@ class Author extends PureComponent<Props, State> {
       </Container>
     );
   }
-}
-
-const Data = adopt<DataProps, InputProps>({
-  author: ({ authorId, render }) => <GetUser id={authorId}>{render}</GetUser>,
-});
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <Author {...inputProps} {...dataProps} />}
-  </Data>
 );
+
+export default Author;
