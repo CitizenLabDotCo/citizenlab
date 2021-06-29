@@ -160,6 +160,14 @@ const InputsTable = ({
     });
   }, []);
 
+  // Search
+  const onSearch = useCallback((search: string) => {
+    clHistory.replace({
+      pathname,
+      search: stringify({ ...query, search }, { addQueryPrefix: true }),
+    });
+  }, []);
+
   // From this point we need data ----------------------------------------------
   if (isNilOrError(inputs)) {
     return null;
@@ -217,13 +225,6 @@ const InputsTable = ({
         },
         { addQueryPrefix: true }
       ),
-    });
-  };
-
-  const onSearch = (search: string) => {
-    clHistory.replace({
-      pathname,
-      search: stringify({ ...query, search }, { addQueryPrefix: true }),
     });
   };
 
