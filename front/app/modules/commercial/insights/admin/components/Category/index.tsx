@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 import useCategory from 'modules/commercial/insights/hooks/useInsightsCategory';
@@ -13,14 +13,16 @@ export type CategoryProps = {
 } & WithRouterProps;
 
 const Category = ({ id, inputId, params: { viewId } }: CategoryProps) => {
+  const [loading, setLoading] = useState(false);
   const category = useCategory(viewId, id);
 
   if (isNilOrError(category)) {
     return null;
   }
-  const handleRemoveCategory = () => {
+  const handleRemoveCategory = async () => {
+    setLoading(true);
     try {
-      deleteInsightsInputCategory(viewId, inputId, id);
+      await deleteInsightsInputCategory(viewId, inputId, id);
     } catch {
       // Do nothing
     }
@@ -31,6 +33,7 @@ const Category = ({ id, inputId, params: { viewId } }: CategoryProps) => {
       variant="primary"
       label={category.attributes.name}
       onIconClick={handleRemoveCategory}
+      loading={loading}
     />
   );
 };
