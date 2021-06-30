@@ -105,7 +105,7 @@ const EventYear = styled.div`
   border-radius: ${(props: any) => props.theme.borderRadius};
   border-top-left-radius: 0;
   border-top-right-radius: 0;
-  background: ${colors.label};
+  background: ${({ theme }) => theme.colorMain};
 
   ${media.smallerThanMinTablet`
     font-size: 14px;

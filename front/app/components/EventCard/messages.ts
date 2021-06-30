@@ -9,4 +9,12 @@ export default defineMessages({
     id: 'app.components.EventCard.endsAt',
     defaultMessage: 'Ends at',
   },
+  readMore: {
+    id: 'app.components.EventCard.readMore',
+    defaultMessage: 'Read more',
+  },
+  readLess: {
+    id: 'app.components.EventCard.readLess',
+    defaultMessage: 'Read less',
+  },
 });

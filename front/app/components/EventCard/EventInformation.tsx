@@ -1,5 +1,4 @@
-import React, { memo } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
+import React, { memo, useRef, useState } from 'react';
 import { isEmpty, every } from 'lodash-es';
 import moment from 'moment';
 
@@ -17,12 +16,19 @@ import { IEventData } from 'services/events';
 
 // i18n
 import T from 'components/T';
+import { injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
+import messages from './messages';
 
 // styling
 import styled, { useTheme } from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 
-const EventInformation = styled.div`
+// other
+import checkTextOverflow from './checkTextOverflow';
+import { isNilOrError } from 'utils/helperUtils';
+
+const EventInformationContainer = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -37,6 +43,7 @@ const EventTitleAndMeta = styled.div`
 const ProjectTitle = styled.div`
   color: ${(props: any) => props.theme.colorText};
   font-size: ${fontSizes.xs}px;
+  margin: 0 0 5px 0;
 `;
 
 const EventTitle = styled.h3`
@@ -44,7 +51,7 @@ const EventTitle = styled.h3`
   font-size: ${fontSizes.xl}px;
   font-weight: 700;
   line-height: normal;
-  margin-bottom: 13px;
+  margin: 0 0 13px 0;
 `;
 
 const EventMetaContainer = styled.div`
@@ -52,12 +59,11 @@ const EventMetaContainer = styled.div`
   flex-direction: row;
 `;
 
-const EventMeta = styled.div`
+const EventMeta = styled.div<{ first?: boolean }>`
   color: ${(props: any) => props.theme.colorText};
   font-size: ${fontSizes.xs}px;
+  margin-left: ${({ first }) => (first ? 0 : 23)}px;
 `;
-
-const EventDescription = styled.div``;
 
 const StyledIcon = styled(Icon)`
   flex: 0 0 24px;
@@ -65,6 +71,72 @@ const StyledIcon = styled(Icon)`
   height: ${fontSizes.xs}px;
   fill: ${colors.label};
   margin-right: 6px;
+`;
+
+const EventDescription = styled.div``;
+
+const SMALL_LINE_HEIGHT = fontSizes.small + 2.45;
+
+interface IStyledT {
+  hideTextOverflow?: boolean;
+  showGradient?: boolean;
+}
+
+// https://css-tricks.com/line-clampin/#the-fade-out-way
+const StyledT = styled(T)<IStyledT>`
+  ${({ hideTextOverflow }) => {
+    if (hideTextOverflow) {
+      return `
+        overflow: hidden;
+        height: calc(${SMALL_LINE_HEIGHT}px * 4);
+      `;
+    }
+
+    return '';
+  }}
+
+  ${({ showGradient }) => {
+    if (showGradient)
+      return `
+      &:after {
+        content: "";
+        text-align: right;
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        width: 70%;
+        height: ${SMALL_LINE_HEIGHT}px;
+        background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1) 50%);
+      }
+    `;
+
+    return '';
+  }}
+
+  p {
+    font-size: ${fontSizes.small}px;
+    line-height: ${SMALL_LINE_HEIGHT}px;
+  }
+
+  color: ${(props: any) => props.theme.colorText};
+  position: relative;
+  display: block;
+`;
+
+const ReadMoreOrLessWrapper = styled.div`
+  margin-top: 18px;
+`;
+
+const ReadMoreOrLess = styled.a`
+  color: ${colors.label};
+  cursor: pointer;
+  font-weight: 600;
+  text-decoration-line: underline;
+
+  &:hover {
+    color: ${({ theme }) => theme.colorMain};
+    text-decoration-line: underline;
+  }
 `;
 
 interface Props {
@@ -75,13 +147,14 @@ interface Props {
   showProjectTitle: boolean;
 }
 
-export default memo<Props>((props) => {
+const EventInformation = memo<Props & InjectedIntlProps>((props) => {
   const {
     event,
     isMultiDayEvent,
     startAtMoment,
     endAtMoment,
     showProjectTitle,
+    intl,
   } = props;
 
   const theme: any = useTheme();
@@ -102,9 +175,13 @@ export default memo<Props>((props) => {
   const project = useProject({ projectId });
   const projectTitle = project?.attributes.title_multiloc;
 
+  const TElement = useRef(null);
+  const textOverflow = checkTextOverflow(TElement);
+  const [hideTextOverflow, setHideTextOverflow] = useState(true);
+
   return (
     <>
-      <EventInformation>
+      <EventInformationContainer>
         <EventTitleAndMeta>
           {showProjectTitle && projectTitle && (
             <ProjectTitle>
@@ -117,7 +194,7 @@ export default memo<Props>((props) => {
           </EventTitle>
 
           <EventMetaContainer>
-            <EventMeta>
+            <EventMeta first={true}>
               <StyledIcon name="clock" />
               {eventDateTime}
             </EventMeta>
@@ -133,17 +210,38 @@ export default memo<Props>((props) => {
 
         <EventDescription>
           <QuillEditedContent textColor={theme.colorText}>
-            <T
+            <StyledT
               value={event.attributes.description_multiloc}
               supportHtml={true}
+              ref={TElement}
+              showGradient={hideTextOverflow && textOverflow}
+              hideTextOverflow={hideTextOverflow}
             />
           </QuillEditedContent>
+
+          {textOverflow && hideTextOverflow && (
+            <ReadMoreOrLessWrapper>
+              <ReadMoreOrLess onClick={() => setHideTextOverflow(false)}>
+                {intl.formatMessage(messages.readMore)}
+              </ReadMoreOrLess>
+            </ReadMoreOrLessWrapper>
+          )}
+
+          {!hideTextOverflow && (
+            <ReadMoreOrLessWrapper>
+              <ReadMoreOrLess onClick={() => setHideTextOverflow(true)}>
+                {intl.formatMessage(messages.readLess)}
+              </ReadMoreOrLess>
+            </ReadMoreOrLessWrapper>
+          )}
         </EventDescription>
 
         {!isNilOrError(eventFiles) && eventFiles.length > 0 && (
           <FileAttachments files={eventFiles} />
         )}
-      </EventInformation>
+      </EventInformationContainer>
     </>
   );
 });
+
+export default injectIntl(EventInformation);
