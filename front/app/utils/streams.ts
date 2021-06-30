@@ -507,6 +507,9 @@ class Streams {
           this.deleteStream(streamId, apiEndpoint);
         };
       }).pipe(
+        // startsWith -> will push an initial value into a newly created stream as long as it's waiting for a proper respose. We check for this 'initial' string to determine if the valid response already took place.
+        // See https://www.learnrxjs.io/learn-rxjs/operators/combination/startwith for more info
+        // scan -> The RxJS documentation can probably explain it better than I can: https://www.learnrxjs.io/learn-rxjs/operators/transformation/scan
         startWith('initial' as any),
         scan((accumulated: T, current: T | pureFn<T>) => {
           let data: any = accumulated;
@@ -514,41 +517,55 @@ class Streams {
 
           this.streams[streamId].type = 'unknown';
 
+          // I don't think we still have uses cases were current is a function instead of a value (was an early experiment)
+          // so I wouldn't worry too much about this line. It's safe to assume current will always be an object or an array, as opposed to a function.
+          // If you're feeling brave you could try removing it and try data = current instead :).
           data = isFunction(current) ? current(data) : current;
 
           if (isObject(data) && !isEmpty(data)) {
             const innerData = data['data'];
 
+            // endpoints that return an array of objects
             if (isArray(innerData)) {
               this.streams[streamId].type = 'arrayOfObjects';
+              // loop through the array of objects
               innerData
                 .filter((item) => has(item, 'id'))
                 .forEach((item) => {
                   const dataId = item.id;
                   dataIds[dataId] = true;
                   if (cacheStream) {
+                    // write the endpoint response to the key-value object cache
+                    // first deepfreeze it to guarantee immutability
                     this.resourcesByDataId[dataId] = this.deepFreeze({
                       data: item,
                     });
                   }
+                  // create an index for the stream by its dataId
                   this.addStreamIdByDataIdIndex(
                     streamId,
                     isQueryStream,
                     dataId
                   );
                 });
-            } else if (isObject(innerData) && has(innerData, 'id')) {
+            }
+            // endpoints that return a single object
+            else if (isObject(innerData) && has(innerData, 'id')) {
               const dataId = innerData['id'];
               this.streams[streamId].type = 'singleObject';
               dataIds[dataId] = true;
               if (cacheStream) {
+                // write the endpoint response to the key-value object cache
+                // first deepfreeze it to guarantee immutability
                 this.resourcesByDataId[dataId] = this.deepFreeze({
                   data: innerData,
                 });
               }
+              // create an index for the stream by its dataId
               this.addStreamIdByDataIdIndex(streamId, isQueryStream, dataId);
             }
 
+            // Important: also loop through any included data and put in it the key-value object cache
             if (has(data, 'included')) {
               data['included']
                 .filter((item) => item.id)
@@ -558,6 +575,12 @@ class Streams {
                   });
                 });
 
+              // Important: remove the included object after it's been cached!
+              // Note: We do this because we do never want to access data through the included attribute.
+              // Instead what we want to do is create a separate stream whenever we want to access data that migth already have been included in a previous response.
+              // When the stream gets initiated it will check if the data is already present in the cache. If so, it will use the cache and not make a redundant request.
+              // This way we can keep the 'clean' abstraction of having separate streams for separate pieces of data while limiting requests and being able to use included data to their full potential.
+              // TL;DR: always cache and remove included data, never read it directly from a response!
               data = omit(data, 'included');
             }
           }
@@ -572,6 +595,7 @@ class Streams {
         refCount()
       );
 
+      // this is the container for the entire stream that holds both the 'pipe' (= observable), the pump (= observer), utility functions (fetch) and metadata (params, streamId, isQueryStream, etc...)
       this.streams[streamId] = {
         params,
         fetch,
@@ -589,7 +613,8 @@ class Streams {
       this.addStreamIdByApiEndpointIndex(apiEndpoint, streamId, isQueryStream);
 
       if (cacheStream) {
-        // keep stream hot
+        // here we subscribe to the stream if it should be cached,
+        // to make sure there at any give time at least 1 subscriber (you can kind of view this as being similar to a subscription to the stream in App.tsx... it will stay subscribed as long as the user is on the platform)
         this.streams[streamId].subscription = this.streams[
           streamId
         ].observable.subscribe();
