@@ -1,22 +1,59 @@
 import React from 'react';
-import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 import Link from 'utils/cl-router/Link';
 
-// resources
-import GetUser, { GetUserChildProps } from 'resources/GetUser';
+// styles
+import { darken } from 'polished';
+import { colors, fontSizes } from 'utils/styleUtils';
+import styled from 'styled-components';
 
-// components
-import Name from './Name';
+// resources
+import useUser from 'hooks/useUser';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
-interface DataProps {
-  user: GetUserChildProps;
-}
+const Name = styled.span<{
+  color?: string;
+  fontWeight?: number;
+  fontSize?: number;
+  underline?: boolean;
+}>`
+  color: ${({ color, theme }) => color || theme.colorText};
+  font-weight: ${({ fontWeight }) => fontWeight || 400};
+  font-size: ${({ fontSize }) => fontSize || fontSizes.base}px;
+  text-decoration: ${({ underline }) => (underline ? 'underline' : 'none')};
+  hyphens: auto;
+
+  &.isLinkToProfile {
+    &:hover {
+      text-decoration: underline;
+      color: ${({ color, theme }) => darken(0.15, color || theme.colorText)};
+    }
+  }
+
+  &.canModerate {
+    color: ${colors.clRedError};
+
+    &:hover {
+      color: ${darken(0.15, colors.clRedError)};
+    }
+  }
+
+  // this one has to stay at the bottom to
+  // overwrite the styles when there's no user
+  &.isUnknownUser {
+    font-style: italic;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: none;
+      color: ${({ color, theme }) => color || theme.colorText};
+    }
+  }
+`;
 
 interface StyleProps {
   fontWeight?: number;
@@ -26,7 +63,7 @@ interface StyleProps {
   canModerate?: boolean;
 }
 
-interface InputProps extends StyleProps {
+interface Props extends StyleProps {
   // if user was deleted, userId can be null
   userId: string | null;
   className?: string;
@@ -34,18 +71,21 @@ interface InputProps extends StyleProps {
   hideLastName?: boolean;
 }
 
-interface Props extends InputProps, DataProps {}
-
 const UserName = (props: Props & InjectedIntlProps) => {
   const {
     intl: { formatMessage },
-    user,
+    userId,
     className,
     isLinkToProfile,
     hideLastName,
-    ...styleProps
+    fontWeight,
+    fontSize,
+    underline,
+    color,
+    canModerate,
   } = props;
   let isUnknownUser = false;
+  const user = useUser({ userId });
 
   const getName = () => {
     if (!isNilOrError(user)) {
@@ -82,12 +122,20 @@ const UserName = (props: Props & InjectedIntlProps) => {
 
   const NameComponent = (
     <Name
-      name={name}
-      className={className}
-      isUnknownUser={isUnknownUser || isNilOrError(user)}
-      isLinkToProfile={isLinkToProfile}
-      {...styleProps}
-    />
+      fontWeight={fontWeight}
+      fontSize={fontSize}
+      underline={underline}
+      className={`
+        ${className || ''}
+        ${canModerate ? 'canModerate' : ''}
+        ${isUnknownUser ? 'isUnknownUser' : ''}
+        ${isLinkToProfile ? 'isLinkToProfile' : ''}
+        e2e-username
+      `}
+      color={color}
+    >
+      {name}
+    </Name>
   );
 
   if (isLinkToProfile && profileLink) {
@@ -101,14 +149,4 @@ const UserName = (props: Props & InjectedIntlProps) => {
   return NameComponent;
 };
 
-const Data = adopt<DataProps, InputProps>({
-  user: ({ userId, render }) => <GetUser id={userId}>{render}</GetUser>,
-});
-
-const UserNameWithHOCs = injectIntl(UserName);
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <UserNameWithHOCs {...inputProps} {...dataProps} />}
-  </Data>
-);
+export default injectIntl(UserName);
