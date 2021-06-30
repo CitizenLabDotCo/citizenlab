@@ -135,17 +135,6 @@ const Author = memo(
       !isNilOrError(author) &&
       showModeration &&
       canModerateProject(projectId, { data: author });
-    const authorName = (
-      <UserName
-        userId={authorId}
-        isLinkToProfile={isLinkToProfile}
-        canModerate={authorCanModerate}
-        fontWeight={fontWeight}
-        fontSize={fontSize}
-        color={color}
-        underline={underline}
-      />
-    );
 
     return (
       <Container className={className}>
@@ -167,7 +156,15 @@ const Author = memo(
               <ScreenReaderOnly>
                 <FormattedMessage {...messages.a11y_postedBy} />:
               </ScreenReaderOnly>
-              {authorName}
+              <UserName
+                userId={authorId}
+                isLinkToProfile={isLinkToProfile}
+                canModerate={authorCanModerate}
+                fontWeight={fontWeight}
+                fontSize={fontSize}
+                color={color}
+                underline={underline}
+              />
             </AuthorNameContainer>
 
             {createdAt && (
