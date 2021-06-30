@@ -7,6 +7,35 @@ import { modifyMetaData } from 'components/SignUpIn/events';
 import useAuthUser from 'hooks/useAuthUser';
 import { isNilOrError } from 'utils/helperUtils';
 import FeatureFlag from 'components/FeatureFlag';
+import useAppConfiguration from 'hooks/useAppConfiguration';
+
+export const CONFIRMATION_STEP_NAME = 'confirmation';
+
+type RenderOnFeatureFlagProps = {
+  children: ReactNode;
+};
+
+const RenderOnFeatureFlag = ({ children }: RenderOnFeatureFlagProps) => {
+  const isUserConfirmationEnabled = useFeatureFlag('user_confirmation');
+
+  if (isUserConfirmationEnabled) {
+    return <>{children}</>;
+  }
+  return null;
+};
+
+const RenderOnFeatureAllowed = ({ children }: RenderOnFeatureFlagProps) => {
+  const appConfiguration = useAppConfiguration();
+
+  if (
+    isNilOrError(appConfiguration) ||
+    !appConfiguration?.data.attributes?.settings?.user_confirmation?.allowed
+  ) {
+    return null;
+  }
+
+  return <>{children}</>;
+};
 
 const configuration: ModuleConfiguration = {
   outlets: {
@@ -33,13 +62,15 @@ const configuration: ModuleConfiguration = {
         // When we allow users to reconfirm their emails, we should stop checking for registration_completed_at.
         user?.attributes?.confirmation_required &&
         !user?.attributes?.registration_completed_at;
-
       if (
         confirmationRequired &&
         isUserConfirmationEnabled &&
         !metaData.requiresConfirmation
       ) {
-        modifyMetaData(metaData, { requiresConfirmation: true });
+        modifyMetaData(metaData, {
+          requiresConfirmation: true,
+          modalNoCloseSteps: [CONFIRMATION_STEP_NAME],
+        });
       }
 
       return null;
