@@ -321,17 +321,19 @@ class Streams {
 
   // addStreamIdByDataIdIndex will index a given streamId by the dataId(s) it includes.
   // This may sound a bit complicated, but it's actually rather simple:
-  // Any given stream will have 1) a streamId and 2) one or more dataIds inside of it
-  // The streamId is a unique identifier (see getStreamId()) for any given stream
-  // The dataId or dataIds are the identifiers of the object(s) inside of a stream
+  // Any given stream will have 1) a streamId and 2) one or more objects with corresponding dataIds inside of it
   // E.g. You have a stream for the '/ideas' endpoint (without query params to make it a bit simpler).
-  // This stream has a streamId of value '/ideas', and includes 2 idea objects. Each of these object has a data.id attribute (which is the unique identifier as returned by the back-end).
-  // For the sake of the example: the first object has an id of '123' and the second object a dataId of '456'.
+  // The streamId for this stream is '/ideas', and the stream includes 2 idea objects. Each of these object has a data.id attribute (= the unique identifier that's part of the object).
+  // For the sake of the example: the first object has an dataId of '123', the second object a dataId of '456'.
   // So we know that the stream with streamId '/ideas' has 2 objects in it. We also know the stream does not contain any query parameters.
   // With this knowledge we can now index this stream by its dataIds, e.g: this.streamIdsByDataIdWithoutQuery['123'] = ['/ideas'] and this.streamIdsByDataIdWithoutQuery['465'] = ['/ideas'].
-  // Now that we have this indexes we can later determine which streams to update when either the data with id '123' or '456' changes.
-  // E.g. when we know an update to dataId '123' occurs we can loop through all streams that contain this id, refetch their endpoints and push the new, updated data for '123' in the streams.
-  // Alternatively we can also manually push the updated objects into all streams that contain this dataId (only applies to streams without query params, as to not mess up any sorting, pagination, etc... that might take place in streams with query params).
+  // Now that we have these indexes we can later determine which streams to update when either the data with dataId '123' or '456' changes.
+  // E.g. when an update to dataId '123' occurs we can loop through all streams that contain this dataId, refetch their endpoints and push the new, updated data in the corresponding streams.
+  // Alternatively we can also manually push the updated objects into all streams that contain this dataId.
+  // Note: The later case, manually pushing updated data into a stream, only applies to none-query streams. The reason being that you don't want to push data in a stream that contains a sorted or/and paginated list.
+  // In this case manually adding/removing/updating an item in the list might not reflect the new state the back-end would return.
+  // For example: when the vote count on an idea changes, the newly returned list of ideas might vary from the previous if it's sorted by votes.
+  // The only way to have a correct reflection of this new state is to refetch the list from the back-end. Hence never manually push data in a query stream, but always do a refetch!
   addStreamIdByDataIdIndex(
     streamId: string,
     isQueryStream: boolean,
@@ -360,8 +362,10 @@ class Streams {
     }
   }
 
-  // same concept as addStreamIdByDataIdIndex, but instead of indexing by dataId we index here by apiEndpoint
-  // Why index by both dataId and apiEndpoint?
+  // Same concept as addStreamIdByDataIdIndex, but instead of indexing by dataId we index here by apiEndpoint
+  // Why index by both dataId and apiEndpoint? Because we want to be able to control refetches by both dataId and apiEndpoints.
+  // Sometimes we might know the dataId of an object that being updated/removed, other times we only know the apiEndpoint -or- are creating a new object that does not have a dataId.
+  // So to cover all cases you need to index the streams by both the dataIds they include, and the apiEndpoint they represent.
   addStreamIdByApiEndpointIndex(
     apiEndpoint: string,
     streamId: string,
@@ -384,6 +388,8 @@ class Streams {
     }
   }
 
+  // This is the 'heart' of streams.ts.
+  // Here we create a stream if it doesn't exist yet for the given set of criteria (endpoint + query params + cacheStream) -or- return the previsouly created stream.
   get<T>(inputParams: IInputStreamParams) {
     const params: IExtendedStreamParams = {
       bodyData: null,
@@ -397,12 +403,17 @@ class Streams {
     );
     const isQueryStream =
       isObject(queryParameters) && !isEmpty(queryParameters);
+    // Check if the requested endpoint contains a search query param. See explanation below for more details.
     const isSearchQuery =
       isQueryStream &&
       queryParameters &&
       queryParameters['search'] &&
       isString(queryParameters['search']) &&
       !isEmpty(queryParameters['search']);
+    // whenever the cacheStream argument is set to false or a search param is included in the list of query params
+    // the stream will not be cached.
+    // Why also for search queries? Because these could potentially create many different streams (e.g. when the user performs multiple searches, when the debouncing isn't fast enough, etc...)
+    // and we don't want to cache them all as they might potentially take up a lot amount of memory and even choke the system
     const cacheStream =
       isSearchQuery || inputParams.cacheStream === false ? false : true;
     const streamId = this.getStreamId(
@@ -412,17 +423,21 @@ class Streams {
       cacheStream
     );
 
+    // If a stream with the calculated streamId does not yet exist
     if (!has(this.streams, streamId)) {
       const { bodyData } = params;
       const lastUrlSegment = apiEndpoint.substr(
         apiEndpoint.lastIndexOf('/') + 1
       );
+      // Use to last url segmennt of the requested endpoint and check if it's a UUID. If so, we're dealing with a single-item endpoint (as opposed to an array)
       const isSingleItemStream = this.isSingleItemStream(
         lastUrlSegment,
         isQueryStream
       );
+      // You can think of the observer as the 'pump' that takes data as input and pushes it, using its .next() method, into the stream it's associated with.
       const observer: IObserver<T | null> = null as any;
 
+      // Here we fetch the data for the given andpoint and push it into the associated stream
       const fetch = () => {
         return request<any>(
           apiEndpoint,
@@ -431,15 +446,25 @@ class Streams {
           queryParameters
         )
           .then((response) => {
+            // grab the response and push it into the stream
             this.streams?.[streamId]?.observer?.next(response);
             return response;
           })
           .catch((error) => {
+            // When the endpoint returns an error we destroy the stream
+            // so it can again be recreated afterwards and start of with a 'clean slate' to retry the endpoint.
+            // Note: streams.ts will first push the error object into the stream and only afterwards destroy it, so that any subscriber still gets the error object.
+            // When an unsuscribe -> resubscribe action occurs in the hook or component, streams.ts will create and fetch the stream from scratch again.
+            // Note: when we're dealing with either the authUser stream or the currentOnboardingCampaigns stream we do not destory the stream when an error occurs,
+            // because these 2 endpoints produce error responses whenever the user is not logged. There are however not 'true' errors (e.g. not similar to, for example, a connection failure error) but rather the back-end telling us
+            // the user needs to be logged in to use the endpoint. We can therefore view erros from these 2 endpoints as valid return values and exclude them from the error-handling logic.
             if (
               streamId !== authApiEndpoint &&
               streamId !== currentOnboardingCampaignsApiEndpoint
             ) {
+              // push the error reponse into the stream
               this.streams[streamId].observer.next(error);
+              // destroy the stream
               this.deleteStream(streamId, apiEndpoint);
               reportError(error);
               throw error;
@@ -451,6 +476,10 @@ class Streams {
           });
       };
 
+      // The observable constant here can be considered as the pipe that contains the stream (if that makes any sense :)).
+      // E.g. when data gets pushed into the stream by using observer.next(), you can think of it as the data being pushed into this observable pipe
+      // to which you can subscribe to capture any data that comes out of this pipe.
+      // To fully grasp the concepts invloved here I recommend to take a deep dive into RxJS (trust me, you won't regret doing so!).
       const observable = new Observable<T | null>((observer) => {
         const dataId = lastUrlSegment;
 
@@ -458,6 +487,10 @@ class Streams {
           this.streams[streamId].observer = observer;
         }
 
+        // When we know the stream represents a single-item endpoint, and cache for this stream is not turned of
+        // we first check the resourcesByDataId key-value store to check if it includes the object with the requested dataId.
+        // If so, we directly push it into the stream without making a request to the server.
+        // If not, we fetch the endpoint and push the return value into the stream (see fetch()).
         if (
           cacheStream &&
           isSingleItemStream &&
@@ -468,6 +501,8 @@ class Streams {
           fetch();
         }
 
+        // clean-up function that gets triggered whenever there are no subscibers anymore to the stream
+        // Note: cahced streams will always have at least 1 subscriber, and therefore this function will only ever gets triggered for uncached streams
         return () => {
           this.deleteStream(streamId, apiEndpoint);
         };
