@@ -174,7 +174,7 @@ const InputsTable = ({
   }
 
   // Pagination ----------------------------------------------------------------
-  const handlePaginationClick = (newPageNumber) => {
+  const handlePaginationClick = (newPageNumber: number) => {
     clHistory.push({
       pathname,
       search: stringify(
@@ -323,7 +323,7 @@ const InputsTable = ({
         {!isNilOrError(previewedInputIndex) &&
           !isNilOrError(inputs[previewedInputIndex]) && (
             <InputDetails
-              selectedInput={inputs[previewedInputIndex]}
+              previewedInputId={inputs[previewedInputIndex].id}
               moveUp={moveUp}
               moveDown={moveDown}
               isMoveUpDisabled={previewedInputIndex === 0}
