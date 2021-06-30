@@ -24,7 +24,7 @@ module FlagInappropriateContent
       end
 
       def activity_triggers
-        { 'IdeaAssignments::Notifications::InappropriateContentFlagged' => { 'created' => true } }
+        { 'FlagInappropriateContent::Notifications::InappropriateContentFlagged' => { 'created' => true } }
       end
 
       def filter_notification_recipient users_scope, activity:, time: nil
