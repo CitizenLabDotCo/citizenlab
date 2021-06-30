@@ -69,6 +69,14 @@ const StyledPlus = styled.div`
   text-align: center;
 `;
 
+const LoadingContainer = styled.div`
+  display: flex;
+  width: 100%;
+  height: 100%;
+  justify-context: center;
+  align-items: center;
+`;
+
 type OptionProps = {
   label: string;
   value: string;
@@ -89,6 +97,15 @@ const InputDetails = ({
 
   const categories = useInsightsCategories(viewId);
   const previewedInput = useInsightsInput(viewId, previewedInputId);
+
+  // Loading state
+  if (previewedInput === undefined) {
+    return (
+      <LoadingContainer data-testid="insightsEditDetailsLoading">
+        <Spinner />
+      </LoadingContainer>
+    );
+  }
 
   if (isNilOrError(categories) || isNilOrError(previewedInput)) {
     return null;

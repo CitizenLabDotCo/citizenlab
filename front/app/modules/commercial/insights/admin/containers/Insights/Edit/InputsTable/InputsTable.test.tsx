@@ -150,6 +150,10 @@ jest.mock('react-router', () => {
 
 jest.mock('utils/cl-router/history');
 
+jest.mock('modules/commercial/insights/hooks/useInsightsInput', () => {
+  return jest.fn(() => undefined);
+});
+
 window.confirm = jest.fn(() => true);
 
 describe('Insights Input Table', () => {
@@ -162,6 +166,14 @@ describe('Insights Input Table', () => {
     it('renders correct number of rows', () => {
       render(<InputsTable />);
       expect(screen.getAllByTestId('insightsInputsTableRow')).toHaveLength(2);
+    });
+    it('adds previewedInputId to url correctly on row click', () => {
+      render(<InputsTable />);
+      fireEvent.click(screen.getAllByTestId('insightsInputsTableRow')[0]);
+      expect(clHistory.replace).toHaveBeenCalledWith({
+        pathname: '',
+        search: `?previewedInputId=${mockInputData.list[0].id}`,
+      });
     });
     it('renders list of categories correctly', () => {
       render(<InputsTable />);
@@ -492,33 +504,34 @@ describe('Insights Input Table', () => {
         screen.getByText('You have no input assigned to this category yet')
       ).toBeInTheDocument();
     });
-  });
-  it('renders correct table empty state when there is no uncategorized input', () => {
-    mockLocationData = { pathname: '', query: { category: '' } };
-    mockInputData = { currentPage: 1, lastPage: 1, list: [] };
+    it('renders correct table empty state when there is no uncategorized input', () => {
+      mockLocationData = { pathname: '', query: { category: '' } };
+      mockInputData = { currentPage: 1, lastPage: 1, list: [] };
 
-    render(<InputsTable />);
-    expect(
-      screen.getByTestId('insightsInputsTableEmptyState')
-    ).toBeInTheDocument();
-    expect(
-      screen.getByText('There is no input without a category')
-    ).toBeInTheDocument();
+      render(<InputsTable />);
+      expect(
+        screen.getByTestId('insightsInputsTableEmptyState')
+      ).toBeInTheDocument();
+      expect(
+        screen.getByText('There is no input without a category')
+      ).toBeInTheDocument();
+    });
+
+    it('renders correct table empty state when there is no search results', () => {
+      mockLocationData = {
+        pathname: '',
+        query: { category: '', search: 'search' },
+      };
+      mockInputData = { currentPage: 1, lastPage: 1, list: [] };
+
+      render(<InputsTable />);
+      expect(
+        screen.getByTestId('insightsInputsTableEmptyState')
+      ).toBeInTheDocument();
+      expect(screen.getByText('No results found')).toBeInTheDocument();
+    });
   });
 
-  it('renders correct table empty state when there is no search results', () => {
-    mockLocationData = {
-      pathname: '',
-      query: { category: '', search: 'search' },
-    };
-    mockInputData = { currentPage: 1, lastPage: 1, list: [] };
-
-    render(<InputsTable />);
-    expect(
-      screen.getByTestId('insightsInputsTableEmptyState')
-    ).toBeInTheDocument();
-    expect(screen.getByText('No results found')).toBeInTheDocument();
-  });
   it('filters table by category', () => {
     mockLocationData = {
       pathname: '',
@@ -532,20 +545,21 @@ describe('Insights Input Table', () => {
       pageNumber: 1,
     });
   });
-  it('filters table by search query', () => {
-    mockLocationData = {
-      pathname: '',
-      query: { search: 'search', pageNumber: 1 },
-    };
 
-    render(<InputsTable />);
-    expect(useInsightsInputs).toHaveBeenCalledWith(viewId, {
-      search: 'search',
-      category: undefined,
-      pageNumber: 1,
-    });
-  });
   describe('Search', () => {
+    it('filters table by search query', () => {
+      mockLocationData = {
+        pathname: '',
+        query: { search: 'search', pageNumber: 1 },
+      };
+
+      render(<InputsTable />);
+      expect(useInsightsInputs).toHaveBeenCalledWith(viewId, {
+        search: 'search',
+        category: undefined,
+        pageNumber: 1,
+      });
+    });
     it('adds search query to url', () => {
       const spy = jest.spyOn(clHistory, 'replace');
       render(<InputsTable />);

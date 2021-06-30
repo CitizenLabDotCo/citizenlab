@@ -2,6 +2,7 @@ import React from 'react';
 import { render, screen, fireEvent, act } from 'utils/testUtils/rtl';
 import * as insightsService from 'modules/commercial/insights/services/insightsInputs';
 import * as categoryService from 'modules/commercial/insights/services/insightsCategories';
+
 import selectEvent from 'react-select-event';
 import InputDetails from './';
 
@@ -15,7 +16,7 @@ const defaultProps = {
   moveDown: jest.fn(),
 };
 
-const mockInputData = {
+let mockInputData: insightsService.IInsightsInputData | undefined = {
   id: '4e9ac1f1-6928-45e9-9ac9-313e86ad636f',
   type: 'input',
   relationships: {
@@ -36,9 +37,6 @@ const mockInputData = {
           type: 'category',
         },
       ],
-    },
-    suggested_categories: {
-      data: [],
     },
   },
 };
@@ -205,5 +203,12 @@ describe('Insights Input Details', () => {
       defaultProps.previewedInputId,
       mockCategoryDataResponse.data.id
     );
+  });
+  it('shows loading state when loading', () => {
+    mockInputData = undefined;
+    render(<InputDetails {...defaultProps} />);
+    expect(
+      screen.getByTestId('insightsEditDetailsLoading')
+    ).toBeInTheDocument();
   });
 });
