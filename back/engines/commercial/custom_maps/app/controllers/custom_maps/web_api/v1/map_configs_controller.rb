@@ -16,7 +16,6 @@ module CustomMaps
         end
 
         def update
-          authorize @project, :update?
           if @map_config.update(map_config_params)
             render json: serialized_map_config
           else
@@ -25,7 +24,6 @@ module CustomMaps
         end
 
         def destroy
-          authorize @project, :update?
           if @map_config.destroy
             head :no_content
           else
@@ -43,6 +41,7 @@ module CustomMaps
         private
 
         def set_map_config
+          authorize @project, :update?
           @map_config = CustomMaps::MapConfig.find_by!(project_id: params[:project_id])
         end
 

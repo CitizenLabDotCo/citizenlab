@@ -35,6 +35,7 @@ module CustomMaps
         end
 
         def show
+          authorize @project
           render json: serialized_layer
         end
 
