@@ -14,6 +14,7 @@ import useUser from 'hooks/useUser';
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
+import { IUserData } from 'services/users';
 
 const Name = styled.span<{
   color?: string;
@@ -84,69 +85,65 @@ const UserName = (props: Props & InjectedIntlProps) => {
     color,
     canModerate,
   } = props;
-  let isUnknownUser = false;
   const user = useUser({ userId });
 
-  const getName = () => {
-    if (!isNilOrError(user)) {
-      const firstName = user.attributes.first_name;
-      const lastName = user.attributes.last_name;
-      if (firstName) {
-        // Sometimes we have a user, but names don't load (only seen in dev mode)
-        // Built in this check to make sure we don't show an empty space (in production)
-        // See Name.tsx for why only firstName is required
-        return `${firstName} ${!hideLastName && lastName ? lastName : ''}`;
-      }
-    }
-
-    isUnknownUser = true;
-    return formatMessage(messages.deletedUser);
-  };
-
-  const getProfileLink = () => {
-    if (
-      !isNilOrError(user) &&
-      // It only makes sense to link to profile when we see a name,
-      // we don't want to link to the profile of an unknown user
-      user.attributes.first_name &&
-      user.attributes.slug
-    ) {
-      return `/profile/${user.attributes.slug}`;
-    }
-
-    return null;
-  };
-
-  const name = getName();
-  const profileLink = getProfileLink();
-
-  const NameComponent = (
-    <Name
-      fontWeight={fontWeight}
-      fontSize={fontSize}
-      underline={underline}
-      className={`
-        ${className || ''}
-        ${canModerate ? 'canModerate' : ''}
-        ${isUnknownUser ? 'isUnknownUser' : ''}
-        ${isLinkToProfile ? 'isLinkToProfile' : ''}
-        e2e-username
-      `}
-      color={color}
-    >
-      {name}
-    </Name>
-  );
-
-  if (isLinkToProfile && profileLink) {
+  if (userId === null) {
+    // Deleted user
     return (
-      <Link to={profileLink} className={`e2e-author-link ${className || ''}`}>
-        {NameComponent}
-      </Link>
+      <Name
+        fontWeight={fontWeight}
+        fontSize={fontSize}
+        underline={underline}
+        className={`
+      ${className || ''}
+      isUnknownUser
+      e2e-username
+    `}
+        color={color}
+      >
+        {formatMessage(messages.deletedUser)}
+      </Name>
     );
   }
 
-  return NameComponent;
+  if (!isNilOrError(user)) {
+    const getName = (user: IUserData) => {
+      const firstName = user.attributes.first_name;
+      const lastName = user.attributes.last_name;
+      return `${firstName} ${!hideLastName && lastName ? lastName : ''}`;
+    };
+    const name = getName(user);
+    const profileLink = `/profile/${user.attributes.slug}`;
+
+    const NameComponent = (
+      <Name
+        fontWeight={fontWeight}
+        fontSize={fontSize}
+        underline={underline}
+        className={`
+          ${className || ''}
+          ${canModerate ? 'canModerate' : ''}
+          ${isLinkToProfile ? 'isLinkToProfile' : ''}
+          e2e-username
+        `}
+        color={color}
+      >
+        {name}
+      </Name>
+    );
+
+    if (isLinkToProfile) {
+      return (
+        <Link to={profileLink} className={`e2e-author-link ${className || ''}`}>
+          {NameComponent}
+        </Link>
+      );
+    } else {
+      return NameComponent;
+    }
+  }
+
+  return null;
 };
 
 export default injectIntl(UserName);
