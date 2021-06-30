@@ -198,6 +198,11 @@ export interface IAppConfigurationSettings {
       target: string;
     }[];
   };
+  events_page?: {
+    enabled: boolean;
+    allowed: boolean;
+    alternative_name?: string;
+  };
 }
 
 interface AppConfigurationMapSettings extends AppConfigurationFeature {

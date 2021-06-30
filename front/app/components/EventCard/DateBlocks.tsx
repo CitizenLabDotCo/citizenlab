@@ -1,4 +1,5 @@
 import React, { memo } from 'react';
+import moment from 'moment';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -104,7 +105,7 @@ const EventYear = styled.div`
   border-radius: ${(props: any) => props.theme.borderRadius};
   border-top-left-radius: 0;
   border-top-right-radius: 0;
-  background: ${colors.label};
+  background: ${({ theme }) => theme.colorMain};
 
   ${media.smallerThanMinTablet`
     font-size: 14px;
@@ -112,29 +113,23 @@ const EventYear = styled.div`
 `;
 
 interface Props {
-  startAtDay: string;
-  endAtDay: string;
-  startAtMonth: string;
-  endAtMonth: string;
-  startAtYear: string;
-  endAtYear: string;
-  isMultiMonth: boolean;
-  isMultiYear: boolean;
+  startAtMoment: moment.Moment;
+  endAtMoment: moment.Moment;
   isMultiDayEvent: boolean;
 }
 
 export default memo<Props>((props) => {
-  const {
-    startAtDay,
-    endAtDay,
-    startAtMonth,
-    endAtMonth,
-    startAtYear,
-    endAtYear,
-    isMultiMonth,
-    isMultiYear,
-    isMultiDayEvent,
-  } = props;
+  const { startAtMoment, endAtMoment, isMultiDayEvent } = props;
+
+  const startAtDay = startAtMoment.format('DD');
+  const endAtDay = endAtMoment.format('DD');
+  const startAtMonth = startAtMoment.format('MMM');
+  const endAtMonth = endAtMoment.format('MMM');
+  const startAtYear = startAtMoment.format('YYYY');
+  const endAtYear = endAtMoment.format('YYYY');
+
+  const isMultiMonth = startAtMonth !== endAtMonth;
+  const isMultiYear = startAtYear !== endAtYear;
 
   return (
     <EventDateBlocks>

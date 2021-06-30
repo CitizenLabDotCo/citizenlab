@@ -21,6 +21,7 @@ type Props = {
 type State = {
   locale: Locale | null;
   currentTenantLocales: Locale[] | null;
+  innerRef: any;
 };
 
 export default class T extends React.PureComponent<Props, State> {
@@ -31,6 +32,7 @@ export default class T extends React.PureComponent<Props, State> {
     this.state = {
       locale: null,
       currentTenantLocales: null,
+      innerRef: React.createRef(),
     };
     this.subscriptions = [];
   }
@@ -82,11 +84,13 @@ export default class T extends React.PureComponent<Props, State> {
       if (supportHtml) {
         return createElement(as || 'span', {
           className,
+          ref: this.state.innerRef,
           dangerouslySetInnerHTML: { __html: localizedText },
         });
       } else {
         return createElement(as || 'span', {
           className,
+          ref: this.state.innerRef,
           children: localizedText,
         });
       }
