@@ -108,6 +108,8 @@
   "app.components.ErrorBoundary.genericErrorWithForm": "En fejl opstod og vi kan ikke vise dette indhold. Prøv venligst igen eller {openForm}!",
   "app.components.ErrorBoundary.openFormText": "hjælp os med at løse problemet",
   "app.components.EventCard.endsAt": "Slutter den",
+  "app.components.EventCard.readLess": "",
+  "app.components.EventCard.readMore": "",
   "app.components.EventCard.startsAt": "Starter den",
   "app.components.FileUploader.a11y_file": "Fil:",
   "app.components.FileUploader.a11y_filesToBeUploaded": "Filer, der skal uploades: {fileNames}",

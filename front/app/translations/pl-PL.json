@@ -108,6 +108,8 @@
   "app.components.ErrorBoundary.genericErrorWithForm": "Wystąpił błąd i nie możemy wyświetlić tej treści. Proszę spróbować ponownie, lub {openForm}!",
   "app.components.ErrorBoundary.openFormText": "pomóż nam to zrozumieć",
   "app.components.EventCard.endsAt": "Kończy się o",
+  "app.components.EventCard.readLess": "",
+  "app.components.EventCard.readMore": "",
   "app.components.EventCard.startsAt": "Zaczyna się o",
   "app.components.FileUploader.a11y_file": "Plik:",
   "app.components.FileUploader.a11y_filesToBeUploaded": "Pliki do załadowania: {fileNames}",
