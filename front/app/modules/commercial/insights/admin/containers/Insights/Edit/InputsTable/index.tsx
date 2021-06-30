@@ -136,29 +136,63 @@ const InputsTable = ({
     setSelectedRows(new Set());
   }, [selectedCategory, pageNumber]);
 
+  // Reset input index when input no longer appears in table
   useEffect(() => {
-    if (!isNilOrError(inputs) && inputs.length === 0) {
-      setIsSideModalOpen(false);
+    if (!isNilOrError(inputs)) {
+      const inputsIds = inputs.map((input) => input.id);
+      if (isSideModalOpen && !inputsIds.includes(query.previewedInputId)) {
+        setPreviewedInputIndex(null);
+      }
     }
-  }, [inputs]);
+  }, [inputs, isSideModalOpen, query.previewedInputId]);
 
   // Side Modal Preview
   // Use callback to keep references for moveUp and moveDown stable
   const moveUp = useCallback(() => {
+    let index: number | null = null;
     setPreviewedInputIndex((prevSelectedIndex) => {
+      index = prevSelectedIndex;
       if (!isNilOrError(prevSelectedIndex)) {
         return prevSelectedIndex - 1;
       } else return prevSelectedIndex;
     });
-  }, []);
+
+    if (!isNilOrError(index) && !isNilOrError(inputs)) {
+      clHistory.replace({
+        pathname,
+        search: stringify(
+          {
+            ...query,
+            previewedInputId: inputs[index - 1].id,
+          },
+          { addQueryPrefix: true }
+        ),
+      });
+    }
+  }, [inputs]);
 
   const moveDown = useCallback(() => {
+    let index: number | null = null;
     setPreviewedInputIndex((prevSelectedIndex) => {
+      index = prevSelectedIndex;
       if (!isNilOrError(prevSelectedIndex)) {
         return prevSelectedIndex + 1;
       } else return prevSelectedIndex;
     });
-  }, []);
+
+    if (!isNilOrError(index) && !isNilOrError(inputs)) {
+      clHistory.replace({
+        pathname,
+        search: stringify(
+          {
+            ...query,
+            previewedInputId: inputs[index + 1].id,
+          },
+          { addQueryPrefix: true }
+        ),
+      });
+    }
+  }, [inputs]);
 
   // Search
   const onSearch = useCallback((search: string) => {
@@ -208,10 +242,18 @@ const InputsTable = ({
 
   // Side Modal Preview --------------------------------------------------------
   const closeSideModal = () => setIsSideModalOpen(false);
+
   const openSideModal = () => setIsSideModalOpen(true);
 
   const previewInput = (input: IInsightsInputData) => () => {
     setPreviewedInputIndex(inputs.indexOf(input));
+    clHistory.replace({
+      pathname,
+      search: stringify(
+        { ...query, previewedInputId: input.id },
+        { addQueryPrefix: true }
+      ),
+    });
     openSideModal();
   };
 
@@ -320,16 +362,19 @@ const InputsTable = ({
       )}
 
       <SideModal opened={isSideModalOpen} close={closeSideModal}>
-        {!isNilOrError(previewedInputIndex) &&
-          !isNilOrError(inputs[previewedInputIndex]) && (
-            <InputDetails
-              previewedInputId={inputs[previewedInputIndex].id}
-              moveUp={moveUp}
-              moveDown={moveDown}
-              isMoveUpDisabled={previewedInputIndex === 0}
-              isMoveDownDisabled={previewedInputIndex === inputs.length - 1}
-            />
-          )}
+        <InputDetails
+          // Rely on url query for previewedInputId
+          previewedInputId={query.previewedInputId}
+          moveUp={moveUp}
+          moveDown={moveDown}
+          isMoveUpDisabled={
+            isNilOrError(previewedInputIndex) || previewedInputIndex === 0
+          }
+          isMoveDownDisabled={
+            isNilOrError(previewedInputIndex) ||
+            previewedInputIndex === inputs.length - 1
+          }
+        />
       </SideModal>
     </Inputs>
   );

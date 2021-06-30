@@ -116,6 +116,7 @@ const Tag = ({
       data-testid="insightsTag"
       className={className}
       onClick={onClick}
+      tabIndex={onClick ? 0 : -1}
     >
       <TagContent>
         {label}
@@ -126,6 +127,7 @@ const Tag = ({
             onKeyPress={handleEnterPress}
             role="button"
             data-testid="insightsTagIconContainer"
+            tabIndex={0}
           >
             {variant === 'primary' && (
               <CloseIcon name="close" className="insightsTagCloseIcon" />
