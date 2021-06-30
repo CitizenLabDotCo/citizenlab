@@ -1,5 +1,10 @@
 # Changelog 
 
+## Release 2021-06-30
+
+### Changes
+- Users can no longer leave registration before confirming their account. This should prevent bugs relative to unconfirmed users navigating the platform.
+
 ## Release 2021-06-29
 
 ### Fixed

@@ -218,6 +218,7 @@ class Survey extends PureComponent<Props, State> {
                   requiresConfirmation,
                   flow: 'signup',
                   pathname: window.location.pathname,
+                  modalNoCloseSteps: ['confirmation'],
                   inModal: true,
                   verification: shouldVerify,
                   noPushLinks: true,
