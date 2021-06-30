@@ -7,6 +7,7 @@ import styled from 'styled-components';
 // components
 import { Button, Icon } from 'cl2-component-library';
 import T from 'components/T';
+import Link from 'utils/cl-router/Link';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -42,18 +43,19 @@ const ProjectButton = ({ projectId }: ProjectButtonProps) => {
 
   return (
     <div data-testid="insightsProjectButton">
-      <Button
-        locale={locale}
-        buttonStyle="secondary-outlined"
-        linkTo={`/projects/${project.attributes.slug}`}
-        fontSize={`${fontSizes.small}px`}
-        padding="4px 6px"
-      >
-        <ProjectButtonContent>
-          <T value={project.attributes.title_multiloc} />
-          <Icon name="link" className="linkIcon" />
-        </ProjectButtonContent>
-      </Button>
+      <Link to={`/projects/${project.attributes.slug}`} target="_blank">
+        <Button
+          locale={locale}
+          buttonStyle="secondary-outlined"
+          fontSize={`${fontSizes.small}px`}
+          padding="4px 6px"
+        >
+          <ProjectButtonContent>
+            <T value={project.attributes.title_multiloc} />
+            <Icon name="link" className="linkIcon" />
+          </ProjectButtonContent>
+        </Button>
+      </Link>
     </div>
   );
 };
