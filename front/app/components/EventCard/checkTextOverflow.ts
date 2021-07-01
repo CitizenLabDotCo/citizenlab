@@ -16,4 +16,4 @@ export default function getTextOverflow(TElement: React.MutableRefObject<any>) {
 }
 
 const getChildrenHeight = (children) =>
-  children.reduce((acc, curr) => (acc += curr.clientHeight), 0);
+  children.reduce((acc, curr) => acc + curr.clientHeight, 0);
