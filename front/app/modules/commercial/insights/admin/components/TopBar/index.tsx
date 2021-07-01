@@ -6,7 +6,8 @@ import { colors, fontSizes } from 'utils/styleUtils';
 import styled from 'styled-components';
 
 // components
-import { Dropdown, DropdownListItem, Button } from 'cl2-component-library';
+import { Dropdown, DropdownListItem } from 'cl2-component-library';
+import Button from 'components/UI/Button';
 import Modal from 'components/UI/Modal';
 import RenameInsightsView from './RenameInsightsView';
 import ProjectButton from './ProjectButton';
@@ -25,7 +26,6 @@ import { deleteInsightsView } from '../../../services/insightsViews';
 
 // hooks
 import useInsightsView from '../../../hooks/useInsightsView';
-import useLocale from 'hooks/useLocale';
 
 export const topBarHeight = 60;
 
@@ -35,6 +35,9 @@ const Container = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 12px 40px;
+  position: relative;
+  z-index: 1;
+  box-shadow: 0px 2px 4px -1px rgb(0 0 0 / 10%);
   // TODO : set bg color in component library
   background: #fbfbfb;
 `;
@@ -68,11 +71,10 @@ const TopBar = ({
   const [renameModalOpened, setRenameModalOpened] = useState(false);
   const [isDropdownOpened, setDropdownOpened] = useState(false);
 
-  const locale = useLocale();
   const viewId = params.viewId;
   const view = useInsightsView(viewId);
 
-  if (isNilOrError(view) || isNilOrError(locale)) {
+  if (isNilOrError(view)) {
     return null;
   }
   const projectId = view.relationships?.scope.data.id;
@@ -106,7 +108,6 @@ const TopBar = ({
         {formatMessage(messages.options)}
         <Button
           icon="more-options"
-          locale={locale}
           iconColor={colors.label}
           iconHoverColor={colors.label}
           boxShadow="none"

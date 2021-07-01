@@ -5,7 +5,8 @@ import { fontSizes } from 'utils/styleUtils';
 import styled from 'styled-components';
 
 // components
-import { Button, Icon } from 'cl2-component-library';
+import { Icon } from 'cl2-component-library';
+import Button from 'components/UI/Button';
 import T from 'components/T';
 import Link from 'utils/cl-router/Link';
 
@@ -14,7 +15,6 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // hooks
 import useProject from 'hooks/useProject';
-import useLocale from 'hooks/useLocale';
 
 interface ProjectButtonProps {
   projectId: string;
@@ -31,13 +31,11 @@ const ProjectButtonContent = styled.span`
 `;
 
 const ProjectButton = ({ projectId }: ProjectButtonProps) => {
-  const locale = useLocale();
-
   const project = useProject({
     projectId,
   });
 
-  if (isNilOrError(project) || isNilOrError(locale)) {
+  if (isNilOrError(project)) {
     return null;
   }
 
@@ -45,7 +43,6 @@ const ProjectButton = ({ projectId }: ProjectButtonProps) => {
     <div data-testid="insightsProjectButton">
       <Link to={`/projects/${project.attributes.slug}`} target="_blank">
         <Button
-          locale={locale}
           buttonStyle="secondary-outlined"
           fontSize={`${fontSizes.small}px`}
           padding="4px 6px"
