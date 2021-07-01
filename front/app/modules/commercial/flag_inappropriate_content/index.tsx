@@ -40,7 +40,7 @@ const configuration: ModuleConfiguration = {
         </RenderOnSelectedTabValue>
       );
     },
-    'app.modules.commercial.moderation.admin.components.EmptyMessageModerationWithFlag': ({
+    'app.modules.commercial.moderation.admin.components.EmptyMessage': ({
       isWarningsTabSelected,
     }) => {
       return (

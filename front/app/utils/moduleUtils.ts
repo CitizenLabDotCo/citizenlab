@@ -334,7 +334,7 @@ export type OutletsPropertyMap = {
     isWarningsTabSelected: boolean;
     inappropriateContentFlagId: string | undefined;
   };
-  'app.modules.commercial.moderation.admin.components.EmptyMessageModerationWithFlag': {
+  'app.modules.commercial.moderation.admin.components.EmptyMessage': {
     isWarningsTabSelected: boolean;
   };
   'app.modules.commercial.moderation.admin.containers.actionbar.buttons': {

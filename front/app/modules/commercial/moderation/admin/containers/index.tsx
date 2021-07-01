@@ -607,7 +607,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
                 }[selectedTab]
               }
               <Outlet
-                id="app.modules.commercial.moderation.admin.components.EmptyMessageModerationWithFlag"
+                id="app.modules.commercial.moderation.admin.components.EmptyMessage"
                 isWarningsTabSelected={selectedTab === 'warnings'}
               />
             </EmptyMessage>
