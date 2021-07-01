@@ -90,7 +90,15 @@ const CategoryButton = styled(Button)`
     justify-content: space-between;
   }
   .buttonText {
-    white-space: normal !important;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    > div:first-child {
+      white-space: nowrap;
+      width: 80%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
   }
 `;
 
@@ -298,7 +306,8 @@ const EditInsightsView = ({
                     bgHoverColor={darken(0.05, colors.lightGreyishBlue)}
                     onClick={selectCategory(category.id)}
                   >
-                    {category.attributes.name}
+                    <div>{category.attributes.name}</div>
+                    <div>{category.attributes.inputs_count}</div>
                   </CategoryButton>
                 </div>
               ))

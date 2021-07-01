@@ -22,6 +22,7 @@ export function openSignUpInModal(metaData?: Partial<ISignUpInMetaData>) {
     isInvitation: !!metaData?.isInvitation,
     token: metaData?.token,
     inModal: true,
+    modalNoCloseSteps: [],
     action: metaData?.action || undefined,
   };
 
@@ -53,6 +54,7 @@ export function modifyMetaData(
     token: undefined,
     inModal: undefined,
     action: undefined,
+    modalNoCloseSteps: [],
     ...overridenMetaData,
   };
 

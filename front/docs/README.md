@@ -1,12 +1,18 @@
 # Changelog 
 
-## Next release
+## Release 2021-06-30
+
+### Changes
+- Users can no longer leave registration before confirming their account. This should prevent bugs relative to unconfirmed users navigating the platform.
+
+## Release 2021-06-29
 
 ### Fixed
 - Map: Fix for ideas that only have coordinates but no address not being shown on the map
 - Map: Fix for 'click on the map to add your input' message wrongfully being shown when idea posting is not allowed
 - Sign-up flow: Fix for bug that could cause the browser to freeze when the user tried to complete the custom fields step
 - Project description: Fix for numbered and unnumbered lists being cut off
+- Project Managers can now upload map layers.
 
 ### Changed
 - Map: When an idea is selected that is hidden behind a cluster the map now zooms in to show that marker
@@ -15,6 +21,9 @@
 - Idea location: Display idea location in degrees (°) minutes (') seconds ('') when the idea only has coordinates but no address
 - Sign-up flow: Show loading spinner when the user clicks on 'skip this step' in the sign-up custom fields step
 - Image upload: The default max allowed file size for an image is now 10 Mb instead of 5 Mb
+
+### Added
+- 'Go back' button from project to project folder (if appropriate).
 
 ## 2021-06-22
 

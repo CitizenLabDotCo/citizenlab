@@ -77,7 +77,7 @@ resource 'Batch category assignments for view inputs' do
         expect(status).to eq(204)
         inputs.each do |input_id|
           assignments = assignment_service.assignments(input_id, view)
-          expect(assignments.pluck(:category_id)).to match(categories)
+          expect(assignments.pluck(:category_id)).to match_array(categories)
         end
       end
 
