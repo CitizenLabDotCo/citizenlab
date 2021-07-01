@@ -15,7 +15,6 @@ describe Insights::TopicCategoryService do
 
   describe 'copy_assignments' do
     it 'assigns categories corresponding to topics' do
-      # debugger
       assignment_ids = service.copy_assignments(view, user)
       assignments = Insights::CategoryAssignment.find(assignment_ids)
 

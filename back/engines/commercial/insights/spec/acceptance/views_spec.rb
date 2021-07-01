@@ -93,9 +93,8 @@ resource 'Views' do
     let(:name) { 'that awesome view' }
     let(:topic1) { create(:topic) }
     let(:topic2) { create(:topic, title_multiloc: { 'en': "Nature"}) }
-    let(:topic3) { create(:topic, title_multiloc: { 'en': "Other"}) }
     let(:ideas) { create_list(:idea, 3, topics: [topic1, topic2]) }
-    let(:project) { create(:project, topics: [topic1, topic2, topic3], ideas: ideas) }
+    let(:project) { create(:project, topics: [topic1, topic2], ideas: ideas) }
     let(:scope_id) { project.id }
 
     context 'when admin' do
@@ -122,16 +121,17 @@ resource 'Views' do
         expect(json_response).to match(expected_response)
       end
 
-      example_request 'copies topic to assignments' do
+      example 'copies topic to assignments', document: false do
+        do_request
         view =  Insights::View.find(json_response[:data][:id])
+        expect(status).to eq(201)
         aggregate_failures 'check assignments' do
-          expect(status).to eq(201)
           expect(
             assignment_service
               .approved_assignments(ideas[1], view).pluck(:category_id)
               .length
           ).to eq(2)
-          expect(view.categories.length).to eq(3)
+          expect(view.categories.length).to eq(2)
         end
       end
 
