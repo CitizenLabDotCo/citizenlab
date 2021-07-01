@@ -7,35 +7,8 @@ import { modifyMetaData } from 'components/SignUpIn/events';
 import useAuthUser from 'hooks/useAuthUser';
 import { isNilOrError } from 'utils/helperUtils';
 import FeatureFlag from 'components/FeatureFlag';
-import useAppConfiguration from 'hooks/useAppConfiguration';
 
 export const CONFIRMATION_STEP_NAME = 'confirmation';
-
-type RenderOnFeatureFlagProps = {
-  children: ReactNode;
-};
-
-const RenderOnFeatureFlag = ({ children }: RenderOnFeatureFlagProps) => {
-  const isUserConfirmationEnabled = useFeatureFlag('user_confirmation');
-
-  if (isUserConfirmationEnabled) {
-    return <>{children}</>;
-  }
-  return null;
-};
-
-const RenderOnFeatureAllowed = ({ children }: RenderOnFeatureFlagProps) => {
-  const appConfiguration = useAppConfiguration();
-
-  if (
-    isNilOrError(appConfiguration) ||
-    !appConfiguration?.data.attributes?.settings?.user_confirmation?.allowed
-  ) {
-    return null;
-  }
-
-  return <>{children}</>;
-};
 
 const configuration: ModuleConfiguration = {
   outlets: {
