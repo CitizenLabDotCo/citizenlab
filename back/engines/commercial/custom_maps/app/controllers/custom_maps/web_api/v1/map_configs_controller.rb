@@ -5,6 +5,7 @@ module CustomMaps
         before_action :set_map_config, only: %i[update destroy]
 
         def create
+          authorize @project, :update?
           @map_config = @project.build_map_config(map_config_params)
 
           if @map_config.save
@@ -40,6 +41,7 @@ module CustomMaps
         private
 
         def set_map_config
+          authorize @project, :update?
           @map_config = CustomMaps::MapConfig.find_by!(project_id: params[:project_id])
         end
 
