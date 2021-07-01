@@ -26,7 +26,7 @@ const RenderOnSelectedTabValue = ({
 const configuration: ModuleConfiguration = {
   outlets: {
     'app.containers.Admin.settings.general.form': (props) => (
-      <FeatureFlag name="flag_inappropriate_content">
+      <FeatureFlag onlyCheckAllowed name="flag_inappropriate_content">
         <Setting {...props} />
       </FeatureFlag>
     ),
