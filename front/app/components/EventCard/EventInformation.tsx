@@ -27,6 +27,7 @@ import { colors, fontSizes } from 'utils/styleUtils';
 // other
 import checkTextOverflow from './checkTextOverflow';
 import { isNilOrError } from 'utils/helperUtils';
+import getTextOverflow from './checkTextOverflow';
 
 const EventInformationContainer = styled.div`
   flex: 1;
@@ -97,7 +98,7 @@ const StyledT = styled(T)<IStyledT>`
           bottom: 0;
           right: 0;
           width: 100%;
-          height: ${SMALL_LINE_HEIGHT}px;
+          height: ${SMALL_LINE_HEIGHT * 2}px;
           background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1) 100%);
         }
       `;
@@ -174,33 +175,14 @@ const EventInformation = memo<Props & InjectedIntlProps>((props) => {
   const [hideTextOverflow, setHideTextOverflow] = useState(true);
 
   useEffect(() => {
-    if (hideTextOverflow === false) {
-      // If the user has clicked 'read more', we will not be able to detect
-      // whether the text is overflowing. So do nothing
-      return;
-    }
+    if (textOverflow === false) return;
 
-    if (textOverflow === false) {
-      // If the user has not clicked 'read more', and the text is not currently overflowing,
-      // there is no problem and we can do nothing
-      return;
-    }
-
-    // We have to set this to true first, so that we can check if it is overflowing.
     setTextOverflow(true);
 
     setTimeout(() => {
-      // Then on the next rerender...
-      const textIsCurrentlyOverflowing = checkTextOverflow(TElement);
-
-      if (textIsCurrentlyOverflowing === undefined) {
-        // The child has not loaded yet. Do nothing
-        return;
-      }
-
-      setTextOverflow(textIsCurrentlyOverflowing);
+      setTextOverflow(getTextOverflow(TElement));
     }, 0);
-  });
+  }, [TElement]);
 
   return (
     <>

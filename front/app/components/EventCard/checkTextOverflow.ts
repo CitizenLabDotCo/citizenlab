@@ -2,10 +2,10 @@ import React from 'react';
 
 export default function getTextOverflow(TElement: React.MutableRefObject<any>) {
   const tElementCurrent: any = TElement?.current;
-  if (!tElementCurrent) return;
+  if (!tElementCurrent) return true;
 
   const spanElement = tElementCurrent.state.innerRef.current;
-  if (!spanElement) return;
+  if (!spanElement) return true;
 
   const spanChildren = [...spanElement.children];
 
