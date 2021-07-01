@@ -15,7 +15,7 @@ export type ISuccessStory = {
   location: string;
   page_slug: string;
 };
-export type AppConfigurationSettingsFeatureNames = keyof IAppConfigurationSettings;
+export type TAppConfigurationSetting = keyof IAppConfigurationSettings;
 
 export type IAppConfigurationSettingsCore = {
   allowed: boolean;
