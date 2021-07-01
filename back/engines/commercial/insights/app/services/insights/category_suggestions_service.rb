@@ -8,7 +8,7 @@ module Insights
   # classification and to store prediction results.
   class CategorySuggestionsService
     class << self
-      # @param [NLP::ZeroshotClassificationMessage] zsc_message
+      # @param [NLP::ZeroshotClassificationMessage] zsc_message zeroshot-classification result
       # @return [Array<Insights::CategoryAssignment>]
       def save_suggestion(zsc_message)
         return unless zsc_message.success?
@@ -37,7 +37,7 @@ module Insights
           # Ignore: don't save anything if the input cannot be found.
         end
 
-        new_assignments.to_a # to return an empty array instead of nil
+        new_assignments.compact # removes nil introduced by missing inputs
       end
     end
 
