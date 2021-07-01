@@ -79,7 +79,6 @@ const SMALL_LINE_HEIGHT = fontSizes.small + 2.45;
 
 interface IStyledT {
   hideTextOverflow?: boolean;
-  showGradient?: boolean;
 }
 
 // https://css-tricks.com/line-clampin/#the-fade-out-way
