@@ -6,8 +6,7 @@ import { colors, fontSizes } from 'utils/styleUtils';
 import styled from 'styled-components';
 
 // components
-import { Dropdown, DropdownListItem } from 'cl2-component-library';
-import Button from 'components/UI/Button';
+import { Dropdown, DropdownListItem, Button } from 'cl2-component-library';
 import Modal from 'components/UI/Modal';
 import RenameInsightsView from './RenameInsightsView';
 import ProjectButton from './ProjectButton';
@@ -26,6 +25,7 @@ import { deleteInsightsView } from '../../../services/insightsViews';
 
 // hooks
 import useInsightsView from '../../../hooks/useInsightsView';
+import useLocale from 'hooks/useLocale';
 
 export const topBarHeight = 60;
 
@@ -70,11 +70,11 @@ const TopBar = ({
 }: WithRouterProps & InjectedIntlProps) => {
   const [renameModalOpened, setRenameModalOpened] = useState(false);
   const [isDropdownOpened, setDropdownOpened] = useState(false);
-
+  const locale = useLocale();
   const viewId = params.viewId;
   const view = useInsightsView(viewId);
 
-  if (isNilOrError(view)) {
+  if (isNilOrError(view) || isNilOrError(locale)) {
     return null;
   }
   const projectId = view.relationships?.scope.data.id;
@@ -107,6 +107,7 @@ const TopBar = ({
       <DropdownWrapper>
         {formatMessage(messages.options)}
         <Button
+          locale={locale}
           icon="more-options"
           iconColor={colors.label}
           iconHoverColor={colors.label}
