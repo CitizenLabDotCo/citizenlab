@@ -12,7 +12,7 @@ module ProjectManagement
       def moderatable_projects user, scope=::Project
         if user.roles.pluck('type').include? 'project_moderator'
           project_ids = user.roles.select{ |role| role['type'] == 'project_moderator' }.pluck('project_id').compact.uniq
-          super.or(scope.where(id: project_ids))
+          super.or scope.where(id: project_ids)
         else
           super
         end
