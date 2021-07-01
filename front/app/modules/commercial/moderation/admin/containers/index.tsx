@@ -230,6 +230,13 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
     projectIds: [],
     searchTerm: '',
   });
+  const moderationsWithActiveFlag = useModerations({
+    moderationStatus: null,
+    isFlagged: true,
+    moderatableTypes: [],
+    projectIds: [],
+    searchTerm: '',
+  });
 
   const [moderations, setModerations] = useState(list);
   const [selectedModerations, setSelectedModerations] = useState<
@@ -462,6 +469,11 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
                 <Outlet
                   id="app.modules.commercial.moderation.admin.containers.tabs"
                   onData={handleData}
+                  activeFlagsCount={
+                    !isNilOrError(moderationsWithActiveFlag.list)
+                      ? moderationsWithActiveFlag.list.length
+                      : 0
+                  }
                 />
                 <StyledTabs
                   items={tabs}
