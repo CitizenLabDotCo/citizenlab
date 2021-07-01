@@ -116,7 +116,7 @@ describe Insights::CategorySuggestionsService do
       allow(nlp_client).to receive(:zeroshot_classification).and_return(response)
       tasks = service.classify(inputs, categories)
 
-      aggregate_failures "checking created task" do
+      aggregate_failures 'checking created task' do
         expect(tasks.length).to eq(1)
         expect(tasks.first.categories).to match(categories)
         expect(tasks.first.inputs).to match(inputs)
@@ -125,6 +125,21 @@ describe Insights::CategorySuggestionsService do
   end
 
   describe '#input_to_text' do
-    let(:input) { build(:idea) }
+    using RSpec::Parameterized::TableSyntax
+
+    subject(:service) { described_class.new }
+
+    where(:input_body, :result) do
+      'simple body'                                   | 'simple body'
+      '<script> script with bad intentions </script>' | 'script with bad intentions'
+      '<p> line 1<br> line 2<br> line 3 </p>'         | 'line 1 line 2 line 3'
+    end
+    
+    with_them do
+      it 'converts input to text correctly' do
+        input = create(:idea, body_multiloc: { en: input_body })
+        expect(service.input_to_text(input)).to eq(result)
+      end
+    end
   end
 end
