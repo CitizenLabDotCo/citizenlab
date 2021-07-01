@@ -27,7 +27,6 @@ import { colors, fontSizes } from 'utils/styleUtils';
 // other
 import checkTextOverflow from './checkTextOverflow';
 import { isNilOrError } from 'utils/helperUtils';
-import getTextOverflow from './checkTextOverflow';
 
 const EventInformationContainer = styled.div`
   flex: 1;
@@ -68,8 +67,8 @@ const EventMeta = styled.div<{ first?: boolean }>`
 
 const StyledIcon = styled(Icon)`
   flex: 0 0 24px;
-  width: ${fontSizes.xs}px;
-  height: ${fontSizes.xs}px;
+  width: ${fontSizes.base}px;
+  height: ${fontSizes.base}px;
   fill: ${colors.label};
   margin-right: 6px;
 `;
@@ -180,13 +179,13 @@ const EventInformation = memo<Props & InjectedIntlProps>((props) => {
     setTextOverflow(true);
 
     setTimeout(() => {
-      setTextOverflow(getTextOverflow(TElement));
+      setTextOverflow(checkTextOverflow(TElement));
     }, 0);
   }, [TElement]);
 
   return (
     <>
-      <EventInformationContainer>
+      <EventInformationContainer data-testid="EventInformation">
         <EventTitleAndMeta>
           {showProjectTitle && projectTitle && (
             <ProjectTitle>
@@ -224,7 +223,7 @@ const EventInformation = memo<Props & InjectedIntlProps>((props) => {
           </QuillEditedContent>
 
           {textOverflow && hideTextOverflow && (
-            <ReadMoreOrLessWrapper>
+            <ReadMoreOrLessWrapper data-testid="ReadMoreButton">
               <ReadMoreOrLess onClick={() => setHideTextOverflow(false)}>
                 {intl.formatMessage(messages.readMore)}
               </ReadMoreOrLess>
