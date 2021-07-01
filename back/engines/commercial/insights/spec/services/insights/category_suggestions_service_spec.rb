@@ -134,12 +134,23 @@ describe Insights::CategorySuggestionsService do
       '<script> script with bad intentions </script>' | 'script with bad intentions'
       '<p> line 1<br> line 2<br> line 3 </p>'         | 'line 1 line 2 line 3'
     end
-    
+
     with_them do
       it 'converts input to text correctly' do
         input = create(:idea, body_multiloc: { en: input_body })
         expect(service.input_to_text(input)).to eq(result)
       end
+    end
+  end
+
+  describe '#documents' do
+    subject(:service) { described_class.new }
+
+    let(:input) { create(:idea, body_multiloc: { en: 'The body...' }) }
+
+    it 'converts inputs to documents correctly'do
+      documents = service.documents_from([input])
+      expect(documents).to eq [{ text: 'The body...', doc_id: input.id }]
     end
   end
 end

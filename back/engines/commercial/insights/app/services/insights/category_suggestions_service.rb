@@ -49,7 +49,7 @@ module Insights
 
     # @return[Array<Insights::ZeroshotClassificationTask>]
     def classify(inputs, categories)
-      documents = documents(inputs)
+      documents = documents_from(inputs)
       return [] unless documents.any?
 
       response = nlp_client.zeroshot_classification(
@@ -64,7 +64,7 @@ module Insights
     end
 
     # @return [Array<Hash>]
-    def documents(inputs)
+    def documents_from(inputs)
       inputs.map { |i| { text: input_to_text(i), doc_id: i.id } }
             .select { |document| document[:text] }
     end
@@ -75,8 +75,9 @@ module Insights
       # [TODO] We currently assume that the multiloc contains only one body.
       # It seems to be true in most cases. (The UI does not allow a user to provide translations.)
       # Might not be true in seed data or similar settings.
+      # [TODO] We are not taking the title into account at the moment.
       text = input.body_multiloc.compact.values.first
-      ActionView::Base.full_sanitizer.sanitize(text).presence
+      ActionView::Base.full_sanitizer.sanitize(text)&.strip.presence
     end
 
     # @param [Enumerable<Insights::Category>] categories
