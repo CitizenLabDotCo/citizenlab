@@ -19,12 +19,10 @@ module Polls
     end
 
     def responses_count?
-      # TODO also allow project and folder moderators?
       active? && admin?
     end
 
     def index_xlsx?
-      # TODO also allow project and folder moderators?
       active? && admin?
     end
 

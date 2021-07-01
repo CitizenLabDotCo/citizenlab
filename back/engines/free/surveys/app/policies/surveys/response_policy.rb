@@ -18,7 +18,6 @@ module Surveys
     end
 
     def index_xlsx?
-      # TODO also allow project and folder moderators?
       user&.active? && user.admin?
     end
 
