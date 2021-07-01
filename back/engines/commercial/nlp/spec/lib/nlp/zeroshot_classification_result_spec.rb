@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
-require 'nlp/zeroshot_classification_message'
+require 'nlp/zeroshot_classification_result'
 
-describe NLP::ZeroshotClassificationMessage do
+describe NLP::ZeroshotClassificationResult do
 
   let(:payload) do
     @response = {
@@ -26,15 +26,15 @@ describe NLP::ZeroshotClassificationMessage do
   end
   
   describe '.from_json' do
-    let(:zsc_message) { described_class.from_json(payload) }
+    let(:zsc_result) { described_class.from_json(payload) }
 
-    it { expect(zsc_message).to be_success }
-    it { expect(zsc_message.task_id).to eq('task-id') }
-    it { expect(zsc_message.tenant_id).to eq('tenant-id') }
-    it { expect(zsc_message.predictions.length).to eq(2)}
+    it { expect(zsc_result).to be_success }
+    it { expect(zsc_result.task_id).to eq('task-id') }
+    it { expect(zsc_result.tenant_id).to eq('tenant-id') }
+    it { expect(zsc_result.predictions.length).to eq(2)}
   end
 
-  describe NLP::ZeroshotClassificationMessage::Prediction do
+  describe NLP::ZeroshotClassificationResult::Prediction do
     describe '.from_json' do
       let(:json_prediction) { final_predictions.first }
 

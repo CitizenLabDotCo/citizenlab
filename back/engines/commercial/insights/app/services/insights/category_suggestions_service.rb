@@ -8,23 +8,23 @@ module Insights
   # classification and to store prediction results.
   class CategorySuggestionsService
     class << self
-      # @param [NLP::ZeroshotClassificationMessage] zsc_message zeroshot-classification result
+      # @param [NLP::ZeroshotClassificationResult] zsc_result zeroshot-classification result
       # @return [Array<Insights::CategoryAssignment>]
-      def save_suggestion(zsc_message)
-        return unless zsc_message.success?
+      def save_suggestion(zsc_result)
+        return unless zsc_result.success?
 
-        Tenant.find(zsc_message.tenant_id).switch do
-          zsc_task = ZeroshotClassificationTask.find_by(task_id: zsc_message.task_id)
+        Tenant.find(zsc_result.tenant_id).switch do
+          zsc_task = ZeroshotClassificationTask.find_by(task_id: zsc_result.task_id)
           return [] unless zsc_task
 
           zsc_task.destroy!
-          save_predictions(zsc_message.predictions)
+          save_predictions(zsc_result.predictions)
         end
       end
 
       private
 
-      # @param[Array<NLP::ZeroshotClassificationMessage::Prediction>] predictions
+      # @param[Array<NLP::ZeroshotClassificationResult::Prediction>] predictions
       # @return [Array<Insights::CategoryAssignment>]
       def save_predictions(predictions)
         assignment_service = CategoryAssignmentsService.new

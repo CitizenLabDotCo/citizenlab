@@ -3,8 +3,10 @@
 require 'json'
 
 module NLP
-  class ZeroshotClassificationMessage
-    attr_reader :task_id, :tenant_id, :predictions, :json_message # is only initialized if the instance is created with +.from_json+
+  # Data class for zeroshot-classification results.
+  class ZeroshotClassificationResult
+    attr_reader :task_id, :tenant_id, :predictions
+    attr_reader :json_message # is only initialized if the instance is created with +.from_json+
 
     # @param [String] task_id
     # @param [String, nil] tenant_id

@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-require 'nlp/zeroshot_classification_message'
+require 'nlp/zeroshot_classification_result'
 
-# The +:zsc_message+ and +:zsc_prediction+ factories instantiate plain old ruby
+# The +:zsc_result+ and +:zsc_prediction+ factories instantiate plain old ruby
 # object (PORO — not ActiveRecord objects)
 FactoryBot.define do
-  factory :zsc_message, class: 'NLP::ZeroshotClassificationMessage' do
+  factory :zsc_result, class: 'NLP::ZeroshotClassificationResult' do
     sequence :task_id
 
     transient {
@@ -22,7 +22,7 @@ FactoryBot.define do
     end
   end
 
-  factory :zsc_prediction, class: 'NLP::ZeroshotClassificationMessage::Prediction' do
+  factory :zsc_prediction, class: 'NLP::ZeroshotClassificationResult::Prediction' do
     transient {
       input { nil }
       category { nil }
