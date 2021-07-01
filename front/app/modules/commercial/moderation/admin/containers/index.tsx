@@ -271,6 +271,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
       setSelectedTab(tabName);
 
       if (tabName === 'read' || tabName === 'unread') {
+        onIsFlaggedChange(false);
         onModerationStatusChange(tabName);
       }
 
