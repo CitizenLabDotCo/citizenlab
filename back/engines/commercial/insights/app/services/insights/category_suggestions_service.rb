@@ -85,7 +85,7 @@ module Insights
       categories.map { |c| { text: c.name, label_id: c.id } }
     end
 
-    # @param [Array<Hash>] tasks_infos
+    # @param [Array<Hash>] tasks_infos looks like [{'task_id':..., 'doc_ids':..., 'tags_ids':...}, ...]
     # @return [Array<Insights::ZeroshotClassificationTask>]
     def create_tasks(tasks_infos)
       task_service = ZeroshotClassificationTasksService.new
