@@ -172,8 +172,8 @@ const EventInformation = memo<Props & InjectedIntlProps>((props) => {
   const [textOverflow, setTextOverflow] = useState(true);
   const [hideTextOverflow, setHideTextOverflow] = useState(true);
 
-  const showHiddenText = () => setHideTextOverflow(true);
-  const hideText = () => setHideTextOverflow(false);
+  const showHiddenText = () => setHideTextOverflow(false);
+  const hideText = () => setHideTextOverflow(true);
 
   useEffect(() => {
     if (textOverflow === false) return;
@@ -233,7 +233,7 @@ const EventInformation = memo<Props & InjectedIntlProps>((props) => {
           )}
 
           {!hideTextOverflow && (
-            <ReadMoreOrLessWrapper>
+            <ReadMoreOrLessWrapper data-testid="ReadLessButton">
               <ReadMoreOrLess onClick={hideText}>
                 {intl.formatMessage(messages.readLess)}
               </ReadMoreOrLess>

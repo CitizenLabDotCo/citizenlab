@@ -5,8 +5,8 @@ import {
   render,
   screen,
   fireEvent,
-  waitFor,
   waitForElementToBeRemoved,
+  waitFor,
 } from 'utils/testUtils/rtl';
 import moment from 'moment';
 
@@ -97,6 +97,35 @@ describe('<EventInformation />', () => {
     `);
 
     render(<EventInformation {...defaultProps} event={event} />);
+    expect(screen.getByTestId('ReadMoreButton')).toBeInTheDocument();
+  });
+
+  it('correctly shows and hides text when "read more" and "read less" are clicked', async () => {
+    const event = createEvent(`
+      some
+      description
+      with
+      multiple
+      lines
+    `);
+
+    render(<EventInformation {...defaultProps} event={event} />);
+
+    const readMoreButton = screen.getByTestId('ReadMoreButton');
+    expect(readMoreButton).toBeInTheDocument();
+
+    const readMoreAnchor = readMoreButton.querySelector('a');
+    fireEvent.click(readMoreAnchor);
+
+    expect(screen.queryByTestId('ReadMoreButton')).not.toBeInTheDocument();
+
+    const readLessButton = screen.getByTestId('ReadLessButton');
+    expect(readLessButton).toBeInTheDocument();
+
+    const readLessAnchor = readLessButton.querySelector('a');
+    fireEvent.click(readLessAnchor);
+
+    expect(screen.queryByTestId('ReadLessButton')).not.toBeInTheDocument();
     expect(screen.getByTestId('ReadMoreButton')).toBeInTheDocument();
   });
 });
