@@ -5,7 +5,11 @@ module FlagInappropriateContent
       flag_service = InappropriateContentFlagService.new
 
       texts = extract_texts flaggable, attributes
-      return if texts.blank?
+      if texts.blank?
+        flag.update! toxicity_label: nil
+        flag_service.maybe_delete! flag
+        return
+      end
       res = request_toxicity_detection texts
       if toxicity_detected? res
         flag_service.introduce_flag! flaggable, toxicity_label: (extract_toxicity_label(res) || 'without_label')

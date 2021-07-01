@@ -28,7 +28,7 @@ describe SideFxIdeaService do
     let(:idea) { create(:idea, project: original_project, assignee: assignee) }
 
     context "when there's an assignee and the project has changed" do
-      let(:assignee) { create(:moderator, project: original_project) }
+      let(:assignee) { create(:project_moderator, projects: [original_project]) }
 
       it "unassigns the assignee if she can't moderate the new project" do
         idea.project = create(:project)

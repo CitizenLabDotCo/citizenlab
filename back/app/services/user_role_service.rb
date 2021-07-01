@@ -1,4 +1,20 @@
 class UserRoleService
+  def can_moderate? object, user
+    case object.class.name
+    when 'Idea'
+      can_moderate? object.project, user
+    when 'Initiative'
+      user.admin?
+    when 'Comment'
+      can_moderate? object.post, user
+    when 'Project'
+      can_moderate_project? object, user
+    end
+  end
+
+  def can_moderate_project? project, user
+    user.admin?
+  end
 
   def moderators_for object, scope=User
     case object.class.name
@@ -15,8 +31,16 @@ class UserRoleService
 
   def moderators_for_project project, scope=User
     scope.admin
-      .or(scope.project_moderator(project.id))
+  end
+
+  def moderatable_projects user, scope=Project
+    if user.admin?
+      scope.all
+    else
+      scope.none
+    end
   end
 end
 
+UserRoleService.prepend_if_ee('ProjectManagement::Patches::UserRoleService')
 UserRoleService.prepend_if_ee('ProjectFolders::Patches::UserRoleService')

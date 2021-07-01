@@ -6,7 +6,7 @@ module FlagInappropriateContent
     before_destroy :remove_notifications
 
     validates :flaggable, presence: true
-
+    
     
     def deleted?
       !!deleted_at

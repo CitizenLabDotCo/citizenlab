@@ -9,7 +9,8 @@ module Surveys
       end
 
       def resolve
-        moderatable_projects = ProjectPolicy::Scope.new(user, Project).moderatable
+        return scope.none if !user
+        moderatable_projects = ::UserRoleService.new.moderatable_projects user
         moderatable_phases = Phase.where(project: moderatable_projects)
         scope
           .where(participation_context: moderatable_projects + moderatable_phases)
@@ -17,6 +18,7 @@ module Surveys
     end
 
     def index_xlsx?
+      # TODO also allow project and folder moderators?
       user&.active? && user.admin?
     end
 

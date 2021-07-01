@@ -181,6 +181,7 @@ class NewIdeaForm extends PureComponent<Props, State> {
       ideaFiles,
       authorId,
     } = ideaFormOutput;
+
     this.globalState.set({
       title,
       description,
@@ -192,6 +193,7 @@ class NewIdeaForm extends PureComponent<Props, State> {
       ideaFiles,
       authorId,
     });
+
     this.props.onSubmit();
   };
 

@@ -79,6 +79,18 @@ exports[`<IdeaContent /> renders correctly when an idea is provided 1`] = `
           postId="myIdeasiD"
           postType="idea"
         />
+        <IdeaContent__StyledMap
+          address="50° 52′ 8.38577″ N 4° 25′ 7.43365″ E"
+          position={
+            Object {
+              "coordinates": Array [
+                4.418731568531502,
+                50.86899604801978,
+              ],
+              "type": "Point",
+            }
+          }
+        />
         <IdeaContent__StyledOfficialFeedback
           permissionToPost={true}
           postId="myIdeasiD"

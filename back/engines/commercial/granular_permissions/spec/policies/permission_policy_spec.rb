@@ -13,7 +13,7 @@ describe PermissionPolicy do
 
   context 'when user is moderator of the corresponding project' do
     let(:project) { create(:continuous_project, participation_method: 'ideation') }
-    let(:user) { create(:moderator, project: project) }
+    let(:user) { create(:project_moderator, projects: [project]) }
     let(:permission) { project.permissions.first }
 
     it { is_expected.to permit(:show)             }
@@ -27,7 +27,7 @@ describe PermissionPolicy do
   context 'when user is moderator of another project' do
     let(:project) { create(:continuous_project, participation_method: 'ideation') }
     let(:permission) { project.permissions.first }
-    let(:user) { create(:moderator, project: create(:project)) }
+    let(:user) { create(:project_moderator, projects: [create(:project)]) }
 
     it { is_expected.not_to permit(:show)         }
     it { is_expected.not_to permit(:update)       }

@@ -543,7 +543,7 @@ resource 'Projects' do
       end
 
       example 'Deleting a project removes associated moderator rights', document: false, skip: !CitizenLab.ee? do
-        moderator = create(:moderator, project: project)
+        moderator = create(:project_moderator, projects: [project])
         expect(moderator.project_moderator?(id)).to be true
         do_request
         expect(moderator.reload.project_moderator?(id)).to be false
@@ -555,7 +555,7 @@ resource 'Projects' do
     context 'when moderator', skip: !CitizenLab.ee? do
       before do
         @project = create(:project)
-        @moderator = create(:moderator, project: @project)
+        @moderator = create(:project_moderator, projects: [@project])
         header_token_for(@moderator)
 
         @projects = create_list(:project, 10, admin_publication_attributes: { publication_status: 'published' })

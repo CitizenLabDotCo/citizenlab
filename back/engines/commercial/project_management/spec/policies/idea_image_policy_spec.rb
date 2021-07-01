@@ -13,7 +13,7 @@ describe IdeaImagePolicy do
     let!(:image) { create(:idea_image, idea: idea) }
 
     context 'for a moderator' do
-      let(:user) { create(:moderator, project: project) }
+      let(:user) { create(:project_moderator, projects: [project]) }
 
       it { is_expected.to permit(:show) }
       it { is_expected.to permit(:create) }

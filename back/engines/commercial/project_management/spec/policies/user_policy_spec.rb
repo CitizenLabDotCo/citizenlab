@@ -9,7 +9,7 @@ describe UserPolicy do
 
   context 'for a moderator' do
     let(:project) { create(:project) }
-    let(:current_user) { create(:moderator, project: project) }
+    let(:current_user) { create(:project_moderator, projects: [project]) }
 
     context 'on theirself' do
       let(:subject_user) { current_user }

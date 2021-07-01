@@ -17,7 +17,7 @@ module ProjectManagement
         def resolve_for_project_moderator
           return scope.none unless user.project_moderator?
 
-          projects = ::ProjectPolicy::Scope.new(user, ::Project.all).moderatable
+          projects = ::UserRoleService.new.moderatable_projects user
           scope.where(project: projects)
         end
       end

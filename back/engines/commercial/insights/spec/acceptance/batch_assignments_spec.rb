@@ -65,19 +65,19 @@ resource 'Batch category assignments for view inputs' do
 
         inputs.each do |input_id|
           assignments = assignment_service.assignments(input_id, view)
-          expect(assignments.pluck(:category_id)).to match(categories)
+          expect(assignments.pluck(:category_id)).to match_array categories
         end
       end
 
       example 'does not fail when categories were already assigned (idempotent)', document: false do
-        assignment_service.add_assignments!(input_instances.first, category_instances)
+        assignment_service.add_assignments(input_instances.first, category_instances)
 
         do_request
 
         expect(status).to eq(204)
         inputs.each do |input_id|
           assignments = assignment_service.assignments(input_id, view)
-          expect(assignments.pluck(:category_id)).to match(categories)
+          expect(assignments.pluck(:category_id)).to match_array categories
         end
       end
 
@@ -111,13 +111,13 @@ resource 'Batch category assignments for view inputs' do
         aggregate_failures 'checking categories were removed' do
           inputs.each do |input_id|
             assignments = assignment_service.assignments(input_id, view)
-            expect(assignments.pluck(:category_id)).to match([category_instances.last.id])
+            expect(assignments.pluck(:category_id)).to match_array [category_instances.last.id]
           end
         end
 
         # Checking categories were not removed from the last input.
         assignments = assignment_service.assignments(input_instances.last, view)
-        expect(assignments.map(&:category)).to match(category_instances)
+        expect(assignments.map(&:category)).to match_array category_instances
       end
 
       include_examples 'not-found requests'

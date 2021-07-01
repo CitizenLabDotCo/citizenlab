@@ -171,7 +171,7 @@ resource "Comments" do
     context 'when the user moderates the project', skip: !CitizenLab.ee? do
       before do
         @project = create(:project)
-        @user = create(:moderator, project: @project)
+        @user = create(:project_moderator, projects: [@project])
         header_token_for(@user)
       end
 
@@ -183,7 +183,7 @@ resource "Comments" do
     context 'when the user moderates another project', skip: !CitizenLab.ee? do
       before do
         @project = create(:project)
-        @user = create(:moderator, project: create(:project))
+        @user = create(:project_moderator, projects: [create(:project)])
         header_token_for(@user)
       end
 
