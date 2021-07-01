@@ -7,7 +7,7 @@ RSpec.describe UserConfirmation::ConfirmUser do
   let(:user) { create(:user_with_confirmation) }
 
   before do
-    AppConfiguration.instance.activate_feature!('user_confirmation')
+    SettingsService.new.activate_feature! 'user_confirmation'
     UserConfirmation::SendConfirmationCode.call(user: user)
   end
 

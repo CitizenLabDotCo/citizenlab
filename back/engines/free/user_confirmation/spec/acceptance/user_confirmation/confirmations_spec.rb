@@ -6,7 +6,7 @@ resource 'Confirmations' do
 
   before do
     set_api_content_type
-    AppConfiguration.instance.activate_feature!('user_confirmation')
+    SettingsService.new.activate_feature! 'user_confirmation'
   end
 
   post 'web_api/v1/user/confirm' do
