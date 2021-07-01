@@ -2,6 +2,8 @@
 
 require 'nlp/zeroshot_classification_message'
 
+# The +:zsc_message+ and +:zsc_prediction+ factories instantiate plain old ruby
+# object (PORO — not ActiveRecord objects)
 FactoryBot.define do
   factory :zsc_message, class: 'NLP::ZeroshotClassificationMessage' do
     sequence :task_id
