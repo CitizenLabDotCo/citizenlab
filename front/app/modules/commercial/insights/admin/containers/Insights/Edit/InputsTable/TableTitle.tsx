@@ -34,14 +34,19 @@ const StyledHeader = styled.h2`
   align-items: center;
   color: ${colors.adminTextColor};
   font-size: ${fontSizes.large}px;
+  margin-bottom: 0;
   button {
     margin-left: 20px;
   }
-  margin-bottom: 0;
 `;
 
 const StyledTooltipContent = styled.p`
   font-weight: normal;
+`;
+
+const DropdownWrapper = styled.div`
+  margin-top: 40px;
+  margin-left: -40px;
 `;
 
 const TableTitle = ({
@@ -142,21 +147,23 @@ const TableTitle = ({
           </>
         )}
       </StyledHeader>
-      <Dropdown
-        opened={isCategoryMenuOpened}
-        onClickOutside={closeCategoryMenu}
-        className="dropdown"
-        content={
-          <>
-            <DropdownListItem onClick={openCategoryRenameModal}>
-              {formatMessage(messages.editCategoryName)}
-            </DropdownListItem>
-            <DropdownListItem onClick={handleDeleteCategory}>
-              {formatMessage(messages.deleteCategory)}
-            </DropdownListItem>
-          </>
-        }
-      />
+      <DropdownWrapper>
+        <Dropdown
+          opened={isCategoryMenuOpened}
+          onClickOutside={closeCategoryMenu}
+          className="dropdown"
+          content={
+            <>
+              <DropdownListItem onClick={openCategoryRenameModal}>
+                {formatMessage(messages.editCategoryName)}
+              </DropdownListItem>
+              <DropdownListItem onClick={handleDeleteCategory}>
+                {formatMessage(messages.deleteCategory)}
+              </DropdownListItem>
+            </>
+          }
+        />
+      </DropdownWrapper>
       <Modal
         opened={renameCategoryModalOpened}
         close={closeCategoryRenameModal}
