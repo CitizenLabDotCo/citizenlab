@@ -40,6 +40,10 @@ const StyledHeader = styled.h2`
   margin-bottom: 0;
 `;
 
+const StyledTooltipContent = styled.p`
+  font-weight: normal;
+`;
+
 const TableTitle = ({
   intl: { formatMessage },
   params: { viewId },
@@ -117,14 +121,24 @@ const TableTitle = ({
           <>
             {formatMessage(messages.notCategorized)}
             <IconTooltip
-              content={formatMessage(messages.notCategorizedTooltip)}
+              content={
+                <StyledTooltipContent>
+                  {formatMessage(messages.notCategorizedTooltip)}
+                </StyledTooltipContent>
+              }
             />
           </>
         )}
         {selectedCategoryFilter === 'allInput' && (
           <>
             {formatMessage(messages.allInput)}
-            <IconTooltip content={formatMessage(messages.allInputTooltip)} />
+            <IconTooltip
+              content={
+                <StyledTooltipContent>
+                  {formatMessage(messages.allInputTooltip)}
+                </StyledTooltipContent>
+              }
+            />
           </>
         )}
       </StyledHeader>
