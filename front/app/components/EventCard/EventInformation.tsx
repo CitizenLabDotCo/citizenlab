@@ -1,4 +1,4 @@
-import React, { memo, useRef, useState } from 'react';
+import React, { memo, useRef, useState, useEffect } from 'react';
 import { isEmpty, every } from 'lodash-es';
 import moment from 'moment';
 
@@ -89,26 +89,19 @@ const StyledT = styled(T)<IStyledT>`
       return `
         overflow: hidden;
         height: calc(${SMALL_LINE_HEIGHT}px * 4);
+
+        &:after {
+          content: "";
+          text-align: right;
+          position: absolute;
+          bottom: 0;
+          right: 0;
+          width: 70%;
+          height: ${SMALL_LINE_HEIGHT}px;
+          background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1) 50%);
+        }
       `;
     }
-
-    return '';
-  }}
-
-  ${({ showGradient }) => {
-    if (showGradient)
-      return `
-      &:after {
-        content: "";
-        text-align: right;
-        position: absolute;
-        bottom: 0;
-        right: 0;
-        width: 70%;
-        height: ${SMALL_LINE_HEIGHT}px;
-        background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1) 50%);
-      }
-    `;
 
     return '';
   }}
@@ -176,8 +169,38 @@ const EventInformation = memo<Props & InjectedIntlProps>((props) => {
   const projectTitle = project?.attributes.title_multiloc;
 
   const TElement = useRef(null);
-  const textOverflow = checkTextOverflow(TElement);
+
+  const [textOverflow, setTextOverflow] = useState(true);
   const [hideTextOverflow, setHideTextOverflow] = useState(true);
+
+  useEffect(() => {
+    if (hideTextOverflow === false) {
+      // If the user has clicked 'read more', we will not be able to detect
+      // whether the text is overflowing. So do nothing
+      return;
+    }
+
+    if (textOverflow === false) {
+      // If the user has not clicked 'read more', and the text is not currently overflowing,
+      // there is no problem and we can do nothing
+      return;
+    }
+
+    // We have to set this to true first, so that we can check if it is overflowing.
+    setTextOverflow(true);
+
+    setTimeout(() => {
+      // Then on the next rerender...
+      const textIsCurrentlyOverflowing = checkTextOverflow(TElement);
+
+      if (textIsCurrentlyOverflowing === undefined) {
+        // The child has not loaded yet. Do nothing
+        return;
+      }
+
+      setTextOverflow(textIsCurrentlyOverflowing);
+    }, 0);
+  });
 
   return (
     <>
@@ -214,8 +237,7 @@ const EventInformation = memo<Props & InjectedIntlProps>((props) => {
               value={event.attributes.description_multiloc}
               supportHtml={true}
               ref={TElement}
-              showGradient={hideTextOverflow && textOverflow}
-              hideTextOverflow={hideTextOverflow}
+              hideTextOverflow={hideTextOverflow && textOverflow}
             />
           </QuillEditedContent>
 
