@@ -2700,6 +2700,7 @@
   "app.errors.view_name_taken": "A view with this name already exists",
   "app.modules.commercial.flag_inappropriate_content.admin.components.inappropriate": "inappropriate or offensive",
   "app.modules.commercial.flag_inappropriate_content.admin.components.nlpFlaggedWarningText": "Inappropriate content auto-detected",
+  "app.modules.commercial.flag_inappropriate_content.admin.components.noWarningItems": "There are no items with content warning",
   "app.modules.commercial.flag_inappropriate_content.admin.components.removeWarning": "Remove {numberOfItems, plural, one {warning} other {# warnings}}",
   "app.modules.commercial.flag_inappropriate_content.admin.components.userFlaggedWarningText": "Reported: {reason}",
   "app.modules.commercial.flag_inappropriate_content.admin.components.warningTooltip": "Not inappropriate? Remove this designation in the Warnings tab.",
