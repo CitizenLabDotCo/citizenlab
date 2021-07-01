@@ -96,9 +96,9 @@ const StyledT = styled(T)<IStyledT>`
           position: absolute;
           bottom: 0;
           right: 0;
-          width: 70%;
+          width: 100%;
           height: ${SMALL_LINE_HEIGHT}px;
-          background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1) 50%);
+          background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1) 100%);
         }
       `;
     }
