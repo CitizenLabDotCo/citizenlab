@@ -59,6 +59,18 @@ const Container = styled.main`
   `}
 `;
 
+const StyledQuillEditedContent = styled(QuillEditedContent)`
+  h1,
+  h2 {
+    color: ${(props) => props.theme.colorText};
+  }
+
+  p,
+  li {
+    color: ${colors.label};
+  }
+`;
+
 const FooterBanner = styled.div`
   background: ${({ theme }) => theme.colorMain};
   width: 100%;
@@ -226,7 +238,7 @@ class LandingPage extends PureComponent<Props, State> {
 
               {showCustomSection && (
                 <CustomSectionContentContainer>
-                  <QuillEditedContent>
+                  <StyledQuillEditedContent>
                     <Fragment
                       name={
                         !isNilOrError(homepageInfoPage)
@@ -238,7 +250,7 @@ class LandingPage extends PureComponent<Props, State> {
                     >
                       <T value={customSectionBodyMultiloc} supportHtml={true} />
                     </Fragment>
-                  </QuillEditedContent>
+                  </StyledQuillEditedContent>
                 </CustomSectionContentContainer>
               )}
 

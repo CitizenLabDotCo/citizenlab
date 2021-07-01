@@ -2,15 +2,15 @@ module FlagInappropriateContent
   class InappropriateContentFlagPolicy < ApplicationPolicy
 
     def show?
-      user&.admin?
+      user && ::UserRoleService.new.can_moderate?(record.flaggable, user)
     end
 
     def mark_as_deleted?
-      user&.admin?
+      user && ::UserRoleService.new.can_moderate?(record.flaggable, user)
     end
 
     def mark_as_flagged?
-      user&.admin?
+      user && ::UserRoleService.new.can_moderate?(record.flaggable, user)
     end
 
   end

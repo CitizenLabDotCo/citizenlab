@@ -13,6 +13,8 @@ import { InjectedIntlProps } from 'react-intl';
 // components
 import { Icon } from 'cl2-component-library';
 
+import { getSelectedCategoryFilter } from '../';
+
 const StyledEmptyState = styled.div`
   display: flex;
   flex-grow: 1;
@@ -40,17 +42,32 @@ const EmptyState = ({
   intl: { formatMessage },
   location: { query },
 }: InjectedIntlProps & WithRouterProps) => {
+  const selectedCategoryFilter = getSelectedCategoryFilter(query.category);
   return (
     <StyledEmptyState data-testid="insightsInputsTableEmptyState">
       <Icon name="blankPage" />
-      {query.category ? (
-        <>
-          <h1>{formatMessage(messages.inputsTableCategoryTitle)}</h1>
-          <p>{formatMessage(messages.inputsTableCategoryDescription)}</p>
-        </>
-      ) : (
-        formatMessage(messages.inputsTableEmpty)
-      )}
+      <>
+        {query.search ? (
+          <>
+            <h1>{formatMessage(messages.inputsTableNoResults)}</h1>
+            <p>{formatMessage(messages.inputsTableNoResultsDescription)}</p>
+          </>
+        ) : (
+          <>
+            {selectedCategoryFilter === 'allInput' &&
+              formatMessage(messages.inputsTableEmpty)}
+            {selectedCategoryFilter === 'notCategorized' && (
+              <p>{formatMessage(messages.inputsTableNotCategorized)}</p>
+            )}
+            {selectedCategoryFilter === 'category' && (
+              <>
+                <h1>{formatMessage(messages.inputsTableCategoryTitle)}</h1>
+                <p>{formatMessage(messages.inputsTableCategoryDescription)}</p>
+              </>
+            )}
+          </>
+        )}
+      </>
     </StyledEmptyState>
   );
 };

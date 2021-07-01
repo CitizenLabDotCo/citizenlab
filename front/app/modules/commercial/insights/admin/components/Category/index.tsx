@@ -37,7 +37,7 @@ const Category = ({
 
   return (
     <Tag
-      status="approved"
+      variant="primary"
       label={category.attributes.name}
       onIconClick={handleRemoveCategory}
     />

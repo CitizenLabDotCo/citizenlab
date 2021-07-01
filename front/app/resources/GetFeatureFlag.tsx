@@ -6,13 +6,13 @@ import { Subscription } from 'rxjs';
 import {
   currentAppConfigurationStream,
   IAppConfiguration,
-  AppConfigurationSettingsFeatureNames,
+  TAppConfigurationSetting,
 } from 'services/appConfiguration';
 
 type children = (renderProps: GetFeatureFlagChildProps) => JSX.Element | null;
 
 interface Props {
-  name?: AppConfigurationSettingsFeatureNames;
+  name?: TAppConfigurationSetting;
   children?: children;
 }
 

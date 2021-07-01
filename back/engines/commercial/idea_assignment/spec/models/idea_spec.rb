@@ -10,7 +10,7 @@ RSpec.describe Idea, type: :model do
     end
 
     it "is invalid when it\'s a a project moderator of a different project" do
-      idea.assignee = build(:moderator)
+      idea.assignee = build(:project_moderator)
       expect(idea).to be_invalid
     end
 
@@ -21,7 +21,7 @@ RSpec.describe Idea, type: :model do
 
     it "is valid when it\'s a project moderator of the same project" do
       idea.update(project: create(:project)) # Project must have an ID
-      idea.assignee = build(:moderator, project: idea.project)
+      idea.assignee = build(:project_moderator, projects: [idea.project])
       expect(idea).to be_valid
     end
 

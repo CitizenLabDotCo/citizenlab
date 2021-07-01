@@ -1,8 +1,7 @@
-import React, { memo, useCallback, useState, useEffect, useMemo } from 'react';
+import React, { memo, useCallback, useState, useEffect } from 'react';
 
 import { isNilOrError } from 'utils/helperUtils';
 import { insertConfiguration } from 'utils/moduleUtils';
-import { isFlagActive } from 'modules/commercial/flag_inappropriate_content/utils';
 
 // components
 import Table from 'components/UI/Table';
@@ -27,11 +26,7 @@ import {
   IModerationData,
   TModeratableTypes,
 } from '../../services/moderations';
-import {
-  removeInappropriateContentFlag,
-  inappropriateContentFlagByIdStream,
-  IInappropriateContentFlag,
-} from 'modules/commercial/flag_inappropriate_content/services/inappropriateContentFlags';
+import { removeInappropriateContentFlag } from 'modules/commercial/flag_inappropriate_content/services/inappropriateContentFlags';
 
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
@@ -73,11 +68,18 @@ const StyledIconTooltip = styled(IconTooltip)`
 `;
 
 const ActionBar = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 55px;
+`;
+
+const ActionBarTop = styled.div`
   min-height: 50px;
   display: flex;
   align-items: center;
-  margin-bottom: 55px;
 `;
+
+const ActionBarBottom = styled.div``;
 
 const Buttons = styled.div`
   display: flex;
@@ -220,6 +222,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
     onModeratableTypesChange,
     onProjectIdsChange,
     onSearchTermChange,
+    onIsFlaggedChange,
   } = useModerations({
     pageSize: pageSizes[1].value,
     moderationStatus: 'unread',
@@ -229,23 +232,9 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
   });
 
   const [moderations, setModerations] = useState(list);
-  // const [moderationsWithActiveFlag, setModerationsWithActiveFlag] = useState<
-  //   IModerationData[]
-  // >([]);
-  const [moderationsForSelectedTab, setModerationsForSelectedTab] = useState(
-    moderations
-  );
-  const [
-    activeInappropriateContentFlags,
-    setActiveInappropriateContentFlags,
-  ] = useState<IInappropriateContentFlag[]>([]);
   const [selectedModerations, setSelectedModerations] = useState<
     IModerationData[]
   >([]);
-  const [
-    selectedModerationsWithActiveFlag,
-    setSelectedModerationsWithActiveFlag,
-  ] = useState<IModerationData[]>([]);
   const [processing, setProcessing] = useState(false);
   const [selectedTypes, setSelectedTypes] = useState<TModeratableTypes[]>([]);
   const [selectedProjectIds, setSelectedProjectIds] = useState<string[]>([]);
@@ -264,74 +253,17 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
     },
   ]);
 
-  // useEffect(() => {
-  //   if (!isNilOrError(moderations)) {
-  //     const modItemsWithFlagRel = moderations.filter(
-  //       (moderation) => moderation.relationships.inappropriate_content_flag
-  //     );
-  //     const modItemsWithActiveFlag = modItemsWithFlagRel.filter(
-  //       (moderationWithFlag) => {
-  //         const flagId = moderationWithFlag.relationships
-  //           .inappropriate_content_flag?.data.id as string;
-  //         return activeInappropriateContentFlags
-  //           .map((activeFlag) => activeFlag.data.id)
-  //           .includes(flagId);
-  //       }
-  //     );
-
-  //     setModerationsWithActiveFlag(modItemsWithActiveFlag);
-  //   }
-  // }, [moderations, activeInappropriateContentFlags]);
-
-  const moderationsWithActiveFlag = useMemo(() => {
-    if (!isNilOrError(moderations)) {
-      const modItemsWithFlagRel = moderations.filter(
-        (moderation) => moderation.relationships.inappropriate_content_flag
-      );
-      const modItemsWithActiveFlag = modItemsWithFlagRel.filter(
-        (moderationWithFlag) => {
-          const flagId = moderationWithFlag.relationships
-            .inappropriate_content_flag?.data.id as string;
-          return activeInappropriateContentFlags
-            .map((activeFlag) => activeFlag.data.id)
-            .includes(flagId);
-        }
-      );
-
-      return modItemsWithActiveFlag;
-    }
-
-    return null;
-  }, [moderations, activeInappropriateContentFlags]);
-
   const handleOnSelectAll = useCallback(
     (_event: React.ChangeEvent) => {
       if (!processing) {
-        if (selectedTab === 'warnings') {
-          if (!isNilOrError(moderationsWithActiveFlag)) {
-            setSelectedModerationsWithActiveFlag(
-              selectedModerationsWithActiveFlag.length <
-                moderationsWithActiveFlag.length
-                ? moderationsWithActiveFlag
-                : []
-            );
-          }
-        } else {
-          if (!isNilOrError(moderations)) {
-            setSelectedModerations(
-              selectedModerations.length < moderations.length ? moderations : []
-            );
-          }
+        if (!isNilOrError(moderations)) {
+          setSelectedModerations(
+            selectedModerations.length < moderations.length ? moderations : []
+          );
         }
       }
     },
-    [
-      selectedTab,
-      moderations,
-      moderationsWithActiveFlag,
-      selectedModerations,
-      processing,
-    ]
+    [moderations, selectedModerations, processing]
   );
 
   const handleOnTabChange = useCallback(
@@ -339,10 +271,13 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
       setSelectedTab(tabName);
 
       if (tabName === 'read' || tabName === 'unread') {
+        onIsFlaggedChange(false);
         onModerationStatusChange(tabName);
       }
 
+      // OS: how to?
       if (tabName === 'warnings') {
+        onIsFlaggedChange(true);
         onModerationStatusChange(null);
       }
 
@@ -407,62 +342,36 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
   const handleRowOnSelectChange = useCallback(
     (newSelectedModeration: IModerationData) => {
       if (!processing) {
-        if (selectedTab === 'warnings') {
-          setSelectedModerationsWithActiveFlag(
-            (prevSelectedModerationsWithActiveFlag) => {
-              if (
-                isModerationSelected(
-                  newSelectedModeration,
-                  prevSelectedModerationsWithActiveFlag
-                )
-              ) {
-                return prevSelectedModerationsWithActiveFlag.filter(
-                  (moderation) => newSelectedModeration.id !== moderation.id
-                );
-              }
+        setSelectedModerations((prevSelectedModerations) => {
+          if (
+            isModerationSelected(newSelectedModeration, prevSelectedModerations)
+          ) {
+            return prevSelectedModerations.filter(
+              (moderation) => moderation.id !== newSelectedModeration.id
+            );
+          }
 
-              return [
-                ...prevSelectedModerationsWithActiveFlag,
-                newSelectedModeration,
-              ];
-            }
-          );
-        } else {
-          setSelectedModerations((prevSelectedModerations) => {
-            if (
-              isModerationSelected(
-                newSelectedModeration,
-                prevSelectedModerations
-              )
-            ) {
-              return prevSelectedModerations.filter(
-                (moderation) => moderation.id !== newSelectedModeration.id
-              );
-            }
-
-            return [...prevSelectedModerations, newSelectedModeration];
-          });
-        }
+          return [...prevSelectedModerations, newSelectedModeration];
+        });
       }
     },
-    [processing, selectedTab]
+    [processing]
   );
 
+  // OS: how to?
   const removeFlags = useCallback(async () => {
-    if (activeInappropriateContentFlags.length > 0 && !processing) {
-      const selectedActiveInappropriateContentFlags = selectedModerationsWithActiveFlag.map(
-        (mod) => mod.relationships.inappropriate_content_flag?.data.id
-      );
-      const selectedActiveFlags = activeInappropriateContentFlags.filter(
-        (flag) => {
-          return selectedActiveInappropriateContentFlags.includes(flag.data.id);
-        }
+    if (!processing) {
+      const selectedActiveInappropriateContentFlagIds = selectedModerations.map(
+        // we can be sure the flag is here. With the is_flagged param in the request
+        // only moderations with active flags will be returned
+        (mod) => mod.relationships.inappropriate_content_flag?.data.id as string
       );
 
-      const promises = selectedActiveFlags.map((flag) => {
-        const flagId = flag.data.id;
-        return removeInappropriateContentFlag(flagId);
-      });
+      const promises = selectedActiveInappropriateContentFlagIds.map(
+        (flagId) => {
+          return removeInappropriateContentFlag(flagId);
+        }
+      );
 
       try {
         setActionBarErrorMessage(null);
@@ -471,17 +380,13 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
         await Promise.all(promises);
 
         setProcessing(false);
-        setSelectedModerationsWithActiveFlag([]);
+        setSelectedModerations([]);
       } catch {
         setActionBarErrorMessage(intl.formatMessage(messages.removeFlagsError));
         setProcessing(false);
       }
     }
-  }, [
-    activeInappropriateContentFlags,
-    selectedModerationsWithActiveFlag,
-    processing,
-  ]);
+  }, [processing, selectedModerations]);
 
   const markAs = useCallback(
     async (event: React.FormEvent) => {
@@ -536,55 +441,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
     }
   }, [list, processing]);
 
-  useEffect(() => {
-    if (!processing && !isNilOrError(moderations)) {
-      // const moderationsWithFlagRelationship = moderations.filter(
-      //   (moderation) => moderation.relationships.inappropriate_content_flag
-      // );
-      // const moderationsWithActiveFlag = moderationsWithFlagRelationship.filter(
-      //   (moderationWithFlag) => {
-      //     const flagId = moderationWithFlag.relationships
-      //       .inappropriate_content_flag?.data.id as string;
-      //     return activeInappropriateContentFlags
-      //       .map((activeFlag) => activeFlag.data.id)
-      //       .includes(flagId);
-      //   }
-      // );
-
-      setModerationsForSelectedTab(
-        selectedTab === 'warnings' ? moderationsWithActiveFlag : moderations
-      );
-    }
-  }, [selectedTab, moderations, moderationsWithActiveFlag]);
-
-  useEffect(() => {
-    (async () => {
-      if (!isNilOrError(moderations) && moderations.length > 0) {
-        const moderationsWithFlagRelationship = moderations.filter(
-          (moderation) =>
-            moderation.relationships.inappropriate_content_flag?.data.id
-        );
-        const promises = moderationsWithFlagRelationship.map(
-          (moderationItemWithFlag) => {
-            // We know from previous filter operations the id is a string
-            const flagId = moderationItemWithFlag.relationships
-              .inappropriate_content_flag?.data.id as string;
-            const stream = inappropriateContentFlagByIdStream(flagId);
-
-            return stream.fetch();
-          }
-        ) as Promise<IInappropriateContentFlag>[];
-
-        try {
-          const flags = await Promise.all(promises);
-          const activeFlags = flags.filter((flag) => isFlagActive(flag.data));
-          setActiveInappropriateContentFlags(activeFlags);
-        } catch {}
-      }
-    })();
-  }, [moderations]);
-
-  if (!isNilOrError(moderationsForSelectedTab)) {
+  if (!isNilOrError(moderations)) {
     return (
       <Container className={className}>
         <PageTitleWrapper>
@@ -592,75 +449,74 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
             <FormattedMessage {...messages.pageTitle} />
           </StyledPageTitle>
           <StyledIconTooltip
-            content={<FormattedMessage {...messages.moderationHelpTooltip} />}
+            content={<FormattedMessage {...messages.moderationsTooltip} />}
             iconSize="20px"
             placement="right"
           />
         </PageTitleWrapper>
 
         <ActionBar>
-          {(selectedTab === 'warnings'
-            ? selectedModerationsWithActiveFlag
-            : selectedModerations
-          ).length === 0 ? (
-            <>
-              <Outlet
-                id="app.modules.commercial.moderation.admin.containers.tabs"
-                onData={handleData}
-                activeFlagsCount={moderationsWithActiveFlag?.length || 0}
-              />
-              <StyledTabs
-                items={tabs}
-                selectedValue={selectedTab}
-                onClick={handleOnTabChange}
-              />
-              <SelectType
-                selectedTypes={selectedTypes}
-                onChange={handleModeratableTypesChange}
-              />
-              <SelectProject
-                selectedProjectIds={selectedProjectIds}
-                onChange={handleProjectIdsChange}
-              />
-            </>
-          ) : (
-            <Buttons>
-              {selectedModerations.length > 0 &&
-                (selectedTab === 'read' || selectedTab === 'unread') && (
-                  <MarkAsButton
-                    icon={
-                      moderationStatus === 'unread'
-                        ? 'eyeOpened-unfilled'
-                        : 'eyeClosed-unfilled'
-                    }
-                    buttonStyle="cl-blue"
-                    processing={processing}
-                    onClick={markAs}
-                  >
-                    {intl.formatMessage(
-                      {
-                        unread: messages.markSeen,
-                        read: messages.markNotSeen,
-                      }[selectedTab],
-                      {
-                        selectedItemsCount: selectedModerations.length,
+          <ActionBarTop>
+            {selectedModerations.length === 0 ? (
+              <>
+                <Outlet
+                  id="app.modules.commercial.moderation.admin.containers.tabs"
+                  onData={handleData}
+                />
+                <StyledTabs
+                  items={tabs}
+                  selectedValue={selectedTab}
+                  onClick={handleOnTabChange}
+                />
+                <SelectType
+                  selectedTypes={selectedTypes}
+                  onChange={handleModeratableTypesChange}
+                />
+                <SelectProject
+                  selectedProjectIds={selectedProjectIds}
+                  onChange={handleProjectIdsChange}
+                />
+              </>
+            ) : (
+              <Buttons>
+                {selectedModerations.length > 0 &&
+                  (selectedTab === 'read' || selectedTab === 'unread') && (
+                    <MarkAsButton
+                      icon={
+                        moderationStatus === 'unread'
+                          ? 'eyeOpened-unfilled'
+                          : 'eyeClosed-unfilled'
                       }
-                    )}
-                  </MarkAsButton>
-                )}
+                      buttonStyle="cl-blue"
+                      processing={processing}
+                      onClick={markAs}
+                    >
+                      {intl.formatMessage(
+                        {
+                          unread: messages.markSeen,
+                          read: messages.markNotSeen,
+                        }[selectedTab],
+                        {
+                          selectedItemsCount: selectedModerations.length,
+                        }
+                      )}
+                    </MarkAsButton>
+                  )}
 
-              <Outlet
-                id="app.modules.commercial.moderation.admin.containers.actionbar.buttons"
-                selectedActiveFlagsCount={
-                  selectedModerationsWithActiveFlag.length
-                }
-                processing={processing}
-                onClick={removeFlags}
-              />
-            </Buttons>
-          )}
-          <StyledSearchInput onChange={handleSearchTermChange} />
-          <Error text={actionBarErrorMessage} />
+                <Outlet
+                  id="app.modules.commercial.moderation.admin.containers.actionbar.buttons"
+                  selectedActiveFlagsCount={selectedModerations.length}
+                  processing={processing}
+                  onRemoveFlags={removeFlags}
+                  isWarningsTabSelected={selectedTab === 'warnings'}
+                />
+              </Buttons>
+            )}
+            <StyledSearchInput onChange={handleSearchTermChange} />
+          </ActionBarTop>
+          <ActionBarBottom>
+            <Error text={actionBarErrorMessage} />
+          </ActionBarBottom>
         </ActionBar>
 
         <StyledTable>
@@ -669,23 +525,14 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
               <th className="checkbox">
                 <StyledCheckbox
                   checked={
-                    moderationsForSelectedTab.length > 0 &&
-                    (selectedTab === 'warnings'
-                      ? selectedModerationsWithActiveFlag
-                      : selectedModerations
-                    ).length === moderationsForSelectedTab.length
+                    moderations.length > 0 &&
+                    selectedModerations.length === moderations.length
                   }
                   indeterminate={
-                    (selectedTab === 'warnings'
-                      ? selectedModerationsWithActiveFlag
-                      : selectedModerations
-                    ).length > 0 &&
-                    (selectedTab === 'warnings'
-                      ? selectedModerationsWithActiveFlag
-                      : selectedModerations
-                    ).length < moderationsForSelectedTab.length
+                    selectedModerations.length > 0 &&
+                    selectedModerations.length < moderations.length
                   }
-                  disabled={moderationsForSelectedTab.length === 0}
+                  disabled={moderations.length === 0}
                   onChange={handleOnSelectAll}
                 />
               </th>
@@ -704,17 +551,15 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
               <th className="goto">&nbsp;</th>
             </tr>
           </thead>
-          {moderationsForSelectedTab.length > 0 && (
+          {moderations.length > 0 && (
             <tbody>
-              {moderationsForSelectedTab.map((moderationItem) => (
+              {moderations.map((moderationItem) => (
                 <ModerationRow
                   key={moderationItem.id}
                   moderation={moderationItem}
                   selected={isModerationSelected(
                     moderationItem,
-                    selectedTab === 'warnings'
-                      ? selectedModerationsWithActiveFlag
-                      : selectedModerations
+                    selectedModerations
                   )}
                   onSelect={handleRowOnSelectChange}
                   inappropriateContentFlagId={
@@ -728,7 +573,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
           )}
         </StyledTable>
 
-        {moderationsForSelectedTab.length > 0 && (
+        {moderations.length > 0 && (
           <Footer>
             <StyledPagination
               currentPage={currentPage}
@@ -751,7 +596,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
           </Footer>
         )}
 
-        {moderationsForSelectedTab.length === 0 && (
+        {moderations.length === 0 && (
           <Empty>
             <EmptyIcon name="inbox" />
             <EmptyMessage>
@@ -759,9 +604,12 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
                 {
                   read: <FormattedMessage {...messages.noViewedItems} />,
                   unread: <FormattedMessage {...messages.noUnviewedItems} />,
-                  warnings: <FormattedMessage {...messages.noWarningItems} />,
                 }[selectedTab]
               }
+              <Outlet
+                id="app.modules.commercial.moderation.admin.components.EmptyMessage"
+                isWarningsTabSelected={selectedTab === 'warnings'}
+              />
             </EmptyMessage>
           </Empty>
         )}

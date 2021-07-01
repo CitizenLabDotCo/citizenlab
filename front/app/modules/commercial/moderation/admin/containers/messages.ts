@@ -69,10 +69,6 @@ export default defineMessages({
     id: 'app.containers.Admin.Moderation.noUnviewedItems',
     defaultMessage: 'There are no unviewed items',
   },
-  noWarningItems: {
-    id: 'app.containers.Admin.Moderation.noWarningItems',
-    defaultMessage: 'There are no items with content warning',
-  },
   readMore: {
     id: 'app.containers.Admin.Moderation.readMore',
     defaultMessage: '...see more',
@@ -95,10 +91,10 @@ export default defineMessages({
     id: 'app.containers.Admin.Moderation.goToThisContentType',
     defaultMessage: 'Open this {contentType} in a new tab',
   },
-  moderationHelpTooltip: {
-    id: 'app.containers.Admin.Moderation.moderationHelpTooltip',
+  moderationsTooltip: {
+    id: 'app.containers.Admin.Moderation.moderationsTooltip',
     defaultMessage:
-      'This page allows you to quickly check all new input that has been added to your platform, including posts and comments. You can mark posts as being ‘viewed’ so that others know which inputs still need to be processed.',
+      "This page allows you to quickly check all new input that has been added to your platform, including posts and comments. You can mark posts as being 'seen' so that others know which inputs still need to be processed.",
   },
   settings: {
     id: 'app.containers.Admin.Moderation.settings',

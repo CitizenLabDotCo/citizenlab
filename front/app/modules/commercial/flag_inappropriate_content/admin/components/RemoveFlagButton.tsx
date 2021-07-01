@@ -9,13 +9,13 @@ import messages from './messages';
 
 interface Props {
   processing: boolean;
-  onClick: () => void;
+  onRemoveFlags: () => void;
   selectedActiveFlagsCount: number;
 }
 
 const RemoveFlagButton = ({
   processing,
-  onClick,
+  onRemoveFlags,
   selectedActiveFlagsCount,
 }: Props) => {
   const locale = useLocale();
@@ -26,7 +26,7 @@ const RemoveFlagButton = ({
         icon="exclamation-trapezium-strikethrough"
         buttonStyle="cl-blue"
         processing={processing}
-        onClick={onClick}
+        onClick={onRemoveFlags}
         locale={locale}
       >
         <FormattedMessage

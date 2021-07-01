@@ -11,6 +11,17 @@ module FlagInappropriateContent
           def include_serialize_resources
             super + [:inappropriate_content_flag]
           end
+
+          def index_filter
+            super
+            if params.include? :is_flagged
+              @moderations = if ActiveModel::Type::Boolean.new.cast params[:is_flagged]
+                @moderations.where(inappropriate_content_flag: FlagInappropriateContent::InappropriateContentFlag.where('deleted_at IS NULL'))
+              else
+                @moderations.where.not(inappropriate_content_flag: FlagInappropriateContent::InappropriateContentFlag.where('deleted_at IS NULL'))
+              end
+            end 
+          end
         end
       end
     end

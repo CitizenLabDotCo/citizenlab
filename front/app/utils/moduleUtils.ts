@@ -334,10 +334,14 @@ export type OutletsPropertyMap = {
     isWarningsTabSelected: boolean;
     inappropriateContentFlagId: string | undefined;
   };
+  'app.modules.commercial.moderation.admin.components.EmptyMessage': {
+    isWarningsTabSelected: boolean;
+  };
   'app.modules.commercial.moderation.admin.containers.actionbar.buttons': {
     selectedActiveFlagsCount: number;
     processing: boolean;
-    onClick: () => void;
+    onRemoveFlags: () => void;
+    isWarningsTabSelected: boolean;
   };
   'app.modules.commercial.moderation.admin.containers.tabs': {
     onData: (data: InsertConfigurationOptions<ITabItem>) => void;
@@ -345,6 +349,10 @@ export type OutletsPropertyMap = {
   };
   'app.components.NotificationMenu.Notification': {
     notification: TNotificationData;
+  };
+  'app.containers.ProjectsShowPage.shared.header.ProjectHeader.GoBackButton': {
+    projectFolderId: string;
+    className?: string;
   };
 };
 

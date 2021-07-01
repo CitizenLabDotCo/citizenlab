@@ -38,4 +38,9 @@ export default defineMessages({
     defaultMessage:
       'Not inappropriate? Remove this designation in the Warnings tab.',
   },
+  noWarningItems: {
+    id:
+      'app.modules.commercial.flag_inappropriate_content.admin.components.noWarningItems',
+    defaultMessage: 'There are no items with content warning',
+  },
 });

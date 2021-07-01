@@ -11,7 +11,7 @@ describe GroupPolicy do
     let!(:group) { create(:group) }
 
     context 'for a project moderator' do
-      let(:user) { create(:moderator, project: project) }
+      let(:user) { create(:project_moderator, projects: [project]) }
 
       context 'of a public project' do
         let(:project) { create(:project) }

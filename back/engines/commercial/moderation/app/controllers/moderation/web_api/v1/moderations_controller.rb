@@ -9,10 +9,7 @@ module Moderation
         .includes(*include_load_resources)
         .order(created_at: :desc)
       
-      @moderations = @moderations.with_moderation_status(params[:moderation_status]) if params[:moderation_status].present?
-      @moderations = @moderations.where(moderatable_type: params[:moderatable_types]) if params[:moderatable_types].present?
-      @moderations = @moderations.where(project_id: params[:project_ids]) if params[:project_ids].present?
-      @moderations = @moderations.search_by_all(params[:search]) if params[:search].present?
+      index_filter
 
       @moderations = @moderations
         .page(params.dig(:page, :number))
@@ -61,6 +58,13 @@ module Moderation
 
     def include_serialize_resources
       []
+    end
+
+    def index_filter
+      @moderations = @moderations.with_moderation_status(params[:moderation_status]) if params[:moderation_status].present?
+      @moderations = @moderations.where(moderatable_type: params[:moderatable_types]) if params[:moderatable_types].present?
+      @moderations = @moderations.where(project_id: params[:project_ids]) if params[:project_ids].present?
+      @moderations = @moderations.search_by_all(params[:search]) if params[:search].present?
     end
   end
 end

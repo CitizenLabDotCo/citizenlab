@@ -21,7 +21,7 @@ describe IdeaCustomFields::IdeaCustomFieldPolicy do
   end
 
   context "for a moderator of the field's project" do
-    let(:user) { create(:moderator, project: project) }
+    let(:user) { create(:project_moderator, projects: [project]) }
 
       it { should     permit(:show)    }
       it { should     permit(:upsert_by_code)  }
@@ -32,7 +32,7 @@ describe IdeaCustomFields::IdeaCustomFieldPolicy do
   end
 
   context "for a moderator of another project" do
-    let(:user) { create(:moderator) }
+    let(:user) { create(:project_moderator) }
 
       it { should_not permit(:show)    }
       it { should_not permit(:upsert_by_code)  }

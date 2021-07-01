@@ -28,7 +28,7 @@ module IdeaAssignment
       def _clean_idea_assignments(lost_roles)
         return if (lost_roles.pluck('type') & %w[admin project_moderator]).empty?
 
-        moderatable_projects = ::ProjectPolicy::Scope.new(self, ::Project).moderatable
+        moderatable_projects = ::UserRoleService.new.moderatable_projects self
         assigned_ideas.where.not(project: moderatable_projects)
                       .update(assignee_id: nil, updated_at: DateTime.now)
 
