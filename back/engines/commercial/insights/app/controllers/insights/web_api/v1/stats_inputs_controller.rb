@@ -2,9 +2,8 @@ module Insights
   module WebApi::V1
     class StatsInputsController < ::ApplicationController
       def inputs_count
-        @result = Insights::InputsFinder.new(view, counts_params).execute
-
-        render json: { count: @result.count }
+        inputs = Insights::InputsFinder.new(view, counts_params, false).execute
+        render json: { count: inputs.count }
       end
 
       private

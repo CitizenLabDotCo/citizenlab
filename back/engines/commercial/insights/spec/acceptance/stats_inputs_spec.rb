@@ -8,8 +8,6 @@ resource "Stats - Inputs" do
 
   let(:view) { create(:view) }
   let(:view_id) { view.id }
-  let(:ideas) { create_list(:idea, 5, project: view.scope) }
-  let(:other_ideas) { create_list(:idea, 4) }
 
   let(:json_response) { json_parse(response_body) }
   let(:assignment_service) { Insights::CategoryAssignmentsService.new }
@@ -28,14 +26,16 @@ resource "Stats - Inputs" do
 
   get "web_api/v1/insights/views/:view_id/stats/inputs_count" do
     parameter :category, 'Filter by category', required: false
+    parameter :search, 'Filter by search', required: false
 
     context 'when admin' do
       before { admin_header_token }
+      let!(:ideas) { create_list(:idea, 3, project: view.scope) }
+      let!(:other_ideas) { create_list(:idea, 2) }
 
       example_request "Count all inputs" do
         expect(response_status).to eq 200
-        json_response = json_parse(response_body)
-        expect(json_response[:count]).to eq view.scope.ideas.count
+        expect(json_response[:count]).to eq ideas.length
       end
 
       context 'with categories filter' do
@@ -46,7 +46,6 @@ resource "Stats - Inputs" do
           do_request(category: category.id)
 
           expect(response_status).to eq 200
-          json_response = json_parse(response_body)
           expect(json_response[:count]).to eq 2
         end
 
@@ -54,8 +53,7 @@ resource "Stats - Inputs" do
           do_request(category: '')
 
           expect(response_status).to eq 200
-          json_response = json_parse(response_body)
-          expect(json_response[:count]).to eq 3
+          expect(json_response[:count]).to eq 1
         end
       end
 
