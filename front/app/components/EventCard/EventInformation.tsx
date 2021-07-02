@@ -46,6 +46,15 @@ const ProjectTitle = styled.div`
   margin: 0 0 5px 0;
 `;
 
+const ProjectTitleClickable = styled(T)`
+  text-decoration: underline;
+  cursor: pointer;
+
+  &:hover {
+    color: #000;
+  }
+`;
+
 const EventTitle = styled.h3`
   color: ${(props: any) => props.theme.colorText};
   font-size: ${fontSizes.xl}px;
@@ -189,7 +198,7 @@ const EventInformation = memo<Props & InjectedIntlProps>((props) => {
         <EventTitleAndMeta>
           {showProjectTitle && projectTitle && (
             <ProjectTitle>
-              <T value={projectTitle} />
+              <T value={projectTitle} as="a" />
             </ProjectTitle>
           )}
 

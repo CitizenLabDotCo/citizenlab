@@ -56,7 +56,7 @@ const EventCard = memo<Props>((props) => {
           startAtMoment={startAtMoment}
           endAtMoment={endAtMoment}
           isMultiDayEvent={isMultiDayEvent}
-          showProjectTitle={showProjectTitle}
+          showProjectTitle={true}
         />
       </Container>
     );
