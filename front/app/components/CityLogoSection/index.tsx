@@ -6,8 +6,7 @@ import Fragment from 'components/Fragment';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { getLocalized } from 'utils/i18n';
+import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // services
@@ -19,7 +18,6 @@ import {
 
 // style
 import styled from 'styled-components';
-import { fontSizes } from 'utils/styleUtils';
 
 // typings
 import { Locale } from 'typings';
@@ -44,21 +42,6 @@ const LogoLink = styled.a`
 const TenantLogo = styled.img`
   height: 50px;
   margin-bottom: 20px;
-`;
-
-const TenantSlogan = styled.div`
-  h2 {
-    font-size: ${fontSizes.xxl}px;
-    font-weight: 500;
-    line-height: normal;
-    overflow-wrap: break-word;
-    word-wrap: break-word;
-    word-break: break-word;
-  }
-  width: 100%;
-  max-width: 340px;
-  color: ${(props) => props.theme.colorText};
-  text-align: center;
 `;
 
 interface Props {}
@@ -102,31 +85,11 @@ class CityLogoSection extends PureComponent<Props & InjectedIntlProps, State> {
     const { formatMessage } = this.props.intl;
 
     if (locale && currentTenant) {
-      const currentTenantLocales =
-        currentTenant.data.attributes.settings.core.locales;
       const currentTenantLogo = currentTenant.data.attributes.logo
         ? currentTenant.data.attributes.logo.medium
         : false;
       const tenantSite =
         currentTenant.data.attributes.settings.core.organization_site;
-      const organizationNameMulitiLoc =
-        currentTenant.data.attributes.settings.core.organization_name;
-      const currentTenantName = getLocalized(
-        organizationNameMulitiLoc,
-        locale,
-        currentTenantLocales
-      );
-      const organizationType =
-        currentTenant.data.attributes.settings.core.organization_type;
-      const slogan = currentTenantName ? (
-        <FormattedMessage
-          tagName="h2"
-          {...messages.slogan}
-          values={{ name: currentTenantName, type: organizationType }}
-        />
-      ) : (
-        ''
-      );
       const footerLocale = `footer-city-logo-${locale}`;
 
       return (
@@ -144,8 +107,6 @@ class CityLogoSection extends PureComponent<Props & InjectedIntlProps, State> {
             {currentTenantLogo && !tenantSite && (
               <TenantLogo src={currentTenantLogo} alt="Organization logo" />
             )}
-
-            <TenantSlogan>{slogan}</TenantSlogan>
           </Container>
         </Fragment>
       );
@@ -155,4 +116,4 @@ class CityLogoSection extends PureComponent<Props & InjectedIntlProps, State> {
   }
 }
 
-export default injectIntl<Props>(CityLogoSection);
+export default injectIntl(CityLogoSection);
