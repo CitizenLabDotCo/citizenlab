@@ -22,7 +22,7 @@
   "app.components.Author.a11y_postedBy": "Inlagd av:",
   "app.components.AvatarBubbles.numberOfUsers": "{numberOfUsers} deltagare",
   "app.components.CityLogoSection.iframeTitle": "Mer information om {orgName}",
-  "app.components.CityLogoSection.slogan": "{tenantName, select, britainhomeoffice {Denna webbplats är ett initiativ som en del av {orgName}} other {Denna webbplats är ett initiativ från {orgName}}}",
+  "app.components.CityLogoSection.slogan": "{tenantName, select, britainhomeoffice {This website is an initiative as part of the {orgName}} other {This website is an initiative from {orgName}}}",
   "app.components.Comments.cancel": "Avbryt",
   "app.components.Comments.commentingDisabledInCurrentPhase": "Kommentarer är inte möjliga i den aktuella fasen.",
   "app.components.Comments.commentingDisabledInactiveProject": "Kommentarer är inte möjliga eftersom projektet för närvarande inte är aktivt.",
