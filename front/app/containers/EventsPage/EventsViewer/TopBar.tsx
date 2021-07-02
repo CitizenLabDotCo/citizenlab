@@ -32,13 +32,15 @@ const Title = styled.h1`
 
 const ProjectFilterDropdownPositioner = styled.div`
   margin-top: auto;
+  display: flex;
+  align-items: center;
 `;
 
 const FilterIcon = styled(Icon)`
-  transform: translate(0, -1.5px);
   width: 12px;
   height: 12px;
   fill: ${({ theme }) => theme.colorText};
+  margin-right: 3px;
 `;
 
 interface Props {
