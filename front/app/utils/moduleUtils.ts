@@ -531,44 +531,44 @@ export const insertConfiguration = <T extends { name: string }>({
   insertBeforeName,
   // if the inserted element contains data that's updated,
   // we can force the element to be reinserted
-  reinsertAfterPropOrStateChange,
+  reinsertAfterUpdate,
 }: InsertConfigurationOptions<T>) => (items: T[]): T[] => {
   const itemAlreadyInserted = items.some(
     (item) => item.name === configuration.name
   );
-  const foundIndex = items.findIndex(
+  // index of item where we need to insert before/after
+  const referenceIndex = items.findIndex(
     (item) => item.name === (insertAfterName || insertBeforeName)
   );
   const insertIndex = clamp(
-    insertAfterName ? foundIndex + 1 : foundIndex - 1,
+    // if number is outside of lower and upper, it picks
+    // the closes value. If it's inside the ranges, the
+    // number is kept
+    insertAfterName ? referenceIndex + 1 : referenceIndex - 1,
     0,
     items.length
   );
 
-  console.log(configuration.name);
-  console.log(insertIndex);
-  console.log([...items.slice(0, items.length - 2), configuration]);
-  if (reinsertAfterPropOrStateChange) {
-    return insertIndex >= 0
-      ? [
-          ...items.slice(0, insertBeforeName ? insertIndex - 1 : insertIndex),
-          configuration,
-          // here we're jumping over (not including)
-          // the already existing item which would be a duplicate
-          ...items.slice(insertIndex + 1),
-        ]
-      : [...items.slice(0, items.length - 2), configuration];
-  } else {
-    if (itemAlreadyInserted) {
-      return [...items];
-    } else {
-      return insertIndex >= 0
-        ? [
-            ...items.slice(0, insertIndex),
-            configuration,
-            ...items.slice(insertIndex),
-          ]
-        : [...items, configuration];
+  if (itemAlreadyInserted) {
+    if (reinsertAfterUpdate) {
+      // remove at insertIndex (which is where the item is currently at)
+      // insert again at insertIndex
+
+      items.splice(insertIndex, 1);
+
+      return [
+        ...items.slice(0, insertIndex),
+        configuration,
+        ...items.slice(insertIndex),
+      ];
     }
+
+    return [...items];
+  } else {
+    return [
+      ...items.slice(0, insertIndex),
+      configuration,
+      ...items.slice(insertIndex),
+    ];
   }
 };

@@ -35,7 +35,7 @@ const ActivityWarningsTab = ({
           ),
         },
         insertAfterName: 'read',
-        reinsertAfterPropOrStateChange: true,
+        reinsertAfterUpdate: true,
       }),
     [activeFlagsCount]
   );
