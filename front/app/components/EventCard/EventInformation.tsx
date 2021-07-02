@@ -84,25 +84,23 @@ interface IStyledT {
 // https://css-tricks.com/line-clampin/#the-fade-out-way
 const StyledT = styled(T)<IStyledT>`
   ${({ hideTextOverflow }) => {
-    if (hideTextOverflow) {
-      return `
-        overflow: hidden;
-        height: calc(${SMALL_LINE_HEIGHT}px * 4);
+    if (!hideTextOverflow) return '';
 
-        &:after {
-          content: "";
-          text-align: right;
-          position: absolute;
-          bottom: 0;
-          right: 0;
-          width: 100%;
-          height: ${SMALL_LINE_HEIGHT * 2}px;
-          background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1) 100%);
-        }
-      `;
-    }
+    return `
+      overflow: hidden;
+      height: calc(${SMALL_LINE_HEIGHT}px * 4);
 
-    return '';
+      &:after {
+        content: "";
+        text-align: right;
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        width: 100%;
+        height: ${SMALL_LINE_HEIGHT * 2}px;
+        background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1) 100%);
+      }
+    `;
   }}
 
   p {

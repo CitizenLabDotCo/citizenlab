@@ -118,63 +118,63 @@ interface Props {
   isMultiDayEvent: boolean;
 }
 
-export default memo<Props>((props) => {
-  const { startAtMoment, endAtMoment, isMultiDayEvent } = props;
+export default memo<Props>(
+  ({ startAtMoment, endAtMoment, isMultiDayEvent }) => {
+    const startAtDay = startAtMoment.format('DD');
+    const endAtDay = endAtMoment.format('DD');
+    const startAtMonth = startAtMoment.format('MMM');
+    const endAtMonth = endAtMoment.format('MMM');
+    const startAtYear = startAtMoment.format('YYYY');
+    const endAtYear = endAtMoment.format('YYYY');
 
-  const startAtDay = startAtMoment.format('DD');
-  const endAtDay = endAtMoment.format('DD');
-  const startAtMonth = startAtMoment.format('MMM');
-  const endAtMonth = endAtMoment.format('MMM');
-  const startAtYear = startAtMoment.format('YYYY');
-  const endAtYear = endAtMoment.format('YYYY');
+    const isMultiMonth = startAtMonth !== endAtMonth;
+    const isMultiYear = startAtYear !== endAtYear;
 
-  const isMultiMonth = startAtMonth !== endAtMonth;
-  const isMultiYear = startAtYear !== endAtYear;
-
-  return (
-    <EventDateBlocks>
-      <EventDateBlockWrapper className={isMultiYear ? 'first' : ''}>
-        {isMultiYear && (
-          <EventDateBlockLabel>
-            <FormattedMessage {...messages.startsAt} />
-          </EventDateBlockLabel>
-        )}
-        <EventDateBlock>
-          <EventDate>
-            <EventMonth>{startAtMonth}</EventMonth>
-            <EventDay>{startAtDay}</EventDay>
-            {isMultiDayEvent && !isMultiYear && (
-              <>
-                <Separator>-</Separator>
-                {isMultiMonth && <EventMonth>{endAtMonth}</EventMonth>}
-                <EventDay>{endAtDay}</EventDay>
-              </>
-            )}
-          </EventDate>
-          <EventYear>
-            <span>{startAtYear}</span>
-          </EventYear>
-        </EventDateBlock>
-      </EventDateBlockWrapper>
-
-      {isMultiDayEvent && isMultiYear && (
-        <EventDateBlockWrapper className={isMultiYear ? 'second' : ''}>
+    return (
+      <EventDateBlocks>
+        <EventDateBlockWrapper className={isMultiYear ? 'first' : ''}>
           {isMultiYear && (
             <EventDateBlockLabel>
-              <FormattedMessage {...messages.endsAt} />
+              <FormattedMessage {...messages.startsAt} />
             </EventDateBlockLabel>
           )}
           <EventDateBlock>
             <EventDate>
-              <EventMonth>{endAtMonth}</EventMonth>
-              <EventDay>{endAtDay}</EventDay>
+              <EventMonth>{startAtMonth}</EventMonth>
+              <EventDay>{startAtDay}</EventDay>
+              {isMultiDayEvent && !isMultiYear && (
+                <>
+                  <Separator>-</Separator>
+                  {isMultiMonth && <EventMonth>{endAtMonth}</EventMonth>}
+                  <EventDay>{endAtDay}</EventDay>
+                </>
+              )}
             </EventDate>
             <EventYear>
-              <span>{endAtYear}</span>
+              <span>{startAtYear}</span>
             </EventYear>
           </EventDateBlock>
         </EventDateBlockWrapper>
-      )}
-    </EventDateBlocks>
-  );
-});
+
+        {isMultiDayEvent && isMultiYear && (
+          <EventDateBlockWrapper className={isMultiYear ? 'second' : ''}>
+            {isMultiYear && (
+              <EventDateBlockLabel>
+                <FormattedMessage {...messages.endsAt} />
+              </EventDateBlockLabel>
+            )}
+            <EventDateBlock>
+              <EventDate>
+                <EventMonth>{endAtMonth}</EventMonth>
+                <EventDay>{endAtDay}</EventDay>
+              </EventDate>
+              <EventYear>
+                <span>{endAtYear}</span>
+              </EventYear>
+            </EventDateBlock>
+          </EventDateBlockWrapper>
+        )}
+      </EventDateBlocks>
+    );
+  }
+);

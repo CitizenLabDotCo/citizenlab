@@ -38,6 +38,15 @@ const createEvent = (description) => ({
   relationships: { project: { data: { id: '2' } } },
 });
 
+const eventWithShortDescription = createEvent('Short description');
+const eventWithLongDescription = createEvent(`
+  some
+  description
+  with
+  multiple
+  lines
+`);
+
 const defaultProps = {
   isMultiDayEvent: false,
   startAtMoment: moment('2021-07-01T09:13:00.145Z'),
@@ -46,19 +55,17 @@ const defaultProps = {
 
 describe('<EventInformation />', () => {
   it('renders', () => {
-    const event = createEvent('');
-
-    render(<EventInformation {...defaultProps} event={event} />);
+    render(
+      <EventInformation {...defaultProps} event={eventWithShortDescription} />
+    );
     expect(screen.getByTestId('EventInformation')).toBeInTheDocument();
   });
 
   it('shows project title if showProjectTitle={true}', () => {
-    const event = createEvent('');
-
     render(
       <EventInformation
         {...defaultProps}
-        event={event}
+        event={eventWithShortDescription}
         showProjectTitle={true}
       />
     );
@@ -68,18 +75,18 @@ describe('<EventInformation />', () => {
   });
 
   it('does not show project title if showProjectTitle={false}', () => {
-    const event = createEvent('');
-
-    render(<EventInformation {...defaultProps} event={event} />);
+    render(
+      <EventInformation {...defaultProps} event={eventWithShortDescription} />
+    );
     expect(
       screen.queryByText(mockProjectData.attributes.title_multiloc.en)
     ).not.toBeInTheDocument();
   });
 
   it('does not show "read more" button if description is short', async () => {
-    const event = createEvent('Short description');
-
-    render(<EventInformation {...defaultProps} event={event} />);
+    render(
+      <EventInformation {...defaultProps} event={eventWithShortDescription} />
+    );
 
     await waitForElementToBeRemoved(() =>
       screen.queryByTestId('ReadMoreButton')
@@ -88,28 +95,16 @@ describe('<EventInformation />', () => {
   });
 
   it('shows "read more" button if description is long', () => {
-    const event = createEvent(`
-      some
-      description
-      with
-      multiple
-      lines
-    `);
-
-    render(<EventInformation {...defaultProps} event={event} />);
+    render(
+      <EventInformation {...defaultProps} event={eventWithLongDescription} />
+    );
     expect(screen.getByTestId('ReadMoreButton')).toBeInTheDocument();
   });
 
-  it('correctly shows and hides text when "read more" and "read less" are clicked', async () => {
-    const event = createEvent(`
-      some
-      description
-      with
-      multiple
-      lines
-    `);
-
-    render(<EventInformation {...defaultProps} event={event} />);
+  it('correctly shows and hides text when "read more" and "read less" are clicked', () => {
+    render(
+      <EventInformation {...defaultProps} event={eventWithLongDescription} />
+    );
 
     const readMoreButton = screen.getByTestId('ReadMoreButton');
     expect(readMoreButton).toBeInTheDocument();
