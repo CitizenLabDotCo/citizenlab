@@ -24,20 +24,12 @@ module Insights
 
         # @return [Array<Idea>, nil]
         def inputs
-          @inputs ||= view.scope.ideas.find(input_ids) if input_ids.present?
-        end
-
-        def input_ids
-          params.get(:input_ids)
+          @inputs ||= view.scope.ideas.find(params[:inputs]) if params.key?(:inputs)
         end
 
         # @return [Array<Insights::Category>, nil]
         def categories
-          @categories ||= view.categories.find(category_ids) if category_ids.present?
-        end
-
-        def category_ids
-          params.get(:category_ids)
+          @categories ||= view.categories.find(params[:categories]) if params.key?(:categories)
         end
       end
     end
