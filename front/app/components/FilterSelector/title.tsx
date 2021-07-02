@@ -9,6 +9,7 @@ import { isPage } from 'utils/helperUtils';
 // style
 import styled from 'styled-components';
 import { fontSizes, colors, isRtl } from 'utils/styleUtils';
+import { darken } from 'polished';
 
 const Text = styled.span<{ textColor?: string }>`
   white-space: nowrap;
@@ -38,7 +39,7 @@ const DropdownIcon = styled(Icon)<{ textColor?: string }>`
   `}
 `;
 
-const Container = styled.button`
+const Container = styled.button<{ textColor?: string }>`
   height: 24px;
   cursor: pointer;
   display: flex;
@@ -67,12 +68,12 @@ const Container = styled.button`
   &:focus,
   &.opened {
     ${Text} {
-      color: #000;
+      color: ${({ textColor }) => darken(0.2, textColor ?? colors.text)};
       text-decoration: underline;
     }
 
     ${DropdownIcon} {
-      fill: #000;
+      fill: ${({ textColor }) => darken(0.2, textColor ?? colors.text)};
     }
   }
 `;
@@ -111,6 +112,7 @@ export default class Title extends PureComponent<Props, State> {
           opened ? 'opened' : ''
         } ${className} ${adminPage ? 'adminpage' : ''}`}
         aria-live="polite"
+        textColor={textColor}
       >
         <Text className="FilterSelectorTitleText" textColor={textColor}>
           {title}
