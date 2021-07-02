@@ -1,5 +1,10 @@
 # Changelog 
 
+## Release 2021-07-02
+
+### Fixed
+- Instances where the user name was "unknown author".
+
 ## Release 2021-06-30
 
 ### Changes
