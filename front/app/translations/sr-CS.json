@@ -22,7 +22,6 @@
   "app.components.Author.a11y_postedBy": "Autor objave:",
   "app.components.AvatarBubbles.numberOfUsers": "{numberOfUsers} učesnika",
   "app.components.CityLogoSection.iframeTitle": "Više informacija o {orgName}",
-  "app.components.CityLogoSection.slogan": "{tenantName, select, britainhomeoffice {This website is an initiative as part of the {orgName}} other {This website is an initiative from {orgName}}}",
   "app.components.Comments.cancel": "Prekid",
   "app.components.Comments.commentingDisabledInCurrentPhase": "Komentarisanje nije moguće u ovoj fazi.",
   "app.components.Comments.commentingDisabledInactiveProject": "Komentarisanje nije moguće jer projekat nije trenutno aktivan.",
