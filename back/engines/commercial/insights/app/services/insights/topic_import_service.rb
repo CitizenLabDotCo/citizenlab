@@ -4,9 +4,9 @@ module Insights
   class TopicImportService
     # Creates categories and assignments copying ideas_topics
     #
-    # @param <View> view
-    # @param <User> user
-    # @return [strign] The ids of the created assignments
+    # @param [Insights::View] view
+    # @param [User] current_user
+    # @return [Array<String>] The ids of the created assignments
     def copy_assignments(view, current_user)
       locale = current_user.locale
       topics(view).flat_map { |topic|
