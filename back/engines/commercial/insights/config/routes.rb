@@ -27,6 +27,10 @@ Insights::Engine.routes.draw do
           end
 
           nested do
+            scope '/tasks' do
+              resources :category_suggestions, controller: 'classification_tasks', only: %i[index create]
+            end
+
             scope '/batch' do
               post :assign_categories, controller: 'batch_assignments'
               post :remove_categories, controller: 'batch_assignments'
