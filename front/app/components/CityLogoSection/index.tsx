@@ -1,5 +1,5 @@
-import React, { PureComponent } from 'react';
-import { Subscription, combineLatest } from 'rxjs';
+import React, { memo } from 'react';
+import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import Fragment from 'components/Fragment';
@@ -9,18 +9,12 @@ import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
-// services
-import { localeStream } from 'services/locale';
-import {
-  currentAppConfigurationStream,
-  IAppConfiguration,
-} from 'services/appConfiguration';
+// hooks
+import useLocale from 'hooks/useLocale';
+import useAppConfiguration from 'hooks/useAppConfiguration';
 
 // style
 import styled from 'styled-components';
-
-// typings
-import { Locale } from 'typings';
 
 const Container = styled.div`
   display: flex;
@@ -46,50 +40,17 @@ const TenantLogo = styled.img`
 
 interface Props {}
 
-interface State {
-  locale: Locale | null;
-  currentTenant: IAppConfiguration | null;
-}
+const CityLogoSection = memo(
+  ({ intl: { formatMessage } }: Props & InjectedIntlProps) => {
+    const locale = useLocale();
+    const appConfiguration = useAppConfiguration();
 
-class CityLogoSection extends PureComponent<Props & InjectedIntlProps, State> {
-  subscriptions: Subscription[];
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      locale: null,
-      currentTenant: null,
-    };
-    this.subscriptions = [];
-  }
-
-  componentDidMount() {
-    const locale$ = localeStream().observable;
-    const currentTenant$ = currentAppConfigurationStream().observable;
-
-    this.subscriptions = [
-      combineLatest(locale$, currentTenant$).subscribe(
-        ([locale, currentTenant]) => {
-          this.setState({ locale, currentTenant });
-        }
-      ),
-    ];
-  }
-
-  componentWillUnmount() {
-    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
-  }
-
-  render() {
-    const { locale, currentTenant } = this.state;
-    const { formatMessage } = this.props.intl;
-
-    if (locale && currentTenant) {
-      const currentTenantLogo = currentTenant.data.attributes.logo
-        ? currentTenant.data.attributes.logo.medium
+    if (!isNilOrError(appConfiguration)) {
+      const currentTenantLogo = appConfiguration.data.attributes.logo
+        ? appConfiguration.data.attributes.logo.medium
         : false;
       const tenantSite =
-        currentTenant.data.attributes.settings.core.organization_site;
+        appConfiguration.data.attributes.settings.core.organization_site;
       const footerLocale = `footer-city-logo-${locale}`;
 
       return (
@@ -114,6 +75,6 @@ class CityLogoSection extends PureComponent<Props & InjectedIntlProps, State> {
 
     return null;
   }
-}
+);
 
 export default injectIntl(CityLogoSection);
