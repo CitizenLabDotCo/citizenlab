@@ -134,7 +134,7 @@ interface Props {
   startAtMoment: moment.Moment;
   endAtMoment: moment.Moment;
   isMultiDayEvent: boolean;
-  showProjectTitle: boolean;
+  showProjectTitle?: boolean;
 }
 
 const EventInformation = memo<Props & InjectedIntlProps>((props) => {
