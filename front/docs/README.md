@@ -1,8 +1,16 @@
 # Changelog 
 
+## Release 2021-07-02
+
+### Fixed
+- Instances where the user name was "unknown author"
+
+### Changed
+- Removed the slogan from the homepage footer
+
 ## Release 2021-06-30
 
-### Changes
+### Changed
 - Users can no longer leave registration before confirming their account. This should prevent bugs relative to unconfirmed users navigating the platform.
 
 ## Release 2021-06-29
