@@ -46,31 +46,30 @@ const CityLogoSection = memo(
     const appConfiguration = useAppConfiguration();
 
     if (!isNilOrError(appConfiguration)) {
-      const currentTenantLogo = appConfiguration.data.attributes.logo
-        ? appConfiguration.data.attributes.logo.medium
-        : false;
+      const currentTenantLogo =
+        appConfiguration.data.attributes.logo?.medium || null;
       const tenantSite =
         appConfiguration.data.attributes.settings.core.organization_site;
       const footerLocale = `footer-city-logo-${locale}`;
 
-      return (
-        <Fragment
-          title={formatMessage(messages.iframeTitle)}
-          name={footerLocale}
-        >
-          <Container id="hook-footer-logo">
-            {currentTenantLogo && tenantSite && (
-              <LogoLink href={tenantSite} target="_blank">
+      if (currentTenantLogo) {
+        return (
+          <Fragment
+            title={formatMessage(messages.iframeTitle)}
+            name={footerLocale}
+          >
+            <Container id="hook-footer-logo">
+              {tenantSite ? (
+                <LogoLink href={tenantSite} target="_blank">
+                  <TenantLogo src={currentTenantLogo} alt="Organization logo" />
+                </LogoLink>
+              ) : (
                 <TenantLogo src={currentTenantLogo} alt="Organization logo" />
-              </LogoLink>
-            )}
-
-            {currentTenantLogo && !tenantSite && (
-              <TenantLogo src={currentTenantLogo} alt="Organization logo" />
-            )}
-          </Container>
-        </Fragment>
-      );
+              )}
+            </Container>
+          </Fragment>
+        );
+      }
     }
 
     return null;
