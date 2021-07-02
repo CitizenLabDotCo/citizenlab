@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { withRouter, WithRouterProps } from 'react-router';
 import { stringify } from 'qs';
 
@@ -113,9 +113,8 @@ const InputsTable = ({
   // State
   const [selectedRows, setSelectedRows] = useState<Set<string>>(new Set());
   const [isSideModalOpen, setIsSideModalOpen] = useState(false);
-  const [previewedInputIndex, setPreviewedInputIndex] = useState<number | null>(
-    null
-  );
+  const [, setPreviewedInputIndex] = useState<number | null>(null);
+  const isPreviewedInputInTable = useRef(true);
 
   // Data fetching -------------------------------------------------------------
   const pageNumber = parseInt(query?.pageNumber, 10);
@@ -136,61 +135,70 @@ const InputsTable = ({
     setSelectedRows(new Set());
   }, [selectedCategory, pageNumber]);
 
-  // Reset input index when input no longer appears in table
+  // Set ref value for isPreviewedInputInTable
+  // We use ref to avoid rerendering the component when the value changes
   useEffect(() => {
     if (!isNilOrError(inputs)) {
       const inputsIds = inputs.map((input) => input.id);
-      if (isSideModalOpen && !inputsIds.includes(query.previewedInputId)) {
-        setPreviewedInputIndex(null);
-      }
+      if (inputsIds.includes(query.previewedInputId)) {
+        isPreviewedInputInTable.current = true;
+      } else isPreviewedInputInTable.current = false;
     }
-  }, [inputs, isSideModalOpen, query.previewedInputId]);
+  }, [inputs, query.previewedInputId]);
 
   // Side Modal Preview
   // Use callback to keep references for moveUp and moveDown stable
   const moveUp = useCallback(() => {
-    let index: number | null = null;
-    setPreviewedInputIndex((prevSelectedIndex) => {
-      index = prevSelectedIndex;
-      if (!isNilOrError(prevSelectedIndex)) {
-        return prevSelectedIndex - 1;
-      } else return prevSelectedIndex;
-    });
+    if (!isNilOrError(inputs)) {
+      let index: number | null = null;
 
-    if (!isNilOrError(index) && !isNilOrError(inputs)) {
-      clHistory.replace({
-        pathname,
-        search: stringify(
-          {
-            ...query,
-            previewedInputId: inputs[index - 1].id,
-          },
-          { addQueryPrefix: true }
-        ),
+      setPreviewedInputIndex((prevSelectedIndex) => {
+        index = !isNilOrError(prevSelectedIndex)
+          ? prevSelectedIndex - 1
+          : prevSelectedIndex;
+
+        return index;
       });
+
+      if (!isNilOrError(index)) {
+        clHistory.replace({
+          pathname,
+          search: stringify(
+            {
+              ...query,
+              previewedInputId: inputs[index].id,
+            },
+            { addQueryPrefix: true }
+          ),
+        });
+      }
     }
   }, [inputs]);
 
   const moveDown = useCallback(() => {
-    let index: number | null = null;
-    setPreviewedInputIndex((prevSelectedIndex) => {
-      index = prevSelectedIndex;
-      if (!isNilOrError(prevSelectedIndex)) {
-        return prevSelectedIndex + 1;
-      } else return prevSelectedIndex;
-    });
+    if (!isNilOrError(inputs)) {
+      let index: number | null = null;
 
-    if (!isNilOrError(index) && !isNilOrError(inputs)) {
-      clHistory.replace({
-        pathname,
-        search: stringify(
-          {
-            ...query,
-            previewedInputId: inputs[index + 1].id,
-          },
-          { addQueryPrefix: true }
-        ),
+      setPreviewedInputIndex((prevSelectedIndex) => {
+        index =
+          !isNilOrError(prevSelectedIndex) && isPreviewedInputInTable.current
+            ? prevSelectedIndex + 1
+            : prevSelectedIndex;
+
+        return index;
       });
+      if (!isNilOrError(index)) {
+        clHistory.replace({
+          pathname,
+          search: stringify(
+            {
+              ...query,
+              previewedInputId: inputs[index].id,
+            },
+            { addQueryPrefix: true }
+          ),
+        });
+      }
     }
   }, [inputs]);
 
@@ -367,13 +375,8 @@ const InputsTable = ({
           previewedInputId={query.previewedInputId}
           moveUp={moveUp}
           moveDown={moveDown}
-          isMoveUpDisabled={
-            isNilOrError(previewedInputIndex) || previewedInputIndex === 0
-          }
-          isMoveDownDisabled={
-            isNilOrError(previewedInputIndex) ||
-            previewedInputIndex === inputs.length - 1
-          }
+          isMoveUpDisabled={false}
+          isMoveDownDisabled={false}
         />
       </SideModal>
     </Inputs>
