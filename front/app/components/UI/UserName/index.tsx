@@ -7,14 +7,16 @@ import { darken } from 'polished';
 import { colors, fontSizes } from 'utils/styleUtils';
 import styled from 'styled-components';
 
-// resources
+// hooks
 import useUser from 'hooks/useUser';
+
+// services
+import { IUserData } from 'services/users';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
-import { IUserData } from 'services/users';
 
 const Name = styled.span<{
   color?: string;

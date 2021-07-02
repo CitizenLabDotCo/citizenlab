@@ -98,7 +98,7 @@ const TimeAgo = styled.div`
 
 export interface Props {
   authorId: string | null;
-  createdAt?: string | undefined;
+  createdAt?: string;
   size: number;
   isLinkToProfile?: boolean;
   projectId?: string | null;
