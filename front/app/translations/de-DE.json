@@ -22,7 +22,6 @@
   "app.components.Author.a11y_postedBy": "Gepostet von:",
   "app.components.AvatarBubbles.numberOfUsers": "{numberOfUsers} Benutzer",
   "app.components.CityLogoSection.iframeTitle": "Weitere Informationen zu {orgName}",
-  "app.components.CityLogoSection.slogan": "{tenantName, select, Wunsiedel {Diese Webseite ist eine Initiative des Landkreises Wunsiedel i. Fichtelgebirge} other {Diese Webseite ist eine Initiative der {orgName}}}",
   "app.components.Comments.cancel": "Abbrechen",
   "app.components.Comments.commentingDisabledInCurrentPhase": "In der gegenwärtigen Phase können keine Kommentare abgegeben werden.",
   "app.components.Comments.commentingDisabledInactiveProject": "Da dieses Projekt derzeit nicht aktiv ist, ist es nicht möglich, Kommentare abzugeben.",
