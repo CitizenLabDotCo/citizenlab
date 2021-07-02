@@ -40,7 +40,9 @@ export async function removeInappropriateContentFlag(flagId: string) {
     {}
   );
 
-  await streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/moderations`] });
+  await streams.fetchAllWith({
+    apiEndpoint: [apiEndpoint, `${API_PATH}/moderations`],
+  });
 
   return response;
 }
