@@ -1,4 +1,10 @@
-import React, { useState, useCallback, useEffect, useRef } from 'react';
+import React, {
+  useState,
+  useCallback,
+  useEffect,
+  useRef,
+  useMemo,
+} from 'react';
 import { withRouter, WithRouterProps } from 'react-router';
 import { stringify } from 'qs';
 
@@ -113,8 +119,11 @@ const InputsTable = ({
   // State
   const [selectedRows, setSelectedRows] = useState<Set<string>>(new Set());
   const [isSideModalOpen, setIsSideModalOpen] = useState(false);
-  const [, setPreviewedInputIndex] = useState<number | null>(null);
+  const [previewedInputIndex, setPreviewedInputIndex] = useState<number | null>(
+    null
+  );
   const isPreviewedInputInTable = useRef(true);
+  const [isMoveDownDisabled, setIsMoveDownDisabled] = useState(false);
 
   // Data fetching -------------------------------------------------------------
   const pageNumber = parseInt(query?.pageNumber, 10);
@@ -140,9 +149,15 @@ const InputsTable = ({
   useEffect(() => {
     if (!isNilOrError(inputs)) {
       const inputsIds = inputs.map((input) => input.id);
-      if (inputsIds.includes(query.previewedInputId)) {
-        isPreviewedInputInTable.current = true;
-      } else isPreviewedInputInTable.current = false;
+      const isInTable = inputsIds.includes(query.previewedInputId);
+
+      isPreviewedInputInTable.current = isInTable;
+
+      setIsMoveDownDisabled(
+        isInTable
+          ? previewedInputIndex === inputs.length - 1
+          : previewedInputIndex === inputs.length
+      );
     }
   }, [inputs, query.previewedInputId]);
 
@@ -187,6 +202,7 @@ const InputsTable = ({
 
         return index;
       });
+
       if (!isNilOrError(index)) {
         clHistory.replace({
           pathname,
@@ -278,6 +294,10 @@ const InputsTable = ({
     });
   };
 
+  const inputInTable = inputs
+    .map((input) => input.id)
+    .includes(query.previewedInputId);
+
   return (
     <Inputs data-testid="insightsInputsTable">
       <SearchContainer>
@@ -368,15 +388,14 @@ const InputsTable = ({
           />
         </>
       )}
-
       <SideModal opened={isSideModalOpen} close={closeSideModal}>
         <InputDetails
           // Rely on url query for previewedInputId
           previewedInputId={query.previewedInputId}
           moveUp={moveUp}
           moveDown={moveDown}
-          isMoveUpDisabled={false}
-          isMoveDownDisabled={false}
+          isMoveUpDisabled={previewedInputIndex === 0}
+          isMoveDownDisabled={isMoveDownDisabled}
         />
       </SideModal>
     </Inputs>
