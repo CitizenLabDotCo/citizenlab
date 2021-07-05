@@ -1,16 +1,11 @@
 import React from 'react';
 
-// i18n
-import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
-import messages from './messages';
-
 // components
-import ContentContainer from 'components/ContentContainer';
+import EventsPageMeta from './EventsPageMeta';
 import SectionContainer from 'components/SectionContainer';
-import { Helmet } from 'react-helmet';
-import UpcomingEventsViewer from './UpcomingEventsViewer';
-import PastEventsViewer from './PastEventsViewer';
+import ContentContainer from 'components/ContentContainer';
+import UpcomingEvents from './UpcomingEvents';
+import PastEvents from './PastEvents';
 
 // styling
 import styled from 'styled-components';
@@ -21,7 +16,7 @@ const StyledContentContainer = styled(ContentContainer)`
   margin-right: auto;
 `;
 
-export default injectIntl<InjectedIntlProps>(({ intl }) => {
+export default () => {
   const upcomingEvents = Array(15)
     .fill(0)
     .map((_, i) => i + 1);
@@ -30,16 +25,14 @@ export default injectIntl<InjectedIntlProps>(({ intl }) => {
 
   return (
     <>
-      <Helmet>
-        <title>{intl.formatMessage(messages.eventsPageTitle)}</title>
-      </Helmet>
+      <EventsPageMeta />
 
       <SectionContainer>
         <StyledContentContainer>
-          <UpcomingEventsViewer upcomingEvents={upcomingEvents} />
-          <PastEventsViewer pastEvents={pastEvents} />
+          <UpcomingEvents upcomingEvents={upcomingEvents} />
+          <PastEvents pastEvents={pastEvents} />
         </StyledContentContainer>
       </SectionContainer>
     </>
   );
-});
+};

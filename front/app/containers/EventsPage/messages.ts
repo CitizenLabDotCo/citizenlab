@@ -5,6 +5,11 @@ export default defineMessages({
     id: 'app.containers.eventspage.eventsPageTitle',
     defaultMessage: 'Events',
   },
+  eventsPageDescription: {
+    id: 'app.containers.eventspage.eventsPageDescription',
+    defaultMessage:
+      'Show all events posted on the participation platform of {orgName}.',
+  },
   upcomingEvents: {
     id: 'app.containers.eventspage.upcomingEvents',
     defaultMessage: 'Upcoming events',
@@ -20,5 +25,9 @@ export default defineMessages({
   noPastEvents: {
     id: 'app.containers.eventspage.noPastEvents',
     defaultMessage: 'There are no past events',
+  },
+  filterDropdownTitle: {
+    id: 'app.containers.eventspage.filterDropdownTitle',
+    defaultMessage: 'Projects',
   },
 });

@@ -1,5 +1,10 @@
 import React, { memo } from 'react';
 
+// i18n
+import { injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
+import messages from '../messages';
+
 // components
 import ProjectFilterDropdown from 'components/ProjectFilterDropdown';
 import { Icon } from 'cl2-component-library';
@@ -47,7 +52,7 @@ interface Props {
   title: string;
 }
 
-const TopBar = memo<Props>(({ title }) => {
+const TopBar = memo<Props & InjectedIntlProps>(({ title, intl }) => {
   const theme: any = useTheme();
 
   return (
@@ -57,7 +62,7 @@ const TopBar = memo<Props>(({ title }) => {
       <ProjectFilterDropdownPositioner>
         <FilterIcon name="filter-funnel" />
         <ProjectFilterDropdown
-          title="Projects"
+          title={intl.formatMessage(messages.filterDropdownTitle)}
           onChange={console.log}
           textColor={theme.colorText}
         />
@@ -66,4 +71,4 @@ const TopBar = memo<Props>(({ title }) => {
   );
 });
 
-export default TopBar;
+export default injectIntl(TopBar);
