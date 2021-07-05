@@ -56,7 +56,7 @@ jest.mock('react-router', () => {
         return <Component {...props} params={{ viewId }} />;
       };
     },
-    Link: (props) => <a href={props.to}>{props.children}</a>,
+    Link: (props) => <a href={props.to.pathname}>{props.children}</a>,
   };
 });
 
@@ -74,11 +74,15 @@ describe('Insights Top Bar', () => {
   it('renders Project button with correct slug', () => {
     render(<TopBar />);
     expect(screen.getByTestId('insightsProjectButton')).toBeInTheDocument();
+    expect(screen.getByRole('link')).toHaveAttribute(
+      'href',
+      '/en/projects/test'
+    );
   });
   it('deletes view on menu item click', () => {
     render(<TopBar />);
     const spy = jest.spyOn(service, 'deleteInsightsView');
-    fireEvent.click(screen.getAllByRole('button')[1]);
+    fireEvent.click(screen.getByRole('button'));
     fireEvent.click(screen.getByText('Delete'));
     expect(spy).toHaveBeenCalledWith(mockViewData.id);
   });

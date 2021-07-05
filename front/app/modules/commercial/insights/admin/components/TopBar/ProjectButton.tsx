@@ -8,7 +8,6 @@ import styled from 'styled-components';
 import { Icon } from 'cl2-component-library';
 import Button from 'components/UI/Button';
 import T from 'components/T';
-import Link from 'utils/cl-router/Link';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -41,18 +40,18 @@ const ProjectButton = ({ projectId }: ProjectButtonProps) => {
 
   return (
     <div data-testid="insightsProjectButton">
-      <Link to={`/projects/${project.attributes.slug}`} target="_blank">
-        <Button
-          buttonStyle="secondary-outlined"
-          fontSize={`${fontSizes.small}px`}
-          padding="4px 6px"
-        >
-          <ProjectButtonContent>
-            <T value={project.attributes.title_multiloc} />
-            <Icon name="link" className="linkIcon" />
-          </ProjectButtonContent>
-        </Button>
-      </Link>
+      <Button
+        buttonStyle="secondary-outlined"
+        fontSize={`${fontSizes.small}px`}
+        padding="4px 6px"
+        openInNewTab
+        linkTo={`/projects/${project.attributes.slug}`}
+      >
+        <ProjectButtonContent>
+          <T value={project.attributes.title_multiloc} />
+          <Icon name="link" className="linkIcon" />
+        </ProjectButtonContent>
+      </Button>
     </div>
   );
 };
