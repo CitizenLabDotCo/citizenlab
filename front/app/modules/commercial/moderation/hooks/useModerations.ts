@@ -11,10 +11,10 @@ import { getPageNumberFromUrl } from 'utils/paginationUtils';
 interface InputProps {
   pageNumber?: number;
   pageSize?: number;
-  moderationStatus: TModerationStatus | null;
-  moderatableTypes: TModeratableTypes[];
-  projectIds: string[];
-  searchTerm: string;
+  moderationStatus?: TModerationStatus;
+  moderatableTypes?: TModeratableTypes[];
+  projectIds?: string[];
+  searchTerm?: string;
   isFlagged?: boolean;
 }
 
@@ -31,10 +31,10 @@ export default function useModerations(props: InputProps) {
   const [currentPage, setCurrentPage] = useState(1);
   const [lastPage, setLastPage] = useState(1);
   const [moderatableTypes, setModeratableTypes] = useState(
-    props.moderatableTypes
+    props.moderatableTypes || []
   );
-  const [projectIds, setProjectIds] = useState(props.projectIds);
-  const [searchTerm, setSearchTerm] = useState(props.searchTerm);
+  const [projectIds, setProjectIds] = useState(props.projectIds || []);
+  const [searchTerm, setSearchTerm] = useState(props.searchTerm || '');
   const [isFlagged, setIsFlagged] = useState(props.isFlagged || false);
 
   const onPageNumberChange = useCallback((newPageNumber: number) => {
@@ -85,7 +85,9 @@ export default function useModerations(props: InputProps) {
   }, [props.pageSize]);
 
   useEffect(() => {
-    setModerationStatus(props.moderationStatus);
+    if (props.moderationStatus) {
+      setModerationStatus(props.moderationStatus);
+    }
   }, [props.moderationStatus]);
 
   useEffect(() => {
