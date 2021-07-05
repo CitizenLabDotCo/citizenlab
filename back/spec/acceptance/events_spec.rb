@@ -17,7 +17,7 @@ resource "Events" do
       parameter :number, "Page number"
       parameter :size, "Number of events per page"
     end
-    
+
     let(:project_id) { @project.id }
 
     example_request "List all events of a project" do
@@ -51,6 +51,7 @@ resource "Events" do
         parameter :location_multiloc, "The location of the event. Textual", required: false
         parameter :start_at, "The start datetime of the event", required: true
         parameter :end_at, "The end datetime of the event", required: true
+        parameter :location_point_geojson, "A GeoJSON point that situates the event"
       end
       ValidationErrorHelper.new.error_fields(self, Event)
       response_field :start_at, "Array containing objects with signature {error: 'after_end_at'}", scope: :errors
@@ -98,6 +99,7 @@ resource "Events" do
         parameter :location_multiloc, "The location of the event. Textual"
         parameter :start_at, "The start datetime of the event"
         parameter :end_at, "The end datetime of the event"
+        parameter :location_point_geojson, "A GeoJSON point that situates the event"
       end
       ValidationErrorHelper.new.error_fields(self, Event)
 
