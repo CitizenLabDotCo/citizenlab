@@ -64,7 +64,7 @@ resource 'Initiatives' do
     describe do
       let(:topic_ids) { [create(:topic).id] }
 
-      example 'No toxicity detection job is enqueued when updating initiative attributes without text', document: falsedo
+      example 'No toxicity detection job is enqueued when updating initiative attributes without text', document: false do
         expect {
           do_request
         }.not_to have_enqueued_job(ToxicityDetectionJob)
