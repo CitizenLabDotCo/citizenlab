@@ -486,7 +486,7 @@ describe('Insights Input Table', () => {
         screen.getByTestId('insightsInputsTableEmptyState')
       ).toBeInTheDocument();
       expect(
-        screen.getByText("This project doesn't seem to contain any input.")
+        screen.getByTestId('insightsInputsTableEmptyAllInputs')
       ).toBeInTheDocument();
     });
     it('renders correct table empty state when are no input for category', () => {
@@ -501,7 +501,7 @@ describe('Insights Input Table', () => {
         screen.getByTestId('insightsInputsTableEmptyState')
       ).toBeInTheDocument();
       expect(
-        screen.getByText('You have no input assigned to this category yet')
+        screen.getByTestId('insightsInputsTableEmptyNoInputInCategory')
       ).toBeInTheDocument();
     });
     it('renders correct table empty state when there is no uncategorized input', () => {
@@ -513,7 +513,7 @@ describe('Insights Input Table', () => {
         screen.getByTestId('insightsInputsTableEmptyState')
       ).toBeInTheDocument();
       expect(
-        screen.getByText('There is no input without a category')
+        screen.getByTestId('insightsInputsTableEmptyNotCategorized')
       ).toBeInTheDocument();
     });
 
@@ -528,7 +528,9 @@ describe('Insights Input Table', () => {
       expect(
         screen.getByTestId('insightsInputsTableEmptyState')
       ).toBeInTheDocument();
-      expect(screen.getByText('No results found')).toBeInTheDocument();
+      expect(
+        screen.getByTestId('insightsInputsTableEmptyNoResults')
+      ).toBeInTheDocument();
     });
   });
 
