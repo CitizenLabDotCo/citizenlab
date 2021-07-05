@@ -1,10 +1,4 @@
-import React, {
-  useState,
-  useCallback,
-  useEffect,
-  useRef,
-  useMemo,
-} from 'react';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { withRouter, WithRouterProps } from 'react-router';
 import { stringify } from 'qs';
 
@@ -122,8 +116,10 @@ const InputsTable = ({
   const [previewedInputIndex, setPreviewedInputIndex] = useState<number | null>(
     null
   );
+  // Use ref for isPreviewedInputInTable to avoid dependencies in moveUp and moveDown
   const isPreviewedInputInTable = useRef(true);
   const [isMoveDownDisabled, setIsMoveDownDisabled] = useState(false);
+  const [movedUpDown, setMovedUpDown] = useState(false);
 
   // Data fetching -------------------------------------------------------------
   const pageNumber = parseInt(query?.pageNumber, 10);
@@ -144,8 +140,7 @@ const InputsTable = ({
     setSelectedRows(new Set());
   }, [selectedCategory, pageNumber]);
 
-  // Set ref value for isPreviewedInputInTable
-  // We use ref to avoid rerendering the component when the value changes
+  // Update isPreviewedInputInTable ref value
   useEffect(() => {
     if (!isNilOrError(inputs)) {
       const inputsIds = inputs.map((input) => input.id);
@@ -161,62 +156,56 @@ const InputsTable = ({
     }
   }, [inputs, query.previewedInputId]);
 
+  // Navigate to correct index when moving up and down
+  useEffect(() => {
+    if (
+      !isNilOrError(inputs) &&
+      !isNilOrError(previewedInputIndex) &&
+      movedUpDown
+    ) {
+      clHistory.replace({
+        pathname,
+        search: stringify(
+          {
+            ...query,
+            previewedInputId: inputs[previewedInputIndex].id,
+          },
+          { addQueryPrefix: true }
+        ),
+      });
+      setMovedUpDown(false);
+    }
+  }, [inputs, previewedInputIndex, query, movedUpDown]);
+
   // Side Modal Preview
   // Use callback to keep references for moveUp and moveDown stable
   const moveUp = useCallback(() => {
-    if (!isNilOrError(inputs)) {
-      let index: number | null = null;
+    let index: number | null = null;
 
-      setPreviewedInputIndex((prevSelectedIndex) => {
-        index = !isNilOrError(prevSelectedIndex)
-          ? prevSelectedIndex - 1
-          : prevSelectedIndex;
+    setPreviewedInputIndex((prevSelectedIndex) => {
+      index = !isNilOrError(prevSelectedIndex)
+        ? prevSelectedIndex - 1
+        : prevSelectedIndex;
 
-        return index;
-      });
-
-      if (!isNilOrError(index)) {
-        clHistory.replace({
-          pathname,
-          search: stringify(
-            {
-              ...query,
-              previewedInputId: inputs[index].id,
-            },
-            { addQueryPrefix: true }
-          ),
-        });
-      }
-    }
-  }, [inputs]);
+      return index;
+    });
+    setMovedUpDown(true);
+  }, []);
 
   const moveDown = useCallback(() => {
-    if (!isNilOrError(inputs)) {
-      let index: number | null = null;
+    let index: number | null = null;
 
-      setPreviewedInputIndex((prevSelectedIndex) => {
-        index =
-          !isNilOrError(prevSelectedIndex) && isPreviewedInputInTable.current
-            ? prevSelectedIndex + 1
-            : prevSelectedIndex;
+    setPreviewedInputIndex((prevSelectedIndex) => {
+      index =
+        !isNilOrError(prevSelectedIndex) && isPreviewedInputInTable.current
+          ? prevSelectedIndex + 1
+          : prevSelectedIndex;
 
-        return index;
-      });
+      return index;
+    });
 
-      if (!isNilOrError(index)) {
-        clHistory.replace({
-          pathname,
-          search: stringify(
-            {
-              ...query,
-              previewedInputId: inputs[index].id,
-            },
-            { addQueryPrefix: true }
-          ),
-        });
-      }
-    }
-  }, [inputs]);
+    setMovedUpDown(true);
+  }, []);
 
   // Search
   const onSearch = useCallback((search: string) => {
@@ -293,10 +282,6 @@ const InputsTable = ({
       ),
     });
   };
-
-  const inputInTable = inputs
-    .map((input) => input.id)
-    .includes(query.previewedInputId);
 
   return (
     <Inputs data-testid="insightsInputsTable">
