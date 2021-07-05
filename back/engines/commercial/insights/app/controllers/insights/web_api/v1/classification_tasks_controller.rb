@@ -3,7 +3,18 @@
 module Insights
   module WebApi
     module V1
-      class ClassificationTasksController
+      class ClassificationTasksController < ::ApplicationController
+        skip_after_action :verify_policy_scoped, only: [:index]
+        after_action :verify_authorized, only: [:index]
+
+        def index
+          tasks = ZeroshotClassificationTasksFinder.new(
+            categories || view.categories, # use all the categories if the query parameter was not provided
+            inputs: inputs
+          ).execute
+          render json: ZeroshotClassificationTaskSerializer.new(tasks, params: fastjson_params), status: :ok
+        end
+
         def create
           Insights::CreateClassificationTasksJob.perform_later(
             inputs: inputs,
@@ -12,6 +23,20 @@ module Insights
           )
 
           head :accepted
+        end
+
+        def destroy_all
+          tasks = ZeroshotClassificationTasksFinder.new(view.categories).execute.destroy_all
+          status = tasks.map(&:destroyed?).all? ? :ok : :internal_server_error
+          render status: status
+        end
+
+        def destroy
+          # We find the task via the finder to make sure it's associated with the right view.
+          # [TODO] Actually, nothing prevents a task from being associated to categories from several views.
+          task = ZeroshotClassificationTasksFinder.new(view.categories).execute.find(params[:id])
+          status = task.destroy.destroyed? ? :ok : 500
+          head status
         end
 
         # @return [Insights::View]

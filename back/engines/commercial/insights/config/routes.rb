@@ -28,7 +28,9 @@ Insights::Engine.routes.draw do
 
           nested do
             scope '/tasks' do
-              resources :category_suggestions, controller: 'classification_tasks', only: %i[index create]
+              resources :category_suggestions, controller: 'classification_tasks', only: %i[index create destroy] do
+                delete :index, on: :collection, action: :destroy_all
+              end
             end
 
             scope '/batch' do
