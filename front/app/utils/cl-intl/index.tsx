@@ -11,4 +11,6 @@ type IMessageInfo = {
   values?: OriginalFormattedMessage.Props['values'];
 };
 
-export { FormattedMessage, injectIntl, IMessageInfo };
+type MessageDescriptor = OriginalFormattedMessage.MessageDescriptor;
+
+export { FormattedMessage, injectIntl, IMessageInfo, MessageDescriptor };

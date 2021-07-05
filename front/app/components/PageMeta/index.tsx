@@ -4,8 +4,8 @@ import { Helmet } from 'react-helmet';
 import { adopt } from 'react-adopt';
 
 // i18n
-import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps, FormattedMessage } from 'react-intl';
+import { injectIntl, MessageDescriptor } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
 
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
@@ -18,8 +18,8 @@ import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
 import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
 
 interface InputProps {
-  titleMessage: FormattedMessage.MessageDescriptor;
-  descriptionMessage: FormattedMessage.MessageDescriptor;
+  titleMessage: MessageDescriptor;
+  descriptionMessage: MessageDescriptor;
 }
 
 interface DataProps {
