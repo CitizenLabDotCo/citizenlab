@@ -4,6 +4,7 @@ import { Locale } from 'typings';
 
 export default function setPhaseUrl(
   selectedPhaseId: string,
+  currentPhaseId: string | undefined,
   phases: IPhaseData[],
   project: IProjectData,
   locale: Locale
@@ -12,6 +13,11 @@ export default function setPhaseUrl(
     phases.findIndex((phase) => selectedPhaseId === phase.id) + 1;
   const projectSlug = project.attributes.slug;
 
-  const url = `/${locale}/projects/${projectSlug}/${phaseNumber}`;
+  const projectURL = `/${locale}/projects/${projectSlug}`;
+  const url =
+    selectedPhaseId === currentPhaseId
+      ? projectURL
+      : `${projectURL}/${phaseNumber}`;
+
   window.history.pushState(null, '', url);
 }

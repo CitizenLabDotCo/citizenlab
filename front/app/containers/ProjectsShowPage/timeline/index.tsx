@@ -19,7 +19,11 @@ import {
 } from 'containers/ProjectsShowPage/styles';
 
 // services
-import { IPhaseData, getLatestRelevantPhase } from 'services/phases';
+import {
+  IPhaseData,
+  getLatestRelevantPhase,
+  getCurrentPhase,
+} from 'services/phases';
 
 // events
 import { selectedPhase$, selectPhase } from './events';
@@ -95,6 +99,7 @@ const ProjectTimelineContainer = memo<Props & WithRouterProps>(
     const windowSize = useWindowSize();
 
     const [selectedPhase, setSelectedPhase] = useState<IPhaseData | null>(null);
+    const currentPhase = getCurrentPhase(phases);
 
     useEffect(() => {
       const subscription = selectedPhase$.subscribe((selectedPhase) => {
@@ -114,7 +119,13 @@ const ProjectTimelineContainer = memo<Props & WithRouterProps>(
         project &&
         !isNilOrError(locale)
       ) {
-        setPhaseURL(selectedPhase.id, phases, project, locale);
+        setPhaseURL(
+          selectedPhase.id,
+          currentPhase?.id,
+          phases,
+          project,
+          locale
+        );
       }
     }, [selectedPhase]);
 
