@@ -65,7 +65,7 @@ module UserConfirmation
       end
 
       def email_confirmation_code_expiration_at
-        email_confirmation_code_sent_at + 1.day
+        email_confirmation_code_sent_at && email_confirmation_code_sent_at + 1.day
       end
 
       def reset_confirmation_code!

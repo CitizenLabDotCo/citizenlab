@@ -18,7 +18,7 @@ module UserConfirmation
     end
 
     def validate_code_expiration
-      return unless user.email_confirmation_code_expiration_at < Time.zone.now
+      return unless user.email_confirmation_code_expiration_at && user.email_confirmation_code_expiration_at < Time.zone.now
 
       fail_with_error! :code, :expired
     end
