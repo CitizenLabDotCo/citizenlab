@@ -5,23 +5,21 @@ import { withRouter, WithRouterProps } from 'react-router';
 import { isNilOrError } from 'utils/helperUtils';
 
 // services
-import {
-  addInsightsInputCategory,
-  IInsightsInputData,
-} from 'modules/commercial/insights/services/insightsInputs';
+import { addInsightsInputCategory } from 'modules/commercial/insights/services/insightsInputs';
 import { addInsightsCategory } from 'modules/commercial/insights/services/insightsCategories';
 
 // components
 import Category from 'modules/commercial/insights/admin/components/Category';
 import Idea from './Idea';
-import { Button, Label, Spinner } from 'cl2-component-library';
+import { Label, Spinner } from 'cl2-component-library';
+import Button from 'components/UI/Button';
 import Creatable from 'react-select/creatable';
 import selectStyles from 'components/UI/MultipleSelect/styles';
 import Navigation, { NavigationProps } from './Navigation';
 
 // hooks
-import useLocale from 'hooks/useLocale';
 import useInsightsCategories from 'modules/commercial/insights/hooks/useInsightsCategories';
+import useInsightsInput from 'modules/commercial/insights/hooks/useInsightsInput';
 
 // styles
 import styled from 'styled-components';
@@ -33,7 +31,7 @@ import { InjectedIntlProps } from 'react-intl';
 import messages from '../../messages';
 
 type InputDetailsProps = {
-  selectedInput: IInsightsInputData;
+  previewedInputId: string;
 } & NavigationProps &
   WithRouterProps &
   InjectedIntlProps;
@@ -71,6 +69,14 @@ const StyledPlus = styled.div`
   text-align: center;
 `;
 
+const LoadingContainer = styled.div`
+  display: flex;
+  width: 100%;
+  height: 100%;
+  justify-context: center;
+  align-items: center;
+`;
+
 type OptionProps = {
   label: string;
   value: string;
@@ -79,31 +85,39 @@ type OptionProps = {
 const InputDetails = ({
   params: { viewId },
   intl: { formatMessage },
-  selectedInput,
+  previewedInputId,
   moveUp,
   moveDown,
   isMoveUpDisabled,
   isMoveDownDisabled,
 }: InputDetailsProps) => {
-  const locale = useLocale();
-
   const [selectedOption, setSelectedOption] = useState<null | OptionProps>();
   const [isSelectFocused, setIsSelectFocused] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const categories = useInsightsCategories(viewId);
+  const previewedInput = useInsightsInput(viewId, previewedInputId);
 
-  if (isNilOrError(categories) || isNilOrError(locale)) {
+  // Loading state
+  if (previewedInput === undefined) {
+    return (
+      <LoadingContainer data-testid="insightsEditDetailsLoading">
+        <Spinner />
+      </LoadingContainer>
+    );
+  }
+
+  if (isNilOrError(categories) || isNilOrError(previewedInput)) {
     return null;
   }
 
-  const ideaId = selectedInput.relationships?.source.data.id;
+  const ideaId = previewedInput.relationships?.source.data.id;
 
   const options = categories
     // Filter out already selected categories
     .filter((category) => {
-      const selectedCategoriesIds = selectedInput.relationships?.categories
-        ? selectedInput.relationships?.categories.data.map(
+      const selectedCategoriesIds = previewedInput.relationships?.categories
+        ? previewedInput.relationships?.categories.data.map(
             (category) => category.id
           )
         : [];
@@ -123,7 +137,7 @@ const InputDetails = ({
     setLoading(true);
     try {
       const result = await addInsightsCategory(viewId, value);
-      await addInsightsInputCategory(viewId, selectedInput.id, result.data.id);
+      await addInsightsInputCategory(viewId, previewedInput.id, result.data.id);
       setSelectedOption(null);
     } catch {
       // Do nothing
@@ -137,7 +151,7 @@ const InputDetails = ({
       if (selectedOption) {
         await addInsightsInputCategory(
           viewId,
-          selectedInput.id,
+          previewedInput.id,
           selectedOption.value
         );
         setSelectedOption(null);
@@ -179,7 +193,6 @@ const InputDetails = ({
             />
           </div>
           <Button
-            locale={locale}
             fontSize={`${fontSizes.xxxl}px`}
             bgColor={colors.adminTextColor}
             className="addButton"
@@ -192,11 +205,11 @@ const InputDetails = ({
           </Button>
         </FormContainer>
         <CategoryList>
-          {selectedInput.relationships?.categories.data.map((category) => (
+          {previewedInput.relationships?.categories.data.map((category) => (
             <Category
               id={category.id}
               key={category.id}
-              inputId={selectedInput.id}
+              inputId={previewedInput.id}
             />
           ))}
         </CategoryList>
