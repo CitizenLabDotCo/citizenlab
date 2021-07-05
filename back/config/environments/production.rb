@@ -55,7 +55,7 @@ Rails.application.configure do
   config.cache_store = :mem_cache_store,
     ENV.fetch('MEMCACHED_HOST'),
     {
-      namespace: lambda do 
+      namespace: lambda do
         AppConfiguration.instance.id
       rescue ActiveRecord::RecordNotFound
         'public'
@@ -81,4 +81,15 @@ Rails.application.configure do
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
 
+
+  config.after_initialize do
+    Bullet.enable = true
+    Bullet.rails_logger = true
+    Bullet.bullet_logger = false
+    Bullet.sentry = true
+    # Bullet.raise = true # for testing
+
+    # Bullet.stacktrace_includes = [ 'your_gem', 'your_middleware' ]
+    # Bullet.stacktrace_excludes = [ 'their_gem', 'their_middleware', ['my_file.rb', 'my_method'], ['my_file.rb', 16..20] ]
+  end
 end
