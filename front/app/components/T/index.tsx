@@ -17,6 +17,7 @@ type Props = {
   supportHtml?: boolean;
   graphql?: boolean;
   onClick?: Function;
+  wrapInDiv?: boolean;
 };
 
 type State = {
@@ -24,6 +25,8 @@ type State = {
   currentTenantLocales: Locale[] | null;
   innerRef: any;
 };
+
+const wrapTextInDiv = (text: string) => `<div>${text}</div>`;
 
 export default class T extends React.PureComponent<Props, State> {
   subscriptions: Subscription[];
@@ -71,6 +74,7 @@ export default class T extends React.PureComponent<Props, State> {
         className,
         supportHtml,
         onClick,
+        wrapInDiv,
       } = this.props;
       const localizedText = getLocalized(
         value,
@@ -88,14 +92,16 @@ export default class T extends React.PureComponent<Props, State> {
           className,
           onClick,
           ref: this.state.innerRef,
-          dangerouslySetInnerHTML: { __html: localizedText },
+          dangerouslySetInnerHTML: {
+            __html: wrapInDiv ? wrapTextInDiv(localizedText) : localizedText,
+          },
         });
       } else {
         return createElement(as || 'span', {
           className,
           onClick,
           ref: this.state.innerRef,
-          children: localizedText,
+          children: wrapInDiv ? wrapTextInDiv(localizedText) : localizedText,
         });
       }
     }

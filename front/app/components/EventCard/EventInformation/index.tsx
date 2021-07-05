@@ -22,7 +22,7 @@ import messages from '../messages';
 
 // styling
 import styled, { useTheme } from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
+import { colors, fontSizes, media } from 'utils/styleUtils';
 
 // other
 import checkTextOverflow from './checkTextOverflow';
@@ -37,7 +37,7 @@ const EventInformationContainer = styled.div`
   margin-top: 4px;
 `;
 
-const EventTitleAndMeta = styled.div`
+const EventTitleAndAttributes = styled.div`
   margin-bottom: 18px;
 `;
 
@@ -64,23 +64,37 @@ const EventTitle = styled.h3`
   margin: 0 0 13px 0;
 `;
 
-const EventMetaContainer = styled.div`
+const EventTimeAndLocationContainer = styled.div`
   display: flex;
   flex-direction: row;
+
+  ${media.smallerThanMinTablet`
+    flex-direction: column;
+  `}
 `;
 
-const EventMeta = styled.div<{ first?: boolean }>`
+const TimeOrLocation = styled.div<{ first?: boolean }>`
   color: ${(props: any) => props.theme.colorText};
   font-size: ${fontSizes.xs}px;
   margin-left: ${({ first }) => (first ? 0 : 23)}px;
+
+  ${media.smallerThanMinTablet`
+    margin-left: 0px;
+    margin-bottom: ${({ first }) => (first ? 5 : 0)}px;
+  `}
 `;
 
-const StyledIcon = styled(Icon)`
+interface StyledIconProps {
+  width: number;
+  height: number;
+}
+
+const StyledIcon = styled(Icon)<StyledIconProps>`
   flex: 0 0 24px;
-  width: ${fontSizes.base}px;
-  height: ${fontSizes.base}px;
   fill: ${colors.label};
   margin-right: 6px;
+  width: ${({ width }) => width}px;
+  height: ${({ height }) => height}px;
 `;
 
 const EventDescription = styled.div``;
@@ -123,11 +137,8 @@ const StyledT = styled(T)<IStyledT>`
   display: block;
 `;
 
-const ReadMoreOrLessWrapper = styled.div`
+const ReadMoreOrLessButton = styled.button`
   margin-top: 18px;
-`;
-
-const ReadMoreOrLess = styled.a`
   color: ${colors.label};
   cursor: pointer;
   font-weight: 600;
@@ -181,8 +192,7 @@ const EventInformation = memo<Props & InjectedIntlProps>((props) => {
   const [textOverflow, setTextOverflow] = useState(true);
   const [hideTextOverflow, setHideTextOverflow] = useState(true);
 
-  const showHiddenText = () => setHideTextOverflow(false);
-  const hideText = () => setHideTextOverflow(true);
+  const toggleHiddenText = () => setHideTextOverflow(!hideTextOverflow);
 
   useEffect(() => {
     if (textOverflow === false) return;
@@ -190,7 +200,7 @@ const EventInformation = memo<Props & InjectedIntlProps>((props) => {
     setTextOverflow(true);
 
     setTimeout(() => {
-      setTextOverflow(checkTextOverflow(TElement));
+      setTextOverflow(!!checkTextOverflow(TElement));
     }, 0);
   }, [TElement]);
 
@@ -200,69 +210,65 @@ const EventInformation = memo<Props & InjectedIntlProps>((props) => {
   };
 
   return (
-    <>
-      <EventInformationContainer data-testid="EventInformation">
-        <EventTitleAndMeta>
-          {showProjectTitle && projectTitle && (
-            <ProjectTitle>
-              <ProjectTitleLink
-                value={projectTitle}
-                onClick={goToProjectPage}
-              />
-            </ProjectTitle>
-          )}
-
-          <EventTitle>
-            <T value={event.attributes.title_multiloc} />
-          </EventTitle>
-
-          <EventMetaContainer>
-            <EventMeta first={true}>
-              <StyledIcon name="clock" />
-              {eventDateTime}
-            </EventMeta>
-
-            {hasLocation && (
-              <EventMeta>
-                <StyledIcon name="mapmarker" />
-                <T value={event.attributes.location_multiloc} />
-              </EventMeta>
-            )}
-          </EventMetaContainer>
-        </EventTitleAndMeta>
-
-        <EventDescription>
-          <QuillEditedContent textColor={theme.colorText}>
-            <StyledT
-              value={event.attributes.description_multiloc}
-              supportHtml={true}
-              ref={TElement}
-              hideTextOverflow={hideTextOverflow && textOverflow}
-            />
-          </QuillEditedContent>
-
-          {textOverflow && hideTextOverflow && (
-            <ReadMoreOrLessWrapper data-testid="ReadMoreButton">
-              <ReadMoreOrLess onClick={showHiddenText}>
-                {intl.formatMessage(messages.readMore)}
-              </ReadMoreOrLess>
-            </ReadMoreOrLessWrapper>
-          )}
-
-          {!hideTextOverflow && (
-            <ReadMoreOrLessWrapper data-testid="ReadLessButton">
-              <ReadMoreOrLess onClick={hideText}>
-                {intl.formatMessage(messages.readLess)}
-              </ReadMoreOrLess>
-            </ReadMoreOrLessWrapper>
-          )}
-        </EventDescription>
-
-        {!isNilOrError(eventFiles) && eventFiles.length > 0 && (
-          <FileAttachments files={eventFiles} />
+    <EventInformationContainer data-testid="EventInformation">
+      <EventTitleAndAttributes>
+        {showProjectTitle && projectTitle && (
+          <ProjectTitle>
+            <ProjectTitleLink value={projectTitle} onClick={goToProjectPage} />
+          </ProjectTitle>
         )}
-      </EventInformationContainer>
-    </>
+
+        <EventTitle>
+          <T value={event.attributes.title_multiloc} />
+        </EventTitle>
+
+        <EventTimeAndLocationContainer>
+          <TimeOrLocation first={true}>
+            <StyledIcon
+              name="clock-solid"
+              width={fontSizes.medium}
+              height={fontSizes.medium}
+            />
+            {eventDateTime}
+          </TimeOrLocation>
+
+          {hasLocation && (
+            <TimeOrLocation>
+              <StyledIcon
+                name="mapmarker"
+                width={fontSizes.medium}
+                height={fontSizes.medium}
+              />
+              <T value={event.attributes.location_multiloc} />
+            </TimeOrLocation>
+          )}
+        </EventTimeAndLocationContainer>
+      </EventTitleAndAttributes>
+
+      <EventDescription>
+        <QuillEditedContent textColor={theme.colorText}>
+          <StyledT
+            value={event.attributes.description_multiloc}
+            supportHtml={true}
+            ref={TElement}
+            wrapInDiv={true}
+            hideTextOverflow={hideTextOverflow && textOverflow}
+          />
+        </QuillEditedContent>
+
+        {((textOverflow && hideTextOverflow) || !hideTextOverflow) && (
+          <ReadMoreOrLessButton onClick={toggleHiddenText}>
+            {intl.formatMessage(
+              hideTextOverflow ? messages.readMore : messages.readLess
+            )}
+          </ReadMoreOrLessButton>
+        )}
+      </EventDescription>
+
+      {!isNilOrError(eventFiles) && eventFiles.length > 0 && (
+        <FileAttachments files={eventFiles} />
+      )}
+    </EventInformationContainer>
   );
 });
 

@@ -1,19 +1,15 @@
 import styled from 'styled-components';
-import { colors, media } from 'utils/styleUtils';
+import { colors, media, fontSizes } from 'utils/styleUtils';
 
 export const EventDateBlockWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: stretch;
-
-  &.second {
-    margin-top: 14px;
-  }
 `;
 
 export const EventDateBlockLabel = styled.div`
   color: ${colors.label};
-  font-size: 12px;
+  font-size: ${fontSizes.xs}px;
   line-height: normal;
   font-weight: 600;
   text-transform: uppercase;
@@ -46,7 +42,7 @@ export const EventDate = styled.div`
 
 export const EventMonth = styled.div`
   color: ${(props: any) => props.theme.colorText};
-  font-size: 14px;
+  font-size: ${fontSizes.small}px;
   line-height: normal;
   font-weight: 500;
   text-transform: uppercase;
@@ -54,18 +50,18 @@ export const EventMonth = styled.div`
 
 export const EventDay = styled.div`
   color: ${(props: any) => props.theme.colorText};
-  font-size: 17px;
+  font-size: ${fontSizes.medium}px;
   line-height: normal;
   font-weight: 400;
 
   ${media.smallerThanMinTablet`
-    font-size: 16px;
+    font-size: ${fontSizes.base}px;
   `}
 `;
 
 export const EventYear = styled.div`
   color: #fff;
-  font-size: 16px;
+  font-size: ${fontSizes.base}px;
   line-height: normal;
   font-weight: 400;
   display: flex;
@@ -78,15 +74,6 @@ export const EventYear = styled.div`
   background: ${({ theme }) => theme.colorMain};
 
   ${media.smallerThanMinTablet`
-    font-size: 14px;
-  `}
-`;
-
-export const Separator = styled.div`
-  height: 18px;
-
-  ${media.smallerThanMinTablet`
-    width: 15px;
-    height: auto;
+    font-size: ${fontSizes.small}px;
   `}
 `;

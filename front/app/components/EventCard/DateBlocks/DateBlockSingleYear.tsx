@@ -7,7 +7,6 @@ import {
   EventMonth,
   EventDay,
   EventYear,
-  Separator,
 } from './styling';
 
 interface Props {
@@ -38,8 +37,7 @@ export default memo<Props>((props) => {
         <EventDay>{startAtDay}</EventDay>
         {isMultiDayEvent && (
           <>
-            <Separator>-</Separator>
-            {isMultiMonthEvent && <EventMonth>{endAtMonth}</EventMonth>}
+            -{isMultiMonthEvent && <EventMonth>{endAtMonth}</EventMonth>}
             <EventDay>{endAtDay}</EventDay>
           </>
         )}

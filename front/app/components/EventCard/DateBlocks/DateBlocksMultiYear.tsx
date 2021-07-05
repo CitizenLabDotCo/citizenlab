@@ -11,8 +11,8 @@ import messages from '../messages';
 // styling
 import styled from 'styled-components';
 
-const SecondDateBlockWrapper = styled.div`
-  margin-top: 17px;
+const FirstDateBlockWrapper = styled.div`
+  margin-bottom: 17px;
 `;
 
 interface Props {
@@ -36,27 +36,27 @@ export default memo<Props>((props) => {
 
   return (
     <EventDateBlockWrapper>
-      <EventDateBlockLabel>
-        <FormattedMessage {...messages.startsAt} />
-      </EventDateBlockLabel>
-
-      <DateBlockSingleYear
-        startAtDay={startAtDay}
-        startAtMonth={startAtMonth}
-        startAtYear={startAtYear}
-      />
-
-      <SecondDateBlockWrapper>
+      <FirstDateBlockWrapper>
         <EventDateBlockLabel>
-          <FormattedMessage {...messages.endsAt} />
+          <FormattedMessage {...messages.startsAt} />
         </EventDateBlockLabel>
 
         <DateBlockSingleYear
-          startAtDay={endAtDay}
-          startAtMonth={endAtMonth}
-          startAtYear={endAtYear}
+          startAtDay={startAtDay}
+          startAtMonth={startAtMonth}
+          startAtYear={startAtYear}
         />
-      </SecondDateBlockWrapper>
+      </FirstDateBlockWrapper>
+
+      <EventDateBlockLabel>
+        <FormattedMessage {...messages.endsAt} />
+      </EventDateBlockLabel>
+
+      <DateBlockSingleYear
+        startAtDay={endAtDay}
+        startAtMonth={endAtMonth}
+        startAtYear={endAtYear}
+      />
     </EventDateBlockWrapper>
   );
 });

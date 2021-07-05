@@ -109,17 +109,15 @@ describe('<EventInformation />', () => {
       <EventInformation {...defaultProps} event={eventWithShortDescription} />
     );
 
-    await waitForElementToBeRemoved(() =>
-      screen.queryByTestId('ReadMoreButton')
-    );
-    expect(screen.queryByTestId('ReadMoreButton')).not.toBeInTheDocument();
+    await waitForElementToBeRemoved(() => screen.queryByText('Read more'));
+    expect(screen.queryByText('Read more')).not.toBeInTheDocument();
   });
 
   it('shows "read more" button if description is long', () => {
     render(
       <EventInformation {...defaultProps} event={eventWithLongDescription} />
     );
-    expect(screen.getByTestId('ReadMoreButton')).toBeInTheDocument();
+    expect(screen.getByText('Read more')).toBeInTheDocument();
   });
 
   it('correctly shows and hides text when "read more" and "read less" are clicked', () => {
@@ -127,21 +125,17 @@ describe('<EventInformation />', () => {
       <EventInformation {...defaultProps} event={eventWithLongDescription} />
     );
 
-    const readMoreButton = screen.getByTestId('ReadMoreButton');
+    const readMoreButton = screen.getByText('Read more');
     expect(readMoreButton).toBeInTheDocument();
 
-    const readMoreAnchor = readMoreButton.querySelector('a');
-    fireEvent.click(readMoreAnchor);
+    fireEvent.click(readMoreButton);
+    expect(screen.queryByText('Read more')).not.toBeInTheDocument();
 
-    expect(screen.queryByTestId('ReadMoreButton')).not.toBeInTheDocument();
-
-    const readLessButton = screen.getByTestId('ReadLessButton');
+    const readLessButton = screen.getByText('Read less');
     expect(readLessButton).toBeInTheDocument();
 
-    const readLessAnchor = readLessButton.querySelector('a');
-    fireEvent.click(readLessAnchor);
-
-    expect(screen.queryByTestId('ReadLessButton')).not.toBeInTheDocument();
-    expect(screen.getByTestId('ReadMoreButton')).toBeInTheDocument();
+    fireEvent.click(readLessButton);
+    expect(screen.queryByText('Read less')).not.toBeInTheDocument();
+    expect(screen.getByText('Read more')).toBeInTheDocument();
   });
 });
