@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { withRouter, WithRouterProps } from 'react-router';
 
 // utils
@@ -91,6 +91,9 @@ const InputDetails = ({
   isMoveUpDisabled,
   isMoveDownDisabled,
 }: InputDetailsProps) => {
+  const selectRef = useRef<Creatable<{ label: string; value: string }, false>>(
+    null
+  );
   const [selectedOption, setSelectedOption] = useState<null | OptionProps>();
   const [isSelectFocused, setIsSelectFocused] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -145,8 +148,15 @@ const InputDetails = ({
     setLoading(false);
   };
 
+  const handleEnterPress = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      handleSubmit();
+    }
+  };
+
   const handleSubmit = async () => {
     setLoading(true);
+
     try {
       if (selectedOption) {
         await addInsightsInputCategory(
@@ -155,6 +165,7 @@ const InputDetails = ({
           selectedOption.value
         );
         setSelectedOption(null);
+        selectRef.current?.blur();
       }
     } catch {
       // Do nothing
@@ -186,10 +197,11 @@ const InputDetails = ({
               onCreateOption={handleCreate}
               onChange={handleChange}
               value={selectedOption}
-              blurInputOnSelect
               formatCreateLabel={formatCreateLabel}
               onFocus={onSelectFocus}
               onBlur={onSelectBlur}
+              onKeyDown={handleEnterPress}
+              ref={selectRef}
             />
           </div>
           <Button

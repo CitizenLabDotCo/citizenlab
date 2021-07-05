@@ -47,7 +47,7 @@ jest.mock('hooks/useProject', () => {
   return jest.fn(() => mockProjectData);
 });
 
-jest.mock('hooks/useLocale', () => jest.fn(() => 'en'));
+jest.mock('hooks/useLocale');
 
 jest.mock('react-router', () => {
   return {
