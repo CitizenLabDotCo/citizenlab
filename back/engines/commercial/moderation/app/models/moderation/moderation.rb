@@ -4,7 +4,6 @@ module Moderation
     self.primary_key = 'id'
 
     has_one :moderation_status, foreign_key: :moderatable_id, foreign_type: :moderatable_type
-    has_one :inappropriate_content_flag, foreign_key: :flaggable_id, foreign_type: :flaggable_type, class_name: 'FlagInappropriateContent::InappropriateContentFlag' # TODO patch
 
     pg_search_scope :search_by_all, 
         :against => [:content_title_multiloc, :content_body_multiloc],
@@ -54,3 +53,5 @@ module Moderation
     
   end
 end
+
+Moderation::Moderation.include_if_ee 'FlagInappropriateContent::Extensions::Moderation'
