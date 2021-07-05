@@ -4,6 +4,7 @@ module UserConfirmation
 
     def call
       validate_user
+      validate_code_sent
       validate_code_expiration
       validate_code_value
       validate_retry_count
@@ -17,8 +18,14 @@ module UserConfirmation
       fail_with_error! :user, :blank
     end
 
+    def validate_code_sent
+      return if user.email_confirmation_code_sent_at
+
+      fail_with_error! :code, :not_sent
+    end
+
     def validate_code_expiration
-      return unless user.email_confirmation_code_expiration_at && user.email_confirmation_code_expiration_at < Time.zone.now
+      return if user.email_confirmation_code_expiration_at >= Time.zone.now
 
       fail_with_error! :code, :expired
     end

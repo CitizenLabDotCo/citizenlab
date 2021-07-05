@@ -52,6 +52,11 @@ export default defineMessages({
     id: 'app.errors.confirmation_code_expired',
     defaultMessage: 'Code expired. Please resend a new code.',
   },
+  confirmation_code_not_sent: {
+    id: 'app.errors.confirmation_code_not_sent',
+    defaultMessage:
+      'Code was not properly sent to you. Please resend a new code.',
+  },
   confirmation_code_too_many_retries: {
     id: 'app.errors.confirmation_code_too_many_retries',
     defaultMessage:
