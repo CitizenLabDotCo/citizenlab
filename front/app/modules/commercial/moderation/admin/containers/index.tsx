@@ -210,41 +210,17 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
     },
   ];
 
-  const {
-    list,
-    pageSize,
-    moderationStatus,
-    currentPage,
-    lastPage,
-    onModerationStatusChange,
-    onPageNumberChange,
-    onPageSizeChange,
-    onModeratableTypesChange,
-    onProjectIdsChange,
-    onSearchTermChange,
-    onIsFlaggedChange,
-  } = useModerations({
-    pageSize: pageSizes[1].value,
-    moderationStatus: 'unread',
-    moderatableTypes: [],
-    projectIds: [],
-    searchTerm: '',
-  });
-  const moderationsWithActiveFlag = useModerations({
-    moderationStatus: null,
-    isFlagged: true,
-    moderatableTypes: [],
-    projectIds: [],
-    searchTerm: '',
-  });
-
-  const [moderations, setModerations] = useState(list);
   const [selectedModerations, setSelectedModerations] = useState<
     IModerationData[]
   >([]);
   const [processing, setProcessing] = useState(false);
   const [selectedTypes, setSelectedTypes] = useState<TModeratableTypes[]>([]);
   const [selectedProjectIds, setSelectedProjectIds] = useState<string[]>([]);
+  const [selectedPageNumber, setSelectedPageNumber] = useState<number>(1);
+  const [selectedPageSize, setSelectedPageSize] = useState<number>(
+    pageSizes[1].value
+  );
+  const [searchTerm, setSearchTerm] = useState<string>('');
   const [selectedTab, setSelectedTab] = useState<TActivityTabName>('unread');
   const [actionBarErrorMessage, setActionBarErrorMessage] = useState<
     string | null
@@ -260,83 +236,104 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
     },
   ]);
 
-  const handleOnSelectAll = useCallback(
-    (_event: React.ChangeEvent) => {
-      if (!processing) {
-        if (!isNilOrError(moderations)) {
-          setSelectedModerations(
-            selectedModerations.length < moderations.length ? moderations : []
-          );
-        }
+  const {
+    list: moderations,
+    pageSize,
+    moderationStatus,
+    currentPage,
+    lastPage,
+    onModerationStatusChange,
+    onPageNumberChange,
+    onPageSizeChange,
+    onModeratableTypesChange,
+    onProjectIdsChange,
+    onSearchTermChange,
+    onIsFlaggedChange,
+  } = useModerations({
+    pageSize: selectedPageSize,
+    moderationStatus: 'unread',
+  });
+  const moderationsWithActiveFlag = useModerations({
+    isFlagged: true,
+  });
+
+  const handleOnSelectAll = (_event: React.ChangeEvent) => {
+    if (!processing) {
+      if (!isNilOrError(moderations)) {
+        setSelectedModerations(
+          selectedModerations.length < moderations.length ? moderations : []
+        );
       }
-    },
-    [moderations, selectedModerations, processing]
-  );
+    }
+  };
 
-  const handleOnTabChange = useCallback(
-    (tabName: TActivityTabName) => {
-      setSelectedTab(tabName);
+  const handleOnTabChange = (tabName: TActivityTabName) => {
+    setSelectedTab(tabName);
+    trackEventByName(tracks.tabClicked, {
+      tabName,
+    });
+  };
 
-      if (tabName === 'read' || tabName === 'unread') {
-        onIsFlaggedChange(false);
-        onModerationStatusChange(tabName);
-      }
+  useEffect(() => {
+    if (selectedTab === 'read' || selectedTab === 'unread') {
+      onIsFlaggedChange(false);
+      onModerationStatusChange(selectedTab);
+    }
 
-      // OS: how to?
-      if (tabName === 'warnings') {
-        onIsFlaggedChange(true);
-        onModerationStatusChange(null);
-      }
+    // OS: how to?
+    if (selectedTab === 'warnings') {
+      onIsFlaggedChange(true);
+      onModerationStatusChange(null);
+    }
+  }, [selectedTab]);
 
-      trackEventByName(tracks.tabClicked, {
-        tabName,
-      });
-    },
-    [onModerationStatusChange]
-  );
+  const handePageNumberChange = (pageNumber: number) => {
+    trackEventByName(tracks.pageNumberClicked);
+    setSelectedPageNumber(pageNumber);
+  };
 
-  const handePageNumberChange = useCallback(
-    (pageNumber: number) => {
-      trackEventByName(tracks.pageNumberClicked);
-      onPageNumberChange(pageNumber);
-    },
-    [onPageNumberChange]
-  );
+  useEffect(() => {
+    onPageNumberChange(selectedPageNumber);
+  }, [selectedPageNumber]);
 
-  const handleOnPageSizeChange = useCallback(
-    (option: IOption) => {
-      onPageSizeChange(option.value);
-    },
-    [onPageSizeChange]
-  );
+  const handleOnPageSizeChange = (option: IOption) => {
+    setSelectedPageSize(option.value);
+  };
 
-  const handleModeratableTypesChange = useCallback(
-    (newSelectedTypes: TModeratableTypes[]) => {
-      setSelectedTypes(newSelectedTypes);
-      onModeratableTypesChange(newSelectedTypes);
-      trackEventByName(tracks.typeFilterUsed);
-    },
-    [onModeratableTypesChange]
-  );
+  useEffect(() => {
+    onPageSizeChange(selectedPageSize);
+  }, [selectedPageSize]);
 
-  const handleProjectIdsChange = useCallback(
-    (newProjectIds: string[]) => {
-      setSelectedProjectIds(newProjectIds);
-      onProjectIdsChange(newProjectIds);
-      trackEventByName(tracks.projectFilterUsed);
-    },
-    [onModeratableTypesChange]
-  );
+  const handleModeratableTypesChange = (
+    newSelectedTypes: TModeratableTypes[]
+  ) => {
+    setSelectedTypes(newSelectedTypes);
+    trackEventByName(tracks.typeFilterUsed);
+  };
 
-  const handleSearchTermChange = useCallback(
-    (searchTerm: string) => {
-      onSearchTermChange(searchTerm);
-      trackEventByName(tracks.searchUsed, {
-        searchTerm,
-      });
-    },
-    [onSearchTermChange]
-  );
+  useEffect(() => {
+    onModeratableTypesChange(selectedTypes);
+  }, [selectedTypes]);
+
+  const handleProjectIdsChange = (newProjectIds: string[]) => {
+    setSelectedProjectIds(newProjectIds);
+    trackEventByName(tracks.projectFilterUsed);
+  };
+
+  useEffect(() => {
+    onProjectIdsChange(selectedProjectIds);
+  }, [selectedProjectIds]);
+
+  const handleSearchTermChange = (searchTerm: string) => {
+    setSearchTerm(searchTerm);
+    trackEventByName(tracks.searchUsed, {
+      searchTerm,
+    });
+  };
+
+  useEffect(() => {
+    onSearchTermChange(searchTerm);
+  }, [searchTerm]);
 
   const isModerationSelected = (
     selectedModeration: IModerationData,
@@ -346,27 +343,24 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
       .map((moderation) => moderation.id)
       .includes(selectedModeration.id);
 
-  const handleRowOnSelectChange = useCallback(
-    (newSelectedModeration: IModerationData) => {
-      if (!processing) {
-        setSelectedModerations((prevSelectedModerations) => {
-          if (
-            isModerationSelected(newSelectedModeration, prevSelectedModerations)
-          ) {
-            return prevSelectedModerations.filter(
-              (moderation) => moderation.id !== newSelectedModeration.id
-            );
-          }
+  const handleRowOnSelectChange = (newSelectedModeration: IModerationData) => {
+    if (!processing) {
+      setSelectedModerations((prevSelectedModerations) => {
+        if (
+          isModerationSelected(newSelectedModeration, prevSelectedModerations)
+        ) {
+          return prevSelectedModerations.filter(
+            (moderation) => moderation.id !== newSelectedModeration.id
+          );
+        }
 
-          return [...prevSelectedModerations, newSelectedModeration];
-        });
-      }
-    },
-    [processing]
-  );
+        return [...prevSelectedModerations, newSelectedModeration];
+      });
+    }
+  };
 
   // OS: how to?
-  const removeFlags = useCallback(async () => {
+  const removeFlags = async () => {
     if (!processing) {
       const selectedActiveInappropriateContentFlagIds = selectedModerations.map(
         // we can be sure the flag is here. With the is_flagged param in the request
@@ -393,45 +387,42 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
         setProcessing(false);
       }
     }
-  }, [processing, selectedModerations]);
+  };
 
-  const markAs = useCallback(
-    async (event: React.FormEvent) => {
-      if (selectedModerations.length > 0 && moderationStatus && !processing) {
-        event.preventDefault();
-        const updatedModerationStatus =
-          moderationStatus === 'read' ? 'unread' : 'read';
-        const promises = selectedModerations.map((moderation) =>
-          updateModerationStatus(
-            moderation.id,
-            moderation.attributes.moderatable_type,
-            updatedModerationStatus
-          )
+  const markAs = async (event: React.FormEvent) => {
+    if (selectedModerations.length > 0 && moderationStatus && !processing) {
+      event.preventDefault();
+      const updatedModerationStatus =
+        moderationStatus === 'read' ? 'unread' : 'read';
+      const promises = selectedModerations.map((moderation) =>
+        updateModerationStatus(
+          moderation.id,
+          moderation.attributes.moderatable_type,
+          updatedModerationStatus
+        )
+      );
+
+      try {
+        setActionBarErrorMessage(null);
+        setProcessing(true);
+
+        await Promise.all(promises);
+
+        setProcessing(false);
+        setSelectedModerations([]);
+
+        trackEventByName(
+          moderationStatus === 'read'
+            ? tracks.markedAsNotViewedButtonClicked
+            : tracks.markedAsNotViewedButtonClicked,
+          { selectedItemsCount: selectedModerations.length }
         );
-
-        try {
-          setActionBarErrorMessage(null);
-          setProcessing(true);
-
-          await Promise.all(promises);
-
-          setProcessing(false);
-          setSelectedModerations([]);
-
-          trackEventByName(
-            moderationStatus === 'read'
-              ? tracks.markedAsNotViewedButtonClicked
-              : tracks.markedAsNotViewedButtonClicked,
-            { selectedItemsCount: selectedModerations.length }
-          );
-        } catch {
-          setActionBarErrorMessage(intl.formatMessage(messages.markFlagsError));
-          setProcessing(false);
-        }
+      } catch {
+        setActionBarErrorMessage(intl.formatMessage(messages.markFlagsError));
+        setProcessing(false);
       }
-    },
-    [selectedModerations, moderationStatus]
-  );
+    }
+  };
 
   const handleData = (data: InsertConfigurationOptions<ITabItem>) =>
     setTabs((tabs) => insertConfiguration(data)(tabs));
@@ -441,12 +432,6 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
       setSelectedModerations([]);
     }
   }, [currentPage, moderationStatus, pageSize, processing]);
-
-  useEffect(() => {
-    if (!processing) {
-      setModerations(list);
-    }
-  }, [list, processing]);
 
   if (!isNilOrError(moderations)) {
     return (
