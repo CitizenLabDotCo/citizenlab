@@ -16,6 +16,7 @@ type Props = {
   maxLength?: number;
   supportHtml?: boolean;
   graphql?: boolean;
+  onClick?: Function;
 };
 
 type State = {
@@ -69,6 +70,7 @@ export default class T extends React.PureComponent<Props, State> {
         maxLength,
         className,
         supportHtml,
+        onClick,
       } = this.props;
       const localizedText = getLocalized(
         value,
@@ -84,12 +86,14 @@ export default class T extends React.PureComponent<Props, State> {
       if (supportHtml) {
         return createElement(as || 'span', {
           className,
+          onClick,
           ref: this.state.innerRef,
           dangerouslySetInnerHTML: { __html: localizedText },
         });
       } else {
         return createElement(as || 'span', {
           className,
+          onClick,
           ref: this.state.innerRef,
           children: localizedText,
         });

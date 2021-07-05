@@ -9,9 +9,10 @@ import {
   waitFor,
 } from 'utils/testUtils/rtl';
 import moment from 'moment';
+import clHistory from 'utils/cl-router/history';
 
 // component to test
-import EventInformation from './EventInformation';
+import EventInformation from './';
 
 // mocks
 const mockProjectData = {
@@ -28,6 +29,7 @@ jest.mock('hooks/useProject', () => jest.fn(() => mockProjectData));
 jest.mock('utils/cl-intl');
 jest.mock('services/appConfiguration');
 jest.mock('services/locale');
+jest.mock('utils/cl-router/history');
 
 const createEvent = (description) => ({
   attributes: {
@@ -72,6 +74,25 @@ describe('<EventInformation />', () => {
     expect(
       screen.getByText(mockProjectData.attributes.title_multiloc.en)
     ).toBeInTheDocument();
+  });
+
+  it('navigates to project page when project title is clicked', () => {
+    render(
+      <EventInformation
+        {...defaultProps}
+        event={eventWithShortDescription}
+        showProjectTitle={true}
+      />
+    );
+
+    const spy = jest.spyOn(clHistory, 'push');
+
+    const projectTitleLink = screen.getByText(
+      mockProjectData.attributes.title_multiloc.en
+    );
+    fireEvent.click(projectTitleLink);
+
+    expect(spy).toHaveBeenCalledWith('/projects/test');
   });
 
   it('does not show project title if showProjectTitle={false}', () => {

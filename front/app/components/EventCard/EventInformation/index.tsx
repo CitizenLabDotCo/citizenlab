@@ -18,7 +18,7 @@ import { IEventData } from 'services/events';
 import T from 'components/T';
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
-import messages from './messages';
+import messages from '../messages';
 
 // styling
 import styled, { useTheme } from 'styled-components';
@@ -27,6 +27,7 @@ import { colors, fontSizes } from 'utils/styleUtils';
 // other
 import checkTextOverflow from './checkTextOverflow';
 import { isNilOrError } from 'utils/helperUtils';
+import clHistory from 'utils/cl-router/history';
 
 const EventInformationContainer = styled.div`
   flex: 1;
@@ -46,12 +47,12 @@ const ProjectTitle = styled.div`
   margin: 0 0 5px 0;
 `;
 
-const ProjectTitleClickable = styled(T)`
+const ProjectTitleLink = styled(T)`
   text-decoration: underline;
   cursor: pointer;
 
   &:hover {
-    color: #000;
+    color: ${({ theme }) => theme.colorMain};
   }
 `;
 
@@ -173,6 +174,7 @@ const EventInformation = memo<Props & InjectedIntlProps>((props) => {
   const projectId = event.relationships.project.data.id;
   const project = useProject({ projectId });
   const projectTitle = project?.attributes.title_multiloc;
+  const projectSlug = project?.attributes.slug;
 
   const TElement = useRef(null);
 
@@ -192,13 +194,21 @@ const EventInformation = memo<Props & InjectedIntlProps>((props) => {
     }, 0);
   }, [TElement]);
 
+  const goToProjectPage = () => {
+    if (!projectSlug) return;
+    clHistory.push(`/projects/${projectSlug}`);
+  };
+
   return (
     <>
       <EventInformationContainer data-testid="EventInformation">
         <EventTitleAndMeta>
           {showProjectTitle && projectTitle && (
             <ProjectTitle>
-              <T value={projectTitle} as="a" />
+              <ProjectTitleLink
+                value={projectTitle}
+                onClick={goToProjectPage}
+              />
             </ProjectTitle>
           )}
 
