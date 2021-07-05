@@ -118,5 +118,23 @@ describe TrackIntercomService do
 
       service.track_activity(activity)
     end
+
+    it 'does not trigger a call to intercom if the event is not whitelisted' do
+      stub_const('INTERCOM_EVENT_WHITELIST', [])
+      admin = create(:admin)
+      activity = build(:activity, user: admin)
+
+      expect(intercom).not_to receive(:events)
+      service.track_activity(activity)
+    end
+
+    it 'triggers a call to intercom if the event is whitelisted' do
+      stub_const('INTERCOM_EVENT_WHITELIST', ['Idea changed'])
+      admin = create(:admin)
+      activity = build(:activity, item: create(:idea), action: :changed, user: admin)
+
+      expect(intercom).to receive(:events)
+      service.track_activity(activity)
+    end
   end
 end
