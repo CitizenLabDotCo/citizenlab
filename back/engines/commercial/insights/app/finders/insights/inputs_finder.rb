@@ -7,10 +7,10 @@ module Insights
 
     attr_reader :view, :params
 
-    def initialize(view, params = {}, paginate = true)
+    def initialize(view, params = {}, options = { paginate: true })
       @view = view
       @params = params
-      @paginate = paginate
+      @paginate = options[:paginate]
     end
 
     def execute
