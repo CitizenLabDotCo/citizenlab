@@ -19,14 +19,14 @@ resource 'Comments' do
     end
 
     with_options scope: :comment do
-      parameter :body_multiloc, 'Multi-locale field with the comment body', required: true
+      parameter :body_multiloc
     end
 
     let(:idea_id) { @idea.id }
     let(:comment) { build(:comment) }
     let(:body_multiloc) { comment.body_multiloc }
 
-    example 'Toxicity detection job is enqueued when creating a comment' do
+    example 'Toxicity detection job is enqueued when creating a comment', document: false do
       expect {
         do_request
       }.to have_enqueued_job(ToxicityDetectionJob)
@@ -42,13 +42,13 @@ resource 'Comments' do
     end
 
     with_options scope: :comment do
-      parameter :body_multiloc, 'Multi-locale field with the comment body'
+      parameter :body_multiloc
     end
     
     let(:id) { @comment.id }
     let(:body_multiloc) { {'en' => 'Changed body'} }
 
-    example 'Toxicity detection job is enqueued when updating an comment\'s body' do
+    example 'Toxicity detection job is enqueued when updating an comment\'s body', document: false do
       expect {
         do_request
       }.to have_enqueued_job(ToxicityDetectionJob).with(@comment, attributes: [:body_multiloc])

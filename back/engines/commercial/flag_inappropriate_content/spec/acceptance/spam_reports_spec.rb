@@ -12,9 +12,9 @@ resource 'Spam Reports' do
 
   post 'web_api/v1/ideas/:idea_id/spam_reports' do
     with_options scope: :spam_report do
-      parameter :user_id, 'the user id of the user owning the spam report. Signed in user by default', required: false
-      parameter :reason_code, 'one of [wrong_content, inappropriate, other]', required: true
-      parameter :other_reason, 'the reason for the spam report, if none of the reason codes is applicable, in which case \'other\' must be chosen', required: false
+      parameter :user_id
+      parameter :reason_code
+      parameter :other_reason
     end
 
     let(:idea) { create(:idea) }

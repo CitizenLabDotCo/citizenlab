@@ -20,12 +20,12 @@ resource 'Ideas' do
     end
 
     with_options scope: :idea do
-      parameter :project_id, 'The identifier of the project that hosts the idea', extra: ''
-      parameter :publication_status, 'Publication status', required: true, extra: "One of #{Post::PUBLICATION_STATUSES.join(',')}"
-      parameter :title_multiloc, 'Multi-locale field with the idea title', required: true, extra: 'Maximum 100 characters'
-      parameter :body_multiloc, 'Multi-locale field with the idea body', extra: 'Required if not draft'
-      parameter :location_point_geojson, 'A GeoJSON point that situates the location the idea applies to'
-      parameter :location_description, 'A human readable description of the location the idea applies to'
+      parameter :project_id
+      parameter :publication_status
+      parameter :title_multiloc
+      parameter :body_multiloc
+      parameter :location_point_geojson
+      parameter :location_description
     end
 
     let(:idea) { build(:idea) }
@@ -35,7 +35,7 @@ resource 'Ideas' do
     let(:body_multiloc) { idea.body_multiloc }
     let(:location_description) { 'Stanley Road 4' }
 
-    example 'Toxicity detection job is enqueued when creating an idea' do
+    example 'Toxicity detection job is enqueued when creating an idea', document: false do
       expect {
         do_request
       }.to have_enqueued_job(ToxicityDetectionJob)
@@ -50,10 +50,10 @@ resource 'Ideas' do
     end
 
     with_options scope: :idea do
-      parameter :title_multiloc, 'Multi-locale field with the idea title', extra: 'Maximum 100 characters'
-      parameter :body_multiloc, 'Multi-locale field with the idea body', extra: 'Required if not draft'
-      parameter :location_description, 'A human readable description of the location the idea applies to'
-      parameter :budget, 'The budget needed to realize the idea, as determined by the city'
+      parameter :title_multiloc
+      parameter :body_multiloc
+      parameter :location_description
+      parameter :budget
     end
 
     let(:id) { @idea.id }
@@ -62,7 +62,7 @@ resource 'Ideas' do
       let(:title_multiloc) { {'en' => 'Changed title' } }
       let(:location_description) { 'Watkins Road 8' }
 
-      example 'Toxicity detection job is enqueued when updating an idea\'s title and location description' do
+      example 'Toxicity detection job is enqueued when updating an idea\'s title and location description', document: false do
         expect {
           do_request
         }.to have_enqueued_job(ToxicityDetectionJob).with(@idea, attributes: [:title_multiloc, :location_description])
@@ -72,7 +72,7 @@ resource 'Ideas' do
     describe do
       let(:budget) { 11 }
 
-      example 'No toxicity detection job is enqueued when updating idea attributes without text' do
+      example 'No toxicity detection job is enqueued when updating idea attributes without text', document: false do
         expect {
           do_request
         }.not_to have_enqueued_job(ToxicityDetectionJob)
