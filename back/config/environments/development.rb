@@ -90,7 +90,6 @@ Rails.application.configure do
     Bullet.enable = true
     Bullet.rails_logger = true
     Bullet.bullet_logger = true
-    Bullet.sentry = true
     # Bullet.sentry = true # for staging
     # Bullet.raise = true # for testing
 
