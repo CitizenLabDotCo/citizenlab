@@ -138,6 +138,8 @@ resource 'Category-suggestion tasks' do
         expect(status).to eq(200)
       end
     end
+
+    include_examples 'unauthorized requests'
   end
 
   delete 'web_api/v1/insights/views/:view_id/tasks/category_suggestions/:task_id' do

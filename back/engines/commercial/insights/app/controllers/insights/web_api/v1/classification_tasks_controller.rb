@@ -9,9 +9,10 @@ module Insights
 
         def index
           tasks = ZeroshotClassificationTasksFinder.new(
-            categories || view.categories, # use all the categories if the query parameter was not provided
+            categories || view.categories, # use all the categories if the query parameter is not provided
             inputs: inputs
           ).execute
+          
           render json: ZeroshotClassificationTaskSerializer.new(tasks, params: fastjson_params), status: :ok
         end
 
@@ -35,7 +36,7 @@ module Insights
           # We find the task via the finder to make sure it's associated with the right view.
           # [TODO] Actually, nothing prevents a task from being associated to categories from several views.
           task = ZeroshotClassificationTasksFinder.new(view.categories).execute.find(params[:id])
-          status = task.destroy.destroyed? ? :ok : 500
+          status = task.destroy.destroyed? ? :ok : :internal_server_error
           head status
         end
 

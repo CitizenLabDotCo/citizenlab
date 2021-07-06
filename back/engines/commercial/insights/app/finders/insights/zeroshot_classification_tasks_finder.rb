@@ -3,7 +3,6 @@ module Insights
 
     attr_reader :categories, :inputs
 
-    # @param [Insights::View] view
     def initialize(categories, inputs: nil)
       @categories = categories
       @inputs = inputs
