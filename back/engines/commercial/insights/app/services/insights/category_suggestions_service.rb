@@ -55,8 +55,7 @@ module Insights
       response = nlp_client.zeroshot_classification(
         candidate_labels: candidate_labels(categories),
         documents: documents,
-        tenant_id: AppConfiguration.instance.id,
-        locale: nil # [TODO] the nlp service requires it but do not use it.
+        tenant_id: AppConfiguration.instance.id
       )
 
       tasks_infos = response['batches'] # It should look like [{'task_id':..., 'doc_ids':..., 'tags_ids':...}, ...]
