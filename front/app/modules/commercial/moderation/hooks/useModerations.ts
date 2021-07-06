@@ -73,24 +73,6 @@ export default function useModerations(props: InputProps) {
   }, []);
 
   useEffect(() => {
-    if (props.pageNumber) {
-      setPageNumber(props.pageNumber);
-    }
-  }, [props.pageNumber]);
-
-  useEffect(() => {
-    if (props.pageSize) {
-      setPageSize(props.pageSize);
-    }
-  }, [props.pageSize]);
-
-  useEffect(() => {
-    if (props.moderationStatus) {
-      setModerationStatus(props.moderationStatus);
-    }
-  }, [props.moderationStatus]);
-
-  useEffect(() => {
     const subscription = moderationsStream({
       queryParameters: {
         'page[number]': pageNumber,
