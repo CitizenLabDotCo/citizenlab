@@ -146,8 +146,6 @@ class Favicon extends PureComponent<Props, State> {
               <FormattedMessage {...messages.faviconExplaination} />
               <MainDropzone
                 acceptedFileTypes="image/png"
-                maxNumberOfImages={1}
-                maxImageFileSize={5000000}
                 images={favicon}
                 imagePreviewRatio={1}
                 maxImagePreviewWidth="152px"
@@ -159,8 +157,6 @@ class Favicon extends PureComponent<Props, State> {
               />
               <Preview
                 acceptedFileTypes="image/png"
-                maxNumberOfImages={1}
-                maxImageFileSize={5000000}
                 images={favicon}
                 imagePreviewRatio={1}
                 maxImagePreviewWidth="32px"
@@ -172,8 +168,6 @@ class Favicon extends PureComponent<Props, State> {
               />
               <Preview
                 acceptedFileTypes="image/png"
-                maxNumberOfImages={1}
-                maxImageFileSize={5000000}
                 images={favicon}
                 imagePreviewRatio={1}
                 maxImagePreviewWidth="16px"

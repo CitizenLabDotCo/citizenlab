@@ -37,6 +37,17 @@ describe Insights::CategoryAssignmentsService do
         expect(assignments.map(&:approved).all?).to be(true)
       end
     end
+
+    it 'updates the input count on category' do
+      input = create(:idea)
+      categories = create_list(:category, 3)
+
+      aggregate_failures 'check categories input_count' do
+        service.add_assignments(input, categories[1..2])
+
+        expect(categories.map(&:inputs_count)).to eq([0, 1, 1])
+      end
+    end
   end
 
   describe '#add_suggestions' do
