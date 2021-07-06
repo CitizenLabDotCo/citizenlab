@@ -22,6 +22,7 @@ module Insights
           :category,
           :search,
           :sort,
+          :processed,
           page: %i[number size]
         )
       end
