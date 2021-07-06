@@ -3,6 +3,7 @@ import { isEmpty, every } from 'lodash-es';
 import moment from 'moment';
 
 // components
+import Link from 'utils/cl-router/Link';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 import { Icon } from 'cl2-component-library';
 import FileAttachments from 'components/UI/FileAttachments';
@@ -27,7 +28,6 @@ import { colors, fontSizes, media } from 'utils/styleUtils';
 // other
 import checkTextOverflow from './checkTextOverflow';
 import { isNilOrError } from 'utils/helperUtils';
-import clHistory from 'utils/cl-router/history';
 import { ScreenReaderOnly } from 'utils/a11y';
 
 const EventInformationContainer = styled.div`
@@ -42,15 +42,13 @@ const EventTitleAndAttributes = styled.div`
   margin-bottom: 18px;
 `;
 
-const ProjectTitle = styled.div`
-  color: ${(props: any) => props.theme.colorText};
-  font-size: ${fontSizes.xs}px;
-  margin: 0 0 5px 0;
-`;
-
-const ProjectTitleLink = styled(T)`
+const StyledLink = styled(Link)`
   text-decoration: underline;
   cursor: pointer;
+  color: ${colors.label};
+  font-size: ${fontSizes.xs}px;
+  display: block;
+  margin: 0 0 5px 0;
 
   &:hover {
     color: ${({ theme }) => theme.colorMain};
@@ -148,7 +146,7 @@ const ShowMoreOrLessButton = styled.button`
 
   &:hover {
     color: ${({ theme }) => theme.colorMain};
-    text-decoration-line: underline;
+    text-decoration-line: none;
   }
 `;
 
@@ -219,18 +217,13 @@ const EventInformation = memo<Props & InjectedIntlProps>((props) => {
     }, 0);
   }, [TElement]);
 
-  const goToProjectPage = () => {
-    if (!projectSlug) return;
-    clHistory.push(`/projects/${projectSlug}`);
-  };
-
   return (
     <EventInformationContainer data-testid="EventInformation">
       <EventTitleAndAttributes>
         {showProjectTitle && projectTitle && (
-          <ProjectTitle>
-            <ProjectTitleLink value={projectTitle} onClick={goToProjectPage} />
-          </ProjectTitle>
+          <StyledLink to={`/projects/${projectSlug}`}>
+            <T value={projectTitle} />
+          </StyledLink>
         )}
 
         <EventTitle>
