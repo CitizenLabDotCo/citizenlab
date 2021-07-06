@@ -35,6 +35,9 @@ const Container = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 12px 40px;
+  position: relative;
+  z-index: 1;
+  box-shadow: 0px 2px 4px -1px rgb(0 0 0 / 10%);
   // TODO : set bg color in component library
   background: #fbfbfb;
 `;
@@ -67,7 +70,6 @@ const TopBar = ({
 }: WithRouterProps & InjectedIntlProps) => {
   const [renameModalOpened, setRenameModalOpened] = useState(false);
   const [isDropdownOpened, setDropdownOpened] = useState(false);
-
   const locale = useLocale();
   const viewId = params.viewId;
   const view = useInsightsView(viewId);
@@ -105,8 +107,8 @@ const TopBar = ({
       <DropdownWrapper>
         {formatMessage(messages.options)}
         <Button
-          icon="more-options"
           locale={locale}
+          icon="more-options"
           iconColor={colors.label}
           iconHoverColor={colors.label}
           boxShadow="none"

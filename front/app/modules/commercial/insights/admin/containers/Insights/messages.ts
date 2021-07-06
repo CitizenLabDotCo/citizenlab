@@ -227,4 +227,33 @@ export default defineMessages({
     defaultMessage:
       'Are you sure you can to remove {selectedCount} inputs from {categoryName}?',
   },
+  editCategories: {
+    id: 'app.containers.Admin.Insights.Details.editCategories',
+    defaultMessage: 'Edit categories',
+  },
+  categoriesTitle: {
+    id: 'app.containers.Admin.Insights.Details.categoriesTitle',
+    defaultMessage: 'Categories',
+  },
+  categoriesTitleTooltip: {
+    id: 'app.containers.Admin.Insights.Details.categoriesTitleTooltip',
+    defaultMessage:
+      'Categories help structure your input. You can edit your categories at any time or use them as filter on the visualisation below.',
+  },
+  categoriesSeeAll: {
+    id: 'app.containers.Admin.Insights.Details.categoriesSeeAll',
+    defaultMessage: 'See all',
+  },
+  categoriesEmptyTitle: {
+    id: 'app.containers.Admin.Insights.Details.categoriesEmptyTitle',
+    defaultMessage: "Organize the input you've received",
+  },
+  categoriesEmptyDescription: {
+    id: 'app.containers.Admin.Insights.Details.categoriesEmptyDescription',
+    defaultMessage: 'Define the categories you want to group your input into.',
+  },
+  categoriesEmptyButton: {
+    id: 'app.containers.Admin.Insights.Details.categoriesEmptyButton',
+    defaultMessage: 'Create categories',
+  },
 });

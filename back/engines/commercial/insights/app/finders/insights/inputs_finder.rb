@@ -7,9 +7,10 @@ module Insights
 
     attr_reader :view, :params
 
-    def initialize(view, params = {})
+    def initialize(view, params = {}, options = { paginate: true })
       @view = view
       @params = params
+      @paginate = options[:paginate]
     end
 
     def execute
@@ -18,7 +19,8 @@ module Insights
       inputs = filter_processed(inputs)
       inputs = sort_by_approval(inputs)
       inputs = search(inputs)
-      paginate(inputs)
+      inputs = paginate(inputs) if @paginate
+      inputs
     end
 
     # Takes into account, both, actual and suggested categories.

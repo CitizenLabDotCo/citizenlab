@@ -8,6 +8,7 @@ import ProjectInfo from './ProjectInfo';
 import ProjectArchivedIndicator from 'components/ProjectArchivedIndicator';
 import { Button } from 'cl2-component-library';
 import Image from 'components/UI/Image';
+import Outlet from 'components/Outlet';
 
 // hooks
 import useLocale from 'hooks/useLocale';
@@ -34,6 +35,17 @@ const Container = styled.div`
   ${media.smallerThanMinTablet`
     padding-top: 30px;
     padding-bottom: 35px;
+  `}
+`;
+
+const TopBar = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+
+  ${isRtl`
+    flex-direction: row-reverse;
   `}
 `;
 
@@ -80,6 +92,7 @@ const ProjectHeader = memo<Props & InjectedIntlProps>(
     const locale = useLocale();
     const project = useProject({ projectId });
     const authUser = useAuthUser();
+    const projectFolderId = project?.attributes.folder_id;
 
     if (!isNilOrError(locale) && !isNilOrError(project)) {
       const projectHeaderImageLargeUrl = project?.attributes?.header_bg?.large;
@@ -90,16 +103,27 @@ const ProjectHeader = memo<Props & InjectedIntlProps>(
       return (
         <Container className={className || ''}>
           <ContentContainer maxWidth={maxPageWidth}>
-            {userCanEditProject && (
-              <EditButton
-                icon="edit"
-                locale={locale}
-                linkTo={`/admin/projects/${project.id}/edit`}
-                buttonStyle="secondary"
-                padding="5px 8px"
-              >
-                {formatMessage(messages.editProject)}
-              </EditButton>
+            {(projectFolderId || userCanEditProject) && (
+              <TopBar>
+                {projectFolderId && (
+                  <Outlet
+                    id="app.containers.ProjectsShowPage.shared.header.ProjectHeader.GoBackButton"
+                    projectFolderId={projectFolderId}
+                  />
+                )}
+
+                {userCanEditProject && (
+                  <EditButton
+                    icon="edit"
+                    locale={locale}
+                    linkTo={`/admin/projects/${project.id}/edit`}
+                    buttonStyle="secondary"
+                    padding="5px 8px"
+                  >
+                    {formatMessage(messages.editProject)}
+                  </EditButton>
+                )}
+              </TopBar>
             )}
             {projectHeaderImageLargeUrl && (
               <HeaderImage
