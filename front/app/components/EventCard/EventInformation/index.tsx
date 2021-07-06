@@ -137,7 +137,7 @@ const StyledT = styled(T)<IStyledT>`
   display: block;
 `;
 
-const ReadMoreOrLessButton = styled.button`
+const ShowMoreOrLessButton = styled.button`
   margin-top: 18px;
   color: ${colors.label};
   cursor: pointer;
@@ -257,11 +257,11 @@ const EventInformation = memo<Props & InjectedIntlProps>((props) => {
         </QuillEditedContent>
 
         {((textOverflow && hideTextOverflow) || !hideTextOverflow) && (
-          <ReadMoreOrLessButton onClick={toggleHiddenText}>
+          <ShowMoreOrLessButton onClick={toggleHiddenText}>
             {intl.formatMessage(
-              hideTextOverflow ? messages.readMore : messages.readLess
+              hideTextOverflow ? messages.showMore : messages.showLess
             )}
-          </ReadMoreOrLessButton>
+          </ShowMoreOrLessButton>
         )}
       </EventDescription>
 
