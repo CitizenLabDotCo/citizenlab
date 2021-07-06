@@ -1,4 +1,4 @@
-import React, { memo, useCallback } from 'react';
+import React, { memo } from 'react';
 import moment from 'moment';
 import { omitBy, isNil, isEmpty } from 'lodash-es';
 import { TActivityTabName } from './';
@@ -145,36 +145,31 @@ const ModerationRow = memo<Props & InjectedIntlProps>(
       viewLink = `/${parentType.toLowerCase()}s/${parentSlug}`;
     }
 
-    const handleOnChecked = useCallback(
-      (_event: React.ChangeEvent) => {
-        onSelect(moderation);
-      },
-      [onSelect, moderation]
-    );
+    const handleOnChecked = (_event: React.ChangeEvent) => {
+      onSelect(moderation);
+    };
 
-    const handleGoToLinkOnClick = useCallback(
-      (event: React.MouseEvent<HTMLAnchorElement>) => {
-        event.preventDefault();
-        const url = event.currentTarget.href;
-        const type = event.currentTarget.dataset.type;
-        trackEventByName(tracks.goToLinkClicked, { type });
-        const win = window.open(url, '_blank');
-        win && win.focus();
-      },
-      []
-    );
+    const handleGoToLinkOnClick = (
+      event: React.MouseEvent<HTMLAnchorElement>
+    ) => {
+      event.preventDefault();
+      const url = event.currentTarget.href;
+      const type = event.currentTarget.dataset.type;
+      trackEventByName(tracks.goToLinkClicked, { type });
+      const win = window.open(url, '_blank');
+      win && win.focus();
+    };
 
-    const handleBelongsToLinkOnClick = useCallback(
-      (event: React.MouseEvent<HTMLAnchorElement>) => {
-        event.preventDefault();
-        const url = event.currentTarget.href;
-        const belongsToType = event.currentTarget.dataset.belongstotype;
-        trackEventByName(tracks.belongsToLinkClicked, { belongsToType });
-        const win = window.open(url, '_blank');
-        win && win.focus();
-      },
-      []
-    );
+    const handleBelongsToLinkOnClick = (
+      event: React.MouseEvent<HTMLAnchorElement>
+    ) => {
+      event.preventDefault();
+      const url = event.currentTarget.href;
+      const belongsToType = event.currentTarget.dataset.belongstotype;
+      trackEventByName(tracks.belongsToLinkClicked, { belongsToType });
+      const win = window.open(url, '_blank');
+      win && win.focus();
+    };
 
     return (
       <Container
