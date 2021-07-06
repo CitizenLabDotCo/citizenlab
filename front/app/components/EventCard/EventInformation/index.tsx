@@ -197,15 +197,15 @@ const EventInformation = memo<Props & InjectedIntlProps>((props) => {
 
   const toggleHiddenText = () => {
     if (hideTextOverflow) {
+      setHideTextOverflow(false);
       setA11y_showMoreHelperText(
         intl.formatMessage(messages.a11y_moreContentVisible)
       );
-      setHideTextOverflow(!hideTextOverflow);
     } else {
+      setHideTextOverflow(true);
       setA11y_showMoreHelperText(
         intl.formatMessage(messages.a11y_lessContentVisible)
       );
-      setHideTextOverflow(hideTextOverflow);
     }
   };
 
