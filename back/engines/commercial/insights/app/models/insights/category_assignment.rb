@@ -5,6 +5,7 @@ module Insights
     INPUT_TYPES = ['Idea'].freeze
 
     belongs_to :category
+    counter_culture :category, column_name: 'inputs_count'
     belongs_to :input, polymorphic: true
 
     delegate :view, to: :category
