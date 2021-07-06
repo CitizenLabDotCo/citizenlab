@@ -1,7 +1,5 @@
-import React, { MouseEvent, PureComponent } from 'react';
+import React, { MouseEvent, memo } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { adopt } from 'react-adopt';
-import clHistory from 'utils/cl-router/history';
 
 // components
 import Link from 'utils/cl-router/Link';
@@ -9,9 +7,9 @@ import Link from 'utils/cl-router/Link';
 // services
 import { IIdeaData } from 'services/ideas';
 
-// resources
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetProject, { GetProjectChildProps } from 'resources/GetProject';
+// hooks
+import useProject from 'hooks/useProject';
+import useAuthUser from 'hooks/useAuthUser';
 
 // i18n
 import messages from './messages';
@@ -67,26 +65,18 @@ const StyledButton = styled.button`
   }
 `;
 
-interface InputProps {
+interface Props {
   projectId: string;
   votingDescriptor: IIdeaData['attributes']['action_descriptor']['voting_idea'];
 }
 
-interface DataProps {
-  authUser: GetAuthUserChildProps;
-  project: GetProjectChildProps;
-}
+const VotingDisabled = memo(({ projectId, votingDescriptor }: Props) => {
+  const project = useProject({ projectId });
+  const authUser = useAuthUser();
 
-interface Props extends InputProps, DataProps {}
-
-interface State {}
-
-class VotingDisabled extends PureComponent<Props, State> {
-  onVerify = (event) => {
+  const onVerify = (event) => {
     event.stopPropagation();
     event.preventDefault();
-
-    const { project } = this.props;
 
     if (!isNilOrError(project)) {
       const pcType =
@@ -106,72 +96,57 @@ class VotingDisabled extends PureComponent<Props, State> {
         });
       }
     }
-  };
 
-  removeFocus = (event: React.MouseEvent) => {
-    event.preventDefault();
-  };
+    const removeFocus = (event: React.MouseEvent) => {
+      event.preventDefault();
+    };
 
-  reasonToMessage = () => {
-    const { authUser } = this.props;
-    const { disabled_reason, future_enabled } = this.props.votingDescriptor;
+    const reasonToMessage = () => {
+      const { disabled_reason, future_enabled } = votingDescriptor;
 
-    if (disabled_reason === 'project_inactive') {
-      return future_enabled
-        ? messages.votingPossibleLater
-        : messages.votingDisabledProjectInactive;
-    } else if (disabled_reason === 'voting_disabled' && future_enabled) {
-      return messages.votingPossibleLater;
-    } else if (disabled_reason === 'voting_limited_max_reached') {
-      return messages.votingDisabledMaxReached;
-    } else if (disabled_reason === 'idea_not_in_current_phase') {
-      return future_enabled
-        ? messages.votingDisabledFutureEnabled
-        : messages.votingDisabledPhaseOver;
-    } else if (disabled_reason === 'not_permitted') {
-      return messages.votingNotPermitted;
-    } else if (authUser && disabled_reason === 'not_verified') {
-      return messages.votingNotVerified;
-    } else {
-      return messages.votingNotEnabled;
-    }
-  };
+      if (disabled_reason === 'project_inactive') {
+        return future_enabled
+          ? messages.votingPossibleLater
+          : messages.votingDisabledProjectInactive;
+      } else if (disabled_reason === 'voting_disabled' && future_enabled) {
+        return messages.votingPossibleLater;
+      } else if (disabled_reason === 'voting_limited_max_reached') {
+        return messages.votingDisabledMaxReached;
+      } else if (disabled_reason === 'idea_not_in_current_phase') {
+        return future_enabled
+          ? messages.votingDisabledFutureEnabled
+          : messages.votingDisabledPhaseOver;
+      } else if (disabled_reason === 'not_permitted') {
+        return messages.votingNotPermitted;
+      } else if (authUser && disabled_reason === 'not_verified') {
+        return messages.votingNotVerified;
+      } else {
+        return messages.votingNotEnabled;
+      }
+    };
 
-  handleProjectLinkClick = (event: MouseEvent) => {
-    event.preventDefault();
-    event.stopPropagation();
+    const stopPropagation = (event: MouseEvent | KeyboardEvent) => {
+      event.stopPropagation();
+    };
 
-    if (!isNilOrError(this.props.project)) {
-      clHistory.push(`/projects/${this.props.project.attributes.slug}`);
-    }
-  };
+    const getProjectLink = () => {
+      if (!isNilOrError(project)) {
+        const projectTitle = project.attributes.title_multiloc;
 
-  getProjectLink = () => {
-    const { project } = this.props;
+        return (
+          <StyledLink
+            to={`/projects/${project.attributes.slug}`}
+            onClick={stopPropagation}
+          >
+            <T value={projectTitle} />
+          </StyledLink>
+        );
+      }
 
-    if (!isNilOrError(project)) {
-      const projectTitle = project.attributes.title_multiloc;
+      return null;
+    };
 
-      return (
-        <StyledLink
-          to={`/projects/${project.attributes.slug}`}
-          onClick={this.stopPropagation}
-        >
-          <T value={projectTitle} />
-        </StyledLink>
-      );
-    }
-
-    return null;
-  };
-
-  stopPropagation = (event: MouseEvent | KeyboardEvent) => {
-    event.stopPropagation();
-  };
-
-  render() {
-    const { votingDescriptor } = this.props;
-    const message = this.reasonToMessage();
+    const message = reasonToMessage();
     const enabledFromDate = votingDescriptor.future_enabled ? (
       <FormattedDate
         value={votingDescriptor.future_enabled}
@@ -180,12 +155,12 @@ class VotingDisabled extends PureComponent<Props, State> {
         day="numeric"
       />
     ) : null;
-    const projectName = this.getProjectLink();
+    const projectName = getProjectLink();
     const verificationLink = (
       <StyledButton
         className="e2e-verify-button"
-        onClick={this.onVerify}
-        onMouseDown={this.removeFocus}
+        onClick={onVerify}
+        onMouseDown={removeFocus}
       >
         <FormattedMessage {...messages.linkToVerificationText} />
       </StyledButton>
@@ -203,18 +178,9 @@ class VotingDisabled extends PureComponent<Props, State> {
         />
       </Container>
     );
-  }
-}
+  };
 
-const Data = adopt<DataProps, InputProps>({
-  authUser: <GetAuthUser />,
-  project: ({ projectId, render }) => (
-    <GetProject projectId={projectId}>{render}</GetProject>
-  ),
+  return null;
 });
 
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <VotingDisabled {...inputProps} {...dataProps} />}
-  </Data>
-);
+export default VotingDisabled;

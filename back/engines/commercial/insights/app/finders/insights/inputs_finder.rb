@@ -7,9 +7,10 @@ module Insights
 
     attr_reader :view, :params
 
-    def initialize(view, params = {})
+    def initialize(view, params = {}, options = { paginate: true })
       @view = view
       @params = params
+      @paginate = options[:paginate]
     end
 
     def execute
@@ -17,11 +18,12 @@ module Insights
       inputs = filter_category(inputs)
       inputs = sort_by_approval(inputs)
       inputs = search(inputs)
-      paginate(inputs)
+      inputs = paginate(inputs) if @paginate
+      inputs
     end
 
     # Takes into account, both, actual and suggested categories.
-    # Keep only inputs without categories if +params[:category]+ is +nil+ 
+    # Keep only inputs without categories if +params[:category]+ is +nil+
     # or +''+.
     # @raise [ActiveRecord::RecordNotFound]
     def filter_category(inputs)

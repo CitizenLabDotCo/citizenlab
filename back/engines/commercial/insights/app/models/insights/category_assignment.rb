@@ -25,5 +25,9 @@ module Insights
     def touch_view
       category.view.touch if previous_changes.present?
     end
+
+    def approved?
+      approved
+    end
   end
 end
