@@ -9,6 +9,15 @@ module Insights
 
     validates :task_id, presence: true, uniqueness: true
 
+    def self.create_task(task_id, inputs, categories)
+      ZeroshotClassificationTask.transaction do
+        task = ZeroshotClassificationTask.create(task_id: task_id, categories: categories)
+        task.add_inputs(inputs)
+
+        task
+      end
+    end
+
     def inputs
       tasks_inputs.map(&:input)
     end
@@ -16,6 +25,8 @@ module Insights
     def add_inputs(inputs)
       tasks_inputs_attrs = inputs.map { |i| { input: i } }
       tasks_inputs.create(tasks_inputs_attrs)
+
+      self
     end
 
     def add_input(input)
