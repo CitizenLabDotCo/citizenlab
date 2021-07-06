@@ -28,6 +28,7 @@ import { colors, fontSizes, media } from 'utils/styleUtils';
 import checkTextOverflow from './checkTextOverflow';
 import { isNilOrError } from 'utils/helperUtils';
 import clHistory from 'utils/cl-router/history';
+import { ScreenReaderOnly } from 'utils/a11y';
 
 const EventInformationContainer = styled.div`
   flex: 1;
@@ -139,6 +140,7 @@ const StyledT = styled(T)<IStyledT>`
 
 const ShowMoreOrLessButton = styled.button`
   margin-top: 18px;
+  padding: 0;
   color: ${colors.label};
   cursor: pointer;
   font-weight: 600;
@@ -191,8 +193,21 @@ const EventInformation = memo<Props & InjectedIntlProps>((props) => {
 
   const [textOverflow, setTextOverflow] = useState(true);
   const [hideTextOverflow, setHideTextOverflow] = useState(true);
+  const [a11y_showMoreHelperText, setA11y_showMoreHelperText] = useState('');
 
-  const toggleHiddenText = () => setHideTextOverflow(!hideTextOverflow);
+  const toggleHiddenText = () => {
+    if (hideTextOverflow) {
+      setA11y_showMoreHelperText(
+        intl.formatMessage(messages.a11y_moreContentVisible)
+      );
+      setHideTextOverflow(!hideTextOverflow);
+    } else {
+      setA11y_showMoreHelperText(
+        intl.formatMessage(messages.a11y_lessContentVisible)
+      );
+      setHideTextOverflow(hideTextOverflow);
+    }
+  };
 
   useEffect(() => {
     if (textOverflow === false) return;
@@ -257,11 +272,16 @@ const EventInformation = memo<Props & InjectedIntlProps>((props) => {
         </QuillEditedContent>
 
         {((textOverflow && hideTextOverflow) || !hideTextOverflow) && (
-          <ShowMoreOrLessButton onClick={toggleHiddenText}>
-            {intl.formatMessage(
-              hideTextOverflow ? messages.showMore : messages.showLess
-            )}
-          </ShowMoreOrLessButton>
+          <>
+            <ShowMoreOrLessButton onClick={toggleHiddenText}>
+              {intl.formatMessage(
+                hideTextOverflow ? messages.showMore : messages.showLess
+              )}
+            </ShowMoreOrLessButton>
+            <ScreenReaderOnly aria-live="polite">
+              {a11y_showMoreHelperText}
+            </ScreenReaderOnly>
+          </>
         )}
       </EventDescription>
 

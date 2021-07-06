@@ -17,4 +17,12 @@ export default defineMessages({
     id: 'app.components.EventCard.showLess',
     defaultMessage: 'Show less',
   },
+  a11y_moreContentVisible: {
+    id: 'app.components.EventCard.a11y_moreContentVisible',
+    defaultMessage: 'More event information became visble.',
+  },
+  a11y_lessContentVisible: {
+    id: 'app.components.EventCard.a11y_lessContentVisible',
+    defaultMessage: 'Less event information became visble.',
+  },
 });
