@@ -41,6 +41,7 @@ export default defineMessages({
   noWarningItems: {
     id:
       'app.modules.commercial.flag_inappropriate_content.admin.components.noWarningItems',
-    defaultMessage: 'There are no items with content warning',
+    defaultMessage:
+      'There are no posts reported for review by the community or flagged for inappropriate content by our Natural Language Processing system',
   },
 });
