@@ -571,18 +571,59 @@ resource "Stats - Ideas" do
     end
 
     describe "with time filters" do
+      context("Full time filter") do
+        let(:start_at) { (now - 1.year).in_time_zone(@timezone).beginning_of_year }
+        let(:end_at) { (now - 1.year).in_time_zone(@timezone).end_of_year }
+        let(:interval) { 'day' }
 
-      let(:start_at) { (now - 1.year).in_time_zone(@timezone).beginning_of_year }
-      let(:end_at) { (now - 1.year).in_time_zone(@timezone).end_of_year }
-      let(:interval) { 'day' }
+        example_request "Ideas by time (published_at) cumulative" do
+          expect(response_status).to eq 200
+          json_response = json_parse(response_body)
+          expect(json_response[:series][:ideas].size).to eq end_at.yday
+          # monotonically increasing
+          expect(json_response[:series][:ideas].values.uniq).to eq json_response[:series][:ideas].values.uniq.sort
+          expect(json_response[:series][:ideas].values.last).to eq Idea.published.count
+        end
+      end
 
-      example_request "Ideas by time (published_at) cumulative" do
-        expect(response_status).to eq 200
-        json_response = json_parse(response_body)
-        expect(json_response[:series][:ideas].size).to eq end_at.yday
-        # monotonically increasing
-        expect(json_response[:series][:ideas].values.uniq).to eq json_response[:series][:ideas].values.uniq.sort
-        expect(json_response[:series][:ideas].values.last).to eq Idea.published.count
+      context("Start time filter") do
+        let(:start_at) { (now - 1.year).in_time_zone(@timezone).beginning_of_year }
+        let(:interval) { 'day' }
+
+        example_request "Ideas by time (published_at) cumulative" do
+          expect(response_status).to eq 200
+          json_response = json_parse(response_body)
+          # monotonically increasing
+          expect(json_response[:series][:ideas].values.uniq).to eq json_response[:series][:ideas].values.uniq.sort
+          expect(json_response[:series][:ideas].values.last).to eq Idea.published.count
+        end
+      end
+
+      context("Weird time filter") do
+        let(:start_at) { (now - 1.year).in_time_zone(@timezone).beginning_of_year }
+        let(:end_at) { "" }
+        let(:interval) { 'day' }
+
+        example_request "Ideas by time (published_at) cumulative" do
+          expect(response_status).to eq 200
+          json_response = json_parse(response_body)
+          # monotonically increasing
+          expect(json_response[:series][:ideas].values.uniq).to eq json_response[:series][:ideas].values.uniq.sort
+          expect(json_response[:series][:ideas].values.last).to eq Idea.published.count
+        end
+      end
+
+      context("End time filter") do
+        let(:end_at) { (now - 1.year).in_time_zone(@timezone).end_of_year }
+        let(:interval) { 'day' }
+
+        example_request "Ideas by time (published_at) cumulative" do
+          expect(response_status).to eq 200
+          json_response = json_parse(response_body)
+          # monotonically increasing
+          expect(json_response[:series][:ideas].values.uniq).to eq json_response[:series][:ideas].values.uniq.sort
+          expect(json_response[:series][:ideas].values.last).to eq Idea.published.count
+        end
       end
     end
   end
