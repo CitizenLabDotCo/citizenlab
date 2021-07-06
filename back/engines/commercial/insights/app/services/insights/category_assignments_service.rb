@@ -19,8 +19,8 @@ module Insights
       CategoryAssignment.find(ids)
     end
 
-    def add_assignments(input, categories)
-      ids = add_assignments_batch([input], categories)
+    def add_assignments(input, categories, set_processed = true)
+      ids = add_assignments_batch([input], categories, set_processed)
       CategoryAssignment.find(ids)
     end
 
@@ -48,7 +48,7 @@ module Insights
     # @param [Enumerable<Ideas>] inputs
     # @param [Enumerable<Insights::Category>] categories
     # @return [Array<String>] assignment identifiers
-    def add_assignments_batch(inputs, categories)
+    def add_assignments_batch(inputs, categories, set_processed = true)
       validate_inputs!(inputs)
 
       assignments_attrs = inputs.to_a.product(categories)
@@ -59,6 +59,7 @@ module Insights
       result = CategoryAssignment.upsert_all(assignments_attrs, unique_by: %i[category_id input_id input_type])
       touch_views_of(categories)
       update_counts_of(categories)
+      set_processed(inputs, categories) if set_processed
       result.pluck('id')
     end
 
@@ -124,6 +125,21 @@ module Insights
     # Updating 'inputs_count' of categories.
     def update_counts_of(categories)
       categories.each { |cat| cat.update({ inputs_count: CategoryAssignment.where(category_id: cat.id).size })}
+    end
+
+    # Sets a processed_flag for all the inputs in the view corresponding to the categories
+    def set_processed(inputs, categories)
+      processed_flag_attributes = inputs.to_a.product(categories) # yields all pairs of input x category
+                                  .map { |input, category|
+                                    {
+                                      view_id: category.view.id,
+                                      input_id: input.id,
+                                      input_type: input.class.name,
+                                      created_at: Time.zone.now,
+                                      updated_at: Time.zone.now
+                                    }
+                                   }
+      ProcessedFlag.insert_all(processed_flag_attributes)
     end
   end
 end

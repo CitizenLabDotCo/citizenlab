@@ -16,6 +16,7 @@ module Insights
     def execute
       inputs = view.scope.ideas
       inputs = filter_category(inputs)
+      inputs = filter_processed(inputs)
       inputs = sort_by_approval(inputs)
       inputs = search(inputs)
       inputs = paginate(inputs) if @paginate
@@ -37,6 +38,20 @@ module Insights
 
       inputs.left_outer_joins(:insights_category_assignments)
             .where(insights_category_assignments: { category_id: category_id })
+    end
+
+    def filter_processed(inputs)
+      return inputs if params[:processed].blank?
+      return inputs unless %w[true false].include?(params[:processed])
+
+      return inputs.left_outer_joins(:insights_processed_flags)
+            .where(insights_processed_flags: { view: view }) if params[:processed] == 'true'
+
+      inputs_with_flags = inputs.left_outer_joins(:insights_processed_flags)
+
+      inputs_with_flags
+        .where.not(insights_processed_flags: { view: view })
+        .or(inputs_with_flags.where(insights_processed_flags: { id: nil }))
     end
 
     def sort_by_approval(inputs)
