@@ -107,6 +107,8 @@
   "app.components.ErrorBoundary.errorFormTitle": "Se pare că există o problemă.",
   "app.components.ErrorBoundary.genericErrorWithForm": "A apărut o eroare și nu putem afișa acest conținut. Vă rugăm să încercați din nou, sau {openForm}!",
   "app.components.ErrorBoundary.openFormText": "ajută-ne să o identificăm",
+  "app.components.EventCard.a11y_lessContentVisible": "",
+  "app.components.EventCard.a11y_moreContentVisible": "",
   "app.components.EventCard.endsAt": "Se termină la",
   "app.components.EventCard.showLess": "",
   "app.components.EventCard.showMore": "",

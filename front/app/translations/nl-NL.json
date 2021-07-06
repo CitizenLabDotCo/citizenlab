@@ -107,6 +107,8 @@
   "app.components.ErrorBoundary.errorFormTitle": "Het lijkt erop dat er een probleem is.",
   "app.components.ErrorBoundary.genericErrorWithForm": "Er is een fout opgetreden en we kunnen inhoud niet weergeven. Probeer het opnieuw of {openForm}!",
   "app.components.ErrorBoundary.openFormText": "help ons het op te lossen",
+  "app.components.EventCard.a11y_lessContentVisible": "",
+  "app.components.EventCard.a11y_moreContentVisible": "",
   "app.components.EventCard.endsAt": "Eindigt op",
   "app.components.EventCard.showLess": "",
   "app.components.EventCard.showMore": "",

@@ -107,6 +107,8 @@
   "app.components.ErrorBoundary.errorFormTitle": "Čini se da je došlo do greške.",
   "app.components.ErrorBoundary.genericErrorWithForm": "Došlo je do greške te ne možemo prikazati ovaj sadržaj. Molimo vas pokušajte ponovo ili {openForm}",
   "app.components.ErrorBoundary.openFormText": "pomozite nam da shvatimo",
+  "app.components.EventCard.a11y_lessContentVisible": "",
+  "app.components.EventCard.a11y_moreContentVisible": "",
   "app.components.EventCard.endsAt": "Završava se u",
   "app.components.EventCard.showLess": "",
   "app.components.EventCard.showMore": "",
