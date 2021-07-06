@@ -107,6 +107,8 @@
   "app.components.ErrorBoundary.errorFormTitle": "يبدو أنّ هناك مشكلة ما.",
   "app.components.ErrorBoundary.genericErrorWithForm": "حدث خطأ ما، ولا يمكننا عرض هذا المحتوى. يُرجى المحاولة مجددًا، أو {openForm}!",
   "app.components.ErrorBoundary.openFormText": "ساعدنا في تحديد الخلل",
+  "app.components.EventCard.a11y_lessContentVisible": "",
+  "app.components.EventCard.a11y_moreContentVisible": "",
   "app.components.EventCard.endsAt": "ينتهي عند",
   "app.components.EventCard.showLess": "",
   "app.components.EventCard.showMore": "",

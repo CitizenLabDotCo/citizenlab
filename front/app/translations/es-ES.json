@@ -107,6 +107,8 @@
   "app.components.ErrorBoundary.errorFormTitle": "Parece que hay un problema.",
   "app.components.ErrorBoundary.genericErrorWithForm": "Se ha producido un error y no podemos mostrar este contenido. ¡Por favor, inténtelo de nuevo {openForm}!",
   "app.components.ErrorBoundary.openFormText": "Ayúdanos a entender",
+  "app.components.EventCard.a11y_lessContentVisible": "",
+  "app.components.EventCard.a11y_moreContentVisible": "",
   "app.components.EventCard.endsAt": "Termina en",
   "app.components.EventCard.showLess": "",
   "app.components.EventCard.showMore": "",

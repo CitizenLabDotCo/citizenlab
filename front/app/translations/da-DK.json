@@ -107,6 +107,8 @@
   "app.components.ErrorBoundary.errorFormTitle": "Det ser ud til at vi har problemer.",
   "app.components.ErrorBoundary.genericErrorWithForm": "En fejl opstod og vi kan ikke vise dette indhold. Prøv venligst igen eller {openForm}!",
   "app.components.ErrorBoundary.openFormText": "hjælp os med at løse problemet",
+  "app.components.EventCard.a11y_lessContentVisible": "",
+  "app.components.EventCard.a11y_moreContentVisible": "",
   "app.components.EventCard.endsAt": "Slutter den",
   "app.components.EventCard.showLess": "",
   "app.components.EventCard.showMore": "",

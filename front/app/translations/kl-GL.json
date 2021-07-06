@@ -107,6 +107,8 @@
   "app.components.ErrorBoundary.errorFormTitle": "Ajornartorsiuteqarpasippugut.",
   "app.components.ErrorBoundary.genericErrorWithForm": "Akornuteqalerpoq uumallu imarisaa nuisissinnaanngilarput. Misileqqilaaruk imaluunniit {openForm}!",
   "app.components.ErrorBoundary.openFormText": "ajornartorsiut aaqqinniarlugu ikiortigut",
+  "app.components.EventCard.a11y_lessContentVisible": "",
+  "app.components.EventCard.a11y_moreContentVisible": "",
   "app.components.EventCard.endsAt": "Ends at",
   "app.components.EventCard.showLess": "",
   "app.components.EventCard.showMore": "",

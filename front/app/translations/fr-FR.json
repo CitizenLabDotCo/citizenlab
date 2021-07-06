@@ -107,6 +107,8 @@
   "app.components.ErrorBoundary.errorFormTitle": "On dirait que quelque chose ne va pas.",
   "app.components.ErrorBoundary.genericErrorWithForm": "Une erreur s'est produite et le contenu n'a pas pu être affiché. Veuillez essayer à nouveau, ou {openForm} !",
   "app.components.ErrorBoundary.openFormText": "aidez-nous à comprendre ce qui s'est passé",
+  "app.components.EventCard.a11y_lessContentVisible": "",
+  "app.components.EventCard.a11y_moreContentVisible": "",
   "app.components.EventCard.endsAt": "Termine le",
   "app.components.EventCard.showLess": "",
   "app.components.EventCard.showMore": "",
