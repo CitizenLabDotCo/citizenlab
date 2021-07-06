@@ -237,7 +237,6 @@ const ModerationRow = memo<Props & InjectedIntlProps>(
           <Outlet
             id="app.modules.commercial.moderation.admin.containers.ModerationRow.content"
             inappropriateContentFlagId={inappropriateContentFlagId}
-            isWarningsTabSelected={selectedTab === 'warnings'}
           />
         </td>
         <td>

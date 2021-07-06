@@ -33,12 +33,10 @@ const WarningIcon = styled(Icon)`
 
 interface Props {
   inappropriateContentFlagId: string;
-  isWarningsTabSelected: boolean;
 }
 
 const InappropriateContentWarning = ({
   inappropriateContentFlagId,
-  isWarningsTabSelected,
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
   const inappropriateContentFlag = useInappropriateContentFlag(
@@ -54,9 +52,7 @@ const InappropriateContentWarning = ({
     if (reasonCode && flagType) {
       return (
         <Container>
-          {isWarningsTabSelected && (
-            <WarningIcon name="exclamation-trapezium" />
-          )}
+          <WarningIcon name="exclamation-trapezium" />
           <WarningContent>
             {
               {
@@ -70,12 +66,6 @@ const InappropriateContentWarning = ({
               }[flagType]
             }
           </WarningContent>
-          {!isWarningsTabSelected && (
-            <IconTooltip
-              content={<FormattedMessage {...messages.warningTooltip} />}
-              iconColor={colors.clRedError}
-            />
-          )}
         </Container>
       );
     }

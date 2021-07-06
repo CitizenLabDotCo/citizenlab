@@ -50,14 +50,12 @@ const configuration: ModuleConfiguration = {
       );
     },
     'app.modules.commercial.moderation.admin.containers.ModerationRow.content': ({
-      isWarningsTabSelected,
       inappropriateContentFlagId,
     }) => {
       if (inappropriateContentFlagId) {
         return (
           <InappropriateContentWarning
             inappropriateContentFlagId={inappropriateContentFlagId}
-            isWarningsTabSelected={isWarningsTabSelected}
           />
         );
       }
