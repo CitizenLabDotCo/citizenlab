@@ -57,7 +57,7 @@ resource 'Category-suggestion tasks' do
       example 'returns pending tasks for a subset of inputs', document: false do
         task_1, task_2 = expected_tasks = [tasks_c1.first, tasks_c2.first]
         input_1, input_2 = inputs = create_list(:idea, 2, project: view.scope) # we need inputs that belong to the view
-        
+
         task_1.add_input(input_1)
         task_2.add_input(input_2)
 
@@ -67,6 +67,10 @@ resource 'Category-suggestion tasks' do
         expect(json_response_body[:data].pluck(:id)).to match(expected_tasks.pluck(:id))
       end
 
+      example 'returns 404 for inputs that does not belong the view scope' do
+        do_request(inputs: [other_task.inputs.first.id])
+        expect(status).to eq(404)
+      end
     end
 
     include_examples 'unauthorized requests'
@@ -95,6 +99,16 @@ resource 'Category-suggestion tasks' do
             expect(options[:view]).to eq(view)
           end)
           expect(status).to eq(202)
+        end
+
+        example 'returns 404 if the category belongs to another view' do
+          do_request(categories: create(:category).id)
+          expect(status).to eq(404)
+        end
+
+        example "returns 404 if the input doesn't belong to the view scope" do
+          do_request(inputs: create(:idea).id)
+          expect(status).to eq(404)
         end
       end
 
@@ -135,6 +149,11 @@ resource 'Category-suggestion tasks' do
         do_request(task_id: task.id)
         expect(status).to eq(200)
         expect { task.reload }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+
+      example "returns 404 if the task doesn't belong to the view" do
+        do_request(task_id: create(:zsc_task).id)
+        expect(status).to eq(404)
       end
     end
 
