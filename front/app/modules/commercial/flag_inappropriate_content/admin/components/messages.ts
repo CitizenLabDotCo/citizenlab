@@ -17,12 +17,12 @@ export default defineMessages({
     id:
       'app.modules.commercial.flag_inappropriate_content.admin.components.removeWarning',
     defaultMessage:
-      'Remove {numberOfItems, plural, one {warning} other {# warnings}}',
+      'Remove {numberOfItems, plural, one {content warning} other {# content warnings}}',
   },
   warnings: {
     id:
       'app.modules.commercial.flag_inappropriate_content.admin.components.warnings',
-    defaultMessage: 'Warnings',
+    defaultMessage: 'Content Warnings',
   },
   warningTooltip: {
     id:
