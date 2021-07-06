@@ -4,12 +4,14 @@ export default defineMessages({
   nlpFlaggedWarningText: {
     id:
       'app.modules.commercial.flag_inappropriate_content.admin.components.nlpFlaggedWarningText',
-    defaultMessage: 'Inappropriate content auto-detected',
+    defaultMessage:
+      'Inappropriate content auto-detected. You can remove this content flag by selecting this item and clicking the remove button at the top.',
   },
   userFlaggedWarningText: {
     id:
       'app.modules.commercial.flag_inappropriate_content.admin.components.userFlaggedWarningText',
-    defaultMessage: 'Reported: {reason}',
+    defaultMessage:
+      'Reported as inappropriate by a platform user. You can remove this content flag by selecting this item and clicking the remove button at the top.',
   },
   removeWarning: {
     id:
@@ -21,16 +23,6 @@ export default defineMessages({
     id:
       'app.modules.commercial.flag_inappropriate_content.admin.components.warnings',
     defaultMessage: 'Warnings',
-  },
-  inappropriate: {
-    id:
-      'app.modules.commercial.flag_inappropriate_content.admin.components.inappropriate',
-    defaultMessage: 'inappropriate or offensive',
-  },
-  wrong: {
-    id:
-      'app.modules.commercial.flag_inappropriate_content.admin.components.wrong',
-    defaultMessage: 'irrelevant',
   },
   warningTooltip: {
     id:
