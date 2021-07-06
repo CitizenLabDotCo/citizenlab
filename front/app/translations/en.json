@@ -1644,7 +1644,6 @@
   "app.containers.AdminPage.SettingsPage.imageOverlayColor": "Image overlay color",
   "app.containers.AdminPage.SettingsPage.imageOverlayOpacity": "Image overlay opacity",
   "app.containers.AdminPage.SettingsPage.inappropriateContentDetectionSetting": "Detect inappropriate content",
-  "app.containers.AdminPage.SettingsPage.inappropriateContentDetectionSettingDescription": "Auto-review input, proposals and comments for potentially inappropriate content.",
   "app.containers.AdminPage.SettingsPage.inappropriateContentDetectionTooltip": "In Beta: currently available in English, French, German, Portuguese and Spanish. While this feature is enabled, input, proposals and comments posted by participants will be automatically reviewed using Natural Language Processing. Posts flagged as potentially containing inappropriate content will not be blocked, but will be highlighted for review on the {linkToActivityPage} page.",
   "app.containers.AdminPage.SettingsPage.languages": "Languages",
   "app.containers.AdminPage.SettingsPage.languagesTooltip": "You can select multiple languages in which you want to offer your platform to users. You will need to create content for every selected language.",
