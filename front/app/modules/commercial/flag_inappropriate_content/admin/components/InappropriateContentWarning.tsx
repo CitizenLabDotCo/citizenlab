@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { IconTooltip, colors, Icon } from 'cl2-component-library';
+import { colors, Icon } from 'cl2-component-library';
 import { isNilOrError } from 'utils/helperUtils';
 
 // services
@@ -10,7 +10,7 @@ import { getFlagType } from '../../utils';
 import useInappropriateContentFlag from '../../hooks/useInappropriateContentFlag';
 
 // i18n
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 

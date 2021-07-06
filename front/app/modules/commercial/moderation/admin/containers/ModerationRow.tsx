@@ -1,7 +1,6 @@
 import React, { memo, useCallback } from 'react';
 import moment from 'moment';
 import { omitBy, isNil, isEmpty } from 'lodash-es';
-import { TActivityTabName } from './';
 
 // components
 import ModerationContentCell from './ModerationContentCell';
@@ -90,7 +89,6 @@ interface Props {
   onSelect: (selectedModeration: IModerationData) => void;
   className?: string;
   inappropriateContentFlagId?: string;
-  selectedTab: TActivityTabName;
 }
 
 const ModerationRow = memo<Props & InjectedIntlProps>(
@@ -101,7 +99,6 @@ const ModerationRow = memo<Props & InjectedIntlProps>(
     className,
     intl,
     inappropriateContentFlagId,
-    selectedTab,
   }) => {
     const inappropriateContentFlag = inappropriateContentFlagId
       ? useInappropriateContentFlag(inappropriateContentFlagId)
