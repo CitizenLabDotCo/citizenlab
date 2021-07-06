@@ -46,6 +46,17 @@ module NLP
         @confidence = confidence
       end
 
+      # Parses a JSON object into a predction. The JSON object should
+      # look like:
+      #
+      #   {
+      #     "id": "document-id",
+      #     "predicted_labels": [
+      #       { "id": "label-id", "confidence": "confidence-score" },
+      #       ...
+      #     ]
+      #   }
+      #
       # @return[Array<Prediction>]
       def self.from_json(json_prediction)
         document_id = json_prediction['id']
