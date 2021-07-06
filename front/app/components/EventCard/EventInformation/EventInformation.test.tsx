@@ -76,25 +76,6 @@ describe('<EventInformation />', () => {
     ).toBeInTheDocument();
   });
 
-  it('navigates to project page when project title is clicked', () => {
-    render(
-      <EventInformation
-        {...defaultProps}
-        event={eventWithShortDescription}
-        showProjectTitle={true}
-      />
-    );
-
-    const spy = jest.spyOn(clHistory, 'push');
-
-    const projectTitleLink = screen.getByText(
-      mockProjectData.attributes.title_multiloc.en
-    );
-    fireEvent.click(projectTitleLink);
-
-    expect(spy).toHaveBeenCalledWith('/projects/test');
-  });
-
   it('does not show project title if showProjectTitle={false}', () => {
     render(
       <EventInformation {...defaultProps} event={eventWithShortDescription} />
