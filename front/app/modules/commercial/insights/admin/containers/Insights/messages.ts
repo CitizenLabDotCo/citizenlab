@@ -126,7 +126,8 @@ export default defineMessages({
   },
   inputsTableRecentlyPosted: {
     id: 'app.containers.Admin.Insights.Edit.inputsTableRecentlyPosted',
-    defaultMessage: 'All input has been assigned to a category',
+    defaultMessage:
+      'There is no recent input. All input has been taken into consideration.',
   },
   categories: {
     id: 'app.containers.Admin.Insights.Edit.categories',
