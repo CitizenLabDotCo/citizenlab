@@ -9,8 +9,7 @@ export default defineMessages({
   inappropriateContentDetectionSettingDescription: {
     id:
       'app.containers.AdminPage.SettingsPage.inappropriateContentDetectionSettingDescription',
-    defaultMessage:
-      'Auto-review input, proposals and comments for potentially inappropriate content.',
+    defaultMessage: 'Auto-detect inappropriate content posted on the platform.',
   },
   inappropriateContentDetectionTooltip: {
     id:

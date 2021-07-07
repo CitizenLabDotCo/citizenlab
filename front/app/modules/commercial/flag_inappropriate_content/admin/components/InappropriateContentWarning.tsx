@@ -61,12 +61,7 @@ const InappropriateContentWarning = ({
             {
               {
                 nlp_flagged: formatMessage(messages.nlpFlaggedWarningText),
-                user_flagged: formatMessage(messages.userFlaggedWarningText, {
-                  reason: {
-                    inappropriate: formatMessage(messages.inappropriate),
-                    wrong_content: formatMessage(messages.wrong),
-                  }[reasonCode],
-                }),
+                user_flagged: formatMessage(messages.userFlaggedWarningText),
               }[flagType]
             }
           </WarningContent>
