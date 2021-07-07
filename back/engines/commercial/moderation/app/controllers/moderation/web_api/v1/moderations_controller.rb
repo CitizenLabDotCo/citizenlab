@@ -1,11 +1,10 @@
 module Moderation
   class WebApi::V1::ModerationsController < ApplicationController
+    after_action :verify_authorized, except: [:index, :moderations_count]
+    after_action :verify_policy_scoped, only: [:index, :moderations_count]
 
     def index
-      @moderations = policy_scope(Moderation)
-      @moderations = @moderations.where(id: Idea.published)
-        .or(@moderations.where(id: Initiative.published))
-        .or(@moderations.where(id: Comment.published))
+      @moderations = policy_scope(published_moderations)
         .includes(*include_load_resources)
         .order(created_at: :desc)
       
@@ -44,6 +43,14 @@ module Moderation
         ).serialized_json, status: :ok
     end
 
+    def moderations_count
+      @moderations = policy_scope(published_moderations)
+
+      index_filter
+
+      render json: {count: @moderations.count}, status: :ok
+    end
+
     def moderation_params
       params.require(:moderation).permit(
         :moderation_status
@@ -58,6 +65,12 @@ module Moderation
 
     def include_serialize_resources
       []
+    end
+
+    def published_moderations
+      Moderation.where(id: Idea.published)
+        .or(Moderation.where(id: Initiative.published))
+        .or(Moderation.where(id: Comment.published))
     end
 
     def index_filter
