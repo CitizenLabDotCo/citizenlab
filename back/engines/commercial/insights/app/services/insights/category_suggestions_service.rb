@@ -11,14 +11,12 @@ module Insights
       # @param [NLP::ZeroshotClassificationResult] zsc_result zeroshot-classification result
       # @return [Array<Insights::CategoryAssignment>]
       def save_suggestion(zsc_result)
-        return unless zsc_result.success?
-
         Tenant.find(zsc_result.tenant_id).switch do
           zsc_task = ZeroshotClassificationTask.find_by(task_id: zsc_result.task_id)
           return [] unless zsc_task
 
           zsc_task.destroy!
-          save_predictions(zsc_result.predictions)
+          save_predictions(zsc_result.predictions) if zsc_result.success?
         end
       end
 
