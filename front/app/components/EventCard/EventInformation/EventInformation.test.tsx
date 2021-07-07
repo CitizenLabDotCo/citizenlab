@@ -85,38 +85,38 @@ describe('<EventInformation />', () => {
     ).not.toBeInTheDocument();
   });
 
-  it('does not show "read more" button if description is short', async () => {
+  it('does not show "Show more" button if description is short', async () => {
     render(
       <EventInformation {...defaultProps} event={eventWithShortDescription} />
     );
 
-    await waitForElementToBeRemoved(() => screen.queryByText('Read more'));
-    expect(screen.queryByText('Read more')).not.toBeInTheDocument();
+    await waitForElementToBeRemoved(() => screen.queryByText('Show more'));
+    expect(screen.queryByText('Show more')).not.toBeInTheDocument();
   });
 
-  it('shows "read more" button if description is long', () => {
+  it('shows "Show more" button if description is long', () => {
     render(
       <EventInformation {...defaultProps} event={eventWithLongDescription} />
     );
-    expect(screen.getByText('Read more')).toBeInTheDocument();
+    expect(screen.getByText('Show more')).toBeInTheDocument();
   });
 
-  it('correctly shows and hides text when "read more" and "read less" are clicked', () => {
+  it('correctly shows and hides text when "Show more" and "Show less" are clicked', () => {
     render(
       <EventInformation {...defaultProps} event={eventWithLongDescription} />
     );
 
-    const readMoreButton = screen.getByText('Read more');
-    expect(readMoreButton).toBeInTheDocument();
+    const showMoreButton = screen.getByText('Show more');
+    expect(showMoreButton).toBeInTheDocument();
 
-    fireEvent.click(readMoreButton);
-    expect(screen.queryByText('Read more')).not.toBeInTheDocument();
+    fireEvent.click(showMoreButton);
+    expect(screen.queryByText('Show more')).not.toBeInTheDocument();
 
-    const readLessButton = screen.getByText('Read less');
-    expect(readLessButton).toBeInTheDocument();
+    const showLessButton = screen.getByText('Show less');
+    expect(showLessButton).toBeInTheDocument();
 
-    fireEvent.click(readLessButton);
-    expect(screen.queryByText('Read less')).not.toBeInTheDocument();
-    expect(screen.getByText('Read more')).toBeInTheDocument();
+    fireEvent.click(showLessButton);
+    expect(screen.queryByText('Show less')).not.toBeInTheDocument();
+    expect(screen.getByText('Show more')).toBeInTheDocument();
   });
 });
