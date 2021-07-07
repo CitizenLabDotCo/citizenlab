@@ -70,16 +70,22 @@ const EventTimeAndLocationContainer = styled.div`
   ${media.smallerThanMinTablet`
     flex-direction: column;
   `}
-`;
 
-const TimeOrLocation = styled.div<{ first?: boolean }>`
   color: ${(props: any) => props.theme.colorText};
   font-size: ${fontSizes.xs}px;
-  margin-left: ${({ first }) => (first ? 0 : 23)}px;
+`;
+
+const Time = styled.time`
+  ${media.smallerThanMinTablet`
+    margin-bottom: 5px;
+  `}
+`;
+
+const Location = styled.div`
+  margin-left: 23px;
 
   ${media.smallerThanMinTablet`
     margin-left: 0px;
-    margin-bottom: ${({ first }) => (first ? 5 : 0)}px;
   `}
 `;
 
@@ -231,24 +237,24 @@ const EventInformation = memo<Props & InjectedIntlProps>((props) => {
         </EventTitle>
 
         <EventTimeAndLocationContainer>
-          <TimeOrLocation first={true}>
+          <Time>
             <StyledIcon
               name="clock-solid"
               width={fontSizes.medium}
               height={fontSizes.medium}
             />
             {eventDateTime}
-          </TimeOrLocation>
+          </Time>
 
           {hasLocation && (
-            <TimeOrLocation>
+            <Location>
               <StyledIcon
                 name="mapmarker"
                 width={fontSizes.medium}
                 height={fontSizes.medium}
               />
               <T value={event.attributes.location_multiloc} />
-            </TimeOrLocation>
+            </Location>
           )}
         </EventTimeAndLocationContainer>
       </EventTitleAndAttributes>

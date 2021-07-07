@@ -41,7 +41,7 @@ export default memo<Props>(
     const isMultiYearEvent = startAtYear !== endAtYear;
 
     return (
-      <EventDateBlocks>
+      <EventDateBlocks aria-hidden={true}>
         {!isMultiYearEvent && (
           <EventDateBlockWrapper>
             <DateBlockSingleYear
