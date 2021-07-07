@@ -11,4 +11,3 @@ sr:
       main_header: '%{firstName}, imate novi zadatak'
       subject: 'Imate zadatak na %{organizationName} platformi '
       preheader_idea: 'The idea of %{authorName} has been assigned to you'
-      
