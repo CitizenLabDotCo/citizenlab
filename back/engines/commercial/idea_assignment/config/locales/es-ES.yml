@@ -11,4 +11,3 @@ es:
       main_header: '%{firstName}, tienes una nueva asignación'
       subject: 'Tienes una asignación en la plataforma de %{organizationName}'
       preheader_idea: 'La idea de %{authorName} ha sido asignada a ti'
-      
