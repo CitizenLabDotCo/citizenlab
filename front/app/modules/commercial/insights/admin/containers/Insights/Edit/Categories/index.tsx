@@ -44,6 +44,7 @@ const Container = styled.aside`
   display: flex;
   flex-direction: column;
   align-items: stretch;
+  overflow-y: auto;
 `;
 
 const DetectButton = styled(Button)`
@@ -96,10 +97,6 @@ const CategoryInfoBox = styled.div`
   color: ${colors.adminTextColor};
   border-radius: 3px;
   padding: 8px 20px;
-`;
-
-const CategoriesList = styled.div`
-  overflow-y: auto;
 `;
 
 const StyledPlus = styled.div`
@@ -288,42 +285,41 @@ const Categories = ({
         </Button>
       </FormContainer>
       {errors && <Error apiErrors={errors['name']} fieldName="category_name" />}
-      <CategoriesList>
-        {categories.length === 0 ? (
-          <CategoryInfoBox data-testid="insightsNoCategories">
-            <p>
-              <FormattedMessage
-                {...messages.categoryInfoBox}
-                values={{
-                  bold: <b>{formatMessage(messages.categoryInfoBoxBold)}</b>,
-                }}
-              />
-            </p>
-          </CategoryInfoBox>
-        ) : (
-          categories.map((category) => (
-            <div data-testid="insightsCategory" key={category.id}>
-              <CategoryButton
-                locale={locale}
-                bgColor={
-                  category.id === query.category
-                    ? darken(0.05, colors.lightGreyishBlue)
-                    : 'transparent'
-                }
-                textColor={colors.label}
-                textHoverColor={colors.adminTextColor}
-                bgHoverColor={darken(0.05, colors.lightGreyishBlue)}
-                onClick={selectCategory(category.id)}
-              >
-                <div>{category.attributes.name}</div>
-                <div data-testid="insightsCategoryCount">
-                  {category.attributes.inputs_count}
-                </div>
-              </CategoryButton>
-            </div>
-          ))
-        )}
-      </CategoriesList>
+
+      {categories.length === 0 ? (
+        <CategoryInfoBox data-testid="insightsNoCategories">
+          <p>
+            <FormattedMessage
+              {...messages.categoryInfoBox}
+              values={{
+                bold: <b>{formatMessage(messages.categoryInfoBoxBold)}</b>,
+              }}
+            />
+          </p>
+        </CategoryInfoBox>
+      ) : (
+        categories.map((category) => (
+          <div data-testid="insightsCategory" key={category.id}>
+            <CategoryButton
+              locale={locale}
+              bgColor={
+                category.id === query.category
+                  ? darken(0.05, colors.lightGreyishBlue)
+                  : 'transparent'
+              }
+              textColor={colors.label}
+              textHoverColor={colors.adminTextColor}
+              bgHoverColor={darken(0.05, colors.lightGreyishBlue)}
+              onClick={selectCategory(category.id)}
+            >
+              <div>{category.attributes.name}</div>
+              <div data-testid="insightsCategoryCount">
+                {category.attributes.inputs_count}
+              </div>
+            </CategoryButton>
+          </div>
+        ))
+      )}
     </Container>
   );
 };
