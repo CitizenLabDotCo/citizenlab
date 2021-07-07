@@ -109,7 +109,7 @@ const TableTitle = ({
     query.category,
     query.processed
   );
-  console.log(inputsCategoryFilter);
+
   return (
     <>
       <StyledHeader data-testid="insightsInputsHeader">
