@@ -83,7 +83,7 @@ describe('Insights Edit Categories', () => {
     fireEvent.click(screen.getByText(mockData[0].attributes.name));
     expect(spy).toHaveBeenCalledWith({
       pathname: '',
-      search: `?pageNumber=1&category=${mockData[0].id}`,
+      search: `?pageNumber=1&category=${mockData[0].id}&processed=true`,
     });
   });
 
@@ -93,7 +93,7 @@ describe('Insights Edit Categories', () => {
     fireEvent.click(screen.getAllByText('All input')[0]);
     expect(spy).toHaveBeenCalledWith({
       pathname: '',
-      search: `?pageNumber=1`,
+      search: `?pageNumber=1&processed=true`,
     });
   });
 
@@ -103,7 +103,7 @@ describe('Insights Edit Categories', () => {
     fireEvent.click(screen.getAllByText('Not categorized')[0]);
     expect(spy).toHaveBeenCalledWith({
       pathname: '',
-      search: `?pageNumber=1&category=`,
+      search: `?pageNumber=1&category=&processed=true`,
     });
   });
   it('shows category count correctly', () => {

@@ -425,7 +425,10 @@ describe('Insights Input Table', () => {
 
       render(<InputsTable />);
       expect(useInsightsInputs).toHaveBeenCalledWith(viewId, {
+        category: undefined,
         pageNumber: 2,
+        processed: true,
+        search: undefined,
       });
     });
   });
@@ -532,6 +535,18 @@ describe('Insights Input Table', () => {
         screen.getByTestId('insightsInputsTableEmptyNoResults')
       ).toBeInTheDocument();
     });
+    it('renders correct table empty state when there is no recently posted inputs', () => {
+      mockLocationData = {
+        pathname: '',
+        query: { category: '', processed: 'false' },
+      };
+      mockInputData = { currentPage: 1, lastPage: 1, list: [] };
+
+      render(<InputsTable />);
+      expect(
+        screen.getByTestId('insightsInputsTableRecentlyPosted')
+      ).toBeInTheDocument();
+    });
   });
 
   it('filters table by category', () => {
@@ -543,6 +558,7 @@ describe('Insights Input Table', () => {
     render(<InputsTable />);
     expect(useInsightsInputs).toHaveBeenCalledWith(viewId, {
       category: 'category',
+      processed: true,
       search: undefined,
       pageNumber: 1,
     });
@@ -560,6 +576,7 @@ describe('Insights Input Table', () => {
         search: 'search',
         category: undefined,
         pageNumber: 1,
+        processed: true,
       });
     });
     it('adds search query to url', () => {

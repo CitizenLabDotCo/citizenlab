@@ -17,7 +17,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { colors, fontSizes } from 'utils/styleUtils';
 import clHistory from 'utils/cl-router/history';
-import getSelectedCategoryFilter from 'modules/commercial/insights/utils/getSelectedCategoryFilter';
+import getInputsCategoryFilter from 'modules/commercial/insights/utils/getInputsCategoryFilter';
 
 // hooks
 import useLocale from 'hooks/useLocale';
@@ -155,13 +155,26 @@ const Categories = ({
     clHistory.push({
       pathname,
       search: stringify(
-        { ...query, pageNumber: 1, category: categoryId },
+        { ...query, pageNumber: 1, category: categoryId, processed: true },
         { addQueryPrefix: true }
       ),
     });
   };
 
-  const selectedCategoryFilter = getSelectedCategoryFilter(query.category);
+  const selectRecentlyPosted = () => {
+    clHistory.push({
+      pathname,
+      search: stringify(
+        { ...query, pageNumber: 1, category: undefined, processed: false },
+        { addQueryPrefix: true }
+      ),
+    });
+  };
+
+  const inputsCategoryFilter = getInputsCategoryFilter(
+    query.category,
+    query.processed
+  );
 
   const handleResetCategories = async () => {
     const deleteMessage = formatMessage(messages.resetCategoriesConfimation);
@@ -203,7 +216,7 @@ const Categories = ({
         <CategoryButton
           locale={locale}
           bgColor={
-            selectedCategoryFilter === 'allInput'
+            inputsCategoryFilter === 'allInput'
               ? darken(0.05, colors.lightGreyishBlue)
               : 'transparent'
           }
@@ -222,7 +235,21 @@ const Categories = ({
         <CategoryButton
           locale={locale}
           bgColor={
-            selectedCategoryFilter === 'notCategorized'
+            inputsCategoryFilter === 'recentlyPosted'
+              ? darken(0.05, colors.lightGreyishBlue)
+              : 'transparent'
+          }
+          textColor={colors.label}
+          textHoverColor={colors.adminTextColor}
+          bgHoverColor={darken(0.05, colors.lightGreyishBlue)}
+          onClick={selectRecentlyPosted}
+        >
+          <div>{formatMessage(messages.recentlyPosted)}</div>
+        </CategoryButton>
+        <CategoryButton
+          locale={locale}
+          bgColor={
+            inputsCategoryFilter === 'notCategorized'
               ? darken(0.05, colors.lightGreyishBlue)
               : 'transparent'
           }

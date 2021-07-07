@@ -5,6 +5,7 @@ import { stringify } from 'qs';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import clHistory from 'utils/cl-router/history';
+import getInputsCategoryFilter from 'modules/commercial/insights/utils/getInputsCategoryFilter';
 
 // hooks
 import useInsightsInputs from 'modules/commercial/insights/hooks/useInsightsInputs';
@@ -22,6 +23,7 @@ import Divider from 'components/admin/Divider';
 import Actions from './Actions';
 import Pagination from 'components/admin/Pagination/Pagination';
 import SearchInput from 'components/UI/SearchInput';
+import TableTitle from './TableTitle';
 
 // styles
 import styled from 'styled-components';
@@ -31,7 +33,6 @@ import { colors, fontSizes } from 'utils/styleUtils';
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from '../../messages';
-import TableTitle from './TableTitle';
 
 const Inputs = styled.div`
   flex: 1;
@@ -126,10 +127,15 @@ const InputsTable = ({
   const pageNumber = parseInt(query?.pageNumber, 10);
   const selectedCategory = query.category;
   const search = query.search;
+  const inputsCategoryFilter = getInputsCategoryFilter(
+    selectedCategory,
+    query.processed
+  );
 
   const { list: inputs, lastPage } = useInsightsInputs(viewId, {
     pageNumber,
     search,
+    processed: !(inputsCategoryFilter === 'recentlyPosted'),
     category: selectedCategory,
   });
 

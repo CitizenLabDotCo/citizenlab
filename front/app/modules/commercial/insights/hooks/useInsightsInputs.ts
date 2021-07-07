@@ -13,6 +13,7 @@ type QueryParameters = {
   pageNumber: number;
   search: string;
   sort?: 'approval' | '-approval';
+  processed: boolean;
 };
 
 export interface IUseInpightsInputsOutput {
@@ -34,6 +35,7 @@ const useInsightsInputs = (
   const category = queryParameters?.category;
   const search = queryParameters?.search;
   const sort = queryParameters?.sort || 'approval';
+  const processed = queryParameters?.processed;
 
   const [lastPage, setLastPage] = useState<number | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
@@ -45,6 +47,7 @@ const useInsightsInputs = (
         category,
         search,
         sort,
+        processed,
         'page[number]': queryParameters?.pageNumber || 1,
         'page[size]': queryParameters?.pageSize || defaultPageSize,
       },
@@ -55,7 +58,7 @@ const useInsightsInputs = (
     });
 
     return () => subscription.unsubscribe();
-  }, [viewId, pageNumber, category, search, sort]);
+  }, [viewId, pageNumber, category, search, sort, processed]);
 
   return {
     lastPage,
