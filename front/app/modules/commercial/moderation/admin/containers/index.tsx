@@ -258,12 +258,10 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
   });
 
   const handleOnSelectAll = (_event: React.ChangeEvent) => {
-    if (!processing) {
-      if (!isNilOrError(moderations)) {
-        setSelectedModerations(
-          selectedModerations.length < moderations.length ? moderations : []
-        );
-      }
+    if (!processing && !isNilOrError(moderations)) {
+      setSelectedModerations(
+        selectedModerations.length < moderations.length ? moderations : []
+      );
     }
   };
 
@@ -285,7 +283,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
       onIsFlaggedChange(true);
       onModerationStatusChange(null);
     }
-  }, [selectedTab]);
+  }, [selectedTab, onIsFlaggedChange, onModerationStatusChange]);
 
   const handePageNumberChange = (pageNumber: number) => {
     trackEventByName(tracks.pageNumberClicked);
@@ -294,7 +292,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
 
   useEffect(() => {
     onPageNumberChange(selectedPageNumber);
-  }, [selectedPageNumber]);
+  }, [selectedPageNumber, onPageNumberChange]);
 
   const handleOnPageSizeChange = (option: IOption) => {
     setSelectedPageSize(option.value);
@@ -302,7 +300,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
 
   useEffect(() => {
     onPageSizeChange(selectedPageSize);
-  }, [selectedPageSize]);
+  }, [selectedPageSize, onPageSizeChange]);
 
   const handleModeratableTypesChange = (
     newSelectedTypes: TModeratableTypes[]
@@ -313,7 +311,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
 
   useEffect(() => {
     onModeratableTypesChange(selectedTypes);
-  }, [selectedTypes]);
+  }, [selectedTypes, onModeratableTypesChange]);
 
   const handleProjectIdsChange = (newProjectIds: string[]) => {
     setSelectedProjectIds(newProjectIds);
@@ -322,7 +320,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
 
   useEffect(() => {
     onProjectIdsChange(selectedProjectIds);
-  }, [selectedProjectIds]);
+  }, [selectedProjectIds, onProjectIdsChange]);
 
   const handleSearchTermChange = (searchTerm: string) => {
     setSearchTerm(searchTerm);
@@ -333,7 +331,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
 
   useEffect(() => {
     onSearchTermChange(searchTerm);
-  }, [searchTerm]);
+  }, [searchTerm, onSearchTermChange]);
 
   const isModerationSelected = (
     selectedModeration: IModerationData,

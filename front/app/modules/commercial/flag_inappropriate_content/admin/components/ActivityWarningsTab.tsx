@@ -37,7 +37,7 @@ const ActivityWarningsTab = ({
         insertAfterName: 'read',
         reinsertAfterUpdate: true,
       }),
-    [activeFlagsCount]
+    [activeFlagsCount, onData]
   );
   return null;
 };
