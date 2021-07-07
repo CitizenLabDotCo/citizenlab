@@ -5,7 +5,7 @@ import { includes } from 'lodash-es';
 // components
 import Table from 'components/UI/Table';
 import ModerationRow from './ModerationRow';
-import Pagination from 'components/admin/Pagination/Pagination';
+import Pagination from 'components/Pagination';
 import Checkbox from 'components/UI/Checkbox';
 import { Icon, IconTooltip, Select, Button } from 'cl2-component-library';
 import Tabs from 'components/UI/Tabs';

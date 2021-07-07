@@ -9,10 +9,10 @@ import useEvents from 'hooks/useEvents';
 import EventCard from './EventCard';
 import ContentContainer from 'components/ContentContainer';
 import {
-  SectionContainer,
   ProjectPageSectionTitle,
   maxPageWidth,
 } from 'containers/ProjectsShowPage/styles';
+import SectionContainer from 'components/SectionContainer';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';

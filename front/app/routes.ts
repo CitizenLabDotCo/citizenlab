@@ -207,6 +207,15 @@ export default function createRoutes() {
           ],
         },
         {
+          path: 'events',
+          name: 'Events page',
+          component: Loadable({
+            loader: () => import('containers/EventsPage'),
+            loading: LoadableLoadingCitizen,
+            delay: 500,
+          }),
+        },
+        {
           path: 'pages/cookie-policy',
           name: 'cookiePolicy',
           component: Loadable({
