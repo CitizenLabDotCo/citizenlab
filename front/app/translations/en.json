@@ -2702,7 +2702,6 @@
   "app.modules.commercial.flag_inappropriate_content.admin.components.noWarningItems": "There are no posts reported for review by the community or flagged for inappropriate content by our Natural Language Processing system",
   "app.modules.commercial.flag_inappropriate_content.admin.components.removeWarning": "Remove {numberOfItems, plural, one {content warning} other {# content warnings}}",
   "app.modules.commercial.flag_inappropriate_content.admin.components.userFlaggedWarningText": "Reported as inappropriate by a platform user. You can remove this content flag by selecting this item and clicking the remove button at the top.",
-  "app.modules.commercial.flag_inappropriate_content.admin.components.warningTooltip": "Not inappropriate? Remove this designation in the Warnings tab.",
   "app.modules.commercial.flag_inappropriate_content.admin.components.warnings": "Content Warnings",
   "app.modules.commercial.flag_inappropriate_content.citizen.components.inappropriateContentAutoDetected": "Inappropriate content was auto-detected in a post or comment",
   "app.modules.granular_permissions.admin.components.projectPermissionsTab": "Access rights",
