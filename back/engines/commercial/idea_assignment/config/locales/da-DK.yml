@@ -11,4 +11,3 @@ da:
       main_header: '%{firstName}, du har en ny tildeling'
       subject: 'Du har en tildeling på platformen for %{organizationName}'
       preheader_idea: 'Du er blevet tildelt %{authorName}s idé'
-      
