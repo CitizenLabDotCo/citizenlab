@@ -1,4 +1,4 @@
-# Changelog 
+# Changelog
 
 ## Release 2021-06-30
 
