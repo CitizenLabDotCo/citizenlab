@@ -1,36 +1,30 @@
 // libraries
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import { adopt } from 'react-adopt';
+import { isError } from 'lodash-es';
 
 // i18n
 import { injectIntl, MessageDescriptor } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 
-// resources
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetAppConfigurationLocales, {
-  GetAppConfigurationLocalesChildProps,
-} from 'resources/GetAppConfigurationLocales';
+// hooks
+import useAuthUser from 'hooks/useAuthUser';
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
 // utils
 import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
 import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
 
-interface InputProps {
+interface Props {
   titleMessage: MessageDescriptor;
   descriptionMessage: MessageDescriptor;
 }
 
-interface DataProps {
-  authUser: GetAuthUserChildProps;
-  tenantLocales: GetAppConfigurationLocalesChildProps;
-}
+const PageMeta = React.memo<Props & InjectedIntlProps>(
+  ({ intl, titleMessage, descriptionMessage }) => {
+    const authUser = useAuthUser();
+    const tenantLocales = useAppConfigurationLocales();
 
-interface Props extends InputProps, DataProps {}
-
-const IdeaMeta = React.memo<Props & InjectedIntlProps>(
-  ({ intl, authUser, tenantLocales, titleMessage, descriptionMessage }) => {
     const { formatMessage } = intl;
     const { location } = window;
     const ideasIndexTitle = formatMessage(titleMessage);
@@ -41,7 +35,9 @@ const IdeaMeta = React.memo<Props & InjectedIntlProps>(
         <title>
           {`
           ${
-            authUser && authUser.attributes.unread_notifications
+            authUser &&
+            !isError(authUser) &&
+            authUser.attributes.unread_notifications
               ? `(${authUser.attributes.unread_notifications}) `
               : ''
           }
@@ -59,15 +55,4 @@ const IdeaMeta = React.memo<Props & InjectedIntlProps>(
   }
 );
 
-const IdeaMetaWithHoc = injectIntl<Props>(IdeaMeta);
-
-const Data = adopt<DataProps, InputProps>({
-  tenantLocales: <GetAppConfigurationLocales />,
-  authUser: <GetAuthUser />,
-});
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataprops) => <IdeaMetaWithHoc {...inputProps} {...dataprops} />}
-  </Data>
-);
+export default injectIntl(PageMeta);
