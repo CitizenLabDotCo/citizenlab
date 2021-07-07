@@ -17,7 +17,7 @@ interface Props {
   onData: (data: InsertConfigurationOptions<ITabItem>) => void;
 }
 
-const ActivityTab = ({
+const ActivityWarningsTab = ({
   onData,
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
@@ -28,10 +28,11 @@ const ActivityTab = ({
           name: 'warnings',
           label: formatMessage(messages.warnings),
         },
+        insertAfterName: 'read',
       }),
     []
   );
   return null;
 };
 
-export default injectIntl(ActivityTab);
+export default injectIntl(ActivityWarningsTab);

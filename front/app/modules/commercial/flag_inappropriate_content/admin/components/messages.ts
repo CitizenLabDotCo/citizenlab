@@ -32,4 +32,9 @@ export default defineMessages({
       'app.modules.commercial.flag_inappropriate_content.admin.components.wrong',
     defaultMessage: 'irrelevant',
   },
+  noWarningItems: {
+    id:
+      'app.modules.commercial.flag_inappropriate_content.admin.components.noWarningItems',
+    defaultMessage: 'There are no items with content warning',
+  },
 });

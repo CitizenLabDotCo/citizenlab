@@ -333,10 +333,14 @@ export type OutletsPropertyMap = {
   'app.modules.commercial.moderation.admin.containers.ModerationRow.content': {
     inappropriateContentFlagId: string | undefined;
   };
+  'app.modules.commercial.moderation.admin.components.EmptyMessage': {
+    isWarningsTabSelected: boolean;
+  };
   'app.modules.commercial.moderation.admin.containers.actionbar.buttons': {
-    activeFlagsCount: number;
+    selectedActiveFlagsCount: number;
     processing: boolean;
-    onClick: () => void;
+    onRemoveFlags: () => void;
+    isWarningsTabSelected: boolean;
   };
   'app.modules.commercial.moderation.admin.containers.tabs': {
     onData: (data: InsertConfigurationOptions<ITabItem>) => void;

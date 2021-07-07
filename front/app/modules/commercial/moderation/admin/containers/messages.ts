@@ -77,23 +77,24 @@ export default defineMessages({
     id: 'app.containers.Admin.Moderation.collapse',
     defaultMessage: 'see less',
   },
-  markAsSeen: {
-    id: 'app.containers.Admin.Moderation.markAsSeen',
+  markSeen: {
+    id: 'app.containers.Admin.Moderation.markSeen',
     defaultMessage:
       'Mark {selectedItemsCount, plural, one {# item} other {# items}} as seen',
   },
-  markAsNotSeen: {
-    id: 'app.containers.Admin.Moderation.markAsNotSeen',
-    defaultMessage: 'Mark as unseen',
+  markNotSeen: {
+    id: 'app.containers.Admin.Moderation.markNotSeen',
+    defaultMessage:
+      'Mark {selectedItemsCount, plural, one {# item} other {# items}} as not seen',
   },
   goToThisContentType: {
     id: 'app.containers.Admin.Moderation.goToThisContentType',
     defaultMessage: 'Open this {contentType} in a new tab',
   },
-  moderationHelpTooltip: {
-    id: 'app.containers.Admin.Moderation.moderationHelpTooltip',
+  moderationsTooltip: {
+    id: 'app.containers.Admin.Moderation.moderationsTooltip',
     defaultMessage:
-      'This page allows you to quickly check all new input that has been added to your platform, including posts and comments. You can mark posts as being ‘viewed’ so that others know which inputs still need to be processed.',
+      "This page allows you to quickly check all new input that has been added to your platform, including posts and comments. You can mark posts as being 'seen' so that others know which inputs still need to be processed.",
   },
   settings: {
     id: 'app.containers.Admin.Moderation.settings',

@@ -62,14 +62,14 @@ export interface ITab {
   label: string;
   url: string;
   active?: boolean | ((pathname: string) => boolean);
-  feature?: AppConfigurationSettingsFeatureNames;
+  feature?: TAppConfigurationSetting;
 }
 
 export type CellConfiguration<ComponentProps> = {
   name: string;
   onChange?: (event: unknown) => void;
   onClick?: (event: unknown) => void;
-  featureFlag?: AppConfigurationSettingsFeatureNames;
+  featureFlag?: TAppConfigurationSetting;
   cellProps?: TableCellProps;
   Component: FC<ComponentProps>;
 };
@@ -115,7 +115,7 @@ import { IIdeaAction } from 'services/ideas';
 import { FormikActions } from 'formik';
 import { FC } from 'react';
 import { TableCellProps } from 'semantic-ui-react';
-import { AppConfigurationSettingsFeatureNames } from 'services/appConfiguration';
+import { TAppConfigurationSetting } from 'services/appConfiguration';
 export type MessageDescriptor = Messages['key'];
 
 export type Locale = keyof typeof appLocalePairs;

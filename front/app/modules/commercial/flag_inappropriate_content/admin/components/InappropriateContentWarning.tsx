@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Icon, colors } from 'cl2-component-library';
+import { colors, Icon } from 'cl2-component-library';
 import { isNilOrError } from 'utils/helperUtils';
 
 // services
@@ -22,11 +22,12 @@ const Container = styled.div`
 const WarningContent = styled.div`
   color: ${colors.clRedError};
   font-weight: bold;
+  margin-right: 5px;
 `;
 
 const WarningIcon = styled(Icon)`
-  color: ${colors.clRedError};
   margin-right: 5px;
+  color: ${colors.clRedError};
   width: 16px;
 `;
 

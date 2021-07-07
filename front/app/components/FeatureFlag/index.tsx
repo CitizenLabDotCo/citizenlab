@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs';
 
 // services
 import {
-  AppConfigurationSettingsFeatureNames,
+  TAppConfigurationSetting,
   currentAppConfigurationStream,
   IAppConfiguration,
   IAppConfigurationData,
@@ -12,7 +12,7 @@ import {
 import { isNilOrError } from 'utils/helperUtils';
 
 interface Props {
-  name: AppConfigurationSettingsFeatureNames;
+  name: TAppConfigurationSetting;
   /** when this flag is set, the feature will show if it's allowed, regardless of whether it's enabled */
   onlyCheckAllowed: boolean;
 }
