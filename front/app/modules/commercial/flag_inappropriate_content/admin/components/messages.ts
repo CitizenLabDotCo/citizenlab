@@ -24,12 +24,6 @@ export default defineMessages({
       'app.modules.commercial.flag_inappropriate_content.admin.components.warnings',
     defaultMessage: 'Content Warnings',
   },
-  warningTooltip: {
-    id:
-      'app.modules.commercial.flag_inappropriate_content.admin.components.warningTooltip',
-    defaultMessage:
-      'Not inappropriate? Remove this designation in the Warnings tab.',
-  },
   noWarningItems: {
     id:
       'app.modules.commercial.flag_inappropriate_content.admin.components.noWarningItems',

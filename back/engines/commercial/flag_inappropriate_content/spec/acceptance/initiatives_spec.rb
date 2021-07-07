@@ -14,10 +14,10 @@ resource 'Initiatives' do
 
   post 'web_api/v1/initiatives' do
     with_options scope: :initiative do
-      parameter :publication_status, 'Publication status', required: true, extra: "One of #{Post::PUBLICATION_STATUSES.join(',')}"
-      parameter :title_multiloc, 'Multi-locale field with the initiative title', required: true, extra: 'Maximum 100 characters'
-      parameter :body_multiloc, 'Multi-locale field with the initiative body', extra: 'Required if not draft'
-      parameter :location_description, 'A human readable description of the location the initiative applies to'
+      parameter :publication_status
+      parameter :title_multiloc
+      parameter :body_multiloc
+      parameter :location_description
     end
 
     let(:initiative) { build(:initiative) }
@@ -25,7 +25,7 @@ resource 'Initiatives' do
     let(:title_multiloc) { initiative.title_multiloc }
     let(:body_multiloc) { initiative.body_multiloc }
 
-    example 'Toxicity detection job is enqueued when creating an initiative' do
+    example 'Toxicity detection job is enqueued when creating an initiative', document: false do
       SettingsService.new.activate_feature! 'moderation'
       SettingsService.new.activate_feature! 'flag_inappropriate_content'
       expect {
@@ -42,10 +42,10 @@ resource 'Initiatives' do
     end
 
     with_options scope: :initiative do
-      parameter :title_multiloc, 'Multi-locale field with the initiative title', extra: 'Maximum 100 characters'
-      parameter :body_multiloc, 'Multi-locale field with the initiative body', extra: 'Required if not draft'
-      parameter :location_description, 'A human readable description of the location the initiative applies to'
-      parameter :topic_ids, 'Array of ids of the associated topics'
+      parameter :title_multiloc
+      parameter :body_multiloc
+      parameter :location_description
+      parameter :topic_ids
     end
 
     let(:id) { @initiative.id }
@@ -54,7 +54,7 @@ resource 'Initiatives' do
     describe do
       let(:location_description) { 'Watkins Road 8' }
 
-      example 'Toxicity detection job is enqueued when updating an initiative\'s title' do
+      example 'Toxicity detection job is enqueued when updating an initiative\'s title', document: false do
         expect {
           do_request
         }.to have_enqueued_job(ToxicityDetectionJob).with(@initiative, attributes: [:location_description])
@@ -64,7 +64,7 @@ resource 'Initiatives' do
     describe do
       let(:topic_ids) { [create(:topic).id] }
 
-      example 'No toxicity detection job is enqueued when updating initiative attributes without text' do
+      example 'No toxicity detection job is enqueued when updating initiative attributes without text', document: false do
         expect {
           do_request
         }.not_to have_enqueued_job(ToxicityDetectionJob)

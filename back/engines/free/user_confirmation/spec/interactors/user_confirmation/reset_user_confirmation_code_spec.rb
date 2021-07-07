@@ -6,7 +6,7 @@ RSpec.describe UserConfirmation::ResetUserConfirmationCode do
   let(:context) { {} }
 
   before do
-    AppConfiguration.instance.activate_feature!('user_confirmation')
+    SettingsService.new.activate_feature! 'user_confirmation'
   end
 
   context 'when the confirmation code generation mechanism is broken' do

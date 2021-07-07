@@ -145,7 +145,7 @@ resource "Users" do
 
       context 'when the user_confirmation module is active' do
         before do
-          AppConfiguration.instance.activate_feature!('user_confirmation')
+          SettingsService.new.activate_feature! 'user_confirmation'
         end
 
         example_request 'Registration is not completed by default' do
@@ -595,7 +595,7 @@ resource "Users" do
       # NOTE: To be included in an upcoming iteration
       # context 'when the user_confirmation module is active' do
       #   before do
-      #     AppConfiguration.instance.activate_feature!('user_confirmation')
+      #     SettingsService.new.activate_feature! 'user_confirmation'
       #   end
 
       #   describe 'Changing the email' do

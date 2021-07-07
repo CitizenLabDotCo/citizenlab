@@ -11,15 +11,15 @@ import NLPFlagNotification from './citizen/components/NLPFlagNotification';
 import { INLPFlagNotificationData } from 'services/notifications';
 
 type RenderOnSelectedTabValueProps = {
-  isWarningsTabSelected: boolean;
+  isTabSelected: boolean;
   children: ReactNode;
 };
 
 const RenderOnSelectedTabValue = ({
-  isWarningsTabSelected,
+  isTabSelected,
   children,
 }: RenderOnSelectedTabValueProps) => {
-  if (!isWarningsTabSelected) return null;
+  if (!isTabSelected) return null;
   return <>{children}</>;
 };
 
@@ -35,7 +35,7 @@ const configuration: ModuleConfiguration = {
       ...otherProps
     }) => {
       return (
-        <RenderOnSelectedTabValue isWarningsTabSelected={isWarningsTabSelected}>
+        <RenderOnSelectedTabValue isTabSelected={isWarningsTabSelected}>
           <RemoveFlagButton {...otherProps} />
         </RenderOnSelectedTabValue>
       );
@@ -44,20 +44,18 @@ const configuration: ModuleConfiguration = {
       isWarningsTabSelected,
     }) => {
       return (
-        <RenderOnSelectedTabValue isWarningsTabSelected={isWarningsTabSelected}>
+        <RenderOnSelectedTabValue isTabSelected={isWarningsTabSelected}>
           <EmptyMessageModerationsWithFlag />
         </RenderOnSelectedTabValue>
       );
     },
     'app.modules.commercial.moderation.admin.containers.ModerationRow.content': ({
-      isWarningsTabSelected,
       inappropriateContentFlagId,
     }) => {
       if (inappropriateContentFlagId) {
         return (
           <InappropriateContentWarning
             inappropriateContentFlagId={inappropriateContentFlagId}
-            isWarningsTabSelected={isWarningsTabSelected}
           />
         );
       }

@@ -2702,7 +2702,6 @@
   "app.modules.commercial.flag_inappropriate_content.admin.components.noWarningItems": "",
   "app.modules.commercial.flag_inappropriate_content.admin.components.removeWarning": "",
   "app.modules.commercial.flag_inappropriate_content.admin.components.userFlaggedWarningText": "",
-  "app.modules.commercial.flag_inappropriate_content.admin.components.warningTooltip": "",
   "app.modules.commercial.flag_inappropriate_content.admin.components.warnings": "",
   "app.modules.commercial.flag_inappropriate_content.citizen.components.inappropriateContentAutoDetected": "",
   "app.modules.granular_permissions.admin.components.projectPermissionsTab": "Droits d'accès",
