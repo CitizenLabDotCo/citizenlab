@@ -46,6 +46,7 @@ const CategoriesContainer = styled.div`
   align-items: center;
   .categoryTag {
     margin-right: 8px;
+    margin-bottom: 8px;
   }
 `;
 

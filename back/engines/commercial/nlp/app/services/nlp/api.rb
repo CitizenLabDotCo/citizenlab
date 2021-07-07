@@ -10,7 +10,7 @@ module NLP
 
     delegate :post, :base_uri, :get, to: :class
 
-    def initialize(base_uri)
+    def initialize(base_uri = ENV.fetch('CL2_NLP_HOST'))
       base_uri(base_uri)
     end
 
@@ -36,9 +36,9 @@ module NLP
 
     def clustering(tenant_id, locale, options = {})
       body = { locale: locale }
-      body[:idea_ids]   = options[:idea_ids]   if options[:idea_ids]
+      body[:idea_ids] = options[:idea_ids] if options[:idea_ids]
       body[:n_clusters] = options[:n_clusters] if options[:n_clusters]
-      body[:max_depth]  = options[:max_depth]  if options[:max_depth]
+      body[:max_depth] = options[:max_depth] if options[:max_depth]
 
       resp = post(
         "/v1/tenants/#{tenant_id}/ideas/clustering",
@@ -46,10 +46,9 @@ module NLP
         headers: { 'Content-Type' => 'application/json' },
         timeout: LONG_TIMEOUT
       )
-      unless resp.success?
-        raise ClErrors::TransactionError.new(error_key: resp['code'])
-      end
-      resp.parsed_response.dig('data')
+      raise ClErrors::TransactionError.new(error_key: resp['code']) unless resp.success?
+
+      resp.parsed_response['data']
     end
 
     def ideas_classification(tenant_id, locale)
@@ -71,10 +70,9 @@ module NLP
         headers: { 'Content-Type' => 'application/json' },
         timeout: LONG_TIMEOUT
       )
-      unless resp.success?
-        raise ClErrors::TransactionError.new(error_key: resp['code'])
-      end
-      resp.parsed_response.dig('data')
+      raise ClErrors::TransactionError.new(error_key: resp['code']) unless resp.success?
+
+      resp.parsed_response['data']
     end
 
     def tag_suggestions(body)
@@ -84,10 +82,9 @@ module NLP
         headers: { 'Content-Type' => 'application/json' },
         timeout: LONG_TIMEOUT
       )
-      unless resp.success?
-        raise ClErrors::TransactionError.new(error_key: resp['code'])
-      end
-      resp.parsed_response.dig('data')
+      raise ClErrors::TransactionError.new(error_key: resp['code']) unless resp.success?
+
+      resp.parsed_response['data']
     end
 
     def zeroshot_classification(body)
@@ -97,10 +94,9 @@ module NLP
         headers: { 'Content-Type' => 'application/json' },
         timeout: LONG_TIMEOUT
       )
-      unless resp.success?
-        raise ClErrors::TransactionError.new(error_key: resp['code'])
-      end
-      resp.parsed_response.dig('data')
+      raise ClErrors::TransactionError.new(error_key: resp['code']) unless resp.success?
+      
+      resp.parsed_response['data']
     end
 
     def cancel_task(task_id)
@@ -118,10 +114,9 @@ module NLP
         headers: { 'Content-Type' => 'application/json' },
         timeout: LONG_TIMEOUT
       )
-      unless resp.success?
-        raise ClErrors::TransactionError.new(error_key: resp['code'])
-      end
-      resp.parsed_response.dig('data')
+      raise ClErrors::TransactionError.new(error_key: resp['code']) unless resp.success?
+      
+      resp.parsed_response['data']
     end
   end
 end

@@ -10,16 +10,14 @@ import { LiveAnnouncer } from 'react-aria-live';
 
 const AllTheProviders = ({ children }) => {
   return (
-    <div id="modal-portal">
-      <LiveAnnouncer>
-        <ThemeProvider theme={getTheme(null)}>
-          <GlobalStyle />
-          <IntlProvider locale="en" messages={messages}>
-            {children}
-          </IntlProvider>
-        </ThemeProvider>
-      </LiveAnnouncer>
-    </div>
+    <LiveAnnouncer>
+      <ThemeProvider theme={getTheme(null)}>
+        <GlobalStyle />
+        <IntlProvider locale="en" messages={messages}>
+          <div id="modal-portal">{children}</div>
+        </IntlProvider>
+      </ThemeProvider>
+    </LiveAnnouncer>
   );
 };
 

@@ -40,6 +40,7 @@ import {
   updateAppConfiguration,
   IUpdatedAppConfigurationProperties,
   IAppConfigurationData,
+  TAppConfigurationSetting,
 } from 'services/appConfiguration';
 
 // Utils
@@ -262,37 +263,42 @@ class SettingsGeneralTab extends PureComponent<
     }
   };
 
-  handleSettingChange = (settingName: string, settingValue: any) => {
+  handleSettingChange = (settingName: TAppConfigurationSetting) => {
     const { appConfiguration } = this.state;
 
-    if (isNilOrError(appConfiguration)) {
-      return;
-    }
+    if (!isNilOrError(appConfiguration)) {
+      const setting = appConfiguration.attributes.settings[settingName];
 
-    this.setState({
-      settingsSavingError: false,
-    });
-
-    updateAppConfiguration({
-      settings: {
-        [settingName]: settingValue,
-      },
-    })
-      .then(() => {
+      if (setting) {
+        const oldSettingEnabled = setting.enabled;
         this.setState({
-          settingsUpdatedSuccessFully: true,
+          settingsSavingError: false,
         });
-        setTimeout(() => {
-          this.setState({
-            settingsUpdatedSuccessFully: false,
+
+        updateAppConfiguration({
+          settings: {
+            [settingName]: {
+              enabled: !oldSettingEnabled,
+            },
+          },
+        })
+          .then(() => {
+            this.setState({
+              settingsUpdatedSuccessFully: true,
+            });
+            setTimeout(() => {
+              this.setState({
+                settingsUpdatedSuccessFully: false,
+              });
+            }, 2000);
+          })
+          .catch((_error) => {
+            this.setState({
+              settingsSavingError: true,
+            });
           });
-        }, 2000);
-      })
-      .catch((_error) => {
-        this.setState({
-          settingsSavingError: true,
-        });
-      });
+      }
+    }
   };
 
   render() {

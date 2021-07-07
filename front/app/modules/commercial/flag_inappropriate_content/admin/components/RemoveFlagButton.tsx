@@ -9,26 +9,30 @@ import messages from './messages';
 
 interface Props {
   processing: boolean;
-  onClick: () => void;
-  activeFlagsCount: number;
+  onRemoveFlags: () => void;
+  selectedActiveFlagsCount: number;
 }
 
-const RemoveFlagButton = ({ processing, onClick, activeFlagsCount }: Props) => {
+const RemoveFlagButton = ({
+  processing,
+  onRemoveFlags,
+  selectedActiveFlagsCount,
+}: Props) => {
   const locale = useLocale();
 
-  if (!isNilOrError(locale) && activeFlagsCount > 0) {
+  if (!isNilOrError(locale) && selectedActiveFlagsCount > 0) {
     return (
       <Button
         icon="exclamation-trapezium-strikethrough"
         buttonStyle="cl-blue"
         processing={processing}
-        onClick={onClick}
+        onClick={onRemoveFlags}
         locale={locale}
       >
         <FormattedMessage
           {...messages.removeWarning}
           values={{
-            numberOfItems: activeFlagsCount,
+            numberOfItems: selectedActiveFlagsCount,
           }}
         />
       </Button>

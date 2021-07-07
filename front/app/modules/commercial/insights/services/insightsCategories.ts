@@ -26,7 +26,7 @@ export interface IInsightsCategories {
 }
 
 const getInsightsCategoriesEndpoint = (viewId: string) =>
-  `insights/views/${viewId}/categories/`;
+  `insights/views/${viewId}/categories`;
 
 export function insightsCategoriesStream(
   insightsViewId: string,
