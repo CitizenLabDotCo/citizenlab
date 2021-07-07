@@ -28,6 +28,7 @@ export async function batchAssignCategories(
     partialApiEndpoint: [
       `insights/views/${insightsViewId}/inputs`,
       `insights/views/${insightsViewId}/categories`,
+      `insights/views/${insightsViewId}/stats/inputs_count`,
     ],
   });
   return res;
@@ -49,6 +50,7 @@ export async function batchUnassignCategories(
     partialApiEndpoint: [
       `insights/views/${insightsViewId}/inputs`,
       `insights/views/${insightsViewId}/categories`,
+      `insights/views/${insightsViewId}/stats/inputs_count`,
     ],
   });
   return res;
