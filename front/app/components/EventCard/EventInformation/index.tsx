@@ -76,18 +76,15 @@ const EventTimeAndLocationContainer = styled.div`
 `;
 
 const Time = styled.time`
+  margin-right: 23px;
+
   ${media.smallerThanMinTablet`
     margin-bottom: 5px;
+    margin-right: 0px;
   `}
 `;
 
-const Location = styled.div`
-  margin-left: 23px;
-
-  ${media.smallerThanMinTablet`
-    margin-left: 0px;
-  `}
-`;
+const Location = styled.div``;
 
 interface StyledIconProps {
   width: number;
