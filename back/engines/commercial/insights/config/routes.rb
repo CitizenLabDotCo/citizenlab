@@ -31,6 +31,10 @@ Insights::Engine.routes.draw do
               post :assign_categories, controller: 'batch_assignments'
               post :remove_categories, controller: 'batch_assignments'
             end
+
+            scope '/stats' do
+              get :inputs_count, controller: 'stats_inputs', action: :inputs_count
+            end
           end
         end
       end

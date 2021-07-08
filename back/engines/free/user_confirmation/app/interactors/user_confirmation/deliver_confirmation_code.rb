@@ -17,7 +17,7 @@ module UserConfirmation
         ConfirmationsMailer.with(user: user).send_confirmation_code.deliver_later(priority: 1)
       end
 
-      user.update_attribute(email_confirmation_code_sent_at: Time.zone.now)
+      user.update_attributes(email_confirmation_code_sent_at: Time.zone.now)
     end
   end
 end
