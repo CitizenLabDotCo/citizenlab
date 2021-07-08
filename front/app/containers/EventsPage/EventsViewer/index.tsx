@@ -2,6 +2,7 @@ import React, { memo, useState, useEffect } from 'react';
 
 // components
 import TopBar from './TopBar';
+import EventCard from 'components/EventCard';
 import Pagination from 'components/Pagination';
 
 // svg
@@ -19,13 +20,12 @@ import { IEventData } from 'services/events';
 import { sliceEventsToPage, getNumberOfPages } from './eventsViewerUtils';
 import { isNilOrError } from 'utils/helperUtils';
 
-const PlaceHolder = styled.div<{ first: boolean }>`
-  width: 100%;
-  height: 237px;
-  margin-top: ${({ first }) => (first ? '29px' : '39px')};
-  padding: 30px;
-  font-size: ${fontSizes.xxl}px;
-  border: 1px dotted;
+interface IStyledEventCard {
+  last: boolean;
+}
+
+const StyledEventCard = styled(EventCard)<IStyledEventCard>`
+  margin-bottom: ${({ last }) => (last ? 0 : 39)}px;
 `;
 
 const NoEventsContainer = styled.figure`
@@ -90,9 +90,12 @@ const EventsViewer = memo<Props>(
 
         {visibleEvents.length > 0 &&
           visibleEvents.map((event, i) => (
-            <PlaceHolder key={event.id} first={i === 0}>
-              {event.id}
-            </PlaceHolder>
+            <StyledEventCard
+              event={event}
+              showProjectTitle={true}
+              last={visibleEvents.length - 1 === i}
+              key={event.id}
+            />
           ))}
 
         {visibleEvents.length === 0 && (

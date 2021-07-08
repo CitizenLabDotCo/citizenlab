@@ -18,6 +18,7 @@ const Container = styled.div`
   justify-content: space-between;
   padding-bottom: 14px;
   border-bottom: solid 1px #ccc;
+  margin-bottom: 29px;
 `;
 
 const Title = styled.h1`
