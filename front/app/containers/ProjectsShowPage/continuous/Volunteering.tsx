@@ -5,10 +5,8 @@ import { isNilOrError } from 'utils/helperUtils';
 import ContentContainer from 'components/ContentContainer';
 import Volunteering from '../shared/volunteering';
 import { ScreenReaderOnly } from 'utils/a11y';
-import {
-  SectionContainer,
-  maxPageWidth,
-} from 'containers/ProjectsShowPage/styles';
+import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
+import SectionContainer from 'components/SectionContainer';
 
 // hooks
 import useProject from 'hooks/useProject';
