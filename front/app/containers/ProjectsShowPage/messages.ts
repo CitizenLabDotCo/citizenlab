@@ -353,14 +353,6 @@ export default defineMessages({
     id: 'app.containers.Projects.seeLess',
     defaultMessage: 'See less',
   },
-  startsAt: {
-    id: 'app.containers.Projects.startsAt',
-    defaultMessage: 'Starts at',
-  },
-  endsAt: {
-    id: 'app.containers.Projects.endsAt',
-    defaultMessage: 'Ends at',
-  },
   xEvents: {
     id: 'app.containers.Projects.xEvents',
     defaultMessage: '{eventsCount, plural, one {# event} other {# events}}',

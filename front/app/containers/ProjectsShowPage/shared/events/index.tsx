@@ -6,7 +6,7 @@ import useProject from 'hooks/useProject';
 import useEvents from 'hooks/useEvents';
 
 // components
-import EventCard from './EventCard';
+import EventCard from 'components/EventCard';
 import ContentContainer from 'components/ContentContainer';
 import {
   ProjectPageSectionTitle,
@@ -47,7 +47,11 @@ const EventsContainer = memo<Props>(({ projectId, className }) => {
               <FormattedMessage {...messages.events} />
             </ProjectPageSectionTitle>
             {events.map((event) => (
-              <StyledEventCard key={event.id} event={event} />
+              <StyledEventCard
+                key={event.id}
+                event={event}
+                showProjectTitle={true}
+              />
             ))}
           </SectionContainer>
         </ContentContainer>
