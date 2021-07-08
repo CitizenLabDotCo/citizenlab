@@ -15,4 +15,12 @@ module Locatable
   def location_point_geojson= geojson_point
     self.location_point = RGeo::GeoJSON.decode(geojson_point)
   end
+
+  def latitude
+    RGeo::GeoJSON.encode(location_point)&.dig('coordinates',1)
+  end
+
+  def longitude
+    RGeo::GeoJSON.encode(location_point)&.dig('coordinates',0)
+  end
 end
