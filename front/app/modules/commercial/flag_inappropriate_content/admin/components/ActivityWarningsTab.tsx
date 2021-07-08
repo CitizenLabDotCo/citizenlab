@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { InsertConfigurationOptions } from 'typings';
 
 // i18n
@@ -31,9 +31,8 @@ const ActivityWarningsTab = ({
           label: `${formatMessage(messages.warnings)} (${activeFlagsCount})`,
         },
         insertAfterName: 'read',
-        reinsertAfterUpdate: true,
       }),
-    [activeFlagsCount, onData]
+    [activeFlagsCount]
   );
   return null;
 };

@@ -528,9 +528,6 @@ export const insertConfiguration = <T extends { name: string }>({
   configuration,
   insertAfterName,
   insertBeforeName,
-  // if the inserted element contains data that's updated,
-  // we can force the element to be reinserted
-  reinsertAfterUpdate,
 }: InsertConfigurationOptions<T>) => (items: T[]): T[] => {
   const itemAlreadyInserted = items.some(
     (item) => item.name === configuration.name
@@ -549,25 +546,12 @@ export const insertConfiguration = <T extends { name: string }>({
   );
 
   if (itemAlreadyInserted) {
-    if (reinsertAfterUpdate) {
-      // remove at insertIndex (which is where the item is currently at)
-      // insert again at insertIndex
-
-      items.splice(insertIndex, 1);
-
-      return [
-        ...items.slice(0, insertIndex),
-        configuration,
-        ...items.slice(insertIndex),
-      ];
-    }
-
-    return [...items];
-  } else {
-    return [
-      ...items.slice(0, insertIndex),
-      configuration,
-      ...items.slice(insertIndex),
-    ];
+    items.splice(insertIndex, 1);
   }
+
+  return [
+    ...items.slice(0, insertIndex),
+    configuration,
+    ...items.slice(insertIndex),
+  ];
 };
