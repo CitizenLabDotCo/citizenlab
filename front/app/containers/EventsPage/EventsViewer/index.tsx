@@ -7,12 +7,17 @@ import Pagination from 'components/Pagination';
 // svg
 import noEventsIllustration from './NoEventsPicture.svg';
 
+// hooks
+import useEvents from 'hooks/useEvents';
+
 // styling
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 
 // other
+import { IEventData } from 'services/events';
 import { sliceEventsToPage, getNumberOfPages } from './eventsViewerUtils';
+import { isNilOrError } from 'utils/helperUtils';
 
 const PlaceHolder = styled.div<{ first: boolean }>`
   width: 100%;
@@ -51,33 +56,46 @@ const StyledPagination = styled(Pagination)`
 interface Props {
   title: string;
   fallbackMessage: string;
-  events: number[];
+  eventsTime: 'past' | 'future';
   className?: string;
 }
 
 const EVENTS_PER_PAGE = 10;
 
 const EventsViewer = memo<Props>(
-  ({ title, events, className, fallbackMessage }) => {
+  ({ title, fallbackMessage, eventsTime, className }) => {
+    const [projectIds, setProjectIds] = useState<string[]>([]);
+
+    const events = useEvents(
+      projectIds,
+      eventsTime === 'future',
+      eventsTime === 'past'
+    );
+
     const [currentPage, setCurrentPage] = useState<number>(1);
-    const [visibleEvents, setVisibleEvents] = useState<number[]>([]);
+    const [visibleEvents, setVisibleEvents] = useState<IEventData[]>([]);
 
     useEffect(() => {
+      if (isNilOrError(events)) {
+        setVisibleEvents([]);
+        return;
+      }
+
       setVisibleEvents(sliceEventsToPage(events, currentPage, EVENTS_PER_PAGE));
     }, [events, currentPage]);
 
     return (
       <div className={className}>
-        <TopBar title={title} />
+        <TopBar title={title} setProjectIds={setProjectIds} />
 
         {visibleEvents.length > 0 &&
-          visibleEvents.map((e, i) => (
-            <PlaceHolder key={e} first={i === 0}>
-              {e}
+          visibleEvents.map((event, i) => (
+            <PlaceHolder key={event.id} first={i === 0}>
+              {event.id}
             </PlaceHolder>
           ))}
 
-        {events.length === 0 && (
+        {visibleEvents.length === 0 && (
           <NoEventsContainer>
             <NoEventsIllustration src={noEventsIllustration} />
 
@@ -85,7 +103,7 @@ const EventsViewer = memo<Props>(
           </NoEventsContainer>
         )}
 
-        {events.length > 10 && (
+        {!isNilOrError(events) && events.length > 10 && (
           <StyledPagination
             currentPage={currentPage}
             totalPages={getNumberOfPages(events.length, EVENTS_PER_PAGE)}

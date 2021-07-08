@@ -1,5 +1,7 @@
+import { IEventData } from 'services/events';
+
 export function sliceEventsToPage(
-  events: number[],
+  events: IEventData[],
   currentPage: number,
   eventsPerPage: number
 ) {

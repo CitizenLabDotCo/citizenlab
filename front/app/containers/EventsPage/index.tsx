@@ -36,20 +36,14 @@ export default () => {
     return null;
   }
 
-  const upcomingEvents = Array(15)
-    .fill(0)
-    .map((_, i) => i + 1);
-
-  const pastEvents = [];
-
   return (
     <>
       <EventsPageMeta />
 
       <SectionContainer>
         <StyledContentContainer>
-          <UpcomingEvents upcomingEvents={upcomingEvents} />
-          <PastEvents pastEvents={pastEvents} />
+          <UpcomingEvents />
+          <PastEvents />
         </StyledContentContainer>
       </SectionContainer>
     </>

@@ -50,25 +50,28 @@ const FilterIcon = styled(Icon)`
 
 interface Props {
   title: string;
+  setProjectIds: (value: any) => void;
 }
 
-const TopBar = memo<Props & InjectedIntlProps>(({ title, intl }) => {
-  const theme: any = useTheme();
+const TopBar = memo<Props & InjectedIntlProps>(
+  ({ title, setProjectIds, intl }) => {
+    const theme: any = useTheme();
 
-  return (
-    <Container>
-      <Title>{title}</Title>
+    return (
+      <Container>
+        <Title>{title}</Title>
 
-      <ProjectFilterDropdownPositioner>
-        <FilterIcon name="filter-funnel" />
-        <ProjectFilterDropdown
-          title={intl.formatMessage(messages.filterDropdownTitle)}
-          onChange={console.log}
-          textColor={theme.colorText}
-        />
-      </ProjectFilterDropdownPositioner>
-    </Container>
-  );
-});
+        <ProjectFilterDropdownPositioner>
+          <FilterIcon name="filter-funnel" />
+          <ProjectFilterDropdown
+            title={intl.formatMessage(messages.filterDropdownTitle)}
+            onChange={setProjectIds}
+            textColor={theme.colorText}
+          />
+        </ProjectFilterDropdownPositioner>
+      </Container>
+    );
+  }
+);
 
 export default injectIntl(TopBar);
