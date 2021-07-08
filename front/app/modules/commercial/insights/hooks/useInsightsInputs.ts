@@ -7,7 +7,7 @@ import {
 
 const defaultPageSize = 20;
 
-type QueryParameters = {
+export type QueryParameters = {
   category: string;
   pageSize: number;
   pageNumber: number;
@@ -29,14 +29,13 @@ const useInsightsInputs = (
   const [insightsInputs, setInsightsInputs] = useState<
     IInsightsInputData[] | undefined | null | Error
   >(undefined);
+  const [lastPage, setLastPage] = useState<number | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
 
   const pageNumber = queryParameters?.pageNumber;
   const category = queryParameters?.category;
   const search = queryParameters?.search;
   const sort = queryParameters?.sort || 'approval';
-
-  const [lastPage, setLastPage] = useState<number | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     setLoading(true);

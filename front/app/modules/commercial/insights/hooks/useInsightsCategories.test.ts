@@ -2,6 +2,7 @@ import { renderHook } from '@testing-library/react-hooks';
 import useInsightsCategories from './useInsightsCategories';
 import { Observable, Subscription } from 'rxjs';
 import { waitFor } from 'utils/testUtils/rtl';
+import { delay } from 'rxjs/operators';
 import { insightsCategoriesStream } from 'modules/commercial/insights/services/insightsCategories';
 
 const viewId = '1';
@@ -26,8 +27,8 @@ const mockCategories = {
 };
 
 let mockObservable = new Observable((subscriber) => {
-  subscriber.next(setTimeout(() => mockCategories, 0));
-});
+  subscriber.next(mockCategories);
+}).pipe(delay(1));
 
 jest.mock('modules/commercial/insights/services/insightsCategories', () => {
   return {
@@ -40,11 +41,11 @@ jest.mock('modules/commercial/insights/services/insightsCategories', () => {
 });
 
 describe('useInsightsCategories', () => {
-  it('should call insightsCategoriesStream with correct arguments', async () => {
+  it('should call insightsCategoriesStream with correct arguments', () => {
     renderHook(() => useInsightsCategories(viewId));
     expect(insightsCategoriesStream).toHaveBeenCalledWith(viewId);
   });
-  it('should return data when data', async () => {
+  it('should return data when data', () => {
     const { result } = renderHook(() => useInsightsCategories(viewId));
     expect(result.current).toBe(undefined); // initially, the hook returns undefined
     waitFor(() => expect(result.current).toBe(mockCategories.data));

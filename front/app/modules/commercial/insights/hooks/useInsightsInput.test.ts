@@ -2,6 +2,7 @@ import { renderHook } from '@testing-library/react-hooks';
 import useInsightsInput from './useInsightsInput';
 import { Observable, Subscription } from 'rxjs';
 import { waitFor } from 'utils/testUtils/rtl';
+import { delay } from 'rxjs/operators';
 import { insightsInputStream } from 'modules/commercial/insights/services/insightsInputs';
 
 const viewId = '1';
@@ -29,8 +30,8 @@ const mockInput = {
 };
 
 let mockObservable = new Observable((subscriber) => {
-  subscriber.next(setTimeout(() => mockInput, 0));
-});
+  subscriber.next(mockInput);
+}).pipe(delay(1));
 
 jest.mock('modules/commercial/insights/services/insightsInputs', () => {
   return {
@@ -43,11 +44,11 @@ jest.mock('modules/commercial/insights/services/insightsInputs', () => {
 });
 
 describe('useInsightsInput', () => {
-  it('should call insightsInputStream with correct arguments', async () => {
+  it('should call insightsInputStream with correct arguments', () => {
     renderHook(() => useInsightsInput(viewId, inputId));
     expect(insightsInputStream).toHaveBeenCalledWith(viewId, inputId);
   });
-  it('should return data when data', async () => {
+  it('should return data when data', () => {
     const { result } = renderHook(() => useInsightsInput(viewId, inputId));
     expect(result.current).toBe(undefined); // initially, the hook returns undefined
     waitFor(() => expect(result.current).toBe(mockInput.data));

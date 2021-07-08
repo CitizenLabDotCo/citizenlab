@@ -2,6 +2,7 @@ import { renderHook } from '@testing-library/react-hooks';
 import useInsightsCategory from './useInsightsCategory';
 import { Observable, Subscription } from 'rxjs';
 import { waitFor } from 'utils/testUtils/rtl';
+import { delay } from 'rxjs/operators';
 import { insightsCategoryStream } from 'modules/commercial/insights/services/insightsCategories';
 
 const viewId = '1';
@@ -18,8 +19,8 @@ const mockCategory = {
 };
 
 let mockObservable = new Observable((subscriber) => {
-  subscriber.next(setTimeout(() => mockCategory, 0));
-});
+  subscriber.next(mockCategory);
+}).pipe(delay(1));
 
 jest.mock('modules/commercial/insights/services/insightsCategories', () => {
   return {
@@ -32,11 +33,11 @@ jest.mock('modules/commercial/insights/services/insightsCategories', () => {
 });
 
 describe('useInsightsCategory', () => {
-  it('should call insightsCategoryStream with correct arguments', async () => {
+  it('should call insightsCategoryStream with correct arguments', () => {
     renderHook(() => useInsightsCategory(viewId, categoryId));
     expect(insightsCategoryStream).toHaveBeenCalledWith(viewId, categoryId);
   });
-  it('should return data when data', async () => {
+  it('should return data when data', () => {
     const { result } = renderHook(() =>
       useInsightsCategory(viewId, categoryId)
     );

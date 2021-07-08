@@ -2,6 +2,7 @@ import { renderHook } from '@testing-library/react-hooks';
 import useInsightsViews from './useInsightsViews';
 import { Observable, Subscription } from 'rxjs';
 import { waitFor } from 'utils/testUtils/rtl';
+import { delay } from 'rxjs/operators';
 import { insightsViewsStream } from 'modules/commercial/insights/services/insightsViews';
 
 const mockViews = {
@@ -26,8 +27,8 @@ const mockViews = {
 };
 
 let mockObservable = new Observable((subscriber) => {
-  subscriber.next(setTimeout(() => mockViews, 0));
-});
+  subscriber.next(mockViews);
+}).pipe(delay(1));
 
 jest.mock('modules/commercial/insights/services/insightsViews', () => {
   return {
