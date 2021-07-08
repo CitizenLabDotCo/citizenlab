@@ -19,6 +19,7 @@ import Outlet from 'components/Outlet';
 
 // hooks
 import useModerations from '../../hooks/useModerations';
+import useModerationsCount from '../../hooks/useModerationsCount';
 
 // services
 import {
@@ -253,7 +254,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
     pageSize: selectedPageSize,
     moderationStatus: 'unread',
   });
-  const moderationsWithActiveFlag = useModerations({
+  const moderationsWithActiveFlagCount = useModerationsCount({
     isFlagged: true,
   });
 
@@ -453,8 +454,8 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
                   id="app.modules.commercial.moderation.admin.containers.tabs"
                   onData={handleData}
                   activeFlagsCount={
-                    !isNilOrError(moderationsWithActiveFlag.list)
-                      ? moderationsWithActiveFlag.list.length
+                    !isNilOrError(moderationsWithActiveFlagCount)
+                      ? moderationsWithActiveFlagCount.count
                       : 0
                   }
                 />
