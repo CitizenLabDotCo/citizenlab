@@ -56,7 +56,7 @@ resource 'Moderations' do
       describe do
         let(:is_flagged) { true }
         
-        example_request "Count only moderations for ideas or comments" do
+        example_request "Count only moderations that are flagged" do
           expect(status).to eq(200)
           json_response = json_parse(response_body)
           expect(json_response[:count]).to eq 1
