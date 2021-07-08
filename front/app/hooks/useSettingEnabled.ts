@@ -1,21 +1,18 @@
 import { useState, useEffect } from 'react';
-import { currentAppConfigurationStream } from 'services/appConfiguration';
+import useAppConfiguration from 'hooks/useAppConfiguration';
+import { isNilOrError } from 'utils/helperUtils';
 
 export default function useSettingEnabled(settingName: string) {
   const [settingEnabled, setSettingEnabled] = useState<boolean | null>(null);
+  const appConfiguration = useAppConfiguration();
 
   useEffect(() => {
-    const observable = currentAppConfigurationStream().observable;
+    if (isNilOrError(appConfiguration)) return;
+    const setting = appConfiguration.data.attributes.settings[settingName];
+    const settingIsEnabled = setting && setting.allowed && setting.enabled;
 
-    const subscription = observable.subscribe((configuration) => {
-      const setting = configuration.data.attributes.settings[settingName];
-      const settingIsEnabled = setting && setting.allowed && setting.enabled;
-
-      setSettingEnabled(!!settingIsEnabled);
-    });
-
-    return () => subscription.unsubscribe();
-  }, [settingName]);
+    setSettingEnabled(!!settingIsEnabled);
+  }, [settingName, appConfiguration]);
 
   return settingEnabled;
 }
