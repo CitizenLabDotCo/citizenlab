@@ -50,7 +50,7 @@ module FlagInappropriateContent
     end
 
     def request_toxicity_detection texts
-      @api ||= NLP::API.new ENV.fetch('CL2_NLP_HOST')
+      @api ||= NLP::Api.new ENV.fetch('CL2_NLP_HOST')
       @api.toxicity_detection texts
     end
 
