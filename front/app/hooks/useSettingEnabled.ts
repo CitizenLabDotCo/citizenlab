@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { currentAppConfigurationStream } from 'services/appConfiguration';
 
 export default function useSettingEnabled(settingName: string) {
-  const [settingEnabled, setSettingEnabled] = useState<string>('pending');
+  const [settingEnabled, setSettingEnabled] = useState<boolean | null>(null);
 
   useEffect(() => {
     const observable = currentAppConfigurationStream().observable;
@@ -11,7 +11,7 @@ export default function useSettingEnabled(settingName: string) {
       const setting = configuration.data.attributes.settings[settingName];
       const settingIsEnabled = setting && setting.allowed && setting.enabled;
 
-      setSettingEnabled(settingIsEnabled ? 'enabled' : 'disabled');
+      setSettingEnabled(!!settingIsEnabled);
     });
 
     return () => subscription.unsubscribe();

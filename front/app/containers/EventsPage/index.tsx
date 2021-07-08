@@ -28,9 +28,9 @@ export default () => {
   const eventsPageEnabled = useSettingEnabled('events_page');
   const locale = useLocale();
 
-  if (eventsPageEnabled === 'pending' || isNilOrError(locale)) return null;
+  if (eventsPageEnabled === null || isNilOrError(locale)) return null;
 
-  if (eventsPageEnabled === 'disabled') {
+  if (!eventsPageEnabled) {
     clHistory.replace(`/${locale}/*`);
     window.history.replaceState(null, '', `/${locale}/events`);
     return null;

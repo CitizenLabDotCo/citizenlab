@@ -82,9 +82,9 @@ const InitiativeIndexPage = memo<Props>(() => {
   const initiativesEnabled = useSettingEnabled('initiatives');
   const locale = useLocale();
 
-  if (initiativesEnabled === 'pending' || isNilOrError(locale)) return null;
+  if (initiativesEnabled === null || isNilOrError(locale)) return null;
 
-  if (initiativesEnabled === 'disabled') {
+  if (!initiativesEnabled) {
     clHistory.replace(`/${locale}/*`);
     window.history.replaceState(null, '', `/${locale}/initiatives`);
     return null;
