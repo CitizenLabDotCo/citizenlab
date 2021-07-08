@@ -2,6 +2,7 @@ import React, { memo, useState, useEffect } from 'react';
 
 // components
 import TopBar from './TopBar';
+import { Spinner } from 'cl2-component-library';
 import EventCard from 'components/EventCard';
 import Pagination from 'components/Pagination';
 
@@ -23,6 +24,10 @@ import { isNilOrError } from 'utils/helperUtils';
 interface IStyledEventCard {
   last: boolean;
 }
+
+const StyledSpinner = styled(Spinner)`
+  margin-top: 70px;
+`;
 
 const StyledEventCard = styled(EventCard)<IStyledEventCard>`
   margin-bottom: ${({ last }) => (last ? 0 : 39)}px;
@@ -74,45 +79,54 @@ const EventsViewer = memo<Props>(
 
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [visibleEvents, setVisibleEvents] = useState<IEventData[]>([]);
+    const [eventsHaveLoaded, setEventsHaveLoaded] = useState<boolean>(false);
 
     useEffect(() => {
       if (isNilOrError(events)) {
         setVisibleEvents([]);
+        setEventsHaveLoaded(false);
         return;
       }
 
       setVisibleEvents(sliceEventsToPage(events, currentPage, EVENTS_PER_PAGE));
+      setEventsHaveLoaded(true);
     }, [events, currentPage]);
 
     return (
       <div className={className}>
         <TopBar title={title} setProjectIds={setProjectIds} />
 
-        {visibleEvents.length > 0 &&
-          visibleEvents.map((event, i) => (
-            <StyledEventCard
-              event={event}
-              showProjectTitle={true}
-              last={visibleEvents.length - 1 === i}
-              key={event.id}
-            />
-          ))}
+        {!eventsHaveLoaded && <StyledSpinner />}
 
-        {visibleEvents.length === 0 && (
-          <NoEventsContainer>
-            <NoEventsIllustration src={noEventsIllustration} />
+        {eventsHaveLoaded && (
+          <>
+            {visibleEvents.length > 0 &&
+              visibleEvents.map((event, i) => (
+                <StyledEventCard
+                  event={event}
+                  showProjectTitle={true}
+                  last={visibleEvents.length - 1 === i}
+                  key={event.id}
+                />
+              ))}
 
-            <NoEventsText>{fallbackMessage}</NoEventsText>
-          </NoEventsContainer>
-        )}
+            {visibleEvents.length === 0 && (
+              <NoEventsContainer>
+                <NoEventsIllustration src={noEventsIllustration} />
 
-        {!isNilOrError(events) && events.length > 10 && (
-          <StyledPagination
-            currentPage={currentPage}
-            totalPages={getNumberOfPages(events.length, EVENTS_PER_PAGE)}
-            loadPage={setCurrentPage}
-            useColorsTheme
-          />
+                <NoEventsText>{fallbackMessage}</NoEventsText>
+              </NoEventsContainer>
+            )}
+
+            {!isNilOrError(events) && events.length > 10 && (
+              <StyledPagination
+                currentPage={currentPage}
+                totalPages={getNumberOfPages(events.length, EVENTS_PER_PAGE)}
+                loadPage={setCurrentPage}
+                useColorsTheme
+              />
+            )}
+          </>
         )}
       </div>
     );
