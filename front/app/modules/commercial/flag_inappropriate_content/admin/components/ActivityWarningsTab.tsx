@@ -28,11 +28,7 @@ const ActivityWarningsTab = ({
       onData({
         configuration: {
           name: 'warnings',
-          label: (
-            <span>
-              {`${formatMessage(messages.warnings)} (${activeFlagsCount})`}
-            </span>
-          ),
+          label: `${formatMessage(messages.warnings)} (${activeFlagsCount})`,
         },
         insertAfterName: 'read',
         reinsertAfterUpdate: true,
