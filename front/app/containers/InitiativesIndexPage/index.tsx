@@ -13,9 +13,17 @@ import InitiativeButton from 'components/InitiativeButton';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
+// hooks
+import useSettingEnabled from 'hooks/useSettingEnabled';
+import useLocale from 'hooks/useLocale';
+
 // style
 import styled from 'styled-components';
 import { media, fontSizes, colors } from 'utils/styleUtils';
+
+// other
+import { isNilOrError } from 'utils/helperUtils';
+import clHistory from 'utils/cl-router/history';
 
 const Container = styled.main``;
 
@@ -71,6 +79,17 @@ const Padding = styled.div`
 interface Props {}
 
 const InitiativeIndexPage = memo<Props>(() => {
+  const initiativesEnabled = useSettingEnabled('initiatives');
+  const locale = useLocale();
+
+  if (initiativesEnabled === 'pending' || isNilOrError(locale)) return null;
+
+  if (initiativesEnabled === 'disabled') {
+    clHistory.replace(`/${locale}/*`);
+    window.history.replaceState(null, '', `/${locale}/initiatives`);
+    return null;
+  }
+
   return (
     <>
       <InitiativesIndexMeta />
