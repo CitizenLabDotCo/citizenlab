@@ -161,9 +161,10 @@ resource "Moderations" do
     end
 
     get "web_api/v1/moderations/moderations_count" do
-      with_options scope: :moderation do
-        parameter :moderation_status, "Either #{Moderation::ModerationStatus::MODERATION_STATUSES.join(", ")}", required: true
-      end
+      parameter :moderation_status, "Filter by moderation status. One of #{Moderation::ModerationStatus::MODERATION_STATUSES.join(", ")}.", required: false
+      parameter :moderatable_types, "Filter by a given array of moderatable types. One (or more) of Idea, Initiative, Comment.", required: false
+      parameter :project_ids, "Filter by a given array of project IDs.", required: false
+      parameter :search, "Filter by searching in content title, and content body", required: false
 
       context "when admin" do
         before do
