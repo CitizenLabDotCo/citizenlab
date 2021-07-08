@@ -66,4 +66,8 @@ export default defineMessages({
     id: 'app.containers.landing.verifyNow',
     defaultMessage: 'Verify now',
   },
+  eventsWidgetTitle: {
+    id: 'app.containers.landing.eventsWidgetTitle',
+    defaultMessage: 'Upcoming events',
+  },
 });
