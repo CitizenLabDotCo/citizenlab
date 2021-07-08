@@ -2697,6 +2697,7 @@
   "app.errors.unknown_locale": "La langue {value} trouvée ligne {row} ne fait pas partie des langues paramétrées",
   "app.errors.unparseable_excel": "Le fichier Excel sélectionné n'a pas pu être traité.",
   "app.errors.view_name_taken": "A view with this name already exists",
+  "app.modules.commercial.flag_inappropriate_content.admin.components.flagTooltip": "",
   "app.modules.commercial.flag_inappropriate_content.admin.components.nlpFlaggedWarningText": "",
   "app.modules.commercial.flag_inappropriate_content.admin.components.noWarningItems": "",
   "app.modules.commercial.flag_inappropriate_content.admin.components.removeWarning": "",

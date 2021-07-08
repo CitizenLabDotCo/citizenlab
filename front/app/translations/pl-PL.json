@@ -2697,6 +2697,7 @@
   "app.errors.unknown_locale": "Język {value} znajdujący się w wierszu {row} nie jest skonfigurowany",
   "app.errors.unparseable_excel": "Wybrany plik Excela nie mógł zostać przetworzony.",
   "app.errors.view_name_taken": "Widok o tej nazwie już istnieje",
+  "app.modules.commercial.flag_inappropriate_content.admin.components.flagTooltip": "",
   "app.modules.commercial.flag_inappropriate_content.admin.components.nlpFlaggedWarningText": "",
   "app.modules.commercial.flag_inappropriate_content.admin.components.noWarningItems": "",
   "app.modules.commercial.flag_inappropriate_content.admin.components.removeWarning": "",

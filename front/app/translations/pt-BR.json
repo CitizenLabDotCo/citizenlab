@@ -2697,6 +2697,7 @@
   "app.errors.unknown_locale": "O idioma {value} encontrado na linha {row} não é um idioma configurado",
   "app.errors.unparseable_excel": "O arquivo Excel selecionado não pôde ser processado.",
   "app.errors.view_name_taken": "A view with this name already exists",
+  "app.modules.commercial.flag_inappropriate_content.admin.components.flagTooltip": "",
   "app.modules.commercial.flag_inappropriate_content.admin.components.nlpFlaggedWarningText": "",
   "app.modules.commercial.flag_inappropriate_content.admin.components.noWarningItems": "",
   "app.modules.commercial.flag_inappropriate_content.admin.components.removeWarning": "",

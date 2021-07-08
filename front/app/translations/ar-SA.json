@@ -2697,6 +2697,7 @@
   "app.errors.unknown_locale": "اللغة {value} التي تم العثور عليها في الصف {row} هي لغة لم تتم تهيئتها",
   "app.errors.unparseable_excel": "تعذرت معالجة ملف إكسل المحدد.",
   "app.errors.view_name_taken": "A view with this name already exists",
+  "app.modules.commercial.flag_inappropriate_content.admin.components.flagTooltip": "",
   "app.modules.commercial.flag_inappropriate_content.admin.components.nlpFlaggedWarningText": "",
   "app.modules.commercial.flag_inappropriate_content.admin.components.noWarningItems": "",
   "app.modules.commercial.flag_inappropriate_content.admin.components.removeWarning": "",
