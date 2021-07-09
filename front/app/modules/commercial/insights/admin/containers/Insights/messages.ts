@@ -267,7 +267,7 @@ export default defineMessages({
       'This automated process may take a few minutes. You can leave the page and come back.',
   },
   categoriesEmptyScanButton: {
-    id: 'app.containers.Admin.Insights.Details.categoriesEmptyScanDescription',
+    id: 'app.containers.Admin.Insights.Details.categoriesEmptyScanButton',
     defaultMessage: 'Scan for suggestions',
   },
 });
