@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { withRouter, WithRouterProps } from 'react-router';
 
 // styles
 import styled from 'styled-components';
@@ -11,6 +12,10 @@ import { InjectedIntlProps } from 'react-intl';
 
 // components
 import Button from 'components/UI/Button';
+import { Spinner } from 'cl2-component-library';
+
+// services
+import { insightsSuggestCategories } from 'modules/commercial/insights/services/insightsCategorySuggestions';
 
 const ScanContainer = styled.div`
   width: 100%;
@@ -36,7 +41,21 @@ const ScanContainer = styled.div`
   }
 `;
 
-const ScanCategory = ({ intl: { formatMessage } }: InjectedIntlProps) => {
+const ScanCategory = ({
+  intl: { formatMessage },
+  params: { viewId },
+  location: { query },
+}: InjectedIntlProps & WithRouterProps) => {
+  const [loading, setLoading] = useState(false);
+  const suggestCategories = async () => {
+    try {
+      setLoading(true);
+      await insightsSuggestCategories(viewId, [query.category]);
+    } catch {
+      // Do nothing
+    }
+    setLoading(false);
+  };
   return (
     <ScanContainer>
       <div className="scanContent">
@@ -47,11 +66,15 @@ const ScanCategory = ({ intl: { formatMessage } }: InjectedIntlProps) => {
           {formatMessage(messages.categoriesEmptyScanDescription)}
         </p>
       </div>
-      <Button buttonStyle="admin-dark">
-        {formatMessage(messages.categoriesEmptyScanButton)}
-      </Button>
+      {loading ? (
+        <Spinner />
+      ) : (
+        <Button buttonStyle="admin-dark" onClick={suggestCategories}>
+          {formatMessage(messages.categoriesEmptyScanButton)}
+        </Button>
+      )}
     </ScanContainer>
   );
 };
 
-export default injectIntl(ScanCategory);
+export default withRouter(injectIntl(ScanCategory));
