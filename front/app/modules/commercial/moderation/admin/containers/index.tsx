@@ -1,4 +1,4 @@
-import React, { memo, useState, useEffect } from 'react';
+import React, { memo, useState, useEffect, useCallback } from 'react';
 
 import { isNilOrError } from 'utils/helperUtils';
 import { insertConfiguration } from 'utils/moduleUtils';
@@ -423,8 +423,11 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
     }
   };
 
-  const handleData = (data: InsertConfigurationOptions<ITabItem>) =>
-    setTabs((tabs) => insertConfiguration(data)(tabs));
+  const handleData = useCallback(
+    (data: InsertConfigurationOptions<ITabItem>) =>
+      setTabs((tabs) => insertConfiguration(data)(tabs)),
+    []
+  );
 
   useEffect(() => {
     if (!processing) {
