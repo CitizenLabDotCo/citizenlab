@@ -11,14 +11,12 @@ module Insights
       # @param [NLP::ZeroshotClassificationResult] zsc_result zeroshot-classification result
       # @return [Array<Insights::CategoryAssignment>]
       def save_suggestion(zsc_result)
-        return unless zsc_result.success?
-
         Tenant.find(zsc_result.tenant_id).switch do
           zsc_task = ZeroshotClassificationTask.find_by(task_id: zsc_result.task_id)
           return [] unless zsc_task
 
           zsc_task.destroy!
-          save_predictions(zsc_result.predictions)
+          save_predictions(zsc_result.predictions) if zsc_result.success?
         end
       end
 
@@ -55,8 +53,7 @@ module Insights
       response = nlp_client.zeroshot_classification(
         candidate_labels: candidate_labels(categories),
         documents: documents,
-        tenant_id: AppConfiguration.instance.id,
-        locale: nil # [TODO] the nlp service requires it but do not use it.
+        tenant_id: AppConfiguration.instance.id
       )
 
       tasks_infos = response['batches'] # It should look like [{'task_id':..., 'doc_ids':..., 'tags_ids':...}, ...]

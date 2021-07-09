@@ -1694,6 +1694,7 @@
   "app.containers.AdminPage.SideBar.inputManager": "Pomysły",
   "app.containers.AdminPage.SideBar.insights": "Raportowanie",
   "app.containers.AdminPage.SideBar.invitations": "Zaproszenia",
+  "app.containers.AdminPage.SideBar.linkToSupportCenter": "https://support.citizenlab.co/",
   "app.containers.AdminPage.SideBar.moderation": "Aktywności",
   "app.containers.AdminPage.SideBar.processing": "Przetwarzanie",
   "app.containers.AdminPage.SideBar.projects": "Projekty",
