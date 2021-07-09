@@ -1,7 +1,5 @@
 import React from 'react';
-import { Button } from 'cl2-component-library';
-import useLocale from 'hooks/useLocale';
-import { isNilOrError } from 'utils/helperUtils';
+import Button from 'components/UI/Button';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -18,16 +16,13 @@ const RemoveFlagButton = ({
   onRemoveFlags,
   selectedActiveFlagsCount,
 }: Props) => {
-  const locale = useLocale();
-
-  if (!isNilOrError(locale) && selectedActiveFlagsCount > 0) {
+  if (selectedActiveFlagsCount > 0) {
     return (
       <Button
         icon="exclamation-trapezium-strikethrough"
         buttonStyle="cl-blue"
         processing={processing}
         onClick={onRemoveFlags}
-        locale={locale}
       >
         <FormattedMessage
           {...messages.removeWarning}

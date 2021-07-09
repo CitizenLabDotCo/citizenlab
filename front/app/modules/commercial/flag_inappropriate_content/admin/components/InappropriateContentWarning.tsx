@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { colors, Icon } from 'cl2-component-library';
+import { colors, IconTooltip } from 'cl2-component-library';
 import { isNilOrError } from 'utils/helperUtils';
 
 // services
@@ -25,11 +25,7 @@ const WarningContent = styled.div`
   margin-right: 5px;
 `;
 
-const WarningIcon = styled(Icon)`
-  margin-right: 5px;
-  color: ${colors.clRedError};
-  width: 16px;
-`;
+const StyledIconTooltip = styled(IconTooltip)``;
 
 interface Props {
   inappropriateContentFlagId: string;
@@ -52,25 +48,21 @@ const InappropriateContentWarning = ({
     if (reasonCode && flagType) {
       return (
         <Container>
-          <WarningIcon name="exclamation-trapezium" />
           <WarningContent>
             {
               {
                 nlp_flagged: formatMessage(messages.nlpFlaggedWarningText),
-                user_flagged: formatMessage(messages.userFlaggedWarningText, {
-                  reason: {
-                    inappropriate: formatMessage(messages.inappropriate),
-                    wrong_content: formatMessage(messages.wrong),
-                  }[reasonCode],
-                }),
+                user_flagged: formatMessage(messages.userFlaggedWarningText),
               }[flagType]
             }
           </WarningContent>
+          <StyledIconTooltip
+            iconColor={colors.clRedError}
+            content={formatMessage(messages.flagTooltip)}
+          />
         </Container>
       );
     }
-
-    return null;
   }
 
   return null;

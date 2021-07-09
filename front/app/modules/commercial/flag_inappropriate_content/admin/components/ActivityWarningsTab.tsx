@@ -15,10 +15,12 @@ declare module 'modules/commercial/moderation/admin/containers/index' {
 
 interface Props {
   onData: (data: InsertConfigurationOptions<ITabItem>) => void;
+  activeFlagsCount: number;
 }
 
 const ActivityWarningsTab = ({
   onData,
+  activeFlagsCount,
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
   useEffect(
@@ -26,11 +28,11 @@ const ActivityWarningsTab = ({
       onData({
         configuration: {
           name: 'warnings',
-          label: formatMessage(messages.warnings),
+          label: `${formatMessage(messages.warnings)} (${activeFlagsCount})`,
         },
         insertAfterName: 'read',
       }),
-    []
+    [activeFlagsCount, onData]
   );
   return null;
 };

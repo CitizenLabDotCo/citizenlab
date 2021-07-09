@@ -2697,6 +2697,7 @@
   "app.errors.unknown_locale": "Die Sprache {value} in der Zeile {row} ist derzeit nicht konfiguriert.",
   "app.errors.unparseable_excel": "Die ausgewählte Datei konnte nicht verarbeitet werden.",
   "app.errors.view_name_taken": "Eine Ansicht mit diesem Namen existiert bereits",
+  "app.modules.commercial.flag_inappropriate_content.admin.components.flagTooltip": "",
   "app.modules.commercial.flag_inappropriate_content.admin.components.nlpFlaggedWarningText": "",
   "app.modules.commercial.flag_inappropriate_content.admin.components.noWarningItems": "",
   "app.modules.commercial.flag_inappropriate_content.admin.components.removeWarning": "",

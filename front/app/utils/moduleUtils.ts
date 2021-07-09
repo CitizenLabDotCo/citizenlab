@@ -344,6 +344,7 @@ export type OutletsPropertyMap = {
   };
   'app.modules.commercial.moderation.admin.containers.tabs': {
     onData: (data: InsertConfigurationOptions<ITabItem>) => void;
+    activeFlagsCount: number;
   };
   'app.components.NotificationMenu.Notification': {
     notification: TNotificationData;
@@ -531,24 +532,26 @@ export const insertConfiguration = <T extends { name: string }>({
   const itemAlreadyInserted = items.some(
     (item) => item.name === configuration.name
   );
-  const foundIndex = items.findIndex(
+  // index of item where we need to insert before/after
+  const referenceIndex = items.findIndex(
     (item) => item.name === (insertAfterName || insertBeforeName)
   );
   const insertIndex = clamp(
-    insertAfterName ? foundIndex + 1 : foundIndex - 1,
+    // if number is outside of lower and upper, it picks
+    // the closes value. If it's inside the ranges, the
+    // number is kept
+    insertAfterName ? referenceIndex + 1 : referenceIndex - 1,
     0,
     items.length
   );
 
   if (itemAlreadyInserted) {
-    return [...items];
-  } else {
-    return insertIndex >= 0
-      ? [
-          ...items.slice(0, insertIndex),
-          configuration,
-          ...items.slice(insertIndex),
-        ]
-      : [...items, configuration];
+    items.splice(insertIndex, 1);
   }
+
+  return [
+    ...items.slice(0, insertIndex),
+    configuration,
+    ...items.slice(insertIndex),
+  ];
 };

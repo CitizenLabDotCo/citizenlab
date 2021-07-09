@@ -2697,6 +2697,7 @@
   "app.errors.unknown_locale": "De {value} van de taal in rij {row} is geen geconfigureerde taal",
   "app.errors.unparseable_excel": "Het geselecteerde Excel-bestand kan niet worden verwerkt.",
   "app.errors.view_name_taken": "A view with this name already exists",
+  "app.modules.commercial.flag_inappropriate_content.admin.components.flagTooltip": "",
   "app.modules.commercial.flag_inappropriate_content.admin.components.nlpFlaggedWarningText": "",
   "app.modules.commercial.flag_inappropriate_content.admin.components.noWarningItems": "",
   "app.modules.commercial.flag_inappropriate_content.admin.components.removeWarning": "",
