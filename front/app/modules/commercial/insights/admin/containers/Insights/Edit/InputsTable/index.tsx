@@ -291,7 +291,7 @@ const InputsTable = ({
         <Button
           buttonStyle="admin-dark"
           bgColor={colors.clBlue}
-          linkTo={`/admin/insights/${viewId}`}
+          linkTo={`/admin/insights`}
         >
           {formatMessage(messages.inputsDone)}
         </Button>

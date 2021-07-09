@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import { darken } from 'polished';
 
 // components
-import { Button, Input, Spinner } from 'cl2-component-library';
+import { Button, Input } from 'cl2-component-library';
 import Divider from 'components/admin/Divider';
 import TopBar, { topBarHeight } from '../../../components/TopBar';
 import Error from 'components/UI/Error';
@@ -209,12 +209,9 @@ const EditInsightsView = ({
             locale={locale}
             textColor={colors.adminTextColor}
             onClick={handleResetCategories}
+            processing={loadingReset}
           >
-            {loadingReset ? (
-              <Spinner size="22px" />
-            ) : (
-              formatMessage(messages.resetCategories)
-            )}
+            {formatMessage(messages.resetCategories)}
           </ResetButton>
           <Divider />
           <ButtonsContainer>
@@ -265,13 +262,10 @@ const EditInsightsView = ({
               className="addButton"
               padding="8px"
               onClick={handleCategorySubmit}
-              disabled={!name || loadingAdd}
+              disabled={!name}
+              processing={loadingAdd}
             >
-              {loadingAdd ? (
-                <Spinner size="22px" />
-              ) : (
-                <StyledPlus>+</StyledPlus>
-              )}
+              <StyledPlus>+</StyledPlus>
             </Button>
           </FormContainer>
           {errors && (
