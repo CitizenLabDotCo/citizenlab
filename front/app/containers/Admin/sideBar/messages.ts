@@ -57,4 +57,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SideBar.guide',
     defaultMessage: 'Guide',
   },
+  linkToSupportCenter: {
+    id: 'app.containers.AdminPage.SideBar.linkToSupportCenter',
+    defaultMessage: 'https://support.citizenlab.co/',
+  },
 });

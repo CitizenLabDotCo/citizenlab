@@ -1694,6 +1694,7 @@
   "app.containers.AdminPage.SideBar.inputManager": "Menadžer unosa",
   "app.containers.AdminPage.SideBar.insights": "",
   "app.containers.AdminPage.SideBar.invitations": "Pozivnice",
+  "app.containers.AdminPage.SideBar.linkToSupportCenter": "",
   "app.containers.AdminPage.SideBar.moderation": "Aktivnosti",
   "app.containers.AdminPage.SideBar.processing": "Obrada",
   "app.containers.AdminPage.SideBar.projects": "Projekti",

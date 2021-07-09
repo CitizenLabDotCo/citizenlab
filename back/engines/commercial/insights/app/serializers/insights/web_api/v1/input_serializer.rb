@@ -8,13 +8,13 @@ module Insights
           idea
         end
 
-        # TODO: optimize DB requests
+        # [TODO] optimize DB requests
         has_many :categories do |idea, _params|
           ::Insights::CategoryAssignment.where(input: idea, approved: true)
                                         .map(&:category)
         end
 
-        # TODO: optimize DB requests
+        # [TODO] optimize DB requests
         has_many :suggested_categories, record_type: :category, serializer: CategorySerializer do |idea, _params|
           ::Insights::CategoryAssignment.where(input: idea, approved: false)
                                         .map(&:category)
