@@ -135,6 +135,17 @@ resource 'Views' do
         end
       end
 
+      example 'sets inputs as processed', document: false do
+        do_request
+        view =  Insights::View.find(json_response[:data][:id])
+        expect(status).to eq(201)
+        aggregate_failures 'check assignments' do
+          expect(
+            ideas.map { |idea| idea.processed(view) }.uniq
+          ).to eq([true])
+        end
+      end
+
       include_examples 'unprocessable entity'
     end
 
