@@ -43,6 +43,13 @@ const ScanContainer = styled.div`
   }
 `;
 
+const ScanButtonContent = styled.div`
+  display: flex;
+  align-items: center;
+  > div:first-child {
+    margin-right: 8px;
+  }
+`;
 const ScanCategory = ({
   intl: { formatMessage },
   params: { viewId },
@@ -65,10 +72,12 @@ const ScanCategory = ({
     return null;
   }
 
-  const loading = categorySuggestionsPendingTasks.find((suggestion) =>
-    suggestion.relationships?.categories.data
-      .map((category) => category.id)
-      .includes(query.category)
+  const loading = Boolean(
+    categorySuggestionsPendingTasks.find((pendingTask) =>
+      pendingTask.relationships?.categories.data
+        .map((category) => category.id)
+        .includes(query.category)
+    )
   );
 
   return (
@@ -81,13 +90,17 @@ const ScanCategory = ({
           {formatMessage(messages.categoriesEmptyScanDescription)}
         </p>
       </div>
-      {loading ? (
-        <Spinner />
-      ) : (
-        <Button buttonStyle="admin-dark" onClick={suggestCategories}>
+
+      <Button
+        buttonStyle="admin-dark"
+        onClick={suggestCategories}
+        disabled={loading}
+      >
+        <ScanButtonContent>
+          {loading && <Spinner size="22px" />}
           {formatMessage(messages.categoriesEmptyScanButton)}
-        </Button>
-      )}
+        </ScanButtonContent>
+      </Button>
     </ScanContainer>
   );
 };

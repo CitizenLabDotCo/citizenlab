@@ -2,10 +2,10 @@ import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 import { IRelationship } from 'typings';
 
-const getInsightsCategoriesSuggestionsEndpoint = (viewId: string) =>
+const getInsightsCategorySuggestionsEndpoint = (viewId: string) =>
   `insights/views/${viewId}/tasks/category_suggestions`;
 
-export interface IInsightsSuggestedCategoryData {
+export interface IInsightsCategorySuggestionData {
   id: string;
   type: string;
   attributes: {
@@ -21,20 +21,20 @@ export interface IInsightsSuggestedCategoryData {
   };
 }
 
-export interface IInsightsSuggestedCategory {
-  data: IInsightsSuggestedCategoryData;
+export interface IInsightsCategorySuggestion {
+  data: IInsightsCategorySuggestionData;
 }
 
-export interface IInsightsSuggestedCategories {
-  data: IInsightsSuggestedCategoryData[];
+export interface IInsightsCategorySuggestions {
+  data: IInsightsCategorySuggestionData[];
 }
 
-export function insightsCategoriesSuggestionsStream(
+export function insightsCategorySuggestionsStream(
   insightsViewId: string,
   streamParams: IStreamParams | null = null
 ) {
-  return streams.get<IInsightsSuggestedCategories>({
-    apiEndpoint: `${API_PATH}/${getInsightsCategoriesSuggestionsEndpoint(
+  return streams.get<IInsightsCategorySuggestions>({
+    apiEndpoint: `${API_PATH}/${getInsightsCategorySuggestionsEndpoint(
       insightsViewId
     )}`,
     ...streamParams,
@@ -48,7 +48,7 @@ export async function insightsSuggestCategories(
   inputs?: string[]
 ) {
   return await streams.add(
-    `${API_PATH}/${getInsightsCategoriesSuggestionsEndpoint(insightsViewId)}`,
+    `${API_PATH}/${getInsightsCategorySuggestionsEndpoint(insightsViewId)}`,
     {
       inputs,
       categories,

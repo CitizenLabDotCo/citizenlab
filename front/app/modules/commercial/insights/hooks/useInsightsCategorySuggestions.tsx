@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import {
-  insightsCategoriesSuggestionsStream,
-  IInsightsSuggestedCategoryData,
+  insightsCategorySuggestionsStream,
+  IInsightsCategorySuggestionData,
 } from '../services/insightsCategorySuggestions';
 
-type QueryParameters = {
+export type QueryParameters = {
   inputs: string[];
   categories: string[];
 };
@@ -15,14 +15,14 @@ const useInsightsCategoriesSuggestions = (
   const [
     insightsCategoriesSuggestions,
     setInsightsCategoriesSuggestions,
-  ] = useState<IInsightsSuggestedCategoryData[] | undefined | null | Error>(
+  ] = useState<IInsightsCategorySuggestionData[] | undefined | null | Error>(
     undefined
   );
   const categories = queryParameters?.categories;
   const inputs = queryParameters?.inputs;
 
   useEffect(() => {
-    const subscription = insightsCategoriesSuggestionsStream(viewId, {
+    const subscription = insightsCategorySuggestionsStream(viewId, {
       queryParameters: { categories, inputs },
     }).observable.subscribe((insightsCategories) => {
       setInsightsCategoriesSuggestions(insightsCategories.data);
