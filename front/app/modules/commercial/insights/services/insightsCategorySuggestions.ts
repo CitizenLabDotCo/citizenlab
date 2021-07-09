@@ -13,10 +13,10 @@ export interface IInsightsSuggestedCategoryData {
   };
   relationships?: {
     categories: {
-      data: IRelationship;
+      data: IRelationship[];
     };
     inputs: {
-      data: IRelationship;
+      data: IRelationship[];
     };
   };
 }

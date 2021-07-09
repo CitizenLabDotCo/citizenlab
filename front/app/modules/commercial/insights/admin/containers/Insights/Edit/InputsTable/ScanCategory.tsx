@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo } from 'react';
 import { withRouter, WithRouterProps } from 'react-router';
 
 // styles
@@ -9,6 +9,7 @@ import { fontSizes, colors } from 'utils/styleUtils';
 import messages from '../../messages';
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
+import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import Button from 'components/UI/Button';
@@ -16,6 +17,7 @@ import { Spinner } from 'cl2-component-library';
 
 // services
 import { insightsSuggestCategories } from 'modules/commercial/insights/services/insightsCategorySuggestions';
+import useInsightsCategoriesSuggestions from 'modules/commercial/insights/hooks/useInsightsCategorySuggestions';
 
 const ScanContainer = styled.div`
   width: 100%;
@@ -46,16 +48,29 @@ const ScanCategory = ({
   params: { viewId },
   location: { query },
 }: InjectedIntlProps & WithRouterProps) => {
-  const [loading, setLoading] = useState(false);
+  const categories = useMemo(() => [query.category], [query.category]);
+  const categorySuggestionsPendingTasks = useInsightsCategoriesSuggestions(
+    viewId
+  );
+
   const suggestCategories = async () => {
     try {
-      setLoading(true);
-      await insightsSuggestCategories(viewId, [query.category]);
+      await insightsSuggestCategories(viewId, categories);
     } catch {
       // Do nothing
     }
-    setLoading(false);
   };
+
+  if (isNilOrError(categorySuggestionsPendingTasks)) {
+    return null;
+  }
+
+  const loading = categorySuggestionsPendingTasks.find((suggestion) =>
+    suggestion.relationships?.categories.data
+      .map((category) => category.id)
+      .includes(query.category)
+  );
+
   return (
     <ScanContainer>
       <div className="scanContent">
