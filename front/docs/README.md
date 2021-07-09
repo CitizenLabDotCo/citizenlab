@@ -1,6 +1,11 @@
-# Changelog 
+# Changelog
 
-## Release 2021-07-02
+## Next
+
+### Changed
+- The admin Guide link goes to the support center now instead of to /admin/guide. 
+
+## 2021-07-02
 
 ### Fixed
 - Instances where the user name was "unknown author"
@@ -8,12 +13,12 @@
 ### Changed
 - Removed the slogan from the homepage footer
 
-## Release 2021-06-30
+## 2021-06-30
 
 ### Changed
 - Users can no longer leave registration before confirming their account. This should prevent bugs relative to unconfirmed users navigating the platform.
 
-## Release 2021-06-29
+## 2021-06-29
 
 ### Fixed
 - Map: Fix for ideas that only have coordinates but no address not being shown on the map

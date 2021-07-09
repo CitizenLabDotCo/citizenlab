@@ -1694,6 +1694,7 @@
   "app.containers.AdminPage.SideBar.inputManager": "Beitragsmanager",
   "app.containers.AdminPage.SideBar.insights": "Berichte",
   "app.containers.AdminPage.SideBar.invitations": "Einladungen",
+  "app.containers.AdminPage.SideBar.linkToSupportCenter": "",
   "app.containers.AdminPage.SideBar.moderation": "Aktivität",
   "app.containers.AdminPage.SideBar.processing": "Analyse",
   "app.containers.AdminPage.SideBar.projects": "Projekte",
