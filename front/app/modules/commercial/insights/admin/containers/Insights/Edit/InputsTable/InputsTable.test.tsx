@@ -154,6 +154,13 @@ jest.mock('modules/commercial/insights/hooks/useInsightsInput', () => {
   return jest.fn(() => undefined);
 });
 
+jest.mock(
+  'modules/commercial/insights/hooks/useInsightsCategorySuggestions',
+  () => {
+    return jest.fn(() => []);
+  }
+);
+
 window.confirm = jest.fn(() => true);
 
 describe('Insights Input Table', () => {
@@ -497,6 +504,7 @@ describe('Insights Input Table', () => {
       mockInputData = { currentPage: 1, lastPage: 1, list: [] };
 
       render(<InputsTable />);
+      expect(screen.getByTestId('insightsScanCategory')).toBeInTheDocument();
       expect(
         screen.getByTestId('insightsInputsTableEmptyState')
       ).toBeInTheDocument();

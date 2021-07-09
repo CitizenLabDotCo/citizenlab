@@ -50,6 +50,7 @@ const ScanButtonContent = styled.div`
     margin-right: 8px;
   }
 `;
+
 const ScanCategory = ({
   intl: { formatMessage },
   params: { viewId },
@@ -81,7 +82,7 @@ const ScanCategory = ({
   );
 
   return (
-    <ScanContainer>
+    <ScanContainer data-testid="insightsScanCategory">
       <div className="scanContent">
         <p className="scanTitle">
           {formatMessage(messages.categoriesEmptyScanTitle)}
