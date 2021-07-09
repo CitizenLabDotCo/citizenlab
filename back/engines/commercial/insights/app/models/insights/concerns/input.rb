@@ -33,7 +33,7 @@ module Insights
       end
 
       def processed(view)
-        insights_processed_flags.where(view: view).length == 1
+        insights_processed_flags.exists?(view: view)
       end
     end
   end

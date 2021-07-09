@@ -44,14 +44,14 @@ module Insights
       return inputs if params[:processed].blank?
       return inputs unless %w[true false].include?(params[:processed])
 
-      return inputs.left_outer_joins(:insights_processed_flags)
-            .where(insights_processed_flags: { view: view }) if params[:processed] == 'true'
-
       inputs_with_flags = inputs.left_outer_joins(:insights_processed_flags)
+                                .where(insights_processed_flags: { view: [view, nil] })
 
-      inputs_with_flags
-        .where.not(insights_processed_flags: { view: view })
-        .or(inputs_with_flags.where(insights_processed_flags: { id: nil }))
+      if params[:processed] == 'true'
+      	inputs_with_flags.where.not(insights_processed_flags: { id: nil })
+      else
+        inputs_with_flags.where(insights_processed_flags: { id: nil })
+      end
     end
 
     def sort_by_approval(inputs)
