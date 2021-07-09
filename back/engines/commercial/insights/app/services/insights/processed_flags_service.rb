@@ -13,8 +13,12 @@ module Insights
                                       created_at: Time.zone.now,
                                       updated_at: Time.zone.now
                                     }
-                                   }
+                                  }
       ProcessedFlag.insert_all(processed_flag_attributes)
+    end
+
+    def resets_flags(view)
+      ProcessedFlag.where(view: view).destroy_all
     end
   end
 end
