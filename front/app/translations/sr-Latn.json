@@ -2641,6 +2641,7 @@
   "app.containers.landing.userDeletionFailed": "Došlo je do greške prilikom brisanja vašeg naloga, obavešteni smo o problemu i potrudićemo se da ga rešimo. Pokušajte ponovo kasnije.",
   "app.containers.landing.verifyNow": "Potvrdite sada",
   "app.containers.landing.verifyYourIdentity": "Verifikujte vaš identitet.",
+  "app.containers.landing.viewAllEventsText": "",
   "app.errors.after_end_at": "Datum početka je postavljen nakon datuma završetka",
   "app.errors.avatar_carrierwave_download_error": "Neuspešno preuzimanje avatar fajla.",
   "app.errors.avatar_carrierwave_integrity_error": "Odabrani avatar ne spada u dozvoljeni tip fajlova.",
