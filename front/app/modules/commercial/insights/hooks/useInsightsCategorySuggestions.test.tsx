@@ -14,7 +14,7 @@ const queryParameters: QueryParameters = {
   inputs: ['10'],
 };
 
-const mockInputs = {
+const mockCategorySuggestions = {
   data: [
     {
       id: '58ed4a03-155b-4b60-ac9e-cf101e6d94d0',
@@ -70,7 +70,7 @@ const mockInputs = {
 };
 
 let mockObservable = new Observable((subscriber) => {
-  subscriber.next(mockInputs);
+  subscriber.next(mockCategorySuggestions);
 }).pipe(delay(1));
 
 jest.mock(
@@ -105,7 +105,7 @@ describe('useInsightsCategorySuggestions', () => {
     expect(result.current).toStrictEqual(undefined); // initially, the hook returns undefined
     act(() => {
       waitFor(() => {
-        expect(result.current).toBe(mockInputs.data);
+        expect(result.current).toBe(mockCategorySuggestions.data);
       });
     });
   });
