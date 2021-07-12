@@ -51,7 +51,7 @@ const FilterIcon = styled(Icon)`
 
 interface Props {
   title: string;
-  setProjectIds: (value: any) => void;
+  setProjectIds: (projectIds: string[]) => void;
 }
 
 const TopBar = memo<Props & InjectedIntlProps>(

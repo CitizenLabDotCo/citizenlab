@@ -302,8 +302,8 @@ class WithoutFiltersSidebar extends PureComponent<
     this.props.ideas.onChangeSearchTerm(search);
   };
 
-  handleProjectsOnChange = (projects: string[]) => {
-    this.props.ideas.onChangeProjects(projects);
+  handleProjectsOnChange = (projectIds: string[]) => {
+    this.props.ideas.onChangeProjects(projectIds);
   };
 
   handleSortOnChange = (sort: Sort) => {

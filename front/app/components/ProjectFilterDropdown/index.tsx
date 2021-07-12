@@ -16,7 +16,7 @@ type DataProps = {
 
 type InputProps = {
   title: string | JSX.Element;
-  onChange: (value: any) => void;
+  onChange: (projectIds: string[]) => void;
   className?: string;
   textColor?: string;
 };

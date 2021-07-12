@@ -14,7 +14,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // hooks
-import useSettingEnabled from 'hooks/useSettingEnabled';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
 
 // style
@@ -79,12 +79,13 @@ const Padding = styled.div`
 interface Props {}
 
 const InitiativeIndexPage = memo<Props>(() => {
-  const initiativesEnabled = useSettingEnabled('initiatives');
+  const initiativesEnabled = useFeatureFlag('initiatives');
   const locale = useLocale();
 
-  if (initiativesEnabled === null || isNilOrError(locale)) return null;
+  if (isNilOrError(locale)) return null;
 
   if (!initiativesEnabled) {
+    // This redirects to the 'page not found' page while keeping the requested URL
     clHistory.replace(`/${locale}/*`);
     window.history.replaceState(null, '', `/${locale}/initiatives`);
     return null;

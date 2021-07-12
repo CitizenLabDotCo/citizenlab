@@ -8,7 +8,7 @@ import UpcomingEvents from './UpcomingEvents';
 import PastEvents from './PastEvents';
 
 // hooks
-import useSettingEnabled from 'hooks/useSettingEnabled';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
 
 // styling
@@ -25,12 +25,13 @@ const StyledContentContainer = styled(ContentContainer)`
 `;
 
 export default () => {
-  const eventsPageEnabled = useSettingEnabled('events_page');
+  const eventsPageEnabled = useFeatureFlag('events_page');
   const locale = useLocale();
 
-  if (eventsPageEnabled === null || isNilOrError(locale)) return null;
+  if (isNilOrError(locale)) return null;
 
   if (!eventsPageEnabled) {
+    // This redirects to the 'page not found' page while keeping the requested URL
     clHistory.replace(`/${locale}/*`);
     window.history.replaceState(null, '', `/${locale}/events`);
     return null;
