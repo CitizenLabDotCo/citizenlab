@@ -70,4 +70,8 @@ export default defineMessages({
     id: 'app.containers.landing.eventsWidgetTitle',
     defaultMessage: 'Upcoming events',
   },
+  viewAllEventsText: {
+    id: 'app.containers.landing.viewAllEventsText',
+    defaultMessage: 'View all events',
+  },
 });
