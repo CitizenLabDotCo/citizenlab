@@ -29,10 +29,6 @@ end
 resource "Stats - Comments" do
   before { header 'Content-Type', 'application/json' }
 
-  let(:view) { create(:view) }
-  let(:view_id) { view.id }
-
-  let(:assignment_service) { Insights::CategoryAssignmentsService.new }
   let(:json_response) { json_parse(response_body) }
 
   shared_examples 'unauthorized requests' do
