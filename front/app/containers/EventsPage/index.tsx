@@ -15,8 +15,8 @@ import useLocale from 'hooks/useLocale';
 import styled from 'styled-components';
 
 // other
-import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
+import redirectToNotFoundPage from 'utils/cl-router/redirectToNotFoundPage';
 
 const StyledContentContainer = styled(ContentContainer)`
   max-width: calc(${(props) => props.theme.maxPageWidth}px - 100px);
@@ -29,13 +29,7 @@ export default () => {
   const locale = useLocale();
 
   if (isNilOrError(locale)) return null;
-
-  if (!eventsPageEnabled) {
-    // This redirects to the 'page not found' page while keeping the requested URL
-    clHistory.replace(`/${locale}/*`);
-    window.history.replaceState(null, '', `/${locale}/events`);
-    return null;
-  }
+  if (!eventsPageEnabled) return redirectToNotFoundPage(locale, 'events');
 
   return (
     <>

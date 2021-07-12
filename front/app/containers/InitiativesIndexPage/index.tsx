@@ -23,7 +23,7 @@ import { media, fontSizes, colors } from 'utils/styleUtils';
 
 // other
 import { isNilOrError } from 'utils/helperUtils';
-import clHistory from 'utils/cl-router/history';
+import redirectToNotFoundPage from 'utils/cl-router/redirectToNotFoundPage';
 
 const Container = styled.main``;
 
@@ -83,13 +83,7 @@ const InitiativeIndexPage = memo<Props>(() => {
   const locale = useLocale();
 
   if (isNilOrError(locale)) return null;
-
-  if (!initiativesEnabled) {
-    // This redirects to the 'page not found' page while keeping the requested URL
-    clHistory.replace(`/${locale}/*`);
-    window.history.replaceState(null, '', `/${locale}/initiatives`);
-    return null;
-  }
+  if (!initiativesEnabled) return redirectToNotFoundPage(locale, 'initiatives');
 
   return (
     <>
