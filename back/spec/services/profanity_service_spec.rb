@@ -89,8 +89,6 @@ describe ProfanityService do
         language: 'fr'
       }])
     end
-
-    # Nokogiri::HTML('<p>test test test tes test pute </p>').text
   end
 
   private
