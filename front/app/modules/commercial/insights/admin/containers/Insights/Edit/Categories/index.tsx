@@ -118,9 +118,13 @@ const Categories = ({
   const [loadingAdd, setLoadingAdd] = useState(false);
   const [loadingReset, setLoadingReset] = useState(false);
   const [errors, setErrors] = useState<CLErrors | undefined>();
-  const allInputsCount = useInsightsInputsCount(viewId);
+  const allInputsCount = useInsightsInputsCount(viewId, { processed: true });
   const uncategorizedInputsCount = useInsightsInputsCount(viewId, {
     category: '',
+    processed: true,
+  });
+  const recentlyPostedInputsCount = useInsightsInputsCount(viewId, {
+    processed: false,
   });
 
   const categories = useInsightsCategories(viewId);
@@ -242,6 +246,11 @@ const Categories = ({
           onClick={selectRecentlyPosted}
         >
           <div>{formatMessage(messages.recentlyPosted)}</div>
+          {!isNilOrError(uncategorizedInputsCount) && (
+            <div data-testid="insightsRecentlyPostedInputsCount">
+              {recentlyPostedInputsCount.count}
+            </div>
+          )}
         </CategoryButton>
         <CategoryButton
           locale={locale}

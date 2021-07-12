@@ -40,10 +40,14 @@ jest.mock('modules/commercial/insights/hooks/useInsightsCategories', () => {
 
 const allInputsCount = 10;
 const uncategorizedInputCount = 5;
+const recentlyPostedInputCount = 2;
 
 jest.mock('modules/commercial/insights/hooks/useInsightsInputsCount', () => {
   return jest.fn((_viewId, queryParameters) => {
-    return queryParameters === undefined
+    return queryParameters.processed === false
+      ? { count: recentlyPostedInputCount }
+      : queryParameters.processed === true &&
+        queryParameters.category === undefined
       ? { count: allInputsCount }
       : { count: uncategorizedInputCount };
   });
@@ -156,6 +160,13 @@ describe('Insights Edit Categories', () => {
     expect(screen.getByTestId('insightsAllInputsCount')).toHaveTextContent(
       allInputsCount.toString()
     );
+  });
+
+  it('shows recently posted input category count correctly', () => {
+    render(<Categories />);
+    expect(
+      screen.getByTestId('insightsRecentlyPostedInputsCount')
+    ).toHaveTextContent(recentlyPostedInputCount.toString());
   });
   it('shows uncategorized category count correctly', () => {
     render(<Categories />);
