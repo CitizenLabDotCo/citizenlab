@@ -168,6 +168,17 @@ const ModerationRow = memo<Props & InjectedIntlProps>(
       win && win.focus();
     };
 
+    function getModerationBelongsTo(moderation: IModerationData) {
+      const belongsTo = moderation.attributes.belongs_to;
+      const belongsToArray = Object.keys(belongsTo);
+
+      return {
+        belongsToLength: belongsToArray.length,
+      };
+    }
+
+    const { belongsToLength } = getModerationBelongsTo(moderation);
+
     return (
       <Container
         className={`${className}`}
@@ -187,12 +198,7 @@ const ModerationRow = memo<Props & InjectedIntlProps>(
             Object.keys(moderation.attributes.belongs_to).map((key, index) => (
               <BelongsToItem
                 key={`${moderation.id}-${key}`}
-                className={
-                  index + 1 ===
-                  Object.keys(moderation.attributes.belongs_to).length
-                    ? 'last'
-                    : ''
-                }
+                className={index + 1 === belongsToLength ? 'last' : ''}
               >
                 <BelongsToType>
                   <FormattedMessage
