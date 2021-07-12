@@ -85,10 +85,6 @@ class StatVotePolicy < ApplicationPolicy
     show_stats?
   end
 
-  def votes_by_time_cumulative_as_xlsx?
-    show_stats?
-  end
-
   def votes_by_topic_as_xlsx?
     show_stats?
   end

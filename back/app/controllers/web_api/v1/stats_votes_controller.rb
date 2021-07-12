@@ -6,7 +6,6 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
   ]
   before_action :render_no_data_as_xlsx, only: [
     :votes_by_time_as_xlsx,
-    :votes_by_time_cumulative_as_xlsx,
   ]
 
   @@multiloc_service = MultilocService.new
@@ -93,12 +92,6 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
 
   def votes_by_time_cumulative
     render json: {series: double_grouped_by_to_nested_hashes(votes_by_time_cumulative_serie)}
-  end
-
-  def votes_by_time_cumulative_as_xlsx
-    xlsx = XlsxService.new.generate_votes_by_time_xlsx double_grouped_by_to_object_array(votes_by_time_cumulative_serie), 'votes_by_time_cumulative'
-
-    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'votes_by_time_cumulative.xlsx'
   end
 
 
