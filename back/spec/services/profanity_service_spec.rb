@@ -73,7 +73,6 @@ describe ProfanityService do
       text = 'Il est un peu déBiLE.'
       expect(service.search_blocked_words(text)).to match_array([{
         word: 'débile',
-        # position: 14,
         language: 'fr'
       }])
     end
@@ -82,6 +81,16 @@ describe ProfanityService do
       text = 'Il est un peu debile et id1ot.'
       expect(service.search_blocked_words(text)).to be_blank
     end
+
+    it "matches with HTML" do
+      text = '<p>Je suis tombé dans une pute</p>'
+      expect(service.search_blocked_words(text)).to match_array([{
+        word: 'pute',
+        language: 'fr'
+      }])
+    end
+
+    # Nokogiri::HTML('<p>test test test tes test pute </p>').text
   end
 
   private
@@ -93,7 +102,8 @@ describe ProfanityService do
         [
           'con',
           'débile',
-          'idiot'
+          'idiot',
+          'pute'
         ]
       when 'nl'
         [
