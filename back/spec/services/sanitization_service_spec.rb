@@ -69,13 +69,15 @@ describe SanitizationService do
       expect(service.sanitize(input, features)).to eq input
     end
 
-    #[TODO]
-    it "still allows links to pass through with blank target and referrer when link feature is enabled" do
+    pending "fixes links blank target and referrer allowed" do
       input = <<~HTML
         <a href="https://www.google.com" target="_blank">Link</a>
       HTML
+      parsed_input = <<~HTML
+        <a href="https://www.google.com" target="_blank" rel="noreferrer noopener">Link</a>
+      HTML
       features = [:link]
-      expect(service.sanitize(input, features)).to eq input
+      expect(service.sanitize(input, features)).to eq parsed_input
     end
 
     it "allows images to pass through when title feature is enabled" do
