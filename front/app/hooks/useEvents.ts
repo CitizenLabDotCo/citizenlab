@@ -1,11 +1,7 @@
 import { useState, useEffect } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
-import {
-  IEventData,
-  eventsStream,
-  IProjectsStreamParams,
-} from 'services/events';
+import { IEventData, eventsStream, IEventsStreamParams } from 'services/events';
 
 interface InputParameters {
   projectIds?: string[];
@@ -30,7 +26,7 @@ export default function useEvents({
   useEffect(() => {
     setEvents(undefined);
 
-    const streamParams: IProjectsStreamParams = {
+    const streamParams: IEventsStreamParams = {
       queryParameters: { project_ids: projectIds },
     };
 

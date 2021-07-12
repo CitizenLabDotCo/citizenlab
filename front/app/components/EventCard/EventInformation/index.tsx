@@ -43,7 +43,6 @@ const EventTitleAndAttributes = styled.div`
 `;
 
 const StyledLink = styled(Link)`
-  text-decoration: underline;
   cursor: pointer;
   color: ${colors.label};
   font-size: ${fontSizes.xs}px;
