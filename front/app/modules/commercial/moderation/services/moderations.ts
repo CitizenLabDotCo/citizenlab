@@ -4,6 +4,8 @@ import { Multiloc, ILinks, IRelationship } from 'typings';
 
 export type TModerationStatus = 'read' | 'unread';
 export type TModeratableTypes = 'Idea' | 'Initiative' | 'Comment';
+// add case for initiative
+export type TBelongsTo = keyof IModerationData['attributes']['belongs_to'];
 
 export interface IModerationData {
   id: '1d10b3f1-6a03-4c52-a0b2-4f60929df3ec';
@@ -16,12 +18,17 @@ export interface IModerationData {
     created_at: string;
     moderation_status?: TModerationStatus;
     belongs_to: {
-      project: {
+      project?: {
         id: string;
         slug: string;
         title_multiloc: Multiloc;
       };
       idea?: {
+        id: string;
+        slug: string;
+        title_multiloc: Multiloc;
+      };
+      initiative?: {
         id: string;
         slug: string;
         title_multiloc: Multiloc;
