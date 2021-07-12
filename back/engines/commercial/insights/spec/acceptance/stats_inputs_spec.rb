@@ -26,6 +26,7 @@ resource "Stats - Inputs" do
 
   get "web_api/v1/insights/views/:view_id/stats/inputs_count" do
     parameter :category, 'Filter by category', required: false
+    parameter :processed, 'Filter by category', required: false
     parameter :search, 'Filter by search', required: false
 
     context 'when admin' do
@@ -36,6 +37,13 @@ resource "Stats - Inputs" do
       example_request "Count all inputs" do
         expect(response_status).to eq 200
         expect(json_response[:count]).to eq ideas.length
+      end
+
+      example 'supports processed filter', document: false do
+        create(:processed_flag, input: ideas.first, view: view)
+        do_request(processed: true)
+        expect(status).to eq(200)
+        expect(json_response[:count]).to eq(1) # bc there are 3 inputs in total
       end
 
       context 'with categories filter' do

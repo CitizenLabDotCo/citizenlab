@@ -59,7 +59,10 @@ module Insights
       result = CategoryAssignment.upsert_all(assignments_attrs, unique_by: %i[category_id input_id input_type])
       touch_views_of(categories)
       update_counts_of(categories)
-      set_processed(inputs, categories) if set_processed
+      if set_processed
+        view_ids = categories.pluck(:view_id).uniq
+        processed_service.set_processed(inputs, view_ids)
+      end
       result.pluck('id')
     end
 
@@ -127,19 +130,8 @@ module Insights
       categories.each { |cat| cat.update({ inputs_count: CategoryAssignment.where(category_id: cat.id).size })}
     end
 
-    # Sets a processed_flag for all the inputs in the view corresponding to the categories
-    def set_processed(inputs, categories)
-      processed_flag_attributes = inputs.to_a.product(categories) # yields all pairs of input x category
-                                  .map { |input, category|
-                                    {
-                                      view_id: category.view.id,
-                                      input_id: input.id,
-                                      input_type: input.class.name,
-                                      created_at: Time.zone.now,
-                                      updated_at: Time.zone.now
-                                    }
-                                   }
-      ProcessedFlag.insert_all(processed_flag_attributes)
+    def processed_service
+      @processed_service ||= Insights::ProcessedFlagsService.new
     end
   end
 end
