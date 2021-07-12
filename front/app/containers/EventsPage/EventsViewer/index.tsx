@@ -1,4 +1,4 @@
-import React, { memo, useState, useEffect } from 'react';
+import React, { memo, useState } from 'react';
 
 // components
 import TopBar from './TopBar';
@@ -17,8 +17,6 @@ import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 
 // other
-import { IEventData } from 'services/events';
-import { sliceEventsToPage, getNumberOfPages } from './eventsViewerUtils';
 import { isNilOrError } from 'utils/helperUtils';
 
 interface IStyledEventCard {
@@ -66,57 +64,47 @@ const EVENTS_PER_PAGE = 10;
 const EventsViewer = memo<Props>(
   ({ title, fallbackMessage, eventsTime, className }) => {
     const [projectIds, setProjectIds] = useState<string[]>([]);
+    const [currentPageNumber, setCurrentPageNumber] = useState<number>(1);
 
-    const events = useEvents(
+    const { events, lastPageNumber } = useEvents({
       projectIds,
-      eventsTime === 'future',
-      eventsTime === 'past'
-    );
-
-    const eventsHaveLoaded = !isNilOrError(events);
-
-    const [currentPage, setCurrentPage] = useState<number>(1);
-    const [visibleEvents, setVisibleEvents] = useState<IEventData[]>([]);
-
-    useEffect(() => {
-      if (isNilOrError(events)) return;
-      setVisibleEvents(sliceEventsToPage(events, currentPage, EVENTS_PER_PAGE));
-    }, [events, currentPage]);
+      futureOnly: eventsTime === 'future',
+      pastOnly: eventsTime === 'past',
+      pageNumber: currentPageNumber,
+      pageSize: EVENTS_PER_PAGE,
+    });
 
     return (
       <div className={className}>
         <TopBar title={title} setProjectIds={setProjectIds} />
 
-        {!eventsHaveLoaded && <Spinner />}
+        {isNilOrError(events) && <Spinner />}
 
-        {eventsHaveLoaded && (
+        {!isNilOrError(events) && (
           <>
-            {visibleEvents.length > 0 &&
-              visibleEvents.map((event, i) => (
+            {events.length > 0 &&
+              events.map((event, i) => (
                 <StyledEventCard
                   event={event}
                   showProjectTitle={true}
-                  last={visibleEvents.length - 1 === i}
+                  last={events.length - 1 === i}
                   key={event.id}
                 />
               ))}
 
-            {visibleEvents.length === 0 && (
+            {events.length === 0 && (
               <NoEventsContainer>
                 <NoEventsIllustration src={noEventsIllustration} />
-
                 <NoEventsText>{fallbackMessage}</NoEventsText>
               </NoEventsContainer>
             )}
 
-            {!isNilOrError(events) && (
-              <StyledPagination
-                currentPage={currentPage}
-                totalPages={getNumberOfPages(events.length, EVENTS_PER_PAGE)}
-                loadPage={setCurrentPage}
-                useColorsTheme
-              />
-            )}
+            <StyledPagination
+              currentPage={currentPageNumber}
+              totalPages={lastPageNumber}
+              loadPage={setCurrentPageNumber}
+              useColorsTheme
+            />
           </>
         )}
       </div>

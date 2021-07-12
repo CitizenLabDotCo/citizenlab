@@ -1,6 +1,6 @@
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
-import { Multiloc } from 'typings';
+import { Multiloc, ILinks } from 'typings';
 
 const apiEndpoint = `${API_PATH}/events`;
 
@@ -32,6 +32,7 @@ export interface IEvent {
 
 export interface IEvents {
   data: IEventData[];
+  links: ILinks;
 }
 
 export interface IUpdatedEventProperties {
@@ -48,6 +49,8 @@ export type IProjectsStreamParams = IStreamParams & {
     project_ids?: string[];
     start_at_lt?: string | Date;
     start_at_gteq?: string | Date;
+    'page[number]'?: number;
+    'page[size]'?: number;
   };
 };
 
