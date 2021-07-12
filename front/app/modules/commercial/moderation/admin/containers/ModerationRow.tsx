@@ -169,13 +169,7 @@ const ModerationRow = memo<Props & InjectedIntlProps>(
       win && win.focus();
     };
 
-    function getModerationBelongsTo(moderation: IModerationData) {
-      const belongsTo = moderation.attributes.belongs_to;
-      const belongsToTypes = Object.keys(belongsTo);
-
-      return belongsToTypes;
-    }
-    const belongsToTypes = getModerationBelongsTo(moderation);
+    const belongsToTypes = Object.keys(moderation.attributes.belongs_to);
     const belongsToHrefs = {
       idea: `/ideas/${moderation.attributes.belongs_to.idea?.slug}`,
       initiative: `/initiatives/${moderation.attributes.belongs_to.initiative?.slug}`,
