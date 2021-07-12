@@ -14,7 +14,7 @@ import Link from 'utils/cl-router/Link';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
-import T from 'components/T';
+import useLocalize from 'hooks/useLocalize';
 
 // analytics
 import { trackEventByName } from 'utils/analytics';
@@ -100,6 +100,7 @@ const ModerationRow = memo<Props & InjectedIntlProps>(
     intl,
     inappropriateContentFlagId,
   }) => {
+    const localize = useLocalize();
     const inappropriateContentFlag = inappropriateContentFlagId
       ? useInappropriateContentFlag(inappropriateContentFlagId)
       : null;
@@ -170,14 +171,16 @@ const ModerationRow = memo<Props & InjectedIntlProps>(
 
     function getModerationBelongsTo(moderation: IModerationData) {
       const belongsTo = moderation.attributes.belongs_to;
-      const belongsToArray = Object.keys(belongsTo);
+      const belongsToTypes = Object.keys(belongsTo);
 
-      return {
-        belongsToLength: belongsToArray.length,
-      };
+      return belongsToTypes;
     }
-
-    const { belongsToLength } = getModerationBelongsTo(moderation);
+    const belongsToTypes = getModerationBelongsTo(moderation);
+    const belongsToHrefs = {
+      idea: `/ideas/${moderation.attributes.belongs_to.idea?.slug}`,
+      initiative: `/initiatives/${moderation.attributes.belongs_to.initiative?.slug}`,
+      project: `/projects/${moderation.attributes.belongs_to.project?.slug}`,
+    };
 
     return (
       <Container
@@ -194,36 +197,35 @@ const ModerationRow = memo<Props & InjectedIntlProps>(
         </td>
         <td className="type">{contentType}</td>
         <td className="belongsTo">
-          {Object.keys(moderation.attributes.belongs_to).length > 0 &&
-            Object.keys(moderation.attributes.belongs_to).map((key, index) => (
-              <BelongsToItem
-                key={`${moderation.id}-${key}`}
-                className={index + 1 === belongsToLength ? 'last' : ''}
-              >
-                <BelongsToType>
-                  <FormattedMessage
-                    {...({
-                      idea: messages.post,
-                      project: messages.project,
-                      initiative: messages.initiative,
-                    }[key] as any)}
-                  />
-                  :
-                </BelongsToType>
+          {belongsToTypes.map((belongsToType, index) => (
+            <BelongsToItem
+              key={`${moderation.id}-${belongsToType}`}
+              className={index + 1 === belongsToTypes.length ? 'last' : ''}
+            >
+              <BelongsToType>
+                <FormattedMessage
+                  {...({
+                    idea: messages.post,
+                    project: messages.project,
+                    initiative: messages.initiative,
+                  }[belongsToType] as any)}
+                />
+                :
+              </BelongsToType>
+              {belongsToHrefs[belongsToType] && (
                 <a
-                  href={`/${key === 'idea' ? 'idea' : 'project'}s/${
-                    moderation.attributes.belongs_to[key].slug
-                  }`}
-                  role="button"
+                  href={belongsToHrefs[belongsToType]}
                   onClick={handleBelongsToLinkOnClick}
-                  data-belongstotype={key}
+                  data-belongstotype={belongsToType}
                 >
-                  <T
-                    value={moderation.attributes.belongs_to[key].title_multiloc}
-                  />
+                  {localize(
+                    moderation.attributes.belongs_to[belongsToType]
+                      .title_multiloc
+                  )}
                 </a>
-              </BelongsToItem>
-            ))}
+              )}
+            </BelongsToItem>
+          ))}
 
           {isEmpty(moderation.attributes.belongs_to) && <>-</>}
         </td>
