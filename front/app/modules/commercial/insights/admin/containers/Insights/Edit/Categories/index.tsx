@@ -246,7 +246,7 @@ const Categories = ({
           onClick={selectRecentlyPosted}
         >
           <div>{formatMessage(messages.recentlyPosted)}</div>
-          {!isNilOrError(uncategorizedInputsCount) && (
+          {!isNilOrError(recentlyPostedInputsCount) && (
             <div data-testid="insightsRecentlyPostedInputsCount">
               {recentlyPostedInputsCount.count}
             </div>
