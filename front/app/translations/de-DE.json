@@ -2626,6 +2626,7 @@
   "app.containers.landing.createAccount": "Registrieren",
   "app.containers.landing.defaultSignedInMessage": "{tenantName, select, Wunsiedel {{firstName}, mach mit! Dein Fichtelgebirge. Deine Entscheidung.} other {{firstName}, rege heute noch Veränderungen an!}}",
   "app.containers.landing.doItLater": "Ich werde das später machen",
+  "app.containers.landing.eventsWidgetTitle": "",
   "app.containers.landing.initiativesBoxText": "Veröffentliche deinen Vorschlag auf dieser Plattform, sammle dafür Unterstützung und setze ihn auf unsere Tagesordnung. Oder lasse dich von anderen Vorschlägen inspirieren.",
   "app.containers.landing.initiativesBoxTitle": "Was ist dein Vorschlag?",
   "app.containers.landing.new": "neu",
