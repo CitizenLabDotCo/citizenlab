@@ -3,7 +3,7 @@
 module Insights
   # Creates classification tasks to suggest categories for some inputs.
   class CreateClassificationTasksJob < ::ApplicationJob
-    queue_as :insights
+    queue_as :default
     
     # If +categories+ or +inputs+ are not specified, all the categories and 
     # all the inputs (in the scope) of the the view are used respectively. (So
