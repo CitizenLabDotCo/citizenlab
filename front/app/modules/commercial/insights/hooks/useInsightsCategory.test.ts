@@ -10,7 +10,7 @@ const categoryId = '1aa8a788-3aee-4ada-a581-6d934e49784b';
 
 const mockCategory = {
   data: {
-    id: '1aa8a788-3aee-4ada-a581-6d934e49784b',
+    id: categoryId,
     type: 'category',
     attributes: {
       name: 'Test',

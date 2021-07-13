@@ -10,12 +10,12 @@ const inputId = '4e9ac1f1-6928-45e9-9ac9-313e86ad636f';
 
 const mockInput = {
   data: {
-    id: '4e9ac1f1-6928-45e9-9ac9-313e86ad636f',
+    id: inputId,
     type: 'input',
     relationships: {
       source: {
         data: {
-          id: '4e9ac1f1-6928-45e9-9ac9-313e86ad636f',
+          id: inputId,
           type: 'idea',
         },
       },

@@ -9,7 +9,7 @@ const viewId = '1aa8a788-3aee-4ada-a581-6d934e49784b';
 
 const mockView = {
   data: {
-    id: '1aa8a788-3aee-4ada-a581-6d934e49784b',
+    id: viewId,
     type: 'view',
     attributes: {
       name: 'Test',
