@@ -11,4 +11,3 @@ pl:
       main_header: '%{firstName}, masz nowe zadanie'
       subject: 'Zostałeś przypisany na platformie %{organizationName}'
       preheader_idea: 'Został do ciebie przypisany pomysł %{authorName}'
-      
