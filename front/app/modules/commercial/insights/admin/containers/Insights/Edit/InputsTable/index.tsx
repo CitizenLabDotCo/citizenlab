@@ -96,6 +96,7 @@ const StyledSort = styled.div`
 `;
 
 const StyledPagination = styled(Pagination)`
+  display: block;
   margin-top: 12px;
 `;
 
@@ -291,7 +292,7 @@ const InputsTable = ({
         <Button
           buttonStyle="admin-dark"
           bgColor={colors.clBlue}
-          linkTo={`/admin/insights/${viewId}`}
+          linkTo={`/admin/insights`}
         >
           {formatMessage(messages.inputsDone)}
         </Button>
