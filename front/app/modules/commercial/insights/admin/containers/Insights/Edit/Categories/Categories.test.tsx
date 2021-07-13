@@ -49,7 +49,7 @@ jest.mock('modules/commercial/insights/hooks/useInsightsInputsCount', () => {
   });
 });
 
-jest.mock('hooks/useLocale', () => jest.fn(() => 'en'));
+jest.mock('hooks/useLocale');
 
 const mockLocationData = { pathname: '', query: {} };
 
@@ -69,8 +69,6 @@ jest.mock('react-router', () => {
     Link: () => 'Link',
   };
 });
-
-window.confirm = jest.fn(() => true);
 
 describe('Insights Edit Categories', () => {
   it('renders correct number of categories', () => {

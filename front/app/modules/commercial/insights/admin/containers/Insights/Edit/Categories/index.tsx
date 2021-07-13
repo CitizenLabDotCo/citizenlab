@@ -178,7 +178,7 @@ const Categories = ({
   };
 
   return (
-    <Container>
+    <Container data-testid="insightsCategories">
       <DetectButton
         buttonStyle="white"
         locale={locale}
