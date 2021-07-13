@@ -11,4 +11,3 @@ hu:
       main_header: '%{firstName}, you have a new assignment'
       subject: 'You have an assignment on the platform of %{organizationName}'
       preheader_idea: 'The idea of %{authorName} has been assigned to you'
-      
