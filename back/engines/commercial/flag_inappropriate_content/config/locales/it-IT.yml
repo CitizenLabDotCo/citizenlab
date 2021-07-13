@@ -1,15 +1,15 @@
 it:
   email_campaigns:
     campaign_type_description:
-      "inappropriate_content_flagged": Inappropriate content flagged
+      "inappropriate_content_flagged": Contenuto inappropriato segnalato
     admin_campaign_type_description:
-      "inappropriate_content_flagged": Inappropriate content flagged - admins
+      "inappropriate_content_flagged": Contenuto inappropriato segnalato - amministratori
     inappropriate_content_flagged:
-      subject: 'A post on your platform has been flagged for review'
-      header_title: 'A post on your platform has been flagged for review'
-      comment_author: '%{authorName} commented:'
-      idea_author: '%{authorName} submitted a post:'
-      initiative_author: '%{authorName} submitted a proposal:'
+      subject: 'Un post sulla tua piattaforma è stato segnalato per la revisione'
+      header_title: 'Un post sulla tua piattaforma è stato segnalato per la revisione'
+      comment_author: '%{authorName} ha commentato:'
+      idea_author: '%{authorName} ha inserito un messaggio:'
+      initiative_author: '%{authorName} ha presentato una proposta:'
       this_post_was_flagged: >
-        <p>This post was automatically detected as potentially containing inappropriate content. We’re sending you this notification so that you can review the post in accordance with your own moderation guidelines.</p><p>If the post does not contain inappropriate content, you can remove the warning via your platform in the Activity tab in the admin panel.</p>
-      cta_review_post: 'Review post'
+        <p>Questo post è stato automaticamente rilevato come potenzialmente contenente contenuti inappropriati. Ti stiamo inviando questa notifica in modo che tu possa rivedere il post secondo le tue linee guida di moderazione.</p><p>Se il post non contiene contenuti inappropriati, puoi rimuovere l'avviso tramite la tua piattaforma nella scheda Attività nel pannello di amministrazione.</p>
+      cta_review_post: 'Messaggio di revisione'
