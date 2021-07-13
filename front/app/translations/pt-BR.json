@@ -1705,7 +1705,7 @@
   "app.containers.AdminPage.SideBar.inputManager": "Gerenciamento de Informações",
   "app.containers.AdminPage.SideBar.insights": "Reporting",
   "app.containers.AdminPage.SideBar.invitations": "Convites",
-  "app.containers.AdminPage.SideBar.linkToSupportCenter": "https://suporte.citizenlab.co/",
+  "app.containers.AdminPage.SideBar.linkToSupportCenter": "https://support.citizenlab.co/",
   "app.containers.AdminPage.SideBar.moderation": "Atividade",
   "app.containers.AdminPage.SideBar.processing": "Em processamento",
   "app.containers.AdminPage.SideBar.projects": "Projetos",
