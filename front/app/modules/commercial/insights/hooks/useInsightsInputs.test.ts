@@ -64,6 +64,7 @@ const expectedQueryParameters = {
   'page[size]': queryParameters.pageSize,
   search: queryParameters.search,
   sort: queryParameters.sort,
+  processed: true,
 };
 
 let mockObservable = new Observable((subscriber) => {
