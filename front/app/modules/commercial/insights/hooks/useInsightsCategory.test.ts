@@ -1,4 +1,4 @@
-import { renderHook } from '@testing-library/react-hooks';
+import { renderHook, act } from '@testing-library/react-hooks';
 import useInsightsCategory from './useInsightsCategory';
 import { Observable, Subscription } from 'rxjs';
 import { waitFor } from 'utils/testUtils/rtl';
@@ -37,12 +37,15 @@ describe('useInsightsCategory', () => {
     renderHook(() => useInsightsCategory(viewId, categoryId));
     expect(insightsCategoryStream).toHaveBeenCalledWith(viewId, categoryId);
   });
-  it('should return data when data', () => {
+  it('should return data when data', async () => {
     const { result } = renderHook(() =>
       useInsightsCategory(viewId, categoryId)
     );
     expect(result.current).toBe(undefined); // initially, the hook returns undefined
-    waitFor(() => expect(result.current).toBe(mockCategory.data));
+    await act(
+      async () =>
+        await waitFor(() => expect(result.current).toBe(mockCategory.data))
+    );
   });
   it('should return error when error', () => {
     const error = new Error();

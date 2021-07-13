@@ -16,56 +16,44 @@ const queryParameters: QueryParameters = {
 };
 
 const mockInputs = {
-  data: {
-    currentPage: 1,
-    lastPage: 2,
-    list: [
-      {
-        id: '4e9ac1f1-6928-45e9-9ac9-313e86ad636f',
-        type: 'input',
-        relationships: {
-          source: {
-            data: {
-              id: '4e9ac1f1-6928-45e9-9ac9-313e86ad636f',
-              type: 'idea',
-            },
-          },
-          categories: {
-            data: [
-              {
-                id: '94a649b5-23fe-4d47-9165-9beceef2dcad',
-                type: 'category',
-              },
-              {
-                id: '94a649b5-23fe-4d47-9165-9becedfg45sd',
-                type: 'category',
-              },
-            ],
-          },
-          suggested_categories: {
-            data: [],
-          },
+  data: [
+    {
+      id: 'f270e1dd-48c2-4736-912a-1aba276dcd1a',
+      type: 'input',
+      relationships: {
+        source: {
+          data: { id: 'f270e1dd-48c2-4736-912a-1aba276dcd1a', type: 'idea' },
         },
+        categories: { data: [] },
+        suggested_categories: { data: [] },
       },
-      {
-        id: '54438f73-12f4-4b16-84f3-a55bd118de7e',
-        type: 'input',
-        relationships: {
-          source: {
-            data: {
-              id: '54438f73-12f4-4b16-84f3-a55bd118de7e',
-              type: 'idea',
-            },
-          },
-          categories: {
-            data: [],
-          },
-          suggested_categories: {
-            data: [],
-          },
+    },
+    {
+      id: '49d36411-d736-4fc9-9e66-fa05d57663b7',
+      type: 'input',
+      relationships: {
+        source: {
+          data: { id: '49d36411-d736-4fc9-9e66-fa05d57663b7', type: 'idea' },
         },
+        categories: {
+          data: [
+            { id: '4e14b5b3-d95a-4925-8eba-1f57b7e87f63', type: 'category' },
+            { id: '3d0e81fb-062f-4ce2-981e-0f619cea4c4f', type: 'category' },
+          ],
+        },
+        suggested_categories: { data: [] },
       },
-    ],
+    },
+  ],
+  links: {
+    self:
+      'views/eefff7f5-957a-4b5b-816c-9278943ccde7/inputs?page%5Bnumber%5D=1\u0026page%5Bsize%5D=20\u0026sort=approval',
+    first:
+      'views/eefff7f5-957a-4b5b-816c-9278943ccde7/inputs?page%5Bnumber%5D=1\u0026page%5Bsize%5D=20\u0026sort=approval',
+    last:
+      'views/eefff7f5-957a-4b5b-816c-9278943ccde7/inputs?page%5Bnumber%5D=1\u0026page%5Bsize%5D=20\u0026sort=approval',
+    prev: null,
+    next: null,
   },
 };
 
@@ -108,18 +96,19 @@ describe('useInsightsInputs', () => {
       },
     });
   });
-  it('should return correct data when data', () => {
+  it('should return correct data when data', async () => {
     const { result } = renderHook(() => useInsightsInputs(viewId));
     expect(result.current).toStrictEqual({
       lastPage: null,
       list: undefined, // initially, the hook list returns undefined
       loading: true,
     });
-    act(() => {
-      waitFor(() => {
-        expect(result.current.list).toBe(mockInputs.data.list);
-        expect(result.current.lastPage).toBe(mockInputs.data.lastPage);
-        expect(result.current.loading).toBe(false);
+
+    await act(async () => {
+      await waitFor(() => {
+        expect(result.current.list).toStrictEqual(mockInputs.data);
+        expect(result.current.lastPage).toStrictEqual(1);
+        expect(result.current.loading).toStrictEqual(false);
       });
     });
   });
