@@ -11,4 +11,3 @@ de:
       main_header: '%{firstName}, du hast eine neue Zuordnung'
       subject: 'Du hast einen Auftrag auf der Plattform von %{organizationName}'
       preheader_idea: 'Ihnen wurde die Idee von %{authorName} zugewiesen'
-      
