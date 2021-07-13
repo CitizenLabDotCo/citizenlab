@@ -1,6 +1,5 @@
 import React, { memo } from 'react';
 import moment from 'moment';
-import { omitBy, isNil, isEmpty } from 'lodash-es';
 
 // components
 import ModerationContentCell from './ModerationContentCell';
@@ -26,8 +25,7 @@ import { colors } from 'utils/styleUtils';
 import { rgba } from 'polished';
 
 // typings
-import { IModerationData } from '../../services/moderations';
-import { Multiloc } from 'typings';
+import { IModerationData, TBelongsTo } from '../../services/moderations';
 
 // hooks
 import useInappropriateContentFlag from 'modules/commercial/flag_inappropriate_content/hooks/useInappropriateContentFlag';
@@ -109,14 +107,8 @@ const ModerationRow = memo<Props & InjectedIntlProps>(
     )
       ? inappropriateContentFlag.attributes.reason_code !== null
       : false;
-    const contentTitle = omitBy(
-      moderation.attributes.content_title_multiloc,
-      (value) => isNil(value) || isEmpty(value)
-    ) as Multiloc;
-    const contentBody = omitBy(
-      moderation.attributes.content_body_multiloc,
-      (value) => isNil(value) || isEmpty(value)
-    ) as Multiloc;
+    const contentTitle = moderation.attributes.content_title_multiloc;
+    const contentBody = moderation.attributes.content_body_multiloc;
     const contentType = intl.formatMessage(
       {
         idea: messages.post,
@@ -191,41 +183,49 @@ const ModerationRow = memo<Props & InjectedIntlProps>(
         </td>
         <td className="type">{contentType}</td>
         <td className="belongsTo">
-          {belongsToTypes.map((belongsToType, index) => (
-            <BelongsToItem
-              key={`${moderation.id}-${belongsToType}`}
-              className={index + 1 === belongsToTypes.length ? 'last' : ''}
-            >
-              <BelongsToType>
-                <FormattedMessage
-                  {...({
-                    idea: messages.post,
-                    project: messages.project,
-                    initiative: messages.initiative,
-                  }[belongsToType] as any)}
-                />
-                :
-              </BelongsToType>
-              {belongsToHrefs[belongsToType] && (
-                <a
-                  href={belongsToHrefs[belongsToType]}
-                  onClick={handleBelongsToLinkOnClick}
-                  data-belongstotype={belongsToType}
-                >
-                  {localize(
-                    moderation.attributes.belongs_to[belongsToType]
-                      .title_multiloc
-                  )}
-                </a>
-              )}
-            </BelongsToItem>
-          ))}
+          {belongsToTypes.length > 0 ? (
+            belongsToTypes.map((belongsToType: TBelongsTo, index) => {
+              const belongsToTypeMessage = {
+                idea: messages.post,
+                project: messages.project,
+                initiative: messages.initiative,
+              }[belongsToType];
+              const belongsToTitleMultiloc =
+                moderation.attributes.belongs_to[belongsToType]?.title_multiloc;
 
-          {isEmpty(moderation.attributes.belongs_to) && <>-</>}
+              if (belongsToTitleMultiloc) {
+                return (
+                  <BelongsToItem
+                    key={`${moderation.id}-${belongsToType}`}
+                    className={
+                      index + 1 === belongsToTypes.length ? 'last' : ''
+                    }
+                  >
+                    <BelongsToType>
+                      <FormattedMessage {...belongsToTypeMessage} />:
+                    </BelongsToType>
+                    {belongsToHrefs[belongsToType] && (
+                      <a
+                        href={belongsToHrefs[belongsToType]}
+                        onClick={handleBelongsToLinkOnClick}
+                        data-belongstotype={belongsToType}
+                      >
+                        {localize(belongsToTitleMultiloc)}
+                      </a>
+                    )}
+                  </BelongsToItem>
+                );
+              }
+
+              return null;
+            })
+          ) : (
+            <>-</>
+          )}
         </td>
         <td className="content">
           <StyledModerationContentCell
-            contentTitle={!isEmpty(contentTitle) ? contentTitle : null}
+            contentTitle={contentTitle}
             contentBody={contentBody}
           />
           <Outlet
