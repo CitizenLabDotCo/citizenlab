@@ -107,6 +107,19 @@ const SearchContainer = styled.div`
   margin-bottom: 40px;
 `;
 
+const RecentlyPostedInfoBox = styled.div`
+  color: ${colors.adminTextColor};
+  background-color: ${colors.clBlueLightest};
+  padding: 20px;
+  border-radius: 3px;
+  text-align: center;
+  margin-bottom: 28px;
+  svg {
+    fill: ${colors.clBlue};
+    margin-right: 8px;
+  }
+`;
+
 const InputsTable = ({
   params: { viewId },
   location: { pathname, query },
@@ -302,9 +315,15 @@ const InputsTable = ({
           {formatMessage(messages.inputsDone)}
         </Button>
       </SearchContainer>
+      {inputsCategoryFilter === 'recentlyPosted' && inputs.length !== 0 && (
+        <RecentlyPostedInfoBox data-testid="insightsRecentlyAddedInfobox">
+          <Icon name="showMore" />
+          {formatMessage(messages.inputsTableRecentlyPostedInfoBox)}
+        </RecentlyPostedInfoBox>
+      )}
       <TitleRow>
         <TableTitle />
-        <StyledActions selectedInputs={selectedRows} />
+        {inputs.length !== 0 && <StyledActions selectedInputs={selectedRows} />}
       </TitleRow>
       <StyledDivider />
       {inputs.length === 0 ? (

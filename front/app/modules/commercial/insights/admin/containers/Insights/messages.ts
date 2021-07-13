@@ -129,6 +129,11 @@ export default defineMessages({
     defaultMessage:
       'There is no recent input. All input has been taken into consideration.',
   },
+  inputsTableRecentlyPostedInfoBox: {
+    id: 'app.containers.Admin.Insights.Edit.inputsTableRecentlyPostedInfoBox',
+    defaultMessage:
+      'The input below was recently added and has not yet been categorized. ',
+  },
   categories: {
     id: 'app.containers.Admin.Insights.Edit.categories',
     defaultMessage: 'Categories',
