@@ -7,7 +7,7 @@ interface InputParameters {
   projectIds?: string[];
   futureOnly?: boolean;
   pastOnly?: boolean;
-  pageNumber?: number;
+  page?: number;
   pageSize?: number;
 }
 
@@ -15,13 +15,13 @@ export default function useEvents({
   projectIds,
   futureOnly,
   pastOnly,
-  pageNumber,
+  page,
   pageSize,
 }: InputParameters) {
   const [events, setEvents] = useState<IEventData[] | undefined | null | Error>(
     undefined
   );
-  const [lastPageNumber, setLastPageNumber] = useState(1);
+  const [lastPage, setLastPage] = useState(1);
 
   useEffect(() => {
     setEvents(undefined);
@@ -38,8 +38,8 @@ export default function useEvents({
       streamParams.queryParameters.start_at_lt = new Date().toJSON();
     }
 
-    if (pageNumber) {
-      streamParams.queryParameters['page[number]'] = pageNumber;
+    if (page) {
+      streamParams.queryParameters['page[number]'] = page;
     }
 
     if (pageSize) {
@@ -50,19 +50,19 @@ export default function useEvents({
       (response) => {
         if (isNilOrError(response)) {
           setEvents(response);
-          setLastPageNumber(1);
+          setLastPage(1);
           return;
         }
 
-        setEvents(response.data);
-
         const lastPageNumber = getPageNumberFromUrl(response.links?.last) ?? 1;
-        setLastPageNumber(lastPageNumber);
+
+        setEvents(response.data);
+        setLastPage(lastPageNumber);
       }
     );
 
     return () => subscription.unsubscribe();
-  }, [projectIds, futureOnly, pastOnly, pageNumber, pageSize]);
+  }, [projectIds, futureOnly, pastOnly, page, pageSize]);
 
-  return { events, lastPageNumber };
+  return { events, lastPage };
 }

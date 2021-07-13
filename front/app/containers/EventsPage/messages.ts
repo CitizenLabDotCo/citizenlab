@@ -30,4 +30,8 @@ export default defineMessages({
     id: 'app.containers.eventspage.filterDropdownTitle',
     defaultMessage: 'Projects',
   },
+  errorWhenFetchingEvents: {
+    id: 'app.containers.eventspage.errorWhenFetchingEvents',
+    defaultMessage: 'Error when fetching events',
+  },
 });

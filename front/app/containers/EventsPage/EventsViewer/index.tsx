@@ -2,7 +2,8 @@ import React, { memo, useState } from 'react';
 
 // components
 import TopBar from './TopBar';
-import { Spinner } from 'cl2-component-library';
+import EventsError from './EventsError';
+import EventsSpinner from './EventsSpinner';
 import EventCard from 'components/EventCard';
 import Pagination from 'components/Pagination';
 
@@ -17,7 +18,7 @@ import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 
 // other
-import { isNilOrError } from 'utils/helperUtils';
+import { isNilOrError, isNil, isError } from 'utils/helperUtils';
 
 interface IStyledEventCard {
   last: boolean;
@@ -64,21 +65,25 @@ const EVENTS_PER_PAGE = 10;
 const EventsViewer = memo<Props>(
   ({ title, fallbackMessage, eventsTime, className }) => {
     const [projectIds, setProjectIds] = useState<string[]>([]);
-    const [currentPageNumber, setCurrentPageNumber] = useState<number>(1);
+    const [currentPage, setCurrentPage] = useState<number>(1);
 
-    const { events, lastPageNumber } = useEvents({
+    const { events, lastPage } = useEvents({
       projectIds,
       futureOnly: eventsTime === 'future',
       pastOnly: eventsTime === 'past',
-      pageNumber: currentPageNumber,
+      page: currentPage,
       pageSize: EVENTS_PER_PAGE,
     });
+
+    const eventsLoading = isNil(events);
+    const eventsError = isError(events);
 
     return (
       <div className={className}>
         <TopBar title={title} setProjectIds={setProjectIds} />
 
-        {isNilOrError(events) && <Spinner />}
+        {eventsError && <EventsError />}
+        {eventsLoading && <EventsSpinner />}
 
         {!isNilOrError(events) && (
           <>
@@ -100,9 +105,9 @@ const EventsViewer = memo<Props>(
             )}
 
             <StyledPagination
-              currentPage={currentPageNumber}
-              totalPages={lastPageNumber}
-              loadPage={setCurrentPageNumber}
+              currentPage={currentPage}
+              totalPages={lastPage}
+              loadPage={setCurrentPage}
               useColorsTheme
             />
           </>
