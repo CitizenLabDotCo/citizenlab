@@ -211,9 +211,10 @@ const InputDetails = ({
             padding="12px 22px"
             size="2"
             onClick={handleSubmit}
-            disabled={!selectedOption || loading}
+            disabled={!selectedOption}
+            processing={loading}
           >
-            {loading ? <Spinner size="24px" /> : <StyledPlus>+</StyledPlus>}
+            <StyledPlus>+</StyledPlus>
           </Button>
         </FormContainer>
         <CategoryList>

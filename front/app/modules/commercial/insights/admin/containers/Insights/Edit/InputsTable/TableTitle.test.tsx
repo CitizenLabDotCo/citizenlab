@@ -54,8 +54,6 @@ jest.mock('react-router', () => {
   };
 });
 
-window.confirm = jest.fn(() => true);
-
 describe('Table Title', () => {
   it('shows All Input title correctly', () => {
     render(<TableTitle />);

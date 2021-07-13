@@ -97,6 +97,7 @@ const StyledSort = styled.div`
 `;
 
 const StyledPagination = styled(Pagination)`
+  display: block;
   margin-top: 12px;
 `;
 
@@ -144,10 +145,12 @@ const InputsTable = ({
     selectedCategory,
     query.processed
   );
+  const sort = query.sort;
 
   const { list: inputs, lastPage } = useInsightsInputs(viewId, {
     pageNumber,
     search,
+    sort,
     processed: !(inputsCategoryFilter === 'recentlyPosted'),
     category: selectedCategory,
   });
@@ -310,7 +313,7 @@ const InputsTable = ({
         <Button
           buttonStyle="admin-dark"
           bgColor={colors.clBlue}
-          linkTo={`/admin/insights/${viewId}`}
+          linkTo={`/admin/insights`}
         >
           {formatMessage(messages.inputsDone)}
         </Button>
