@@ -54,8 +54,6 @@ jest.mock('react-router', () => {
   };
 });
 
-window.confirm = jest.fn(() => true);
-
 describe('Table Title', () => {
   it('shows selected category correctly', () => {
     mockLocationData = { pathname: '', query: { category: mockData[0].id } };

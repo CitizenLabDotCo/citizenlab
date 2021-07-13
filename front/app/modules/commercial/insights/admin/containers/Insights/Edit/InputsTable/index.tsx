@@ -96,6 +96,7 @@ const StyledSort = styled.div`
 `;
 
 const StyledPagination = styled(Pagination)`
+  display: block;
   margin-top: 12px;
 `;
 
