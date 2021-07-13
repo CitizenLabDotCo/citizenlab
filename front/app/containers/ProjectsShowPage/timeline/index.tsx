@@ -127,7 +127,7 @@ const ProjectTimelineContainer = memo<Props & WithRouterProps>(
           locale
         );
       }
-    }, [selectedPhase]);
+    }, [selectedPhase, phases, project, locale]);
 
     useEffect(() => {
       if (!isNilOrError(phases) && phases.length > 0) {
