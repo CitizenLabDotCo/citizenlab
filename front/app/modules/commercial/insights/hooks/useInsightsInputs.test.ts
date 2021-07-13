@@ -55,6 +55,7 @@ const queryParameters: QueryParameters = {
   pageNumber: 12,
   search: 'search',
   sort: '-approval',
+  processed: true,
 };
 
 const expectedQueryParameters = {
