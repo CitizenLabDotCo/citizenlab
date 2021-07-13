@@ -7,14 +7,6 @@ import { insightsInputsStream } from 'modules/commercial/insights/services/insig
 
 const viewId = '1';
 
-const queryParameters: QueryParameters = {
-  category: '3',
-  pageSize: 10,
-  pageNumber: 12,
-  search: 'search',
-  sort: '-approval',
-};
-
 const mockInputs = {
   data: [
     {
@@ -57,6 +49,22 @@ const mockInputs = {
   },
 };
 
+const queryParameters: QueryParameters = {
+  category: '3',
+  pageSize: 10,
+  pageNumber: 12,
+  search: 'search',
+  sort: '-approval',
+};
+
+const expectedQueryParameters = {
+  category: queryParameters.category,
+  'page[number]': queryParameters.pageNumber,
+  'page[size]': queryParameters.pageSize,
+  search: queryParameters.search,
+  sort: queryParameters.sort,
+};
+
 let mockObservable = new Observable((subscriber) => {
   subscriber.next(mockInputs);
 }).pipe(delay(1));
@@ -86,15 +94,111 @@ describe('useInsightsInputs', () => {
   });
   it('should call useInsightsInputs with correct non-default arguments', async () => {
     renderHook(() => useInsightsInputs(viewId, queryParameters));
+
+    expect(insightsInputsStream).toHaveBeenCalledWith(viewId, {
+      queryParameters: expectedQueryParameters,
+    });
+  });
+  it('should call useInsightsInputs with correct arguments on category change', async () => {
+    let category = '5';
+    const { rerender } = renderHook(() =>
+      useInsightsInputs(viewId, { ...queryParameters, category })
+    );
+
+    expect(insightsInputsStream).toHaveBeenCalledWith(viewId, {
+      queryParameters: { ...expectedQueryParameters, category },
+    });
+
+    // Category change
+    category = '6';
+    rerender();
+
+    expect(insightsInputsStream).toHaveBeenCalledWith(viewId, {
+      queryParameters: { ...expectedQueryParameters, category },
+    });
+    expect(insightsInputsStream).toHaveBeenCalledTimes(2);
+  });
+  it('should call useInsightsInputs with correct arguments on page number change', async () => {
+    let pageNumber = 5;
+    const { rerender } = renderHook(() =>
+      useInsightsInputs(viewId, { ...queryParameters, pageNumber })
+    );
+
     expect(insightsInputsStream).toHaveBeenCalledWith(viewId, {
       queryParameters: {
-        category: queryParameters.category,
-        'page[number]': queryParameters.pageNumber,
-        'page[size]': queryParameters.pageSize,
-        search: queryParameters.search,
-        sort: queryParameters.sort,
+        ...expectedQueryParameters,
+        'page[number]': pageNumber,
       },
     });
+
+    // Search change
+    pageNumber = 10;
+    rerender();
+
+    expect(insightsInputsStream).toHaveBeenCalledWith(viewId, {
+      queryParameters: {
+        ...expectedQueryParameters,
+        'page[number]': pageNumber,
+      },
+    });
+    expect(insightsInputsStream).toHaveBeenCalledTimes(2);
+  });
+  it('should call useInsightsInputs with correct arguments on page size change', async () => {
+    let pageSize = 5;
+    const { rerender } = renderHook(() =>
+      useInsightsInputs(viewId, { ...queryParameters, pageSize })
+    );
+
+    expect(insightsInputsStream).toHaveBeenCalledWith(viewId, {
+      queryParameters: { ...expectedQueryParameters, 'page[size]': pageSize },
+    });
+
+    // Search change
+    pageSize = 10;
+    rerender();
+
+    expect(insightsInputsStream).toHaveBeenCalledWith(viewId, {
+      queryParameters: { ...expectedQueryParameters, 'page[size]': pageSize },
+    });
+    expect(insightsInputsStream).toHaveBeenCalledTimes(2);
+  });
+  it('should call useInsightsInputs with correct arguments on search change', async () => {
+    let search = 'some search';
+    const { rerender } = renderHook(() =>
+      useInsightsInputs(viewId, { ...queryParameters, search })
+    );
+
+    expect(insightsInputsStream).toHaveBeenCalledWith(viewId, {
+      queryParameters: { ...expectedQueryParameters, search },
+    });
+
+    // Search change
+    search = 'another search';
+    rerender();
+
+    expect(insightsInputsStream).toHaveBeenCalledWith(viewId, {
+      queryParameters: { ...expectedQueryParameters, search },
+    });
+    expect(insightsInputsStream).toHaveBeenCalledTimes(2);
+  });
+  it('should call useInsightsInputs with correct arguments on sort change', async () => {
+    let sort: QueryParameters['sort'] = 'approval';
+    const { rerender } = renderHook(() =>
+      useInsightsInputs(viewId, { ...queryParameters, sort })
+    );
+
+    expect(insightsInputsStream).toHaveBeenCalledWith(viewId, {
+      queryParameters: { ...expectedQueryParameters, sort },
+    });
+
+    // Sort change
+    sort = '-approval';
+    rerender();
+
+    expect(insightsInputsStream).toHaveBeenCalledWith(viewId, {
+      queryParameters: { ...expectedQueryParameters, sort },
+    });
+    expect(insightsInputsStream).toHaveBeenCalledTimes(2);
   });
   it('should return correct data when data', async () => {
     const { result } = renderHook(() => useInsightsInputs(viewId));
