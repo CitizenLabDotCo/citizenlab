@@ -192,6 +192,7 @@ const ModerationRow = memo<Props & InjectedIntlProps>(
               }[belongsToType];
               const belongsToTitleMultiloc =
                 moderation.attributes.belongs_to[belongsToType]?.title_multiloc;
+              const belongsToHref = belongsToHrefs[belongsToType];
 
               if (belongsToTitleMultiloc) {
                 return (
@@ -204,15 +205,13 @@ const ModerationRow = memo<Props & InjectedIntlProps>(
                     <BelongsToType>
                       <FormattedMessage {...belongsToTypeMessage} />:
                     </BelongsToType>
-                    {belongsToHrefs[belongsToType] && (
-                      <a
-                        href={belongsToHrefs[belongsToType]}
-                        onClick={handleBelongsToLinkOnClick}
-                        data-belongstotype={belongsToType}
-                      >
-                        {localize(belongsToTitleMultiloc)}
-                      </a>
-                    )}
+                    <a
+                      href={belongsToHref}
+                      onClick={handleBelongsToLinkOnClick}
+                      data-belongstotype={belongsToType}
+                    >
+                      {localize(belongsToTitleMultiloc)}
+                    </a>
                   </BelongsToItem>
                 );
               }
