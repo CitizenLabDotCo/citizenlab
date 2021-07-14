@@ -32,6 +32,7 @@ export default defineMessages({
   },
   errorWhenFetchingEvents: {
     id: 'app.containers.eventspage.errorWhenFetchingEvents',
-    defaultMessage: 'Error when fetching events',
+    defaultMessage:
+      'An error occurred while loading events. Please try reloading the page.',
   },
 });

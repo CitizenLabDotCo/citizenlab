@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React from 'react';
 
 // components
 import Centerer from './Centerer';
@@ -20,12 +20,10 @@ interface Props {
   className?: string;
 }
 
-const ProjectNotFound = memo<Props>(({ className }) => {
-  return (
-    <Container className={className || ''}>
-      <FormattedMessage {...messages.errorWhenFetchingEvents} />
-    </Container>
-  );
-});
+const ProjectNotFound = ({ className }: Props) => (
+  <Container className={className || ''}>
+    <FormattedMessage {...messages.errorWhenFetchingEvents} />
+  </Container>
+);
 
 export default ProjectNotFound;
