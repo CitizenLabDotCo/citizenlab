@@ -1,10 +1,14 @@
 # Changelog
 
-## Next
+## 2021-07-14
+
+### Fixed
+- Blocked words for content that can contain HTML
+- Searching users after sorting (e.g. by role)
 
 ### Changed
-- The admin Guide link goes to the support center now instead of to /admin/guide.
-- A phase number parameter can now be appended to `projects/project_slug`.
+- The admin Guide link goes to the support center now instead of to /admin/guide
+- A phase number parameter can now be appended to `projects/project_slug`
 
 ## 2021-07-02
 
