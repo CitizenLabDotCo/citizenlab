@@ -25,7 +25,11 @@ import { colors } from 'utils/styleUtils';
 import { rgba } from 'polished';
 
 // typings
-import { IModerationData, TBelongsTo } from '../../services/moderations';
+import {
+  IModerationData,
+  TBelongsTo,
+  TModeratableType,
+} from '../../services/moderations';
 
 // hooks
 import useInappropriateContentFlag from 'modules/commercial/flag_inappropriate_content/hooks/useInappropriateContentFlag';
@@ -109,6 +113,13 @@ const ModerationRow = memo<Props & InjectedIntlProps>(
       : false;
     const contentTitle = moderation.attributes.content_title_multiloc;
     const contentBody = moderation.attributes.content_body_multiloc;
+    const belongsToTypes = Object.keys(moderation.attributes.belongs_to);
+    const belongsToHrefs = {
+      idea: `/ideas/${moderation.attributes.belongs_to.idea?.slug}`,
+      initiative: `/initiatives/${moderation.attributes.belongs_to.initiative?.slug}`,
+      project: `/projects/${moderation.attributes.belongs_to.project?.slug}`,
+    };
+
     const moderatableTypeMessage = {
       Idea: messages.post,
       Comment: messages.comment,
@@ -119,19 +130,19 @@ const ModerationRow = memo<Props & InjectedIntlProps>(
       : moderation.attributes.moderation_status === 'read'
       ? '#f6f6f6'
       : '#fff';
-    let viewLink = `/${moderation.attributes?.moderatable_type.toLowerCase()}s/${
-      moderation.attributes.content_slug
-    }`;
+    function getViewLink() {
+      if (moderation.attributes.moderatable_type === 'Comment') {
+        const parentType = belongsToTypes[belongsToTypes.length - 1];
+        const parentSlug = moderation.attributes.belongs_to[parentType].slug;
+        return `/${parentType.toLowerCase()}s/${parentSlug}`;
+      }
 
-    if (moderation.attributes.moderatable_type === 'Comment') {
-      const belongsToLength = Object.keys(moderation.attributes.belongs_to)
-        .length;
-      const parentType = Object.keys(moderation.attributes.belongs_to)[
-        belongsToLength - 1
-      ];
-      const parentSlug = moderation.attributes.belongs_to[parentType].slug;
-      viewLink = `/${parentType.toLowerCase()}s/${parentSlug}`;
+      return `/${moderation.attributes?.moderatable_type.toLowerCase()}s/${
+        moderation.attributes.content_slug
+      }`;
     }
+
+    const viewLink = getViewLink();
 
     const handleOnChecked = (_event: React.ChangeEvent) => {
       onSelect(moderation);
@@ -157,13 +168,6 @@ const ModerationRow = memo<Props & InjectedIntlProps>(
       trackEventByName(tracks.belongsToLinkClicked, { belongsToType });
       const win = window.open(url, '_blank');
       win && win.focus();
-    };
-
-    const belongsToTypes = Object.keys(moderation.attributes.belongs_to);
-    const belongsToHrefs = {
-      idea: `/ideas/${moderation.attributes.belongs_to.idea?.slug}`,
-      initiative: `/initiatives/${moderation.attributes.belongs_to.initiative?.slug}`,
-      project: `/projects/${moderation.attributes.belongs_to.project?.slug}`,
     };
 
     return (
