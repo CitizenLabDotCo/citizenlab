@@ -212,7 +212,7 @@ const ModerationRow = memo<Props & InjectedIntlProps>(
                 initiative: messages.initiative,
               }[belongsToType];
               const belongsToTitleMultiloc =
-                moderation.attributes.belongs_to[belongsToType]?.title_multiloc;
+                belongsToTypes[belongsToType].title_multiloc;
               const belongsToHref = belongsToHrefs[belongsToType];
 
               if (belongsToTitleMultiloc) {
