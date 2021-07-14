@@ -65,7 +65,13 @@ export default function useEvents(parameters: InputParameters) {
     );
 
     return () => subscription.unsubscribe();
-  }, [parameters, projectIds, currentPage, pageSize]);
+  }, [
+    parameters.futureOnly,
+    parameters.pastOnly,
+    projectIds,
+    currentPage,
+    pageSize,
+  ]);
 
   return {
     events,
