@@ -46,7 +46,7 @@ class ProfanityService
   def normalize_text text
     # We could also consider removing accents and
     # substituting digits by resembling letters.
-    text.downcase
+    Nokogiri::HTML(text).text.downcase
   end
 
   def without_special_chars text

@@ -141,8 +141,6 @@ jest.mock('react-router', () => {
 
 jest.mock('utils/cl-router/history');
 
-window.confirm = jest.fn(() => true);
-
 describe('Insights Input Details', () => {
   it('renders', () => {
     render(<InputDetails {...defaultProps} />);

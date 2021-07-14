@@ -19,27 +19,30 @@ class WebApi::V1::UsersController < ::ApplicationController
     @users = @users.admin.or(@users.project_moderator) if params[:can_moderate].present?
     @users = @users.admin if params[:can_admin].present?
 
-    @users = case params[:sort]
-      when "created_at"
-        @users.order(created_at: :asc)
-      when "-created_at"
-        @users.order(created_at: :desc)
-      when "last_name"
-        @users.order(last_name: :asc)
-      when "-last_name"
-        @users.order(last_name: :desc)
-      when "email"
-        @users.order(email: :asc) if view_private_attributes?
-      when "-email"
-        @users.order(email: :desc) if view_private_attributes?
-      when "role"
-        @users.order_role(:asc)
-      when "-role"
-        @users.order_role(:desc)
-      when nil
-        @users
-      else
-        raise "Unsupported sort method"
+
+    if !params[:search].present?
+      @users = case params[:sort]
+        when "created_at"
+          @users.order(created_at: :asc)
+        when "-created_at"
+          @users.order(created_at: :desc)
+        when "last_name"
+          @users.order(last_name: :asc)
+        when "-last_name"
+          @users.order(last_name: :desc)
+        when "email"
+          @users.order(email: :asc) if view_private_attributes?
+        when "-email"
+          @users.order(email: :desc) if view_private_attributes?
+        when "role"
+          @users.order_role(:asc)
+        when "-role"
+          @users.order_role(:desc)
+        when nil
+          @users
+        else
+          raise "Unsupported sort method"
+        end
     end
 
     @users = @users
