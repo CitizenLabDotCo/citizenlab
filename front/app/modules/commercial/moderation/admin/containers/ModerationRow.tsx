@@ -256,12 +256,11 @@ const ModerationRow = memo<Props & InjectedIntlProps>(
               placement="bottom-end"
               content={
                 <FormattedMessage
-                  {...messages.goToThisContentType}
-                  values={{
-                    contentType: formatMessage(
-                      moderatableTypeMessage
-                    ).toLowerCase(),
-                  }}
+                  {...{
+                    Idea: messages.goToPost,
+                    Initiative: messages.goToProposal,
+                    Comment: messages.goToComment,
+                  }[moderatableType]}
                 />
               }
             >

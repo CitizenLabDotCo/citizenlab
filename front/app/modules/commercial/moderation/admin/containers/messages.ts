@@ -87,9 +87,17 @@ export default defineMessages({
     defaultMessage:
       'Mark {selectedItemsCount, plural, one {# item} other {# items}} as not seen',
   },
-  goToThisContentType: {
-    id: 'app.containers.Admin.Moderation.goToThisContentType',
-    defaultMessage: 'Open this {contentType} in a new tab',
+  goToPost: {
+    id: 'app.containers.Admin.Moderation.goToPost',
+    defaultMessage: 'Open this post in a new tab',
+  },
+  goToProposal: {
+    id: 'app.containers.Admin.Moderation.goToProposal',
+    defaultMessage: 'Open this proposal in a new tab',
+  },
+  goToComment: {
+    id: 'app.containers.Admin.Moderation.goToComment',
+    defaultMessage: 'Open this comment in a new tab',
   },
   moderationsTooltip: {
     id: 'app.containers.Admin.Moderation.moderationsTooltip',
