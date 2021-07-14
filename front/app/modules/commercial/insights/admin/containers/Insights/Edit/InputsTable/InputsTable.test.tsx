@@ -161,8 +161,6 @@ jest.mock(
   }
 );
 
-window.confirm = jest.fn(() => true);
-
 describe('Insights Input Table', () => {
   it('renders', () => {
     render(<InputsTable />);
