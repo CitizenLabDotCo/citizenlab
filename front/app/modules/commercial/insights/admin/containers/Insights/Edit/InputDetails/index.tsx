@@ -193,6 +193,7 @@ const InputDetails = ({
                 key={category.id}
                 inputId={previewedInput.id}
                 variant="suggested"
+                size="large"
               />
             )
           )}

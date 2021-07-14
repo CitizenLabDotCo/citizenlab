@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 import useCategory from 'modules/commercial/insights/hooks/useInsightsCategory';
-import Tag from 'modules/commercial/insights/admin/components/Tag';
+import Tag, {
+  TagProps,
+} from 'modules/commercial/insights/admin/components/Tag';
 import {
   deleteInsightsInputCategory,
   addInsightsInputCategory,
@@ -14,12 +16,14 @@ export type CategoryProps = {
   id: string;
   inputId: string;
   variant: 'suggested' | 'approved';
+  size?: TagProps['size'];
 } & WithRouterProps;
 
 const Category = ({
   id,
   inputId,
   variant,
+  size,
   params: { viewId },
 }: CategoryProps) => {
   const [loading, setLoading] = useState(false);
@@ -47,6 +51,7 @@ const Category = ({
       label={category.attributes.name}
       onIconClick={handleCategoryAction}
       loading={loading}
+      size={size}
     />
   );
 };
