@@ -55,7 +55,12 @@ export default () => {
       {!isNilOrError(events) && (
         <CardsContainer>
           {events.map((event) => (
-            <StyledEventCard event={event} key={event.id} showProjectTitle />
+            <StyledEventCard
+              event={event}
+              key={event.id}
+              showProjectTitle
+              clickable
+            />
           ))}
         </CardsContainer>
       )}

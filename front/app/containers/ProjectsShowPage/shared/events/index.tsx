@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // hooks
@@ -21,6 +21,10 @@ import messages from 'containers/ProjectsShowPage/messages';
 // style
 import styled from 'styled-components';
 
+// events
+import { ScrollToEventCardParams } from 'components/EventCard';
+import eventEmitter from 'utils/eventEmitter';
+
 const Container = styled.div`
   background: #fff;
 `;
@@ -37,6 +41,27 @@ interface Props {
 const EventsContainer = memo<Props>(({ projectId, className }) => {
   const project = useProject({ projectId });
   const { events } = useEvents({ projectIds: [projectId] });
+  const [scrollTo, setScrollTo] = useState<string | null>(null);
+
+  useEffect(() => {
+    const subscription = eventEmitter
+      .observeEvent<ScrollToEventCardParams>('scrollToEventCardParams')
+      .subscribe(({ eventValue: { eventId } }) => {
+        if (scrollTo !== eventId) {
+          setScrollTo(eventId);
+        }
+      });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  useEffect(() => {
+    if (events && scrollTo !== null) {
+      const element = document.getElementById(scrollTo);
+      element?.scrollIntoView();
+      setScrollTo(null);
+    }
+  }, [scrollTo, events]);
 
   if (!isNilOrError(project) && !isNilOrError(events) && events.length > 0) {
     return (
@@ -48,6 +73,7 @@ const EventsContainer = memo<Props>(({ projectId, className }) => {
             </ProjectPageSectionTitle>
             {events.map((event) => (
               <StyledEventCard
+                id={event.id}
                 key={event.id}
                 event={event}
                 showLocation
