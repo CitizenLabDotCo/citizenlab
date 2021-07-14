@@ -44,7 +44,6 @@ const ProjectButton = ({ projectId }: ProjectButtonProps) => {
         buttonStyle="secondary-outlined"
         fontSize={`${fontSizes.small}px`}
         padding="4px 6px"
-        openInNewTab
         linkTo={`/projects/${project.attributes.slug}`}
       >
         <ProjectButtonContent>
