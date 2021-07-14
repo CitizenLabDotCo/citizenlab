@@ -2589,6 +2589,7 @@
   "app.containers.app.navbar.search": "Pretraga",
   "app.containers.app.navbar.signOut": "Odjava",
   "app.containers.app.navbar.signUp": "Prijavi se",
+  "app.containers.eventspage.errorWhenFetchingEvents": "",
   "app.containers.eventspage.eventsPageDescription": "",
   "app.containers.eventspage.eventsPageTitle": "",
   "app.containers.eventspage.filterDropdownTitle": "",

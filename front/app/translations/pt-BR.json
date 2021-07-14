@@ -2589,6 +2589,7 @@
   "app.containers.app.navbar.search": "Salvar",
   "app.containers.app.navbar.signOut": "Salvar",
   "app.containers.app.navbar.signUp": "faça o login",
+  "app.containers.eventspage.errorWhenFetchingEvents": "",
   "app.containers.eventspage.eventsPageDescription": "",
   "app.containers.eventspage.eventsPageTitle": "",
   "app.containers.eventspage.filterDropdownTitle": "",

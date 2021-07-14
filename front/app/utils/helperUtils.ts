@@ -19,7 +19,15 @@ export function capitalizeParticipationContextType(
 }
 
 export function isNilOrError(obj: any): obj is undefined | null | Error {
-  return obj === undefined || obj === null || obj instanceof Error;
+  return isNil(obj) || isError(obj);
+}
+
+export function isNil(obj: any): obj is undefined | null {
+  return obj === undefined || obj === null;
+}
+
+export function isError(obj: any): obj is Error {
+  return obj instanceof Error;
 }
 
 export function isApiError(obj: any): obj is CLErrorsJSON {

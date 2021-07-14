@@ -1,26 +1,31 @@
-import React, { memo, useState, useEffect } from 'react';
+import React, { memo } from 'react';
 
 // components
 import TopBar from './TopBar';
+import EventsError from './EventsError';
+import EventsSpinner from './EventsSpinner';
+import EventCard from 'components/EventCard';
 import Pagination from 'components/Pagination';
 
 // svg
 import noEventsIllustration from './NoEventsPicture.svg';
+
+// hooks
+import useEvents from 'hooks/useEvents';
 
 // styling
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 
 // other
-import { sliceEventsToPage, getNumberOfPages } from './eventsViewerUtils';
+import { isNilOrError, isNil, isError } from 'utils/helperUtils';
 
-const PlaceHolder = styled.div<{ first: boolean }>`
-  width: 100%;
-  height: 237px;
-  margin-top: ${({ first }) => (first ? '29px' : '39px')};
-  padding: 30px;
-  font-size: ${fontSizes.xxl}px;
-  border: 1px dotted;
+interface IStyledEventCard {
+  last: boolean;
+}
+
+const StyledEventCard = styled(EventCard)<IStyledEventCard>`
+  margin-bottom: ${({ last }) => (last ? 0 : 39)}px;
 `;
 
 const NoEventsContainer = styled.figure`
@@ -51,47 +56,59 @@ const StyledPagination = styled(Pagination)`
 interface Props {
   title: string;
   fallbackMessage: string;
-  events: number[];
+  eventsTime: 'past' | 'future';
   className?: string;
 }
 
-const EVENTS_PER_PAGE = 10;
-
 const EventsViewer = memo<Props>(
-  ({ title, events, className, fallbackMessage }) => {
-    const [currentPage, setCurrentPage] = useState<number>(1);
-    const [visibleEvents, setVisibleEvents] = useState<number[]>([]);
+  ({ title, fallbackMessage, eventsTime, className }) => {
+    const {
+      events,
+      currentPage,
+      lastPage,
+      onProjectIdsChange,
+      onCurrentPageChange,
+    } = useEvents({
+      futureOnly: eventsTime === 'future',
+      pastOnly: eventsTime === 'past',
+    });
 
-    useEffect(() => {
-      setVisibleEvents(sliceEventsToPage(events, currentPage, EVENTS_PER_PAGE));
-    }, [events, currentPage]);
+    const eventsLoading = isNil(events);
+    const eventsError = isError(events);
 
     return (
       <div className={className}>
-        <TopBar title={title} />
+        <TopBar title={title} setProjectIds={onProjectIdsChange} />
 
-        {visibleEvents.length > 0 &&
-          visibleEvents.map((e, i) => (
-            <PlaceHolder key={e} first={i === 0}>
-              {e}
-            </PlaceHolder>
-          ))}
+        {eventsError && <EventsError />}
+        {eventsLoading && <EventsSpinner />}
 
-        {events.length === 0 && (
-          <NoEventsContainer>
-            <NoEventsIllustration src={noEventsIllustration} />
+        {!isNilOrError(events) && (
+          <>
+            {events.length > 0 &&
+              events.map((event, i) => (
+                <StyledEventCard
+                  event={event}
+                  showProjectTitle={true}
+                  last={events.length - 1 === i}
+                  key={event.id}
+                />
+              ))}
 
-            <NoEventsText>{fallbackMessage}</NoEventsText>
-          </NoEventsContainer>
-        )}
+            {events.length === 0 && (
+              <NoEventsContainer>
+                <NoEventsIllustration src={noEventsIllustration} />
+                <NoEventsText>{fallbackMessage}</NoEventsText>
+              </NoEventsContainer>
+            )}
 
-        {events.length > 10 && (
-          <StyledPagination
-            currentPage={currentPage}
-            totalPages={getNumberOfPages(events.length, EVENTS_PER_PAGE)}
-            loadPage={setCurrentPage}
-            useColorsTheme
-          />
+            <StyledPagination
+              currentPage={currentPage}
+              totalPages={lastPage}
+              loadPage={onCurrentPageChange}
+              useColorsTheme
+            />
+          </>
         )}
       </div>
     );

@@ -2589,6 +2589,7 @@
   "app.containers.app.navbar.search": "Zoek",
   "app.containers.app.navbar.signOut": "Afmelden",
   "app.containers.app.navbar.signUp": "Registreren",
+  "app.containers.eventspage.errorWhenFetchingEvents": "",
   "app.containers.eventspage.eventsPageDescription": "",
   "app.containers.eventspage.eventsPageTitle": "",
   "app.containers.eventspage.filterDropdownTitle": "",

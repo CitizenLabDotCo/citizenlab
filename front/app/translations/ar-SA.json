@@ -2589,6 +2589,7 @@
   "app.containers.app.navbar.search": "بحث",
   "app.containers.app.navbar.signOut": "تسجيل الخروج",
   "app.containers.app.navbar.signUp": "التسجيل",
+  "app.containers.eventspage.errorWhenFetchingEvents": "",
   "app.containers.eventspage.eventsPageDescription": "",
   "app.containers.eventspage.eventsPageTitle": "",
   "app.containers.eventspage.filterDropdownTitle": "",
