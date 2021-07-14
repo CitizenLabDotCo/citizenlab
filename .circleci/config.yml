@@ -185,6 +185,28 @@ jobs:
           path: spec/reports
       - final_citizenlab_github_status
 
+  back-web-api-docs:
+    resource_class: small
+    executor:
+      name: cl2-back
+      image-tag: << pipeline.parameters.citizenlab_sha >>-$CIRCLE_SHA1
+    working_directory: /cl2_back
+    environment:
+      RAILS_ENV: test
+      CITIZENLAB_EE: true
+    steps:
+      - wait-for-postgres
+      - run: |
+          rake db:create
+          rake db:schema:load
+      - run: bundle exec rake web_api:docs:generate
+      - run: bundle exec rake public_api:docs:generate
+      - run: bundle exec rake admin_api:docs:generate
+      - run: apt-get -y install awscli
+      - run: aws s3 sync doc/api s3://developers.citizenlab.co/api-docs/ee/frontweb_api/<< pipeline.parameters.citizenlab_branch >> --delete --acl public-read
+      - run: aws s3 sync doc/public_api s3://developers.citizenlab.co/api-docs/ee/public_api/<< pipeline.parameters.citizenlab_branch >> --delete --acl public-read
+      - run: aws s3 sync doc/admin_api s3://developers.citizenlab.co/api-docs/ee/admin_api/<< pipeline.parameters.citizenlab_branch >> --delete --acl public-read
+
   back-trigger-deploy:
     resource_class: small
     docker:
@@ -393,6 +415,10 @@ workflows:
           context: docker-hub-access
           requires:
             - back-build-ee-docker-image
+      - back-web-api-docs:
+          context: docker-hub-access
+          requires:
+            - back-test
       - back-slow-tests:
           context: docker-hub-access
           requires:
