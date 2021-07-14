@@ -13,7 +13,7 @@ import { InjectedIntlProps } from 'react-intl';
 // components
 import { Icon } from 'cl2-component-library';
 
-import { getSelectedCategoryFilter } from '../';
+import getSelectedCategoryFilter from 'modules/commercial/insights/utils/getSelectedCategoryFilter';
 
 const StyledEmptyState = styled.div`
   display: flex;

@@ -29,7 +29,7 @@
   "app.components.Comments.commentingDisabledUnverified": "{verifyIdentityLink}, um kommentieren zu können.",
   "app.components.Comments.commentingInitiativeMaybeNotPermitted": "Nicht alle Benutzer dürfen kommentieren. Bitte {signUpLink} oder {signInLink} um festzustellen, ob Sie die Bedingungen erfüllen.",
   "app.components.Comments.commentingInitiativeNotPermitted": "Du hast nicht das Recht zu kommentieren.",
-  "app.components.Comments.commentingMaybeNotPermitted": "Nicht jeder darf kommentieren. Bitte {signInLink} um feststellen zu können, ob du den Bedingungen erfüllst.",
+  "app.components.Comments.commentingMaybeNotPermitted": "Bitte {signInLink}, um zu sehen, welche Maßnahmen ergriffen werden können.",
   "app.components.Comments.invisibleTitleComments": "Kommentare",
   "app.components.Comments.mostUpvoted": "Hat die meisten Stimmen erhalten",
   "app.components.Comments.official": "Offiziell",
