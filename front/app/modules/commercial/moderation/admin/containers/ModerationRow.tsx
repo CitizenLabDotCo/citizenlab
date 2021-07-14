@@ -120,11 +120,6 @@ const ModerationRow = memo<Props & InjectedIntlProps>(
       initiative: `/initiatives/${moderation.attributes.belongs_to.initiative?.slug}`,
       project: `/projects/${moderation.attributes.belongs_to.project?.slug}`,
     };
-    const moderatableTypeMessage = {
-      Idea: messages.post,
-      Comment: messages.comment,
-      Initiative: messages.initiative,
-    }[moderatableType];
     const bgColor = selected
       ? rgba(colors.adminTextColor, 0.1)
       : moderation.attributes.moderation_status === 'read'
@@ -199,7 +194,15 @@ const ModerationRow = memo<Props & InjectedIntlProps>(
           {moment(moderation.attributes.created_at).format('L')}{' '}
           {moment(moderation.attributes.created_at).format('LT')}
         </td>
-        <td className="type">{formatMessage(moderatableTypeMessage)}</td>
+        <td className="type">
+          {formatMessage(
+            {
+              Idea: messages.post,
+              Comment: messages.comment,
+              Initiative: messages.initiative,
+            }[moderatableType]
+          )}
+        </td>
         <td className="belongsTo">
           {belongsToTypes.length > 0 ? (
             belongsToTypes.map((belongsToType: TBelongsTo, index) => {
@@ -268,7 +271,7 @@ const ModerationRow = memo<Props & InjectedIntlProps>(
                 <GoToLink
                   to={viewLink}
                   onClick={handleGoToLinkOnClick}
-                  data-type={formatMessage(moderatableTypeMessage)}
+                  data-type={moderatableType}
                 >
                   <GoToIcon name="goTo" />
                 </GoToLink>
