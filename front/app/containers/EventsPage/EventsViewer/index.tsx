@@ -66,8 +66,8 @@ const EventsViewer = memo<Props>(
       events,
       currentPage,
       lastPage,
-      setProjectIds,
-      setCurrentPage,
+      onProjectIdsChange,
+      onCurrentPageChange,
     } = useEvents({
       futureOnly: eventsTime === 'future',
       pastOnly: eventsTime === 'past',
@@ -78,7 +78,7 @@ const EventsViewer = memo<Props>(
 
     return (
       <div className={className}>
-        <TopBar title={title} setProjectIds={setProjectIds} />
+        <TopBar title={title} setProjectIds={onProjectIdsChange} />
 
         {eventsError && <EventsError />}
         {eventsLoading && <EventsSpinner />}
@@ -105,7 +105,7 @@ const EventsViewer = memo<Props>(
             <StyledPagination
               currentPage={currentPage}
               totalPages={lastPage}
-              loadPage={setCurrentPage}
+              loadPage={onCurrentPageChange}
               useColorsTheme
             />
           </>

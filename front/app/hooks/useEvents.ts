@@ -26,6 +26,14 @@ export default function useEvents(parameters: InputParameters) {
   const [lastPage, setLastPage] = useState(1);
   const [pageSize] = useState(parameters.pageSize ?? DEFAULT_PAGE_SIZE);
 
+  const onProjectIdsChange = (projectIds: string[]) => {
+    setProjectIds([...projectIds]);
+  };
+
+  const onCurrentPageChange = (newPage: number) => {
+    setCurrentPage(newPage);
+  };
+
   useEffect(() => {
     setEvents(undefined);
 
@@ -79,8 +87,7 @@ export default function useEvents(parameters: InputParameters) {
     currentPage,
     lastPage,
     pageSize,
-
-    setProjectIds,
-    setCurrentPage,
+    onProjectIdsChange,
+    onCurrentPageChange,
   };
 }
