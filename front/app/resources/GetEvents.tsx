@@ -2,11 +2,7 @@ import React from 'react';
 import { Subscription, BehaviorSubject } from 'rxjs';
 import { distinctUntilChanged, tap, switchMap } from 'rxjs/operators';
 import shallowCompare from 'utils/shallowCompare';
-import {
-  IEventData,
-  eventsStream,
-  IProjectsStreamParams,
-} from 'services/events';
+import { IEventData, eventsStream, IEventsStreamParams } from 'services/events';
 
 interface InputProps {
   projectIds?: string[];
@@ -57,16 +53,16 @@ export default class GetEvents extends React.Component<Props, State> {
           distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
           tap(() => resetOnChange && this.setState({ events: undefined })),
           switchMap(({ projectIds, futureOnly, pastOnly }) => {
-            const queryParameters: IProjectsStreamParams['queryParameters'] = {
+            const queryParameters: IEventsStreamParams['queryParameters'] = {
               project_ids: projectIds,
             };
 
             if (futureOnly) {
-              queryParameters.start_at_gteq = new Date();
+              queryParameters.start_at_gteq = new Date().toJSON();
             }
 
             if (pastOnly) {
-              queryParameters.start_at_lt = new Date();
+              queryParameters.start_at_lt = new Date().toJSON();
             }
 
             return eventsStream({ queryParameters }).observable;

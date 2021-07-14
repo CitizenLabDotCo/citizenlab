@@ -13,9 +13,17 @@ import InitiativeButton from 'components/InitiativeButton';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
+// hooks
+import useFeatureFlag from 'hooks/useFeatureFlag';
+import useLocale from 'hooks/useLocale';
+
 // style
 import styled from 'styled-components';
 import { media, fontSizes, colors } from 'utils/styleUtils';
+
+// other
+import { isNilOrError } from 'utils/helperUtils';
+import redirectToNotFoundPage from 'utils/cl-router/redirectToNotFoundPage';
 
 const Container = styled.main``;
 
@@ -71,6 +79,12 @@ const Padding = styled.div`
 interface Props {}
 
 const InitiativeIndexPage = memo<Props>(() => {
+  const initiativesEnabled = useFeatureFlag('initiatives');
+  const locale = useLocale();
+
+  if (isNilOrError(locale)) return null;
+  if (!initiativesEnabled) return redirectToNotFoundPage(locale, 'initiatives');
+
   return (
     <>
       <InitiativesIndexMeta />

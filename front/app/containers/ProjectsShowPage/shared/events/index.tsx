@@ -36,7 +36,7 @@ interface Props {
 
 const EventsContainer = memo<Props>(({ projectId, className }) => {
   const project = useProject({ projectId });
-  const events = useEvents([projectId]);
+  const { events } = useEvents({ projectIds: [projectId] });
 
   if (!isNilOrError(project) && !isNilOrError(events) && events.length > 0) {
     return (
@@ -47,11 +47,7 @@ const EventsContainer = memo<Props>(({ projectId, className }) => {
               <FormattedMessage {...messages.events} />
             </ProjectPageSectionTitle>
             {events.map((event) => (
-              <StyledEventCard
-                key={event.id}
-                event={event}
-                showProjectTitle={true}
-              />
+              <StyledEventCard key={event.id} event={event} />
             ))}
           </SectionContainer>
         </ContentContainer>

@@ -2589,6 +2589,7 @@
   "app.containers.app.navbar.search": "Søk",
   "app.containers.app.navbar.signOut": "Logg ut",
   "app.containers.app.navbar.signUp": "Opprett en konto",
+  "app.containers.eventspage.errorWhenFetchingEvents": "",
   "app.containers.eventspage.eventsPageDescription": "",
   "app.containers.eventspage.eventsPageTitle": "",
   "app.containers.eventspage.filterDropdownTitle": "",

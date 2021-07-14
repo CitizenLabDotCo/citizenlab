@@ -7,8 +7,16 @@ import ContentContainer from 'components/ContentContainer';
 import UpcomingEvents from './UpcomingEvents';
 import PastEvents from './PastEvents';
 
+// hooks
+import useFeatureFlag from 'hooks/useFeatureFlag';
+import useLocale from 'hooks/useLocale';
+
 // styling
 import styled from 'styled-components';
+
+// other
+import { isNilOrError } from 'utils/helperUtils';
+import redirectToNotFoundPage from 'utils/cl-router/redirectToNotFoundPage';
 
 const StyledContentContainer = styled(ContentContainer)`
   max-width: calc(${(props) => props.theme.maxPageWidth}px - 100px);
@@ -17,11 +25,11 @@ const StyledContentContainer = styled(ContentContainer)`
 `;
 
 export default () => {
-  const upcomingEvents = Array(15)
-    .fill(0)
-    .map((_, i) => i + 1);
+  const eventsPageEnabled = useFeatureFlag('events_page');
+  const locale = useLocale();
 
-  const pastEvents = [];
+  if (isNilOrError(locale)) return null;
+  if (!eventsPageEnabled) return redirectToNotFoundPage(locale, 'events');
 
   return (
     <>
@@ -29,8 +37,8 @@ export default () => {
 
       <SectionContainer>
         <StyledContentContainer>
-          <UpcomingEvents upcomingEvents={upcomingEvents} />
-          <PastEvents pastEvents={pastEvents} />
+          <UpcomingEvents />
+          <PastEvents />
         </StyledContentContainer>
       </SectionContainer>
     </>

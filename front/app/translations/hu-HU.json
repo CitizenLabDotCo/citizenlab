@@ -2589,6 +2589,7 @@
   "app.containers.app.navbar.search": "Search",
   "app.containers.app.navbar.signOut": "Sign out",
   "app.containers.app.navbar.signUp": "Sign up",
+  "app.containers.eventspage.errorWhenFetchingEvents": "",
   "app.containers.eventspage.eventsPageDescription": "",
   "app.containers.eventspage.eventsPageTitle": "",
   "app.containers.eventspage.filterDropdownTitle": "",
