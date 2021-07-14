@@ -86,6 +86,14 @@ jest.mock(
   }
 );
 
+jest.mock('utils/streams', () => {
+  return { fetchAllWith: jest.fn() };
+});
+
+jest.mock('utils/helperUtils', () => {
+  return { isNilOrError: false };
+});
+
 describe('useInsightsCategorySuggestions', () => {
   it('should call useInsightsCategorySuggestions with correct viewId', async () => {
     renderHook(() => useInsightsCategorySuggestions(viewId));
@@ -182,6 +190,6 @@ describe('useInsightsCategorySuggestions', () => {
     );
 
     unmount();
-    expect(Subscription.prototype.unsubscribe).toHaveBeenCalledTimes(1);
+    expect(Subscription.prototype.unsubscribe).toHaveBeenCalledTimes(2);
   });
 });

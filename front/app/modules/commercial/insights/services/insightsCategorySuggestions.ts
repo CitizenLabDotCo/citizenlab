@@ -47,11 +47,19 @@ export async function insightsSuggestCategories(
   categories?: string[],
   inputs?: string[]
 ) {
-  return await streams.add(
+  const response = await streams.add(
     `${API_PATH}/${getInsightsCategorySuggestionsEndpoint(insightsViewId)}`,
     {
       inputs,
       categories,
     }
   );
+
+  streams.fetchAllWith({
+    partialApiEndpoint: [
+      `insights/views/${insightsViewId}/tasks/category_suggestions`,
+      `insights/views/${insightsViewId}/inputs`,
+    ],
+  });
+  return response;
 }

@@ -1,7 +1,6 @@
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 import { IRelationship } from 'typings';
-import { uuidRegExp } from 'utils/helperUtils';
 
 export interface IInsightsCategoryData {
   id: string;
@@ -35,7 +34,6 @@ export function insightsCategoriesStream(
   return streams.get<IInsightsCategories>({
     apiEndpoint: `${API_PATH}/${getInsightsCategoriesEndpoint(insightsViewId)}`,
     ...streamParams,
-    cacheStream: false,
   });
 }
 
@@ -49,17 +47,23 @@ export function insightsCategoryStream(
       insightsViewId
     )}/${insightsCategoryId}`,
     ...streamParams,
-    cacheStream: false,
   });
 }
 
 export function addInsightsCategory(insightsViewId: string, name: string) {
-  return streams.add<IInsightsCategory>(
+  const response = streams.add<IInsightsCategory>(
     `${API_PATH}/${getInsightsCategoriesEndpoint(insightsViewId)}`,
     {
       category: { name },
     }
   );
+  streams.fetchAllWith({
+    partialApiEndpoint: [
+      `insights/views/${insightsViewId}/inputs`,
+      `insights/views/${insightsViewId}/categories`,
+    ],
+  });
+  return response;
 }
 
 export function updateInsightsCategory(
@@ -82,16 +86,11 @@ export async function deleteInsightsCategories(insightsViewId: string) {
     ''
   );
 
-  const categoriesEndpointRegexp = new RegExp(
-    `\/insights\/views\/${uuidRegExp}\/categories$`
-  );
-  const inputsEndpointRegexp = new RegExp(
-    `\/insights\/views\/${uuidRegExp}\/inputs$`
-  );
-
-  await streams.fetchAllWith({
-    regexApiEndpoint: [categoriesEndpointRegexp, inputsEndpointRegexp],
-    onlyFetchActiveStreams: true,
+  streams.fetchAllWith({
+    partialApiEndpoint: [
+      `insights/views/${insightsViewId}/inputs`,
+      `insights/views/${insightsViewId}/categories`,
+    ],
   });
 
   return response;
