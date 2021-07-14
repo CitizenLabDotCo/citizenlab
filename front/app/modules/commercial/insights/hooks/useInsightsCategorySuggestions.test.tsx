@@ -100,6 +100,57 @@ describe('useInsightsCategorySuggestions', () => {
       queryParameters,
     });
   });
+
+  it('should call insightsCategorySuggestionsStream with correct arguments on categories change', async () => {
+    let categories = ['5'];
+    const { rerender } = renderHook(() =>
+      useInsightsCategorySuggestions(viewId, { ...queryParameters, categories })
+    );
+
+    expect(insightsCategorySuggestionsStream).toHaveBeenCalledWith(viewId, {
+      queryParameters: {
+        ...queryParameters,
+        categories,
+      },
+    });
+
+    // Categories change
+    categories = ['10'];
+    rerender();
+
+    expect(insightsCategorySuggestionsStream).toHaveBeenCalledWith(viewId, {
+      queryParameters: {
+        ...queryParameters,
+        categories,
+      },
+    });
+    expect(insightsCategorySuggestionsStream).toHaveBeenCalledTimes(2);
+  });
+  it('should call insightsCategorySuggestionsStream with correct arguments on inputs change', async () => {
+    let inputs = ['5'];
+    const { rerender } = renderHook(() =>
+      useInsightsCategorySuggestions(viewId, { ...queryParameters, inputs })
+    );
+
+    expect(insightsCategorySuggestionsStream).toHaveBeenCalledWith(viewId, {
+      queryParameters: {
+        ...queryParameters,
+        inputs,
+      },
+    });
+
+    // Inputs change
+    inputs = ['10'];
+    rerender();
+
+    expect(insightsCategorySuggestionsStream).toHaveBeenCalledWith(viewId, {
+      queryParameters: {
+        ...queryParameters,
+        inputs,
+      },
+    });
+    expect(insightsCategorySuggestionsStream).toHaveBeenCalledTimes(2);
+  });
   it('should return correct data when data', () => {
     const { result } = renderHook(() => useInsightsCategorySuggestions(viewId));
     expect(result.current).toStrictEqual(undefined); // initially, the hook returns undefined
