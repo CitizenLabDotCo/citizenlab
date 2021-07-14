@@ -95,7 +95,7 @@ const ModerationRow = memo<Props & InjectedIntlProps>(
     selected,
     onSelect,
     className,
-    intl,
+    intl: { formatMessage },
     inappropriateContentFlagId,
   }) => {
     const localize = useLocalize();
@@ -109,23 +109,21 @@ const ModerationRow = memo<Props & InjectedIntlProps>(
       : false;
     const contentTitle = moderation.attributes.content_title_multiloc;
     const contentBody = moderation.attributes.content_body_multiloc;
-    const contentType = intl.formatMessage(
-      {
-        idea: messages.post,
-        comment: messages.comment,
-        initiative: messages.initiative,
-      }[moderation.attributes?.moderatable_type.toLowerCase()] as any
-    );
+    const moderatableTypeMessage = {
+      Idea: messages.post,
+      Comment: messages.comment,
+      Initiative: messages.initiative,
+    }[moderation.attributes.moderatable_type];
     const bgColor = selected
       ? rgba(colors.adminTextColor, 0.1)
-      : moderation?.attributes?.moderation_status === 'read'
+      : moderation.attributes.moderation_status === 'read'
       ? '#f6f6f6'
       : '#fff';
     let viewLink = `/${moderation.attributes?.moderatable_type.toLowerCase()}s/${
       moderation.attributes.content_slug
     }`;
 
-    if (moderation.attributes?.moderatable_type === 'Comment') {
+    if (moderation.attributes.moderatable_type === 'Comment') {
       const belongsToLength = Object.keys(moderation.attributes.belongs_to)
         .length;
       const parentType = Object.keys(moderation.attributes.belongs_to)[
@@ -181,7 +179,7 @@ const ModerationRow = memo<Props & InjectedIntlProps>(
           {moment(moderation.attributes.created_at).format('L')}{' '}
           {moment(moderation.attributes.created_at).format('LT')}
         </td>
-        <td className="type">{contentType}</td>
+        <td className="type">{formatMessage(moderatableTypeMessage)}</td>
         <td className="belongsTo">
           {belongsToTypes.length > 0 ? (
             belongsToTypes.map((belongsToType: TBelongsTo, index) => {
@@ -238,7 +236,11 @@ const ModerationRow = memo<Props & InjectedIntlProps>(
             content={
               <FormattedMessage
                 {...messages.goToThisContentType}
-                values={{ contentType: contentType.toLowerCase() }}
+                values={{
+                  contentType: formatMessage(
+                    moderatableTypeMessage
+                  ).toLowerCase(),
+                }}
               />
             }
           >
@@ -246,7 +248,7 @@ const ModerationRow = memo<Props & InjectedIntlProps>(
               <GoToLink
                 to={viewLink}
                 onClick={handleGoToLinkOnClick}
-                data-type={contentType}
+                data-type={formatMessage(moderatableTypeMessage)}
               >
                 <GoToIcon name="goTo" />
               </GoToLink>
