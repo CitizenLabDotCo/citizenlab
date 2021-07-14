@@ -2589,6 +2589,7 @@
   "app.containers.app.navbar.search": "Ujaruk",
   "app.containers.app.navbar.signOut": "Anigit",
   "app.containers.app.navbar.signUp": "Nalunaarsorit",
+  "app.containers.eventspage.errorWhenFetchingEvents": "",
   "app.containers.eventspage.eventsPageDescription": "",
   "app.containers.eventspage.eventsPageTitle": "",
   "app.containers.eventspage.filterDropdownTitle": "",
