@@ -6,6 +6,7 @@ import { Observable, Subscription } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { waitFor } from 'utils/testUtils/rtl';
 import { insightsCategorySuggestionsStream } from 'modules/commercial/insights/services/insightsCategorySuggestions';
+import streams from 'utils/streams';
 
 const viewId = '1';
 
@@ -91,7 +92,7 @@ jest.mock('utils/streams', () => {
 });
 
 jest.mock('utils/helperUtils', () => {
-  return { isNilOrError: false };
+  return { isNilOrError: jest.fn(() => false) };
 });
 
 describe('useInsightsCategorySuggestions', () => {
@@ -134,6 +135,7 @@ describe('useInsightsCategorySuggestions', () => {
     });
     expect(insightsCategorySuggestionsStream).toHaveBeenCalledTimes(2);
   });
+
   it('should call insightsCategorySuggestionsStream with correct arguments on inputs change', async () => {
     let inputs = ['5'];
     const { rerender } = renderHook(() =>
@@ -159,15 +161,48 @@ describe('useInsightsCategorySuggestions', () => {
     });
     expect(insightsCategorySuggestionsStream).toHaveBeenCalledTimes(2);
   });
-  it('should return correct data when data', () => {
+
+  it('should return correct data when data', async () => {
     const { result } = renderHook(() => useInsightsCategorySuggestions(viewId));
     expect(result.current).toStrictEqual(undefined); // initially, the hook returns undefined
-    act(() => {
-      waitFor(() => {
-        expect(result.current).toBe(mockCategorySuggestions.data);
+
+    await act(
+      async () =>
+        await waitFor(() => {
+          expect(result.current).toStrictEqual(mockCategorySuggestions.data);
+        })
+    );
+  });
+
+  it('should call streams.fetchAllWith with correct arguments when data', async () => {
+    jest.useFakeTimers();
+    mockObservable = new Observable((subscriber) => {
+      subscriber.next({ data: mockCategorySuggestions.data });
+    });
+    const { result } = renderHook(() => useInsightsCategorySuggestions(viewId));
+    expect(result.current).toStrictEqual(mockCategorySuggestions.data);
+    await waitFor(() => {
+      expect(streams.fetchAllWith).toHaveBeenCalledWith({
+        partialApiEndpoint: [
+          'insights/views/1/tasks/category_suggestions',
+          'insights/views/1/inputs',
+        ],
       });
     });
   });
+
+  it('should not call streams.fetchAllWith when data is empty', async () => {
+    jest.useFakeTimers();
+    mockObservable = new Observable((subscriber) => {
+      subscriber.next({ data: [] });
+    });
+    const { result } = renderHook(() => useInsightsCategorySuggestions(viewId));
+    expect(result.current).toStrictEqual([]);
+    await waitFor(() => {
+      expect(streams.fetchAllWith).not.toHaveBeenCalled();
+    });
+  });
+
   it('should return error when error', () => {
     const error = new Error();
     mockObservable = new Observable((subscriber) => {
@@ -191,5 +226,8 @@ describe('useInsightsCategorySuggestions', () => {
 
     unmount();
     expect(Subscription.prototype.unsubscribe).toHaveBeenCalledTimes(2);
+  });
+  afterEach(() => {
+    jest.useRealTimers();
   });
 });

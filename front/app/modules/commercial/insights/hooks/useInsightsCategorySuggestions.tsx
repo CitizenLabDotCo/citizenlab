@@ -34,7 +34,6 @@ const useInsightsCategoriesSuggestions = (
     });
 
     const pollingTimer = timer(5000, 5000).subscribe(() => {
-      console.log(data);
       if (!isNilOrError(data) && data.length > 0) {
         streams.fetchAllWith({
           partialApiEndpoint: [
