@@ -113,36 +113,24 @@ const ModerationRow = memo<Props & InjectedIntlProps>(
       : false;
     const contentTitle = moderation.attributes.content_title_multiloc;
     const contentBody = moderation.attributes.content_body_multiloc;
+    const moderatableType = moderation.attributes.moderatable_type;
     const belongsToTypes = Object.keys(moderation.attributes.belongs_to);
     const belongsToHrefs = {
       idea: `/ideas/${moderation.attributes.belongs_to.idea?.slug}`,
       initiative: `/initiatives/${moderation.attributes.belongs_to.initiative?.slug}`,
       project: `/projects/${moderation.attributes.belongs_to.project?.slug}`,
     };
-
     const moderatableTypeMessage = {
       Idea: messages.post,
       Comment: messages.comment,
       Initiative: messages.initiative,
-    }[moderation.attributes.moderatable_type];
+    }[moderatableType];
     const bgColor = selected
       ? rgba(colors.adminTextColor, 0.1)
       : moderation.attributes.moderation_status === 'read'
       ? '#f6f6f6'
       : '#fff';
-    function getViewLink() {
-      if (moderation.attributes.moderatable_type === 'Comment') {
-        const parentType = belongsToTypes[belongsToTypes.length - 1];
-        const parentSlug = moderation.attributes.belongs_to[parentType].slug;
-        return `/${parentType.toLowerCase()}s/${parentSlug}`;
-      }
-
-      return `/${moderation.attributes?.moderatable_type.toLowerCase()}s/${
-        moderation.attributes.content_slug
-      }`;
-    }
-
-    const viewLink = getViewLink();
+    const viewLink = getViewLink(moderatableType);
 
     const handleOnChecked = (_event: React.ChangeEvent) => {
       onSelect(moderation);
@@ -169,6 +157,34 @@ const ModerationRow = memo<Props & InjectedIntlProps>(
       const win = window.open(url, '_blank');
       win && win.focus();
     };
+
+    function getViewLink(moderatableType: TModeratableType) {
+      if (moderatableType === 'Comment') {
+        if (
+          belongsToTypes.includes('initiative') &&
+          moderation.attributes.belongs_to.initiative?.slug
+        ) {
+          return `/initiatives/${moderation.attributes.belongs_to.initiative.slug}`;
+        }
+
+        if (
+          belongsToTypes.includes('idea') &&
+          moderation.attributes.belongs_to.idea?.slug
+        ) {
+          return `/ideas/${moderation.attributes.belongs_to.idea.slug}`;
+        }
+      }
+
+      if (moderatableType === 'Idea') {
+        return `/ideas/${moderation.attributes.content_slug}`;
+      }
+
+      if (moderatableType === 'Initiative') {
+        return `/initiatives/${moderation.attributes.content_slug}`;
+      }
+
+      return null;
+    }
 
     return (
       <Container
@@ -234,31 +250,33 @@ const ModerationRow = memo<Props & InjectedIntlProps>(
             inappropriateContentFlagId={inappropriateContentFlagId}
           />
         </td>
-        <td>
-          <Tippy
-            placement="bottom-end"
-            content={
-              <FormattedMessage
-                {...messages.goToThisContentType}
-                values={{
-                  contentType: formatMessage(
-                    moderatableTypeMessage
-                  ).toLowerCase(),
-                }}
-              />
-            }
-          >
-            <GoToLinkWrapper>
-              <GoToLink
-                to={viewLink}
-                onClick={handleGoToLinkOnClick}
-                data-type={formatMessage(moderatableTypeMessage)}
-              >
-                <GoToIcon name="goTo" />
-              </GoToLink>
-            </GoToLinkWrapper>
-          </Tippy>
-        </td>
+        {viewLink && (
+          <td>
+            <Tippy
+              placement="bottom-end"
+              content={
+                <FormattedMessage
+                  {...messages.goToThisContentType}
+                  values={{
+                    contentType: formatMessage(
+                      moderatableTypeMessage
+                    ).toLowerCase(),
+                  }}
+                />
+              }
+            >
+              <GoToLinkWrapper>
+                <GoToLink
+                  to={viewLink}
+                  onClick={handleGoToLinkOnClick}
+                  data-type={formatMessage(moderatableTypeMessage)}
+                >
+                  <GoToIcon name="goTo" />
+                </GoToLink>
+              </GoToLinkWrapper>
+            </Tippy>
+          </td>
+        )}
       </Container>
     );
   }
