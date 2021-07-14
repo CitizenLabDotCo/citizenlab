@@ -3,7 +3,10 @@ import { isNilOrError } from 'utils/helperUtils';
 
 import useCategory from 'modules/commercial/insights/hooks/useInsightsCategory';
 import Tag from 'modules/commercial/insights/admin/components/Tag';
-import { deleteInsightsInputCategory } from 'modules/commercial/insights/services/insightsInputs';
+import {
+  deleteInsightsInputCategory,
+  addInsightsInputCategory,
+} from 'modules/commercial/insights/services/insightsInputs';
 
 import { withRouter, WithRouterProps } from 'react-router';
 
@@ -25,10 +28,14 @@ const Category = ({
   if (isNilOrError(category)) {
     return null;
   }
-  const handleRemoveCategory = async () => {
+  const handleCategoryAction = async () => {
     setLoading(true);
     try {
-      await deleteInsightsInputCategory(viewId, inputId, id);
+      if (variant === 'approved') {
+        await deleteInsightsInputCategory(viewId, inputId, id);
+      } else if (variant === 'suggested') {
+        await addInsightsInputCategory(viewId, inputId, id);
+      }
     } catch {
       // Do nothing
     }
@@ -38,7 +45,7 @@ const Category = ({
     <Tag
       variant={variant === 'suggested' ? 'default' : 'primary'}
       label={category.attributes.name}
-      onIconClick={handleRemoveCategory}
+      onIconClick={handleCategoryAction}
       loading={loading}
     />
   );
