@@ -6,15 +6,20 @@ import { getTheme } from 'utils/styleUtils';
 import GlobalStyle from 'global-styles';
 import { IntlProvider } from 'react-intl';
 import messages from 'i18n/en';
+import { LiveAnnouncer } from 'react-aria-live';
+
+window.confirm = jest.fn(() => true);
 
 const AllTheProviders = ({ children }) => {
   return (
-    <ThemeProvider theme={getTheme(null)}>
-      <GlobalStyle />
-      <IntlProvider locale="en" messages={messages}>
-        <div id="modal-portal">{children}</div>
-      </IntlProvider>
-    </ThemeProvider>
+    <LiveAnnouncer>
+      <ThemeProvider theme={getTheme(null)}>
+        <GlobalStyle />
+        <IntlProvider locale="en" messages={messages}>
+          <div id="modal-portal">{children}</div>
+        </IntlProvider>
+      </ThemeProvider>
+    </LiveAnnouncer>
   );
 };
 

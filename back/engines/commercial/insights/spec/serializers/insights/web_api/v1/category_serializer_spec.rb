@@ -11,6 +11,7 @@ describe Insights::WebApi::V1::CategorySerializer do
         type: :category,
         attributes: {
           name: category.name,
+          inputs_count: category.inputs_count
         },
         relationships: {
           view: {

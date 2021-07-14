@@ -2,43 +2,43 @@ import React from 'react';
 import { render, screen, fireEvent, act } from 'utils/testUtils/rtl';
 import * as insightsService from 'modules/commercial/insights/services/insightsInputs';
 import * as categoryService from 'modules/commercial/insights/services/insightsCategories';
+
 import selectEvent from 'react-select-event';
 import InputDetails from './';
 
 const viewId = '1';
 
 const defaultProps = {
-  selectedInput: {
-    id: '4e9ac1f1-6928-45e9-9ac9-313e86ad636f',
-    type: 'input',
-    relationships: {
-      source: {
-        data: {
-          id: '4e9ac1f1-6928-45e9-9ac9-313e86ad636f',
-          type: 'idea',
-        },
-      },
-      categories: {
-        data: [
-          {
-            id: '94a649b5-23fe-4d47-9165-9beceef2dcad',
-            type: 'category',
-          },
-          {
-            id: '94a649b5-23fe-4d47-9165-9becedfg45sd',
-            type: 'category',
-          },
-        ],
-      },
-      suggested_categories: {
-        data: [],
-      },
-    },
-  },
+  previewedInputId: '4e9ac1f1-6928-45e9-9ac9-313e86ad636f',
   isMoveUpDisabled: false,
   isMoveDownDisabled: false,
   moveUp: jest.fn(),
   moveDown: jest.fn(),
+};
+
+let mockInputData: insightsService.IInsightsInputData | undefined = {
+  id: '4e9ac1f1-6928-45e9-9ac9-313e86ad636f',
+  type: 'input',
+  relationships: {
+    source: {
+      data: {
+        id: '4e9ac1f1-6928-45e9-9ac9-313e86ad636f',
+        type: 'idea',
+      },
+    },
+    categories: {
+      data: [
+        {
+          id: '94a649b5-23fe-4d47-9165-9beceef2dcad',
+          type: 'category',
+        },
+        {
+          id: '94a649b5-23fe-4d47-9165-9becedfg45sd',
+          type: 'category',
+        },
+      ],
+    },
+  },
 };
 
 const mockIdeaData = {
@@ -113,6 +113,10 @@ jest.mock('hooks/useIdea', () => {
   return jest.fn(() => mockIdeaData);
 });
 
+jest.mock('modules/commercial/insights/hooks/useInsightsInput', () => {
+  return jest.fn(() => mockInputData);
+});
+
 jest.mock('modules/commercial/insights/hooks/useInsightsCategories', () => {
   return jest.fn(() => mockCategoriesData);
 });
@@ -136,8 +140,6 @@ jest.mock('react-router', () => {
 });
 
 jest.mock('utils/cl-router/history');
-
-window.confirm = jest.fn(() => true);
 
 describe('Insights Input Details', () => {
   it('renders', () => {
@@ -169,7 +171,7 @@ describe('Insights Input Details', () => {
 
     expect(spy).toHaveBeenCalledWith(
       viewId,
-      defaultProps.selectedInput.id,
+      defaultProps.previewedInputId,
       mockCategoriesData[0].id
     );
   });
@@ -196,8 +198,15 @@ describe('Insights Input Details', () => {
     expect(spyAddCategory).toHaveBeenCalledWith(viewId, 'New category');
     expect(spyAddInputCategory).toHaveBeenCalledWith(
       viewId,
-      defaultProps.selectedInput.id,
+      defaultProps.previewedInputId,
       mockCategoryDataResponse.data.id
     );
+  });
+  it('shows loading state when loading', () => {
+    mockInputData = undefined;
+    render(<InputDetails {...defaultProps} />);
+    expect(
+      screen.getByTestId('insightsEditDetailsLoading')
+    ).toBeInTheDocument();
   });
 });

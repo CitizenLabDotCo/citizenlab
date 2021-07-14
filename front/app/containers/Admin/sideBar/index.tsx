@@ -5,7 +5,6 @@ import { get } from 'lodash-es';
 
 // router
 import { withRouter, WithRouterProps } from 'react-router';
-import Link from 'utils/cl-router/Link';
 import { getUrlLocale } from 'services/locale';
 
 // components
@@ -95,7 +94,7 @@ const Spacer = styled.div`
   flex-grow: 1;
 `;
 
-const GetStartedLink = styled(Link)`
+const GetStartedLink = styled.a`
   flex: 0 0 auto;
   width: 210px;
   display: flex;
@@ -366,7 +365,10 @@ class Sidebar extends PureComponent<
             item={{ type: 'route', path: '/admin/guide' }}
             action="access"
           >
-            <GetStartedLink to="/admin/guide">
+            <GetStartedLink
+              href={formatMessage(messages.linkToSupportCenter)}
+              target="_blank"
+            >
               <IconWrapper>
                 <Icon name="circleInfo" />
               </IconWrapper>

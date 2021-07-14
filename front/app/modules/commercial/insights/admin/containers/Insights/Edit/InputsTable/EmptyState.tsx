@@ -13,6 +13,8 @@ import { InjectedIntlProps } from 'react-intl';
 // components
 import { Icon } from 'cl2-component-library';
 
+import getSelectedCategoryFilter from 'modules/commercial/insights/utils/getSelectedCategoryFilter';
+
 const StyledEmptyState = styled.div`
   display: flex;
   flex-grow: 1;
@@ -40,17 +42,37 @@ const EmptyState = ({
   intl: { formatMessage },
   location: { query },
 }: InjectedIntlProps & WithRouterProps) => {
+  const selectedCategoryFilter = getSelectedCategoryFilter(query.category);
   return (
     <StyledEmptyState data-testid="insightsInputsTableEmptyState">
       <Icon name="blankPage" />
-      {query.category ? (
-        <>
-          <h1>{formatMessage(messages.inputsTableCategoryTitle)}</h1>
-          <p>{formatMessage(messages.inputsTableCategoryDescription)}</p>
-        </>
-      ) : (
-        formatMessage(messages.inputsTableEmpty)
-      )}
+      <>
+        {query.search ? (
+          <div data-testid="insightsInputsTableEmptyNoResults">
+            <h1>{formatMessage(messages.inputsTableNoResults)}</h1>
+            <p>{formatMessage(messages.inputsTableNoResultsDescription)}</p>
+          </div>
+        ) : (
+          <>
+            {selectedCategoryFilter === 'allInput' && (
+              <p data-testid="insightsInputsTableEmptyAllInputs">
+                {formatMessage(messages.inputsTableEmpty)}
+              </p>
+            )}
+            {selectedCategoryFilter === 'notCategorized' && (
+              <p data-testid="insightsInputsTableEmptyNotCategorized">
+                {formatMessage(messages.inputsTableNotCategorized)}
+              </p>
+            )}
+            {selectedCategoryFilter === 'category' && (
+              <div data-testid="insightsInputsTableEmptyNoInputInCategory">
+                <h1>{formatMessage(messages.inputsTableCategoryTitle)}</h1>
+                <p>{formatMessage(messages.inputsTableCategoryDescription)}</p>
+              </div>
+            )}
+          </>
+        )}
+      </>
     </StyledEmptyState>
   );
 };

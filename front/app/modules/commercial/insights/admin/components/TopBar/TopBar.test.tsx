@@ -47,7 +47,7 @@ jest.mock('hooks/useProject', () => {
   return jest.fn(() => mockProjectData);
 });
 
-jest.mock('hooks/useLocale', () => jest.fn(() => 'en'));
+jest.mock('hooks/useLocale');
 
 jest.mock('react-router', () => {
   return {
@@ -59,8 +59,6 @@ jest.mock('react-router', () => {
     Link: (props) => <a href={props.to.pathname}>{props.children}</a>,
   };
 });
-
-window.confirm = jest.fn(() => true);
 
 describe('Insights Top Bar', () => {
   it('renders Top Bar', () => {

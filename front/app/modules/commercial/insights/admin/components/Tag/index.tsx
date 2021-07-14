@@ -1,16 +1,21 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
-import { Icon } from 'cl2-component-library';
+import { Icon, Spinner } from 'cl2-component-library';
+import { darken } from 'polished';
 
 // TODO: Add Tag to component library once we remove tagging
 
-type Status = 'approved' | 'suggested';
+type Variant = 'primary' | 'secondary';
 
 export type TagProps = {
   label: string;
-  onIconClick: () => void;
-  status: 'approved' | 'suggested';
+  onIconClick?: () => void;
+  variant: Variant;
+  count?: number;
+  className?: string;
+  onClick?: () => void;
+  loading?: boolean;
 };
 
 const IconContainer = styled.div`
@@ -18,72 +23,141 @@ const IconContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 5px;
-  margin: -5px;
+  // Increases the clickable surface area
+  padding: 4px 8px 4px 0px;
+  margin: -4px -8px -4px 0px;
 `;
 
 const PlusIcon = styled(Icon)`
+  margin-left: 8px;
   height: 14px;
   fill: ${colors.clGreen};
-  margin-left: 5px;
 `;
 
 const CloseIcon = styled(Icon)`
+  margin-left: 8px;
   height: 10px;
   fill: #fff;
-  margin-left: 5px;
 `;
 
-const StyledTag = styled.div<{ status: Status }>`
-  ${({ status, theme }) => css`
+const Count = styled.div`
+  margin-left: 8px;
+`;
+
+const StyledTag = styled.button<{ variant: Variant }>`
+  ${({ variant, onClick, theme }) => css`
     border-radius: ${theme.borderRadius};
     cursor: default;
     font-size: ${fontSizes.small}px;
     font-weight: normal;
     display: inline-block;
     padding: 4px 12px;
-    ${status === 'approved' &&
-    css`
-      background-color: ${colors.clGreen};
-      color: #fff;
-    `}
-    ${status === 'suggested' &&
-    css`
-      background-color: #fff;
-      color: ${colors.label};
-      border: 1px solid ${colors.border};
-    `}
+    ${
+      variant === 'primary' &&
+      css`
+        background-color: ${colors.clGreen};
+        border: 1px solid ${colors.clGreen};
+        color: #fff;
+      `
+    }
+    ${
+      variant === 'secondary' &&
+      css`
+        background-color: #fff;
+        color: ${colors.label};
+        border: 1px solid ${colors.border};
+      `
+    }
+    ${
+      onClick &&
+      css`
+        cursor: pointer;
+        &:hover,
+        &:focus {
+          background-color: ${darken(
+            0.1,
+            variant === 'primary' ? colors.clGreen : '#fff'
+          )};
+        }
+      `
+    }
   `}
 `;
 
 const TagContent = styled.div`
   display: flex;
   align-items: center;
+  white-space: nowrap;
 `;
 
-const Tag = ({ label, onIconClick, status }: TagProps) => {
+const StyledSpinner = styled(Spinner)`
+  margin-left: 8px;
+`;
+
+const Tag = ({
+  label,
+  onIconClick,
+  variant,
+  count,
+  className,
+  onClick,
+  loading,
+}: TagProps) => {
   const handleIconClick = (e: React.MouseEvent) => {
-    e.preventDefault();
     e.stopPropagation();
-    onIconClick();
+    e.preventDefault();
+    onIconClick && onIconClick();
   };
 
+  const handleEnterPress = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      e.stopPropagation();
+      e.preventDefault();
+      onIconClick && onIconClick();
+    }
+  };
   return (
-    <StyledTag status={status} data-testid="insightsTag">
+    <StyledTag
+      variant={variant}
+      data-testid="insightsTag"
+      className={className}
+      onClick={onClick}
+      tabIndex={onClick ? 0 : -1}
+    >
       <TagContent>
         {label}
-        <IconContainer
-          onClick={handleIconClick}
-          role="button"
-          data-testid="insightsTagIconContainer"
-        >
-          {status === 'approved' && (
-            <CloseIcon name="close" className="insightsTagCloseIcon" />
-          )}
-          {status === 'suggested' && (
-            <PlusIcon name="plus-circle" className="insightsTagPlusIcon" />
-          )}
-        </IconContainer>
+        {count !== undefined && <Count>{count}</Count>}
+        {onIconClick && (
+          <>
+            {loading ? (
+              <div data-testid="insightsTagSpinner">
+                <StyledSpinner
+                  size="10px"
+                  thickness="1px"
+                  color={variant === 'primary' ? '#fff' : colors.clGreen}
+                />
+              </div>
+            ) : (
+              <IconContainer
+                onClick={handleIconClick}
+                onKeyPress={handleEnterPress}
+                role="button"
+                data-testid="insightsTagIconContainer"
+                tabIndex={0}
+              >
+                {variant === 'primary' && (
+                  <CloseIcon name="close" className="insightsTagCloseIcon" />
+                )}
+                {variant === 'secondary' && (
+                  <PlusIcon
+                    name="plus-circle"
+                    className="insightsTagPlusIcon"
+                  />
+                )}
+              </IconContainer>
+            )}
+          </>
+        )}
       </TagContent>
     </StyledTag>
   );

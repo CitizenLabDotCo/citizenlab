@@ -34,7 +34,7 @@ import { getInputTermMessage } from 'utils/i18n';
 // utils
 import eventEmitter from 'utils/eventEmitter';
 import { convertUrlToUploadFileObservable } from 'utils/fileTools';
-import { convertToGeoJson } from 'utils/locationTools';
+import { geocode } from 'utils/locationTools';
 
 // typings
 import { UploadFile, Multiloc, Locale } from 'typings';
@@ -295,7 +295,7 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
     };
 
     if (address && address.length > 0) {
-      addressDiff.location_point_geojson = await convertToGeoJson(address);
+      addressDiff.location_point_geojson = await geocode(address);
       addressDiff.location_description = address;
     }
 

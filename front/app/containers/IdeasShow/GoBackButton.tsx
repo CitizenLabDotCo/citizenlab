@@ -1,4 +1,4 @@
-import React, { memo, useCallback, FormEvent } from 'react';
+import React, { memo, FormEvent } from 'react';
 import clHistory from 'utils/cl-router/history';
 import { Button } from 'cl2-component-library';
 import useProject from 'hooks/useProject';
@@ -18,20 +18,17 @@ const GoBackButton = memo(({ projectId, className, insideModal }: Props) => {
   const locale = useLocale();
   const localize = useLocalize();
 
-  const onGoBack = useCallback(
-    (event: FormEvent<HTMLButtonElement>) => {
-      event.preventDefault();
+  const onGoBack = (event: FormEvent<HTMLButtonElement>) => {
+    event.preventDefault();
 
-      if (insideModal) {
-        eventEmitter.emit('closeIdeaModal');
-      } else if (!isNilOrError(project)) {
-        clHistory.push(`/projects/${project.attributes.slug}`);
-      } else {
-        clHistory.push('/');
-      }
-    },
-    [insideModal, project]
-  );
+    if (insideModal) {
+      eventEmitter.emit('closeIdeaModal');
+    } else if (!isNilOrError(project)) {
+      clHistory.push(`/projects/${project.attributes.slug}`);
+    } else {
+      clHistory.push('/');
+    }
+  };
 
   if (!isNilOrError(project) && !isNilOrError(locale)) {
     return (
