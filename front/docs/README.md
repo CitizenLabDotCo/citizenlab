@@ -3,7 +3,8 @@
 ## Next
 
 ### Changed
-- The admin Guide link goes to the support center now instead of to /admin/guide. 
+- The admin Guide link goes to the support center now instead of to /admin/guide.
+- A phase number parameter can now be appended to `projects/project_slug`.
 
 ## 2021-07-02
 
