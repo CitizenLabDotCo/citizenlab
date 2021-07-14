@@ -29,12 +29,14 @@ interface InputProps {
   event: IEventData;
   className?: string;
   showProjectTitle?: boolean;
+  showLocation?: boolean;
+  showDescription?: boolean;
 }
 
 interface Props extends InputProps {}
 
 const EventCard = memo<Props>((props) => {
-  const { event, className, showProjectTitle } = props;
+  const { event, className, ...otherProps } = props;
 
   if (!isNilOrError(event)) {
     const startAtMoment = moment(event.attributes.start_at);
@@ -56,7 +58,7 @@ const EventCard = memo<Props>((props) => {
           startAtMoment={startAtMoment}
           endAtMoment={endAtMoment}
           isMultiDayEvent={isMultiDayEvent}
-          showProjectTitle={showProjectTitle}
+          {...otherProps}
         />
       </Container>
     );

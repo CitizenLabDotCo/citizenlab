@@ -158,6 +158,8 @@ interface Props {
   endAtMoment: moment.Moment;
   isMultiDayEvent: boolean;
   showProjectTitle?: boolean;
+  showLocation?: boolean;
+  showDescription?: boolean;
 }
 
 const EventInformation = memo<Props & InjectedIntlProps>((props) => {
@@ -167,6 +169,8 @@ const EventInformation = memo<Props & InjectedIntlProps>((props) => {
     startAtMoment,
     endAtMoment,
     showProjectTitle,
+    showLocation,
+    showDescription,
     intl,
   } = props;
 
@@ -210,7 +214,7 @@ const EventInformation = memo<Props & InjectedIntlProps>((props) => {
   };
 
   useEffect(() => {
-    if (textOverflow === false) return;
+    if (textOverflow === false || showDescription === false) return;
 
     setTextOverflow(true);
 
@@ -242,7 +246,7 @@ const EventInformation = memo<Props & InjectedIntlProps>((props) => {
             {eventDateTime}
           </Time>
 
-          {hasLocation && (
+          {hasLocation && showLocation && (
             <Location>
               <StyledIcon
                 name="mapmarker"
@@ -255,30 +259,32 @@ const EventInformation = memo<Props & InjectedIntlProps>((props) => {
         </EventTimeAndLocationContainer>
       </EventTitleAndAttributes>
 
-      <EventDescription>
-        <QuillEditedContent textColor={theme.colorText}>
-          <StyledT
-            value={event.attributes.description_multiloc}
-            supportHtml={true}
-            ref={TElement}
-            wrapInDiv={true}
-            hideTextOverflow={hideTextOverflow && textOverflow}
-          />
-        </QuillEditedContent>
+      {showDescription && (
+        <EventDescription>
+          <QuillEditedContent textColor={theme.colorText}>
+            <StyledT
+              value={event.attributes.description_multiloc}
+              supportHtml={true}
+              ref={TElement}
+              wrapInDiv={true}
+              hideTextOverflow={hideTextOverflow && textOverflow}
+            />
+          </QuillEditedContent>
 
-        {((textOverflow && hideTextOverflow) || !hideTextOverflow) && (
-          <>
-            <ShowMoreOrLessButton onClick={toggleHiddenText}>
-              {intl.formatMessage(
-                hideTextOverflow ? messages.showMore : messages.showLess
-              )}
-            </ShowMoreOrLessButton>
-            <ScreenReaderOnly aria-live="polite">
-              {a11y_showMoreHelperText}
-            </ScreenReaderOnly>
-          </>
-        )}
-      </EventDescription>
+          {((textOverflow && hideTextOverflow) || !hideTextOverflow) && (
+            <>
+              <ShowMoreOrLessButton onClick={toggleHiddenText}>
+                {intl.formatMessage(
+                  hideTextOverflow ? messages.showMore : messages.showLess
+                )}
+              </ShowMoreOrLessButton>
+              <ScreenReaderOnly aria-live="polite">
+                {a11y_showMoreHelperText}
+              </ScreenReaderOnly>
+            </>
+          )}
+        </EventDescription>
+      )}
 
       {!isNilOrError(eventFiles) && eventFiles.length > 0 && (
         <FileAttachments files={eventFiles} />

@@ -17,6 +17,31 @@ const EventsWidgetContainer = styled.div`
   padding: 48px 0 124px 0;
 `;
 
+const CardsContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+  > * {
+    margin: 0px 19px;
+  }
+  > :first-child {
+    margin-left: 0px;
+  }
+  > :last-child {
+    margin-right: 0px;
+  }
+`;
+
+const StyledEventCard = styled(EventCard)`
+  border-radius: 3px;
+  padding: 20px;
+
+  > div > div > h3 > span {
+    font-size: 18px;
+  }
+`;
+
 export default () => {
   const { events } = useEvents({
     futureOnly: true,
@@ -27,10 +52,13 @@ export default () => {
     <EventsWidgetContainer>
       <TopBar />
 
-      {!isNilOrError(events) &&
-        events.map((event) => {
-          return <EventCard event={event} key={event.id} />;
-        })}
+      {!isNilOrError(events) && (
+        <CardsContainer>
+          {events.map((event) => (
+            <StyledEventCard event={event} key={event.id} showProjectTitle />
+          ))}
+        </CardsContainer>
+      )}
     </EventsWidgetContainer>
   );
 };

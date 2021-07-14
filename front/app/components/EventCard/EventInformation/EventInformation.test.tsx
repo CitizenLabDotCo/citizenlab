@@ -51,6 +51,7 @@ const eventWithLongDescription = createEvent(`
 
 const defaultProps = {
   isMultiDayEvent: false,
+  showDescription: true,
   startAtMoment: moment('2021-07-01T09:13:00.145Z'),
   endAtMoment: moment('2021-07-01T14:13:00.300Z'),
 };

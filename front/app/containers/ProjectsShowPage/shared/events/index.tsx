@@ -47,7 +47,12 @@ const EventsContainer = memo<Props>(({ projectId, className }) => {
               <FormattedMessage {...messages.events} />
             </ProjectPageSectionTitle>
             {events.map((event) => (
-              <StyledEventCard key={event.id} event={event} />
+              <StyledEventCard
+                key={event.id}
+                event={event}
+                showLocation
+                showDescription
+              />
             ))}
           </SectionContainer>
         </ContentContainer>
