@@ -38,15 +38,32 @@ jest.mock('react-router', () => {
 
 describe('Insights Category', () => {
   it('renders Tag with correct name', () => {
-    render(<Category id={categoryId} inputId={inputId} />);
+    render(<Category variant="approved" id={categoryId} inputId={inputId} />);
     expect(screen.getByTestId('insightsTag')).toBeInTheDocument();
     expect(
       screen.getByText(mockCategoryData.attributes.name)
     ).toBeInTheDocument();
   });
-  it('calls delete category with correct arguments', () => {
+
+  it('renders Tag with correct variant when suggested', () => {
+    render(<Category variant="suggested" id={categoryId} inputId={inputId} />);
+    expect(screen.getByTestId('insightsTag')).toBeInTheDocument();
+    expect(
+      screen.getByTestId('insightsTagContent-default')
+    ).toBeInTheDocument();
+  });
+
+  it('renders Tag with correct variant when approved', () => {
+    render(<Category variant="approved" id={categoryId} inputId={inputId} />);
+    expect(screen.getByTestId('insightsTag')).toBeInTheDocument();
+    expect(
+      screen.getByTestId('insightsTagContent-primary')
+    ).toBeInTheDocument();
+  });
+
+  it('calls delete category with correct arguments when variant is approved', () => {
     const spy = jest.spyOn(service, 'deleteInsightsInputCategory');
-    render(<Category id={categoryId} inputId={inputId} />);
+    render(<Category variant="approved" id={categoryId} inputId={inputId} />);
     expect(screen.getByTestId('insightsTag')).toBeInTheDocument();
     const deleteIcon = screen
       .getByTestId('insightsTag')

@@ -44,7 +44,7 @@ const Container = styled.div`
 `;
 
 const CategoryList = styled.div`
-  margin-top: 50px;
+  margin-bottom: 16px;
   > * {
     margin-right: 8px;
     margin-bottom: 8px;
@@ -54,7 +54,8 @@ const CategoryList = styled.div`
 const FormContainer = styled.form`
   display: flex;
   align-items: flex-end;
-  margin-bottom: 28px;
+  margin-top: 50px;
+  margin-bottom: 50px;
   .categoryInput {
     flex: 1;
   }
@@ -184,6 +185,18 @@ const InputDetails = ({
   return (
     <>
       <Container data-testid="insightsInputDetails">
+        <CategoryList>
+          {previewedInput.relationships?.suggested_categories.data.map(
+            (category) => (
+              <Category
+                id={category.id}
+                key={category.id}
+                inputId={previewedInput.id}
+                variant="suggested"
+              />
+            )
+          )}
+        </CategoryList>
         <FormContainer>
           <div className="categoryInput">
             <Label htmlFor="categorySelect">
@@ -223,6 +236,7 @@ const InputDetails = ({
               id={category.id}
               key={category.id}
               inputId={previewedInput.id}
+              variant="approved"
             />
           ))}
         </CategoryList>

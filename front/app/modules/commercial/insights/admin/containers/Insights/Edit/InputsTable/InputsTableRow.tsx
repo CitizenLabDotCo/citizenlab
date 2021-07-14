@@ -78,7 +78,24 @@ const InputsTableRow = ({
               query.category ? category.id === query.category : category
             )
             .map((category) => (
-              <Category id={category.id} inputId={input.id} key={category.id} />
+              <Category
+                id={category.id}
+                variant="approved"
+                inputId={input.id}
+                key={category.id}
+              />
+            ))}
+          {input.relationships?.suggested_categories.data
+            .filter((category) =>
+              query.category ? category.id === query.category : category
+            )
+            .map((category) => (
+              <Category
+                id={category.id}
+                variant="suggested"
+                inputId={input.id}
+                key={category.id}
+              />
             ))}
         </CategoryList>
       </td>
@@ -90,6 +107,17 @@ const InputsTableRow = ({
               .map((category) => (
                 <Category
                   id={category.id}
+                  variant="approved"
+                  inputId={input.id}
+                  key={category.id}
+                />
+              ))}
+            {input.relationships?.suggested_categories.data
+              .filter((category) => category.id !== query.category)
+              .map((category) => (
+                <Category
+                  id={category.id}
+                  variant="suggested"
                   inputId={input.id}
                   key={category.id}
                 />

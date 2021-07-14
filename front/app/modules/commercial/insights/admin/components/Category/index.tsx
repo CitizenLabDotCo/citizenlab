@@ -10,9 +10,15 @@ import { withRouter, WithRouterProps } from 'react-router';
 export type CategoryProps = {
   id: string;
   inputId: string;
+  variant: 'suggested' | 'approved';
 } & WithRouterProps;
 
-const Category = ({ id, inputId, params: { viewId } }: CategoryProps) => {
+const Category = ({
+  id,
+  inputId,
+  variant,
+  params: { viewId },
+}: CategoryProps) => {
   const [loading, setLoading] = useState(false);
   const category = useCategory(viewId, id);
 
@@ -30,7 +36,7 @@ const Category = ({ id, inputId, params: { viewId } }: CategoryProps) => {
 
   return (
     <Tag
-      variant="primary"
+      variant={variant === 'suggested' ? 'default' : 'primary'}
       label={category.attributes.name}
       onIconClick={handleRemoveCategory}
       loading={loading}

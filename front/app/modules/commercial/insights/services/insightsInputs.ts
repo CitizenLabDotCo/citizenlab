@@ -7,6 +7,7 @@ export interface IInsightsInputData {
   type: string;
   relationships?: {
     categories: { data: IRelationship[] };
+    suggested_categories: { data: IRelationship[] };
     source: {
       data: IRelationship;
     };

@@ -27,6 +27,7 @@ const IdeaTitle = styled.h2`
 const IdeaBody = styled.div`
   color: ${colors.adminTextColor};
   font-size: ${fontSizes.base}px;
+  padding-bottom: 24px;
 `;
 
 const Idea = ({ ideaId }: IdeaProps) => {

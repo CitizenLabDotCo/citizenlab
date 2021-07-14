@@ -52,7 +52,16 @@ let mockInputData = {
           ],
         },
         suggested_categories: {
-          data: [],
+          data: [
+            {
+              id: '94a649b5-23fe',
+              type: 'category',
+            },
+            {
+              id: '94a649b5-23fe-4d47',
+              type: 'category',
+            },
+          ],
         },
       },
     },
@@ -184,14 +193,20 @@ describe('Insights Input Table', () => {
       render(<InputsTable />);
       const firstRow = screen.getAllByTestId('insightsInputsTableRow')[0];
       const secondRow = screen.getAllByTestId('insightsInputsTableRow')[1];
-      expect(within(firstRow).getAllByTestId('insightsTag')).toHaveLength(2);
+      expect(within(firstRow).getAllByTestId('insightsTag')).toHaveLength(4);
+      expect(
+        within(firstRow).getAllByTestId('insightsTagContent-default')
+      ).toHaveLength(2);
+      expect(
+        within(firstRow).getAllByTestId('insightsTagContent-primary')
+      ).toHaveLength(2);
       expect(within(secondRow).queryAllByTestId('insightsTag')).toHaveLength(0);
     });
     it('calls onDelete category with correct arguments', () => {
       const spy = jest.spyOn(service, 'deleteInsightsInputCategory');
       render(<InputsTable />);
       const firstTagDeleteIcon = screen
-        .getAllByTestId('insightsTag')[0]
+        .getAllByTestId('insightsTagContent-primary')[0]
         .querySelector('.insightsTagCloseIcon');
       if (firstTagDeleteIcon) {
         fireEvent.click(firstTagDeleteIcon);

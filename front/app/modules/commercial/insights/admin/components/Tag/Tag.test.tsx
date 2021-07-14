@@ -27,9 +27,9 @@ describe('Tag', () => {
       container.querySelector('.insightsTagCloseIcon')
     ).toBeInTheDocument();
   });
-  it('should render correct icon when secondary', () => {
+  it('should render correct icon when default', () => {
     const { container } = render(
-      <Tag {...defaultTagProps} variant="secondary" />
+      <Tag {...defaultTagProps} variant="default" />
     );
     expect(container.querySelector('.insightsTagPlusIcon')).toBeInTheDocument();
   });

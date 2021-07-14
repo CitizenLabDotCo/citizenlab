@@ -6,7 +6,7 @@ import { darken } from 'polished';
 
 // TODO: Add Tag to component library once we remove tagging
 
-type Variant = 'primary' | 'secondary';
+type Variant = 'primary' | 'default';
 
 export type TagProps = {
   label: string;
@@ -61,7 +61,7 @@ const StyledTag = styled.button<{ variant: Variant }>`
       `
     }
     ${
-      variant === 'secondary' &&
+      variant === 'default' &&
       css`
         background-color: #fff;
         color: ${colors.label};
@@ -124,7 +124,7 @@ const Tag = ({
       onClick={onClick}
       tabIndex={onClick ? 0 : -1}
     >
-      <TagContent>
+      <TagContent data-testid={`insightsTagContent-${variant}`}>
         {label}
         {count !== undefined && <Count>{count}</Count>}
         {onIconClick && (
@@ -148,7 +148,7 @@ const Tag = ({
                 {variant === 'primary' && (
                   <CloseIcon name="close" className="insightsTagCloseIcon" />
                 )}
-                {variant === 'secondary' && (
+                {variant === 'default' && (
                   <PlusIcon
                     name="plus-circle"
                     className="insightsTagPlusIcon"
