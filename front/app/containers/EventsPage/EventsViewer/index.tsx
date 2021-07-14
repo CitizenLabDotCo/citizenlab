@@ -1,4 +1,4 @@
-import React, { memo, useState } from 'react';
+import React, { memo } from 'react';
 
 // components
 import TopBar from './TopBar';
@@ -60,19 +60,17 @@ interface Props {
   className?: string;
 }
 
-const EVENTS_PER_PAGE = 10;
-
 const EventsViewer = memo<Props>(
   ({ title, fallbackMessage, eventsTime, className }) => {
-    const [projectIds, setProjectIds] = useState<string[]>([]);
-    const [currentPage, setCurrentPage] = useState<number>(1);
-
-    const { events, lastPage } = useEvents({
-      projectIds,
+    const {
+      events,
+      currentPage,
+      lastPage,
+      setProjectIds,
+      setCurrentPage,
+    } = useEvents({
       futureOnly: eventsTime === 'future',
       pastOnly: eventsTime === 'past',
-      page: currentPage,
-      pageSize: EVENTS_PER_PAGE,
     });
 
     const eventsLoading = isNil(events);

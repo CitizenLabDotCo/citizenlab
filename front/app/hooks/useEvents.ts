@@ -7,21 +7,24 @@ interface InputParameters {
   projectIds?: string[];
   futureOnly?: boolean;
   pastOnly?: boolean;
-  page?: number;
+  currentPage?: number;
   pageSize?: number;
 }
 
-export default function useEvents({
-  projectIds,
-  futureOnly,
-  pastOnly,
-  page,
-  pageSize,
-}: InputParameters) {
+const DEFAULT_PAGE_SIZE = 10;
+
+export default function useEvents(parameters: InputParameters) {
   const [events, setEvents] = useState<IEventData[] | undefined | null | Error>(
     undefined
   );
+  const [projectIds, setProjectIds] = useState<string[]>(
+    parameters.projectIds ?? []
+  );
+  const [currentPage, setCurrentPage] = useState<number>(
+    parameters.currentPage ?? 1
+  );
   const [lastPage, setLastPage] = useState(1);
+  const [pageSize] = useState(parameters.pageSize ?? DEFAULT_PAGE_SIZE);
 
   useEffect(() => {
     setEvents(undefined);
@@ -30,16 +33,16 @@ export default function useEvents({
       queryParameters: { project_ids: projectIds },
     };
 
-    if (futureOnly) {
+    if (parameters.futureOnly) {
       streamParams.queryParameters.start_at_gteq = new Date().toJSON();
     }
 
-    if (pastOnly) {
+    if (parameters.pastOnly) {
       streamParams.queryParameters.start_at_lt = new Date().toJSON();
     }
 
-    if (page) {
-      streamParams.queryParameters['page[number]'] = page;
+    if (currentPage) {
+      streamParams.queryParameters['page[number]'] = currentPage;
     }
 
     if (pageSize) {
@@ -62,7 +65,16 @@ export default function useEvents({
     );
 
     return () => subscription.unsubscribe();
-  }, [projectIds, futureOnly, pastOnly, page, pageSize]);
+  }, [parameters, projectIds, currentPage, pageSize]);
 
-  return { events, lastPage };
+  return {
+    events,
+    projectIds,
+    currentPage,
+    lastPage,
+    pageSize,
+
+    setProjectIds,
+    setCurrentPage,
+  };
 }
