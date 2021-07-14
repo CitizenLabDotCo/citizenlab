@@ -25,7 +25,7 @@ import useModerationsCount from '../../hooks/useModerationsCount';
 import {
   updateModerationStatus,
   IModerationData,
-  TModeratableTypes,
+  TModeratableType,
 } from '../../services/moderations';
 import { removeInappropriateContentFlag } from 'modules/commercial/flag_inappropriate_content/services/inappropriateContentFlags';
 
@@ -215,7 +215,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
     IModerationData[]
   >([]);
   const [processing, setProcessing] = useState(false);
-  const [selectedTypes, setSelectedTypes] = useState<TModeratableTypes[]>([]);
+  const [selectedTypes, setSelectedTypes] = useState<TModeratableType[]>([]);
   const [selectedProjectIds, setSelectedProjectIds] = useState<string[]>([]);
   const [selectedPageNumber, setSelectedPageNumber] = useState<number>(1);
   const [selectedPageSize, setSelectedPageSize] = useState<number>(
@@ -304,7 +304,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
   }, [selectedPageSize, onPageSizeChange]);
 
   const handleModeratableTypesChange = (
-    newSelectedTypes: TModeratableTypes[]
+    newSelectedTypes: TModeratableType[]
   ) => {
     setSelectedTypes(newSelectedTypes);
     trackEventByName(tracks.typeFilterUsed);

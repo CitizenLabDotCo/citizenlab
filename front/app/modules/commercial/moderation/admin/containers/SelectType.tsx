@@ -6,20 +6,17 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // services
-import { TModeratableTypes } from '../../services/moderations';
+import { TModeratableType } from '../../services/moderations';
 
 interface Props {
-  onChange: (newModeratableType: TModeratableTypes[]) => void;
-  selectedTypes: TModeratableTypes[];
+  onChange: (newModeratableType: TModeratableType[]) => void;
+  selectedTypes: TModeratableType[];
 }
 
 const SelectType = memo(({ onChange, selectedTypes }: Props) => {
-  const handleOnChange = useCallback(
-    (newSelectedTypes: TModeratableTypes[]) => {
-      onChange(newSelectedTypes);
-    },
-    []
-  );
+  const handleOnChange = useCallback((newSelectedTypes: TModeratableType[]) => {
+    onChange(newSelectedTypes);
+  }, []);
 
   return (
     <FilterSelector
