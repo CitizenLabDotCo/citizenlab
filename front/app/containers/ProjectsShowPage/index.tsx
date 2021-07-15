@@ -72,6 +72,8 @@ interface Props {
   project: IProjectData | Error | null | undefined;
 }
 
+const anyIsUndefined = (...args) => args.some(isUndefined);
+
 const ProjectsShowPage = memo<Props>(({ project }) => {
   const projectId = !isNilOrError(project) ? project.id : undefined;
   const projectNotFound = isError(project);
@@ -88,13 +90,7 @@ const ProjectsShowPage = memo<Props>(({ project }) => {
   const user = useAuthUser();
 
   const loading = useMemo(() => {
-    return (
-      isUndefined(locale) ||
-      isUndefined(tenant) ||
-      isUndefined(project) ||
-      isUndefined(phases) ||
-      isUndefined(events)
-    );
+    return anyIsUndefined(locale, tenant, project, phases, events);
   }, [locale, tenant, project, phases, events]);
 
   const isUnauthorized = useMemo(() => {

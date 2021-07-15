@@ -4,6 +4,9 @@ import { isNilOrError } from 'utils/helperUtils';
 // hooks
 import useProject from 'hooks/useProject';
 import useEvents from 'hooks/useEvents';
+import useLocale from 'hooks/useLocale';
+import useAppConfiguration from 'hooks/useAppConfiguration';
+import usePhases from 'hooks/usePhases';
 
 // components
 import EventCard from 'components/EventCard';
@@ -37,14 +40,22 @@ interface Props {
   className?: string;
 }
 
+const allHaveLoaded = (...args) => args.every((arg) => !isNilOrError(arg));
+
 const EventsContainer = memo<Props>(({ projectId, className }) => {
   const project = useProject({ projectId });
   const { events } = useEvents({ projectIds: [projectId] });
+  const locale = useLocale();
+  const tenant = useAppConfiguration();
+  const phases = usePhases(projectId);
 
   useEffect(() => {
     const scrollToEventId = getScrollToEventId();
 
-    if (!isNilOrError(events) && scrollToEventId !== null) {
+    if (
+      scrollToEventId !== null &&
+      allHaveLoaded(events, locale, tenant, phases)
+    ) {
       setTimeout(() => {
         const element = document.getElementById(scrollToEventId);
 
