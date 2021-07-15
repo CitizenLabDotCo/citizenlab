@@ -192,7 +192,8 @@ resource 'Categories' do
         expect(view.categories).to be_empty
       end
 
-      example_request 'sets all input as unprocessed' do
+      example 'sets all input as unprocessed', document: false do
+        do_request
         expect(status).to eq(200)
         expect(view.scope.ideas.map { |idea| idea.processed(view) }.uniq).to be_empty
       end
