@@ -492,7 +492,7 @@ class Streams {
       const lastUrlSegment = apiEndpoint.substr(
         apiEndpoint.lastIndexOf('/') + 1
       );
-      // Use to last url segmennt of the requested endpoint and check if it's a UUID.
+      // Use to last url segment of the requested endpoint and check if it's a UUID.
       // If so, we're dealing with a single-item endpoint (as opposed to an array)
       const isSingleItemStream = this.isSingleItemStream(
         lastUrlSegment,
@@ -526,9 +526,11 @@ class Streams {
             // Note: when we're dealing with either the authUser stream or
             // the currentOnboardingCampaigns stream we do not destory the stream when an error occurs,
             // because these 2 endpoints produce error responses whenever
-            // the user is not logged. There are however not 'true' errors (e.g. not similar to, for example, a connection failure error) but rather the back-end telling us
-            // the user needs to be logged in to use the endpoint. We can
-            // therefore view erros from these 2 endpoints as valid return values and exclude them from the error-handling logic.
+            // the user is not logged. There are however not 'true' errors
+            // (e.g. not similar to, for example, a connection failure error)
+            // but rather the back-end telling us the user needs to be logged in to use the endpoint.
+            // We can therefore view errors from these 2 endpoints as valid return values
+            // and exclude them from the error-handling logic.
             if (
               streamId !== authApiEndpoint &&
               streamId !== currentOnboardingCampaignsApiEndpoint
@@ -561,8 +563,10 @@ class Streams {
           this.streams[streamId].observer = observer;
         }
 
-        // When we know the stream represents a single-item endpoint, and cache for this stream is not turned of
-        // we first check the resourcesByDataId key-value store to check if it includes the object with the requested dataId.
+        // When we know the stream represents a single-item endpoint,
+        // and cache for this stream is not turned of
+        // we first check the resourcesByDataId key-value store to check
+        // if it includes the object with the requested dataId.
         // If so, we directly push it into the stream without making a request to the server.
         // If not, we fetch the endpoint and push the return value into the stream (see fetch()).
         if (
@@ -583,7 +587,8 @@ class Streams {
         };
       }).pipe(
         // startsWith -> will push an initial value into a newly created stream
-        // as long as it's waiting for a proper respose. We check for this 'initial' string to determine if the valid response already took place.
+        // as long as it's waiting for a proper respose. We check for this 'initial' string
+        // to determine if the valid response already took place.
         // See https://www.learnrxjs.io/learn-rxjs/operators/combination/startwith for more info
         // scan
         // -> The RxJS documentation can probably explain it better than I can:
@@ -595,7 +600,7 @@ class Streams {
 
           this.streams[streamId].type = 'unknown';
 
-          // I don't think we still have uses cases were current is a function
+          // I don't think we still have uss cases were current is a function
           // instead of a value (was an early experiment)
           // so I wouldn't worry too much about this line.
           // It's safe to assume current will always be an object or an array, as opposed to a function.
