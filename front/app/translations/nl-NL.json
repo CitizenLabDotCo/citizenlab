@@ -2698,7 +2698,7 @@
   "app.errors.unknown_locale": "De {value} van de taal in rij {row} is geen geconfigureerde taal",
   "app.errors.unparseable_excel": "Het geselecteerde Excel-bestand kan niet worden verwerkt.",
   "app.errors.view_name_taken": "A view with this name already exists",
-  "app.modules.commercial.flag_inappropriate_content.admin.components.flagTooltip": "U kunt deze markering verwijderen door dit item te selecteren en bovenaan op de knop Verwijderen te klikken. Het zal dan opnieuw verschijnen in de tabbladen Gezien of Niet gezien",
+  "app.modules.commercial.flag_inappropriate_content.admin.components.flagTooltip": "Je kunt deze markering verwijderen door dit item te selecteren en bovenaan op de knop Verwijderen te klikken. Het item zal dan opnieuw verschijnen in de tabbladen Gezien of Niet gezien",
   "app.modules.commercial.flag_inappropriate_content.admin.components.nlpFlaggedWarningText": "Automatisch gedetecteerd als ongepaste inhoud.",
   "app.modules.commercial.flag_inappropriate_content.admin.components.noWarningItems": "Er zijn door andere deelnemers of door ons automatische detectie-systeem via Natural Language Processing (NLP) geen berichten gemarkeerd als ongepaste inhoud",
   "app.modules.commercial.flag_inappropriate_content.admin.components.removeWarning": "Verwijder {numberOfItems, plural, one {waarschuwing} other {# waarschuwingen}}",
