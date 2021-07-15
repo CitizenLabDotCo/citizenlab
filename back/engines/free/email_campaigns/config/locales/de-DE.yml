@@ -9,7 +9,6 @@ de:
       "comment_on_your_idea": Ein Kommentar zu meiner Idee
       "comment_on_your_initiative": Ein Kommentar zu meinem Vorschlag
       "first_idea_published": Veröffentlichung meiner ersten Idee
-      "idea_assigned_to_you": Zuweisung einer Idee zu mir
       "idea_marked_as_spam": Ideen-Spam-Bericht
       "idea_published": Veröffentlichung meiner Idee
       "initiative_assigned_to_you": Zuweisung eines Vorschlags an mich
@@ -58,7 +57,6 @@ de:
       "comment_on_your_idea": Kommentieren Sie Ihre Idee - alle Benutzer
       "comment_on_your_initiative": Kommentieren Sie Ihren Vorschlag - alle Benutzer
       "first_idea_published": Veröffentlichung Ihrer ersten Idee - alle Benutzer
-      "idea_assigned_to_you": Zuweisung einer Idee - Admins und Projektleiter
       "idea_marked_as_spam": Ideen-Spam-Bericht - Admins und Projektleiter
       "idea_published": Veröffentlichung Ihrer Idee - alle Nutzer
       "initiative_assigned_to_you": Zuweisung eines Vorschlags - Admins
@@ -167,13 +165,6 @@ de:
       main_header: '%{commentAuthor} kommentierte deinen Vorschlag'
       subject: 'Du hast einen Kommentar erhalten auf %{organizationName}s Plattform'
       preheader: '%{authorName} hinterließ einen Kommentar zu deinem Vorschlag für %{organizationName}'
-    idea_assigned_to_you:
-      by_author: 'von %{authorName}'
-      cta_reply_to: 'Geben Sie %{authorName} Feedback'
-      event_description_idea: 'Ihnen wurde eine Idee zugewiesen. Geben Sie Feedback, indem Sie ein offizielles Update schreiben oder den Status ändern.'
-      main_header: '%{firstName}, du hast eine neue Zuordnung'
-      subject: 'Du hast einen Auftrag auf der Plattform von %{organizationName}'
-      preheader_idea: 'Ihnen wurde die Idee von %{authorName} zugewiesen'
     assignee_digest:
       subject: 'Ideen, die dein Feedback benötigen: %{numberIdeas}'
       preheader: 'Übersicht der Beauftragten von %{organizationName}'
