@@ -162,6 +162,8 @@ interface Props {
   showDescription?: boolean;
 }
 
+const preventDefault = (event) => event.preventDefault();
+
 const EventInformation = memo<Props & InjectedIntlProps>((props) => {
   const {
     event,
@@ -227,7 +229,7 @@ const EventInformation = memo<Props & InjectedIntlProps>((props) => {
     <EventInformationContainer data-testid="EventInformation">
       <EventTitleAndAttributes>
         {showProjectTitle && projectTitle && (
-          <StyledLink to={`/projects/${projectSlug}`}>
+          <StyledLink onClick={preventDefault} to={`/projects/${projectSlug}`}>
             <T value={projectTitle} />
           </StyledLink>
         )}
