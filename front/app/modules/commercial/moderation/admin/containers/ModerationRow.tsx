@@ -119,11 +119,6 @@ const ModerationRow = memo<Props & InjectedIntlProps>(
     const contentBody = moderation.attributes.content_body_multiloc;
     const moderatableType = moderation.attributes.moderatable_type;
     const belongsToTypes = Object.keys(moderation.attributes.belongs_to);
-    const belongsToHrefs = {
-      idea: `${ideasPath}/${moderation.attributes.belongs_to.idea?.slug}`,
-      initiative: `${initiativesPath}/${moderation.attributes.belongs_to.initiative?.slug}`,
-      project: `${projectsPath}/${moderation.attributes.belongs_to.project?.slug}`,
-    };
     const bgColor = selected
       ? rgba(colors.adminTextColor, 0.1)
       : moderation.attributes.moderation_status === 'read'
@@ -217,7 +212,11 @@ const ModerationRow = memo<Props & InjectedIntlProps>(
               }[belongsToType];
               const belongsToTitleMultiloc =
                 belongsToTypes[belongsToType].title_multiloc;
-              const belongsToHref = belongsToHrefs[belongsToType];
+              const belongsToHref = {
+                idea: `${ideasPath}/${moderation.attributes.belongs_to.idea?.slug}`,
+                initiative: `${initiativesPath}/${moderation.attributes.belongs_to.initiative?.slug}`,
+                project: `${projectsPath}/${moderation.attributes.belongs_to.project?.slug}`,
+              }[belongsToType];
 
               if (belongsToTitleMultiloc) {
                 return (
