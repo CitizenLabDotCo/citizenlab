@@ -126,6 +126,17 @@ PATH
       rails (~> 6.0.0)
 
 PATH
+  remote: engines/commercial/flag_inappropriate_content
+  specs:
+    flag_inappropriate_content (0.1.0)
+      active_model_serializers (~> 0.10.7)
+      apartment (~> 2.2.1)
+      email_campaigns
+      moderation
+      pundit (~> 2.0)
+      rails (~> 6.0.0)
+
+PATH
   remote: engines/commercial/geographic_dashboard
   specs:
     geographic_dashboard (0.1.0)
@@ -1059,6 +1070,7 @@ DEPENDENCIES
   factory_bot_rails
   faker
   fast_jsonapi!
+  flag_inappropriate_content!
   fog-aws
   frontend!
   geographic_dashboard!

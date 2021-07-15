@@ -1,0 +1,51 @@
+<mj-section padding="25px"
+            text-align="left">
+  <mj-column
+    padding="20px 25px"
+    border="1px solid #eaeaea">
+    <mj-text>
+      <p style="font-size: 14px; margin-top: 10px; color: #84939E;">
+        <% case event.flaggable_type %>
+        <% when 'Comment' %>
+          <%= format_message('comment_author', values: { authorName: event.flaggable_author_name }) %>
+        <% when 'Idea' %>
+          <%= format_message('idea_author', values: { authorName: event.flaggable_author_name }) %>
+        <% when 'Initiative' %>
+          <%= format_message('initiative_author', values: { authorName: event.flaggable_author_name }) %>
+        <% end %>
+      </p>
+      <% case event.flaggable_type %>
+      <% when 'Comment' %>
+        <h2 style="font-size: 18px; margin-top: 10px; margin-bottom: 10px;">
+          <%= localize_for_recipient(event.flaggable_body_multiloc) %>
+        </h2>
+      <% when 'Idea' %>
+        <h2 style="font-size: 18px; margin-top: 10px; margin-bottom: 10px;">
+          <%= localize_for_recipient(event.flaggable_title_multiloc) %>
+        </h2>
+        <p style="font-size: 14px; margin-top: 10px; color: #84939E;">
+          <%= localize_for_recipient(event.flaggable_body_multiloc) %>
+        </p>
+      <% when 'Initiative' %>
+        <h2 style="font-size: 18px; margin-top: 10px; margin-bottom: 10px;">
+          <%= localize_for_recipient(event.flaggable_title_multiloc) %>
+        </h2>
+        <p style="font-size: 14px; margin-top: 10px; color: #84939E;">
+          <%= localize_for_recipient(event.flaggable_body_multiloc) %>
+        </p>
+      <% end %>
+      
+    </mj-text>
+  </mj-column>
+</mj-section>
+
+<mj-section padding="20px 25px" text-align="left">
+  <mj-column>
+    <mj-text font-size="14px" color="#84939E">
+      <%= format_message('this_post_was_flagged', escape_html: false) %>
+    </mj-text>
+  </mj-column>
+</mj-section>
+
+
+<%= render partial: 'application/cta_button', locals: { href: event.flaggable_url, message: format_message('cta_review_post') } %>

@@ -13,10 +13,6 @@ module ProjectManagement
           super.or resolve_for_project_moderator
         end
 
-        def moderatable
-          user ? super.or(scope.where(id: user.moderatable_project_ids)) : super
-        end
-
         private
 
         def resolve_for_project_moderator

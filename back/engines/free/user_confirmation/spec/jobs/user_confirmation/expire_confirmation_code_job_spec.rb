@@ -4,7 +4,7 @@ RSpec.describe UserConfirmation::ExpireConfirmationCodeJob do
   let(:user) { create(:user_with_confirmation) }
 
   before do
-    AppConfiguration.instance.activate_feature!('user_confirmation')
+    SettingsService.new.activate_feature! 'user_confirmation'
   end
 
   it 'changes the confirmation code' do

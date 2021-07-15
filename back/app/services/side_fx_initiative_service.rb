@@ -90,3 +90,5 @@ class SideFxInitiativeService
   end
 
 end
+
+::SideFxInitiativeService.prepend_if_ee('FlagInappropriateContent::Patches::SideFxInitiativeService')

@@ -9,7 +9,6 @@
       "comment_on_your_idea": En kommentar på min idé
       "comment_on_your_initiative": En kommentar på mitt forslag
       "first_idea_published": Publisering av min  første idé
-      "idea_assigned_to_you": En idé tildelt meg
       "idea_marked_as_spam": Rapportere idé-spam
       "idea_published": Publisering av min idé
       "initiative_assigned_to_you": Et forslag tildelt meg
@@ -58,7 +57,6 @@
       "comment_on_your_idea": Comment on your idea - all users
       "comment_on_your_initiative": Comment on your proposal - all users
       "first_idea_published": Publication of your first idea - all users
-      "idea_assigned_to_you": Assignment of an idea - admins and project managers
       "idea_marked_as_spam": Idea spam report - admins and project managers
       "idea_published": Publication of your idea - all users
       "initiative_assigned_to_you": Assignment of a proposal - admins
@@ -167,13 +165,6 @@
       main_header: '%{commentAuthor} kommenterte ditt forslag'
       subject: 'Du har fått en kommentar på plattformen til %{organizationName}'
       preheader: '%{authorName} la igjen en kommentar på ditt forslag til %{organizationName}'
-    idea_assigned_to_you:
-      by_author: 'av %{authorName}'
-      cta_reply_to: 'Gi en tilbakemelding til %{authorName}'
-      event_description_idea: 'En idé har blitt tildelt deg. Gi en tilbakemelding ved å skrive en offsiel oppdatering eller ved å endre status. '
-      main_header: '%{firstName}, du har en ny oppgave'
-      subject: 'Du har en ny oppgave på plattformen til %{organizationName}'
-      preheader_idea: 'Ideen til %{authorName} har blitt tildelt deg'
     assignee_digest:
       subject: 'Ideer som du må gi en tilbakemelding på: %{numberIdeas}'
       preheader: 'Assignee digest of %{organizationName}'

@@ -34,3 +34,17 @@ files:
       locale:
         en: en
         nb: nb-NO
+  - source: /back/engines/commercial/idea_assignment/config/locales/en.yml
+    translation: /back/engines/commercial/idea_assignment/config/locales/%locale%.yml
+    update_option: update_without_changes
+    languages_mapping:
+      locale:
+        en: en
+        nb: nb-NO
+  - source: /back/engines/commercial/flag_inappropriate_content/config/locales/en.yml
+    translation: /back/engines/commercial/flag_inappropriate_content/config/locales/%locale%.yml
+    update_option: update_without_changes
+    languages_mapping:
+      locale:
+        en: en
+        nb: nb-NO

@@ -1,14 +1,15 @@
 require 'rails_helper'
 
-class ActivityTriggerableCampaign < EmailCampaigns::Campaign
-  include EmailCampaigns::ActivityTriggerable
-
-  attr_accessor :activity_triggers
-end
 
 RSpec.describe EmailCampaigns::ActivityTriggerable, type: :model do
   before do
-    @campaign = ActivityTriggerableCampaign.create
+    class ActivityTriggerableCampaign < EmailCampaigns::Campaign
+      include EmailCampaigns::ActivityTriggerable
+
+      attr_accessor :activity_triggers
+    end
+
+    @campaign = ActivityTriggerableCampaign.create!
     @activity = create(:published_activity)
   end
   

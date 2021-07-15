@@ -35,7 +35,7 @@ import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import Outlet from 'components/Outlet';
 import { InsertConfigurationOptions } from 'typings';
 import { insertConfiguration } from 'utils/moduleUtils';
-import { AppConfigurationSettingsFeatureNames } from 'services/appConfiguration';
+import { TAppConfigurationSetting } from 'services/appConfiguration';
 
 const Menu = styled.div`
   z-index: 10;
@@ -144,7 +144,7 @@ export type NavItem = {
   link: string;
   iconName: IconNames;
   message: string;
-  featureName?: AppConfigurationSettingsFeatureNames;
+  featureName?: TAppConfigurationSetting;
   isActive: (pathname: string) => boolean;
   count?: number;
   onlyCheckAllowed?: boolean;

@@ -1,5 +1,5 @@
 module GeographicDashboard
-  class NLPApiService < ::NLP::API
+  class NLPApiService < ::NLP::Api
     def geotag(tenant_id, text, locale, options = {})
       body = options.merge(text: text, locale: locale)
       resp = post(

@@ -11,7 +11,7 @@ namespace :nlp do
   end
 
   task :dump_all_tenants_to_nlp_now, [] => [:environment] do |_t, _args|
-    api = NLP::API.new ENV.fetch('CL2_NLP_HOST')
+    api = NLP::Api.new ENV.fetch('CL2_NLP_HOST')
     Tenant.all.each do |tn|
       dump = NLP::TenantDumpService.new.dump tn
       api.update_tenant dump

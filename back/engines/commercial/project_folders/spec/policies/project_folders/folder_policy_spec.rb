@@ -81,7 +81,7 @@ describe ProjectFolders::FolderPolicy do
     end
 
     context 'when folder moderator of the folder' do
-      let(:user) { create(:project_folder_moderator, project_folder: published_folder) }
+      let(:user) { create(:project_folder_moderator, project_folders: [published_folder]) }
 
       it { is_expected.to permit(:show)        }
       it { is_expected.to permit(:update)      }
@@ -102,7 +102,7 @@ describe ProjectFolders::FolderPolicy do
     end
 
     context 'when folder moderator of another folder' do
-      let(:user) { create(:project_folder_moderator, project_folder: create(:project_folder)) }
+      let(:user) { create(:project_folder_moderator, project_folders: [create(:project_folder)]) }
 
       it { is_expected.to     permit(:show)    }
       it { is_expected.not_to permit(:create)  }
@@ -124,7 +124,7 @@ describe ProjectFolders::FolderPolicy do
 
     context 'when project moderator of a project contained in the folder' do
       let(:project) { create(:project) }
-      let(:user) { create(:moderator, project: project) }
+      let(:user) { create(:project_moderator, projects: [project]) }
 
       before do
         project.admin_publication.update(parent_id: published_folder.admin_publication.id)
@@ -150,7 +150,7 @@ describe ProjectFolders::FolderPolicy do
 
     context 'when project moderator of a project contained in another folder' do
       let(:project) { create(:project) }
-      let(:user) { create(:moderator, project: project) }
+      let(:user) { create(:project_moderator, projects: [project]) }
 
       before do
         project.admin_publication.update(parent_id: draft_folder.admin_publication.id)

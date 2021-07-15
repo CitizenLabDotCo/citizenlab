@@ -1,8 +1,8 @@
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
-import { Multiloc, ILinks } from 'typings';
+import { Multiloc, ILinks, IRelationship } from 'typings';
 
-export type TModerationStatuses = 'read' | 'unread';
+export type TModerationStatus = 'read' | 'unread';
 export type TModeratableTypes = 'Idea' | 'Initiative' | 'Comment';
 
 export interface IModerationData {
@@ -14,7 +14,7 @@ export interface IModerationData {
     content_body_multiloc: Multiloc;
     content_slug: string | null;
     created_at: string;
-    moderation_status?: TModerationStatuses;
+    moderation_status?: TModerationStatus;
     belongs_to: {
       project: {
         id: string;
@@ -26,6 +26,11 @@ export interface IModerationData {
         slug: string;
         title_multiloc: Multiloc;
       };
+    };
+  };
+  relationships: {
+    inappropriate_content_flag?: {
+      data: IRelationship;
     };
   };
 }
@@ -50,7 +55,7 @@ export function moderationsStream(streamParams: IStreamParams | null = null) {
 export async function updateModerationStatus(
   moderationId: string,
   moderatableType: TModeratableTypes,
-  moderationStatus: TModerationStatuses
+  moderationStatus: TModerationStatus
 ) {
   const apiEndpoint = `${API_PATH}/moderations/${moderatableType}/${moderationId}`;
   const updateObject = {
@@ -65,4 +70,17 @@ export async function updateModerationStatus(
   );
   await streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/moderations`] });
   return response;
+}
+
+export interface IModerationsCount {
+  count: number;
+}
+
+export function moderationsCountStream(
+  streamParams: IStreamParams | null = null
+) {
+  return streams.get<IModerationsCount>({
+    apiEndpoint: `${API_PATH}/moderations/moderations_count`,
+    ...streamParams,
+  });
 }

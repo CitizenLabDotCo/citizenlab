@@ -148,7 +148,7 @@ resource 'OfficialFeedback' do
 
   context 'when the current user is a moderator', document: false, skip: !CitizenLab.ee? do
     before do
-      @user = create(:moderator, project: @project)
+      @user = create(:project_moderator, projects: [@project])
       header_token_for(@user)
     end
 

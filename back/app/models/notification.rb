@@ -15,12 +15,6 @@ class Notification < ApplicationRecord
 
   scope :unread, -> {where(read_at: nil)}
 
-  def self.classes_for activity
-    Dir[File.join(__dir__, 'notifications', '*.rb')].each { |file| require file }
-    self.descendants.select do |notification_class|
-      notification_class::ACTIVITY_TRIGGERS.dig(activity.item_type, activity.action)
-    end
-  end
 
   def event_bus_item_name
     "Notification for #{event_name}"
@@ -46,3 +40,5 @@ class Notification < ApplicationRecord
     self.class::EVENT_NAME
   end
 end
+
+Notification.include_if_ee 'FlagInappropriateContent::Extensions::Notification'

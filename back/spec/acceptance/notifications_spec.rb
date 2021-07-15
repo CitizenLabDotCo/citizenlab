@@ -38,17 +38,9 @@ resource "Notifications" do
     end
 
     describe do
-      before do
-        # Make sure that we can find all notification
-        # subclasses, but without enabling eager
-        # loading for the other tests.
-        Cl2Back::Application.eager_load!
-      end
       example "List all different types of notification", document: false do
-        NotificationToSerializerMapper.map.keys.each do |notification_subclass|
-          if notification_subclass.descendants.empty?
-            create(notification_subclass.model_name.element.to_sym)
-          end
+        NotificationService.new.notification_classes.each do |notification_class|
+          create(notification_class.model_name.element.to_sym)
         end
         do_request
         json_response = json_parse(response_body)

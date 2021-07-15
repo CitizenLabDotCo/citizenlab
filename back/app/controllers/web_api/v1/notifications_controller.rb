@@ -1,5 +1,4 @@
 class WebApi::V1::NotificationsController < ApplicationController
-  # This mapping is needed to serialize a collection (of notifications) of different types.
 
   before_action :set_notification, only: [:show, :mark_read]
   before_action do
@@ -9,7 +8,7 @@ class WebApi::V1::NotificationsController < ApplicationController
   def index
     @notifications = policy_scope(Notification)
       .order(created_at: :desc)
-      .includes(:recipient, :initiating_user, :post, :post_status, :comment, :project, :phase, :official_feedback, :spam_report, :invite)
+      .includes(*include_load_resources)
 
     if params[:only_unread]
       @notifications = @notifications.where(read_at: nil)
@@ -22,7 +21,7 @@ class WebApi::V1::NotificationsController < ApplicationController
       @notifications,
       WebApi::V1::Notifications::NotificationSerializer,
       params: fastjson_params,
-      serializers: NotificationToSerializerMapper.map
+      serializers: NotificationService.new.serializers
       )
   end
 
@@ -36,7 +35,7 @@ class WebApi::V1::NotificationsController < ApplicationController
       render json: WebApi::V1::Notifications::NotificationSerializer.new(
         Notification.find(ids),
         params: fastjson_params,
-        serializers: NotificationToSerializerMapper.map,
+        serializers: NotificationService.new.serializers,
         ).serialized_json
     else
       head 500
@@ -47,7 +46,7 @@ class WebApi::V1::NotificationsController < ApplicationController
     render json: WebApi::V1::Notifications::NotificationSerializer.new(
       @notification,
       params: fastjson_params,
-      serializers: NotificationToSerializerMapper.map,
+      serializers: NotificationService.new.serializers,
       ).serialized_json
   end
 
@@ -56,7 +55,7 @@ class WebApi::V1::NotificationsController < ApplicationController
       render json: WebApi::V1::Notifications::NotificationSerializer.new(
         @notification,
         params: fastjson_params,
-        serializers: NotificationToSerializerMapper.map,
+        serializers: NotificationService.new.serializers,
         ).serialized_json, status: :ok
     else
       head 500
@@ -70,7 +69,13 @@ class WebApi::V1::NotificationsController < ApplicationController
     authorize @notification
   end
 
+  def include_load_resources
+    [:recipient, :initiating_user, :post, :post_status, :comment, :project, :phase, :official_feedback, :spam_report, :invite]
+  end
+
   def secure_controller?
     false
   end
 end
+
+WebApi::V1::NotificationsController.prepend_if_ee('FlagInappropriateContent::Patches::WebApi::V1::NotificationsController')

@@ -1,12 +1,13 @@
 require 'rails_helper'
 
-class TrackableCampaign < EmailCampaigns::Campaign
-  include EmailCampaigns::Trackable
-end
 
 RSpec.describe EmailCampaigns::Trackable, type: :model do
   before do
-    @campaign = TrackableCampaign.create
+    class TrackableCampaign < EmailCampaigns::Campaign
+      include EmailCampaigns::Trackable
+    end
+
+    @campaign = TrackableCampaign.create!
   end
   
   describe "sent?" do

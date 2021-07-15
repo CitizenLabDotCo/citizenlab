@@ -26,14 +26,6 @@ FactoryBot.define do
       end
     end
 
-
-    factory :moderator do
-      transient do
-        project { create(:project) }
-      end
-      roles { [{type: 'project_moderator', project_id: project.id}] }
-    end
-
     factory :user_with_demographics do
       gender { ['male','female','unspecified',nil][rand(4)] }
       birthyear { rand(1)==0 ? (Time.now.year - 12 - rand(100)) : nil }

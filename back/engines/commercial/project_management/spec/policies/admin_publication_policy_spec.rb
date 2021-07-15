@@ -11,7 +11,7 @@ describe AdminPublicationPolicy do
     let!(:admin_publication) { create(:project).admin_publication }
 
     context 'for a moderator of another project' do
-      let(:user) { create(:moderator, project: create(:project)) }
+      let(:user) { create(:project_moderator, projects: [create(:project)]) }
 
       it { is_expected.not_to permit(:reorder) }
 
@@ -26,7 +26,7 @@ describe AdminPublicationPolicy do
     let!(:admin_publication) { project.admin_publication }
 
     context 'for a moderator' do
-      let(:user) { create(:moderator, project: project) }
+      let(:user) { create(:project_moderator, projects: [project]) }
 
       it { is_expected.not_to permit(:reorder) }
 

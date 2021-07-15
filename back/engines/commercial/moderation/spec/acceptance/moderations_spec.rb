@@ -8,11 +8,7 @@ resource "Moderations" do
   
   before do
     header "Content-Type", "application/json"
-  end
 
- 
- 
-  before do
     @time = Time.now
     @project = create(:project)
     @m3 = create(:idea, 
@@ -45,16 +41,17 @@ resource "Moderations" do
       parameter :number, "Page number"
       parameter :size, "Number of moderations per page"
     end
+    parameter :moderation_status, "Filter by moderation status. One of #{Moderation::ModerationStatus::MODERATION_STATUSES.join(", ")}.", required: false
+    parameter :moderatable_types, "Filter by a given array of moderatable types. One (or more) of Idea, Initiative, Comment.", required: false
+    parameter :project_ids, "Filter by a given array of project IDs.", required: false
+    parameter :search, "Filter by searching in content title, and content body", required: false
 
     context "when moderator" do
       before do
-        @moderator = create(:moderator, project: @project)
+        @moderator = create(:project_moderator, projects: [@project])
         token = Knock::AuthToken.new(payload: @moderator.to_token_payload).token
         header 'Authorization', "Bearer #{token}" 
       end
-
-      parameter :project_ids, "Filter by a given array of project IDs.", required: false
-      parameter :search, "Filter by searching in content title, and content body", required: false
       
       example_request "List only moderations moderator has access to" do
         expect(status).to eq(200)
@@ -66,8 +63,6 @@ resource "Moderations" do
           {'project' => {'id' => @project.id, 'slug' => @project.slug, 'title_multiloc' => @project.title_multiloc}},
         ]
       end
-
-
     end
 
     context "when admin" do
@@ -76,11 +71,6 @@ resource "Moderations" do
         token = Knock::AuthToken.new(payload: @user.to_token_payload).token
         header 'Authorization', "Bearer #{token}"
       end
-      
-      parameter :moderation_status, "Filter by moderation status. One of #{Moderation::ModerationStatus::MODERATION_STATUSES.join(", ")}.", required: false
-      parameter :moderatable_types, "Filter by a given array of moderatable types. One (or more) of Idea, Initiative, Comment.", required: false
-      parameter :project_ids, "Filter by a given array of project IDs.", required: false
-      parameter :search, "Filter by searching in content title, and content body", required: false
       
       example_request "List all moderations" do
         expect(status).to eq(200)
@@ -168,10 +158,43 @@ resource "Moderations" do
           expect(json_response[:data].map { |d| d.dig(:id) }).to match_array [@m2.id, @m3.id, @m5.id]
         end
       end
+    end
 
-      patch "web_api/v1/moderations/:moderatable_type/:moderatable_id" do
-        with_options scope: :moderation do
-          parameter :moderation_status, "Either #{Moderation::ModerationStatus::MODERATION_STATUSES.join(", ")}", required: true
+    get "web_api/v1/moderations/moderations_count" do
+      parameter :moderation_status, "Filter by moderation status. One of #{Moderation::ModerationStatus::MODERATION_STATUSES.join(", ")}.", required: false
+      parameter :moderatable_types, "Filter by a given array of moderatable types. One (or more) of Idea, Initiative, Comment.", required: false
+      parameter :project_ids, "Filter by a given array of project IDs.", required: false
+      parameter :search, "Filter by searching in content title, and content body", required: false
+
+      context "when admin" do
+        before do
+          @user = create(:admin)
+          token = Knock::AuthToken.new(payload: @user.to_token_payload).token
+          header 'Authorization', "Bearer #{token}"
+        end
+
+        describe do
+          let(:moderatable_types) { ['Idea', 'Comment'] }
+          
+          example_request "Count only moderations for ideas or comments" do
+            expect(status).to eq(200)
+            json_response = json_parse(response_body)
+            expect(json_response[:count]).to eq 3
+          end
+        end
+      end
+    end
+
+    patch "web_api/v1/moderations/:moderatable_type/:moderatable_id" do
+      with_options scope: :moderation do
+        parameter :moderation_status, "Either #{Moderation::ModerationStatus::MODERATION_STATUSES.join(", ")}", required: true
+      end
+
+      context "when admin" do
+        before do
+          @user = create(:admin)
+          token = Knock::AuthToken.new(payload: @user.to_token_payload).token
+          header 'Authorization', "Bearer #{token}"
         end
         
         let(:idea) { create(:idea) }
@@ -203,18 +226,8 @@ resource "Moderations" do
           end
         end
       end  
-    
-    
-    
-    
-    
-    
+       
     end
-
-
-
-    
-  
   end
 end
   

@@ -9,7 +9,6 @@ fr:
       "comment_on_your_idea": Un commentaire sur mon idée
       "comment_on_your_initiative": Un commentaire sur mon proposition
       "first_idea_published": Publication de ma première idée
-      "idea_assigned_to_you": Attribution en ma faveur d'une idée
       "idea_marked_as_spam": Rapport sur le spam d'idées
       "idea_published": Publication de mon idée
       "initiative_assigned_to_you": Attribution en ma faveur d'une proposition
@@ -58,7 +57,6 @@ fr:
       "comment_on_your_idea": Commentez votre idée (tous les utilisateurs)
       "comment_on_your_initiative": Commentez votre proposition - tous les utilisateurs
       "first_idea_published": Publication de votre première idée (tous les utilisateurs)
-      "idea_assigned_to_you": Attribution d'une idée - administrateurs et administrateurs projet
       "idea_marked_as_spam": Rapport de spam d'idées - administrateurs et administrateurs projet
       "idea_published": Publication de votre idée (tous les utilisateurs)
       "initiative_assigned_to_you": Attribution d'une proposition - admins
@@ -167,13 +165,6 @@ fr:
       main_header: '%{commentAuthor} a commenté votre proposition'
       subject: 'Vous avez reçu un commentaire sur la plateforme de %{organizationName}'
       preheader: '%{authorName} a commenté votre proposition pour %{organizationName}'
-    idea_assigned_to_you:
-      by_author: 'par %{authorName}'
-      cta_reply_to: 'Faites vos retours à %{authorName}'
-      event_description_idea: 'Une idée vous a été attribuée. Envoyer une mise à jour en écrivant un commentaire officiel ou en changeant son statut.'
-      main_header: '%{firstName}, vous avez une nouvelle attribution'
-      subject: 'Vous avez une attribution sur la plate-forme de %{organizationName}'
-      preheader_idea: 'L’idée de %{authorName} vous a été attribuée'
     assignee_digest:
       subject: 'Idées en attente de mise à jour: %{numberIdeas}'
       preheader: 'Rapport de gestion de %{organizationName}'
