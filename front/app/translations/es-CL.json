@@ -884,7 +884,7 @@
   "app.containers.Admin.Moderation.goToThisContentType": "Abrir este {contentType} en una nueva pestaña",
   "app.containers.Admin.Moderation.initiative": "Propuesta",
   "app.containers.Admin.Moderation.markFlagsError": "No se han podido marcar los ítems. Intentalo nuevamente.",
-  "app.containers.Admin.Moderation.markNotSeen": "Mark {selectedItemsCount, plural, one {# item} other {# items}} as not seen",
+  "app.containers.Admin.Moderation.markNotSeen": "Marca {selectedItemsCount, plural, one {# item} other {# items}} como no visto ",
   "app.containers.Admin.Moderation.markSeen": "Mark {selectedItemsCount, plural, one {# item} other {# items}} as seen",
   "app.containers.Admin.Moderation.moderationsTooltip": "This page allows you to quickly check all new input that has been added to your platform, including posts and comments. You can mark posts as being 'seen' so that others know which inputs still need to be processed.",
   "app.containers.Admin.Moderation.noUnviewedItems": "No hay elementos no vistos",
