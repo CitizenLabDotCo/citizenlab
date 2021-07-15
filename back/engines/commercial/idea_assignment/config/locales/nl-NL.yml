@@ -11,4 +11,3 @@ nl:
       main_header: '%{firstName}, je hebt een nieuwe toewijzing'
       subject: 'Je hebt een toewijzing op het platform van %{organizationName}'
       preheader_idea: 'Je kreeg het idee van %{authorName} toegewezen'
-      

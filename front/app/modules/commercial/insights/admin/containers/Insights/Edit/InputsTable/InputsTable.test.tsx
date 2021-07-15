@@ -154,8 +154,6 @@ jest.mock('modules/commercial/insights/hooks/useInsightsInput', () => {
   return jest.fn(() => undefined);
 });
 
-window.confirm = jest.fn(() => true);
-
 describe('Insights Input Table', () => {
   it('renders', () => {
     render(<InputsTable />);

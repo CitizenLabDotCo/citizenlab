@@ -60,8 +60,6 @@ jest.mock('react-router', () => {
   };
 });
 
-window.confirm = jest.fn(() => true);
-
 describe('Insights Top Bar', () => {
   it('renders Top Bar', () => {
     render(<TopBar />);

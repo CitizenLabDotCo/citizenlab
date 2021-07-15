@@ -96,6 +96,7 @@ const StyledSort = styled.div`
 `;
 
 const StyledPagination = styled(Pagination)`
+  display: block;
   margin-top: 12px;
 `;
 
@@ -126,10 +127,12 @@ const InputsTable = ({
   const pageNumber = parseInt(query?.pageNumber, 10);
   const selectedCategory = query.category;
   const search = query.search;
+  const sort = query.sort;
 
   const { list: inputs, lastPage } = useInsightsInputs(viewId, {
     pageNumber,
     search,
+    sort,
     category: selectedCategory,
   });
 
@@ -291,7 +294,7 @@ const InputsTable = ({
         <Button
           buttonStyle="admin-dark"
           bgColor={colors.clBlue}
-          linkTo={`/admin/insights/${viewId}`}
+          linkTo={`/admin/insights`}
         >
           {formatMessage(messages.inputsDone)}
         </Button>

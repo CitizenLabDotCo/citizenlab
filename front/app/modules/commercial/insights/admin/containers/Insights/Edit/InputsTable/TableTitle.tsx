@@ -27,7 +27,7 @@ import { Dropdown, DropdownListItem, IconTooltip } from 'cl2-component-library';
 import Button from 'components/UI/Button';
 import RenameCategory from '../RenameCategory';
 
-import { getSelectedCategoryFilter } from '../';
+import getSelectedCategoryFilter from 'modules/commercial/insights/utils/getSelectedCategoryFilter';
 
 const StyledHeader = styled.h2`
   display: flex;

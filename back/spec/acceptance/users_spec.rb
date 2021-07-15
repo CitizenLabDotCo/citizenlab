@@ -263,7 +263,7 @@ resource "Users" do
 
     context "when admin" do
       before do
-        @user.update(roles: [{type: 'admin'}])
+        @user.update!(roles: [{type: 'admin'}])
       end
 
       get "web_api/v1/users" do
@@ -295,6 +295,16 @@ resource "Users" do
           u2 = create(:user, last_name: 'Rudolf')
 
           do_request search: "joskela"
+          json_response = json_parse(response_body)
+          expect(json_response[:data].size).to eq 1
+          expect(json_response[:data][0][:id]).to eq u1.id
+        end
+
+        example "Search for users with sort parameter", document: false do
+          u1 = create(:user, first_name: 'Joskelala')
+          u2 = create(:user, last_name: 'Rudolf')
+
+          do_request search: "joskela", sort: 'role'
           json_response = json_parse(response_body)
           expect(json_response[:data].size).to eq 1
           expect(json_response[:data][0][:id]).to eq u1.id
@@ -698,7 +708,7 @@ resource "Users" do
 
       describe do
         example "The user avatar can be removed" do
-          @user.update(avatar: Rails.root.join("spec/fixtures/male_avatar_1.jpg").open)
+          @user.update!(avatar: Rails.root.join("spec/fixtures/male_avatar_1.jpg").open)
           expect(@user.reload.avatar_url).to be_present
           do_request user: {avatar: nil}
           expect(@user.reload.avatar_url).to be nil
@@ -719,7 +729,7 @@ resource "Users" do
 
         example "Can't change some attributes of a user verified with FranceConnect", document: false, skip: !CitizenLab.ee? do
           create(:verification, method_name: 'franceconnect', user: @user)
-          @user.update(custom_field_values: {cf.key => "original value", birthyear_cf.key => 1950})
+          @user.update!(custom_field_values: {cf.key => "original value", birthyear_cf.key => 1950})
           do_request
           expect(response_status).to eq 200
           @user.reload
@@ -747,7 +757,7 @@ resource "Users" do
       let(:custom_field_values) {{ cf1.key => "somevalue", cf2.key => [cf2_options.first.key] }}
 
       example "Complete the registration of a user" do
-        @user.update(registration_completed_at: nil)
+        @user.update! registration_completed_at: nil
         do_request
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
@@ -757,7 +767,7 @@ resource "Users" do
       end
 
       example "[error] Complete the registration of a user fails if not all required fields are provided" do
-        @user.update(registration_completed_at: nil)
+        @user.update! registration_completed_at: nil
         do_request(user: {custom_field_values: {cf2.key => nil}})
         expect(response_status).to eq 422
       end
@@ -776,7 +786,7 @@ resource "Users" do
         }}
 
         example "Can't change some custom_field_values of a user verified with FranceConnect", document: false, skip: !CitizenLab.ee? do
-          @user.update(
+          @user.update!(
             registration_completed_at: nil,
             custom_field_values: {cf.key => "original value", birthyear_cf.key => 1950}
           )
@@ -792,7 +802,7 @@ resource "Users" do
 
     delete "web_api/v1/users/:id" do
       before do
-        @user.update(roles: [{type: 'admin'}])
+        @user.update!(roles: [{type: 'admin'}])
         @subject_user = create(:user)
       end
       let(:id) { @subject_user.id }

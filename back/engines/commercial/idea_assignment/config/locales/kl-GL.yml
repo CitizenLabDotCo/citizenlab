@@ -11,4 +11,3 @@ kl:
       main_header: '%{firstName}, nutaamik tunineqarputit'
       subject: 'Platformimi %{organizationName}mi nutaamik tunineqarputit'
       preheader_idea: '%{authorName}p isumassarsiaanik tunineqarputit'
-      

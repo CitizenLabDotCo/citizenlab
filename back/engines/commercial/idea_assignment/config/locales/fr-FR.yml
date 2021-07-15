@@ -11,4 +11,3 @@ fr:
       main_header: '%{firstName}, vous avez une nouvelle attribution'
       subject: 'Vous avez une attribution sur la plate-forme de %{organizationName}'
       preheader_idea: 'L’idée de %{authorName} vous a été attribuée'
-      
