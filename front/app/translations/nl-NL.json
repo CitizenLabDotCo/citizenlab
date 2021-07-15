@@ -886,7 +886,7 @@
   "app.containers.Admin.Moderation.markFlagsError": "Kon item(s) niet markeren. Probeer het opnieuw.",
   "app.containers.Admin.Moderation.markNotSeen": "Markeer {selectedItemsCount, plural, one {# item} other {# items}} als niet gezien",
   "app.containers.Admin.Moderation.markSeen": "Markeer {selectedItemsCount, plural, one {# item} other {# items}} als gezien",
-  "app.containers.Admin.Moderation.moderationsTooltip": "Op deze pagina kun je snel alle nieuwe input bekijken die aan je platform is toegevoegd, inclusief reacties en voorstellen. Je kunt ze markeren als ‘gezien’ zodat andere beheerders weten welke input nog moeten worden verwerkt.",
+  "app.containers.Admin.Moderation.moderationsTooltip": "Op deze pagina kun je snel alle nieuwe input bekijken die aan je platform is toegevoegd, inclusief reacties en voorstellen. Je kunt ze markeren als 'gezien' zodat andere beheerders weten welke input nog moeten worden verwerkt.",
   "app.containers.Admin.Moderation.noUnviewedItems": "Er zijn geen ongeziene items",
   "app.containers.Admin.Moderation.noViewedItems": "Er zijn geen geziene items",
   "app.containers.Admin.Moderation.pageTitle": "Activiteit",
