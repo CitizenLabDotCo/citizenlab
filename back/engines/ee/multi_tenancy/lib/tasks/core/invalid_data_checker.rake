@@ -83,6 +83,7 @@ namespace :checks do
     # a lot of processing.
     return true if claz.name == 'EmailCampaigns::Delivery'
     return true if claz.name.starts_with? 'Notifications::'
+    return true if claz.name == 'CommonPassword'
     false
   end
 
