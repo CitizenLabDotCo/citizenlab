@@ -11,4 +11,3 @@
       main_header: '%{firstName}, du har en ny oppgave'
       subject: 'Du har en ny oppgave på plattformen til %{organizationName}'
       preheader_idea: 'Ideen til %{authorName} har blitt tildelt deg'
-      
