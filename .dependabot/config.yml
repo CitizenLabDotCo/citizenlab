@@ -4,4 +4,4 @@ update_configs:
     directory: "/front"
     update_schedule: "weekly"
     commit_message:
-    include_scope: true
+      include_scope: true
