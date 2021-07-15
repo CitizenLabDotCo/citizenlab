@@ -5,11 +5,12 @@ fr:
     admin_campaign_type_description:
       "inappropriate_content_flagged": Contenu inapproprié signalé - administrateurs
     inappropriate_content_flagged:
-      subject: 'Une contribution a été signalée et nécessite modération'
-      header_title: 'Une contribution a été signalée et nécessite modération'
+      subject: 'Une publication a été signalée et doit-être vérifiée'
+      header_title: 'Une publication a été signalée et doit-être vérifiée'
       comment_author: '%{authorName} a commenté :'
       idea_author: '%{authorName} a publié une contribution :'
       initiative_author: '%{authorName} a publié une proposition :'
       this_post_was_flagged: >
-        <p>This post was automatically detected as potentially containing inappropriate content. We’re sending you this notification so that you can review the post in accordance with your own moderation guidelines.</p><p>If the post does not contain inappropriate content, you can remove the warning via your platform in the Activity tab in the admin panel.</p>
-      cta_review_post: 'Review post'
+        <p>Cette publication pourrait contenir un contenu inapproprié. Nous vous notifions afin que vous puissiez l'examiner en fonction de vos propres règles de modération. </p><p> Si la publication ne contient pas de contenu inapproprié, vous pouvez supprimer l'alerte depuis l'interface administrateur de votre plateforme, dans l'onglet 'Activité'.</p>
+
+      cta_review_post: 'Vérifier la publication'
