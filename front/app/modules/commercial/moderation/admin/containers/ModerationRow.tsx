@@ -93,6 +93,10 @@ interface Props {
   inappropriateContentFlagId?: string;
 }
 
+const ideasPath = '/ideas';
+const initiativesPath = '/initiatives';
+const projectsPath = '/projects';
+
 const ModerationRow = memo<Props & InjectedIntlProps>(
   ({
     moderation,
@@ -116,9 +120,9 @@ const ModerationRow = memo<Props & InjectedIntlProps>(
     const moderatableType = moderation.attributes.moderatable_type;
     const belongsToTypes = Object.keys(moderation.attributes.belongs_to);
     const belongsToHrefs = {
-      idea: `/ideas/${moderation.attributes.belongs_to.idea?.slug}`,
-      initiative: `/initiatives/${moderation.attributes.belongs_to.initiative?.slug}`,
-      project: `/projects/${moderation.attributes.belongs_to.project?.slug}`,
+      idea: `${ideasPath}/${moderation.attributes.belongs_to.idea?.slug}`,
+      initiative: `${initiativesPath}/${moderation.attributes.belongs_to.initiative?.slug}`,
+      project: `${projectsPath}/${moderation.attributes.belongs_to.project?.slug}`,
     };
     const bgColor = selected
       ? rgba(colors.adminTextColor, 0.1)
@@ -159,23 +163,23 @@ const ModerationRow = memo<Props & InjectedIntlProps>(
           belongsToTypes.includes('initiative') &&
           moderation.attributes.belongs_to.initiative?.slug
         ) {
-          return `/initiatives/${moderation.attributes.belongs_to.initiative.slug}`;
+          return `${initiativesPath}/${moderation.attributes.belongs_to.initiative.slug}`;
         }
 
         if (
           belongsToTypes.includes('idea') &&
           moderation.attributes.belongs_to.idea?.slug
         ) {
-          return `/ideas/${moderation.attributes.belongs_to.idea.slug}`;
+          return `${ideasPath}/${moderation.attributes.belongs_to.idea.slug}`;
         }
       }
 
       if (moderatableType === 'Idea') {
-        return `/ideas/${moderation.attributes.content_slug}`;
+        return `${ideasPath}/${moderation.attributes.content_slug}`;
       }
 
       if (moderatableType === 'Initiative') {
-        return `/initiatives/${moderation.attributes.content_slug}`;
+        return `${initiativesPath}/${moderation.attributes.content_slug}`;
       }
 
       return null;
