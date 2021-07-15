@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useState } from 'react';
+import React, { memo, useEffect } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // hooks
@@ -22,8 +22,7 @@ import messages from 'containers/ProjectsShowPage/messages';
 import styled from 'styled-components';
 
 // events
-import { ScrollToEventCardParams } from 'components/EventCard';
-import eventEmitter from 'utils/eventEmitter';
+import { getScrollToEventId, setScrollToEventId } from './scrollToEventState';
 
 const Container = styled.div`
   background: #fff;
@@ -41,27 +40,25 @@ interface Props {
 const EventsContainer = memo<Props>(({ projectId, className }) => {
   const project = useProject({ projectId });
   const { events } = useEvents({ projectIds: [projectId] });
-  const [scrollTo, setScrollTo] = useState<string | null>(null);
 
   useEffect(() => {
-    const subscription = eventEmitter
-      .observeEvent<ScrollToEventCardParams>('scrollToEventCardParams')
-      .subscribe(({ eventValue: { eventId } }) => {
-        if (scrollTo !== eventId) {
-          setScrollTo(eventId);
+    const scrollToEventId = getScrollToEventId();
+
+    if (!isNilOrError(events) && scrollToEventId !== null) {
+      setTimeout(() => {
+        const element = document.getElementById(scrollToEventId);
+
+        if (element) {
+          const top =
+            element.getBoundingClientRect().top + window.pageYOffset - 100;
+          const behavior = 'smooth';
+          window.scrollTo({ top, behavior });
         }
-      });
+      }, 100);
 
-    return () => subscription.unsubscribe();
-  }, []);
-
-  useEffect(() => {
-    if (events && scrollTo !== null) {
-      const element = document.getElementById(scrollTo);
-      element?.scrollIntoView();
-      setScrollTo(null);
+      setScrollToEventId(null);
     }
-  }, [scrollTo, events]);
+  }, [events]);
 
   if (!isNilOrError(project) && !isNilOrError(events) && events.length > 0) {
     return (

@@ -20,7 +20,7 @@ import { defaultCardStyle, defaultCardHoverStyle } from 'utils/styleUtils';
 import { getIsoDate } from 'utils/dateUtils';
 import { isNilOrError, isNil } from 'utils/helperUtils';
 import clHistory from 'utils/cl-router/history';
-import eventEmitter from 'utils/eventEmitter';
+import { setScrollToEventId } from 'containers/ProjectsShowPage/shared/events/scrollToEventState';
 
 const Container = styled.div<{ clickable?: boolean }>`
   width: 100%;
@@ -32,10 +32,6 @@ const Container = styled.div<{ clickable?: boolean }>`
   box-shadow: none;
   border: solid 1px #ccc;
 `;
-
-export interface ScrollToEventCardParams {
-  eventId: string;
-}
 
 interface InputProps {
   event: IEventData;
@@ -58,13 +54,9 @@ const EventCard = memo<Props>((props) => {
 
   const onClick = () => {
     if (isNilOrError(locale) || isNil(project)) return;
-    clHistory.push(`/${locale}/projects/${project.attributes.slug}`);
 
-    setTimeout(() => {
-      eventEmitter.emit<ScrollToEventCardParams>('scrollToEventCardParams', {
-        eventId: event.id,
-      });
-    }, 1);
+    setScrollToEventId(event.id);
+    clHistory.push(`/${locale}/projects/${project.attributes.slug}`);
   };
 
   if (!isNilOrError(event)) {
