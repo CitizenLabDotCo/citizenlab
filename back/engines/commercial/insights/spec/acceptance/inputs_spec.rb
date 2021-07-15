@@ -61,7 +61,7 @@ resource 'Inputs' do
         create(:processed_flag, input: ideas.first, view: view)
         do_request(processed: true)
         expect(status).to eq(200)
-        expect(json_response[:data].length).to eq(1) # bc there are 3 inputs in total
+        expect(json_response[:data].length).to eq(1)
       end
 
       example 'returns 404 if the view does not exist', document: false do
