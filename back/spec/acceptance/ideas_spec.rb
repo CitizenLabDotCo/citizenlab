@@ -981,7 +981,7 @@ resource "Ideas" do
 
     context "when moderator", skip: !CitizenLab.ee? do
       before do
-        @moderator = create(:moderator, project: @project)
+        @moderator = create(:project_moderator, projects: [@project])
         token = Knock::AuthToken.new(payload: @moderator.to_token_payload).token
         header 'Authorization', "Bearer #{token}"
       end

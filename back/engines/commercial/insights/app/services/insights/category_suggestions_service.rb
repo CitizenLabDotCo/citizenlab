@@ -42,7 +42,7 @@ module Insights
     attr_reader :nlp_client
 
     def initialize(nlp_client = nil)
-      @nlp_client = nlp_client || NLP::API.new
+      @nlp_client = nlp_client || NLP::Api.new
     end
 
     # @return[Array<Insights::ZeroshotClassificationTask>]
@@ -86,10 +86,9 @@ module Insights
     # @param [Array<Hash>] tasks_infos looks like [{'task_id':..., 'doc_ids':..., 'tags_ids':...}, ...]
     # @return [Array<Insights::ZeroshotClassificationTask>]
     def create_tasks(tasks_infos)
-      task_service = ZeroshotClassificationTasksService.new
       tasks_infos.map do |task_infos|
         # [TODO] optimize the nb of DB queries
-        task_service.create_task(
+        ZeroshotClassificationTask.create_task(
           task_infos['task_id'],
           Idea.where(id: task_infos['doc_ids']),
           Category.where(id: task_infos['tags_ids'])

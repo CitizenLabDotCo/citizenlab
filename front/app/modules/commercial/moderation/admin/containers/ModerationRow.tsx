@@ -1,10 +1,11 @@
-import React, { memo, useCallback } from 'react';
+import React, { memo } from 'react';
 import moment from 'moment';
 import { omitBy, isNil, isEmpty } from 'lodash-es';
 
 // components
 import ModerationContentCell from './ModerationContentCell';
 import Checkbox from 'components/UI/Checkbox';
+import Outlet from 'components/Outlet';
 import { Icon } from 'cl2-component-library';
 import Tippy from '@tippyjs/react';
 import Link from 'utils/cl-router/Link';
@@ -28,8 +29,13 @@ import { rgba } from 'polished';
 import { IModerationData } from '../../services/moderations';
 import { Multiloc } from 'typings';
 
-const Container = styled.tr<{ bgColor: string }>`
-  background: ${({ bgColor }) => bgColor};
+// hooks
+import useInappropriateContentFlag from 'modules/commercial/flag_inappropriate_content/hooks/useInappropriateContentFlag';
+import { isNilOrError } from 'utils/helperUtils';
+
+const Container = styled.tr<{ bgColor: string; flagged: boolean }>`
+  background: ${({ bgColor, flagged }) =>
+    flagged ? colors.clRedErrorBackground : bgColor};
 `;
 
 const StyledCheckbox = styled(Checkbox)`
@@ -73,15 +79,35 @@ const GoToIcon = styled(Icon)`
   }
 `;
 
+const StyledModerationContentCell = styled(ModerationContentCell)`
+  margin-bottom: 20px;
+`;
+
 interface Props {
   moderation: IModerationData;
   selected: boolean;
-  onSelect: (moderationId: string) => void;
+  onSelect: (selectedModeration: IModerationData) => void;
   className?: string;
+  inappropriateContentFlagId?: string;
 }
 
 const ModerationRow = memo<Props & InjectedIntlProps>(
-  ({ moderation, selected, onSelect, className, intl }) => {
+  ({
+    moderation,
+    selected,
+    onSelect,
+    className,
+    intl,
+    inappropriateContentFlagId,
+  }) => {
+    const inappropriateContentFlag = inappropriateContentFlagId
+      ? useInappropriateContentFlag(inappropriateContentFlagId)
+      : null;
+    const hasActiveInappropriateContentFlag = !isNilOrError(
+      inappropriateContentFlag
+    )
+      ? inappropriateContentFlag.attributes.reason_code !== null
+      : false;
     const contentTitle = omitBy(
       moderation.attributes.content_title_multiloc,
       (value) => isNil(value) || isEmpty(value)
@@ -116,39 +142,38 @@ const ModerationRow = memo<Props & InjectedIntlProps>(
       viewLink = `/${parentType.toLowerCase()}s/${parentSlug}`;
     }
 
-    const handleOnChecked = useCallback(
-      (_event: React.ChangeEvent) => {
-        onSelect(moderation.id);
-      },
-      [onSelect]
-    );
+    const handleOnChecked = (_event: React.ChangeEvent) => {
+      onSelect(moderation);
+    };
 
-    const handleGoToLinkOnClick = useCallback(
-      (event: React.MouseEvent<HTMLAnchorElement>) => {
-        event.preventDefault();
-        const url = event.currentTarget.href;
-        const type = event.currentTarget.dataset.type;
-        trackEventByName(tracks.goToLinkClicked, { type });
-        const win = window.open(url, '_blank');
-        win && win.focus();
-      },
-      []
-    );
+    const handleGoToLinkOnClick = (
+      event: React.MouseEvent<HTMLAnchorElement>
+    ) => {
+      event.preventDefault();
+      const url = event.currentTarget.href;
+      const type = event.currentTarget.dataset.type;
+      trackEventByName(tracks.goToLinkClicked, { type });
+      const win = window.open(url, '_blank');
+      win && win.focus();
+    };
 
-    const handleBelongsToLinkOnClick = useCallback(
-      (event: React.MouseEvent<HTMLAnchorElement>) => {
-        event.preventDefault();
-        const url = event.currentTarget.href;
-        const belongsToType = event.currentTarget.dataset.belongstotype;
-        trackEventByName(tracks.belongsToLinkClicked, { belongsToType });
-        const win = window.open(url, '_blank');
-        win && win.focus();
-      },
-      []
-    );
+    const handleBelongsToLinkOnClick = (
+      event: React.MouseEvent<HTMLAnchorElement>
+    ) => {
+      event.preventDefault();
+      const url = event.currentTarget.href;
+      const belongsToType = event.currentTarget.dataset.belongstotype;
+      trackEventByName(tracks.belongsToLinkClicked, { belongsToType });
+      const win = window.open(url, '_blank');
+      win && win.focus();
+    };
 
     return (
-      <Container className={className} bgColor={bgColor}>
+      <Container
+        className={`${className}`}
+        flagged={hasActiveInappropriateContentFlag}
+        bgColor={bgColor}
+      >
         <td className="checkbox">
           <StyledCheckbox checked={selected} onChange={handleOnChecked} />
         </td>
@@ -197,9 +222,13 @@ const ModerationRow = memo<Props & InjectedIntlProps>(
           {isEmpty(moderation.attributes.belongs_to) && <>-</>}
         </td>
         <td className="content">
-          <ModerationContentCell
+          <StyledModerationContentCell
             contentTitle={!isEmpty(contentTitle) ? contentTitle : null}
             contentBody={contentBody}
+          />
+          <Outlet
+            id="app.modules.commercial.moderation.admin.containers.ModerationRow.content"
+            inappropriateContentFlagId={inappropriateContentFlagId}
           />
         </td>
         <td>

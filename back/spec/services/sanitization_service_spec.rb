@@ -63,10 +63,21 @@ describe SanitizationService do
 
     it "allows links to pass through when link feature is enabled" do
       input = <<~HTML
-        <a href="https://www.google.com" target="_blank">Link</a>
+        <a href="https://www.google.com" target="_blank" rel="noreferrer noopener">Link</a>
       HTML
       features = [:link]
       expect(service.sanitize(input, features)).to eq input
+    end
+
+    pending "fixes links blank target and referrer allowed" do
+      input = <<~HTML
+        <a href="https://www.google.com" target="_blank">Link</a>
+      HTML
+      parsed_input = <<~HTML
+        <a href="https://www.google.com" target="_blank" rel="noreferrer noopener">Link</a>
+      HTML
+      features = [:link]
+      expect(service.sanitize(input, features)).to eq parsed_input
     end
 
     it "allows images to pass through when title feature is enabled" do
@@ -164,7 +175,7 @@ describe SanitizationService do
     it "sanitizes malicious javascript" do
       input = <<~HTML
         <p>
-          test 
+          test
         <SCRIPT SRC=%(jscript)s?<B>
         <BODY onload!#$%%&()*~+-_.,:;?@[/|\]^`=javascript:alert(1)>
         <SCRIPT/SRC="%(jscript)s"></SCRIPT>
@@ -311,17 +322,17 @@ describe SanitizationService do
     it "transforms a plan-text link to an anchor" do
       html = "<p>https://www.google.com</p>"
       output = service.linkify(html)
-      expect(output).to eq '<p><a href="https://www.google.com" target="_blank">https://www.google.com</a></p>'
+      expect(output).to eq '<p><a href="https://www.google.com" target="_blank" rel="noreferrer noopener">https://www.google.com</a></p>'
     end
 
     it "transforms plain-text links with one domain segment" do
       html = "<p>http://localhost:3000/ideas</p>"
       output = service.linkify(html)
-      expect(output).to eq '<p><a href="http://localhost:3000/ideas" target="_blank">http://localhost:3000/ideas</a></p>'
+      expect(output).to eq '<p><a href="http://localhost:3000/ideas" target="_blank" rel="noreferrer noopener">http://localhost:3000/ideas</a></p>'
     end
 
     it "doesn't transforms an existing anchor" do
-      html = '<p><a href="https://www.google.com" target="_blank">https://www.google.com</a></p>'
+      html = '<p><a href="https://www.google.com" target="_blank" rel="noreferrer noopener">https://www.google.com</a></p>'
       output = service.linkify(html)
       expect(output).to eq html
     end
@@ -329,7 +340,7 @@ describe SanitizationService do
     it "transforms an email to a mailto: anchor" do
       html = "<p>hello@citizenlab.co</p>"
       output = service.linkify(html)
-      expect(output).to eq '<p><a href="mailto:hello@citizenlab.co" target="_blank">hello@citizenlab.co</a></p>'
+      expect(output).to eq '<p><a href="mailto:hello@citizenlab.co" target="_blank" rel="noreferrer noopener">hello@citizenlab.co</a></p>'
     end
   end
 

@@ -136,7 +136,7 @@ resource 'ProjectFolder' do
     delete "web_api/v1/project_folders/:id" do
       let(:project_folder) { @folders.first }
       let!(:id) { project_folder.id }
-      let!(:folder_moderators) { create_list(:project_folder_moderator, 3, project_folder: project_folder) }
+      let!(:folder_moderators) { create_list(:project_folder_moderator, 3, project_folders: [project_folder]) }
 
       example "Delete a folder" do
         old_count = ProjectFolders::Folder.count
@@ -156,7 +156,7 @@ resource 'ProjectFolder' do
 
   context 'when project folder moderator' do
     let(:moderated_folder) { create(:project_folder) }
-    let!(:user) { create(:project_folder_moderator, project_folder: moderated_folder) }
+    let!(:user) { create(:project_folder_moderator, project_folders: [moderated_folder]) }
 
     before do
       header_token_for(user)
@@ -226,7 +226,7 @@ resource 'ProjectFolder' do
     delete 'web_api/v1/project_folders/:id' do
       let(:project_folder) { @folders.first }
       let!(:id) { project_folder.id }
-      let!(:folder_moderators) { create_list(:project_folder_moderator, 3, project_folder: project_folder) }
+      let!(:folder_moderators) { create_list(:project_folder_moderator, 3, project_folders: [project_folder]) }
 
       example 'Delete a folder' do
         do_request id: moderated_folder.id

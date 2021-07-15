@@ -80,4 +80,11 @@ class SettingsService
     config.settings[feature] = feature_settings.merge({ 'allowed' => true, 'enabled' => true })
     config.save!
   end
+
+  def deactivate_feature! feature, config: nil
+    config ||= AppConfiguration.instance
+    feature_settings = config.settings[feature]
+    feature_settings['enabled'] = false if feature_settings
+    config.save!
+  end
 end

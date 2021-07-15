@@ -3,27 +3,17 @@ import React, { ReactNode } from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 import ProjectVisibility from './admin/containers/index';
 import Tab from './admin/components/Tab';
-
-type RenderOnFeatureFlagProps = {
-  children: ReactNode;
-};
+import FeatureFlag from 'components/FeatureFlag';
 
 type RenderOnTabHideConditionProps = {
   children: ReactNode;
 };
 
-const RenderOnFeatureFlag = ({ children }: RenderOnFeatureFlagProps) => {
-  const isEnabled = useFeatureFlag('project_visibility');
-  if (isEnabled) {
-    return <>{children}</>;
-  }
-  return null;
-};
-
 const RenderOnTabHideCondition = ({
   children,
 }: RenderOnTabHideConditionProps) => {
-  // could be the same as, but might diverge from RenderOnFeatureFlag
+  // Could be more than just a feature flag check,
+  // hence we're not using the FeatureFlag component
   const isEnabled = useFeatureFlag('project_visibility');
   if (isEnabled) {
     return <>{children}</>;
@@ -36,9 +26,9 @@ const configuration: ModuleConfiguration = {
     'app.containers.Admin.project.edit.permissions.participationRights': (
       props
     ) => (
-      <RenderOnFeatureFlag>
+      <FeatureFlag name="project_visibility">
         <ProjectVisibility {...props} />
-      </RenderOnFeatureFlag>
+      </FeatureFlag>
     ),
     'app.containers.Admin.projects.edit': (props) => {
       return (

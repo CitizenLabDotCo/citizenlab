@@ -15,7 +15,7 @@ export type ISuccessStory = {
   location: string;
   page_slug: string;
 };
-export type AppConfigurationSettingsFeatureNames = keyof IAppConfigurationSettings;
+export type TAppConfigurationSetting = keyof IAppConfigurationSettings;
 
 export type IAppConfigurationSettingsCore = {
   allowed: boolean;
@@ -163,6 +163,7 @@ export interface IAppConfigurationSettings {
   similar_ideas?: AppConfigurationFeature;
   polls?: AppConfigurationFeature;
   moderation?: AppConfigurationFeature;
+  flag_inappropriate_content?: AppConfigurationFeature;
   disable_downvoting?: AppConfigurationFeature;
   project_visibility?: AppConfigurationFeature;
   project_management?: AppConfigurationFeature;
