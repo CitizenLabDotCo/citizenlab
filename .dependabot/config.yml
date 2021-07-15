@@ -1,0 +1,7 @@
+version: 1
+update_configs:
+  - package_manager: "javascript"
+    directory: "/front"
+    update_schedule: "weekly"
+    commit_message:
+    include_scope: true
