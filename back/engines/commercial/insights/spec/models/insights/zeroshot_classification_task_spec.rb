@@ -24,4 +24,20 @@ describe Insights::ZeroshotClassificationTask do
       expect(task.tasks_inputs.map(&:input)).to match(inputs)
     end
   end
+
+  describe '.create_task' do
+    let(:categories) { create_list(:category, 2) }
+    let(:inputs) { create_list(:idea, 2) }
+
+    it 'creates task correctly' do
+      task_id = 'some-task-id'
+      task = described_class.create_task(task_id, inputs, categories)
+
+      aggregate_failures 'check created task' do
+        expect(task.task_id).to eq(task_id)
+        expect(task.inputs).to match(inputs)
+        expect(task.categories).to match(categories)
+      end
+    end
+  end
 end
