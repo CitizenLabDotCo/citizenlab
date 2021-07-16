@@ -13,7 +13,7 @@ describe EmailCampaigns::CampaignPolicy, skip: skip_reason do
     let!(:campaign) { create(:manual_campaign) }
 
     context 'for a project moderator' do
-      let(:user) { create(:moderator, project: project) }
+      let(:user) { create(:project_moderator, projects: [project]) }
 
       context 'of a public project' do
         let(:project) { create(:project) }
@@ -94,7 +94,7 @@ describe EmailCampaigns::CampaignPolicy, skip: skip_reason do
     let!(:campaign) { create(:comment_on_your_comment_campaign) }
 
     context 'for a project moderator' do
-      let(:user) { create(:moderator, project: project) }
+      let(:user) { create(:project_moderator, projects: [project]) }
 
       context 'of a public project' do
         let(:project) { create(:project) }

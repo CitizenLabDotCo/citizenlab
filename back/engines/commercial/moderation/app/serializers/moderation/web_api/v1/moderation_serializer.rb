@@ -25,3 +25,5 @@ module Moderation
     end
   end
 end
+
+Moderation::WebApi::V1::ModerationSerializer.include_if_ee('FlagInappropriateContent::Extensions::WebApi::V1::ModerationSerializer')

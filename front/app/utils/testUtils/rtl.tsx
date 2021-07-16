@@ -8,6 +8,8 @@ import { IntlProvider } from 'react-intl';
 import messages from 'i18n/en';
 import { LiveAnnouncer } from 'react-aria-live';
 
+window.confirm = jest.fn(() => true);
+
 const AllTheProviders = ({ children }) => {
   return (
     <LiveAnnouncer>

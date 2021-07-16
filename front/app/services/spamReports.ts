@@ -28,13 +28,22 @@ export interface SpamReportResponse {
   links: ILinks;
 }
 
-export function sendSpamReport(
+export async function sendSpamReport(
   targetType: 'comments' | 'ideas' | 'initiatives',
   targetId: string,
   spamReport: Report
 ) {
-  return streams.add<SpamReportResponse>(
+  const response = await streams.add<SpamReportResponse>(
     `${API_PATH}/${targetType}/${targetId}/spam_reports`,
     { spam_report: spamReport }
   );
+
+  await streams.fetchAllWith({
+    apiEndpoint: [
+      `${API_PATH}/inappropriate_content_flags`,
+      `${API_PATH}/moderations`,
+    ],
+  });
+
+  return response;
 }

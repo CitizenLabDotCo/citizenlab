@@ -3,6 +3,7 @@ Moderation::Engine.routes.draw do
     namespace :v1 do
       resources :moderations, only: [:index] do
         patch ':moderatable_type/:moderatable_id' => 'moderations#update', on: :collection
+        get 'moderations_count', on: :collection
       end
     end
   end

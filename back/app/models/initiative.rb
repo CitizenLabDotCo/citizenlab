@@ -132,5 +132,6 @@ class Initiative < ApplicationRecord
 
 end
 
+Initiative.include_if_ee 'FlagInappropriateContent::Concerns::Flaggable'
 Initiative.include_if_ee 'Moderation::Concerns::Moderatable'
 Initiative.include_if_ee 'MachineTranslations::Concerns::Translatable'

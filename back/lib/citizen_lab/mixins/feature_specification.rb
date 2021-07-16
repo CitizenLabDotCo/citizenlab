@@ -38,6 +38,10 @@ module CitizenLab
         nil
       end
 
+      def dependencies
+        []
+      end
+
       # @return [Boolean]
       def allowed_by_default
         true
