@@ -157,6 +157,7 @@ const MobileIdeaMoreActions = styled(IdeaMoreActions)`
 const TopBar = styled.div`
   display: flex;
   justify-content: space-between;
+  align-items: center;
 
   ${isRtl`
     flex-direction: row-reverse;

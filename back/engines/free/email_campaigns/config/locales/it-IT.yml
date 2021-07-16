@@ -9,7 +9,6 @@ it:
       "comment_on_your_idea": Un commento sulla mia idea
       "comment_on_your_initiative": Un commento sulla mia proposta
       "first_idea_published": Pubblicazione della mia prima idea
-      "idea_assigned_to_you": Assegnazione di un'idea a me
       "idea_marked_as_spam": Segnalazione di spam di idee
       "idea_published": Pubblicazione della mia idea
       "initiative_assigned_to_you": Assegnazione di una proposta a me
@@ -58,7 +57,6 @@ it:
       "comment_on_your_idea": Comment on your idea - all users
       "comment_on_your_initiative": Comment on your proposal - all users
       "first_idea_published": Publication of your first idea - all users
-      "idea_assigned_to_you": Assignment of an idea - admins and project managers
       "idea_marked_as_spam": Idea spam report - admins and project managers
       "idea_published": Publication of your idea - all users
       "initiative_assigned_to_you": Assignment of a proposal - admins
@@ -167,13 +165,6 @@ it:
       main_header: '%{commentAuthor} ha commentato la tua iniziativa'
       subject: 'Hai ricevuto un commento sulla piattaforma di %{organizationName}'
       preheader: '%{authorName} ha lasciato un commento sulla tua iniziativa per %{organizationName}'
-    idea_assigned_to_you:
-      by_author: 'da %{authorName}'
-      cta_reply_to: 'Dai un feedback a %{authorName}'
-      event_description_idea: 'Un''idea ti è stata assegnata. Dai un feedback scrivendo un aggiornamento ufficiale o cambiando il suo stato.'
-      main_header: '%{firstName}, hai un nuovo incarico'
-      subject: 'Sei diventato un amministratore sulla piattaforma di %{organizationName}'
-      preheader_idea: 'L''idea di %{authorName} ti è stata assegnata'
     assignee_digest:
       subject: 'Idee che richiedono il vostro feedback: %{numberIdeas}'
       preheader: 'Messaggi Amministrazione di %{organizationName}'
@@ -369,12 +360,12 @@ it:
       cta_view: 'Vai a questa idea'
       event_description: '%{officialName} ha dato un aggiornamento sull''idea ''%{ideaTitle}''. Clicca il pulsante qui sotto per entrare nella conversazione con %{officialName}.'
       main_header: 'C''è un aggiornamento su un''idea che hai commentato'
-      subject: 'An idea you commented on has received an official update on the platform of %{organizationName}'
-      preheader: '%{officialName} left an official update on an idea you commented on'
+      subject: 'Un''idea che hai commentato ha ricevuto un aggiornamento ufficiale sulla piattaforma di %{organizationName}'
+      preheader: '%{officialName} ha lasciato un aggiornamento ufficiale su un''idea che hai commentato'
     official_feedback_on_your_idea:
-      by_author: 'by %{authorName}'
-      updated: '%{officialName} wrote:'
-      cta_view: 'Go to your idea'
+      by_author: 'da %{authorName}'
+      updated: '%{officialName} ha scritto:'
+      cta_view: 'Vai alla tua idea'
       event_description: '%{officialName} ha dato un aggiornamento sulla tua idea ''%{ideaTitle}''. Clicca il pulsante qui sotto per entrare nella conversazione con %{officialName}.'
       main_header: 'Hai ricevuto un aggiornamento da %{organizationName}'
       subject: 'Hai ricevuto un aggiornamento da %{organizationName}'
@@ -431,64 +422,64 @@ it:
       subject: '%{organizationName}: Resetta la tua password'
       title_reset_your_password: 'Scegliere una nuova password'
     project_phase_started:
-      cta_view_phase: 'Discover this new phase'
-      event_description: 'This project entered a new phase on the platform of %{organizationName}. Click on the link below to learn more!'
-      main_header: 'A new phase started for project ''%{projectName}'''
-      new_phase: 'This project entered the phase ''%{phaseTitle}'''
-      subject: '%{projectName} entered a new phase'
-      preheader: 'A new phase has been started for %{projectName}'
+      cta_view_phase: 'Scopri questa nuova fase'
+      event_description: 'Questo progetto è entrato in una nuova fase sulla piattaforma di %{organizationName}. Clicca sul link qui sotto per saperne di più!'
+      main_header: 'Una nuova fase è iniziata per il progetto ''%{projectName}'''
+      new_phase: 'Questo progetto è entrato nella fase ''%{phaseTitle}'''
+      subject: '%{projectName} è entrato in una nuova fase'
+      preheader: 'Una nuova fase è stata avviata per %{projectName}'
     project_phase_upcoming:
-      cta_view_phase: 'Set this new phase up'
-      event_description: 'The project ''%{projectName}'' will be entering a new phase soon. Make sure everything is set up for this phase: Is there an adequate description? Are selected ideas transferred to this phase? Do you want to inform your citizens on the specifics of this phase through a custom email campaign?'
-      main_header: '%{firstName}, a project will enter a new phase soon'
-      new_phase: 'The project will enter the phase ''%{phaseTitle}'''
-      subject: 'Get everything set up for the new phase of %{projectName}'
-      preheader: 'A new phase will start soon for %{projectName}'
+      cta_view_phase: 'Impostare questa nuova fase'
+      event_description: 'Il progetto ''%{projectName}'' entrerà presto in una nuova fase. Assicurati che tutto sia impostato per questa fase: C''è una descrizione adeguata? Le idee selezionate sono trasferite a questa fase? Vuoi informare i tuoi cittadini sulle specifiche di questa fase attraverso una campagna email personalizzata?'
+      main_header: '%{firstName}, un progetto entrerà presto in una nuova fase'
+      new_phase: 'Il progetto entrerà nella fase ''%{phaseTitle}'''
+      subject: 'Prepara tutto per la nuova fase di %{projectName}'
+      preheader: 'Una nuova fase inizierà presto per %{projectName}'
     status_change_of_commented_idea:
-      status_change: 'The new status of this idea is ''%{ideaStatus}'''
-      cta_view_idea: 'Go to this idea'
-      event_description: '%{organizationName} updated the status of the idea ''%{ideaTitle}'' on their digital participation platform.'
-      main_header: 'An idea you commented on has a new status'
-      subject: 'The status of an idea you commented on has been changed'
-      preheader: '%{organizationName} changed the status of an idea you commented on'
+      status_change: 'Il nuovo stato di questa idea è ''%{ideaStatus}'''
+      cta_view_idea: 'Vai a questa idea'
+      event_description: '%{organizationName} ha aggiornato lo stato dell''idea ''%{ideaTitle}'' sulla loro piattaforma di partecipazione digitale.'
+      main_header: 'Un''idea che hai commentato ha un nuovo status'
+      subject: 'Lo stato di un''idea che hai commentato è stato cambiato'
+      preheader: '%{organizationName} ha cambiato lo stato di un''idea che hai commentato'
     status_change_of_your_idea:
-      status_change: 'The new status of your idea is ''%{ideaStatus}'''
-      cta_view_idea: 'Go to your idea'
-      event_description: '%{organizationName} updated the status of your idea ''%{ideaTitle}'' on their digital participation platform.'
-      main_header: 'Your idea has a new status'
-      subject: 'The status of your idea has been changed'
-      preheader: '%{organizationName} changed the status of your idea'
+      status_change: 'Il nuovo stato della tua idea è ''%{ideaStatus}'''
+      cta_view_idea: 'Vai alla tua idea'
+      event_description: '%{organizationName} ha aggiornato lo stato della tua idea ''%{ideaTitle}'' sulla loro piattaforma di partecipazione digitale.'
+      main_header: 'La tua idea ha un nuovo status'
+      subject: 'Lo stato della tua idea è stato cambiato'
+      preheader: '%{organizationName} ha cambiato lo stato della tua idea'
     status_change_of_voted_idea:
-      status_change: 'The new status of this idea is ''%{ideaStatus}'''
-      cta_view_idea: 'Go to this idea'
-      event_description: '%{organizationName} updated the status of the idea ''%{ideaTitle}'' on their digital participation platform.'
-      main_header: 'An idea you voted on has a new status'
-      subject: 'The status of an idea you voted on has been changed'
-      preheader: '%{organizationName} changed the status of an idea you voted on'
+      status_change: 'Il nuovo stato di questa idea è ''%{ideaStatus}'''
+      cta_view_idea: 'Vai a questa idea'
+      event_description: '%{organizationName} ha aggiornato lo stato dell''idea ''%{ideaTitle}'' sulla loro piattaforma di partecipazione digitale.'
+      main_header: 'Un''idea che hai votato ha un nuovo status'
+      subject: 'Lo stato di un''idea che hai votato è stato cambiato'
+      preheader: '%{organizationName} ha cambiato lo stato di un''idea che hai votato'
     status_change_of_voted_initiative:
-      status_change: 'The new status of this proposal is ''%{initiativeStatus}'''
-      cta_view_initiative: 'Go to this proposal'
-      event_description: 'The status of the proposal ''%{initiativeTitle}'' has been updated on the digital participation platform of %{organizationName}.'
-      main_header: 'A proposal you voted on has a new status'
-      subject: 'The status of a proposal you voted on has changed'
-      preheader: 'The status of a proposal you voted on changed'
+      status_change: 'Il nuovo stato di questa proposta è ''%{initiativeStatus}'''
+      cta_view_initiative: 'Vai a questa proposta'
+      event_description: 'Lo stato della proposta ''%{initiativeTitle}'' è stato aggiornato sulla piattaforma di partecipazione digitale di %{organizationName}.'
+      main_header: 'Una proposta che hai votato ha un nuovo status'
+      subject: 'Lo stato di una proposta su cui hai votato è cambiato'
+      preheader: 'Lo stato di una proposta su cui hai votato è cambiato'
     status_change_of_commented_initiative:
-      status_change: 'The new status of this proposal is ''%{initiativeStatus}'''
-      cta_view_initiative: 'Go to this proposal'
-      event_description: 'The status of the proposal ''%{initiativeTitle}'' has been updated on the digital participation platform of %{organizationName}.'
-      main_header: 'A proposal you commented on has a new status'
-      subject: 'The status of a proposal you commented on has changed'
-      preheader: 'The status of a proposal you commented on has changed'
+      status_change: 'Il nuovo stato di questa proposta è ''%{initiativeStatus}'''
+      cta_view_initiative: 'Vai a questa proposta'
+      event_description: 'Lo stato della proposta ''%{initiativeTitle}'' è stato aggiornato sulla piattaforma di partecipazione digitale di %{organizationName}.'
+      main_header: 'Una proposta che hai commentato ha un nuovo stato'
+      subject: 'Lo stato di una proposta che hai commentato è cambiato'
+      preheader: 'Lo stato di una proposta che hai commentato è cambiato'
     status_change_of_your_initiative:
-      status_change: 'The new status of your proposal is ''%{initiativeStatus}'''
-      cta_view_initiative: 'Go to your proposal'
-      event_description: 'The status of the proposal ''%{initiativeTitle}'' has been updated on the digital participation platform of %{organizationName}.'
-      main_header: 'Your proposal has a new status'
-      subject: 'The status of your proposal has changed'
-      preheader: 'The status of your proposal has changed'
+      status_change: 'Il nuovo stato della tua proposta è ''%{initiativeStatus}'''
+      cta_view_initiative: 'Vai alla tua proposta'
+      event_description: 'Lo stato della proposta ''%{initiativeTitle}'' è stato aggiornato sulla piattaforma di partecipazione digitale di %{organizationName}.'
+      main_header: 'La tua proposta ha un nuovo stato'
+      subject: 'Lo stato della tua proposta è cambiato'
+      preheader: 'Lo stato della tua proposta è cambiato'
     user_digest:
-      subject: "Your activity on the participation platform of %{organizationName}"
-      commented: "%{authorFirstName} commented:"
+      subject: "La tua attività sulla piattaforma di partecipazione di %{organizationName}"
+      commented: "%{authorFirstName} ha commentato:"
       preheader: "Panoramica settimanale di %{organizationName}"
       title_your_weekly_report: "Scopri cosa è successo la settimana scorsa"
       intro_text: "Ecco un riassunto di quello che è successo sulla piattaforma di partecipazione di %{organizationName}."
@@ -543,28 +534,28 @@ it:
       action_add_image: '%{addImageLink} per aumentare la visibilità'
       action_published_idea: 'Idea pubblicata'
       action_send_email: 'Invia ai tuoi contatti un %{sendEmailLink}'
-      action_share_fb: 'Let your friends know on %{fbLink}'
-      action_share_link: 'Share it via any channel by copying the %{link}'
-      action_share_twitter: 'Inform your followers on %{twitterLink}'
-      add_image: 'Add an image'
-      cta_view_idea: 'Go to your idea'
-      event_description: '%{firstName}, your idea has successfully been published on the participation platform of %{organizationName}. You will be notified when people interact with your idea. Find out what next steps you can take below.'
+      action_share_fb: 'Fallo sapere ai tuoi amici su %{fbLink}'
+      action_share_link: 'Condividilo tramite qualsiasi canale copiando il %{link}'
+      action_share_twitter: 'Informa i tuoi seguaci su %{twitterLink}'
+      add_image: 'Aggiungere un''immagine'
+      cta_view_idea: 'Vai alla tua idea'
+      event_description: '%{firstName}, la tua idea è stata pubblicata con successo sulla piattaforma di partecipazione di %{organizationName}. Sarai avvisato quando le persone interagiranno con la tua idea. Scopri quali sono i prossimi passi che puoi fare qui sotto.'
       link: link
-      main_header: 'You posted an idea! Let''s make sure it gets read.'
-      message_get_votes: 'Reach more people with your idea:'
-      preheader: '%{firstName}, congratulations on posting your idea on the platform of %{organizationName}. Now gather support.'
-      see_you: 'See you soon at the platform!'
-      send_email: email
-      subject: 'Your idea on the platform of %{organizationName}'
+      main_header: 'Hai pubblicato un''idea! Assicuriamoci che venga letta.'
+      message_get_votes: 'Raggiungi più persone con la tua idea:'
+      preheader: '%{firstName}, complimenti per aver pubblicato la tua idea sulla piattaforma di %{organizationName}. Ora raccogliete il sostegno.'
+      see_you: 'Ci vediamo presto alla piattaforma!'
+      send_email: e-mail
+      subject: 'La tua idea sulla piattaforma di %{organizationName}'
       message_next_steps: ""
     your_proposed_initiatives_digest:
-      subject: 'Weekly update of your proposals'
-      preheader: 'What happened with your proposals in the past week?'
-      title_your_weekly_report: 'How have your proposals been doing?'
-      text_introduction: 'Find the key numbers below and go to the platform to take action and gather enough support in time.'
-      cta_see_your_initiative: 'Go to your proposals'
-      total_votes: 'Total votes'
-      new_votes: 'New votes'
-      remaining_votes: 'Votes remaining'
-      remaining_days: 'Days remaining'
+      subject: 'Aggiornamento settimanale delle sue proposte'
+      preheader: 'Cosa è successo con le tue proposte nell''ultima settimana?'
+      title_your_weekly_report: 'Come sono andate le tue proposte?'
+      text_introduction: 'Trova i numeri chiave qui sotto e vai alla piattaforma per agire e raccogliere abbastanza sostegno in tempo.'
+      cta_see_your_initiative: 'Vai alle tue proposte'
+      total_votes: 'Voti totali'
+      new_votes: 'Nuovi voti'
+      remaining_votes: 'Voti rimanenti'
+      remaining_days: 'Giorni rimanenti'
 

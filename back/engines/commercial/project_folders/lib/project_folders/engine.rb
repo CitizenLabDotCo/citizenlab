@@ -15,25 +15,13 @@ module ProjectFolders
 
     config.generators.api_only = true
 
-    # Sharing the factories to make them accessible from to the main app / other engines.
+    # Sharing the factories to make them accessible to the main app / other engines.
     factories_path = File.expand_path('../../spec/factories', __dir__)
     config.factory_bot.definition_file_paths += [factories_path] if defined?(FactoryBotRails)
 
     config.to_prepare do
       require 'project_folders/feature_specification'
       AppConfiguration::Settings.add_feature(ProjectFolders::FeatureSpecification)
-
-      # Adding folder admin rights campaign to email campaigns.
-      if defined? ::EmailCampaigns::ApplicationCampaign
-        ::EmailCampaigns::DeliveryService.add_campaign_types(
-          ::ProjectFolders::EmailCampaigns::Campaigns::ProjectFolderModerationRightsReceived
-        )
-      end
-
-      ::NotificationToSerializerMapper.add_to_map(
-        ::ProjectFolders::Notifications::ProjectFolderModerationRightsReceived =>
-          ::ProjectFolders::WebApi::V1::Notifications::ProjectFolderModerationRightsReceivedSerializer
-      )
 
       # Adding project folders to the sitemap.
       if defined? ::Seo::ApplicationController

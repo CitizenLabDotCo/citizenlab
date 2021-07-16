@@ -1,5 +1,12 @@
 import React from 'react';
-import { render, screen, fireEvent, within, act } from 'utils/testUtils/rtl';
+import {
+  render,
+  screen,
+  fireEvent,
+  within,
+  act,
+  waitFor,
+} from 'utils/testUtils/rtl';
 import * as service from 'modules/commercial/insights/services/insightsInputs';
 import useInsightsInputs from 'modules/commercial/insights/hooks/useInsightsInputs';
 import * as batchService from 'modules/commercial/insights/services/batchAssignment';
@@ -137,12 +144,15 @@ jest.mock('react-router', () => {
         );
       };
     },
+    Link: () => 'Link',
   };
 });
 
 jest.mock('utils/cl-router/history');
 
-window.confirm = jest.fn(() => true);
+jest.mock('modules/commercial/insights/hooks/useInsightsInput', () => {
+  return jest.fn(() => undefined);
+});
 
 describe('Insights Input Table', () => {
   it('renders', () => {
@@ -154,6 +164,14 @@ describe('Insights Input Table', () => {
     it('renders correct number of rows', () => {
       render(<InputsTable />);
       expect(screen.getAllByTestId('insightsInputsTableRow')).toHaveLength(2);
+    });
+    it('adds previewedInputId to url correctly on row click', () => {
+      render(<InputsTable />);
+      fireEvent.click(screen.getAllByTestId('insightsInputsTableRow')[0]);
+      expect(clHistory.replace).toHaveBeenCalledWith({
+        pathname: '',
+        search: `?previewedInputId=${mockInputData.list[0].id}`,
+      });
     });
     it('renders list of categories correctly', () => {
       render(<InputsTable />);
@@ -466,7 +484,7 @@ describe('Insights Input Table', () => {
         screen.getByTestId('insightsInputsTableEmptyState')
       ).toBeInTheDocument();
       expect(
-        screen.getByText("This project doesn't seem to contain any input.")
+        screen.getByTestId('insightsInputsTableEmptyAllInputs')
       ).toBeInTheDocument();
     });
     it('renders correct table empty state when are no input for category', () => {
@@ -481,20 +499,82 @@ describe('Insights Input Table', () => {
         screen.getByTestId('insightsInputsTableEmptyState')
       ).toBeInTheDocument();
       expect(
-        screen.getByText('You have no input assigned to this category yet')
+        screen.getByTestId('insightsInputsTableEmptyNoInputInCategory')
+      ).toBeInTheDocument();
+    });
+    it('renders correct table empty state when there is no uncategorized input', () => {
+      mockLocationData = { pathname: '', query: { category: '' } };
+      mockInputData = { currentPage: 1, lastPage: 1, list: [] };
+
+      render(<InputsTable />);
+      expect(
+        screen.getByTestId('insightsInputsTableEmptyState')
+      ).toBeInTheDocument();
+      expect(
+        screen.getByTestId('insightsInputsTableEmptyNotCategorized')
+      ).toBeInTheDocument();
+    });
+
+    it('renders correct table empty state when there is no search results', () => {
+      mockLocationData = {
+        pathname: '',
+        query: { category: '', search: 'search' },
+      };
+      mockInputData = { currentPage: 1, lastPage: 1, list: [] };
+
+      render(<InputsTable />);
+      expect(
+        screen.getByTestId('insightsInputsTableEmptyState')
+      ).toBeInTheDocument();
+      expect(
+        screen.getByTestId('insightsInputsTableEmptyNoResults')
       ).toBeInTheDocument();
     });
   });
-  it('renders correct table empty state when there is no uncategorized input', () => {
-    mockLocationData = { pathname: '', query: { category: '' } };
-    mockInputData = { currentPage: 1, lastPage: 1, list: [] };
+
+  it('filters table by category', () => {
+    mockLocationData = {
+      pathname: '',
+      query: { category: 'category', pageNumber: 1 },
+    };
 
     render(<InputsTable />);
-    expect(
-      screen.getByTestId('insightsInputsTableEmptyState')
-    ).toBeInTheDocument();
-    expect(
-      screen.getByText('There is no input without a category')
-    ).toBeInTheDocument();
+    expect(useInsightsInputs).toHaveBeenCalledWith(viewId, {
+      category: 'category',
+      search: undefined,
+      pageNumber: 1,
+    });
+  });
+
+  describe('Search', () => {
+    it('filters table by search query', () => {
+      mockLocationData = {
+        pathname: '',
+        query: { search: 'search', pageNumber: 1 },
+      };
+
+      render(<InputsTable />);
+      expect(useInsightsInputs).toHaveBeenCalledWith(viewId, {
+        search: 'search',
+        category: undefined,
+        pageNumber: 1,
+      });
+    });
+    it('adds search query to url', () => {
+      const spy = jest.spyOn(clHistory, 'replace');
+      render(<InputsTable />);
+      fireEvent.change(screen.getByPlaceholderText('Search'), {
+        target: {
+          value: 'search',
+        },
+      });
+
+      waitFor(() => {
+        expect(spy).toHaveBeenCalledWith({
+          pathname: '',
+          search: `?search=search`,
+        });
+      });
+    });
   });
 });

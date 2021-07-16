@@ -1,10 +1,72 @@
-# Changelog 
+# Changelog
 
-## Next Release
+## Next release
+/
+
+## 2021-07-16
+
+### Added
+- Auto-detection of inappropriate content (in beta for certain languages). Flagged content can be inspected on the admin Activity page. The setting can be toggled in the General settings tab.
+
+### Fixed
+- On the admin activity page (/admin/moderation), items about proposals now correctly link to proposals (instead of to projects). Also, the copy of the links at the end of the item rows is now correct for different types of content (correct conjugation of 'this post', 'this project', etc. for all languages).
+
+## 2021-07-14
+
+### Added
+- Project phases now have their own URLs, which makes it possible to link to a specific phase
+
+### Fixed
+- Blocked words for content that can contain HTML
+- Searching users after sorting (e.g. by role)
+
+## 2021-07-09
+
+### Changed
+- The admin Guide link goes to the support center now instead of to /admin/guide
+
+## 2021-07-02
+
+### Fixed
+- Instances where the user name was "unknown author"
+
+### Changed
+- Removed the slogan from the homepage footer
+
+## 2021-06-30
+
+### Changed
+- Users can no longer leave registration before confirming their account. This should prevent bugs relative to unconfirmed users navigating the platform.
+
+## 2021-06-29
+
+### Fixed
+- Map: Fix for ideas that only have coordinates but no address not being shown on the map
+- Map: Fix for 'click on the map to add your input' message wrongfully being shown when idea posting is not allowed
+- Sign-up flow: Fix for bug that could cause the browser to freeze when the user tried to complete the custom fields step
+- Project description: Fix for numbered and unnumbered lists being cut off
+- Project Managers can now upload map layers.
+
+### Changed
+- Map: When an idea is selected that is hidden behind a cluster the map now zooms in to show that marker
+- Map: Idea marker gets centered on map when clicked
+- Map: Larger idea box on bigger desktop screens (width > 1440 pixels)
+- Idea location: Display idea location in degrees (°) minutes (') seconds ('') when the idea only has coordinates but no address
+- Sign-up flow: Show loading spinner when the user clicks on 'skip this step' in the sign-up custom fields step
+- Image upload: The default max allowed file size for an image is now 10 Mb instead of 5 Mb
+
+### Added
+- 'Go back' button from project to project folder (if appropriate).
+
+## 2021-06-22
 
 ### Changed
 
-- Project managers that are assigned to a project and/or it's input now lose those assignments when losing project management rights over that project.
+- Project managers that are assigned to a project and/or its input now lose those assignments when losing project management rights over that project.
+
+### Fixed
+
+- Input manager side modal scroll.
 
 ## 2021-06-18
 

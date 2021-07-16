@@ -22,7 +22,7 @@ import messages from 'components/SignUpIn/SignUp/messages';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
-import { colors, fontSizes, media } from 'utils/styleUtils';
+import { media } from 'utils/styleUtils';
 
 // analytics
 import { trackEventByName } from 'utils/analytics';
@@ -62,23 +62,12 @@ const ButtonWrapper = styled.div`
   `}
 `;
 
-const SkipButton = styled.button`
-  color: ${colors.clGreyOnGreyBackground};
-  font-size: ${fontSizes.base}px;
-  font-weight: 400;
-  line-height: 20px;
-  cursor: pointer;
-  margin-left: 15px;
+const SubmitButton = styled(Button)``;
 
-  &:hover {
-    color: #000;
-    text-decoration: underline;
-  }
-
+const SkipButton = styled(Button)`
   ${media.smallerThanMinTablet`
-    margin-left: 0px;
-    margin-top: 30px;
-    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 15px;
   `}
 `;
 
@@ -95,7 +84,8 @@ interface Props extends InputProps, InjectedIntlProps {}
 
 const CustomFieldsStep: FC<Props & InjectedIntlProps> = memo(
   ({ onData, intl: { formatMessage }, onCompleted, step }) => {
-    const [processing, setProcessing] = useState<boolean>(false);
+    const [processingSubmit, setProcessingSubmit] = useState(false);
+    const [processingSkip, setProcessingSkip] = useState(false);
     const [unknownError, setUnknownError] = useState<string | null>();
 
     const authUser = useAuthUser();
@@ -134,15 +124,15 @@ const CustomFieldsStep: FC<Props & InjectedIntlProps> = memo(
     const handleCustomFieldsFormOnSubmit = async ({ formData }) => {
       if (!isNilOrError(authUser) && isObject(formData)) {
         try {
-          setProcessing(true);
+          setProcessingSubmit(true);
           setUnknownError(null);
           await completeRegistration(formData);
-          setProcessing(false);
+          setProcessingSubmit(false);
           trackEventByName(tracks.signUpCustomFieldsStepCompleted);
           onCompleted();
         } catch (error) {
           trackEventByName(tracks.signUpCustomFieldsStepFailed, { error });
-          setProcessing(false);
+          setProcessingSubmit(false);
           setUnknownError(formatMessage(messages.unknownError));
         }
       }
@@ -151,7 +141,8 @@ const CustomFieldsStep: FC<Props & InjectedIntlProps> = memo(
     const skipStep = async (event: FormEvent) => {
       event.preventDefault();
       trackEventByName(tracks.signUpCustomFieldsStepSkipped);
-      !isNilOrError(authUser) && (await completeRegistration({}));
+      setProcessingSkip(true);
+      await completeRegistration();
       onCompleted();
     };
 
@@ -176,15 +167,20 @@ const CustomFieldsStep: FC<Props & InjectedIntlProps> = memo(
           />
 
           <ButtonWrapper>
-            <Button
+            <SubmitButton
               id="e2e-signup-custom-fields-submit-btn"
-              processing={processing}
+              processing={processingSubmit}
               text={formatMessage(messages.completeSignUp)}
               onClick={handleOnSubmitButtonClick}
             />
             {!userCustomFieldsSchema.hasRequiredFields && (
               <SkipButton
-                className="e2e-signup-custom-fields-skip-btn"
+                id="e2e-signup-custom-fields-skip-btn"
+                buttonStyle="text"
+                padding="0"
+                textDecoration="underline"
+                textDecorationHover="underline"
+                processing={processingSkip}
                 onClick={skipStep}
               >
                 {formatMessage(messages.skip)}

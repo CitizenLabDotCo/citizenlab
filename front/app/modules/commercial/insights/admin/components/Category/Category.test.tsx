@@ -24,9 +24,7 @@ jest.mock('modules/commercial/insights/hooks/useInsightsCategory', () => {
   return jest.fn(() => mockCategoryData);
 });
 
-jest.mock('hooks/useLocale', () => jest.fn(() => 'en'));
-
-jest.mock('utils/cl-intl');
+jest.mock('hooks/useLocale');
 
 jest.mock('react-router', () => {
   return {
@@ -37,8 +35,6 @@ jest.mock('react-router', () => {
     },
   };
 });
-
-window.confirm = jest.fn(() => true);
 
 describe('Insights Category', () => {
   it('renders Tag with correct name', () => {

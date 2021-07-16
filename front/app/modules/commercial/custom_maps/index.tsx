@@ -6,19 +6,7 @@ import Legend from './shared/components/Map/Legend';
 import { isNilOrError } from 'utils/helperUtils';
 import { IProjectData } from 'services/projects';
 import { IPhaseData } from 'services/phases';
-import useFeatureFlag from 'hooks/useFeatureFlag';
-
-type RenderOnFeatureFlagProps = {
-  children: ReactNode;
-};
-
-const RenderOnFeatureFlag = ({ children }: RenderOnFeatureFlagProps) => {
-  const isEnabled = useFeatureFlag('custom_maps');
-  if (isEnabled) {
-    return <>{children}</>;
-  }
-  return null;
-};
+import FeatureFlag from 'components/FeatureFlag';
 
 type RenderOnHideTabConditionProps = {
   project: IProjectData;
@@ -63,14 +51,14 @@ const configuration: ModuleConfiguration = {
   },
   outlets: {
     'app.components.Map.leafletConfig': (props) => (
-      <RenderOnFeatureFlag>
+      <FeatureFlag name="custom_maps">
         <LeafletConfig {...props} />
-      </RenderOnFeatureFlag>
+      </FeatureFlag>
     ),
     'app.components.Map.Legend': (props) => (
-      <RenderOnFeatureFlag>
+      <FeatureFlag name="custom_maps">
         <Legend {...props} />
-      </RenderOnFeatureFlag>
+      </FeatureFlag>
     ),
     'app.containers.Admin.projects.edit': (props) => {
       return (

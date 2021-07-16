@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { CONFIRMATION_STEP_NAME } from '../../index';
 import { SignUpStepOutletProps } from 'utils/moduleUtils';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
@@ -171,7 +172,7 @@ const ConfirmationSignupStep = ({
 
   useEffect(() => {
     props.onData({
-      key: 'confirmation',
+      key: CONFIRMATION_STEP_NAME,
       configuration: {
         position: 2.1,
         stepName: formatMessage(messages.confirmYourAccount),
@@ -185,7 +186,7 @@ const ConfirmationSignupStep = ({
     });
   }, []);
 
-  if (props.step !== 'confirmation' || isNilOrError(user)) {
+  if (props.step !== CONFIRMATION_STEP_NAME || isNilOrError(user)) {
     return null;
   }
 

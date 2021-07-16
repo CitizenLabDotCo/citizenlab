@@ -7,6 +7,8 @@ import {
   DEFAULT_ZOOM,
 } from 'components/UI/LeafletMap/config';
 import { LatLngTuple } from 'leaflet';
+import { isNil } from 'lodash-es';
+import formatcoords from 'formatcoords';
 
 export const getCenter = (
   centerLatLng?: LatLngTuple | null,
@@ -57,4 +59,23 @@ export const getTileProvider = (
 
 export const getTileOptions = () => {
   return DEFAULT_TILE_OPTIONS;
+};
+
+export const convertLatLngToDMS = (lat: any, lng: any) => {
+  if (!isNil(lat) && !isNil(lng)) {
+    return formatcoords(parseFloat(lat), parseFloat(lng)).format() as string;
+  }
+
+  return null;
+};
+
+export const getAddressOrFallbackDMS = (
+  location_description: string | null,
+  location_point_geojson: GeoJSON.Point | null
+) => {
+  const point = location_point_geojson;
+  const lat = point?.coordinates?.[1] || null;
+  const lng = point?.coordinates?.[0] || null;
+  const address = location_description || convertLatLngToDMS(lat, lng) || null;
+  return address;
 };

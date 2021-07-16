@@ -27,17 +27,26 @@ import { Dropdown, DropdownListItem, IconTooltip } from 'cl2-component-library';
 import Button from 'components/UI/Button';
 import RenameCategory from '../RenameCategory';
 
-import { getSelectedCategoryFilter } from '../';
+import getSelectedCategoryFilter from 'modules/commercial/insights/utils/getSelectedCategoryFilter';
 
 const StyledHeader = styled.h2`
   display: flex;
   align-items: center;
   color: ${colors.adminTextColor};
   font-size: ${fontSizes.large}px;
+  margin-bottom: 0;
   button {
     margin-left: 20px;
   }
-  margin-bottom: 0;
+`;
+
+const StyledTooltipContent = styled.p`
+  font-weight: normal;
+`;
+
+const DropdownWrapper = styled.div`
+  margin-top: 40px;
+  margin-left: -40px;
 `;
 
 const TableTitle = ({
@@ -117,32 +126,44 @@ const TableTitle = ({
           <>
             {formatMessage(messages.notCategorized)}
             <IconTooltip
-              content={formatMessage(messages.notCategorizedTooltip)}
+              content={
+                <StyledTooltipContent>
+                  {formatMessage(messages.notCategorizedTooltip)}
+                </StyledTooltipContent>
+              }
             />
           </>
         )}
         {selectedCategoryFilter === 'allInput' && (
           <>
             {formatMessage(messages.allInput)}
-            <IconTooltip content={formatMessage(messages.allInputTooltip)} />
+            <IconTooltip
+              content={
+                <StyledTooltipContent>
+                  {formatMessage(messages.allInputTooltip)}
+                </StyledTooltipContent>
+              }
+            />
           </>
         )}
       </StyledHeader>
-      <Dropdown
-        opened={isCategoryMenuOpened}
-        onClickOutside={closeCategoryMenu}
-        className="dropdown"
-        content={
-          <>
-            <DropdownListItem onClick={openCategoryRenameModal}>
-              {formatMessage(messages.editCategoryName)}
-            </DropdownListItem>
-            <DropdownListItem onClick={handleDeleteCategory}>
-              {formatMessage(messages.deleteCategory)}
-            </DropdownListItem>
-          </>
-        }
-      />
+      <DropdownWrapper>
+        <Dropdown
+          opened={isCategoryMenuOpened}
+          onClickOutside={closeCategoryMenu}
+          className="dropdown"
+          content={
+            <>
+              <DropdownListItem onClick={openCategoryRenameModal}>
+                {formatMessage(messages.editCategoryName)}
+              </DropdownListItem>
+              <DropdownListItem onClick={handleDeleteCategory}>
+                {formatMessage(messages.deleteCategory)}
+              </DropdownListItem>
+            </>
+          }
+        />
+      </DropdownWrapper>
       <Modal
         opened={renameCategoryModalOpened}
         close={closeCategoryRenameModal}

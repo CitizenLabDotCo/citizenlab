@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { withRouter, WithRouterProps } from 'react-router';
 import { stringify } from 'qs';
 
@@ -12,6 +12,7 @@ import { IInsightsInputData } from 'modules/commercial/insights/services/insight
 
 // components
 import { Table, Icon } from 'cl2-component-library';
+import Button from 'components/UI/Button';
 import InputsTableRow from './InputsTableRow';
 import EmptyState from './EmptyState';
 import CheckboxWithPartialCheck from 'components/UI/CheckboxWithPartialCheck';
@@ -19,7 +20,8 @@ import SideModal from 'components/UI/SideModal';
 import InputDetails from '../InputDetails';
 import Divider from 'components/admin/Divider';
 import Actions from './Actions';
-import Pagination from 'components/Pagination';
+import Pagination from 'components/admin/Pagination';
+import SearchInput from 'components/UI/SearchInput';
 
 // styles
 import styled from 'styled-components';
@@ -37,6 +39,7 @@ const Inputs = styled.div`
   overflow-x: auto;
   overflow-y: auto;
   padding: 40px;
+  border-left: 1px solid ${colors.separation};
 `;
 
 const TitleRow = styled.div`
@@ -93,12 +96,20 @@ const StyledSort = styled.div`
 `;
 
 const StyledPagination = styled(Pagination)`
+  display: block;
   margin-top: 12px;
+`;
+
+const SearchContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-content: center;
+  margin-bottom: 40px;
 `;
 
 const InputsTable = ({
   params: { viewId },
-  location: { query, pathname },
+  location: { pathname, query },
   intl: { formatMessage },
 }: WithRouterProps & InjectedIntlProps) => {
   // State
@@ -107,13 +118,21 @@ const InputsTable = ({
   const [previewedInputIndex, setPreviewedInputIndex] = useState<number | null>(
     null
   );
+  // Use ref for isPreviewedInputInTable to avoid dependencies in moveUp and moveDown
+  const isPreviewedInputInTable = useRef(true);
+  const [isMoveDownDisabled, setIsMoveDownDisabled] = useState(false);
+  const [movedUpDown, setMovedUpDown] = useState(false);
 
   // Data fetching -------------------------------------------------------------
   const pageNumber = parseInt(query?.pageNumber, 10);
   const selectedCategory = query.category;
+  const search = query.search;
+  const sort = query.sort;
 
   const { list: inputs, lastPage } = useInsightsInputs(viewId, {
     pageNumber,
+    search,
+    sort,
     category: selectedCategory,
   });
 
@@ -125,27 +144,78 @@ const InputsTable = ({
     setSelectedRows(new Set());
   }, [selectedCategory, pageNumber]);
 
+  // Update isPreviewedInputInTable ref value
   useEffect(() => {
-    if (!isNilOrError(inputs) && inputs.length === 0) {
-      setIsSideModalOpen(false);
+    if (!isNilOrError(inputs)) {
+      const inputsIds = inputs.map((input) => input.id);
+      const isInTable = inputsIds.includes(query.previewedInputId);
+
+      isPreviewedInputInTable.current = isInTable;
+
+      setIsMoveDownDisabled(
+        isInTable
+          ? previewedInputIndex === inputs.length - 1
+          : previewedInputIndex === inputs.length
+      );
     }
-  }, [inputs]);
+  }, [inputs, query.previewedInputId]);
+
+  // Navigate to correct index when moving up and down
+  useEffect(() => {
+    if (
+      !isNilOrError(inputs) &&
+      !isNilOrError(previewedInputIndex) &&
+      movedUpDown
+    ) {
+      clHistory.replace({
+        pathname,
+        search: stringify(
+          {
+            ...query,
+            previewedInputId: inputs[previewedInputIndex].id,
+          },
+          { addQueryPrefix: true }
+        ),
+      });
+      setMovedUpDown(false);
+    }
+  }, [inputs, previewedInputIndex, query, movedUpDown]);
 
   // Side Modal Preview
   // Use callback to keep references for moveUp and moveDown stable
   const moveUp = useCallback(() => {
+    let index: number | null = null;
+
     setPreviewedInputIndex((prevSelectedIndex) => {
-      if (!isNilOrError(prevSelectedIndex)) {
-        return prevSelectedIndex - 1;
-      } else return prevSelectedIndex;
+      index = !isNilOrError(prevSelectedIndex)
+        ? prevSelectedIndex - 1
+        : prevSelectedIndex;
+
+      return index;
     });
+    setMovedUpDown(true);
   }, []);
 
   const moveDown = useCallback(() => {
+    let index: number | null = null;
+
     setPreviewedInputIndex((prevSelectedIndex) => {
-      if (!isNilOrError(prevSelectedIndex)) {
-        return prevSelectedIndex + 1;
-      } else return prevSelectedIndex;
+      index =
+        !isNilOrError(prevSelectedIndex) && isPreviewedInputInTable.current
+          ? prevSelectedIndex + 1
+          : prevSelectedIndex;
+
+      return index;
+    });
+
+    setMovedUpDown(true);
+  }, []);
+
+  // Search
+  const onSearch = useCallback((search: string) => {
+    clHistory.replace({
+      pathname,
+      search: stringify({ ...query, search }, { addQueryPrefix: true }),
     });
   }, []);
 
@@ -155,7 +225,7 @@ const InputsTable = ({
   }
 
   // Pagination ----------------------------------------------------------------
-  const handlePaginationClick = (newPageNumber) => {
+  const handlePaginationClick = (newPageNumber: number) => {
     clHistory.push({
       pathname,
       search: stringify(
@@ -189,10 +259,18 @@ const InputsTable = ({
 
   // Side Modal Preview --------------------------------------------------------
   const closeSideModal = () => setIsSideModalOpen(false);
+
   const openSideModal = () => setIsSideModalOpen(true);
 
   const previewInput = (input: IInsightsInputData) => () => {
     setPreviewedInputIndex(inputs.indexOf(input));
+    clHistory.replace({
+      pathname,
+      search: stringify(
+        { ...query, previewedInputId: input.id },
+        { addQueryPrefix: true }
+      ),
+    });
     openSideModal();
   };
 
@@ -211,6 +289,16 @@ const InputsTable = ({
 
   return (
     <Inputs data-testid="insightsInputsTable">
+      <SearchContainer>
+        <SearchInput onChange={onSearch} />
+        <Button
+          buttonStyle="admin-dark"
+          bgColor={colors.clBlue}
+          linkTo={`/admin/insights`}
+        >
+          {formatMessage(messages.inputsDone)}
+        </Button>
+      </SearchContainer>
       <TitleRow>
         <TableTitle />
         <StyledActions selectedInputs={selectedRows} />
@@ -289,18 +377,15 @@ const InputsTable = ({
           />
         </>
       )}
-
       <SideModal opened={isSideModalOpen} close={closeSideModal}>
-        {!isNilOrError(previewedInputIndex) &&
-          !isNilOrError(inputs[previewedInputIndex]) && (
-            <InputDetails
-              selectedInput={inputs[previewedInputIndex]}
-              moveUp={moveUp}
-              moveDown={moveDown}
-              isMoveUpDisabled={previewedInputIndex === 0}
-              isMoveDownDisabled={previewedInputIndex === inputs.length - 1}
-            />
-          )}
+        <InputDetails
+          // Rely on url query for previewedInputId
+          previewedInputId={query.previewedInputId}
+          moveUp={moveUp}
+          moveDown={moveDown}
+          isMoveUpDisabled={previewedInputIndex === 0}
+          isMoveDownDisabled={isMoveDownDisabled}
+        />
       </SideModal>
     </Inputs>
   );

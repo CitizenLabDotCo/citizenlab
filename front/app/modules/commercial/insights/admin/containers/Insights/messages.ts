@@ -84,6 +84,10 @@ export default defineMessages({
     id: 'app.containers.Admin.Insights.createModalCancel',
     defaultMessage: 'Cancel',
   },
+  inputsDone: {
+    id: 'app.containers.Admin.Insights.Edit.inputsDone',
+    defaultMessage: 'Done',
+  },
   inputsTableInputs: {
     id: 'app.containers.Admin.Insights.Edit.inputsTableInputs',
     defaultMessage: 'Inputs',
@@ -99,6 +103,14 @@ export default defineMessages({
   inputsTableEmpty: {
     id: 'app.containers.Admin.Insights.Edit.inputsEmptyState',
     defaultMessage: "This project doesn't seem to contain any input.",
+  },
+  inputsTableNoResults: {
+    id: 'app.containers.Admin.Insights.Edit.inputsTableNoResults',
+    defaultMessage: 'No results found',
+  },
+  inputsTableNoResultsDescription: {
+    id: 'app.containers.Admin.Insights.Edit.inputsTableNoResultsDescription',
+    defaultMessage: 'Please try a different filter or search term.',
   },
   inputsTableCategoryTitle: {
     id: 'app.containers.Admin.Insights.Edit.inputsTableCategoryTitle',
@@ -214,5 +226,38 @@ export default defineMessages({
     id: 'app.containers.Admin.Insights.Edit.deleteFromCategories',
     defaultMessage:
       'Are you sure you can to remove {selectedCount} inputs from {categoryName}?',
+  },
+  editCategories: {
+    id: 'app.containers.Admin.Insights.Details.editCategories',
+    defaultMessage: 'Edit categories',
+  },
+  categoriesTitle: {
+    id: 'app.containers.Admin.Insights.Details.categoriesTitle',
+    defaultMessage: 'Categories',
+  },
+  categoriesTitleTooltip: {
+    id: 'app.containers.Admin.Insights.Details.categoriesTitleTooltip',
+    defaultMessage:
+      'Categories help structure your input. You can edit your categories at any time or use them as filter on the visualisation below.',
+  },
+  categoriesSeeAll: {
+    id: 'app.containers.Admin.Insights.Details.categoriesSeeAll',
+    defaultMessage: 'See all',
+  },
+  categoriesEmptyTitle: {
+    id: 'app.containers.Admin.Insights.Details.categoriesEmptyTitle',
+    defaultMessage: "Organize the input you've received",
+  },
+  categoriesEmptyDescription: {
+    id: 'app.containers.Admin.Insights.Details.categoriesEmptyDescription',
+    defaultMessage: 'Define the categories you want to group your input into.',
+  },
+  categoriesEmptyButton: {
+    id: 'app.containers.Admin.Insights.Details.categoriesEmptyButton',
+    defaultMessage: 'Create categories',
+  },
+  categoriesSeeLess: {
+    id: 'app.containers.Admin.Insights.Details.categoriesSeeLess',
+    defaultMessage: 'See less',
   },
 });

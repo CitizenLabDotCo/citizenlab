@@ -34,7 +34,6 @@ const Box = styled.div`
 const StyledVoting = styled(Voting)`
   padding-bottom: 23px;
   margin-bottom: 23px;
-  border-bottom: solid 1px #ccc;
 `;
 
 const StyledAssignBudgetControl = styled(AssignBudgetControl)`

@@ -12,7 +12,7 @@ describe ProjectFilePolicy do
     let!(:file) { create(:project_file, project: project) }
 
     context 'for a moderator' do
-      let(:user) { create(:moderator, project: project) }
+      let(:user) { create(:project_moderator, projects: [project]) }
 
       it { is_expected.to permit(:show)    }
       it { is_expected.to permit(:create)  }

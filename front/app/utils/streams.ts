@@ -28,11 +28,9 @@ import request from 'utils/request';
 import { authApiEndpoint } from 'services/auth';
 import { currentAppConfigurationEndpoint } from 'services/appConfiguration';
 import { currentOnboardingCampaignsApiEndpoint } from 'services/onboardingCampaigns';
-import { IUser } from 'services/users';
 import stringify from 'json-stable-stringify';
 import { reportError } from 'utils/loggingUtils';
 import { isUUID } from 'utils/helperUtils';
-
 import modules from 'modules';
 
 export type pureFn<T> = (arg: T) => T;
@@ -88,31 +86,40 @@ class Streams {
     this.streamIdsByDataIdWithQuery = {};
   }
 
-  async reset(authUser: IUser | null) {
+  async reset() {
     this.resourcesByDataId = {};
-
-    this.streams[authApiEndpoint].observer.next(authUser);
 
     const promises: Promise<any>[] = [];
     const promisesToAwait: Promise<any>[] = [];
 
+    const rootStreamIds = [authApiEndpoint, currentAppConfigurationEndpoint];
+
+    rootStreamIds.forEach((rootStreamId) => {
+      promisesToAwait.push(this.streams[rootStreamId].fetch());
+    });
+
     Object.keys(this.streams).forEach((streamId) => {
       if (
-        streamId === authApiEndpoint ||
-        streamId === currentAppConfigurationEndpoint ||
-        modules.streamsToReset.includes(streamId)
+        !includes(rootStreamIds, streamId) &&
+        !streamId.endsWith('/users/custom_fields/schema')
       ) {
-        promisesToAwait.push(this.streams[streamId].fetch());
-      } else if (this.isActiveStream(streamId)) {
-        promises.push(this.streams[streamId].fetch());
-      } else {
-        this.deleteStream(streamId, this.streams[streamId].params.apiEndpoint);
+        if (
+          this.isActiveStream(streamId) ||
+          modules?.streamsToReset?.includes(streamId)
+        ) {
+          promises.push(this.streams[streamId].fetch());
+        } else {
+          this.deleteStream(
+            streamId,
+            this.streams[streamId].params.apiEndpoint
+          );
+        }
       }
     });
 
     try {
-      Promise.all(promises);
       await Promise.all(promisesToAwait);
+      Promise.all(promises);
     } finally {
       return true;
     }

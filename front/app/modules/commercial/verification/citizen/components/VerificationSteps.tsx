@@ -96,7 +96,7 @@ const VerificationSteps = memo<Props>(
 
     const goToSuccessStep = useCallback(() => {
       if (!isNilOrError(authUser)) {
-        streams.reset({ data: authUser }).then(() => {
+        streams.reset().then(() => {
           setActiveStep('success');
           setMethod(null);
         });
