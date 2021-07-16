@@ -37,10 +37,6 @@ module ProjectManagement
         ::Project.where(id: moderatable_project_ids)
       end
 
-      def moderatable_projects_was
-        ::Project.where(id: moderatable_project_ids_was)
-      end
-
       def project_moderator?(project_id = nil)
         project_id ? moderatable_project_ids.include?(project_id) : moderatable_project_ids.present?
       end

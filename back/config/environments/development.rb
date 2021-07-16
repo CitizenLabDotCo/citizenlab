@@ -43,8 +43,8 @@ Rails.application.configure do
 
   config.action_mailer.perform_caching = false
 
-  # Previewing mails from the email engine.
-  config.action_mailer.preview_path = "#{Rails.root}/engines/free/email_campaigns/spec/mailers/previews"
+  # Previewing mails from all engines.
+  config.action_mailer.preview_path = "#{Rails.root}/engines/*/*/spec/mailers/previews"
 
 
   # Raise an error on page load if there are pending migrations.

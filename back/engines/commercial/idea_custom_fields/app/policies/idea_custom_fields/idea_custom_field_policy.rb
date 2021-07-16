@@ -15,7 +15,7 @@ module IdeaCustomFields
           scope
             .joins("LEFT JOIN custom_forms ON custom_fields.resource_id = custom_forms.id")
             .joins("LEFT JOIN projects ON projects.custom_form_id = custom_forms.id")
-            .where("projects.id" => ProjectPolicy::Scope.new(user, Project).moderatable)
+            .where("projects.id" => ::UserRoleService.new.moderatable_projects(user))
         else
           scope.none
         end
@@ -35,10 +35,7 @@ module IdeaCustomFields
     end
 
     def can_view_custom_fields_for_project? project
-      user&.active? && (
-        user.admin? ||
-        (project && user.project_moderator?(project.id))
-      )
+      user&.active? && ::UserRoleService.new.can_moderate_project?(project, user)
     end
 
     def permitted_attributes

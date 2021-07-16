@@ -1,14 +1,23 @@
 # Changelog
 
+## Next release
+
+### Fixed
+- On the admin activity page (/admin/moderation), items about proposals now correctly link to proposals (instead of to projects). Also, the copy of the links at the end of the item rows is now correct for different types of content (correct conjugation of 'this post', 'this project', etc. for all languages).
+
 ## 2021-07-14
+
+### Added
+- Project phases now have their own URLs, which makes it possible to link to a specific phase
 
 ### Fixed
 - Blocked words for content that can contain HTML
 - Searching users after sorting (e.g. by role)
 
+## 2021-07-09
+
 ### Changed
 - The admin Guide link goes to the support center now instead of to /admin/guide
-- A phase number parameter can now be appended to `projects/project_slug`
 
 ## 2021-07-02
 

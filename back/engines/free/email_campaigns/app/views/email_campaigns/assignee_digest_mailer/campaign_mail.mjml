@@ -7,7 +7,7 @@
       </h2>
     </mj-text>
   </mj-column>
-  </mj-section>
+</mj-section>
 <mj-section
   background-color="#FFFFFF"
   padding="40px 25px"

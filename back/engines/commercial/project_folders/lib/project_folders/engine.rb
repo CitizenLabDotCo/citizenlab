@@ -23,18 +23,6 @@ module ProjectFolders
       require 'project_folders/feature_specification'
       AppConfiguration::Settings.add_feature(ProjectFolders::FeatureSpecification)
 
-      # Adding folder admin rights campaign to email campaigns.
-      if defined? ::EmailCampaigns::ApplicationCampaign
-        ::EmailCampaigns::DeliveryService.add_campaign_types(
-          ::ProjectFolders::EmailCampaigns::Campaigns::ProjectFolderModerationRightsReceived
-        )
-      end
-
-      ::NotificationToSerializerMapper.add_to_map(
-        ::ProjectFolders::Notifications::ProjectFolderModerationRightsReceived =>
-          ::ProjectFolders::WebApi::V1::Notifications::ProjectFolderModerationRightsReceivedSerializer
-      )
-
       # Adding project folders to the sitemap.
       if defined? ::Seo::ApplicationController
         ::Seo::ApplicationController.outlet 'seo.sitemap' do |locals|

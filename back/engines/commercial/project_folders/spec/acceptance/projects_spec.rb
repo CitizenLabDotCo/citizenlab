@@ -11,7 +11,7 @@ resource 'Projects' do
 
   context 'as a project folder moderator' do
     let!(:project_folder) { create(:project_folder) }
-    let!(:user) { create(:project_folder_moderator, project_folder: project_folder) }
+    let!(:user) { create(:project_folder_moderator, project_folders: [project_folder]) }
     let!(:projects_within_folder) do
       projects = publication_statuses.map do |status|
         create(
@@ -108,7 +108,7 @@ resource 'Projects' do
         let(:area_ids) { create_list(:area, 2).map(&:id) }
         let(:visible_to) { 'admins' }
         let(:publication_status) { 'draft' }
-        let!(:other_folder_moderators) { create_list(:project_folder_moderator, 3, project_folder: project_folder) }
+        let!(:other_folder_moderators) { create_list(:project_folder_moderator, 3, project_folders: [project_folder]) }
         let(:last_project) { Project.order(created_at: :desc).take }
 
         context 'when passing a folder_id of a folder the user moderates' do
@@ -213,7 +213,7 @@ resource 'Projects' do
 
       describe do
         let!(:project) { create(:project) }
-        let!(:old_folder_moderators) { create_list(:project_folder_moderator, 3, project_folder: project_folder) }
+        let!(:old_folder_moderators) { create_list(:project_folder_moderator, 3, project_folders: [project_folder]) }
 
         let(:id) { project.id }
         let(:title_multiloc) { project.title_multiloc }
@@ -231,7 +231,7 @@ resource 'Projects' do
 
         context 'when a valid folder_id is passed' do
           let!(:new_folder) { create(:project_folder) }
-          let!(:new_folder_moderators) { create_list(:project_folder_moderator, 3, project_folder: new_folder) }
+          let!(:new_folder_moderators) { create_list(:project_folder_moderator, 3, project_folders: [new_folder]) }
           let(:project_moderators) { User.project_moderator(project.id) }
 
           let(:folder_id) { new_folder.id }
@@ -257,7 +257,7 @@ resource 'Projects' do
 
         context 'when an invalid folder_id is passed' do
           let!(:new_folder) { create(:project_folder) }
-          let!(:new_folder_moderators) { create_list(:project_folder_moderator, 3, project_folder: new_folder) }
+          let!(:new_folder_moderators) { create_list(:project_folder_moderator, 3, project_folders: [new_folder]) }
           let(:project_moderators) { User.project_moderator(project.id) }
 
           let(:folder_id) { 'foo' }
