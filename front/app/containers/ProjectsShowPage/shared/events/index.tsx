@@ -1,6 +1,9 @@
 import React, { memo, useEffect } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
+// resources
+import GetIdeas from 'resources/GetIdeas';
+
 // hooks
 import useProject from 'hooks/useProject';
 import useEvents from 'hooks/useEvents';
@@ -38,6 +41,7 @@ const StyledEventCard = styled(EventCard)`
 interface Props {
   projectId: string;
   className?: string;
+  ideasLoaded: boolean;
 }
 
 const allHaveLoaded = (...args) => args.every((arg) => !isNilOrError(arg));
@@ -97,4 +101,30 @@ const EventsContainer = memo<Props>(({ projectId, className }) => {
   return null;
 });
 
-export default EventsContainer;
+interface InputProps {
+  projectId: string;
+  className?: string;
+}
+
+export default (props: Props) => {
+  const { projectId } = props;
+  const project = useProject({ projectId });
+  const phases = usePhases(projectId);
+
+  if (!isNilOrError(project)) return;
+  const sort = project.return(
+    <GetIdeas
+      type="load-more"
+      projectIds={[projectId]}
+      pageSize={24}
+      sort={
+        getIdeasInputProps.defaultSortingMethod || ideaDefaultSortMethodFallback
+      }
+    >
+      {(dataProps) => {
+        const ideasLoaded = !!dataProps.list;
+        return <EventsContainer {...props} ideasLoaded={ideasLoaded} />;
+      }}
+    </GetIdeas>
+  );
+};
