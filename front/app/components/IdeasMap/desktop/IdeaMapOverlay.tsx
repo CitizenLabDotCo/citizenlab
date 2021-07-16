@@ -7,6 +7,7 @@ import { ideaMapCardSelected$, setIdeaMapCardSelected } from '../events';
 
 // hooks
 import useProject from 'hooks/useProject';
+import useWindowSize from 'hooks/useWindowSize';
 
 // components
 import IdeasList from './IdeasList';
@@ -27,15 +28,15 @@ const Container = styled.div`
   align-items: stretch;
   position: relative;
   ${defaultCardStyle};
-  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.15);
+  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.12);
 `;
 
-const InnerOverlay = styled.div`
+const InnerOverlay = styled.div<{ right: string }>`
   position: absolute;
   top: 0;
   bottom: 0;
   left: 0;
-  right: -100px;
+  right: ${(props) => props.right};
   background: #fff;
   display: flex;
   flex-direction: column;
@@ -51,18 +52,18 @@ const InnerOverlay = styled.div`
 
     &.animation-enter-active {
       opacity: 1;
-      right: -100px;
+      right: ${(props) => props.right};
     }
   }
 
   &.animation-enter-done {
     opacity: 1;
-    right: -100px;
+    right: ${(props) => props.right};
   }
 
   &.animation-exit {
     opacity: 1;
-    right: -100px;
+    right: ${(props) => props.right};
 
     &.animation-exit-active {
       opacity: 0;
@@ -99,6 +100,8 @@ interface Props {
 const IdeaMapOverlay = memo<Props>(
   ({ projectIds, projectId, phaseId, className }) => {
     const project = useProject({ projectId });
+    const { windowWidth } = useWindowSize();
+    const smallerThan1440px = !!(windowWidth && windowWidth <= 1440);
 
     const [selectedIdeaId, setSelectedIdeaId] = useState<string | null>(null);
     const [
@@ -148,7 +151,7 @@ const IdeaMapOverlay = memo<Props>(
             enter={true}
             exit={true}
           >
-            <InnerOverlay>
+            <InnerOverlay right={smallerThan1440px ? '-100px' : '-150px'}>
               <StyledIdeaShowPageTopBar
                 ideaId={selectedIdeaId as string}
                 goBackAction={goBack}

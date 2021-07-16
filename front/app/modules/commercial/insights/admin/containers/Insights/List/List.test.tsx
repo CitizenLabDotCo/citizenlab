@@ -10,8 +10,6 @@ jest.mock('modules/commercial/insights/services/insightsViews', () => ({
 
 jest.mock('utils/cl-intl');
 
-window.confirm = jest.fn(() => true);
-
 let mockData = [
   {
     id: '1aa8a788-3aee-4ada-a581-6d934e49784b',

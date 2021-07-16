@@ -11,18 +11,16 @@ import ProjectFolderCard from './citizen/components/ProjectFolderCard';
 import ProjectFolderSiteMap from './citizen/components/ProjectFolderSiteMap';
 import ProjectFolderModerationRightsReceivedNotification from './citizen/components/ProjectFolderModerationRightsReceivedNotification';
 import CreateProject from 'containers/Admin/projects/all/CreateProject';
+import ProjectFolderGoBackButton from './citizen/components/ProjectFolderGoBackButton';
 
 import ProjectsListItem from 'containers/Navbar/components/ProjectsListItem';
 
 import { isProjectFolderModerator } from './permissions/roles';
-import useFeatureFlag from 'hooks/useFeatureFlag';
 import useAuthUser from 'hooks/useAuthUser';
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
-import {
-  TNotificationData,
-  IProjectFolderModerationRightsReceivedNotificationData,
-  TNotificationType,
-} from 'services/notifications';
+import { IProjectFolderModerationRightsReceivedNotificationData } from 'services/notifications';
+import { RenderOnNotificationTypeProps } from 'modules/utilComponents/RenderOnNotificationType';
+import FeatureFlag from 'components/FeatureFlag';
 
 type RenderOnPublicationTypeProps = {
   publication: IAdminPublicationContent;
@@ -39,24 +37,6 @@ const RenderOnPublicationType = ({
 }: RenderOnPublicationTypeProps) => {
   if (publication.publicationType !== 'folder') return null;
   return <>{children}</>;
-};
-
-type RenderOnFeatureFlagProps = {
-  children: ReactNode;
-};
-
-type RenderOnNotificationTypeProps = {
-  children: ReactNode;
-  notification: TNotificationData;
-  notificationType: TNotificationType;
-};
-
-const RenderOnFeatureFlag = ({ children }: RenderOnFeatureFlagProps) => {
-  const isProjectFoldersEnabled = useFeatureFlag('project_folders');
-  if (isProjectFoldersEnabled) {
-    return <>{children}</>;
-  }
-  return null;
 };
 
 const RenderOnProjectFolderModerator = ({
@@ -102,14 +82,14 @@ const configuration: ModuleConfiguration = {
       );
     },
     'app.containers.AdminPage.projects.all.projectsAndFolders.title': () => (
-      <RenderOnFeatureFlag>
+      <FeatureFlag name="project_folders">
         <ProjectFolderTitle />
-      </RenderOnFeatureFlag>
+      </FeatureFlag>
     ),
     'app.containers.AdminPage.projects.all.projectsAndFolders.actions': () => (
-      <RenderOnFeatureFlag>
+      <FeatureFlag name="project_folders">
         <NewProjectFolderButton />
-      </RenderOnFeatureFlag>
+      </FeatureFlag>
     ),
     'app.containers.AdminPage.projects.all.projectsAndFolders.row': (props) => (
       <RenderOnPublicationType publication={props.publication}>
@@ -131,23 +111,23 @@ const configuration: ModuleConfiguration = {
       projectAttrs,
       authUser,
     }) => (
-      <RenderOnFeatureFlag>
+      <FeatureFlag name="project_folders">
         <ProjectFolderSelect
           onChange={onChange}
           projectAttrs={projectAttrs}
           authUser={authUser}
         />
-      </RenderOnFeatureFlag>
+      </FeatureFlag>
     ),
     'app.containers.AdminPage.projects.all.createProjectNotAdmin': () => (
-      <RenderOnFeatureFlag>
+      <FeatureFlag name="project_folders">
         <RenderOnProjectFolderModerator>
           <CreateProject />
         </RenderOnProjectFolderModerator>
-      </RenderOnFeatureFlag>
+      </FeatureFlag>
     ),
     'app.components.NotificationMenu.Notification': ({ notification }) => (
-      <RenderOnFeatureFlag>
+      <FeatureFlag name="project_folders">
         <RenderOnNotificationType
           notification={notification}
           notificationType="project_folder_moderation_rights_received"
@@ -158,7 +138,14 @@ const configuration: ModuleConfiguration = {
             }
           />
         </RenderOnNotificationType>
-      </RenderOnFeatureFlag>
+      </FeatureFlag>
+    ),
+    'app.containers.ProjectsShowPage.shared.header.ProjectHeader.GoBackButton': (
+      props
+    ) => (
+      <FeatureFlag name="project_folders">
+        <ProjectFolderGoBackButton {...props} />
+      </FeatureFlag>
     ),
   },
   routes: {

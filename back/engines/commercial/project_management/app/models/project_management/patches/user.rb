@@ -15,7 +15,7 @@ module ProjectManagement
             end
           }
 
-          scope :not_project_moderator, -> { where.not(id: project_moderator) }
+          scope :not_project_moderator, -> { where.not(id: ::User.project_moderator) }
         end
       end
 
@@ -35,10 +35,6 @@ module ProjectManagement
 
       def moderatable_projects
         ::Project.where(id: moderatable_project_ids)
-      end
-
-      def moderatable_projects_was
-        ::Project.where(id: moderatable_project_ids_was)
       end
 
       def project_moderator?(project_id = nil)

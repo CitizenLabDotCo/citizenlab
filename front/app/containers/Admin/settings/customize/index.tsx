@@ -563,8 +563,6 @@ class SettingsCustomizeTab extends PureComponent<
               <ImagesDropzone
                 id="tenant-logo-dropzone"
                 acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
-                maxNumberOfImages={1}
-                maxImageFileSize={5000000}
                 images={logo}
                 imagePreviewRatio={1}
                 maxImagePreviewWidth="150px"
@@ -590,8 +588,6 @@ class SettingsCustomizeTab extends PureComponent<
               <ImagesDropzone
                 id="landingpage-header-dropzone"
                 acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
-                maxNumberOfImages={1}
-                maxImageFileSize={5000000}
                 images={header_bg}
                 imagePreviewRatio={480 / 1440}
                 maxImagePreviewWidth="500px"

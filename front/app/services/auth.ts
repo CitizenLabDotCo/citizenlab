@@ -45,7 +45,7 @@ export async function signIn(email: string, password: string) {
     );
     setJwt(jwt);
     const authUser = await getAuthUserAsync();
-    await streams.reset(authUser);
+    await streams.reset();
     return authUser;
   } catch (error) {
     signOut();
@@ -101,7 +101,7 @@ export function signOut() {
       const url = `${AUTH_PATH}/${provider}/logout?user_id=${sub}`;
       window.location.href = url;
     } else {
-      streams.reset(null);
+      streams.reset();
       const { pathname } = removeLocale(location.pathname);
 
       if (
@@ -135,7 +135,7 @@ export function signOutAndDeleteAccountPart2() {
             const url = `${AUTH_PATH}/${provider}/logout?user_id=${sub}`;
             window.location.href = url;
           } else {
-            streams.reset(null);
+            streams.reset();
           }
           clHistory.push('/');
           resolve(true);

@@ -26,7 +26,9 @@ const exitTimeout = 350;
 const exitDelay = 0;
 const easing = 'cubic-bezier(0.165, 0.84, 0.44, 1)';
 
-const ModalContainer = styled(clickOutside)`
+const ModalWrapper = styled(clickOutside)``;
+
+const ModalContainer = styled.div`
   width: 940px;
   height: 100vh;
   background: white;
@@ -242,14 +244,16 @@ export default class SideModal extends PureComponent<Props, State> {
             role="dialog"
             aria-label={label}
           >
-            <ModalContainer
+            <ModalWrapper
               onClickOutside={this.clickOutsideModal}
               closeOnClickOutsideEnabled={!this.state.innerModalOpened}
             >
               <FocusOn>
-                <ModalContent id="e2e-side-modal-content">
-                  {children}
-                </ModalContent>
+                <ModalContainer>
+                  <ModalContent id="e2e-side-modal-content">
+                    {children}
+                  </ModalContent>
+                </ModalContainer>
                 <CloseButton
                   className="e2e-modal-close-button"
                   onClick={this.clickCloseButton}
@@ -260,7 +264,7 @@ export default class SideModal extends PureComponent<Props, State> {
                   <CloseIcon name="close" />
                 </CloseButton>
               </FocusOn>
-            </ModalContainer>
+            </ModalWrapper>
           </Overlay>
         </CSSTransition>,
         modalPortalElement

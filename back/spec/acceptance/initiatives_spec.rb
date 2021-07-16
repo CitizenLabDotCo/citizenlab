@@ -429,7 +429,7 @@ resource "Initiatives" do
   patch "web_api/v1/initiatives/:id" do
     before do
       create(:initiative_status, code: 'proposed')
-      @initiative =  create(:initiative, author: @user)
+      @initiative = create(:initiative, author: @user)
     end
 
     with_options scope: :initiative do

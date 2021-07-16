@@ -83,5 +83,6 @@ class Comment < ApplicationRecord
 
 end
 
+Comment.include_if_ee 'FlagInappropriateContent::Concerns::Flaggable'
 Comment.include_if_ee 'Moderation::Concerns::Moderatable'
 Comment.include_if_ee 'MachineTranslations::Concerns::Translatable'

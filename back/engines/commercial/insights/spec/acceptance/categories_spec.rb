@@ -67,7 +67,7 @@ resource 'Categories' do
           data: {
             id: category.id,
             type: 'category',
-            attributes: { name: category.name },
+            attributes: { name: category.name, inputs_count: 0 },
             relationships: {
               view: { data: { id: view_id, type: 'view' } }
             }
@@ -102,7 +102,7 @@ resource 'Categories' do
           data: {
             id: anything,
             type: 'category',
-            attributes: { name: name },
+            attributes: { name: name, inputs_count: 0 },
             relationships: {
               view: { data: { id: view_id, type: 'view' } }
             }
@@ -142,7 +142,7 @@ resource 'Categories' do
           data: {
             id: anything,
             type: 'category',
-            attributes: { name: name },
+            attributes: { name: name, inputs_count: 0 },
             relationships: {
               view: { data: { id: view_id, type: 'view' } }
             }

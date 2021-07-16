@@ -54,6 +54,7 @@ export function insightsInputStream(
       insightsViewId
     )}/${insightsInputId}`,
     skipSanitizationFor: ['category'],
+    cacheStream: false,
     ...streamParams,
   });
 }
@@ -73,6 +74,7 @@ export async function deleteInsightsInputCategory(
   streams.fetchAllWith({
     partialApiEndpoint: [
       `${API_PATH}/${getInsightsInputsEndpoint(insightsViewId)}`,
+      `insights/views/${insightsViewId}/categories`,
     ],
   });
 
@@ -94,6 +96,7 @@ export async function addInsightsInputCategory(
   streams.fetchAllWith({
     partialApiEndpoint: [
       `${API_PATH}/${getInsightsInputsEndpoint(insightsViewId)}`,
+      `insights/views/${insightsViewId}/categories`,
     ],
   });
 
