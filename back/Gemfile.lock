@@ -36,17 +36,6 @@ GIT
       activesupport (>= 4.2)
 
 GIT
-  remote: https://github.com/influitive/apartment.git
-  revision: f266f73e58835f94e4ec7c16f28443fe5eada1ac
-  branch: development
-  specs:
-    apartment (2.2.1)
-      activerecord (>= 3.1.2, < 6.1)
-      parallel (>= 0.7.1)
-      public_suffix (>= 2)
-      rack (>= 1.3.6)
-
-GIT
   remote: https://github.com/nsarno/knock
   revision: 9214cd027422df8dc31eb67c60032fbbf8fc100b
   ref: 9214cd027422df8dc31eb67c60032fbbf8fc100b
@@ -79,21 +68,21 @@ PATH
   specs:
     admin_api (0.1.0)
       active_model_serializers (~> 0.10.7)
-      apartment (~> 2.2.1)
       custom_style
       graphql (~> 1.8.0)
       kaminari (~> 1.2)
       multi_tenancy
       rails (~> 6.0.0)
+      ros-apartment (>= 2.9.0)
 
 PATH
   remote: engines/commercial/clusterings
   specs:
     clusterings (0.1.0)
-      apartment (~> 2.2.1)
       nlp
       pundit (~> 2.0)
       rails (~> 6.0.0)
+      ros-apartment (>= 2.9.0)
 
 PATH
   remote: engines/commercial/custom_idea_statuses
@@ -107,9 +96,9 @@ PATH
   remote: engines/commercial/custom_maps
   specs:
     custom_maps (0.1.0)
-      apartment (~> 2.2.1)
       pundit (~> 2.0)
       rails (~> 6.0.0)
+      ros-apartment (>= 2.9.0)
 
 PATH
   remote: engines/commercial/custom_style
@@ -130,11 +119,11 @@ PATH
   specs:
     flag_inappropriate_content (0.1.0)
       active_model_serializers (~> 0.10.7)
-      apartment (~> 2.2.1)
       email_campaigns
       moderation
       pundit (~> 2.0)
       rails (~> 6.0.0)
+      ros-apartment (>= 2.9.0)
 
 PATH
   remote: engines/commercial/geographic_dashboard
@@ -233,10 +222,10 @@ PATH
   specs:
     machine_translations (0.1.0)
       active_model_serializers (~> 0.10.7)
-      apartment (~> 2.2.1)
       easy_translate
       pundit (~> 2.0)
       rails (~> 6.0.0)
+      ros-apartment (>= 2.9.0)
 
 PATH
   remote: engines/commercial/matomo
@@ -277,11 +266,11 @@ PATH
   specs:
     public_api (0.1.0)
       active_model_serializers (~> 0.10.7)
-      apartment (~> 2.2.1)
       kaminari (~> 1.2)
       knock
       pundit (~> 2.0)
       rails (~> 6.0.0)
+      ros-apartment (>= 2.9.0)
 
 PATH
   remote: engines/commercial/smart_groups
@@ -302,26 +291,26 @@ PATH
   specs:
     user_custom_fields (0.1.0)
       active_model_serializers (~> 0.10.7)
-      apartment (~> 2.2.1)
       pundit (~> 2.0)
       rails (~> 6.0.0)
+      ros-apartment (>= 2.9.0)
 
 PATH
   remote: engines/commercial/verification
   specs:
     verification (0.1.0)
-      apartment (~> 2.2.1)
       granular_permissions
       pundit (~> 2.0)
       rails (~> 6.0.0)
+      ros-apartment (>= 2.9.0)
       savon (~> 2.12.0)
 
 PATH
   remote: engines/ee/multi_tenancy
   specs:
     multi_tenancy (0.1.0)
-      apartment (>= 2.2.1)
       rails (~> 6.0)
+      ros-apartment (>= 2.9.0)
 
 PATH
   remote: engines/free/email_campaigns
@@ -872,6 +861,11 @@ GEM
     rgeo-geojson (2.1.1)
       rgeo (>= 1.0.0)
     rinku (2.0.5)
+    ros-apartment (2.9.0)
+      activerecord (>= 5.0.0, < 6.2)
+      parallel (< 2.0)
+      public_suffix (>= 2.0.5, < 5.0)
+      rack (>= 1.3.6, < 3.0)
     rspec (3.9.0)
       rspec-core (~> 3.9.0)
       rspec-expectations (~> 3.9.0)
@@ -1042,11 +1036,10 @@ PLATFORMS
 DEPENDENCIES
   active_model_serializers (~> 0.10.12)
   activerecord-import (~> 1.0)
-  activerecord-postgis-adapter (~> 6.0.0)
+  activerecord-postgis-adapter (~> 6.0.2)
   activerecord_json_validator (~> 1.3.0)
   acts_as_list
   admin_api!
-  apartment!
   api-pagination (~> 4.8.2)
   awesome_nested_set (~> 3.4.0)
   aws-sdk-s3 (~> 1)
@@ -1139,6 +1132,7 @@ DEPENDENCIES
   rest-client
   rgeo-geojson
   rinku (~> 2)
+  ros-apartment
   rspec-parameterized
   rspec-rails
   rspec_api_documentation
