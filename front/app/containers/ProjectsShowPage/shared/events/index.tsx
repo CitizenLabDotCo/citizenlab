@@ -106,20 +106,23 @@ interface InputProps {
   className?: string;
 }
 
-export default (props: Props) => {
+export default (props: InputProps) => {
   const { projectId } = props;
   const project = useProject({ projectId });
-  const phases = usePhases(projectId);
+  // const phase
 
-  if (!isNilOrError(project)) return;
-  const sort = project.return(
+  if (isNilOrError(project)) return;
+
+  // const sort = project.attributes.process_type === 'continuous'
+  // ? project.attributes.ideas_order
+  // : project.attributes.ideas_order // TODO
+
+  return (
     <GetIdeas
       type="load-more"
       projectIds={[projectId]}
       pageSize={24}
-      sort={
-        getIdeasInputProps.defaultSortingMethod || ideaDefaultSortMethodFallback
-      }
+      /*sort={sort}*/
     >
       {(dataProps) => {
         const ideasLoaded = !!dataProps.list;
