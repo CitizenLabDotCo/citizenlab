@@ -1,5 +1,10 @@
 # Changelog
 
+## Next release
+
+### Fixed
+- On the admin activity page (/admin/moderation), items about proposals now correctly link to proposals (instead of to projects). Also, the copy of the links at the end of the item rows is now correct for different types of content (correct conjugation of 'this post', 'this project', etc. for all languages).
+
 ## 2021-07-14
 
 ### Added
@@ -8,7 +13,6 @@
 ### Fixed
 - Blocked words for content that can contain HTML
 - Searching users after sorting (e.g. by role)
-
 
 ## 2021-07-09
 
