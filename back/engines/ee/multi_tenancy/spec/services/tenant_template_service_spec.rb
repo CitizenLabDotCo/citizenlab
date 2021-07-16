@@ -15,98 +15,26 @@ describe MultiTenancy::TenantTemplateService do
   end
 
   describe "resolve_and_apply_template", template_test: true do
-
-    MultiTenancy::TenantTemplateService.new.available_templates(external_subfolder: 'test')[:external].map do |template|
-      it "Successfully applies '#{template}' template" do
-        locales = MultiTenancy::TenantTemplateService.new.required_locales(template, external_subfolder: 'test')
-        locales = ['en'] if locales.blank?
-        name = template.split('_').join('')
-        Tenant.create!({
-          name: name,
-          host: "#{name}.localhost",
-          logo: Rails.root.join("spec/fixtures/logo.png").open,
-          header_bg: Rails.root.join("spec/fixtures/header.jpg").open,
-          settings: {
-            core: {
-              allowed: true,
-              enabled: true,
-              locales: locales,
-              organization_type: 'medium_city',
-              organization_name: locales.map { |locale|
-                [locale,Faker::Address.city]
-              }.to_h,
-              timezone: "Brussels",
-              color_main: Faker::Color.hex_color,
-              color_secondary: Faker::Color.hex_color,
-              color_text: Faker::Color.hex_color,
-              currency: 'EUR'
-            },
-            facebook_login: {
-              allowed: true,
-              enabled: true,
-              app_id: '307796929633098',
-              app_secret: '***REMOVED***'
-            },
-            private_projects: {
-              enabled: true,
-              allowed: true
-            }
-          }
-         })
-        Apartment::Tenant.switch("#{name}_localhost") do
-          service.resolve_and_apply_template template, external_subfolder: 'test'
-        end
-      end
-    end
-
-    it "raises an error if the requested template was not found"  do
+    it "raises an error if the requested template was not found" do
       expect{service.resolve_and_apply_template('a_tenant_template_name_that_doesnt_exist', external_subfolder: false)}.to raise_error
     end
 
-    it "raises an error if the requested template was not found", template_test: true  do
+    it "raises an error if the requested template was not found" do
       expect{service.resolve_and_apply_template('a_tenant_template_name_that_doesnt_exist', external_subfolder: 'test')}.to raise_error
     end
   end
 
   describe "resolve_and_apply_template", slow_test: true do
-
     MultiTenancy::TenantTemplateService.new.available_templates[:internal].map do |template|
       it "Successfully applies '#{template}' template" do
         name = template.split('_').join('')
         locales = MultiTenancy::TenantTemplateService.new.required_locales(template, external_subfolder: 'test')
         locales = ['en'] if locales.blank?
-        Tenant.create!({
-          name: name,
-          host: "#{name}.localhost",
-          logo: Rails.root.join("spec/fixtures/logo.png").open,
-          header_bg: Rails.root.join("spec/fixtures/header.jpg").open,
-          settings: {
-            core: {
-              allowed: true,
-              enabled: true,
-              locales: locales,
-              organization_type: 'medium_city',
-              organization_name: locales.map { |locale|
-                [locale,Faker::Address.city]
-              }.to_h,
-              timezone: "Brussels",
-              color_main: Faker::Color.hex_color,
-              color_secondary: Faker::Color.hex_color,
-              color_text: Faker::Color.hex_color,
-              currency: 'EUR'
-            },
-            facebook_login: {
-              allowed: true,
-              enabled: true,
-              app_id: '307796929633098',
-              app_secret: '***REMOVED***'
-            },
-            private_projects: {
-              enabled: true,
-              allowed: true
-            }
-          }
-         })
+        Tenant.create!(
+          name: name, 
+          host: "#{name}.localhost", 
+          settings: {core: {allowed: true, enabled: true, locales: locales}}
+          )
         Apartment::Tenant.switch("#{name}_localhost") do
           service.resolve_and_apply_template template
         end

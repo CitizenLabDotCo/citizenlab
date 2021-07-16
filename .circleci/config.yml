@@ -1,6 +1,22 @@
 version: 2.1
+
 orbs:
   cypress: cypress-io/cypress@1.27.0
+  slack: circleci/slack@4.3.3
+
+slack-fail-post-step-templates: &slack-fail-post-step-templates
+  post-steps:
+    - slack/notify:
+        event: fail
+        mentions: ':boom: FAILURE: Tenant templates workflow failed to release new template versions.'
+        template: basic_fail_1
+
+slack-fail-post-step-inconsistent-data: &slack-fail-post-step-inconsistent-data
+  post-steps:
+    - slack/notify:
+        event: fail
+        mentions: ':boom: FAILURE: Some data is likely invalid.'
+        template: basic_fail_1
 
 parameters:
 
@@ -121,6 +137,15 @@ commands:
               -d '{"state": "success","description": "Success","context": "ci/circleci: EE '"$CIRCLE_JOB"'","target_url": "'"$CIRCLE_BUILD_URL"'"}'
 
 jobs:
+  slack-invalid-data-success:
+    resource_class: small
+    docker:
+      - image: cimg/base:2021.03
+    steps:
+      - slack/notify:
+          event: pass
+          template: basic_success_1
+
   # *************** back ***************
 
   back-build-ee-docker-image:
@@ -140,6 +165,7 @@ jobs:
           docker login -u $DOCKER_USER -p $DOCKER_PASS
           docker push citizenlabdotco/back-ee:<< pipeline.parameters.citizenlab_sha >>-$CIRCLE_SHA1
       - final_citizenlab_github_status
+  
   back-test:
     resource_class: small
     executor:
@@ -184,6 +210,44 @@ jobs:
       - store_test_results:
           path: spec/reports
       - final_citizenlab_github_status
+
+  back-test-tenant-templates:
+    resource_class: small
+    executor:
+      name: cl2-back
+      image-tag: << pipeline.parameters.citizenlab_sha >>-$CIRCLE_SHA1
+    working_directory: /cl2_back
+    environment:
+      RAILS_ENV: test
+      CITIZENLAB_EE: true
+    steps:
+      - run: mkdir -p workspace
+      - wait-for-postgres
+      - run: |
+          rake db:create
+          rake db:schema:load
+      - run: SPEC_OPTS="-t template_test -P "spec/**/*_spec.rb"" bundle exec rspec
+      - run: SPEC_OPTS="-t template_test -P "engines/*/*/spec/**/*_spec.rb"" bundle exec rspec
+      - run: 
+          command: rake templates:verify['workspace/failed-templates.txt']
+          no_output_timeout: 60m
+      - persist_to_workspace:
+          root: workspace
+          paths:
+            - failed-templates.txt
+
+  back-release-tenant-templates:
+    resource_class: small
+    executor:
+      name: cl2-back
+      image-tag: << pipeline.parameters.citizenlab_sha >>-$CIRCLE_SHA1
+    working_directory: /cl2_back
+    environment:
+      CITIZENLAB_EE: true
+    steps:
+      - attach_workspace:
+          at: /tmp/workspace
+      - run: rake templates:release['/tmp/workspace/failed-templates.txt']
 
   back-web-api-docs:
     resource_class: small
@@ -264,6 +328,41 @@ jobs:
           command: ssh << parameters.ssh_user >>@<< parameters.ssh_host >> -o StrictHostKeyChecking=no "docker pull citizenlabdotco/back-ee:$CIRCLE_BRANCH && docker run --env-file cl2-deployment/<< parameters.env_file >> citizenlabdotco/back-ee:$CIRCLE_BRANCH rake db:migrate cl2back:clean_tenant_settings email_campaigns:assure_campaign_records fix_existing_tenants:update_permissions cl2back:clear_cache_store email_campaigns:remove_deprecated"
       - deploy:
           command: ssh << parameters.ssh_user >>@<< parameters.ssh_host >> -o StrictHostKeyChecking=no "cd cl2-deployment && docker stack deploy --compose-file << parameters.compose_file >> << parameters.stack_name >> --with-registry-auth"
+
+  back-generate-tenant-templates:
+    resource_class: small
+    docker:
+      - image: cimg/base:2021.03
+    parameters:
+      ssh_host:
+        type: string
+      ssh_user:
+        type: string
+        default: ubuntu
+      env_file:
+        type: string
+        default: .env-production-benelux
+    steps:
+      - run: ssh << parameters.ssh_user >>@<< parameters.ssh_host >> -o StrictHostKeyChecking=no "docker run --env-file cl2-deployment/<< parameters.env_file >> citizenlabdotco/back-ee:$CIRCLE_BRANCH rake templates:generate[true]"
+
+  check-for-inconsistent-data:
+    resource_class: small
+    docker:
+      - image: cimg/base:2021.03
+    parameters:
+      ssh_host:
+        type: string
+      ssh_user:
+        type: string
+        default: ubuntu
+      env_file:
+        type: string
+        default: .env-production
+    steps:
+      - run:
+          name: Check for inconsistent data
+          command: ssh << parameters.ssh_user >>@<< parameters.ssh_host >> -o StrictHostKeyChecking=no "docker run --env-file cl2-deployment/<< parameters.env_file >> citizenlabdotco/back-ee:$CIRCLE_BRANCH rake checks:invalid_data"
+          no_output_timeout: 60m
 
   # *************** front ***************
   front-test:
@@ -577,3 +676,138 @@ workflows:
           filters:
             branches:
               only: master
+  nightly-templates:
+    triggers:
+      - schedule:
+          cron: "0 0 * * *"
+          filters:
+            branches:
+              only:
+                - production
+    jobs:
+      - back-build-ee-docker-image:
+          context: 
+            - docker-hub-access
+            - slack-dev-notifications-tenant-templates
+          <<: *slack-fail-post-step-templates
+      - back-generate-tenant-templates:
+          name: 'Benelux'
+          context: 
+            - docker-hub-access
+            - slack-dev-notifications-tenant-templates
+          <<: *slack-fail-post-step-templates
+          ssh_host: '52.57.74.84'
+          env_file: '.env-production-benelux'
+      - back-generate-tenant-templates:
+          name: 'South America'
+          context: 
+            - docker-hub-access
+            - slack-dev-notifications-tenant-templates
+          <<: *slack-fail-post-step-templates
+          ssh_host: '52.67.181.38'
+          env_file: '.env-web'
+      - back-generate-tenant-templates:
+          name: 'Canada'
+          context: 
+            - docker-hub-access
+            - slack-dev-notifications-tenant-templates
+          <<: *slack-fail-post-step-templates
+          ssh_host: '35.183.23.116'
+          env_file: '.env-production-canada'
+      - back-generate-tenant-templates:
+          name: 'US West'
+          context: 
+            - docker-hub-access
+            - slack-dev-notifications-tenant-templates
+          <<: *slack-fail-post-step-templates
+          ssh_host: '52.13.59.174'
+          env_file: '.env-web'
+      - back-generate-tenant-templates:
+          name: 'UK'
+          context: 
+            - docker-hub-access
+            - slack-dev-notifications-tenant-templates
+          <<: *slack-fail-post-step-templates
+          ssh_host: '35.179.69.215'
+          env_file: '.env-web'
+      - back-test-tenant-templates:
+          context: 
+            - docker-hub-access
+            - slack-dev-notifications-tenant-templates
+          <<: *slack-fail-post-step-templates
+          requires:
+            - back-build-ee-docker-image
+            - 'Benelux'
+            - 'South America'
+            - 'Canada'
+            - 'US West'
+            - 'UK'
+      - back-release-tenant-templates:
+          context: 
+            - docker-hub-access
+            - slack-dev-notifications-tenant-templates
+          requires:
+            - back-test-tenant-templates
+          post-steps:
+            - slack/notify:
+                event: pass
+                template: basic_success_1
+            - slack/notify:
+                event: fail
+                mentions: ':boom: FAILURE: Some templates are invalid and could not be released.'
+                template: basic_fail_1
+  check-for-inconsistent-data:
+    triggers:
+      - schedule:
+          cron: "0 2 * * 1"
+          filters:
+            branches:
+              only:
+                - production
+    jobs:
+      - check-for-inconsistent-data:
+          <<: *slack-fail-post-step-inconsistent-data
+          name: 'Benelux'
+          context:
+            - slack-dev-notifications-inconsistent-data
+          ssh_host: '52.57.74.84'
+          env_file: '.env-production-benelux'
+      - check-for-inconsistent-data:
+          <<: *slack-fail-post-step-inconsistent-data
+          name: 'South America'
+          context:
+            - slack-dev-notifications-inconsistent-data
+          ssh_host: '52.67.181.38'
+          env_file: '.env-web'
+      - check-for-inconsistent-data:
+          <<: *slack-fail-post-step-inconsistent-data
+          name: 'Canada'
+          context:
+            - slack-dev-notifications-inconsistent-data
+          ssh_host: '35.183.23.116'
+          env_file: '.env-production-canada'
+      - check-for-inconsistent-data:
+          <<: *slack-fail-post-step-inconsistent-data
+          name: 'US West'
+          context:
+            - slack-dev-notifications-inconsistent-data
+          ssh_host: '52.13.59.174'
+          env_file: '.env-web'
+      - check-for-inconsistent-data:
+          <<: *slack-fail-post-step-inconsistent-data
+          name: 'UK'
+          context:
+            - slack-dev-notifications-inconsistent-data
+          ssh_host: '35.179.69.215'
+          env_file: '.env-web'
+      - slack-invalid-data-success:
+          name: ':tada: SUCCESS: No invalid data was detected!' # Mentions are not supported for basic_success_1
+          context:
+            - slack-dev-notifications-inconsistent-data
+          requires:
+            - 'Benelux'
+            - 'South America'
+            - 'Canada'
+            - 'US West'
+            - 'UK'
+             

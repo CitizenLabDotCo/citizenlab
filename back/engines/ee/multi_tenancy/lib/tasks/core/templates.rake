@@ -34,15 +34,52 @@ namespace :templates do
     end
   end
 
-  task :release, [] => [:environment] do |t, args|
+  task :verify, [:output_file] => [:environment] do |t, args|
+    failed_templates = []
+    service = MultiTenancy::TenantTemplateService.new
+    MultiTenancy::TenantTemplateService.new.available_templates(external_subfolder: 'test')[:external].map do |template|
+      locales = MultiTenancy::TenantTemplateService.new.required_locales(template, external_subfolder: 'test')
+      locales = ['en'] if locales.blank?
+      name = template.split('_').join('')
+      tn = Tenant.create!(
+        name: name, 
+        host: "#{name}.localhost", 
+        settings: {core: {allowed: true, enabled: true, locales: locales}}
+        )
+
+      Apartment::Tenant.switch(tn.schema_name) do
+        puts "Verifying #{template}"
+        begin
+          service.resolve_and_apply_template template, external_subfolder: 'test'
+        rescue Exception => e 
+          failed_templates += [template]
+        end
+      end
+
+      tn.destroy!
+    end
+    File.open(args[:output_file], 'w+') do |f|
+      failed_templates.each { |template| f.puts template }
+    end
+  end
+
+  task :release, [:failed_templates_file] => [:environment] do |t, args|
+    failed_templates = []
+    failed_templates += File.readlines(args[:failed_templates_file]).map(&:strip) if args[:failed_templates_file]
+
     s3 = Aws::S3::Resource.new client: Aws::S3::Client.new(region: 'eu-central-1')
     bucket = s3.bucket(ENV.fetch('TEMPLATE_BUCKET', 'cl2-tenant-templates'))
+    bucket.objects(prefix: 'release').each(&:delete)
     bucket.objects(prefix: 'test').each do |template|
       template_name = "#{template.key}"
       template_name.slice! 'test/'
-      if template_name.present?
+      if template_name.present? && !failed_templates.include?(template_name.split('.').first)
         template.copy_to(bucket: ENV.fetch('TEMPLATE_BUCKET', 'cl2-tenant-templates'), key: "release/#{template_name}")
       end
+    end
+
+    if failed_templates.present?
+      raise "Some templates are invalid: #{failed_templates.join(', ')}"
     end
   end
 

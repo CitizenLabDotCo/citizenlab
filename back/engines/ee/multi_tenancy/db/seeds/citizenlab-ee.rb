@@ -417,6 +417,10 @@ if ['public','example_org'].include? Apartment::Tenant.current
         enabled: true,
         allowed: true
       },
+      flag_inappropriate_content: {
+        enabled: true,
+        allowed: true
+      },
       project_management: {
         enabled: true,
         allowed: true
