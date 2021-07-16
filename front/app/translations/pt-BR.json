@@ -721,7 +721,7 @@
   "app.containers.Admin.Insights.Details.categoriesEmptyDescription": "Defina as categorias em que deseja agrupar as suas informações.",
   "app.containers.Admin.Insights.Details.categoriesEmptyTitle": "Organize as informações que você recebeu",
   "app.containers.Admin.Insights.Details.categoriesSeeAll": "Ver tudo",
-  "app.containers.Admin.Insights.Details.categoriesSeeLess": "",
+  "app.containers.Admin.Insights.Details.categoriesSeeLess": "See less",
   "app.containers.Admin.Insights.Details.categoriesTitle": "Categorias",
   "app.containers.Admin.Insights.Details.categoriesTitleTooltip": "As categorias ajudam a estruturar a sua contribuição. Você pode editar suas categorias a qualquer momento ou usá-las como filtro na visualização abaixo.",
   "app.containers.Admin.Insights.Details.editCategories": "Editar categorias",

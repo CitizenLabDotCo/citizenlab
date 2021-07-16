@@ -721,6 +721,7 @@
   "app.containers.Admin.Insights.Details.categoriesEmptyDescription": "Definisci le categorie in cui vuoi raggruppare i tuoi input.",
   "app.containers.Admin.Insights.Details.categoriesEmptyTitle": "Organizza l'input che hai ricevuto",
   "app.containers.Admin.Insights.Details.categoriesSeeAll": "Vedi tutti",
+  "app.containers.Admin.Insights.Details.categoriesSeeLess": "See less",
   "app.containers.Admin.Insights.Details.categoriesTitle": "Categorie",
   "app.containers.Admin.Insights.Details.categoriesTitleTooltip": "Le categorie aiutano a strutturare il tuo input. Puoi modificare le tue categorie in qualsiasi momento o usarle come filtro nella visualizzazione sottostante.",
   "app.containers.Admin.Insights.Details.editCategories": "Modificare categorie",
