@@ -1,5 +1,10 @@
 # Changelog
 
+## 2021-07-16
+
+### Added
+- Auto-detection of inappropriate content (in beta for certain languages). Flagged content can be inspected on the admin Activity page. The setting can be toggled in the General settings tab.
+
 ## 2021-07-14
 
 ### Added
@@ -8,7 +13,6 @@
 ### Fixed
 - Blocked words for content that can contain HTML
 - Searching users after sorting (e.g. by role)
-
 
 ## 2021-07-09
 
