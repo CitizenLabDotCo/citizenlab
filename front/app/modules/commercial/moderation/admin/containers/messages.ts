@@ -77,21 +77,60 @@ export default defineMessages({
     id: 'app.containers.Admin.Moderation.collapse',
     defaultMessage: 'see less',
   },
-  markAsViewed: {
-    id: 'app.containers.Admin.Moderation.markAsViewed',
-    defaultMessage: 'Mark {selectedItemsCount} items as viewed',
-  },
-  markAsNotViewed: {
-    id: 'app.containers.Admin.Moderation.markAsNotViewed',
-    defaultMessage: 'Mark {selectedItemsCount} items as not viewed',
-  },
-  goToThisContentType: {
-    id: 'app.containers.Admin.Moderation.goToThisContentType',
-    defaultMessage: 'Open this {contentType} in a new tab',
-  },
-  moderationHelpTooltip: {
-    id: 'app.containers.Admin.Moderation.moderationHelpTooltip',
+  markSeen: {
+    id: 'app.containers.Admin.Moderation.markSeen',
     defaultMessage:
-      'This page allows you to quickly check all new input that has been added to your platform, including posts and comments. You can mark posts as being ‘viewed’ so that others know which inputs still need to be processed.',
+      'Mark {selectedItemsCount, plural, one {# item} other {# items}} as seen',
+  },
+  markNotSeen: {
+    id: 'app.containers.Admin.Moderation.markNotSeen',
+    defaultMessage:
+      'Mark {selectedItemsCount, plural, one {# item} other {# items}} as not seen',
+  },
+  goToPost: {
+    id: 'app.containers.Admin.Moderation.goToPost',
+    defaultMessage: 'Open this post in a new tab',
+  },
+  goToProposal: {
+    id: 'app.containers.Admin.Moderation.goToProposal',
+    defaultMessage: 'Open this proposal in a new tab',
+  },
+  goToComment: {
+    id: 'app.containers.Admin.Moderation.goToComment',
+    defaultMessage: 'Open this comment in a new tab',
+  },
+  moderationsTooltip: {
+    id: 'app.containers.Admin.Moderation.moderationsTooltip',
+    defaultMessage:
+      "This page allows you to quickly check all new input that has been added to your platform, including posts and comments. You can mark posts as being 'seen' so that others know which inputs still need to be processed.",
+  },
+  settings: {
+    id: 'app.containers.Admin.Moderation.settings',
+    defaultMessage: 'Settings',
+  },
+  profanityBlockerSetting: {
+    id: 'app.containers.Admin.Moderation.profanityBlockerSetting',
+    defaultMessage: 'Profanity blocker',
+  },
+  profanityBlockerSettingDescription: {
+    id: 'app.containers.Admin.Moderation.profanityBlockerSettingDescription',
+    defaultMessage:
+      'Block posts containing the most commonly reported offensive words.',
+  },
+  successfulUpdateSettings: {
+    id: 'app.containers.Admin.Moderation.successfulUpdateSettings',
+    defaultMessage: 'Settings updated successfully.',
+  },
+  settingsSavingError: {
+    id: 'app.containers.Admin.Moderation.settingsSavingError',
+    defaultMessage: "Couldn't save. Try changing the setting again.",
+  },
+  removeFlagsError: {
+    id: 'app.containers.Admin.Moderation.removeFlagsError',
+    defaultMessage: "Couldn't remove warning(s). Try again.",
+  },
+  markFlagsError: {
+    id: 'app.containers.Admin.Moderation.markFlagsError',
+    defaultMessage: "Couldn't mark item(s). Try again.",
   },
 });

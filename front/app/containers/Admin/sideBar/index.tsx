@@ -5,7 +5,6 @@ import { get } from 'lodash-es';
 
 // router
 import { withRouter, WithRouterProps } from 'react-router';
-import Link from 'utils/cl-router/Link';
 import { getUrlLocale } from 'services/locale';
 
 // components
@@ -36,7 +35,7 @@ import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import Outlet from 'components/Outlet';
 import { InsertConfigurationOptions } from 'typings';
 import { insertConfiguration } from 'utils/moduleUtils';
-import { AppConfigurationSettingsFeatureNames } from 'services/appConfiguration';
+import { TAppConfigurationSetting } from 'services/appConfiguration';
 
 const Menu = styled.div`
   z-index: 10;
@@ -95,7 +94,7 @@ const Spacer = styled.div`
   flex-grow: 1;
 `;
 
-const GetStartedLink = styled(Link)`
+const GetStartedLink = styled.a`
   flex: 0 0 auto;
   width: 210px;
   display: flex;
@@ -145,7 +144,7 @@ export type NavItem = {
   link: string;
   iconName: IconNames;
   message: string;
-  featureName?: AppConfigurationSettingsFeatureNames;
+  featureName?: TAppConfigurationSetting;
   isActive: (pathname: string) => boolean;
   count?: number;
   onlyCheckAllowed?: boolean;
@@ -366,7 +365,10 @@ class Sidebar extends PureComponent<
             item={{ type: 'route', path: '/admin/guide' }}
             action="access"
           >
-            <GetStartedLink to="/admin/guide">
+            <GetStartedLink
+              href={formatMessage(messages.linkToSupportCenter)}
+              target="_blank"
+            >
               <IconWrapper>
                 <Icon name="circleInfo" />
               </IconWrapper>

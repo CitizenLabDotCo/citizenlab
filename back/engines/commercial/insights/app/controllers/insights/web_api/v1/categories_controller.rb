@@ -36,15 +36,24 @@ module Insights
       def destroy_all
         authorize(::Insights::Category)
         categories.destroy_all
+        processed_service.resets_flags(view)
         status = categories.count.zero? ? :ok : 500
         head status
       end
 
       private
 
+      def processed_service
+        @processed_service ||= Insights::ProcessedFlagsService.new
+      end
+
+      def view
+        View.includes(:categories).find(params.require(:view_id))
+      end
+
       def categories
         @categories ||= policy_scope(
-          View.includes(:categories).find(params.require(:view_id)).categories
+          view.categories
         )
       end
 

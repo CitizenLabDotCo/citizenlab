@@ -101,7 +101,7 @@ describe Insights::CategorySuggestionsService do
   describe '#classify' do
     subject(:service) { described_class.new(nlp_client) }
 
-    let(:nlp_client) { instance_double(NLP::API, 'nlp_client') }
+    let(:nlp_client) { instance_double(NLP::Api, 'nlp_client') }
     let(:inputs) { create_list(:idea, 2) }
     let(:categories) { create_list(:category, 2) }
     let(:response) do

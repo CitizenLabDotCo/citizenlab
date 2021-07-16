@@ -253,7 +253,7 @@ class User < ApplicationRecord
     active? && admin_or_moderator?(project_id)
   end
 
-  def moderatable_project_ids
+  def moderatable_project_ids # TODO include folders?
     []
   end
 
