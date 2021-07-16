@@ -1,4 +1,4 @@
-import React, { memo, useEffect } from 'react';
+import React, { memo, useState, useEffect } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // resources
@@ -24,11 +24,16 @@ import SectionContainer from 'components/SectionContainer';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from 'containers/ProjectsShowPage/messages';
 
+// services
+import { IPhaseData } from 'services/phases';
+
 // style
 import styled from 'styled-components';
 
-// events
+// other
+import { selectedPhase$ } from '../../timeline/events';
 import { getScrollToEventId, setScrollToEventId } from './scrollToEventState';
+import { ideaDefaultSortMethodFallback } from 'services/participationContexts';
 
 const Container = styled.div`
   background: #fff;
@@ -38,16 +43,20 @@ const StyledEventCard = styled(EventCard)`
   margin-bottom: 30px;
 `;
 
-interface Props {
+interface InputProps {
   projectId: string;
   className?: string;
+}
+
+interface DataProps {
   ideasLoaded: boolean;
 }
 
+interface Props extends InputProps, DataProps {}
+
 const allHaveLoaded = (...args) => args.every((arg) => !isNilOrError(arg));
 
-const EventsContainer = memo<Props>(({ projectId, className }) => {
-  const project = useProject({ projectId });
+const EventsContainer = memo<Props>(({ projectId, className, ideasLoaded }) => {
   const { events } = useEvents({ projectIds: [projectId] });
   const locale = useLocale();
   const tenant = useAppConfiguration();
@@ -58,6 +67,7 @@ const EventsContainer = memo<Props>(({ projectId, className }) => {
 
     if (
       scrollToEventId !== null &&
+      ideasLoaded &&
       allHaveLoaded(events, locale, tenant, phases)
     ) {
       setTimeout(() => {
@@ -75,7 +85,7 @@ const EventsContainer = memo<Props>(({ projectId, className }) => {
     }
   }, [events]);
 
-  if (!isNilOrError(project) && !isNilOrError(events) && events.length > 0) {
+  if (!isNilOrError(events) && events.length > 0) {
     return (
       <Container id="project-events" className={className || ''}>
         <ContentContainer maxWidth={maxPageWidth}>
@@ -101,28 +111,33 @@ const EventsContainer = memo<Props>(({ projectId, className }) => {
   return null;
 });
 
-interface InputProps {
-  projectId: string;
-  className?: string;
-}
-
 export default (props: InputProps) => {
   const { projectId } = props;
   const project = useProject({ projectId });
-  // const phase
-
   if (isNilOrError(project)) return;
 
-  // const sort = project.attributes.process_type === 'continuous'
-  // ? project.attributes.ideas_order
-  // : project.attributes.ideas_order // TODO
+  const [selectedPhase, setSelectedPhase] = useState<IPhaseData | null>(null);
+
+  useEffect(() => {
+    const subscription = selectedPhase$.subscribe((selectedPhase) => {
+      setSelectedPhase(selectedPhase);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const sort =
+    project.attributes.process_type === 'continuous'
+      ? project.attributes.ideas_order
+      : selectedPhase?.attributes.ideas_order;
 
   return (
     <GetIdeas
       type="load-more"
       projectIds={[projectId]}
       pageSize={24}
-      /*sort={sort}*/
+      sort={sort ?? ideaDefaultSortMethodFallback}
+      phaseId={selectedPhase?.id}
     >
       {(dataProps) => {
         const ideasLoaded = !!dataProps.list;
