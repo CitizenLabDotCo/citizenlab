@@ -256,4 +256,8 @@ export default defineMessages({
     id: 'app.containers.Admin.Insights.Details.categoriesEmptyButton',
     defaultMessage: 'Create categories',
   },
+  categoriesSeeLess: {
+    id: 'app.containers.Admin.Insights.Details.categoriesSeeLess',
+    defaultMessage: 'See less',
+  },
 });
