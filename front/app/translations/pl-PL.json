@@ -721,6 +721,7 @@
   "app.containers.Admin.Insights.Details.categoriesEmptyDescription": "Zdefiniuj kategorie, na które chcesz pogrupować swoje dane wejściowe.",
   "app.containers.Admin.Insights.Details.categoriesEmptyTitle": "Uporządkuj otrzymane informacje",
   "app.containers.Admin.Insights.Details.categoriesSeeAll": "Zobacz wszystkie",
+  "app.containers.Admin.Insights.Details.categoriesSeeLess": "See less",
   "app.containers.Admin.Insights.Details.categoriesTitle": "Kategorie",
   "app.containers.Admin.Insights.Details.categoriesTitleTooltip": "Kategorie pomagają uporządkować Twoje dane wejściowe. Możesz edytować swoje kategorie w dowolnym momencie lub użyć ich jako filtrów na poniższej wizualizacji.",
   "app.containers.Admin.Insights.Details.editCategories": "Edytuj kategorie",
