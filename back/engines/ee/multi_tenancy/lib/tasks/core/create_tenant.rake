@@ -271,13 +271,20 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
+        moderation: {
+          enabled: true,
+          allowed: true
+        },
+        flag_inappropriate_content: {
+          enabled: true,
+          allowed: true
+        },
         project_visibility: {
           enabled: true,
           allowed: true
         }
       }
     })
-
 
     Apartment::Tenant.switch tenant.schema_name do
       MultiTenancy::TenantTemplateService.new.resolve_and_apply_template tenant_template, external_subfolder: 'release'

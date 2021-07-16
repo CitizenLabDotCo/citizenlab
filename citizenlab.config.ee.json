@@ -8,6 +8,7 @@
     "commercial/custom_style": true,
     "commercial/custom_topics": true,
     "commercial/clusterings": true,
+    "commercial/flag_inappropriate_content": true,
     "commercial/geographic_dashboard": true,
     "commercial/google_analytics": true,
     "commercial/google_tag_manager": true,
