@@ -101,7 +101,7 @@ class IdeasFinder < ApplicationFinder
 
   def location_required_condition(location_required)
     return unless location_required
-    @records.where.not(location_point: nil, location_description: nil)
+    @records.where.not(location_point: nil)
   end
 end
 

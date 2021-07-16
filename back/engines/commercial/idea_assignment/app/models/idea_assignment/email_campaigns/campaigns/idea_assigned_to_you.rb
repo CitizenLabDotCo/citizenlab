@@ -20,7 +20,7 @@ module IdeaAssignment
       end
 
       def activity_triggers
-        { 'IdeaAssignments::Notifications::IdeaAssignedToYou' => { 'created' => true } }
+        { 'IdeaAssignment::Notifications::IdeaAssignedToYou' => { 'created' => true } }
       end
 
       def self.category

@@ -3,13 +3,16 @@ import styled from 'styled-components';
 import { darken } from 'polished';
 import useIdea from 'hooks/useIdea';
 import { isNilOrError } from 'utils/helperUtils';
-import { isEmpty } from 'lodash-es';
+import { isNil } from 'lodash-es';
 
 // components
 import { Icon, colors } from 'cl2-component-library';
 import Modal from 'components/UI/Modal';
 import Map, { Point } from 'components/Map';
 import { Header, Item } from 'components/IdeasShowComponents/MetaInfoStyles';
+
+// utils
+import { getAddressOrFallbackDMS } from 'utils/map';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
@@ -87,25 +90,27 @@ const Location = memo<Props & InjectedIntlProps>(
     const [isOpened, setIsOpened] = useState(false);
     const idea = useIdea({ ideaId });
 
-    const address =
-      !isNilOrError(idea) && !isEmpty(idea.attributes?.location_description)
-        ? idea.attributes.location_description
-        : null;
-
     const point =
-      !isNilOrError(idea) && !isEmpty(idea.attributes?.location_point_geojson)
-        ? idea.attributes.location_point_geojson
-        : null;
+      (!isNilOrError(idea) && idea.attributes?.location_point_geojson) || null;
+    const lat = point?.coordinates?.[1] || null;
+    const lng = point?.coordinates?.[0] || null;
+    const address = !isNilOrError(idea)
+      ? getAddressOrFallbackDMS(
+          idea.attributes.location_description,
+          idea.attributes.location_point_geojson
+        )
+      : null;
 
     const points = useMemo(() => {
       return point ? ([point] as Point[]) : undefined;
     }, [point]);
 
     const centerLatLng = useMemo(() => {
-      return point
-        ? ([point.coordinates[1], point.coordinates[0]] as LatLngTuple)
-        : undefined;
-    }, [point]);
+      if (!isNil(lat) && !isNil(lng)) {
+        return [lat, lng] as LatLngTuple;
+      }
+      return;
+    }, [lat, lng]);
 
     const closeModal = () => {
       setIsOpened(false);
@@ -115,7 +120,7 @@ const Location = memo<Props & InjectedIntlProps>(
       setIsOpened(true);
     };
 
-    if (address && point) {
+    if (address && points) {
       return (
         <Item className={className || ''} compact={compact}>
           <Header>{formatMessage(messages.location)}</Header>

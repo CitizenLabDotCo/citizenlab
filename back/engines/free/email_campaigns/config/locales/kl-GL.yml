@@ -9,7 +9,6 @@ kl:
       "comment_on_your_idea": Isumassarsiannut oqaaseqaat
       "comment_on_your_initiative": Innuttaasutut siunnersuutinnut oqaaseqaat
       "first_idea_published": Isumassarsiannik siullermik avammut saqqummiineq
-      "idea_assigned_to_you": Uannut isumassarsiamik tunniussineq
       "idea_marked_as_spam": Spam pillugit isumassarsianut nalunaarusiorneq
       "idea_published": Isumassarsiannik avammut saqqummiineq
       "initiative_assigned_to_you": Innuttaasut siunnersuutaannik uannut tunniussineq
@@ -58,7 +57,6 @@ kl:
       "comment_on_your_idea": Comment on your idea - all users
       "comment_on_your_initiative": Comment on your proposal - all users
       "first_idea_published": Publication of your first idea - all users
-      "idea_assigned_to_you": Assignment of an idea - admins and project managers
       "idea_marked_as_spam": Idea spam report - admins and project managers
       "idea_published": Publication of your idea - all users
       "initiative_assigned_to_you": Assignment of a proposal - admins
@@ -167,13 +165,6 @@ kl:
       main_header: '%{commentAuthor} innuttaasunut siunnersuutit oqaaseqarfigaa'
       subject: '%{organizationName}p platformiani oqaaseqaammik tigusaqarputit'
       preheader: '%{authorName} innuttaasunut siunnersuutinnut %{organizationName} oqaaseqaateqarpoq'
-    idea_assigned_to_you:
-      by_author: 'uannga %{authorName}'
-      cta_reply_to: '%{authorName} utertitsiffigiuk'
-      event_description_idea: 'Isumassarsiamik tunineqarputit. Tamanut paasittutissat kingulliit ilanngullugit takussutissiinikkut imaluunniit isumassarsiap killiffiata allanngortinneratigut utimut tunniussigit.'
-      main_header: '%{firstName}, nutaamik tunineqarputit'
-      subject: 'Platformimi %{organizationName}mi nutaamik tunineqarputit'
-      preheader_idea: '%{authorName}p isumassarsiaanik tunineqarputit'
     assignee_digest:
       subject: 'Isumassarsiat utimut nalunaarnissannik piumasaqaatitallit: %{numberIdeas}'
       preheader: '%{organizationName}mut aallartitamit eqikkaaneq'

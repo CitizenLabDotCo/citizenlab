@@ -9,7 +9,6 @@ sr:
       "comment_on_your_idea": Komentar na moju ideju
       "comment_on_your_initiative": Komentar na moj predlog
       "first_idea_published": Objava moje prve ideje
-      "idea_assigned_to_you": Dodeljena mi je ideja
       "idea_marked_as_spam": Izveštaj o spam ideji
       "idea_published": Objava moje ideje
       "initiative_assigned_to_you": Dodeljen mi je predlog
@@ -58,7 +57,6 @@ sr:
       "comment_on_your_idea": Komentarišite svoju ideju - svi korisnici
       "comment_on_your_initiative": Komentarišite svoj predlog - svi korisnici
       "first_idea_published": Objava vaše prve ideje - svi korisnici
-      "idea_assigned_to_you": Dodela ideje - administratori i menadžeri projekata
       "idea_marked_as_spam": Izveštaj o neželjenoj pošti - administratori i menadžeri projekata
       "idea_published": Objava vaše ideje - svi korisnici
       "initiative_assigned_to_you": Dodeljivanje predloga - administratori
@@ -167,13 +165,6 @@ sr:
       main_header: '%{commentAuthor} je komentarisao/la vašu inicijativu'
       subject: 'Dobili ste komentar na platformi %{organizationName}'
       preheader: '%{authorName} je ostavio komentar na vašu inicijativu za %{organizationName}'
-    idea_assigned_to_you:
-      by_author: 'od %{authorName}'
-      cta_reply_to: 'Pošaljite utiske za %{authorName}'
-      event_description_idea: 'Dodeljen vam je post. Ažurirajte informacije pisanjem zvaničnog obaveštenja ili promenom njegovog statusa.'
-      main_header: '%{firstName}, imate novi zadatak'
-      subject: 'Imate zadatak na %{organizationName} platformi '
-      preheader_idea: 'The idea of %{authorName} has been assigned to you'
     assignee_digest:
       subject: 'Objave za koje su potrebne vaše povratne informacije: %{numberIdeas}'
       preheader: '%{organizationName} sažetak'

@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
-import { isString, isEmpty, isNumber, get } from 'lodash-es';
+import { isEmpty, isNumber, get } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 import { parse } from 'qs';
 
@@ -31,7 +31,7 @@ import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import { PreviousPathnameContext } from 'context';
 
 // utils
-import { convertToGeoJson, reverseGeocode } from 'utils/locationTools';
+import { geocode, reverseGeocode } from 'utils/locationTools';
 
 // style
 import { media, colors } from 'utils/styleUtils';
@@ -137,12 +137,12 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
     this.redirectIfNotPermittedOnPage();
 
     if (isNumber(lat) && isNumber(lng)) {
-      reverseGeocode([lat, lng]).then((position) => {
+      reverseGeocode(lat, lng).then((address) => {
         this.globalState.set({
           // When an idea is posted through the map, Google Maps gets an approximate address,
           // but we also keep the exact coordinates from the click so the location indicator keeps its initial position on the map
           // and doesn't read just together with the address correction/approximation
-          position,
+          position: address,
           position_coordinates: {
             type: 'Point',
             coordinates: [lng, lat],
@@ -205,10 +205,12 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
       try {
         const ideaTitle = { [locale]: title as string };
         const ideaDescription = { [locale]: description || '' };
-        const locationGeoJSON =
-          position_coordinates || (await convertToGeoJson(position));
-        const locationDescription =
-          isString(position) && !isEmpty(position) ? position : null;
+        const locationDescription = !isEmpty(position) ? position : null;
+        let locationGeoJSON: GeoJSON.Point | null = position_coordinates;
+
+        if (!locationGeoJSON) {
+          locationGeoJSON = await geocode(position);
+        }
 
         const ideaObject: IIdeaAdd = {
           budget,

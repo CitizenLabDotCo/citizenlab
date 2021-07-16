@@ -4,8 +4,8 @@ import {
   IInsightsInputData,
 } from '../services/insightsInputs';
 
-const useInsightsViews = (viewId: string, inputId: string) => {
-  const [insightsViews, setInsightsViews] = useState<
+const useInsightsInput = (viewId: string, inputId: string) => {
+  const [insightsInput, setInsightsInput] = useState<
     IInsightsInputData | undefined | null | Error
   >(undefined);
 
@@ -13,14 +13,14 @@ const useInsightsViews = (viewId: string, inputId: string) => {
     const subscription = insightsInputStream(
       viewId,
       inputId
-    ).observable.subscribe((insightsViews) => {
-      setInsightsViews(insightsViews.data);
+    ).observable.subscribe((insightsInput) => {
+      setInsightsInput(insightsInput.data);
     });
 
     return () => subscription.unsubscribe();
   }, [viewId, inputId]);
 
-  return insightsViews;
+  return insightsInput;
 };
 
-export default useInsightsViews;
+export default useInsightsInput;

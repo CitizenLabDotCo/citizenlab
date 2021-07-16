@@ -9,7 +9,6 @@ pt:
       "comment_on_your_idea": Um comentário sobre a minha ideia
       "comment_on_your_initiative": Um comentário sobre a minha proposta
       "first_idea_published": Publicação da minha primeira ideia
-      "idea_assigned_to_you": Atribuição de uma ideia para mim
       "idea_marked_as_spam": Relatório de ideias spam
       "idea_published": Publicação da minha ideia
       "initiative_assigned_to_you": Atribuição de uma ideia para mim
@@ -58,7 +57,6 @@ pt:
       "comment_on_your_idea": Comente a sua ideia - todos os usuários
       "comment_on_your_initiative": Comente a sua ideia - todos os usuários
       "first_idea_published": Publicação da sua primeira ideia - todos os usuários
-      "idea_assigned_to_you": Atribuição de uma ideia - administradores e gestores de projeto
       "idea_marked_as_spam": Comente o relatório de spam - administradores e gestores de projeto
       "idea_published": Publicação da sua ideia - todos os usuários
       "initiative_assigned_to_you": Atribuição de uma ideia - administradores
@@ -167,13 +165,6 @@ pt:
       main_header: '%{commentAuthor} comentou a sua proposta'
       subject: 'Você recebeu um comentário sobre %{organizationName}''s plataforma'
       preheader: '%{authorName} deixou um comentário sobre a sua proposta para %{organizationName}'
-    idea_assigned_to_you:
-      by_author: 'por %{authorName}'
-      cta_reply_to: 'Dar uma opinião a %{authorName}'
-      event_description_idea: 'Uma ideia foi atribuída a você. Dê uma opinião escrevendo uma atualização ou alterando o seu status.'
-      main_header: '%{firstName}, você tem uma nova tarefa'
-      subject: 'Você tem uma atribuição na plataforma de %{organizationName}'
-      preheader_idea: 'A ideia de %{authorName} foi atribuída a você'
     assignee_digest:
       subject: 'idéias que requerem a sua opinião: %{numberIdeas}'
       preheader: 'Resumo do proprietario %{organizationName}'

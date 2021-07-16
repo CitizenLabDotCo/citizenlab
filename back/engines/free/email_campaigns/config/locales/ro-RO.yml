@@ -9,7 +9,6 @@ ro:
       "comment_on_your_idea": Un comentariu la ideea mea
       "comment_on_your_initiative": Un comentariu la propunerea mea
       "first_idea_published": Publicarea primei mele idei
-      "idea_assigned_to_you": Atribuirea unei idei mie
       "idea_marked_as_spam": Raportul spam despre idei
       "idea_published": Publicarea ideii mele
       "initiative_assigned_to_you": Atribuirea unei propuneri mie
@@ -58,7 +57,6 @@ ro:
       "comment_on_your_idea": Comentează ideea ta - toți utilizatorii
       "comment_on_your_initiative": Comentează propunerea ta - toți utilizatorii
       "first_idea_published": Publicarea primei tale idei - toți utilizatorii
-      "idea_assigned_to_you": Atribuirea unei idei - administratori și manageri de proiect
       "idea_marked_as_spam": Raport spam de idei - administratori și manageri de proiect
       "idea_published": Publicarea ideii dvs. - toți utilizatorii
       "initiative_assigned_to_you": Atribuirea unei propuneri - administratori
@@ -167,13 +165,6 @@ ro:
       main_header: '%{commentAuthor} a comentat inițiativa dvs.'
       subject: 'Ați primit un comentariu pe platforma %{organizationName}'
       preheader: '%{authorName} a lăsat un comentariu la inițiativa dvs. pentru %{organizationName}'
-    idea_assigned_to_you:
-      by_author: 'De către %{authorName}'
-      cta_reply_to: 'Trimiteți feedback la %{authorName}'
-      event_description_idea: 'Ți-a fost atribuită o idee. Trimiteți feedback prin scrierea unei actualizări oficiale sau schimbarea statusului ei.'
-      main_header: '%{firstName}, aveți o sarcină nouă'
-      subject: 'Aveți o misiune pe platforma %{organizationName}'
-      preheader_idea: 'Ideea de %{authorName} v-a fost atribuită'
     assignee_digest:
       subject: 'Idei care necesită feedback'
       preheader: 'Analiza reprezentantului %{organizationName}'

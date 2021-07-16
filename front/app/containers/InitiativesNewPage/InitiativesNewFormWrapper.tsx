@@ -26,7 +26,7 @@ import clHistory from 'utils/cl-router/history';
 import styled from 'styled-components';
 
 // intl
-import { convertToGeoJson } from 'utils/locationTools';
+import { geocode } from 'utils/locationTools';
 import { isEqual, pick, get, omitBy, isEmpty, debounce } from 'lodash-es';
 import { Point } from 'geojson';
 import {
@@ -151,7 +151,7 @@ export class InitiativesNewFormWrapper extends React.PureComponent<
         break;
 
       default:
-        location_point_geojson = await convertToGeoJson(position);
+        location_point_geojson = await geocode(position);
         location_description = position;
         break;
     }
@@ -172,6 +172,7 @@ export class InitiativesNewFormWrapper extends React.PureComponent<
     const { location_point_geojson } = this.state;
 
     let positionInfo;
+
     if (location_point_geojson) {
       positionInfo = {
         location_point_geojson,

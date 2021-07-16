@@ -190,8 +190,6 @@ const EditCause = memo<Props & InjectedIntlProps & WithRouterProps>((props) => {
           </Label>
           <ImagesDropzone
             acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
-            maxNumberOfImages={1}
-            maxImageFileSize={5000000}
             images={formValues.image ? [formValues.image] : null}
             imagePreviewRatio={120 / 480}
             maxImagePreviewWidth="500px"

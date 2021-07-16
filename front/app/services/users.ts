@@ -132,12 +132,12 @@ export async function deleteUser(userId: string) {
   return response;
 }
 
-export async function completeRegistration(customFieldValues: object) {
+export async function completeRegistration(customFieldValues?: object) {
   const authUser = await streams.add<IUser>(
     `${apiEndpoint}/complete_registration`,
-    { user: { custom_field_values: customFieldValues } }
+    { user: { custom_field_values: customFieldValues || {} } }
   );
-  await streams.reset(authUser);
+  await streams.reset();
   return authUser;
 }
 

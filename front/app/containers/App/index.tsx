@@ -372,6 +372,7 @@ class App extends PureComponent<Props, State> {
             error: isAuthError,
             verification: !!sso_verification,
             requiresConfirmation: shouldConfirm,
+            modalNoCloseSteps: ['confirmation'],
             verificationContext: !!(
               sso_verification &&
               sso_verification_action &&

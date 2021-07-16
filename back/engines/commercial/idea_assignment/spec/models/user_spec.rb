@@ -20,9 +20,9 @@ RSpec.describe User, type: :model do
 
     context 'when project moderator loses admin rights' do
       let(:user) do
-        create(:moderator).tap do |user|
+        create(:project_moderator).tap do |user|
           user.roles << { type: 'admin' }
-          user.save
+          user.save!
         end
       end
 

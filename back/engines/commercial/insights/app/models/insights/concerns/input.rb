@@ -11,6 +11,13 @@ module Insights
             as: :input,  # polymorphic *association*
             dependent: :destroy
           )
+
+          has_many(
+            :insights_zsc_tasks_inputs,
+            as: :input,
+            class_name: 'Insights::ZeroshotClassificationTaskInput',
+            dependent: :destroy
+          )
         end
       end
 

@@ -25,7 +25,10 @@ export async function batchAssignCategories(
     }
   );
   streams.fetchAllWith({
-    partialApiEndpoint: [`insights/views/${insightsViewId}/inputs`],
+    partialApiEndpoint: [
+      `insights/views/${insightsViewId}/inputs`,
+      `insights/views/${insightsViewId}/categories`,
+    ],
   });
   return res;
 }
@@ -43,7 +46,10 @@ export async function batchUnassignCategories(
     }
   );
   streams.fetchAllWith({
-    partialApiEndpoint: [`insights/views/${insightsViewId}/inputs`],
+    partialApiEndpoint: [
+      `insights/views/${insightsViewId}/inputs`,
+      `insights/views/${insightsViewId}/categories`,
+    ],
   });
   return res;
 }

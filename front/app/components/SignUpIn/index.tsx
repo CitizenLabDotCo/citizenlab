@@ -36,6 +36,7 @@ export interface ISignUpInMetaData {
   isInvitation?: boolean;
   token?: string;
   inModal?: boolean;
+  modalNoCloseSteps?: string[];
   noPushLinks?: boolean;
   noAutofocus?: boolean;
   action?: () => void;

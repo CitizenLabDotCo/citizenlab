@@ -33,6 +33,9 @@ import { media, colors } from 'utils/styleUtils';
 // typings
 import { IProjectData } from 'services/projects';
 
+// other
+import { isValidPhase } from './phaseParam';
+
 const Container = styled.main<{ background: string }>`
   flex: 1 0 auto;
   height: 100%;
@@ -151,15 +154,32 @@ const ProjectsShowPage = memo<Props>(({ project }) => {
 });
 
 const ProjectsShowPageWrapper = memo<WithRouterProps>(
-  ({ location: { pathname }, params: { slug } }) => {
+  ({ location: { pathname }, params: { slug, phaseNumber } }) => {
     const project = useProject({ projectSlug: slug });
+    const phases = usePhases(project?.id);
 
     const urlSegments = pathname
       .replace(/^\/|\/$/g, '')
       .split('/')
       .filter((segment) => segment !== '');
 
-    if (urlSegments.length > 3 && urlSegments[1] === 'projects') {
+    const processType = project?.attributes.process_type;
+
+    // If processType is not available yet: don't render yet
+    if (!processType) return null;
+
+    // If processType is 'timeline' but the phases aren't loaded yet: don't render yet
+    if (processType === 'timeline' && isNilOrError(phases)) return null;
+
+    if (
+      processType === 'timeline' &&
+      urlSegments.length === 4 &&
+      !isNilOrError(phases) &&
+      isValidPhase(phaseNumber, phases)
+    ) {
+      // If this is a timeline project and a valid phase param was passed: continue
+      return <ProjectsShowPage project={project} />;
+    } else if (urlSegments.length > 3 && urlSegments[1] === 'projects') {
       // redirect old childRoutes (e.g. /info, /process, ...) to the project index location
       clHistory.replace(`/${urlSegments.slice(1, 3).join('/')}`);
     } else if (slug) {

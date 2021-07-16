@@ -3,15 +3,19 @@
 module Tagging
   class AutomaticTaggingService
     def save_tags_from_prediction(body)
-      if body['status'] == 'SUCCESS'
-        switch_tenant(body) do
-          prediction = body['result']['data']['final_predictions']
-          parse_prediction prediction do |tag_id, document_id, confidence_score|
-            create_tag tag_id, document_id, confidence_score
-          end
-          PendingTask.where(nlp_task_id: body['task_id']).destroy_all
-          TagService.new.remove_unused_tags unless processing?
+      return unless body['status'] == 'SUCCESS'
+
+      switch_tenant(body) do
+        pending_tasks = PendingTask.where(nlp_task_id: body['task_id'])
+        return if pending_tasks.blank?
+
+        prediction = body['result']['data']['final_predictions']
+        parse_prediction prediction do |tag_id, document_id, confidence_score|
+          create_tag(tag_id, document_id, confidence_score)
         end
+
+        pending_tasks.destroy_all
+        TagService.new.remove_unused_tags unless processing?
       end
     end
 
