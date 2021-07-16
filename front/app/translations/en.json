@@ -2613,7 +2613,7 @@
   "app.containers.app.navbar.search": "Search",
   "app.containers.app.navbar.signOut": "Sign out",
   "app.containers.app.navbar.signUp": "Sign up",
-  "app.containers.eventspage.errorWhenFetchingEvents": "Error when fetching events",
+  "app.containers.eventspage.errorWhenFetchingEvents": "An error occurred while loading events. Please try reloading the page.",
   "app.containers.eventspage.eventsPageDescription": "Show all events posted on the participation platform of {orgName}.",
   "app.containers.eventspage.eventsPageTitle": "Events",
   "app.containers.eventspage.filterDropdownTitle": "Projects",
