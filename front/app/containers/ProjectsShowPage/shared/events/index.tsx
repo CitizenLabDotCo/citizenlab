@@ -83,7 +83,7 @@ const EventsContainer = memo<Props>(({ projectId, className, ideasLoaded }) => {
 
       setScrollToEventId(null);
     }
-  }, [events]);
+  }, [events, locale, tenant, phases, ideasLoaded]);
 
   if (!isNilOrError(events) && events.length > 0) {
     return (
@@ -114,8 +114,6 @@ const EventsContainer = memo<Props>(({ projectId, className, ideasLoaded }) => {
 export default (props: InputProps) => {
   const { projectId } = props;
   const project = useProject({ projectId });
-  if (isNilOrError(project)) return;
-
   const [selectedPhase, setSelectedPhase] = useState<IPhaseData | null>(null);
 
   useEffect(() => {
@@ -125,6 +123,8 @@ export default (props: InputProps) => {
 
     return () => subscription.unsubscribe();
   }, []);
+
+  if (isNilOrError(project)) return null;
 
   const sort =
     project.attributes.process_type === 'continuous'
