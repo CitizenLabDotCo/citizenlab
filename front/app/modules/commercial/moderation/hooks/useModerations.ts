@@ -3,7 +3,7 @@ import {
   moderationsStream,
   IModerationData,
   TModerationStatus,
-  TModeratableTypes,
+  TModeratableType,
 } from '../services/moderations';
 import { isNilOrError } from 'utils/helperUtils';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
@@ -12,7 +12,7 @@ interface InputProps {
   pageNumber?: number;
   pageSize?: number;
   moderationStatus?: TModerationStatus;
-  moderatableTypes?: TModeratableTypes[];
+  moderatableTypes?: TModeratableType[];
   projectIds?: string[];
   searchTerm?: string;
   isFlagged?: boolean;
@@ -54,7 +54,7 @@ export default function useModerations(props: InputProps) {
   );
 
   const onModeratableTypesChange = useCallback(
-    (newModeratableTypes: TModeratableTypes[]) => {
+    (newModeratableTypes: TModeratableType[]) => {
       setModeratableTypes([...newModeratableTypes]);
     },
     []

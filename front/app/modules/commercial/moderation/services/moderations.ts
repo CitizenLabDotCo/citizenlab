@@ -3,25 +3,32 @@ import streams, { IStreamParams } from 'utils/streams';
 import { Multiloc, ILinks, IRelationship } from 'typings';
 
 export type TModerationStatus = 'read' | 'unread';
-export type TModeratableTypes = 'Idea' | 'Initiative' | 'Comment';
+export type TModeratableType = 'Idea' | 'Initiative' | 'Comment';
+// add case for initiative
+export type TBelongsTo = keyof IModerationData['attributes']['belongs_to'];
 
 export interface IModerationData {
   id: '1d10b3f1-6a03-4c52-a0b2-4f60929df3ec';
   type: 'moderation';
   attributes: {
-    moderatable_type: TModeratableTypes;
+    moderatable_type: TModeratableType;
     content_title_multiloc: Multiloc | null;
     content_body_multiloc: Multiloc;
     content_slug: string | null;
     created_at: string;
     moderation_status?: TModerationStatus;
     belongs_to: {
-      project: {
+      project?: {
         id: string;
         slug: string;
         title_multiloc: Multiloc;
       };
       idea?: {
+        id: string;
+        slug: string;
+        title_multiloc: Multiloc;
+      };
+      initiative?: {
         id: string;
         slug: string;
         title_multiloc: Multiloc;
@@ -54,7 +61,7 @@ export function moderationsStream(streamParams: IStreamParams | null = null) {
 
 export async function updateModerationStatus(
   moderationId: string,
-  moderatableType: TModeratableTypes,
+  moderatableType: TModeratableType,
   moderationStatus: TModerationStatus
 ) {
   const apiEndpoint = `${API_PATH}/moderations/${moderatableType}/${moderationId}`;
