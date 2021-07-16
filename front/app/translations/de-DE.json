@@ -721,6 +721,7 @@
   "app.containers.Admin.Insights.Details.categoriesEmptyDescription": "Definieren Sie die Kategorien, in die Sie Ihre Beiträge gruppieren möchten.",
   "app.containers.Admin.Insights.Details.categoriesEmptyTitle": "Organisieren Sie die erhaltenen Beiträge",
   "app.containers.Admin.Insights.Details.categoriesSeeAll": "Alle anzeigen",
+  "app.containers.Admin.Insights.Details.categoriesSeeLess": "See less",
   "app.containers.Admin.Insights.Details.categoriesTitle": "Kategorien",
   "app.containers.Admin.Insights.Details.categoriesTitleTooltip": "Kategorien helfen, Ihre Beiträge zu strukturieren. Sie können Ihre Kategorien jederzeit bearbeiten oder als Filter in der untenstehenden Visualisierung verwenden.",
   "app.containers.Admin.Insights.Details.editCategories": "Kategorien bearbeiten",
