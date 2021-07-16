@@ -69,7 +69,7 @@ end
 # Latest version (2.4.1) of Pundit on RubyGems is quite outdated (2019-08-14).
 # This newer version from Git adds reason to Pundit::NotAuthorized.
 gem "pundit", git: 'https://github.com/varvet/pundit', branch: 'master', ref: '973b63b396c2a98099caf5eefd1c6841416eddfa'
-gem "active_model_serializers", "~> 0.10.8"
+gem "active_model_serializers", "~> 0.10.12"
 
 # See https://github.com/nsarno/knock/issues/250
 # Installs v2.2 which is not available on rubygems.org
