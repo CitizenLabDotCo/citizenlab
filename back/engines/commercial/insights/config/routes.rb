@@ -24,6 +24,8 @@ Insights::Engine.routes.draw do
             resources :suggested_categories, only: %i[index destroy], controller: 'category_suggestions' do
               delete :index, on: :collection, action: :delete_suggestions
             end
+
+            post :processed_flag, controller: 'processed_flags', action: :create
           end
 
           nested do
