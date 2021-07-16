@@ -189,24 +189,23 @@ resource "Stats - Comments" do
             expect(json_response[:series][:comments].values.last).to eq 6
           end
         end
+      end
+      context "as a moderator", skip: !CitizenLab.ee? do
+        before do
+          token = Knock::AuthToken.new(payload: create(:moderator).to_token_payload).token
+          header 'Authorization', "Bearer #{token}"
+          initiative = create(:initiative)
+          @project = create(:project)
+          create(:comment, post: initiative)
+          create(:comment, post: create(:idea, project: @project))
+        end
 
-        context "as a moderator", skip: !CitizenLab.ee? do
-          before do
-            token = Knock::AuthToken.new(payload: create(:moderator).to_token_payload).token
-            header 'Authorization', "Bearer #{token}"
-            initiative = create(:initiative)
-            @project = create(:project)
-            create(:comment, post: initiative)
-            create(:comment, post: create(:idea, project: @project))
-          end
+        let(:project) { @project.id }
 
-          let(:project) { @project.id }
+        example_request "Count all comments filtered by project", document: false do
+          expect(response_status).to eq 200
 
-          example_request "Count all comments filtered by project", document: false do
-            expect(response_status).to eq 200
-
-            expect(json_response[:series][:comments].values.last).to eq 1
-          end
+          expect(json_response[:series][:comments].values.last).to eq 1
         end
       end
       include_examples 'unauthorized requests'
