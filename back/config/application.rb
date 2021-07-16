@@ -40,7 +40,7 @@ module Cl2Back
 
     config.active_job.queue_adapter = ENV.fetch('ACTIVE_JOB_QUEUE_ADAPTER', 'que').to_sym
     config.action_mailer.deliver_later_queue_name = 'default'
-    config.i18n.fallbacks = { 'nb-NO': [:nb, :no] }
+    config.i18n.fallbacks = [I18n.default_locale, { 'nb-NO': [:nb, :no] }]
 
     ### After https://stackoverflow.com/a/44985745/3585671
     # Without lines below we get an uninitialized constant
