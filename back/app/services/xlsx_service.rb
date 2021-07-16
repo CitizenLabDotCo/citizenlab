@@ -298,7 +298,7 @@ class XlsxService
   end
 
   def convert_to_text_long_lines html
-    convert_to_text(html).gsub(/\n/, '')
+    convert_to_text(html).gsub(/\n/, ' ')
   end
 end
 
