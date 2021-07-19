@@ -8,6 +8,7 @@ module MultiTenancy
         base.class_eval do
           attr_accessor :tenant_sync_enabled
 
+          validate :validate_lifecycle_stage_change, on: :update
           after_save :update_tenant, if: :tenant_sync_enabled
           after_initialize :custom_initialization
         end
@@ -39,6 +40,20 @@ module MultiTenancy
         tenant.remove_favicon! if favicon_previously_changed? && favicon.blank?
         tenant.remove_header_bg! if header_bg_previously_changed? && header_bg.blank?
         tenant.disable_config_sync.save
+      end
+
+      def validate_lifecycle_stage_change
+        if settings_changed?
+          prev_demo = settings_was.dig('core', 'lifecycle_stage') == 'demo' 
+          currently_demo = settings.dig('core', 'lifecycle_stage') == 'demo'
+          if prev_demo != currently_demo
+            errors.add(
+              :settings,
+              :invalid_lifecycle_stage_change,
+              message: 'The lifecycle stage cannot be changed from or to "demo". Demo platforms cannot become the final platforms; instead a new tenant should be created.'
+            )
+          end
+        end
       end
 
       module ClassMethods
