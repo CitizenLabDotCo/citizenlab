@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 import ConfirmationSignupStep from './citizen/components/ConfirmationSignupStep';
 import ToggleUserConfirmation from './admin/components/ToggleUserConfirmation';
@@ -6,47 +6,21 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import { modifyMetaData } from 'components/SignUpIn/events';
 import useAuthUser from 'hooks/useAuthUser';
 import { isNilOrError } from 'utils/helperUtils';
-import useAppConfiguration from 'hooks/useAppConfiguration';
+import FeatureFlag from 'components/FeatureFlag';
 
 export const CONFIRMATION_STEP_NAME = 'confirmation';
-
-type RenderOnFeatureFlagProps = {
-  children: ReactNode;
-};
-
-const RenderOnFeatureFlag = ({ children }: RenderOnFeatureFlagProps) => {
-  const isUserConfirmationEnabled = useFeatureFlag('user_confirmation');
-
-  if (isUserConfirmationEnabled) {
-    return <>{children}</>;
-  }
-  return null;
-};
-
-const RenderOnFeatureAllowed = ({ children }: RenderOnFeatureFlagProps) => {
-  const appConfiguration = useAppConfiguration();
-
-  if (
-    isNilOrError(appConfiguration) ||
-    !appConfiguration?.data.attributes?.settings?.user_confirmation?.allowed
-  ) {
-    return null;
-  }
-
-  return <>{children}</>;
-};
 
 const configuration: ModuleConfiguration = {
   outlets: {
     'app.components.SignUpIn.SignUp.step': (props) => (
-      <RenderOnFeatureFlag>
+      <FeatureFlag name="user_confirmation">
         <ConfirmationSignupStep {...props} />
-      </RenderOnFeatureFlag>
+      </FeatureFlag>
     ),
     'app.containers.Admin.settings.registrationBeginning': (props) => (
-      <RenderOnFeatureAllowed>
+      <FeatureFlag onlyCheckAllowed name="user_confirmation">
         <ToggleUserConfirmation {...props} />
-      </RenderOnFeatureAllowed>
+      </FeatureFlag>
     ),
     'app.components.SignUpIn.metaData': ({ metaData }) => {
       const user = useAuthUser();

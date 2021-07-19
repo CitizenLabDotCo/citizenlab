@@ -244,6 +244,10 @@ export default defineMessages({
     id: 'app.containers.Admin.Insights.Details.categoriesSeeAll',
     defaultMessage: 'See all',
   },
+  categoriesSeeLess: {
+    id: 'app.containers.Admin.Insights.Details.categoriesSeeLess',
+    defaultMessage: 'See less',
+  },
   categoriesEmptyTitle: {
     id: 'app.containers.Admin.Insights.Details.categoriesEmptyTitle',
     defaultMessage: "Organize the input you've received",

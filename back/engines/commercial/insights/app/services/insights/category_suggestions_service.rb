@@ -42,7 +42,7 @@ module Insights
     attr_reader :nlp_client
 
     def initialize(nlp_client = nil)
-      @nlp_client = nlp_client || NLP::API.new
+      @nlp_client = nlp_client || NLP::Api.new
     end
 
     # @return[Array<Insights::ZeroshotClassificationTask>]

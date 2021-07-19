@@ -17,7 +17,7 @@ module Insights
         end
 
         def create
-          Insights::CreateClassificationTasksJob.perform_later(
+          Insights::CreateClassificationTasksJob.perform_now(
             inputs: inputs,
             categories: categories,
             view: view

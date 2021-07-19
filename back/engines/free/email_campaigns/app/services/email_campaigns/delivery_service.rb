@@ -1,20 +1,7 @@
 module EmailCampaigns
   class DeliveryService
-    class << self
-      def campaign_classes
-        @campaign_types.map(&:constantize)
-      end
 
-      def campaign_types
-        @campaign_types ||= []
-      end
-
-      def add_campaign_types(*campaign_classes)
-        @campaign_types = campaign_types.concat(campaign_classes.map(&:name).uniq)
-      end
-    end
-
-    add_campaign_types(
+    CAMPAIGN_CLASSES = [
       Campaigns::AdminDigest,
       Campaigns::AdminRightsReceived,
       Campaigns::AssigneeDigest,
@@ -61,12 +48,19 @@ module EmailCampaigns
       Campaigns::UserDigest,
       Campaigns::Welcome,
       Campaigns::YourProposedInitiativesDigest
-    )
+    ].freeze
 
-    delegate :campaign_types, :campaign_classes, to: :class
+
+    def campaign_types
+      campaign_classes.map(&:name)
+    end
+
+    def campaign_classes
+      CAMPAIGN_CLASSES
+    end
 
     def consentable_campaign_types_for(user)
-      consentable_types = Consentable.consentable_campaign_types(campaign_classes, user)
+      consentable_types = Consentable.consentable_campaign_types(campaign_classes, user, self)
       disabled_types = Disableable.enabled_campaign_types(Campaign.where(type: campaign_types))
       consentable_types - disabled_types
     end
@@ -170,3 +164,7 @@ module EmailCampaigns
     end
   end
 end
+
+EmailCampaigns::DeliveryService.prepend_if_ee('FlagInappropriateContent::Patches::EmailCampaigns::DeliveryService')
+EmailCampaigns::DeliveryService.prepend_if_ee('IdeaAssignment::Patches::EmailCampaigns::DeliveryService')
+EmailCampaigns::DeliveryService.prepend_if_ee('ProjectFolders::Patches::EmailCampaigns::DeliveryService')

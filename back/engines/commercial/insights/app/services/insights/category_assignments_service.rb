@@ -19,8 +19,8 @@ module Insights
       CategoryAssignment.find(ids)
     end
 
-    def add_assignments(input, categories)
-      ids = add_assignments_batch([input], categories)
+    def add_assignments(input, categories, set_processed = true)
+      ids = add_assignments_batch([input], categories, set_processed)
       CategoryAssignment.find(ids)
     end
 
@@ -48,7 +48,7 @@ module Insights
     # @param [Enumerable<Ideas>] inputs
     # @param [Enumerable<Insights::Category>] categories
     # @return [Array<String>] assignment identifiers
-    def add_assignments_batch(inputs, categories)
+    def add_assignments_batch(inputs, categories, set_processed = true)
       validate_inputs!(inputs)
 
       assignments_attrs = inputs.to_a.product(categories)
@@ -59,6 +59,10 @@ module Insights
       result = CategoryAssignment.upsert_all(assignments_attrs, unique_by: %i[category_id input_id input_type])
       touch_views_of(categories)
       update_counts_of(categories)
+      if set_processed
+        view_ids = categories.pluck(:view_id).uniq
+        processed_service.set_processed(inputs, view_ids)
+      end
       result.pluck('id')
     end
 
@@ -124,6 +128,10 @@ module Insights
     # Updating 'inputs_count' of categories.
     def update_counts_of(categories)
       categories.each { |cat| cat.update({ inputs_count: CategoryAssignment.where(category_id: cat.id).size })}
+    end
+
+    def processed_service
+      @processed_service ||= Insights::ProcessedFlagsService.new
     end
   end
 end

@@ -92,32 +92,38 @@ resource 'Category-suggestion tasks' do
         let(:categories) { view.categories.take(1).pluck(:id) }
         let(:inputs) { view.scope.ideas.take(2).pluck(:id) }
 
-        example 'enqueues task-creation job' do
-          expect { do_request }.to(have_enqueued_job.with do |options|
+        example 'creates classification tasks' do
+          expect(Insights::CreateClassificationTasksJob).to receive(:perform_now) do |options|
             expect(options.fetch(:inputs).pluck(:id)).to match(inputs)
             expect(options.fetch(:categories).pluck(:id)).to match(categories)
             expect(options[:view]).to eq(view)
-          end)
+          end
+
+          do_request
+
           expect(status).to eq(202)
         end
 
-        example 'returns 404 if the category belongs to another view' do
+        example 'returns 404 if the category belongs to another view', document: false do
           do_request(categories: create(:category).id)
           expect(status).to eq(404)
         end
 
-        example "returns 404 if the input doesn't belong to the view scope" do
+        example "returns 404 if the input doesn't belong to the view scope", document: false do
           do_request(inputs: create(:idea).id)
           expect(status).to eq(404)
         end
       end
 
-      example 'enqueues task-creation job', document: false do
-        expect { do_request }.to(have_enqueued_job(Insights::CreateClassificationTasksJob).with do |options|
+      example 'creates classification tasks', document: false do
+        expect(Insights::CreateClassificationTasksJob).to receive(:perform_now) do |options|
           expect(options.fetch(:inputs)).to be_nil
           expect(options.fetch(:categories)).to be_nil
           expect(options[:view]).to eq(view)
-        end)
+        end
+
+        do_request
+
         expect(status).to eq(202)
       end
     end

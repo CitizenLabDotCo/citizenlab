@@ -18,6 +18,7 @@ WORKDIR $INSTALL_PATH
 COPY citizenlab.config.json citizenlab.config.*.json /
 COPY back/Gemfile back/Gemfile.* ./
 COPY back/engines ./engines
+COPY back/lib/citizen_lab.rb ./lib/
 
 RUN bundle install
 
