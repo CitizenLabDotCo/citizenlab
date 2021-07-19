@@ -6,13 +6,13 @@ import useProject from 'hooks/useProject';
 import useEvents from 'hooks/useEvents';
 
 // components
-import EventCard from './EventCard';
+import EventCard from 'components/EventCard';
 import ContentContainer from 'components/ContentContainer';
 import {
-  SectionContainer,
   ProjectPageSectionTitle,
   maxPageWidth,
 } from 'containers/ProjectsShowPage/styles';
+import SectionContainer from 'components/SectionContainer';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -36,7 +36,7 @@ interface Props {
 
 const EventsContainer = memo<Props>(({ projectId, className }) => {
   const project = useProject({ projectId });
-  const events = useEvents(projectId);
+  const { events } = useEvents({ projectIds: [projectId] });
 
   if (!isNilOrError(project) && !isNilOrError(events) && events.length > 0) {
     return (

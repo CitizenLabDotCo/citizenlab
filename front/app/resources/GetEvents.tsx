@@ -1,11 +1,13 @@
 import React from 'react';
-import { Subscription, BehaviorSubject, of } from 'rxjs';
+import { Subscription, BehaviorSubject } from 'rxjs';
 import { distinctUntilChanged, tap, switchMap } from 'rxjs/operators';
 import shallowCompare from 'utils/shallowCompare';
-import { IEventData, eventsStream } from 'services/events';
+import { IEventData, eventsStream, IEventsStreamParams } from 'services/events';
 
 interface InputProps {
-  projectId: string | null;
+  projectIds?: string[];
+  futureOnly?: boolean;
+  pastOnly?: boolean;
   resetOnChange?: boolean;
 }
 
@@ -37,18 +39,34 @@ export default class GetEvents extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    const { projectId, resetOnChange } = this.props;
+    const { projectIds, resetOnChange, futureOnly, pastOnly } = this.props;
 
-    this.inputProps$ = new BehaviorSubject({ projectId });
+    this.inputProps$ = new BehaviorSubject({
+      projectIds,
+      futureOnly,
+      pastOnly,
+    });
 
     this.subscriptions = [
       this.inputProps$
         .pipe(
           distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
           tap(() => resetOnChange && this.setState({ events: undefined })),
-          switchMap(({ projectId }) =>
-            projectId ? eventsStream(projectId).observable : of(null)
-          )
+          switchMap(({ projectIds, futureOnly, pastOnly }) => {
+            const queryParameters: IEventsStreamParams['queryParameters'] = {
+              project_ids: projectIds,
+            };
+
+            if (futureOnly) {
+              queryParameters.start_at_gteq = new Date().toJSON();
+            }
+
+            if (pastOnly) {
+              queryParameters.start_at_lt = new Date().toJSON();
+            }
+
+            return eventsStream({ queryParameters }).observable;
+          })
         )
         .subscribe((events) =>
           this.setState({ events: events ? events.data : null })
@@ -57,8 +75,8 @@ export default class GetEvents extends React.Component<Props, State> {
   }
 
   componentDidUpdate() {
-    const { projectId } = this.props;
-    this.inputProps$.next({ projectId });
+    const { projectIds } = this.props;
+    this.inputProps$.next({ projectIds });
   }
 
   componentWillUnmount() {

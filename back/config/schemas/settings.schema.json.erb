@@ -916,6 +916,19 @@
         }
       },
 
+      "events_page": {
+        "type": "object",
+        "title": "Events Page",
+        "description":  "Enables a Page where users can view future and past events happening across projects.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true},
+          "alternative_name": { "type": "string" }
+        }
+      },
+
       "fragments": {
         "type": "object",
         "title": "Fragments",

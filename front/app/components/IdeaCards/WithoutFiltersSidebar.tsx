@@ -11,7 +11,7 @@ import IdeaCard from 'components/IdeaCard/Compact';
 import { Icon, Spinner } from 'cl2-component-library';
 import TopicFilterDropdown from './TopicFilterDropdown';
 import SelectSort from './SortFilterDropdown';
-import ProjectFilterDropdown from './ProjectFilterDropdown';
+import ProjectFilterDropdown from 'components/ProjectFilterDropdown';
 import SearchInput from 'components/UI/SearchInput';
 import Button from 'components/UI/Button';
 import ViewButtons from 'components/PostCardsComponents/ViewButtons';
@@ -302,8 +302,8 @@ class WithoutFiltersSidebar extends PureComponent<
     this.props.ideas.onChangeSearchTerm(search);
   };
 
-  handleProjectsOnChange = (projects: string[]) => {
-    this.props.ideas.onChangeProjects(projects);
+  handleProjectsOnChange = (projectIds: string[]) => {
+    this.props.ideas.onChangeProjects(projectIds);
   };
 
   handleSortOnChange = (sort: Sort) => {
@@ -421,7 +421,10 @@ class WithoutFiltersSidebar extends PureComponent<
                 defaultSortingMethod={defaultSortingMethod || null}
               />
               {allowProjectsFilter && (
-                <ProjectFilterDropdown onChange={this.handleProjectsOnChange} />
+                <ProjectFilterDropdown
+                  title={<FormattedMessage {...messages.projectFilterTitle} />}
+                  onChange={this.handleProjectsOnChange}
+                />
               )}
               {topicsEnabled && (
                 <TopicFilterDropdown

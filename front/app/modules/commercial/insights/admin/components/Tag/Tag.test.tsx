@@ -49,4 +49,8 @@ describe('Tag', () => {
     fireEvent.click(screen.getByTestId('insightsTag'));
     expect(handleClick).toHaveBeenCalled();
   });
+  it('should render spinner when loading', () => {
+    render(<Tag {...defaultTagProps} loading={true} onIconClick={jest.fn} />);
+    expect(screen.getByTestId('insightsTagSpinner')).toBeInTheDocument();
+  });
 });

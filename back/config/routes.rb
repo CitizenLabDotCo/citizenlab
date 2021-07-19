@@ -114,7 +114,7 @@ Rails.application.routes.draw do
       # to be shallow so we can determine their container class. See e.g.
       # https://github.com/rails/rails/pull/24405
 
-      resources :events, only: %i[show edit update destroy] do
+      resources :events, only: %i[index show edit update destroy] do
         resources :files, defaults: { container_type: 'Event' }, shallow: false
       end
 
@@ -123,7 +123,7 @@ Rails.application.routes.draw do
       end
 
       resources :projects do
-        resources :events, only: %i[index new create]
+        resources :events, only: %i[new create]
         resources :projects_topics, only: [:index]
         resources :topics, only: %i[index reorder] do
           patch 'reorder', on: :member

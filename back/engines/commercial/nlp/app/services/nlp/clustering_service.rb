@@ -92,7 +92,7 @@ module NLP
       max_depth = levels.take_while{|l| l == 'clustering'}.size
       levels = levels.drop(max_depth)
       # apply hierarchical clustering
-      api = NLP::API.new(ENV.fetch("CL2_NLP_HOST"))
+      api = NLP::Api.new(ENV.fetch("CL2_NLP_HOST"))
       raw_clustering = api.clustering(
         Tenant.current.id, # TODO_MT Should we use AppConfiguration.instance.id (they should be the same)
         AppConfiguration.instance.settings('core', 'locales').first[0...2], # TODO figure out a language

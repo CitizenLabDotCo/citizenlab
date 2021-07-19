@@ -8,8 +8,8 @@ import styled from 'styled-components';
 
 const StyledNavigation = styled.div`
   position: absolute;
-  bottom: 20px;
-  right: 20px;
+  bottom: 10px;
+  left: 20px;
 `;
 
 const StyledChevronButton = styled(Button)`

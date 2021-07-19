@@ -9,7 +9,6 @@ it:
       "comment_on_your_idea": Un commento sulla mia idea
       "comment_on_your_initiative": Un commento sulla mia proposta
       "first_idea_published": Pubblicazione della mia prima idea
-      "idea_assigned_to_you": Assegnazione di un'idea a me
       "idea_marked_as_spam": Segnalazione di spam di idee
       "idea_published": Pubblicazione della mia idea
       "initiative_assigned_to_you": Assegnazione di una proposta a me
@@ -58,7 +57,6 @@ it:
       "comment_on_your_idea": Comment on your idea - all users
       "comment_on_your_initiative": Comment on your proposal - all users
       "first_idea_published": Publication of your first idea - all users
-      "idea_assigned_to_you": Assignment of an idea - admins and project managers
       "idea_marked_as_spam": Idea spam report - admins and project managers
       "idea_published": Publication of your idea - all users
       "initiative_assigned_to_you": Assignment of a proposal - admins
@@ -167,13 +165,6 @@ it:
       main_header: '%{commentAuthor} ha commentato la tua iniziativa'
       subject: 'Hai ricevuto un commento sulla piattaforma di %{organizationName}'
       preheader: '%{authorName} ha lasciato un commento sulla tua iniziativa per %{organizationName}'
-    idea_assigned_to_you:
-      by_author: 'da %{authorName}'
-      cta_reply_to: 'Dai un feedback a %{authorName}'
-      event_description_idea: 'Un''idea ti è stata assegnata. Dai un feedback scrivendo un aggiornamento ufficiale o cambiando il suo stato.'
-      main_header: '%{firstName}, hai un nuovo incarico'
-      subject: 'Sei diventato un amministratore sulla piattaforma di %{organizationName}'
-      preheader_idea: 'L''idea di %{authorName} ti è stata assegnata'
     assignee_digest:
       subject: 'Idee che richiedono il vostro feedback: %{numberIdeas}'
       preheader: 'Messaggi Amministrazione di %{organizationName}'

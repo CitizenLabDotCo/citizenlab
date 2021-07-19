@@ -134,7 +134,7 @@ class AdminProjectEventsIndex extends React.PureComponent<
 
 export default withRouter(
   injectIntl((inputProps: InputProps & WithRouterProps & InjectedIntlProps) => (
-    <GetEvents projectId={inputProps.params.projectId}>
+    <GetEvents projectIds={[inputProps.params.projectId]}>
       {(events) => <AdminProjectEventsIndex {...inputProps} events={events} />}
     </GetEvents>
   ))

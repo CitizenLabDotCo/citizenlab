@@ -1,7 +1,7 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
-import { Icon } from 'cl2-component-library';
+import { Icon, Spinner } from 'cl2-component-library';
 import { darken } from 'polished';
 
 // TODO: Add Tag to component library once we remove tagging
@@ -15,6 +15,7 @@ export type TagProps = {
   count?: number;
   className?: string;
   onClick?: () => void;
+  loading?: boolean;
 };
 
 const IconContainer = styled.div`
@@ -89,6 +90,10 @@ const TagContent = styled.div`
   white-space: nowrap;
 `;
 
+const StyledSpinner = styled(Spinner)`
+  margin-left: 8px;
+`;
+
 const Tag = ({
   label,
   onIconClick,
@@ -96,6 +101,7 @@ const Tag = ({
   count,
   className,
   onClick,
+  loading,
 }: TagProps) => {
   const handleIconClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -116,24 +122,41 @@ const Tag = ({
       data-testid="insightsTag"
       className={className}
       onClick={onClick}
+      tabIndex={onClick ? 0 : -1}
     >
       <TagContent>
         {label}
         {count !== undefined && <Count>{count}</Count>}
         {onIconClick && (
-          <IconContainer
-            onClick={handleIconClick}
-            onKeyPress={handleEnterPress}
-            role="button"
-            data-testid="insightsTagIconContainer"
-          >
-            {variant === 'primary' && (
-              <CloseIcon name="close" className="insightsTagCloseIcon" />
+          <>
+            {loading ? (
+              <div data-testid="insightsTagSpinner">
+                <StyledSpinner
+                  size="10px"
+                  thickness="1px"
+                  color={variant === 'primary' ? '#fff' : colors.clGreen}
+                />
+              </div>
+            ) : (
+              <IconContainer
+                onClick={handleIconClick}
+                onKeyPress={handleEnterPress}
+                role="button"
+                data-testid="insightsTagIconContainer"
+                tabIndex={0}
+              >
+                {variant === 'primary' && (
+                  <CloseIcon name="close" className="insightsTagCloseIcon" />
+                )}
+                {variant === 'secondary' && (
+                  <PlusIcon
+                    name="plus-circle"
+                    className="insightsTagPlusIcon"
+                  />
+                )}
+              </IconContainer>
             )}
-            {variant === 'secondary' && (
-              <PlusIcon name="plus-circle" className="insightsTagPlusIcon" />
-            )}
-          </IconContainer>
+          </>
         )}
       </TagContent>
     </StyledTag>

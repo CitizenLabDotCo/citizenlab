@@ -1,23 +1,19 @@
 module Moderation
   class WebApi::V1::ModerationsController < ApplicationController
+    after_action :verify_authorized, except: [:index, :moderations_count]
+    after_action :verify_policy_scoped, only: [:index, :moderations_count]
 
     def index
-      @moderations = policy_scope(Moderation)
-      @moderations = @moderations.where(id: Idea.published)
-        .or(@moderations.where(id: Initiative.published))
-        .or(@moderations.where(id: Comment.published))
-        .includes(:moderation_status)
+      @moderations = policy_scope(published_moderations)
+        .includes(*include_load_resources)
         .order(created_at: :desc)
       
-      @moderations = @moderations.with_moderation_status(params[:moderation_status]) if params[:moderation_status].present?
-      @moderations = @moderations.where(moderatable_type: params[:moderatable_types]) if params[:moderatable_types].present?
-      @moderations = @moderations.where(project_id: params[:project_ids]) if params[:project_ids].present?
-      @moderations = @moderations.search_by_all(params[:search]) if params[:search].present?
+      index_filter
 
       @moderations = @moderations
         .page(params.dig(:page, :number))
         .per(params.dig(:page, :size))
-      render json: linked_json(@moderations, WebApi::V1::ModerationSerializer, params: fastjson_params)
+      render json: linked_json(@moderations, WebApi::V1::ModerationSerializer, params: fastjson_params, include: include_serialize_resources)
     end
 
     def update
@@ -47,10 +43,43 @@ module Moderation
         ).serialized_json, status: :ok
     end
 
+    def moderations_count
+      @moderations = policy_scope(published_moderations)
+
+      index_filter
+
+      render json: {count: @moderations.count}, status: :ok
+    end
+
     def moderation_params
       params.require(:moderation).permit(
         :moderation_status
       )
     end
+
+    private
+
+    def include_load_resources
+      [:moderation_status]
+    end
+
+    def include_serialize_resources
+      []
+    end
+
+    def published_moderations
+      Moderation.where(id: Idea.published)
+        .or(Moderation.where(id: Initiative.published))
+        .or(Moderation.where(id: Comment.published))
+    end
+
+    def index_filter
+      @moderations = @moderations.with_moderation_status(params[:moderation_status]) if params[:moderation_status].present?
+      @moderations = @moderations.where(moderatable_type: params[:moderatable_types]) if params[:moderatable_types].present?
+      @moderations = @moderations.where(project_id: params[:project_ids]) if params[:project_ids].present?
+      @moderations = @moderations.search_by_all(params[:search]) if params[:search].present?
+    end
   end
 end
+
+::Moderation::WebApi::V1::ModerationsController.prepend_if_ee('FlagInappropriateContent::Patches::WebApi::V1::ModerationsController')

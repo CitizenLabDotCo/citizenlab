@@ -281,6 +281,16 @@ ActiveRecord::Schema.define(version: 2021_18_06_161354) do
     t.index ["project_id"], name: "index_events_on_project_id"
   end
 
+  create_table "flag_inappropriate_content_inappropriate_content_flags", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "flaggable_id", null: false
+    t.string "flaggable_type", null: false
+    t.datetime "deleted_at"
+    t.string "toxicity_label"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["flaggable_id", "flaggable_type"], name: "inappropriate_content_flags_flaggable"
+  end
+
   create_table "groups", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.jsonb "title_multiloc", default: {}
     t.string "slug"
@@ -631,7 +641,9 @@ ActiveRecord::Schema.define(version: 2021_18_06_161354) do
     t.string "post_type"
     t.string "post_status_type"
     t.uuid "project_folder_id"
+    t.uuid "inappropriate_content_flag_id"
     t.index ["created_at"], name: "index_notifications_on_created_at"
+    t.index ["inappropriate_content_flag_id"], name: "index_notifications_on_inappropriate_content_flag_id"
     t.index ["initiating_user_id"], name: "index_notifications_on_initiating_user_id"
     t.index ["invite_id"], name: "index_notifications_on_invite_id"
     t.index ["official_feedback_id"], name: "index_notifications_on_official_feedback_id"
@@ -1147,6 +1159,7 @@ ActiveRecord::Schema.define(version: 2021_18_06_161354) do
   add_foreign_key "memberships", "groups"
   add_foreign_key "memberships", "users"
   add_foreign_key "notifications", "comments"
+  add_foreign_key "notifications", "flag_inappropriate_content_inappropriate_content_flags", column: "inappropriate_content_flag_id"
   add_foreign_key "notifications", "invites"
   add_foreign_key "notifications", "official_feedbacks"
   add_foreign_key "notifications", "phases"

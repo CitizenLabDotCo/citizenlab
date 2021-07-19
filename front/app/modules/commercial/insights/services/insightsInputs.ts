@@ -54,6 +54,7 @@ export function insightsInputStream(
       insightsViewId
     )}/${insightsInputId}`,
     skipSanitizationFor: ['category'],
+    cacheStream: false,
     ...streamParams,
   });
 }

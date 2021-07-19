@@ -7,7 +7,7 @@ skip_reason = defined?(EmailCampaigns::Engine) ? nil : 'email_campaigns engine i
 RSpec.describe EmailCampaigns::ProjectModerationRightsReceivedMailer, type: :mailer, skip: skip_reason do
   describe 'campaign_mail' do
     let(:project) { create(:project) }
-    let!(:recipient) { create(:moderator, locale: 'en', project: project) }
+    let!(:recipient) { create(:project_moderator, locale: 'en', projects: [project]) }
     let!(:campaign) { EmailCampaigns::Campaigns::ProjectModerationRightsReceived.create! }
     let(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
 

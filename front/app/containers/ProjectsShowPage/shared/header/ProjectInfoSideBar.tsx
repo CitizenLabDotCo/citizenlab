@@ -136,7 +136,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
   const tenant = useAppConfiguration();
   const project = useProject({ projectId });
   const phases = usePhases(projectId);
-  const events = useEvents(projectId);
+  const { events } = useEvents({ projectIds: [projectId] });
   const authUser = useAuthUser();
 
   const [currentPhase, setCurrentPhase] = useState<IPhaseData | null>(null);

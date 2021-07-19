@@ -17,10 +17,6 @@ class ProjectPolicy < ApplicationPolicy
         .or resolve_for_normal_user
     end
 
-    def moderatable
-      user&.admin? ? scope.all : scope.none
-    end
-
     private
 
     def resolve_for_admin

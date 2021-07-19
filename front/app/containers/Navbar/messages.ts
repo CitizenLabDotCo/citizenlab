@@ -46,6 +46,10 @@ export default defineMessages({
     id: 'app.containers.app.navbar.pageInitiatives',
     defaultMessage: 'Initiatives',
   },
+  pageEvents: {
+    id: 'app.containers.app.navbar.pageEvents',
+    defaultMessage: 'Events',
+  },
   pageOverview: {
     id: 'app.containers.app.navbar.pageOverview',
     defaultMessage: 'Overview',
@@ -77,6 +81,10 @@ export default defineMessages({
   mobilePageInitiatives: {
     id: 'app.containers.app.navbar.mobilePageInitiatives',
     defaultMessage: 'Initiatives',
+  },
+  mobilePageEvents: {
+    id: 'app.containers.app.navbar.mobilePageEvents',
+    defaultMessage: 'Events',
   },
   mobilePageProjects: {
     id: 'app.containers.app.navbar.mobilePageProjects',
