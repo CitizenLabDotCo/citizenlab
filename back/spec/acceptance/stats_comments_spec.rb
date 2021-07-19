@@ -192,7 +192,7 @@ resource "Stats - Comments" do
       end
       context "as a moderator", skip: !CitizenLab.ee? do
         before do
-          token = Knock::AuthToken.new(payload: create(:moderator).to_token_payload).token
+          token = Knock::AuthToken.new(payload: create(:project_moderator).to_token_payload).token
           header 'Authorization', "Bearer #{token}"
           initiative = create(:initiative)
           @project = create(:project)
