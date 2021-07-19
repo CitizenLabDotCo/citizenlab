@@ -458,6 +458,29 @@ class SettingsCustomizeTab extends PureComponent<
     });
   };
 
+  handleToggleEventsWidget = () => {
+    const { tenant } = this.state;
+    if (!tenant?.data.attributes.settings.events_widget) return;
+
+    const previousValue = tenant.data.attributes.settings.events_widget.enabled;
+    this.setState((state) => {
+      return {
+        attributesDiff: {
+          ...state.attributesDiff,
+          settings: {
+            ...state.settings,
+            ...get(state.attributesDiff, 'settings', {}),
+            events_widget: {
+              ...get(state.settings, 'events_widget', {}),
+              ...get(state.attributesDiff, 'settings.events_widget', {}),
+              enabled: !previousValue,
+            },
+          },
+        },
+      };
+    });
+  };
+
   render() {
     const { locale, tenant } = this.state;
     const { formatMessage } = this.props.intl;
@@ -727,6 +750,39 @@ class SettingsCustomizeTab extends PureComponent<
                     </ToggleLabel>
                   </Setting>
                 </WideSectionField>
+
+                {tenant.data.attributes.settings?.events_widget &&
+                  tenant.data.attributes.settings.events_widget.allowed && (
+                    <WideSectionField>
+                      <Setting>
+                        <ToggleLabel>
+                          <StyledToggle
+                            checked={
+                              get(
+                                attributesDiff,
+                                'settings.events_widget.enabled'
+                              ) ??
+                              get(
+                                tenant,
+                                'data.attributes.settings.events_widget.enabled'
+                              )
+                            }
+                            onChange={this.handleToggleEventsWidget}
+                          />
+                          <LabelContent>
+                            <LabelTitle>
+                              {formatMessage(messages.eventsWidgetSetting)}
+                            </LabelTitle>
+                            <LabelDescription>
+                              {formatMessage(
+                                messages.eventsWidgetSettingDescription
+                              )}
+                            </LabelDescription>
+                          </LabelContent>
+                        </ToggleLabel>
+                      </Setting>
+                    </WideSectionField>
+                  )}
               </Section>
             )}
 

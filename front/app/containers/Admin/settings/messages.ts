@@ -191,6 +191,15 @@ export default defineMessages({
     defaultMessage:
       "When enabled, an events overview page will be added to the platform that's accessible via an added 'Events' menu item in the main menu.",
   },
+  eventsWidgetSetting: {
+    id: 'app.components.AdminPage.SettingsPage.eventsWidgetSetting',
+    defaultMessage: 'Upcoming events widget on landing page',
+  },
+  eventsWidgetSettingDescription: {
+    id: 'app.components.AdminPage.SettingsPage.eventsWidgetSettingDescription',
+    defaultMessage:
+      'When enabled, a widget displaying up to three upcoming events will be added to the landing page of the platform.',
+  },
   customSectionLabel: {
     id: 'app.components.AdminPage.SettingsPage.customSectionLabel',
     defaultMessage: 'Content',

@@ -233,7 +233,9 @@ class LandingPage extends PureComponent<Props, State> {
                   </SectionContainer>
                 </ProjectSection>
 
-                <EventsWidget />
+                <FeatureFlag name="events_widget">
+                  <EventsWidget />
+                </FeatureFlag>
 
                 <FeatureFlag name="initiatives">
                   {postingProposalsEnabled && <StyledInitiativesCTABox />}
