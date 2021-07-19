@@ -156,6 +156,10 @@ AppConfiguration.create!(
     events_page: {
       enabled: true,
       allowed: true
+    },
+    events_widget: {
+      enabled: true,
+      allowed: true
     }
   }
 )
