@@ -1,11 +1,7 @@
 AdminPublication changed
 AppConfiguration changed
 AppConfiguration changed_host
-Area changed
 Area created
-Area deleted
-Comment changed
-Comment changed_body
 Comment created
 Comment marked_as_deleted
 Comment mentioned
@@ -15,40 +11,6 @@ CustomField deleted
 CustomFieldOption changed
 CustomFieldOption created
 CustomFieldOption deleted
-EmailCampaigns::Campaigns::CommentOnYourComment changed
-EmailCampaigns::Campaigns::CommentOnYourIdea changed
-EmailCampaigns::Campaigns::CommentOnYourInitiative changed
-EmailCampaigns::Campaigns::FirstIdeaPublished changed
-EmailCampaigns::Campaigns::IdeaPublished changed
-EmailCampaigns::Campaigns::InitiativeAssignedToYou changed
-EmailCampaigns::Campaigns::InitiativeMarkedAsSpam changed
-EmailCampaigns::Campaigns::InitiativePublished changed
-EmailCampaigns::Campaigns::InviteReminder changed
-EmailCampaigns::Campaigns::Manual changed
-EmailCampaigns::Campaigns::Manual created
-EmailCampaigns::Campaigns::Manual deleted
-EmailCampaigns::Campaigns::Manual sent
-EmailCampaigns::Campaigns::ModeratorDigest changed
-EmailCampaigns::Campaigns::NewCommentForAdmin changed
-EmailCampaigns::Campaigns::NewCommentOnCommentedIdea changed
-EmailCampaigns::Campaigns::NewCommentOnCommentedInitiative changed
-EmailCampaigns::Campaigns::NewIdeaForAdmin changed
-EmailCampaigns::Campaigns::OfficialFeedbackOnCommentedIdea changed
-EmailCampaigns::Campaigns::OfficialFeedbackOnCommentedInitiative changed
-EmailCampaigns::Campaigns::OfficialFeedbackOnVotedIdea changed
-EmailCampaigns::Campaigns::OfficialFeedbackOnVotedInitiative changed
-EmailCampaigns::Campaigns::OfficialFeedbackOnYourIdea changed
-EmailCampaigns::Campaigns::OfficialFeedbackOnYourInitiative changed
-EmailCampaigns::Campaigns::ProjectModerationRightsReceived changed
-EmailCampaigns::Campaigns::ProjectPhaseStarted changed
-EmailCampaigns::Campaigns::StatusChangeOfCommentedIdea changed
-EmailCampaigns::Campaigns::StatusChangeOfCommentedInitiative changed
-EmailCampaigns::Campaigns::StatusChangeOfYourIdea changed
-EmailCampaigns::Campaigns::StatusChangeOfYourInitiative changed
-EmailCampaigns::Campaigns::ThresholdReachedForAdmin changed
-EmailCampaigns::Campaigns::UserDigest changed
-EmailCampaigns::Campaigns::Welcome changed
-EmailCampaigns::Campaigns::YourProposedInitiativesDigest changed
 Event changed
 Event created
 Event deleted
@@ -78,44 +40,6 @@ Invite deleted
 Invite email_requested
 Invite not_accepted_since_3_days
 Moderation::ModerationStatus read
-Notification for Admin rights received created
-Notification for Comment deleted by admin created
-Notification for Comment marked as spam created
-Notification for Comment on your comment created
-Notification for Comment on your idea created
-Notification for Idea assigned to you created
-Notification for Invite accepted created
-Notification for Mention in a comment created
-Notification for Official feedback on commented idea created
-Notification for Official feedback on voted idea created
-Notification for Official feedback on your idea created
-Notification for Project Folder moderation rights received created
-Notification for Project moderation rights received created
-Notification for Project phase started created
-Notification for Project phase upcoming created
-Notification for Status change of your idea created
-Notification for Status change of your initiative created
-Notification for Status change on commented idea created
-Notification for Status change on commented initiative created
-Notification for Status change on voted idea created
-Notification for Status change on voted initiative created
-Notifications::AdminRightsReceived created
-Notifications::CommentDeletedByAdmin created
-Notifications::CommentMarkedAsSpam created
-Notifications::CommentOnYourComment created
-Notifications::CommentOnYourIdea created
-Notifications::CommentOnYourInitiative created
-Notifications::InviteAccepted created
-Notifications::MentionInComment created
-Notifications::OfficialFeedbackOnCommentedIdea created
-Notifications::OfficialFeedbackOnVotedIdea created
-Notifications::OfficialFeedbackOnYourIdea created
-Notifications::ProjectModerationRightsReceived created
-Notifications::ProjectPhaseStarted created
-Notifications::ProjectPhaseUpcoming created
-Notifications::StatusChangeOfYourIdea created
-Notifications::StatusChangeOnCommentedIdea created
-Notifications::StatusChangeOnVotedIdea created
 OfficialFeedback changed
 OfficialFeedback created
 OfficialFeedback deleted
@@ -162,7 +86,6 @@ User project_moderation_rights_removed
 User requested password reset
 User requested_password_reset
 User searched_users
-Volunteering::Cause changed
 Volunteering::Cause created
 Volunteering::Volunteer created
 Volunteering::Volunteer deleted
