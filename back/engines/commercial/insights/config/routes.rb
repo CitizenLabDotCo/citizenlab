@@ -26,6 +26,8 @@ Insights::Engine.routes.draw do
             end
           end
 
+          resource :network, only: %i[show]
+          
           nested do
             scope '/batch' do
               post :assign_categories, controller: 'batch_assignments'
