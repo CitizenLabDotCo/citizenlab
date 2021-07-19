@@ -518,7 +518,7 @@ GEM
       nokogiri (~> 1.8, >= 1.8.2)
       rubyzip (~> 1.2, >= 1.2.1)
     bcrypt (3.1.13)
-    bindata (2.4.4)
+    bindata (2.4.10)
     binding_ninja (0.2.3)
     binding_of_caller (0.8.0)
       debug_inspector (>= 0.0.1)
