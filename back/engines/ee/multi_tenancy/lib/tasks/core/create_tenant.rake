@@ -162,6 +162,10 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
+        events_page: {
+          enabled: true,
+          allowed: true
+        },
         initiatives: {
           enabled: true,
           allowed: true,
