@@ -49,8 +49,7 @@ module MultiTenancy
           if prev_demo != currently_demo
             errors.add(
               :settings,
-              :invalid_lifecycle_stage_change,
-              message: 'The lifecycle stage cannot be changed from or to "demo". Demo platforms cannot become the final platforms; instead a new tenant should be created.'
+              'The lifecycle stage cannot be changed from or to "demo". Demo platforms cannot become the final platforms; instead a new tenant should be created.'
             )
           end
         end
