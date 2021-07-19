@@ -11,7 +11,7 @@ export interface Props {
   setClearButtonRef?: (arg: HTMLButtonElement) => void;
   onChange: (arg: string | null) => void;
   className?: string;
-  size: SearchInputProps['size'];
+  size?: SearchInputProps['size'];
 }
 
 const SearchInputWrapper = memo<Props & InjectedIntlProps>(

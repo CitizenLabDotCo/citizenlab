@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen, fireEvent, waitFor } from 'utils/testUtils/rtl';
 import clHistory from 'utils/cl-router/history';
 
-import Categories, { visibleCategoriesNumber } from './Categories';
+import Categories, { visibleCategoriesNumber } from './';
 
 let mockData = [
   {
