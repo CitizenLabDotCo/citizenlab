@@ -240,8 +240,8 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
   const {
     list: moderations,
     pageSize,
+    pageNumber,
     moderationStatus,
-    currentPage,
     lastPage,
     onModerationStatusChange,
     onPageNumberChange,
@@ -433,7 +433,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
     if (!processing) {
       setSelectedModerations([]);
     }
-  }, [currentPage, moderationStatus, pageSize, processing]);
+  }, [pageNumber, moderationStatus, pageSize, processing]);
 
   if (!isNilOrError(moderations)) {
     return (
@@ -574,7 +574,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
         {moderations.length > 0 && (
           <Footer>
             <StyledPagination
-              currentPage={currentPage}
+              currentPage={pageNumber}
               totalPages={lastPage}
               loadPage={handePageNumberChange}
             />

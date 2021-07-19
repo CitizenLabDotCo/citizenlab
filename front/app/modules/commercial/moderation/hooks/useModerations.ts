@@ -105,6 +105,7 @@ export default function useModerations(props: InputProps) {
     list,
     lastPage,
     pageSize,
+    pageNumber,
     moderationStatus,
     onPageNumberChange,
     onPageSizeChange,
