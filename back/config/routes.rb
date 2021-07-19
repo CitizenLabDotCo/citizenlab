@@ -233,7 +233,6 @@ Rails.application.routes.draw do
         get 'votes_by_gender_as_xlsx', **route_params
         get 'votes_by_custom_field_as_xlsx', **route_params
         get 'votes_by_time_as_xlsx', **route_params
-        get 'votes_by_time_cumulative_as_xlsx', **route_params
         get 'votes_by_topic_as_xlsx', **route_params
         get 'votes_by_project_as_xlsx', **route_params
       end
