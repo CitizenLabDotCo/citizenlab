@@ -13,6 +13,8 @@
   "app.components.AdminPage.SettingsPage.eventsPageSetting": "",
   "app.components.AdminPage.SettingsPage.eventsPageSettingDescription": "",
   "app.components.AdminPage.SettingsPage.eventsSection": "",
+  "app.components.AdminPage.SettingsPage.eventsWidgetSetting": "",
+  "app.components.AdminPage.SettingsPage.eventsWidgetSettingDescription": "",
   "app.components.AdminPage.SettingsPage.homePageCustomizableSection": "Section personnalisée de la page d’accueil",
   "app.components.AdminPage.SettingsPage.homePageCustomizableSectionTooltip": "Cet espace libre au bas de la page d'accueil peut être personnalisé avec vos propres images, textes, vidéos et liens.",
   "app.components.AssignBudgetControl.a11y_price": "Prix :",

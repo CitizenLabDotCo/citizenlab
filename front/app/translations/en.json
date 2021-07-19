@@ -13,6 +13,8 @@
   "app.components.AdminPage.SettingsPage.eventsPageSetting": "Events overview page",
   "app.components.AdminPage.SettingsPage.eventsPageSettingDescription": "When enabled, an events overview page will be added to the platform that's accessible via an added 'Events' menu item in the main menu.",
   "app.components.AdminPage.SettingsPage.eventsSection": "Events",
+  "app.components.AdminPage.SettingsPage.eventsWidgetSetting": "Upcoming events widget on landing page",
+  "app.components.AdminPage.SettingsPage.eventsWidgetSettingDescription": "When enabled, a widget displaying up to three upcoming events will be added to the landing page of the platform.",
   "app.components.AdminPage.SettingsPage.homePageCustomizableSection": "Homepage customizable section",
   "app.components.AdminPage.SettingsPage.homePageCustomizableSectionTooltip": "This empty section at the bottom of the homepage can be customized with your own images, text and links.",
   "app.components.AssignBudgetControl.a11y_price": "Price:",

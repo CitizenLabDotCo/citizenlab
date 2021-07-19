@@ -13,6 +13,8 @@
   "app.components.AdminPage.SettingsPage.eventsPageSetting": "",
   "app.components.AdminPage.SettingsPage.eventsPageSettingDescription": "",
   "app.components.AdminPage.SettingsPage.eventsSection": "",
+  "app.components.AdminPage.SettingsPage.eventsWidgetSetting": "",
+  "app.components.AdminPage.SettingsPage.eventsWidgetSettingDescription": "",
   "app.components.AdminPage.SettingsPage.homePageCustomizableSection": "Część konfigurowalna na stronie głównej",
   "app.components.AdminPage.SettingsPage.homePageCustomizableSectionTooltip": "Tą pustą sekcję na dole strony głównej możesz dostosowywać swoimi obrazkami, tekstem i linkami.",
   "app.components.AssignBudgetControl.a11y_price": "Cena:",

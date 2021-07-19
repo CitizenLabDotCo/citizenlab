@@ -13,6 +13,8 @@
   "app.components.AdminPage.SettingsPage.eventsPageSetting": "",
   "app.components.AdminPage.SettingsPage.eventsPageSettingDescription": "",
   "app.components.AdminPage.SettingsPage.eventsSection": "",
+  "app.components.AdminPage.SettingsPage.eventsWidgetSetting": "",
+  "app.components.AdminPage.SettingsPage.eventsWidgetSettingDescription": "",
   "app.components.AdminPage.SettingsPage.homePageCustomizableSection": "Startseite anpassbarer Bereich",
   "app.components.AdminPage.SettingsPage.homePageCustomizableSectionTooltip": "Dieser leere Abschnitt am unteren Ende der Homepage kann mit eigenen Bildern, Texten und Links angepasst werden.",
   "app.components.AssignBudgetControl.a11y_price": "Preis:",

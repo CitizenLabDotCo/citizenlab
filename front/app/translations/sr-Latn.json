@@ -13,6 +13,8 @@
   "app.components.AdminPage.SettingsPage.eventsPageSetting": "",
   "app.components.AdminPage.SettingsPage.eventsPageSettingDescription": "",
   "app.components.AdminPage.SettingsPage.eventsSection": "",
+  "app.components.AdminPage.SettingsPage.eventsWidgetSetting": "",
+  "app.components.AdminPage.SettingsPage.eventsWidgetSettingDescription": "",
   "app.components.AdminPage.SettingsPage.homePageCustomizableSection": "Prilagođena sekcija početne stranice",
   "app.components.AdminPage.SettingsPage.homePageCustomizableSectionTooltip": "This empty section at the bottom of the homepage can be customized with your own images, text and links.",
   "app.components.AssignBudgetControl.a11y_price": "Cena:",
