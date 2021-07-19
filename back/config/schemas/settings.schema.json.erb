@@ -11,7 +11,7 @@
         "description": "The container for general settings. The core system should always be enabled.",
         "required-settings": ["organization_type", "timezone", "currency", "locales", "color_main", "color_secondary","color_text", "lifecycle_stage"],
         "additionalProperties": false,
-        "required": ["allowed", "enabled"],
+        "required": ["allowed", "enabled", "lifecycle_stage"],
         "properties": {
           "allowed": { "type": "boolean", "default": true},
           "enabled": { "type": "boolean", "default": true},
@@ -37,8 +37,7 @@
             "title": "Lifecycle Stage",
             "description": "The lifecycle stage of the customer.",
             "type": "string",
-            "enum": ["trial", "expired_trial", "demo", "active", "churned", "not_applicable"],
-            "default": "demo"
+            "enum": ["trial", "expired_trial", "demo", "active", "churned", "not_applicable"]
           },
           "timezone": {
             "title": "Time Zone",
