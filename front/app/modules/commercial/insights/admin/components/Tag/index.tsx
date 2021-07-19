@@ -72,8 +72,7 @@ const StyledTag = styled.button<{ variant: Variant }>`
       onClick &&
       css`
         cursor: pointer;
-        &:hover,
-        &:focus {
+        &:hover {
           background-color: ${darken(
             0.1,
             variant === 'primary' ? colors.clGreen : '#fff'

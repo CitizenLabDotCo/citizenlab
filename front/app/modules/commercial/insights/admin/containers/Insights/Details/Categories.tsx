@@ -43,7 +43,7 @@ const Container = styled.div`
 const CategoriesContainer = styled.div`
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   .categoriesList {
     width: 70%;
   }
