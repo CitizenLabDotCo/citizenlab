@@ -788,7 +788,7 @@ GEM
       binding_of_caller (~> 0.7)
       pry (~> 0.13)
     public_suffix (4.0.6)
-    puma (4.3.5)
+    puma (5.3.2)
       nio4r (~> 2.0)
     que-web (0.9.3)
       que (~> 1.0.0.beta3)
@@ -1124,7 +1124,7 @@ DEPENDENCIES
   pry
   pry-stack_explorer
   public_api!
-  puma
+  puma (>= 4.3.8)
   pundit!
   que!
   que-web
