@@ -5,7 +5,7 @@ import TopBar from './TopBar';
 import EventCard from 'components/EventCard';
 import EventsError from 'containers/EventsPage/EventsViewer/EventsError';
 import EventsSpinner from 'containers/EventsPage/EventsViewer/EventsSpinner';
-import Centerer from 'containers/EventsPage/EventsViewer/Centerer';
+import VerticalCenterer from 'components/VerticalCenterer';
 
 // hooks
 import useEvents from 'hooks/useEvents';
@@ -75,11 +75,11 @@ export default injectIntl<InjectedIntlProps>(({ intl }) => {
       {eventsError && <EventsError />}
 
       {!isNilOrError(events) && events.length === 0 && (
-        <Centerer>
+        <VerticalCenterer>
           <NoEventsText>
             {intl.formatMessage(messages.noUpcomingEvents)}
           </NoEventsText>
-        </Centerer>
+        </VerticalCenterer>
       )}
 
       {!isNilOrError(events) && (
