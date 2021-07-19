@@ -1124,7 +1124,7 @@ DEPENDENCIES
   pry
   pry-stack_explorer
   public_api!
-  puma (>= 4.3.8)
+  puma (~> 5.3.2)
   pundit!
   que!
   que-web
