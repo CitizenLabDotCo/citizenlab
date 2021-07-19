@@ -58,7 +58,7 @@
     "@tippyjs/react": "4.2.5",
     "ajv": "6.12.6",
     "bowser": "1.x",
-    "cl2-component-library": "^0.9.12",
+    "cl2-component-library": "0.9.12",
     "clipboard-polyfill": "2.8.6",
     "compression": "1.7.4",
     "core-js": "3.14.0",
