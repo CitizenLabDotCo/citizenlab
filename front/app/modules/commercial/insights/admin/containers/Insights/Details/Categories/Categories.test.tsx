@@ -245,7 +245,7 @@ describe('Insights Details Categories', () => {
     fireEvent.click(screen.getByText(mockData[0].attributes.name));
     expect(spy).toHaveBeenCalledWith({
       pathname: '',
-      search: `?category=${mockData[0].id}`,
+      search: `?category=${mockData[0].id}&page=1`,
     });
   });
 

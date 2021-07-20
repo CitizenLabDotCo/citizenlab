@@ -10,18 +10,28 @@ import Button from 'components/UI/Button';
 import clHistory from 'utils/cl-router/history';
 import { stringify } from 'qs';
 
+// intl
+import { injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
+import messages from '../../messages';
+
 const InputsContainer = styled.div`
-  min-width: 420px;
+  flex: 0 0 420px;
   overflow-x: auto;
   padding: 20px;
   background-color: ${colors.emailBg};
   border-left: 1px solid ${colors.separation};
 `;
 
+const StyledSearch = styled(Search)`
+  margin-bottom: 20px;
+`;
+
 const Inputs = ({
   params: { viewId },
   location: { pathname, query },
-}: WithRouterProps) => {
+  intl: { formatMessage },
+}: WithRouterProps & InjectedIntlProps) => {
   const category = query.category;
   const search = query.search;
   const page = query.page ? Number(query.page) : 1;
@@ -59,21 +69,17 @@ const Inputs = ({
 
   return (
     <InputsContainer>
-      <Search onChange={onSearch} size="small" />
+      <StyledSearch onChange={onSearch} size="small" />
       {list.map((input) => (
-        <InputCard key={input.id} />
+        <InputCard key={input.id} input={input} />
       ))}
       {hasMore && (
-        <Button
-          processing={loading}
-          onClick={onLoadMore}
-          buttonStyle="secondary-outlined"
-        >
-          Load more
+        <Button processing={loading} onClick={onLoadMore} buttonStyle="white">
+          {formatMessage(messages.inputsLoadMore)}
         </Button>
       )}
     </InputsContainer>
   );
 };
 
-export default withRouter(Inputs);
+export default withRouter(injectIntl(Inputs));
