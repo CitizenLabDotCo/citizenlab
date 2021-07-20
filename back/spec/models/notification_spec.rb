@@ -10,18 +10,9 @@ RSpec.describe Notification, type: :model do
   end
 
   describe 'all notification subclass factories' do
-    before do
-      # Make sure that we can find all notification
-      # subclasses, but without enabling eager
-      # loading for the other tests.
-      Cl2Back::Application.eager_load!
-    end
-
     it 'are valid' do
-      NotificationToSerializerMapper.map.keys.each do |notification_subclass|
-        if notification_subclass.descendants.empty?
-          expect(build(notification_subclass.model_name.element.to_sym)).to be_valid
-        end
+      NotificationService.new.notification_classes.each do |notification_subclass|
+        expect(build(notification_subclass.model_name.element.to_sym)).to be_valid
       end
     end
   end

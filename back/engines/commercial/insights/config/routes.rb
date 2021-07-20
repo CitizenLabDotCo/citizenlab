@@ -28,7 +28,15 @@ Insights::Engine.routes.draw do
             post :processed_flag, controller: 'processed_flags', action: :create
           end
 
+          resource :network, only: %i[show]
+          
           nested do
+            scope '/tasks' do
+              resources :category_suggestions, controller: 'classification_tasks', only: %i[index create destroy] do
+                delete :index, on: :collection, action: :destroy_all
+              end
+            end
+
             scope '/batch' do
               post :assign_categories, controller: 'batch_assignments'
               post :remove_categories, controller: 'batch_assignments'

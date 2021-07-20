@@ -12,7 +12,7 @@ RSpec.describe Notification, type: :model do
   describe 'make_notifications_on' do
     it 'makes a project moderation rights received notification on moderator (user) project_moderation_rights_given' do
       project = create(:project)
-      moderator = create(:moderator, project: project)
+      moderator = create(:project_moderator, projects: [project])
       activity = create(:activity, item: moderator, action: 'project_moderation_rights_given',
                                    payload: { project_id: project.id })
 
@@ -34,13 +34,13 @@ RSpec.describe Notification, type: :model do
       end
 
       context "and the user moderates the project" do
-        before { create(:moderator, project: project, manual_groups: [project.groups.first]) }
+        before { create(:project_moderator, projects: [project], manual_groups: [project.groups.first]) }
 
         it { expect(notifications.map(&:recipient_id)).to eq [] }
       end
 
       context "and the user moderates another project" do
-        let!(:user) { create(:moderator, manual_groups: [project.groups.first]) }
+        let!(:user) { create(:project_moderator, manual_groups: [project.groups.first]) }
 
         it { expect(notifications.map(&:recipient_id)).to eq [user.id] }
       end

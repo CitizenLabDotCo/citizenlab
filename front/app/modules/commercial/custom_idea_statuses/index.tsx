@@ -1,19 +1,7 @@
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import React, { ReactNode } from 'react';
+import React from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 import Tab from './admin/components/Tab';
-
-type RenderOnFeatureFlagProps = {
-  children: ReactNode;
-};
-
-const RenderOnFeatureFlag = ({ children }: RenderOnFeatureFlagProps) => {
-  const isEnabled = useFeatureFlag('custom_idea_statuses');
-  if (isEnabled) {
-    return <>{children}</>;
-  }
-  return null;
-};
+import FeatureFlag from 'components/FeatureFlag';
 
 const configuration: ModuleConfiguration = {
   routes: {
@@ -35,9 +23,9 @@ const configuration: ModuleConfiguration = {
   outlets: {
     'app.containers.Admin.ideas.tabs': (props) => {
       return (
-        <RenderOnFeatureFlag>
+        <FeatureFlag name="custom_idea_statuses">
           <Tab {...props} />
-        </RenderOnFeatureFlag>
+        </FeatureFlag>
       );
     },
   },

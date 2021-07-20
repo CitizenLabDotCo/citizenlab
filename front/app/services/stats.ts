@@ -347,8 +347,6 @@ export interface IVotesByTimeCumulative {
   };
 }
 
-export const votesByTimeCumulativeXlsxEndpoint = `${apiEndpoint}/votes_by_time_cumulative_as_xlsx`;
-
 export function votesByTimeCumulativeStream(
   streamParams: IStreamParams | null = null
 ) {
