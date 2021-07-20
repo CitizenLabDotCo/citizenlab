@@ -96,7 +96,10 @@ const Categories = ({
     const category = query.category === id ? undefined : id;
     clHistory.push({
       pathname,
-      search: stringify({ ...query, category }, { addQueryPrefix: true }),
+      search: stringify(
+        { ...query, category, page: 1 },
+        { addQueryPrefix: true }
+      ),
     });
   };
 

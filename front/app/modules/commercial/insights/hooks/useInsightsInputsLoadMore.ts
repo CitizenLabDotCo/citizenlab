@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { getPageNumberFromUrl } from 'utils/paginationUtils';
 import {
   insightsInputsStream,
   IInsightsInputData,
@@ -29,7 +28,7 @@ const useInsightsInputs = (
   const [insightsInputs, setInsightsInputs] = useState<
     IInsightsInputData[] | undefined | null | Error
   >(undefined);
-  const [lastPage, setLastPage] = useState<number | null>(null);
+  const [hasMore, setHasMore] = useState<boolean | null>(true);
   const [loading, setLoading] = useState<boolean>(true);
 
   const pageNumber = queryParameters?.pageNumber;
@@ -42,16 +41,16 @@ const useInsightsInputs = (
       queryParameters: {
         category,
         search,
-        'page[number]': queryParameters?.pageNumber || 1,
+        'page[number]': pageNumber || 1,
         'page[size]': defaultPageSize,
       },
     }).observable.subscribe((insightsInputs) => {
       setInsightsInputs((prevInsightsInputs) =>
-        !isNilOrError(prevInsightsInputs)
+        !isNilOrError(prevInsightsInputs) && pageNumber !== 1
           ? unionBy(prevInsightsInputs, insightsInputs.data, 'id')
           : insightsInputs.data
       );
-      setLastPage(getPageNumberFromUrl(insightsInputs.links?.last));
+      setHasMore(!(insightsInputs.links?.next === null));
       setLoading(false);
     });
 
@@ -59,7 +58,7 @@ const useInsightsInputs = (
   }, [viewId, pageNumber, category, search]);
 
   return {
-    lastPage,
+    hasMore,
     loading,
     list: insightsInputs,
   };
