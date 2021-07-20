@@ -3,15 +3,28 @@ import { isNilOrError } from 'utils/helperUtils';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
 import { IEventData, eventsStream, IEventsStreamParams } from 'services/events';
 
+type sort = 'newest' | 'oldest';
+
 interface InputParameters {
   projectIds?: string[];
   futureOnly?: boolean;
   pastOnly?: boolean;
   currentPage?: number;
   pageSize?: number;
+  sort?: sort;
 }
 
 const DEFAULT_PAGE_SIZE = 10;
+
+const getStart = (event: IEventData) => event.attributes.start_at;
+
+const sortEvents = (_events: IEventData[], sort: sort) => {
+  const events = [..._events]; // _events is immutable
+
+  return sort === 'newest'
+    ? events.sort((a, b) => (getStart(a) < getStart(b) ? 1 : -1))
+    : events.sort((a, b) => (getStart(b) < getStart(a) ? 1 : -1));
+};
 
 export default function useEvents(parameters: InputParameters) {
   const [events, setEvents] = useState<IEventData[] | undefined | null | Error>(
@@ -67,7 +80,7 @@ export default function useEvents(parameters: InputParameters) {
 
         const lastPageNumber = getPageNumberFromUrl(response.links?.last) ?? 1;
 
-        setEvents(response.data);
+        setEvents(sortEvents(response.data, parameters.sort ?? 'oldest'));
         setLastPage(lastPageNumber);
       }
     );

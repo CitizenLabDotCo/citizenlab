@@ -36,7 +36,10 @@ interface Props {
 
 const EventsContainer = memo<Props>(({ projectId, className }) => {
   const project = useProject({ projectId });
-  const { events } = useEvents({ projectIds: [projectId] });
+  const { events } = useEvents({
+    projectIds: [projectId],
+    sort: 'newest',
+  });
 
   if (!isNilOrError(project) && !isNilOrError(events) && events.length > 0) {
     return (

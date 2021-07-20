@@ -71,6 +71,7 @@ const EventsViewer = memo<Props>(
     } = useEvents({
       futureOnly: eventsTime === 'future',
       pastOnly: eventsTime === 'past',
+      sort: eventsTime === 'past' ? 'newest' : 'oldest',
     });
 
     const eventsLoading = isNil(events);

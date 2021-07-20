@@ -87,6 +87,7 @@ const ProjectsShowPage = memo<Props>(({ project }) => {
   const phases = usePhases(projectId);
   const { events } = useEvents({
     projectIds: projectId ? [projectId] : undefined,
+    sort: 'newest',
   });
   const user = useAuthUser();
 
