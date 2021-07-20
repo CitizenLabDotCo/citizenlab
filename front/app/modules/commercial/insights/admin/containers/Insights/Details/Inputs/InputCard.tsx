@@ -1,8 +1,8 @@
 import React from 'react';
+
+// styles
 import styled from 'styled-components';
-import { IInsightsInputData } from 'modules/commercial/insights/services/insightsInputs';
 import { colors, fontSizes } from 'utils/styleUtils';
-import Button from 'components/UI/Button';
 
 // intl
 import { injectIntl } from 'utils/cl-intl';
@@ -14,9 +14,13 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import T from 'components/T';
+import Button from 'components/UI/Button';
 
 // hooks
 import useIdea from 'hooks/useIdea';
+
+// types
+import { IInsightsInputData } from 'modules/commercial/insights/services/insightsInputs';
 
 type InputCardProps = { input: IInsightsInputData } & InjectedIntlProps;
 
@@ -26,6 +30,9 @@ const Container = styled.div`
   border: 1px solid ${colors.separation};
   padding: 12px 28px;
   margin-bottom: 8px;
+  .buttonContainer {
+    display: flex;
+  }
 `;
 
 const InputTitle = styled.h2`
@@ -55,7 +62,7 @@ const InputCard = ({ input, intl: { formatMessage } }: InputCardProps) => {
       <InputBody>
         <T value={idea.attributes.body_multiloc} supportHtml maxLength={200} />
       </InputBody>
-      <div style={{ display: 'flex' }}>
+      <div className="buttonContainer">
         <Button
           buttonStyle="text"
           fontWeight="bold"

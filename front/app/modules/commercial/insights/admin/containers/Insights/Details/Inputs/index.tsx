@@ -1,14 +1,23 @@
 import React, { useCallback } from 'react';
 import { withRouter, WithRouterProps } from 'react-router';
+
+// utils
 import { isNilOrError } from 'utils/helperUtils';
-import styled from 'styled-components';
-import Search from 'components/UI/SearchInput';
-import { colors } from 'utils/styleUtils';
-import useInsightsInputsLoadMore from 'modules/commercial/insights/hooks/useInsightsInputsLoadMore';
-import InputCard from './InputCard';
-import Button from 'components/UI/Button';
 import clHistory from 'utils/cl-router/history';
 import { stringify } from 'qs';
+
+// styles
+import styled from 'styled-components';
+import { colors } from 'utils/styleUtils';
+
+// components
+import Search from 'components/UI/SearchInput';
+import InputCard from './InputCard';
+import Empty from './Empty';
+import Button from 'components/UI/Button';
+
+// hooks
+import useInsightsInputsLoadMore from 'modules/commercial/insights/hooks/useInsightsInputsLoadMore';
 
 // intl
 import { injectIntl } from 'utils/cl-intl';
@@ -42,16 +51,18 @@ const Inputs = ({
     pageNumber: page,
   });
 
-  // Search
-  const onSearch = useCallback((search: string) => {
-    clHistory.replace({
-      pathname,
-      search: stringify(
-        { ...query, search, page: 1 },
-        { addQueryPrefix: true }
-      ),
-    });
-  }, []);
+  const onSearch = useCallback(
+    (search: string) => {
+      clHistory.replace({
+        pathname,
+        search: stringify(
+          { category, search, page: 1 },
+          { addQueryPrefix: true }
+        ),
+      });
+    },
+    [category, pathname]
+  );
 
   const onLoadMore = () => {
     clHistory.replace({
@@ -70,9 +81,11 @@ const Inputs = ({
   return (
     <InputsContainer>
       <StyledSearch onChange={onSearch} size="small" />
-      {list.map((input) => (
-        <InputCard key={input.id} input={input} />
-      ))}
+      {list.length === 0 ? (
+        <Empty />
+      ) : (
+        list.map((input) => <InputCard key={input.id} input={input} />)
+      )}
       {hasMore && (
         <Button processing={loading} onClick={onLoadMore} buttonStyle="white">
           {formatMessage(messages.inputsLoadMore)}
