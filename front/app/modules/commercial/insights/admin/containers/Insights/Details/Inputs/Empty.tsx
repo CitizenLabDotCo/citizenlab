@@ -20,7 +20,7 @@ const Container = styled.div`
 
 const Empty = ({ intl: { formatMessage } }: InjectedIntlProps) => {
   return (
-    <Container>
+    <Container data-testid="insightsDetailsEmpty">
       <h2>{formatMessage(messages.inputsEmptyTitle)}</h2>
       <p>{formatMessage(messages.inputsEmptyDescription)}</p>
     </Container>

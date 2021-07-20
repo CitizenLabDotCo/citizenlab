@@ -10,6 +10,8 @@ import {
 import * as service from 'modules/commercial/insights/services/insightsInputs';
 import useInsightsInputs from 'modules/commercial/insights/hooks/useInsightsInputs';
 import * as batchService from 'modules/commercial/insights/services/batchAssignment';
+import inputs from 'modules/commercial/insights/fixtures/inputs';
+import categories from 'modules/commercial/insights/fixtures/categories';
 
 import clHistory from 'utils/cl-router/history';
 
@@ -28,53 +30,7 @@ const viewId = '1';
 let mockInputData = {
   currentPage: 1,
   lastPage: 2,
-  list: [
-    {
-      id: '4e9ac1f1-6928-45e9-9ac9-313e86ad636f',
-      type: 'input',
-      relationships: {
-        source: {
-          data: {
-            id: '4e9ac1f1-6928-45e9-9ac9-313e86ad636f',
-            type: 'idea',
-          },
-        },
-        categories: {
-          data: [
-            {
-              id: '94a649b5-23fe-4d47-9165-9beceef2dcad',
-              type: 'category',
-            },
-            {
-              id: '94a649b5-23fe-4d47-9165-9becedfg45sd',
-              type: 'category',
-            },
-          ],
-        },
-        suggested_categories: {
-          data: [],
-        },
-      },
-    },
-    {
-      id: '54438f73-12f4-4b16-84f3-a55bd118de7e',
-      type: 'input',
-      relationships: {
-        source: {
-          data: {
-            id: '54438f73-12f4-4b16-84f3-a55bd118de7e',
-            type: 'idea',
-          },
-        },
-        categories: {
-          data: [],
-        },
-        suggested_categories: {
-          data: [],
-        },
-      },
-    },
-  ],
+  list: inputs,
 };
 
 const mockIdeaData = {
@@ -85,29 +41,9 @@ const mockIdeaData = {
   },
 };
 
-const mockCategoryData = {
-  id: '94a649b5-23fe-4d47-9165-9beceef2dcad',
-  type: 'category',
-  attributes: {
-    name: 'Category 1',
-  },
-};
-const mockCategoriesData = [
-  {
-    id: '3612e489-a631-4e7d-8bdb-63be407ea123',
-    type: 'category',
-    attributes: {
-      name: 'Category 1',
-    },
-  },
-  {
-    id: '26739409-a631-4e7d-8bdb-676308464923',
-    type: 'category',
-    attributes: {
-      name: 'Category 2',
-    },
-  },
-];
+const mockCategoryData = categories[0];
+
+const mockCategoriesData = categories;
 
 let mockLocationData = { pathname: '', query: {} };
 
@@ -127,7 +63,7 @@ jest.mock('modules/commercial/insights/hooks/useInsightsInputs', () => {
   return jest.fn(() => mockInputData);
 });
 
-jest.mock('hooks/useLocale', () => jest.fn(() => 'en'));
+jest.mock('hooks/useLocale');
 
 jest.mock('utils/cl-intl');
 
@@ -163,7 +99,9 @@ describe('Insights Input Table', () => {
   describe('Rows general display and function', () => {
     it('renders correct number of rows', () => {
       render(<InputsTable />);
-      expect(screen.getAllByTestId('insightsInputsTableRow')).toHaveLength(2);
+      expect(screen.getAllByTestId('insightsInputsTableRow')).toHaveLength(
+        mockInputData.list.length
+      );
     });
     it('adds previewedInputId to url correctly on row click', () => {
       render(<InputsTable />);

@@ -9,11 +9,11 @@ type QueryParameters = {
   search: string;
 };
 
-const useInsightsCategories = (
+const useInsightsInputsCount = (
   viewId: string,
   queryParameters?: Partial<QueryParameters>
 ) => {
-  const [insightsCategories, setInsightsCategories] = useState<
+  const [insightsInputsCount, setInsightsInputsCount] = useState<
     IInsightsInputsCount | undefined | null | Error
   >(undefined);
 
@@ -26,14 +26,14 @@ const useInsightsCategories = (
         category,
         search,
       },
-    }).observable.subscribe((insightsCategories) => {
-      setInsightsCategories(insightsCategories);
+    }).observable.subscribe((insightsInputsCount) => {
+      setInsightsInputsCount(insightsInputsCount);
     });
 
     return () => subscription.unsubscribe();
   }, [viewId, category, search]);
 
-  return insightsCategories;
+  return insightsInputsCount;
 };
 
-export default useInsightsCategories;
+export default useInsightsInputsCount;

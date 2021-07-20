@@ -55,7 +55,7 @@ const InputCard = ({ input, intl: { formatMessage } }: InputCardProps) => {
     return null;
   }
   return (
-    <Container>
+    <Container data-testid="insightsInputCard">
       <InputTitle>
         <T value={idea.attributes.title_multiloc} />
       </InputTitle>

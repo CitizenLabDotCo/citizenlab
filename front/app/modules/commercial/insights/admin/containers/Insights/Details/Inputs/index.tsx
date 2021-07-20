@@ -79,7 +79,7 @@ const Inputs = ({
   }
 
   return (
-    <InputsContainer>
+    <InputsContainer data-testid="insightsDetailsInputs">
       <StyledSearch onChange={onSearch} size="small" />
       {list.length === 0 ? (
         <Empty />
