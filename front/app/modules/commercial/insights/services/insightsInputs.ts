@@ -20,14 +20,14 @@ export interface IInsightsInput {
 export interface IInsightsInputLinks {
   self: string;
   first: string;
-  prev: string;
-  next: string;
+  prev: string | null;
+  next: string | null;
   last: string;
 }
 
 export interface IInsightsInputs {
   data: IInsightsInputData[];
-  links?: IInsightsInputLinks;
+  links: IInsightsInputLinks;
 }
 
 const getInsightsInputsEndpoint = (viewId: string) =>

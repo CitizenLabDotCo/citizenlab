@@ -1,19 +1,9 @@
 import React from 'react';
 import Inputs from './';
 
-import {
-  render,
-  screen,
-  // fireEvent,
-  // within,
-  // act,
-  // waitFor,
-} from 'utils/testUtils/rtl';
-// import * as service from 'modules/commercial/insights/services/insightsInputs';
+import { render, screen } from 'utils/testUtils/rtl';
 import useInsightsInputsLoadMore from 'modules/commercial/insights/hooks/useInsightsInputsLoadMore';
 import inputs from 'modules/commercial/insights/fixtures/inputs';
-
-// import clHistory from 'utils/cl-router/history';
 
 jest.mock('modules/commercial/insights/services/insightsInputs', () => ({
   deleteInsightsInputCategory: jest.fn(),

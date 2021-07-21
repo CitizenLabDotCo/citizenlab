@@ -4,7 +4,7 @@ import {
   IInsightsInputsCount,
 } from '../services/insightsInputsCount';
 
-type QueryParameters = {
+export type QueryParameters = {
   category: string;
   search: string;
 };

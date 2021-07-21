@@ -14,13 +14,6 @@ export type QueryParameters = {
   search: string;
 };
 
-export interface IUseInpightsInputsOutput {
-  list: IInsightsInputData[] | undefined | null;
-  loading: boolean;
-  onChangePage: (pageNumber: number) => void;
-  currentPage: number;
-}
-
 const useInsightsInputs = (
   viewId: string,
   queryParameters?: Partial<QueryParameters>
@@ -28,7 +21,7 @@ const useInsightsInputs = (
   const [insightsInputs, setInsightsInputs] = useState<
     IInsightsInputData[] | undefined | null | Error
   >(undefined);
-  const [hasMore, setHasMore] = useState<boolean | null>(true);
+  const [hasMore, setHasMore] = useState<boolean | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
   const pageNumber = queryParameters?.pageNumber;
@@ -50,7 +43,7 @@ const useInsightsInputs = (
           ? unionBy(prevInsightsInputs, insightsInputs.data, 'id')
           : insightsInputs.data
       );
-      setHasMore(!(insightsInputs.links?.next === null));
+      setHasMore(!isNilOrError(insightsInputs.links?.next));
       setLoading(false);
     });
 
