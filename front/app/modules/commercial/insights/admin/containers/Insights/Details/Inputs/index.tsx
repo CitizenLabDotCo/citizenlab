@@ -43,12 +43,12 @@ const Inputs = ({
 }: WithRouterProps & InjectedIntlProps) => {
   const category = query.category;
   const search = query.search;
-  const page = query.page ? Number(query.page) : 1;
+  const pageNumber = query.pageNumber ? Number(query.pageNumber) : 1;
 
   const { list, loading, hasMore } = useInsightsInputsLoadMore(viewId, {
     category,
     search,
-    pageNumber: page,
+    pageNumber,
   });
 
   const onSearch = useCallback(
@@ -56,7 +56,7 @@ const Inputs = ({
       clHistory.replace({
         pathname,
         search: stringify(
-          { category, search, page: 1 },
+          { category, search, pageNumber: 1 },
           { addQueryPrefix: true }
         ),
       });
@@ -68,7 +68,7 @@ const Inputs = ({
     clHistory.replace({
       pathname,
       search: stringify(
-        { ...query, search, page: page + 1 },
+        { ...query, search, pageNumber: pageNumber + 1 },
         { addQueryPrefix: true }
       ),
     });
@@ -87,9 +87,11 @@ const Inputs = ({
         list.map((input) => <InputCard key={input.id} input={input} />)
       )}
       {hasMore && (
-        <Button processing={loading} onClick={onLoadMore} buttonStyle="white">
-          {formatMessage(messages.inputsLoadMore)}
-        </Button>
+        <div data-testid="insightsDetailsLoadMore">
+          <Button processing={loading} onClick={onLoadMore} buttonStyle="white">
+            {formatMessage(messages.inputsLoadMore)}
+          </Button>
+        </div>
       )}
     </InputsContainer>
   );

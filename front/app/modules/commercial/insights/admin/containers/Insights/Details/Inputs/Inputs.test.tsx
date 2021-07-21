@@ -10,7 +10,7 @@ import {
   // waitFor,
 } from 'utils/testUtils/rtl';
 // import * as service from 'modules/commercial/insights/services/insightsInputs';
-// import useInsightsInputsLoadMore from 'modules/commercial/insights/hooks/useInsightsInputsLoadMore';
+import useInsightsInputsLoadMore from 'modules/commercial/insights/hooks/useInsightsInputsLoadMore';
 import inputs from 'modules/commercial/insights/fixtures/inputs';
 
 // import clHistory from 'utils/cl-router/history';
@@ -27,8 +27,7 @@ jest.mock('modules/commercial/insights/services/batchAssignment', () => ({
 const viewId = '1';
 
 let mockInputsData = {
-  currentPage: 1,
-  lastPage: 2,
+  hasMore: true,
   list: inputs,
 };
 
@@ -40,7 +39,7 @@ const mockIdeaData = {
   },
 };
 
-const mockLocationData = { pathname: '', query: {} };
+let mockLocationData = { pathname: '', query: {} };
 
 jest.mock('hooks/useIdea', () => {
   return jest.fn(() => mockIdeaData);
@@ -78,10 +77,43 @@ describe('Insights Details Inputs', () => {
     render(<Inputs />);
     expect(screen.getByTestId('insightsDetailsInputs')).toBeInTheDocument();
   });
+  it('calls useInsightsInputsLoadMore with correct arguments', () => {
+    mockLocationData = {
+      pathname: '',
+      query: { search: 'search', pageNumber: 1, category: 'category' },
+    };
+    render(<Inputs />);
+    expect(useInsightsInputsLoadMore).toHaveBeenCalledWith(
+      viewId,
+      mockLocationData.query
+    );
+  });
+  it('renders correct number of input cards', () => {
+    render(<Inputs />);
+    expect(screen.getAllByTestId('insightsInputCard')).toHaveLength(
+      mockInputsData.list.length
+    );
+  });
+
+  it('shows load more button when there is a next page', () => {
+    render(<Inputs />);
+    expect(screen.getByTestId('insightsDetailsLoadMore')).toBeInTheDocument();
+  });
+
+  it('does not show load more button when there is no next page', () => {
+    mockInputsData = {
+      hasMore: false,
+      list: inputs,
+    };
+    render(<Inputs />);
+    expect(
+      screen.queryByTestId('insightsDetailsLoadMore')
+    ).not.toBeInTheDocument();
+  });
+
   it('renders empty state', () => {
     mockInputsData = {
-      currentPage: 1,
-      lastPage: 1,
+      hasMore: false,
       list: [],
     };
     render(<Inputs />);
