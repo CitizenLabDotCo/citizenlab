@@ -15,6 +15,12 @@ export type QueryParameters = {
   sort: 'approval' | '-approval';
 };
 
+export interface IUseInpightsInputsOutput {
+  list: IInsightsInputData[] | Error | undefined | null;
+  loading: boolean;
+  currentPage: number;
+}
+
 const useInsightsInputs = (
   viewId: string,
   queryParameters?: Partial<QueryParameters>

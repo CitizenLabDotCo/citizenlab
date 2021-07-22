@@ -2,22 +2,13 @@ import React from 'react';
 import Inputs from './';
 
 import { fireEvent, render, screen, within } from 'utils/testUtils/rtl';
-import useInsightsInputsLoadMore from 'modules/commercial/insights/hooks/useInsightsInputsLoadMore';
 import inputs from 'modules/commercial/insights/fixtures/inputs';
 import clHistory from 'utils/cl-router/history';
-
-jest.mock('modules/commercial/insights/services/insightsInputs', () => ({
-  deleteInsightsInputCategory: jest.fn(),
-}));
-
-jest.mock('modules/commercial/insights/services/batchAssignment', () => ({
-  batchAssignCategories: jest.fn(),
-  batchUnassignCategories: jest.fn(),
-}));
 
 const viewId = '1';
 
 let mockInputsData = {
+  loading: false,
   hasMore: true,
   list: inputs,
 };
@@ -30,7 +21,7 @@ const mockIdeaData = {
   },
 };
 
-let mockLocationData = { pathname: '', query: {} };
+const mockLocationData = { pathname: '', query: {} };
 
 jest.mock('hooks/useIdea', () => {
   return jest.fn(() => mockIdeaData);
@@ -69,12 +60,12 @@ const openPreview = jest.fn();
 
 describe('Insights Details Inputs', () => {
   it('renders', () => {
-    render(<Inputs openPreview={openPreview} />);
+    render(<Inputs openPreview={openPreview} inputs={mockInputsData} />);
     expect(screen.getByTestId('insightsDetailsInputs')).toBeInTheDocument();
   });
 
   it('adds previewedInputId to url on input card click', () => {
-    render(<Inputs openPreview={openPreview} />);
+    render(<Inputs openPreview={openPreview} inputs={mockInputsData} />);
     fireEvent.click(
       within(screen.getAllByTestId('insightsInputCard')[0]).getByRole('button')
     );
@@ -85,27 +76,15 @@ describe('Insights Details Inputs', () => {
     });
   });
 
-  it('calls useInsightsInputsLoadMore with correct arguments', () => {
-    mockLocationData = {
-      pathname: '',
-      query: { search: 'search', pageNumber: 1, category: 'category' },
-    };
-    render(<Inputs openPreview={openPreview} />);
-    expect(useInsightsInputsLoadMore).toHaveBeenCalledWith(
-      viewId,
-      mockLocationData.query
-    );
-  });
-
   it('renders correct number of input cards', () => {
-    render(<Inputs openPreview={openPreview} />);
+    render(<Inputs openPreview={openPreview} inputs={mockInputsData} />);
     expect(screen.getAllByTestId('insightsInputCard')).toHaveLength(
       mockInputsData.list.length
     );
   });
 
   it('shows load more button when there is a next page', () => {
-    render(<Inputs openPreview={openPreview} />);
+    render(<Inputs openPreview={openPreview} inputs={mockInputsData} />);
     expect(screen.getByTestId('insightsDetailsLoadMore')).toBeInTheDocument();
   });
 
@@ -113,8 +92,9 @@ describe('Insights Details Inputs', () => {
     mockInputsData = {
       hasMore: false,
       list: inputs,
+      loading: false,
     };
-    render(<Inputs openPreview={openPreview} />);
+    render(<Inputs openPreview={openPreview} inputs={mockInputsData} />);
     expect(
       screen.queryByTestId('insightsDetailsLoadMore')
     ).not.toBeInTheDocument();
@@ -124,8 +104,11 @@ describe('Insights Details Inputs', () => {
     mockInputsData = {
       hasMore: false,
       list: [],
+      loading: false,
     };
-    render(<Inputs openPreview={openPreview} />);
+    render(<Inputs openPreview={openPreview} inputs={mockInputsData} />);
     expect(screen.getByTestId('insightsDetailsEmpty')).toBeInTheDocument();
   });
 });
+
+// test loader

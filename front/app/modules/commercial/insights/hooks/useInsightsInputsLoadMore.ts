@@ -14,6 +14,12 @@ export type QueryParameters = {
   search: string;
 };
 
+export interface IUseInpightsInputsLoadMoreOutput {
+  list: IInsightsInputData[] | Error | undefined | null;
+  loading: boolean;
+  hasMore: boolean | null;
+}
+
 const useInsightsInputs = (
   viewId: string,
   queryParameters?: Partial<QueryParameters>

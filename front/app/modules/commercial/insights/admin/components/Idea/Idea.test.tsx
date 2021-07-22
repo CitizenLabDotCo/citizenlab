@@ -34,7 +34,7 @@ describe('Insights Idea', () => {
   it('renders Idea', () => {
     render(<Idea ideaId={ideaId} />);
     expect(screen.getByTestId('insightsIdea')).toBeInTheDocument();
-    expect(screen.getByText('insightsIdeaTitle')).toBeInTheDocument();
+    expect(screen.getByTestId('insightsIdeaTitle')).toBeInTheDocument();
     expect(screen.getByTestId('insightsIdeaBody')).toBeInTheDocument();
   });
   it('calls useIdea with correct idea id', () => {

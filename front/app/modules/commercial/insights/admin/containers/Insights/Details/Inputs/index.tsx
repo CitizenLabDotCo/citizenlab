@@ -17,7 +17,7 @@ import Empty from './Empty';
 import Button from 'components/UI/Button';
 
 // hooks
-import useInsightsInputsLoadMore from 'modules/commercial/insights/hooks/useInsightsInputsLoadMore';
+import { IUseInpightsInputsLoadMoreOutput } from 'modules/commercial/insights/hooks/useInsightsInputsLoadMore';
 
 // intl
 import { injectIntl } from 'utils/cl-intl';
@@ -38,24 +38,21 @@ const StyledSearch = styled(Search)`
 
 type InputsProps = {
   openPreview: () => void;
+  inputs: IUseInpightsInputsLoadMoreOutput;
 } & WithRouterProps &
   InjectedIntlProps;
 
 const Inputs = ({
-  params: { viewId },
   location: { pathname, query },
   intl: { formatMessage },
   openPreview,
+  inputs,
 }: InputsProps) => {
   const category = query.category;
   const search = query.search;
   const pageNumber = query.pageNumber ? Number(query.pageNumber) : 1;
 
-  const { list, loading, hasMore } = useInsightsInputsLoadMore(viewId, {
-    category,
-    search,
-    pageNumber,
-  });
+  const { list, loading, hasMore } = inputs;
 
   const onSearch = useCallback(
     (search: string) => {
@@ -80,7 +77,7 @@ const Inputs = ({
     });
   };
 
-  const onOpenPreview = (id) => {
+  const onOpenPreview = (id: string) => {
     openPreview();
     clHistory.replace({
       pathname,
