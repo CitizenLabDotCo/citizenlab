@@ -757,7 +757,7 @@
   "app.containers.Admin.Insights.Edit.notCategorized": "Não categorizado",
   "app.containers.Admin.Insights.Edit.notCategorizedTooltip": "Isto lista todas as entradas de processos anteriores que não tenham sido atribuídas a uma categoria. As entradas recentemente adicionadas NÃO são mostradas aqui.",
   "app.containers.Admin.Insights.Edit.recentlyPosted": "Recentemente publicado",
-  "app.containers.Admin.Insights.Edit.recentlyPostedTooltip": "This lists all recently added input, and has not yet been processed for categorization.",
+  "app.containers.Admin.Insights.Edit.recentlyPostedTooltip": "Isto lista todas as entradas recentemente adicionadas, e que ainda não foram processadas para categorização.",
   "app.containers.Admin.Insights.Edit.renameCategoryModalCancel": "Cancelado",
   "app.containers.Admin.Insights.Edit.renameCategoryModalNameLabel": "Nome",
   "app.containers.Admin.Insights.Edit.renameCategoryModalSave": "Salvo",
