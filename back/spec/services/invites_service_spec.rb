@@ -97,7 +97,7 @@ describe InvitesService do
         {email: '   user@domain.net'}
       ]}
 
-      it "fails with invalid_email error" do
+      it "trims the spaces" do
         expect { service.bulk_create_xlsx(xlsx) }.to change { User.count }.from(0).to(1)
         expect(User.first.email).to eq('user@domain.net')
       end
@@ -108,7 +108,7 @@ describe InvitesService do
         {email: 'user@domain.net   '}
       ]}
 
-      it "fails with invalid_email error" do
+      it "trims the spaces" do
         expect { service.bulk_create_xlsx(xlsx) }.to change { User.count }.from(0).to(1)
         expect(User.first.email).to eq('user@domain.net')
       end
