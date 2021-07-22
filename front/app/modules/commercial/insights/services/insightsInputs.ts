@@ -75,6 +75,7 @@ export async function deleteInsightsInputCategory(
     partialApiEndpoint: [
       `${API_PATH}/${getInsightsInputsEndpoint(insightsViewId)}`,
       `insights/views/${insightsViewId}/categories`,
+      `insights/views/${insightsViewId}/stats/inputs_count`,
     ],
   });
 
@@ -97,6 +98,7 @@ export async function addInsightsInputCategory(
     partialApiEndpoint: [
       `${API_PATH}/${getInsightsInputsEndpoint(insightsViewId)}`,
       `insights/views/${insightsViewId}/categories`,
+      `insights/views/${insightsViewId}/stats/inputs_count`,
     ],
   });
 
