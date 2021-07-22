@@ -23,7 +23,6 @@ import { media, fontSizes, colors } from 'utils/styleUtils';
 
 // other
 import { isNilOrError } from 'utils/helperUtils';
-import redirectToNotFoundPage from 'utils/cl-router/redirectToNotFoundPage';
 
 const Container = styled.main``;
 
@@ -78,36 +77,28 @@ const Padding = styled.div`
 
 interface Props {}
 
-const InitiativeIndexPage = memo<Props>(() => {
-  const initiativesEnabled = useFeatureFlag('initiatives');
-  const locale = useLocale();
+const InitiativeIndexPage = memo<Props>(() => (
+  <>
+    <InitiativesIndexMeta />
+    <Container>
+      <InitiativesHeader />
+      <StyledContentContainer maxWidth="100%">
+        <SuccessStories />
+        <Padding />
+        <InitiativeCards
+          invisibleTitleMessage={messages.invisibleTitleInitiativeCards}
+        />
+      </StyledContentContainer>
+      <FooterBanner>
+        <FooterMessage>
+          <FormattedMessage {...messages.footer} />
+        </FooterMessage>
 
-  if (isNilOrError(locale)) return null;
-  if (!initiativesEnabled) return redirectToNotFoundPage(locale, 'initiatives');
-
-  return (
-    <>
-      <InitiativesIndexMeta />
-      <Container>
-        <InitiativesHeader />
-        <StyledContentContainer maxWidth="100%">
-          <SuccessStories />
-          <Padding />
-          <InitiativeCards
-            invisibleTitleMessage={messages.invisibleTitleInitiativeCards}
-          />
-        </StyledContentContainer>
-        <FooterBanner>
-          <FooterMessage>
-            <FormattedMessage {...messages.footer} />
-          </FooterMessage>
-
-          <InitiativeButton buttonStyle="white" location="initiatives_footer" />
-        </FooterBanner>
-        <CityLogoSection />
-      </Container>
-    </>
-  );
-});
+        <InitiativeButton buttonStyle="white" location="initiatives_footer" />
+      </FooterBanner>
+      <CityLogoSection />
+    </Container>
+  </>
+));
 
 export default InitiativeIndexPage;
