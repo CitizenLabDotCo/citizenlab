@@ -81,7 +81,7 @@ export async function addEvent(
   projectId: string,
   object: IUpdatedEventProperties
 ) {
-  const response = streams.add<IEvent>(
+  const response = await streams.add<IEvent>(
     `${API_PATH}/projects/${projectId}/events`,
     {
       event: object,
@@ -89,12 +89,18 @@ export async function addEvent(
   );
 
   await streams.fetchAllWith({
-    partialApiEndpoint: [apiEndpoint],
+    apiEndpoint: [apiEndpoint],
   });
 
   return response;
 }
 
-export function deleteEvent(eventId: string) {
-  return streams.delete(`${apiEndpoint}/${eventId}`, eventId);
+export async function deleteEvent(eventId: string) {
+  const response = await streams.delete(`${apiEndpoint}/${eventId}`, eventId);
+
+  await streams.fetchAllWith({
+    apiEndpoint: [apiEndpoint],
+  });
+
+  return response;
 }
