@@ -63,7 +63,7 @@
   "app.components.ConsentManager.Banner.accept": "Aanvaarden",
   "app.components.ConsentManager.Banner.ariaButtonClose": "Aanvaard het beleid en sluit de banner",
   "app.components.ConsentManager.Banner.close": "Sluiten",
-  "app.components.ConsentManager.Banner.mainText": "Door te navigeren, ga je akkoord met ons {policyLink}.",
+  "app.components.ConsentManager.Banner.mainText": "Dit platform maakt gebruik van cookies in overeenstemming met ons {policyLink}.",
   "app.components.ConsentManager.Banner.manage": "Beheren",
   "app.components.ConsentManager.Banner.noDestinations": "Er zijn geen trackers actief op dit platform",
   "app.components.ConsentManager.Banner.policyLink": "Cookiebeleid",
