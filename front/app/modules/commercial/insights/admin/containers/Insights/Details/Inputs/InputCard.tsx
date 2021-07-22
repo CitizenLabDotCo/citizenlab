@@ -12,8 +12,6 @@ import messages from '../../messages';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import clHistory from 'utils/cl-router/history';
-import { stringify } from 'qs';
 
 // components
 import T from 'components/T';
@@ -24,9 +22,6 @@ import useIdea from 'hooks/useIdea';
 
 // types
 import { IInsightsInputData } from 'modules/commercial/insights/services/insightsInputs';
-
-type InputCardProps = { input: IInsightsInputData } & InjectedIntlProps &
-  WithRouterProps;
 
 const Container = styled.div<{ isActive: boolean }>`
   border-radius: 3px;
@@ -53,10 +48,17 @@ const InputBody = styled.div`
   font-size: ${fontSizes.small}px;
 `;
 
+type InputCardProps = {
+  onReadMore: (id: string) => void;
+  input: IInsightsInputData;
+} & InjectedIntlProps &
+  WithRouterProps;
+
 const InputCard = ({
   input,
   intl: { formatMessage },
-  location: { pathname, query },
+  location: { query },
+  onReadMore,
 }: InputCardProps) => {
   const idea = useIdea({ ideaId: input.relationships?.source.data.id });
 
@@ -65,13 +67,7 @@ const InputCard = ({
   }
 
   const handleReadMoreClick = () => {
-    clHistory.replace({
-      pathname,
-      search: stringify(
-        { ...query, previewedInputId: idea.id, pageNumber: 1 },
-        { addQueryPrefix: true }
-      ),
-    });
+    onReadMore(idea.id);
   };
 
   return (

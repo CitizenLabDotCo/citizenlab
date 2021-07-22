@@ -36,11 +36,17 @@ const StyledSearch = styled(Search)`
   margin-bottom: 20px;
 `;
 
+type InputsProps = {
+  openPreview: () => void;
+} & WithRouterProps &
+  InjectedIntlProps;
+
 const Inputs = ({
   params: { viewId },
   location: { pathname, query },
   intl: { formatMessage },
-}: WithRouterProps & InjectedIntlProps) => {
+  openPreview,
+}: InputsProps) => {
   const category = query.category;
   const search = query.search;
   const pageNumber = query.pageNumber ? Number(query.pageNumber) : 1;
@@ -74,6 +80,17 @@ const Inputs = ({
     });
   };
 
+  const onOpenPreview = (id) => {
+    openPreview();
+    clHistory.replace({
+      pathname,
+      search: stringify(
+        { ...query, previewedInputId: id, pageNumber: 1 },
+        { addQueryPrefix: true }
+      ),
+    });
+  };
+
   if (isNilOrError(list)) {
     return null;
   }
@@ -84,7 +101,9 @@ const Inputs = ({
       {list.length === 0 ? (
         <Empty />
       ) : (
-        list.map((input) => <InputCard key={input.id} input={input} />)
+        list.map((input) => (
+          <InputCard key={input.id} input={input} onReadMore={onOpenPreview} />
+        ))
       )}
       {hasMore && (
         <div data-testid="insightsDetailsLoadMore">

@@ -42,7 +42,7 @@ jest.mock('modules/commercial/insights/hooks/useInsightsInputsLoadMore', () => {
   return jest.fn(() => mockInputsData);
 });
 
-jest.mock('hooks/useLocale', () => jest.fn(() => 'en'));
+jest.mock('hooks/useLocale');
 
 jest.mock('utils/cl-intl');
 
@@ -65,17 +65,20 @@ jest.mock('react-router', () => {
 
 jest.mock('utils/cl-router/history');
 
+const openPreview = jest.fn();
+
 describe('Insights Details Inputs', () => {
   it('renders', () => {
-    render(<Inputs />);
+    render(<Inputs openPreview={openPreview} />);
     expect(screen.getByTestId('insightsDetailsInputs')).toBeInTheDocument();
   });
 
   it('adds previewedInputId to url on input card click', () => {
-    render(<Inputs />);
+    render(<Inputs openPreview={openPreview} />);
     fireEvent.click(
       within(screen.getAllByTestId('insightsInputCard')[0]).getByRole('button')
     );
+    expect(openPreview).toHaveBeenCalled();
     expect(clHistory.replace).toHaveBeenCalledWith({
       pathname: '',
       search: `?previewedInputId=${mockIdeaData.id}&pageNumber=1`,
@@ -87,7 +90,7 @@ describe('Insights Details Inputs', () => {
       pathname: '',
       query: { search: 'search', pageNumber: 1, category: 'category' },
     };
-    render(<Inputs />);
+    render(<Inputs openPreview={openPreview} />);
     expect(useInsightsInputsLoadMore).toHaveBeenCalledWith(
       viewId,
       mockLocationData.query
@@ -95,14 +98,14 @@ describe('Insights Details Inputs', () => {
   });
 
   it('renders correct number of input cards', () => {
-    render(<Inputs />);
+    render(<Inputs openPreview={openPreview} />);
     expect(screen.getAllByTestId('insightsInputCard')).toHaveLength(
       mockInputsData.list.length
     );
   });
 
   it('shows load more button when there is a next page', () => {
-    render(<Inputs />);
+    render(<Inputs openPreview={openPreview} />);
     expect(screen.getByTestId('insightsDetailsLoadMore')).toBeInTheDocument();
   });
 
@@ -111,7 +114,7 @@ describe('Insights Details Inputs', () => {
       hasMore: false,
       list: inputs,
     };
-    render(<Inputs />);
+    render(<Inputs openPreview={openPreview} />);
     expect(
       screen.queryByTestId('insightsDetailsLoadMore')
     ).not.toBeInTheDocument();
@@ -122,7 +125,7 @@ describe('Insights Details Inputs', () => {
       hasMore: false,
       list: [],
     };
-    render(<Inputs />);
+    render(<Inputs openPreview={openPreview} />);
     expect(screen.getByTestId('insightsDetailsEmpty')).toBeInTheDocument();
   });
 });

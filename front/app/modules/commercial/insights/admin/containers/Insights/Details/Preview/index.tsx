@@ -1,7 +1,8 @@
 import React from 'react';
 import { withRouter, WithRouterProps } from 'react-router';
-import clHistory from 'utils/cl-router/history';
-import { stringify } from 'qs';
+import useInsightsInput from 'modules/commercial/insights/hooks/useInsightsInput';
+import { Spinner } from 'cl2-component-library';
+import { isNilOrError } from 'utils/helperUtils';
 
 // styles
 import styled from 'styled-components';
@@ -18,7 +19,7 @@ const Container = styled.div`
   width: 100%;
   background-color: #fff;
   overflow-y: auto;
-  padding: 40px;
+  padding: 120px;
 `;
 
 const CloseButton = styled(Button)`
@@ -27,20 +28,34 @@ const CloseButton = styled(Button)`
   right: 12px;
 `;
 
-const Preview = ({ location: { query, pathname } }: WithRouterProps) => {
-  if (!query.previewedInputId) {
+type PreviewProps = {
+  isPreviewOpen: boolean;
+  closePreview: () => void;
+} & WithRouterProps;
+
+const Preview = ({
+  params: { viewId },
+  location: { query },
+  isPreviewOpen,
+  closePreview,
+}: PreviewProps) => {
+  if (!isPreviewOpen) {
     return null;
   }
+  const previewedInput = useInsightsInput(viewId, query.previewedInputId);
 
-  const handleOnClose = () => {
-    clHistory.push({
-      pathname,
-      search: stringify(
-        { ...query, previewedInputId: undefined },
-        { addQueryPrefix: true }
-      ),
-    });
-  };
+  // Loading state
+  if (previewedInput === undefined) {
+    return (
+      <Container data-testid="insightsDetailsPreviewLoading">
+        <Spinner />
+      </Container>
+    );
+  }
+
+  if (isNilOrError(previewedInput)) {
+    return null;
+  }
 
   return (
     <Container>
@@ -53,7 +68,7 @@ const Preview = ({ location: { query, pathname } }: WithRouterProps) => {
         iconSize="12px"
         boxShadow="none"
         boxShadowHover="none"
-        onClick={handleOnClose}
+        onClick={closePreview}
       />
       <Idea ideaId={query.previewedInputId} />
     </Container>

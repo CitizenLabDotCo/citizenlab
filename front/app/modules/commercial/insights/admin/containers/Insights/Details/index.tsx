@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 // styles
 import { stylingConsts, media } from 'utils/styleUtils';
@@ -28,15 +28,19 @@ const Left = styled.div`
 `;
 
 const DetailsInsightsView = () => {
+  const [isPreviewOpen, setIsPreviewOpen] = useState(false);
+
+  const openPreview = () => setIsPreviewOpen(true);
+  const closePreview = () => setIsPreviewOpen(false);
   return (
     <>
       <TopBar />
       <Container>
         <Left>
           <Categories />
-          <Preview />
+          <Preview isPreviewOpen={isPreviewOpen} closePreview={closePreview} />
         </Left>
-        <Inputs />
+        <Inputs openPreview={openPreview} />
       </Container>
     </>
   );
