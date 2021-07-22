@@ -15,7 +15,9 @@ import { Label, Spinner } from 'cl2-component-library';
 import Button from 'components/UI/Button';
 import Creatable from 'react-select/creatable';
 import selectStyles from 'components/UI/MultipleSelect/styles';
-import Navigation, { NavigationProps } from './Navigation';
+import Navigation, {
+  NavigationProps,
+} from 'modules/commercial/insights/admin/components/Navigation';
 
 // hooks
 import useInsightsCategories from 'modules/commercial/insights/hooks/useInsightsCategories';
