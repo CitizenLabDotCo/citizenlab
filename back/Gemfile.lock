@@ -784,6 +784,9 @@ GEM
     pry (0.13.1)
       coderay (~> 1.1)
       method_source (~> 1.0)
+    pry-byebug (3.9.0)
+      byebug (~> 11.0)
+      pry (~> 0.13.0)
     pry-stack_explorer (0.4.13)
       binding_of_caller (~> 0.7)
       pry (~> 0.13)
@@ -1122,6 +1125,7 @@ DEPENDENCIES
   project_management!
   project_permissions!
   pry
+  pry-byebug
   pry-stack_explorer
   public_api!
   puma (~> 4.3.8)

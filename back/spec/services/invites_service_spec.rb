@@ -10,7 +10,6 @@ describe InvitesService do
   end
 
   describe "bulk_create_xlsx" do
-    
     let(:xlsx) { XlsxService.new.hash_array_to_xlsx(hash_array) }
 
     context do
@@ -90,6 +89,28 @@ describe InvitesService do
 
         user = User.find_by(email: "user7@domain.net")
         expect(user.custom_field_values).to eq({"integer_field" => 1873050293742134})
+      end
+    end
+
+    context "when email has leading spaces" do
+      let(:hash_array) {[
+        {email: '   user@domain.net'}
+      ]}
+
+      it "fails with invalid_email error" do
+        expect { service.bulk_create_xlsx(xlsx) }.to change { User.count }.from(0).to(1)
+        expect(User.first.email).to eq('user@domain.net')
+      end
+    end
+
+    context "when email has trailing spaces" do
+      let(:hash_array) {[
+        {email: 'user@domain.net   '}
+      ]}
+
+      it "fails with invalid_email error" do
+        expect { service.bulk_create_xlsx(xlsx) }.to change { User.count }.from(0).to(1)
+        expect(User.first.email).to eq('user@domain.net')
       end
     end
 
