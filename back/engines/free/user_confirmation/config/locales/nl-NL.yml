@@ -3,7 +3,7 @@ nl:
     confirmations_mailer:
       send_confirmation_code:
         subject: "Bevestig je e-mailadres voor het participatieplatform van %{organizationName}"
-        header: "Je bevestigingscode "
+        header: "Je bevestigingscode"
         header_message: "Hallo %{firstName}!"
         thanks_for_signing_up: "Bedankt voor je inschrijving op het participatieplatform van %{organizationName}."
         please_confirm_your_email_address: "In deze stap verifiëren we of je e-mailadres wel degelijk bestaat."
