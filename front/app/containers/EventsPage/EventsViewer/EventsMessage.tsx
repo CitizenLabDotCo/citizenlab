@@ -4,8 +4,7 @@ import React from 'react';
 import Centerer from './Centerer';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '..//messages';
+import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 
 // style
 import styled from 'styled-components';
@@ -18,11 +17,12 @@ const Container = styled(Centerer)`
 
 interface Props {
   className?: string;
+  message: MessageDescriptor;
 }
 
-const ProjectNotFound = ({ className }: Props) => (
+const ProjectNotFound = ({ className, message }: Props) => (
   <Container className={className || ''}>
-    <FormattedMessage {...messages.errorWhenFetchingEvents} />
+    <FormattedMessage {...message} />
   </Container>
 );
 

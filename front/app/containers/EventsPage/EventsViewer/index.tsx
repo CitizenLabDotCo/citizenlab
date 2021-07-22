@@ -2,20 +2,20 @@ import React, { memo } from 'react';
 
 // components
 import TopBar from './TopBar';
-import EventsError from './EventsError';
+import EventsMessage from './EventsMessage';
 import EventsSpinner from './EventsSpinner';
 import EventCard from 'components/EventCard';
 import Pagination from 'components/Pagination';
 
-// svg
-import noEventsIllustration from './NoEventsPicture.svg';
+// i18n
+import messages from '../messages';
+import { MessageDescriptor } from 'utils/cl-intl';
 
 // hooks
 import useEvents from 'hooks/useEvents';
 
 // styling
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
 
 // other
 import { isNilOrError, isNil, isError } from 'utils/helperUtils';
@@ -28,26 +28,6 @@ const StyledEventCard = styled(EventCard)<IStyledEventCard>`
   margin-bottom: ${({ last }) => (last ? 0 : 39)}px;
 `;
 
-const NoEventsContainer = styled.figure`
-  position: relative;
-  width: 100%;
-  margin: 78px 0px 216px;
-`;
-
-const NoEventsIllustration = styled.img`
-  width: 345px;
-  height: 286px;
-  display: block;
-  margin: 0px auto;
-`;
-
-const NoEventsText = styled.figcaption`
-  margin: 37px auto 0px;
-  text-align: center;
-  color: ${colors.label};
-  font-size: ${fontSizes.xl}px;
-`;
-
 const StyledPagination = styled(Pagination)`
   justify-content: center;
   margin: 36px auto 0px;
@@ -55,7 +35,7 @@ const StyledPagination = styled(Pagination)`
 
 interface Props {
   title: string;
-  fallbackMessage: string;
+  fallbackMessage: MessageDescriptor;
   eventsTime: 'past' | 'future';
   className?: string;
 }
@@ -81,7 +61,9 @@ const EventsViewer = memo<Props>(
       <div className={className}>
         <TopBar title={title} setProjectIds={onProjectIdsChange} />
 
-        {eventsError && <EventsError />}
+        {eventsError && (
+          <EventsMessage message={messages.errorWhenFetchingEvents} />
+        )}
         {eventsLoading && <EventsSpinner />}
 
         {!isNilOrError(events) && (
@@ -96,12 +78,7 @@ const EventsViewer = memo<Props>(
                 />
               ))}
 
-            {events.length === 0 && (
-              <NoEventsContainer>
-                <NoEventsIllustration src={noEventsIllustration} />
-                <NoEventsText>{fallbackMessage}</NoEventsText>
-              </NoEventsContainer>
-            )}
+            {events.length === 0 && <EventsMessage message={fallbackMessage} />}
 
             <StyledPagination
               currentPage={currentPage}
