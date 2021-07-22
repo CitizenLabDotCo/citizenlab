@@ -1,9 +1,10 @@
 import React from 'react';
 import Inputs from './';
 
-import { render, screen } from 'utils/testUtils/rtl';
+import { fireEvent, render, screen, within } from 'utils/testUtils/rtl';
 import useInsightsInputsLoadMore from 'modules/commercial/insights/hooks/useInsightsInputsLoadMore';
 import inputs from 'modules/commercial/insights/fixtures/inputs';
+import clHistory from 'utils/cl-router/history';
 
 jest.mock('modules/commercial/insights/services/insightsInputs', () => ({
   deleteInsightsInputCategory: jest.fn(),
@@ -34,6 +35,8 @@ let mockLocationData = { pathname: '', query: {} };
 jest.mock('hooks/useIdea', () => {
   return jest.fn(() => mockIdeaData);
 });
+
+jest.mock('utils/cl-router/history');
 
 jest.mock('modules/commercial/insights/hooks/useInsightsInputsLoadMore', () => {
   return jest.fn(() => mockInputsData);
@@ -67,6 +70,18 @@ describe('Insights Details Inputs', () => {
     render(<Inputs />);
     expect(screen.getByTestId('insightsDetailsInputs')).toBeInTheDocument();
   });
+
+  it('adds previewedInputId to url on input card click', () => {
+    render(<Inputs />);
+    fireEvent.click(
+      within(screen.getAllByTestId('insightsInputCard')[0]).getByRole('button')
+    );
+    expect(clHistory.replace).toHaveBeenCalledWith({
+      pathname: '',
+      search: `?previewedInputId=${mockIdeaData.id}&pageNumber=1`,
+    });
+  });
+
   it('calls useInsightsInputsLoadMore with correct arguments', () => {
     mockLocationData = {
       pathname: '',
@@ -78,6 +93,7 @@ describe('Insights Details Inputs', () => {
       mockLocationData.query
     );
   });
+
   it('renders correct number of input cards', () => {
     render(<Inputs />);
     expect(screen.getAllByTestId('insightsInputCard')).toHaveLength(

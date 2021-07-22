@@ -1,12 +1,14 @@
 import React from 'react';
 
+// styles
 import { stylingConsts, media } from 'utils/styleUtils';
+import styled from 'styled-components';
 
 // components
 import TopBar, { topBarHeight } from '../../../components/TopBar';
 import Categories from './Categories';
 import Inputs from './Inputs';
-import styled from 'styled-components';
+import Preview from './Preview';
 
 const Container = styled.div`
   height: calc(100vh - ${stylingConsts.menuHeight + topBarHeight}px);
@@ -21,12 +23,19 @@ const Container = styled.div`
 `}
 `;
 
+const Left = styled.div`
+  position: relative;
+`;
+
 const DetailsInsightsView = () => {
   return (
     <>
       <TopBar />
       <Container>
-        <Categories />
+        <Left>
+          <Categories />
+          <Preview />
+        </Left>
         <Inputs />
       </Container>
     </>

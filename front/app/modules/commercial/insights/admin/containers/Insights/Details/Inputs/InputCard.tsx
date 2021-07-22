@@ -1,4 +1,5 @@
 import React from 'react';
+import { withRouter, WithRouterProps } from 'react-router';
 
 // styles
 import styled from 'styled-components';
@@ -11,6 +12,8 @@ import messages from '../../messages';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
+import clHistory from 'utils/cl-router/history';
+import { stringify } from 'qs';
 
 // components
 import T from 'components/T';
@@ -22,12 +25,14 @@ import useIdea from 'hooks/useIdea';
 // types
 import { IInsightsInputData } from 'modules/commercial/insights/services/insightsInputs';
 
-type InputCardProps = { input: IInsightsInputData } & InjectedIntlProps;
+type InputCardProps = { input: IInsightsInputData } & InjectedIntlProps &
+  WithRouterProps;
 
-const Container = styled.div`
+const Container = styled.div<{ isActive: boolean }>`
   border-radius: 3px;
   background-color: #fff;
-  border: 1px solid ${colors.separation};
+  border: 1px solid
+    ${({ isActive }) => (isActive ? colors.border : colors.separation)};
   padding: 12px 28px;
   margin-bottom: 8px;
   .buttonContainer {
@@ -48,14 +53,32 @@ const InputBody = styled.div`
   font-size: ${fontSizes.small}px;
 `;
 
-const InputCard = ({ input, intl: { formatMessage } }: InputCardProps) => {
+const InputCard = ({
+  input,
+  intl: { formatMessage },
+  location: { pathname, query },
+}: InputCardProps) => {
   const idea = useIdea({ ideaId: input.relationships?.source.data.id });
 
   if (isNilOrError(idea)) {
     return null;
   }
+
+  const handleReadMoreClick = () => {
+    clHistory.replace({
+      pathname,
+      search: stringify(
+        { ...query, previewedInputId: idea.id, pageNumber: 1 },
+        { addQueryPrefix: true }
+      ),
+    });
+  };
+
   return (
-    <Container data-testid="insightsInputCard">
+    <Container
+      data-testid="insightsInputCard"
+      isActive={query.previewedInputId === idea.id}
+    >
       <InputTitle>
         <T value={idea.attributes.title_multiloc} />
       </InputTitle>
@@ -68,6 +91,7 @@ const InputCard = ({ input, intl: { formatMessage } }: InputCardProps) => {
           fontWeight="bold"
           padding="0px"
           fontSize={`${fontSizes.small}px`}
+          onClick={handleReadMoreClick}
         >
           {formatMessage(messages.inputsReadMore)}
         </Button>
@@ -76,4 +100,4 @@ const InputCard = ({ input, intl: { formatMessage } }: InputCardProps) => {
   );
 };
 
-export default injectIntl(InputCard);
+export default withRouter(injectIntl(InputCard));
