@@ -12,5 +12,4 @@ fr-BE:
       initiative_author: '%{authorName} a publié une proposition :'
       this_post_was_flagged: >
         <p>Cette publication pourrait contenir un contenu inapproprié. Nous vous notifions afin que vous puissiez l'examiner en fonction de vos propres règles de modération. </p><p> Si la publication ne contient pas de contenu inapproprié, vous pouvez supprimer l'alerte depuis l'interface administrateur de votre plateforme, dans l'onglet 'Activité'.</p>
-
       cta_review_post: 'Vérifier la publication'

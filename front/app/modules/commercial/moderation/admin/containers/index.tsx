@@ -25,7 +25,7 @@ import useModerationsCount from '../../hooks/useModerationsCount';
 import {
   updateModerationStatus,
   IModerationData,
-  TModeratableTypes,
+  TModeratableType,
 } from '../../services/moderations';
 import { removeInappropriateContentFlag } from 'modules/commercial/flag_inappropriate_content/services/inappropriateContentFlags';
 
@@ -215,7 +215,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
     IModerationData[]
   >([]);
   const [processing, setProcessing] = useState(false);
-  const [selectedTypes, setSelectedTypes] = useState<TModeratableTypes[]>([]);
+  const [selectedTypes, setSelectedTypes] = useState<TModeratableType[]>([]);
   const [selectedProjectIds, setSelectedProjectIds] = useState<string[]>([]);
   const [selectedPageNumber, setSelectedPageNumber] = useState<number>(1);
   const [selectedPageSize, setSelectedPageSize] = useState<number>(
@@ -286,7 +286,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
     }
   }, [selectedTab, onIsFlaggedChange, onModerationStatusChange]);
 
-  const handePageNumberChange = (pageNumber: number) => {
+  const handleOnPageNumberChange = (pageNumber: number) => {
     trackEventByName(tracks.pageNumberClicked);
     setSelectedPageNumber(pageNumber);
   };
@@ -303,8 +303,8 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
     onPageSizeChange(selectedPageSize);
   }, [selectedPageSize, onPageSizeChange]);
 
-  const handleModeratableTypesChange = (
-    newSelectedTypes: TModeratableTypes[]
+  const handleOnModeratableTypesChange = (
+    newSelectedTypes: TModeratableType[]
   ) => {
     setSelectedTypes(newSelectedTypes);
     trackEventByName(tracks.typeFilterUsed);
@@ -314,7 +314,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
     onModeratableTypesChange(selectedTypes);
   }, [selectedTypes, onModeratableTypesChange]);
 
-  const handleProjectIdsChange = (newProjectIds: string[]) => {
+  const handleOnProjectIdsChange = (newProjectIds: string[]) => {
     setSelectedProjectIds(newProjectIds);
     trackEventByName(tracks.projectFilterUsed);
   };
@@ -469,11 +469,11 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
                 />
                 <SelectType
                   selectedTypes={selectedTypes}
-                  onChange={handleModeratableTypesChange}
+                  onChange={handleOnModeratableTypesChange}
                 />
                 <SelectProject
                   selectedProjectIds={selectedProjectIds}
-                  onChange={handleProjectIdsChange}
+                  onChange={handleOnProjectIdsChange}
                 />
               </>
             ) : (
@@ -576,7 +576,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
             <StyledPagination
               currentPage={currentPage}
               totalPages={lastPage}
-              loadPage={handePageNumberChange}
+              loadPage={handleOnPageNumberChange}
             />
 
             <Spacer />

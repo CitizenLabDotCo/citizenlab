@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { withRouter, WithRouterProps } from 'react-router';
 
 // utils
@@ -44,6 +44,9 @@ const CategoriesContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  .categoriesList {
+    width: 70%;
+  }
   .categoryTag {
     margin-right: 8px;
     margin-bottom: 8px;
@@ -71,11 +74,18 @@ const EmptyStateContainer = styled.div`
   }
 `;
 
+const CategoriesButtonContainer = styled.div`
+  display: flex;
+`;
+
+export const visibleCategoriesNumber = 8;
+
 const Categories = ({
   location: { pathname, query },
   params: { viewId },
   intl: { formatMessage },
 }: CategoryProps) => {
+  const [seeAllCategories, setSeeAllCategories] = useState(false);
   const categories = useInsightsCategories(viewId);
 
   if (isNilOrError(categories)) {
@@ -90,6 +100,10 @@ const Categories = ({
     });
   };
 
+  const toggleSeeAllCategories = () => {
+    setSeeAllCategories(!seeAllCategories);
+  };
+
   return (
     <Container data-testid="insightsDetailsCategories">
       <h1>
@@ -98,21 +112,44 @@ const Categories = ({
       </h1>
       {categories.length > 0 ? (
         <CategoriesContainer>
-          <div>
-            {categories.map((category) => (
-              <Tag
-                key={category.id}
-                label={category.attributes.name}
-                variant={
-                  query.category === category.id ? 'primary' : 'secondary'
-                }
-                count={category.attributes.inputs_count}
-                className="categoryTag"
-                onClick={handleCategoryClick(category.id)}
-              />
-            ))}
+          <div className="categoriesList">
+            {categories
+              // Filter visible categories
+              .filter((_, i) =>
+                !seeAllCategories ? i < visibleCategoriesNumber : true
+              )
+              .map((category) => (
+                <Tag
+                  key={category.id}
+                  label={category.attributes.name}
+                  variant={
+                    query.category === category.id ? 'primary' : 'secondary'
+                  }
+                  count={category.attributes.inputs_count}
+                  className="categoryTag"
+                  onClick={handleCategoryClick(category.id)}
+                />
+              ))}
+            <CategoriesButtonContainer>
+              {categories.length > visibleCategoriesNumber && (
+                <Button
+                  buttonStyle="text"
+                  padding="0px"
+                  onClick={toggleSeeAllCategories}
+                >
+                  {seeAllCategories
+                    ? formatMessage(messages.categoriesSeeLess)
+                    : formatMessage(messages.categoriesSeeAll)}
+                </Button>
+              )}
+            </CategoriesButtonContainer>
           </div>
-          <Button buttonStyle="admin-dark" linkTo={`${pathname}/edit`}>
+          <Button
+            buttonStyle="admin-dark"
+            linkTo={`${pathname}/edit`}
+            icon="categories"
+            iconPos="right"
+          >
             {formatMessage(messages.editCategories)}
           </Button>
         </CategoriesContainer>
@@ -125,7 +162,12 @@ const Categories = ({
             <p> {formatMessage(messages.categoriesEmptyDescription)}</p>
           </div>
 
-          <Button buttonStyle="admin-dark" linkTo={`${pathname}/edit`}>
+          <Button
+            buttonStyle="admin-dark"
+            linkTo={`${pathname}/edit`}
+            icon="categories"
+            iconPos="right"
+          >
             {formatMessage(messages.categoriesEmptyButton)}
           </Button>
         </EmptyStateContainer>

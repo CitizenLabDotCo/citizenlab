@@ -10,7 +10,7 @@ module FlagInappropriateContent
             '/v2/toxic_classification',
             body: body.to_json,
             headers: { 'Content-Type' => 'application/json' },
-            timeout: LONG_TIMEOUT
+            timeout: singleton_class::LONG_TIMEOUT
           )
           if !resp.success?
             raise ClErrors::TransactionError.new(error_key: resp['code'])
