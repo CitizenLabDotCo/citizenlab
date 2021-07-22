@@ -1,8 +1,11 @@
 import React from 'react';
 import { withRouter, WithRouterProps } from 'react-router';
+import clHistory from 'utils/cl-router/history';
+import { stringify } from 'qs';
 import useInsightsInput from 'modules/commercial/insights/hooks/useInsightsInput';
 import { Spinner } from 'cl2-component-library';
 import { isNilOrError } from 'utils/helperUtils';
+import Category from 'modules/commercial/insights/admin/components/Category';
 
 // styles
 import styled from 'styled-components';
@@ -28,6 +31,14 @@ const CloseButton = styled(Button)`
   right: 12px;
 `;
 
+const CategoryList = styled.div`
+  margin-top: 50px;
+  > * {
+    margin-right: 8px;
+    margin-bottom: 8px;
+  }
+`;
+
 type PreviewProps = {
   isPreviewOpen: boolean;
   closePreview: () => void;
@@ -35,7 +46,7 @@ type PreviewProps = {
 
 const Preview = ({
   params: { viewId },
-  location: { query },
+  location: { query, pathname },
   isPreviewOpen,
   closePreview,
 }: PreviewProps) => {
@@ -56,6 +67,16 @@ const Preview = ({
   if (isNilOrError(previewedInput)) {
     return null;
   }
+  const handleOnClose = () => {
+    clHistory.push({
+      pathname,
+      search: stringify(
+        { ...query, previewedInputId: undefined },
+        { addQueryPrefix: true }
+      ),
+    });
+    closePreview();
+  };
 
   return (
     <Container>
@@ -68,8 +89,17 @@ const Preview = ({
         iconSize="12px"
         boxShadow="none"
         boxShadowHover="none"
-        onClick={closePreview}
+        onClick={handleOnClose}
       />
+      <CategoryList>
+        {previewedInput.relationships?.categories.data.map((category) => (
+          <Category
+            id={category.id}
+            key={category.id}
+            inputId={previewedInput.id}
+          />
+        ))}
+      </CategoryList>
       <Idea ideaId={query.previewedInputId} />
     </Container>
   );

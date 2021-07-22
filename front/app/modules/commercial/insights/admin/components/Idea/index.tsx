@@ -31,19 +31,20 @@ const IdeaBody = styled.div`
 
 const Idea = ({ ideaId }: IdeaProps) => {
   const idea = useIdea({ ideaId });
+
   if (isNilOrError(idea)) {
     return null;
   }
 
   return (
-    <>
-      <IdeaTitle data-testid="insightsDetailsIdeaTitle">
+    <div data-testid="insightsIdea">
+      <IdeaTitle data-testid="insightsIdeaTitle">
         <T value={idea.attributes.title_multiloc} />
       </IdeaTitle>
-      <IdeaBody data-testid="insightsDetailsIdeaBody">
+      <IdeaBody data-testid="insightsIdeaBody">
         <T value={idea.attributes.body_multiloc} supportHtml />
       </IdeaBody>
-    </>
+    </div>
   );
 };
 

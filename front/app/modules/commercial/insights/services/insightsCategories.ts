@@ -49,7 +49,6 @@ export function insightsCategoryStream(
       insightsViewId
     )}/${insightsCategoryId}`,
     ...streamParams,
-    cacheStream: false,
   });
 }
 
