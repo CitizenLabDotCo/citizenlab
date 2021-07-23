@@ -39,7 +39,6 @@ const AdminProjectEventsIndex = ({
 }: WithRouterProps & InjectedIntlProps) => {
   const { projectId } = params;
   const { events } = useEvents({ projectIds: [projectId] });
-  console.log(events);
 
   const createDeleteClickHandler = (eventId: string) => (
     event: React.FormEvent<any>

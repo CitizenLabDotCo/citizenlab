@@ -95,12 +95,6 @@ export async function addEvent(
   return response;
 }
 
-export async function deleteEvent(eventId: string) {
-  const response = await streams.delete(`${apiEndpoint}/${eventId}`, eventId);
-
-  await streams.fetchAllWith({
-    apiEndpoint: [apiEndpoint],
-  });
-
-  return response;
+export function deleteEvent(eventId: string) {
+  return streams.delete(`${apiEndpoint}/${eventId}`, eventId);
 }
