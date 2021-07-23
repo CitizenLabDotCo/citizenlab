@@ -49,7 +49,7 @@ const InputBody = styled.div`
 `;
 
 type InputCardProps = {
-  onReadMore: (id: string) => void;
+  onReadMore: (input: IInsightsInputData) => void;
   input: IInsightsInputData;
 } & InjectedIntlProps &
   WithRouterProps;
@@ -67,7 +67,7 @@ const InputCard = ({
   }
 
   const handleReadMoreClick = () => {
-    onReadMore(idea.id);
+    onReadMore(input);
   };
 
   return (

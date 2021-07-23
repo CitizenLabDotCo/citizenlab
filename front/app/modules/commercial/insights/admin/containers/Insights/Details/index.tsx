@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { withRouter, WithRouterProps } from 'react-router';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
+import clHistory from 'utils/cl-router/history';
+import { stringify } from 'qs';
 
 // styles
 import { stylingConsts, media } from 'utils/styleUtils';
@@ -19,6 +21,9 @@ import Preview from './Preview';
 // hooks
 import useInsightsInputsLoadMore from 'modules/commercial/insights/hooks/useInsightsInputsLoadMore';
 
+// types
+import { IInsightsInputData } from 'modules/commercial/insights/services/insightsInputs';
+
 const Container = styled.div`
   height: calc(100vh - ${stylingConsts.menuHeight + topBarHeight}px);
   display: flex;
@@ -34,38 +39,130 @@ const Container = styled.div`
 
 const Left = styled.div`
   position: relative;
+  width: 100%;
 `;
 
 const DetailsInsightsView = ({
   params: { viewId },
-  location: { query },
+  location: { pathname, query },
 }: WithRouterProps) => {
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
+  const [previewedInputIndex, setPreviewedInputIndex] = useState<number | null>(
+    null
+  );
+  // Use ref for isPreviewedInputInTable to avoid dependencies in moveUp and moveDown
+  const isPreviewedInputInTable = useRef(true);
+  const [isMoveDownDisabled, setIsMoveDownDisabled] = useState(false);
+  const [movedUpDown, setMovedUpDown] = useState(false);
+
   const category = query.category;
   const search = query.search;
   const pageNumber = query.pageNumber ? Number(query.pageNumber) : 1;
 
-  const inputs = useInsightsInputsLoadMore(viewId, {
+  const { list: inputs, loading, hasMore } = useInsightsInputsLoadMore(viewId, {
     category,
     search,
     pageNumber,
   });
 
-  if (isNilOrError(inputs.list)) {
+  // Update isPreviewedInputInTable ref value
+  useEffect(() => {
+    if (!isNilOrError(inputs)) {
+      const inputsIds = inputs.map((input) => input.id);
+      const isInList = inputsIds.includes(query.previewedInputId);
+
+      isPreviewedInputInTable.current = isInList;
+
+      setIsMoveDownDisabled(
+        isInList
+          ? previewedInputIndex === inputs.length - 1
+          : previewedInputIndex === inputs.length
+      );
+    }
+  }, [inputs, query.previewedInputId, previewedInputIndex]);
+
+  // Navigate to correct index when moving up and down
+  useEffect(() => {
+    if (
+      !isNilOrError(inputs) &&
+      !isNilOrError(previewedInputIndex) &&
+      movedUpDown
+    ) {
+      clHistory.replace({
+        pathname,
+        search: stringify(
+          {
+            ...query,
+            previewedInputId: inputs[previewedInputIndex].id,
+          },
+          { addQueryPrefix: true }
+        ),
+      });
+      setMovedUpDown(false);
+    }
+  }, [inputs, previewedInputIndex, query, movedUpDown]);
+
+  // Side Modal Preview
+  // Use callback to keep references for moveUp and moveDown stable
+  const moveUp = useCallback(() => {
+    setPreviewedInputIndex((prevSelectedIndex) =>
+      !isNilOrError(prevSelectedIndex)
+        ? prevSelectedIndex - 1
+        : prevSelectedIndex
+    );
+    setMovedUpDown(true);
+  }, []);
+
+  const moveDown = useCallback(() => {
+    setPreviewedInputIndex((prevSelectedIndex) =>
+      !isNilOrError(prevSelectedIndex) && isPreviewedInputInTable.current
+        ? prevSelectedIndex + 1
+        : prevSelectedIndex
+    );
+
+    setMovedUpDown(true);
+  }, []);
+
+  const closePreview = () => setIsPreviewOpen(false);
+
+  if (isNilOrError(inputs)) {
     return null;
   }
 
-  const openPreview = () => setIsPreviewOpen(true);
-  const closePreview = () => setIsPreviewOpen(false);
+  const onPreviewInput = (input: IInsightsInputData) => {
+    setPreviewedInputIndex(inputs.indexOf(input));
+
+    clHistory.replace({
+      pathname,
+      search: stringify(
+        { ...query, previewedInputId: input.id },
+        { addQueryPrefix: true }
+      ),
+    });
+    setIsPreviewOpen(true);
+  };
+
   return (
     <>
       <TopBar />
       <Container>
         <Left>
-          <Categories />
-          <Preview isPreviewOpen={isPreviewOpen} closePreview={closePreview} />
+          {isPreviewOpen ? (
+            <Preview
+              closePreview={closePreview}
+              moveUp={moveUp}
+              moveDown={moveDown}
+              isMoveUpDisabled={previewedInputIndex === 0}
+              isMoveDownDisabled={isMoveDownDisabled}
+            />
+          ) : (
+            <Categories />
+          )}
         </Left>
-        <Inputs inputs={inputs} openPreview={openPreview} />
+        <Inputs
+          inputs={{ loading, hasMore, list: inputs }}
+          onPreviewInput={onPreviewInput}
+        />
       </Container>
     </>
   );

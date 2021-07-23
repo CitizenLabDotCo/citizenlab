@@ -14,11 +14,13 @@ const mockInputsCount = { count: 3 };
 const queryParameters: QueryParameters = {
   category: '3',
   search: 'search',
+  processed: false,
 };
 
 const expectedQueryParameters = {
   category: queryParameters.category,
   search: queryParameters.search,
+  processed: false,
 };
 
 let mockObservable = new Observable((subscriber) => {
@@ -71,7 +73,25 @@ describe('useInsightsInputsCount', () => {
     });
     expect(insightsInputsCountStream).toHaveBeenCalledTimes(2);
   });
+  it('should call useInsightsInputsCount with correct arguments on processed change', async () => {
+    let processed = true;
+    const { rerender } = renderHook(() =>
+      useInsightsInputsCount(viewId, { ...queryParameters, processed })
+    );
 
+    expect(insightsInputsCountStream).toHaveBeenCalledWith(viewId, {
+      queryParameters: { ...expectedQueryParameters, processed },
+    });
+
+    // Processed change
+    processed = false;
+    rerender();
+
+    expect(insightsInputsCountStream).toHaveBeenCalledWith(viewId, {
+      queryParameters: { ...expectedQueryParameters, processed },
+    });
+    expect(insightsInputsCountStream).toHaveBeenCalledTimes(2);
+  });
   it('should call useInsightsInputsCount with correct arguments on search change', async () => {
     let search = 'some search';
     const { rerender } = renderHook(() =>

@@ -24,6 +24,9 @@ import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from '../../messages';
 
+// types
+import { IInsightsInputData } from 'modules/commercial/insights/services/insightsInputs';
+
 const InputsContainer = styled.div`
   flex: 0 0 420px;
   overflow-x: auto;
@@ -37,7 +40,7 @@ const StyledSearch = styled(Search)`
 `;
 
 type InputsProps = {
-  openPreview: () => void;
+  onPreviewInput: (input: IInsightsInputData) => void;
   inputs: IUseInpightsInputsLoadMoreOutput;
 } & WithRouterProps &
   InjectedIntlProps;
@@ -45,7 +48,7 @@ type InputsProps = {
 const Inputs = ({
   location: { pathname, query },
   intl: { formatMessage },
-  openPreview,
+  onPreviewInput,
   inputs,
 }: InputsProps) => {
   const category = query.category;
@@ -77,17 +80,6 @@ const Inputs = ({
     });
   };
 
-  const onOpenPreview = (id: string) => {
-    openPreview();
-    clHistory.replace({
-      pathname,
-      search: stringify(
-        { ...query, previewedInputId: id, pageNumber: 1 },
-        { addQueryPrefix: true }
-      ),
-    });
-  };
-
   if (isNilOrError(list)) {
     return null;
   }
@@ -99,7 +91,7 @@ const Inputs = ({
         <Empty />
       ) : (
         list.map((input) => (
-          <InputCard key={input.id} input={input} onReadMore={onOpenPreview} />
+          <InputCard key={input.id} input={input} onReadMore={onPreviewInput} />
         ))
       )}
       {hasMore && (

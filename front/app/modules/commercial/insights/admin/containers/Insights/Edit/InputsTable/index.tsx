@@ -177,7 +177,7 @@ const InputsTable = ({
           : previewedInputIndex === inputs.length
       );
     }
-  }, [inputs, query.previewedInputId]);
+  }, [inputs, query.previewedInputId, previewedInputIndex]);
 
   // Navigate to correct index when moving up and down
   useEffect(() => {

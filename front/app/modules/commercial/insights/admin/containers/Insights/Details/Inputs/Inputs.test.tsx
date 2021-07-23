@@ -1,9 +1,8 @@
 import React from 'react';
 import Inputs from './';
 
-import { fireEvent, render, screen, within } from 'utils/testUtils/rtl';
+import { render, screen } from 'utils/testUtils/rtl';
 import inputs from 'modules/commercial/insights/fixtures/inputs';
-import clHistory from 'utils/cl-router/history';
 
 const viewId = '1';
 
@@ -54,37 +53,23 @@ jest.mock('react-router', () => {
   };
 });
 
-jest.mock('utils/cl-router/history');
-
-const openPreview = jest.fn();
+const onPreviewInput = jest.fn();
 
 describe('Insights Details Inputs', () => {
   it('renders', () => {
-    render(<Inputs openPreview={openPreview} inputs={mockInputsData} />);
+    render(<Inputs onPreviewInput={onPreviewInput} inputs={mockInputsData} />);
     expect(screen.getByTestId('insightsDetailsInputs')).toBeInTheDocument();
   });
 
-  it('adds previewedInputId to url on input card click', () => {
-    render(<Inputs openPreview={openPreview} inputs={mockInputsData} />);
-    fireEvent.click(
-      within(screen.getAllByTestId('insightsInputCard')[0]).getByRole('button')
-    );
-    expect(openPreview).toHaveBeenCalled();
-    expect(clHistory.replace).toHaveBeenCalledWith({
-      pathname: '',
-      search: `?previewedInputId=${mockIdeaData.id}&pageNumber=1`,
-    });
-  });
-
   it('renders correct number of input cards', () => {
-    render(<Inputs openPreview={openPreview} inputs={mockInputsData} />);
+    render(<Inputs onPreviewInput={onPreviewInput} inputs={mockInputsData} />);
     expect(screen.getAllByTestId('insightsInputCard')).toHaveLength(
       mockInputsData.list.length
     );
   });
 
   it('shows load more button when there is a next page', () => {
-    render(<Inputs openPreview={openPreview} inputs={mockInputsData} />);
+    render(<Inputs onPreviewInput={onPreviewInput} inputs={mockInputsData} />);
     expect(screen.getByTestId('insightsDetailsLoadMore')).toBeInTheDocument();
   });
 
@@ -94,7 +79,7 @@ describe('Insights Details Inputs', () => {
       list: inputs,
       loading: false,
     };
-    render(<Inputs openPreview={openPreview} inputs={mockInputsData} />);
+    render(<Inputs onPreviewInput={onPreviewInput} inputs={mockInputsData} />);
     expect(
       screen.queryByTestId('insightsDetailsLoadMore')
     ).not.toBeInTheDocument();
@@ -106,7 +91,7 @@ describe('Insights Details Inputs', () => {
       list: [],
       loading: false,
     };
-    render(<Inputs openPreview={openPreview} inputs={mockInputsData} />);
+    render(<Inputs onPreviewInput={onPreviewInput} inputs={mockInputsData} />);
     expect(screen.getByTestId('insightsDetailsEmpty')).toBeInTheDocument();
   });
 });

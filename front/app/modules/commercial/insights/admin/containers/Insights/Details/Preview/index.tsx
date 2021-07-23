@@ -5,7 +5,6 @@ import { stringify } from 'qs';
 import useInsightsInput from 'modules/commercial/insights/hooks/useInsightsInput';
 import { Spinner } from 'cl2-component-library';
 import { isNilOrError } from 'utils/helperUtils';
-import Category from 'modules/commercial/insights/admin/components/Category';
 
 // styles
 import styled from 'styled-components';
@@ -13,11 +12,12 @@ import styled from 'styled-components';
 // components
 import Button from 'components/UI/Button';
 import Idea from 'modules/commercial/insights/admin/components/Idea';
+import Category from 'modules/commercial/insights/admin/components/Category';
+import Navigation, {
+  NavigationProps,
+} from 'modules/commercial/insights/admin/components/Navigation';
 
 const Container = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
   height: 100%;
   width: 100%;
   background-color: #fff;
@@ -32,7 +32,7 @@ const CloseButton = styled(Button)`
 `;
 
 const CategoryList = styled.div`
-  margin-top: 50px;
+  margin-bottom: 12px;
   > * {
     margin-right: 8px;
     margin-bottom: 8px;
@@ -40,19 +40,20 @@ const CategoryList = styled.div`
 `;
 
 type PreviewProps = {
-  isPreviewOpen: boolean;
   closePreview: () => void;
-} & WithRouterProps;
+} & NavigationProps &
+  WithRouterProps;
 
 const Preview = ({
   params: { viewId },
   location: { query, pathname },
-  isPreviewOpen,
+
   closePreview,
+  moveUp,
+  moveDown,
+  isMoveUpDisabled,
+  isMoveDownDisabled,
 }: PreviewProps) => {
-  if (!isPreviewOpen) {
-    return null;
-  }
   const previewedInput = useInsightsInput(viewId, query.previewedInputId);
 
   // Loading state
@@ -97,10 +98,17 @@ const Preview = ({
             id={category.id}
             key={category.id}
             inputId={previewedInput.id}
+            variant="approved"
           />
         ))}
       </CategoryList>
       <Idea ideaId={query.previewedInputId} />
+      <Navigation
+        moveUp={moveUp}
+        moveDown={moveDown}
+        isMoveDownDisabled={isMoveDownDisabled}
+        isMoveUpDisabled={isMoveUpDisabled}
+      />
     </Container>
   );
 };
