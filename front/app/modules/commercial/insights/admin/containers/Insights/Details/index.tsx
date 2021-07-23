@@ -102,7 +102,6 @@ const DetailsInsightsView = ({
     }
   }, [inputs, previewedInputIndex, query, movedUpDown]);
 
-  // Side Modal Preview
   // Use callback to keep references for moveUp and moveDown stable
   const moveUp = useCallback(() => {
     setPreviewedInputIndex((prevSelectedIndex) =>

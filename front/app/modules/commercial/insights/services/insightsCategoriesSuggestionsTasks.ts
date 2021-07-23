@@ -38,7 +38,6 @@ export function insightsCategoriesSuggestionsTasksStream(
       insightsViewId
     )}`,
     ...streamParams,
-    cacheStream: false,
   });
 }
 

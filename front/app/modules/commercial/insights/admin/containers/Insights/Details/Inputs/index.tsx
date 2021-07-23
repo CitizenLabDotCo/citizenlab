@@ -52,6 +52,7 @@ const Inputs = ({
   inputs,
 }: InputsProps) => {
   const category = query.category;
+  const previewedInputId = query.previewedInputId;
   const search = query.search;
   const pageNumber = query.pageNumber ? Number(query.pageNumber) : 1;
 
@@ -62,12 +63,12 @@ const Inputs = ({
       clHistory.replace({
         pathname,
         search: stringify(
-          { category, search, pageNumber: 1 },
+          { previewedInputId, category, search, pageNumber: 1 },
           { addQueryPrefix: true }
         ),
       });
     },
-    [category, pathname]
+    [previewedInputId, category, pathname]
   );
 
   const onLoadMore = () => {
