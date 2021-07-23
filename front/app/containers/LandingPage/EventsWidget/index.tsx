@@ -3,7 +3,7 @@ import React from 'react';
 // components
 import TopBar from './TopBar';
 import EventCard from 'components/EventCard';
-import EventsError from 'containers/EventsPage/EventsViewer/EventsError';
+import EventsMessage from 'containers/EventsPage/EventsViewer/EventsMessage';
 import EventsSpinner from 'containers/EventsPage/EventsViewer/EventsSpinner';
 import VerticalCenterer from 'components/VerticalCenterer';
 
@@ -62,6 +62,7 @@ export default injectIntl<InjectedIntlProps>(({ intl }) => {
   const { events } = useEvents({
     futureOnly: true,
     pageSize: 3,
+    sort: 'newest',
   });
 
   const eventsLoading = isNil(events);
@@ -72,7 +73,9 @@ export default injectIntl<InjectedIntlProps>(({ intl }) => {
       <TopBar />
 
       {eventsLoading && <EventsSpinner />}
-      {eventsError && <EventsError />}
+      {eventsError && (
+        <EventsMessage message={messages.errorWhenFetchingEvents} />
+      )}
 
       {!isNilOrError(events) && events.length === 0 && (
         <VerticalCenterer>

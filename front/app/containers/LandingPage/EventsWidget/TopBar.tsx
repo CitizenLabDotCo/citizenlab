@@ -2,6 +2,7 @@ import React from 'react';
 
 // components
 import Link from 'utils/cl-router/Link';
+import FeatureFlag from 'components/FeatureFlag';
 
 // i18n
 import messages from '../messages';
@@ -48,8 +49,10 @@ const EventPageLink = styled(Link)`
 export default injectIntl<InjectedIntlProps>(({ intl }) => (
   <Header>
     <Title>{intl.formatMessage(messages.eventsWidgetTitle)}</Title>
-    <EventPageLink to="/events">
-      {intl.formatMessage(messages.viewAllEventsText)}
-    </EventPageLink>
+    <FeatureFlag name="events_page">
+      <EventPageLink to="/events">
+        {intl.formatMessage(messages.viewAllEventsText)}
+      </EventPageLink>
+    </FeatureFlag>
   </Header>
 ));
