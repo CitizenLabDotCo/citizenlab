@@ -57,7 +57,11 @@ interface Props extends InputProps, DataProps {}
 const allHaveLoaded = (...args) => args.every((arg) => !isNilOrError(arg));
 
 const EventsContainer = memo<Props>(({ projectId, className, ideasLoaded }) => {
-  const { events } = useEvents({ projectIds: [projectId] });
+  const { events } = useEvents({
+    projectIds: [projectId],
+    sort: 'newest',
+  });
+
   const locale = useLocale();
   const tenant = useAppConfiguration();
   const phases = usePhases(projectId);

@@ -14,7 +14,7 @@ const StyledEventsViewer = styled(EventsViewer)`
 export default injectIntl<InjectedIntlProps>(({ intl }) => (
   <StyledEventsViewer
     title={intl.formatMessage(messages.upcomingEvents)}
-    fallbackMessage={intl.formatMessage(messages.noUpcomingEvents)}
+    fallbackMessage={messages.noUpcomingEvents}
     eventsTime="future"
   />
 ));

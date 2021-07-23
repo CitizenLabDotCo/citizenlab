@@ -20,11 +20,11 @@ export default defineMessages({
   },
   noUpcomingEvents: {
     id: 'app.containers.eventspage.noUpcomingEvents',
-    defaultMessage: 'There are no upcoming events',
+    defaultMessage: 'No upcoming events are currently scheduled',
   },
   noPastEvents: {
     id: 'app.containers.eventspage.noPastEvents',
-    defaultMessage: 'There are no past events',
+    defaultMessage: 'No past events to display',
   },
   filterDropdownTitle: {
     id: 'app.containers.eventspage.filterDropdownTitle',

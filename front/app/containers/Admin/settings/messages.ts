@@ -184,12 +184,12 @@ export default defineMessages({
   },
   eventsPageSetting: {
     id: 'app.components.AdminPage.SettingsPage.eventsPageSetting',
-    defaultMessage: 'Events overview page',
+    defaultMessage: 'Add Events to navigation bar',
   },
   eventsPageSettingDescription: {
     id: 'app.components.AdminPage.SettingsPage.eventsPageSettingDescription',
     defaultMessage:
-      "When enabled, an events overview page will be added to the platform that's accessible via an added 'Events' menu item in the main menu.",
+      'When enabled, a link to all project events will be added to the navigation bar.',
   },
   eventsWidgetSetting: {
     id: 'app.components.AdminPage.SettingsPage.eventsWidgetSetting',
