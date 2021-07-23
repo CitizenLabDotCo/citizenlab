@@ -1,11 +1,11 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-import useInsightsCategorySuggestions, {
+import useInsightsCatgeoriesSuggestionsTasks, {
   QueryParameters,
-} from './useInsightsCategorySuggestions';
+} from './useInsightsCategoriesSuggestionsTasks';
 import { Observable, Subscription } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { waitFor } from 'utils/testUtils/rtl';
-import { insightsCategorySuggestionsStream } from 'modules/commercial/insights/services/insightsCategorySuggestions';
+import { insightsCategoriesSuggestionsTasksStream } from 'modules/commercial/insights/services/insightsCategoriesSuggestionsTasks';
 import streams from 'utils/streams';
 
 const viewId = '1';
@@ -15,7 +15,7 @@ const queryParameters: QueryParameters = {
   inputs: ['10'],
 };
 
-const mockCategorySuggestions = {
+const mockCategoriesSuggestionsTasks = {
   data: [
     {
       id: '58ed4a03-155b-4b60-ac9e-cf101e6d94d0',
@@ -71,14 +71,14 @@ const mockCategorySuggestions = {
 };
 
 let mockObservable = new Observable((subscriber) => {
-  subscriber.next(mockCategorySuggestions);
+  subscriber.next(mockCategoriesSuggestionsTasks);
 }).pipe(delay(1));
 
 jest.mock(
-  'modules/commercial/insights/services/insightsCategorySuggestions',
+  'modules/commercial/insights/services/insightsCategoriesSuggestionsTasks',
   () => {
     return {
-      insightsCategorySuggestionsStream: jest.fn(() => {
+      insightsCategoriesSuggestionsTasksStream: jest.fn(() => {
         return {
           observable: mockObservable,
         };
@@ -95,81 +95,111 @@ jest.mock('utils/helperUtils', () => {
   return { isNilOrError: jest.fn(() => false) };
 });
 
-describe('useInsightsCategorySuggestions', () => {
-  it('should call useInsightsCategorySuggestions with correct viewId', async () => {
-    renderHook(() => useInsightsCategorySuggestions(viewId));
-    expect(insightsCategorySuggestionsStream).toHaveBeenCalledWith(viewId, {
-      queryParameters: { categories: undefined, inputs: undefined },
-    });
+describe('useInsightsCatgeoriesSuggestionsTasks', () => {
+  it('should call useInsightsCatgeoriesSuggestionsTasks with correct viewId', async () => {
+    renderHook(() => useInsightsCatgeoriesSuggestionsTasks(viewId));
+    expect(insightsCategoriesSuggestionsTasksStream).toHaveBeenCalledWith(
+      viewId,
+      {
+        queryParameters: { categories: undefined, inputs: undefined },
+      }
+    );
   });
 
-  it('should call useInsightsCategorySuggestions with correct query parameters', async () => {
-    renderHook(() => useInsightsCategorySuggestions(viewId, queryParameters));
-    expect(insightsCategorySuggestionsStream).toHaveBeenCalledWith(viewId, {
-      queryParameters,
-    });
+  it('should call useInsightsCatgeoriesSuggestionsTasks with correct query parameters', async () => {
+    renderHook(() =>
+      useInsightsCatgeoriesSuggestionsTasks(viewId, queryParameters)
+    );
+    expect(insightsCategoriesSuggestionsTasksStream).toHaveBeenCalledWith(
+      viewId,
+      {
+        queryParameters,
+      }
+    );
   });
 
-  it('should call insightsCategorySuggestionsStream with correct arguments on categories change', async () => {
+  it('should call insightsCategoriesSuggestionsTasksStream with correct arguments on categories change', async () => {
     let categories = ['5'];
     const { rerender } = renderHook(() =>
-      useInsightsCategorySuggestions(viewId, { ...queryParameters, categories })
-    );
-
-    expect(insightsCategorySuggestionsStream).toHaveBeenCalledWith(viewId, {
-      queryParameters: {
+      useInsightsCatgeoriesSuggestionsTasks(viewId, {
         ...queryParameters,
         categories,
-      },
-    });
+      })
+    );
+
+    expect(insightsCategoriesSuggestionsTasksStream).toHaveBeenCalledWith(
+      viewId,
+      {
+        queryParameters: {
+          ...queryParameters,
+          categories,
+        },
+      }
+    );
 
     // Categories change
     categories = ['10'];
     rerender();
 
-    expect(insightsCategorySuggestionsStream).toHaveBeenCalledWith(viewId, {
-      queryParameters: {
-        ...queryParameters,
-        categories,
-      },
-    });
-    expect(insightsCategorySuggestionsStream).toHaveBeenCalledTimes(2);
+    expect(insightsCategoriesSuggestionsTasksStream).toHaveBeenCalledWith(
+      viewId,
+      {
+        queryParameters: {
+          ...queryParameters,
+          categories,
+        },
+      }
+    );
+    expect(insightsCategoriesSuggestionsTasksStream).toHaveBeenCalledTimes(2);
   });
 
-  it('should call insightsCategorySuggestionsStream with correct arguments on inputs change', async () => {
+  it('should call insightsCategoriesSuggestionsTasksStream with correct arguments on inputs change', async () => {
     let inputs = ['5'];
     const { rerender } = renderHook(() =>
-      useInsightsCategorySuggestions(viewId, { ...queryParameters, inputs })
-    );
-
-    expect(insightsCategorySuggestionsStream).toHaveBeenCalledWith(viewId, {
-      queryParameters: {
+      useInsightsCatgeoriesSuggestionsTasks(viewId, {
         ...queryParameters,
         inputs,
-      },
-    });
+      })
+    );
+
+    expect(insightsCategoriesSuggestionsTasksStream).toHaveBeenCalledWith(
+      viewId,
+      {
+        queryParameters: {
+          ...queryParameters,
+          inputs,
+        },
+      }
+    );
 
     // Inputs change
     inputs = ['10'];
     rerender();
 
-    expect(insightsCategorySuggestionsStream).toHaveBeenCalledWith(viewId, {
-      queryParameters: {
-        ...queryParameters,
-        inputs,
-      },
-    });
-    expect(insightsCategorySuggestionsStream).toHaveBeenCalledTimes(2);
+    expect(insightsCategoriesSuggestionsTasksStream).toHaveBeenCalledWith(
+      viewId,
+      {
+        queryParameters: {
+          ...queryParameters,
+          inputs,
+        },
+      }
+    );
+    expect(insightsCategoriesSuggestionsTasksStream).toHaveBeenCalledTimes(2);
   });
 
   it('should return correct data when data', async () => {
-    const { result } = renderHook(() => useInsightsCategorySuggestions(viewId));
+    const { result } = renderHook(() =>
+      useInsightsCatgeoriesSuggestionsTasks(viewId)
+    );
     expect(result.current).toStrictEqual(undefined); // initially, the hook returns undefined
 
     await act(
       async () =>
         await waitFor(() => {
-          expect(result.current).toStrictEqual(mockCategorySuggestions.data);
+          expect(result.current).toStrictEqual(
+            mockCategoriesSuggestionsTasks.data
+          );
         })
     );
   });
@@ -177,10 +207,12 @@ describe('useInsightsCategorySuggestions', () => {
   it('should call streams.fetchAllWith with correct arguments when data', async () => {
     jest.useFakeTimers();
     mockObservable = new Observable((subscriber) => {
-      subscriber.next({ data: mockCategorySuggestions.data });
+      subscriber.next({ data: mockCategoriesSuggestionsTasks.data });
     });
-    const { result } = renderHook(() => useInsightsCategorySuggestions(viewId));
-    expect(result.current).toStrictEqual(mockCategorySuggestions.data);
+    const { result } = renderHook(() =>
+      useInsightsCatgeoriesSuggestionsTasks(viewId)
+    );
+    expect(result.current).toStrictEqual(mockCategoriesSuggestionsTasks.data);
     await waitFor(() => {
       expect(streams.fetchAllWith).toHaveBeenCalledWith({
         partialApiEndpoint: [
@@ -196,7 +228,9 @@ describe('useInsightsCategorySuggestions', () => {
     mockObservable = new Observable((subscriber) => {
       subscriber.next({ data: [] });
     });
-    const { result } = renderHook(() => useInsightsCategorySuggestions(viewId));
+    const { result } = renderHook(() =>
+      useInsightsCatgeoriesSuggestionsTasks(viewId)
+    );
     expect(result.current).toStrictEqual([]);
     await waitFor(() => {
       expect(streams.fetchAllWith).not.toHaveBeenCalled();
@@ -208,20 +242,24 @@ describe('useInsightsCategorySuggestions', () => {
     mockObservable = new Observable((subscriber) => {
       subscriber.next({ data: new Error() });
     });
-    const { result } = renderHook(() => useInsightsCategorySuggestions(viewId));
+    const { result } = renderHook(() =>
+      useInsightsCatgeoriesSuggestionsTasks(viewId)
+    );
     expect(result.current).toStrictEqual(error);
   });
   it('should return null when data is null', () => {
     mockObservable = new Observable((subscriber) => {
       subscriber.next({ data: null });
     });
-    const { result } = renderHook(() => useInsightsCategorySuggestions(viewId));
+    const { result } = renderHook(() =>
+      useInsightsCatgeoriesSuggestionsTasks(viewId)
+    );
     expect(result.current).toBe(null);
   });
   it('should unsubscribe on unmount', () => {
     spyOn(Subscription.prototype, 'unsubscribe');
     const { unmount } = renderHook(() =>
-      useInsightsCategorySuggestions(viewId)
+      useInsightsCatgeoriesSuggestionsTasks(viewId)
     );
 
     unmount();

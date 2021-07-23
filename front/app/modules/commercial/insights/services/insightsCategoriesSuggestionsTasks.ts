@@ -2,10 +2,10 @@ import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 import { IRelationship } from 'typings';
 
-const getInsightsCategorySuggestionsEndpoint = (viewId: string) =>
+const getInsightsCategorySuggestionsTasksEndpoint = (viewId: string) =>
   `insights/views/${viewId}/tasks/category_suggestions`;
 
-export interface IInsightsCategorySuggestionData {
+export interface IInsightsCategoriesSuggestionTasksData {
   id: string;
   type: string;
   attributes: {
@@ -21,20 +21,20 @@ export interface IInsightsCategorySuggestionData {
   };
 }
 
-export interface IInsightsCategorySuggestion {
-  data: IInsightsCategorySuggestionData;
+export interface IInsightsCategoriesSuggestionTasks {
+  data: IInsightsCategoriesSuggestionTasksData;
 }
 
-export interface IInsightsCategorySuggestions {
-  data: IInsightsCategorySuggestionData[];
+export interface IInsightsCategorySuggestionsTasks {
+  data: IInsightsCategoriesSuggestionTasksData[];
 }
 
-export function insightsCategorySuggestionsStream(
+export function insightsCategoriesSuggestionsTasksStream(
   insightsViewId: string,
   streamParams: IStreamParams | null = null
 ) {
-  return streams.get<IInsightsCategorySuggestions>({
-    apiEndpoint: `${API_PATH}/${getInsightsCategorySuggestionsEndpoint(
+  return streams.get<IInsightsCategorySuggestionsTasks>({
+    apiEndpoint: `${API_PATH}/${getInsightsCategorySuggestionsTasksEndpoint(
       insightsViewId
     )}`,
     ...streamParams,
@@ -42,13 +42,15 @@ export function insightsCategorySuggestionsStream(
   });
 }
 
-export async function insightsSuggestCategories(
+export async function insightsTriggerCategoriesSuggestionsTasks(
   insightsViewId: string,
   categories?: string[],
   inputs?: string[]
 ) {
   const response = await streams.add(
-    `${API_PATH}/${getInsightsCategorySuggestionsEndpoint(insightsViewId)}`,
+    `${API_PATH}/${getInsightsCategorySuggestionsTasksEndpoint(
+      insightsViewId
+    )}`,
     {
       inputs,
       categories,

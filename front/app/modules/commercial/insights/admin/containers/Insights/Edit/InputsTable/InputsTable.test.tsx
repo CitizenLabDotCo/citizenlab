@@ -164,7 +164,7 @@ jest.mock('modules/commercial/insights/hooks/useInsightsInput', () => {
 });
 
 jest.mock(
-  'modules/commercial/insights/hooks/useInsightsCategorySuggestions',
+  'modules/commercial/insights/hooks/useInsightsCategoriesSuggestionsTasks',
   () => {
     return jest.fn(() => []);
   }
@@ -449,7 +449,6 @@ describe('Insights Input Table', () => {
       });
     });
   });
-
   describe('Sorting', () => {
     it('sorts categories for -approval when category is selected', () => {
       const spy = jest.spyOn(clHistory, 'push');

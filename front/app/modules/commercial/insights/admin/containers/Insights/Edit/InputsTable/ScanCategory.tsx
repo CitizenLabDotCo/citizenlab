@@ -16,8 +16,8 @@ import Button from 'components/UI/Button';
 import { Spinner } from 'cl2-component-library';
 
 // services
-import { insightsSuggestCategories } from 'modules/commercial/insights/services/insightsCategorySuggestions';
-import useInsightsCategoriesSuggestions from 'modules/commercial/insights/hooks/useInsightsCategorySuggestions';
+import { insightsTriggerCategoriesSuggestionsTasks } from 'modules/commercial/insights/services/insightsCategoriesSuggestionsTasks';
+import useInsightsCategoriesSuggestionsTasks from 'modules/commercial/insights/hooks/useInsightsCategoriesSuggestionsTasks';
 
 const ScanContainer = styled.div`
   width: 100%;
@@ -57,13 +57,13 @@ const ScanCategory = ({
   location: { query },
 }: InjectedIntlProps & WithRouterProps) => {
   const categories = useMemo(() => [query.category], [query.category]);
-  const categorySuggestionsPendingTasks = useInsightsCategoriesSuggestions(
+  const categorySuggestionsPendingTasks = useInsightsCategoriesSuggestionsTasks(
     viewId
   );
 
   const suggestCategories = async () => {
     try {
-      await insightsSuggestCategories(viewId, categories);
+      await insightsTriggerCategoriesSuggestionsTasks(viewId, categories);
     } catch {
       // Do nothing
     }

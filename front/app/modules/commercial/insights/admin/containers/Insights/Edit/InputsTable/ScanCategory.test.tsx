@@ -1,10 +1,10 @@
 import React from 'react';
 import { render, screen, fireEvent } from 'utils/testUtils/rtl';
-import { insightsSuggestCategories } from 'modules/commercial/insights/services/insightsCategorySuggestions';
+import { insightsTriggerCategoriesSuggestionsTasks } from 'modules/commercial/insights/services/insightsCategoriesSuggestionsTasks';
 
 import ScanCategory from './ScanCategory';
 
-const mockCategorySuggestions = [
+const mockCategoriesSuggestionsTasks = [
   {
     id: '58ed4a03-155b-4b60-ac9e-cf101e6d94d0',
     type: 'zeroshot_classification_task',
@@ -60,16 +60,16 @@ const mockCategorySuggestions = [
 jest.mock('utils/cl-intl');
 
 jest.mock(
-  'modules/commercial/insights/services/insightsCategorySuggestions',
+  'modules/commercial/insights/services/insightsCategoriesSuggestionsTasks',
   () => ({
-    insightsSuggestCategories: jest.fn(),
+    insightsTriggerCategoriesSuggestionsTasks: jest.fn(),
   })
 );
 
 jest.mock(
-  'modules/commercial/insights/hooks/useInsightsCategorySuggestions',
+  'modules/commercial/insights/hooks/useInsightsCategoriesSuggestionsTasks',
   () => {
-    return jest.fn(() => mockCategorySuggestions);
+    return jest.fn(() => mockCategoriesSuggestionsTasks);
   }
 );
 
@@ -101,25 +101,25 @@ describe('Scan category', () => {
     render(<ScanCategory />);
     expect(screen.getByTestId('insightsScanCategory')).toBeInTheDocument();
   });
-  it('calls insightsSuggestCategories with correct arguments on button click', () => {
+  it('calls insightsTriggerCategoriesSuggestionsTasks with correct arguments on button click', () => {
     render(<ScanCategory />);
     fireEvent.click(screen.getByRole('button'));
-    expect(insightsSuggestCategories).toHaveBeenCalledWith(viewId, [
-      categoryId,
-    ]);
+    expect(
+      insightsTriggerCategoriesSuggestionsTasks
+    ).toHaveBeenCalledWith(viewId, [categoryId]);
   });
   it('disables button if the selected category is already in a pending task', () => {
     mockLocationData = {
       pathname: '',
       query: {
         category:
-          mockCategorySuggestions[0].relationships.categories.data[0].id,
+          mockCategoriesSuggestionsTasks[0].relationships.categories.data[0].id,
       },
     };
 
     render(<ScanCategory />);
 
     fireEvent.click(screen.getByRole('button'));
-    expect(insightsSuggestCategories).toHaveBeenCalledTimes(0);
+    expect(insightsTriggerCategoriesSuggestionsTasks).toHaveBeenCalledTimes(0);
   });
 });
