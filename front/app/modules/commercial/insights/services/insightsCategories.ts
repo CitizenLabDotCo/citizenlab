@@ -34,7 +34,6 @@ export function insightsCategoriesStream(
   return streams.get<IInsightsCategories>({
     apiEndpoint: `${API_PATH}/${getInsightsCategoriesEndpoint(insightsViewId)}`,
     ...streamParams,
-    cacheStream: false,
   });
 }
 
@@ -48,17 +47,23 @@ export function insightsCategoryStream(
       insightsViewId
     )}/${insightsCategoryId}`,
     ...streamParams,
-    cacheStream: false,
   });
 }
 
 export function addInsightsCategory(insightsViewId: string, name: string) {
-  return streams.add<IInsightsCategory>(
+  const response = streams.add<IInsightsCategory>(
     `${API_PATH}/${getInsightsCategoriesEndpoint(insightsViewId)}`,
     {
       category: { name },
     }
   );
+  streams.fetchAllWith({
+    partialApiEndpoint: [
+      `insights/views/${insightsViewId}/inputs`,
+      `insights/views/${insightsViewId}/categories`,
+    ],
+  });
+  return response;
 }
 
 export function updateInsightsCategory(

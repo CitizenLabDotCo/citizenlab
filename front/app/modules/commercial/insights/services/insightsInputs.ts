@@ -5,8 +5,9 @@ import { IRelationship } from 'typings';
 export interface IInsightsInputData {
   id: string;
   type: string;
-  relationships?: {
+  relationships: {
     categories: { data: IRelationship[] };
+    suggested_categories: { data: IRelationship[] };
     source: {
       data: IRelationship;
     };

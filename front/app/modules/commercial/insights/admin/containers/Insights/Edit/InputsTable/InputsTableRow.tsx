@@ -54,6 +54,9 @@ const InputsTableRow = ({
     }
   };
 
+  const categories = input.relationships?.categories.data;
+  const suggestedCategories = input.relationships?.suggested_categories.data;
+
   return (
     <tr
       data-testid="insightsInputsTableRow"
@@ -73,23 +76,52 @@ const InputsTableRow = ({
       </td>
       <td>
         <CategoryList>
-          {input.relationships?.categories.data
-            .filter((category) =>
-              query.category ? category.id === query.category : category
-            )
-            .map((category) => (
-              <Category id={category.id} inputId={input.id} key={category.id} />
-            ))}
+          {(query.category
+            ? categories.filter((category) => category.id === query.category)
+            : categories
+          ).map((category) => (
+            <Category
+              id={category.id}
+              variant="approved"
+              inputId={input.id}
+              key={category.id}
+            />
+          ))}
+
+          {(query.category
+            ? suggestedCategories.filter(
+                (category) => category.id === query.category
+              )
+            : suggestedCategories
+          ).map((category) => (
+            <Category
+              id={category.id}
+              variant="suggested"
+              inputId={input.id}
+              key={category.id}
+            />
+          ))}
         </CategoryList>
       </td>
       {query.category ? (
         <td>
           <CategoryList>
-            {input.relationships?.categories.data
+            {categories
               .filter((category) => category.id !== query.category)
               .map((category) => (
                 <Category
                   id={category.id}
+                  variant="approved"
+                  inputId={input.id}
+                  key={category.id}
+                />
+              ))}
+            {suggestedCategories
+              .filter((category) => category.id !== query.category)
+              .map((category) => (
+                <Category
+                  id={category.id}
+                  variant="suggested"
                   inputId={input.id}
                   key={category.id}
                 />

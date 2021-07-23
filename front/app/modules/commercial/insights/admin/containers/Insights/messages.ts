@@ -263,6 +263,10 @@ export default defineMessages({
     id: 'app.containers.Admin.Insights.Details.categoriesSeeAll',
     defaultMessage: 'See all',
   },
+  categoriesSeeLess: {
+    id: 'app.containers.Admin.Insights.Details.categoriesSeeLess',
+    defaultMessage: 'See less',
+  },
   categoriesEmptyTitle: {
     id: 'app.containers.Admin.Insights.Details.categoriesEmptyTitle',
     defaultMessage: "Organize the input you've received",
@@ -275,8 +279,18 @@ export default defineMessages({
     id: 'app.containers.Admin.Insights.Details.categoriesEmptyButton',
     defaultMessage: 'Create categories',
   },
-  categoriesSeeLess: {
-    id: 'app.containers.Admin.Insights.Details.categoriesSeeLess',
-    defaultMessage: 'See less',
+  categoriesEmptyScanTitle: {
+    id: 'app.containers.Admin.Insights.Details.categoriesEmptyScanTitle',
+    defaultMessage:
+      'Do you want to scan for input that belongs in this category?',
+  },
+  categoriesEmptyScanDescription: {
+    id: 'app.containers.Admin.Insights.Details.categoriesEmptyScanDescription',
+    defaultMessage:
+      'This automated process may take a few minutes. You can leave the page and come back.',
+  },
+  categoriesEmptyScanButton: {
+    id: 'app.containers.Admin.Insights.Details.categoriesEmptyScanButton',
+    defaultMessage: 'Scan for suggestions',
   },
 });
