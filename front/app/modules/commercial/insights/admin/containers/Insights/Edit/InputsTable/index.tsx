@@ -5,6 +5,7 @@ import { stringify } from 'qs';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import clHistory from 'utils/cl-router/history';
+import getInputsCategoryFilter from 'modules/commercial/insights/utils/getInputsCategoryFilter';
 
 // hooks
 import useInsightsInputs from 'modules/commercial/insights/hooks/useInsightsInputs';
@@ -22,6 +23,7 @@ import Divider from 'components/admin/Divider';
 import Actions from './Actions';
 import Pagination from 'components/admin/Pagination/Pagination';
 import SearchInput from 'components/UI/SearchInput';
+import TableTitle from './TableTitle';
 
 // styles
 import styled from 'styled-components';
@@ -31,7 +33,6 @@ import { colors, fontSizes } from 'utils/styleUtils';
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from '../../messages';
-import TableTitle from './TableTitle';
 
 const Inputs = styled.div`
   flex: 1;
@@ -107,6 +108,19 @@ const SearchContainer = styled.div`
   margin-bottom: 40px;
 `;
 
+const RecentlyPostedInfoBox = styled.div`
+  color: ${colors.adminTextColor};
+  background-color: ${colors.clBlueLightest};
+  padding: 20px;
+  border-radius: 3px;
+  text-align: center;
+  margin-bottom: 28px;
+  svg {
+    fill: ${colors.clBlue};
+    margin-right: 8px;
+  }
+`;
+
 const InputsTable = ({
   params: { viewId },
   location: { pathname, query },
@@ -127,12 +141,17 @@ const InputsTable = ({
   const pageNumber = parseInt(query?.pageNumber, 10);
   const selectedCategory = query.category;
   const search = query.search;
+  const inputsCategoryFilter = getInputsCategoryFilter(
+    selectedCategory,
+    query.processed
+  );
   const sort = query.sort;
 
   const { list: inputs, lastPage } = useInsightsInputs(viewId, {
     pageNumber,
     search,
     sort,
+    processed: !(inputsCategoryFilter === 'recentlyPosted'),
     category: selectedCategory,
   });
 
@@ -299,9 +318,15 @@ const InputsTable = ({
           {formatMessage(messages.inputsDone)}
         </Button>
       </SearchContainer>
+      {inputsCategoryFilter === 'recentlyPosted' && inputs.length !== 0 && (
+        <RecentlyPostedInfoBox data-testid="insightsRecentlyAddedInfobox">
+          <Icon name="showMore" />
+          {formatMessage(messages.inputsTableRecentlyPostedInfoBox)}
+        </RecentlyPostedInfoBox>
+      )}
       <TitleRow>
         <TableTitle />
-        <StyledActions selectedInputs={selectedRows} />
+        {inputs.length !== 0 && <StyledActions selectedInputs={selectedRows} />}
       </TitleRow>
       <StyledDivider />
       {inputs.length === 0 ? (

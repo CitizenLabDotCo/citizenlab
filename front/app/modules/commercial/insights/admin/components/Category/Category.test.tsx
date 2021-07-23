@@ -4,6 +4,7 @@ import * as service from 'modules/commercial/insights/services/insightsInputs';
 
 jest.mock('modules/commercial/insights/services/insightsInputs', () => ({
   deleteInsightsInputCategory: jest.fn(),
+  addInsightsInputCategory: jest.fn(),
 }));
 
 import Category from './';
@@ -38,15 +39,32 @@ jest.mock('react-router', () => {
 
 describe('Insights Category', () => {
   it('renders Tag with correct name', () => {
-    render(<Category id={categoryId} inputId={inputId} />);
+    render(<Category variant="approved" id={categoryId} inputId={inputId} />);
     expect(screen.getByTestId('insightsTag')).toBeInTheDocument();
     expect(
       screen.getByText(mockCategoryData.attributes.name)
     ).toBeInTheDocument();
   });
-  it('calls delete category with correct arguments', () => {
+
+  it('renders Tag with correct variant when suggested', () => {
+    render(<Category variant="suggested" id={categoryId} inputId={inputId} />);
+    expect(screen.getByTestId('insightsTag')).toBeInTheDocument();
+    expect(
+      screen.getByTestId('insightsTagContent-default')
+    ).toBeInTheDocument();
+  });
+
+  it('renders Tag with correct variant when approved', () => {
+    render(<Category variant="approved" id={categoryId} inputId={inputId} />);
+    expect(screen.getByTestId('insightsTag')).toBeInTheDocument();
+    expect(
+      screen.getByTestId('insightsTagContent-primary')
+    ).toBeInTheDocument();
+  });
+
+  it('calls delete category with correct arguments when variant is approved', () => {
     const spy = jest.spyOn(service, 'deleteInsightsInputCategory');
-    render(<Category id={categoryId} inputId={inputId} />);
+    render(<Category variant="approved" id={categoryId} inputId={inputId} />);
     expect(screen.getByTestId('insightsTag')).toBeInTheDocument();
     const deleteIcon = screen
       .getByTestId('insightsTag')
@@ -54,6 +72,20 @@ describe('Insights Category', () => {
 
     if (deleteIcon) {
       fireEvent.click(deleteIcon);
+    }
+
+    expect(spy).toHaveBeenCalledWith(viewId, inputId, categoryId);
+  });
+  it('calls add category with correct arguments when variant is suggested', () => {
+    const spy = jest.spyOn(service, 'addInsightsInputCategory');
+    render(<Category variant="suggested" id={categoryId} inputId={inputId} />);
+    expect(screen.getByTestId('insightsTag')).toBeInTheDocument();
+    const plusIcon = screen
+      .getByTestId('insightsTag')
+      .querySelector('.insightsTagPlusIcon');
+
+    if (plusIcon) {
+      fireEvent.click(plusIcon);
     }
 
     expect(spy).toHaveBeenCalledWith(viewId, inputId, categoryId);

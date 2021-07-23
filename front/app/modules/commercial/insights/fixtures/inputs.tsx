@@ -22,7 +22,16 @@ const inputs = [
         ],
       },
       suggested_categories: {
-        data: [],
+        data: [
+          {
+            id: '94a649b5-23fe',
+            type: 'category',
+          },
+          {
+            id: '94a649b5-23fe-4d47',
+            type: 'category',
+          },
+        ],
       },
     },
   },
