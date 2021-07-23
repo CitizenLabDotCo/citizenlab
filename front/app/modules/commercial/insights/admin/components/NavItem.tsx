@@ -26,7 +26,7 @@ const NavItemComponent: FC<Props> = ({ onData }) => {
         },
         insertAfterName: 'projects',
       }),
-    []
+    [onData]
   );
   return null;
 };

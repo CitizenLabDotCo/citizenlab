@@ -14,7 +14,7 @@ import { InjectedIntlProps } from 'react-intl';
 import { Icon } from 'cl2-component-library';
 import ScanCategory from './ScanCategory';
 
-import getSelectedCategoryFilter from 'modules/commercial/insights/utils/getSelectedCategoryFilter';
+import getInputsCategoryFilter from 'modules/commercial/insights/utils/getInputsCategoryFilter';
 
 const StyledEmptyState = styled.div`
   display: flex;
@@ -43,10 +43,13 @@ const EmptyState = ({
   intl: { formatMessage },
   location: { query },
 }: InjectedIntlProps & WithRouterProps) => {
-  const selectedCategoryFilter = getSelectedCategoryFilter(query.category);
+  const inputsCategoryFilter = getInputsCategoryFilter(
+    query.category,
+    query.processed
+  );
   return (
     <StyledEmptyState data-testid="insightsInputsTableEmptyState">
-      {selectedCategoryFilter === 'category' && <ScanCategory />}
+      {inputsCategoryFilter === 'category' && <ScanCategory />}
       <Icon name="blankPage" />
       {query.search ? (
         <div data-testid="insightsInputsTableEmptyNoResults">
@@ -55,20 +58,25 @@ const EmptyState = ({
         </div>
       ) : (
         <>
-          {selectedCategoryFilter === 'allInput' && (
+          {inputsCategoryFilter === 'allInput' && (
             <p data-testid="insightsInputsTableEmptyAllInputs">
               {formatMessage(messages.inputsTableEmpty)}
             </p>
           )}
-          {selectedCategoryFilter === 'notCategorized' && (
+          {inputsCategoryFilter === 'notCategorized' && (
             <p data-testid="insightsInputsTableEmptyNotCategorized">
               {formatMessage(messages.inputsTableNotCategorized)}
             </p>
           )}
-          {selectedCategoryFilter === 'category' && (
+          {inputsCategoryFilter === 'category' && (
             <div data-testid="insightsInputsTableEmptyNoInputInCategory">
               <h1>{formatMessage(messages.inputsTableCategoryTitle)}</h1>
               <p>{formatMessage(messages.inputsTableCategoryDescription)}</p>
+            </div>
+          )}
+          {inputsCategoryFilter === 'recentlyPosted' && (
+            <div data-testid="insightsInputsTableRecentlyPosted">
+              <p>{formatMessage(messages.inputsTableRecentlyPosted)}</p>
             </div>
           )}
         </>

@@ -90,6 +90,7 @@ export async function deleteInsightsCategories(insightsViewId: string) {
     partialApiEndpoint: [
       `insights/views/${insightsViewId}/inputs`,
       `insights/views/${insightsViewId}/categories`,
+      `insights/views/${insightsViewId}/stats/inputs_count`,
     ],
   });
 

@@ -124,6 +124,16 @@ export default defineMessages({
     id: 'app.containers.Admin.Insights.Edit.inputsTableNotCategorized',
     defaultMessage: 'There is no input without a category',
   },
+  inputsTableRecentlyPosted: {
+    id: 'app.containers.Admin.Insights.Edit.inputsTableRecentlyPosted',
+    defaultMessage:
+      'There is no recent input. All input has been taken into consideration.',
+  },
+  inputsTableRecentlyPostedInfoBox: {
+    id: 'app.containers.Admin.Insights.Edit.inputsTableRecentlyPostedInfoBox',
+    defaultMessage:
+      'The input below was recently added and has not yet been categorized. ',
+  },
   categories: {
     id: 'app.containers.Admin.Insights.Edit.categories',
     defaultMessage: 'Categories',
@@ -169,6 +179,15 @@ export default defineMessages({
     id: 'app.containers.Admin.Insights.Edit.notCategorizedTooltip',
     defaultMessage:
       "This lists all previously processed input that hasn't been assigned a category. Recently added input is NOT shown here.",
+  },
+  recentlyPosted: {
+    id: 'app.containers.Admin.Insights.Edit.recentlyPosted',
+    defaultMessage: 'Recently posted',
+  },
+  recentlyPostedTooltip: {
+    id: 'app.containers.Admin.Insights.Edit.recentlyPostedTooltip',
+    defaultMessage:
+      'This lists all recently added input, and has not yet been processed for categorization.',
   },
   editCategoryName: {
     id: 'app.containers.Admin.Insights.Edit.editCategoryName',
