@@ -3,7 +3,8 @@
 ## Next release
 
 ### Added
-- Configured dependabot for the frontend, a tool that helps keeping dependencies up to date. 
+- Configured dependabot for the frontend, a tool that helps keeping dependencies up to date.
+- Added events overview page to navigation menu, which can be enabled or disabled.
 
 ## 2021-07-16
 
