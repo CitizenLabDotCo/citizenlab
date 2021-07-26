@@ -9,7 +9,7 @@ Insights::Engine.routes.draw do
             delete :index, on: :collection, action: :destroy_all
           end
 
-          resource :detected_categories, only: %i[index]
+          resources :detected_categories, only: %i[index]
 
           resources :inputs, only: %i[index show] do
             resources :categories, only: %i[index destroy], controller: 'category_assignments' do
@@ -31,7 +31,7 @@ Insights::Engine.routes.draw do
           end
 
           resource :network, only: %i[show]
-          
+
           nested do
             scope '/tasks' do
               resources :category_suggestions, controller: 'classification_tasks', only: %i[index create destroy] do
