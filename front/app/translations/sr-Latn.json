@@ -1457,6 +1457,7 @@
   "app.containers.AdminPage.ProjectEdit.loadMoreTemplates": "",
   "app.containers.AdminPage.ProjectEdit.mapDisplay": "Na mapi",
   "app.containers.AdminPage.ProjectEdit.mapTab": "Mapa",
+  "app.containers.AdminPage.ProjectEdit.minimumBudget": "",
   "app.containers.AdminPage.ProjectEdit.moderationInfoCenterLinkText": "posetite naš Centar za podršku",
   "app.containers.AdminPage.ProjectEdit.moderationRightsTitle": "Dozvole projektnog menadžera",
   "app.containers.AdminPage.ProjectEdit.moderatorsSectionTitle": "Ko su projektni menadžeri?",

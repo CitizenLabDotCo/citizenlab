@@ -1457,6 +1457,7 @@
   "app.containers.AdminPage.ProjectEdit.loadMoreTemplates": "Baixar mais modelos",
   "app.containers.AdminPage.ProjectEdit.mapDisplay": "No mapa",
   "app.containers.AdminPage.ProjectEdit.mapTab": "Mapa",
+  "app.containers.AdminPage.ProjectEdit.minimumBudget": "",
   "app.containers.AdminPage.ProjectEdit.moderationInfoCenterLinkText": "visite nossa Central de Ajuda",
   "app.containers.AdminPage.ProjectEdit.moderationRightsTitle": "Permissões do gerente de projeto",
   "app.containers.AdminPage.ProjectEdit.moderatorsSectionTitle": "Quem são os gerentes de projeto?",

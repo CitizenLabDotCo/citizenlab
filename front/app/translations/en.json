@@ -1457,6 +1457,7 @@
   "app.containers.AdminPage.ProjectEdit.loadMoreTemplates": "Load more templates",
   "app.containers.AdminPage.ProjectEdit.mapDisplay": "Map",
   "app.containers.AdminPage.ProjectEdit.mapTab": "Map",
+  "app.containers.AdminPage.ProjectEdit.minimumBudget": "Minimum budget",
   "app.containers.AdminPage.ProjectEdit.moderationInfoCenterLinkText": "visit our Help Center",
   "app.containers.AdminPage.ProjectEdit.moderationRightsTitle": "Activity",
   "app.containers.AdminPage.ProjectEdit.moderatorsSectionTitle": "Who can moderate this project?",

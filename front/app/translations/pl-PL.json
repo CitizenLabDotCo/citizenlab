@@ -1457,6 +1457,7 @@
   "app.containers.AdminPage.ProjectEdit.loadMoreTemplates": "Załaduj więcej szablonów",
   "app.containers.AdminPage.ProjectEdit.mapDisplay": "Na mapie",
   "app.containers.AdminPage.ProjectEdit.mapTab": "Mapa",
+  "app.containers.AdminPage.ProjectEdit.minimumBudget": "",
   "app.containers.AdminPage.ProjectEdit.moderationInfoCenterLinkText": "odwiedź nasze Centrum Pomocy",
   "app.containers.AdminPage.ProjectEdit.moderationRightsTitle": "Zarządzanie",
   "app.containers.AdminPage.ProjectEdit.moderatorsSectionTitle": "Prawa do zarządzania projektem",

@@ -1457,6 +1457,7 @@
   "app.containers.AdminPage.ProjectEdit.loadMoreTemplates": "Meer sjablonen tonen",
   "app.containers.AdminPage.ProjectEdit.mapDisplay": "Op een kaart",
   "app.containers.AdminPage.ProjectEdit.mapTab": "Kaart",
+  "app.containers.AdminPage.ProjectEdit.minimumBudget": "",
   "app.containers.AdminPage.ProjectEdit.moderationInfoCenterLinkText": "in ons Helpcentrum",
   "app.containers.AdminPage.ProjectEdit.moderationRightsTitle": "Projectbeheerdersrechten",
   "app.containers.AdminPage.ProjectEdit.moderatorsSectionTitle": "Wie zijn de projectbeheerders?",
