@@ -28,6 +28,8 @@ Insights::Engine.routes.draw do
             post :processed_flag, controller: 'processed_flags', action: :create
           end
 
+          resource :network, only: %i[show]
+          
           nested do
             scope '/tasks' do
               resources :category_suggestions, controller: 'classification_tasks', only: %i[index create destroy] do

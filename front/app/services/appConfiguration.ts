@@ -191,13 +191,14 @@ export interface IAppConfigurationSettings {
     tenant_site_id: string;
     product_site_id: string;
   };
-  redirects?: {
-    enabled: boolean;
-    allowed: boolean;
+  redirects?: AppConfigurationFeature & {
     rules: {
       path: string;
       target: string;
     }[];
+  };
+  events_page?: AppConfigurationFeature & {
+    alternative_name?: string;
   };
 }
 

@@ -17,7 +17,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { colors, fontSizes } from 'utils/styleUtils';
 import clHistory from 'utils/cl-router/history';
-import getSelectedCategoryFilter from 'modules/commercial/insights/utils/getSelectedCategoryFilter';
+import getInputsCategoryFilter from 'modules/commercial/insights/utils/getInputsCategoryFilter';
 
 // hooks
 import useLocale from 'hooks/useLocale';
@@ -44,6 +44,7 @@ const Container = styled.aside`
   display: flex;
   flex-direction: column;
   align-items: stretch;
+  overflow-y: auto;
 `;
 
 const DetectButton = styled(Button)`
@@ -98,10 +99,6 @@ const CategoryInfoBox = styled.div`
   padding: 8px 20px;
 `;
 
-const CategoriesList = styled.div`
-  overflow-y: auto;
-`;
-
 const StyledPlus = styled.div`
   width: 22px;
   text-align: center;
@@ -121,9 +118,13 @@ const Categories = ({
   const [loadingAdd, setLoadingAdd] = useState(false);
   const [loadingReset, setLoadingReset] = useState(false);
   const [errors, setErrors] = useState<CLErrors | undefined>();
-  const allInputsCount = useInsightsInputsCount(viewId);
+  const allInputsCount = useInsightsInputsCount(viewId, { processed: true });
   const uncategorizedInputsCount = useInsightsInputsCount(viewId, {
     category: '',
+    processed: true,
+  });
+  const recentlyPostedInputsCount = useInsightsInputsCount(viewId, {
+    processed: false,
   });
 
   const categories = useInsightsCategories(viewId);
@@ -155,13 +156,26 @@ const Categories = ({
     clHistory.push({
       pathname,
       search: stringify(
-        { ...query, pageNumber: 1, category: categoryId },
+        { ...query, pageNumber: 1, category: categoryId, processed: true },
         { addQueryPrefix: true }
       ),
     });
   };
 
-  const selectedCategoryFilter = getSelectedCategoryFilter(query.category);
+  const selectRecentlyPosted = () => {
+    clHistory.push({
+      pathname,
+      search: stringify(
+        { ...query, pageNumber: 1, category: undefined, processed: false },
+        { addQueryPrefix: true }
+      ),
+    });
+  };
+
+  const inputsCategoryFilter = getInputsCategoryFilter(
+    query.category,
+    query.processed
+  );
 
   const handleResetCategories = async () => {
     const deleteMessage = formatMessage(messages.resetCategoriesConfimation);
@@ -203,7 +217,7 @@ const Categories = ({
         <CategoryButton
           locale={locale}
           bgColor={
-            selectedCategoryFilter === 'allInput'
+            inputsCategoryFilter === 'allInput'
               ? darken(0.05, colors.lightGreyishBlue)
               : 'transparent'
           }
@@ -222,7 +236,26 @@ const Categories = ({
         <CategoryButton
           locale={locale}
           bgColor={
-            selectedCategoryFilter === 'notCategorized'
+            inputsCategoryFilter === 'recentlyPosted'
+              ? darken(0.05, colors.lightGreyishBlue)
+              : 'transparent'
+          }
+          textColor={colors.label}
+          textHoverColor={colors.adminTextColor}
+          bgHoverColor={darken(0.05, colors.lightGreyishBlue)}
+          onClick={selectRecentlyPosted}
+        >
+          <div>{formatMessage(messages.recentlyPosted)}</div>
+          {!isNilOrError(recentlyPostedInputsCount) && (
+            <div data-testid="insightsRecentlyPostedInputsCount">
+              {recentlyPostedInputsCount.count}
+            </div>
+          )}
+        </CategoryButton>
+        <CategoryButton
+          locale={locale}
+          bgColor={
+            inputsCategoryFilter === 'notCategorized'
               ? darken(0.05, colors.lightGreyishBlue)
               : 'transparent'
           }
@@ -261,42 +294,41 @@ const Categories = ({
         </Button>
       </FormContainer>
       {errors && <Error apiErrors={errors['name']} fieldName="category_name" />}
-      <CategoriesList>
-        {categories.length === 0 ? (
-          <CategoryInfoBox data-testid="insightsNoCategories">
-            <p>
-              <FormattedMessage
-                {...messages.categoryInfoBox}
-                values={{
-                  bold: <b>{formatMessage(messages.categoryInfoBoxBold)}</b>,
-                }}
-              />
-            </p>
-          </CategoryInfoBox>
-        ) : (
-          categories.map((category) => (
-            <div data-testid="insightsCategory" key={category.id}>
-              <CategoryButton
-                locale={locale}
-                bgColor={
-                  category.id === query.category
-                    ? darken(0.05, colors.lightGreyishBlue)
-                    : 'transparent'
-                }
-                textColor={colors.label}
-                textHoverColor={colors.adminTextColor}
-                bgHoverColor={darken(0.05, colors.lightGreyishBlue)}
-                onClick={selectCategory(category.id)}
-              >
-                <div>{category.attributes.name}</div>
-                <div data-testid="insightsCategoryCount">
-                  {category.attributes.inputs_count}
-                </div>
-              </CategoryButton>
-            </div>
-          ))
-        )}
-      </CategoriesList>
+
+      {categories.length === 0 ? (
+        <CategoryInfoBox data-testid="insightsNoCategories">
+          <p>
+            <FormattedMessage
+              {...messages.categoryInfoBox}
+              values={{
+                bold: <b>{formatMessage(messages.categoryInfoBoxBold)}</b>,
+              }}
+            />
+          </p>
+        </CategoryInfoBox>
+      ) : (
+        categories.map((category) => (
+          <div data-testid="insightsCategory" key={category.id}>
+            <CategoryButton
+              locale={locale}
+              bgColor={
+                category.id === query.category
+                  ? darken(0.05, colors.lightGreyishBlue)
+                  : 'transparent'
+              }
+              textColor={colors.label}
+              textHoverColor={colors.adminTextColor}
+              bgHoverColor={darken(0.05, colors.lightGreyishBlue)}
+              onClick={selectCategory(category.id)}
+            >
+              <div>{category.attributes.name}</div>
+              <div data-testid="insightsCategoryCount">
+                {category.attributes.inputs_count}
+              </div>
+            </CategoryButton>
+          </div>
+        ))
+      )}
     </Container>
   );
 };

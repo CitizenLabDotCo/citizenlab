@@ -24,10 +24,14 @@ jest.mock('modules/commercial/insights/hooks/useInsightsCategories', () => {
 
 const allInputsCount = 10;
 const uncategorizedInputCount = 5;
+const recentlyPostedInputCount = 2;
 
 jest.mock('modules/commercial/insights/hooks/useInsightsInputsCount', () => {
   return jest.fn((_viewId, queryParameters) => {
-    return queryParameters === undefined
+    return queryParameters.processed === false
+      ? { count: recentlyPostedInputCount }
+      : queryParameters.processed === true &&
+        queryParameters.category === undefined
       ? { count: allInputsCount }
       : { count: uncategorizedInputCount };
   });
@@ -67,7 +71,7 @@ describe('Insights Edit Categories', () => {
     fireEvent.click(screen.getByText(mockData[0].attributes.name));
     expect(spy).toHaveBeenCalledWith({
       pathname: '',
-      search: `?pageNumber=1&category=${mockData[0].id}`,
+      search: `?pageNumber=1&category=${mockData[0].id}&processed=true`,
     });
   });
 
@@ -77,7 +81,7 @@ describe('Insights Edit Categories', () => {
     fireEvent.click(screen.getAllByText('All input')[0]);
     expect(spy).toHaveBeenCalledWith({
       pathname: '',
-      search: `?pageNumber=1`,
+      search: `?pageNumber=1&processed=true`,
     });
   });
 
@@ -87,7 +91,7 @@ describe('Insights Edit Categories', () => {
     fireEvent.click(screen.getAllByText('Not categorized')[0]);
     expect(spy).toHaveBeenCalledWith({
       pathname: '',
-      search: `?pageNumber=1&category=`,
+      search: `?pageNumber=1&category=&processed=true`,
     });
   });
   it('shows category count correctly', () => {
@@ -140,6 +144,13 @@ describe('Insights Edit Categories', () => {
     expect(screen.getByTestId('insightsAllInputsCount')).toHaveTextContent(
       allInputsCount.toString()
     );
+  });
+
+  it('shows recently posted input category count correctly', () => {
+    render(<Categories />);
+    expect(
+      screen.getByTestId('insightsRecentlyPostedInputsCount')
+    ).toHaveTextContent(recentlyPostedInputCount.toString());
   });
   it('shows uncategorized category count correctly', () => {
     render(<Categories />);

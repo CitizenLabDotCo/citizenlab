@@ -8,8 +8,6 @@ import FilterSelector from 'components/FilterSelector';
 import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
 import localize, { InjectedLocalized } from 'utils/localize';
 
 type DataProps = {
@@ -17,8 +15,10 @@ type DataProps = {
 };
 
 type InputProps = {
-  id?: string | undefined;
-  onChange: (value: any) => void;
+  title: string | JSX.Element;
+  onChange: (projectIds: string[]) => void;
+  className?: string;
+  textColor?: string;
 };
 
 type Props = InputProps & DataProps;
@@ -45,7 +45,7 @@ class ProjectFilterDropdown extends PureComponent<
 
   render() {
     const { selectedValues } = this.state;
-    const { projects, localize } = this.props;
+    const { projects, localize, title, className, textColor } = this.props;
     const projectsList = projects.projectsList;
 
     if (projectsList && projectsList.length > 0) {
@@ -60,7 +60,8 @@ class ProjectFilterDropdown extends PureComponent<
         return (
           <FilterSelector
             id="e2e-project-filter-selector"
-            title={<FormattedMessage {...messages.projectFilterTitle} />}
+            className={className}
+            title={title}
             name="projects"
             selected={selectedValues}
             values={options}
@@ -68,6 +69,7 @@ class ProjectFilterDropdown extends PureComponent<
             multipleSelectionAllowed={true}
             right="-10px"
             mobileLeft="-5px"
+            textColor={textColor}
           />
         );
       }

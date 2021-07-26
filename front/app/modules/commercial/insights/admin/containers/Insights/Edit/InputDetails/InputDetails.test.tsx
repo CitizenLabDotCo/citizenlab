@@ -103,7 +103,9 @@ describe('Insights Input Details', () => {
   });
   it('renders correct number of categories', () => {
     render(<InputDetails {...defaultProps} />);
-    expect(screen.getAllByTestId('insightsTag')).toHaveLength(2);
+    expect(screen.getAllByTestId('insightsTag')).toHaveLength(4);
+    expect(screen.getAllByTestId('insightsTagContent-primary')).toHaveLength(2);
+    expect(screen.getAllByTestId('insightsTagContent-default')).toHaveLength(2);
   });
   it('adds existing category to category list correctly', async () => {
     const spy = jest.spyOn(insightsService, 'addInsightsInputCategory');

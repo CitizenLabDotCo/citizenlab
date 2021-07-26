@@ -27,7 +27,7 @@ import { Dropdown, DropdownListItem, IconTooltip } from 'cl2-component-library';
 import Button from 'components/UI/Button';
 import RenameCategory from '../RenameCategory';
 
-import getSelectedCategoryFilter from 'modules/commercial/insights/utils/getSelectedCategoryFilter';
+import getInputsCategoryFilter from 'modules/commercial/insights/utils/getInputsCategoryFilter';
 
 const StyledHeader = styled.h2`
   display: flex;
@@ -47,6 +47,10 @@ const StyledTooltipContent = styled.p`
 const DropdownWrapper = styled.div`
   margin-top: 40px;
   margin-left: -40px;
+`;
+
+const TitleContainer = styled.div`
+  display: flex;
 `;
 
 const TableTitle = ({
@@ -101,12 +105,15 @@ const TableTitle = ({
     (category) => category.id === query.category
   );
 
-  const selectedCategoryFilter = getSelectedCategoryFilter(query.category);
+  const inputsCategoryFilter = getInputsCategoryFilter(
+    query.category,
+    query.processed
+  );
 
   return (
     <>
       <StyledHeader data-testid="insightsInputsHeader">
-        {selectedCategoryFilter === 'category' && (
+        {inputsCategoryFilter === 'category' && (
           <>
             {selectedCategory?.attributes.name}
             <Button
@@ -122,8 +129,8 @@ const TableTitle = ({
             />
           </>
         )}
-        {selectedCategoryFilter === 'notCategorized' && (
-          <>
+        {inputsCategoryFilter === 'notCategorized' && (
+          <TitleContainer data-testid="insightsTableHeaderNotCategorized">
             {formatMessage(messages.notCategorized)}
             <IconTooltip
               content={
@@ -132,10 +139,10 @@ const TableTitle = ({
                 </StyledTooltipContent>
               }
             />
-          </>
+          </TitleContainer>
         )}
-        {selectedCategoryFilter === 'allInput' && (
-          <>
+        {inputsCategoryFilter === 'allInput' && (
+          <TitleContainer data-testid="insightsTableHeaderAllInput">
             {formatMessage(messages.allInput)}
             <IconTooltip
               content={
@@ -144,7 +151,19 @@ const TableTitle = ({
                 </StyledTooltipContent>
               }
             />
-          </>
+          </TitleContainer>
+        )}
+        {inputsCategoryFilter === 'recentlyPosted' && (
+          <TitleContainer data-testid="insightsTableHeaderRecentlyPosted">
+            {formatMessage(messages.recentlyPosted)}
+            <IconTooltip
+              content={
+                <StyledTooltipContent>
+                  {formatMessage(messages.recentlyPostedTooltip)}
+                </StyledTooltipContent>
+              }
+            />
+          </TitleContainer>
         )}
       </StyledHeader>
       <DropdownWrapper>
