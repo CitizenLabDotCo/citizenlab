@@ -145,7 +145,7 @@ const DetailsInsightsView = ({
   return (
     <>
       <TopBar />
-      <Container>
+      <Container data-testid="insightsDetails">
         <Left>
           {isPreviewOpen ? (
             <>
