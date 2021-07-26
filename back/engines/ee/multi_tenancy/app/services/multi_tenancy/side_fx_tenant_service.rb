@@ -11,14 +11,16 @@ module MultiTenancy
       update_google_host(tenant)
     end
 
-    def after_apply_template(tenant, current_user = nil)
+    def after_apply_template tenant, template, current_user=nil
       tenant.switch do
         EmailCampaigns::AssureCampaignsService.new.assure_campaigns # fix campaigns
         PermissionsService.new.update_all_permissions # fix permissions
         track_tenant_async(tenant)
       end
     ensure
-      LogActivityJob.perform_later(tenant, 'template_loaded', current_user, tenant.created_at.to_i)
+      LogActivityJob.perform_later(tenant, 'template_loaded', current_user, tenant.created_at.to_i, payload: { 
+        tenant_template: template 
+      })
     end
 
     def before_update(tenant, current_user = nil) end

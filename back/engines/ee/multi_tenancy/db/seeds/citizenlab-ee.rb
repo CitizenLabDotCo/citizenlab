@@ -495,7 +495,7 @@ user = {
 
 if Apartment::Tenant.current == 'empty_localhost'
   MultiTenancy::TenantTemplateService.new.resolve_and_apply_template 'base', external_subfolder: false
-  MultiTenancy::SideFxTenantService.new.after_apply_template(Tenant.current, nil)
+  MultiTenancy::SideFxTenantService.new.after_apply_template(Tenant.current, 'base')
   random_user = AnonymizeUserService.new.anonymized_attributes(Tenant.current.settings.dig('core', 'locales'))
   User.create! AnonymizeUserService.new.anonymized_attributes(Tenant.current.settings.dig('core', 'locales')).merge({**admin, id: "e0d698fc-5969-439f-9fe6-e74fe82b567a"})
 end
@@ -533,7 +533,7 @@ if Apartment::Tenant.current == 'localhost'
   end
 
   MultiTenancy::TenantTemplateService.new.resolve_and_apply_template 'base', external_subfolder: false
-  MultiTenancy::SideFxTenantService.new.after_apply_template(Tenant.current, nil)
+  MultiTenancy::SideFxTenantService.new.after_apply_template(Tenant.current, 'base')
   User.create! AnonymizeUserService.new.anonymized_attributes(Tenant.current.settings.dig('core', 'locales')).merge(admin)
   User.create! AnonymizeUserService.new.anonymized_attributes(Tenant.current.settings.dig('core', 'locales')).merge(moderator)
   User.create! AnonymizeUserService.new.anonymized_attributes(Tenant.current.settings.dig('core', 'locales')).merge(user)
