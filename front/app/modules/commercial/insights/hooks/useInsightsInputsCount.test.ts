@@ -14,6 +14,7 @@ const mockInputsCount = { count: 3 };
 const queryParameters: QueryParameters = {
   category: '3',
   search: 'search',
+  processed: true,
 };
 
 const expectedQueryParameters = {
