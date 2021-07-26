@@ -466,6 +466,12 @@ class ParticipationContext extends PureComponent<
     });
   };
 
+  handleMinBudgetingAmountChange = (min_budget: string) => {
+    this.setState({
+      min_budget: parseInt(min_budget, 10),
+    });
+  };
+
   handleInputTermChange = (option: IOption) => {
     const input_term: InputTerm = option.value;
 
@@ -745,7 +751,7 @@ class ParticipationContext extends PureComponent<
                     <FormattedMessage {...messages.minimumBudget} />
                   </SubSectionTitle>
                   <BudgetingAmountInput
-                    onChange={this.handleMaxBudgetingAmountChange}
+                    onChange={this.handleMinBudgetingAmountChange}
                     type="number"
                     min="0"
                     value={min_budget ? min_budget.toString() : null}
