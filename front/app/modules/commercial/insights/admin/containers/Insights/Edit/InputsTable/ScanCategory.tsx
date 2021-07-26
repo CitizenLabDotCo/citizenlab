@@ -99,6 +99,7 @@ const ScanCategory = ({
         buttonStyle="admin-dark"
         onClick={suggestCategories}
         processing={processing}
+        disabled={processing}
       >
         <ScanButtonContent>
           {formatMessage(messages.categoriesEmptyScanButton)}
