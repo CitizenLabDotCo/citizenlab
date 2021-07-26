@@ -19,7 +19,8 @@ module Insights
       def counts_params
         @counts_params ||= params.permit(
           :category,
-          :search
+          :search,
+          :processed
         )
       end
     end
