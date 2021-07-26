@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import { withRouter, WithRouterProps } from 'react-router';
 import clHistory from 'utils/cl-router/history';
 import { stringify } from 'qs';
@@ -13,9 +13,6 @@ import styled from 'styled-components';
 import Button from 'components/UI/Button';
 import Idea from 'modules/commercial/insights/admin/components/Idea';
 import Category from 'modules/commercial/insights/admin/components/Category';
-import Navigation, {
-  NavigationProps,
-} from 'modules/commercial/insights/admin/components/Navigation';
 
 const Container = styled.div`
   height: 100%;
@@ -41,20 +38,19 @@ const CategoryList = styled.div`
 
 type PreviewProps = {
   closePreview: () => void;
-} & NavigationProps &
-  WithRouterProps;
+} & WithRouterProps;
 
 const Preview = ({
   params: { viewId },
   location: { query, pathname },
-
   closePreview,
-  moveUp,
-  moveDown,
-  isMoveUpDisabled,
-  isMoveDownDisabled,
 }: PreviewProps) => {
   const previewedInput = useInsightsInput(viewId, query.previewedInputId);
+  const previewRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    previewRef.current && previewRef.current.scrollTo(0, 0);
+  }, [query.previewedInputId]);
 
   // Loading state
   if (previewedInput === undefined) {
@@ -80,18 +76,20 @@ const Preview = ({
   };
 
   return (
-    <Container>
-      <CloseButton
-        width="26px"
-        height="26px"
-        padding="0px"
-        buttonStyle="white"
-        icon="close"
-        iconSize="12px"
-        boxShadow="none"
-        boxShadowHover="none"
-        onClick={handleOnClose}
-      />
+    <Container ref={previewRef} data-testid="insightsDetailsPreview">
+      <div data-testid="insightsDetailsPreviewClose">
+        <CloseButton
+          width="26px"
+          height="26px"
+          padding="0px"
+          buttonStyle="white"
+          icon="close"
+          iconSize="12px"
+          boxShadow="none"
+          boxShadowHover="none"
+          onClick={handleOnClose}
+        />
+      </div>
       <CategoryList>
         {previewedInput.relationships?.categories.data.map((category) => (
           <Category
@@ -103,12 +101,6 @@ const Preview = ({
         ))}
       </CategoryList>
       <Idea ideaId={query.previewedInputId} />
-      <Navigation
-        moveUp={moveUp}
-        moveDown={moveDown}
-        isMoveDownDisabled={isMoveDownDisabled}
-        isMoveUpDisabled={isMoveUpDisabled}
-      />
     </Container>
   );
 };

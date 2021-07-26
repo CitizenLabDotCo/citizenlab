@@ -17,6 +17,7 @@ import TopBar, {
 import Categories from './Categories';
 import Inputs from './Inputs';
 import Preview from './Preview';
+import Navigation from 'modules/commercial/insights/admin/components/Navigation';
 
 // hooks
 import useInsightsInputsLoadMore from 'modules/commercial/insights/hooks/useInsightsInputsLoadMore';
@@ -147,13 +148,15 @@ const DetailsInsightsView = ({
       <Container>
         <Left>
           {isPreviewOpen ? (
-            <Preview
-              closePreview={closePreview}
-              moveUp={moveUp}
-              moveDown={moveDown}
-              isMoveUpDisabled={previewedInputIndex === 0}
-              isMoveDownDisabled={isMoveDownDisabled}
-            />
+            <>
+              <Preview closePreview={closePreview} />
+              <Navigation
+                moveUp={moveUp}
+                moveDown={moveDown}
+                isMoveUpDisabled={previewedInputIndex === 0}
+                isMoveDownDisabled={isMoveDownDisabled}
+              />
+            </>
           ) : (
             <Categories />
           )}
