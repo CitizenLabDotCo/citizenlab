@@ -1,5 +1,4 @@
 import React, { memo, useState } from 'react';
-import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 import { round } from 'lodash-es';
 import moment from 'moment';
@@ -9,15 +8,6 @@ import { updateBasket } from 'services/baskets';
 
 // typings
 import { IParticipationContextType } from 'typings';
-
-// resources
-import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetAppConfiguration, {
-  GetAppConfigurationChildProps,
-} from 'resources/GetAppConfiguration';
-import GetBasket, { GetBasketChildProps } from 'resources/GetBasket';
-import GetProject, { GetProjectChildProps } from 'resources/GetProject';
-import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
 
 // components
 import Button from 'components/UI/Button';
@@ -42,6 +32,13 @@ import { ScreenReaderOnly } from 'utils/a11y';
 
 // a11y
 import { LiveMessage } from 'react-aria-live';
+
+// hooks
+import useAppConfiguration from 'hooks/useAppConfiguration';
+import useBasket from 'hooks/useBasket';
+import useProject from 'hooks/useProject';
+import usePhase from 'hooks/usePhase';
+import useLocale from 'hooks/useLocale';
 
 const Container = styled.div`
   ${defaultCardStyle};
@@ -233,37 +230,48 @@ const SubmitExpensesButton = styled(Button)<{ viewMode: 'row' | 'column' }>`
   `}
 `;
 
-interface InputProps {
+interface Props {
   participationContextId: string | null;
   participationContextType: IParticipationContextType;
   viewMode: 'row' | 'column';
   className?: string;
 }
 
-interface DataProps {
-  locale: GetLocaleChildProps;
-  tenant: GetAppConfigurationChildProps;
-  basket: GetBasketChildProps;
-  project: GetProjectChildProps;
-  phase: GetPhaseChildProps;
-}
-
-interface Props extends InputProps, DataProps {}
-
 const PBExpenses = memo(
   ({
-    locale,
-    tenant,
     participationContextType,
     participationContextId,
-    project,
-    phase,
-    basket,
     className,
     viewMode,
     intl: { formatMessage },
   }: Props & InjectedIntlProps) => {
     const [processing, setProcessing] = useState(false);
+    const locale = useLocale();
+    const appConfiguration = useAppConfiguration();
+    const project = useProject({
+      projectId:
+        participationContextType === 'project' ? participationContextId : null,
+    });
+    const phase = usePhase(
+      participationContextType === 'phase' ? participationContextId : null
+    );
+    function getBasketId() {
+      let basketId: string | null = null;
+
+      if (participationContextType === 'project') {
+        basketId = !isNilOrError(project)
+          ? project.relationships.user_basket?.data?.id || null
+          : null;
+      } else {
+        basketId = !isNilOrError(phase)
+          ? phase.relationships.user_basket?.data?.id || null
+          : null;
+      }
+
+      return basketId;
+    }
+    const basketId = getBasketId();
+    const basket = useBasket(basketId);
 
     const handleSubmitExpensesOnClick = async () => {
       if (!isNilOrError(basket)) {
@@ -277,11 +285,11 @@ const PBExpenses = memo(
 
     if (
       !isNilOrError(locale) &&
-      !isNilOrError(tenant) &&
+      !isNilOrError(appConfiguration) &&
       ((participationContextType === 'project' && !isNilOrError(project)) ||
         (participationContextType === 'phase' && !isNilOrError(phase)))
     ) {
-      const currency = tenant.attributes.settings.core.currency;
+      const currency = appConfiguration.data.attributes.settings.core.currency;
       const spentBudget = !isNilOrError(basket)
         ? basket.attributes.total_budget
         : 0;
@@ -478,46 +486,4 @@ const PBExpenses = memo(
   }
 );
 
-const Data = adopt<DataProps, InputProps>({
-  locale: <GetLocale />,
-  tenant: <GetAppConfiguration />,
-  project: ({ participationContextType, participationContextId, render }) => (
-    <GetProject
-      projectId={
-        participationContextType === 'project' ? participationContextId : null
-      }
-    >
-      {render}
-    </GetProject>
-  ),
-  phase: ({ participationContextType, participationContextId, render }) => (
-    <GetPhase
-      id={participationContextType === 'phase' ? participationContextId : null}
-    >
-      {render}
-    </GetPhase>
-  ),
-  basket: ({ participationContextType, project, phase, render }) => {
-    let basketId: string | null = null;
-
-    if (participationContextType === 'project') {
-      basketId = !isNilOrError(project)
-        ? project.relationships.user_basket?.data?.id || null
-        : null;
-    } else {
-      basketId = !isNilOrError(phase)
-        ? phase.relationships.user_basket?.data?.id || null
-        : null;
-    }
-
-    return <GetBasket id={basketId}>{render}</GetBasket>;
-  },
-});
-
-const PBExpensesWithHoCs = injectIntl(PBExpenses);
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <PBExpensesWithHoCs {...inputProps} {...dataProps} />}
-  </Data>
-);
+export default injectIntl(PBExpenses);
