@@ -756,10 +756,7 @@ class ParticipationContext extends PureComponent<
                     min="0"
                     value={min_budget ? min_budget.toString() : null}
                   />
-                  {/* <Error
-                    text={}
-                    apiErrors={apiErrors && apiErrors.min_budget}
-                  /> */}
+                  <Error apiErrors={apiErrors && apiErrors.min_budget} />
                 </SectionField>
                 <SectionField>
                   <SubSectionTitle>
