@@ -320,6 +320,14 @@ if ['public','example_org'].include? Apartment::Tenant.current
         enabled: true,
         allowed: true
       },
+      events_page: {
+        enabled: true,
+        allowed: true
+      },
+      events_widget: {
+        enabled: true,
+        allowed: true
+      },
       initiatives: {
         enabled: true,
         allowed: true,
