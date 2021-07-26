@@ -385,6 +385,10 @@ class SettingsCustomizeTab extends PureComponent<
     }
   };
 
+  getSetting = (setting) =>
+    get(this.state.attributesDiff, `settings.${setting}`) ??
+    get(this.state.tenant, `data.attributes.settings.${setting}`);
+
   handleColorPickerOnClick = () => {
     this.setState({ colorPickerOpened: true });
   };
@@ -439,7 +443,8 @@ class SettingsCustomizeTab extends PureComponent<
     const { tenant } = this.state;
     if (!tenant?.data.attributes.settings.events_page) return;
 
-    const previousValue = tenant.data.attributes.settings.events_page.enabled;
+    const previousValue = this.getSetting('events_page.enabled');
+
     this.setState((state) => {
       return {
         attributesDiff: {
@@ -462,7 +467,8 @@ class SettingsCustomizeTab extends PureComponent<
     const { tenant } = this.state;
     if (!tenant?.data.attributes.settings.events_widget) return;
 
-    const previousValue = tenant.data.attributes.settings.events_widget.enabled;
+    const previousValue = this.getSetting('events_widget.enabled');
+
     this.setState((state) => {
       return {
         attributesDiff: {
@@ -544,13 +550,7 @@ class SettingsCustomizeTab extends PureComponent<
                     </Label>
                     <ColorPickerInput
                       type="text"
-                      value={
-                        get(attributesDiff, `settings.core.${colorName}`) ||
-                        get(
-                          tenant,
-                          `data.attributes.settings.core.${colorName}`
-                        )
-                      }
+                      value={this.getSetting(`core.${colorName}`)}
                       onChange={this.handleColorPickerOnChange(colorName)}
                     />
                     {contrastRatioWarningOfColor && contrastRatioOfColor && (
@@ -730,13 +730,7 @@ class SettingsCustomizeTab extends PureComponent<
                   <Setting>
                     <ToggleLabel>
                       <StyledToggle
-                        checked={
-                          get(attributesDiff, 'settings.events_page.enabled') ??
-                          get(
-                            tenant,
-                            'data.attributes.settings.events_page.enabled'
-                          )
-                        }
+                        checked={this.getSetting('events_page.enabled')}
                         onChange={this.handleToggleEventsPage}
                       />
                       <LabelContent>
@@ -757,16 +751,7 @@ class SettingsCustomizeTab extends PureComponent<
                       <Setting>
                         <ToggleLabel>
                           <StyledToggle
-                            checked={
-                              get(
-                                attributesDiff,
-                                'settings.events_widget.enabled'
-                              ) ??
-                              get(
-                                tenant,
-                                'data.attributes.settings.events_widget.enabled'
-                              )
-                            }
+                            checked={this.getSetting('events_widget.enabled')}
                             onChange={this.handleToggleEventsWidget}
                           />
                           <LabelContent>
