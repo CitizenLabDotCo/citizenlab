@@ -21,7 +21,7 @@ import SideModal from 'components/UI/SideModal';
 import InputDetails from '../InputDetails';
 import Divider from 'components/admin/Divider';
 import Actions from './Actions';
-import Pagination from 'components/admin/Pagination/Pagination';
+import Pagination from 'components/Pagination';
 import SearchInput from 'components/UI/SearchInput';
 import TableTitle from './TableTitle';
 
