@@ -9,6 +9,8 @@ Insights::Engine.routes.draw do
             delete :index, on: :collection, action: :destroy_all
           end
 
+          resource :detected_categories, only: %i[index]
+
           resources :inputs, only: %i[index show] do
             resources :categories, only: %i[index destroy], controller: 'category_assignments' do
               collection do
