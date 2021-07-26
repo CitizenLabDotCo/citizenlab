@@ -36,6 +36,7 @@ import { IProjectData } from 'services/projects';
 // other
 import { isValidPhase } from './phaseParam';
 import { anyIsUndefined } from 'utils/helperUtils';
+import { isScrollToQuery, parseScrollToQuery } from './scrollToQuery';
 
 const Container = styled.main<{ background: string }>`
   flex: 1 0 auto;
@@ -74,9 +75,10 @@ const ContentWrapper = styled.div`
 
 interface Props {
   project: IProjectData | Error | null | undefined;
+  scrollTo?: string;
 }
 
-const ProjectsShowPage = memo<Props>(({ project }) => {
+const ProjectsShowPage = memo<Props>(({ project, scrollTo }) => {
   const projectId = !isNilOrError(project) ? project.id : undefined;
   const projectNotFound = isError(project);
   const processType = !isNilOrError(project)
@@ -133,7 +135,7 @@ const ProjectsShowPage = memo<Props>(({ project }) => {
         ) : (
           <TimelineContainer projectId={projectId} />
         )}
-        <ProjectEvents projectId={projectId} />
+        <ProjectEvents projectId={projectId} scrollTo={scrollTo} />
       </ContentWrapper>
     );
   }
@@ -175,8 +177,12 @@ const ProjectsShowPageWrapper = memo<WithRouterProps>(
     ) {
       // If this is a timeline project and a valid phase param was passed: continue
       return <ProjectsShowPage project={project} />;
+    } else if (isScrollToQuery(urlSegments[3])) {
+      // If an event id was passed as a query param, pass it on
+      const scrollTo = parseScrollToQuery(urlSegments[3]);
+      return <ProjectsShowPage project={project} scrollTo={scrollTo} />;
     } else if (urlSegments.length > 3 && urlSegments[1] === 'projects') {
-      // redirect old childRoutes (e.g. /info, /process, ...) to the project index location
+      // Redirect old childRoutes (e.g. /info, /process, ...) to the project index location
       clHistory.replace(`/${urlSegments.slice(1, 3).join('/')}`);
     } else if (slug) {
       return <ProjectsShowPage project={project} />;

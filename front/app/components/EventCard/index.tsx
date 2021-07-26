@@ -20,7 +20,6 @@ import { defaultCardStyle, defaultCardHoverStyle } from 'utils/styleUtils';
 import { getIsoDate } from 'utils/dateUtils';
 import { isNilOrError, isNil } from 'utils/helperUtils';
 import clHistory from 'utils/cl-router/history';
-import { setScrollToEventId } from 'containers/ProjectsShowPage/shared/events/scrollToEventState';
 
 const Container = styled.div<{ clickable?: boolean }>`
   ${defaultCardStyle};
@@ -64,11 +63,13 @@ const EventCard = memo<Props>((props) => {
       !onClickGoToProjectAndScrollToEvent ||
       isNilOrError(locale) ||
       isNil(project)
-    )
+    ) {
       return;
+    }
+    const slug = project.attributes.slug;
+    const scrollTo = `?scrollTo=${event.id}`;
 
-    setScrollToEventId(event.id);
-    clHistory.push(`/${locale}/projects/${project.attributes.slug}`);
+    clHistory.push(`/${locale}/projects/${slug}/${scrollTo}`);
   };
 
   if (!isNilOrError(event)) {

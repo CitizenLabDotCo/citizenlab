@@ -32,7 +32,6 @@ import styled from 'styled-components';
 
 // other
 import { selectedPhase$ } from '../../timeline/events';
-import { getScrollToEventId, setScrollToEventId } from './scrollToEventState';
 import { ideaDefaultSortMethodFallback } from 'services/participationContexts';
 
 const Container = styled.div`
@@ -46,6 +45,7 @@ const StyledEventCard = styled(EventCard)`
 interface InputProps {
   projectId: string;
   className?: string;
+  scrollTo?: string;
 }
 
 interface DataProps {
@@ -56,24 +56,32 @@ interface Props extends InputProps, DataProps {}
 
 const allHaveLoaded = (...args) => args.every((arg) => !isNilOrError(arg));
 
-const EventsContainer = memo<Props>(({ projectId, className, ideasLoaded }) => {
-  const { events } = useEvents({
-    projectIds: [projectId],
-    sort: 'newest',
-  });
+const EventsContainer = memo<Props>(
+  ({ projectId, className, ideasLoaded, scrollTo }) => {
+    const { events } = useEvents({
+      projectIds: [projectId],
+      sort: 'newest',
+    });
 
-  const locale = useLocale();
-  const tenant = useAppConfiguration();
-  const phases = usePhases(projectId);
+    const locale = useLocale();
+    const tenant = useAppConfiguration();
+    const phases = usePhases(projectId);
+    const [scrollToEventId, setScrollToEventId] = useState<null | string>(null);
 
-  useEffect(() => {
-    const scrollToEventId = getScrollToEventId();
+    useEffect(() => {
+      if (!scrollTo) return;
+      setScrollToEventId(scrollTo);
+    }, []);
 
-    if (
-      scrollToEventId !== null &&
-      ideasLoaded &&
-      allHaveLoaded(events, locale, tenant, phases)
-    ) {
+    useEffect(() => {
+      if (
+        scrollToEventId === null ||
+        !ideasLoaded ||
+        !allHaveLoaded(events, locale, tenant, phases)
+      ) {
+        return;
+      }
+
       setTimeout(() => {
         const element = document.getElementById(scrollToEventId);
 
@@ -86,35 +94,35 @@ const EventsContainer = memo<Props>(({ projectId, className, ideasLoaded }) => {
       }, 100);
 
       setScrollToEventId(null);
+    }, [events, locale, tenant, phases, ideasLoaded]);
+
+    if (!isNilOrError(events) && events.length > 0) {
+      return (
+        <Container id="project-events" className={className || ''}>
+          <ContentContainer maxWidth={maxPageWidth}>
+            <SectionContainer>
+              <ProjectPageSectionTitle>
+                <FormattedMessage {...messages.events} />
+              </ProjectPageSectionTitle>
+              {events.map((event) => (
+                <StyledEventCard
+                  id={event.id}
+                  key={event.id}
+                  event={event}
+                  showLocation
+                  showDescription
+                  showAttachments
+                />
+              ))}
+            </SectionContainer>
+          </ContentContainer>
+        </Container>
+      );
     }
-  }, [events, locale, tenant, phases, ideasLoaded]);
 
-  if (!isNilOrError(events) && events.length > 0) {
-    return (
-      <Container id="project-events" className={className || ''}>
-        <ContentContainer maxWidth={maxPageWidth}>
-          <SectionContainer>
-            <ProjectPageSectionTitle>
-              <FormattedMessage {...messages.events} />
-            </ProjectPageSectionTitle>
-            {events.map((event) => (
-              <StyledEventCard
-                id={event.id}
-                key={event.id}
-                event={event}
-                showLocation
-                showDescription
-                showAttachments
-              />
-            ))}
-          </SectionContainer>
-        </ContentContainer>
-      </Container>
-    );
+    return null;
   }
-
-  return null;
-});
+);
 
 export default (props: InputProps) => {
   const { projectId } = props;
