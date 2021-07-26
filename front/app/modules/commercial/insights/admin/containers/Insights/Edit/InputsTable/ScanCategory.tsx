@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { withRouter, WithRouterProps } from 'react-router';
 
 // styles
@@ -13,7 +13,6 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import Button from 'components/UI/Button';
-import { Spinner } from 'cl2-component-library';
 
 // services
 import { insightsTriggerCategoriesSuggestionsTasks } from 'modules/commercial/insights/services/insightsCategoriesSuggestionsTasks';
@@ -56,13 +55,25 @@ const ScanCategory = ({
   params: { viewId },
   location: { query },
 }: InjectedIntlProps & WithRouterProps) => {
+  const [processing, setProcessing] = useState(false);
   const categories = useMemo(() => [query.category], [query.category]);
   const categorySuggestionsPendingTasks = useInsightsCategoriesSuggestionsTasks(
-    viewId
+    viewId,
+    { categories }
   );
+
+  useEffect(() => {
+    if (
+      !isNilOrError(categorySuggestionsPendingTasks) &&
+      categorySuggestionsPendingTasks.length === 0
+    ) {
+      setProcessing(false);
+    }
+  }, [categorySuggestionsPendingTasks]);
 
   const suggestCategories = async () => {
     try {
+      setProcessing(true);
       await insightsTriggerCategoriesSuggestionsTasks(viewId, categories);
     } catch {
       // Do nothing
@@ -72,14 +83,6 @@ const ScanCategory = ({
   if (isNilOrError(categorySuggestionsPendingTasks)) {
     return null;
   }
-
-  const loading = Boolean(
-    categorySuggestionsPendingTasks.find((pendingTask) =>
-      pendingTask.relationships?.categories.data
-        .map((category) => category.id)
-        .includes(query.category)
-    )
-  );
 
   return (
     <ScanContainer data-testid="insightsScanCategory">
@@ -95,10 +98,9 @@ const ScanCategory = ({
       <Button
         buttonStyle="admin-dark"
         onClick={suggestCategories}
-        disabled={loading}
+        processing={processing}
       >
         <ScanButtonContent>
-          {loading && <Spinner size="22px" />}
           {formatMessage(messages.categoriesEmptyScanButton)}
         </ScanButtonContent>
       </Button>
