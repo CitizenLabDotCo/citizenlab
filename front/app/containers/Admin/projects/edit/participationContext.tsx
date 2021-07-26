@@ -748,7 +748,6 @@ class ParticipationContext extends PureComponent<
                     onChange={this.handleMaxBudgetingAmountChange}
                     type="number"
                     min="0"
-                    placeholder=""
                     value={min_budget ? min_budget.toString() : null}
                   />
                   {/* <Error
@@ -764,7 +763,6 @@ class ParticipationContext extends PureComponent<
                     onChange={this.handleMaxBudgetingAmountChange}
                     type="number"
                     min="1"
-                    placeholder=""
                     value={max_budget ? max_budget.toString() : null}
                   />
                   <Error
