@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { memo, useState } from 'react';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 import { round } from 'lodash-es';
@@ -250,44 +250,30 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-interface State {
-  processing: boolean;
-}
+const PBExpenses = memo(
+  ({
+    locale,
+    tenant,
+    participationContextType,
+    participationContextId,
+    project,
+    phase,
+    basket,
+    className,
+    viewMode,
+    intl: { formatMessage },
+  }: Props & InjectedIntlProps) => {
+    const [processing, setProcessing] = useState(false);
 
-class PBExpenses extends PureComponent<Props & InjectedIntlProps, State> {
-  constructor(props) {
-    super(props);
-    this.state = {
-      processing: false,
+    const handleSubmitExpensesOnClick = async () => {
+      if (!isNilOrError(basket)) {
+        const now = moment().format();
+        setProcessing(true);
+        await updateBasket(basket.id, { submitted_at: now });
+        trackEventByName(tracks.basketSubmitted);
+        setProcessing(false);
+      }
     };
-  }
-
-  handleSubmitExpensesOnClick = async () => {
-    const { basket } = this.props;
-
-    if (!isNilOrError(basket)) {
-      const now = moment().format();
-      this.setState({ processing: true });
-      await updateBasket(basket.id, { submitted_at: now });
-      trackEventByName(tracks.basketSubmitted);
-      this.setState({ processing: false });
-    }
-  };
-
-  render() {
-    const {
-      locale,
-      tenant,
-      participationContextType,
-      participationContextId,
-      project,
-      phase,
-      basket,
-      className,
-      viewMode,
-      intl: { formatMessage },
-    } = this.props;
-    const { processing } = this.state;
 
     if (
       !isNilOrError(locale) &&
@@ -469,7 +455,7 @@ class PBExpenses extends PureComponent<Props & InjectedIntlProps, State> {
                 />
 
                 <SubmitExpensesButton
-                  onClick={this.handleSubmitExpensesOnClick}
+                  onClick={handleSubmitExpensesOnClick}
                   bgColor={colors.adminTextColor}
                   disabled={
                     validationStatus === 'validationSuccess' ||
@@ -490,7 +476,7 @@ class PBExpenses extends PureComponent<Props & InjectedIntlProps, State> {
 
     return null;
   }
-}
+);
 
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
