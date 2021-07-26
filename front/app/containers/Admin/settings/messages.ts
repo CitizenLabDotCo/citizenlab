@@ -178,6 +178,19 @@ export default defineMessages({
     id: 'app.components.AdminPage.SettingsPage.homePageCustomizableSection',
     defaultMessage: 'Homepage customizable section',
   },
+  eventsSection: {
+    id: 'app.components.AdminPage.SettingsPage.eventsSection',
+    defaultMessage: 'Events',
+  },
+  eventsPageSetting: {
+    id: 'app.components.AdminPage.SettingsPage.eventsPageSetting',
+    defaultMessage: 'Add Events to navigation bar',
+  },
+  eventsPageSettingDescription: {
+    id: 'app.components.AdminPage.SettingsPage.eventsPageSettingDescription',
+    defaultMessage:
+      'When enabled, a link to all project events will be added to the navigation bar.',
+  },
   customSectionLabel: {
     id: 'app.components.AdminPage.SettingsPage.customSectionLabel',
     defaultMessage: 'Content',

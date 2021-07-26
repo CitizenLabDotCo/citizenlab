@@ -806,6 +806,19 @@
         }
       },
 
+      "events_widget": {
+        "type": "object",
+        "title": "Events Landing Page Widget",
+        "description":	"Display a widget of the next upcoming events in your landing page.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true},
+          "widget_title": {"$ref": "#/definitions/multiloc_string"}
+        }
+      },
+
       "redirects": {
         "type": "object",
         "title": "URL redirection rules",
@@ -900,6 +913,19 @@
         "properties": {
           "allowed": { "type": "boolean", "default": true},
           "enabled": { "type": "boolean", "default": true}
+        }
+      },
+
+      "events_page": {
+        "type": "object",
+        "title": "Events Page",
+        "description":  "Enables a Page where users can view future and past events happening across projects.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true},
+          "alternative_name": { "type": "string" }
         }
       },
 
