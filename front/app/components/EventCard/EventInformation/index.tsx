@@ -54,9 +54,9 @@ const StyledLink = styled(Link)`
   }
 `;
 
-const EventTitle = styled.h3`
+const EventTitle = styled.h3<{ fontSize?: number }>`
   color: ${(props: any) => props.theme.colorText};
-  font-size: ${fontSizes.xl}px;
+  font-size: ${({ fontSize }) => fontSize ?? fontSizes.xl}px;
   font-weight: 700;
   line-height: normal;
   margin: 0 0 13px 0;
@@ -161,9 +161,12 @@ interface Props {
   showLocation?: boolean;
   showDescription?: boolean;
   showAttachments?: boolean;
+  titleFontSize?: number;
 }
 
-const preventDefault = (event) => event.preventDefault();
+const stopPropagation = (event) => {
+  event.stopPropagation();
+};
 
 const EventInformation = memo<Props & InjectedIntlProps>((props) => {
   const {
@@ -175,6 +178,7 @@ const EventInformation = memo<Props & InjectedIntlProps>((props) => {
     showLocation,
     showDescription,
     showAttachments,
+    titleFontSize,
     intl,
   } = props;
 
@@ -231,12 +235,14 @@ const EventInformation = memo<Props & InjectedIntlProps>((props) => {
     <EventInformationContainer data-testid="EventInformation">
       <EventTitleAndAttributes>
         {showProjectTitle && projectTitle && (
-          <StyledLink onClick={preventDefault} to={`/projects/${projectSlug}`}>
-            <T value={projectTitle} />
-          </StyledLink>
+          <span onClick={stopPropagation}>
+            <StyledLink to={`/projects/${projectSlug}`}>
+              <T value={projectTitle} />
+            </StyledLink>
+          </span>
         )}
 
-        <EventTitle>
+        <EventTitle fontSize={titleFontSize}>
           <T value={event.attributes.title_multiloc} />
         </EventTitle>
 

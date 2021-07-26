@@ -52,10 +52,6 @@ const CardsContainer = styled.div`
 const StyledEventCard = styled(EventCard)`
   border-radius: 3px;
   padding: 20px;
-
-  > div > div > h3 > span {
-    font-size: 18px;
-  }
 `;
 
 export default injectIntl<InjectedIntlProps>(({ intl }) => {
@@ -85,14 +81,15 @@ export default injectIntl<InjectedIntlProps>(({ intl }) => {
         </VerticalCenterer>
       )}
 
-      {!isNilOrError(events) && (
+      {!isNilOrError(events) && events.length > 0 && (
         <CardsContainer>
           {events.map((event) => (
             <StyledEventCard
               event={event}
               key={event.id}
+              titleFontSize={18}
               showProjectTitle
-              clickable
+              onClickGoToProjectAndScrollToEvent
             />
           ))}
         </CardsContainer>

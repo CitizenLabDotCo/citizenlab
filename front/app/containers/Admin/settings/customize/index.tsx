@@ -719,57 +719,55 @@ class SettingsCustomizeTab extends PureComponent<
             </WideSectionField>
           </Section>
 
-          {tenant.data.attributes.settings?.events_page &&
-            tenant.data.attributes.settings.events_page.allowed && (
-              <Section>
-                <SectionTitle>
-                  <FormattedMessage {...messages.eventsSection} />
-                </SectionTitle>
+          {tenant.data.attributes.settings?.events_page?.allowed && (
+            <Section>
+              <SectionTitle>
+                <FormattedMessage {...messages.eventsSection} />
+              </SectionTitle>
 
+              <WideSectionField>
+                <Setting>
+                  <ToggleLabel>
+                    <StyledToggle
+                      checked={this.getSetting('events_page.enabled')}
+                      onChange={this.handleToggleEventsPage}
+                    />
+                    <LabelContent>
+                      <LabelTitle>
+                        {formatMessage(messages.eventsPageSetting)}
+                      </LabelTitle>
+                      <LabelDescription>
+                        {formatMessage(messages.eventsPageSettingDescription)}
+                      </LabelDescription>
+                    </LabelContent>
+                  </ToggleLabel>
+                </Setting>
+              </WideSectionField>
+
+              {tenant.data.attributes.settings?.events_widget?.allowed && (
                 <WideSectionField>
                   <Setting>
                     <ToggleLabel>
                       <StyledToggle
-                        checked={this.getSetting('events_page.enabled')}
-                        onChange={this.handleToggleEventsPage}
+                        checked={this.getSetting('events_widget.enabled')}
+                        onChange={this.handleToggleEventsWidget}
                       />
                       <LabelContent>
                         <LabelTitle>
-                          {formatMessage(messages.eventsPageSetting)}
+                          {formatMessage(messages.eventsWidgetSetting)}
                         </LabelTitle>
                         <LabelDescription>
-                          {formatMessage(messages.eventsPageSettingDescription)}
+                          {formatMessage(
+                            messages.eventsWidgetSettingDescription
+                          )}
                         </LabelDescription>
                       </LabelContent>
                     </ToggleLabel>
                   </Setting>
                 </WideSectionField>
-
-                {tenant.data.attributes.settings?.events_widget &&
-                  tenant.data.attributes.settings.events_widget.allowed && (
-                    <WideSectionField>
-                      <Setting>
-                        <ToggleLabel>
-                          <StyledToggle
-                            checked={this.getSetting('events_widget.enabled')}
-                            onChange={this.handleToggleEventsWidget}
-                          />
-                          <LabelContent>
-                            <LabelTitle>
-                              {formatMessage(messages.eventsWidgetSetting)}
-                            </LabelTitle>
-                            <LabelDescription>
-                              {formatMessage(
-                                messages.eventsWidgetSettingDescription
-                              )}
-                            </LabelDescription>
-                          </LabelContent>
-                        </ToggleLabel>
-                      </Setting>
-                    </WideSectionField>
-                  )}
-              </Section>
-            )}
+              )}
+            </Section>
+          )}
 
           <SubmitWrapper
             loading={this.state.loading}

@@ -1,5 +1,5 @@
 import React, { memo, useMemo } from 'react';
-import { isError, isUndefined } from 'lodash-es';
+import { isError } from 'lodash-es';
 import { isNilOrError, isApiError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
 import clHistory from 'utils/cl-router/history';
@@ -35,6 +35,7 @@ import { IProjectData } from 'services/projects';
 
 // other
 import { isValidPhase } from './phaseParam';
+import { anyIsUndefined } from 'utils/helperUtils';
 
 const Container = styled.main<{ background: string }>`
   flex: 1 0 auto;
@@ -74,8 +75,6 @@ const ContentWrapper = styled.div`
 interface Props {
   project: IProjectData | Error | null | undefined;
 }
-
-const anyIsUndefined = (...args) => args.some(isUndefined);
 
 const ProjectsShowPage = memo<Props>(({ project }) => {
   const projectId = !isNilOrError(project) ? project.id : undefined;

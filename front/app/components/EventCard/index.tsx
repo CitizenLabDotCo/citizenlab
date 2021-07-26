@@ -23,38 +23,49 @@ import clHistory from 'utils/cl-router/history';
 import { setScrollToEventId } from 'containers/ProjectsShowPage/shared/events/scrollToEventState';
 
 const Container = styled.div<{ clickable?: boolean }>`
-  width: 100%;
-  padding: 30px;
-  display: flex;
   ${defaultCardStyle};
   ${({ clickable }) => (clickable ? defaultCardHoverStyle : '')}
   ${({ clickable }) => (clickable ? 'cursor: pointer;' : '')}
+  width: 100%;
+  padding: 30px;
+  display: flex;
   box-shadow: none;
   border: solid 1px #ccc;
 `;
 
-interface InputProps {
+interface Props {
   event: IEventData;
   className?: string;
   id?: string;
+  onClickGoToProjectAndScrollToEvent?: boolean;
   showProjectTitle?: boolean;
   showLocation?: boolean;
   showDescription?: boolean;
   showAttachments?: boolean;
-  clickable?: boolean;
+  titleFontSize?: number;
 }
 
-interface Props extends InputProps {}
-
 const EventCard = memo<Props>((props) => {
-  const { event, className, id, clickable, ...otherProps } = props;
+  const {
+    event,
+    className,
+    id,
+    onClickGoToProjectAndScrollToEvent,
+    ...otherProps
+  } = props;
+
   const projectId = event.relationships.project.data.id;
 
   const locale = useLocale();
   const project = useProject({ projectId });
 
   const onClick = () => {
-    if (isNilOrError(locale) || isNil(project)) return;
+    if (
+      !onClickGoToProjectAndScrollToEvent ||
+      isNilOrError(locale) ||
+      isNil(project)
+    )
+      return;
 
     setScrollToEventId(event.id);
     clHistory.push(`/${locale}/projects/${project.attributes.slug}`);
@@ -71,7 +82,7 @@ const EventCard = memo<Props>((props) => {
       <Container
         className={className || ''}
         id={id || ''}
-        clickable={clickable}
+        clickable={onClickGoToProjectAndScrollToEvent}
         onClick={onClick}
       >
         <DateBlocks
