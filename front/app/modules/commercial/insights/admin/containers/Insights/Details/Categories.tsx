@@ -123,7 +123,7 @@ const Categories = ({
                   key={category.id}
                   label={category.attributes.name}
                   variant={
-                    query.category === category.id ? 'primary' : 'secondary'
+                    query.category === category.id ? 'primary' : 'default'
                   }
                   count={category.attributes.inputs_count}
                   className="categoryTag"

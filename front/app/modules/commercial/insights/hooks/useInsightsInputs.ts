@@ -12,6 +12,7 @@ export type QueryParameters = {
   pageSize: number;
   pageNumber: number;
   search: string;
+  processed: boolean;
   sort: 'approval' | '-approval';
 };
 
@@ -37,6 +38,7 @@ const useInsightsInputs = (
   const category = queryParameters?.category;
   const search = queryParameters?.search;
   const sort = queryParameters?.sort;
+  const processed = queryParameters?.processed;
 
   useEffect(() => {
     setLoading(true);
@@ -44,6 +46,7 @@ const useInsightsInputs = (
       queryParameters: {
         category,
         search,
+        processed,
         sort: queryParameters?.sort || 'approval',
         'page[number]': queryParameters?.pageNumber || 1,
         'page[size]': queryParameters?.pageSize || defaultPageSize,
@@ -55,7 +58,7 @@ const useInsightsInputs = (
     });
 
     return () => subscription.unsubscribe();
-  }, [viewId, pageNumber, category, search, sort, pageSize]);
+  }, [viewId, pageNumber, category, search, sort, pageSize, processed]);
 
   return {
     lastPage,

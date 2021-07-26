@@ -11,8 +11,11 @@ class WebApi::V1::StatsController < ApplicationController
   end
 
   def parse_time_boundaries
-    platform_range = AppConfiguration.instance.created_at..Time.now
-    requested_range = (params[:start_at] || platform_range.begin)..(params[:end_at] || platform_range.end)
+    timezone = AppConfiguration.instance.settings('core','timezone')
+    platform_range = AppConfiguration.instance.created_at..Time.now.in_time_zone(timezone).end_of_day
+    start_range = params[:start_at] && params[:start_at].to_date ? params[:start_at] : platform_range.begin
+    end_range = params[:end_at] && params[:end_at].to_date ? params[:end_at] : platform_range.end
+    requested_range = start_range...end_range
     if requested_range.overlaps?(platform_range)
       range = range_intersection(platform_range, requested_range)
       @start_at = range.begin
