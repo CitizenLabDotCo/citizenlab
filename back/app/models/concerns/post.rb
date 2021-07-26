@@ -63,7 +63,7 @@ module Post
     scope :order_new, -> (direction=:desc) { order(published_at: direction) }
     scope :order_random, -> {
       modulus = RandomOrderingService.new.modulus_of_the_day
-      order("(extract(epoch from #{table_name}.created_at) * 100)::bigint % #{modulus}, #{table_name}.id")
+      order(Arel.sql("(extract(epoch from #{table_name}.created_at) * 100)::bigint % #{modulus}, #{table_name}.id"))
     }
 
 

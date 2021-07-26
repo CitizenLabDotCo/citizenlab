@@ -14,6 +14,11 @@ require 'action_cable/engine'
 # require 'sprockets/railtie'
 # require 'rails/test_unit/railtie'
 
+# require time extentions to fix
+#   NoMethodError: undefined method `day' for 1:Integer
+#   /usr/local/bundle/bundler/gems/knock-9214cd027422/lib/knock.rb:7:in `<module:Knock>'
+require "active_support/core_ext/integer/time"
+
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)

@@ -3,7 +3,7 @@ module Moderation
     include PgSearch::Model
     self.primary_key = 'id'
 
-    has_one :moderation_status, foreign_key: :moderatable_id, foreign_type: :moderatable_type
+    has_one :moderation_status, foreign_key: :moderatable_id, foreign_type: :moderatable_type, as: :moderatable
 
     pg_search_scope :search_by_all, 
         :against => [:content_title_multiloc, :content_body_multiloc],
