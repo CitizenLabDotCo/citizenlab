@@ -20,6 +20,7 @@ const queryParameters: QueryParameters = {
 const expectedQueryParameters = {
   category: queryParameters.category,
   search: queryParameters.search,
+  processed: true,
 };
 
 let mockObservable = new Observable((subscriber) => {
