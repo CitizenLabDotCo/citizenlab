@@ -1457,6 +1457,7 @@
   "app.containers.AdminPage.ProjectEdit.loadMoreTemplates": "تحميل المزيد من القوالب",
   "app.containers.AdminPage.ProjectEdit.mapDisplay": "على الخريطة",
   "app.containers.AdminPage.ProjectEdit.mapTab": "الخريطة",
+  "app.containers.AdminPage.ProjectEdit.minimumBudget": "",
   "app.containers.AdminPage.ProjectEdit.moderationInfoCenterLinkText": "زُر مركز المساعدة الخاص بنا",
   "app.containers.AdminPage.ProjectEdit.moderationRightsTitle": "أذونات مدير المشروع",
   "app.containers.AdminPage.ProjectEdit.moderatorsSectionTitle": "من هم مديرو المشروع؟",
