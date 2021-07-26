@@ -67,7 +67,7 @@ const EventCard = memo<Props>((props) => {
       return;
     }
     const slug = project.attributes.slug;
-    const scrollTo = `?scrollTo=${event.id}`;
+    const scrollTo = `?scrollToEventId=${event.id}`;
 
     clHistory.push(`/${locale}/projects/${slug}/${scrollTo}`);
   };

@@ -45,7 +45,7 @@ const StyledEventCard = styled(EventCard)`
 interface InputProps {
   projectId: string;
   className?: string;
-  scrollTo?: string;
+  scrollToEventId?: string;
 }
 
 interface DataProps {
@@ -57,7 +57,12 @@ interface Props extends InputProps, DataProps {}
 const allHaveLoaded = (...args) => args.every((arg) => !isNilOrError(arg));
 
 const EventsContainer = memo<Props>(
-  ({ projectId, className, ideasLoaded, scrollTo }) => {
+  ({
+    projectId,
+    className,
+    ideasLoaded,
+    scrollToEventId: _scrollToEventId,
+  }) => {
     const { events } = useEvents({
       projectIds: [projectId],
       sort: 'newest',
@@ -69,8 +74,8 @@ const EventsContainer = memo<Props>(
     const [scrollToEventId, setScrollToEventId] = useState<null | string>(null);
 
     useEffect(() => {
-      if (!scrollTo) return;
-      setScrollToEventId(scrollTo);
+      if (!_scrollToEventId) return;
+      setScrollToEventId(_scrollToEventId);
     }, []);
 
     useEffect(() => {
