@@ -184,10 +184,10 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
     const projectType = project.attributes.process_type;
     const projectParticipantsCount = project.attributes.participants_count;
     const currency = tenant.data.attributes.settings.core.currency;
-    const totalBudget =
+    const maxBudget =
       currentPhase?.attributes?.max_budget ||
       project?.attributes?.max_budget ||
-      0;
+      null;
     const hasProjectEnded = currentPhase
       ? pastPresentOrFuture([
           currentPhase.attributes.start_at,
@@ -337,7 +337,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
             {((projectType === 'continuous' &&
               projectParticipationMethod === 'budgeting') ||
               currentPhase?.attributes.participation_method === 'budgeting') &&
-              totalBudget > 0 && (
+              maxBudget && (
                 <ListItem>
                   <ListItemIcon ariaHidden name="moneybag" />
                   <ListItemButton
@@ -349,7 +349,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                       values={{
                         amount: (
                           <FormattedNumber
-                            value={totalBudget}
+                            value={maxBudget}
                             style="currency"
                             currency={currency}
                             minimumFractionDigits={0}
