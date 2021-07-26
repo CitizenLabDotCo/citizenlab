@@ -33,6 +33,7 @@ import styled from 'styled-components';
 // other
 import { selectedPhase$ } from '../../timeline/events';
 import { ideaDefaultSortMethodFallback } from 'services/participationContexts';
+import { scrollToElement } from 'utils/scroll';
 
 const Container = styled.div`
   background: #fff;
@@ -88,14 +89,7 @@ const EventsContainer = memo<Props>(
       }
 
       setTimeout(() => {
-        const element = document.getElementById(scrollToEventId);
-
-        if (element) {
-          const top =
-            element.getBoundingClientRect().top + window.pageYOffset - 100;
-          const behavior = 'smooth';
-          window.scrollTo({ top, behavior });
-        }
+        scrollToElement({ id: scrollToEventId });
       }, 100);
 
       setScrollToEventId(null);
