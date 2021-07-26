@@ -40,6 +40,7 @@ interface InputProps {
   showProjectTitle?: boolean;
   showLocation?: boolean;
   showDescription?: boolean;
+  showAttachments?: boolean;
   clickable?: boolean;
 }
 

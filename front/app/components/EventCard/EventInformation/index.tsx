@@ -160,6 +160,7 @@ interface Props {
   showProjectTitle?: boolean;
   showLocation?: boolean;
   showDescription?: boolean;
+  showAttachments?: boolean;
 }
 
 const preventDefault = (event) => event.preventDefault();
@@ -173,6 +174,7 @@ const EventInformation = memo<Props & InjectedIntlProps>((props) => {
     showProjectTitle,
     showLocation,
     showDescription,
+    showAttachments,
     intl,
   } = props;
 
@@ -288,9 +290,9 @@ const EventInformation = memo<Props & InjectedIntlProps>((props) => {
         </EventDescription>
       )}
 
-      {!isNilOrError(eventFiles) && eventFiles.length > 0 && (
-        <FileAttachments files={eventFiles} />
-      )}
+      {!isNilOrError(eventFiles) &&
+        eventFiles.length > 0 &&
+        showAttachments && <FileAttachments files={eventFiles} />}
     </EventInformationContainer>
   );
 });

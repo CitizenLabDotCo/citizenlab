@@ -75,6 +75,7 @@ const EventsViewer = memo<Props>(
                   showProjectTitle
                   showLocation
                   showDescription
+                  showAttachments
                   last={events.length - 1 === i}
                   key={event.id}
                 />

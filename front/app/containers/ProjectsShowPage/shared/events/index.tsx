@@ -104,6 +104,7 @@ const EventsContainer = memo<Props>(({ projectId, className, ideasLoaded }) => {
                 event={event}
                 showLocation
                 showDescription
+                showAttachments
               />
             ))}
           </SectionContainer>

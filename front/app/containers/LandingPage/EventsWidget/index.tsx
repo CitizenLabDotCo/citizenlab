@@ -62,7 +62,7 @@ export default injectIntl<InjectedIntlProps>(({ intl }) => {
   const { events } = useEvents({
     futureOnly: true,
     pageSize: 3,
-    sort: 'newest',
+    sort: 'oldest',
   });
 
   const eventsLoading = isNil(events);
