@@ -136,6 +136,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.amountPerCitizen',
     defaultMessage: 'Amount per citizen, in {currency}',
   },
+  minimumBudget: {
+    id: 'app.containers.AdminPage.ProjectEdit.minimumBudget',
+    defaultMessage: 'Minimum budget',
+  },
   inputPostingEnabled: {
     id: 'app.containers.AdminPage.ProjectEdit.inputPostingEnabled',
     defaultMessage: 'Submitting inputs',

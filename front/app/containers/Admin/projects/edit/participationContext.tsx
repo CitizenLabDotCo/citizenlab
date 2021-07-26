@@ -558,6 +558,7 @@ class ParticipationContext extends PureComponent<
       voting_method,
       voting_limited_max,
       downvoting_enabled,
+      min_budget,
       max_budget,
       survey_embed_url,
       survey_service,
@@ -741,10 +742,23 @@ class ParticipationContext extends PureComponent<
               <>
                 <SectionField>
                   <SubSectionTitle>
-                    <FormattedMessage
-                      {...messages.amountPerCitizen}
-                      values={{ currency: tenantCurrency }}
-                    />
+                    <FormattedMessage {...messages.minimumBudget} />
+                  </SubSectionTitle>
+                  <BudgetingAmountInput
+                    onChange={this.handleBudgetingAmountChange}
+                    type="number"
+                    min="0"
+                    placeholder=""
+                    value={min_budget ? min_budget.toString() : null}
+                  />
+                  {/* <Error
+                    text={}
+                    apiErrors={apiErrors && apiErrors.min_budget}
+                  /> */}
+                </SectionField>
+                <SectionField>
+                  <SubSectionTitle>
+                    <FormattedMessage {...messages.amountPerCitizen} />
                   </SubSectionTitle>
                   <BudgetingAmountInput
                     onChange={this.handleBudgetingAmountChange}
