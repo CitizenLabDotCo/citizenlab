@@ -153,6 +153,7 @@ export interface IParticipationContextConfig {
   presentation_mode?: 'map' | 'card' | null;
   ideas_order?: IdeaDefaultSortMethod;
   input_term?: InputTerm;
+  min_budget?: number | null;
   max_budget?: number | null;
   survey_service?: SurveyServices | null;
   survey_embed_url?: string | null;
@@ -204,6 +205,7 @@ class ParticipationContext extends PureComponent<
       voting_limited_max: 5,
       downvoting_enabled: true,
       presentation_mode: 'card',
+      min_budget: null,
       max_budget: null,
       survey_service: null,
       survey_embed_url: null,
@@ -239,6 +241,7 @@ class ParticipationContext extends PureComponent<
             voting_limited_max,
             downvoting_enabled,
             presentation_mode,
+            min_budget,
             max_budget,
             survey_embed_url,
             survey_service,
@@ -256,6 +259,7 @@ class ParticipationContext extends PureComponent<
             voting_limited_max,
             downvoting_enabled,
             presentation_mode,
+            min_budget,
             max_budget,
             survey_embed_url,
             survey_service,
@@ -289,6 +293,7 @@ class ParticipationContext extends PureComponent<
       voting_limited_max,
       downvoting_enabled,
       presentation_mode,
+      min_budget,
       max_budget,
       survey_embed_url,
       survey_service,
@@ -340,6 +345,7 @@ class ParticipationContext extends PureComponent<
       output = omitBy(
         {
           participation_method,
+          min_budget,
           max_budget,
           commenting_enabled,
           presentation_mode,
@@ -400,6 +406,7 @@ class ParticipationContext extends PureComponent<
       presentation_mode: participation_method === 'ideation' ? 'card' : null,
       survey_embed_url: null,
       survey_service: participation_method === 'survey' ? 'typeform' : null,
+      min_budget: participation_method === 'budgeting' ? 0 : null,
       max_budget: participation_method === 'budgeting' ? 1000 : null,
     });
   };
