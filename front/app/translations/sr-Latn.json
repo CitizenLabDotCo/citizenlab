@@ -744,6 +744,7 @@
   "app.containers.Admin.Insights.Edit.allInput": "",
   "app.containers.Admin.Insights.Edit.allInputTooltip": "",
   "app.containers.Admin.Insights.Edit.assignCategoriesButton": "",
+  "app.containers.Admin.Insights.Edit.bulkApprove": "",
   "app.containers.Admin.Insights.Edit.bulkAssignCategory": "",
   "app.containers.Admin.Insights.Edit.bulkUnassign": "",
   "app.containers.Admin.Insights.Edit.categories": "",
