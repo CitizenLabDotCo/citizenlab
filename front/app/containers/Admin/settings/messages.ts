@@ -189,16 +189,15 @@ export default defineMessages({
   eventsPageSettingDescription: {
     id: 'app.components.AdminPage.SettingsPage.eventsPageSettingDescription',
     defaultMessage:
-      'When enabled, a link to all project events will be added to the navigation bar.',
+      'Add a link to view all project events in the navigation bar',
   },
   eventsWidgetSetting: {
     id: 'app.components.AdminPage.SettingsPage.eventsWidgetSetting',
-    defaultMessage: 'Upcoming events widget on landing page',
+    defaultMessage: 'Add upcoming events to homepage',
   },
   eventsWidgetSettingDescription: {
     id: 'app.components.AdminPage.SettingsPage.eventsWidgetSettingDescription',
-    defaultMessage:
-      'When enabled, a widget displaying up to three upcoming events will be added to the landing page of the platform.',
+    defaultMessage: 'Display a preview of upcoming events on the homepage',
   },
   customSectionLabel: {
     id: 'app.components.AdminPage.SettingsPage.customSectionLabel',
