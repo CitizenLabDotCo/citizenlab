@@ -459,7 +459,7 @@ class ParticipationContext extends PureComponent<
     this.setState({ ideas_order });
   };
 
-  handleBudgetingAmountChange = (max_budget: string) => {
+  handleMaxBudgetingAmountChange = (max_budget: string) => {
     this.setState({
       max_budget: parseInt(max_budget, 10),
       noBudgetingAmount: null,
@@ -745,7 +745,7 @@ class ParticipationContext extends PureComponent<
                     <FormattedMessage {...messages.minimumBudget} />
                   </SubSectionTitle>
                   <BudgetingAmountInput
-                    onChange={this.handleBudgetingAmountChange}
+                    onChange={this.handleMaxBudgetingAmountChange}
                     type="number"
                     min="0"
                     placeholder=""
@@ -761,7 +761,7 @@ class ParticipationContext extends PureComponent<
                     <FormattedMessage {...messages.amountPerCitizen} />
                   </SubSectionTitle>
                   <BudgetingAmountInput
-                    onChange={this.handleBudgetingAmountChange}
+                    onChange={this.handleMaxBudgetingAmountChange}
                     type="number"
                     min="1"
                     placeholder=""
