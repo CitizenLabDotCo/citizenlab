@@ -146,7 +146,7 @@ export default class TextArea extends React.PureComponent<Props, State> {
             className={`textarea ${!isEmpty(error) ? 'error' : ''}`}
             name={name || ''}
             rows={rows || 5}
-            value={value || ''}
+            value={String(value).replaceAll('&amp;', '&') || ''}
             placeholder={placeholder || undefined}
             onChange={this.handleOnChange}
             onFocus={this.handleOnFocus}

@@ -269,7 +269,7 @@ class MentionsTextArea extends PureComponent<Props, State> {
             }`}
             name={name || ''}
             rows={rows}
-            value={value || ''}
+            value={String(value).replaceAll('&amp;', '&') || ''}
             placeholder={placeholder}
             displayTransform={this.mentionDisplayTransform}
             markup={'@[__display__](__id__)'}
