@@ -58,7 +58,8 @@ const ScanCategory = ({
 }: InjectedIntlProps & WithRouterProps) => {
   const categories = useMemo(() => [query.category], [query.category]);
   const categorySuggestionsPendingTasks = useInsightsCategoriesSuggestionsTasks(
-    viewId
+    viewId,
+    { categories }
   );
 
   const suggestCategories = async () => {
