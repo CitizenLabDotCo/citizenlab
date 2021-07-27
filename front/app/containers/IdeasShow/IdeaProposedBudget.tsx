@@ -1,4 +1,5 @@
 import React, { memo } from 'react';
+import FormattedCurrency from 'utils/FormattedCurrency';
 
 // styling
 import styled from 'styled-components';
@@ -17,11 +18,15 @@ const Container = styled.div`
 
 interface Props {
   className?: string;
-  formattedBudget: string;
+  proposedBudget: number;
 }
 
-const IdeaProposedBudget = memo<Props>(({ className, formattedBudget }) => {
-  return <Container className={className}>{formattedBudget}</Container>;
+const IdeaProposedBudget = memo<Props>(({ className, proposedBudget }) => {
+  return (
+    <Container className={className}>
+      <FormattedCurrency value={proposedBudget} />
+    </Container>
+  );
 });
 
 export default IdeaProposedBudget;

@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { isNilOrError, getFormattedBudget } from 'utils/helperUtils';
+import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
 import { get } from 'lodash-es';
 
@@ -32,9 +32,6 @@ import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import GetIdeaImages, {
   GetIdeaImagesChildProps,
 } from 'resources/GetIdeaImages';
-import GetAppConfiguration, {
-  GetAppConfigurationChildProps,
-} from 'resources/GetAppConfiguration';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetPermission, {
@@ -175,7 +172,6 @@ interface DataProps {
   idea: GetIdeaChildProps;
   ideaImages: GetIdeaImagesChildProps;
   ideaFiles: GetResourceFilesChildProps;
-  tenant: GetAppConfigurationChildProps;
   locale: GetLocaleChildProps;
   project: GetProjectChildProps;
   postOfficialFeedbackPermission: GetPermissionChildProps;
@@ -213,7 +209,6 @@ export class IdeaContent extends PureComponent<
       localize,
       ideaImages,
       ideaFiles,
-      tenant,
       locale,
       handleClickEdit,
     } = this.props;
@@ -221,7 +216,6 @@ export class IdeaContent extends PureComponent<
     if (
       !isNilOrError(idea) &&
       !isNilOrError(locale) &&
-      !isNilOrError(tenant) &&
       !isNilOrError(project)
     ) {
       const ideaId = idea.id;
@@ -238,7 +232,6 @@ export class IdeaContent extends PureComponent<
       // AuthorId can be null if user has been deleted
       const authorId = idea.relationships.author.data?.id || null;
       const proposedBudget = idea.attributes.proposed_budget;
-      const currency = tenant.attributes.settings.core.currency;
       const processType = project.attributes.process_type;
 
       return (
@@ -291,13 +284,7 @@ export class IdeaContent extends PureComponent<
                     <BodySectionTitle>
                       <FormattedMessage {...messages.proposedBudgetTitle} />
                     </BodySectionTitle>
-                    <IdeaProposedBudget
-                      formattedBudget={getFormattedBudget(
-                        locale,
-                        proposedBudget,
-                        currency
-                      )}
-                    />
+                    <IdeaProposedBudget proposedBudget={proposedBudget} />
                     <BodySectionTitle>
                       <FormattedMessage {...messages.bodyTitle} />
                     </BodySectionTitle>
@@ -370,7 +357,6 @@ export class IdeaContent extends PureComponent<
 }
 
 const Data = adopt<DataProps, InputProps>({
-  tenant: <GetAppConfiguration />,
   locale: <GetLocale />,
   idea: ({ ideaId, render }) => <GetIdea ideaId={ideaId}>{render}</GetIdea>,
   project: ({ idea, render }) => (
