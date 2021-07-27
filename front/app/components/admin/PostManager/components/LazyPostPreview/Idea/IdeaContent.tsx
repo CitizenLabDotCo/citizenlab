@@ -47,8 +47,9 @@ import { getAddressOrFallbackDMS } from 'utils/map';
 // i18n
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { InjectedIntlProps, FormattedNumber } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import messages from '../messages';
+import FormattedCurrency from 'utils/FormattedCurrency';
 
 // style
 import styled from 'styled-components';
@@ -336,13 +337,7 @@ export class IdeaContent extends PureComponent<
                 {idea.attributes.budget && (
                   <>
                     <BudgetBox>
-                      <FormattedNumber
-                        value={idea.attributes.budget}
-                        style="currency"
-                        currency={currency}
-                        minimumFractionDigits={0}
-                        maximumFractionDigits={0}
-                      />
+                      <FormattedCurrency value={idea.attributes.budget} />
                       <Picks>
                         <FormattedMessage
                           {...messages.picks}

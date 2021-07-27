@@ -10,7 +10,6 @@ import { isNumber } from 'lodash-es';
 import moment from 'moment';
 
 // hooks
-import useAppConfiguration from 'hooks/useAppConfiguration';
 import useProject from 'hooks/useProject';
 import usePhases from 'hooks/usePhases';
 import useEvents from 'hooks/useEvents';
@@ -30,9 +29,9 @@ import { pastPresentOrFuture } from 'utils/dateUtils';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import { FormattedNumber } from 'react-intl';
 import messages from 'containers/ProjectsShowPage/messages';
 import { getInputTermMessage } from 'utils/i18n';
+import FormattedCurrency from 'utils/FormattedCurrency';
 
 // style
 import styled from 'styled-components';
@@ -133,7 +132,6 @@ interface Props {
 }
 
 const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
-  const tenant = useAppConfiguration();
   const project = useProject({ projectId });
   const phases = usePhases(projectId);
   const { events } = useEvents({
@@ -180,10 +178,9 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
     setShareModalOpened(false);
   }, []);
 
-  if (!isNilOrError(tenant) && !isNilOrError(project)) {
+  if (!isNilOrError(project)) {
     const projectType = project.attributes.process_type;
     const projectParticipantsCount = project.attributes.participants_count;
-    const currency = tenant.data.attributes.settings.core.currency;
     const totalBudget =
       currentPhase?.attributes?.max_budget ||
       project?.attributes?.max_budget ||
@@ -347,15 +344,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                     <FormattedMessage
                       {...messages.budget}
                       values={{
-                        amount: (
-                          <FormattedNumber
-                            value={totalBudget}
-                            style="currency"
-                            currency={currency}
-                            minimumFractionDigits={0}
-                            maximumFractionDigits={0}
-                          />
-                        ),
+                        amount: <FormattedCurrency value={totalBudget} />,
                       }}
                     />
                   </ListItemButton>

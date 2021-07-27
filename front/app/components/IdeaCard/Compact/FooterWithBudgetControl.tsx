@@ -1,19 +1,13 @@
 import React, { memo } from 'react';
+import FormattedCurrency from 'utils/FormattedCurrency';
 
 // components
-import { FormattedNumber } from 'react-intl';
 import { Icon } from 'cl2-component-library';
 import AssignBudgetControl from 'components/AssignBudgetControl';
 
 // types
 import { IParticipationContextType } from 'typings';
 import { IIdeaData } from 'services/ideas';
-
-// hooks
-import useAppConfiguration from 'hooks/useAppConfiguration';
-
-// utils
-import { isNilOrError } from 'utils/helperUtils';
 
 // styles
 import styled from 'styled-components';
@@ -63,13 +57,6 @@ interface Props {
 
 const FooterWithBudgetControl = memo<Props>(
   ({ idea, participationContextId, participationContextType }) => {
-    const tenant = useAppConfiguration();
-
-    if (isNilOrError(tenant)) {
-      return null;
-    }
-
-    const tenantCurrency = tenant.data.attributes.settings.core.currency;
     const projectId = idea?.relationships?.project.data?.id;
     const ideaBudget = idea?.attributes?.budget;
 
@@ -82,13 +69,7 @@ const FooterWithBudgetControl = memo<Props>(
         {participationContextId && participationContextType && ideaBudget && (
           <BudgetControl>
             <IdeaBudget>
-              <FormattedNumber
-                value={ideaBudget}
-                style="currency"
-                currency={tenantCurrency}
-                minimumFractionDigits={0}
-                maximumFractionDigits={0}
-              />
+              <FormattedCurrency value={ideaBudget} />
             </IdeaBudget>
             <AssignBudgetControl
               view="ideaCard"
