@@ -299,7 +299,7 @@ const PBExpenses = memo(
       const submittedAt = !isNilOrError(basket)
         ? basket.attributes.submitted_at
         : null;
-      let totalBudget = 0;
+      let maxBudget = 0;
       let progress = 0;
       let validationStatus:
         | 'notValidated'
@@ -309,13 +309,13 @@ const PBExpenses = memo(
       let progressBarColor: 'green' | 'red' | '' = '';
 
       if (participationContextType === 'project' && !isNilOrError(project)) {
-        totalBudget = project.attributes.max_budget as number;
+        maxBudget = project.attributes.max_budget as number;
       } else if (participationContextType === 'phase' && !isNilOrError(phase)) {
-        totalBudget = phase.attributes.max_budget as number;
+        maxBudget = phase.attributes.max_budget as number;
       }
 
-      if (totalBudget > 0 && spentBudget > 0) {
-        progress = round((spentBudget / totalBudget) * 100, 1);
+      if (maxBudget > 0 && spentBudget > 0) {
+        progress = round((spentBudget / maxBudget) * 100, 1);
       }
 
       if (budgetExceedsLimit) {
@@ -376,7 +376,7 @@ const PBExpenses = memo(
                   </BudgetLabel>
                   <BudgetAmount>
                     <FormattedNumber
-                      value={totalBudget}
+                      value={maxBudget}
                       style="currency"
                       currency={currency}
                       minimumFractionDigits={0}
@@ -423,7 +423,7 @@ const PBExpenses = memo(
                     </BudgetLabel>
                     <BudgetAmount>
                       <FormattedNumber
-                        value={totalBudget}
+                        value={maxBudget}
                         style="currency"
                         currency={currency}
                         minimumFractionDigits={0}
@@ -434,7 +434,7 @@ const PBExpenses = memo(
                 )}
                 <ScreenReaderOnly aria-live="polite">
                   <FormattedMessage {...messages.totalBudget} />:
-                  {`${totalBudget} ${currency}`}
+                  {`${maxBudget} ${currency}`}
                   <FormattedMessage {...messages.spentBudget} />:
                   {`${spentBudget} ${currency}`}
                 </ScreenReaderOnly>
