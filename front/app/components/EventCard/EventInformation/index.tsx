@@ -235,7 +235,7 @@ const EventInformation = memo<Props & InjectedIntlProps>((props) => {
     <EventInformationContainer data-testid="EventInformation">
       <EventTitleAndAttributes>
         {showProjectTitle && projectTitle && (
-          <span onClick={stopPropagation}>
+          <span role="button" onClick={stopPropagation}>
             <StyledLink to={`/projects/${projectSlug}`}>
               <T value={projectTitle} />
             </StyledLink>
