@@ -166,6 +166,8 @@ const ProjectsShowPageWrapper = memo<WithRouterProps>(
       .split('/')
       .filter((segment) => segment !== '');
 
+    console.log(urlSegments);
+
     const processType = project?.attributes.process_type;
 
     // If processType is not available yet: don't render yet
@@ -185,6 +187,7 @@ const ProjectsShowPageWrapper = memo<WithRouterProps>(
     } else if (isScrollToEventIdQuery(urlSegments[3])) {
       // If an event id was passed as a query param, pass it on
       const scrollToEventId = parseScrollToEventIdQuery(urlSegments[3]);
+
       return (
         <ProjectsShowPage project={project} scrollToEventId={scrollToEventId} />
       );

@@ -42,7 +42,6 @@ declare global {
       apiAddPoll: typeof apiAddPoll;
       apiVerifyBogus: typeof apiVerifyBogus;
       apiCreateEvent: typeof apiCreateEvent;
-      topIsWithinViewport: typeof topIsWithinViewport;
     }
   }
 }
@@ -994,21 +993,6 @@ export function apiCreateEvent({
   });
 }
 
-// https://stackoverflow.com/a/58713927
-export function topIsWithinViewport(subject: any) {
-  const windowInnerWidth = Cypress.config('viewportWidth');
-
-  const bounding = subject[0].getBoundingClientRect();
-
-  const rightBoundOfWindow = windowInnerWidth;
-
-  expect(bounding.top).to.be.at.least(0);
-  expect(bounding.left).to.be.at.least(0);
-  expect(bounding.right).to.be.lessThan(rightBoundOfWindow);
-
-  return subject;
-}
-
 Cypress.Commands.add('unregisterServiceWorkers', unregisterServiceWorkers);
 Cypress.Commands.add('goToLandingPage', goToLandingPage);
 Cypress.Commands.add('login', login);
@@ -1053,8 +1037,4 @@ Cypress.Commands.add('apiAddPoll', apiAddPoll);
 Cypress.Commands.add('setAdminLoginCookie', setAdminLoginCookie);
 Cypress.Commands.add('setLoginCookie', setLoginCookie);
 Cypress.Commands.add('apiVerifyBogus', apiVerifyBogus);
-Cypress.Commands.add(
-  'topIsWithinViewport',
-  { prevSubject: true },
-  topIsWithinViewport
-);
+Cypress.Commands.add('apiCreateEvent', apiCreateEvent);
