@@ -10,7 +10,8 @@ describe('?scrollEventId parameter on project page', () => {
   const ideaTitle = randomString();
   const ideaContent = Math.random().toString(36);
   let projectId: string;
-  let ideaId: string;
+  let projectSlug: string;
+  let eventId: string;
 
   before(() => {
     cy.apiSignup(firstName, lastName, email, password)
@@ -28,6 +29,8 @@ describe('?scrollEventId parameter on project page', () => {
       })
       .then((project) => {
         projectId = project.body.data.id;
+        projectSlug = project.body.data.attributes.slug;
+
         return cy.apiCreatePhase(
           projectId,
           'phaseTitle',
@@ -60,9 +63,25 @@ describe('?scrollEventId parameter on project page', () => {
           title: 'Some event',
           location: 'Some location',
           description: 'This is some event',
-          startDate: new Date(),
-          endDate: new Date(),
+          startDate: new Date('2022-04-04'),
+          endDate: new Date('2022-05-05'),
         });
+      })
+      .then((event) => {
+        eventId = event.body.data.id;
       });
   });
+
+  // it('does not have event in viewport without parameter', () => {
+  //   cy.visit(`/projects/${projectSlug}`);
+  //   cy.wait(1000);
+
+  //   cy.get(`#${eventId}`).then($eventCard => {
+  //     cy.topIsWithinViewport($eventCard)
+  //   })
+  // });
+
+  // it('does have event in viewport with parameter', () => {
+
+  // });
 });
