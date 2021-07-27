@@ -299,6 +299,7 @@ const PBExpenses = memo(
       const submittedAt = !isNilOrError(basket)
         ? basket.attributes.submitted_at
         : null;
+      let minBudget = 0;
       let maxBudget = 0;
       let progress = 0;
       let validationStatus:
@@ -309,8 +310,10 @@ const PBExpenses = memo(
       let progressBarColor: 'green' | 'red' | '' = '';
 
       if (participationContextType === 'project' && !isNilOrError(project)) {
+        minBudget = project.attributes.min_budget as number;
         maxBudget = project.attributes.max_budget as number;
       } else if (participationContextType === 'phase' && !isNilOrError(phase)) {
+        minBudget = phase.attributes.min_budget as number;
         maxBudget = phase.attributes.max_budget as number;
       }
 
