@@ -12,15 +12,20 @@ const FormattedCurrency = ({ value }: Props) => {
 
   if (!isNilOrError(appConfiguration)) {
     const currency = appConfiguration.data.attributes.settings.core.currency;
-    return (
-      <FormattedNumber
-        value={value}
-        style="currency"
-        currency={currency}
-        minimumFractionDigits={0}
-        maximumFractionDigits={0}
-      />
-    );
+
+    if (currency === 'TOK') {
+    } else if (currency === 'CRE') {
+    } else {
+      return (
+        <FormattedNumber
+          value={value}
+          style="currency"
+          currency={currency}
+          minimumFractionDigits={0}
+          maximumFractionDigits={0}
+        />
+      );
+    }
   }
 
   return null;
