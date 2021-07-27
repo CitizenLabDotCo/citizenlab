@@ -57,5 +57,11 @@ export async function insightsTriggerCategoriesSuggestionsTasks(
     }
   );
 
+  streams.fetchAllWith({
+    partialApiEndpoint: [
+      `insights/views/${insightsViewId}/tasks/category_suggestions`,
+      `insights/views/${insightsViewId}/inputs`,
+    ],
+  });
   return response;
 }
