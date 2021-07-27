@@ -41,6 +41,8 @@ declare global {
       apiRemoveCustomField: typeof apiRemoveCustomField;
       apiAddPoll: typeof apiAddPoll;
       apiVerifyBogus: typeof apiVerifyBogus;
+      apiCreateEvent: typeof apiCreateEvent;
+      topIsWithinViewport: typeof topIsWithinViewport;
     }
   }
 }
@@ -944,6 +946,69 @@ export function apiVerifyBogus(jwt: string, error?: string) {
   });
 }
 
+export function apiCreateEvent({
+  projectId,
+  title,
+  description,
+  location,
+  startDate,
+  endDate,
+}: {
+  projectId: string;
+  title: string;
+  description: string;
+  location: string;
+  startDate: Date;
+  endDate: Date;
+}) {
+  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'POST',
+      url: `web_api/v1/projects/${projectId}/events`,
+      body: {
+        event: {
+          project_id: projectId,
+          title_multiloc: {
+            en: title,
+            'nl-BE': title,
+          },
+          description_multiloc: {
+            en: description,
+            'nl-BE': description,
+          },
+          location_multiloc: {
+            en: location,
+            'nl-BE': location,
+          },
+          start_at: startDate.toJSON(),
+          end_at: startDate.toJSON(),
+        },
+      },
+    });
+  });
+}
+
+// https://stackoverflow.com/a/58713927
+export function topIsWithinViewport(subject: any) {
+  const windowInnerWidth = Cypress.config('viewportWidth');
+
+  const bounding = subject[0].getBoundingClientRect();
+
+  const rightBoundOfWindow = windowInnerWidth;
+
+  expect(bounding.top).to.be.at.least(0);
+  expect(bounding.left).to.be.at.least(0);
+  expect(bounding.right).to.be.lessThan(rightBoundOfWindow);
+
+  return subject;
+}
+
 Cypress.Commands.add('unregisterServiceWorkers', unregisterServiceWorkers);
 Cypress.Commands.add('goToLandingPage', goToLandingPage);
 Cypress.Commands.add('login', login);
@@ -988,3 +1053,8 @@ Cypress.Commands.add('apiAddPoll', apiAddPoll);
 Cypress.Commands.add('setAdminLoginCookie', setAdminLoginCookie);
 Cypress.Commands.add('setLoginCookie', setLoginCookie);
 Cypress.Commands.add('apiVerifyBogus', apiVerifyBogus);
+Cypress.Commands.add(
+  'topIsWithinViewport',
+  { prevSubject: true },
+  topIsWithinViewport
+);

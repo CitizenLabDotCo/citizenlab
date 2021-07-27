@@ -5,9 +5,8 @@ import {
   IParticipationContextType,
   CLErrorsJSON,
 } from 'typings';
-import { trim } from 'lodash-es';
+import { trim, isUndefined } from 'lodash-es';
 import { removeUrlLocale } from 'services/locale';
-import { isUndefined } from 'lodash-es';
 
 export function capitalizeParticipationContextType(
   type: IParticipationContextType

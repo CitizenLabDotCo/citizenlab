@@ -1,6 +1,5 @@
 import React, { memo, useMemo } from 'react';
 import { isError } from 'lodash-es';
-import { isNilOrError, isApiError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
 import clHistory from 'utils/cl-router/history';
 
@@ -35,7 +34,7 @@ import { IProjectData } from 'services/projects';
 
 // other
 import { isValidPhase } from './phaseParam';
-import { anyIsUndefined } from 'utils/helperUtils';
+import { anyIsUndefined, isNilOrError, isApiError } from 'utils/helperUtils';
 import {
   isScrollToEventIdQuery,
   parseScrollToEventIdQuery,
