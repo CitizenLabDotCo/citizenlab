@@ -740,6 +740,7 @@
   "app.containers.Admin.Insights.Detect.addCategories": "Add categories",
   "app.containers.Admin.Insights.Detect.addCategory": "Add category",
   "app.containers.Admin.Insights.Detect.cancel": "Cancel",
+  "app.containers.Admin.Insights.Detect.goBack": "Go back",
   "app.containers.Admin.Insights.Detect.pageTitle": "Detect new categories",
   "app.containers.Admin.Insights.Detect.sectionDescription": "These auto-detected categories are the most common topics discussed on your platform.",
   "app.containers.Admin.Insights.Detect.sectionTitle": "Detected categories",
