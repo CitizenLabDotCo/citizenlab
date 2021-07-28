@@ -343,7 +343,9 @@ const PBExpenses = memo(
         validationStatusMessage = formatMessage(messages.budgetValidated);
       }
 
-      // const showMinBudget = minBudget > 0 && minBudget < maxBudget;
+      const minBudgetRequired = minBudget > 0;
+      const minBudgetReached = spentBudget >= minBudget;
+      // const showMinBudget = minBudgetRequired && minBudget < maxBudget;
       const showMinBudget = true;
 
       return (
@@ -506,7 +508,7 @@ const PBExpenses = memo(
                     validationStatus === 'validationSuccess' ||
                     budgetExceedsLimit ||
                     spentBudget === 0 ||
-                    (minBudget > 0 && spentBudget <= minBudget)
+                    (minBudgetRequired && !minBudgetReached)
                   }
                   processing={processing}
                   viewMode={viewMode}
