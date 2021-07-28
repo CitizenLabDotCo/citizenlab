@@ -744,6 +744,7 @@
   "app.containers.Admin.Insights.Edit.allInput": "Cały wkład",
   "app.containers.Admin.Insights.Edit.allInputTooltip": "Ta lista zawiera wszystkie poprzednio przetworzone dane, niezależnie od przypisanych kategorii. Ostatnio dodane dane NIE są tu wyświetlane.",
   "app.containers.Admin.Insights.Edit.assignCategoriesButton": "Dodaj",
+  "app.containers.Admin.Insights.Edit.bulkApprove": "Approve",
   "app.containers.Admin.Insights.Edit.bulkAssignCategory": "Dodaj kategorie do wybranych wkładów",
   "app.containers.Admin.Insights.Edit.bulkUnassign": "Usuń",
   "app.containers.Admin.Insights.Edit.categories": "Kategorie",
