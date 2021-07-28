@@ -2,8 +2,8 @@ import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 import { IRelationship } from 'typings';
 
-import { of } from 'rxjs';
-import { delay, repeat, takeWhile, skip, finalize } from 'rxjs/operators';
+import { interval } from 'rxjs';
+import { takeWhile, skip, finalize } from 'rxjs/operators';
 
 const getInsightsCategorySuggestionsTasksEndpoint = (viewId: string) =>
   `insights/views/${viewId}/tasks/category_suggestions`;
@@ -50,7 +50,7 @@ export async function insightsTriggerCategoriesSuggestionsTasks(
   categories?: string[],
   inputs?: string[]
 ) {
-  const pollingStream = of({}).pipe(delay(3000), repeat());
+  const pollingStream = interval(3000);
 
   const response = await streams.add(
     `${API_PATH}/${getInsightsCategorySuggestionsTasksEndpoint(
@@ -84,7 +84,10 @@ export async function insightsTriggerCategoriesSuggestionsTasks(
       // Refetch inputs when there are no pending tasks
       finalize(() => {
         streams.fetchAllWith({
-          partialApiEndpoint: [`insights/views/${insightsViewId}/inputs`],
+          partialApiEndpoint: [
+            `insights/views/${insightsViewId}/inputs`,
+            `insights/views/${insightsViewId}/categories`,
+          ],
         });
         subscription.unsubscribe();
       })
