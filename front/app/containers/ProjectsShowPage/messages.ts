@@ -115,6 +115,10 @@ export default defineMessages({
     id: 'app.containers.Projects.yourBudget',
     defaultMessage: 'Your budget',
   },
+  requiredSelection: {
+    id: 'app.containers.Projects.requiredSelection',
+    defaultMessage: 'Required selection',
+  },
   addedToBasket: {
     id: 'app.containers.Projects.addedToBasket',
     defaultMessage: 'Added to your basket',

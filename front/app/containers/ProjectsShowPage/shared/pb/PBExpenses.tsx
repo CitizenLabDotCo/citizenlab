@@ -414,7 +414,12 @@ const PBExpenses = memo(
               {viewMode === 'column' && (
                 <TotalBudgetColumn aria-hidden>
                   <BudgetLabel>
-                    <FormattedMessage {...messages.yourBudget} />:
+                    <FormattedMessage
+                      {...(minBudget === maxBudget
+                        ? messages.requiredSelection
+                        : messages.yourBudget)}
+                    />
+                    :
                   </BudgetLabel>
                   <BudgetAmount>
                     <FormattedNumber
