@@ -9,7 +9,6 @@ import AvatarBubbles from 'components/AvatarBubbles';
 import SignedOutHeader from './SignedOutHeader';
 import SignedInHeader from './SignedInHeader';
 import InitiativesCTABox from './InitiativesCTABox';
-import EventsWidget from './EventsWidget';
 import T from 'components/T';
 import Fragment from 'components/Fragment';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
@@ -43,6 +42,7 @@ import GetInitiativesPermissions, {
   GetInitiativesPermissionsChildProps,
 } from 'resources/GetInitiativesPermissions';
 import FeatureFlag from 'components/FeatureFlag';
+import Outlet from 'components/Outlet';
 
 const Container = styled.main`
   height: 100%;
@@ -233,9 +233,7 @@ class LandingPage extends PureComponent<Props, State> {
                   </SectionContainer>
                 </ProjectSection>
 
-                <FeatureFlag name="events_widget">
-                  <EventsWidget />
-                </FeatureFlag>
+                <Outlet id="app.containers.LandingPage.EventsWidget" />
 
                 <FeatureFlag name="initiatives">
                   {postingProposalsEnabled && <StyledInitiativesCTABox />}
