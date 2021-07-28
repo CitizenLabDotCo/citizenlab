@@ -579,6 +579,14 @@ class ParticipationContext extends PureComponent<
 
     if (!isNilOrError(tenant) && loaded) {
       const tenantCurrency = tenant.attributes.settings.core.currency;
+      const minBudgetInputValue =
+        // need to check the type because if min_budget is 0,
+        // it'll evaluate to null
+        typeof min_budget === 'number' ? min_budget.toString() : null;
+      const maxBudgetInputValue =
+        // maxBudget can't be lower than 1, but it's still a good practice
+        // to check for type instead of relying on JS type coercion
+        typeof max_budget === 'number' ? max_budget.toString() : null;
 
       return (
         <Container className={className}>
@@ -754,7 +762,9 @@ class ParticipationContext extends PureComponent<
                     onChange={this.handleMinBudgetingAmountChange}
                     type="number"
                     min="0"
-                    value={min_budget ? min_budget.toString() : null}
+                    value={
+                      minBudgetInputValue
+                    }
                   />
                   <Error apiErrors={apiErrors && apiErrors.min_budget} />
                 </SectionField>
@@ -766,7 +776,7 @@ class ParticipationContext extends PureComponent<
                     onChange={this.handleMaxBudgetingAmountChange}
                     type="number"
                     min="1"
-                    value={max_budget ? max_budget.toString() : null}
+                    value={maxBudgetInputValue}
                   />
                   <Error
                     text={noBudgetingAmount}
