@@ -207,7 +207,7 @@ describe('Insights Input Table', () => {
       expect(
         within(firstRow).getAllByTestId('insightsTagContent-primary')
       ).toHaveLength(2);
-      expect(within(secondRow).queryAllByTestId('insightsTag')).toHaveLength(0);
+      expect(within(secondRow).queryAllByTestId('insightsTag')).toHaveLength(1);
     });
     it('calls onDelete category with correct arguments', () => {
       const spy = jest.spyOn(service, 'deleteInsightsInputCategory');
